@@ -27,6 +27,13 @@ at the measured P and liquid x; the vapour composition is compared, not fitted.
     (validation/data/ethanol_water_101kPa.json, ethanol_ethylene-glycol_101kPa.json,
     water_ethylene-glycol_101kPa_kamihama2012.json)
 
+  open literature beyond the ThermoML Archive (validation/data/eos/, each file with its source
+  block; the tables were checked against the source pages, see each file's "transcription"):
+  isothermal P-x(-y) data, fitted to the bubble pressures as above (LIT_PX_FITS), and isobaric
+  T-x-y data at 100.65 kPa (Rodrigues et al., Braz. J. Chem. Eng. 22 (2005) 453, in TXY_FITS).
+  A literature k_ij is written only when the fit meets LIT_GATE; otherwise the script says why
+  and the pair keeps no k_ij.
+
 Usage: python validation/python/eos_fit_kij.py [--write]
 """
 import json
@@ -82,6 +89,36 @@ TXY_FITS = [
     # ethyl acetate by esterification benchmark; the acetic acid pairs get no k_ij: a cubic
     # equation of state does not describe the dimerization of acetic acid in the vapour
     {"pair": ("ethyl-acetate", "ethanol"), "file": "ethyl-acetate_ethanol_101kPa.json", "cite": "Calvar et al. (2005)"},
+    # open literature (Rodrigues, Mattedi, Abreu 2005; SciELO open access), written only within LIT_GATE
+    {"pair": ("cyclohexane", "n-heptane"), "file": "eos/rodrigues2005_cyclohexane_n-heptane.json", "cite": "Rodrigues et al. (2005)", "gate": True},
+    {"pair": ("p-xylene", "m-xylene"), "file": "eos/rodrigues2005_p-xylene_m-xylene.json", "cite": "Rodrigues et al. (2005)", "gate": True},
+    {"pair": ("p-xylene", "o-xylene"), "file": "eos/rodrigues2005_p-xylene_o-xylene.json", "cite": "Rodrigues et al. (2005)", "gate": True},
+    {"pair": ("m-xylene", "o-xylene"), "file": "eos/rodrigues2005_m-xylene_o-xylene.json", "cite": "Rodrigues et al. (2005)", "gate": True},
+]
+
+# The limits a k_ij fitted to the open literature must meet to be written: as fit_parameters.GATE
+# for T-x-y data (AAD 0.5 K in T and 0.012 in y), and for pressures an AAD of 5 % with every data
+# point given a bubble pressure by the equation of state (a cubic equation of state with one
+# constant k_ij is not expected to reach the 1.5 % of an activity model at high pressure).
+LIT_GATE = {"T_K": 0.5, "y": 0.012, "P_pct": 5.0}
+
+# Isothermal P-x(-y) files of validation/data/eos (kind "isothermal-pxy": columns T_K, P_kPa,
+# x_1, y_1; rows listed under "excluded" are left out, with the file's reason).
+LIT_PX_FITS = [
+    {"pair": ("ethane", "n-decane"), "files": ["goni2024_ethane_n-decane.json"], "cite": "Goni (2024)"},
+    {"pair": ("ethane", "n-undecane"), "files": ["goni2024_ethane_n-undecane.json"], "cite": "Goni (2024)"},
+    {"pair": ("ethane", "n-dodecane"), "files": ["goni2024_ethane_n-dodecane.json"], "cite": "Goni (2024)"},
+    {"pair": ("propane", "n-decane"), "files": ["goni2024_propane_n-decane.json"], "cite": "Goni (2024)"},
+    {"pair": ("propane", "n-undecane"), "files": ["goni2024_propane_n-undecane.json"], "cite": "Goni (2024)"},
+    {"pair": ("propane", "n-dodecane"), "files": ["goni2024_propane_n-dodecane.json"], "cite": "Goni (2024)"},
+    {"pair": ("argon", "hydrogen-sulfide"), "files": ["gonzalez2017_argon_hydrogen-sulfide.json"], "cite": "González Pérez (2017)"},
+    {"pair": ("ethylene", "propylene"), "files": ["bae1981_ethylene_propylene.json"], "cite": "Bae et al. (1981)"},
+    {"pair": ("ethylene", "1-butene"), "files": ["bae1981_ethylene_1-butene.json"], "cite": "Bae et al. (1981)"},
+    {"pair": ("carbon-dioxide", "n-decane"), "files": ["inomata1986_carbon-dioxide_n-decane.json"], "cite": "Inomata et al. (1986)"},
+    {"pair": ("ammonia", "benzene"), "files": ["noda1975_ammonia_benzene.json"], "cite": "Noda et al. (1975)"},
+    {"pair": ("sulfur-dioxide", "isooctane"), "files": ["nitta1976_sulfur-dioxide_isooctane.json"], "cite": "Nitta et al. (1976)"},
+    {"pair": ("hydrogen", "n-decane"), "files": ["sebastian1980_hydrogen_n-decane.json", "sokolov1977_hydrogen_n-decane.json"],
+     "cite": "Sebastian et al. (1980) and Sokolov and Polyakov (1977), both as compiled by Young (1981)"},
 ]
 
 
@@ -210,16 +247,22 @@ def fit_txy(doc):
             k = round(float(res.x), 4)
             out = calc(k)
             if None in out:
+                if fit.get("gate"):
+                    print(f"{model} {i}-{j}: NOT WRITTEN, at the optimum k_ij = {k} {out.count(None)} data points have no bubble point within 25 K")
+                    continue
                 raise SystemExit(f"{model} {i}-{j}: at the optimum k_ij = {k} {out.count(None)} data points have no bubble point within 25 K")
             dT = [abs(Tc - T) for (Tc, _), (_, _, T, _) in zip(out, pts)]
             dy = [abs(yc - y) for (_, yc), (_, _, _, y) in zip(out, pts)]
             q = f"AAD {sum(dT) / len(dT):.2f} K in T (max {max(dT):.2f} K), {sum(dy) / len(dy):.4f} in y (max {max(dy):.4f})"
             print(f"{model} {i}-{j}: k_ij = {k:.4f}, {q}, {len(pts)} points")
+            if fit.get("gate") and (sum(dT) / len(dT) > LIT_GATE["T_K"] or sum(dy) / len(dy) > LIT_GATE["y"]):
+                print(f"   NOT WRITTEN: outside LIT_GATE {LIT_GATE}")
+                continue
             Ts = [T for _, _, T, _ in pts]
             entry = {
                 "model": model, "i": i, "j": j, "kij": k, "tier": "fitted",
                 "source": {
-                    "fit": f"Fitted for CHEPTA with validation/python/eos_fit_kij.py to the {len(pts)} bubble temperatures of {fit.get('cite', 'Kamihama et al. (2012)')} at {pts[0][0]} kPa: {q}",
+                    "fit": f"Fitted for CHEPTA with validation/python/eos_fit_kij.py to the {len(pts)} bubble temperatures of {fit.get('cite', 'Kamihama et al. (2012)')} at {pts[0][0]:g} kPa: {q}",
                     "data": [f"validation/data/{fit['file']}"],
                     "conditions": f"P = {pts[0][0]} kPa, T = {min(Ts):g}-{max(Ts):g} K",
                     "T_range_K": [min(Ts), max(Ts)],
@@ -235,11 +278,87 @@ def fit_txy(doc):
                 doc["pairs"].append(entry)
 
 
+def load_lit_px(name):
+    """Isothermal P-x(-y) file of validation/data/eos as [(T_K, x1, P_kPa, y1 or None)]: binary rows
+    with a measured liquid composition, without the rows the file lists under "excluded"."""
+    d = json.load(open(os.path.join(DATA, name)))
+    c = {k: n for n, k in enumerate(d["columns"])}
+    skip = {e["row"] for e in d.get("excluded", [])}
+    return [(r[c["T_K"]], r[c["x_1"]], r[c["P_kPa"]], r[c["y_1"]]) for n, r in enumerate(d["rows"])
+            if n not in skip and r[c["x_1"]] is not None and 0 < r[c["x_1"]] < 1]
+
+
+def bubble_py_fresh(e, T, x1, P_guess):
+    """bubble_p_fresh, with the vapour mole fraction of the first component."""
+    P = bubble_p_fresh(e, T, x1, P_guess)
+    z = np.array([x1, 1 - x1])
+    K = e.Pc / (P * 1000) * np.exp(5.37 * (1 + e.w) * (1 - e.Tc / T))
+    _, w = e._inner(T, P * 1000, z, True, K * z / (K * z).sum())
+    return P, float(w[0])
+
+
+def fit_lit_px(doc):
+    """k_ij of the LIT_PX_FITS entries, both models, written when the fit meets LIT_GATE."""
+    for fit in LIT_PX_FITS:
+        i, j = fit["pair"]
+        for f in fit["files"]:
+            comps = json.load(open(os.path.join(DATA, f)))["components"]
+            if list(comps) != [i, j]:
+                raise SystemExit(f"{f}: components {comps}, pair {fit['pair']}: list the pair in the file's order")
+        pts = [p for f in fit["files"] for p in load_lit_px(f)]
+        for model in ("PR", "SRK"):
+            e = Cubic(model, [i, j])
+
+            def resid(k):
+                e.k[0, 1] = e.k[1, 0] = k
+                out = []
+                for T, x, P, _ in pts:
+                    try:
+                        out.append(math.log(bubble_p_fresh(e, T, x, P) / P))
+                    except ValueError:
+                        out.append(None)
+                return out
+
+            res = minimize_scalar(lambda k: sum(v * v if v is not None else 1.0 for v in resid(k)), bounds=(-0.3, 0.6), method="bounded", options={"xatol": 1e-5})
+            k = round(float(res.x), 4)
+            r = resid(k)
+            missing = r.count(None)
+            dev = [100 * (math.exp(v) - 1) for v in r if v is not None]
+            aad = sum(abs(d) for d in dev) / len(dev) if dev else float("inf")
+            dy = []
+            for (T, x, P, y), v in zip(pts, r):
+                if y is not None and v is not None:
+                    dy.append(abs(bubble_py_fresh(e, T, x, P)[1] - y))
+            Ts = sorted({T for T, _, _, _ in pts})
+            q = f"AAD {aad:.2f} % in P (deviations {min(dev):.1f} to {max(dev):.1f} %)" + (f", {sum(dy) / len(dy):.4f} in y (max {max(dy):.4f}, {len(dy)} points)" if dy else "")
+            print(f"{model} {i}-{j}: k_ij = {k:.4f}, {q}, {len(pts)} points" + (f", {missing} without a bubble pressure" if missing else ""))
+            if missing or aad > LIT_GATE["P_pct"]:
+                print(f"   NOT WRITTEN: outside LIT_GATE {LIT_GATE}")
+                continue
+            entry = {
+                "model": model, "i": i, "j": j, "kij": k, "tier": "fitted",
+                "source": {
+                    "fit": f"Fitted for CHEPTA with validation/python/eos_fit_kij.py to the {len(pts)} bubble pressures of {fit['cite']} at {len(Ts)} temperatures, {min(Ts):g}-{max(Ts):g} K: {q}",
+                    "data": [f"validation/data/eos/{f}" for f in fit["files"]],
+                    "conditions": f"T = {min(Ts):g}-{max(Ts):g} K, P = {min(p for _, _, p, _ in pts):g}-{max(p for _, _, p, _ in pts):g} kPa, x_1 = {min(x for _, x, _, _ in pts):g}-{max(x for _, x, _, _ in pts):g}",
+                    "T_range_K": [min(Ts), max(Ts)],
+                },
+            }
+            idx = [n for n, p in enumerate(doc["pairs"]) if p["model"] == model and {p["i"], p["j"]} == {i, j}]
+            if idx:
+                if doc["pairs"][idx[0]].get("tier") != "fitted":
+                    raise SystemExit(f"{model} {i}-{j}: a databank value exists; keep it under 'replaced' as for hydrogen + toluene")
+                doc["pairs"][idx[0]] = entry
+            else:
+                doc["pairs"].append(entry)
+
+
 def main():
     path = os.path.join(ROOT, "src", "data", "kij.json")
     doc = json.load(open(path))
     fit_txy(doc)
     fit_px(doc)
+    fit_lit_px(doc)
     for fit in FITS:
         i, j = fit["pair"]
         pts = fit["data"]()
