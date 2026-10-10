@@ -2,7 +2,7 @@
 
 That script fits with the engine's bubble pressures. Here the separate Python implementation of
 the equations of state (reference_eos.py, through eos_fit_kij.bubble_p_fresh) recomputes, at the
-fitted k_ij of src/data/kij.json, the bubble pressure of four points of every kept data set (the
+fitted k_ij of src/data/kij.json, the bubble pressure (bubble_p below) of four points of every kept data set (the
 lowest and highest pressure and two between). It writes validation/data/eos/literature_check.json;
 test/eos-literature.test.js requires the engine to agree with these pressures.
 
@@ -12,9 +12,43 @@ import json
 import os
 import sys
 
+import numpy as np
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from eos_fit_kij import DATA, ROOT, bubble_p_fresh  # noqa: E402
 from reference_eos import Cubic  # noqa: E402
+
+
+def bubble_p(e, T, x1, P_guess):
+    """eos_fit_kij.bubble_p_fresh; near the mixture critical point, where its scan finds the
+    residual positive below the bubble pressure and only the trivial solution (vapour = liquid)
+    above it, the bubble pressure is the boundary between the two, found by bisection; it is
+    accepted when the residual there is below 1e-4."""
+    try:
+        return bubble_p_fresh(e, T, x1, P_guess)
+    except ValueError:
+        pass
+    z = np.array([x1, 1 - x1])
+
+    def f(P):
+        K = e.Pc / P * np.exp(5.37 * (1 + e.w) * (1 - e.Tc / T))
+        r, w = e._inner(T, P, z, True, K * z / (K * z).sum())
+        return None if np.max(np.abs(w - z)) < 1e-4 else r
+
+    Ps = np.geomspace(0.3 * P_guess * 1000, 3 * P_guess * 1000, 25)
+    vals = [f(P) for P in Ps]
+    for a, b, fa, fb in zip(Ps, Ps[1:], vals, vals[1:]):
+        if fa is not None and fa > 0 and fb is None:
+            for _ in range(60):
+                m = (a + b) / 2
+                fm = f(m)
+                if fm is not None and fm > 0:
+                    a, fa = m, fm
+                else:
+                    b = m
+            if fa < 1e-4:
+                return a / 1000
+    raise ValueError(f"no bubble pressure at T = {T} K, x1 = {x1}")
 
 
 def points(name):
@@ -39,7 +73,7 @@ def main():
         e = Cubic(model, [i, j])
         e.k[0, 1] = e.k[1, 0] = k
         for T, x, P in sample:
-            P_ref = bubble_p_fresh(e, T, x, P)
+            P_ref = bubble_p(e, T, x, P)
             print(f"{model} {i}-{j} k_ij = {k}: T = {T} K, x1 = {x}, P_exp = {P:g} kPa, reference {P_ref:.2f} kPa ({100 * (P_ref / P - 1):+.1f} %)")
             out.append({"model": model, "pair": [i, j], "kij": k, "T_K": T, "x_1": x, "P_exp_kPa": P, "P_reference_kPa": round(P_ref, 3)})
     if "--write" in sys.argv:
