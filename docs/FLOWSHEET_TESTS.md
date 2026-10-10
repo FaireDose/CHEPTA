@@ -27,26 +27,26 @@ Peng-Robinson with the databank's k_ij (ChemSep). Flows as printed (mol/hr); the
 | Component | Feed | P1, CHEPTA | P1, VMGSim APR | P1, FLOWTRAN | P2, CHEPTA | P2, VMGSim APR | P2, FLOWTRAN |
 |---|---|---|---|---|---|---|---|
 | Nitrogen | 358.2 | 358.20 | 358.2 | 358.2 | 0.00 | 0 | 0.0009 |
-| Carbon dioxide | 4965.6 | 4958.87 | 4961.79 | 4964.7 | 6.73 | 3.81 | 4.73 |
-| Hydrogen sulfide | 339.4 | 331.27 | 334.95 | 334.7 | 8.13 | 4.45 | 5.22 |
+| Carbon dioxide | 4965.6 | 4958.69 | 4961.79 | 4964.7 | 6.91 | 3.81 | 4.73 |
+| Hydrogen sulfide | 339.4 | 331.08 | 334.95 | 334.7 | 8.32 | 4.45 | 5.22 |
 | Methane | 2995.5 | 2995.33 | 2995.35 | 2996.3 | 0.17 | 0.15 | 0.17 |
-| Ethane | 2395.5 | 2376.68 | 2378.28 | 2883.2 | 18.82 | 17.22 | 14.5 |
-| Propane | 2291 | 1870.41 | 1876.66 | 1899.1 | 420.59 | 414.34 | 404.2 |
-| Isobutane | 604.1 | 195.42 | 197.73 | 198.2 | 408.68 | 406.37 | 410.3 |
-| n-Butane | 1539.9 | 308.84 | 311.86 | 299.4 | 1231.06 | 1228.04 | 1247.4 |
-| Isopentane | 790.4 | 38.65 | 38.61 | 37.2 | 751.75 | 751.79 | 753.9 |
-| n-Pentane | 1129.9 | 41.70 | 41.41 | 34.8 | 1088.20 | 1088.49 | 1095.7 |
-| n-Hexane | 1764.7 | 11.04 | 11.14 | 10.5 | 1753.66 | 1753.56 | 1754.6 |
+| Ethane | 2395.5 | 2377.19 | 2378.28 | 2883.2 | 18.31 | 17.22 | 14.5 |
+| Propane | 2291 | 1888.50 | 1876.66 | 1899.1 | 402.50 | 414.34 | 404.2 |
+| Isobutane | 604.1 | 193.62 | 197.73 | 198.2 | 410.48 | 406.37 | 410.3 |
+| n-Butane | 1539.9 | 306.26 | 311.86 | 299.4 | 1233.64 | 1228.04 | 1247.4 |
+| Isopentane | 790.4 | 38.50 | 38.61 | 37.2 | 751.90 | 751.79 | 753.9 |
+| n-Pentane | 1129.9 | 41.56 | 41.41 | 34.8 | 1088.34 | 1088.49 | 1095.7 |
+| n-Hexane | 1764.7 | 11.02 | 11.14 | 10.5 | 1753.68 | 1753.56 | 1754.6 |
 | n-Heptane | 2606.7 | 4.00 | 4.04 | 3.72 | 2602.70 | 2602.66 | 2603.2 |
 | n-Octane | 1844.5 | 0.61 | 0.7 | 0.55 | 1843.89 | 1843.8 | 1844 |
 | n-Nonane | 1669 | 0.12 | 0.15 | 0.12 | 1668.88 | 1668.85 | 1668.9 |
-| n-Decane | 831.7 | 0.01 | 0.02 | 0.015 | 831.69 | 831.68 | 831.7 |
-| n-Undecane | 1214.5 | 0.00 | 0.01 | 0.007 | 1214.50 | 1214.49 | 1214.5 |
-| **Total** | 27340.6 | 13491.2 | 13510.9 | 14020.7 | 13849.4 | 13829.7 | 13853.0 |
+| n-Decane | 831.7 | 0.02 | 0.02 | 0.015 | 831.68 | 831.68 | 831.7 |
+| n-Undecane | 1214.5 | 0.01 | 0.01 | 0.007 | 1214.49 | 1214.49 | 1214.5 |
+| **Total** | 27340.6 | 13504.7 | 13510.9 | 14020.7 | 13835.9 | 13829.7 | 13853.0 |
 
 FLOWTRAN's P1 ethane, 2883.2, is above the feed (2395.5); Rosen reads it as a typo for 2383.2. FLOWTRAN's products do not close the component balances (Rosen's last column); VMGSim's do. P1 is the vapour of FL1, P2 the liquid of FL4 (Figure 2). Rosen's text says P2 is the liquid of FL2; Figure 2 and the stated conditions (85 F, 13 psia) are those of FL4.
 
-Drums: FL2 322.04 K, vapour fraction 0.4063; FL1 310.93 K, vapour fraction 0.7527; FL3 308.71 K, vapour fraction 0.3963; FL4 302.59 K, vapour fraction 0.2632.
+Drums: FL2 322.04 K, vapour fraction 0.4090; FL1 310.93 K, vapour fraction 0.7507; FL3 308.71 K, vapour fraction 0.3946; FL4 302.59 K, vapour fraction 0.2587.
 
 Cavett (1963) and Rosen and Pauls (1977) found this problem slow to converge (propane builds up in all three loops). At CHEPTA's tolerance (1e-8, relative), Wegstein needed 170 iterations and direct substitution 222; Broyden's method, now the default, needs 37.
 
