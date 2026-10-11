@@ -70,14 +70,17 @@ def splits_note(rec):
 
 
 def all_pairs(doc):
-    """Every pair among the components that ChemSep has and CHEPTA has no set for, as
-    PAIRS entries."""
-    have = {frozenset((r["i"], r["j"])) for r in doc["pairs"]}
+    """Every pair among the components that ChemSep has and CHEPTA lacks a set of one of the two models
+    for, as PAIRS entries (main() then imports only the model the pair lacks: a pair with a fitted NRTL
+    set can still take its UNIQUAC set from ChemSep)."""
+    have = {}
+    for r in doc["pairs"]:
+        have.setdefault(frozenset((r["i"], r["j"])), set()).add(r["model"])
     ids = sorted(COMPONENTS)
     out = []
     for n, a in enumerate(ids):
         for b in ids[n + 1:]:
-            if frozenset((a, b)) not in have:
+            if not {"NRTL", "UNIQUAC"} <= have.get(frozenset((a, b)), set()):
                 out.append(dict(pair=(a, b), wanted=ALL_WANTED))
     return out
 

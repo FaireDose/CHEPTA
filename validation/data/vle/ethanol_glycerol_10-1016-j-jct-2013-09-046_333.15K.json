@@ -1,0 +1,73 @@
+{
+ "_about": "Ethanol (1) + Glycerol (2): isothermal total pressures at 333.15 K. Rows: temperature in K, liquid mole fraction of ethanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "M. Zaoui-Djelloul-Daouadji, A. Negadi, I. Mokbel, L. Negadi, (Vapor-liquid) equilibria and excess Gibbs free energy functions of (ethanol + glycerol), or (water + glycerol) binary mixtures at several temperatures, J. Chem. Thermodyn. 69 (2014) 165-171",
+  "doi": "10.1016/j.jct.2013.09.046",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2013.09.046.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 10. The table number in the article was not checked."
+ },
+ "components": [
+  "ethanol",
+  "glycerol"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   333.15,
+   0.0,
+   0.001
+  ],
+  [
+   333.15,
+   0.0815,
+   8.124
+  ],
+  [
+   333.15,
+   0.2,
+   19.016
+  ],
+  [
+   333.15,
+   0.35,
+   28.174
+  ],
+  [
+   333.15,
+   0.5001,
+   30.545
+  ],
+  [
+   333.15,
+   0.625,
+   32.244
+  ],
+  [
+   333.15,
+   0.75,
+   36.362
+  ],
+  [
+   333.15,
+   0.8,
+   38.842
+  ],
+  [
+   333.15,
+   0.9,
+   41.674
+  ],
+  [
+   333.15,
+   1.0,
+   46.906
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

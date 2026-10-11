@@ -1,0 +1,113 @@
+{
+ "_about": "2-Butanol (1) + Water (2): total pressures against temperature, 523-573 K, at set liquid compositions. Rows: temperature in K, liquid mole fraction of 2-butanol, pressure in kPa, as stored in the ThermoML Archive record.",
+ "source": {
+  "citation": "Y. Shimoyama, Y. Iwai, K. Yamada, M. Yamakita, Y. Arai, Measurement and Correlation of Vapor-Liquid Equilibria for Water + 2-Propanol, Water + 2-Butanol, and Water + 2-Pentanol Systems at High Temperatures and Pressures, J. Chem. Eng. Data 51 (2006) 51-55",
+  "doi": "10.1021/je0501336",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je0501336.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 3. The table number in the article was not checked."
+ },
+ "components": [
+  "2-butanol",
+  "water"
+ ],
+ "kind": "tpx",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   523.0,
+   0.013,
+   4460.0
+  ],
+  [
+   523.0,
+   0.031,
+   4800.0
+  ],
+  [
+   523.0,
+   0.132,
+   5230.0
+  ],
+  [
+   523.0,
+   0.457,
+   5330.0
+  ],
+  [
+   523.0,
+   0.602,
+   5080.0
+  ],
+  [
+   523.0,
+   0.727,
+   4720.0
+  ],
+  [
+   548.0,
+   0.015,
+   6380.0
+  ],
+  [
+   548.0,
+   0.031,
+   6740.0
+  ],
+  [
+   548.0,
+   0.06,
+   7220.0
+  ],
+  [
+   548.0,
+   0.09,
+   7390.0
+  ],
+  [
+   548.0,
+   0.174,
+   7700.0
+  ],
+  [
+   548.0,
+   0.298,
+   7890.0
+  ],
+  [
+   573.0,
+   0.012,
+   8990.0
+  ],
+  [
+   573.0,
+   0.035,
+   9780.0
+  ],
+  [
+   573.0,
+   0.066,
+   10260.0
+  ],
+  [
+   573.0,
+   0.123,
+   10720.0
+  ],
+  [
+   573.0,
+   0.16,
+   10900.0
+  ],
+  [
+   573.0,
+   0.187,
+   11130.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. No isotherm of the set has its own pure-component pressures, so the fit uses the vapour pressures of the component records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

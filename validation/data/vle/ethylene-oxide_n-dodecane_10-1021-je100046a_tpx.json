@@ -1,0 +1,148 @@
+{
+ "_about": "Ethylene oxide (1) + n-Dodecane (2): total pressures against temperature, 302.52-395.18 K, at set liquid compositions. Rows: temperature in K, liquid mole fraction of ethylene oxide, pressure in kPa, as stored in the ThermoML Archive record.",
+ "source": {
+  "citation": "M. Submuth, H. Fitzner, S. Degenkolbe, W. Witt, Vapor-Liquid Equilibria of Binary Systems of Ethene Oxide + Dodecane, Ethene Oxide + 1-Decanol, and Ethene Oxide + 1-Dodecanol and Prediction with the Predictive Soave-Redlich-Kwong (PSRK) Equation of State, J. Chem. Eng. Data 55 (2010) 3179-3183",
+  "doi": "10.1021/je100046a",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je100046a.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1. The table number in the article was not checked."
+ },
+ "components": [
+  "ethylene-oxide",
+  "n-dodecane"
+ ],
+ "kind": "tpx",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   302.52,
+   0.2982,
+   116.5
+  ],
+  [
+   302.56,
+   0.3994,
+   140.8
+  ],
+  [
+   302.56,
+   0.5993,
+   170.2
+  ],
+  [
+   302.63,
+   0.4994,
+   155.6
+  ],
+  [
+   302.63,
+   0.6993,
+   182.2
+  ],
+  [
+   302.78,
+   0.7994,
+   190.0
+  ],
+  [
+   332.3,
+   0.2966,
+   234.1
+  ],
+  [
+   332.59,
+   0.7989,
+   452.5
+  ],
+  [
+   332.66,
+   0.4979,
+   343.2
+  ],
+  [
+   332.67,
+   0.6986,
+   421.6
+  ],
+  [
+   332.78,
+   0.598,
+   386.6
+  ],
+  [
+   332.8,
+   0.3978,
+   294.8
+  ],
+  [
+   333.72,
+   0.1961,
+   170.2
+  ],
+  [
+   361.17,
+   0.0964,
+   143.8
+  ],
+  [
+   362.62,
+   0.2948,
+   414.9
+  ],
+  [
+   362.98,
+   0.4961,
+   648.0
+  ],
+  [
+   363.09,
+   0.5964,
+   752.5
+  ],
+  [
+   363.18,
+   0.396,
+   539.3
+  ],
+  [
+   363.59,
+   0.6978,
+   841.1
+  ],
+  [
+   364.73,
+   0.1938,
+   293.2
+  ],
+  [
+   369.77,
+   0.2934,
+   657.2
+  ],
+  [
+   391.17,
+   0.6975,
+   1402.2
+  ],
+  [
+   393.04,
+   0.4947,
+   1069.0
+  ],
+  [
+   393.46,
+   0.3946,
+   871.6
+  ],
+  [
+   395.18,
+   0.1916,
+   447.5
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. No isotherm of the set has its own pure-component pressures, so the fit uses the vapour pressures of the component records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

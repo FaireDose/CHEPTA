@@ -1,0 +1,113 @@
+{
+ "_about": "2-Butanone (1) + Isobutanol (2): isothermal total pressures at 332.65 K. Rows: temperature in K, liquid mole fraction of 2-butanone, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "K. Moodley, C.-L. Dorsamy, Isothermal Vapor-Liquid Equilibrium Measurements of Butan-2-one + 2-Methyl-propan-1-ol/Pentan-1-ol, J. Chem. Eng. Data 63 (2018) 4128-4135",
+  "doi": "10.1021/acs.jced.8b00552",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.8b00552.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 7. The table number in the article was not checked."
+ },
+ "components": [
+  "2-butanone",
+  "isobutanol"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   332.65,
+   0.0,
+   12.17
+  ],
+  [
+   332.65,
+   0.01,
+   13.8
+  ],
+  [
+   332.65,
+   0.028,
+   15.7
+  ],
+  [
+   332.65,
+   0.04,
+   16.4
+  ],
+  [
+   332.65,
+   0.05,
+   17.02
+  ],
+  [
+   332.65,
+   0.117,
+   21.35
+  ],
+  [
+   332.65,
+   0.162,
+   24.24
+  ],
+  [
+   332.65,
+   0.237,
+   28.03
+  ],
+  [
+   332.65,
+   0.3,
+   30.82
+  ],
+  [
+   332.65,
+   0.469,
+   36.31
+  ],
+  [
+   332.65,
+   0.644,
+   41.79
+  ],
+  [
+   332.65,
+   0.71,
+   43.69
+  ],
+  [
+   332.65,
+   0.846,
+   47.77
+  ],
+  [
+   332.65,
+   0.908,
+   49.47
+  ],
+  [
+   332.65,
+   0.947,
+   50.57
+  ],
+  [
+   332.65,
+   0.97,
+   51.01
+  ],
+  [
+   332.65,
+   0.98,
+   51.4
+  ],
+  [
+   332.65,
+   1.0,
+   51.76
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

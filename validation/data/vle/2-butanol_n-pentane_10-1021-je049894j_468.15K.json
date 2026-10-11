@@ -1,0 +1,93 @@
+{
+ "_about": "2-Butanol (1) + n-Pentane (2): isothermal total pressures at 468.15 K. Rows: temperature in K, liquid mole fraction of 2-butanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "Y. Kim, W. Bae, H. Kim, Isothermal Vapor-Liquid Equilibria for the n-Pentane + 1-Butanol and n-Pentane + 2-Butanol Systems near the Critical Region of the Mixtures, J. Chem. Eng. Data 50 (2005) 1520-1524",
+  "doi": "10.1021/je049894j",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je049894j.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 10. The table number in the article was not checked."
+ },
+ "components": [
+  "2-butanol",
+  "n-pentane"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   468.15,
+   0.0,
+   3286.0
+  ],
+  [
+   468.15,
+   0.023,
+   3272.0
+  ],
+  [
+   468.15,
+   0.087,
+   3232.0
+  ],
+  [
+   468.15,
+   0.158,
+   3168.0
+  ],
+  [
+   468.15,
+   0.247,
+   3066.0
+  ],
+  [
+   468.15,
+   0.328,
+   2946.0
+  ],
+  [
+   468.15,
+   0.431,
+   2775.0
+  ],
+  [
+   468.15,
+   0.539,
+   2584.0
+  ],
+  [
+   468.15,
+   0.638,
+   2357.0
+  ],
+  [
+   468.15,
+   0.721,
+   2162.0
+  ],
+  [
+   468.15,
+   0.833,
+   1879.0
+  ],
+  [
+   468.15,
+   0.914,
+   1649.0
+  ],
+  [
+   468.15,
+   0.936,
+   1588.0
+  ],
+  [
+   468.15,
+   1.0,
+   1351.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

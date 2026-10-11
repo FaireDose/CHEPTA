@@ -50,6 +50,11 @@ Data kinds a FITS entry can use:
                                           each T are the vapour pressures of that isotherm (the
                                           pair parameters are not biased by the databank
                                           vapour pressures); they are not fitted.
+                     kind "tpx"  columns T_K, x_1, P_kPa: total pressure of the liquid at the
+                                          row's own T (1/0.5 %), with the vapour pressures of
+                                          the component records (a static apparatus measuring
+                                          P against T at fixed compositions, where no isotherm
+                                          has its own pure-component pressures).
                      kind "excess-enthalpy"  columns x_1 and HE_kJ_mol (or HE_J_mol), with
                                           T_K as a column or at the top of the file.
                    Files under "check" are compared with the result but not fitted.
@@ -185,6 +190,16 @@ def px_file(name, pair):
     return out
 
 
+def tpx_file(name, pair):
+    """T-P-x file as [(T_K, x1, P_kPa)] with x1 of pair[0]; pure-component rows left out (the vapour
+    pressures come from the component records)."""
+    d = load(name)
+    flip = _orient(d, name, pair)
+    col = {c: k for k, c in enumerate(d["columns"])}
+    return [(r[col["T_K"]], 1 - r[col["x_1"]] if flip else r[col["x_1"]], r[col["P_kPa"]]) for r in d["rows"]
+            if 0 < r[col["x_1"]] < 1]
+
+
 def he_file(name, pair):
     """Excess-enthalpy file as [(T_K, x1, HE in J/mol)] with x1 of pair[0]."""
     d = load(name)
@@ -224,6 +239,8 @@ def file_sets(spec, key="files"):
             out.append(("he", name, he_file(name, spec["pair"])))
         elif kind == "isothermal-px":
             out.append(("px", name, px_file(name, spec["pair"])))
+        elif kind == "tpx":
+            out.append(("tpx", name, tpx_file(name, spec["pair"])))
         else:
             raise ValueError(f"{name}: unknown kind {kind!r}")
     return out
@@ -363,6 +380,12 @@ def gate(spec, model, params):
             dev.append(abs(s.equilibrium([x1, 1 - x1], T)[0] / P - 1) * 100)
         if np.mean(dev) > GATE["P_pct"]:
             return f"AAD {np.mean(dev):.2f} % in P (limit {GATE['P_pct']} %)"
+    tpx = [p for kind, _, c in sets if kind == "tpx" for p in c]
+    if tpx:
+        s = System([i, j], model, params=[params])
+        dev = [abs(s.equilibrium([x1, 1 - x1], T)[0] / P - 1) * 100 for T, x1, P in tpx]
+        if np.mean(dev) > GATE["P_pct"]:
+            return f"AAD {np.mean(dev):.2f} % in P (limit {GATE['P_pct']} %)"
     return None
 
 
@@ -408,6 +431,9 @@ def file_residuals(s, sets, single=False):
                 s.psat_fixed = list(ps)
                 r.append((s.equilibrium([x1, 1 - x1], T)[0] / P - 1) / 0.005)
                 s.psat_fixed = None
+        elif kind == "tpx":
+            for T, x1, P in c:
+                r.append((s.equilibrium([x1, 1 - x1], T)[0] / P - 1) / 0.005)
         elif kind == "az":
             for T, P, x1 in c:
                 Tc, y = s.bubble_t([x1, 1 - x1], P)
@@ -557,6 +583,11 @@ def describe_fit(sets, model, i, j, params, minor=False):
             s.psat_fixed = None
         Ts = sorted({round(T, 2) for T, _, _, _ in px})
         out.append(f"P-x at {', '.join(f'{T:g}' for T in Ts)} K (with the measured pure-component pressures): AAD {np.mean(dev):.2f} % (max {np.max(dev):.2f} %)")
+    tpx = [p for kind, _, c in sets if kind == "tpx" for p in c]
+    if tpx:
+        dev = [abs(s.equilibrium([x1, 1 - x1], T)[0] / P - 1) * 100 for T, x1, P in tpx]
+        out.append(f"total pressures at {min(T for T, _, _ in tpx):g}-{max(T for T, _, _ in tpx):g} K (with the vapour pressures "
+                   f"of the component records): AAD {np.mean(dev):.2f} % (max {np.max(dev):.2f} %)")
     he = [p for kind, _, c in sets if kind == "he" for p in c]
     if he:
         dev = [s.excess_enthalpy([x1, 1 - x1], T) - h for T, x1, h in he]

@@ -1,0 +1,113 @@
+{
+ "_about": "1-Propanol (1) + Cyclohexane (2): total pressures against temperature, 303.39-343.19 K, at set liquid compositions. Rows: temperature in K, liquid mole fraction of 1-propanol, pressure in kPa, as stored in the ThermoML Archive record.",
+ "source": {
+  "citation": "Y. Huo, S. Xia, S. Yi, P. Ma, Measurement and correlation of vapor pressure of benzene and thiophene with BMIM][PF6] and [BMIM][BF4] ionic liquids, Fluid Phase Equilib. 276 (2009) 46-52",
+  "doi": "10.1016/j.fluid.2008.09.018",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2008.09.018.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1. The table number in the article was not checked."
+ },
+ "components": [
+  "1-propanol",
+  "cyclohexane"
+ ],
+ "kind": "tpx",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   303.39,
+   0.6001,
+   15.1
+  ],
+  [
+   303.56,
+   0.1,
+   17.9
+  ],
+  [
+   308.37,
+   0.1,
+   21.8
+  ],
+  [
+   308.56,
+   0.6001,
+   18.5
+  ],
+  [
+   313.29,
+   0.1,
+   26.2
+  ],
+  [
+   313.42,
+   0.6001,
+   22.3
+  ],
+  [
+   318.12,
+   0.6001,
+   26.7
+  ],
+  [
+   318.28,
+   0.1,
+   31.6
+  ],
+  [
+   323.07,
+   0.1,
+   37.6
+  ],
+  [
+   323.18,
+   0.6001,
+   31.6
+  ],
+  [
+   328.25,
+   0.1,
+   45.4
+  ],
+  [
+   328.27,
+   0.6001,
+   38.4
+  ],
+  [
+   333.17,
+   0.1,
+   54.0
+  ],
+  [
+   333.26,
+   0.6001,
+   45.6
+  ],
+  [
+   338.24,
+   0.6001,
+   54.0
+  ],
+  [
+   338.26,
+   0.1,
+   63.7
+  ],
+  [
+   343.17,
+   0.6001,
+   64.1
+  ],
+  [
+   343.19,
+   0.1,
+   75.6
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. No isotherm of the set has its own pure-component pressures, so the fit uses the vapour pressures of the component records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

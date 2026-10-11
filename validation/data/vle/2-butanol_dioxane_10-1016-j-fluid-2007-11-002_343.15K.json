@@ -1,0 +1,128 @@
+{
+ "_about": "2-Butanol (1) + 1,4-Dioxane (2): isothermal total pressures at 343.15 K. Rows: temperature in K, liquid mole fraction of 2-butanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "B. S. Reddy, K. V. Rao, Measurement and correlation of binary vapor liquid equilibria of isomeric butanols with 1,4-dioxane, Fluid Phase Equilib. 264 (2008) 76-85",
+  "doi": "10.1016/j.fluid.2007.11.002",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2007.11.002.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 16. The table number in the article was not checked."
+ },
+ "components": [
+  "2-butanol",
+  "dioxane"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   343.15,
+   0.0,
+   35.19
+  ],
+  [
+   343.15,
+   0.0682,
+   35.72
+  ],
+  [
+   343.15,
+   0.1168,
+   35.86
+  ],
+  [
+   343.15,
+   0.1746,
+   36.12
+  ],
+  [
+   343.15,
+   0.2258,
+   36.12
+  ],
+  [
+   343.15,
+   0.2734,
+   36.26
+  ],
+  [
+   343.15,
+   0.3385,
+   36.12
+  ],
+  [
+   343.15,
+   0.3911,
+   36.12
+  ],
+  [
+   343.15,
+   0.4427,
+   35.86
+  ],
+  [
+   343.15,
+   0.4962,
+   35.72
+  ],
+  [
+   343.15,
+   0.5414,
+   35.46
+  ],
+  [
+   343.15,
+   0.5968,
+   35.06
+  ],
+  [
+   343.15,
+   0.6416,
+   34.79
+  ],
+  [
+   343.15,
+   0.6943,
+   34.26
+  ],
+  [
+   343.15,
+   0.7549,
+   33.59
+  ],
+  [
+   343.15,
+   0.8012,
+   33.19
+  ],
+  [
+   343.15,
+   0.8578,
+   32.39
+  ],
+  [
+   343.15,
+   0.9064,
+   31.59
+  ],
+  [
+   343.15,
+   0.9445,
+   31.06
+  ],
+  [
+   343.15,
+   0.9876,
+   30.12
+  ],
+  [
+   343.15,
+   1.0,
+   29.86
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

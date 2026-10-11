@@ -26,7 +26,7 @@ test("every generated fit names its data file, and every data file has a complet
       const d = load(`../validation/data/${name}`);
       assert.deepEqual(d.components, f.pair, name);
       assert.ok(d.source.citation && d.source.doi && d.source.open_copy.startsWith("https://trc.nist.gov/ThermoML/") && d.source.access && d.source.tables, name);
-      assert.ok(["isobaric-txy", "isobaric-tx", "isothermal-px"].includes(d.kind), name);
+      assert.ok(["isobaric-txy", "isobaric-tx", "isothermal-px", "tpx"].includes(d.kind), name);
     }
   }
 });
@@ -47,6 +47,13 @@ for (const f of fits) {
         const s = system({ components: f.pair, model, psat: [pure(1), pure(0)] });
         const dev = d.rows.filter(r => r[col.x_1] > 0 && r[col.x_1] < 1)
           .map(r => Math.abs(s.bubbleP([r[col.x_1], 1 - r[col.x_1]], T).P / r[col.P_kPa] - 1) * 100);
+        const aad = dev.reduce((a, v) => a + v, 0) / dev.length;
+        assert.ok(aad <= GATE.P_pct * SLACK, `AAD ${aad.toFixed(3)} % in P`);
+      } else if (d.kind === "tpx") {
+        // pressures against temperature at set compositions, with the vapour pressures of the component records, as in the fit
+        const s = system({ components: f.pair, model });
+        const dev = d.rows.filter(r => r[col.x_1] > 0 && r[col.x_1] < 1)
+          .map(r => Math.abs(s.bubbleP([r[col.x_1], 1 - r[col.x_1]], r[col.T_K]).P / r[col.P_kPa] - 1) * 100);
         const aad = dev.reduce((a, v) => a + v, 0) / dev.length;
         assert.ok(aad <= GATE.P_pct * SLACK, `AAD ${aad.toFixed(3)} % in P`);
       } else {

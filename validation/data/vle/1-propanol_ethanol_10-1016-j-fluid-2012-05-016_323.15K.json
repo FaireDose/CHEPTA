@@ -1,0 +1,78 @@
+{
+ "_about": "1-Propanol (1) + Ethanol (2): isothermal total pressures at 323.15 K. Rows: temperature in K, liquid mole fraction of 1-propanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "J. Pavlicek, G. Bogdanic, I. Wichterle, Vapour-liquid and chemical equilibria in the ethyl ethanoate + ethanol + propyl  ethanoate + propanol system accompanied with transesterification reaction, Fluid Phase Equilib. 328 (2012) 61-68",
+  "doi": "10.1016/j.fluid.2012.05.016",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.05.016.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 13. The table number in the article was not checked."
+ },
+ "components": [
+  "1-propanol",
+  "ethanol"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   323.15,
+   0.0,
+   29.48
+  ],
+  [
+   323.15,
+   0.0152,
+   29.25
+  ],
+  [
+   323.15,
+   0.1547,
+   26.85
+  ],
+  [
+   323.15,
+   0.2495,
+   25.24
+  ],
+  [
+   323.15,
+   0.4626,
+   21.56
+  ],
+  [
+   323.15,
+   0.5476,
+   20.08
+  ],
+  [
+   323.15,
+   0.6198,
+   18.8
+  ],
+  [
+   323.15,
+   0.7354,
+   16.84
+  ],
+  [
+   323.15,
+   0.7976,
+   15.71
+  ],
+  [
+   323.15,
+   0.8757,
+   14.38
+  ],
+  [
+   323.15,
+   1.0,
+   12.17
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

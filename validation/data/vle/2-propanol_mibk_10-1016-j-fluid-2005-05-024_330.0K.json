@@ -1,0 +1,138 @@
+{
+ "_about": "2-Propanol (1) + Methyl isobutyl ketone (2): isothermal total pressures at 330.0 K. Rows: temperature in K, liquid mole fraction of 2-propanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "S. Psutka, I. Wichterle, Isothermal vapour liquid equilibria in the binary and ternary systems composed of 2-propanol, diisopropyl ether and 4-methyl-2-pentanone, Fluid Phase Equilib. 235 (2005) 58-63",
+  "doi": "10.1016/j.fluid.2005.05.024",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2005.05.024.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 7. The table number in the article was not checked."
+ },
+ "components": [
+  "2-propanol",
+  "mibk"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   330.0,
+   0.0,
+   12.7
+  ],
+  [
+   330.0,
+   0.0108,
+   13.3
+  ],
+  [
+   330.0,
+   0.0309,
+   14.53
+  ],
+  [
+   330.0,
+   0.073,
+   16.36
+  ],
+  [
+   330.0,
+   0.1225,
+   18.43
+  ],
+  [
+   330.0,
+   0.1896,
+   20.62
+  ],
+  [
+   330.0,
+   0.266,
+   22.74
+  ],
+  [
+   330.0,
+   0.2748,
+   22.86
+  ],
+  [
+   330.0,
+   0.349,
+   24.57
+  ],
+  [
+   330.0,
+   0.427,
+   26.17
+  ],
+  [
+   330.0,
+   0.5024,
+   27.47
+  ],
+  [
+   330.0,
+   0.5058,
+   27.62
+  ],
+  [
+   330.0,
+   0.5715,
+   28.56
+  ],
+  [
+   330.0,
+   0.6137,
+   29.26
+  ],
+  [
+   330.0,
+   0.6609,
+   29.74
+  ],
+  [
+   330.0,
+   0.7038,
+   30.36
+  ],
+  [
+   330.0,
+   0.782,
+   31.31
+  ],
+  [
+   330.0,
+   0.8482,
+   31.98
+  ],
+  [
+   330.0,
+   0.9,
+   32.46
+  ],
+  [
+   330.0,
+   0.9398,
+   32.75
+  ],
+  [
+   330.0,
+   0.9698,
+   32.96
+  ],
+  [
+   330.0,
+   0.9897,
+   33.07
+  ],
+  [
+   330.0,
+   1.0,
+   33.25
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

@@ -142,6 +142,18 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   9 %), vinyl acetate vapour pressure (ThermoML and the WebBook Antoine equations disagree in sign), NMP liquid heat
   capacity (all eight articles agree it is 1-9 % high, but only to 353 K; a refit would end the record there
   instead of 541 K). The maintainer chose to keep the NMP record over its full range, to 541 K (2026-10-11).
+- **Activity-model pipeline (the literature package's activity part):** its four claims were checked against the
+  code and all hold; fixed in scan_pairs, vle_batch, chemsep_pairs and fit_parameters: an equilibrium-property gate
+  (density, heat capacity, surface tension and diffusion sets no longer count; gas solubility in molality,
+  concentration, Ostwald or Bunsen units does), measured boiling temperatures read, sets without fixed T or P
+  grouped into isotherms, a new data kind "tpx" (pressure against temperature at set compositions, fitted with the
+  component vapour pressures), and the ChemSep import looking for each model separately (it finds no record for any
+  of the 81 one-model pairs). Rerun: 64 new pair data sets, 81 new NRTL/UNIQUAC sets within the gate; fitted pairs
+  169 -> 218 of the 2415 activity pairs. Not within the gate, data kept: MEA + water (2.1 % in P), glycerol + water
+  (1.8 %), and others listed in docs/PAIR_SCAN.md. Ethanol + cyclohexane (ethanol dehydration benchmark) now
+  defaults to the NRTL set fitted to Reddy et al. (2013), which gives the open azeotrope at 65.11 degC, x 0.457
+  (data 64.9 degC, 0.445; ChemSep 65.20 degC, 0.444); the maintainer kept this default, the ChemSep set stays
+  selectable.
 
 ### 2026-10-10
 

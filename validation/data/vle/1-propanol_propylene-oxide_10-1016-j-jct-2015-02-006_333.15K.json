@@ -1,0 +1,98 @@
+{
+ "_about": "1-Propanol (1) + Propylene oxide (2): isothermal total pressures at 333.15 K. Rows: temperature in K, liquid mole fraction of 1-propanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "H. Kim, S. Hyeong, J. H. Hong, A. R. Kim, M. S. Shin, H. Kim, Isothermal (vapor + liquid) equilibria for the binary mixtures of (propylene oxide + ethanol) and (propylene oxide + 1-propanol) at several temperatures, J. Chem. Thermodyn. 86 (2015) 1-5",
+  "doi": "10.1016/j.jct.2015.02.006",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.02.006.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 5. The table number in the article was not checked."
+ },
+ "components": [
+  "1-propanol",
+  "propylene-oxide"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   333.15,
+   0.0,
+   237.88
+  ],
+  [
+   333.15,
+   0.1155,
+   217.5
+  ],
+  [
+   333.15,
+   0.1788,
+   206.32
+  ],
+  [
+   333.15,
+   0.2308,
+   198.11
+  ],
+  [
+   333.15,
+   0.3051,
+   186.22
+  ],
+  [
+   333.15,
+   0.4034,
+   169.74
+  ],
+  [
+   333.15,
+   0.4861,
+   155.33
+  ],
+  [
+   333.15,
+   0.5537,
+   142.45
+  ],
+  [
+   333.15,
+   0.6505,
+   123.5
+  ],
+  [
+   333.15,
+   0.7163,
+   108.44
+  ],
+  [
+   333.15,
+   0.7585,
+   98.39
+  ],
+  [
+   333.15,
+   0.8323,
+   77.93
+  ],
+  [
+   333.15,
+   0.8873,
+   61.12
+  ],
+  [
+   333.15,
+   0.9332,
+   45.88
+  ],
+  [
+   333.15,
+   1.0,
+   19.93
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}
