@@ -61,7 +61,7 @@ Cavett (1963) and Rosen and Pauls (1977) found this problem slow to converge (pr
 | G05 three drums, PR, 4 components | Carbon dioxide, Isopentane, n-Pentane, n-Undecane | R1, R2, R3 | V1 0.400, V2 0.205, V3 0.657 | V1 1, V2 1, V3 1 |
 | G06 three drums, NRTL, 3 components | Ethanol, Acetonitrile, p-Xylene | R1, R2, R3 | V1 0.457, V2 0.958, V3 0.357 | not checked (activity model) |
 | G07 three drums, PR, 7 components | Methane, Hydrogen sulfide, Propane, n-Pentane, n-Heptane, n-Octane, n-Nonane | R1, R2, R3 | V1 0.414, V2 0.461, V3 0.314 | V1 1, V2 1, V3 1 |
-| G08 three drums, UNIQUAC, 6 components | Acetone, Chloroform, Methanol, Ethanol, Benzene, Toluene | R1, R2, R3 | V1 0.435, V2 0.907, V3 0.464 | not checked (activity model) |
+| G08 three drums, UNIQUAC, 6 components | Acetone, Chloroform, Methanol, Ethanol, Benzene, Toluene | R1, R2, R3 | V1 0.437, V2 0.908, V3 0.464 | not checked (activity model) |
 | G09 separator, PR, 5 components | Carbon dioxide, Propane, Isopentane, n-Hexane, n-Decane | R1, R2, R3 | V1 0.231, V2 0.623 | V1 1, V2 1 |
 | G10 separator, NRTL, 5 components | Methanol, Ethanol, Acetonitrile, Toluene, p-Xylene | R1, R2, R3 | V1 0.379, V2 0.685 | not checked (activity model) |
 | G11 separator, PR, 7 components | Carbon dioxide, Ethane, Hydrogen sulfide, n-Butane, n-Pentane, n-Heptane, n-Nonane | R1, R2, R3 | V1 0.466, V2 0.351 | V1 1, V2 1 |
