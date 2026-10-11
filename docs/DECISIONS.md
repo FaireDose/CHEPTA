@@ -141,7 +141,7 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   ETBE viscosity (one article), glycerol vapour pressure (two articles with uncertainties below 1 % disagree by
   9 %), vinyl acetate vapour pressure (ThermoML and the WebBook Antoine equations disagree in sign), NMP liquid heat
   capacity (all eight articles agree it is 1-9 % high, but only to 353 K; a refit would end the record there
-  instead of 541 K). Open for the maintainer: accept that narrower NMP record, or keep the known issue.
+  instead of 541 K). The maintainer chose to keep the NMP record over its full range, to 541 K (2026-10-11).
 
 ### 2026-10-10
 
