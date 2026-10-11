@@ -312,6 +312,10 @@ MEASURED_REFIT = {
     # (the ETBE viscosity, 27 % off one article at 293-303 K, stays: one article over 10 K cannot replace a record
     # to 450 K; the warning stays in docs/MEASURED_CHECKS.md)
     "etbe": {"vapourPressure": "the ChemSep vapour pressure deviates from 11 articles by 4.6 % (median)"},
+    # the large deviations of the engineering report (2026-10-11): all seven articles find the ChemSep curve high
+    "mea": {"vapourPressure": "the ChemSep vapour pressure is above the measured values of all seven articles, by "
+                              "2-9 % (median per article) above 350 K and up to 44 % near room temperature, and above the "
+                              "Antoine equation of Matthews et al. (1950) by up to 21 %"},
 }
 VP_FROM_MEASURED = {cid for cid, props in MEASURED_REFIT.items() if "vapourPressure" in props}
 WEBBOOK_ANTOINE_FILE = Path(__file__).resolve().parents[2] / "validation" / "data" / "pure" / "measured" / "webbook_antoine.json"
