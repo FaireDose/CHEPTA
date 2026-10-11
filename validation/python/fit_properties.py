@@ -342,6 +342,8 @@ MEASURED_REFIT = {
     # ThermoML Archive instead
     "cyrene": {"vapourPressure": "ChemSep stores the vapour pressure in an equation (200) that DWSIM does not define",
                "liquidDensity": "ChemSep has no liquid density"},
+    # (ChemSep has no diethyl carbonate liquid heat capacity either, and no measured value is within the 1 % target:
+    # "no open data at the target", from_measured)
     "diethyl-carbonate": {"liquidHeatCapacity": "ChemSep has no liquid heat capacity"},
     # the measured checks of batch 1 (docs/MEASURED_CHECKS.md): above three times the 2 % tolerance
     "bdo": {"liquidHeatCapacity": "the ChemSep heat capacity deviates from the three articles with stated "
@@ -1328,13 +1330,18 @@ class Builder:
         vals = tml.values(prop)
         loose_only = not any(p["u_rel"] is None or p["u_rel"] <= target for p in vals)
         if loose_only:
-            # no measured value within the target (diethyl carbonate heat capacity, 2.0-5.2 %): every value met within
-            # its own stated uncertainty instead
-            from measured_components import fit_within_uncertainty
-            coeffs, use, exc, m = fit_within_uncertainty(cid, prop, form, vals, Tc=Tc)
-            kept = []
-        else:
-            coeffs, use, kept, exc, m = fit_measured_loose(cid, prop, form, vals, target, Tc=Tc)
+            # no measured value within the target (diethyl carbonate heat capacity, 2.0-5.2 %): no record, as for the
+            # 2-methoxyethanol surface tension (measured_components.fit_or_marker)
+            Ts, u = [p["T"] for p in vals], [100 * p["u_rel"] for p in vals]
+            self.log.append("%-16s %-27s no open data at the target" % (cid, prop))
+            return {"available": False, "searched": [
+                "CoolProp 8.0.0 (not a fluid)", "NIST Chemistry WebBook (not a WebBook fluid)",
+                "%s (no correlation)" % self.cs.name(cas),
+                "NIST TRC ThermoML Archive (validation/data/pure/measured/thermoml_%s.json)" % cid],
+                "note": "no open data at the %g %% target of the records: %d measured values from %d articles, %.2f-%.2f K, "
+                        "but their stated uncertainties (%.2g-%.2g %%) are larger than the target" % (
+                            100 * target, len(vals), len({p["doi"] for p in vals}), min(Ts), max(Ts), min(u), max(u))}, None
+        coeffs, use, kept, exc, m = fit_measured_loose(cid, prop, form, vals, target, Tc=Tc)
         T = np.array([p["T"] for p in use])
         y = np.array([p["y"] for p in use])
         Tall = [p["T"] for p in use + kept]
@@ -1352,16 +1359,10 @@ class Builder:
         where, access = tml.origin(use + kept)
         source = {"name": "Measured values (%s)" % where, "reference": "; ".join(refs),
                   "access": access,
-                  "fit": ("%d measured values from %d articles, %.2f-%.2f K, none with a stated uncertainty within the %g %% "
-                          "target (%.2g-%.2g %%); the fit meets each within its own stated uncertainty (max deviation %s %%), "
-                          "so the record is no better than these values" % (
-                              len(use), len({p["doi"] for p in use}), T.min(), T.max(), 100 * target,
-                              min(100 * p["u_rel"] for p in use), max(100 * p["u_rel"] for p in use), pct(m))
-                          if loose_only else
-                          "%d measured values with stated uncertainties within %g %% from %d articles, %.2f-%.2f K, max "
-                          "deviation %s %%%s" % (len(use), 100 * target, len({p["doi"] for p in use}), T.min(), T.max(), pct(m),
-                                                "; %d values with larger stated uncertainties agree within them" % len(kept)
-                                                if kept else "")),
+                  "fit": "%d measured values with stated uncertainties within %g %% from %d articles, %.2f-%.2f K, max "
+                         "deviation %s %%%s" % (len(use), 100 * target, len({p["doi"] for p in use}), T.min(), T.max(), pct(m),
+                                               "; %d values with larger stated uncertainties agree within them" % len(kept)
+                                               if kept else ""),
                   "notes": "Fitted to measured data instead of the databank: %s%s. Rules: "
                            "validation/python/measured_components.py." % (
                                MEASURED_REFIT[cid][prop], "; the databank record deviates from these values by %s" % old

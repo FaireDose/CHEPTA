@@ -169,11 +169,13 @@ test("props() returns liquid and vapour properties for every component at a typi
     // a property with an explicit "no open data" marker (propylene glycol: transport properties) is null, with
     // a note that says so; every other one has a value
     const none = new Set(Object.entries(components[id].properties).filter(([, r]) => r.available === false).map(([k]) => k));
-    // the enthalpy needs the ideal-gas heat capacity: without it (2-methoxyethanol, no open data) h is null too
-    const recordOf_ = { rho_kg_m3: "liquidDensity", cp_J_molK: "liquidHeatCapacity", dHvap_J_mol: "heatOfVaporization",
-      mu_Pa_s: "liquidViscosity", k_W_mK: "liquidThermalConductivity", h_J_mol: "idealGasHeatCapacity" };
+    // the enthalpy needs the ideal-gas heat capacity: without it (2-methoxyethanol, no open data) h is null too;
+    // the liquid enthalpy, h(ideal gas) - ΔHvap, also needs the heat of vaporization (terephthalic acid: no liquid
+    // record, ChemSep's covers only the solid range)
+    const recordOf_ = { rho_kg_m3: ["liquidDensity"], cp_J_molK: ["liquidHeatCapacity"], dHvap_J_mol: ["heatOfVaporization"],
+      mu_Pa_s: ["liquidViscosity"], k_W_mK: ["liquidThermalConductivity"], h_J_mol: ["idealGasHeatCapacity", "heatOfVaporization"] };
     for (const k of ["rho_kg_m3", "cp_J_molK", "dHvap_J_mol", "mu_Pa_s", "k_W_mK", ...hKeys]) {
-      if (none.has(recordOf_[k])) { assert.equal(L[k], null, `${name} liquid ${k}`); assert.match(L.notes.join(" "), /No open data/); continue; }
+      if (recordOf_[k].some(r => none.has(r))) { assert.equal(L[k], null, `${name} liquid ${k}`); assert.match(L.notes.join(" "), /No open data/); continue; }
       assert.ok(Number.isFinite(L[k]), `${name} liquid ${k}: ${L.notes.join(" ")}`);
     }
     // vapour: 10 K above the normal boiling point at 1 kPa
