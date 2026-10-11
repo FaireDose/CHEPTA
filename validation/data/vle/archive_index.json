@@ -32,6 +32,21 @@
     ]
    }
   ],
+  "1-butanol+1-propanol": [
+   {
+    "doi": "10.1016/j.jct.2010.02.001",
+    "year": "2010",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2010.02.001.xml",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 34
+     }
+    ]
+   }
+  ],
   "1-butanol+2-propanol": [
    {
     "doi": "10.1016/j.fluid.2012.12.020",
@@ -193,16 +208,6 @@
     "file": "10.1021/je100788g.xml",
     "sets": [
      {
-      "number": 6,
-      "kind": "isothermal-px",
-      "points": 13
-     },
-     {
-      "number": 7,
-      "kind": "isothermal-px",
-      "points": 13
-     },
-     {
       "number": 8,
       "kind": "isothermal-px",
       "points": 7
@@ -234,6 +239,21 @@
       "number": 10,
       "kind": "isothermal-px",
       "points": 26
+     }
+    ]
+   }
+  ],
+  "1-butanol+dichloroethane": [
+   {
+    "doi": "10.1021/acs.jced.9b00484",
+    "year": "2019",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.9b00484.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 66
      }
     ]
    }
@@ -605,6 +625,11 @@
       "number": 11,
       "kind": "azeotrope",
       "points": 2
+     },
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 42
      }
     ]
    }
@@ -794,6 +819,11 @@
       "number": 9,
       "kind": "azeotrope",
       "points": 2
+     },
+     {
+      "number": 10,
+      "kind": "tpx-varying",
+      "points": 56
      }
     ]
    }
@@ -852,6 +882,21 @@
       "number": 15,
       "kind": "tpx-varying",
       "points": 61
+     }
+    ]
+   }
+  ],
+  "1-butanol+nmp": [
+   {
+    "doi": "10.1021/je500092v",
+    "year": "2014",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je500092v.xml",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 49
      }
     ]
    }
@@ -1407,6 +1452,21 @@
     ]
    }
   ],
+  "1-propanol+2-butanone": [
+   {
+    "doi": "10.1016/j.fluid.2008.06.004",
+    "year": "2008",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2008.06.004.xml",
+    "sets": [
+     {
+      "number": 15,
+      "kind": "tpx-varying",
+      "points": 42
+     }
+    ]
+   }
+  ],
   "1-propanol+2-methoxyethanol": [
    {
     "doi": "10.1021/je400791n",
@@ -1761,6 +1821,11 @@
       "number": 10,
       "kind": "azeotrope",
       "points": 2
+     },
+     {
+      "number": 11,
+      "kind": "tpx-varying",
+      "points": 63
      }
     ]
    }
@@ -1985,6 +2050,21 @@
       "number": 3,
       "kind": "tpx-varying",
       "points": 8
+     }
+    ]
+   }
+  ],
+  "1-propanol+methanol": [
+   {
+    "doi": "10.1016/j.jct.2011.08.006",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2011.08.006.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 105
      }
     ]
    }
@@ -2761,6 +2841,19 @@
       "points": 22
      }
     ]
+   },
+   {
+    "doi": "10.1021/je5003225",
+    "year": "2014",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je5003225.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 58
+     }
+    ]
    }
   ],
   "2-butanol+furfural": [
@@ -2915,6 +3008,19 @@
       "points": 24
      }
     ]
+   },
+   {
+    "doi": "10.1021/je5003225",
+    "year": "2014",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je5003225.xml",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 61
+     }
+    ]
    }
   ],
   "2-butanol+mibk": [
@@ -2933,6 +3039,11 @@
       "number": 15,
       "kind": "azeotrope",
       "points": 1
+     },
+     {
+      "number": 16,
+      "kind": "tpx-varying",
+      "points": 43
      }
     ]
    },
@@ -3018,6 +3129,19 @@
   ],
   "2-butanol+n-butyl-acetate": [
    {
+    "doi": "10.1021/acs.jced.7b00141",
+    "year": "2017",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.7b00141.xml",
+    "sets": [
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 74
+     }
+    ]
+   },
+   {
     "doi": "10.1021/je400036b",
     "year": "2013",
     "journal": "J. Chem. Eng. Data",
@@ -3075,6 +3199,11 @@
       "number": 14,
       "kind": "azeotrope",
       "points": 3
+     },
+     {
+      "number": 15,
+      "kind": "tpx-varying",
+      "points": 63
      }
     ]
    },
@@ -3317,6 +3446,36 @@
     ]
    }
   ],
+  "2-butanone+2-methoxyethanol": [
+   {
+    "doi": "10.1016/j.jct.2015.03.013",
+    "year": "2015",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2015.03.013.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 30
+     }
+    ]
+   }
+  ],
+  "2-butanone+2-propanol": [
+   {
+    "doi": "10.1016/j.fluid.2008.06.004",
+    "year": "2008",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2008.06.004.xml",
+    "sets": [
+     {
+      "number": 17,
+      "kind": "tpx-varying",
+      "points": 42
+     }
+    ]
+   }
+  ],
   "2-butanone+acetic-acid": [
    {
     "doi": "10.1016/j.fluid.2009.03.008",
@@ -3464,6 +3623,19 @@
       "number": 10,
       "kind": "azeotrope",
       "points": 1
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.fluid.2008.06.004",
+    "year": "2008",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2008.06.004.xml",
+    "sets": [
+     {
+      "number": 13,
+      "kind": "tpx-varying",
+      "points": 42
      }
     ]
    },
@@ -4023,6 +4195,19 @@
   ],
   "2-methoxyethanol+water": [
    {
+    "doi": "10.1016/j.jct.2015.03.013",
+    "year": "2015",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2015.03.013.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 24
+     }
+    ]
+   },
+   {
     "doi": "10.1021/acs.jced.6b00895",
     "year": "2017",
     "journal": "J. Chem. Eng. Data",
@@ -4400,6 +4585,19 @@
     ]
    },
    {
+    "doi": "10.1016/j.fluid.2015.09.052",
+    "year": "2016",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2015.09.052.xml",
+    "sets": [
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 72
+     }
+    ]
+   },
+   {
     "doi": "10.1021/je501019y",
     "year": "2015",
     "journal": "J. Chem. Eng. Data",
@@ -4692,6 +4890,19 @@
   ],
   "2-propanol+methanol": [
    {
+    "doi": "10.1016/j.fluid.2015.07.023",
+    "year": "2015",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2015.07.023.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 85
+     }
+    ]
+   },
+   {
     "doi": "10.1021/je060476j",
     "year": "2007",
     "journal": "J. Chem. Eng. Data",
@@ -4825,6 +5036,19 @@
       "points": 13
      }
     ]
+   },
+   {
+    "doi": "10.1021/acs.jced.7b00141",
+    "year": "2017",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.7b00141.xml",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 61
+     }
+    ]
    }
   ],
   "2-propanol+n-heptane": [
@@ -4945,7 +5169,35 @@
     ]
    }
   ],
+  "2-propanol+toluene": [
+   {
+    "doi": "10.1021/je200921u",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je200921u.xml",
+    "sets": [
+     {
+      "number": 6,
+      "kind": "tpx-varying",
+      "points": 68
+     }
+    ]
+   }
+  ],
   "2-propanol+water": [
+   {
+    "doi": "10.1016/j.fluid.2006.03.021",
+    "year": "2006",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2006.03.021.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 48
+     }
+    ]
+   },
    {
     "doi": "10.1016/j.fluid.2014.02.006",
     "year": "2014",
@@ -5128,6 +5380,24 @@
       "number": 4,
       "kind": "isobaric-txy",
       "points": 18
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/acs.jced.7b00755",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.7b00755.xml",
+    "sets": [
+     {
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 17
+     },
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 17
      }
     ]
    },
@@ -5517,6 +5787,19 @@
   ],
   "acetic-acid+isopropyl-acetate": [
    {
+    "doi": "10.1021/acs.jced.9b00152",
+    "year": "2019",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.9b00152.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 105
+     }
+    ]
+   },
+   {
     "doi": "10.1021/je049711t",
     "year": "2005",
     "journal": "J. Chem. Eng. Data",
@@ -5763,6 +6046,19 @@
     ]
    },
    {
+    "doi": "10.1016/j.fluid.2018.06.011",
+    "year": "2018",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2018.06.011.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 24
+     }
+    ]
+   },
+   {
     "doi": "10.1021/acs.jced.5b01104",
     "year": "2016",
     "journal": "J. Chem. Eng. Data",
@@ -5877,6 +6173,19 @@
       "number": 13,
       "kind": "tpx-varying",
       "points": 2
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je0342771",
+    "year": "2004",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je0342771.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 8
      }
     ]
    },
@@ -6843,6 +7152,24 @@
     ]
    },
    {
+    "doi": "10.1021/acs.jced.7b00755",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.7b00755.xml",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 5
+     },
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 5
+     }
+    ]
+   },
+   {
     "doi": "10.1021/je400531a",
     "year": "2013",
     "journal": "J. Chem. Eng. Data",
@@ -7060,19 +7387,6 @@
       "number": 4,
       "kind": "tpx-varying",
       "points": 14
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je9008359",
-    "year": "2010",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je9008359.xml",
-    "sets": [
-     {
-      "number": 2,
-      "kind": "tpx-varying",
-      "points": 1
      }
     ]
    }
@@ -7356,19 +7670,6 @@
   ],
   "argon+water": [
    {
-    "doi": "10.1016/j.fluid.2015.07.026",
-    "year": "2016",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2015.07.026.xml",
-    "sets": [
-     {
-      "number": 3,
-      "kind": "tpx-varying",
-      "points": 45
-     }
-    ]
-   },
-   {
     "doi": "10.1021/je700386c",
     "year": "2008",
     "journal": "J. Chem. Eng. Data",
@@ -7439,6 +7740,29 @@
       "number": 11,
       "kind": "azeotrope",
       "points": 1
+     },
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 1
+     },
+     {
+      "number": 13,
+      "kind": "tpx-varying",
+      "points": 1
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je100081v",
+    "year": "2010",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je100081v.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 1
      }
     ]
    },
@@ -7500,6 +7824,21 @@
       "number": 15,
       "kind": "isothermal-px",
       "points": 36
+     }
+    ]
+   }
+  ],
+  "benzene+dioxane": [
+   {
+    "doi": "10.1016/j.fluid.2005.09.010",
+    "year": "2005",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2005.09.010.xml",
+    "sets": [
+     {
+      "number": 13,
+      "kind": "tpx-varying",
+      "points": 35
      }
     ]
    }
@@ -7706,6 +8045,19 @@
       "points": 19
      }
     ]
+   },
+   {
+    "doi": "10.1016/j.jct.2006.06.002",
+    "year": "2007",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2006.06.002.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 6
+     }
+    ]
    }
   ],
   "benzene+methyl-acetate": [
@@ -7865,19 +8217,6 @@
       "points": 15
      }
     ]
-   },
-   {
-    "doi": "10.1021/je700578f",
-    "year": "2008",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je700578f.xml",
-    "sets": [
-     {
-      "number": 4,
-      "kind": "isobaric-tx",
-      "points": 7
-     }
-    ]
    }
   ],
   "benzene+o-xylene": [
@@ -8010,6 +8349,19 @@
       "number": 6,
       "kind": "isobaric-txy",
       "points": 13
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.tca.2016.05.011",
+    "year": "2016",
+    "journal": "Thermochim. Acta",
+    "file": "10.1016/j.tca.2016.05.011.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 5
      }
     ]
    },
@@ -8721,19 +9073,6 @@
       "points": 6
      }
     ]
-   },
-   {
-    "doi": "10.1021/je900830s",
-    "year": "2010",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je900830s.xml",
-    "sets": [
-     {
-      "number": 2,
-      "kind": "tpx-varying",
-      "points": 33
-     }
-    ]
    }
   ],
   "carbon-dioxide+ethyl-acetate": [
@@ -8817,16 +9156,6 @@
       "number": 6,
       "kind": "isothermal-px",
       "points": 10
-     },
-     {
-      "number": 7,
-      "kind": "isothermal-px",
-      "points": 13
-     },
-     {
-      "number": 8,
-      "kind": "isothermal-px",
-      "points": 13
      }
     ]
    },
@@ -9437,16 +9766,6 @@
       "number": 5,
       "kind": "isothermal-px",
       "points": 10
-     },
-     {
-      "number": 6,
-      "kind": "isothermal-px",
-      "points": 6
-     },
-     {
-      "number": 7,
-      "kind": "isothermal-px",
-      "points": 6
      }
     ]
    },
@@ -9530,29 +9849,6 @@
     ]
    },
    {
-    "doi": "10.1016/j.jct.2015.12.036",
-    "year": "2016",
-    "journal": "J. Chem. Thermodyn.",
-    "file": "10.1016/j.jct.2015.12.036.xml",
-    "sets": [
-     {
-      "number": 4,
-      "kind": "tpx-varying",
-      "points": 27
-     },
-     {
-      "number": 5,
-      "kind": "tpx-varying",
-      "points": 27
-     },
-     {
-      "number": 6,
-      "kind": "tpx-varying",
-      "points": 26
-     }
-    ]
-   },
-   {
     "doi": "10.1016/j.jct.2018.05.015",
     "year": "2018",
     "journal": "J. Chem. Thermodyn.",
@@ -9567,19 +9863,6 @@
       "number": 5,
       "kind": "tpx-varying",
       "points": 28
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/acs.jced.7b00159",
-    "year": "2017",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/acs.jced.7b00159.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 17
      }
     ]
    },
@@ -9619,80 +9902,11 @@
       "number": 8,
       "kind": "isothermal-px",
       "points": 6
-     },
-     {
-      "number": 9,
-      "kind": "isothermal-px",
-      "points": 6
-     },
-     {
-      "number": 10,
-      "kind": "isothermal-px",
-      "points": 6
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je5000764",
-    "year": "2014",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je5000764.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "isothermal-px",
-      "points": 12
-     },
-     {
-      "number": 2,
-      "kind": "isothermal-px",
-      "points": 12
-     },
-     {
-      "number": 3,
-      "kind": "isothermal-px",
-      "points": 12
      }
     ]
    }
   ],
   "carbon-dioxide+n-dodecane": [
-   {
-    "doi": "10.1016/j.fluid.2014.07.039",
-    "year": "2014",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2014.07.039.xml",
-    "sets": [
-     {
-      "number": 8,
-      "kind": "isothermal-px",
-      "points": 13
-     },
-     {
-      "number": 9,
-      "kind": "isothermal-px",
-      "points": 13
-     },
-     {
-      "number": 10,
-      "kind": "isothermal-px",
-      "points": 12
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/acs.jced.7b00159",
-    "year": "2017",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/acs.jced.7b00159.xml",
-    "sets": [
-     {
-      "number": 3,
-      "kind": "tpx-varying",
-      "points": 18
-     }
-    ]
-   },
    {
     "doi": "10.1021/acs.jced.7b00517",
     "year": "2017",
@@ -9761,19 +9975,6 @@
     ]
    },
    {
-    "doi": "10.1021/je301283e",
-    "year": "2013",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je301283e.xml",
-    "sets": [
-     {
-      "number": 4,
-      "kind": "tpx-varying",
-      "points": 108
-     }
-    ]
-   },
-   {
     "doi": "10.1021/je900312z",
     "year": "2010",
     "journal": "J. Chem. Eng. Data",
@@ -9811,6 +10012,19 @@
       "number": 30,
       "kind": "isothermal-px",
       "points": 3
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.fluid.2018.08.017",
+    "year": "2018",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2018.08.017.xml",
+    "sets": [
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 19
      }
     ]
    },
@@ -9936,19 +10150,6 @@
     ]
    },
    {
-    "doi": "10.1016/j.fluid.2017.02.012",
-    "year": "2017",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2017.02.012.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 41
-     }
-    ]
-   },
-   {
     "doi": "10.1021/acs.jced.7b00517",
     "year": "2017",
     "journal": "J. Chem. Eng. Data",
@@ -10047,45 +10248,6 @@
       "number": 3,
       "kind": "tpx-varying",
       "points": 42
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.fluid.2017.02.012",
-    "year": "2017",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2017.02.012.xml",
-    "sets": [
-     {
-      "number": 2,
-      "kind": "tpx-varying",
-      "points": 38
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.fluid.2019.05.002",
-    "year": "2019",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2019.05.002.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 46
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/acs.jced.7b00159",
-    "year": "2017",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/acs.jced.7b00159.xml",
-    "sets": [
-     {
-      "number": 2,
-      "kind": "tpx-varying",
-      "points": 20
      }
     ]
    },
@@ -10198,6 +10360,19 @@
       "number": 3,
       "kind": "isothermal-px",
       "points": 4
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.fluid.2018.08.017",
+    "year": "2018",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2018.08.017.xml",
+    "sets": [
+     {
+      "number": 13,
+      "kind": "tpx-varying",
+      "points": 53
      }
     ]
    },
@@ -10616,6 +10791,19 @@
     ]
    },
    {
+    "doi": "10.1021/je0342771",
+    "year": "2004",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je0342771.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 5
+     }
+    ]
+   },
+   {
     "doi": "10.1021/je0498560",
     "year": "2005",
     "journal": "J. Chem. Eng. Data",
@@ -10703,11 +10891,6 @@
     "sets": [
      {
       "number": 1,
-      "kind": "tpx-varying",
-      "points": 28
-     },
-     {
-      "number": 2,
       "kind": "tpx-varying",
       "points": 28
      }
@@ -10926,43 +11109,15 @@
     ]
    },
    {
-    "doi": "10.1016/j.jct.2015.05.005",
+    "doi": "10.1016/j.jct.2015.09.024",
     "year": "2016",
     "journal": "J. Chem. Thermodyn.",
-    "file": "10.1016/j.jct.2015.05.005.xml",
+    "file": "10.1016/j.jct.2015.09.024.xml",
     "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 69
-     },
-     {
-      "number": 5,
-      "kind": "tpx-varying",
-      "points": 12
-     },
-     {
-      "number": 6,
-      "kind": "tpx-varying",
-      "points": 55
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.jct.2015.06.034",
-    "year": "2016",
-    "journal": "J. Chem. Thermodyn.",
-    "file": "10.1016/j.jct.2015.06.034.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 116
-     },
      {
       "number": 2,
       "kind": "tpx-varying",
-      "points": 106
+      "points": 15
      }
     ]
    },
@@ -11006,6 +11161,45 @@
     ]
    },
    {
+    "doi": "10.1021/acs.jced.6b00505",
+    "year": "2016",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.6b00505.xml",
+    "sets": [
+     {
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 4
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/acs.jced.7b00591",
+    "year": "2017",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.7b00591.xml",
+    "sets": [
+     {
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 8
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/acs.jced.7b00777",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.7b00777.xml",
+    "sets": [
+     {
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 1
+     }
+    ]
+   },
+   {
     "doi": "10.1021/acs.jced.8b00451",
     "year": "2018",
     "journal": "J. Chem. Eng. Data",
@@ -11019,15 +11213,15 @@
     ]
    },
    {
-    "doi": "10.1021/je049940f",
-    "year": "2004",
+    "doi": "10.1021/acs.jced.9b00013",
+    "year": "2019",
     "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je049940f.xml",
+    "file": "10.1021/acs.jced.9b00013.xml",
     "sets": [
      {
-      "number": 2,
+      "number": 3,
       "kind": "tpx-varying",
-      "points": 8
+      "points": 174
      }
     ]
    },
@@ -11045,45 +11239,6 @@
     ]
    },
    {
-    "doi": "10.1021/je0499667",
-    "year": "2005",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je0499667.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 45
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je0503913",
-    "year": "2006",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je0503913.xml",
-    "sets": [
-     {
-      "number": 3,
-      "kind": "isobaric-tx",
-      "points": 4
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je100198g",
-    "year": "2010",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je100198g.xml",
-    "sets": [
-     {
-      "number": 2,
-      "kind": "tpx-varying",
-      "points": 75
-     }
-    ]
-   },
-   {
     "doi": "10.1021/je1011168",
     "year": "2011",
     "journal": "J. Chem. Eng. Data",
@@ -11093,19 +11248,6 @@
       "number": 1,
       "kind": "tpx-varying",
       "points": 17
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je200302h",
-    "year": "2011",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je200302h.xml",
-    "sets": [
-     {
-      "number": 2,
-      "kind": "tpx-varying",
-      "points": 19
      }
     ]
    },
@@ -11255,26 +11397,6 @@
       "number": 1,
       "kind": "tpx-varying",
       "points": 27
-     }
-    ]
-   }
-  ],
-  "carbon-monoxide+n-dodecane": [
-   {
-    "doi": "10.1021/acs.jced.5b00986",
-    "year": "2016",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/acs.jced.5b00986.xml",
-    "sets": [
-     {
-      "number": 3,
-      "kind": "tpx-varying",
-      "points": 8
-     },
-     {
-      "number": 4,
-      "kind": "tpx-varying",
-      "points": 8
      }
     ]
    }
@@ -11578,6 +11700,19 @@
   ],
   "cyclohexane+dioxane": [
    {
+    "doi": "10.1016/j.fluid.2005.09.010",
+    "year": "2005",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2005.09.010.xml",
+    "sets": [
+     {
+      "number": 11,
+      "kind": "tpx-varying",
+      "points": 43
+     }
+    ]
+   },
+   {
     "doi": "10.1021/je020148t",
     "year": "2003",
     "journal": "J. Chem. Eng. Data",
@@ -11670,6 +11805,19 @@
       "number": 2,
       "kind": "azeotrope",
       "points": 1
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.fluid.2013.07.044",
+    "year": "2013",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2013.07.044.xml",
+    "sets": [
+     {
+      "number": 6,
+      "kind": "tpx-varying",
+      "points": 59
      }
     ]
    },
@@ -11809,6 +11957,21 @@
       "number": 14,
       "kind": "isobaric-tx",
       "points": 21
+     }
+    ]
+   }
+  ],
+  "cyclohexane+n-butyl-acetate": [
+   {
+    "doi": "10.1021/je3005408",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je3005408.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 66
      }
     ]
    }
@@ -12041,6 +12204,21 @@
       "number": 8,
       "kind": "tpx-varying",
       "points": 8
+     }
+    ]
+   }
+  ],
+  "cyclohexane+water": [
+   {
+    "doi": "10.1021/je3005408",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je3005408.xml",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 3
      }
     ]
    }
@@ -12824,6 +13002,11 @@
       "number": 16,
       "kind": "azeotrope",
       "points": 1
+     },
+     {
+      "number": 17,
+      "kind": "tpx-varying",
+      "points": 26
      }
     ]
    }
@@ -13692,29 +13875,6 @@
       "points": 10
      }
     ]
-   },
-   {
-    "doi": "10.1021/je101197a",
-    "year": "2011",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je101197a.xml",
-    "sets": [
-     {
-      "number": 4,
-      "kind": "isothermal-px",
-      "points": 9
-     },
-     {
-      "number": 5,
-      "kind": "isothermal-px",
-      "points": 9
-     },
-     {
-      "number": 6,
-      "kind": "isothermal-px",
-      "points": 9
-     }
-    ]
    }
   ],
   "ethane+nitrogen": [
@@ -13761,11 +13921,6 @@
     "sets": [
      {
       "number": 3,
-      "kind": "tpx-varying",
-      "points": 18
-     },
-     {
-      "number": 4,
       "kind": "tpx-varying",
       "points": 18
      }
@@ -14057,6 +14212,32 @@
     ]
    },
    {
+    "doi": "10.1016/j.jct.2011.06.016",
+    "year": "2011",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2011.06.016.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 69
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.jct.2012.09.032",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2012.09.032.xml",
+    "sets": [
+     {
+      "number": 6,
+      "kind": "tpx-varying",
+      "points": 125
+     }
+    ]
+   },
+   {
     "doi": "10.1016/j.jct.2013.09.046",
     "year": "2014",
     "journal": "J. Chem. Thermodyn.",
@@ -14292,6 +14473,21 @@
     ]
    }
   ],
+  "ethanol+isopropyl-acetate": [
+   {
+    "doi": "10.1021/acs.jced.8b00005",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.8b00005.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 90
+     }
+    ]
+   }
+  ],
   "ethanol+methane": [
    {
     "doi": "10.1016/j.fluid.2005.04.020",
@@ -14359,6 +14555,21 @@
     ]
    }
   ],
+  "ethanol+methanol": [
+   {
+    "doi": "10.1021/je0601309",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je0601309.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 105
+     }
+    ]
+   }
+  ],
   "ethanol+mtbe": [
    {
     "doi": "10.1021/je9004068",
@@ -14375,6 +14586,11 @@
       "number": 11,
       "kind": "azeotrope",
       "points": 2
+     },
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 63
      }
     ]
    }
@@ -14571,6 +14787,19 @@
       "points": 21
      }
     ]
+   },
+   {
+    "doi": "10.1021/je400238j",
+    "year": "2013",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je400238j.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 92
+     }
+    ]
    }
   ],
   "ethanol+n-pentane": [
@@ -14636,6 +14865,34 @@
       "points": 21
      }
     ]
+   },
+   {
+    "doi": "10.1021/je200868y",
+    "year": "2011",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je200868y.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 73
+     }
+    ]
+   }
+  ],
+  "ethanol+phenol": [
+   {
+    "doi": "10.1016/j.fluid.2017.09.008",
+    "year": "2017",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2017.09.008.xml",
+    "sets": [
+     {
+      "number": 14,
+      "kind": "tpx-varying",
+      "points": 54
+     }
+    ]
    }
   ],
   "ethanol+propane": [
@@ -14684,6 +14941,21 @@
       "number": 2,
       "kind": "isobaric-txy",
       "points": 10
+     }
+    ]
+   }
+  ],
+  "ethanol+toluene": [
+   {
+    "doi": "10.1021/je200921u",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je200921u.xml",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 68
      }
     ]
    }
@@ -14758,6 +15030,19 @@
       "number": 3,
       "kind": "isobaric-tx",
       "points": 18
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.fluid.2011.06.009",
+    "year": "2011",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2011.06.009.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 45
      }
     ]
    },
@@ -14909,6 +15194,19 @@
     ]
    },
    {
+    "doi": "10.1016/j.jct.2017.07.021",
+    "year": "2017",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2017.07.021.xml",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 24
+     }
+    ]
+   },
+   {
     "doi": "10.1021/acs.jced.6b00197",
     "year": "2016",
     "journal": "J. Chem. Eng. Data",
@@ -14941,6 +15239,32 @@
       "number": 16,
       "kind": "azeotrope",
       "points": 1
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/acs.jced.7b00827",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.7b00827.xml",
+    "sets": [
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 21
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/acs.jced.8b00005",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.8b00005.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 10
      }
     ]
    },
@@ -15030,6 +15354,19 @@
     ]
    },
    {
+    "doi": "10.1021/je400238j",
+    "year": "2013",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je400238j.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 8
+     }
+    ]
+   },
+   {
     "doi": "10.1021/je900002p",
     "year": "2009",
     "journal": "J. Chem. Eng. Data",
@@ -15109,6 +15446,19 @@
       "points": 27
      }
     ]
+   },
+   {
+    "doi": "10.1021/acs.jced.9b00668",
+    "year": "2019",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.9b00668.xml",
+    "sets": [
+     {
+      "number": 24,
+      "kind": "tpx-varying",
+      "points": 72
+     }
+    ]
    }
   ],
   "ethyl-acetate+methanol": [
@@ -15145,6 +15495,19 @@
       "number": 4,
       "kind": "isobaric-txy",
       "points": 16
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je100614r",
+    "year": "2010",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je100614r.xml",
+    "sets": [
+     {
+      "number": 8,
+      "kind": "tpx-varying",
+      "points": 82
      }
     ]
    }
@@ -15591,6 +15954,47 @@
     ]
    }
   ],
+  "ethylbenzene+styrene": [
+   {
+    "doi": "10.1021/je050523s",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je050523s.xml",
+    "sets": [
+     {
+      "number": 16,
+      "kind": "tpx-varying",
+      "points": 35
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je200098d",
+    "year": "2011",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je200098d.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 36
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je201205t",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je201205t.xml",
+    "sets": [
+     {
+      "number": 8,
+      "kind": "tpx-varying",
+      "points": 18
+     }
+    ]
+   }
+  ],
   "ethylbenzene+sulfolane": [
    {
     "doi": "10.1016/j.jct.2011.06.015",
@@ -15609,6 +16013,34 @@
       "points": 12
      }
     ]
+   },
+   {
+    "doi": "10.1021/je200098d",
+    "year": "2011",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je200098d.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 30
+     }
+    ]
+   }
+  ],
+  "ethylbenzene+toluene": [
+   {
+    "doi": "10.1021/je020186c",
+    "year": "2003",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je020186c.xml",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 52
+     }
+    ]
    }
   ],
   "ethylene+isobutanol": [
@@ -15620,16 +16052,6 @@
     "sets": [
      {
       "number": 4,
-      "kind": "tpx-varying",
-      "points": 23
-     },
-     {
-      "number": 5,
-      "kind": "tpx-varying",
-      "points": 23
-     },
-     {
-      "number": 6,
       "kind": "tpx-varying",
       "points": 23
      }
@@ -15814,6 +16236,34 @@
     ]
    }
   ],
+  "ethylene-glycol+mdea": [
+   {
+    "doi": "10.1021/acs.jced.8b00054",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.8b00054.xml",
+    "sets": [
+     {
+      "number": 14,
+      "kind": "tpx-varying",
+      "points": 37
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je400373d",
+    "year": "2013",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je400373d.xml",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 39
+     }
+    ]
+   }
+  ],
   "ethylene-glycol+methane": [
    {
     "doi": "10.1016/j.fluid.2006.11.001",
@@ -15938,6 +16388,19 @@
       "points": 20
      }
     ]
+   },
+   {
+    "doi": "10.1021/je5010824",
+    "year": "2015",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je5010824.xml",
+    "sets": [
+     {
+      "number": 10,
+      "kind": "tpx-varying",
+      "points": 36
+     }
+    ]
    }
   ],
   "ethylene-glycol+sulfur-dioxide": [
@@ -16042,6 +16505,19 @@
     ]
    },
    {
+    "doi": "10.1021/acs.jced.7b00945",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.7b00945.xml",
+    "sets": [
+     {
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 49
+     }
+    ]
+   },
+   {
     "doi": "10.1021/je0342522",
     "year": "2004",
     "journal": "J. Chem. Eng. Data",
@@ -16115,6 +16591,11 @@
     "journal": "J. Chem. Eng. Data",
     "file": "10.1021/acs.jced.6b00139.xml",
     "sets": [
+     {
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 8
+     },
      {
       "number": 4,
       "kind": "tpx-varying",
@@ -16363,6 +16844,32 @@
       "points": 22
      }
     ]
+   },
+   {
+    "doi": "10.1016/j.jct.2009.11.020",
+    "year": "2010",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2009.11.020.xml",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 22
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.jct.2012.09.032",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2012.09.032.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 125
+     }
+    ]
    }
   ],
   "glycerol+n-decane": [
@@ -16515,6 +17022,45 @@
     ]
    },
    {
+    "doi": "10.1016/j.jct.2009.11.020",
+    "year": "2010",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2009.11.020.xml",
+    "sets": [
+     {
+      "number": 8,
+      "kind": "tpx-varying",
+      "points": 70
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.jct.2011.06.016",
+    "year": "2011",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2011.06.016.xml",
+    "sets": [
+     {
+      "number": 6,
+      "kind": "tpx-varying",
+      "points": 73
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.jct.2012.09.032",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2012.09.032.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 17
+     }
+    ]
+   },
+   {
     "doi": "10.1016/j.jct.2013.09.046",
     "year": "2014",
     "journal": "J. Chem. Thermodyn.",
@@ -16638,26 +17184,6 @@
     ]
    }
   ],
-  "hydrogen+n-dodecane": [
-   {
-    "doi": "10.1021/acs.jced.5b00986",
-    "year": "2016",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/acs.jced.5b00986.xml",
-    "sets": [
-     {
-      "number": 5,
-      "kind": "tpx-varying",
-      "points": 9
-     },
-     {
-      "number": 6,
-      "kind": "tpx-varying",
-      "points": 9
-     }
-    ]
-   }
-  ],
   "hydrogen+toluene": [
    {
     "doi": "10.1016/j.fluid.2004.07.013",
@@ -16721,34 +17247,6 @@
       "number": 8,
       "kind": "tpx-varying",
       "points": 1
-     }
-    ]
-   }
-  ],
-  "hydrogen+water": [
-   {
-    "doi": "10.1016/j.fluid.2018.07.022",
-    "year": "2018",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2018.07.022.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 43
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.jct.2017.12.011",
-    "year": "2018",
-    "journal": "J. Chem. Thermodyn.",
-    "file": "10.1016/j.jct.2017.12.011.xml",
-    "sets": [
-     {
-      "number": 3,
-      "kind": "isothermal-px",
-      "points": 10
      }
     ]
    }
@@ -17349,6 +17847,21 @@
     ]
    }
   ],
+  "isooctane+methyl-acetate": [
+   {
+    "doi": "10.1021/acs.jced.9b00668",
+    "year": "2019",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.9b00668.xml",
+    "sets": [
+     {
+      "number": 21,
+      "kind": "tpx-varying",
+      "points": 71
+     }
+    ]
+   }
+  ],
   "isooctane+mibk": [
    {
     "doi": "10.1016/j.fluid.2011.05.011",
@@ -17754,21 +18267,6 @@
     ]
    }
   ],
-  "m-xylene+nitrogen": [
-   {
-    "doi": "10.1021/je700578f",
-    "year": "2008",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je700578f.xml",
-    "sets": [
-     {
-      "number": 8,
-      "kind": "isobaric-tx",
-      "points": 7
-     }
-    ]
-   }
-  ],
   "m-xylene+p-xylene": [
    {
     "doi": "10.1021/acs.jced.6b00085",
@@ -17810,6 +18308,21 @@
       "number": 19,
       "kind": "gamma",
       "points": 5
+     }
+    ]
+   }
+  ],
+  "m-xylene+styrene": [
+   {
+    "doi": "10.1021/je050523s",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je050523s.xml",
+    "sets": [
+     {
+      "number": 20,
+      "kind": "tpx-varying",
+      "points": 41
      }
     ]
    }
@@ -17922,6 +18435,32 @@
       "number": 5,
       "kind": "tpx-varying",
       "points": 1
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/acs.jced.8b00054",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.8b00054.xml",
+    "sets": [
+     {
+      "number": 11,
+      "kind": "tpx-varying",
+      "points": 39
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je060396f",
+    "year": "2007",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je060396f.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 9
      }
     ]
    },
@@ -18129,34 +18668,9 @@
       "points": 3
      },
      {
-      "number": 3,
-      "kind": "isothermal-px",
-      "points": 3
-     },
-     {
-      "number": 4,
-      "kind": "isothermal-px",
-      "points": 3
-     },
-     {
       "number": 5,
       "kind": "tpx-varying",
       "points": 1
-     },
-     {
-      "number": 6,
-      "kind": "isothermal-px",
-      "points": 6
-     },
-     {
-      "number": 7,
-      "kind": "isothermal-px",
-      "points": 6
-     },
-     {
-      "number": 10,
-      "kind": "isothermal-px",
-      "points": 5
      }
     ]
    },
@@ -18189,24 +18703,6 @@
   ],
   "methane+n-decane": [
    {
-    "doi": "10.1016/j.fluid.2005.03.032",
-    "year": "2005",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2005.03.032.xml",
-    "sets": [
-     {
-      "number": 12,
-      "kind": "isothermal-px",
-      "points": 5
-     },
-     {
-      "number": 13,
-      "kind": "isothermal-px",
-      "points": 5
-     }
-    ]
-   },
-   {
     "doi": "10.1016/j.fluid.2015.12.046",
     "year": "2016",
     "journal": "Fluid Phase Equilib.",
@@ -18234,42 +18730,6 @@
       "number": 3,
       "kind": "tpx-varying",
       "points": 4
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.fluid.2018.12.016",
-    "year": "2019",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2018.12.016.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 18
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.jct.2015.12.036",
-    "year": "2016",
-    "journal": "J. Chem. Thermodyn.",
-    "file": "10.1016/j.jct.2015.12.036.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 39
-     },
-     {
-      "number": 2,
-      "kind": "tpx-varying",
-      "points": 43
-     },
-     {
-      "number": 3,
-      "kind": "tpx-varying",
-      "points": 22
      }
     ]
    }
@@ -18361,19 +18821,6 @@
       "points": 5
      }
     ]
-   },
-   {
-    "doi": "10.1021/je200560w",
-    "year": "2011",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je200560w.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 89
-     }
-    ]
    }
   ],
   "methane+n-pentane": [
@@ -18387,29 +18834,6 @@
       "number": 4,
       "kind": "isothermal-px",
       "points": 7
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je101197a",
-    "year": "2011",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je101197a.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "isothermal-px",
-      "points": 15
-     },
-     {
-      "number": 2,
-      "kind": "isothermal-px",
-      "points": 15
-     },
-     {
-      "number": 3,
-      "kind": "isothermal-px",
-      "points": 15
      }
     ]
    },
@@ -18428,19 +18852,6 @@
    }
   ],
   "methane+nitrogen": [
-   {
-    "doi": "10.1016/j.fluid.2010.11.013",
-    "year": "2011",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2010.11.013.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 69
-     }
-    ]
-   },
    {
     "doi": "10.1021/je201299u",
     "year": "2012",
@@ -18497,24 +18908,6 @@
       "number": 1,
       "kind": "tpx-varying",
       "points": 13
-     },
-     {
-      "number": 4,
-      "kind": "tpx-varying",
-      "points": 261
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.jct.2017.03.002",
-    "year": "2017",
-    "journal": "J. Chem. Thermodyn.",
-    "file": "10.1016/j.jct.2017.03.002.xml",
-    "sets": [
-     {
-      "number": 9,
-      "kind": "tpx-varying",
-      "points": 27
      }
     ]
    },
@@ -18608,41 +19001,15 @@
     ]
    },
    {
-    "doi": "10.1016/j.fluid.2015.09.050",
-    "year": "2016",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2015.09.050.xml",
+    "doi": "10.1021/acs.jced.7b00777",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.7b00777.xml",
     "sets": [
      {
-      "number": 1,
+      "number": 3,
       "kind": "tpx-varying",
-      "points": 31
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.fluid.2015.10.006",
-    "year": "2016",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2015.10.006.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 57
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.jct.2006.03.019",
-    "year": "2006",
-    "journal": "J. Chem. Thermodyn.",
-    "file": "10.1016/j.jct.2006.03.019.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "isobaric-tx",
-      "points": 13
+      "points": 1
      }
     ]
    },
@@ -18781,6 +19148,11 @@
     "journal": "Fluid Phase Equilib.",
     "file": "10.1016/j.fluid.2015.12.029.xml",
     "sets": [
+     {
+      "number": 10,
+      "kind": "tpx-varying",
+      "points": 132
+     },
      {
       "number": 11,
       "kind": "azeotrope",
@@ -18992,21 +19364,6 @@
     ]
    }
   ],
-  "methanol+nitrogen": [
-   {
-    "doi": "10.1021/je700578f",
-    "year": "2008",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je700578f.xml",
-    "sets": [
-     {
-      "number": 3,
-      "kind": "isothermal-px",
-      "points": 4
-     }
-    ]
-   }
-  ],
   "methanol+nmp": [
    {
     "doi": "10.1021/je034254m",
@@ -19189,6 +19546,19 @@
     ]
    },
    {
+    "doi": "10.1016/j.jct.2009.11.020",
+    "year": "2010",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2009.11.020.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 66
+     }
+    ]
+   },
+   {
     "doi": "10.1016/j.jct.2019.01.004",
     "year": "2019",
     "journal": "J. Chem. Thermodyn.",
@@ -19296,6 +19666,19 @@
       "number": 4,
       "kind": "isobaric-txy",
       "points": 15
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je300613v",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je300613v.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 32
      }
     ]
    }
@@ -19677,29 +20060,6 @@
   ],
   "n-decane+nitrogen": [
    {
-    "doi": "10.1016/j.jct.2015.12.036",
-    "year": "2016",
-    "journal": "J. Chem. Thermodyn.",
-    "file": "10.1016/j.jct.2015.12.036.xml",
-    "sets": [
-     {
-      "number": 7,
-      "kind": "tpx-varying",
-      "points": 46
-     },
-     {
-      "number": 8,
-      "kind": "tpx-varying",
-      "points": 39
-     },
-     {
-      "number": 9,
-      "kind": "tpx-varying",
-      "points": 26
-     }
-    ]
-   },
-   {
     "doi": "10.1021/je800881t",
     "year": "2009",
     "journal": "J. Chem. Eng. Data",
@@ -19851,39 +20211,6 @@
       "number": 1,
       "kind": "tpx-varying",
       "points": 169
-     }
-    ]
-   }
-  ],
-  "n-dodecane+water": [
-   {
-    "doi": "10.1016/j.fluid.2018.07.032",
-    "year": "2018",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2018.07.032.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "isobaric-tx",
-      "points": 4
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/acs.jced.5b00986",
-    "year": "2016",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/acs.jced.5b00986.xml",
-    "sets": [
-     {
-      "number": 7,
-      "kind": "tpx-varying",
-      "points": 5
-     },
-     {
-      "number": 8,
-      "kind": "tpx-varying",
-      "points": 5
      }
     ]
    }
@@ -20396,36 +20723,6 @@
     ]
    }
   ],
-  "nitrogen+o-xylene": [
-   {
-    "doi": "10.1021/je700578f",
-    "year": "2008",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je700578f.xml",
-    "sets": [
-     {
-      "number": 7,
-      "kind": "isobaric-tx",
-      "points": 7
-     }
-    ]
-   }
-  ],
-  "nitrogen+p-xylene": [
-   {
-    "doi": "10.1021/je700578f",
-    "year": "2008",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je700578f.xml",
-    "sets": [
-     {
-      "number": 6,
-      "kind": "isobaric-tx",
-      "points": 7
-     }
-    ]
-   }
-  ],
   "nitrogen+styrene": [
    {
     "doi": "10.1016/j.fluid.2019.03.016",
@@ -20456,32 +20753,17 @@
     ]
    }
   ],
-  "nitrogen+toluene": [
-   {
-    "doi": "10.1021/je700578f",
-    "year": "2008",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je700578f.xml",
-    "sets": [
-     {
-      "number": 5,
-      "kind": "isobaric-tx",
-      "points": 7
-     }
-    ]
-   }
-  ],
   "nitrogen+water": [
    {
-    "doi": "10.1016/j.jct.2015.08.006",
-    "year": "2016",
-    "journal": "J. Chem. Thermodyn.",
-    "file": "10.1016/j.jct.2015.08.006.xml",
+    "doi": "10.1007/s10765-017-2310-y",
+    "year": "2017",
+    "journal": "Int. J. Thermophys.",
+    "file": "10.1007/s10765-017-2310-y.xml",
     "sets": [
      {
       "number": 2,
       "kind": "tpx-varying",
-      "points": 24
+      "points": 9
      }
     ]
    },
@@ -20603,45 +20885,6 @@
       "points": 3
      }
     ]
-   },
-   {
-    "doi": "10.1021/je0503913",
-    "year": "2006",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je0503913.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "isobaric-tx",
-      "points": 4
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je300102d",
-    "year": "2012",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je300102d.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 5
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je301371p",
-    "year": "2013",
-    "journal": "J. Chem. Eng. Data",
-    "file": "10.1021/je301371p.xml",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 6
-     }
-    ]
    }
   ],
   "nmp+propane": [
@@ -20730,6 +20973,21 @@
       "number": 17,
       "kind": "gamma",
       "points": 5
+     }
+    ]
+   }
+  ],
+  "o-xylene+styrene": [
+   {
+    "doi": "10.1021/je050523s",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je050523s.xml",
+    "sets": [
+     {
+      "number": 18,
+      "kind": "tpx-varying",
+      "points": 38
      }
     ]
    }
@@ -20883,6 +21141,21 @@
     ]
    }
   ],
+  "p-xylene+styrene": [
+   {
+    "doi": "10.1021/je050523s",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je050523s.xml",
+    "sets": [
+     {
+      "number": 22,
+      "kind": "tpx-varying",
+      "points": 39
+     }
+    ]
+   }
+  ],
   "p-xylene+vinyl-acetate": [
    {
     "doi": "10.1021/je050162g",
@@ -20919,6 +21192,19 @@
       "number": 4,
       "kind": "tpx-varying",
       "points": 20
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.jct.2014.07.021",
+    "year": "2014",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2014.07.021.xml",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 1
      }
     ]
    }
@@ -21089,6 +21375,21 @@
     ]
    }
   ],
+  "styrene+sulfolane": [
+   {
+    "doi": "10.1021/je200098d",
+    "year": "2011",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je200098d.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 30
+     }
+    ]
+   }
+  ],
   "sulfolane+sulfur-dioxide": [
    {
     "doi": "10.1021/je4007713",
@@ -21188,21 +21489,6 @@
       "number": 4,
       "kind": "gamma",
       "points": 2
-     }
-    ]
-   }
-  ],
-  "toluene+water": [
-   {
-    "doi": "10.1016/j.fluid.2018.07.032",
-    "year": "2018",
-    "journal": "Fluid Phase Equilib.",
-    "file": "10.1016/j.fluid.2018.07.032.xml",
-    "sets": [
-     {
-      "number": 2,
-      "kind": "isobaric-tx",
-      "points": 4
      }
     ]
    }

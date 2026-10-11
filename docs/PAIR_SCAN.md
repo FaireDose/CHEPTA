@@ -342,9 +342,9 @@ All 94 components, 4371 pairs, each counted once for the method the rules of doc
 
 | Method needed | Pairs | With parameters | No parameters, open data in the archive | No parameters, no data in the archive |
 |---|---|---|---|---|
-| Polar liquids: an activity model (NRTL, UNIQUAC) | 2397 | 289 | 144 | 1964 |
-| Nonpolar, or both gases: an equation of state with k_ij | 837 | 112 | 92 | 633 |
-| A gas in a polar liquid: Henry's law (water only), else PSRK or MHV2 (not in CHEPTA yet) | 1137 | 10 | 139 | 988 |
+| Polar liquids: an activity model (NRTL, UNIQUAC) | 2397 | 289 | 154 | 1954 |
+| Nonpolar, or both gases: an equation of state with k_ij | 837 | 112 | 91 | 634 |
+| A gas in a polar liquid: Henry's law (water only), else PSRK or MHV2 (not in CHEPTA yet) | 1137 | 10 | 138 | 989 |
 
 The whole archive has binary vapour-liquid data for 7158 distinct compound pairs (of every compound it holds, not only CHEPTA's).
 
