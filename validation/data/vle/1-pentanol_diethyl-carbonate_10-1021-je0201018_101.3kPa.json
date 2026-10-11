@@ -1,0 +1,154 @@
+{
+ "_about": "1-Pentanol (1) + Diethyl carbonate (2): isobaric T-x-y at 101.3 kPa. Rows: liquid mole fraction of 1-pentanol, boiling temperature in K, vapour mole fraction of 1-pentanol, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "A. Rodriguez, J. Canosa, A. Dominguez, J. Tojo, Isobaric Phase Equilibria of Diethyl Carbonate with Five Alcohols at 101.3 kPa, J. Chem. Eng. Data 48 (2003) 86-91",
+  "doi": "10.1021/je0201018",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je0201018.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 27, 28. The table number in the article was not checked."
+ },
+ "components": [
+  "1-pentanol",
+  "diethyl-carbonate"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.3,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0153,
+   399.29,
+   0.018199999999999994
+  ],
+  [
+   0.0509,
+   399.2,
+   0.05489999999999995
+  ],
+  [
+   0.0872,
+   399.18,
+   0.08979999999999999
+  ],
+  [
+   0.1445,
+   399.28,
+   0.13729999999999998
+  ],
+  [
+   0.2011,
+   399.52,
+   0.18600000000000005
+  ],
+  [
+   0.2543,
+   399.75,
+   0.22740000000000005
+  ],
+  [
+   0.3114,
+   400.06,
+   0.26680000000000004
+  ],
+  [
+   0.3519,
+   400.36,
+   0.29569999999999996
+  ],
+  [
+   0.3944,
+   400.67,
+   0.32509999999999994
+  ],
+  [
+   0.436,
+   401.02,
+   0.3539
+  ],
+  [
+   0.4768,
+   401.37,
+   0.38639999999999997
+  ],
+  [
+   0.513,
+   401.7,
+   0.4131
+  ],
+  [
+   0.547,
+   402.06,
+   0.44389999999999996
+  ],
+  [
+   0.5835,
+   402.42,
+   0.47030000000000005
+  ],
+  [
+   0.6115,
+   402.8,
+   0.4981
+  ],
+  [
+   0.6425,
+   403.09,
+   0.5187999999999999
+  ],
+  [
+   0.6746,
+   403.54,
+   0.5494
+  ],
+  [
+   0.7108,
+   404.0,
+   0.5829
+  ],
+  [
+   0.743,
+   404.45,
+   0.6107
+  ],
+  [
+   0.7824,
+   405.12,
+   0.6533
+  ],
+  [
+   0.8182,
+   405.87,
+   0.6990000000000001
+  ],
+  [
+   0.8573,
+   406.71,
+   0.7479
+  ],
+  [
+   0.8983,
+   407.69,
+   0.8026
+  ],
+  [
+   0.9311,
+   408.71,
+   0.8576
+  ],
+  [
+   0.9578,
+   409.57,
+   0.9086
+  ],
+  [
+   0.9756,
+   410.19,
+   0.9434
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0064. To be checked by a person against the record (AGENTS.md rule 4)."
+}

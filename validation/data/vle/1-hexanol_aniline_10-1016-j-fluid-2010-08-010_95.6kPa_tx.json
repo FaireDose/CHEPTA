@@ -1,0 +1,83 @@
+{
+ "_about": "1-Hexanol (1) + Aniline (2): isobaric bubble temperatures at 95.6 kPa (no vapour compositions are fitted). Rows: liquid mole fraction of 1-hexanol, boiling temperature in K, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "K. S. Reddy, A. V. N. Swamy, T. E. V. Prasad, D. H. L. Prasad, Bubble point measurements of binary mixtures formed by 1-hexanol with selected nitro-compounds and substituted benzenes at 95.6 kPa , Fluid Phase Equilib. 298 (2010) 276-279",
+  "doi": "10.1016/j.fluid.2010.08.010",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2010.08.010.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 15. The table number in the article was not checked."
+ },
+ "components": [
+  "1-hexanol",
+  "aniline"
+ ],
+ "kind": "isobaric-tx",
+ "P_kPa": 95.6,
+ "columns": [
+  "x_1",
+  "T_K"
+ ],
+ "rows": [
+  [
+   0.0,
+   455.25
+  ],
+  [
+   0.0746,
+   451.95
+  ],
+  [
+   0.195,
+   447.25
+  ],
+  [
+   0.2574,
+   445.05
+  ],
+  [
+   0.3264,
+   442.75
+  ],
+  [
+   0.3889,
+   440.85
+  ],
+  [
+   0.4468,
+   439.25
+  ],
+  [
+   0.5093,
+   437.55
+  ],
+  [
+   0.5655,
+   436.15
+  ],
+  [
+   0.628,
+   434.65
+  ],
+  [
+   0.6845,
+   433.65
+  ],
+  [
+   0.747,
+   432.25
+  ],
+  [
+   0.8668,
+   430.15
+  ],
+  [
+   0.9293,
+   429.35
+  ],
+  [
+   1.0,
+   428.45
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Fitted to the bubble temperatures alone (Barker's method): no set of this pair with vapour compositions passes the consistency point test, or none was measured. Pure-component boiling points of the set within 0.76 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

@@ -1,0 +1,133 @@
+{
+ "_about": "1-Pentanol (1) + 2-Butanone (2): isothermal total pressures at 333.65 K. Rows: temperature in K, liquid mole fraction of 1-pentanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "K. Moodley, C.-L. Dorsamy, Isothermal Vapor-Liquid Equilibrium Measurements of Butan-2-one + 2-Methyl-propan-1-ol/Pentan-1-ol, J. Chem. Eng. Data 63 (2018) 4128-4135",
+  "doi": "10.1021/acs.jced.8b00552",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.8b00552.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 9. The table number in the article was not checked."
+ },
+ "components": [
+  "1-pentanol",
+  "2-butanone"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   333.65,
+   0.0,
+   52.42
+  ],
+  [
+   333.65,
+   0.002,
+   52.37
+  ],
+  [
+   333.65,
+   0.01,
+   52.02
+  ],
+  [
+   333.65,
+   0.02,
+   51.6
+  ],
+  [
+   333.65,
+   0.041,
+   50.65
+  ],
+  [
+   333.65,
+   0.06,
+   49.85
+  ],
+  [
+   333.65,
+   0.1,
+   48.16
+  ],
+  [
+   333.65,
+   0.161,
+   45.6
+  ],
+  [
+   333.65,
+   0.25,
+   42.12
+  ],
+  [
+   333.65,
+   0.308,
+   40.67
+  ],
+  [
+   333.65,
+   0.369,
+   38.81
+  ],
+  [
+   333.65,
+   0.479,
+   34.7
+  ],
+  [
+   333.65,
+   0.581,
+   31.3
+  ],
+  [
+   333.65,
+   0.66,
+   26.6
+  ],
+  [
+   333.65,
+   0.781,
+   20.4
+  ],
+  [
+   333.65,
+   0.871,
+   13.15
+  ],
+  [
+   333.65,
+   0.935,
+   8.52
+  ],
+  [
+   333.65,
+   0.968,
+   6.0
+  ],
+  [
+   333.65,
+   0.983,
+   4.8
+  ],
+  [
+   333.65,
+   0.991,
+   4.2
+  ],
+  [
+   333.65,
+   0.995,
+   3.87
+  ],
+  [
+   333.65,
+   1.0,
+   3.43
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

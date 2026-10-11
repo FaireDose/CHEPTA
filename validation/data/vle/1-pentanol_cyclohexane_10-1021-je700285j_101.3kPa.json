@@ -1,0 +1,89 @@
+{
+ "_about": "1-Pentanol (1) + Cyclohexane (2): isobaric T-x-y at 101.3 kPa. Rows: liquid mole fraction of 1-pentanol, boiling temperature in K, vapour mole fraction of 1-pentanol, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "G. Ovejero, M. D. Romero, E. Diez, T. Lopes, I. Diaz, Isobaric Vapor-Liquid Equilibrium for the Binary Systems 1-Pentanol + Cyclohexane and 1-Pentanol + n-Hexane at Low Alcohol Compositions, J. Chem. Eng. Data 52 (2007) 1984-1987",
+  "doi": "10.1021/je700285j",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je700285j.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1, 2. The table number in the article was not checked."
+ },
+ "components": [
+  "1-pentanol",
+  "cyclohexane"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.3,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0059,
+   353.8,
+   0.0057
+  ],
+  [
+   0.0095,
+   353.9,
+   0.0083
+  ],
+  [
+   0.0106,
+   353.9,
+   0.009
+  ],
+  [
+   0.0157,
+   354.0,
+   0.0125
+  ],
+  [
+   0.0222,
+   354.1,
+   0.0155
+  ],
+  [
+   0.0272,
+   354.3,
+   0.0184
+  ],
+  [
+   0.0335,
+   354.4,
+   0.0204
+  ],
+  [
+   0.0436,
+   354.3,
+   0.0238
+  ],
+  [
+   0.0457,
+   354.5,
+   0.0239
+  ],
+  [
+   0.0496,
+   354.4,
+   0.025
+  ],
+  [
+   0.0554,
+   354.6,
+   0.0268
+  ],
+  [
+   0.0654,
+   354.7,
+   0.0284
+  ],
+  [
+   0.068,
+   354.7,
+   0.0292
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0051. To be checked by a person against the record (AGENTS.md rule 4)."
+}

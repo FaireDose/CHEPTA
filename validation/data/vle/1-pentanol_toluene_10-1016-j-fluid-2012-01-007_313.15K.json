@@ -1,0 +1,153 @@
+{
+ "_about": "1-Pentanol (1) + Toluene (2): isothermal total pressures at 313.15 K. Rows: temperature in K, liquid mole fraction of 1-pentanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "A. Moreau, M. C. Martin, C. R. Chamorro, J. J. Segovia, Thermodynamic characterization of second generation biofuels: Vapour-liquid  equilibria and excess enthalpies of the binary mixtures 1-pentanol and  cyclohexane or toluene, Fluid Phase Equilib. 317 (2012) 127-131",
+  "doi": "10.1016/j.fluid.2012.01.007",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.01.007.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 4, 5. The table number in the article was not checked."
+ },
+ "components": [
+  "1-pentanol",
+  "toluene"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   313.15,
+   0.0,
+   7.864
+  ],
+  [
+   313.15,
+   0.0493,
+   7.789
+  ],
+  [
+   313.15,
+   0.0991,
+   7.698
+  ],
+  [
+   313.15,
+   0.1495,
+   7.595
+  ],
+  [
+   313.15,
+   0.1997,
+   7.485
+  ],
+  [
+   313.15,
+   0.2495,
+   7.365
+  ],
+  [
+   313.15,
+   0.2995,
+   7.232
+  ],
+  [
+   313.15,
+   0.3497,
+   7.082
+  ],
+  [
+   313.15,
+   0.3997,
+   6.918
+  ],
+  [
+   313.15,
+   0.4049,
+   6.922
+  ],
+  [
+   313.15,
+   0.4497,
+   6.723
+  ],
+  [
+   313.15,
+   0.4551,
+   6.725
+  ],
+  [
+   313.15,
+   0.4996,
+   6.508
+  ],
+  [
+   313.15,
+   0.5052,
+   6.516
+  ],
+  [
+   313.15,
+   0.5497,
+   6.268
+  ],
+  [
+   313.15,
+   0.5551,
+   6.269
+  ],
+  [
+   313.15,
+   0.5997,
+   5.968
+  ],
+  [
+   313.15,
+   0.605,
+   5.966
+  ],
+  [
+   313.15,
+   0.6548,
+   5.638
+  ],
+  [
+   313.15,
+   0.7046,
+   5.23
+  ],
+  [
+   313.15,
+   0.7539,
+   4.76
+  ],
+  [
+   313.15,
+   0.804,
+   4.203
+  ],
+  [
+   313.15,
+   0.8532,
+   3.555
+  ],
+  [
+   313.15,
+   0.9023,
+   2.799
+  ],
+  [
+   313.15,
+   0.9517,
+   1.917
+  ],
+  [
+   313.15,
+   1.0,
+   0.901
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}
