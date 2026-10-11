@@ -394,6 +394,31 @@ def gate(spec, model, params, GATE=GATE):
     return None
 
 
+def score(spec, model, params):
+    """How far a set is from the generated fit's data, in units of GATE (the largest of the mean deviations in T, y and
+    P divided by their limits); used to compare a set within WIDE_GATE with the set it would replace."""
+    i, j = spec["pair"]
+    sets = file_sets(spec)
+    out = 0.0
+    txy = [c for kind, _, c in sets if kind == "txy"]
+    if txy:
+        dT, dy = txy_deviations(txy, model, i, j, [params])
+        out = max(out, np.mean(dT) / GATE["T_K"], (np.mean(dy) / GATE["y"]) if len(dy) else 0.0)
+    px = [p for kind, _, c in sets if kind == "px" for p in c]
+    if px:
+        s = System([i, j], model, params=[params])
+        dev = []
+        for T, x1, P, ps in px:
+            s.psat_fixed = list(ps)
+            dev.append(abs(s.equilibrium([x1, 1 - x1], T)[0] / P - 1) * 100)
+        out = max(out, np.mean(dev) / GATE["P_pct"])
+    tpx = [p for kind, _, c in sets if kind == "tpx" for p in c]
+    if tpx:
+        s = System([i, j], model, params=[params])
+        out = max(out, np.mean([abs(s.equilibrium([x1, 1 - x1], T)[0] / P - 1) * 100 for T, x1, P in tpx]) / GATE["P_pct"])
+    return float(out)
+
+
 def make_params(model, i, j, p, alpha=0.3):
     a_ij, a_ji = (p[2], p[3]) if len(p) > 2 else (0.0, 0.0)
     e = dict(model=model, i=i, j=j, a_ij=float(a_ij), a_ji=float(a_ji), b_ij=float(p[0]), b_ji=float(p[1]))
@@ -791,6 +816,20 @@ def main(write, only=None):
                         why = str(e)
                     if not why:
                         break
+                if why and wide:
+                    # within WIDE_GATE: written only where the pair has no default set of this model, or where the
+                    # default set follows the same data less closely
+                    cur = next((r for r in binaries["pairs"] if r["model"] == model and {r["i"], r["j"]} == set(spec["pair"])
+                                and r.get("default", True)), None)
+                    if cur is not None:
+                        try:
+                            s_cur = score(spec, model, dict(cur, model=model))
+                        except Exception:
+                            s_cur = float("inf")
+                        if s_cur <= score(spec, model, wide[0]):
+                            why = ("%s; the existing %s set (%s) follows the same data as closely or better, and stays" % (
+                                wide[1], cur.get("tier", "databank"), cur.get("set", "default")))
+                            wide = None
                 if why and wide:
                     params, why_wide = wide
                     params["quality_warning"] = (
