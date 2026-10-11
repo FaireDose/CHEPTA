@@ -1,6 +1,6 @@
 {
  "_about": "Records of the NIST TRC ThermoML Archive (https://trc.nist.gov/ThermoML/; open data, free to read even where the article is not) with binary vapour-liquid data of each pair, found by validation/python/scan_pairs.py. Set numbers and point counts as stored in each record; the values themselves are read from the record when a pair is fitted.",
- "scanned": "2026-10-09",
+ "scanned": "2026-10-11",
  "pairs": {
   "acetic-acid+water": [
    {
@@ -89,6 +89,19 @@
     ]
    },
    {
+    "doi": "10.1016/j.fluid.2018.06.011",
+    "year": "2018",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Galeotti, Nadia",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 24
+     }
+    ]
+   },
+   {
     "doi": "10.1021/acs.jced.5b01104",
     "year": "2016",
     "journal": "J. Chem. Eng. Data",
@@ -146,11 +159,6 @@
     "first_author": "Jia, Tao",
     "sets": [
      {
-      "number": 2,
-      "kind": "isobaric-tx",
-      "points": 6
-     },
-     {
       "number": 3,
       "kind": "tpx-varying",
       "points": 6
@@ -182,9 +190,9 @@
     "first_author": "Chouireb, Naima",
     "sets": [
      {
-      "number": 3,
-      "kind": "isobaric-tx",
-      "points": 10
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 49
      }
     ]
    },
@@ -290,6 +298,19 @@
       "number": 6,
       "kind": "isobaric-tx",
       "points": 5
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.jct.2009.11.020",
+    "year": "2010",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Soujanya, J.",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 66
      }
     ]
    },
@@ -403,6 +424,19 @@
       "points": 15
      }
     ]
+   },
+   {
+    "doi": "10.1021/je300613v",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Yang, C.[Changsheng]",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 32
+     }
+    ]
    }
   ],
   "ethanol+water": [
@@ -479,6 +513,19 @@
     ]
    },
    {
+    "doi": "10.1016/j.fluid.2011.06.009",
+    "year": "2011",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Voutsas, E. C.[Epaminondas C.]",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 45
+     }
+    ]
+   },
+   {
     "doi": "10.1016/j.fluid.2012.11.026",
     "year": "2013",
     "journal": "Fluid Phase Equilib.",
@@ -519,19 +566,6 @@
       "number": 6,
       "kind": "tpx-varying",
       "points": 42
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.fluid.2014.05.031",
-    "year": "2014",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Brandt, S.[Sarah]",
-    "sets": [
-     {
-      "number": 4,
-      "kind": "tpx-varying",
-      "points": 56
      }
     ]
    },
@@ -652,6 +686,19 @@
     ]
    },
    {
+    "doi": "10.1016/j.jct.2017.07.021",
+    "year": "2017",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Dias, R. M.[Rafael M.]",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 24
+     }
+    ]
+   },
+   {
     "doi": "10.1021/acs.jced.6b00197",
     "year": "2016",
     "journal": "J. Chem. Eng. Data",
@@ -684,6 +731,32 @@
       "number": 16,
       "kind": "azeotrope",
       "points": 1
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/acs.jced.7b00827",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Wang, Jun",
+    "sets": [
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 21
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/acs.jced.8b00005",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Li, Geng",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 10
      }
     ]
    },
@@ -795,6 +868,19 @@
       "number": 3,
       "kind": "isobaric-txy",
       "points": 15
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je400238j",
+    "year": "2013",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Li, G.[Geng]",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 8
      }
     ]
    },
@@ -954,37 +1040,6 @@
     ]
    },
    {
-    "doi": "10.1016/j.fluid.2014.05.031",
-    "year": "2014",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Brandt, S.[Sarah]",
-    "sets": [
-     {
-      "number": 7,
-      "kind": "isobaric-tx",
-      "points": 23
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.fluid.2018.02.003",
-    "year": "2018",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Roque, Laerti Reis",
-    "sets": [
-     {
-      "number": 45,
-      "kind": "isobaric-tx",
-      "points": 4
-     },
-     {
-      "number": 47,
-      "kind": "isobaric-tx",
-      "points": 4
-     }
-    ]
-   },
-   {
     "doi": "10.1021/je049875+",
     "year": "2004",
     "journal": "J. Chem. Eng. Data",
@@ -1011,6 +1066,21 @@
     ]
    }
   ],
+  "cyclohexane+water": [
+   {
+    "doi": "10.1021/je3005408",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Li, G.[Geng]",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 3
+     }
+    ]
+   }
+  ],
   "p-xylene+water": [
    {
     "doi": "10.1016/j.jct.2012.03.001",
@@ -1027,6 +1097,19 @@
       "number": 4,
       "kind": "tpx-varying",
       "points": 20
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.jct.2014.07.021",
+    "year": "2014",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Gomis, V.[Vicente]",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 1
      }
     ]
    }
@@ -1294,27 +1377,22 @@
       "points": 28
      }
     ]
-   },
-   {
-    "doi": "10.1021/je900337a",
-    "year": "2009",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Costa, H.[Henrique]",
-    "sets": [
-     {
-      "number": 16,
-      "kind": "isobaric-tx",
-      "points": 11
-     },
-     {
-      "number": 17,
-      "kind": "isobaric-tx",
-      "points": 11
-     }
-    ]
    }
   ],
   "2-propanol+water": [
+   {
+    "doi": "10.1016/j.fluid.2006.03.021",
+    "year": "2006",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Bermejo, M. D.",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 48
+     }
+    ]
+   },
    {
     "doi": "10.1016/j.fluid.2014.02.006",
     "year": "2014",
@@ -1497,6 +1575,24 @@
       "number": 4,
       "kind": "isobaric-txy",
       "points": 18
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/acs.jced.7b00755",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Comak, Gurbuz",
+    "sets": [
+     {
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 17
+     },
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 17
      }
     ]
    },
@@ -1796,42 +1892,6 @@
       "points": 8
      }
     ]
-   },
-   {
-    "doi": "10.1016/j.fluid.2018.02.003",
-    "year": "2018",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Roque, Laerti Reis",
-    "sets": [
-     {
-      "number": 49,
-      "kind": "isobaric-tx",
-      "points": 4
-     },
-     {
-      "number": 50,
-      "kind": "isobaric-tx",
-      "points": 4
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je900337a",
-    "year": "2009",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Costa, H.[Henrique]",
-    "sets": [
-     {
-      "number": 13,
-      "kind": "isobaric-tx",
-      "points": 4
-     },
-     {
-      "number": 14,
-      "kind": "isobaric-tx",
-      "points": 4
-     }
-    ]
    }
   ],
   "acetonitrile+water": [
@@ -1886,6 +1946,24 @@
       "number": 4,
       "kind": "isobaric-txy",
       "points": 14
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/acs.jced.7b00755",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Comak, Gurbuz",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 5
+     },
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 5
      }
     ]
    },
@@ -1974,6 +2052,45 @@
     ]
    },
    {
+    "doi": "10.1016/j.jct.2009.11.020",
+    "year": "2010",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Soujanya, J.",
+    "sets": [
+     {
+      "number": 8,
+      "kind": "tpx-varying",
+      "points": 70
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.jct.2011.06.016",
+    "year": "2011",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Coelho, R.[Renata]",
+    "sets": [
+     {
+      "number": 6,
+      "kind": "tpx-varying",
+      "points": 73
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.jct.2012.09.032",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Veneral, J. G.[Josamaique G.]",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 17
+     }
+    ]
+   },
+   {
     "doi": "10.1016/j.jct.2013.09.046",
     "year": "2014",
     "journal": "J. Chem. Thermodyn.",
@@ -1983,19 +2100,6 @@
       "number": 11,
       "kind": "tpx-varying",
       "points": 94
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.jct.2016.02.026",
-    "year": "2016",
-    "journal": "J. Chem. Thermodyn.",
-    "first_author": "Faggion, H.[Heron]",
-    "sets": [
-     {
-      "number": 17,
-      "kind": "isobaric-tx",
-      "points": 7
      }
     ]
    },
@@ -2014,24 +2118,6 @@
       "number": 5,
       "kind": "gamma",
       "points": 5
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/acs.jced.5b01080",
-    "year": "2016",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Aniya, V.[Vineet]",
-    "sets": [
-     {
-      "number": 15,
-      "kind": "isobaric-tx",
-      "points": 175
-     },
-     {
-      "number": 16,
-      "kind": "isobaric-tx",
-      "points": 175
      }
     ]
    },
@@ -2060,31 +2146,6 @@
       "number": 7,
       "kind": "gamma",
       "points": 7
-     }
-    ]
-   }
-  ],
-  "cyclohexanone+water": [
-   {
-    "doi": "10.1021/je200468r",
-    "year": "2011",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Bermudez-Salguero, C.[Carolina]",
-    "sets": [
-     {
-      "number": 29,
-      "kind": "isobaric-tx",
-      "points": 14
-     },
-     {
-      "number": 31,
-      "kind": "isobaric-tx",
-      "points": 15
-     },
-     {
-      "number": 32,
-      "kind": "isobaric-tx",
-      "points": 15
      }
     ]
    }
@@ -2153,11 +2214,6 @@
       "number": 1,
       "kind": "gamma",
       "points": 4
-     },
-     {
-      "number": 2,
-      "kind": "tpx-varying",
-      "points": 1
      }
     ]
    },
@@ -2182,11 +2238,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Horstmann, S.[Sven]",
     "sets": [
-     {
-      "number": 1,
-      "kind": "isobaric-tx",
-      "points": 20
-     },
      {
       "number": 2,
       "kind": "isothermal-px",
@@ -2264,29 +2315,6 @@
    }
   ],
   "isobutanol+water": [
-   {
-    "doi": "10.1021/je200468r",
-    "year": "2011",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Bermudez-Salguero, C.[Carolina]",
-    "sets": [
-     {
-      "number": 17,
-      "kind": "isobaric-tx",
-      "points": 12
-     },
-     {
-      "number": 19,
-      "kind": "isobaric-tx",
-      "points": 12
-     },
-     {
-      "number": 20,
-      "kind": "isobaric-tx",
-      "points": 12
-     }
-    ]
-   },
    {
     "doi": "10.1021/je600567z",
     "year": "2007",
@@ -2400,55 +2428,6 @@
     ]
    },
    {
-    "doi": "10.1016/j.tca.2015.02.020",
-    "year": "2015",
-    "journal": "Thermochim. Acta",
-    "first_author": "Shen, Y.[Yunting]",
-    "sets": [
-     {
-      "number": 3,
-      "kind": "isobaric-tx",
-      "points": 74
-     },
-     {
-      "number": 4,
-      "kind": "isobaric-tx",
-      "points": 105
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/acs.jced.8b00070",
-    "year": "2018",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Xu, Lingjun",
-    "sets": [
-     {
-      "number": 4,
-      "kind": "isobaric-tx",
-      "points": 36
-     },
-     {
-      "number": 5,
-      "kind": "isobaric-tx",
-      "points": 36
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/acs.jced.8b00674",
-    "year": "2019",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Evjen, Sigvart",
-    "sets": [
-     {
-      "number": 22,
-      "kind": "isobaric-tx",
-      "points": 8
-     }
-    ]
-   },
-   {
     "doi": "10.1021/je800290k",
     "year": "2008",
     "journal": "J. Chem. Eng. Data",
@@ -2509,32 +2488,9 @@
     "first_author": "Shokouhi, M.[Mohammad]",
     "sets": [
      {
-      "number": 4,
-      "kind": "tpx-varying",
-      "points": 3
-     },
-     {
-      "number": 5,
-      "kind": "tpx-varying",
-      "points": 3
-     },
-     {
       "number": 6,
       "kind": "tpx-varying",
       "points": 3
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.jct.2017.06.019",
-    "year": "2017",
-    "journal": "J. Chem. Thermodyn.",
-    "first_author": "Mondal, B. K.[Bikash K.]",
-    "sets": [
-     {
-      "number": 6,
-      "kind": "isobaric-tx",
-      "points": 8
      }
     ]
    },
@@ -2558,22 +2514,22 @@
     "first_author": "Soames, Adam",
     "sets": [
      {
-      "number": 12,
-      "kind": "isobaric-tx",
-      "points": 14
+      "number": 11,
+      "kind": "tpx-varying",
+      "points": 39
      }
     ]
    },
    {
-    "doi": "10.1021/acs.jced.8b00674",
-    "year": "2019",
+    "doi": "10.1021/je060396f",
+    "year": "2007",
     "journal": "J. Chem. Eng. Data",
-    "first_author": "Evjen, Sigvart",
+    "first_author": "Barreau, A.[Alain]",
     "sets": [
      {
-      "number": 23,
-      "kind": "isobaric-tx",
-      "points": 8
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 9
      }
     ]
    },
@@ -2598,6 +2554,11 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Sommer, T.[Tomas]",
     "sets": [
+     {
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 8
+     },
      {
       "number": 4,
       "kind": "tpx-varying",
@@ -2632,11 +2593,6 @@
       "number": 5,
       "kind": "gamma",
       "points": 8
-     },
-     {
-      "number": 6,
-      "kind": "isobaric-tx",
-      "points": 7
      }
     ]
    }
@@ -2707,11 +2663,6 @@
       "number": 22,
       "kind": "isothermal-px",
       "points": 15
-     },
-     {
-      "number": 23,
-      "kind": "isobaric-tx",
-      "points": 38
      }
     ]
    }
@@ -2774,11 +2725,6 @@
     "journal": "Fluid Phase Equilib.",
     "first_author": "Brandt, S.[Sarah]",
     "sets": [
-     {
-      "number": 2,
-      "kind": "isobaric-tx",
-      "points": 14
-     },
      {
       "number": 3,
       "kind": "tpx-varying",
@@ -2888,11 +2834,6 @@
     "journal": "Fluid Phase Equilib.",
     "first_author": "Brandt, S.[Sarah]",
     "sets": [
-     {
-      "number": 5,
-      "kind": "isobaric-tx",
-      "points": 14
-     },
      {
       "number": 6,
       "kind": "isothermal-px",
@@ -3120,6 +3061,19 @@
    }
   ],
   "acetic-acid+isopropyl-acetate": [
+   {
+    "doi": "10.1021/acs.jced.9b00152",
+    "year": "2019",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Li, G.[Geng]",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 105
+     }
+    ]
+   },
    {
     "doi": "10.1021/je049711t",
     "year": "2005",
@@ -3367,6 +3321,19 @@
       "points": 20
      }
     ]
+   },
+   {
+    "doi": "10.1021/je5010824",
+    "year": "2015",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Yang, C.[Changsheng]",
+    "sets": [
+     {
+      "number": 10,
+      "kind": "tpx-varying",
+      "points": 36
+     }
+    ]
    }
   ],
   "1-propanol+ethylene-glycol": [
@@ -3432,9 +3399,22 @@
     "first_author": "Soames, Adam",
     "sets": [
      {
-      "number": 15,
-      "kind": "isobaric-tx",
-      "points": 12
+      "number": 14,
+      "kind": "tpx-varying",
+      "points": 37
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je400373d",
+    "year": "2013",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Yang, C.[Changsheng]",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 39
      }
     ]
    }
@@ -3480,6 +3460,21 @@
       "number": 22,
       "kind": "gamma",
       "points": 1
+     }
+    ]
+   }
+  ],
+  "ethanol+methanol": [
+   {
+    "doi": "10.1021/je0601309",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Fukano, M.[Makoto]",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 105
      }
     ]
    }
@@ -3694,6 +3689,19 @@
       "points": 19
      }
     ]
+   },
+   {
+    "doi": "10.1016/j.jct.2006.06.002",
+    "year": "2007",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Yang, M.[Meifang]",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 6
+     }
+    ]
    }
   ],
   "ethyl-acetate+methanol": [
@@ -3740,9 +3748,9 @@
     "first_author": "Susial, P.[Pedro]",
     "sets": [
      {
-      "number": 7,
-      "kind": "isobaric-tx",
-      "points": 17
+      "number": 8,
+      "kind": "tpx-varying",
+      "points": 82
      }
     ]
    }
@@ -3850,7 +3858,35 @@
     ]
    }
   ],
+  "1-propanol+methanol": [
+   {
+    "doi": "10.1016/j.jct.2011.08.006",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Matsuda, H.[Hiroyuki]",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 105
+     }
+    ]
+   }
+  ],
   "2-propanol+methanol": [
+   {
+    "doi": "10.1016/j.fluid.2015.07.023",
+    "year": "2015",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Soujanya, J.",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 85
+     }
+    ]
+   },
    {
     "doi": "10.1021/je060476j",
     "year": "2007",
@@ -3995,6 +4031,11 @@
     "journal": "Fluid Phase Equilib.",
     "first_author": "Matsuda, H.[Hiroyuki]",
     "sets": [
+     {
+      "number": 10,
+      "kind": "tpx-varying",
+      "points": 132
+     },
      {
       "number": 11,
       "kind": "azeotrope",
@@ -4200,6 +4241,32 @@
       "points": 22
      }
     ]
+   },
+   {
+    "doi": "10.1016/j.jct.2009.11.020",
+    "year": "2010",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Soujanya, J.",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 22
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.jct.2012.09.032",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Veneral, J. G.[Josamaique G.]",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 125
+     }
+    ]
    }
   ],
   "methanol+mibk": [
@@ -4257,11 +4324,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Horstmann, S.[Sven]",
     "sets": [
-     {
-      "number": 3,
-      "kind": "isobaric-tx",
-      "points": 21
-     },
      {
       "number": 4,
       "kind": "isothermal-px",
@@ -4464,20 +4526,15 @@
   ],
   "ethanol+toluene": [
    {
-    "doi": "10.1016/j.fluid.2007.08.020",
-    "year": "2007",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Kwak, H.-Y.[Hae-Yeon]",
+    "doi": "10.1021/je200921u",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Chen, R.[Ruiqian]",
     "sets": [
      {
-      "number": 10,
-      "kind": "isobaric-tx",
-      "points": 11
-     },
-     {
-      "number": 11,
-      "kind": "isobaric-tx",
-      "points": 11
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 68
      }
     ]
    }
@@ -4557,19 +4614,6 @@
       "number": 3,
       "kind": "tpx-varying",
       "points": 36
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.fluid.2014.05.031",
-    "year": "2014",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Brandt, S.[Sarah]",
-    "sets": [
-     {
-      "number": 1,
-      "kind": "tpx-varying",
-      "points": 42
      }
     ]
    },
@@ -4684,6 +4728,19 @@
     ]
    },
    {
+    "doi": "10.1016/j.fluid.2013.07.044",
+    "year": "2013",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Reddy, P.[Prashant]",
+    "sets": [
+     {
+      "number": 6,
+      "kind": "tpx-varying",
+      "points": 59
+     }
+    ]
+   },
+   {
     "doi": "10.1016/j.fluid.2018.07.013",
     "year": "2018",
     "journal": "Fluid Phase Equilib.",
@@ -4731,6 +4788,19 @@
       "number": 15,
       "kind": "isobaric-txy",
       "points": 21
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je200868y",
+    "year": "2011",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Matsuda, H.[Hiroyuki]",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 73
      }
     ]
    }
@@ -4826,6 +4896,19 @@
       "number": 6,
       "kind": "isobaric-txy",
       "points": 21
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je400238j",
+    "year": "2013",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Li, G.[Geng]",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 92
      }
     ]
    }
@@ -4928,6 +5011,19 @@
     ]
    },
    {
+    "doi": "10.1016/j.fluid.2008.06.004",
+    "year": "2008",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Martinez, N. F.[Nelson F.]",
+    "sets": [
+     {
+      "number": 13,
+      "kind": "tpx-varying",
+      "points": 42
+     }
+    ]
+   },
+   {
     "doi": "10.1016/j.fluid.2017.10.001",
     "year": "2018",
     "journal": "Fluid Phase Equilib.",
@@ -4984,11 +5080,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Badajoz, Pedro Susial",
     "sets": [
-     {
-      "number": 20,
-      "kind": "isobaric-tx",
-      "points": 17
-     },
      {
       "number": 21,
       "kind": "isobaric-tx",
@@ -5051,6 +5142,11 @@
       "number": 11,
       "kind": "azeotrope",
       "points": 2
+     },
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 63
      }
     ]
    }
@@ -5088,6 +5184,32 @@
     ]
    },
    {
+    "doi": "10.1016/j.jct.2011.06.016",
+    "year": "2011",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Coelho, R.[Renata]",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 69
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.jct.2012.09.032",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Veneral, J. G.[Josamaique G.]",
+    "sets": [
+     {
+      "number": 6,
+      "kind": "tpx-varying",
+      "points": 125
+     }
+    ]
+   },
+   {
     "doi": "10.1016/j.jct.2013.09.046",
     "year": "2014",
     "journal": "J. Chem. Thermodyn.",
@@ -5110,11 +5232,6 @@
       "number": 5,
       "kind": "isobaric-tx",
       "points": 16
-     },
-     {
-      "number": 6,
-      "kind": "isobaric-tx",
-      "points": 11
      }
     ]
    },
@@ -5158,6 +5275,21 @@
     ]
    }
   ],
+  "ethanol+phenol": [
+   {
+    "doi": "10.1016/j.fluid.2017.09.008",
+    "year": "2017",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Cesari, Laetitia",
+    "sets": [
+     {
+      "number": 14,
+      "kind": "tpx-varying",
+      "points": 54
+     }
+    ]
+   }
+  ],
   "cyclohexanone+ethanol": [
    {
     "doi": "10.1021/acs.jced.8b00033",
@@ -5189,19 +5321,6 @@
       "number": 32,
       "kind": "isobaric-tx",
       "points": 21
-     }
-    ]
-   },
-   {
-    "doi": "10.1016/j.fluid.2013.07.034",
-    "year": "2013",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Gianni, P.",
-    "sets": [
-     {
-      "number": 5,
-      "kind": "isobaric-tx",
-      "points": 15
      }
     ]
    }
@@ -5250,6 +5369,21 @@
       "number": 26,
       "kind": "isobaric-txy",
       "points": 23
+     }
+    ]
+   }
+  ],
+  "ethanol+isopropyl-acetate": [
+   {
+    "doi": "10.1021/acs.jced.8b00005",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Li, Geng",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 90
      }
     ]
    }
@@ -5394,50 +5528,6 @@
       "points": 24
      }
     ]
-   },
-   {
-    "doi": "10.1021/je700094y",
-    "year": "2007",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Hwang, I.-C.[In-Chan]",
-    "sets": [
-     {
-      "number": 7,
-      "kind": "isobaric-tx",
-      "points": 11
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je7003512",
-    "year": "2007",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Hwang, I.-C.[In-Chan]",
-    "sets": [
-     {
-      "number": 12,
-      "kind": "isobaric-tx",
-      "points": 13
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je9001416",
-    "year": "2009",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Kim, H.-D.[Hyeon-Deok]",
-    "sets": [
-     {
-      "number": 9,
-      "kind": "isobaric-tx",
-      "points": 13
-     },
-     {
-      "number": 10,
-      "kind": "isobaric-tx",
-      "points": 13
-     }
-    ]
    }
   ],
   "acrylonitrile+ethanol": [
@@ -5470,11 +5560,6 @@
      {
       "number": 11,
       "kind": "gamma",
-      "points": 1
-     },
-     {
-      "number": 12,
-      "kind": "tpx-varying",
       "points": 1
      }
     ]
@@ -5510,11 +5595,6 @@
      {
       "number": 9,
       "kind": "gamma",
-      "points": 1
-     },
-     {
-      "number": 10,
-      "kind": "tpx-varying",
       "points": 1
      }
     ]
@@ -5688,36 +5768,6 @@
     ]
    }
   ],
-  "chloroform+cyclohexane": [
-   {
-    "doi": "10.1016/j.fluid.2010.06.007",
-    "year": "2010",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Gianni, P.",
-    "sets": [
-     {
-      "number": 6,
-      "kind": "isobaric-tx",
-      "points": 20
-     }
-    ]
-   }
-  ],
-  "chloroform+tetrahydrofuran": [
-   {
-    "doi": "10.1016/j.fluid.2010.06.007",
-    "year": "2010",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Gianni, P.",
-    "sets": [
-     {
-      "number": 4,
-      "kind": "isobaric-tx",
-      "points": 16
-     }
-    ]
-   }
-  ],
   "2-propanol+chloroform": [
    {
     "doi": "10.1016/j.fluid.2018.03.011",
@@ -5749,16 +5799,6 @@
       "number": 9,
       "kind": "isothermal-px",
       "points": 22
-     },
-     {
-      "number": 11,
-      "kind": "isobaric-tx",
-      "points": 48
-     },
-     {
-      "number": 12,
-      "kind": "isobaric-tx",
-      "points": 48
      }
     ]
    }
@@ -5770,21 +5810,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Clara, R. A.[Rene A.]",
     "sets": [
-     {
-      "number": 7,
-      "kind": "isobaric-tx",
-      "points": 20
-     },
-     {
-      "number": 8,
-      "kind": "isobaric-tx",
-      "points": 14
-     },
-     {
-      "number": 9,
-      "kind": "isobaric-tx",
-      "points": 14
-     },
      {
       "number": 10,
       "kind": "azeotrope",
@@ -5814,16 +5839,6 @@
       "number": 7,
       "kind": "isothermal-px",
       "points": 16
-     },
-     {
-      "number": 9,
-      "kind": "isobaric-tx",
-      "points": 48
-     },
-     {
-      "number": 10,
-      "kind": "isobaric-tx",
-      "points": 48
      }
     ]
    }
@@ -5947,6 +5962,19 @@
     ]
    },
    {
+    "doi": "10.1016/j.tca.2016.05.011",
+    "year": "2016",
+    "journal": "Thermochim. Acta",
+    "first_author": "Siitsman, C.[Carmen]",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 5
+     }
+    ]
+   },
+   {
     "doi": "10.1021/acs.jced.6b00733",
     "year": "2017",
     "journal": "J. Chem. Eng. Data",
@@ -6011,6 +6039,29 @@
      {
       "number": 11,
       "kind": "azeotrope",
+      "points": 1
+     },
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 1
+     },
+     {
+      "number": 13,
+      "kind": "tpx-varying",
+      "points": 1
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je100081v",
+    "year": "2010",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Yin, W.[Wang]",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
       "points": 1
      }
     ]
@@ -6136,16 +6187,6 @@
       "number": 15,
       "kind": "isothermal-px",
       "points": 20
-     },
-     {
-      "number": 16,
-      "kind": "isobaric-tx",
-      "points": 11
-     },
-     {
-      "number": 17,
-      "kind": "isobaric-tx",
-      "points": 11
      }
     ]
    }
@@ -6226,11 +6267,6 @@
       "points": 17
      },
      {
-      "number": 15,
-      "kind": "isobaric-tx",
-      "points": 11
-     },
-     {
       "number": 16,
       "kind": "isobaric-txy",
       "points": 17
@@ -6249,11 +6285,6 @@
       "number": 17,
       "kind": "isobaric-tx",
       "points": 17
-     },
-     {
-      "number": 18,
-      "kind": "isobaric-tx",
-      "points": 10
      },
      {
       "number": 19,
@@ -6371,6 +6402,21 @@
     ]
    }
   ],
+  "benzene+dioxane": [
+   {
+    "doi": "10.1016/j.fluid.2005.09.010",
+    "year": "2005",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Romero, C.",
+    "sets": [
+     {
+      "number": 13,
+      "kind": "tpx-varying",
+      "points": 35
+     }
+    ]
+   }
+  ],
   "benzene+isobutanol": [
    {
     "doi": "10.1016/j.fluid.2005.11.017",
@@ -6449,11 +6495,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Chen, W.-K.[Wei-Kuan]",
     "sets": [
-     {
-      "number": 4,
-      "kind": "isobaric-tx",
-      "points": 13
-     },
      {
       "number": 5,
       "kind": "tpx-varying",
@@ -6577,6 +6618,21 @@
     ]
    }
   ],
+  "ethylbenzene+toluene": [
+   {
+    "doi": "10.1021/je020186c",
+    "year": "2003",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Kuus, M.[Mati]",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 52
+     }
+    ]
+   }
+  ],
   "n-hexane+toluene": [
    {
     "doi": "10.1016/j.tca.2019.178413",
@@ -6689,17 +6745,17 @@
     ]
    }
   ],
-  "1-propanol+toluene": [
+  "2-propanol+toluene": [
    {
-    "doi": "10.1016/j.fluid.2008.06.019",
-    "year": "2008",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Hwang, I.-C.[In-Chan]",
+    "doi": "10.1021/je200921u",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Chen, R.[Ruiqian]",
     "sets": [
      {
-      "number": 8,
-      "kind": "isobaric-tx",
-      "points": 11
+      "number": 6,
+      "kind": "tpx-varying",
+      "points": 68
      }
     ]
    }
@@ -6755,11 +6811,6 @@
      {
       "number": 15,
       "kind": "gamma",
-      "points": 1
-     },
-     {
-      "number": 16,
-      "kind": "tpx-varying",
       "points": 1
      }
     ]
@@ -7030,34 +7081,11 @@
       "number": 16,
       "kind": "isobaric-txy",
       "points": 25
-     },
-     {
-      "number": 17,
-      "kind": "isobaric-tx",
-      "points": 15
-     },
-     {
-      "number": 18,
-      "kind": "isobaric-tx",
-      "points": 37
      }
     ]
    }
   ],
   "ethyl-acetate+n-hexane": [
-   {
-    "doi": "10.1016/j.fluid.2004.12.005",
-    "year": "2005",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Collinet, E.[Eileen]",
-    "sets": [
-     {
-      "number": 17,
-      "kind": "tpx-varying",
-      "points": 38
-     }
-    ]
-   },
    {
     "doi": "10.1021/je100832h",
     "year": "2010",
@@ -7083,16 +7111,6 @@
       "number": 22,
       "kind": "azeotrope",
       "points": 1
-     },
-     {
-      "number": 23,
-      "kind": "isobaric-tx",
-      "points": 52
-     },
-     {
-      "number": 24,
-      "kind": "isobaric-tx",
-      "points": 75
      }
     ]
    }
@@ -7122,11 +7140,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Badajoz, P. S.[Pedro Susial]",
     "sets": [
-     {
-      "number": 16,
-      "kind": "isobaric-tx",
-      "points": 21
-     },
      {
       "number": 17,
       "kind": "isobaric-txy",
@@ -7164,16 +7177,6 @@
       "number": 28,
       "kind": "azeotrope",
       "points": 1
-     },
-     {
-      "number": 29,
-      "kind": "isobaric-tx",
-      "points": 16
-     },
-     {
-      "number": 30,
-      "kind": "isobaric-tx",
-      "points": 79
      }
     ]
    }
@@ -7194,16 +7197,6 @@
       "number": 32,
       "kind": "isobaric-txy",
       "points": 27
-     },
-     {
-      "number": 33,
-      "kind": "isobaric-tx",
-      "points": 53
-     },
-     {
-      "number": 34,
-      "kind": "isobaric-tx",
-      "points": 77
      }
     ]
    }
@@ -7269,11 +7262,6 @@
     "first_author": "Susial, P.[Pedro]",
     "sets": [
      {
-      "number": 17,
-      "kind": "isobaric-tx",
-      "points": 21
-     },
-     {
       "number": 18,
       "kind": "isobaric-tx",
       "points": 22
@@ -7293,16 +7281,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Laavi, H.[Helena]",
     "sets": [
-     {
-      "number": 15,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
-     {
-      "number": 16,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
      {
       "number": 18,
       "kind": "tpx-varying",
@@ -7427,29 +7405,6 @@
   ],
   "ethyl-acetate+isobutanol": [
    {
-    "doi": "10.1021/je030218b",
-    "year": "2004",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Resa, J. M.[Jose M.]",
-    "sets": [
-     {
-      "number": 22,
-      "kind": "isobaric-tx",
-      "points": 19
-     },
-     {
-      "number": 23,
-      "kind": "isobaric-tx",
-      "points": 19
-     },
-     {
-      "number": 24,
-      "kind": "isobaric-tx",
-      "points": 19
-     }
-    ]
-   },
-   {
     "doi": "10.1021/je050420+",
     "year": "2006",
     "journal": "J. Chem. Eng. Data",
@@ -7459,11 +7414,6 @@
       "number": 13,
       "kind": "isobaric-tx",
       "points": 21
-     },
-     {
-      "number": 14,
-      "kind": "isobaric-tx",
-      "points": 19
      },
      {
       "number": 15,
@@ -7494,16 +7444,6 @@
     "first_author": "Laavi, H.[Helena]",
     "sets": [
      {
-      "number": 7,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
-     {
-      "number": 8,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
-     {
       "number": 10,
       "kind": "tpx-varying",
       "points": 22
@@ -7517,9 +7457,9 @@
     "first_author": "Susial, P.[Pedro]",
     "sets": [
      {
-      "number": 6,
-      "kind": "isobaric-tx",
-      "points": 21
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 58
      }
     ]
    }
@@ -7540,16 +7480,6 @@
       "number": 36,
       "kind": "isobaric-txy",
       "points": 26
-     },
-     {
-      "number": 37,
-      "kind": "isobaric-tx",
-      "points": 18
-     },
-     {
-      "number": 38,
-      "kind": "isobaric-tx",
-      "points": 74
      }
     ]
    }
@@ -7565,11 +7495,6 @@
       "number": 4,
       "kind": "gamma",
       "points": 4
-     },
-     {
-      "number": 5,
-      "kind": "tpx-varying",
-      "points": 38
      }
     ]
    },
@@ -7588,16 +7513,6 @@
       "number": 40,
       "kind": "isobaric-txy",
       "points": 21
-     },
-     {
-      "number": 41,
-      "kind": "isobaric-tx",
-      "points": 53
-     },
-     {
-      "number": 42,
-      "kind": "isobaric-tx",
-      "points": 76
      }
     ]
    }
@@ -7638,9 +7553,9 @@
     "first_author": "Badajoz, P. S.[Pedro Susial]",
     "sets": [
      {
-      "number": 22,
-      "kind": "isobaric-tx",
-      "points": 20
+      "number": 24,
+      "kind": "tpx-varying",
+      "points": 72
      }
     ]
    }
@@ -7843,21 +7758,6 @@
     ]
    }
   ],
-  "2-propanol+cyclohexane": [
-   {
-    "doi": "10.1016/j.jct.2015.01.013",
-    "year": "2015",
-    "journal": "J. Chem. Thermodyn.",
-    "first_author": "Mardani, S.[Saeed]",
-    "sets": [
-     {
-      "number": 11,
-      "kind": "isobaric-tx",
-      "points": 9
-     }
-    ]
-   }
-  ],
   "1-butanol+cyclohexane": [
    {
     "doi": "10.1021/je200840e",
@@ -7884,6 +7784,21 @@
       "number": 11,
       "kind": "tpx-varying",
       "points": 24
+     }
+    ]
+   }
+  ],
+  "cyclohexane+n-butyl-acetate": [
+   {
+    "doi": "10.1021/je3005408",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Li, G.[Geng]",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 66
      }
     ]
    }
@@ -8054,6 +7969,19 @@
   ],
   "cyclohexane+dioxane": [
    {
+    "doi": "10.1016/j.fluid.2005.09.010",
+    "year": "2005",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Romero, C.",
+    "sets": [
+     {
+      "number": 11,
+      "kind": "tpx-varying",
+      "points": 43
+     }
+    ]
+   },
+   {
     "doi": "10.1021/je020148t",
     "year": "2003",
     "journal": "J. Chem. Eng. Data",
@@ -8181,6 +8109,21 @@
       "number": 15,
       "kind": "isobaric-txy",
       "points": 14
+     }
+    ]
+   }
+  ],
+  "o-xylene+styrene": [
+   {
+    "doi": "10.1021/je050523s",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Aucejo, A.[Antonio]",
+    "sets": [
+     {
+      "number": 18,
+      "kind": "tpx-varying",
+      "points": 38
      }
     ]
    }
@@ -8513,6 +8456,21 @@
     ]
    }
   ],
+  "m-xylene+styrene": [
+   {
+    "doi": "10.1021/je050523s",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Aucejo, A.[Antonio]",
+    "sets": [
+     {
+      "number": 20,
+      "kind": "tpx-varying",
+      "points": 41
+     }
+    ]
+   }
+  ],
   "m-xylene+n-hexane": [
    {
     "doi": "10.1021/je3002283",
@@ -8831,6 +8789,21 @@
     ]
    }
   ],
+  "p-xylene+styrene": [
+   {
+    "doi": "10.1021/je050523s",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Aucejo, A.[Antonio]",
+    "sets": [
+     {
+      "number": 22,
+      "kind": "tpx-varying",
+      "points": 39
+     }
+    ]
+   }
+  ],
   "n-heptane+p-xylene": [
    {
     "doi": "10.1016/j.fluid.2016.02.018",
@@ -9043,21 +9016,6 @@
       "number": 10,
       "kind": "isobaric-txy",
       "points": 20
-     },
-     {
-      "number": 11,
-      "kind": "isobaric-tx",
-      "points": 33
-     },
-     {
-      "number": 12,
-      "kind": "isobaric-tx",
-      "points": 33
-     },
-     {
-      "number": 13,
-      "kind": "isobaric-tx",
-      "points": 33
      }
     ]
    }
@@ -9129,21 +9087,6 @@
       "number": 10,
       "kind": "isobaric-txy",
       "points": 20
-     },
-     {
-      "number": 11,
-      "kind": "isobaric-tx",
-      "points": 33
-     },
-     {
-      "number": 12,
-      "kind": "isobaric-tx",
-      "points": 33
-     },
-     {
-      "number": 13,
-      "kind": "isobaric-tx",
-      "points": 33
      }
     ]
    }
@@ -9212,6 +9155,47 @@
       "number": 14,
       "kind": "isobaric-txy",
       "points": 14
+     }
+    ]
+   }
+  ],
+  "ethylbenzene+styrene": [
+   {
+    "doi": "10.1021/je050523s",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Aucejo, A.[Antonio]",
+    "sets": [
+     {
+      "number": 16,
+      "kind": "tpx-varying",
+      "points": 35
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je200098d",
+    "year": "2011",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Jongmans, M. T. G.[Mark T.G.]",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 36
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je201205t",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Jongmans, M. T. G.[Mark T.G.]",
+    "sets": [
+     {
+      "number": 8,
+      "kind": "tpx-varying",
+      "points": 18
      }
     ]
    }
@@ -9440,6 +9424,19 @@
     ]
    },
    {
+    "doi": "10.1021/je200098d",
+    "year": "2011",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Jongmans, M. T. G.[Mark T.G.]",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 30
+     }
+    ]
+   },
+   {
     "doi": "10.1021/je700139p",
     "year": "2007",
     "journal": "J. Chem. Eng. Data",
@@ -9553,6 +9550,21 @@
     ]
    }
   ],
+  "styrene+sulfolane": [
+   {
+    "doi": "10.1021/je200098d",
+    "year": "2011",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Jongmans, M. T. G.[Mark T.G.]",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 30
+     }
+    ]
+   }
+  ],
   "1-propanol+n-pentane": [
    {
     "doi": "10.1016/j.jct.2016.10.023",
@@ -9560,11 +9572,6 @@
     "journal": "J. Chem. Thermodyn.",
     "first_author": "Abdulagatov, I. M.[Ilmutdin M.]",
     "sets": [
-     {
-      "number": 2,
-      "kind": "tpx-varying",
-      "points": 266
-     },
      {
       "number": 6,
       "kind": "tpx-varying",
@@ -9791,21 +9798,6 @@
       "number": 8,
       "kind": "txy-varying",
       "points": 32
-     }
-    ]
-   }
-  ],
-  "methyl-acetate+n-hexane": [
-   {
-    "doi": "10.1016/j.fluid.2004.12.005",
-    "year": "2005",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Collinet, E.[Eileen]",
-    "sets": [
-     {
-      "number": 18,
-      "kind": "tpx-varying",
-      "points": 38
      }
     ]
    }
@@ -10149,11 +10141,6 @@
     "first_author": "Mohsen-Nia, M.",
     "sets": [
      {
-      "number": 7,
-      "kind": "isobaric-tx",
-      "points": 13
-     },
-     {
       "number": 8,
       "kind": "azeotrope",
       "points": 2
@@ -10162,6 +10149,11 @@
       "number": 9,
       "kind": "azeotrope",
       "points": 2
+     },
+     {
+      "number": 10,
+      "kind": "tpx-varying",
+      "points": 56
      }
     ]
    }
@@ -10248,11 +10240,6 @@
     "first_author": "Badajoz, P. S.[Pedro Susial]",
     "sets": [
      {
-      "number": 13,
-      "kind": "isobaric-tx",
-      "points": 38
-     },
-     {
       "number": 14,
       "kind": "isobaric-txy",
       "points": 34
@@ -10274,11 +10261,6 @@
       "number": 28,
       "kind": "isobaric-tx",
       "points": 25
-     },
-     {
-      "number": 29,
-      "kind": "isobaric-tx",
-      "points": 16
      },
      {
       "number": 30,
@@ -10417,6 +10399,11 @@
       "number": 14,
       "kind": "azeotrope",
       "points": 3
+     },
+     {
+      "number": 15,
+      "kind": "tpx-varying",
+      "points": 63
      }
     ]
    },
@@ -10602,11 +10589,6 @@
      {
       "number": 13,
       "kind": "gamma",
-      "points": 1
-     },
-     {
-      "number": 14,
-      "kind": "tpx-varying",
       "points": 1
      }
     ]
@@ -10825,21 +10807,6 @@
     ]
    }
   ],
-  "dmf+tetrahydrofuran": [
-   {
-    "doi": "10.1016/j.fluid.2013.07.034",
-    "year": "2013",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Gianni, P.",
-    "sets": [
-     {
-      "number": 2,
-      "kind": "isobaric-tx",
-      "points": 12
-     }
-    ]
-   }
-  ],
   "dmso+tetrahydrofuran": [
    {
     "doi": "10.1021/je030122h",
@@ -10938,9 +10905,24 @@
     "first_author": "Mohsen-Nia, M.",
     "sets": [
      {
-      "number": 3,
-      "kind": "isobaric-tx",
-      "points": 15
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 34
+     }
+    ]
+   }
+  ],
+  "1-propanol+2-butanone": [
+   {
+    "doi": "10.1016/j.fluid.2008.06.004",
+    "year": "2008",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Martinez, N. F.[Nelson F.]",
+    "sets": [
+     {
+      "number": 15,
+      "kind": "tpx-varying",
+      "points": 42
      }
     ]
    }
@@ -10952,11 +10934,6 @@
     "journal": "Int. J. Thermophys.",
     "first_author": "Susial, P.[Pedro]",
     "sets": [
-     {
-      "number": 11,
-      "kind": "isobaric-tx",
-      "points": 18
-     },
      {
       "number": 12,
       "kind": "isobaric-tx",
@@ -10996,11 +10973,6 @@
     "first_author": "Badajoz, Pedro Susial",
     "sets": [
      {
-      "number": 23,
-      "kind": "isobaric-tx",
-      "points": 19
-     },
-     {
       "number": 24,
       "kind": "isobaric-tx",
       "points": 28
@@ -11009,24 +10981,6 @@
       "number": 25,
       "kind": "isobaric-txy",
       "points": 28
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je900337a",
-    "year": "2009",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Costa, H.[Henrique]",
-    "sets": [
-     {
-      "number": 19,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
-     {
-      "number": 20,
-      "kind": "isobaric-tx",
-      "points": 9
      }
     ]
    }
@@ -11108,24 +11062,9 @@
     "first_author": "Marigliano, A. C. G.[Ana C. Gomez]",
     "sets": [
      {
-      "number": 13,
-      "kind": "isobaric-tx",
-      "points": 21
-     },
-     {
-      "number": 14,
-      "kind": "isobaric-tx",
-      "points": 21
-     },
-     {
       "number": 15,
       "kind": "isobaric-tx",
       "points": 30
-     },
-     {
-      "number": 16,
-      "kind": "isobaric-tx",
-      "points": 21
      },
      {
       "number": 17,
@@ -11371,19 +11310,6 @@
   ],
   "1-propanol+isooctane": [
    {
-    "doi": "10.1016/j.fluid.2007.07.002",
-    "year": "2007",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Hwang, I.-C.[In-Chan]",
-    "sets": [
-     {
-      "number": 3,
-      "kind": "isobaric-tx",
-      "points": 11
-     }
-    ]
-   },
-   {
     "doi": "10.1021/je200279q",
     "year": "2011",
     "journal": "J. Chem. Eng. Data",
@@ -11393,19 +11319,6 @@
       "number": 7,
       "kind": "isothermal-px",
       "points": 22
-     }
-    ]
-   },
-   {
-    "doi": "10.1021/je700460w",
-    "year": "2007",
-    "journal": "J. Chem. Eng. Data",
-    "first_author": "Hwang, I.-C.[In-Chan]",
-    "sets": [
-     {
-      "number": 8,
-      "kind": "isobaric-tx",
-      "points": 13
      }
     ]
    }
@@ -11423,14 +11336,14 @@
       "points": 2
      },
      {
-      "number": 9,
-      "kind": "isobaric-tx",
-      "points": 19
-     },
-     {
       "number": 10,
       "kind": "azeotrope",
       "points": 2
+     },
+     {
+      "number": 11,
+      "kind": "tpx-varying",
+      "points": 63
      }
     ]
    }
@@ -11451,6 +11364,21 @@
       "number": 10,
       "kind": "isobaric-tx",
       "points": 22
+     }
+    ]
+   }
+  ],
+  "2-butanone+2-propanol": [
+   {
+    "doi": "10.1016/j.fluid.2008.06.004",
+    "year": "2008",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Martinez, N. F.[Nelson F.]",
+    "sets": [
+     {
+      "number": 17,
+      "kind": "tpx-varying",
+      "points": 42
      }
     ]
    }
@@ -11481,9 +11409,9 @@
     "first_author": "Badajoz, P. S.[Pedro Susial]",
     "sets": [
      {
-      "number": 8,
-      "kind": "isobaric-tx",
-      "points": 20
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 61
      }
     ]
    }
@@ -11532,6 +11460,19 @@
       "number": 5,
       "kind": "isobaric-tx",
       "points": 20
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.fluid.2015.09.052",
+    "year": "2016",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Soujanya, J.",
+    "sets": [
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 72
      }
     ]
    },
@@ -11648,11 +11589,6 @@
     "first_author": "Moodley, Kuveneshan",
     "sets": [
      {
-      "number": 7,
-      "kind": "isobaric-tx",
-      "points": 48
-     },
-     {
       "number": 8,
       "kind": "tpx-varying",
       "points": 50
@@ -11667,26 +11603,6 @@
     "journal": "Fluid Phase Equilib.",
     "first_author": "Andreatta, A. E.",
     "sets": [
-     {
-      "number": 12,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
-     {
-      "number": 13,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
-     {
-      "number": 14,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
-     {
-      "number": 15,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
      {
       "number": 16,
       "kind": "isobaric-tx",
@@ -11876,11 +11792,6 @@
     "first_author": "Susial, P.[Pedro]",
     "sets": [
      {
-      "number": 14,
-      "kind": "isobaric-tx",
-      "points": 14
-     },
-     {
       "number": 15,
       "kind": "isobaric-tx",
       "points": 31
@@ -11913,11 +11824,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Badajoz, Pedro Susial",
     "sets": [
-     {
-      "number": 26,
-      "kind": "isobaric-tx",
-      "points": 19
-     },
      {
       "number": 27,
       "kind": "isobaric-tx",
@@ -11997,6 +11903,21 @@
     ]
    }
   ],
+  "1-butanol+dichloroethane": [
+   {
+    "doi": "10.1021/acs.jced.9b00484",
+    "year": "2019",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Tailor, J. H.[Jay H.]",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 66
+     }
+    ]
+   }
+  ],
   "1-butanol+mibk": [
    {
     "doi": "10.1016/j.fluid.2008.11.012",
@@ -12013,6 +11934,26 @@
       "number": 11,
       "kind": "azeotrope",
       "points": 2
+     },
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 42
+     }
+    ]
+   }
+  ],
+  "1-butanol+nmp": [
+   {
+    "doi": "10.1021/je500092v",
+    "year": "2014",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Hirawan, R.[Ranjeetha]",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 49
      }
     ]
    }
@@ -12128,21 +12069,6 @@
     "first_author": "Rubio-Perez, Gabriel",
     "sets": [
      {
-      "number": 13,
-      "kind": "isobaric-tx",
-      "points": 21
-     },
-     {
-      "number": 14,
-      "kind": "isobaric-tx",
-      "points": 21
-     },
-     {
-      "number": 15,
-      "kind": "isobaric-tx",
-      "points": 21
-     },
-     {
       "number": 16,
       "kind": "isobaric-tx",
       "points": 26
@@ -12237,11 +12163,6 @@
     "first_author": "Radhamma, M.",
     "sets": [
      {
-      "number": 13,
-      "kind": "isobaric-tx",
-      "points": 15
-     },
-     {
       "number": 14,
       "kind": "isobaric-tx",
       "points": 10
@@ -12269,11 +12190,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Kumari, P. G.",
     "sets": [
-     {
-      "number": 8,
-      "kind": "isobaric-tx",
-      "points": 15
-     },
      {
       "number": 9,
       "kind": "isobaric-tx",
@@ -12416,9 +12332,9 @@
     "first_author": "Susial, P.[Pedro]",
     "sets": [
      {
-      "number": 3,
-      "kind": "isobaric-tx",
-      "points": 16
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 61
      }
     ]
    }
@@ -12463,21 +12379,6 @@
     ]
    }
   ],
-  "methyl-acetate+n-decane": [
-   {
-    "doi": "10.1016/j.fluid.2004.12.005",
-    "year": "2005",
-    "journal": "Fluid Phase Equilib.",
-    "first_author": "Collinet, E.[Eileen]",
-    "sets": [
-     {
-      "number": 19,
-      "kind": "tpx-varying",
-      "points": 38
-     }
-    ]
-   }
-  ],
   "isooctane+methyl-acetate": [
    {
     "doi": "10.1021/acs.jced.9b00668",
@@ -12486,9 +12387,9 @@
     "first_author": "Badajoz, P. S.[Pedro Susial]",
     "sets": [
      {
-      "number": 19,
-      "kind": "isobaric-tx",
-      "points": 35
+      "number": 21,
+      "kind": "tpx-varying",
+      "points": 71
      }
     ]
    }
@@ -12501,9 +12402,9 @@
     "first_author": "Badajoz, P. S.[Pedro Susial]",
     "sets": [
      {
-      "number": 11,
-      "kind": "isobaric-tx",
-      "points": 24
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 74
      }
     ]
    },
@@ -12513,16 +12414,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Laavi, H.[Helena]",
     "sets": [
-     {
-      "number": 11,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
-     {
-      "number": 12,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
      {
       "number": 14,
       "kind": "tpx-varying",
@@ -12652,16 +12543,6 @@
     "first_author": "Laavi, H.[Helena]",
     "sets": [
      {
-      "number": 9,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
-     {
-      "number": 10,
-      "kind": "isobaric-tx",
-      "points": 11
-     },
-     {
       "number": 12,
       "kind": "tpx-varying",
       "points": 23
@@ -12735,11 +12616,6 @@
       "number": 14,
       "kind": "tpx-varying",
       "points": 12
-     },
-     {
-      "number": 16,
-      "kind": "tpx-varying",
-      "points": 61
      }
     ]
    }
@@ -12888,11 +12764,6 @@
     "first_author": "Garcia-Gimenez, P.",
     "sets": [
      {
-      "number": 19,
-      "kind": "isobaric-tx",
-      "points": 23
-     },
-     {
       "number": 20,
       "kind": "tpx-varying",
       "points": 10
@@ -12910,11 +12781,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Gnanakumari, P.",
     "sets": [
-     {
-      "number": 13,
-      "kind": "isobaric-tx",
-      "points": 15
-     },
      {
       "number": 14,
       "kind": "isobaric-tx",
@@ -12961,11 +12827,6 @@
     "first_author": "Radhamma, M.",
     "sets": [
      {
-      "number": 15,
-      "kind": "isobaric-tx",
-      "points": 16
-     },
-     {
       "number": 16,
       "kind": "isobaric-tx",
       "points": 10
@@ -12981,11 +12842,6 @@
     "first_author": "Kumari, P. G.",
     "sets": [
      {
-      "number": 10,
-      "kind": "isobaric-tx",
-      "points": 14
-     },
-     {
       "number": 11,
       "kind": "isobaric-tx",
       "points": 8
@@ -13000,11 +12856,6 @@
     "journal": "Fluid Phase Equilib.",
     "first_author": "Zaitseva, A.[Anna]",
     "sets": [
-     {
-      "number": 1,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
      {
       "number": 3,
       "kind": "isothermal-px",
@@ -13064,6 +12915,11 @@
       "number": 15,
       "kind": "azeotrope",
       "points": 1
+     },
+     {
+      "number": 16,
+      "kind": "tpx-varying",
+      "points": 43
      }
     ]
    },
@@ -13073,21 +12929,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Laavi, H.[Helena]",
     "sets": [
-     {
-      "number": 13,
-      "kind": "isobaric-tx",
-      "points": 10
-     },
-     {
-      "number": 14,
-      "kind": "isobaric-tx",
-      "points": 10
-     },
-     {
-      "number": 15,
-      "kind": "isobaric-tx",
-      "points": 10
-     },
      {
       "number": 16,
       "kind": "tpx-varying",
@@ -13129,11 +12970,6 @@
     "first_author": "Radhamma, M.",
     "sets": [
      {
-      "number": 17,
-      "kind": "isobaric-tx",
-      "points": 14
-     },
-     {
       "number": 18,
       "kind": "isobaric-tx",
       "points": 10
@@ -13148,11 +12984,6 @@
     "journal": "J. Chem. Eng. Data",
     "first_author": "Kumari, P. G.",
     "sets": [
-     {
-      "number": 12,
-      "kind": "isobaric-tx",
-      "points": 16
-     },
      {
       "number": 13,
       "kind": "isobaric-tx",
@@ -13336,11 +13167,6 @@
       "number": 14,
       "kind": "isobaric-txy",
       "points": 13
-     },
-     {
-      "number": 15,
-      "kind": "isobaric-tx",
-      "points": 13
      }
     ]
    }
@@ -13518,11 +13344,6 @@
     "first_author": "Zaitseva, A.[Anna]",
     "sets": [
      {
-      "number": 7,
-      "kind": "isobaric-tx",
-      "points": 9
-     },
-     {
       "number": 9,
       "kind": "isothermal-px",
       "points": 10
@@ -13574,6 +13395,11 @@
       "number": 16,
       "kind": "azeotrope",
       "points": 1
+     },
+     {
+      "number": 17,
+      "kind": "tpx-varying",
+      "points": 26
      }
     ]
    }
