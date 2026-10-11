@@ -31534,6 +31534,485 @@
           "nist-webbook"
         ]
       }
+    },
+    "bdo": {
+      "name": "1,4-Butanediol",
+      "formula": "C4H10O2",
+      "cas": "110-63-4",
+      "aliases": [
+        "1,4-butanediol",
+        "butane-1,4-diol",
+        "tetramethylene glycol",
+        "1,4-bdo"
+      ],
+      "MW": 90.121,
+      "Tc_K": 667.0,
+      "Pc_Pa": 4880000.0,
+      "Tb_K": 501.15,
+      "uniquac": {
+        "r": 4.6976,
+        "q": 4.56,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 1.17696,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "cyrene": {
+      "name": "Cyrene",
+      "formula": "C6H8O3",
+      "cas": "53716-82-8",
+      "aliases": [
+        "dihydrolevoglucosenone",
+        "6,8-dioxabicyclo[3.2.1]octan-4-one"
+      ],
+      "MW": 128.1259,
+      "Tc_K": 657.8597,
+      "Pc_Pa": 3566445.0,
+      "Tb_K": 499.0,
+      "uniquac": {
+        "r": 5.078,
+        "q": 4.048,
+        "source": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
+      },
+      "omega": 0.4596,
+      "constants_source": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.31-2"
+      ],
+      "omega_source": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.31-2"
+      ]
+    },
+    "dimethyl-carbonate": {
+      "name": "Dimethyl carbonate",
+      "formula": "C3H6O3",
+      "cas": "616-38-6",
+      "aliases": [
+        "dmc",
+        "carbonic acid dimethyl ester"
+      ],
+      "MW": 90.0779,
+      "Tc_K": 557.0,
+      "Pc_Pa": 4908755.0,
+      "Tb_K": 363.2561,
+      "uniquac": {
+        "r": 3.3822,
+        "q": 3.086,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 0.346,
+      "constants_source": "CoolProp 8.0.0 (DimethylCarbonate: equation of state Zhou-JPCRD-2011); open source, MIT. Tb at 101.325 kPa from the same equation of state. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "coolprop"
+      ],
+      "omega_source": "CoolProp 8.0.0 (DimethylCarbonate: equation of state Zhou-JPCRD-2011); open source, MIT.",
+      "omega_source_ids": [
+        "coolprop"
+      ]
+    },
+    "diethyl-carbonate": {
+      "name": "Diethyl carbonate",
+      "formula": "C5H10O3",
+      "cas": "105-58-8",
+      "aliases": [
+        "dec",
+        "carbonic acid diethyl ester"
+      ],
+      "MW": 118.1311,
+      "Tc_K": 577.0,
+      "Pc_Pa": 3420000.0,
+      "Tb_K": 399.95,
+      "uniquac": {
+        "r": 4.731,
+        "q": 4.166,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 0.3544,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "ethylene-carbonate": {
+      "name": "Ethylene carbonate",
+      "formula": "C3H4O3",
+      "cas": "96-49-1",
+      "aliases": [
+        "1,3-dioxolan-2-one",
+        "ec"
+      ],
+      "MW": 88.06207,
+      "Tc_K": 806.0,
+      "Pc_Pa": 6770000.0,
+      "Tb_K": 521.15,
+      "uniquac": {
+        "r": 2.9288,
+        "q": 2.47,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 0.442272,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "propylene-carbonate": {
+      "name": "Propylene carbonate",
+      "formula": "C4H6O3",
+      "cas": "108-32-7",
+      "aliases": [
+        "4-methyl-1,3-dioxolan-2-one",
+        "pc"
+      ],
+      "MW": 102.0886,
+      "Tc_K": 778.0,
+      "Pc_Pa": 5410000.0,
+      "Tb_K": 514.9,
+      "uniquac": {
+        "r": 3.6024,
+        "q": 3.006,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 0.449764,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "acetaldehyde": {
+      "name": "Acetaldehyde",
+      "formula": "C2H4O",
+      "cas": "75-07-0",
+      "aliases": [
+        "ethanal"
+      ],
+      "MW": 44.05256,
+      "Tc_K": 466.0,
+      "Pc_Pa": 5550000.0,
+      "Tb_K": 294.0,
+      "omega": 0.290734,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "1-pentanol": {
+      "name": "1-Pentanol",
+      "formula": "C5H12O",
+      "cas": "71-41-0",
+      "aliases": [
+        "n-pentanol",
+        "pentan-1-ol",
+        "amyl alcohol",
+        "n-amyl alcohol"
+      ],
+      "MW": 88.14818,
+      "Tc_K": 588.15,
+      "Pc_Pa": 3909000.0,
+      "Tb_K": 411.16,
+      "uniquac": {
+        "r": 4.5987,
+        "q": 4.208,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 0.579,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "1-hexanol": {
+      "name": "1-Hexanol",
+      "formula": "C6H14O",
+      "cas": "111-27-3",
+      "aliases": [
+        "n-hexanol",
+        "hexan-1-ol",
+        "hexyl alcohol"
+      ],
+      "MW": 102.1748,
+      "Tc_K": 611.4,
+      "Pc_Pa": 3510000.0,
+      "Tb_K": 430.44,
+      "uniquac": {
+        "r": 5.2731,
+        "q": 4.748,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 0.58,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "1-octanol": {
+      "name": "1-Octanol",
+      "formula": "C8H18O",
+      "cas": "111-87-5",
+      "aliases": [
+        "n-octanol",
+        "octan-1-ol",
+        "octyl alcohol"
+      ],
+      "MW": 130.228,
+      "Tc_K": 652.3,
+      "Pc_Pa": 2783000.0,
+      "Tb_K": 467.1,
+      "uniquac": {
+        "r": 6.6219,
+        "q": 5.828,
+        "source": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
+      },
+      "omega": 0.569694,
+      "constants_source": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.31-2"
+      ],
+      "omega_source": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.31-2"
+      ]
+    },
+    "diethylene-glycol": {
+      "name": "Diethylene glycol",
+      "formula": "C4H10O3",
+      "cas": "111-46-6",
+      "aliases": [
+        "deg",
+        "2,2'-oxydiethanol",
+        "digol"
+      ],
+      "MW": 106.1204,
+      "Tc_K": 744.6,
+      "Pc_Pa": 4600000.0,
+      "Tb_K": 517.95,
+      "uniquac": {
+        "r": 4.9415,
+        "q": 4.8,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 0.622105,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "p-cymene": {
+      "name": "p-Cymene",
+      "formula": "C10H14",
+      "cas": "99-87-6",
+      "aliases": [
+        "4-isopropyltoluene",
+        "1-methyl-4-(propan-2-yl)benzene",
+        "cymene"
+      ],
+      "MW": 134.2182,
+      "Tc_K": 652.0,
+      "Pc_Pa": 2800000.0,
+      "Tb_K": 450.26,
+      "uniquac": {
+        "r": 6.0058,
+        "q": 4.612,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 0.376,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "adipic-acid": {
+      "name": "Adipic acid",
+      "formula": "C6H10O4",
+      "cas": "124-04-9",
+      "aliases": [
+        "hexanedioic acid"
+      ],
+      "MW": 146.1412,
+      "Tc_K": 809.0,
+      "Pc_Pa": 3530000.0,
+      "Tb_K": 611.0,
+      "uniquac": {
+        "r": 5.3002,
+        "q": 4.608,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 1.05065,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "maleic-anhydride": {
+      "name": "Maleic anhydride",
+      "formula": "C4H2O3",
+      "cas": "108-31-6",
+      "aliases": [
+        "furan-2,5-dione",
+        "cis-butenedioic anhydride"
+      ],
+      "MW": 98.05688,
+      "Tc_K": 721.0,
+      "Pc_Pa": 7280000.0,
+      "Tb_K": 473.15,
+      "uniquac": {
+        "r": 2.903098,
+        "q": 2.384,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 0.54629,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "terephthalic-acid": {
+      "name": "Terephthalic acid",
+      "formula": "C8H6O4",
+      "cas": "100-21-0",
+      "aliases": [
+        "benzene-1,4-dicarboxylic acid",
+        "pta",
+        "tpa"
+      ],
+      "MW": 166.1308,
+      "Tc_K": 943.0648,
+      "Pc_Pa": 4492234.0,
+      "Tb_K": 665.55,
+      "uniquac": {
+        "r": 5.456,
+        "q": 4.288,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 1.16031,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
+    },
+    "dmt": {
+      "name": "Dimethyl terephthalate",
+      "formula": "C10H10O4",
+      "cas": "120-61-6",
+      "aliases": [
+        "dimethyl terephthalate",
+        "dimethyl benzene-1,4-dicarboxylate"
+      ],
+      "MW": 194.184,
+      "Tc_K": 772.0,
+      "Pc_Pa": 2780000.0,
+      "Tb_K": 555.15,
+      "uniquac": {
+        "r": 6.6618,
+        "q": 5.296,
+        "source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), UNIQUAC r and q; Artistic License 2.0.",
+        "source_ids": [
+          "chemsep-8.3"
+        ]
+      },
+      "omega": 0.637086,
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT).",
+      "constants_source_ids": [
+        "chemsep-8.3"
+      ],
+      "omega_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor), AcentricityFactor; Artistic License 2.0.",
+      "omega_source_ids": [
+        "chemsep-8.3"
+      ]
     }
   }
 }

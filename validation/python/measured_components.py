@@ -307,8 +307,28 @@ class WebBook:
 
 
 class ThermoML:
+    """The measured values of a component: its ThermoML file (thermoml_<id>.json) and, where an open-access article
+    outside the archive has values, article_<id>.json in the same format (transcribed from the article's tables, with
+    its source block); either may be missing."""
     def __init__(self, cid):
-        self.d = json.loads((MEASURED_DIR / ("thermoml_%s.json" % cid)).read_text())
+        f, a = MEASURED_DIR / ("thermoml_%s.json" % cid), MEASURED_DIR / ("article_%s.json" % cid)
+        self.d = json.loads(f.read_text()) if f.exists() else {"articles": {}, "rows": []}
+        self.from_article = set()
+        if a.exists():
+            art = json.loads(a.read_text())
+            self.d = dict(self.d, articles={**self.d["articles"], **art["articles"]}, rows=self.d["rows"] + art["rows"])
+            self.from_article = set(art["articles"])
+            self.article_access = art["source"]["access"]
+
+    def origin(self, pts):
+        """Where the values come from, for a record's source name and access text."""
+        kinds = {p.get("from") for p in pts if p.get("doi")}
+        if kinds == {"article"}:
+            return "an open-access article", self.article_access
+        if "article" in kinds:
+            return "the NIST TRC ThermoML Archive and an open-access article", \
+                "open data (NIST TRC ThermoML Archive) and an open-access article (%s)" % self.article_access
+        return "NIST TRC ThermoML Archive", "open data (NIST TRC ThermoML Archive), free to read even where the article is not"
 
     def cite(self, doi):
         a = self.d["articles"][doi]
@@ -338,7 +358,8 @@ class ThermoML:
             seen.add(key)
             u = r["uncertainty"]
             out.append({"T": r["T_K"], "y": r["value"] * spec[1], "u_rel": (u / r["value"]) if u else None,
-                        "ref": self.short(r["doi"]), "doi": r["doi"], "from": "ThermoML"})
+                        "ref": self.short(r["doi"]), "doi": r["doi"],
+                        "from": "article" if r["doi"] in self.from_article else "ThermoML"})
         return out
 
 # ---------------------------------------------------------------------------------------------

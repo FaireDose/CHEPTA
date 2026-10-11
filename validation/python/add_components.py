@@ -134,6 +134,25 @@ BATCHES = {
         ("isopentane", "Isopentane", "Isopentane", ["2-methylbutane", "i-pentane", "isoamylane"]),
         ("n-undecane", "n-Undecane", "n-Undecane", ["undecane", "hendecane"]),
     ],
+    # proposal 0009 (green and bio-based chemistry), batch 1: platform and solvent molecules in ChemSep or CoolProp
+    9: [
+        ("bdo", "1,4-Butanediol", None, ["1,4-butanediol", "butane-1,4-diol", "tetramethylene glycol", "1,4-bdo"]),
+        ("cyrene", "Cyrene", None, ["dihydrolevoglucosenone", "6,8-dioxabicyclo[3.2.1]octan-4-one"]),
+        ("dimethyl-carbonate", "Dimethyl carbonate", "DimethylCarbonate", ["dmc", "carbonic acid dimethyl ester"]),
+        ("diethyl-carbonate", "Diethyl carbonate", None, ["dec", "carbonic acid diethyl ester"]),
+        ("ethylene-carbonate", "Ethylene carbonate", None, ["1,3-dioxolan-2-one", "ec"]),
+        ("propylene-carbonate", "Propylene carbonate", None, ["4-methyl-1,3-dioxolan-2-one", "pc"]),
+        ("acetaldehyde", "Acetaldehyde", None, ["ethanal"]),
+        ("1-pentanol", "1-Pentanol", None, ["n-pentanol", "pentan-1-ol", "amyl alcohol", "n-amyl alcohol"]),
+        ("1-hexanol", "1-Hexanol", None, ["n-hexanol", "hexan-1-ol", "hexyl alcohol"]),
+        ("1-octanol", "1-Octanol", None, ["n-octanol", "octan-1-ol", "octyl alcohol"]),
+        ("diethylene-glycol", "Diethylene glycol", None, ["deg", "2,2'-oxydiethanol", "digol"]),
+        ("p-cymene", "p-Cymene", None, ["4-isopropyltoluene", "1-methyl-4-(propan-2-yl)benzene", "cymene"]),
+        ("adipic-acid", "Adipic acid", None, ["hexanedioic acid"]),
+        ("maleic-anhydride", "Maleic anhydride", None, ["furan-2,5-dione", "cis-butenedioic anhydride"]),
+        ("terephthalic-acid", "Terephthalic acid", None, ["benzene-1,4-dicarboxylic acid", "pta", "tpa"]),
+        ("dmt", "Dimethyl terephthalate", None, ["dimethyl terephthalate", "dimethyl benzene-1,4-dicarboxylate"]),
+    ],
 }
 CHEMSEP_NAME = "ChemSep pure-component database v8.3 (Kooijman & Taylor)"
 CHEMSEP_CAS = {"styrene": "100-42-5", "1-propanol": "71-23-8", "2-propanol": "67-63-0", "1-butanol": "71-36-3",
@@ -149,7 +168,11 @@ CHEMSEP_CAS = {"styrene": "100-42-5", "1-propanol": "71-23-8", "2-propanol": "67
                "hydrogen-peroxide": "7722-84-1",
                "cumene": "98-82-8", "mesitylene": "108-67-8", "isooctane": "540-84-1", "isoprene": "78-79-5",
                "etbe": "637-92-3", "pyridine": "110-86-1", "aniline": "62-53-3", "acrylonitrile": "107-13-1",
-               "methylamine": "74-89-5", "naphthalene": "91-20-3", "benzoic-acid": "65-85-0", "salicylic-acid": "69-72-7"}   # CAS of the components taken from ChemSep (checked against `chemicals`)
+               "methylamine": "74-89-5", "naphthalene": "91-20-3", "benzoic-acid": "65-85-0", "salicylic-acid": "69-72-7",
+               "bdo": "110-63-4", "cyrene": "53716-82-8", "diethyl-carbonate": "105-58-8", "ethylene-carbonate": "96-49-1",
+               "propylene-carbonate": "108-32-7", "acetaldehyde": "75-07-0", "1-pentanol": "71-41-0", "1-hexanol": "111-27-3",
+               "1-octanol": "111-87-5", "diethylene-glycol": "111-46-6", "p-cymene": "99-87-6", "adipic-acid": "124-04-9",
+               "maleic-anhydride": "108-31-6", "terephthalic-acid": "100-21-0", "dmt": "120-61-6"}   # CAS of the components taken from ChemSep (checked against `chemicals`)
 # the second file of the same databank (as redistributed in DWSIM, same licence), for compounds not in chemsep1.xml
 CHEMSEP2_NAME = "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)"
 

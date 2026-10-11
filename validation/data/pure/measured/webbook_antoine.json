@@ -787,5 +787,240 @@
     "comment": "Coefficents calculated by NIST from author's data."
    }
   ]
+ },
+ "bdo": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110634&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "sets": []
+ },
+ "cyrene": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C53716828&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "sets": []
+ },
+ "diethyl-carbonate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C105588&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 263.1,
+    "Tmax_K": 399.0,
+    "A": 4.77616,
+    "B": 1721.904,
+    "C": -37.959,
+    "reference": "Stull, 1947",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "ethylene-carbonate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96491&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "sets": []
+ },
+ "propylene-carbonate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108327&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "sets": []
+ },
+ "acetaldehyde": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C75070&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 293.4,
+    "Tmax_K": 377.5,
+    "A": 3.68639,
+    "B": 822.894,
+    "C": -69.899,
+    "reference": "Bull, Seregrennaja, et al., 1963, 2",
+    "comment": "Coefficents calculated by NIST from author's data."
+   },
+   {
+    "Tmin_K": 272.9,
+    "Tmax_K": 307.6,
+    "A": 5.1883,
+    "B": 1637.083,
+    "C": 22.317,
+    "reference": "Coles and Popper, 1950",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "1-pentanol": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C71410&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 437.79,
+    "Tmax_K": 513.79,
+    "A": 3.97383,
+    "B": 1106.11,
+    "C": -134.578,
+    "reference": "Ambrose, Sprake, et al., 1975",
+    "comment": "Coefficents calculated by NIST from author's data."
+   },
+   {
+    "Tmin_K": 347.91,
+    "Tmax_K": 429.13,
+    "A": 4.32418,
+    "B": 1297.689,
+    "C": -110.669,
+    "reference": "Ambrose and Sprake, 1970",
+    "comment": "Coefficents calculated by NIST from author's data."
+   },
+   {
+    "Tmin_K": 307.1,
+    "Tmax_K": 411.0,
+    "A": 4.68277,
+    "B": 1492.549,
+    "C": -91.621,
+    "reference": "Kemme and Kreps, 1969",
+    "comment": ""
+   }
+  ]
+ },
+ "1-hexanol": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C111273&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 325.4,
+    "Tmax_K": 430.5,
+    "A": 4.41271,
+    "B": 1422.031,
+    "C": -107.706,
+    "reference": "Kemme and Kreps, 1969",
+    "comment": ""
+   },
+   {
+    "Tmin_K": 334.1,
+    "Tmax_K": 381.7,
+    "A": 5.64356,
+    "B": 2117.967,
+    "C": -51.988,
+    "reference": "Rose and Supina, 1961",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "1-octanol": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C111875&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 502.19,
+    "Tmax_K": 553.99,
+    "A": 3.96451,
+    "B": 1350.263,
+    "C": -129.565,
+    "reference": "Ambrose, Sprake, et al., 1975",
+    "comment": "Coefficents calculated by NIST from author's data."
+   },
+   {
+    "Tmin_K": 328.02,
+    "Tmax_K": 387.0,
+    "A": 4.80915,
+    "B": 1753.525,
+    "C": -99.0,
+    "reference": "Ambrose, Ellender, et al., 1974",
+    "comment": "Coefficents calculated by NIST from author's data."
+   },
+   {
+    "Tmin_K": 386.42,
+    "Tmax_K": 479.27,
+    "A": 3.90279,
+    "B": 1274.261,
+    "C": -141.328,
+    "reference": "Ambrose and Sprake, 1970",
+    "comment": "Coefficents calculated by NIST from author's data."
+   },
+   {
+    "Tmin_K": 352.1,
+    "Tmax_K": 468.5,
+    "A": 3.74844,
+    "B": 1196.639,
+    "C": -149.043,
+    "reference": "Kemme and Kreps, 1969",
+    "comment": ""
+   },
+   {
+    "Tmin_K": 293.0,
+    "Tmax_K": 353.0,
+    "A": 6.47682,
+    "B": 2603.359,
+    "C": -48.799,
+    "reference": "Geiseler, Fruwert, et al., 1966",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "diethylene-glycol": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C111466&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "sets": []
+ },
+ "p-cymene": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C99876&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 380.19,
+    "Tmax_K": 451.57,
+    "A": 4.16214,
+    "B": 1599.29,
+    "C": -65.491,
+    "reference": "McDonald, Shrader, et al., 1959",
+    "comment": ""
+   }
+  ]
+ },
+ "adipic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C124049&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 432.7,
+    "Tmax_K": 610.7,
+    "A": 5.47306,
+    "B": 2813.066,
+    "C": -95.951,
+    "reference": "Stull, 1947",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "maleic-anhydride": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108316&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 317.0,
+    "Tmax_K": 475.0,
+    "A": 3.79916,
+    "B": 1431.009,
+    "C": -101.093,
+    "reference": "Stull, 1947",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "terephthalic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C100210&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "sets": []
+ },
+ "dmt": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C120616&Units=SI&Mask=4",
+  "retrieved": "2026-10-11",
+  "sets": []
  }
 }
