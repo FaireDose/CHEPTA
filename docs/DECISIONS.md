@@ -145,6 +145,16 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   liquid split in the data range, ethylene carbonate + water 1.7-2.1 % in P), and one model of 6 more.
 - **Pending:** the pairs of Cyrene, terephthalic acid, dimethyl terephthalate, maleic and adipic acid have no open
   vapour-liquid data in the archive; they stay on docs/DATA_WANTED.md.
+- **Decided by the maintainer: sets a little outside the gate are written, with a warning.** "The gap is super small,
+  even the 2 %": a generated fit outside the gate (0.5 K, 0.012 in y, 1.5 % in P) but within 2.5 K, 0.02 and 3 % is
+  written with a `quality_warning` and a "fit-quality" entry in src/data/known-issues.json (the workbench shows it for
+  that pair and model). Never written: a fit that predicts a liquid split inside the data range. A set within the wider
+  limits replaces a ChemSep default only if it follows the same data better (seven ChemSep defaults became
+  non-default; methanol + n-butyl acetate UNIQUAC kept its ChemSep set), and never replaces a set fitted to other open
+  data (2-butanol + cyclohexane keeps its Belabbaci et al. 2012 set). Applied to every generated pair: 78 sets, 16 pairs
+  of the new components and 33 older pairs (for example monoethanolamine + water, glycerol + water, sulfolane +
+  toluene). Fitted activity pairs: 280 -> 315. The four flowsheet-suite cases whose default sets changed (G02, G04,
+  G06, G10) have new reference solutions; their components are the same.
 
 ### 2026-10-11
 

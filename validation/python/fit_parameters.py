@@ -818,10 +818,15 @@ def main(write, only=None):
                         break
                 if why and wide:
                     # within WIDE_GATE: written only where the pair has no default set of this model, or where the
-                    # default set follows the same data less closely
+                    # default set is a databank set that follows the same data less closely
                     cur = next((r for r in binaries["pairs"] if r["model"] == model and {r["i"], r["j"]} == set(spec["pair"])
                                 and r.get("default", True)), None)
-                    if cur is not None:
+                    if cur is not None and cur.get("tier") == "fitted" and spec["file"] not in cur.get("source", ""):
+                        # a set fitted to other open data is never replaced by a set within the wider limits
+                        why = ("%s; the pair has a set fitted to other open data (%s), which stays" % (
+                            wide[1], cur.get("set", "default")))
+                        wide = None
+                    elif cur is not None:
                         try:
                             s_cur = score(spec, model, dict(cur, model=model))
                         except Exception:
