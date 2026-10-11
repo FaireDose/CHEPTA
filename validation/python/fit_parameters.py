@@ -767,6 +767,8 @@ def main(write, only=None):
         for model in spec.get("models", ["NRTL", "UNIQUAC"]):
             if not spec.get("generated"):
                 params, _ = fit(spec, model)
+                if spec["data"] == "txy-file":
+                    check_phase_splits(spec, model, params)
             else:
                 # NRTL: alpha 0.3, else the other usual values 0.2 and 0.47 (a set that predicts a
                 # spurious liquid split with one alpha may not with another)
@@ -783,8 +785,6 @@ def main(write, only=None):
                     rejected.append((spec["pair"], model, why))
                     print(f"REJECTED {model} {spec['pair']}: {why}")
                     continue
-            elif spec["data"] == "txy-file":
-                check_phase_splits(spec, model, params)
             q = quality(spec, model, params) + test
             params["source"] = f"{spec['describe']} {q}"
             params["tier"] = "databank" if spec["data"] == "uniquac-curve" else "fitted"
