@@ -494,6 +494,9 @@ def fit(spec, model):
             continue
         if best is None or res.cost < best.cost:
             best = res
+    if best is None:
+        raise RuntimeError("no start of the least-squares fit converged (the bubble-point calculation failed at every "
+                           "start)")
     if spec["data"] == "txy-file" and len(sets) < len(all_sets):
         # second stage: all targets, started from the first-stage optimum (where the
         # liquid-liquid split needed by the azeotrope target exists)
@@ -762,14 +765,14 @@ def main(write, only=None):
                 print(f"{spec['pair']}: point test (Redlich-Kister, 4 terms, T-x only): mean |dy| = {dy_test:.4f}")
                 test = f" Data consistency point test (Redlich-Kister fit to T-x): mean |dy| {dy_test:.3f}{' (passes, < 0.01)' if dy_test < 0.01 else ' (fails, >= 0.01)'}."
         for model in spec.get("models", ["NRTL", "UNIQUAC"]):
-            params, _ = fit(spec, model)
-            if spec.get("generated"):
+            if not spec.get("generated"):
+                params, _ = fit(spec, model)
+            else:
                 # NRTL: alpha 0.3, else the other usual values 0.2 and 0.47 (a set that predicts a
                 # spurious liquid split with one alpha may not with another)
                 for alpha in ((0.3, 0.2, 0.47) if model == "NRTL" else (None,)):
-                    if alpha not in (None, 0.3):
-                        params, _ = fit(dict(spec, alpha=alpha), model)
                     try:
+                        params, _ = fit(spec if alpha in (None, 0.3) else dict(spec, alpha=alpha), model)
                         check_phase_splits(spec, model, params)
                         why = gate(spec, model, params)
                     except (SystemExit, Exception) as e:
