@@ -1,0 +1,110 @@
+{
+ "_about": "Hydrogen (1) + n-decane (2): liquid solubility at 358.15, 408.15 and 483.15 K from Sokolov and Polyakov (1977), as compiled in IUPAC SDS 5/6.",
+ "components": [
+  "hydrogen",
+  "n-decane"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "C. L. Young, Hydrogen and Deuterium, IUPAC Solubility Data Series Vol. 5/6, Pergamon (1981)",
+  "open_copy": "https://iupac.github.io/SolubilityDataSeries/volumes/SDS-5-6.pdf",
+  "access": "Open access: IUPAC (the copyright holder) publishes the volume at iupac.github.io",
+  "original_measurement": "B. I. Sokolov, A. A. Polyakov, Zh. Prikl. Khim. 50 (1977) 1403-1405 (as cited in the compilation, which does not give the title)",
+  "tables": "IUPAC Solubility Data Series Vol. 5/6 (1981) p 368 (PDF p 385); estimated error (by the compiler) T 1 K, P 0.5 bar, x 3 %",
+  "transcription": "Read from the scanned page image at 200-400 dpi; compared value by value with an independent transcription in another assistant's literature package (they agree except where noted). The person checking should compare each row with the page."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "x_1",
+  "y_1",
+  "P_printed"
+ ],
+ "printed_pressure_unit": "bar",
+ "rows": [
+  [
+   358.15,
+   4050.0,
+   0.036,
+   null,
+   40.5
+  ],
+  [
+   358.15,
+   10130.0,
+   0.086,
+   null,
+   101.3
+  ],
+  [
+   358.15,
+   20260.0,
+   0.158,
+   null,
+   202.6
+  ],
+  [
+   358.15,
+   30400.0,
+   0.221,
+   null,
+   304.0
+  ],
+  [
+   408.15,
+   4050.0,
+   0.044,
+   null,
+   40.5
+  ],
+  [
+   408.15,
+   10130.0,
+   0.105,
+   null,
+   101.3
+  ],
+  [
+   408.15,
+   20260.0,
+   0.191,
+   null,
+   202.6
+  ],
+  [
+   408.15,
+   30400.0,
+   0.26,
+   null,
+   304.0
+  ],
+  [
+   483.15,
+   4050.0,
+   0.06,
+   null,
+   40.5
+  ],
+  [
+   483.15,
+   10130.0,
+   0.147,
+   null,
+   101.3
+  ],
+  [
+   483.15,
+   20260.0,
+   0.25,
+   null,
+   202.6
+  ],
+  [
+   483.15,
+   30400.0,
+   0.345,
+   null,
+   304.0
+  ]
+ ]
+}

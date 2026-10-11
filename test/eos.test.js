@@ -69,11 +69,11 @@ test("thermodynamic consistency: G_R/RT = sum x ln phi, cp_R = dH_R/dT", () => {
   }
 });
 
-test("k_ij data: 131 pairs for PR and SRK (ChemSep for the 49 components and for isopentane, one PR pair refitted, five fitted for the proposal 0004 benchmarks), each with a source", () => {
+test("k_ij data: 142 pairs for PR and 141 for SRK (ChemSep for the 49 components and for isopentane, one PR pair refitted, five fitted for the proposal 0004 benchmarks, eleven fitted to open literature, test/eos-literature.test.js), each with a source", () => {
   const ids = new Set(listComponents().map(c => c.id));
   for (const model of ["PR", "SRK"]) {
     const pairs = kij.pairs.filter(p => p.model === model);
-    assert.equal(pairs.length, 131, model);
+    assert.equal(pairs.length, { PR: 142, SRK: 141 }[model], model);
     for (const p of pairs) {
       assert.ok(ids.has(p.i) && ids.has(p.j), `${p.i} ${p.j}`);
       assert.ok(Math.abs(p.kij) < 0.6);
@@ -89,7 +89,12 @@ test("k_ij data: 131 pairs for PR and SRK (ChemSep for the 49 components and for
     }
   }
   const fitted = kij.pairs.filter(p => p.tier === "fitted").map(p => `${p.model} ${p.i}-${p.j}`);
-  assert.deepEqual(fitted, ["PR hydrogen-toluene", "PR ethanol-water", "SRK ethanol-water", "PR ethanol-ethylene-glycol", "SRK ethanol-ethylene-glycol", "PR water-ethylene-glycol", "SRK water-ethylene-glycol", "PR ethyl-acetate-ethanol", "SRK ethyl-acetate-ethanol", "PR dimethyl-ether-methanol", "SRK dimethyl-ether-methanol"]);
+  assert.deepEqual(fitted, ["PR hydrogen-toluene", "PR ethanol-water", "SRK ethanol-water", "PR ethanol-ethylene-glycol", "SRK ethanol-ethylene-glycol", "PR water-ethylene-glycol", "SRK water-ethylene-glycol", "PR ethyl-acetate-ethanol", "SRK ethyl-acetate-ethanol", "PR dimethyl-ether-methanol", "SRK dimethyl-ether-methanol",
+    // open literature beyond the ThermoML Archive (SRK propane + n-decane was outside the gate)
+    "PR cyclohexane-n-heptane", "SRK cyclohexane-n-heptane", "PR p-xylene-m-xylene", "SRK p-xylene-m-xylene", "PR p-xylene-o-xylene", "SRK p-xylene-o-xylene",
+    "PR m-xylene-o-xylene", "SRK m-xylene-o-xylene", "PR ethane-n-decane", "SRK ethane-n-decane", "PR ethane-n-undecane", "SRK ethane-n-undecane",
+    "PR ethane-n-dodecane", "SRK ethane-n-dodecane", "PR propane-n-decane", "PR propane-n-undecane", "SRK propane-n-undecane", "PR propane-n-dodecane",
+    "SRK propane-n-dodecane", "PR ethylene-1-butene", "SRK ethylene-1-butene"]);
   assert.equal(kij.pairs.find(p => p.tier === "fitted" && p.j === "toluene").replaced.kij, -0.51);
   const sys = system({ components: ["methane", "nitrogen", "water"], model: "PR" });
   const byPair = Object.fromEntries(sys.info.pairs.map(p => [p.pair.join("+"), p]));

@@ -1,0 +1,109 @@
+{
+ "_about": "cyclohexane (1) + n-heptane (2): isobaric T-x-y at 100.65 kPa from Rodrigues, Mattedi, Abreu (2005), Table 2.",
+ "components": [
+  "cyclohexane",
+  "n-heptane"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 100.65,
+ "source": {
+  "citation": "W. L. Rodrigues, S. Mattedi, J. C. N. Abreu, Experimental vapor-liquid equilibria data for binary mixtures of xylene isomers, Braz. J. Chem. Eng. 22 (2005) 453-462",
+  "doi": "10.1590/S0104-66322005000300013",
+  "open_copy": "https://www.scielo.br/j/bjce/a/TKWGwmMz3fm3py3FhBDfzWF/?format=pdf&lang=en",
+  "access": "Open access (SciELO, Brazilian Journal of Chemical Engineering)",
+  "tables": "Table 2, p 456 (PDF p 4); the authors' reference system; modified Fischer cell, gas chromatography",
+  "transcription": "Extracted with pdftotext from the text layer of the PDF, row by row; the same rows were transcribed independently in another assistant's literature package and agree with this extraction on every value."
+ },
+ "columns": [
+  "T_K",
+  "x_1",
+  "y_1"
+ ],
+ "rows": [
+  [
+   371.424,
+   0.0,
+   0.0
+  ],
+  [
+   370.332,
+   0.0423,
+   0.0687
+  ],
+  [
+   369.292,
+   0.0847,
+   0.1356
+  ],
+  [
+   368.295,
+   0.1247,
+   0.1936
+  ],
+  [
+   367.423,
+   0.1542,
+   0.243
+  ],
+  [
+   365.777,
+   0.2348,
+   0.3409
+  ],
+  [
+   364.366,
+   0.3047,
+   0.4357
+  ],
+  [
+   363.173,
+   0.3541,
+   0.4831
+  ],
+  [
+   360.597,
+   0.5148,
+   0.6447
+  ],
+  [
+   357.894,
+   0.6061,
+   0.7159
+  ],
+  [
+   357.008,
+   0.6785,
+   0.788
+  ],
+  [
+   355.862,
+   0.7417,
+   0.8433
+  ],
+  [
+   355.156,
+   0.8777,
+   0.8931
+  ],
+  [
+   354.523,
+   0.9525,
+   0.9625
+  ],
+  [
+   354.144,
+   0.9763,
+   0.9809
+  ],
+  [
+   353.953,
+   0.9899,
+   0.9899
+  ],
+  [
+   353.78,
+   1.0,
+   1.0
+  ]
+ ]
+}

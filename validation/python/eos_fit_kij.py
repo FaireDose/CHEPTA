@@ -27,7 +27,13 @@ at the measured P and liquid x; the vapour composition is compared, not fitted.
     (validation/data/ethanol_water_101kPa.json, ethanol_ethylene-glycol_101kPa.json,
     water_ethylene-glycol_101kPa_kamihama2012.json)
 
-Usage: python validation/python/eos_fit_kij.py [--write]
+  open literature beyond the ThermoML Archive: isobaric T-x-y data at 100.65 kPa of Rodrigues
+  et al., Braz. J. Chem. Eng. 22 (2005) 453 (validation/data/eos/rodrigues2005_*.json, in
+  TXY_FITS), written only when the fit meets LIT_GATE. The isothermal P-x(-y) tables of the open
+  literature are fitted by validation/fit_kij_literature.mjs (the same objective, with the engine's
+  bubble pressures: this implementation is too slow for their 560 points).
+
+Usage: python validation/python/eos_fit_kij.py [--literature-only] [--write]
 """
 import json
 import math
@@ -82,7 +88,17 @@ TXY_FITS = [
     # ethyl acetate by esterification benchmark; the acetic acid pairs get no k_ij: a cubic
     # equation of state does not describe the dimerization of acetic acid in the vapour
     {"pair": ("ethyl-acetate", "ethanol"), "file": "ethyl-acetate_ethanol_101kPa.json", "cite": "Calvar et al. (2005)"},
+    # open literature (Rodrigues, Mattedi, Abreu 2005; SciELO open access), written only within LIT_GATE
+    {"pair": ("cyclohexane", "n-heptane"), "file": "eos/rodrigues2005_cyclohexane_n-heptane.json", "cite": "Rodrigues et al. (2005)", "gate": True},
+    {"pair": ("p-xylene", "m-xylene"), "file": "eos/rodrigues2005_p-xylene_m-xylene.json", "cite": "Rodrigues et al. (2005)", "gate": True},
+    {"pair": ("p-xylene", "o-xylene"), "file": "eos/rodrigues2005_p-xylene_o-xylene.json", "cite": "Rodrigues et al. (2005)", "gate": True},
+    {"pair": ("m-xylene", "o-xylene"), "file": "eos/rodrigues2005_m-xylene_o-xylene.json", "cite": "Rodrigues et al. (2005)", "gate": True},
 ]
+
+# The limits a k_ij fitted to T-x-y data of the open literature must meet to be written: those of
+# fit_parameters.GATE (AAD 0.5 K in T and 0.012 in y). For P-x data see validation/fit_kij_literature.mjs.
+LIT_GATE = {"T_K": 0.5, "y": 0.012}
+
 
 
 FITS = [
@@ -210,16 +226,22 @@ def fit_txy(doc):
             k = round(float(res.x), 4)
             out = calc(k)
             if None in out:
+                if fit.get("gate"):
+                    print(f"{model} {i}-{j}: NOT WRITTEN, at the optimum k_ij = {k} {out.count(None)} data points have no bubble point within 25 K")
+                    continue
                 raise SystemExit(f"{model} {i}-{j}: at the optimum k_ij = {k} {out.count(None)} data points have no bubble point within 25 K")
             dT = [abs(Tc - T) for (Tc, _), (_, _, T, _) in zip(out, pts)]
             dy = [abs(yc - y) for (_, yc), (_, _, _, y) in zip(out, pts)]
             q = f"AAD {sum(dT) / len(dT):.2f} K in T (max {max(dT):.2f} K), {sum(dy) / len(dy):.4f} in y (max {max(dy):.4f})"
             print(f"{model} {i}-{j}: k_ij = {k:.4f}, {q}, {len(pts)} points")
+            if fit.get("gate") and (sum(dT) / len(dT) > LIT_GATE["T_K"] or sum(dy) / len(dy) > LIT_GATE["y"]):
+                print(f"   NOT WRITTEN: outside LIT_GATE {LIT_GATE}")
+                continue
             Ts = [T for _, _, T, _ in pts]
             entry = {
                 "model": model, "i": i, "j": j, "kij": k, "tier": "fitted",
                 "source": {
-                    "fit": f"Fitted for CHEPTA with validation/python/eos_fit_kij.py to the {len(pts)} bubble temperatures of {fit.get('cite', 'Kamihama et al. (2012)')} at {pts[0][0]} kPa: {q}",
+                    "fit": f"Fitted for CHEPTA with validation/python/eos_fit_kij.py to the {len(pts)} bubble temperatures of {fit.get('cite', 'Kamihama et al. (2012)')} at {pts[0][0]:g} kPa: {q}",
                     "data": [f"validation/data/{fit['file']}"],
                     "conditions": f"P = {pts[0][0]} kPa, T = {min(Ts):g}-{max(Ts):g} K",
                     "T_range_K": [min(Ts), max(Ts)],
@@ -235,11 +257,33 @@ def fit_txy(doc):
                 doc["pairs"].append(entry)
 
 
+def merge_literature(doc):
+    """The k_ij that validation/fit_kij_literature.mjs fitted to the P-x tables of the open literature
+    and kept within its gate (validation/data/eos/literature_fits.json), added or replaced in doc."""
+    for entry in json.load(open(os.path.join(DATA, "literature_fits.json")))["entries"]:
+        model, i, j = entry["model"], entry["i"], entry["j"]
+        print(f"{model} {i}-{j}: k_ij = {entry['kij']:.4f} from literature_fits.json")
+        idx = [n for n, p in enumerate(doc["pairs"]) if p["model"] == model and {p["i"], p["j"]} == {i, j}]
+        if idx:
+            if doc["pairs"][idx[0]].get("tier") != "fitted":
+                raise SystemExit(f"{model} {i}-{j}: a databank value exists; keep it under 'replaced' as for hydrogen + toluene")
+            doc["pairs"][idx[0]] = entry
+        else:
+            doc["pairs"].append(entry)
+
+
 def main():
     path = os.path.join(ROOT, "src", "data", "kij.json")
     doc = json.load(open(path))
+    if "--literature-only" in sys.argv:
+        # the T-x-y fits of the open literature and the merge of the P-x fits, without the slower
+        # fits above (their entries are kept as they are in kij.json)
+        TXY_FITS[:] = [f for f in TXY_FITS if f.get("gate")]
+        FITS.clear()
+    else:
+        fit_px(doc)
     fit_txy(doc)
-    fit_px(doc)
+    merge_literature(doc)
     for fit in FITS:
         i, j = fit["pair"]
         pts = fit["data"]()

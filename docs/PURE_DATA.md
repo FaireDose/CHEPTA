@@ -66,7 +66,7 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | 1,4-Dioxane | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.30 (f) | ChemSep 0.24 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.047 (f) | ChemSep 0.0001 (d) | ChemSep 0.60 (f) |
 | Isobutanol | ChemSep 0.00011 (d) | ChemSep 0.0001 (d) | ChemSep 0.12 (f) | ChemSep 0.16 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.49 (f) | ChemSep 0.0001 (d) | ChemSep 0.13 (f) |
 | 2-Butanol | ChemSep 1 (f) | ChemSep 0.0001 (d) | ChemSep 0.63 (f) | ChemSep 0.16 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.58 (f) | ChemSep 0.0001 (d) | ChemSep 0.20 (f) |
-| Monoethanolamine | ChemSep 0.94 (f) | ChemSep 0.0001 (d) | ChemSep 0.30 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.36 (f) | ChemSep 0.0001 (d) | ChemSep 0.19 (f) |
+| Monoethanolamine | ChemSep 1 (f) | ChemSep 0.0001 (d) | ChemSep 0.30 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.36 (f) | ChemSep 0.0001 (d) | ChemSep 0.19 (f) |
 | Diethanolamine | ChemSep 0.89 (f) | ChemSep 0.0001 (d) | ChemSep 0.31 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.16 (f) | ChemSep 0.0001 (d) | ChemSep 0.48 (f) |
 | Methyldiethanolamine | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.084 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.31 (f) | ChemSep 0.0001 (d) | ChemSep 0.24 (f) |
 | Sulfur dioxide | CoolProp 0.13 (f) | CoolProp 0.28 (f) | CoolProp 0.00091 (f) | CoolProp 0.50 (f) | CoolProp 0.054 (f) | WebBook 0.36 (f) | WebBook 0.13 (f) | WebBook 0.18 (f) | WebBook 0.066 (f) | CoolProp 0.49 (f) |
@@ -1098,7 +1098,7 @@ At 25 °C (298.15 K) for the liquids and at the normal boiling point for the gas
 
 | Property | Unit | CHEPTA | Source | Deviation | ChemSep |
 |---|---|---|---|---|---|
-| Psat | kPa | 0.063991 | 0.064303 | -0.49 % | – |
+| Psat | kPa | 0.049904 | 0.064303 | -22.39 % | – |
 | ρL | kg/m³ | 1011.8 | 1011.8 | -0.00 % | – |
 | cp° | J/(mol·K) | 85.353 | 85.533 | -0.21 % | – |
 | cpL | J/(mol·K) | 166.03 | 166.03 | 0.00 % | – |
@@ -1726,7 +1726,7 @@ Measured values from the NIST WebBook in `validation/data/pure/measured/webbook.
 | Tetrahydrofuran | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 8 measured values from 1 articles, 288.1-323.1 K; median deviation of the articles 2.08 % (abov |
 | Tetrahydrofuran | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 56 measured values from 19 articles, 283.1-323.1 K; median deviation of the articles 1.93 % (wi |
 | Tetrahydrofuran | surfaceTension | NIST TRC ThermoML Archive (validation/python/check_measured.py): 10 measured values from 4 articles, 288.1-313.1 K; median deviation of the articles 1.68 %; lar |
-| Monoethanolamine | vapourPressure | NIST TRC ThermoML Archive (validation/python/check_measured.py): 5 measured values from 2 articles, 353.1-435.6 K; median deviation of the articles 2.44 % (abov |
+| Monoethanolamine | vapourPressure | NIST TRC ThermoML Archive (validation/python/check_measured.py): 5 measured values from 2 articles, 353.1-435.6 K; median deviation of the articles 0.04 % (with |
 | Monoethanolamine | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 200 measured values from 38 articles, 285.1-373.1 K; median deviation of the articles 0.04 % (w |
 | Monoethanolamine | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 11 measured values from 1 articles, 303.1-353.1 K; median deviation of the articles 0.14 % (wit |
 | Monoethanolamine | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 79 measured values from 16 articles, 293.1-393.1 K; median deviation of the articles 1.10 % (wi |
@@ -1845,7 +1845,7 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
 - cross-check isobutanol vapour pressure vs Biddiscombe, Collerson, et al., 1963, 2, 353.36-388.77 K: max +1.15 % at 353.4 K
 - cross-check 2-butanol vapour pressure vs Ambrose and Townsend, 1963, 2: max +1.80 % at 439.2 K
 - cross-check 2-butanol vapour pressure vs Biddiscombe, Collerson, et al., 1963, 2: max +0.42 % at 380.3 K
-- cross-check mea vapour pressure vs Matthews, Sumner, et al., 1950, 2, 338.60-444.10 K: max +20.99 % at 338.6 K
+- cross-check mea vapour pressure vs Matthews, Sumner, et al., 1950, 2: max +10.97 % at 338.6 K
 - cross-check dea vapour pressure vs McDonald, Shrader, et al., 1959, 2, 464.00-582.40 K: max +1.92 % at 464.0 K
 - cross-check dea vapour pressure vs McDonald, Shrader, et al., 1959, 2, 466.93-514.47 K: max +1.95 % at 466.9 K
 - cross-check formic-acid vapour pressure vs Kahlbaum, 1894, 2, 273.70-307.40 K: max +1.81 % at 307.4 K

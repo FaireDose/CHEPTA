@@ -1,0 +1,629 @@
+{
+ "_about": "Bubble pressures of the independent Python equation of state (validation/python/eos_check_literature.py) at the k_ij fitted to the open literature; test/eos-literature.test.js compares the engine with them.",
+ "points": [
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-decane"
+   ],
+   "kij": 0.0244,
+   "T_K": 325.81,
+   "x_1": 0.1725,
+   "P_exp_kPa": 970.0,
+   "P_reference_kPa": 914.285
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-decane"
+   ],
+   "kij": 0.0244,
+   "T_K": 311.79,
+   "x_1": 0.3822,
+   "P_exp_kPa": 1720.0,
+   "P_reference_kPa": 1792.976
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-decane"
+   ],
+   "kij": 0.0244,
+   "T_K": 358.06,
+   "x_1": 0.3822,
+   "P_exp_kPa": 3000.0,
+   "P_reference_kPa": 3103.164
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-decane"
+   ],
+   "kij": 0.0244,
+   "T_K": 317.78,
+   "x_1": 0.971,
+   "P_exp_kPa": 5730.0,
+   "P_reference_kPa": 5716.699
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-decane"
+   ],
+   "kij": 0.0237,
+   "T_K": 325.81,
+   "x_1": 0.1725,
+   "P_exp_kPa": 970.0,
+   "P_reference_kPa": 914.381
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-decane"
+   ],
+   "kij": 0.0237,
+   "T_K": 311.79,
+   "x_1": 0.3822,
+   "P_exp_kPa": 1720.0,
+   "P_reference_kPa": 1794.388
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-decane"
+   ],
+   "kij": 0.0237,
+   "T_K": 358.06,
+   "x_1": 0.3822,
+   "P_exp_kPa": 3000.0,
+   "P_reference_kPa": 3087.21
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-decane"
+   ],
+   "kij": 0.0237,
+   "T_K": 317.78,
+   "x_1": 0.971,
+   "P_exp_kPa": 5730.0,
+   "P_reference_kPa": 5728.567
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-undecane"
+   ],
+   "kij": 0.0126,
+   "T_K": 288.51,
+   "x_1": 0.2369,
+   "P_exp_kPa": 690.0,
+   "P_reference_kPa": 694.263
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-undecane"
+   ],
+   "kij": 0.0126,
+   "T_K": 368.22,
+   "x_1": 0.2369,
+   "P_exp_kPa": 1870.0,
+   "P_reference_kPa": 1917.987
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-undecane"
+   ],
+   "kij": 0.0126,
+   "T_K": 314.57,
+   "x_1": 0.6756,
+   "P_exp_kPa": 3530.0,
+   "P_reference_kPa": 3528.877
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-undecane"
+   ],
+   "kij": 0.0126,
+   "T_K": 368.06,
+   "x_1": 0.7925,
+   "P_exp_kPa": 8600.0,
+   "P_reference_kPa": 8618.239
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-undecane"
+   ],
+   "kij": 0.0115,
+   "T_K": 288.51,
+   "x_1": 0.2369,
+   "P_exp_kPa": 690.0,
+   "P_reference_kPa": 695.67
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-undecane"
+   ],
+   "kij": 0.0115,
+   "T_K": 368.22,
+   "x_1": 0.2369,
+   "P_exp_kPa": 1870.0,
+   "P_reference_kPa": 1910.709
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-undecane"
+   ],
+   "kij": 0.0115,
+   "T_K": 314.57,
+   "x_1": 0.6756,
+   "P_exp_kPa": 3530.0,
+   "P_reference_kPa": 3538.175
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-undecane"
+   ],
+   "kij": 0.0115,
+   "T_K": 368.06,
+   "x_1": 0.7925,
+   "P_exp_kPa": 8600.0,
+   "P_reference_kPa": 8583.486
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-dodecane"
+   ],
+   "kij": 0.0049,
+   "T_K": 277.42,
+   "x_1": 0.2836,
+   "P_exp_kPa": 610.0,
+   "P_reference_kPa": 642.635
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-dodecane"
+   ],
+   "kij": 0.0049,
+   "T_K": 288.78,
+   "x_1": 0.9498,
+   "P_exp_kPa": 3340.0,
+   "P_reference_kPa": 3208.724
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-dodecane"
+   ],
+   "kij": 0.0049,
+   "T_K": 364.97,
+   "x_1": 0.573,
+   "P_exp_kPa": 4850.0,
+   "P_reference_kPa": 5155.336
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethane",
+    "n-dodecane"
+   ],
+   "kij": 0.0049,
+   "T_K": 372.33,
+   "x_1": 0.8102,
+   "P_exp_kPa": 8950.0,
+   "P_reference_kPa": 9162.177
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-dodecane"
+   ],
+   "kij": 0.0037,
+   "T_K": 277.42,
+   "x_1": 0.2836,
+   "P_exp_kPa": 610.0,
+   "P_reference_kPa": 641.22
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-dodecane"
+   ],
+   "kij": 0.0037,
+   "T_K": 288.78,
+   "x_1": 0.9498,
+   "P_exp_kPa": 3340.0,
+   "P_reference_kPa": 3236.28
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-dodecane"
+   ],
+   "kij": 0.0037,
+   "T_K": 364.97,
+   "x_1": 0.573,
+   "P_exp_kPa": 4850.0,
+   "P_reference_kPa": 5118.622
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethane",
+    "n-dodecane"
+   ],
+   "kij": 0.0037,
+   "T_K": 372.33,
+   "x_1": 0.8102,
+   "P_exp_kPa": 8950.0,
+   "P_reference_kPa": 9123.907
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-decane"
+   ],
+   "kij": 0.0178,
+   "T_K": 252.46,
+   "x_1": 0.726,
+   "P_exp_kPa": 140.0,
+   "P_reference_kPa": 180.269
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-decane"
+   ],
+   "kij": 0.0178,
+   "T_K": 309.42,
+   "x_1": 0.507,
+   "P_exp_kPa": 700.0,
+   "P_reference_kPa": 628.207
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-decane"
+   ],
+   "kij": 0.0178,
+   "T_K": 328.83,
+   "x_1": 0.726,
+   "P_exp_kPa": 1370.0,
+   "P_reference_kPa": 1348.122
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-decane"
+   ],
+   "kij": 0.0178,
+   "T_K": 369.42,
+   "x_1": 0.952,
+   "P_exp_kPa": 3740.0,
+   "P_reference_kPa": 3776.628
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-undecane"
+   ],
+   "kij": 0.0222,
+   "T_K": 291.91,
+   "x_1": 0.414,
+   "P_exp_kPa": 330.0,
+   "P_reference_kPa": 355.409
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-undecane"
+   ],
+   "kij": 0.0222,
+   "T_K": 357.4,
+   "x_1": 0.311,
+   "P_exp_kPa": 890.0,
+   "P_reference_kPa": 910.621
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-undecane"
+   ],
+   "kij": 0.0222,
+   "T_K": 350.8,
+   "x_1": 0.529,
+   "P_exp_kPa": 1470.0,
+   "P_reference_kPa": 1456.127
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-undecane"
+   ],
+   "kij": 0.0222,
+   "T_K": 364.36,
+   "x_1": 0.952,
+   "P_exp_kPa": 3540.0,
+   "P_reference_kPa": 3500.34
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "propane",
+    "n-undecane"
+   ],
+   "kij": 0.0206,
+   "T_K": 291.91,
+   "x_1": 0.414,
+   "P_exp_kPa": 330.0,
+   "P_reference_kPa": 353.397
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "propane",
+    "n-undecane"
+   ],
+   "kij": 0.0206,
+   "T_K": 357.4,
+   "x_1": 0.311,
+   "P_exp_kPa": 890.0,
+   "P_reference_kPa": 908.919
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "propane",
+    "n-undecane"
+   ],
+   "kij": 0.0206,
+   "T_K": 350.8,
+   "x_1": 0.529,
+   "P_exp_kPa": 1470.0,
+   "P_reference_kPa": 1458.164
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "propane",
+    "n-undecane"
+   ],
+   "kij": 0.0206,
+   "T_K": 364.36,
+   "x_1": 0.952,
+   "P_exp_kPa": 3540.0,
+   "P_reference_kPa": 3517.404
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-dodecane"
+   ],
+   "kij": 0.0195,
+   "T_K": 315.51,
+   "x_1": 0.306,
+   "P_exp_kPa": 380.0,
+   "P_reference_kPa": 432.387
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-dodecane"
+   ],
+   "kij": 0.0195,
+   "T_K": 323.21,
+   "x_1": 0.504,
+   "P_exp_kPa": 860.0,
+   "P_reference_kPa": 841.803
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-dodecane"
+   ],
+   "kij": 0.0195,
+   "T_K": 358.99,
+   "x_1": 0.504,
+   "P_exp_kPa": 1430.0,
+   "P_reference_kPa": 1544.33
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "propane",
+    "n-dodecane"
+   ],
+   "kij": 0.0195,
+   "T_K": 360.98,
+   "x_1": 0.935,
+   "P_exp_kPa": 3320.0,
+   "P_reference_kPa": 3236.43
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "propane",
+    "n-dodecane"
+   ],
+   "kij": 0.0184,
+   "T_K": 315.51,
+   "x_1": 0.306,
+   "P_exp_kPa": 380.0,
+   "P_reference_kPa": 430.721
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "propane",
+    "n-dodecane"
+   ],
+   "kij": 0.0184,
+   "T_K": 323.21,
+   "x_1": 0.504,
+   "P_exp_kPa": 860.0,
+   "P_reference_kPa": 842.114
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "propane",
+    "n-dodecane"
+   ],
+   "kij": 0.0184,
+   "T_K": 358.99,
+   "x_1": 0.504,
+   "P_exp_kPa": 1430.0,
+   "P_reference_kPa": 1544.263
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "propane",
+    "n-dodecane"
+   ],
+   "kij": 0.0184,
+   "T_K": 360.98,
+   "x_1": 0.935,
+   "P_exp_kPa": 3320.0,
+   "P_reference_kPa": 3257.444
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethylene",
+    "1-butene"
+   ],
+   "kij": 0.0004,
+   "T_K": 273.14,
+   "x_1": 0.023,
+   "P_exp_kPa": 205.385775,
+   "P_reference_kPa": 197.617
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethylene",
+    "1-butene"
+   ],
+   "kij": 0.0004,
+   "T_K": 273.14,
+   "x_1": 0.536,
+   "P_exp_kPa": 1944.42675,
+   "P_reference_kPa": 1911.688
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethylene",
+    "1-butene"
+   ],
+   "kij": 0.0004,
+   "T_K": 273.14,
+   "x_1": 0.93,
+   "P_exp_kPa": 3635.541,
+   "P_reference_kPa": 3632.708
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "ethylene",
+    "1-butene"
+   ],
+   "kij": 0.0004,
+   "T_K": 293.35,
+   "x_1": 0.931,
+   "P_exp_kPa": 5497.8945,
+   "P_reference_kPa": 5307.537
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethylene",
+    "1-butene"
+   ],
+   "kij": -0.0041,
+   "T_K": 273.14,
+   "x_1": 0.023,
+   "P_exp_kPa": 205.385775,
+   "P_reference_kPa": 196.486
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethylene",
+    "1-butene"
+   ],
+   "kij": -0.0041,
+   "T_K": 273.14,
+   "x_1": 0.536,
+   "P_exp_kPa": 1944.42675,
+   "P_reference_kPa": 1917.003
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethylene",
+    "1-butene"
+   ],
+   "kij": -0.0041,
+   "T_K": 273.14,
+   "x_1": 0.93,
+   "P_exp_kPa": 3635.541,
+   "P_reference_kPa": 3649.709
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "ethylene",
+    "1-butene"
+   ],
+   "kij": -0.0041,
+   "T_K": 293.35,
+   "x_1": 0.931,
+   "P_exp_kPa": 5497.8945,
+   "P_reference_kPa": 5302.403
+  }
+ ]
+}
