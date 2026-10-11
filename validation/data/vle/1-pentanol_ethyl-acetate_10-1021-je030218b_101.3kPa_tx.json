@@ -1,0 +1,115 @@
+{
+ "_about": "1-Pentanol (1) + Ethyl acetate (2): isobaric bubble temperatures at 101.3 kPa (no vapour compositions are fitted). Rows: liquid mole fraction of 1-pentanol, boiling temperature in K, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "J. M. Resa, C. Gonzalez, J. M. Goenaga, M. Iglesias, Density, Refractive Index, and Speed of Sound at 298.15 K and Vapor-Liquid Equilibria at 101.3 kPa for Binary Mixtures of Ethyl Acetate + 1-Pentanol and Ethanol + 2-Methyl-1-propanol, J. Chem. Eng. Data 49 (2004) 804-808",
+  "doi": "10.1021/je030218b",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je030218b.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 19, 21. The table number in the article was not checked."
+ },
+ "components": [
+  "1-pentanol",
+  "ethyl-acetate"
+ ],
+ "kind": "isobaric-tx",
+ "P_kPa": 101.3,
+ "columns": [
+  "x_1",
+  "T_K"
+ ],
+ "rows": [
+  [
+   0.0,
+   350.25
+  ],
+  [
+   0.064,
+   351.96
+  ],
+  [
+   0.118,
+   353.45
+  ],
+  [
+   0.219,
+   356.36
+  ],
+  [
+   0.255,
+   357.33
+  ],
+  [
+   0.302,
+   359.02
+  ],
+  [
+   0.317,
+   359.42
+  ],
+  [
+   0.363,
+   360.87
+  ],
+  [
+   0.392,
+   361.85
+  ],
+  [
+   0.427,
+   363.12
+  ],
+  [
+   0.472,
+   364.74
+  ],
+  [
+   0.511,
+   366.77
+  ],
+  [
+   0.558,
+   368.96
+  ],
+  [
+   0.609,
+   371.67
+  ],
+  [
+   0.659,
+   374.23
+  ],
+  [
+   0.708,
+   377.32
+  ],
+  [
+   0.75,
+   381.19
+  ],
+  [
+   0.801,
+   385.89
+  ],
+  [
+   0.847,
+   390.53
+  ],
+  [
+   0.881,
+   393.93
+  ],
+  [
+   0.935,
+   400.66
+  ],
+  [
+   0.978,
+   406.75
+  ],
+  [
+   1.0,
+   410.59
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Fitted to the bubble temperatures alone (Barker's method): no set of this pair with vapour compositions passes the consistency point test, or none was measured. Pure-component boiling points of the set within 0.32 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

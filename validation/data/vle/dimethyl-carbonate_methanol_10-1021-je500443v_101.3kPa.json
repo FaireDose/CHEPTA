@@ -1,0 +1,104 @@
+{
+ "_about": "Dimethyl carbonate (1) + Methanol (2): isobaric T-x-y at 101.3 kPa. Rows: liquid mole fraction of dimethyl carbonate, boiling temperature in K, vapour mole fraction of dimethyl carbonate, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "L. Qun-Sheng, S. Zhang, B. Ding, L. Cao, P. Liu, Z. Jiang, B. Wang, Isobaric Vapor Liquid Equilibrium for Methanol + Dimethyl Carbonate + Trifluoromethanesulfonate-based Ionic Liquids at 101.3 kPa, J. Chem. Eng. Data 59 (2014) 3488-3494",
+  "doi": "10.1021/je500443v",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je500443v.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1, 2. The table number in the article was not checked."
+ },
+ "components": [
+  "dimethyl-carbonate",
+  "methanol"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.3,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0,
+   337.9,
+   0.0
+  ],
+  [
+   0.056,
+   337.0,
+   0.06699999999999995
+  ],
+  [
+   0.098,
+   336.8,
+   0.11299999999999999
+  ],
+  [
+   0.138,
+   336.6,
+   0.135
+  ],
+  [
+   0.203,
+   336.7,
+   0.17600000000000005
+  ],
+  [
+   0.282,
+   337.0,
+   0.19599999999999995
+  ],
+  [
+   0.351,
+   337.3,
+   0.22399999999999998
+  ],
+  [
+   0.442,
+   338.0,
+   0.26
+  ],
+  [
+   0.536,
+   338.9,
+   0.28300000000000003
+  ],
+  [
+   0.646,
+   340.4,
+   0.32699999999999996
+  ],
+  [
+   0.716,
+   342.7,
+   0.387
+  ],
+  [
+   0.773,
+   344.0,
+   0.43000000000000005
+  ],
+  [
+   0.819,
+   346.5,
+   0.489
+  ],
+  [
+   0.877,
+   350.0,
+   0.5740000000000001
+  ],
+  [
+   0.914,
+   352.5,
+   0.65
+  ],
+  [
+   1.0,
+   363.2,
+   1.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0064. Pure-component boiling points of the set within 0.27 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

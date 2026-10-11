@@ -1,0 +1,143 @@
+{
+ "_about": "Acetaldehyde (1) + Acetic acid (2): isobaric bubble temperatures at 101.325 kPa (no vapour compositions are fitted). Rows: liquid mole fraction of acetaldehyde, boiling temperature in K, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "D. Zhu, D. Gao, H. Zhang, B. Winter, P. Lucking, H. Sun, H. Guan, H. Chen, J. Shi, Geometric Structures of Associating Component Optimized toward Correlation and Prediction of Isobaric Vapor Liquid Equilibria for Binary and Ternary Mixtures of Ethanal, Ethanol, and Ethanoic Acid, J. Chem. Eng. Data 58 (2013) 7-17",
+  "doi": "10.1021/je300810p",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je300810p.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 12, 13. The table number in the article was not checked."
+ },
+ "components": [
+  "acetaldehyde",
+  "acetic-acid"
+ ],
+ "kind": "isobaric-tx",
+ "P_kPa": 101.325,
+ "columns": [
+  "x_1",
+  "T_K"
+ ],
+ "rows": [
+  [
+   0.0,
+   391.43
+  ],
+  [
+   0.0088,
+   386.49
+  ],
+  [
+   0.013,
+   385.93
+  ],
+  [
+   0.0218,
+   381.99
+  ],
+  [
+   0.025,
+   380.16
+  ],
+  [
+   0.0389,
+   375.38
+  ],
+  [
+   0.079,
+   363.27
+  ],
+  [
+   0.119,
+   354.08
+  ],
+  [
+   0.1589,
+   346.74
+  ],
+  [
+   0.1988,
+   338.76
+  ],
+  [
+   0.2386,
+   332.14
+  ],
+  [
+   0.2787,
+   327.58
+  ],
+  [
+   0.3188,
+   323.88
+  ],
+  [
+   0.3588,
+   319.06
+  ],
+  [
+   0.3987,
+   315.38
+  ],
+  [
+   0.4387,
+   312.94
+  ],
+  [
+   0.4788,
+   311.49
+  ],
+  [
+   0.5188,
+   309.16
+  ],
+  [
+   0.5588,
+   307.63
+  ],
+  [
+   0.6051,
+   305.1
+  ],
+  [
+   0.6448,
+   303.63
+  ],
+  [
+   0.6845,
+   301.94
+  ],
+  [
+   0.7242,
+   300.58
+  ],
+  [
+   0.7637,
+   299.31
+  ],
+  [
+   0.8031,
+   297.9
+  ],
+  [
+   0.8424,
+   296.84
+  ],
+  [
+   0.8816,
+   296.19
+  ],
+  [
+   0.9208,
+   294.77
+  ],
+  [
+   0.9598,
+   293.66
+  ],
+  [
+   1.0,
+   293.91
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Fitted to the bubble temperatures alone (Barker's method): no set of this pair with vapour compositions passes the consistency point test, or none was measured. Pure-component boiling points of the set within 0.47 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

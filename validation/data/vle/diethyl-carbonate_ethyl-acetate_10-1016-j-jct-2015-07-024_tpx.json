@@ -1,0 +1,138 @@
+{
+ "_about": "Diethyl carbonate (1) + Ethyl acetate (2): total pressures against temperature, 373.2-453.2 K, at set liquid compositions. Rows: temperature in K, liquid mole fraction of diethyl carbonate, pressure in kPa, as stored in the ThermoML Archive record.",
+ "source": {
+  "citation": "H. Y. Ho, S. S. Shu, S. J. Wang, M. J. Lee, Isothermal (vapour + liquid) equilibrium (VLE) for binary mixtures containing diethyl carbonate, phenyl acetate, diphenyl carbonate, or ethyl acetate, J. Chem. Thermodyn. 91 (2015) 35-42",
+  "doi": "10.1016/j.jct.2015.07.024",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.07.024.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 4. The table number in the article was not checked."
+ },
+ "components": [
+  "diethyl-carbonate",
+  "ethyl-acetate"
+ ],
+ "kind": "tpx",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   373.2,
+   0.112,
+   188.0
+  ],
+  [
+   373.2,
+   0.175,
+   179.4
+  ],
+  [
+   373.2,
+   0.318,
+   155.2
+  ],
+  [
+   373.2,
+   0.446,
+   130.6
+  ],
+  [
+   373.2,
+   0.591,
+   104.7
+  ],
+  [
+   373.2,
+   0.742,
+   80.5
+  ],
+  [
+   373.2,
+   0.843,
+   65.9
+  ],
+  [
+   373.2,
+   0.923,
+   53.9
+  ],
+  [
+   413.2,
+   0.174,
+   473.4
+  ],
+  [
+   413.2,
+   0.317,
+   418.9
+  ],
+  [
+   413.2,
+   0.449,
+   362.8
+  ],
+  [
+   413.2,
+   0.56,
+   314.2
+  ],
+  [
+   413.2,
+   0.635,
+   288.7
+  ],
+  [
+   413.2,
+   0.715,
+   252.9
+  ],
+  [
+   413.2,
+   0.844,
+   220.0
+  ],
+  [
+   413.2,
+   0.9,
+   193.1
+  ],
+  [
+   453.2,
+   0.197,
+   1052.9
+  ],
+  [
+   453.2,
+   0.338,
+   915.9
+  ],
+  [
+   453.2,
+   0.458,
+   803.2
+  ],
+  [
+   453.2,
+   0.601,
+   680.5
+  ],
+  [
+   453.2,
+   0.732,
+   568.9
+  ],
+  [
+   453.2,
+   0.83,
+   518.6
+  ],
+  [
+   453.2,
+   0.902,
+   461.7
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. No isotherm of the set has its own pure-component pressures, so the fit uses the vapour pressures of the component records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

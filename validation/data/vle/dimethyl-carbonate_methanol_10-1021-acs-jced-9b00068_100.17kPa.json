@@ -1,0 +1,109 @@
+{
+ "_about": "Dimethyl carbonate (1) + Methanol (2): isobaric T-x-y at 100.17 kPa. Rows: liquid mole fraction of dimethyl carbonate, boiling temperature in K, vapour mole fraction of dimethyl carbonate, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "C. Du, Z. Du, B. Long, H. Du, Z. Yan, X. Yin, Isobaric Vapor-Liquid Equilibria of Binary Mixtures of Diethyl Carbonate with Methyl Acetate, n-Propyl Acetate, or Amyl Acetate at 100.17 kPa, J. Chem. Eng. Data 64 (2019) 2550-2557",
+  "doi": "10.1021/acs.jced.9b00068",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.9b00068.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 25, 26. The table number in the article was not checked."
+ },
+ "components": [
+  "dimethyl-carbonate",
+  "methanol"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 100.17,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0,
+   337.5,
+   0.0
+  ],
+  [
+   0.018,
+   337.3,
+   0.028000000000000025
+  ],
+  [
+   0.035,
+   337.2,
+   0.051000000000000045
+  ],
+  [
+   0.057,
+   337.1,
+   0.07999999999999996
+  ],
+  [
+   0.083,
+   337.0,
+   0.09299999999999997
+  ],
+  [
+   0.09,
+   336.9,
+   0.09999999999999998
+  ],
+  [
+   0.107,
+   336.9,
+   0.10999999999999999
+  ],
+  [
+   0.142,
+   336.9,
+   0.129
+  ],
+  [
+   0.171,
+   337.0,
+   0.14500000000000002
+  ],
+  [
+   0.265,
+   337.4,
+   0.19199999999999995
+  ],
+  [
+   0.378,
+   338.0,
+   0.239
+  ],
+  [
+   0.648,
+   341.2,
+   0.32599999999999996
+  ],
+  [
+   0.688,
+   342.1,
+   0.36
+  ],
+  [
+   0.847,
+   348.3,
+   0.524
+  ],
+  [
+   0.915,
+   352.7,
+   0.654
+  ],
+  [
+   0.963,
+   357.4,
+   0.796
+  ],
+  [
+   1.0,
+   362.5,
+   1.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0070. Pure-component boiling points of the set within 0.36 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

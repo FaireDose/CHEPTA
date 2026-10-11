@@ -1,0 +1,134 @@
+{
+ "_about": "Diethyl carbonate (1) + m-Xylene (2): isobaric T-x-y at 101.33 kPa. Rows: liquid mole fraction of diethyl carbonate, boiling temperature in K, vapour mole fraction of diethyl carbonate, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "J. Ding, W. Guan, P. Wan, L. Wang, H. Wan, G. Guan, Isobaric Vapor Liquid Equilibrium for the Binary Systems of Diethyl Carbonate with Xylene Isomers and Ethylbenzene at 101.33 kPa, J. Chem. Eng. Data 61 (2016) 3724-3729",
+  "doi": "10.1021/acs.jced.6b00085",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00085.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 15, 16. The table number in the article was not checked."
+ },
+ "components": [
+  "diethyl-carbonate",
+  "m-xylene"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.33,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0,
+   412.28,
+   0.0
+  ],
+  [
+   0.0711,
+   410.65,
+   0.1208
+  ],
+  [
+   0.1273,
+   409.41,
+   0.1983
+  ],
+  [
+   0.1994,
+   407.97,
+   0.2898
+  ],
+  [
+   0.2325,
+   407.37,
+   0.3281
+  ],
+  [
+   0.2848,
+   406.56,
+   0.3842
+  ],
+  [
+   0.3875,
+   405.03,
+   0.4854
+  ],
+  [
+   0.4322,
+   404.3,
+   0.5256
+  ],
+  [
+   0.4764,
+   403.79,
+   0.563
+  ],
+  [
+   0.5001,
+   403.38,
+   0.5879
+  ],
+  [
+   0.5645,
+   402.67,
+   0.6387
+  ],
+  [
+   0.6015,
+   402.26,
+   0.6748
+  ],
+  [
+   0.6563,
+   401.75,
+   0.7229
+  ],
+  [
+   0.7029,
+   401.35,
+   0.7532
+  ],
+  [
+   0.7399,
+   401.05,
+   0.7829
+  ],
+  [
+   0.7758,
+   400.75,
+   0.8145
+  ],
+  [
+   0.8006,
+   400.7,
+   0.8353
+  ],
+  [
+   0.854,
+   400.25,
+   0.877
+  ],
+  [
+   0.893,
+   399.91,
+   0.9052
+  ],
+  [
+   0.9201,
+   399.89,
+   0.9235
+  ],
+  [
+   0.9582,
+   399.87,
+   0.9622
+  ],
+  [
+   1.0,
+   399.84,
+   1.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0047. Pure-component boiling points of the set within 0.15 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

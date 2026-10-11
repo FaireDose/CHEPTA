@@ -12,7 +12,11 @@ import binaries from "../src/data/binaries.json" with { type: "json" };
 
 const load = p => JSON.parse(readFileSync(new URL(p, import.meta.url)));
 const { fits } = load("../validation/data/vle/fits.json");
-const GATE = { T_K: 0.5, y: 0.012, P_pct: 1.5 };
+const GATE_MAIN = { T_K: 0.5, y: 0.012, P_pct: 1.5 };
+// sets written within the wider limits (fit_parameters.WIDE_GATE, decision of 2026-10-11) carry a quality_warning
+// and a "fit-quality" entry in src/data/known-issues.json, which the workbench shows; they are held to these limits
+const WIDE_GATE = { T_K: 2.5, y: 0.02, P_pct: 3.0 };
+const known = load("../src/data/known-issues.json").issues;
 const SLACK = 1.02;   // the JavaScript engine and the Python reference agree to far better than this
 
 /** The default set of a model for the pair, if it was fitted to this file. */
@@ -38,6 +42,11 @@ for (const f of fits) {
     if (!set) continue;   // the fit did not meet the limits for this model: not written (fit_parameters.py says why)
     written++;
     test(`${f.pair.join(" + ")}, ${model}: follows ${f.file}`, () => {
+      const GATE = set.quality_warning ? WIDE_GATE : GATE_MAIN;
+      if (set.quality_warning) {
+        assert.ok(known.some(k => k.kind === "fit-quality" && k.model === model && k.components.length === 2
+          && f.pair.every(c => k.components.includes(c))), "a set within the wider limits has its known-issues entry");
+      }
       const d = load(`../validation/data/${f.file}`);
       const col = Object.fromEntries(d.columns.map((c, k) => [c, k]));
       if (d.kind === "isothermal-px") {

@@ -1,0 +1,79 @@
+{
+ "_about": "Dimethyl carbonate (1) + Ethylene carbonate (2): isobaric T-x-y at 101.3 kPa. Rows: liquid mole fraction of dimethyl carbonate, boiling temperature in K, vapour mole fraction of dimethyl carbonate, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "Y. J. Fang, J. M. Qian, Isobaric Vapor-Liquid Equilibria of Binary Mixtures Containing the Carbonate Group -OCOO-, J. Chem. Eng. Data 50 (2005) 340-343",
+  "doi": "10.1021/je049859c",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je049859c.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1, 2. The table number in the article was not checked."
+ },
+ "components": [
+  "dimethyl-carbonate",
+  "ethylene-carbonate"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.3,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0231,
+   482.07,
+   0.6625
+  ],
+  [
+   0.0586,
+   446.95,
+   0.8807
+  ],
+  [
+   0.119,
+   419.66,
+   0.9622
+  ],
+  [
+   0.2076,
+   401.21,
+   0.9844
+  ],
+  [
+   0.3623,
+   385.26,
+   0.993
+  ],
+  [
+   0.525,
+   375.27,
+   0.9959
+  ],
+  [
+   0.6296,
+   371.74,
+   0.9969
+  ],
+  [
+   0.781,
+   368.25,
+   0.9982
+  ],
+  [
+   0.8791,
+   365.4,
+   0.999
+  ],
+  [
+   0.9204,
+   364.97,
+   0.9993
+  ],
+  [
+   0.9711,
+   363.96,
+   0.9997
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0052. To be checked by a person against the record (AGENTS.md rule 4)."
+}

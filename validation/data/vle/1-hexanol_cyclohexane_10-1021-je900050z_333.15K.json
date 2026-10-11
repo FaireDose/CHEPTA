@@ -1,0 +1,88 @@
+{
+ "_about": "1-Hexanol (1) + Cyclohexane (2): isothermal total pressures at 333.15 K. Rows: temperature in K, liquid mole fraction of 1-hexanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "P. Gierycz, A. Kosowski, R. Swietlik, Vapor-Liquid Equilibria in Binary Systems Formed by Cyclohexane with Alcohols, J. Chem. Eng. Data 54 (2009) 2996-3001",
+  "doi": "10.1021/je900050z",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je900050z.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 9. The table number in the article was not checked."
+ },
+ "components": [
+  "1-hexanol",
+  "cyclohexane"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   333.15,
+   0.0,
+   51.92
+  ],
+  [
+   333.15,
+   0.0656,
+   50.267
+  ],
+  [
+   333.15,
+   0.1239,
+   49.467
+  ],
+  [
+   333.15,
+   0.1946,
+   48.56
+  ],
+  [
+   333.15,
+   0.2596,
+   47.453
+  ],
+  [
+   333.15,
+   0.3398,
+   45.867
+  ],
+  [
+   333.15,
+   0.3903,
+   44.587
+  ],
+  [
+   333.15,
+   0.457,
+   42.2
+  ],
+  [
+   333.15,
+   0.5203,
+   39.28
+  ],
+  [
+   333.15,
+   0.7066,
+   29.733
+  ],
+  [
+   333.15,
+   0.7781,
+   23.253
+  ],
+  [
+   333.15,
+   0.8465,
+   16.213
+  ],
+  [
+   333.15,
+   1.0,
+   1.013
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

@@ -1,0 +1,91 @@
+{
+ "_about": "1-Hexanol (1) + 1,2-Dichloroethane (2): isobaric bubble temperatures at 95.6 kPa (no vapour compositions are fitted). Rows: liquid mole fraction of 1-hexanol, boiling temperature in K, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "K. S. Reddy, A. V. N. Swamy, T. E. V. Prasad, D. H. L. Prasad, Vapor-Liquid Equilibria of Binary Mixtures Formed by Hexan-1-ol with Chloroethanes and Chloroethenes at 95.6 kPa, J. Chem. Eng. Data 55 (2010) 2073-2076",
+  "doi": "10.1021/je9000608",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je9000608.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 16. The table number in the article was not checked."
+ },
+ "components": [
+  "1-hexanol",
+  "dichloroethane"
+ ],
+ "kind": "isobaric-tx",
+ "P_kPa": 95.6,
+ "columns": [
+  "x_1",
+  "T_K"
+ ],
+ "rows": [
+  [
+   0.0,
+   355.15
+  ],
+  [
+   0.0655,
+   357.15
+  ],
+  [
+   0.1344,
+   359.25
+  ],
+  [
+   0.1969,
+   361.15
+  ],
+  [
+   0.2594,
+   363.15
+  ],
+  [
+   0.3237,
+   365.45
+  ],
+  [
+   0.3862,
+   367.75
+  ],
+  [
+   0.4238,
+   369.25
+  ],
+  [
+   0.4863,
+   371.95
+  ],
+  [
+   0.5243,
+   373.85
+  ],
+  [
+   0.5868,
+   377.15
+  ],
+  [
+   0.6771,
+   383.05
+  ],
+  [
+   0.7396,
+   388.05
+  ],
+  [
+   0.7878,
+   392.75
+  ],
+  [
+   0.8503,
+   400.25
+  ],
+  [
+   0.9375,
+   414.55
+  ],
+  [
+   1.0,
+   428.45
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Fitted to the bubble temperatures alone (Barker's method): no set of this pair with vapour compositions passes the consistency point test, or none was measured. Pure-component boiling points of the set within 0.76 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}
