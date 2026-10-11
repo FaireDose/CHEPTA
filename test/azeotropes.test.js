@@ -43,7 +43,8 @@ test("known-issues.json names real components and models", () => {
   for (const k of known) {
     assert.ok(["NRTL", "UNIQUAC", "ideal", "PR", "SRK"].includes(k.model), k.model);
     for (const c of k.components) assert.ok(pure(c), c);
-    assert.ok(["ternary-azeotrope", "phase-split"].includes(k.kind), k.kind);
+    // fit-quality: a pair set written within the wider limits of validation/python/fit_parameters.py (WIDE_GATE)
+    assert.ok(["ternary-azeotrope", "phase-split", "fit-quality"].includes(k.kind), k.kind);
     assert.ok(k.message && k.reference);
   }
 });

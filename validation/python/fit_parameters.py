@@ -360,10 +360,15 @@ GENERATED = [dict(pair=tuple(f["pair"]), data="txy-file", file=f["file"], check=
              for f in (json.loads(GENERATED_FILE.read_text())["fits"] if GENERATED_FILE.exists() else [])]
 # A generated fit must follow the data it is fitted to: AAD in T and y for T-x-y, in P for P-x.
 GATE = {"T_K": 0.5, "y": 0.012, "P_pct": 1.5}
+# a fit outside GATE but within WIDE_GATE is written too, with a quality_warning in the record and a "fit-quality"
+# entry in src/data/known-issues.json that the workbench shows (decision of the maintainer, 2026-10-11: a set a little
+# outside the gate is better than none); a fit that predicts a liquid split in the data range is never written
+WIDE_GATE = {"T_K": 2.5, "y": 0.02, "P_pct": 3.0}
+KNOWN_FILE = ROOT / "src" / "data" / "known-issues.json"
 
 
-def gate(spec, model, params):
-    """None if a generated fit follows its data within GATE, else the reason."""
+def gate(spec, model, params, GATE=GATE):
+    """None if a generated fit follows its data within GATE (or the limits given), else the reason."""
     i, j = spec["pair"]
     sets = file_sets(spec)
     txy = [c for kind, _, c in sets if kind == "txy"]
@@ -754,7 +759,7 @@ def point_test(spec, nterms=4):
 
 def main(write, only=None):
     binaries = json.loads(BIN_FILE.read_text())
-    rejected = []
+    rejected, warned, done = [], [], []
     for spec in FITS + GENERATED:
         if only is not None and "+".join(sorted(spec["pair"])) not in only:
             continue
@@ -764,6 +769,8 @@ def main(write, only=None):
             if dy_test is not None:
                 print(f"{spec['pair']}: point test (Redlich-Kister, 4 terms, T-x only): mean |dy| = {dy_test:.4f}")
                 test = f" Data consistency point test (Redlich-Kister fit to T-x): mean |dy| {dy_test:.3f}{' (passes, < 0.01)' if dy_test < 0.01 else ' (fails, >= 0.01)'}."
+        if spec.get("generated"):
+            done.append(tuple(sorted(spec["pair"])))
         for model in spec.get("models", ["NRTL", "UNIQUAC"]):
             if not spec.get("generated"):
                 params, _ = fit(spec, model)
@@ -772,15 +779,28 @@ def main(write, only=None):
             else:
                 # NRTL: alpha 0.3, else the other usual values 0.2 and 0.47 (a set that predicts a
                 # spurious liquid split with one alpha may not with another)
+                wide = None   # the first variant outside GATE but within WIDE_GATE, with no liquid split
                 for alpha in ((0.3, 0.2, 0.47) if model == "NRTL" else (None,)):
                     try:
                         params, _ = fit(spec if alpha in (None, 0.3) else dict(spec, alpha=alpha), model)
                         check_phase_splits(spec, model, params)
                         why = gate(spec, model, params)
+                        if why and wide is None and not gate(spec, model, params, WIDE_GATE):
+                            wide = (params, why)
                     except (SystemExit, Exception) as e:
                         why = str(e)
                     if not why:
                         break
+                if why and wide:
+                    params, why_wide = wide
+                    params["quality_warning"] = (
+                        "Outside the main limits of the fits (%g K, %g in y, %g %% in P) but within the wider ones (%g K, %g, "
+                        "%g %%): %s. Use with care; a better data set would replace it." % (
+                            GATE["T_K"], GATE["y"], GATE["P_pct"], WIDE_GATE["T_K"], WIDE_GATE["y"], WIDE_GATE["P_pct"],
+                            why_wide))
+                    warned.append((spec, model, why_wide))
+                    print(f"WIDER LIMITS {model} {spec['pair']}: {why_wide}")
+                    why = None
                 if why:
                     rejected.append((spec["pair"], model, why))
                     print(f"REJECTED {model} {spec['pair']}: {why}")
@@ -836,6 +856,18 @@ def main(write, only=None):
     if write:
         BIN_FILE.write_text(json.dumps(binaries, indent=2) + "\n")
         print(f"updated {BIN_FILE}")
+        # the "fit-quality" entries of the pairs fitted in this run are replaced by the new ones
+        K = json.loads(KNOWN_FILE.read_text())
+        K["issues"] = [k for k in K["issues"] if not (k.get("kind") == "fit-quality" and tuple(sorted(k["components"])) in done)]
+        for spec, model, why in warned:
+            K["issues"].append({"components": list(spec["pair"]), "model": model, "kind": "fit-quality",
+                                "message": "These %s parameters are fitted to open data but follow them less closely than the "
+                                           "other fitted sets: %s (the main limits are %g K, %g in y and %g %% in P). Use with "
+                                           "care." % (model, why, GATE["T_K"], GATE["y"], GATE["P_pct"]),
+                                "reference": "validation/data/%s (%s)" % (spec["file"], spec["describe"].split(" from ")[-1].split(" (")[0]
+                                                                          if " from " in spec["describe"] else spec["file"])})
+        KNOWN_FILE.write_text(json.dumps(K, indent=2, ensure_ascii=False) + "\n")
+        print(f"updated {KNOWN_FILE}: {len(warned)} fit-quality entries")
 
 
 if __name__ == "__main__":
