@@ -590,7 +590,7 @@
     "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
     "fit": "6 measured values with stated uncertainties within 3 % from 1 articles, 303.15-353.15 K, max deviation 0.26 %",
     "notes": "Fitted to measured data instead of the databank: the ChemSep thermal conductivity deviates from the measured values by 19 %; the databank record deviates from these values by +19.5 % (median, +20.2 % at most). Rules: validation/python/measured_components.py.",
-    "chain": "Measured data (ThermoML Archive) above the databank: see docs/MEASURED_CHECKS.md",
+    "chain": "Measured data (NIST TRC ThermoML Archive) above the databank: see docs/MEASURED_CHECKS.md",
     "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 6 measured values from 1 articles, 303.1-353.1 K; median deviation of the articles 0.01 % (within the 5 % tolerance of the engineering report); largest single deviation -0.25 % at 353.1 K (Shokouhi 2013, doi:10.1016/j.tca.2013.03.017); docs/MEASURED_CHECKS.md"
    },
    "T_K": [

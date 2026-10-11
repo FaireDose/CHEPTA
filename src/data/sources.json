@@ -200,6 +200,19 @@
         "validation/data/eos/bae1981_ethylene_propylene.json"
       ]
     },
+    "baird2019-article-cyrene": {
+      "title": "Vapor Pressures, Densities, and PC-SAFT Parameters for 11 Bio-compounds",
+      "authors": "Z. S. Baird, P. Uusi-Kyyny, J.-P. Pokki, E. Pedegert, V. Alopaeus",
+      "year": 2019,
+      "published": "Int. J. Thermophys. 40 (2019) 102",
+      "kind": "open-access article",
+      "doi": "10.1007/s10765-019-2570-9",
+      "url": "https://link.springer.com/content/pdf/10.1007/s10765-019-2570-9.pdf",
+      "access": "Open access, CC BY 4.0 (Springer); data also deposited at the Open Science Framework (doi:10.31219/osf.io/vbqrn)",
+      "files": [
+        "validation/data/pure/measured/article_cyrene.json"
+      ]
+    },
     "belabbaci2009-mea-water": {
       "title": "Isothermal Vapor-Liquid Equilibria of (Monoethanolamine + Water) and (4-Methylmorpholine + Water) Binary Systems at Several Temperatures",
       "authors": "A. Belabbaci, A. Razzouk, I. Mokbel, J. Jose, L. Negadi",

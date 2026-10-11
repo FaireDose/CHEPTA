@@ -396,7 +396,7 @@
     "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
     "fit": "6 measured values with stated uncertainties within 3 % from 2 articles, 308.15-338.15 K, max deviation 2.7 %; 29 values with larger stated uncertainties agree within them",
     "notes": "Fitted to measured data instead of the databank: the ChemSep viscosity deviates from the measured values by 38 % (median of the articles); the databank record deviates from these values by +41.6 % (median, +44.4 % at most). Rules: validation/python/measured_components.py.",
-    "chain": "Measured data (ThermoML Archive) above the databank: see docs/MEASURED_CHECKS.md",
+    "chain": "Measured data (NIST TRC ThermoML Archive) above the databank: see docs/MEASURED_CHECKS.md",
     "excluded": [
      {
       "T_K": 295.0,

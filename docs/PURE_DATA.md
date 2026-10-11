@@ -98,6 +98,22 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | Salicylic acid | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.11 (f) | ChemSep 0.036 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.054 (f) | ChemSep 0.0001 (d) | ChemSep 0.19 (f) |
 | Isopentane | CoolProp 0.33 (f) | CoolProp 0.60 (f) | CoolProp 0.35 (f) | CoolProp 0.56 (f) | CoolProp 0.13 (f) | CoolProp 0.79 (f) | CoolProp 0.17 (f) | CoolProp 0.26 (f) | CoolProp 0.32 (f) | CoolProp 0.00017 (f) |
 | n-Undecane | CoolProp 0.33 (f) | CoolProp 0.35 (f) | CoolProp 0.043 (f) | CoolProp 0.79 (f) | CoolProp 0.18 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.64 (f) | ChemSep 0.0001 (d) | CoolProp 0.0001 (f) |
+| 1,4-Butanediol | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.34 (f) | ChemSep 1 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.31 (f) | ChemSep 0.0001 (d) | ChemSep 0.46 (f) |
+| Cyrene | ChemSep 15 (f) | ChemSep 1 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) |
+| Dimethyl carbonate | CoolProp 0.18 (f) | CoolProp 0.075 (f) | CoolProp 0.00026 (f) | CoolProp 0.61 (f) | CoolProp 0.045 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.069 (f) | ChemSep 0.0001 (d) | CoolProp 0.0001 (f) |
+| Diethyl carbonate | ChemSep 0.74 (f) | ChemSep 0.0001 (d) | ChemSep 0.98 (f) | no open data | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | no open data | no open data | ChemSep 0.13 (f) |
+| Ethylene carbonate | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.055 (f) | ChemSep 0.088 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.27 (f) | ChemSep 0.0001 (d) | ChemSep 0.13 (f) |
+| Propylene carbonate | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.14 (f) | ChemSep 0.25 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.22 (f) | ChemSep 0.0001 (d) | ChemSep 0.18 (f) |
+| Acetaldehyde | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.23 (f) | ChemSep 0.100 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.54 (f) | ChemSep 0.0001 (d) | ChemSep 0.40 (f) |
+| 1-Pentanol | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.27 (f) | ChemSep 0.044 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.66 (f) | ChemSep 0.0001 (d) | ChemSep 0.25 (f) |
+| 1-Hexanol | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.28 (f) | ChemSep 0.067 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.71 (f) | ChemSep 0.0001 (d) | ChemSep 0.28 (f) |
+| 1-Octanol | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) |
+| Diethylene glycol | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.70 (f) | ChemSep 0.042 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.041 (f) | ChemSep 0.0001 (d) | ChemSep 0.60 (f) |
+| p-Cymene | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.49 (f) | ChemSep 0.0011 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.19 (f) | ChemSep 0.0001 (d) | ChemSep 0.52 (f) |
+| Adipic acid | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.21 (f) | ChemSep 0.21 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.23 (f) | ChemSep 0.0001 (d) | ChemSep 0.076 (f) |
+| Maleic anhydride | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.095 (f) | ChemSep 0.026 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.14 (f) | ChemSep 0.0001 (d) | ChemSep 0.29 (f) |
+| Terephthalic acid | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.073 (f) | no open data | no open data | no open data | ChemSep 0.0001 (d) | no open data | ChemSep 0.0001 (d) | no open data |
+| Dimethyl terephthalate | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.045 (f) | ChemSep 0.094 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.16 (f) | ChemSep 0.0001 (d) | ChemSep 0.054 (f) |
 
 "existing": the vapour-pressure records of the ten liquids from v0.1 (not changed).
 
@@ -197,6 +213,22 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | Salicylic acid | 431.75–722.53 | 273–1000.15 | 431.75–551.75 | 431.75–722.83 | 431.75–639 | 431.75–1000 | 431.75–529 | 274–1000 | 431.75–702.05 |
 | Isopentane | 112.65–437.33 | 112.65–500 | 112.65–421.09 | 112.65–437.33 | 112.65–437.33 | 112.65–500 | 112.65–437.33 | 112.65–500 | 112.65–437.33 |
 | n-Undecane | 247.55–606.86 | 247.55–700 | 247.55–606.86 | 247.55–606.86 | 247.58–639 | 247.57–1000 | 247.58–469.08 | 247.571–1000 | 247.55–606.86 |
+| 1,4-Butanediol | 293.05–667 | 273–1500.15 | 283.15–353.15 | 293.05–666.33 | 293.15–501.15 | 293.05–1000 | 293.05–501.15 | 293.05–1000 | 293.05–633.65 |
+| Cyrene | 293.15–423.15 | 197.358–2000 | 323.471–657.86 | 323.471–657.2 | 311–657.86 | 462.101–1000 | 253.15–423.15 | 311–643.15 | 273.15–657.2 |
+| Dimethyl carbonate | 277.06–529.15 | 277.06–600 | 277.06–516.54 | 277.06–529.15 | 277.06–438.4 | 273.15–1000 | 277.06–363.4 | 273.15–1000 | 277.06–529.15 |
+| Diethyl carbonate | 263.15–577 | 126.937–1500 | – | 279.965–576.42 | 263.15–577 | 263.12–1000 | – | – | 230.15–548.15 |
+| Ethylene carbonate | 309.55–779.87 | 273–1500 | 309.55–511.15 | 309.55–779.87 | 310.93–372.04 | 309.55–1000 | 309.55–521.35 | 274–1000 | 309.55–765.7 |
+| Propylene carbonate | 224.85–778 | 273–1500 | 298.15–425 | 224.85–777.22 | 224.85–622.4 | 224.85–1000 | 224.85–514.85 | 274–1000 | 224.85–739.09 |
+| Acetaldehyde | 150.15–455.37 | 200–1500 | 150.15–294 | 150.15–449.38 | 150.15–444.26 | 150.15–1000 | 150.15–410.93 | 150.15–994 | 150.15–428.07 |
+| 1-Pentanol | 195.56–588.1 | 200–1500 | 200.14–390 | 195.56–588.1 | 253.15–450 | 277.39–1000 | 273.15–373.15 | 195.56–990.95 | 273.15–503.15 |
+| 1-Hexanol | 228.55–610.3 | 200–1500 | 228.55–460 | 228.55–610.3 | 243.15–611 | 228.55–1000 | 228.55–575 | 228.55–1000 | 228.55–580.82 |
+| 1-Octanol | 257.65–652.3 | 298.15–1500 | 257.65–467.1 | 257.65–651.64 | 280–468.35 | 257.65–1000 | 257.65–570.15 | 468.35–1000 | 257.65–651.64 |
+| Diethylene glycol | 262.7–719.24 | 200–1500 | 262.7–513.15 | 262.7–743.85 | 262.7–595.68 | 262.7–1000 | 262.7–517.95 | 262.7–1000 | 262.7–639.43 |
+| p-Cymene | 205.25–652 | 200–1500 | 205.25–450.28 | 205.25–651.34 | 205.25–600 | 205.25–1000 | 205.25–593.15 | 205.25–1000 | 205.25–598.69 |
+| Adipic acid | 425.5–809 | 273–1500 | 425.5–611 | 425.5–808.19 | 433.15–466.15 | 425.5–1000 | 425.5–642.7 | 274–1000 | 425.5–768.55 |
+| Maleic anhydride | 325.73–721 | 273–1000.1 | 325.73–540.5 | 325.73–720.27 | 325.73–475.15 | 325.72–1000 | 325.73–475.15 | 274–1000 | 325.73–684.95 |
+| Terephthalic acid | 700.15–943.065 | 273–1500 | – | – | – | 700.15–1000 | – | 274–1000 | – |
+| Dimethyl terephthalate | 413.8–753.15 | 273–1000.15 | 423.15–466.35 | 413.8–753.15 | 413.8–561.15 | 413.8–1550 | 413.8–561.15 | 274–1000 | 413.8–733.4 |
 
 Temperatures in K.
 
@@ -1574,6 +1606,246 @@ At 25 °C (298.15 K) for the liquids and at the normal boiling point for the gas
 | kV | mW/(m·K) | 8.6433 | 8.6433 | 0.00 % | – |
 | σ | mN/m | 24.246 | 24.246 | 0.00 % | 24.31 |
 
+### 1,4-Butanediol, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.00036178 | 0.00036178 | 0.00 % | – |
+| ρL | kg/m³ | 1014.3 | 1014.3 | 0.00 % | – |
+| cp° | J/(mol·K) | 123.02 | 123.29 | -0.22 % | – |
+| cpL | J/(mol·K) | 202.76 | (table) | – | 183.65 |
+| ΔHvap | kJ/mol | 76.455 | 76.455 | 0.00 % | – |
+| μL | mPa·s | 71.389 | 71.389 | 0.00 % | – |
+| μV | μPa·s | 6.89 | 6.89 | 0.00 % | – |
+| kL | mW/(m·K) | 209.92 | 210.49 | -0.27 % | – |
+| kV | mW/(m·K) | 9.5763 | 9.5763 | 0.00 % | – |
+| σ | mN/m | 43.975 | 44.106 | -0.30 % | – |
+
+### Cyrene, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.012599 | (table) | – | – |
+| ρL | kg/m³ | 1245.8 | (table) | – | – |
+| cp° | J/(mol·K) | 189.8 | 189.8 | 0.00 % | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | 134.45 | 134.45 | 0.00 % | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | 38.771 | 38.771 | 0.00 % | – |
+
+### Dimethyl carbonate, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 7.2546 | 7.2654 | -0.15 % | – |
+| ρL | kg/m³ | 1063.1 | 1063.2 | -0.01 % | 1062.9 |
+| cp° | J/(mol·K) | 106.81 | 106.81 | -0.00 % | 99.937 |
+| cpL | J/(mol·K) | 164.15 | 165.07 | -0.56 % | 170.43 |
+| ΔHvap | kJ/mol | 37.774 | 37.763 | 0.03 % | 37.099 |
+| μL | mPa·s | 0.58293 | 0.58293 | 0.00 % | – |
+| μV | μPa·s | 8.1754 | 8.1754 | 0.00 % | – |
+| kL | mW/(m·K) | 161.7 | 161.81 | -0.07 % | – |
+| kV | mW/(m·K) | 12.452 | 12.452 | 0.00 % | – |
+| σ | mN/m | 28.435 | 28.435 | 0.00 % | 30.126 |
+
+### Diethyl carbonate, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 1.436 | 1.4465 | -0.73 % | – |
+| ρL | kg/m³ | 970.05 | 970.05 | -0.00 % | – |
+| cp° | J/(mol·K) | 140.28 | 139.23 | 0.75 % | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | 45.056 | 45.056 | 0.00 % | – |
+| μL | mPa·s | 0.74898 | 0.74898 | 0.00 % | – |
+| μV | μPa·s | 4.6645 | 4.6645 | 0.00 % | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | 19.847 | 19.824 | 0.12 % | – |
+
+### Ethylene carbonate, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.0041113 | (table) | – | – |
+| ρL | kg/m³ | – | – | – | – |
+| cp° | J/(mol·K) | 88.476 | 88.522 | -0.05 % | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | 11.063 | 11.063 | 0.00 % | – |
+| σ | mN/m | – | – | – | – |
+
+### Propylene carbonate, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.0074854 | 0.0074854 | 0.00 % | – |
+| ρL | kg/m³ | 1197.1 | 1197.1 | -0.00 % | – |
+| cp° | J/(mol·K) | 108.4 | 108.52 | -0.11 % | – |
+| cpL | J/(mol·K) | 162.52 | 162.92 | -0.25 % | – |
+| ΔHvap | kJ/mol | 59.515 | 59.515 | 0.00 % | – |
+| μL | mPa·s | 2.5232 | 2.5232 | 0.00 % | – |
+| μV | μPa·s | 7.8405 | 7.8405 | 0.00 % | – |
+| kL | mW/(m·K) | 212.27 | 212.36 | -0.04 % | – |
+| kV | mW/(m·K) | 11.409 | 11.409 | 0.00 % | – |
+| σ | mN/m | 41.026 | 40.974 | 0.13 % | – |
+
+### Acetaldehyde, T = 294.22 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 101.33 | 101.33 | 0.00 % | – |
+| ρL | kg/m³ | 779.26 | 779.26 | 0.00 % | – |
+| cp° | J/(mol·K) | 54.753 | 54.761 | -0.01 % | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | 25.848 | 25.848 | 0.00 % | – |
+| μL | mPa·s | 0.21858 | 0.21858 | 0.00 % | – |
+| μV | μPa·s | 8.5663 | 8.5663 | 0.00 % | – |
+| kL | mW/(m·K) | 183.76 | 183.1 | 0.36 % | – |
+| kV | mW/(m·K) | 11.14 | 11.14 | 0.00 % | – |
+| σ | mN/m | 20.954 | 21.027 | -0.35 % | – |
+
+### 1-Pentanol, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.33114 | 0.33114 | 0.00 % | – |
+| ρL | kg/m³ | 811.87 | 811.87 | 0.00 % | – |
+| cp° | J/(mol·K) | 132.3 | 132.13 | 0.13 % | – |
+| cpL | J/(mol·K) | 208.68 | 208.61 | 0.04 % | – |
+| ΔHvap | kJ/mol | 57.359 | 57.359 | -0.00 % | – |
+| μL | mPa·s | 3.4911 | 3.4911 | 0.00 % | – |
+| μV | μPa·s | 6.6252 | 6.6252 | 0.00 % | – |
+| kL | mW/(m·K) | 153.97 | 154.88 | -0.59 % | – |
+| kV | mW/(m·K) | 11.655 | 11.655 | 0.00 % | – |
+| σ | mN/m | 25.188 | 25.226 | -0.15 % | – |
+
+### 1-Hexanol, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.11273 | 0.11273 | 0.00 % | – |
+| ρL | kg/m³ | 815.28 | 815.28 | 0.00 % | – |
+| cp° | J/(mol·K) | 154.55 | 154.38 | 0.11 % | – |
+| cpL | J/(mol·K) | 244.4 | 244.39 | 0.00 % | – |
+| ΔHvap | kJ/mol | 61.645 | 61.645 | 0.00 % | – |
+| μL | mPa·s | 4.5262 | 4.5262 | 0.00 % | – |
+| μV | μPa·s | 6.2415 | 6.2415 | 0.00 % | – |
+| kL | mW/(m·K) | 153.68 | 153.49 | 0.12 % | – |
+| kV | mW/(m·K) | 10.907 | 10.907 | 0.00 % | – |
+| σ | mN/m | 25.569 | 25.611 | -0.16 % | – |
+
+### 1-Octanol, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.011128 | 0.011128 | 0.00 % | – |
+| ρL | kg/m³ | 825.95 | 825.95 | 0.00 % | – |
+| cp° | J/(mol·K) | 198.32 | 198.32 | 0.00 % | – |
+| cpL | J/(mol·K) | 308.39 | 308.39 | -0.00 % | – |
+| ΔHvap | kJ/mol | 72.301 | 72.301 | 0.00 % | – |
+| μL | mPa·s | 7.3474 | 7.3474 | 0.00 % | – |
+| μV | μPa·s | 5.3979 | 5.3979 | 0.00 % | – |
+| kL | mW/(m·K) | 160.74 | 160.74 | 0.00 % | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | 27.092 | 27.092 | 0.00 % | – |
+
+### Diethylene glycol, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.00056651 | 0.00056651 | 0.00 % | – |
+| ρL | kg/m³ | 1114.7 | 1114.7 | 0.00 % | – |
+| cp° | J/(mol·K) | 133.87 | 134.11 | -0.18 % | – |
+| cpL | J/(mol·K) | 244.23 | 244.32 | -0.04 % | – |
+| ΔHvap | kJ/mol | 84.86 | 84.86 | -0.00 % | – |
+| μL | mPa·s | 29.471 | 29.471 | 0.00 % | – |
+| μV | μPa·s | 6.9025 | 6.9025 | 0.00 % | – |
+| kL | mW/(m·K) | 205.12 | 205.04 | 0.04 % | – |
+| kV | mW/(m·K) | 9.5691 | 9.5691 | 0.00 % | – |
+| σ | mN/m | 47.57 | 47.325 | 0.52 % | – |
+
+### p-Cymene, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.20147 | 0.20147 | 0.00 % | – |
+| ρL | kg/m³ | 852.51 | 852.51 | 0.00 % | – |
+| cp° | J/(mol·K) | 174.39 | 174.63 | -0.14 % | – |
+| cpL | J/(mol·K) | 237.55 | 237.55 | -0.00 % | – |
+| ΔHvap | kJ/mol | 49.892 | 49.892 | 0.00 % | – |
+| μL | mPa·s | 0.79573 | 0.79573 | 0.00 % | – |
+| μV | μPa·s | 5.5885 | 5.5885 | 0.00 % | – |
+| kL | mW/(m·K) | 121.28 | 121.51 | -0.18 % | – |
+| kV | mW/(m·K) | 9.366 | 9.366 | 0.00 % | – |
+| σ | mN/m | 27.488 | 27.432 | 0.20 % | – |
+
+### Adipic acid, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 1.9049e-07 | (table) | – | – |
+| ρL | kg/m³ | – | – | – | – |
+| cp° | J/(mol·K) | 174.32 | 174.15 | 0.10 % | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | 8.5327 | 8.5327 | 0.00 % | – |
+| σ | mN/m | – | – | – | – |
+
+### Maleic anhydride, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.042447 | (table) | – | – |
+| ρL | kg/m³ | – | – | – | – |
+| cp° | J/(mol·K) | 112.2 | 112.3 | -0.09 % | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | 11.661 | 11.661 | 0.00 % | – |
+| σ | mN/m | – | – | – | – |
+
+### Terephthalic acid, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 5.0036e-16 | (table) | – | – |
+| ρL | kg/m³ | – | – | – | – |
+| cp° | J/(mol·K) | 125.33 | 125.25 | 0.06 % | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | 6.1241 | 6.1241 | 0.00 % | – |
+| σ | mN/m | – | – | – | – |
+
+### Dimethyl terephthalate, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.00070782 | (table) | – | – |
+| ρL | kg/m³ | – | – | – | – |
+| cp° | J/(mol·K) | 167.92 | 167.98 | -0.04 % | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | 8.4654 | 8.4654 | 0.00 % | – |
+| σ | mN/m | – | – | – | – |
+
 ## Comparison with measured data
 
 Measured values from the NIST WebBook in `validation/data/pure/measured/webbook.json` (rules and references there), checked by `test/properties.test.js` at 2 %. Liquid heat capacity at 298.15 K against the mean of the values measured in 1970 or later; heat of vaporization at the normal boiling point against Majer and Svoboda (1985). Ethylene glycol has no Majer-Svoboda value at Tb on its WebBook page. Liquid densities of the four ChemSep liquids are not compared with measurements: the WebBook has none and the ThermoML Archive could not be reached.
@@ -1796,6 +2068,42 @@ Measured values from the NIST WebBook in `validation/data/pure/measured/webbook.
 | Benzoic acid | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 6 measured values from 1 articles, 401.3-447.1 K; median deviation of the articles 0.72 % (with |
 | Benzoic acid | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 6 measured values from 1 articles, 400.3-447.1 K; median deviation of the articles 6.14 % (abov |
 | Benzoic acid | liquidThermalConductivity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 4 measured values from 1 articles, 406.8-465.1 K; median deviation of the articles 2.19 % (with |
+| 1,4-Butanediol | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 90 measured values from 22 articles, 293.1-363.1 K; median deviation of the articles 0.13 % (wi |
+| 1,4-Butanediol | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 58 measured values from 3 articles, 293.1-353.1 K; median deviation of the articles 0.07 % (wit |
+| 1,4-Butanediol | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 28 measured values from 7 articles, 293.1-363.1 K; median deviation of the articles 6.00 % (abo |
+| Dimethyl carbonate | vapourPressure | NIST TRC ThermoML Archive (validation/python/check_measured.py): 12 measured values from 4 articles, 336.7-428.1 K; median deviation of the articles 0.11 % (wit |
+| Dimethyl carbonate | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 174 measured values from 57 articles, 278.1-343.1 K; median deviation of the articles 0.02 % (w |
+| Dimethyl carbonate | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 10 measured values from 3 articles, 288.1-323.1 K; median deviation of the articles 0.53 % (wit |
+| Dimethyl carbonate | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 48 measured values from 10 articles, 288.1-343.1 K; median deviation of the articles 1.29 % (wi |
+| Diethyl carbonate | vapourPressure | NIST TRC ThermoML Archive (validation/python/check_measured.py): 35 measured values from 3 articles, 354.7-399.9 K; median deviation of the articles 0.31 % (wit |
+| Diethyl carbonate | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 121 measured values from 41 articles, 278.1-363.1 K; median deviation of the articles 0.09 % (w |
+| Diethyl carbonate | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 63 measured values from 14 articles, 288.1-363.1 K; median deviation of the articles 0.56 % (wi |
+| Diethyl carbonate | surfaceTension | NIST TRC ThermoML Archive (validation/python/check_measured.py): 21 measured values from 1 articles, 273.2-373.2 K; median deviation of the articles 24.06 %; la |
+| Ethylene carbonate | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 4 measured values from 2 articles, 313.1-353.1 K; median deviation of the articles 0.33 % (with |
+| Propylene carbonate | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 76 measured values from 21 articles, 273.1-363.1 K; median deviation of the articles 0.19 % (wi |
+| Propylene carbonate | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 5 measured values from 2 articles, 298.1-323.1 K; median deviation of the articles 3.21 % (abov |
+| Propylene carbonate | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 24 measured values from 9 articles, 288.1-323.1 K; median deviation of the articles 1.70 % (wit |
+| 1-Pentanol | vapourPressure | NIST TRC ThermoML Archive (validation/python/check_measured.py): 66 measured values from 14 articles, 323.1-422.4 K; median deviation of the articles 0.31 % (wi |
+| 1-Pentanol | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 328 measured values from 110 articles, 278.1-403.1 K; median deviation of the articles 0.11 % ( |
+| 1-Pentanol | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 123 measured values from 22 articles, 283.1-373.1 K; median deviation of the articles 0.42 % (w |
+| 1-Pentanol | surfaceTension | NIST TRC ThermoML Archive (validation/python/check_measured.py): 9 measured values from 4 articles, 293.1-318.1 K; median deviation of the articles 1.03 %; larg |
+| 1-Hexanol | vapourPressure | NIST TRC ThermoML Archive (validation/python/check_measured.py): 57 measured values from 5 articles, 338.1-432.3 K; median deviation of the articles 1.80 % (abo |
+| 1-Hexanol | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 268 measured values from 83 articles, 278.1-403.1 K; median deviation of the articles 0.02 % (w |
+| 1-Hexanol | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 8 measured values from 1 articles, 288.1-323.1 K; median deviation of the articles 1.02 % (with |
+| 1-Hexanol | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 100 measured values from 23 articles, 283.1-363.1 K; median deviation of the articles 1.13 % (w |
+| 1-Hexanol | surfaceTension | NIST TRC ThermoML Archive (validation/python/check_measured.py): 17 measured values from 5 articles, 288.1-328.1 K; median deviation of the articles 0.63 %; lar |
+| 1-Octanol | vapourPressure | NIST TRC ThermoML Archive (validation/python/check_measured.py): 45 measured values from 3 articles, 363.1-466.6 K; median deviation of the articles 1.90 % (abo |
+| 1-Octanol | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 225 measured values from 77 articles, 278.1-363.1 K; median deviation of the articles 0.48 % (w |
+| 1-Octanol | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 12 measured values from 2 articles, 288.1-323.1 K; median deviation of the articles 4.29 % (abo |
+| 1-Octanol | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 106 measured values from 27 articles, 283.1-363.1 K; median deviation of the articles 3.71 % (w |
+| 1-Octanol | liquidThermalConductivity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 6 measured values from 1 articles, 274.9-375.0 K; median deviation of the articles 3.35 % (with |
+| 1-Octanol | surfaceTension | NIST TRC ThermoML Archive (validation/python/check_measured.py): 5 measured values from 2 articles, 298.1-313.1 K; median deviation of the articles 1.19 %; larg |
+| Diethylene glycol | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 175 measured values from 31 articles, 283.1-464.1 K; median deviation of the articles 0.15 % (w |
+| Diethylene glycol | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 6 measured values from 1 articles, 303.1-353.1 K; median deviation of the articles 0.37 % (with |
+| Diethylene glycol | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 71 measured values from 11 articles, 288.1-464.1 K; median deviation of the articles 2.82 % (wi |
+| Diethylene glycol | liquidThermalConductivity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 5 measured values from 1 articles, 298.1-338.2 K; median deviation of the articles 1.91 % (with |
+| p-Cymene | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 13 measured values from 5 articles, 298.1-328.1 K; median deviation of the articles 0.08 % (wit |
+| p-Cymene | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 4 measured values from 1 articles, 298.6-328.4 K; median deviation of the articles 1.44 % (with |
 
 ## Range limits to note
 
@@ -1812,6 +2120,7 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
 - N-Methyl-2-pyrrolidone, kV: starts at 477.42 K, above the normal boiling point 477.144 K (ChemSep range); vapour states between Tb and 477.42 K have no value.
 - Formic acid, kV: starts at 420 K, above the normal boiling point 373.701 K (ChemSep range); vapour states between Tb and 420 K have no value.
 - Isoprene, μV: starts at 307.2 K, above the normal boiling point 307.198 K (ChemSep range); vapour states between Tb and 307.2 K have no value.
+- 1-Octanol, kV: starts at 468.35 K, above the normal boiling point 467.093 K (ChemSep range); vapour states between Tb and 468.35 K have no value.
 
 ## Cross-checks
 
@@ -1871,6 +2180,22 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
 - cross-check naphthalene vapour pressure vs Camin and Rossini, 1955, 399.47-491.79 K: max +1.23 % at 399.5 K
 - cross-check benzoic-acid vapour pressure vs Stull, 1947, 369.00-522.40 K: max -15.50 % at 373.1 K
 - cross-check salicylic-acid vapour pressure vs Stull, 1947, 386.80-529.00 K: max -5.82 % at 479.5 K
+- cross-check diethyl-carbonate vapour pressure vs Stull, 1947, 263.10-399.00 K: max -10.76 % at 273.0 K
+- cross-check acetaldehyde vapour pressure vs Bull, Seregrennaja, et al., 1963, 2, 293.40-377.50 K: max -4.70 % at 331.2 K
+- cross-check acetaldehyde vapour pressure vs Coles and Popper, 1950, 272.90-307.60 K: max -4.28 % at 307.6 K
+- cross-check 1-pentanol vapour pressure vs Ambrose, Sprake, et al., 1975, 437.79-513.79 K: max +7.69 % at 513.8 K
+- cross-check 1-pentanol vapour pressure vs Ambrose and Sprake, 1970, 347.91-429.13 K: max +6.86 % at 347.9 K
+- cross-check 1-pentanol vapour pressure vs Kemme and Kreps, 1969, 307.10-411.00 K: max +12.84 % at 307.1 K
+- cross-check 1-hexanol vapour pressure vs Kemme and Kreps, 1969, 325.40-430.50 K: max +9.91 % at 325.4 K
+- cross-check 1-hexanol vapour pressure vs Rose and Supina, 1961, 334.10-381.70 K: max +5.90 % at 334.1 K
+- cross-check 1-octanol vapour pressure vs Ambrose, Sprake, et al., 1975, 502.19-553.99 K: max +11.35 % at 510.0 K
+- cross-check 1-octanol vapour pressure vs Ambrose, Ellender, et al., 1974, 328.02-387.00 K: max +2.63 % at 328.0 K
+- cross-check 1-octanol vapour pressure vs Ambrose and Sprake, 1970, 386.42-479.27 K: max +3.62 % at 479.3 K
+- cross-check 1-octanol vapour pressure vs Kemme and Kreps, 1969, 352.10-468.50 K: max +7.39 % at 352.1 K
+- cross-check 1-octanol vapour pressure vs Geiseler, Fruwert, et al., 1966, 293.00-353.00 K: max +3.18 % at 314.0 K
+- cross-check p-cymene vapour pressure vs McDonald, Shrader, et al., 1959, 380.19-451.57 K: max +4.30 % at 380.2 K
+- cross-check adipic-acid vapour pressure vs Stull, 1947, 432.70-610.70 K: max -11.40 % at 432.7 K
+- cross-check maleic-anhydride vapour pressure vs Stull, 1947, 317.00-475.00 K: max +8.64 % at 323.1 K
 
 ## Notes
 
@@ -1959,6 +2284,7 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
   - Wagner-JPCRD-2002: W. Wagner and A. Pruß, The IAPWS Formulation 1995 for the Thermodynamic Properties of Ordinary Water Substance for General and Scientific Use, J. Phys. Chem. Ref. Data 31 (2002) 387-535, doi:10.1063/1.1461829
   - Wu-JPCRD-2011: Jiangtao Wu et al., An Equation of State for the Thermodynamic Properties of Dimethyl Ether, J. Phys. Chem. Ref. Data 40 (2011) 023104-1:16, doi:10.1063/1.3582533
   - Xiang-JPCRD-2006: Hong Wei Xiang et al., A New Reference Correlation for the Viscosity of Methanol, J. Phys. Chem. Ref. Data 35 (2006) 1597-1:24, doi:10.1063/1.2360605
+  - Zhou-JPCRD-2011: Yong Zhou et al., Thermodynamic Properties of Dimethyl Carbonate, J. Phys. Chem. Ref. Data 40 (2011) 043106-1:11, doi:10.1063/1.3664084
   - Zhou-JPCRD-2012: Yong Zhou et al., Thermodynamic Properties of o-Xylene, m-Xylene, p-Xylene, and Ethylbenzene, J. Phys. Chem. Ref. Data 41 (2012) 023103-1 - 023103-26, doi:10.1063/1.3703506
   - Zhou-JPCRD-2014: Yong Zhou et al., An Equation of State for the Thermodynamic Properties of Cyclohexane, J. Phys. Chem. Ref. Data 43 (2014) 043105-1:12, doi:10.1063/1.4900538
   - deReuck-BOOK-1993: K. M. de Reuck and R. J. B. Craven, Methanol: International Thermodynamic Tables of the Fluid State - 12, Blackwell Scientific Publications, Oxford, United Kingdom (1993)
