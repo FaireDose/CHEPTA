@@ -131,6 +131,18 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
 
 ## Log
 
+### 2026-10-11
+
+- **The five large deviations of the engineering report (records against measured data):** the maintainer
+  asked to refit them. Under the refit rule of proposal 0008 (refit when the measured values cover 25-100 degC,
+  or when the record misses three times the tolerance): monoethanolamine vapour pressure refitted to the
+  ThermoML values (all seven articles found the ChemSep curve high; the refit is closer to every one of them and
+  to the Antoine equation of Matthews et al. 1950). Kept, with the reason as a known issue (check_measured.KNOWN):
+  ETBE viscosity (one article), glycerol vapour pressure (two articles with uncertainties below 1 % disagree by
+  9 %), vinyl acetate vapour pressure (ThermoML and the WebBook Antoine equations disagree in sign), NMP liquid heat
+  capacity (all eight articles agree it is 1-9 % high, but only to 353 K; a refit would end the record there
+  instead of 541 K). The maintainer chose to keep the NMP record over its full range, to 541 K (2026-10-11).
+
 ### 2026-10-10
 
 - **`chepta@0.3.0` is on npm** (staged with the one-time token and approved on npmjs.com; served by

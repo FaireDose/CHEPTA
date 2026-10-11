@@ -48,6 +48,21 @@ KNOWN = {
     ("mesitylene", "liquidViscosity"):
         "the ChemSep v8.3 viscosity is 10-20 % above all six articles (278-350 K); a refit to them would cover only "
         "278-350 K instead of 228-550 K, so the record stays for now (proposal 0008, batch 3)",
+    # the large deviations of the engineering report, reviewed on 2026-10-11 (docs/DECISIONS.md)
+    ("etbe", "liquidViscosity"):
+        "one article only (Cwiklinska 2007, three values at 293-303 K) finds the ChemSep viscosity 27 % high; one "
+        "article over 10 K cannot replace a record to 450 K",
+    ("glycerol", "vapourPressure"):
+        "the record is fitted to Verevkin et al. (2015, 113 values, 304-436 K); Mokbel et al. (2012), also with "
+        "stated uncertainties below 1 %, is about 9 % higher over 352-463 K, and no single curve meets both",
+    ("vinyl-acetate", "vapourPressure"):
+        "the open data disagree: four ThermoML articles, one value each at the boiling point (345-346 K), find the "
+        "ChemSep curve 1.2-2.5 % high, while the measured Antoine equations of the NIST WebBook (Capkova and Fried "
+        "1963, 295-345 K; Swamy and Van Winkle 1965, 340-355 K) find it 0.4-2 % low; the record lies between them",
+    ("nmp", "liquidHeatCapacity"):
+        "all eight articles find the ChemSep heat capacity 1-9 % high, but they cover 265-353 K only; a refit would "
+        "end the record at 353 K instead of 541 K (the refit rule asks for the measured values to cover 25-100 degC "
+        "or for a deviation above three times the tolerance; this is 2.6 times)",
 }
 
 # the components checked, and the names searched in the archive (its full-text search finds the compound

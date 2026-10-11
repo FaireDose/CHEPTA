@@ -57,7 +57,7 @@ Rules: liquid values at 110 kPa or less, inside the record's temperature range, 
 |---|---|---|---|---|---|---|
 | Vapour pressure | 28 | 3 (0) | 373.1-475.7 | 1.71 % | -3.16 % at 373.1 K (Chylinski 2004, doi:10.1021/je034096z) | ⚠️ above 1 % |
 | Liquid density | 220 | 52 (52) | 288.1-373.1 | 0.15 % | +0.66 % at 303.1 K (Qi 2009, doi:10.1016/j.jct.2008.09.003) | ✅ within 1 % |
-| Liquid heat capacity | 18 | 2 (0) | 306.6-352.5 | 5.28 % | -9.10 % at 306.6 K (Ruzicka 2015, doi:10.1016/j.fluid.2015.06.045) | ⚠️ above 2 % |
+| Liquid heat capacity | 18 | 2 (0) | 306.6-352.5 | 5.28 % | -9.10 % at 306.6 K (Ruzicka 2015, doi:10.1016/j.fluid.2015.06.045) | ⚠️ above 2 % — known issue: all eight articles find the ChemSep heat capacity 1-9 % high, but they cover 265-353 K only; a refit would end the record at 353 K instead of 541 K (the refit rule asks for the measured values to cover 25-100 degC or for a deviation above three times the tolerance; this is 2.6 times) |
 | Liquid viscosity | 128 | 22 (21) | 283.1-353.1 | 0.75 % | -38.93 % at 303.1 K (Kavitha 2012, doi:10.1016/j.jct.2012.03.034) | ✅ within 5 % (record fitted to these values) |
 | Surface tension | 17 | 3 | 277.8-337.9 | 1.76 % | +4.14 % at 277.8 K (Kahl 2003, doi:10.1021/je0201323) | reported (no tolerance) |
 
@@ -239,7 +239,7 @@ Rules: liquid values at 110 kPa or less, inside the record's temperature range, 
 
 | Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
 |---|---|---|---|---|---|---|
-| Vapour pressure | 90 | 2 (1) | 313.3-462.9 | 6.05 % | -14.02 % at 452.6 K (Mokbel 2012, doi:10.1021/je200766t) | ⚠️ above 1 % (record fitted to these values) |
+| Vapour pressure | 90 | 2 (1) | 313.3-462.9 | 6.05 % | -14.02 % at 452.6 K (Mokbel 2012, doi:10.1021/je200766t) | ⚠️ above 1 % (record fitted to these values) — known issue: the record is fitted to Verevkin et al. (2015, 113 values, 304-436 K); Mokbel et al. (2012), also with stated uncertainties below 1 %, is about 9 % higher over 352-463 K, and no single curve meets both |
 | Liquid density | 88 | 23 (22) | 293.1-363.1 | 0.76 % | -1.05 % at 298.1 K (Mohan 2017, doi:10.1016/j.fluid.2017.05.024) | ✅ within 1 % |
 | Liquid viscosity | 18 | 3 (3) | 293.1-353.7 | 1.06 % | +9.16 % at 318.1 K (Ge 2010, doi:10.1021/je900938b) | ✅ within 5 % (record fitted to these values) |
 | Liquid thermal conductivity | 6 | 2 (2) | 293.1-333.1 | 2.09 % | +4.14 % at 333.1 K (Rodil 2018, doi:10.1016/j.tca.2018.04.007) | ✅ within 5 % |
@@ -333,7 +333,7 @@ Rules: liquid values at 110 kPa or less, inside the record's temperature range, 
 
 | Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
 |---|---|---|---|---|---|---|
-| Vapour pressure | 5 | 2 (1) | 353.1-435.6 | 2.44 % | +5.64 % at 353.1 K (Belabbaci 2009, doi:10.1021/je800530u) | ⚠️ above 1 % |
+| Vapour pressure | 5 | 2 (2) | 353.1-435.6 | 0.04 % | -0.32 % at 435.6 K (Kim 2008, doi:10.1021/je800290k) | ✅ within 1 % (record fitted to these values) |
 | Liquid density | 200 | 38 (38) | 285.1-373.1 | 0.04 % | +0.33 % at 293.1 K (Islam 2004, doi:10.1016/j.jct.2004.06.004) | ✅ within 1 % |
 | Liquid heat capacity | 11 | 1 (1) | 303.1-353.1 | 0.14 % | +0.67 % at 313.1 K (Mundhwa 2007, doi:10.1021/je0604232) | ✅ within 2 % |
 | Liquid viscosity | 79 | 16 (16) | 293.1-393.1 | 1.10 % | +9.84 % at 323.1 K (Islam 2004, doi:10.1016/j.jct.2004.06.004) | ✅ within 5 % |
@@ -397,7 +397,7 @@ Rules: liquid values at 110 kPa or less, inside the record's temperature range, 
 
 | Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
 |---|---|---|---|---|---|---|
-| Vapour pressure | 3 | 3 (0) | 345.8-346.1 | 2.48 % | +2.48 % at 346.1 K (Resa 2005, doi:10.1021/je049544x) | ⚠️ above 1 % |
+| Vapour pressure | 3 | 3 (0) | 345.8-346.1 | 2.48 % | +2.48 % at 346.1 K (Resa 2005, doi:10.1021/je049544x) | ⚠️ above 1 % — known issue: the open data disagree: four ThermoML articles, one value each at the boiling point (345-346 K), find the ChemSep curve 1.2-2.5 % high, while the measured Antoine equations of the NIST WebBook (Capkova and Fried 1963, 295-345 K; Swamy and Van Winkle 1965, 340-355 K) find it 0.4-2 % low; the record lies between them |
 | Liquid density | 20 | 8 (7) | 293.1-313.1 | 0.36 % | +2.11 % at 313.1 K (Kapoor 2005, doi:10.1021/je050162g) | ✅ within 1 % |
 | Liquid viscosity | 6 | 2 (2) | 303.1-313.1 | 1.16 % | +4.80 % at 313.1 K (Kapoor 2005, doi:10.1021/je050162g) | ✅ within 5 % |
 
@@ -513,7 +513,7 @@ Rules: liquid values at 110 kPa or less, inside the record's temperature range, 
 |---|---|---|---|---|---|---|
 | Vapour pressure | 55 | 11 (11) | 298.2-346.3 | 0.25 % | +0.79 % at 343.0 K (Haimi 2010, doi:10.1016/j.fluid.2010.09.023) | ✅ within 1 % (record fitted to these values) |
 | Liquid density | 44 | 8 (8) | 283.1-333.1 | 0.15 % | +0.28 % at 288.1 K (Gonzalez-Olmos 2008, doi:10.1016/j.fluid.2008.03.004) | ✅ within 1 % |
-| Liquid viscosity | 3 | 1 (0) | 293.1-303.1 | 27.43 % | -27.91 % at 303.1 K (Cwiklinska 2007, doi:10.1016/j.jct.2007.01.010) | ⚠️ above 5 % |
+| Liquid viscosity | 3 | 1 (0) | 293.1-303.1 | 27.43 % | -27.91 % at 303.1 K (Cwiklinska 2007, doi:10.1016/j.jct.2007.01.010) | ⚠️ above 5 % — known issue: one article only (Cwiklinska 2007, three values at 293-303 K) finds the ChemSep viscosity 27 % high; one article over 10 K cannot replace a record to 450 K |
 | Surface tension | 1 | | | | | too few values (1 measured in all) |
 
 ## Pyridine

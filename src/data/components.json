@@ -21781,23 +21781,26 @@
       "MW": 61.08308,
       "Tc_K": 671.4,
       "Pc_Pa": 8030000.0,
-      "Tb_K": 443.1371,
+      "Tb_K": 443.2645,
       "vapourPressure": {
         "equation": "DIPPR101",
         "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
         "units": "Pa",
-        "A": 224.8343475,
-        "B": -13286.31373,
-        "C": -36.63424221,
-        "D": 1.784197382,
-        "E": 0.51,
-        "Tmin_K": 283.65,
-        "Tmax_K": 670.72,
+        "A": 252.9965819,
+        "B": -15757.08068,
+        "C": -36.11380462,
+        "D": 0.0319467432,
+        "E": 1.0,
+        "Tmin_K": 279.0,
+        "Tmax_K": 671.4,
         "tier": "fitted",
-        "source": "ChemSep v8.3 pure-component database, vapour pressure: ChemSep equation 10 (P = exp(A - B/(T + C)), Pa) refitted in the DIPPR 101 form, 200 points 283.65-670.72 K, max deviation 0.94 %. Not a CoolProp 8.0.0 fluid. Artistic License 2.0",
+        "source": "Fitted to measured vapour pressures (NIST TRC ThermoML Archive): 5 values with stated uncertainties within 1 % from 2 articles, max deviation 0.32 %, and 36 values with larger stated uncertainties, kept where the fit is within them (they extend the range to 279.00 K); and the ChemSep v8.3 pure-component database critical point (671.40 K, 8030000 Pa). Between 442.28 K and the critical point the curve is held only by the critical point. The ChemSep vapour-pressure equation was not used: it deviates from the values within 1 % by -0.5 % (median, +5.8 % at most); see docs/MEASURED_CHECKS.md. Articles: Kim et al., J. Chem. Eng. Data 53 (2008) 2521-2531, doi:10.1021/je800290k; Belabbaci et al., J. Chem. Eng. Data 54 (2009) 2312-2316, doi:10.1021/je800530u; Kapteina et al., J. Chem. Eng. Data 50 (2005) 398-402, doi:10.1021/je049761y; Klepacova et al., J. Chem. Eng. Data 56 (2011) 2242-2248, doi:10.1021/je101259r; Reddy et al., J. Chem. Eng. Data 57 (2012) 1412-1416, doi:10.1021/je3002078; McDougal et al., J. Chem. Eng. Data 59 (2014) 1069-1085, doi:10.1021/je400885z; Sunder and Prasad, J. Chem. Eng. Data 52 (2007) 2050-2052, doi:10.1021/je7001336. Rules: validation/python/measured_components.py (fit_measured_loose).",
         "source_ids": [
+          "nist-thermoml-archive",
           "chemsep-8.3",
-          "coolprop"
+          "reddy2012-2-methoxyethanol-nmp",
+          "sunder2007-dmf-n-hexane",
+          "prasad2007-acetonitrile-mtbe"
         ],
         "crossCheck": [
           {
@@ -21807,10 +21810,469 @@
               338.6,
               444.1
             ],
-            "max_deviation_percent": 20.99
+            "max_deviation_percent": 10.97
           }
         ],
-        "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 5 measured values from 2 articles, 353.1-435.6 K; median deviation of the articles 2.44 % (above the 1 % tolerance of the engineering report); largest single deviation +5.64 % at 353.1 K (Belabbaci 2009, doi:10.1021/je800530u); docs/MEASURED_CHECKS.md"
+        "looser": [
+          {
+            "T_K": 279.0,
+            "value": 8.48,
+            "reference": "Kapteina 2005",
+            "deviation_percent": -6.71,
+            "stated_uncertainty_percent": 10.26
+          },
+          {
+            "T_K": 281.1,
+            "value": 10.55,
+            "reference": "Kapteina 2005",
+            "deviation_percent": -6.73,
+            "stated_uncertainty_percent": 10.14
+          },
+          {
+            "T_K": 294.0,
+            "value": 32.21,
+            "reference": "Kapteina 2005",
+            "deviation_percent": 6.76,
+            "stated_uncertainty_percent": 10.15
+          },
+          {
+            "T_K": 358.6,
+            "value": 3020.0,
+            "reference": "Klepacova 2011",
+            "deviation_percent": 7.28,
+            "stated_uncertainty_percent": 8.61
+          },
+          {
+            "T_K": 432.6,
+            "value": 71800.0,
+            "reference": "Klepacova 2011",
+            "deviation_percent": 0.69,
+            "stated_uncertainty_percent": 1.39
+          },
+          {
+            "T_K": 441.9,
+            "value": 97500.0,
+            "reference": "Klepacova 2011",
+            "deviation_percent": -0.35,
+            "stated_uncertainty_percent": 1.23
+          },
+          {
+            "T_K": 442.28,
+            "value": 95300.0,
+            "reference": "Reddy 2012",
+            "deviation_percent": 3.15,
+            "stated_uncertainty_percent": 7.5
+          },
+          {
+            "T_K": 373.15,
+            "value": 6160.0,
+            "reference": "McDougal 2014",
+            "deviation_percent": 10.43,
+            "stated_uncertainty_percent": 16.4
+          },
+          {
+            "T_K": 373.15,
+            "value": 6170.0,
+            "reference": "McDougal 2014",
+            "deviation_percent": 10.25,
+            "stated_uncertainty_percent": 16.37
+          },
+          {
+            "T_K": 423.15,
+            "value": 52710.0,
+            "reference": "McDougal 2014",
+            "deviation_percent": -0.17,
+            "stated_uncertainty_percent": 2.28
+          },
+          {
+            "T_K": 373.15,
+            "value": 6640.0,
+            "reference": "McDougal 2014",
+            "deviation_percent": 2.45,
+            "stated_uncertainty_percent": 15.21
+          },
+          {
+            "T_K": 423.15,
+            "value": 51970.0,
+            "reference": "McDougal 2014",
+            "deviation_percent": 1.25,
+            "stated_uncertainty_percent": 2.29
+          },
+          {
+            "T_K": 441.45,
+            "value": 94400.0,
+            "reference": "Sunder 2007",
+            "deviation_percent": 1.5,
+            "stated_uncertainty_percent": 5.3
+          },
+          {
+            "T_K": 357.46,
+            "value": 2980.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 2.22,
+            "stated_uncertainty_percent": 20.13
+          },
+          {
+            "T_K": 362.99,
+            "value": 3980.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 2.68,
+            "stated_uncertainty_percent": 15.08
+          },
+          {
+            "T_K": 369.33,
+            "value": 5480.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 2.94,
+            "stated_uncertainty_percent": 10.95
+          },
+          {
+            "T_K": 374.29,
+            "value": 6980.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 2.96,
+            "stated_uncertainty_percent": 8.6
+          },
+          {
+            "T_K": 378.41,
+            "value": 8470.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 3.07,
+            "stated_uncertainty_percent": 7.08
+          },
+          {
+            "T_K": 384.07,
+            "value": 10970.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 3.04,
+            "stated_uncertainty_percent": 5.47
+          },
+          {
+            "T_K": 391.14,
+            "value": 14960.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 2.88,
+            "stated_uncertainty_percent": 4.01
+          },
+          {
+            "T_K": 398.01,
+            "value": 19970.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 2.59,
+            "stated_uncertainty_percent": 3.05
+          },
+          {
+            "T_K": 403.43,
+            "value": 24970.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 1.89,
+            "stated_uncertainty_percent": 2.44
+          },
+          {
+            "T_K": 408.19,
+            "value": 29970.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 2.03,
+            "stated_uncertainty_percent": 2.04
+          },
+          {
+            "T_K": 415.78,
+            "value": 39980.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 1.38,
+            "stated_uncertainty_percent": 1.55
+          },
+          {
+            "T_K": 424.61,
+            "value": 54950.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 0.7,
+            "stated_uncertainty_percent": 1.15
+          },
+          {
+            "T_K": 308.34,
+            "value": 129.32,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -8.95,
+            "stated_uncertainty_percent": 10.13
+          },
+          {
+            "T_K": 313.34,
+            "value": 187.98,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -7.09,
+            "stated_uncertainty_percent": 10.08
+          },
+          {
+            "T_K": 338.34,
+            "value": 1006.6,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -0.92,
+            "stated_uncertainty_percent": 1.58
+          },
+          {
+            "T_K": 343.34,
+            "value": 1362.6,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -0.39,
+            "stated_uncertainty_percent": 1.51
+          },
+          {
+            "T_K": 348.34,
+            "value": 1826.5,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -0.06,
+            "stated_uncertainty_percent": 1.46
+          },
+          {
+            "T_K": 353.34,
+            "value": 2425.1,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": 0.11,
+            "stated_uncertainty_percent": 1.42
+          },
+          {
+            "T_K": 358.34,
+            "value": 3193.1,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": 0.05,
+            "stated_uncertainty_percent": 1.4
+          },
+          {
+            "T_K": 363.09,
+            "value": 4113.0,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -0.12,
+            "stated_uncertainty_percent": 1.39
+          },
+          {
+            "T_K": 313.15,
+            "value": 185.5,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -7.22,
+            "stated_uncertainty_percent": 10.3
+          },
+          {
+            "T_K": 333.15,
+            "value": 727.4,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -1.73,
+            "stated_uncertainty_percent": 1.95
+          },
+          {
+            "T_K": 343.15,
+            "value": 1347.2,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -0.4,
+            "stated_uncertainty_percent": 1.48
+          }
+        ],
+        "excluded": [
+          {
+            "T_K": 297.2,
+            "value": 40.9,
+            "reference": "Kapteina 2005",
+            "deviation_percent": 12.18,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 300.2,
+            "value": 53.03,
+            "reference": "Kapteina 2005",
+            "deviation_percent": 12.54,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 303.2,
+            "value": 63.3,
+            "reference": "Kapteina 2005",
+            "deviation_percent": 21.8,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 306.3,
+            "value": 83.66,
+            "reference": "Kapteina 2005",
+            "deviation_percent": 19.24,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 309.4,
+            "value": 105.6,
+            "reference": "Kapteina 2005",
+            "deviation_percent": 21.4,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 312.4,
+            "value": 133.7,
+            "reference": "Kapteina 2005",
+            "deviation_percent": 21.46,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 315.4,
+            "value": 168.9,
+            "reference": "Kapteina 2005",
+            "deviation_percent": 21.06,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 318.4,
+            "value": 202.7,
+            "reference": "Kapteina 2005",
+            "deviation_percent": 26.29,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 321.4,
+            "value": 255.9,
+            "reference": "Kapteina 2005",
+            "deviation_percent": 24.54,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 324.5,
+            "value": 313.4,
+            "reference": "Kapteina 2005",
+            "deviation_percent": 26.8,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 373.0,
+            "value": 6400.0,
+            "reference": "Klepacova 2011",
+            "deviation_percent": 5.52,
+            "why": "stated uncertainty 4.4 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 385.7,
+            "value": 11700.0,
+            "reference": "Klepacova 2011",
+            "deviation_percent": 3.88,
+            "why": "stated uncertainty 3.4 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 403.6,
+            "value": 24900.0,
+            "reference": "Klepacova 2011",
+            "deviation_percent": 2.86,
+            "why": "stated uncertainty 2.4 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 422.7,
+            "value": 51100.0,
+            "reference": "Klepacova 2011",
+            "deviation_percent": 1.38,
+            "why": "stated uncertainty 1.4 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 423.15,
+            "value": 50620.0,
+            "reference": "McDougal 2014",
+            "deviation_percent": 3.95,
+            "why": "stated uncertainty 2.3 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 415.81,
+            "value": 39950.0,
+            "reference": "Kim 2008",
+            "deviation_percent": 1.57,
+            "why": "stated uncertainty 1.6 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 283.34,
+            "value": 16.0,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -22.75,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 288.34,
+            "value": 25.33,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -20.16,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 293.34,
+            "value": 38.66,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -16.27,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 298.34,
+            "value": 58.66,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -13.49,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 303.34,
+            "value": 87.99,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -11.34,
+            "why": "stated uncertainty 10 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 318.34,
+            "value": 269.31,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -5.37,
+            "why": "stated uncertainty 1.7 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 323.34,
+            "value": 381.3,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -3.98,
+            "why": "stated uncertainty 1.7 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 328.34,
+            "value": 533.29,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -2.8,
+            "why": "stated uncertainty 1.6 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 333.34,
+            "value": 735.94,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -1.66,
+            "why": "stated uncertainty 1.6 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 283.15,
+            "value": 15.8,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -23.25,
+            "why": "stated uncertainty 12 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 293.15,
+            "value": 38.2,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -16.73,
+            "why": "stated uncertainty 11 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 303.15,
+            "value": 86.7,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -11.45,
+            "why": "stated uncertainty 11 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 323.15,
+            "value": 376.2,
+            "reference": "Belabbaci 2009",
+            "deviation_percent": -3.98,
+            "why": "stated uncertainty 2.2 % is above the target, and the value deviates by more than it"
+          }
+        ],
+        "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 5 measured values from 2 articles, 353.1-435.6 K; median deviation of the articles 0.04 % (within the 1 % tolerance of the engineering report); largest single deviation -0.32 % at 435.6 K (Kim 2008, doi:10.1021/je800290k); docs/MEASURED_CHECKS.md"
       },
       "uniquac": {
         "r": 3.0436,
@@ -21821,7 +22283,7 @@
         ]
       },
       "omega": 0.550815,
-      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT). Tb: the temperature at which the vapour-pressure record reaches 101.325 kPa (443.137 K); ChemSep lists 444.15 K.",
+      "constants_source": "ChemSep pure-component database v8.3 (Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT). Tb: the temperature at which the vapour-pressure record reaches 101.325 kPa (443.264 K); ChemSep lists 444.15 K.",
       "constants_source_ids": [
         "chemsep-8.3"
       ],
