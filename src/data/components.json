@@ -32318,27 +32318,30 @@
           ]
         },
         "idealGasHeatCapacity": {
-          "equation": "DIPPR100",
+          "equation": "DIPPR107",
           "coefficients": {
-            "A": 21.51873,
-            "B": 0.6758666,
-            "C": -0.000398693,
-            "D": 8.36298e-08,
-            "E": 0.0
+            "A": 64.07498315,
+            "B": 300.3376703,
+            "C": 540.1585899,
+            "D": -150.8384864,
+            "E": 540.1068555
           },
           "units": "J/mol/K",
-          "Tmin_K": 197.3579,
-          "Tmax_K": 2000.0,
-          "tier": "databank",
+          "Tmin_K": 200.0,
+          "Tmax_K": 700.0,
+          "tier": "fitted",
           "source": {
-            "name": "ChemSep v8.31 pure-component database, data file 2",
-            "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
-            "access": "Artistic License 2.0",
-            "fit": "ChemSep equation 4 coefficients taken over unchanged except: ChemSep equation 4 is DIPPR 100 with the higher coefficients zero. coefficients converted from J/kmol/K to J/mol/K.; reproduces ChemSep within 0.0001 % at 200 points 197.36-2000.00 K",
-            "chain": "CoolProp 8.0.0: fluid not included; ChemSep, as proposal 0009 sets for the components that are not CoolProp fluids (checked against the NIST WebBook where it has data: vapour pressure)"
+            "name": "Open-access article (calculated values)",
+            "reference": "V. Jerabek, V. Stejfa, M. Klajmon, K. Rehak, Thermodynamic Properties and Phase Equilibria of Dihydrolevoglucosenone and Its Mixtures with Hydrocarbons, J. Chem. Eng. Data 68 (2023) 3361-3376, doi:10.1021/acs.jced.3c00461, Table 4",
+            "url": "https://pubs.acs.org/doi/10.1021/acs.jced.3c00461",
+            "access": "Open access, CC BY 4.0 (American Chemical Society)",
+            "file": "validation/data/pure/measured/article_cyrene_jced2023.json",
+            "fit": "26 tabulated points, 200.00-700.00 K, max deviation 0.091 %",
+            "notes": "Values calculated, not measured: rigid-rotor harmonic-oscillator (RRHO) model with quantum-chemistry molecular data of the stable conformer (Table S1 of the supporting information); expanded uncertainty (k = 2) 0.01 Cp as stated; the authors check it against their calorimetric liquid heat capacities and vapour pressures (SimCor, section 3.6). Used instead of the databank: the ChemSep v8.31 data 2 value is about as large as the measured liquid heat capacity (190 against 200 J/(mol K) at 298 K, Jerabek et al. 2023, Table 3), where the calculated ideal-gas value is 75 J/(mol K) lower; the ChemSep v8.31 pure-component database, data file 2 value at 298.15 K, 189.8 J/(mol K), is +52 % from it.",
+            "chain": "Open-access article above the databank, where the databank value is implausible (ARTICLE_CP0)"
           },
           "source_ids": [
-            "chemsep-8.31-2"
+            "jerabek2023-article-cyrene"
           ]
         },
         "liquidHeatCapacity": {
