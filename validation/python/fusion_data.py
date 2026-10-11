@@ -19,7 +19,8 @@ validation/data/pure/fusion/webbook_fusion.json and chosen here by a fixed rule:
 
 Where the WebBook has no enthalpy of fusion (or no melting temperature), the next source of rule 1 (step 4): the ChemSep
 v8.3 databank (chemsep1.xml, TriplePointTemperature or NormalMeltingPointTemperature, and HeatOfFusionAtMeltingPoint),
-labelled so. Otherwise the ChemSep values are the cross-check, stated in the record.
+labelled so; where ChemSep has neither, an open-access article (step 5) whose data file in validation/data/pure/measured/
+states them (Cyrene: Jerabek et al. 2023). Otherwise the ChemSep values are the cross-check, stated in the record.
 
     python validation/python/fusion_data.py --fetch --chemsep chemsep1.xml chemsep2.xml   # download, then choose
     python validation/python/fusion_data.py --chemsep chemsep1.xml chemsep2.xml --write   # write the records
@@ -190,6 +191,16 @@ def chemsep_values(cs, cas):
             "Hfus_J_mol": Hf / 1000 if Hf else None}
 
 
+def article_fusion(cid):
+    """(fusion block, source block) of an open-access article file of the component that states the melting data."""
+    d = ROOT / "validation" / "data" / "pure" / "measured"
+    for f in sorted(d.glob("article_%s.json" % cid)) + sorted(d.glob("article_%s_*.json" % cid)):
+        a = json.loads(f.read_text())
+        if "fusion" in a:
+            return a["fusion"], a["source"]
+    return None
+
+
 def build(comps, data, cs):
     out, report = {}, []
     for cid, c in comps.items():
@@ -211,6 +222,21 @@ def build(comps, data, cs):
                                        "selection": "ChemSep %s and enthalpy of fusion; NIST WebBook (%s): %s" % (
                                            x["Tm_tag"], url, why)}}
                 report.append((cid, x["Tm_K"], x["Hfus_J_mol"], 0, None, "ChemSep (WebBook: %s)" % why))
+                continue
+            # the next source of rule 1 (step 5): an open-access article (validation/data/pure/measured/article_<id>*.json)
+            art = article_fusion(cid)
+            if art:
+                f, src = art
+                out[cid] = {"Tm_K": f["Tm_K"], "Hfus_J_mol": round(f["Hfus_kJ_mol"] * 1000, 1), "tier": "databank",
+                            "source": {"name": "Open-access article", "reference": src["citation"] + ", doi:" + src["doi"],
+                                       "access": src["access"], "url": src["open_copy"],
+                                       "Tm_uncertainty_K": f["Tm_uncertainty_K"],
+                                       "selection": "melting temperature %g +/- %g K and enthalpy of fusion %g +/- %g kJ/mol, %s; "
+                                                    "NIST WebBook (%s): %s; ChemSep: %s" % (
+                                                        f["Tm_K"], f["Tm_uncertainty_K"], f["Hfus_kJ_mol"],
+                                                        f["Hfus_uncertainty_kJ_mol"], f["where"], url, why,
+                                                        "no enthalpy of fusion" if x and x["Tm_K"] else "no value")}}
+                report.append((cid, f["Tm_K"], f["Hfus_kJ_mol"] * 1000, 1, None, "open-access article"))
                 continue
             out[cid] = {"available": False, "searched": [
                 "NIST Chemistry WebBook, phase change data (%s): %s" % (url, why),

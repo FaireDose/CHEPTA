@@ -307,28 +307,31 @@ class WebBook:
 
 
 class ThermoML:
-    """The measured values of a component: its ThermoML file (thermoml_<id>.json) and, where an open-access article
-    outside the archive has values, article_<id>.json in the same format (transcribed from the article's tables, with
-    its source block); either may be missing."""
+    """The measured values of a component: its ThermoML file (thermoml_<id>.json) and, where open-access articles
+    outside the archive have values, one file per article, article_<id>.json or article_<id>_<label>.json, in the same
+    format (transcribed from the article's tables, with its source block); any of them may be missing."""
     def __init__(self, cid):
-        f, a = MEASURED_DIR / ("thermoml_%s.json" % cid), MEASURED_DIR / ("article_%s.json" % cid)
+        f = MEASURED_DIR / ("thermoml_%s.json" % cid)
         self.d = json.loads(f.read_text()) if f.exists() else {"articles": {}, "rows": []}
-        self.from_article = set()
-        if a.exists():
+        self.access = {}  # doi -> access text of an article outside the archive
+        for a in sorted(MEASURED_DIR.glob("article_%s.json" % cid)) + sorted(MEASURED_DIR.glob("article_%s_*.json" % cid)):
             art = json.loads(a.read_text())
             self.d = dict(self.d, articles={**self.d["articles"], **art["articles"]}, rows=self.d["rows"] + art["rows"])
-            self.from_article = set(art["articles"])
-            self.article_access = art["source"]["access"]
+            self.access.update({doi: art["source"]["access"] for doi in art["articles"]})
+        self.from_article = set(self.access)
 
     def origin(self, pts):
         """Where the values come from, for a record's source name and access text."""
-        kinds = {p.get("from") for p in pts if p.get("doi")}
-        if kinds == {"article"}:
-            return "an open-access article", self.article_access
-        if "article" in kinds:
-            return "the NIST TRC ThermoML Archive and an open-access article", \
-                "open data (NIST TRC ThermoML Archive) and an open-access article (%s)" % self.article_access
-        return "NIST TRC ThermoML Archive", "open data (NIST TRC ThermoML Archive), free to read even where the article is not"
+        used = {p["doi"] for p in pts if p.get("doi")}
+        arts = sorted(used & self.from_article)
+        if not arts:
+            return "NIST TRC ThermoML Archive", "open data (NIST TRC ThermoML Archive), free to read even where the article is not"
+        what = "an open-access article" if len(arts) == 1 else "%d open-access articles" % len(arts)
+        acc = "; ".join("%s: %s" % (self.short(d), self.access[d]) for d in arts)
+        if used - self.from_article:
+            return "the NIST TRC ThermoML Archive and " + what, \
+                "open data (NIST TRC ThermoML Archive) and %s (%s)" % (what, acc)
+        return what, acc
 
     def cite(self, doi):
         a = self.d["articles"][doi]

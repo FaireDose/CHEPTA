@@ -337,11 +337,17 @@ MEASURED_REFIT = {
     "mea": {"vapourPressure": "the ChemSep vapour pressure is above the measured values of all seven articles, by "
                               "2-9 % (median per article) above 350 K and up to 44 % near room temperature, and above the "
                               "Antoine equation of Matthews et al. (1950) by up to 21 %"},
-    # proposal 0009, batch 1: properties ChemSep does not give (its Cyrene vapour pressure is in an equation, 200,
-    # that DWSIM does not define); the measured values of an open-access article (article_cyrene.json) or of the
-    # ThermoML Archive instead
+    # proposal 0009, batch 1: properties ChemSep does not give, or gives wrongly (Cyrene, chemsep2.xml); the measured
+    # values of open-access articles (article_cyrene_*.json: Baird et al. 2019, Jerabek et al. 2023, Medgyesi and Mika
+    # 2024) or of the ThermoML Archive instead
     "cyrene": {"vapourPressure": "ChemSep stores the vapour pressure in an equation (200) that DWSIM does not define",
-               "liquidDensity": "ChemSep has no liquid density"},
+               "liquidDensity": "ChemSep has no liquid density",
+               "liquidHeatCapacity": "the ChemSep heat capacity is 19-22 % below the measured values of Jerabek et al. "
+                                     "(2023) where they overlap (323-350 K), and 23-32 % below them when extended to 260 K",
+               "liquidViscosity": "the ChemSep viscosity equation (101) has a negative B, so that the viscosity rises with "
+                                  "temperature; it is many orders of magnitude below the measured values",
+               "surfaceTension": "the ChemSep surface tension is about 15 % below the measured values of Medgyesi and Mika "
+                                 "(2024), the only open measurements"},
     # (ChemSep has no diethyl carbonate liquid heat capacity either, and no measured value is within the 1 % target:
     # "no open data at the target", from_measured)
     "diethyl-carbonate": {"liquidHeatCapacity": "ChemSep has no liquid heat capacity"},
@@ -364,7 +370,41 @@ SEARCHED_BEYOND = {
                           for p in ("liquidHeatCapacity", "heatOfVaporization", "liquidViscosity",
                                     "liquidThermalConductivity", "surfaceTension")},
 }
+# articles whose values are compared with a measured record but not fitted, where another article with stated
+# uncertainties has values for the same property (they are fitted where they are the only measurements)
+CROSS_CHECK_ONLY = {
+    "cyrene": {"10.1002/cplu.202400379": {
+        "vapourPressure": "no stated uncertainty; 7-12 % above the curve through the other two articles at 400-450 K, and "
+                          "above Baird et al. (2019) at 383-403 K, as the authors note",
+        "liquidDensity": "no stated uncertainty (the supporting information gives the spread of three experiments)",
+        "liquidViscosity": "no stated uncertainty (the supporting information gives the spread of three experiments); "
+                           "5 % below Jerabek et al. (2023)"}},
+}
 VP_FROM_MEASURED = {cid for cid, props in MEASURED_REFIT.items() if "vapourPressure" in props}
+
+
+def set_aside(cid, vals, fit_from):
+    """The values of CROSS_CHECK_ONLY articles, set aside when other values remain: (fitted, set aside, reasons)."""
+    cc = {d: w[fit_from] for d, w in CROSS_CHECK_ONLY.get(cid, {}).items() if fit_from in w}
+    aside = [p for p in vals if p.get("doi") in cc]
+    rest = [p for p in vals if p.get("doi") not in cc]
+    if not aside or not rest:
+        return vals, [], {}
+    return rest, aside, {d: cc[d] for d in {p["doi"] for p in aside}}
+
+
+def cross_check(tml, form, coeffs, aside, reasons, Tc=None):
+    """Deviation of the record from each set-aside article (record / measured - 1)."""
+    out = []
+    for doi, why in reasons.items():
+        ps = [p for p in aside if p["doi"] == doi]
+        T = np.array([p["T"] for p in ps])
+        d = ev(form, coeffs, T, Tc) / np.array([p["y"] for p in ps]) - 1
+        k = int(np.argmax(np.abs(d)))
+        out.append({"reference": tml.cite(doi), "values": len(ps), "T_range_K": [float(T.min()), float(T.max())],
+                    "max_deviation_percent": round(100 * float(d[k]), 2), "at_T_K": float(T[k]),
+                    "median_deviation_percent": round(100 * float(np.median(d)), 2), "not_fitted_because": why})
+    return out
 WEBBOOK_ANTOINE_FILE = Path(__file__).resolve().parents[2] / "validation" / "data" / "pure" / "measured" / "webbook_antoine.json"
 WEBBOOK_ANTOINE_URL = "https://webbook.nist.gov/cgi/cbook.cgi?ID={ID}&Units=SI&Mask=4"
 
@@ -1327,7 +1367,7 @@ class Builder:
         Tc = self.coolprop(cid).Tc if cid in COOLPROP else self.cs.const(cas, "CriticalTemperature")
         form = FORM[prop]
         target = 0.03 if prop in TRANSPORT else 0.01
-        vals = tml.values(prop)
+        vals, aside, reasons = set_aside(cid, tml.values(prop), prop)
         loose_only = not any(p["u_rel"] is None or p["u_rel"] <= target for p in vals)
         if loose_only:
             # no measured value within the target (diethyl carbonate heat capacity, 2.0-5.2 %): no record, as for the
@@ -1344,6 +1384,7 @@ class Builder:
         coeffs, use, kept, exc, m = fit_measured_loose(cid, prop, form, vals, target, Tc=Tc)
         T = np.array([p["T"] for p in use])
         y = np.array([p["y"] for p in use])
+        n_unc = sum(1 for p in use if p["u_rel"] is None)
         Tall = [p["T"] for p in use + kept]
         refs = []
         for p in use + kept:
@@ -1359,8 +1400,10 @@ class Builder:
         where, access = tml.origin(use + kept)
         source = {"name": "Measured values (%s)" % where, "reference": "; ".join(refs),
                   "access": access,
-                  "fit": "%d measured values with stated uncertainties within %g %% from %d articles, %.2f-%.2f K, max "
-                         "deviation %s %%%s" % (len(use), 100 * target, len({p["doi"] for p in use}), T.min(), T.max(), pct(m),
+                  "fit": "%d measured values with stated uncertainties within %g %%%s from %d articles, %.2f-%.2f K, max "
+                         "deviation %s %%%s" % (len(use), 100 * target,
+                                               (" or no stated uncertainty (%d)" % n_unc) if n_unc else "",
+                                               len({p["doi"] for p in use}), T.min(), T.max(), pct(m),
                                                "; %d values with larger stated uncertainties agree within them" % len(kept)
                                                if kept else ""),
                   "notes": "Fitted to measured data instead of the databank: %s%s. Rules: "
@@ -1368,6 +1411,8 @@ class Builder:
                                MEASURED_REFIT[cid][prop], "; the databank record deviates from these values by %s" % old
                                if old else ""),
                   "chain": "Measured data (%s) above the databank: see docs/MEASURED_CHECKS.md" % where}
+        if aside:
+            source["crossCheck"] = cross_check(tml, form, coeffs, aside, reasons, Tc if form == "DIPPR106" else None)
         if exc:
             source["excluded"] = [{"T_K": p["T"], "value": rnd(p["y"], 8), "reference": p["ref"],
                                    "deviation_percent": p["deviation_percent"], "why": p["why"]} for p in exc]
@@ -1507,7 +1552,7 @@ class Builder:
         cas = self.comps[cid]["cas"]
         Tc, Pc = self.cs.const(cas, "CriticalTemperature"), self.cs.const(cas, "CriticalPressure")
         crit = {"T": Tc, "y": Pc, "u_rel": None, "ref": "%s critical point" % self.cs.name(cas), "doi": None}
-        pts = tml.values("vapourPressure")
+        pts, aside, reasons = set_aside(cid, tml.values("vapourPressure"), "vapourPressure")
         # measured Antoine equations of the NIST WebBook, where the ThermoML values alone are too few (phenol)
         W = json.loads(WEBBOOK_ANTOINE_FILE.read_text()).get(cid, {}) if WEBBOOK_ANTOINE_FILE.exists() else {}
         for st in W.get("sets", []):
@@ -1586,6 +1631,10 @@ class Builder:
                                "T_range_K": [st["Tmin_K"], st["Tmax_K"]], "max_deviation_percent": round(100 * float(dev[k]), 2)})
                 self.log.append("  cross-check %s vapour pressure vs %s: max %+.2f %% at %.1f K" % (
                     cid, st["reference"], 100 * dev[k], Ta[k]))
+        if aside:
+            checks += cross_check(tml, "DIPPR101", coeffs, aside, reasons)
+            self.log.append("  cross-check %s vapour pressure vs %s: max %+.2f %% at %.1f K (not fitted)" % (
+                cid, checks[-1]["reference"], checks[-1]["max_deviation_percent"], checks[-1]["at_T_K"]))
         if checks:
             rec["crossCheck"] = checks
         if kept:
