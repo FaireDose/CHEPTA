@@ -197,7 +197,7 @@ def article_fusion(cid):
     for f in sorted(d.glob("article_%s.json" % cid)) + sorted(d.glob("article_%s_*.json" % cid)):
         a = json.loads(f.read_text())
         if "fusion" in a:
-            return a["fusion"], a["source"]
+            return a["fusion"], dict(a["source"], file=f.relative_to(ROOT).as_posix())
     return None
 
 
@@ -229,7 +229,7 @@ def build(comps, data, cs):
                 f, src = art
                 out[cid] = {"Tm_K": f["Tm_K"], "Hfus_J_mol": round(f["Hfus_kJ_mol"] * 1000, 1), "tier": "databank",
                             "source": {"name": "Open-access article", "reference": src["citation"] + ", doi:" + src["doi"],
-                                       "access": src["access"], "url": src["open_copy"],
+                                       "access": src["access"], "url": src["open_copy"], "file": src["file"],
                                        "Tm_uncertainty_K": f["Tm_uncertainty_K"],
                                        "selection": "melting temperature %g +/- %g K and enthalpy of fusion %g +/- %g kJ/mol, %s; "
                                                     "NIST WebBook (%s): %s; ChemSep: %s" % (

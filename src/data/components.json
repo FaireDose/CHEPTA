@@ -31900,23 +31900,364 @@
       "MW": 128.1259,
       "Tc_K": 657.8597,
       "Pc_Pa": 3566445.0,
-      "Tb_K": 498.9997,
+      "Tb_K": 493.7671,
       "vapourPressure": {
         "equation": "DIPPR101",
         "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
         "units": "Pa",
-        "A": 326.9198013,
-        "B": -17239.24791,
-        "C": -49.73889373,
-        "D": 0.05643695415,
+        "A": 214.593737,
+        "B": -13451.06504,
+        "C": -31.11155266,
+        "D": 0.03469228622,
         "E": 1.0,
-        "Tmin_K": 298.26,
+        "Tmin_K": 253.26,
         "Tmax_K": 657.8597,
         "tier": "fitted",
-        "source": "Fitted to measured vapour pressures (an open-access article): 15 values from 1 articles, none with a stated uncertainty within the 1 % target (1.4-17 %); the fit meets each within its own stated uncertainty (max deviation 15 %), so the record is no better than these values; the ChemSep v8.31 pure-component database, data file 2 normal boiling point (499.00 K); and the ChemSep v8.31 pure-component database, data file 2 critical point (657.86 K, 3566445 Pa). Between 403.16 K and the critical point the curve is held only by the normal boiling point and the critical point. ChemSep stores the vapour pressure in its equation 200, which DWSIM, the open-source program that redistributes the databank, does not define (PropertyPackage.vb, CalcCSTDepProp: no case for it), so it was not used. Articles: Baird et al., Int. J. Thermophys. 40 (2019) 102, doi:10.1007/s10765-019-2570-9. Rules: validation/python/measured_components.py (fit_within_uncertainty).",
+        "source": "Fitted to measured vapour pressures (2 open-access articles): 49 values with stated uncertainties within 1 % from 1 articles, max deviation 0.29 %, and 44 values with larger stated uncertainties, kept where the fit is within them (they extend the range to 253.26 K); and the ChemSep v8.31 pure-component database, data file 2 critical point (657.86 K, 3566445 Pa). Between 403.16 K and the critical point the curve is held only by the critical point. ChemSep stores the vapour pressure in its equation 200, which DWSIM, the open-source program that redistributes the databank, does not define (PropertyPackage.vb, CalcCSTDepProp: no case for it), so it was not used. Articles: Jerabek et al., J. Chem. Eng. Data 68 (2023) 3361-3376, doi:10.1021/acs.jced.3c00461; Baird et al., Int. J. Thermophys. 40 (2019) 102, doi:10.1007/s10765-019-2570-9. Rules: validation/python/measured_components.py (fit_measured_loose).",
         "source_ids": [
           "chemsep-8.31-2",
+          "jerabek2023-article-cyrene",
           "baird2019-article-cyrene"
+        ],
+        "crossCheck": [
+          {
+            "reference": "Medgyesi and Mika, ChemPlusChem 89 (2024) e202400379, doi:10.1002/cplu.202400379",
+            "values": 16,
+            "T_range_K": [
+              373.05,
+              494.7
+            ],
+            "max_deviation_percent": -10.74,
+            "at_T_K": 442.75,
+            "median_deviation_percent": -5.0,
+            "not_fitted_because": "no stated uncertainty; 7-12 % above the curve through the other two articles at 400-450 K, and above Baird et al. (2019) at 383-403 K, as the authors note"
+          }
+        ],
+        "looser": [
+          {
+            "T_K": 298.26,
+            "value": 14.4,
+            "reference": "Baird 2019",
+            "deviation_percent": -9.26,
+            "stated_uncertainty_percent": 16.67
+          },
+          {
+            "T_K": 308.31,
+            "value": 28.2,
+            "reference": "Baird 2019",
+            "deviation_percent": 1.86,
+            "stated_uncertainty_percent": 8.87
+          },
+          {
+            "T_K": 318.24,
+            "value": 51.5,
+            "reference": "Baird 2019",
+            "deviation_percent": 14.54,
+            "stated_uncertainty_percent": 15.53
+          },
+          {
+            "T_K": 328.27,
+            "value": 116.9,
+            "reference": "Baird 2019",
+            "deviation_percent": -1.0,
+            "stated_uncertainty_percent": 5.22
+          },
+          {
+            "T_K": 333.32,
+            "value": 157.3,
+            "reference": "Baird 2019",
+            "deviation_percent": 1.43,
+            "stated_uncertainty_percent": 4.45
+          },
+          {
+            "T_K": 338.27,
+            "value": 219.4,
+            "reference": "Baird 2019",
+            "deviation_percent": -1.48,
+            "stated_uncertainty_percent": 3.37
+          },
+          {
+            "T_K": 343.26,
+            "value": 294.0,
+            "reference": "Baird 2019",
+            "deviation_percent": -1.2,
+            "stated_uncertainty_percent": 5.1
+          },
+          {
+            "T_K": 343.26,
+            "value": 288.0,
+            "reference": "Baird 2019",
+            "deviation_percent": 0.86,
+            "stated_uncertainty_percent": 4.17
+          },
+          {
+            "T_K": 353.25,
+            "value": 506.1,
+            "reference": "Baird 2019",
+            "deviation_percent": 0.71,
+            "stated_uncertainty_percent": 1.4
+          },
+          {
+            "T_K": 363.26,
+            "value": 842.0,
+            "reference": "Baird 2019",
+            "deviation_percent": 2.55,
+            "stated_uncertainty_percent": 3.44
+          },
+          {
+            "T_K": 378.23,
+            "value": 1780.0,
+            "reference": "Baird 2019",
+            "deviation_percent": 0.52,
+            "stated_uncertainty_percent": 6.24
+          },
+          {
+            "T_K": 393.18,
+            "value": 3490.0,
+            "reference": "Baird 2019",
+            "deviation_percent": -0.33,
+            "stated_uncertainty_percent": 5.79
+          },
+          {
+            "T_K": 403.16,
+            "value": 5170.0,
+            "reference": "Baird 2019",
+            "deviation_percent": 1.71,
+            "stated_uncertainty_percent": 4.43
+          },
+          {
+            "T_K": 253.26,
+            "value": 0.152,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -3.17,
+            "stated_uncertainty_percent": 33.39
+          },
+          {
+            "T_K": 284.72,
+            "value": 4.04,
+            "reference": "Jerabek 2023",
+            "deviation_percent": 0.48,
+            "stated_uncertainty_percent": 1.74
+          },
+          {
+            "T_K": 284.82,
+            "value": 4.09,
+            "reference": "Jerabek 2023",
+            "deviation_percent": 0.16,
+            "stated_uncertainty_percent": 1.72
+          },
+          {
+            "T_K": 284.81,
+            "value": 4.077,
+            "reference": "Jerabek 2023",
+            "deviation_percent": 0.39,
+            "stated_uncertainty_percent": 1.73
+          },
+          {
+            "T_K": 258.28,
+            "value": 0.278,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -3.93,
+            "stated_uncertainty_percent": 18.49
+          },
+          {
+            "T_K": 287.88,
+            "value": 5.403,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.11,
+            "stated_uncertainty_percent": 1.43
+          },
+          {
+            "T_K": 287.87,
+            "value": 5.394,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.03,
+            "stated_uncertainty_percent": 1.43
+          },
+          {
+            "T_K": 258.29,
+            "value": 0.279,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -4.17,
+            "stated_uncertainty_percent": 18.42
+          },
+          {
+            "T_K": 287.87,
+            "value": 5.375,
+            "reference": "Jerabek 2023",
+            "deviation_percent": 0.32,
+            "stated_uncertainty_percent": 1.43
+          },
+          {
+            "T_K": 263.29,
+            "value": 0.487,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -3.31,
+            "stated_uncertainty_percent": 10.77
+          },
+          {
+            "T_K": 292.91,
+            "value": 8.366,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.03,
+            "stated_uncertainty_percent": 1.1
+          },
+          {
+            "T_K": 263.31,
+            "value": 0.489,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -3.5,
+            "stated_uncertainty_percent": 10.72
+          },
+          {
+            "T_K": 292.91,
+            "value": 8.369,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.07,
+            "stated_uncertainty_percent": 1.1
+          },
+          {
+            "T_K": 263.31,
+            "value": 0.488,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -3.3,
+            "stated_uncertainty_percent": 10.75
+          },
+          {
+            "T_K": 292.91,
+            "value": 8.364,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.01,
+            "stated_uncertainty_percent": 1.1
+          },
+          {
+            "T_K": 268.31,
+            "value": 0.831,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -2.53,
+            "stated_uncertainty_percent": 6.52
+          },
+          {
+            "T_K": 268.32,
+            "value": 0.832,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -2.55,
+            "stated_uncertainty_percent": 6.51
+          },
+          {
+            "T_K": 273.37,
+            "value": 1.39,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -1.77,
+            "stated_uncertainty_percent": 4.1
+          },
+          {
+            "T_K": 273.37,
+            "value": 1.391,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -1.84,
+            "stated_uncertainty_percent": 4.09
+          },
+          {
+            "T_K": 278.23,
+            "value": 2.234,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -1.24,
+            "stated_uncertainty_percent": 2.74
+          },
+          {
+            "T_K": 278.25,
+            "value": 2.24,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -1.32,
+            "stated_uncertainty_percent": 2.73
+          },
+          {
+            "T_K": 278.26,
+            "value": 2.242,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -1.31,
+            "stated_uncertainty_percent": 2.73
+          },
+          {
+            "T_K": 283.17,
+            "value": 3.551,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.87,
+            "stated_uncertainty_percent": 1.91
+          },
+          {
+            "T_K": 283.17,
+            "value": 3.546,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.73,
+            "stated_uncertainty_percent": 1.91
+          },
+          {
+            "T_K": 283.17,
+            "value": 3.549,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.81,
+            "stated_uncertainty_percent": 1.91
+          },
+          {
+            "T_K": 288.2,
+            "value": 5.588,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.63,
+            "stated_uncertainty_percent": 1.39
+          },
+          {
+            "T_K": 288.2,
+            "value": 5.585,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.58,
+            "stated_uncertainty_percent": 1.4
+          },
+          {
+            "T_K": 288.2,
+            "value": 5.586,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.6,
+            "stated_uncertainty_percent": 1.4
+          },
+          {
+            "T_K": 293.11,
+            "value": 8.53,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.27,
+            "stated_uncertainty_percent": 1.09
+          },
+          {
+            "T_K": 293.11,
+            "value": 8.52,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.15,
+            "stated_uncertainty_percent": 1.09
+          },
+          {
+            "T_K": 293.11,
+            "value": 8.522,
+            "reference": "Jerabek 2023",
+            "deviation_percent": -0.18,
+            "stated_uncertainty_percent": 1.09
+          }
+        ],
+        "excluded": [
+          {
+            "T_K": 373.24,
+            "value": 1324.0,
+            "reference": "Baird 2019",
+            "deviation_percent": 6.79,
+            "why": "stated uncertainty 5.2 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 383.26,
+            "value": 2133.0,
+            "reference": "Baird 2019",
+            "deviation_percent": 5.6,
+            "why": "stated uncertainty 4.4 % is above the target, and the value deviates by more than it"
+          }
         ]
       },
       "uniquac": {
@@ -31928,7 +32269,7 @@
         ]
       },
       "omega": 0.4596,
-      "constants_source": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT). Tb: the temperature at which the vapour-pressure record reaches 101.325 kPa (499 K); ChemSep lists 499 K.",
+      "constants_source": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor) (MolecularWeight, CriticalTemperature, CriticalPressure, NormalBoilingPointTemperature); Artistic License 2.0. Not a CoolProp 8.0.0 fluid. Formula and CAS: chemicals library (MIT). Tb: the temperature at which the vapour-pressure record reaches 101.325 kPa (493.767 K); ChemSep lists 499 K.",
       "constants_source_ids": [
         "chemsep-8.31-2"
       ],
@@ -31940,25 +32281,40 @@
         "liquidDensity": {
           "equation": "DIPPR105",
           "coefficients": {
-            "A": 454.8319163,
-            "B": 0.5432123441,
+            "A": 405.4226109,
+            "B": 0.5150224639,
             "C": 657.8597,
-            "D": 0.7107015953
+            "D": 0.6072351965
           },
           "units": "kg/m3",
           "Tmin_K": 293.15,
           "Tmax_K": 423.15,
           "tier": "fitted",
           "source": {
-            "name": "Measured values (an open-access article)",
-            "reference": "Baird et al., Int. J. Thermophys. 40 (2019) 102, doi:10.1007/s10765-019-2570-9",
-            "access": "Open access, CC BY 4.0 (Springer); data also deposited at the Open Science Framework (doi:10.31219/osf.io/vbqrn)",
-            "fit": "8 measured values with stated uncertainties within 1 % from 1 articles, 293.15-423.15 K, max deviation 0.0044 %",
+            "name": "Measured values (2 open-access articles)",
+            "reference": "Baird et al., Int. J. Thermophys. 40 (2019) 102, doi:10.1007/s10765-019-2570-9; Jerabek et al., J. Chem. Eng. Data 68 (2023) 3361-3376, doi:10.1021/acs.jced.3c00461",
+            "access": "Baird 2019: Open access, CC BY 4.0 (Springer); data also deposited at the Open Science Framework (doi:10.31219/osf.io/vbqrn); Jerabek 2023: Open access, CC BY 4.0 (American Chemical Society)",
+            "fit": "21 measured values with stated uncertainties within 1 % from 2 articles, 293.15-423.15 K, max deviation 0.11 %",
             "notes": "Fitted to measured data instead of the databank: ChemSep has no liquid density. Rules: validation/python/measured_components.py.",
-            "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md"
+            "chain": "Measured data (2 open-access articles) above the databank: see docs/MEASURED_CHECKS.md",
+            "crossCheck": [
+              {
+                "reference": "Medgyesi and Mika, ChemPlusChem 89 (2024) e202400379, doi:10.1002/cplu.202400379",
+                "values": 8,
+                "T_range_K": [
+                  293.15,
+                  363.15
+                ],
+                "max_deviation_percent": 0.03,
+                "at_T_K": 323.15,
+                "median_deviation_percent": 0.02,
+                "not_fitted_because": "no stated uncertainty (the supporting information gives the spread of three experiments)"
+              }
+            ]
           },
           "source_ids": [
-            "baird2019-article-cyrene"
+            "baird2019-article-cyrene",
+            "jerabek2023-article-cyrene"
           ]
         },
         "idealGasHeatCapacity": {
@@ -31988,25 +32344,81 @@
         "liquidHeatCapacity": {
           "equation": "DIPPR100",
           "coefficients": {
-            "A": -41.24428,
-            "B": 0.740775,
-            "C": -0.00034578,
-            "D": 0.0,
-            "E": 0.0
+            "A": 104.4103909,
+            "B": 0.3224320062
           },
           "units": "J/mol/K",
-          "Tmin_K": 323.4706,
-          "Tmax_K": 657.8597,
-          "tier": "databank",
+          "Tmin_K": 260.0,
+          "Tmax_K": 350.0,
+          "tier": "fitted",
           "source": {
-            "name": "ChemSep v8.31 pure-component database, data file 2",
-            "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
-            "access": "Artistic License 2.0",
-            "fit": "ChemSep equation 3 coefficients taken over unchanged except: ChemSep equation 3 is DIPPR 100 with the higher coefficients zero. coefficients converted from J/kmol/K to J/mol/K.; reproduces ChemSep within 0.0001 % at 200 points 323.47-657.86 K",
-            "chain": "CoolProp 8.0.0: fluid not included; ChemSep, as proposal 0009 sets for the components that are not CoolProp fluids (checked against the NIST WebBook where it has data: vapour pressure)"
+            "name": "Measured values (an open-access article)",
+            "reference": "Jerabek et al., J. Chem. Eng. Data 68 (2023) 3361-3376, doi:10.1021/acs.jced.3c00461",
+            "access": "Jerabek 2023: Open access, CC BY 4.0 (American Chemical Society)",
+            "fit": "18 measured values with stated uncertainties within 1 % from 1 articles, 260.00-350.00 K, max deviation 0.13 %; 1 values with larger stated uncertainties agree within them",
+            "notes": "Fitted to measured data instead of the databank: the ChemSep heat capacity is 19-22 % below the measured values of Jerabek et al. (2023) where they overlap (323-350 K), and 23-32 % below them when extended to 260 K; the databank record deviates from these values by -20.3 % (median, -21.5 % at most). Rules: validation/python/measured_components.py.",
+            "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md",
+            "excluded": [
+              {
+                "T_K": 293.16,
+                "value": 192.1889,
+                "reference": "Medgyesi 2024",
+                "deviation_percent": 3.51,
+                "why": "stated uncertainty 2.7 % is above the target, and the value deviates by more than it"
+              },
+              {
+                "T_K": 303.16,
+                "value": 193.4701,
+                "reference": "Medgyesi 2024",
+                "deviation_percent": 4.49,
+                "why": "stated uncertainty 2.6 % is above the target, and the value deviates by more than it"
+              },
+              {
+                "T_K": 313.15,
+                "value": 194.7514,
+                "reference": "Medgyesi 2024",
+                "deviation_percent": 5.46,
+                "why": "stated uncertainty 2.6 % is above the target, and the value deviates by more than it"
+              },
+              {
+                "T_K": 323.15,
+                "value": 196.0326,
+                "reference": "Medgyesi 2024",
+                "deviation_percent": 6.41,
+                "why": "stated uncertainty 2.6 % is above the target, and the value deviates by more than it"
+              },
+              {
+                "T_K": 333.16,
+                "value": 197.3139,
+                "reference": "Medgyesi 2024",
+                "deviation_percent": 7.36,
+                "why": "stated uncertainty 2.6 % is above the target, and the value deviates by more than it"
+              },
+              {
+                "T_K": 343.15,
+                "value": 198.5951,
+                "reference": "Medgyesi 2024",
+                "deviation_percent": 8.29,
+                "why": "stated uncertainty 2.6 % is above the target, and the value deviates by more than it"
+              },
+              {
+                "T_K": 353.15,
+                "value": 201.1577,
+                "reference": "Medgyesi 2024",
+                "deviation_percent": 8.51,
+                "why": "stated uncertainty 2.5 % is above the target, and the value deviates by more than it"
+              },
+              {
+                "T_K": 363.15,
+                "value": 205.0014,
+                "reference": "Medgyesi 2024",
+                "deviation_percent": 8.05,
+                "why": "stated uncertainty 2.5 % is above the target, and the value deviates by more than it"
+              }
+            ]
           },
           "source_ids": [
-            "chemsep-8.31-2"
+            "jerabek2023-article-cyrene"
           ]
         },
         "heatOfVaporization": {
@@ -32037,24 +32449,39 @@
         "liquidViscosity": {
           "equation": "DIPPR101",
           "coefficients": {
-            "A": 61.83602,
-            "B": -25277.47,
-            "C": 0.0,
+            "A": -113.5330057,
+            "B": 7446.139027,
+            "C": 14.75875443,
             "D": 0.0
           },
           "units": "Pa s",
-          "Tmin_K": 311.0,
-          "Tmax_K": 657.8597,
-          "tier": "databank",
+          "Tmin_K": 293.15,
+          "Tmax_K": 353.15,
+          "tier": "fitted",
           "source": {
-            "name": "ChemSep v8.31 pure-component database, data file 2",
-            "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
-            "access": "Artistic License 2.0",
-            "fit": "ChemSep equation 101 coefficients taken over unchanged; reproduces ChemSep within 0.0001 % at 200 points 311.00-657.86 K",
-            "chain": "CoolProp 8.0.0: fluid not included; ChemSep, as proposal 0009 sets for the components that are not CoolProp fluids (checked against the NIST WebBook where it has data: vapour pressure)"
+            "name": "Measured values (an open-access article)",
+            "reference": "Jerabek et al., J. Chem. Eng. Data 68 (2023) 3361-3376, doi:10.1021/acs.jced.3c00461",
+            "access": "Jerabek 2023: Open access, CC BY 4.0 (American Chemical Society)",
+            "fit": "13 measured values with stated uncertainties within 3 % from 1 articles, 293.15-353.15 K, max deviation 0.40 %",
+            "notes": "Fitted to measured data instead of the databank: the ChemSep viscosity equation (101) has a negative B, so that the viscosity rises with temperature; it is many orders of magnitude below the measured values; the databank record deviates from these values by -100.0 % (median, -100.0 % at most). Rules: validation/python/measured_components.py.",
+            "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md",
+            "crossCheck": [
+              {
+                "reference": "Medgyesi and Mika, ChemPlusChem 89 (2024) e202400379, doi:10.1002/cplu.202400379",
+                "values": 8,
+                "T_range_K": [
+                  293.15,
+                  363.15
+                ],
+                "max_deviation_percent": 5.8,
+                "at_T_K": 363.15,
+                "median_deviation_percent": 4.94,
+                "not_fitted_because": "no stated uncertainty (the supporting information gives the spread of three experiments); 5 % below Jerabek et al. (2023)"
+              }
+            ]
           },
           "source_ids": [
-            "chemsep-8.31-2"
+            "jerabek2023-article-cyrene"
           ]
         },
         "vapourViscosity": {
@@ -32132,34 +32559,42 @@
         "surfaceTension": {
           "equation": "DIPPR106",
           "coefficients": {
-            "A": 0.0815672,
-            "B": 1.232,
-            "C": 0.0,
-            "D": 0.0,
-            "E": 0.0
+            "A": 0.07909671277,
+            "B": 0.9286187079
           },
           "units": "N/m",
-          "Tmin_K": 273.15,
-          "Tmax_K": 657.2,
+          "Tmin_K": 293.15,
+          "Tmax_K": 352.9,
           "Tc_K": 657.8597,
-          "tier": "databank",
+          "tier": "fitted",
           "source": {
-            "name": "ChemSep v8.31 pure-component database, data file 2",
-            "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
-            "access": "Artistic License 2.0",
-            "fit": "ChemSep equation 106 coefficients taken over unchanged except: A converted from J/kmol to J/mol.; reproduces ChemSep within 0.0001 % at 200 points 273.15-657.20 K",
-            "chain": "CoolProp 8.0.0: fluid not included; ChemSep, as proposal 0009 sets for the components that are not CoolProp fluids (checked against the NIST WebBook where it has data: vapour pressure)"
+            "name": "Measured values (an open-access article)",
+            "reference": "Medgyesi and Mika, ChemPlusChem 89 (2024) e202400379, doi:10.1002/cplu.202400379",
+            "access": "Medgyesi 2024: Open access, CC BY-NC 4.0 (Wiley-VCH)",
+            "fit": "7 measured values with stated uncertainties within 1 % or no stated uncertainty (7) from 1 articles, 293.15-352.90 K, max deviation 0.63 %",
+            "notes": "Fitted to measured data instead of the databank: the ChemSep surface tension is about 15 % below the measured values of Medgyesi and Mika (2024), the only open measurements; the databank record deviates from these values by -15.4 % (median, -18.8 % at most). Rules: validation/python/measured_components.py.",
+            "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md"
           },
           "source_ids": [
-            "chemsep-8.31-2"
+            "medgyesi2024-article-cyrene"
           ]
         }
       },
       "fusion": {
-        "available": false,
-        "searched": [
-          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C53716828&Units=SI&Mask=4): no phase-change data on the page",
-          "ChemSep v8.3: no value"
+        "Tm_K": 251.9,
+        "Hfus_J_mol": 2400.0,
+        "tier": "databank",
+        "source": {
+          "name": "Open-access article",
+          "reference": "V. Jerabek, V. Stejfa, M. Klajmon, K. Rehak, Thermodynamic Properties and Phase Equilibria of Dihydrolevoglucosenone and Its Mixtures with Hydrocarbons, J. Chem. Eng. Data 68 (2023) 3361-3376, doi:10.1021/acs.jced.3c00461",
+          "access": "Open access, CC BY 4.0 (American Chemical Society)",
+          "url": "https://pubs.acs.org/doi/10.1021/acs.jced.3c00461",
+          "file": "validation/data/pure/measured/article_cyrene_jced2023.json",
+          "Tm_uncertainty_K": 0.5,
+          "selection": "melting temperature 251.9 +/- 0.5 K and enthalpy of fusion 2.4 +/- 0.3 kJ/mol, section 3.2 (DSC after in situ drying at 353 K; expanded uncertainties, k = 2; mole fraction purity 0.9996); the authors note the low enthalpy of fusion (fusion entropy 9.5 J/(K mol)); NIST WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C53716828&Units=SI&Mask=4): no phase-change data on the page; ChemSep: no value"
+        },
+        "source_ids": [
+          "jerabek2023-article-cyrene"
         ]
       }
     },

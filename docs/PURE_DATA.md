@@ -99,7 +99,7 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | Isopentane | CoolProp 0.33 (f) | CoolProp 0.60 (f) | CoolProp 0.35 (f) | CoolProp 0.56 (f) | CoolProp 0.13 (f) | CoolProp 0.79 (f) | CoolProp 0.17 (f) | CoolProp 0.26 (f) | CoolProp 0.32 (f) | CoolProp 0.00017 (f) |
 | n-Undecane | CoolProp 0.33 (f) | CoolProp 0.35 (f) | CoolProp 0.043 (f) | CoolProp 0.79 (f) | CoolProp 0.18 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.64 (f) | ChemSep 0.0001 (d) | CoolProp 0.0001 (f) |
 | 1,4-Butanediol | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.34 (f) | ChemSep 1 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.31 (f) | ChemSep 0.0001 (d) | ChemSep 0.46 (f) |
-| Cyrene | ChemSep 15 (f) | ChemSep 1 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) |
+| Cyrene | ChemSep 1 (f) | ChemSep 1 (f) | ChemSep 0.0001 (d) | ChemSep 1 (f) | ChemSep 0.0001 (d) | ChemSep 3 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 1 (f) |
 | Dimethyl carbonate | CoolProp 0.18 (f) | CoolProp 0.075 (f) | CoolProp 0.00026 (f) | CoolProp 0.61 (f) | CoolProp 0.045 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.069 (f) | ChemSep 0.0001 (d) | CoolProp 0.0001 (f) |
 | Diethyl carbonate | ChemSep 0.74 (f) | ChemSep 0.0001 (d) | ChemSep 0.98 (f) | no open data | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | no open data | no open data | ChemSep 0.13 (f) |
 | Ethylene carbonate | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.055 (f) | ChemSep 0.088 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.27 (f) | ChemSep 0.0001 (d) | ChemSep 0.13 (f) |
@@ -214,7 +214,7 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | Isopentane | 112.65–437.33 | 112.65–500 | 112.65–421.09 | 112.65–437.33 | 112.65–437.33 | 112.65–500 | 112.65–437.33 | 112.65–500 | 112.65–437.33 |
 | n-Undecane | 247.55–606.86 | 247.55–700 | 247.55–606.86 | 247.55–606.86 | 247.58–639 | 247.57–1000 | 247.58–469.08 | 247.571–1000 | 247.55–606.86 |
 | 1,4-Butanediol | 293.05–667 | 273–1500.15 | 283.15–353.15 | 293.05–666.33 | 293.15–501.15 | 293.05–1000 | 293.05–501.15 | 293.05–1000 | 293.05–633.65 |
-| Cyrene | 293.15–423.15 | 197.358–2000 | 323.471–657.86 | 323.471–657.2 | 311–657.86 | 462.101–1000 | 253.15–423.15 | 311–643.15 | 273.15–657.2 |
+| Cyrene | 293.15–423.15 | 197.358–2000 | 260–350 | 323.471–657.2 | 293.15–353.15 | 462.101–1000 | 253.15–423.15 | 311–643.15 | 293.15–352.9 |
 | Dimethyl carbonate | 277.06–529.15 | 277.06–600 | 277.06–516.54 | 277.06–529.15 | 277.06–438.4 | 273.15–1000 | 277.06–363.4 | 273.15–1000 | 277.06–529.15 |
 | Diethyl carbonate | 263.15–577 | 126.937–1500 | – | 279.965–576.42 | 263.15–577 | 263.12–1000 | – | – | 230.15–548.15 |
 | Ethylene carbonate | 309.55–779.87 | 273–1500 | 309.55–511.15 | 309.55–779.87 | 310.93–372.04 | 309.55–1000 | 309.55–521.35 | 274–1000 | 309.55–765.7 |
@@ -1625,16 +1625,16 @@ At 25 °C (298.15 K) for the liquids and at the normal boiling point for the gas
 
 | Property | Unit | CHEPTA | Source | Deviation | ChemSep |
 |---|---|---|---|---|---|
-| Psat | kPa | 0.012599 | (table) | – | – |
-| ρL | kg/m³ | 1245.8 | (table) | – | – |
+| Psat | kPa | 0.01295 | (table) | – | – |
+| ρL | kg/m³ | 1246.9 | (table) | – | – |
 | cp° | J/(mol·K) | 189.8 | 189.8 | 0.00 % | – |
-| cpL | J/(mol·K) | – | – | – | – |
+| cpL | J/(mol·K) | 200.54 | (table) | – | – |
 | ΔHvap | kJ/mol | – | – | – | – |
-| μL | mPa·s | – | – | – | – |
+| μL | mPa·s | 11.458 | (table) | – | – |
 | μV | μPa·s | – | – | – | – |
 | kL | mW/(m·K) | 134.45 | 134.45 | 0.00 % | – |
 | kV | mW/(m·K) | – | – | – | – |
-| σ | mN/m | 38.771 | 38.771 | 0.00 % | – |
+| σ | mN/m | 45.154 | (table) | – | 38.771 |
 
 ### Dimethyl carbonate, T = 298.15 K
 
@@ -2180,6 +2180,7 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
 - cross-check naphthalene vapour pressure vs Camin and Rossini, 1955, 399.47-491.79 K: max +1.23 % at 399.5 K
 - cross-check benzoic-acid vapour pressure vs Stull, 1947, 369.00-522.40 K: max -15.50 % at 373.1 K
 - cross-check salicylic-acid vapour pressure vs Stull, 1947, 386.80-529.00 K: max -5.82 % at 479.5 K
+- cross-check cyrene vapour pressure vs Medgyesi and Mika, ChemPlusChem 89 (2024) e202400379, doi:10.1002/cplu.202400379: max -10.74 % at 442.8 K (not fitted)
 - cross-check diethyl-carbonate vapour pressure vs Stull, 1947, 263.10-399.00 K: max -10.76 % at 273.0 K
 - cross-check acetaldehyde vapour pressure vs Bull, Seregrennaja, et al., 1963, 2, 293.40-377.50 K: max -4.70 % at 331.2 K
 - cross-check acetaldehyde vapour pressure vs Coles and Popper, 1950, 272.90-307.60 K: max -4.28 % at 307.6 K
