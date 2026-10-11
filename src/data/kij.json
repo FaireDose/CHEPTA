@@ -7065,6 +7065,8 @@
    "model": "PR",
    "i": "n-hexane",
    "j": "1-pentanol",
+   "set": "chemsep",
+   "default": true,
    "kij": 0.0456,
    "tier": "databank",
    "source": {
@@ -7073,12 +7075,17 @@
     "conditions": "n-Hexane/1-Pentanol p749",
     "entries_in_file": 1
    },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
    "alternatives": []
   },
   {
    "model": "SRK",
    "i": "n-hexane",
    "j": "1-pentanol",
+   "set": "chemsep",
+   "default": true,
    "kij": 0.047,
    "tier": "databank",
    "source": {
@@ -7087,6 +7094,9 @@
     "conditions": "n-Hexane/1-Pentanol p749",
     "entries_in_file": 1
    },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
    "alternatives": []
   }
  ]

@@ -12582,12 +12582,17 @@
       "model": "NRTL",
       "i": "1-hexanol",
       "j": "water",
+      "set": "chemsep",
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": -233.89915655570724,
       "b_ji": 1505.222468698739,
       "alpha": 0.1563,
       "source": "ChemSep NRTL databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(1-hexanol) 0.0102-0.71; 298.15 K: x(1-hexanol) 0.0158-0.702; 323.15 K: x(1-hexanol) 0.0242-0.689; 348.15 K: x(1-hexanol) 0.033-0.671; 373.15 K: x(1-hexanol) 0.0477-0.649), not checked against data in this import.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     },
@@ -12595,11 +12600,16 @@
       "model": "UNIQUAC",
       "i": "1-hexanol",
       "j": "water",
+      "set": "chemsep",
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": -403.90150962587524,
       "b_ji": 4.8937093193687975,
       "source": "ChemSep UNIQUAC databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(1-hexanol) 0.0131-0.74; 298.15 K: x(1-hexanol) 0.0148-0.688; 323.15 K: x(1-hexanol) 0.0168-0.637; 348.15 K: x(1-hexanol) 0.0189-0.588; 373.15 K: x(1-hexanol) 0.0214-0.542), not checked against data in this import.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     },
@@ -12607,12 +12617,17 @@
       "model": "NRTL",
       "i": "aniline",
       "j": "p-cymene",
+      "set": "chemsep",
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": 445.4094722026142,
       "b_ji": -59.55628339934568,
       "alpha": 0.295,
       "source": "ChemSep NRTL databank (via the open-source thermo library).",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     },
@@ -12620,12 +12635,17 @@
       "model": "NRTL",
       "i": "bdo",
       "j": "methanol",
+      "set": "chemsep",
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": -226.7435760771682,
       "b_ji": 224.91497693634037,
       "alpha": 0.3152,
       "source": "ChemSep NRTL databank (via the open-source thermo library).",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     },
@@ -12633,11 +12653,16 @@
       "model": "UNIQUAC",
       "i": "bdo",
       "j": "methanol",
+      "set": "chemsep",
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": -247.02588969678928,
       "b_ji": 144.24923797016166,
       "source": "ChemSep UNIQUAC databank (via the open-source thermo library).",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     },
@@ -12645,12 +12670,17 @@
       "model": "NRTL",
       "i": "bdo",
       "j": "water",
+      "set": "chemsep",
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": 966.2520556962269,
       "b_ji": 659.670184531812,
       "alpha": 0.5778,
       "source": "ChemSep NRTL databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(bdo) 0.817-0.981; 298.15 K: x(bdo) 0.83-0.965; 323.15 K: x(bdo) 0.867-0.927), not checked against data in this import.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     },
@@ -12658,11 +12688,16 @@
       "model": "UNIQUAC",
       "i": "bdo",
       "j": "water",
+      "set": "chemsep",
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": -823.144773813434,
       "b_ji": 186.37686508045104,
       "source": "ChemSep UNIQUAC databank (via the open-source thermo library).",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     },
@@ -12670,12 +12705,17 @@
       "model": "NRTL",
       "i": "diethylene-glycol",
       "j": "water",
+      "set": "chemsep",
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": -50.27163139652671,
       "b_ji": 597.1859182768037,
       "alpha": 0.2974,
       "source": "ChemSep NRTL databank (via the open-source thermo library).",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     },
@@ -12683,13 +12723,2184 @@
       "model": "UNIQUAC",
       "i": "diethylene-glycol",
       "j": "water",
+      "set": "chemsep",
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": -453.1952848249071,
       "b_ji": 174.25621875269306,
       "source": "ChemSep UNIQUAC databank (via the open-source thermo library).",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "1-butanol",
+      "j": "1-pentanol",
+      "set": "fitted-wang2013",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -386.03997771309184,
+      "b_ji": 493.522254040567,
+      "alpha": 0.3,
+      "source": "Fitted to 19 T-x-y points at 101.0 kPa from Wang et al., Fluid Phase Equilib. 341 (2013) 30-34 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-butanol_1-pentanol_10-1016-j-fluid-2012-12-020_101.0kPa.json). AAD 0.20 K in T, 0.0041 in y (max 0.37 K, 0.0077). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "wang2013-1-butanol-2-propanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-butanol",
+      "j": "1-pentanol",
+      "set": "fitted-wang2013",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 168.84208552153123,
+      "b_ji": -204.76127029491346,
+      "source": "Fitted to 19 T-x-y points at 101.0 kPa from Wang et al., Fluid Phase Equilib. 341 (2013) 30-34 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-butanol_1-pentanol_10-1016-j-fluid-2012-12-020_101.0kPa.json). AAD 0.20 K in T, 0.0041 in y (max 0.38 K, 0.0081). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "wang2013-1-butanol-2-propanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-butanol",
+      "j": "bdo",
+      "set": "fitted-yang2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 4.388600192327722,
+      "b_ji": -71.02200484359801,
+      "alpha": 0.3,
+      "source": "Fitted to 12 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 70.0 kPa from Yang et al., J. Chem. Eng. Data 61 (2016) 3034-3040 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-butanol_bdo_10-1021-acs-jced-6b00088_70.0kPa_tx.json). AAD 0.27 K in T (max 0.78 K; no vapour compositions).",
+      "source_ids": [
+        "yang2016-1-butanol-bdo",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-butanol",
+      "j": "bdo",
+      "set": "fitted-yang2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 49.859455467526075,
+      "b_ji": -28.464010785917733,
+      "source": "Fitted to 12 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 70.0 kPa from Yang et al., J. Chem. Eng. Data 61 (2016) 3034-3040 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-butanol_bdo_10-1021-acs-jced-6b00088_70.0kPa_tx.json). AAD 0.29 K in T (max 0.87 K; no vapour compositions).",
+      "source_ids": [
+        "yang2016-1-butanol-bdo",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-butanol",
+      "j": "diethyl-carbonate",
+      "set": "fitted-rodriguez2003",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 339.49543660378913,
+      "b_ji": -86.89642626889223,
+      "alpha": 0.3,
+      "source": "Fitted to 30 T-x-y points at 101.3 kPa from Rodriguez et al., J. Chem. Eng. Data 48 (2003) 86-91 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-butanol_diethyl-carbonate_10-1021-je0201018_101.3kPa.json). AAD 0.11 K in T, 0.0055 in y (max 0.26 K, 0.0130). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "rodriguez2003-1-butanol-diethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-butanol",
+      "j": "diethyl-carbonate",
+      "set": "fitted-rodriguez2003",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -41.010901923350524,
+      "b_ji": -24.439456320233603,
+      "source": "Fitted to 30 T-x-y points at 101.3 kPa from Rodriguez et al., J. Chem. Eng. Data 48 (2003) 86-91 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-butanol_diethyl-carbonate_10-1021-je0201018_101.3kPa.json). AAD 0.11 K in T, 0.0055 in y (max 0.26 K, 0.0128). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "rodriguez2003-1-butanol-diethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-hexanol",
+      "j": "acetonitrile",
+      "set": "fitted-reddy2010-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 713.7926105685137,
+      "b_ji": 205.4785543618541,
+      "alpha": 0.47,
+      "source": "Fitted to 13 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 95.6 kPa from Reddy et al., Fluid Phase Equilib. 298 (2010) 276-279 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-hexanol_acetonitrile_10-1016-j-fluid-2010-08-010_95.6kPa_tx.json). AAD 0.40 K in T (max 0.74 K; no vapour compositions).",
+      "source_ids": [
+        "reddy2010-1-hexanol-acetonitrile",
+        "reddy2010-1-hexanol-dichloroethane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-hexanol",
+      "j": "aniline",
+      "set": "fitted-reddy2010-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 810.4108585261599,
+      "b_ji": -451.24364641939155,
+      "alpha": 0.3,
+      "source": "Fitted to 13 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 95.6 kPa from Reddy et al., Fluid Phase Equilib. 298 (2010) 276-279 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-hexanol_aniline_10-1016-j-fluid-2010-08-010_95.6kPa_tx.json). AAD 0.21 K in T (max 0.57 K; no vapour compositions).",
+      "source_ids": [
+        "reddy2010-1-hexanol-acetonitrile",
+        "reddy2010-1-hexanol-dichloroethane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-hexanol",
+      "j": "aniline",
+      "set": "fitted-reddy2010-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -570.4681241836649,
+      "b_ji": 344.5320910996508,
+      "source": "Fitted to 13 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 95.6 kPa from Reddy et al., Fluid Phase Equilib. 298 (2010) 276-279 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-hexanol_aniline_10-1016-j-fluid-2010-08-010_95.6kPa_tx.json). AAD 0.21 K in T (max 0.58 K; no vapour compositions).",
+      "source_ids": [
+        "reddy2010-1-hexanol-acetonitrile",
+        "reddy2010-1-hexanol-dichloroethane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-hexanol",
+      "j": "cyclohexane",
+      "set": "fitted-gierycz2009",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -154.34475804543507,
+      "b_ji": 901.0184771265813,
+      "alpha": 0.3,
+      "source": "Fitted to 11 total pressures at 333.15 K with the measured pure-component pressures from Gierycz et al., J. Chem. Eng. Data 54 (2009) 2996-3001 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-hexanol_cyclohexane_10-1021-je900050z_333.15K.json). P-x at 333.15 K (with the measured pure-component pressures): AAD 1.48 % (max 3.57 %).",
+      "source_ids": [
+        "gierycz2009-2-butanol-cyclohexane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-hexanol",
+      "j": "cyclohexane",
+      "set": "fitted-gierycz2009",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 134.01657011424214,
+      "b_ji": -320.33400382019636,
+      "source": "Fitted to 11 total pressures at 333.15 K with the measured pure-component pressures from Gierycz et al., J. Chem. Eng. Data 54 (2009) 2996-3001 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-hexanol_cyclohexane_10-1021-je900050z_333.15K.json). P-x at 333.15 K (with the measured pure-component pressures): AAD 1.28 % (max 4.23 %).",
+      "source_ids": [
+        "gierycz2009-2-butanol-cyclohexane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-hexanol",
+      "j": "dichloroethane",
+      "set": "fitted-reddy2010-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 179.0638600488366,
+      "b_ji": -24.387193517179387,
+      "alpha": 0.3,
+      "source": "Fitted to 15 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 95.6 kPa from Reddy et al., J. Chem. Eng. Data 55 (2010) 2073-2076 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-hexanol_dichloroethane_10-1021-je9000608_95.6kPa_tx.json). AAD 0.15 K in T (max 0.47 K; no vapour compositions).",
+      "source_ids": [
+        "reddy2010-1-hexanol-acetonitrile",
+        "reddy2010-1-hexanol-dichloroethane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-hexanol",
+      "j": "dichloroethane",
+      "set": "fitted-reddy2010-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -242.15381991225365,
+      "b_ji": 135.01328281629088,
+      "source": "Fitted to 15 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 95.6 kPa from Reddy et al., J. Chem. Eng. Data 55 (2010) 2073-2076 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-hexanol_dichloroethane_10-1021-je9000608_95.6kPa_tx.json). AAD 0.12 K in T (max 0.45 K; no vapour compositions).",
+      "source_ids": [
+        "reddy2010-1-hexanol-acetonitrile",
+        "reddy2010-1-hexanol-dichloroethane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-hexanol",
+      "j": "ethylbenzene",
+      "set": "fitted-prasad2008",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -41.55235904854054,
+      "b_ji": 157.91428046245136,
+      "alpha": 0.3,
+      "source": "Fitted to 14 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 95.35 kPa from Prasad et al., J. Chem. Thermodyn. 40 (2008) 1418-1421 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-hexanol_ethylbenzene_10-1016-j-jct-2008-05-002_95.35kPa_tx.json). AAD 0.09 K in T (max 0.39 K; no vapour compositions).",
+      "source_ids": [
+        "prasad2008-1-hexanol-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-hexanol",
+      "j": "ethylbenzene",
+      "set": "fitted-prasad2008",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 141.8900432866486,
+      "b_ji": -169.50918732812147,
+      "source": "Fitted to 14 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 95.35 kPa from Prasad et al., J. Chem. Thermodyn. 40 (2008) 1418-1421 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-hexanol_ethylbenzene_10-1016-j-jct-2008-05-002_95.35kPa_tx.json). AAD 0.08 K in T (max 0.41 K; no vapour compositions).",
+      "source_ids": [
+        "prasad2008-1-hexanol-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-hexanol",
+      "j": "o-xylene",
+      "set": "fitted-reddy2010-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -204.06357912985058,
+      "b_ji": 351.04742432479856,
+      "alpha": 0.3,
+      "source": "Fitted to 14 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 95.6 kPa from Reddy et al., Fluid Phase Equilib. 298 (2010) 276-279 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-hexanol_o-xylene_10-1016-j-fluid-2010-08-010_95.6kPa_tx.json). AAD 0.12 K in T (max 0.41 K; no vapour compositions).",
+      "source_ids": [
+        "reddy2010-1-hexanol-acetonitrile",
+        "reddy2010-1-hexanol-dichloroethane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-hexanol",
+      "j": "o-xylene",
+      "set": "fitted-reddy2010-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 232.27457385270327,
+      "b_ji": -313.01598147725366,
+      "source": "Fitted to 14 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 95.6 kPa from Reddy et al., Fluid Phase Equilib. 298 (2010) 276-279 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-hexanol_o-xylene_10-1016-j-fluid-2010-08-010_95.6kPa_tx.json). AAD 0.10 K in T (max 0.38 K; no vapour compositions).",
+      "source_ids": [
+        "reddy2010-1-hexanol-acetonitrile",
+        "reddy2010-1-hexanol-dichloroethane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-octanol",
+      "j": "n-dodecane",
+      "set": "fitted-ferreira2018",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -103.87776415150996,
+      "b_ji": 789.0229021743055,
+      "alpha": 0.3,
+      "source": "Fitted to 37 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 40.0 kPa from Ferreira et al., J. Chem. Eng. Data 63 (2018) 4614-4625 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-octanol_n-dodecane_10-1021-acs-jced-8b00680_40.0kPa_tx.json). AAD 0.45 K in T (max 1.08 K; no vapour compositions).",
+      "source_ids": [
+        "ferreira2018-1-octanol-n-dodecane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-octanol",
+      "j": "n-dodecane",
+      "set": "fitted-ferreira2018",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 198.51974534990038,
+      "b_ji": -364.14687199752495,
+      "source": "Fitted to 37 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 40.0 kPa from Ferreira et al., J. Chem. Eng. Data 63 (2018) 4614-4625 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-octanol_n-dodecane_10-1021-acs-jced-8b00680_40.0kPa_tx.json). AAD 0.45 K in T (max 1.08 K; no vapour compositions).",
+      "source_ids": [
+        "ferreira2018-1-octanol-n-dodecane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "1-propanol",
+      "set": "fitted-lladosa2006",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -398.59408863777054,
+      "b_ji": 680.2101581498237,
+      "alpha": 0.3,
+      "source": "Fitted to 19 T-x-y points at 101.3 kPa from Lladosa et al., Fluid Phase Equilib. 247 (2006) 175-181 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_1-propanol_10-1016-j-fluid-2006-07-003_101.3kPa.json). AAD 0.32 K in T, 0.0057 in y (max 0.77 K, 0.0105). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.007 (passes, < 0.01).",
+      "source_ids": [
+        "lladosa2006-1-pentanol-1-propanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-pentanol",
+      "j": "1-propanol",
+      "set": "fitted-lladosa2006",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 197.5179684060419,
+      "b_ji": -320.4458799927192,
+      "source": "Fitted to 19 T-x-y points at 101.3 kPa from Lladosa et al., Fluid Phase Equilib. 247 (2006) 175-181 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_1-propanol_10-1016-j-fluid-2006-07-003_101.3kPa.json). AAD 0.28 K in T, 0.0056 in y (max 0.72 K, 0.0124). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.007 (passes, < 0.01).",
+      "source_ids": [
+        "lladosa2006-1-pentanol-1-propanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "2-butanone",
+      "set": "fitted-moodley2018-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -120.93901640135262,
+      "b_ji": 422.75401092170995,
+      "alpha": 0.3,
+      "source": "Fitted to 20 total pressures at 333.65 K with the measured pure-component pressures from Moodley et al., J. Chem. Eng. Data 63 (2018) 4128-4135 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_2-butanone_10-1021-acs-jced-8b00552_333.65K.json). P-x at 333.65 K (with the measured pure-component pressures): AAD 1.09 % (max 4.48 %).",
+      "source_ids": [
+        "moodley2018-2-butanone-isobutanol",
+        "moodley2018-2-propanol-isobutanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-pentanol",
+      "j": "2-butanone",
+      "set": "fitted-moodley2018-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 6.955787820835333,
+      "b_ji": -80.4815592419989,
+      "source": "Fitted to 20 total pressures at 333.65 K with the measured pure-component pressures from Moodley et al., J. Chem. Eng. Data 63 (2018) 4128-4135 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_2-butanone_10-1021-acs-jced-8b00552_333.65K.json). P-x at 333.65 K (with the measured pure-component pressures): AAD 1.15 % (max 4.60 %).",
+      "source_ids": [
+        "moodley2018-2-butanone-isobutanol",
+        "moodley2018-2-propanol-isobutanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "2-propanol",
+      "set": "fitted-wang2013",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 174.25361142832773,
+      "b_ji": -190.26168557021256,
+      "alpha": 0.3,
+      "source": "Fitted to 24 T-x-y points at 101.0 kPa from Wang et al., Fluid Phase Equilib. 341 (2013) 30-34 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_2-propanol_10-1016-j-fluid-2012-12-020_101.0kPa.json). AAD 0.20 K in T, 0.0050 in y (max 0.54 K, 0.0100). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "wang2013-1-butanol-2-propanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-pentanol",
+      "j": "2-propanol",
+      "set": "fitted-wang2013",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 177.7589859336441,
+      "b_ji": -237.13859389617002,
+      "source": "Fitted to 24 T-x-y points at 101.0 kPa from Wang et al., Fluid Phase Equilib. 341 (2013) 30-34 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_2-propanol_10-1016-j-fluid-2012-12-020_101.0kPa.json). AAD 0.18 K in T, 0.0054 in y (max 0.62 K, 0.0106). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "wang2013-1-butanol-2-propanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "cyclohexane",
+      "set": "fitted-ovejero2007",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -18.302805417168702,
+      "b_ji": 681.5524367364334,
+      "alpha": 0.3,
+      "source": "Fitted to 13 T-x-y points at 101.3 kPa from Ovejero et al., J. Chem. Eng. Data 52 (2007) 1984-1987 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_cyclohexane_10-1021-je700285j_101.3kPa.json). AAD 0.07 K in T, 0.0018 in y (max 0.17 K, 0.0031). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "ovejero2007-1-pentanol-cyclohexane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-pentanol",
+      "j": "cyclohexane",
+      "set": "fitted-ovejero2007",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 50.93361178960047,
+      "b_ji": -197.93951989330162,
+      "source": "Fitted to 13 T-x-y points at 101.3 kPa from Ovejero et al., J. Chem. Eng. Data 52 (2007) 1984-1987 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_cyclohexane_10-1021-je700285j_101.3kPa.json). AAD 0.07 K in T, 0.0018 in y (max 0.17 K, 0.0031). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "ovejero2007-1-pentanol-cyclohexane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "diethyl-carbonate",
+      "set": "fitted-rodriguez2003",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 63.109329606777045,
+      "b_ji": 139.63082611007238,
+      "alpha": 0.3,
+      "source": "Fitted to 26 T-x-y points at 101.3 kPa from Rodriguez et al., J. Chem. Eng. Data 48 (2003) 86-91 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_diethyl-carbonate_10-1021-je0201018_101.3kPa.json). AAD 0.15 K in T, 0.0040 in y (max 0.33 K, 0.0118). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "rodriguez2003-1-butanol-diethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-pentanol",
+      "j": "diethyl-carbonate",
+      "set": "fitted-rodriguez2003",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -2.6344711046130733,
+      "b_ji": -43.4327669433135,
+      "source": "Fitted to 26 T-x-y points at 101.3 kPa from Rodriguez et al., J. Chem. Eng. Data 48 (2003) 86-91 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_diethyl-carbonate_10-1021-je0201018_101.3kPa.json). AAD 0.15 K in T, 0.0040 in y (max 0.33 K, 0.0119). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "rodriguez2003-1-butanol-diethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "ethyl-acetate",
+      "set": "fitted-resa2004",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -144.84661614520388,
+      "b_ji": 304.5935937604788,
+      "alpha": 0.3,
+      "source": "Fitted to 21 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Resa et al., J. Chem. Eng. Data 49 (2004) 804-808 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_ethyl-acetate_10-1021-je030218b_101.3kPa_tx.json). AAD 0.19 K in T (max 0.61 K; no vapour compositions).",
+      "source_ids": [
+        "resa2004-ethanol-isobutanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-pentanol",
+      "j": "ethyl-acetate",
+      "set": "fitted-resa2004",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -0.7769207519384285,
+      "b_ji": -36.11263792669122,
+      "source": "Fitted to 21 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Resa et al., J. Chem. Eng. Data 49 (2004) 804-808 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_ethyl-acetate_10-1021-je030218b_101.3kPa_tx.json). AAD 0.19 K in T (max 0.59 K; no vapour compositions).",
+      "source_ids": [
+        "resa2004-ethanol-isobutanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "isobutanol",
+      "set": "fitted-resa2006-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 365.4940143365412,
+      "b_ji": -294.40225712797246,
+      "alpha": 0.3,
+      "source": "Fitted to 20 T-x-y points at 101.3 kPa from Resa et al., J. Chem. Eng. Data 51 (2006) 1892-1895 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_isobutanol_10-1021-je060238o_101.3kPa.json). AAD 0.09 K in T, 0.0044 in y (max 0.32 K, 0.0133). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "resa2006-1-pentanol-isobutanol",
+        "resa2006-ethyl-acetate-isobutanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-pentanol",
+      "j": "isobutanol",
+      "set": "fitted-resa2006-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -167.92441942460076,
+      "b_ji": 138.5777549392263,
+      "source": "Fitted to 20 T-x-y points at 101.3 kPa from Resa et al., J. Chem. Eng. Data 51 (2006) 1892-1895 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_isobutanol_10-1021-je060238o_101.3kPa.json). AAD 0.09 K in T, 0.0044 in y (max 0.33 K, 0.0132). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "resa2006-1-pentanol-isobutanol",
+        "resa2006-ethyl-acetate-isobutanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "isooctane",
+      "set": "fitted-moreau2013",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 222.97298825347053,
+      "b_ji": 609.1588290099816,
+      "alpha": 0.47,
+      "source": "Fitted to 24 total pressures at 313.15 K with the measured pure-component pressures from Moreau et al., Fluid Phase Equilib. 338 (2013) 95-99 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_isooctane_10-1016-j-fluid-2012-11-005_313.15K.json). P-x at 313.15 K (with the measured pure-component pressures): AAD 0.88 % (max 2.34 %).",
+      "source_ids": [
+        "moreau2013-1-pentanol-isooctane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "n-heptane",
+      "set": "fitted-moreau2013",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 225.46589688557046,
+      "b_ji": 619.001306282582,
+      "alpha": 0.47,
+      "source": "Fitted to 22 total pressures at 313.15 K with the measured pure-component pressures from Moreau et al., Fluid Phase Equilib. 338 (2013) 95-99 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_n-heptane_10-1016-j-fluid-2012-11-005_313.15K.json). P-x at 313.15 K (with the measured pure-component pressures): AAD 0.87 % (max 2.22 %).",
+      "source_ids": [
+        "moreau2013-1-pentanol-isooctane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "n-hexane",
+      "set": "fitted-moreau2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 72.78698605501442,
+      "b_ji": 623.7096490946709,
+      "alpha": 0.3,
+      "source": "Fitted to 24 total pressures at 313.15 K with the measured pure-component pressures from Moreau et al., Fluid Phase Equilib. 425 (2016) 177-182 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_n-hexane_10-1016-j-fluid-2016-05-031_313.15K.json). P-x at 313.15 K (with the measured pure-component pressures): AAD 1.45 % (max 3.58 %).",
+      "source_ids": [
+        "moreau2016-1-pentanol-n-hexane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "n-nonane",
+      "set": "fitted-ferreira2018",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 242.3076659645837,
+      "b_ji": 396.0750447854247,
+      "alpha": 0.3,
+      "source": "Fitted to 43 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 40.0 kPa from Ferreira et al., J. Chem. Eng. Data 63 (2018) 4614-4625 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_n-nonane_10-1021-acs-jced-8b00680_40.0kPa_tx.json). AAD 0.13 K in T (max 0.48 K; no vapour compositions).",
+      "source_ids": [
+        "ferreira2018-1-octanol-n-dodecane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-pentanol",
+      "j": "n-nonane",
+      "set": "fitted-ferreira2018",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 72.057632626858,
+      "b_ji": -217.8175442647283,
+      "source": "Fitted to 43 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 40.0 kPa from Ferreira et al., J. Chem. Eng. Data 63 (2018) 4614-4625 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_n-nonane_10-1021-acs-jced-8b00680_40.0kPa_tx.json). AAD 0.13 K in T (max 0.45 K; no vapour compositions).",
+      "source_ids": [
+        "ferreira2018-1-octanol-n-dodecane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "propionic-acid",
+      "set": "fitted-mohsennia2010-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 291.150129888502,
+      "b_ji": -401.40036849609385,
+      "alpha": 0.3,
+      "source": "Fitted to 23 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 91.3 kPa from Mohsen-Nia et al., J. Chem. Thermodyn. 42 (2010) 1311-1315 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_propionic-acid_10-1016-j-jct-2010-05-014_91.3kPa_tx.json). AAD 0.12 K in T (max 0.40 K; no vapour compositions).",
+      "source_ids": [
+        "mohsennia2010-1-butanol-1-propanol",
+        "mohsennia2010-1-pentanol-propionic-acid",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-pentanol",
+      "j": "propionic-acid",
+      "set": "fitted-mohsennia2010-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 383.6824888638822,
+      "b_ji": -663.0132977376263,
+      "source": "Fitted to 23 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 91.3 kPa from Mohsen-Nia et al., J. Chem. Thermodyn. 42 (2010) 1311-1315 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_propionic-acid_10-1016-j-jct-2010-05-014_91.3kPa_tx.json). AAD 0.19 K in T (max 0.62 K; no vapour compositions).",
+      "source_ids": [
+        "mohsennia2010-1-butanol-1-propanol",
+        "mohsennia2010-1-pentanol-propionic-acid",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-pentanol",
+      "j": "toluene",
+      "set": "fitted-moreau2012",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 5.36132006202535,
+      "b_ji": 556.277833807302,
+      "alpha": 0.3,
+      "source": "Fitted to 24 total pressures at 313.15 K with the measured pure-component pressures from Moreau et al., Fluid Phase Equilib. 317 (2012) 127-131 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_toluene_10-1016-j-fluid-2012-01-007_313.15K.json). P-x at 313.15 K (with the measured pure-component pressures): AAD 0.84 % (max 1.85 %).",
+      "source_ids": [
+        "moreau2012-1-pentanol-toluene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-pentanol",
+      "j": "toluene",
+      "set": "fitted-moreau2012",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 33.25432616505107,
+      "b_ji": -145.2236783561694,
+      "source": "Fitted to 24 total pressures at 313.15 K with the measured pure-component pressures from Moreau et al., Fluid Phase Equilib. 317 (2012) 127-131 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-pentanol_toluene_10-1016-j-fluid-2012-01-007_313.15K.json). P-x at 313.15 K (with the measured pure-component pressures): AAD 0.77 % (max 1.64 %).",
+      "source_ids": [
+        "moreau2012-1-pentanol-toluene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-propanol",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-matsuda2012",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 292.74977787743705,
+      "b_ji": 101.6314045234744,
+      "alpha": 0.3,
+      "source": "Fitted to 15 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 93.32 kPa from Matsuda et al., J. Chem. Thermodyn. 44 (2012) 84-96 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-propanol_dimethyl-carbonate_10-1016-j-jct-2011-08-006_93.32kPa_tx.json). AAD 0.09 K in T (max 0.47 K; no vapour compositions).",
+      "source_ids": [
+        "matsuda2012-1-propanol-methanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-propanol",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-matsuda2012",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -48.91782840550415,
+      "b_ji": -88.23415526165792,
+      "source": "Fitted to 15 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 93.32 kPa from Matsuda et al., J. Chem. Thermodyn. 44 (2012) 84-96 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-propanol_dimethyl-carbonate_10-1016-j-jct-2011-08-006_93.32kPa_tx.json). AAD 0.09 K in T (max 0.47 K; no vapour compositions).",
+      "source_ids": [
+        "matsuda2012-1-propanol-methanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "2-butanol",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 121.76078846094579,
+      "b_ji": 153.63447653507365,
+      "alpha": 0.3,
+      "source": "Fitted to 32 T-x-y points at 101.3 kPa from Pereiro et al., J. Chem. Thermodyn. 37 (2005) 249-257 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-butanol_dimethyl-carbonate_10-1016-j-jct-2004-09-009_101.3kPa.json). AAD 0.09 K in T, 0.0023 in y (max 0.28 K, 0.0080). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "2-butanol",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -29.05813878522422,
+      "b_ji": -57.43049582987007,
+      "source": "Fitted to 32 T-x-y points at 101.3 kPa from Pereiro et al., J. Chem. Thermodyn. 37 (2005) 249-257 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-butanol_dimethyl-carbonate_10-1016-j-jct-2004-09-009_101.3kPa.json). AAD 0.09 K in T, 0.0022 in y (max 0.28 K, 0.0079). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "2-butanone",
+      "j": "diethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -337.2548769821286,
+      "b_ji": 477.1110309043224,
+      "alpha": 0.3,
+      "source": "Fitted to 29 T-x-y points at 101.325 kPa from Pereiro et al., Fluid Phase Equilib. 235 (2005) 83-91 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-butanone_diethyl-carbonate_10-1016-j-fluid-2005-06-024_101.33kPa.json). AAD 0.21 K in T, 0.0025 in y (max 0.46 K, 0.0090). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "2-butanone",
+      "j": "diethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 175.72336448367136,
+      "b_ji": -242.21548803452018,
+      "source": "Fitted to 29 T-x-y points at 101.325 kPa from Pereiro et al., Fluid Phase Equilib. 235 (2005) 83-91 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-butanone_diethyl-carbonate_10-1016-j-fluid-2005-06-024_101.33kPa.json). AAD 0.18 K in T, 0.0025 in y (max 0.46 K, 0.0090). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "2-butanone",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 191.07168806850777,
+      "b_ji": -98.26485805822243,
+      "alpha": 0.3,
+      "source": "Fitted to 34 T-x-y points at 101.3 kPa from Pereiro et al., J. Chem. Eng. Data 50 (2005) 481-486 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-butanone_dimethyl-carbonate_10-1021-je0497000_101.3kPa.json). AAD 0.14 K in T, 0.0036 in y (max 0.33 K, 0.0125). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "2-butanone",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -81.05664637970035,
+      "b_ji": 50.602353866914186,
+      "source": "Fitted to 34 T-x-y points at 101.3 kPa from Pereiro et al., J. Chem. Eng. Data 50 (2005) 481-486 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-butanone_dimethyl-carbonate_10-1021-je0497000_101.3kPa.json). AAD 0.14 K in T, 0.0036 in y (max 0.34 K, 0.0125). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "2-propanol",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 316.82325884317015,
+      "b_ji": 52.96650611816672,
+      "alpha": 0.3,
+      "source": "Fitted to 32 T-x-y points at 101.3 kPa from Pereiro et al., J. Chem. Thermodyn. 37 (2005) 249-257 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-propanol_dimethyl-carbonate_10-1016-j-jct-2004-09-009_101.3kPa.json). AAD 0.19 K in T, 0.0055 in y (max 0.63 K, 0.0250). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.008 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "2-propanol",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -66.26835942544673,
+      "b_ji": -59.65091120843824,
+      "source": "Fitted to 32 T-x-y points at 101.3 kPa from Pereiro et al., J. Chem. Thermodyn. 37 (2005) 249-257 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-propanol_dimethyl-carbonate_10-1016-j-jct-2004-09-009_101.3kPa.json). AAD 0.19 K in T, 0.0055 in y (max 0.63 K, 0.0252). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.008 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "acetaldehyde",
+      "j": "ethanol",
+      "set": "fitted-sun2017-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 720.0421930120561,
+      "b_ji": -486.72822714565257,
+      "alpha": 0.3,
+      "source": "Fitted to 18 T-x-y points at 101.3 kPa from Sun et al., J. Chem. Eng. Data 62 (2017) 2136-2142 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetaldehyde_ethanol_10-1021-acs-jced-7b00231_101.3kPa.json). AAD 0.27 K in T, 0.0040 in y (max 0.47 K, 0.0184). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "sun2017-1-butanol-acetaldehyde",
+        "sun2017-bdo-tetrahydrofuran",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "acetaldehyde",
+      "j": "ethyl-acetate",
+      "set": "fitted-sun2017-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 581.8017611173876,
+      "b_ji": -391.49334836125695,
+      "alpha": 0.3,
+      "source": "Fitted to 18 T-x-y points at 101.3 kPa from Sun et al., J. Chem. Eng. Data 62 (2017) 2136-2142 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetaldehyde_ethyl-acetate_10-1021-acs-jced-7b00231_101.3kPa.json). AAD 0.25 K in T, 0.0042 in y (max 0.79 K, 0.0190). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "sun2017-1-butanol-acetaldehyde",
+        "sun2017-bdo-tetrahydrofuran",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "acetone",
+      "j": "diethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -448.69507978203353,
+      "b_ji": 623.8477849852349,
+      "alpha": 0.3,
+      "source": "Fitted to 38 T-x-y points at 101.325 kPa from Pereiro et al., Fluid Phase Equilib. 235 (2005) 83-91 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetone_diethyl-carbonate_10-1016-j-fluid-2005-06-024_101.33kPa.json). AAD 0.27 K in T, 0.0038 in y (max 0.72 K, 0.0153). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "acetone",
+      "j": "diethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 194.63296866695617,
+      "b_ji": -266.70913626876757,
+      "source": "Fitted to 38 T-x-y points at 101.325 kPa from Pereiro et al., Fluid Phase Equilib. 235 (2005) 83-91 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetone_diethyl-carbonate_10-1016-j-fluid-2005-06-024_101.33kPa.json). AAD 0.22 K in T, 0.0029 in y (max 0.78 K, 0.0161). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "acetone",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -127.47968788463594,
+      "b_ji": 170.92465030281417,
+      "alpha": 0.3,
+      "source": "Fitted to 34 T-x-y points at 101.3 kPa from Pereiro et al., J. Chem. Eng. Data 50 (2005) 481-486 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetone_dimethyl-carbonate_10-1021-je0497000_101.3kPa.json). AAD 0.30 K in T, 0.0056 in y (max 0.89 K, 0.0145). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "acetone",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-pereiro2005-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 103.73494484941125,
+      "b_ji": -138.50083686192966,
+      "source": "Fitted to 34 T-x-y points at 101.3 kPa from Pereiro et al., J. Chem. Eng. Data 50 (2005) 481-486 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetone_dimethyl-carbonate_10-1021-je0497000_101.3kPa.json). AAD 0.29 K in T, 0.0057 in y (max 0.86 K, 0.0143). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "pereiro2005-2-butanol-dimethyl-carbonate",
+        "pereiro2005-2-butanone-diethyl-carbonate",
+        "pereiro2005-2-butanone-dimethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "bdo",
+      "j": "ethylene-glycol",
+      "set": "fitted-yang2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -280.1167398427571,
+      "b_ji": 434.99176773393225,
+      "alpha": 0.3,
+      "source": "Fitted to 10 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 10.0 kPa from Yang et al., J. Chem. Eng. Data 59 (2014) 1273-1280 (data public in the NIST TRC ThermoML Archive; validation/data/vle/bdo_ethylene-glycol_10-1021-je401020e_10.0kPa_tx.json). AAD 0.12 K in T (max 0.31 K; no vapour compositions).",
+      "source_ids": [
+        "yang2014-bdo-ethylene-glycol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "bdo",
+      "j": "ethylene-glycol",
+      "set": "fitted-yang2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -97.40091604016169,
+      "b_ji": 42.897706860952184,
+      "source": "Fitted to 10 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 10.0 kPa from Yang et al., J. Chem. Eng. Data 59 (2014) 1273-1280 (data public in the NIST TRC ThermoML Archive; validation/data/vle/bdo_ethylene-glycol_10-1021-je401020e_10.0kPa_tx.json). AAD 0.12 K in T (max 0.32 K; no vapour compositions).",
+      "source_ids": [
+        "yang2014-bdo-ethylene-glycol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "cyclohexane",
+      "j": "diethyl-carbonate",
+      "set": "fitted-marrufo2011",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 381.02739440895294,
+      "b_ji": -32.715190236458234,
+      "alpha": 0.3,
+      "source": "Fitted to 22 T-x-y points at 100.0 kPa from Marrufo et al., J. Chem. Eng. Data 56 (2011) 4790-4796 (data public in the NIST TRC ThermoML Archive; validation/data/vle/cyclohexane_diethyl-carbonate_10-1021-je200784y_100.0kPa.json). AAD 0.20 K in T, 0.0032 in y (max 0.58 K, 0.0098). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "marrufo2011-cyclohexane-diethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "cyclohexane",
+      "j": "diethyl-carbonate",
+      "set": "fitted-marrufo2011",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -77.15508753691682,
+      "b_ji": 0.28571758802666314,
+      "source": "Fitted to 22 T-x-y points at 100.0 kPa from Marrufo et al., J. Chem. Eng. Data 56 (2011) 4790-4796 (data public in the NIST TRC ThermoML Archive; validation/data/vle/cyclohexane_diethyl-carbonate_10-1021-je200784y_100.0kPa.json). AAD 0.20 K in T, 0.0031 in y (max 0.59 K, 0.0097). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "marrufo2011-cyclohexane-diethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "cyclohexanone",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-liu2019-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 147.70083486175957,
+      "b_ji": 174.71198845732766,
+      "alpha": 0.3,
+      "source": "Fitted to 18 T-x-y points at 101.3 kPa from Liu et al., J. Chem. Eng. Data 64 (2019) 5210-5217 (data public in the NIST TRC ThermoML Archive; validation/data/vle/cyclohexanone_dimethyl-carbonate_10-1021-acs-jced-9b00414_101.3kPa.json). AAD 0.19 K in T, 0.0065 in y (max 0.44 K, 0.0107). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.009 (passes, < 0.01).",
+      "source_ids": [
+        "liu2019-cyclohexanone-dimethyl-carbonate",
+        "liu2019-dimethyl-carbonate-p-xylene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "cyclohexanone",
+      "j": "dimethyl-carbonate",
+      "set": "fitted-liu2019-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -31.708782795169718,
+      "b_ji": -39.15419900627763,
+      "source": "Fitted to 18 T-x-y points at 101.3 kPa from Liu et al., J. Chem. Eng. Data 64 (2019) 5210-5217 (data public in the NIST TRC ThermoML Archive; validation/data/vle/cyclohexanone_dimethyl-carbonate_10-1021-acs-jced-9b00414_101.3kPa.json). AAD 0.20 K in T, 0.0068 in y (max 0.46 K, 0.0113). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.009 (passes, < 0.01).",
+      "source_ids": [
+        "liu2019-cyclohexanone-dimethyl-carbonate",
+        "liu2019-dimethyl-carbonate-p-xylene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "ethanol",
+      "set": "fitted-rodriguez2003",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -128.75132881947448,
+      "b_ji": 575.0441726886266,
+      "alpha": 0.3,
+      "source": "Fitted to 34 T-x-y points at 101.3 kPa from Rodriguez et al., J. Chem. Eng. Data 48 (2003) 86-91 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_ethanol_10-1021-je0201018_101.3kPa.json). AAD 0.43 K in T, 0.0066 in y (max 1.17 K, 0.0322). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.008 (passes, < 0.01).",
+      "source_ids": [
+        "rodriguez2003-1-butanol-diethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "ethanol",
+      "set": "fitted-rodriguez2003",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -154.3857212937518,
+      "b_ji": -12.751632730023301,
+      "source": "Fitted to 34 T-x-y points at 101.3 kPa from Rodriguez et al., J. Chem. Eng. Data 48 (2003) 86-91 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_ethanol_10-1021-je0201018_101.3kPa.json). AAD 0.40 K in T, 0.0061 in y (max 1.07 K, 0.0298). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.008 (passes, < 0.01).",
+      "source_ids": [
+        "rodriguez2003-1-butanol-diethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "ethylbenzene",
+      "set": "fitted-ding2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 53.404564907143076,
+      "b_ji": 26.993632406342265,
+      "alpha": 0.3,
+      "source": "Fitted to 20 T-x-y points at 101.33 kPa from Ding et al., J. Chem. Eng. Data 61 (2016) 3724-3729 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_ethylbenzene_10-1021-acs-jced-6b00085_101.33kPa.json). AAD 0.12 K in T, 0.0019 in y (max 0.25 K, 0.0069). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "ding2016-diethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "ethylbenzene",
+      "set": "fitted-ding2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -120.12485707938825,
+      "b_ji": 104.49352009910547,
+      "source": "Fitted to 20 T-x-y points at 101.33 kPa from Ding et al., J. Chem. Eng. Data 61 (2016) 3724-3729 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_ethylbenzene_10-1021-acs-jced-6b00085_101.33kPa.json). AAD 0.13 K in T, 0.0019 in y (max 0.28 K, 0.0067). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "ding2016-diethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "isooctane",
+      "set": "fitted-anugraha2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 417.3425203920658,
+      "b_ji": 5.032832245998042,
+      "alpha": 0.3,
+      "source": "Fitted to 9 total pressures at 323.15 K with the measured pure-component pressures from Anugraha et al., J. Chem. Eng. Data 62 (2017) 2362-2366 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_isooctane_10-1021-acs-jced-7b00236_323.15K.json). P-x at 323.15 K (with the measured pure-component pressures): AAD 0.65 % (max 2.14 %).",
+      "source_ids": [
+        "anugraha2017-diethyl-carbonate-isooctane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "isooctane",
+      "set": "fitted-anugraha2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -112.74440358886703,
+      "b_ji": 25.810171353285586,
+      "source": "Fitted to 9 total pressures at 323.15 K with the measured pure-component pressures from Anugraha et al., J. Chem. Eng. Data 62 (2017) 2362-2366 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_isooctane_10-1021-acs-jced-7b00236_323.15K.json). P-x at 323.15 K (with the measured pure-component pressures): AAD 0.64 % (max 2.15 %).",
+      "source_ids": [
+        "anugraha2017-diethyl-carbonate-isooctane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "isopropyl-acetate",
+      "set": "fitted-yin2019",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 130.06940767611405,
+      "b_ji": -143.54949250806726,
+      "alpha": 0.3,
+      "source": "Fitted to 14 T-x-y points at 101.3 kPa from Yin et al., J. Chem. Eng. Data 64 (2019) 5225-5231 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_isopropyl-acetate_10-1021-acs-jced-9b00430_101.3kPa.json). AAD 0.22 K in T, 0.0035 in y (max 0.71 K, 0.0131). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "yin2019-diethyl-carbonate-isopropyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "isopropyl-acetate",
+      "set": "fitted-yin2019",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -51.12546430775863,
+      "b_ji": 53.82189805917755,
+      "source": "Fitted to 14 T-x-y points at 101.3 kPa from Yin et al., J. Chem. Eng. Data 64 (2019) 5225-5231 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_isopropyl-acetate_10-1021-acs-jced-9b00430_101.3kPa.json). AAD 0.22 K in T, 0.0035 in y (max 0.73 K, 0.0135). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "yin2019-diethyl-carbonate-isopropyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "m-xylene",
+      "set": "fitted-ding2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 213.10804013635584,
+      "b_ji": -104.96680479638616,
+      "alpha": 0.3,
+      "source": "Fitted to 20 T-x-y points at 101.33 kPa from Ding et al., J. Chem. Eng. Data 61 (2016) 3724-3729 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_m-xylene_10-1021-acs-jced-6b00085_101.33kPa.json). AAD 0.11 K in T, 0.0032 in y (max 0.24 K, 0.0078). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "ding2016-diethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "m-xylene",
+      "set": "fitted-ding2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -224.543595338685,
+      "b_ji": 174.69245723873675,
+      "source": "Fitted to 20 T-x-y points at 101.33 kPa from Ding et al., J. Chem. Eng. Data 61 (2016) 3724-3729 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_m-xylene_10-1021-acs-jced-6b00085_101.33kPa.json). AAD 0.12 K in T, 0.0031 in y (max 0.24 K, 0.0070). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "ding2016-diethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "methanol",
+      "set": "fitted-rodriguez2003",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -423.02846968380635,
+      "b_ji": 75.69667936403272,
+      "source": "Fitted to 35 T-x-y points at 101.3 kPa from Rodriguez et al., J. Chem. Eng. Data 48 (2003) 86-91 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_methanol_10-1021-je0201018_101.3kPa.json). AAD 0.49 K in T, 0.0077 in y (max 1.41 K, 0.0278). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.010 (passes, < 0.01).",
+      "source_ids": [
+        "rodriguez2003-1-butanol-diethyl-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "methyl-acetate",
+      "set": "fitted-du2019",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -4.829591014781765,
+      "b_ji": -38.03824600378565,
+      "alpha": 0.3,
+      "source": "Fitted to 13 T-x-y points at 100.17 kPa from Du et al., J. Chem. Eng. Data 64 (2019) 2550-2557 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_methyl-acetate_10-1021-acs-jced-9b00068_100.17kPa.json). AAD 0.38 K in T, 0.0062 in y (max 1.26 K, 0.0263). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "du2019-diethyl-carbonate-methyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "methyl-acetate",
+      "set": "fitted-du2019",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -0.12577622028686522,
+      "b_ji": 0.09836123082686811,
+      "source": "Fitted to 13 T-x-y points at 100.17 kPa from Du et al., J. Chem. Eng. Data 64 (2019) 2550-2557 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_methyl-acetate_10-1021-acs-jced-9b00068_100.17kPa.json). AAD 0.35 K in T, 0.0061 in y (max 1.20 K, 0.0271). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "du2019-diethyl-carbonate-methyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "n-heptane",
+      "set": "fitted-anugraha2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 313.9618195619752,
+      "b_ji": 51.14757366852371,
+      "alpha": 0.3,
+      "source": "Fitted to 9 total pressures at 323.15 K with the measured pure-component pressures from Anugraha et al., J. Chem. Eng. Data 62 (2017) 2362-2366 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_n-heptane_10-1021-acs-jced-7b00236_323.15K.json). P-x at 323.15 K (with the measured pure-component pressures): AAD 0.61 % (max 1.29 %).",
+      "source_ids": [
+        "anugraha2017-diethyl-carbonate-isooctane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "n-heptane",
+      "set": "fitted-anugraha2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -101.24408357732095,
+      "b_ji": 19.151041410229308,
+      "source": "Fitted to 9 total pressures at 323.15 K with the measured pure-component pressures from Anugraha et al., J. Chem. Eng. Data 62 (2017) 2362-2366 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_n-heptane_10-1021-acs-jced-7b00236_323.15K.json). P-x at 323.15 K (with the measured pure-component pressures): AAD 0.60 % (max 1.29 %).",
+      "source_ids": [
+        "anugraha2017-diethyl-carbonate-isooctane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "n-hexane",
+      "set": "fitted-marrufo2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 38.51943562367104,
+      "b_ji": 311.2059028146612,
+      "alpha": 0.3,
+      "source": "Fitted to 21 T-x-y points at 100.0 kPa from Marrufo et al., J. Chem. Eng. Data 62 (2017) 1355-1364 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_n-hexane_10-1021-acs-jced-6b00905_100.0kPa.json). AAD 0.10 K in T, 0.0020 in y (max 0.52 K, 0.0036). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.002 (passes, < 0.01).",
+      "source_ids": [
+        "marrufo2017-mibk-n-hexane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "n-hexane",
+      "set": "fitted-marrufo2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 10.703549027748616,
+      "b_ji": -93.76383450970428,
+      "source": "Fitted to 21 T-x-y points at 100.0 kPa from Marrufo et al., J. Chem. Eng. Data 62 (2017) 1355-1364 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_n-hexane_10-1021-acs-jced-6b00905_100.0kPa.json). AAD 0.11 K in T, 0.0020 in y (max 0.53 K, 0.0035). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.002 (passes, < 0.01).",
+      "source_ids": [
+        "marrufo2017-mibk-n-hexane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "o-xylene",
+      "set": "fitted-ding2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 254.4601437415295,
+      "b_ji": -104.97830066079477,
+      "alpha": 0.3,
+      "source": "Fitted to 20 T-x-y points at 101.33 kPa from Ding et al., J. Chem. Eng. Data 61 (2016) 3724-3729 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_o-xylene_10-1021-acs-jced-6b00085_101.33kPa.json). AAD 0.23 K in T, 0.0055 in y (max 0.58 K, 0.0124). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.009 (passes, < 0.01).",
+      "source_ids": [
+        "ding2016-diethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "o-xylene",
+      "set": "fitted-ding2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -236.61931084490843,
+      "b_ji": 175.15837226387885,
+      "source": "Fitted to 20 T-x-y points at 101.33 kPa from Ding et al., J. Chem. Eng. Data 61 (2016) 3724-3729 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_o-xylene_10-1021-acs-jced-6b00085_101.33kPa.json). AAD 0.25 K in T, 0.0057 in y (max 0.61 K, 0.0123). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.009 (passes, < 0.01).",
+      "source_ids": [
+        "ding2016-diethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "p-xylene",
+      "set": "fitted-ding2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 269.5518639543917,
+      "b_ji": -142.72591044929328,
+      "alpha": 0.3,
+      "source": "Fitted to 19 T-x-y points at 101.33 kPa from Ding et al., J. Chem. Eng. Data 61 (2016) 3724-3729 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_p-xylene_10-1021-acs-jced-6b00085_101.33kPa.json). AAD 0.10 K in T, 0.0031 in y (max 0.19 K, 0.0107). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "ding2016-diethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "p-xylene",
+      "set": "fitted-ding2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -243.92652653632243,
+      "b_ji": 185.1480519065606,
+      "source": "Fitted to 19 T-x-y points at 101.33 kPa from Ding et al., J. Chem. Eng. Data 61 (2016) 3724-3729 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_p-xylene_10-1021-acs-jced-6b00085_101.33kPa.json). AAD 0.10 K in T, 0.0031 in y (max 0.23 K, 0.0109). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "ding2016-diethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "propylene-carbonate",
+      "set": "fitted-hu2015",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -287.6928283675561,
+      "b_ji": 420.2611287841586,
+      "alpha": 0.3,
+      "source": "Fitted to 17 T-x-y points at 101.3 kPa from Hu et al., J. Chem. Eng. Data 60 (2015) 1487-1494 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_propylene-carbonate_10-1021-acs-jced-5b00064_101.3kPa.json). AAD 0.14 K in T, 0.0023 in y (max 0.33 K, 0.0072). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "hu2015-diethyl-carbonate-propylene-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "propylene-carbonate",
+      "set": "fitted-hu2015",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 117.60974837231787,
+      "b_ji": -153.66292377088752,
+      "source": "Fitted to 17 T-x-y points at 101.3 kPa from Hu et al., J. Chem. Eng. Data 60 (2015) 1487-1494 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_propylene-carbonate_10-1021-acs-jced-5b00064_101.3kPa.json). AAD 0.14 K in T, 0.0022 in y (max 0.35 K, 0.0062). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "hu2015-diethyl-carbonate-propylene-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "propylene-glycol",
+      "set": "fitted-hu2015",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 385.71608030704067,
+      "b_ji": 277.0380380544059,
+      "alpha": 0.3,
+      "source": "Fitted to 17 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Hu et al., J. Chem. Eng. Data 60 (2015) 1487-1494 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_propylene-glycol_10-1021-acs-jced-5b00064_101.3kPa_tx.json). AAD 0.13 K in T (max 0.38 K; no vapour compositions).",
+      "source_ids": [
+        "hu2015-diethyl-carbonate-propylene-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "propylene-glycol",
+      "set": "fitted-hu2015",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -124.87325232289591,
+      "b_ji": -11.659963285401178,
+      "source": "Fitted to 17 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Hu et al., J. Chem. Eng. Data 60 (2015) 1487-1494 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_propylene-glycol_10-1021-acs-jced-5b00064_101.3kPa_tx.json). AAD 0.11 K in T (max 0.40 K; no vapour compositions).",
+      "source_ids": [
+        "hu2015-diethyl-carbonate-propylene-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "toluene",
+      "set": "fitted-anugraha2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 445.14991352247483,
+      "b_ji": -75.11458387710032,
+      "alpha": 0.3,
+      "source": "Fitted to 9 total pressures at 323.15 K with the measured pure-component pressures from Anugraha et al., J. Chem. Eng. Data 62 (2017) 2362-2366 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_toluene_10-1021-acs-jced-7b00236_323.15K.json). P-x at 323.15 K (with the measured pure-component pressures): AAD 0.93 % (max 2.05 %).",
+      "source_ids": [
+        "anugraha2017-diethyl-carbonate-isooctane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethyl-carbonate",
+      "j": "toluene",
+      "set": "fitted-anugraha2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -328.4083603295149,
+      "b_ji": 169.02752274732373,
+      "source": "Fitted to 9 total pressures at 323.15 K with the measured pure-component pressures from Anugraha et al., J. Chem. Eng. Data 62 (2017) 2362-2366 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_toluene_10-1021-acs-jced-7b00236_323.15K.json). P-x at 323.15 K (with the measured pure-component pressures): AAD 0.95 % (max 2.01 %).",
+      "source_ids": [
+        "anugraha2017-diethyl-carbonate-isooctane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethyl-carbonate",
+      "j": "vinyl-acetate",
+      "set": "fitted-resa2005",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -650.5194077736485,
+      "b_ji": 1101.1380336834486,
+      "alpha": 0.3,
+      "source": "Fitted to 19 T-x-y points at 101.3 kPa from Resa et al., J. Chem. Eng. Data 50 (2005) 1212-1217 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_vinyl-acetate_10-1021-je049544x_101.3kPa.json). AAD 0.26 K in T, 0.0072 in y (max 0.69 K, 0.0138). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "resa2005-diethyl-carbonate-vinyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "diethylene-glycol",
+      "j": "ethylene-glycol",
+      "set": "fitted-yang2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 273.3568134169566,
+      "b_ji": -159.86065334448438,
+      "alpha": 0.3,
+      "source": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 40.0 kPa from Yang et al., J. Chem. Eng. Data 59 (2014) 1273-1280 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethylene-glycol_ethylene-glycol_10-1021-je401020e_40.0kPa_tx.json). AAD 0.11 K in T (max 0.35 K; no vapour compositions).",
+      "source_ids": [
+        "yang2014-bdo-ethylene-glycol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethylene-glycol",
+      "j": "ethylene-glycol",
+      "set": "fitted-yang2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -288.0577474130906,
+      "b_ji": 171.93228515931852,
+      "source": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 40.0 kPa from Yang et al., J. Chem. Eng. Data 59 (2014) 1273-1280 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethylene-glycol_ethylene-glycol_10-1021-je401020e_40.0kPa_tx.json). AAD 0.11 K in T (max 0.33 K; no vapour compositions).",
+      "source_ids": [
+        "yang2014-bdo-ethylene-glycol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "ethanol",
+      "set": "fitted-liu2019-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -15.54886903808773,
+      "b_ji": 435.5694534673467,
+      "alpha": 0.3,
+      "source": "Fitted to 20 T-x-y points at 101.3 kPa from Liu et al., J. Chem. Eng. Data 64 (2019) 5210-5217 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_ethanol_10-1021-acs-jced-9b00414_101.3kPa.json). AAD 0.09 K in T, 0.0017 in y (max 0.13 K, 0.0032). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "liu2019-cyclohexanone-dimethyl-carbonate",
+        "liu2019-dimethyl-carbonate-p-xylene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "ethanol",
+      "set": "fitted-liu2019-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -109.40123460007942,
+      "b_ji": -57.1960863047759,
+      "source": "Fitted to 20 T-x-y points at 101.3 kPa from Liu et al., J. Chem. Eng. Data 64 (2019) 5210-5217 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_ethanol_10-1021-acs-jced-9b00414_101.3kPa.json). AAD 0.08 K in T, 0.0016 in y (max 0.13 K, 0.0028). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "liu2019-cyclohexanone-dimethyl-carbonate",
+        "liu2019-dimethyl-carbonate-p-xylene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "ethyl-acetate",
+      "set": "fitted-mali2017-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -53.798009254902446,
+      "b_ji": 144.4027292118013,
+      "alpha": 0.3,
+      "source": "Fitted to 11 T-x-y points at 93.13 kPa from Mali et al., J. Chem. Eng. Data 62 (2017) 4356-4363 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_ethyl-acetate_10-1021-acs-jced-7b00704_93.13kPa.json). AAD 0.03 K in T, 0.0010 in y (max 0.07 K, 0.0018). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.001 (passes, < 0.01).",
+      "source_ids": [
+        "mali2017-aniline-dmf",
+        "mali2017-dimethyl-carbonate-ethyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "ethyl-acetate",
+      "set": "fitted-mali2017-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 48.11796186987242,
+      "b_ji": -79.98398226925711,
+      "source": "Fitted to 11 T-x-y points at 93.13 kPa from Mali et al., J. Chem. Eng. Data 62 (2017) 4356-4363 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_ethyl-acetate_10-1021-acs-jced-7b00704_93.13kPa.json). AAD 0.03 K in T, 0.0010 in y (max 0.07 K, 0.0018). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.001 (passes, < 0.01).",
+      "source_ids": [
+        "mali2017-aniline-dmf",
+        "mali2017-dimethyl-carbonate-ethyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "ethylbenzene",
+      "set": "fitted-yadav2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 383.9922798182109,
+      "b_ji": -69.58449106818203,
+      "alpha": 0.3,
+      "source": "Fitted to 11 T-x-y points at 93.13 kPa from Yadav et al., J. Chem. Eng. Data 62 (2017) 2436-2442 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_ethylbenzene_10-1021-acs-jced-7b00372_93.13kPa.json). AAD 0.04 K in T, 0.0010 in y (max 0.10 K, 0.0020). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.001 (passes, < 0.01).",
+      "source_ids": [
+        "yadav2017-dimethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "ethylbenzene",
+      "set": "fitted-yadav2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -157.34845984136433,
+      "b_ji": 83.23984059462119,
+      "source": "Fitted to 11 T-x-y points at 93.13 kPa from Yadav et al., J. Chem. Eng. Data 62 (2017) 2436-2442 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_ethylbenzene_10-1021-acs-jced-7b00372_93.13kPa.json). AAD 0.04 K in T, 0.0011 in y (max 0.11 K, 0.0020). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.001 (passes, < 0.01).",
+      "source_ids": [
+        "yadav2017-dimethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "isopropyl-acetate",
+      "set": "fitted-mali2017-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 80.16822998486532,
+      "b_ji": 14.997684712489118,
+      "alpha": 0.3,
+      "source": "Fitted to 11 T-x-y points at 93.13 kPa from Mali et al., J. Chem. Eng. Data 62 (2017) 4356-4363 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_isopropyl-acetate_10-1021-acs-jced-7b00704_93.13kPa.json). AAD 0.03 K in T, 0.0012 in y (max 0.11 K, 0.0021). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.002 (passes, < 0.01).",
+      "source_ids": [
+        "mali2017-aniline-dmf",
+        "mali2017-dimethyl-carbonate-ethyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "isopropyl-acetate",
+      "set": "fitted-mali2017-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 24.61472132362101,
+      "b_ji": -55.72350001848327,
+      "source": "Fitted to 11 T-x-y points at 93.13 kPa from Mali et al., J. Chem. Eng. Data 62 (2017) 4356-4363 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_isopropyl-acetate_10-1021-acs-jced-7b00704_93.13kPa.json). AAD 0.03 K in T, 0.0012 in y (max 0.11 K, 0.0021). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.002 (passes, < 0.01).",
+      "source_ids": [
+        "mali2017-aniline-dmf",
+        "mali2017-dimethyl-carbonate-ethyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "m-xylene",
+      "set": "fitted-yadav2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 208.35981119503646,
+      "b_ji": -55.67737306078262,
+      "alpha": 0.3,
+      "source": "Fitted to 11 T-x-y points at 93.13 kPa from Yadav et al., J. Chem. Eng. Data 62 (2017) 2436-2442 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_m-xylene_10-1021-acs-jced-7b00372_93.13kPa.json). AAD 0.29 K in T, 0.0027 in y (max 0.70 K, 0.0091). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "yadav2017-dimethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "m-xylene",
+      "set": "fitted-yadav2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -78.79061009225339,
+      "b_ji": 57.736367330305875,
+      "source": "Fitted to 11 T-x-y points at 93.13 kPa from Yadav et al., J. Chem. Eng. Data 62 (2017) 2436-2442 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_m-xylene_10-1021-acs-jced-7b00372_93.13kPa.json). AAD 0.29 K in T, 0.0031 in y (max 0.68 K, 0.0101). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "yadav2017-dimethyl-carbonate-ethylbenzene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "methanol",
+      "set": "fitted-yang2012-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 73.58907905759543,
+      "b_ji": 383.932164372192,
+      "alpha": 0.3,
+      "source": "Fitted to 14 T-x-y points at 101.32 kPa from Yang et al., J. Chem. Eng. Data 57 (2012) 66-71 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_methanol_10-1021-je200697m_101.32kPa.json); checked against Qun-Sheng et al., J. Chem. Eng. Data 59 (2014) 3488-3494 at 101.3 kPa, Du et al., J. Chem. Eng. Data 64 (2019) 2550-2557 at 100.17 kPa. AAD 0.21 K in T, 0.0050 in y (max 0.56 K, 0.0088). Check against vle/dimethyl-carbonate_methanol_10-1021-je500443v_101.3kPa.json: AAD 0.25 K in T, 0.0060 in y (max 0.50 K, 0.0133). Check against vle/dimethyl-carbonate_methanol_10-1021-acs-jced-9b00068_100.17kPa.json: AAD 0.39 K in T, 0.0062 in y (max 0.85 K, 0.0116). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "yang2012-1-butanol-ethylbenzene",
+        "yang2012-dimethyl-carbonate-methanol",
+        "nist-thermoml-archive",
+        "qunsheng2014-dimethyl-carbonate-methanol",
+        "du2019-diethyl-carbonate-methyl-acetate"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "methanol",
+      "set": "fitted-yang2012-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -318.6738757681387,
+      "b_ji": 10.961878493841017,
+      "source": "Fitted to 14 T-x-y points at 101.32 kPa from Yang et al., J. Chem. Eng. Data 57 (2012) 66-71 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_methanol_10-1021-je200697m_101.32kPa.json); checked against Qun-Sheng et al., J. Chem. Eng. Data 59 (2014) 3488-3494 at 101.3 kPa, Du et al., J. Chem. Eng. Data 64 (2019) 2550-2557 at 100.17 kPa. AAD 0.22 K in T, 0.0050 in y (max 0.57 K, 0.0087). Check against vle/dimethyl-carbonate_methanol_10-1021-je500443v_101.3kPa.json: AAD 0.24 K in T, 0.0061 in y (max 0.48 K, 0.0133). Check against vle/dimethyl-carbonate_methanol_10-1021-acs-jced-9b00068_100.17kPa.json: AAD 0.40 K in T, 0.0063 in y (max 0.87 K, 0.0122). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "yang2012-1-butanol-ethylbenzene",
+        "yang2012-dimethyl-carbonate-methanol",
+        "nist-thermoml-archive",
+        "qunsheng2014-dimethyl-carbonate-methanol",
+        "du2019-diethyl-carbonate-methyl-acetate"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "methyl-acetate",
+      "set": "fitted-mali2017-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 73.10344039342581,
+      "b_ji": 42.655314908374436,
+      "alpha": 0.3,
+      "source": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 93.13 kPa from Mali et al., J. Chem. Eng. Data 62 (2017) 4356-4363 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_methyl-acetate_10-1021-acs-jced-7b00704_93.13kPa_tx.json). AAD 0.04 K in T (max 0.13 K; no vapour compositions).",
+      "source_ids": [
+        "mali2017-aniline-dmf",
+        "mali2017-dimethyl-carbonate-ethyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "methyl-acetate",
+      "set": "fitted-mali2017-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -88.35469635846866,
+      "b_ji": 39.70374841762093,
+      "source": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 93.13 kPa from Mali et al., J. Chem. Eng. Data 62 (2017) 4356-4363 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_methyl-acetate_10-1021-acs-jced-7b00704_93.13kPa_tx.json). AAD 0.04 K in T (max 0.13 K; no vapour compositions).",
+      "source_ids": [
+        "mali2017-aniline-dmf",
+        "mali2017-dimethyl-carbonate-ethyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "mibk",
+      "set": "fitted-matsuda2011",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 271.52324224695445,
+      "b_ji": -143.74873886084632,
+      "alpha": 0.3,
+      "source": "Fitted to 39 total pressures at 351.22-383.6 K (T-P-x, with the component vapour pressures) from Matsuda et al., Fluid Phase Equilib. 310 (2011) 166-181 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_mibk_10-1016-j-fluid-2011-08-007_tpx.json). total pressures at 351.22-383.6 K (with the vapour pressures of the component records): AAD 0.15 % (max 0.31 %).",
+      "source_ids": [
+        "matsuda2011-methanol-mibk",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "mibk",
+      "set": "fitted-matsuda2011",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -54.925796090589856,
+      "b_ji": 24.754352429183168,
+      "source": "Fitted to 39 total pressures at 351.22-383.6 K (T-P-x, with the component vapour pressures) from Matsuda et al., Fluid Phase Equilib. 310 (2011) 166-181 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_mibk_10-1016-j-fluid-2011-08-007_tpx.json). total pressures at 351.22-383.6 K (with the vapour pressures of the component records): AAD 0.15 % (max 0.30 %).",
+      "source_ids": [
+        "matsuda2011-methanol-mibk",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "n-butyl-acetate",
+      "set": "fitted-mali2017-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 300.17914297228486,
+      "b_ji": -172.61238745051187,
+      "alpha": 0.3,
+      "source": "Fitted to 11 T-x-y points at 93.13 kPa from Mali et al., J. Chem. Eng. Data 62 (2017) 4356-4363 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_n-butyl-acetate_10-1021-acs-jced-7b00704_93.13kPa.json). AAD 0.09 K in T, 0.0024 in y (max 0.33 K, 0.0059). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "mali2017-aniline-dmf",
+        "mali2017-dimethyl-carbonate-ethyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "n-butyl-acetate",
+      "set": "fitted-mali2017-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -47.65603300855844,
+      "b_ji": 18.648139011000456,
+      "source": "Fitted to 11 T-x-y points at 93.13 kPa from Mali et al., J. Chem. Eng. Data 62 (2017) 4356-4363 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_n-butyl-acetate_10-1021-acs-jced-7b00704_93.13kPa.json). AAD 0.10 K in T, 0.0022 in y (max 0.32 K, 0.0057). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "mali2017-aniline-dmf",
+        "mali2017-dimethyl-carbonate-ethyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "n-nonane",
+      "set": "fitted-tojo2004",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 721.2813348504425,
+      "b_ji": -37.686354127940284,
+      "alpha": 0.3,
+      "source": "Fitted to 37 T-x-y points at 101.3 kPa from Tojo et al., J. Chem. Eng. Data 49 (2004) 86-93 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_n-nonane_10-1021-je0301794_101.3kPa.json). AAD 0.42 K in T, 0.0080 in y (max 1.94 K, 0.0282). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.008 (passes, < 0.01).",
+      "source_ids": [
+        "tojo2004-dimethyl-carbonate-n-nonane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "n-nonane",
+      "set": "fitted-tojo2004",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -58.86851659343552,
+      "b_ji": -84.37485029892339,
+      "source": "Fitted to 37 T-x-y points at 101.3 kPa from Tojo et al., J. Chem. Eng. Data 49 (2004) 86-93 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_n-nonane_10-1021-je0301794_101.3kPa.json). AAD 0.44 K in T, 0.0083 in y (max 2.04 K, 0.0306). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.008 (passes, < 0.01).",
+      "source_ids": [
+        "tojo2004-dimethyl-carbonate-n-nonane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "o-xylene",
+      "set": "fitted-liu2019-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 351.92633712659324,
+      "b_ji": 108.53704662836452,
+      "alpha": 0.3,
+      "source": "Fitted to 18 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Liu et al., J. Chem. Eng. Data 64 (2019) 5210-5217 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_o-xylene_10-1021-acs-jced-9b00414_101.3kPa_tx.json). AAD 0.30 K in T (max 0.56 K; no vapour compositions).",
+      "source_ids": [
+        "liu2019-cyclohexanone-dimethyl-carbonate",
+        "liu2019-dimethyl-carbonate-p-xylene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "o-xylene",
+      "set": "fitted-liu2019-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -63.60061926591421,
+      "b_ji": -37.89387660902062,
+      "source": "Fitted to 18 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Liu et al., J. Chem. Eng. Data 64 (2019) 5210-5217 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_o-xylene_10-1021-acs-jced-9b00414_101.3kPa_tx.json). AAD 0.29 K in T (max 0.55 K; no vapour compositions).",
+      "source_ids": [
+        "liu2019-cyclohexanone-dimethyl-carbonate",
+        "liu2019-dimethyl-carbonate-p-xylene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "p-xylene",
+      "set": "fitted-liu2019-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 42.65211829924397,
+      "b_ji": 56.32646328436081,
+      "alpha": 0.3,
+      "source": "Fitted to 14 T-x-y points at 101.3 kPa from Liu et al., J. Chem. Thermodyn. 133 (2019) 10-18 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_p-xylene_10-1016-j-jct-2019-01-027_101.3kPa.json); checked against Yadav et al., J. Chem. Eng. Data 62 (2017) 2436-2442 at 93.13 kPa. AAD 0.21 K in T, 0.0062 in y (max 0.58 K, 0.0125). Check against vle/dimethyl-carbonate_p-xylene_10-1021-acs-jced-7b00372_93.13kPa.json: AAD 4.04 K in T, 0.0364 in y (max 8.40 K, 0.0891). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.007 (passes, < 0.01).",
+      "source_ids": [
+        "liu2019-cyclohexanone-dimethyl-carbonate",
+        "liu2019-dimethyl-carbonate-p-xylene",
+        "nist-thermoml-archive",
+        "yadav2017-dimethyl-carbonate-ethylbenzene"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "p-xylene",
+      "set": "fitted-liu2019-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 97.7525862288582,
+      "b_ji": -115.68002124416131,
+      "source": "Fitted to 14 T-x-y points at 101.3 kPa from Liu et al., J. Chem. Thermodyn. 133 (2019) 10-18 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_p-xylene_10-1016-j-jct-2019-01-027_101.3kPa.json); checked against Yadav et al., J. Chem. Eng. Data 62 (2017) 2436-2442 at 93.13 kPa. AAD 0.18 K in T, 0.0068 in y (max 0.55 K, 0.0136). Check against vle/dimethyl-carbonate_p-xylene_10-1021-acs-jced-7b00372_93.13kPa.json: AAD 4.04 K in T, 0.0366 in y (max 8.44 K, 0.0895). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.007 (passes, < 0.01).",
+      "source_ids": [
+        "liu2019-cyclohexanone-dimethyl-carbonate",
+        "liu2019-dimethyl-carbonate-p-xylene",
+        "nist-thermoml-archive",
+        "yadav2017-dimethyl-carbonate-ethylbenzene"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "propylene-carbonate",
+      "j": "propylene-glycol",
+      "set": "fitted-mathuni2011",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 116.4074628540023,
+      "b_ji": 504.0440901699499,
+      "alpha": 0.3,
+      "source": "Fitted to 18 T-x-y points at 12.0 kPa from Mathuni et al., J. Chem. Eng. Data 56 (2011) 89-96 (data public in the NIST TRC ThermoML Archive; validation/data/vle/propylene-carbonate_propylene-glycol_10-1021-je100803e_12.0kPa.json). AAD 0.24 K in T, 0.0079 in y (max 0.56 K, 0.0290). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.008 (passes, < 0.01).",
+      "source_ids": [
+        "mathuni2011-propylene-carbonate-propylene-glycol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "propylene-carbonate",
+      "j": "propylene-glycol",
+      "set": "fitted-mathuni2011",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 162.15246902636758,
+      "b_ji": -373.1201845133335,
+      "source": "Fitted to 18 T-x-y points at 12.0 kPa from Mathuni et al., J. Chem. Eng. Data 56 (2011) 89-96 (data public in the NIST TRC ThermoML Archive; validation/data/vle/propylene-carbonate_propylene-glycol_10-1021-je100803e_12.0kPa.json). AAD 0.22 K in T, 0.0070 in y (max 0.47 K, 0.0261). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.008 (passes, < 0.01).",
+      "source_ids": [
+        "mathuni2011-propylene-carbonate-propylene-glycol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
     }
   ]
 }
