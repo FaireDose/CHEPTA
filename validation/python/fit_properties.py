@@ -370,6 +370,15 @@ SEARCHED_BEYOND = {
                           for p in ("liquidHeatCapacity", "heatOfVaporization", "liquidViscosity",
                                     "liquidThermalConductivity", "surfaceTension")},
 }
+# ideal-gas heat capacities tabulated in an open-access article (validation/data/pure/measured/<file>, key
+# "idealGasHeatCapacity"), used where the databank value is implausible; calculated values (statistical
+# thermodynamics), like the WebBook tables of WEBBOOK_CP0. The reason is stated in the record.
+ARTICLE_CP0 = {
+    "cyrene": ("article_cyrene_jced2023.json",
+               "the ChemSep v8.31 data 2 value is about as large as the measured liquid heat capacity (190 against 200 "
+               "J/(mol K) at 298 K, Jerabek et al. 2023, Table 3), where the calculated ideal-gas value is 75 J/(mol K) "
+               "lower"),
+}
 # articles whose values are compared with a measured record but not fitted, where another article with stated
 # uncertainties has values for the same property (they are fitted where they are the only measurements)
 CROSS_CHECK_ONLY = {
@@ -412,6 +421,8 @@ WEBBOOK_ANTOINE_URL = "https://webbook.nist.gov/cgi/cbook.cgi?ID={ID}&Units=SI&M
 def chosen_source(cid, prop):
     if prop in MEASURED_REFIT.get(cid, {}):
         return "measured"
+    if prop == "idealGasHeatCapacity" and cid in ARTICLE_CP0:
+        return "article-cp0"
     if cid in COOLPROP and prop not in COOLPROP_GAPS.get(cid, []):
         return "coolprop"
     if prop == "idealGasHeatCapacity" and cid in WEBBOOK_CP0:
@@ -1172,6 +1183,32 @@ class Builder:
                                     "deviation_percent": [round(100 * d, 2) for d in dev]}
         return rec
 
+    def from_article_cp0(self, cid, prop):
+        """DIPPR 107 fitted to the ideal-gas heat capacities tabulated in an open-access article (ARTICLE_CP0)."""
+        fname, why = ARTICLE_CP0[cid]
+        f = Path(__file__).resolve().parents[2] / "validation" / "data" / "pure" / "measured" / fname
+        A = json.loads(f.read_text())
+        W, src = A["idealGasHeatCapacity"], A["source"]
+        T, y = np.array(W["T_K"], dtype=float), np.array(W["values"], dtype=float)
+        c, extra = fit("DIPPR107", T, y, 0.01)
+        m = rel_dev(ev("DIPPR107", c, T), y)
+        cas = self.comps[cid]["cas"]
+        old = ""
+        d = self.cs.corr(cas, prop)
+        if d is not None and d["Tmin"] <= 298.15 <= d["Tmax"]:
+            v = float(self.cs.value_si(cas, prop, np.array([298.15]))[0])
+            y298 = float(ev("DIPPR107", c, np.array([298.15]))[0])
+            old = "; the %s value at 298.15 K, %.1f J/(mol K), is %+.0f %% from it" % (self.cs.name(cas), v, 100 * (v / y298 - 1))
+        source = {"name": "Open-access article (calculated values)", "reference": "%s, doi:%s, %s" % (
+                      src["citation"], src["doi"], W["table"]),
+                  "url": src["open_copy"], "access": src["access"],
+                  "file": f.relative_to(Path(__file__).resolve().parents[2]).as_posix(),
+                  "fit": "%d tabulated points, %.2f-%.2f K, max deviation %s %%" % (len(T), T.min(), T.max(), pct(m)),
+                  "notes": "Values %s. Used instead of the databank: %s%s." % (W["method"], why, old),
+                  "chain": "Open-access article above the databank, where the databank value is implausible (ARTICLE_CP0)"}
+        return self._record(cid, prop, "DIPPR107", c, extra, float(T.min()), float(T.max()), "fitted", source, T, y, m, 0.01,
+                            store_all=True)
+
     def from_webbook_fluid(self, cid, prop):
         W = WEBBOOK_FLUID[cid]
         D = json.loads((WEBBOOK_FLUID_DIR / ("%s.json" % cid)).read_text())
@@ -1425,6 +1462,8 @@ class Builder:
         src = chosen_source(cid, prop)
         if src == "measured":
             return self.from_measured(cid, prop)
+        if src == "article-cp0":
+            return self.from_article_cp0(cid, prop)
         if src == "coolprop":
             return self.from_coolprop(cid, prop)
         if src == "webbook":
@@ -1897,7 +1936,7 @@ def write_doc(comps, records, builder, vp_gas, measured=()):
                     src = builder.coolprop(cid).value(p, T)
                 elif s == "chemsep":
                     src = builder.chemsep_check(cid, p, T)
-                elif s in ("webbook-fluid", "measured"):
+                elif s in ("webbook-fluid", "measured", "article-cp0"):
                     src = None  # tabulated or measured points: the deviation over them is in the record
                 else:
                     src = webbook_value(cid, T)

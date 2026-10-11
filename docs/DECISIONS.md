@@ -154,10 +154,11 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
     were poor: heat capacity 19-32 % low, a viscosity equation with the wrong sign, surface tension 15 % low. The 2024
     vapour pressures, densities and viscosities have no stated uncertainty and are compared, not fitted (the vapour
     pressures lie up to 11 % from the curve at 400-450 K); its surface tensions are the only ones and are fitted.
-  - **Open question for the maintainer:** ChemSep's Cyrene ideal-gas heat capacity (190 J/(mol K) at 298 K) is above
-    the measured liquid heat capacity (200), which is unlikely; Jerabek et al. (2023, Table 4) give 125.0 from a
-    quantum-chemistry (RRHO) calculation. Calculated, not measured: use it, or keep ChemSep? Also the ChemSep critical
-    point (657.86 K) holds the vapour-pressure curve above 403 K; no open measurement of it was found.
+  - **Cyrene ideal-gas heat capacity** (the maintainer left the choice to the assistant): ChemSep's value (190 J/(mol K)
+    at 298 K) is about as large as the measured liquid heat capacity (200), so the record now uses the values that
+    Jerabek et al. (2023, Table 4) calculated with the RRHO model (125.0 at 298 K, 200-700 K), labelled as calculated,
+    like the WebBook ideal-gas tables of other components. Still open: the ChemSep critical point (657.86 K) holds the
+    vapour-pressure curve above 403 K; no open measurement of it was found.
   Pending:
   - warnings kept (the measured values do not cover 25-100 degC): 1,4-butanediol viscosity, propylene carbonate heat
     capacity, 1-hexanol and 1-octanol vapour pressure, 1-octanol heat capacity.
