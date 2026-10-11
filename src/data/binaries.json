@@ -12577,6 +12577,119 @@
         "nist-thermoml-archive"
       ],
       "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-hexanol",
+      "j": "water",
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -233.89915655570724,
+      "b_ji": 1505.222468698739,
+      "alpha": 0.1563,
+      "source": "ChemSep NRTL databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(1-hexanol) 0.0102-0.71; 298.15 K: x(1-hexanol) 0.0158-0.702; 323.15 K: x(1-hexanol) 0.0242-0.689; 348.15 K: x(1-hexanol) 0.033-0.671; 373.15 K: x(1-hexanol) 0.0477-0.649), not checked against data in this import.",
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-hexanol",
+      "j": "water",
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -403.90150962587524,
+      "b_ji": 4.8937093193687975,
+      "source": "ChemSep UNIQUAC databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(1-hexanol) 0.0131-0.74; 298.15 K: x(1-hexanol) 0.0148-0.688; 323.15 K: x(1-hexanol) 0.0168-0.637; 348.15 K: x(1-hexanol) 0.0189-0.588; 373.15 K: x(1-hexanol) 0.0214-0.542), not checked against data in this import.",
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "aniline",
+      "j": "p-cymene",
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 445.4094722026142,
+      "b_ji": -59.55628339934568,
+      "alpha": 0.295,
+      "source": "ChemSep NRTL databank (via the open-source thermo library).",
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "bdo",
+      "j": "methanol",
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -226.7435760771682,
+      "b_ji": 224.91497693634037,
+      "alpha": 0.3152,
+      "source": "ChemSep NRTL databank (via the open-source thermo library).",
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "bdo",
+      "j": "methanol",
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -247.02588969678928,
+      "b_ji": 144.24923797016166,
+      "source": "ChemSep UNIQUAC databank (via the open-source thermo library).",
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "bdo",
+      "j": "water",
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 966.2520556962269,
+      "b_ji": 659.670184531812,
+      "alpha": 0.5778,
+      "source": "ChemSep NRTL databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(bdo) 0.817-0.981; 298.15 K: x(bdo) 0.83-0.965; 323.15 K: x(bdo) 0.867-0.927), not checked against data in this import.",
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "bdo",
+      "j": "water",
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -823.144773813434,
+      "b_ji": 186.37686508045104,
+      "source": "ChemSep UNIQUAC databank (via the open-source thermo library).",
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "diethylene-glycol",
+      "j": "water",
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -50.27163139652671,
+      "b_ji": 597.1859182768037,
+      "alpha": 0.2974,
+      "source": "ChemSep NRTL databank (via the open-source thermo library).",
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "diethylene-glycol",
+      "j": "water",
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -453.1952848249071,
+      "b_ji": 174.25621875269306,
+      "source": "ChemSep UNIQUAC databank (via the open-source thermo library).",
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     }
   ]
 }
