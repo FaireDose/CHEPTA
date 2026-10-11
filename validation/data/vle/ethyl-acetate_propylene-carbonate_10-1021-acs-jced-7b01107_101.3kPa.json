@@ -1,0 +1,134 @@
+{
+ "_about": "Ethyl acetate (1) + Propylene carbonate (2): isobaric T-x-y at 101.3 kPa. Rows: liquid mole fraction of ethyl acetate, boiling temperature in K, vapour mole fraction of ethyl acetate, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "X. Liu, Y. Zhang, M. Li, X. Li, G. Li, Y. Wang, J. Gao, Isobaric Vapor-liquid Equilibrium for Three Binary Systems of Ethyl Acetate + Propyl Acetate, Ethyl Acetate + Propylene Carbonate, and Propyl Acetate + Propylene Carbonate at 101.3 kPa, J. Chem. Eng. Data 63 (2018) 1588-1595",
+  "doi": "10.1021/acs.jced.7b01107",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b01107.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 9, 10. The table number in the article was not checked."
+ },
+ "components": [
+  "ethyl-acetate",
+  "propylene-carbonate"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.3,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.03,
+   468.6,
+   0.692
+  ],
+  [
+   0.033,
+   461.1,
+   0.757
+  ],
+  [
+   0.037,
+   454.7,
+   0.801
+  ],
+  [
+   0.044,
+   447.7,
+   0.847
+  ],
+  [
+   0.07,
+   427.9,
+   0.917
+  ],
+  [
+   0.097,
+   415.4,
+   0.947
+  ],
+  [
+   0.14,
+   403.6,
+   0.964
+  ],
+  [
+   0.179,
+   395.7,
+   0.976
+  ],
+  [
+   0.219,
+   390.2,
+   0.982
+  ],
+  [
+   0.255,
+   386.0,
+   0.985
+  ],
+  [
+   0.306,
+   381.4,
+   0.989
+  ],
+  [
+   0.372,
+   376.6,
+   0.991
+  ],
+  [
+   0.436,
+   372.8,
+   0.994
+  ],
+  [
+   0.473,
+   370.8,
+   0.994
+  ],
+  [
+   0.592,
+   365.1,
+   0.997
+  ],
+  [
+   0.628,
+   363.5,
+   0.997
+  ],
+  [
+   0.683,
+   361.3,
+   0.998
+  ],
+  [
+   0.745,
+   359.0,
+   0.998
+  ],
+  [
+   0.791,
+   357.2,
+   0.999
+  ],
+  [
+   0.849,
+   355.2,
+   0.999
+  ],
+  [
+   0.908,
+   353.3,
+   0.999
+  ],
+  [
+   0.953,
+   351.9,
+   1.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0045. To be checked by a person against the record (AGENTS.md rule 4)."
+}

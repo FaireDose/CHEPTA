@@ -1,0 +1,78 @@
+{
+ "_about": "Diethyl carbonate (1) + Isooctane (2): isothermal total pressures at 323.15 K. Rows: temperature in K, liquid mole fraction of diethyl carbonate, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "R. P. Anugraha, A. Altway, G. Wibawa, Measurement and Correlation of Isothermal Binary Vapor Liquid Equilibrium for Diethyl Carbonate + Isooctane/n-Heptane/Toluene Systems, J. Chem. Eng. Data 62 (2017) 2362-2366",
+  "doi": "10.1021/acs.jced.7b00236",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00236.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 5. The table number in the article was not checked."
+ },
+ "components": [
+  "diethyl-carbonate",
+  "isooctane"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   323.15,
+   0.0,
+   19.54
+  ],
+  [
+   323.15,
+   0.1012,
+   19.35
+  ],
+  [
+   323.15,
+   0.1988,
+   18.4
+  ],
+  [
+   323.15,
+   0.2997,
+   17.68
+  ],
+  [
+   323.15,
+   0.4012,
+   16.77
+  ],
+  [
+   323.15,
+   0.5,
+   16.03
+  ],
+  [
+   323.15,
+   0.6,
+   15.23
+  ],
+  [
+   323.15,
+   0.7019,
+   14.05
+  ],
+  [
+   323.15,
+   0.7999,
+   12.72
+  ],
+  [
+   323.15,
+   0.8998,
+   10.47
+  ],
+  [
+   323.15,
+   1.0,
+   5.75
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

@@ -1,0 +1,104 @@
+{
+ "_about": "Dimethyl carbonate (1) + p-Xylene (2): isobaric T-x-y at 101.3 kPa. Rows: liquid mole fraction of dimethyl carbonate, boiling temperature in K, vapour mole fraction of dimethyl carbonate, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "K. Liu, Z. Wang, Y. Zhang, D. Xu, J. Gao, Z. Ma, Y. Wang, Vapour-liquid equilibrium measurements and extractive distillation process design for separation of azeotropic mixture (dimethyl carbonate + ethanol), J. Chem. Thermodyn. 133 (2019) 10-18",
+  "doi": "10.1016/j.jct.2019.01.027",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2019.01.027.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 6, 7. The table number in the article was not checked."
+ },
+ "components": [
+  "dimethyl-carbonate",
+  "p-xylene"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.3,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0,
+   411.45,
+   0.0
+  ],
+  [
+   0.024,
+   407.95,
+   0.1129
+  ],
+  [
+   0.0429,
+   405.65,
+   0.1831
+  ],
+  [
+   0.0675,
+   403.25,
+   0.2542
+  ],
+  [
+   0.0897,
+   401.05,
+   0.3157
+  ],
+  [
+   0.1197,
+   398.25,
+   0.388
+  ],
+  [
+   0.1608,
+   394.65,
+   0.4728
+  ],
+  [
+   0.2102,
+   391.05,
+   0.5532
+  ],
+  [
+   0.2637,
+   387.65,
+   0.616
+  ],
+  [
+   0.3192,
+   384.45,
+   0.673
+  ],
+  [
+   0.4007,
+   380.65,
+   0.7355
+  ],
+  [
+   0.4878,
+   377.25,
+   0.7909
+  ],
+  [
+   0.6075,
+   372.95,
+   0.8517
+  ],
+  [
+   0.7037,
+   370.05,
+   0.8899
+  ],
+  [
+   0.8276,
+   366.65,
+   0.9399
+  ],
+  [
+   1.0,
+   363.35,
+   1.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0073. Pure-component boiling points of the set within 0.14 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

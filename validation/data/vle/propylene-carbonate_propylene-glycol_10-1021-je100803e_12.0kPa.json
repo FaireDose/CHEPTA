@@ -1,0 +1,114 @@
+{
+ "_about": "Propylene carbonate (1) + Propylene glycol (2): isobaric T-x-y at 12.0 kPa. Rows: liquid mole fraction of propylene carbonate, boiling temperature in K, vapour mole fraction of propylene carbonate, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "T. Mathuni, J. I. Kim, S. J. Park, Phase Equilibrium and Physical Properties for the Purification of Propylene Carbonate (PC) and y-Butyrolactone (GBL), J. Chem. Eng. Data 56 (2011) 89-96",
+  "doi": "10.1021/je100803e",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je100803e.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 22, 24. The table number in the article was not checked."
+ },
+ "components": [
+  "propylene-carbonate",
+  "propylene-glycol"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 12.0,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0169,
+   402.38,
+   0.018299999999999983
+  ],
+  [
+   0.034,
+   402.19,
+   0.03180000000000005
+  ],
+  [
+   0.0555,
+   402.2,
+   0.051000000000000045
+  ],
+  [
+   0.1525,
+   402.48,
+   0.1048
+  ],
+  [
+   0.2323,
+   402.85,
+   0.12670000000000003
+  ],
+  [
+   0.2552,
+   403.01,
+   0.13739999999999997
+  ],
+  [
+   0.3092,
+   403.28,
+   0.15180000000000005
+  ],
+  [
+   0.3779,
+   403.87,
+   0.16810000000000003
+  ],
+  [
+   0.4137,
+   404.35,
+   0.17859999999999998
+  ],
+  [
+   0.4827,
+   404.97,
+   0.19030000000000002
+  ],
+  [
+   0.5573,
+   405.52,
+   0.2127
+  ],
+  [
+   0.6792,
+   408.03,
+   0.2682
+  ],
+  [
+   0.7784,
+   411.49,
+   0.3284
+  ],
+  [
+   0.8572,
+   415.49,
+   0.40800000000000003
+  ],
+  [
+   0.8843,
+   417.63,
+   0.4615
+  ],
+  [
+   0.9033,
+   419.53,
+   0.4959
+  ],
+  [
+   0.9425,
+   425.17,
+   0.6261
+  ],
+  [
+   0.9857,
+   432.77,
+   0.8329
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0078. To be checked by a person against the record (AGENTS.md rule 4)."
+}

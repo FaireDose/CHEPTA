@@ -1,0 +1,89 @@
+{
+ "_about": "Dimethyl carbonate (1) + m-Xylene (2): isobaric T-x-y at 93.13 kPa. Rows: liquid mole fraction of dimethyl carbonate, boiling temperature in K, vapour mole fraction of dimethyl carbonate, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "S. S. Yadav, N. A. Mali, S. S. Joshi, P. V. Chavan, Isobaric Vapor Liquid Equilibrium Data for the Binary Systems of Dimethyl Carbonate with Xylene Isomers at 93.13 kPa, J. Chem. Eng. Data 62 (2017) 2436-2442",
+  "doi": "10.1021/acs.jced.7b00372",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00372.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 19, 20. The table number in the article was not checked."
+ },
+ "components": [
+  "dimethyl-carbonate",
+  "m-xylene"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 93.13,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0,
+   409.13,
+   0.0
+  ],
+  [
+   0.0707,
+   399.19,
+   0.29359999999999997
+  ],
+  [
+   0.1208,
+   394.72,
+   0.4131
+  ],
+  [
+   0.1855,
+   389.23,
+   0.5382
+  ],
+  [
+   0.2721,
+   383.5,
+   0.6513
+  ],
+  [
+   0.4027,
+   377.03,
+   0.7614
+  ],
+  [
+   0.4939,
+   373.53,
+   0.8147
+  ],
+  [
+   0.6065,
+   369.96,
+   0.8575
+  ],
+  [
+   0.8027,
+   364.16,
+   0.9358
+  ],
+  [
+   0.8275,
+   363.66,
+   0.9429
+  ],
+  [
+   0.8672,
+   363.1,
+   0.9561
+  ],
+  [
+   0.9305,
+   362.2,
+   0.9771
+  ],
+  [
+   1.0,
+   360.73,
+   1.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0041. Pure-component boiling points of the set within 0.13 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

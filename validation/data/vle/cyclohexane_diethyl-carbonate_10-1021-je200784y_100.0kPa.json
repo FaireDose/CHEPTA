@@ -1,0 +1,134 @@
+{
+ "_about": "Cyclohexane (1) + Diethyl carbonate (2): isobaric T-x-y at 100.0 kPa. Rows: liquid mole fraction of cyclohexane, boiling temperature in K, vapour mole fraction of cyclohexane, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "B. Marrufo, S. Loras, E. Lladosa, Phase Equilibria Involved in the Extractive Distillation of Cyclohexane + Cyclohexene Using Diethyl Carbonate as an Entrainer, J. Chem. Eng. Data 56 (2011) 4790-4796",
+  "doi": "10.1021/je200784y",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je200784y.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 2, 3. The table number in the article was not checked."
+ },
+ "components": [
+  "cyclohexane",
+  "diethyl-carbonate"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 100.0,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.014,
+   396.14,
+   0.077
+  ],
+  [
+   0.036,
+   392.79,
+   0.184
+  ],
+  [
+   0.054,
+   390.27,
+   0.263
+  ],
+  [
+   0.082,
+   386.59,
+   0.358
+  ],
+  [
+   0.143,
+   380.74,
+   0.5
+  ],
+  [
+   0.186,
+   376.41,
+   0.581
+  ],
+  [
+   0.239,
+   372.83,
+   0.655
+  ],
+  [
+   0.3,
+   369.8,
+   0.709
+  ],
+  [
+   0.366,
+   366.91,
+   0.749
+  ],
+  [
+   0.42,
+   364.92,
+   0.779
+  ],
+  [
+   0.456,
+   363.59,
+   0.802
+  ],
+  [
+   0.508,
+   362.22,
+   0.82
+  ],
+  [
+   0.555,
+   360.85,
+   0.839
+  ],
+  [
+   0.617,
+   359.61,
+   0.857
+  ],
+  [
+   0.659,
+   358.68,
+   0.875
+  ],
+  [
+   0.704,
+   357.74,
+   0.887
+  ],
+  [
+   0.764,
+   356.74,
+   0.902
+  ],
+  [
+   0.805,
+   356.16,
+   0.916
+  ],
+  [
+   0.864,
+   355.27,
+   0.936
+  ],
+  [
+   0.902,
+   354.67,
+   0.951
+  ],
+  [
+   0.954,
+   353.94,
+   0.973
+  ],
+  [
+   0.981,
+   353.64,
+   0.989
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0051. To be checked by a person against the record (AGENTS.md rule 4)."
+}

@@ -1,0 +1,93 @@
+{
+ "_about": "Diethyl carbonate (1) + Water (2): isothermal total pressures at 353.15 K. Rows: temperature in K, liquid mole fraction of diethyl carbonate, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "I. C. Arango, A. L. Villa, Isothermal vapor   liquid and vapor liquid liquid equilibrium for the ternary  system ethanol + water + diethyl carbonate and constituent binary systems at  different temperatures, Fluid Phase Equilib. 339 (2013) 31-39",
+  "doi": "10.1016/j.fluid.2012.11.026",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.11.026.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 8. The table number in the article was not checked."
+ },
+ "components": [
+  "diethyl-carbonate",
+  "water"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   353.15,
+   0.0,
+   47.3296
+  ],
+  [
+   353.15,
+   0.0095,
+   54.8475
+  ],
+  [
+   353.15,
+   0.0198,
+   57.2897
+  ],
+  [
+   353.15,
+   0.0514,
+   63.9761
+  ],
+  [
+   353.15,
+   0.6396,
+   63.9761
+  ],
+  [
+   353.15,
+   0.7018,
+   62.4388
+  ],
+  [
+   353.15,
+   0.8029,
+   61.7617
+  ],
+  [
+   353.15,
+   0.903,
+   56.5682
+  ],
+  [
+   353.15,
+   0.9529,
+   46.1585
+  ],
+  [
+   353.15,
+   0.9706,
+   37.8777
+  ],
+  [
+   353.15,
+   0.9819,
+   31.9795
+  ],
+  [
+   353.15,
+   0.9877,
+   28.2711
+  ],
+  [
+   353.15,
+   0.9941,
+   24.6837
+  ],
+  [
+   353.15,
+   1.0,
+   20.7404
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}
