@@ -63,6 +63,11 @@ KNOWN = {
         "all eight articles find the ChemSep heat capacity 1-9 % high, but they cover 265-353 K only; a refit would "
         "end the record at 353 K instead of 541 K (the refit rule asks for the measured values to cover 25-100 degC "
         "or for a deviation above three times the tolerance; this is 2.6 times)",
+    # proposal 0009, batch 1
+    ("diethyl-carbonate", "liquidHeatCapacity"):
+        "the record is fitted to Pokorny et al. (2017), Ding (2004) and Comelli et al. (2006), with stated "
+        "uncertainties of 3.1-5.2 % (ChemSep has no liquid heat capacity); the one article within the 2 % tolerance, "
+        "Comelli et al. (2010, 2.0 %), lies 5-6 % below all three, its authors' 2006 values included, and is left out",
 }
 
 # the components checked, and the names searched in the archive (its full-text search finds the compound

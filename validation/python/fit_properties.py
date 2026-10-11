@@ -343,6 +343,9 @@ MEASURED_REFIT = {
     "cyrene": {"vapourPressure": "ChemSep stores the vapour pressure in an equation (200) that DWSIM does not define",
                "liquidDensity": "ChemSep has no liquid density"},
     "diethyl-carbonate": {"liquidHeatCapacity": "ChemSep has no liquid heat capacity"},
+    # the measured checks of batch 1 (docs/MEASURED_CHECKS.md): above three times the 2 % tolerance
+    "bdo": {"liquidHeatCapacity": "the ChemSep heat capacity deviates from the three articles with stated "
+                                  "uncertainties within 2 % by 7.5 % (median of the articles)"},
 }
 # where a property has no record in the sources above, the further searches of AGENTS.md rule 1 (steps 5 and 6), listed
 # in its "no open data" record (proposal 0009, batch 1; searched 2026-10-11)
