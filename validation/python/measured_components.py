@@ -471,6 +471,43 @@ def fit_measured(cid, prop, form, pts, target, Tc=None, fixed=()):
     return coeffs, use, excluded, m
 
 
+def fit_within_uncertainty(cid, prop, form, pts, Tc=None, fixed=()):
+    """Where no measured value has a stated uncertainty within the target (Cyrene's vapour pressures, 1.4-17 %): least
+    squares weighted by 1/u, the fewest coefficients that meet every value within its own stated uncertainty; values
+    it cannot meet are left out one at a time (the one furthest outside its uncertainty first), at most a third.
+    Returns coeffs, the values met, the values left out, and the maximum relative deviation."""
+    use = [p for p in pts if p["u_rel"]] + list(fixed)
+    n0, excluded = len(use), []
+    while True:
+        T = np.array([p["T"] for p in use])
+        y = np.array([p["y"] for p in use])
+        fm = np.array([p in fixed for p in use])
+        u = np.array([0.001 if f else p["u_rel"] for p, f in zip(use, fm)])
+        w = 1 / u
+        found = None
+        for k in complexities(form, T):
+            c = fit_ls(form, T, y, Tc, k, w)
+            d = ev(form, c, T, Tc) / y - 1
+            if np.all(np.abs(d[~fm]) <= u[~fm]):
+                found = c
+                break
+        if found is not None:
+            break
+        score = [-1 if f else abs(dd) / uu for dd, uu, f in zip(d, u, fm)]
+        j = int(np.argmax(score))
+        excluded.append(dict(use[j], why="outside its stated uncertainty in every fit of the others"))
+        use.pop(j)
+        if len(use) < 2 * n0 / 3:
+            raise SystemExit("%s %s: more than a third of the values would be left out; the data disagree" % (cid, prop))
+    coeffs = {k: rnd(v) for k, v in found.items() if k in "ABCDE"}
+    T = np.array([p["T"] for p in use])
+    y = np.array([p["y"] for p in use])
+    m = rel_dev(ev(form, coeffs, T, Tc), y)
+    for p in excluded:
+        p["deviation_percent"] = round(100 * float(ev(form, coeffs, np.array([p["T"]]), Tc)[0] / p["y"] - 1), 2)
+    return coeffs, use, excluded, m
+
+
 def fit_measured_loose(cid, prop, form, pts, target, Tc=None, fixed=()):
     """As fit_measured, which fits only the values whose stated uncertainty is within the target. The values with
     larger stated uncertainties are then compared with the fit: those it meets within their own uncertainty are kept

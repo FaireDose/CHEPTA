@@ -356,7 +356,8 @@ SEARCHED_BEYOND = {
     "diethyl-carbonate": {"liquidThermalConductivity": [_TML % ("diethyl-carbonate", "thermal conductivity"), _LIT],
                           "vapourThermalConductivity": [_TML % ("diethyl-carbonate", "thermal conductivity"), _LIT]},
     "terephthalic-acid": {p: [_TML % ("terephthalic-acid", "liquid values"), _TPA]
-                          for p in ("liquidHeatCapacity", "liquidViscosity", "liquidThermalConductivity", "surfaceTension")},
+                          for p in ("liquidHeatCapacity", "heatOfVaporization", "liquidViscosity",
+                                    "liquidThermalConductivity", "surfaceTension")},
 }
 VP_FROM_MEASURED = {cid for cid, props in MEASURED_REFIT.items() if "vapourPressure" in props}
 WEBBOOK_ANTOINE_FILE = Path(__file__).resolve().parents[2] / "validation" / "data" / "pure" / "measured" / "webbook_antoine.json"
@@ -1178,13 +1179,29 @@ class Builder:
             Tmax = Tc
             conv += "Tmax limited to the ChemSep critical temperature %.2f K (ChemSep: %.2f K). " % (Tc, d["Tmax"])
         if prop in LIQUID_SIDE:
-            Tt = self.cs.const(cas, "TriplePointTemperature")
+            # the triple point, else the normal melting point (proposal 0009: diethyl carbonate, terephthalic acid);
+            # ChemSep gives neither for Cyrene, whose records keep their own range
+            tag = next((t for t in ("TriplePointTemperature", "NormalMeltingPointTemperature")
+                        if self.cs.compound(cas).find(t) is not None), None)
+            Tt = self.cs.const(cas, tag) if tag else 0.0
             if cid in COOLPROP:
                 Tt = max(Tt, self.coolprop(cid).Ttriple)
             Tt = math.ceil(Tt * 100) / 100
             if Tmin < Tt:
                 Tmin = Tt
-                conv += "Tmin raised to the triple point %.2f K (ChemSep: %.2f K). " % (Tt, d["Tmin"])
+                conv += "Tmin raised to the %s %.2f K (ChemSep: %.2f K). " % (
+                    "melting point" if tag == "NormalMeltingPointTemperature" else "triple point", Tt, d["Tmin"])
+            if Tmin >= Tmax:
+                # the whole ChemSep range is below the melting point (terephthalic acid, heat of vaporization at
+                # 298-308 K): not a property of the liquid
+                self.log.append("%-16s %-27s no liquid record (ChemSep %.2f-%.2f K, below %.2f K)" % (
+                    cid, prop, d["Tmin"], d["Tmax"], Tt))
+                return {"available": False, "searched": [
+                    "CoolProp 8.0.0 (not a fluid)", "NIST Chemistry WebBook (not a WebBook fluid)",
+                    "%s (a correlation for %.2f-%.2f K only, below the %s %.2f K, where the compound is a solid: not "
+                    "used)" % (self.cs.name(cas), d["Tmin"], d["Tmax"], "melting point" if tag ==
+                               "NormalMeltingPointTemperature" else "triple point", Tt)]
+                    + SEARCHED_BEYOND.get(cid, {}).get(prop, [])}, None
         target = 0.03 if prop in TRANSPORT else 0.01
         chain = chain_note(cid, prop)
         if d["eqno"] in (1, 2, 3, 4, 100, 101, 102, 105, 106, 107):
@@ -1239,10 +1256,19 @@ class Builder:
         if d["eqno"] not in (10, 16, 116):
             raise ValueError("ChemSep equation %d for %s %s" % (d["eqno"], cid, prop))
         form = FORM[prop]
-        why = "ChemSep range" + (", Tmin raised to the triple point" if Tmin > d["Tmin"] else "")
+        why = "ChemSep range" + ((", Tmin raised to the melting point" if tag == "NormalMeltingPointTemperature" else
+                                  ", Tmin raised to the triple point") if Tmin > d["Tmin"] else "")
         if prop in LIQUID_SIDE and Tmax > 0.95 * Tc:
             Tmax = math.floor(0.95 * Tc * 100) / 100
             why += ", limited to 0.95 Tc"
+        Tg = grid(Tmin, Tmax)
+        yg = self.cs.value_si(cas, prop, Tg)
+        if np.any(yg <= 0):
+            # the ChemSep curve reaches zero inside the range (diethylene glycol surface tension, equation 116, below
+            # 0.95 Tc): the record ends at 0.95 times the temperature where it first does, as for a polynomial above
+            T0 = float(Tg[np.argmax(yg <= 0)])
+            Tmax = math.floor(0.95 * T0 * 100) / 100
+            why += ", ended at %.2f K (the ChemSep curve reaches zero at %.1f K)" % (Tmax, T0)
         T, y, c, extra, m, Tmin, Tmax, narrowed = fit_range(
             form, lambda T: self.cs.value_si(cas, prop, T), Tmin, Tmax, target, Tc,
             keep=keep_T(self.comps[cid]))
@@ -1296,7 +1322,16 @@ class Builder:
         Tc = self.coolprop(cid).Tc if cid in COOLPROP else self.cs.const(cas, "CriticalTemperature")
         form = FORM[prop]
         target = 0.03 if prop in TRANSPORT else 0.01
-        coeffs, use, kept, exc, m = fit_measured_loose(cid, prop, form, tml.values(prop), target, Tc=Tc)
+        vals = tml.values(prop)
+        loose_only = not any(p["u_rel"] is None or p["u_rel"] <= target for p in vals)
+        if loose_only:
+            # no measured value within the target (diethyl carbonate heat capacity, 2.0-5.2 %): every value met within
+            # its own stated uncertainty instead
+            from measured_components import fit_within_uncertainty
+            coeffs, use, exc, m = fit_within_uncertainty(cid, prop, form, vals, Tc=Tc)
+            kept = []
+        else:
+            coeffs, use, kept, exc, m = fit_measured_loose(cid, prop, form, vals, target, Tc=Tc)
         T = np.array([p["T"] for p in use])
         y = np.array([p["y"] for p in use])
         Tall = [p["T"] for p in use + kept]
@@ -1314,10 +1349,16 @@ class Builder:
         where, access = tml.origin(use + kept)
         source = {"name": "Measured values (%s)" % where, "reference": "; ".join(refs),
                   "access": access,
-                  "fit": "%d measured values with stated uncertainties within %g %% from %d articles, %.2f-%.2f K, max "
-                         "deviation %s %%%s" % (len(use), 100 * target, len({p["doi"] for p in use}), T.min(), T.max(), pct(m),
-                                               "; %d values with larger stated uncertainties agree within them" % len(kept)
-                                               if kept else ""),
+                  "fit": ("%d measured values from %d articles, %.2f-%.2f K, none with a stated uncertainty within the %g %% "
+                          "target (%.2g-%.2g %%); the fit meets each within its own stated uncertainty (max deviation %s %%), "
+                          "so the record is no better than these values" % (
+                              len(use), len({p["doi"] for p in use}), T.min(), T.max(), 100 * target,
+                              min(100 * p["u_rel"] for p in use), max(100 * p["u_rel"] for p in use), pct(m))
+                          if loose_only else
+                          "%d measured values with stated uncertainties within %g %% from %d articles, %.2f-%.2f K, max "
+                          "deviation %s %%%s" % (len(use), 100 * target, len({p["doi"] for p in use}), T.min(), T.max(), pct(m),
+                                                "; %d values with larger stated uncertainties agree within them" % len(kept)
+                                                if kept else "")),
                   "notes": "Fitted to measured data instead of the databank: %s%s. Rules: "
                            "validation/python/measured_components.py." % (
                                MEASURED_REFIT[cid][prop], "; the databank record deviates from these values by %s" % old
@@ -1470,10 +1511,20 @@ class Builder:
                 for T in np.linspace(st["Tmin_K"], st["Tmax_K"], 9):
                     pts.append({"T": float(T), "y": 1e5 * 10 ** (st["A"] - st["B"] / (T + st["C"])), "u_rel": None,
                                 "ref": "%s (Antoine equation, NIST WebBook, %s)" % (st["reference"], W["url"]), "doi": None})
-        coeffs, use, kept, exc, m = fit_measured_loose(cid, "vapourPressure", "DIPPR101", pts, 0.01, fixed=[crit])
+        loose_only = not any(p["u_rel"] is None or p["u_rel"] <= 0.01 for p in pts)
+        if loose_only:
+            # no measured value within 1 % (Cyrene): every value met within its own stated uncertainty instead
+            from measured_components import fit_within_uncertainty
+            # the values end well below the critical point: the ChemSep normal boiling point holds the curve between
+            tb = {"T": self.cs.const(cas, "NormalBoilingPointTemperature"), "y": 101325.0, "u_rel": None,
+                  "ref": "%s normal boiling point" % self.cs.name(cas), "doi": None}
+            coeffs, use, exc, m = fit_within_uncertainty(cid, "vapourPressure", "DIPPR101", pts, fixed=[crit, tb])
+            kept = []
+        else:
+            coeffs, use, kept, exc, m = fit_measured_loose(cid, "vapourPressure", "DIPPR101", pts, 0.01, fixed=[crit])
         coeffs.setdefault("D", 0.0)
         coeffs.setdefault("E", 0.0)
-        meas = [p for p in use if p is not crit]
+        meas = [p for p in use if p is not crit and not (loose_only and p is tb)]
         ant = [p for p in meas if not p.get("doi")]
         meas = [p for p in meas if p.get("doi")]
         Tmin = min(p["T"] for p in meas + kept + ant)
@@ -1496,14 +1547,27 @@ class Builder:
                        "redistributes the databank, does not define (PropertyPackage.vb, CalcCSTDepProp: no case for it), "
                        "so it was not used." % (cs_curve["eqno"] if cs_curve else "(none)"))
         where, _ = tml.origin(meas + kept)
-        source = ("Fitted to measured vapour pressures (" + where + "): %d values with stated uncertainties "
-                  "within 1 %% from %d articles, max deviation %s %%, and %d values with larger stated uncertainties, "
-                  "kept where the fit is within them (they extend the range to %.2f K); %sand the %s critical point "
-                  "(%.2f K, %.0f Pa). Between %.2f K and the critical point the curve is held only by the critical point. "
-                  "%s Articles: %s. Rules: validation/python/measured_components.py (fit_measured_loose)."
-                  % (len(meas), len({p["doi"] for p in meas}), pct(m), len(kept), Tmin,
-                     ("%d points of the measured Antoine equation of %s; " % (len(ant), ", ".join(VP_MEASURED_ANTOINE[cid])))
-                     if ant else "", self.cs.name(cas), Tc, Pc, Tdata, cs_text, "; ".join(refs)))
+        ant_text = ("%d points of the measured Antoine equation of %s; " % (len(ant), ", ".join(VP_MEASURED_ANTOINE[cid]))
+                    if ant else "")
+        if loose_only:
+            u = [100 * p["u_rel"] for p in meas]
+            head = ("Fitted to measured vapour pressures (%s): %d values from %d articles, none with a stated uncertainty "
+                    "within the 1 %% target (%.2g-%.2g %%); the fit meets each within its own stated uncertainty (max "
+                    "deviation %s %%), so the record is no better than these values; " % (
+                        where, len(meas), len({p["doi"] for p in meas}), min(u), max(u), pct(m)))
+            head += "the %s normal boiling point (%.2f K); " % (self.cs.name(cas), tb["T"])
+            rule = "fit_within_uncertainty"
+        else:
+            head = ("Fitted to measured vapour pressures (%s): %d values with stated uncertainties within 1 %% from %d "
+                    "articles, max deviation %s %%, and %d values with larger stated uncertainties, kept where the fit is "
+                    "within them (they extend the range to %.2f K); " % (
+                        where, len(meas), len({p["doi"] for p in meas}), pct(m), len(kept), Tmin))
+            rule = "fit_measured_loose"
+        source = (head + "%sand the %s critical point (%.2f K, %.0f Pa). Between %.2f K and the critical point the curve "
+                  "is held only by %s. %s Articles: %s. Rules: validation/python/measured_components.py "
+                  "(%s)." % (ant_text, self.cs.name(cas), Tc, Pc, Tdata,
+                             "the normal boiling point and the critical point" if loose_only else "the critical point",
+                             cs_text, "; ".join(refs), rule))
         rec = {"equation": "DIPPR101", "form": "ln(P/Pa) = A + B/T + C ln T + D T^E", "units": "Pa",
                **{k: coeffs[k] for k in "ABCDE"}, "Tmin_K": rnd(Tmin, 8), "Tmax_K": rnd(Tc, 8), "tier": "fitted",
                "source": source}
