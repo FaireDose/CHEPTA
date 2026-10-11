@@ -133,6 +133,28 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
 
 ### 2026-10-10
 
+- **`chepta@0.3.0` is on npm** (staged with the one-time token and approved on npmjs.com; served by
+  jsDelivr). Still to do by the maintainer: steps 4.4 and 4.5 under Open items (trusted publisher,
+  then delete the token and the secret), deprecate `fugacity`, and optionally deprecate the
+  placeholder `chepta@0.0.0-stage`.
+- **Front page:** the maintainer edits README.md directly (new flowsheet screenshot, shorter
+  rename note, the "model predictions" sentence reworded, a shorter load prompt, updated
+  parameter counts).
+- **Engineering report comment made shorter:** the top gives the totals (❌ large, ⚠️ small,
+  ✅ ok, not checked) and whether the pull request changes results; each group is folded, its
+  title starting with its own counts, and opens on its problems, with every result folded
+  again inside. ❌ large = a failed or lost calculation, or a deviation of more than twice the
+  tolerance; the tolerances themselves are unchanged.
+- **Assistants use the workbench's own exports:** asked for an Excel file of a flowsheet, ChatGPT
+  wrote its own spreadsheet instead of using the workbench's. The instructions (use.md and the
+  skill) now say: open the workbench and name the button (Download Excel, Excel concept model,
+  Download CSV, Copy CSV, the Excel button of a diagram, File > Save); do not make the file or
+  compute again in code; do not solve the flowsheet in code after `checkProject` passes; ask
+  before building anything the workbench cannot do. A test keeps the button names in the
+  instructions equal to those in the interface.
+- **Website domain:** the maintainer set up www.cheptasim.org for the GitHub Pages site (the same
+  workbench as fairedose.github.io/CHEPTA, which redirects there). Pending: tick Settings → Pages →
+  Enforce HTTPS; offered: change the old links in README, use.md, the install page and the skill.
 - **Literature package from another assistant (2026-10-10):** the maintainer asked to use its data.
   The equation-of-state part had 584 transcribed rows for 16 pairs without a k_ij; every row was
   read again from the eight open sources (two Heriot-Watt theses, SciELO, four J-STAGE papers, IUPAC
