@@ -119,6 +119,20 @@
         "validation/data/vle/methyl-acetate_n-heptane_10-1021-acs-jced-9b00668_1500.0kPa_tx.json"
       ]
     },
+    "bae1981-ethylene-1-butene": {
+      "title": "Measurement and correlation of high pressure vapor-liquid equilibria for the systems ethylene-1-butene and ethylene-propylene",
+      "authors": "H. K. Bae, K. Nagahama, M. Hirata",
+      "year": 1981,
+      "published": "J. Chem. Eng. Japan 14 (1981) 1-6",
+      "kind": "open-access article",
+      "doi": "10.1252/jcej.14.1",
+      "url": "https://www.jstage.jst.go.jp/article/jcej1968/14/1/14_1_1/_pdf/-char/en",
+      "access": "Open access to read on J-STAGE (marked Free access); copyright The Society of Chemical Engineers, Japan",
+      "files": [
+        "validation/data/eos/bae1981_ethylene_1-butene.json",
+        "validation/data/eos/bae1981_ethylene_propylene.json"
+      ]
+    },
     "belabbaci2012-1-butanol-cyclohexane": {
       "title": "Vapor-Liquid Equilibria of Binary Mixtures Containing 1-Butanol and Hydrocarbons at 313.15 K",
       "authors": "A. Belabbaci, R. M. Villamanan, L. Negadi, C. M. Martin, A. Ait Kaci, M. A. Villamanan",
@@ -584,6 +598,23 @@
         "validation/data/vle/1-propanol_dichloroethane_10-1016-j-jct-2004-07-012_313.15K.json"
       ]
     },
+    "goni2024-ethane-n-decane": {
+      "title": "Solubility of Light Ends in Heavy Condensates, PhD thesis",
+      "authors": "M. U. Goni",
+      "year": 2024,
+      "published": "Heriot-Watt University (2024)",
+      "kind": "open-access article",
+      "url": "https://www.ros.hw.ac.uk/bitstreams/acb9515b-fa8c-4552-bff7-df8722dff6f1/download",
+      "access": "Open access in the Heriot-Watt University research repository (ROS); the copyright is the author's, and any use of the information must acknowledge the thesis as its source",
+      "files": [
+        "validation/data/eos/goni2024_ethane_n-decane.json",
+        "validation/data/eos/goni2024_ethane_n-dodecane.json",
+        "validation/data/eos/goni2024_ethane_n-undecane.json",
+        "validation/data/eos/goni2024_propane_n-decane.json",
+        "validation/data/eos/goni2024_propane_n-dodecane.json",
+        "validation/data/eos/goni2024_propane_n-undecane.json"
+      ]
+    },
     "grande2005-water-ethyl-acetate": {
       "title": "Liquid-Liquid Equilibria for Water + Benzonitrile + Ethyl Acetate or + Butyl Acetate",
       "authors": "M. del C. Grande, C. M. Marschoff",
@@ -767,6 +798,19 @@
       "files": [
         "src/thermo/iapws/if97.js",
         "src/thermo/iapws/steam.js"
+      ]
+    },
+    "inomata1986-carbon-dioxide-n-decane": {
+      "title": "Measurement of vapor-liquid equilibria at elevated temperatures and pressures using a flow type apparatus",
+      "authors": "H. Inomata, K. Tuchiya, K. Arai, S. Saito",
+      "year": 1986,
+      "published": "J. Chem. Eng. Japan 19 (1986) 386-391",
+      "kind": "open-access article",
+      "doi": "10.1252/jcej.19.386",
+      "url": "https://www.jstage.jst.go.jp/article/jcej1968/19/5/19_5_386/_pdf",
+      "access": "Open access to read on J-STAGE (marked Free access); copyright The Society of Chemical Engineers, Japan",
+      "files": [
+        "validation/data/eos/inomata1986_carbon-dioxide_n-decane.json"
       ]
     },
     "janisch2007-nitrogen-methane": {
@@ -1412,6 +1456,32 @@
         "validation/report/reference/"
       ]
     },
+    "nitta1976-sulfur-dioxide-isooctane": {
+      "title": "Vapor-liquid equilibria for binary systems of sulfur dioxide and some organic solvents",
+      "authors": "T. Nitta, O. Kido, T. Katayama",
+      "year": 1976,
+      "published": "J. Chem. Eng. Japan 9 (1976) 317-318",
+      "kind": "open-access article",
+      "doi": "10.1252/jcej.9.317",
+      "url": "https://www.jstage.jst.go.jp/article/jcej1968/9/4/9_4_317/_pdf",
+      "access": "Open access to read on J-STAGE (marked Free access); copyright The Society of Chemical Engineers, Japan",
+      "files": [
+        "validation/data/eos/nitta1976_sulfur-dioxide_isooctane.json"
+      ]
+    },
+    "noda1975-ammonia-benzene": {
+      "title": "Vapor-liquid equilibria for the benzene-cyclohexene-ammonia system",
+      "authors": "K. Noda, T. Morisue, K. Ishida",
+      "year": 1975,
+      "published": "J. Chem. Eng. Japan 8 (1975) 104-108",
+      "kind": "open-access article",
+      "doi": "10.1252/jcej.8.104",
+      "url": "https://www.jstage.jst.go.jp/article/jcej1968/8/2/8_2_104/_pdf",
+      "access": "Open access to read on J-STAGE (marked Free access); copyright The Society of Chemical Engineers, Japan",
+      "files": [
+        "validation/data/eos/noda1975_ammonia_benzene.json"
+      ]
+    },
     "orchilles2007-methanol-methyl-acetate": {
       "title": "Isobaric Vapor-Liquid Equilibria for Methyl Acetate + Methanol + 1-Ethyl-3-methylimidazolium Trifluoromethanesulfonate at 100 kPa",
       "authors": "A. V. Orchilles, P. J. Miguel, E. Vercher, A. Martinez-Andreu",
@@ -1481,6 +1551,18 @@
       "files": [
         "validation/data/vle/acetic-acid_dmso_10-1016-j-fluid-2008-09-010_13.33kPa.json",
         "validation/data/vle/dmso_water_10-1016-j-fluid-2008-09-010_13.33kPa.json"
+      ]
+    },
+    "perez2017-argon-hydrogen-sulfide": {
+      "title": "Experimental and modelling studies of the phase behaviour and transport properties of mixtures related to carbon capture and storage, PhD thesis",
+      "authors": "A. González Pérez",
+      "year": 2017,
+      "published": "Heriot-Watt University (2017)",
+      "kind": "open-access article",
+      "url": "https://www.ros.hw.ac.uk/bitstreams/cdb95f6c-6ba0-4e5f-8752-63f92b02f78f/download",
+      "access": "Open access in the Heriot-Watt University research repository (ROS); the copyright is the author's, and any use of the information must acknowledge the thesis as its source",
+      "files": [
+        "validation/data/eos/gonzalez2017_argon_hydrogen-sulfide.json"
       ]
     },
     "pienaar2013-ethanol-isooctane": {
@@ -1670,6 +1752,22 @@
         "validation/data/vle/ethyl-acetate_isobutanol_10-1021-je050420_101.0kPa.json"
       ]
     },
+    "rodrigues2005-cyclohexane-n-heptane": {
+      "title": "Experimental vapor-liquid equilibria data for binary mixtures of xylene isomers",
+      "authors": "W. L. Rodrigues, S. Mattedi, J. C. N. Abreu",
+      "year": 2005,
+      "published": "Braz. J. Chem. Eng. 22 (2005) 453-462",
+      "kind": "open-access article",
+      "doi": "10.1590/S0104-66322005000300013",
+      "url": "https://www.scielo.br/j/bjce/a/TKWGwmMz3fm3py3FhBDfzWF/?format=pdf&lang=en",
+      "access": "Open access (SciELO, Brazilian Journal of Chemical Engineering)",
+      "files": [
+        "validation/data/eos/rodrigues2005_cyclohexane_n-heptane.json",
+        "validation/data/eos/rodrigues2005_m-xylene_o-xylene.json",
+        "validation/data/eos/rodrigues2005_p-xylene_m-xylene.json",
+        "validation/data/eos/rodrigues2005_p-xylene_o-xylene.json"
+      ]
+    },
     "rodrigues2005-ethylbenzene-m-xylene": {
       "title": "Vapor-Liquid Equilibria Data for Binary Systems of Ethylbenzene + Xylene Isomers at 100.65 kPa",
       "authors": "W. L. Rodrigues, S. Mattedi, J. C. N. Abreu",
@@ -1744,6 +1842,19 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/schmid2007_acetic_acid_ethylene_glycol.json"
+      ]
+    },
+    "sebastian1980-hydrogen-n-decane": {
+      "title": "Gas-liquid equilibrium in the hydrogen + n-decane system at elevated temperatures and pressures",
+      "authors": "H. M. Sebastian, J. J. Simnick, H. M. Lin, K.-C. Chao",
+      "year": 1980,
+      "published": "J. Chem. Eng. Data 25 (1980) 68-70",
+      "kind": "open-access article",
+      "doi": "10.1021/je60084a021",
+      "url": "https://iupac.github.io/SolubilityDataSeries/volumes/SDS-5-6.pdf#page=386",
+      "access": "The original article is not open; its values are compiled in IUPAC Solubility Data Series Vol. 5/6, Hydrogen and Deuterium (C. L. Young, Pergamon, 1981; copyright IUPAC), which IUPAC publishes as open access at iupac.github.io",
+      "files": [
+        "validation/data/eos/sebastian1980_hydrogen_n-decane.json"
       ]
     },
     "shang2018-methanol-methyl-acetate": {
@@ -2212,6 +2323,18 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/methanol_water_10-1021-acs-jced-9b00306_101.3kPa.json"
+      ]
+    },
+    "young1981-hydrogen-n-decane": {
+      "title": "Hydrogen and Deuterium, IUPAC Solubility Data Series Vol. 5/6",
+      "authors": "C. L. Young",
+      "year": 1981,
+      "published": "Pergamon (1981)",
+      "kind": "open-access article",
+      "url": "https://iupac.github.io/SolubilityDataSeries/volumes/SDS-5-6.pdf",
+      "access": "Open access: IUPAC (the copyright holder) publishes the volume at iupac.github.io",
+      "files": [
+        "validation/data/eos/sokolov1977_hydrogen_n-decane.json"
       ]
     },
     "yue2018-2-propanol-chloroform": {

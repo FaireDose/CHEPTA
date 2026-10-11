@@ -152,6 +152,23 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   compute again in code; do not solve the flowsheet in code after `checkProject` passes; ask
   before building anything the workbench cannot do. A test keeps the button names in the
   instructions equal to those in the interface.
+- **Website domain:** the maintainer set up www.cheptasim.org for the GitHub Pages site (the same
+  workbench as fairedose.github.io/CHEPTA, which redirects there). Pending: tick Settings → Pages →
+  Enforce HTTPS; offered: change the old links in README, use.md, the install page and the skill.
+- **Literature package from another assistant (2026-10-10):** the maintainer asked to use its data.
+  The equation-of-state part had 584 transcribed rows for 16 pairs without a k_ij; every row was
+  read again from the eight open sources (two Heriot-Watt theses, SciELO, four J-STAGE papers, IUPAC
+  SDS 5/6): one value was wrong in the package (ethylene + 1-butene, 10.01 degC, y = 0.965, not
+  0.956). Cyclohexane + n-heptane from the same open paper was added. Fitted with one constant k_ij
+  and kept only within a gate set before the fits (5 % AAD in P with a bubble pressure at every
+  point; 0.5 K and 0.012 in y for T-x-y): 21 sets for 11 pairs (ethane and propane with C10-C12,
+  ethylene + 1-butene, the three xylene pairs, cyclohexane + n-heptane). Not kept, data kept for
+  a better model: argon + H2S, ethylene + propylene, CO2 + n-decane, ammonia + benzene, SO2 +
+  iso-octane (likely two liquids), hydrogen + n-decane, and SRK propane + n-decane (5.11 %).
+  Pending: the package's activity-model part has no new data, but points to four gaps in the
+  fitting pipeline (pressure-as-property data sets, non-equilibrium sets classified as T-x, sets
+  missed inside indexed articles, the ChemSep import skipping a pair's second model); to be checked
+  and fixed in a separate pull request.
 - **The rename is done on GitHub:** the repository is `FaireDose/CHEPTA`, #90 is merged, and the website
   is at https://fairedose.github.io/CHEPTA/. Next: the first npm upload of `chepta` with a one-time
   token (#93 merged; the steps are under Open items), after the pair data (#91).

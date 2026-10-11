@@ -6451,6 +6451,615 @@
     "chemsep-eos-ipd"
    ],
    "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "cyclohexane",
+   "j": "n-heptane",
+   "set": "fitted-rodrigues2005",
+   "default": true,
+   "kij": 0.0022,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/python/eos_fit_kij.py to the 15 bubble temperatures of Rodrigues et al. (2005) at 100.65 kPa: AAD 0.35 K in T (max 0.68 K), 0.0077 in y (max 0.0238)",
+    "data": [
+     "validation/data/eos/rodrigues2005_cyclohexane_n-heptane.json"
+    ],
+    "conditions": "P = 100.65 kPa, T = 353.953-370.332 K",
+    "T_range_K": [
+     353.953,
+     370.332
+    ]
+   },
+   "source_ids": [
+    "rodrigues2005-cyclohexane-n-heptane"
+   ],
+   "valid": {
+    "T_K": [
+     353.953,
+     370.332
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "cyclohexane",
+   "j": "n-heptane",
+   "set": "fitted-rodrigues2005",
+   "default": true,
+   "kij": 0.005,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/python/eos_fit_kij.py to the 15 bubble temperatures of Rodrigues et al. (2005) at 100.65 kPa: AAD 0.31 K in T (max 0.78 K), 0.0087 in y (max 0.0228)",
+    "data": [
+     "validation/data/eos/rodrigues2005_cyclohexane_n-heptane.json"
+    ],
+    "conditions": "P = 100.65 kPa, T = 353.953-370.332 K",
+    "T_range_K": [
+     353.953,
+     370.332
+    ]
+   },
+   "source_ids": [
+    "rodrigues2005-cyclohexane-n-heptane"
+   ],
+   "valid": {
+    "T_K": [
+     353.953,
+     370.332
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "p-xylene",
+   "j": "m-xylene",
+   "set": "fitted-rodrigues2005",
+   "default": true,
+   "kij": -0.0017,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/python/eos_fit_kij.py to the 11 bubble temperatures of Rodrigues et al. (2005) at 100.65 kPa: AAD 0.05 K in T (max 0.19 K), 0.0026 in y (max 0.0087)",
+    "data": [
+     "validation/data/eos/rodrigues2005_p-xylene_m-xylene.json"
+    ],
+    "conditions": "P = 100.65 kPa, T = 411.527-412.273 K",
+    "T_range_K": [
+     411.527,
+     412.273
+    ]
+   },
+   "source_ids": [
+    "rodrigues2005-cyclohexane-n-heptane"
+   ],
+   "valid": {
+    "T_K": [
+     411.527,
+     412.273
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "p-xylene",
+   "j": "m-xylene",
+   "set": "fitted-rodrigues2005",
+   "default": true,
+   "kij": 0.0001,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/python/eos_fit_kij.py to the 11 bubble temperatures of Rodrigues et al. (2005) at 100.65 kPa: AAD 0.03 K in T (max 0.09 K), 0.0021 in y (max 0.0069)",
+    "data": [
+     "validation/data/eos/rodrigues2005_p-xylene_m-xylene.json"
+    ],
+    "conditions": "P = 100.65 kPa, T = 411.527-412.273 K",
+    "T_range_K": [
+     411.527,
+     412.273
+    ]
+   },
+   "source_ids": [
+    "rodrigues2005-cyclohexane-n-heptane"
+   ],
+   "valid": {
+    "T_K": [
+     411.527,
+     412.273
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "p-xylene",
+   "j": "o-xylene",
+   "set": "fitted-rodrigues2005",
+   "default": true,
+   "kij": -0.0014,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/python/eos_fit_kij.py to the 14 bubble temperatures of Rodrigues et al. (2005) at 100.65 kPa: AAD 0.06 K in T (max 0.13 K), 0.0079 in y (max 0.0213)",
+    "data": [
+     "validation/data/eos/rodrigues2005_p-xylene_o-xylene.json"
+    ],
+    "conditions": "P = 100.65 kPa, T = 411.623-417.175 K",
+    "T_range_K": [
+     411.623,
+     417.175
+    ]
+   },
+   "source_ids": [
+    "rodrigues2005-cyclohexane-n-heptane"
+   ],
+   "valid": {
+    "T_K": [
+     411.623,
+     417.175
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "p-xylene",
+   "j": "o-xylene",
+   "set": "fitted-rodrigues2005",
+   "default": true,
+   "kij": 0.0005,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/python/eos_fit_kij.py to the 14 bubble temperatures of Rodrigues et al. (2005) at 100.65 kPa: AAD 0.07 K in T (max 0.16 K), 0.0075 in y (max 0.0185)",
+    "data": [
+     "validation/data/eos/rodrigues2005_p-xylene_o-xylene.json"
+    ],
+    "conditions": "P = 100.65 kPa, T = 411.623-417.175 K",
+    "T_range_K": [
+     411.623,
+     417.175
+    ]
+   },
+   "source_ids": [
+    "rodrigues2005-cyclohexane-n-heptane"
+   ],
+   "valid": {
+    "T_K": [
+     411.623,
+     417.175
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "m-xylene",
+   "j": "o-xylene",
+   "set": "fitted-rodrigues2005",
+   "default": true,
+   "kij": -0.0023,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/python/eos_fit_kij.py to the 11 bubble temperatures of Rodrigues et al. (2005) at 100.65 kPa: AAD 0.06 K in T (max 0.14 K), 0.0073 in y (max 0.0158)",
+    "data": [
+     "validation/data/eos/rodrigues2005_m-xylene_o-xylene.json"
+    ],
+    "conditions": "P = 100.65 kPa, T = 412.533-417.337 K",
+    "T_range_K": [
+     412.533,
+     417.337
+    ]
+   },
+   "source_ids": [
+    "rodrigues2005-cyclohexane-n-heptane"
+   ],
+   "valid": {
+    "T_K": [
+     412.533,
+     417.337
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "m-xylene",
+   "j": "o-xylene",
+   "set": "fitted-rodrigues2005",
+   "default": true,
+   "kij": -0.0005,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/python/eos_fit_kij.py to the 11 bubble temperatures of Rodrigues et al. (2005) at 100.65 kPa: AAD 0.03 K in T (max 0.06 K), 0.0073 in y (max 0.0143)",
+    "data": [
+     "validation/data/eos/rodrigues2005_m-xylene_o-xylene.json"
+    ],
+    "conditions": "P = 100.65 kPa, T = 412.533-417.337 K",
+    "T_range_K": [
+     412.533,
+     417.337
+    ]
+   },
+   "source_ids": [
+    "rodrigues2005-cyclohexane-n-heptane"
+   ],
+   "valid": {
+    "T_K": [
+     412.533,
+     417.337
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "ethane",
+   "j": "n-decane",
+   "set": "fitted-goni2024",
+   "default": true,
+   "kij": 0.0244,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 46 bubble pressures of Goni (2024) at 46 temperatures, 275.63-358.06 K: AAD 2.87 % in P (deviations -8.4 to 8.9 %)",
+    "data": [
+     "validation/data/eos/goni2024_ethane_n-decane.json"
+    ],
+    "conditions": "T = 275.63-358.06 K, P = 970-5730 kPa, x_1 = 0.1725-0.9726",
+    "T_range_K": [
+     275.63,
+     358.06
+    ]
+   },
+   "source_ids": [
+    "goni2024-ethane-n-decane"
+   ],
+   "valid": {
+    "T_K": [
+     275.63,
+     358.06
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "ethane",
+   "j": "n-decane",
+   "set": "fitted-goni2024",
+   "default": true,
+   "kij": 0.0237,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 46 bubble pressures of Goni (2024) at 46 temperatures, 275.63-358.06 K: AAD 2.73 % in P (deviations -8.2 to 8.9 %)",
+    "data": [
+     "validation/data/eos/goni2024_ethane_n-decane.json"
+    ],
+    "conditions": "T = 275.63-358.06 K, P = 970-5730 kPa, x_1 = 0.1725-0.9726",
+    "T_range_K": [
+     275.63,
+     358.06
+    ]
+   },
+   "source_ids": [
+    "goni2024-ethane-n-decane"
+   ],
+   "valid": {
+    "T_K": [
+     275.63,
+     358.06
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "ethane",
+   "j": "n-undecane",
+   "set": "fitted-goni2024",
+   "default": true,
+   "kij": 0.0126,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 79 bubble pressures of Goni (2024) at 77 temperatures, 259.76-369.59 K: AAD 1.46 % in P (deviations -8.1 to 7.4 %)",
+    "data": [
+     "validation/data/eos/goni2024_ethane_n-undecane.json"
+    ],
+    "conditions": "T = 259.76-369.59 K, P = 690-8600 kPa, x_1 = 0.2369-0.9727",
+    "T_range_K": [
+     259.76,
+     369.59
+    ]
+   },
+   "source_ids": [
+    "goni2024-ethane-n-decane"
+   ],
+   "valid": {
+    "T_K": [
+     259.76,
+     369.59
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "ethane",
+   "j": "n-undecane",
+   "set": "fitted-goni2024",
+   "default": true,
+   "kij": 0.0115,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 79 bubble pressures of Goni (2024) at 77 temperatures, 259.76-369.59 K: AAD 1.30 % in P (deviations -7.4 to 7.7 %)",
+    "data": [
+     "validation/data/eos/goni2024_ethane_n-undecane.json"
+    ],
+    "conditions": "T = 259.76-369.59 K, P = 690-8600 kPa, x_1 = 0.2369-0.9727",
+    "T_range_K": [
+     259.76,
+     369.59
+    ]
+   },
+   "source_ids": [
+    "goni2024-ethane-n-decane"
+   ],
+   "valid": {
+    "T_K": [
+     259.76,
+     369.59
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "ethane",
+   "j": "n-dodecane",
+   "set": "fitted-goni2024",
+   "default": true,
+   "kij": 0.0049,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 51 bubble pressures of Goni (2024) at 43 temperatures, 267.44-372.33 K: AAD 2.41 % in P (deviations -5.0 to 6.3 %)",
+    "data": [
+     "validation/data/eos/goni2024_ethane_n-dodecane.json"
+    ],
+    "conditions": "T = 267.44-372.33 K, P = 610-8950 kPa, x_1 = 0.2836-0.9498",
+    "T_range_K": [
+     267.44,
+     372.33
+    ]
+   },
+   "source_ids": [
+    "goni2024-ethane-n-decane"
+   ],
+   "valid": {
+    "T_K": [
+     267.44,
+     372.33
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "ethane",
+   "j": "n-dodecane",
+   "set": "fitted-goni2024",
+   "default": true,
+   "kij": 0.0037,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 51 bubble pressures of Goni (2024) at 43 temperatures, 267.44-372.33 K: AAD 2.26 % in P (deviations -4.7 to 5.6 %)",
+    "data": [
+     "validation/data/eos/goni2024_ethane_n-dodecane.json"
+    ],
+    "conditions": "T = 267.44-372.33 K, P = 610-8950 kPa, x_1 = 0.2836-0.9498",
+    "T_range_K": [
+     267.44,
+     372.33
+    ]
+   },
+   "source_ids": [
+    "goni2024-ethane-n-decane"
+   ],
+   "valid": {
+    "T_K": [
+     267.44,
+     372.33
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "propane",
+   "j": "n-decane",
+   "set": "fitted-goni2024",
+   "default": true,
+   "kij": 0.0178,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 44 bubble pressures of Goni (2024) at 39 temperatures, 247.37-369.42 K: AAD 4.97 % in P (deviations -10.3 to 28.8 %)",
+    "data": [
+     "validation/data/eos/goni2024_propane_n-decane.json"
+    ],
+    "conditions": "T = 247.37-369.42 K, P = 140-3740 kPa, x_1 = 0.283-0.952",
+    "T_range_K": [
+     247.37,
+     369.42
+    ]
+   },
+   "source_ids": [
+    "goni2024-ethane-n-decane"
+   ],
+   "valid": {
+    "T_K": [
+     247.37,
+     369.42
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "propane",
+   "j": "n-undecane",
+   "set": "fitted-goni2024",
+   "default": true,
+   "kij": 0.0222,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 54 bubble pressures of Goni (2024) at 54 temperatures, 291.91-370.19 K: AAD 3.33 % in P (deviations -10.7 to 7.7 %)",
+    "data": [
+     "validation/data/eos/goni2024_propane_n-undecane.json"
+    ],
+    "conditions": "T = 291.91-370.19 K, P = 330-3540 kPa, x_1 = 0.311-0.952",
+    "T_range_K": [
+     291.91,
+     370.19
+    ]
+   },
+   "source_ids": [
+    "goni2024-ethane-n-decane"
+   ],
+   "valid": {
+    "T_K": [
+     291.91,
+     370.19
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "propane",
+   "j": "n-undecane",
+   "set": "fitted-goni2024",
+   "default": true,
+   "kij": 0.0206,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 54 bubble pressures of Goni (2024) at 54 temperatures, 291.91-370.19 K: AAD 3.16 % in P (deviations -10.6 to 7.1 %)",
+    "data": [
+     "validation/data/eos/goni2024_propane_n-undecane.json"
+    ],
+    "conditions": "T = 291.91-370.19 K, P = 330-3540 kPa, x_1 = 0.311-0.952",
+    "T_range_K": [
+     291.91,
+     370.19
+    ]
+   },
+   "source_ids": [
+    "goni2024-ethane-n-decane"
+   ],
+   "valid": {
+    "T_K": [
+     291.91,
+     370.19
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "propane",
+   "j": "n-dodecane",
+   "set": "fitted-goni2024",
+   "default": true,
+   "kij": 0.0195,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 51 bubble pressures of Goni (2024) at 51 temperatures, 276.81-369.22 K: AAD 4.97 % in P (deviations -19.2 to 13.8 %)",
+    "data": [
+     "validation/data/eos/goni2024_propane_n-dodecane.json"
+    ],
+    "conditions": "T = 276.81-369.22 K, P = 380-3320 kPa, x_1 = 0.306-0.935",
+    "T_range_K": [
+     276.81,
+     369.22
+    ]
+   },
+   "source_ids": [
+    "goni2024-ethane-n-decane"
+   ],
+   "valid": {
+    "T_K": [
+     276.81,
+     369.22
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "propane",
+   "j": "n-dodecane",
+   "set": "fitted-goni2024",
+   "default": true,
+   "kij": 0.0184,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 51 bubble pressures of Goni (2024) at 51 temperatures, 276.81-369.22 K: AAD 4.83 % in P (deviations -18.4 to 13.3 %)",
+    "data": [
+     "validation/data/eos/goni2024_propane_n-dodecane.json"
+    ],
+    "conditions": "T = 276.81-369.22 K, P = 380-3320 kPa, x_1 = 0.306-0.935",
+    "T_range_K": [
+     276.81,
+     369.22
+    ]
+   },
+   "source_ids": [
+    "goni2024-ethane-n-decane"
+   ],
+   "valid": {
+    "T_K": [
+     276.81,
+     369.22
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "ethylene",
+   "j": "1-butene",
+   "set": "fitted-bae1981",
+   "default": true,
+   "kij": 0.0004,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 42 bubble pressures of Bae et al. (1981) at 3 temperatures, 273.14-293.35 K: AAD 4.38 % in P (deviations -9.6 to 17.6 %), 0.0094 in y (max 0.0439, 42 points)",
+    "data": [
+     "validation/data/eos/bae1981_ethylene_1-butene.json"
+    ],
+    "conditions": "T = 273.14-293.35 K, P = 205.4-5498 kPa, x_1 = 0.023-0.961",
+    "T_range_K": [
+     273.14,
+     293.35
+    ]
+   },
+   "source_ids": [
+    "bae1981-ethylene-1-butene"
+   ],
+   "valid": {
+    "T_K": [
+     273.14,
+     293.35
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "ethylene",
+   "j": "1-butene",
+   "set": "fitted-bae1981",
+   "default": true,
+   "kij": -0.0041,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_literature.mjs to the 42 bubble pressures of Bae et al. (1981) at 3 temperatures, 273.14-293.35 K: AAD 4.40 % in P (deviations -9.7 to 17.1 %), 0.0090 in y (max 0.0436, 42 points)",
+    "data": [
+     "validation/data/eos/bae1981_ethylene_1-butene.json"
+    ],
+    "conditions": "T = 273.14-293.35 K, P = 205.4-5498 kPa, x_1 = 0.023-0.961",
+    "T_range_K": [
+     273.14,
+     293.35
+    ]
+   },
+   "source_ids": [
+    "bae1981-ethylene-1-butene"
+   ],
+   "valid": {
+    "T_K": [
+     273.14,
+     293.35
+    ]
+   }
   }
  ]
 }

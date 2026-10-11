@@ -1,0 +1,89 @@
+{
+ "_about": "m-xylene (1) + o-xylene (2): isobaric T-x-y at 100.65 kPa from Rodrigues, Mattedi, Abreu (2005), Table 5.",
+ "components": [
+  "m-xylene",
+  "o-xylene"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 100.65,
+ "source": {
+  "citation": "W. L. Rodrigues, S. Mattedi, J. C. N. Abreu, Experimental vapor-liquid equilibria data for binary mixtures of xylene isomers, Braz. J. Chem. Eng. 22 (2005) 453-462",
+  "doi": "10.1590/S0104-66322005000300013",
+  "open_copy": "https://www.scielo.br/j/bjce/a/TKWGwmMz3fm3py3FhBDfzWF/?format=pdf&lang=en",
+  "access": "Open access (SciELO, Brazilian Journal of Chemical Engineering)",
+  "tables": "Table 5, p 457 (PDF p 5); modified Fischer cell, gas chromatography",
+  "transcription": "Extracted with pdftotext from the text layer of the PDF, row by row; the same rows were transcribed independently in another assistant's literature package and agree with this extraction on every value."
+ },
+ "columns": [
+  "T_K",
+  "x_1",
+  "y_1"
+ ],
+ "rows": [
+  [
+   417.593,
+   0.0,
+   0.0
+  ],
+  [
+   417.337,
+   0.0426,
+   0.0479
+  ],
+  [
+   416.806,
+   0.1315,
+   0.1511
+  ],
+  [
+   416.44,
+   0.2033,
+   0.2342
+  ],
+  [
+   415.754,
+   0.3368,
+   0.3649
+  ],
+  [
+   415.175,
+   0.4259,
+   0.4746
+  ],
+  [
+   414.819,
+   0.5027,
+   0.5477
+  ],
+  [
+   414.333,
+   0.5967,
+   0.6431
+  ],
+  [
+   413.939,
+   0.6778,
+   0.7184
+  ],
+  [
+   413.417,
+   0.7757,
+   0.8061
+  ],
+  [
+   412.827,
+   0.8832,
+   0.9061
+  ],
+  [
+   412.533,
+   0.945,
+   0.9527
+  ],
+  [
+   412.333,
+   1.0,
+   1.0
+  ]
+ ]
+}

@@ -1,0 +1,121 @@
+{
+ "_about": "Sulfur dioxide (1) + iso-octane (2): total pressure against liquid composition at 20 degC from Nitta, Kido, Katayama (1976).",
+ "components": [
+  "sulfur-dioxide",
+  "isooctane"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "T. Nitta, O. Kido, T. Katayama, Vapor-liquid equilibria for binary systems of sulfur dioxide and some organic solvents, J. Chem. Eng. Japan 9 (1976) 317-318",
+  "doi": "10.1252/jcej.9.317",
+  "open_copy": "https://www.jstage.jst.go.jp/article/jcej1968/9/4/9_4_317/_pdf",
+  "access": "Open access to read on J-STAGE (marked Free access); copyright The Society of Chemical Engineers, Japan",
+  "tables": "Table 1, iso-octane (A) block, p 317 (PDF p 1); x_B is the SO2 mole fraction; pressure 0.5 mmHg below 1000 mmHg, 3 mmHg above 1100 mmHg; liquid composition by iodometry",
+  "transcription": "Read from the scanned page image at 200-400 dpi; compared value by value with an independent transcription in another assistant's literature package (they agree except where noted). The person checking should compare each row with the page."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "x_1",
+  "y_1",
+  "P_printed"
+ ],
+ "printed_pressure_unit": "mmHg",
+ "rows": [
+  [
+   293.15,
+   5.150243,
+   0.0,
+   null,
+   38.63
+  ],
+  [
+   293.15,
+   70.207559,
+   0.0445,
+   null,
+   526.6
+  ],
+  [
+   293.15,
+   103.071523,
+   0.071,
+   null,
+   773.1
+  ],
+  [
+   293.15,
+   151.587533,
+   0.1184,
+   null,
+   1137
+  ],
+  [
+   293.15,
+   204.249868,
+   0.1847,
+   null,
+   1532
+  ],
+  [
+   293.15,
+   252.112599,
+   0.2706,
+   null,
+   1891
+  ],
+  [
+   293.15,
+   279.577007,
+   0.3362,
+   null,
+   2097
+  ],
+  [
+   293.15,
+   317.040592,
+   0.6412,
+   null,
+   2378
+  ],
+  [
+   293.15,
+   319.307072,
+   0.7897,
+   null,
+   2395
+  ],
+  [
+   293.15,
+   319.973684,
+   0.8506,
+   null,
+   2400
+  ],
+  [
+   293.15,
+   330.106184,
+   1.0,
+   null,
+   2476
+  ]
+ ],
+ "excluded": [
+  {
+   "row": 0,
+   "reason": "pure iso-octane: a vapour pressure taken from the authors' reference 1, not measured here"
+  },
+  {
+   "row": 7,
+   "reason": "the pressure is almost constant (2378-2400 mmHg) from x = 0.64 to 0.85: a sign of two liquid phases (the authors report a large positive deviation from Raoult's law). A cubic equation of state with one k_ij is not used for liquid-liquid equilibrium here, so these rows are left out of the fit"
+  },
+  {
+   "row": 8,
+   "reason": "the pressure is almost constant (2378-2400 mmHg) from x = 0.64 to 0.85: a sign of two liquid phases (the authors report a large positive deviation from Raoult's law). A cubic equation of state with one k_ij is not used for liquid-liquid equilibrium here, so these rows are left out of the fit"
+  },
+  {
+   "row": 9,
+   "reason": "the pressure is almost constant (2378-2400 mmHg) from x = 0.64 to 0.85: a sign of two liquid phases (the authors report a large positive deviation from Raoult's law). A cubic equation of state with one k_ij is not used for liquid-liquid equilibrium here, so these rows are left out of the fit"
+  }
+ ]
+}
