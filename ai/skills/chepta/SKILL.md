@@ -192,9 +192,9 @@ don't fill it in.
 
 ## Rules
 
-- Only use components that `CHEPTA.listComponents()` returns. Version 0.3.0 holds 94
-  components (water, alcohols, glycols, ketones, esters, aromatics, alkanes, light gases
-  and more). Not every pair has parameters: the widget names missing pairs, and equation-of-state results carry
+- Only use components that `CHEPTA.listComponents()` returns. The current version holds 110
+  components (water, alcohols, glycols, ketones, esters, carbonates, aromatics, alkanes, light
+  gases, bio-based solvents and more). Not every pair has parameters: the widget names missing pairs, and equation-of-state results carry
   `warnings` for pairs without k_ij. If the user asks for other chemicals or pairs, say
   they are not in the databank yet and point to
   https://github.com/FaireDose/CHEPTA/blob/main/CONTRIBUTING.md; do not invent parameters.
