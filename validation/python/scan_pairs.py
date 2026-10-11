@@ -122,8 +122,13 @@ def classify(s, rec, ids):
         return "gamma"
     if any("Azeotropic" in p for p in props):
         return "azeotrope"
+    # only sets that measure the phase equilibrium itself: a boiling temperature, a vapour pressure or a mole
+    # fraction of a phase (a density, heat capacity or refractive index measured at fixed pressure is not a T-x set)
+    if not any(p.startswith(("Boiling temperature", "Vapor or sublimation pressure", "Mole fraction")) for p in props):
+        return None
     gas_x = any(p == "Mole fraction" and "Gas" in (phases_of.get(p) or []) for p in props)
-    has_T = any(t.startswith("Temperature") for t in var + con)
+    # a boiling temperature may be the measured property rather than a variable
+    has_T = any(t.startswith("Temperature") for t in var + con) or any(p.startswith("Boiling temperature") for p in props)
     has_P = any(t.startswith("Pressure") for t in var + con) or any(p.startswith("Vapor or sublimation pressure") for p in props)
     fixed_P = any(t.startswith("Pressure") for t in con)
     fixed_T = any(t.startswith("Temperature") for t in con)

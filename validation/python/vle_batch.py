@@ -108,6 +108,11 @@ def curves(rec, a, b):
         cons = {c["type"].split(",")[0]: c["value"] for c in s["constraints"] if c["type"] and c["type"].split(",")[0] in ("Temperature", "Pressure")}
         if any(c["type"] and not c["type"].split(",")[0] in ("Temperature", "Pressure") for c in s["constraints"]):
             continue   # a constraint on composition or something else: not a plain binary curve
+        if not any((p["name"] or "").startswith(("Boiling temperature", "Vapor or sublimation pressure", "Mole fraction"))
+                   for p in s["properties"].values()):
+            continue   # not an equilibrium measurement (a density or heat capacity at fixed pressure, for example)
+        T_var = any((v["type"] or "").startswith("Temperature") for v in s["variables"].values())
+        P_var = any((v["type"] or "").startswith("Pressure") for v in s["variables"].values())
         for r in s["rows"]:
             x = y = T = P = None
             for vn, v in s["variables"].items():
@@ -144,9 +149,16 @@ def curves(rec, a, b):
                 key, val = ("isobaric", round(cons["Pressure"], 4)), T
             elif "Temperature" in cons and "Pressure" not in cons:
                 key, val = ("isothermal", round(cons["Temperature"], 3)), P
-            elif not cons and T is not None and P is not None and any((v["type"] or "").startswith("Pressure") for v in s["variables"].values()):
+            elif not cons and T is not None and P is not None and P_var:
                 # T, P and x all varying: rows at the same pressure form an isobaric curve
                 key, val = ("isobaric", round(P, 2)), T
+            elif not cons and T is not None and P is not None and T_var:
+                # the pressure measured at set temperatures (a static apparatus): rows at the same temperature
+                # form an isothermal curve; all rows together are also a T-P-x set, for an apparatus that
+                # measures P against T at fixed compositions (no isotherm then has its own pure-component pressures)
+                key, val = ("isothermal", round(T, 2)), P
+                out[("tpx", 0)][(round(x, 6), round(T, 3))] = {"P": P}
+                used[("tpx", 0)].add(s["number"])
             else:
                 continue
             if val is None and y is None:
@@ -195,6 +207,12 @@ def candidates(pair, cache):
             continue
         cs, used = curves(rec, a, b)
         for (kind, val), pts in cs.items():
+            if kind == "tpx":
+                rows = sorted((T, x, p["P"]) for (x, T), p in pts.items() if 0 < x < 1)
+                if len(rows) >= 10 and len({round(r[0]) for r in rows}) >= 3:
+                    out.append(dict(kind="tpx", rows=rows, inner=len(rows), dy=None, ends=None, rec=rec,
+                                    T=min(r[0] for r in rows), sets=sorted(used[(kind, val)]), doi=entry["doi"]))
+                continue
             if kind == "isobaric":
                 # bubble temperatures alone (T-x): a candidate for rule 4
                 tx = sorted((x, p["T"], None) for x, p in pts.items() if "T" in p)
@@ -247,6 +265,11 @@ def choose(cands):
     tx = [c for c in cands if c["kind"] == "isobaric-tx" and c["ends"] is not None and c["ends"] < 1.0]
     if tx:
         return sorted(tx, key=lambda c: (not 90 <= c["P"] <= 110, -c["inner"]))[0], [], None
+    # T-P-x data of a static apparatus (pressure against temperature at fixed compositions), with the vapour
+    # pressures of the component records: the most points
+    tpx = [c for c in cands if c["kind"] == "tpx"]
+    if tpx:
+        return sorted(tpx, key=lambda c: -c["inner"])[0], [], None
     txy = [c for c in cands if c["kind"] == "isobaric-txy"]
     shifted = [c for c in txy if c["dy"] is not None and c["dy"] < 0.01 and c["ends"] is not None and c["ends"] >= 1.0]
     if shifted:
@@ -283,7 +306,7 @@ def write_file(pair, c):
     a, b = pair
     doi = c["doi"]
     tag = re.sub(r"[^a-z0-9]+", "-", doi.lower()).strip("-")
-    name = f"vle/{a}_{b}_{tag}{'_' + str(round(c['P'], 2)) + 'kPa' + ('_tx' if c['kind'] == 'isobaric-tx' else '') if c['kind'].startswith('isobaric') else '_' + str(round(c['T'], 2)) + 'K'}.json"
+    name = f"vle/{a}_{b}_{tag}{'_' + str(round(c['P'], 2)) + 'kPa' + ('_tx' if c['kind'] == 'isobaric-tx' else '') if c['kind'].startswith('isobaric') else '_tpx' if c['kind'] == 'tpx' else '_' + str(round(c['T'], 2)) + 'K'}.json"
     na, nb = COMPS[a]["name"], COMPS[b]["name"]
     common = dict(source=dict(citation=citation(c["rec"]), doi=doi, open_copy=f"https://trc.nist.gov/ThermoML/{doi}.html", access=ACCESS,
                               tables=f"ThermoML record, PureOrMixtureData {', '.join(map(str, c['sets']))}. The table number in the article was not checked."),
@@ -302,6 +325,13 @@ def write_file(pair, c):
                  notes=f"Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| {c['dy']:.4f}."
                        + (f" Pure-component boiling points of the set within {c['ends']:.2f} K of the vapour-pressure records." if c.get("ends") is not None else "")
                        + " To be checked by a person against the record (AGENTS.md rule 4).")
+    elif c["kind"] == "tpx":
+        Ts = [r[0] for r in c["rows"]]
+        d = dict(_about=f"{na} (1) + {nb} (2): total pressures against temperature, {min(Ts):g}-{max(Ts):g} K, at set liquid compositions. Rows: "
+                        f"temperature in K, liquid mole fraction of {na.lower()}, pressure in kPa, as stored in the ThermoML Archive record.",
+                 **common, kind="tpx", columns=["T_K", "x_1", "P_kPa"], rows=[list(r) for r in c["rows"]],
+                 notes="Read with validation/python/vle_batch.py. No isotherm of the set has its own pure-component pressures, so the fit uses "
+                       "the vapour pressures of the component records. To be checked by a person against the record (AGENTS.md rule 4).")
     else:
         d = dict(_about=f"{na} (1) + {nb} (2): isothermal total pressures at {c['T']} K. Rows: temperature in K, liquid mole fraction of {na.lower()}, pressure in kPa, as stored "
                         "in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
@@ -348,6 +378,8 @@ def main():
             what = f"{best['inner']} T-x-y points at {best['P']} kPa"
         elif best["kind"] == "isobaric-tx":
             what = f"{best['inner']} bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at {best['P']} kPa"
+        elif best["kind"] == "tpx":
+            what = f"{best['inner']} total pressures at {min(r[0] for r in best['rows']):g}-{max(r[0] for r in best['rows']):g} K (T-P-x, with the component vapour pressures)"
         else:
             what = f"{best['inner']} total pressures at {best['T']} K with the measured pure-component pressures"
         describe = (f"Fitted to {what} from {short_ref(best['rec'])} ({fit_parameters.MAC}; validation/data/{file})"
