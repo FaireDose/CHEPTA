@@ -98,7 +98,9 @@ test("every component's melting data have a source, or say there are no open dat
     if (c.fusion.available === false) { assert.ok(c.fusion.searched.length >= 2, id); continue; }
     assert.ok(c.fusion.Tm_K > 0 && c.fusion.Hfus_J_mol > 0, id);
     assert.ok(c.fusion.Tm_K < c.Tc_K, id);
-    assert.ok(/NIST Chemistry WebBook|ChemSep/.test(c.fusion.source.name), id);
+    // the WebBook, else ChemSep, else an open-access article with its data file (AGENTS.md rule 1; Cyrene)
+    assert.ok(/NIST Chemistry WebBook|ChemSep|Open-access article/.test(c.fusion.source.name), id);
+    if (/Open-access article/.test(c.fusion.source.name)) assert.ok(c.fusion.source.file && c.fusion.source.url, id);
     assert.ok(c.fusion.source_ids?.length, `${id}: source_ids`);
     withData++;
   }

@@ -585,3 +585,133 @@ Rules: liquid values at 110 kPa or less, inside the record's temperature range, 
 | Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
 |---|---|---|---|---|---|---|
 
+## 1,4-Butanediol
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (31 measured in all) |
+| Liquid density | 90 | 22 (22) | 293.1-363.1 | 0.13 % | +1.16 % at 328.1 K (George 2003, doi:10.1021/je0340755) | ✅ within 1 % |
+| Liquid heat capacity | 58 | 3 (3) | 293.1-353.1 | 0.07 % | +1.29 % at 333.1 K (Yang 2004, doi:10.1021/je0341918) | ✅ within 2 % (record fitted to these values) |
+| Heat of vaporization | 0 | | | | | too few values (1 measured in all) |
+| Liquid viscosity | 28 | 7 (3) | 293.1-363.1 | 6.00 % | -6.00 % at 308.1 K (Mehta 2005, doi:10.1016/j.jct.2004.11.020) | ⚠️ above 5 % |
+
+## Cyrene
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+
+## Dimethyl carbonate
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 12 | 4 (4) | 336.7-428.1 | 0.11 % | -1.37 % at 428.1 K (Yunhai 2005, doi:10.1016/j.fluid.2005.05.002) | ✅ within 1 % |
+| Liquid density | 174 | 57 (57) | 278.1-343.1 | 0.02 % | -0.74 % at 298.1 K (Vittal Prasad 2004, doi:10.1021/je030131q) | ✅ within 1 % |
+| Liquid heat capacity | 10 | 3 (2) | 288.1-323.1 | 0.53 % | -3.22 % at 323.1 K (Comelli 2010, doi:10.1021/je900307z) | ✅ within 2 % |
+| Liquid viscosity | 48 | 10 (10) | 288.1-343.1 | 1.29 % | +5.52 % at 288.1 K (Arbad 2006, doi:10.1021/je050183a) | ✅ within 5 % |
+| Surface tension | 1 | | | | | too few values (1 measured in all) |
+
+## Diethyl carbonate
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 35 | 3 (3) | 354.7-399.9 | 0.31 % | +1.45 % at 357.4 K (Marrufo 2011, doi:10.1021/je200784y) | ✅ within 1 % |
+| Liquid density | 121 | 41 (41) | 278.1-363.1 | 0.09 % | +0.23 % at 298.1 K (Ding 2016, doi:10.1021/acs.jced.6b00085) | ✅ within 1 % |
+| Liquid heat capacity | 0 | | | | | no record (164 measured in all) |
+| Liquid viscosity | 63 | 14 (14) | 288.1-363.1 | 0.56 % | +2.00 % at 353.1 K (Yang 2006, doi:10.1021/je050414d) | ✅ within 5 % |
+| Surface tension | 21 | 1 | 273.2-373.2 | 24.06 % | -24.97 % at 278.2 K (Zhao 2010, doi:10.1016/j.fluid.2010.03.040) | reported (no tolerance) |
+
+## Ethylene carbonate
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (42 measured in all) |
+| Liquid density | 4 | 2 (2) | 313.1-353.1 | 0.33 % | +0.97 % at 353.1 K (Hofmann 2016, doi:10.1021/acs.jced.5b00338) | ✅ within 1 % |
+| Liquid heat capacity | 0 | | | | | too few values (47 measured in all) |
+| Liquid viscosity | 0 | | | | | too few values (9 measured in all) |
+
+## Propylene carbonate
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 1 | | | | | too few values (140 measured in all) |
+| Liquid density | 76 | 21 (20) | 273.1-363.1 | 0.19 % | +4.55 % at 353.1 K (Wang 2006, doi:10.1016/j.jct.2005.03.019) | ✅ within 1 % |
+| Liquid heat capacity | 5 | 2 (0) | 298.1-323.1 | 3.21 % | -4.11 % at 298.1 K (Comelli 2010, doi:10.1021/je900307z) | ⚠️ above 2 % |
+| Liquid viscosity | 24 | 9 (7) | 288.1-323.1 | 1.70 % | +8.12 % at 303.1 K (Jain 2004, doi:10.1021/je034204h) | ✅ within 5 % |
+
+## Acetaldehyde
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (4 measured in all) |
+| Liquid density | 1 | | | | | too few values (1 measured in all) |
+
+## 1-Pentanol
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 66 | 14 (11) | 323.1-422.4 | 0.31 % | +5.69 % at 354.4 K (Khoiroh 2013, doi:10.1016/j.fluid.2013.09.029) | ✅ within 1 % |
+| Liquid density | 328 | 110 (110) | 278.1-403.1 | 0.11 % | +0.40 % at 343.1 K (Yang 2006, doi:10.1021/je0600808) | ✅ within 1 % |
+| Liquid heat capacity | 2 | | | | | too few values (2 measured in all) |
+| Liquid viscosity | 123 | 22 (21) | 283.1-373.1 | 0.42 % | -10.39 % at 318.1 K (Almasi 2010, doi:10.1021/je901067c) | ✅ within 5 % |
+| Surface tension | 9 | 4 | 293.1-318.1 | 1.03 % | +1.74 % at 308.1 K (Chorazewski 2019, doi:10.1016/j.jct.2018.12.042) | reported (no tolerance) |
+
+## 1-Hexanol
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 57 | 5 (0) | 338.1-432.3 | 1.80 % | -4.06 % at 423.1 K (Nasirzadeh 2006, doi:10.1021/je049600u) | ⚠️ above 1 % |
+| Liquid density | 268 | 83 (82) | 278.1-403.1 | 0.02 % | +6.84 % at 303.1 K (Mozo 2008, doi:10.1021/je7005727) | ✅ within 1 % |
+| Liquid heat capacity | 8 | 1 (1) | 288.1-323.1 | 1.02 % | +1.72 % at 288.1 K (Rubini 2007, doi:10.1016/j.tca.2006.10.025) | ✅ within 2 % |
+| Liquid viscosity | 100 | 23 (22) | 283.1-363.1 | 1.13 % | +8.22 % at 308.1 K (Dubey 2010, doi:10.1016/j.jct.2009.08.009) | ✅ within 5 % |
+| Surface tension | 17 | 5 | 288.1-328.1 | 0.63 % | +4.32 % at 298.1 K (Bagheri 2013, doi:10.1016/j.jct.2013.04.009) | reported (no tolerance) |
+
+## 1-Octanol
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 45 | 3 (1) | 363.1-466.6 | 1.90 % | +3.48 % at 363.1 K (Nasirzadeh 2006, doi:10.1021/je049600u) | ⚠️ above 1 % |
+| Liquid density | 225 | 77 (77) | 278.1-363.1 | 0.48 % | +1.25 % at 303.1 K (Srirachat 2017, doi:10.1016/j.fluid.2016.11.029) | ✅ within 1 % |
+| Liquid heat capacity | 12 | 2 (1) | 288.1-323.1 | 4.29 % | -13.99 % at 313.1 K (Anouti 2010, doi:10.1021/je100671v) | ⚠️ above 2 % |
+| Liquid viscosity | 106 | 27 (26) | 283.1-363.1 | 3.71 % | +15.67 % at 323.1 K (Anouti 2010, doi:10.1021/je100671v) | ✅ within 5 % |
+| Liquid thermal conductivity | 6 | 1 (1) | 274.9-375.0 | 3.35 % | +5.41 % at 274.9 K (Wang 2019, doi:10.1021/acs.jced.9b00628) | ✅ within 5 % |
+| Surface tension | 5 | 2 | 298.1-313.1 | 1.19 % | +6.20 % at 313.1 K (Mohammad 2014, doi:10.1016/j.jct.2014.03.022) | reported (no tolerance) |
+
+## Diethylene glycol
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (4 measured in all) |
+| Liquid density | 175 | 31 (31) | 283.1-464.1 | 0.15 % | +0.97 % at 464.1 K (Sagdeev 2012, doi:10.1016/j.fluid.2011.11.022) | ✅ within 1 % |
+| Liquid heat capacity | 6 | 1 (1) | 303.1-353.1 | 0.37 % | -0.82 % at 303.1 K (Li 2009, doi:10.1016/j.tca.2009.01.008) | ✅ within 2 % |
+| Liquid viscosity | 71 | 11 (9) | 288.1-464.1 | 2.82 % | +9.69 % at 308.1 K (Sastry 2008, doi:10.1007/s10765-008-0399-8) | ✅ within 5 % |
+| Liquid thermal conductivity | 5 | 1 (1) | 298.1-338.2 | 1.91 % | +2.86 % at 298.1 K (Khayet 2005, doi:10.1007/s10765-005-5568-4) | ✅ within 5 % |
+
+## p-Cymene
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 1 | | | | | too few values (3 measured in all) |
+| Liquid density | 13 | 5 (5) | 298.1-328.1 | 0.08 % | -0.22 % at 318.1 K (Liao 2007, doi:10.1021/je060420p) | ✅ within 1 % |
+| Liquid heat capacity | 4 | 1 (1) | 298.6-328.4 | 1.44 % | -2.02 % at 328.4 K (Martinez-Lopez 2017, doi:10.1016/j.jct.2017.03.027) | ✅ within 2 % |
+| Liquid viscosity | 1 | | | | | too few values (1 measured in all) |
+
+## Adipic acid
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+
+## Maleic anhydride
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+
+## Terephthalic acid
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+
+## Dimethyl terephthalate
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+

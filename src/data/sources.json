@@ -200,6 +200,19 @@
         "validation/data/eos/bae1981_ethylene_propylene.json"
       ]
     },
+    "baird2019-article-cyrene": {
+      "title": "Vapor Pressures, Densities, and PC-SAFT Parameters for 11 Bio-compounds",
+      "authors": "Z. S. Baird, P. Uusi-Kyyny, J.-P. Pokki, E. Pedegert, V. Alopaeus",
+      "year": 2019,
+      "published": "Int. J. Thermophys. 40 (2019) 102",
+      "kind": "open-access article",
+      "doi": "10.1007/s10765-019-2570-9",
+      "url": "https://link.springer.com/content/pdf/10.1007/s10765-019-2570-9.pdf",
+      "access": "Open access, CC BY 4.0 (Springer); data also deposited at the Open Science Framework (doi:10.31219/osf.io/vbqrn)",
+      "files": [
+        "validation/data/pure/measured/article_cyrene_ijt2019.json"
+      ]
+    },
     "belabbaci2009-mea-water": {
       "title": "Isothermal Vapor-Liquid Equilibria of (Monoethanolamine + Water) and (4-Methylmorpholine + Water) Binary Systems at Several Temperatures",
       "authors": "A. Belabbaci, A. Razzouk, I. Mokbel, J. Jose, L. Negadi",
@@ -1077,6 +1090,19 @@
         "validation/data/eos/janisch2007_nitrogen_methane.json"
       ]
     },
+    "jerabek2023-article-cyrene": {
+      "title": "Thermodynamic Properties and Phase Equilibria of Dihydrolevoglucosenone and Its Mixtures with Hydrocarbons",
+      "authors": "V. Jerabek, V. Stejfa, M. Klajmon, K. Rehak",
+      "year": 2023,
+      "published": "J. Chem. Eng. Data 68 (2023) 3361-3376",
+      "kind": "open-access article",
+      "doi": "10.1021/acs.jced.3c00461",
+      "url": "https://pubs.acs.org/doi/10.1021/acs.jced.3c00461",
+      "access": "Open access, CC BY 4.0 (American Chemical Society)",
+      "files": [
+        "validation/data/pure/measured/article_cyrene_jced2023.json"
+      ]
+    },
     "jia2019-1-propanol-acetonitrile": {
       "title": "Isobaric Vapor-Liquid Equilibrium of the Acetonitrile + 1-Propanol + Ionic Liquids at an Atmospheric Pressure",
       "authors": "P. Jia, Z. Zhao, Q. Gao, X. Zhang",
@@ -1771,6 +1797,19 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/1-butanol_n-pentane_10-1021-je400885z_333.15K.json"
+      ]
+    },
+    "medgyesi2024-article-cyrene": {
+      "title": "Characterization and Application of Cyrene as a Biomass-Based Solvent for Homogeneous Heck-Coupling Reaction",
+      "authors": "Z. Medgyesi, L. T. Mika",
+      "year": 2024,
+      "published": "ChemPlusChem 89 (2024) e202400379",
+      "kind": "open-access article",
+      "doi": "10.1002/cplu.202400379",
+      "url": "https://chemistry-europe.onlinelibrary.wiley.com/doi/10.1002/cplu.202400379",
+      "access": "Open access, CC BY-NC 4.0 (Wiley-VCH)",
+      "files": [
+        "validation/data/pure/measured/article_cyrene_cplu2024.json"
       ]
     },
     "mejia2007-1-propanol-etbe": {

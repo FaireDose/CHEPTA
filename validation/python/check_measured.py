@@ -142,6 +142,23 @@ CHECKED = {
     "naphthalene": ["naphthalene"],
     "benzoic-acid": ["benzoic acid", "benzenecarboxylic acid"],
     "salicylic-acid": ["2-hydroxybenzoic acid", "salicylic acid"],
+    # proposal 0009, batch 1: green solvents, bio-based platform chemicals, polymer intermediates
+    "bdo": ["1,4-butanediol", "butane-1,4-diol"],
+    "cyrene": ["dihydrolevoglucosenone", "cyrene"],
+    "dimethyl-carbonate": ["dimethyl carbonate"],
+    "diethyl-carbonate": ["diethyl carbonate"],
+    "ethylene-carbonate": ["1,3-dioxolan-2-one", "ethylene carbonate"],
+    "propylene-carbonate": ["4-methyl-1,3-dioxolan-2-one", "propylene carbonate"],
+    "acetaldehyde": ["acetaldehyde", "ethanal"],
+    "1-pentanol": ["1-pentanol", "pentan-1-ol"],
+    "1-hexanol": ["1-hexanol", "hexan-1-ol"],
+    "1-octanol": ["1-octanol", "octan-1-ol"],
+    "diethylene-glycol": ["diethylene glycol", "2,2'-oxydiethanol"],
+    "p-cymene": ["1-methyl-4-(1-methylethyl)benzene", "p-cymene"],
+    "adipic-acid": ["hexanedioic acid", "adipic acid"],
+    "maleic-anhydride": ["2,5-furandione", "maleic anhydride"],
+    "terephthalic-acid": ["1,4-benzenedicarboxylic acid", "terephthalic acid"],
+    "dmt": ["dimethyl terephthalate", "dimethyl 1,4-benzenedicarboxylate"],
 }
 
 

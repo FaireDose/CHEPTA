@@ -1,0 +1,80 @@
+{
+ "component": "dmt",
+ "cas": "120-61-6",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-11",
+ "searched": "ThermoML-API full-text search for \"dimethyl terephthalate\", \"dimethyl 1,4-benzenedicarboxylate\"; 7 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1021/acs.jced.8b00298": {
+   "authors": [
+    "Wilson, Loren C.",
+    "Jasperson, Louis V.",
+    "VonNiederhausern, David",
+    "Giles, Neil F.",
+    "Ihmels, Christian"
+   ],
+   "title": "DIPPR Project 851 - Thirty Years of Vapor-Liquid Critical Point Measurements and Experimental Technique Development",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "63",
+   "year": "2018",
+   "pages": "3408-3417"
+  },
+  "10.1021/je500110d": {
+   "authors": [
+    "Gobble, C.[Chase]",
+    "Chickos, J.[James]",
+    "Verevkin, S. P.[Sergey P.]"
+   ],
+   "title": "Vapor Pressures and Vaporization Enthalpies of a Series of Dialkyl Phthalates by Correlation Gas Chromatography",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "59",
+   "year": "2014",
+   "pages": "1353-1365"
+  }
+ },
+ "rows": [
+  {
+   "property": "Critical temperature, K",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 779.0,
+   "uncertainty": 20.0,
+   "doi": "10.1021/acs.jced.8b00298",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Critical pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 2760.0,
+   "uncertainty": 400.0,
+   "doi": "10.1021/acs.jced.8b00298",
+   "set": 6,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Metastable liquid",
+    "Gas"
+   ],
+   "T_K": 298.15,
+   "P_kPa": null,
+   "value": 2.14e-07,
+   "uncertainty": 3.14e-08,
+   "doi": "10.1021/je500110d",
+   "set": 1,
+   "binary_with": null
+  }
+ ]
+}

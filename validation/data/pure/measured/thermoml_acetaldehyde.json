@@ -1,0 +1,112 @@
+{
+ "component": "acetaldehyde",
+ "cas": "75-07-0",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-11",
+ "searched": "ThermoML-API full-text search for \"acetaldehyde\", \"ethanal\"; 16 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1021/acs.jced.8b01196": {
+   "authors": [
+    "Naicker, S.[Sivanna]",
+    "Iwarere, S. A.[Samuel A.]",
+    "Naidoo, P.[Paramespri]",
+    "Ramjugernath, D.[Deresh]"
+   ],
+   "title": "Vapor Liquid Equilibrium Data for 2,3-Pentanedione + (Acetaldehyde or Acetone) at (100, 150, and 200) kPa",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "64",
+   "year": "2019",
+   "pages": "2388-2394"
+  },
+  "10.1021/je300810p": {
+   "authors": [
+    "Zhu, D.[Dechun]",
+    "Gao, D.[Daming]",
+    "Zhang, H.[Hui]",
+    "Winter, B.[Bernhard]",
+    "Lucking, P.[Peter]",
+    "Sun, H.[Hong]",
+    "Guan, H.[Hangmin]",
+    "Chen, H.[Hong]",
+    "Shi, J.[Jianjun]"
+   ],
+   "title": "Geometric Structures of Associating Component Optimized toward Correlation and Prediction of Isobaric Vapor Liquid Equilibria for Binary and Ternary Mixtures of Ethanal, Ethanol, and Ethanoic Acid",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "58",
+   "year": "2013",
+   "pages": "7-17"
+  }
+ },
+ "rows": [
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 293.52,
+   "P_kPa": null,
+   "value": 100.0,
+   "uncertainty": 5.0,
+   "doi": "10.1021/acs.jced.8b01196",
+   "set": 7,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 304.31,
+   "P_kPa": null,
+   "value": 150.0,
+   "uncertainty": 5.0,
+   "doi": "10.1021/acs.jced.8b01196",
+   "set": 7,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 312.98,
+   "P_kPa": null,
+   "value": 200.0,
+   "uncertainty": 6.0,
+   "doi": "10.1021/acs.jced.8b01196",
+   "set": 7,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 289.15,
+   "P_kPa": 101.325,
+   "value": 788.02,
+   "uncertainty": 0.36,
+   "doi": "10.1021/je300810p",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 293.91,
+   "P_kPa": null,
+   "value": 101.325,
+   "uncertainty": 2.584,
+   "doi": "10.1021/je300810p",
+   "set": 6,
+   "binary_with": null
+  }
+ ]
+}

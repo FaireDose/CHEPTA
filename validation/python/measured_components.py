@@ -307,8 +307,31 @@ class WebBook:
 
 
 class ThermoML:
+    """The measured values of a component: its ThermoML file (thermoml_<id>.json) and, where open-access articles
+    outside the archive have values, one file per article, article_<id>.json or article_<id>_<label>.json, in the same
+    format (transcribed from the article's tables, with its source block); any of them may be missing."""
     def __init__(self, cid):
-        self.d = json.loads((MEASURED_DIR / ("thermoml_%s.json" % cid)).read_text())
+        f = MEASURED_DIR / ("thermoml_%s.json" % cid)
+        self.d = json.loads(f.read_text()) if f.exists() else {"articles": {}, "rows": []}
+        self.access = {}  # doi -> access text of an article outside the archive
+        for a in sorted(MEASURED_DIR.glob("article_%s.json" % cid)) + sorted(MEASURED_DIR.glob("article_%s_*.json" % cid)):
+            art = json.loads(a.read_text())
+            self.d = dict(self.d, articles={**self.d["articles"], **art["articles"]}, rows=self.d["rows"] + art["rows"])
+            self.access.update({doi: art["source"]["access"] for doi in art["articles"]})
+        self.from_article = set(self.access)
+
+    def origin(self, pts):
+        """Where the values come from, for a record's source name and access text."""
+        used = {p["doi"] for p in pts if p.get("doi")}
+        arts = sorted(used & self.from_article)
+        if not arts:
+            return "NIST TRC ThermoML Archive", "open data (NIST TRC ThermoML Archive), free to read even where the article is not"
+        what = "an open-access article" if len(arts) == 1 else "%d open-access articles" % len(arts)
+        acc = "; ".join("%s: %s" % (self.short(d), self.access[d]) for d in arts)
+        if used - self.from_article:
+            return "the NIST TRC ThermoML Archive and " + what, \
+                "open data (NIST TRC ThermoML Archive) and %s (%s)" % (what, acc)
+        return what, acc
 
     def cite(self, doi):
         a = self.d["articles"][doi]
@@ -338,7 +361,8 @@ class ThermoML:
             seen.add(key)
             u = r["uncertainty"]
             out.append({"T": r["T_K"], "y": r["value"] * spec[1], "u_rel": (u / r["value"]) if u else None,
-                        "ref": self.short(r["doi"]), "doi": r["doi"], "from": "ThermoML"})
+                        "ref": self.short(r["doi"]), "doi": r["doi"],
+                        "from": "article" if r["doi"] in self.from_article else "ThermoML"})
         return out
 
 # ---------------------------------------------------------------------------------------------
@@ -442,6 +466,43 @@ def fit_measured(cid, prop, form, pts, target, Tc=None, fixed=()):
         if len(use) < 2 * n0 / 3:
             raise SystemExit("%s %s: more than a third of the values would be left out; the data disagree" % (cid, prop))
     coeffs = {k: rnd(v) for k, v in c.items() if k in "ABCDE"}
+    T = np.array([p["T"] for p in use])
+    y = np.array([p["y"] for p in use])
+    m = rel_dev(ev(form, coeffs, T, Tc), y)
+    for p in excluded:
+        p["deviation_percent"] = round(100 * float(ev(form, coeffs, np.array([p["T"]]), Tc)[0] / p["y"] - 1), 2)
+    return coeffs, use, excluded, m
+
+
+def fit_within_uncertainty(cid, prop, form, pts, Tc=None, fixed=()):
+    """Where no measured value has a stated uncertainty within the target (Cyrene's vapour pressures, 1.4-17 %): least
+    squares weighted by 1/u, the fewest coefficients that meet every value within its own stated uncertainty; values
+    it cannot meet are left out one at a time (the one furthest outside its uncertainty first), at most a third.
+    Returns coeffs, the values met, the values left out, and the maximum relative deviation."""
+    use = [p for p in pts if p["u_rel"]] + list(fixed)
+    n0, excluded = len(use), []
+    while True:
+        T = np.array([p["T"] for p in use])
+        y = np.array([p["y"] for p in use])
+        fm = np.array([p in fixed for p in use])
+        u = np.array([0.001 if f else p["u_rel"] for p, f in zip(use, fm)])
+        w = 1 / u
+        found = None
+        for k in complexities(form, T):
+            c = fit_ls(form, T, y, Tc, k, w)
+            d = ev(form, c, T, Tc) / y - 1
+            if np.all(np.abs(d[~fm]) <= u[~fm]):
+                found = c
+                break
+        if found is not None:
+            break
+        score = [-1 if f else abs(dd) / uu for dd, uu, f in zip(d, u, fm)]
+        j = int(np.argmax(score))
+        excluded.append(dict(use[j], why="outside its stated uncertainty in every fit of the others"))
+        use.pop(j)
+        if len(use) < 2 * n0 / 3:
+            raise SystemExit("%s %s: more than a third of the values would be left out; the data disagree" % (cid, prop))
+    coeffs = {k: rnd(v) for k, v in found.items() if k in "ABCDE"}
     T = np.array([p["T"] for p in use])
     y = np.array([p["y"] for p in use])
     m = rel_dev(ev(form, coeffs, T, Tc), y)

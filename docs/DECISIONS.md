@@ -14,8 +14,9 @@ Newest first. Pull requests are in `FaireDose/Fugacity`.
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
-- **Proposals 0009, 0010 and 0011:** merged in [#83](https://github.com/FaireDose/Fugacity/pull/83) with status
-  **Draft**. Accept or decline each one, then set its status in the file and in `proposals/README.md`.
+- **Proposals 0010 and 0011:** merged in [#83](https://github.com/FaireDose/Fugacity/pull/83) with status
+  **Draft**. Accept or decline each one, then set its status in the file and in `proposals/README.md`. Proposal
+  0009 was accepted on 2026-10-11 (batch 1 in its pull request).
 - **Make the new name official** (decided 2026-10-09: **CHEPTA**, *Chemical Engineering Process Tools
   for Agents*). In this order:
   1. GitHub: Settings → General → Repository name: `CHEPTA`. GitHub redirects the old links,
@@ -66,8 +67,8 @@ Newest first. Pull requests are in `FaireDose/Fugacity`.
 
 ### After the proposals are accepted
 
-- **0009, green chemistry components:**
-  1. batch 1, 16 components from ChemSep and CoolProp;
+- **0009, green chemistry components** (accepted 2026-10-11):
+  1. batch 1, 16 components from ChemSep and CoolProp (in a pull request, 2026-10-11);
   2. batch 2, lipids;
   3. batch 3, platform molecules from the WebBook and ThermoML, in small pull requests;
   4. the "nonvolatile" component class;
@@ -133,6 +134,34 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
 
 ### 2026-10-11
 
+- **Proposal 0009 accepted; batch 1 (16 green-chemistry components):** the maintainer asked for the first batch,
+  using the databanks already in use and, where they have nothing, an extensive search of other open sources, newer
+  or older. Added: 1,4-butanediol, Cyrene, dimethyl and diethyl carbonate, ethylene and propylene carbonate,
+  acetaldehyde, 1-pentanol, 1-hexanol, 1-octanol, diethylene glycol, p-cymene, adipic acid, maleic anhydride,
+  terephthalic acid, dimethyl terephthalate (ChemSep v8.3 and v8.31 data 2; dimethyl carbonate from CoolProp), with
+  ThermoML checks and WebBook melting data. From outside the databanks: the Cyrene vapour pressures and densities of
+  Baird et al. (Int. J. Thermophys. 2019, CC BY 4.0; validation/data/pure/measured/article_cyrene.json). Their
+  vapour pressures have stated uncertainties of 1.4-17 %, so the Cyrene vapour pressure meets each within its own
+  uncertainty and says it is no better. Refitted by the rule of proposal 0008: the 1,4-butanediol liquid heat
+  capacity (ChemSep 7.5 % off three articles; the record now covers 283-353 K). No open data, with the sources
+  searched: diethyl carbonate thermal conductivities and liquid heat capacity (the four ThermoML articles state 2-5 %,
+  above the 1 % target), terephthalic acid liquid properties (no melting point on the WebBook; ChemSep's heat of
+  vaporization covers only 298-308 K, where it is a solid).
+  - **Cyrene, from the two articles the maintainer downloaded** (with their supporting information): Jerabek et al.
+    (J. Chem. Eng. Data 2023, CC BY 4.0) and Medgyesi and Mika (ChemPlusChem 2024, CC BY-NC 4.0). Now fitted to
+    measured values: vapour pressure (87 static values of 2023 and Baird et al. 2019, within 0.3 %), density, liquid
+    heat capacity, viscosity, surface tension, and the melting data (251.9 K, 2.4 kJ/mol). ChemSep's Cyrene records
+    were poor: heat capacity 19-32 % low, a viscosity equation with the wrong sign, surface tension 15 % low. The 2024
+    vapour pressures, densities and viscosities have no stated uncertainty and are compared, not fitted (the vapour
+    pressures lie up to 11 % from the curve at 400-450 K); its surface tensions are the only ones and are fitted.
+  - **Cyrene ideal-gas heat capacity** (the maintainer left the choice to the assistant): ChemSep's value (190 J/(mol K)
+    at 298 K) is about as large as the measured liquid heat capacity (200), so the record now uses the values that
+    Jerabek et al. (2023, Table 4) calculated with the RRHO model (125.0 at 298 K, 200-700 K), labelled as calculated,
+    like the WebBook ideal-gas tables of other components. Still open: the ChemSep critical point (657.86 K) holds the
+    vapour-pressure curve above 403 K; no open measurement of it was found.
+  Pending:
+  - warnings kept (the measured values do not cover 25-100 degC): 1,4-butanediol viscosity, propylene carbonate heat
+    capacity, 1-hexanol and 1-octanol vapour pressure, 1-octanol heat capacity.
 - **The five large deviations of the engineering report (records against measured data):** the maintainer
   asked to refit them. Under the refit rule of proposal 0008 (refit when the measured values cover 25-100 degC,
   or when the record misses three times the tolerance): monoethanolamine vapour pressure refitted to the

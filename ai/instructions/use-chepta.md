@@ -156,8 +156,9 @@ it does so on my computer at no cost to this chat. So:
   build it yourself. Missing features can be asked for with the workbench's Feedback button.
 
 **Rules**
-- Version 0.3.0 holds 94 components: `CHEPTA.listComponents()` lists them (water,
-  alcohols, glycols, ketones, esters, aromatics, alkanes, light gases and more). Not every
+- The current version holds 110 components: `CHEPTA.listComponents()` lists them (water,
+  alcohols, glycols, ketones, esters, carbonates, aromatics, alkanes, light gases, bio-based
+  solvents and more). Not every
   pair has parameters; the page names missing pairs. For other chemicals, say they are not
   in the databank yet and point me to
   https://github.com/FaireDose/CHEPTA/blob/main/CONTRIBUTING.md. Never invent
