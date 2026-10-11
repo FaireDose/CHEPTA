@@ -3,14 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CHEPTA workbench</title>
+<title>CHEPTA</title>
 <meta name="description" content="Open chemical process simulation in the browser: phase equilibria, properties, steam tables and equations of state.">
 <style>
   :root { color-scheme: light dark; }
   body { margin: 0; padding: 16px; background: Canvas; color: CanvasText;
          font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
   body > header { max-width: 1240px; margin: 0 auto 12px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
-  body > header h1 { font-size: 1.1rem; margin: 0; }
+  body > header h1 { font-size: 1.6rem; margin: 0; line-height: 1.2; }
+  body > header .tagline { display: block; font-size: .95rem; font-weight: normal; }
   body > header a { color: inherit; }
   #app { max-width: 1240px; margin: 0 auto; }
   footer { max-width: 1240px; margin: 12px auto 0; font-size: .85rem; opacity: .75; }
@@ -18,7 +19,7 @@
 </head>
 <body>
 <header>
-  <h1>CHEPTA workbench</h1>
+    <h1>CHEPTA <span class="tagline">Chemical Engineering Process Tools for Agents</span></h1>
   <span>Open process simulation that calculates in your browser.</span>
   <a href="https://github.com/FaireDose/CHEPTA">Source and how to contribute</a>
   <a href="use.md">Instructions for AI assistants</a>
