@@ -1,0 +1,83 @@
+{
+ "_about": "1-Propanol (1) + n-Dodecane (2): isothermal total pressures at 323.0 K. Rows: temperature in K, liquid mole fraction of 1-propanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "C. Narasigadu, C. Subramoney, P. Naidoo, C. Coquelet, D. Richon, D. Ramjugernath, Isothermal Vapor Liquid Equilibrium Data for the Propan-1-ol + Dodecane System at (323.0, 343.4, 353.2, 363.1, and 369.2) K, J. Chem. Eng. Data 57 (2012) 862-868",
+  "doi": "10.1021/je201032t",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je201032t.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 5. The table number in the article was not checked."
+ },
+ "components": [
+  "1-propanol",
+  "n-dodecane"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   323.0,
+   0.0,
+   0.12
+  ],
+  [
+   323.0,
+   0.139,
+   8.42
+  ],
+  [
+   323.0,
+   0.215,
+   9.63
+  ],
+  [
+   323.0,
+   0.329,
+   10.46
+  ],
+  [
+   323.0,
+   0.409,
+   10.6
+  ],
+  [
+   323.0,
+   0.443,
+   10.74
+  ],
+  [
+   323.0,
+   0.569,
+   10.87
+  ],
+  [
+   323.0,
+   0.672,
+   10.92
+  ],
+  [
+   323.0,
+   0.795,
+   11.1
+  ],
+  [
+   323.0,
+   0.835,
+   11.18
+  ],
+  [
+   323.0,
+   0.949,
+   11.73
+  ],
+  [
+   323.0,
+   1.0,
+   12.11
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

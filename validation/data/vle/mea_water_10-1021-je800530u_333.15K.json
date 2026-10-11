@@ -1,0 +1,73 @@
+{
+ "_about": "Monoethanolamine (1) + Water (2): isothermal total pressures at 333.15 K. Rows: temperature in K, liquid mole fraction of monoethanolamine, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "A. Belabbaci, A. Razzouk, I. Mokbel, J. Jose, L. Negadi, Isothermal Vapor-Liquid Equilibria of (Monoethanolamine + Water) and (4-Methylmorpholine + Water) Binary Systems at Several Temperatures, J. Chem. Eng. Data 54 (2009) 2312-2316",
+  "doi": "10.1021/je800530u",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je800530u.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 8. The table number in the article was not checked."
+ },
+ "components": [
+  "mea",
+  "water"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   333.15,
+   0.0,
+   19.6156
+  ],
+  [
+   333.15,
+   0.0527,
+   18.7262
+  ],
+  [
+   333.15,
+   0.119,
+   17.1441
+  ],
+  [
+   333.15,
+   0.2023,
+   14.9731
+  ],
+  [
+   333.15,
+   0.274,
+   12.6144
+  ],
+  [
+   333.15,
+   0.3759,
+   9.8436
+  ],
+  [
+   333.15,
+   0.5214,
+   7.076
+  ],
+  [
+   333.15,
+   0.684,
+   3.9889
+  ],
+  [
+   333.15,
+   0.848,
+   2.1527
+  ],
+  [
+   333.15,
+   1.0,
+   0.7274
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

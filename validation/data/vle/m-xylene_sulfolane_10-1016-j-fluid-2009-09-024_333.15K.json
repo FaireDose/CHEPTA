@@ -1,0 +1,98 @@
+{
+ "_about": "m-Xylene (1) + Sulfolane (2): isothermal total pressures at 333.15 K. Rows: temperature in K, liquid mole fraction of m-xylene, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "W. K. Chen, K. J. Lee, J. W. Ko, C. M. J. Chang, L.  Lee, Vapor liquid equilibria and density measurement for binary mixtures of toluene, benzene, o-xylene, m-xylene, sulfolane and nonane at 333.15K and 353.15K, Fluid Phase Equilib. 287 (2010) 126-133",
+  "doi": "10.1016/j.fluid.2009.09.024",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2009.09.024.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 25. The table number in the article was not checked."
+ },
+ "components": [
+  "m-xylene",
+  "sulfolane"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   333.15,
+   0.0,
+   0.01
+  ],
+  [
+   333.15,
+   0.01,
+   0.31
+  ],
+  [
+   333.15,
+   0.015,
+   0.46
+  ],
+  [
+   333.15,
+   0.02,
+   0.6
+  ],
+  [
+   333.15,
+   0.03,
+   0.87
+  ],
+  [
+   333.15,
+   0.1,
+   2.47
+  ],
+  [
+   333.15,
+   0.199,
+   3.96
+  ],
+  [
+   333.15,
+   0.299,
+   4.79
+  ],
+  [
+   333.15,
+   0.399,
+   5.27
+  ],
+  [
+   333.15,
+   0.501,
+   5.52
+  ],
+  [
+   333.15,
+   0.6,
+   5.64
+  ],
+  [
+   333.15,
+   0.7,
+   5.73
+  ],
+  [
+   333.15,
+   0.799,
+   5.88
+  ],
+  [
+   333.15,
+   0.9,
+   6.11
+  ],
+  [
+   333.15,
+   1.0,
+   6.59
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

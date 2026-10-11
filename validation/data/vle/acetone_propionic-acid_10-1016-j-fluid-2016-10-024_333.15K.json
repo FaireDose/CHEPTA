@@ -1,0 +1,103 @@
+{
+ "_about": "Acetone (1) + Propionic acid (2): isothermal total pressures at 333.15 K. Rows: temperature in K, liquid mole fraction of acetone, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "J. Pillay, S. A. Iwarere, J. D. Raal, P. Naidoo, D. Ramjugernath, Isothermal vapour-liquid equilibrium data for the binary systems 2-propanone + (2-butanol or propanoic acid), Fluid Phase Equilib. 433 (2017) 119-125",
+  "doi": "10.1016/j.fluid.2016.10.024",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2016.10.024.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 6. The table number in the article was not checked."
+ },
+ "components": [
+  "acetone",
+  "propionic-acid"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   333.15,
+   0.0,
+   3.64
+  ],
+  [
+   333.15,
+   0.005,
+   4.43
+  ],
+  [
+   333.15,
+   0.025,
+   6.62
+  ],
+  [
+   333.15,
+   0.042,
+   8.57
+  ],
+  [
+   333.15,
+   0.07,
+   11.65
+  ],
+  [
+   333.15,
+   0.098,
+   14.77
+  ],
+  [
+   333.15,
+   0.191,
+   24.26
+  ],
+  [
+   333.15,
+   0.237,
+   29.62
+  ],
+  [
+   333.15,
+   0.313,
+   36.75
+  ],
+  [
+   333.15,
+   0.391,
+   44.89
+  ],
+  [
+   333.15,
+   0.541,
+   63.35
+  ],
+  [
+   333.15,
+   0.717,
+   82.41
+  ],
+  [
+   333.15,
+   0.801,
+   91.7
+  ],
+  [
+   333.15,
+   0.863,
+   98.89
+  ],
+  [
+   333.15,
+   0.893,
+   103.1
+  ],
+  [
+   333.15,
+   1.0,
+   115.5
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

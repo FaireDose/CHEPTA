@@ -1,0 +1,107 @@
+{
+ "_about": "Acetic acid (1) + Isopropyl acetate (2): isobaric bubble temperatures at 101.3 kPa (no vapour compositions are fitted). Rows: liquid mole fraction of acetic acid, boiling temperature in K, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "G. Li, X. Yin, B. Jing, Study of Vapor-Liquid Equilibria for Acetic Acid + n-Propyl Acetate + Isopropyl Acetate Systems, J. Chem. Eng. Data 64 (2019) 2759-2766",
+  "doi": "10.1021/acs.jced.9b00152",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.9b00152.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 7. The table number in the article was not checked."
+ },
+ "components": [
+  "acetic-acid",
+  "isopropyl-acetate"
+ ],
+ "kind": "isobaric-tx",
+ "P_kPa": 101.3,
+ "columns": [
+  "x_1",
+  "T_K"
+ ],
+ "rows": [
+  [
+   0.0,
+   361.79
+  ],
+  [
+   0.053,
+   362.71
+  ],
+  [
+   0.1,
+   363.78
+  ],
+  [
+   0.149,
+   364.44
+  ],
+  [
+   0.199,
+   365.56
+  ],
+  [
+   0.249,
+   366.1
+  ],
+  [
+   0.3,
+   367.52
+  ],
+  [
+   0.347,
+   368.33
+  ],
+  [
+   0.405,
+   369.65
+  ],
+  [
+   0.45,
+   370.61
+  ],
+  [
+   0.501,
+   371.84
+  ],
+  [
+   0.551,
+   373.34
+  ],
+  [
+   0.61,
+   374.91
+  ],
+  [
+   0.648,
+   376.33
+  ],
+  [
+   0.695,
+   377.79
+  ],
+  [
+   0.748,
+   379.41
+  ],
+  [
+   0.8,
+   381.34
+  ],
+  [
+   0.852,
+   383.62
+  ],
+  [
+   0.905,
+   385.85
+  ],
+  [
+   0.949,
+   387.99
+  ],
+  [
+   1.0,
+   390.93
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Fitted to the bubble temperatures alone (Barker's method): no set of this pair with vapour compositions passes the consistency point test, or none was measured. Pure-component boiling points of the set within 0.09 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

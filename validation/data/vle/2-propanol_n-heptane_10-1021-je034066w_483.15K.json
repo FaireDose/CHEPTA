@@ -1,0 +1,88 @@
+{
+ "_about": "2-Propanol (1) + n-Heptane (2): isothermal total pressures at 483.15 K. Rows: temperature in K, liquid mole fraction of 2-propanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "B. C. Oh, S. Lee, J. Seo, H. Kim, Isothermal Vapor-Liquid Equilibria for the 2-Propanol + n-Heptane System near the Critical Region, J. Chem. Eng. Data 49 (2004) 221-223",
+  "doi": "10.1021/je034066w",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je034066w.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 5. The table number in the article was not checked."
+ },
+ "components": [
+  "2-propanol",
+  "n-heptane"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   483.15,
+   0.0,
+   1160.0
+  ],
+  [
+   483.15,
+   0.092,
+   1514.0
+  ],
+  [
+   483.15,
+   0.176,
+   1790.0
+  ],
+  [
+   483.15,
+   0.308,
+   2168.0
+  ],
+  [
+   483.15,
+   0.43,
+   2459.0
+  ],
+  [
+   483.15,
+   0.573,
+   2726.0
+  ],
+  [
+   483.15,
+   0.69,
+   2889.0
+  ],
+  [
+   483.15,
+   0.771,
+   2979.0
+  ],
+  [
+   483.15,
+   0.838,
+   3041.0
+  ],
+  [
+   483.15,
+   0.886,
+   3089.0
+  ],
+  [
+   483.15,
+   0.941,
+   3116.0
+  ],
+  [
+   483.15,
+   0.961,
+   3121.0
+  ],
+  [
+   483.15,
+   1.0,
+   3101.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

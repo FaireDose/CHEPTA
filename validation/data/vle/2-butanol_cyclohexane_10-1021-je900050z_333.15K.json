@@ -1,0 +1,133 @@
+{
+ "_about": "2-Butanol (1) + Cyclohexane (2): isothermal total pressures at 333.15 K. Rows: temperature in K, liquid mole fraction of 2-butanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "P. Gierycz, A. Kosowski, R. Swietlik, Vapor-Liquid Equilibria in Binary Systems Formed by Cyclohexane with Alcohols, J. Chem. Eng. Data 54 (2009) 2996-3001",
+  "doi": "10.1021/je900050z",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je900050z.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 6. The table number in the article was not checked."
+ },
+ "components": [
+  "2-butanol",
+  "cyclohexane"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   333.15,
+   0.0,
+   51.92
+  ],
+  [
+   333.15,
+   0.0523,
+   55.16
+  ],
+  [
+   333.15,
+   0.1196,
+   56.467
+  ],
+  [
+   333.15,
+   0.1897,
+   56.44
+  ],
+  [
+   333.15,
+   0.244,
+   56.067
+  ],
+  [
+   333.15,
+   0.3001,
+   55.4
+  ],
+  [
+   333.15,
+   0.3726,
+   54.6
+  ],
+  [
+   333.15,
+   0.4372,
+   53.467
+  ],
+  [
+   333.15,
+   0.4917,
+   52.267
+  ],
+  [
+   333.15,
+   0.5482,
+   50.72
+  ],
+  [
+   333.15,
+   0.5544,
+   50.72
+  ],
+  [
+   333.15,
+   0.6082,
+   48.333
+  ],
+  [
+   333.15,
+   0.6652,
+   45.627
+  ],
+  [
+   333.15,
+   0.7113,
+   43.12
+  ],
+  [
+   333.15,
+   0.7634,
+   39.6
+  ],
+  [
+   333.15,
+   0.8195,
+   38.213
+  ],
+  [
+   333.15,
+   0.8665,
+   34.493
+  ],
+  [
+   333.15,
+   0.9048,
+   31.187
+  ],
+  [
+   333.15,
+   0.9385,
+   27.64
+  ],
+  [
+   333.15,
+   0.9665,
+   24.16
+  ],
+  [
+   333.15,
+   0.9848,
+   21.0
+  ],
+  [
+   333.15,
+   1.0,
+   18.2
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

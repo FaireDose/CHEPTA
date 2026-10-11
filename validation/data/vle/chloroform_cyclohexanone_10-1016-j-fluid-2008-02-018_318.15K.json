@@ -1,0 +1,103 @@
+{
+ "_about": "Chloroform (1) + Cyclohexanone (2): isothermal total pressures at 318.15 K. Rows: temperature in K, liquid mole fraction of chloroform, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "D. Dragoescu, A. Barhala, M. Teodorescu, Vapour pressure and excess Gibbs energy of binary 1,2-dichloroethane + cyclohexanone, chloroform + cyclopentanone and chloroform + cyclohexanone mixtures at temperatures from 298.15 to 318.15 K, Fluid Phase Equilib. 267 (2008) 70-78",
+  "doi": "10.1016/j.fluid.2008.02.018",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2008.02.018.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 15. The table number in the article was not checked."
+ },
+ "components": [
+  "chloroform",
+  "cyclohexanone"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   318.15,
+   0.0,
+   1.91
+  ],
+  [
+   318.15,
+   0.0884,
+   3.59
+  ],
+  [
+   318.15,
+   0.1709,
+   5.57
+  ],
+  [
+   318.15,
+   0.2443,
+   7.74
+  ],
+  [
+   318.15,
+   0.2981,
+   9.53
+  ],
+  [
+   318.15,
+   0.3763,
+   12.94
+  ],
+  [
+   318.15,
+   0.4433,
+   16.15
+  ],
+  [
+   318.15,
+   0.4888,
+   18.76
+  ],
+  [
+   318.15,
+   0.5876,
+   25.6
+  ],
+  [
+   318.15,
+   0.6839,
+   33.62
+  ],
+  [
+   318.15,
+   0.7571,
+   40.05
+  ],
+  [
+   318.15,
+   0.8005,
+   43.91
+  ],
+  [
+   318.15,
+   0.8595,
+   48.67
+  ],
+  [
+   318.15,
+   0.9074,
+   51.85
+  ],
+  [
+   318.15,
+   0.9635,
+   56.78
+  ],
+  [
+   318.15,
+   1.0,
+   58.68
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

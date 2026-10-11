@@ -1,0 +1,108 @@
+{
+ "_about": "2-Propanol (1) + Isobutanol (2): isothermal total pressures at 333.15 K. Rows: temperature in K, liquid mole fraction of 2-propanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "K. Moodley, C.-L. Dorsamy, C. Narasigadu, Y. Vemblanathan, Excess Properties and Phase Equilibria for the Potential Biofuel System of Propan-2-ol and 2-Methyl-propan-1-ol at 333.15, 343.15, and 353.15 K, J. Chem. Eng. Data 63 (2018) 2106-2113",
+  "doi": "10.1021/acs.jced.8b00103",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.8b00103.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 8. The table number in the article was not checked."
+ },
+ "components": [
+  "2-propanol",
+  "isobutanol"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   333.15,
+   0.0,
+   12.3
+  ],
+  [
+   333.15,
+   0.0515,
+   14.1
+  ],
+  [
+   333.15,
+   0.1299,
+   16.6
+  ],
+  [
+   333.15,
+   0.1698,
+   17.8
+  ],
+  [
+   333.15,
+   0.2192,
+   19.3
+  ],
+  [
+   333.15,
+   0.2598,
+   20.5
+  ],
+  [
+   333.15,
+   0.3117,
+   21.9
+  ],
+  [
+   333.15,
+   0.3546,
+   23.0
+  ],
+  [
+   333.15,
+   0.3895,
+   23.9
+  ],
+  [
+   333.15,
+   0.4605,
+   25.7
+  ],
+  [
+   333.15,
+   0.5803,
+   28.5
+  ],
+  [
+   333.15,
+   0.7187,
+   31.6
+  ],
+  [
+   333.15,
+   0.7909,
+   33.5
+  ],
+  [
+   333.15,
+   0.839,
+   34.6
+  ],
+  [
+   333.15,
+   0.8731,
+   35.5
+  ],
+  [
+   333.15,
+   0.938,
+   37.0
+  ],
+  [
+   333.15,
+   1.0,
+   38.5
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

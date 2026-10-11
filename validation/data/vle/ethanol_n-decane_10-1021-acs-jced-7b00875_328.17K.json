@@ -1,0 +1,78 @@
+{
+ "_about": "Ethanol (1) + n-Decane (2): isothermal total pressures at 328.17 K. Rows: temperature in K, liquid mole fraction of ethanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "C. Narasigadu, K. Moodley, J. D. Raal, Vapor-Liquid Equilibrium Measurements of Ethanol and n-Nonane or n-Decane Binary Mixtures with Large Relative Volatility, J. Chem. Eng. Data 63 (2018) 1240-1248",
+  "doi": "10.1021/acs.jced.7b00875",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00875.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 9. The table number in the article was not checked."
+ },
+ "components": [
+  "ethanol",
+  "n-decane"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   328.17,
+   0.0,
+   1.18
+  ],
+  [
+   328.17,
+   0.036,
+   24.0
+  ],
+  [
+   328.17,
+   0.116,
+   34.21
+  ],
+  [
+   328.17,
+   0.312,
+   35.32
+  ],
+  [
+   328.17,
+   0.451,
+   35.42
+  ],
+  [
+   328.17,
+   0.634,
+   35.61
+  ],
+  [
+   328.17,
+   0.748,
+   35.76
+  ],
+  [
+   328.17,
+   0.822,
+   36.1
+  ],
+  [
+   328.17,
+   0.913,
+   36.52
+  ],
+  [
+   328.17,
+   0.983,
+   37.15
+  ],
+  [
+   328.17,
+   1.0,
+   37.53
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

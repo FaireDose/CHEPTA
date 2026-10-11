@@ -1,0 +1,115 @@
+{
+ "_about": "Ethanol (1) + n-Octane (2): isobaric bubble temperatures at 90.0 kPa (no vapour compositions are fitted). Rows: liquid mole fraction of ethanol, boiling temperature in K, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "G. Li, Z. Li, Measurement and Modeling of Vapor Liquid Equilibria for the Octane + Sulfuric Acid + Water + Ethanol System, J. Chem. Eng. Data 58 (2013) 2044-2050",
+  "doi": "10.1021/je400238j",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je400238j.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 3. The table number in the article was not checked."
+ },
+ "components": [
+  "ethanol",
+  "n-octane"
+ ],
+ "kind": "isobaric-tx",
+ "P_kPa": 90.0,
+ "columns": [
+  "x_1",
+  "T_K"
+ ],
+ "rows": [
+  [
+   0.0,
+   394.09
+  ],
+  [
+   0.0458,
+   361.39
+  ],
+  [
+   0.092,
+   353.54
+  ],
+  [
+   0.16,
+   350.75
+  ],
+  [
+   0.189,
+   350.19
+  ],
+  [
+   0.2653,
+   348.97
+  ],
+  [
+   0.3165,
+   348.61
+  ],
+  [
+   0.3566,
+   348.2
+  ],
+  [
+   0.4259,
+   348.0
+  ],
+  [
+   0.4708,
+   347.75
+  ],
+  [
+   0.5164,
+   347.59
+  ],
+  [
+   0.5551,
+   347.44
+  ],
+  [
+   0.5926,
+   347.34
+  ],
+  [
+   0.6621,
+   347.24
+  ],
+  [
+   0.7222,
+   347.04
+  ],
+  [
+   0.7579,
+   346.93
+  ],
+  [
+   0.7901,
+   346.88
+  ],
+  [
+   0.8324,
+   346.83
+  ],
+  [
+   0.8575,
+   346.83
+  ],
+  [
+   0.8998,
+   346.93
+  ],
+  [
+   0.948,
+   347.29
+  ],
+  [
+   0.973,
+   347.75
+  ],
+  [
+   1.0,
+   348.56
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Fitted to the bubble temperatures alone (Barker's method): no set of this pair with vapour compositions passes the consistency point test, or none was measured. Pure-component boiling points of the set within 0.44 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

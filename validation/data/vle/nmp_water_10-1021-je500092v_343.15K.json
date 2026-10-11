@@ -1,0 +1,73 @@
+{
+ "_about": "N-Methyl-2-pyrrolidone (1) + Water (2): isothermal total pressures at 343.15 K. Rows: temperature in K, liquid mole fraction of n-methyl-2-pyrrolidone, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "R. Hirawan, S. Sinha, S. Iwarere, D. Raal, P. Naidoo, D. Ramjugernath, Vapor Liquid Equilibrium Data for 1-Methyl-2-Pyrrolidone + (1-Butanol or 1-Hexene or Water) Binary Mixtures, J. Chem. Eng. Data 59 (2014) 1643-1650",
+  "doi": "10.1021/je500092v",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je500092v.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 11. The table number in the article was not checked."
+ },
+ "components": [
+  "nmp",
+  "water"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   343.15,
+   0.0,
+   31.1
+  ],
+  [
+   343.15,
+   0.077,
+   28.4
+  ],
+  [
+   343.15,
+   0.188,
+   24.9
+  ],
+  [
+   343.15,
+   0.267,
+   21.7
+  ],
+  [
+   343.15,
+   0.343,
+   19.29
+  ],
+  [
+   343.15,
+   0.395,
+   17.49
+  ],
+  [
+   343.15,
+   0.477,
+   14.79
+  ],
+  [
+   343.15,
+   0.538,
+   12.69
+  ],
+  [
+   343.15,
+   0.66,
+   9.01
+  ],
+  [
+   343.15,
+   1.0,
+   0.79
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

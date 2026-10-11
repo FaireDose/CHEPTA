@@ -1,0 +1,123 @@
+{
+ "_about": "2-Butanone (1) + Cyclohexane (2): isothermal total pressures at 303.2 K. Rows: temperature in K, liquid mole fraction of 2-butanone, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "B. Liebergesell, T. Brands, H.-J. Kobeta, A. Bardow, Quaternary isothermal vapor-liquid equilibrium of the model biofuel 2-butanone + n-heptane + tetrahydrofuran + cyclohexane using Raman spectroscopic characterization, Fluid Phase Equilib. 472 (2018) 107-116",
+  "doi": "10.1016/j.fluid.2018.04.009",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2018.04.009.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 11. The table number in the article was not checked."
+ },
+ "components": [
+  "2-butanone",
+  "cyclohexane"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   303.2,
+   0.0,
+   16.1
+  ],
+  [
+   303.2,
+   0.082,
+   19.9
+  ],
+  [
+   303.2,
+   0.098,
+   20.2
+  ],
+  [
+   303.2,
+   0.141,
+   20.9
+  ],
+  [
+   303.2,
+   0.152,
+   21.0
+  ],
+  [
+   303.2,
+   0.259,
+   21.8
+  ],
+  [
+   303.2,
+   0.281,
+   21.9
+  ],
+  [
+   303.2,
+   0.287,
+   21.9
+  ],
+  [
+   303.2,
+   0.395,
+   22.1
+  ],
+  [
+   303.2,
+   0.53,
+   22.1
+  ],
+  [
+   303.2,
+   0.616,
+   21.9
+  ],
+  [
+   303.2,
+   0.624,
+   21.8
+  ],
+  [
+   303.2,
+   0.74,
+   21.1
+  ],
+  [
+   303.2,
+   0.753,
+   20.9
+  ],
+  [
+   303.2,
+   0.816,
+   20.2
+  ],
+  [
+   303.2,
+   0.837,
+   19.8
+  ],
+  [
+   303.2,
+   0.912,
+   18.3
+  ],
+  [
+   303.2,
+   0.917,
+   18.1
+  ],
+  [
+   303.2,
+   0.924,
+   17.9
+  ],
+  [
+   303.2,
+   1.0,
+   15.1
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

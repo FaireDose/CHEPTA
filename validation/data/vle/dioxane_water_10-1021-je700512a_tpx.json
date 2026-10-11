@@ -1,0 +1,113 @@
+{
+ "_about": "1,4-Dioxane (1) + Water (2): total pressures against temperature, 288.15-308.15 K, at set liquid compositions. Rows: temperature in K, liquid mole fraction of 1,4-dioxane, pressure in kPa, as stored in the ThermoML Archive record.",
+ "source": {
+  "citation": "A. V. Kurzin, A. N. Evdokimov, V. B. Antipina, O. S. Pavlova, V. E. Gusev, Vapor Pressures for 1,4-Dioxane + Tetrabutylammonium Nitrate, Water + Tetrabutylammonium Nitrate, and 1,4-Dioxane + Water + Tetrabutylammonium Nitrate, J. Chem. Eng. Data 53 (2008) 207-210",
+  "doi": "10.1021/je700512a",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je700512a.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 6. The table number in the article was not checked."
+ },
+ "components": [
+  "dioxane",
+  "water"
+ ],
+ "kind": "tpx",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   288.15,
+   0.05,
+   2.352
+  ],
+  [
+   288.15,
+   0.1,
+   2.709
+  ],
+  [
+   288.15,
+   0.17,
+   2.984
+  ],
+  [
+   288.15,
+   0.5,
+   3.657
+  ],
+  [
+   288.15,
+   0.7,
+   3.749
+  ],
+  [
+   288.15,
+   0.9,
+   3.386
+  ],
+  [
+   298.15,
+   0.05,
+   4.157
+  ],
+  [
+   298.15,
+   0.1,
+   4.93
+  ],
+  [
+   298.15,
+   0.17,
+   5.482
+  ],
+  [
+   298.15,
+   0.5,
+   6.357
+  ],
+  [
+   298.15,
+   0.7,
+   6.359
+  ],
+  [
+   298.15,
+   0.9,
+   6.027
+  ],
+  [
+   308.15,
+   0.05,
+   7.238
+  ],
+  [
+   308.15,
+   0.1,
+   8.617
+  ],
+  [
+   308.15,
+   0.17,
+   9.703
+  ],
+  [
+   308.15,
+   0.5,
+   10.735
+  ],
+  [
+   308.15,
+   0.7,
+   10.828
+  ],
+  [
+   308.15,
+   0.9,
+   9.914
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. No isotherm of the set has its own pure-component pressures, so the fit uses the vapour pressures of the component records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

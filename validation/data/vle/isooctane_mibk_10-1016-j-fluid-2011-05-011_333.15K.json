@@ -1,0 +1,103 @@
+{
+ "_about": "Isooctane (1) + Methyl isobutyl ketone (2): isothermal total pressures at 333.15 K. Rows: temperature in K, liquid mole fraction of isooctane, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "S. Bernatova, J. Pavlicek, I. Wichterle, Isothermal vapour-liquid equilibria in the binary and ternary systems composed of 2,2,4-trimethylpentane, 2-methyl-1-propanol, and 4-methyl-2-pentanone, Fluid Phase Equilib. 307 (2011) 66-71",
+  "doi": "10.1016/j.fluid.2011.05.011",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2011.05.011.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 11. The table number in the article was not checked."
+ },
+ "components": [
+  "isooctane",
+  "mibk"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   333.15,
+   0.0,
+   14.45
+  ],
+  [
+   333.15,
+   0.0049,
+   14.68
+  ],
+  [
+   333.15,
+   0.0184,
+   15.4
+  ],
+  [
+   333.15,
+   0.0503,
+   16.88
+  ],
+  [
+   333.15,
+   0.0852,
+   18.22
+  ],
+  [
+   333.15,
+   0.1427,
+   20.21
+  ],
+  [
+   333.15,
+   0.2368,
+   22.72
+  ],
+  [
+   333.15,
+   0.3263,
+   24.45
+  ],
+  [
+   333.15,
+   0.4329,
+   26.05
+  ],
+  [
+   333.15,
+   0.5487,
+   27.36
+  ],
+  [
+   333.15,
+   0.6407,
+   28.13
+  ],
+  [
+   333.15,
+   0.7531,
+   28.77
+  ],
+  [
+   333.15,
+   0.8174,
+   28.99
+  ],
+  [
+   333.15,
+   0.8674,
+   29.06
+  ],
+  [
+   333.15,
+   0.9208,
+   28.99
+  ],
+  [
+   333.15,
+   1.0,
+   28.64
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

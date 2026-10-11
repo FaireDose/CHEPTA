@@ -1,0 +1,123 @@
+{
+ "_about": "2-Butanol (1) + Acetone (2): isothermal total pressures at 333.15 K. Rows: temperature in K, liquid mole fraction of 2-butanol, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "J. Pillay, S. A. Iwarere, J. D. Raal, P. Naidoo, D. Ramjugernath, Isothermal vapour-liquid equilibrium data for the binary systems 2-propanone + (2-butanol or propanoic acid), Fluid Phase Equilib. 433 (2017) 119-125",
+  "doi": "10.1016/j.fluid.2016.10.024",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2016.10.024.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 4. The table number in the article was not checked."
+ },
+ "components": [
+  "2-butanol",
+  "acetone"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   333.15,
+   0.0,
+   115.5
+  ],
+  [
+   333.15,
+   0.058,
+   109.5
+  ],
+  [
+   333.15,
+   0.062,
+   109.3
+  ],
+  [
+   333.15,
+   0.138,
+   102.3
+  ],
+  [
+   333.15,
+   0.166,
+   100.1
+  ],
+  [
+   333.15,
+   0.199,
+   98.27
+  ],
+  [
+   333.15,
+   0.238,
+   95.04
+  ],
+  [
+   333.15,
+   0.332,
+   87.65
+  ],
+  [
+   333.15,
+   0.446,
+   78.57
+  ],
+  [
+   333.15,
+   0.5,
+   74.06
+  ],
+  [
+   333.15,
+   0.578,
+   67.72
+  ],
+  [
+   333.15,
+   0.728,
+   53.19
+  ],
+  [
+   333.15,
+   0.753,
+   50.65
+  ],
+  [
+   333.15,
+   0.831,
+   42.48
+  ],
+  [
+   333.15,
+   0.889,
+   35.07
+  ],
+  [
+   333.15,
+   0.901,
+   33.15
+  ],
+  [
+   333.15,
+   0.948,
+   26.34
+  ],
+  [
+   333.15,
+   0.95,
+   26.4
+  ],
+  [
+   333.15,
+   0.974,
+   22.85
+  ],
+  [
+   333.15,
+   1.0,
+   18.15
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}
