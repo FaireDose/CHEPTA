@@ -146,10 +146,19 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   capacity (ChemSep 7.5 % off three articles; the record now covers 283-353 K). No open data, with the sources
   searched: diethyl carbonate thermal conductivities and liquid heat capacity (the four ThermoML articles state 2-5 %,
   above the 1 % target), terephthalic acid liquid properties (no melting point on the WebBook; ChemSep's heat of
-  vaporization covers only 298-308 K, where it is a solid), Cyrene melting data. Pending:
-  - two more open-access Cyrene articles (J. Chem. Eng. Data 2023, doi:10.1021/acs.jced.3c00461, CC BY; ChemPlusChem
-    2024, doi:10.1002/cplu.202400379, CC BY-NC) block automated download; if the maintainer downloads them, their
-    vapour pressures, viscosities and melting data can be added;
+  vaporization covers only 298-308 K, where it is a solid).
+  - **Cyrene, from the two articles the maintainer downloaded** (with their supporting information): Jerabek et al.
+    (J. Chem. Eng. Data 2023, CC BY 4.0) and Medgyesi and Mika (ChemPlusChem 2024, CC BY-NC 4.0). Now fitted to
+    measured values: vapour pressure (87 static values of 2023 and Baird et al. 2019, within 0.3 %), density, liquid
+    heat capacity, viscosity, surface tension, and the melting data (251.9 K, 2.4 kJ/mol). ChemSep's Cyrene records
+    were poor: heat capacity 19-32 % low, a viscosity equation with the wrong sign, surface tension 15 % low. The 2024
+    vapour pressures, densities and viscosities have no stated uncertainty and are compared, not fitted (the vapour
+    pressures lie up to 11 % from the curve at 400-450 K); its surface tensions are the only ones and are fitted.
+  - **Open question for the maintainer:** ChemSep's Cyrene ideal-gas heat capacity (190 J/(mol K) at 298 K) is above
+    the measured liquid heat capacity (200), which is unlikely; Jerabek et al. (2023, Table 4) give 125.0 from a
+    quantum-chemistry (RRHO) calculation. Calculated, not measured: use it, or keep ChemSep? Also the ChemSep critical
+    point (657.86 K) holds the vapour-pressure curve above 403 K; no open measurement of it was found.
+  Pending:
   - warnings kept (the measured values do not cover 25-100 degC): 1,4-butanediol viscosity, propylene carbonate heat
     capacity, 1-hexanol and 1-octanol vapour pressure, 1-octanol heat capacity.
 - **The five large deviations of the engineering report (records against measured data):** the maintainer
