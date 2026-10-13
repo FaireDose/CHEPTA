@@ -1063,7 +1063,7 @@ def build(cid, log):
                          "thermo and chemicals libraries (no UNIQUAC r and q tables)"],
             "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence "
                     "of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it "
-                    "is settled the component has no activity-model data."},
+                    "is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."},
         "omega": omega,
         "constants_source": ("%s. MW, formula and CAS: "
                              "chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep "

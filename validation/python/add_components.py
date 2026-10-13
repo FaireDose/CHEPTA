@@ -179,7 +179,7 @@ def main():
                                          "thermo and chemicals libraries (no UNIQUAC r and q tables)"],
                             "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and "
                                     "areas, but the licence of those group tables is the open question of roadmap A3; "
-                                    "until it is settled the component has no activity-model data."}
+                                    "until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."}
             rec = new
         tb = rec["Tb_K"] if rec["Tb_K"] is not None else float("nan")
         old = comps.get(cid, {})

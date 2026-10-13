@@ -15917,7 +15917,7 @@
           "ChemSep v8.3 and v8.31 data 2 (compound not included)",
           "thermo and chemicals libraries (no UNIQUAC r and q tables)"
         ],
-        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no activity-model data."
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
       "omega": 0.226009,
       "constants_source": "Tc and Pc: Garcia-Sanchez, Romero-Martinez, et al., 1989, NIST Chemistry WebBook (SRD 69), phase change data, https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Units=SI&Mask=4. MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0008, Part B). Tb: where the vapour-pressure record reaches 101.325 kPa (313.118 K).",
@@ -16290,7 +16290,7 @@
           "ChemSep v8.3 and v8.31 data 2 (compound not included)",
           "thermo and chemicals libraries (no UNIQUAC r and q tables)"
         ],
-        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no activity-model data."
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
       "omega": 0.453864,
       "constants_source": "Tc and Pc: Wilson, Wilson, et al., 1996, NIST Chemistry WebBook (SRD 69), phase change data, https://webbook.nist.gov/cgi/cbook.cgi?ID=C109864&Units=SI&Mask=4. MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0008, Part B). Tb: where the vapour-pressure record reaches 101.325 kPa (397.601 K); measured normal boiling temperatures in the ThermoML Archive: 397.63 K (Zhao 2014); 397.60 K (Shen 2018).",
@@ -40226,7 +40226,7 @@
           "ChemSep v8.3 and v8.31 data 2 (compound not included)",
           "thermo and chemicals libraries (no UNIQUAC r and q tables)"
         ],
-        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no activity-model data."
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
       "omega": 0.186931,
       "constants_source": "Tc: Cheng, McCoubrey, et al., 1962; Pc: Kobe, Ravicz, et al., 1956, NIST Chemistry WebBook (SRD 69), phase change data, https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Units=SI&Mask=4 (Kobe et al. (1956) give the only measured Pc; Tc from Cheng et al. (1962), uncertainty 0.3 K, instead of their 487 K (2 K)). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (304.565 K).",
@@ -40626,7 +40626,7 @@
           "ChemSep v8.3 and v8.31 data 2 (compound not included)",
           "thermo and chemicals libraries (no UNIQUAC r and q tables)"
         ],
-        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no activity-model data."
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
       "omega": 0.246855,
       "constants_source": "Tc and Pc: Kobe, Ravicz, et al., 1956, NIST Chemistry WebBook (SRD 69), phase change data, https://webbook.nist.gov/cgi/cbook.cgi?ID=C534225&Units=SI&Mask=4. MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (337.046 K).",
@@ -40912,7 +40912,7 @@
           "ChemSep v8.3 and v8.31 data 2 (compound not included)",
           "thermo and chemicals libraries (no UNIQUAC r and q tables)"
         ],
-        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no activity-model data."
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
       "omega": 0.280733,
       "constants_source": "Tc and Pc: Kobe, Ravicz, et al., 1956, NIST Chemistry WebBook (SRD 69), phase change data, https://webbook.nist.gov/cgi/cbook.cgi?ID=C96479&Units=SI&Mask=4. MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (352.914 K).",
@@ -41198,7 +41198,7 @@
           "ChemSep v8.3 and v8.31 data 2 (compound not included)",
           "thermo and chemicals libraries (no UNIQUAC r and q tables)"
         ],
-        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no activity-model data."
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
       "omega": 0.591241,
       "constants_source": "Tc and Pc: Nikitin and Popov, Fluid Phase Equilib. 380 (2014) 11-17, doi:10.1016/j.fluid.2014.07.038, NIST TRC ThermoML Archive (stated uncertainties 22 K and 520 kPa); the archive also has the values of Nikitin 2013, the later article; its values equal the median of all four. MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (487.71 K).",
