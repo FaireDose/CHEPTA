@@ -1,0 +1,859 @@
+{
+ "component": "2-3-butanediol",
+ "cas": "513-85-9",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-13",
+ "searched": "ThermoML-API full-text search for \"2,3-butanediol\", \"butane-2,3-diol\"; 34 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1016/j.fluid.2007.09.001": {
+   "authors": [
+    "Wu, Y.-Y.[Yan-Yang]",
+    "Zhu, J.-W.[Jia-Wen]",
+    "Chen, K.[Kui]",
+    "Wu, B.[Bin]",
+    "Shen, Y.-L.[Ya-Ling]"
+   ],
+   "title": "Vapor liquid equilibria for the binary mixtures of 2,3-butanediol with n-butanol, n-butyl acetate, and ethyl acetate at 101.3 kPa",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "262",
+   "year": "2007",
+   "pages": "169-173"
+  },
+  "10.1016/j.fluid.2007.12.003": {
+   "authors": [
+    "Wu, Y.-Y.[Yan-Yang]",
+    "Zhu, J.-W.[Jia-Wen]",
+    "Chen, K.[Kui]",
+    "Wu, B.[Bin]",
+    "Fang, J.[Jiang]",
+    "Shen, Y.-L.[Ya-Ling]"
+   ],
+   "title": "Liquid liquid equilibria of water + 2,3-butanediol + 1-butanol at T = 298.15 K, T = 308.15K and T = 318.15K",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "265",
+   "year": "2008",
+   "pages": "1-6"
+  },
+  "10.1016/j.fluid.2008.01.009": {
+   "authors": [
+    "Wu, Y.-Y.[Yan-Yang]",
+    "Zhu, J.-W.[Jia-Wen]",
+    "Chen, K.[Kui]",
+    "Wu, B.[Bin]",
+    "Shen, Y.-L.[Ya-Ling]"
+   ],
+   "title": "Liquid liquid equilibria of water + 2,3-butanediol + ethyl acetate at several temperatures",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "266",
+   "year": "2008",
+   "pages": "42-46"
+  },
+  "10.1016/j.jct.2004.11.020": {
+   "authors": [
+    "Mehta, S. K.",
+    "Ram, G.[Ganga]",
+    "Bhasin, K. K."
+   ],
+   "title": "Effect of placement of hydroxyl groups in isomeric butanediol on the behaviour of thermophysical and spectroscopic properties of pyrrolidin-2-one",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "37",
+   "year": "2005",
+   "pages": "791-801"
+  },
+  "10.1016/j.jct.2005.09.001": {
+   "authors": [
+    "Mehta, S. K.",
+    "Ram, G.[Ganga]",
+    "Mani, C.[Chander]",
+    "Bhasin, K. K."
+   ],
+   "title": "A comparative study of thermophysical and spectroscopic properties in mixtures of isomeric butanediol and N,N-dimethylformamide",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "38",
+   "year": "2006",
+   "pages": "836-848"
+  },
+  "10.1016/j.jct.2007.04.011": {
+   "authors": [
+    "Zorebski, E.[Edward]",
+    "Goralski, P.[Pawel]"
+   ],
+   "title": "Molar heat capacities for (1-butanol + 1,4-butanediol, 2,3-butanediol, 1,2-butanediol, and 2-methyl-2,4-pentanediol) as function of temperature",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "39",
+   "year": "2007",
+   "pages": "1601-1607"
+  },
+  "10.1016/j.jct.2009.06.006": {
+   "authors": [
+    "Mehta, S. K.",
+    "Ram, G.[Ganga]",
+    "Chauhan, R.[Rajat]",
+    "Bhasin, K. K."
+   ],
+   "title": "Thermodynamic, transport, and spectroscopic studies for mixtures of isomeric butanediol and N-methyl-2-pyrrolidinone",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "41",
+   "year": "2009",
+   "pages": "1329-1338"
+  },
+  "10.1016/j.jct.2010.03.011": {
+   "authors": [
+    "Gilani, A. G.",
+    "Ghanadzadeh, H.",
+    "Bahrpaima, K.[Kh.]",
+    "Ranjkesh, A."
+   ],
+   "title": "Dielectric properties of binary mixtures of three butanediols with 1,4-dioxane and 2-ethyl-1-hexanol at T = 298.2 K",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "42",
+   "year": "2010",
+   "pages": "967-972"
+  },
+  "10.1016/j.jct.2012.08.026": {
+   "authors": [
+    "Chaudhary, G. R.[Ganga Ram]",
+    "Bansal, S.[Shafila]",
+    "Kumar, A.[Arun]",
+    "Mehta, S. K."
+   ],
+   "title": "Effect of B-cyclodextrin on the behaviour of thermophysical and spectroscopic properties of binary mixtures of (isomeric butanediol + pyrrolidin-2-one)",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "57",
+   "year": "2013",
+   "pages": "266-275"
+  },
+  "10.1016/j.jct.2014.07.023": {
+   "authors": [
+    "Pietrzak, A.",
+    "Piekarski, H."
+   ],
+   "title": "Molar heat capacities for {isomer of butanediol + methanol} as function of mixture composition and temperature",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "79",
+   "year": "2014",
+   "pages": "171-177"
+  },
+  "10.1021/je0340755": {
+   "authors": [
+    "George, J.[John]",
+    "Sastry, N. V.[Nandhibatla V.]"
+   ],
+   "title": "Densities, Dynamic Viscosities, Speeds of Sound, and Relative Permittivities for Water + Alkanediols (Propane-1,2- and -1,3-diol and Butane-1,2-, -1,3-, -1,4-, and -2,3-Diol) at Different Temperatures",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "48",
+   "year": "2003",
+   "pages": "1529-1539"
+  },
+  "10.1021/je700705d": {
+   "authors": [
+    "Wu, Y.-Y.[Yan-Yang]",
+    "Zhu, J.-W.[Jia-Wen]",
+    "Chen, K.[Kui]",
+    "Wu, B.[Bin]",
+    "Shen, Y.-L.[Ya-Ling]"
+   ],
+   "title": "Liquid Liquid Equilibria of Water + 2,3-Butanediol + Butyl Acetate at T ) 298.15 K, T ) 308.15 K, and T ) 318.15 K",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "53",
+   "year": "2008",
+   "pages": "559-563"
+  }
+ },
+ "rows": [
+  {
+   "property": "Normal boiling temperature, K",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 454.21,
+   "uncertainty": 0.5,
+   "doi": "10.1016/j.fluid.2007.09.001",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Normal boiling temperature, K",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 454.21,
+   "uncertainty": 0.2,
+   "doi": "10.1016/j.fluid.2007.12.003",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 1002.3,
+   "uncertainty": 1.0,
+   "doi": "10.1016/j.fluid.2007.12.003",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Normal boiling temperature, K",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 454.21,
+   "uncertainty": 0.2,
+   "doi": "10.1016/j.fluid.2008.01.009",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 990.72,
+   "uncertainty": 1.03,
+   "doi": "10.1016/j.jct.2004.11.020",
+   "set": 13,
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 0.05138,
+   "uncertainty": 0.001136,
+   "doi": "10.1016/j.jct.2004.11.020",
+   "set": 14,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 990.72,
+   "uncertainty": 1.01,
+   "doi": "10.1016/j.jct.2005.09.001",
+   "set": 13,
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 0.05138,
+   "uncertainty": 0.000533,
+   "doi": "10.1016/j.jct.2005.09.001",
+   "set": 14,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 236.67,
+   "uncertainty": 2.05,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": 101.325,
+   "value": 239.28,
+   "uncertainty": 2.07,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 241.85,
+   "uncertainty": 2.09,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": 101.325,
+   "value": 244.35,
+   "uncertainty": 2.12,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 318.15,
+   "P_kPa": 101.325,
+   "value": 246.82,
+   "uncertainty": 2.14,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": 101.325,
+   "value": 249.23,
+   "uncertainty": 2.16,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 328.15,
+   "P_kPa": 101.325,
+   "value": 251.6,
+   "uncertainty": 2.18,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 333.15,
+   "P_kPa": 101.325,
+   "value": 253.91,
+   "uncertainty": 2.2,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 338.15,
+   "P_kPa": 101.325,
+   "value": 256.17,
+   "uncertainty": 2.22,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 343.15,
+   "P_kPa": 101.325,
+   "value": 258.39,
+   "uncertainty": 2.24,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 348.15,
+   "P_kPa": 101.325,
+   "value": 260.55,
+   "uncertainty": 2.26,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 353.15,
+   "P_kPa": 101.325,
+   "value": 262.67,
+   "uncertainty": 2.27,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 1000.4,
+   "uncertainty": 0.5,
+   "doi": "10.1016/j.jct.2007.04.011",
+   "set": 6,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 990.72,
+   "uncertainty": 0.83,
+   "doi": "10.1016/j.jct.2009.06.006",
+   "set": 13,
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 0.05138,
+   "uncertainty": 0.000524,
+   "doi": "10.1016/j.jct.2009.06.006",
+   "set": 14,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.2,
+   "P_kPa": 101.0,
+   "value": 994.31,
+   "uncertainty": 0.86,
+   "doi": "10.1016/j.jct.2010.03.011",
+   "set": 6,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.2,
+   "P_kPa": 101.0,
+   "value": 994.31,
+   "uncertainty": 0.86,
+   "doi": "10.1016/j.jct.2010.03.011",
+   "set": 21,
+   "binary_with": "2-ethyl-1-hexanol"
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 990.72,
+   "uncertainty": 1.09,
+   "doi": "10.1016/j.jct.2012.08.026",
+   "set": 13,
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 0.05138,
+   "uncertainty": 0.00113,
+   "doi": "10.1016/j.jct.2012.08.026",
+   "set": 15,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 236.63,
+   "uncertainty": 10.04,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 9,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 293.15,
+   "P_kPa": 101.325,
+   "value": 233.954116,
+   "uncertainty": 9.91331,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 10,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 236.657746,
+   "uncertainty": 10.003431,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 10,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": 101.325,
+   "value": 239.361376,
+   "uncertainty": 10.183673,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 10,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 242.065006,
+   "uncertainty": 10.273794,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 10,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": 101.325,
+   "value": 244.768636,
+   "uncertainty": 10.363915,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 10,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 318.15,
+   "P_kPa": 101.325,
+   "value": 247.472266,
+   "uncertainty": 10.544157,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 10,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": 101.325,
+   "value": 250.175896,
+   "uncertainty": 10.634278,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 10,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 293.15,
+   "P_kPa": 100.0,
+   "value": 233.954116,
+   "uncertainty": 9.91331,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 14,
+   "binary_with": "methanol"
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 100.0,
+   "value": 236.657746,
+   "uncertainty": 10.003431,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 14,
+   "binary_with": "methanol"
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": 100.0,
+   "value": 239.361376,
+   "uncertainty": 10.183673,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 14,
+   "binary_with": "methanol"
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 100.0,
+   "value": 242.065006,
+   "uncertainty": 10.273794,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 14,
+   "binary_with": "methanol"
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": 100.0,
+   "value": 244.768636,
+   "uncertainty": 10.363915,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 14,
+   "binary_with": "methanol"
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 318.15,
+   "P_kPa": 100.0,
+   "value": 247.472266,
+   "uncertainty": 10.544157,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 14,
+   "binary_with": "methanol"
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": 100.0,
+   "value": 250.175896,
+   "uncertainty": 10.634278,
+   "doi": "10.1016/j.jct.2014.07.023",
+   "set": 14,
+   "binary_with": "methanol"
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 0.044684,
+   "uncertainty": 0.000214,
+   "doi": "10.1021/je0340755",
+   "set": 25,
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 0.022947,
+   "uncertainty": 0.000124,
+   "doi": "10.1021/je0340755",
+   "set": 25,
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 318.15,
+   "P_kPa": 101.325,
+   "value": 0.012802,
+   "uncertainty": 8.8e-05,
+   "doi": "10.1021/je0340755",
+   "set": 25,
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 328.15,
+   "P_kPa": 101.325,
+   "value": 0.007722,
+   "uncertainty": 7.4e-05,
+   "doi": "10.1021/je0340755",
+   "set": 25,
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 338.15,
+   "P_kPa": 101.325,
+   "value": 0.005195,
+   "uncertainty": 6.9e-05,
+   "doi": "10.1021/je0340755",
+   "set": 25,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 998.57,
+   "uncertainty": 2.03,
+   "doi": "10.1021/je0340755",
+   "set": 27,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 101.325,
+   "value": 992.11,
+   "uncertainty": 2.03,
+   "doi": "10.1021/je0340755",
+   "set": 27,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 318.15,
+   "P_kPa": 101.325,
+   "value": 984.13,
+   "uncertainty": 2.03,
+   "doi": "10.1021/je0340755",
+   "set": 27,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 328.15,
+   "P_kPa": 101.325,
+   "value": 970.58,
+   "uncertainty": 2.04,
+   "doi": "10.1021/je0340755",
+   "set": 27,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 338.15,
+   "P_kPa": 101.325,
+   "value": 961.97,
+   "uncertainty": 2.04,
+   "doi": "10.1021/je0340755",
+   "set": 27,
+   "binary_with": null
+  },
+  {
+   "property": "Normal boiling temperature, K",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 454.21,
+   "uncertainty": 0.2,
+   "doi": "10.1021/je700705d",
+   "set": 1,
+   "binary_with": null
+  }
+ ]
+}
