@@ -366,7 +366,7 @@ class ThermoML:
             u = r["uncertainty"]
             out.append({"T": r["T_K"], "y": r["value"] * spec[1], "u_rel": (u / r["value"]) if u else None,
                         "ref": self.short(r["doi"]), "doi": r["doi"],
-                        "from": "article" if r["doi"] in self.from_article else "ThermoML"})
+                        "from": "article" if r["doi"] in self.from_article else "ThermoML", "set": r.get("set")})
         return out
 
 # ---------------------------------------------------------------------------------------------

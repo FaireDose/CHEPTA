@@ -176,8 +176,29 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   - methyl linoleate: thermal conductivities and gas viscosity.
   An open-access article with triglyceride vaporisation enthalpies (Verevkin and Nagrimanov, Thermo 2022) gives
   single values at 298.15 K, not a correlation, and the publisher's site refused the download.
-- **Pending:** the pairs (FAME + methanol, + glycerol, and the others) are listed in docs/DATA_WANTED.md for the
-  next pull request, as for batch 1.
+- **The articles the maintainer provided (same day), used as follows:**
+  - **Perkins and Huber, Energy Fuels 25 (2011) 2383** (NIST; not subject to U.S. copyright, free copy from NIST):
+    their correlation of the liquid thermal conductivity of methyl oleate and methyl linoleate (eqs 2-4, Tables
+    1-2; within 2.5 % of their measurements at 302-508 K) is coded in perkins2011_conductivity.py. The code
+    reproduces the check values of their Table 3 within 0.0004 %.
+    - Methyl linoleate: a liquid thermal conductivity record now exists.
+    - Methyl oleate: the ChemSep record was 30-36 % below the correlation; it is refitted.
+    - The records say they are fitted to values calculated from the authors' correlation. Their tabulated
+      measurements are in the supporting information, which was not used.
+  - **Verevkin and Nagrimanov, Thermo 2 (2022) 250** (CC BY 4.0): only saturated triglycerides. For tripalmitin it has
+    one measured enthalpy of vaporization, 169.5 kJ/mol at 385-433 K. The ChemSep vapour pressure of the record
+    implies about 190 kJ/mol there, so ChemSep's curve may be too steep at low pressure. The article's vapour
+    pressures (its supporting information, Table S2) would show it; noted in the record.
+  - **Not used:**
+    - van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999), tripalmitin heat capacity: paywalled, and its
+      values are not in an open source.
+    - Zong et al., Ind. Eng. Chem. Res. 49 (2010): paywalled, and predictions for mono- and diglycerides, not
+      measurements.
+    - The fifth file (arXiv 2501.12948) is about language models, not this batch.
+- **Pending:**
+  - the pairs (FAME + methanol, + glycerol, and the others) are listed in docs/DATA_WANTED.md for the next pull
+    request, as for batch 1;
+  - the supporting information of Verevkin and Nagrimanov (2022), for the tripalmitin vapour pressure.
 
 ### 2026-10-13: flowsheet editor
 

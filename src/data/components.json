@@ -37942,25 +37942,23 @@
         "liquidThermalConductivity": {
           "equation": "DIPPR100",
           "coefficients": {
-            "A": 0.14015,
-            "B": -0.00013316,
-            "C": 0.0,
-            "D": 0.0,
-            "E": 0.0
+            "A": 0.1866229878,
+            "B": -0.0001412654408
           },
           "units": "W/m/K",
-          "Tmin_K": 293.05,
-          "Tmax_K": 609.2,
-          "tier": "databank",
+          "Tmin_K": 302.15,
+          "Tmax_K": 492.15,
+          "tier": "fitted",
           "source": {
-            "name": "ChemSep v8.31 pure-component database, data file 2",
-            "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
-            "access": "Artistic License 2.0",
-            "fit": "ChemSep equation 100 coefficients taken over unchanged; reproduces ChemSep within 0.0001 % at 200 points 293.05-609.20 K",
-            "chain": "CoolProp 8.0.0: no thermal conductivity model; NIST WebBook: methyl oleate is not a WebBook fluid (its fluid list, checked 2026-10-13, has no fatty acid methyl ester)"
+            "name": "Correlation of measured values (an open-access article)",
+            "reference": "Perkins and Huber, Energy Fuels 25 (2011) 2383-2388, doi:10.1021/ef200417x",
+            "access": "Perkins 2011: A work of NIST, not subject to U.S. copyright; free full text from NIST",
+            "fit": "20 values calculated from the authors' correlation of their measurements, stated uncertainty within 3 %, from 1 article, 302.15-492.15 K, max deviation 1.2 %",
+            "notes": "Fitted to measured data instead of the databank: the ChemSep v8.31 data 2 thermal conductivity is 30-36 % below the correlation of Perkins and Huber (2011, NIST), which is within 2.5 % of their measurements at 302-508 K; the databank record deviates from these values by -33.6 % (median, -35.6 % at most). Rules: validation/python/measured_components.py.",
+            "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md"
           },
           "source_ids": [
-            "chemsep-8.31-2"
+            "perkins2011-article-methyl-linoleate"
           ]
         },
         "vapourThermalConductivity": {
@@ -38232,17 +38230,29 @@
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_methyl-linoleate.json: no gas values)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)"
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)"
           ]
         },
         "liquidThermalConductivity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (no model for this property)",
-            "NIST Chemistry WebBook (not a WebBook fluid)",
-            "ChemSep v8.3 pure-component database (no correlation)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_methyl-linoleate.json: no thermal conductivity)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 0.1855437496,
+            "B": -0.000140793478
+          },
+          "units": "W/m/K",
+          "Tmin_K": 302.15,
+          "Tmax_K": 492.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Correlation of measured values (an open-access article)",
+            "reference": "Perkins and Huber, Energy Fuels 25 (2011) 2383-2388, doi:10.1021/ef200417x",
+            "access": "Perkins 2011: A work of NIST, not subject to U.S. copyright; free full text from NIST",
+            "fit": "20 values calculated from the authors' correlation of their measurements, stated uncertainty within 3 %, from 1 article, 302.15-492.15 K, max deviation 0.45 %",
+            "notes": "Fitted to measured data instead of the databank: CoolProp 8.0.0 has no thermal conductivity model for methyl linoleate, and ChemSep v8.31 data 2 none. Rules: validation/python/measured_components.py.",
+            "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md"
+          },
+          "source_ids": [
+            "perkins2011-article-methyl-linoleate"
           ]
         },
         "vapourThermalConductivity": {
@@ -38251,8 +38261,8 @@
             "CoolProp 8.0.0 (no model for this property)",
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_methyl-linoleate.json: no gas values)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)"
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_methyl-linoleate.json: no gas values; the dilute-gas part of the correlation of Perkins and Huber (2011) rests on estimated values (Chung et al.), 10-30 % uncertain as the authors state)",
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)"
           ]
         },
         "surfaceTension": {
@@ -38396,7 +38406,7 @@
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_triolein.json: no liquid heat capacity)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)"
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)"
           ]
         },
         "heatOfVaporization": {
@@ -38406,8 +38416,8 @@
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_triolein.json: no enthalpy of vaporization)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)",
-            "NIST Chemistry WebBook phase-change data: none"
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)",
+            "NIST Chemistry WebBook: no enthalpy of vaporization"
           ]
         },
         "liquidViscosity": {
@@ -38440,7 +38450,7 @@
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_triolein.json: no gas values)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)"
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)"
           ]
         },
         "liquidThermalConductivity": {
@@ -38450,7 +38460,7 @@
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_triolein.json: no thermal conductivity)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)"
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)"
           ]
         },
         "vapourThermalConductivity": {
@@ -38460,7 +38470,7 @@
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_triolein.json: no gas values)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)"
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)"
           ]
         },
         "surfaceTension": {
@@ -38614,7 +38624,8 @@
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_tripalmitin.json: no liquid heat capacity)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)"
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)",
+            "NIST Chemistry WebBook (liquid heat capacity): 1665 J/(mol K) at 343 K (Phillips and Mattamal 1976) and 1753.1 at 338.8 K (Charbonnet and Singleton 1947), 5 % apart: single temperatures, not a correlation; Verevkin and Nagrimanov (2022, Table 3): an estimate from the chain length, not a measurement"
           ]
         },
         "heatOfVaporization": {
@@ -38624,8 +38635,9 @@
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_tripalmitin.json: no enthalpy of vaporization)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)",
-            "NIST Chemistry WebBook phase-change data: two values at single temperatures (166.3 kJ/mol at 483 K, Kishore et al. 1990, TGA; 160.8 kJ/mol at 521 K, Stephenson and Malanowski 1987), not a correlation"
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)",
+            "NIST Chemistry WebBook (enthalpy of vaporization): 166.3 kJ/mol at 483 K (Kishore et al. 1990, TGA) and 160.8 kJ/mol at 521 K (Stephenson and Malanowski 1987, from data at 506-572 K): single temperatures, not a correlation",
+            "Verevkin and Nagrimanov (2022, Table 1): one measured value, 169.5 +/- 4.2 kJ/mol at 384.9-433.2 K (quartz crystal microbalance), and values adjusted to 298.15 K with an estimated heat-capacity difference (their eqs 3-4): not a correlation over the liquid range. The ChemSep vapour pressure of the record implies about 190 kJ/mol there (Clausius-Clapeyron), 12 % more; the article's vapour pressures (its Table S2) would decide"
           ]
         },
         "liquidViscosity": {
@@ -38658,7 +38670,7 @@
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_tripalmitin.json: no gas values)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)"
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)"
           ]
         },
         "liquidThermalConductivity": {
@@ -38668,7 +38680,7 @@
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_tripalmitin.json: no thermal conductivity)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)"
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)"
           ]
         },
         "vapourThermalConductivity": {
@@ -38678,7 +38690,7 @@
             "NIST Chemistry WebBook (not a WebBook fluid)",
             "ChemSep v8.3 pure-component database (no correlation)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/data/pure/measured/thermoml_tripalmitin.json: no gas values)",
-            "open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; single values, not a correlation over the liquid range, and the publisher's site refused the download)"
+            "open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) 5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)"
           ]
         },
         "surfaceTension": {

@@ -118,8 +118,8 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | Methyl myristate | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.13 (f) |
 | Methyl palmitate | CoolProp 1.00 (f) | CoolProp 0.46 (f) | CoolProp 0.015 (f) | CoolProp 0.74 (f) | CoolProp 0.24 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | CoolProp 0.21 (f) |
 | Methyl stearate | CoolProp 1.3 (f) | CoolProp 0.44 (f) | CoolProp 0.0034 (f) | CoolProp 0.74 (f) | CoolProp 0.19 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | CoolProp 0.19 (f) |
-| Methyl oleate | CoolProp 1.5 (f) | CoolProp 0.60 (f) | CoolProp 0.040 (f) | CoolProp 0.78 (f) | CoolProp 0.32 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | CoolProp 0.0001 (f) |
-| Methyl linoleate | CoolProp 1.1 (f) | CoolProp 0.83 (f) | CoolProp 0.037 (f) | CoolProp 0.60 (f) | CoolProp 0.57 (f) | ChemSep 3 (f) | no open data | no open data | no open data | CoolProp 0.00014 (f) |
+| Methyl oleate | CoolProp 1.5 (f) | CoolProp 0.60 (f) | CoolProp 0.040 (f) | CoolProp 0.78 (f) | CoolProp 0.32 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 3 (f) | ChemSep 0.0001 (d) | CoolProp 0.0001 (f) |
+| Methyl linoleate | CoolProp 1.1 (f) | CoolProp 0.83 (f) | CoolProp 0.037 (f) | CoolProp 0.60 (f) | CoolProp 0.57 (f) | ChemSep 3 (f) | no open data | ChemSep 3 (f) | no open data | CoolProp 0.00014 (f) |
 | Triolein | ChemSep 0.00011 (d) | ChemSep 0.0001 (d) | ChemSep 0.24 (f) | no open data | no open data | ChemSep 0.0001 (d) | no open data | no open data | no open data | ChemSep 0.17 (f) |
 | Tripalmitin | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.24 (f) | no open data | no open data | ChemSep 0.0001 (d) | no open data | no open data | no open data | ChemSep 0.14 (f) |
 | Oleic acid | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) |
@@ -246,8 +246,8 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | Methyl myristate | 291.85–741.2 | 298.15–1500 | 297.85–569.9 | 291.85–740.45 | 291.85–569.9 | 291.85–1000 | 291.85–569.9 | 569.9–1000 | 291.05–704.14 |
 | Methyl palmitate | 302.71–717.25 | 302.71–1000 | 302.71–717.25 | 302.71–717.25 | 303.05–597.7 | 303.05–1000 | 303.05–597.7 | 597.7–1000 | 302.71–717.25 |
 | Methyl stearate | 311.85–736.24 | 311.85–1000 | 311.85–736.24 | 311.85–736.24 | 312.15–623.7 | 312.15–1000 | 312.15–623.7 | 623.7–1000 | 311.85–736.24 |
-| Methyl oleate | 253.47–742.9 | 253.47–1000 | 253.47–742.9 | 253.47–742.9 | 293.05–617 | 617–1000 | 293.05–609.2 | 617–1000 | 253.47–742.9 |
-| Methyl linoleate | 260–759.05 | 260–1000 | 260–759.05 | 260–759.05 | 278.15–353.15 | – | – | – | 260–759.05 |
+| Methyl oleate | 253.47–742.9 | 253.47–1000 | 253.47–742.9 | 253.47–742.9 | 293.05–617 | 617–1000 | 302.15–492.15 | 617–1000 | 253.47–742.9 |
+| Methyl linoleate | 260–759.05 | 260–1000 | 260–759.05 | 260–759.05 | 278.15–353.15 | – | 302.15–492.15 | – | 260–759.05 |
 | Triolein | 278.15–935.3 | 255–1500 | – | – | 278.15–896.8 | – | – | – | 278.15–888.53 |
 | Tripalmitin | 338.9–925.3 | 255–1500 | – | – | 338.9–876 | – | – | – | 339.01–879.03 |
 | Oleic acid | 286.53–781 | 298.15–1500.1 | 286.53–550 | 286.53–780.21 | 286.53–633 | 286.53–1000 | 286.53–625 | 633–1000 | 286.53–780.21 |
@@ -1943,7 +1943,7 @@ At 25 °C (298.15 K) for the liquids and at the normal boiling point for the gas
 | ΔHvap | kJ/mol | 106.35 | 106.66 | -0.29 % | 100.34 |
 | μL | mPa·s | 5.4061 | 5.4061 | 0.00 % | – |
 | μV | μPa·s | – | – | – | – |
-| kL | mW/(m·K) | 100.45 | 100.45 | 0.00 % | – |
+| kL | mW/(m·K) | – | – | – | – |
 | kV | mW/(m·K) | – | – | – | – |
 | σ | mN/m | 30.124 | 30.124 | 0.00 % | 31.454 |
 

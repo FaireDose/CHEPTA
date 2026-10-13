@@ -378,7 +378,14 @@ MEASURED_REFIT = {
     # proposal 0009, batch 2: a property that neither CoolProp 8.0.0 (no viscosity model for the methyl esters) nor
     # ChemSep v8.31 data 2 (no correlation) has; the ThermoML Archive values instead
     "methyl-linoleate": {"liquidViscosity": "CoolProp 8.0.0 has no viscosity model for methyl linoleate, and ChemSep v8.31 "
-                                            "data 2 no liquid viscosity"},
+                                            "data 2 no liquid viscosity",
+                         "liquidThermalConductivity": "CoolProp 8.0.0 has no thermal conductivity model for methyl "
+                                                      "linoleate, and ChemSep v8.31 data 2 none"},
+    # the correlation of Perkins and Huber (2011, NIST), fitted to their measurements (uncertainty below 1 %), as
+    # calculated by perkins2011_conductivity.py (article_<id>_perkins2011.json)
+    "methyl-oleate": {"liquidThermalConductivity": "the ChemSep v8.31 data 2 thermal conductivity is 30-36 % below the "
+                                                   "correlation of Perkins and Huber (2011, NIST), which is within 2.5 % "
+                                                   "of their measurements at 302-508 K"},
 }
 # where a property has no record in the sources above, the further searches of AGENTS.md rule 1 (steps 5 and 6), listed
 # in its "no open data" record (proposal 0009, batch 1; searched 2026-10-11)
@@ -396,22 +403,31 @@ SEARCHED_BEYOND = {
                                     "liquidThermalConductivity", "surfaceTension")},
 }
 # proposal 0009, batch 2 (searched 2026-10-13)
-_LIT2 = ("open literature: web search (English) and Europe PMC; found, not usable here: tripalmitin heat capacity by DSC "
-         "at 300-363 K (J. Chim. Phys. 1993, doi:10.1051/jcp/1993900457; mostly below its melting point at 339 K, and not opened) and the vaporisation "
-         "enthalpies of triglycerides adjusted to 298.15 K (Verevkin and Nagrimanov, Thermo 2 (2022) 250, open access; "
-         "single values, not a correlation over the liquid range, and the publisher's site refused the download)")
-_HVAP_WB = ("NIST Chemistry WebBook phase-change data: %s")
+_LIT2 = ("open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer "
+         "provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van "
+         "Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; "
+         "paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) "
+         "5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)")
+_WB_HVAP = ("NIST Chemistry WebBook (enthalpy of vaporization): 166.3 kJ/mol at 483 K (Kishore et al. 1990, TGA) and 160.8 "
+            "kJ/mol at 521 K (Stephenson and Malanowski 1987, from data at 506-572 K): single temperatures, not a correlation")
+_TH_HVAP = ("Verevkin and Nagrimanov (2022, Table 1): one measured value, 169.5 +/- 4.2 kJ/mol at 384.9-433.2 K (quartz "
+            "crystal microbalance), and values adjusted to 298.15 K with an estimated heat-capacity difference (their eqs "
+            "3-4): not a correlation over the liquid range. The ChemSep vapour pressure of the record implies about 190 "
+            "kJ/mol there (Clausius-Clapeyron), 12 % more; the article's vapour pressures (its Table S2) would decide")
+_WB_CP = ("NIST Chemistry WebBook (liquid heat capacity): 1665 J/(mol K) at 343 K (Phillips and Mattamal 1976) and 1753.1 "
+          "at 338.8 K (Charbonnet and Singleton 1947), 5 % apart: single temperatures, not a correlation; Verevkin and "
+          "Nagrimanov (2022, Table 3): an estimate from the chain length, not a measurement")
 SEARCHED_BEYOND.update({
     "methyl-linoleate": {p: [_TML % ("methyl-linoleate", what), _LIT2] for p, what in (
-        ("liquidThermalConductivity", "thermal conductivity"), ("vapourViscosity", "gas values"),
-        ("vapourThermalConductivity", "gas values"))},
-    **{cid: {p: [_TML % (cid, what), _LIT2] + ([_HVAP_WB % hv] if p == "heatOfVaporization" else []) for p, what in (
+        ("vapourViscosity", "gas values"),
+        ("vapourThermalConductivity", "gas values; the dilute-gas part of the correlation of Perkins and Huber (2011) "
+                                      "rests on estimated values (Chung et al.), 10-30 % uncertain as the authors state"))},
+    **{cid: {p: [_TML % (cid, what), _LIT2] + extra.get(p, []) for p, what in (
         ("liquidHeatCapacity", "liquid heat capacity"), ("heatOfVaporization", "enthalpy of vaporization"),
         ("vapourViscosity", "gas values"), ("liquidThermalConductivity", "thermal conductivity"),
         ("vapourThermalConductivity", "gas values"))}
-       for cid, hv in (("triolein", "none"),
-                       ("tripalmitin", "two values at single temperatures (166.3 kJ/mol at 483 K, Kishore et al. 1990, "
-                                       "TGA; 160.8 kJ/mol at 521 K, Stephenson and Malanowski 1987), not a correlation"))},
+       for cid, extra in (("triolein", {"heatOfVaporization": ["NIST Chemistry WebBook: no enthalpy of vaporization"]}),
+                          ("tripalmitin", {"heatOfVaporization": [_WB_HVAP, _TH_HVAP], "liquidHeatCapacity": [_WB_CP]}))},
 })
 # ideal-gas heat capacities tabulated in an open-access article (validation/data/pure/measured/<file>, key
 # "idealGasHeatCapacity"), used where the databank value is implausible; calculated values (statistical
@@ -1506,12 +1522,20 @@ class Builder:
                 dd = self.cs.value_si(cas, prop, T[inside]) / y[inside] - 1
                 old = "%+.1f %% (median, %+.1f %% at most)" % (100 * float(np.median(dd)), 100 * float(dd[np.argmax(np.abs(dd))]))
         where, access = tml.origin(use + kept)
-        source = {"name": "Measured values (%s)" % where, "reference": "; ".join(refs),
+        # values calculated from an article's correlation of its own measurements (perkins2011_conductivity.py), where
+        # the article's tabulated measurements are not used: said so, not called measured values
+        calc = all(str(p.get("set") or "").startswith("correlation") for p in use + kept)
+        source = {"name": ("Correlation of measured values (%s)" if calc else "Measured values (%s)") % where,
+                  "reference": "; ".join(refs),
                   "access": access,
-                  "fit": "%d measured values with stated uncertainties within %g %%%s from %d articles, %.2f-%.2f K, max "
-                         "deviation %s %%%s" % (len(use), 100 * target,
+                  "fit": ("%d values calculated from the authors' correlation of their measurements, stated uncertainty "
+                          "within %g %%%s, from %d article%s, %.2f-%.2f K, max deviation %s %%%s" if calc else
+                          "%d measured values with stated uncertainties within %g %%%s from %d articles, %.2f-%.2f K, max "
+                          "deviation %s %%%s") % (len(use), 100 * target,
                                                (" or no stated uncertainty (%d)" % n_unc) if n_unc else "",
-                                               len({p["doi"] for p in use}), T.min(), T.max(), pct(m),
+                                               len({p["doi"] for p in use}),
+                                               *(("" if len({p["doi"] for p in use}) == 1 else "s",) if calc else ()),
+                                               T.min(), T.max(), pct(m),
                                                "; %d values with larger stated uncertainties agree within them" % len(kept)
                                                if kept else ""),
                   "notes": "Fitted to measured data instead of the databank: %s%s. Rules: "

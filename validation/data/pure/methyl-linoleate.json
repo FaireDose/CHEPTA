@@ -473,6 +473,61 @@
     0.0016816
    ]
   },
+  "liquidThermalConductivity": {
+   "units": "W/m/K",
+   "source": {
+    "name": "Correlation of measured values (an open-access article)",
+    "reference": "Perkins and Huber, Energy Fuels 25 (2011) 2383-2388, doi:10.1021/ef200417x",
+    "access": "Perkins 2011: A work of NIST, not subject to U.S. copyright; free full text from NIST",
+    "fit": "20 values calculated from the authors' correlation of their measurements, stated uncertainty within 3 %, from 1 article, 302.15-492.15 K, max deviation 0.45 %",
+    "notes": "Fitted to measured data instead of the databank: CoolProp 8.0.0 has no thermal conductivity model for methyl linoleate, and ChemSep v8.31 data 2 none. Rules: validation/python/measured_components.py.",
+    "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md"
+   },
+   "T_K": [
+    302.15,
+    312.15,
+    322.15,
+    332.15,
+    342.15,
+    352.15,
+    362.15,
+    372.15,
+    382.15,
+    392.15,
+    402.15,
+    412.15,
+    422.15,
+    432.15,
+    442.15,
+    452.15,
+    462.15,
+    472.15,
+    482.15,
+    492.15
+   ],
+   "values": [
+    0.142376,
+    0.141164,
+    0.139927,
+    0.138665,
+    0.13738,
+    0.136074,
+    0.134747,
+    0.1334,
+    0.132034,
+    0.130648,
+    0.129243,
+    0.12782,
+    0.126379,
+    0.124919,
+    0.12344,
+    0.121942,
+    0.120425,
+    0.118889,
+    0.117332,
+    0.115754
+   ]
+  },
   "surfaceTension": {
    "units": "N/m",
    "source": {

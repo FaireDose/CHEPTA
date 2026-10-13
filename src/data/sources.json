@@ -2516,6 +2516,20 @@
         "validation/data/eos/gonzalez2017_argon_hydrogen-sulfide.json"
       ]
     },
+    "perkins2011-article-methyl-linoleate": {
+      "title": "Measurement and Correlation of the Thermal Conductivities of Biodiesel Constituent Fluids: Methyl Oleate and Methyl Linoleate",
+      "authors": "R.A. Perkins, M.L. Huber",
+      "year": 2011,
+      "published": "Energy Fuels 25 (2011) 2383-2388",
+      "kind": "open-access article",
+      "doi": "10.1021/ef200417x",
+      "url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=907397",
+      "access": "Open access: a work of NIST, not subject to U.S. copyright, free full text from NIST",
+      "files": [
+        "validation/data/pure/measured/article_methyl-linoleate_perkins2011.json",
+        "validation/data/pure/measured/article_methyl-oleate_perkins2011.json"
+      ]
+    },
     "pienaar2013-ethanol-isooctane": {
       "title": "Vapor Liquid Liquid Equilibria Measurements for the Dehydration of Ethanol, Isopropanol, and n-Propanol via Azeotropic Distillation Using DIPE and Isooctane as Entrainers",
       "authors": "C. Pienaar, C. Schwarz, J. H. Knoetze, A. Burger",
