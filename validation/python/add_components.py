@@ -25,173 +25,20 @@ No number is typed in by hand: every value comes from a library run here.
 """
 import argparse
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 COMP_FILE = ROOT / "src" / "data" / "components.json"
 
-# id, name, CoolProp fluid name, aliases (lower case; the name, id and formula are always found)
-BATCHES = {
-    1: [  # gases at 25 degC and 1 atm, for the methanol, air-separation and light-hydrocarbon benchmarks
-        ("carbon-monoxide", "Carbon monoxide", "CarbonMonoxide", ["co"]),
-        ("carbon-dioxide", "Carbon dioxide", "CarbonDioxide", ["co2"]),
-        ("hydrogen-sulfide", "Hydrogen sulfide", "HydrogenSulfide", ["h2s", "hydrogen sulphide"]),
-        ("argon", "Argon", "Argon", ["ar"]),
-        ("propane", "Propane", "n-Propane", ["c3h8", "n-propane"]),
-        ("propylene", "Propylene", "Propylene", ["propene", "c3h6"]),
-        ("n-butane", "n-Butane", "n-Butane", ["butane"]),
-        ("isobutane", "Isobutane", "IsoButane", ["2-methylpropane", "i-butane"]),
-        ("ammonia", "Ammonia", "Ammonia", ["nh3"]),
-        ("dimethyl-ether", "Dimethyl ether", "DimethylEther", ["dme", "methoxymethane"]),
-    ],
-    2: [  # hydrocarbon liquids, for the aromatics, ethanol-dehydration and higher-boiler benchmarks
-        ("cyclohexane", "Cyclohexane", "Cyclohexane", ["c6h12"]),
-        ("o-xylene", "o-Xylene", "o-Xylene", ["1,2-dimethylbenzene", "ortho-xylene"]),
-        ("m-xylene", "m-Xylene", "m-Xylene", ["1,3-dimethylbenzene", "meta-xylene"]),
-        ("p-xylene", "p-Xylene", "p-Xylene", ["1,4-dimethylbenzene", "para-xylene"]),
-        ("ethylbenzene", "Ethylbenzene", "EthylBenzene", ["ethyl benzene", "phenylethane"]),
-        ("styrene", "Styrene", None, ["vinylbenzene", "ethenylbenzene", "phenylethylene"]),
-        ("n-pentane", "n-Pentane", "n-Pentane", ["pentane"]),
-        ("n-hexane", "n-Hexane", "n-Hexane", ["hexane"]),
-        ("n-heptane", "n-Heptane", "n-Heptane", ["heptane"]),
-        ("n-octane", "n-Octane", "n-Octane", ["octane"]),
-    ],
-    # dichloromethane is not in this batch: it is neither a CoolProp fluid nor in ChemSep v8.3 (as shipped
-    # with DWSIM); its data have to come from measured data (NIST WebBook, ThermoML), a separate step
-    3: [  # solvents, alcohols, glycols and phenol, for the solvent-recovery and higher-boiler benchmarks
-        ("diethyl-ether", "Diethyl ether", "DiethylEther", ["ether", "ethoxyethane"]),
-        ("propylene-glycol", "Propylene glycol", "PropyleneGlycol", ["1,2-propanediol", "propane-1,2-diol"]),
-        ("tetrahydrofuran", "Tetrahydrofuran", "Tetrahydrofuran", ["thf", "oxolane"]),
-        ("1-propanol", "1-Propanol", None, ["n-propanol", "propan-1-ol", "propyl alcohol"]),
-        ("2-propanol", "2-Propanol", None, ["isopropanol", "propan-2-ol", "isopropyl alcohol", "ipa"]),
-        ("1-butanol", "1-Butanol", None, ["n-butanol", "butan-1-ol", "butyl alcohol"]),
-        ("2-butanone", "2-Butanone", None, ["methyl ethyl ketone", "mek", "butanone"]),
-        ("methyl-acetate", "Methyl acetate", None, ["methyl ethanoate"]),
-        ("n-butyl-acetate", "n-Butyl acetate", None, ["butyl acetate", "butyl ethanoate"]),
-        ("acetonitrile", "Acetonitrile", None, ["methyl cyanide", "mecn"]),
-        ("mtbe", "MTBE", None, ["methyl tert-butyl ether", "2-methoxy-2-methylpropane"]),
-        ("glycerol", "Glycerol", None, ["glycerine", "propane-1,2,3-triol"]),
-        ("phenol", "Phenol", None, ["hydroxybenzene", "carbolic acid"]),
-    ],
-    # proposal 0008, Part B, batch 1: extraction solvents (proposal 0007). Dichloromethane and 2-methoxyethanol
-    # are in neither source: they are built from measured data by measured_components.py
-    4: [
-        ("dichloroethane", "1,2-Dichloroethane", "Dichloroethane", ["1,2-dichloroethane", "ethylene dichloride", "edc"]),
-        ("mibk", "Methyl isobutyl ketone", None, ["4-methyl-2-pentanone", "4-methylpentan-2-one", "methyl isobutyl ketone"]),
-        ("cyclohexanone", "Cyclohexanone", None, ["c6h10o", "pimelic ketone"]),
-        ("dmf", "N,N-Dimethylformamide", None, ["dimethylformamide", "n,n-dimethylformamide"]),
-        ("dmso", "Dimethyl sulfoxide", None, ["dimethyl sulphoxide", "methylsulfinylmethane"]),
-        ("nmp", "N-Methyl-2-pyrrolidone", None, ["n-methylpyrrolidone", "1-methyl-2-pyrrolidinone", "n-methyl-2-pyrrolidinone"]),
-        ("sulfolane", "Sulfolane", None, ["tetramethylene sulfone", "tetrahydrothiophene 1,1-dioxide"]),
-        ("furfural", "Furfural", None, ["2-furaldehyde", "furan-2-carbaldehyde"]),
-        ("dioxane", "1,4-Dioxane", None, ["1,4-dioxane", "p-dioxane", "dioxan"]),
-        ("isobutanol", "Isobutanol", None, ["2-methyl-1-propanol", "2-methylpropan-1-ol", "isobutyl alcohol"]),
-        ("2-butanol", "2-Butanol", None, ["sec-butanol", "butan-2-ol", "sec-butyl alcohol"]),
-    ],
-    # proposal 0008, Part B, batch 2: gas treating, acids, esters and reaction work
-    5: [
-        ("mea", "Monoethanolamine", None, ["ethanolamine", "2-aminoethanol", "2-aminoethan-1-ol"]),
-        ("dea", "Diethanolamine", None, ["2,2'-iminodiethanol", "bis(2-hydroxyethyl)amine"]),
-        ("mdea", "Methyldiethanolamine", None, ["n-methyldiethanolamine", "2,2'-(methylimino)diethanol"]),
-        ("sulfur-dioxide", "Sulfur dioxide", "SulfurDioxide", ["so2", "sulphur dioxide"]),
-        ("nitrous-oxide", "Nitrous oxide", "NitrousOxide", ["n2o", "dinitrogen monoxide", "dinitrogen oxide"]),
-        ("formic-acid", "Formic acid", None, ["methanoic acid", "hcooh"]),
-        ("propionic-acid", "Propionic acid", None, ["propanoic acid"]),
-        ("acrylic-acid", "Acrylic acid", None, ["prop-2-enoic acid", "propenoic acid"]),
-        ("vinyl-acetate", "Vinyl acetate", None, ["ethenyl acetate", "vinyl ethanoate"]),
-        ("isopropyl-acetate", "Isopropyl acetate", None, ["propan-2-yl acetate", "1-methylethyl acetate"]),
-        ("ethylene-oxide", "Ethylene oxide", "EthyleneOxide", ["oxirane", "epoxyethane"]),
-        ("propylene-oxide", "Propylene oxide", None, ["methyloxirane", "1,2-epoxypropane"]),
-        ("formaldehyde", "Formaldehyde", None, ["methanal", "ch2o"]),
-        ("hydrogen-peroxide", "Hydrogen peroxide", None, ["h2o2"]),
-    ],
-    # proposal 0008, Part B, batch 3: petrochemicals and fuels, nitrogen compounds
-    6: [
-        ("cumene", "Cumene", None, ["isopropylbenzene", "(1-methylethyl)benzene", "propan-2-ylbenzene"]),
-        ("mesitylene", "Mesitylene", None, ["1,3,5-trimethylbenzene"]),
-        ("n-nonane", "n-Nonane", "n-Nonane", ["nonane"]),
-        ("n-decane", "n-Decane", "n-Decane", ["decane"]),
-        ("n-dodecane", "n-Dodecane", "n-Dodecane", ["dodecane"]),
-        ("isooctane", "Isooctane", None, ["2,2,4-trimethylpentane"]),
-        ("1-butene", "1-Butene", "1-Butene", ["but-1-ene", "1-butylene", "butene-1"]),
-        ("isoprene", "Isoprene", None, ["2-methyl-1,3-butadiene", "2-methylbuta-1,3-diene"]),
-        ("etbe", "ETBE", None, ["ethyl tert-butyl ether", "2-ethoxy-2-methylpropane"]),
-        ("pyridine", "Pyridine", None, ["azine", "azabenzene"]),
-        ("aniline", "Aniline", None, ["aminobenzene", "phenylamine", "benzenamine"]),
-        ("acrylonitrile", "Acrylonitrile", None, ["prop-2-enenitrile", "vinyl cyanide", "propenenitrile"]),
-        ("methylamine", "Methylamine", None, ["methanamine", "monomethylamine", "mma"]),
-    ],
-    # proposal 0008, Part B, batch 4: solids at 25 degC (proposal 0007, step 4: solid-liquid equilibrium); urea,
-    # phthalic anhydride and caprolactam are in neither source (proposal 0008, scan of the sources)
-    7: [
-        ("naphthalene", "Naphthalene", None, ["c10h8"]),
-        ("benzoic-acid", "Benzoic acid", None, ["benzenecarboxylic acid", "carboxybenzene"]),
-        ("salicylic-acid", "Salicylic acid", None, ["2-hydroxybenzoic acid", "o-hydroxybenzoic acid"]),
-    ],
-    # proposal 0008, Part B, two of the four free places: the two components of the Cavett problem (the flowsheet
-    # convergence test, docs/FLOWSHEET_TESTS.md) that were missing
-    8: [
-        ("isopentane", "Isopentane", "Isopentane", ["2-methylbutane", "i-pentane", "isoamylane"]),
-        ("n-undecane", "n-Undecane", "n-Undecane", ["undecane", "hendecane"]),
-    ],
-    # proposal 0009 (green and bio-based chemistry), batch 1: platform and solvent molecules in ChemSep or CoolProp
-    9: [
-        ("bdo", "1,4-Butanediol", None, ["1,4-butanediol", "butane-1,4-diol", "tetramethylene glycol", "1,4-bdo"]),
-        ("cyrene", "Cyrene", None, ["dihydrolevoglucosenone", "6,8-dioxabicyclo[3.2.1]octan-4-one"]),
-        ("dimethyl-carbonate", "Dimethyl carbonate", "DimethylCarbonate", ["dmc", "carbonic acid dimethyl ester"]),
-        ("diethyl-carbonate", "Diethyl carbonate", None, ["dec", "carbonic acid diethyl ester"]),
-        ("ethylene-carbonate", "Ethylene carbonate", None, ["1,3-dioxolan-2-one", "ec"]),
-        ("propylene-carbonate", "Propylene carbonate", None, ["4-methyl-1,3-dioxolan-2-one", "pc"]),
-        ("acetaldehyde", "Acetaldehyde", None, ["ethanal"]),
-        ("1-pentanol", "1-Pentanol", None, ["n-pentanol", "pentan-1-ol", "amyl alcohol", "n-amyl alcohol"]),
-        ("1-hexanol", "1-Hexanol", None, ["n-hexanol", "hexan-1-ol", "hexyl alcohol"]),
-        ("1-octanol", "1-Octanol", None, ["n-octanol", "octan-1-ol", "octyl alcohol"]),
-        ("diethylene-glycol", "Diethylene glycol", None, ["deg", "2,2'-oxydiethanol", "digol"]),
-        ("p-cymene", "p-Cymene", None, ["4-isopropyltoluene", "1-methyl-4-(propan-2-yl)benzene", "cymene"]),
-        ("adipic-acid", "Adipic acid", None, ["hexanedioic acid"]),
-        ("maleic-anhydride", "Maleic anhydride", None, ["furan-2,5-dione", "cis-butenedioic anhydride"]),
-        ("terephthalic-acid", "Terephthalic acid", None, ["benzene-1,4-dicarboxylic acid", "pta", "tpa"]),
-        ("dmt", "Dimethyl terephthalate", None, ["dimethyl terephthalate", "dimethyl benzene-1,4-dicarboxylate"]),
-    ],
-    # proposal 0009, batch 2: lipids (biodiesel and hydrotreated oils); four methyl esters are CoolProp fluids
-    10: [
-        ("methyl-laurate", "Methyl laurate", None, ["methyl dodecanoate", "c12:0 me"]),
-        ("methyl-myristate", "Methyl myristate", None, ["methyl tetradecanoate", "c14:0 me"]),
-        ("methyl-palmitate", "Methyl palmitate", "MethylPalmitate", ["methyl hexadecanoate", "c16:0 me", "fame"]),
-        ("methyl-stearate", "Methyl stearate", "MethylStearate", ["methyl octadecanoate", "c18:0 me", "fame"]),
-        ("methyl-oleate", "Methyl oleate", "MethylOleate", ["methyl (z)-octadec-9-enoate", "c18:1 me", "fame", "biodiesel"]),
-        ("methyl-linoleate", "Methyl linoleate", "MethylLinoleate", ["methyl (9z,12z)-octadeca-9,12-dienoate", "c18:2 me", "fame"]),
-        ("triolein", "Triolein", None, ["glyceryl trioleate", "glycerol trioleate", "triglyceride"]),
-        ("tripalmitin", "Tripalmitin", None, ["glyceryl tripalmitate", "glycerol tripalmitate", "triglyceride"]),
-        ("oleic-acid", "Oleic acid", None, ["(z)-octadec-9-enoic acid", "c18:1", "fatty acid"]),
-        ("palmitic-acid", "Palmitic acid", None, ["hexadecanoic acid", "c16:0", "fatty acid"]),
-        ("stearic-acid", "Stearic acid", None, ["octadecanoic acid", "c18:0", "fatty acid"]),
-        ("n-hexadecane", "n-Hexadecane", None, ["hexadecane", "cetane"]),
-        ("n-octadecane", "n-Octadecane", None, ["octadecane"]),
-    ],
-}
+# the batches: id, name, CoolProp fluid name (None: from ChemSep), aliases (lower case; the name, id and formula are
+# always found), from the one registry validation/data/component_registry.json (registry.py); a new batch is an entry there
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from registry import REG  # noqa: E402
+
+BATCHES = {n: REG.batch(n) for n in REG.batches}
 CHEMSEP_NAME = "ChemSep pure-component database v8.3 (Kooijman & Taylor)"
-CHEMSEP_CAS = {"styrene": "100-42-5", "1-propanol": "71-23-8", "2-propanol": "67-63-0", "1-butanol": "71-36-3",
-               "2-butanone": "78-93-3", "methyl-acetate": "79-20-9", "n-butyl-acetate": "123-86-4",
-               "acetonitrile": "75-05-8", "mtbe": "1634-04-4", "glycerol": "56-81-5",
-               "phenol": "108-95-2",
-               "mibk": "108-10-1", "cyclohexanone": "108-94-1", "dmf": "68-12-2", "dmso": "67-68-5", "nmp": "872-50-4",
-               "sulfolane": "126-33-0", "furfural": "98-01-1", "dioxane": "123-91-1", "isobutanol": "78-83-1",
-               "2-butanol": "78-92-2",
-               "mea": "141-43-5", "dea": "111-42-2", "mdea": "105-59-9", "formic-acid": "64-18-6",
-               "propionic-acid": "79-09-4", "acrylic-acid": "79-10-7", "vinyl-acetate": "108-05-4",
-               "isopropyl-acetate": "108-21-4", "propylene-oxide": "75-56-9", "formaldehyde": "50-00-0",
-               "hydrogen-peroxide": "7722-84-1",
-               "cumene": "98-82-8", "mesitylene": "108-67-8", "isooctane": "540-84-1", "isoprene": "78-79-5",
-               "etbe": "637-92-3", "pyridine": "110-86-1", "aniline": "62-53-3", "acrylonitrile": "107-13-1",
-               "methylamine": "74-89-5", "naphthalene": "91-20-3", "benzoic-acid": "65-85-0", "salicylic-acid": "69-72-7",
-               "bdo": "110-63-4", "cyrene": "53716-82-8", "diethyl-carbonate": "105-58-8", "ethylene-carbonate": "96-49-1",
-               "propylene-carbonate": "108-32-7", "acetaldehyde": "75-07-0", "1-pentanol": "71-41-0", "1-hexanol": "111-27-3",
-               "1-octanol": "111-87-5", "diethylene-glycol": "111-46-6", "p-cymene": "99-87-6", "adipic-acid": "124-04-9",
-               "maleic-anhydride": "108-31-6", "terephthalic-acid": "100-21-0", "dmt": "120-61-6",
-               "methyl-laurate": "111-82-0", "methyl-myristate": "124-10-7", "triolein": "122-32-7", "tripalmitin": "555-44-2",
-               "oleic-acid": "112-80-1", "palmitic-acid": "57-10-3", "stearic-acid": "57-11-4", "n-hexadecane": "544-76-3",
-               "n-octadecane": "593-45-3"}   # CAS of the components taken from ChemSep (checked against `chemicals`)
+CHEMSEP_CAS = REG.chemsep_cas   # CAS of the components taken from ChemSep (checked against `chemicals`)
 # the second file of the same databank (as redistributed in DWSIM, same licence), for compounds not in chemsep1.xml
 CHEMSEP2_NAME = "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)"
 
