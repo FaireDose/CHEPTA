@@ -1082,6 +1082,32 @@
       "source_ids": [
         "wang2011-cumene-sulfolane"
       ]
+    },
+    {
+      "components": [
+        "methyl-palmitate",
+        "methyl-stearate"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 0.62 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/methyl-palmitate_methyl-stearate_10-1021-je3003699_10.0kPa_tx.json (Hou et al., J. Chem. Eng. Data 57)",
+      "source_ids": [
+        "hou2012-methyl-palmitate-methyl-stearate"
+      ]
+    },
+    {
+      "components": [
+        "methyl-palmitate",
+        "methyl-stearate"
+      ],
+      "model": "UNIQUAC",
+      "kind": "fit-quality",
+      "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 0.62 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/methyl-palmitate_methyl-stearate_10-1021-je3003699_10.0kPa_tx.json (Hou et al., J. Chem. Eng. Data 57)",
+      "source_ids": [
+        "hou2012-methyl-palmitate-methyl-stearate"
+      ]
     }
   ]
 }

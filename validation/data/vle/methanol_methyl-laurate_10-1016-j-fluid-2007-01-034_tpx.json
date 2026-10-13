@@ -1,0 +1,123 @@
+{
+ "_about": "Methanol (1) + Methyl laurate (2): total pressures against temperature, 493-543 K, at set liquid compositions. Rows: temperature in K, liquid mole fraction of methanol, pressure in kPa, as stored in the ThermoML Archive record.",
+ "source": {
+  "citation": "Y. Shimoyama, Y. Iwai, B. S. Jin, T. Hirayama, Y. Arai, Measurement and correlation of vapor liquid equilibria for methanol + methyl laurate and methanol + methyl myristate systems near critical temperature of methanol, Fluid Phase Equilib. 257 (2007) 217-222",
+  "doi": "10.1016/j.fluid.2007.01.034",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2007.01.034.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1. The table number in the article was not checked."
+ },
+ "components": [
+  "methanol",
+  "methyl-laurate"
+ ],
+ "kind": "tpx",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   493.0,
+   0.433,
+   2160.0
+  ],
+  [
+   493.0,
+   0.525,
+   2630.0
+  ],
+  [
+   493.0,
+   0.61,
+   3200.0
+  ],
+  [
+   493.0,
+   0.699,
+   3700.0
+  ],
+  [
+   493.0,
+   0.769,
+   4110.0
+  ],
+  [
+   493.0,
+   0.842,
+   4480.0
+  ],
+  [
+   493.0,
+   0.895,
+   4830.0
+  ],
+  [
+   523.0,
+   0.535,
+   3810.0
+  ],
+  [
+   523.0,
+   0.587,
+   4290.0
+  ],
+  [
+   523.0,
+   0.656,
+   4900.0
+  ],
+  [
+   523.0,
+   0.712,
+   5520.0
+  ],
+  [
+   523.0,
+   0.783,
+   6200.0
+  ],
+  [
+   523.0,
+   0.886,
+   7280.0
+  ],
+  [
+   543.0,
+   0.473,
+   4090.0
+  ],
+  [
+   543.0,
+   0.557,
+   4880.0
+  ],
+  [
+   543.0,
+   0.62,
+   5530.0
+  ],
+  [
+   543.0,
+   0.68,
+   6270.0
+  ],
+  [
+   543.0,
+   0.742,
+   7140.0
+  ],
+  [
+   543.0,
+   0.801,
+   7920.0
+  ],
+  [
+   543.0,
+   0.842,
+   8490.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. No isotherm of the set has its own pure-component pressures, so the fit uses the vapour pressures of the component records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

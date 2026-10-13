@@ -1,0 +1,113 @@
+{
+ "_about": "Methanol (1) + Methyl palmitate (2): total pressures against temperature, 493-543 K, at set liquid compositions. Rows: temperature in K, liquid mole fraction of methanol, pressure in kPa, as stored in the ThermoML Archive record.",
+ "source": {
+  "citation": "J. Xu, Q. Liu, T. Yan, Y. Wang, T. Fang, Vapor Liquid Equilibrium for Methanol + Methyl Palmitate near the Critical Temperature of Methanol, J. Chem. Eng. Data 61 (2016) 1229-1235",
+  "doi": "10.1021/acs.jced.5b00865",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.5b00865.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1. The table number in the article was not checked."
+ },
+ "components": [
+  "methanol",
+  "methyl-palmitate"
+ ],
+ "kind": "tpx",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   493.0,
+   0.3731,
+   1860.0
+  ],
+  [
+   493.0,
+   0.4952,
+   2490.0
+  ],
+  [
+   493.0,
+   0.6359,
+   3120.0
+  ],
+  [
+   493.0,
+   0.7111,
+   3760.0
+  ],
+  [
+   493.0,
+   0.804,
+   4310.0
+  ],
+  [
+   493.0,
+   0.8889,
+   4890.0
+  ],
+  [
+   523.0,
+   0.2952,
+   1890.0
+  ],
+  [
+   523.0,
+   0.3851,
+   2590.0
+  ],
+  [
+   523.0,
+   0.4395,
+   3280.0
+  ],
+  [
+   523.0,
+   0.5953,
+   4300.0
+  ],
+  [
+   523.0,
+   0.7252,
+   5420.0
+  ],
+  [
+   523.0,
+   0.837,
+   6660.0
+  ],
+  [
+   543.0,
+   0.3825,
+   3070.0
+  ],
+  [
+   543.0,
+   0.5031,
+   4360.0
+  ],
+  [
+   543.0,
+   0.6361,
+   5500.0
+  ],
+  [
+   543.0,
+   0.7293,
+   6460.0
+  ],
+  [
+   543.0,
+   0.8276,
+   7560.0
+  ],
+  [
+   543.0,
+   0.8674,
+   8810.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. No isotherm of the set has its own pure-component pressures, so the fit uses the vapour pressures of the component records. To be checked by a person against the record (AGENTS.md rule 4)."
+}
