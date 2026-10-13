@@ -160,50 +160,6 @@ export function deleteBlock(fs, id) {
   return removeBlock(fs, id).fs;
 }
 
-/**
- * Make a flowsheet complete in structure again, as the editor keeps it: a stream that goes to a
- * block that is not there leaves the flowsheet (a new Product), a stream that comes from one
- * starts from a new Feed, and an outlet a unit must have that has no stream gets a product stream.
- * A document written or changed outside the editor (by hand, by an assistant, an older file) can
- * lack these, and the canvas cannot draw such a stream. Returns { fs, note } (note: "" if nothing
- * was missing).
- */
-export function completeFlowsheet(fs) {
-  const out = clone(fs);
-  const fixed = [];
-  const has = id => out.blocks.some(b => b.id === id);
-  for (const s of out.streams) {
-    if (!has(portOf(s.to).block)) {
-      const pid = nextId(blockIds(out), PREFIX.product);
-      out.blocks.push({ id: pid, type: "product", ...productSpot(out, s.from) });
-      fixed.push(`${s.id} went to ${portOf(s.to).block}, which is not in the flowsheet: it now leaves the flowsheet`);
-      s.to = `${pid}.in`;
-      delete s.tear; delete s.guess;
-    }
-    if (!has(portOf(s.from).block)) {
-      const dst = out.blocks.find(b => b.id === portOf(s.to).block);
-      const fid = nextId(blockIds(out), PREFIX.feed);
-      out.blocks.push({ id: fid, type: "feed", ...clearSpot(out, (dst?.x ?? 160) - 140, dst?.y ?? 160), spec: {} });
-      fixed.push(`${s.id} came from ${portOf(s.from).block}, which is not in the flowsheet: it now starts from a new feed ${fid}`);
-      s.from = `${fid}.out`;
-      delete s.tear; delete s.guess;
-    }
-  }
-  for (const b of out.blocks.filter(x => x.type !== "product" && x.type !== "feed")) {
-    let u;
-    try { u = unitType(b.type); } catch { continue; }
-    for (const p of u.outlets.filter(q => !q.optional)) {
-      const n = out.streams.filter(s => s.from === `${b.id}.${p.port}`).length;
-      const need = p.min === Infinity ? 2 : (p.min ?? 1);
-      for (let k = n; k < need; k++) fixed.push(`${b.id} had no stream on its ${p.port} outlet: ${addProductStream(out, `${b.id}.${p.port}`, k)} added, leaving the flowsheet`);
-    }
-  }
-  for (const b of out.blocks.filter(x => x.type === "feed")) {
-    if (!out.streams.some(s => portOf(s.from).block === b.id)) fixed.push(`${b.id} had no stream: ${addProductStream(out, `${b.id}.out`)} added, leaving the flowsheet`);
-  }
-  return { fs: fixed.length ? out : fs, note: fixed.length ? `Restored the structure: ${fixed.join("; ")}.` : "" };
-}
-
 /** Add an outlet to a splitter or component separator (a new product stream and its fraction). */
 export function addOutlet(fs, id) {
   const out = clone(fs);

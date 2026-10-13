@@ -16,7 +16,7 @@ import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
 import { flowsheetDocStatus, runFlowsheet } from "../flowsheet/document.js";
 import {
-  PALETTE, addBlock, addFeedTo, connect, removeBlock, completeFlowsheet, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
+  PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
   setComponents, streamsOf, endOf, openInlets, deleteStream,
 } from "./flowsheet-logic.js";
 import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
@@ -426,12 +426,7 @@ function shape(type, w, hh) {
 /** Draw the flowsheet (canvas, results panel and stream table). ctx from app-views renderView. */
 export function flowsheetView(ctx) {
   const { state, set, plot, side, below, notes, ui } = ctx;
-  const f = ensureUi(ui), u = state.units;
-  let fs = state.flowsheet;
-  // a document from outside the editor may lack Products or Feeds the editor always has: restore
-  // them (the canvas could not draw such a stream) and say so
-  const rep = completeFlowsheet(fs);
-  if (rep.note) { fs = rep.fs; queueMicrotask(() => { f.note = rep.note; set({ flowsheet: rep.fs }); }); }
+  const f = ensureUi(ui), fs = state.flowsheet, u = state.units;
   if (!fs.components.length) {
     plot.replaceChildren(h("div", { class: "fa-need is-start", role: "status" },
       h("h3", {}, "Start by choosing the components of the simulation"),
@@ -480,7 +475,22 @@ export function flowsheetView(ctx) {
     for (const s of doc.streams) {
       const fb = s.from.split(".")[0], tb = s.to.split(".")[0];
       const a = P.get(`${s.id}@${fb}`), e = P.get(`${s.id}@${tb}`);
-      if (!a || !e) continue;
+      if (!a && !e) continue;
+      if (!a || !e) {
+        // one end names a block that is not in the flowsheet (a document written or changed outside the
+        // editor): drawn from the end that exists, in red, so the person sees it and can fix it; nothing is changed
+        const at = a ?? e, d = a ? a.dir : [-1, 0];
+        const mid = { x: at.x + 24 * d[0], y: at.y + 24 * d[1] }, end = { x: mid.x + (a ? 40 : -40), y: mid.y };
+        const g = svgEl("g", { class: "fs-stream is-broken", "data-stream": s.id });
+        g.append(svgEl("path", { d: `M${at.x} ${at.y} L${mid.x} ${mid.y} L${end.x} ${end.y}`, class: "fs-line" }));
+        const t = svgEl("text", { x: end.x + (a ? 6 : -6), y: end.y + 4, class: "fs-label fs-broken", "text-anchor": a ? "start" : "end" });
+        t.textContent = a ? `${s.id} → ${tb} is missing` : `${fb} is missing → ${s.id}`;
+        const tip = svgEl("title", {});
+        tip.textContent = `${s.id} ${a ? `goes to ${tb}` : `comes from ${fb}`}, which is not a block of the flowsheet. Delete the stream, or connect it again.`;
+        g.append(tip, t);
+        layer.append(g);
+        continue;
+      }
       const pts = route(a, e);
       const d = pts.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
       const g = svgEl("g", { class: "fs-stream" + (selected("stream", s.id) ? " is-sel" : "") + (s.tear ? " is-tear" : ""), "data-stream": s.id,

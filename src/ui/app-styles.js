@@ -338,6 +338,8 @@ export const APP_CSS = `
 .fs-hit{fill:none; stroke:transparent; stroke-width:12; cursor:pointer}
 .fs-stream.is-sel .fs-line{stroke:var(--fug-accent); stroke-width:2.6}
 .fs-stream.is-tear .fs-line{stroke-dasharray:6 4}
+.fs-stream.is-broken .fs-line{stroke:#c0392b; stroke-dasharray:4 3}
+.fs-label.fs-broken{fill:#c0392b}
 .fs-arrow{fill:var(--fug-fg2, #555)}
 .fs-label{font-size:10.5px; fill:var(--fug-fg2, #555); paint-order:stroke; stroke:var(--fug-halo); stroke-width:3px}
 .fs-handle{fill:var(--fug-bg); stroke:var(--fug-accent); stroke-width:1.6; cursor:crosshair}

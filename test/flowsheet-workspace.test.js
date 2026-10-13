@@ -8,7 +8,7 @@ import { emptyFlowsheet } from "../src/flowsheet/document.js";
 import { initialState, applyPatch } from "../src/ui/app-logic.js";
 import { WORKSPACES } from "../src/ui/workspaces.js";
 import {
-  addBlock, addFeedTo, connect, deleteBlock, removeBlock, completeFlowsheet, deleteStream, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
+  addBlock, addFeedTo, connect, deleteBlock, removeBlock, deleteStream, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
   setComponents, openInlets, endOf, streamsOf,
 } from "../src/ui/flowsheet-logic.js";
 
@@ -195,30 +195,4 @@ test("products of one unit are not drawn on top of each other", () => {
   const spots = d.blocks.map(b => `${b.x},${b.y}`);
   assert.equal(new Set(spots).size, spots.length, `two blocks on one spot: ${spots.join(" ")}`);
   structureOk(d);
-});
-
-test("a flowsheet missing Products or Feeds (written outside the editor) is completed, and says so", () => {
-  const fs = {
-    ...base(),
-    blocks: [
-      { id: "F1", type: "feed", x: 0, y: 0, spec: { T_K: 350, P_kPa: 101.325, flow_kmol_h: { ethanol: 1, water: 1 } } },
-      { id: "V1", type: "flash", x: 150, y: 0, spec: { T_K: 355, P_kPa: 101.325 } },
-      { id: "P1", type: "product", x: 280, y: -60 },
-    ],
-    // S3 goes to a Product that is not there; the canvas could not draw it and the flowsheet did not solve
-    streams: [{ id: "S1", from: "F1.out", to: "V1.in" }, { id: "S2", from: "V1.vapour", to: "P1.in" }, { id: "S3", from: "V1.liquid", to: "P2.in" }],
-  };
-  assert.ok(flowsheetDocStatus(fs).structure.length > 0);
-  const r = completeFlowsheet(fs);
-  assert.match(r.note, /S3 went to P2, which is not in the flowsheet/);
-  structureOk(r.fs);
-  assert.equal(endOf(r.fs, "S3").kind, "product");
-  // an outlet with no stream at all gets a product stream
-  const r2 = completeFlowsheet({ ...fs, streams: fs.streams.slice(0, 2) });
-  assert.match(r2.note, /V1 had no stream on its liquid outlet/);
-  structureOk(r2.fs);
-  // a complete flowsheet is left as it is
-  const r3 = completeFlowsheet(r.fs);
-  assert.equal(r3.note, "");
-  assert.equal(r3.fs, r.fs);
 });

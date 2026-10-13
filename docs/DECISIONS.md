@@ -141,10 +141,13 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   went; the note says which.
 - **Second bug, what was found (not the confirmed cause):** the canvas drew nothing for a stream whose block is
   missing (for example a stream to a Product block that is not in the document), and such a flowsheet does not solve.
-  None of the editor's own edits leaves a document like that; a file written or changed outside the editor can. The
-  editor now completes such a document when it shows it (a Product for a stream to a missing block, a Feed for one
-  from a missing block, a product stream for an outlet without one) and says what it restored. Also, two new
-  Products of one unit were placed on the same spot (one hidden under the other); they now get separate spots.
+  None of the editor's own edits leaves a document like that; a file written or changed outside the editor can. Such a
+  stream is now drawn in red from the end that exists ("S3 → P2 is missing"); the flowsheet is not changed. The
+  maintainer does not want the editor to repair or connect anything by itself (2026-10-13): an automatic completion
+  tried first was removed. Also, two new Products of one unit were placed on the same spot (one hidden under the
+  other); they now get separate spots (placement only).
+  Open question for the maintainer: a stream that came out of a deleted unit now starts from a new, empty feed (the
+  document needs a block at both ends of a stream); the alternative is to delete those outgoing streams as before.
   Pending: the maintainer's screenshots, if the lost stream happens again.
 
 ### 2026-10-11 (late): pairs of the green-chemistry components
