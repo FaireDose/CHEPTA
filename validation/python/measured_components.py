@@ -79,6 +79,10 @@ THERMOML_PROPS = {
     "Normal boiling temperature, K": ("Tb", 1.0, "Liquid"),
     "Critical temperature, K": ("Tc", 1.0, None),
     "Critical pressure, kPa": ("Pc", 1000.0, None),
+    # melting data, for validation/python/fusion_data.py (proposal 0009, batch 2: where the WebBook and ChemSep have none)
+    "Normal melting temperature, K": ("Tm", 1.0, "Liquid"),
+    "Triple point temperature, K": ("Ttriple", 1.0, "Liquid"),
+    "Molar enthalpy of transition or fusion, kJ/mol": ("Hfus", 1000.0, "Liquid"),
 }
 
 # ---------------------------------------------------------------------------------------------
@@ -362,7 +366,7 @@ class ThermoML:
             u = r["uncertainty"]
             out.append({"T": r["T_K"], "y": r["value"] * spec[1], "u_rel": (u / r["value"]) if u else None,
                         "ref": self.short(r["doi"]), "doi": r["doi"],
-                        "from": "article" if r["doi"] in self.from_article else "ThermoML"})
+                        "from": "article" if r["doi"] in self.from_article else "ThermoML", "set": r.get("set")})
         return out
 
 # ---------------------------------------------------------------------------------------------

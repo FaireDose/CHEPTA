@@ -20,7 +20,11 @@ validation/data/pure/fusion/webbook_fusion.json and chosen here by a fixed rule:
 Where the WebBook has no enthalpy of fusion (or no melting temperature), the next source of rule 1 (step 4): the ChemSep
 v8.3 databank (chemsep1.xml, TriplePointTemperature or NormalMeltingPointTemperature, and HeatOfFusionAtMeltingPoint),
 labelled so; where ChemSep has neither, an open-access article (step 5) whose data file in validation/data/pure/measured/
-states them (Cyrene: Jerabek et al. 2023). Otherwise the ChemSep values are the cross-check, stated in the record.
+states them (Cyrene: Jerabek et al. 2023), or else the melting data of the NIST TRC ThermoML Archive (step 5, stored by
+check_measured.py --fetch in validation/data/pure/measured/thermoml_<id>.json), chosen by the same rule as the WebBook
+values: the median melting temperature of the articles, and the median enthalpy of fusion of the articles whose own
+melting temperature (where they give one) is within 3 K of it (triolein, tripalmitin). Otherwise the ChemSep values are
+the cross-check, stated in the record.
 
     python validation/python/fusion_data.py --fetch --chemsep chemsep1.xml chemsep2.xml   # download, then choose
     python validation/python/fusion_data.py --chemsep chemsep1.xml chemsep2.xml --write   # write the records
@@ -137,13 +141,20 @@ def choose(rec, chemsep=None):
     avg = [r for r in one.get("Tfus", []) if r["method"] == "AVG" and r["units"] == "K"]
     ind = [r["value"] for r in one.get("Tfus", []) if r["method"] != "AVG" and r["units"] == "K"]
     tri = [r for r in one.get("Ttriple", []) if r["method"] == "AVG" and r["units"] == "K"]
-    tri_ind = [r["value"] for r in one.get("Ttriple", []) if r["method"] != "AVG" and r["units"] == "K"]
+    # a triple point of a metastable crystal form ("Crystal phase 2", "Crystal phase 3": tripalmitin, whose alpha form
+    # melts about 21 K below the stable beta form) is not the melting temperature of the solid that equilibrium sees
+    tri_rows = [r for r in one.get("Ttriple", []) if r["method"] != "AVG" and r["units"] == "K"]
+    meta = [r for r in tri_rows if re.search(r"Crystal phase [2-9]", r.get("comment") or "")]
+    tri_ind = [r["value"] for r in tri_rows if r not in meta]
     if tri:
         Tm, how = tri[0]["value"], "WebBook average of the triple-point temperatures (Ttriple, %s)" % tri[0]["comment"]
         Tm_unc = tri[0]["uncertainty"]
     elif tri_ind:
         Tm, how, Tm_unc = statistics.median(tri_ind), "median of %d WebBook triple-point temperatures (%s)" % (
-            len(tri_ind), "; ".join(r["reference"] for r in one["Ttriple"] if r["method"] != "AVG")), None
+            len(tri_ind), "; ".join(r["reference"] for r in tri_rows if r not in meta)), None
+        if meta:
+            how += "; left out: %d triple point%s of metastable crystal forms (%s)" % (
+                len(meta), "s" if len(meta) > 1 else "", ", ".join("%g K" % r["value"] for r in meta))
     elif avg:
         Tm, how = avg[0]["value"], "WebBook average of the measured melting temperatures (Tfus, %s)" % avg[0]["comment"]
         Tm_unc = avg[0]["uncertainty"]
@@ -201,6 +212,52 @@ def article_fusion(cid):
     return None
 
 
+def thermoml_fusion(cid):
+    """Melting data of the ThermoML Archive file of the component (median of the articles), or None."""
+    f = ROOT / "validation" / "data" / "pure" / "measured" / ("thermoml_%s.json" % cid)
+    if not f.exists():
+        return None
+    d = json.loads(f.read_text())
+    tm, hf = {}, {}
+    for r in d["rows"]:
+        if r["binary_with"] or "Liquid" not in r["phases"] or not any(p.startswith("Crystal") for p in r["phases"]):
+            continue
+        if r["property"] in ("Normal melting temperature, K", "Triple point temperature, K"):
+            tm.setdefault(r["doi"], []).append(r["value"])
+        elif r["property"] == "Molar enthalpy of transition or fusion, kJ/mol":
+            hf.setdefault(r["doi"], []).append(r["value"])
+    if not tm or not hf:
+        return None
+    Tm = statistics.median(statistics.median(v) for v in tm.values())
+    near = {doi: statistics.median(v) for doi, v in hf.items()
+            if doi not in tm or abs(statistics.median(tm[doi]) - Tm) <= NEAR_TM_K}
+    if not near:
+        return None
+    H = statistics.median(near.values())
+    # a value more than twice or less than half the median (a unit or transcription slip in the article or the archive):
+    # named in the record and left out of the spread; the median is not affected by it
+    odd = {doi: v for doi, v in near.items() if not 0.5 <= v / H <= 2}
+    kept = [v for doi, v in near.items() if doi not in odd]
+    cite = lambda doi: "%s %s, doi:%s" % (d["articles"][doi]["authors"][0].split(",")[0], d["articles"][doi]["year"], doi)  # noqa: E731
+    return {"Tm_K": round(Tm, 2), "Hfus_kJ_mol": round(H, 2), "n_Tm": len(tm), "n_H": len(near),
+            "Hfus_min": min(kept), "Hfus_max": max(kept), "odd": odd,
+            "left_out": sorted(doi for doi in hf if doi not in near),
+            "references": sorted({cite(doi) for doi in list(tm) + list(near)}),
+            "file": f.relative_to(ROOT).as_posix()}
+
+
+def thermoml_has(cid):
+    """What the stored ThermoML file of the component has of melting data, for the `searched` list."""
+    f = ROOT / "validation" / "data" / "pure" / "measured" / ("thermoml_%s.json" % cid)
+    if not f.exists():
+        return "not searched"
+    props = {r["property"] for r in json.loads(f.read_text())["rows"] if not r["binary_with"]}
+    tm = props & {"Normal melting temperature, K", "Triple point temperature, K"}
+    if tm and "Molar enthalpy of transition or fusion, kJ/mol" not in props:
+        return "a melting temperature but no enthalpy of fusion"
+    return "no melting data"
+
+
 def build(comps, data, cs):
     out, report = {}, []
     for cid, c in comps.items():
@@ -238,9 +295,35 @@ def build(comps, data, cs):
                                                         "no enthalpy of fusion" if x and x["Tm_K"] else "no value")}}
                 report.append((cid, f["Tm_K"], f["Hfus_kJ_mol"] * 1000, 1, None, "open-access article"))
                 continue
+            # the ThermoML Archive (step 5): measured melting data of the articles, the median of each
+            tml = thermoml_fusion(cid)
+            if tml:
+                spread = (tml["Hfus_max"] - tml["Hfus_min"]) / tml["Hfus_kJ_mol"]
+                sel = ("melting temperature: median of %d articles; enthalpy of fusion: median of %d article%s (%s-%s kJ/mol) "
+                       "whose melting temperature is within %g K of it" % (
+                           tml["n_Tm"], tml["n_H"], "s" if tml["n_H"] > 1 else "", tml["Hfus_min"], tml["Hfus_max"], NEAR_TM_K))
+                if tml["n_H"] == 1:
+                    sel = sel.replace("median of 1 article (%s-%s kJ/mol)" % (tml["Hfus_min"], tml["Hfus_max"]), "one article")
+                for doi, v in tml["odd"].items():
+                    sel += ("; not counted in that range: %s kJ/mol (doi:%s), %.1f times the median, which it does not "
+                            "change" % (v, doi, v / tml["Hfus_kJ_mol"]))
+                if tml["left_out"]:
+                    sel += "; left out (melting temperature more than %g K away): %s" % (NEAR_TM_K, ", ".join(tml["left_out"]))
+                if spread > 0.10:
+                    sel += "; the measured values disagree by %.0f %% of the median: the enthalpy of fusion is uncertain" % (100 * spread)
+                sel += "; NIST WebBook (%s): %s; ChemSep: %s" % (url, why, "no enthalpy of fusion" if x and x["Tm_K"] else "no value")
+                out[cid] = {"Tm_K": tml["Tm_K"], "Hfus_J_mol": round(tml["Hfus_kJ_mol"] * 1000, 1), "tier": "databank",
+                            "source": {"name": "NIST TRC ThermoML Archive", "reference": "; ".join(tml["references"]),
+                                       "access": "NIST open data (the archive's values are free to use, also where the "
+                                                 "article is paywalled)", "url": "https://trc.nist.gov/ThermoML/",
+                                       "file": tml["file"], "selection": sel}}
+                report.append((cid, tml["Tm_K"], tml["Hfus_kJ_mol"] * 1000, tml["n_H"], None,
+                               "ThermoML Archive" + (" spread %.0f %%" % (100 * spread) if spread > 0.10 else "")))
+                continue
             out[cid] = {"available": False, "searched": [
                 "NIST Chemistry WebBook, phase change data (%s): %s" % (url, why),
-                "ChemSep v8.3: %s" % ("no enthalpy of fusion" if x and x["Tm_K"] else "no value")]}
+                "ChemSep v8.3: %s" % ("no enthalpy of fusion" if x and x["Tm_K"] else "no value"),
+                "NIST TRC ThermoML Archive: %s" % thermoml_has(cid)]}
             report.append((cid, None, None, None, None, why))
             continue
         Hf = round(ch["Hfus_kJ_mol"] * 1000, 1)

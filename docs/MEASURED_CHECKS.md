@@ -715,3 +715,112 @@ Rules: liquid values at 110 kPa or less, inside the record's temperature range, 
 | Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
 |---|---|---|---|---|---|---|
 
+## Methyl laurate
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 7 | 2 (0) | 412.8-442.5 | 1.61 % | -2.11 % at 432.6 K (Sahraoui 2016, doi:10.1016/j.jct.2016.07.024) | ⚠️ above 1 % |
+| Liquid density | 72 | 7 (7) | 283.1-453.1 | 0.09 % | +0.34 % at 353.1 K (Zhao 2019, doi:10.1016/j.jct.2019.02.025) | ✅ within 1 % |
+| Liquid heat capacity | 21 | 3 (3) | 280.0-386.8 | 0.76 % | +2.15 % at 367.1 K (Habrioux 2018, doi:10.1016/j.jct.2017.12.020) | ✅ within 2 % |
+| Heat of vaporization | 1 | | | | | too few values (1 measured in all) |
+| Liquid viscosity | 50 | 7 (7) | 283.1-353.1 | 0.85 % | +7.55 % at 343.1 K (Ceriani 2007, doi:10.1021/je600552b) | ✅ within 5 % |
+| Liquid thermal conductivity | 26 | 1 (1) | 283.8-402.7 | 4.95 % | -5.56 % at 307.8 K (Fan 2018, doi:10.1016/j.jct.2018.06.005) | ✅ within 5 % |
+
+## Methyl myristate
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 12 | 2 (0) | 432.6-453.1 | 2.66 % | -4.43 % at 453.1 K (Sahraoui 2017, doi:10.1021/acs.jced.7b00099) | ⚠️ above 1 % |
+| Liquid density | 47 | 5 (5) | 293.1-453.1 | 0.04 % | -0.76 % at 453.1 K (Zhao 2019, doi:10.1016/j.jct.2019.02.025) | ✅ within 1 % |
+| Liquid heat capacity | 6 | 1 (1) | 300.0-350.0 | 0.02 % | -0.15 % at 300.0 K (van Miltenburg 2004, doi:10.1021/je0499364) | ✅ within 2 % |
+| Heat of vaporization | 1 | | | | | too few values (1 measured in all) |
+| Liquid viscosity | 29 | 4 (1) | 293.1-353.1 | 6.10 % | +13.91 % at 343.1 K (Ceriani 2007, doi:10.1021/je600552b) | ⚠️ above 5 % |
+| Liquid thermal conductivity | 24 | 1 (0) | 304.0-402.4 | 5.75 % | -6.18 % at 327.2 K (Fan 2018, doi:10.1016/j.jct.2018.06.005) | ⚠️ above 5 % |
+
+## Methyl palmitate
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (141 measured in all) |
+| Liquid density | 27 | 3 (3) | 308.1-383.1 | 0.18 % | +0.81 % at 383.1 K (Ndiaye 2013, doi:10.1021/je400122k) | ✅ within 1 % |
+| Liquid heat capacity | 5 | 1 (1) | 310.0-350.0 | 1.48 % | +2.37 % at 310.0 K (van Miltenburg 2004, doi:10.1021/je0499364) | ✅ within 2 % |
+| Heat of vaporization | 0 | | | | | too few values (3 measured in all) |
+| Liquid viscosity | 16 | 2 (0) | 308.1-363.1 | 8.42 % | +15.54 % at 343.1 K (Ceriani 2007, doi:10.1021/je600552b) | ⚠️ above 5 % |
+
+## Methyl stearate
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (94 measured in all) |
+| Liquid density | 16 | 2 (2) | 313.1-363.1 | 0.21 % | -0.37 % at 313.1 K (Pratas 2010, doi:10.1021/je100042c) | ✅ within 1 % |
+| Liquid heat capacity | 4 | 1 (1) | 320.0-350.0 | 1.93 % | +2.91 % at 320.0 K (van Miltenburg 2004, doi:10.1021/je0499364) | ✅ within 2 % |
+| Heat of vaporization | 1 | | | | | too few values (3 measured in all) |
+| Liquid viscosity | 11 | 1 (0) | 313.1-363.1 | 6.25 % | +7.93 % at 363.1 K (Pratas 2010, doi:10.1021/je100042c) | ⚠️ above 5 % |
+
+## Methyl oleate
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (12 measured in all) |
+| Liquid density | 33 | 3 (3) | 278.1-393.1 | 0.03 % | +0.54 % at 393.1 K (Ndiaye 2013, doi:10.1021/je4005323) | ✅ within 1 % |
+| Heat of vaporization | 1 | | | | | too few values (1 measured in all) |
+| Liquid viscosity | 19 | 2 (2) | 293.1-353.1 | 0.99 % | +9.02 % at 343.1 K (Ceriani 2007, doi:10.1021/je600552b) | ✅ within 5 % |
+
+## Methyl linoleate
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (4 measured in all) |
+| Liquid density | 36 | 3 (3) | 278.1-393.1 | 0.19 % | +0.75 % at 393.1 K (Ndiaye 2013, doi:10.1021/je4005323) | ✅ within 1 % |
+| Heat of vaporization | 1 | | | | | too few values (1 measured in all) |
+| Liquid viscosity | 22 | 2 (2) | 278.1-353.1 | 2.30 % | +10.48 % at 343.1 K (Ceriani 2007, doi:10.1021/je600552b) | ✅ within 5 % (record fitted to these values) |
+
+## Triolein
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+
+## Tripalmitin
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+
+## Oleic acid
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (8 measured in all) |
+| Heat of vaporization | 0 | | | | | too few values (1 measured in all) |
+
+## Palmitic acid
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (53 measured in all) |
+| Heat of vaporization | 0 | | | | | too few values (1 measured in all) |
+| Liquid thermal conductivity | 0 | | | | | too few values (1 measured in all) |
+
+## Stearic acid
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (53 measured in all) |
+| Liquid heat capacity | 0 | | | | | too few values (1 measured in all) |
+| Heat of vaporization | 0 | | | | | too few values (1 measured in all) |
+
+## n-Hexadecane
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Vapour pressure | 0 | | | | | too few values (51 measured in all) |
+| Liquid density | 163 | 42 (42) | 291.6-463.1 | 0.14 % | -0.53 % at 298.1 K (Hwang 2009, doi:10.1021/je8006265) | ✅ within 1 % |
+| Heat of vaporization | 1 | | | | | too few values (3 measured in all) |
+| Liquid viscosity | 109 | 17 (17) | 293.1-373.1 | 1.87 % | +4.23 % at 298.1 K (Sirbu 2019, doi:10.1016/j.jct.2018.08.036) | ✅ within 5 % |
+
+## n-Octadecane
+
+| Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
+|---|---|---|---|---|---|---|
+| Liquid density | 1 | | | | | too few values (1 measured in all) |
+| Liquid viscosity | 89 | 1 (1) | 301.4-318.1 | 2.57 % | +5.90 % at 301.8 K (Delgado 2018, doi:10.1016/j.tca.2018.08.017) | ✅ within 5 % |
+

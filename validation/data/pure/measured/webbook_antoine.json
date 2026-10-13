@@ -1022,5 +1022,136 @@
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C120616&Units=SI&Mask=4",
   "retrieved": "2026-10-11",
   "sets": []
+ },
+ "methyl-laurate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C111820&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 373.0,
+    "Tmax_K": 439.0,
+    "A": 4.81707,
+    "B": 2303.546,
+    "C": -61.592,
+    "reference": "Althouse and Triebold, 1944",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "methyl-myristate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C124107&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 439.0,
+    "Tmax_K": 511.0,
+    "A": 3.62632,
+    "B": 1492.807,
+    "C": -162.674,
+    "reference": "Rose and Supina, 1961",
+    "comment": "Coefficents calculated by NIST from author's data."
+   },
+   {
+    "Tmin_K": 400.3,
+    "Tmax_K": 481.4,
+    "A": 6.33833,
+    "B": 3631.289,
+    "C": 7.153,
+    "reference": "Bonhorst, Althouse, et al., 1948",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "triolein": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C122327&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "sets": []
+ },
+ "tripalmitin": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C555442&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "sets": []
+ },
+ "oleic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C112801&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 449.7,
+    "Tmax_K": 633.0,
+    "A": 5.04842,
+    "B": 2555.604,
+    "C": -127.258,
+    "reference": "Stull, 1947",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "palmitic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C57103&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 426.8,
+    "Tmax_K": 626.9,
+    "A": 5.35728,
+    "B": 3061.422,
+    "C": -55.077,
+    "reference": "Stull, 1947",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "stearic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C57114&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 446.9,
+    "Tmax_K": 643.0,
+    "A": 5.72544,
+    "B": 3348.131,
+    "C": -57.825,
+    "reference": "Stull, 1947",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "n-hexadecane": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C544763&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 463.2,
+    "Tmax_K": 559.9,
+    "A": 4.17312,
+    "B": 1845.672,
+    "C": -117.054,
+    "reference": "Camin, Forziati, et al., 1954",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
+ },
+ "n-octadecane": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C593453&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "equation": "log10(P/bar) = A - B / (T/K + C)",
+  "sets": [
+   {
+    "Tmin_K": 447.7,
+    "Tmax_K": 590.0,
+    "A": 4.33209,
+    "B": 2068.963,
+    "C": -111.927,
+    "reference": "Krafft, 1882",
+    "comment": "Coefficents calculated by NIST from author's data."
+   }
+  ]
  }
 }

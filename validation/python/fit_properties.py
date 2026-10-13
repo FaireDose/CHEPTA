@@ -89,7 +89,10 @@ IDS = ["water", "acetic-acid", "ethylene-glycol", "methanol", "ethanol", "aceton
        # proposal 0009, batch 1: green and bio-based platform and solvent molecules
        "bdo", "cyrene", "dimethyl-carbonate", "diethyl-carbonate", "ethylene-carbonate", "propylene-carbonate",
        "acetaldehyde", "1-pentanol", "1-hexanol", "1-octanol", "diethylene-glycol", "p-cymene", "adipic-acid",
-       "maleic-anhydride", "terephthalic-acid", "dmt"]
+       "maleic-anhydride", "terephthalic-acid", "dmt",
+       # proposal 0009, batch 2: lipids (biodiesel and hydrotreated oils)
+       "methyl-laurate", "methyl-myristate", "methyl-palmitate", "methyl-stearate", "methyl-oleate", "methyl-linoleate",
+       "triolein", "tripalmitin", "oleic-acid", "palmitic-acid", "stearic-acid", "n-hexadecane", "n-octadecane"]
 # components whose vapour-pressure record is made here (the ten liquids of v0.1 keep theirs): from CoolProp,
 # or from ChemSep for a component that is not a CoolProp fluid
 VP_FITTED = ["oxygen", "nitrogen", "hydrogen", "methane", "ethane", "ethylene",
@@ -112,11 +115,17 @@ VP_FITTED = ["oxygen", "nitrogen", "hydrogen", "methane", "ethane", "ethylene",
        # proposal 0009, batch 1: green and bio-based platform and solvent molecules
        "bdo", "cyrene", "dimethyl-carbonate", "diethyl-carbonate", "ethylene-carbonate", "propylene-carbonate",
        "acetaldehyde", "1-pentanol", "1-hexanol", "1-octanol", "diethylene-glycol", "p-cymene", "adipic-acid",
-       "maleic-anhydride", "terephthalic-acid", "dmt"]
+       "maleic-anhydride", "terephthalic-acid", "dmt",
+       # proposal 0009, batch 2: lipids (biodiesel and hydrotreated oils)
+       "methyl-laurate", "methyl-myristate", "methyl-palmitate", "methyl-stearate", "methyl-oleate", "methyl-linoleate",
+       "triolein", "tripalmitin", "oleic-acid", "palmitic-acid", "stearic-acid", "n-hexadecane", "n-octadecane"]
 # proposal 0009, batch 1 (the record notes name the proposal)
 BATCH_0009 = ["bdo", "cyrene", "dimethyl-carbonate", "diethyl-carbonate", "ethylene-carbonate", "propylene-carbonate",
        "acetaldehyde", "1-pentanol", "1-hexanol", "1-octanol", "diethylene-glycol", "p-cymene", "adipic-acid",
-       "maleic-anhydride", "terephthalic-acid", "dmt"]
+       "maleic-anhydride", "terephthalic-acid", "dmt",
+       # proposal 0009, batch 2: lipids (biodiesel and hydrotreated oils)
+       "methyl-laurate", "methyl-myristate", "methyl-palmitate", "methyl-stearate", "methyl-oleate", "methyl-linoleate",
+       "triolein", "tripalmitin", "oleic-acid", "palmitic-acid", "stearic-acid", "n-hexadecane", "n-octadecane"]
 # proposal 0008, Part B, batches 1 to 3 (the record notes name the proposal)
 BATCH_0008 = ["dichloroethane", "mibk", "cyclohexanone", "dmf", "dmso", "nmp", "sulfolane", "furfural", "dioxane",
        "isobutanol", "2-butanol",
@@ -142,7 +151,9 @@ COOLPROP = {"water": "Water", "methanol": "Methanol", "ethanol": "Ethanol", "ace
             "tetrahydrofuran": "Tetrahydrofuran", "dichloroethane": "Dichloroethane",
             "sulfur-dioxide": "SulfurDioxide", "nitrous-oxide": "NitrousOxide", "ethylene-oxide": "EthyleneOxide",
             "n-nonane": "n-Nonane", "n-decane": "n-Decane", "n-dodecane": "n-Dodecane", "1-butene": "1-Butene",
-            "isopentane": "Isopentane", "n-undecane": "n-Undecane", "dimethyl-carbonate": "DimethylCarbonate"}
+            "isopentane": "Isopentane", "n-undecane": "n-Undecane", "dimethyl-carbonate": "DimethylCarbonate",
+            "methyl-palmitate": "MethylPalmitate", "methyl-stearate": "MethylStearate", "methyl-oleate": "MethylOleate",
+            "methyl-linoleate": "MethylLinoleate"}
 
 PROPS = ["liquidDensity", "idealGasHeatCapacity", "liquidHeatCapacity", "heatOfVaporization",
          "liquidViscosity", "vapourViscosity", "liquidThermalConductivity",
@@ -181,7 +192,9 @@ NOT_IN_COOLPROP = ["acetic-acid", "ethylene-glycol", "chloroform", "ethyl-acetat
                    "acrylonitrile", "methylamine", "naphthalene", "benzoic-acid", "salicylic-acid",
                    "bdo", "cyrene", "diethyl-carbonate", "ethylene-carbonate", "propylene-carbonate", "acetaldehyde",
                    "1-pentanol", "1-hexanol", "1-octanol", "diethylene-glycol", "p-cymene", "adipic-acid", "maleic-anhydride",
-                   "terephthalic-acid", "dmt"]
+                   "terephthalic-acid", "dmt",
+                   "methyl-laurate", "methyl-myristate", "triolein", "tripalmitin", "oleic-acid", "palmitic-acid",
+                   "stearic-acid", "n-hexadecane", "n-octadecane"]
 COOLPROP_GAPS = {  # property models CoolProp 8.0.0 does not have (checked in this script)
     "acetone": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
     "ethylene": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
@@ -203,6 +216,10 @@ COOLPROP_GAPS = {  # property models CoolProp 8.0.0 does not have (checked in th
     "1-butene": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
     "n-undecane": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
     "dimethyl-carbonate": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
+    "methyl-palmitate": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
+    "methyl-stearate": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
+    "methyl-oleate": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
+    "methyl-linoleate": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
 }
 
 # NIST WebBook fluid tables (step 3 of the chain) for properties in COOLPROP_GAPS, where the WebBook
@@ -299,7 +316,11 @@ WEBBOOK_ANTOINE = {cid: "C" + cas.replace("-", "") for cid, cas in [
     ("bdo", "110-63-4"), ("cyrene", "53716-82-8"), ("diethyl-carbonate", "105-58-8"), ("ethylene-carbonate", "96-49-1"),
     ("propylene-carbonate", "108-32-7"), ("acetaldehyde", "75-07-0"), ("1-pentanol", "71-41-0"), ("1-hexanol", "111-27-3"),
     ("1-octanol", "111-87-5"), ("diethylene-glycol", "111-46-6"), ("p-cymene", "99-87-6"), ("adipic-acid", "124-04-9"),
-    ("maleic-anhydride", "108-31-6"), ("terephthalic-acid", "100-21-0"), ("dmt", "120-61-6")]}
+    ("maleic-anhydride", "108-31-6"), ("terephthalic-acid", "100-21-0"), ("dmt", "120-61-6"),
+    # proposal 0009, batch 2 (the components that are not CoolProp fluids)
+    ("methyl-laurate", "111-82-0"), ("methyl-myristate", "124-10-7"), ("triolein", "122-32-7"), ("tripalmitin", "555-44-2"),
+    ("oleic-acid", "112-80-1"), ("palmitic-acid", "57-10-3"), ("stearic-acid", "57-11-4"), ("n-hexadecane", "544-76-3"),
+    ("n-octadecane", "593-45-3")]}
 # Vapour pressures fitted to a WebBook Antoine set plus the critical point, where the ChemSep equation does not
 # reproduce the measured normal boiling point. Styrene: the ChemSep equation 101 gives 417.14 K at 101.325 kPa
 # against 418.31 K (ChemSep's own Tb, and the Antoine equation of Dreyer et al. (1955), measured to 417.92 K;
@@ -354,6 +375,17 @@ MEASURED_REFIT = {
     # the measured checks of batch 1 (docs/MEASURED_CHECKS.md): above three times the 2 % tolerance
     "bdo": {"liquidHeatCapacity": "the ChemSep heat capacity deviates from the three articles with stated "
                                   "uncertainties within 2 % by 7.5 % (median of the articles)"},
+    # proposal 0009, batch 2: a property that neither CoolProp 8.0.0 (no viscosity model for the methyl esters) nor
+    # ChemSep v8.31 data 2 (no correlation) has; the ThermoML Archive values instead
+    "methyl-linoleate": {"liquidViscosity": "CoolProp 8.0.0 has no viscosity model for methyl linoleate, and ChemSep v8.31 "
+                                            "data 2 no liquid viscosity",
+                         "liquidThermalConductivity": "CoolProp 8.0.0 has no thermal conductivity model for methyl "
+                                                      "linoleate, and ChemSep v8.31 data 2 none"},
+    # the correlation of Perkins and Huber (2011, NIST), fitted to their measurements (uncertainty below 1 %), as
+    # calculated by perkins2011_conductivity.py (article_<id>_perkins2011.json)
+    "methyl-oleate": {"liquidThermalConductivity": "the ChemSep v8.31 data 2 thermal conductivity is 30-36 % below the "
+                                                   "correlation of Perkins and Huber (2011, NIST), which is within 2.5 % "
+                                                   "of their measurements at 302-508 K"},
 }
 # where a property has no record in the sources above, the further searches of AGENTS.md rule 1 (steps 5 and 6), listed
 # in its "no open data" record (proposal 0009, batch 1; searched 2026-10-11)
@@ -370,6 +402,33 @@ SEARCHED_BEYOND = {
                           for p in ("liquidHeatCapacity", "heatOfVaporization", "liquidViscosity",
                                     "liquidThermalConductivity", "surfaceTension")},
 }
+# proposal 0009, batch 2 (searched 2026-10-13)
+_LIT2 = ("open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer "
+         "provided: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266 (CC BY 4.0; saturated triglycerides only); van "
+         "Miltenburg and ten Grotenhuis, J. Chem. Eng. Data 44 (1999) 721-726 (tripalmitin heat capacity 10-350 K; "
+         "paywalled, and its values are not in an open source, so not used); Zong et al., Ind. Eng. Chem. Res. 49 (2010) "
+         "5479-5484 (predictions for mono- and diglycerides; paywalled, not measured, so not used)")
+_WB_HVAP = ("NIST Chemistry WebBook (enthalpy of vaporization): 166.3 kJ/mol at 483 K (Kishore et al. 1990, TGA) and 160.8 "
+            "kJ/mol at 521 K (Stephenson and Malanowski 1987, from data at 506-572 K): single temperatures, not a correlation")
+_TH_HVAP = ("Verevkin and Nagrimanov (2022, Table 1): one measured value, 169.5 +/- 4.2 kJ/mol at 384.9-433.2 K (quartz "
+            "crystal microbalance), and values adjusted to 298.15 K with an estimated heat-capacity difference (their eqs "
+            "3-4): not a correlation over the liquid range. The ChemSep vapour pressure of the record implies about 190 "
+            "kJ/mol there (Clausius-Clapeyron), 12 % more; the article's vapour pressures (its Table S2) would decide")
+_WB_CP = ("NIST Chemistry WebBook (liquid heat capacity): 1665 J/(mol K) at 343 K (Phillips and Mattamal 1976) and 1753.1 "
+          "at 338.8 K (Charbonnet and Singleton 1947), 5 % apart: single temperatures, not a correlation; Verevkin and "
+          "Nagrimanov (2022, Table 3): an estimate from the chain length, not a measurement")
+SEARCHED_BEYOND.update({
+    "methyl-linoleate": {p: [_TML % ("methyl-linoleate", what), _LIT2] for p, what in (
+        ("vapourViscosity", "gas values"),
+        ("vapourThermalConductivity", "gas values; the dilute-gas part of the correlation of Perkins and Huber (2011) "
+                                      "rests on estimated values (Chung et al.), 10-30 % uncertain as the authors state"))},
+    **{cid: {p: [_TML % (cid, what), _LIT2] + extra.get(p, []) for p, what in (
+        ("liquidHeatCapacity", "liquid heat capacity"), ("heatOfVaporization", "enthalpy of vaporization"),
+        ("vapourViscosity", "gas values"), ("liquidThermalConductivity", "thermal conductivity"),
+        ("vapourThermalConductivity", "gas values"))}
+       for cid, extra in (("triolein", {"heatOfVaporization": ["NIST Chemistry WebBook: no enthalpy of vaporization"]}),
+                          ("tripalmitin", {"heatOfVaporization": [_WB_HVAP, _TH_HVAP], "liquidHeatCapacity": [_WB_CP]}))},
+})
 # ideal-gas heat capacities tabulated in an open-access article (validation/data/pure/measured/<file>, key
 # "idealGasHeatCapacity"), used where the databank value is implausible; calculated values (statistical
 # thermodynamics), like the WebBook tables of WEBBOOK_CP0. The reason is stated in the record.
@@ -452,6 +511,9 @@ def chain_note(cid, prop):
         elif cid in ("dimethyl-ether", "diethyl-ether", "propylene-glycol", "tetrahydrofuran", "dichloroethane",
                      "ethylene-oxide", "1-butene", "dimethyl-carbonate"):
             notes.append("NIST WebBook: %s is not a WebBook fluid" % ("1-butene" if cid == "1-butene" else cid.replace("-", " ")))
+        elif cid in ("methyl-palmitate", "methyl-stearate", "methyl-oleate", "methyl-linoleate"):
+            notes.append("NIST WebBook: %s is not a WebBook fluid (its fluid list, checked 2026-10-13, has no fatty acid "
+                         "methyl ester)" % cid.replace("-", " "))
         elif cid == "n-undecane":
             notes.append("NIST WebBook: undecane is not a WebBook fluid (its fluid list, checked 2026-10-08, has decane "
                          "and dodecane)")
@@ -596,6 +658,19 @@ def _minimax(fit_once, T, y, iters=30):
     return best[1]
 
 
+def tsat_101(c, P, T0):
+    """Temperature of a DIPPR101 curve at pressure P, by Newton from T0."""
+    T = float(T0)
+    for _ in range(50):
+        f = float(np.log(ev("DIPPR101", c, np.array([T]))[0] / P))
+        h = 1e-3
+        d = (float(np.log(ev("DIPPR101", c, np.array([T + h]))[0] / P)) - f) / h
+        T -= f / d
+        if abs(f / d) < 1e-8:
+            break
+    return T
+
+
 def fit_100(T, y, target):
     best = None
     for deg in range(1, 5):
@@ -613,15 +688,23 @@ def fit_100(T, y, target):
     return best[1], {}
 
 
-def fit_101(T, y, target, Es=(1, 2, 3, 4, 6, 10)):
-    """ln y = A + B/T + C ln T + D T^E: linear in A-D for a given E; E from a grid, then refined."""
+def fit_101(T, y, target, Es=(1, 2, 3, 4, 6, 10), pin=None):
+    """ln y = A + B/T + C ln T + D T^E: linear in A-D for a given E; E from a grid, then refined. pin=(T0, y0): the
+    curve passes exactly through that point (A follows from the others)."""
     from scipy.optimize import minimize_scalar
     ly = np.log(y)
 
     def for_E(E):
         def once(w):
-            cols = [np.ones_like(T), 1 / T, np.log(T)] + ([T ** E] if E else [])
-            x = _lstsq(np.vstack(cols).T, ly, w)
+            if pin:
+                T0, l0 = pin[0], math.log(pin[1])
+                cols = [1 / T - 1 / T0, np.log(T) - math.log(T0)] + ([T ** E - T0 ** E] if E else [])
+                x = _lstsq(np.vstack(cols).T, ly - l0, w)
+                B, C, D = x[0], x[1], x[2] if E else 0.0
+                x = [l0 - B / T0 - C * math.log(T0) - (D * T0 ** E if E else 0.0), B, C, D]
+            else:
+                cols = [np.ones_like(T), 1 / T, np.log(T)] + ([T ** E] if E else [])
+                x = _lstsq(np.vstack(cols).T, ly, w)
             c = {"A": x[0], "B": x[1], "C": x[2], "D": x[3] if E else 0.0, "E": float(E) if E else 0.0}
             return (lambda t, c=c: ev("DIPPR101", c, t), c)
         f, c = _minimax(once, T, y)
@@ -1017,7 +1100,11 @@ CHEMSEP2_NAME = "ChemSep v8.31 pure-component database, data file 2"
 # whose viscosities, thermal conductivities and surface tension CoolProp 8.0.0 does not model (chemsep1.xml does not
 # have it)
 CHEMSEP2_USE = {"872-50-4", "57-55-6", "64-18-6", "7722-84-1",  # and formic acid, hydrogen peroxide (batch 2)
-                "53716-82-8", "111-87-5"}  # Cyrene and 1-octanol (proposal 0009, batch 1)
+                "53716-82-8", "111-87-5",  # Cyrene and 1-octanol (proposal 0009, batch 1)
+                # proposal 0009, batch 2: the lipids (the four methyl esters that are CoolProp fluids only for the
+                # transport properties CoolProp does not model)
+                "111-82-0", "124-10-7", "112-39-0", "112-61-8", "112-62-9", "112-63-0", "122-32-7", "555-44-2",
+                "112-80-1", "57-10-3", "57-11-4"}
 CHEMSEP2_REF = ("Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), "
                 "via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)")
 CHEMSEP_ACCESS = "Artistic License 2.0"
@@ -1435,12 +1522,20 @@ class Builder:
                 dd = self.cs.value_si(cas, prop, T[inside]) / y[inside] - 1
                 old = "%+.1f %% (median, %+.1f %% at most)" % (100 * float(np.median(dd)), 100 * float(dd[np.argmax(np.abs(dd))]))
         where, access = tml.origin(use + kept)
-        source = {"name": "Measured values (%s)" % where, "reference": "; ".join(refs),
+        # values calculated from an article's correlation of its own measurements (perkins2011_conductivity.py), where
+        # the article's tabulated measurements are not used: said so, not called measured values
+        calc = all(str(p.get("set") or "").startswith("correlation") for p in use + kept)
+        source = {"name": ("Correlation of measured values (%s)" if calc else "Measured values (%s)") % where,
+                  "reference": "; ".join(refs),
                   "access": access,
-                  "fit": "%d measured values with stated uncertainties within %g %%%s from %d articles, %.2f-%.2f K, max "
-                         "deviation %s %%%s" % (len(use), 100 * target,
+                  "fit": ("%d values calculated from the authors' correlation of their measurements, stated uncertainty "
+                          "within %g %%%s, from %d article%s, %.2f-%.2f K, max deviation %s %%%s" if calc else
+                          "%d measured values with stated uncertainties within %g %%%s from %d articles, %.2f-%.2f K, max "
+                          "deviation %s %%%s") % (len(use), 100 * target,
                                                (" or no stated uncertainty (%d)" % n_unc) if n_unc else "",
-                                               len({p["doi"] for p in use}), T.min(), T.max(), pct(m),
+                                               len({p["doi"] for p in use}),
+                                               *(("" if len({p["doi"] for p in use}) == 1 else "s",) if calc else ()),
+                                               T.min(), T.max(), pct(m),
                                                "; %d values with larger stated uncertainties agree within them" % len(kept)
                                                if kept else ""),
                   "notes": "Fitted to measured data instead of the databank: %s%s. Rules: "
@@ -1503,13 +1598,22 @@ class Builder:
         if Tmin > T00:
             why = ("narrowed: from the triple point (%.2f K, where the pressure is %.2g Pa) one DIPPR 101 curve does "
                    "not meet the 1 %% target; it starts at %.2f K" % (T00, F.value("vapourPressure", T00), Tmin))
+        tb = self.comps[cid]["Tb_K"]
+        pinned = ""
+        if tb and abs(tsat_101(c, 101325.0, tb) - tb) > 0.2:
+            # the curve must give the normal boiling point of the same equation of state (the engine's boiling point is
+            # tested to 0.2 K): where the free fit misses it by more than that (the methyl esters, whose curves span
+            # 1e-3 Pa to the critical point), it is fitted through (Tb, 101.325 kPa)
+            miss = tsat_101(c, 101325.0, tb) - tb
+            c, _ = fit_101(T, y, 0.01, Es=(1, 2, 3, 4, 5, 6, 8, 10), pin=(tb, 101325.0))
+            m = rel_dev(ev("DIPPR101", c, T), y)
+            pinned = "; fitted through the normal boiling point (the free fit missed it by %+.2f K)" % miss
         keys = F.keys("EOS")
         coeffs = {k: rnd(v) for k, v in c.items()}
         m2 = rel_dev(ev("DIPPR101", coeffs, T), y)
-        tb = self.comps[cid]["Tb_K"]
         source = ("Fitted to the saturation pressure of CoolProp 8.0.0 (%s: equation of state %s; %s); "
                   "%d points %.3f-%.3f K (%s), max deviation %s %%." % (
-                      F.name, ", ".join(keys), "; ".join(self.bib.short(k) for k in keys), len(T), Tmin, Tmax, why,
+                      F.name, ", ".join(keys), "; ".join(self.bib.short(k) for k in keys), len(T), Tmin, Tmax, why + pinned,
                       pct(max(m, m2))))
         rec = {"equation": "DIPPR101", "form": "ln(P/Pa) = A + B/T + C ln T + D T^E", "units": "Pa",
                "A": coeffs["A"], "B": coeffs["B"], "C": coeffs["C"], "D": coeffs["D"], "E": coeffs["E"],

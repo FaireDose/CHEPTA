@@ -2,9 +2,39 @@
  "component": "terephthalic-acid",
  "cas": "100-21-0",
  "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
- "retrieved": "2026-10-11",
+ "retrieved": "2026-10-13",
  "searched": "ThermoML-API full-text search for \"1,4-benzenedicarboxylic acid\", \"terephthalic acid\"; 26 records opened",
  "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
- "articles": {},
- "rows": []
+ "articles": {
+  "10.1021/je049801y": {
+   "authors": [
+    "Li, D.-Q.[Dian-Qing]",
+    "Lin, Y.-J.[Yan-Jun]",
+    "Evans, D. G. G.[David G.]",
+    "Duan, X.[Xue]"
+   ],
+   "title": "Solid-Liquid Equilibria for Benzoic Acid + p-Toluic Acid + Chloroform, Benzoic Acid + p-Toluic Acid + Acetic Acid, and Terephthalic Acid + Isophthalic Acid + N,N-Dimethylformamide",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "50",
+   "year": "2005",
+   "pages": "119-121"
+  }
+ },
+ "rows": [
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 703.1,
+   "uncertainty": 1.0,
+   "doi": "10.1021/je049801y",
+   "set": 2,
+   "binary_with": null
+  }
+ ]
 }

@@ -1,0 +1,1703 @@
+{
+ "component": "stearic-acid",
+ "cas": "57-11-4",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-13",
+ "searched": "ThermoML-API full-text search for \"octadecanoic acid\", \"stearic acid\"; 68 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1016/j.fluid.2015.12.021": {
+   "authors": [
+    "Tamura, K.[Kazuhiro]",
+    "Kasuga, T.[Tsuyoshi]",
+    "Nakagawa, T.[Tomoyuki]"
+   ],
+   "title": "Phase behavior and solid-liquid equilibria of aliphatic and aromatic carboxylic acid mixtures",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "420",
+   "year": "2016",
+   "pages": "24-29"
+  },
+  "10.1016/j.fluid.2016.01.011": {
+   "authors": [
+    "Maximo, G. J.[Guilherme J.]",
+    "Aquino, R. T.[Rafael T.]",
+    "Meirelles, A. J. A.[Antonio J. A.]",
+    "Krahenbuhl, M. A.[Maria Alvina]",
+    "Costa, M. C.[Mariana C.]"
+   ],
+   "title": "Enhancing the description of SSLE data for binary and ternary fatty mixtures",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "426",
+   "year": "2016",
+   "pages": "119-130"
+  },
+  "10.1016/j.fluid.2016.04.008": {
+   "authors": [
+    "Matos, F. a. C. d.[Fl avio Cardoso de]",
+    "Costa, M. C. d.[Mariana Conceicao da]",
+    "Meirelles, A. J. d. A.[Antonio Jose de Almeida]",
+    "Batista, E. A. C.[Eduardo Augusto Caldas]"
+   ],
+   "title": "Binary solid-liquid equilibrium systems containing fatty acids, fatty alcohols and trilaurin by differential scanning calorimetry",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "423",
+   "year": "2016",
+   "pages": "74-83"
+  },
+  "10.1016/j.fluid.2017.04.007": {
+   "authors": [
+    "Pontes, Paula V.A.",
+    "Crespo, Emanuel A.",
+    "Martins, Monia A.R.",
+    "Silva, Liliana P.",
+    "Neves, Catarina M.S.S.",
+    "Maximo, Guilherme J.",
+    "Hubinger, Miriam Dupas",
+    "Batista, Eduardo A.C.",
+    "Pinho, Simao P.",
+    "Coutinho, Joao A.P.",
+    "Sadowski, Gabriele",
+    "Held, Christoph"
+   ],
+   "title": "Measurement and PC-SAFT modeling of solid-liquid equilibrium of deep eutectic solvents of quaternary ammonium chlorides and carboxylic acids",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "448",
+   "year": "2017",
+   "pages": "69-80"
+  },
+  "10.1016/j.fluid.2019.05.020": {
+   "authors": [
+    "Pelaquim, Fernanda Paludetto",
+    "Matos, Flavio Cardoso de",
+    "Cardoso, Lisandro Pavie",
+    "Batista, Eduardo Augusto Caldas",
+    "Meirelles, Antonio Jose de Almeida",
+    "Costa, Mariana Conceicao da"
+   ],
+   "title": "Solid-liquid phase equilibrium diagrams of binary mixtures containing fatty acids, fatty alcohol compounds and tripalmitin using differential scanning calorimetry",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "497",
+   "year": "2019",
+   "pages": "19-32"
+  },
+  "10.1016/j.jct.2016.11.022": {
+   "authors": [
+    "Ma, G.[Guixiang]",
+    "Han, L.[Lipeng]",
+    "Sun, J.[Jinhe]",
+    "Jia, Y.[Yongzhong]"
+   ],
+   "title": "Thermal properties and reliability of eutectic mixture of stearic acid-acetamide as phase change material for latent heat storage",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "106",
+   "year": "2017",
+   "pages": "178-186"
+  },
+  "10.1016/j.jct.2018.01.008": {
+   "authors": [
+    "Ma, Guixiang",
+    "Sun, Jinhe",
+    "Xie, Shaolei",
+    "Wang, Zhao",
+    "Jing, Yan",
+    "Jia, Yongzhong"
+   ],
+   "title": "Solid-liquid phase equilibria of stearic acid and dicarboxylic acids binary mixtures as low temperature thermal energy storage materials",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "120",
+   "year": "2018",
+   "pages": "60-71"
+  },
+  "10.1016/j.tca.2009.06.018": {
+   "authors": [
+    "Costa, M. C.[Mariana C.]",
+    "Rolemberg, M. P.[Marlus P.]",
+    "Meirelles, A. J. A.[Antonio J. A.]",
+    "Coutinho, J. A. P.[Joao A. P.]",
+    "Krahenbuhl, M. A."
+   ],
+   "title": "The solid liquid phase diagrams of binary mixtures of even saturated fatty acids differing by six carbon atoms",
+   "journal": "Thermochim. Acta",
+   "volume": "496",
+   "year": "2009",
+   "pages": "30-37"
+  },
+  "10.1016/j.tca.2012.07.034": {
+   "authors": [
+    "Falleiro, R. M. M.[Rafael M. Matricarde]",
+    "Silva, L. Y. A.[Luciana Y. Akisawa]",
+    "Meirelles, A. J. A.[Antonio J. A.]",
+    "Krahenbuhl, M. A.[Maria A.]"
+   ],
+   "title": "Vapor pressure data for fatty acids obtained using an adaptation of the DSC technique",
+   "journal": "Thermochim. Acta",
+   "volume": "547",
+   "year": "2012",
+   "pages": "6-12"
+  },
+  "10.1016/j.tca.2014.12.020": {
+   "authors": [
+    "Puupponen, S.[Salla]",
+    "Seppala, A.[Ari]",
+    "Vartia, O.[Olli]",
+    "Saari, K.[Kari]",
+    "Ala-Nissila, T.[Tapio]"
+   ],
+   "title": "Preparation of paraffin and fatty acid phase changing nanoemulsions for heat transfer",
+   "journal": "Thermochim. Acta",
+   "volume": "601",
+   "year": "2015",
+   "pages": "33-38"
+  },
+  "10.1016/j.tca.2016.02.008": {
+   "authors": [
+    "Eckert, K.-A.[Karl-Andreas]",
+    "Dasgupta, S.[Sunanda]",
+    "Selge, B.[Benjamin]",
+    "Ay, P.[Peter]"
+   ],
+   "title": "Solid liquid phase diagrams of binary fatty acid mixtures - Palmitic/stearic with oleic/linoleic/linolenic acid mixture",
+   "journal": "Thermochim. Acta",
+   "volume": "630",
+   "year": "2016",
+   "pages": "50-63"
+  },
+  "10.1016/j.tca.2016.09.014": {
+   "authors": [
+    "Kaur, A.[Amanpreet]",
+    "Goindi, S.[Shishu]",
+    "Katare, O. P.[Om Prakash]"
+   ],
+   "title": "Thermal analysis and quantitative characterization of compatibility between diflunisal and lipid excipients as raw materials for development of solid lipid nanoparticles",
+   "journal": "Thermochim. Acta",
+   "volume": "643",
+   "year": "2016",
+   "pages": "23-32"
+  },
+  "10.1016/j.tca.2017.03.015": {
+   "authors": [
+    "Eckert, K.-A.[Karl-Andreas]",
+    "Dasgupta, S.[Sunanda]",
+    "Selge, B.[Benjamin]",
+    "Ay, P.[Peter]"
+   ],
+   "title": "Novel model for the prediction of SSLE temperatures andcrystallization paths of any mixture containing palmitic, stearic, oleic,linoleic and linolenic acid",
+   "journal": "Thermochim. Acta",
+   "volume": "652",
+   "year": "2017",
+   "pages": "126-140"
+  },
+  "10.1016/j.tca.2017.03.027": {
+   "authors": [
+    "Cai, Y.[Yibing]",
+    "Hou, X.[Xuebin]",
+    "Wang, W.[Weiwei]",
+    "Liu, M.[Mengmeng]",
+    "Zhang, J.[Junhao]",
+    "Qiao, H.[Hui]",
+    "Huang, F.[Fenglin]",
+    "Wei, Q.[Qufu]"
+   ],
+   "title": "Effects of SiO2 nanoparticles on structure and property of form-stable phase change materials made of cellulose acetate phase inversion membrane absorbed with capric-myristic-stearic acid ternary eutectic mixture",
+   "journal": "Thermochim. Acta",
+   "volume": "653",
+   "year": "2017",
+   "pages": "49-58"
+  },
+  "10.1016/j.tca.2017.12.024": {
+   "authors": [
+    "Kahwaji, Samer",
+    "White, Mary Anne"
+   ],
+   "title": "Prediction of the properties of eutectic fatty acid phase change materials",
+   "journal": "Thermochim. Acta",
+   "volume": "660",
+   "year": "2018",
+   "pages": "94-100"
+  },
+  "10.1016/j.tca.2018.03.018": {
+   "authors": [
+    "Zhang, J.-L.[Jin-Lin]",
+    "Wu, N.[Nan]",
+    "Wu, X.-W.[Xiu-Wen]",
+    "Chen, Y.[Yuan]",
+    "Zhao, Y.[Ying]",
+    "Liang, J.-F.[Jia-Feng]",
+    "Bai, X.-B.[Xin-Bao]"
+   ],
+   "title": "High latent heat stearic acid impregnated in expanded graphite",
+   "journal": "Thermochim. Acta",
+   "volume": "663",
+   "year": "2018",
+   "pages": "118-124"
+  },
+  "10.1021/acs.jced.5b00371": {
+   "authors": [
+    "Zhang, Z.[Zhaoli]",
+    "Yuan, Y.[Yanping]",
+    "Zhang, N.[Nan]",
+    "Cao, X.[Xiaoling]"
+   ],
+   "title": "Thermophysical properties and supercooling of fatty acids  and their binary eutectic phase change slurries for thermal  energy storage",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "60",
+   "year": "2015",
+   "pages": "2495-2501"
+  },
+  "10.1021/acs.jced.6b00355": {
+   "authors": [
+    "Yui, K.[Kazuko]",
+    "Itsukaichi, Y.[Yasuhiro]",
+    "Kobayashi, T.[Takuro]",
+    "Tomoya, T.[Tsuji]",
+    "Fukui, K.[Keisuke]",
+    "Maeda, K.[Kouji]",
+    "Kuramochi, H.[Hidetoshi]"
+   ],
+   "title": "Solid Liquid Equilibria in the Binary Systems of Saturated Fatty Acids or Triglycerides (C12 to C18) + Hexadecane",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "62",
+   "year": "2017",
+   "pages": "35-43"
+  },
+  "10.1021/acs.jced.8b01006": {
+   "authors": [
+    "Sosa, F. H. B.[Filipe Hobi Bordon]",
+    "Carareto, N. D. D.[Natalia Daniele Dorighello]",
+    "Maximo, G. J.[Guilherme Jose]",
+    "Meirelles, A. J. d. A.[Antonio Jose de Almeida]",
+    "Costa, M. C.[Mariana Conceicao]"
+   ],
+   "title": "Solid-Liquid Equilibrium of Binary Systems Containing Fatty Acids and Fatty Alcohols Using Differential Scanning Calorimetry",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "64",
+   "year": "2019",
+   "pages": "5017-5027"
+  },
+  "10.1021/acs.jced.8b01044": {
+   "authors": [
+    "Bonassoli, Andrea Briones Goncalves",
+    "Oliveira, Grazielle",
+    "Sosa, Filipe Hobi Bordon",
+    "Rolemberg, Marlus Pinheiro",
+    "Mota, Marilsa Aparecida",
+    "Basso, Rodrigo Correa",
+    "Igarashi-Mafra, Luciana",
+    "Mafra, Marcos R."
+   ],
+   "title": "Solubility Measurement of Lauric, Palmitic, and Stearic Acids in Ethanol, n-Propanol, and 2-Propanol Using Differential Scanning Calorimetry",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "64",
+   "year": "2019",
+   "pages": "2084-2092"
+  },
+  "10.1021/je060146z": {
+   "authors": [
+    "Costa, M. C.[Mariana C.]",
+    "Rolemberg, M. P.[Marlus P.]",
+    "Boros, L. A. D.[Laslo A. D.]",
+    "Krahenbuhl, M. A.[Maria A.]"
+   ],
+   "title": "Solid-Liquid Equilibrium of Binary Fatty Acid Mixtures",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "52",
+   "year": "2007",
+   "pages": "30-36"
+  },
+  "10.1021/je300902c": {
+   "authors": [
+    "Wilson, J. A.[Joe A.]",
+    "Chickos, J. S.[James S.]"
+   ],
+   "title": "Vapor Pressures and Vaporization, Sublimation, and Fusion Enthalpies of Some Fatty Acids",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "58",
+   "year": "2013",
+   "pages": "322-333"
+  },
+  "10.1021/je400260c": {
+   "authors": [
+    "Trivedi, V.[Vivek]",
+    "Bhomia, R.[Ruchir]",
+    "Mitchell, J. C.[John C]",
+    "Coleman, N. J.[Nichola J]",
+    "Douroumis, D.[Dennis]",
+    "Snowden, M. J.[Martin J]"
+   ],
+   "title": "Study of the Effect of Pressure on Melting Behavior of Saturated Fatty Acids in Liquid or Supercritical Carbon Dioxide",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "58",
+   "year": "2013",
+   "pages": "1861-1866"
+  },
+  "10.1021/je900410j": {
+   "authors": [
+    "Costa, M. C.[Mariana C.]",
+    "Boros, L. A. D.[Laslo A. D.]",
+    "Rolemberg, M. P.[Marlus P.]",
+    "Krahenbuhl, M. A.[Maria A.]",
+    "Meirelles, A. J. A.[Antonio J. A.]"
+   ],
+   "title": "Solid-Liquid Equilibrium of Saturated Fatty Acids + Triacylglycerols",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "55",
+   "year": "2010",
+   "pages": "974-977"
+  }
+ },
+ "rows": [
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 342.95,
+   "uncertainty": 0.5,
+   "doi": "10.1016/j.fluid.2015.12.021",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 343.98,
+   "uncertainty": 0.61,
+   "doi": "10.1016/j.fluid.2016.01.011",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 64.23,
+   "uncertainty": 2.28,
+   "doi": "10.1016/j.fluid.2016.01.011",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 344.04,
+   "uncertainty": 0.7,
+   "doi": "10.1016/j.fluid.2016.04.008",
+   "set": 9,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 61.1,
+   "uncertainty": null,
+   "doi": "10.1016/j.fluid.2016.04.008",
+   "set": 10,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 343.67,
+   "uncertainty": 0.45,
+   "doi": "10.1016/j.fluid.2017.04.007",
+   "set": 14,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 61.36,
+   "uncertainty": 1.44,
+   "doi": "10.1016/j.fluid.2017.04.007",
+   "set": 15,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 343.63,
+   "uncertainty": 0.49,
+   "doi": "10.1016/j.fluid.2019.05.020",
+   "set": 11,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 56.165,
+   "uncertainty": 4.741,
+   "doi": "10.1016/j.fluid.2019.05.020",
+   "set": 12,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 342.62,
+   "uncertainty": 1.06,
+   "doi": "10.1016/j.jct.2016.11.022",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 60.3717598728,
+   "uncertainty": 6.144708384,
+   "doi": "10.1016/j.jct.2016.11.022",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 57.1201850196,
+   "uncertainty": 5.8147147856,
+   "doi": "10.1016/j.jct.2018.01.008",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 342.0,
+   "uncertainty": 2.03,
+   "doi": "10.1016/j.jct.2018.01.008",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 343.98,
+   "uncertainty": 0.5,
+   "doi": "10.1016/j.tca.2009.06.018",
+   "set": 6,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 501.3,
+   "P_kPa": null,
+   "value": 1.333,
+   "uncertainty": 0.12,
+   "doi": "10.1016/j.tca.2012.07.034",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 519.1,
+   "P_kPa": null,
+   "value": 2.666,
+   "uncertainty": 0.132,
+   "doi": "10.1016/j.tca.2012.07.034",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 528.9,
+   "P_kPa": null,
+   "value": 4.0,
+   "uncertainty": 0.168,
+   "doi": "10.1016/j.tca.2012.07.034",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 535.9,
+   "P_kPa": null,
+   "value": 5.333,
+   "uncertainty": 0.185,
+   "doi": "10.1016/j.tca.2012.07.034",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 543.7,
+   "P_kPa": null,
+   "value": 6.666,
+   "uncertainty": 0.203,
+   "doi": "10.1016/j.tca.2012.07.034",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 548.7,
+   "P_kPa": null,
+   "value": 7.999,
+   "uncertainty": 0.256,
+   "doi": "10.1016/j.tca.2012.07.034",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 553.2,
+   "P_kPa": null,
+   "value": 9.333,
+   "uncertainty": 0.269,
+   "doi": "10.1016/j.tca.2012.07.034",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 326.15,
+   "uncertainty": 5.0,
+   "doi": "10.1016/j.tca.2014.12.020",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 51.888648576,
+   "uncertainty": 1.450833924,
+   "doi": "10.1016/j.tca.2014.12.020",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 517.7485768,
+   "uncertainty": 22.7581792,
+   "doi": "10.1016/j.tca.2014.12.020",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 338.15,
+   "P_kPa": 101.325,
+   "value": 648.6081072,
+   "uncertainty": 28.447724,
+   "doi": "10.1016/j.tca.2014.12.020",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 343.75,
+   "uncertainty": 0.4,
+   "doi": "10.1016/j.tca.2016.02.008",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 63.068604108,
+   "uncertainty": 3.12924964,
+   "doi": "10.1016/j.tca.2016.02.008",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 327.17,
+   "uncertainty": 5.02,
+   "doi": "10.1016/j.tca.2016.09.014",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 50.437814652,
+   "uncertainty": 1.393938476,
+   "doi": "10.1016/j.tca.2016.09.014",
+   "set": 6,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 342.51,
+   "uncertainty": 0.87,
+   "doi": "10.1016/j.tca.2017.03.015",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 342.15,
+   "uncertainty": 4.0,
+   "doi": "10.1016/j.tca.2017.03.027",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 63.381529072,
+   "uncertainty": 2.816324676,
+   "doi": "10.1016/j.tca.2017.03.027",
+   "set": 6,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 341.55,
+   "uncertainty": 3.0,
+   "doi": "10.1016/j.tca.2017.12.024",
+   "set": 9,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 60.02469764,
+   "uncertainty": 11.94804408,
+   "doi": "10.1016/j.tca.2017.12.024",
+   "set": 10,
+   "binary_with": null
+  },
+  {
+   "property": "Triple point temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 325.66,
+   "uncertainty": 1.0,
+   "doi": "10.1016/j.tca.2018.03.018",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 50.0708390124,
+   "uncertainty": 1.3854041588,
+   "doi": "10.1016/j.tca.2018.03.018",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 343.9,
+   "uncertainty": 4.02,
+   "doi": "10.1021/acs.jced.5b00371",
+   "set": 7,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 59.2935911332,
+   "uncertainty": 2.0425465832,
+   "doi": "10.1021/acs.jced.5b00371",
+   "set": 8,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 343.1,
+   "uncertainty": 0.7,
+   "doi": "10.1021/acs.jced.6b00355",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 63.31,
+   "uncertainty": 1.69,
+   "doi": "10.1021/acs.jced.6b00355",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 61.2,
+   "uncertainty": 1.6,
+   "doi": "10.1021/acs.jced.8b01006",
+   "set": 9,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 343.96,
+   "uncertainty": 2.03,
+   "doi": "10.1021/acs.jced.8b01006",
+   "set": 10,
+   "binary_with": null
+  },
+  {
+   "property": "Triple point temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 344.08,
+   "uncertainty": 0.93,
+   "doi": "10.1021/acs.jced.8b01044",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 60.8240786844,
+   "uncertainty": 3.6014818584,
+   "doi": "10.1021/acs.jced.8b01044",
+   "set": 6,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 341.91,
+   "uncertainty": 1.16,
+   "doi": "10.1021/je060146z",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of vaporization or sublimation, kJ/mol",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 298.0,
+   "P_kPa": null,
+   "value": 132.6,
+   "uncertainty": 17.4,
+   "doi": "10.1021/je300902c",
+   "set": 17,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 298.15,
+   "P_kPa": null,
+   "value": 1.0639e-08,
+   "uncertainty": 9.0483e-08,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 300.0,
+   "P_kPa": null,
+   "value": 1.4591e-08,
+   "uncertainty": 9.8995e-08,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 315.0,
+   "P_kPa": null,
+   "value": 1.6313e-07,
+   "uncertainty": 4.6812e-07,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 330.0,
+   "P_kPa": null,
+   "value": 1.4185e-06,
+   "uncertainty": 3.212e-06,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 345.0,
+   "P_kPa": null,
+   "value": 9.8083e-06,
+   "uncertainty": 1.81372e-05,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 360.0,
+   "P_kPa": null,
+   "value": 5.583e-05,
+   "uncertainty": 8.5518e-05,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 375.0,
+   "P_kPa": null,
+   "value": 0.00026648,
+   "uncertainty": 0.00034248,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 390.0,
+   "P_kPa": null,
+   "value": 0.0010842,
+   "uncertainty": 0.0012058,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 405.0,
+   "P_kPa": null,
+   "value": 0.0038807,
+   "uncertainty": 0.0037288,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 420.0,
+   "P_kPa": null,
+   "value": 0.01226,
+   "uncertainty": 0.010335,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 435.0,
+   "P_kPa": null,
+   "value": 0.034856,
+   "uncertainty": 0.025939,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 450.0,
+   "P_kPa": null,
+   "value": 0.089977,
+   "uncertainty": 0.059275,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 465.0,
+   "P_kPa": null,
+   "value": 0.21278,
+   "uncertainty": 0.12564,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 480.0,
+   "P_kPa": null,
+   "value": 0.46812,
+   "uncertainty": 0.24926,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 495.0,
+   "P_kPa": null,
+   "value": 0.96157,
+   "uncertainty": 0.46204,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 510.0,
+   "P_kPa": null,
+   "value": 1.8542,
+   "uncertainty": 0.8106,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 525.0,
+   "P_kPa": null,
+   "value": 3.3944,
+   "uncertainty": 1.3476,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 540.0,
+   "P_kPa": null,
+   "value": 5.9072,
+   "uncertainty": 2.1481,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 555.0,
+   "P_kPa": null,
+   "value": 9.8387,
+   "uncertainty": 3.2627,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 570.0,
+   "P_kPa": null,
+   "value": 15.705,
+   "uncertainty": 4.864,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 585.0,
+   "P_kPa": null,
+   "value": 24.318,
+   "uncertainty": 6.89,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 600.0,
+   "P_kPa": null,
+   "value": 36.274,
+   "uncertainty": 9.423,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 298.15,
+   "P_kPa": null,
+   "value": 1.1652e-08,
+   "uncertainty": 8.9875e-08,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 300.0,
+   "P_kPa": null,
+   "value": 1.6009e-08,
+   "uncertainty": 9.8083e-08,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 315.0,
+   "P_kPa": null,
+   "value": 1.7631e-07,
+   "uncertainty": 4.6812e-07,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 330.0,
+   "P_kPa": null,
+   "value": 1.5199e-06,
+   "uncertainty": 3.212e-06,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 345.0,
+   "P_kPa": null,
+   "value": 1.0436e-05,
+   "uncertainty": 1.8137e-05,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 360.0,
+   "P_kPa": null,
+   "value": 5.887e-05,
+   "uncertainty": 8.5518e-05,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 375.0,
+   "P_kPa": null,
+   "value": 0.00027966,
+   "uncertainty": 0.00034248,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 390.0,
+   "P_kPa": null,
+   "value": 0.0011348,
+   "uncertainty": 0.0012058,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 405.0,
+   "P_kPa": null,
+   "value": 0.0040327,
+   "uncertainty": 0.0037288,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 420.0,
+   "P_kPa": null,
+   "value": 0.012666,
+   "uncertainty": 0.010335,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 435.0,
+   "P_kPa": null,
+   "value": 0.03597,
+   "uncertainty": 0.025939,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 450.0,
+   "P_kPa": null,
+   "value": 0.092408,
+   "uncertainty": 0.059275,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 465.0,
+   "P_kPa": null,
+   "value": 0.21886,
+   "uncertainty": 0.12564,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 480.0,
+   "P_kPa": null,
+   "value": 0.47825,
+   "uncertainty": 0.24926,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 495.0,
+   "P_kPa": null,
+   "value": 0.97981,
+   "uncertainty": 0.46204,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 510.0,
+   "P_kPa": null,
+   "value": 1.8846,
+   "uncertainty": 0.8106,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 525.0,
+   "P_kPa": null,
+   "value": 3.4451,
+   "uncertainty": 1.3476,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 540.0,
+   "P_kPa": null,
+   "value": 5.9782,
+   "uncertainty": 2.1481,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 555.0,
+   "P_kPa": null,
+   "value": 9.9299,
+   "uncertainty": 3.2627,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 570.0,
+   "P_kPa": null,
+   "value": 15.807,
+   "uncertainty": 4.864,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 585.0,
+   "P_kPa": null,
+   "value": 24.419,
+   "uncertainty": 6.89,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 600.0,
+   "P_kPa": null,
+   "value": 36.376,
+   "uncertainty": 9.423,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 615.0,
+   "P_kPa": null,
+   "value": 52.486,
+   "uncertainty": 12.564,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 630.0,
+   "P_kPa": null,
+   "value": 73.866,
+   "uncertainty": 14.287,
+   "doi": "10.1021/je300902c",
+   "set": 18,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 342.9,
+   "uncertainty": 0.5,
+   "doi": "10.1021/je400260c",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 343.38,
+   "uncertainty": 0.53,
+   "doi": "10.1021/je900410j",
+   "set": 3,
+   "binary_with": null
+  }
+ ]
+}

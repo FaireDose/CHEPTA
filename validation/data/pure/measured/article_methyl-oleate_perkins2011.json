@@ -1,0 +1,287 @@
+{
+ "component": "methyl-oleate",
+ "cas": "112-62-9",
+ "about": "Liquid thermal conductivity calculated from the correlation of Perkins and Huber (2011, eqs 2-4, Tables 1-2), which they fitted to their measurements (transient hot wire, 302-508 K, uncertainty below 1 %); at 101.325 kPa, with the liquid density of the equation of state of Huber et al. (2009) as implemented in CoolProp 8.0.0, the one the authors used; without the critical enhancement, negligible below 500 K as the article states. 'uncertainty' is the 2.5 % (95 % confidence) the authors give for the correlation. Written by validation/python/perkins2011_conductivity.py, which first reproduces the check values of the article's Table 3. The measured values themselves are in the article's supporting information, not used here.",
+ "source": {
+  "citation": "R.A. Perkins, M.L. Huber, Measurement and Correlation of the Thermal Conductivities of Biodiesel Constituent Fluids: Methyl Oleate and Methyl Linoleate, Energy Fuels 25 (2011) 2383-2388",
+  "doi": "10.1021/ef200417x",
+  "open_copy": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=907397",
+  "access": "Open access: a work of NIST, not subject to U.S. copyright, free full text from NIST",
+  "tables": "eqs 2-4 and Tables 1-2 (correlation), Table 3 (check values); critical parameters in the text"
+ },
+ "articles": {
+  "10.1021/ef200417x": {
+   "authors": [
+    "Perkins, R.A.",
+    "Huber, M.L."
+   ],
+   "title": "Measurement and Correlation of the Thermal Conductivities of Biodiesel Constituent Fluids: Methyl Oleate and Methyl Linoleate",
+   "journal": "Energy Fuels",
+   "volume": "25",
+   "year": "2011",
+   "pages": "2383-2388"
+  }
+ },
+ "rows": [
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 302.15,
+   "P_kPa": 101.325,
+   "value": 0.142352,
+   "uncertainty": 0.003559,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 312.15,
+   "P_kPa": 101.325,
+   "value": 0.141425,
+   "uncertainty": 0.003536,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 322.15,
+   "P_kPa": 101.325,
+   "value": 0.140441,
+   "uncertainty": 0.003511,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 332.15,
+   "P_kPa": 101.325,
+   "value": 0.139401,
+   "uncertainty": 0.003485,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 342.15,
+   "P_kPa": 101.325,
+   "value": 0.138308,
+   "uncertainty": 0.003458,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 352.15,
+   "P_kPa": 101.325,
+   "value": 0.137161,
+   "uncertainty": 0.003429,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 362.15,
+   "P_kPa": 101.325,
+   "value": 0.135961,
+   "uncertainty": 0.003399,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 372.15,
+   "P_kPa": 101.325,
+   "value": 0.134709,
+   "uncertainty": 0.003368,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 382.15,
+   "P_kPa": 101.325,
+   "value": 0.133406,
+   "uncertainty": 0.003335,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 392.15,
+   "P_kPa": 101.325,
+   "value": 0.132053,
+   "uncertainty": 0.003301,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 402.15,
+   "P_kPa": 101.325,
+   "value": 0.130649,
+   "uncertainty": 0.003266,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 412.15,
+   "P_kPa": 101.325,
+   "value": 0.129196,
+   "uncertainty": 0.00323,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 422.15,
+   "P_kPa": 101.325,
+   "value": 0.127694,
+   "uncertainty": 0.003192,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 432.15,
+   "P_kPa": 101.325,
+   "value": 0.126143,
+   "uncertainty": 0.003154,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 442.15,
+   "P_kPa": 101.325,
+   "value": 0.124544,
+   "uncertainty": 0.003114,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 452.15,
+   "P_kPa": 101.325,
+   "value": 0.122897,
+   "uncertainty": 0.003072,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 462.15,
+   "P_kPa": 101.325,
+   "value": 0.121202,
+   "uncertainty": 0.00303,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 472.15,
+   "P_kPa": 101.325,
+   "value": 0.11946,
+   "uncertainty": 0.002987,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 482.15,
+   "P_kPa": 101.325,
+   "value": 0.117671,
+   "uncertainty": 0.002942,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 492.15,
+   "P_kPa": 101.325,
+   "value": 0.115834,
+   "uncertainty": 0.002896,
+   "doi": "10.1021/ef200417x",
+   "set": "correlation, eqs 2-4, Tables 1-2",
+   "binary_with": null
+  }
+ ]
+}

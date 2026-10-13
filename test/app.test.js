@@ -208,7 +208,9 @@ test("selection helpers: toggle, rotate, search", () => {
     ["2-methoxyethanol", "dea", "dichloroethane", "dichloromethane", "diethyl-carbonate", "diethyl-ether",
       "diethylene-glycol", "dimethyl-carbonate", "dimethyl-ether", "dmf", "dmso", "dmt", "ethane", "ethanol",
       "ethyl-acetate", "ethylbenzene", "ethylene", "ethylene-carbonate", "ethylene-glycol", "ethylene-oxide", "mdea", "mea",
-      "methane", "methanol", "methyl-acetate", "methylamine", "mibk", "nmp"].sort());
+      "methane", "methanol", "methyl-acetate", "methylamine", "mibk", "nmp",
+      // the methyl esters of proposal 0009, batch 2 ("Methyl laurate" ...)
+      "methyl-laurate", "methyl-myristate", "methyl-palmitate", "methyl-stearate", "methyl-oleate", "methyl-linoleate"].sort());
   assert.deepEqual(filterComponents(all, "7732-18-5").map(c => c.id), ["water"]);
   assert.deepEqual(filterComponents(all, "chcl3").map(c => c.id), ["chloroform"]);
   assert.deepEqual(filterComponents(all, "zzz"), []);
