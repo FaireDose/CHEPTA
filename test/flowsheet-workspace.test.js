@@ -9,7 +9,7 @@ import { initialState, applyPatch } from "../src/ui/app-logic.js";
 import { WORKSPACES } from "../src/ui/workspaces.js";
 import {
   addBlock, addFeedTo, connect, deleteBlock, removeBlock, deleteStream, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
-  setComponents, openInlets, endOf, streamsOf,
+  setComponents, openInlets, endOf, streamsOf, setStreamLabel, streamName,
 } from "../src/ui/flowsheet-logic.js";
 
 const base = () => ({ ...emptyFlowsheet(), components: ["ethanol", "water"] });
@@ -195,4 +195,53 @@ test("products of one unit are not drawn on top of each other", () => {
   const spots = d.blocks.map(b => `${b.x},${b.y}`);
   assert.equal(new Set(spots).size, spots.length, `two blocks on one spot: ${spots.join(" ")}`);
   structureOk(d);
+});
+
+test("deleting a feed deletes its stream too, and nothing is made again in its place", () => {
+  // F1 -> V1 (flash); delete V1: its products start from new feeds; delete those feeds
+  let fs = base();
+  ({ fs } = addBlock(fs, "flash"));
+  ({ fs } = addFeedTo(fs, "V1.in"));
+  const [vap] = streamsOf(fs, "V1").vapour, [liq] = streamsOf(fs, "V1").liquid;
+  ({ fs } = removeBlock(fs, "V1"));
+  const feedOf = sid => fs.streams.find(s => s.id === sid).from.split(".")[0];
+  for (const sid of [vap, liq]) {
+    const fid = feedOf(sid), nBlocks = fs.blocks.length;
+    const r = removeBlock(fs, fid);
+    assert.ok(!r.fs.blocks.some(b => b.id === fid), `${fid} is deleted`);
+    assert.ok(!r.fs.streams.some(s => s.id === sid), `${sid} is deleted with its feed`);
+    assert.equal(r.fs.blocks.length, nBlocks - 2, "the feed and the product of its stream go, no new feed appears");
+    assert.match(r.note, new RegExp(`Deleted the feed ${fid} with its stream ${sid}`));
+    fs = r.fs;
+    structureOk(fs);
+  }
+  // a feed into a unit: the unit only loses that inlet
+  ({ fs } = addBlock(fs, "heater"));
+  ({ fs } = addFeedTo(fs, "E1.in"));
+  const [into] = streamsOf(fs, "E1").in, fid = feedOf(into);
+  const d = deleteBlock(fs, fid);
+  assert.ok(d.blocks.some(b => b.id === "E1"));
+  assert.ok(!d.streams.some(s => s.id === into));
+  assert.equal(d.blocks.filter(b => b.type === "feed").length, fs.blocks.filter(b => b.type === "feed").length - 1);
+});
+
+test("a stream can be given a name, and the name can be cleared", () => {
+  let fs = base();
+  ({ fs } = addBlock(fs, "flash"));
+  ({ fs } = addFeedTo(fs, "V1.in"));
+  const [sid] = streamsOf(fs, "V1").in;
+  const named = setStreamLabel(fs, sid, "  Crude   feed ");
+  assert.equal(named.streams.find(s => s.id === sid).label, "Crude feed");
+  assert.equal(streamName(named.streams.find(s => s.id === sid)), "Crude feed");
+  assert.equal(fs.streams.find(s => s.id === sid).label, undefined, "the original document is not changed");
+  for (const empty of ["", "   ", sid]) {
+    const s = setStreamLabel(named, sid, empty).streams.find(x => x.id === sid);
+    assert.equal(s.label, undefined);
+    assert.equal(streamName(s), sid);
+  }
+  assert.equal(setStreamLabel(fs, sid, "x".repeat(60)).streams.find(s => s.id === sid).label.length, 40);
+  assert.throws(() => setStreamLabel(fs, "S99", "a"), /No stream S99/);
+  // a named flowsheet is a valid document and solves the same
+  structureOk(named);
+  assert.equal(flowsheetDocStatus(named).ok, flowsheetDocStatus(fs).ok);
 });

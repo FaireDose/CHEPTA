@@ -149,6 +149,11 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   Open question for the maintainer: a stream that came out of a deleted unit now starts from a new, empty feed (the
   document needs a block at both ends of a stream); the alternative is to delete those outgoing streams as before.
   Pending: the maintainer's screenshots, if the lost stream happens again.
+- **Reported on the preview (same day):** deleting one of those new feeds (F2, F3) made it again lower on the page;
+  only deleting the stream from its end removed it. Fixed: deleting a feed deletes its stream too (and the Product the
+  stream went to; a unit it went to only loses that inlet), the same as deleting a feed's stream already did. Also asked:
+  rename streams. Done: a Name field in the stream panel; the name shows on the drawing, in the stream table, the CSV
+  and the Excel workbook. The stream keeps its id (S1, S2 ...) underneath; an empty name shows the id again.
 
 ### 2026-10-11 (late): pairs of the green-chemistry components
 

@@ -88,12 +88,12 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
       fracCell[b.id] = outs.map((s, k) => ref(r0 + k, 2));
       outs.forEach((s, k) => {
         const others = outs.map((_, j) => j).filter(j => j !== k && fr[j] !== "rest").map(j => ref(r0 + j, 2));
-        I.push([`to ${s.id}`, null, fr[k] === "rest" ? F(`1-${others.length ? `SUM(${others.join(",")})` : "0"}`) : inp(Number(fr[k] ?? 0))]);
+        I.push([`to ${s.label || s.id}`, null, fr[k] === "rest" ? F(`1-${others.length ? `SUM(${others.join(",")})` : "0"}`) : inp(Number(fr[k] ?? 0))]);
       });
       I.push([]);
     } else if (b.type === "separator") {
       const outs = fs.streams.filter(s => s.from === `${b.id}.out`);
-      I.push([{ v: `Component separator ${b.id}: fraction of each component to each outlet`, s: "bold" }, null, ...outs.map(s => ({ v: `to ${s.id}`, s: "bold" }))]);
+      I.push([{ v: `Component separator ${b.id}: fraction of each component to each outlet`, s: "bold" }, null, ...outs.map(s => ({ v: `to ${s.label || s.id}`, s: "bold" }))]);
       sepCell[b.id] = {};
       for (const c of comps) {
         const key = Object.keys(spec.fractions ?? {}).find(k => { try { return findComponent(k) === c; } catch { return false; } });
@@ -119,7 +119,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
   const R = { from: 1, to: 2, T: 3, P: 4, VF: 5, flow0: 6 };
   R.total = R.flow0 + n; R.mass = R.total + 1; R.H = R.mass + 1; R.x0 = R.H + 1;
   const S = [];
-  S[0] = [{ v: "Streams", s: "head" }, null, ...streams.map(s => ({ v: s.id, s: "bold" }))];
+  S[0] = [{ v: "Streams", s: "head" }, null, ...streams.map(s => ({ v: s.label || s.id, s: "bold" }))];
   S[R.from] = ["From", null, ...streams.map(s => s.from.replace(".", " "))];
   S[R.to] = ["To", null, ...streams.map(s => { const t = portOf(s.to); return blocks.get(t.block)?.type === "product" ? "product" : `${t.block} ${t.port}`; })];
   const flowRef = (sid, i) => `${colName(col.get(sid))}${R.flow0 + i + 1}`;

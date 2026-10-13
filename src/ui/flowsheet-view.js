@@ -17,7 +17,7 @@ import { unitType } from "../units/units.js";
 import { flowsheetDocStatus, runFlowsheet } from "../flowsheet/document.js";
 import {
   PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
-  setComponents, streamsOf, endOf, openInlets, deleteStream,
+  setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName,
 } from "./flowsheet-logic.js";
 import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { flowsheetXlsx } from "./flowsheet-excel.js";
@@ -369,7 +369,11 @@ function streamSections({ fs, put, sel, f, inputsSection, back, set }) {
   const goes = h("select", { "data-fk": `fs-to-${s.id}`, "aria-label": "Goes to", on: { change: ev => { try { put(connect(fs, s.id, ev.target.value || null)); } catch (e) { f.note = e.message; set({}); } } } },
     ...[...new Set(opts)].map(o => h("option", { value: o, selected: o === (end.kind === "unit" ? s.to : "") }, o ? o.replace(".", " · ") : "Leaves the flowsheet (product)")));
   return [
-    inputsSection(`Stream ${s.id}`, h("p", { class: "fa-in-hint" }, `From ${from[0]} (${from[1]}).`),
+    inputsSection(`Stream ${streamName(s)}`, h("p", { class: "fa-in-hint" }, `From ${from[0]} (${from[1]}).`),
+      h("label", { class: "fa-field fa-field-stack" }, h("span", {}, "Name"),
+        h("input", { type: "text", value: s.label ?? "", placeholder: s.id, maxlength: 40, "data-fk": `fs-name-${s.id}`, "aria-label": `Name of stream ${s.id}`,
+          title: `A name to show instead of ${s.id}; empty shows ${s.id} again`,
+          on: { change: ev => put(setStreamLabel(fs, s.id, ev.target.value)), keydown: ev => { if (ev.key === "Enter") ev.target.blur(); } } })),
       h("label", { class: "fa-field fa-field-stack" }, h("span", {}, "Goes to"), goes),
       end.kind === "unit" ? h("label", { class: "fa-field" }, h("span", {}, "Tear stream (recycle)"),
         h("input", { type: "checkbox", checked: !!s.tear, "data-fk": `fs-tear-${s.id}`, on: { change: ev => put(setTear(fs, s.id, ev.target.checked)) } })) : null,
@@ -494,7 +498,7 @@ export function flowsheetView(ctx) {
       const pts = route(a, e);
       const d = pts.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
       const g = svgEl("g", { class: "fs-stream" + (selected("stream", s.id) ? " is-sel" : "") + (s.tear ? " is-tear" : ""), "data-stream": s.id,
-        tabindex: 0, role: "button", "aria-label": `Stream ${s.id}` });
+        tabindex: 0, role: "button", "aria-label": `Stream ${streamName(s)}` });
       g.append(svgEl("path", { d, class: "fs-hit" }), svgEl("path", { d, class: "fs-line", "marker-end": `url(#${uidM}-a)` }));
       // label on the longest segment
       let best = 1, len = 0;
@@ -503,9 +507,9 @@ export function flowsheetView(ctx) {
       // the name on the drawing; flow and temperature on hover and in the stream table
       const st = res?.streams?.[s.id];
       const t = svgEl("text", { x: lx, y: ly - 6, class: "fs-label", "text-anchor": "middle" });
-      t.textContent = s.id;
+      t.textContent = streamName(s);
       const tip = svgEl("title", {});
-      tip.textContent = st ? `${s.id}: ${fmtShort(st.F_kmol_h, 5)} kmol/h${st.T_K != null ? `, ${fmtTemp(st.T_K, u, 2)}` : ""}${st.VF != null ? `, VF ${fmtShort(st.VF, 3)}` : ""}` : `${s.id} (not calculated)`;
+      tip.textContent = st ? `${streamName(s)}${s.label ? ` (${s.id})` : ""}: ${fmtShort(st.F_kmol_h, 5)} kmol/h${st.T_K != null ? `, ${fmtTemp(st.T_K, u, 2)}` : ""}${st.VF != null ? `, VF ${fmtShort(st.VF, 3)}` : ""}` : `${streamName(s)} (not calculated)`;
       g.append(tip);
       g.append(t);
       // the end of every stream is a handle: drag it onto another inlet to reconnect, or into
@@ -738,7 +742,7 @@ function streamTable({ fs, res, u, state }) {
   return h("div", { class: "fs-tables" },
     h("h3", {}, "Streams"),
     h("div", { class: "fug-scroll" }, h("table", { class: "fa-table fa-stream" },
-      h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Stream"), h("th", { scope: "col" }, "Unit"), ...ids.map(id => h("th", { scope: "col", class: "fug-num" }, id)))),
+      h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Stream"), h("th", { scope: "col" }, "Unit"), ...ids.map(id => h("th", { scope: "col", class: "fug-num" }, streamName(fs.streams.find(s => s.id === id)))))),
       h("tbody", {}, ...rows.map(([label, unit, vals]) => h("tr", {}, h("th", { scope: "row" }, label), h("td", {}, unit), ...vals.map(v => h("td", { class: "fug-num" }, fmt(v)))))))),
     qs.length ? h("h3", {}, "Energy streams") : null,
     qs.length ? h("table", { class: "fa-table" }, h("thead", {}, h("tr", {}, h("th", {}, "Stream"), h("th", {}, "Block"), h("th", { class: "fug-num" }, "Duty, kW"))),
@@ -749,7 +753,7 @@ function streamTable({ fs, res, u, state }) {
 function csvTools(ctx, fs, res, u) {
   const { ids, rows } = streamRows(fs, res, u, ctx.state);
   const q = v => (v == null || Number.isNaN(v) ? "" : typeof v === "string" ? (/[",]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v) : String(Number(v.toPrecision(10))));
-  const lines = [["Stream", "Unit", ...ids].join(","), ...rows.map(([l, unit, vals]) => [q(l), q(unit), ...vals.map(q)].join(",")), "",
+  const lines = [["Stream", "Unit", ...ids.map(id => q(streamName(fs.streams.find(s => s.id === id))))].join(","), ...rows.map(([l, unit, vals]) => [q(l), q(unit), ...vals.map(q)].join(",")), "",
     "Energy stream,Block,Duty kW", ...Object.values(res.energy).map(e => [e.id, e.block, q(e.duty_kW)].join(","))];
   const csv = lines.join("\r\n") + "\r\n";
   const status = h("div", { class: "fug-foot", "aria-live": "polite" }), box = h("div");

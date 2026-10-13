@@ -125,16 +125,25 @@ export function connect(fs, sid, to) {
 }
 
 /**
- * Delete a block and keep its streams (the way a person expects a simulator to: the streams stay,
+ * Delete a unit and keep its streams (the way a person expects a simulator to: the streams stay,
  * open at the end that went to the deleted block). A stream that went into it now leaves the
  * flowsheet (a Product; a feed keeps its stream); a stream that came out of it now starts from a
  * new Feed in its place, still going where it went (fill in the feed, or delete it). Returns
- * { fs, note } (the note says which streams were kept and how).
+ * { fs, note } (the note says which streams were kept and how). A feed goes with its stream (and the
+ * Product it went to), as deleting a feed's stream does.
  */
 export function removeBlock(fs, id) {
   let out = clone(fs);
   const b = out.blocks.find(x => x.id === id);
   if (!b || b.type === "product") return { fs: out, note: "" };
+  if (b.type === "feed") {
+    // a feed's stream exists only with it: both go, and the Product it went to (a unit it went to loses that inlet)
+    const mine = out.streams.filter(x => portOf(x.from).block === id);
+    for (const s of mine) if (isProduct(out, portOf(s.to).block)) out.blocks = out.blocks.filter(x => x.id !== portOf(s.to).block);
+    out.streams = out.streams.filter(x => portOf(x.from).block !== id);
+    out.blocks = out.blocks.filter(x => x.id !== id);
+    return { fs: out, note: `Deleted the feed ${id}${mine.length ? ` with its stream ${mine.map(x => x.id).join(", ")}` : ""}.` };
+  }
   const leave = [], feeds = [];
   for (const s of out.streams.filter(x => portOf(x.to).block === id)) {
     out = connect(out, s.id, null);
@@ -154,6 +163,19 @@ export function removeBlock(fs, id) {
     .filter(Boolean).join(" ");
   return { fs: out, note };
 }
+
+/** Give a stream a name shown on the drawing and in the tables ("" removes it); its id stays. */
+export function setStreamLabel(fs, sid, label) {
+  const out = clone(fs);
+  const s = out.streams.find(x => x.id === sid);
+  if (!s) throw new Error(`No stream ${sid}.`);
+  const name = String(label ?? "").replace(/\s+/g, " ").trim().slice(0, 40);
+  if (name && name !== sid) s.label = name; else delete s.label;
+  return out;
+}
+
+/** The name of a stream on the drawing and in the tables: its label, else its id. */
+export const streamName = s => s?.label || s?.id;
 
 /** Delete a block and keep its streams (removeBlock without the note). */
 export function deleteBlock(fs, id) {
