@@ -68,7 +68,7 @@ export function workspaceOf(view) {
  * `solid`: the slots whose component must have a melting temperature and enthalpy of fusion;
  * `activityOnly`: the view needs an activity model (NRTL, UNIQUAC or ideal) for the liquid.
  * `liquid`: with an activity-coefficient model (NRTL, UNIQUAC, ideal), only components with
- * activity-model data (vapour pressure, UNIQUAC r and q); with an equation of state (PR, SRK)
+ * activity-model data (a liquid with a vapour-pressure record; UNIQUAC also needs r and q); with an equation of state (PR, SRK)
  * every component, gases too. `minActivity`: the smallest list with an activity model, where
  * it differs from `min` (an activity-model system needs two components).
  * The phase-equilibrium diagrams work with either kind of model (the Model group of the toolbar).
@@ -170,9 +170,11 @@ export function checkInputs(view, value, model = "NRTL") {
     if (!id) { problems.push({ slot: i, message: `${label} is empty: choose ${spec.liquid ? "a liquid" : "a component"}.` }); return; }
     if (!m.has(id)) { problems.push({ slot: i, message: `${label}: unknown component "${id}".` }); return; }
     if (spec.liquid && !m.get(id).activity && spec.activityOnly) {
-      problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no activity-model data (vapour pressure and UNIQUAC r and q), so ${spec.what} cannot use it yet.` });
+      problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no activity-model data (it is not a liquid with a vapour-pressure record), so ${spec.what} cannot use it yet.` });
     } else if (spec.liquid && !m.get(id).activity) {
-      problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no activity-model data (vapour pressure and UNIQUAC r and q), so ${spec.what} with ${model === "ideal" ? "an ideal solution" : model} cannot use it. Choose a liquid, or an equation of state (Peng–Robinson or SRK) in the Model group for gases.` });
+      problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no activity-model data (it is not a liquid with a vapour-pressure record), so ${spec.what} with ${model === "ideal" ? "an ideal solution" : model} cannot use it. Choose a liquid, or an equation of state (Peng–Robinson or SRK) in the Model group for gases.` });
+    } else if (spec.liquid && model === "UNIQUAC" && !m.get(id).uniquac) {
+      problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no UNIQUAC r and q (no open data yet), so UNIQUAC cannot use it: choose NRTL in the Model group.` });
     }
     if (spec.solid?.includes(i) && !m.get(id).fusion) {
       problems.push({ slot: i, message: `${nameIn(m, id)} has no melting temperature and enthalpy of fusion in the databank (no open data), so it cannot be the solid.` });

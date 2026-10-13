@@ -7,14 +7,18 @@ import componentData from "../data/components.json" with { type: "json" };
 import { fail } from "../util/errors.js";
 
 /**
- * All components in the databank, as { id, name, formula, cas, aliases, activity }.
- * `activity` is true when the component has the data for activity-coefficient (NRTL,
- * UNIQUAC) vapour-liquid equilibria; light gases are described by equations of state.
+ * All components in the databank, as { id, name, formula, cas, aliases, activity, uniquac }.
+ * `activity` is true when the component can be used with activity-coefficient models: a liquid at
+ * 25 degC (normal boiling point above 298.15 K) with a vapour-pressure record; light gases are
+ * described by equations of state. `uniquac` is true when it also has UNIQUAC r and q: without them
+ * NRTL and the ideal solution still work, UNIQUAC does not (src/thermo/system.js says so). Components
+ * from ChemSep have r and q; those built from measured data alone have none until an open source
+ * gives them (roadmap A3).
  * `aliases` are other names it is known by (lower case), for searching.
  */
 export function listComponents() {
   return Object.entries(componentData.components).map(([id, c]) => ({
-    id, name: c.name, formula: c.formula, cas: c.cas, aliases: c.aliases ?? [], activity: Boolean(c.uniquac && c.vapourPressure),
+    id, name: c.name, formula: c.formula, cas: c.cas, aliases: c.aliases ?? [], activity: Boolean(c.vapourPressure && (c.uniquac || c.Tb_K > 298.15)), uniquac: Boolean(c.uniquac),
     // melting temperature and enthalpy of fusion (solid-liquid equilibrium)
     fusion: Boolean(c.fusion && c.fusion.available !== false),
   }));

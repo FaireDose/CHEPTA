@@ -312,7 +312,9 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
     const thermo = { ...fs.thermo, ...patch };
     const nowEos = ["PR", "SRK"].includes(thermo.model);
     const dropped = nowEos ? [] : fs.components.filter(c => !byId().get(c)?.activity);
-    f.note = dropped.length ? `${dropped.map(nameOf).join(", ")} need${dropped.length === 1 ? "s" : ""} an equation of state (no activity-model data); keep Peng–Robinson or SRK, or remove ${dropped.length === 1 ? "it" : "them"}.` : "";
+    const noRq = thermo.model === "UNIQUAC" ? fs.components.filter(c => byId().get(c)?.activity && !byId().get(c)?.uniquac) : [];
+    f.note = dropped.length ? `${dropped.map(nameOf).join(", ")} need${dropped.length === 1 ? "s" : ""} an equation of state (no activity-model data); keep Peng–Robinson or SRK, or remove ${dropped.length === 1 ? "it" : "them"}.`
+      : noRq.length ? `${noRq.map(nameOf).join(", ")} ha${noRq.length === 1 ? "s" : "ve"} no UNIQUAC r and q (no open data yet), so UNIQUAC cannot use ${noRq.length === 1 ? "it" : "them"}: choose NRTL.` : "";
     set({ flowsheet: { ...fs, thermo } });
   };
   if (f.setup === "method") {

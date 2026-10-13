@@ -116,7 +116,7 @@ export function componentMap() {
   return new Map(listComponents().map(c => [c.id, c]));
 }
 
-/** Components usable with activity-coefficient models (liquids with vapour pressure and UNIQUAC data). */
+/** Components usable with activity-coefficient models (liquids with a vapour-pressure record; UNIQUAC also needs r and q). */
 export function liquids(ids) {
   const m = componentMap();
   return ids.filter(id => m.get(id)?.activity);

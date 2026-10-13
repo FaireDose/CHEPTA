@@ -44,9 +44,14 @@ test("solids: the Solubility workspace holds gases, a solid in a solvent and the
   let c = checkInputs("solid", ["mdea", "water"], "NRTL");
   assert.equal(c.ok, false); assert.match(c.problems[0].message, /no melting temperature/); assert.equal(c.problems[0].slot, 0);
   assert.ok(checkInputs("solid", ["naphthalene", "mdea"], "ideal").ok);
-  // a component without activity-model data: said so, without suggesting an equation of state
-  c = checkInputs("solid", ["naphthalene", "2-methoxyethanol"], "ideal");
-  assert.equal(c.ok, false); assert.doesNotMatch(c.problems[0].message, /equation of state/);
+  // a component without activity-model data (a gas): said so, without suggesting an equation of state
+  c = checkInputs("solid", ["naphthalene", "methane"], "ideal");
+  assert.equal(c.ok, false); assert.match(c.problems[0].message, /no activity-model data/); assert.doesNotMatch(c.problems[0].message, /equation of state/);
+  // a liquid without UNIQUAC r and q (2-methoxyethanol, built from measured data, 2026-10-13): NRTL and the ideal
+  // solution can use it, UNIQUAC cannot, and the check says to choose NRTL
+  assert.ok(checkInputs("solid", ["naphthalene", "2-methoxyethanol"], "ideal").ok);
+  c = checkInputs("solid", ["naphthalene", "2-methoxyethanol"], "UNIQUAC");
+  assert.equal(c.ok, false); assert.equal(c.problems[0].slot, 1); assert.match(c.problems[0].message, /no UNIQUAC r and q.*choose NRTL/);
   // the diagram needs melting data for both
   c = checkInputs("sle", ["naphthalene", "mdea"], "ideal");
   assert.equal(c.ok, false); assert.equal(c.problems[0].slot, 1);
