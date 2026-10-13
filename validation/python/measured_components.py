@@ -79,6 +79,10 @@ THERMOML_PROPS = {
     "Normal boiling temperature, K": ("Tb", 1.0, "Liquid"),
     "Critical temperature, K": ("Tc", 1.0, None),
     "Critical pressure, kPa": ("Pc", 1000.0, None),
+    # melting data, for validation/python/fusion_data.py (proposal 0009, batch 2: where the WebBook and ChemSep have none)
+    "Normal melting temperature, K": ("Tm", 1.0, "Liquid"),
+    "Triple point temperature, K": ("Ttriple", 1.0, "Liquid"),
+    "Molar enthalpy of transition or fusion, kJ/mol": ("Hfus", 1000.0, "Liquid"),
 }
 
 # ---------------------------------------------------------------------------------------------

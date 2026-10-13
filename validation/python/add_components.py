@@ -153,6 +153,22 @@ BATCHES = {
         ("terephthalic-acid", "Terephthalic acid", None, ["benzene-1,4-dicarboxylic acid", "pta", "tpa"]),
         ("dmt", "Dimethyl terephthalate", None, ["dimethyl terephthalate", "dimethyl benzene-1,4-dicarboxylate"]),
     ],
+    # proposal 0009, batch 2: lipids (biodiesel and hydrotreated oils); four methyl esters are CoolProp fluids
+    10: [
+        ("methyl-laurate", "Methyl laurate", None, ["methyl dodecanoate", "c12:0 me"]),
+        ("methyl-myristate", "Methyl myristate", None, ["methyl tetradecanoate", "c14:0 me"]),
+        ("methyl-palmitate", "Methyl palmitate", "MethylPalmitate", ["methyl hexadecanoate", "c16:0 me", "fame"]),
+        ("methyl-stearate", "Methyl stearate", "MethylStearate", ["methyl octadecanoate", "c18:0 me", "fame"]),
+        ("methyl-oleate", "Methyl oleate", "MethylOleate", ["methyl (z)-octadec-9-enoate", "c18:1 me", "fame", "biodiesel"]),
+        ("methyl-linoleate", "Methyl linoleate", "MethylLinoleate", ["methyl (9z,12z)-octadeca-9,12-dienoate", "c18:2 me", "fame"]),
+        ("triolein", "Triolein", None, ["glyceryl trioleate", "glycerol trioleate", "triglyceride"]),
+        ("tripalmitin", "Tripalmitin", None, ["glyceryl tripalmitate", "glycerol tripalmitate", "triglyceride"]),
+        ("oleic-acid", "Oleic acid", None, ["(z)-octadec-9-enoic acid", "c18:1", "fatty acid"]),
+        ("palmitic-acid", "Palmitic acid", None, ["hexadecanoic acid", "c16:0", "fatty acid"]),
+        ("stearic-acid", "Stearic acid", None, ["octadecanoic acid", "c18:0", "fatty acid"]),
+        ("n-hexadecane", "n-Hexadecane", None, ["hexadecane", "cetane"]),
+        ("n-octadecane", "n-Octadecane", None, ["octadecane"]),
+    ],
 }
 CHEMSEP_NAME = "ChemSep pure-component database v8.3 (Kooijman & Taylor)"
 CHEMSEP_CAS = {"styrene": "100-42-5", "1-propanol": "71-23-8", "2-propanol": "67-63-0", "1-butanol": "71-36-3",
@@ -172,7 +188,10 @@ CHEMSEP_CAS = {"styrene": "100-42-5", "1-propanol": "71-23-8", "2-propanol": "67
                "bdo": "110-63-4", "cyrene": "53716-82-8", "diethyl-carbonate": "105-58-8", "ethylene-carbonate": "96-49-1",
                "propylene-carbonate": "108-32-7", "acetaldehyde": "75-07-0", "1-pentanol": "71-41-0", "1-hexanol": "111-27-3",
                "1-octanol": "111-87-5", "diethylene-glycol": "111-46-6", "p-cymene": "99-87-6", "adipic-acid": "124-04-9",
-               "maleic-anhydride": "108-31-6", "terephthalic-acid": "100-21-0", "dmt": "120-61-6"}   # CAS of the components taken from ChemSep (checked against `chemicals`)
+               "maleic-anhydride": "108-31-6", "terephthalic-acid": "100-21-0", "dmt": "120-61-6",
+               "methyl-laurate": "111-82-0", "methyl-myristate": "124-10-7", "triolein": "122-32-7", "tripalmitin": "555-44-2",
+               "oleic-acid": "112-80-1", "palmitic-acid": "57-10-3", "stearic-acid": "57-11-4", "n-hexadecane": "544-76-3",
+               "n-octadecane": "593-45-3"}   # CAS of the components taken from ChemSep (checked against `chemicals`)
 # the second file of the same databank (as redistributed in DWSIM, same licence), for compounds not in chemsep1.xml
 CHEMSEP2_NAME = "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)"
 

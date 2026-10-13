@@ -1,0 +1,313 @@
+{
+ "component": "tripalmitin",
+ "cas": "555-44-2",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-13",
+ "searched": "ThermoML-API full-text search for \"tripalmitin\", \"glyceryl tripalmitate\", \"glycerol tripalmitate\"; 9 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1016/j.fluid.2005.12.017": {
+   "authors": [
+    "Li, J.",
+    "Rodriguez, M.[Miguel]",
+    "Paiva, A.[Alexandre]",
+    "Matos, H. A.",
+    "Gomes de Azevedo, E.[Edmundo]"
+   ],
+   "title": "Binary solid liquid gas equilibrium of the tripalmitin/CO2 and ubiquinone/CO2 systems",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "241",
+   "year": "2006",
+   "pages": "196-204"
+  },
+  "10.1016/j.fluid.2019.05.020": {
+   "authors": [
+    "Pelaquim, Fernanda Paludetto",
+    "Matos, Flavio Cardoso de",
+    "Cardoso, Lisandro Pavie",
+    "Batista, Eduardo Augusto Caldas",
+    "Meirelles, Antonio Jose de Almeida",
+    "Costa, Mariana Conceicao da"
+   ],
+   "title": "Solid-liquid phase equilibrium diagrams of binary mixtures containing fatty acids, fatty alcohol compounds and tripalmitin using differential scanning calorimetry",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "497",
+   "year": "2019",
+   "pages": "19-32"
+  },
+  "10.1021/acs.jced.6b00355": {
+   "authors": [
+    "Yui, K.[Kazuko]",
+    "Itsukaichi, Y.[Yasuhiro]",
+    "Kobayashi, T.[Takuro]",
+    "Tomoya, T.[Tsuji]",
+    "Fukui, K.[Keisuke]",
+    "Maeda, K.[Kouji]",
+    "Kuramochi, H.[Hidetoshi]"
+   ],
+   "title": "Solid Liquid Equilibria in the Binary Systems of Saturated Fatty Acids or Triglycerides (C12 to C18) + Hexadecane",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "62",
+   "year": "2017",
+   "pages": "35-43"
+  },
+  "10.1021/acs.jced.8b01200": {
+   "authors": [
+    "Di Prinzio, R. C.[Renata Costa]",
+    "Pontes, P. V. d. A.[Paula Virginia de Almeida]",
+    "da Costa, M. C.[Mariana Conceicao]",
+    "Meirelles, A. J. d. A.[Antonio Jose de Almeida]",
+    "Batista, E. A. C.[Eduardo Augusto Caldas]",
+    "Maximo, G. J.[Guilherme Jose]"
+   ],
+   "title": "Phase Equilibrium of Fats and Monoterpenes and How It Affects Chocolate Quality",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "64",
+   "year": "2019",
+   "pages": "3231-3243"
+  },
+  "10.1021/je101092j": {
+   "authors": [
+    "Nishimura, K.[Kouki]",
+    "Maeda, K.[Kouji]",
+    "Kuramochi, H.[Hidetoshi]",
+    "Nakagawa, K.[Kyuya]",
+    "Asakuma, Y.[Yusuke]",
+    "Fukui, K.[Keisuke]",
+    "Osako, M.[Masahiro]",
+    "Sakai, S.-i.[Shin-ichi]"
+   ],
+   "title": "Solid-Liquid Equilibria in Fatty Acid/Triglycerol Systems",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "56",
+   "year": "2011",
+   "pages": "1613-1616"
+  },
+  "10.1021/je200033b": {
+   "authors": [
+    "Costa, M. C.[Mariana C.]",
+    "Boros, L. A. D.[Laslo A. D.]",
+    "Souza, J. A.[Jackiney A.]",
+    "Rolemberg, M. P.[Marlus P.]",
+    "Krahenbuhl, M. A.[Maria A.]",
+    "Meirelles, A. J. A.[Antonio J. A.]"
+   ],
+   "title": "Solid Liquid Equilibrium of Binary Mixtures Containing Fatty Acids and Triacylglycerols  ",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "56",
+   "year": "2011",
+   "pages": "3277-3284"
+  },
+  "10.1021/je900342a": {
+   "authors": [
+    "Hong, J.[Jindui]",
+    "Hua, D.[Dan]",
+    "Wang, X.[Xia]",
+    "Wang, H.[Hongtao]",
+    "Li, J.[Jun]"
+   ],
+   "title": "Solid-Liquid-Gas Equilibrium of the Ternaries Ibuprofen + Myristic Acid + CO2 and Ibuprofen + Tripalmitin + CO2",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "55",
+   "year": "2010",
+   "pages": "297-302"
+  }
+ },
+ "rows": [
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 121.0,
+   "uncertainty": 2.0,
+   "doi": "10.1016/j.fluid.2005.12.017",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 337.4,
+   "uncertainty": 0.5,
+   "doi": "10.1016/j.fluid.2005.12.017",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 339.44,
+   "uncertainty": 0.65,
+   "doi": "10.1016/j.fluid.2019.05.020",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 160.23,
+   "uncertainty": 8.79,
+   "doi": "10.1016/j.fluid.2019.05.020",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 340.7,
+   "uncertainty": 0.7,
+   "doi": "10.1021/acs.jced.6b00355",
+   "set": 11,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 181.1,
+   "uncertainty": 5.2,
+   "doi": "10.1021/acs.jced.6b00355",
+   "set": 12,
+   "binary_with": null
+  },
+  {
+   "property": "Triple point temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 336.8,
+   "uncertainty": 1.39,
+   "doi": "10.1021/acs.jced.8b01200",
+   "set": 7,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 158.67,
+   "uncertainty": 3.29,
+   "doi": "10.1021/acs.jced.8b01200",
+   "set": 8,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 339.0,
+   "uncertainty": 0.5,
+   "doi": "10.1021/je101092j",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 607.7,
+   "uncertainty": 15.3,
+   "doi": "10.1021/je101092j",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 338.82,
+   "uncertainty": 0.7,
+   "doi": "10.1021/je200033b",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 162.6,
+   "uncertainty": 4.2,
+   "doi": "10.1021/je900342a",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 340.5,
+   "uncertainty": 0.5,
+   "doi": "10.1021/je900342a",
+   "set": 6,
+   "binary_with": null
+  }
+ ]
+}

@@ -1,0 +1,161 @@
+{
+ "component": "triolein",
+ "cas": "122-32-7",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-13",
+ "searched": "ThermoML-API full-text search for \"triolein\", \"glyceryl trioleate\", \"glycerol trioleate\"; 16 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1016/j.fluid.2015.06.015": {
+   "authors": [
+    "Matos, F. C. d.[Flavio Cardoso de]",
+    "Costa, M. C. d.[Mariana Conceicao da]",
+    "Meirelles, A. J. d. A.[Antonio Jose de Almeida]",
+    "Batista, E. A. C.[Eduardo Augusto Caldas]"
+   ],
+   "title": "Binary solid-liquid equilibrium systems containing fatty acids, fatty alcohols and triolein by differential scanning calorimetry",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "404",
+   "year": "2015",
+   "pages": "1-8"
+  },
+  "10.1021/je101092j": {
+   "authors": [
+    "Nishimura, K.[Kouki]",
+    "Maeda, K.[Kouji]",
+    "Kuramochi, H.[Hidetoshi]",
+    "Nakagawa, K.[Kyuya]",
+    "Asakuma, Y.[Yusuke]",
+    "Fukui, K.[Keisuke]",
+    "Osako, M.[Masahiro]",
+    "Sakai, S.-i.[Shin-ichi]"
+   ],
+   "title": "Solid-Liquid Equilibria in Fatty Acid/Triglycerol Systems",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "56",
+   "year": "2011",
+   "pages": "1613-1616"
+  },
+  "10.1021/je200033b": {
+   "authors": [
+    "Costa, M. C.[Mariana C.]",
+    "Boros, L. A. D.[Laslo A. D.]",
+    "Souza, J. A.[Jackiney A.]",
+    "Rolemberg, M. P.[Marlus P.]",
+    "Krahenbuhl, M. A.[Maria A.]",
+    "Meirelles, A. J. A.[Antonio J. A.]"
+   ],
+   "title": "Solid Liquid Equilibrium of Binary Mixtures Containing Fatty Acids and Triacylglycerols  ",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "56",
+   "year": "2011",
+   "pages": "3277-3284"
+  },
+  "10.1021/je900410j": {
+   "authors": [
+    "Costa, M. C.[Mariana C.]",
+    "Boros, L. A. D.[Laslo A. D.]",
+    "Rolemberg, M. P.[Marlus P.]",
+    "Krahenbuhl, M. A.[Maria A.]",
+    "Meirelles, A. J. A.[Antonio J. A.]"
+   ],
+   "title": "Solid-Liquid Equilibrium of Saturated Fatty Acids + Triacylglycerols",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "55",
+   "year": "2010",
+   "pages": "974-977"
+  }
+ },
+ "rows": [
+  {
+   "property": "Triple point temperature, K",
+   "phases": [
+    "Crystal 2",
+    "Crystal 1",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 258.99,
+   "uncertainty": 0.66,
+   "doi": "10.1016/j.fluid.2015.06.015",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal 1",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 278.57,
+   "uncertainty": 0.39,
+   "doi": "10.1016/j.fluid.2015.06.015",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal 1",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 114.61,
+   "uncertainty": 2.47,
+   "doi": "10.1016/j.fluid.2015.06.015",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 268.2,
+   "uncertainty": 0.5,
+   "doi": "10.1021/je101092j",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 279.22,
+   "uncertainty": 0.7,
+   "doi": "10.1021/je200033b",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 278.42,
+   "uncertainty": 0.53,
+   "doi": "10.1021/je900410j",
+   "set": 5,
+   "binary_with": null
+  }
+ ]
+}

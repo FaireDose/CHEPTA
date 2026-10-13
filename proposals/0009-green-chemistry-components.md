@@ -1,7 +1,7 @@
 # 0009: Components for green and bio-based chemistry
 
-- **Status:** Accepted (by the lead maintainer, 2026-10-11, who asked for batch 1). Batch 1 is in a pull
-  request; the later batches follow the steps below.
+- **Status:** Accepted (by the lead maintainer, 2026-10-11, who asked for batch 1). Batch 1 and its pairs are
+  merged; batch 2 (lipids) is in a pull request; the later batches follow the steps below.
 - **Author(s):** CHEPTA maintainers (drafted with an AI assistant)
 - **Discussion:** this pull request
 - **Roadmap item:** data track D5 (components), D8 (formation data of the components, for proposal 0010);

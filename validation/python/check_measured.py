@@ -159,6 +159,20 @@ CHECKED = {
     "maleic-anhydride": ["2,5-furandione", "maleic anhydride"],
     "terephthalic-acid": ["1,4-benzenedicarboxylic acid", "terephthalic acid"],
     "dmt": ["dimethyl terephthalate", "dimethyl 1,4-benzenedicarboxylate"],
+    # proposal 0009, batch 2: lipids (biodiesel and hydrotreated oils)
+    "methyl-laurate": ["methyl dodecanoate", "methyl laurate"],
+    "methyl-myristate": ["methyl tetradecanoate", "methyl myristate"],
+    "methyl-palmitate": ["methyl hexadecanoate", "methyl palmitate"],
+    "methyl-stearate": ["methyl octadecanoate", "methyl stearate"],
+    "methyl-oleate": ["methyl oleate", "methyl (Z)-9-octadecenoate", "methyl cis-9-octadecenoate"],
+    "methyl-linoleate": ["methyl linoleate", "methyl (9Z,12Z)-9,12-octadecadienoate", "methyl cis,cis-9,12-octadecadienoate"],
+    "triolein": ["triolein", "glyceryl trioleate", "glycerol trioleate"],
+    "tripalmitin": ["tripalmitin", "glyceryl tripalmitate", "glycerol tripalmitate"],
+    "oleic-acid": ["oleic acid", "(Z)-9-octadecenoic acid", "cis-9-octadecenoic acid"],
+    "palmitic-acid": ["hexadecanoic acid", "palmitic acid"],
+    "stearic-acid": ["octadecanoic acid", "stearic acid"],
+    "n-hexadecane": ["hexadecane"],
+    "n-octadecane": ["octadecane"],
 }
 
 

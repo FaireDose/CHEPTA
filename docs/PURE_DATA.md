@@ -114,6 +114,19 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | Maleic anhydride | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.095 (f) | ChemSep 0.026 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.14 (f) | ChemSep 0.0001 (d) | ChemSep 0.29 (f) |
 | Terephthalic acid | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.073 (f) | no open data | no open data | no open data | ChemSep 0.0001 (d) | no open data | ChemSep 0.0001 (d) | no open data |
 | Dimethyl terephthalate | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.045 (f) | ChemSep 0.094 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.16 (f) | ChemSep 0.0001 (d) | ChemSep 0.054 (f) |
+| Methyl laurate | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.13 (f) |
+| Methyl myristate | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.13 (f) |
+| Methyl palmitate | CoolProp 1.00 (f) | CoolProp 0.46 (f) | CoolProp 0.015 (f) | CoolProp 0.74 (f) | CoolProp 0.24 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | CoolProp 0.21 (f) |
+| Methyl stearate | CoolProp 1.3 (f) | CoolProp 0.44 (f) | CoolProp 0.0034 (f) | CoolProp 0.74 (f) | CoolProp 0.19 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | CoolProp 0.19 (f) |
+| Methyl oleate | CoolProp 1.5 (f) | CoolProp 0.60 (f) | CoolProp 0.040 (f) | CoolProp 0.78 (f) | CoolProp 0.32 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | CoolProp 0.0001 (f) |
+| Methyl linoleate | CoolProp 1.1 (f) | CoolProp 0.83 (f) | CoolProp 0.037 (f) | CoolProp 0.60 (f) | CoolProp 0.57 (f) | ChemSep 3 (f) | no open data | no open data | no open data | CoolProp 0.00014 (f) |
+| Triolein | ChemSep 0.00011 (d) | ChemSep 0.0001 (d) | ChemSep 0.24 (f) | no open data | no open data | ChemSep 0.0001 (d) | no open data | no open data | no open data | ChemSep 0.17 (f) |
+| Tripalmitin | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.24 (f) | no open data | no open data | ChemSep 0.0001 (d) | no open data | no open data | no open data | ChemSep 0.14 (f) |
+| Oleic acid | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) |
+| Palmitic acid | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) |
+| Stearic acid | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) |
+| n-Hexadecane | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.45 (f) | ChemSep 0.011 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.36 (f) | ChemSep 0.0001 (d) | ChemSep 0.12 (f) |
+| n-Octadecane | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.40 (f) | ChemSep 0.048 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.68 (f) | ChemSep 0.0001 (d) | ChemSep 0.45 (f) |
 
 "existing": the vapour-pressure records of the ten liquids from v0.1 (not changed).
 
@@ -229,6 +242,19 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | Maleic anhydride | 325.73–721 | 273–1000.1 | 325.73–540.5 | 325.73–720.27 | 325.73–475.15 | 325.72–1000 | 325.73–475.15 | 274–1000 | 325.73–684.95 |
 | Terephthalic acid | 700.15–943.065 | 273–1500 | – | – | – | 700.15–1000 | – | 274–1000 | – |
 | Dimethyl terephthalate | 413.8–753.15 | 273–1000.15 | 423.15–466.35 | 413.8–753.15 | 413.8–561.15 | 413.8–1550 | 413.8–561.15 | 274–1000 | 413.8–733.4 |
+| Methyl laurate | 278.15–712 | 298.15–1500 | 278.15–540 | 278.15–711.28 | 278.15–540 | 278.15–1000 | 278.15–540 | 540–1000 | 278.15–676.4 |
+| Methyl myristate | 291.85–741.2 | 298.15–1500 | 297.85–569.9 | 291.85–740.45 | 291.85–569.9 | 291.85–1000 | 291.85–569.9 | 569.9–1000 | 291.05–704.14 |
+| Methyl palmitate | 302.71–717.25 | 302.71–1000 | 302.71–717.25 | 302.71–717.25 | 303.05–597.7 | 303.05–1000 | 303.05–597.7 | 597.7–1000 | 302.71–717.25 |
+| Methyl stearate | 311.85–736.24 | 311.85–1000 | 311.85–736.24 | 311.85–736.24 | 312.15–623.7 | 312.15–1000 | 312.15–623.7 | 623.7–1000 | 311.85–736.24 |
+| Methyl oleate | 253.47–742.9 | 253.47–1000 | 253.47–742.9 | 253.47–742.9 | 293.05–617 | 617–1000 | 293.05–609.2 | 617–1000 | 253.47–742.9 |
+| Methyl linoleate | 260–759.05 | 260–1000 | 260–759.05 | 260–759.05 | 278.15–353.15 | – | – | – | 260–759.05 |
+| Triolein | 278.15–935.3 | 255–1500 | – | – | 278.15–896.8 | – | – | – | 278.15–888.53 |
+| Tripalmitin | 338.9–925.3 | 255–1500 | – | – | 338.9–876 | – | – | – | 339.01–879.03 |
+| Oleic acid | 286.53–781 | 298.15–1500.1 | 286.53–550 | 286.53–780.21 | 286.53–633 | 286.53–1000 | 286.53–625 | 633–1000 | 286.53–780.21 |
+| Palmitic acid | 335.66–785 | 300–1500 | 335.66–624.15 | 335.66–784.21 | 335.66–624.15 | 335.66–1000 | 335.66–624.15 | 624.15–1000 | 335.66–784.21 |
+| Stearic acid | 342.75–803 | 300–1500 | 342.75–648.35 | 342.75–802.19 | 342.75–648.35 | 342.75–1000 | 342.75–648.35 | 648.35–1000 | 342.75–802.19 |
+| n-Hexadecane | 291.31–723 | 200–1500 | 291.31–560.01 | 291.31–722.27 | 291.31–723 | 273.15–1000 | 291.31–560.01 | 291.308–1000 | 291.31–686.85 |
+| n-Octadecane | 301.33–747 | 200–1500 | 301.33–589.86 | 301.33–723.54 | 301.33–613.15 | 301.31–1000 | 301.33–589.86 | 301.33–1000 | 301.33–689.23 |
 
 Temperatures in K.
 
@@ -1846,6 +1872,201 @@ At 25 °C (298.15 K) for the liquids and at the normal boiling point for the gas
 | kV | mW/(m·K) | 8.4654 | 8.4654 | 0.00 % | – |
 | σ | mN/m | – | – | – | – |
 
+### Methyl laurate, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.00065543 | 0.00065543 | 0.00 % | – |
+| ρL | kg/m³ | 865.16 | 865.16 | 0.00 % | – |
+| cp° | J/(mol·K) | 320.52 | 320.52 | 0.00 % | – |
+| cpL | J/(mol·K) | 436.32 | 436.32 | 0.00 % | – |
+| ΔHvap | kJ/mol | 75.483 | 75.483 | 0.00 % | – |
+| μL | mPa·s | 2.7581 | 2.7581 | 0.00 % | – |
+| μV | μPa·s | 4.5727 | 4.5727 | 0.00 % | – |
+| kL | mW/(m·K) | 138.25 | 138.25 | 0.00 % | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | 29.215 | 29.22 | -0.02 % | – |
+
+### Methyl myristate, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 8.1684e-05 | 8.1684e-05 | 0.00 % | – |
+| ρL | kg/m³ | 863.12 | 863.12 | 0.00 % | – |
+| cp° | J/(mol·K) | 366.16 | 366.16 | 0.00 % | – |
+| cpL | J/(mol·K) | 498.24 | 498.24 | -0.00 % | – |
+| ΔHvap | kJ/mol | 82.352 | 82.352 | 0.00 % | – |
+| μL | mPa·s | 4.0726 | 4.0726 | 0.00 % | – |
+| μV | μPa·s | 4.284 | 4.284 | 0.00 % | – |
+| kL | mW/(m·K) | 140.35 | 140.35 | 0.00 % | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | 29.54 | 29.565 | -0.08 % | – |
+
+### Methyl palmitate, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 9.4026e-06 | 9.2585e-06 | 1.56 % | – |
+| ρL | kg/m³ | – | – | – | – |
+| cp° | J/(mol·K) | – | – | – | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | – | – | – | – |
+
+### Methyl stearate, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 1.0031e-06 | 9.6722e-07 | 3.71 % | – |
+| ρL | kg/m³ | – | – | – | – |
+| cp° | J/(mol·K) | – | – | – | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | – | – | – | – |
+
+### Methyl oleate, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 1.1203e-06 | 1.1042e-06 | 1.46 % | – |
+| ρL | kg/m³ | 869.39 | 870.1 | -0.08 % | 870.21 |
+| cp° | J/(mol·K) | 445.11 | 445.2 | -0.02 % | – |
+| cpL | J/(mol·K) | 660.96 | 665.07 | -0.62 % | 600.68 |
+| ΔHvap | kJ/mol | 106.35 | 106.66 | -0.29 % | 100.34 |
+| μL | mPa·s | 5.4061 | 5.4061 | 0.00 % | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | 100.45 | 100.45 | 0.00 % | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | 30.124 | 30.124 | 0.00 % | 31.454 |
+
+### Methyl linoleate, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 1.0903e-06 | 1.1001e-06 | -0.89 % | – |
+| ρL | kg/m³ | 879.45 | 881.67 | -0.25 % | – |
+| cp° | J/(mol·K) | 431.92 | 432.04 | -0.03 % | 410.63 |
+| cpL | J/(mol·K) | 676.03 | 678.01 | -0.29 % | – |
+| ΔHvap | kJ/mol | 107.14 | 107.7 | -0.52 % | – |
+| μL | mPa·s | 4.4444 | (table) | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | 29.825 | 29.825 | 0.00 % | 32.34 |
+
+### Triolein, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 1.0608e-19 | 1.0608e-19 | 0.00 % | – |
+| ρL | kg/m³ | 908.75 | 908.75 | -0.00 % | – |
+| cp° | J/(mol·K) | 1237.7 | 1240.6 | -0.23 % | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | 56.601 | 56.601 | 0.00 % | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | 34.443 | 34.468 | -0.07 % | – |
+
+### Tripalmitin, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 7.0409e-19 | (table) | – | – |
+| ρL | kg/m³ | – | – | – | – |
+| cp° | J/(mol·K) | 1142.5 | 1145.1 | -0.23 % | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | – | – | – | – |
+
+### Oleic acid, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 9.0356e-08 | 9.0356e-08 | 0.00 % | – |
+| ρL | kg/m³ | 883.58 | 883.58 | 0.00 % | – |
+| cp° | J/(mol·K) | 417.8 | 417.8 | -0.00 % | – |
+| cpL | J/(mol·K) | 533.26 | 533.26 | -0.00 % | – |
+| ΔHvap | kJ/mol | 110.69 | 110.69 | 0.00 % | – |
+| μL | mPa·s | 29.572 | 29.572 | 0.00 % | – |
+| μV | μPa·s | 4.0963 | 4.0963 | 0.00 % | – |
+| kL | mW/(m·K) | 150.86 | 150.86 | 0.00 % | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | 32.33 | 32.33 | 0.00 % | – |
+
+### Palmitic acid, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 9.5035e-08 | (table) | – | – |
+| ρL | kg/m³ | – | – | – | – |
+| cp° | J/(mol·K) | – | – | – | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | – | – | – | – |
+
+### Stearic acid, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 8.6312e-09 | (table) | – | – |
+| ρL | kg/m³ | – | – | – | – |
+| cp° | J/(mol·K) | – | – | – | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | – | – | – | – |
+
+### n-Hexadecane, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 0.00021238 | 0.00021238 | 0.00 % | – |
+| ρL | kg/m³ | 769.1 | 769.1 | -0.00 % | – |
+| cp° | J/(mol·K) | 371.75 | 371.65 | 0.03 % | – |
+| cpL | J/(mol·K) | 500.9 | 500.88 | 0.00 % | – |
+| ΔHvap | kJ/mol | 80.731 | 80.731 | 0.00 % | – |
+| μL | mPa·s | 3.0935 | 3.0935 | 0.00 % | – |
+| μV | μPa·s | 3.3624 | 3.3624 | 0.00 % | – |
+| kL | mW/(m·K) | 141.74 | 141.5 | 0.17 % | – |
+| kV | mW/(m·K) | 6.6415 | 6.6415 | 0.00 % | – |
+| σ | mN/m | 27.12 | 27.093 | 0.10 % | – |
+
+### n-Octadecane, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 2.229e-05 | (table) | – | – |
+| ρL | kg/m³ | – | – | – | – |
+| cp° | J/(mol·K) | 416.49 | 416.24 | 0.06 % | – |
+| cpL | J/(mol·K) | – | – | – | – |
+| ΔHvap | kJ/mol | – | – | – | – |
+| μL | mPa·s | – | – | – | – |
+| μV | μPa·s | – | – | – | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | – | – | – | – |
+| σ | mN/m | – | – | – | – |
+
 ## Comparison with measured data
 
 Measured values from the NIST WebBook in `validation/data/pure/measured/webbook.json` (rules and references there), checked by `test/properties.test.js` at 2 %. Liquid heat capacity at 298.15 K against the mean of the values measured in 1970 or later; heat of vaporization at the normal boiling point against Majer and Svoboda (1985). Ethylene glycol has no Majer-Svoboda value at Tb on its WebBook page. Liquid densities of the four ChemSep liquids are not compared with measurements: the WebBook has none and the ThermoML Archive could not be reached.
@@ -2104,6 +2325,29 @@ Measured values from the NIST WebBook in `validation/data/pure/measured/webbook.
 | Diethylene glycol | liquidThermalConductivity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 5 measured values from 1 articles, 298.1-338.2 K; median deviation of the articles 1.91 % (with |
 | p-Cymene | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 13 measured values from 5 articles, 298.1-328.1 K; median deviation of the articles 0.08 % (wit |
 | p-Cymene | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 4 measured values from 1 articles, 298.6-328.4 K; median deviation of the articles 1.44 % (with |
+| Methyl laurate | vapourPressure | NIST TRC ThermoML Archive (validation/python/check_measured.py): 7 measured values from 2 articles, 412.8-442.5 K; median deviation of the articles 1.61 % (abov |
+| Methyl laurate | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 72 measured values from 7 articles, 283.1-453.1 K; median deviation of the articles 0.09 % (wit |
+| Methyl laurate | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 21 measured values from 3 articles, 280.0-386.8 K; median deviation of the articles 0.76 % (wit |
+| Methyl laurate | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 50 measured values from 7 articles, 283.1-353.1 K; median deviation of the articles 0.85 % (wit |
+| Methyl laurate | liquidThermalConductivity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 26 measured values from 1 articles, 283.8-402.7 K; median deviation of the articles 4.95 % (wit |
+| Methyl myristate | vapourPressure | NIST TRC ThermoML Archive (validation/python/check_measured.py): 12 measured values from 2 articles, 432.6-453.1 K; median deviation of the articles 2.66 % (abo |
+| Methyl myristate | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 47 measured values from 5 articles, 293.1-453.1 K; median deviation of the articles 0.04 % (wit |
+| Methyl myristate | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 6 measured values from 1 articles, 300.0-350.0 K; median deviation of the articles 0.02 % (with |
+| Methyl myristate | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 29 measured values from 4 articles, 293.1-353.1 K; median deviation of the articles 6.10 % (abo |
+| Methyl myristate | liquidThermalConductivity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 24 measured values from 1 articles, 304.0-402.4 K; median deviation of the articles 5.75 % (abo |
+| Methyl palmitate | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 27 measured values from 3 articles, 308.1-383.1 K; median deviation of the articles 0.18 % (wit |
+| Methyl palmitate | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 5 measured values from 1 articles, 310.0-350.0 K; median deviation of the articles 1.48 % (with |
+| Methyl palmitate | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 16 measured values from 2 articles, 308.1-363.1 K; median deviation of the articles 8.42 % (abo |
+| Methyl stearate | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 16 measured values from 2 articles, 313.1-363.1 K; median deviation of the articles 0.21 % (wit |
+| Methyl stearate | liquidHeatCapacity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 4 measured values from 1 articles, 320.0-350.0 K; median deviation of the articles 1.93 % (with |
+| Methyl stearate | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 11 measured values from 1 articles, 313.1-363.1 K; median deviation of the articles 6.25 % (abo |
+| Methyl oleate | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 33 measured values from 3 articles, 278.1-393.1 K; median deviation of the articles 0.03 % (wit |
+| Methyl oleate | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 19 measured values from 2 articles, 293.1-353.1 K; median deviation of the articles 0.99 % (wit |
+| Methyl linoleate | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 36 measured values from 3 articles, 278.1-393.1 K; median deviation of the articles 0.19 % (wit |
+| Methyl linoleate | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 22 measured values from 2 articles, 278.1-353.1 K; median deviation of the articles 2.30 % (wit |
+| n-Hexadecane | liquidDensity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 163 measured values from 42 articles, 291.6-463.1 K; median deviation of the articles 0.14 % (w |
+| n-Hexadecane | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 109 measured values from 17 articles, 293.1-373.1 K; median deviation of the articles 1.87 % (w |
+| n-Octadecane | liquidViscosity | NIST TRC ThermoML Archive (validation/python/check_measured.py): 89 measured values from 1 articles, 301.4-318.1 K; median deviation of the articles 2.57 % (wit |
 
 ## Range limits to note
 
@@ -2121,6 +2365,10 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
 - Formic acid, kV: starts at 420 K, above the normal boiling point 373.701 K (ChemSep range); vapour states between Tb and 420 K have no value.
 - Isoprene, μV: starts at 307.2 K, above the normal boiling point 307.198 K (ChemSep range); vapour states between Tb and 307.2 K have no value.
 - 1-Octanol, kV: starts at 468.35 K, above the normal boiling point 467.093 K (ChemSep range); vapour states between Tb and 468.35 K have no value.
+- Methyl laurate, kV: starts at 540 K, above the normal boiling point 539.774 K (ChemSep range); vapour states between Tb and 540 K have no value.
+- Methyl myristate, kV: starts at 569.9 K, above the normal boiling point 569.651 K (ChemSep range); vapour states between Tb and 569.9 K have no value.
+- Palmitic acid, kV: starts at 624.15 K, above the normal boiling point 623.151 K (ChemSep range); vapour states between Tb and 624.15 K have no value.
+- Stearic acid, kV: starts at 648.35 K, above the normal boiling point 647.101 K (ChemSep range); vapour states between Tb and 648.35 K have no value.
 
 ## Cross-checks
 
@@ -2197,6 +2445,14 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
 - cross-check p-cymene vapour pressure vs McDonald, Shrader, et al., 1959, 380.19-451.57 K: max +4.30 % at 380.2 K
 - cross-check adipic-acid vapour pressure vs Stull, 1947, 432.70-610.70 K: max -11.40 % at 432.7 K
 - cross-check maleic-anhydride vapour pressure vs Stull, 1947, 317.00-475.00 K: max +8.64 % at 323.1 K
+- cross-check methyl-laurate vapour pressure vs Althouse and Triebold, 1944, 373.00-439.00 K: max -18.24 % at 373.0 K
+- cross-check methyl-myristate vapour pressure vs Rose and Supina, 1961, 439.00-511.00 K: max +4.39 % at 511.0 K
+- cross-check methyl-myristate vapour pressure vs Bonhorst, Althouse, et al., 1948, 400.30-481.40 K: max +11.57 % at 465.2 K
+- cross-check oleic-acid vapour pressure vs Stull, 1947, 449.70-633.00 K: max +2.06 % at 614.7 K
+- cross-check palmitic-acid vapour pressure vs Stull, 1947, 426.80-626.90 K: max -54.68 % at 426.8 K
+- cross-check stearic-acid vapour pressure vs Stull, 1947, 446.90-643.00 K: max -41.39 % at 446.9 K
+- cross-check n-hexadecane vapour pressure vs Camin, Forziati, et al., 1954, 463.20-559.90 K: max +0.70 % at 559.9 K
+- cross-check n-octadecane vapour pressure vs Krafft, 1882, 447.70-590.00 K: max -5.26 % at 447.7 K
 
 ## Notes
 
@@ -2231,6 +2487,7 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
   - Gao-JCED-2016: Kehui Gao et al., A Helmholtz Energy Equation of State for Sulfur Dioxide, J. Chem. Eng. Data  (2016)
   - Gao-JPCRD-2020: K. Gao et al., Thermodynamic Properties of Ammonia for Temperatures from the Melting Line to 725 K and Pressures to 1000 MPa, J. Phys. Chem. Ref. Data  ()
   - Huber-EF-2004: Marcia L. Huber et al., Transport Properties of n-Dodecane, Energy & Fuels 18 (2004) 968-975, doi:10.1021/ef034109e
+  - Huber-EF-2009: Marcia L. Huber et al., Model for the Thermodynamic Properties of a Biodiesel Fuel, Energy & Fuels 23 (2009) 3790-3797, doi:10.1021/ef900159g
   - Huber-FPE-2004: Marcia L. Huber et al., Viscosity correlations for minor constituent fluids in natural gas: n-octane, n-nonane and n-decane, Fluid Phase Equilib. 224 (2004) 263-270, doi:10.1016/j.fluid.2004.07.012
   - Huber-FPE-2005: M.L. Huber and R.A. Perkins, Thermal conductivity correlations for minor constituent fluids in natural gas: n-octane, n-nonane and n-decane, Fluid Phase Equilib. 227 (2005) 47-55, doi:10.1016/j.fluid.2004.10.031
   - Huber-IECR-2003: Marcia L. Huber et al., Model for the Viscosity and Thermal Conductivity of Refrigerants, Including a New Correlation for the Viscosity of R134a, Ind. Eng. Chem. Res. 42 (2003) 3163-3178, doi:10.1021/ie0300880
