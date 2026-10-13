@@ -127,7 +127,7 @@
    "units": "J/mol",
    "source": {
     "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
-    "fit": "25 Clapeyron values and 2 measured values, 275.70-356.97 K, max deviation 1.7 %"
+    "fit": "25 Clapeyron values and 0 measured values, 275.70-356.97 K, max deviation 0.73 %"
    },
    "T_K": [
     275.7,
@@ -137,10 +137,8 @@
     289.2448,
     292.63101,
     296.01721,
-    298.15,
     299.40341,
     302.78961,
-    304.5,
     306.17581,
     309.56201,
     312.94821,
@@ -166,10 +164,8 @@
     27787.23,
     27659.75,
     27527.361,
-    27710.0,
     27389.856,
     27247.03,
-    27100.0,
     27098.679,
     26944.607,
     26784.62,
@@ -195,10 +191,8 @@
     "Clapeyron equation with the vapour-pressure record",
     "Clapeyron equation with the vapour-pressure record",
     "Clapeyron equation with the vapour-pressure record",
-    "Majer and Svoboda, 1985 (ΔvapH° at 298.15 K, compilation, NIST WebBook)",
     "Clapeyron equation with the vapour-pressure record",
     "Clapeyron equation with the vapour-pressure record",
-    "Majer and Svoboda, 1985 (compilation, NIST WebBook)",
     "Clapeyron equation with the vapour-pressure record",
     "Clapeyron equation with the vapour-pressure record",
     "Clapeyron equation with the vapour-pressure record",

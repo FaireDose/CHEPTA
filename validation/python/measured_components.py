@@ -165,6 +165,10 @@ COMPONENTS = {
         "aliases": ["γ-butyrolactone", "butyrolactone", "oxolan-2-one", "gbl"],
         "thermoml_queries": ["gamma-butyrolactone", "oxolan-2-one"],
         "webbook_individual": ["HVAP"],
+        # not written yet: no temperature where both its vapour pressure and its liquid density are measured
+        "hold": "its open measured vapour pressures start at 377 K (ThermoML Archive; the WebBook has none) and its "
+                "liquid densities end at 353 K, so no liquid state has both; wanted: vapour pressures below 377 K or "
+                "densities above 353 K from an open source",
         # the archive also has VonNiederhausern et al. (2006): 732.5 K and 5.10 MPa, with larger uncertainties
         "critical": "Wilson, Wilson, et al., 1996",
         "antoine_fit": [],
@@ -180,6 +184,9 @@ COMPONENTS = {
         "aliases": ["3-methyl-1-butanol", "3-methylbutan-1-ol", "isopentyl alcohol", "isopentanol"],
         "thermoml_queries": ["3-methyl-1-butanol", "3-methylbutan-1-ol"],
         "webbook_individual": ["TC", "HVAP"],
+        "hold": "its open measured vapour pressures start at 335.85 K (ThermoML Archive; the WebBook has none) and its "
+                "liquid densities end at 332.7 K, so no liquid state has both; wanted: vapour pressures below 336 K or "
+                "densities above 333 K from an open source",
         "critical": "Gude and Teja, 1995",
         "antoine_fit": [],
         # calorimetric values of Majer, Svoboda et al. (1985), 303-358 K, and the evaluation of Majer and Svoboda (1985)
@@ -779,13 +786,14 @@ def dh_clapeyron(cid, C, wb, tml, measured, psat, Tlow, Tc, Pc, omega, records, 
     """Where the measured enthalpies of vaporization do not give the temperature dependence (one temperature, or
     none): the record is fitted to Clapeyron values from the vapour-pressure record, from its lowest temperature up to
     where Psat reaches 500 kPa (low enough that the Peng-Robinson vapour volume is close to the real one), together
-    with the chosen measured values (calorimetric, critically evaluated), which are never left out and must be met
-    within their stated uncertainty (1 % where none is stated); the Clapeyron values within 2 %. The other values of
-    the WebBook page (most derived by their authors from vapour pressures) are compared with the record."""
+    with the calorimetric values (WebBook method C, and the ThermoML Archive), which are never left out and must be met
+    within their stated uncertainty (1 % where none is stated); the record meets the Clapeyron values it keeps within
+    1 %. The other chosen values (critically evaluated) and those of the WebBook page (most derived by their authors
+    from vapour pressures) are compared with the record."""
     Thi = brentq(lambda T: psat(T) - 5e5, Tlow, Tc - 1)
     pts = clapeyron(cid, C, psat, Tlow, Thi, Tc, Pc, omega)
-    fixed = [p for p in measured if p["u_rel"] is None or p["u_rel"] <= 0.02]
-    coeffs, use, exc, m = fit_measured(cid, "heatOfVaporization", "DIPPR106", pts, 0.02, Tc=Tc, fixed=fixed)
+    fixed = [p for p in measured if (p.get("method") == "C" or p.get("doi")) and (p["u_rel"] is None or p["u_rel"] <= 0.02)]
+    coeffs, use, exc, m = fit_measured(cid, "heatOfVaporization", "DIPPR106", pts, 0.01, Tc=Tc, fixed=fixed)
     f = lambda T: float(ev("DIPPR106", coeffs, np.array([T]), Tc)[0])  # noqa: E731
     checks, bad = [], []
     for p in measured:
@@ -817,8 +825,8 @@ def dh_clapeyron(cid, C, wb, tml, measured, psat, Tlow, Tc, Pc, omega, records, 
                "volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, "
                "MIT), %.2f-%.2f K (up to Psat = 500 kPa); DIPPR 106 with the critical temperature %.2f K. Chosen because "
                "the measured values do not give the temperature dependence (%s). Max deviation from the Clapeyron "
-               "values %s %%. Measured values, fitted with weight 10 and never left out (they must be met within their "
-               "stated uncertainty, 1 %% where none is stated): %s. Other values on the WebBook page (most derived by "
+               "values %s %%. Measured values (calorimetric ones fitted with weight 10 and never left out, met within "
+               "their stated uncertainty, 1 %% where none is stated; the others compared): %s. Other values on the WebBook page (most derived by "
                "their authors from vapour pressures), compared: %s." % (
                    min(p["T"] for p in use if p not in fixed), max(p["T"] for p in use if p not in fixed), Tc,
                    C["dHvap_why"], pct(mc), "; ".join(checks) if checks else "none", "; ".join(derived) if derived else "none")))
@@ -1021,12 +1029,12 @@ def build(cid, log):
 
     # enthalpy of vaporization: the WebBook values chosen by method and reference, and ThermoML values
     pts = [{"T": e["T_K"], "y": 1000 * e["value"], "u_rel": (e["unc"] / e["value"]) if e["unc"] else None, "doi": None,
-            "ref": "%s (%s, NIST WebBook)" % (e["reference"], "method " + e["method"] if e["method"] != "N/A" else "compilation")}
+            "method": e["method"], "ref": "%s (%s, NIST WebBook)" % (e["reference"], "method " + e["method"] if e["method"] != "N/A" else "compilation")}
            for e in wb.dhvap() if e["method"] in C.get("dHvap_methods", ["C"]) or e["reference"] in C.get("dHvap_refs", [])]
     # the standard enthalpy of vaporization (at 298.15 K) of the phase change table, chosen the same way
     for v, u, unit, method, ref in wb.constants("ΔvapH°"):
         if unit == "kJ/mol" and (method in C.get("dHvap_methods", ["C"]) or ref in C.get("dHvap_refs", [])):
-            pts.append({"T": 298.15, "y": 1000 * v, "u_rel": (u / v) if u else None, "doi": None,
+            pts.append({"T": 298.15, "y": 1000 * v, "u_rel": (u / v) if u else None, "doi": None, "method": method,
                         "ref": "%s (ΔvapH° at 298.15 K, %s, NIST WebBook)" % (ref, "method " + method if method != "N/A" else "compilation")})
     pts += tml.values("heatOfVaporization")
     if C.get("dHvap") == "clapeyron":
@@ -1080,7 +1088,8 @@ def build(cid, log):
 
 def write_doc(comps):
     L = ["# Components from measured data", "",
-         "Generated by `validation/python/measured_components.py` (proposal 0008, Part B). These components are neither",
+         "Generated by `validation/python/measured_components.py` (proposal 0008, Part B; proposal 0009, batch 3). These",
+         "components are neither",
          "CoolProp fluids nor in the ChemSep databank, so every record is fitted to measured values from the NIST",
          "Chemistry WebBook and the NIST TRC ThermoML Archive. The stored files",
          "`validation/data/pure/measured/webbook_<id>.json` and `thermoml_<id>.json` hold the values with their",
@@ -1124,6 +1133,9 @@ def main():
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--only", nargs="+", metavar="ID", help="build (and write) only these components")
     args = ap.parse_args()
+    for c in [c for c in COMPONENTS if COMPONENTS[c].get("hold") and c not in (args.only or [])]:
+        print("held: %s (%s)" % (c, COMPONENTS[c]["hold"]))
+        del COMPONENTS[c]
     every = list(COMPONENTS)
     if args.only:
         unknown = [c for c in args.only if c not in COMPONENTS]
