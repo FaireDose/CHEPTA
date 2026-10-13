@@ -505,6 +505,20 @@
         "validation/data/vle/ethanol_toluene_10-1021-je200921u_101.3kPa_tx.json"
       ]
     },
+    "chen2014-methyl-myristate-methyl-palmitate": {
+      "title": "Isobaric vapor liquid equilibrium for binary system of methyl myristate + methyl palmitate at 0.5, 1.0 and 1.4 kPa",
+      "authors": "R. Chen, H. Ding, M. Liu, J. Qi, H. Zhou, N. Chen",
+      "year": 2014,
+      "published": "Fluid Phase Equilib. 382 (2014) 133-138",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2014.09.006",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2014.09.006.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/methyl-myristate_methyl-palmitate_10-1016-j-fluid-2014-09-006_0.5kPa_tx.json"
+      ]
+    },
     "chernyak2008-ethylene-carbonate-water": {
       "title": "Phase Equilibria in Binary Mixtures of Water with Cyclic Alkylene Carbonates",
       "authors": "Y. Chernyak",
@@ -1091,6 +1105,20 @@
         "validation/data/vle/sulfolane_water_10-1021-je034254m_413.18K.json"
       ]
     },
+    "hou2012-methyl-palmitate-methyl-stearate": {
+      "title": "Isobaric Vapor Liquid Equilibrium of the Mixture of Methyl Palmitate and Methyl Stearate at 0.1 kPa, 1 kPa, 5 kPa, and 10 kPa",
+      "authors": "J. Hou, S. Xu, H. Ding, T. Sun",
+      "year": 2012,
+      "published": "J. Chem. Eng. Data 57 (2012) 2632-2639",
+      "kind": "thermoml",
+      "doi": "10.1021/je3003699",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je3003699.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/methyl-palmitate_methyl-stearate_10-1021-je3003699_10.0kPa_tx.json"
+      ]
+    },
     "hu2015-diethyl-carbonate-propylene-carbonate": {
       "title": "Isobaric Vapor Liquid Equilibria for Binary Systems of Diethyl Carbonate + Propylene Carbonate, Diethyl Carbonate + Propylene Glycol, and Ethanol + Propylene Carbonate at 101.3 kPa",
       "authors": "C. C. Hu, P. H. Chiu, S. J. Wang, S. H. Cheng",
@@ -1529,6 +1557,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/acetonitrile_methanol_10-1016-j-jct-2016-05-011_101.3kPa.json"
+      ]
+    },
+    "li2016-methyl-myristate-n-hexadecane": {
+      "title": "Isobaric vapor-liquid equilibrium for the three binary systems of C14 - C16 n-alkane + methyl myristate at 5.00 kPa",
+      "authors": "H. Li, H. Luo, S. Xia, P. Ma",
+      "year": 2016,
+      "published": "Fluid Phase Equilib. 408 (2016) 47-51",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2015.08.015",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2015.08.015.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/methyl-myristate_n-hexadecane_10-1016-j-fluid-2015-08-015_5.0kPa.json"
       ]
     },
     "li2018-2-butanone-ethanol": {
@@ -3080,6 +3122,35 @@
         "validation/data/vle/2-butanol_water_10-1021-je0501336_tpx.json"
       ]
     },
+    "shimoyama2007-methanol-methyl-laurate": {
+      "title": "Measurement and correlation of vapor liquid equilibria for methanol + methyl laurate and methanol + methyl myristate systems near critical temperature of methanol",
+      "authors": "Y. Shimoyama, Y. Iwai, B. S. Jin, T. Hirayama, Y. Arai",
+      "year": 2007,
+      "published": "Fluid Phase Equilib. 257 (2007) 217-222",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2007.01.034",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2007.01.034.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/methanol_methyl-laurate_10-1016-j-fluid-2007-01-034_tpx.json",
+        "validation/data/vle/methanol_methyl-myristate_10-1016-j-fluid-2007-01-034_tpx.json"
+      ]
+    },
+    "silva2016-methanol-methyl-oleate": {
+      "title": "Phase equilibria of triolein to biodiesel reactor systems",
+      "authors": "C. Silva, L. Soh, A. Barberio, J. Zimmerman, W. D. Seider",
+      "year": 2016,
+      "published": "Fluid Phase Equilib. 409 (2016) 171-192",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2015.09.049",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2015.09.049.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/methanol_methyl-oleate_10-1016-j-fluid-2015-09-049_101.0kPa.json"
+      ]
+    },
     "soujanya2016-2-propanol-glycerol": {
       "title": "Experimental vapour - liquid equilibrium data of the quaternary system Methanol (1) + Isopropyl Alcohol (2) + Water (3) + Glycerol (4) along with Isopropyl Alcohol (2) + Glycerol (4) and Isopropyl Alcohol (2) + Water (3) binary data at atmospheric and sub-atmospheric pressures.",
       "authors": "J. Soujanya, C. A. Reddy, B. Satyavathi, T. Sankarshana",
@@ -3528,6 +3599,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/2-butanone_isopropyl-acetate_10-1016-j-fluid-2009-03-008_101.33kPa.json"
+      ]
+    },
+    "xu2016-methanol-methyl-palmitate": {
+      "title": "Vapor Liquid Equilibrium for Methanol + Methyl Palmitate near the Critical Temperature of Methanol",
+      "authors": "J. Xu, Q. Liu, T. Yan, Y. Wang, T. Fang",
+      "year": 2016,
+      "published": "J. Chem. Eng. Data 61 (2016) 1229-1235",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.5b00865",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.5b00865.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/methanol_methyl-palmitate_10-1021-acs-jced-5b00865_tpx.json"
       ]
     },
     "xu2017-water-ethyl-acetate": {

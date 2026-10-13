@@ -1,0 +1,69 @@
+{
+ "_about": "Methanol (1) + Methyl oleate (2): isobaric T-x-y at 101.0 kPa. Rows: liquid mole fraction of methanol, boiling temperature in K, vapour mole fraction of methanol, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "C. Silva, L. Soh, A. Barberio, J. Zimmerman, W. D. Seider, Phase equilibria of triolein to biodiesel reactor systems, Fluid Phase Equilib. 409 (2016) 171-192",
+  "doi": "10.1016/j.fluid.2015.09.049",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2015.09.049.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1, 2. The table number in the article was not checked."
+ },
+ "components": [
+  "methanol",
+  "methyl-oleate"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.0,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0528,
+   414.85,
+   0.9972
+  ],
+  [
+   0.0552,
+   435.15,
+   0.9964
+  ],
+  [
+   0.0759,
+   394.65,
+   0.9978
+  ],
+  [
+   0.104,
+   384.15,
+   0.9985
+  ],
+  [
+   0.145,
+   372.85,
+   0.999
+  ],
+  [
+   0.239,
+   362.65,
+   0.9992
+  ],
+  [
+   0.346,
+   356.75,
+   0.9986
+  ],
+  [
+   0.484,
+   346.95,
+   0.9997
+  ],
+  [
+   0.672,
+   342.25,
+   0.9997
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0013. To be checked by a person against the record (AGENTS.md rule 4)."
+}

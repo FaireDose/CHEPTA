@@ -1,6 +1,6 @@
 {
  "_about": "Records of the NIST TRC ThermoML Archive (https://trc.nist.gov/ThermoML/; open data, free to read even where the article is not) with binary vapour-liquid data of each pair, found by validation/python/scan_pairs.py. Set numbers and point counts as stored in each record; the values themselves are read from the record when a pair is fitted.",
- "scanned": "2026-10-11",
+ "scanned": "2026-10-13",
  "pairs": {
   "acetic-acid+water": [
    {
@@ -4930,6 +4930,131 @@
     ]
    }
   ],
+  "methanol+methyl-laurate": [
+   {
+    "doi": "10.1016/j.fluid.2007.01.034",
+    "year": "2007",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Shimoyama, Y.[Yusuke]",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 20
+     }
+    ]
+   }
+  ],
+  "methanol+methyl-myristate": [
+   {
+    "doi": "10.1016/j.fluid.2007.01.034",
+    "year": "2007",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Shimoyama, Y.[Yusuke]",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 19
+     }
+    ]
+   }
+  ],
+  "methanol+methyl-palmitate": [
+   {
+    "doi": "10.1021/acs.jced.5b00865",
+    "year": "2016",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Xu, J.[Jie]",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 18
+     }
+    ]
+   }
+  ],
+  "methanol+methyl-oleate": [
+   {
+    "doi": "10.1016/j.fluid.2015.09.049",
+    "year": "2016",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Silva, C.[Cory]",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "isobaric-tx",
+      "points": 9
+     },
+     {
+      "number": 2,
+      "kind": "isobaric-txy",
+      "points": 9
+     }
+    ]
+   }
+  ],
+  "methanol+triolein": [
+   {
+    "doi": "10.1016/j.fluid.2005.10.010",
+    "year": "2006",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Tang, Z.[Zhong]",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 21
+     }
+    ]
+   }
+  ],
+  "methanol+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 29,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "methanol+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 16,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "methanol+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 8,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
   "acetone+ethanol": [
    {
     "doi": "10.1016/j.fluid.2005.01.007",
@@ -6217,6 +6342,51 @@
     ]
    }
   ],
+  "ethanol+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 30,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "ethanol+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 17,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "ethanol+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
   "acetone+toluene": [
    {
     "doi": "10.1016/j.jct.2015.12.034",
@@ -6475,6 +6645,51 @@
     ]
    }
   ],
+  "acetone+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 40,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "acetone+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 28,
+      "kind": "gamma",
+      "points": 6
+     }
+    ]
+   }
+  ],
+  "acetone+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 20,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
   "2-propanol+chloroform": [
    {
     "doi": "10.1016/j.fluid.2018.03.011",
@@ -6596,6 +6811,51 @@
       "number": 6,
       "kind": "gamma",
       "points": 1
+     }
+    ]
+   }
+  ],
+  "chloroform+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 34,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "chloroform+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 22,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "chloroform+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 14,
+      "kind": "gamma",
+      "points": 3
      }
     ]
    }
@@ -7862,6 +8122,51 @@
     ]
    }
   ],
+  "oleic-acid+toluene": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 26,
+      "kind": "gamma",
+      "points": 4
+     }
+    ]
+   }
+  ],
+  "palmitic-acid+toluene": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 13,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "stearic-acid+toluene": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "gamma",
+      "points": 4
+     }
+    ]
+   }
+  ],
   "ethyl-acetate+n-pentane": [
    {
     "doi": "10.1021/je100832h",
@@ -8453,6 +8758,51 @@
       "number": 21,
       "kind": "isobaric-txy",
       "points": 23
+     }
+    ]
+   }
+  ],
+  "ethyl-acetate+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 39,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "ethyl-acetate+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 27,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "ethyl-acetate+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 19,
+      "kind": "gamma",
+      "points": 4
      }
     ]
    }
@@ -9077,6 +9427,66 @@
       "number": 27,
       "kind": "gamma",
       "points": 3
+     }
+    ]
+   }
+  ],
+  "cyclohexane+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 27,
+      "kind": "gamma",
+      "points": 4
+     }
+    ]
+   }
+  ],
+  "cyclohexane+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 14,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "cyclohexane+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 6,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "cyclohexane+n-hexadecane": [
+   {
+    "doi": "10.1021/acs.jced.8b00125",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Ahitan, Sourabh",
+    "sets": [
+     {
+      "number": 11,
+      "kind": "tpx-varying",
+      "points": 55
      }
     ]
    }
@@ -10815,6 +11225,51 @@
     ]
    }
   ],
+  "ethylbenzene+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 28,
+      "kind": "gamma",
+      "points": 4
+     }
+    ]
+   }
+  ],
+  "ethylbenzene+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 15,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "ethylbenzene+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "gamma",
+      "points": 4
+     }
+    ]
+   }
+  ],
   "glycerol+styrene": [
    {
     "doi": "10.1021/je900686n",
@@ -11443,6 +11898,66 @@
     ]
    }
   ],
+  "n-hexane+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 22,
+      "kind": "gamma",
+      "points": 4
+     }
+    ]
+   }
+  ],
+  "n-hexane+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "n-hexane+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "n-hexadecane+n-hexane": [
+   {
+    "doi": "10.1016/j.jct.2019.05.011",
+    "year": "2019",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Kabane, Bakusele",
+    "sets": [
+     {
+      "number": 27,
+      "kind": "gamma",
+      "points": 1
+     }
+    ]
+   }
+  ],
   "n-heptane+propylene-glycol": [
    {
     "doi": "10.1016/j.jct.2014.06.006",
@@ -12016,6 +12531,51 @@
     "sets": [
      {
       "number": 19,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "n-heptane+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 23,
+      "kind": "gamma",
+      "points": 4
+     }
+    ]
+   }
+  ],
+  "n-heptane+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 10,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "n-heptane+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 2,
       "kind": "gamma",
       "points": 3
      }
@@ -13027,6 +13587,51 @@
     ]
    }
   ],
+  "1-propanol+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 31,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "1-propanol+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 18,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "1-propanol+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 10,
+      "kind": "gamma",
+      "points": 5
+     }
+    ]
+   }
+  ],
   "1-butanol+2-propanol": [
    {
     "doi": "10.1016/j.fluid.2012.12.020",
@@ -13569,6 +14174,51 @@
     ]
    }
   ],
+  "2-propanol+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 32,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "2-propanol+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 20,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "2-propanol+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 12,
+      "kind": "gamma",
+      "points": 4
+     }
+    ]
+   }
+  ],
   "1-butanol+methyl-acetate": [
    {
     "doi": "10.1007/s10765-013-1483-2",
@@ -14019,6 +14669,51 @@
       "number": 14,
       "kind": "isothermal-px",
       "points": 19
+     }
+    ]
+   }
+  ],
+  "1-butanol+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 76,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "1-butanol+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 19,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "1-butanol+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 11,
+      "kind": "gamma",
+      "points": 5
      }
     ]
    }
@@ -14898,6 +15593,51 @@
       "number": 16,
       "kind": "isobaric-tx",
       "points": 17
+     }
+    ]
+   }
+  ],
+  "dichloroethane+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 37,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "dichloroethane+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 25,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "dichloroethane+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 17,
+      "kind": "gamma",
+      "points": 6
      }
     ]
    }
@@ -15786,6 +16526,51 @@
     ]
    }
   ],
+  "2-butanol+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 33,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "2-butanol+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 21,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "2-butanol+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 13,
+      "kind": "gamma",
+      "points": 5
+     }
+    ]
+   }
+  ],
   "1-pentanol+propionic-acid": [
    {
     "doi": "10.1016/j.jct.2010.05.014",
@@ -16176,6 +16961,51 @@
     ]
    }
   ],
+  "isooctane+oleic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 24,
+      "kind": "gamma",
+      "points": 4
+     }
+    ]
+   }
+  ],
+  "isooctane+palmitic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.06.009",
+    "year": "2012",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia C.]",
+    "sets": [
+     {
+      "number": 11,
+      "kind": "gamma",
+      "points": 3
+     }
+    ]
+   }
+  ],
+  "isooctane+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2012.12.009",
+    "year": "2013",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Belting, P. C.[Patricia Castro]",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "gamma",
+      "points": 4
+     }
+    ]
+   }
+  ],
   "n-undecane+pyridine": [
    {
     "doi": "10.1016/j.fluid.2016.10.009",
@@ -16305,6 +17135,102 @@
       "number": 28,
       "kind": "isobaric-txy",
       "points": 26
+     }
+    ]
+   }
+  ],
+  "methyl-myristate+methyl-palmitate": [
+   {
+    "doi": "10.1016/j.fluid.2014.09.006",
+    "year": "2014",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Chen, R.[Ruru]",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 38
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.tca.2010.10.002",
+    "year": "2011",
+    "journal": "Thermochim. Acta",
+    "first_author": "Silva, L. Y. A.[Luciana Y. Akisawa]",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "isobaric-tx",
+      "points": 6
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je3003699",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Hou, J.[Jun]",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "isobaric-tx",
+      "points": 4
+     }
+    ]
+   }
+  ],
+  "methyl-myristate+n-hexadecane": [
+   {
+    "doi": "10.1016/j.fluid.2015.08.015",
+    "year": "2016",
+    "journal": "Fluid Phase Equilib.",
+    "first_author": "Li, H.[Hao]",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "isobaric-tx",
+      "points": 12
+     },
+     {
+      "number": 6,
+      "kind": "isobaric-txy",
+      "points": 12
+     }
+    ]
+   }
+  ],
+  "methyl-palmitate+methyl-stearate": [
+   {
+    "doi": "10.1021/je3003699",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "first_author": "Hou, J.[Jun]",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 45
+     }
+    ]
+   }
+  ],
+  "palmitic-acid+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2009.07.008",
+    "year": "2010",
+    "journal": "J. Chem. Thermodyn.",
+    "first_author": "Matricarde Falleiro, R. M.[Rafael M.]",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "isobaric-tx",
+      "points": 10
+     },
+     {
+      "number": 6,
+      "kind": "isobaric-txy",
+      "points": 10
      }
     ]
    }
