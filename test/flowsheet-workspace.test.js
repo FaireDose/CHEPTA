@@ -8,7 +8,8 @@ import { emptyFlowsheet } from "../src/flowsheet/document.js";
 import { initialState, applyPatch } from "../src/ui/app-logic.js";
 import { WORKSPACES } from "../src/ui/workspaces.js";
 import {
-  addBlock, addFeedTo, connect, deleteBlock, deleteStream, addOutlet, removeOutlet, setSpec, moveBlock, setTear, setComponents, openInlets, endOf, streamsOf,
+  addBlock, addFeedTo, connect, deleteBlock, removeBlock, completeFlowsheet, deleteStream, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
+  setComponents, openInlets, endOf, streamsOf,
 } from "../src/ui/flowsheet-logic.js";
 
 const base = () => ({ ...emptyFlowsheet(), components: ["ethanol", "water"] });
@@ -90,9 +91,13 @@ test("deleting blocks, outlets and components keeps the flowsheet consistent", (
   const d = deleteBlock(fs, "X1");
   assert.equal(endOf(d, streamsOf(d, "E1").out[0]).kind, "product");
   structureOk(d);
-  // deleting the heater removes its feed too
+  // deleting the heater keeps its feed and its stream (decision of the maintainer, 2026-10-13: deleting a unit
+  // does not delete its streams); the feed's stream now leaves the flowsheet
+  const feedStream = streamsOf(d, "E1").in[0];
   const d2 = deleteBlock(d, "E1");
-  assert.equal(d2.blocks.length, 0);
+  assert.ok(d2.blocks.some(b => b.id === "F1") && d2.streams.some(s => s.id === feedStream));
+  assert.equal(endOf(d2, feedStream).kind, "product");
+  structureOk(d2);
   // components: a removed one leaves the feeds and separators; a new one starts at zero
   fs = setSpec(fs, "F1", { flow_kmol_h: { ethanol: 30, water: 70 } });
   const c = setComponents(fs, ["water", "methanol"]);
@@ -150,4 +155,70 @@ test("deleting streams: what each kind of stream allows", () => {
   r = deleteStream(fs, feedStream);
   assert.ok(!r.fs.blocks.some(b => b.type === "feed"));
   assert.match(r.note, /Deleted the feed F1/);
+});
+
+test("deleting a unit keeps every stream connected to it", () => {
+  // F1 -> V1 (flash) -> vapour to E1 (heater), liquid out; delete V1
+  let fs = base();
+  ({ fs } = addBlock(fs, "flash"));
+  ({ fs } = addFeedTo(fs, "V1.in"));
+  ({ fs } = addBlock(fs, "heater"));
+  const [inlet] = streamsOf(fs, "V1").in, [vap] = streamsOf(fs, "V1").vapour, [liq] = streamsOf(fs, "V1").liquid;
+  fs = connect(fs, vap, "E1.in");
+  const before = fs.streams.map(s => s.id).sort();
+  const { fs: d, note } = removeBlock(fs, "V1");
+  assert.ok(!d.blocks.some(b => b.id === "V1"));
+  assert.deepEqual(d.streams.map(s => s.id).sort(), before, "no stream is deleted");
+  // the stream into V1 leaves the flowsheet; its feed stays
+  assert.equal(endOf(d, inlet).kind, "product");
+  assert.ok(d.blocks.some(b => b.id === "F1"));
+  // the streams out of V1 start from new feeds and still go where they went
+  for (const sid of [vap, liq]) {
+    const s = d.streams.find(x => x.id === sid);
+    assert.equal(d.blocks.find(b => b.id === s.from.split(".")[0]).type, "feed");
+  }
+  assert.equal(endOf(d, vap).block, "E1");
+  assert.match(note, new RegExp(`${inlet} now leaves the flowsheet`));
+  assert.match(note, new RegExp(`${vap} from F`));
+  structureOk(d);
+});
+
+test("products of one unit are not drawn on top of each other", () => {
+  // a flash whose vapour and liquid both go into a mixer; deleting the mixer gives both back as products
+  let fs = base();
+  ({ fs } = addBlock(fs, "flash"));
+  ({ fs } = addFeedTo(fs, "V1.in"));
+  ({ fs } = addBlock(fs, "mixer"));
+  fs = connect(fs, streamsOf(fs, "V1").vapour[0], "M1.in");
+  fs = connect(fs, streamsOf(fs, "V1").liquid[0], "M1.in");
+  const d = deleteBlock(fs, "M1");
+  const spots = d.blocks.map(b => `${b.x},${b.y}`);
+  assert.equal(new Set(spots).size, spots.length, `two blocks on one spot: ${spots.join(" ")}`);
+  structureOk(d);
+});
+
+test("a flowsheet missing Products or Feeds (written outside the editor) is completed, and says so", () => {
+  const fs = {
+    ...base(),
+    blocks: [
+      { id: "F1", type: "feed", x: 0, y: 0, spec: { T_K: 350, P_kPa: 101.325, flow_kmol_h: { ethanol: 1, water: 1 } } },
+      { id: "V1", type: "flash", x: 150, y: 0, spec: { T_K: 355, P_kPa: 101.325 } },
+      { id: "P1", type: "product", x: 280, y: -60 },
+    ],
+    // S3 goes to a Product that is not there; the canvas could not draw it and the flowsheet did not solve
+    streams: [{ id: "S1", from: "F1.out", to: "V1.in" }, { id: "S2", from: "V1.vapour", to: "P1.in" }, { id: "S3", from: "V1.liquid", to: "P2.in" }],
+  };
+  assert.ok(flowsheetDocStatus(fs).structure.length > 0);
+  const r = completeFlowsheet(fs);
+  assert.match(r.note, /S3 went to P2, which is not in the flowsheet/);
+  structureOk(r.fs);
+  assert.equal(endOf(r.fs, "S3").kind, "product");
+  // an outlet with no stream at all gets a product stream
+  const r2 = completeFlowsheet({ ...fs, streams: fs.streams.slice(0, 2) });
+  assert.match(r2.note, /V1 had no stream on its liquid outlet/);
+  structureOk(r2.fs);
+  // a complete flowsheet is left as it is
+  const r3 = completeFlowsheet(r.fs);
+  assert.equal(r3.note, "");
+  assert.equal(r3.fs, r.fs);
 });

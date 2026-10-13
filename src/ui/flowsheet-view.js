@@ -16,7 +16,7 @@ import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
 import { flowsheetDocStatus, runFlowsheet } from "../flowsheet/document.js";
 import {
-  PALETTE, addBlock, addFeedTo, connect, deleteBlock, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
+  PALETTE, addBlock, addFeedTo, connect, removeBlock, completeFlowsheet, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
   setComponents, streamsOf, endOf, openInlets, deleteStream,
 } from "./flowsheet-logic.js";
 import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
@@ -54,9 +54,9 @@ export function deleteSelected(state, set, ui) {
   const f = ensureUi(ui), fs = state.flowsheet;
   if (!f.sel) return;
   if (f.sel.kind === "block") {
-    const id = f.sel.id;
-    f.sel = null; f.note = `Deleted ${id}. Streams that went into it now leave the flowsheet.`;
-    set({ flowsheet: deleteBlock(fs, id) });
+    const r = removeBlock(fs, f.sel.id);
+    f.sel = null; f.note = r.note;
+    set({ flowsheet: r.fs });
     return;
   }
   const r = deleteStream(fs, f.sel.id);
@@ -426,7 +426,12 @@ function shape(type, w, hh) {
 /** Draw the flowsheet (canvas, results panel and stream table). ctx from app-views renderView. */
 export function flowsheetView(ctx) {
   const { state, set, plot, side, below, notes, ui } = ctx;
-  const f = ensureUi(ui), fs = state.flowsheet, u = state.units;
+  const f = ensureUi(ui), u = state.units;
+  let fs = state.flowsheet;
+  // a document from outside the editor may lack Products or Feeds the editor always has: restore
+  // them (the canvas could not draw such a stream) and say so
+  const rep = completeFlowsheet(fs);
+  if (rep.note) { fs = rep.fs; queueMicrotask(() => { f.note = rep.note; set({ flowsheet: rep.fs }); }); }
   if (!fs.components.length) {
     plot.replaceChildren(h("div", { class: "fa-need is-start", role: "status" },
       h("h3", {}, "Start by choosing the components of the simulation"),
