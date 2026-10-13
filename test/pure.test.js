@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { evaluate } from "../src/thermo/correlations.js";
-import { pure, listComponents } from "../src/index.js";
+import { pure, listComponents, system } from "../src/index.js";
 
 // Expected values computed independently with the open-source `chemicals` library
 // (chemicals.dippr EQ100-EQ107), with the same arbitrary coefficients, at T = 350 K.
@@ -58,4 +58,20 @@ test("missing data is reported, not guessed", () => {
   const s = pure("water").props(300, 101.325);
   assert.equal(s.phase, "liquid");
   for (const [k, v] of Object.entries(s)) if (v === null) assert.ok(s.notes.length > 0, k);
+});
+
+test("a liquid without UNIQUAC r and q works with NRTL and the ideal solution, and UNIQUAC says why it cannot", () => {
+  // dichloromethane and 2-methoxyethanol are built from measured data: no open source gives their r and q yet
+  for (const id of ["dichloromethane", "2-methoxyethanol"]) {
+    const c = listComponents().find(x => x.id === id);
+    assert.equal(c.activity, true, id);
+    assert.equal(c.uniquac, false, id);
+  }
+  const s = system({ components: ["dichloromethane", "methanol"], model: "NRTL" });
+  assert.ok(Number.isFinite(s.bubbleT([0.5, 0.5], 101.325).T));
+  assert.ok(Number.isFinite(system({ components: ["2-methoxyethanol", "water"], model: "ideal" }).bubbleT([0.5, 0.5], 101.325).T));
+  assert.throws(() => system({ components: ["dichloromethane", "methanol"], model: "UNIQUAC" }), /Dichloromethane has no UNIQUAC r and q/);
+  // gases stay with the equations of state; every component with r and q is an activity-model component
+  assert.equal(listComponents().find(c => c.id === "methane").activity, false);
+  assert.ok(listComponents().filter(c => c.uniquac).every(c => c.activity));
 });

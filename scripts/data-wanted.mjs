@@ -5,8 +5,9 @@ import { readFileSync, writeFileSync } from "node:fs";
 
 const comps = JSON.parse(readFileSync(new URL("../src/data/components.json", import.meta.url))).components;
 const pairs = JSON.parse(readFileSync(new URL("../src/data/binaries.json", import.meta.url))).pairs;
-// Activity-model (NRTL/UNIQUAC) pairs only: light gases are described by equations of state.
-const ids = Object.keys(comps).filter(id => comps[id].uniquac);
+// Activity-model (NRTL/UNIQUAC) pairs only: liquids at 25 degC with a vapour-pressure record (src/thermo/components.js,
+// `activity`); light gases are described by equations of state.
+const ids = Object.keys(comps).filter(id => comps[id].vapourPressure && (comps[id].uniquac || comps[id].Tb_K > 298.15));
 const name = id => comps[id].name;
 
 const have = new Map(), stillWanted = new Map();

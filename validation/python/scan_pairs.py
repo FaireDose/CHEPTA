@@ -1,7 +1,7 @@
 """Which binary pairs of the activity-model components have open vapour-liquid data, and where.
 
-For every pair of the components that NRTL and UNIQUAC describe (those with UNIQUAC r and q in
-src/data/components.json, as docs/DATA_WANTED.md counts them), this lists:
+For every pair of the components that activity models describe (liquids at 25 degC with a vapour-pressure
+record in src/data/components.json, as docs/DATA_WANTED.md counts them), this lists:
 
   - the parameter sets CHEPTA has (src/data/binaries.json): fitted, databank, none;
   - whether the ChemSep databank (Artistic License 2.0, as shipped with the open-source thermo
@@ -43,7 +43,9 @@ BINS = json.loads((ROOT / "src" / "data" / "binaries.json").read_text())["pairs"
 INDEX_FILE = ROOT / "validation" / "data" / "vle" / "index.json"
 DOC_FILE = ROOT / "docs" / "PAIR_SCAN.md"
 
-ACTIVITY = [cid for cid, c in COMPS.items() if c.get("uniquac")]
+# the components activity models describe: liquids at 25 degC with a vapour-pressure record (as src/thermo/components.js,
+# `activity`); NRTL needs no UNIQUAC r and q
+ACTIVITY = [cid for cid, c in COMPS.items() if c.get("vapourPressure") and (c.get("uniquac") or (c.get("Tb_K") or 0) > 298.15)]
 NOT_SEARCHED = {"water"}
 VLE_SUMMARY = {
     ("VaporPBoilingTAzeotropTandP", None),

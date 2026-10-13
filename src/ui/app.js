@@ -432,7 +432,9 @@ export function app(target, cfg = {}) {
       const bad = spec.liquid && !c.activity;
       const noMelt = !bad && spec.solid?.includes(slot) && !c.fusion;
       const other = usedElsewhere.get(c.id);
-      return { disabled: bad || noMelt, note: bad ? "gas: equation of state only" : noMelt ? "no melting data" : other != null ? `also component ${other + 1}` : null };
+      // no UNIQUAC r and q: still offered (NRTL works); the check says what to do if UNIQUAC is chosen
+      const noRq = !bad && spec.liquid && state.model === "UNIQUAC" && !c.uniquac;
+      return { disabled: bad || noMelt, note: bad ? "gas: equation of state only" : noMelt ? "no melting data" : noRq ? "NRTL only (no UNIQUAC r and q)" : other != null ? `also component ${other + 1}` : null };
     };
   }
 
