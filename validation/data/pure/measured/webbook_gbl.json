@@ -1,0 +1,677 @@
+{
+ "component": "gbl",
+ "retrieved": "2026-10-13",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Units=SI&Mask=1",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°gas",
+       "-364. ± 3.",
+       "kJ/mol",
+       "Cm",
+       "Wiberg and Waldron, 1991",
+       "Heat of reduction; ALS"
+      ],
+      [
+       "ΔfH°gas",
+       "-366.5 ± 0.8",
+       "kJ/mol",
+       "Ccb",
+       "Leitao, Pilcher, et al., 1990",
+       "See  Brown, Conn, et al., 1989; ALS"
+      ],
+      [
+       "ΔfH°gas",
+       "-365.61 ± 0.44",
+       "kJ/mol",
+       "Ccb",
+       "Steele, Chirico, et al., 1989",
+       "ALS"
+      ],
+      [
+       "ΔfH°gas",
+       "-377.7",
+       "kJ/mol",
+       "N/A",
+       "Ismailov, Gabzalilova, et al., 1988",
+       "Value computed using ΔfHliquid° value of -431.2±2.7 kj/mol from  Ismailov, Gabzalilova, et al., 1988 and ΔvapH° value of 53.5 kj/mol from  Steele, Chirico, et al., 1989.; DRB"
+      ],
+      [
+       "ΔfH°gas",
+       "-368.5",
+       "kJ/mol",
+       "N/A",
+       "Yevstropov, Lebedev, et al., 1980",
+       "Value computed using ΔfHliquid° value of -422.0±1.1 kj/mol from  Yevstropov, Lebedev, et al., 1980 and ΔvapH° value of 53.5 kj/mol from  Steele, Chirico, et al., 1989.; DRB"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,gas (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "43.46",
+       "100.",
+       "Kudchadker S.A., 1975",
+       "GT"
+      ],
+      [
+       "50.99",
+       "150."
+      ],
+      [
+       "60.82",
+       "200."
+      ],
+      [
+       "79.20",
+       "273.15"
+      ],
+      [
+       "86.10",
+       "298.15"
+      ],
+      [
+       "86.62",
+       "300."
+      ],
+      [
+       "114.24",
+       "400."
+      ],
+      [
+       "138.77",
+       "500."
+      ],
+      [
+       "159.18",
+       "600."
+      ],
+      [
+       "176.01",
+       "700."
+      ],
+      [
+       "189.98",
+       "800."
+      ],
+      [
+       "201.69",
+       "900."
+      ],
+      [
+       "211.55",
+       "1000."
+      ],
+      [
+       "219.91",
+       "1100."
+      ],
+      [
+       "227.02",
+       "1200."
+      ],
+      [
+       "233.10",
+       "1300."
+      ],
+      [
+       "238.33",
+       "1400."
+      ],
+      [
+       "242.82",
+       "1500."
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,gas",
+      "Constant pressure heat capacity of gas"
+     ],
+     "rows": [
+      [
+       "ΔfH°gas",
+       "Enthalpy of formation of gas at standard conditions"
+      ]
+     ]
+    }
+   ]
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°liquid",
+       "-419. ± 3.",
+       "kJ/mol",
+       "Cm",
+       "Wiberg and Waldron, 1991",
+       "Heat of reduction; ALS"
+      ],
+      [
+       "ΔfH°liquid",
+       "-420.9 ± 0.7",
+       "kJ/mol",
+       "Ccb",
+       "Leitao, Pilcher, et al., 1990",
+       "See  Brown, Conn, et al., 1989; ALS"
+      ],
+      [
+       "ΔfH°liquid",
+       "-419.07 ± 0.36",
+       "kJ/mol",
+       "Ccb",
+       "Steele, Chirico, et al., 1989",
+       "ALS"
+      ],
+      [
+       "ΔfH°liquid",
+       "-431.2 ± 2.7",
+       "kJ/mol",
+       "Ccb",
+       "Ismailov, Gabzalilova, et al., 1988",
+       "ALS"
+      ],
+      [
+       "ΔfH°liquid",
+       "-422.0 ± 1.1",
+       "kJ/mol",
+       "Ccb",
+       "Yevstropov, Lebedev, et al., 1980",
+       "ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2010.6 ± 0.5",
+       "kJ/mol",
+       "Ccb",
+       "Leitao, Pilcher, et al., 1990",
+       "See  Brown, Conn, et al., 1989; Corresponding ΔfHºliquid = -420.9 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2012.46 ± 0.28",
+       "kJ/mol",
+       "Ccb",
+       "Steele, Chirico, et al., 1989",
+       "Corresponding ΔfHºliquid = -419.07 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2000.4 ± 6.4",
+       "kJ/mol",
+       "Ccb",
+       "Ismailov, Gabzalilova, et al., 1988",
+       "Corresponding ΔfHºliquid = -431.14 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2009.2 ± 0.8",
+       "kJ/mol",
+       "Ccb",
+       "Yevstropov, Lebedev, et al., 1980",
+       "Corresponding ΔfHºliquid = -422.3 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "S°liquid",
+       "197.4",
+       "J/mol*K",
+       "N/A",
+       "Lebedev and Yevstropov, 1983",
+       "DH"
+      ],
+      [
+       "S°liquid",
+       "197.5",
+       "J/mol*K",
+       "N/A",
+       "Yevstropov, Lebedev, et al., 1980, 2",
+       "DH"
+      ],
+      [
+       "S°liquid",
+       "201.28",
+       "J/mol*K",
+       "N/A",
+       "Ismailov, Gabzalilova, et al., 1988",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "140.5",
+       "298.15",
+       "Steele, Chirico, et al., 1989",
+       "DH"
+      ],
+      [
+       "140.9",
+       "298.15",
+       "Ismailov, Gabzalilova, et al., 1988",
+       "T = 290 to 410 K. Cp(liq) = 101.0829 + 763.3375X10-4T + 1.918968x10-4T2 J/mol*K (290 to 410 K).; DH"
+      ],
+      [
+       "141.3",
+       "298.15",
+       "Lebedev and Yevstropov, 1983",
+       "T = 13.8 to 340 K.; DH"
+      ],
+      [
+       "141.3",
+       "298.15",
+       "Yevstropov, Lebedev, et al., 1980, 2",
+       "T = 5 to 330 K.; DH"
+      ],
+      [
+       "141.4",
+       "298.15",
+       "Fuchs, 1979",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid",
+      "Constant pressure heat capacity of liquid"
+     ],
+     "rows": [
+      [
+       "S°liquid",
+       "Entropy of liquid at standard conditions"
+      ],
+      [
+       "ΔcH°liquid",
+       "Enthalpy of combustion of liquid at standard conditions"
+      ],
+      [
+       "ΔfH°liquid",
+       "Enthalpy of formation of liquid at standard conditions"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "477.7",
+       "K",
+       "N/A",
+       "Aldrich Chemical Company Inc., 1990",
+       "BS"
+      ],
+      [
+       "Tboil",
+       "479.20",
+       "K",
+       "N/A",
+       "Vasil'eva, Naumova, et al., 1990",
+       "Uncertainty assigned by TRC =  0.2 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tfus",
+       "229.0",
+       "K",
+       "N/A",
+       "Anonymous, 1954",
+       "Uncertainty assigned by TRC =  0.6 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Ttriple",
+       "229.78",
+       "K",
+       "N/A",
+       "Lebedev and Yevstropov, 1983",
+       "Uncertainty assigned by TRC =  0.02 K; TRC"
+      ],
+      [
+       "Ttriple",
+       "229.78",
+       "K",
+       "N/A",
+       "Evstropov, Lebedev, et al., 1980",
+       "Crystal phase 1 phase; Uncertainty assigned by TRC =  0.01 K; TRC"
+      ],
+      [
+       "Ttriple",
+       "229.78",
+       "K",
+       "N/A",
+       "Evstropov, Lebedev, et al., 1979",
+       "Uncertainty assigned by TRC =  0.05 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tc",
+       "731.0",
+       "K",
+       "N/A",
+       "Wilson, Wilson, et al., 1996",
+       "Uncertainty assigned by TRC =  0.4 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Pc",
+       "51.31",
+       "bar",
+       "N/A",
+       "Wilson, Wilson, et al., 1996",
+       "Uncertainty assigned by TRC =  0.40 bar; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "53. ± 5.",
+       "kJ/mol",
+       "AVG",
+       "N/A",
+       "Average of 16 values; Individual data points"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "49.5 ± 0.1",
+       "392.",
+       "EB",
+       "Wiberg and Waldron, 1991",
+       "Based on data from 378. to 406. K.; AC"
+      ],
+      [
+       "51.8 ± 0.6",
+       "357.",
+       "MM",
+       "Wiberg and Waldron, 1991",
+       "Based on data from 345. to 370. K.; AC"
+      ],
+      [
+       "48.2",
+       "407.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 392. to 474. K.; AC"
+      ],
+      [
+       "45.2 ± 0.4",
+       "349.",
+       "V",
+       "Yevstropov, Lebedev, et al., 1980",
+       "ALS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "9.570",
+       "229.78",
+       "Lebedev and Yevstropov, 1983, 2",
+       "DH"
+      ],
+      [
+       "9.570",
+       "229.78",
+       "Yevstropov, Lebedev, et al., 1980, 2",
+       "DH"
+      ],
+      [
+       "9.57",
+       "230.",
+       "Acree, 1991",
+       "AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusS (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "41.56",
+       "229.78",
+       "Lebedev and Yevstropov, 1983, 2",
+       "DH"
+      ],
+      [
+       "41.56",
+       "229.78",
+       "Yevstropov, Lebedev, et al., 1980, 2",
+       "DH"
+      ]
+     ]
+    }
+   ]
+  },
+  "HVAP values": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Units=SI&Type=HVAP",
+   "tables": [
+    {
+     "header": [
+      "ΔvapH° (kJ/mol)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "47.6 ± 4.0",
+       "N/A",
+       "Klein, 1997",
+       "Based on data from 293. to 333. K. See also  Emel'yanenko, Kozlova, et al., 2008.; AC"
+      ],
+      [
+       "55. ± 1.",
+       "V",
+       "Wiberg and Waldron, 1991",
+       "Heat of reduction; ALS"
+      ],
+      [
+       "55.0",
+       "N/A",
+       "Wiberg and Waldron, 1991",
+       "DRB"
+      ],
+      [
+       "55.2 ± 1.3",
+       "EB",
+       "Wiberg and Waldron, 1991",
+       "Based on data from 378. to 406. K.; AC"
+      ],
+      [
+       "55.6 ± 1.4",
+       "MM",
+       "Wiberg and Waldron, 1991",
+       "Based on data from 345. to 370. K.; AC"
+      ],
+      [
+       "54.4 ± 0.4",
+       "C",
+       "Leitao, Pilcher, et al., 1990",
+       "See  Brown, Conn, et al., 1989; ALS"
+      ],
+      [
+       "54.4",
+       "N/A",
+       "Leitao, Pilcher, et al., 1990",
+       "DRB"
+      ],
+      [
+       "54.4 ± 0.4",
+       "C",
+       "Leitao, Pilcher, et al., 1990",
+       "AC"
+      ],
+      [
+       "48.9 ± 0.3",
+       "N/A",
+       "Ramkumar and Kudchadker, 1990",
+       "Based on data from 392. to 555. K. See also  Emel'yanenko, Kozlova, et al., 2008.; AC"
+      ],
+      [
+       "54.9 ± 0.2",
+       "EB",
+       "Steele, Chirico, et al., 1989",
+       "Based on data from 361. to 522. K. See also  Emel'yanenko, Kozlova, et al., 2008.; AC"
+      ],
+      [
+       "53.46 ± 0.13",
+       "V",
+       "Steele, Chirico, et al., 1989, 2",
+       "ALS"
+      ],
+      [
+       "53.5",
+       "N/A",
+       "Steele, Chirico, et al., 1989, 2",
+       "DRB"
+      ],
+      [
+       "51.5",
+       "EB",
+       "Ismailov, Gabzalilova, et al., 1988",
+       "Based on data from 357. to 435. K. See also  Emel'yanenko, Kozlova, et al., 2008.; AC"
+      ],
+      [
+       "54.6 ± 0.2",
+       "GS",
+       "Jarim-Agaev, Afanasienko, et al., 1980",
+       "Based on data from 273. to 478. K. See also  Emel'yanenko, Kozlova, et al., 2008.; AC"
+      ],
+      [
+       "53.1 ± 0.2",
+       "EB",
+       "Jarim-Agaev, Afanasienko, et al., 1980",
+       "Based on data from 413. to 478. K. See also  Emel'yanenko, Kozlova, et al., 2008.; AC"
+      ],
+      [
+       "48.0 ± 0.4",
+       "EB",
+       "Yevstropov, Lebedev, et al., 1980",
+       "See also  Emel'yanenko, Kozlova, et al., 2008.; AC"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,350 @@
+{
+ "component": "1-3-propanediol",
+ "retrieved": "2026-10-13",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Units=SI&Mask=1",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°gas",
+       "-408.4 ± 5.1",
+       "kJ/mol",
+       "Ccr",
+       "Knauth and Sabbah, 1990",
+       "see  Knauth and Sabbah, 1989"
+      ],
+      [
+       "ΔfH°gas",
+       "-392. ± 3.",
+       "kJ/mol",
+       "Ccb",
+       "Gardner and Hussain, 1972",
+       ""
+      ]
+     ]
+    }
+   ]
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°liquid",
+       "-480.8 ± 5.1",
+       "kJ/mol",
+       "Ccr",
+       "Knauth and Sabbah, 1990",
+       "see  Knauth and Sabbah, 1989"
+      ],
+      [
+       "ΔfH°liquid",
+       "-465. ± 3.",
+       "kJ/mol",
+       "Ccb",
+       "Gardner and Hussain, 1972",
+       ""
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°liquid",
+       "-1843.0 ± 5.1",
+       "kJ/mol",
+       "Ccr",
+       "Knauth and Sabbah, 1990",
+       "see  Knauth and Sabbah, 1989; Corresponding ΔfHºliquid = -480.9 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+      ],
+      [
+       "ΔcH°liquid",
+       "-1859. ± 2.3",
+       "kJ/mol",
+       "Ccb",
+       "Gardner and Hussain, 1972",
+       "Corresponding ΔfHºliquid = -464.8 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "487. ± 3.",
+       "K",
+       "AVG",
+       "N/A",
+       "Average of 11 out of 12 values; Individual data points"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tfus",
+       "332.",
+       "K",
+       "N/A",
+       "Lipkin and Layloff, 1970",
+       "Uncertainty assigned by TRC =  2. K; TRC"
+      ],
+      [
+       "Tfus",
+       "246.5",
+       "K",
+       "N/A",
+       "Anonymous, 1953",
+       "Uncertainty assigned by TRC =  0.6 K; TRC"
+      ],
+      [
+       "Tfus",
+       "241.15",
+       "K",
+       "N/A",
+       "Gallaugher and Hibbert, 1936",
+       "Uncertainty assigned by TRC =  0.7 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Ttriple",
+       "245.5",
+       "K",
+       "N/A",
+       "Knauth and Sabbah, 1990",
+       "Uncertainty assigned by TRC =  0.1 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "70. ± 5.",
+       "kJ/mol",
+       "AVG",
+       "N/A",
+       "Average of 11 values; Individual data points"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "57.2",
+       "347.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 332. to 448. K. See also  Stull, 1947.; AC"
+      ],
+      [
+       "73. ± 2.",
+       "383.",
+       "V",
+       "Gardner and Hussain, 1972",
+       "ALS"
+      ],
+      [
+       "57.86",
+       "273.",
+       "V",
+       "Gallaugher and Hibbert, 1937",
+       "ALS"
+      ],
+      [
+       "63.3",
+       "408.",
+       "N/A",
+       "Schierholtz and Staples, 1935",
+       "Based on data from 383. to 433. K.; AC"
+      ],
+      [
+       "60.4",
+       "460.",
+       "N/A",
+       "Schierholtz and Staples, 1935",
+       "Based on data from 433. to 488. K.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Temperature (K)",
+      "A",
+      "B",
+      "C",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "332.6 to 487.4",
+       "6.29523",
+       "3105.018",
+       "6.101",
+       "Stull, 1947",
+       "Coefficents calculated by NIST from author's data."
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "11.4",
+       "249.",
+       "DSC",
+       "Jabrane, Létoffé, et al., 1998",
+       "AC"
+      ]
+     ]
+    }
+   ]
+  },
+  "HVAP values": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Units=SI&Type=HVAP",
+   "tables": [
+    {
+     "header": [
+      "ΔvapH° (kJ/mol)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "66.5",
+       "EB",
+       "Ribeiro da Silva and Santos, 2008",
+       "Based on data from 314. to 460. K.; AC"
+      ],
+      [
+       "70.5 ± 0.2",
+       "GS",
+       "Verevkin, 2007",
+       "Based on data from 293. to 342. K.; AC"
+      ],
+      [
+       "69.1 ± 0.2",
+       "N/A",
+       "Wilson, VonNiederhausern, et al., 2002",
+       "Based on data from 480. to 716. K. See also  Verevkin, 2007.; AC"
+      ],
+      [
+       "70.6 ± 0.5",
+       "EB",
+       "Olson, 1996",
+       "Based on data from 413. to 458. K. See also  Verevkin, 2007.; AC"
+      ],
+      [
+       "72.4",
+       "N/A",
+       "Knauth and Sabbah, 1990",
+       "DRB"
+      ],
+      [
+       "72.4 ± 0.3",
+       "C",
+       "Knauth and Sabbah, 1988",
+       "See also  Knauth and Sabbah, 1990.; AC"
+      ],
+      [
+       "72.4 ± 0.3",
+       "C",
+       "Knauth and Sabbah, 1988, 2",
+       "ALS"
+      ],
+      [
+       "70.1 ± 0.3",
+       "EB",
+       "Markovnik, Sachek, et al., 1981",
+       "Based on data from 402. to 488. K. See also  Verevkin, 2007.; AC"
+      ],
+      [
+       "73.0",
+       "N/A",
+       "Gardner and Hussain, 1972",
+       "DRB"
+      ],
+      [
+       "71.4",
+       "EB",
+       "Thomas and Meatyard, 1966",
+       "Based on data from 367. to 489. K. See also  Verevkin, 2007.; AC"
+      ],
+      [
+       "65.2",
+       "EB",
+       "Gallaugher and Hibbert, 1937",
+       "Based on data from 373. to 488. K. See also  Verevkin, 2007.; AC"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

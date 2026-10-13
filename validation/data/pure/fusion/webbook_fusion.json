@@ -1,4 +1,56 @@
 {
+ "1-3-propanediol": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 332.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Lipkin and Layloff, 1970",
+     "comment": "Uncertainty assigned by TRC = 2. K; TRC"
+    },
+    {
+     "value": 246.5,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Anonymous, 1953",
+     "comment": "Uncertainty assigned by TRC = 0.6 K; TRC"
+    },
+    {
+     "value": 241.15,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Gallaugher and Hibbert, 1936",
+     "comment": "Uncertainty assigned by TRC = 0.7 K; TRC"
+    }
+   ],
+   "Ttriple": [
+    {
+     "value": 245.5,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Knauth and Sabbah, 1990",
+     "comment": "Uncertainty assigned by TRC = 0.1 K; TRC"
+    }
+   ],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 11.4,
+    "T_K": 249.0,
+    "method": "DSC",
+    "reference": "Jabrane, Létoffé, et al., 1998",
+    "comment": "AC"
+   }
+  ]
+ },
  "1-butanol": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C71363&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -512,6 +564,67 @@
   "retrieved": "2026-10-07",
   "one_dimensional": {
    "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
+ "2-methylfuran": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C534225&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [
+    {
+     "value": 181.9,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Carlson and Westrum, 1965",
+     "comment": "Uncertainty assigned by TRC = 0.1 K; TRC"
+    },
+    {
+     "value": 181.9,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Carlson, 1962",
+     "comment": "Uncertainty assigned by TRC = 0.2 K; TRC"
+    }
+   ],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 8.552,
+    "T_K": 181.9,
+    "method": "",
+    "reference": "Carlson and Westrum, 1965, 2",
+    "comment": "DH"
+   },
+   {
+    "Hfus_kJ_mol": 8.55,
+    "T_K": 181.9,
+    "method": "",
+    "reference": "Carlson and Westrum, 1965, 2",
+    "comment": "AC"
+   }
+  ]
+ },
+ "2-methyltetrahydrofuran": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96479&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 137.05,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Boord, Greenlee, et al., 1949",
+     "comment": "Uncertainty assigned by TRC = 0.4 K; TRC"
+    }
+   ],
    "Ttriple": [],
    "ΔfusH": []
   },
@@ -2815,6 +2928,82 @@
    }
   ]
  },
+ "furan": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 187.44,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Guanquan, Ott, et al., 1986",
+     "comment": "Uncertainty assigned by TRC = 0.2 K; TRC"
+    },
+    {
+     "value": 187.56,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Goates, Ott, et al., 1973",
+     "comment": "Uncertainty assigned by TRC = 0.05 K; TRC"
+    },
+    {
+     "value": 187.15,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Brooks and Pilcher, 1959",
+     "comment": "Uncertainty assigned by TRC = 1. K; TRC"
+    },
+    {
+     "value": 187.47,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Boord, Greenlee, et al., 1946",
+     "comment": "Uncertainty assigned by TRC = 0.2 K; TRC"
+    },
+    {
+     "value": 187.55,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Dolliver, Gresham, et al., 1938",
+     "comment": "Uncertainty assigned by TRC = 0.3 K; TRC"
+    }
+   ],
+   "Ttriple": [
+    {
+     "value": 187.54,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Wilhoit, Chao, et al., 1985",
+     "comment": "Crystal phase 1 phase; Uncertainty assigned by TRC = 0.05 K; TRC"
+    },
+    {
+     "value": 187.55,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Guthrie, Scott, et al., 1952",
+     "comment": "Crystal phase 1 phase; Uncertainty assigned by TRC = 0.02 K; TRC"
+    }
+   ],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 3.8,
+    "T_K": 187.6,
+    "method": "",
+    "reference": "Domalski and Hearing, 1996",
+    "comment": "AC"
+   }
+  ]
+ },
  "furfural": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98011&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -2855,6 +3044,72 @@
     "method": "",
     "reference": "Miller, 1935",
     "comment": "DH"
+   }
+  ]
+ },
+ "gbl": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 229.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Anonymous, 1954",
+     "comment": "Uncertainty assigned by TRC = 0.6 K; TRC"
+    }
+   ],
+   "Ttriple": [
+    {
+     "value": 229.78,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Lebedev and Yevstropov, 1983",
+     "comment": "Uncertainty assigned by TRC = 0.02 K; TRC"
+    },
+    {
+     "value": 229.78,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Evstropov, Lebedev, et al., 1980",
+     "comment": "Crystal phase 1 phase; Uncertainty assigned by TRC = 0.01 K; TRC"
+    },
+    {
+     "value": 229.78,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Evstropov, Lebedev, et al., 1979",
+     "comment": "Uncertainty assigned by TRC = 0.05 K; TRC"
+    }
+   ],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 9.57,
+    "T_K": 229.78,
+    "method": "",
+    "reference": "Lebedev and Yevstropov, 1983, 2",
+    "comment": "DH"
+   },
+   {
+    "Hfus_kJ_mol": 9.57,
+    "T_K": 229.78,
+    "method": "",
+    "reference": "Yevstropov, Lebedev, et al., 1980, 2",
+    "comment": "DH"
+   },
+   {
+    "Hfus_kJ_mol": 9.57,
+    "T_K": 230.0,
+    "method": "",
+    "reference": "Acree, 1991",
+    "comment": "AC"
    }
   ]
  },
@@ -3009,6 +3264,16 @@
      "comment": "Crystal phase 1 phase; Uncertainty assigned by TRC = 0.03 K; temp. scale for transition tempertures, T0 = 273.10 K Nature of transition C2 - C1 not definitely established; TRC"
     }
    ],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
+ "isoamyl-alcohol": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=4",
+  "retrieved": "2026-10-13",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
    "ΔfusH": []
   },
   "enthalpy_of_fusion": []
