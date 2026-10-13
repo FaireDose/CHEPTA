@@ -9,6 +9,7 @@ from the source over the fit range.
 
     python validation/python/fit_properties.py --chemsep path/to/chemsep1.xml           # fit, print
     python validation/python/fit_properties.py --chemsep path/to/chemsep1.xml --write   # and write
+    python validation/python/fit_properties.py --chemsep ... --only triolein tripalmitin   # just these components
 
 After --write, run make_sources.py: it adds the source_ids of the records (proposal 0003).
 
@@ -61,99 +62,19 @@ DOC_FILE = ROOT / "docs" / "PURE_DATA.md"
 N_FIT = 200        # points sampled from the source per record (uniform in T)
 N_STORE = 41       # of which this many are stored for the test (every 5th, ends included)
 
-IDS = ["water", "acetic-acid", "ethylene-glycol", "methanol", "ethanol", "acetone", "chloroform",
-       "benzene", "toluene", "ethyl-acetate", "oxygen", "nitrogen", "hydrogen", "methane", "ethane",
-       "ethylene",
-       # proposal 0004, batch 1: gases at 25 degC and 1 atm
-       "carbon-monoxide", "carbon-dioxide", "hydrogen-sulfide", "argon", "propane", "propylene", "n-butane",
-       "isobutane", "ammonia", "dimethyl-ether",
-       # proposal 0004, batch 2: hydrocarbon liquids
-       "cyclohexane", "o-xylene", "m-xylene", "p-xylene", "ethylbenzene", "styrene", "n-pentane", "n-hexane",
-       "n-heptane", "n-octane",
-       # proposal 0004, batch 3: solvents, alcohols, glycols and phenol
-       "diethyl-ether", "propylene-glycol", "tetrahydrofuran", "1-propanol", "2-propanol", "1-butanol", "2-butanone",
-       "methyl-acetate", "n-butyl-acetate", "acetonitrile", "mtbe", "glycerol", "phenol",
-       # proposal 0008, Part B, batch 1: extraction solvents
-       "dichloroethane", "mibk", "cyclohexanone", "dmf", "dmso", "nmp", "sulfolane", "furfural", "dioxane",
-       "isobutanol", "2-butanol",
-       # proposal 0008, Part B, batch 2: gas treating, acids, esters and reaction work
-       "mea", "dea", "mdea", "sulfur-dioxide", "nitrous-oxide", "formic-acid", "propionic-acid", "acrylic-acid",
-       "vinyl-acetate", "isopropyl-acetate", "ethylene-oxide", "propylene-oxide", "formaldehyde", "hydrogen-peroxide",
-       # proposal 0008, Part B, batch 3: petrochemicals and fuels, nitrogen compounds
-       "cumene", "mesitylene", "n-nonane", "n-decane", "n-dodecane", "isooctane", "1-butene", "isoprene",
-       "etbe", "pyridine", "aniline", "acrylonitrile", "methylamine",
-       # proposal 0008, Part B, batch 4: solids at 25 degC
-       "naphthalene", "benzoic-acid", "salicylic-acid",
-       # proposal 0008, Part B, batch 5: the Cavett problem's missing components
-       "isopentane", "n-undecane",
-       # proposal 0009, batch 1: green and bio-based platform and solvent molecules
-       "bdo", "cyrene", "dimethyl-carbonate", "diethyl-carbonate", "ethylene-carbonate", "propylene-carbonate",
-       "acetaldehyde", "1-pentanol", "1-hexanol", "1-octanol", "diethylene-glycol", "p-cymene", "adipic-acid",
-       "maleic-anhydride", "terephthalic-acid", "dmt",
-       # proposal 0009, batch 2: lipids (biodiesel and hydrotreated oils)
-       "methyl-laurate", "methyl-myristate", "methyl-palmitate", "methyl-stearate", "methyl-oleate", "methyl-linoleate",
-       "triolein", "tripalmitin", "oleic-acid", "palmitic-acid", "stearic-acid", "n-hexadecane", "n-octadecane"]
+# the components and the facts the source chain needs about them (CoolProp fluid name, ChemSep file), from the one
+# registry: validation/data/component_registry.json (registry.py)
+from registry import REG  # noqa: E402
+
+IDS = REG.ids
 # components whose vapour-pressure record is made here (the ten liquids of v0.1 keep theirs): from CoolProp,
 # or from ChemSep for a component that is not a CoolProp fluid
-VP_FITTED = ["oxygen", "nitrogen", "hydrogen", "methane", "ethane", "ethylene",
-             "carbon-monoxide", "carbon-dioxide", "hydrogen-sulfide", "argon", "propane", "propylene", "n-butane",
-             "isobutane", "ammonia", "dimethyl-ether",
-             "cyclohexane", "o-xylene", "m-xylene", "p-xylene", "ethylbenzene", "styrene", "n-pentane", "n-hexane",
-             "n-heptane", "n-octane",
-             "diethyl-ether", "propylene-glycol", "tetrahydrofuran", "1-propanol", "2-propanol", "1-butanol",
-             "2-butanone", "methyl-acetate", "n-butyl-acetate", "acetonitrile", "mtbe", "glycerol", "phenol",
-             "dichloroethane", "mibk", "cyclohexanone", "dmf", "dmso", "nmp", "sulfolane", "furfural", "dioxane",
-             "isobutanol", "2-butanol",
-             "mea", "dea", "mdea", "sulfur-dioxide", "nitrous-oxide", "formic-acid", "propionic-acid", "acrylic-acid",
-             "vinyl-acetate", "isopropyl-acetate", "ethylene-oxide", "propylene-oxide", "formaldehyde", "hydrogen-peroxide",
-             "cumene", "mesitylene", "n-nonane", "n-decane", "n-dodecane", "isooctane", "1-butene", "isoprene",
-             "etbe", "pyridine", "aniline", "acrylonitrile", "methylamine",
-       # proposal 0008, Part B, batch 4: solids at 25 degC
-       "naphthalene", "benzoic-acid", "salicylic-acid",
-       # proposal 0008, Part B, batch 5: the Cavett problem's missing components
-       "isopentane", "n-undecane",
-       # proposal 0009, batch 1: green and bio-based platform and solvent molecules
-       "bdo", "cyrene", "dimethyl-carbonate", "diethyl-carbonate", "ethylene-carbonate", "propylene-carbonate",
-       "acetaldehyde", "1-pentanol", "1-hexanol", "1-octanol", "diethylene-glycol", "p-cymene", "adipic-acid",
-       "maleic-anhydride", "terephthalic-acid", "dmt",
-       # proposal 0009, batch 2: lipids (biodiesel and hydrotreated oils)
-       "methyl-laurate", "methyl-myristate", "methyl-palmitate", "methyl-stearate", "methyl-oleate", "methyl-linoleate",
-       "triolein", "tripalmitin", "oleic-acid", "palmitic-acid", "stearic-acid", "n-hexadecane", "n-octadecane"]
-# proposal 0009, batch 1 (the record notes name the proposal)
-BATCH_0009 = ["bdo", "cyrene", "dimethyl-carbonate", "diethyl-carbonate", "ethylene-carbonate", "propylene-carbonate",
-       "acetaldehyde", "1-pentanol", "1-hexanol", "1-octanol", "diethylene-glycol", "p-cymene", "adipic-acid",
-       "maleic-anhydride", "terephthalic-acid", "dmt",
-       # proposal 0009, batch 2: lipids (biodiesel and hydrotreated oils)
-       "methyl-laurate", "methyl-myristate", "methyl-palmitate", "methyl-stearate", "methyl-oleate", "methyl-linoleate",
-       "triolein", "tripalmitin", "oleic-acid", "palmitic-acid", "stearic-acid", "n-hexadecane", "n-octadecane"]
-# proposal 0008, Part B, batches 1 to 3 (the record notes name the proposal)
-BATCH_0008 = ["dichloroethane", "mibk", "cyclohexanone", "dmf", "dmso", "nmp", "sulfolane", "furfural", "dioxane",
-       "isobutanol", "2-butanol",
-       "mea", "dea", "mdea", "sulfur-dioxide", "nitrous-oxide", "formic-acid", "propionic-acid", "acrylic-acid",
-       "vinyl-acetate", "isopropyl-acetate", "ethylene-oxide", "propylene-oxide", "formaldehyde", "hydrogen-peroxide",
-       "cumene", "mesitylene", "n-nonane", "n-decane", "n-dodecane", "isooctane", "1-butene", "isoprene",
-       "etbe", "pyridine", "aniline", "acrylonitrile", "methylamine",
-       # proposal 0008, Part B, batch 4: solids at 25 degC
-       "naphthalene", "benzoic-acid", "salicylic-acid",
-       # proposal 0008, Part B, batch 5: the Cavett problem's missing components
-       "isopentane", "n-undecane"]
+VP_FITTED = REG.vp_fitted
+# the batches of proposals 0008 and 0009 (the record notes name the proposal)
+BATCH_0009 = REG.by_proposal("0009")
+BATCH_0008 = REG.by_proposal("0008")
 
-COOLPROP = {"water": "Water", "methanol": "Methanol", "ethanol": "Ethanol", "acetone": "Acetone",
-            "benzene": "Benzene", "toluene": "Toluene", "oxygen": "Oxygen", "nitrogen": "Nitrogen",
-            "hydrogen": "Hydrogen", "methane": "Methane", "ethane": "Ethane", "ethylene": "Ethylene",
-            "carbon-monoxide": "CarbonMonoxide", "carbon-dioxide": "CarbonDioxide",
-            "hydrogen-sulfide": "HydrogenSulfide", "argon": "Argon", "propane": "n-Propane",
-            "propylene": "Propylene", "n-butane": "n-Butane", "isobutane": "IsoButane", "ammonia": "Ammonia",
-            "dimethyl-ether": "DimethylEther",
-            "cyclohexane": "Cyclohexane", "o-xylene": "o-Xylene", "m-xylene": "m-Xylene", "p-xylene": "p-Xylene",
-            "ethylbenzene": "EthylBenzene", "n-pentane": "n-Pentane", "n-hexane": "n-Hexane", "n-heptane": "n-Heptane",
-            "n-octane": "n-Octane", "diethyl-ether": "DiethylEther", "propylene-glycol": "PropyleneGlycol",
-            "tetrahydrofuran": "Tetrahydrofuran", "dichloroethane": "Dichloroethane",
-            "sulfur-dioxide": "SulfurDioxide", "nitrous-oxide": "NitrousOxide", "ethylene-oxide": "EthyleneOxide",
-            "n-nonane": "n-Nonane", "n-decane": "n-Decane", "n-dodecane": "n-Dodecane", "1-butene": "1-Butene",
-            "isopentane": "Isopentane", "n-undecane": "n-Undecane", "dimethyl-carbonate": "DimethylCarbonate",
-            "methyl-palmitate": "MethylPalmitate", "methyl-stearate": "MethylStearate", "methyl-oleate": "MethylOleate",
-            "methyl-linoleate": "MethylLinoleate"}
+COOLPROP = REG.coolprop
 
 PROPS = ["liquidDensity", "idealGasHeatCapacity", "liquidHeatCapacity", "heatOfVaporization",
          "liquidViscosity", "vapourViscosity", "liquidThermalConductivity",
@@ -183,44 +104,32 @@ CHEMSEP_TAG = {"liquidDensity": "LiquidDensity", "idealGasHeatCapacity": "IdealG
 # "coolprop": CoolProp 8.0.0; "webbook": NIST WebBook; "chemsep": ChemSep v8.3.
 # Why each choice was made is in CHAIN_NOTES and in the records.
 # ---------------------------------------------------------------------------------------------
-NOT_IN_COOLPROP = ["acetic-acid", "ethylene-glycol", "chloroform", "ethyl-acetate", "styrene", "1-propanol",
-                   "2-propanol", "1-butanol", "2-butanone", "methyl-acetate", "n-butyl-acetate", "acetonitrile", "mtbe",
-                   "glycerol", "phenol", "mibk", "cyclohexanone", "dmf", "dmso", "nmp", "sulfolane", "furfural",
-                   "dioxane", "isobutanol", "2-butanol", "mea", "dea", "mdea", "formic-acid", "propionic-acid",
-                   "acrylic-acid", "vinyl-acetate", "isopropyl-acetate", "propylene-oxide", "formaldehyde",
-                   "hydrogen-peroxide", "cumene", "mesitylene", "isooctane", "isoprene", "etbe", "pyridine", "aniline",
-                   "acrylonitrile", "methylamine", "naphthalene", "benzoic-acid", "salicylic-acid",
-                   "bdo", "cyrene", "diethyl-carbonate", "ethylene-carbonate", "propylene-carbonate", "acetaldehyde",
-                   "1-pentanol", "1-hexanol", "1-octanol", "diethylene-glycol", "p-cymene", "adipic-acid", "maleic-anhydride",
-                   "terephthalic-acid", "dmt",
-                   "methyl-laurate", "methyl-myristate", "triolein", "tripalmitin", "oleic-acid", "palmitic-acid",
-                   "stearic-acid", "n-hexadecane", "n-octadecane"]
-COOLPROP_GAPS = {  # property models CoolProp 8.0.0 does not have (checked in this script)
-    "acetone": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "ethylene": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "carbon-monoxide": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "hydrogen-sulfide": ["liquidThermalConductivity", "vapourThermalConductivity"],
-    "dimethyl-ether": ["liquidThermalConductivity", "vapourThermalConductivity"],
-    "cyclohexane": ["liquidThermalConductivity", "vapourThermalConductivity"],
-    "diethyl-ether": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "propylene-glycol": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity",
-                         "surfaceTension"],
-    "tetrahydrofuran": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity",
-                        "surfaceTension"],
-    "dichloroethane": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity",
-                       "surfaceTension"],
-    "sulfur-dioxide": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "nitrous-oxide": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "ethylene-oxide": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity",
-                       "surfaceTension"],
-    "1-butene": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "n-undecane": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "dimethyl-carbonate": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "methyl-palmitate": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "methyl-stearate": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "methyl-oleate": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-    "methyl-linoleate": ["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"],
-}
+NOT_IN_COOLPROP = REG.not_in_coolprop
+
+
+def coolprop_gaps():
+    """{id: [properties]} that CoolProp 8.0.0 has no model for (viscosity, thermal conductivity, surface tension),
+    probed on each CoolProp fluid's saturated liquid at 0.7 Tc; those properties come from the next source."""
+    import CoolProp.CoolProp as CP
+    out = {}
+    for cid, fluid in COOLPROP.items():
+        AS = CP.AbstractState("HEOS", fluid)
+        AS.update(CP.QT_INPUTS, 0, 0.7 * AS.T_critical())
+        miss = []
+        for fn, props in ((AS.viscosity, ["liquidViscosity", "vapourViscosity"]),
+                          (AS.conductivity, ["liquidThermalConductivity", "vapourThermalConductivity"]),
+                          (AS.surface_tension, ["surfaceTension"])):
+            try:
+                fn()
+            except ValueError:
+                miss += props
+        if miss:
+            out[cid] = miss
+    return out
+
+
+# filled by main() before the records are built (coolprop_gaps())
+COOLPROP_GAPS = {}
 
 # NIST WebBook fluid tables (step 3 of the chain) for properties in COOLPROP_GAPS, where the WebBook
 # page names the model behind the values. Checked on the pages (2026-10-03):
@@ -293,34 +202,7 @@ WEBBOOK_DILUTE_MPa = 0.001   # the dilute-gas isobar, 1 kPa
 # NIST WebBook Antoine equations (phase change data), to cross-check vapour pressures taken from ChemSep
 # (proposal 0004: "checked against the NIST WebBook where it has data"). Downloaded by --fetch-webbook into
 # validation/data/pure/measured/webbook_antoine.json: log10(P/bar) = A - B / (T/K + C).
-WEBBOOK_ANTOINE = {cid: "C" + cas.replace("-", "") for cid, cas in [
-    ("styrene", "100-42-5"), ("1-propanol", "71-23-8"), ("2-propanol", "67-63-0"), ("1-butanol", "71-36-3"),
-    ("2-butanone", "78-93-3"), ("methyl-acetate", "79-20-9"), ("n-butyl-acetate", "123-86-4"),
-    ("acetonitrile", "75-05-8"), ("mtbe", "1634-04-4"), ("glycerol", "56-81-5"), ("phenol", "108-95-2"),
-    # proposal 0008, Part B, batch 1
-    ("mibk", "108-10-1"), ("cyclohexanone", "108-94-1"), ("dmf", "68-12-2"), ("dmso", "67-68-5"), ("nmp", "872-50-4"),
-    ("sulfolane", "126-33-0"), ("furfural", "98-01-1"), ("dioxane", "123-91-1"), ("isobutanol", "78-83-1"),
-    ("2-butanol", "78-92-2"),
-    # proposal 0008, Part B, batch 2
-    ("mea", "141-43-5"), ("dea", "111-42-2"), ("mdea", "105-59-9"), ("formic-acid", "64-18-6"),
-    ("propionic-acid", "79-09-4"), ("acrylic-acid", "79-10-7"), ("vinyl-acetate", "108-05-4"),
-    ("isopropyl-acetate", "108-21-4"), ("propylene-oxide", "75-56-9"), ("formaldehyde", "50-00-0"),
-    ("hydrogen-peroxide", "7722-84-1"),
-    # proposal 0008, Part B, batch 3 (the components that are not CoolProp fluids)
-    ("cumene", "98-82-8"), ("mesitylene", "108-67-8"), ("isooctane", "540-84-1"), ("isoprene", "78-79-5"),
-    ("etbe", "637-92-3"), ("pyridine", "110-86-1"), ("aniline", "62-53-3"), ("acrylonitrile", "107-13-1"),
-    ("methylamine", "74-89-5"),
-    # proposal 0008, Part B, batch 4
-    ("naphthalene", "91-20-3"), ("benzoic-acid", "65-85-0"), ("salicylic-acid", "69-72-7"),
-    # proposal 0009, batch 1 (the components that are not CoolProp fluids)
-    ("bdo", "110-63-4"), ("cyrene", "53716-82-8"), ("diethyl-carbonate", "105-58-8"), ("ethylene-carbonate", "96-49-1"),
-    ("propylene-carbonate", "108-32-7"), ("acetaldehyde", "75-07-0"), ("1-pentanol", "71-41-0"), ("1-hexanol", "111-27-3"),
-    ("1-octanol", "111-87-5"), ("diethylene-glycol", "111-46-6"), ("p-cymene", "99-87-6"), ("adipic-acid", "124-04-9"),
-    ("maleic-anhydride", "108-31-6"), ("terephthalic-acid", "100-21-0"), ("dmt", "120-61-6"),
-    # proposal 0009, batch 2 (the components that are not CoolProp fluids)
-    ("methyl-laurate", "111-82-0"), ("methyl-myristate", "124-10-7"), ("triolein", "122-32-7"), ("tripalmitin", "555-44-2"),
-    ("oleic-acid", "112-80-1"), ("palmitic-acid", "57-10-3"), ("stearic-acid", "57-11-4"), ("n-hexadecane", "544-76-3"),
-    ("n-octadecane", "593-45-3")]}
+WEBBOOK_ANTOINE = REG.webbook_antoine
 # Vapour pressures fitted to a WebBook Antoine set plus the critical point, where the ChemSep equation does not
 # reproduce the measured normal boiling point. Styrene: the ChemSep equation 101 gives 417.14 K at 101.325 kPa
 # against 418.31 K (ChemSep's own Tb, and the Antoine equation of Dreyer et al. (1955), measured to 417.92 K;
@@ -1096,15 +978,9 @@ CHEMSEP_REF_FULL = ("H. Kooijman, R. Taylor, ChemSep pure-component database v8.
                     "Artistic License 2.0, as redistributed in DWSIM, https://github.com/DanWBR/dwsim, "
                     "DWSIM.Thermodynamics/Assets/Databases/chemsep1.xml")
 CHEMSEP2_NAME = "ChemSep v8.31 pure-component database, data file 2"
-# compounds taken from chemsep2.xml: N-methyl-2-pyrrolidone (proposal 0008), and propylene glycol, a CoolProp fluid
-# whose viscosities, thermal conductivities and surface tension CoolProp 8.0.0 does not model (chemsep1.xml does not
-# have it)
-CHEMSEP2_USE = {"872-50-4", "57-55-6", "64-18-6", "7722-84-1",  # and formic acid, hydrogen peroxide (batch 2)
-                "53716-82-8", "111-87-5",  # Cyrene and 1-octanol (proposal 0009, batch 1)
-                # proposal 0009, batch 2: the lipids (the four methyl esters that are CoolProp fluids only for the
-                # transport properties CoolProp does not model)
-                "111-82-0", "124-10-7", "112-39-0", "112-61-8", "112-62-9", "112-63-0", "122-32-7", "555-44-2",
-                "112-80-1", "57-10-3", "57-11-4"}
+# compounds taken from chemsep2.xml instead of chemsep1.xml ("chemsep_file": 2 in the registry): those chemsep1.xml
+# does not have, and the CoolProp fluids whose missing properties come from it (propylene glycol, the methyl esters)
+CHEMSEP2_USE = REG.chemsep2
 CHEMSEP2_REF = ("Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), "
                 "via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)")
 CHEMSEP_ACCESS = "Artistic License 2.0"
@@ -2135,6 +2011,8 @@ def add_measured(records):
     M = json.loads(MEASURED_FILE.read_text())
     out = []
     for cid, e in M["liquidHeatCapacity"].items():
+        if cid not in records:  # not in this run (--only)
+            continue
         r = records[cid]["liquidHeatCapacity"]
         mean, n = measured_mean(e)
         v = float(ev(r["equation"], r["coefficients"], 298.15, r.get("Tc_K")))
@@ -2146,6 +2024,8 @@ def add_measured(records):
         r["source"]["measured"] = txt
         out.append("%s cpL(298.15 K) %.2f: %s" % (cid, v, txt))
     for cid, e in M["heatOfVaporization"].items():
+        if cid not in records:
+            continue
         r = records[cid]["heatOfVaporization"]
         v = float(ev(r["equation"], r["coefficients"], e["T_K"], r.get("Tc_K"))) / 1000
         txt = ("%+.1f %% vs %.2f kJ/mol at %.1f K (Majer and Svoboda 1985, via the NIST WebBook, %s)"
@@ -2284,7 +2164,15 @@ def main():
     ap.add_argument("--bib", help="CoolProp's CoolPropBibTeXLibrary.bib (v8.0.0) for full references "
                     "(https://github.com/CoolProp/CoolProp/blob/v8.0.0/CoolPropBibTeXLibrary.bib)")
     ap.add_argument("--write", action="store_true")
+    ap.add_argument("--only", nargs="+", metavar="ID",
+                    help="fit only these components (a batch while it is being built); the other records stay as stored, "
+                         "and docs/PURE_DATA.md, which lists every component, is not rewritten: run once without --only "
+                         "at the end")
     args = ap.parse_args()
+    unknown = [c for c in args.only or [] if c not in IDS]
+    if unknown:
+        raise SystemExit("--only: not in validation/data/component_registry.json: %s" % ", ".join(unknown))
+    ids = [c for c in IDS if c in (args.only or IDS)]
 
     import CoolProp
     if CoolProp.__version__ != "8.0.0":
@@ -2299,24 +2187,11 @@ def main():
     cs = ChemSep(args.chemsep)
     b = Builder(comps, cs, Bib(args.bib))
 
-    # check that the CoolProp gaps listed above are real, and that nothing else is missing
-    for cid, props in COOLPROP_GAPS.items():
-        F = b.coolprop(cid)
-        F.sat(0.7 * F.Tc, 0)
-        for name, fn in (("Viscosity", F.AS.viscosity), ("ThermalConductivity", F.AS.conductivity)):
-            listed = any(name in p for p in props)
-            try:
-                fn()
-                has = True
-            except ValueError:
-                has = False
-            if has and listed:
-                raise SystemExit("CoolProp has a %s model for %s now: update COOLPROP_GAPS" % (name, cid))
-            if not has and not listed:
-                raise SystemExit("CoolProp has no %s model for %s: add it to COOLPROP_GAPS" % (name, cid))
+    # the property models CoolProp 8.0.0 lacks, probed here (they come from the next source of the chain)
+    COOLPROP_GAPS.update(coolprop_gaps())
 
     records, points, vp_gas = {}, {}, {}
-    for cid in IDS:
+    for cid in ids:
         records[cid], points[cid] = {}, {}
         for p in PROPS:
             rec, pts = b.build(cid, p)
@@ -2330,6 +2205,8 @@ def main():
     measured = add_measured(records)
     measured += add_measured_checks(records, vp_gas, comps)
     for cid, notes in RECORD_NOTES.items():
+        if cid not in records:
+            continue
         for p, text in notes.items():
             records[cid][p]["source"]["notes"] = text
     print("\n".join(b.log))
@@ -2338,7 +2215,7 @@ def main():
 
     if args.write:
         for cid in VP_FITTED:
-            if cid in COOLPROP:
+            if cid in COOLPROP or cid not in vp_gas:
                 continue
             # not a CoolProp fluid: Tb is where the vapour-pressure record reaches 101.325 kPa (as Tb of a CoolProp
             # fluid is that of its equation of state), so that the two agree; ChemSep's listed value is stated
@@ -2353,7 +2230,7 @@ def main():
             base = comps[cid]["constants_source"].split(" Tb: the temperature")[0]
             comps[cid]["constants_source"] = base + note
             points[cid]["vapourPressure"]["Tb_K_at_101325Pa"] = tb
-        for cid in IDS:
+        for cid in ids:
             c = comps[cid]
             if cid in VP_FITTED:
                 # insert vapourPressure after Tb_K, like the liquids
@@ -2369,7 +2246,7 @@ def main():
             c["properties"] = records[cid]
         COMP_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
         POINTS_DIR.mkdir(parents=True, exist_ok=True)
-        for cid in IDS:
+        for cid in ids:
             doc = {"component": cid, "name": comps[cid]["name"],
                    "about": "Points sampled from the source of each property record (or the source's own "
                             "tabulated values) by validation/python/fit_properties.py. test/properties.test.js "
@@ -2377,6 +2254,10 @@ def main():
                             "maximum deviation stated in each record.",
                    "records": points[cid]}
             (POINTS_DIR / ("%s.json" % cid)).write_text(json.dumps(doc, indent=1, ensure_ascii=False) + "\n")
+        if args.only:
+            print("written: %s, %s (%d components); %s not rewritten (--only): run once without --only at the end" % (
+                COMP_FILE.relative_to(ROOT), POINTS_DIR.relative_to(ROOT), len(ids), DOC_FILE.relative_to(ROOT)))
+            return
         write_doc(comps, records, b, vp_gas, measured)
         print("written: %s, %s, %s" % (COMP_FILE.relative_to(ROOT), POINTS_DIR.relative_to(ROOT),
                                        DOC_FILE.relative_to(ROOT)))

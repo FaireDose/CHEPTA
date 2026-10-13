@@ -173,10 +173,14 @@ npm run wanted                                  # after changing src/data; commi
 npm run check-package -- file.json              # check a contribution package
 python validation/python/fit_parameters.py      # fit parameters
 python validation/python/make_fixtures.py       # after changing parameters
+python validation/python/gap_report.py --batch N --chemsep ... --cache DIR   # before a component batch: sources per property
+python validation/python/fit_properties.py --chemsep ... --only ID ...       # fit only a batch while building it
 ```
 
 - New experimental data: `validation/data/<system>.json` with a `source` block (citation,
   doi, open_copy, access, tables).
+- New components: one entry per component in `validation/data/component_registry.json` (the only list the data
+  scripts read); run `gap_report.py` first and ask the person for the articles it shows are missing.
 - Sources: cite each source once in `src/data/sources.json` and refer to it by id
   (`source_ids`); `python validation/python/make_sources.py` adds the sources of new data
   files and regenerates the table in `src/data/LICENSES.md`.
