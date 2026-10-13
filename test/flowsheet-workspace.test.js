@@ -9,7 +9,7 @@ import { initialState, applyPatch } from "../src/ui/app-logic.js";
 import { WORKSPACES } from "../src/ui/workspaces.js";
 import {
   addBlock, addFeedTo, connect, deleteBlock, removeBlock, deleteStream, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
-  setComponents, openInlets, endOf, streamsOf, setStreamLabel, streamName,
+  setComponents, openInlets, endOf, streamsOf, setStreamLabel, streamName, setBlockLabel, blockName,
 } from "../src/ui/flowsheet-logic.js";
 
 const base = () => ({ ...emptyFlowsheet(), components: ["ethanol", "water"] });
@@ -244,4 +244,22 @@ test("a stream can be given a name, and the name can be cleared", () => {
   // a named flowsheet is a valid document and solves the same
   structureOk(named);
   assert.equal(flowsheetDocStatus(named).ok, flowsheetDocStatus(fs).ok);
+});
+
+test("a feed or a unit can be given a name; a product end cannot", () => {
+  let fs = base();
+  ({ fs } = addBlock(fs, "flash"));
+  ({ fs } = addFeedTo(fs, "V1.in"));
+  const fid = fs.blocks.find(b => b.type === "feed").id, pid = fs.blocks.find(b => b.type === "product").id;
+  let named = setBlockLabel(fs, "V1", " Flash   drum 1 ");
+  named = setBlockLabel(named, fid, "Crude");
+  assert.equal(blockName(named.blocks.find(b => b.id === "V1")), "Flash drum 1");
+  assert.equal(blockName(named.blocks.find(b => b.id === fid)), "Crude");
+  assert.equal(fs.blocks.find(b => b.id === "V1").label, undefined, "the original document is not changed");
+  for (const empty of ["", "  ", "V1"]) assert.equal(blockName(setBlockLabel(named, "V1", empty).blocks.find(b => b.id === "V1")), "V1");
+  assert.throws(() => setBlockLabel(fs, pid, "End"), /give the stream a name instead/);
+  assert.throws(() => setBlockLabel(fs, "X9", "a"), /No block X9/);
+  // the names change nothing in the connections, so the flowsheet is valid and solves the same
+  structureOk(named);
+  assert.deepEqual(named.streams, fs.streams);
 });

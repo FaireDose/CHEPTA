@@ -17,7 +17,7 @@ import { unitType } from "../units/units.js";
 import { flowsheetDocStatus, runFlowsheet } from "../flowsheet/document.js";
 import {
   PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
-  setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName,
+  setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName,
 } from "./flowsheet-logic.js";
 import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { flowsheetXlsx } from "./flowsheet-excel.js";
@@ -171,7 +171,8 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
   const back = h("button", { type: "button", class: "fa-mini", "data-fk": "fs-back", on: { click: () => { f.sel = null; set({}); } } }, icon("chevronUp", 14), "Setup and status");
   if (f.sel.kind === "stream") return streamSections({ fs, put, sel, f, inputsSection, back, set });
   const b = sel, bst = st?.blocks?.[b.id];
-  const secs = [inputsSection(`${LABEL[b.type]} ${b.id}`, h("p", { class: "fa-in-hint" }, HINT[b.type] ?? ""), dofBadge(bst))];
+  const secs = [inputsSection(`${LABEL[b.type]} ${blockName(b)}`, h("p", { class: "fa-in-hint" }, HINT[b.type] ?? ""),
+    nameField(b, `${LABEL[b.type].toLowerCase()} ${b.id}`, v => put(setBlockLabel(fs, b.id, v))), dofBadge(bst))];
   const spec = b.spec ?? {};
   const setS = patch => put(setSpec(fs, b.id, patch));
   const T = (key, label = "Temperature") => numberField(label, spec[key] == null ? "" : String(+tToDisplay(spec[key], u).toFixed(3)),
@@ -321,7 +322,7 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
         : h("div", {}, st ? h("div", { class: `fa-dof ${st.ready ? "is-ok" : "is-bad"}`, role: "status" }, st.message) : null,
           h("ul", { class: "fa-dof-list" }, ...(st ? [...st.structure.map(p => h("li", {}, p.message)),
             ...Object.entries(st.blocks).filter(([, b]) => !b.ok).map(([id, b]) => h("li", {}, h("button", { type: "button", class: "fa-link", "data-fk": `fs-go-${id}`,
-              on: { click: () => { f.sel = { kind: "block", id }; set({}); } } }, id), ": ", b.message.replace(/^[^:]+: /, "")))] : [])))));
+              on: { click: () => { f.sel = { kind: "block", id }; set({}); } } }, blockName(fs.blocks.find(x => x.id === id)) ?? id), ": ", b.message.replace(/^[^:]+: /, "")))] : [])))));
   return secs;
 }
 
@@ -363,17 +364,22 @@ function solverSection({ fs, set, uid, inputsSection }) {
       { id: "solver-iter", uid }))];
 }
 
+/** A Name field for a stream or a block: a label shown instead of its id, which stays. */
+function nameField(o, what, onCommit) {
+  return h("label", { class: "fa-field fa-field-stack" }, h("span", {}, "Name"),
+    h("input", { type: "text", value: o.label ?? "", placeholder: o.id, maxlength: 40, "data-fk": `fs-name-${o.id}`, "aria-label": `Name of ${what}`,
+      title: `A name to show instead of ${o.id}; empty shows ${o.id} again`,
+      on: { change: ev => onCommit(ev.target.value), keydown: ev => { if (ev.key === "Enter") ev.target.blur(); } } }));
+}
+
 function streamSections({ fs, put, sel, f, inputsSection, back, set }) {
   const s = sel, from = s.from.split("."), end = endOf(fs, s.id);
   const opts = ["", ...openInlets(fs, from[0]), ...(end.kind === "unit" ? [s.to] : [])];
   const goes = h("select", { "data-fk": `fs-to-${s.id}`, "aria-label": "Goes to", on: { change: ev => { try { put(connect(fs, s.id, ev.target.value || null)); } catch (e) { f.note = e.message; set({}); } } } },
     ...[...new Set(opts)].map(o => h("option", { value: o, selected: o === (end.kind === "unit" ? s.to : "") }, o ? o.replace(".", " · ") : "Leaves the flowsheet (product)")));
   return [
-    inputsSection(`Stream ${streamName(s)}`, h("p", { class: "fa-in-hint" }, `From ${from[0]} (${from[1]}).`),
-      h("label", { class: "fa-field fa-field-stack" }, h("span", {}, "Name"),
-        h("input", { type: "text", value: s.label ?? "", placeholder: s.id, maxlength: 40, "data-fk": `fs-name-${s.id}`, "aria-label": `Name of stream ${s.id}`,
-          title: `A name to show instead of ${s.id}; empty shows ${s.id} again`,
-          on: { change: ev => put(setStreamLabel(fs, s.id, ev.target.value)), keydown: ev => { if (ev.key === "Enter") ev.target.blur(); } } })),
+    inputsSection(`Stream ${streamName(s)}`, h("p", { class: "fa-in-hint" }, `From ${blockName(fs.blocks.find(x => x.id === from[0])) ?? from[0]} (${from[1]}).`),
+      nameField(s, `stream ${s.id}`, v => put(setStreamLabel(fs, s.id, v))),
       h("label", { class: "fa-field fa-field-stack" }, h("span", {}, "Goes to"), goes),
       end.kind === "unit" ? h("label", { class: "fa-field" }, h("span", {}, "Tear stream (recycle)"),
         h("input", { type: "checkbox", checked: !!s.tear, "data-fk": `fs-tear-${s.id}`, on: { change: ev => put(setTear(fs, s.id, ev.target.checked)) } })) : null,
@@ -529,7 +535,7 @@ export function flowsheetView(ctx) {
       const [w, hh] = SIZE[b.type];
       const g = svgEl("g", { class: `fs-block fs-${b.type}` + (selected("block", b.id) ? " is-sel" : "") + (sol.loop?.includes(b.id) ? " is-failed" : "") + (sol.status?.blocks?.[b.id] && !sol.status.blocks[b.id].ok ? " is-incomplete" : ""),
         transform: `translate(${b.x ?? 0} ${b.y ?? 0})`, "data-block": b.id, tabindex: 0, role: "button",
-        "aria-label": `${LABEL[b.type]} ${b.id}${sol.status?.blocks?.[b.id]?.ok === false ? ", not fully specified" : ""}` });
+        "aria-label": `${LABEL[b.type]} ${blockName(b)}${sol.status?.blocks?.[b.id]?.ok === false ? ", not fully specified" : ""}` });
       g.append(shape(b.type, w, hh));
       // inlet ports: a ring on the left; an open one takes another stream
       for (const ip of unitType(b.type).inlets) {
@@ -543,7 +549,7 @@ export function flowsheetView(ctx) {
       // the drum's liquid leaves at the bottom: its name goes on the right
       const t = b.type === "flash" ? svgEl("text", { x: w / 2 + 6, y: 4, class: "fs-name", "text-anchor": "start" })
         : svgEl("text", { y: hh / 2 + 15, class: "fs-name", "text-anchor": "middle" });
-      t.textContent = b.id; g.append(t);
+      t.textContent = blockName(b); g.append(t);
       if (sol.status?.blocks?.[b.id] && !sol.status.blocks[b.id].ok) {
         const warn = svgEl("circle", { cx: w / 2, cy: -hh / 2, r: 5, class: "fs-warn-dot" });
         const tt = svgEl("title", {}); tt.textContent = sol.status.blocks[b.id].message; warn.append(tt); g.append(warn);
@@ -676,7 +682,7 @@ function resultsPanel({ state, f, sol, u }) {
   const out = [];
   if (f.sel?.kind === "block") {
     const b = fs.blocks.find(x => x.id === f.sel.id), r = res?.blocks?.[f.sel.id];
-    out.push(h("div", { class: "fug-eyebrow" }, `${LABEL[b?.type] ?? ""} ${f.sel.id}`));
+    out.push(h("div", { class: "fug-eyebrow" }, `${LABEL[b?.type] ?? ""} ${blockName(b) ?? f.sel.id}`));
     if (r) {
       out.push(kvList([
         unitType(b.type).duty ? [`Duty (${b.energy || `Q-${b.id}`})`, `${fmtShort(r.duty_kW, 5)} kW`] : null,
@@ -688,7 +694,7 @@ function resultsPanel({ state, f, sol, u }) {
     } else out.push(h("div", { class: "fa-empty" }, sol.status.blocks?.[f.sel.id]?.ok === false ? sol.status.blocks[f.sel.id].message : "Not calculated yet."));
   } else if (f.sel?.kind === "stream") {
     const s = res?.streams?.[f.sel.id];
-    out.push(h("div", { class: "fug-eyebrow" }, `Stream ${f.sel.id}`));
+    out.push(h("div", { class: "fug-eyebrow" }, `Stream ${streamName(fs.streams.find(x => x.id === f.sel.id)) ?? f.sel.id}`));
     if (s) {
       out.push(kvList([
         ["Temperature", s.T_K == null ? "–" : fmtTemp(s.T_K, u, 2)], ["Pressure", s.P_kPa == null ? "–" : fmtP(s.P_kPa, u)],
@@ -718,9 +724,10 @@ function streamRows(fs, res, u, state) {
   const ids = fs.streams.map(s => s.id);
   const S = ids.map(id => res.streams[id]);
   const mass = state.basis === "mass";
+  const nameOfBlock = bid => blockName(fs.blocks.find(b => b.id === bid)) ?? bid;
   const rows = [
-    ["From", "", ids.map(id => fs.streams.find(s => s.id === id).from.replace(".", " ")), "text"],
-    ["To", "", ids.map(id => { const e = endOf(fs, id); return e.kind === "product" ? "product" : `${e.block} ${e.port}`; }), "text"],
+    ["From", "", ids.map(id => { const [bid, port] = fs.streams.find(s => s.id === id).from.split("."); return `${nameOfBlock(bid)} ${port}`; }), "text"],
+    ["To", "", ids.map(id => { const e = endOf(fs, id); return e.kind === "product" ? "product" : `${nameOfBlock(e.block)} ${e.port}`; }), "text"],
     ["Temperature", u.T === "K" ? "K" : "°C", S.map(s => (s.T_K == null ? null : tToDisplay(s.T_K, u)))],
     ["Pressure", u.P, S.map(s => (s.P_kPa == null ? null : pToDisplay(s.P_kPa, u)))],
     ["Vapour fraction", "mol/mol", S.map(s => s.VF)],

@@ -169,13 +169,29 @@ export function setStreamLabel(fs, sid, label) {
   const out = clone(fs);
   const s = out.streams.find(x => x.id === sid);
   if (!s) throw new Error(`No stream ${sid}.`);
-  const name = String(label ?? "").replace(/\s+/g, " ").trim().slice(0, 40);
-  if (name && name !== sid) s.label = name; else delete s.label;
+  putLabel(s, label);
   return out;
 }
 
-/** The name of a stream on the drawing and in the tables: its label, else its id. */
+/** Give a feed or a unit a name shown on the drawing and in the tables ("" removes it); its id stays. */
+export function setBlockLabel(fs, id, label) {
+  const out = clone(fs);
+  const b = out.blocks.find(x => x.id === id);
+  if (!b) throw new Error(`No block ${id}.`);
+  if (b.type === "product") throw new Error(`${id} is the end of a product stream; give the stream a name instead.`);
+  putLabel(b, label);
+  return out;
+}
+
+/** One line, at most 40 characters; empty or the id itself removes the label. */
+function putLabel(o, label) {
+  const name = String(label ?? "").replace(/\s+/g, " ").trim().slice(0, 40);
+  if (name && name !== o.id) o.label = name; else delete o.label;
+}
+
+/** The name of a stream or a block on the drawing and in the tables: its label, else its id. */
 export const streamName = s => s?.label || s?.id;
+export const blockName = b => b?.label || b?.id;
 
 /** Delete a block and keep its streams (removeBlock without the note). */
 export function deleteBlock(fs, id) {

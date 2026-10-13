@@ -75,7 +75,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
   for (const b of fs.blocks) {
     const spec = b.spec ?? {};
     if (b.type === "feed") {
-      I.push([{ v: `Feed ${b.id}`, s: "bold" }, { v: spec.flow_kg_h ? "kg/h (converted to kmol/h in Streams)" : "kmol/h", s: "bold" }]);
+      I.push([{ v: `Feed ${b.label || b.id}`, s: "bold" }, { v: spec.flow_kg_h ? "kg/h (converted to kmol/h in Streams)" : "kmol/h", s: "bold" }]);
       feedCell[b.id] = {};
       const mass = spec.flow_kg_h != null, flows = (mass ? spec.flow_kg_h : spec.flow_kmol_h) ?? {};
       comps.forEach((c, i) => { feedCell[b.id][c] = { r: I.length, mass, i }; I.push([nameOf(c), null, inp(Number(flows[c] ?? 0))]); });
@@ -83,7 +83,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
       I.push([]);
     } else if (b.type === "splitter") {
       const outs = fs.streams.filter(s => s.from === `${b.id}.out`);
-      I.push([{ v: `Splitter ${b.id}: fraction of the flow to each outlet`, s: "bold" }]);
+      I.push([{ v: `Splitter ${b.label || b.id}: fraction of the flow to each outlet`, s: "bold" }]);
       const r0 = I.length, fr = Array.isArray(spec.fractions) ? spec.fractions : [];
       fracCell[b.id] = outs.map((s, k) => ref(r0 + k, 2));
       outs.forEach((s, k) => {
@@ -93,7 +93,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
       I.push([]);
     } else if (b.type === "separator") {
       const outs = fs.streams.filter(s => s.from === `${b.id}.out`);
-      I.push([{ v: `Component separator ${b.id}: fraction of each component to each outlet`, s: "bold" }, null, ...outs.map(s => ({ v: `to ${s.label || s.id}`, s: "bold" }))]);
+      I.push([{ v: `Component separator ${b.label || b.id}: fraction of each component to each outlet`, s: "bold" }, null, ...outs.map(s => ({ v: `to ${s.label || s.id}`, s: "bold" }))]);
       sepCell[b.id] = {};
       for (const c of comps) {
         const key = Object.keys(spec.fractions ?? {}).find(k => { try { return findComponent(k) === c; } catch { return false; } });
@@ -107,7 +107,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
       }
       I.push([]);
     } else if (["flash", "heater", "mixer"].includes(b.type) && Object.keys(spec).length) {
-      I.push([{ v: `${unitType(b.type).label} ${b.id}`, s: "bold" }, concept && b.type === "flash"
+      I.push([{ v: `${unitType(b.type).label} ${b.label || b.id}`, s: "bold" }, concept && b.type === "flash"
         ? "(as specified in CHEPTA; in this workbook change T and P on the Flash models sheet)" : "(used by CHEPTA; change it there)"]);
       for (const [k, v] of Object.entries(spec)) I.push([k, null, val(v)]);
       I.push([]);
@@ -254,7 +254,7 @@ function conceptFlashes(fs, res, { comps, nameOf, flowRef, inlets }) {
     const V = port("vapour"), L = port("liquid"), L2 = port("liquid2");
     const ins = inlets(b.id);
     const spec = b.spec ?? {}, tp = spec.T_K != null && spec.P_kPa != null;
-    rows.push([{ v: `Flash drum ${b.id}`, s: "bold" }, tp ? "specified by temperature and pressure"
+    rows.push([{ v: `Flash drum ${b.label || b.id}`, s: "bold" }, tp ? "specified by temperature and pressure"
       : `specified by ${Object.keys(spec).join(" and ")} in CHEPTA: the temperature it found is held here`]);
     const rT = rows.length;
     rows.push(["Temperature, K", inp(st.T_K)]);
@@ -266,8 +266,8 @@ function conceptFlashes(fs, res, { comps, nameOf, flowRef, inlets }) {
     if (liq2) {
       // two liquids: fixed split fractions per component, from CHEPTA's solution
       rows.push(["Two liquid phases: written as fixed split fractions (inputs) from CHEPTA's solution."]);
-      rows.push([{ v: "Component", s: "bold" }, { v: "Inlet, kmol/h", s: "bold" }, ...[V, L, L2].map(s => ({ v: s ? `to ${s.id}` : "", s: "bold" })),
-        ...[V, L, L2].map(s => ({ v: s ? `${s.id}, kmol/h` : "", s: "bold" }))]);
+      rows.push([{ v: "Component", s: "bold" }, { v: "Inlet, kmol/h", s: "bold" }, ...[V, L, L2].map(s => ({ v: s ? `to ${s.label || s.id}` : "", s: "bold" })),
+        ...[V, L, L2].map(s => ({ v: s ? `${s.label || s.id}, kmol/h` : "", s: "bold" }))]);
       comps.forEach((c, i) => {
         const r = rows.length, tot = [V, L, L2].reduce((a, s) => a + (s ? res.streams[s.id].flows[i] : 0), 0);
         rows.push([nameOf(c), F(inFlow(i), tot), ...[V, L, L2].map(s => (s ? inp(tot > 0 ? res.streams[s.id].flows[i] / tot : 0) : null)),
@@ -286,7 +286,7 @@ function conceptFlashes(fs, res, { comps, nameOf, flowRef, inlets }) {
     if (!two && sys?.gammas) { try { gz = sys.gammas(z, st.T_K); } catch { gz = null; } }
     rows.push([{ v: "Component", s: "bold" }, { v: "Inlet, kmol/h", s: "bold" }, { v: "z", s: "bold" }, ...["A", "B", "C", "D", "E"].map(v => ({ v, s: "bold" })),
       { v: "Psat, kPa", s: "bold" }, { v: "γ", s: "bold" }, { v: "K", s: "bold" }, { v: "x (liquid)", s: "bold" }, { v: "y (vapour)", s: "bold" },
-      { v: V ? `${V.id}, kmol/h` : "vapour, kmol/h", s: "bold" }, { v: L ? `${L.id}, kmol/h` : "liquid, kmol/h", s: "bold" }]);
+      { v: V ? `${V.label || V.id}, kmol/h` : "vapour, kmol/h", s: "bold" }, { v: L ? `${L.label || L.id}, kmol/h` : "liquid, kmol/h", s: "bold" }]);
     const r0 = rows.length, rVF = r0 + n + 1;
     const VF = abs(rVF, 1);
     const zR = `${abs(r0, 2)}:${abs(r0 + n - 1, 2)}`, KR = `${abs(r0, 10)}:${abs(r0 + n - 1, 10)}`;

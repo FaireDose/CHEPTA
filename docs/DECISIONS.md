@@ -154,6 +154,10 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   stream went to; a unit it went to only loses that inlet), the same as deleting a feed's stream already did. Also asked:
   rename streams. Done: a Name field in the stream panel; the name shows on the drawing, in the stream table, the CSV
   and the Excel workbook. The stream keeps its id (S1, S2 ...) underneath; an empty name shows the id again.
+- **Asked next (same day):** names for the units and the feeds too, not only the streams. Done: the same Name field in
+  the panel of a feed or a unit; the name shows on the drawing, in the panel and results, in the From/To rows of the
+  stream table and in the Excel workbook. The end circle of a product stream takes no name (name its stream). The
+  energy stream of a unit keeps its own name (Q-V1).
 
 ### 2026-10-11 (late): pairs of the green-chemistry components
 
