@@ -586,7 +586,7 @@
    "source": {
     "name": "Correlation of measured values (an open-access article)",
     "reference": "Perkins and Huber, Energy Fuels 25 (2011) 2383-2388, doi:10.1021/ef200417x",
-    "access": "Perkins 2011: A work of NIST, not subject to U.S. copyright; free full text from NIST",
+    "access": "Perkins 2011: Open access: a work of NIST, not subject to U.S. copyright, free full text from NIST",
     "fit": "20 values calculated from the authors' correlation of their measurements, stated uncertainty within 3 %, from 1 article, 302.15-492.15 K, max deviation 1.2 %",
     "notes": "Fitted to measured data instead of the databank: the ChemSep v8.31 data 2 thermal conductivity is 30-36 % below the correlation of Perkins and Huber (2011, NIST), which is within 2.5 % of their measurements at 302-508 K; the databank record deviates from these values by -33.6 % (median, -35.6 % at most). Rules: validation/python/measured_components.py.",
     "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md"
