@@ -11491,6 +11491,36 @@
     ]
    }
   ],
+  "carbon-dioxide+methyl-linoleate": [
+   {
+    "doi": "10.1016/j.fluid.2005.04.008",
+    "year": "2005",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2005.04.008.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 26
+     }
+    ]
+   }
+  ],
+  "carbon-dioxide+methyl-oleate": [
+   {
+    "doi": "10.1016/j.fluid.2005.04.008",
+    "year": "2005",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2005.04.008.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 25
+     }
+    ]
+   }
+  ],
   "carbon-dioxide+mibk": [
    {
     "doi": "10.1016/j.fluid.2009.12.030",
@@ -11696,6 +11726,47 @@
     ]
    }
   ],
+  "carbon-dioxide+n-hexadecane": [
+   {
+    "doi": "10.1016/j.fluid.2018.08.019",
+    "year": "2018",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2018.08.019.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 12
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/acs.jced.7b00517",
+    "year": "2017",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.7b00517.xml",
+    "sets": [
+     {
+      "number": 19,
+      "kind": "tpx-varying",
+      "points": 30
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je800966f",
+    "year": "2009",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je800966f.xml",
+    "sets": [
+     {
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 18
+     }
+    ]
+   }
+  ],
   "carbon-dioxide+n-hexane": [
    {
     "doi": "10.1016/j.fluid.2005.10.023",
@@ -11867,6 +11938,34 @@
       "number": 5,
       "kind": "tpx-varying",
       "points": 25
+     }
+    ]
+   }
+  ],
+  "carbon-dioxide+n-octadecane": [
+   {
+    "doi": "10.1016/j.fluid.2012.11.039",
+    "year": "2013",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2012.11.039.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "isothermal-px",
+      "points": 6
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je4000394",
+    "year": "2013",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je4000394.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "isothermal-px",
+      "points": 6
      }
     ]
    }
@@ -12696,6 +12795,21 @@
       "number": 2,
       "kind": "tpx-varying",
       "points": 25
+     }
+    ]
+   }
+  ],
+  "carbon-dioxide+triolein": [
+   {
+    "doi": "10.1021/je300801j",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je300801j.xml",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 29
      }
     ]
    }
@@ -13889,6 +14003,21 @@
       "number": 9,
       "kind": "isothermal-px",
       "points": 2
+     }
+    ]
+   }
+  ],
+  "cyclohexane+n-hexadecane": [
+   {
+    "doi": "10.1021/acs.jced.8b00125",
+    "year": "2018",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.8b00125.xml",
+    "sets": [
+     {
+      "number": 11,
+      "kind": "tpx-varying",
+      "points": 55
      }
     ]
    }
@@ -17022,6 +17151,101 @@
       "number": 1,
       "kind": "isothermal-px",
       "points": 3
+     }
+    ]
+   }
+  ],
+  "ethane+methyl-laurate": [
+   {
+    "doi": "10.1016/j.fluid.2011.08.015",
+    "year": "2011",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2011.08.015.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 29
+     },
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 19
+     }
+    ]
+   }
+  ],
+  "ethane+methyl-myristate": [
+   {
+    "doi": "10.1016/j.fluid.2011.08.015",
+    "year": "2011",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2011.08.015.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 36
+     },
+     {
+      "number": 6,
+      "kind": "tpx-varying",
+      "points": 23
+     }
+    ]
+   }
+  ],
+  "ethane+methyl-palmitate": [
+   {
+    "doi": "10.1016/j.fluid.2011.08.015",
+    "year": "2011",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2011.08.015.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "tpx-varying",
+      "points": 20
+     },
+     {
+      "number": 8,
+      "kind": "tpx-varying",
+      "points": 28
+     }
+    ]
+   }
+  ],
+  "ethane+methyl-stearate": [
+   {
+    "doi": "10.1016/j.fluid.2011.08.015",
+    "year": "2011",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2011.08.015.xml",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 16
+     },
+     {
+      "number": 10,
+      "kind": "tpx-varying",
+      "points": 28
+     }
+    ]
+   }
+  ],
+  "ethane+n-octadecane": [
+   {
+    "doi": "10.1021/je200787v",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je200787v.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 22
      }
     ]
    }
@@ -20521,6 +20745,36 @@
     ]
    }
   ],
+  "hydrogen+n-hexadecane": [
+   {
+    "doi": "10.1016/j.fluid.2014.08.035",
+    "year": "2014",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2014.08.035.xml",
+    "sets": [
+     {
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 15
+     }
+    ]
+   }
+  ],
+  "hydrogen+n-octadecane": [
+   {
+    "doi": "10.1016/j.fluid.2014.08.035",
+    "year": "2014",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2014.08.035.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 8
+     }
+    ]
+   }
+  ],
   "hydrogen+toluene": [
    {
     "doi": "10.1016/j.fluid.2004.07.013",
@@ -20584,6 +20838,21 @@
       "number": 8,
       "kind": "tpx-varying",
       "points": 1
+     }
+    ]
+   }
+  ],
+  "hydrogen+triolein": [
+   {
+    "doi": "10.1016/j.fluid.2013.11.006",
+    "year": "2014",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2013.11.006.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 14
      }
     ]
    }
@@ -22101,6 +22370,21 @@
     ]
    }
   ],
+  "methane+n-hexadecane": [
+   {
+    "doi": "10.1021/je9007958",
+    "year": "2010",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je9007958.xml",
+    "sets": [
+     {
+      "number": 2,
+      "kind": "tpx-varying",
+      "points": 18
+     }
+    ]
+   }
+  ],
   "methane+n-hexane": [
    {
     "doi": "10.1016/j.jct.2016.03.038",
@@ -22151,6 +22435,21 @@
       "number": 1,
       "kind": "isothermal-px",
       "points": 3
+     }
+    ]
+   }
+  ],
+  "methane+n-octadecane": [
+   {
+    "doi": "10.1016/j.fluid.2011.10.018",
+    "year": "2012",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2011.10.018.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 24
      }
     ]
    }
@@ -22613,6 +22912,71 @@
     ]
    }
   ],
+  "methanol+methyl-laurate": [
+   {
+    "doi": "10.1016/j.fluid.2007.01.034",
+    "year": "2007",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2007.01.034.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 20
+     }
+    ]
+   }
+  ],
+  "methanol+methyl-myristate": [
+   {
+    "doi": "10.1016/j.fluid.2007.01.034",
+    "year": "2007",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2007.01.034.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 19
+     }
+    ]
+   }
+  ],
+  "methanol+methyl-oleate": [
+   {
+    "doi": "10.1016/j.fluid.2015.09.049",
+    "year": "2016",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2015.09.049.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "isobaric-tx",
+      "points": 9
+     },
+     {
+      "number": 2,
+      "kind": "isobaric-txy",
+      "points": 9
+     }
+    ]
+   }
+  ],
+  "methanol+methyl-palmitate": [
+   {
+    "doi": "10.1021/acs.jced.5b00865",
+    "year": "2016",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.5b00865.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 18
+     }
+    ]
+   }
+  ],
   "methanol+mibk": [
    {
     "doi": "10.1016/j.fluid.2011.08.007",
@@ -22833,6 +23197,21 @@
       "number": 4,
       "kind": "isobaric-txy",
       "points": 16
+     }
+    ]
+   }
+  ],
+  "methanol+triolein": [
+   {
+    "doi": "10.1016/j.fluid.2005.10.010",
+    "year": "2006",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2005.10.010.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 21
      }
     ]
    }
@@ -23180,6 +23559,82 @@
       "number": 9,
       "kind": "isothermal-px",
       "points": 8
+     }
+    ]
+   }
+  ],
+  "methyl-myristate+methyl-palmitate": [
+   {
+    "doi": "10.1016/j.fluid.2014.09.006",
+    "year": "2014",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2014.09.006.xml",
+    "sets": [
+     {
+      "number": 1,
+      "kind": "tpx-varying",
+      "points": 38
+     }
+    ]
+   },
+   {
+    "doi": "10.1016/j.tca.2010.10.002",
+    "year": "2011",
+    "journal": "Thermochim. Acta",
+    "file": "10.1016/j.tca.2010.10.002.xml",
+    "sets": [
+     {
+      "number": 7,
+      "kind": "isobaric-tx",
+      "points": 6
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je3003699",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je3003699.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "isobaric-tx",
+      "points": 4
+     }
+    ]
+   }
+  ],
+  "methyl-myristate+n-hexadecane": [
+   {
+    "doi": "10.1016/j.fluid.2015.08.015",
+    "year": "2016",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2015.08.015.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "isobaric-tx",
+      "points": 12
+     },
+     {
+      "number": 6,
+      "kind": "isobaric-txy",
+      "points": 12
+     }
+    ]
+   }
+  ],
+  "methyl-palmitate+methyl-stearate": [
+   {
+    "doi": "10.1021/je3003699",
+    "year": "2012",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je3003699.xml",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 45
      }
     ]
    }
@@ -24446,6 +24901,21 @@
     ]
    }
   ],
+  "oleic-acid+propane": [
+   {
+    "doi": "10.1016/j.fluid.2013.11.006",
+    "year": "2014",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2013.11.006.xml",
+    "sets": [
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 18
+     }
+    ]
+   }
+  ],
   "oxygen+styrene": [
    {
     "doi": "10.1016/j.fluid.2019.03.016",
@@ -24589,6 +25059,41 @@
     ]
    }
   ],
+  "palmitic-acid+propane": [
+   {
+    "doi": "10.1021/je101077v",
+    "year": "2011",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je101077v.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 39
+     }
+    ]
+   }
+  ],
+  "palmitic-acid+stearic-acid": [
+   {
+    "doi": "10.1016/j.jct.2009.07.008",
+    "year": "2010",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2009.07.008.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "isobaric-tx",
+      "points": 10
+     },
+     {
+      "number": 6,
+      "kind": "isobaric-txy",
+      "points": 10
+     }
+    ]
+   }
+  ],
   "propane+propylene": [
    {
     "doi": "10.1016/j.fluid.2006.03.009",
@@ -24600,6 +25105,21 @@
       "number": 3,
       "kind": "tpx-varying",
       "points": 90
+     }
+    ]
+   }
+  ],
+  "propane+stearic-acid": [
+   {
+    "doi": "10.1021/je101077v",
+    "year": "2011",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je101077v.xml",
+    "sets": [
+     {
+      "number": 6,
+      "kind": "tpx-varying",
+      "points": 39
      }
     ]
    }

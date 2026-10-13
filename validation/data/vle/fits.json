@@ -2803,6 +2803,46 @@
    "describe": "Fitted to 19 T-x-y points at 101.3 kPa from Zhang et al., Fluid Phase Equilib. 401 (2015) 1-8 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methanol_methyl-acetate_10-1016-j-fluid-2015-04-018_101.3kPa.json); checked against Orchilles et al., J. Chem. Eng. Data 52 (2007) 915-920 at 100.0 kPa, Shang et al., Fluid Phase Equilib. 473 (2018) 90-97 at 101.3 kPa."
   },
   {
+   "key": "methanol+methyl-laurate",
+   "pair": [
+    "methanol",
+    "methyl-laurate"
+   ],
+   "file": "vle/methanol_methyl-laurate_10-1016-j-fluid-2007-01-034_tpx.json",
+   "check": [],
+   "describe": "Fitted to 20 total pressures at 493-543 K (T-P-x, with the component vapour pressures) from Shimoyama et al., Fluid Phase Equilib. 257 (2007) 217-222 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methanol_methyl-laurate_10-1016-j-fluid-2007-01-034_tpx.json)."
+  },
+  {
+   "key": "methanol+methyl-myristate",
+   "pair": [
+    "methanol",
+    "methyl-myristate"
+   ],
+   "file": "vle/methanol_methyl-myristate_10-1016-j-fluid-2007-01-034_tpx.json",
+   "check": [],
+   "describe": "Fitted to 19 total pressures at 493-543 K (T-P-x, with the component vapour pressures) from Shimoyama et al., Fluid Phase Equilib. 257 (2007) 217-222 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methanol_methyl-myristate_10-1016-j-fluid-2007-01-034_tpx.json)."
+  },
+  {
+   "key": "methanol+methyl-oleate",
+   "pair": [
+    "methanol",
+    "methyl-oleate"
+   ],
+   "file": "vle/methanol_methyl-oleate_10-1016-j-fluid-2015-09-049_101.0kPa.json",
+   "check": [],
+   "describe": "Fitted to 9 T-x-y points at 101.0 kPa from Silva et al., Fluid Phase Equilib. 409 (2016) 171-192 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methanol_methyl-oleate_10-1016-j-fluid-2015-09-049_101.0kPa.json)."
+  },
+  {
+   "key": "methanol+methyl-palmitate",
+   "pair": [
+    "methanol",
+    "methyl-palmitate"
+   ],
+   "file": "vle/methanol_methyl-palmitate_10-1021-acs-jced-5b00865_tpx.json",
+   "check": [],
+   "describe": "Fitted to 18 total pressures at 493-543 K (T-P-x, with the component vapour pressures) from Xu et al., J. Chem. Eng. Data 61 (2016) 1229-1235 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methanol_methyl-palmitate_10-1021-acs-jced-5b00865_tpx.json)."
+  },
+  {
    "key": "methanol+mibk",
    "pair": [
     "methanol",
@@ -2906,6 +2946,36 @@
    "file": "vle/methyl-acetate_p-xylene_10-1021-acs-jced-8b00807_101.3kPa.json",
    "check": [],
    "describe": "Fitted to 15 T-x-y points at 101.3 kPa from Jiang et al., J. Chem. Eng. Data 64 (2019) 296-302 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-acetate_p-xylene_10-1021-acs-jced-8b00807_101.3kPa.json)."
+  },
+  {
+   "key": "methyl-myristate+methyl-palmitate",
+   "pair": [
+    "methyl-myristate",
+    "methyl-palmitate"
+   ],
+   "file": "vle/methyl-myristate_methyl-palmitate_10-1016-j-fluid-2014-09-006_0.5kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 0.5 kPa from Chen et al., Fluid Phase Equilib. 382 (2014) 133-138 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-myristate_methyl-palmitate_10-1016-j-fluid-2014-09-006_0.5kPa_tx.json)."
+  },
+  {
+   "key": "methyl-myristate+n-hexadecane",
+   "pair": [
+    "methyl-myristate",
+    "n-hexadecane"
+   ],
+   "file": "vle/methyl-myristate_n-hexadecane_10-1016-j-fluid-2015-08-015_5.0kPa.json",
+   "check": [],
+   "describe": "Fitted to 10 T-x-y points at 5.0 kPa from Li et al., Fluid Phase Equilib. 408 (2016) 47-51 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-myristate_n-hexadecane_10-1016-j-fluid-2015-08-015_5.0kPa.json)."
+  },
+  {
+   "key": "methyl-palmitate+methyl-stearate",
+   "pair": [
+    "methyl-palmitate",
+    "methyl-stearate"
+   ],
+   "file": "vle/methyl-palmitate_methyl-stearate_10-1021-je3003699_10.0kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 10 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 10.0 kPa from Hou et al., J. Chem. Eng. Data 57 (2012) 2632-2639 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-palmitate_methyl-stearate_10-1021-je3003699_10.0kPa_tx.json)."
   },
   {
    "key": "mibk+n-hexane",

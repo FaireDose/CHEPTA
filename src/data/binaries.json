@@ -16396,6 +16396,204 @@
         "nist-thermoml-archive"
       ],
       "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "ethanol",
+      "j": "n-hexadecane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 1187.3002937371627,
+      "b_ji": 759.4605805807978,
+      "alpha": 0.4448,
+      "source": "ChemSep NRTL databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(ethanol) 0.615-0.993; 298.15 K: x(ethanol) 0.582-0.989; 323.15 K: x(ethanol) 0.553-0.983; 348.15 K: x(ethanol) 0.528-0.976; 373.15 K: x(ethanol) 0.509-0.967), not checked against data in this import.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "ethanol",
+      "j": "n-hexadecane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 202.01285210337136,
+      "b_ji": -897.6358078157693,
+      "source": "ChemSep UNIQUAC databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(ethanol) 0.031-0.655; 298.15 K: x(ethanol) 0.0477-0.684; 323.15 K: x(ethanol) 0.0735-0.704; 348.15 K: x(ethanol) 0.105-0.717; 373.15 K: x(ethanol) 0.144-0.724), not checked against data in this import.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "ethanol",
+      "j": "oleic-acid",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 490.9820395953294,
+      "b_ji": -172.8783533480201,
+      "alpha": 0.2988,
+      "source": "ChemSep NRTL databank (via the open-source thermo library).",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "ethanol",
+      "j": "oleic-acid",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 90.9621641630503,
+      "b_ji": -316.0051601487128,
+      "source": "ChemSep UNIQUAC databank (via the open-source thermo library).",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "methanol",
+      "j": "oleic-acid",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 75.07069258297268,
+      "b_ji": -479.079237003623,
+      "source": "ChemSep UNIQUAC databank (via the open-source thermo library).",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "methyl-myristate",
+      "j": "methyl-palmitate",
+      "set": "fitted-chen2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 1516.7543482252336,
+      "b_ji": -733.2669280021032,
+      "alpha": 0.3,
+      "source": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 0.5 kPa from Chen et al., Fluid Phase Equilib. 382 (2014) 133-138 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-myristate_methyl-palmitate_10-1016-j-fluid-2014-09-006_0.5kPa_tx.json). AAD 0.37 K in T (max 0.86 K; no vapour compositions).",
+      "source_ids": [
+        "chen2014-methyl-myristate-methyl-palmitate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "methyl-myristate",
+      "j": "methyl-palmitate",
+      "set": "fitted-chen2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -523.0098377107231,
+      "b_ji": 325.0176899527721,
+      "source": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 0.5 kPa from Chen et al., Fluid Phase Equilib. 382 (2014) 133-138 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-myristate_methyl-palmitate_10-1016-j-fluid-2014-09-006_0.5kPa_tx.json). AAD 0.41 K in T (max 0.97 K; no vapour compositions).",
+      "source_ids": [
+        "chen2014-methyl-myristate-methyl-palmitate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "methyl-myristate",
+      "j": "n-hexadecane",
+      "set": "fitted-li2016-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 16.528351850664436,
+      "b_ji": 68.21421788998754,
+      "alpha": 0.3,
+      "source": "Fitted to 10 T-x-y points at 5.0 kPa from Li et al., Fluid Phase Equilib. 408 (2016) 47-51 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-myristate_n-hexadecane_10-1016-j-fluid-2015-08-015_5.0kPa.json). AAD 0.10 K in T, 0.0024 in y (max 0.20 K, 0.0046). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "li2016-2-butanone-methanol",
+        "li2016-acetonitrile-methanol",
+        "li2016-methyl-myristate-n-hexadecane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "methyl-myristate",
+      "j": "n-hexadecane",
+      "set": "fitted-li2016-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 16.85115284017815,
+      "b_ji": -26.396734675429098,
+      "source": "Fitted to 10 T-x-y points at 5.0 kPa from Li et al., Fluid Phase Equilib. 408 (2016) 47-51 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-myristate_n-hexadecane_10-1016-j-fluid-2015-08-015_5.0kPa.json). AAD 0.10 K in T, 0.0023 in y (max 0.20 K, 0.0047). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "li2016-2-butanone-methanol",
+        "li2016-acetonitrile-methanol",
+        "li2016-methyl-myristate-n-hexadecane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "methyl-palmitate",
+      "j": "methyl-stearate",
+      "set": "fitted-hou2012",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -177.62505249732192,
+      "b_ji": 456.42911910718965,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 0.62 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 10 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 10.0 kPa from Hou et al., J. Chem. Eng. Data 57 (2012) 2632-2639 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-palmitate_methyl-stearate_10-1021-je3003699_10.0kPa_tx.json). AAD 0.62 K in T (max 1.02 K; no vapour compositions).",
+      "source_ids": [
+        "hou2012-methyl-palmitate-methyl-stearate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "methyl-palmitate",
+      "j": "methyl-stearate",
+      "set": "fitted-hou2012",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 137.96732549050967,
+      "b_ji": -182.677566218442,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 0.62 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 10 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 10.0 kPa from Hou et al., J. Chem. Eng. Data 57 (2012) 2632-2639 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-palmitate_methyl-stearate_10-1021-je3003699_10.0kPa_tx.json). AAD 0.62 K in T (max 1.03 K; no vapour compositions).",
+      "source_ids": [
+        "hou2012-methyl-palmitate-methyl-stearate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
     }
   ]
 }
