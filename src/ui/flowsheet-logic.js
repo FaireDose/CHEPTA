@@ -32,12 +32,23 @@ export function freeSpot(fs, near) {
   return { x, y: units[units.length - 1].y ?? 160 };
 }
 
+/** A spot for a new block near (x, y) that no other block occupies (moved down in 50 px steps). */
+function clearSpot(fs, x, y) {
+  while (fs.blocks.some(b => Math.abs((b.x ?? 0) - x) < 40 && Math.abs((b.y ?? 0) - y) < 30)) y += 50;
+  return { x, y };
+}
+
+/** Where the Product of outlet `from` (BLOCK.port) goes: right of the unit, by port, on a free spot. */
+function productSpot(fs, from, k = 0) {
+  const src = fs.blocks.find(b => b.id === portOf(from).block);
+  const dy = { vapour: -60, liquid: 60, liquid2: 100 }[portOf(from).port] ?? (k - 0.5) * 70;
+  return clearSpot(fs, (src?.x ?? 0) + 130, (src?.y ?? 0) + dy);
+}
+
 /** Add a Product block and a stream from `from` (BLOCK.port) to it, placed right of the unit. */
 function addProductStream(fs, from, k = 0) {
-  const src = fs.blocks.find(b => b.id === portOf(from).block);
   const pid = nextId(blockIds(fs), PREFIX.product), sid = nextId(streamIds(fs), "S");
-  const dy = { vapour: -60, liquid: 60, liquid2: 100 }[portOf(from).port] ?? (k - 0.5) * 70;
-  fs.blocks.push({ id: pid, type: "product", x: (src?.x ?? 0) + 130, y: (src?.y ?? 0) + dy });
+  fs.blocks.push({ id: pid, type: "product", ...productSpot(fs, from, k) });
   fs.streams.push({ id: sid, from, to: `${pid}.in` });
   return sid;
 }
@@ -102,8 +113,7 @@ export function connect(fs, sid, to) {
   if (to == null) {
     if (isProduct(out, old)) return out;
     const pid = nextId(blockIds(out), PREFIX.product);
-    const src = out.blocks.find(b => b.id === portOf(s.from).block);
-    out.blocks.push({ id: pid, type: "product", x: (src?.x ?? 0) + 130, y: (src?.y ?? 0) + 40 });
+    out.blocks.push({ id: pid, type: "product", ...productSpot(out, s.from) });
     s.to = `${pid}.in`;
     delete s.tear; delete s.guess;
   } else {
@@ -115,25 +125,87 @@ export function connect(fs, sid, to) {
 }
 
 /**
- * Delete a block. Streams into it from units go back to being products; streams out of it are
- * removed with the Products they went to (a unit they went to loses that inlet stream).
+ * Delete a unit and keep its streams (the way a person expects a simulator to: the streams stay,
+ * open at the end that went to the deleted block). A stream that went into it now leaves the
+ * flowsheet (a Product; a feed keeps its stream); a stream that came out of it now starts from a
+ * new Feed in its place, still going where it went (fill in the feed, or delete it). Returns
+ * { fs, note } (the note says which streams were kept and how). A feed goes with its stream (and the
+ * Product it went to), as deleting a feed's stream does.
  */
-export function deleteBlock(fs, id) {
+export function removeBlock(fs, id) {
   let out = clone(fs);
   const b = out.blocks.find(x => x.id === id);
-  if (!b || b.type === "product") return out;
+  if (!b || b.type === "product") return { fs: out, note: "" };
+  if (b.type === "feed") {
+    // a feed's stream exists only with it: both go, and the Product it went to (a unit it went to loses that inlet)
+    const mine = out.streams.filter(x => portOf(x.from).block === id);
+    for (const s of mine) if (isProduct(out, portOf(s.to).block)) out.blocks = out.blocks.filter(x => x.id !== portOf(s.to).block);
+    out.streams = out.streams.filter(x => portOf(x.from).block !== id);
+    out.blocks = out.blocks.filter(x => x.id !== id);
+    return { fs: out, note: mine.length ? `Deleted the feed stream ${mine.map(streamName).join(", ")}.` : `Deleted the feed ${id}.` };
+  }
+  const leave = [], feeds = [];
   for (const s of out.streams.filter(x => portOf(x.to).block === id)) {
-    if (out.blocks.find(x => x.id === portOf(s.from).block)?.type === "feed") {
-      out.blocks = out.blocks.filter(x => x.id !== portOf(s.from).block);
-      out.streams = out.streams.filter(x => x.id !== s.id);
-    } else out = connect(out, s.id, null);
+    out = connect(out, s.id, null);
+    leave.push(streamName(s));
   }
-  for (const s of out.streams.filter(x => portOf(x.from).block === id)) {
-    out.streams = out.streams.filter(x => x.id !== s.id);
-    if (isProduct(out, portOf(s.to).block)) out.blocks = out.blocks.filter(x => x.id !== portOf(s.to).block);
-  }
+  out.streams.filter(x => portOf(x.from).block === id).forEach((s, k) => {
+    const fid = nextId(blockIds(out), PREFIX.feed);
+    out.blocks.push({ id: fid, type: "feed", ...clearSpot(out, (b.x ?? 0), (b.y ?? 0) + k * 60), spec: {} });
+    s.from = `${fid}.out`;
+    delete s.tear; delete s.guess;
+    feeds.push(streamName(s));
+  });
   out.blocks = out.blocks.filter(x => x.id !== id);
+  const note = [`Deleted ${blockName(b)}; its streams are kept.`,
+    leave.length ? `${leave.join(", ")} now leave${leave.length === 1 ? "s" : ""} the flowsheet (drag the end onto an inlet to connect again).` : "",
+    feeds.length ? `${feeds.join(", ")} now ${feeds.length === 1 ? "starts as a feed stream" : "start as feed streams"} where ${blockName(b)} was; fill in ${feeds.length === 1 ? "its" : "their"} flows or delete ${feeds.length === 1 ? "it" : "them"}.` : ""]
+    .filter(Boolean).join(" ");
+  return { fs: out, note };
+}
+
+/** Give a stream a name shown on the drawing and in the tables ("" removes it); its id stays. */
+export function setStreamLabel(fs, sid, label) {
+  const out = clone(fs);
+  const s = out.streams.find(x => x.id === sid);
+  if (!s) throw new Error(`No stream ${sid}.`);
+  putLabel(s, label);
   return out;
+}
+
+/** Give a feed or a unit a name shown on the drawing and in the tables ("" removes it); its id stays. */
+export function setBlockLabel(fs, id, label) {
+  const out = clone(fs);
+  const b = out.blocks.find(x => x.id === id);
+  if (!b) throw new Error(`No block ${id}.`);
+  if (b.type === "product") throw new Error(`${id} is the end of a product stream; give the stream a name instead.`);
+  putLabel(b, label);
+  return out;
+}
+
+/** One line, at most 40 characters; empty or the id itself removes the label. */
+function putLabel(o, label) {
+  const name = String(label ?? "").replace(/\s+/g, " ").trim().slice(0, 40);
+  if (name && name !== o.id) o.label = name; else delete o.label;
+}
+
+/** The Feed block a stream starts from, or null. On the drawing a feed is its stream (a feed stream). */
+export function feedOf(fs, sid) {
+  const s = fs.streams.find(x => x.id === sid);
+  const b = s && fs.blocks.find(x => x.id === portOf(s.from).block);
+  return b?.type === "feed" ? b : null;
+}
+
+/** The stream that leaves a Feed block, or null. */
+export const feedStreamOf = (fs, fid) => fs.streams.find(s => portOf(s.from).block === fid) ?? null;
+
+/** The name of a stream or a block on the drawing and in the tables: its label, else its id. */
+export const streamName = s => s?.label || s?.id;
+export const blockName = b => b?.label || b?.id;
+
+/** Delete a block and keep its streams (removeBlock without the note). */
+export function deleteBlock(fs, id) {
+  return removeBlock(fs, id).fs;
 }
 
 /** Add an outlet to a splitter or component separator (a new product stream and its fraction). */
@@ -259,9 +331,11 @@ export function deleteStream(fs, sid) {
   const src = fs.blocks.find(b => b.id === portOf(s.from).block);
   if (src?.type === "feed") {
     const out = clone(fs);
+    // the feed and the Product end go with it (a unit it went to loses that inlet)
+    const end = endOf(fs, sid);
     out.streams = out.streams.filter(x => x.id !== sid);
-    out.blocks = out.blocks.filter(b => b.id !== src.id);
-    return { fs: out, note: `Deleted the feed ${src.id} with its stream ${sid}.` };
+    out.blocks = out.blocks.filter(b => b.id !== src.id && !(end?.kind === "product" && b.id === end.block));
+    return { fs: out, note: `Deleted the feed stream ${streamName(s)}.` };
   }
   const end = endOf(fs, sid);
   if (end.kind === "unit") return { fs: connect(fs, sid, null), note: `${sid} no longer goes to ${end.block}: it now leaves the flowsheet.` };

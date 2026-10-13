@@ -16,8 +16,8 @@ import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
 import { flowsheetDocStatus, runFlowsheet } from "../flowsheet/document.js";
 import {
-  PALETTE, addBlock, addFeedTo, connect, deleteBlock, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
-  setComponents, streamsOf, endOf, openInlets, deleteStream,
+  PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
+  setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
 } from "./flowsheet-logic.js";
 import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { flowsheetXlsx } from "./flowsheet-excel.js";
@@ -44,19 +44,27 @@ const COMING = [
   { id: "column", label: "Distillation", icon: "column", note: "roadmap v0.5" },
   { id: "extraction", label: "Extraction", icon: "extract", note: "after liquid-liquid equilibria in the flash" },
 ];
-const SIZE = { feed: [44, 26], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], product: [0, 0] };
+// a feed is drawn as the start of its stream (a tab), not as a block; its size is that point
+const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], product: [0, 0] };
 
 // setup: which setup page the Inputs panel shows while nothing is selected ("components" or "method")
 export const ensureUi = ui => (ui.fs ??= { sel: null, setup: "components", auto: true, solveKey: null, cache: null, note: "" });
+
+/** On the drawing a feed is its stream: a selected Feed block becomes its stream (a feed with no stream stays a block). */
+function feedSel(f, fs) {
+  if (f.sel?.kind !== "block") return;
+  const b = fs.blocks.find(x => x.id === f.sel.id), s = b?.type === "feed" ? feedStreamOf(fs, b.id) : null;
+  if (s) f.sel = { kind: "stream", id: s.id };
+}
 
 /** Delete what is selected (a block, or a stream as far as the flowsheet allows) and say what happened. */
 export function deleteSelected(state, set, ui) {
   const f = ensureUi(ui), fs = state.flowsheet;
   if (!f.sel) return;
   if (f.sel.kind === "block") {
-    const id = f.sel.id;
-    f.sel = null; f.note = `Deleted ${id}. Streams that went into it now leave the flowsheet.`;
-    set({ flowsheet: deleteBlock(fs, id) });
+    const r = removeBlock(fs, f.sel.id);
+    f.sel = null; f.note = r.note;
+    set({ flowsheet: r.fs });
     return;
   }
   const r = deleteStream(fs, f.sel.id);
@@ -93,7 +101,7 @@ export function flowsheetRibbon({ state, set, ui, group, bigButton, smallButton 
   const ready = fs.components.length > 0;
   const place = type => () => {
     const r = addBlock(fs, type);
-    f.sel = { kind: "block", id: r.id };
+    f.sel = { kind: "block", id: r.id }; feedSel(f, r.fs);
     set({ flowsheet: r.fs });
   };
   const method = fs.thermo.model + (["PR", "SRK"].includes(fs.thermo.model) || fs.thermo.vapour === "ideal" ? "" : ` + ${fs.thermo.vapour}`);
@@ -119,8 +127,10 @@ export function flowsheetRibbon({ state, set, ui, group, bigButton, smallButton 
     group("Canvas", h("div", { class: "fa-canvas-grid" },
       smallButton({ ico: "plus", label: "Zoom in", fk: "fs-zoom-in", title: "Zoom in (Ctrl + mouse wheel)", onClick: () => { f.zoom = Math.min(3, (f.zoom ?? 1) * 1.25); set({}); } }),
       (() => {
-        const what = f.sel ? `${f.sel.kind === "block" ? "" : "stream "}${f.sel.id}` : "";
-        const b = smallButton({ ico: "trash", label: f.sel ? `Delete ${f.sel.id}` : "Delete", fk: "fs-delete",
+        feedSel(f, fs);
+        const name = !f.sel ? "" : f.sel.kind === "block" ? blockName(fs.blocks.find(x => x.id === f.sel.id)) ?? f.sel.id : streamName(fs.streams.find(x => x.id === f.sel.id)) ?? f.sel.id;
+        const what = f.sel ? `${f.sel.kind === "block" ? "" : "stream "}${name}` : "";
+        const b = smallButton({ ico: "trash", label: f.sel ? `Delete ${name}` : "Delete", fk: "fs-delete",
           title: f.sel ? `Delete ${what} (Delete key)` : "Select a block or a stream on the canvas first", onClick: () => deleteSelected(state, set, ui) });
         b.disabled = !f.sel;
         return b;
@@ -166,12 +176,17 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
   let st = null;
   try { st = flowsheetDocStatus(fs); } catch { /* shown on the canvas */ }
   const put = next => set({ flowsheet: next });
+  feedSel(f, fs);
   const sel = f.sel && (f.sel.kind === "block" ? fs.blocks.find(b => b.id === f.sel.id) : fs.streams.find(s => s.id === f.sel.id));
   if (!sel) { f.sel = null; return setupSections({ state, set, ui, uid, inputsSection, st }); }
   const back = h("button", { type: "button", class: "fa-mini", "data-fk": "fs-back", on: { click: () => { f.sel = null; set({}); } } }, icon("chevronUp", 14), "Setup and status");
-  if (f.sel.kind === "stream") return streamSections({ fs, put, sel, f, inputsSection, back, set });
-  const b = sel, bst = st?.blocks?.[b.id];
-  const secs = [inputsSection(`${LABEL[b.type]} ${b.id}`, h("p", { class: "fa-in-hint" }, HINT[b.type] ?? ""), dofBadge(bst))];
+  // a feed stream: the stream, then its flows and state (kept in its Feed block, which is not drawn)
+  const feed = f.sel.kind === "stream" ? feedOf(fs, sel.id) : null;
+  if (f.sel.kind === "stream" && !feed) return streamSections({ fs, put, sel, f, inputsSection, back, set });
+  const b = feed ?? sel, bst = st?.blocks?.[b.id];
+  const [streamHead, streamActions] = feed ? streamSections({ fs, put, sel, f, inputsSection, back, set, badge: dofBadge(bst) }) : [];
+  const secs = [feed ? streamHead : inputsSection(`${LABEL[b.type]} ${blockName(b)}`, h("p", { class: "fa-in-hint" }, HINT[b.type] ?? ""),
+    nameField(b, `${LABEL[b.type].toLowerCase()} ${b.id}`, v => put(setBlockLabel(fs, b.id, v))), dofBadge(bst))];
   const spec = b.spec ?? {};
   const setS = patch => put(setSpec(fs, b.id, patch));
   const T = (key, label = "Temperature") => numberField(label, spec[key] == null ? "" : String(+tToDisplay(spec[key], u).toFixed(3)),
@@ -267,12 +282,13 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
     secs.push(inputsSection("Connections",
       h("p", { class: "fa-in-hint" }, connected.length ? `In: ${connected.join(", ")}.` : "No stream comes in yet."),
       open.length ? h("button", { type: "button", class: "fa-mini", "data-fk": `fs-feed-${b.id}`, on: { click: () => {
-        const r = addFeedTo(fs, open[0]); f.sel = { kind: "block", id: r.id }; put(r.fs);
+        const r = addFeedTo(fs, open[0]); f.sel = { kind: "stream", id: r.stream }; put(r.fs);
       } } }, icon("feed", 14), "Add a feed to this inlet") : null,
       h("p", { class: "fa-in-hint" }, "To connect: drag from an outlet dot (●, where a stream leaves a block) to an inlet ring (○ on the left of a block). The rings that can take the stream light up while you drag. A recycle is the same: drag a later block's outlet back to an earlier block, usually a mixer.")));
   }
+  if (feed) { secs.push(streamActions); return secs; }
   secs.push(inputsSection("Block", h("div", { class: "fa-in-actions" }, back,
-    h("button", { type: "button", class: "fa-mini", "data-fk": `fs-del-${b.id}`, on: { click: () => deleteSelected(state, set, ui) } }, icon("trash", 14), `Delete ${b.id}`))));
+    h("button", { type: "button", class: "fa-mini", "data-fk": `fs-del-${b.id}`, on: { click: () => deleteSelected(state, set, ui) } }, icon("trash", 14), `Delete ${blockName(b)}`))));
   return secs;
 }
 
@@ -321,7 +337,7 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
         : h("div", {}, st ? h("div", { class: `fa-dof ${st.ready ? "is-ok" : "is-bad"}`, role: "status" }, st.message) : null,
           h("ul", { class: "fa-dof-list" }, ...(st ? [...st.structure.map(p => h("li", {}, p.message)),
             ...Object.entries(st.blocks).filter(([, b]) => !b.ok).map(([id, b]) => h("li", {}, h("button", { type: "button", class: "fa-link", "data-fk": `fs-go-${id}`,
-              on: { click: () => { f.sel = { kind: "block", id }; set({}); } } }, id), ": ", b.message.replace(/^[^:]+: /, "")))] : [])))));
+              on: { click: () => { f.sel = { kind: "block", id }; set({}); } } }, feedStreamOf(fs, id) ? streamName(feedStreamOf(fs, id)) : blockName(fs.blocks.find(x => x.id === id)) ?? id), ": ", b.message.replace(/^[^:]+: /, "")))] : [])))));
   return secs;
 }
 
@@ -363,22 +379,32 @@ function solverSection({ fs, set, uid, inputsSection }) {
       { id: "solver-iter", uid }))];
 }
 
-function streamSections({ fs, put, sel, f, inputsSection, back, set }) {
-  const s = sel, from = s.from.split("."), end = endOf(fs, s.id);
+/** A Name field for a stream or a block: a label shown instead of its id, which stays. */
+function nameField(o, what, onCommit) {
+  return h("label", { class: "fa-field fa-field-stack" }, h("span", {}, "Name"),
+    h("input", { type: "text", value: o.label ?? "", placeholder: o.id, maxlength: 40, "data-fk": `fs-name-${o.id}`, "aria-label": `Name of ${what}`,
+      title: `A name to show instead of ${o.id}; empty shows ${o.id} again`,
+      on: { change: ev => onCommit(ev.target.value), keydown: ev => { if (ev.key === "Enter") ev.target.blur(); } } }));
+}
+
+function streamSections({ fs, put, sel, f, inputsSection, back, set, badge }) {
+  const s = sel, from = s.from.split("."), end = endOf(fs, s.id), feed = feedOf(fs, s.id);
   const opts = ["", ...openInlets(fs, from[0]), ...(end.kind === "unit" ? [s.to] : [])];
   const goes = h("select", { "data-fk": `fs-to-${s.id}`, "aria-label": "Goes to", on: { change: ev => { try { put(connect(fs, s.id, ev.target.value || null)); } catch (e) { f.note = e.message; set({}); } } } },
     ...[...new Set(opts)].map(o => h("option", { value: o, selected: o === (end.kind === "unit" ? s.to : "") }, o ? o.replace(".", " · ") : "Leaves the flowsheet (product)")));
   return [
-    inputsSection(`Stream ${s.id}`, h("p", { class: "fa-in-hint" }, `From ${from[0]} (${from[1]}).`),
+    inputsSection(`${feed ? "Feed stream" : "Stream"} ${streamName(s)}`,
+      h("p", { class: "fa-in-hint" }, feed ? HINT.feed : `From ${blockName(fs.blocks.find(x => x.id === from[0])) ?? from[0]} (${from[1]}).`),
+      nameField(s, `stream ${s.id}`, v => put(setStreamLabel(fs, s.id, v))),
       h("label", { class: "fa-field fa-field-stack" }, h("span", {}, "Goes to"), goes),
-      end.kind === "unit" ? h("label", { class: "fa-field" }, h("span", {}, "Tear stream (recycle)"),
+      end.kind === "unit" && !feed ? h("label", { class: "fa-field" }, h("span", {}, "Tear stream (recycle)"),
         h("input", { type: "checkbox", checked: !!s.tear, "data-fk": `fs-tear-${s.id}`, on: { change: ev => put(setTear(fs, s.id, ev.target.checked)) } })) : null,
-      h("p", { class: "fa-in-hint" }, "The solver chooses the tear stream of a recycle itself; mark one only to choose it.")),
+      feed ? badge : h("p", { class: "fa-in-hint" }, "The solver chooses the tear stream of a recycle itself; mark one only to choose it.")),
     inputsSection("Stream", h("div", { class: "fa-in-actions" }, back,
       h("button", { type: "button", class: "fa-mini", "data-fk": `fs-delstream-${s.id}`, on: { click: () => {
         const r = deleteStream(fs, s.id); f.note = r.note;
         if (r.fs !== fs) { if (!r.fs.streams.some(x => x.id === s.id)) f.sel = null; put(r.fs); } else set({});
-      } } }, icon("trash", 14), `Delete ${s.id}`))),
+      } } }, icon("trash", 14), `Delete ${streamName(s)}`))),
   ];
 }
 
@@ -427,6 +453,7 @@ function shape(type, w, hh) {
 export function flowsheetView(ctx) {
   const { state, set, plot, side, below, notes, ui } = ctx;
   const f = ensureUi(ui), fs = state.flowsheet, u = state.units;
+  feedSel(f, fs);
   if (!fs.components.length) {
     plot.replaceChildren(h("div", { class: "fa-need is-start", role: "status" },
       h("h3", {}, "Start by choosing the components of the simulation"),
@@ -475,11 +502,26 @@ export function flowsheetView(ctx) {
     for (const s of doc.streams) {
       const fb = s.from.split(".")[0], tb = s.to.split(".")[0];
       const a = P.get(`${s.id}@${fb}`), e = P.get(`${s.id}@${tb}`);
-      if (!a || !e) continue;
-      const pts = route(a, e);
+      if (!a && !e) continue;
+      if (!a || !e) {
+        // one end names a block that is not in the flowsheet (a document written or changed outside the
+        // editor): drawn from the end that exists, in red, so the person sees it and can fix it; nothing is changed
+        const at = a ?? e, d = a ? a.dir : [-1, 0];
+        const mid = { x: at.x + 24 * d[0], y: at.y + 24 * d[1] }, end = { x: mid.x + (a ? 40 : -40), y: mid.y };
+        const g = svgEl("g", { class: "fs-stream is-broken", "data-stream": s.id });
+        g.append(svgEl("path", { d: `M${at.x} ${at.y} L${mid.x} ${mid.y} L${end.x} ${end.y}`, class: "fs-line" }));
+        const t = svgEl("text", { x: end.x + (a ? 6 : -6), y: end.y + 4, class: "fs-label fs-broken", "text-anchor": a ? "start" : "end" });
+        t.textContent = a ? `${s.id} → ${tb} is missing` : `${fb} is missing → ${s.id}`;
+        const tip = svgEl("title", {});
+        tip.textContent = `${s.id} ${a ? `goes to ${tb}` : `comes from ${fb}`}, which is not a block of the flowsheet. Delete the stream, or connect it again.`;
+        g.append(tip, t);
+        layer.append(g);
+        continue;
+      }
+      const pts = route(a, e), src = doc.blocks.find(b => b.id === fb);
       const d = pts.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
       const g = svgEl("g", { class: "fs-stream" + (selected("stream", s.id) ? " is-sel" : "") + (s.tear ? " is-tear" : ""), "data-stream": s.id,
-        tabindex: 0, role: "button", "aria-label": `Stream ${s.id}` });
+        tabindex: 0, role: "button", "aria-label": `${src?.type === "feed" ? "Feed stream" : "Stream"} ${streamName(s)}` });
       g.append(svgEl("path", { d, class: "fs-hit" }), svgEl("path", { d, class: "fs-line", "marker-end": `url(#${uidM}-a)` }));
       // label on the longest segment
       let best = 1, len = 0;
@@ -488,9 +530,9 @@ export function flowsheetView(ctx) {
       // the name on the drawing; flow and temperature on hover and in the stream table
       const st = res?.streams?.[s.id];
       const t = svgEl("text", { x: lx, y: ly - 6, class: "fs-label", "text-anchor": "middle" });
-      t.textContent = s.id;
+      t.textContent = streamName(s);
       const tip = svgEl("title", {});
-      tip.textContent = st ? `${s.id}: ${fmtShort(st.F_kmol_h, 5)} kmol/h${st.T_K != null ? `, ${fmtTemp(st.T_K, u, 2)}` : ""}${st.VF != null ? `, VF ${fmtShort(st.VF, 3)}` : ""}` : `${s.id} (not calculated)`;
+      tip.textContent = st ? `${streamName(s)}${s.label ? ` (${s.id})` : ""}: ${fmtShort(st.F_kmol_h, 5)} kmol/h${st.T_K != null ? `, ${fmtTemp(st.T_K, u, 2)}` : ""}${st.VF != null ? `, VF ${fmtShort(st.VF, 3)}` : ""}` : `${streamName(s)} (not calculated)`;
       g.append(tip);
       g.append(t);
       // the end of every stream is a handle: drag it onto another inlet to reconnect, or into
@@ -502,15 +544,23 @@ export function flowsheetView(ctx) {
         : `${s.id} goes into ${tb}. Drag this end onto another inlet to reconnect it, or into empty space to disconnect it.`;
       hnd.append(tt);
       g.append(hnd);
+      // a feed stream starts at a tab: drag it to move the start, click it (or the line) for the flows and state
+      if (src?.type === "feed") {
+        const bad = sol.status?.blocks?.[fb] && !sol.status.blocks[fb].ok;
+        const tab = svgEl("rect", { x: a.x - 14, y: a.y - 7, width: 14, height: 14, rx: 3, class: "fs-source" + (bad ? " is-incomplete" : ""), "data-feed": fb, "data-sid": s.id });
+        const ft = svgEl("title", {});
+        ft.textContent = `Feed stream ${streamName(s)}${bad ? `: ${sol.status.blocks[fb].message.replace(/^[^:]+: /, "")}` : ""}. Click to fill in its flows, T and P; drag to move its start.`;
+        tab.append(ft); g.append(tab);
+      }
       layer.append(g);
     }
     // blocks
     for (const b of doc.blocks) {
-      if (b.type === "product") continue;
-      const [w, hh] = SIZE[b.type];
+      if (b.type === "product" || (b.type === "feed" && feedStreamOf(doc, b.id))) continue;
+      const [w, hh] = b.type === "feed" ? [44, 26] : SIZE[b.type];   // a feed without a stream: the old oval, so it can be deleted
       const g = svgEl("g", { class: `fs-block fs-${b.type}` + (selected("block", b.id) ? " is-sel" : "") + (sol.loop?.includes(b.id) ? " is-failed" : "") + (sol.status?.blocks?.[b.id] && !sol.status.blocks[b.id].ok ? " is-incomplete" : ""),
         transform: `translate(${b.x ?? 0} ${b.y ?? 0})`, "data-block": b.id, tabindex: 0, role: "button",
-        "aria-label": `${LABEL[b.type]} ${b.id}${sol.status?.blocks?.[b.id]?.ok === false ? ", not fully specified" : ""}` });
+        "aria-label": `${LABEL[b.type]} ${blockName(b)}${sol.status?.blocks?.[b.id]?.ok === false ? ", not fully specified" : ""}` });
       g.append(shape(b.type, w, hh));
       // inlet ports: a ring on the left; an open one takes another stream
       for (const ip of unitType(b.type).inlets) {
@@ -524,7 +574,7 @@ export function flowsheetView(ctx) {
       // the drum's liquid leaves at the bottom: its name goes on the right
       const t = b.type === "flash" ? svgEl("text", { x: w / 2 + 6, y: 4, class: "fs-name", "text-anchor": "start" })
         : svgEl("text", { y: hh / 2 + 15, class: "fs-name", "text-anchor": "middle" });
-      t.textContent = b.id; g.append(t);
+      t.textContent = blockName(b); g.append(t);
       if (sol.status?.blocks?.[b.id] && !sol.status.blocks[b.id].ok) {
         const warn = svgEl("circle", { cx: w / 2, cy: -hh / 2, r: 5, class: "fs-warn-dot" });
         const tt = svgEl("title", {}); tt.textContent = sol.status.blocks[b.id].message; warn.append(tt); g.append(warn);
@@ -547,7 +597,7 @@ export function flowsheetView(ctx) {
       const [fb, port] = st.from.split(".");
       const src = doc.blocks.find(b => b.id === fb);
       const a = P.get(`${st.id}@${fb}`);
-      if (!a || !src || src.type === "product") continue;
+      if (!a || !src || src.type === "product" || src.type === "feed") continue;
       const dot = svgEl("circle", { cx: a.x, cy: a.y, r: 4.5, class: "fs-port-out", "data-handle": st.id });
       const tt = svgEl("title", {}); tt.textContent = `${src.id} ${OUT_LABEL[port] ?? "outlet"} (stream ${st.id}): drag onto an inlet to connect it`; dot.append(tt);
       layer.append(dot);
@@ -563,7 +613,8 @@ export function flowsheetView(ctx) {
   const toSvg = ev => { const m = svg.getScreenCTM(); if (!m) return { x: 0, y: 0 }; const p = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(m.inverse()); return { x: p.x, y: p.y }; };
   let drag = null;
   svg.addEventListener("pointerdown", ev => {
-    const hnd = ev.target.closest?.("[data-handle]"), blk = ev.target.closest?.("[data-block]"), str = ev.target.closest?.("[data-stream]");
+    const hnd = ev.target.closest?.("[data-handle]"), blk = ev.target.closest?.("[data-block]"), str = ev.target.closest?.("[data-stream]"), tab = ev.target.closest?.("[data-feed]");
+    if (tab) { const b = pos.get(tab.dataset.feed); drag = { kind: "move", id: b.id, sid: tab.dataset.sid, start: toSvg(ev), x0: b.x ?? 0, y0: b.y ?? 0, moved: false, doc: fs }; svg.setPointerCapture?.(ev.pointerId); ev.preventDefault(); return; }
     if (hnd) { drag = { kind: "connect", sid: hnd.dataset.handle, start: toSvg(ev), moved: false, fromEnd: !!hnd.dataset.end }; svg.setPointerCapture?.(ev.pointerId); ev.preventDefault(); return; }
     if (blk) { const b = pos.get(blk.dataset.block); drag = { kind: "move", id: b.id, start: toSvg(ev), x0: b.x ?? 0, y0: b.y ?? 0, moved: false, doc: fs }; svg.setPointerCapture?.(ev.pointerId); ev.preventDefault(); return; }
     if (str) { select("stream", str.dataset.stream); return; }
@@ -589,7 +640,7 @@ export function flowsheetView(ctx) {
     if (!drag) return;
     const d = drag; drag = null;
     if (d.kind === "move") {
-      if (d.moved) set({ flowsheet: d.doc }); else select("block", d.id);
+      if (d.moved) { if (d.sid) f.sel = { kind: "stream", id: d.sid }; set({ flowsheet: d.doc }); } else d.sid ? select("stream", d.sid) : select("block", d.id);
       return;
     }
     svg.classList.remove("is-connecting");
@@ -621,7 +672,9 @@ export function flowsheetView(ctx) {
   svg.addEventListener("keydown", ev => {
     const str = ev.target.closest?.("[data-stream]");
     if (str) {
+      const step = { ArrowLeft: [-10, 0], ArrowRight: [10, 0], ArrowUp: [0, -10], ArrowDown: [0, 10] }[ev.key], fd = feedOf(fs, str.dataset.stream);
       if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select("stream", str.dataset.stream); }
+      else if (step && fd) { ev.preventDefault(); f.sel = { kind: "stream", id: str.dataset.stream }; set({ flowsheet: moveBlock(fs, fd.id, (fd.x ?? 0) + step[0], (fd.y ?? 0) + step[1]) }); }
       else if (ev.key === "Delete" || ev.key === "Backspace") { ev.preventDefault(); f.sel = { kind: "stream", id: str.dataset.stream }; deleteSelected(state, set, ui); }
       return;
     }
@@ -657,7 +710,7 @@ function resultsPanel({ state, f, sol, u }) {
   const out = [];
   if (f.sel?.kind === "block") {
     const b = fs.blocks.find(x => x.id === f.sel.id), r = res?.blocks?.[f.sel.id];
-    out.push(h("div", { class: "fug-eyebrow" }, `${LABEL[b?.type] ?? ""} ${f.sel.id}`));
+    out.push(h("div", { class: "fug-eyebrow" }, `${LABEL[b?.type] ?? ""} ${blockName(b) ?? f.sel.id}`));
     if (r) {
       out.push(kvList([
         unitType(b.type).duty ? [`Duty (${b.energy || `Q-${b.id}`})`, `${fmtShort(r.duty_kW, 5)} kW`] : null,
@@ -669,7 +722,7 @@ function resultsPanel({ state, f, sol, u }) {
     } else out.push(h("div", { class: "fa-empty" }, sol.status.blocks?.[f.sel.id]?.ok === false ? sol.status.blocks[f.sel.id].message : "Not calculated yet."));
   } else if (f.sel?.kind === "stream") {
     const s = res?.streams?.[f.sel.id];
-    out.push(h("div", { class: "fug-eyebrow" }, `Stream ${f.sel.id}`));
+    out.push(h("div", { class: "fug-eyebrow" }, `Stream ${streamName(fs.streams.find(x => x.id === f.sel.id)) ?? f.sel.id}`));
     if (s) {
       out.push(kvList([
         ["Temperature", s.T_K == null ? "–" : fmtTemp(s.T_K, u, 2)], ["Pressure", s.P_kPa == null ? "–" : fmtP(s.P_kPa, u)],
@@ -699,9 +752,10 @@ function streamRows(fs, res, u, state) {
   const ids = fs.streams.map(s => s.id);
   const S = ids.map(id => res.streams[id]);
   const mass = state.basis === "mass";
+  const nameOfBlock = bid => blockName(fs.blocks.find(b => b.id === bid)) ?? bid;
   const rows = [
-    ["From", "", ids.map(id => fs.streams.find(s => s.id === id).from.replace(".", " ")), "text"],
-    ["To", "", ids.map(id => { const e = endOf(fs, id); return e.kind === "product" ? "product" : `${e.block} ${e.port}`; }), "text"],
+    ["From", "", ids.map(id => { const [bid, port] = fs.streams.find(s => s.id === id).from.split("."); return feedOf(fs, id) ? "feed" : `${nameOfBlock(bid)} ${port}`; }), "text"],
+    ["To", "", ids.map(id => { const e = endOf(fs, id); return e.kind === "product" ? "product" : `${nameOfBlock(e.block)} ${e.port}`; }), "text"],
     ["Temperature", u.T === "K" ? "K" : "°C", S.map(s => (s.T_K == null ? null : tToDisplay(s.T_K, u)))],
     ["Pressure", u.P, S.map(s => (s.P_kPa == null ? null : pToDisplay(s.P_kPa, u)))],
     ["Vapour fraction", "mol/mol", S.map(s => s.VF)],
@@ -723,7 +777,7 @@ function streamTable({ fs, res, u, state }) {
   return h("div", { class: "fs-tables" },
     h("h3", {}, "Streams"),
     h("div", { class: "fug-scroll" }, h("table", { class: "fa-table fa-stream" },
-      h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Stream"), h("th", { scope: "col" }, "Unit"), ...ids.map(id => h("th", { scope: "col", class: "fug-num" }, id)))),
+      h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Stream"), h("th", { scope: "col" }, "Unit"), ...ids.map(id => h("th", { scope: "col", class: "fug-num" }, streamName(fs.streams.find(s => s.id === id)))))),
       h("tbody", {}, ...rows.map(([label, unit, vals]) => h("tr", {}, h("th", { scope: "row" }, label), h("td", {}, unit), ...vals.map(v => h("td", { class: "fug-num" }, fmt(v)))))))),
     qs.length ? h("h3", {}, "Energy streams") : null,
     qs.length ? h("table", { class: "fa-table" }, h("thead", {}, h("tr", {}, h("th", {}, "Stream"), h("th", {}, "Block"), h("th", { class: "fug-num" }, "Duty, kW"))),
@@ -734,7 +788,7 @@ function streamTable({ fs, res, u, state }) {
 function csvTools(ctx, fs, res, u) {
   const { ids, rows } = streamRows(fs, res, u, ctx.state);
   const q = v => (v == null || Number.isNaN(v) ? "" : typeof v === "string" ? (/[",]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v) : String(Number(v.toPrecision(10))));
-  const lines = [["Stream", "Unit", ...ids].join(","), ...rows.map(([l, unit, vals]) => [q(l), q(unit), ...vals.map(q)].join(",")), "",
+  const lines = [["Stream", "Unit", ...ids.map(id => q(streamName(fs.streams.find(s => s.id === id))))].join(","), ...rows.map(([l, unit, vals]) => [q(l), q(unit), ...vals.map(q)].join(",")), "",
     "Energy stream,Block,Duty kW", ...Object.values(res.energy).map(e => [e.id, e.block, q(e.duty_kW)].join(","))];
   const csv = lines.join("\r\n") + "\r\n";
   const status = h("div", { class: "fug-foot", "aria-live": "polite" }), box = h("div");

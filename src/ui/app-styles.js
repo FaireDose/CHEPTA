@@ -333,11 +333,16 @@ export const APP_CSS = `
 .fs-block:focus-visible .fs-shape,.fs-block.is-sel .fs-shape{stroke:var(--fug-accent); stroke-width:2.6}
 .fs-block.is-incomplete .fs-shape{stroke-dasharray:5 3}
 .fs-warn-dot{fill:#d9822b; stroke:var(--fug-bg); stroke-width:1.5}
+.fs-source{fill:var(--fug-accent); stroke:var(--fug-bg); stroke-width:1.2; cursor:move}
+.fs-source.is-incomplete{fill:var(--fug-bg); stroke:#d9822b; stroke-width:1.8; stroke-dasharray:3 2}
+.fs-stream.is-sel .fs-source,.fs-source:hover{stroke:var(--fug-accent); stroke-width:5; stroke-opacity:.35}
 .fs-name{font-size:12px; font-weight:600; fill:var(--fug-fg)}
 .fs-line{fill:none; stroke:var(--fug-fg2, #555); stroke-width:1.6}
 .fs-hit{fill:none; stroke:transparent; stroke-width:12; cursor:pointer}
 .fs-stream.is-sel .fs-line{stroke:var(--fug-accent); stroke-width:2.6}
 .fs-stream.is-tear .fs-line{stroke-dasharray:6 4}
+.fs-stream.is-broken .fs-line{stroke:#c0392b; stroke-dasharray:4 3}
+.fs-label.fs-broken{fill:#c0392b}
 .fs-arrow{fill:var(--fug-fg2, #555)}
 .fs-label{font-size:10.5px; fill:var(--fug-fg2, #555); paint-order:stroke; stroke:var(--fug-halo); stroke-width:3px}
 .fs-handle{fill:var(--fug-bg); stroke:var(--fug-accent); stroke-width:1.6; cursor:crosshair}
