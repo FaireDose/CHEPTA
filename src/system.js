@@ -36,7 +36,7 @@ export function system(cfg) {
   };
   if (sys.kind === "eos") {
     // model "PR" or "SRK"; solid-liquid equilibrium needs an activity model (or "ideal") for the liquid
-    const noSle = () => { throw fail("NOT_AVAILABLE", `Solid solubility uses an activity model for the liquid: use model "NRTL", "UNIQUAC" or "ideal", not ${sys.model}.`); };
+    const noSle = () => { throw fail("NOT_AVAILABLE", `Solid solubility uses an activity model for the liquid: use model "NRTL", "UNIQUAC", "MOD-UNIFAC-2" or "ideal", not ${sys.model}.`); };
     return Object.assign(sys, eosMethods(sys), diagrams, { solidSolubility: noSle, solubilityCurve: noSle, liquidusT: noSle, sleDiagram: noSle });
   }
   return Object.assign(sys, diagrams, {

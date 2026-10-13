@@ -8,7 +8,7 @@ export const FUTURE_MODELS = {
   // liquid activity coefficients, next to NRTL and UNIQUAC
   activity: [
     { id: "wilson", label: "Wilson", note: "Wilson (1964): two parameters per pair, often the best fit of vapour-liquid data of miscible mixtures; it cannot describe two liquids. Not available yet." },
-    { id: "unifac", label: "UNIFAC", note: "UNIFAC group contribution (Fredenslund, Jones and Prausnitz, 1975; modified UNIFAC, Dortmund): predicts pairs without data, labelled 'predicted'. Waiting for the parameter licence (proposal 0008, Part A). Not available yet." },
+    { id: "unifac", label: "UNIFAC", note: "Original UNIFAC (Fredenslund, Jones and Prausnitz, 1975): waiting for the parameter licence (proposal 0008, Part A). Modified UNIFAC 2.0, which predicts pairs without data from the same kind of groups, is available in the activity models. Not available yet." },
   ],
   // equations of state, next to Peng-Robinson and SRK
   eos: [

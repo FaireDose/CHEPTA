@@ -8,7 +8,7 @@
  * gases with a Henry's law constant (HENRY_GASES) and the gas-solvent pairs of the Henry's
  * law table (src/data/henry.json), so that a selector offers only what the engine has.
  */
-import { listComponents, findComponent, EOS_MODELS } from "../thermo/system.js";
+import { listComponents, findComponent, EOS_MODELS, modelName } from "../thermo/system.js";
 import { HENRY_GASES } from "../thermo/henry.js";
 import henryData from "../data/henry.json" with { type: "json" };
 
@@ -172,9 +172,11 @@ export function checkInputs(view, value, model = "NRTL") {
     if (spec.liquid && !m.get(id).activity && spec.activityOnly) {
       problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no activity-model data (it is not a liquid with a vapour-pressure record), so ${spec.what} cannot use it yet.` });
     } else if (spec.liquid && !m.get(id).activity) {
-      problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no activity-model data (it is not a liquid with a vapour-pressure record), so ${spec.what} with ${model === "ideal" ? "an ideal solution" : model} cannot use it. Choose a liquid, or an equation of state (Peng–Robinson or SRK) in the Model group for gases.` });
+      problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no activity-model data (it is not a liquid with a vapour-pressure record), so ${spec.what} with ${model === "ideal" ? "an ideal solution" : modelName(model)} cannot use it. Choose a liquid, or an equation of state (Peng–Robinson or SRK) in the Model group for gases.` });
     } else if (spec.liquid && model === "UNIQUAC" && !m.get(id).uniquac) {
       problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no UNIQUAC r and q (no open data yet), so UNIQUAC cannot use it: choose NRTL in the Model group.` });
+    } else if (spec.liquid && model === "MOD-UNIFAC-2" && !m.get(id).modUnifac) {
+      problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no Mod. UNIFAC 2.0 groups (its structure is not covered by the method's groups, or not checked yet), so Mod. UNIFAC 2.0 cannot use it: choose NRTL in the Model group.` });
     }
     if (spec.solid?.includes(i) && !m.get(id).fusion) {
       problems.push({ slot: i, message: `${nameIn(m, id)} has no melting temperature and enthalpy of fusion in the databank (no open data), so it cannot be the solid.` });

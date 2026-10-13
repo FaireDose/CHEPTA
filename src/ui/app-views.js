@@ -17,7 +17,7 @@ import { renderTernary } from "./ternary.js";
 import { mountProperties } from "./properties.js";
 import { drawPlot } from "./plot.js";
 import { system } from "../system.js";
-import { listComponents } from "../thermo/system.js";
+import { listComponents, modelName } from "../thermo/system.js";
 import { pure, PROPERTIES, PROPERTY_NAMES } from "../thermo/pure.js";
 import { SOLID_UNITS, solidIn } from "./solubility-units.js";
 import { steam, steamSat } from "../thermo/iapws/steam.js";
@@ -167,7 +167,7 @@ const listNames = names => names.join(", ").replace(/, ([^,]*)$/, " and $1");
 /** The About rows of an export: components, model, conditions, units, parameters and their sources. */
 function aboutRows(state, sys, conditions = []) {
   const u = state.units;
-  const model = sys.kind === "eos" ? sys.info.equation : `${sys.model === "ideal" ? "Ideal solution" : sys.model}; vapour: ${sys.info.vapour}`;
+  const model = sys.kind === "eos" ? sys.info.equation : `${sys.model === "ideal" ? "Ideal solution" : modelName(sys.model)}; vapour: ${sys.info.vapour}`;
   return [
     ["Components", sys.names.join(", ")], ["Model", model], ...conditions,
     ["Units", `T in ${tU(u)}, P in ${u.P}; compositions in mole fractions${state.basis === "mass" ? " and wt %" : ""}`],
@@ -608,7 +608,7 @@ function flashView(ctx) {
   const feedFlowText = `${fmtShort(state.flash.flow, 6)} ${fu}${fu === "kmol/h" ? "" : ` (${fmtShort(flow, 6)} kmol/h)`}`;
   const spec = FLASH_SPECS.find(f => f.id === state.flash.spec);
   const ml = isEosModel(state.model) ? (state.model === "PR" ? "Peng–Robinson" : "SRK")
-    : `${state.model === "ideal" ? "Ideal solution" : state.model}${state.vapour !== "ideal" ? ` with a ${state.vapour} vapour` : ""}`;
+    : `${state.model === "ideal" ? "Ideal solution" : modelName(state.model)}${state.vapour !== "ideal" ? ` with a ${state.vapour} vapour` : ""}`;
 
   // the phase split as one bar
   const bar = h("div", { class: "fa-split", role: "img", "aria-label": `Phase split: ${r.phases.map(p => `${phaseName(p)} ${fmtNum(p.fraction, 4)}`).join(", ")}` },
@@ -805,7 +805,7 @@ function solidView(ctx) {
       splits ||= r.splits;
     } catch (e) { addReason(reasons, e.message); }
   }
-  const series = [{ name: sys.model === "ideal" ? "ideal" : sys.model, color: SERIES(0), segments: [{ points: pts }] }];
+  const series = [{ name: sys.model === "ideal" ? "ideal" : modelName(sys.model), color: SERIES(0), segments: [{ points: pts }] }];
   if (sys.model !== "ideal") series.push({ name: "ideal", color: "var(--fug-muted)", dash: "5 4", segments: [{ points: ideal }] });
   if (splits) notes.append(h("div", { class: "fug-warn", role: "note" }, `The ${sys.model} model splits the liquid into two phases at some temperatures: the solvent-rich solubility is drawn there; a liquid-liquid check is needed.`));
   if (noRho) notes.append(h("div", { class: "fug-warn", role: "note" }, `No liquid density of ${nameOf(solvent).toLowerCase()} at some of these temperatures (outside its correlation): g/L is not drawn there. g/100 g needs no density.`));
@@ -858,7 +858,7 @@ function solidView(ctx) {
   side.replaceChildren(result, read);
   extra.append(section("Sources", fusionSources(ctx, [solid]), sys.model !== "ideal" ? pairSources(ctx, sys.info.pairs) : null,
     unit.id === "gL" ? componentSourceList([solvent], ["liquidDensity"]) : null));
-  return { data: `${sys.model === "ideal" ? "Ideal solution" : sys.model}${note ? " (no pair parameters)" : ""}`, export: () => ({
+  return { data: `${sys.model === "ideal" ? "Ideal solution" : modelName(sys.model)}${note ? " (no pair parameters)" : ""}`, export: () => ({
     title: `Solubility of ${nameOf(solid)} in ${nameOf(solvent).toLowerCase()}`, file: `solubility ${solid} ${solvent}`,
     about: [...aboutRows(state, sys), ["Melting point of the solid", meltText(f, u)], ...(note ? [["Note", note]] : []),
       ["Equation", "ln(x γ) = −(ΔH_fus / R T)(1 − T / T_m), ΔCp of fusion taken as 0"]],

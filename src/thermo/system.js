@@ -3,15 +3,23 @@ import componentData from "../data/components.json" with { type: "json" };
 import { vapourPressure } from "./psat.js";
 import { nrtl } from "./activity/nrtl.js";
 import { uniquac } from "./activity/uniquac.js";
+import { modUnifac } from "./activity/mod-unifac.js";
+import modUnifacTables from "../data/mod-unifac-2.json" with { type: "json" };
 import { dimerK, monomerPressure } from "./vapour.js";
 import { createEosSystem, EOS_MODELS } from "./eos/system.js";
 import { listComponents, findComponent } from "./components.js";
-import { selection, choosePair, describePair, pairWarnings } from "./library.js";
+import { selection, choosePair, describePair, pairWarnings, sourceEntry } from "./library.js";
 import { createCubicVapour } from "./gamma-phi-vapour.js";
 import { activityPhaseMethods } from "./enthalpy.js";
 import { fail, failRange } from "../util/errors.js";
 
-export const MODELS = ["NRTL", "UNIQUAC", "ideal"];
+export const MODELS = ["NRTL", "UNIQUAC", "MOD-UNIFAC-2", "ideal"];
+/** Display names of the model keys that are not names themselves. */
+const MODEL_NAMES = { "MOD-UNIFAC-2": "Mod. UNIFAC 2.0" };
+/** A model key as people read it: "Mod. UNIFAC 2.0" for "MOD-UNIFAC-2"; other keys unchanged. */
+export const modelName = m => MODEL_NAMES[m] ?? m;
+/** Modified UNIFAC 2.0 (predicted from groups): the source every one of its pairs cites. */
+export const MOD_UNIFAC_SOURCE = `Modified UNIFAC 2.0 (Hayer, Hasse and Jirasek, Ind. Eng. Chem. Res. 64 (2025) 10304; arXiv:2412.12962, CC BY 4.0): predicted from the functional groups, not fitted to data of the pair`;
 export { EOS_MODELS, listComponents, findComponent };
 
 /**
@@ -19,7 +27,8 @@ export { EOS_MODELS, listComponents, findComponent };
  *
  * @param {object} cfg
  * @param {string[]} cfg.components  names, ids, aliases or CAS numbers
- * @param {"NRTL"|"UNIQUAC"|"ideal"} [cfg.model="NRTL"]
+ * @param {"NRTL"|"UNIQUAC"|"MOD-UNIFAC-2"|"ideal"} [cfg.model="NRTL"]  "MOD-UNIFAC-2": Modified UNIFAC 2.0,
+ *        every pair predicted from the groups of the components (tier "predicted")
  * @param {boolean} [cfg.allowMissingPairs=false]  treat pairs without parameters as ideal
  * @param {boolean} [cfg.association=true]         use the chemical theory for dimerizing acids
  * @param {number[]|((T:number)=>number[])} [cfg.psat]  override pure vapour pressures (kPa),
@@ -54,6 +63,9 @@ export function createSystem(cfg) {
       throw fail("MISSING_DATA", `${c.name} has no vapour-pressure record, so it cannot be used with activity-coefficient models. Use an equation of state for gases.`);
     }
     if (model === "UNIQUAC" && !c.uniquac) throw fail("MISSING_DATA", `${c.name} has no UNIQUAC r and q.`);
+    if (model === "MOD-UNIFAC-2" && !c.modUnifac?.groups) {
+      throw fail("MISSING_DATA", `${c.name} has no Modified UNIFAC 2.0 groups${c.modUnifac?.note ? ` (${c.modUnifac.note.replace(/^no Modified UNIFAC 2\.0 groups: /, "")})` : ""}.`);
+    }
   }
   const n = ids.length;
   const useAssoc = cfg.association !== false;
@@ -64,6 +76,12 @@ export function createSystem(cfg) {
   const pairs = [], missing = [];
   for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
     if (model === "ideal") continue;
+    if (model === "MOD-UNIFAC-2") {
+      pairs.push({ pair: [comps[i].name, comps[j].name], source: MOD_UNIFAC_SOURCE, tier: "predicted", T_range_K: null,
+        set: "mod-unifac-2.0", default: true, chosenBy: "model", source_ids: ["hayer2025-mod-unifac-2"],
+        sources: [sourceEntry("hayer2025-mod-unifac-2")].filter(Boolean), valid: null, alternatives: [] });
+      continue;
+    }
     const choice = choosePair(model, ids[i], ids[j], sel);
     if (!choice) { missing.push([comps[i].name, comps[j].name]); continue; }
     const p = choice.chosen.params;
@@ -79,6 +97,7 @@ export function createSystem(cfg) {
   // missing pairs: NRTL with zero tau is ideal; UNIQUAC with tau = 1 keeps only the combinatorial term
   let gammas;
   if (model === "NRTL") { for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j && !alpha[i][j]) alpha[i][j] = 0.3; gammas = nrtl({ a, b, alpha }); }
+  else if (model === "MOD-UNIFAC-2") gammas = modUnifac({ groups: comps.map(c => c.modUnifac.groups), tables: modUnifacTables });
   else if (model === "UNIQUAC") gammas = uniquac({ a, b, r: comps.map(c => c.uniquac.r), q: comps.map(c => c.uniquac.q), qp: comps.map(c => c.uniquac.qp ?? c.uniquac.q) });
   else gammas = () => new Array(n).fill(1);
 

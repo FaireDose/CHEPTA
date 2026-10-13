@@ -1,8 +1,8 @@
 # 0008: UNIFAC as the predicted tier, and the next 50 components
 
-- **Status:** Accepted (by the lead maintainer, 2026-10-06). Part A (UNIFAC) is on hold: nothing
-  of it is implemented until DDBST has answered on the use of the published parameters and the
-  maintainer decides. Part B (components) goes ahead.
+- **Status:** Accepted (by the lead maintainer, 2026-10-06). Part A: the published DDBST tables
+  (original and modified UNIFAC) stay on hold until DDBST answers; **Modified UNIFAC 2.0** goes ahead
+  instead (update of 2026-10-13 below, asked by the maintainer). Part B (components) goes ahead.
 - **Author(s):** CHEPTA maintainers (drafted with an AI assistant)
 - **Discussion:** this pull request
 - **Roadmap item:** core track A3 (quality tiers and prediction); data track (components);
@@ -47,6 +47,28 @@
   that has open data (proposal 0004 step 3) and the deviations are published in the engineering
   report next to the fitted sets: bubble temperatures, azeotropes, liquid-liquid splits and
   excess enthalpies. The Library shows that comparison.
+
+### Part A, update (2026-10-13): Modified UNIFAC 2.0
+
+- **Source.** N. Hayer, H. Hasse, F. Jirasek, *Modified UNIFAC 2.0 - A Group-Contribution Method
+  Completed with Machine Learning*, Ind. Eng. Chem. Res. 64 (2025) 10304-10313,
+  doi:10.1021/acs.iecr.5c00077; open copy arXiv:2412.12962. The arXiv record and its three parameter
+  files are under **CC BY 4.0**, and the authors confirmed this to the maintainer by e-mail. That
+  answers the licence question of Part A for this parameter set; the DDBST tables stay on hold.
+- **What it is.** The modified UNIFAC (Dortmund) equations with R and Q identical to the published
+  version and pair-interaction tables (a_nm, b_nm; no c_nm) for all 63 main groups. The tables were
+  completed by a matrix-completion method trained on more than 500,000 activity-coefficient and
+  excess-enthalpy data points of the Dortmund Data Bank. No pair of main groups is missing.
+- **Group assignments.** The paper does not give them. Each component is split into subgroups from
+  its structure by the SMARTS patterns of the thermo library (MIT). Each split is checked against
+  DDBST's published assignment (as shipped with thermo, used only as a check) and against the atom
+  balance. A split that cannot be checked is not used until a person checks it.
+- **How it is used (step 1).** A model of its own, `MOD-UNIFAC-2`, next to NRTL and UNIQUAC; every pair
+  is labelled `predicted`. Using it as the fallback of NRTL and UNIQUAC for missing pairs (the
+  Library rule "allow predicted") is step 2, unchanged.
+- **Not a shortcut for data.** The search of the open literature and databases for every
+  component and pair goes on as before (maintainer, 2026-10-13); predicted values never replace
+  fitted or databank ones.
 
 ### Part B: the next 50 components, chosen by process (as in proposal 0004)
 
@@ -261,6 +283,7 @@ found follow when a source is found.
 |---|---|---|
 | 0 | The maintainer writes to DDBST about using the published original and modified (Dortmund) UNIFAC tables in an open-source (MIT) project, with attribution | — |
 | 1 | (After a yes) UNIFAC model and the published tables with their sources; group assignments for the 49 components | against `thermo.unifac`; tables against the DDBST pages |
+| 1′ | (2026-10-13) Modified UNIFAC 2.0 as its own model, from the CC BY 4.0 files; group assignments for every component | against `thermo.unifac` (1e-9 in ln γ); tables against the arXiv files; T-x-y of six pairs against open data |
 | 2 | The `predicted` tier in the Library rule and the interface; benchmark comparison in the engineering report | the report; no change without the rule |
 | 3–6 | The next 50 components in four batches by process area (as proposal 0004 step 2) | as proposal 0004 |
 | 7 | Fits of the new benchmark pairs to open data (as proposal 0004 step 3) | against the data |

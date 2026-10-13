@@ -19,7 +19,7 @@ import { system } from "../system.js";
 import { findComponent } from "../thermo/components.js";
 import { solveFlowsheet, flowsheetStatus } from "./flowsheet.js";
 
-const MODELS = ["NRTL", "UNIQUAC", "ideal", "PR", "SRK"];
+const MODELS = ["NRTL", "UNIQUAC", "MOD-UNIFAC-2", "ideal", "PR", "SRK"];
 const BLOCK_KEYS = ["id", "type", "x", "y", "spec", "energy", "label"];
 const STREAM_KEYS = ["id", "from", "to", "tear", "guess", "label"];
 

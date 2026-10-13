@@ -86,7 +86,7 @@ export function mount(target, cfg = {}) {
   }
 
   function render() {
-    const models = [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["ideal", "Ideal"]];
+    const models = [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0"], ["ideal", "Ideal"]];
     const seg = h("div", { class: "fug-seg", role: "group", "aria-label": "Activity model" },
       ...models.map(([m, label]) => h("button", {
         type: "button", "aria-pressed": String(state.model === m),

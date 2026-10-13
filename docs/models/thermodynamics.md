@@ -18,13 +18,14 @@ model. Every layer above uses only this object.
 |---|---|---|---|
 | `NRTL` | NRTL activity coefficients | ideal gas, or PR / SRK | [activity/nrtl.js](../../src/thermo/activity/nrtl.js) |
 | `UNIQUAC` | UNIQUAC activity coefficients | ideal gas, or PR / SRK | [activity/uniquac.js](../../src/thermo/activity/uniquac.js) |
+| `MOD-UNIFAC-2` | Modified UNIFAC 2.0, predicted from groups | ideal gas, or PR / SRK | [activity/mod-unifac.js](../../src/thermo/activity/mod-unifac.js) |
 | `ideal` | ideal solution (γ = 1) | ideal gas, or PR / SRK | system.js |
 | `PR` | Peng–Robinson (1976) | the same equation | [eos/cubic.js](../../src/thermo/eos/cubic.js), [eos/system.js](../../src/thermo/eos/system.js) |
 | `SRK` | Soave–Redlich–Kwong (1972) | the same equation | same |
 
 Locked in the interface as "not available yet": Wilson, UNIFAC, PC-SAFT, CPA, eNRTL, Pitzer,
-Flory–Huggins and PC-SAFT for polymers ([src/ui/future-models.js](../../src/ui/future-models.js)). UNIFAC is on hold until
-the parameter licence is settled (proposal 0008).
+Flory–Huggins and PC-SAFT for polymers ([src/ui/future-models.js](../../src/ui/future-models.js)). The original UNIFAC
+is on hold until its parameter licence is settled (proposal 0008); Modified UNIFAC 2.0 is available (below).
 
 **Method advice** (pull request #85, open): `info.advice` and the warnings say when a model is
 used outside the domain of the selection rules. For example, an equation of state with polar
@@ -36,6 +37,21 @@ components, or an activity model above 1000 kPa
 - **NRTL**: τ_ij = a_ij + b_ij / T, G_ij = exp(−α_ij τ_ij).
 - **UNIQUAC**: τ_ij = exp(a_ij + b_ij / T), coordination number z = 10. An optional q′
   replaces q in the residual term (Anderson–Prausnitz modification).
+- **Modified UNIFAC 2.0** (`MOD-UNIFAC-2`): the modified UNIFAC (Dortmund) equations (Weidlich and Gmehling 1987;
+  Gmehling, Li and Schiller 1993) with the parameters of Hayer, Hasse and Jirasek, Ind. Eng. Chem. Res. 64 (2025)
+  10304 (arXiv:2412.12962, CC BY 4.0): R and Q of 125 subgroups and complete a and b tables of 63 main groups,
+  Ψ_nm = exp(−(a_nm + b_nm T)/T). Every pair is **predicted** from the groups of its components, labelled so, never
+  fitted to data of the pair.
+  - Parameters: [src/data/mod-unifac-2.json](../../src/data/mod-unifac-2.json), written from the arXiv files
+    ([validation/data/unifac/mod-unifac-2.0/](../../validation/data/unifac/mod-unifac-2.0/)) by
+    [validation/python/mod_unifac_2.py](../../validation/python/mod_unifac_2.py).
+  - Groups of each component (`modUnifac` in components.json): split from its structure by the SMARTS patterns of the
+    thermo library and checked against DDBST's published assignment and the atom balance; a component without
+    groups (gases, and a few whose structure is not covered or not checked yet) says why.
+  - Checks ([test/mod-unifac.test.js](../../test/mod-unifac.test.js)): ln γ equal to thermo's modified UNIFAC with
+    the same tables to 1e-9; against the open isobaric T-x-y sets of six pairs, mean deviations 0.3-1.1 K in T and
+    0.001-0.019 in y (the NRTL fits to the same data: 0.06-0.16 K). It predicts no ethanol + water azeotrope at
+    101.325 kPa (the measured one, at x(ethanol) 0.89, is less than 0.2 K below the boiling point of ethanol).
 - **Gamma-phi equilibrium** ([gamma-phi-vapour.js](../../src/thermo/gamma-phi-vapour.js)):
   y_i φ_i^V P = x_i γ_i P_i^sat φ_i^sat exp[v_i^L (P − P_i^sat) / RT]. φ^V and φ^sat come from the
   cubic equation; v^L comes from the liquid-density record (Poynting factor). With an ideal-gas
