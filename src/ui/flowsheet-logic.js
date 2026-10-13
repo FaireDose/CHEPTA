@@ -142,24 +142,24 @@ export function removeBlock(fs, id) {
     for (const s of mine) if (isProduct(out, portOf(s.to).block)) out.blocks = out.blocks.filter(x => x.id !== portOf(s.to).block);
     out.streams = out.streams.filter(x => portOf(x.from).block !== id);
     out.blocks = out.blocks.filter(x => x.id !== id);
-    return { fs: out, note: `Deleted the feed ${id}${mine.length ? ` with its stream ${mine.map(x => x.id).join(", ")}` : ""}.` };
+    return { fs: out, note: mine.length ? `Deleted the feed stream ${mine.map(streamName).join(", ")}.` : `Deleted the feed ${id}.` };
   }
   const leave = [], feeds = [];
   for (const s of out.streams.filter(x => portOf(x.to).block === id)) {
     out = connect(out, s.id, null);
-    leave.push(s.id);
+    leave.push(streamName(s));
   }
   out.streams.filter(x => portOf(x.from).block === id).forEach((s, k) => {
     const fid = nextId(blockIds(out), PREFIX.feed);
     out.blocks.push({ id: fid, type: "feed", ...clearSpot(out, (b.x ?? 0), (b.y ?? 0) + k * 60), spec: {} });
     s.from = `${fid}.out`;
     delete s.tear; delete s.guess;
-    feeds.push(`${s.id} from ${fid}`);
+    feeds.push(streamName(s));
   });
   out.blocks = out.blocks.filter(x => x.id !== id);
-  const note = [`Deleted ${id}; its streams are kept.`,
+  const note = [`Deleted ${blockName(b)}; its streams are kept.`,
     leave.length ? `${leave.join(", ")} now leave${leave.length === 1 ? "s" : ""} the flowsheet (drag the end onto an inlet to connect again).` : "",
-    feeds.length ? `${feeds.join(", ")}: new feed${feeds.length === 1 ? "" : "s"} where ${id} was; fill in ${feeds.length === 1 ? "its" : "their"} flows or delete ${feeds.length === 1 ? "it" : "them"}.` : ""]
+    feeds.length ? `${feeds.join(", ")} now ${feeds.length === 1 ? "starts as a feed stream" : "start as feed streams"} where ${blockName(b)} was; fill in ${feeds.length === 1 ? "its" : "their"} flows or delete ${feeds.length === 1 ? "it" : "them"}.` : ""]
     .filter(Boolean).join(" ");
   return { fs: out, note };
 }
@@ -188,6 +188,16 @@ function putLabel(o, label) {
   const name = String(label ?? "").replace(/\s+/g, " ").trim().slice(0, 40);
   if (name && name !== o.id) o.label = name; else delete o.label;
 }
+
+/** The Feed block a stream starts from, or null. On the drawing a feed is its stream (a feed stream). */
+export function feedOf(fs, sid) {
+  const s = fs.streams.find(x => x.id === sid);
+  const b = s && fs.blocks.find(x => x.id === portOf(s.from).block);
+  return b?.type === "feed" ? b : null;
+}
+
+/** The stream that leaves a Feed block, or null. */
+export const feedStreamOf = (fs, fid) => fs.streams.find(s => portOf(s.from).block === fid) ?? null;
 
 /** The name of a stream or a block on the drawing and in the tables: its label, else its id. */
 export const streamName = s => s?.label || s?.id;
@@ -321,9 +331,11 @@ export function deleteStream(fs, sid) {
   const src = fs.blocks.find(b => b.id === portOf(s.from).block);
   if (src?.type === "feed") {
     const out = clone(fs);
+    // the feed and the Product end go with it (a unit it went to loses that inlet)
+    const end = endOf(fs, sid);
     out.streams = out.streams.filter(x => x.id !== sid);
-    out.blocks = out.blocks.filter(b => b.id !== src.id);
-    return { fs: out, note: `Deleted the feed ${src.id} with its stream ${sid}.` };
+    out.blocks = out.blocks.filter(b => b.id !== src.id && !(end?.kind === "product" && b.id === end.block));
+    return { fs: out, note: `Deleted the feed stream ${streamName(s)}.` };
   }
   const end = endOf(fs, sid);
   if (end.kind === "unit") return { fs: connect(fs, sid, null), note: `${sid} no longer goes to ${end.block}: it now leaves the flowsheet.` };

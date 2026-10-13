@@ -333,6 +333,9 @@ export const APP_CSS = `
 .fs-block:focus-visible .fs-shape,.fs-block.is-sel .fs-shape{stroke:var(--fug-accent); stroke-width:2.6}
 .fs-block.is-incomplete .fs-shape{stroke-dasharray:5 3}
 .fs-warn-dot{fill:#d9822b; stroke:var(--fug-bg); stroke-width:1.5}
+.fs-source{fill:var(--fug-accent); stroke:var(--fug-bg); stroke-width:1.2; cursor:move}
+.fs-source.is-incomplete{fill:var(--fug-bg); stroke:#d9822b; stroke-width:1.8; stroke-dasharray:3 2}
+.fs-stream.is-sel .fs-source,.fs-source:hover{stroke:var(--fug-accent); stroke-width:5; stroke-opacity:.35}
 .fs-name{font-size:12px; font-weight:600; fill:var(--fug-fg)}
 .fs-line{fill:none; stroke:var(--fug-fg2, #555); stroke-width:1.6}
 .fs-hit{fill:none; stroke:transparent; stroke-width:12; cursor:pointer}

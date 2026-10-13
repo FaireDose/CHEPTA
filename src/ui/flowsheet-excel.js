@@ -75,7 +75,8 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
   for (const b of fs.blocks) {
     const spec = b.spec ?? {};
     if (b.type === "feed") {
-      I.push([{ v: `Feed ${b.label || b.id}`, s: "bold" }, { v: spec.flow_kg_h ? "kg/h (converted to kmol/h in Streams)" : "kmol/h", s: "bold" }]);
+      const fst = fs.streams.find(s => s.from === `${b.id}.out`);
+      I.push([{ v: fst ? `Feed stream ${fst.label || fst.id}` : `Feed ${b.label || b.id}`, s: "bold" }, { v: spec.flow_kg_h ? "kg/h (converted to kmol/h in Streams)" : "kmol/h", s: "bold" }]);
       feedCell[b.id] = {};
       const mass = spec.flow_kg_h != null, flows = (mass ? spec.flow_kg_h : spec.flow_kmol_h) ?? {};
       comps.forEach((c, i) => { feedCell[b.id][c] = { r: I.length, mass, i }; I.push([nameOf(c), null, inp(Number(flows[c] ?? 0))]); });

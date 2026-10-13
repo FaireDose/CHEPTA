@@ -158,6 +158,19 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   the panel of a feed or a unit; the name shows on the drawing, in the panel and results, in the From/To rows of the
   stream table and in the Excel workbook. The end circle of a product stream takes no name (name its stream). The
   energy stream of a unit keeps its own name (Q-V1).
+- **Asked next (same day):** a feed and its stream as one thing, as in most simulators, not an oval plus a stream.
+  **Decided by the maintainer:** yes, in #106. Done on the drawing only:
+  - **On the drawing:** a feed is a feed stream that starts at a small tab. The tab is dashed orange while the feed
+    is not fully specified. You drag the tab to move the start; clicking it or the line opens the stream panel, which
+    holds the flows, T, P and the name.
+  - **Deleting:** deleting a feed stream deletes it whole, with its Product end. Before, the Product end stayed
+    behind in the document.
+  - **Deleting a unit:** its outgoing streams become feed streams to fill in.
+  - **The file:** the document format is unchanged; the Feed block stays in the file underneath, so old projects, the
+    solver and the Excel export work as before. A Feed block with no stream (only possible in a file written outside
+    the editor) is still drawn as the oval, so it can be deleted.
+  - **The open question above:** this answers it. A deleted unit's outgoing streams become feed streams, not new
+    ovals.
 
 ### 2026-10-11 (late): pairs of the green-chemistry components
 

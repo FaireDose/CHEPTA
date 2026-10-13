@@ -9,7 +9,7 @@ import { initialState, applyPatch } from "../src/ui/app-logic.js";
 import { WORKSPACES } from "../src/ui/workspaces.js";
 import {
   addBlock, addFeedTo, connect, deleteBlock, removeBlock, deleteStream, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
-  setComponents, openInlets, endOf, streamsOf, setStreamLabel, streamName, setBlockLabel, blockName,
+  setComponents, openInlets, endOf, streamsOf, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
 } from "../src/ui/flowsheet-logic.js";
 
 const base = () => ({ ...emptyFlowsheet(), components: ["ethanol", "water"] });
@@ -154,7 +154,13 @@ test("deleting streams: what each kind of stream allows", () => {
   const feedStream = streamsOf(fs, "E1").in[0];
   r = deleteStream(fs, feedStream);
   assert.ok(!r.fs.blocks.some(b => b.type === "feed"));
-  assert.match(r.note, /Deleted the feed F1/);
+  assert.match(r.note, new RegExp(`Deleted the feed stream ${feedStream}`));
+  // a feed stream that leaves the flowsheet: its Product end goes too, nothing is left behind
+  ({ fs } = addBlock(base(), "feed"));
+  const [lone] = streamsOf(fs, "F1").out;
+  r = deleteStream(fs, lone);
+  assert.deepEqual(r.fs.blocks, [], "no feed and no Product end left");
+  assert.deepEqual(r.fs.streams, []);
 });
 
 test("deleting a unit keeps every stream connected to it", () => {
@@ -179,7 +185,7 @@ test("deleting a unit keeps every stream connected to it", () => {
   }
   assert.equal(endOf(d, vap).block, "E1");
   assert.match(note, new RegExp(`${inlet} now leaves the flowsheet`));
-  assert.match(note, new RegExp(`${vap} from F`));
+  assert.match(note, new RegExp(`${vap}, ${liq} now start as feed streams where V1 was`));
   structureOk(d);
 });
 
@@ -211,7 +217,7 @@ test("deleting a feed deletes its stream too, and nothing is made again in its p
     assert.ok(!r.fs.blocks.some(b => b.id === fid), `${fid} is deleted`);
     assert.ok(!r.fs.streams.some(s => s.id === sid), `${sid} is deleted with its feed`);
     assert.equal(r.fs.blocks.length, nBlocks - 2, "the feed and the product of its stream go, no new feed appears");
-    assert.match(r.note, new RegExp(`Deleted the feed ${fid} with its stream ${sid}`));
+    assert.match(r.note, new RegExp(`Deleted the feed stream ${sid}`));
     fs = r.fs;
     structureOk(fs);
   }
@@ -262,4 +268,19 @@ test("a feed or a unit can be given a name; a product end cannot", () => {
   // the names change nothing in the connections, so the flowsheet is valid and solves the same
   structureOk(named);
   assert.deepEqual(named.streams, fs.streams);
+});
+
+test("on the drawing a feed is its stream: feedOf and feedStreamOf", () => {
+  let fs = base();
+  ({ fs } = addBlock(fs, "flash"));
+  const r = addFeedTo(fs, "V1.in");
+  fs = r.fs;
+  assert.equal(feedOf(fs, r.stream).id, r.id);
+  assert.equal(feedStreamOf(fs, r.id).id, r.stream);
+  const [vap] = streamsOf(fs, "V1").vapour;
+  assert.equal(feedOf(fs, vap), null, "a unit's outlet is not a feed stream");
+  assert.equal(feedStreamOf(fs, "V1")?.id, vap, "feedStreamOf is only asked of feeds; for a unit it gives its first outlet");
+  // the name of a feed stream is the stream's name
+  fs = setStreamLabel(fs, r.stream, "Wine");
+  assert.equal(streamName(feedStreamOf(fs, r.id)), "Wine");
 });
