@@ -54,6 +54,17 @@ Newest first. Pull requests are in `FaireDose/Fugacity`.
    that have none (docs/PAIR_SCAN.md, "Coverage by the method each pair needs"), and import the
    ChemSep k_ij of the proposal 0008 components that the batches did not bring in (for example
    methane + n-nonane).
+   - **Import done (2026-10-13, asked by the maintainer):** `eos_kij_from_chemsep.py --add-new` appended 40 ChemSep
+     entries (20 pairs, PR and SRK) that kij.json did not have; the fitted and literature entries are unchanged.
+     - Left out, with the reason printed by the script: PR and SRK carbon dioxide + n-decane and SRK propane +
+       n-decane. Their literature fits were rejected (no constant k_ij reaches the 5 % gate), so a databank value
+       would only hide that.
+     - New reference solutions, by their own scripts:
+       - the hard flashes (reference_flash_hard.py): 11 of 77 cases change, the same 77 points;
+       - three flowsheet-suite cases (reference_flowsheet_suite.py): the Cavett problem, G03 and G07, whose
+         components now have these k_ij. In the Cavett problem CHEPTA's vapour flows move by up to 1.7 kmol/h,
+         mostly towards the two published solutions.
+   - Still to do: fitting the archive pairs.
 2. Gases in polar liquids (139 pairs with archive data): Henry's-law constants for gases in water
    from the archive; other solvents need PSRK or MHV2, not in CHEPTA yet.
 3. Review the two pairs whose 1-atm data sets disagree by more than 1 K (methanol + 2-propanol,

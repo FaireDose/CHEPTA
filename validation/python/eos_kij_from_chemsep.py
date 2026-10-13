@@ -19,6 +19,12 @@ validation/python/eos_fit_kij.py --write after this script.
 
 Usage:
   python validation/python/eos_kij_from_chemsep.py DWSIM_pr.ipd DWSIM_srk.ipd [--write]
+  python validation/python/eos_kij_from_chemsep.py DWSIM_pr.ipd DWSIM_srk.ipd --add-new [--write]
+
+--add-new keeps src/data/kij.json as it is (its fitted and literature entries too) and appends only the entries of
+pairs it does not have yet (components added since the file was built), except the pairs whose literature fit was
+rejected (validation/data/eos/literature_fits.json, "rejected": open data show that no constant k_ij reaches the gate,
+so a databank value would only hide that). Then run make_sources.py.
 """
 import json
 import os
@@ -110,8 +116,23 @@ def main():
         },
         "pairs": pairs,
     }
+    out = os.path.join(ROOT, "src", "data", "kij.json")
+    if "--add-new" in sys.argv:
+        old = json.load(open(out))
+        have = {(e["model"], *sorted((e["i"], e["j"]))) for e in old["pairs"]}
+        lit = json.load(open(os.path.join(ROOT, "validation", "data", "eos", "literature_fits.json")))
+        rejected = {(r["model"], *sorted(r["pair"])): r.get("why", "") for r in lit.get("rejected", [])}
+        new = [p for p in pairs if (p["model"], *sorted((p["i"], p["j"]))) not in have]
+        for p in [p for p in new if (p["model"], *sorted((p["i"], p["j"]))) in rejected]:
+            print(f"  left out: {p['model']} {p['i']} + {p['j']} ({p['kij']}): its literature fit was rejected "
+                  f"({rejected[(p['model'], *sorted((p['i'], p['j'])))]})")
+        new = [p for p in new if (p["model"], *sorted((p["i"], p["j"]))) not in rejected]
+        print(f"--add-new: {len(new)} entries of pairs kij.json does not have")
+        for p in new:
+            print(f"  {p['model']:4s} {p['i']} + {p['j']}: {p['kij']}  ({p['source']['conditions']})")
+        old["pairs"] += new
+        doc = old
     if "--write" in sys.argv:
-        out = os.path.join(ROOT, "src", "data", "kij.json")
         with open(out, "w") as f:
             json.dump(doc, f, indent=1, ensure_ascii=False)
             f.write("\n")

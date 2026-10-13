@@ -7098,6 +7098,836 @@
     "chemsep-eos-ipd"
    ],
    "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "nitrogen",
+   "j": "nitrous-oxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0044,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".44e-2",
+    "conditions": "Nitrogen/Nitrous Oxide p304",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "nitrogen",
+   "j": "sulfur-dioxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.08,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".800e-1",
+    "conditions": "Nitrogen/Sulfur Dioxide p332",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "nitrogen",
+   "j": "n-decane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.1122,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".1122",
+    "conditions": "Nitrogen/n-Decane T=310.93-410.93K p349",
+    "entries_in_file": 1,
+    "T_range_K": [
+     310.93,
+     410.93
+    ]
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": [],
+   "valid": {
+    "T_K": [
+     310.93,
+     410.93
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "oxygen",
+   "j": "nitrous-oxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0478,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".478e-1",
+    "conditions": "Oxygen/NitrousOxide p376",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "methane",
+   "j": "nitrous-oxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0256,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".256e-1",
+    "conditions": "Methane/NitrousOxide p396",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "methane",
+   "j": "sulfur-dioxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.1356,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".1356",
+    "conditions": "Methane/Sulfur Dioxide p421",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "methane",
+   "j": "n-nonane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0474,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".474e-1",
+    "conditions": "Methane/n-Nonane p481",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "methane",
+   "j": "n-decane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0411,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".411e-1",
+    "conditions": "Methane/n-Decane T=311-511K p486",
+    "entries_in_file": 3,
+    "T_range_K": [
+     311.0,
+     511.0
+    ]
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": [
+    ".489e-1 (Methane/n-Decane T=244-277K p485)",
+    ".644e-1 (Methane/n-Decane T=423-583K p489)"
+   ],
+   "valid": {
+    "T_K": [
+     311.0,
+     511.0
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "ethylene",
+   "j": "n-decane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0253,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".253e-1",
+    "conditions": "Ethylene/n-Decane p524",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "carbon-dioxide",
+   "j": "nitrous-oxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0048,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".48e-2",
+    "conditions": "Carbon Dioxide/NitrousOxide p575",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "carbon-dioxide",
+   "j": "1-butene",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0593,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".593e-1",
+    "conditions": "Carbon Dioxide/1-Butene p605",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "hydrogen-sulfide",
+   "j": "n-decane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0333,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".333e-1",
+    "conditions": "Hydrogen Sulfide/n-Decane p652",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "propylene",
+   "j": "1-butene",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0004,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".4e-3",
+    "conditions": "Propylene/1-C4 p661",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "sulfur-dioxide",
+   "j": "benzene",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0015,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".15e-2",
+    "conditions": "Sulfur Dioxide/Benzene p696",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "1-butene",
+   "j": "n-butane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0007,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".7e-3",
+    "conditions": "1-Butene/n-Butane T=311-411K P=3.55-34.89bar p699",
+    "entries_in_file": 2,
+    "T_range_K": [
+     311.0,
+     411.0
+    ]
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": [
+    ".41e-2 (1-Butene/n-Butane T=311-339K P=3.55-8.69bar p700)"
+   ],
+   "valid": {
+    "T_K": [
+     311.0,
+     411.0
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "n-butane",
+   "j": "n-decane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0078,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".78e-2",
+    "conditions": "n-Butane/n-Decane p710",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "benzene",
+   "j": "isooctane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0004,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".4e-3",
+    "conditions": "Benzene/Isooctane p757",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "cyclohexane",
+   "j": "dichloroethane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.073,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".730e-1",
+    "conditions": "Cyclohexane/1,2-Dichloroethane p762",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "cyclohexane",
+   "j": "cyclohexanone",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0659,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".659e-1",
+    "conditions": "Cyclohexane/Cyclohexanone p763",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "n-heptane",
+   "j": "isooctane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0004,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".4e-3",
+    "conditions": "n-Heptane/Isooctane p766",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "nitrogen",
+   "j": "nitrous-oxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": -0.011,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": "-.110e-1",
+    "conditions": "Nitrogen/Nitrous Oxide p304",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "nitrogen",
+   "j": "sulfur-dioxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0578,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".578e-1",
+    "conditions": "Nitrogen/Sulfur Dioxide p332",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "nitrogen",
+   "j": "n-decane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.1033,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".1033",
+    "conditions": "Nitrogen/n-Decane T=310.93-410.93K p349",
+    "entries_in_file": 1,
+    "T_range_K": [
+     310.93,
+     410.93
+    ]
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": [],
+   "valid": {
+    "T_K": [
+     310.93,
+     410.93
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "oxygen",
+   "j": "nitrous-oxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0433,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".433e-1",
+    "conditions": "Oxygen/NitrousOxide p376",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "methane",
+   "j": "nitrous-oxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0211,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".211e-1",
+    "conditions": "Methane/NitrousOxide p396",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "methane",
+   "j": "sulfur-dioxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.1279,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".1279",
+    "conditions": "Methane/Sulfur Dioxide p421",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "methane",
+   "j": "n-nonane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0448,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".448e-1",
+    "conditions": "Methane/n-Nonane p481",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "methane",
+   "j": "n-decane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.04,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".400e-1",
+    "conditions": "Methane/n-Decane T=311-511K p486",
+    "entries_in_file": 3,
+    "T_range_K": [
+     311.0,
+     511.0
+    ]
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": [
+    ".433e-1 (Methane/n-Decane T=244-277K p485)",
+    ".1000 (Methane/n-Decane T=423-583K p489)"
+   ],
+   "valid": {
+    "T_K": [
+     311.0,
+     511.0
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "ethylene",
+   "j": "n-decane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0248,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".248e-1",
+    "conditions": "Ethylene/n-Decane p524",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "carbon-dioxide",
+   "j": "nitrous-oxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0022,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".22e-2",
+    "conditions": "Carbon Dioxide/NitrousOxide p575",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "carbon-dioxide",
+   "j": "1-butene",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0596,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".596e-1",
+    "conditions": "Carbon Dioxide/1-Butene p605",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "hydrogen-sulfide",
+   "j": "n-decane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0452,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".452e-1",
+    "conditions": "Hydrogen Sulfide/n-Decane p652",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "propylene",
+   "j": "1-butene",
+   "set": "chemsep",
+   "default": true,
+   "kij": -0.0037,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": "-.37e-2",
+    "conditions": "Propylene/1-C4 p661",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "sulfur-dioxide",
+   "j": "benzene",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0093,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".93e-2",
+    "conditions": "Sulfur Dioxide/Benzene p696",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "1-butene",
+   "j": "n-butane",
+   "set": "chemsep",
+   "default": true,
+   "kij": -0.0056,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": "-.56e-2",
+    "conditions": "1-Butene/n-Butane T=311-411K P=3.55-34.89bar p699",
+    "entries_in_file": 2,
+    "T_range_K": [
+     311.0,
+     411.0
+    ]
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": [
+    "-.22e-2 (1-Butene/n-Butane T=311-339K P=3.55-8.69bar p700)"
+   ],
+   "valid": {
+    "T_K": [
+     311.0,
+     411.0
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "n-butane",
+   "j": "n-decane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0067,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".67e-2",
+    "conditions": "n-Butane/n-Decane p710",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "benzene",
+   "j": "isooctane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0048,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".48e-2",
+    "conditions": "Benzene/Isooctane p757",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "cyclohexane",
+   "j": "dichloroethane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0793,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".793e-1",
+    "conditions": "Cyclohexane/1,2-Dichloroethane p762",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "cyclohexane",
+   "j": "cyclohexanone",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.07,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".700e-1",
+    "conditions": "Cyclohexane/Cyclohexanone p763",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "n-heptane",
+   "j": "isooctane",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0007,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".7e-3",
+    "conditions": "n-Heptane/Isooctane p766",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
   }
  ]
 }
