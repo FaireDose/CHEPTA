@@ -1535,6 +1535,16 @@
    }
   ]
  },
+ "butyl-levulinate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
  "carbon-dioxide": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C124389&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -2509,6 +2519,16 @@
     "comment": "DH"
    }
   ]
+ },
+ "ethyl-levulinate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
  },
  "ethylbenzene": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C100414&Units=SI&Mask=4",
@@ -4003,6 +4023,16 @@
      "comment": "Uncertainty assigned by TRC = 0.05 K; TRC"
     }
    ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
+ "methyl-levulinate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [],
    "Ttriple": [],
    "ΔfusH": []
   },

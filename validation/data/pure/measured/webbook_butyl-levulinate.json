@@ -1,0 +1,71 @@
+{
+ "component": "butyl-levulinate",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "510.7",
+       "K",
+       "N/A",
+       "Weast and Grasselli, 1989",
+       "BS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "55.5",
+       "373.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 338. to 511. K.; AC"
+      ],
+      [
+       "51.0",
+       "408.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 393. to 499. K.; AC"
+      ],
+      [
+       "56.0",
+       "452.",
+       "N/A",
+       "Schuette and Cowley, 1931",
+       "AC"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

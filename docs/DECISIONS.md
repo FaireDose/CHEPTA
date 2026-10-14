@@ -82,6 +82,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   1. batch 1, 16 components from ChemSep and CoolProp (in a pull request, 2026-10-11);
   2. batch 2, lipids;
   3. batch 3, platform molecules from the WebBook and ThermoML, in small pull requests;
+     - 3a (furans, 1,3-propanediol) and 3b (levulinate esters) done; held, with the data wanted: gamma-butyrolactone,
+       isoamyl alcohol, levulinic acid (vapour pressures between 373 K and 518 K);
+     - ethyl levulinate: the open-access article Bo et al., Energies 18 (2025) 3939 (vapour-liquid equilibrium with
+       ethanol up to 470 K) could replace the compiled boiling point, if a person downloads it (MDPI refuses the
+       assistant's container);
+     - 3c, the molecules without measured critical constants (GVL, the lactates, furfuryl alcohol, THFA,
+       2,3-butanediol, limonene, CPME, solketal), needs the "activity models only" path of the proposal first;
   4. the "nonvolatile" component class;
   5. batch 4, sugars and acids as solids.
   - Six names still need a CAS number: xylose, erythritol, muconic acid, levoglucosenone,

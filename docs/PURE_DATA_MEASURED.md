@@ -60,6 +60,62 @@ Left out of liquidHeatCapacity: 298.15 K, Ghanta 2017, -0.33 % (stated uncertain
 
 Left out of liquidViscosity: 293.15 K, Guo 2019, +1.55 % (stated uncertainty 4.2 % is above the 3 % target); 298.15 K, Guo 2019, +1.58 % (stated uncertainty 4.2 % is above the 3 % target); 303.15 K, Guo 2019, +1.14 % (stated uncertainty 4.2 % is above the 3 % target); 308.15 K, Guo 2019, +0.50 % (stated uncertainty 4.2 % is above the 3 % target); 313.15 K, Guo 2019, -0.34 % (stated uncertainty 4.2 % is above the 3 % target); 318.15 K, Guo 2019, -1.13 % (stated uncertainty 4.2 % is above the 3 % target); 323.15 K, Guo 2019, -1.80 % (stated uncertainty 4.1 % is above the 3 % target); 328.15 K, Guo 2019, -2.27 % (stated uncertainty 4.1 % is above the 3 % target); 333.15 K, Guo 2019, -2.38 % (stated uncertainty 4.1 % is above the 3 % target); 338.15 K, Guo 2019, -2.15 % (stated uncertainty 4.1 % is above the 3 % target); 343.15 K, Guo 2019, -1.41 % (stated uncertainty 4.1 % is above the 3 % target); 348.15 K, Guo 2019, -0.17 % (stated uncertainty 4.1 % is above the 3 % target); 353.15 K, Guo 2019, +1.82 % (stated uncertainty 4.1 % is above the 3 % target); 293.15 K, Shi 2019, +1.92 % (stated uncertainty 5.1 % is above the 3 % target); 298.15 K, Shi 2019, +1.94 % (stated uncertainty 5.1 % is above the 3 % target); 303.15 K, Shi 2019, +1.53 % (stated uncertainty 5.1 % is above the 3 % target); 308.15 K, Shi 2019, +0.85 % (stated uncertainty 5.1 % is above the 3 % target); 313.15 K, Shi 2019, +0.03 % (stated uncertainty 5 % is above the 3 % target); 318.15 K, Shi 2019, -0.76 % (stated uncertainty 5.1 % is above the 3 % target); 323.15 K, Shi 2019, -1.44 % (stated uncertainty 5.1 % is above the 3 % target); 328.15 K, Shi 2019, -1.90 % (stated uncertainty 5.1 % is above the 3 % target); 333.15 K, Shi 2019, -2.03 % (stated uncertainty 5.1 % is above the 3 % target); 338.15 K, Shi 2019, -1.77 % (stated uncertainty 5.1 % is above the 3 % target); 343.15 K, Shi 2019, -1.03 % (stated uncertainty 5 % is above the 3 % target); 348.15 K, Shi 2019, +0.19 % (stated uncertainty 5.1 % is above the 3 % target); 353.15 K, Shi 2019, +2.01 % (stated uncertainty 5 % is above the 3 % target); 298.15 K, Bhattacharje 2010, +0.54 % (stated uncertainty 3.1 % is above the 3 % target); 308.15 K, Bhattacharje 2010, +0.99 % (stated uncertainty 3.2 % is above the 3 % target); 318.15 K, Bhattacharje 2010, +0.20 % (stated uncertainty 3.2 % is above the 3 % target); 293.15 K, Islam 2004, -13.72 % (deviates most from a robust fit of the others); 323.15 K, Islam 2004, +26.89 % (deviates most from a robust fit of the others); 318.15 K, Islam 2004, +26.09 % (deviates most from a robust fit of the others); 313.15 K, Islam 2004, +22.22 % (deviates most from a robust fit of the others); 313.15 K, Cwiklinska 2011, +4.86 % (deviates most from a robust fit of the others); 308.15 K, Islam 2004, +12.65 % (deviates most from a robust fit of the others); 303.15 K, Roy 2010, -9.55 % (deviates most from a robust fit of the others); 313.15 K, Roy 2010, -10.63 % (deviates most from a robust fit of the others); 323.15 K, Roy 2010, -11.26 % (deviates most from a robust fit of the others).
 
+## Methyl levulinate (C6H10O3, CAS 624-45-3)
+
+- Tc 668.00 K, Pc 3.27 MPa, Tb 470.403 K, ω 0.5393, M 130.1418 g/mol
+- Constants: Tc and Pc: Nikitin et al., J. Chem. Thermodyn. 135 (2019) 233-240, doi:10.1016/j.jct.2019.03.040, NIST TRC ThermoML Archive (stated uncertainties 7 K and 100 kPa). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (470.403 K).
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| Vapour pressure | 333.15-668.00 | 22 | 12 | 0.040 % | ThermoML, WebBook |
+| liquidDensity | 278.15-338.15 | 38 | 0 | 0.0061 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| heatOfVaporization | 333.15-453.15 | 25 | 0 | 0.020 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
+| liquidViscosity | 278.15-338.15 | 25 | 0 | 0.57 % | Measured values (NIST TRC ThermoML Archive) |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+
+Left out of vapourPressure: 338.15 K, Lomba 2013, -3.14 % (stated uncertainty 1.9 % is above the target, and the value deviates by more than it); 293.50 K, Emel'yanenko 2018, -24.76 % (stated uncertainty 6.6 % is above the target, and the value deviates by more than it); 298.50 K, Emel'yanenko 2018, -20.44 % (stated uncertainty 6.3 % is above the target, and the value deviates by more than it); 303.30 K, Emel'yanenko 2018, -17.73 % (stated uncertainty 6.3 % is above the target, and the value deviates by more than it); 308.50 K, Emel'yanenko 2018, -14.47 % (stated uncertainty 6.2 % is above the target, and the value deviates by more than it); 313.40 K, Emel'yanenko 2018, -15.07 % (stated uncertainty 6.3 % is above the target, and the value deviates by more than it); 318.30 K, Emel'yanenko 2018, -10.18 % (stated uncertainty 6.3 % is above the target, and the value deviates by more than it); 323.20 K, Emel'yanenko 2018, -11.50 % (stated uncertainty 6.3 % is above the target, and the value deviates by more than it); 328.20 K, Emel'yanenko 2018, -9.06 % (stated uncertainty 6.2 % is above the target, and the value deviates by more than it); 333.20 K, Emel'yanenko 2018, -10.63 % (stated uncertainty 6 % is above the target, and the value deviates by more than it); 338.20 K, Emel'yanenko 2018, -7.57 % (stated uncertainty 6.1 % is above the target, and the value deviates by more than it); 343.10 K, Emel'yanenko 2018, -7.33 % (stated uncertainty 6.3 % is above the target, and the value deviates by more than it).
+
+## Ethyl levulinate (C7H12O3, CAS 539-88-8)
+
+- Tc 669.00 K, Pc 2.97 MPa, Tb 479.000 K, ω 0.5878, M 144.1684 g/mol
+- Constants: Tc and Pc: Nikitin et al., J. Chem. Thermodyn. 135 (2019) 233-240, doi:10.1016/j.jct.2019.03.040, NIST TRC ThermoML Archive (stated uncertainties 7 K and 90 kPa). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (479 K).
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| Vapour pressure | 293.50-669.00 | 14 | 0 | 3.4 % | ThermoML, WebBook |
+| liquidDensity | 293.15-333.15 | 6 | 0 | 0.13 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| heatOfVaporization | 293.50-479.00 | 25 | 0 | 0.22 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+## Butyl levulinate (C9H16O3, CAS 2052-15-5)
+
+- Tc 692.00 K, Pc 2.41 MPa, Tb 510.700 K, ω 0.6684, M 172.2215 g/mol
+- Constants: Tc and Pc: Nikitin et al., J. Chem. Thermodyn. 135 (2019) 233-240, doi:10.1016/j.jct.2019.03.040, NIST TRC ThermoML Archive (stated uncertainties 7 K and 80 kPa). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (510.7 K).
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| Vapour pressure | 298.20-692.00 | 13 | 0 | 5.3 % | ThermoML, WebBook |
+| liquidDensity | 293.15-333.15 | 6 | 0 | 0.089 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| heatOfVaporization | 298.20-510.70 | 25 | 0 | 0.28 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
 ## Furan (C4H4O, CAS 110-00-9)
 
 - Tc 490.20 K, Pc 5.32 MPa, Tb 304.565 K, ω 0.1869, M 68.0740 g/mol
@@ -133,7 +189,7 @@ Left out of liquidViscosity: 293.15 K, Francesconi 2007, +0.78 % (stated uncerta
 | liquidDensity | 253.15-363.15 | 171 | 0 | 0.23 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
 | liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
-| heatOfVaporization | 298.15-551.31 | 23 | 2 | 0.97 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
+| heatOfVaporization | 298.15-487.43 | 23 | 2 | 0.96 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | 288.15-333.15 | 59 | 26 | 2.4 % | Measured values (NIST TRC ThermoML Archive) |
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
@@ -142,7 +198,7 @@ Left out of liquidViscosity: 293.15 K, Francesconi 2007, +0.78 % (stated uncerta
 
 Left out of vapourPressure: 346.40 K, Emel'yanenko 2015, +10.76 % (outside its stated uncertainty in every fit of the others); 344.30 K, Emel'yanenko 2015, +9.91 % (outside its stated uncertainty in every fit of the others); 339.40 K, Verevkin 2007, +10.08 % (outside its stated uncertainty in every fit of the others); 338.70 K, Emel'yanenko 2015, +8.64 % (outside its stated uncertainty in every fit of the others); 342.30 K, Verevkin 2007, +9.28 % (outside its stated uncertainty in every fit of the others); 336.40 K, Verevkin 2007, +8.95 % (outside its stated uncertainty in every fit of the others); 333.50 K, Verevkin 2007, +7.65 % (outside its stated uncertainty in every fit of the others); 293.50 K, Verevkin 2007, -10.58 % (outside its stated uncertainty in every fit of the others); 292.50 K, Emel'yanenko 2015, -10.30 % (outside its stated uncertainty in every fit of the others).
 
-Left out of heatOfVaporization: 296.40 K, Clapeyron equation with the vapour-pressure record, -2.65 % (deviates most from a robust fit of the others); 307.02 K, Clapeyron equation with the vapour-pressure record, -1.69 % (deviates most from a robust fit of the others).
+Left out of heatOfVaporization: 296.40 K, Clapeyron equation with the vapour-pressure record, -2.71 % (deviates most from a robust fit of the others); 304.36 K, Clapeyron equation with the vapour-pressure record, -1.72 % (deviates most from a robust fit of the others).
 
 Left out of liquidViscosity: 308.15 K, Mehta 2007, +1.33 % (stated uncertainty 3.7 % is above the 3 % target); 298.15 K, Moosavi 2013, -0.88 % (stated uncertainty 10 % is above the 3 % target); 303.15 K, Moosavi 2013, +0.46 % (stated uncertainty 10 % is above the 3 % target); 308.15 K, Moosavi 2013, -0.77 % (stated uncertainty 10 % is above the 3 % target); 293.15 K, Moosavi 2017, -2.37 % (stated uncertainty 20 % is above the 3 % target); 298.15 K, Moosavi 2017, -0.49 % (stated uncertainty 20 % is above the 3 % target); 303.15 K, Moosavi 2017, -1.42 % (stated uncertainty 20 % is above the 3 % target); 293.15 K, Moosavi 2017, +0.57 % (stated uncertainty 16 % is above the 3 % target); 298.15 K, Moosavi 2017, +0.48 % (stated uncertainty 16 % is above the 3 % target); 303.15 K, Moosavi 2017, +0.57 % (stated uncertainty 16 % is above the 3 % target); 273.15 K, Miksik 2018, +7.74 % (stated uncertainty 30 % is above the 3 % target); 283.15 K, Miksik 2018, +1.59 % (stated uncertainty 30 % is above the 3 % target); 293.15 K, Miksik 2018, -0.32 % (stated uncertainty 30 % is above the 3 % target); 303.15 K, Miksik 2018, +0.02 % (stated uncertainty 30 % is above the 3 % target); 313.15 K, Miksik 2018, +1.08 % (stated uncertainty 30 % is above the 3 % target); 323.15 K, Miksik 2018, +1.62 % (stated uncertainty 30 % is above the 3 % target); 333.15 K, Miksik 2018, +0.31 % (stated uncertainty 30 % is above the 3 % target); 343.15 K, Miksik 2018, -2.77 % (stated uncertainty 30 % is above the 3 % target); 353.15 K, Miksik 2018, -8.60 % (stated uncertainty 30 % is above the 3 % target); 253.15 K, Miksik 2018, +55.41 % (stated uncertainty 30 % is above the 3 % target); 258.15 K, Miksik 2018, +33.45 % (stated uncertainty 30 % is above the 3 % target); 263.15 K, Miksik 2018, +21.52 % (stated uncertainty 30 % is above the 3 % target); 268.15 K, Miksik 2018, +13.59 % (stated uncertainty 30 % is above the 3 % target); 328.15 K, George 2003, +13.32 % (deviates most from a robust fit of the others); 338.15 K, George 2003, +14.13 % (deviates most from a robust fit of the others); 318.15 K, George 2003, +7.37 % (deviates most from a robust fit of the others).
 

@@ -42543,36 +42543,36 @@
         "heatOfVaporization": {
           "equation": "DIPPR106",
           "coefficients": {
-            "A": 3956.197736,
-            "B": -19.86498715,
-            "C": 56.63436439,
-            "D": -63.92505216,
-            "E": 27.27989712
+            "A": 43.38848404,
+            "B": -51.99906932,
+            "C": 154.255715,
+            "D": -184.7919783,
+            "E": 83.51849776
           },
           "units": "J/mol",
           "Tmin_K": 298.15,
-          "Tmax_K": 551.30515,
+          "Tmax_K": 487.43,
           "Tc_K": 721.0,
           "tier": "fitted",
           "source": {
             "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
             "reference": "validation/python/measured_components.py (clapeyron); Knauth and Sabbah, 1988 (ΔvapH° at 298.15 K, method C, NIST WebBook); Knauth and Sabbah, 1988, 2 (ΔvapH° at 298.15 K, method C, NIST WebBook)",
             "access": "calculated from the open measured data of the vapour-pressure record; free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Units=SI&Mask=4)",
-            "fit": "23 Clapeyron values and 2 measured values, 298.15-551.31 K, max deviation 0.97 %",
-            "notes": "dHvap = T (dPsat/dT) (v_vapour - v_liquid), Psat from the vapour-pressure record of this component, both volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, MIT), 317.64-551.31 K (up to Psat = 500 kPa); DIPPR 106 with the critical temperature 721.00 K. Chosen because the measured values do not give the temperature dependence (the calorimetric value of Knauth and Sabbah (1988) is at 298.15 K only). Max deviation from the Clapeyron values 0.97 %. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): Knauth and Sabbah, 1988 (ΔvapH° at 298.15 K, method C, NIST WebBook), 298.15 K: +0.00 % (stated uncertainty 0.41 %); Knauth and Sabbah, 1988, 2 (ΔvapH° at 298.15 K, method C, NIST WebBook), 298.15 K: +0.00 % (stated uncertainty 0.41 %); Umnahanant 2006, 298.15 K: +3.73 % (stated uncertainty 5 %), not fitted. Other values on the WebBook page (most derived by their authors from vapour pressures), compared: Stephenson and Malanowski, 1987 at 347 K (method A): +22.1 %; Gardner and Hussain, 1972 at 383 K (method V): -8.6 %; Gallaugher and Hibbert, 1937 at 273 K (method V): +24.9 %; Schierholtz and Staples, 1935 at 408 K (no method given): +1.8 %; Schierholtz and Staples, 1935 at 460 K (no method given): -1.4 %; Ribeiro da Silva and Santos, 2008 (ΔvapH° at 298.15 K, method EB): +8.9 %; Verevkin, 2007 (ΔvapH° at 298.15 K, method GS): +2.7 %; Wilson, VonNiederhausern, et al., 2002 (ΔvapH° at 298.15 K, no method given): +4.8 %; Olson, 1996 (ΔvapH° at 298.15 K, method EB): +2.6 %; Knauth and Sabbah, 1990 (ΔvapH° at 298.15 K, no method given): +0.0 %; Markovnik, Sachek, et al., 1981 (ΔvapH° at 298.15 K, method EB): +3.3 %; Gardner and Hussain, 1972 (ΔvapH° at 298.15 K, no method given): -0.8 %; Thomas and Meatyard, 1966 (ΔvapH° at 298.15 K, method EB): +1.4 %; Gallaugher and Hibbert, 1937 (ΔvapH° at 298.15 K, method EB): +11.0 %.",
+            "fit": "23 Clapeyron values and 2 measured values, 298.15-487.43 K, max deviation 0.96 %",
+            "notes": "dHvap = T (dPsat/dT) (v_vapour - v_liquid), Psat from the vapour-pressure record of this component, both volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, MIT), 312.32-487.43 K (up to the last measured vapour pressure); DIPPR 106 with the critical temperature 721.00 K. Chosen because the measured values do not give the temperature dependence (the calorimetric value of Knauth and Sabbah (1988) is at 298.15 K only). Max deviation from the Clapeyron values 0.96 %. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): Knauth and Sabbah, 1988 (ΔvapH° at 298.15 K, method C, NIST WebBook), 298.15 K: +0.00 % (stated uncertainty 0.41 %); Knauth and Sabbah, 1988, 2 (ΔvapH° at 298.15 K, method C, NIST WebBook), 298.15 K: +0.00 % (stated uncertainty 0.41 %); Umnahanant 2006, 298.15 K: +3.73 % (stated uncertainty 5 %), not fitted. Other values on the WebBook page (most derived by their authors from vapour pressures), compared: Stephenson and Malanowski, 1987 at 347 K (method A): +22.3 %; Gardner and Hussain, 1972 at 383 K (method V): -8.8 %; Gallaugher and Hibbert, 1937 at 273 K (method V): +22.7 %; Schierholtz and Staples, 1935 at 408 K (no method given): +1.5 %; Schierholtz and Staples, 1935 at 460 K (no method given): -1.1 %; Ribeiro da Silva and Santos, 2008 (ΔvapH° at 298.15 K, method EB): +8.9 %; Verevkin, 2007 (ΔvapH° at 298.15 K, method GS): +2.7 %; Wilson, VonNiederhausern, et al., 2002 (ΔvapH° at 298.15 K, no method given): +4.8 %; Olson, 1996 (ΔvapH° at 298.15 K, method EB): +2.6 %; Knauth and Sabbah, 1990 (ΔvapH° at 298.15 K, no method given): +0.0 %; Markovnik, Sachek, et al., 1981 (ΔvapH° at 298.15 K, method EB): +3.3 %; Gardner and Hussain, 1972 (ΔvapH° at 298.15 K, no method given): -0.8 %; Thomas and Meatyard, 1966 (ΔvapH° at 298.15 K, method EB): +1.4 %; Gallaugher and Hibbert, 1937 (ΔvapH° at 298.15 K, method EB): +11.0 %.",
             "excluded": [
               {
                 "T_K": 296.4,
                 "value": 74401.662,
                 "reference": "Clapeyron equation with the vapour-pressure record",
-                "deviation_percent": -2.65,
+                "deviation_percent": -2.71,
                 "why": "deviates most from a robust fit of the others"
               },
               {
-                "T_K": 307.02104805264486,
-                "value": 73409.644,
+                "T_K": 304.3595833333333,
+                "value": 73657.359,
                 "reference": "Clapeyron equation with the vapour-pressure record",
-                "deviation_percent": -1.69,
+                "deviation_percent": -1.72,
                 "why": "deviates most from a robust fit of the others"
               }
             ]
@@ -42845,6 +42845,685 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH2, 2 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O2"
+      }
+    },
+    "methyl-levulinate": {
+      "name": "Methyl levulinate",
+      "formula": "C6H10O3",
+      "cas": "624-45-3",
+      "aliases": [
+        "methyl 4-oxopentanoate",
+        "ml"
+      ],
+      "MW": 130.1418,
+      "Tc_K": 668.0,
+      "Pc_Pa": 3270000.0,
+      "Tb_K": 470.4028,
+      "vapourPressure": {
+        "equation": "DIPPR101",
+        "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
+        "units": "Pa",
+        "A": 302.6428273,
+        "B": -17161.21468,
+        "C": -44.60011519,
+        "D": 0.04212562284,
+        "E": 1.0,
+        "Tmin_K": 333.15,
+        "Tmax_K": 668.0,
+        "tier": "fitted",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Lomba et al., J. Chem. Thermodyn. 65 (2013) 34-41, doi:10.1016/j.jct.2013.05.025; Nikitin 2019 (critical point, NIST TRC ThermoML Archive); Emel'yanenko et al., Thermochim. Acta 659 (2018) 213-221, doi:10.1016/j.tca.2017.12.006. 22 measured values (21 from the ThermoML Archive) and the critical point, 353.15-668.00 K, max deviation 0.040 %. Between 453.15 K and the critical point the curve is held only by the critical point. Also 5 values with stated uncertainties above 1 % (1.2-6.3 %), 333.15-353.20 K, which the fit meets within their uncertainties (kept as confirmation, not fitted).",
+        "source_ids": [
+          "nist-thermoml-archive",
+          "nist-webbook"
+        ],
+        "crossCheck": [
+          {
+            "reference": "Stull, 1947 (Antoine equation, NIST WebBook)",
+            "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4",
+            "T_range_K": [
+              312.9,
+              470.9
+            ],
+            "max_deviation_percent": -16.35
+          }
+        ],
+        "excluded": [
+          {
+            "T_K": 338.15,
+            "value": 627.0,
+            "reference": "Lomba 2013",
+            "deviation_percent": -3.14,
+            "why": "stated uncertainty 1.9 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 293.5,
+            "value": 30.2,
+            "reference": "Emel'yanenko 2018",
+            "deviation_percent": -24.76,
+            "why": "stated uncertainty 6.6 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 298.5,
+            "value": 44.2,
+            "reference": "Emel'yanenko 2018",
+            "deviation_percent": -20.44,
+            "why": "stated uncertainty 6.3 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 303.3,
+            "value": 63.8,
+            "reference": "Emel'yanenko 2018",
+            "deviation_percent": -17.73,
+            "why": "stated uncertainty 6.3 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 308.5,
+            "value": 92.9,
+            "reference": "Emel'yanenko 2018",
+            "deviation_percent": -14.47,
+            "why": "stated uncertainty 6.2 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 313.4,
+            "value": 135.9,
+            "reference": "Emel'yanenko 2018",
+            "deviation_percent": -15.07,
+            "why": "stated uncertainty 6.3 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 318.3,
+            "value": 183.7,
+            "reference": "Emel'yanenko 2018",
+            "deviation_percent": -10.18,
+            "why": "stated uncertainty 6.3 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 323.2,
+            "value": 262.6,
+            "reference": "Emel'yanenko 2018",
+            "deviation_percent": -11.5,
+            "why": "stated uncertainty 6.3 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 328.2,
+            "value": 357.2,
+            "reference": "Emel'yanenko 2018",
+            "deviation_percent": -9.06,
+            "why": "stated uncertainty 6.2 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 333.2,
+            "value": 501.0,
+            "reference": "Emel'yanenko 2018",
+            "deviation_percent": -10.63,
+            "why": "stated uncertainty 6 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 338.2,
+            "value": 659.0,
+            "reference": "Emel'yanenko 2018",
+            "deviation_percent": -7.57,
+            "why": "stated uncertainty 6.1 % is above the target, and the value deviates by more than it"
+          },
+          {
+            "T_K": 343.1,
+            "value": 878.0,
+            "reference": "Emel'yanenko 2018",
+            "deviation_percent": -7.33,
+            "why": "stated uncertainty 6.3 % is above the target, and the value deviates by more than it"
+          }
+        ]
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "omega": 0.539322,
+      "constants_source": "Tc and Pc: Nikitin et al., J. Chem. Thermodyn. 135 (2019) 233-240, doi:10.1016/j.jct.2019.03.040, NIST TRC ThermoML Archive (stated uncertainties 7 K and 100 kPa). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (470.403 K).",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "omega_source": "From its definition, -log10(Psat(0.7 Tc)/Pc) - 1, with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook; Psat at 467.60 K between the last measured value at 453.15 K and the critical point, so ω is less certain than the measured values).",
+      "omega_source_ids": [
+        "nist-thermoml-archive",
+        "nist-webbook"
+      ],
+      "properties": {
+        "liquidDensity": {
+          "equation": "DIPPR105",
+          "coefficients": {
+            "A": 242.4060672,
+            "B": 0.4255298937,
+            "C": 668.0,
+            "D": 0.5779626589
+          },
+          "units": "kg/m3",
+          "Tmin_K": 278.15,
+          "Tmax_K": 338.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+            "reference": "Lomba et al., J. Chem. Thermodyn. 65 (2013) 34-41, doi:10.1016/j.jct.2013.05.025; Lomba et al., J. Chem. Thermodyn. 66 (2013) 131-136, doi:10.1016/j.jct.2013.06.020",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "38 measured values, 278.15-338.15 K, max deviation 0.0061 %",
+            "notes": "DIPPR 105 with C fixed at the critical temperature 668.00 K (Nikitin 2019, NIST TRC ThermoML Archive)."
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"methyl levulinate\", \"methyl 4-oxidanylidenepentanoate\"; 4 records opened)",
+            "NIST Chemistry WebBook, gas phase thermochemistry: no gas heat capacity",
+            "ThermoML Archive: no gas-phase heat capacity"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"methyl levulinate\", \"methyl 4-oxidanylidenepentanoate\"; 4 records opened)"
+          ],
+          "note": "no open data at the 1 % target of the records: 143 measured values, 302.68-373.68 K, but their stated uncertainties (2.4-2.5 %) are larger than the target"
+        },
+        "heatOfVaporization": {
+          "equation": "DIPPR106",
+          "coefficients": {
+            "A": 165977.9057,
+            "B": 2.567349991,
+            "C": -2.094529732
+          },
+          "units": "J/mol",
+          "Tmin_K": 333.15,
+          "Tmax_K": 453.15,
+          "Tc_K": 668.0,
+          "tier": "fitted",
+          "source": {
+            "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
+            "reference": "validation/python/measured_components.py (clapeyron)",
+            "access": "calculated from the open measured data of the vapour-pressure record; free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4)",
+            "fit": "25 Clapeyron values and 0 measured values, 333.15-453.15 K, max deviation 0.020 %",
+            "notes": "dHvap = T (dPsat/dT) (v_vapour - v_liquid), Psat from the vapour-pressure record of this component, both volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, MIT), 333.15-453.15 K (up to the last measured vapour pressure); DIPPR 106 with the critical temperature 668.00 K. Chosen because the measured values do not give the temperature dependence (no calorimetric value; the WebBook values are derived from vapour pressures). Max deviation from the Clapeyron values 0.020 %. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none. Other values on the WebBook page (most derived by their authors from vapour pressures), compared: Stephenson and Malanowski, 1987 at 327 K (method A): +16.8 %; Schuette and Cowley, 1931 at 410 K (no method given): -4.0 %."
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "nist-webbook",
+            "thermo-library"
+          ]
+        },
+        "liquidViscosity": {
+          "equation": "DIPPR101",
+          "coefficients": {
+            "A": -78.69111743,
+            "B": 4793.752566,
+            "C": 9.890113742,
+            "D": 0.0,
+            "E": 0.0
+          },
+          "units": "Pa s",
+          "Tmin_K": 278.15,
+          "Tmax_K": 338.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (NIST TRC ThermoML Archive)",
+            "reference": "Lomba et al., J. Chem. Thermodyn. 65 (2013) 34-41, doi:10.1016/j.jct.2013.05.025",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "25 measured values, 278.15-338.15 K, max deviation 0.57 %"
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"methyl levulinate\", \"methyl 4-oxidanylidenepentanoate\"; 4 records opened)"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"methyl levulinate\", \"methyl 4-oxidanylidenepentanoate\"; 4 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"methyl levulinate\", \"methyl 4-oxidanylidenepentanoate\"; 4 records opened)"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"methyl levulinate\", \"methyl 4-oxidanylidenepentanoate\"; 4 records opened)"
+          ],
+          "note": "no open data at the 1 % target of the records: 25 measured values, 278.15-338.15 K, but their stated uncertainties (2.9-3.4 %) are larger than the target"
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "2": 1,
+          "18": 1,
+          "22": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O3"
+      }
+    },
+    "ethyl-levulinate": {
+      "name": "Ethyl levulinate",
+      "formula": "C7H12O3",
+      "cas": "539-88-8",
+      "aliases": [
+        "ethyl 4-oxopentanoate",
+        "el"
+      ],
+      "MW": 144.1684,
+      "Tc_K": 669.0,
+      "Pc_Pa": 2970000.0,
+      "Tb_K": 479.0,
+      "vapourPressure": {
+        "equation": "DIPPR101",
+        "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
+        "units": "Pa",
+        "A": 195.9108845,
+        "B": -13325.99035,
+        "C": -27.23750671,
+        "D": 0.02408638729,
+        "E": 1.0,
+        "Tmin_K": 293.5,
+        "Tmax_K": 669.0,
+        "tier": "fitted",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Emel'yanenko et al., Thermochim. Acta 659 (2018) 213-221, doi:10.1016/j.tca.2017.12.006; Nikitin 2019 (critical point, NIST TRC ThermoML Archive); Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook). 14 measured values (12 from the ThermoML Archive), the normal boiling temperature 479.00 K (Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook), fitted as 101.325 kPa, never left out) and the critical point, 293.50-669.00 K, max deviation 3.4 %, each within its own stated uncertainty. Between 479.00 K and the critical point the curve is held only by the critical point.",
+        "source_ids": [
+          "nist-thermoml-archive",
+          "nist-webbook"
+        ],
+        "crossCheck": [
+          {
+            "reference": "Stull, 1947 (Antoine equation, NIST WebBook)",
+            "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4",
+            "T_range_K": [
+              320.4,
+              479.4
+            ],
+            "max_deviation_percent": 8.41
+          }
+        ]
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "omega": 0.587794,
+      "constants_source": "Tc and Pc: Nikitin et al., J. Chem. Thermodyn. 135 (2019) 233-240, doi:10.1016/j.jct.2019.03.040, NIST TRC ThermoML Archive (stated uncertainties 7 K and 90 kPa). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (479 K).",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "omega_source": "From its definition, -log10(Psat(0.7 Tc)/Pc) - 1, with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook; Psat at 468.30 K inside the measured range).",
+      "omega_source_ids": [
+        "nist-thermoml-archive",
+        "nist-webbook"
+      ],
+      "properties": {
+        "liquidDensity": {
+          "equation": "DIPPR105",
+          "coefficients": {
+            "A": 3.634034583e-167,
+            "B": 1.716524599e-85,
+            "C": 669.0,
+            "D": 0.001747417095
+          },
+          "units": "kg/m3",
+          "Tmin_K": 293.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+            "reference": "Lomba et al., J. Chem. Thermodyn. 66 (2013) 131-136, doi:10.1016/j.jct.2013.06.020; Han et al., J. Chem. Thermodyn. 92 (2016) 207-213, doi:10.1016/j.jct.2015.09.017",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "6 measured values, 293.15-333.15 K, max deviation 0.13 %",
+            "notes": "DIPPR 105 with C fixed at the critical temperature 669.00 K (Nikitin 2019, NIST TRC ThermoML Archive)."
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl levulinate\", \"ethyl 4-oxidanylidenepentanoate\"; 7 records opened)",
+            "NIST Chemistry WebBook, gas phase thermochemistry: no gas heat capacity",
+            "ThermoML Archive: no gas-phase heat capacity"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl levulinate\", \"ethyl 4-oxidanylidenepentanoate\"; 7 records opened)"
+          ],
+          "note": "no open data at the 1 % target of the records: 143 measured values, 302.98-373.98 K, but their stated uncertainties (2.4-2.5 %) are larger than the target"
+        },
+        "heatOfVaporization": {
+          "equation": "DIPPR106",
+          "coefficients": {
+            "A": 109106.6827,
+            "B": 1.484426952,
+            "C": -1.119826643
+          },
+          "units": "J/mol",
+          "Tmin_K": 293.5,
+          "Tmax_K": 479.0,
+          "Tc_K": 669.0,
+          "tier": "fitted",
+          "source": {
+            "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
+            "reference": "validation/python/measured_components.py (clapeyron)",
+            "access": "calculated from the open measured data of the vapour-pressure record; free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4)",
+            "fit": "25 Clapeyron values and 0 measured values, 293.50-479.00 K, max deviation 0.22 %",
+            "notes": "dHvap = T (dPsat/dT) (v_vapour - v_liquid), Psat from the vapour-pressure record of this component, both volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, MIT), 293.50-479.00 K (up to the last measured vapour pressure); DIPPR 106 with the critical temperature 669.00 K. Chosen because the measured values do not give the temperature dependence (no calorimetric value; the WebBook values are derived from vapour pressures). Max deviation from the Clapeyron values 0.22 %. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none. Other values on the WebBook page (most derived by their authors from vapour pressures), compared: Stephenson and Malanowski, 1987 at 335 K (method A): -1.5 %; Schuette and Cowley, 1931 at 420 K (no method given): -2.3 %."
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "nist-webbook",
+            "thermo-library"
+          ]
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl levulinate\", \"ethyl 4-oxidanylidenepentanoate\"; 7 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl levulinate\", \"ethyl 4-oxidanylidenepentanoate\"; 7 records opened)"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl levulinate\", \"ethyl 4-oxidanylidenepentanoate\"; 7 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl levulinate\", \"ethyl 4-oxidanylidenepentanoate\"; 7 records opened)"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl levulinate\", \"ethyl 4-oxidanylidenepentanoate\"; 7 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "2": 2,
+          "18": 1,
+          "22": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 2 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H12O3"
+      }
+    },
+    "butyl-levulinate": {
+      "name": "Butyl levulinate",
+      "formula": "C9H16O3",
+      "cas": "2052-15-5",
+      "aliases": [
+        "butyl 4-oxopentanoate",
+        "n-butyl levulinate",
+        "bl"
+      ],
+      "MW": 172.2215,
+      "Tc_K": 692.0,
+      "Pc_Pa": 2410000.0,
+      "Tb_K": 510.6999,
+      "vapourPressure": {
+        "equation": "DIPPR101",
+        "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
+        "units": "Pa",
+        "A": 226.5175733,
+        "B": -15458.81827,
+        "C": -31.84181466,
+        "D": 0.02709419132,
+        "E": 1.0,
+        "Tmin_K": 298.2,
+        "Tmax_K": 692.0,
+        "tier": "fitted",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Emel'yanenko et al., Thermochim. Acta 659 (2018) 213-221, doi:10.1016/j.tca.2017.12.006; Nikitin 2019 (critical point, NIST TRC ThermoML Archive); Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook). 13 measured values (11 from the ThermoML Archive), the normal boiling temperature 510.70 K (Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook), fitted as 101.325 kPa, never left out) and the critical point, 298.20-692.00 K, max deviation 5.3 %, each within its own stated uncertainty. Between 510.70 K and the critical point the curve is held only by the critical point.",
+        "source_ids": [
+          "nist-thermoml-archive",
+          "nist-webbook"
+        ]
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "omega": 0.668376,
+      "constants_source": "Tc and Pc: Nikitin et al., J. Chem. Thermodyn. 135 (2019) 233-240, doi:10.1016/j.jct.2019.03.040, NIST TRC ThermoML Archive (stated uncertainties 7 K and 80 kPa). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (510.7 K).",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "omega_source": "From its definition, -log10(Psat(0.7 Tc)/Pc) - 1, with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook; Psat at 484.40 K inside the measured range).",
+      "omega_source_ids": [
+        "nist-thermoml-archive",
+        "nist-webbook"
+      ],
+      "properties": {
+        "liquidDensity": {
+          "equation": "DIPPR105",
+          "coefficients": {
+            "A": 4035.665831,
+            "B": 1.87238385,
+            "C": 692.0,
+            "D": -0.4263851676
+          },
+          "units": "kg/m3",
+          "Tmin_K": 293.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+            "reference": "Lomba et al., J. Chem. Thermodyn. 66 (2013) 131-136, doi:10.1016/j.jct.2013.06.020; Han et al., J. Chem. Thermodyn. 92 (2016) 207-213, doi:10.1016/j.jct.2015.09.017",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "6 measured values, 293.15-333.15 K, max deviation 0.089 %",
+            "notes": "DIPPR 105 with C fixed at the critical temperature 692.00 K (Nikitin 2019, NIST TRC ThermoML Archive)."
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"butyl levulinate\", \"butyl 4-oxidanylidenepentanoate\"; 5 records opened)",
+            "NIST Chemistry WebBook, gas phase thermochemistry: no gas heat capacity",
+            "ThermoML Archive: no gas-phase heat capacity"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"butyl levulinate\", \"butyl 4-oxidanylidenepentanoate\"; 5 records opened)"
+          ],
+          "note": "no open data at the 1 % target of the records: 144 measured values, 302.66-374.16 K, but their stated uncertainties (2.4-2.5 %) are larger than the target"
+        },
+        "heatOfVaporization": {
+          "equation": "DIPPR106",
+          "coefficients": {
+            "A": 130227.4211,
+            "B": 1.664106898,
+            "C": -1.276194973
+          },
+          "units": "J/mol",
+          "Tmin_K": 298.2,
+          "Tmax_K": 510.7,
+          "Tc_K": 692.0,
+          "tier": "fitted",
+          "source": {
+            "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
+            "reference": "validation/python/measured_components.py (clapeyron)",
+            "access": "calculated from the open measured data of the vapour-pressure record; free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4)",
+            "fit": "25 Clapeyron values and 0 measured values, 298.20-510.70 K, max deviation 0.28 %",
+            "notes": "dHvap = T (dPsat/dT) (v_vapour - v_liquid), Psat from the vapour-pressure record of this component, both volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, MIT), 298.20-510.70 K (up to the last measured vapour pressure); DIPPR 106 with the critical temperature 692.00 K. Chosen because the measured values do not give the temperature dependence (no calorimetric value; the WebBook values are derived from vapour pressures). Max deviation from the Clapeyron values 0.28 %. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none. Other values on the WebBook page (most derived by their authors from vapour pressures), compared: Stephenson and Malanowski, 1987 at 373 K (method A): +10.2 %; Stephenson and Malanowski, 1987 at 408 K (method A): +13.4 %; Schuette and Cowley, 1931 at 452 K (no method given): -3.5 %."
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "nist-webbook",
+            "thermo-library"
+          ]
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"butyl levulinate\", \"butyl 4-oxidanylidenepentanoate\"; 5 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"butyl levulinate\", \"butyl 4-oxidanylidenepentanoate\"; 5 records opened)"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"butyl levulinate\", \"butyl 4-oxidanylidenepentanoate\"; 5 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"butyl levulinate\", \"butyl 4-oxidanylidenepentanoate\"; 5 records opened)"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"butyl levulinate\", \"butyl 4-oxidanylidenepentanoate\"; 5 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "2": 4,
+          "18": 1,
+          "22": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 4 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C9H16O3"
       }
     }
   }

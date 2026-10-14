@@ -55,12 +55,24 @@ MEASURED_ONLY = [c for c in comp if "Measured data only" in comp[c].get("constan
 
 
 def webbook_tboil(c):
-    """(value K, uncertainty K) of the Tboil average (AVG) on the component's stored WebBook page."""
+    """(value K, uncertainty K) of the Tboil average (AVG) on the component's stored WebBook page; without an average,
+    the page's one Tboil value and None (a compilation without a stated uncertainty)."""
     d = json.loads((ROOT / f"validation/data/pure/measured/webbook_{c}.json").read_text())
     t = next(t for t in d["pages"]["phase change"]["tables"] if t["header"][0] == "Quantity")
-    r = next(r for r in t["rows"] if r[0] == "Tboil" and r[3] == "AVG")
+    r = next((r for r in t["rows"] if r[0] == "Tboil" and r[3] == "AVG"), None)
+    if r is None:
+        (r,) = [r for r in t["rows"] if r[0] == "Tboil" and r[2] == "K"]
+        return float(r[1].split("±")[0]), None
     v, u = (float(x) for x in r[1].split("±"))
     return v, u
+
+
+def tb_tolerance(c):
+    """The tolerance class of the boiling-point case of a component built from measured data."""
+    if "fitted as 101.325 kPa" in comp[c]["vapourPressure"]["source"]:
+        return "boilingPointFitted"  # the vapour-pressure record is fitted to this boiling point
+    u = webbook_tboil(c)[1]
+    return "boilingPointSingle" if u is None else "boilingPointAvg" if u <= 1.0 else "boilingPointAvgWide"
 
 
 LIQ_PROPS = [("liquidDensity", "rho_kg_m3", "liquidDensity"),
@@ -77,7 +89,7 @@ groups.append({
     "cases": [{"id": f"tb/{c}", "type": "normalBoilingPoint", "component": c, "P_kPa": 101.325,
                "quantities": [{"key": "T_C", "tol": "boilingPoint"}]} for c in ALL + [c for c in EXTRA if c in TB_EXTRA]]
     + [{"id": f"tb/{c}", "type": "normalBoilingPoint", "component": c, "P_kPa": 101.325,
-        "quantities": [{"key": "T_C", "tol": "boilingPointAvg" if webbook_tboil(c)[1] <= 1.0 else "boilingPointAvgWide"}]}
+        "quantities": [{"key": "T_C", "tol": tb_tolerance(c)}]}
        for c in MEASURED_ONLY]})
 
 # (b) azeotropes
@@ -306,6 +318,8 @@ TOL = {
     "thermalConductivity": {"rel": 0.05, "basis": "Proposal 0002"},
     "boilingPointAvg": {"abs": 1.0, "unit": "K", "basis": "Average of the measured normal boiling points on the NIST WebBook page, stated uncertainty 1 K or less (components built from measured data)"},
     "boilingPointAvgWide": {"abs": 1.0, "unit": "K", "informational": True, "basis": "Report only: the WebBook average of the measured normal boiling points states an uncertainty above 1 K"},
+    "boilingPointSingle": {"abs": 1.0, "unit": "K", "informational": True, "basis": "Report only: the WebBook page has one normal boiling point, from a compilation, without a stated uncertainty"},
+    "boilingPointFitted": {"abs": 1.0, "unit": "K", "informational": True, "basis": "Report only: the vapour-pressure record is fitted to this boiling point (no other measured vapour pressure near it), so this is a consistency check"},
     "azeotropeT": {"abs": 1.0, "unit": "K", "basis": "Same bound as test/azeotropes.test.js"},
     "azeotropeX": {"abs": 0.05, "unit": "mole fraction", "basis": "Same bound as test/azeotropes.test.js"},
     "bubbleT": {"abs": 1.0, "unit": "K", "basis": "Chosen for this report, as for azeotrope temperatures (not in proposal 0002)"},
