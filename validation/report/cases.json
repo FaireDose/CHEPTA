@@ -11,7 +11,7 @@
   "thermalConductivity": {"rel": 0.05, "basis": "Proposal 0002"},
   "boilingPointAvg": {"abs": 1.0, "unit": "K", "basis": "Average of the measured normal boiling points on the NIST WebBook page, stated uncertainty 1 K or less (components built from measured data)"},
   "boilingPointAvgWide": {"abs": 1.0, "unit": "K", "informational": true, "basis": "Report only: the WebBook average of the measured normal boiling points states an uncertainty above 1 K"},
-  "boilingPointSingle": {"abs": 1.0, "unit": "K", "informational": true, "basis": "Report only: the WebBook page has one normal boiling point, from a compilation, without a stated uncertainty"},
+  "boilingPointSingle": {"abs": 1.0, "unit": "K", "informational": true, "basis": "Report only: the WebBook page has no averaged normal boiling point: its one value (a compilation), or the median of its values, without a stated uncertainty"},
   "boilingPointFitted": {"abs": 1.0, "unit": "K", "informational": true, "basis": "Report only: the vapour-pressure record is fitted to this boiling point (no other measured vapour pressure near it), so this is a consistency check"},
   "azeotropeT": {"abs": 1.0, "unit": "K", "basis": "Same bound as test/azeotropes.test.js"},
   "azeotropeX": {"abs": 0.05, "unit": "mole fraction", "basis": "Same bound as test/azeotropes.test.js"},
@@ -98,7 +98,9 @@
    {"id": "tb/methyl-levulinate", "type": "normalBoilingPoint", "component": "methyl-levulinate", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
    {"id": "tb/ethyl-levulinate", "type": "normalBoilingPoint", "component": "ethyl-levulinate", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
    {"id": "tb/butyl-levulinate", "type": "normalBoilingPoint", "component": "butyl-levulinate", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointFitted"}]},
-   {"id": "tb/levulinic-acid", "type": "normalBoilingPoint", "component": "levulinic-acid", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]}
+   {"id": "tb/levulinic-acid", "type": "normalBoilingPoint", "component": "levulinic-acid", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
+   {"id": "tb/gbl", "type": "normalBoilingPoint", "component": "gbl", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
+   {"id": "tb/isoamyl-alcohol", "type": "normalBoilingPoint", "component": "isoamyl-alcohol", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointAvgWide"}]}
   ]},
   {"id": "azeotropes", "title": "Azeotropes at 101.325 kPa", "cases": [
    {"id": "azeo/ethanol+water/NRTL", "type": "azeotrope", "components": ["ethanol", "water"], "model": "NRTL", "P_kPa": 101.325, "near_x1": 0.892, "quantities": [{"key": "T_C", "tol": "azeotropeT"}, {"key": "x1", "tol": "azeotropeX"}]},

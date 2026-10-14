@@ -40,7 +40,7 @@ function statedMaxDeviation(rec) {
 }
 
 test("every component has every property, as a record or an explicit 'no open data' marker", () => {
-  assert.equal(listComponents().length, 131);
+  assert.equal(listComponents().length, 133);
   assert.equal(GASES.length, 23);
   for (const { id, name } of listComponents()) {
     const props = components[id].properties;
@@ -137,10 +137,13 @@ test("the gases' vapour pressures give their normal boiling points within 0.1 K"
 // is the monomer's and its ΔHvap is to the real, largely dimerized vapour, so that h is not consistent
 // (review of #12, finding 1; the fix needs the vapour association / equation of state, #13).
 const ENTHALPY_NOT_CONSISTENT = new Set(["acetic-acid"]);
-// Components written with a gap between their records (the maintainer's decision of 2026-10-14): levulinic acid's
-// open liquid densities end at 343 K and its vapour-pressure record starts at 375 K, so at its typical liquid state
-// (375 K) the density is refused with an out-of-range note instead of being extrapolated.
-const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3"] };
+// Components written with a gap between their records (the maintainer's decision of 2026-10-14): their open liquid
+// densities end below the start of their vapour-pressure record (levulinic acid 343 / 375 K, gamma-butyrolactone
+// 333 / 377 K, isoamyl alcohol 332.7 / 335.85 K), so at their typical liquid state (the start of the vapour-pressure
+// record) these properties are refused with an out-of-range note instead of being extrapolated (gamma-butyrolactone:
+// also its liquid viscosity, measured to 323 K; isoamyl alcohol: also its viscosity, to 323 K).
+const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3"], "gbl": ["rho_kg_m3", "mu_Pa_s"],
+  "isoamyl-alcohol": ["rho_kg_m3", "mu_Pa_s"] };
 
 test("props() returns liquid and vapour properties for every component at a typical state", () => {
   // styrene at 25 °C: below its measured vapour pressure, so the liquid enthalpy is refused with a reason

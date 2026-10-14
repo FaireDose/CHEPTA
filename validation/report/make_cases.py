@@ -7,6 +7,7 @@ Edit this file (not cases.json) to add or change a case, then regenerate the ref
 CoolProp is used here only to choose the temperature range of the plots.
 """
 import json
+import statistics
 from pathlib import Path
 
 import sys
@@ -56,13 +57,13 @@ MEASURED_ONLY = [c for c in comp if "Measured data only" in comp[c].get("constan
 
 def webbook_tboil(c):
     """(value K, uncertainty K) of the Tboil average (AVG) on the component's stored WebBook page; without an average,
-    the page's one Tboil value and None (a compilation without a stated uncertainty)."""
+    the median of the page's Tboil values and None (no stated uncertainty)."""
     d = json.loads((ROOT / f"validation/data/pure/measured/webbook_{c}.json").read_text())
     t = next(t for t in d["pages"]["phase change"]["tables"] if t["header"][0] == "Quantity")
     r = next((r for r in t["rows"] if r[0] == "Tboil" and r[3] == "AVG"), None)
-    if r is None:
-        (r,) = [r for r in t["rows"] if r[0] == "Tboil" and r[2] == "K"]
-        return float(r[1].split("±")[0]), None
+    if r is None:  # no average: the median of the page's values (one, for most), without an uncertainty
+        rows = [r for r in t["rows"] if r[0] == "Tboil" and r[2] == "K"]
+        return statistics.median(float(r[1].split("±")[0]) for r in rows), None
     v, u = (float(x) for x in r[1].split("±"))
     return v, u
 
@@ -318,7 +319,7 @@ TOL = {
     "thermalConductivity": {"rel": 0.05, "basis": "Proposal 0002"},
     "boilingPointAvg": {"abs": 1.0, "unit": "K", "basis": "Average of the measured normal boiling points on the NIST WebBook page, stated uncertainty 1 K or less (components built from measured data)"},
     "boilingPointAvgWide": {"abs": 1.0, "unit": "K", "informational": True, "basis": "Report only: the WebBook average of the measured normal boiling points states an uncertainty above 1 K"},
-    "boilingPointSingle": {"abs": 1.0, "unit": "K", "informational": True, "basis": "Report only: the WebBook page has one normal boiling point, from a compilation, without a stated uncertainty"},
+    "boilingPointSingle": {"abs": 1.0, "unit": "K", "informational": True, "basis": "Report only: the WebBook page has no averaged normal boiling point: its one value (a compilation), or the median of its values, without a stated uncertainty"},
     "boilingPointFitted": {"abs": 1.0, "unit": "K", "informational": True, "basis": "Report only: the vapour-pressure record is fitted to this boiling point (no other measured vapour pressure near it), so this is a consistency check"},
     "azeotropeT": {"abs": 1.0, "unit": "K", "basis": "Same bound as test/azeotropes.test.js"},
     "azeotropeX": {"abs": 0.05, "unit": "mole fraction", "basis": "Same bound as test/azeotropes.test.js"},

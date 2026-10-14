@@ -36,6 +36,7 @@ The stored points of each record (validation/data/pure/<id>.json) are the measur
 test/properties.test.js checks every record against the measurements themselves.
 """
 import argparse
+import collections
 import datetime
 import html as H
 import json
@@ -142,7 +143,11 @@ COMPONENTS = {
         # record refuses outside its own range (vapour-liquid equilibrium with an ideal-gas vapour needs only the
         # vapour pressure)
         "antoine_fit": ["Stull, 1947"],
-        "vp_fit": "loose", "vp_tb": "thermoml",
+        "vp_fit": "consensus", "vp_tb": "thermoml",
+        "vp_exclude": {"Verevkin 2012": "transpiration takes the vapour as monomer, and a carboxylic acid partly "
+                                        "dimerizes in the gas, which makes the apparent pressure too high; these values "
+                                        "lie 11-43 % above the curve of Stull (1947), the measured boiling temperature "
+                                        "and the critical point"},
         "vp_why": ("The transpiration values of Verevkin et al. (2012, 328-373 K) lie 11-43 % above this curve and are "
                    "left out: no curve with a physical enthalpy of vaporization meets both them and the measured normal "
                    "boiling temperature; transpiration takes the vapour as monomer, and a carboxylic acid partly "
@@ -160,13 +165,10 @@ COMPONENTS = {
         "thermoml_queries": ["methyl levulinate", "methyl 4-oxidanylidenepentanoate"],
         # critical point: Nikitin et al. (2019, pulse heating), ThermoML Archive, the only measurement
         "critical_thermoml": "10.1016/j.jct.2019.03.040",
-        # Lomba et al. (2013) measured 333-453 K (0.2-2.7 %); Emel'yanenko et al. (2018, transpiration, 6 %) 294-353 K.
-        # Where they overlap (333-353 K) they differ by up to 10 %, beyond their stated uncertainties: a fit of both
-        # leaves out eight values of Lomba et al. (333-373 K, up to 6 % off, stated 0.4-2.7 %), so, as for isoamyl
-        # alcohol, the more precise set is fitted and the other kept as confirmation where the fit meets it. Stull
-        # (1947), a compilation, as a cross-check only
+        # Lomba et al. (2013, 333-453 K, 0.2-2.7 %) and Emel'yanenko et al. (2018, transpiration, 294-353 K, 6 %), fitted
+        # together with the same weight (the rule of 2026-10-14); Stull (1947), a compilation, as a cross-check only
         "antoine_fit": [],
-        "vp_fit": "loose",
+        "vp_fit": "consensus",
         "dHvap": "clapeyron",
         "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
         "cp0": None,
@@ -181,7 +183,7 @@ COMPONENTS = {
         # article_ethyl-levulinate_bo2025.json) 446-479 K, the pure end points of their isobaric VLE sets and their
         # boiling temperature at 101.3 kPa. Stull (1947, a compilation, 320-479 K) as a cross-check only
         "antoine_fit": [],
-        "vp_fit": "within",
+        "vp_fit": "consensus",
         "dHvap": "clapeyron",
         "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
         "cp0": None,
@@ -195,7 +197,7 @@ COMPONENTS = {
         # only Emel'yanenko et al. (2018, transpiration, 6-7 %), 298-348 K; the WebBook has no Antoine equation; above
         # them only the normal boiling temperature of the WebBook (Weast and Grasselli, 1989, a compilation; 510.7 K)
         "antoine_fit": [],
-        "vp_fit": "within", "vp_tb": "Weast and Grasselli, 1989",
+        "vp_fit": "consensus", "vp_tb": "Weast and Grasselli, 1989",
         "dHvap": "clapeyron",
         "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
         "cp0": None,
@@ -212,6 +214,8 @@ COMPONENTS = {
                         "instead of their 487 K (2 K)",
         # the ThermoML values cover 284-304 K and 353-408 K; Guthrie et al. (1952) measured 276-335 K
         "antoine_fit": ["Guthrie, Scott, et al., 1952, 3"],
+        # vapour pressure: every set together, each article with the same weight (the rule of 2026-10-14)
+        "vp_fit": "consensus",
         "dHvap": "clapeyron", "dHvap_refs": ["Majer and Svoboda, 1985"],
         "dHvap_why": "the critically evaluated values of Majer and Svoboda (1985) are at 298.15 K and 304.5 K only",
         "cp0": {"tables": ["Dorofeeva O.V., 1992"], "Tmin": 200.0},
@@ -234,8 +238,8 @@ COMPONENTS = {
         "thermoml_queries": ["2-methyltetrahydrofuran", "2-methyloxolane"],
         "critical": "Kobe, Ravicz, et al., 1956",
         "antoine_fit": [],
-        # Lepori et al. (2017, 279-310 K, 2.5 %) extend the range below the values within 1 %
-        "vp_fit": "loose",
+        # vapour pressure: every set together, each article with the same weight (the rule of 2026-10-14)
+        "vp_fit": "consensus",
         "dHvap": "clapeyron",
         "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
         "cp0": None,
@@ -245,15 +249,14 @@ COMPONENTS = {
         "aliases": ["γ-butyrolactone", "butyrolactone", "oxolan-2-one", "gbl"],
         "thermoml_queries": ["gamma-butyrolactone", "oxolan-2-one"],
         "webbook_individual": ["HVAP"],
-        # not written yet: no temperature where both its vapour pressure and its liquid density are measured
-        "hold": "its open measured vapour pressures start at 377 K (ThermoML Archive; the WebBook has none) and its "
-                "liquid densities end at 353 K, so no liquid state has both; wanted: vapour pressures below 377 K or "
-                "densities above 353 K from an open source",
+        # written with a gap (the maintainer's decision, 2026-10-14): its open measured vapour pressures start at 377 K
+        # (ThermoML Archive; the WebBook has none) and its liquid densities end below them; each record refuses outside
+        # its own range. Wanted: vapour pressures below 377 K or densities above 353 K from an open source
         # the archive also has VonNiederhausern et al. (2006): 732.5 K and 5.10 MPa, with larger uncertainties
         "critical": "Wilson, Wilson, et al., 1996",
         "antoine_fit": [],
-        # Mathuni et al. (2011) have the only values within 1 %; the others (1.4-5 %) confirm the curve
-        "vp_fit": "loose",
+        # vapour pressure: every set together, each article with the same weight (the rule of 2026-10-14)
+        "vp_fit": "consensus",
         "dHvap": "clapeyron",
         "dHvap_why": "the calorimetric value of Leitao et al. (1990) is at 298.15 K only",
         "cpL_equation": "Ismailov, Gabzalilova, et al., 1988",
@@ -264,17 +267,18 @@ COMPONENTS = {
         "aliases": ["3-methyl-1-butanol", "3-methylbutan-1-ol", "isopentyl alcohol", "isopentanol"],
         "thermoml_queries": ["3-methyl-1-butanol", "3-methylbutan-1-ol"],
         "webbook_individual": ["TC", "HVAP"],
-        "hold": "its open measured vapour pressures start at 335.85 K (ThermoML Archive; the WebBook has none) and its "
-                "liquid densities end at 332.7 K, so no liquid state has both; wanted: vapour pressures below 336 K or "
-                "densities above 333 K from an open source",
+        # written with a gap (the maintainer's decision, 2026-10-14): its open measured vapour pressures start at
+        # 335.85 K (ThermoML Archive; the WebBook has none) and its liquid densities end at 332.7 K; each record refuses
+        # outside its own range. Wanted: vapour pressures below 336 K or densities above 333 K from an open source
         "critical": "Gude and Teja, 1995",
         "antoine_fit": [],
         # calorimetric values of Majer, Svoboda et al. (1985), 303-358 K, and the evaluation of Majer and Svoboda (1985)
         "dHvap_methods": ["C"], "dHvap_refs": ["Majer and Svoboda, 1985"],
         "cp0": {"tables": ["Stromsoe E., 1970"]},
-        # the archive's sets disagree by up to 3 %, beyond their stated uncertainties; Censky et al. (2010,
-        # ebulliometry) state the smallest (0.14-0.21 %)
-        "vp_fit": "anchor", "vp_anchor": ["Censky 2010"],
+        # the archive's twelve sets differ by up to 3 %: fitted together with the same weight (the rule of 2026-10-14;
+        # until then anchored on Censky et al. 2010 for its smallest stated uncertainty, which the independent checks
+        # did not support)
+        "vp_fit": "consensus",
     },
     "1-3-propanediol": {
         "name": "1,3-Propanediol", "cas": "504-63-2", "webbook": "C504632", "proposal": "proposal 0009, batch 3",
@@ -286,8 +290,10 @@ COMPONENTS = {
         "critical_why": "the later article; its values equal the median of all four",
         # Stull (1947), a compilation, as a cross-check only
         "antoine_fit": [],
-        # every set states uncertainties above 1 % except a few values of Mokbel et al. (2012)
-        "vp_fit": "within",
+        # vapour pressure: every set together, each article with the same weight (the rule of 2026-10-14)
+        # (every set states uncertainties above 1 % except a few values of Mokbel et al. 2012; the sets differ by up to
+        # 8 %)
+        "vp_fit": "consensus",
         "dHvap": "clapeyron",
         "dHvap_why": "the calorimetric value of Knauth and Sabbah (1988) is at 298.15 K only",
         "cp0": None,
@@ -728,6 +734,71 @@ def fit_within_uncertainty(cid, prop, form, pts, Tc=None, fixed=()):
     return coeffs, use, excluded, m
 
 
+def fit_consensus(cid, prop, form, pts, fixed=(), exclude=None, floor=0.005, none_u=0.01):
+    """The rule of 2026-10-14 (docs/decisions/2026-10-14-07-...): a small stated uncertainty is the authors' claim,
+    not proof, so no set is preferred for it. Every set is fitted together, each paper with the same total weight
+    (point weight 1 / (u sqrt(n_set)), u the stated uncertainty with a floor of 0.5 %, 1 % where none is stated), with
+    the fixed points (critical point). A whole set is left out only with a physical reason stated in COMPONENTS
+    ("vp_exclude": {set: reason}); a single value only when the fit misses it by more than three times its
+    uncertainty: fit, keep every value within three times its uncertainty of that fit, fit again, until the values
+    kept no longer change (at most a third left out). Of the DIPPR 101 variants, the fewest coefficients whose weighted
+    residual is within 10 % of the best one and whose enthalpy of vaporization (ideal gas, R T^2 dlnP/dT) falls with
+    temperature over the measured range below 0.7 Tc (above it the real-gas factor makes the ideal-gas value rise).
+    Returns coeffs, the values used, the values left out, the maximum deviation and each set's mean deviation (%)."""
+    exclude = exclude or {}
+    cand = [p for p in pts if p["ref"] not in exclude]
+    by_set = [dict(p, why=exclude[p["ref"]]) for p in pts if p["ref"] in exclude]
+    u_of = lambda p: max(p["u_rel"] if p["u_rel"] else none_u, floor)  # noqa: E731
+    Tc = max(p["T"] for p in fixed) if fixed else None
+
+    def fit(use):
+        cnt = collections.Counter(p["ref"] for p in use)
+        T = np.array([p["T"] for p in use] + [p["T"] for p in fixed])
+        y = np.array([p["y"] for p in use] + [p["y"] for p in fixed])
+        w = np.array([1 / (u_of(p) * math.sqrt(cnt[p["ref"]])) for p in use] + [1 / 0.001] * len(fixed))
+        Td = np.array([p["T"] for p in use])
+        hi = min(Td.max(), 0.7 * Tc) if Tc else Td.max()
+        grid = np.linspace(Td.min(), max(hi, Td.min() + 1), 50)
+        fits = []
+        for k in complexities(form, T):
+            c = fit_ls(form, T, y, None, k, w)
+            r = float(np.sqrt(np.mean((w * np.log(ev(form, c, T) / y)) ** 2)))
+            lnp = np.log(ev(form, c, grid))
+            dh = grid[1:-1] ** 2 * (lnp[2:] - lnp[:-2]) / (grid[2:] - grid[:-2])
+            fits.append((c, r, bool(np.all(np.diff(dh) < 0))))
+        ok = [f for f in fits if f[2]]
+        if not ok:
+            raise SystemExit("%s %s: no DIPPR 101 variant with an enthalpy of vaporization falling with temperature" % (cid, prop))
+        best = min(f[1] for f in ok)
+        return next(f[0] for f in ok if f[1] <= 1.1 * best)
+
+    dev = lambda c, p: float(ev(form, c, np.array([p["T"]]))[0]) / p["y"] - 1  # noqa: E731
+    use, seen = list(cand), []
+    for _ in range(30):
+        c = fit(use)
+        new = [p for p in cand if abs(dev(c, p)) <= 3 * u_of(p)]
+        key = frozenset(id(p) for p in new)
+        if len(new) < 2 * len(cand) / 3:
+            raise SystemExit("%s %s: more than a third of the values would be left out; the data disagree" % (cid, prop))
+        if key == frozenset(id(p) for p in use) or key in seen:
+            use = new
+            break
+        seen.append(frozenset(id(p) for p in use))
+        use = new
+    c = fit(use)
+    coeffs = {k: rnd(v) for k, v in c.items() if k in "ABCDE"}
+    kept = {id(p) for p in use}
+    excluded = by_set + [dict(p, why="more than three times its stated uncertainty from the fit of all the sets")
+                         for p in cand if id(p) not in kept]
+    m = rel_dev(ev(form, coeffs, np.array([p["T"] for p in use])), np.array([p["y"] for p in use]))
+    for p in excluded:
+        p["deviation_percent"] = round(100 * dev(coeffs, p), 2)
+    sets = collections.defaultdict(list)
+    for p in use:
+        sets[p["ref"]].append(100 * dev(coeffs, p))
+    return coeffs, use + list(fixed), excluded, m, {k: float(np.mean(v)) for k, v in sets.items()}
+
+
 def fit_measured_loose(cid, prop, form, pts, target, Tc=None, fixed=()):
     """As fit_measured, which fits only the values whose stated uncertainty is within the target. The values with
     larger stated uncertainties are then compared with the fit: those it meets within their own uncertainty are kept
@@ -978,6 +1049,10 @@ def build(cid, log):
             else:
                 exc.append(dict(p, deviation_percent=round(100 * d, 2),
                                 why="deviates by more than its stated uncertainty from the fit of %s" % " and ".join(C["vp_anchor"])))
+    elif C.get("vp_fit") == "consensus":
+        # every set together, each paper with the same weight (the rule of 2026-10-14)
+        coeffs, use, exc, m, set_dev = fit_consensus(cid, "vapourPressure", "DIPPR101", pts, fixed=fix,
+                                                     exclude=C.get("vp_exclude"))
     elif C.get("vp_fit") == "within":
         # no set within the target over the range: every value fitted within its own stated uncertainty
         coeffs, use, exc, m = fit_within_uncertainty(cid, "vapourPressure", "DIPPR101", pts, fixed=fix)
@@ -996,6 +1071,10 @@ def build(cid, log):
                  ", the normal boiling temperature %.2f K (%s, fitted as 101.325 kPa, never left out)" % (
                      tbp[0]["T"], tbp[0]["ref"]) if tbp else "", min(p["T"] for p in use), Tc, pct(m),
                  ", each within its own stated uncertainty" if C.get("vp_fit") == "within" else "", Tdata))
+    if C.get("vp_fit") == "consensus":
+        vp_fit += (" All the measured sets fitted together, each article with the same weight (no set preferred for a "
+                   "smaller stated uncertainty); mean deviation of the fit from each set: %s." % "; ".join(
+                       "%s %+.2f %%" % (k, v) for k, v in sorted(set_dev.items())))
     if C.get("vp_why"):
         vp_fit += " " + C["vp_why"]
     if C.get("vp_fit") == "anchor":
@@ -1037,6 +1116,28 @@ def build(cid, log):
     omega = float("%.6g" % (-math.log10(psat(0.7 * Tc) / Pc) - 1))
     tb_measured = [(p["y"], p["ref"]) for p in tml.values("Tb")]
     vp_pts["Tb_K_at_101325Pa"] = Tb
+    # independent checks of the curve (not fitted): the measured normal boiling temperatures, and the slope against
+    # the calorimetric enthalpies of vaporization (Clapeyron, Peng-Robinson volumes) inside the curve's range
+    if C.get("vp_fit") == "consensus":
+        chk = []
+        tbs = [t for t, ref in tb_measured if not (C.get("vp_tb") == "thermoml")]
+        if tbs:
+            chk.append("normal boiling temperature %.2f K against the measured %.2f-%.2f K (%d articles, median %.2f K)" % (
+                Tb, min(tbs), max(tbs), len(tbs), float(np.median(tbs))))
+        avg = [(v, u) for v, u, unit, method, ref in wb.constants("Tboil") if method == "AVG" and unit == "K"]
+        if avg:
+            chk.append("normal boiling temperature %.2f K against the WebBook average of the measured values, %g +/- %g K" % (
+                Tb, avg[0][0], avg[0][1]))
+        cal = [(e["T_K"], 1000 * e["value"], e["reference"]) for e in wb.dhvap() if e["method"] == "C"]
+        cal += [(p["T"], p["y"], p["ref"]) for p in tml.values("heatOfVaporization") if p["u_rel"] and p["u_rel"] <= 0.02]
+        cal = [c for c in cal if vp["Tmin_K"] <= c[0] <= Tdata]
+        if cal:
+            d = [100 * (clapeyron(cid, C, psat, T0, T0, Tc, Pc, omega)[0]["y"] / v - 1) for T0, v, _ in cal]
+            chk.append("enthalpy of vaporization from the curve's slope against %d calorimetric values (%s): %+.1f to %+.1f %%" % (
+                len(cal), "; ".join(sorted({r for _, _, r in cal})), min(d), max(d)))
+        if chk:
+            vp["source"] += " Independent checks (not fitted): %s." % "; ".join(chk)
+            vp_pts["source"]["fit"] = vp_fit
 
     # liquid density
     pts = tml.values("liquidDensity")

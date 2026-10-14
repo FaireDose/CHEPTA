@@ -68,31 +68,31 @@
     510.7
    ],
    "values": [
-    69622.29,
-    68484.043,
-    67380.745,
-    66312.083,
-    65277.621,
-    64276.766,
-    63308.745,
-    62372.576,
-    61467.056,
-    60590.746,
-    59741.978,
-    58918.851,
-    58119.251,
-    57340.864,
-    56581.195,
-    55837.586,
-    55107.238,
-    54387.216,
-    53674.459,
-    52965.778,
-    52257.845,
-    51547.172,
-    50830.084,
-    50102.675,
-    49360.756
+    69622.297,
+    68484.047,
+    67380.746,
+    66312.081,
+    65277.617,
+    64276.761,
+    63308.738,
+    62372.567,
+    61467.045,
+    60590.734,
+    59741.965,
+    58918.838,
+    58119.237,
+    57340.85,
+    56581.18,
+    55837.572,
+    55107.224,
+    54387.203,
+    53674.447,
+    52965.767,
+    52257.835,
+    51547.164,
+    50830.078,
+    50102.671,
+    49360.755
    ],
    "references": [
     "Clapeyron equation with the vapour-pressure record",
@@ -126,7 +126,7 @@
    "units": "Pa",
    "source": {
     "name": "measured vapour pressures and the critical point",
-    "fit": "13 measured values (11 from the ThermoML Archive), the normal boiling temperature 510.70 K (Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook), fitted as 101.325 kPa, never left out) and the critical point, 298.20-692.00 K, max deviation 5.3 %, each within its own stated uncertainty. Between 510.70 K and the critical point the curve is held only by the critical point."
+    "fit": "13 measured values (11 from the ThermoML Archive), the normal boiling temperature 510.70 K (Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook), fitted as 101.325 kPa, never left out) and the critical point, 298.20-692.00 K, max deviation 5.3 %. Between 510.70 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty); mean deviation of the fit from each set: Emel'yanenko 2018 +0.01 %."
    },
    "T_K": [
     298.2,
@@ -173,7 +173,7 @@
     "Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook)",
     "Nikitin 2019 (critical point, NIST TRC ThermoML Archive)"
    ],
-   "Tb_K_at_101325Pa": 510.6999
+   "Tb_K_at_101325Pa": 510.7
   }
  }
 }
