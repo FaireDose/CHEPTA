@@ -102,7 +102,7 @@ export function mountProperties(target, cfg = {}) {
         `M = ${fmtNum(p.MW, 5)} g/mol`,
         Number.isFinite(p.Tc_K) ? `Tc = ${fmtT(p.Tc_K, u)} ${tU}` : "Tc, Pc: no open data",
         ...(Number.isFinite(p.Pc_kPa) ? [`Pc = ${fmtNum(pToDisplay(p.Pc_kPa, u), 4)} ${u.P}`] : []),
-        p.Tb_K == null ? "no liquid at 1 atm (sublimes)" : `Tb = ${fmtT(p.Tb_K, u)} ${tU}`,
+        p.Tb_K != null ? `Tb = ${fmtT(p.Tb_K, u)} ${tU}` : p.TbNote ? "Tb: above the measured vapour pressures" : "no liquid at 1 atm (sublimes)",
         ...(Number.isFinite(p.omega) ? [`ω = ${fmtNum(p.omega, 3)}`] : []),
       ].join(" · ")));
     const controls = h("div", { class: "fug-controls" },

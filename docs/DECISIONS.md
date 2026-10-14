@@ -92,8 +92,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
        enthalpy of vaporization) or keep the merged record;
      - Modified UNIFAC 2.0 groups for a person to choose: gamma-butyrolactone, 2-methyltetrahydrofuran, Cyrene,
        ethylene and propylene carbonate;
-     - 3c, the molecules without measured critical constants (GVL, the lactates, furfuryl alcohol, THFA,
-       2,3-butanediol, limonene, CPME, solketal), needs the "activity models only" path of the proposal first;
+     - 3c done in part (GVL, CPME, tetrahydrofurfuryl alcohol, 2,3-butanediol, through the path for components
+       without critical constants); decide on the narrow misses of the pooling rule (methyl lactate, ethyl lactate,
+       limonene) and on furfuryl alcohol (two sets 4-7 % apart); no open vapour pressures: HMF, lactic acid, lactide,
+       solketal, alpha-angelica lactone;
   4. the "nonvolatile" component class;
   5. batch 4, sugars and acids as solids.
   - Six names still need a CAS number: xylose, erythritol, muconic acid, levoglucosenone,

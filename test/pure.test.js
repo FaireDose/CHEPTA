@@ -39,7 +39,7 @@ test("pure() vapour pressure and boiling point agree with the VLE data", () => {
 });
 
 test("every component has critical constants and an acentric factor, or says why not", () => {
-  assert.equal(listComponents().length, 132);
+  assert.equal(listComponents().length, 135);
   for (const c of listComponents()) {
     const p = pure(c.id);
     assert.ok(Number.isFinite(p.MW), `${c.name} MW`);
@@ -52,8 +52,10 @@ test("every component has critical constants and an acentric factor, or says why
     } else {
       for (const k of ["Tc_K", "Pc_kPa", "omega"]) assert.ok(Number.isFinite(p[k]), `${c.name} ${k}`);
     }
-    // a normal boiling point, except for carbon dioxide, which has no liquid at 1 atm (it sublimes)
+    // a normal boiling point, except for carbon dioxide, which has no liquid at 1 atm (it sublimes), and a component
+    // whose measured vapour pressures stop below 101.325 kPa, which says so (TbNote; tetrahydrofurfuryl alcohol)
     if (c.id === "carbon-dioxide") assert.equal(p.Tb_K, null);
+    else if (p.TbNote) { assert.equal(p.Tb_K, null); assert.ok(p.psat(p.record("vapourPressure").Tmax_K) < 101.325, c.name); }
     else assert.ok(Number.isFinite(p.Tb_K), `${c.name} Tb_K`);
   }
 });

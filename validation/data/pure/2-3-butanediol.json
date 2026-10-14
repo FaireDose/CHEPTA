@@ -1,0 +1,268 @@
+{
+ "component": "2-3-butanediol",
+ "name": "2,3-Butanediol",
+ "about": "Measured values each record of this component was fitted to (validation/python/measured_components.py). test/properties.test.js checks that the coefficients in src/data/components.json reproduce them within the maximum deviation stated in each record.",
+ "records": {
+  "liquidDensity": {
+   "units": "kg/m3",
+   "source": {
+    "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+    "fit": "12 measured values, 298.15-338.15 K, max deviation 0.54 %"
+   },
+   "T_K": [
+    298.15,
+    298.15,
+    298.15,
+    298.2,
+    308.15,
+    308.15,
+    308.15,
+    308.15,
+    308.15,
+    318.15,
+    328.15,
+    338.15
+   ],
+   "values": [
+    998.57,
+    1000.4,
+    1002.3,
+    994.31,
+    990.72,
+    990.72,
+    990.72,
+    990.72,
+    992.11,
+    984.13,
+    970.58,
+    961.97
+   ],
+   "references": [
+    "George 2003",
+    "Zorebski 2007",
+    "Wu 2008",
+    "Gilani 2010",
+    "Mehta 2005",
+    "Mehta 2006",
+    "Mehta 2009",
+    "Chaudhary 2013",
+    "George 2003",
+    "George 2003",
+    "George 2003",
+    "George 2003"
+   ]
+  },
+  "liquidHeatCapacity": {
+   "units": "J/mol/K",
+   "source": {
+    "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook)",
+    "fit": "12 measured values, 298.15-353.15 K, max deviation 0.19 %"
+   },
+   "T_K": [
+    298.15,
+    303.15,
+    308.15,
+    313.15,
+    318.15,
+    323.15,
+    328.15,
+    333.15,
+    338.15,
+    343.15,
+    348.15,
+    353.15
+   ],
+   "values": [
+    236.67,
+    239.28,
+    241.85,
+    244.35,
+    246.82,
+    249.23,
+    251.6,
+    253.91,
+    256.17,
+    258.39,
+    260.55,
+    262.67
+   ],
+   "references": [
+    "Zorebski 2007",
+    "Zorebski 2007",
+    "Zorebski 2007",
+    "Zorebski 2007",
+    "Zorebski 2007",
+    "Zorebski 2007",
+    "Zorebski 2007",
+    "Zorebski 2007",
+    "Zorebski 2007",
+    "Zorebski 2007",
+    "Zorebski 2007",
+    "Zorebski 2007"
+   ]
+  },
+  "heatOfVaporization": {
+   "units": "J/mol",
+   "source": {
+    "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook)",
+    "fit": "25 Clapeyron values and 0 measured values, 317.00-394.45 K, max deviation 0.11 %"
+   },
+   "T_K": [
+    317.0,
+    320.22723,
+    323.45446,
+    326.68169,
+    329.90892,
+    333.13616,
+    336.36339,
+    339.59062,
+    342.81785,
+    346.04508,
+    349.27231,
+    352.49954,
+    355.72677,
+    358.954,
+    362.18124,
+    365.40847,
+    368.6357,
+    371.86293,
+    375.09016,
+    378.31739,
+    381.54462,
+    384.77185,
+    387.99909,
+    391.22632,
+    394.45355
+   ],
+   "values": [
+    58841.894,
+    58749.146,
+    58657.668,
+    58567.459,
+    58478.52,
+    58390.85,
+    58304.449,
+    58219.318,
+    58135.456,
+    58052.863,
+    57971.54,
+    57891.487,
+    57812.702,
+    57735.187,
+    57658.942,
+    57583.966,
+    57510.259,
+    57437.822,
+    57366.654,
+    57296.755,
+    57228.126,
+    57160.767,
+    57094.676,
+    57029.855,
+    56966.304
+   ],
+   "references": [
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)"
+   ]
+  },
+  "liquidViscosity": {
+   "units": "Pa s",
+   "source": {
+    "name": "Measured values (NIST TRC ThermoML Archive)",
+    "fit": "7 measured values, 298.15-338.15 K, max deviation 0.00013 %"
+   },
+   "T_K": [
+    298.15,
+    308.15,
+    308.15,
+    308.15,
+    308.15,
+    328.15,
+    338.15
+   ],
+   "values": [
+    0.044684,
+    0.05138,
+    0.05138,
+    0.05138,
+    0.05138,
+    0.007722,
+    0.005195
+   ],
+   "references": [
+    "George 2003",
+    "Mehta 2005",
+    "Mehta 2006",
+    "Mehta 2009",
+    "Chaudhary 2013",
+    "George 2003",
+    "George 2003"
+   ]
+  },
+  "vapourPressure": {
+   "units": "Pa",
+   "source": {
+    "name": "measured vapour pressures and the critical point",
+    "fit": "9 measured values (0 from the ThermoML Archive), 317.00-455.00 K, max deviation 0.014 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Stull, 1947 (Antoine equation, NIST WebBook) +0.00 %."
+   },
+   "T_K": [
+    317.0,
+    334.25,
+    351.5,
+    368.75,
+    386.0,
+    403.25,
+    420.5,
+    437.75,
+    455.0
+   ],
+   "values": [
+    133.74001,
+    421.39355,
+    1176.2988,
+    2962.5038,
+    6831.4057,
+    14598.35,
+    29198.513,
+    55116.31,
+    98874.473
+   ],
+   "references": [
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)"
+   ],
+   "Tb_K_at_101325Pa": null
+  }
+ }
+}

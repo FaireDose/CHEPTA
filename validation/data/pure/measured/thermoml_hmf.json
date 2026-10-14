@@ -2,8 +2,8 @@
  "component": "hmf",
  "cas": "67-47-0",
  "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
- "retrieved": "2026-10-13",
- "searched": "ThermoML-API full-text search for \"5-hydroxymethylfurfural\", \"5-(hydroxymethyl)furan-2-carbaldehyde\"; 15 records opened",
+ "retrieved": "2026-10-14",
+ "searched": "ThermoML-API full-text search for \"5-hydroxymethylfurfural\", \"hydroxymethylfurfural\", \"5-(hydroxymethyl)-2-furaldehyde\", \"5-(hydroxymethyl)furfural\", \"5-(hydroxymethyl)furan-2-carbaldehyde\"; 15 records opened",
  "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
  "articles": {},
  "rows": []

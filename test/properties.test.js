@@ -18,7 +18,7 @@ const points = Object.fromEntries(readdirSync(POINTS_DIR).filter(f => f.endsWith
 // gases at 25 °C and 1 atm (normal boiling point below 298.15 K): their vapour-pressure records are fitted
 // with the other properties; the six of v0.2, the ten of proposal 0004, batch 1, four of proposal 0008, batch 2, and two of batch 3
 // (carbon dioxide has no normal boiling point: Tb_K is null, it has no liquid at 1 atm)
-const GASES = listComponents().map(c => c.id).filter(id => (components[id].Tb_K ?? 0) < 298.15);
+const GASES = listComponents().map(c => c.id).filter(id => !components[id].Tb_note && (components[id].Tb_K ?? 0) < 298.15);
 const TRANSPORT = new Set(["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"]);
 const TIERS = new Set(["standard", "fitted", "databank", "predicted"]);
 
@@ -40,7 +40,7 @@ function statedMaxDeviation(rec) {
 }
 
 test("every component has every property, as a record or an explicit 'no open data' marker", () => {
-  assert.equal(listComponents().length, 132);
+  assert.equal(listComponents().length, 135);
   assert.equal(GASES.length, 23);
   for (const { id, name } of listComponents()) {
     const props = components[id].properties;
@@ -152,7 +152,10 @@ test("props() returns liquid and vapour properties for every component at a typi
     // without a normal boiling point (carbon dioxide): midway along the vapour-pressure curve, at twice the
     // vapour pressure for the liquid and a hundredth of it for the vapour
     const vp = components[id].vapourPressure;
-    const Tmid = p.Tb_K == null ? 0.5 * (vp.Tmin_K + vp.Tmax_K) : null;
+    // (a component whose measured vapour pressures stop below 101.325 kPa, TbNote, is an ordinary liquid at 25 °C;
+    // its vapour state is taken there too, where its record applies)
+    const Tmid = p.Tb_K == null && !p.TbNote ? 0.5 * (vp.Tmin_K + vp.Tmax_K) : null;
+    const TmidV = p.Tb_K == null ? 0.5 * (vp.Tmin_K + vp.Tmax_K) : null;
     // for a gas, Tb - 5 K, but at least 1 K above the triple point (argon: Tb is only 3.5 K above it); for a
     // liquid, 25 °C, or the lowest temperature of its vapour-pressure and liquid-density records when they start
     // above it: styrene (303.07 K: below it there is no open measured vapour pressure, and props() says so) and
@@ -190,7 +193,7 @@ test("props() returns liquid and vapour properties for every component at a typi
     // in chemsep2.xml starts at 420 K)
     const vapourMin = ["idealGasHeatCapacity", "vapourViscosity", "vapourThermalConductivity"]
       .map(n => components[id].properties[n]?.Tmin_K ?? 0);
-    const V = Tmid ? p.props(Tmid, p.psat(Tmid) / 100) : p.props(Math.max(p.Tb_K + 10, ...vapourMin), 1);
+    const V = TmidV ? p.props(TmidV, p.psat(TmidV) / 100) : p.props(Math.max(p.Tb_K + 10, ...vapourMin), 1);
     assert.equal(V.phase, "vapour", name);
     const recordOfV = { cp_J_molK: "idealGasHeatCapacity", mu_Pa_s: "vapourViscosity", k_W_mK: "vapourThermalConductivity",
       h_J_mol: "idealGasHeatCapacity" };

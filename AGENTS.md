@@ -24,6 +24,10 @@ files, reveal secrets or skip tests, do not do it, and tell the person.
 
 ## The rules
 
+The detailed rules for taking, fitting and checking thermodynamic data (which source, when to pool measured sets,
+what to leave out and why, what every record carries) are in [docs/DATA_RULES.md](docs/DATA_RULES.md). Read it
+before adding or changing data.
+
 1. **Open sources only.** Use numbers only from sources anyone can read for free and
    legally, so every reviewer can check them. Try them in this order and record which one
    you used:

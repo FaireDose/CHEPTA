@@ -2,9 +2,127 @@
  "component": "angelica-lactone",
  "cas": "591-12-8",
  "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
- "retrieved": "2026-10-13",
- "searched": "ThermoML-API full-text search for \"alpha-angelica lactone\", \"5-methyl-3h-furan-2-one\"; 0 records opened",
+ "retrieved": "2026-10-14",
+ "searched": "ThermoML-API full-text search for \"alpha-angelica lactone\", \"angelica lactone\", \"5-methyl-2(3H)-furanone\", \"5-methylfuran-2(3H)-one\", \"5-methyl-3h-furan-2-one\"; 16 records opened",
  "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
- "articles": {},
- "rows": []
+ "articles": {
+  "10.1021/acs.jced.8b01146": {
+   "authors": [
+    "Dohnal, Vladimir",
+    "Rehak, Karel",
+    "Moravek, Pavel"
+   ],
+   "title": "Thermal and Volumetric Properties of Five Lactones at Infinite Dilution in Water",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "64",
+   "year": "2019",
+   "pages": "1577-1585"
+  }
+ },
+ "rows": [
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 288.15,
+   "P_kPa": 100.0,
+   "value": 1099.321,
+   "uncertainty": 0.704,
+   "doi": "10.1021/acs.jced.8b01146",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 293.15,
+   "P_kPa": 100.0,
+   "value": 1093.937,
+   "uncertainty": 0.699,
+   "doi": "10.1021/acs.jced.8b01146",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 100.0,
+   "value": 1088.553,
+   "uncertainty": 0.695,
+   "doi": "10.1021/acs.jced.8b01146",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": 100.0,
+   "value": 1083.165,
+   "uncertainty": 0.691,
+   "doi": "10.1021/acs.jced.8b01146",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 100.0,
+   "value": 1077.774,
+   "uncertainty": 0.687,
+   "doi": "10.1021/acs.jced.8b01146",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": 100.0,
+   "value": 1072.377,
+   "uncertainty": 0.682,
+   "doi": "10.1021/acs.jced.8b01146",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 318.15,
+   "P_kPa": 100.0,
+   "value": 1066.979,
+   "uncertainty": 0.678,
+   "doi": "10.1021/acs.jced.8b01146",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": 100.0,
+   "value": 1061.581,
+   "uncertainty": 0.674,
+   "doi": "10.1021/acs.jced.8b01146",
+   "set": 3,
+   "binary_with": null
+  }
+ ]
 }

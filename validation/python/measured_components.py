@@ -80,6 +80,9 @@ THERMOML_PROPS = {
     "Thermal conductivity, W/m/K": ("liquidThermalConductivity", 1.0, "Liquid"),
     "Molar enthalpy of vaporization or sublimation, kJ/mol": ("heatOfVaporization", 1000.0, "Liquid"),
     "Normal boiling temperature, K": ("Tb", 1.0, "Liquid"),
+    # the boiling temperature of the pure component at a stated pressure (the x = 1 end of an isobaric set): a vapour
+    # pressure, read by values("vapourPressure") with T and P swapped
+    "Boiling temperature at pressure P, K": ("boilingT", 1.0, "Liquid"),
     "Critical temperature, K": ("Tc", 1.0, None),
     "Critical pressure, kPa": ("Pc", 1000.0, None),
     # melting data, for validation/python/fusion_data.py (proposal 0009, batch 2: where the WebBook and ChemSep have none)
@@ -214,6 +217,107 @@ COMPONENTS = {
         "vp_fit": "consensus",
         "dHvap": "clapeyron",
         "dHvap_why": "the calorimetric value of Leitao et al. (1990) is at 298.15 K only",
+        "cp0": None,
+    },
+    "furfuryl-alcohol": {
+        # not written: its two vapour-pressure sets disagree (Tai 2014, three values at 353-408 K, lie 4-7 % above
+        # Negadi 2014, 27 values at 273-412 K, beyond the stated uncertainties); both reach the measured normal boiling
+        # temperatures of the WebBook (442.5-444.15 K, four articles: Negadi 442.9 K, Tai 444.6 K extrapolated), so the
+        # independent check does not single out one
+        "hold": "its two vapour-pressure sets disagree (Tai 2014 lies 4-7 % above Negadi 2014, beyond their stated "
+                "uncertainties) and no independent check singles out one (both reach the measured boiling temperatures "
+                "of 442.5-444.15 K); a reason to choose a set, or another measured set, is wanted",
+        "name": "Furfuryl alcohol", "cas": "98-00-0", "webbook": "C98000", "proposal": "proposal 0009, batch 3",
+        "aliases": ["2-furanmethanol", "furan-2-ylmethanol", "2-furylmethanol", "furfural alcohol"],
+        "thermoml_queries": ["furfuryl alcohol", "furan-2-ylmethanol"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
+        "cp0": None,
+    },
+    "thfa": {
+        "name": "Tetrahydrofurfuryl alcohol", "cas": "97-99-4", "webbook": "C97994", "proposal": "proposal 0009, batch 3",
+        "aliases": ["tetrahydro-2-furanmethanol", "oxolan-2-ylmethanol", "thfa"],
+        "thermoml_queries": ["tetrahydrofurfuryl alcohol", "oxolan-2-ylmethanol"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        # the measured vapour pressures (Lomba 2014) end at 448 K and 97.9 kPa, so the record has no normal boiling
+        # point (Tb_note). The WebBook value of Moshkin (1955, 451.0 K) is not used to complete the curve: fitted with
+        # it, the curve misses Lomba's values at 428-448 K by 2-3.7 %, beyond their stated uncertainties (Lomba's own
+        # curve reaches 101.325 kPa at about 449.5 K)
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
+        "cp0": None,
+    },
+    "methyl-lactate": {
+        "hold": "its two vapour-pressure sets do not agree well enough to pool: Lomba 2014 lies 2.96 % from the pooled curve on average, against its mean stated uncertainty of 2.59 % (Sanz 2005: three values at 283-303 K, stated 4.6-24 %); Lomba's own curve meets the measured normal boiling temperature of Lecat (417.0 K) within 0.3 K; a decision, or another measured set, is wanted",
+        "name": "Methyl lactate", "cas": "547-64-8", "webbook": "C547648", "proposal": "proposal 0009, batch 3",
+        "aliases": ["methyl 2-hydroxypropanoate", "lactic acid methyl ester"],
+        "thermoml_queries": ["methyl lactate", "methyl 2-oxidanylpropanoate"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
+        "cp0": None,
+    },
+    "ethyl-lactate": {
+        "hold": "its five vapour-pressure sets do not agree well enough to pool: Resa 2010 (two boiling temperatures at 101 kPa, 427.6 K) lies 1.94 % from the pooled curve on average, against its stated 1.70 %; the other boiling temperatures are 425.0 K (Resa 2006) and 426.2-426.7 K (Matsuda 2016, Lomba 2014); a decision, or a reason to leave out a set, is wanted",
+        "name": "Ethyl lactate", "cas": "97-64-3", "webbook": "C97643", "proposal": "proposal 0009, batch 3",
+        "aliases": ["ethyl 2-hydroxypropanoate", "lactic acid ethyl ester"],
+        "thermoml_queries": ["ethyl lactate", "ethyl 2-oxidanylpropanoate"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
+        "cp0": None,
+    },
+    "cpme": {
+        "name": "Cyclopentyl methyl ether", "cas": "5614-37-9", "webbook": "C5614379", "proposal": "proposal 0009, batch 3",
+        "aliases": ["methoxycyclopentane", "cpme"],
+        "thermoml_queries": ["cyclopentyl methyl ether", "methoxycyclopentane"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
+        "cp0": None,
+    },
+    "limonene": {
+        "hold": "its vapour-pressure sets do not agree well enough to pool: Wu 2019 (two boiling temperatures at 101 kPa, "
+                "449.3-449.6 K) lies 1.83 % from the pooled curve on average, against its stated 1.62 %; the other "
+                "measured boiling temperatures are 450.34 K (Sun 2011) and 450.2-450.8 K from the curves of Ngema 2012 "
+                "and Clara 2009; a decision, or a reason to leave out a set, is wanted",
+        "name": "Limonene", "cas": "138-86-3", "webbook": "C138863", "proposal": "proposal 0009, batch 3",
+        "aliases": ["dipentene", "d-limonene", "(R)-limonene", "1-methyl-4-(prop-1-en-2-yl)cyclohexene"],
+        "thermoml_queries": ["limonene", "d-limonene", "(R)-limonene", "dipentene", "1-methyl-4-prop-1-en-2-yl-cyclohexene",
+                             "(+)-limonene"],
+        # the archive's values of either enantiomer and of the racemate count (mirror images have the same thermodynamic
+        # properties; most measurements are of (R)-limonene)
+        "inchi_no_stereo": True,
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures or thermogravimetry",
+        "cp0": None,
+    },
+    "2-3-butanediol": {
+        "name": "2,3-Butanediol", "cas": "513-85-9", "webbook": "C513859", "proposal": "proposal 0009, batch 3",
+        "aliases": ["butane-2,3-diol", "2,3-butylene glycol", "2,3-bdo", "dimethylethylene glycol"],
+        "thermoml_queries": ["2,3-butanediol", "butane-2,3-diol", "2,3-butylene glycol", "meso-2,3-butanediol"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        # no measured vapour pressure in the archive or open articles: the WebBook's Antoine equation of Stull (1947, a
+        # compilation, 317-455 K) is the only source, as for levulinic acid; the measured normal boiling temperatures of
+        # four articles (ThermoML Archive) are the independent check
+        "antoine_fit": ["Stull, 1947"],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
         "cp0": None,
     },
     # proposal 0009, batch 3 (volatile platform molecules), first part: the six with measured critical constants
@@ -396,6 +500,11 @@ def fetch_thermoml(cid, cache, C=None):
     if meta.CASs != C["cas"]:
         raise SystemExit("%s: CAS %s does not match chemicals (%s)" % (cid, C["cas"], meta.CASs))
     inchi = norm_inchi(meta.InChI)
+    # "inchi_no_stereo": the archive's values of either enantiomer count (mirror images have the same thermodynamic
+    # properties; limonene); the stereo layers of the InChI are ignored
+    unstereo = lambda s: re.sub(r"/[tmsb][^/]*", "", s)  # noqa: E731
+    if C.get("inchi_no_stereo"):
+        inchi = unstereo(inchi)
     dois = sorted({h["content"]["Citation"]["sDOI"] for q in C["thermoml_queries"] for h in thermoml_search(q)})
     cache.mkdir(parents=True, exist_ok=True)
     rows, articles = [], {}
@@ -404,7 +513,8 @@ def fetch_thermoml(cid, cache, C=None):
         if not f.exists():
             f.write_bytes(get("https://trc.nist.gov/ThermoML/%s.xml" % doi))
         rec = thermoml_read.parse(f.read_bytes())
-        mine = [n for n, c in rec["compounds"].items() if norm_inchi(c["inchi"]) == inchi]
+        mine = [n for n, c in rec["compounds"].items()
+                if (unstereo(norm_inchi(c["inchi"])) if C.get("inchi_no_stereo") else norm_inchi(c["inchi"])) == inchi]
         if not mine:
             continue
         me = mine[0]
@@ -592,6 +702,16 @@ class ThermoML:
         out, seen = [], set()
         for r in self.d["rows"]:
             spec = THERMOML_PROPS.get(r["property"])
+            if record == "vapourPressure" and spec and spec[0] == "boilingT" and r["P_kPa"]:
+                # a boiling temperature at a stated pressure: the vapour pressure P at T; its stated uncertainty is on
+                # T, so the relative uncertainty of P is not stated (None: 1 % in the pooled fit)
+                key = (r["doi"], r["value"], r["P_kPa"])
+                if key not in seen:
+                    seen.add(key)
+                    out.append({"T": r["value"], "y": 1000.0 * r["P_kPa"], "u_rel": None, "ref": self.short(r["doi"]),
+                                "doi": r["doi"], "from": "article" if r["doi"] in self.from_article else "ThermoML",
+                                "set": r.get("set"), "boiling": True})
+                continue
             if not spec or spec[0] != record:
                 continue
             if spec[2] and spec[2] not in r["phases"] and not (
@@ -1237,6 +1357,11 @@ def build(cid, log):
     if C.get("vp_fit") == "consensus":
         chk = []
         tbs = [t for t, ref in tb_measured if not (C.get("vp_tb") == "thermoml")]
+        if tbs and not Tb:
+            T0 = float(np.median(tbs))
+            if vp["Tmin_K"] <= T0 <= vp["Tmax_K"]:
+                chk.append("at the measured normal boiling temperature %.2f K (%d articles) the record gives %.2f kPa, %+.1f %% "
+                           "from 101.325 kPa" % (T0, len(tbs), psat(T0) / 1000, 100 * (psat(T0) / 101325.0 - 1)))
         if tbs and Tb:
             chk.append("normal boiling temperature %.2f K against the measured %.2f-%.2f K (%d articles, median %.2f K)" % (
                 Tb, min(tbs), max(tbs), len(tbs), float(np.median(tbs))))

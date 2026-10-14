@@ -293,6 +293,8 @@ export function pure(key, opts = {}) {
   const base = {
     id, name: c.name, formula: c.formula, cas: c.cas,
     MW: c.MW, Tc_K: c.Tc_K ?? null, Pc_kPa: Number.isFinite(c.Pc_Pa) ? c.Pc_Pa / 1000 : null, omega: c.omega ?? null, Tb_K: c.Tb_K,
+    // why there is no normal boiling point when the measured vapour pressures stop below 101.325 kPa, else null
+    TbNote: c.Tb_note ?? null,
     // no measured critical constants: { available: false, searched } (critical.js), else null
     critical: crit ? null : (c.critical ?? { available: false, searched: [] }),
     // melting (triple-point) temperature and enthalpy of fusion with their source, or null (no open data)

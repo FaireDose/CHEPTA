@@ -27,6 +27,7 @@ by hand; the script is named at the top of each.
 
 | Page | Covers |
 |---|---|
+| [DATA_RULES.md](DATA_RULES.md) | **How data are taken, fitted and checked: the rules for people and AI assistants** |
 | [DATA_WANTED.md](DATA_WANTED.md) *(generated)* | Pairs with and without parameters |
 | [PAIR_SCAN.md](PAIR_SCAN.md) *(generated)* | Every pair: the method it needs, its parameters, the open vapour-liquid data in the NIST TRC ThermoML Archive, the pairs fitted from it |
 | [PURE_DATA.md](PURE_DATA.md) *(generated)* | Pure-component records: source and fit quality |

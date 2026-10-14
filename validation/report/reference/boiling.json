@@ -462,6 +462,12 @@
     "source": "nist-webbook",
     "detail": "Tboil = 480.7 K (Aldrich Chemical Company Inc., 1990, the only value on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4"
    }
+  },
+  "tb/cpme": {
+   "T_C": {
+    "value": null,
+    "why": "No open reference: no measured normal boiling temperature on the component's WebBook page"
+   }
   }
  }
 }
