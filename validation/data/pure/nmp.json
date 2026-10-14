@@ -10,8 +10,7 @@
     "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
     "access": "Artistic License 2.0",
     "fit": "ChemSep equation 105 coefficients taken over unchanged except: A converted from kmol/m3 to kg/m3 with the ChemSep molar mass 99.1311 kg/kmol.; reproduces ChemSep within 0.0001 % at 200 points 249.15-721.60 K",
-    "chain": "CoolProp 8.0.0: fluid not included; ChemSep, as proposal 0008 sets for the components that are not CoolProp fluids (checked against the NIST WebBook where it has data: vapour pressure)",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 220 measured values from 52 articles, 288.1-373.1 K; median deviation of the articles 0.15 % (within the 1 % tolerance of the engineering report); largest single deviation +0.66 % at 303.1 K (Qi 2009, doi:10.1016/j.jct.2008.09.003); docs/MEASURED_CHECKS.md"
+    "chain": "CoolProp 8.0.0: fluid not included; ChemSep, as proposal 0008 sets for the components that are not CoolProp fluids (checked against the NIST WebBook where it has data: vapour pressure)"
    },
    "T_K": [
     249.15,
@@ -203,8 +202,7 @@
     "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
     "access": "Artistic License 2.0",
     "fit": "ChemSep equation 100 coefficients taken over unchanged except: coefficients converted from J/kmol/K to J/mol/K.; reproduces ChemSep within 0.0001 % at 200 points 306.45-541.35 K",
-    "chain": "CoolProp 8.0.0: fluid not included; ChemSep, as proposal 0008 sets for the components that are not CoolProp fluids (checked against the NIST WebBook where it has data: vapour pressure)",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 18 measured values from 2 articles, 306.6-352.5 K; median deviation of the articles 5.28 % (above the 2 % tolerance of the engineering report); largest single deviation -9.10 % at 306.6 K (Ruzicka 2015, doi:10.1016/j.fluid.2015.06.045); docs/MEASURED_CHECKS.md"
+    "chain": "CoolProp 8.0.0: fluid not included; ChemSep, as proposal 0008 sets for the components that are not CoolProp fluids (checked against the NIST WebBook where it has data: vapour pressure)"
    },
    "T_K": [
     306.45,
@@ -397,7 +395,7 @@
     "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
     "fit": "79 measured values with stated uncertainties within 3 % from 15 articles, 288.15-353.15 K, max deviation 2.9 %; 44 values with larger stated uncertainties agree within them",
     "notes": "Fitted to measured data instead of the databank: the ChemSep v8.31 viscosity deviates from 22 articles by 9 % (median); the databank record deviates from these values by +9.3 % (median, +16.5 % at most). Rules: validation/python/measured_components.py.",
-    "chain": "Measured data (NIST TRC ThermoML Archive) above the databank: see docs/MEASURED_CHECKS.md",
+    "chain": "Measured data (NIST TRC ThermoML Archive) above the databank",
     "excluded": [
      {
       "T_K": 303.15,
@@ -574,8 +572,7 @@
       "deviation_percent": -3.71,
       "why": "deviates most from a robust fit of the others"
      }
-    ],
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 128 measured values from 22 articles, 283.1-353.1 K; median deviation of the articles 0.75 % (within the 5 % tolerance of the engineering report); largest single deviation -38.93 % at 303.1 K (Kavitha 2012, doi:10.1016/j.jct.2012.03.034); docs/MEASURED_CHECKS.md"
+    ]
    },
    "T_K": [
     293.15,
@@ -1035,8 +1032,7 @@
     "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
     "access": "Artistic License 2.0",
     "fit": "refitted in the DIPPR106 form to ChemSep equation 116 (Y = A + B t^0.35 + C t^(2/3) + D t + E t^(4/3), t = 1 - T/Tc, N/m, converted to the mol basis): 200 points 249.15-667.67 K (ChemSep range, limited to 0.95 Tc), max deviation 0.50 %; range narrowed from 249.15-689.70 K (max deviation there 1.8 %) to meet the 1 % target",
-    "chain": "CoolProp 8.0.0: fluid not included; ChemSep, as proposal 0008 sets for the components that are not CoolProp fluids (checked against the NIST WebBook where it has data: vapour pressure)",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 17 measured values from 3 articles, 277.8-337.9 K; median deviation of the articles 1.76 %; largest single deviation +4.14 % at 277.8 K (Kahl 2003, doi:10.1021/je0201323); docs/MEASURED_CHECKS.md"
+    "chain": "CoolProp 8.0.0: fluid not included; ChemSep, as proposal 0008 sets for the components that are not CoolProp fluids (checked against the NIST WebBook where it has data: vapour pressure)"
    },
    "T_K": [
     249.15,

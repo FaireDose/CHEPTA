@@ -32,7 +32,6 @@ by hand; the script is named at the top of each.
 | [PAIR_SCAN.md](PAIR_SCAN.md) *(generated)* | Every pair: the method it needs, its parameters, the open vapour-liquid data in the NIST TRC ThermoML Archive, the pairs fitted from it |
 | [PURE_DATA.md](PURE_DATA.md) *(generated)* | Pure-component records: source and fit quality |
 | [PURE_DATA_MEASURED.md](PURE_DATA_MEASURED.md) *(generated)* | Components fitted only to measured data |
-| [MEASURED_CHECKS.md](MEASURED_CHECKS.md) *(generated)* | Records compared with measured data (ThermoML Archive) |
 | [SLE_CHECKS.md](SLE_CHECKS.md) *(generated)* | Ideal solid solubility against measured data |
 | [SLE_FITS.md](SLE_FITS.md) *(generated)* | NRTL fitted to solid solubilities |
 | [BENCHMARKS.md](BENCHMARKS.md) | Benchmark processes and the pairs they need (proposal 0004) |

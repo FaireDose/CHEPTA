@@ -35,6 +35,29 @@ test("defaults: no sets or prefer gives the default set of every pair, with the 
   assert.ok(ids.length >= 10);
 });
 
+test("a set fitted to measured mixture data is the default over the ChemSep set of the same pair", () => {
+  // docs/DATA_RULES.md, section 5 (the maintainer, 2026-10-14): mixture data come from the ThermoML Archive and open
+  // articles directly, so where a pair has a fitted set it is the default; the ChemSep set stays as an alternative
+  for (const file of ["../src/data/binaries.json", "../src/data/kij.json"]) {
+    const byPair = new Map();
+    for (const p of load(file).pairs) {
+      const key = `${p.model} ${[p.i, p.j].sort().join("+")}`;
+      if (!byPair.has(key)) byPair.set(key, []);
+      byPair.get(key).push(p);
+    }
+    let both = 0;
+    for (const [key, sets] of byPair) {
+      if (!sets.some(p => p.tier === "fitted")) continue;
+      const def = sets.filter(p => p.default !== false);
+      assert.equal(def.length, 1, `${key}: one default set`);
+      assert.equal(def[0].tier, "fitted", `${key}: the default is ${def[0].set}, not the fitted set`);
+      // in kij.json the ChemSep value a fit replaced is kept under `replaced` (src/thermo/library.js)
+      if (sets.some(p => p.tier === "databank" || p.replaced?.tier === "databank")) both++;
+    }
+    assert.ok(both > 0, `${file}: no pair with both a fitted and a ChemSep set`);
+  }
+});
+
 test("ChemSep sets reproduce the pre-refit saddle azeotropes of methanol + acetone + chloroform (PR #18)", () => {
   // Values recorded in pull request #18 (before the refit), 101.325 kPa:
   //   UNIQUAC 60.05 °C, x = 0.553 / 0.280 / 0.167;  NRTL 57.14 °C, x = 0.432 / 0.350 / 0.217

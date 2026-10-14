@@ -10,8 +10,7 @@
     "reference": "Zhou et al., J. Phys. Chem. Ref. Data 40 (2011) 043106-1:11, doi:10.1063/1.3664084",
     "access": "MIT (open source)",
     "quantity": "saturated liquid density",
-    "fit": "200 points 277.06-529.15 K (triple point to 0.95 Tc), max deviation 0.075 %",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 174 measured values from 57 articles, 278.1-343.1 K; median deviation of the articles 0.02 % (within the 1 % tolerance of the engineering report); largest single deviation -0.74 % at 298.1 K (Vittal Prasad 2004, doi:10.1021/je030131q); docs/MEASURED_CHECKS.md"
+    "fit": "200 points 277.06-529.15 K (triple point to 0.95 Tc), max deviation 0.075 %"
    },
    "T_K": [
     277.06,
@@ -203,8 +202,7 @@
     "reference": "Zhou et al., J. Phys. Chem. Ref. Data 40 (2011) 043106-1:11, doi:10.1063/1.3664084",
     "access": "MIT (open source)",
     "quantity": "cp of the saturated liquid",
-    "fit": "200 points 277.06-516.54 K, max deviation 0.61 %; range narrowed from 277.06-529.15 K (max deviation there 1.5 %) to meet the 1 % target",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 10 measured values from 3 articles, 288.1-323.1 K; median deviation of the articles 0.53 % (within the 2 % tolerance of the engineering report); largest single deviation -3.22 % at 323.1 K (Comelli 2010, doi:10.1021/je900307z); docs/MEASURED_CHECKS.md"
+    "fit": "200 points 277.06-516.54 K, max deviation 0.61 %; range narrowed from 277.06-529.15 K (max deviation there 1.5 %) to meet the 1 % target"
    },
    "T_K": [
     277.06,
@@ -396,8 +394,7 @@
     "reference": "Kooijman and Taylor, ChemSep v8.3, chemsep1.xml (2021), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
     "access": "Artistic License 2.0",
     "fit": "ChemSep equation 101 coefficients taken over unchanged except: Tmin raised to the triple point 277.06 K (ChemSep: 273.15 K).; reproduces ChemSep within 0.0001 % at 200 points 277.06-438.40 K",
-    "chain": "CoolProp 8.0.0: no viscosity model; NIST WebBook: dimethyl carbonate is not a WebBook fluid",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 48 measured values from 10 articles, 288.1-343.1 K; median deviation of the articles 1.29 % (within the 5 % tolerance of the engineering report); largest single deviation +5.52 % at 288.1 K (Arbad 2006, doi:10.1021/je050183a); docs/MEASURED_CHECKS.md"
+    "chain": "CoolProp 8.0.0: no viscosity model; NIST WebBook: dimethyl carbonate is not a WebBook fluid"
    },
    "T_K": [
     277.06,

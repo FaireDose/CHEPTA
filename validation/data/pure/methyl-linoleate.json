@@ -10,8 +10,7 @@
     "reference": "Huber et al., Energy & Fuels 23 (2009) 3790-3797, doi:10.1021/ef900159g",
     "access": "MIT (open source)",
     "quantity": "saturated liquid density",
-    "fit": "200 points 260.00-759.05 K (triple point to 0.95 Tc), max deviation 0.83 %",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 36 measured values from 3 articles, 278.1-393.1 K; median deviation of the articles 0.19 % (within the 1 % tolerance of the engineering report); largest single deviation +0.75 % at 393.1 K (Ndiaye 2013, doi:10.1021/je4005323); docs/MEASURED_CHECKS.md"
+    "fit": "200 points 260.00-759.05 K (triple point to 0.95 Tc), max deviation 0.83 %"
    },
    "T_K": [
     260.0,
@@ -396,7 +395,7 @@
     "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
     "fit": "16 measured values with stated uncertainties within 3 % from 1 articles, 278.15-353.15 K, max deviation 0.57 %; 1 values with larger stated uncertainties agree within them",
     "notes": "Fitted to measured data instead of the databank: CoolProp 8.0.0 has no viscosity model for methyl linoleate, and ChemSep v8.31 data 2 no liquid viscosity. Rules: validation/python/measured_components.py.",
-    "chain": "Measured data (NIST TRC ThermoML Archive) above the databank: see docs/MEASURED_CHECKS.md",
+    "chain": "Measured data (NIST TRC ThermoML Archive) above the databank",
     "excluded": [
      {
       "T_K": 293.15,
@@ -433,8 +432,7 @@
       "deviation_percent": 10.48,
       "why": "stated uncertainty 3.4 % is above the target, and the value deviates by more than it"
      }
-    ],
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 22 measured values from 2 articles, 278.1-353.1 K; median deviation of the articles 2.30 % (within the 5 % tolerance of the engineering report); largest single deviation +10.48 % at 343.1 K (Ceriani 2007, doi:10.1021/je600552b); docs/MEASURED_CHECKS.md"
+    ]
    },
    "T_K": [
     278.15,
@@ -481,7 +479,7 @@
     "access": "Perkins 2011: Open access: a work of NIST, not subject to U.S. copyright, free full text from NIST",
     "fit": "20 values calculated from the authors' correlation of their measurements, stated uncertainty within 3 %, from 1 article, 302.15-492.15 K, max deviation 0.45 %",
     "notes": "Fitted to measured data instead of the databank: CoolProp 8.0.0 has no thermal conductivity model for methyl linoleate, and ChemSep v8.31 data 2 none. Rules: validation/python/measured_components.py.",
-    "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md"
+    "chain": "Measured data (an open-access article) above the databank"
    },
    "T_K": [
     302.15,

@@ -10,8 +10,7 @@
     "reference": "Huber et al., Energy & Fuels 23 (2009) 3790-3797, doi:10.1021/ef900159g",
     "access": "MIT (open source)",
     "quantity": "saturated liquid density",
-    "fit": "200 points 311.85-736.24 K (triple point to 0.95 Tc), max deviation 0.44 %",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 16 measured values from 2 articles, 313.1-363.1 K; median deviation of the articles 0.21 % (within the 1 % tolerance of the engineering report); largest single deviation -0.37 % at 313.1 K (Pratas 2010, doi:10.1021/je100042c); docs/MEASURED_CHECKS.md"
+    "fit": "200 points 311.85-736.24 K (triple point to 0.95 Tc), max deviation 0.44 %"
    },
    "T_K": [
     311.85,
@@ -203,8 +202,7 @@
     "reference": "Huber et al., Energy & Fuels 23 (2009) 3790-3797, doi:10.1021/ef900159g",
     "access": "MIT (open source)",
     "quantity": "cp of the saturated liquid",
-    "fit": "200 points 311.85-736.24 K (triple point to 0.95 Tc), max deviation 0.74 %",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 4 measured values from 1 articles, 320.0-350.0 K; median deviation of the articles 1.93 % (within the 2 % tolerance of the engineering report); largest single deviation +2.91 % at 320.0 K (van Miltenburg 2004, doi:10.1021/je0499364); docs/MEASURED_CHECKS.md"
+    "fit": "200 points 311.85-736.24 K (triple point to 0.95 Tc), max deviation 0.74 %"
    },
    "T_K": [
     311.85,
@@ -396,8 +394,7 @@
     "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
     "access": "Artistic License 2.0",
     "fit": "ChemSep equation 101 coefficients taken over unchanged; reproduces ChemSep within 0.0001 % at 200 points 312.15-623.70 K",
-    "chain": "CoolProp 8.0.0: no viscosity model; NIST WebBook: methyl stearate is not a WebBook fluid (its fluid list, checked 2026-10-13, has no fatty acid methyl ester)",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 11 measured values from 1 articles, 313.1-363.1 K; median deviation of the articles 6.25 % (above the 5 % tolerance of the engineering report); largest single deviation +7.93 % at 363.1 K (Pratas 2010, doi:10.1021/je100042c); docs/MEASURED_CHECKS.md"
+    "chain": "CoolProp 8.0.0: no viscosity model; NIST WebBook: methyl stearate is not a WebBook fluid (its fluid list, checked 2026-10-13, has no fatty acid methyl ester)"
    },
    "T_K": [
     312.15,

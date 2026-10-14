@@ -99,7 +99,6 @@ library documentation:
 - **Data**:
   - [src/data/components.json](../../src/data/components.json);
   - fit quality: [../PURE_DATA.md](../PURE_DATA.md);
-  - comparison with measured values: [../MEASURED_CHECKS.md](../MEASURED_CHECKS.md);
   - components fitted only to measured data: [../PURE_DATA_MEASURED.md](../PURE_DATA_MEASURED.md).
 
 ## Mixture enthalpy

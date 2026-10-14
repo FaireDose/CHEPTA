@@ -10,8 +10,7 @@
     "reference": "Huber et al., Energy & Fuels 23 (2009) 3790-3797, doi:10.1021/ef900159g",
     "access": "MIT (open source)",
     "quantity": "saturated liquid density",
-    "fit": "200 points 253.47-742.90 K (triple point to 0.95 Tc), max deviation 0.60 %",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 33 measured values from 3 articles, 278.1-393.1 K; median deviation of the articles 0.03 % (within the 1 % tolerance of the engineering report); largest single deviation +0.54 % at 393.1 K (Ndiaye 2013, doi:10.1021/je4005323); docs/MEASURED_CHECKS.md"
+    "fit": "200 points 253.47-742.90 K (triple point to 0.95 Tc), max deviation 0.60 %"
    },
    "T_K": [
     253.47,
@@ -395,8 +394,7 @@
     "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
     "access": "Artistic License 2.0",
     "fit": "ChemSep equation 101 coefficients taken over unchanged; reproduces ChemSep within 0.0001 % at 200 points 293.05-617.00 K",
-    "chain": "CoolProp 8.0.0: no viscosity model; NIST WebBook: methyl oleate is not a WebBook fluid (its fluid list, checked 2026-10-13, has no fatty acid methyl ester)",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 19 measured values from 2 articles, 293.1-353.1 K; median deviation of the articles 0.99 % (within the 5 % tolerance of the engineering report); largest single deviation +9.02 % at 343.1 K (Ceriani 2007, doi:10.1021/je600552b); docs/MEASURED_CHECKS.md"
+    "chain": "CoolProp 8.0.0: no viscosity model; NIST WebBook: methyl oleate is not a WebBook fluid (its fluid list, checked 2026-10-13, has no fatty acid methyl ester)"
    },
    "T_K": [
     293.05,
@@ -589,7 +587,7 @@
     "access": "Perkins 2011: Open access: a work of NIST, not subject to U.S. copyright, free full text from NIST",
     "fit": "20 values calculated from the authors' correlation of their measurements, stated uncertainty within 3 %, from 1 article, 302.15-492.15 K, max deviation 1.2 %",
     "notes": "Fitted to measured data instead of the databank: the ChemSep v8.31 data 2 thermal conductivity is 30-36 % below the correlation of Perkins and Huber (2011, NIST), which is within 2.5 % of their measurements at 302-508 K; the databank record deviates from these values by -33.6 % (median, -35.6 % at most). Rules: validation/python/measured_components.py.",
-    "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md"
+    "chain": "Measured data (an open-access article) above the databank"
    },
    "T_K": [
     302.15,

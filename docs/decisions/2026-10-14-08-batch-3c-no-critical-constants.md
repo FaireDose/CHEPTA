@@ -52,3 +52,14 @@
   enthalpies, liquid-liquid data) from the ThermoML Archive and open articles directly; the ThermoML Archive for pure
   components only for what ChemSep does not have. The maintainer assumes ChemSep's correlations were themselves
   fitted to such literature data, which is why they work.
+- **Lean: the comparison of ChemSep records with measured data removed (the maintainer, 2026-10-14):** "I want
+  something lean so if we spend some time now to clean is no problem." Removed: `validation/python/check_measured.py`,
+  `test/measured-checks.test.js`, the "Records against measured data" group of the engineering report
+  (`make_measured_cases.py`, its references and code in `scripts/engineering-report.mjs`), `docs/MEASURED_CHECKS.md`,
+  and the `measuredCheck` texts of the records. Kept: the records refitted before (`MEASURED_REFIT`), and the
+  ThermoML values in `validation/data/pure/measured/thermoml_<id>.json`, which the refits, the melting data
+  (`fusion_data.py`) and `gap_report.py` read (`gap_report.py --fetch` now downloads them). The report-coverage test
+  no longer asks for a case for components taken from ChemSep as they are.
+- **Pairs (the maintainer, 2026-10-14, "I go with your suggestion"):** where a pair has a set fitted to measured
+  mixture data, that set is the default and the ChemSep set stays as an alternative; ChemSep is the default only
+  where no measured mixture data were fitted. The data already followed this; `test/library.test.js` now checks it.

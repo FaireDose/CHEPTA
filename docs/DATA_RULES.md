@@ -109,17 +109,19 @@ thermodynamic properties; limonene, `inchi_no_stereo`). Diastereomers (meso and 
 **Melting data** (`fusion_data.py`): the WebBook (triple point, else the average of the measured melting points; the
 median of the enthalpies of fusion), else ChemSep, else the ThermoML Archive.
 
-## 4. Earlier comparisons of databank records with measurements (`check_measured.py`)
+## 4. Records refitted before 2026-10-14
 
-Until 2026-10-14 every ChemSep record was compared with the measured values of the ThermoML Archive (tolerances of
-the engineering report: vapour pressure 1 %, liquid density 1 %, heat capacity 2 %, enthalpy of vaporization 2 %,
-viscosity 5 %, thermal conductivity 5 %; each article counted once) and refitted to them when at least three articles
-put it more than three times its tolerance off. Some records were refitted that way (glycerol, phenol, N-methyl-2-
-pyrrolidone, and others; docs/MEASURED_CHECKS.md). From 2026-10-14 a ChemSep record is taken as it is and no new
-comparison or refit is made (section 1).
+Until 2026-10-14 every ChemSep record was compared with the measured values of the ThermoML Archive, and refitted to
+them when it missed them clearly (`MEASURED_REFIT` in `fit_properties.py`: glycerol, phenol, N-methyl-2-pyrrolidone and
+others; each record says why). Those refits stay. The comparison itself was removed on 2026-10-14 (the maintainer: "I
+want something lean"): no script, test or report section compares a ChemSep record with measured data any more, and no
+new refit of a ChemSep record is made (section 1).
 
 ## 5. Pairs (NRTL, UNIQUAC, k_ij)
 
+- Where a pair has a set fitted to measured mixture data (ThermoML Archive, open articles), that set is the default;
+  the ChemSep set of the same pair stays as an alternative the user can choose (`sets`, `prefer`). The ChemSep set is
+  the default only where no measured mixture data were fitted (the maintainer, 2026-10-14; `test/library.test.js`).
 - Open databank sets (ChemSep) are imported as tier "databank".
 - Fits to measured vapour-liquid data from the ThermoML Archive (`vle_batch.py`, then `fit_parameters.py`): isobaric
   T-x-y near 101.3 kPa first, that passes the point test of thermodynamic consistency; then other pressures; then
@@ -161,8 +163,8 @@ user compares the models and decides.
 ## 9. Before the pull request
 
 1. Run the scripts in this order after a component change: the component script, `fusion_data.py --write`,
-   `make_sources.py`, `mod_unifac_2.py --write`, then `validation/report/make_cases.py`, `make_reference.py`,
-   `make_measured_cases.py`; then `npm run wanted`, `npm run build` and `npm test`.
+   `make_sources.py`, `mod_unifac_2.py --write`, then `validation/report/make_cases.py` and `make_reference.py`; then
+   `npm run wanted`, `npm run build` and `npm test`.
 2. Never change validation data or tests to make results pass (AGENTS.md rule 6). Changing a test that counts or
    lists components, or that a new kind of component makes wrong, is fine; say why in the test.
 3. Ask the person to compare every transcribed value with its source (AGENTS.md rule 4).

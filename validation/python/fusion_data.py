@@ -21,7 +21,7 @@ Where the WebBook has no enthalpy of fusion (or no melting temperature), the nex
 v8.3 databank (chemsep1.xml, TriplePointTemperature or NormalMeltingPointTemperature, and HeatOfFusionAtMeltingPoint),
 labelled so; where ChemSep has neither, an open-access article (step 5) whose data file in validation/data/pure/measured/
 states them (Cyrene: Jerabek et al. 2023), or else the melting data of the NIST TRC ThermoML Archive (step 5, stored by
-check_measured.py --fetch in validation/data/pure/measured/thermoml_<id>.json), chosen by the same rule as the WebBook
+gap_report.py --fetch in validation/data/pure/measured/thermoml_<id>.json), chosen by the same rule as the WebBook
 values: the median melting temperature of the articles, and the median enthalpy of fusion of the articles whose own
 melting temperature (where they give one) is within 3 K of it (triolein, tripalmitin). Otherwise the ChemSep values are
 the cross-check, stated in the record.

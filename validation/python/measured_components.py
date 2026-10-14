@@ -493,7 +493,7 @@ def norm_inchi(s):
 
 def fetch_thermoml(cid, cache, C=None):
     """Every pure-component value of the compound in the archive, and the pure end points of binary sets.
-    C: {"cas", "thermoml_queries"} (default: COMPONENTS[cid]); also used by check_measured.py."""
+    C: {"cas", "thermoml_queries"} (default: COMPONENTS[cid]); also used by gap_report.py."""
     from chemicals.identifiers import search_chemical
     C = C or COMPONENTS[cid]
     meta = search_chemical(C["cas"])

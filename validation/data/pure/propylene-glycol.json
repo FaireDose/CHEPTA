@@ -10,8 +10,7 @@
     "reference": "Eisenbach et al., J. Phys. Chem. Ref. Data 50 (2021)",
     "access": "MIT (open source)",
     "quantity": "saturated liquid density",
-    "fit": "200 points 213.00-640.29 K (triple point to 0.95 Tc), max deviation 0.25 %",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 287 measured values from 44 articles, 253.2-463.1 K; median deviation of the articles 0.05 % (within the 1 % tolerance of the engineering report); largest single deviation -0.84 % at 298.1 K (Zhang 2013, doi:10.1021/je4004993); docs/MEASURED_CHECKS.md"
+    "fit": "200 points 213.00-640.29 K (triple point to 0.95 Tc), max deviation 0.25 %"
    },
    "T_K": [
     213.0,
@@ -203,8 +202,7 @@
     "reference": "Eisenbach et al., J. Phys. Chem. Ref. Data 50 (2021)",
     "access": "MIT (open source)",
     "quantity": "cp of the saturated liquid",
-    "fit": "200 points 213.00-618.92 K, max deviation 0.92 %; range narrowed from 213.00-640.29 K (max deviation there 2.3 %) to meet the 1 % target",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 7 measured values from 2 articles, 298.1-353.1 K; median deviation of the articles 0.49 % (within the 2 % tolerance of the engineering report); largest single deviation -0.84 % at 298.1 K (Pietrzak 2015, doi:10.1016/j.fluid.2015.05.016); docs/MEASURED_CHECKS.md"
+    "fit": "200 points 213.00-618.92 K, max deviation 0.92 %; range narrowed from 213.00-640.29 K (max deviation there 2.3 %) to meet the 1 % target"
    },
    "T_K": [
     213.0,
@@ -396,8 +394,7 @@
     "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
     "access": "Artistic License 2.0",
     "fit": "ChemSep equation 101 coefficients taken over unchanged; reproduces ChemSep within 0.0001 % at 200 points 213.15-500.80 K",
-    "chain": "CoolProp 8.0.0: no viscosity model; NIST WebBook: propylene glycol is not a WebBook fluid",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 103 measured values from 16 articles, 288.1-458.9 K; median deviation of the articles 2.92 % (within the 5 % tolerance of the engineering report); largest single deviation +19.14 % at 318.1 K (George 2003, doi:10.1021/je0340755); docs/MEASURED_CHECKS.md"
+    "chain": "CoolProp 8.0.0: no viscosity model; NIST WebBook: propylene glycol is not a WebBook fluid"
    },
    "T_K": [
     213.15,
@@ -589,8 +586,7 @@
     "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
     "access": "Artistic License 2.0",
     "fit": "ChemSep equation 2 coefficients taken over unchanged except: ChemSep equation 2 is DIPPR 100 with the higher coefficients zero.; reproduces ChemSep within 0.0001 % at 200 points 213.15-460.75 K",
-    "chain": "CoolProp 8.0.0: no thermal conductivity model; NIST WebBook: propylene glycol is not a WebBook fluid",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 9 measured values from 1 articles, 299.1-450.8 K; median deviation of the articles 2.25 % (within the 5 % tolerance of the engineering report); largest single deviation +6.19 % at 450.8 K (Sun 2004, doi:10.1021/je049960h); docs/MEASURED_CHECKS.md"
+    "chain": "CoolProp 8.0.0: no thermal conductivity model; NIST WebBook: propylene glycol is not a WebBook fluid"
    },
    "T_K": [
     213.15,
@@ -782,8 +778,7 @@
     "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
     "access": "Artistic License 2.0",
     "fit": "refitted in the DIPPR106 form to ChemSep equation 16 (Y = A + exp(B/T + C + D T + E T^2), N/m, converted to the mol basis): 200 points 213.15-573.95 K (ChemSep range, limited to 0.95 Tc), max deviation 0.31 %; range narrowed from 213.15-592.94 K (max deviation there 1.1 %) to meet the 1 % target",
-    "chain": "CoolProp 8.0.0: no thermal conductivity model; NIST WebBook: propylene glycol is not a WebBook fluid",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 4 measured values from 1 articles, 298.1-328.1 K; median deviation of the articles 3.27 %; largest single deviation -5.99 % at 328.1 K (Chang 2015, doi:10.1016/j.fluid.2014.12.040); docs/MEASURED_CHECKS.md"
+    "chain": "CoolProp 8.0.0: no thermal conductivity model; NIST WebBook: propylene glycol is not a WebBook fluid"
    },
    "T_K": [
     213.15,

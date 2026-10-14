@@ -208,11 +208,8 @@ WEBBOOK_ANTOINE = REG.webbook_antoine
 # against 418.31 K (ChemSep's own Tb, and the Antoine equation of Dreyer et al. (1955), measured to 417.92 K;
 # WebBook average of 18 measured Tb values: 419 +/- 2 K), and differs from Dreyer et al. by +6.7 % at 303 K.
 VP_FROM_ANTOINE = {"styrene": "Dreyer, Martin, et al., 1955"}
-# Vapour pressures fitted to the measured values of the ThermoML Archive (check_measured.py) and the ChemSep critical
-# point, where the ChemSep equation deviates from them by more than the 1 % tolerance of the engineering report
-# (docs/MEASURED_CHECKS.md, proposal 0008)
-# Records fitted to the measured values of the ThermoML Archive instead of the databank (docs/MEASURED_CHECKS.md).
-# The rule (proposal 0008, batch 1): a databank record is replaced when it misses the tolerance of the engineering
+# Records fitted to the measured values of the ThermoML Archive instead of the databank, before 2026-10-14. Since then
+# a ChemSep record is taken as it is and no new refit is made (docs/DATA_RULES.md, section 4); these stay. The rule (proposal 0008, batch 1): a databank record is replaced when it misses the tolerance of the engineering
 # report (proposal 0002) and the measured values within the record's target cover the working range, from 25 degC
 # (or the melting point) to 100 degC (or the normal boiling point if lower); or, whatever the coverage, when it
 # misses three times the tolerance (then the record covers only the measured temperatures). The reason is stated
@@ -224,7 +221,7 @@ MEASURED_REFIT = {
     "2-butanol": {"vapourPressure": "the ChemSep vapour pressure deviates from 24 articles by 1.1 % (median)"},
     "dmso": {"liquidThermalConductivity": "the ChemSep thermal conductivity deviates from the measured values by 16 %"},
     "sulfolane": {"liquidThermalConductivity": "the ChemSep thermal conductivity deviates from the measured values by 19 %"},
-    # the older components (docs/MEASURED_CHECKS.md)
+    # the older components
     "glycerol": {"vapourPressure": "the ChemSep vapour pressure deviates from the measured values by 7 % (median of the "
                                    "articles)",
                  "liquidViscosity": "the ChemSep viscosity deviates from the measured values by 38 % (median of the articles)"},
@@ -234,7 +231,7 @@ MEASURED_REFIT = {
     "acetonitrile": {"vapourPressure": "the ChemSep vapour pressure deviates from 8 articles by 1.2 % (median)"},
     # proposal 0008, batch 3
     # (the ETBE viscosity, 27 % off one article at 293-303 K, stays: one article over 10 K cannot replace a record
-    # to 450 K; the warning stays in docs/MEASURED_CHECKS.md)
+    # to 450 K)
     "etbe": {"vapourPressure": "the ChemSep vapour pressure deviates from 11 articles by 4.6 % (median)"},
     # the large deviations of the engineering report (2026-10-11): all seven articles find the ChemSep curve high
     "mea": {"vapourPressure": "the ChemSep vapour pressure is above the measured values of all seven articles, by "
@@ -254,7 +251,7 @@ MEASURED_REFIT = {
     # (ChemSep has no diethyl carbonate liquid heat capacity either, and no measured value is within the 1 % target:
     # "no open data at the target", from_measured)
     "diethyl-carbonate": {"liquidHeatCapacity": "ChemSep has no liquid heat capacity"},
-    # the measured checks of batch 1 (docs/MEASURED_CHECKS.md): above three times the 2 % tolerance
+    # the measured checks of batch 1: above three times the 2 % tolerance
     "bdo": {"liquidHeatCapacity": "the ChemSep heat capacity deviates from the three articles with stated "
                                   "uncertainties within 2 % by 7.5 % (median of the articles)"},
     # proposal 0009, batch 2: a property that neither CoolProp 8.0.0 (no viscosity model for the methyl esters) nor
@@ -1418,7 +1415,7 @@ class Builder:
                            "validation/python/measured_components.py." % (
                                MEASURED_REFIT[cid][prop], "; the databank record deviates from these values by %s" % old
                                if old else ""),
-                  "chain": "Measured data (%s) above the databank: see docs/MEASURED_CHECKS.md" % where}
+                  "chain": "Measured data (%s) above the databank" % where}
         if aside:
             source["crossCheck"] = cross_check(tml, form, coeffs, aside, reasons, Tc if form == "DIPPR106" else None)
         if exc:
@@ -1564,7 +1561,7 @@ class Builder:
 
     def vapour_pressure_measured(self, cid):
         """DIPPR101 fitted to the measured vapour pressures of the ThermoML Archive (validation/data/pure/measured/
-        thermoml_<id>.json, from check_measured.py) and the ChemSep critical point, with the rules of
+        thermoml_<id>.json, from gap_report.py --fetch) and the ChemSep critical point, with the rules of
         measured_components.py; values whose stated uncertainty is above 1 % stay only where they agree within it."""
         from measured_components import ThermoML, fit_measured_loose
         tml = ThermoML(cid)
@@ -1607,7 +1604,7 @@ class Builder:
         if cs_curve is not None and cs_curve["eqno"] in (10, 101):
             dcs = self.cs.value_si(cas, "vapourPressure", Tq) / np.array([p["y"] for p in meas]) - 1
             cs_text = ("The ChemSep vapour-pressure equation was not used: it deviates from the values within 1 %% by "
-                       "%+.1f %% (median, %+.1f %% at most); see docs/MEASURED_CHECKS.md." % (
+                       "%+.1f %% (median, %+.1f %% at most)." % (
                            100 * float(np.median(dcs)), 100 * float(dcs[np.argmax(np.abs(dcs))])))
         else:
             dcs = np.array([np.nan])
@@ -2035,38 +2032,6 @@ def add_measured(records):
     return out
 
 
-def add_measured_checks(records, vp_gas, comps):
-    """For the components of check_measured.py: the comparison of each record with the measured values of the
-    ThermoML Archive, stated in the record ("measuredCheck"). Returns report lines."""
-    import check_measured as CM
-    out = []
-    for cid in CM.CHECKED:
-        f = CM.MEASURED_DIR / ("thermoml_%s.json" % cid)
-        if cid not in records or not f.exists():
-            continue
-        data = json.loads(f.read_text())
-        # the vapour pressure made here, or the component's own (the liquids of v0.1 keep theirs)
-        vpd = vp_gas[cid] if cid in vp_gas else comps[cid]["vapourPressure"]
-        comp = {"vapourPressure": vpd, "properties": records[cid]}
-        for prop in CM.TOLERANCE:
-            r = CM.compare(cid, comp, data, prop)
-            if r["status"] in ("no record", "too few values"):
-                continue
-            txt = ("NIST TRC ThermoML Archive (validation/python/check_measured.py): %d measured values from %d articles, "
-                   "%.1f-%.1f K; median deviation of the articles %.2f %%%s; largest single deviation %+.2f %% at %.1f K (%s); "
-                   "docs/MEASURED_CHECKS.md" % (
-                       r["n"], r["articles"], r["T"][0], r["T"][1], 100 * r["median"],
-                       "" if r["tol"] is None else (" (within the %g %% tolerance of the engineering report)" if r["status"] == "pass"
-                                                    else " (above the %g %% tolerance of the engineering report)") % (100 * r["tol"]),
-                       100 * r["max"], r["max_T"], r["max_ref"]))
-            if prop == "vapourPressure":
-                vpd["measuredCheck"] = txt
-            else:
-                records[cid][prop]["source"]["measuredCheck"] = txt
-            out.append("%s %s: %s" % (cid, prop, txt[:160]))
-    return out
-
-
 def fetch_webbook_fluid(cid):
     """Download the WebBook fluid tables of WEBBOOK_FLUID[cid] (saturation line and the dilute-gas
     isobar) as tab-delimited text and store them unchanged (numbers as given) for the fit."""
@@ -2203,7 +2168,6 @@ def main():
             vp_gas[cid] = rec
             points[cid]["vapourPressure"] = pts
     measured = add_measured(records)
-    measured += add_measured_checks(records, vp_gas, comps)
     for cid, notes in RECORD_NOTES.items():
         if cid not in records:
             continue

@@ -10,8 +10,7 @@
     "reference": "Huber et al., Energy & Fuels 23 (2009) 3790-3797, doi:10.1021/ef900159g",
     "access": "MIT (open source)",
     "quantity": "saturated liquid density",
-    "fit": "200 points 302.71-717.25 K (triple point to 0.95 Tc), max deviation 0.46 %",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 27 measured values from 3 articles, 308.1-383.1 K; median deviation of the articles 0.18 % (within the 1 % tolerance of the engineering report); largest single deviation +0.81 % at 383.1 K (Ndiaye 2013, doi:10.1021/je400122k); docs/MEASURED_CHECKS.md"
+    "fit": "200 points 302.71-717.25 K (triple point to 0.95 Tc), max deviation 0.46 %"
    },
    "T_K": [
     302.71,
@@ -203,8 +202,7 @@
     "reference": "Huber et al., Energy & Fuels 23 (2009) 3790-3797, doi:10.1021/ef900159g",
     "access": "MIT (open source)",
     "quantity": "cp of the saturated liquid",
-    "fit": "200 points 302.71-717.25 K (triple point to 0.95 Tc), max deviation 0.74 %",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 5 measured values from 1 articles, 310.0-350.0 K; median deviation of the articles 1.48 % (within the 2 % tolerance of the engineering report); largest single deviation +2.37 % at 310.0 K (van Miltenburg 2004, doi:10.1021/je0499364); docs/MEASURED_CHECKS.md"
+    "fit": "200 points 302.71-717.25 K (triple point to 0.95 Tc), max deviation 0.74 %"
    },
    "T_K": [
     302.71,
@@ -396,8 +394,7 @@
     "reference": "Kooijman and Taylor, ChemSep v8.31 pure component data 2, chemsep2.xml (2022), via https://github.com/DanWBR/dwsim (DWSIM.Thermodynamics/Assets/Databases)",
     "access": "Artistic License 2.0",
     "fit": "ChemSep equation 101 coefficients taken over unchanged; reproduces ChemSep within 0.0001 % at 200 points 303.05-597.70 K",
-    "chain": "CoolProp 8.0.0: no viscosity model; NIST WebBook: methyl palmitate is not a WebBook fluid (its fluid list, checked 2026-10-13, has no fatty acid methyl ester)",
-    "measuredCheck": "NIST TRC ThermoML Archive (validation/python/check_measured.py): 16 measured values from 2 articles, 308.1-363.1 K; median deviation of the articles 8.42 % (above the 5 % tolerance of the engineering report); largest single deviation +15.54 % at 343.1 K (Ceriani 2007, doi:10.1021/je600552b); docs/MEASURED_CHECKS.md"
+    "chain": "CoolProp 8.0.0: no viscosity model; NIST WebBook: methyl palmitate is not a WebBook fluid (its fluid list, checked 2026-10-13, has no fatty acid methyl ester)"
    },
    "T_K": [
     303.05,
