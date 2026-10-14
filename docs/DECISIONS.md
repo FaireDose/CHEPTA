@@ -160,6 +160,15 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   1-octanol, cyclohexanone, NMP, methyl laurate 1.4-1.9 %; viscosities of the methyl esters 6-8 %). They follow the
   refit rule of proposal 0008 (refit, or a known issue with the reason).
 
+### 2026-10-14: what the pull-request e-mail says
+
+- **Asked:** the e-mail of every pull request (the engineering report comment) should say what the change is and what
+  comes next, not open with the engineering report.
+- **Done:** the comment of `engineering-report-comment.yml` now starts with the pull request's title and its "What this
+  changes" and "Next steps" sections; the engineering report follows, folded (one click opens it). The pull request
+  template has a "Next steps" section. Takes effect for the pull requests after this one is merged (the comment
+  workflow runs from the default branch).
+
 ### 2026-10-14: model drop-down lists, any component selectable, one Excel button
 
 - **Asked:** after #114: a drop-down list to choose an activity model or an equation of state, and for an activity

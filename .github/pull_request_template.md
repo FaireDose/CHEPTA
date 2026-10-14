@@ -2,6 +2,10 @@
 
 <!-- One or two sentences, in engineering terms. Link the issue: "Closes #12". -->
 
+## Next steps
+
+<!-- What the maintainer should check or decide, and what comes after this pull request. This section and "What this changes" open the comment that the engineering report workflow posts (and e-mails). -->
+
 ## Checklist for the author
 
 - [ ] Every new number has a `source` (paper and table, databank, or fit description), following the rules in AGENTS.md
