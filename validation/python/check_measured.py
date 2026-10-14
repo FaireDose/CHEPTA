@@ -48,7 +48,7 @@ KNOWN = {
     ("mesitylene", "liquidViscosity"):
         "the ChemSep v8.3 viscosity is 10-20 % above all six articles (278-350 K); a refit to them would cover only "
         "278-350 K instead of 228-550 K, so the record stays for now (proposal 0008, batch 3)",
-    # the large deviations of the engineering report, reviewed on 2026-10-11 (docs/DECISIONS.md)
+    # the large deviations of the engineering report, reviewed on 2026-10-11 (docs/decisions/2026-10-11-01.md)
     ("etbe", "liquidViscosity"):
         "one article only (Cwiklinska 2007, three values at 293-303 K) finds the ChemSep viscosity 27 % high; one "
         "article over 10 K cannot replace a record to 450 K",

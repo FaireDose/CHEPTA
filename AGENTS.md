@@ -193,5 +193,7 @@ python validation/python/fit_properties.py --chemsep ... --only ID ...       # f
 
 Tell the person what you did, what they must check against the source, and how to submit
 (which form, or the pull request). Do not describe results as validated beyond what the
-tests show. Record what the person decided, and what is still pending, in
+tests show. Record what the person decided in a new file of
+[docs/decisions/](docs/decisions/), named `YYYY-MM-DD-NN-topic.md` (one file per pull request, so two open pull
+requests never edit the same lines), and update what is still pending in the open items of
 [docs/DECISIONS.md](docs/DECISIONS.md).
