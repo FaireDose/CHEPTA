@@ -44,8 +44,10 @@
   refusal (`REFUSED_AT_TYPICAL_STATE`). Wanted, to close the gap: liquid densities above 375 K, or vapour pressures
   between 343 and 375 K by a static or ebulliometric method, from an open source. Its Modified UNIFAC 2.0 groups
   (CH3CO + 2 CH2 + COOH) are the same as DDBST's; fusion data from the WebBook (308 K, 9.2 kJ/mol).
-- **Open for the maintainer:** gamma-butyrolactone and isoamyl alcohol are held for the same reason (no liquid state
-  with both records); they could be added with a gap the same way.
+- **Gamma-butyrolactone and isoamyl alcohol stay held.** The maintainer asked to add them with a gap too, unless many
+  of their vapour pressures would be left out. A trial build left out 11 of 33 values for gamma-butyrolactone (33 %,
+  2-6 % from the fit) and 56 of 119 for isoamyl alcohol (47 %, 0.6-3.6 %, its sets disagreeing beyond their stated
+  uncertainties), so, as the maintainer decided, neither was added.
 - **Changed for every component built this way:** the Clapeyron enthalpies of vaporization stop at the last measured
   vapour pressure (or at 500 kPa if lower), never in the part of the curve held only by the critical point.
   1,3-propanediol's record now ends at 487 K instead of 551 K; within 296-487 K its values move by -0.3 to +0.4 %.
