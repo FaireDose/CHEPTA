@@ -21,6 +21,7 @@ export const criticalT = c => (Number.isFinite(c?.Tc_K) ? c.Tc_K : Infinity);
 
 /** The sentence that says why a component has no critical constants. */
 export function noCriticalReason(c) {
+  if (c?.class === "nonvolatile") return `${c.name} is nonvolatile in CHEPTA (it stays in the liquid): it has no vapour pressure and no critical constants`;
   const s = c?.critical?.searched;
   return `${c.name} has no measured critical constants in the open sources${s?.length ? ` (searched: ${s.join("; ")})` : ""}`;
 }

@@ -376,6 +376,23 @@ Left out of liquidDensity: 293.15 K, Yang 2007, +0.05 % (stated uncertainty 2 % 
 
 Left out of liquidViscosity: 303.15 K, Boodida 2008, +4.28 % (stated uncertainty 7.1 % is above the 3 % target); 308.15 K, Boodida 2008, +5.05 % (stated uncertainty 7.1 % is above the 3 % target); 313.15 K, Boodida 2008, +4.89 % (stated uncertainty 7.2 % is above the 3 % target); 318.15 K, Boodida 2008, +6.45 % (stated uncertainty 7.2 % is above the 3 % target); 298.15 K, Vranes 2015, +0.36 % (stated uncertainty 4 % is above the 3 % target); 303.15 K, Vranes 2015, -1.15 % (stated uncertainty 4.3 % is above the 3 % target); 308.15 K, Vranes 2015, -1.24 % (stated uncertainty 3.9 % is above the 3 % target); 313.15 K, Vranes 2015, -1.21 % (stated uncertainty 4.2 % is above the 3 % target); 318.15 K, Vranes 2015, -2.68 % (stated uncertainty 4.4 % is above the 3 % target); 323.15 K, Vranes 2015, -5.25 % (stated uncertainty 3.8 % is above the 3 % target); 293.15 K, Papovic 2016, +1.07 % (stated uncertainty 4.3 % is above the 3 % target); 298.15 K, Papovic 2016, +1.53 % (stated uncertainty 4.1 % is above the 3 % target); 303.15 K, Papovic 2016, +1.97 % (stated uncertainty 3.8 % is above the 3 % target); 308.15 K, Papovic 2016, +2.12 % (stated uncertainty 4.1 % is above the 3 % target); 313.15 K, Papovic 2016, +2.40 % (stated uncertainty 4.4 % is above the 3 % target); 318.15 K, Papovic 2016, +2.64 % (stated uncertainty 3.9 % is above the 3 % target); 323.15 K, Papovic 2016, +2.64 % (stated uncertainty 4.2 % is above the 3 % target); 298.15 K, Papovic 2018, +1.53 % (stated uncertainty 4.1 % is above the 3 % target); 303.15 K, Papovic 2018, +1.97 % (stated uncertainty 3.8 % is above the 3 % target); 308.15 K, Papovic 2018, +2.12 % (stated uncertainty 4.1 % is above the 3 % target); 313.15 K, Papovic 2018, +2.40 % (stated uncertainty 4.4 % is above the 3 % target); 318.15 K, Papovic 2018, +2.64 % (stated uncertainty 3.9 % is above the 3 % target); 323.15 K, Papovic 2018, +2.64 % (stated uncertainty 4.2 % is above the 3 % target); 298.15 K, Mathuni 2011, +4.97 % (deviates most from a robust fit of the others); 298.15 K, Mathuni 2011, +4.97 % (deviates most from a robust fit of the others); 323.15 K, Vranes 2014, -5.25 % (deviates most from a robust fit of the others); 323.15 K, Papovic 2015, -5.25 % (deviates most from a robust fit of the others); 323.15 K, Vranes 2015, -5.25 % (deviates most from a robust fit of the others).
 
+## Lactic acid (C3H6O3, CAS 50-21-5)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): lactic acid has no open measured vapour pressures and, in the aqueous processes where it appears, hardly evaporates (it forms oligomers on heating); CHEPTA keeps it in the liquid; M 90.0779 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, step 5): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| idealGasHeatCapacity | — | — | — | — | no open data (not defined) |
+| liquidHeatCapacity | 230.00-445.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | no open data (not defined) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data (not defined) |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data (not defined) |
+| surfaceTension | — | — | — | — | no open data |
+
 ## 1,3-Propanediol (C3H8O2, CAS 504-63-2)
 
 - Tc 721.00 K, Pc 6.38 MPa, Tb 487.073 K, ω 0.5799, M 76.0944 g/mol

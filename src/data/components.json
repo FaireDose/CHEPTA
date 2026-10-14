@@ -45697,6 +45697,158 @@
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2COO, 2 CY-CH2): chosen: the lactone's ring ester O-C(=O)-CH2 as CH2COO and two ring CH2, as DDBST assigns it (the SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen); structure-based (SMARTS) assignment {87: 1, 78: 2}. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O2"
       }
+    },
+    "lactic-acid": {
+      "name": "Lactic acid",
+      "formula": "C3H6O3",
+      "cas": "50-21-5",
+      "aliases": [
+        "2-hydroxypropanoic acid",
+        "dl-lactic acid",
+        "l-lactic acid",
+        "milk acid"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "lactic acid has no open measured vapour pressures and, in the aqueous processes where it appears, hardly evaporates (it forms oligomers on heating); CHEPTA keeps it in the liquid",
+        "source": "proposal 0009, step 5"
+      },
+      "MW": 90.07794,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: lactic acid has no open measured vapour pressures and, in the aqueous processes where it appears, hardly evaporates (it forms oligomers on heating); CHEPTA keeps it in the liquid; a normal boiling temperature is reported: 398.20 K (Afolabi and Alao, Fluid Phase Equilib. 379 (2014) 19-25, doi:10.1016/j.fluid.2014.06.010)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, step 5): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"dl-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"dl-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened)"
+          ],
+          "note": "no open data at the 1 % target of the records: 3 measured values, 293.15-298.20 K, but their stated uncertainties (2.9-7.2 %) are larger than the target"
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [],
+          "note": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 171.9199547,
+            "B": -0.7199301403,
+            "C": 0.002800468315
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 230.0,
+          "Tmax_K": 445.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "1 C-(H)3(C), 1 C-(H)(C)2(O) (alcohol), 1 O-(H)(C), 1 CO-(C)(O), 1 O-(H)(CO)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Table 8 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (230-445 K)",
+            "notes": "No open measured liquid heat capacity (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"dl-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened)). The alpha carbon CH(OH)(COOH) is C-(H)(C)(O)(CO), a group the method does not have; it is counted as the secondary alcohol carbon C-(H)(C)2(O), its nearest group. Accuracy of the method on 15 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 3.4 % at 300 K for all of them; for alcohols and polyols it rises with temperature, +5 to +15 % at 350-400 K (ethanol, 2-propanol, propylene glycol, glycerol), while acids and ketones stay within about 2-6 %."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "searched": [],
+          "note": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"dl-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [],
+          "note": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"dl-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [],
+          "note": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"dl-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened)"
+          ]
+        }
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "3": 1,
+          "42": 1,
+          "81": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH, 1 COOH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
+      },
+      "fusion": {
+        "Tm_K": 290.0,
+        "Hfus_J_mol": 11340.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST Chemistry WebBook (SRD 69), phase change data",
+          "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4",
+          "access": "Free to read online (NIST Standard Reference Database 69); values cited per record",
+          "reference": "Domalski and Hearing, 1996",
+          "selection": "melting temperature: median of 1 WebBook triple-point temperatures (Wilhoit, Chao, et al., 1985); enthalpy of fusion: the only one of 1 measured value (11.34-11.34 kJ/mol) within 3 K of it"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
+      }
     }
   }
 }

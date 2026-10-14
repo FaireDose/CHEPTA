@@ -115,6 +115,9 @@ export function pure(key, opts = {}) {
   /** Residual enthalpy (J/mol) of the saturated vapour: Peng-Robinson, or 0 for an ideal gas. */
   const hResSat = (T, pS) => (crit ? eosPR().state(T, pS, [1], "vapour").hR_J_mol : 0);
 
+  // a nonvolatile component (proposal 0009, step 5): no vapour pressure, always a liquid
+  const nonvolatile = c.class === "nonvolatile";
+  const NONVOLATILE_NOTE = `${c.name} is nonvolatile in CHEPTA: it has no vapour pressure and stays in the liquid${c.nonvolatile?.why ? ` (${c.nonvolatile.why})` : ""}.`;
   const record = name => {
     if (name === "vapourPressure") return vpRec;
     const r = data[name];
@@ -134,6 +137,7 @@ export function pure(key, opts = {}) {
     if (name !== "vapourPressure" && !PROPERTIES[name]) {
       throw fail("BAD_INPUT", `Unknown property "${name}". Known: vapourPressure, ${PROPERTY_NAMES.join(", ")}.`);
     }
+    if (name === "vapourPressure" && nonvolatile) throw fail("NOT_AVAILABLE", NONVOLATILE_NOTE);
     const r = record(name);
     if (!r) throw fail("MISSING_DATA", missingMessage(name));
     const v = evaluate(r, T, opts);
@@ -177,6 +181,21 @@ export function pure(key, opts = {}) {
         if (srcName) { const r = record(srcName); out.sources[key] = { tier: r?.tier, source: r?.source }; }
       } catch (e) { out[key] = null; out.notes.push(e.message); }
     };
+    if (nonvolatile) {
+      // always a liquid; its enthalpy is the integral of cp_L from 298.15 K (reference: the liquid there), as in
+      // mixtures (enthalpy.js)
+      out.phase = "liquid";
+      out.psat_kPa = null;
+      out.notes.push(NONVOLATILE_NOTE);
+      tryGet("rho_kg_m3", () => property("liquidDensity", T), "liquidDensity");
+      tryGet("cp_J_molK", () => property("liquidHeatCapacity", T), "liquidHeatCapacity");
+      tryGet("h_J_mol", () => integrate(t => property("liquidHeatCapacity", t), T_REF, T));
+      out.notes.push("Liquid enthalpy h = integral of cp_L from 298.15 K: the reference state of a nonvolatile component is its liquid at 298.15 K.");
+      tryGet("mu_Pa_s", () => property("liquidViscosity", T), "liquidViscosity");
+      tryGet("k_W_mK", () => property("liquidThermalConductivity", T), "liquidThermalConductivity");
+      out.notes.push("Liquid properties at saturation; the effect of pressure is neglected.");
+      return out;
+    }
     let ps = null;
     if (T < Tc) { try { ps = psat(T); } catch (e) { out.notes.push(e.message); } }
     out.psat_kPa = ps;

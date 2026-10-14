@@ -36,7 +36,9 @@ Never:
   article may be read to understand a method, but it is not cited and its numbers are not used;
 - supplier catalogues and data sheets as measurements (they may be listed, never fitted);
 - estimated values presented as data. Group-contribution estimates (Joback, UNIFAC) are not used for constants;
-  Modified UNIFAC 2.0 is used only as a model, with the tier "predicted" (section 7).
+  Modified UNIFAC 2.0 is used only as a model, with the tier "predicted" (section 7). Where a property has no open
+  measured value at all, an open group-contribution method may predict it, labelled tier "predicted" with its method
+  and accuracy (section 10); it is never mixed with measured values.
 
 If nothing open has a number, write **"no open data"** with the sources searched. Search the open literature too, not
 only the databases (the maintainer, 2026-10-13).
@@ -179,3 +181,26 @@ decides.
 3. Ask the person to compare every transcribed value with its source (AGENTS.md rule 4).
 4. Record what the maintainer decided in a new file of [decisions/](decisions/), and update the open items in
    [DECISIONS.md](DECISIONS.md).
+
+## 10. Predicted properties and nonvolatile components (proposal 0009, step 5)
+
+**Predicted, not refused (the maintainer, 2026-10-14):** "definitely not refuse ... there should be some data or
+predicted like Mod. UNIFAC". Where no open source has a measured value of a property a calculation needs, an open
+group-contribution method predicts it:
+
+- liquid heat capacity: Ruzicka and Domalski (1993), J. Phys. Chem. Ref. Data 22, 597 and 619 (free NIST reprints),
+  transcribed from the page images into `validation/data/gc/ruzicka_domalski_1993.json` (`predict_cp.py`);
+- the record has tier "predicted", names the groups and every approximation (a group the method lacks counted as its
+  nearest group, as for the furan ring of Modified UNIFAC 2.0), and states the method's accuracy on CHEPTA liquids
+  with CoolProp or ChemSep records: within 3.4 % at 300 K for all fifteen checked; for alcohols and polyols it rises
+  with temperature, +5 to +15 % at 350-400 K.
+
+**Nonvolatile components:** a component that does not evaporate in the processes where it appears (it decomposes,
+polymerizes, or has no measurable vapour pressure) has `"class": "nonvolatile"` and no vapour pressure, critical
+constants or vapour properties. Activity models keep it in the liquid (a vapour pressure of 1e-20 kPa keeps the flash
+finite: its vapour mole fraction stays below 1e-20); a vapour fraction above the share of the other components, a dew
+point and the equations of state are refused with the reason. Its liquid enthalpy is the integral of its liquid heat
+capacity from 298.15 K, so its reference state is the liquid there; that is enough for energy balances without
+reactions. `measured_components.py` (`build_nonvolatile`) builds it from the measured values that meet the targets,
+with the heat capacity predicted where none is measured. A volatile liquid without open vapour pressures (solketal,
+alpha-angelica lactone) is not made nonvolatile: that would make every distillation with it wrong.

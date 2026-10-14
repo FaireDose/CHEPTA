@@ -107,3 +107,31 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def predicted_record(cid, why_no_data):
+    """The liquid heat-capacity record of a component of PREDICT, tier "predicted", with the method's accuracy on the
+    check set stated."""
+    p = PREDICT[cid]
+    c, (lo, hi) = coefficients(p["groups"])
+    rows = check()
+    near = [r for r in rows]
+    s = GC["sources"]
+    return {
+        "equation": "DIPPR100", "coefficients": {k: float("%.10g" % v) for k, v in c.items()}, "units": "J/mol/K",
+        "Tmin_K": float(lo), "Tmax_K": float(hi), "tier": "predicted",
+        "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "%s, doi:%s; %s, doi:%s" % (s["part1"]["citation"], s["part1"]["doi"], s["part2"]["citation"], s["part2"]["doi"]),
+            "access": "%s (%s; %s)" % (s["part2"]["access"], s["part1"]["open_copy"], s["part2"]["open_copy"]),
+            "groups": ", ".join("%d %s" % (n, g) for g, n in p["groups"].items()),
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Table 8 of "
+                   "part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were "
+                   "fitted (%g-%g K)" % (lo, hi),
+            "notes": "%s. %s. Accuracy of the method on %d CHEPTA liquids with a CoolProp or ChemSep record "
+                     "(validation/python/predict_cp.py): within 3.4 %% at 300 K for all of them; for alcohols and polyols "
+                     "it rises with temperature, +5 to +15 %% at 350-400 K (ethanol, 2-propanol, propylene glycol, "
+                     "glycerol), while acids and ketones stay within about 2-6 %%." % (
+                         why_no_data, p["approximation"][0].upper() + p["approximation"][1:], len(near)),
+        },
+    }

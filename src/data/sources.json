@@ -3254,6 +3254,18 @@
         "validation/data/vle/1-butanol_isooctane_10-1016-j-fluid-2018-07-027_101.3kPa.json"
       ]
     },
+    "ruzicka-domalski-1993": {
+      "title": "Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds; II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur",
+      "authors": "V. Ruzicka Jr., E. S. Domalski",
+      "year": 1993,
+      "published": "J. Phys. Chem. Ref. Data 22 (1993) 597-618 and 619-657",
+      "doi": "10.1063/1.555924",
+      "kind": "open-access article",
+      "url": "https://srd.nist.gov/jpcrdreprint/1.555924.pdf",
+      "access": "Free to read: reprints hosted by NIST (Standard Reference Data), part I at https://srd.nist.gov/jpcrdreprint/1.555923.pdf",
+      "license": "Copyright AIP for NIST; free to read",
+      "note": "Group parameters transcribed from the page images into validation/data/gc/ruzicka_domalski_1993.json; tier predicted."
+    },
     "sanchezrussinyol2004-ethanol-p-xylene": {
       "title": "Isobaric Vapor-Liquid Equilibria for Binary and Ternary Mixtures of Ethanol, Methylcyclohexane and p-Xylene",
       "authors": "M. D. C. Sanchez-Russinyol, A. Aucejo, S. Loras",

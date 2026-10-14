@@ -101,7 +101,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
        anhydride and the small gases have no groups; check the furans against open binary VLE data when a pair needs them;
      - Modified UNIFAC 2.0 groups chosen by the user (asked 2026-10-14): part of the work on adding the user's own
        data, not before (tier "user", subgroups and atom balance checked, a group picker in the interface);
-  4. the "nonvolatile" component class;
+  4. the "nonvolatile" component class: done (lactic acid; predicted heat capacity, Ruzicka-Domalski;
+     docs/decisions/2026-10-14-12-nonvolatile-class.md); check the transcribed groups against the tables; HMF and
+     lactide with batch 4;
   5. batch 4, sugars and acids as solids.
   - Six names still need a CAS number: xylose, erythritol, muconic acid, levoglucosenone,
     glycerol carbonate, ethoxymethylfurfural.

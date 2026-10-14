@@ -1,10 +1,146 @@
 {
  "component": "lactic-acid",
- "cas": "79-33-4",
+ "cas": "50-21-5",
  "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
  "retrieved": "2026-10-14",
- "searched": "ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened",
+ "searched": "ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"dl-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened",
  "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
- "articles": {},
- "rows": []
+ "articles": {
+  "10.1016/j.fluid.2010.05.013": {
+   "authors": [
+    "Bogel-Lukasik, R.[Rafal]",
+    "Matkowska, D.[Dobrochna]",
+    "Zakrzewska, M. E.[Malgorzata E.]",
+    "Bogel-Lukasik, E.[Ewa]",
+    "Hofman, T.[Tadeusz]"
+   ],
+   "title": "The phase envelopes of alternative solvents (ionic liquid, CO2) and building blocks of biomass origin (lactic acid, propionic acid)",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "295",
+   "year": "2010",
+   "pages": "177-185"
+  },
+  "10.1016/j.fluid.2013.06.007": {
+   "authors": [
+    "Domingues, L.[Lucas]",
+    "Cussolin, P. A.[Phylipe Andrian]",
+    "Lopes da Silva Jr., J.[Julio]",
+    "Hadlich de Oliveira, L.[Leonardo]",
+    "Aznar, M.[Martin]"
+   ],
+   "title": "Liquid-liquid equilibrium data for ternary systems of water + lactic acid + C4-C7 alcohols at 298.2 K and atmospheric pressure",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "354",
+   "year": "2013",
+   "pages": "12-18"
+  },
+  "10.1016/j.fluid.2014.06.010": {
+   "authors": [
+    "Afolabi, T. J.[Tinuade Jolaade]",
+    "Alao, A. I.[Adeyinka Idowu]"
+   ],
+   "title": "Liquid-liquid equilibria of water + lactic acid + methyl isobutyl ketone",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "379",
+   "year": "2014",
+   "pages": "19-25"
+  },
+  "10.1016/j.jct.2008.07.014": {
+   "authors": [
+    "Sahin, S.[Selin]",
+    "Kirbaslar, S. I.",
+    "Bilgin, M.[Mehmet]"
+   ],
+   "title": "(Liquid + liquid) equilibria of (water + lactic acid + alcohol) ternary systems",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "41",
+   "year": "2009",
+   "pages": "97-102"
+  },
+  "10.1021/acs.jced.9b00041": {
+   "authors": [
+    "Riveiro, E.[Elisa]",
+    "Villar, L.[Lorena]",
+    "Sas, O. G.[Olalla G.]",
+    "Gonzalez, B.[Begona]",
+    "Canosa, J.[Jose]",
+    "Dominguez, A.[Angeles]"
+   ],
+   "title": "Extraction of Carboxylic Acids from Aqueous Solutions by Using [BMim][NTf2] and Salting-out Agents",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "64",
+   "year": "2019",
+   "pages": "4717-4723"
+  }
+ },
+ "rows": [
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 290.0,
+   "uncertainty": 0.17,
+   "doi": "10.1016/j.fluid.2010.05.013",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.2,
+   "P_kPa": 101.325,
+   "value": 1199.914,
+   "uncertainty": 86.939,
+   "doi": "10.1016/j.fluid.2013.06.007",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Normal boiling temperature, K",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 398.2,
+   "uncertainty": 0.2,
+   "doi": "10.1016/j.fluid.2014.06.010",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 293.15,
+   "P_kPa": 101.325,
+   "value": 1207.0,
+   "uncertainty": 34.94,
+   "doi": "10.1016/j.jct.2008.07.014",
+   "set": 5,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 1202.57,
+   "uncertainty": 34.69,
+   "doi": "10.1021/acs.jced.9b00041",
+   "set": 4,
+   "binary_with": null
+  }
+ ]
 }

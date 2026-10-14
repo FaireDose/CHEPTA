@@ -409,6 +409,20 @@ COMPONENTS = {
         # did not support)
         "vp_fit": "consensus",
     },
+    # Nonvolatile components (proposal 0009, step 5; the maintainer, 2026-10-14): no vapour pressure, they stay in the
+    # liquid; where no open measured heat capacity exists it is predicted by group additivity (predict_cp.py), tier
+    # "predicted", as the maintainer decided ("definitely not refuse ... there should be some data or predicted")
+    "lactic-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "lactic acid has no open measured vapour pressures and, in the aqueous processes where it "
+                           "appears, hardly evaporates (it forms oligomers on heating); CHEPTA keeps it in the liquid",
+        "name": "Lactic acid", "cas": "50-21-5", "webbook": "C50215", "proposal": "proposal 0009, step 5",
+        "aliases": ["2-hydroxypropanoic acid", "dl-lactic acid", "l-lactic acid", "milk acid"],
+        "thermoml_queries": ["lactic acid", "l-lactic acid", "dl-lactic acid", "2-hydroxypropanoic acid",
+                             "(2S)-2-hydroxypropanoic acid"],
+        # values of either enantiomer and of the racemate count (mirror images have the same thermodynamic properties)
+        "inchi_no_stereo": True,
+    },
     "1-3-propanediol": {
         "name": "1,3-Propanediol", "cas": "504-63-2", "webbook": "C504632", "proposal": "proposal 0009, batch 3",
         "aliases": ["propane-1,3-diol", "trimethylene glycol", "1,3-pdo", "pdo"],
@@ -1562,6 +1576,59 @@ def build(cid, log):
         "%.4f" % omega if omega is not None else "none", meta.MW))
     return comp, points
 
+def build_nonvolatile(cid, log):
+    """A nonvolatile component (proposal 0009, step 5): no vapour pressure, no critical constants, no vapour
+    properties; the liquid's records from measured values where they meet the targets, the liquid heat capacity
+    predicted by group additivity (predict_cp.py, tier "predicted") where no open measured values exist."""
+    from chemicals.identifiers import search_chemical
+    import predict_cp
+    C = COMPONENTS[cid]
+    wb, tml = WebBook(cid), ThermoML(cid)
+    meta = search_chemical(C["cas"])
+    searched = ["CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+                "NIST Chemistry WebBook (%s)" % wb.url("phase change"), "NIST TRC ThermoML Archive (%s)" % tml.d["searched"]]
+    records, points = {}, {}
+    fit_or_marker(cid, "liquidDensity", "DIPPR100", 0.01, tml.values("liquidDensity"), records, points, log, None, tml,
+                  searched, "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)", THERMOML_ACCESS)
+    fit_or_marker(cid, "liquidHeatCapacity", "DIPPR100", 0.01, tml.values("liquidHeatCapacity"), records, points, log,
+                  None, tml, searched, "Measured heat capacities of the liquid (NIST TRC ThermoML Archive)", THERMOML_ACCESS)
+    if records["liquidHeatCapacity"].get("available") is False:
+        why = "No open measured liquid heat capacity (searched: %s)" % "; ".join(searched)
+        records["liquidHeatCapacity"] = predict_cp.predicted_record(cid, why)
+        log.append("%-17s liquidHeatCapacity        predicted (Ruzicka-Domalski), %g-%g K" % (
+            cid, records["liquidHeatCapacity"]["Tmin_K"], records["liquidHeatCapacity"]["Tmax_K"]))
+    for prop, form, target in (("liquidViscosity", "DIPPR101", 0.03), ("surfaceTension", "DIPPR100", 0.01),
+                               ("liquidThermalConductivity", "DIPPR100", 0.03)):
+        fit_or_marker(cid, prop, form, target, tml.values(prop), records, points, log, None, tml, searched,
+                      "Measured values (NIST TRC ThermoML Archive)", THERMOML_ACCESS)
+    gas_note = "not defined: %s is nonvolatile, it is never in the vapour" % C["name"]
+    for prop in ("idealGasHeatCapacity", "heatOfVaporization", "vapourViscosity", "vapourThermalConductivity"):
+        records[prop] = {"available": False, "searched": [], "note": gas_note}
+    records = {p: records[p] for p in PROPS}
+    tb = ["%.2f K (%s)" % (p["y"], tml.cite(p["doi"])) for p in tml.values("Tb")]
+    comp = {
+        "name": C["name"], "formula": meta.formula, "cas": C["cas"], "aliases": C["aliases"], "class": "nonvolatile",
+        "nonvolatile": {"why": C["why_nonvolatile"], "source": C.get("proposal")},
+        "MW": rnd(meta.MW, 7), "Tc_K": None, "Pc_Pa": None, "Tb_K": None, "omega": None,
+        "Tb_note": "nonvolatile in CHEPTA: %s%s" % (C["why_nonvolatile"],
+                                                     "; a normal boiling temperature is reported: %s" % "; ".join(tb) if tb else ""),
+        "uniquac_missing": {
+            "searched": ["ChemSep v8.3 and v8.31 data 2 (compound not included)",
+                         "thermo and chemicals libraries (no UNIQUAC r and q tables)"],
+            "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence "
+                    "of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it "
+                    "is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."},
+        "constants_source": ("MW, formula and CAS: chemicals library (MIT). Nonvolatile (%s): no vapour pressure, critical "
+                             "constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank." %
+                             C.get("proposal")),
+        "constants_source_ids": ["nist-webbook"],
+        "critical": {"available": False, "searched": searched},
+        "properties": records,
+    }
+    log.append("%-17s nonvolatile, MW %.4f" % (cid, meta.MW))
+    return comp, points
+
+
 # ---------------------------------------------------------------------------------------------
 # Report
 # ---------------------------------------------------------------------------------------------
@@ -1581,26 +1648,32 @@ def write_doc(comps):
          "the sources searched.", ""]
     for cid, c in comps.items():
         L += ["## %s (%s, CAS %s)" % (c["name"], c["formula"], c["cas"]), "",
-              ("- Tc %.2f K, Pc %.4g MPa, Tb %.3f K, ω %.4f, M %.4f g/mol" % (c["Tc_K"], c["Pc_Pa"] / 1e6, c["Tb_K"], c["omega"], c["MW"])
+              ("- Nonvolatile (no vapour pressure; it stays in the liquid): %s; M %.4f g/mol" % (c["nonvolatile"]["why"], c["MW"])
+               if c.get("class") == "nonvolatile" else
+               "- Tc %.2f K, Pc %.4g MPa, Tb %.3f K, ω %.4f, M %.4f g/mol" % (c["Tc_K"], c["Pc_Pa"] / 1e6, c["Tb_K"], c["omega"], c["MW"])
                if c["Tc_K"] else "- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb %s, M %.4f g/mol" % (
                    "%.3f K" % c["Tb_K"] if c["Tb_K"] else "not reached by the measured vapour pressures", c["MW"])),
               "- Constants: %s" % c["constants_source"], "",
               "| Property | Range (K) | Values used | Left out | Max deviation | Sources |", "|---|---|---|---|---|---|"]
-        vp = c["vapourPressure"]
-        L.append("| Vapour pressure | %.2f-%.2f | %s | %d | %s | ThermoML, WebBook |" % (
-            vp["Tmin_K"], vp["Tmax_K"], re.search(r"(\d+) measured values", vp["source"]).group(1), len(vp.get("excluded", [])),
-            re.search(r"max deviation ([0-9.]+ %)", vp["source"]).group(1)))
+        vp = c.get("vapourPressure")
+        if vp:
+            L.append("| Vapour pressure | %.2f-%.2f | %s | %d | %s | ThermoML, WebBook |" % (
+                vp["Tmin_K"], vp["Tmax_K"], re.search(r"(\d+) measured values", vp["source"]).group(1), len(vp.get("excluded", [])),
+                re.search(r"max deviation ([0-9.]+ %)", vp["source"]).group(1)))
         for p, r in c["properties"].items():
             if r.get("available") is False:
                 L.append("| %s | — | — | — | — | no open data%s |" % (p, " (%s)" % r["note"].split(":")[0] if r.get("note") else ""))
                 continue
             f = r["source"]["fit"]
+            if r.get("tier") == "predicted":
+                L.append("| %s | %.2f-%.2f | predicted | — | — | %s |" % (p, r["Tmin_K"], r["Tmax_K"], r["source"]["name"]))
+                continue
             nval = re.match(r"(\d+)", f).group(1)
             L.append("| %s | %.2f-%.2f | %s | %d | %s | %s |" % (
                 p, r["Tmin_K"], r["Tmax_K"], nval, len(r["source"].get("excluded", [])),
                 re.search(r"max deviation ([0-9.]+ %)", f).group(1), r["source"]["name"]))
         L.append("")
-        for p, r in [("vapourPressure", vp)] + list(c["properties"].items()):
+        for p, r in ([("vapourPressure", vp)] if vp else []) + list(c["properties"].items()):
             exc = r.get("excluded") or (r.get("source", {}).get("excluded") if isinstance(r.get("source"), dict) else None)
             if exc:
                 L.append("Left out of %s: %s." % (p, "; ".join("%.2f K, %s, %+.2f %% (%s)" % (
@@ -1635,7 +1708,7 @@ def main():
             fetch_thermoml(cid, args.cache)
     log, comps, pts = [], {}, {}
     for cid in COMPONENTS:
-        comps[cid], pts[cid] = build(cid, log)
+        comps[cid], pts[cid] = (build_nonvolatile if COMPONENTS[cid].get("class") == "nonvolatile" else build)(cid, log)
     print("\n".join(log))
     if args.write:
         data = json.loads(COMP_FILE.read_text())
