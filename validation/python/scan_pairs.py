@@ -309,11 +309,19 @@ def is_polar(cid):
 
 
 def is_gas(cid):
+    # a component whose measured vapour pressures stop short of 101.325 kPa has no Tb but says why (Tb_note): a liquid
+    if COMPS[cid].get("Tb_K") is None and COMPS[cid].get("Tb_note"):
+        return False
     return (COMPS[cid].get("Tb_K") or 0) < 273.15
 
 
+def no_critical(cid):
+    """Without measured critical constants (proposal 0009) a component cannot use an equation of state."""
+    return COMPS[cid].get("Tc_K") is None
+
+
 def needed_method(a, b):
-    if not is_polar(a) and not is_polar(b):
+    if not is_polar(a) and not is_polar(b) and not (no_critical(a) or no_critical(b)):
         return "eos"
     if is_gas(a) and is_gas(b):
         return "eos"
