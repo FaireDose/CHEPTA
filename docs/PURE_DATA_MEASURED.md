@@ -354,6 +354,28 @@ Left out of surfaceTension: 333.15 K, Lomba 2015, +0.13 % (stated uncertainty 1 
 
 Left out of liquidViscosity: 293.15 K, Francesconi 2007, +0.78 % (stated uncertainty 8.1 % is above the 3 % target); 303.15 K, Francesconi 2007, +1.05 % (stated uncertainty 9 % is above the 3 % target); 313.15 K, Francesconi 2007, -0.94 % (stated uncertainty 9.6 % is above the 3 % target).
 
+## gamma-Butyrolactone (C4H6O2, CAS 96-48-0)
+
+- Tc 731.00 K, Pc 5.131 MPa, Tb 478.170 K, ω 0.3776, M 86.0892 g/mol
+- Constants: Tc and Pc: Wilson, Wilson, et al., 1996, NIST Chemistry WebBook (SRD 69), phase change data, https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Units=SI&Mask=4. MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (478.17 K); measured normal boiling temperatures in the ThermoML Archive: 477.80 K (Yang 2016).
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| Vapour pressure | 376.99-731.00 | 33 | 0 | 3.0 % | ThermoML, WebBook |
+| liquidDensity | 273.15-333.15 | 104 | 8 | 0.50 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
+| idealGasHeatCapacity | 200.00-1500.00 | 16 | 0 | 0.27 % | NIST Chemistry WebBook |
+| liquidHeatCapacity | 290.00-410.00 | 11 | 0 | 0.34 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook) |
+| heatOfVaporization | 298.15-556.10 | 25 | 0 | 0.51 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
+| liquidViscosity | 273.15-323.15 | 43 | 28 | 2.7 % | Measured values (NIST TRC ThermoML Archive) |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+Left out of liquidDensity: 293.15 K, Yang 2007, +0.05 % (stated uncertainty 2 % is above the 1 % target); 303.15 K, Yang 2007, +0.06 % (stated uncertainty 2 % is above the 1 % target); 313.15 K, Yang 2007, +0.17 % (stated uncertainty 2 % is above the 1 % target); 323.15 K, Yang 2007, +0.40 % (stated uncertainty 2 % is above the 1 % target); 333.15 K, Yang 2007, +0.75 % (stated uncertainty 2 % is above the 1 % target); 343.15 K, Yang 2007, +1.22 % (stated uncertainty 2 % is above the 1 % target); 353.15 K, Yang 2007, +1.82 % (stated uncertainty 2 % is above the 1 % target); 313.15 K, Farhan 2010, -1.06 % (deviates most from a robust fit of the others).
+
+Left out of liquidViscosity: 303.15 K, Boodida 2008, +4.28 % (stated uncertainty 7.1 % is above the 3 % target); 308.15 K, Boodida 2008, +5.05 % (stated uncertainty 7.1 % is above the 3 % target); 313.15 K, Boodida 2008, +4.89 % (stated uncertainty 7.2 % is above the 3 % target); 318.15 K, Boodida 2008, +6.45 % (stated uncertainty 7.2 % is above the 3 % target); 298.15 K, Vranes 2015, +0.36 % (stated uncertainty 4 % is above the 3 % target); 303.15 K, Vranes 2015, -1.15 % (stated uncertainty 4.3 % is above the 3 % target); 308.15 K, Vranes 2015, -1.24 % (stated uncertainty 3.9 % is above the 3 % target); 313.15 K, Vranes 2015, -1.21 % (stated uncertainty 4.2 % is above the 3 % target); 318.15 K, Vranes 2015, -2.68 % (stated uncertainty 4.4 % is above the 3 % target); 323.15 K, Vranes 2015, -5.25 % (stated uncertainty 3.8 % is above the 3 % target); 293.15 K, Papovic 2016, +1.07 % (stated uncertainty 4.3 % is above the 3 % target); 298.15 K, Papovic 2016, +1.53 % (stated uncertainty 4.1 % is above the 3 % target); 303.15 K, Papovic 2016, +1.97 % (stated uncertainty 3.8 % is above the 3 % target); 308.15 K, Papovic 2016, +2.12 % (stated uncertainty 4.1 % is above the 3 % target); 313.15 K, Papovic 2016, +2.40 % (stated uncertainty 4.4 % is above the 3 % target); 318.15 K, Papovic 2016, +2.64 % (stated uncertainty 3.9 % is above the 3 % target); 323.15 K, Papovic 2016, +2.64 % (stated uncertainty 4.2 % is above the 3 % target); 298.15 K, Papovic 2018, +1.53 % (stated uncertainty 4.1 % is above the 3 % target); 303.15 K, Papovic 2018, +1.97 % (stated uncertainty 3.8 % is above the 3 % target); 308.15 K, Papovic 2018, +2.12 % (stated uncertainty 4.1 % is above the 3 % target); 313.15 K, Papovic 2018, +2.40 % (stated uncertainty 4.4 % is above the 3 % target); 318.15 K, Papovic 2018, +2.64 % (stated uncertainty 3.9 % is above the 3 % target); 323.15 K, Papovic 2018, +2.64 % (stated uncertainty 4.2 % is above the 3 % target); 298.15 K, Mathuni 2011, +4.97 % (deviates most from a robust fit of the others); 298.15 K, Mathuni 2011, +4.97 % (deviates most from a robust fit of the others); 323.15 K, Vranes 2014, -5.25 % (deviates most from a robust fit of the others); 323.15 K, Papovic 2015, -5.25 % (deviates most from a robust fit of the others); 323.15 K, Vranes 2015, -5.25 % (deviates most from a robust fit of the others).
+
 ## 1,3-Propanediol (C3H8O2, CAS 504-63-2)
 
 - Tc 721.00 K, Pc 6.38 MPa, Tb 487.073 K, ω 0.5799, M 76.0944 g/mol

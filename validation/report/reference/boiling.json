@@ -474,6 +474,13 @@
     "value": null,
     "why": "No open reference: no measured normal boiling temperature on the component's WebBook page"
    }
+  },
+  "tb/gbl": {
+   "T_C": {
+    "value": 205.3,
+    "source": "nist-webbook",
+    "detail": "Tboil = 478.45 K, the median of 477.7 K (Aldrich Chemical Company Inc., 1990); 479.20 K (Vasil'eva, Naumova, et al., 1990) (no average on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Units=SI&Mask=4"
+   }
   }
  }
 }

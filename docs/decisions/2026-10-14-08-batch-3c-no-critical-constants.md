@@ -74,7 +74,14 @@
   tetrahydrofurfuryl alcohol (DDBST's assignment, one H over in the atom balance), propylene carbonate (CH3 +
   (CH2)2CB; the SMARTS match had taken a nitrogen subgroup), ethylene carbonate ((CH2)2CB), Cyrene (from the structure).
   The method has no subgroup for a furan ring, an anhydride or the small gases, so furan, 2-methylfuran, furfuryl
-  alcohol, maleic anhydride and the gases still have none.
+  alcohol, maleic anhydride and the gases still have none. The maintainer recalled furan groups written like AC2H2O:
+  the parameter files of Modified UNIFAC 2.0 (63 main groups) have such ring groups for pyridine (AC2H2N, AC2HN, AC2N)
+  and thiophene (AC2H2S, AC2HS, AC2S) only, and furfural as one whole-molecule group. The UNIFAC Consortium's own
+  tables (version 2025) list further main groups (anhydrides, lactones, ...), but their parameters are for the
+  consortium's members, not open, so they are not used (AGENTS.md rule 1).
+- **gamma-Butyrolactone (the maintainer, 2026-10-14):** "I accept the gamma butyrolactone": Sun 2017's narrow miss
+  (1.93 % against its stated 1.71 %) accepted, with the gap already accepted. Modified UNIFAC 2.0 groups as DDBST
+  assigns them (CH2COO and two CY-CH2; the SMARTS match had taken a nitrogen subgroup).
 - **Pairs (the maintainer, 2026-10-14, "I go with your suggestion"):** where a pair has a set fitted to measured
   mixture data, that set is the default and the ChemSep set stays as an alternative; ChemSep is the default only
   where no measured mixture data were fitted. The data already followed this; `test/library.test.js` now checks it.

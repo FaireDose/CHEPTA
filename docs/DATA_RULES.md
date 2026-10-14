@@ -152,7 +152,8 @@ without waiting for a person to choose (the maintainer, 2026-10-14). A component
 is used (`CHOSEN` in `mod_unifac_2.py`); a substituted ring carbon counted in the ring's subgroup, as DDBST does, may
 leave the balance one H over, which is stated. Without a DDBST assignment, the structure-based one is used after a
 check of the structure (`REVIEWED`), or corrected when it is plainly wrong (`FROM_STRUCTURE`). The subgroups cannot
-describe a furan ring, an anhydride or the small gases: those components have no groups, and say so. Where measured
+describe a furan ring, an anhydride or the small gases: those components have no groups, and say so. The UNIFAC
+Consortium's newer groups (anhydrides, lactones, ...) are for its members only, so they are not used. Where measured
 data show the prediction is off, a "predicted-deviation" known issue says by how much; the user compares the models and
 decides.
 

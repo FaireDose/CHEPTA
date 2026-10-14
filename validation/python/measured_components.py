@@ -373,14 +373,10 @@ COMPONENTS = {
         "aliases": ["γ-butyrolactone", "butyrolactone", "oxolan-2-one", "gbl"],
         "thermoml_queries": ["gamma-butyrolactone", "oxolan-2-one"],
         "webbook_individual": ["HVAP"],
-        # not written: its open measured vapour pressures start at 377 K and its liquid densities end at 333 K (a gap the
-        # maintainer accepted, 2026-10-14), but its vapour-pressure sets disagree, so they are not pooled (the rule of
-        # 2026-10-14): Yang 2016, Yan 2017 and Sun 2017 lie 1.2-1.9 % below the pooled curve, Mathuni 2011 and
-        # VonNiederhausern 2006 0.6-1.3 % above; Sun 2017 (two values) by more than its stated uncertainty
-        "hold": "its vapour-pressure sets disagree (Yang 2016, Yan 2017 and Sun 2017 lie 1.2-1.9 % below the curve of all "
-                "the sets, Mathuni 2011 and VonNiederhausern 2006 0.6-1.3 % above; Sun 2017 by more than its stated "
-                "uncertainty), so they are not pooled, and no reason to prefer one has been found; also no liquid state "
-                "has both a vapour pressure (from 377 K) and a density (to 333 K)",
+        # its open measured vapour pressures start at 377 K and its liquid densities end at 333 K (a gap the maintainer
+        # accepted, 2026-10-14). Its vapour-pressure sets are pooled: Sun 2017 (two values) misses the agreement test
+        # narrowly (1.93 % against its stated 1.71 %), and the maintainer accepted the narrow miss (2026-10-14)
+        "vp_accept": {"Sun 2017": 1.93},
         # the archive also has VonNiederhausern et al. (2006): 732.5 K and 5.10 MPa, with larger uncertainties
         "critical": "Wilson, Wilson, et al., 1996",
         "antoine_fit": [],

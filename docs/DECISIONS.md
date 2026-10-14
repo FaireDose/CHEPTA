@@ -85,13 +85,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      - 3a (furans, 1,3-propanediol) and 3b (levulinate esters; levulinic acid with a gap between its vapour-pressure
        and density records) done; levulinic acid's gap: wanted liquid densities above 375 K, or vapour pressures between
        343 and 375 K by a static or ebulliometric method, from an open source;
-     - held: gamma-butyrolactone and isoamyl alcohol, whose vapour-pressure sets disagree (not pooled), with a gap too;
-       gamma-butyrolactone misses agreement only by Sun 2017's two values (1.93 % against 1.71 %): accept it or not;
+     - held: isoamyl alcohol, whose twelve vapour-pressure sets disagree (not pooled), with a gap too;
      - 2-methylfuran: its three vapour-pressure sets disagree; under the rule of 2026-10-14 (all sets with the same
        weight) a set is preferred only with a stated reason; find one (independent boiling points, calorimetric
        enthalpy of vaporization) or keep the merged record;
      - 3c done (GVL, CPME, tetrahydrofurfuryl alcohol, 2,3-butanediol, methyl and ethyl lactate, limonene, furfuryl
-       alcohol, through the path for components without critical constants); no open vapour pressures: HMF, lactic
+       alcohol, through the path for components without critical constants; gamma-butyrolactone, with its gap); no open vapour pressures: HMF, lactic
        acid, lactide, solketal, alpha-angelica lactone;
      - Modified UNIFAC 2.0 has no subgroup for a furan ring, an anhydride or the small gases: furan, 2-methylfuran,
        furfuryl alcohol, maleic anhydride and the gases have no groups;

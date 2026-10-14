@@ -62,6 +62,8 @@ CHOSEN = {
     "thfa": ({2: 1, 14: 1, 27: 1, 78: 2}, "the ring ether CH-O-CH2 counted as the THF subgroup, with CH2 and a primary "
                                           "OH, as DDBST assigns it (the SMARTS match took a TRIOXAN group, the subgroup of "
                                           "1,3,5-trioxane)"),
+    "gbl": ({22: 1, 78: 2}, "the lactone's ring ester O-C(=O)-CH2 as CH2COO and two ring CH2, as DDBST assigns it (the "
+                            "SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen)"),
 }
 # components without a DDBST assignment whose structure-based assignment is wrong: the assignment used, and why
 FROM_STRUCTURE = {
