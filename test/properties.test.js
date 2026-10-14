@@ -140,8 +140,10 @@ const ENTHALPY_NOT_CONSISTENT = new Set(["acetic-acid"]);
 // Components written with a gap between their records (the maintainer's decision of 2026-10-14): levulinic acid's
 // open liquid densities end at 343 K and its vapour-pressure record starts at 375 K, so at its typical liquid state
 // (375 K) the density is refused with an out-of-range note instead of being extrapolated. gamma-Butyrolactone the same:
-// its liquid densities end at 333 K, its viscosities at 323 K, and its vapour-pressure record starts at 377 K.
-const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3"], gbl: ["rho_kg_m3", "mu_Pa_s"] };
+// its liquid densities end at 333 K, its viscosities at 323 K, and its vapour-pressure record starts at 377 K. Isoamyl
+// alcohol too: densities to 332.7 K, viscosities to 323.15 K, vapour pressures from 335.85 K.
+const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3"], gbl: ["rho_kg_m3", "mu_Pa_s"],
+  "isoamyl-alcohol": ["rho_kg_m3", "mu_Pa_s"] };
 
 test("props() returns liquid and vapour properties for every component at a typical state", () => {
   // styrene at 25 °C: below its measured vapour pressure, so the liquid enthalpy is refused with a reason
