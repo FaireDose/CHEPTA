@@ -30,7 +30,7 @@ import {
   RULES, ruleOf, setsFor, setChoices, pairKeyOf, modelLabel, feedbackLinks,
 } from "./app-logic.js";
 import { diagramXlsx, exportFileName } from "./diagram-export.js";
-import { FUTURE_MODELS } from "./future-models.js";
+import { modelPicker, liquidPicker } from "./model-picker.js";
 import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, checkInputs, examplesFor, rotateInputs, solventsFor, needsFor, isEosModel } from "./workspaces.js";
 import { UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
@@ -153,24 +153,22 @@ export function app(target, cfg = {}) {
   const ribbon = h("div", { class: "fa-ribbon", role: "toolbar", id: `fa-rib-${uid}` });
   const left = h("aside", { class: "fa-left", "aria-label": "Inputs", id: `fa-in-${uid}` });
   const canvasBar = h("div", { class: "fa-canvas-bar" });
-  // Excel download of the diagram on the canvas: shown when the view has a data table (info.export)
-  const excelBtn = h("button", { type: "button", class: "fa-mini fa-excel", "data-fk": "diagram-xlsx", hidden: true,
+  // Excel download of the diagram on the canvas, at the foot of the canvas as on the flowsheet: shown when the view has
+  // a data table (info.export)
+  const excelBtn = h("button", { type: "button", class: "fa-mini fa-excel", "data-fk": "diagram-xlsx",
     title: "Download the numbers of this diagram as an Excel workbook: every point drawn, in the units shown",
-    on: { click: () => exportDiagram() } }, icon("table", 15), "Excel");
-  // the same download at the foot of the Results panel, where the flowsheet has its Excel button
-  const excelFoot = h("button", { type: "button", class: "fa-mini fa-excel", "data-fk": "diagram-xlsx-foot", hidden: true,
-    title: "Download the numbers of this diagram as an Excel workbook: every point drawn, in the units shown",
-    on: { click: () => exportDiagram() } }, icon("table", 15), "Export to Excel");
+    on: { click: () => exportDiagram() } }, icon("table", 15), "Download Excel");
+  const exportNote = h("div", { class: "fug-foot fa-export-note", role: "status" });
+  const canvasFoot = h("div", { class: "fa-canvas-foot", hidden: true }, h("div", { class: "fa-in-actions" }, excelBtn), exportNote);
   const notes = h("div", { class: "fa-notes" });
   const plot = h("div", { class: "fug-plot fa-plot" });
   const below = h("div", { class: "fa-below" });
-  const canvas = h("main", { class: "fa-canvas" }, canvasBar, notes, plot, below);
+  const canvas = h("main", { class: "fa-canvas" }, canvasBar, notes, plot, below, canvasFoot);
   const side = h("div", { class: "fug-side fa-readout", "aria-live": "polite" });
   const inspectorExtra = h("div", { class: "fa-inspector-extra" });
   const provenance = h("div", { class: "fa-provenance" });
   const right = h("aside", { class: "fa-right", "aria-label": "Results" },
-    h("div", { class: "fa-panel-head" }, h("h2", {}, "Results"), provenance), side, inspectorExtra,
-    h("div", { class: "fa-results-foot" }, excelFoot));
+    h("div", { class: "fa-panel-head" }, h("h2", {}, "Results"), provenance), side, inspectorExtra);
   const statusBar = h("div", { class: "fa-status", role: "status" });
   const body = h("div", { class: "fa-body" }, left, canvas, right);
   const drawer = h("section", { class: "fa-drawer", role: "dialog", id: `fa-drawer-${uid}`, tabindex: "-1",
@@ -320,31 +318,13 @@ export function app(target, cfg = {}) {
     return bigButton({ ico: VIEW_ICON[view], label, pressed: state.view === view, title: `${VIEWS[view].label}: ${needsOf(view, state.model).toLowerCase()}`,
       fk: `diagram-${view}`, onClick: () => set({ view }) });
   }
-  /** Models on the roadmap: locked chips with what each is for (FUTURE_MODELS). */
-  const lockedChips = list => list.map(m => h("span", { class: "fa-locked-chip", title: m.note, "aria-disabled": "true", "data-fk": `later-${m.id}` },
-    icon("lock", 11), m.label));
-  /** One labelled row of the Model group: a caption and its choices. */
-  const modelRow = (caption, label, choices, current, onPick) =>
-    h("div", { class: "fa-model-row" }, h("span", { class: "fa-model-cap", "aria-hidden": "true" }, caption), seg(label, choices, current, onPick));
   /**
-   * The Model group: the activity models, with their vapour model as a smaller sub-row (it
-   * belongs to them: the liquid from γ, the vapour from an ideal gas or a cubic equation),
-   * then the equations of state, which describe both phases. The vapour row stays in place,
-   * dimmed and disabled, while an equation of state is chosen.
+   * The Model group: the method as drop-down lists (model-picker.js): an activity model with its vapour model (an ideal
+   * gas unless chosen otherwise), or an equation of state for both phases.
    */
   function modelGroup() {
-    const eos = isEosModel(state.model);
-    return group("Model", h("div", { class: "fa-stack fa-models" },
-      h("div", { class: "fa-model-family" + (eos ? "" : " is-on") },
-        modelRow("Activity", "Activity model (liquid)", [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0"], ["ideal", "Ideal"]], eos ? null : state.model, m => set({ model: m })),
-        h("div", { class: "fa-model-row fa-model-sub" + (eos ? " is-off" : "") },
-          h("span", { class: "fa-model-cap", "aria-hidden": "true" }, "vapour"),
-          seg("Vapour model of the activity model", [["ideal", "Ideal gas"], ["PR", "PR"], ["SRK", "SRK"]], state.vapour, m => set({ vapour: m }),
-            { disabled: eos, title: eos ? "The vapour model belongs to the activity models; an equation of state describes the vapour itself" : undefined }))),
-      h("div", { class: "fa-model-family" + (eos ? " is-on" : "") },
-        modelRow("EOS", "Equation of state (both phases)", [["PR", "Peng–Robinson"], ["SRK", "SRK"]], eos ? state.model : null, m => set({ model: m }))),
-      h("div", { class: "fa-model-row fa-model-later", role: "note", "aria-label": "Models not available yet" },
-        h("span", { class: "fa-model-cap", "aria-hidden": "true" }, "later"), ...lockedChips([...FUTURE_MODELS.activity, ...FUTURE_MODELS.eos]))));
+    return group("Model", modelPicker({ model: state.model, vapour: state.vapour, id: `fa-model-${uid}`,
+      onChange: p => set(p.model === state.model ? { vapour: p.vapour } : { model: p.model, vapour: p.vapour }) }));
   }
   function ribbonGroups() {
     const u = state.units, v = state.view;
@@ -385,7 +365,7 @@ export function app(target, cfg = {}) {
         // solids: a pure solid in equilibrium with the liquid; γ from an activity model (or 1: the ideal solubility)
         return [views,
           group("Liquid model", h("div", { class: "fa-stack" },
-            seg("Liquid model", [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0"], ["ideal", "Ideal"]], isEosModel(state.model) ? null : state.model, m => set({ model: m })),
+            liquidPicker({ model: state.model, id: `fa-liq-${uid}`, onChange: m => set({ model: m }) }),
             h("div", { class: "fa-hint" }, "ln(x γ) = −(ΔH_fus / R T)(1 − T / T_m); pure solid, ΔCp = 0"))),
           v === "solid"
             ? group("Solubility as", seg("Solubility unit", SOLID_UNITS.map(su => [su.id, su.label]), state.solidUnit, su => set({ solidUnit: su })))
@@ -425,7 +405,7 @@ export function app(target, cfg = {}) {
     return Array.isArray(value) && view !== "steam" && !value.some(Boolean);
   }
 
-  /** How a component appears in the pickers of a view: a note, and whether it can be chosen (liquids only). */
+  /** How a component appears in the pickers of a view: a note on what the chosen model or view cannot do with it. */
   function pickStatus(view, slot) {
     const spec = needsFor(view, state.model), value = state.inputs[view];
     const usedElsewhere = new Map((Array.isArray(value) ? value : []).map((id, i) => [id, i]).filter(([id, i]) => id && i !== slot));
@@ -436,7 +416,8 @@ export function app(target, cfg = {}) {
       // no UNIQUAC r and q: still offered (NRTL works); the check says what to do if UNIQUAC is chosen
       const noRq = !bad && spec.liquid && state.model === "UNIQUAC" && !c.uniquac;
       const noGroups = !bad && spec.liquid && state.model === "MOD-UNIFAC-2" && !c.modUnifac;
-      return { disabled: bad || noMelt, note: bad ? "gas: equation of state only" : noMelt ? "no melting data" : noRq ? "NRTL only (no UNIQUAC r and q)"
+      // every component can be chosen; the Inputs panel says when the model (or the view) cannot use it
+      return { note: bad ? "gas: needs Peng–Robinson or SRK" : noMelt ? "no melting data" : noRq ? "NRTL only (no UNIQUAC r and q)"
         : noGroups ? "no Mod. UNIFAC 2.0 groups" : other != null ? `also component ${other + 1}` : null };
     };
   }
@@ -550,18 +531,19 @@ export function app(target, cfg = {}) {
     } else if (state.workspace === "solubility") {
       const { gas, solvent } = state.inputs.henry;
       const bad = new Map(check.problems.map(p => [p.slot, p.message]));
-      // every component is listed; those without a Henry's law constant (for this gas) say so and cannot be picked
+      // every component is listed and can be picked; those without a Henry's law constant (for this gas) say so, and the
+      // check of the inputs explains it when one is chosen
       const gasSel = componentPicker({
         id: `fa-gas-${uid}`, fk: "gas", label: "Gas", components: all, value: gas, invalid: bad.has(0),
-        status: c => (HENRY_GASES.includes(c.id) ? {} : { disabled: true, note: "no Henry's law constant" }),
+        status: c => (HENRY_GASES.includes(c.id) ? {} : { note: "no Henry's law constant" }),
         group: c => (HENRY_GASES.includes(c.id) ? "With Henry's law constants" : "Others"),
         onPick: g => { if (g) set({ gas: g }); },
       });
       const solvents = solventsFor(HENRY_GASES.includes(gas) ? gas : null);
       const solvSel = componentPicker({
-        id: `fa-solv-${uid}`, fk: "solvent", label: "Solvent", components: all.filter(c => c.activity || solvents.includes(c.id)), value: solvent,
+        id: `fa-solv-${uid}`, fk: "solvent", label: "Solvent", components: all, value: solvent,
         invalid: bad.has(1),
-        status: c => (solvents.includes(c.id) ? {} : { disabled: true, note: "no constant for this gas" }),
+        status: c => (solvents.includes(c.id) ? {} : { note: "no constant for this gas" }),
         group: c => (solvents.includes(c.id) ? "With a constant for this gas" : "Others"),
         onPick: v => { if (v) set({ solvent: v }); },
       });
@@ -757,7 +739,6 @@ export function app(target, cfg = {}) {
         h("h2", {}, v === "properties" && check.ok ? [h("span", { class: "fa-role-tag" }, "Component"), title] : title),
         h("div", { class: "fa-sub" }, sub)),
       h("div", { class: "fa-canvas-tools", role: "toolbar", "aria-label": "Panels" },
-        excelBtn,
         tog("panelL", "Inputs panel", state.panels.left, () => set({ panels: { left: !state.panels.left } }, { canvas: false }), "tog-left"),
         tog("layers", state.background ? "Hide background layers" : "Show background layers", state.background, () => set({ background: !state.background }, { canvas: false }), "tog-bg"),
         tog("panelR", "Results panel", state.panels.right, () => set({ panels: { right: !state.panels.right } }, { canvas: false }), "tog-right")));
@@ -1033,7 +1014,7 @@ export function app(target, cfg = {}) {
   function exportDiagram() {
     const exp = ui.status.info?.export;
     if (!exp) return;
-    const note = h("div", { class: "fug-foot fa-export-note", role: "status" });
+    const note = exportNote;
     try {
       const desc = exp();
       const name = exportFileName(desc);
@@ -1043,8 +1024,6 @@ export function app(target, cfg = {}) {
       setTimeout(() => URL.revokeObjectURL(url), 2000);
       note.textContent = `Saved ${name}: an About sheet with the settings and sources, then ${desc.tables.map(t => `"${t.name}"`).join(", ")}, with every point the view calculated, in the units shown. If nothing was downloaded, the page does not allow downloads.`;
     } catch (e) { note.textContent = `The Excel file could not be made: ${e.message}`; }
-    notes.querySelector(".fa-export-note")?.remove();
-    notes.prepend(note);
   }
 
   // ---- canvas
@@ -1070,7 +1049,7 @@ export function app(target, cfg = {}) {
       const v = state.view, check = checkInputs(v, state.inputs[v], state.model);
       let info = null, error = null;
       notes.replaceChildren(); below.replaceChildren(); inspectorExtra.replaceChildren(); provenance.replaceChildren(); side.hidden = false;
-      excelBtn.hidden = excelFoot.hidden = true;
+      canvasFoot.hidden = true; exportNote.textContent = "";
       delete plot.dataset.view;
       if (!check.ok) {
         plot.replaceChildren(needInputs(v, check));
@@ -1092,7 +1071,7 @@ export function app(target, cfg = {}) {
       canvasRendered = true;
       box.classList.remove("fa-busy");
       ui.status = { busy: false, ms: check.ok ? performance.now() - t0 : null, error: error ?? info?.error ?? null, info, waiting: !check.ok };
-      excelBtn.hidden = excelFoot.hidden = !(check.ok && !error && typeof info?.export === "function");
+      canvasFoot.hidden = !(check.ok && !error && typeof info?.export === "function");
       renderStatus();
     };
     if (now) run(); else setTimeout(run, 16);
