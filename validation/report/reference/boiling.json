@@ -468,6 +468,12 @@
     "value": null,
     "why": "No open reference: no measured normal boiling temperature on the component's WebBook page"
    }
+  },
+  "tb/ethyl-lactate": {
+   "T_C": {
+    "value": null,
+    "why": "No open reference: no measured normal boiling temperature on the component's WebBook page"
+   }
   }
  }
 }

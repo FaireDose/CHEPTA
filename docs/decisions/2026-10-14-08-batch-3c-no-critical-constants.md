@@ -60,6 +60,21 @@
   ThermoML values in `validation/data/pure/measured/thermoml_<id>.json`, which the refits, the melting data
   (`fusion_data.py`) and `gap_report.py` read (`gap_report.py --fetch` now downloads them). The report-coverage test
   no longer asks for a case for components taken from ChemSep as they are.
+- **Narrow misses accepted (the maintainer, 2026-10-14):** methyl lactate (Lomba 2014, 2.96 % against its stated
+  2.59 %), ethyl lactate (Resa 2010, 1.94 % against 1.70 %) and limonene (Wu 2019, 1.83 % against 1.62 %) are pooled
+  (`vp_accept` in `measured_components.py`: the build stops if the miss grows beyond the accepted value). Methyl lactate
+  and limonene have no normal boiling point: their records end at 413.15 K (92.2 kPa) and 450.00 K (100.8 kPa).
+- **Furfuryl alcohol (the maintainer, 2026-10-14):** first "choose the one with more citations" (Crossref,
+  2026-10-14: Tai 2014, 19; Negadi 2014, 15), then, told that Tai 2014 has three values at 353-408 K against Negadi's
+  27 at 273-412 K: "the 36 points are better also the range is better. keep this" (the archive lists 36 entries, 9 of
+  them twice). Negadi 2014 is used and Tai 2014 left out with that reason. No normal boiling point: the record ends at
+  412 K.
+- **Modified UNIFAC 2.0 groups without asking (the maintainer, 2026-10-14):** "it is just a prediction tool ... at
+  least you have something you can work with in case we do not have data". Groups added: 2-methyltetrahydrofuran and
+  tetrahydrofurfuryl alcohol (DDBST's assignment, one H over in the atom balance), propylene carbonate (CH3 +
+  (CH2)2CB; the SMARTS match had taken a nitrogen subgroup), ethylene carbonate ((CH2)2CB), Cyrene (from the structure).
+  The method has no subgroup for a furan ring, an anhydride or the small gases, so furan, 2-methylfuran, furfuryl
+  alcohol, maleic anhydride and the gases still have none.
 - **Pairs (the maintainer, 2026-10-14, "I go with your suggestion"):** where a pair has a set fitted to measured
   mixture data, that set is the default and the ChemSep set stays as an alternative; ChemSep is the default only
   where no measured mixture data were fitted. The data already followed this; `test/library.test.js` now checks it.

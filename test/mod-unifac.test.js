@@ -56,9 +56,10 @@ test("every pair is labelled predicted, with the source; a component without gro
     assert.match(p.source, /Modified UNIFAC 2\.0 .*Hayer/);
     assert.equal(p.sources[0].license, "CC BY 4.0");
   }
-  // gases have no Modified UNIFAC 2.0 subgroups; a component whose groups were not checked says so too
+  // gases have no Modified UNIFAC 2.0 subgroups, and neither has a furan ring: such a component says so
   assert.throws(() => system({ components: ["methane", "n-hexane"], model: "MOD-UNIFAC-2" }), /Methane has no vapour-pressure record|Methane has no Modified UNIFAC 2\.0 groups/);
-  assert.throws(() => system({ components: ["cyrene", "water"], model: "MOD-UNIFAC-2" }), /Cyrene has no Modified UNIFAC 2\.0 groups \(no DDBST assignment/);
+  assert.throws(() => system({ components: ["furfuryl-alcohol", "water"], model: "MOD-UNIFAC-2" }),
+    /Furfuryl alcohol has no Modified UNIFAC 2\.0 groups \(its structure cannot be split/);
   // every group assignment states its source; every component either has groups or says why not
   for (const [id, c] of Object.entries(comps)) {
     assert.ok(c.modUnifac, `${id}: modUnifac`);

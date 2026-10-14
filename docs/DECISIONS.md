@@ -90,12 +90,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      - 2-methylfuran: its three vapour-pressure sets disagree; under the rule of 2026-10-14 (all sets with the same
        weight) a set is preferred only with a stated reason; find one (independent boiling points, calorimetric
        enthalpy of vaporization) or keep the merged record;
-     - Modified UNIFAC 2.0 groups for a person to choose: gamma-butyrolactone, 2-methyltetrahydrofuran, Cyrene,
-       ethylene and propylene carbonate;
-     - 3c done in part (GVL, CPME, tetrahydrofurfuryl alcohol, 2,3-butanediol, through the path for components
-       without critical constants); decide on the narrow misses of the pooling rule (methyl lactate, ethyl lactate,
-       limonene) and on furfuryl alcohol (two sets 4-7 % apart); no open vapour pressures: HMF, lactic acid, lactide,
-       solketal, alpha-angelica lactone;
+     - 3c done (GVL, CPME, tetrahydrofurfuryl alcohol, 2,3-butanediol, methyl and ethyl lactate, limonene, furfuryl
+       alcohol, through the path for components without critical constants); no open vapour pressures: HMF, lactic
+       acid, lactide, solketal, alpha-angelica lactone;
+     - Modified UNIFAC 2.0 has no subgroup for a furan ring, an anhydride or the small gases: furan, 2-methylfuran,
+       furfuryl alcohol, maleic anhydride and the gases have no groups;
   4. the "nonvolatile" component class;
   5. batch 4, sugars and acids as solids.
   - Six names still need a CAS number: xylose, erythritol, muconic acid, levoglucosenone,

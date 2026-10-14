@@ -145,11 +145,16 @@ Such a component has `Tc_K`, `Pc_Pa` and `omega` null and a `critical` marker wi
 
 ## 7. Modified UNIFAC 2.0 (predicted tier)
 
-The parameters are those of the paper (Hayer, Hasse and Jirasek 2025; CC BY 4.0), unchanged: no refits. A component's
-groups come from its structure (thermo SMARTS) and must pass the atom balance; DDBST's published assignment is used
-only as a check. When the two differ, or the structure cannot be checked, the component has no groups until a person
-chooses. Where measured data show the prediction is off, a "predicted-deviation" known issue says by how much; the
-user compares the models and decides.
+The parameters are those of the paper (Hayer, Hasse and Jirasek 2025; CC BY 4.0), unchanged: no refits. It is a
+prediction tool for when there are no data, so every component whose structure the subgroups can describe gets groups,
+without waiting for a person to choose (the maintainer, 2026-10-14). A component's groups come from its structure
+(thermo SMARTS) and must pass the atom balance; DDBST's published assignment is the check. When the two differ, DDBST's
+is used (`CHOSEN` in `mod_unifac_2.py`); a substituted ring carbon counted in the ring's subgroup, as DDBST does, may
+leave the balance one H over, which is stated. Without a DDBST assignment, the structure-based one is used after a
+check of the structure (`REVIEWED`), or corrected when it is plainly wrong (`FROM_STRUCTURE`). The subgroups cannot
+describe a furan ring, an anhydride or the small gases: those components have no groups, and say so. Where measured
+data show the prediction is off, a "predicted-deviation" known issue says by how much; the user compares the models and
+decides.
 
 ## 8. What every record carries
 

@@ -220,19 +220,19 @@ COMPONENTS = {
         "cp0": None,
     },
     "furfuryl-alcohol": {
-        # not written: its two vapour-pressure sets disagree (Tai 2014, three values at 353-408 K, lie 4-7 % above
-        # Negadi 2014, 27 values at 273-412 K, beyond the stated uncertainties); both reach the measured normal boiling
-        # temperatures of the WebBook (442.5-444.15 K, four articles: Negadi 442.9 K, Tai 444.6 K extrapolated), so the
-        # independent check does not single out one
-        "hold": "its two vapour-pressure sets disagree (Tai 2014 lies 4-7 % above Negadi 2014, beyond their stated "
-                "uncertainties) and no independent check singles out one (both reach the measured boiling temperatures "
-                "of 442.5-444.15 K); a reason to choose a set, or another measured set, is wanted",
+        # its two vapour-pressure sets disagree (Tai 2014, three values at 353-408 K, lie 4-7 % above Negadi 2014, 27
+        # values at 273-412 K, beyond the stated uncertainties); both reach the measured normal boiling temperatures of
+        # the WebBook (442.5-444.15 K), so the independent check does not single out one. The maintainer chose Negadi
+        # 2014 (2026-10-14): more values over a wider range (27 distinct values; the archive lists 9 of them twice)
         "name": "Furfuryl alcohol", "cas": "98-00-0", "webbook": "C98000", "proposal": "proposal 0009, batch 3",
         "aliases": ["2-furanmethanol", "furan-2-ylmethanol", "2-furylmethanol", "furfural alcohol"],
         "thermoml_queries": ["furfuryl alcohol", "furan-2-ylmethanol"],
         "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
         "antoine_fit": [],
         "vp_fit": "consensus",
+        "vp_exclude": {"Tai 2014": "its three values at 353-408 K lie 4-7 % above Negadi 2014, beyond the stated "
+                                   "uncertainties, and no independent check singles out one set; the maintainer chose "
+                                   "Negadi 2014, with 27 values over 273-412 K (2026-10-14)"},
         "dHvap": "clapeyron",
         "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
         "cp0": None,
@@ -253,7 +253,10 @@ COMPONENTS = {
         "cp0": None,
     },
     "methyl-lactate": {
-        "hold": "its two vapour-pressure sets do not agree well enough to pool: Lomba 2014 lies 2.96 % from the pooled curve on average, against its mean stated uncertainty of 2.59 % (Sanz 2005: three values at 283-303 K, stated 4.6-24 %); Lomba's own curve meets the measured normal boiling temperature of Lecat (417.0 K) within 0.3 K; a decision, or another measured set, is wanted",
+        # Lomba 2014 misses the agreement test narrowly (2.96 % against its stated 2.59 %; Sanz 2005: three values at
+        # 283-303 K, stated 4.6-24 %); Lomba's own curve meets the measured boiling temperature of Lecat (417.0 K) within
+        # 0.3 K. The maintainer accepted the narrow miss (2026-10-14)
+        "vp_accept": {"Lomba 2014": 2.96},
         "name": "Methyl lactate", "cas": "547-64-8", "webbook": "C547648", "proposal": "proposal 0009, batch 3",
         "aliases": ["methyl 2-hydroxypropanoate", "lactic acid methyl ester"],
         "thermoml_queries": ["methyl lactate", "methyl 2-oxidanylpropanoate"],
@@ -265,7 +268,10 @@ COMPONENTS = {
         "cp0": None,
     },
     "ethyl-lactate": {
-        "hold": "its five vapour-pressure sets do not agree well enough to pool: Resa 2010 (two boiling temperatures at 101 kPa, 427.6 K) lies 1.94 % from the pooled curve on average, against its stated 1.70 %; the other boiling temperatures are 425.0 K (Resa 2006) and 426.2-426.7 K (Matsuda 2016, Lomba 2014); a decision, or a reason to leave out a set, is wanted",
+        # Resa 2010 (two boiling temperatures at 101 kPa, 427.6 K) misses the agreement test narrowly (1.94 % against its
+        # stated 1.70 %); the other boiling temperatures are 425.0 K (Resa 2006) and 426.2-426.7 K (Matsuda 2016, Lomba
+        # 2014). The maintainer accepted the narrow miss (2026-10-14)
+        "vp_accept": {"Resa 2010": 1.94},
         "name": "Ethyl lactate", "cas": "97-64-3", "webbook": "C97643", "proposal": "proposal 0009, batch 3",
         "aliases": ["ethyl 2-hydroxypropanoate", "lactic acid ethyl ester"],
         "thermoml_queries": ["ethyl lactate", "ethyl 2-oxidanylpropanoate"],
@@ -288,10 +294,10 @@ COMPONENTS = {
         "cp0": None,
     },
     "limonene": {
-        "hold": "its vapour-pressure sets do not agree well enough to pool: Wu 2019 (two boiling temperatures at 101 kPa, "
-                "449.3-449.6 K) lies 1.83 % from the pooled curve on average, against its stated 1.62 %; the other "
-                "measured boiling temperatures are 450.34 K (Sun 2011) and 450.2-450.8 K from the curves of Ngema 2012 "
-                "and Clara 2009; a decision, or a reason to leave out a set, is wanted",
+        # Wu 2019 (two boiling temperatures at 101 kPa, 449.3-449.6 K) misses the agreement test narrowly (1.83 % against
+        # its stated 1.62 %); the other measured boiling temperatures are 450.34 K (Sun 2011) and 450.2-450.8 K from the
+        # curves of Ngema 2012 and Clara 2009. The maintainer accepted the narrow miss (2026-10-14)
+        "vp_accept": {"Wu 2019": 1.83},
         "name": "Limonene", "cas": "138-86-3", "webbook": "C138863", "proposal": "proposal 0009, batch 3",
         "aliases": ["dipentene", "d-limonene", "(R)-limonene", "1-methyl-4-(prop-1-en-2-yl)cyclohexene"],
         "thermoml_queries": ["limonene", "d-limonene", "(R)-limonene", "dipentene", "1-methyl-4-prop-1-en-2-yl-cyclohexene",
@@ -877,7 +883,7 @@ def fit_within_uncertainty(cid, prop, form, pts, Tc=None, fixed=()):
     return coeffs, use, excluded, m
 
 
-def fit_consensus(cid, prop, form, pts, fixed=(), exclude=None, floor=0.005, none_u=0.01, Tc=None):
+def fit_consensus(cid, prop, form, pts, fixed=(), exclude=None, floor=0.005, none_u=0.01, Tc=None, accept=None):
     """The rule of 2026-10-14 (docs/decisions/2026-10-14-07-...): a small stated uncertainty is the authors' claim,
     not proof, so no set is preferred for it; the sets are pooled only when they agree (each set's mean deviation from
     the pooled curve within its mean stated uncertainty), else the build stops and asks for a set to be chosen or left
@@ -889,7 +895,10 @@ def fit_consensus(cid, prop, form, pts, fixed=(), exclude=None, floor=0.005, non
     kept no longer change (at most a third left out). Of the DIPPR 101 variants, the fewest coefficients whose weighted
     residual is within 10 % of the best one and whose enthalpy of vaporization (ideal gas, R T^2 dlnP/dT) falls with
     temperature over the measured range below 0.7 Tc (above it the real-gas factor makes the ideal-gas value rise).
-    Returns coeffs, the values used, the values left out, the maximum deviation and each set's mean deviation (%)."""
+    A set that misses the agreement test narrowly may be pooled when the maintainer accepted it ("vp_accept":
+    {set: the mean deviation accepted, %}); the build still stops if the set's mean deviation grows beyond that.
+    Returns coeffs, the values used, the values left out, the maximum deviation, each set's mean deviation (%) and the
+    accepted misses (text)."""
     exclude = exclude or {}
     cand = [p for p in pts if p["ref"] not in exclude]
     by_set = [dict(p, why=exclude[p["ref"]]) for p in pts if p["ref"] in exclude]
@@ -944,11 +953,16 @@ def fit_consensus(cid, prop, form, pts, fixed=(), exclude=None, floor=0.005, non
     # curve within its mean stated uncertainty; otherwise a set has to be chosen, or left out, with a stated reason
     disagree = ["%s (mean deviation %+.2f %%, mean stated uncertainty %.2f %%)" % (k, np.mean([d for d, _ in v]),
                                                                               np.mean([u for _, u in v]))
-                for k, v in sets.items() if abs(np.mean([d for d, _ in v])) > np.mean([u for _, u in v])]
+                for k, v in sets.items() if abs(np.mean([d for d, _ in v])) > np.mean([u for _, u in v])
+                and not (k in (accept or {}) and abs(np.mean([d for d, _ in v])) <= accept[k] + 0.05)]
+    accepted = ["%s (mean deviation %+.2f %%, mean stated uncertainty %.2f %%)" % (k, np.mean([d for d, _ in v]),
+                                                                              np.mean([u for _, u in v]))
+                for k, v in sets.items() if k in (accept or {}) and abs(np.mean([d for d, _ in v])) > np.mean([u for _, u in v])]
     if disagree:
         raise SystemExit("%s %s: the sets disagree, so they are not pooled: %s; choose or leave out a set with a stated "
                          "reason (vp_exclude)" % (cid, prop, "; ".join(disagree)))
-    return coeffs, use + list(fixed), excluded, m, {k: float(np.mean([d for d, _ in v])) for k, v in sets.items()}
+    return (coeffs, use + list(fixed), excluded, m, {k: float(np.mean([d for d, _ in v])) for k, v in sets.items()},
+            accepted)
 
 
 def fit_measured_loose(cid, prop, form, pts, target, Tc=None, fixed=()):
@@ -1273,8 +1287,9 @@ def build(cid, log):
                                 why="deviates by more than its stated uncertainty from the fit of %s" % " and ".join(C["vp_anchor"])))
     elif C.get("vp_fit") == "consensus":
         # every set together, each paper with the same weight (the rule of 2026-10-14)
-        coeffs, use, exc, m, set_dev = fit_consensus(cid, "vapourPressure", "DIPPR101", pts, fixed=fix,
-                                                     exclude=C.get("vp_exclude"), Tc=Tc)
+        coeffs, use, exc, m, set_dev, accepted = fit_consensus(cid, "vapourPressure", "DIPPR101", pts, fixed=fix,
+                                                               exclude=C.get("vp_exclude"), Tc=Tc,
+                                                               accept=C.get("vp_accept"))
     elif C.get("vp_fit") == "within":
         # no set within the target over the range: every value fitted within its own stated uncertainty
         coeffs, use, exc, m = fit_within_uncertainty(cid, "vapourPressure", "DIPPR101", pts, fixed=fix)
@@ -1298,8 +1313,10 @@ def build(cid, log):
     if C.get("vp_fit") == "consensus":
         vp_fit += (" All the measured sets fitted together, each article with the same weight (no set preferred for a "
                    "smaller stated uncertainty), pooled because they agree: each set lies within its mean stated "
-                   "uncertainty of the curve on average; mean deviation of the fit from each set: %s." % "; ".join(
-                       "%s %+.2f %%" % (k, v) for k, v in sorted(set_dev.items())))
+                   "uncertainty of the curve on average%s; mean deviation of the fit from each set: %s." % (
+                       ", except a narrow miss the maintainer accepted (2026-10-14): %s" % "; ".join(accepted)
+                       if accepted else "",
+                       "; ".join("%s %+.2f %%" % (k, v) for k, v in sorted(set_dev.items()))))
         tight = [abs(float(ev("DIPPR101", coeffs, np.array([p["T"]]))[0]) / p["y"] - 1) for p in use
                  if p.get("u_rel") is not None and p["u_rel"] <= 0.10]
         loose = [p for p in use if p.get("u_rel") is not None and p["u_rel"] > 0.10]
@@ -1540,8 +1557,9 @@ def build(cid, log):
         comp["critical"] = {"available": False, "searched": C["no_critical"]}
         del comp["omega_source"]
     if Tb is None:
-        comp["Tb_note"] = ("the measured vapour pressures end at %.2f K, below 101.325 kPa (%.4g kPa there): no normal "
-                           "boiling temperature from measured data" % (vp["Tmax_K"], psat(vp["Tmax_K"]) / 1000))
+        comp["Tb_note"] = ("the vapour-pressure record ends with the measured temperatures at %.2f K, where it gives "
+                           "%.4g kPa, below 101.325 kPa: no normal boiling temperature from measured data" % (
+                               vp["Tmax_K"], psat(vp["Tmax_K"]) / 1000))
     points["vapourPressure"] = vp_pts
     log.append("%-17s Tc %s, Pc %s, Tb %s, omega %s, MW %.4f" % (
         cid, "%.2f K" % Tc if Tc else "none", "%.0f Pa" % Pc if Pc else "none", "%.3f K" % Tb if Tb else "none",

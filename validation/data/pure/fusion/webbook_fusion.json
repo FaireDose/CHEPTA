@@ -2544,6 +2544,16 @@
    }
   ]
  },
+ "ethyl-lactate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97643&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
  "ethyl-levulinate": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4",
   "retrieved": "2026-10-14",
@@ -3085,6 +3095,55 @@
    {
     "Hfus_kJ_mol": 14.368,
     "T_K": 235.1,
+    "method": "",
+    "reference": "Miller, 1935",
+    "comment": "DH"
+   }
+  ]
+ },
+ "furfuryl-alcohol": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [
+    {
+     "value": 258.6,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Parks, Kennedy, et al., 1956",
+     "comment": "Uncertainty assigned by TRC = 0.2 K; TRC"
+    },
+    {
+     "value": 253.5,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Miller, 1936",
+     "comment": "Uncertainty assigned by TRC = 0.3 K; TRC"
+    }
+   ],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 13.1,
+    "T_K": 258.6,
+    "method": "",
+    "reference": "Domalski and Hearing, 1996",
+    "comment": "AC"
+   },
+   {
+    "Hfus_kJ_mol": 13.129,
+    "T_K": 258.6,
+    "method": "",
+    "reference": "Parks, Kennedy, et al., 1956, 2",
+    "comment": "DH"
+   },
+   {
+    "Hfus_kJ_mol": 14.811,
+    "T_K": 253.5,
     "method": "",
     "reference": "Miller, 1935",
     "comment": "DH"
@@ -3730,6 +3789,33 @@
    }
   ]
  },
+ "limonene": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C138863&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 184.12,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Hawkins and Eriksen. W.T., 1954",
+     "comment": "Uncertainty assigned by TRC = 0.1 K; TRC"
+    },
+    {
+     "value": 177.65,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Anonymous, 1942",
+     "comment": "Uncertainty assigned by TRC = 0.3 K; TRC"
+    }
+   ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
  "m-xylene": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108383&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -4069,6 +4155,16 @@
     "comment": "AC"
    }
   ]
+ },
+ "methyl-lactate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C547648&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
  },
  "methyl-laurate": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C111820&Units=SI&Mask=4",
