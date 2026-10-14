@@ -1,0 +1,94 @@
+{
+ "_about": "Isoamyl alcohol (1) + Isobutanol (2): isobaric T-x-y at 101.3 kPa. Rows: liquid mole fraction of isoamyl alcohol, boiling temperature in K, vapour mole fraction of isoamyl alcohol, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "T. P. V. B. Dias, L. A. A. P. Fonseca, M. C. Ruiz, F. R. M. Batista, E. A. C. Batista, A. J. A. Meirelles, Vapor Liquid Equilibrium of Mixtures Containing the Following Higher Alcohols: 2-Propanol, 2-Methyl-1-propanol, and 3-Methyl-1-butanol, J. Chem. Eng. Data 59 (2014) 659-665",
+  "doi": "10.1021/je400581e",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je400581e.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 10, 11. The table number in the article was not checked."
+ },
+ "components": [
+  "isoamyl-alcohol",
+  "isobutanol"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.3,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0,
+   380.73,
+   0.0
+  ],
+  [
+   0.1153,
+   382.81,
+   0.06220000000000003
+  ],
+  [
+   0.2108,
+   384.37,
+   0.1048
+  ],
+  [
+   0.2854,
+   385.84,
+   0.1523
+  ],
+  [
+   0.4334,
+   388.66,
+   0.2512
+  ],
+  [
+   0.492,
+   389.69,
+   0.28869999999999996
+  ],
+  [
+   0.5645,
+   391.58,
+   0.35919999999999996
+  ],
+  [
+   0.6108,
+   392.6,
+   0.40359999999999996
+  ],
+  [
+   0.7837,
+   396.56,
+   0.5892999999999999
+  ],
+  [
+   0.8178,
+   397.96,
+   0.6473
+  ],
+  [
+   0.8596,
+   399.22,
+   0.7139
+  ],
+  [
+   0.8966,
+   400.2,
+   0.7765
+  ],
+  [
+   0.9705,
+   403.17,
+   0.9308
+  ],
+  [
+   1.0,
+   404.71,
+   1.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0068. Pure-component boiling points of the set within 0.29 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}
