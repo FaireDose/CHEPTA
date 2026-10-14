@@ -131,19 +131,24 @@ COMPONENTS = {
         # melts at 306-310 K (WebBook); Nikitin et al. (2019) report their densities (293-343 K) and heat capacities
         # (303-374 K) as of the metastable liquid
         "metastable_liquid": True,
-        # not written yet: the open vapour pressures disagree. Verevkin et al. (2012, transpiration, 5 %, 328-373 K)
-        # give an enthalpy of vaporization of about 67 kJ/mol from their own slope (ideal gas); a curve
-        # A + B/T + C ln T through the measured normal boiling temperature (Uslu et al. 2008, 518.2 K) and the critical
-        # point gives 79 kJ/mol at 350 K and misses their values by -24 to +28 %; the DIPPR 101 curve that meets every
-        # value within its uncertainty has an enthalpy of vaporization rising with temperature (57 kJ/mol at 300 K, 75
-        # at 470 K), which is not physical, and misses their calorimetric 70.3 kJ/mol at 298.15 K by 18 %. Stull
-        # (1947, a compilation, 375-519 K) does not reach the range of Verevkin et al.
-        "hold": "its open vapour pressures disagree: the transpiration values of Verevkin et al. (2012, 328-373 K) and "
-                "the measured normal boiling temperature (Uslu et al. 2008, 518.2 K) with the critical point (Nikitin et "
-                "al. 2019) do not lie on one curve with a physical enthalpy of vaporization; wanted: vapour pressures "
-                "between 373 K and 518 K from a static or ebulliometric method in an open source",
-        "antoine_fit": [],
-        "vp_fit": "within", "vp_tb": "thermoml",
+        # The open vapour pressures disagree. Stull (1947, a compilation, 375-519 K) agrees with the measured normal
+        # boiling temperature (Uslu et al. 2008, 518.2 K); the transpiration values of Verevkin et al. (2012, 328-373 K,
+        # 5 %) lie 11-43 % above the curve through them and the critical point, and no curve with a physical enthalpy
+        # of vaporization meets both. Transpiration takes the vapour as monomer; a carboxylic acid partly dimerizes in
+        # the gas, which makes the apparent pressure too high, a likely reason (not checked here). Fitted: Stull, the
+        # boiling temperature and the critical point; Verevkin et al. listed as left out; the record starts at 375 K.
+        "hold": "its vapour-pressure record starts at 375 K (Stull 1947 and the measured normal boiling temperature; "
+                "the transpiration values of Verevkin et al. 2012, 328-373 K, lie 11-43 % above them and are left out) "
+                "and its open liquid densities end at 343 K (Nikitin et al. 2019), so no liquid state has both; wanted: "
+                "liquid densities above 375 K, or vapour pressures between 343 K and 375 K by a static or ebulliometric "
+                "method, from an open source",
+        "antoine_fit": ["Stull, 1947"],
+        "vp_fit": "loose", "vp_tb": "thermoml",
+        "vp_why": ("The transpiration values of Verevkin et al. (2012, 328-373 K) lie 11-43 % above this curve and are "
+                   "left out: no curve with a physical enthalpy of vaporization meets both them and the measured normal "
+                   "boiling temperature; transpiration takes the vapour as monomer, and a carboxylic acid partly "
+                   "dimerizes in the gas, which makes the apparent pressure too high (a likely reason, not checked). "
+                   "Below 375 K the record refuses."),
         "dHvap": "clapeyron",
         "dHvap_why": "the only calorimetric value, Verevkin et al. (2012, ThermoML Archive), is at 298.15 K",
         "cp0": None,
@@ -171,12 +176,11 @@ COMPONENTS = {
         "thermoml_queries": ["ethyl levulinate", "ethyl 4-oxidanylidenepentanoate"],
         # critical point: Nikitin et al. (2019, pulse heating), ThermoML Archive, the only measurement
         "critical_thermoml": "10.1016/j.jct.2019.03.040",
-        # Emel'yanenko et al. (2018, transpiration, 6 %) measured 294-349 K; above them only the normal boiling
-        # temperature of the WebBook (Weast and Grasselli, 1989, a compilation; 479.0 K). Stull (1947, a compilation,
-        # 320-479 K) as a cross-check only: fitted with the critical point it misses Emel'yanenko et al. by 8-15 %
-        # below 310 K
+        # Emel'yanenko et al. (2018, transpiration, 6 %) measured 294-349 K; Bo et al. (Energies 2025, open access,
+        # article_ethyl-levulinate_bo2025.json) 446-479 K, the pure end points of their isobaric VLE sets and their
+        # boiling temperature at 101.3 kPa. Stull (1947, a compilation, 320-479 K) as a cross-check only
         "antoine_fit": [],
-        "vp_fit": "within", "vp_tb": "Weast and Grasselli, 1989",
+        "vp_fit": "within",
         "dHvap": "clapeyron",
         "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
         "cp0": None,
@@ -983,12 +987,16 @@ def build(cid, log):
     refs = refs_of([p for p in use if p.get("doi")], tml) + sorted({p["ref"] for p in use if not p.get("doi")})
     Tdata = max(p["T"] for p in use + kept if p is not crit)
     Tlow = min(p["T"] for p in use + kept)
-    vp_fit = ("%d measured values (%d from the ThermoML Archive)%s and the critical point, %.2f-%.2f K, max deviation %s %%%s. "
+    n_art = sum(1 for p in use if p.get("from") == "article")
+    vp_fit = ("%d measured values (%d from the ThermoML Archive%s)%s and the critical point, %.2f-%.2f K, max deviation %s %%%s. "
               "Between %.2f K and the critical point the curve is held only by the critical point."
-              % (len(use), sum(1 for p in use if p.get("doi")),
+              % (len(use), sum(1 for p in use if p.get("from") == "ThermoML"),
+                 ", %d from open-access articles" % n_art if n_art else "",
                  ", the normal boiling temperature %.2f K (%s, fitted as 101.325 kPa, never left out)" % (
                      tbp[0]["T"], tbp[0]["ref"]) if tbp else "", min(p["T"] for p in use), Tc, pct(m),
                  ", each within its own stated uncertainty" if C.get("vp_fit") == "within" else "", Tdata))
+    if C.get("vp_why"):
+        vp_fit += " " + C["vp_why"]
     if C.get("vp_fit") == "anchor":
         vp_fit += (" Fitted: %s (the smallest stated uncertainties of the measured sets, which disagree with each other "
                    "beyond their uncertainties) and the critical point." % " and ".join(C["vp_anchor"]))

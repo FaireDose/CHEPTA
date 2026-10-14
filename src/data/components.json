@@ -43155,23 +43155,24 @@
       "MW": 144.1684,
       "Tc_K": 669.0,
       "Pc_Pa": 2970000.0,
-      "Tb_K": 479.0,
+      "Tb_K": 478.9423,
       "vapourPressure": {
         "equation": "DIPPR101",
         "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
         "units": "Pa",
-        "A": 195.9108845,
-        "B": -13325.99035,
-        "C": -27.23750671,
-        "D": 0.02408638729,
+        "A": 133.1367685,
+        "B": -11015.83392,
+        "C": -17.01070363,
+        "D": 0.01330552103,
         "E": 1.0,
         "Tmin_K": 293.5,
         "Tmax_K": 669.0,
         "tier": "fitted",
-        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Emel'yanenko et al., Thermochim. Acta 659 (2018) 213-221, doi:10.1016/j.tca.2017.12.006; Nikitin 2019 (critical point, NIST TRC ThermoML Archive); Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook). 14 measured values (12 from the ThermoML Archive), the normal boiling temperature 479.00 K (Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook), fitted as 101.325 kPa, never left out) and the critical point, 293.50-669.00 K, max deviation 3.4 %, each within its own stated uncertainty. Between 479.00 K and the critical point the curve is held only by the critical point.",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Emel'yanenko et al., Thermochim. Acta 659 (2018) 213-221, doi:10.1016/j.tca.2017.12.006; Bo et al., Energies 18 (2025) 3939, doi:10.3390/en18153939; Nikitin 2019 (critical point, NIST TRC ThermoML Archive). 17 measured values (12 from the ThermoML Archive, 4 from open-access articles) and the critical point, 293.50-669.00 K, max deviation 5.7 %, each within its own stated uncertainty. Between 478.88 K and the critical point the curve is held only by the critical point.",
         "source_ids": [
           "nist-thermoml-archive",
-          "nist-webbook"
+          "nist-webbook",
+          "bo2025-article-ethyl-levulinate"
         ],
         "crossCheck": [
           {
@@ -43181,7 +43182,7 @@
               320.4,
               479.4
             ],
-            "max_deviation_percent": 8.41
+            "max_deviation_percent": 4.1
           }
         ]
       },
@@ -43192,8 +43193,8 @@
         ],
         "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
-      "omega": 0.587794,
-      "constants_source": "Tc and Pc: Nikitin et al., J. Chem. Thermodyn. 135 (2019) 233-240, doi:10.1016/j.jct.2019.03.040, NIST TRC ThermoML Archive (stated uncertainties 7 K and 90 kPa). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (479 K).",
+      "omega": 0.58953,
+      "constants_source": "Tc and Pc: Nikitin et al., J. Chem. Thermodyn. 135 (2019) 233-240, doi:10.1016/j.jct.2019.03.040, NIST TRC ThermoML Archive (stated uncertainties 7 K and 90 kPa). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (478.942 K).",
       "constants_source_ids": [
         "nist-webbook"
       ],
@@ -43250,21 +43251,21 @@
         "heatOfVaporization": {
           "equation": "DIPPR106",
           "coefficients": {
-            "A": 109106.6827,
-            "B": 1.484426952,
-            "C": -1.119826643
+            "A": 84036.13407,
+            "B": 0.8182031871,
+            "C": -0.5012448916
           },
           "units": "J/mol",
           "Tmin_K": 293.5,
-          "Tmax_K": 479.0,
+          "Tmax_K": 478.88,
           "Tc_K": 669.0,
           "tier": "fitted",
           "source": {
             "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
             "reference": "validation/python/measured_components.py (clapeyron)",
             "access": "calculated from the open measured data of the vapour-pressure record; free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4)",
-            "fit": "25 Clapeyron values and 0 measured values, 293.50-479.00 K, max deviation 0.22 %",
-            "notes": "dHvap = T (dPsat/dT) (v_vapour - v_liquid), Psat from the vapour-pressure record of this component, both volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, MIT), 293.50-479.00 K (up to the last measured vapour pressure); DIPPR 106 with the critical temperature 669.00 K. Chosen because the measured values do not give the temperature dependence (no calorimetric value; the WebBook values are derived from vapour pressures). Max deviation from the Clapeyron values 0.22 %. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none. Other values on the WebBook page (most derived by their authors from vapour pressures), compared: Stephenson and Malanowski, 1987 at 335 K (method A): -1.5 %; Schuette and Cowley, 1931 at 420 K (no method given): -2.3 %."
+            "fit": "25 Clapeyron values and 0 measured values, 293.50-478.88 K, max deviation 0.27 %",
+            "notes": "dHvap = T (dPsat/dT) (v_vapour - v_liquid), Psat from the vapour-pressure record of this component, both volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, MIT), 293.50-478.88 K (up to the last measured vapour pressure); DIPPR 106 with the critical temperature 669.00 K. Chosen because the measured values do not give the temperature dependence (no calorimetric value; the WebBook values are derived from vapour pressures). Max deviation from the Clapeyron values 0.27 %. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none. Other values on the WebBook page (most derived by their authors from vapour pressures), compared: Stephenson and Malanowski, 1987 at 335 K (method A): -2.8 %; Schuette and Cowley, 1931 at 420 K (no method given): -1.0 %."
           },
           "source_ids": [
             "nist-thermoml-archive",

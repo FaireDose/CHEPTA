@@ -82,16 +82,16 @@ Left out of vapourPressure: 338.15 K, Lomba 2013, -3.14 % (stated uncertainty 1.
 
 ## Ethyl levulinate (C7H12O3, CAS 539-88-8)
 
-- Tc 669.00 K, Pc 2.97 MPa, Tb 479.000 K, ω 0.5878, M 144.1684 g/mol
-- Constants: Tc and Pc: Nikitin et al., J. Chem. Thermodyn. 135 (2019) 233-240, doi:10.1016/j.jct.2019.03.040, NIST TRC ThermoML Archive (stated uncertainties 7 K and 90 kPa). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (479 K).
+- Tc 669.00 K, Pc 2.97 MPa, Tb 478.942 K, ω 0.5895, M 144.1684 g/mol
+- Constants: Tc and Pc: Nikitin et al., J. Chem. Thermodyn. 135 (2019) 233-240, doi:10.1016/j.jct.2019.03.040, NIST TRC ThermoML Archive (stated uncertainties 7 K and 90 kPa). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (478.942 K).
 
 | Property | Range (K) | Values used | Left out | Max deviation | Sources |
 |---|---|---|---|---|---|
-| Vapour pressure | 293.50-669.00 | 14 | 0 | 3.4 % | ThermoML, WebBook |
+| Vapour pressure | 293.50-669.00 | 17 | 0 | 5.7 % | ThermoML, WebBook |
 | liquidDensity | 293.15-333.15 | 6 | 0 | 0.13 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
 | liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
-| heatOfVaporization | 293.50-479.00 | 25 | 0 | 0.22 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
+| heatOfVaporization | 293.50-478.88 | 25 | 0 | 0.27 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data |
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |

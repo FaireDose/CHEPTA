@@ -69,8 +69,8 @@ def webbook_tboil(c):
 
 def tb_tolerance(c):
     """The tolerance class of the boiling-point case of a component built from measured data."""
-    if "fitted as 101.325 kPa" in comp[c]["vapourPressure"]["source"]:
-        return "boilingPointFitted"  # the vapour-pressure record is fitted to this boiling point
+    if "(normal boiling temperature, NIST WebBook), fitted as 101.325 kPa" in comp[c]["vapourPressure"]["source"]:
+        return "boilingPointFitted"  # the vapour-pressure record is fitted to this WebBook boiling point
     u = webbook_tboil(c)[1]
     return "boilingPointSingle" if u is None else "boilingPointAvg" if u <= 1.0 else "boilingPointAvgWide"
 
