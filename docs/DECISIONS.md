@@ -82,9 +82,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   1. batch 1, 16 components from ChemSep and CoolProp (in a pull request, 2026-10-11);
   2. batch 2, lipids;
   3. batch 3, platform molecules from the WebBook and ThermoML, in small pull requests;
-     - 3a (furans, 1,3-propanediol) and 3b (levulinate esters) done; held, with the data wanted: gamma-butyrolactone,
-       isoamyl alcohol, levulinic acid (liquid densities above 375 K, or vapour pressures between 343 and 375 K by a
-       static or ebulliometric method);
+     - 3a (furans, 1,3-propanediol) and 3b (levulinic acid with a gap between its records, levulinate esters) done;
+       held, with the data wanted: gamma-butyrolactone and isoamyl alcohol (no liquid state with both a vapour
+       pressure and a density). Decide whether to add them with a gap, as levulinic acid was;
+     - levulinic acid's gap: wanted liquid densities above 375 K, or vapour pressures between 343 and 375 K by a
+       static or ebulliometric method, from an open source;
      - 3c, the molecules without measured critical constants (GVL, the lactates, furfuryl alcohol, THFA,
        2,3-butanediol, limonene, CPME, solketal), needs the "activity models only" path of the proposal first;
   4. the "nonvolatile" component class;

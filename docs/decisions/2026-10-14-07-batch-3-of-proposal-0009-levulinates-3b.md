@@ -2,7 +2,7 @@
 
 - **Asked:** "both in order": first the refits that the larger engineering report showed (the measured-data review,
   its own pull request), then batch 3b.
-- **Done (3 components):** methyl, ethyl and butyl levulinate, from measured data alone (`measured_components.py`).
+- **Done (4 components):** levulinic acid (with a gap, below) and methyl, ethyl and butyl levulinate, from measured data alone (`measured_components.py`).
   Their critical constants come from Nikitin et al., J. Chem. Thermodyn. 2019 (doi:10.1016/j.jct.2019.03.040),
   ThermoML Archive, the only measurement. Their Modified UNIFAC 2.0 groups are the structure-based ones, the same as
   DDBST's published ones (CH3, CH2, CH3CO, CH2COO).
@@ -24,20 +24,28 @@
     to this fit (2026-10-14).**
   - Stull (1947, a compilation) only as a cross-check: it differs from the measured sets by up to 16 % at its
     low-pressure end.
-- **Held back:** levulinic acid. The maintainer asked why the best known of the four has no good data. Its open data:
+- **Levulinic acid, written with a gap.** The maintainer asked why the best known of the four had no good data. Its
+  open data:
   - vapour pressure: Verevkin et al. 2012 (transpiration, 328-373 K, 5 %), Stull 1947 (a compilation, 375-519 K)
     and the measured normal boiling temperature (Uslu et al. 2008, 518.2 K). Stull, the boiling point and the critical
     point lie on one curve (within 3 %); Verevkin et al. lie 11-43 % above it, and no curve with a physical enthalpy
     of vaporization meets both. Transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in
-    the gas, which makes the apparent pressure too high: a likely reason, not checked here. The script now fits
-    Stull, the boiling point and the critical point and leaves Verevkin et al. out with that reason (`vp_why`);
-  - liquid density: only up to 343 K (Nikitin et al. 2019, which the archive labels "metastable liquid": the acid
-    melts at 306-310 K; the script accepts these values with `metastable_liquid`).
-  So the vapour-pressure record starts at 375 K and the densities end at 343 K: no liquid state has both, as for
-  gamma-butyrolactone and isoamyl alcohol, and the component is held. Wanted: liquid densities above 375 K, or
-  vapour pressures between 343 and 375 K by a static or ebulliometric method, from an open source. The rest of its
-  entry is ready (critical point, fusion data on the WebBook, Modified UNIFAC 2.0 groups CH3CO + 2 CH2 + COOH, the
-  same as DDBST's).
+    the gas, which makes the apparent pressure too high: a likely reason, not checked here. Fitted: Stull, the
+    boiling point and the critical point; Verevkin et al. left out with that reason in the record (`vp_why`);
+  - liquid density: only 293-343 K (Nikitin et al. 2019, which the archive labels "metastable liquid": the acid melts
+    at 306-310 K; the script accepts these values with `metastable_liquid`).
+  No liquid state has both a vapour pressure (from 375 K) and a density (to 343 K). Until now such a component was
+  held (gamma-butyrolactone, isoamyl alcohol). **The maintainer decided (2026-10-14) to add levulinic acid with the
+  gap**: each record refuses outside its own range. Vapour-liquid equilibrium with an ideal-gas vapour needs only the
+  vapour pressure, so it works above 375 K (for example water + levulinic acid with Modified UNIFAC 2.0 at
+  101.325 kPa: bubble point 107.9 °C at x_water = 0.5; a water-rich liquid boiling below 375 K is refused). The
+  liquid density, and the Peng-Robinson or SRK vapour option that uses it, are refused above 343 K; there is no
+  ideal-gas heat capacity, so no energy balance (as for the three esters). `test/properties.test.js` checks the
+  refusal (`REFUSED_AT_TYPICAL_STATE`). Wanted, to close the gap: liquid densities above 375 K, or vapour pressures
+  between 343 and 375 K by a static or ebulliometric method, from an open source. Its Modified UNIFAC 2.0 groups
+  (CH3CO + 2 CH2 + COOH) are the same as DDBST's; fusion data from the WebBook (308 K, 9.2 kJ/mol).
+- **Open for the maintainer:** gamma-butyrolactone and isoamyl alcohol are held for the same reason (no liquid state
+  with both records); they could be added with a gap the same way.
 - **Changed for every component built this way:** the Clapeyron enthalpies of vaporization stop at the last measured
   vapour pressure (or at 500 kPa if lower), never in the part of the curve held only by the critical point.
   1,3-propanediol's record now ends at 487 K instead of 551 K; within 296-487 K its values move by -0.3 to +0.4 %.
@@ -45,4 +53,4 @@
   WebBook value (a compilation, report only); so is ethyl levulinate, whose record is fitted to Bo et al. instead.
   For butyl levulinate the record is fitted to that WebBook value, so the case is a consistency check (report only).
 - **Kept as before:** the liquid heat capacities of Nikitin et al. 2019 (2.4 %) are above the 1 % target of the
-  records, so the three have "no open data at the 1 % target" for liquid heat capacity, as for 1,3-propanediol.
+  records, so the four have "no open data at the 1 % target" for liquid heat capacity, as for 1,3-propanediol.

@@ -137,18 +137,19 @@ COMPONENTS = {
         # of vaporization meets both. Transpiration takes the vapour as monomer; a carboxylic acid partly dimerizes in
         # the gas, which makes the apparent pressure too high, a likely reason (not checked here). Fitted: Stull, the
         # boiling temperature and the critical point; Verevkin et al. listed as left out; the record starts at 375 K.
-        "hold": "its vapour-pressure record starts at 375 K (Stull 1947 and the measured normal boiling temperature; "
-                "the transpiration values of Verevkin et al. 2012, 328-373 K, lie 11-43 % above them and are left out) "
-                "and its open liquid densities end at 343 K (Nikitin et al. 2019), so no liquid state has both; wanted: "
-                "liquid densities above 375 K, or vapour pressures between 343 K and 375 K by a static or ebulliometric "
-                "method, from an open source",
+        # Written with a gap (the maintainer's decision, 2026-10-14): its open liquid densities end at 343 K, so
+        # between 343 and 375 K there is neither a density nor a vapour pressure, and above 375 K no density; each
+        # record refuses outside its own range (vapour-liquid equilibrium with an ideal-gas vapour needs only the
+        # vapour pressure)
         "antoine_fit": ["Stull, 1947"],
         "vp_fit": "loose", "vp_tb": "thermoml",
         "vp_why": ("The transpiration values of Verevkin et al. (2012, 328-373 K) lie 11-43 % above this curve and are "
                    "left out: no curve with a physical enthalpy of vaporization meets both them and the measured normal "
                    "boiling temperature; transpiration takes the vapour as monomer, and a carboxylic acid partly "
                    "dimerizes in the gas, which makes the apparent pressure too high (a likely reason, not checked). "
-                   "Below 375 K the record refuses."),
+                   "Below 375 K the record refuses. The open liquid densities end at 343 K, so above 375 K the liquid "
+                   "density is refused too (no open data; wanted: densities above 375 K, or vapour pressures between "
+                   "343 and 375 K by a static or ebulliometric method)."),
         "dHvap": "clapeyron",
         "dHvap_why": "the only calorimetric value, Verevkin et al. (2012, ThermoML Archive), is at 298.15 K",
         "cp0": None,

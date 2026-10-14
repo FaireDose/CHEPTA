@@ -40,7 +40,7 @@ function statedMaxDeviation(rec) {
 }
 
 test("every component has every property, as a record or an explicit 'no open data' marker", () => {
-  assert.equal(listComponents().length, 130);
+  assert.equal(listComponents().length, 131);
   assert.equal(GASES.length, 23);
   for (const { id, name } of listComponents()) {
     const props = components[id].properties;
@@ -137,6 +137,10 @@ test("the gases' vapour pressures give their normal boiling points within 0.1 K"
 // is the monomer's and its ΔHvap is to the real, largely dimerized vapour, so that h is not consistent
 // (review of #12, finding 1; the fix needs the vapour association / equation of state, #13).
 const ENTHALPY_NOT_CONSISTENT = new Set(["acetic-acid"]);
+// Components written with a gap between their records (the maintainer's decision of 2026-10-14): levulinic acid's
+// open liquid densities end at 343 K and its vapour-pressure record starts at 375 K, so at its typical liquid state
+// (375 K) the density is refused with an out-of-range note instead of being extrapolated.
+const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3"] };
 
 test("props() returns liquid and vapour properties for every component at a typical state", () => {
   // styrene at 25 °C: below its measured vapour pressure, so the liquid enthalpy is refused with a reason
@@ -176,6 +180,9 @@ test("props() returns liquid and vapour properties for every component at a typi
       mu_Pa_s: ["liquidViscosity"], k_W_mK: ["liquidThermalConductivity"], h_J_mol: ["idealGasHeatCapacity", "heatOfVaporization"] };
     for (const k of ["rho_kg_m3", "cp_J_molK", "dHvap_J_mol", "mu_Pa_s", "k_W_mK", ...hKeys]) {
       if (recordOf_[k].some(r => none.has(r))) { assert.equal(L[k], null, `${name} liquid ${k}`); assert.match(L.notes.join(" "), /No open data/); continue; }
+      if (REFUSED_AT_TYPICAL_STATE[id]?.includes(k)) {
+        assert.equal(L[k], null, `${name} liquid ${k}`); assert.match(L.notes.join(" "), /outside the range/); continue;
+      }
       assert.ok(Number.isFinite(L[k]), `${name} liquid ${k}: ${L.notes.join(" ")}`);
     }
     // vapour: 10 K above the normal boiling point at 1 kPa

@@ -448,6 +448,13 @@
     "source": "nist-webbook",
     "detail": "Tboil = 510.7 K (Weast and Grasselli, 1989, the only value on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4"
    }
+  },
+  "tb/levulinic-acid": {
+   "T_C": {
+    "value": 245.55,
+    "source": "nist-webbook",
+    "detail": "Tboil = 518.7 K (Aldrich Chemical Company Inc., 1990, the only value on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C123762&Units=SI&Mask=4"
+   }
   }
  }
 }
