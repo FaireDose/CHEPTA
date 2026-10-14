@@ -1,0 +1,73 @@
+{
+ "component": "methyl-lactate",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C547648&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C547648&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C547648&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "417.0",
+       "K",
+       "N/A",
+       "Lecat, 1927",
+       "Uncertainty assigned by TRC =  0.5 K; TRC"
+      ],
+      [
+       "Tboil",
+       "417.0",
+       "K",
+       "N/A",
+       "Lecat, 1926",
+       "Uncertainty assigned by TRC =  0.5 K; TRC"
+      ],
+      [
+       "Tboil",
+       "417.0",
+       "K",
+       "N/A",
+       "Lecat, 1926, 2",
+       "Uncertainty assigned by TRC =  0.5 K; TRC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "44.7",
+       "328.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 313. to 418. K.; AC"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

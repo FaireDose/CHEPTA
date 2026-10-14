@@ -97,7 +97,7 @@ test("every component's melting data have a source, or say there are no open dat
     assert.ok(c.fusion, `${id}: no fusion record`);
     if (c.fusion.available === false) { assert.ok(c.fusion.searched.length >= 2, id); continue; }
     assert.ok(c.fusion.Tm_K > 0 && c.fusion.Hfus_J_mol > 0, id);
-    assert.ok(c.fusion.Tm_K < c.Tc_K, id);
+    assert.ok(c.fusion.Tm_K < (c.Tc_K ?? Infinity), id);   // (no critical constants: src/thermo/critical.js)
     // the WebBook, else ChemSep, else an open-access article with its data file (AGENTS.md rule 1; Cyrene), else the
     // ThermoML Archive values with their stored file (triolein)
     assert.ok(/NIST Chemistry WebBook|ChemSep|Open-access article|NIST TRC ThermoML Archive/.test(c.fusion.source.name), id);

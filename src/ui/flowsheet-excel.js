@@ -294,13 +294,14 @@ function conceptFlashes(fs, res, { comps, nameOf, flowRef, inlets }) {
     comps.forEach((c, i) => {
       // the vapour-pressure record the activity-model flash uses (DIPPR 101 for every component, water included)
       const r = r0 + i, p = pure(c), rec = componentData.components[c].vapourPressure, co = rec;
-      const usePsat = rec?.equation === "DIPPR101" && st.T_K < p.Tc_K && st.T_K >= (rec.Tmin_K ?? 0) - 1e-9 && st.T_K <= (rec.Tmax_K ?? Infinity) + 1e-9;
+      const usePsat = rec?.equation === "DIPPR101" && st.T_K < (p.Tc_K ?? Infinity) && st.T_K >= (rec.Tmin_K ?? 0) - 1e-9 && st.T_K <= (rec.Tmax_K ?? Infinity) + 1e-9;
       const xS = two ? res.streams[L.id].z[i] : null, yS = two ? res.streams[V.id].z[i] : null;
       let Ksol = two && xS > 1e-14 ? yS / xS : null;
       const psat = usePsat ? Math.exp(co.A + co.B / st.T_K + co.C * Math.log(st.T_K) + co.D * st.T_K ** co.E) / 1000 : null;
       if (Ksol == null) {
         if (usePsat) Ksol = (gz ? gz[i] : 1) * psat / st.P_kPa;
-        else Ksol = (p.Pc_kPa / st.P_kPa) * Math.exp(5.373 * (1 + p.omega) * (1 - p.Tc_K / st.T_K));   // Wilson's estimate
+        // Wilson's estimate; without critical constants (critical.js) none: the stream is single-phase here, K shown as 1
+        else Ksol = Number.isFinite(p.Pc_kPa) ? (p.Pc_kPa / st.P_kPa) * Math.exp(5.373 * (1 + p.omega) * (1 - p.Tc_K / st.T_K)) : 1;
       }
       const g = usePsat ? Ksol * st.P_kPa / psat : null;
       const K = Ksol;

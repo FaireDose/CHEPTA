@@ -3198,6 +3198,16 @@
    }
   ]
  },
+ "gvl": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
  "hydrogen": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C1333740&Units=SI&Mask=4",
   "retrieved": "2026-10-07",

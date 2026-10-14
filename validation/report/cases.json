@@ -98,7 +98,8 @@
    {"id": "tb/methyl-levulinate", "type": "normalBoilingPoint", "component": "methyl-levulinate", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
    {"id": "tb/ethyl-levulinate", "type": "normalBoilingPoint", "component": "ethyl-levulinate", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
    {"id": "tb/butyl-levulinate", "type": "normalBoilingPoint", "component": "butyl-levulinate", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointFitted"}]},
-   {"id": "tb/levulinic-acid", "type": "normalBoilingPoint", "component": "levulinic-acid", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]}
+   {"id": "tb/levulinic-acid", "type": "normalBoilingPoint", "component": "levulinic-acid", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
+   {"id": "tb/gvl", "type": "normalBoilingPoint", "component": "gvl", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]}
   ]},
   {"id": "azeotropes", "title": "Azeotropes at 101.325 kPa", "cases": [
    {"id": "azeo/ethanol+water/NRTL", "type": "azeotrope", "components": ["ethanol", "water"], "model": "NRTL", "P_kPa": 101.325, "near_x1": 0.892, "quantities": [{"key": "T_C", "tol": "azeotropeT"}, {"key": "x1", "tol": "azeotropeX"}]},

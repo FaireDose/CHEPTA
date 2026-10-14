@@ -1074,6 +1074,20 @@
         "validation/data/vle/2-propanol_methanol_10-1021-je201349k_101.0kPa.json"
       ]
     },
+    "havasi2016-water-gvl": {
+      "title": "Vapor-Liquid Equilibrium Study of the Gamma-Valerolactone-Water Binary System",
+      "authors": "D. Havasi, P. Mizsey, L. T. Mika",
+      "year": 2016,
+      "published": "J. Chem. Eng. Data 61 (2016) 1502-1508",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.5b00849",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.5b00849.html",
+      "access": "Journal article is subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/water_gvl_tx_havasi2016.json"
+      ]
+    },
     "hayer2025-mod-unifac-2": {
       "title": "Modified UNIFAC 2.0 - A Group-Contribution Method Completed with Machine Learning",
       "authors": "N. Hayer, H. Hasse, F. Jirasek",

@@ -140,7 +140,7 @@ export function mount(target, cfg = {}) {
         sys ? h("span", { class: "fug-sub" }, `${n === 2 ? "T-x-y" : "Ternary"} · P = ${state.P} kPa · ${modelName(state.model)} · vapour: ${sys.info.vapour}`) : null),
       state.picker ? picker() : null,
       h("div", { class: "fug-controls" }, seg, h("label", { for: pIn.id }, "Pressure, kPa", pIn), basisSeg, ...checks),
-      ...issues.map(k => h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${k.model}): `), k.message, ` Reference: ${k.reference}.`)),
+      ...issues.map(k => h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${modelName(k.model)}): `), k.message, ` Reference: ${k.reference}.`)),
       h("div", { class: "fug-main" }, plot, side),
       h("div", { class: "fug-foot" }, sources.length ? h("div", {}, "Parameter sources:") : null, ...sources,
         h("div", {}, "Calculated live in this page by CHEPTA. Predictions, not measurements. ",

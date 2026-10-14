@@ -67,6 +67,23 @@ test("every pair is labelled predicted, with the source; a component without gro
   }
 });
 
+test("water + gamma-valerolactone: the known deviation of Modified UNIFAC 2.0 from measured bubble temperatures", () => {
+  // Havasi et al. 2016 (ThermoML Archive), bubble temperatures stated within 2.1 K; the prediction is too low and
+  // predicts a liquid split, as src/data/known-issues.json says (reported, not a target)
+  const d = load("../validation/data/water_gvl_tx_havasi2016.json");
+  const s = system({ components: ["water", "gvl"], model: "MOD-UNIFAC-2" });
+  const bounds = { 101.325: [-3.5, -2.5], 50.6: [-7.8, -6.8], 10.1: [-7.4, -6.4] };
+  for (const st of d.sets) {
+    const dev = st.rows.filter(r => r[0] > 0 && r[0] < 1).map(([x, T]) => s.bubbleT([x, 1 - x], st.P_kPa).T - T);
+    const mean = dev.reduce((a, b) => a + b, 0) / dev.length;
+    const [lo, hi] = bounds[st.P_kPa];
+    assert.ok(mean > lo && mean < hi, `${st.P_kPa} kPa: mean deviation ${mean.toFixed(2)} K`);
+  }
+  assert.equal(s.isLiquidStable([0.6, 0.4], 330), false);
+  const issue = load("../src/data/known-issues.json").issues.find(k => k.model === "MOD-UNIFAC-2" && k.components.includes("gvl"));
+  assert.match(issue.message, /3\.0 K at 101\.3 kPa, 7\.3 K at 50\.6 kPa and 6\.9 K at 10\.1 kPa/);
+});
+
 const TXY = [
   // file, bounds found when the model was added: mean |dT| (K), mean |dy|
   ["ethanol_water_101kPa.json", 1.1, 0.019],

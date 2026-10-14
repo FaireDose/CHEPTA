@@ -134,6 +134,26 @@ Left out of vapourPressure: 328.40 K, Verevkin 2012, -40.69 % (transpiration tak
 | vapourThermalConductivity | — | — | — | — | no open data |
 | surfaceTension | — | — | — | — | no open data |
 
+## gamma-Valerolactone (C5H8O2, CAS 108-29-2)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb 478.902 K, M 100.1158 g/mol
+- Constants: Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (478.902 K).
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| Vapour pressure | 238.07-480.20 | 86 | 0 | 39 % | ThermoML, WebBook |
+| liquidDensity | 288.15-363.15 | 40 | 0 | 0.19 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| heatOfVaporization | 238.07-401.38 | 17 | 8 | 0.91 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
+| liquidViscosity | — | — | — | — | no open data (no open data at the 3 % target of the records) |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+Left out of heatOfVaporization: 292.51 K, Clapeyron equation with the vapour-pressure record (ideal-gas vapour), +1.44 % (deviates most from a robust fit of the others); 285.70 K, Clapeyron equation with the vapour-pressure record (ideal-gas vapour), +1.46 % (deviates most from a robust fit of the others); 299.31 K, Clapeyron equation with the vapour-pressure record (ideal-gas vapour), +1.36 % (deviates most from a robust fit of the others); 278.90 K, Clapeyron equation with the vapour-pressure record (ideal-gas vapour), +1.42 % (deviates most from a robust fit of the others); 306.11 K, Clapeyron equation with the vapour-pressure record (ideal-gas vapour), +1.24 % (deviates most from a robust fit of the others); 272.09 K, Clapeyron equation with the vapour-pressure record (ideal-gas vapour), +1.32 % (deviates most from a robust fit of the others); 312.92 K, Clapeyron equation with the vapour-pressure record (ideal-gas vapour), +1.09 % (deviates most from a robust fit of the others); 265.29 K, Clapeyron equation with the vapour-pressure record (ideal-gas vapour), +1.13 % (deviates most from a robust fit of the others).
+
 ## Furan (C4H4O, CAS 110-00-9)
 
 - Tc 490.20 K, Pc 5.32 MPa, Tb 304.505 K, ω 0.1868, M 68.0740 g/mol

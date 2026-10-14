@@ -41,10 +41,11 @@ for (const t of lit.ternary) for (const model of ["NRTL", "UNIQUAC"]) {
 
 test("known-issues.json names real components and models", () => {
   for (const k of known) {
-    assert.ok(["NRTL", "UNIQUAC", "ideal", "PR", "SRK"].includes(k.model), k.model);
+    assert.ok(["NRTL", "UNIQUAC", "MOD-UNIFAC-2", "ideal", "PR", "SRK"].includes(k.model), k.model);
     for (const c of k.components) assert.ok(pure(c), c);
-    // fit-quality: a pair set written within the wider limits of validation/python/fit_parameters.py (WIDE_GATE)
-    assert.ok(["ternary-azeotrope", "phase-split", "fit-quality"].includes(k.kind), k.kind);
+    // fit-quality: a pair set written within the wider limits of validation/python/fit_parameters.py (WIDE_GATE);
+    // predicted-deviation: a predictive model (Modified UNIFAC 2.0) against measured data (test/mod-unifac.test.js)
+    assert.ok(["ternary-azeotrope", "phase-split", "fit-quality", "predicted-deviation"].includes(k.kind), k.kind);
     assert.ok(k.message && k.reference);
   }
 });

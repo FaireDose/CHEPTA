@@ -43568,6 +43568,274 @@
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 CH3CO, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H8O3"
       }
+    },
+    "gvl": {
+      "name": "gamma-Valerolactone",
+      "formula": "C5H8O2",
+      "cas": "108-29-2",
+      "aliases": [
+        "γ-valerolactone",
+        "gvl",
+        "5-methyloxolan-2-one",
+        "4-pentanolide",
+        "valerolactone"
+      ],
+      "MW": 100.1158,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": 478.9016,
+      "vapourPressure": {
+        "equation": "DIPPR101",
+        "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
+        "units": "Pa",
+        "A": 61.99219229,
+        "B": -8119.382274,
+        "C": -5.430115005,
+        "D": 0.0,
+        "E": 0.0,
+        "Tmin_K": 238.07,
+        "Tmax_K": 480.2,
+        "tier": "fitted",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Emel'yanenko et al., J. Chem. Thermodyn. 40 (2008) 911-916, doi:10.1016/j.jct.2008.02.002; Zaitseva et al., J. Chem. Eng. Data 61 (2016) 881-890, doi:10.1021/acs.jced.5b00724; Havasi et al., J. Chem. Eng. Data 61 (2016) 1502-1508, doi:10.1021/acs.jced.5b00849; Pokorny et al., J. Chem. Eng. Data 62 (2017) 4174-4186, doi:10.1021/acs.jced.7b00578; Pokki et al., J. Chem. Eng. Data 63 (2018) 4381-4391, doi:10.1021/acs.jced.8b00451; Klajmon et al., J. Chem. Eng. Data 60 (2015) 1362-1370, doi:10.1021/je501074b. 86 measured values (86 from the ThermoML Archive), 238.07-480.20 K, max deviation 39 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Emel'yanenko 2008 +3.17 %; Havasi 2016 +2.52 %; Klajmon 2015 -1.57 %; Pokki 2018 +0.02 %; Pokorny 2017 +3.91 %; Zaitseva 2016 -9.18 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (18 values, 10-6e+02 %); among the values stated within 10 %, the largest deviation is 6.7 %.",
+        "source_ids": [
+          "nist-thermoml-archive",
+          "nist-webbook"
+        ],
+        "crossCheck": [
+          {
+            "reference": "Stull, 1947 (Antoine equation, NIST WebBook)",
+            "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4",
+            "T_range_K": [
+              310.7,
+              480.7
+            ],
+            "max_deviation_percent": -14.41
+          }
+        ]
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "omega": null,
+      "constants_source": "Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (478.902 K).",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "properties": {
+        "liquidDensity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 1326.722396,
+            "B": -0.9310860021
+          },
+          "units": "kg/m3",
+          "Tmin_K": 288.15,
+          "Tmax_K": 363.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+            "reference": "Correa et al., Fluid Phase Equilib. 484 (2019) 239-244, doi:10.1016/j.fluid.2018.11.012; Han et al., J. Chem. Thermodyn. 92 (2016) 207-213, doi:10.1016/j.jct.2015.09.017; Papovic et al., J. Chem. Thermodyn. 107 (2017) 170-181, doi:10.1016/j.jct.2016.12.032; Zaitseva et al., J. Chem. Eng. Data 61 (2016) 881-890, doi:10.1021/acs.jced.5b00724; Correa et al., J. Chem. Eng. Data 64 (2019) 2045-2051, doi:10.1021/acs.jced.8b01025; Dohnal et al., J. Chem. Eng. Data 64 (2019) 1577-1585, doi:10.1021/acs.jced.8b01146; Klajmon et al., J. Chem. Eng. Data 60 (2015) 1362-1370, doi:10.1021/je501074b",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "40 measured values, 288.15-363.15 K, max deviation 0.19 %",
+            "notes": "DIPPR 100 (a polynomial in T; no measured critical temperature)."
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"gamma-valerolactone\", \"5-methyloxolan-2-one\"; 16 records opened)",
+            "NIST Chemistry WebBook, gas phase thermochemistry: no gas heat capacity",
+            "ThermoML Archive: no gas-phase heat capacity"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"gamma-valerolactone\", \"5-methyloxolan-2-one\"; 16 records opened)"
+          ],
+          "note": "no open data at the 1 % target of the records: 20 measured values, 265.37-358.50 K, but their stated uncertainties (3.9-3.9 %) are larger than the target"
+        },
+        "heatOfVaporization": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": -25966.84567,
+            "B": 840.7933407,
+            "C": -2.736443914,
+            "D": 0.002766771727
+          },
+          "units": "J/mol",
+          "Tmin_K": 238.07,
+          "Tmax_K": 401.37615,
+          "tier": "fitted",
+          "source": {
+            "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook)",
+            "reference": "validation/python/measured_components.py (clapeyron_ideal); Leitao, Pilcher, et al., 1990 (ΔvapH° at 298.15 K, method C, NIST WebBook)",
+            "access": "calculated from the open measured data of the vapour-pressure record; free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4)",
+            "fit": "17 Clapeyron values and 2 measured values, 238.07-401.38 K, max deviation 0.91 %",
+            "notes": "No measured critical constants (proposal 0009): dHvap = R T^2 dln(Psat)/dT, the Clapeyron equation with an ideal-gas vapour and the liquid volume neglected (largest P v_L / R T 6.9e-05 where the density record applies), Psat from the vapour-pressure record of this component, 238.07-401.38 K (up to Psat = 10 kPa or the last measured vapour pressure); DIPPR 100 (a polynomial in T). Chosen because the calorimetric value of Leitao et al. (1990) is at 298.15 K only. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): Leitao, Pilcher, et al., 1990 (ΔvapH° at 298.15 K, method C, NIST WebBook), 298.15 K: -0.01 % (stated uncertainty 0.73 %); Leitao, Pilcher, et al., 1990 (ΔvapH° at 298.15 K, method C, NIST WebBook), 298.15 K: -0.01 % (stated uncertainty 0.73 %).",
+            "excluded": [
+              {
+                "T_K": 292.5053834113871,
+                "value": 54302.188,
+                "reference": "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+                "deviation_percent": 1.44,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 285.70096048496373,
+                "value": 54609.397,
+                "reference": "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+                "deviation_percent": 1.46,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 299.30980633781047,
+                "value": 53994.978,
+                "reference": "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+                "deviation_percent": 1.36,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 278.89653755854033,
+                "value": 54916.607,
+                "reference": "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+                "deviation_percent": 1.42,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 306.11422926423387,
+                "value": 53687.769,
+                "reference": "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+                "deviation_percent": 1.24,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 272.09211463211693,
+                "value": 55223.816,
+                "reference": "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+                "deviation_percent": 1.32,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 312.91865219065727,
+                "value": 53380.559,
+                "reference": "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+                "deviation_percent": 1.09,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 265.28769170569353,
+                "value": 55531.026,
+                "reference": "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+                "deviation_percent": 1.13,
+                "why": "deviates most from a robust fit of the others"
+              }
+            ]
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "nist-webbook"
+          ]
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"gamma-valerolactone\", \"5-methyloxolan-2-one\"; 16 records opened)"
+          ],
+          "note": "no open data at the 3 % target of the records: 7 measured values, 293.15-323.15 K, but their stated uncertainties (3.8-4.2 %) are larger than the target"
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"gamma-valerolactone\", \"5-methyloxolan-2-one\"; 16 records opened)"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"gamma-valerolactone\", \"5-methyloxolan-2-one\"; 16 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"gamma-valerolactone\", \"5-methyloxolan-2-one\"; 16 records opened)"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"gamma-valerolactone\", \"5-methyloxolan-2-one\"; 16 records opened)"
+          ]
+        }
+      },
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-14)"
+        ]
+      },
+      "fusion": {
+        "Tm_K": 238.34,
+        "Hfus_J_mol": 7100.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST TRC ThermoML Archive",
+          "reference": "Pokorny 2017, doi:10.1021/acs.jced.7b00578",
+          "access": "NIST open data (the archive's values are free to use, also where the article is paywalled)",
+          "url": "https://trc.nist.gov/ThermoML/",
+          "file": "validation/data/pure/measured/thermoml_gvl.json",
+          "selection": "melting temperature: median of 1 articles; enthalpy of fusion: one article whose melting temperature is within 3 K of it; NIST WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page; ChemSep: no value"
+        },
+        "source_ids": [
+          "nist-thermoml-archive"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "22": 1,
+          "78": 1,
+          "79": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2COO, 1 CY-CH2, 1 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H8O2"
+      }
     }
   }
 }

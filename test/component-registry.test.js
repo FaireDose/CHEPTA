@@ -10,7 +10,8 @@ const reg = read("../validation/data/component_registry.json");
 const comps = read("../src/data/components.json").components;
 // measured_components.py (proposal 0008, Part B; proposal 0009, batch 3)
 const FROM_MEASURED = ["dichloromethane", "2-methoxyethanol", "furan", "2-methylfuran", "2-methyltetrahydrofuran",
-  "1-3-propanediol", "levulinic-acid", "methyl-levulinate", "ethyl-levulinate", "butyl-levulinate"];
+  "1-3-propanediol", "levulinic-acid", "methyl-levulinate", "ethyl-levulinate", "butyl-levulinate",
+  "gvl"];
 
 test("every component is in the registry once, and every registry entry is a component", () => {
   const ids = [...reg.base.components, ...reg.batches.flatMap(b => b.components)].map(c => c.id);

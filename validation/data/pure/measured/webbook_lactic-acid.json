@@ -1,0 +1,55 @@
+{
+ "component": "lactic-acid",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79334&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79334&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°solid",
+       "-694.08",
+       "kJ/mol",
+       "Ccb",
+       "Saville and Gundry, 1959",
+       ""
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°solid",
+       "-1343.98 ± 0.46",
+       "kJ/mol",
+       "Ccb",
+       "Saville and Gundry, 1959",
+       "Corresponding ΔfHºsolid = -694.034 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79334&Units=SI&Mask=4",
+   "tables": []
+  }
+ }
+}

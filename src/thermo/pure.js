@@ -31,6 +31,7 @@ import { viscosity as viscosityIAPWS, thermalConductivityParts as conductivityIA
 import { cubicEos, CUBICS } from "./eos/cubic.js";
 import { dimerK, monomerPressure } from "./vapour.js";
 import { fail, failRange } from "../util/errors.js";
+import { hasCritical, criticalT, requireCritical } from "./critical.js";
 
 // Accuracy of the Peng-Robinson residual enthalpy and cp of vapours, against CoolProp's
 // reference equations of state (test/eos-reference.test.js, 12 states): light gases and
@@ -104,7 +105,15 @@ export function pure(key, opts = {}) {
   const vpRec = vapourPressureRecord(c);
   let prCache = null;
   /** Peng-Robinson for this component alone (vapour and supercritical states). */
-  const eosPR = () => prCache || (prCache = cubicEos("PR", [{ name: c.name, Tc_K: c.Tc_K, Pc_Pa: c.Pc_Pa, omega: c.omega }]));
+  const eosPR = () => {
+    requireCritical([c], "the Peng-Robinson equation of state");
+    return prCache || (prCache = cubicEos("PR", [{ name: c.name, Tc_K: c.Tc_K, Pc_Pa: c.Pc_Pa, omega: c.omega }]));
+  };
+  // without critical constants (critical.js) the vapour is an ideal gas and no critical point bounds the liquid
+  const crit = hasCritical(c), Tc = criticalT(c);
+  const IDEAL_VAPOUR_NOTE = `${c.name} has no measured critical constants: its vapour is taken as an ideal gas (no residual enthalpy or heat capacity), which holds at low pressure.`;
+  /** Residual enthalpy (J/mol) of the saturated vapour: Peng-Robinson, or 0 for an ideal gas. */
+  const hResSat = (T, pS) => (crit ? eosPR().state(T, pS, [1], "vapour").hR_J_mol : 0);
 
   const record = name => {
     if (name === "vapourPressure") return vpRec;
@@ -169,17 +178,26 @@ export function pure(key, opts = {}) {
       } catch (e) { out[key] = null; out.notes.push(e.message); }
     };
     let ps = null;
-    if (T < c.Tc_K) { try { ps = psat(T); } catch (e) { out.notes.push(e.message); } }
+    if (T < Tc) { try { ps = psat(T); } catch (e) { out.notes.push(e.message); } }
     out.psat_kPa = ps;
     if (ps !== null) out.sources.psat_kPa = { tier: vpRec.tier, source: vpRec.source };
-    out.phase = T >= c.Tc_K ? "supercritical" : ps === null ? null : P >= ps ? "liquid" : "vapour";
-    if (out.phase === null && T < c.Tc_K) {
+    out.phase = T >= Tc ? "supercritical" : ps === null ? null : P >= ps ? "liquid" : "vapour";
+    if (out.phase === null && T < Tc && crit) {
       // No vapour-pressure record (or out of its range): decide the phase with Peng-Robinson.
       try {
         const pPR = eosPR().psat(0, T);
         out.phase = P >= pPR ? "liquid" : "vapour";
         out.notes.push(`Phase decided with the Peng-Robinson saturation pressure (${pPR.toPrecision(5)} kPa); no vapour-pressure correlation available at ${T} K.`);
       } catch (e) { out.notes.push(e.message); }
+    }
+    if (out.phase === null && !crit && vpRec) {
+      // no critical constants: outside the vapour-pressure record, the phase still follows from its ends, because the
+      // vapour pressure rises with temperature (below the vapour pressure at the record's top end: vapour above it;
+      // above the vapour pressure at its bottom end: liquid below it)
+      const pHi = psat(vpRec.Tmax_K), pLo = psat(vpRec.Tmin_K);
+      if (T > vpRec.Tmax_K && P < pHi) out.phase = "vapour";
+      else if (T < vpRec.Tmin_K && P > pLo) out.phase = "liquid";
+      if (out.phase) out.notes.push(`Phase decided from the end of the vapour-pressure record (${out.phase === "vapour" ? `${pHi.toPrecision(4)} kPa at ${vpRec.Tmax_K} K` : `${pLo.toPrecision(4)} kPa at ${vpRec.Tmin_K} K`}).`);
     }
     if (out.phase === null) {
       out.notes.push(`Phase unknown at ${T} K: no vapour pressure available.`);
@@ -196,7 +214,9 @@ export function pure(key, opts = {}) {
         out.notes.push(assocNote);
       } else {
         tryGet("h_J_mol", () => liquidEnthalpy(T, ps));
-        out.notes.push("Liquid enthalpy h = h_ideal-gas + h_residual(saturated vapour, Peng-Robinson) - dHvap, so that h_vapour - h_liquid = dHvap at saturation.");
+        out.notes.push(crit ? "Liquid enthalpy h = h_ideal-gas + h_residual(saturated vapour, Peng-Robinson) - dHvap, so that h_vapour - h_liquid = dHvap at saturation."
+          : "Liquid enthalpy h = h_ideal-gas - dHvap (ideal-gas vapour), so that h_vapour - h_liquid = dHvap at saturation.");
+        if (!crit) out.notes.push(IDEAL_VAPOUR_NOTE);
       }
       tryGet("mu_Pa_s", () => property("liquidViscosity", T), "liquidViscosity");
       tryGet("k_W_mK", () => property("liquidThermalConductivity", T), "liquidThermalConductivity");
@@ -214,6 +234,17 @@ export function pure(key, opts = {}) {
       if (out.cp_J_molK !== null) out.notes.push(`cp_J_molK is the ideal-gas heat capacity of the ${c.name} monomer; it excludes the heat of dissociating the dimers (${(100 * 2 * pd / (pm + 2 * pd)).toFixed(0)} % of the molecules are dimerized here), so the real vapour's cp is higher.`);
       tryGet("mu_Pa_s", () => property("vapourViscosity", T), "vapourViscosity");
       tryGet("k_W_mK", () => property("vapourThermalConductivity", T), "vapourThermalConductivity");
+    } else if (!crit) {
+      // no critical constants: an ideal gas (critical.js)
+      out.Z = 1;
+      out.rho_kg_m3 = MWkg * P * 1000 / (R * T);
+      out.sources.rho_kg_m3 = { tier: "standard", source: "Ideal gas" };
+      out.hResidual_J_mol = 0;
+      tryGet("cp_J_molK", () => property("idealGasHeatCapacity", T), "idealGasHeatCapacity");
+      tryGet("h_J_mol", () => hIdealGas(T));
+      tryGet("mu_Pa_s", () => property("vapourViscosity", T), "vapourViscosity");
+      tryGet("k_W_mK", () => property("vapourThermalConductivity", T), "vapourThermalConductivity");
+      out.notes.push(IDEAL_VAPOUR_NOTE);
     } else {
       // Vapour or supercritical fluid: Peng-Robinson for density, residual enthalpy and
       // residual heat capacity; ideal-gas parts from the cpIG correlation.
@@ -247,21 +278,23 @@ export function pure(key, opts = {}) {
   function liquidEnthalpy(T, ps = null) {
     if (c.association) throw fail("NOT_AVAILABLE", `${c.name} dimerizes in the vapour: liquid enthalpy is not available yet.`);
     const pS = ps ?? (vpRec ? psat(T) : eosPR().psat(0, T));
-    return hIdealGas(T) + eosPR().state(T, pS, [1], "vapour").hR_J_mol - property("heatOfVaporization", T);
+    return hIdealGas(T) + hResSat(T, pS) - property("heatOfVaporization", T);
   }
 
   /** Enthalpies of the saturated vapour and liquid at T (J/mol) and the pressure (kPa). */
   function saturation(T) {
-    if (!(T < c.Tc_K)) throw failRange("OUT_OF_RANGE", `${c.name}: no saturation state at ${T} K (critical temperature ${c.Tc_K} K).`);
+    if (!(T < Tc)) throw failRange("OUT_OF_RANGE", `${c.name}: no saturation state at ${T} K (critical temperature ${c.Tc_K} K).`);
     const pS = vpRec ? psat(T) : eosPR().psat(0, T);
-    const hV = c.association ? null : hIdealGas(T) + eosPR().state(T, pS, [1], "vapour").hR_J_mol;
+    const hV = c.association ? null : hIdealGas(T) + hResSat(T, pS);
     const hL = c.association ? null : liquidEnthalpy(T, pS);
     return { T_K: T, P_kPa: pS, hV_J_mol: hV, hL_J_mol: hL, dHvap_J_mol: property("heatOfVaporization", T) };
   }
 
   const base = {
     id, name: c.name, formula: c.formula, cas: c.cas,
-    MW: c.MW, Tc_K: c.Tc_K, Pc_kPa: c.Pc_Pa / 1000, omega: c.omega, Tb_K: c.Tb_K,
+    MW: c.MW, Tc_K: c.Tc_K ?? null, Pc_kPa: Number.isFinite(c.Pc_Pa) ? c.Pc_Pa / 1000 : null, omega: c.omega ?? null, Tb_K: c.Tb_K,
+    // no measured critical constants: { available: false, searched } (critical.js), else null
+    critical: crit ? null : (c.critical ?? { available: false, searched: [] }),
     // melting (triple-point) temperature and enthalpy of fusion with their source, or null (no open data)
     fusion: c.fusion && c.fusion.available !== false
       ? { Tm_K: c.fusion.Tm_K, Hfus_J_mol: c.fusion.Hfus_J_mol, tier: c.fusion.tier, source: c.fusion.source } : null,

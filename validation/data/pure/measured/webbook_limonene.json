@@ -1,0 +1,143 @@
+{
+ "component": "limonene",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C138863&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C138863&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔcH°liquid",
+       "-6128.3",
+       "kJ/mol",
+       "Ccb",
+       "Auwsers, Roth, et al., 1910",
+       "Corresponding ΔfHºliquid = -93.3 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "249.4",
+       "293.3",
+       "Kolosovskii and Udovenko, 1934",
+       "DH"
+      ],
+      [
+       "249.4",
+       "293.4",
+       "de Kolossowsky and Udowenko, 1933",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid",
+      "Constant pressure heat capacity of liquid"
+     ],
+     "rows": [
+      [
+       "ΔcH°liquid",
+       "Enthalpy of combustion of liquid at standard conditions"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C138863&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "451. ± 4.",
+       "K",
+       "AVG",
+       "N/A",
+       "Average of 13 values; Individual data points"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tfus",
+       "184.12",
+       "K",
+       "N/A",
+       "Hawkins and Eriksen. W.T., 1954",
+       "Uncertainty assigned by TRC =  0.1 K; TRC"
+      ],
+      [
+       "Tfus",
+       "177.65",
+       "K",
+       "N/A",
+       "Anonymous, 1942",
+       "Uncertainty assigned by TRC =  0.3 K; TRC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "39.4",
+       "379.",
+       "TGA",
+       "Hazra, Dollimore, et al., 2002",
+       "Based on data from 353. to 405. K.; AC"
+      ],
+      [
+       "45.9",
+       "302.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 287. to 448. K.; AC"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}
