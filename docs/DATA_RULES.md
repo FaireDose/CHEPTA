@@ -16,13 +16,18 @@ Only from sources anyone can read for free and legally, so that every reviewer c
 3. the NIST Chemistry WebBook;
 4. open databanks and libraries: **ChemSep** (Artistic License 2.0), thermo, chemicals. A table copied from a handbook
    or a commercial databank is not open just because an open library ships it;
-5. only when the sources above have nothing: the NIST TRC ThermoML Archive (its data are open even where the article
-   is paywalled), open-access articles, open repositories;
+5. the NIST TRC ThermoML Archive (its data are open even where the article is paywalled), open-access articles, open
+   repositories;
 6. free books (public domain or openly licensed).
 
-**When ChemSep has the value, take it as it is** (the maintainer, 2026-10-14): its equations are known and its
-authors maintain them, so a ChemSep record is not compared further with measured data or refitted. Measured data
-(ThermoML Archive, open articles) are used only for what ChemSep and the sources before it do not have.
+What to take from where (the maintainer, 2026-10-14): take a number from the source that has it, and do not take a
+number that then has to be compared with another source.
+
+| Data | Where from |
+|---|---|
+| Pure-component properties (constants, vapour pressure, density, heat capacity, enthalpy of vaporization, transport properties, UNIQUAC r and q) | ChemSep when it has them, **taken as they are**: its equations are known and its authors maintain them, so a ChemSep record is not compared with measured data or refitted. The ThermoML Archive and open articles only for what ChemSep and the sources before it do not have. |
+| Mixture data (VLE, azeotropes, excess enthalpies, liquid-liquid data) | The ThermoML Archive and open-access articles, **directly**. |
+| Components in neither CoolProp nor ChemSep | Measured data only (section 3). |
 
 Never:
 

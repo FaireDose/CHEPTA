@@ -96,6 +96,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
        without critical constants); decide on the narrow misses of the pooling rule (methyl lactate, ethyl lactate,
        limonene) and on furfuryl alcohol (two sets 4-7 % apart); no open vapour pressures: HMF, lactic acid, lactide,
        solketal, alpha-angelica lactone;
+     - after "take ChemSep as it is" (2026-10-14): keep or drop the comparison of ChemSep records with the
+       ThermoML Archive (the "records against measured data" section of the engineering report and
+       `test/measured-checks.test.js`), or keep it as information only; and whether a pair fitted to ThermoML
+       VLE data replaces the imported ChemSep NRTL/UNIQUAC set of the same pair;
   4. the "nonvolatile" component class;
   5. batch 4, sugars and acids as solids.
   - Six names still need a CAS number: xylose, erythritol, muconic acid, levoglucosenone,

@@ -45,3 +45,10 @@
   taken as it is, with no new comparison with measured data or refit; the records refitted before (glycerol, phenol,
   N-methyl-2-pyrrolidone and others) stay as they are for now. CLAUDE.md now also loads docs/DATA_RULES.md, so Claude
   Code reads the data rules in every session; other agents reach them from AGENTS.md.
+- **What to take from where (the maintainer, 2026-10-14):** "take the numbers you know there are in ChemSep and not
+  in ThermoML. Do not take something that you have to compare. For example if VLE data is in ThermoML take it from
+  there directly. If other properties are in ChemSep take them from there." AGENTS.md rule 1 and docs/DATA_RULES.md
+  section 1 now say: pure-component properties from ChemSep as they are; mixture data (VLE, azeotropes, excess
+  enthalpies, liquid-liquid data) from the ThermoML Archive and open articles directly; the ThermoML Archive for pure
+  components only for what ChemSep does not have. The maintainer assumes ChemSep's correlations were themselves
+  fitted to such literature data, which is why they work.
