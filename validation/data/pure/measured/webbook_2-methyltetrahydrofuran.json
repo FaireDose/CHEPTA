@@ -1,0 +1,127 @@
+{
+ "component": "2-methyltetrahydrofuran",
+ "retrieved": "2026-10-13",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96479&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96479&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96479&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "352. ± 10.",
+       "K",
+       "AVG",
+       "N/A",
+       "Average of 6 values; Individual data points"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tfus",
+       "137.05",
+       "K",
+       "N/A",
+       "Boord, Greenlee, et al., 1949",
+       "Uncertainty assigned by TRC =  0.4 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tc",
+       "537.",
+       "K",
+       "N/A",
+       "Kobe, Ravicz, et al., 1956",
+       "Uncertainty assigned by TRC =  2. K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Pc",
+       "37.5763",
+       "bar",
+       "N/A",
+       "Kobe, Ravicz, et al., 1956",
+       "Uncertainty assigned by TRC =  0.6894 bar; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Vc",
+       "0.267",
+       "l/mol",
+       "N/A",
+       "Kobe, Ravicz, et al., 1956",
+       "Uncertainty assigned by TRC =  0.005 l/mol; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "34.0",
+       "kJ/mol",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 283. to 353. K.; AC"
+      ],
+      [
+       "ΔvapH°",
+       "33.7",
+       "kJ/mol",
+       "N/A",
+       "Moiseev and Antonova, 1970",
+       "AC"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

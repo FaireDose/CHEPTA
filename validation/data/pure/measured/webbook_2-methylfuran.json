@@ -1,0 +1,369 @@
+{
+ "component": "2-methylfuran",
+ "retrieved": "2026-10-13",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C534225&Units=SI&Mask=1",
+   "tables": [
+    {
+     "header": [
+      "Cp,gas (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "36.64",
+       "50.",
+       "Thermodynamics Research Center, 1997",
+       "p=1 bar. Selected entropy and heat capacity at 298.15 K are in close agreement with statistical values calculated by [ Green J.H.S., 1977]."
+      ],
+      [
+       "45.61",
+       "100."
+      ],
+      [
+       "54.15",
+       "150."
+      ],
+      [
+       "64.27",
+       "200."
+      ],
+      [
+       "82.78",
+       "273.15"
+      ],
+      [
+       "89.66",
+       "298.15"
+      ],
+      [
+       "90.17",
+       "300."
+      ],
+      [
+       "117.24",
+       "400."
+      ],
+      [
+       "140.76",
+       "500."
+      ],
+      [
+       "160.06",
+       "600."
+      ],
+      [
+       "175.83",
+       "700."
+      ],
+      [
+       "188.90",
+       "800."
+      ],
+      [
+       "199.87",
+       "900."
+      ],
+      [
+       "209.15",
+       "1000."
+      ],
+      [
+       "217.06",
+       "1100."
+      ],
+      [
+       "223.83",
+       "1200."
+      ],
+      [
+       "229.65",
+       "1300."
+      ],
+      [
+       "234.68",
+       "1400."
+      ],
+      [
+       "239.03",
+       "1500."
+      ]
+     ]
+    }
+   ]
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C534225&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "S°liquid",
+       "213.89",
+       "J/mol*K",
+       "N/A",
+       "Carlson and Westrum, 1965",
+       ""
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "143.72",
+       "298.15",
+       "Carlson and Westrum, 1965",
+       "T = 5 to 310 K."
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid",
+      "Constant pressure heat capacity of liquid"
+     ],
+     "rows": [
+      [
+       "S°liquid",
+       "Entropy of liquid at standard conditions"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C534225&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "337. ± 1.",
+       "K",
+       "AVG",
+       "N/A",
+       "Average of 10 values; Individual data points"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Ttriple",
+       "181.9",
+       "K",
+       "N/A",
+       "Carlson and Westrum, 1965",
+       "Uncertainty assigned by TRC =  0.1 K; TRC"
+      ],
+      [
+       "Ttriple",
+       "181.90",
+       "K",
+       "N/A",
+       "Carlson, 1962",
+       "Uncertainty assigned by TRC =  0.2 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tc",
+       "528.",
+       "K",
+       "N/A",
+       "Kobe, Ravicz, et al., 1956",
+       "Uncertainty assigned by TRC =  2. K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Pc",
+       "47.20",
+       "bar",
+       "N/A",
+       "Kobe, Ravicz, et al., 1956",
+       "Uncertainty assigned by TRC =  1.034 bar; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Vc",
+       "0.247",
+       "l/mol",
+       "N/A",
+       "Kobe, Ravicz, et al., 1956",
+       "Uncertainty assigned by TRC =  0.005 l/mol; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "32.2",
+       "kJ/mol",
+       "N/A",
+       "Moiseev and Antonova, 1970",
+       "Based on data from 215. to 360. K.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "32.4",
+       "304.",
+       "N/A",
+       "Loras, Aucejo, et al., 2002",
+       "Based on data from 289. to 337. K.; AC"
+      ],
+      [
+       "34.4",
+       "266.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 251. to 338. K.; AC"
+      ],
+      [
+       "31.5",
+       "324.",
+       "N/A",
+       "Krevor and Prausnitz, 1986",
+       "Based on data from 309. to 339. K.; AC"
+      ],
+      [
+       "32.5",
+       "295.",
+       "N/A",
+       "Dykyj, 1972",
+       "Based on data from 288. to 303. K.; AC"
+      ],
+      [
+       "30.9",
+       "348.",
+       "N/A",
+       "Eon, Pommier, et al., 1971",
+       "Based on data from 333. to 373. K. See also  Boublik, Fried, et al., 1984.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Temperature (K)",
+      "A",
+      "B",
+      "C",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "333.4 to 373.5",
+       "4.81528",
+       "1643.082",
+       "3.234",
+       "Eon, Pommier, et al., 1971",
+       "Coefficents calculated by NIST from author's data."
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "8.552",
+       "181.90",
+       "Carlson and Westrum, 1965, 2",
+       "DH"
+      ],
+      [
+       "8.55",
+       "181.9",
+       "Carlson and Westrum, 1965, 2",
+       "AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusS (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "47.01",
+       "181.90",
+       "Carlson and Westrum, 1965, 2",
+       "DH"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

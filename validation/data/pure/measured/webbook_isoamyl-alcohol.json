@@ -1,0 +1,488 @@
+{
+ "component": "isoamyl-alcohol",
+ "retrieved": "2026-10-13",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=1",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°gas",
+       "-300.8",
+       "kJ/mol",
+       "N/A",
+       "Markovnik, Shvarko, et al., 1987",
+       "Value computed using ΔfHliquid° value of -355.9±1.6 kj/mol from  Markovnik, Shvarko, et al., 1987 and ΔvapH° value of 55.1 kj/mol from  Chao and Rossini, 1965.; DRB"
+      ],
+      [
+       "ΔfH°gas",
+       "-301.3 ± 1.5",
+       "kJ/mol",
+       "Ccb",
+       "Chao and Rossini, 1965",
+       "Heat of formation derived by  Cox and Pilcher, 1970; ALS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,gas (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "187.2 ± 1.1",
+       "451.65",
+       "Stromsoe E., 1970",
+       "Ideal gas heat capacities are given by [ Stromsoe E., 1970] as a linear function Cp=f1*(a+bT). This expression approximates the experimental values with the average deviation of 1.09 J/mol*K. The accuracy of the experimental heat capacities [ Stromsoe E., 1970] is estimated as less than 0.3%.; GT"
+      ],
+      [
+       "193.7 ± 1.1",
+       "474.55"
+      ],
+      [
+       "197.6 ± 1.1",
+       "488.35"
+      ],
+      [
+       "200.7 ± 1.1",
+       "499.15"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,gas",
+      "Constant pressure heat capacity of gas"
+     ],
+     "rows": [
+      [
+       "ΔfH°gas",
+       "Enthalpy of formation of gas at standard conditions"
+      ]
+     ]
+    }
+   ]
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°liquid",
+       "-355.9 ± 1.6",
+       "kJ/mol",
+       "Ccb",
+       "Markovnik, Shvarko, et al., 1987",
+       "Uc =-3320.42 kJ/mol; ALS"
+      ],
+      [
+       "ΔfH°liquid",
+       "-356.4 ± 0.59",
+       "kJ/mol",
+       "Ccb",
+       "Chao and Rossini, 1965",
+       "ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°liquid",
+       "-3326.6 ± 1.6",
+       "kJ/mol",
+       "Ccb",
+       "Markovnik, Shvarko, et al., 1987",
+       "Uc =-3320.42 kJ/mol; Corresponding ΔfHºliquid = -355.92 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "ΔcH°liquid",
+       "-3326.2 ± 0.50",
+       "kJ/mol",
+       "Ccb",
+       "Chao and Rossini, 1965",
+       "Corresponding ΔfHºliquid = -356.4 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "257.7",
+       "347.",
+       "Swietoslawski and Zielenkiewicz, 1958",
+       "Mean value 22 to 126°C.; DH"
+      ],
+      [
+       "209.52",
+       "295.52",
+       "Zhdanov, 1945",
+       "T = 7 to 47°C. Value is unsmoothed experimental datum.; DH"
+      ],
+      [
+       "210.0",
+       "303.",
+       "Willams and Daniels, 1924",
+       "T = 303 to 343 K. Equation only; DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid",
+      "Constant pressure heat capacity of liquid"
+     ],
+     "rows": [
+      [
+       "ΔcH°liquid",
+       "Enthalpy of combustion of liquid at standard conditions"
+      ],
+      [
+       "ΔfH°liquid",
+       "Enthalpy of formation of liquid at standard conditions"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "404. ± 2.",
+       "K",
+       "AVG",
+       "N/A",
+       "Average of 83 out of 84 values; Individual data points"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tc",
+       "579. ± 3.",
+       "K",
+       "AVG",
+       "N/A",
+       "Average of 9 values; Individual data points"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Pc",
+       "39.3 ± 0.2",
+       "bar",
+       "N/A",
+       "Gude and Teja, 1995",
+       ""
+      ],
+      [
+       "Pc",
+       "39.30",
+       "bar",
+       "N/A",
+       "Quadri, Khilar, et al., 1991",
+       "Uncertainty assigned by TRC =  0.40 bar; TRC"
+      ],
+      [
+       "Pc",
+       "45.5963",
+       "bar",
+       "N/A",
+       "Kreglewski, 1955",
+       "Uncertainty assigned by TRC =  2.0265 bar; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "53. ± 8.",
+       "kJ/mol",
+       "AVG",
+       "N/A",
+       "Average of 6 values; Individual data points"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "44.07",
+       "404.2",
+       "N/A",
+       "Majer and Svoboda, 1985",
+       ""
+      ],
+      [
+       "49.8",
+       "363.",
+       "N/A",
+       "Lladosa, Monton, et al., 2008",
+       "Based on data from 348. to 404. K.; AC"
+      ],
+      [
+       "47.2",
+       "340.",
+       "N/A",
+       "Aucejo, Burguet, et al., 1994",
+       "Based on data from 325. to 385. K.; AC"
+      ],
+      [
+       "57.1",
+       "318.",
+       "N/A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 303. to 412. K.; AC"
+      ],
+      [
+       "55.2 ± 0.2",
+       "303.",
+       "C",
+       "Majer, Svoboda, et al., 1985",
+       "AC"
+      ],
+      [
+       "54.2 ± 0.2",
+       "313.",
+       "C",
+       "Majer, Svoboda, et al., 1985",
+       "AC"
+      ],
+      [
+       "52.9 ± 0.2",
+       "328.",
+       "C",
+       "Majer, Svoboda, et al., 1985",
+       "AC"
+      ],
+      [
+       "51.4 ± 0.2",
+       "343.",
+       "C",
+       "Majer, Svoboda, et al., 1985",
+       "AC"
+      ],
+      [
+       "49.7 ± 0.2",
+       "358.",
+       "C",
+       "Majer, Svoboda, et al., 1985",
+       "AC"
+      ],
+      [
+       "56.5",
+       "313.",
+       "N/A",
+       "Wilhoit and Zwolinski, 1973",
+       "Based on data from 298. to 426. K.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Temperature (K)",
+      "303. to 395."
+     ],
+     "rows": [
+      [
+       "A (kJ/mol)",
+       "68.92"
+      ],
+      [
+       "α",
+       "-0.598"
+      ],
+      [
+       "β",
+       "0.7228"
+      ],
+      [
+       "Tc (K)",
+       "579.4"
+      ],
+      [
+       "Reference",
+       "Majer and Svoboda, 1985"
+      ]
+     ]
+    }
+   ]
+  },
+  "TC values": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Type=TC",
+   "tables": [
+    {
+     "header": [
+      "Tc (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "577.2 ± 0.5",
+       "Gude and Teja, 1995",
+       ""
+      ],
+      [
+       "577.2",
+       "Quadri, Khilar, et al., 1991",
+       "Uncertainty assigned by TRC =  0.7 K; TRC"
+      ],
+      [
+       "579.4",
+       "Majer and Svoboda, 1985",
+       ""
+      ],
+      [
+       "580.15",
+       "Kreglewski, 1955",
+       "Uncertainty assigned by TRC =  1. K; TRC"
+      ],
+      [
+       "579.2",
+       "Kreglewski, 1954",
+       "Uncertainty assigned by TRC =  0.35 K; by disappearance of meniscus; TRC"
+      ],
+      [
+       "580.4",
+       "Fischer and Reichel, 1943",
+       "TRC"
+      ],
+      [
+       "582.9",
+       "Brown, 1906",
+       "TRC"
+      ],
+      [
+       "579.2",
+       "Schmidt, 1891",
+       "TRC"
+      ],
+      [
+       "579.8",
+       "Pawlewski, 1883",
+       "TRC"
+      ]
+     ]
+    }
+   ]
+  },
+  "HVAP values": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Type=HVAP",
+   "tables": [
+    {
+     "header": [
+      "ΔvapH° (kJ/mol)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "55.63",
+       "N/A",
+       "Majer and Svoboda, 1985",
+       ""
+      ],
+      [
+       "55.3",
+       "CGC",
+       "Chickos, Hosseini, et al., 1995",
+       "Based on data from 323. to 373. K.; AC"
+      ],
+      [
+       "55.0 ± 1.3",
+       "V",
+       "Chao and Rossini, 1965",
+       "Heat of formation derived by  Cox and Pilcher, 1970; ALS"
+      ],
+      [
+       "55.1",
+       "N/A",
+       "Chao and Rossini, 1965",
+       "DRB"
+      ],
+      [
+       "54.3",
+       "C",
+       "McCurdy and Laidler, 1963",
+       "AC"
+      ],
+      [
+       "44.18 ± 0.02",
+       "V",
+       "Mathews, 1926",
+       "ALS"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

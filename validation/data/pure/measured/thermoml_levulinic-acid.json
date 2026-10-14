@@ -1,0 +1,2303 @@
+{
+ "component": "levulinic-acid",
+ "cas": "123-76-2",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-13",
+ "searched": "ThermoML-API full-text search for \"levulinic acid\", \"4-oxidanylidenepentanoic acid\"; 23 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1016/j.fluid.2008.08.004": {
+   "authors": [
+    "Uslu, H.[Hasan]",
+    "Gok, A.[Asly]",
+    "Kirbaslar, S. I.[S ISmail]"
+   ],
+   "title": "Phase equilibria of (water + levunilic acid + alcohol) ternary systems",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "273",
+   "year": "2008",
+   "pages": "21-26"
+  },
+  "10.1016/j.fluid.2009.04.017": {
+   "authors": [
+    "Uslu, H.[Hasan]",
+    "Gok, A.[Asli]",
+    "Kirbaslar, S. I."
+   ],
+   "title": "Phase equilibria of (water + levulinic acid + dibasic esters) ternary systems",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "282",
+   "year": "2009",
+   "pages": "20-24"
+  },
+  "10.1016/j.jct.2011.07.014": {
+   "authors": [
+    "Verevkin, S. P.[Sergey P.]",
+    "Emelyanenko, V. N.[Vladimir N.]"
+   ],
+   "title": "Renewable platform-chemicals and materials: Thermochemical study of levulinic acid",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "46",
+   "year": "2012",
+   "pages": "94-98"
+  },
+  "10.1016/j.jct.2019.02.010": {
+   "authors": [
+    "Gajardo-Parra, Nicolas F.",
+    "Lubben, Michael J.",
+    "Winnert, Joshua M.",
+    "Leiva, Angel",
+    "Brennecke, Joan F.",
+    "Canales, Roberto I."
+   ],
+   "title": "Physicochemical properties of choline chloride-based deep eutectic solvents and excess properties of their pseudo-binary mixtures with 1-butanol",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "133",
+   "year": "2019",
+   "pages": "272-284"
+  },
+  "10.1016/j.jct.2019.03.040": {
+   "authors": [
+    "Nikitin, Eugene D.",
+    "Popov, Alexander P.",
+    "Bogatishcheva, Nataliya S.",
+    "Faizullin, Mars Z."
+   ],
+   "title": "Critical temperatures and pressures, heat capacities, and thermal diffusivities of levulinic acid and four n-alkyl levulinates",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "135",
+   "year": "2019",
+   "pages": "233-240"
+  },
+  "10.1021/acs.jced.9b00041": {
+   "authors": [
+    "Riveiro, E.[Elisa]",
+    "Villar, L.[Lorena]",
+    "Sas, O. G.[Olalla G.]",
+    "Gonzalez, B.[Begona]",
+    "Canosa, J.[Jose]",
+    "Dominguez, A.[Angeles]"
+   ],
+   "title": "Extraction of Carboxylic Acids from Aqueous Solutions by Using [BMim][NTf2] and Salting-out Agents",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "64",
+   "year": "2019",
+   "pages": "4717-4723"
+  }
+ },
+ "rows": [
+  {
+   "property": "Normal boiling temperature, K",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 518.2,
+   "uncertainty": 0.5,
+   "doi": "10.1016/j.fluid.2008.08.004",
+   "set": 10,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 293.15,
+   "P_kPa": 101.325,
+   "value": 1133.5,
+   "uncertainty": 1.73,
+   "doi": "10.1016/j.fluid.2008.08.004",
+   "set": 12,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 293.15,
+   "P_kPa": 101.325,
+   "value": 1133.5,
+   "uncertainty": 1.15,
+   "doi": "10.1016/j.fluid.2009.04.017",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of vaporization or sublimation, kJ/mol",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 298.15,
+   "P_kPa": null,
+   "value": 70.32,
+   "uncertainty": 1.82,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 328.4,
+   "P_kPa": null,
+   "value": 0.00705,
+   "uncertainty": 0.00038,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 333.4,
+   "P_kPa": null,
+   "value": 0.01045,
+   "uncertainty": 0.00054,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 338.3,
+   "P_kPa": null,
+   "value": 0.01414,
+   "uncertainty": 0.00074,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 343.3,
+   "P_kPa": null,
+   "value": 0.02096,
+   "uncertainty": 0.00108,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 343.4,
+   "P_kPa": null,
+   "value": 0.02019,
+   "uncertainty": 0.00104,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 348.3,
+   "P_kPa": null,
+   "value": 0.02702,
+   "uncertainty": 0.0014,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 353.3,
+   "P_kPa": null,
+   "value": 0.0381,
+   "uncertainty": 0.00197,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 358.3,
+   "P_kPa": null,
+   "value": 0.05278,
+   "uncertainty": 0.00274,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 358.4,
+   "P_kPa": null,
+   "value": 0.05148,
+   "uncertainty": 0.00268,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 363.4,
+   "P_kPa": null,
+   "value": 0.07587,
+   "uncertainty": 0.00392,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 368.4,
+   "P_kPa": null,
+   "value": 0.10096,
+   "uncertainty": 0.00519,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 373.4,
+   "P_kPa": null,
+   "value": 0.13493,
+   "uncertainty": 0.00688,
+   "doi": "10.1016/j.jct.2011.07.014",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 293.15,
+   "P_kPa": 101.325,
+   "value": 1140.1,
+   "uncertainty": 8.1,
+   "doi": "10.1016/j.jct.2019.02.010",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": 101.325,
+   "value": 1131.6,
+   "uncertainty": 8.1,
+   "doi": "10.1016/j.jct.2019.02.010",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": 101.325,
+   "value": 1123.0,
+   "uncertainty": 8.1,
+   "doi": "10.1016/j.jct.2019.02.010",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": 101.325,
+   "value": 1114.5,
+   "uncertainty": 8.1,
+   "doi": "10.1016/j.jct.2019.02.010",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 333.15,
+   "P_kPa": 101.325,
+   "value": 1105.9,
+   "uncertainty": 8.1,
+   "doi": "10.1016/j.jct.2019.02.010",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 343.15,
+   "P_kPa": 101.325,
+   "value": 1097.4,
+   "uncertainty": 8.1,
+   "doi": "10.1016/j.jct.2019.02.010",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Critical temperature, K",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 766.0,
+   "uncertainty": 12.0,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Critical pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 5310.0,
+   "uncertainty": 220.0,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 302.62,
+   "P_kPa": 101.325,
+   "value": 245.93203596,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 303.12,
+   "P_kPa": 101.325,
+   "value": 246.1642664,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 303.62,
+   "P_kPa": 101.325,
+   "value": 246.04815118,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 304.12,
+   "P_kPa": 101.325,
+   "value": 246.28038162,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 304.62,
+   "P_kPa": 101.325,
+   "value": 246.1642664,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 305.12,
+   "P_kPa": 101.325,
+   "value": 246.51261206,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 305.62,
+   "P_kPa": 101.325,
+   "value": 246.39649684,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 306.12,
+   "P_kPa": 101.325,
+   "value": 246.86095772,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 306.62,
+   "P_kPa": 101.325,
+   "value": 246.86095772,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 307.12,
+   "P_kPa": 101.325,
+   "value": 246.86095772,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 307.62,
+   "P_kPa": 101.325,
+   "value": 246.86095772,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 308.12,
+   "P_kPa": 101.325,
+   "value": 246.97707294,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 308.62,
+   "P_kPa": 101.325,
+   "value": 247.44153382,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 309.12,
+   "P_kPa": 101.325,
+   "value": 247.09318816,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 309.62,
+   "P_kPa": 101.325,
+   "value": 247.3254186,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 310.12,
+   "P_kPa": 101.325,
+   "value": 247.44153382,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 310.62,
+   "P_kPa": 101.325,
+   "value": 248.02210992,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 311.12,
+   "P_kPa": 101.325,
+   "value": 247.9059947,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 311.62,
+   "P_kPa": 101.325,
+   "value": 247.9059947,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 312.12,
+   "P_kPa": 101.325,
+   "value": 247.9059947,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 312.62,
+   "P_kPa": 101.325,
+   "value": 247.9059947,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 313.12,
+   "P_kPa": 101.325,
+   "value": 247.55764904,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 313.62,
+   "P_kPa": 101.325,
+   "value": 247.9059947,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 314.12,
+   "P_kPa": 101.325,
+   "value": 248.25434036,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 314.62,
+   "P_kPa": 101.325,
+   "value": 248.37045558,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 315.12,
+   "P_kPa": 101.325,
+   "value": 248.4865708,
+   "uncertainty": 6.03799144,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 315.62,
+   "P_kPa": 101.325,
+   "value": 248.83491646,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 316.12,
+   "P_kPa": 101.325,
+   "value": 248.95103168,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 316.62,
+   "P_kPa": 101.325,
+   "value": 249.53160778,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 317.12,
+   "P_kPa": 101.325,
+   "value": 249.647723,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 317.62,
+   "P_kPa": 101.325,
+   "value": 249.76383822,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 318.12,
+   "P_kPa": 101.325,
+   "value": 250.46052954,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 318.62,
+   "P_kPa": 101.325,
+   "value": 250.2282991,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 319.12,
+   "P_kPa": 101.325,
+   "value": 249.99606866,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 319.62,
+   "P_kPa": 101.325,
+   "value": 250.34441432,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 320.12,
+   "P_kPa": 101.325,
+   "value": 250.11218388,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 320.62,
+   "P_kPa": 101.325,
+   "value": 250.46052954,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 321.12,
+   "P_kPa": 101.325,
+   "value": 250.34441432,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 321.62,
+   "P_kPa": 101.325,
+   "value": 250.46052954,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 322.12,
+   "P_kPa": 101.325,
+   "value": 250.57664476,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 322.62,
+   "P_kPa": 101.325,
+   "value": 250.46052954,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 323.12,
+   "P_kPa": 101.325,
+   "value": 251.15722086,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 323.62,
+   "P_kPa": 101.325,
+   "value": 251.04110564,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 324.12,
+   "P_kPa": 101.325,
+   "value": 251.27333608,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 324.62,
+   "P_kPa": 101.325,
+   "value": 251.50556652,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 325.12,
+   "P_kPa": 101.325,
+   "value": 251.27333608,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 325.62,
+   "P_kPa": 101.325,
+   "value": 251.3894513,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 326.12,
+   "P_kPa": 101.325,
+   "value": 251.73779696,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 326.62,
+   "P_kPa": 101.325,
+   "value": 252.20225784,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 327.12,
+   "P_kPa": 101.325,
+   "value": 251.85391218,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 327.62,
+   "P_kPa": 101.325,
+   "value": 251.85391218,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 328.12,
+   "P_kPa": 101.325,
+   "value": 251.85391218,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 328.62,
+   "P_kPa": 101.325,
+   "value": 252.08614262,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 329.12,
+   "P_kPa": 101.325,
+   "value": 252.31837306,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 329.62,
+   "P_kPa": 101.325,
+   "value": 251.85391218,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 330.12,
+   "P_kPa": 101.325,
+   "value": 252.5506035,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 330.62,
+   "P_kPa": 101.325,
+   "value": 252.5506035,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 331.12,
+   "P_kPa": 101.325,
+   "value": 252.66671872,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 331.62,
+   "P_kPa": 101.325,
+   "value": 253.24729482,
+   "uncertainty": 6.15410666,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 332.12,
+   "P_kPa": 101.325,
+   "value": 253.59564048,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 332.62,
+   "P_kPa": 101.325,
+   "value": 253.82787092,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 333.12,
+   "P_kPa": 101.325,
+   "value": 254.06010136,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 333.62,
+   "P_kPa": 101.325,
+   "value": 254.2923318,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 334.12,
+   "P_kPa": 101.325,
+   "value": 254.06010136,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 334.62,
+   "P_kPa": 101.325,
+   "value": 254.17621658,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 335.12,
+   "P_kPa": 101.325,
+   "value": 254.40844702,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 335.62,
+   "P_kPa": 101.325,
+   "value": 254.40844702,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 336.12,
+   "P_kPa": 101.325,
+   "value": 254.8729079,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 336.62,
+   "P_kPa": 101.325,
+   "value": 254.64067746,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 337.12,
+   "P_kPa": 101.325,
+   "value": 255.10513834,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 337.62,
+   "P_kPa": 101.325,
+   "value": 255.453484,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 338.12,
+   "P_kPa": 101.325,
+   "value": 255.22125356,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 338.62,
+   "P_kPa": 101.325,
+   "value": 255.22125356,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 339.12,
+   "P_kPa": 101.325,
+   "value": 255.56959922,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 339.62,
+   "P_kPa": 101.325,
+   "value": 255.80182966,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 340.12,
+   "P_kPa": 101.325,
+   "value": 256.0340601,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 340.62,
+   "P_kPa": 101.325,
+   "value": 256.49852098,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 341.12,
+   "P_kPa": 101.325,
+   "value": 256.73075142,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 341.62,
+   "P_kPa": 101.325,
+   "value": 257.07909708,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 342.12,
+   "P_kPa": 101.325,
+   "value": 257.42744274,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 342.62,
+   "P_kPa": 101.325,
+   "value": 257.54355796,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 343.12,
+   "P_kPa": 101.325,
+   "value": 257.65967318,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 343.62,
+   "P_kPa": 101.325,
+   "value": 257.89190362,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 344.12,
+   "P_kPa": 101.325,
+   "value": 257.89190362,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 344.62,
+   "P_kPa": 101.325,
+   "value": 257.31132752,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 345.12,
+   "P_kPa": 101.325,
+   "value": 257.42744274,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 345.62,
+   "P_kPa": 101.325,
+   "value": 257.54355796,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 346.12,
+   "P_kPa": 101.325,
+   "value": 257.89190362,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 346.62,
+   "P_kPa": 101.325,
+   "value": 258.24024928,
+   "uncertainty": 6.27022188,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 347.12,
+   "P_kPa": 101.325,
+   "value": 258.58859494,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 347.62,
+   "P_kPa": 101.325,
+   "value": 258.70471016,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 348.12,
+   "P_kPa": 101.325,
+   "value": 258.58859494,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 348.62,
+   "P_kPa": 101.325,
+   "value": 258.82082538,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 349.12,
+   "P_kPa": 101.325,
+   "value": 258.9369406,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 349.62,
+   "P_kPa": 101.325,
+   "value": 258.82082538,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 350.12,
+   "P_kPa": 101.325,
+   "value": 258.9369406,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 350.62,
+   "P_kPa": 101.325,
+   "value": 259.16917104,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 351.12,
+   "P_kPa": 101.325,
+   "value": 259.16917104,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 351.62,
+   "P_kPa": 101.325,
+   "value": 259.28528626,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 352.12,
+   "P_kPa": 101.325,
+   "value": 260.21420802,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 352.62,
+   "P_kPa": 101.325,
+   "value": 260.0980928,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 353.12,
+   "P_kPa": 101.325,
+   "value": 259.86586236,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 353.62,
+   "P_kPa": 101.325,
+   "value": 260.33032324,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 354.12,
+   "P_kPa": 101.325,
+   "value": 260.44643846,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 354.62,
+   "P_kPa": 101.325,
+   "value": 259.74974714,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 355.12,
+   "P_kPa": 101.325,
+   "value": 260.21420802,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 355.62,
+   "P_kPa": 101.325,
+   "value": 260.44643846,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 356.12,
+   "P_kPa": 101.325,
+   "value": 260.79478412,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 356.62,
+   "P_kPa": 101.325,
+   "value": 260.79478412,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 357.12,
+   "P_kPa": 101.325,
+   "value": 260.56255368,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 357.62,
+   "P_kPa": 101.325,
+   "value": 260.79478412,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 358.12,
+   "P_kPa": 101.325,
+   "value": 260.44643846,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 358.62,
+   "P_kPa": 101.325,
+   "value": 260.56255368,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 359.12,
+   "P_kPa": 101.325,
+   "value": 261.02701456,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 359.62,
+   "P_kPa": 101.325,
+   "value": 260.6786689,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 360.12,
+   "P_kPa": 101.325,
+   "value": 260.79478412,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 360.62,
+   "P_kPa": 101.325,
+   "value": 261.02701456,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 361.12,
+   "P_kPa": 101.325,
+   "value": 261.37536022,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 361.62,
+   "P_kPa": 101.325,
+   "value": 261.60759066,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 362.12,
+   "P_kPa": 101.325,
+   "value": 261.95593632,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 362.62,
+   "P_kPa": 101.325,
+   "value": 262.07205154,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 363.12,
+   "P_kPa": 101.325,
+   "value": 262.07205154,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 363.62,
+   "P_kPa": 101.325,
+   "value": 262.07205154,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 364.12,
+   "P_kPa": 101.325,
+   "value": 262.88485808,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 364.62,
+   "P_kPa": 101.325,
+   "value": 262.76874286,
+   "uncertainty": 6.3863371,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 365.12,
+   "P_kPa": 101.325,
+   "value": 263.11708852,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 365.62,
+   "P_kPa": 101.325,
+   "value": 263.69766462,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 366.12,
+   "P_kPa": 101.325,
+   "value": 264.39435594,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 366.62,
+   "P_kPa": 101.325,
+   "value": 264.39435594,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 367.12,
+   "P_kPa": 101.325,
+   "value": 263.92989506,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 367.62,
+   "P_kPa": 101.325,
+   "value": 263.46543418,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 368.12,
+   "P_kPa": 101.325,
+   "value": 263.11708852,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 368.62,
+   "P_kPa": 101.325,
+   "value": 263.11708852,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 369.12,
+   "P_kPa": 101.325,
+   "value": 263.46543418,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 369.62,
+   "P_kPa": 101.325,
+   "value": 263.46543418,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 370.12,
+   "P_kPa": 101.325,
+   "value": 263.69766462,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 370.62,
+   "P_kPa": 101.325,
+   "value": 263.69766462,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 371.12,
+   "P_kPa": 101.325,
+   "value": 263.92989506,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 371.62,
+   "P_kPa": 101.325,
+   "value": 264.04601028,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 372.12,
+   "P_kPa": 101.325,
+   "value": 264.27824072,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 372.62,
+   "P_kPa": 101.325,
+   "value": 264.04601028,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 373.12,
+   "P_kPa": 101.325,
+   "value": 264.27824072,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 373.62,
+   "P_kPa": 101.325,
+   "value": 264.27824072,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Metastable liquid"
+   ],
+   "T_K": 374.12,
+   "P_kPa": 101.325,
+   "value": 264.51047116,
+   "uncertainty": 6.50245232,
+   "doi": "10.1016/j.jct.2019.03.040",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 1135.71,
+   "uncertainty": 10.0,
+   "doi": "10.1021/acs.jced.9b00041",
+   "set": 1,
+   "binary_with": null
+  }
+ ]
+}

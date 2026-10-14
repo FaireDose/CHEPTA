@@ -1,0 +1,145 @@
+{
+ "component": "solketal",
+ "cas": "100-79-8",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-13",
+ "searched": "ThermoML-API full-text search for \"solketal\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\"; 5 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1016/j.fluid.2015.07.016": {
+   "authors": [
+    "Yakovleva, M.[Marina]",
+    "Vorobyov, E.[Eugeny]",
+    "Pukinsky, I.[Igor]",
+    "Prikhodko, I.[Igor]",
+    "Kuranov, G.[George]",
+    "Smirnova, N.[Natalia]"
+   ],
+   "title": "Liquid-liquid equilibria for ternary mixtures of 2,2-dimethyl-1,3-dioxolane-4-methanol with n-heptane, toluene, ethanol and water",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "405",
+   "year": "2015",
+   "pages": "107-113"
+  },
+  "10.1021/acs.jced.6b00399": {
+   "authors": [
+    "Li, X.[Xiaofeng]",
+    "Liu, X.[Xiaobang]",
+    "Jiang, Y.[Yaotai]",
+    "Deng, D.[Dongshun]"
+   ],
+   "title": "Solubilities and Thermodynamic Properties of Carbon Dioxide in Some Biobased Solvents",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "61",
+   "year": "2016",
+   "pages": "3355-3362"
+  },
+  "10.1021/acs.jced.8b01042": {
+   "authors": [
+    "Duan, Xiuzhi",
+    "Cui, Yanhong",
+    "Zhang, Chao",
+    "Gao, Bao",
+    "Deng, Dongshun"
+   ],
+   "title": "Solubilities and Thermodynamic Properties of NH3 in Glycerin and its Derivatives",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "64",
+   "year": "2019",
+   "pages": "1131-1139"
+  }
+ },
+ "rows": [
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 1069.3,
+   "uncertainty": 1.0,
+   "doi": "10.1016/j.fluid.2015.07.016",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 0.01006,
+   "uncertainty": 0.00015,
+   "doi": "10.1021/acs.jced.6b00399",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 293.15,
+   "P_kPa": 101.3,
+   "value": 1067.8,
+   "uncertainty": 2.4,
+   "doi": "10.1021/acs.jced.6b00399",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": 101.3,
+   "value": 1058.9,
+   "uncertainty": 2.4,
+   "doi": "10.1021/acs.jced.6b00399",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": 101.3,
+   "value": 1049.9,
+   "uncertainty": 2.4,
+   "doi": "10.1021/acs.jced.6b00399",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": 101.3,
+   "value": 1040.8,
+   "uncertainty": 2.4,
+   "doi": "10.1021/acs.jced.6b00399",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 100.0,
+   "value": 0.01006,
+   "uncertainty": 0.00042,
+   "doi": "10.1021/acs.jced.8b01042",
+   "set": 2,
+   "binary_with": null
+  }
+ ]
+}
