@@ -106,7 +106,7 @@ test("k_ij data: 163 pairs for PR and 162 for SRK (ChemSep for the 49 components
 });
 
 test("interface: model PR/SRK, argument orders, density, user k_ij, clear errors", () => {
-  assert.deepEqual(MODELS, ["NRTL", "UNIQUAC", "ideal"]);
+  assert.deepEqual(MODELS, ["NRTL", "UNIQUAC", "MOD-UNIFAC-2", "ideal"]);
   assert.deepEqual(EOS_MODELS, ["PR", "SRK"]);
   const s = system({ components: ["methane", "ethane"], model: "pr" });
   assert.equal(s.model, "PR");

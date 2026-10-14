@@ -71,7 +71,7 @@ export const ALL_MODELS = [...MODELS, ...EOS_MODELS];
 export function modelLabel(state) {
   const m = state.model;
   if (isEosModel(m)) return m === "PR" ? "Peng–Robinson" : "SRK";
-  const liquid = m === "ideal" ? "Ideal solution" : m;
+  const liquid = m === "ideal" ? "Ideal solution" : m === "MOD-UNIFAC-2" ? "Mod. UNIFAC 2.0 (predicted)" : m;
   return state.vapour && state.vapour !== "ideal" ? `${liquid} with a ${state.vapour} vapour` : liquid;
 }
 

@@ -10,7 +10,7 @@
 import { h, s as svgEl } from "./dom.js";
 import { icon } from "./icons.js";
 import { FUTURE_MODELS } from "./future-models.js";
-import { listComponents } from "../thermo/system.js";
+import { listComponents, modelName } from "../thermo/system.js";
 import { methodAdvice } from "../thermo/method-advice.js";
 import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
@@ -313,8 +313,10 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
     const nowEos = ["PR", "SRK"].includes(thermo.model);
     const dropped = nowEos ? [] : fs.components.filter(c => !byId().get(c)?.activity);
     const noRq = thermo.model === "UNIQUAC" ? fs.components.filter(c => byId().get(c)?.activity && !byId().get(c)?.uniquac) : [];
+    const noGroups = thermo.model === "MOD-UNIFAC-2" ? fs.components.filter(c => byId().get(c)?.activity && !byId().get(c)?.modUnifac) : [];
     f.note = dropped.length ? `${dropped.map(nameOf).join(", ")} need${dropped.length === 1 ? "s" : ""} an equation of state (no activity-model data); keep Peng–Robinson or SRK, or remove ${dropped.length === 1 ? "it" : "them"}.`
-      : noRq.length ? `${noRq.map(nameOf).join(", ")} ha${noRq.length === 1 ? "s" : "ve"} no UNIQUAC r and q (no open data yet), so UNIQUAC cannot use ${noRq.length === 1 ? "it" : "them"}: choose NRTL.` : "";
+      : noRq.length ? `${noRq.map(nameOf).join(", ")} ha${noRq.length === 1 ? "s" : "ve"} no UNIQUAC r and q (no open data yet), so UNIQUAC cannot use ${noRq.length === 1 ? "it" : "them"}: choose NRTL.`
+      : noGroups.length ? `${noGroups.map(nameOf).join(", ")} ha${noGroups.length === 1 ? "s" : "ve"} no Mod. UNIFAC 2.0 groups, so Mod. UNIFAC 2.0 cannot use ${noGroups.length === 1 ? "it" : "them"}: choose NRTL.` : "";
     set({ flowsheet: { ...fs, thermo } });
   };
   if (f.setup === "method") {
@@ -330,7 +332,7 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
     h("p", { class: "fa-in-hint" }, "Property method: ",
       h("button", { type: "button", class: "fa-link", "data-fk": "fs-go-method", title: "Change it on the Method page",
         on: { click: () => { f.setup = "method"; set({}); } } },
-        fs.thermo.model + (eos || (fs.thermo.vapour ?? "ideal") === "ideal" ? "" : ` + ${fs.thermo.vapour}`)),
+        modelName(fs.thermo.model) + (eos || (fs.thermo.vapour ?? "ideal") === "ideal" ? "" : ` + ${fs.thermo.vapour}`)),
       " (Method in the toolbar).")));
   const units = fs.blocks.filter(b => b.type !== "product");
   secs.push(inputsSection("Flowsheet status",
@@ -352,7 +354,7 @@ function methodSection({ fs, eos, setThermo, inputsSection }) {
     h("p", { class: "fa-in-hint" }, "One property method for every block and stream."),
     ...advice.map(a => h("div", { class: "fug-warn", role: "note", "data-fk": "fs-method-advice" }, a)),
     h("div", { class: "fa-fs-model" }, h("span", { class: "fa-in-hint" }, "Activity model"),
-      segRow("Activity model", [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["ideal", "Ideal"]], eos ? null : fs.thermo.model, m => setThermo({ model: m }), "fs-model")),
+      segRow("Activity model", [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0"], ["ideal", "Ideal"]], eos ? null : fs.thermo.model, m => setThermo({ model: m }), "fs-model")),
     eos ? null : h("div", { class: "fa-fs-model" }, h("span", { class: "fa-in-hint" }, "with vapour"),
       segRow("Vapour model", [["ideal", "Ideal gas"], ["PR", "PR"], ["SRK", "SRK"]], fs.thermo.vapour ?? "ideal", v => setThermo({ vapour: v }), "fs-vap")),
     h("div", { class: "fa-fs-model" }, h("span", { class: "fa-in-hint" }, "or an equation of state"),

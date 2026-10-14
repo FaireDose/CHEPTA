@@ -22,7 +22,7 @@ import { injectAppStyles } from "./app-styles.js";
 import { h } from "./dom.js";
 import { icon } from "./icons.js";
 import { componentPicker } from "./component-picker.js";
-import { listComponents } from "../thermo/system.js";
+import { listComponents, modelName } from "../thermo/system.js";
 import { HENRY_GASES } from "../thermo/henry.js";
 import { system } from "../system.js";
 import {
@@ -157,6 +157,10 @@ export function app(target, cfg = {}) {
   const excelBtn = h("button", { type: "button", class: "fa-mini fa-excel", "data-fk": "diagram-xlsx", hidden: true,
     title: "Download the numbers of this diagram as an Excel workbook: every point drawn, in the units shown",
     on: { click: () => exportDiagram() } }, icon("table", 15), "Excel");
+  // the same download at the foot of the Results panel, where the flowsheet has its Excel button
+  const excelFoot = h("button", { type: "button", class: "fa-mini fa-excel", "data-fk": "diagram-xlsx-foot", hidden: true,
+    title: "Download the numbers of this diagram as an Excel workbook: every point drawn, in the units shown",
+    on: { click: () => exportDiagram() } }, icon("table", 15), "Export to Excel");
   const notes = h("div", { class: "fa-notes" });
   const plot = h("div", { class: "fug-plot fa-plot" });
   const below = h("div", { class: "fa-below" });
@@ -165,7 +169,8 @@ export function app(target, cfg = {}) {
   const inspectorExtra = h("div", { class: "fa-inspector-extra" });
   const provenance = h("div", { class: "fa-provenance" });
   const right = h("aside", { class: "fa-right", "aria-label": "Results" },
-    h("div", { class: "fa-panel-head" }, h("h2", {}, "Results"), provenance), side, inspectorExtra);
+    h("div", { class: "fa-panel-head" }, h("h2", {}, "Results"), provenance), side, inspectorExtra,
+    h("div", { class: "fa-results-foot" }, excelFoot));
   const statusBar = h("div", { class: "fa-status", role: "status" });
   const body = h("div", { class: "fa-body" }, left, canvas, right);
   const drawer = h("section", { class: "fa-drawer", role: "dialog", id: `fa-drawer-${uid}`, tabindex: "-1",
@@ -329,12 +334,9 @@ export function app(target, cfg = {}) {
    */
   function modelGroup() {
     const eos = isEosModel(state.model);
-    const hint = eos
-      ? `${state.model === "PR" ? "Peng–Robinson" : "SRK"} for liquid and vapour; k_ij from the databank`
-      : `${state.model === "ideal" ? "Liquid γ = 1" : `Liquid γ from ${state.model}`}; ${state.vapour === "ideal" ? "ideal-gas vapour" : `${state.vapour} vapour with φsat and Poynting`}`;
     return group("Model", h("div", { class: "fa-stack fa-models" },
       h("div", { class: "fa-model-family" + (eos ? "" : " is-on") },
-        modelRow("Activity", "Activity model (liquid)", [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["ideal", "Ideal"]], eos ? null : state.model, m => set({ model: m })),
+        modelRow("Activity", "Activity model (liquid)", [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0"], ["ideal", "Ideal"]], eos ? null : state.model, m => set({ model: m })),
         h("div", { class: "fa-model-row fa-model-sub" + (eos ? " is-off" : "") },
           h("span", { class: "fa-model-cap", "aria-hidden": "true" }, "vapour"),
           seg("Vapour model of the activity model", [["ideal", "Ideal gas"], ["PR", "PR"], ["SRK", "SRK"]], state.vapour, m => set({ vapour: m }),
@@ -342,8 +344,7 @@ export function app(target, cfg = {}) {
       h("div", { class: "fa-model-family" + (eos ? " is-on" : "") },
         modelRow("EOS", "Equation of state (both phases)", [["PR", "Peng–Robinson"], ["SRK", "SRK"]], eos ? state.model : null, m => set({ model: m }))),
       h("div", { class: "fa-model-row fa-model-later", role: "note", "aria-label": "Models not available yet" },
-        h("span", { class: "fa-model-cap", "aria-hidden": "true" }, "later"), ...lockedChips([...FUTURE_MODELS.activity, ...FUTURE_MODELS.eos])),
-      h("div", { class: "fa-hint" }, hint)));
+        h("span", { class: "fa-model-cap", "aria-hidden": "true" }, "later"), ...lockedChips([...FUTURE_MODELS.activity, ...FUTURE_MODELS.eos]))));
   }
   function ribbonGroups() {
     const u = state.units, v = state.view;
@@ -384,7 +385,7 @@ export function app(target, cfg = {}) {
         // solids: a pure solid in equilibrium with the liquid; γ from an activity model (or 1: the ideal solubility)
         return [views,
           group("Liquid model", h("div", { class: "fa-stack" },
-            seg("Liquid model", [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["ideal", "Ideal"]], isEosModel(state.model) ? null : state.model, m => set({ model: m })),
+            seg("Liquid model", [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0"], ["ideal", "Ideal"]], isEosModel(state.model) ? null : state.model, m => set({ model: m })),
             h("div", { class: "fa-hint" }, "ln(x γ) = −(ΔH_fus / R T)(1 − T / T_m); pure solid, ΔCp = 0"))),
           v === "solid"
             ? group("Solubility as", seg("Solubility unit", SOLID_UNITS.map(su => [su.id, su.label]), state.solidUnit, su => set({ solidUnit: su })))
@@ -434,7 +435,9 @@ export function app(target, cfg = {}) {
       const other = usedElsewhere.get(c.id);
       // no UNIQUAC r and q: still offered (NRTL works); the check says what to do if UNIQUAC is chosen
       const noRq = !bad && spec.liquid && state.model === "UNIQUAC" && !c.uniquac;
-      return { disabled: bad || noMelt, note: bad ? "gas: equation of state only" : noMelt ? "no melting data" : noRq ? "NRTL only (no UNIQUAC r and q)" : other != null ? `also component ${other + 1}` : null };
+      const noGroups = !bad && spec.liquid && state.model === "MOD-UNIFAC-2" && !c.modUnifac;
+      return { disabled: bad || noMelt, note: bad ? "gas: equation of state only" : noMelt ? "no melting data" : noRq ? "NRTL only (no UNIQUAC r and q)"
+        : noGroups ? "no Mod. UNIFAC 2.0 groups" : other != null ? `also component ${other + 1}` : null };
     };
   }
 
@@ -653,7 +656,7 @@ export function app(target, cfg = {}) {
   function pairRows(ids) {
     const model = state.model, eosView = isEosModel(model);
     if (ids.length < 2) return null;
-    const head = h("h3", {}, eosView ? `Pairs, ${model} k_ij` : `Parameter sets, ${model}`);
+    const head = h("h3", {}, eosView ? `Pairs, ${model} k_ij` : `Parameter sets, ${modelName(model)}`);
     if (model === "ideal") return h("section", { class: "fa-in-sec fa-pairs" }, head, h("p", { class: "fa-in-hint" }, "Ideal solution: no pair parameters."));
     let info;
     try { info = system({ components: ids, model, allowMissingPairs: true, ...setsFor(state, model) }).info; } catch (e) {
@@ -1067,7 +1070,7 @@ export function app(target, cfg = {}) {
       const v = state.view, check = checkInputs(v, state.inputs[v], state.model);
       let info = null, error = null;
       notes.replaceChildren(); below.replaceChildren(); inspectorExtra.replaceChildren(); provenance.replaceChildren(); side.hidden = false;
-      excelBtn.hidden = true;
+      excelBtn.hidden = excelFoot.hidden = true;
       delete plot.dataset.view;
       if (!check.ok) {
         plot.replaceChildren(needInputs(v, check));
@@ -1089,7 +1092,7 @@ export function app(target, cfg = {}) {
       canvasRendered = true;
       box.classList.remove("fa-busy");
       ui.status = { busy: false, ms: check.ok ? performance.now() - t0 : null, error: error ?? info?.error ?? null, info, waiting: !check.ok };
-      excelBtn.hidden = !(check.ok && !error && typeof info?.export === "function");
+      excelBtn.hidden = excelFoot.hidden = !(check.ok && !error && typeof info?.export === "function");
       renderStatus();
     };
     if (now) run(); else setTimeout(run, 16);
@@ -1105,7 +1108,7 @@ export function app(target, cfg = {}) {
         state.panels.left ? null : h("button", { type: "button", class: "fa-mini", "data-fk": "show-inputs", on: { click: () => set({ panels: { left: true } }, { canvas: false }) } }, icon("panelL", 15), "Show the Inputs panel"));
     }
     return h("div", { class: "fa-need", role: "status" },
-      h("h3", {}, `The ${lower(VIEWS[v].label)} needs: ${needsOf(v, state.model).toLowerCase()}${isEosModel(state.model) || !VIEWS[v].diagram ? "" : ` with ${state.model === "ideal" ? "an ideal solution" : state.model}`}`),
+      h("h3", {}, `The ${lower(VIEWS[v].label)} needs: ${needsOf(v, state.model).toLowerCase()}${isEosModel(state.model) || !VIEWS[v].diagram ? "" : ` with ${state.model === "ideal" ? "an ideal solution" : modelName(state.model)}`}`),
       h("ul", {}, ...check.problems.map(p => h("li", {}, p.message))),
       h("p", {}, `Choose them in the Inputs panel${ui.size === "narrow" ? " above" : ""}. Nothing is calculated until the inputs fit; your choices are kept as they are.`),
       state.panels.left ? null : h("button", { type: "button", class: "fa-mini", "data-fk": "show-inputs", on: { click: () => set({ panels: { left: true } }, { canvas: false }) } }, icon("panelL", 15), "Show the Inputs panel"));

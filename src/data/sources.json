@@ -1061,6 +1061,17 @@
         "validation/data/vle/2-propanol_methanol_10-1021-je201349k_101.0kPa.json"
       ]
     },
+    "hayer2025-mod-unifac-2": {
+      "title": "Modified UNIFAC 2.0 - A Group-Contribution Method Completed with Machine Learning",
+      "authors": "N. Hayer, H. Hasse, F. Jirasek",
+      "year": 2025,
+      "published": "Ind. Eng. Chem. Res. 64 (2025) 10304-10313",
+      "kind": "open-access article",
+      "doi": "10.1021/acs.iecr.5c00077",
+      "url": "https://arxiv.org/abs/2412.12962",
+      "access": "Open access: arXiv:2412.12962 and its parameter files (ancillary files), CC BY 4.0; the authors confirmed the licence to the maintainer by e-mail (2026-10-13)",
+      "license": "CC BY 4.0"
+    },
     "hirawan2014-1-butanol-nmp": {
       "title": "Vapor Liquid Equilibrium Data for 1-Methyl-2-Pyrrolidone + (1-Butanol or 1-Hexene or Water) Binary Mixtures",
       "authors": "R. Hirawan, S. Sinha, S. Iwarere, D. Raal, P. Naidoo, D. Ramjugernath",

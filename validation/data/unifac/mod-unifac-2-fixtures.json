@@ -1,0 +1,378 @@
+{
+ "_about": "ln gamma of Modified UNIFAC 2.0 from the thermo library (MIT; thermo.unifac.UNIFAC, version 1, the modified UNIFAC (Dortmund) equations) with the parameter tables of src/data/mod-unifac-2.json and the group assignments of src/data/components.json; written by validation/python/mod_unifac_2.py, read by test/mod-unifac.test.js.",
+ "thermo_version": "0.6.1",
+ "values": [
+  {
+   "components": [
+    "ethanol",
+    "water"
+   ],
+   "T_K": 298.15,
+   "x": [
+    0.1,
+    0.9
+   ],
+   "lnGamma": [
+    1.0079889541354485,
+    0.02543425241114696
+   ]
+  },
+  {
+   "components": [
+    "ethanol",
+    "water"
+   ],
+   "T_K": 298.15,
+   "x": [
+    0.5,
+    0.5
+   ],
+   "lnGamma": [
+    0.1766767338994832,
+    0.33208666973219386
+   ]
+  },
+  {
+   "components": [
+    "ethanol",
+    "water"
+   ],
+   "T_K": 298.15,
+   "x": [
+    0.9,
+    0.1
+   ],
+   "lnGamma": [
+    0.004832382790754592,
+    0.698126661985088
+   ]
+  },
+  {
+   "components": [
+    "ethanol",
+    "water"
+   ],
+   "T_K": 351.0,
+   "x": [
+    0.1,
+    0.9
+   ],
+   "lnGamma": [
+    1.0486063223593995,
+    0.027096514954082718
+   ]
+  },
+  {
+   "components": [
+    "ethanol",
+    "water"
+   ],
+   "T_K": 351.0,
+   "x": [
+    0.5,
+    0.5
+   ],
+   "lnGamma": [
+    0.16977313611377792,
+    0.3486011900845041
+   ]
+  },
+  {
+   "components": [
+    "ethanol",
+    "water"
+   ],
+   "T_K": 351.0,
+   "x": [
+    0.9,
+    0.1
+   ],
+   "lnGamma": [
+    0.004063862479276925,
+    0.6929940657954126
+   ]
+  },
+  {
+   "components": [
+    "acetone",
+    "chloroform"
+   ],
+   "T_K": 298.15,
+   "x": [
+    0.3,
+    0.7
+   ],
+   "lnGamma": [
+    -0.48358171409427436,
+    -0.08791313397322825
+   ]
+  },
+  {
+   "components": [
+    "acetone",
+    "chloroform"
+   ],
+   "T_K": 298.15,
+   "x": [
+    0.7,
+    0.3
+   ],
+   "lnGamma": [
+    -0.09250957769726319,
+    -0.48069581324461563
+   ]
+  },
+  {
+   "components": [
+    "acetone",
+    "chloroform"
+   ],
+   "T_K": 330.0,
+   "x": [
+    0.3,
+    0.7
+   ],
+   "lnGamma": [
+    -0.3546189872252323,
+    -0.05977374295916262
+   ]
+  },
+  {
+   "components": [
+    "acetone",
+    "chloroform"
+   ],
+   "T_K": 330.0,
+   "x": [
+    0.7,
+    0.3
+   ],
+   "lnGamma": [
+    -0.07114806668163079,
+    -0.34761655416870946
+   ]
+  },
+  {
+   "components": [
+    "methanol",
+    "benzene"
+   ],
+   "T_K": 313.15,
+   "x": [
+    0.2,
+    0.8
+   ],
+   "lnGamma": [
+    1.2299641297727042,
+    0.13886992985198748
+   ]
+  },
+  {
+   "components": [
+    "methanol",
+    "benzene"
+   ],
+   "T_K": 313.15,
+   "x": [
+    0.8,
+    0.2
+   ],
+   "lnGamma": [
+    0.0776076518066498,
+    1.212866899442288
+   ]
+  },
+  {
+   "components": [
+    "tetrahydrofuran",
+    "water"
+   ],
+   "T_K": 303.15,
+   "x": [
+    0.2,
+    0.8
+   ],
+   "lnGamma": [
+    1.71764163145451,
+    0.1878864842949502
+   ]
+  },
+  {
+   "components": [
+    "tetrahydrofuran",
+    "water"
+   ],
+   "T_K": 303.15,
+   "x": [
+    0.8,
+    0.2
+   ],
+   "lnGamma": [
+    0.06497714226373402,
+    1.5890025772968102
+   ]
+  },
+  {
+   "components": [
+    "tetrahydrofuran",
+    "water"
+   ],
+   "T_K": 343.15,
+   "x": [
+    0.2,
+    0.8
+   ],
+   "lnGamma": [
+    1.6902187181443022,
+    0.18582728946050225
+   ]
+  },
+  {
+   "components": [
+    "tetrahydrofuran",
+    "water"
+   ],
+   "T_K": 343.15,
+   "x": [
+    0.8,
+    0.2
+   ],
+   "lnGamma": [
+    0.06284312546665789,
+    1.5599726971469794
+   ]
+  },
+  {
+   "components": [
+    "nmp",
+    "water"
+   ],
+   "T_K": 323.15,
+   "x": [
+    0.5,
+    0.5
+   ],
+   "lnGamma": [
+    -0.10965187836663336,
+    -0.047412247882904074
+   ]
+  },
+  {
+   "components": [
+    "n-hexane",
+    "acetonitrile"
+   ],
+   "T_K": 318.15,
+   "x": [
+    0.5,
+    0.5
+   ],
+   "lnGamma": [
+    0.6723199531626738,
+    0.7119594169707718
+   ]
+  },
+  {
+   "components": [
+    "triolein",
+    "methanol"
+   ],
+   "T_K": 333.15,
+   "x": [
+    0.1,
+    0.9
+   ],
+   "lnGamma": [
+    1.1489448069543355,
+    0.2811334360067765
+   ]
+  },
+  {
+   "components": [
+    "glycerol",
+    "water"
+   ],
+   "T_K": 373.15,
+   "x": [
+    0.3,
+    0.7
+   ],
+   "lnGamma": [
+    0.3518074183471757,
+    0.19956139703067957
+   ]
+  },
+  {
+   "components": [
+    "acetone",
+    "methanol",
+    "chloroform"
+   ],
+   "T_K": 330.0,
+   "x": [
+    0.3,
+    0.3,
+    0.4
+   ],
+   "lnGamma": [
+    -0.28321997625137924,
+    0.44934780159946647,
+    0.07397270556055625
+   ]
+  },
+  {
+   "components": [
+    "acetone",
+    "methanol",
+    "chloroform"
+   ],
+   "T_K": 330.0,
+   "x": [
+    0.1,
+    0.6,
+    0.3
+   ],
+   "lnGamma": [
+    -0.17911681513170957,
+    0.13192449272473275,
+    0.4241194917798041
+   ]
+  },
+  {
+   "components": [
+    "ethanol",
+    "water",
+    "ethyl-acetate"
+   ],
+   "T_K": 343.15,
+   "x": [
+    0.2,
+    0.3,
+    0.5
+   ],
+   "lnGamma": [
+    0.1256214997844091,
+    1.096545339341946,
+    0.32883424525889365
+   ]
+  },
+  {
+   "components": [
+    "dioxane",
+    "water",
+    "toluene"
+   ],
+   "T_K": 353.15,
+   "x": [
+    0.3,
+    0.4,
+    0.3
+   ],
+   "lnGamma": [
+    -0.2683895222039746,
+    1.3531491327158798,
+    1.048890031922172
+   ]
+  }
+ ]
+}

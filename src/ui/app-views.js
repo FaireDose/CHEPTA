@@ -17,13 +17,13 @@ import { renderTernary } from "./ternary.js";
 import { mountProperties } from "./properties.js";
 import { drawPlot } from "./plot.js";
 import { system } from "../system.js";
-import { listComponents } from "../thermo/system.js";
+import { listComponents, modelName } from "../thermo/system.js";
 import { pure, PROPERTIES, PROPERTY_NAMES } from "../thermo/pure.js";
 import { SOLID_UNITS, solidIn } from "./solubility-units.js";
 import { steam, steamSat } from "../thermo/iapws/steam.js";
 import { henry, henryInfo, gasSolubility } from "../thermo/henry.js";
 import { ternaryAzeotropes, binaryAzeotropes } from "../equilibrium/azeotrope.js";
-import { library, sourceEntry, componentSources } from "../thermo/library.js";
+import { library, sourceEntry } from "../thermo/library.js";
 import {
   knownIssuesFor, pxyTemperature, tierCounts, tierSummary, normalizeComposition, interpolate, fmtP, fmtTemp, parseP, parseT,
   setsFor, filterSources, sourceUsedFor, modelLabel,
@@ -100,34 +100,7 @@ function sourceLinks(ids, { access = true } = {}) {
   }));
 }
 
-/** The pair parameter sets in use, each with its set name, tier, fit text and library sources. */
-function pairSources(ctx, pairs, { kij = false } = {}) {
-  return h("ul", { class: "fa-sources" }, ...pairs.map(p => h("li", {},
-    h("div", { class: "fa-src-head" }, h("span", {}, p.pair.join(" + "), kij && p.tier !== "none" ? h("small", { class: "fa-kij" }, ` k_ij = ${fmtShort(p.kij, 4)}`) : null), ctx.badge(p.tier)),
-    p.set ? h("div", { class: "fa-src-set" }, `Set “${p.set}”${p.default ? ", default" : ""}${p.alternatives?.length ? ` · ${p.alternatives.length} other${p.alternatives.length > 1 ? "s" : ""} in the Inputs panel` : ""}`) : null,
-    p.note ? h("div", { class: "fa-src-note" }, p.note) : null,
-    sourceLinks(p.source_ids ?? []),
-    p.source ? h("div", { class: "fa-src-text" + (p.source.length > 150 ? " is-clamped" : ""), title: p.source.length > 150 ? "Click to show all" : undefined,
-      on: { click: ev => ev.currentTarget.classList.remove("is-clamped") } }, p.source) : null)));
-}
 
-/** Library sources of the pure-component records of `ids` (only `keys`), grouped by source. */
-function componentSourceList(ids, keys) {
-  const bySource = new Map();
-  for (const id of ids) for (const r of componentSources(id)) {
-    if (keys && !keys.includes(r.key)) continue;
-    for (const sid of r.source_ids) {
-      if (!bySource.has(sid)) bySource.set(sid, new Map());
-      const m = bySource.get(sid);
-      if (!m.has(r.label)) m.set(r.label, []);
-      m.get(r.label).push(nameOf(id));
-    }
-  }
-  if (!bySource.size) return null;
-  return h("ul", { class: "fa-sources" }, ...[...bySource].map(([sid, m]) => h("li", {},
-    sourceLinks([sid], { access: false }),
-    h("div", { class: "fa-src-text" }, [...m].map(([label, names]) => `${label[0].toUpperCase()}${label.slice(1)}: ${names.join(", ")}`).join("; ")))));
-}
 
 /** Known deviations apply to the default sets only (they were found with them). */
 const onDefaults = sys => sys.info.pairs.every(p => p.default !== false);
@@ -167,7 +140,7 @@ const listNames = names => names.join(", ").replace(/, ([^,]*)$/, " and $1");
 /** The About rows of an export: components, model, conditions, units, parameters and their sources. */
 function aboutRows(state, sys, conditions = []) {
   const u = state.units;
-  const model = sys.kind === "eos" ? sys.info.equation : `${sys.model === "ideal" ? "Ideal solution" : sys.model}; vapour: ${sys.info.vapour}`;
+  const model = sys.kind === "eos" ? sys.info.equation : `${sys.model === "ideal" ? "Ideal solution" : modelName(sys.model)}; vapour: ${sys.info.vapour}`;
   return [
     ["Components", sys.names.join(", ")], ["Model", model], ...conditions,
     ["Units", `T in ${tU(u)}, P in ${u.P}; compositions in mole fractions${state.basis === "mass" ? " and wt %" : ""}`],
@@ -207,11 +180,7 @@ function vleView(view, ctx) {
     return { data: tierSummary(tierCounts(sys.info.pairs), "k_ij pair"), export: exp };
   }
   const counts = tierCounts(sys.info.pairs, sys.info.missingPairs);
-  extra.append(section("Parameter sources", sys.info.pairs.length
-    ? pairSources(ctx, sys.info.pairs)
-    : h("div", { class: "fa-empty" }, "Ideal solution: no binary parameters (activity coefficients equal 1)."),
-  h("div", { class: "fug-foot" }, `Vapour: ${sys.info.vapour}. Predictions, not measurements.`)),
-  section("Pure-component data", componentSourceList(sys.ids, ["vapourPressure", "uniquac", "association"]) ?? h("div", { class: "fa-empty" }, "No sources recorded.")));
+  // the sources themselves: the "Sources used here" button of the Results panel
   const alt = sys.info.pairs.filter(p => p.default === false).length;
   return { data: sys.model === "ideal" ? "Ideal solution, no pair parameters" : tierSummary(counts) + (alt ? `; ${alt} on a non-default set` : ""), export: exp };
 }
@@ -346,10 +315,6 @@ function azeotropeView(ctx) {
     extra.append(...eosSources(ctx, modelSystem(state, ids)));
     return { data: tierSummary(tierCounts([...sources.values()]), "k_ij pair"), error: errors.length ? errors[0] : null, export: exp };
   }
-  extra.append(section("Parameter sources", sources.size
-    ? pairSources(ctx, [...sources.values()])
-    : h("div", { class: "fa-empty" }, state.model === "ideal" ? "Ideal solution: no binary parameters." : "No pair has parameters.")),
-  section("Pure-component data", componentSourceList(ids, ["vapourPressure", "uniquac", "association"]) ?? h("div", { class: "fa-empty" }, "No sources recorded.")));
   return { data: tierSummary(tierCounts([...sources.values()])) || (state.model === "ideal" ? "Ideal solution" : ""), error: errors.length ? errors[0] : null, export: exp };
 }
 
@@ -362,26 +327,17 @@ function modelSystem(state, ids) {
 }
 
 /** Parameter and pure-component sources of an activity-model system. */
-function activitySources(ctx, sys) {
-  return [section("Parameter sources", sys.info.pairs.length
-    ? pairSources(ctx, sys.info.pairs)
-    : h("div", { class: "fa-empty" }, "Ideal solution: no binary parameters (activity coefficients equal 1)."),
-  h("div", { class: "fug-foot" }, `Vapour: ${sys.info.vapour}. Predictions, not measurements.`)),
-  section("Pure-component data", componentSourceList(sys.ids, ["vapourPressure", "uniquac", "association"]) ?? h("div", { class: "fa-empty" }, "No sources recorded."))];
-}
-const sourcesOf = (ctx, sys) => (sys.kind === "eos" ? eosSources(ctx, sys) : activitySources(ctx, sys));
+// the sources of a calculation: the "Sources used here" button of the Results panel; here only the notes of a model
+const sourcesOf = (ctx, sys) => (sys.kind === "eos" ? eosSources(ctx, sys) : []);
 const pairData = sys => (sys.kind === "eos" ? tierSummary(tierCounts(sys.info.pairs), "k_ij pair")
   : sys.model === "ideal" ? "Ideal solution, no pair parameters" : tierSummary(tierCounts(sys.info.pairs, sys.info.missingPairs)));
 
+/** What the Results panel says about an equation-of-state system: its notes and the pairs without k_ij (the sources
+ *  themselves: the "Sources used here" button). */
 function eosSources(ctx, sys) {
-  const pairs = sys.info.pairs.map(p => (p.tier === "none" ? { ...p, source: "No k_ij in the databank; 0 is used.", kij: 0 }
-    : { ...p, source: `${p.source}${p.T_range_K ? `; data range ${p.T_range_K[0]}–${p.T_range_K[1]} K` : ""}` }));
-  return [section("Model and sources",
-    h("div", { class: "fa-src-text" }, `${sys.info.equation}, both phases.`),
-    pairs.length ? pairSources(ctx, pairs, { kij: true }) : null,
-    ...(sys.info.notes || []).map(n => h("div", { class: "fug-foot" }, n))),
-  section("Critical constants and acentric factors", componentSourceList(sys.ids, ["constants_source", "omega_source"])
-    ?? h("div", { class: "fa-empty" }, "From the component records (no source recorded for the critical constants of these liquids yet)."))];
+  const noKij = sys.info.pairs.filter(p => p.tier === "none").map(p => p.pair.join(" + "));
+  const notes = [...(noKij.length ? [`No k_ij in the databank for ${noKij.join("; ")}: 0 is used.`] : []), ...(sys.info.notes || [])];
+  return notes.length ? [section("Model notes", ...notes.map(n => h("div", { class: "fug-foot" }, n)))] : [];
 }
 
 /** Bubble and dew points of the feed at a given T or P, with the model in use (any model). */
@@ -608,7 +564,7 @@ function flashView(ctx) {
   const feedFlowText = `${fmtShort(state.flash.flow, 6)} ${fu}${fu === "kmol/h" ? "" : ` (${fmtShort(flow, 6)} kmol/h)`}`;
   const spec = FLASH_SPECS.find(f => f.id === state.flash.spec);
   const ml = isEosModel(state.model) ? (state.model === "PR" ? "Peng–Robinson" : "SRK")
-    : `${state.model === "ideal" ? "Ideal solution" : state.model}${state.vapour !== "ideal" ? ` with a ${state.vapour} vapour` : ""}`;
+    : `${state.model === "ideal" ? "Ideal solution" : modelName(state.model)}${state.vapour !== "ideal" ? ` with a ${state.vapour} vapour` : ""}`;
 
   // the phase split as one bar
   const bar = h("div", { class: "fa-split", role: "img", "aria-label": `Phase split: ${r.phases.map(p => `${phaseName(p)} ${fmtNum(p.fraction, 4)}`).join(", ")}` },
@@ -732,10 +688,6 @@ function henryView(ctx) {
   side.replaceChildren(result, read);
   move(Math.min(x1, Math.max(x0, tToDisplay(Tset, u))));
 
-  extra.append(
-    section("Sources", sourceList(ctx, gases.map(g => ({ label: `${nameOf(g.id)} in ${solventName.toLowerCase()}`, tier: g.info.tier,
-      text: `${g.info.source}; valid ${fmtTemp(g.info.Tmin_K, u, 1)} to ${fmtTemp(g.info.Tmax_K, u, 1)}` }))),
-    sourceLinks(gases.flatMap(g => g.info.source_ids ?? []))));
   return { data: tierSummary(tierCounts(gases.map(g => ({ tier: g.info.tier }))), "gas", "gases"), export: () => ({
     title: `Solubility of ${listNames(drawnGases.map(g => g.name))} in ${solventName.toLowerCase()}`, file: `solubility ${[gas, ...others].join(" ")} ${solvent}`,
     about: [["Gas partial pressure", fmtP(p, u)], ["Model", "Henry's law, x = p / H (dilute solutions)"],
@@ -756,19 +708,12 @@ function sleSystem(state, ids) {
   try { return { sys: system({ components: ids, model: state.model, ...setsFor(state, state.model) }), note: null }; } catch (e) {
     if (e.code !== "MISSING_DATA" || state.model === "ideal") throw e;
     return { sys: system({ components: ids, model: "ideal" }),
-      note: `No ${state.model} parameters for ${ids.map(nameOf).join(" + ")} (none fitted to solid-liquid or vapour-liquid data yet): this shows the ideal solubility (γ = 1), which can be far off for chemically different components.` };
+      note: `No ${modelName(state.model)} parameters for ${ids.map(nameOf).join(" + ")} (none fitted to solid-liquid or vapour-liquid data yet): this shows the ideal solubility (γ = 1), which can be far off for chemically different components.` };
   }
 }
 
 const meltText = (f, u) => `${fmtTemp(f.Tm_K, u)}, ΔH_fus ${fmtShort(f.Hfus_J_mol / 1000, 4)} kJ/mol`;
 
-function fusionSources(ctx, ids) {
-  return sourceList(ctx, ids.map(id => {
-    const f = pure(id).fusion;
-    return { label: `${nameOf(id)}: melting temperature and enthalpy of fusion`, tier: f.tier ?? "databank",
-      text: `${formatSource(f.source)}${f.source.selection ? `. ${f.source.selection}` : ""}` };
-  }));
-}
 
 function solidView(ctx) {
   const { state, plot, side, notes, extra, compact } = ctx;
@@ -805,9 +750,9 @@ function solidView(ctx) {
       splits ||= r.splits;
     } catch (e) { addReason(reasons, e.message); }
   }
-  const series = [{ name: sys.model === "ideal" ? "ideal" : sys.model, color: SERIES(0), segments: [{ points: pts }] }];
+  const series = [{ name: sys.model === "ideal" ? "ideal" : modelName(sys.model), color: SERIES(0), segments: [{ points: pts }] }];
   if (sys.model !== "ideal") series.push({ name: "ideal", color: "var(--fug-muted)", dash: "5 4", segments: [{ points: ideal }] });
-  if (splits) notes.append(h("div", { class: "fug-warn", role: "note" }, `The ${sys.model} model splits the liquid into two phases at some temperatures: the solvent-rich solubility is drawn there; a liquid-liquid check is needed.`));
+  if (splits) notes.append(h("div", { class: "fug-warn", role: "note" }, `The ${modelName(sys.model)} model splits the liquid into two phases at some temperatures: the solvent-rich solubility is drawn there; a liquid-liquid check is needed.`));
   if (noRho) notes.append(h("div", { class: "fug-warn", role: "note" }, `No liquid density of ${nameOf(solvent).toLowerCase()} at some of these temperatures (outside its correlation): g/L is not drawn there. g/100 g needs no density.`));
   const gap = gapNote(reasons, "solubility");
   if (gap) notes.append(gap);
@@ -856,9 +801,7 @@ function solidView(ctx) {
     move(Math.min(x1, Math.max(x0, tToDisplay(T, u))));
   }
   side.replaceChildren(result, read);
-  extra.append(section("Sources", fusionSources(ctx, [solid]), sys.model !== "ideal" ? pairSources(ctx, sys.info.pairs) : null,
-    unit.id === "gL" ? componentSourceList([solvent], ["liquidDensity"]) : null));
-  return { data: `${sys.model === "ideal" ? "Ideal solution" : sys.model}${note ? " (no pair parameters)" : ""}`, export: () => ({
+  return { data: `${sys.model === "ideal" ? "Ideal solution" : modelName(sys.model)}${note ? " (no pair parameters)" : ""}`, export: () => ({
     title: `Solubility of ${nameOf(solid)} in ${nameOf(solvent).toLowerCase()}`, file: `solubility ${solid} ${solvent}`,
     about: [...aboutRows(state, sys), ["Melting point of the solid", meltText(f, u)], ...(note ? [["Note", note]] : []),
       ["Equation", "ln(x γ) = −(ΔH_fus / R T)(1 − T / T_m), ΔCp of fusion taken as 0"]],
@@ -920,7 +863,6 @@ function sleView(ctx) {
     h("ul", { class: "fa-plain" }, ...at.map(t => h("li", {}, t))),
     h("div", { class: "fug-foot" }, "Each liquidus: ln(x γ) = −(ΔH_fus / R T)(1 − T / T_m) for that pure solid; no solid solutions, ΔCp of fusion taken as 0.")), read);
   move(conv1(d.eutectic.x1));
-  extra.append(section("Sources", fusionSources(ctx, ids), sys.model !== "ideal" ? pairSources(ctx, sys.info.pairs) : null));
   return { data: `Eutectic ${fmtTemp(d.eutectic.T_K, u)}`, export: () => ({
     title: `Solid-liquid diagram of ${listNames(ids.map(nameOf))}`, file: `sle ${ids.join(" ")}`,
     about: [...aboutRows(state, sys), ...(note ? [["Note", note]] : []), ...[0, 1].map(k => [`Melting point, ${nameOf(ids[k]).toLowerCase()}`, meltText(f[k], u)])],
@@ -949,8 +891,7 @@ function propertiesView(ctx) {
     return r ? { label, tier: r.tier ?? "databank", text: `${formatSource(r.source)}${Number.isFinite(r.Tmin_K) ? `; valid ${fmtTemp(r.Tmin_K, u, 1)} to ${fmtTemp(r.Tmax_K, u, 1)}` : ""}` }
       : { label, tier: "none", text: "No open data in the databank yet." };
   });
-  extra.append(section(`Correlations for ${p.name}`, sourceList(ctx, rows)),
-    section("Sources in the library", componentSourceList([id]) ?? h("div", { class: "fa-empty" }, "No sources recorded.")));
+  extra.append(section(`Correlations for ${p.name}`, sourceList(ctx, rows)));
   return { data: `${have} of ${names.length} correlations with open data`, export: () => {
     const plotted = explorer.plotted();
     if (!plotted) throw new Error(`No curve is drawn for ${p.name}: the property has no data in this range.`);
@@ -1053,12 +994,7 @@ function steamView(ctx) {
   tIn.addEventListener("change", run); pIn.addEventListener("change", run);
   run();
   extra.append(
-    section("State calculator", h("div", { class: "fa-form" }, h("label", { for: tIn.id }, h("span", {}, `T, ${tU(u)}`), tIn), h("label", { for: pIn.id }, h("span", {}, `P, ${u.P}`), pIn)), out),
-    section("Sources", sourceList(ctx, [
-      { label: "Thermodynamic properties", tier: "standard", text: "IAPWS-IF97, IAPWS R7-97(2012), www.iapws.org" },
-      { label: "Viscosity", tier: "standard", text: "IAPWS R12-08, industrial form" },
-      { label: "Thermal conductivity", tier: "standard", text: "IAPWS R15-11, industrial form" }]),
-    sourceLinks(["iapws-r7-97", "iapws-r12-08", "iapws-r15-11"])));
+    section("State calculator", h("div", { class: "fa-form" }, h("label", { for: tIn.id }, h("span", {}, `T, ${tU(u)}`), tIn), h("label", { for: pIn.id }, h("span", {}, `P, ${u.P}`), pIn)), out));
   return { data: `IAPWS-IF97 (${TIER_LABEL.standard})`, export: () => ({
     title: "Water and steam: temperature-entropy chart and saturation table", file: "steam",
     about: [["Standard", "IAPWS-IF97 (IAPWS R7-97(2012)); viscosity IAPWS R12-08, thermal conductivity IAPWS R15-11"],

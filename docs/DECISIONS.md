@@ -143,6 +143,40 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
 
 ## Log
 
+### 2026-10-14: Results panel and Model group (asked while reviewing #114)
+
+- **Asked:** the sources listed in the Results panel are too much, since the "Sources used here" button lists them;
+  take out the line "Liquid γ = 1; ideal-gas vapour" of the Model group; the Excel button of the workbench was hard
+  to find (the flowsheet has its button at the bottom). Mod. UNIFAC 2.0: keep the parameters as in the paper, no
+  refits.
+- **Done (in #114):** the Results panel keeps the results, and of the sources only the "Sources used here" button
+  (equations of state keep their model notes, and a missing k_ij is still said); the Model hint line is gone; an
+  "Export to Excel" button at the foot of the Results panel as well; the Mod. UNIFAC 2.0 paper is listed by
+  "Sources used here" (the group assignments cite it). The Mod. UNIFAC 2.0 parameters are the arXiv files, unchanged
+  (a test checks that they stay so); nothing is refitted.
+
+### 2026-10-13: Modified UNIFAC 2.0 (proposal 0008, Part A)
+
+- **Asked:** add Modified UNIFAC 2.0 (Hayer, Hasse and Jirasek 2025, arXiv:2412.12962) before the last batch: its
+  parameter files are CC BY 4.0, which the author confirmed to the maintainer by e-mail. "This unifac will not mean
+  that you can skip searching in open literature for properties, besides the databases."
+- **Done:**
+  - `MOD-UNIFAC-2` model ("Mod. UNIFAC 2.0" in the interface), every pair labelled predicted, with the source;
+  - parameters from the three arXiv files (stored unchanged), group assignments for 106 of the 127 components;
+  - checks: thermo's implementation to 1e-9 in ln γ; T-x-y of six pairs against open data, 0.3-1.1 K mean deviation.
+- **For the maintainer to check:**
+  - the three assignments where the SMARTS split and DDBST differ (tetrahydrofuran, 1,4-dioxane, NMP: DDBST's used,
+    with the reason in the script);
+  - the three reviewed without a DDBST assignment (glycerol, methyl linoleate, triolein);
+  - left without groups until checked: Cyrene, ethylene carbonate (is the (CH2)2CB group meant for the cyclic
+    carbonate?), propylene carbonate, and 2-methyltetrahydrofuran (the structure-based split and DDBST's differ, and
+    DDBST's gives C5H11O instead of C5H10O); furan and 2-methylfuran are not covered by the method's groups.
+- **Found:** Modified UNIFAC 2.0 predicts no ethanol + water azeotrope at 101.325 kPa (y - x stays positive up to
+  x = 0.98); the measured azeotrope is very shallow. Reported in the docs, not corrected.
+- **Not done here:** the drop-down model selector and "every component selectable, error only when the model cannot
+  use it" (its own pull request); Mod. UNIFAC 2.0 as the fallback of NRTL and UNIQUAC for missing pairs (proposal
+  0008, Part A, step 2).
+
 ### 2026-10-13: batch 3 of proposal 0009, first part (3a)
 
 - **Asked:** the next batch, after the maintainer decided "do A" (NRTL without UNIQUAC r and q, its own pull request)
