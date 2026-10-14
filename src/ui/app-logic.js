@@ -157,8 +157,8 @@ export function viewAvailability(view, ids, model = "NRTL") {
       return { enabled: true, use: liq.slice(0, 6) };
     }
     case "flash": {
-      const min = isEosModel(model) ? 1 : 2;
-      if (liq.length < min) return { enabled: false, use: [], reason: `A flash needs ${min === 1 ? "a component" : "two liquids with an activity model"}; ${word(liq.length)} selected.` };
+      // one component is a pure substance heated, cooled or boiled, with any model
+      if (liq.length < 1) return { enabled: false, use: [], reason: `A flash needs a component; ${word(liq.length)} selected.` };
       return { enabled: true, use: liq.slice(0, 6) };
     }
     case "henry": {

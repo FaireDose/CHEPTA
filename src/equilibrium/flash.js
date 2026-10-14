@@ -6,6 +6,10 @@
  *   sys.flash({ z, P, H })     given enthalpy (J/mol of feed): adiabatic flash, valve
  *   sys.flash({ z, P, VF })    given vapour fraction (0 = bubble point, 1 = dew point)
  *   sys.flash({ z, T, VF })
+ * One component with an equation of state (a pure substance): two phases exist only on its saturation curve, so the
+ * P-VF, T-VF and P-H flashes use the equation of state's own saturation pressure (sys.psatEos, equal fugacities of
+ * liquid and vapour) instead of the mixture bubble and dew points, and the enthalpy of each phase at it
+ * (pureEosFlash). Above the critical point a pure substance has one phase.
  * Options: { feed: { T, P } } adds the heat duty, Q = H_out - H_feed (J per mol of feed),
  * with H_feed the enthalpy of the same feed flashed at its own T and P. A heater with a
  * given duty is the P-H flash with H = H_feed + Q.
@@ -1138,6 +1142,57 @@ function bubbleStart(sys, z, P) {
 }
 
 /**
+ * Flash of one component with an equation of state (see the file header): the saturation temperature or pressure from
+ * sys.psatEos, and the vapour fraction from the enthalpies of the saturated liquid and vapour (P-H). Returns the
+ * arguments of result(), or throws with the reason.
+ */
+function pureEosFlash(sys, kind, z, T, P, VF, H) {
+  const c = sys.eos.comps[0];
+  const Tc = c.Tc_K, Pc = c.Pc_Pa / 1000;
+  const psat = Tq => sys.psatEos(Tq)[0];
+  const tsat = Pq => {
+    if (!(Pq < Pc)) return null;
+    let lo = 0.3 * Tc;
+    // the liquid and vapour roots merge at the critical point: bracket just below it, where both still exist
+    let hi = Tc * (1 - 1e-4), psHi = null;
+    for (let k = 0; k < 8 && psHi === null; k++) {
+      try { psHi = psat(hi); } catch { hi = Tc - 2 * (Tc - hi); }
+    }
+    if (psHi === null || psHi < Pq) return null;   // within the last fraction of a kelvin of Tc: treated as above it
+    while (psat(lo) > Pq && lo > 0.05 * Tc) lo *= 0.8;
+    if (psat(lo) > Pq) throw failRange(`${sys.names[0]}: ${Pq} kPa is below the pressures where its saturation temperature can be found.`);
+    return brent(Tq => Math.log(psat(Tq) / Pq), lo, hi, { xtol: 1e-10 });
+  };
+  const above = what => fail("NOT_AVAILABLE", `${sys.names[0]} alone has no ${what} above its critical point (${Tc.toFixed(2)} K, ${Pc.toPrecision(5)} kPa): a pure substance there is one phase.`);
+  const two = v => ({ V: v, x: z, y: z, single: v === 0 ? "liquid" : v === 1 ? "vapour" : null, iterations: 0 });
+  if (kind === "PVF") {
+    const Ts = tsat(P);
+    if (Ts === null) throw above("vapour fraction");
+    return [Ts, P, two(VF)];
+  }
+  if (kind === "TVF") {
+    if (!(T < Tc)) throw above("vapour fraction");
+    return [T, psat(T), two(VF)];
+  }
+  // P-H: on the saturation curve between the saturated liquid and vapour, else one phase at the T where its enthalpy is H
+  const h = (type, Tq) => sys.phase(type, Tq, P, z).h_J_mol;
+  const Ts = tsat(P);
+  const solve = (type, lo, hi) => {
+    let a = lo, b = hi, k = 0;
+    while (h(type, a) > H && k++ < 60) a = Math.max(a * 0.9, 1);
+    k = 0;
+    while (h(type, b) < H && k++ < 60) b *= 1.1;
+    if (h(type, a) > H || h(type, b) < H) throw fail("NO_CONVERGENCE", `${sys.names[0]}: no ${type} temperature with H = ${H.toFixed(1)} J/mol at ${P} kPa.`);
+    return brent(Tq => h(type, Tq) - H, a, b, { xtol: 1e-9 });
+  };
+  if (Ts === null) return null;   // above the critical pressure: one phase, the ordinary P-H flash
+  const hL = h("liquid", Ts), hV = h("vapour", Ts);
+  if (H >= hL && H <= hV) return [Ts, P, two((H - hL) / (hV - hL))];
+  if (H < hL) return [solve("liquid", 0.9 * Ts, Ts), P, two(0)];
+  return [solve("vapour", Ts, 1.2 * Ts), P, two(1)];
+}
+
+/**
  * The flash. See the file header for the specifications.
  * @returns {{spec:string, T:number, P:number, VF:number, H_J_mol:number|null,
  *   phases:{type:string, fraction:number, composition:number[], h_J_mol:number|null}[],
@@ -1156,7 +1211,14 @@ export function flash(sys, spec = {}, opts = {}) {
   const T = has("T") ? checkTemperature(spec.T) : null;
   const P = has("P") ? checkPressure(spec.P) : null;
   let out;
-  if (kind === "PT") out = result(sys, "TP", z, T, P, tpCore(sys, z, T, P));
+  if (isEos(sys) && sys.n === 1 && kind !== "PT") {
+    const VF = has("VF") ? Number(spec.VF) : null;
+    if (VF !== null && !(VF >= 0 && VF <= 1)) throw fail("BAD_INPUT", `flash: VF must be between 0 and 1 (got ${JSON.stringify(spec.VF)}).`);
+    const H = has("H") ? Number(spec.H) : null;
+    if (kind === "HP" && !Number.isFinite(H)) throw fail("BAD_INPUT", `flash: H must be a number of J/mol (got ${JSON.stringify(spec.H)}).`);
+    const r = pureEosFlash(sys, kind, z, T, P, VF, H);
+    out = r ? result(sys, SPECS[kind], z, ...r) : result(sys, "PH", z, ...phFlash(sys, z, P, H));
+  } else if (kind === "PT") out = result(sys, "TP", z, T, P, tpCore(sys, z, T, P));
   else if (kind === "PVF" || kind === "TVF") {
     const VF = Number(spec.VF);
     if (!(VF >= 0 && VF <= 1)) throw fail("BAD_INPUT", `flash: VF must be between 0 and 1 (got ${JSON.stringify(spec.VF)}).`);

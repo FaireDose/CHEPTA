@@ -34,7 +34,10 @@ test("the Flash workspace: in the navigation, with its own inputs and settings",
   assert.equal(checkInputs("flash", ["methane", "ethane"]).ok, false);
   assert.equal(checkInputs("flash", ["methane", "ethane"], "PR").ok, true);
   assert.equal(checkInputs("flash", ["methane"], "SRK").ok, true, "one component with an equation of state");
-  assert.equal(checkInputs("flash", ["water"]).ok, false, "two with an activity model");
+  // one component with an activity model too: a pure substance heated or boiled (the maintainer, 2026-10-14; before,
+  // an activity model asked for two)
+  assert.equal(checkInputs("flash", ["water"]).ok, true, "one with an activity model");
+  assert.equal(checkInputs("flash", []).ok, false, "none");
   assert.equal(initialState({ start: "flash", flash: { spec: "PH", Q_J_mol: -500 } }).flash.Q_J_mol, -500);
 });
 
