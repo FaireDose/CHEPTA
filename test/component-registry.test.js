@@ -8,7 +8,9 @@ import { readFileSync } from "node:fs";
 const read = p => JSON.parse(readFileSync(new URL(p, import.meta.url)));
 const reg = read("../validation/data/component_registry.json");
 const comps = read("../src/data/components.json").components;
-const FROM_MEASURED = ["dichloromethane", "2-methoxyethanol"];   // measured_components.py
+// measured_components.py (proposal 0008, Part B; proposal 0009, batch 3)
+const FROM_MEASURED = ["dichloromethane", "2-methoxyethanol", "furan", "2-methylfuran", "2-methyltetrahydrofuran",
+  "1-3-propanediol"];
 
 test("every component is in the registry once, and every registry entry is a component", () => {
   const ids = [...reg.base.components, ...reg.batches.flatMap(b => b.components)].map(c => c.id);

@@ -1,0 +1,698 @@
+{
+ "component": "furan",
+ "retrieved": "2026-10-13",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Units=SI&Mask=1",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°gas",
+       "-27.7",
+       "kJ/mol",
+       "N/A",
+       "Zaheeruddin and Lodhi, 1991",
+       "Value computed using ΔfHliquid° value of -55.4 kj/mol from  Zaheeruddin and Lodhi, 1991 and ΔvapH° value of 27.6 kj/mol from  Guthrie, Scott, et al., 1952.; DRB"
+      ],
+      [
+       "ΔfH°gas",
+       "-34.7",
+       "kJ/mol",
+       "Ccb",
+       "Guthrie, Scott, et al., 1952",
+       "ALS"
+      ],
+      [
+       "ΔfH°gas",
+       "-29.8",
+       "kJ/mol",
+       "N/A",
+       "Landrieu, Baylocq, et al., 1929",
+       "Value computed using ΔfHliquid° value of -57.5 kj/mol from  Landrieu, Baylocq, et al., 1929 and ΔvapH° value of 27.6 kj/mol from  Guthrie, Scott, et al., 1952.; DRB"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,gas (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "33.26",
+       "50.",
+       "Dorofeeva O.V., 1992",
+       "p=1 bar. Selected entropies and heat capacities are in good agreement with those obtained in other statistical calculations [ Guthrie G.B., 1952,  Bak B., 1955,  Rico M., 1967,  Soptrajanov B., 1968,  Chao J., 1986,  Klots T.D., 1994].; GT"
+      ],
+      [
+       "33.53",
+       "100."
+      ],
+      [
+       "36.39",
+       "150."
+      ],
+      [
+       "43.60",
+       "200."
+      ],
+      [
+       "59.43",
+       "273.15"
+      ],
+      [
+       "65.4 ± 1.5",
+       "298.15"
+      ],
+      [
+       "65.85",
+       "300."
+      ],
+      [
+       "88.80",
+       "400."
+      ],
+      [
+       "107.82",
+       "500."
+      ],
+      [
+       "122.77",
+       "600."
+      ],
+      [
+       "134.59",
+       "700."
+      ],
+      [
+       "144.13",
+       "800."
+      ],
+      [
+       "152.00",
+       "900."
+      ],
+      [
+       "158.60",
+       "1000."
+      ],
+      [
+       "164.20",
+       "1100."
+      ],
+      [
+       "168.97",
+       "1200."
+      ],
+      [
+       "173.08",
+       "1300."
+      ],
+      [
+       "176.62",
+       "1400."
+      ],
+      [
+       "179.69",
+       "1500."
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,gas (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "70.29",
+       "317.25",
+       "Guthrie G.B., 1952",
+       "GT"
+      ],
+      [
+       "80.12",
+       "358.20"
+      ],
+      [
+       "90.00",
+       "402.20"
+      ],
+      [
+       "99.58",
+       "449.20"
+      ],
+      [
+       "106.48",
+       "487.20"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,gas",
+      "Constant pressure heat capacity of gas"
+     ],
+     "rows": [
+      [
+       "ΔfH°gas",
+       "Enthalpy of formation of gas at standard conditions"
+      ]
+     ]
+    }
+   ]
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°liquid",
+       "",
+       "",
+       "Ccb",
+       "Zaheeruddin and Lodhi, 1991",
+       "uncertain value: -55.36 kJ/mol; ALS"
+      ],
+      [
+       "ΔfH°liquid",
+       "-62.34",
+       "kJ/mol",
+       "Ccb",
+       "Guthrie, Scott, et al., 1952",
+       "ALS"
+      ],
+      [
+       "ΔfH°liquid",
+       "-57.45",
+       "kJ/mol",
+       "Ccb",
+       "Landrieu, Baylocq, et al., 1929",
+       "ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°liquid",
+       "",
+       "",
+       "Ccb",
+       "Zaheeruddin and Lodhi, 1991",
+       "uncertain value: -2090.36 kJ/mol; ALS"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2083.5",
+       "kJ/mol",
+       "Ccb",
+       "Guthrie, Scott, et al., 1952",
+       "Corresponding ΔfHºliquid = -62.17 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2088.",
+       "kJ/mol",
+       "Ccb",
+       "Landrieu, Baylocq, et al., 1929",
+       "Corresponding ΔfHºliquid = -57.3 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "S°liquid",
+       "176.65",
+       "J/mol*K",
+       "N/A",
+       "Guthrie, Scott, et al., 1952, 2",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "114.56",
+       "298.15",
+       "Guthrie, Scott, et al., 1952, 2",
+       "T = 11 to 300 K.; DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid",
+      "Constant pressure heat capacity of liquid"
+     ],
+     "rows": [
+      [
+       "S°liquid",
+       "Entropy of liquid at standard conditions"
+      ],
+      [
+       "ΔcH°liquid",
+       "Enthalpy of combustion of liquid at standard conditions"
+      ],
+      [
+       "ΔfH°liquid",
+       "Enthalpy of formation of liquid at standard conditions"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "304.7 ± 0.6",
+       "K",
+       "AVG",
+       "N/A",
+       "Average of 12 out of 13 values; Individual data points"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tfus",
+       "187.44",
+       "K",
+       "N/A",
+       "Guanquan, Ott, et al., 1986",
+       "Uncertainty assigned by TRC =  0.2 K; TRC"
+      ],
+      [
+       "Tfus",
+       "187.56",
+       "K",
+       "N/A",
+       "Goates, Ott, et al., 1973",
+       "Uncertainty assigned by TRC =  0.05 K; TRC"
+      ],
+      [
+       "Tfus",
+       "187.15",
+       "K",
+       "N/A",
+       "Brooks and Pilcher, 1959",
+       "Uncertainty assigned by TRC =  1. K; TRC"
+      ],
+      [
+       "Tfus",
+       "187.47",
+       "K",
+       "N/A",
+       "Boord, Greenlee, et al., 1946",
+       "Uncertainty assigned by TRC =  0.2 K; TRC"
+      ],
+      [
+       "Tfus",
+       "187.55",
+       "K",
+       "N/A",
+       "Dolliver, Gresham, et al., 1938",
+       "Uncertainty assigned by TRC =  0.3 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Ttriple",
+       "187.54",
+       "K",
+       "N/A",
+       "Wilhoit, Chao, et al., 1985",
+       "Crystal phase 1 phase; Uncertainty assigned by TRC =  0.05 K; TRC"
+      ],
+      [
+       "Ttriple",
+       "187.55",
+       "K",
+       "N/A",
+       "Guthrie, Scott, et al., 1952",
+       "Crystal phase 1 phase; Uncertainty assigned by TRC =  0.02 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tc",
+       "490.2",
+       "K",
+       "N/A",
+       "Majer and Svoboda, 1985",
+       ""
+      ],
+      [
+       "Tc",
+       "490.2",
+       "K",
+       "N/A",
+       "Cheng, McCoubrey, et al., 1962",
+       "Uncertainty assigned by TRC =  0.3 K; Visual (5-cm 2-mm bore tubes) in nitrate-nitrite bath, TE or TH cal. vs NPL thermometer.; TRC"
+      ],
+      [
+       "Tc",
+       "487.",
+       "K",
+       "N/A",
+       "Kobe, Ravicz, et al., 1956",
+       "Uncertainty assigned by TRC =  2. K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Pc",
+       "53.20",
+       "bar",
+       "N/A",
+       "Kobe, Ravicz, et al., 1956",
+       "Uncertainty assigned by TRC =  1.172 bar; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Vc",
+       "0.219",
+       "l/mol",
+       "N/A",
+       "Kobe, Ravicz, et al., 1956",
+       "Uncertainty assigned by TRC =  0.005 l/mol; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "27.71",
+       "kJ/mol",
+       "N/A",
+       "Majer and Svoboda, 1985",
+       ""
+      ],
+      [
+       "ΔvapH°",
+       "28.2",
+       "kJ/mol",
+       "N/A",
+       "Moiseev and Antonova, 1970",
+       "Based on data from 277. to 323. K.; AC"
+      ],
+      [
+       "ΔvapH°",
+       "27.6",
+       "kJ/mol",
+       "N/A",
+       "Guthrie, Scott, et al., 1952, 2",
+       "DRB"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "27.1",
+       "304.5",
+       "N/A",
+       "Majer and Svoboda, 1985",
+       ""
+      ],
+      [
+       "27.451",
+       "298.15",
+       "N/A",
+       "Guthrie, Scott, et al., 1952, 3",
+       "P = 79.934 kPa; DH"
+      ],
+      [
+       "30.2",
+       "253.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 238. to 356. K.; AC"
+      ],
+      [
+       "27.7",
+       "304.36",
+       "E",
+       "Guthrie, Scott, et al., 1952, 2",
+       "ALS"
+      ],
+      [
+       "28.6",
+       "290.",
+       "N/A",
+       "Guthrie, Scott, et al., 1952, 3",
+       "Based on data from 275. to 334. K. See also  Boublik, Fried, et al., 1984.; AC"
+      ],
+      [
+       "27.2",
+       "304.2",
+       "V",
+       "Mathews and Fehlandt, 1931",
+       "ALS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Temperature (K)",
+      "A (kJ/mol)",
+      "β",
+      "Tc (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "279. to 305.",
+       "42.32",
+       "0.2802",
+       "490.2",
+       "Majer and Svoboda, 1985",
+       ""
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapS (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "92.07",
+       "298.15",
+       "Guthrie, Scott, et al., 1952, 3",
+       "P; DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Temperature (K)",
+      "A",
+      "B",
+      "C",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "275.70 to 334.58",
+       "4.10003",
+       "1060.801",
+       "-45.416",
+       "Guthrie, Scott, et al., 1952, 3",
+       "Coefficents calculated by NIST from author's data."
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "3.8",
+       "187.6",
+       "Domalski and Hearing, 1996",
+       "AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusS (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "13.64",
+       "150.0",
+       "Domalski and Hearing, 1996",
+       "CAL"
+      ],
+      [
+       "20.29",
+       "187.6"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔHtrs (kJ/mol)",
+      "Temperature (K)",
+      "Initial Phase",
+      "Final Phase",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "2.0468",
+       "150.0",
+       "crystaline, II",
+       "crystaline, I",
+       "Guthrie, Scott, et al., 1952, 3",
+       "DH"
+      ],
+      [
+       "3.8024",
+       "187.55",
+       "crystaline, I",
+       "liquid",
+       "Guthrie, Scott, et al., 1952, 3",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔStrs (J/mol*K)",
+      "Temperature (K)",
+      "Initial Phase",
+      "Final Phase",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "13.65",
+       "150.0",
+       "crystaline, II",
+       "crystaline, I",
+       "Guthrie, Scott, et al., 1952, 3",
+       "DH"
+      ],
+      [
+       "20.27",
+       "187.55",
+       "crystaline, I",
+       "liquid",
+       "Guthrie, Scott, et al., 1952, 3",
+       "DH"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -130,9 +130,14 @@ def assign(comps, sub):
             if ddbst != groups:
                 raise SystemExit("%s: the chosen assignment is not DDBST's (%s)" % (cid, ddbst))
             how = "chosen: %s; structure-based (SMARTS) assignment %s" % (why, smarts)
+        elif smarts and ddbst is not None and smarts != ddbst:
+            why = ("the structure-based assignment %s and DDBST's %s differ (atom balance: %s and %s against %s); not "
+                   "used until a person chooses" % (smarts, ddbst, atoms_of(smarts, u.DOUFSG), atoms_of(ddbst, u.DOUFSG),
+                                                    meta.formula))
+            out[cid] = {"available": False, "note": "no Modified UNIFAC 2.0 groups: " + why}
+            log.append("%-24s not available: %s" % (cid, why))
+            continue
         elif smarts and ddbst is not None:
-            if smarts != ddbst:
-                raise SystemExit("%s: SMARTS %s and DDBST %s differ; add it to CHOSEN with a reason" % (cid, smarts, ddbst))
             groups, how = smarts, "assigned from the structure; the same as DDBST's published assignment"
         elif smarts and cid in REVIEWED:
             groups, how = smarts, "assigned from the structure and checked (%s); DDBST lists no assignment" % REVIEWED[cid]

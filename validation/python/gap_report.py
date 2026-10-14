@@ -16,6 +16,10 @@ article, before the batch is fitted. Values are not read here, only what exists 
 
     python validation/python/gap_report.py --batch 10 --chemsep chemsep1.xml chemsep2.xml --cache DIR
     python validation/python/gap_report.py triolein tripalmitin --chemsep ... --cache DIR --fetch --md report.md
+    python validation/python/gap_report.py --new gvl:108-29-2 furan:110-00-9 --chemsep ... --cache DIR --fetch
+
+--new ID:CAS: a component not in the registry yet (a batch being planned); its name and the ThermoML search names come
+from the open `chemicals` library (name, IUPAC name), checked against the CAS number.
 """
 import argparse
 import html as H
@@ -189,11 +193,22 @@ def main():
     ap.add_argument("--cache", type=Path, required=True, help="directory for the downloaded WebBook pages and ThermoML records")
     ap.add_argument("--fetch", action="store_true", help="fetch the ThermoML values first (check_measured.py --fetch)")
     ap.add_argument("--md", type=Path, help="also write the report as Markdown")
+    ap.add_argument("--new", nargs="+", default=[], metavar="ID:CAS", help="components not in the registry yet")
     a = ap.parse_args()
-    ids = [c[0] for c in REG.batch(a.batch)] if a.batch else a.ids
-    if not ids:
-        raise SystemExit("give component ids or --batch")
+    ids = ([c[0] for c in REG.batch(a.batch)] if a.batch else list(a.ids))
     entries = {c["id"]: c for c in REG.all}
+    for spec in a.new:
+        cid, cas = spec.split(":")
+        from chemicals.identifiers import search_chemical
+        meta = search_chemical(cas)
+        if meta.CASs != cas:
+            raise SystemExit("%s: CAS %s not found in the chemicals library (%s)" % (cid, cas, meta.CASs))
+        names = [n for n in dict.fromkeys([meta.common_name, meta.iupac_name]) if n]
+        entries[cid] = {"id": cid, "name": names[0][:1].upper() + names[0][1:], "coolprop": None, "cas": cas,
+                        "thermoml": names}
+        ids.append(cid)
+    if not ids:
+        raise SystemExit("give component ids, --batch or --new")
     unknown = [i for i in ids if i not in entries]
     if unknown:
         raise SystemExit("not in validation/data/component_registry.json: %s" % ", ".join(unknown))
