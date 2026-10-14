@@ -350,8 +350,12 @@ COMPONENTS = {
         "thermoml_queries": ["2-methylfuran"],
         "critical": "Kobe, Ravicz, et al., 1956",
         "antoine_fit": [],
-        # Tai et al. (2014) disagree with the other two sets by up to 6 %, beyond the stated uncertainties
-        "vp_fit": "within",
+        # Tai et al. (2014) lie 5-6 % above the other two sets, beyond the stated uncertainties; the same article lies
+        # 4-7 % above Negadi 2014 for furfuryl alcohol, so its offset is systematic across compounds (decided 2026-10-14)
+        "vp_fit": "consensus",
+        "vp_exclude": {"Tai 2014": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the "
+                                   "same article lies 4-7 % above the other measured set for furfuryl alcohol too: a "
+                                   "systematic offset of that set, not scatter"},
         "dHvap": "clapeyron",
         "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
         "cp0": {"tables": ["Thermodynamics Research Center, 1997"], "Tmin": 200.0},
@@ -392,13 +396,16 @@ COMPONENTS = {
         "aliases": ["3-methyl-1-butanol", "3-methylbutan-1-ol", "isopentyl alcohol", "isopentanol"],
         "thermoml_queries": ["3-methyl-1-butanol", "3-methylbutan-1-ol"],
         "webbook_individual": ["TC", "HVAP"],
-        # not written: its open measured vapour pressures start at 335.85 K and its liquid densities end at 332.7 K (a
-        # gap the maintainer accepted, 2026-10-14), but its twelve vapour-pressure sets disagree (seven of them by more
-        # than their stated uncertainty, from -1.9 to +2.1 % of the pooled curve), so they are not pooled (the rule of
-        # 2026-10-14), and no reason to prefer one has been found
-        "hold": "its twelve vapour-pressure sets disagree: seven lie farther from the curve of all the sets than their "
-                "stated uncertainties (-1.9 to +2.1 %), so they are not pooled, and no reason to prefer one has been "
-                "found; also no liquid state has both a vapour pressure (from 335.85 K) and a density (to 332.7 K)",
+        # its open measured vapour pressures start at 335.85 K and its liquid densities end at 332.7 K (a gap the
+        # maintainer accepted, 2026-10-14). Its twelve vapour-pressure sets scatter from -2.7 to +1.9 % around the curve of
+        # all of them, seven by more than their stated uncertainties, and no set is singled out by an independent check:
+        # the maintainer asked for the best decision to close batch 3 (2026-10-14), so all twelve are pooled with the same
+        # weight and the spread is the record's stated uncertainty (about 3 %); the build stops if a set moves further
+        "vp_accept": {"Censky 2010": 0.98, "Gnanakumari 2009": 2.72, "Bejarano 2009": 1.85, "Zhou 2017": 1.29,
+                      "Vasanta 2018": 1.87, "Cepeda 2011": 1.53, "Lladosa 2008": 1.05},
+        "vp_why": ("The twelve measured sets scatter from -2.7 to +1.9 % around this curve, seven of them by more than their "
+                   "stated uncertainties, and no independent check singles out one; the record's uncertainty is that "
+                   "spread, about 3 %."),
         "critical": "Gude and Teja, 1995",
         "antoine_fit": [],
         # calorimetric values of Majer, Svoboda et al. (1985), 303-358 K, and the evaluation of Majer and Svoboda (1985)
