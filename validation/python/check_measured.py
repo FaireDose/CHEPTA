@@ -63,6 +63,16 @@ KNOWN = {
         "all eight articles find the ChemSep heat capacity 1-9 % high, but they cover 265-353 K only; a refit would "
         "end the record at 353 K instead of 541 K (the refit rule asks for the measured values to cover 25-100 degC "
         "or for a deviation above three times the tolerance; this is 2.6 times)",
+    # shown as large by the engineering report once it covered every component (2026-10-14,
+    # docs/decisions/2026-10-14-06-measured-data-review.md)
+    ("1-octanol", "liquidHeatCapacity"):
+        "the record (ChemSep v8.31 data 2) agrees with two of the three articles, Rubini et al. 2007 (+1.6 %, 288-323 K) "
+        "and Paramo et al. 2015 (+1.6 %, 298-333 K); Anouti et al. 2010 alone is -14 % to +1.4 % from it, and the median "
+        "of the articles is pulled by that one",
+    ("methyl-myristate", "vapourPressure"):
+        "the open data disagree: Sahraoui et al. (2016, 2017; 332-453 K) find the ChemSep v8.31 curve about 1-2 % low, "
+        "Zaitsau et al. 2019 (94 values, 303-423 K, transpiration) about 8 % high; no single curve meets both, and the "
+        "record lies between them",
 }
 
 # the components checked, and the names searched in the archive (its full-text search finds the compound

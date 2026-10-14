@@ -671,7 +671,7 @@ Rules: liquid values at 110 kPa or less, inside the record's temperature range, 
 |---|---|---|---|---|---|---|
 | Vapour pressure | 45 | 3 (1) | 363.1-466.6 | 1.90 % | +3.48 % at 363.1 K (Nasirzadeh 2006, doi:10.1021/je049600u) | ⚠️ above 1 % |
 | Liquid density | 225 | 77 (77) | 278.1-363.1 | 0.48 % | +1.25 % at 303.1 K (Srirachat 2017, doi:10.1016/j.fluid.2016.11.029) | ✅ within 1 % |
-| Liquid heat capacity | 12 | 2 (1) | 288.1-323.1 | 4.29 % | -13.99 % at 313.1 K (Anouti 2010, doi:10.1021/je100671v) | ⚠️ above 2 % |
+| Liquid heat capacity | 12 | 2 (1) | 288.1-323.1 | 4.29 % | -13.99 % at 313.1 K (Anouti 2010, doi:10.1021/je100671v) | ⚠️ above 2 % — known issue: the record (ChemSep v8.31 data 2) agrees with two of the three articles, Rubini et al. 2007 (+1.6 %, 288-323 K) and Paramo et al. 2015 (+1.6 %, 298-333 K); Anouti et al. 2010 alone is -14 % to +1.4 % from it, and the median of the articles is pulled by that one |
 | Liquid viscosity | 106 | 27 (26) | 283.1-363.1 | 3.71 % | +15.67 % at 323.1 K (Anouti 2010, doi:10.1021/je100671v) | ✅ within 5 % |
 | Liquid thermal conductivity | 6 | 1 (1) | 274.9-375.0 | 3.35 % | +5.41 % at 274.9 K (Wang 2019, doi:10.1021/acs.jced.9b00628) | ✅ within 5 % |
 | Surface tension | 5 | 2 | 298.1-313.1 | 1.19 % | +6.20 % at 313.1 K (Mohammad 2014, doi:10.1016/j.jct.2014.03.022) | reported (no tolerance) |
@@ -730,7 +730,7 @@ Rules: liquid values at 110 kPa or less, inside the record's temperature range, 
 
 | Property | Values used | Articles (within tolerance) | Range (K) | Median deviation of the articles | Largest single deviation | Result |
 |---|---|---|---|---|---|---|
-| Vapour pressure | 12 | 2 (0) | 432.6-453.1 | 2.66 % | -4.43 % at 453.1 K (Sahraoui 2017, doi:10.1021/acs.jced.7b00099) | ⚠️ above 1 % |
+| Vapour pressure | 12 | 2 (0) | 432.6-453.1 | 2.66 % | -4.43 % at 453.1 K (Sahraoui 2017, doi:10.1021/acs.jced.7b00099) | ⚠️ above 1 % — known issue: the open data disagree: Sahraoui et al. (2016, 2017; 332-453 K) find the ChemSep v8.31 curve about 1-2 % low, Zaitsau et al. 2019 (94 values, 303-423 K, transpiration) about 8 % high; no single curve meets both, and the record lies between them |
 | Liquid density | 47 | 5 (5) | 293.1-453.1 | 0.04 % | -0.76 % at 453.1 K (Zhao 2019, doi:10.1016/j.jct.2019.02.025) | ✅ within 1 % |
 | Liquid heat capacity | 6 | 1 (1) | 300.0-350.0 | 0.02 % | -0.15 % at 300.0 K (van Miltenburg 2004, doi:10.1021/je0499364) | ✅ within 2 % |
 | Heat of vaporization | 1 | | | | | too few values (1 measured in all) |
