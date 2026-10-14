@@ -20,10 +20,8 @@
   4. **pooled only when the sets agree** (the maintainer, after seeing the first version): each set's mean deviation
      from the pooled curve must lie within its mean stated uncertainty. When they do not, the script stops: a set has to
      be chosen or left out with a stated reason (for example the independent checks), or the component is held.
-  Where the idea comes from: building recommended values from all the available measurements with their
-  uncertainties is the concept of NIST's ThermoData Engine (Frenkel et al., J. Chem. Inf. Model. 45 (2005) 816-838);
-  its full text was not opened here. The details (the same weight per article, the 0.5 % floor, three times the
-  uncertainty for a single value, the agreement test) are this project's choices, not a published standard.
+  The details (the same weight per article, the 0.5 % floor, three times the uncertainty for a single value, the
+  agreement test) are this project's choices, not a published standard.
   Why: isoamyl alcohol, until then anchored on Censky et al. 2010 for their smallest stated uncertainty (0.14-0.21 %).
   The fit of all twelve sets gives a boiling point of 404.43 K against the measured median of 404.48 K (6 articles;
   Censky alone: 404.67 K) and a slope within 1.4 % of the calorimetric enthalpies of vaporization (Censky alone: 0.4-2.6 %
