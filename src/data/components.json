@@ -41452,23 +41452,24 @@
       "MW": 82.10054,
       "Tc_K": 528.0,
       "Pc_Pa": 4720000.0,
-      "Tb_K": 337.0457,
+      "Tb_K": 337.0081,
       "vapourPressure": {
         "equation": "DIPPR101",
         "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
         "units": "Pa",
-        "A": 50.65319185,
-        "B": -5125.106062,
-        "C": -4.112348832,
-        "D": 9.299893609e-18,
-        "E": 6.0,
+        "A": 102.1524646,
+        "B": -6600.253474,
+        "C": -12.99140662,
+        "D": 0.01356006678,
+        "E": 1.0,
         "Tmin_K": 285.37,
         "Tmax_K": 528.0,
         "tier": "fitted",
-        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Liebergesell et al., Fluid Phase Equilib. 400 (2015) 95-102, doi:10.1016/j.fluid.2015.05.002; Lomba et al., Thermochim. Acta 617 (2015) 54-64, doi:10.1016/j.tca.2015.08.013; Kobe, Ravicz, et al., 1956 (critical point, NIST WebBook). 57 measured values (56 from the ThermoML Archive) and the critical point, 285.37-528.00 K, max deviation 0.95 %, each within its own stated uncertainty. Between 482.96 K and the critical point the curve is held only by the critical point.",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Liebergesell et al., Fluid Phase Equilib. 400 (2015) 95-102, doi:10.1016/j.fluid.2015.05.002; Lomba et al., Thermochim. Acta 617 (2015) 54-64, doi:10.1016/j.tca.2015.08.013; Kobe, Ravicz, et al., 1956 (critical point, NIST WebBook). 60 measured values (59 from the ThermoML Archive) and the critical point, 285.37-528.00 K, max deviation 1.2 %. Between 507.92 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Liebergesell 2015 -0.06 %; Lomba 2015 -0.05 %. Independent checks (not fitted): normal boiling temperature 337.01 K against the WebBook average of the measured values, 337 +/- 1 K.",
         "source_ids": [
           "nist-thermoml-archive",
-          "nist-webbook"
+          "nist-webbook",
+          "liebergesell2015-2-methylfuran-isooctane"
         ],
         "crossCheck": [
           {
@@ -41478,7 +41479,7 @@
               333.4,
               373.5
             ],
-            "max_deviation_percent": 4.85
+            "max_deviation_percent": 4.9
           }
         ],
         "excluded": [
@@ -41486,183 +41487,162 @@
             "T_K": 353.8,
             "value": 161800.0,
             "reference": "Tai 2014",
-            "deviation_percent": 5.88,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 5.92,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 353.8,
             "value": 162600.0,
             "reference": "Tai 2014",
-            "deviation_percent": 5.36,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 5.4,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 357.5,
             "value": 181500.0,
             "reference": "Tai 2014",
-            "deviation_percent": 5.19,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 5.2,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 357.5,
             "value": 181700.0,
             "reference": "Tai 2014",
-            "deviation_percent": 5.07,
-            "why": "outside its stated uncertainty in every fit of the others"
-          },
-          {
-            "T_K": 373.9,
-            "value": 288400.0,
-            "reference": "Tai 2014",
-            "deviation_percent": 3.86,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 5.08,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 358.3,
             "value": 186500.0,
             "reference": "Tai 2014",
             "deviation_percent": 4.76,
-            "why": "outside its stated uncertainty in every fit of the others"
-          },
-          {
-            "T_K": 373.6,
-            "value": 286400.0,
-            "reference": "Tai 2014",
-            "deviation_percent": 3.77,
-            "why": "outside its stated uncertainty in every fit of the others"
-          },
-          {
-            "T_K": 373.4,
-            "value": 285300.0,
-            "reference": "Tai 2014",
-            "deviation_percent": 3.62,
-            "why": "outside its stated uncertainty in every fit of the others"
-          },
-          {
-            "T_K": 362.5,
-            "value": 211100.0,
-            "reference": "Tai 2014",
-            "deviation_percent": 4.27,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 362.4,
             "value": 210500.0,
             "reference": "Tai 2014",
-            "deviation_percent": 4.27,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 4.26,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
+          },
+          {
+            "T_K": 362.5,
+            "value": 211100.0,
+            "reference": "Tai 2014",
+            "deviation_percent": 4.25,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 363.1,
             "value": 214900.0,
             "reference": "Tai 2014",
-            "deviation_percent": 4.16,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 4.14,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 367.2,
             "value": 242100.0,
             "reference": "Tai 2014",
-            "deviation_percent": 3.51,
-            "why": "outside its stated uncertainty in every fit of the others"
-          },
-          {
-            "T_K": 367.9,
-            "value": 246000.0,
-            "reference": "Tai 2014",
-            "deviation_percent": 3.82,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 3.46,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 367.4,
             "value": 242700.0,
             "reference": "Tai 2014",
-            "deviation_percent": 3.81,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 3.77,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
-            "T_K": 398.8,
-            "value": 533800.0,
+            "T_K": 367.9,
+            "value": 246000.0,
             "reference": "Tai 2014",
-            "deviation_percent": 2.52,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 3.77,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
-            "T_K": 398.4,
-            "value": 530300.0,
+            "T_K": 373.4,
+            "value": 285300.0,
             "reference": "Tai 2014",
-            "deviation_percent": 2.27,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 3.55,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
+          },
+          {
+            "T_K": 373.6,
+            "value": 286400.0,
+            "reference": "Tai 2014",
+            "deviation_percent": 3.69,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
+          },
+          {
+            "T_K": 373.9,
+            "value": 288400.0,
+            "reference": "Tai 2014",
+            "deviation_percent": 3.78,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 398.2,
             "value": 527600.0,
             "reference": "Tai 2014",
-            "deviation_percent": 2.33,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 2.2,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
+          },
+          {
+            "T_K": 398.4,
+            "value": 530300.0,
+            "reference": "Tai 2014",
+            "deviation_percent": 2.14,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
+          },
+          {
+            "T_K": 398.8,
+            "value": 533800.0,
+            "reference": "Tai 2014",
+            "deviation_percent": 2.39,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 403.0,
             "value": 587600.0,
             "reference": "Tai 2014",
-            "deviation_percent": 2.24,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 2.12,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 403.2,
             "value": 591700.0,
             "reference": "Tai 2014",
-            "deviation_percent": 1.98,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 1.86,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 403.3,
             "value": 592300.0,
             "reference": "Tai 2014",
-            "deviation_percent": 2.1,
-            "why": "outside its stated uncertainty in every fit of the others"
-          },
-          {
-            "T_K": 507.92,
-            "value": 3651000.0,
-            "reference": "Liebergesell 2015",
-            "deviation_percent": -0.92,
-            "why": "outside its stated uncertainty in every fit of the others"
-          },
-          {
-            "T_K": 502.93,
-            "value": 3403000.0,
-            "reference": "Liebergesell 2015",
-            "deviation_percent": -0.76,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 1.98,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 408.4,
             "value": 667200.0,
             "reference": "Tai 2014",
-            "deviation_percent": 1.19,
-            "why": "outside its stated uncertainty in every fit of the others"
-          },
-          {
-            "T_K": 492.93,
-            "value": 2947000.0,
-            "reference": "Liebergesell 2015",
-            "deviation_percent": -0.5,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 1.08,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 408.6,
             "value": 670200.0,
             "reference": "Tai 2014",
-            "deviation_percent": 1.16,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 1.06,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           },
           {
             "T_K": 409.0,
             "value": 676700.0,
             "reference": "Tai 2014",
-            "deviation_percent": 1.05,
-            "why": "outside its stated uncertainty in every fit of the others"
+            "deviation_percent": 0.94,
+            "why": "its values lie 5-6 % above the two other sets, beyond the stated uncertainties, and the same article lies 4-7 % above the other measured set for furfuryl alcohol too: a systematic offset of that set, not scatter"
           }
         ]
       },
@@ -41673,8 +41653,8 @@
         ],
         "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
-      "omega": 0.246855,
-      "constants_source": "Tc and Pc: Kobe, Ravicz, et al., 1956, NIST Chemistry WebBook (SRD 69), phase change data, https://webbook.nist.gov/cgi/cbook.cgi?ID=C534225&Units=SI&Mask=4. MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (337.046 K).",
+      "omega": 0.247099,
+      "constants_source": "Tc and Pc: Kobe, Ravicz, et al., 1956, NIST Chemistry WebBook (SRD 69), phase change data, https://webbook.nist.gov/cgi/cbook.cgi?ID=C534225&Units=SI&Mask=4. MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (337.008 K).",
       "constants_source_ids": [
         "nist-webbook"
       ],
@@ -41704,7 +41684,8 @@
             "notes": "DIPPR 105 with C fixed at the critical temperature 528.00 K (Kobe, Ravicz, et al., 1956, NIST WebBook)."
           },
           "source_ids": [
-            "nist-thermoml-archive"
+            "nist-thermoml-archive",
+            "liebergesell2015-2-methylfuran-isooctane"
           ]
         },
         "idealGasHeatCapacity": {
@@ -41744,20 +41725,20 @@
         "heatOfVaporization": {
           "equation": "DIPPR106",
           "coefficients": {
-            "A": 43610.0638,
-            "B": 0.3619430284
+            "A": 44271.31112,
+            "B": 0.3755452473
           },
           "units": "J/mol",
           "Tmin_K": 285.37,
-          "Tmax_K": 394.82877,
+          "Tmax_K": 394.88299,
           "Tc_K": 528.0,
           "tier": "fitted",
           "source": {
             "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
             "reference": "validation/python/measured_components.py (clapeyron)",
             "access": "calculated from the open measured data of the vapour-pressure record; free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C534225&Units=SI&Mask=4)",
-            "fit": "25 Clapeyron values and 0 measured values, 285.37-394.83 K, max deviation 0.62 %",
-            "notes": "dHvap = T (dPsat/dT) (v_vapour - v_liquid), Psat from the vapour-pressure record of this component, both volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, MIT), 285.37-394.83 K (up to Psat = 500 kPa); DIPPR 106 with the critical temperature 528.00 K. Chosen because the measured values do not give the temperature dependence (no calorimetric value; the WebBook values are derived from vapour pressures). Max deviation from the Clapeyron values 0.62 %. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none. Other values on the WebBook page (most derived by their authors from vapour pressures), compared: Loras, Aucejo, et al., 2002 at 304 K (no method given): -1.3 %; Stephenson and Malanowski, 1987 at 266 K (method A): -1.6 %; Krevor and Prausnitz, 1986 at 324 K (no method given): -1.9 %; Dykyj, 1972 at 295 K (no method given): -0.2 %; Eon, Pommier, et al., 1971 at 348 K (no method given): -4.4 %; Moiseev and Antonova, 1970 (ΔvapH° at 298.15 K, no method given): +0.2 %."
+            "fit": "25 Clapeyron values and 0 measured values, 285.37-394.88 K, max deviation 0.24 %",
+            "notes": "dHvap = T (dPsat/dT) (v_vapour - v_liquid), Psat from the vapour-pressure record of this component, both volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, MIT), 285.37-394.88 K (up to Psat = 500 kPa); DIPPR 106 with the critical temperature 528.00 K. Chosen because the measured values do not give the temperature dependence (no calorimetric value; the WebBook values are derived from vapour pressures). Max deviation from the Clapeyron values 0.24 %. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none. Other values on the WebBook page (most derived by their authors from vapour pressures), compared: Loras, Aucejo, et al., 2002 at 304 K (no method given): -1.0 %; Stephenson and Malanowski, 1987 at 266 K (method A): -1.1 %; Krevor and Prausnitz, 1986 at 324 K (no method given): -1.7 %; Dykyj, 1972 at 295 K (no method given): +0.2 %; Eon, Pommier, et al., 1971 at 348 K (no method given): -4.4 %; Moiseev and Antonova, 1970 (ΔvapH° at 298.15 K, no method given): +0.6 %."
           },
           "source_ids": [
             "nist-thermoml-archive",
@@ -45696,6 +45677,432 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2COO, 2 CY-CH2): chosen: the lactone's ring ester O-C(=O)-CH2 as CH2COO and two ring CH2, as DDBST assigns it (the SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen); structure-based (SMARTS) assignment {87: 1, 78: 2}. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O2"
+      }
+    },
+    "isoamyl-alcohol": {
+      "name": "Isoamyl alcohol",
+      "formula": "C5H12O",
+      "cas": "123-51-3",
+      "aliases": [
+        "3-methyl-1-butanol",
+        "3-methylbutan-1-ol",
+        "isopentyl alcohol",
+        "isopentanol"
+      ],
+      "MW": 88.14818,
+      "Tc_K": 577.2,
+      "Pc_Pa": 3930000.0,
+      "Tb_K": 404.4267,
+      "vapourPressure": {
+        "equation": "DIPPR101",
+        "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
+        "units": "Pa",
+        "A": 85.18865837,
+        "B": -9048.986294,
+        "C": -8.544435159,
+        "D": 0.0,
+        "E": 0.0,
+        "Tmin_K": 335.85,
+        "Tmax_K": 577.2,
+        "tier": "fitted",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Censky et al., Fluid Phase Equilib. 298 (2010) 199-205, doi:10.1016/j.fluid.2010.06.020; Duran et al., Fluid Phase Equilib. 338 (2013) 128-134, doi:10.1016/j.fluid.2012.11.004; Gnanakumari et al., J. Chem. Thermodyn. 41 (2009) 184-188, doi:10.1016/j.jct.2008.09.021; Bejarano et al., J. Chem. Thermodyn. 41 (2009) 1020-1024, doi:10.1016/j.jct.2009.04.009; Zhi et al., J. Chem. Eng. Data 61 (2016) 3041-3047, doi:10.1021/acs.jced.6b00092; Zhou et al., J. Chem. Eng. Data 62 (2017) 691-697, doi:10.1021/acs.jced.6b00733; Vasanta, J. Chem. Eng. Data 63 (2018) 3215-3226, doi:10.1021/acs.jced.7b01128; Resa et al., J. Chem. Eng. Data 51 (2006) 73-78, doi:10.1021/je0502142; Cepeda and Urbano, J. Chem. Eng. Data 56 (2011) 2602-2607, doi:10.1021/je200111a; Dias et al., J. Chem. Eng. Data 59 (2014) 659-665, doi:10.1021/je400581e; Lladosa et al., J. Chem. Eng. Data 53 (2008) 1897-1902, doi:10.1021/je800298n; Cepeda, J. Chem. Eng. Data 55 (2010) 2349-2354, doi:10.1021/je900812v; Gude and Teja, 1995 (critical point, NIST WebBook). 115 measured values (114 from the ThermoML Archive) and the critical point, 335.85-577.20 K, max deviation 2.9 %. Between 445.98 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average, except a narrow miss the maintainer accepted (2026-10-14): Censky 2010 (mean deviation +0.98 %, mean stated uncertainty 0.50 %); Gnanakumari 2009 (mean deviation -2.72 %, mean stated uncertainty 2.10 %); Bejarano 2009 (mean deviation +1.85 %, mean stated uncertainty 0.87 %); Zhou 2017 (mean deviation -1.29 %, mean stated uncertainty 1.01 %); Vasanta 2018 (mean deviation -1.87 %, mean stated uncertainty 1.53 %); Cepeda 2011 (mean deviation -1.53 %, mean stated uncertainty 1.45 %); Lladosa 2008 (mean deviation -1.05 %, mean stated uncertainty 0.77 %); mean deviation of the fit from each set: Bejarano 2009 +1.85 %; Censky 2010 +0.98 %; Cepeda 2010 +0.31 %; Cepeda 2011 -1.53 %; Dias 2014 +0.56 %; Duran 2013 +0.53 %; Gnanakumari 2009 -2.72 %; Lladosa 2008 -1.05 %; Resa 2006 -0.51 %; Vasanta 2018 -1.87 %; Zhi 2016 -1.14 %; Zhou 2017 -1.29 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (4 values, 12-20 %); among the values stated within 10 %, the largest deviation is 2.9 %. The twelve measured sets scatter from -2.7 to +1.9 % around this curve, seven of them by more than their stated uncertainties, and no independent check singles out one; the record's uncertainty is that spread, about 3 %. Independent checks (not fitted): normal boiling temperature 404.43 K against the measured 403.85-404.90 K (6 articles, median 404.48 K); normal boiling temperature 404.43 K against the WebBook average of the measured values, 404 +/- 2 K; enthalpy of vaporization from the curve's slope against 2 calorimetric values (Majer, Svoboda, et al., 1985): -1.4 to -0.6 %.",
+        "source_ids": [
+          "nist-thermoml-archive",
+          "nist-webbook",
+          "resa2006-1-pentanol-isobutanol",
+          "resa2006-ethyl-acetate-isobutanol",
+          "lladosa2008-1-butanol-n-butyl-acetate"
+        ],
+        "excluded": [
+          {
+            "T_K": 417.3,
+            "value": 151000.0,
+            "reference": "Bejarano 2009",
+            "deviation_percent": 2.38,
+            "why": "more than three times its stated uncertainty from the fit of all the sets"
+          },
+          {
+            "T_K": 419.2,
+            "value": 159500.0,
+            "reference": "Bejarano 2009",
+            "deviation_percent": 2.87,
+            "why": "more than three times its stated uncertainty from the fit of all the sets"
+          },
+          {
+            "T_K": 420.9,
+            "value": 168000.0,
+            "reference": "Bejarano 2009",
+            "deviation_percent": 2.94,
+            "why": "more than three times its stated uncertainty from the fit of all the sets"
+          },
+          {
+            "T_K": 422.4,
+            "value": 176500.0,
+            "reference": "Bejarano 2009",
+            "deviation_percent": 2.59,
+            "why": "more than three times its stated uncertainty from the fit of all the sets"
+          }
+        ]
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "omega": 0.594426,
+      "constants_source": "Tc and Pc: Gude and Teja, 1995, NIST Chemistry WebBook (SRD 69), phase change data, https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=4. MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (404.427 K); measured normal boiling temperatures in the ThermoML Archive: 404.50 K (Uslu 2008); 404.90 K (Duran 2013); 404.55 K (Bilgin 2005); 403.85 K (Zhi 2016); 404.45 K (Rojas 2016); 404.27 K (Resa 2006).",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "omega_source": "From its definition, -log10(Psat(0.7 Tc)/Pc) - 1, with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook; Psat at 404.04 K inside the measured range).",
+      "omega_source_ids": [
+        "nist-thermoml-archive",
+        "nist-webbook"
+      ],
+      "properties": {
+        "liquidDensity": {
+          "equation": "DIPPR105",
+          "coefficients": {
+            "A": 1646.870343,
+            "B": 1.324900948,
+            "C": 577.2,
+            "D": -0.5955815017
+          },
+          "units": "kg/m3",
+          "Tmin_K": 288.15,
+          "Tmax_K": 332.7,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+            "reference": "Roy et al., Int. J. Thermophys. 31 (2010) 316-326, doi:10.1007/s10765-010-0719-7; Roy and Sinha, Fluid Phase Equilib. 243 (2006) 133-141, doi:10.1016/j.fluid.2006.02.023; Sanz and Gmehling, Fluid Phase Equilib. 267 (2008) 158-162, doi:10.1016/j.fluid.2008.03.002; Uslu et al., Fluid Phase Equilib. 273 (2008) 21-26, doi:10.1016/j.fluid.2008.08.004; Senol et al., Fluid Phase Equilib. 429 (2016) 254-265, doi:10.1016/j.fluid.2016.08.041; Oliveira et al., Fluid Phase Equilib. 482 (2019) 48-63, doi:10.1016/j.fluid.2018.10.021; Bilgin et al., J. Chem. Thermodyn. 37 (2005) 297-303, doi:10.1016/j.jct.2004.09.022; Mutalik et al., J. Chem. Thermodyn. 38 (2006) 1062-1071, doi:10.1016/j.jct.2005.10.022; Mutalik et al., J. Chem. Thermodyn. 38 (2006) 1620-1628, doi:10.1016/j.jct.2006.03.018; Gnanakumari et al., J. Chem. Thermodyn. 41 (2009) 184-188, doi:10.1016/j.jct.2008.09.021; Garcia-Garabal et al., J. Chem. Thermodyn. 87 (2015) 52-57, doi:10.1016/j.jct.2015.03.021; Ghanadzadeh Gilani et al., J. Chem. Thermodyn. 91 (2015) 384-395, doi:10.1016/j.jct.2015.08.021; Majstorovic et al., J. Chem. Thermodyn. 104 (2017) 169-188, doi:10.1016/j.jct.2016.09.030; Gilani et al., J. Chem. Thermodyn. 113 (2017) 263-275, doi:10.1016/j.jct.2017.06.020; Rojas et al., J. Chem. Eng. Data 61 (2016) 3109-3115, doi:10.1021/acs.jced.6b00197; Song et al., J. Chem. Eng. Data 49 (2004) 1535-1538, doi:10.1021/je030216r; Fenclova et al., J. Chem. Eng. Data 49 (2004) 1833-1838, doi:10.1021/je049738c; Resa et al., J. Chem. Eng. Data 51 (2006) 73-78, doi:10.1021/je0502142; Alvarez et al., J. Chem. Eng. Data 51 (2006) 940-945, doi:10.1021/je050416y; Bilgin et al., J. Chem. Eng. Data 51 (2006) 1546-1550, doi:10.1021/je060025z; Resa and Goenaga, J. Chem. Eng. Data 51 (2006) 1892-1895, doi:10.1021/je060238o; Cepeda and Urbano, J. Chem. Eng. Data 56 (2011) 2602-2607, doi:10.1021/je200111a; Wang and Liu, J. Chem. Eng. Data 57 (2012) 2689-2695, doi:10.1021/je300683r; Dias et al., J. Chem. Eng. Data 59 (2014) 659-665, doi:10.1021/je400581e; Bajic et al., J. Chem. Eng. Data 59 (2014) 3677-3690, doi:10.1021/je5005752; Lladosa et al., J. Chem. Eng. Data 53 (2008) 1897-1902, doi:10.1021/je800298n; Cepeda, J. Chem. Eng. Data 55 (2010) 2349-2354, doi:10.1021/je900812v",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "53 measured values, 288.15-332.70 K, max deviation 0.77 %",
+            "notes": "DIPPR 105 with C fixed at the critical temperature 577.20 K (Gude and Teja, 1995, NIST WebBook).",
+            "excluded": [
+              {
+                "T_K": 298.15,
+                "value": 820.17,
+                "reference": "Aralaguppi 2006",
+                "deviation_percent": -1.78,
+                "why": "stated uncertainty 1 % is above the 1 % target"
+              },
+              {
+                "T_K": 303.15,
+                "value": 816.28,
+                "reference": "Aralaguppi 2006",
+                "deviation_percent": -1.77,
+                "why": "stated uncertainty 1 % is above the 1 % target"
+              },
+              {
+                "T_K": 308.15,
+                "value": 812.34,
+                "reference": "Aralaguppi 2006",
+                "deviation_percent": -1.77,
+                "why": "stated uncertainty 1 % is above the 1 % target"
+              },
+              {
+                "T_K": 298.15,
+                "value": 807.3,
+                "reference": "Zhi 2016",
+                "deviation_percent": -0.21,
+                "why": "stated uncertainty 1.2 % is above the 1 % target"
+              },
+              {
+                "T_K": 298.15,
+                "value": 811.04,
+                "reference": "Zhang 2013",
+                "deviation_percent": -0.67,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 293.2,
+                "value": 804.433,
+                "reference": "Oliveira 2019",
+                "deviation_percent": 0.6,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 298.15,
+                "value": 801.76,
+                "reference": "Gnanakumari 2007",
+                "deviation_percent": 0.48,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 323.15,
+                "value": 789.8,
+                "reference": "Roy 2010",
+                "deviation_percent": -0.51,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 298.2,
+                "value": 809.05,
+                "reference": "Gilani 2014",
+                "deviation_percent": -0.43,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 298.2,
+                "value": 808.94,
+                "reference": "Lee 2017",
+                "deviation_percent": -0.42,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 298.15,
+                "value": 817.0,
+                "reference": "Duran 2013",
+                "deviation_percent": -1.4,
+                "why": "deviates most from a robust fit of the others"
+              }
+            ]
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "resa2006-1-pentanol-isobutanol",
+            "resa2006-ethyl-acetate-isobutanol",
+            "wang2012-dimethyl-carbonate-glycerol",
+            "lladosa2008-1-butanol-n-butyl-acetate"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 58.93689836,
+            "B": 0.283979927
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 451.65,
+          "Tmax_K": 499.15,
+          "tier": "fitted",
+          "source": {
+            "name": "NIST Chemistry WebBook",
+            "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=1",
+            "access": "free to read (NIST SRD 69)",
+            "reference": "Stromsoe E., 1970, gas heat capacities as tabulated in the NIST Chemistry WebBook (SRD 69): Ideal gas heat capacities are given by [ Stromsoe E., 1970] as a linear function Cp=f1*(a+bT). This expression approximates the experimental values with the average deviation of 1.09 J/mol*K. The accuracy of the experimental heat capacities [ Stromsoe E., 1970] is estimated as less than 0.3%.; GT",
+            "fit": "4 tabulated values, 451.65-499.15 K, max deviation 0.0094 %"
+          },
+          "source_ids": [
+            "nist-webbook"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"3-methyl-1-butanol\", \"3-methylbutan-1-ol\"; 96 records opened)"
+          ],
+          "note": "no open data at the 1 % target of the records: 45 measured values, 123.04-347.00 K, but their stated uncertainties (1.2-2.4 %) are larger than the target"
+        },
+        "heatOfVaporization": {
+          "equation": "DIPPR106",
+          "coefficients": {
+            "A": 79384.16485,
+            "B": 0.4860677373
+          },
+          "units": "J/mol",
+          "Tmin_K": 298.15,
+          "Tmax_K": 404.2,
+          "Tc_K": 577.2,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured enthalpies of vaporization (NIST Chemistry WebBook; calorimetric and critically evaluated values)",
+            "reference": "Majer and Svoboda, 1985 (compilation, NIST WebBook); Majer, Svoboda, et al., 1985 (method C, NIST WebBook); Majer, Svoboda, et al., 1985 (method C, NIST WebBook); Majer, Svoboda, et al., 1985 (method C, NIST WebBook); Majer, Svoboda, et al., 1985 (method C, NIST WebBook); Majer, Svoboda, et al., 1985 (method C, NIST WebBook); Majer and Svoboda, 1985 (ΔvapH° at 298.15 K, compilation, NIST WebBook)",
+            "access": "free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=4)",
+            "fit": "7 measured values, 298.15-404.20 K, max deviation 0.38 %",
+            "notes": "DIPPR 106 with the critical temperature 577.20 K. Values derived from vapour pressures, compared with the record (not fitted): Lladosa, Monton, et al., 2008 at 363 K: -1.5 %; Aucejo, Burguet, et al., 1994 at 340 K: +9.2 %; Stephenson and Malanowski, 1987 at 318 K: -5.8 %; Wilhoit and Zwolinski, 1973 at 313 K: -3.9 %.",
+            "excluded": [
+              {
+                "T_K": 298.15,
+                "value": 54300.0,
+                "reference": "McCurdy and Laidler, 1963 (ΔvapH° at 298.15 K, method C, NIST WebBook)",
+                "deviation_percent": 2.69,
+                "why": "deviates most from a robust fit of the others"
+              }
+            ]
+          },
+          "source_ids": [
+            "nist-webbook"
+          ]
+        },
+        "liquidViscosity": {
+          "equation": "DIPPR101",
+          "coefficients": {
+            "A": 1413.918136,
+            "B": -53984.07996,
+            "C": -218.2279067,
+            "D": 3.459249456e-14,
+            "E": 5.72
+          },
+          "units": "Pa s",
+          "Tmin_K": 288.15,
+          "Tmax_K": 323.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (NIST TRC ThermoML Archive)",
+            "reference": "Roy et al., Int. J. Thermophys. 31 (2010) 316-326, doi:10.1007/s10765-010-0719-7; Majstorovic et al., J. Chem. Thermodyn. 104 (2017) 169-188, doi:10.1016/j.jct.2016.09.030; Bajic et al., J. Chem. Eng. Data 59 (2014) 3677-3690, doi:10.1021/je5005752",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "19 measured values, 288.15-323.15 K, max deviation 2.7 %",
+            "excluded": [
+              {
+                "T_K": 303.15,
+                "value": 0.0031111,
+                "reference": "Roy 2006",
+                "deviation_percent": 3.11,
+                "why": "stated uncertainty 4.5 % is above the 3 % target"
+              },
+              {
+                "T_K": 298.15,
+                "value": 0.003835,
+                "reference": "Mutalik 2006",
+                "deviation_percent": -2.71,
+                "why": "stated uncertainty 11 % is above the 3 % target"
+              },
+              {
+                "T_K": 303.15,
+                "value": 0.003261,
+                "reference": "Mutalik 2006",
+                "deviation_percent": -1.63,
+                "why": "stated uncertainty 11 % is above the 3 % target"
+              },
+              {
+                "T_K": 308.15,
+                "value": 0.001518,
+                "reference": "Mutalik 2006",
+                "deviation_percent": 82.11,
+                "why": "stated uncertainty 66 % is above the 3 % target"
+              },
+              {
+                "T_K": 308.15,
+                "value": 0.0018443,
+                "reference": "Aralaguppi 2006",
+                "deviation_percent": 49.89,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 303.15,
+                "value": 0.0022581,
+                "reference": "Aralaguppi 2006",
+                "deviation_percent": 42.06,
+                "why": "deviates most from a robust fit of the others"
+              },
+              {
+                "T_K": 298.15,
+                "value": 0.0027795,
+                "reference": "Aralaguppi 2006",
+                "deviation_percent": 34.23,
+                "why": "deviates most from a robust fit of the others"
+              }
+            ]
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"3-methyl-1-butanol\", \"3-methylbutan-1-ol\"; 96 records opened)"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"3-methyl-1-butanol\", \"3-methylbutan-1-ol\"; 96 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"3-methyl-1-butanol\", \"3-methylbutan-1-ol\"; 96 records opened)"
+          ]
+        },
+        "surfaceTension": {
+          "equation": "DIPPR106",
+          "coefficients": {
+            "A": 0.04660189336,
+            "B": 0.9047889839
+          },
+          "units": "N/m",
+          "Tmin_K": 293.15,
+          "Tmax_K": 323.15,
+          "Tc_K": 577.2,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (NIST TRC ThermoML Archive)",
+            "reference": "Alvarez et al., J. Chem. Eng. Data 56 (2011) 4235-4238, doi:10.1021/je200793z",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "7 measured values, 293.15-323.15 K, max deviation 0.21 %",
+            "excluded": [
+              {
+                "T_K": 298.15,
+                "value": 0.022825,
+                "reference": "Bagheri 2014",
+                "deviation_percent": 5.78,
+                "why": "stated uncertainty 4.7 % is above the 1 % target"
+              },
+              {
+                "T_K": 308.15,
+                "value": 0.022024,
+                "reference": "Bagheri 2014",
+                "deviation_percent": 6.07,
+                "why": "stated uncertainty 4.8 % is above the 1 % target"
+              },
+              {
+                "T_K": 318.15,
+                "value": 0.021305,
+                "reference": "Bagheri 2014",
+                "deviation_percent": 5.95,
+                "why": "stated uncertainty 5 % is above the 1 % target"
+              },
+              {
+                "T_K": 328.15,
+                "value": 0.020489,
+                "reference": "Bagheri 2014",
+                "deviation_percent": 6.32,
+                "why": "stated uncertainty 5.1 % is above the 1 % target"
+              }
+            ]
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: a melting temperature but no enthalpy of fusion"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 2,
+          "2": 2,
+          "3": 1,
+          "14": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 CH2, 1 CH, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12O"
       }
     }
   }
