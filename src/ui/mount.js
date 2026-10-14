@@ -1,6 +1,6 @@
 import { injectStyles } from "./styles.js";
 import { h } from "./dom.js";
-import { listComponents, findComponent } from "../thermo/system.js";
+import { listComponents, findComponent, modelName } from "../thermo/system.js";
 import { system } from "../system.js";
 import { componentPicker } from "./component-picker.js";
 import { renderTxy } from "./txy.js";
@@ -137,7 +137,7 @@ export function mount(target, cfg = {}) {
     box.replaceChildren(
       h("div", { class: "fug-head" },
         h("h3", { class: "fug-title" }, title),
-        sys ? h("span", { class: "fug-sub" }, `${n === 2 ? "T-x-y" : "Ternary"} · P = ${state.P} kPa · ${state.model} · vapour: ${sys.info.vapour}`) : null),
+        sys ? h("span", { class: "fug-sub" }, `${n === 2 ? "T-x-y" : "Ternary"} · P = ${state.P} kPa · ${modelName(state.model)} · vapour: ${sys.info.vapour}`) : null),
       state.picker ? picker() : null,
       h("div", { class: "fug-controls" }, seg, h("label", { for: pIn.id }, "Pressure, kPa", pIn), basisSeg, ...checks),
       ...issues.map(k => h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${k.model}): `), k.message, ` Reference: ${k.reference}.`)),

@@ -157,6 +157,10 @@ export function app(target, cfg = {}) {
   const excelBtn = h("button", { type: "button", class: "fa-mini fa-excel", "data-fk": "diagram-xlsx", hidden: true,
     title: "Download the numbers of this diagram as an Excel workbook: every point drawn, in the units shown",
     on: { click: () => exportDiagram() } }, icon("table", 15), "Excel");
+  // the same download at the foot of the Results panel, where the flowsheet has its Excel button
+  const excelFoot = h("button", { type: "button", class: "fa-mini fa-excel", "data-fk": "diagram-xlsx-foot", hidden: true,
+    title: "Download the numbers of this diagram as an Excel workbook: every point drawn, in the units shown",
+    on: { click: () => exportDiagram() } }, icon("table", 15), "Export to Excel");
   const notes = h("div", { class: "fa-notes" });
   const plot = h("div", { class: "fug-plot fa-plot" });
   const below = h("div", { class: "fa-below" });
@@ -165,7 +169,8 @@ export function app(target, cfg = {}) {
   const inspectorExtra = h("div", { class: "fa-inspector-extra" });
   const provenance = h("div", { class: "fa-provenance" });
   const right = h("aside", { class: "fa-right", "aria-label": "Results" },
-    h("div", { class: "fa-panel-head" }, h("h2", {}, "Results"), provenance), side, inspectorExtra);
+    h("div", { class: "fa-panel-head" }, h("h2", {}, "Results"), provenance), side, inspectorExtra,
+    h("div", { class: "fa-results-foot" }, excelFoot));
   const statusBar = h("div", { class: "fa-status", role: "status" });
   const body = h("div", { class: "fa-body" }, left, canvas, right);
   const drawer = h("section", { class: "fa-drawer", role: "dialog", id: `fa-drawer-${uid}`, tabindex: "-1",
@@ -329,9 +334,6 @@ export function app(target, cfg = {}) {
    */
   function modelGroup() {
     const eos = isEosModel(state.model);
-    const hint = eos
-      ? `${state.model === "PR" ? "Peng–Robinson" : "SRK"} for liquid and vapour; k_ij from the databank`
-      : `${state.model === "ideal" ? "Liquid γ = 1" : `Liquid γ from ${modelName(state.model)}${state.model === "MOD-UNIFAC-2" ? " (predicted from groups)" : ""}`}; ${state.vapour === "ideal" ? "ideal-gas vapour" : `${state.vapour} vapour with φsat and Poynting`}`;
     return group("Model", h("div", { class: "fa-stack fa-models" },
       h("div", { class: "fa-model-family" + (eos ? "" : " is-on") },
         modelRow("Activity", "Activity model (liquid)", [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0"], ["ideal", "Ideal"]], eos ? null : state.model, m => set({ model: m })),
@@ -342,8 +344,7 @@ export function app(target, cfg = {}) {
       h("div", { class: "fa-model-family" + (eos ? " is-on" : "") },
         modelRow("EOS", "Equation of state (both phases)", [["PR", "Peng–Robinson"], ["SRK", "SRK"]], eos ? state.model : null, m => set({ model: m }))),
       h("div", { class: "fa-model-row fa-model-later", role: "note", "aria-label": "Models not available yet" },
-        h("span", { class: "fa-model-cap", "aria-hidden": "true" }, "later"), ...lockedChips([...FUTURE_MODELS.activity, ...FUTURE_MODELS.eos])),
-      h("div", { class: "fa-hint" }, hint)));
+        h("span", { class: "fa-model-cap", "aria-hidden": "true" }, "later"), ...lockedChips([...FUTURE_MODELS.activity, ...FUTURE_MODELS.eos]))));
   }
   function ribbonGroups() {
     const u = state.units, v = state.view;
@@ -655,7 +656,7 @@ export function app(target, cfg = {}) {
   function pairRows(ids) {
     const model = state.model, eosView = isEosModel(model);
     if (ids.length < 2) return null;
-    const head = h("h3", {}, eosView ? `Pairs, ${model} k_ij` : `Parameter sets, ${model}`);
+    const head = h("h3", {}, eosView ? `Pairs, ${model} k_ij` : `Parameter sets, ${modelName(model)}`);
     if (model === "ideal") return h("section", { class: "fa-in-sec fa-pairs" }, head, h("p", { class: "fa-in-hint" }, "Ideal solution: no pair parameters."));
     let info;
     try { info = system({ components: ids, model, allowMissingPairs: true, ...setsFor(state, model) }).info; } catch (e) {
@@ -1069,7 +1070,7 @@ export function app(target, cfg = {}) {
       const v = state.view, check = checkInputs(v, state.inputs[v], state.model);
       let info = null, error = null;
       notes.replaceChildren(); below.replaceChildren(); inspectorExtra.replaceChildren(); provenance.replaceChildren(); side.hidden = false;
-      excelBtn.hidden = true;
+      excelBtn.hidden = excelFoot.hidden = true;
       delete plot.dataset.view;
       if (!check.ok) {
         plot.replaceChildren(needInputs(v, check));
@@ -1091,7 +1092,7 @@ export function app(target, cfg = {}) {
       canvasRendered = true;
       box.classList.remove("fa-busy");
       ui.status = { busy: false, ms: check.ok ? performance.now() - t0 : null, error: error ?? info?.error ?? null, info, waiting: !check.ok };
-      excelBtn.hidden = !(check.ok && !error && typeof info?.export === "function");
+      excelBtn.hidden = excelFoot.hidden = !(check.ok && !error && typeof info?.export === "function");
       renderStatus();
     };
     if (now) run(); else setTimeout(run, 16);

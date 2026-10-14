@@ -274,6 +274,10 @@
         "groups": {
           "16": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 H2O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against H2O"
       }
     },
@@ -570,6 +574,10 @@
           "1": 1,
           "42": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4O2"
       }
     },
@@ -856,6 +864,10 @@
         "groups": {
           "62": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 DOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H6O2"
       }
     },
@@ -1136,6 +1148,10 @@
         "groups": {
           "15": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3OH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CH4O"
       }
     },
@@ -1415,6 +1431,10 @@
           "2": 1,
           "14": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H6O"
       }
     },
@@ -1696,6 +1716,10 @@
           "1": 1,
           "18": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH3CO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O"
       }
     },
@@ -1978,6 +2002,10 @@
         "groups": {
           "50": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CHCL3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CHCl3"
       }
     },
@@ -2254,6 +2282,10 @@
         "groups": {
           "9": 6
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (6 ACH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H6"
       }
     },
@@ -2532,6 +2564,10 @@
           "9": 5,
           "11": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (5 ACH, 1 ACCH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H8"
       }
     },
@@ -2820,6 +2856,10 @@
           "2": 1,
           "21": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH3COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O2"
       }
     },
@@ -4166,6 +4206,10 @@
         "groups": {
           "1": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H6"
       }
     },
@@ -5785,6 +5829,10 @@
           "1": 2,
           "2": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8"
       }
     },
@@ -6059,6 +6107,10 @@
           "1": 1,
           "5": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2=CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6"
       }
     },
@@ -6333,6 +6385,10 @@
           "1": 2,
           "2": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10"
       }
     },
@@ -6609,6 +6665,10 @@
           "1": 3,
           "3": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH3, 1 CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10"
       }
     },
@@ -7153,6 +7213,10 @@
           "1": 1,
           "24": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH3O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H6O"
       }
     },
@@ -7444,6 +7508,10 @@
         "groups": {
           "78": 6
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (6 CY-CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12"
       }
     },
@@ -7726,6 +7794,10 @@
           "9": 4,
           "11": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 2 ACCH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H10"
       }
     },
@@ -8006,6 +8078,10 @@
           "9": 4,
           "11": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 2 ACCH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H10"
       }
     },
@@ -8287,6 +8363,10 @@
           "9": 4,
           "11": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 2 ACCH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H10"
       }
     },
@@ -8571,6 +8651,10 @@
           "9": 5,
           "12": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 5 ACH, 1 ACCH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H10"
       }
     },
@@ -8877,6 +8961,10 @@
           "9": 5,
           "10": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2=CH, 5 ACH, 1 AC): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H8"
       }
     },
@@ -9161,6 +9249,10 @@
           "1": 2,
           "2": 3
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 3 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12"
       }
     },
@@ -9444,6 +9536,10 @@
           "1": 2,
           "2": 4
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 4 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H14"
       }
     },
@@ -9728,6 +9824,10 @@
           "1": 2,
           "2": 5
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 5 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H16"
       }
     },
@@ -10012,6 +10112,10 @@
           "1": 2,
           "2": 6
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 6 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H18"
       }
     },
@@ -10298,6 +10402,10 @@
           "2": 1,
           "25": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 CH2O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O"
       }
     },
@@ -10591,6 +10699,10 @@
           "14": 1,
           "81": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH, 1 OH (P), 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O2"
       }
     },
@@ -10879,6 +10991,10 @@
           "27": 1,
           "78": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 THF, 2 CY-CH2): chosen: the method has a subgroup for the ring ether, THF (CH2-O-CH2 in a ring); the SMARTS match took a TRIOXAN group and three CY-CH2 instead. Used as DDBST assigns it; structure-based (SMARTS) assignment {84: 1, 78: 3}. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O"
       }
     },
@@ -11198,6 +11314,10 @@
           "2": 2,
           "14": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 2 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O"
       }
     },
@@ -11510,6 +11630,10 @@
           "3": 1,
           "81": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O"
       }
     },
@@ -13173,6 +13297,10 @@
           "2": 3,
           "14": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 3 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O"
       }
     },
@@ -13472,6 +13600,10 @@
           "2": 1,
           "18": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH3CO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O"
       }
     },
@@ -13768,6 +13900,10 @@
           "1": 1,
           "21": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH3COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O2"
       }
     },
@@ -14066,6 +14202,10 @@
           "2": 3,
           "21": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 3 CH2, 1 CH3COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O2"
       }
     },
@@ -14718,6 +14858,10 @@
         "groups": {
           "40": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3CN): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H3N"
       }
     },
@@ -15013,6 +15157,10 @@
           "4": 1,
           "24": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH3, 1 C, 1 CH3O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12O"
       }
     },
@@ -15838,6 +15986,10 @@
           "14": 2,
           "81": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 CH, 2 OH (P), 1 OH (S)): assigned from the structure and checked (two primary OH (P), one secondary OH (S), two CH2 and one CH); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O3"
       }
     },
@@ -16158,6 +16310,10 @@
           "9": 5,
           "17": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (5 ACH, 1 ACOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H6O"
       }
     },
@@ -16414,6 +16570,10 @@
         "groups": {
           "47": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2CL2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CH2Cl2"
       }
     },
@@ -17101,6 +17261,10 @@
           "14": 1,
           "24": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 OH (P), 1 CH3O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O2"
       }
     },
@@ -17387,6 +17551,10 @@
         "groups": {
           "44": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2CL): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4Cl2"
       }
     },
@@ -17687,6 +17855,10 @@
           "3": 1,
           "18": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 CH, 1 CH3CO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O"
       }
     },
@@ -17986,6 +18158,10 @@
           "19": 1,
           "78": 4
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2CO, 4 CY-CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O"
       }
     },
@@ -18285,6 +18461,10 @@
         "groups": {
           "72": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 DMF): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H7NO"
       }
     },
@@ -18592,6 +18772,10 @@
         "groups": {
           "67": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 DMSO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H6OS"
       }
     },
@@ -19068,6 +19252,10 @@
           "78": 3,
           "86": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CY-CH2, 1 NMP): chosen: the method has a subgroup for N-methylpyrrolidone's ring amide, NMP; the SMARTS match took the open-chain amide AMCH3CH2. Used as DDBST assigns it; structure-based (SMARTS) assignment {102: 1, 78: 2}. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H9NO"
       }
     },
@@ -19362,6 +19550,10 @@
           "78": 2,
           "110": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CY-CH2, 1 (CH2)2SU): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O2S"
       }
     },
@@ -19660,6 +19852,10 @@
         "groups": {
           "61": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 FURFURAL): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H4O2"
       }
     },
@@ -19959,6 +20155,10 @@
         "groups": {
           "27": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 THF): chosen: two THF subgroups (CH2-O-CH2 in a ring); the SMARTS match took TRIOXAN and CY-CH2 groups. Used as DDBST assigns it; structure-based (SMARTS) assignment {84: 2, 78: 2}. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O2"
       }
     },
@@ -20270,6 +20470,10 @@
           "3": 1,
           "14": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 CH, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O"
       }
     },
@@ -22247,6 +22451,10 @@
           "3": 1,
           "81": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 CH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O"
       }
     },
@@ -23013,6 +23221,10 @@
           "14": 1,
           "29": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 CH2NH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H7NO"
       }
     },
@@ -23321,6 +23533,10 @@
           "14": 2,
           "32": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH2, 2 OH (P), 1 CH2NH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H11NO2"
       }
     },
@@ -23609,6 +23825,10 @@
           "14": 2,
           "34": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH2, 2 OH (P), 1 CH3N): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H13NO2"
       }
     },
@@ -24465,6 +24685,10 @@
         "groups": {
           "43": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 HCOOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CH2O2"
       }
     },
@@ -24763,6 +24987,10 @@
           "2": 1,
           "42": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O2"
       }
     },
@@ -25054,6 +25282,10 @@
           "5": 1,
           "42": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2=CH, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H4O2"
       }
     },
@@ -25358,6 +25590,10 @@
           "5": 1,
           "21": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2=CH, 1 CH3COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O2"
       }
     },
@@ -25655,6 +25891,10 @@
           "3": 1,
           "21": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH, 1 CH3COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O2"
       }
     },
@@ -25929,6 +26169,10 @@
         "groups": {
           "119": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 H2COCH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4O"
       }
     },
@@ -26232,6 +26476,10 @@
           "1": 1,
           "107": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 H2COCH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O"
       }
     },
@@ -27104,6 +27352,10 @@
           "9": 5,
           "13": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 5 ACH, 1 ACCH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C9H12"
       }
     },
@@ -27402,6 +27654,10 @@
           "9": 3,
           "11": 3
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (3 ACH, 3 ACCH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C9H12"
       }
     },
@@ -27688,6 +27944,10 @@
           "1": 2,
           "2": 7
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 7 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C9H20"
       }
     },
@@ -27974,6 +28234,10 @@
           "1": 2,
           "2": 8
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 8 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C10H22"
       }
     },
@@ -28263,6 +28527,10 @@
           "1": 2,
           "2": 10
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 10 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C12H26"
       }
     },
@@ -28573,6 +28841,10 @@
           "3": 1,
           "4": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (5 CH3, 1 CH2, 1 CH, 1 C): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H18"
       }
     },
@@ -28851,6 +29123,10 @@
           "2": 1,
           "5": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH2=CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8"
       }
     },
@@ -29156,6 +29432,10 @@
           "5": 1,
           "7": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2=CH, 1 CH2=C): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H8"
       }
     },
@@ -29590,6 +29870,10 @@
           "4": 1,
           "25": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH3, 1 C, 1 CH2O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H14O"
       }
     },
@@ -29889,6 +30173,10 @@
           "9": 3,
           "37": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (3 ACH, 1 AC2H2N): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H5N"
       }
     },
@@ -30187,6 +30475,10 @@
           "9": 5,
           "36": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (5 ACH, 1 ACNH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H7N"
       }
     },
@@ -30490,6 +30782,10 @@
         "groups": {
           "68": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 ACRY): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H3N"
       }
     },
@@ -30778,6 +31074,10 @@
         "groups": {
           "28": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3NH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CH5N"
       }
     },
@@ -31083,6 +31383,10 @@
           "9": 8,
           "10": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (8 ACH, 2 AC): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C10H8"
       }
     },
@@ -31380,6 +31684,10 @@
           "10": 1,
           "42": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (5 ACH, 1 AC, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H6O2"
       }
     },
@@ -31675,6 +31983,10 @@
           "17": 1,
           "42": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 1 AC, 1 ACOH, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H6O3"
       }
     },
@@ -31962,6 +32274,10 @@
           "2": 1,
           "3": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH3, 1 CH2, 1 CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12"
       }
     },
@@ -32246,6 +32562,10 @@
           "1": 2,
           "2": 9
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 9 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C11H24"
       }
     },
@@ -32540,6 +32860,10 @@
           "2": 4,
           "14": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH2, 2 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O2"
       }
     },
@@ -33537,6 +33861,10 @@
         "groups": {
           "112": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 (CH3)2CB): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
       }
     },
@@ -33797,6 +34125,10 @@
           "1": 2,
           "113": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 (CH2)2CB): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O3"
       }
     },
@@ -34666,6 +34998,10 @@
           "1": 1,
           "20": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CHO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4O"
       }
     },
@@ -34986,6 +35322,10 @@
           "2": 4,
           "14": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 4 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12O"
       }
     },
@@ -35300,6 +35640,10 @@
           "2": 5,
           "14": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 5 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H14O"
       }
     },
@@ -35644,6 +35988,10 @@
           "2": 7,
           "14": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 7 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H18O"
       }
     },
@@ -35939,6 +36287,10 @@
           "14": 2,
           "25": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH2, 2 OH (P), 1 CH2O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O3"
       }
     },
@@ -36240,6 +36592,10 @@
           "11": 1,
           "13": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 4 ACH, 1 ACCH3, 1 ACCH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C10H14"
       }
     },
@@ -36531,6 +36887,10 @@
           "2": 4,
           "42": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH2, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O4"
       }
     },
@@ -37039,6 +37399,10 @@
           "10": 2,
           "42": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 2 AC, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H6O4"
       }
     },
@@ -37328,6 +37692,10 @@
           "10": 2,
           "77": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 4 ACH, 2 AC, 2 COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C10H10O4"
       }
     },
@@ -37629,6 +37997,10 @@
           "2": 9,
           "22": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 9 CH2, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C13H26O2"
       }
     },
@@ -37941,6 +38313,10 @@
           "2": 11,
           "22": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 11 CH2, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C15H30O2"
       }
     },
@@ -38230,6 +38606,10 @@
           "2": 13,
           "22": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 13 CH2, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C17H34O2"
       }
     },
@@ -38519,6 +38899,10 @@
           "2": 15,
           "22": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 15 CH2, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C19H38O2"
       }
     },
@@ -38798,6 +39182,10 @@
           "6": 1,
           "22": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 13 CH2, 1 CH=CH, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C19H36O2"
       }
     },
@@ -39088,6 +39476,10 @@
           "6": 2,
           "22": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 11 CH2, 2 CH=CH, 1 CH2COO): assigned from the structure and checked (ester CH2COO, the methyl ester's CH3 and the chain's CH3, two CH=CH, eleven CH2); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C19H34O2"
       }
     },
@@ -39316,6 +39708,10 @@
           "6": 3,
           "22": 3
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH3, 41 CH2, 1 CH, 3 CH=CH, 3 CH2COO): assigned from the structure and checked (per oleoyl chain one CH3, thirteen CH2, one CH=CH and one CH2COO; the glycerol backbone two CH2 and one CH); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C57H104O6"
       }
     },
@@ -39545,6 +39941,10 @@
           "3": 1,
           "22": 3
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH3, 41 CH2, 1 CH, 3 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C51H98O6"
       }
     },
@@ -39846,6 +40246,10 @@
           "6": 1,
           "42": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 14 CH2, 1 CH=CH, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C18H34O2"
       }
     },
@@ -40146,6 +40550,10 @@
           "2": 14,
           "42": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 14 CH2, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C16H32O2"
       }
     },
@@ -40446,6 +40854,10 @@
           "2": 16,
           "42": 1
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 16 CH2, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C18H36O2"
       }
     },
@@ -40744,6 +41156,10 @@
           "1": 2,
           "2": 14
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 14 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C16H34"
       }
     },
@@ -41039,6 +41455,10 @@
           "1": 2,
           "2": 16
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 16 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C18H38"
       }
     },
@@ -42420,6 +42840,10 @@
           "2": 3,
           "14": 2
         },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH2, 2 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O2"
       }
     }

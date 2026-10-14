@@ -153,6 +153,7 @@ def assign(comps, sub):
         if atoms_of(groups, u.DOUFSG) != formula:
             raise SystemExit("%s: the subgroups %s give %s, not the formula %s" % (cid, groups, atoms_of(groups, u.DOUFSG), formula))
         out[cid] = {"groups": {str(g): n for g, n in sorted(groups.items())},
+                    "source_ids": ["hayer2025-mod-unifac-2", "thermo-library"],
                     "source": "Modified UNIFAC 2.0 subgroups (%s): %s. %s" % (
                         ", ".join("%d %s" % (n, sub[g]["name"]) for g, n in sorted(groups.items())), how,
                         "Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against %s" % meta.formula)}

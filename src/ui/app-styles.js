@@ -191,6 +191,8 @@ export const APP_CSS = `
 .fug-app .fa-right .fug-foot{font-size:11.5px}
 .fa-right .fug-side{background:transparent; border-radius:0; padding:2px 14px 12px; gap:10px}
 .fa-inspector-extra{padding:0 14px 16px; display:grid; gap:4px}
+.fa-results-foot{padding:4px 14px 16px; display:flex; justify-content:flex-start}
+.fa-results-foot:has(> [hidden]:only-child){display:none}
 .fa-sec h3{font-size:12px; font-weight:600; margin:0 0 8px; padding-top:12px; border-top:1px solid var(--fug-rule)}
 .fa-below .fa-sec h3{font-size:13px; border-top:0; padding-top:4px}
 .fa-sources{list-style:none; margin:0; padding:0; display:grid; gap:9px}
