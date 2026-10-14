@@ -212,7 +212,8 @@ test("selection helpers: toggle, rotate, search", () => {
       // the methyl esters of proposal 0009, batch 2 ("Methyl laurate" ...)
       "methyl-laurate", "methyl-myristate", "methyl-palmitate", "methyl-stearate", "methyl-oleate", "methyl-linoleate",
       // proposal 0009, batch 3
-      "2-methylfuran", "2-methyltetrahydrofuran", "methyl-levulinate", "ethyl-levulinate"].sort());
+      "2-methylfuran", "2-methyltetrahydrofuran", "methyl-levulinate", "ethyl-levulinate", "cpme", "methyl-lactate",
+      "ethyl-lactate"].sort());
   assert.deepEqual(filterComponents(all, "7732-18-5").map(c => c.id), ["water"]);
   assert.deepEqual(filterComponents(all, "chcl3").map(c => c.id), ["chloroform"]);
   assert.deepEqual(filterComponents(all, "zzz"), []);

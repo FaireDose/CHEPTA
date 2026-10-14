@@ -1,0 +1,39 @@
+{
+ "component": "solketal",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "461.7",
+       "K",
+       "N/A",
+       "Aldrich Chemical Company Inc., 1990",
+       ""
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

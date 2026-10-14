@@ -1,0 +1,202 @@
+{
+ "component": "thfa",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97994&Units=SI&Mask=1",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°gas",
+       "-369. ± 6.3",
+       "kJ/mol",
+       "Ccb",
+       "Landrieu, Baylocq, et al., 1929",
+       "Heat of formation derived by  Cox and Pilcher, 1970"
+      ]
+     ]
+    }
+   ]
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97994&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°liquid",
+       "-435.6 ± 5.9",
+       "kJ/mol",
+       "Ccb",
+       "Landrieu, Baylocq, et al., 1929",
+       "Heat of formation derived by  Cox and Pilcher, 1970; ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "S°liquid",
+       "219.2",
+       "J/mol*K",
+       "N/A",
+       "Miller, 1935",
+       "Extrapolation below 90 K, 45.23 J/mol*K.; DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "190.",
+       "298.15",
+       "Bonner and Cerutti, 1976",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid",
+      "Constant pressure heat capacity of liquid"
+     ],
+     "rows": [
+      [
+       "S°liquid",
+       "Entropy of liquid at standard conditions"
+      ],
+      [
+       "ΔfH°liquid",
+       "Enthalpy of formation of liquid at standard conditions"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97994&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "451.2",
+       "K",
+       "N/A",
+       "Aldrich Chemical Company Inc., 1990",
+       "BS"
+      ],
+      [
+       "Tboil",
+       "451.",
+       "K",
+       "N/A",
+       "Moshkin, 1955",
+       "Uncertainty assigned by TRC =  3. K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tfus",
+       "330.",
+       "K",
+       "N/A",
+       "Adkins and Pavlic, 1947",
+       "Uncertainty assigned by TRC =  3. K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "67. ± 2.",
+       "kJ/mol",
+       "E",
+       "Landrieu, Baylocq, et al., 1929",
+       "Heat of formation derived by  Cox and Pilcher, 1970; ALS"
+      ],
+      [
+       "ΔvapH°",
+       "66.6",
+       "kJ/mol",
+       "N/A",
+       "Landrieu, Baylocq, et al., 1929",
+       "DRB"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "46.2",
+       "408.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 393. to 453. K.; AC"
+      ],
+      [
+       "46.5",
+       "388.",
+       "N/A",
+       "Bludilina, Baev, et al., 1979",
+       "Based on data from 333. to 443. K.; AC"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

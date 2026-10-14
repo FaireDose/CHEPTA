@@ -1,0 +1,175 @@
+{
+ "component": "gvl",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=1",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°gas",
+       "-406.5 ± 1.1",
+       "kJ/mol",
+       "Ccb",
+       "Leitao, Pilcher, et al., 1990",
+       "See  Brown, Conn, et al., 1989"
+      ]
+     ]
+    }
+   ]
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°liquid",
+       "-461.3 ± 1.0",
+       "kJ/mol",
+       "Ccb",
+       "Leitao, Pilcher, et al., 1990",
+       "See  Brown, Conn, et al., 1989"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2649.6 ± 0.8",
+       "kJ/mol",
+       "Ccb",
+       "Leitao, Pilcher, et al., 1990",
+       "See  Brown, Conn, et al., 1989; Corresponding ΔfHºliquid = -461.3 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "480.7",
+       "K",
+       "N/A",
+       "Aldrich Chemical Company Inc., 1990",
+       "BS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "53.9 ± 0.2",
+       "kJ/mol",
+       "GS",
+       "Emel'yanenko, Kozlova, et al., 2008",
+       "Based on data from 276. to 350. K. See also  Emel'yanenko, Verevkin, et al., 2009.; AC"
+      ],
+      [
+       "ΔvapH°",
+       "54.8 ± 0.4",
+       "kJ/mol",
+       "C",
+       "Leitao, Pilcher, et al., 1990",
+       "See  Brown, Conn, et al., 1989; ALS"
+      ],
+      [
+       "ΔvapH°",
+       "54.8",
+       "kJ/mol",
+       "N/A",
+       "Leitao, Pilcher, et al., 1990",
+       "DRB"
+      ],
+      [
+       "ΔvapH°",
+       "54.8 ± 0.4",
+       "kJ/mol",
+       "C",
+       "Leitao, Pilcher, et al., 1990",
+       "AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "53.5",
+       "325.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 310. to 480. K. See also  Stull, 1947.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Temperature (K)",
+      "A",
+      "B",
+      "C",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "310.7 to 480.7",
+       "3.48604",
+       "1315.022",
+       "-105.793",
+       "Stull, 1947",
+       "Coefficents calculated by NIST from author's data."
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

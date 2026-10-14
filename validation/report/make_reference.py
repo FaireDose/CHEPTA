@@ -252,7 +252,7 @@ def reference(case, key):
         if wb.exists():
             # components built from measured data: the Tboil average of their stored WebBook page
             d = json.loads(wb.read_text())
-            t = next(t for t in d["pages"]["phase change"]["tables"] if t["header"][0] == "Quantity")
+            t = next((t for t in d["pages"]["phase change"]["tables"] if t["header"][0] == "Quantity"), {"rows": []})
             r = next((r for r in t["rows"] if r[0] == "Tboil" and r[3] == "AVG"), None)
             if r:
                 v, u = (float(x) for x in r[1].split("±"))
@@ -267,7 +267,7 @@ def reference(case, key):
                 v = statistics.median(float(r[1].split("±")[0]) for r in rows)
                 return val(v - 273.15, "nist-webbook", "Tboil = %g K, the median of %s (no average on the page), %s" % (
                     v, "; ".join(f"{r[1]} K ({r[4]})" for r in rows), d['pages']['phase change']['url']))
-        return none("No open reference")
+        return none("No open reference: no measured normal boiling temperature on the component's WebBook page")
     if t == "azeotrope":
         for a in azeo["binary"]:
             if a["components"] == case["components"]:

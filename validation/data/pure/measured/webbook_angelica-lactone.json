@@ -1,0 +1,37 @@
+{
+ "component": "angelica-lactone",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "40.3",
+       "339.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 324. to 442. K.; AC"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

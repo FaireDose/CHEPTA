@@ -53,12 +53,52 @@ CHOSEN = {
                          "as DDBST assigns it"),
     "nmp": ({86: 1, 78: 3}, "the method has a subgroup for N-methylpyrrolidone's ring amide, NMP; the SMARTS match took "
                             "the open-chain amide AMCH3CH2. Used as DDBST assigns it"),
+    # The maintainer (2026-10-14): Modified UNIFAC 2.0 is a prediction tool; a component gets groups whenever its
+    # structure can be described, without waiting for a person to choose. Where the two assignments differ, DDBST's
+    # published one is used: it is how the method's own data bank describes the molecule
+    "2-methyltetrahydrofuran": ({1: 1, 27: 1, 78: 2}, "the ring ether CH-O-CH2 counted as the THF subgroup and the "
+                                                      "methyl as CH3, as DDBST assigns it (the SMARTS match took a "
+                                                      "TRIOXAN group, the subgroup of 1,3,5-trioxane)"),
+    "thfa": ({2: 1, 14: 1, 27: 1, 78: 2}, "the ring ether CH-O-CH2 counted as the THF subgroup, with CH2 and a primary "
+                                          "OH, as DDBST assigns it (the SMARTS match took a TRIOXAN group, the subgroup of "
+                                          "1,3,5-trioxane)"),
+    "gbl": ({22: 1, 78: 2}, "the lactone's ring ester O-C(=O)-CH2 as CH2COO and two ring CH2, as DDBST assigns it (the "
+                            "SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen)"),
 }
+# components without a DDBST assignment whose structure-based assignment is wrong: the assignment used, and why
+FROM_STRUCTURE = {
+    "propylene-carbonate": ({1: 1, 113: 1}, "the cyclic carbonate subgroup (CH2)2CB, as for ethylene carbonate, and CH3 "
+                                            "for the methyl on the ring (the SMARTS match took NEP, the subgroup of "
+                                            "N-ethylpyrrolidone, for a molecule without nitrogen)"),
+    # The method has no furan-ring subgroup (only furfural as one whole-molecule group). The maintainer (2026-10-14):
+    # build the ring from the groups it has, C=C and the ether C-O. Ring O1-C2=C3-C4=C5: the ether O with C5-H as CHO,
+    # the double bond C2=C3 as CH=CH (or CH=C where C2 carries a substituent), C4-H as a ring CH; the C4=C5 double bond
+    # and the ring's aromatic character are not represented, so this is a rough prediction
+    "furan": ({26: 1, 6: 1, 79: 1}, "built from the groups the method has (no furan-ring subgroup), as the maintainer "
+                                     "decided: the ring ether CH-O as CHO, one ring double bond as CH=CH, the remaining "
+                                     "ring CH as CY-CH; the second double bond and the aromatic character are not "
+                                     "represented"),
+    "2-methylfuran": ({26: 1, 8: 1, 79: 1, 1: 1}, "built from the groups the method has (no furan-ring subgroup), as the "
+                                                  "maintainer decided: the ring ether CH-O as CHO, the substituted ring "
+                                                  "double bond as CH=C, the remaining ring CH as CY-CH, and CH3; the "
+                                                  "second double bond and the aromatic character are not represented"),
+    "furfuryl-alcohol": ({26: 1, 8: 1, 79: 1, 2: 1, 14: 1}, "built from the groups the method has (no furan-ring "
+                                                            "subgroup), as the maintainer decided: the ring ether CH-O as "
+                                                            "CHO, the substituted ring double bond as CH=C, the remaining "
+                                                            "ring CH as CY-CH, and CH2 with a primary OH; the second "
+                                                            "double bond and the aromatic character are not represented"),
+}
+# assignments that count a substituted ring carbon in the ring's subgroup (THF: CH2-O-CH2; (CH2)2CB: the ring of ethylene
+# carbonate): their atom balance is one H above the formula, the way DDBST counts such rings
+ONE_H_OVER = {"2-methyltetrahydrofuran", "thfa", "propylene-carbonate"}
 # components without a DDBST assignment whose structure-based assignment was checked (and passes the atom balance)
 REVIEWED = {
     "glycerol": "two primary OH (P), one secondary OH (S), two CH2 and one CH",
     "methyl-linoleate": "ester CH2COO, the methyl ester's CH3 and the chain's CH3, two CH=CH, eleven CH2",
     "triolein": "per oleoyl chain one CH3, thirteen CH2, one CH=CH and one CH2COO; the glycerol backbone two CH2 and one CH",
+    "ethylene-carbonate": "the whole molecule is the cyclic carbonate subgroup (CH2)2CB",
+    "cyrene": "the ring ketone C(=O) with its CH2 as CH2CO, the CH2-O of the bridge as TRIOXAN and the other ring ether "
+              "CH-O as CHO, one ring CH2 and one ring CH",
 }
 
 # reference mixtures for the tests: (components, temperatures in K, compositions)
@@ -130,6 +170,11 @@ def assign(comps, sub):
             if ddbst != groups:
                 raise SystemExit("%s: the chosen assignment is not DDBST's (%s)" % (cid, ddbst))
             how = "chosen: %s; structure-based (SMARTS) assignment %s" % (why, smarts)
+        elif cid in FROM_STRUCTURE:
+            if ddbst is not None:
+                raise SystemExit("%s: DDBST now lists an assignment (%s); use CHOSEN" % (cid, ddbst))
+            groups, why = FROM_STRUCTURE[cid]
+            how = "chosen from the structure: %s; DDBST lists no assignment" % why
         elif smarts and ddbst is not None and smarts != ddbst:
             why = ("the structure-based assignment %s and DDBST's %s differ (atom balance: %s and %s against %s); not "
                    "used until a person chooses" % (smarts, ddbst, atoms_of(smarts, u.DOUFSG), atoms_of(ddbst, u.DOUFSG),
@@ -150,7 +195,10 @@ def assign(comps, sub):
         bad = [g for g in groups if g not in sub]
         if bad:
             raise SystemExit("%s: subgroups %s are not in Modified UNIFAC 2.0" % (cid, bad))
-        if atoms_of(groups, u.DOUFSG) != formula:
+        expected = dict(formula, H=formula["H"] + 1) if cid in ONE_H_OVER else formula
+        if cid in ONE_H_OVER:
+            how += " (atom balance one H above %s: a substituted ring carbon counted in the ring's subgroup)" % meta.formula
+        if atoms_of(groups, u.DOUFSG) != expected:
             raise SystemExit("%s: the subgroups %s give %s, not the formula %s" % (cid, groups, atoms_of(groups, u.DOUFSG), formula))
         out[cid] = {"groups": {str(g): n for g, n in sorted(groups.items())},
                     "source_ids": ["hayer2025-mod-unifac-2", "thermo-library"],

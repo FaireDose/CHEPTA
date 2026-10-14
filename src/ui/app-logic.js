@@ -462,11 +462,16 @@ export function applyPatch(state, patch = {}) {
 /**
  * Temperature of the P-x-y diagram when none is set: 85 % of the lowest critical temperature
  * of the components, rounded to 5 °C, so that both components are below their critical point
- * and the diagram shows a full two-phase region. 298.15 K without components.
+ * and the diagram shows a full two-phase region; for a component without critical constants
+ * (critical.js), the middle of its vapour-pressure record. 298.15 K without components.
  */
 export function autoTemperature(ids) {
   if (!ids.length) return 298.15;
-  const T = 0.85 * Math.min(...ids.map(id => pure(id).Tc_K));
+  const top = id => {
+    const p = pure(id), vp = p.record("vapourPressure");
+    return Number.isFinite(p.Tc_K) ? 0.85 * p.Tc_K : vp ? 0.5 * (vp.Tmin_K + vp.Tmax_K) : 298.15;
+  };
+  const T = Math.min(...ids.map(top));
   return Math.round((T - 273.15) / 5) * 5 + 273.15;
 }
 

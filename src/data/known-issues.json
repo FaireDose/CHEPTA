@@ -1108,6 +1108,20 @@
       "source_ids": [
         "hou2012-methyl-palmitate-methyl-stearate"
       ]
+    },
+    {
+      "components": [
+        "water",
+        "gvl"
+      ],
+      "model": "MOD-UNIFAC-2",
+      "kind": "predicted-deviation",
+      "message": "Modified UNIFAC 2.0 predicts the bubble points of water + gamma-valerolactone too low: on average by 3.0 K at 101.3 kPa, 7.3 K at 50.6 kPa and 6.9 K at 10.1 kPa (up to 13.6, 22.8 and 20.0 K), against the measured bubble temperatures of Havasi et al. (2016), stated within 2.1 K. It also predicts that liquids of 40-80 % water split into two liquid phases (300-360 K), while the measured bubble temperatures change smoothly with composition and stay above the boiling point of water.",
+      "reference": "D. Havasi, P. Mizsey, L. T. Mika, J. Chem. Eng. Data 61 (2016) 1502-1508, doi:10.1021/acs.jced.5b00849, via the NIST TRC ThermoML Archive (validation/data/water_gvl_tx_havasi2016.json)",
+      "source_ids": [
+        "havasi2016-water-gvl",
+        "nist-thermoml-archive"
+      ]
     }
   ]
 }

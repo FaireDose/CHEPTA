@@ -159,7 +159,7 @@ function vleView(view, ctx) {
   let sys;
   try { sys = modelSystem(state, av.use); } catch (e) { throw new Error(friendly(e)); }
   for (const k of onDefaults(sys) ? knownIssuesFor(sys.ids, sys.model) : []) {
-    notes.append(h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${k.model}): `), k.message, ` Reference: ${k.reference}.`));
+    notes.append(h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${modelName(k.model)}): `), k.message, ` Reference: ${k.reference}.`));
   }
   const look = { basis: state.basis, MW: sys.ids.map(id => pure(id).MW), T: state.units.T };
   const drawn = view === "txy" ? renderTxy(plot, side, sys, state.P_kPa, look)
@@ -279,7 +279,7 @@ function azeotropeView(ctx) {
       for (const z of found.filter(z => z.kind === "ternary")) {
         points.push({ T: z.T, kind: "Ternary azeotrope", what: comp(z.x, tri) });
       }
-      for (const k of onDefaults(sys3) ? knownIssuesFor(sys3.ids, sys3.model) : []) ctx.notes.append(h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${k.model}): `), k.message, ` Reference: ${k.reference}.`));
+      for (const k of onDefaults(sys3) ? knownIssuesFor(sys3.ids, sys3.model) : []) ctx.notes.append(h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${modelName(k.model)}): `), k.message, ` Reference: ${k.reference}.`));
     } catch (e) { errors.push(`Ternary search (${ids.slice(0, 3).map(nameOf).join(", ")}): ${friendly(e)}`); }
   }
   // pure-component boiling points do not depend on the mixing rules: the vapour-pressure
@@ -471,7 +471,9 @@ function envelopeView(ctx) {
   } else {
     // an equation of state reaches the mixture critical region; the vapour-pressure
     // correlations of an activity model end at the lowest critical pressure
-    const Pmax = sys.kind === "eos" ? 1.4 * Math.max(...comps.map(c => c.Pc_kPa)) : Math.min(...comps.map(c => c.Pc_kPa));
+    // (a component without critical constants: the vapour pressure where its record ends)
+    const pTop = c => (Number.isFinite(c.Pc_kPa) ? c.Pc_kPa : c.psat(c.record("vapourPressure").Tmax_K));
+    const Pmax = sys.kind === "eos" ? 1.4 * Math.max(...comps.map(c => c.Pc_kPa)) : Math.min(...comps.map(pTop));
     const Ps = linspace(Math.log(10), Math.log(Pmax), 46).map(Math.exp);
     const bub = [], dew = [];
     raw = [];
@@ -496,7 +498,7 @@ function envelopeView(ctx) {
         ? `Equation-of-state vapour pressure up to the critical point (open circle), ${fmtTemp(comps[0].Tc_K, u)}, ${fmtP(comps[0].Pc_kPa, u)}.`
         : sys.kind === "eos"
           ? "Liquid left of the bubble curve, vapour right of the dew curve. Near the mixture critical point the solver stops; no curve is drawn there."
-          : `Liquid left of the bubble curve, vapour right of the dew curve. With an activity model the curves end at the lowest critical pressure (${fmtP(Math.min(...comps.map(c => c.Pc_kPa)), u)}); an equation of state reaches the critical region.`));
+          : `Liquid left of the bubble curve, vapour right of the dew curve. With an activity model the curves end at the lowest critical pressure, or where a vapour-pressure record ends (${fmtP(Pmax, u)}); an equation of state reaches the critical region.`));
     return vals;
   };
   const move = drawPlot(plot, { compact, series, x0: xLo, x1: xHi, log: true, xLabel: `T, ${tU(u)}`, yLabel: `P, ${u.P}`, show,
@@ -554,7 +556,7 @@ function flashView(ctx) {
   let sys;
   try { sys = modelSystem(state, ids); } catch (e) { throw new Error(friendly(e)); }
   for (const k of sys.kind !== "eos" && onDefaults(sys) ? knownIssuesFor(sys.ids, sys.model) : []) {
-    notes.append(h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${k.model}): `), k.message, ` Reference: ${k.reference}.`));
+    notes.append(h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${modelName(k.model)}): `), k.message, ` Reference: ${k.reference}.`));
   }
   const { result: r, z } = runFlash(sys, state.flash);
   const names = sys.names, MW = ids.map(id => pure(id).MW);
@@ -880,9 +882,10 @@ function propertiesView(ctx) {
   const explorer = mountProperties(plot, { component: id, property: state.property, units: u, controls: false });
   side.replaceChildren(
     h("div", {}, h("div", { class: "fug-eyebrow" }, p.formula), h("div", { class: "fa-comp-name" }, p.name), h("div", { class: "fug-sub" }, `CAS ${p.cas}`)),
-    kv([["Molar mass", fmtNum(p.MW, 5), "g/mol"], ["Critical temperature", fmtShort(+tToDisplay(p.Tc_K, u).toFixed(2)), tU(u)],
-      ["Critical pressure", fmtNum(pToDisplay(p.Pc_kPa, u), 4), u.P], ["Normal boiling point", p.Tb_K ? fmtShort(+tToDisplay(p.Tb_K, u).toFixed(2)) : null, tU(u)],
-      ["Acentric factor", fmtNum(p.omega, 3)]]));
+    kv([["Molar mass", fmtNum(p.MW, 5), "g/mol"],
+      ["Critical temperature", Number.isFinite(p.Tc_K) ? fmtShort(+tToDisplay(p.Tc_K, u).toFixed(2)) : "no open data", Number.isFinite(p.Tc_K) ? tU(u) : ""],
+      ["Critical pressure", Number.isFinite(p.Pc_kPa) ? fmtNum(pToDisplay(p.Pc_kPa, u), 4) : "no open data", Number.isFinite(p.Pc_kPa) ? u.P : ""], ["Normal boiling point", p.Tb_K ? fmtShort(+tToDisplay(p.Tb_K, u).toFixed(2)) : null, tU(u)],
+      ["Acentric factor", Number.isFinite(p.omega) ? fmtNum(p.omega, 3) : "no open data"]]));
   const names = ["vapourPressure", ...PROPERTY_NAMES];
   let have = 0;
   const rows = names.map(n => {

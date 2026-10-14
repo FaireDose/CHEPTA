@@ -11,7 +11,7 @@
     "access": "Baird 2019: Open access, CC BY 4.0 (Springer); data also deposited at the Open Science Framework (doi:10.31219/osf.io/vbqrn); Jerabek 2023: Open access, CC BY 4.0 (American Chemical Society)",
     "fit": "21 measured values with stated uncertainties within 1 % from 2 articles, 293.15-423.15 K, max deviation 0.11 %",
     "notes": "Fitted to measured data instead of the databank: ChemSep has no liquid density. Rules: validation/python/measured_components.py.",
-    "chain": "Measured data (2 open-access articles) above the databank: see docs/MEASURED_CHECKS.md",
+    "chain": "Measured data (2 open-access articles) above the databank",
     "crossCheck": [
      {
       "reference": "Medgyesi and Mika, ChemPlusChem 89 (2024) e202400379, doi:10.1002/cplu.202400379",
@@ -151,7 +151,7 @@
     "access": "Jerabek 2023: Open access, CC BY 4.0 (American Chemical Society)",
     "fit": "18 measured values with stated uncertainties within 1 % from 1 articles, 260.00-350.00 K, max deviation 0.13 %; 1 values with larger stated uncertainties agree within them",
     "notes": "Fitted to measured data instead of the databank: the ChemSep heat capacity is 19-22 % below the measured values of Jerabek et al. (2023) where they overlap (323-350 K), and 23-32 % below them when extended to 260 K; the databank record deviates from these values by -20.3 % (median, -21.5 % at most). Rules: validation/python/measured_components.py.",
-    "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md",
+    "chain": "Measured data (an open-access article) above the databank",
     "excluded": [
      {
       "T_K": 293.16,
@@ -356,7 +356,7 @@
     "access": "Jerabek 2023: Open access, CC BY 4.0 (American Chemical Society)",
     "fit": "13 measured values with stated uncertainties within 3 % from 1 articles, 293.15-353.15 K, max deviation 0.40 %",
     "notes": "Fitted to measured data instead of the databank: the ChemSep viscosity equation (101) has a negative B, so that the viscosity rises with temperature; it is many orders of magnitude below the measured values; the databank record deviates from these values by -100.0 % (median, -100.0 % at most). Rules: validation/python/measured_components.py.",
-    "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md",
+    "chain": "Measured data (an open-access article) above the databank",
     "crossCheck": [
      {
       "reference": "Medgyesi and Mika, ChemPlusChem 89 (2024) e202400379, doi:10.1002/cplu.202400379",
@@ -699,7 +699,7 @@
     "access": "Medgyesi 2024: Open access, CC BY-NC 4.0 (Wiley-VCH)",
     "fit": "7 measured values with stated uncertainties within 1 % or no stated uncertainty (7) from 1 articles, 293.15-352.90 K, max deviation 0.63 %",
     "notes": "Fitted to measured data instead of the databank: the ChemSep surface tension is about 15 % below the measured values of Medgyesi and Mika (2024), the only open measurements; the databank record deviates from these values by -15.4 % (median, -18.8 % at most). Rules: validation/python/measured_components.py.",
-    "chain": "Measured data (an open-access article) above the databank: see docs/MEASURED_CHECKS.md"
+    "chain": "Measured data (an open-access article) above the databank"
    },
    "T_K": [
     293.15,

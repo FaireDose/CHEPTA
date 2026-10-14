@@ -59,10 +59,14 @@ def webbook_tboil(c):
     """(value K, uncertainty K) of the Tboil average (AVG) on the component's stored WebBook page; without an average,
     the median of the page's Tboil values and None (no stated uncertainty)."""
     d = json.loads((ROOT / f"validation/data/pure/measured/webbook_{c}.json").read_text())
-    t = next(t for t in d["pages"]["phase change"]["tables"] if t["header"][0] == "Quantity")
+    t = next((t for t in d["pages"]["phase change"]["tables"] if t["header"][0] == "Quantity"), None)
+    if t is None:  # no phase-change data on the page
+        return None, None
     r = next((r for r in t["rows"] if r[0] == "Tboil" and r[3] == "AVG"), None)
     if r is None:  # no average: the median of the page's values (one, for most), without an uncertainty
         rows = [r for r in t["rows"] if r[0] == "Tboil" and r[2] == "K"]
+        if not rows:
+            return None, None
         return statistics.median(float(r[1].split("±")[0]) for r in rows), None
     v, u = (float(x) for x in r[1].split("±"))
     return v, u
@@ -91,7 +95,7 @@ groups.append({
                "quantities": [{"key": "T_C", "tol": "boilingPoint"}]} for c in ALL + [c for c in EXTRA if c in TB_EXTRA]]
     + [{"id": f"tb/{c}", "type": "normalBoilingPoint", "component": c, "P_kPa": 101.325,
         "quantities": [{"key": "T_C", "tol": tb_tolerance(c)}]}
-       for c in MEASURED_ONLY]})
+       for c in MEASURED_ONLY if comp[c].get("Tb_K")]})
 
 # (b) azeotropes
 cases = []
@@ -239,6 +243,13 @@ for c in GASES:
         cases.append({"id": f"pure/{c}/density/300K/{P_bar}bar", "type": "pureProperty", "component": c,
                       "property": "density", "T_K": 300.0, "P_kPa": P_bar * 100.0, "state": "fluid",
                       "quantities": [{"key": "rho_kg_m3", "tol": "gasDensity"}]})
+# components built from measured data whose measured vapour pressures stop below 101.325 kPa (no normal boiling
+# point, "Tb_note"): the vapour pressure at the end of the record, so that the component is in the report
+for c in MEASURED_ONLY:
+    if not comp[c].get("Tb_K"):
+        T = comp[c]["vapourPressure"]["Tmax_K"]
+        cases.append({"id": f"pure/{c}/psat/{T:g}K", "type": "pureProperty", "component": c, "property": "vapourPressure",
+                      "T_K": T, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]})
 groups.append({"id": "pure", "title": "Pure-component properties at standard points", "cases": cases})
 
 # (e) steam tables

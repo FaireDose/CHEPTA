@@ -43,6 +43,7 @@ import { kijMatrix } from "./eos/system.js";
 import { pure } from "./pure.js";
 import { selection } from "./library.js";
 import { fail, failRange } from "../util/errors.js";
+import { requireCritical } from "./critical.js";
 
 const R = 8.314462618; // J/(mol K)
 
@@ -54,6 +55,7 @@ const R = 8.314462618; // J/(mol K)
  *                          to the vapour's k_ij; cfg.sets names the activity-model sets only
  */
 export function createCubicVapour(ids, comps, model, cfg) {
+  requireCritical(comps, `a ${model === "SRK" ? "SRK" : "Peng-Robinson"} vapour`);
   const { K, pairs, missing } = kijMatrix(ids, model, cfg.kij, selection({ prefer: cfg.prefer }));
   const eos = cubicEos(model, comps.map(c => ({ name: c.name, Tc_K: c.Tc_K, Pc_Pa: c.Pc_Pa, omega: c.omega })), K);
   const n = ids.length;

@@ -1,0 +1,215 @@
+{
+ "component": "2-3-butanediol",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C513859&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C513859&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°liquid",
+       "-544.8",
+       "kJ/mol",
+       "Ccb",
+       "Baroody and Carpenter, 1972",
+       "ALS"
+      ],
+      [
+       "ΔfH°liquid",
+       "-541.8",
+       "kJ/mol",
+       "Ccb",
+       "Moureu and Dode, 1937",
+       "ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2461.",
+       "kJ/mol",
+       "Ccb",
+       "Moureu and Dode, 1937",
+       "Corresponding ΔfHºliquid = -541.8 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "213.0",
+       "298.2",
+       "Khokhlovkin and Kalacheva, 1936",
+       "T = 26 to 140°C.; DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid",
+      "Constant pressure heat capacity of liquid"
+     ],
+     "rows": [
+      [
+       "ΔcH°liquid",
+       "Enthalpy of combustion of liquid at standard conditions"
+      ],
+      [
+       "ΔfH°liquid",
+       "Enthalpy of formation of liquid at standard conditions"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C513859&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "456.7",
+       "K",
+       "N/A",
+       "Aldrich Chemical Company Inc., 1990",
+       "BS"
+      ],
+      [
+       "Tboil",
+       "455.65",
+       "K",
+       "N/A",
+       "Mellan, 1962",
+       "Uncertainty assigned by TRC =  1. K; TRC"
+      ],
+      [
+       "Tboil",
+       "455.15",
+       "K",
+       "N/A",
+       "Walpole, 1911",
+       "Uncertainty assigned by TRC =  4. K; TRC"
+      ],
+      [
+       "Tboil",
+       "415.15",
+       "K",
+       "N/A",
+       "Sabatier and Mailhe, 1907",
+       "Uncertainty assigned by TRC =  3. K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tfus",
+       "292.15",
+       "K",
+       "N/A",
+       "Mellan, 1962",
+       "Uncertainty assigned by TRC =  2. K; TRC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "62.5",
+       "363.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 348. to 457. K.; AC"
+      ],
+      [
+       "58.4",
+       "332.",
+       "N/A",
+       "Stull, 1947",
+       "Based on data from 317. to 455. K.; AC"
+      ],
+      [
+       "57.9",
+       "378.",
+       "N/A",
+       "Schierholtz and Staples, 1935",
+       "Based on data from 353. to 403. K.; AC"
+      ],
+      [
+       "55.7",
+       "380.",
+       "N/A",
+       "Schierholtz and Staples, 1935",
+       "Based on data from 303. to 456. K.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Temperature (K)",
+      "A",
+      "B",
+      "C",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "317. to 455.",
+       "6.07439",
+       "2616.746",
+       "-24.565",
+       "Stull, 1947",
+       "Coefficents calculated by NIST from author's data."
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

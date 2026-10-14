@@ -56,15 +56,37 @@ test("every pair is labelled predicted, with the source; a component without gro
     assert.match(p.source, /Modified UNIFAC 2\.0 .*Hayer/);
     assert.equal(p.sources[0].license, "CC BY 4.0");
   }
-  // gases have no Modified UNIFAC 2.0 subgroups; a component whose groups were not checked says so too
+  // gases have no Modified UNIFAC 2.0 subgroups, and neither has an anhydride: such a component says so
   assert.throws(() => system({ components: ["methane", "n-hexane"], model: "MOD-UNIFAC-2" }), /Methane has no vapour-pressure record|Methane has no Modified UNIFAC 2\.0 groups/);
-  assert.throws(() => system({ components: ["cyrene", "water"], model: "MOD-UNIFAC-2" }), /Cyrene has no Modified UNIFAC 2\.0 groups \(no DDBST assignment/);
+  assert.throws(() => system({ components: ["maleic-anhydride", "water"], model: "MOD-UNIFAC-2" }),
+    /Maleic anhydride has no vapour-pressure record|Maleic anhydride has no Modified UNIFAC 2\.0 groups \(its structure cannot be split/);
+  // a furan ring is built from the groups the method has (CHO, C=C, ring CH), and its record says what is left out
+  assert.match(comps["furfuryl-alcohol"].modUnifac.source, /no furan-ring subgroup.*aromatic character are not represented/);
+  const f = system({ components: ["furfuryl-alcohol", "water"], model: "MOD-UNIFAC-2" }).gammas([0.5, 0.5], 350);
+  assert.ok(f.every(g => Number.isFinite(g) && g > 0));
   // every group assignment states its source; every component either has groups or says why not
   for (const [id, c] of Object.entries(comps)) {
     assert.ok(c.modUnifac, `${id}: modUnifac`);
     if (c.modUnifac.groups) assert.match(c.modUnifac.source, /Modified UNIFAC 2\.0 subgroups/);
     else assert.equal(c.modUnifac.available, false, id);
   }
+});
+
+test("water + gamma-valerolactone: the known deviation of Modified UNIFAC 2.0 from measured bubble temperatures", () => {
+  // Havasi et al. 2016 (ThermoML Archive), bubble temperatures stated within 2.1 K; the prediction is too low and
+  // predicts a liquid split, as src/data/known-issues.json says (reported, not a target)
+  const d = load("../validation/data/water_gvl_tx_havasi2016.json");
+  const s = system({ components: ["water", "gvl"], model: "MOD-UNIFAC-2" });
+  const bounds = { 101.325: [-3.5, -2.5], 50.6: [-7.8, -6.8], 10.1: [-7.4, -6.4] };
+  for (const st of d.sets) {
+    const dev = st.rows.filter(r => r[0] > 0 && r[0] < 1).map(([x, T]) => s.bubbleT([x, 1 - x], st.P_kPa).T - T);
+    const mean = dev.reduce((a, b) => a + b, 0) / dev.length;
+    const [lo, hi] = bounds[st.P_kPa];
+    assert.ok(mean > lo && mean < hi, `${st.P_kPa} kPa: mean deviation ${mean.toFixed(2)} K`);
+  }
+  assert.equal(s.isLiquidStable([0.6, 0.4], 330), false);
+  const issue = load("../src/data/known-issues.json").issues.find(k => k.model === "MOD-UNIFAC-2" && k.components.includes("gvl"));
+  assert.match(issue.message, /3\.0 K at 101\.3 kPa, 7\.3 K at 50\.6 kPa and 6\.9 K at 10\.1 kPa/);
 });
 
 const TXY = [

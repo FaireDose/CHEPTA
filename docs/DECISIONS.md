@@ -85,15 +85,17 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      - 3a (furans, 1,3-propanediol) and 3b (levulinate esters; levulinic acid with a gap between its vapour-pressure
        and density records) done; levulinic acid's gap: wanted liquid densities above 375 K, or vapour pressures between
        343 and 375 K by a static or ebulliometric method, from an open source;
-     - held: gamma-butyrolactone and isoamyl alcohol, whose vapour-pressure sets disagree (not pooled), with a gap too;
-       gamma-butyrolactone misses agreement only by Sun 2017's two values (1.93 % against 1.71 %): accept it or not;
+     - held: isoamyl alcohol, whose twelve vapour-pressure sets disagree (not pooled), with a gap too;
      - 2-methylfuran: its three vapour-pressure sets disagree; under the rule of 2026-10-14 (all sets with the same
        weight) a set is preferred only with a stated reason; find one (independent boiling points, calorimetric
        enthalpy of vaporization) or keep the merged record;
-     - Modified UNIFAC 2.0 groups for a person to choose: gamma-butyrolactone, 2-methyltetrahydrofuran, Cyrene,
-       ethylene and propylene carbonate;
-     - 3c, the molecules without measured critical constants (GVL, the lactates, furfuryl alcohol, THFA,
-       2,3-butanediol, limonene, CPME, solketal), needs the "activity models only" path of the proposal first;
+     - 3c done (GVL, CPME, tetrahydrofurfuryl alcohol, 2,3-butanediol, methyl and ethyl lactate, limonene, furfuryl
+       alcohol, through the path for components without critical constants; gamma-butyrolactone, with its gap); no open vapour pressures: HMF, lactic
+       acid, lactide, solketal, alpha-angelica lactone;
+     - Modified UNIFAC 2.0: the furans are built from other groups (CHO, C=C, ring CH), a rough prediction; maleic
+       anhydride and the small gases have no groups; check the furans against open binary VLE data when a pair needs them;
+     - Modified UNIFAC 2.0 groups chosen by the user (asked 2026-10-14): part of the work on adding the user's own
+       data, not before (tier "user", subgroups and atom balance checked, a group picker in the interface);
   4. the "nonvolatile" component class;
   5. batch 4, sugars and acids as solids.
   - Six names still need a CAS number: xylose, erythritol, muconic acid, levoglucosenone,

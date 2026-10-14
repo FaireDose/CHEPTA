@@ -9,7 +9,7 @@ the records need, the report shows what each source of AGENTS.md rule 1 offers:
   NIST WebBook       the full compound page (Mask=FFFF): Antoine sets, enthalpies of vaporization, liquid and gas heat
                      capacities, melting data; and whether it is a WebBook fluid (transport tables)
   ThermoML Archive   the pure-component values in validation/data/pure/measured/thermoml_<id>.json, per property:
-                     values and articles (fetched first with check_measured.py --fetch, or with --fetch here)
+                     values and articles (fetched with --fetch here)
 
 A property no source has is marked GAP: the open literature has to be searched for it, or the maintainer asked for an
 article, before the batch is fitted. Values are not read here, only what exists and where.
@@ -191,7 +191,7 @@ def main():
     ap.add_argument("--batch", type=int, help="all components of this registry batch")
     ap.add_argument("--chemsep", required=True, nargs="+", help="chemsep1.xml and chemsep2.xml")
     ap.add_argument("--cache", type=Path, required=True, help="directory for the downloaded WebBook pages and ThermoML records")
-    ap.add_argument("--fetch", action="store_true", help="fetch the ThermoML values first (check_measured.py --fetch)")
+    ap.add_argument("--fetch", action="store_true", help="fetch the ThermoML values first")
     ap.add_argument("--md", type=Path, help="also write the report as Markdown")
     ap.add_argument("--new", nargs="+", default=[], metavar="ID:CAS", help="components not in the registry yet")
     a = ap.parse_args()

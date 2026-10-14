@@ -80,6 +80,9 @@ THERMOML_PROPS = {
     "Thermal conductivity, W/m/K": ("liquidThermalConductivity", 1.0, "Liquid"),
     "Molar enthalpy of vaporization or sublimation, kJ/mol": ("heatOfVaporization", 1000.0, "Liquid"),
     "Normal boiling temperature, K": ("Tb", 1.0, "Liquid"),
+    # the boiling temperature of the pure component at a stated pressure (the x = 1 end of an isobaric set): a vapour
+    # pressure, read by values("vapourPressure") with T and P swapped
+    "Boiling temperature at pressure P, K": ("boilingT", 1.0, "Liquid"),
     "Critical temperature, K": ("Tc", 1.0, None),
     "Critical pressure, kPa": ("Pc", 1000.0, None),
     # melting data, for validation/python/fusion_data.py (proposal 0009, batch 2: where the WebBook and ChemSep have none)
@@ -202,6 +205,127 @@ COMPONENTS = {
         "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
         "cp0": None,
     },
+    # proposal 0009, batch 3, third part: molecules with no measured critical constants in any open source; activity
+    # models with an ideal-gas vapour only (src/thermo/critical.js)
+    "gvl": {
+        "name": "gamma-Valerolactone", "cas": "108-29-2", "webbook": "C108292", "proposal": "proposal 0009, batch 3",
+        "aliases": ["γ-valerolactone", "gvl", "5-methyloxolan-2-one", "4-pentanolide", "valerolactone"],
+        "thermoml_queries": ["gamma-valerolactone", "5-methyloxolan-2-one"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        # Stull (1947), a compilation, as a cross-check only
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "the calorimetric value of Leitao et al. (1990) is at 298.15 K only",
+        "cp0": None,
+    },
+    "furfuryl-alcohol": {
+        # its two vapour-pressure sets disagree (Tai 2014, three values at 353-408 K, lie 4-7 % above Negadi 2014, 27
+        # values at 273-412 K, beyond the stated uncertainties); both reach the measured normal boiling temperatures of
+        # the WebBook (442.5-444.15 K), so the independent check does not single out one. The maintainer chose Negadi
+        # 2014 (2026-10-14): more values over a wider range (27 distinct values; the archive lists 9 of them twice)
+        "name": "Furfuryl alcohol", "cas": "98-00-0", "webbook": "C98000", "proposal": "proposal 0009, batch 3",
+        "aliases": ["2-furanmethanol", "furan-2-ylmethanol", "2-furylmethanol", "furfural alcohol"],
+        "thermoml_queries": ["furfuryl alcohol", "furan-2-ylmethanol"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "vp_exclude": {"Tai 2014": "its three values at 353-408 K lie 4-7 % above Negadi 2014, beyond the stated "
+                                   "uncertainties, and no independent check singles out one set; the maintainer chose "
+                                   "Negadi 2014, with 27 values over 273-412 K (2026-10-14)"},
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
+        "cp0": None,
+    },
+    "thfa": {
+        "name": "Tetrahydrofurfuryl alcohol", "cas": "97-99-4", "webbook": "C97994", "proposal": "proposal 0009, batch 3",
+        "aliases": ["tetrahydro-2-furanmethanol", "oxolan-2-ylmethanol", "thfa"],
+        "thermoml_queries": ["tetrahydrofurfuryl alcohol", "oxolan-2-ylmethanol"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        # the measured vapour pressures (Lomba 2014) end at 448 K and 97.9 kPa, so the record has no normal boiling
+        # point (Tb_note). The WebBook value of Moshkin (1955, 451.0 K) is not used to complete the curve: fitted with
+        # it, the curve misses Lomba's values at 428-448 K by 2-3.7 %, beyond their stated uncertainties (Lomba's own
+        # curve reaches 101.325 kPa at about 449.5 K)
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
+        "cp0": None,
+    },
+    "methyl-lactate": {
+        # Lomba 2014 misses the agreement test narrowly (2.96 % against its stated 2.59 %; Sanz 2005: three values at
+        # 283-303 K, stated 4.6-24 %); Lomba's own curve meets the measured boiling temperature of Lecat (417.0 K) within
+        # 0.3 K. The maintainer accepted the narrow miss (2026-10-14)
+        "vp_accept": {"Lomba 2014": 2.96},
+        "name": "Methyl lactate", "cas": "547-64-8", "webbook": "C547648", "proposal": "proposal 0009, batch 3",
+        "aliases": ["methyl 2-hydroxypropanoate", "lactic acid methyl ester"],
+        "thermoml_queries": ["methyl lactate", "methyl 2-oxidanylpropanoate"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
+        "cp0": None,
+    },
+    "ethyl-lactate": {
+        # Resa 2010 (two boiling temperatures at 101 kPa, 427.6 K) misses the agreement test narrowly (1.94 % against its
+        # stated 1.70 %); the other boiling temperatures are 425.0 K (Resa 2006) and 426.2-426.7 K (Matsuda 2016, Lomba
+        # 2014). The maintainer accepted the narrow miss (2026-10-14)
+        "vp_accept": {"Resa 2010": 1.94},
+        "name": "Ethyl lactate", "cas": "97-64-3", "webbook": "C97643", "proposal": "proposal 0009, batch 3",
+        "aliases": ["ethyl 2-hydroxypropanoate", "lactic acid ethyl ester"],
+        "thermoml_queries": ["ethyl lactate", "ethyl 2-oxidanylpropanoate"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
+        "cp0": None,
+    },
+    "cpme": {
+        "name": "Cyclopentyl methyl ether", "cas": "5614-37-9", "webbook": "C5614379", "proposal": "proposal 0009, batch 3",
+        "aliases": ["methoxycyclopentane", "cpme"],
+        "thermoml_queries": ["cyclopentyl methyl ether", "methoxycyclopentane"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
+        "cp0": None,
+    },
+    "limonene": {
+        # Wu 2019 (two boiling temperatures at 101 kPa, 449.3-449.6 K) misses the agreement test narrowly (1.83 % against
+        # its stated 1.62 %); the other measured boiling temperatures are 450.34 K (Sun 2011) and 450.2-450.8 K from the
+        # curves of Ngema 2012 and Clara 2009. The maintainer accepted the narrow miss (2026-10-14)
+        "vp_accept": {"Wu 2019": 1.83},
+        "name": "Limonene", "cas": "138-86-3", "webbook": "C138863", "proposal": "proposal 0009, batch 3",
+        "aliases": ["dipentene", "d-limonene", "(R)-limonene", "1-methyl-4-(prop-1-en-2-yl)cyclohexene"],
+        "thermoml_queries": ["limonene", "d-limonene", "(R)-limonene", "dipentene", "1-methyl-4-prop-1-en-2-yl-cyclohexene",
+                             "(+)-limonene"],
+        # the archive's values of either enantiomer and of the racemate count (mirror images have the same thermodynamic
+        # properties; most measurements are of (R)-limonene)
+        "inchi_no_stereo": True,
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures or thermogravimetry",
+        "cp0": None,
+    },
+    "2-3-butanediol": {
+        "name": "2,3-Butanediol", "cas": "513-85-9", "webbook": "C513859", "proposal": "proposal 0009, batch 3",
+        "aliases": ["butane-2,3-diol", "2,3-butylene glycol", "2,3-bdo", "dimethylethylene glycol"],
+        "thermoml_queries": ["2,3-butanediol", "butane-2,3-diol", "2,3-butylene glycol", "meso-2,3-butanediol"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        # no measured vapour pressure in the archive or open articles: the WebBook's Antoine equation of Stull (1947, a
+        # compilation, 317-455 K) is the only source, as for levulinic acid; the measured normal boiling temperatures of
+        # four articles (ThermoML Archive) are the independent check
+        "antoine_fit": ["Stull, 1947"],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
+        "cp0": None,
+    },
     # proposal 0009, batch 3 (volatile platform molecules), first part: the six with measured critical constants
     "furan": {
         "name": "Furan", "cas": "110-00-9", "webbook": "C110009", "proposal": "proposal 0009, batch 3",
@@ -249,14 +373,10 @@ COMPONENTS = {
         "aliases": ["γ-butyrolactone", "butyrolactone", "oxolan-2-one", "gbl"],
         "thermoml_queries": ["gamma-butyrolactone", "oxolan-2-one"],
         "webbook_individual": ["HVAP"],
-        # not written: its open measured vapour pressures start at 377 K and its liquid densities end at 333 K (a gap the
-        # maintainer accepted, 2026-10-14), but its vapour-pressure sets disagree, so they are not pooled (the rule of
-        # 2026-10-14): Yang 2016, Yan 2017 and Sun 2017 lie 1.2-1.9 % below the pooled curve, Mathuni 2011 and
-        # VonNiederhausern 2006 0.6-1.3 % above; Sun 2017 (two values) by more than its stated uncertainty
-        "hold": "its vapour-pressure sets disagree (Yang 2016, Yan 2017 and Sun 2017 lie 1.2-1.9 % below the curve of all "
-                "the sets, Mathuni 2011 and VonNiederhausern 2006 0.6-1.3 % above; Sun 2017 by more than its stated "
-                "uncertainty), so they are not pooled, and no reason to prefer one has been found; also no liquid state "
-                "has both a vapour pressure (from 377 K) and a density (to 333 K)",
+        # its open measured vapour pressures start at 377 K and its liquid densities end at 333 K (a gap the maintainer
+        # accepted, 2026-10-14). Its vapour-pressure sets are pooled: Sun 2017 (two values) misses the agreement test
+        # narrowly (1.93 % against its stated 1.71 %), and the maintainer accepted the narrow miss (2026-10-14)
+        "vp_accept": {"Sun 2017": 1.93},
         # the archive also has VonNiederhausern et al. (2006): 732.5 K and 5.10 MPa, with larger uncertainties
         "critical": "Wilson, Wilson, et al., 1996",
         "antoine_fit": [],
@@ -375,13 +495,18 @@ def norm_inchi(s):
 
 def fetch_thermoml(cid, cache, C=None):
     """Every pure-component value of the compound in the archive, and the pure end points of binary sets.
-    C: {"cas", "thermoml_queries"} (default: COMPONENTS[cid]); also used by check_measured.py."""
+    C: {"cas", "thermoml_queries"} (default: COMPONENTS[cid]); also used by gap_report.py."""
     from chemicals.identifiers import search_chemical
     C = C or COMPONENTS[cid]
     meta = search_chemical(C["cas"])
     if meta.CASs != C["cas"]:
         raise SystemExit("%s: CAS %s does not match chemicals (%s)" % (cid, C["cas"], meta.CASs))
     inchi = norm_inchi(meta.InChI)
+    # "inchi_no_stereo": the archive's values of either enantiomer count (mirror images have the same thermodynamic
+    # properties; limonene); the stereo layers of the InChI are ignored
+    unstereo = lambda s: re.sub(r"/[tmsb][^/]*", "", s)  # noqa: E731
+    if C.get("inchi_no_stereo"):
+        inchi = unstereo(inchi)
     dois = sorted({h["content"]["Citation"]["sDOI"] for q in C["thermoml_queries"] for h in thermoml_search(q)})
     cache.mkdir(parents=True, exist_ok=True)
     rows, articles = [], {}
@@ -390,7 +515,8 @@ def fetch_thermoml(cid, cache, C=None):
         if not f.exists():
             f.write_bytes(get("https://trc.nist.gov/ThermoML/%s.xml" % doi))
         rec = thermoml_read.parse(f.read_bytes())
-        mine = [n for n, c in rec["compounds"].items() if norm_inchi(c["inchi"]) == inchi]
+        mine = [n for n, c in rec["compounds"].items()
+                if (unstereo(norm_inchi(c["inchi"])) if C.get("inchi_no_stereo") else norm_inchi(c["inchi"])) == inchi]
         if not mine:
             continue
         me = mine[0]
@@ -473,7 +599,7 @@ class WebBook:
         """(value, uncertainty, units, method, reference) of every row of a quantity in the phase change table; where
         the table gives only the average (AVG) and the individual values were fetched, those instead."""
         t = self.table("phase change", r"^Quantity")
-        out = [num(r[1]) + (r[2], r[3], r[4]) for r in t["rows"] if r[0] == quantity]
+        out = [num(r[1]) + (r[2], r[3], r[4]) for r in (t["rows"] if t else []) if r[0] == quantity]
         page = self.d["pages"].get("%s values" % INDIVIDUAL.get(quantity, "-"))
         if page:
             out = [o for o in out if o[3] != "AVG"]
@@ -578,6 +704,16 @@ class ThermoML:
         out, seen = [], set()
         for r in self.d["rows"]:
             spec = THERMOML_PROPS.get(r["property"])
+            if record == "vapourPressure" and spec and spec[0] == "boilingT" and r["P_kPa"]:
+                # a boiling temperature at a stated pressure: the vapour pressure P at T; its stated uncertainty is on
+                # T, so the relative uncertainty of P is not stated (None: 1 % in the pooled fit)
+                key = (r["doi"], r["value"], r["P_kPa"])
+                if key not in seen:
+                    seen.add(key)
+                    out.append({"T": r["value"], "y": 1000.0 * r["P_kPa"], "u_rel": None, "ref": self.short(r["doi"]),
+                                "doi": r["doi"], "from": "article" if r["doi"] in self.from_article else "ThermoML",
+                                "set": r.get("set"), "boiling": True})
+                continue
             if not spec or spec[0] != record:
                 continue
             if spec[2] and spec[2] not in r["phases"] and not (
@@ -743,7 +879,7 @@ def fit_within_uncertainty(cid, prop, form, pts, Tc=None, fixed=()):
     return coeffs, use, excluded, m
 
 
-def fit_consensus(cid, prop, form, pts, fixed=(), exclude=None, floor=0.005, none_u=0.01):
+def fit_consensus(cid, prop, form, pts, fixed=(), exclude=None, floor=0.005, none_u=0.01, Tc=None, accept=None):
     """The rule of 2026-10-14 (docs/decisions/2026-10-14-07-...): a small stated uncertainty is the authors' claim,
     not proof, so no set is preferred for it; the sets are pooled only when they agree (each set's mean deviation from
     the pooled curve within its mean stated uncertainty), else the build stops and asks for a set to be chosen or left
@@ -755,12 +891,14 @@ def fit_consensus(cid, prop, form, pts, fixed=(), exclude=None, floor=0.005, non
     kept no longer change (at most a third left out). Of the DIPPR 101 variants, the fewest coefficients whose weighted
     residual is within 10 % of the best one and whose enthalpy of vaporization (ideal gas, R T^2 dlnP/dT) falls with
     temperature over the measured range below 0.7 Tc (above it the real-gas factor makes the ideal-gas value rise).
-    Returns coeffs, the values used, the values left out, the maximum deviation and each set's mean deviation (%)."""
+    A set that misses the agreement test narrowly may be pooled when the maintainer accepted it ("vp_accept":
+    {set: the mean deviation accepted, %}); the build still stops if the set's mean deviation grows beyond that.
+    Returns coeffs, the values used, the values left out, the maximum deviation, each set's mean deviation (%) and the
+    accepted misses (text)."""
     exclude = exclude or {}
     cand = [p for p in pts if p["ref"] not in exclude]
     by_set = [dict(p, why=exclude[p["ref"]]) for p in pts if p["ref"] in exclude]
     u_of = lambda p: max(p["u_rel"] if p["u_rel"] else none_u, floor)  # noqa: E731
-    Tc = max(p["T"] for p in fixed) if fixed else None
 
     def fit(use):
         cnt = collections.Counter(p["ref"] for p in use)
@@ -811,11 +949,16 @@ def fit_consensus(cid, prop, form, pts, fixed=(), exclude=None, floor=0.005, non
     # curve within its mean stated uncertainty; otherwise a set has to be chosen, or left out, with a stated reason
     disagree = ["%s (mean deviation %+.2f %%, mean stated uncertainty %.2f %%)" % (k, np.mean([d for d, _ in v]),
                                                                               np.mean([u for _, u in v]))
-                for k, v in sets.items() if abs(np.mean([d for d, _ in v])) > np.mean([u for _, u in v])]
+                for k, v in sets.items() if abs(np.mean([d for d, _ in v])) > np.mean([u for _, u in v])
+                and not (k in (accept or {}) and abs(np.mean([d for d, _ in v])) <= accept[k] + 0.05)]
+    accepted = ["%s (mean deviation %+.2f %%, mean stated uncertainty %.2f %%)" % (k, np.mean([d for d, _ in v]),
+                                                                              np.mean([u for _, u in v]))
+                for k, v in sets.items() if k in (accept or {}) and abs(np.mean([d for d, _ in v])) > np.mean([u for _, u in v])]
     if disagree:
         raise SystemExit("%s %s: the sets disagree, so they are not pooled: %s; choose or leave out a set with a stated "
                          "reason (vp_exclude)" % (cid, prop, "; ".join(disagree)))
-    return coeffs, use + list(fixed), excluded, m, {k: float(np.mean([d for d, _ in v])) for k, v in sets.items()}
+    return (coeffs, use + list(fixed), excluded, m, {k: float(np.mean([d for d, _ in v])) for k, v in sets.items()},
+            accepted)
 
 
 def fit_measured_loose(cid, prop, form, pts, target, Tc=None, fixed=()):
@@ -901,7 +1044,13 @@ def refs_of(use, tml):
 def critical(cid, C, wb, tml):
     """Tc (K) and Pc (Pa) as chosen for the component: one WebBook reference for both ("critical"), one for each
     ("critical_Tc", "critical_Pc"), or one article of the ThermoML Archive ("critical_thermoml", its DOI). Returns
-    Tc, Pc, who (the reference), where (the source) and the sentence for constants_source."""
+    Tc, Pc, who (the reference), where (the source) and the sentence for constants_source. A component with no
+    measured critical constants in any open source ("no_critical": the sources searched) gets None for both: it is used
+    with activity models and an ideal-gas vapour only (proposal 0009; src/thermo/critical.js)."""
+    if "no_critical" in C:
+        return None, None, None, None, ("Tc and Pc: no measured values in the open sources (searched: %s); not estimated, "
+                                        "so the component is used with activity models and an ideal-gas vapour only "
+                                        "(proposal 0009)" % "; ".join(C["no_critical"]))
     if "critical_thermoml" in C:
         doi = C["critical_thermoml"]
         tc = [p for p in tml.values("Tc") if p["doi"] == doi]
@@ -942,18 +1091,81 @@ def clapeyron(cid, C, psat, Tlo, Thi, Tc, Pc, omega):
     return out
 
 
+def clapeyron_ideal(psat, Tlo, Thi, n=25):
+    """Without critical constants: the Clapeyron equation with an ideal-gas vapour, dHvap = R T^2 dln(Psat)/dT, at
+    low pressure (the caller keeps Psat at or below 10 kPa), where the liquid volume is negligible against the vapour's
+    (the caller states the largest P v_L / R T from the density record)."""
+    out = []
+    for T in np.linspace(Tlo, Thi, n):
+        h = 1e-3 * T
+        out.append({"T": float(T), "y": float(8.314462618 * T * T * (math.log(psat(T + h)) - math.log(psat(T - h))) / (2 * h)),
+                    "u_rel": None, "doi": None, "ref": "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)"})
+    return out
+
+
+def dh_clapeyron_ideal(cid, C, wb, tml, measured, psat, Tlow, Tdata, records, points, log, wb4, MW):
+    """dh_clapeyron without critical constants: Clapeyron values with an ideal-gas vapour, from the lowest measured
+    vapour pressure up to where Psat reaches 10 kPa or the last measured vapour pressure, fitted (DIPPR 100, a
+    polynomial in T) together with the calorimetric values, which are never left out and must be met within their
+    stated uncertainty (1 % where none is stated)."""
+    T10 = brentq(lambda T: psat(T) - 1e4, Tlow, Tdata) if psat(Tdata) > 1e4 else Tdata
+    Thi = min(T10, Tdata)
+    pts = clapeyron_ideal(psat, Tlow, Thi)
+    fixed = [p for p in measured if (p.get("method") == "C" or p.get("doi")) and (p["u_rel"] is None or p["u_rel"] <= 0.02)]
+    fixed = [p for p in fixed if Tlow - 30 <= p["T"] <= Thi + 30]
+    coeffs, use, exc, m = fit_measured(cid, "heatOfVaporization", "DIPPR100", pts, 0.01, fixed=fixed)
+    f = lambda T: float(ev("DIPPR100", coeffs, np.array([T]))[0])  # noqa: E731
+    checks, bad = [], []
+    for p in measured:
+        d = f(p["T"]) / p["y"] - 1
+        checks.append("%s, %.2f K: %+.2f %%%s%s" % (
+            p["ref"], p["T"], 100 * d, " (stated uncertainty %.2g %%)" % (100 * p["u_rel"]) if p["u_rel"] else "",
+            "" if p in fixed else ", not fitted"))
+        if p in fixed and abs(d) > max(0.01, p["u_rel"] or 0):
+            bad.append(checks[-1])
+    if bad:
+        raise SystemExit("%s: the record misses measured enthalpies of vaporization: %s" % (cid, bad))
+    # the liquid volume neglected: the largest P v_L / R T over the range, from the density record where it applies
+    rho = records.get("liquidDensity")
+    vl = []
+    if rho and rho.get("equation"):
+        for T in np.linspace(max(Tlow, rho["Tmin_K"]), min(Thi, rho["Tmax_K"]), 5):
+            r = float(ev(rho["equation"], rho["coefficients"], np.array([T]), rho.get("Tc_K"))[0])
+            vl.append(psat(T) * (MW / 1000 / r) / (8.314462618 * T))
+    vl_text = ("largest P v_L / R T %.2g where the density record applies" % max(vl)) if vl else "no liquid density in this range"
+    records["heatOfVaporization"], points["heatOfVaporization"] = record(
+        "heatOfVaporization", "DIPPR100", coeffs, use, exc, m, None,
+        "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the "
+        "NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook)",
+        ["validation/python/measured_components.py (clapeyron_ideal)"] + sorted({p["ref"] for p in fixed}),
+        "calculated from the open measured data of the vapour-pressure record; " + WEBBOOK_ACCESS + " (%s)" % wb4,
+        notes=("No measured critical constants (proposal 0009): dHvap = R T^2 dln(Psat)/dT, the Clapeyron equation with "
+               "an ideal-gas vapour and the liquid volume neglected (%s), Psat from the vapour-pressure record of this "
+               "component, %.2f-%.2f K (up to Psat = 10 kPa or the last measured vapour pressure); DIPPR 100 (a "
+               "polynomial in T). Chosen because %s. Measured values (calorimetric ones fitted with weight 10 and never "
+               "left out, met within their stated uncertainty, 1 %% where none is stated; the others compared): %s." % (
+                   vl_text, Tlow, Thi, C["dHvap_why"], "; ".join(checks) if checks else "none")))
+    for d in (records["heatOfVaporization"]["source"], points["heatOfVaporization"]["source"]):
+        d["fit"] = d["fit"].replace("%d measured values" % len(use), "%d Clapeyron values and %d measured values" % (
+            len(use) - len(fixed), len(fixed)))
+    log.append("%-17s heatOfVaporization        Clapeyron (ideal gas), %d values, max dev %s %%; calorimetric: %s" % (
+        cid, len(use), pct(m), "; ".join(checks) or "none"))
+
+
 def dh_measured(cid, C, wb, tml, pts, Tc, records, points, log, wb4):
     """The enthalpy-of-vaporization record fitted to the chosen measured values (calorimetric, critically evaluated)."""
-    coeffs, use, exc, m = fit_measured(cid, "heatOfVaporization", "DIPPR106", pts, 0.01, Tc=Tc)
+    form = "DIPPR106" if Tc else "DIPPR100"  # without critical constants a polynomial in T over the measured range
+    coeffs, use, exc, m = fit_measured(cid, "heatOfVaporization", form, pts, 0.01, Tc=Tc)
     others = [e for e in wb.dhvap() if not (e["method"] in C["dHvap_methods"] or e["reference"] in C["dHvap_refs"])]
-    cross = ["%s at %.0f K: %+.1f %%" % (e["reference"], e["T_K"], 100 * (float(ev("DIPPR106", coeffs, np.array([e["T_K"]]), Tc)[0]) / (1000 * e["value"]) - 1))
+    cross = ["%s at %.0f K: %+.1f %%" % (e["reference"], e["T_K"], 100 * (float(ev(form, coeffs, np.array([e["T_K"]]), Tc)[0]) / (1000 * e["value"]) - 1))
              for e in others]
     records["heatOfVaporization"], points["heatOfVaporization"] = record(
-        "heatOfVaporization", "DIPPR106", coeffs, use, exc, m, Tc,
+        "heatOfVaporization", form, coeffs, use, exc, m, Tc,
         "Measured enthalpies of vaporization (NIST Chemistry WebBook; calorimetric and critically evaluated values)",
         [p["ref"] for p in use], WEBBOOK_ACCESS + " (%s)" % wb4,
-        notes=("DIPPR 106 with the critical temperature %.2f K. Values derived from vapour pressures, compared with the "
-               "record (not fitted): %s." % (Tc, "; ".join(cross) if cross else "none")))
+        notes=("%s. Values derived from vapour pressures, compared with the record (not fitted): %s." % (
+            "DIPPR 106 with the critical temperature %.2f K" % Tc if Tc else "DIPPR 100 (no measured critical temperature)",
+            "; ".join(cross) if cross else "none")))
     log.append("%-17s heatOfVaporization        %3d values, %d left out, max dev %s %%" % (cid, len(use), len(exc), pct(m)))
 
 
@@ -1033,7 +1245,8 @@ def build(cid, log):
             for T in np.linspace(s["Tmin_K"], s["Tmax_K"], 9):
                 pts.append({"T": float(T), "y": 1e5 * 10 ** (s["A"] - s["B"] / (T + s["C"])), "u_rel": None,
                             "ref": "%s (Antoine equation, NIST WebBook)" % s["reference"], "doi": None, "from": "WebBook"})
-    crit = {"T": Tc, "y": Pc, "u_rel": None, "ref": "%s (critical point, %s)" % (crit_who, crit_where), "doi": None}
+    nocrit = Tc is None  # no measured critical constants: the curve covers the measured range only
+    crit = None if nocrit else {"T": Tc, "y": Pc, "u_rel": None, "ref": "%s (critical point, %s)" % (crit_who, crit_where), "doi": None}
     # "vp_tb": the normal boiling temperature as a vapour pressure of 101.325 kPa, fitted like the critical point (never
     # left out), where the measured vapour pressures stop well below it: "thermoml" (the archive's measured values) or
     # the reference of a WebBook Tboil row
@@ -1048,7 +1261,7 @@ def build(cid, log):
                for v, u, unit, method, ref in wb.constants("Tboil") if ref == C["vp_tb"] and unit == "K"]
     if C.get("vp_tb") and len(tbp) != 1:
         raise SystemExit("%s: %d normal boiling temperatures for vp_tb %s" % (cid, len(tbp), C["vp_tb"]))
-    fix = [crit] + tbp
+    fix = ([] if nocrit else [crit]) + tbp
     kept = []
     if C.get("vp_fit") == "loose":
         # few values within the target: those with larger stated uncertainties confirm the fit where it meets them
@@ -1070,8 +1283,9 @@ def build(cid, log):
                                 why="deviates by more than its stated uncertainty from the fit of %s" % " and ".join(C["vp_anchor"])))
     elif C.get("vp_fit") == "consensus":
         # every set together, each paper with the same weight (the rule of 2026-10-14)
-        coeffs, use, exc, m, set_dev = fit_consensus(cid, "vapourPressure", "DIPPR101", pts, fixed=fix,
-                                                     exclude=C.get("vp_exclude"))
+        coeffs, use, exc, m, set_dev, accepted = fit_consensus(cid, "vapourPressure", "DIPPR101", pts, fixed=fix,
+                                                               exclude=C.get("vp_exclude"), Tc=Tc,
+                                                               accept=C.get("vp_accept"))
     elif C.get("vp_fit") == "within":
         # no set within the target over the range: every value fitted within its own stated uncertainty
         coeffs, use, exc, m = fit_within_uncertainty(cid, "vapourPressure", "DIPPR101", pts, fixed=fix)
@@ -1083,18 +1297,30 @@ def build(cid, log):
     Tdata = max(p["T"] for p in use + kept if p is not crit)
     Tlow = min(p["T"] for p in use + kept)
     n_art = sum(1 for p in use if p.get("from") == "article")
-    vp_fit = ("%d measured values (%d from the ThermoML Archive%s)%s and the critical point, %.2f-%.2f K, max deviation %s %%%s. "
-              "Between %.2f K and the critical point the curve is held only by the critical point."
+    vp_fit = ("%d measured values (%d from the ThermoML Archive%s)%s%s, %.2f-%.2f K, max deviation %s %%%s. %s"
               % (len(use), sum(1 for p in use if p.get("from") == "ThermoML"),
                  ", %d from open-access articles" % n_art if n_art else "",
                  ", the normal boiling temperature %.2f K (%s, fitted as 101.325 kPa, never left out)" % (
-                     tbp[0]["T"], tbp[0]["ref"]) if tbp else "", min(p["T"] for p in use), Tc, pct(m),
-                 ", each within its own stated uncertainty" if C.get("vp_fit") == "within" else "", Tdata))
+                     tbp[0]["T"], tbp[0]["ref"]) if tbp else "", "" if nocrit else " and the critical point",
+                 min(p["T"] for p in use), Tdata if nocrit else Tc, pct(m),
+                 ", each within its own stated uncertainty" if C.get("vp_fit") == "within" else "",
+                 "No measured critical constants: the record covers the measured temperatures only." if nocrit else
+                 "Between %.2f K and the critical point the curve is held only by the critical point." % Tdata))
     if C.get("vp_fit") == "consensus":
         vp_fit += (" All the measured sets fitted together, each article with the same weight (no set preferred for a "
                    "smaller stated uncertainty), pooled because they agree: each set lies within its mean stated "
-                   "uncertainty of the curve on average; mean deviation of the fit from each set: %s." % "; ".join(
-                       "%s %+.2f %%" % (k, v) for k, v in sorted(set_dev.items())))
+                   "uncertainty of the curve on average%s; mean deviation of the fit from each set: %s." % (
+                       ", except a narrow miss the maintainer accepted (2026-10-14): %s" % "; ".join(accepted)
+                       if accepted else "",
+                       "; ".join("%s %+.2f %%" % (k, v) for k, v in sorted(set_dev.items()))))
+        tight = [abs(float(ev("DIPPR101", coeffs, np.array([p["T"]]))[0]) / p["y"] - 1) for p in use
+                 if p.get("u_rel") is not None and p["u_rel"] <= 0.10]
+        loose = [p for p in use if p.get("u_rel") is not None and p["u_rel"] > 0.10]
+        if loose and tight:
+            vp_fit += (" The largest deviations are at values whose stated uncertainty exceeds 10 %% (%d values, %.2g-%.2g %%); "
+                       "among the values stated within 10 %%, the largest deviation is %s %%." % (
+                           len(loose), 100 * min(p["u_rel"] for p in loose), 100 * max(p["u_rel"] for p in loose),
+                           pct(max(tight))))
     if C.get("vp_why"):
         vp_fit += " " + C["vp_why"]
     if C.get("vp_fit") == "anchor":
@@ -1107,7 +1333,7 @@ def build(cid, log):
                        len(kept), min(u), max(u), min(p["T"] for p in kept), max(p["T"] for p in kept)))
         refs += [r for r in refs_of([p for p in kept if p.get("doi")], tml) if r not in refs]
     vp = {"equation": "DIPPR101", "form": "ln(P/Pa) = A + B/T + C ln T + D T^E", "units": "Pa",
-          **{k: coeffs[k] for k in "ABCDE"}, "Tmin_K": rnd(Tlow, 8), "Tmax_K": rnd(Tc, 8),
+          **{k: coeffs[k] for k in "ABCDE"}, "Tmin_K": rnd(Tlow, 8), "Tmax_K": rnd(Tdata if nocrit else Tc, 8),
           "tier": "fitted",
           "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): %s. %s" % (
               "; ".join(refs), vp_fit)}
@@ -1132,8 +1358,11 @@ def build(cid, log):
     log.append("%-17s vapourPressure            %3d values, %d left out, max dev %s %%" % (cid, len(use), len(exc), pct(m)))
     vpc = dict(coeffs)  # (coeffs is reused by the records below)
     psat = lambda T: float(ev("DIPPR101", vpc, np.array([T]))[0])  # noqa: E731
-    Tb = float("%.7g" % brentq(lambda T: psat(T) - 101325.0, vp["Tmin_K"], Tc - 1))
-    omega = float("%.6g" % (-math.log10(psat(0.7 * Tc) / Pc) - 1))
+    if nocrit and psat(vp["Tmax_K"]) < 101325.0:
+        Tb = None  # the measured vapour pressures stay below 101.325 kPa
+    else:
+        Tb = float("%.7g" % brentq(lambda T: psat(T) - 101325.0, vp["Tmin_K"], vp["Tmax_K"] if nocrit else Tc - 1))
+    omega = None if nocrit else float("%.6g" % (-math.log10(psat(0.7 * Tc) / Pc) - 1))
     tb_measured = [(p["y"], p["ref"]) for p in tml.values("Tb")]
     vp_pts["Tb_K_at_101325Pa"] = Tb
     # independent checks of the curve (not fitted): the measured normal boiling temperatures, and the slope against
@@ -1141,18 +1370,24 @@ def build(cid, log):
     if C.get("vp_fit") == "consensus":
         chk = []
         tbs = [t for t, ref in tb_measured if not (C.get("vp_tb") == "thermoml")]
-        if tbs:
+        if tbs and not Tb:
+            T0 = float(np.median(tbs))
+            if vp["Tmin_K"] <= T0 <= vp["Tmax_K"]:
+                chk.append("at the measured normal boiling temperature %.2f K (%d articles) the record gives %.2f kPa, %+.1f %% "
+                           "from 101.325 kPa" % (T0, len(tbs), psat(T0) / 1000, 100 * (psat(T0) / 101325.0 - 1)))
+        if tbs and Tb:
             chk.append("normal boiling temperature %.2f K against the measured %.2f-%.2f K (%d articles, median %.2f K)" % (
                 Tb, min(tbs), max(tbs), len(tbs), float(np.median(tbs))))
         avg = [(v, u) for v, u, unit, method, ref in wb.constants("Tboil") if method == "AVG" and unit == "K"]
-        if avg:
+        if avg and Tb:
             chk.append("normal boiling temperature %.2f K against the WebBook average of the measured values, %g +/- %g K" % (
                 Tb, avg[0][0], avg[0][1]))
         cal = [(e["T_K"], 1000 * e["value"], e["reference"]) for e in wb.dhvap() if e["method"] == "C"]
         cal += [(p["T"], p["y"], p["ref"]) for p in tml.values("heatOfVaporization") if p["u_rel"] and p["u_rel"] <= 0.02]
         cal = [c for c in cal if vp["Tmin_K"] <= c[0] <= Tdata]
         if cal:
-            d = [100 * (clapeyron(cid, C, psat, T0, T0, Tc, Pc, omega)[0]["y"] / v - 1) for T0, v, _ in cal]
+            d = [100 * ((clapeyron_ideal(psat, T0, T0, 1) if nocrit else clapeyron(cid, C, psat, T0, T0, Tc, Pc, omega))[0]["y"] / v - 1)
+                 for T0, v, _ in cal]
             chk.append("enthalpy of vaporization from the curve's slope against %d calorimetric values (%s): %+.1f to %+.1f %%" % (
                 len(cal), "; ".join(sorted({r for _, _, r in cal})), min(d), max(d)))
         if chk:
@@ -1161,11 +1396,13 @@ def build(cid, log):
 
     # liquid density
     pts = tml.values("liquidDensity")
-    coeffs, use, exc, m = fit_measured(cid, "liquidDensity", "DIPPR105", pts, 0.01, Tc=Tc)
+    rho_form = "DIPPR100" if nocrit else "DIPPR105"
+    coeffs, use, exc, m = fit_measured(cid, "liquidDensity", rho_form, pts, 0.01, Tc=Tc)
     records["liquidDensity"], points["liquidDensity"] = record(
-        "liquidDensity", "DIPPR105", coeffs, use, exc, m, Tc,
+        "liquidDensity", rho_form, coeffs, use, exc, m, Tc,
         "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)", refs_of(use, tml), THERMOML_ACCESS,
-        notes="DIPPR 105 with C fixed at the critical temperature %.2f K (%s, %s)." % (Tc, crit_who, crit_where))
+        notes=("DIPPR 100 (a polynomial in T; no measured critical temperature)." if nocrit else
+               "DIPPR 105 with C fixed at the critical temperature %.2f K (%s, %s)." % (Tc, crit_who, crit_where)))
     log.append("%-17s liquidDensity             %3d values, %d left out, max dev %s %%" % (cid, len(use), len(exc), pct(m)))
 
     # ideal-gas heat capacity: the WebBook Shomate equation (JANAF), as for chloroform in fit_properties.py
@@ -1266,13 +1503,15 @@ def build(cid, log):
             pts.append({"T": 298.15, "y": 1000 * v, "u_rel": (u / v) if u else None, "doi": None, "method": method,
                         "ref": "%s (ΔvapH° at 298.15 K, %s, NIST WebBook)" % (ref, "method " + method if method != "N/A" else "compilation")})
     pts += tml.values("heatOfVaporization")
-    if C.get("dHvap") == "clapeyron":
+    if C.get("dHvap") == "clapeyron" and nocrit:
+        dh_clapeyron_ideal(cid, C, wb, tml, pts, psat, Tlow, Tdata, records, points, log, wb4, meta.MW)
+    elif C.get("dHvap") == "clapeyron":
         dh_clapeyron(cid, C, wb, tml, pts, psat, Tlow, Tdata, Tc, Pc, omega, records, points, log, wb4)
     else:
         dh_measured(cid, C, wb, tml, pts, Tc, records, points, log, wb4)
 
     # liquid viscosity, surface tension, liquid thermal conductivity: ThermoML values where there are enough
-    for prop, form, target in (("liquidViscosity", "DIPPR101", 0.03), ("surfaceTension", "DIPPR106", 0.01),
+    for prop, form, target in (("liquidViscosity", "DIPPR101", 0.03), ("surfaceTension", "DIPPR100" if nocrit else "DIPPR106", 0.01),
                                ("liquidThermalConductivity", "DIPPR100", 0.03)):
         fit_or_marker(cid, prop, form, target, tml.values(prop), records, points, log, Tc, tml, searched_common,
                       "Measured values (NIST TRC ThermoML Archive)", THERMOML_ACCESS)
@@ -1281,12 +1520,13 @@ def build(cid, log):
         log.append("%-17s %-25s no open data" % (cid, prop))
     records = {p: records[p] for p in PROPS}
 
-    tb_text = " Tb: where the vapour-pressure record reaches 101.325 kPa (%g K)" % Tb
+    tb_text = (" Tb: where the vapour-pressure record reaches 101.325 kPa (%g K)" % Tb if Tb else
+               " Tb: not reached, the measured vapour pressures stay below 101.325 kPa")
     if tb_measured:
         tb_text += "; measured normal boiling temperatures in the ThermoML Archive: %s" % "; ".join("%.2f K (%s)" % t for t in tb_measured)
     comp = {
         "name": C["name"], "formula": meta.formula, "cas": C["cas"], "aliases": C["aliases"],
-        "MW": rnd(meta.MW, 7), "Tc_K": Tc, "Pc_Pa": rnd(Pc, 7), "Tb_K": Tb, "vapourPressure": vp,
+        "MW": rnd(meta.MW, 7), "Tc_K": Tc, "Pc_Pa": None if nocrit else rnd(Pc, 7), "Tb_K": Tb, "vapourPressure": vp,
         "uniquac_missing": {
             "searched": ["ChemSep v8.3 and v8.31 data 2 (compound not included)",
                          "thermo and chemicals libraries (no UNIQUAC r and q tables)"],
@@ -1299,15 +1539,27 @@ def build(cid, log):
                              "databank (%s).%s." % (crit_text, C.get("proposal", "proposal 0008, Part B"), tb_text)),
         # stated here: the text above names CoolProp only to say it does not have the fluid
         "constants_source_ids": ["nist-webbook"],
-        "omega_source": ("From its definition, -log10(Psat(0.7 Tc)/Pc) - 1, with the vapour-pressure record (measured values "
+        "omega_source": ("Not defined: the acentric factor needs Tc and Pc, which have no measured values in the open "
+                         "sources." if nocrit else
+                         "From its definition, -log10(Psat(0.7 Tc)/Pc) - 1, with the vapour-pressure record (measured values "
                          "of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook; Psat at %.2f K %s)." % (
                              0.7 * Tc, "inside the measured range" if 0.7 * Tc <= Tdata else
                              "between the last measured value at %.2f K and the critical point, so ω is less certain "
                              "than the measured values" % Tdata)),
         "properties": records,
     }
+    if nocrit:
+        # src/thermo/critical.js: activity models with an ideal-gas vapour only; no acentric factor, so no omega source
+        comp["critical"] = {"available": False, "searched": C["no_critical"]}
+        del comp["omega_source"]
+    if Tb is None:
+        comp["Tb_note"] = ("the vapour-pressure record ends with the measured temperatures at %.2f K, where it gives "
+                           "%.4g kPa, below 101.325 kPa: no normal boiling temperature from measured data" % (
+                               vp["Tmax_K"], psat(vp["Tmax_K"]) / 1000))
     points["vapourPressure"] = vp_pts
-    log.append("%-17s Tc %.2f K, Pc %.0f Pa, Tb %.3f K, omega %.4f, MW %.4f" % (cid, Tc, Pc, Tb, omega, meta.MW))
+    log.append("%-17s Tc %s, Pc %s, Tb %s, omega %s, MW %.4f" % (
+        cid, "%.2f K" % Tc if Tc else "none", "%.0f Pa" % Pc if Pc else "none", "%.3f K" % Tb if Tb else "none",
+        "%.4f" % omega if omega is not None else "none", meta.MW))
     return comp, points
 
 # ---------------------------------------------------------------------------------------------
@@ -1329,7 +1581,9 @@ def write_doc(comps):
          "the sources searched.", ""]
     for cid, c in comps.items():
         L += ["## %s (%s, CAS %s)" % (c["name"], c["formula"], c["cas"]), "",
-              "- Tc %.2f K, Pc %.4g MPa, Tb %.3f K, ω %.4f, M %.4f g/mol" % (c["Tc_K"], c["Pc_Pa"] / 1e6, c["Tb_K"], c["omega"], c["MW"]),
+              ("- Tc %.2f K, Pc %.4g MPa, Tb %.3f K, ω %.4f, M %.4f g/mol" % (c["Tc_K"], c["Pc_Pa"] / 1e6, c["Tb_K"], c["omega"], c["MW"])
+               if c["Tc_K"] else "- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb %s, M %.4f g/mol" % (
+                   "%.3f K" % c["Tb_K"] if c["Tb_K"] else "not reached by the measured vapour pressures", c["MW"])),
               "- Constants: %s" % c["constants_source"], "",
               "| Property | Range (K) | Values used | Left out | Max deviation | Sources |", "|---|---|---|---|---|---|"]
         vp = c["vapourPressure"]

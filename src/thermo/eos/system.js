@@ -13,6 +13,7 @@ import { cubicEos, CUBICS } from "./cubic.js";
 import { RANGE_MARGIN_K, selection, choosePair, describePair, pairWarnings } from "../library.js";
 import { fail } from "../../util/errors.js";
 import { eosPhaseMethods } from "../enthalpy.js";
+import { requireCritical } from "../critical.js";
 
 export const EOS_MODELS = Object.keys(CUBICS);
 
@@ -70,6 +71,7 @@ export function kijMatrix(ids, model, kij, sel = selection({})) {
 export function createEosSystem(ids, cfg, sel = selection(cfg)) {
   const model = String(cfg.model).toUpperCase();
   const comps = ids.map(id => componentData.components[id]);
+  requireCritical(comps, `the ${model === "SRK" ? "SRK" : "Peng-Robinson"} equation of state`);
   const n = ids.length;
   const { K, pairs, missing } = kijMatrix(ids, model, cfg.kij, sel);
   const eos = cubicEos(model, comps.map(c => ({ name: c.name, Tc_K: c.Tc_K, Pc_Pa: c.Pc_Pa, omega: c.omega })), K);

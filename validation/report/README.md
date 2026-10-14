@@ -16,11 +16,11 @@ the pull request and with `main`, and compared with independent references (prop
 | Pure-component properties | Vapour pressure, liquid density, liquid cp, heat of vaporization, liquid viscosity and thermal conductivity at 25 °C and at the normal boiling point; ideal-gas cp at 25 °C; gas density at 300 K and 1, 10, 50 bar. The 16 original components with curves; every other CoolProp fluid of the component registry with these points | CoolProp 8.0.0 (reference equations of state and the transport models CoolProp cites); NIST WebBook liquid cp at 25 °C for the four components CoolProp does not have |
 | Steam tables | Saturation at 100–300 °C (P, ρ′, ρ″, h′, h″, Δh); superheated steam 10 bar/300 °C and 100 bar/500 °C; compressed water 100 bar/100 °C (ρ, h, s, cp, μ, λ) | CoolProp 8.0.0: IAPWS-95, with the viscosity and thermal-conductivity correlations CoolProp cites for water (Huber et al., J. Phys. Chem. Ref. Data 2009 and 2012) |
 | Equation of state | Peng–Robinson densities of air, natural gas and hydrogen + methane; methane + ethane bubble points | CoolProp 8.0.0 multi-fluid mixture model (GERG-2008 form) |
-| Records against measured data | For each component with measured data in `validation/data/pure/measured/thermoml_<id>.json`: vapour pressure, liquid density, liquid cp, heat of vaporization, liquid viscosity and thermal conductivity, as the median over the articles of each article's median deviation from the measured values, inside the record's range (`validation/python/check_measured.py`, `docs/MEASURED_CHECKS.md`) | NIST TRC ThermoML Archive (2003–2019, open data); the reference is zero deviation. Cases and references: `make_measured_cases.py` |
 
-Every component of `src/data/components.json` is in at least one case (`test/report-coverage.test.js`). After adding
-components, regenerate in this order: `python validation/report/make_cases.py && python
-validation/report/make_reference.py && python validation/report/make_measured_cases.py`.
+Every component of `src/data/components.json` whose records are built here is in at least one case
+(`test/report-coverage.test.js`); components taken from the ChemSep databank as they are need none (docs/DATA_RULES.md,
+section 1). After adding components, regenerate in this order: `python validation/report/make_cases.py && python
+validation/report/make_reference.py`.
 
 The cases are in `cases.json` (written by `make_cases.py`); the references are in
 `reference/*.json` (written by `make_reference.py`), each value with its source and, where
@@ -47,7 +47,6 @@ hand except the NIST WebBook spot values, which are listed with their page and t
 | Dew T, liquid x | 1 K, 0.03 | Chosen for this report (not in proposal 0002) |
 | Flash vapour fraction and compositions; flash temperature | 0.001; 0.01 K | Same model in independent code: differences only from solver tolerances |
 | Excess enthalpy, data used in the fit (acetic acid + ethylene glycol) | 50 J/mol, report only | Consistency check: the parameters were fitted to these data |
-| Records against measured data | 1 % (vapour pressure, density), 2 % (heat capacity, heat of vaporization), 5 % (viscosity, thermal conductivity), as a median deviation of the articles | Proposal 0002 tolerances; values whose stated uncertainty is larger than the tolerance are not used |
 | Excess enthalpy predicted from vapour-liquid parameters (water + ethanol at 423.2 K) | 25 %, report only | Independent check of a prediction outside the parameters' temperature range; a ⚠️ shows its size and does not block |
 
 ## How to read the comment
@@ -61,7 +60,7 @@ hand except the NIST WebBook spot values, which are listed with their page and t
     comparison.
   - **not checked**: no reference, or not available in the version under test.
 - Below come the **groups** (boiling points, azeotropes, bubble points, flashes, properties,
-  steam, equation of state, measured data), each folded, its title starting with its own
+  steam, equation of state), each folded, its title starting with its own
   ❌ ⚠️ ✅ counts and the number of results the pull request changes. Opening a group shows
   its problems: the large ones first, then the small ones, then the results changed from
   main that are within tolerance, with property, conditions, main, this PR, reference,
@@ -70,8 +69,7 @@ hand except the NIST WebBook spot values, which are listed with their page and t
   tolerance on main and did not change. Inside, folded again, is every result of the group
   (left out when the comment would be too long; the HTML report always has them).
 - **Known issues** are results out of tolerance that the project has decided to leave as
-  they are for now, with the reason (a case's `"known"` field in `cases.json`; for the
-  measured-data group, `KNOWN` in `validation/python/check_measured.py`). They keep their ⚠️,
+  they are for now, with the reason (a case's `"known"` field in `cases.json`). They keep their ⚠️,
   are marked "(known issue)", and are listed with their reason under the group's problems. The mark disappears by itself once the result is back within tolerance.
 - **"not available"** means the version under test has no function or no data for that
   result (for example steam tables before they exist). It is not a failure.

@@ -1,0 +1,44 @@
+{
+ "component": "ethyl-lactate",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97643&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97643&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97643&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "49.2",
+       "323.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 308. to 426. K."
+      ],
+      [
+       "51.3",
+       "339.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 324. to 427. K."
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

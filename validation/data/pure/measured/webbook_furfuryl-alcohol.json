@@ -1,0 +1,327 @@
+{
+ "component": "furfuryl-alcohol",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Units=SI&Mask=1",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°gas",
+       "-212.0",
+       "kJ/mol",
+       "N/A",
+       "Parks, Mosley, et al., 1950",
+       "Value computed using ΔfHliquid° value of -276.4 kj/mol from  Parks, Mosley, et al., 1950 and ΔvapH° value of 64.4 kj/mol from  Landrieu, Baylocq, et al., 1929.; DRB"
+      ],
+      [
+       "ΔfH°gas",
+       "-212.6",
+       "kJ/mol",
+       "N/A",
+       "Miller, 1936",
+       "Value computed using ΔfHliquid° value of -277.0 kj/mol from  Miller, 1936 and ΔvapH° value of 64.4 kj/mol from  Landrieu, Baylocq, et al., 1929.; DRB"
+      ],
+      [
+       "ΔfH°gas",
+       "-211.8 ± 2.1",
+       "kJ/mol",
+       "Ccb",
+       "Landrieu, Baylocq, et al., 1929",
+       "Heat of formation derived by  Cox and Pilcher, 1970; ALS"
+      ]
+     ]
+    }
+   ]
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°liquid",
+       "-276.4",
+       "kJ/mol",
+       "Ccb",
+       "Parks, Mosley, et al., 1950",
+       "ALS"
+      ],
+      [
+       "ΔfH°liquid",
+       "-277.",
+       "kJ/mol",
+       "Ccb",
+       "Miller, 1936",
+       "%hf calculated possible error by author; ALS"
+      ],
+      [
+       "ΔfH°liquid",
+       "-276.2 ± 1.3",
+       "kJ/mol",
+       "Ccb",
+       "Landrieu, Baylocq, et al., 1929",
+       "Reanalyzed by  Cox and Pilcher, 1970, Original value = -285. kJ/mol; ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2548.7",
+       "kJ/mol",
+       "Ccb",
+       "Parks, Mosley, et al., 1950",
+       "Corresponding ΔfHºliquid = -276.3 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2548.",
+       "kJ/mol",
+       "Ccb",
+       "Miller, 1936",
+       "%hf calculated possible error by author; Corresponding ΔfHºliquid = -277. kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2540.",
+       "kJ/mol",
+       "Ccb",
+       "Landrieu, Baylocq, et al., 1929",
+       "Corresponding ΔfHºliquid = -285. kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "S°liquid",
+       "215.9",
+       "J/mol*K",
+       "N/A",
+       "Parks, Kennedy, et al., 1956",
+       "Extrapolation below 80 K, 48.99 J/mol*K.; DH"
+      ],
+      [
+       "S°liquid",
+       "215.5",
+       "J/mol*K",
+       "N/A",
+       "Miller, 1935",
+       "Extrapolation below 90 K, 42.97 J/mol*K.; DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "204.01",
+       "298.15",
+       "Parks, Kennedy, et al., 1956",
+       "T = 90 to 300 K.; DH"
+      ],
+      [
+       "193.3",
+       "303.",
+       "Hough, Mason, et al., 1950",
+       "T = 303 to 333 K.; DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,liquid",
+      "Constant pressure heat capacity of liquid"
+     ],
+     "rows": [
+      [
+       "S°liquid",
+       "Entropy of liquid at standard conditions"
+      ],
+      [
+       "ΔcH°liquid",
+       "Enthalpy of combustion of liquid at standard conditions"
+      ],
+      [
+       "ΔfH°liquid",
+       "Enthalpy of formation of liquid at standard conditions"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "430. ± 70.",
+       "K",
+       "AVG",
+       "N/A",
+       "Average of 6 values; Individual data points"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Ttriple",
+       "258.6",
+       "K",
+       "N/A",
+       "Parks, Kennedy, et al., 1956",
+       "Uncertainty assigned by TRC =  0.2 K; TRC"
+      ],
+      [
+       "Ttriple",
+       "253.5",
+       "K",
+       "N/A",
+       "Miller, 1936",
+       "Uncertainty assigned by TRC =  0.3 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "64.4 ± 1.7",
+       "kJ/mol",
+       "V",
+       "Landrieu, Baylocq, et al., 1929",
+       "Heat of formation derived by  Cox and Pilcher, 1970; ALS"
+      ],
+      [
+       "ΔvapH°",
+       "64.4",
+       "kJ/mol",
+       "N/A",
+       "Landrieu, Baylocq, et al., 1929",
+       "DRB"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "53.6",
+       "319.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 304. to 443. K. See also  Ketelaar, van Velden, et al., 2010.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "13.1",
+       "258.6",
+       "Domalski and Hearing, 1996",
+       "AC"
+      ],
+      [
+       "13.129",
+       "258.6",
+       "Parks, Kennedy, et al., 1956, 2",
+       "DH"
+      ],
+      [
+       "14.811",
+       "253.5",
+       "Miller, 1935",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusS (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "50.77",
+       "258.6",
+       "Parks, Kennedy, et al., 1956, 2",
+       "DH"
+      ],
+      [
+       "58.4",
+       "253.5",
+       "Miller, 1935",
+       "DH"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}
