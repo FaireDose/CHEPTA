@@ -1,0 +1,103 @@
+{
+ "_about": "gamma-Valerolactone (1) + Water (2): isothermal total pressures at 350.2 K. Rows: temperature in K, liquid mole fraction of gamma-valerolactone, pressure in kPa, as stored in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
+ "source": {
+  "citation": "A. Zaitseva, J. P. Pokki, H. Q. Le, V. Alopaeus, H. Sixta, Vapor - Liquid Equilibria, Excess Enthalpy and Density of Aqueous Gamma-valerolactone Solutions, J. Chem. Eng. Data 61 (2016) 881-890",
+  "doi": "10.1021/acs.jced.5b00724",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.5b00724.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 13. The table number in the article was not checked."
+ },
+ "components": [
+  "gvl",
+  "water"
+ ],
+ "kind": "isothermal-px",
+ "columns": [
+  "T_K",
+  "x_1",
+  "P_kPa"
+ ],
+ "rows": [
+  [
+   350.2,
+   0.0,
+   41.9
+  ],
+  [
+   350.2,
+   0.0122,
+   41.8
+  ],
+  [
+   350.2,
+   0.0312,
+   41.7
+  ],
+  [
+   350.2,
+   0.102,
+   41.2
+  ],
+  [
+   350.2,
+   0.204,
+   40.9
+  ],
+  [
+   350.2,
+   0.307,
+   40.6
+  ],
+  [
+   350.2,
+   0.394,
+   40.4
+  ],
+  [
+   350.2,
+   0.407,
+   40.1
+  ],
+  [
+   350.2,
+   0.449,
+   39.4
+  ],
+  [
+   350.2,
+   0.499,
+   38.5
+  ],
+  [
+   350.2,
+   0.604,
+   35.8
+  ],
+  [
+   350.2,
+   0.699,
+   31.9
+  ],
+  [
+   350.2,
+   0.8,
+   25.6
+  ],
+  [
+   350.2,
+   0.903,
+   15.5
+  ],
+  [
+   350.2,
+   0.949,
+   9.5
+  ],
+  [
+   350.2,
+   1.0,
+   1.2
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

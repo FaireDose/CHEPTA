@@ -3126,6 +3126,286 @@
    "file": "vle/sulfolane_water_10-1021-je034254m_413.18K.json",
    "check": [],
    "describe": "Fitted to 30 total pressures at 413.18 K with the measured pure-component pressures from Horstmann et al., J. Chem. Eng. Data 49 (2004) 1499-1503 (data public in the NIST TRC ThermoML Archive; validation/data/vle/sulfolane_water_10-1021-je034254m_413.18K.json)."
+  },
+  {
+   "key": "1-3-propanediol+1-hexanol",
+   "pair": [
+    "1-3-propanediol",
+    "1-hexanol"
+   ],
+   "file": "vle/1-3-propanediol_1-hexanol_10-1016-j-jct-2018-12-030_101.3kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 15 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Khoshooei et al., J. Chem. Thermodyn. 132 (2019) 105-112 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_1-hexanol_10-1016-j-jct-2018-12-030_101.3kPa_tx.json)."
+  },
+  {
+   "key": "1-3-propanediol+2-propanol",
+   "pair": [
+    "1-3-propanediol",
+    "2-propanol"
+   ],
+   "file": "vle/1-3-propanediol_2-propanol_10-1016-j-fluid-2014-02-006_101.3kPa.json",
+   "check": [],
+   "describe": "Fitted to 18 T-x-y points at 101.3 kPa from Lin et al., Fluid Phase Equilib. 368 (2014) 104-111 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_2-propanol_10-1016-j-fluid-2014-02-006_101.3kPa.json)."
+  },
+  {
+   "key": "1-3-propanediol+ethanol",
+   "pair": [
+    "1-3-propanediol",
+    "ethanol"
+   ],
+   "file": "vle/1-3-propanediol_ethanol_10-1016-j-jct-2013-08-020_101.3kPa.json",
+   "check": [],
+   "describe": "Fitted to 17 T-x-y points at 101.3 kPa from Lai et al., J. Chem. Thermodyn. 68 (2014) 13-19 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_ethanol_10-1016-j-jct-2013-08-020_101.3kPa.json)."
+  },
+  {
+   "key": "1-3-propanediol+glycerol",
+   "pair": [
+    "1-3-propanediol",
+    "glycerol"
+   ],
+   "file": "vle/1-3-propanediol_glycerol_10-1021-je200766t_tpx.json",
+   "check": [],
+   "describe": "Fitted to 45 total pressures at 361.8-462.28 K (T-P-x, with the component vapour pressures) from Mokbel et al., J. Chem. Eng. Data 57 (2012) 284-289 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_glycerol_10-1021-je200766t_tpx.json)."
+  },
+  {
+   "key": "1-3-propanediol+methanol",
+   "pair": [
+    "1-3-propanediol",
+    "methanol"
+   ],
+   "file": "vle/1-3-propanediol_methanol_10-1016-j-tca-2016-09-005_tpx.json",
+   "check": [],
+   "describe": "Fitted to 40 total pressures at 273.15-343.15 K (T-P-x, with the component vapour pressures) from Zaoui-Djelloul-Daouadji et al., Thermochim. Acta 642 (2016) 111-123 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_methanol_10-1016-j-tca-2016-09-005_tpx.json)."
+  },
+  {
+   "key": "1-3-propanediol+propylene-glycol",
+   "pair": [
+    "1-3-propanediol",
+    "propylene-glycol"
+   ],
+   "file": "vle/1-3-propanediol_propylene-glycol_10-1016-j-jct-2016-01-019_6.67kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 13 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 6.67 kPa from Rane et al., J. Chem. Thermodyn. 97 (2016) 142-157 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_propylene-glycol_10-1016-j-jct-2016-01-019_6.67kPa_tx.json)."
+  },
+  {
+   "key": "1-3-propanediol+water",
+   "pair": [
+    "1-3-propanediol",
+    "water"
+   ],
+   "file": "vle/1-3-propanediol_water_10-1016-j-jct-2013-08-020_101.3kPa.json",
+   "check": [],
+   "describe": "Fitted to 16 T-x-y points at 101.3 kPa from Lai et al., J. Chem. Thermodyn. 68 (2014) 13-19 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_water_10-1016-j-jct-2013-08-020_101.3kPa.json)."
+  },
+  {
+   "key": "1-propanol+ethyl-lactate",
+   "pair": [
+    "1-propanol",
+    "ethyl-lactate"
+   ],
+   "file": "vle/1-propanol_ethyl-lactate_10-1021-je900481e_101.3kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 19 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Resa et al., J. Chem. Eng. Data 55 (2010) 1017-1021 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-propanol_ethyl-lactate_10-1021-je900481e_101.3kPa_tx.json)."
+  },
+  {
+   "key": "2-methylfuran+furfuryl-alcohol",
+   "pair": [
+    "2-methylfuran",
+    "furfuryl-alcohol"
+   ],
+   "file": "vle/2-methylfuran_furfuryl-alcohol_10-1016-j-fluid-2014-10-037_tpx.json",
+   "check": [],
+   "describe": "Fitted to 30 total pressures at 353.2-408.2 K (T-P-x, with the component vapour pressures) from Tai et al., Fluid Phase Equilib. 384 (2014) 134-142 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-methylfuran_furfuryl-alcohol_10-1016-j-fluid-2014-10-037_tpx.json)."
+  },
+  {
+   "key": "2-methylfuran+isooctane",
+   "pair": [
+    "2-methylfuran",
+    "isooctane"
+   ],
+   "file": "vle/2-methylfuran_isooctane_10-1016-j-fluid-2015-05-002_tpx.json",
+   "check": [],
+   "describe": "Fitted to 244 total pressures at 352.93-508.32 K (T-P-x, with the component vapour pressures) from Liebergesell et al., Fluid Phase Equilib. 400 (2015) 95-102 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-methylfuran_isooctane_10-1016-j-fluid-2015-05-002_tpx.json)."
+  },
+  {
+   "key": "2-propanol+furfuryl-alcohol",
+   "pair": [
+    "2-propanol",
+    "furfuryl-alcohol"
+   ],
+   "file": "vle/2-propanol_furfuryl-alcohol_10-1016-j-fluid-2014-10-037_tpx.json",
+   "check": [],
+   "describe": "Fitted to 30 total pressures at 353.2-408.2 K (T-P-x, with the component vapour pressures) from Tai et al., Fluid Phase Equilib. 384 (2014) 134-142 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-propanol_furfuryl-alcohol_10-1016-j-fluid-2014-10-037_tpx.json)."
+  },
+  {
+   "key": "2-propanol+gvl",
+   "pair": [
+    "2-propanol",
+    "gvl"
+   ],
+   "file": "vle/2-propanol_gvl_10-1021-acs-jced-6b00384_101.0kPa.json",
+   "check": [],
+   "describe": "Fitted to 30 T-x-y points at 101.0 kPa from Havasi et al., J. Chem. Eng. Data 61 (2016) 3326-3333 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-propanol_gvl_10-1021-acs-jced-6b00384_101.0kPa.json)."
+  },
+  {
+   "key": "bdo+gbl",
+   "pair": [
+    "bdo",
+    "gbl"
+   ],
+   "file": "vle/bdo_gbl_10-1021-je050317k_383.15K.json",
+   "check": [],
+   "describe": "Fitted to 14 total pressures at 383.15 K with the measured pure-component pressures from Giles et al., J. Chem. Eng. Data 51 (2006) 1954-1962 (data public in the NIST TRC ThermoML Archive; validation/data/vle/bdo_gbl_10-1021-je050317k_383.15K.json)."
+  },
+  {
+   "key": "cpme+ethanol",
+   "pair": [
+    "cpme",
+    "ethanol"
+   ],
+   "file": "vle/cpme_ethanol_10-1021-acs-jced-8b01000_94.0kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 19 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 94.0 kPa from Mejia et al., J. Chem. Eng. Data 64 (2019) 1970-1977 (data public in the NIST TRC ThermoML Archive; validation/data/vle/cpme_ethanol_10-1021-acs-jced-8b01000_94.0kPa_tx.json)."
+  },
+  {
+   "key": "dimethyl-carbonate+ethyl-lactate",
+   "pair": [
+    "dimethyl-carbonate",
+    "ethyl-lactate"
+   ],
+   "file": "vle/dimethyl-carbonate_ethyl-lactate_10-1021-acs-jced-7b00185_101.3kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Matsuda et al., J. Chem. Eng. Data 62 (2017) 2944-2952 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_ethyl-lactate_10-1021-acs-jced-7b00185_101.3kPa_tx.json)."
+  },
+  {
+   "key": "ethanol+furan",
+   "pair": [
+    "ethanol",
+    "furan"
+   ],
+   "file": "vle/ethanol_furan_10-1016-j-fluid-2016-09-019_101.0kPa.json",
+   "check": [],
+   "describe": "Fitted to 14 T-x-y points at 101.0 kPa from Auger et al., Fluid Phase Equilib. 430 (2016) 57-66 (data public in the NIST TRC ThermoML Archive; validation/data/vle/ethanol_furan_10-1016-j-fluid-2016-09-019_101.0kPa.json)."
+  },
+  {
+   "key": "ethanol+gvl",
+   "pair": [
+    "ethanol",
+    "gvl"
+   ],
+   "file": "vle/ethanol_gvl_10-1021-acs-jced-6b00384_101.0kPa.json",
+   "check": [],
+   "describe": "Fitted to 34 T-x-y points at 101.0 kPa from Havasi et al., J. Chem. Eng. Data 61 (2016) 3326-3333 (data public in the NIST TRC ThermoML Archive; validation/data/vle/ethanol_gvl_10-1021-acs-jced-6b00384_101.0kPa.json)."
+  },
+  {
+   "key": "ethyl-lactate+methanol",
+   "pair": [
+    "ethyl-lactate",
+    "methanol"
+   ],
+   "file": "vle/ethyl-lactate_methanol_10-1021-je900481e_101.33kPa.json",
+   "check": [],
+   "describe": "Fitted to 20 T-x-y points at 101.33 kPa from Resa et al., J. Chem. Eng. Data 55 (2010) 1017-1021 (data public in the NIST TRC ThermoML Archive; validation/data/vle/ethyl-lactate_methanol_10-1021-je900481e_101.33kPa.json)."
+  },
+  {
+   "key": "ethyl-lactate+methyl-acetate",
+   "pair": [
+    "ethyl-lactate",
+    "methyl-acetate"
+   ],
+   "file": "vle/ethyl-lactate_methyl-acetate_10-1016-j-fluid-2015-12-029_93.32kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 10 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 93.32 kPa from Matsuda et al., Fluid Phase Equilib. 420 (2016) 50-57 (data public in the NIST TRC ThermoML Archive; validation/data/vle/ethyl-lactate_methyl-acetate_10-1016-j-fluid-2015-12-029_93.32kPa_tx.json)."
+  },
+  {
+   "key": "formic-acid+gvl",
+   "pair": [
+    "formic-acid",
+    "gvl"
+   ],
+   "file": "vle/formic-acid_gvl_10-1021-acs-jced-6b00867_51.0kPa.json",
+   "check": [],
+   "describe": "Fitted to 35 T-x-y points at 51.0 kPa from Havasi et al., J. Chem. Eng. Data 62 (2017) 1058-1062 (data public in the NIST TRC ThermoML Archive; validation/data/vle/formic-acid_gvl_10-1021-acs-jced-6b00867_51.0kPa.json)."
+  },
+  {
+   "key": "furan+furfural",
+   "pair": [
+    "furan",
+    "furfural"
+   ],
+   "file": "vle/furan_furfural_10-1016-j-fluid-2014-10-037_tpx.json",
+   "check": [],
+   "describe": "Fitted to 30 total pressures at 353.2-408.2 K (T-P-x, with the component vapour pressures) from Tai et al., Fluid Phase Equilib. 384 (2014) 134-142 (data public in the NIST TRC ThermoML Archive; validation/data/vle/furan_furfural_10-1016-j-fluid-2014-10-037_tpx.json)."
+  },
+  {
+   "key": "furan+n-hexane",
+   "pair": [
+    "furan",
+    "n-hexane"
+   ],
+   "file": "vle/furan_n-hexane_10-1016-j-fluid-2012-08-005_101.0kPa.json",
+   "check": [],
+   "describe": "Fitted to 17 T-x-y points at 101.0 kPa from Nala et al., Fluid Phase Equilib. 337 (2013) 234-245 (data public in the NIST TRC ThermoML Archive; validation/data/vle/furan_n-hexane_10-1016-j-fluid-2012-08-005_101.0kPa.json)."
+  },
+  {
+   "key": "furan+toluene",
+   "pair": [
+    "furan",
+    "toluene"
+   ],
+   "file": "vle/furan_toluene_10-1021-acs-jced-6b00424_tpx.json",
+   "check": [],
+   "describe": "Fitted to 22 total pressures at 313.02-352.99 K (T-P-x, with the component vapour pressures) from Theveneau et al., J. Chem. Eng. Data 62 (2017) 1168-1172 (data public in the NIST TRC ThermoML Archive; validation/data/vle/furan_toluene_10-1021-acs-jced-6b00424_tpx.json)."
+  },
+  {
+   "key": "furfural+gvl",
+   "pair": [
+    "furfural",
+    "gvl"
+   ],
+   "file": "vle/furfural_gvl_10-1021-acs-jced-8b00451_30.0kPa.json",
+   "check": [],
+   "describe": "Fitted to 17 T-x-y points at 30.0 kPa from Pokki et al., J. Chem. Eng. Data 63 (2018) 4381-4391 (data public in the NIST TRC ThermoML Archive; validation/data/vle/furfural_gvl_10-1021-acs-jced-8b00451_30.0kPa.json)."
+  },
+  {
+   "key": "gbl+tetrahydrofuran",
+   "pair": [
+    "gbl",
+    "tetrahydrofuran"
+   ],
+   "file": "vle/gbl_tetrahydrofuran_10-1021-acs-jced-7b00584_50.0kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 13 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 50.0 kPa from Sun et al., J. Chem. Eng. Data 62 (2017) 3872-3877 (data public in the NIST TRC ThermoML Archive; validation/data/vle/gbl_tetrahydrofuran_10-1021-acs-jced-7b00584_50.0kPa_tx.json)."
+  },
+  {
+   "key": "gvl+methanol",
+   "pair": [
+    "gvl",
+    "methanol"
+   ],
+   "file": "vle/gvl_methanol_10-1021-acs-jced-6b00384_101.0kPa.json",
+   "check": [],
+   "describe": "Fitted to 23 T-x-y points at 101.0 kPa from Havasi et al., J. Chem. Eng. Data 61 (2016) 3326-3333 (data public in the NIST TRC ThermoML Archive; validation/data/vle/gvl_methanol_10-1021-acs-jced-6b00384_101.0kPa.json)."
+  },
+  {
+   "key": "gvl+water",
+   "pair": [
+    "gvl",
+    "water"
+   ],
+   "file": "vle/gvl_water_10-1021-acs-jced-5b00724_350.2K.json",
+   "check": [],
+   "describe": "Fitted to 14 total pressures at 350.2 K with the measured pure-component pressures from Zaitseva et al., J. Chem. Eng. Data 61 (2016) 881-890 (data public in the NIST TRC ThermoML Archive; validation/data/vle/gvl_water_10-1021-acs-jced-5b00724_350.2K.json)."
+  },
+  {
+   "key": "methyl-lactate+water",
+   "pair": [
+    "methyl-lactate",
+    "water"
+   ],
+   "file": "vle/methyl-lactate_water_10-1021-je049824c_tpx.json",
+   "check": [],
+   "describe": "Fitted to 45 total pressures at 283.15-303.15 K (T-P-x, with the component vapour pressures) from Sanz et al., J. Chem. Eng. Data 50 (2005) 85-88 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-lactate_water_10-1021-je049824c_tpx.json)."
   }
  ]
 }

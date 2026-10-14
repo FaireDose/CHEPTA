@@ -92,6 +92,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      - 3c done (GVL, CPME, tetrahydrofurfuryl alcohol, 2,3-butanediol, methyl and ethyl lactate, limonene, furfuryl
        alcohol, through the path for components without critical constants; gamma-butyrolactone, with its gap); no open vapour pressures: HMF, lactic
        acid, lactide, solketal, alpha-angelica lactone;
+     - batch 3 pairs: 24 NRTL pairs written (6 with a quality warning); water + gamma-valerolactone has no NRTL set (the
+       only usable set, Zaitseva 2016, gives a spurious liquid split with every alpha): wanted, open T-x-y or P-x-y data
+       over the whole range with pure-component points within 1 K of the records;
+       docs/decisions/2026-10-14-09-batch-3-pairs.md;
      - Modified UNIFAC 2.0: the furans are built from other groups (CHO, C=C, ring CH), a rough prediction; maleic
        anhydride and the small gases have no groups; check the furans against open binary VLE data when a pair needs them;
      - Modified UNIFAC 2.0 groups chosen by the user (asked 2026-10-14): part of the work on adding the user's own

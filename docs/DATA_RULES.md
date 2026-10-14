@@ -126,7 +126,8 @@ new refit of a ChemSep record is made (section 1).
 - Fits to measured vapour-liquid data from the ThermoML Archive (`vle_batch.py`, then `fit_parameters.py`): isobaric
   T-x-y near 101.3 kPa first, that passes the point test of thermodynamic consistency; then other pressures; then
   isothermal P-x(-y); then bubble temperatures alone. The set's pure-component boiling points must be within 1 K of
-  the vapour-pressure records.
+  the vapour-pressure records. A set held at one temperature whose recorded temperature drifts by 0.5 K or less is one
+  isotherm, at the mean temperature.
 - A fit is written when it follows its data within 0.5 K and 0.012 in y (1.5 % in P). Between that and 2.5 K, 0.02,
   3 % it is written with a quality warning and a "fit-quality" known issue. A fit that predicts a liquid split inside
   its data range is never written.

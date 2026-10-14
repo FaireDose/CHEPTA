@@ -113,6 +113,14 @@ def curves(rec, a, b):
             continue   # not an equilibrium measurement (a density or heat capacity at fixed pressure, for example)
         T_var = any((v["type"] or "").startswith("Temperature") for v in s["variables"].values())
         P_var = any((v["type"] or "").startswith("Pressure") for v in s["variables"].values())
+        # a set whose temperature is a variable but stays within 0.5 K (a static apparatus held at one temperature, the
+        # small drift recorded per point) is one isotherm, at the mean temperature, not one curve per point
+        T_one = None
+        if T_var and not P_var and not cons:
+            tv = [r.get("v" + vn) for r in s["rows"] for vn, v in s["variables"].items()
+                  if (v["type"] or "").startswith("Temperature") and r.get("v" + vn) is not None]
+            if tv and max(tv) - min(tv) <= 0.5:
+                T_one = round(sum(tv) / len(tv), 2)
         for r in s["rows"]:
             x = y = T = P = None
             for vn, v in s["variables"].items():
@@ -152,6 +160,8 @@ def curves(rec, a, b):
             elif not cons and T is not None and P is not None and P_var:
                 # T, P and x all varying: rows at the same pressure form an isobaric curve
                 key, val = ("isobaric", round(P, 2)), T
+            elif T_one is not None and P is not None:
+                key, val = ("isothermal", T_one), P
             elif not cons and T is not None and P is not None and T_var:
                 # the pressure measured at set temperatures (a static apparatus): rows at the same temperature
                 # form an isothermal curve; all rows together are also a T-P-x set, for an apparatus that

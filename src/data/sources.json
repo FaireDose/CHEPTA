@@ -130,6 +130,20 @@
         "validation/data/water_ethyl-acetate_gamma_inf_atik2004.json"
       ]
     },
+    "auger2016-ethanol-furan": {
+      "title": "Equilibrium data and GC-PC SAFT predictions for furanic extraction",
+      "authors": "E. Auger, C. Coquelet, A. Valtz, M. Nala, P. Naidoo, D. Ramjugernath",
+      "year": 2016,
+      "published": "Fluid Phase Equilib. 430 (2016) 57-66",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2016.09.019",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2016.09.019.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/ethanol_furan_10-1016-j-fluid-2016-09-019_101.0kPa.json"
+      ]
+    },
     "avoseh2017-1-propanol-mibk": {
       "title": "Vapor Liquid Equilibrium for Methyl Isobutyl Ketone (MIBK) + (1-Propanol or 2-Propanol) Binary Mixtures",
       "authors": "F. Avoseh, S. A. Iwarere, C. Narasigadu, D. Ramjugernath",
@@ -950,7 +964,8 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
-        "validation/data/vle/acetonitrile_isopropyl-acetate_10-1021-je050317k_333.15K.json"
+        "validation/data/vle/acetonitrile_isopropyl-acetate_10-1021-je050317k_333.15K.json",
+        "validation/data/vle/bdo_gbl_10-1021-je050317k_383.15K.json"
       ]
     },
     "gilhernandez2005-1-propanol-dichloroethane": {
@@ -1074,6 +1089,22 @@
         "validation/data/vle/2-propanol_methanol_10-1021-je201349k_101.0kPa.json"
       ]
     },
+    "havasi2016-2-propanol-gvl": {
+      "title": "Isobaric Vapor Liquid Equilibria for Binary Mixtures of .gamma.-Valerolactone + Methanol, Ethanol, and 2-Propanol",
+      "authors": "D. Havasi, G. Patzay, Z. Kolarovszki, L. T. Mika",
+      "year": 2016,
+      "published": "J. Chem. Eng. Data 61 (2016) 3326-3333",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.6b00384",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00384.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/2-propanol_gvl_10-1021-acs-jced-6b00384_101.0kPa.json",
+        "validation/data/vle/ethanol_gvl_10-1021-acs-jced-6b00384_101.0kPa.json",
+        "validation/data/vle/gvl_methanol_10-1021-acs-jced-6b00384_101.0kPa.json"
+      ]
+    },
     "havasi2016-water-gvl": {
       "title": "Vapor-Liquid Equilibrium Study of the Gamma-Valerolactone-Water Binary System",
       "authors": "D. Havasi, P. Mizsey, L. T. Mika",
@@ -1086,6 +1117,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/water_gvl_tx_havasi2016.json"
+      ]
+    },
+    "havasi2017-formic-acid-gvl": {
+      "title": "Vapor Liquid Equilibrium of Gamma-Valerolactone and Formic Acid at p = 51 kPa",
+      "authors": "D. Havasi, A. Hajnal, G. Patzay, L. T. Mika",
+      "year": 2017,
+      "published": "J. Chem. Eng. Data 62 (2017) 1058-1062",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.6b00867",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00867.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/formic-acid_gvl_10-1021-acs-jced-6b00867_51.0kPa.json"
       ]
     },
     "hayer2025-mod-unifac-2": {
@@ -1402,6 +1447,20 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive"
     },
+    "khoshooei2019-1-3-propanediol-1-hexanol": {
+      "title": "Vapor-liquid equilibrium data of binary mixtures of 1-hexanol, 1-heptanol, 1-nonanol and 1,3-propanediol at P = 101.3 kPa using differential scanning calorimetry (DSC)",
+      "authors": "M. A. Khoshooei, D. Sharp, A. Afacan, G. P. Dechaine",
+      "year": 2019,
+      "published": "J. Chem. Thermodyn. 132 (2019) 105-112",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2018.12.030",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2018.12.030.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/1-3-propanediol_1-hexanol_10-1016-j-jct-2018-12-030_101.3kPa_tx.json"
+      ]
+    },
     "kim2005-2-butanol-n-pentane": {
       "title": "Isothermal Vapor-Liquid Equilibria for the n-Pentane + 1-Butanol and n-Pentane + 2-Butanol Systems near the Critical Region of the Mixtures",
       "authors": "Y. Kim, W. Bae, H. Kim",
@@ -1472,6 +1531,21 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/dioxane_water_10-1021-je700512a_tpx.json"
+      ]
+    },
+    "lai2014-1-3-propanediol-ethanol": {
+      "title": "Isobaric (vapor + liquid) equilibria for the ternary system of (ethanol + water + 1,3-propanediol) and three constituent binary systems at P = 101.3 kPa",
+      "authors": "H. S. Lai, Y. F. Lin, C. H. Tu",
+      "year": 2014,
+      "published": "J. Chem. Thermodyn. 68 (2014) 13-19",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2013.08.020",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2013.08.020.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/1-3-propanediol_ethanol_10-1016-j-jct-2013-08-020_101.3kPa.json",
+        "validation/data/vle/1-3-propanediol_water_10-1016-j-jct-2013-08-020_101.3kPa.json"
       ]
     },
     "li2012-cyclohexane-n-butyl-acetate": {
@@ -1696,6 +1770,20 @@
         "validation/data/vle/ethyl-acetate_methanol_10-1021-acs-jced-8b00424_101.3kPa.json"
       ]
     },
+    "liebergesell2015-2-methylfuran-isooctane": {
+      "title": "High-pressure vapor-liquid equilibria of the second generation biofuel blends (2-methylfuran + iso-octane) and (2-methyltetrahydrofuran + di-n-butyl ether): Experiments and PCP-SAFT modeling",
+      "authors": "B. Liebergesell, S. Kaminski, C. Pauls, T. W. de Loos, T. J. H. Vlugt, K. Leonhard, A. Bardow",
+      "year": 2015,
+      "published": "Fluid Phase Equilib. 400 (2015) 95-102",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2015.05.002",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2015.05.002.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/2-methylfuran_isooctane_10-1016-j-fluid-2015-05-002_tpx.json"
+      ]
+    },
     "liebergesell2018-2-butanone-n-heptane": {
       "title": "Quaternary isothermal vapor-liquid equilibrium of the model biofuel 2-butanone + n-heptane + tetrahydrofuran + cyclohexane using Raman spectroscopic characterization",
       "authors": "B. Liebergesell, T. Brands, H.-J. Kobeta, A. Bardow",
@@ -1752,6 +1840,7 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
+        "validation/data/vle/1-3-propanediol_2-propanol_10-1016-j-fluid-2014-02-006_101.3kPa.json",
         "validation/data/vle/2-propanol_water_10-1016-j-fluid-2014-02-006_101.3kPa.json"
       ]
     },
@@ -2109,6 +2198,34 @@
         "validation/data/vle/1-propanol_methanol_10-1016-j-jct-2011-08-006_93.32kPa_tx.json"
       ]
     },
+    "matsuda2016-ethyl-lactate-methyl-acetate": {
+      "title": "Vapor-liquid equilibria of binary and ternary mixtures containing ethyl lactate and effect of ethyl lactate as entrainer",
+      "authors": "H. Matsuda, K. Inaba, H. Sumida, K. Kurihara, K. Tochigi, K. Ochi",
+      "year": 2016,
+      "published": "Fluid Phase Equilib. 420 (2016) 50-57",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2015.12.029",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2015.12.029.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/ethyl-lactate_methyl-acetate_10-1016-j-fluid-2015-12-029_93.32kPa_tx.json"
+      ]
+    },
+    "matsuda2017-dimethyl-carbonate-ethyl-lactate": {
+      "title": "Separation Effects of Renewable Solvent Ethyl Lactate on the Vapor Liquid Equilibria of the Methanol + Dimethyl Carbonate Azeotropic System",
+      "authors": "H. Matsuda, K. Inaba, K. Nishihara, H. Sumida, K. Kurihara, K. Tochigi, K. Ochi",
+      "year": 2017,
+      "published": "J. Chem. Eng. Data 62 (2017) 2944-2952",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.7b00185",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00185.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/dimethyl-carbonate_ethyl-lactate_10-1021-acs-jced-7b00185_101.3kPa_tx.json"
+      ]
+    },
     "mcdougal2014-1-butanol-n-pentane": {
       "title": "Vapor Liquid Equilibrium for Several Compounds Relevant to the Biofuels Industry Modeled with the Wilson Equation",
       "authors": "R. J. McDougal, L. V. Jasperson, G. M. Wilson",
@@ -2164,6 +2281,20 @@
         "validation/data/vle/ethanol_mtbe_10-1021-je9004068_94.0kPa_tx.json"
       ]
     },
+    "mejia2019-cpme-ethanol": {
+      "title": "Experimental Determination of Isobaric Vapor-Liquid Equilibrium and Isothermal Interfacial Tensions for the Binary Ethanol + Cyclopentyl Methyl Ether Mixture",
+      "authors": "A. Mejia, M. Cartes",
+      "year": 2019,
+      "published": "J. Chem. Eng. Data 64 (2019) 1970-1977",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.8b01000",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.8b01000.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/cpme_ethanol_10-1021-acs-jced-8b01000_94.0kPa_tx.json"
+      ]
+    },
     "mohsennia2010-1-butanol-1-propanol": {
       "title": "Isobaric (vapour + liquid) equilibria for the (1-propanol + 1-butanol) binary mixture at (53.3 and 91.3) kPa",
       "authors": "M. Mohsen-Nia, M. R. Memarzadeh",
@@ -2190,6 +2321,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/1-pentanol_propionic-acid_10-1016-j-jct-2010-05-014_91.3kPa_tx.json"
+      ]
+    },
+    "mokbel2012-1-3-propanediol-glycerol": {
+      "title": "C. de Bellefon, Vapor-Liquid Equilibria of Glycerol, 1,3-Propanediol, Glycerol + Water, and Glycerol + 1,3-Propanediol",
+      "authors": "I. Mokbel, T. Sawaya, M. L. Zanota, R. A. Naccoul, J. Jose",
+      "year": 2012,
+      "published": "J. Chem. Eng. Data 57 (2012) 284-289",
+      "kind": "thermoml",
+      "doi": "10.1021/je200766t",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je200766t.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/1-3-propanediol_glycerol_10-1021-je200766t_tpx.json"
       ]
     },
     "moodley2018-2-butanone-isobutanol": {
@@ -2315,6 +2460,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/ethanol_water_HE_nagamachi2006.json"
+      ]
+    },
+    "nala2013-furan-n-hexane": {
+      "title": "Vapour-liquid equilibrium (VLE) for the systems furan + n-hexane and furan + toluene. Measurements, data treatment and modeling using molecular models",
+      "authors": "M. Nala, E. Auger, I. Gedik, N. Ferrando, M. Dicko, P. Paricaud, F. Volle, J. P. Passarello, J. C. de Hemptinne, P. Tobaly, P. Stringari, C. Coquelet, D. Ramjugernath, P. Naidoo, R. Lugo",
+      "year": 2013,
+      "published": "Fluid Phase Equilib. 337 (2013) 234-245",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2012.08.005",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.08.005.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/furan_n-hexane_10-1016-j-fluid-2012-08-005_101.0kPa.json"
       ]
     },
     "narasigadu2012-1-propanol-n-dodecane": {
@@ -2655,6 +2814,20 @@
         "validation/data/vle/2-methoxyethanol_water_10-1021-je400791n_101.3kPa.json"
       ]
     },
+    "pokki2018-furfural-gvl": {
+      "title": "Isobaric Vapor-Liquid Equilibrium of Furfural + gamma-Valerolactone at 30 kPa and Isothermal Liquid-Liquid Equilibrium of Carbon Dioxide + gamma-Valerolactone + Water at 298 K",
+      "authors": "J.-P. Pokki, H. Q. Le, P. Uusi-Kyyny, H. Sixta, V. Alopaeus",
+      "year": 2018,
+      "published": "J. Chem. Eng. Data 63 (2018) 4381-4391",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.8b00451",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.8b00451.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/furfural_gvl_10-1021-acs-jced-8b00451_30.0kPa.json"
+      ]
+    },
     "postigo2009-benzene-n-butyl-acetate": {
       "title": "Isobaric Vapor-Liquid Equilibria for the Binary Systems Benzene + Methyl Ethanoate, Benzene + Butyl Ethanoate, and Benzene + Methyl Heptanoate at 101.31kPa",
       "authors": "M. A. Postigo, A. Mariano, N. Zurakoski, A. F. Jara",
@@ -2782,6 +2955,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/ethylbenzene_propylene-oxide_10-1016-j-fluid-2013-04-008_tpx.json"
+      ]
+    },
+    "rane2016-1-3-propanediol-propylene-glycol": {
+      "title": "Excess properties and isobaric (vapor + liquid) equilibrium at sub-atmospheric pressures of binary (1,2-propanediol + 1,3-propanediol) system: Measurement and modelling",
+      "authors": "N. V. Rane, A. Kumari, J. Soujanya, B. Satyavathi",
+      "year": 2016,
+      "published": "J. Chem. Thermodyn. 97 (2016) 142-157",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2016.01.019",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2016.01.019.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/1-3-propanediol_propylene-glycol_10-1016-j-jct-2016-01-019_6.67kPa_tx.json"
       ]
     },
     "rasulov2010-n-pentane-water": {
@@ -2954,6 +3141,21 @@
         "validation/data/vle/ethyl-acetate_isobutanol_10-1021-je050420_101.0kPa.json"
       ]
     },
+    "resa2010-1-propanol-ethyl-lactate": {
+      "title": "Density, Refractive Index, Speed of Sound at 298.15 K, and Vapor-Liquid Equilibrium at 101.3 kPa for Binary Mixtures of Methanol + Ethyl Lactate and 1-Propanol + Ethyl Lactate",
+      "authors": "J. M. Resa, E. A. Cepeda, J. M. Goenaga, A. Ramos, S. Aguirre, C. Urbano",
+      "year": 2010,
+      "published": "J. Chem. Eng. Data 55 (2010) 1017-1021",
+      "kind": "thermoml",
+      "doi": "10.1021/je900481e",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je900481e.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/1-propanol_ethyl-lactate_10-1021-je900481e_101.3kPa_tx.json",
+        "validation/data/vle/ethyl-lactate_methanol_10-1021-je900481e_101.33kPa.json"
+      ]
+    },
     "rodrigues2005-cyclohexane-n-heptane": {
       "title": "Experimental vapor-liquid equilibria data for binary mixtures of xylene isomers",
       "authors": "W. L. Rodrigues, S. Mattedi, J. C. N. Abreu",
@@ -3076,6 +3278,20 @@
       "url": "https://henrys-law.org/henry/casrn/74-85-1",
       "access": "Open access, CC BY 4.0",
       "license": "CC BY 4.0"
+    },
+    "sanz2005-methyl-lactate-water": {
+      "title": "Isothermal Vapor-Liquid Equilibrium, Excess Enthalpy Data and Activity Coefficients at Infinite Dilution for the Binary System Water + Methyl Lactate",
+      "authors": "M. T. Sanz, J. Gmehling",
+      "year": 2005,
+      "published": "J. Chem. Eng. Data 50 (2005) 85-88",
+      "kind": "thermoml",
+      "doi": "10.1021/je049824c",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je049824c.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/methyl-lactate_water_10-1021-je049824c_tpx.json"
+      ]
     },
     "schmid2007-acetic-acid-ethylene-glycol": {
       "title": "Measurement of the thermodynamic properties for the reactive system ethylene glycol–acetic acid",
@@ -3244,7 +3460,8 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
-        "validation/data/vle/bdo_tetrahydrofuran_10-1021-acs-jced-7b00584_50.0kPa_tx.json"
+        "validation/data/vle/bdo_tetrahydrofuran_10-1021-acs-jced-7b00584_50.0kPa_tx.json",
+        "validation/data/vle/gbl_tetrahydrofuran_10-1021-acs-jced-7b00584_50.0kPa_tx.json"
       ]
     },
     "sunder2003-furfural-water": {
@@ -3305,6 +3522,22 @@
         "validation/data/vle/2-butanol_methyl-acetate_10-1021-je5003225_300.0kPa_tx.json"
       ]
     },
+    "tai2014-2-methylfuran-furfuryl-alcohol": {
+      "title": "Isothermal vapor liquid equilibrium for binary mixtures containing furfural and its derivatives",
+      "authors": "W. P. Tai, H. Y. Lee, M. J. Lee",
+      "year": 2014,
+      "published": "Fluid Phase Equilib. 384 (2014) 134-142",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2014.10.037",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2014.10.037.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/2-methylfuran_furfuryl-alcohol_10-1016-j-fluid-2014-10-037_tpx.json",
+        "validation/data/vle/2-propanol_furfuryl-alcohol_10-1016-j-fluid-2014-10-037_tpx.json",
+        "validation/data/vle/furan_furfural_10-1016-j-fluid-2014-10-037_tpx.json"
+      ]
+    },
     "tebbal2014-isobutanol-n-dodecane": {
       "title": "Vapor Liquid Equilibrium Data for Binary Systems of n-Dodecane + {Propan-1-ol, Butan-1-ol, 2-Methylpropan-1-ol} at 40 kPa",
       "authors": "Z. Tebbal, P. T. Ngema, C. Narasigadu, L. Negadi, D. Ramjugernath",
@@ -3325,6 +3558,20 @@
       "url": "https://github.com/CalebBell/thermo",
       "access": "Open source, MIT",
       "license": "MIT"
+    },
+    "theveneau2017-furan-toluene": {
+      "title": "Vapor Liquid Equilibrium Data for the Furan-Toluene Binary System between 313.02 and 352.99 K",
+      "authors": "P. Theveneau, A. Valtz, C. Coquelet",
+      "year": 2017,
+      "published": "J. Chem. Eng. Data 62 (2017) 1168-1172",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.6b00424",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00424.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/furan_toluene_10-1021-acs-jced-6b00424_tpx.json"
+      ]
     },
     "tojo2004-dimethyl-carbonate-n-nonane": {
       "title": "Densities and Excess Molar Properties of Dimethyl Carbonate with Alkanes (C6 to C10) and VLE of Dimethyl Carbonate with Alkanes (C9 to C10) at 101.3 kPa",
@@ -3872,6 +4119,20 @@
         "validation/data/vle/2-butanol_mtbe_10-1021-acs-jced-5b00300_90.1kPa.json"
       ]
     },
+    "zaitseva2016-gvl-water": {
+      "title": "Vapor - Liquid Equilibria, Excess Enthalpy and Density of Aqueous Gamma-valerolactone Solutions",
+      "authors": "A. Zaitseva, J. P. Pokki, H. Q. Le, V. Alopaeus, H. Sixta",
+      "year": 2016,
+      "published": "J. Chem. Eng. Data 61 (2016) 881-890",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.5b00724",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.5b00724.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/gvl_water_10-1021-acs-jced-5b00724_350.2K.json"
+      ]
+    },
     "zaouidjellouldaouadji2014-ethanol-glycerol": {
       "title": "(Vapor-liquid) equilibria and excess Gibbs free energy functions of (ethanol + glycerol), or (water + glycerol) binary mixtures at several temperatures",
       "authors": "M. Zaoui-Djelloul-Daouadji, A. Negadi, I. Mokbel, L. Negadi",
@@ -3885,6 +4146,20 @@
       "files": [
         "validation/data/vle/ethanol_glycerol_10-1016-j-jct-2013-09-046_333.15K.json",
         "validation/data/vle/glycerol_water_10-1016-j-jct-2013-09-046_333.15K.json"
+      ]
+    },
+    "zaouidjellouldaouadji2016-1-3-propanediol-methanol": {
+      "title": "Vapor-liquid equilibria, density and sound velocity measurements of (water or methanol or ethanol + 1,3-propanediol) binary systems at different temperatures",
+      "authors": "M. Zaoui-Djelloul-Daouadji, I. Mokbel, I. Bahadur, A. Negadi, J. Jose, D. Ramjugernath, E. E. Ebenso, L. Negadi",
+      "year": 2016,
+      "published": "Thermochim. Acta 642 (2016) 111-123",
+      "kind": "thermoml",
+      "doi": "10.1016/j.tca.2016.09.005",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.tca.2016.09.005.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/1-3-propanediol_methanol_10-1016-j-tca-2016-09-005_tpx.json"
       ]
     },
     "zhang2007-2-propanol-methanol": {
