@@ -17036,6 +17036,83 @@
         "nist-thermoml-archive"
       ],
       "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-propanol",
+      "j": "isoamyl-alcohol",
+      "set": "fitted-resa2006-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 252.17486734675234,
+      "b_ji": -188.46646818374708,
+      "alpha": 0.3,
+      "source": "Fitted to 21 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Resa et al., J. Chem. Eng. Data 51 (2006) 73-78 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-propanol_isoamyl-alcohol_10-1021-je0502142_101.3kPa_tx.json). AAD 0.13 K in T (max 0.44 K; no vapour compositions).",
+      "source_ids": [
+        "resa2006-1-pentanol-isobutanol",
+        "resa2006-1-propanol-isoamyl-alcohol",
+        "resa2006-ethyl-acetate-isobutanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "2-propanol",
+      "j": "isoamyl-alcohol",
+      "set": "fitted-dias2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -403.78087384527066,
+      "b_ji": 573.8271191744354,
+      "alpha": 0.3,
+      "source": "Fitted to 12 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Dias et al., J. Chem. Eng. Data 59 (2014) 659-665 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-propanol_isoamyl-alcohol_10-1021-je400581e_101.3kPa_tx.json). AAD 0.49 K in T (max 1.13 K; no vapour compositions).",
+      "source_ids": [
+        "dias2014-2-propanol-isoamyl-alcohol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "bdo",
+      "j": "isoamyl-alcohol",
+      "set": "fitted-zhi2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -466.43883205398174,
+      "b_ji": 674.130084693739,
+      "alpha": 0.3,
+      "source": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 80.0 kPa from Zhi et al., J. Chem. Eng. Data 61 (2016) 3041-3047 (data public in the NIST TRC ThermoML Archive; validation/data/vle/bdo_isoamyl-alcohol_10-1021-acs-jced-6b00092_80.0kPa_tx.json). AAD 0.18 K in T (max 0.54 K; no vapour compositions).",
+      "source_ids": [
+        "zhi2016-bdo-isoamyl-alcohol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "isoamyl-alcohol",
+      "j": "isobutanol",
+      "set": "fitted-resa2006-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 396.299867976014,
+      "b_ji": -302.20499439131635,
+      "alpha": 0.3,
+      "source": "Fitted to 21 T-x-y points at 101.3 kPa from Resa et al., J. Chem. Eng. Data 51 (2006) 1892-1895 (data public in the NIST TRC ThermoML Archive; validation/data/vle/isoamyl-alcohol_isobutanol_10-1021-je060238o_101.3kPa.json); checked against Dias et al., J. Chem. Eng. Data 59 (2014) 659-665 at 101.3 kPa. AAD 0.10 K in T, 0.0049 in y (max 0.31 K, 0.0126). Check against vle/isoamyl-alcohol_isobutanol_10-1021-je400581e_101.3kPa.json: AAD 0.35 K in T, 0.0103 in y (max 0.87 K, 0.0269). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "resa2006-1-pentanol-isobutanol",
+        "resa2006-1-propanol-isoamyl-alcohol",
+        "resa2006-ethyl-acetate-isobutanol",
+        "nist-thermoml-archive",
+        "dias2014-2-propanol-isoamyl-alcohol"
+      ],
+      "tier": "fitted"
     }
   ]
 }

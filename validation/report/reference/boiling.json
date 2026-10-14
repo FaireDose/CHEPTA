@@ -481,6 +481,13 @@
     "source": "nist-webbook",
     "detail": "Tboil = 478.45 K, the median of 477.7 K (Aldrich Chemical Company Inc., 1990); 479.20 K (Vasil'eva, Naumova, et al., 1990) (no average on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Units=SI&Mask=4"
    }
+  },
+  "tb/isoamyl-alcohol": {
+   "T_C": {
+    "value": 130.85,
+    "source": "nist-webbook",
+    "detail": "Tboil = 404. ± 2. K (Average of 83 out of 84 values; Individual data points), https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Units=SI&Mask=4"
+   }
   }
  }
 }

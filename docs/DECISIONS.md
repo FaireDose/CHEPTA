@@ -86,13 +86,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      - 3a (furans, 1,3-propanediol) and 3b (levulinate esters; levulinic acid with a gap between its vapour-pressure
        and density records) done; levulinic acid's gap: wanted liquid densities above 375 K, or vapour pressures between
        343 and 375 K by a static or ebulliometric method, from an open source;
-     - held: isoamyl alcohol, whose twelve vapour-pressure sets disagree (not pooled), with a gap too;
-     - 2-methylfuran: its three vapour-pressure sets disagree; under the rule of 2026-10-14 (all sets with the same
-       weight) a set is preferred only with a stated reason; find one (independent boiling points, calorimetric
-       enthalpy of vaporization) or keep the merged record;
      - 3c done (GVL, CPME, tetrahydrofurfuryl alcohol, 2,3-butanediol, methyl and ethyl lactate, limonene, furfuryl
-       alcohol, through the path for components without critical constants; gamma-butyrolactone, with its gap); no open vapour pressures: HMF, lactic
-       acid, lactide, solketal, alpha-angelica lactone;
+       alcohol, through the path for components without critical constants; gamma-butyrolactone, with its gap); **closed**
+       on 2026-10-14 (isoamyl alcohol added, 2-methylfuran refitted; docs/decisions/2026-10-14-11-batch-3-closed.md);
+       HMF, lactic acid and lactide move to the nonvolatile class; solketal and alpha-angelica lactone wait for open
+       vapour pressures;
      - batch 3 pairs: 24 NRTL pairs written (6 with a quality warning); water + gamma-valerolactone has no NRTL set (the
        only usable set, Zaitseva 2016, gives a spurious liquid split with every alpha): wanted, open T-x-y or P-x-y data
        over the whole range with pure-component points within 1 K of the records;

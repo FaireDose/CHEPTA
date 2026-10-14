@@ -3406,6 +3406,48 @@
    "file": "vle/methyl-lactate_water_10-1021-je049824c_tpx.json",
    "check": [],
    "describe": "Fitted to 45 total pressures at 283.15-303.15 K (T-P-x, with the component vapour pressures) from Sanz et al., J. Chem. Eng. Data 50 (2005) 85-88 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-lactate_water_10-1021-je049824c_tpx.json)."
+  },
+  {
+   "key": "1-propanol+isoamyl-alcohol",
+   "pair": [
+    "1-propanol",
+    "isoamyl-alcohol"
+   ],
+   "file": "vle/1-propanol_isoamyl-alcohol_10-1021-je0502142_101.3kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 21 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Resa et al., J. Chem. Eng. Data 51 (2006) 73-78 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-propanol_isoamyl-alcohol_10-1021-je0502142_101.3kPa_tx.json)."
+  },
+  {
+   "key": "2-propanol+isoamyl-alcohol",
+   "pair": [
+    "2-propanol",
+    "isoamyl-alcohol"
+   ],
+   "file": "vle/2-propanol_isoamyl-alcohol_10-1021-je400581e_101.3kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 12 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Dias et al., J. Chem. Eng. Data 59 (2014) 659-665 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-propanol_isoamyl-alcohol_10-1021-je400581e_101.3kPa_tx.json)."
+  },
+  {
+   "key": "bdo+isoamyl-alcohol",
+   "pair": [
+    "bdo",
+    "isoamyl-alcohol"
+   ],
+   "file": "vle/bdo_isoamyl-alcohol_10-1021-acs-jced-6b00092_80.0kPa_tx.json",
+   "check": [],
+   "describe": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 80.0 kPa from Zhi et al., J. Chem. Eng. Data 61 (2016) 3041-3047 (data public in the NIST TRC ThermoML Archive; validation/data/vle/bdo_isoamyl-alcohol_10-1021-acs-jced-6b00092_80.0kPa_tx.json)."
+  },
+  {
+   "key": "isoamyl-alcohol+isobutanol",
+   "pair": [
+    "isoamyl-alcohol",
+    "isobutanol"
+   ],
+   "file": "vle/isoamyl-alcohol_isobutanol_10-1021-je060238o_101.3kPa.json",
+   "check": [
+    "vle/isoamyl-alcohol_isobutanol_10-1021-je400581e_101.3kPa.json"
+   ],
+   "describe": "Fitted to 21 T-x-y points at 101.3 kPa from Resa et al., J. Chem. Eng. Data 51 (2006) 1892-1895 (data public in the NIST TRC ThermoML Archive; validation/data/vle/isoamyl-alcohol_isobutanol_10-1021-je060238o_101.3kPa.json); checked against Dias et al., J. Chem. Eng. Data 59 (2014) 659-665 at 101.3 kPa."
   }
  ]
 }

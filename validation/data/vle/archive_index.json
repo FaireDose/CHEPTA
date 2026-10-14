@@ -705,6 +705,21 @@
     ]
    }
   ],
+  "1-butanol+isoamyl-alcohol": [
+   {
+    "doi": "10.1016/j.fluid.2016.12.025",
+    "year": "2017",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2016.12.025.xml",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "isothermal-px",
+      "points": 19
+     }
+    ]
+   }
+  ],
   "1-butanol+isobutane": [
    {
     "doi": "10.1021/je034265f",
@@ -1605,6 +1620,21 @@
     ]
    }
   ],
+  "1-butene+isoamyl-alcohol": [
+   {
+    "doi": "10.1021/je049723e",
+    "year": "2005",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je049723e.xml",
+    "sets": [
+     {
+      "number": 25,
+      "kind": "gamma",
+      "points": 5
+     }
+    ]
+   }
+  ],
   "1-butene+isobutane": [
    {
     "doi": "10.1021/je8004672",
@@ -1887,6 +1917,21 @@
       "number": 16,
       "kind": "isobaric-tx",
       "points": 16
+     }
+    ]
+   }
+  ],
+  "1-hexanol+isoamyl-alcohol": [
+   {
+    "doi": "10.1016/j.fluid.2016.12.025",
+    "year": "2017",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2016.12.025.xml",
+    "sets": [
+     {
+      "number": 29,
+      "kind": "isothermal-px",
+      "points": 21
      }
     ]
    }
@@ -3242,6 +3287,26 @@
       "number": 3,
       "kind": "tpx-varying",
       "points": 28
+     }
+    ]
+   }
+  ],
+  "1-propanol+isoamyl-alcohol": [
+   {
+    "doi": "10.1021/je0502142",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je0502142.xml",
+    "sets": [
+     {
+      "number": 20,
+      "kind": "isobaric-tx",
+      "points": 23
+     },
+     {
+      "number": 22,
+      "kind": "isobaric-txy",
+      "points": 23
      }
     ]
    }
@@ -6207,6 +6272,34 @@
       "number": 4,
       "kind": "tpx-varying",
       "points": 30
+     }
+    ]
+   }
+  ],
+  "2-propanol+isoamyl-alcohol": [
+   {
+    "doi": "10.1021/je400581e",
+    "year": "2014",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je400581e.xml",
+    "sets": [
+     {
+      "number": 12,
+      "kind": "tpx-varying",
+      "points": 27
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je800298n",
+    "year": "2008",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je800298n.xml",
+    "sets": [
+     {
+      "number": 12,
+      "kind": "isobaric-tx",
+      "points": 21
      }
     ]
    }
@@ -9502,6 +9595,21 @@
     ]
    }
   ],
+  "bdo+isoamyl-alcohol": [
+   {
+    "doi": "10.1021/acs.jced.6b00092",
+    "year": "2016",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.6b00092.xml",
+    "sets": [
+     {
+      "number": 13,
+      "kind": "tpx-varying",
+      "points": 39
+     }
+    ]
+   }
+  ],
   "bdo+tetrahydrofuran": [
    {
     "doi": "10.1021/acs.jced.7b00584",
@@ -11622,6 +11730,39 @@
       "number": 5,
       "kind": "tpx-varying",
       "points": 3
+     }
+    ]
+   }
+  ],
+  "carbon-dioxide+isoamyl-alcohol": [
+   {
+    "doi": "10.1016/j.jct.2009.11.015",
+    "year": "2010",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2009.11.015.xml",
+    "sets": [
+     {
+      "number": 5,
+      "kind": "tpx-varying",
+      "points": 29
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je025600n",
+    "year": "2003",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je025600n.xml",
+    "sets": [
+     {
+      "number": 3,
+      "kind": "tpx-varying",
+      "points": 13
+     },
+     {
+      "number": 4,
+      "kind": "tpx-varying",
+      "points": 11
      }
     ]
    }
@@ -16693,6 +16834,21 @@
     ]
    }
   ],
+  "dimethyl-ether+isoamyl-alcohol": [
+   {
+    "doi": "10.1016/j.jct.2005.08.004",
+    "year": "2006",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2005.08.004.xml",
+    "sets": [
+     {
+      "number": 97,
+      "kind": "gamma",
+      "points": 5
+     }
+    ]
+   }
+  ],
   "dimethyl-ether+isobutanol": [
    {
     "doi": "10.1016/j.jct.2005.08.004",
@@ -17391,6 +17547,26 @@
       "number": 3,
       "kind": "tpx-varying",
       "points": 41
+     }
+    ]
+   }
+  ],
+  "dmso+isoamyl-alcohol": [
+   {
+    "doi": "10.1021/acs.jced.6b00733",
+    "year": "2017",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/acs.jced.6b00733.xml",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "isobaric-tx",
+      "points": 25
+     },
+     {
+      "number": 10,
+      "kind": "isobaric-txy",
+      "points": 25
      }
     ]
    }
@@ -18445,6 +18621,21 @@
       "number": 2,
       "kind": "tpx-varying",
       "points": 1
+     }
+    ]
+   }
+  ],
+  "ethanol+isoamyl-alcohol": [
+   {
+    "doi": "10.1016/j.fluid.2012.11.004",
+    "year": "2013",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2012.11.004.xml",
+    "sets": [
+     {
+      "number": 9,
+      "kind": "tpx-varying",
+      "points": 21
      }
     ]
    }
@@ -22158,6 +22349,134 @@
       "number": 12,
       "kind": "tpx-varying",
       "points": 68
+     }
+    ]
+   }
+  ],
+  "isoamyl-alcohol+isobutane": [
+   {
+    "doi": "10.1021/je049723e",
+    "year": "2005",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je049723e.xml",
+    "sets": [
+     {
+      "number": 23,
+      "kind": "gamma",
+      "points": 5
+     }
+    ]
+   }
+  ],
+  "isoamyl-alcohol+isobutanol": [
+   {
+    "doi": "10.1021/je060238o",
+    "year": "2006",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je060238o.xml",
+    "sets": [
+     {
+      "number": 18,
+      "kind": "isobaric-tx",
+      "points": 21
+     },
+     {
+      "number": 20,
+      "kind": "isobaric-txy",
+      "points": 21
+     }
+    ]
+   },
+   {
+    "doi": "10.1021/je400581e",
+    "year": "2014",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je400581e.xml",
+    "sets": [
+     {
+      "number": 10,
+      "kind": "isobaric-tx",
+      "points": 14
+     },
+     {
+      "number": 11,
+      "kind": "isobaric-txy",
+      "points": 14
+     }
+    ]
+   }
+  ],
+  "isoamyl-alcohol+n-butane": [
+   {
+    "doi": "10.1021/je049723e",
+    "year": "2005",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je049723e.xml",
+    "sets": [
+     {
+      "number": 21,
+      "kind": "gamma",
+      "points": 5
+     }
+    ]
+   }
+  ],
+  "isoamyl-alcohol+n-butyl-acetate": [
+   {
+    "doi": "10.1016/j.fluid.2016.12.025",
+    "year": "2017",
+    "journal": "Fluid Phase Equilib.",
+    "file": "10.1016/j.fluid.2016.12.025.xml",
+    "sets": [
+     {
+      "number": 19,
+      "kind": "isothermal-px",
+      "points": 20
+     }
+    ]
+   }
+  ],
+  "isoamyl-alcohol+nmp": [
+   {
+    "doi": "10.1016/j.jct.2008.09.021",
+    "year": "2009",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2008.09.021.xml",
+    "sets": [
+     {
+      "number": 23,
+      "kind": "isobaric-tx",
+      "points": 10
+     }
+    ]
+   }
+  ],
+  "isoamyl-alcohol+propane": [
+   {
+    "doi": "10.1021/je049723e",
+    "year": "2005",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je049723e.xml",
+    "sets": [
+     {
+      "number": 17,
+      "kind": "gamma",
+      "points": 5
+     }
+    ]
+   }
+  ],
+  "isoamyl-alcohol+propylene": [
+   {
+    "doi": "10.1021/je049723e",
+    "year": "2005",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je049723e.xml",
+    "sets": [
+     {
+      "number": 19,
+      "kind": "gamma",
+      "points": 5
      }
     ]
    }

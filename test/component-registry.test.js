@@ -11,7 +11,7 @@ const comps = read("../src/data/components.json").components;
 // measured_components.py (proposal 0008, Part B; proposal 0009, batch 3)
 const FROM_MEASURED = ["dichloromethane", "2-methoxyethanol", "furan", "2-methylfuran", "2-methyltetrahydrofuran",
   "1-3-propanediol", "levulinic-acid", "methyl-levulinate", "ethyl-levulinate", "butyl-levulinate",
-  "gvl", "thfa", "cpme", "2-3-butanediol", "methyl-lactate", "ethyl-lactate", "limonene", "furfuryl-alcohol", "gbl",
+  "gvl", "thfa", "cpme", "2-3-butanediol", "methyl-lactate", "ethyl-lactate", "limonene", "furfuryl-alcohol", "gbl", "isoamyl-alcohol",
   "lactic-acid"];
 
 test("every component is in the registry once, and every registry entry is a component", () => {
