@@ -10,6 +10,7 @@
 import { h, s as svgEl } from "./dom.js";
 import { icon } from "./icons.js";
 import { FUTURE_MODELS } from "./future-models.js";
+import { modelPicker } from "./model-picker.js";
 import { listComponents, modelName } from "../thermo/system.js";
 import { methodAdvice } from "../thermo/method-advice.js";
 import { componentPicker } from "./component-picker.js";
@@ -292,17 +293,31 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
   return secs;
 }
 
+/** What the property method cannot do with the chosen components, as one message ("" when it can use them all). */
+function methodProblem(ids, thermo) {
+  const eos = ["PR", "SRK"].includes(thermo.model);
+  const list = xs => `${xs.map(nameOf).join(", ")} ha${xs.length === 1 ? "s" : "ve"}`;
+  const them = xs => (xs.length === 1 ? "it" : "them");
+  const gases = eos ? [] : ids.filter(c => !byId().get(c)?.activity);
+  if (gases.length) return `${gases.map(nameOf).join(", ")} need${gases.length === 1 ? "s" : ""} an equation of state (no activity-model data: not a liquid with a vapour-pressure record): choose Peng–Robinson or SRK in the Method page, or remove ${them(gases)}.`;
+  const noRq = thermo.model === "UNIQUAC" ? ids.filter(c => !byId().get(c)?.uniquac) : [];
+  if (noRq.length) return `${list(noRq)} no UNIQUAC r and q (no open data yet), so UNIQUAC cannot use ${them(noRq)}: choose NRTL in the Method page.`;
+  const noGroups = thermo.model === "MOD-UNIFAC-2" ? ids.filter(c => !byId().get(c)?.modUnifac) : [];
+  if (noGroups.length) return `${list(noGroups)} no Mod. UNIFAC 2.0 groups, so Mod. UNIFAC 2.0 cannot use ${them(noGroups)}: choose NRTL in the Method page.`;
+  return "";
+}
+
 function setupSections({ state, set, ui, uid, inputsSection, st }) {
   const f = ensureUi(ui), fs = state.flowsheet;
   const all = listComponents();
   const eos = ["PR", "SRK"].includes(fs.thermo.model);
-  const usable = all.filter(c => eos || c.activity);
   const changeComps = ids => { const r = setComponents(fs, ids); f.note = r.note; set({ flowsheet: r.fs }); };
-  // type a name, formula or CAS number (component-picker.js); gases need an equation of state
+  // type a name, formula or CAS number (component-picker.js); every component can be chosen, and the Components and
+  // Method pages say when the property method cannot use one (methodProblem)
   const add = componentPicker({
     id: `fa-fs-addcomp-${uid}`, fk: "fs-addcomp", label: "Add a component", clearOnPick: true,
     components: all.filter(c => !fs.components.includes(c.id)),
-    status: c => (usable.includes(c) ? {} : { disabled: true, note: "gas: choose Peng–Robinson or SRK" }),
+    status: c => (eos || c.activity ? {} : { note: "gas: needs Peng–Robinson or SRK" }),
     placeholder: fs.components.length ? "Add: name, formula, CAS…" : "Choose: name, formula, CAS…",
     onPick: id => { if (id) changeComps([...fs.components, id]); },
   });
@@ -310,24 +325,20 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
     h("button", { type: "button", class: "fa-chip-x", "aria-label": `Remove ${nameOf(c)}`, "data-fk": `fs-rm-${c}`, on: { click: () => changeComps(fs.components.filter(x => x !== c)) } }, "×")));
   const setThermo = patch => {
     const thermo = { ...fs.thermo, ...patch };
-    const nowEos = ["PR", "SRK"].includes(thermo.model);
-    const dropped = nowEos ? [] : fs.components.filter(c => !byId().get(c)?.activity);
-    const noRq = thermo.model === "UNIQUAC" ? fs.components.filter(c => byId().get(c)?.activity && !byId().get(c)?.uniquac) : [];
-    const noGroups = thermo.model === "MOD-UNIFAC-2" ? fs.components.filter(c => byId().get(c)?.activity && !byId().get(c)?.modUnifac) : [];
-    f.note = dropped.length ? `${dropped.map(nameOf).join(", ")} need${dropped.length === 1 ? "s" : ""} an equation of state (no activity-model data); keep Peng–Robinson or SRK, or remove ${dropped.length === 1 ? "it" : "them"}.`
-      : noRq.length ? `${noRq.map(nameOf).join(", ")} ha${noRq.length === 1 ? "s" : "ve"} no UNIQUAC r and q (no open data yet), so UNIQUAC cannot use ${noRq.length === 1 ? "it" : "them"}: choose NRTL.`
-      : noGroups.length ? `${noGroups.map(nameOf).join(", ")} ha${noGroups.length === 1 ? "s" : "ve"} no Mod. UNIFAC 2.0 groups, so Mod. UNIFAC 2.0 cannot use ${noGroups.length === 1 ? "it" : "them"}: choose NRTL.` : "";
+    f.note = "";
     set({ flowsheet: { ...fs, thermo } });
   };
   if (f.setup === "method") {
     // the Method page: the property method and the recycle solver
-    return [methodSection({ fs, eos, setThermo, inputsSection }), ...solverSection({ fs, set, uid, inputsSection })];
+    return [methodSection({ fs, eos, setThermo, inputsSection, uid, problem: methodProblem(fs.components, fs.thermo) }),
+      ...solverSection({ fs, set, uid, inputsSection })];
   }
   const secs = [];
 
   secs.push(inputsSection("1. Components",
     h("p", { class: "fa-in-hint" }, "The components of the whole simulation. Every feed lists exactly these."),
     chips.length ? h("ol", { class: "fa-chips", "aria-label": "Components of the flowsheet" }, ...chips) : h("div", { class: "fa-empty" }, "None chosen yet."),
+    methodProblem(fs.components, fs.thermo) ? h("div", { class: "fug-err", role: "alert", "data-fk": "fs-comp-problem" }, methodProblem(fs.components, fs.thermo)) : null,
     h("div", { class: "fa-add" }, add),
     h("p", { class: "fa-in-hint" }, "Property method: ",
       h("button", { type: "button", class: "fa-link", "data-fk": "fs-go-method", title: "Change it on the Method page",
@@ -346,23 +357,21 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
 }
 
 /** The property method of the whole flowsheet: an activity model with a vapour model, or an equation of state. */
-function methodSection({ fs, eos, setThermo, inputsSection }) {
+function methodSection({ fs, eos, setThermo, inputsSection, uid, problem }) {
   // is this the recommended method for these components? (docs/METHOD_SELECTION.md)
   const advice = methodAdvice({ ids: fs.components, names: fs.components.map(nameOf), formulas: fs.components.map(id => byId().get(id)?.formula),
     model: fs.thermo.model, eos });
   return inputsSection("2. Method",
     h("p", { class: "fa-in-hint" }, "One property method for every block and stream."),
     ...advice.map(a => h("div", { class: "fug-warn", role: "note", "data-fk": "fs-method-advice" }, a)),
-    h("div", { class: "fa-fs-model" }, h("span", { class: "fa-in-hint" }, "Activity model"),
-      segRow("Activity model", [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0"], ["ideal", "Ideal"]], eos ? null : fs.thermo.model, m => setThermo({ model: m }), "fs-model")),
-    eos ? null : h("div", { class: "fa-fs-model" }, h("span", { class: "fa-in-hint" }, "with vapour"),
-      segRow("Vapour model", [["ideal", "Ideal gas"], ["PR", "PR"], ["SRK", "SRK"]], fs.thermo.vapour ?? "ideal", v => setThermo({ vapour: v }), "fs-vap")),
-    h("div", { class: "fa-fs-model" }, h("span", { class: "fa-in-hint" }, "or an equation of state"),
-      segRow("Equation of state", [["PR", "Peng–Robinson"], ["SRK", "SRK"]], eos ? fs.thermo.model : null, m => setThermo({ model: m }), "fs-model")),
-    // on the roadmap: locked, with what each is for
+    // the same drop-down lists as the workbench's Model group (model-picker.js)
+    modelPicker({ model: fs.thermo.model, vapour: fs.thermo.vapour ?? "ideal", id: `fs-model-${uid}`, fk: "fs-model",
+      onChange: p => setThermo(p.model === fs.thermo.model ? { vapour: p.vapour } : { model: p.model, vapour: p.vapour }) }),
+    problem ? h("div", { class: "fug-err", role: "alert", "data-fk": "fs-method-problem" }, problem) : null,
+    // on the roadmap, for other kinds of mixture: locked, with what each is for (other models: in the lists above)
     h("div", { class: "fa-fs-later", role: "note" },
       h("div", { class: "fa-in-hint" }, "Not available yet:"),
-      ...[["More models", [...FUTURE_MODELS.activity, ...FUTURE_MODELS.eos]], ["Ions (electrolytes)", FUTURE_MODELS.electrolyte], ["Polymers", FUTURE_MODELS.polymer]]
+      ...[["Ions (electrolytes)", FUTURE_MODELS.electrolyte], ["Polymers", FUTURE_MODELS.polymer]]
         .map(([cap, list]) => h("div", { class: "fa-fs-model" }, h("span", { class: "fa-in-hint" }, cap),
           h("div", { class: "fa-locked-row" }, ...list.map(m => h("span", { class: "fa-locked-chip", title: m.note, "aria-disabled": "true", "data-fk": `fs-later-${m.id}` }, icon("lock", 11), m.label)))))));
 }
