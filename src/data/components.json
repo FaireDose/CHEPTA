@@ -41428,8 +41428,16 @@
         ]
       },
       "modUnifac": {
-        "available": false,
-        "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+        "groups": {
+          "6": 1,
+          "26": 1,
+          "79": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH=CH, 1 CHO, 1 CY-CH): chosen from the structure: built from the groups the method has (no furan-ring subgroup), as the maintainer decided: the ring ether CH-O as CHO, one ring double bond as CH=CH, the remaining ring CH as CY-CH; the second double bond and the aromatic character are not represented; DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H4O"
       }
     },
     "2-methylfuran": {
@@ -41840,8 +41848,17 @@
         ]
       },
       "modUnifac": {
-        "available": false,
-        "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+        "groups": {
+          "1": 1,
+          "8": 1,
+          "26": 1,
+          "79": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH=C, 1 CHO, 1 CY-CH): chosen from the structure: built from the groups the method has (no furan-ring subgroup), as the maintainer decided: the ring ether CH-O as CHO, the substituted ring double bond as CH=C, the remaining ring CH as CY-CH, and CH3; the second double bond and the aromatic character are not represented; DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O"
       }
     },
     "2-methyltetrahydrofuran": {
@@ -45156,8 +45173,18 @@
       },
       "Tb_note": "the vapour-pressure record ends with the measured temperatures at 412.11 K, where it gives 36.51 kPa, below 101.325 kPa: no normal boiling temperature from measured data",
       "modUnifac": {
-        "available": false,
-        "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+        "groups": {
+          "2": 1,
+          "8": 1,
+          "14": 1,
+          "26": 1,
+          "79": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH=C, 1 OH (P), 1 CHO, 1 CY-CH): chosen from the structure: built from the groups the method has (no furan-ring subgroup), as the maintainer decided: the ring ether CH-O as CHO, the substituted ring double bond as CH=C, the remaining ring CH as CY-CH, and CH2 with a primary OH; the second double bond and the aromatic character are not represented; DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O2"
       },
       "fusion": {
         "Tm_K": 256.05,

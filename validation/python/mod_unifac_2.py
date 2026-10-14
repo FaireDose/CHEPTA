@@ -70,6 +70,23 @@ FROM_STRUCTURE = {
     "propylene-carbonate": ({1: 1, 113: 1}, "the cyclic carbonate subgroup (CH2)2CB, as for ethylene carbonate, and CH3 "
                                             "for the methyl on the ring (the SMARTS match took NEP, the subgroup of "
                                             "N-ethylpyrrolidone, for a molecule without nitrogen)"),
+    # The method has no furan-ring subgroup (only furfural as one whole-molecule group). The maintainer (2026-10-14):
+    # build the ring from the groups it has, C=C and the ether C-O. Ring O1-C2=C3-C4=C5: the ether O with C5-H as CHO,
+    # the double bond C2=C3 as CH=CH (or CH=C where C2 carries a substituent), C4-H as a ring CH; the C4=C5 double bond
+    # and the ring's aromatic character are not represented, so this is a rough prediction
+    "furan": ({26: 1, 6: 1, 79: 1}, "built from the groups the method has (no furan-ring subgroup), as the maintainer "
+                                     "decided: the ring ether CH-O as CHO, one ring double bond as CH=CH, the remaining "
+                                     "ring CH as CY-CH; the second double bond and the aromatic character are not "
+                                     "represented"),
+    "2-methylfuran": ({26: 1, 8: 1, 79: 1, 1: 1}, "built from the groups the method has (no furan-ring subgroup), as the "
+                                                  "maintainer decided: the ring ether CH-O as CHO, the substituted ring "
+                                                  "double bond as CH=C, the remaining ring CH as CY-CH, and CH3; the "
+                                                  "second double bond and the aromatic character are not represented"),
+    "furfuryl-alcohol": ({26: 1, 8: 1, 79: 1, 2: 1, 14: 1}, "built from the groups the method has (no furan-ring "
+                                                            "subgroup), as the maintainer decided: the ring ether CH-O as "
+                                                            "CHO, the substituted ring double bond as CH=C, the remaining "
+                                                            "ring CH as CY-CH, and CH2 with a primary OH; the second "
+                                                            "double bond and the aromatic character are not represented"),
 }
 # assignments that count a substituted ring carbon in the ring's subgroup (THF: CH2-O-CH2; (CH2)2CB: the ring of ethylene
 # carbonate): their atom balance is one H above the formula, the way DDBST counts such rings

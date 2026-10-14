@@ -151,8 +151,10 @@ without waiting for a person to choose (the maintainer, 2026-10-14). A component
 (thermo SMARTS) and must pass the atom balance; DDBST's published assignment is the check. When the two differ, DDBST's
 is used (`CHOSEN` in `mod_unifac_2.py`); a substituted ring carbon counted in the ring's subgroup, as DDBST does, may
 leave the balance one H over, which is stated. Without a DDBST assignment, the structure-based one is used after a
-check of the structure (`REVIEWED`), or corrected when it is plainly wrong (`FROM_STRUCTURE`). The subgroups cannot
-describe a furan ring, an anhydride or the small gases: those components have no groups, and say so. The UNIFAC
+check of the structure (`REVIEWED`), or corrected when it is plainly wrong (`FROM_STRUCTURE`). A ring the method has
+no subgroup for is built from the groups it has (the maintainer, 2026-10-14): a furan ring as the ether CH-O (CHO), one
+C=C and a ring CH, with what is not represented (the second double bond, the aromatic character) stated. An
+anhydride and the small gases cannot be described: those components have no groups, and say so. The UNIFAC
 Consortium's newer groups (anhydrides, lactones, ...) are for its members only, so they are not used. Where measured
 data show the prediction is off, a "predicted-deviation" known issue says by how much; the user compares the models and
 decides.

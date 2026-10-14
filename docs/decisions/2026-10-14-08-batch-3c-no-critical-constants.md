@@ -79,6 +79,13 @@
   and thiophene (AC2H2S, AC2HS, AC2S) only, and furfural as one whole-molecule group. The UNIFAC Consortium's own
   tables (version 2025) list further main groups (anhydrides, lactones, ...), but their parameters are for the
   consortium's members, not open, so they are not used (AGENTS.md rule 1).
+- **Furans built from other groups (the maintainer, 2026-10-14):** "you can simply build furan from other
+  interactions. basically it has C=C and C-O in case nothing else is there". DDBST lists no assignment for furan,
+  2-methylfuran or furfuryl alcohol, so they are built from the groups the method has: the ring ether CH-O as CHO, one
+  ring double bond as CH=CH (CH=C where the ring carbon carries the substituent), the remaining ring CH as CY-CH, and
+  the substituent (CH3; CH2 and a primary OH). The atom balance is exact; the second double bond and the aromatic
+  character are not represented, which each record says. Maleic anhydride still has no groups: no anhydride group,
+  and no subgroup for a C=O carbon without hydrogen.
 - **gamma-Butyrolactone (the maintainer, 2026-10-14):** "I accept the gamma butyrolactone": Sun 2017's narrow miss
   (1.93 % against its stated 1.71 %) accepted, with the gap already accepted. Modified UNIFAC 2.0 groups as DDBST
   assigns them (CH2COO and two CY-CH2; the SMARTS match had taken a nitrogen subgroup).
