@@ -126,6 +126,307 @@
     "source": "coolprop",
     "detail": "CoolProp Ethylene: eos Smukala-JPCRD-2000"
    }
+  },
+  "tb/carbon-monoxide": {
+   "T_C": {
+    "value": -191.5118,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonMonoxide: eos Lemmon-JCED-2006"
+   }
+  },
+  "tb/carbon-dioxide": {
+   "T_C": {
+    "value": -88.04638,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonDioxide: eos Span-JPCRD-1996"
+   }
+  },
+  "tb/hydrogen-sulfide": {
+   "T_C": {
+    "value": -60.29515,
+    "source": "coolprop",
+    "detail": "CoolProp HydrogenSulfide: eos Lemmon-JCED-2006"
+   }
+  },
+  "tb/argon": {
+   "T_C": {
+    "value": -185.8479,
+    "source": "coolprop",
+    "detail": "CoolProp Argon: eos Tegeler-JPCRD-1999"
+   }
+  },
+  "tb/propane": {
+   "T_C": {
+    "value": -42.11379,
+    "source": "coolprop",
+    "detail": "CoolProp n-Propane: eos Lemmon-JCED-2009"
+   }
+  },
+  "tb/propylene": {
+   "T_C": {
+    "value": -47.61916,
+    "source": "coolprop",
+    "detail": "CoolProp Propylene: eos Lemmon-PROPYLENE-2013"
+   }
+  },
+  "tb/n-butane": {
+   "T_C": {
+    "value": -0.4901381,
+    "source": "coolprop",
+    "detail": "CoolProp n-Butane: eos Buecker-JPCRD-2006B"
+   }
+  },
+  "tb/isobutane": {
+   "T_C": {
+    "value": -11.74902,
+    "source": "coolprop",
+    "detail": "CoolProp IsoButane: eos Buecker-JPCRD-2006B"
+   }
+  },
+  "tb/ammonia": {
+   "T_C": {
+    "value": -33.31568,
+    "source": "coolprop",
+    "detail": "CoolProp Ammonia: eos Gao-JPCRD-2020"
+   }
+  },
+  "tb/dimethyl-ether": {
+   "T_C": {
+    "value": -24.7822,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylEther: eos Wu-JPCRD-2011"
+   }
+  },
+  "tb/cyclohexane": {
+   "T_C": {
+    "value": 80.71494,
+    "source": "coolprop",
+    "detail": "CoolProp Cyclohexane: eos Zhou-JPCRD-2014"
+   }
+  },
+  "tb/o-xylene": {
+   "T_C": {
+    "value": 144.371,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012"
+   }
+  },
+  "tb/m-xylene": {
+   "T_C": {
+    "value": 139.0639,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012"
+   }
+  },
+  "tb/p-xylene": {
+   "T_C": {
+    "value": 138.3204,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012"
+   }
+  },
+  "tb/ethylbenzene": {
+   "T_C": {
+    "value": 136.1642,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012"
+   }
+  },
+  "tb/n-pentane": {
+   "T_C": {
+    "value": 36.05935,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane"
+   }
+  },
+  "tb/n-hexane": {
+   "T_C": {
+    "value": 68.71562,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane"
+   }
+  },
+  "tb/n-heptane": {
+   "T_C": {
+    "value": 98.38328,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B"
+   }
+  },
+  "tb/n-octane": {
+   "T_C": {
+    "value": 125.6438,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane"
+   }
+  },
+  "tb/diethyl-ether": {
+   "T_C": {
+    "value": 34.45436,
+    "source": "coolprop",
+    "detail": "CoolProp DiethylEther: eos Thol-IJT-2014"
+   }
+  },
+  "tb/propylene-glycol": {
+   "T_C": {
+    "value": 188.0737,
+    "source": "coolprop",
+    "detail": "CoolProp PropyleneGlycol: eos Eisenbach-JPCRD-2021"
+   }
+  },
+  "tb/tetrahydrofuran": {
+   "T_C": {
+    "value": 65.92547,
+    "source": "coolprop",
+    "detail": "CoolProp Tetrahydrofuran: eos Fiedler-IJT-2023-THF"
+   }
+  },
+  "tb/dichloroethane": {
+   "T_C": {
+    "value": 83.49957,
+    "source": "coolprop",
+    "detail": "CoolProp Dichloroethane: eos Thol-THESIS-2015"
+   }
+  },
+  "tb/sulfur-dioxide": {
+   "T_C": {
+    "value": -10.01299,
+    "source": "coolprop",
+    "detail": "CoolProp SulfurDioxide: eos Gao-JCED-2016"
+   }
+  },
+  "tb/nitrous-oxide": {
+   "T_C": {
+    "value": -88.46608,
+    "source": "coolprop",
+    "detail": "CoolProp NitrousOxide: eos Lemmon-JCED-2006"
+   }
+  },
+  "tb/ethylene-oxide": {
+   "T_C": {
+    "value": 10.50955,
+    "source": "coolprop",
+    "detail": "CoolProp EthyleneOxide: eos Thol-CES-2015,Thol-CES-2015-CORR,Thol-THESIS-2015"
+   }
+  },
+  "tb/n-nonane": {
+   "T_C": {
+    "value": 150.763,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006"
+   }
+  },
+  "tb/n-decane": {
+   "T_C": {
+    "value": 174.1202,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006"
+   }
+  },
+  "tb/n-dodecane": {
+   "T_C": {
+    "value": 216.2915,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004"
+   }
+  },
+  "tb/1-butene": {
+   "T_C": {
+    "value": -6.305975,
+    "source": "coolprop",
+    "detail": "CoolProp 1-Butene: eos Lemmon-FPE-2005"
+   }
+  },
+  "tb/isopentane": {
+   "T_C": {
+    "value": 27.82633,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006"
+   }
+  },
+  "tb/n-undecane": {
+   "T_C": {
+    "value": 195.7837,
+    "source": "coolprop",
+    "detail": "CoolProp n-Undecane: eos Aleksandrov-TE-2011"
+   }
+  },
+  "tb/dimethyl-carbonate": {
+   "T_C": {
+    "value": 90.10608,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylCarbonate: eos Zhou-JPCRD-2011"
+   }
+  },
+  "tb/methyl-palmitate": {
+   "T_C": {
+    "value": 329.1189,
+    "source": "coolprop",
+    "detail": "CoolProp MethylPalmitate: eos Huber-EF-2009"
+   }
+  },
+  "tb/methyl-stearate": {
+   "T_C": {
+    "value": 356.407,
+    "source": "coolprop",
+    "detail": "CoolProp MethylStearate: eos Huber-EF-2009"
+   }
+  },
+  "tb/methyl-oleate": {
+   "T_C": {
+    "value": 354.026,
+    "source": "coolprop",
+    "detail": "CoolProp MethylOleate: eos Huber-EF-2009"
+   }
+  },
+  "tb/methyl-linoleate": {
+   "T_C": {
+    "value": 355.6906,
+    "source": "coolprop",
+    "detail": "CoolProp MethylLinoleate: eos Huber-EF-2009"
+   }
+  },
+  "tb/dichloromethane": {
+   "T_C": {
+    "value": 39.85,
+    "source": "nist-webbook",
+    "detail": "Tboil = 313. ± 1. K (Average of 12 values; Individual data points), https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Units=SI&Mask=4"
+   }
+  },
+  "tb/2-methoxyethanol": {
+   "T_C": {
+    "value": 124.35,
+    "source": "nist-webbook",
+    "detail": "Tboil = 397.5 ± 0.3 K (Average of 8 values; Individual data points), https://webbook.nist.gov/cgi/cbook.cgi?ID=C109864&Units=SI&Mask=4"
+   }
+  },
+  "tb/furan": {
+   "T_C": {
+    "value": 31.55,
+    "source": "nist-webbook",
+    "detail": "Tboil = 304.7 ± 0.6 K (Average of 12 out of 13 values; Individual data points), https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Units=SI&Mask=4"
+   }
+  },
+  "tb/2-methylfuran": {
+   "T_C": {
+    "value": 63.85,
+    "source": "nist-webbook",
+    "detail": "Tboil = 337. ± 1. K (Average of 10 values; Individual data points), https://webbook.nist.gov/cgi/cbook.cgi?ID=C534225&Units=SI&Mask=4"
+   }
+  },
+  "tb/2-methyltetrahydrofuran": {
+   "T_C": {
+    "value": 78.85,
+    "source": "nist-webbook",
+    "detail": "Tboil = 352. ± 10. K (Average of 6 values; Individual data points), https://webbook.nist.gov/cgi/cbook.cgi?ID=C96479&Units=SI&Mask=4"
+   }
+  },
+  "tb/1-3-propanediol": {
+   "T_C": {
+    "value": 213.85,
+    "source": "nist-webbook",
+    "detail": "Tboil = 487. ± 3. K (Average of 11 out of 12 values; Individual data points), https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Units=SI&Mask=4"
+   }
   }
  }
 }

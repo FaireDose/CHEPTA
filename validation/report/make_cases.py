@@ -9,9 +9,13 @@ CoolProp is used here only to choose the temperature range of the plots.
 import json
 from pathlib import Path
 
+import sys
+
 import CoolProp.CoolProp as CP
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "validation/python"))
+from registry import REG  # noqa: E402
 comp = json.loads((ROOT / "src/data/components.json").read_text())["components"]
 azeo = json.loads((ROOT / "validation/data/azeotropes_101kPa.json").read_text())
 weg = json.loads((ROOT / "validation/data/water_ethylene_glycol_760mmHg.json").read_text())
@@ -31,6 +35,34 @@ TB_POINT = {"water": 373.12, "methanol": 337.63, "ethanol": 351.57, "acetone": 3
             "hydrogen": 20.37, "methane": 111.67, "ethane": 184.57, "ethylene": 169.38,
             "acetic-acid": 391.2, "ethylene-glycol": 470.5, "chloroform": 334.3, "ethyl-acetate": 350.2}
 
+# Every other CoolProp fluid of the component registry (validation/data/component_registry.json): its boiling point
+# and properties at 25 degC (liquids) and at the normal boiling point, against CoolProp, so that every batch of
+# components reaches the report (test/report-coverage.test.js). The 16 above keep their curves; these have points only.
+EXTRA = [c for c in REG.coolprop if c not in ALL and c in comp]
+TB_EXTRA = {}
+for c in EXTRA:
+    try:
+        TB_EXTRA[c] = round(CP.PropsSI("T", "P", 101325, "Q", 0, REG.coolprop[c]), 2)
+    except ValueError:  # no liquid at 1 atm (carbon dioxide sublimes)
+        pass
+LIQUIDS_EXTRA = [c for c in EXTRA if c in TB_EXTRA and TB_EXTRA[c] > 298.15 and CP.PropsSI("Ttriple", REG.coolprop[c]) < 298.15]
+
+# Components built from measured data alone (validation/python/measured_components.py): their records are fitted to
+# all open measured values, so the measured-data group cannot check them; their boiling point is compared with the
+# average of the measured normal boiling points on their NIST WebBook page (stored in webbook_<id>.json), with the
+# tolerance of that average's stated uncertainty class.
+MEASURED_ONLY = [c for c in comp if "Measured data only" in comp[c].get("constants_source", "")]
+
+
+def webbook_tboil(c):
+    """(value K, uncertainty K) of the Tboil average (AVG) on the component's stored WebBook page."""
+    d = json.loads((ROOT / f"validation/data/pure/measured/webbook_{c}.json").read_text())
+    t = next(t for t in d["pages"]["phase change"]["tables"] if t["header"][0] == "Quantity")
+    r = next(r for r in t["rows"] if r[0] == "Tboil" and r[3] == "AVG")
+    v, u = (float(x) for x in r[1].split("±"))
+    return v, u
+
+
 LIQ_PROPS = [("liquidDensity", "rho_kg_m3", "liquidDensity"),
              ("liquidHeatCapacity", "cp_kJ_kgK", "heatCapacity"),
              ("heatOfVaporization", "dHvap_kJ_kg", "heatOfVaporization"),
@@ -43,7 +75,10 @@ groups = []
 groups.append({
     "id": "boiling", "title": "Normal boiling points at 101.325 kPa",
     "cases": [{"id": f"tb/{c}", "type": "normalBoilingPoint", "component": c, "P_kPa": 101.325,
-               "quantities": [{"key": "T_C", "tol": "boilingPoint"}]} for c in ALL]})
+               "quantities": [{"key": "T_C", "tol": "boilingPoint"}]} for c in ALL + [c for c in EXTRA if c in TB_EXTRA]]
+    + [{"id": f"tb/{c}", "type": "normalBoilingPoint", "component": c, "P_kPa": 101.325,
+        "quantities": [{"key": "T_C", "tol": "boilingPointAvg" if webbook_tboil(c)[1] <= 1.0 else "boilingPointAvgWide"}]}
+       for c in MEASURED_ONLY]})
 
 # (b) azeotropes
 cases = []
@@ -53,13 +88,16 @@ for model in ["NRTL", "UNIQUAC"]:
         cases.append({"id": f"azeo/{a1}+{a2}/{model}", "type": "azeotrope", "components": [a1, a2],
                       "model": model, "P_kPa": azeo["P_kPa"], "near_x1": a["x_first"],
                       "quantities": [{"key": "T_C", "tol": "azeotropeT"}, {"key": "x1", "tol": "azeotropeX"}]})
-t = azeo["ternary"][0]
-mol = [w / comp[c]["MW"] for w, c in zip(t["wt_pct"], t["components"])]
-x0 = [round(m / sum(mol), 4) for m in mol]
-cases.append({"id": "azeo/" + "+".join(t["components"]) + "/NRTL", "type": "ternaryAzeotrope",
-              "components": t["components"], "model": "NRTL", "P_kPa": azeo["P_kPa"], "x0": x0,
-              "quantities": [{"key": "T_C", "tol": "azeotropeT"}] +
-                            [{"key": f"x{i+1}", "tol": "azeotropeX"} for i in range(3)]})
+# the ternary azeotropes of the tables (the methanol + acetone + chloroform saddle, the ethanol + water + ethyl
+# acetate minimum), with both activity models
+for t in azeo["ternary"]:
+    mol = [w / comp[c]["MW"] for w, c in zip(t["wt_pct"], t["components"])]
+    x0 = [round(m / sum(mol), 4) for m in mol]
+    for model in ["NRTL", "UNIQUAC"]:
+        cases.append({"id": "azeo/" + "+".join(t["components"]) + "/" + model, "type": "ternaryAzeotrope",
+                      "components": t["components"], "model": model, "P_kPa": azeo["P_kPa"], "x0": x0,
+                      "quantities": [{"key": "T_C", "tol": "azeotropeT"}] +
+                                    [{"key": f"x{i+1}", "tol": "azeotropeX"} for i in range(3)]})
 groups.append({"id": "azeotropes", "title": "Azeotropes at 101.325 kPa", "cases": cases})
 
 # (c) T-x-y and P-x spot points
@@ -121,6 +159,38 @@ for fid, comps, model, vapour, z, spec, keys in [
     cases.append(c)
 groups.append({"id": "flash", "title": "Flashes", "cases": cases})
 
+# (c2) flashes with two liquids (proposal 0001, step 5): against the independent construction of
+# validation/python/reference_three_phase.py, the handbook azeotrope and the mutual solubilities of Xu et al. 2017
+X3, XA = [{"key": "xA1", "tol": "threePhaseX"}], [{"key": "xA1", "tol": "lleData"}]
+cases = [
+    {"id": "flash3/water+ethyl-acetate/NRTL/TP300", "spec": {"T": 300.0, "P": 101.325}, "z": [0.5, 0.5],
+     "quantities": X3 + [{"key": "xB1", "tol": "threePhaseX"}]},
+    {"id": "flash3/water+ethyl-acetate/NRTL/PVF0", "spec": {"P": 101.325, "VF": 0.0}, "z": [0.5, 0.5],
+     "quantities": [{"key": "T_C", "tol": "flashT"}, {"key": "y1", "tol": "threePhaseX"}] + X3 + [{"key": "xB1", "tol": "threePhaseX"}]},
+    {"id": "flash3/water+ethyl-acetate/NRTL/PH", "spec": {"P": 101.325, "H": -20000.0}, "z": [0.3, 0.7],
+     "quantities": [{"key": "T_C", "tol": "flashT"}, {"key": "VF", "tol": "threePhaseX"}]},
+    {"id": "flash3/water+ethyl-acetate/NRTL/TVF", "spec": {"T": 343.0, "VF": 0.3}, "z": [0.5, 0.5],
+     "quantities": X3 + [{"key": "y1", "tol": "threePhaseX"}]},
+    {"id": "flash3/water+ethyl-acetate/NRTL/handbook", "spec": {"P": 101.325, "VF": 0.0}, "z": [0.5, 0.5], "data": "handbook",
+     "quantities": [{"key": "T_C", "tol": "azeotropeT"}, {"key": "y1", "tol": "azeotropeX"}]},
+    {"id": "flash3/water+ethyl-acetate/NRTL/xu2017-298", "spec": {"T": 298.15, "P": 101.325}, "z": [0.6, 0.4], "data": "xu2017",
+     "quantities": XA},
+    {"id": "flash3/water+ethyl-acetate/NRTL/xu2017-318", "spec": {"T": 318.15, "P": 101.325}, "z": [0.6, 0.4], "data": "xu2017",
+     "quantities": XA},
+    {"id": "flash3/ethanol+water+ethyl-acetate/NRTL/TP", "spec": {"P": 101.325, "T": 343.1402}, "z": [0.1, 0.4, 0.5],
+     "quantities": [{"key": "VF", "tol": "threePhaseX"}] + X3},
+    {"id": "flash3/ethanol+water+ethyl-acetate/NRTL/PVF0", "spec": {"P": 101.325, "VF": 0.0}, "z": [0.1, 0.4, 0.5],
+     "quantities": [{"key": "T_C", "tol": "flashT"}]},
+    {"id": "flash3/ethanol+water+ethyl-acetate/UNIQUAC/PVF", "spec": {"P": 101.325, "VF": 0.1}, "z": [0.05, 0.5, 0.45],
+     "quantities": [{"key": "T_C", "tol": "flashT"}] + X3},
+]
+for c in cases:
+    _, pair, model, _ = c["id"].split("/")
+    c.update({"type": "flash3", "components": pair.split("+"), "model": model})
+# key order as written by hand before this generator made them: id, type, components, model, z, spec, data, quantities
+cases = [{k: c[k] for k in ["id", "type", "components", "model", "z", "spec", "data", "quantities"] if k in c} for c in cases]
+groups.append({"id": "three-phase", "title": "Flashes with two liquids", "cases": cases})
+
 # (d) pure-component properties
 cases = []
 for c in LIQUIDS:
@@ -135,6 +205,20 @@ for c in ALL:
                       "T_K": TB_POINT[c], "P_kPa": 101.325, "state": "saturated liquid",
                       "quantities": [{"key": key, "tol": tol}]})
 for c in ALL:
+    cases.append({"id": f"pure/{c}/idealGasHeatCapacity/25C", "type": "pureProperty", "component": c,
+                  "property": "idealGasHeatCapacity", "T_K": 298.15, "quantities": [{"key": "cp_kJ_kgK", "tol": "heatCapacity"}]})
+for c in LIQUIDS_EXTRA:
+    cases.append({"id": f"pure/{c}/psat/25C", "type": "pureProperty", "component": c, "property": "vapourPressure",
+                  "T_K": 298.15, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]})
+    for prop, key, tol in LIQ_PROPS:
+        cases.append({"id": f"pure/{c}/{prop}/25C", "type": "pureProperty", "component": c, "property": prop,
+                      "T_K": 298.15, "P_kPa": 101.325, "state": "liquid", "quantities": [{"key": key, "tol": tol}]})
+for c in EXTRA:
+    if c in TB_EXTRA:
+        for prop, key, tol in LIQ_PROPS:
+            cases.append({"id": f"pure/{c}/{prop}/Tb", "type": "pureProperty", "component": c, "property": prop,
+                          "T_K": TB_EXTRA[c], "P_kPa": 101.325, "state": "saturated liquid",
+                          "quantities": [{"key": key, "tol": tol}]})
     cases.append({"id": f"pure/{c}/idealGasHeatCapacity/25C", "type": "pureProperty", "component": c,
                   "property": "idealGasHeatCapacity", "T_K": 298.15, "quantities": [{"key": "cp_kJ_kgK", "tol": "heatCapacity"}]})
 for c in GASES:
@@ -220,6 +304,8 @@ TOL = {
     "heatOfVaporization": {"rel": 0.02, "basis": "Proposal 0002"},
     "viscosity": {"rel": 0.05, "basis": "Proposal 0002"},
     "thermalConductivity": {"rel": 0.05, "basis": "Proposal 0002"},
+    "boilingPointAvg": {"abs": 1.0, "unit": "K", "basis": "Average of the measured normal boiling points on the NIST WebBook page, stated uncertainty 1 K or less (components built from measured data)"},
+    "boilingPointAvgWide": {"abs": 1.0, "unit": "K", "informational": True, "basis": "Report only: the WebBook average of the measured normal boiling points states an uncertainty above 1 K"},
     "azeotropeT": {"abs": 1.0, "unit": "K", "basis": "Same bound as test/azeotropes.test.js"},
     "azeotropeX": {"abs": 0.05, "unit": "mole fraction", "basis": "Same bound as test/azeotropes.test.js"},
     "bubbleT": {"abs": 1.0, "unit": "K", "basis": "Chosen for this report, as for azeotrope temperatures (not in proposal 0002)"},
@@ -229,6 +315,8 @@ TOL = {
     "excessEnthalpyPredicted": {"rel": 0.25, "informational": True, "basis": "Report only: excess enthalpy predicted from parameters fitted to vapour-liquid data, here outside their temperature range"},
     "flashVF": {"abs": 0.001, "unit": "mole fraction", "basis": "Independent implementation (thermo FlashVL, same parameters)"},
     "flashT": {"abs": 0.01, "unit": "K", "basis": "Independent implementation (thermo FlashVL and independent enthalpies, same parameters)"},
+    "threePhaseX": {"abs": 0.001, "unit": "mole fraction", "basis": "Independent implementation (validation/python/reference_three_phase.py, same parameters)"},
+    "lleData": {"abs": 0.005, "unit": "mole fraction", "basis": "Model deviation from mutual-solubility data reported by the fit (AAD 0.0034 against Xu 2017); data uncertainty 0.0012"},
     "dewX": {"abs": 0.03, "unit": "mole fraction", "basis": "Chosen for this report: the liquid at a dew point (not in proposal 0002)"},
     "bubbleP": {"rel": 0.03, "basis": "Chosen for this report: fit AAD 1.2 % with the paper's own pure-component pressures, plus the databank vapour pressures (not in proposal 0002)"},
     "steam": {"rel": 0.001, "basis": "IAPWS-IF97 against IAPWS-95: IF97 agrees with IAPWS-95 within its stated uncertainty, not to 1e-8 (team brief)"},

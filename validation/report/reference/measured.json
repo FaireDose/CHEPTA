@@ -92,6 +92,132 @@
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-butene.json"
    }
   },
+  "measured/1-hexanol/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-hexanol.json"
+   }
+  },
+  "measured/1-hexanol/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-hexanol.json"
+   }
+  },
+  "measured/1-hexanol/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-hexanol.json"
+   }
+  },
+  "measured/1-hexanol/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-hexanol.json"
+   }
+  },
+  "measured/1-hexanol/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-hexanol.json"
+   }
+  },
+  "measured/1-hexanol/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-hexanol.json"
+   }
+  },
+  "measured/1-octanol/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-octanol.json"
+   }
+  },
+  "measured/1-octanol/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-octanol.json"
+   }
+  },
+  "measured/1-octanol/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-octanol.json"
+   }
+  },
+  "measured/1-octanol/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-octanol.json"
+   }
+  },
+  "measured/1-octanol/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-octanol.json"
+   }
+  },
+  "measured/1-octanol/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-octanol.json"
+   }
+  },
+  "measured/1-pentanol/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-pentanol.json"
+   }
+  },
+  "measured/1-pentanol/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-pentanol.json"
+   }
+  },
+  "measured/1-pentanol/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-pentanol.json"
+   }
+  },
+  "measured/1-pentanol/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-pentanol.json"
+   }
+  },
+  "measured/1-pentanol/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-pentanol.json"
+   }
+  },
+  "measured/1-pentanol/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_1-pentanol.json"
+   }
+  },
   "measured/1-propanol/vapourPressure": {
    "medianDev_pct": {
     "value": 0.0,
@@ -258,6 +384,48 @@
     "value": 0.0,
     "source": "thermoml-measured",
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_2-propanol.json"
+   }
+  },
+  "measured/acetaldehyde/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_acetaldehyde.json"
+   }
+  },
+  "measured/acetaldehyde/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_acetaldehyde.json"
+   }
+  },
+  "measured/acetaldehyde/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_acetaldehyde.json"
+   }
+  },
+  "measured/acetaldehyde/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_acetaldehyde.json"
+   }
+  },
+  "measured/acetaldehyde/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_acetaldehyde.json"
+   }
+  },
+  "measured/acetaldehyde/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_acetaldehyde.json"
    }
   },
   "measured/acetic-acid/vapourPressure": {
@@ -470,6 +638,48 @@
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_acrylonitrile.json"
    }
   },
+  "measured/adipic-acid/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_adipic-acid.json"
+   }
+  },
+  "measured/adipic-acid/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_adipic-acid.json"
+   }
+  },
+  "measured/adipic-acid/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_adipic-acid.json"
+   }
+  },
+  "measured/adipic-acid/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_adipic-acid.json"
+   }
+  },
+  "measured/adipic-acid/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_adipic-acid.json"
+   }
+  },
+  "measured/adipic-acid/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_adipic-acid.json"
+   }
+  },
   "measured/aniline/vapourPressure": {
    "medianDev_pct": {
     "value": 0.0,
@@ -510,6 +720,48 @@
     "value": 0.0,
     "source": "thermoml-measured",
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_aniline.json"
+   }
+  },
+  "measured/bdo/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_bdo.json"
+   }
+  },
+  "measured/bdo/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_bdo.json"
+   }
+  },
+  "measured/bdo/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_bdo.json"
+   }
+  },
+  "measured/bdo/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_bdo.json"
+   }
+  },
+  "measured/bdo/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_bdo.json"
+   }
+  },
+  "measured/bdo/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_bdo.json"
    }
   },
   "measured/benzoic-acid/vapourPressure": {
@@ -764,6 +1016,48 @@
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_cyclohexanone.json"
    }
   },
+  "measured/cyrene/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_cyrene.json"
+   }
+  },
+  "measured/cyrene/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_cyrene.json"
+   }
+  },
+  "measured/cyrene/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_cyrene.json"
+   }
+  },
+  "measured/cyrene/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_cyrene.json"
+   }
+  },
+  "measured/cyrene/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_cyrene.json"
+   }
+  },
+  "measured/cyrene/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_cyrene.json"
+   }
+  },
   "measured/dea/vapourPressure": {
    "medianDev_pct": {
     "value": 0.0,
@@ -848,6 +1142,48 @@
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dichloroethane.json"
    }
   },
+  "measured/diethyl-carbonate/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethyl-carbonate.json"
+   }
+  },
+  "measured/diethyl-carbonate/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethyl-carbonate.json"
+   }
+  },
+  "measured/diethyl-carbonate/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethyl-carbonate.json"
+   }
+  },
+  "measured/diethyl-carbonate/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethyl-carbonate.json"
+   }
+  },
+  "measured/diethyl-carbonate/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethyl-carbonate.json"
+   }
+  },
+  "measured/diethyl-carbonate/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethyl-carbonate.json"
+   }
+  },
   "measured/diethyl-ether/vapourPressure": {
    "medianDev_pct": {
     "value": 0.0,
@@ -888,6 +1224,90 @@
     "value": 0.0,
     "source": "thermoml-measured",
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethyl-ether.json"
+   }
+  },
+  "measured/diethylene-glycol/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethylene-glycol.json"
+   }
+  },
+  "measured/diethylene-glycol/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethylene-glycol.json"
+   }
+  },
+  "measured/diethylene-glycol/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethylene-glycol.json"
+   }
+  },
+  "measured/diethylene-glycol/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethylene-glycol.json"
+   }
+  },
+  "measured/diethylene-glycol/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethylene-glycol.json"
+   }
+  },
+  "measured/diethylene-glycol/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_diethylene-glycol.json"
+   }
+  },
+  "measured/dimethyl-carbonate/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dimethyl-carbonate.json"
+   }
+  },
+  "measured/dimethyl-carbonate/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dimethyl-carbonate.json"
+   }
+  },
+  "measured/dimethyl-carbonate/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dimethyl-carbonate.json"
+   }
+  },
+  "measured/dimethyl-carbonate/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dimethyl-carbonate.json"
+   }
+  },
+  "measured/dimethyl-carbonate/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dimethyl-carbonate.json"
+   }
+  },
+  "measured/dimethyl-carbonate/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dimethyl-carbonate.json"
    }
   },
   "measured/dimethyl-ether/vapourPressure": {
@@ -1058,6 +1478,48 @@
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dmso.json"
    }
   },
+  "measured/dmt/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dmt.json"
+   }
+  },
+  "measured/dmt/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dmt.json"
+   }
+  },
+  "measured/dmt/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dmt.json"
+   }
+  },
+  "measured/dmt/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dmt.json"
+   }
+  },
+  "measured/dmt/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dmt.json"
+   }
+  },
+  "measured/dmt/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_dmt.json"
+   }
+  },
   "measured/etbe/vapourPressure": {
    "medianDev_pct": {
     "value": 0.0,
@@ -1182,6 +1644,48 @@
     "value": 0.0,
     "source": "thermoml-measured",
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_ethylene.json"
+   }
+  },
+  "measured/ethylene-carbonate/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_ethylene-carbonate.json"
+   }
+  },
+  "measured/ethylene-carbonate/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_ethylene-carbonate.json"
+   }
+  },
+  "measured/ethylene-carbonate/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_ethylene-carbonate.json"
+   }
+  },
+  "measured/ethylene-carbonate/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_ethylene-carbonate.json"
+   }
+  },
+  "measured/ethylene-carbonate/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_ethylene-carbonate.json"
+   }
+  },
+  "measured/ethylene-carbonate/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_ethylene-carbonate.json"
    }
   },
   "measured/ethylene-glycol/vapourPressure": {
@@ -1730,6 +2234,48 @@
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_isopropyl-acetate.json"
    }
   },
+  "measured/maleic-anhydride/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_maleic-anhydride.json"
+   }
+  },
+  "measured/maleic-anhydride/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_maleic-anhydride.json"
+   }
+  },
+  "measured/maleic-anhydride/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_maleic-anhydride.json"
+   }
+  },
+  "measured/maleic-anhydride/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_maleic-anhydride.json"
+   }
+  },
+  "measured/maleic-anhydride/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_maleic-anhydride.json"
+   }
+  },
+  "measured/maleic-anhydride/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_maleic-anhydride.json"
+   }
+  },
   "measured/mdea/vapourPressure": {
    "medianDev_pct": {
     "value": 0.0,
@@ -1896,6 +2442,258 @@
     "value": 0.0,
     "source": "thermoml-measured",
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-acetate.json"
+   }
+  },
+  "measured/methyl-laurate/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-laurate.json"
+   }
+  },
+  "measured/methyl-laurate/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-laurate.json"
+   }
+  },
+  "measured/methyl-laurate/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-laurate.json"
+   }
+  },
+  "measured/methyl-laurate/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-laurate.json"
+   }
+  },
+  "measured/methyl-laurate/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-laurate.json"
+   }
+  },
+  "measured/methyl-laurate/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-laurate.json"
+   }
+  },
+  "measured/methyl-linoleate/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-linoleate.json"
+   }
+  },
+  "measured/methyl-linoleate/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-linoleate.json"
+   }
+  },
+  "measured/methyl-linoleate/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-linoleate.json"
+   }
+  },
+  "measured/methyl-linoleate/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-linoleate.json"
+   }
+  },
+  "measured/methyl-linoleate/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-linoleate.json"
+   }
+  },
+  "measured/methyl-linoleate/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-linoleate.json"
+   }
+  },
+  "measured/methyl-myristate/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-myristate.json"
+   }
+  },
+  "measured/methyl-myristate/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-myristate.json"
+   }
+  },
+  "measured/methyl-myristate/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-myristate.json"
+   }
+  },
+  "measured/methyl-myristate/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-myristate.json"
+   }
+  },
+  "measured/methyl-myristate/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-myristate.json"
+   }
+  },
+  "measured/methyl-myristate/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-myristate.json"
+   }
+  },
+  "measured/methyl-oleate/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-oleate.json"
+   }
+  },
+  "measured/methyl-oleate/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-oleate.json"
+   }
+  },
+  "measured/methyl-oleate/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-oleate.json"
+   }
+  },
+  "measured/methyl-oleate/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-oleate.json"
+   }
+  },
+  "measured/methyl-oleate/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-oleate.json"
+   }
+  },
+  "measured/methyl-oleate/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-oleate.json"
+   }
+  },
+  "measured/methyl-palmitate/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-palmitate.json"
+   }
+  },
+  "measured/methyl-palmitate/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-palmitate.json"
+   }
+  },
+  "measured/methyl-palmitate/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-palmitate.json"
+   }
+  },
+  "measured/methyl-palmitate/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-palmitate.json"
+   }
+  },
+  "measured/methyl-palmitate/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-palmitate.json"
+   }
+  },
+  "measured/methyl-palmitate/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-palmitate.json"
+   }
+  },
+  "measured/methyl-stearate/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-stearate.json"
+   }
+  },
+  "measured/methyl-stearate/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-stearate.json"
+   }
+  },
+  "measured/methyl-stearate/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-stearate.json"
+   }
+  },
+  "measured/methyl-stearate/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-stearate.json"
+   }
+  },
+  "measured/methyl-stearate/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-stearate.json"
+   }
+  },
+  "measured/methyl-stearate/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_methyl-stearate.json"
    }
   },
   "measured/methylamine/vapourPressure": {
@@ -2150,6 +2948,48 @@
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-dodecane.json"
    }
   },
+  "measured/n-hexadecane/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-hexadecane.json"
+   }
+  },
+  "measured/n-hexadecane/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-hexadecane.json"
+   }
+  },
+  "measured/n-hexadecane/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-hexadecane.json"
+   }
+  },
+  "measured/n-hexadecane/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-hexadecane.json"
+   }
+  },
+  "measured/n-hexadecane/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-hexadecane.json"
+   }
+  },
+  "measured/n-hexadecane/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-hexadecane.json"
+   }
+  },
   "measured/n-nonane/vapourPressure": {
    "medianDev_pct": {
     "value": 0.0,
@@ -2190,6 +3030,48 @@
     "value": 0.0,
     "source": "thermoml-measured",
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-nonane.json"
+   }
+  },
+  "measured/n-octadecane/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-octadecane.json"
+   }
+  },
+  "measured/n-octadecane/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-octadecane.json"
+   }
+  },
+  "measured/n-octadecane/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-octadecane.json"
+   }
+  },
+  "measured/n-octadecane/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-octadecane.json"
+   }
+  },
+  "measured/n-octadecane/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-octadecane.json"
+   }
+  },
+  "measured/n-octadecane/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_n-octadecane.json"
    }
   },
   "measured/n-undecane/vapourPressure": {
@@ -2360,6 +3242,132 @@
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_nmp.json"
    }
   },
+  "measured/oleic-acid/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_oleic-acid.json"
+   }
+  },
+  "measured/oleic-acid/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_oleic-acid.json"
+   }
+  },
+  "measured/oleic-acid/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_oleic-acid.json"
+   }
+  },
+  "measured/oleic-acid/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_oleic-acid.json"
+   }
+  },
+  "measured/oleic-acid/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_oleic-acid.json"
+   }
+  },
+  "measured/oleic-acid/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_oleic-acid.json"
+   }
+  },
+  "measured/p-cymene/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_p-cymene.json"
+   }
+  },
+  "measured/p-cymene/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_p-cymene.json"
+   }
+  },
+  "measured/p-cymene/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_p-cymene.json"
+   }
+  },
+  "measured/p-cymene/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_p-cymene.json"
+   }
+  },
+  "measured/p-cymene/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_p-cymene.json"
+   }
+  },
+  "measured/p-cymene/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_p-cymene.json"
+   }
+  },
+  "measured/palmitic-acid/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_palmitic-acid.json"
+   }
+  },
+  "measured/palmitic-acid/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_palmitic-acid.json"
+   }
+  },
+  "measured/palmitic-acid/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_palmitic-acid.json"
+   }
+  },
+  "measured/palmitic-acid/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_palmitic-acid.json"
+   }
+  },
+  "measured/palmitic-acid/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_palmitic-acid.json"
+   }
+  },
+  "measured/palmitic-acid/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_palmitic-acid.json"
+   }
+  },
   "measured/phenol/vapourPressure": {
    "medianDev_pct": {
     "value": 0.0,
@@ -2442,6 +3450,48 @@
     "value": 0.0,
     "source": "thermoml-measured",
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_propionic-acid.json"
+   }
+  },
+  "measured/propylene-carbonate/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_propylene-carbonate.json"
+   }
+  },
+  "measured/propylene-carbonate/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_propylene-carbonate.json"
+   }
+  },
+  "measured/propylene-carbonate/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_propylene-carbonate.json"
+   }
+  },
+  "measured/propylene-carbonate/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_propylene-carbonate.json"
+   }
+  },
+  "measured/propylene-carbonate/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_propylene-carbonate.json"
+   }
+  },
+  "measured/propylene-carbonate/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_propylene-carbonate.json"
    }
   },
   "measured/propylene-glycol/vapourPressure": {
@@ -2612,6 +3662,48 @@
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_salicylic-acid.json"
    }
   },
+  "measured/stearic-acid/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_stearic-acid.json"
+   }
+  },
+  "measured/stearic-acid/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_stearic-acid.json"
+   }
+  },
+  "measured/stearic-acid/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_stearic-acid.json"
+   }
+  },
+  "measured/stearic-acid/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_stearic-acid.json"
+   }
+  },
+  "measured/stearic-acid/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_stearic-acid.json"
+   }
+  },
+  "measured/stearic-acid/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_stearic-acid.json"
+   }
+  },
   "measured/styrene/vapourPressure": {
    "medianDev_pct": {
     "value": 0.0,
@@ -2738,6 +3830,48 @@
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_sulfur-dioxide.json"
    }
   },
+  "measured/terephthalic-acid/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_terephthalic-acid.json"
+   }
+  },
+  "measured/terephthalic-acid/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_terephthalic-acid.json"
+   }
+  },
+  "measured/terephthalic-acid/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_terephthalic-acid.json"
+   }
+  },
+  "measured/terephthalic-acid/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_terephthalic-acid.json"
+   }
+  },
+  "measured/terephthalic-acid/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_terephthalic-acid.json"
+   }
+  },
+  "measured/terephthalic-acid/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_terephthalic-acid.json"
+   }
+  },
   "measured/tetrahydrofuran/vapourPressure": {
    "medianDev_pct": {
     "value": 0.0,
@@ -2778,6 +3912,90 @@
     "value": 0.0,
     "source": "thermoml-measured",
     "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_tetrahydrofuran.json"
+   }
+  },
+  "measured/triolein/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_triolein.json"
+   }
+  },
+  "measured/triolein/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_triolein.json"
+   }
+  },
+  "measured/triolein/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_triolein.json"
+   }
+  },
+  "measured/triolein/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_triolein.json"
+   }
+  },
+  "measured/triolein/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_triolein.json"
+   }
+  },
+  "measured/triolein/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_triolein.json"
+   }
+  },
+  "measured/tripalmitin/vapourPressure": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_tripalmitin.json"
+   }
+  },
+  "measured/tripalmitin/liquidDensity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_tripalmitin.json"
+   }
+  },
+  "measured/tripalmitin/liquidHeatCapacity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_tripalmitin.json"
+   }
+  },
+  "measured/tripalmitin/heatOfVaporization": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_tripalmitin.json"
+   }
+  },
+  "measured/tripalmitin/liquidViscosity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_tripalmitin.json"
+   }
+  },
+  "measured/tripalmitin/liquidThermalConductivity": {
+   "medianDev_pct": {
+    "value": 0.0,
+    "source": "thermoml-measured",
+    "detail": "zero deviation from the measured values in validation/data/pure/measured/thermoml_tripalmitin.json"
    }
   },
   "measured/vinyl-acetate/vapourPressure": {
