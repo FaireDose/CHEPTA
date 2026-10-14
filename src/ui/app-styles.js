@@ -96,6 +96,13 @@ export const APP_CSS = `
 .fa-hint{font-size:11px; color:var(--fug-muted); padding:0 2px}
 .fa-seg button{font-size:12px; padding:4px 10px}
 .fa-models{gap:3px}
+.fa-canvas-foot{padding:10px 0 4px; border-top:1px solid var(--fug-rule); margin-top:10px}
+.fa-canvas-foot[hidden]{display:none}
+.fug-app .fa-model-picker{display:grid; grid-template-columns:auto minmax(9.5em,13em); align-items:center; gap:3px 8px}
+.fug-app .fa-model-field{display:contents}
+.fug-app .fa-model-field > span{font-size:11px; color:var(--fug-muted); text-align:right}
+.fug-app .fa-model-field select{width:100%}
+.fug-app .fa-in-body .fa-model-picker,.fug-app .fa-left .fa-model-picker{grid-template-columns:auto 1fr; margin:6px 0}
 .fa-model-row{display:flex; align-items:center; gap:6px}
 .fa-model-cap{font-size:11px; color:var(--fug-muted); min-width:4.4em; text-align:right}
 .fa-model-family{display:flex; flex-direction:column; gap:2px; padding-left:6px; border-left:2px solid transparent; border-radius:1px}
@@ -191,8 +198,6 @@ export const APP_CSS = `
 .fug-app .fa-right .fug-foot{font-size:11.5px}
 .fa-right .fug-side{background:transparent; border-radius:0; padding:2px 14px 12px; gap:10px}
 .fa-inspector-extra{padding:0 14px 16px; display:grid; gap:4px}
-.fa-results-foot{padding:4px 14px 16px; display:flex; justify-content:flex-start}
-.fa-results-foot:has(> [hidden]:only-child){display:none}
 .fa-sec h3{font-size:12px; font-weight:600; margin:0 0 8px; padding-top:12px; border-top:1px solid var(--fug-rule)}
 .fa-below .fa-sec h3{font-size:13px; border-top:0; padding-top:4px}
 .fa-sources{list-style:none; margin:0; padding:0; display:grid; gap:9px}

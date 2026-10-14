@@ -144,7 +144,7 @@ it does so on my computer at no cost to this chat. So:
     formulas, the flash drum outlets as values from CHEPTA), **Excel concept model** (the
     flash drums as formulas too, an approximation for concept design), **Download CSV**,
     **Copy CSV**;
-  - diagrams and property curves: the **Excel** button above the diagram (every point
+  - diagrams and property curves: **Download Excel** under the diagram (every point
     drawn, in the units shown, with an About sheet of the settings and sources);
   - flash: **Download CSV** and **Copy CSV** under the stream table;
   - the whole work: **File > Save** (a `.chepta.json` project that opens again).

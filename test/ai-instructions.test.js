@@ -33,7 +33,7 @@ test("examples/flowsheet-recycle.chepta.json is the same project, and solves", (
 // The instructions send the assistant to the workbench's own export buttons instead of making files
 // itself; the names they give must be the names on the buttons.
 const BUTTONS = { "src/ui/flowsheet-view.js": ["Download Excel", "Excel concept model", "Download CSV", "Copy CSV"],
-  "src/ui/app.js": ["Excel"], "src/ui/app-views.js": ["Download CSV", "Copy CSV"] };
+  "src/ui/app.js": ["Download Excel"], "src/ui/app-views.js": ["Download CSV", "Copy CSV"] };
 for (const file of ["ai/instructions/use-chepta.md", "ai/skills/chepta/SKILL.md"]) {
   test(`${file}: points to the workbench's export buttons by their names`, () => {
     const md = read(file);
