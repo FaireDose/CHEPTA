@@ -38,8 +38,10 @@
 - **The method of a non-open article** (read by the maintainer to understand pooling) is not cited or used in the
   repository.
 - **Where to look, in order (the maintainer, 2026-10-14):** AGENTS.md rule 1 now opens with the order of sources and
-  points to [docs/DATA_RULES.md](../DATA_RULES.md). Measured data (the ThermoML Archive, the measured values on the
-  WebBook, open-access articles) come before the open databanks and libraries (ChemSep, thermo, chemicals), which fill
-  only what no measurement covers; CoolProp stays ahead of both. ChemSep records already in CHEPTA stay as they are
-  (each was checked against the measured values and refitted where it failed). CLAUDE.md now also loads
-  docs/DATA_RULES.md, so Claude Code reads the data rules in every session; other agents reach them from AGENTS.md.
+  points to [docs/DATA_RULES.md](../DATA_RULES.md). Putting the ThermoML Archive before ChemSep was considered and
+  turned down: the order stays standards, CoolProp, NIST WebBook, ChemSep and the open libraries, then the ThermoML
+  Archive and open articles. The maintainer: "if the information exists in ChemSep, do not compare further, we trust
+  the database; someone else is taking care of it. If there is no information, go to ThermoML." So a ChemSep record is
+  taken as it is, with no new comparison with measured data or refit; the records refitted before (glycerol, phenol,
+  N-methyl-2-pyrrolidone and others) stay as they are for now. CLAUDE.md now also loads docs/DATA_RULES.md, so Claude
+  Code reads the data rules in every session; other agents reach them from AGENTS.md.
