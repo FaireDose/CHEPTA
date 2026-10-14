@@ -82,11 +82,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   1. batch 1, 16 components from ChemSep and CoolProp (in a pull request, 2026-10-11);
   2. batch 2, lipids;
   3. batch 3, platform molecules from the WebBook and ThermoML, in small pull requests;
-     - 3a (furans, 1,3-propanediol) and 3b (levulinate esters; levulinic acid, gamma-butyrolactone and isoamyl
-       alcohol with a gap between their vapour-pressure and density records) done;
-     - the gaps: wanted liquid densities above the start of the vapour-pressure record, or vapour pressures down to
-       the end of the densities, by a static or ebulliometric method, from an open source (levulinic acid 343-375 K,
-       gamma-butyrolactone 333-377 K, isoamyl alcohol 332.7-335.85 K);
+     - 3a (furans, 1,3-propanediol) and 3b (levulinate esters; levulinic acid with a gap between its vapour-pressure
+       and density records) done; levulinic acid's gap: wanted liquid densities above 375 K, or vapour pressures between
+       343 and 375 K by a static or ebulliometric method, from an open source;
+     - held: gamma-butyrolactone and isoamyl alcohol, whose vapour-pressure sets disagree (not pooled), with a gap too;
+       gamma-butyrolactone misses agreement only by Sun 2017's two values (1.93 % against 1.71 %): accept it or not;
      - 2-methylfuran: its three vapour-pressure sets disagree; under the rule of 2026-10-14 (all sets with the same
        weight) a set is preferred only with a stated reason; find one (independent boiling points, calorimetric
        enthalpy of vaporization) or keep the merged record;
@@ -148,10 +148,11 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
     the ThermoML Archive and other open sources (2026-10-06).
   - Known deviations go in the engineering report rather than being hidden (for example
     mesitylene, 2026-10-07).
-  - Measured sets that disagree (2026-10-14): a small stated uncertainty is the authors' claim,
-    not proof. Fit all the sets together, each article with the same weight; judge the result by
-    independent evidence (measured boiling points of other articles, calorimetric enthalpies of
-    vaporization); prefer one paper or leave a set out only with a stated physical reason.
+  - Several measured sets (2026-10-14): a small stated uncertainty is the authors' claim, not
+    proof. Pool the sets (each article with the same weight) only when they agree; judge the
+    result by independent evidence (measured boiling points of other articles, calorimetric
+    enthalpies of vaporization); when they disagree, choose or leave out a set only with a stated
+    physical reason, or hold the component.
 - **Your files are yours:** files and results made with Fugacity belong to the people who
   make them ([#68](https://github.com/FaireDose/Fugacity/pull/68)).
 - **Two licences on purpose:** MIT for the code, and the Artistic License 2.0 that must travel

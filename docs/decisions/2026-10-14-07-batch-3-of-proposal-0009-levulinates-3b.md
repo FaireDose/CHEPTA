@@ -2,8 +2,7 @@
 
 - **Asked:** "both in order": first the refits that the larger engineering report showed (the measured-data review,
   its own pull request), then batch 3b.
-- **Done (6 components):** levulinic acid, gamma-butyrolactone and isoamyl alcohol (each with a gap, below) and
-  methyl, ethyl and butyl levulinate, from measured data alone (`measured_components.py`).
+- **Done (4 components):** levulinic acid (with a gap, below) and methyl, ethyl and butyl levulinate, from measured data alone (`measured_components.py`).
   Their critical constants come from Nikitin et al., J. Chem. Thermodyn. 2019 (doi:10.1016/j.jct.2019.03.040),
   ThermoML Archive, the only measurement. Their Modified UNIFAC 2.0 groups are the structure-based ones, the same as
   DDBST's published ones (CH3, CH2, CH3CO, CH2COO).
@@ -17,13 +16,20 @@
      articles, the WebBook average of the measured boiling points, and the calorimetric enthalpies of vaporization
      through the slope (Clapeyron); the record states each check;
   3. a whole set is left out, or one paper preferred, only with a stated physical reason (`vp_exclude`); a single
-     value only when the fit misses it by more than three times its uncertainty.
+     value only when the fit misses it by more than three times its uncertainty;
+  4. **pooled only when the sets agree** (the maintainer, after seeing the first version): each set's mean deviation
+     from the pooled curve must lie within its mean stated uncertainty. When they do not, the script stops: a set has to
+     be chosen or left out with a stated reason (for example the independent checks), or the component is held.
+  Where the idea comes from: building recommended values from all the available measurements with their
+  uncertainties is the concept of NIST's ThermoData Engine (Frenkel et al., J. Chem. Inf. Model. 45 (2005) 816-838);
+  its full text was not opened here. The details (the same weight per article, the 0.5 % floor, three times the
+  uncertainty for a single value, the agreement test) are this project's choices, not a published standard.
   Why: isoamyl alcohol, until then anchored on Censky et al. 2010 for their smallest stated uncertainty (0.14-0.21 %).
   The fit of all twelve sets gives a boiling point of 404.43 K against the measured median of 404.48 K (6 articles;
   Censky alone: 404.67 K) and a slope within 1.4 % of the calorimetric enthalpies of vaporization (Censky alone: 0.4-2.6 %
-  low); Censky et al. lie about 1 % below the other sets.
+  low). Its sets do not agree with each other, though (below), so it stays held.
   Applied (`vp_fit: "consensus"` in `measured_components.py`) to furan, 2-methyltetrahydrofuran, 1,3-propanediol (all
-  already on main) and the six components of this pull request:
+  already on main) and the four components of this pull request, whose sets agree:
   - furan: boiling point 304.56 -> 304.50 K (WebBook average 304.7 +/- 0.6 K), no value left out;
   - 2-methyltetrahydrofuran: 352.91 -> 352.97 K; the record now starts at 279 K (the values of Lepori et al. 2017 are
     fitted, no longer only confirmation); none left out (10 before);
@@ -71,20 +77,17 @@
   refusal (`REFUSED_AT_TYPICAL_STATE`). Wanted, to close the gap: liquid densities above 375 K, or vapour pressures
   between 343 and 375 K by a static or ebulliometric method, from an open source. Its Modified UNIFAC 2.0 groups
   (CH3CO + 2 CH2 + COOH) are the same as DDBST's; fusion data from the WebBook (308 K, 9.2 kJ/mol).
-- **Gamma-butyrolactone and isoamyl alcohol, written with a gap.** Held until now: no liquid state had both a vapour
-  pressure and a density. The maintainer first asked to add them with a gap unless many vapour pressures would be left
-  out; with the old fits a third (gamma-butyrolactone) and half (isoamyl alcohol) were, so they stayed held. Under the
-  rule above, none and 4 of 119 are left out, and the maintainer asked to add them if the rule allows it:
-  - isoamyl alcohol: vapour pressure 335.85-577.2 K (twelve sets; boiling point 404.43 K, measured median 404.48 K);
-    liquid density 288-332.7 K and viscosity 288-323 K, refused at the start of the vapour-pressure record; Modified
-    UNIFAC 2.0 groups the same as DDBST's;
-  - gamma-butyrolactone: vapour pressure 377-731 K (six sets; boiling point 478.17 K, measured 477.80 K, WebBook values
-    477.7 and 479.2 K); liquid density to 333 K and viscosity to 323 K, refused above; no Modified UNIFAC 2.0 groups yet:
-    the structure-based split fails the atom balance (it takes a nitrogen subgroup) and DDBST's (CH2COO + 2 cy-CH2) is
-    used only after a person chooses it, like 2-methyltetrahydrofuran's.
-  `test/properties.test.js` checks the refusals (`REFUSED_AT_TYPICAL_STATE`). The component search now finds isoamyl
-  alcohol for "butanol" (its alias 3-methyl-1-butanol); the search test lists it, before isobutanol (a word of an alias
-  ranks before a match inside a word, as the search is written).
+- **Gamma-butyrolactone and isoamyl alcohol stay held.** No liquid state has both a vapour pressure and a density
+  (the gap the maintainer accepted for levulinic acid), and their vapour-pressure sets disagree, so under the rule they
+  are not pooled:
+  - isoamyl alcohol: seven of its twelve sets lie farther from the pooled curve than their stated uncertainties, on
+    both sides (-1.9 to +2.1 %); the pooled curve would give 404.43 K for the boiling point (measured median 404.48 K,
+    six articles), but no set or group of sets is singled out by the independent checks yet;
+  - gamma-butyrolactone: Yang 2016, Yan 2017 and Sun 2017 lie 1.2-1.9 % below the pooled curve, Mathuni 2011 and
+    VonNiederhausern 2006 0.6-1.3 % above; only Sun 2017 (two values, 1.93 % against a stated 1.71 %) by more than its
+    uncertainty, a narrow margin the maintainer may accept.
+  (An intermediate version of this pull request added both with the pooled fit before the agreement test; it was
+  withdrawn.)
 - **Changed for every component built this way:** the Clapeyron enthalpies of vaporization stop at the last measured
   vapour pressure (or at 500 kPa if lower), never in the part of the curve held only by the critical point.
   1,3-propanediol's record now ends at 487 K instead of 551 K; within 296-487 K its values move by -0.3 to +0.4 %.

@@ -249,9 +249,14 @@ COMPONENTS = {
         "aliases": ["γ-butyrolactone", "butyrolactone", "oxolan-2-one", "gbl"],
         "thermoml_queries": ["gamma-butyrolactone", "oxolan-2-one"],
         "webbook_individual": ["HVAP"],
-        # written with a gap (the maintainer's decision, 2026-10-14): its open measured vapour pressures start at 377 K
-        # (ThermoML Archive; the WebBook has none) and its liquid densities end below them; each record refuses outside
-        # its own range. Wanted: vapour pressures below 377 K or densities above 353 K from an open source
+        # not written: its open measured vapour pressures start at 377 K and its liquid densities end at 333 K (a gap the
+        # maintainer accepted, 2026-10-14), but its vapour-pressure sets disagree, so they are not pooled (the rule of
+        # 2026-10-14): Yang 2016, Yan 2017 and Sun 2017 lie 1.2-1.9 % below the pooled curve, Mathuni 2011 and
+        # VonNiederhausern 2006 0.6-1.3 % above; Sun 2017 (two values) by more than its stated uncertainty
+        "hold": "its vapour-pressure sets disagree (Yang 2016, Yan 2017 and Sun 2017 lie 1.2-1.9 % below the curve of all "
+                "the sets, Mathuni 2011 and VonNiederhausern 2006 0.6-1.3 % above; Sun 2017 by more than its stated "
+                "uncertainty), so they are not pooled, and no reason to prefer one has been found; also no liquid state "
+                "has both a vapour pressure (from 377 K) and a density (to 333 K)",
         # the archive also has VonNiederhausern et al. (2006): 732.5 K and 5.10 MPa, with larger uncertainties
         "critical": "Wilson, Wilson, et al., 1996",
         "antoine_fit": [],
@@ -267,9 +272,13 @@ COMPONENTS = {
         "aliases": ["3-methyl-1-butanol", "3-methylbutan-1-ol", "isopentyl alcohol", "isopentanol"],
         "thermoml_queries": ["3-methyl-1-butanol", "3-methylbutan-1-ol"],
         "webbook_individual": ["TC", "HVAP"],
-        # written with a gap (the maintainer's decision, 2026-10-14): its open measured vapour pressures start at
-        # 335.85 K (ThermoML Archive; the WebBook has none) and its liquid densities end at 332.7 K; each record refuses
-        # outside its own range. Wanted: vapour pressures below 336 K or densities above 333 K from an open source
+        # not written: its open measured vapour pressures start at 335.85 K and its liquid densities end at 332.7 K (a
+        # gap the maintainer accepted, 2026-10-14), but its twelve vapour-pressure sets disagree (seven of them by more
+        # than their stated uncertainty, from -1.9 to +2.1 % of the pooled curve), so they are not pooled (the rule of
+        # 2026-10-14), and no reason to prefer one has been found
+        "hold": "its twelve vapour-pressure sets disagree: seven lie farther from the curve of all the sets than their "
+                "stated uncertainties (-1.9 to +2.1 %), so they are not pooled, and no reason to prefer one has been "
+                "found; also no liquid state has both a vapour pressure (from 335.85 K) and a density (to 332.7 K)",
         "critical": "Gude and Teja, 1995",
         "antoine_fit": [],
         # calorimetric values of Majer, Svoboda et al. (1985), 303-358 K, and the evaluation of Majer and Svoboda (1985)
@@ -736,7 +745,9 @@ def fit_within_uncertainty(cid, prop, form, pts, Tc=None, fixed=()):
 
 def fit_consensus(cid, prop, form, pts, fixed=(), exclude=None, floor=0.005, none_u=0.01):
     """The rule of 2026-10-14 (docs/decisions/2026-10-14-07-...): a small stated uncertainty is the authors' claim,
-    not proof, so no set is preferred for it. Every set is fitted together, each paper with the same total weight
+    not proof, so no set is preferred for it; the sets are pooled only when they agree (each set's mean deviation from
+    the pooled curve within its mean stated uncertainty), else the build stops and asks for a set to be chosen or left
+    out with a stated reason. Every set is fitted together, each paper with the same total weight
     (point weight 1 / (u sqrt(n_set)), u the stated uncertainty with a floor of 0.5 %, 1 % where none is stated), with
     the fixed points (critical point). A whole set is left out only with a physical reason stated in COMPONENTS
     ("vp_exclude": {set: reason}); a single value only when the fit misses it by more than three times its
@@ -795,8 +806,16 @@ def fit_consensus(cid, prop, form, pts, fixed=(), exclude=None, floor=0.005, non
         p["deviation_percent"] = round(100 * dev(coeffs, p), 2)
     sets = collections.defaultdict(list)
     for p in use:
-        sets[p["ref"]].append(100 * dev(coeffs, p))
-    return coeffs, use + list(fixed), excluded, m, {k: float(np.mean(v)) for k, v in sets.items()}
+        sets[p["ref"]].append((100 * dev(coeffs, p), 100 * u_of(p)))
+    # pooled only when the sets agree (the maintainer's rule, 2026-10-14): each set's mean deviation from the pooled
+    # curve within its mean stated uncertainty; otherwise a set has to be chosen, or left out, with a stated reason
+    disagree = ["%s (mean deviation %+.2f %%, mean stated uncertainty %.2f %%)" % (k, np.mean([d for d, _ in v]),
+                                                                              np.mean([u for _, u in v]))
+                for k, v in sets.items() if abs(np.mean([d for d, _ in v])) > np.mean([u for _, u in v])]
+    if disagree:
+        raise SystemExit("%s %s: the sets disagree, so they are not pooled: %s; choose or leave out a set with a stated "
+                         "reason (vp_exclude)" % (cid, prop, "; ".join(disagree)))
+    return coeffs, use + list(fixed), excluded, m, {k: float(np.mean([d for d, _ in v])) for k, v in sets.items()}
 
 
 def fit_measured_loose(cid, prop, form, pts, target, Tc=None, fixed=()):
@@ -1073,7 +1092,8 @@ def build(cid, log):
                  ", each within its own stated uncertainty" if C.get("vp_fit") == "within" else "", Tdata))
     if C.get("vp_fit") == "consensus":
         vp_fit += (" All the measured sets fitted together, each article with the same weight (no set preferred for a "
-                   "smaller stated uncertainty); mean deviation of the fit from each set: %s." % "; ".join(
+                   "smaller stated uncertainty), pooled because they agree: each set lies within its mean stated "
+                   "uncertainty of the curve on average; mean deviation of the fit from each set: %s." % "; ".join(
                        "%s %+.2f %%" % (k, v) for k, v in sorted(set_dev.items())))
     if C.get("vp_why"):
         vp_fit += " " + C["vp_why"]

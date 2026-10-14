@@ -126,7 +126,7 @@
    "units": "Pa",
    "source": {
     "name": "measured vapour pressures and the critical point",
-    "fit": "13 measured values (11 from the ThermoML Archive), the normal boiling temperature 510.70 K (Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook), fitted as 101.325 kPa, never left out) and the critical point, 298.20-692.00 K, max deviation 5.3 %. Between 510.70 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty); mean deviation of the fit from each set: Emel'yanenko 2018 +0.01 %."
+    "fit": "13 measured values (11 from the ThermoML Archive), the normal boiling temperature 510.70 K (Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook), fitted as 101.325 kPa, never left out) and the critical point, 298.20-692.00 K, max deviation 5.3 %. Between 510.70 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Emel'yanenko 2018 +0.01 %."
    },
    "T_K": [
     298.2,

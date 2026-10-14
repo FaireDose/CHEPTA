@@ -261,7 +261,7 @@
    "units": "Pa",
    "source": {
     "name": "measured vapour pressures and the critical point",
-    "fit": "33 measured values (23 from the ThermoML Archive) and the critical point, 275.70-490.20 K, max deviation 0.63 %. Between 407.90 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty); mean deviation of the fit from each set: Guthrie, Scott, et al., 1952, 3 (Antoine equation, NIST WebBook) +0.13 %; Lomba 2015 -0.04 %; Tai 2014 +0.02 %."
+    "fit": "33 measured values (23 from the ThermoML Archive) and the critical point, 275.70-490.20 K, max deviation 0.63 %. Between 407.90 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Guthrie, Scott, et al., 1952, 3 (Antoine equation, NIST WebBook) +0.13 %; Lomba 2015 -0.04 %; Tai 2014 +0.02 %."
    },
    "T_K": [
     275.7,
