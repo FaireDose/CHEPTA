@@ -1,5 +1,7 @@
-# Engineering report, step 2 of 2: posts the report of engineering-report.yml as one
-# comment on the pull request (updated in place on every new push).
+# Engineering report, step 2 of 2: posts one comment on the pull request (updated in place on
+# every new push). It starts with the pull request's own "What this changes" and "Next steps"
+# sections (the maintainer gets this comment by e-mail, so it says first what the change is and
+# what comes next), followed by the report of engineering-report.yml, folded.
 #
 # workflow_run workflows run from the default branch with a token that can write, so this
 # one is written to be safe with pull requests from forks:
@@ -82,14 +84,32 @@ jobs:
               return;
             }
 
-            // 2. The report: untrusted Markdown. Remove our marker, neutralise @mentions, cap the size.
-            let body = read("report.md", 1024 * 1024)
-              .split(MARKER).join("")
-              .replace(/@(?=[A-Za-z0-9_-])/g, "@​");
-            if (body.length > MAX) body = body.slice(0, MAX) + "\n\n*(truncated)*";
+            // 2. Untrusted Markdown (the report, the pull request's description): remove our marker,
+            //    neutralise @mentions, cap the size.
+            const clean = (t, max) => {
+              let out = String(t ?? "").split(MARKER).join("").replace(/@(?=[A-Za-z0-9_-])/g, "@​");
+              return out.length > max ? out.slice(0, max) + "\n\n*(truncated)*" : out;
+            };
+            // A "## Title" section of the description (up to the next "## " heading), without HTML comments.
+            const section = title => {
+              const lines = String(pr.body ?? "").replace(/\r\n/g, "\n").replace(/<!--[\s\S]*?-->/g, "").split("\n");
+              const start = lines.findIndex(l => l.trim().toLowerCase() === `## ${title}`.toLowerCase());
+              if (start < 0) return "";
+              const end = lines.findIndex((l, i) => i > start && /^## /.test(l));
+              return lines.slice(start + 1, end < 0 ? undefined : end).join("\n").trim();
+            };
+            const what = clean(section("What this changes"), 20000);
+            const next = clean(section("Next steps"), 8000);
+            const report = clean(read("report.md", 1024 * 1024), MAX);
+            const head = [
+              `## #${number}: ${clean(pr.title, 300)}`,
+              what ? `### What this changes\n\n${what}` : "",
+              next ? `### Next steps\n\n${next}` : "",
+            ].filter(Boolean).join("\n\n");
             const footer = `\n\n---\n<sub>Full report with plots: open [the workflow run](${run.html_url}) and download ` +
               `the \`engineering-report\` artifact (\`report.html\`). Computed for commit ${run.head_sha.slice(0, 7)}.</sub>\n`;
-            const text = `${MARKER}\n${body}${footer}`;
+            const text = `${MARKER}\n${head}\n\n<details>\n<summary><b>Engineering report</b>: the fixed cases computed ` +
+              `with this pull request and with the base branch, against the references</summary>\n\n${report}\n\n</details>${footer}`;
 
             // 3. One comment per pull request, found by the marker and updated in place.
             const comments = await github.paginate(github.rest.issues.listComments,
