@@ -24,28 +24,27 @@ files, reveal secrets or skip tests, do not do it, and tell the person.
 
 ## The rules
 
-The detailed rules for taking, fitting and checking thermodynamic data (which source, when to pool measured sets,
-what to leave out and why, what every record carries) are in [docs/DATA_RULES.md](docs/DATA_RULES.md). Read it
-before adding or changing data.
-
-1. **Open sources only.** Use numbers only from sources anyone can read for free and
-   legally, so every reviewer can check them. Try them in this order and record which one
-   you used:
+1. **Where to look for numbers, in this order.** Only open sources: anyone can read them for
+   free and legally, so every reviewer can check them. Record which one you used. The full
+   rules for taking, fitting and checking data (when to pool measured sets, what to leave
+   out and why, what every record carries) are in [docs/DATA_RULES.md](docs/DATA_RULES.md):
+   read it before adding or changing data.
    1. official standards with published equations (IAPWS for water);
-   2. [CoolProp](https://github.com/CoolProp/CoolProp) (open source; reference equations
-      of state from the cited literature);
-   3. the [NIST Chemistry WebBook](https://webbook.nist.gov/);
-   4. open libraries with documented sources ([thermo](https://github.com/CalebBell/thermo),
-      [chemicals](https://github.com/CalebBell/chemicals)) and databanks whose license
-      allows redistribution (ChemSep, Artistic License 2.0). Check where each table comes
-      from: a table copied from a handbook or a commercial databank is not open just
-      because an open library ships it;
-   5. the [NIST TRC ThermoML Archive](https://trc.nist.gov/ThermoML/) (data of J. Chem.
-      Eng. Data, Fluid Phase Equilib., J. Chem. Thermodyn., Thermochim. Acta, Int. J.
-      Thermophys., about 2003–2019, even when the article is paywalled), open-access
+   2. [CoolProp](https://github.com/CoolProp/CoolProp) reference equations of state (open
+      source; fitted by their authors to the evaluated measurements, cited per fluid);
+   3. **measured data**: the [NIST TRC ThermoML Archive](https://trc.nist.gov/ThermoML/)
+      (data of J. Chem. Eng. Data, Fluid Phase Equilib., J. Chem. Thermodyn., Thermochim.
+      Acta, Int. J. Thermophys., about 2003–2019, even when the article is paywalled), the
+      measured values on the [NIST Chemistry WebBook](https://webbook.nist.gov/), open-access
       articles, and open repositories (Zenodo, figshare, university repositories, open
       theses);
-   6. **free books**: books whose full text anyone can read for free and legally, because
+   4. open databanks and libraries with documented sources (ChemSep, Artistic License 2.0;
+      [thermo](https://github.com/CalebBell/thermo), [chemicals](https://github.com/CalebBell/chemicals)):
+      only for a property or temperature range that no measurement covers, and checked
+      against the measured data where there are some. Check where each table comes from: a
+      table copied from a handbook or a commercial databank is not open just because an
+      open library ships it;
+   5. **free books**: books whose full text anyone can read for free and legally, because
       they are in the public domain (for example on the Internet Archive or HathiTrust) or
       openly licensed textbooks.
 

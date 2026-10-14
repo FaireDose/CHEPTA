@@ -12,14 +12,21 @@ Only from sources anyone can read for free and legally, so that every reviewer c
 (AGENTS.md rule 1), and say which one was used:
 
 1. official standards with published equations (IAPWS for water);
-2. CoolProp (open source; reference equations of state from the cited literature);
-3. the NIST Chemistry WebBook;
-4. open libraries with documented sources (thermo, chemicals) and databanks whose licence allows redistribution
-   (ChemSep, Artistic License 2.0). A table copied from a handbook or a commercial databank is not open just because
-   an open library ships it;
-5. the NIST TRC ThermoML Archive (its data are open even where the article is paywalled), open-access articles, open
-   repositories;
-6. free books (public domain or openly licensed).
+2. CoolProp reference equations of state (fitted by their authors to the evaluated measurements, cited per fluid);
+3. **measured data**: the NIST TRC ThermoML Archive (its data are open even where the article is paywalled), the
+   measured values on the NIST Chemistry WebBook, open-access articles, open repositories;
+4. open databanks and libraries (ChemSep, Artistic License 2.0; thermo, chemicals): only for a property or a
+   temperature range that no measurement covers, and checked against the measured data where there are some. A table
+   copied from a handbook or a commercial databank is not open just because an open library ships it;
+5. free books (public domain or openly licensed).
+
+Why measured data come before the databanks (the maintainer, 2026-10-14): the ThermoML Archive gives the primary
+measurements, each with its article and stated uncertainty, while a databank correlation is someone else's fit to
+older measurements, usually without an uncertainty. Our own comparisons found ChemSep records 9-38 % off the measured
+values (glycerol and N-methyl-2-pyrrolidone viscosities, the thermal conductivities of dimethyl sulfoxide and
+sulfolane), which were then refitted. The databanks keep their place for what nobody measured: a wider temperature
+range, constants such as UNIQUAC r and q. CoolProp stays ahead of the archive, because its reference equations are
+themselves evaluated fits to all the good measurements.
 
 Never:
 
@@ -38,8 +45,13 @@ only the databases (the maintainer, 2026-10-13).
 | The component is | Script | Records from |
 |---|---|---|
 | a CoolProp fluid | `fit_properties.py` | CoolProp, then the WebBook, then ChemSep (the chain of proposal 0002) |
-| in the ChemSep databank | `fit_properties.py` | ChemSep, checked against the ThermoML Archive (`check_measured.py`) |
+| in the ChemSep databank | `fit_properties.py` | ChemSep, checked against the ThermoML Archive (`check_measured.py`) and refitted to the measurements where they disagree (section 4) |
 | in neither | `measured_components.py` | measured data only: ThermoML Archive, WebBook, open-access articles |
+
+The order of section 1 puts measured data before the databanks (2026-10-14). The ChemSep records already in CHEPTA
+stay as they are: each was compared with the measured values and refitted where it failed. For a new component that
+ChemSep has, the scripts do not yet build each property from the measurements first and fill the rest from ChemSep;
+until they do, a property with enough measured values is refitted to them by the rule of section 4.
 
 Every component is listed once in `validation/data/component_registry.json`, or, for the measured-data path, in
 `COMPONENTS` of `measured_components.py` with every choice explained in a comment.

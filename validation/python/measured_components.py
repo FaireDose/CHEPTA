@@ -1,5 +1,5 @@
 """Proposal 0008, Part B: components that are neither CoolProp fluids nor in the ChemSep databank, built
-from measured data in open sources (AGENTS.md rule 1, steps 3 and 5):
+from measured data in open sources (AGENTS.md rule 1, step 3):
 
   - the NIST Chemistry WebBook (SRD 69): critical constants, Antoine equations, enthalpies of
     vaporization, heat capacities, as printed on the compound's pages;
