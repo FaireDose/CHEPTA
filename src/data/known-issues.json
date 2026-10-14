@@ -1122,6 +1122,84 @@
         "havasi2016-water-gvl",
         "nist-thermoml-archive"
       ]
+    },
+    {
+      "components": [
+        "2-methylfuran",
+        "isooctane"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.37 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/2-methylfuran_isooctane_10-1016-j-fluid-2015-05-002_tpx.json (Liebergesell et al., Fluid Phase Equilib. 400)",
+      "source_ids": [
+        "liebergesell2015-2-methylfuran-isooctane"
+      ]
+    },
+    {
+      "components": [
+        "2-propanol",
+        "furfuryl-alcohol"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.96 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/2-propanol_furfuryl-alcohol_10-1016-j-fluid-2014-10-037_tpx.json (Tai et al., Fluid Phase Equilib. 384)",
+      "source_ids": [
+        "tai2014-2-methylfuran-furfuryl-alcohol"
+      ]
+    },
+    {
+      "components": [
+        "ethyl-lactate",
+        "methyl-acetate"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 0.79 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/ethyl-lactate_methyl-acetate_10-1016-j-fluid-2015-12-029_93.32kPa_tx.json (Matsuda et al., Fluid Phase Equilib. 420)",
+      "source_ids": [
+        "matsuda2016-ethyl-lactate-methyl-acetate"
+      ]
+    },
+    {
+      "components": [
+        "furan",
+        "furfural"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.97 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/furan_furfural_10-1016-j-fluid-2014-10-037_tpx.json (Tai et al., Fluid Phase Equilib. 384)",
+      "source_ids": [
+        "tai2014-2-methylfuran-furfuryl-alcohol"
+      ]
+    },
+    {
+      "components": [
+        "furan",
+        "toluene"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.44 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/furan_toluene_10-1021-acs-jced-6b00424_tpx.json (Theveneau et al., J. Chem. Eng. Data 62)",
+      "source_ids": [
+        "theveneau2017-furan-toluene"
+      ]
+    },
+    {
+      "components": [
+        "gbl",
+        "tetrahydrofuran"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 0.63 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/gbl_tetrahydrofuran_10-1021-acs-jced-7b00584_50.0kPa_tx.json (Sun et al., J. Chem. Eng. Data 62)",
+      "source_ids": [
+        "sun2017-bdo-tetrahydrofuran"
+      ]
     }
   ]
 }

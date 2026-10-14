@@ -1,0 +1,134 @@
+{
+ "_about": "Ethyl lactate (1) + Methanol (2): isobaric T-x-y at 101.33 kPa. Rows: liquid mole fraction of ethyl lactate, boiling temperature in K, vapour mole fraction of ethyl lactate, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "J. M. Resa, E. A. Cepeda, J. M. Goenaga, A. Ramos, S. Aguirre, C. Urbano, Density, Refractive Index, Speed of Sound at 298.15 K, and Vapor-Liquid Equilibrium at 101.3 kPa for Binary Mixtures of Methanol + Ethyl Lactate and 1-Propanol + Ethyl Lactate, J. Chem. Eng. Data 55 (2010) 1017-1021",
+  "doi": "10.1021/je900481e",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je900481e.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 16, 17. The table number in the article was not checked."
+ },
+ "components": [
+  "ethyl-lactate",
+  "methanol"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.33,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0,
+   337.8,
+   0.0
+  ],
+  [
+   0.04,
+   338.7,
+   0.0020000000000000018
+  ],
+  [
+   0.079,
+   339.75,
+   0.0040000000000000036
+  ],
+  [
+   0.178,
+   342.55,
+   0.010000000000000009
+  ],
+  [
+   0.401,
+   350.65,
+   0.031000000000000028
+  ],
+  [
+   0.487,
+   354.25,
+   0.041000000000000036
+  ],
+  [
+   0.522,
+   355.81,
+   0.049000000000000044
+  ],
+  [
+   0.581,
+   359.24,
+   0.05900000000000005
+  ],
+  [
+   0.64,
+   362.65,
+   0.07399999999999995
+  ],
+  [
+   0.752,
+   372.51,
+   0.126
+  ],
+  [
+   0.769,
+   374.07,
+   0.14100000000000001
+  ],
+  [
+   0.797,
+   377.15,
+   0.15700000000000003
+  ],
+  [
+   0.819,
+   380.23,
+   0.19099999999999995
+  ],
+  [
+   0.857,
+   385.72,
+   0.235
+  ],
+  [
+   0.878,
+   389.35,
+   0.277
+  ],
+  [
+   0.888,
+   391.42,
+   0.28900000000000003
+  ],
+  [
+   0.897,
+   393.6,
+   0.31799999999999995
+  ],
+  [
+   0.914,
+   397.35,
+   0.361
+  ],
+  [
+   0.943,
+   405.06,
+   0.484
+  ],
+  [
+   0.955,
+   408.95,
+   0.552
+  ],
+  [
+   0.985,
+   420.65,
+   0.806
+  ],
+  [
+   1.0,
+   427.6,
+   1.0
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0063. Pure-component boiling points of the set within 0.71 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}

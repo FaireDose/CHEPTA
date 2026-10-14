@@ -16594,6 +16594,448 @@
         "nist-thermoml-archive"
       ],
       "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-3-propanediol",
+      "j": "1-hexanol",
+      "set": "fitted-khoshooei2019",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -618.7661139193777,
+      "b_ji": 1749.6172963412298,
+      "alpha": 0.3,
+      "source": "Fitted to 15 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Khoshooei et al., J. Chem. Thermodyn. 132 (2019) 105-112 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_1-hexanol_10-1016-j-jct-2018-12-030_101.3kPa_tx.json). AAD 0.35 K in T (max 0.95 K; no vapour compositions).",
+      "source_ids": [
+        "khoshooei2019-1-3-propanediol-1-hexanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-3-propanediol",
+      "j": "2-propanol",
+      "set": "fitted-lin2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 579.5364816171299,
+      "b_ji": -225.62287058785924,
+      "alpha": 0.3,
+      "source": "Fitted to 18 T-x-y points at 101.3 kPa from Lin et al., Fluid Phase Equilib. 368 (2014) 104-111 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_2-propanol_10-1016-j-fluid-2014-02-006_101.3kPa.json). AAD 0.21 K in T, 0.0013 in y (max 0.58 K, 0.0048). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.001 (passes, < 0.01).",
+      "source_ids": [
+        "lin2014-2-propanol-water",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-3-propanediol",
+      "j": "ethanol",
+      "set": "fitted-lai2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 365.1490680137484,
+      "b_ji": -179.35481667405944,
+      "alpha": 0.3,
+      "source": "Fitted to 17 T-x-y points at 101.3 kPa from Lai et al., J. Chem. Thermodyn. 68 (2014) 13-19 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_ethanol_10-1016-j-jct-2013-08-020_101.3kPa.json). AAD 0.32 K in T, 0.0012 in y (max 0.59 K, 0.0046). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.001 (passes, < 0.01).",
+      "source_ids": [
+        "lai2014-1-3-propanediol-ethanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-3-propanediol",
+      "j": "methanol",
+      "set": "fitted-zaouidjellouldaouadji2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -55.27903866805627,
+      "b_ji": 74.68001406313934,
+      "alpha": 0.3,
+      "source": "Fitted to 40 total pressures at 273.15-343.15 K (T-P-x, with the component vapour pressures) from Zaoui-Djelloul-Daouadji et al., Thermochim. Acta 642 (2016) 111-123 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_methanol_10-1016-j-tca-2016-09-005_tpx.json). total pressures at 273.15-343.15 K (with the vapour pressures of the component records): AAD 1.11 % (max 4.15 %).",
+      "source_ids": [
+        "zaouidjellouldaouadji2016-1-3-propanediol-methanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-3-propanediol",
+      "j": "propylene-glycol",
+      "set": "fitted-rane2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -388.9181520025298,
+      "b_ji": 837.3692935210465,
+      "alpha": 0.3,
+      "source": "Fitted to 13 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 6.67 kPa from Rane et al., J. Chem. Thermodyn. 97 (2016) 142-157 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_propylene-glycol_10-1016-j-jct-2016-01-019_6.67kPa_tx.json). AAD 0.18 K in T (max 0.52 K; no vapour compositions).",
+      "source_ids": [
+        "rane2016-1-3-propanediol-propylene-glycol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-3-propanediol",
+      "j": "water",
+      "set": "fitted-lai2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -325.84302472802807,
+      "b_ji": 594.1499925415183,
+      "alpha": 0.3,
+      "source": "Fitted to 16 T-x-y points at 101.3 kPa from Lai et al., J. Chem. Thermodyn. 68 (2014) 13-19 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-3-propanediol_water_10-1016-j-jct-2013-08-020_101.3kPa.json). AAD 0.10 K in T, 0.0017 in y (max 0.24 K, 0.0034). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.002 (passes, < 0.01).",
+      "source_ids": [
+        "lai2014-1-3-propanediol-ethanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-propanol",
+      "j": "ethyl-lactate",
+      "set": "fitted-resa2010",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 48.177615060285994,
+      "b_ji": 64.20270916155333,
+      "alpha": 0.3,
+      "source": "Fitted to 19 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Resa et al., J. Chem. Eng. Data 55 (2010) 1017-1021 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-propanol_ethyl-lactate_10-1021-je900481e_101.3kPa_tx.json). AAD 0.22 K in T (max 0.43 K; no vapour compositions).",
+      "source_ids": [
+        "resa2010-1-propanol-ethyl-lactate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "2-methylfuran",
+      "j": "isooctane",
+      "set": "fitted-liebergesell2015",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 89.4351116571833,
+      "b_ji": 24.409469133045576,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 2.37 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
+      "source": "Fitted to 244 total pressures at 352.93-508.32 K (T-P-x, with the component vapour pressures) from Liebergesell et al., Fluid Phase Equilib. 400 (2015) 95-102 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-methylfuran_isooctane_10-1016-j-fluid-2015-05-002_tpx.json). total pressures at 352.93-508.32 K (with the vapour pressures of the component records): AAD 2.37 % (max 9.11 %).",
+      "source_ids": [
+        "liebergesell2015-2-methylfuran-isooctane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "2-propanol",
+      "j": "furfuryl-alcohol",
+      "set": "fitted-tai2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 261.16487901523715,
+      "b_ji": -142.02924949706355,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.96 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
+      "source": "Fitted to 30 total pressures at 353.2-408.2 K (T-P-x, with the component vapour pressures) from Tai et al., Fluid Phase Equilib. 384 (2014) 134-142 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-propanol_furfuryl-alcohol_10-1016-j-fluid-2014-10-037_tpx.json). total pressures at 353.2-408.2 K (with the vapour pressures of the component records): AAD 1.96 % (max 4.77 %).",
+      "source_ids": [
+        "tai2014-2-methylfuran-furfuryl-alcohol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "2-propanol",
+      "j": "gvl",
+      "set": "fitted-havasi2016-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 615.127338381176,
+      "b_ji": -231.71792563516811,
+      "alpha": 0.3,
+      "source": "Fitted to 30 T-x-y points at 101.0 kPa from Havasi et al., J. Chem. Eng. Data 61 (2016) 3326-3333 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-propanol_gvl_10-1021-acs-jced-6b00384_101.0kPa.json). AAD 0.29 K in T, 0.0008 in y (max 1.02 K, 0.0026). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.000 (passes, < 0.01).",
+      "source_ids": [
+        "havasi2016-2-propanol-gvl",
+        "havasi2016-water-gvl",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "bdo",
+      "j": "gbl",
+      "set": "fitted-giles2006",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 88.49765324824988,
+      "b_ji": 363.4519177721435,
+      "alpha": 0.3,
+      "source": "Fitted to 14 total pressures at 383.15 K with the measured pure-component pressures from Giles et al., J. Chem. Eng. Data 51 (2006) 1954-1962 (data public in the NIST TRC ThermoML Archive; validation/data/vle/bdo_gbl_10-1021-je050317k_383.15K.json). P-x at 383.15 K (with the measured pure-component pressures): AAD 0.47 % (max 1.18 %).",
+      "source_ids": [
+        "giles2006-acetonitrile-isopropyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "cpme",
+      "j": "ethanol",
+      "set": "fitted-mejia2019",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 270.02119057352763,
+      "b_ji": 190.963147136424,
+      "alpha": 0.3,
+      "source": "Fitted to 19 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 94.0 kPa from Mejia et al., J. Chem. Eng. Data 64 (2019) 1970-1977 (data public in the NIST TRC ThermoML Archive; validation/data/vle/cpme_ethanol_10-1021-acs-jced-8b01000_94.0kPa_tx.json). AAD 0.07 K in T (max 0.24 K; no vapour compositions).",
+      "source_ids": [
+        "mejia2019-cpme-ethanol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "dimethyl-carbonate",
+      "j": "ethyl-lactate",
+      "set": "fitted-matsuda2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 348.34113029925203,
+      "b_ji": -238.32655752621883,
+      "alpha": 0.3,
+      "source": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Matsuda et al., J. Chem. Eng. Data 62 (2017) 2944-2952 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_ethyl-lactate_10-1021-acs-jced-7b00185_101.3kPa_tx.json). AAD 0.44 K in T (max 1.19 K; no vapour compositions).",
+      "source_ids": [
+        "matsuda2017-dimethyl-carbonate-ethyl-lactate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "ethanol",
+      "j": "furan",
+      "set": "fitted-auger2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 31.879709009014167,
+      "b_ji": 596.2628238537894,
+      "alpha": 0.3,
+      "source": "Fitted to 14 T-x-y points at 101.0 kPa from Auger et al., Fluid Phase Equilib. 430 (2016) 57-66 (data public in the NIST TRC ThermoML Archive; validation/data/vle/ethanol_furan_10-1016-j-fluid-2016-09-019_101.0kPa.json). AAD 0.49 K in T, 0.0085 in y (max 1.65 K, 0.0282). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.009 (passes, < 0.01).",
+      "source_ids": [
+        "auger2016-ethanol-furan",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "ethanol",
+      "j": "gvl",
+      "set": "fitted-havasi2016-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 656.4553538182718,
+      "b_ji": -243.62351621224346,
+      "alpha": 0.3,
+      "source": "Fitted to 34 T-x-y points at 101.0 kPa from Havasi et al., J. Chem. Eng. Data 61 (2016) 3326-3333 (data public in the NIST TRC ThermoML Archive; validation/data/vle/ethanol_gvl_10-1021-acs-jced-6b00384_101.0kPa.json). AAD 0.22 K in T, 0.0005 in y (max 0.60 K, 0.0011). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.001 (passes, < 0.01).",
+      "source_ids": [
+        "havasi2016-2-propanol-gvl",
+        "havasi2016-water-gvl",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "ethyl-lactate",
+      "j": "methanol",
+      "set": "fitted-resa2010",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -64.9818873006899,
+      "b_ji": 88.77801316116557,
+      "alpha": 0.3,
+      "source": "Fitted to 20 T-x-y points at 101.33 kPa from Resa et al., J. Chem. Eng. Data 55 (2010) 1017-1021 (data public in the NIST TRC ThermoML Archive; validation/data/vle/ethyl-lactate_methanol_10-1021-je900481e_101.33kPa.json). AAD 0.30 K in T, 0.0041 in y (max 1.18 K, 0.0112). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "resa2010-1-propanol-ethyl-lactate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "ethyl-lactate",
+      "j": "methyl-acetate",
+      "set": "fitted-matsuda2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 195.8342831728433,
+      "b_ji": -258.3879102777929,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 0.79 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 10 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 93.32 kPa from Matsuda et al., Fluid Phase Equilib. 420 (2016) 50-57 (data public in the NIST TRC ThermoML Archive; validation/data/vle/ethyl-lactate_methyl-acetate_10-1016-j-fluid-2015-12-029_93.32kPa_tx.json). AAD 0.79 K in T (max 2.47 K; no vapour compositions).",
+      "source_ids": [
+        "matsuda2016-ethyl-lactate-methyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "formic-acid",
+      "j": "gvl",
+      "set": "fitted-havasi2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 545.2899959582323,
+      "b_ji": -665.9028457519698,
+      "alpha": 0.47,
+      "source": "Fitted to 35 T-x-y points at 51.0 kPa from Havasi et al., J. Chem. Eng. Data 62 (2017) 1058-1062 (data public in the NIST TRC ThermoML Archive; validation/data/vle/formic-acid_gvl_10-1021-acs-jced-6b00867_51.0kPa.json). AAD 0.44 K in T, 0.0038 in y (max 1.30 K, 0.0161). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "source_ids": [
+        "havasi2017-formic-acid-gvl",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "furan",
+      "j": "furfural",
+      "set": "fitted-tai2014",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -336.2467914695882,
+      "b_ji": 535.7755566724842,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 2.97 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
+      "source": "Fitted to 30 total pressures at 353.2-408.2 K (T-P-x, with the component vapour pressures) from Tai et al., Fluid Phase Equilib. 384 (2014) 134-142 (data public in the NIST TRC ThermoML Archive; validation/data/vle/furan_furfural_10-1016-j-fluid-2014-10-037_tpx.json). total pressures at 353.2-408.2 K (with the vapour pressures of the component records): AAD 2.97 % (max 9.30 %).",
+      "source_ids": [
+        "tai2014-2-methylfuran-furfuryl-alcohol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "furan",
+      "j": "n-hexane",
+      "set": "fitted-nala2013",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 453.1513739255543,
+      "b_ji": -142.47651423387433,
+      "alpha": 0.3,
+      "source": "Fitted to 17 T-x-y points at 101.0 kPa from Nala et al., Fluid Phase Equilib. 337 (2013) 234-245 (data public in the NIST TRC ThermoML Archive; validation/data/vle/furan_n-hexane_10-1016-j-fluid-2012-08-005_101.0kPa.json). AAD 0.14 K in T, 0.0059 in y (max 0.28 K, 0.0120). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
+      "source_ids": [
+        "nala2013-furan-n-hexane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "furan",
+      "j": "toluene",
+      "set": "fitted-theveneau2017",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 43.53837701939341,
+      "b_ji": -68.82257489092854,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 2.44 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
+      "source": "Fitted to 22 total pressures at 313.02-352.99 K (T-P-x, with the component vapour pressures) from Theveneau et al., J. Chem. Eng. Data 62 (2017) 1168-1172 (data public in the NIST TRC ThermoML Archive; validation/data/vle/furan_toluene_10-1021-acs-jced-6b00424_tpx.json). total pressures at 313.02-352.99 K (with the vapour pressures of the component records): AAD 2.44 % (max 8.13 %).",
+      "source_ids": [
+        "theveneau2017-furan-toluene",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "furfural",
+      "j": "gvl",
+      "set": "fitted-pokki2018",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -316.69989014575,
+      "b_ji": 382.37345753205784,
+      "alpha": 0.3,
+      "source": "Fitted to 17 T-x-y points at 30.0 kPa from Pokki et al., J. Chem. Eng. Data 63 (2018) 4381-4391 (data public in the NIST TRC ThermoML Archive; validation/data/vle/furfural_gvl_10-1021-acs-jced-8b00451_30.0kPa.json). AAD 0.06 K in T, 0.0030 in y (max 0.30 K, 0.0098). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.003 (passes, < 0.01).",
+      "source_ids": [
+        "pokki2018-furfural-gvl",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "gbl",
+      "j": "tetrahydrofuran",
+      "set": "fitted-sun2017-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 756.7353603006861,
+      "b_ji": -266.3177544784479,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 0.63 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 13 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 50.0 kPa from Sun et al., J. Chem. Eng. Data 62 (2017) 3872-3877 (data public in the NIST TRC ThermoML Archive; validation/data/vle/gbl_tetrahydrofuran_10-1021-acs-jced-7b00584_50.0kPa_tx.json). AAD 0.63 K in T (max 1.89 K; no vapour compositions).",
+      "source_ids": [
+        "sun2017-1-butanol-acetaldehyde",
+        "sun2017-bdo-tetrahydrofuran",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "gvl",
+      "j": "methanol",
+      "set": "fitted-havasi2016-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -25.465058071607036,
+      "b_ji": 263.9134222773389,
+      "alpha": 0.3,
+      "source": "Fitted to 23 T-x-y points at 101.0 kPa from Havasi et al., J. Chem. Eng. Data 61 (2016) 3326-3333 (data public in the NIST TRC ThermoML Archive; validation/data/vle/gvl_methanol_10-1021-acs-jced-6b00384_101.0kPa.json). AAD 0.26 K in T, 0.0008 in y (max 0.60 K, 0.0025). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.001 (passes, < 0.01).",
+      "source_ids": [
+        "havasi2016-2-propanol-gvl",
+        "havasi2016-water-gvl",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
     }
   ]
 }

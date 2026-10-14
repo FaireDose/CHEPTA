@@ -1,0 +1,109 @@
+{
+ "_about": "Furan (1) + n-Hexane (2): isobaric T-x-y at 101.0 kPa. Rows: liquid mole fraction of furan, boiling temperature in K, vapour mole fraction of furan, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "M. Nala, E. Auger, I. Gedik, N. Ferrando, M. Dicko, P. Paricaud, F. Volle, J. P. Passarello, J. C. de Hemptinne, P. Tobaly, P. Stringari, C. Coquelet, D. Ramjugernath, P. Naidoo, R. Lugo, Vapour-liquid equilibrium (VLE) for the systems furan + n-hexane and furan + toluene. Measurements, data treatment and modeling using molecular models, Fluid Phase Equilib. 337 (2013) 234-245",
+  "doi": "10.1016/j.fluid.2012.08.005",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.08.005.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 2, 3. The table number in the article was not checked."
+ },
+ "components": [
+  "furan",
+  "n-hexane"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.0,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.028,
+   338.43,
+   0.121
+  ],
+  [
+   0.049,
+   335.98,
+   0.206
+  ],
+  [
+   0.078,
+   332.85,
+   0.304
+  ],
+  [
+   0.117,
+   329.37,
+   0.408
+  ],
+  [
+   0.172,
+   325.05,
+   0.52
+  ],
+  [
+   0.267,
+   319.59,
+   0.646
+  ],
+  [
+   0.349,
+   316.37,
+   0.719
+  ],
+  [
+   0.424,
+   313.94,
+   0.759
+  ],
+  [
+   0.493,
+   311.81,
+   0.798
+  ],
+  [
+   0.567,
+   310.26,
+   0.828
+  ],
+  [
+   0.639,
+   309.06,
+   0.847
+  ],
+  [
+   0.715,
+   307.66,
+   0.874
+  ],
+  [
+   0.813,
+   306.26,
+   0.908
+  ],
+  [
+   0.856,
+   305.69,
+   0.924
+  ],
+  [
+   0.905,
+   305.36,
+   0.939
+  ],
+  [
+   0.968,
+   304.94,
+   0.978
+  ],
+  [
+   0.991,
+   304.72,
+   0.992
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0056. To be checked by a person against the record (AGENTS.md rule 4)."
+}

@@ -1,0 +1,144 @@
+{
+ "_about": "gamma-Valerolactone (1) + Methanol (2): isobaric T-x-y at 101.0 kPa. Rows: liquid mole fraction of gamma-valerolactone, boiling temperature in K, vapour mole fraction of gamma-valerolactone, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
+ "source": {
+  "citation": "D. Havasi, G. Patzay, Z. Kolarovszki, L. T. Mika, Isobaric Vapor Liquid Equilibria for Binary Mixtures of .gamma.-Valerolactone + Methanol, Ethanol, and 2-Propanol, J. Chem. Eng. Data 61 (2016) 3326-3333",
+  "doi": "10.1021/acs.jced.6b00384",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00384.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 9, 10. The table number in the article was not checked."
+ },
+ "components": [
+  "gvl",
+  "methanol"
+ ],
+ "kind": "isobaric-txy",
+ "P_kPa": 101.0,
+ "columns": [
+  "x_1",
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   0.0,
+   337.8,
+   0.0
+  ],
+  [
+   0.0007,
+   337.8,
+   9.99999999995449e-06
+  ],
+  [
+   0.0014,
+   337.8,
+   9.999999999998899e-05
+  ],
+  [
+   0.0017,
+   337.8,
+   9.999999999998899e-05
+  ],
+  [
+   0.002,
+   337.8,
+   9.999999999998899e-05
+  ],
+  [
+   0.0027,
+   337.9,
+   9.999999999998899e-05
+  ],
+  [
+   0.004,
+   337.9,
+   9.999999999998899e-05
+  ],
+  [
+   0.0061,
+   337.9,
+   0.00019999999999997797
+  ],
+  [
+   0.0263,
+   338.4,
+   0.0006000000000000449
+  ],
+  [
+   0.0467,
+   338.9,
+   0.0008000000000000229
+  ],
+  [
+   0.067,
+   339.3,
+   0.0010000000000000009
+  ],
+  [
+   0.1319,
+   340.6,
+   0.0012999999999999678
+  ],
+  [
+   0.1544,
+   341.2,
+   0.0014999999999999458
+  ],
+  [
+   0.3261,
+   345.1,
+   0.0024999999999999467
+  ],
+  [
+   0.3532,
+   345.9,
+   0.0027000000000000357
+  ],
+  [
+   0.4399,
+   348.8,
+   0.0038000000000000256
+  ],
+  [
+   0.5034,
+   351.6,
+   0.005099999999999993
+  ],
+  [
+   0.5388,
+   353.4,
+   0.006000000000000005
+  ],
+  [
+   0.5744,
+   355.1,
+   0.007099999999999995
+  ],
+  [
+   0.6096,
+   356.6,
+   0.008099999999999996
+  ],
+  [
+   0.733,
+   365.2,
+   0.015000000000000013
+  ],
+  [
+   0.7599,
+   368.0,
+   0.017900000000000027
+  ],
+  [
+   0.7994,
+   372.4,
+   0.0232
+  ],
+  [
+   0.8223,
+   375.1,
+   0.027100000000000013
+  ]
+ ],
+ "notes": "Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.0009. Pure-component boiling points of the set within 0.24 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+}
