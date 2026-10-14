@@ -1057,6 +1057,2392 @@
     "detail": "CoolProp Ethylene: eos Smukala-JPCRD-2000"
    }
   },
+  "pure/cyclohexane/psat/25C": {
+   "psat_kPa": {
+    "value": 13.01886,
+    "source": "coolprop",
+    "detail": "CoolProp Cyclohexane: eos Zhou-JPCRD-2014; saturated liquid"
+   }
+  },
+  "pure/cyclohexane/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 773.9665,
+    "source": "coolprop",
+    "detail": "CoolProp Cyclohexane: eos Zhou-JPCRD-2014; 101.325 kPa"
+   }
+  },
+  "pure/cyclohexane/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.858922,
+    "source": "coolprop",
+    "detail": "CoolProp Cyclohexane: eos Zhou-JPCRD-2014; 101.325 kPa"
+   }
+  },
+  "pure/cyclohexane/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 392.5167,
+    "source": "coolprop",
+    "detail": "CoolProp Cyclohexane: eos Zhou-JPCRD-2014; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/cyclohexane/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.8911856,
+    "source": "coolprop",
+    "detail": "CoolProp Cyclohexane: eos Zhou-JPCRD-2014; viscosity Tariq-JPCRD-2014-Cyclohexane; 101.325 kPa"
+   }
+  },
+  "pure/cyclohexane/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for Cyclohexane"
+   }
+  },
+  "pure/o-xylene/psat/25C": {
+   "psat_kPa": {
+    "value": 0.8959757,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/o-xylene/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 876.0262,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012; 101.325 kPa"
+   }
+  },
+  "pure/o-xylene/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.764744,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012; 101.325 kPa"
+   }
+  },
+  "pure/o-xylene/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 409.0177,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/o-xylene/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.7568704,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012; viscosity Cao-JPCRD-2016-oxylene; 101.325 kPa"
+   }
+  },
+  "pure/o-xylene/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.130695,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012; conductivity Mylona-JPCRD-2014-xylenes; 101.325 kPa"
+   }
+  },
+  "pure/m-xylene/psat/25C": {
+   "psat_kPa": {
+    "value": 1.117254,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/m-xylene/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 859.924,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012; 101.325 kPa"
+   }
+  },
+  "pure/m-xylene/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.711328,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012; 101.325 kPa"
+   }
+  },
+  "pure/m-xylene/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 402.2181,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/m-xylene/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.5819886,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012; viscosity Cao-JPCRD-2016-mxylene; 101.325 kPa"
+   }
+  },
+  "pure/m-xylene/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.1298696,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012; conductivity Mylona-JPCRD-2014-xylenes; 101.325 kPa"
+   }
+  },
+  "pure/p-xylene/psat/25C": {
+   "psat_kPa": {
+    "value": 1.177657,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/p-xylene/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 856.7406,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012; 101.325 kPa"
+   }
+  },
+  "pure/p-xylene/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.716655,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012; 101.325 kPa"
+   }
+  },
+  "pure/p-xylene/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 399.2612,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/p-xylene/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.6065438,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012; viscosity Balogun-JPCRD-2015-pxylene; 101.325 kPa"
+   }
+  },
+  "pure/p-xylene/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.126625,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012; conductivity Mylona-JPCRD-2014-xylenes; 101.325 kPa"
+   }
+  },
+  "pure/ethylbenzene/psat/25C": {
+   "psat_kPa": {
+    "value": 1.278864,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/ethylbenzene/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 862.5381,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012; 101.325 kPa"
+   }
+  },
+  "pure/ethylbenzene/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.745824,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012; 101.325 kPa"
+   }
+  },
+  "pure/ethylbenzene/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 397.9425,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/ethylbenzene/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.6118888,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012; viscosity Huber-RP912; 101.325 kPa"
+   }
+  },
+  "pure/ethylbenzene/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.1277632,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012; conductivity Mylona-JPCRD-2014-xylenes; 101.325 kPa"
+   }
+  },
+  "pure/n-pentane/psat/25C": {
+   "psat_kPa": {
+    "value": 68.35509,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane; saturated liquid"
+   }
+  },
+  "pure/n-pentane/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 621.2101,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane; 101.325 kPa"
+   }
+  },
+  "pure/n-pentane/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.316271,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane; 101.325 kPa"
+   }
+  },
+  "pure/n-pentane/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 366.4049,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-pentane/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.1798293,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane; viscosity QuinonesCisneros-JPCB-2006; 101.325 kPa"
+   }
+  },
+  "pure/n-pentane/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.1119681,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane; conductivity Vassiliou-JPCRD-2015-pentanes; 101.325 kPa"
+   }
+  },
+  "pure/n-hexane/psat/25C": {
+   "psat_kPa": {
+    "value": 20.16409,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane; saturated liquid"
+   }
+  },
+  "pure/n-hexane/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 654.854,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane; 101.325 kPa"
+   }
+  },
+  "pure/n-hexane/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.272529,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane; 101.325 kPa"
+   }
+  },
+  "pure/n-hexane/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 366.1914,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-hexane/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.297962,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane; viscosity Michailidou-JPCRD-2013-Hexane; 101.325 kPa"
+   }
+  },
+  "pure/n-hexane/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.1199933,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane; conductivity Assael-JPCRD-2013-Hexane; 101.325 kPa"
+   }
+  },
+  "pure/n-heptane/psat/25C": {
+   "psat_kPa": {
+    "value": 6.09082,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B; saturated liquid"
+   }
+  },
+  "pure/n-heptane/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 679.5982,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B; 101.325 kPa"
+   }
+  },
+  "pure/n-heptane/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.24049,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B; 101.325 kPa"
+   }
+  },
+  "pure/n-heptane/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 365.1152,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-heptane/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.3900671,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B; viscosity Michailidou-JPCRD-2014-Heptane; 101.325 kPa"
+   }
+  },
+  "pure/n-heptane/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.1221674,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B; conductivity Assael-JPCRD-2013-Heptane; 101.325 kPa"
+   }
+  },
+  "pure/n-octane/psat/25C": {
+   "psat_kPa": {
+    "value": 1.873453,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane; saturated liquid"
+   }
+  },
+  "pure/n-octane/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 698.577,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane; 101.325 kPa"
+   }
+  },
+  "pure/n-octane/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.227624,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane; 101.325 kPa"
+   }
+  },
+  "pure/n-octane/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 363.4188,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-octane/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.5115312,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane; viscosity Huber-FPE-2004; 101.325 kPa"
+   }
+  },
+  "pure/n-octane/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.1245958,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane; conductivity Huber-FPE-2005; 101.325 kPa"
+   }
+  },
+  "pure/diethyl-ether/psat/25C": {
+   "psat_kPa": {
+    "value": 71.50481,
+    "source": "coolprop",
+    "detail": "CoolProp DiethylEther: eos Thol-IJT-2014; saturated liquid"
+   }
+  },
+  "pure/diethyl-ether/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 707.8395,
+    "source": "coolprop",
+    "detail": "CoolProp DiethylEther: eos Thol-IJT-2014; 101.325 kPa"
+   }
+  },
+  "pure/diethyl-ether/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.33406,
+    "source": "coolprop",
+    "detail": "CoolProp DiethylEther: eos Thol-IJT-2014; 101.325 kPa"
+   }
+  },
+  "pure/diethyl-ether/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 366.3134,
+    "source": "coolprop",
+    "detail": "CoolProp DiethylEther: eos Thol-IJT-2014; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/diethyl-ether/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for DiethylEther"
+   }
+  },
+  "pure/diethyl-ether/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for DiethylEther"
+   }
+  },
+  "pure/propylene-glycol/psat/25C": {
+   "psat_kPa": {
+    "value": 0.01758186,
+    "source": "coolprop",
+    "detail": "CoolProp PropyleneGlycol: eos Eisenbach-JPCRD-2021; saturated liquid"
+   }
+  },
+  "pure/propylene-glycol/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 1032.574,
+    "source": "coolprop",
+    "detail": "CoolProp PropyleneGlycol: eos Eisenbach-JPCRD-2021; 101.325 kPa"
+   }
+  },
+  "pure/propylene-glycol/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.490817,
+    "source": "coolprop",
+    "detail": "CoolProp PropyleneGlycol: eos Eisenbach-JPCRD-2021; 101.325 kPa"
+   }
+  },
+  "pure/propylene-glycol/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 867.3639,
+    "source": "coolprop",
+    "detail": "CoolProp PropyleneGlycol: eos Eisenbach-JPCRD-2021; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/propylene-glycol/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for PropyleneGlycol"
+   }
+  },
+  "pure/propylene-glycol/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for PropyleneGlycol"
+   }
+  },
+  "pure/tetrahydrofuran/psat/25C": {
+   "psat_kPa": {
+    "value": 21.63285,
+    "source": "coolprop",
+    "detail": "CoolProp Tetrahydrofuran: eos Fiedler-IJT-2023-THF; saturated liquid"
+   }
+  },
+  "pure/tetrahydrofuran/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 882.0075,
+    "source": "coolprop",
+    "detail": "CoolProp Tetrahydrofuran: eos Fiedler-IJT-2023-THF; 101.325 kPa"
+   }
+  },
+  "pure/tetrahydrofuran/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.723793,
+    "source": "coolprop",
+    "detail": "CoolProp Tetrahydrofuran: eos Fiedler-IJT-2023-THF; 101.325 kPa"
+   }
+  },
+  "pure/tetrahydrofuran/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 445.7169,
+    "source": "coolprop",
+    "detail": "CoolProp Tetrahydrofuran: eos Fiedler-IJT-2023-THF; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/tetrahydrofuran/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for Tetrahydrofuran"
+   }
+  },
+  "pure/tetrahydrofuran/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for Tetrahydrofuran"
+   }
+  },
+  "pure/dichloroethane/psat/25C": {
+   "psat_kPa": {
+    "value": 10.514,
+    "source": "coolprop",
+    "detail": "CoolProp Dichloroethane: eos Thol-THESIS-2015; saturated liquid"
+   }
+  },
+  "pure/dichloroethane/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 1245.444,
+    "source": "coolprop",
+    "detail": "CoolProp Dichloroethane: eos Thol-THESIS-2015; 101.325 kPa"
+   }
+  },
+  "pure/dichloroethane/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.302469,
+    "source": "coolprop",
+    "detail": "CoolProp Dichloroethane: eos Thol-THESIS-2015; 101.325 kPa"
+   }
+  },
+  "pure/dichloroethane/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 354.5845,
+    "source": "coolprop",
+    "detail": "CoolProp Dichloroethane: eos Thol-THESIS-2015; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/dichloroethane/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for Dichloroethane"
+   }
+  },
+  "pure/dichloroethane/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for Dichloroethane"
+   }
+  },
+  "pure/n-nonane/psat/25C": {
+   "psat_kPa": {
+    "value": 0.5806215,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/n-nonane/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 714.0911,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006; 101.325 kPa"
+   }
+  },
+  "pure/n-nonane/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.207609,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006; 101.325 kPa"
+   }
+  },
+  "pure/n-nonane/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 362.5721,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-nonane/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.6540219,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006; viscosity Huber-FPE-2004; 101.325 kPa"
+   }
+  },
+  "pure/n-nonane/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.1266797,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006; conductivity Huber-FPE-2005; 101.325 kPa"
+   }
+  },
+  "pure/n-decane/psat/25C": {
+   "psat_kPa": {
+    "value": 0.1822657,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/n-decane/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 726.5261,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006; 101.325 kPa"
+   }
+  },
+  "pure/n-decane/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.192519,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006; 101.325 kPa"
+   }
+  },
+  "pure/n-decane/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 361.037,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-decane/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.848117,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006; viscosity Huber-FPE-2004; 101.325 kPa"
+   }
+  },
+  "pure/n-decane/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.1294793,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006; conductivity Huber-FPE-2005; 101.325 kPa"
+   }
+  },
+  "pure/n-dodecane/psat/25C": {
+   "psat_kPa": {
+    "value": 0.01787822,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004; saturated liquid"
+   }
+  },
+  "pure/n-dodecane/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 745.7313,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004; 101.325 kPa"
+   }
+  },
+  "pure/n-dodecane/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.212308,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004; 101.325 kPa"
+   }
+  },
+  "pure/n-dodecane/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 361.4508,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-dodecane/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 1.358862,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004; viscosity Huber-EF-2004; 101.325 kPa"
+   }
+  },
+  "pure/n-dodecane/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.1353016,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004; conductivity Huber-EF-2004; 101.325 kPa"
+   }
+  },
+  "pure/isopentane/psat/25C": {
+   "psat_kPa": {
+    "value": 91.79466,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/isopentane/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 614.9824,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006; 101.325 kPa"
+   }
+  },
+  "pure/isopentane/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.273889,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006; 101.325 kPa"
+   }
+  },
+  "pure/isopentane/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 345.4547,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/isopentane/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": 0.1936447,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006; viscosity Chung-IECR-1988; 101.325 kPa"
+   }
+  },
+  "pure/isopentane/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": 0.1017109,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006; conductivity Vassiliou-JPCRD-2015-pentanes; 101.325 kPa"
+   }
+  },
+  "pure/n-undecane/psat/25C": {
+   "psat_kPa": {
+    "value": 0.05770195,
+    "source": "coolprop",
+    "detail": "CoolProp n-Undecane: eos Aleksandrov-TE-2011; saturated liquid"
+   }
+  },
+  "pure/n-undecane/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 736.4849,
+    "source": "coolprop",
+    "detail": "CoolProp n-Undecane: eos Aleksandrov-TE-2011; 101.325 kPa"
+   }
+  },
+  "pure/n-undecane/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.214535,
+    "source": "coolprop",
+    "detail": "CoolProp n-Undecane: eos Aleksandrov-TE-2011; 101.325 kPa"
+   }
+  },
+  "pure/n-undecane/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 360.9927,
+    "source": "coolprop",
+    "detail": "CoolProp n-Undecane: eos Aleksandrov-TE-2011; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-undecane/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for n-Undecane"
+   }
+  },
+  "pure/n-undecane/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for n-Undecane"
+   }
+  },
+  "pure/dimethyl-carbonate/psat/25C": {
+   "psat_kPa": {
+    "value": 7.265418,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylCarbonate: eos Zhou-JPCRD-2011; saturated liquid"
+   }
+  },
+  "pure/dimethyl-carbonate/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 1063.287,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylCarbonate: eos Zhou-JPCRD-2011; 101.325 kPa"
+   }
+  },
+  "pure/dimethyl-carbonate/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.832445,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylCarbonate: eos Zhou-JPCRD-2011; 101.325 kPa"
+   }
+  },
+  "pure/dimethyl-carbonate/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 419.2285,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylCarbonate: eos Zhou-JPCRD-2011; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/dimethyl-carbonate/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for DimethylCarbonate"
+   }
+  },
+  "pure/dimethyl-carbonate/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for DimethylCarbonate"
+   }
+  },
+  "pure/methyl-oleate/psat/25C": {
+   "psat_kPa": {
+    "value": 1.10418e-06,
+    "source": "coolprop",
+    "detail": "CoolProp MethylOleate: eos Huber-EF-2009; saturated liquid"
+   }
+  },
+  "pure/methyl-oleate/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 870.1662,
+    "source": "coolprop",
+    "detail": "CoolProp MethylOleate: eos Huber-EF-2009; 101.325 kPa"
+   }
+  },
+  "pure/methyl-oleate/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.243139,
+    "source": "coolprop",
+    "detail": "CoolProp MethylOleate: eos Huber-EF-2009; 101.325 kPa"
+   }
+  },
+  "pure/methyl-oleate/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 359.7466,
+    "source": "coolprop",
+    "detail": "CoolProp MethylOleate: eos Huber-EF-2009; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/methyl-oleate/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for MethylOleate"
+   }
+  },
+  "pure/methyl-oleate/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for MethylOleate"
+   }
+  },
+  "pure/methyl-linoleate/psat/25C": {
+   "psat_kPa": {
+    "value": 1.10012e-06,
+    "source": "coolprop",
+    "detail": "CoolProp MethylLinoleate: eos Huber-EF-2009; saturated liquid"
+   }
+  },
+  "pure/methyl-linoleate/liquidDensity/25C": {
+   "rho_kg_m3": {
+    "value": 881.7288,
+    "source": "coolprop",
+    "detail": "CoolProp MethylLinoleate: eos Huber-EF-2009; 101.325 kPa"
+   }
+  },
+  "pure/methyl-linoleate/liquidHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.302453,
+    "source": "coolprop",
+    "detail": "CoolProp MethylLinoleate: eos Huber-EF-2009; 101.325 kPa"
+   }
+  },
+  "pure/methyl-linoleate/heatOfVaporization/25C": {
+   "dHvap_kJ_kg": {
+    "value": 365.7512,
+    "source": "coolprop",
+    "detail": "CoolProp MethylLinoleate: eos Huber-EF-2009; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/methyl-linoleate/liquidViscosity/25C": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for MethylLinoleate"
+   }
+  },
+  "pure/methyl-linoleate/liquidThermalConductivity/25C": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for MethylLinoleate"
+   }
+  },
+  "pure/carbon-monoxide/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 793.2046,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonMonoxide: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/carbon-monoxide/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.145818,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonMonoxide: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/carbon-monoxide/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 214.6807,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonMonoxide: eos Lemmon-JCED-2006; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/carbon-monoxide/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for CarbonMonoxide"
+   }
+  },
+  "pure/carbon-monoxide/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for CarbonMonoxide"
+   }
+  },
+  "pure/carbon-monoxide/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.040297,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonMonoxide: eos Lemmon-JCED-2006"
+   }
+  },
+  "pure/carbon-dioxide/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 1284.924,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonDioxide: eos Span-JPCRD-1996; saturated liquid"
+   }
+  },
+  "pure/carbon-dioxide/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 1.933576,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonDioxide: eos Span-JPCRD-1996; saturated liquid"
+   }
+  },
+  "pure/carbon-dioxide/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 396.2504,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonDioxide: eos Span-JPCRD-1996; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/carbon-dioxide/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.4415532,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonDioxide: eos Span-JPCRD-1996; viscosity Laesecke-JPCRD-2017-CO2; saturated liquid"
+   }
+  },
+  "pure/carbon-dioxide/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.2186481,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonDioxide: eos Span-JPCRD-1996; conductivity Huber-JPCRD-2016-CO2; saturated liquid"
+   }
+  },
+  "pure/carbon-dioxide/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 0.8439211,
+    "source": "coolprop",
+    "detail": "CoolProp CarbonDioxide: eos Span-JPCRD-1996"
+   }
+  },
+  "pure/hydrogen-sulfide/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 949.2015,
+    "source": "coolprop",
+    "detail": "CoolProp HydrogenSulfide: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/hydrogen-sulfide/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 1.995086,
+    "source": "coolprop",
+    "detail": "CoolProp HydrogenSulfide: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/hydrogen-sulfide/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 546.411,
+    "source": "coolprop",
+    "detail": "CoolProp HydrogenSulfide: eos Lemmon-JCED-2006; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/hydrogen-sulfide/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2946068,
+    "source": "coolprop",
+    "detail": "CoolProp HydrogenSulfide: eos Lemmon-JCED-2006; viscosity QuinonesCisneros-JCED-2012; saturated liquid"
+   }
+  },
+  "pure/hydrogen-sulfide/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for HydrogenSulfide"
+   }
+  },
+  "pure/hydrogen-sulfide/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.000811,
+    "source": "coolprop",
+    "detail": "CoolProp HydrogenSulfide: eos Lemmon-JCED-2006"
+   }
+  },
+  "pure/argon/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 1395.408,
+    "source": "coolprop",
+    "detail": "CoolProp Argon: eos Tegeler-JPCRD-1999; saturated liquid"
+   }
+  },
+  "pure/argon/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 1.117246,
+    "source": "coolprop",
+    "detail": "CoolProp Argon: eos Tegeler-JPCRD-1999; saturated liquid"
+   }
+  },
+  "pure/argon/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 161.1399,
+    "source": "coolprop",
+    "detail": "CoolProp Argon: eos Tegeler-JPCRD-1999; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/argon/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2603094,
+    "source": "coolprop",
+    "detail": "CoolProp Argon: eos Tegeler-JPCRD-1999; viscosity Lemmon-IJT-2004; saturated liquid"
+   }
+  },
+  "pure/argon/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.1284648,
+    "source": "coolprop",
+    "detail": "CoolProp Argon: eos Tegeler-JPCRD-1999; conductivity Lemmon-IJT-2004; saturated liquid"
+   }
+  },
+  "pure/argon/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 0.5203333,
+    "source": "coolprop",
+    "detail": "CoolProp Argon: eos Tegeler-JPCRD-1999"
+   }
+  },
+  "pure/propane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 580.8786,
+    "source": "coolprop",
+    "detail": "CoolProp n-Propane: eos Lemmon-JCED-2009; saturated liquid"
+   }
+  },
+  "pure/propane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.24606,
+    "source": "coolprop",
+    "detail": "CoolProp n-Propane: eos Lemmon-JCED-2009; saturated liquid"
+   }
+  },
+  "pure/propane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 425.5876,
+    "source": "coolprop",
+    "detail": "CoolProp n-Propane: eos Lemmon-JCED-2009; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/propane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.1972121,
+    "source": "coolprop",
+    "detail": "CoolProp n-Propane: eos Lemmon-JCED-2009; viscosity Vogel-JPCRD-1998; saturated liquid"
+   }
+  },
+  "pure/propane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.12947,
+    "source": "coolprop",
+    "detail": "CoolProp n-Propane: eos Lemmon-JCED-2009; conductivity Marsh-JCED-2002; saturated liquid"
+   }
+  },
+  "pure/propane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.663118,
+    "source": "coolprop",
+    "detail": "CoolProp n-Propane: eos Lemmon-JCED-2009"
+   }
+  },
+  "pure/propylene/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 610.0584,
+    "source": "coolprop",
+    "detail": "CoolProp Propylene: eos Lemmon-PROPYLENE-2013; saturated liquid"
+   }
+  },
+  "pure/propylene/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.189476,
+    "source": "coolprop",
+    "detail": "CoolProp Propylene: eos Lemmon-PROPYLENE-2013; saturated liquid"
+   }
+  },
+  "pure/propylene/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 438.8855,
+    "source": "coolprop",
+    "detail": "CoolProp Propylene: eos Lemmon-PROPYLENE-2013; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/propylene/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.195569,
+    "source": "coolprop",
+    "detail": "CoolProp Propylene: eos Lemmon-PROPYLENE-2013; viscosity Huber-IECR-2003; saturated liquid"
+   }
+  },
+  "pure/propylene/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.1455929,
+    "source": "coolprop",
+    "detail": "CoolProp Propylene: eos Lemmon-PROPYLENE-2013; conductivity Huber-IECR-2003; saturated liquid"
+   }
+  },
+  "pure/propylene/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.530407,
+    "source": "coolprop",
+    "detail": "CoolProp Propylene: eos Lemmon-PROPYLENE-2013"
+   }
+  },
+  "pure/n-butane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 601.258,
+    "source": "coolprop",
+    "detail": "CoolProp n-Butane: eos Buecker-JPCRD-2006B; saturated liquid"
+   }
+  },
+  "pure/n-butane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.309592,
+    "source": "coolprop",
+    "detail": "CoolProp n-Butane: eos Buecker-JPCRD-2006B; saturated liquid"
+   }
+  },
+  "pure/n-butane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 385.7091,
+    "source": "coolprop",
+    "detail": "CoolProp n-Butane: eos Buecker-JPCRD-2006B; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-butane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.203497,
+    "source": "coolprop",
+    "detail": "CoolProp n-Butane: eos Buecker-JPCRD-2006B; viscosity Vogel-HTHP-1999; saturated liquid"
+   }
+  },
+  "pure/n-butane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.1155786,
+    "source": "coolprop",
+    "detail": "CoolProp n-Butane: eos Buecker-JPCRD-2006B; conductivity Perkins-JCED-2002-nButane; saturated liquid"
+   }
+  },
+  "pure/n-butane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.694359,
+    "source": "coolprop",
+    "detail": "CoolProp n-Butane: eos Buecker-JPCRD-2006B"
+   }
+  },
+  "pure/isobutane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 593.8223,
+    "source": "coolprop",
+    "detail": "CoolProp IsoButane: eos Buecker-JPCRD-2006B; saturated liquid"
+   }
+  },
+  "pure/isobutane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.222198,
+    "source": "coolprop",
+    "detail": "CoolProp IsoButane: eos Buecker-JPCRD-2006B; saturated liquid"
+   }
+  },
+  "pure/isobutane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 365.1011,
+    "source": "coolprop",
+    "detail": "CoolProp IsoButane: eos Buecker-JPCRD-2006B; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/isobutane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.227771,
+    "source": "coolprop",
+    "detail": "CoolProp IsoButane: eos Buecker-JPCRD-2006B; viscosity Vogel-IJT-2000; saturated liquid"
+   }
+  },
+  "pure/isobutane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.1032347,
+    "source": "coolprop",
+    "detail": "CoolProp IsoButane: eos Buecker-JPCRD-2006B; conductivity Perkins-JCED-2002-Isobutane; saturated liquid"
+   }
+  },
+  "pure/isobutane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.662681,
+    "source": "coolprop",
+    "detail": "CoolProp IsoButane: eos Buecker-JPCRD-2006B"
+   }
+  },
+  "pure/ammonia/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 681.64,
+    "source": "coolprop",
+    "detail": "CoolProp Ammonia: eos Gao-JPCRD-2020; saturated liquid"
+   }
+  },
+  "pure/ammonia/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 4.465315,
+    "source": "coolprop",
+    "detail": "CoolProp Ammonia: eos Gao-JPCRD-2020; saturated liquid"
+   }
+  },
+  "pure/ammonia/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 1369.681,
+    "source": "coolprop",
+    "detail": "CoolProp Ammonia: eos Gao-JPCRD-2020; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/ammonia/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2546375,
+    "source": "coolprop",
+    "detail": "CoolProp Ammonia: eos Gao-JPCRD-2020; viscosity Fenghour-JPCRD-1995; saturated liquid"
+   }
+  },
+  "pure/ammonia/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.6647801,
+    "source": "coolprop",
+    "detail": "CoolProp Ammonia: eos Gao-JPCRD-2020; conductivity Tufeu-BBPC-1984; saturated liquid"
+   }
+  },
+  "pure/ammonia/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 2.08683,
+    "source": "coolprop",
+    "detail": "CoolProp Ammonia: eos Gao-JPCRD-2020"
+   }
+  },
+  "pure/dimethyl-ether/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 735.1797,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylEther: eos Wu-JPCRD-2011; saturated liquid"
+   }
+  },
+  "pure/dimethyl-ether/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.238476,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylEther: eos Wu-JPCRD-2011; saturated liquid"
+   }
+  },
+  "pure/dimethyl-ether/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 465.1642,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylEther: eos Wu-JPCRD-2011; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/dimethyl-ether/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2074003,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylEther: eos Wu-JPCRD-2011; viscosity Meng-JCED-2012; saturated liquid"
+   }
+  },
+  "pure/dimethyl-ether/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for DimethylEther"
+   }
+  },
+  "pure/dimethyl-ether/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.428942,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylEther: eos Wu-JPCRD-2011"
+   }
+  },
+  "pure/cyclohexane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 719.4663,
+    "source": "coolprop",
+    "detail": "CoolProp Cyclohexane: eos Zhou-JPCRD-2014; saturated liquid"
+   }
+  },
+  "pure/cyclohexane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.127748,
+    "source": "coolprop",
+    "detail": "CoolProp Cyclohexane: eos Zhou-JPCRD-2014; saturated liquid"
+   }
+  },
+  "pure/cyclohexane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 356.3659,
+    "source": "coolprop",
+    "detail": "CoolProp Cyclohexane: eos Zhou-JPCRD-2014; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/cyclohexane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.4113952,
+    "source": "coolprop",
+    "detail": "CoolProp Cyclohexane: eos Zhou-JPCRD-2014; viscosity Tariq-JPCRD-2014-Cyclohexane; saturated liquid"
+   }
+  },
+  "pure/cyclohexane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for Cyclohexane"
+   }
+  },
+  "pure/cyclohexane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.263036,
+    "source": "coolprop",
+    "detail": "CoolProp Cyclohexane: eos Zhou-JPCRD-2014"
+   }
+  },
+  "pure/o-xylene/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 769.4675,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/o-xylene/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.175467,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/o-xylene/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 342.7114,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/o-xylene/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2469613,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012; viscosity Cao-JPCRD-2016-oxylene; saturated liquid"
+   }
+  },
+  "pure/o-xylene/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.1006749,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012; conductivity Mylona-JPCRD-2014-xylenes; saturated liquid"
+   }
+  },
+  "pure/o-xylene/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.23716,
+    "source": "coolprop",
+    "detail": "CoolProp o-Xylene: eos Zhou-JPCRD-2012"
+   }
+  },
+  "pure/m-xylene/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 755.3079,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/m-xylene/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.116681,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/m-xylene/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 340.1478,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/m-xylene/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2190155,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012; viscosity Cao-JPCRD-2016-mxylene; saturated liquid"
+   }
+  },
+  "pure/m-xylene/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.1008028,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012; conductivity Mylona-JPCRD-2014-xylenes; saturated liquid"
+   }
+  },
+  "pure/m-xylene/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.182823,
+    "source": "coolprop",
+    "detail": "CoolProp m-Xylene: eos Zhou-JPCRD-2012"
+   }
+  },
+  "pure/p-xylene/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 753.0302,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/p-xylene/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.11322,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/p-xylene/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 336.3583,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/p-xylene/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2202397,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012; viscosity Balogun-JPCRD-2015-pxylene; saturated liquid"
+   }
+  },
+  "pure/p-xylene/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.09981113,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012; conductivity Mylona-JPCRD-2014-xylenes; saturated liquid"
+   }
+  },
+  "pure/p-xylene/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.189008,
+    "source": "coolprop",
+    "detail": "CoolProp p-Xylene: eos Zhou-JPCRD-2012"
+   }
+  },
+  "pure/ethylbenzene/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 760.3085,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/ethylbenzene/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.141275,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012; saturated liquid"
+   }
+  },
+  "pure/ethylbenzene/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 335.3024,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/ethylbenzene/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2307312,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012; viscosity Huber-RP912; saturated liquid"
+   }
+  },
+  "pure/ethylbenzene/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.1018846,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012; conductivity Mylona-JPCRD-2014-xylenes; saturated liquid"
+   }
+  },
+  "pure/ethylbenzene/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.201206,
+    "source": "coolprop",
+    "detail": "CoolProp EthylBenzene: eos Zhou-JPCRD-2012"
+   }
+  },
+  "pure/n-pentane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 609.9694,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane; saturated liquid"
+   }
+  },
+  "pure/n-pentane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.368341,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane; saturated liquid"
+   }
+  },
+  "pure/n-pentane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 357.7039,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-pentane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.160906,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane; viscosity QuinonesCisneros-JPCB-2006; saturated liquid"
+   }
+  },
+  "pure/n-pentane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.1079307,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane; conductivity Vassiliou-JPCRD-2015-pentanes; saturated liquid"
+   }
+  },
+  "pure/n-pentane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.664987,
+    "source": "coolprop",
+    "detail": "CoolProp n-Pentane: eos Thol-FPE-2019-alkanes-pentane"
+   }
+  },
+  "pure/n-hexane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 613.3622,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane; saturated liquid"
+   }
+  },
+  "pure/n-hexane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.471716,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane; saturated liquid"
+   }
+  },
+  "pure/n-hexane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 335.1367,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-hexane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2000017,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane; viscosity Michailidou-JPCRD-2013-Hexane; saturated liquid"
+   }
+  },
+  "pure/n-hexane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.1076757,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane; conductivity Assael-JPCRD-2013-Hexane; saturated liquid"
+   }
+  },
+  "pure/n-hexane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.656567,
+    "source": "coolprop",
+    "detail": "CoolProp n-Hexane: eos Thol-FPE-2019-alkanes-hexane"
+   }
+  },
+  "pure/n-heptane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 614.2187,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B; saturated liquid"
+   }
+  },
+  "pure/n-heptane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.558007,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B; saturated liquid"
+   }
+  },
+  "pure/n-heptane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 316.8872,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-heptane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.1977024,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B; viscosity Michailidou-JPCRD-2014-Heptane; saturated liquid"
+   }
+  },
+  "pure/n-heptane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.1012483,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B; conductivity Assael-JPCRD-2013-Heptane; saturated liquid"
+   }
+  },
+  "pure/n-heptane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.648468,
+    "source": "coolprop",
+    "detail": "CoolProp n-Heptane: eos Span-IJT-2003B"
+   }
+  },
+  "pure/n-octane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 611.202,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane; saturated liquid"
+   }
+  },
+  "pure/n-octane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.647537,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane; saturated liquid"
+   }
+  },
+  "pure/n-octane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 301.4826,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-octane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2006107,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane; viscosity Huber-FPE-2004; saturated liquid"
+   }
+  },
+  "pure/n-octane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.09653976,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane; conductivity Huber-FPE-2005; saturated liquid"
+   }
+  },
+  "pure/n-octane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.655075,
+    "source": "coolprop",
+    "detail": "CoolProp n-Octane: eos Beckmueller-IJT-2019-octane"
+   }
+  },
+  "pure/diethyl-ether/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 696.7352,
+    "source": "coolprop",
+    "detail": "CoolProp DiethylEther: eos Thol-IJT-2014; saturated liquid"
+   }
+  },
+  "pure/diethyl-ether/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.367609,
+    "source": "coolprop",
+    "detail": "CoolProp DiethylEther: eos Thol-IJT-2014; saturated liquid"
+   }
+  },
+  "pure/diethyl-ether/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 358.1691,
+    "source": "coolprop",
+    "detail": "CoolProp DiethylEther: eos Thol-IJT-2014; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/diethyl-ether/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for DiethylEther"
+   }
+  },
+  "pure/diethyl-ether/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for DiethylEther"
+   }
+  },
+  "pure/diethyl-ether/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.627041,
+    "source": "coolprop",
+    "detail": "CoolProp DiethylEther: eos Thol-IJT-2014"
+   }
+  },
+  "pure/propylene-glycol/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 892.2692,
+    "source": "coolprop",
+    "detail": "CoolProp PropyleneGlycol: eos Eisenbach-JPCRD-2021; saturated liquid"
+   }
+  },
+  "pure/propylene-glycol/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 3.374903,
+    "source": "coolprop",
+    "detail": "CoolProp PropyleneGlycol: eos Eisenbach-JPCRD-2021; saturated liquid"
+   }
+  },
+  "pure/propylene-glycol/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 699.5914,
+    "source": "coolprop",
+    "detail": "CoolProp PropyleneGlycol: eos Eisenbach-JPCRD-2021; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/propylene-glycol/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for PropyleneGlycol"
+   }
+  },
+  "pure/propylene-glycol/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for PropyleneGlycol"
+   }
+  },
+  "pure/propylene-glycol/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.387511,
+    "source": "coolprop",
+    "detail": "CoolProp PropyleneGlycol: eos Eisenbach-JPCRD-2021"
+   }
+  },
+  "pure/tetrahydrofuran/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 835.741,
+    "source": "coolprop",
+    "detail": "CoolProp Tetrahydrofuran: eos Fiedler-IJT-2023-THF; saturated liquid"
+   }
+  },
+  "pure/tetrahydrofuran/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 1.884119,
+    "source": "coolprop",
+    "detail": "CoolProp Tetrahydrofuran: eos Fiedler-IJT-2023-THF; saturated liquid"
+   }
+  },
+  "pure/tetrahydrofuran/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 416.3455,
+    "source": "coolprop",
+    "detail": "CoolProp Tetrahydrofuran: eos Fiedler-IJT-2023-THF; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/tetrahydrofuran/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for Tetrahydrofuran"
+   }
+  },
+  "pure/tetrahydrofuran/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for Tetrahydrofuran"
+   }
+  },
+  "pure/tetrahydrofuran/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.058433,
+    "source": "coolprop",
+    "detail": "CoolProp Tetrahydrofuran: eos Fiedler-IJT-2023-THF"
+   }
+  },
+  "pure/dichloroethane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 1156.824,
+    "source": "coolprop",
+    "detail": "CoolProp Dichloroethane: eos Thol-THESIS-2015; saturated liquid"
+   }
+  },
+  "pure/dichloroethane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 1.364711,
+    "source": "coolprop",
+    "detail": "CoolProp Dichloroethane: eos Thol-THESIS-2015; saturated liquid"
+   }
+  },
+  "pure/dichloroethane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 324.2787,
+    "source": "coolprop",
+    "detail": "CoolProp Dichloroethane: eos Thol-THESIS-2015; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/dichloroethane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for Dichloroethane"
+   }
+  },
+  "pure/dichloroethane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for Dichloroethane"
+   }
+  },
+  "pure/dichloroethane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 0.8302541,
+    "source": "coolprop",
+    "detail": "CoolProp Dichloroethane: eos Thol-THESIS-2015"
+   }
+  },
+  "pure/sulfur-dioxide/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 1461.593,
+    "source": "coolprop",
+    "detail": "CoolProp SulfurDioxide: eos Gao-JCED-2016; saturated liquid"
+   }
+  },
+  "pure/sulfur-dioxide/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 1.361196,
+    "source": "coolprop",
+    "detail": "CoolProp SulfurDioxide: eos Gao-JCED-2016; saturated liquid"
+   }
+  },
+  "pure/sulfur-dioxide/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 389.5502,
+    "source": "coolprop",
+    "detail": "CoolProp SulfurDioxide: eos Gao-JCED-2016; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/sulfur-dioxide/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for SulfurDioxide"
+   }
+  },
+  "pure/sulfur-dioxide/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for SulfurDioxide"
+   }
+  },
+  "pure/sulfur-dioxide/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 0.6226445,
+    "source": "coolprop",
+    "detail": "CoolProp SulfurDioxide: eos Gao-JCED-2016"
+   }
+  },
+  "pure/nitrous-oxide/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 1230.458,
+    "source": "coolprop",
+    "detail": "CoolProp NitrousOxide: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/nitrous-oxide/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 1.71904,
+    "source": "coolprop",
+    "detail": "CoolProp NitrousOxide: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/nitrous-oxide/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 374.2861,
+    "source": "coolprop",
+    "detail": "CoolProp NitrousOxide: eos Lemmon-JCED-2006; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/nitrous-oxide/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for NitrousOxide"
+   }
+  },
+  "pure/nitrous-oxide/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for NitrousOxide"
+   }
+  },
+  "pure/nitrous-oxide/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 0.8767003,
+    "source": "coolprop",
+    "detail": "CoolProp NitrousOxide: eos Lemmon-JCED-2006"
+   }
+  },
+  "pure/ethylene-oxide/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 883.351,
+    "source": "coolprop",
+    "detail": "CoolProp EthyleneOxide: eos Thol-CES-2015,Thol-CES-2015-CORR,Thol-THESIS-2015; saturated liquid"
+   }
+  },
+  "pure/ethylene-oxide/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 1.978117,
+    "source": "coolprop",
+    "detail": "CoolProp EthyleneOxide: eos Thol-CES-2015,Thol-CES-2015-CORR,Thol-THESIS-2015; saturated liquid"
+   }
+  },
+  "pure/ethylene-oxide/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 578.0634,
+    "source": "coolprop",
+    "detail": "CoolProp EthyleneOxide: eos Thol-CES-2015,Thol-CES-2015-CORR,Thol-THESIS-2015; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/ethylene-oxide/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for EthyleneOxide"
+   }
+  },
+  "pure/ethylene-oxide/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for EthyleneOxide"
+   }
+  },
+  "pure/ethylene-oxide/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.087856,
+    "source": "coolprop",
+    "detail": "CoolProp EthyleneOxide: eos Thol-CES-2015,Thol-CES-2015-CORR,Thol-THESIS-2015"
+   }
+  },
+  "pure/n-nonane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 608.9524,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/n-nonane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.732926,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/n-nonane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 288.5866,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-nonane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2087979,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006; viscosity Huber-FPE-2004; saturated liquid"
+   }
+  },
+  "pure/n-nonane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.09762382,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006; conductivity Huber-FPE-2005; saturated liquid"
+   }
+  },
+  "pure/n-nonane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.640572,
+    "source": "coolprop",
+    "detail": "CoolProp n-Nonane: eos Lemmon-JCED-2006"
+   }
+  },
+  "pure/n-decane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 603.8949,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/n-decane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.81192,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/n-decane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 276.394,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-decane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.2024491,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006; viscosity Huber-FPE-2004; saturated liquid"
+   }
+  },
+  "pure/n-decane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.0949362,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006; conductivity Huber-FPE-2005; saturated liquid"
+   }
+  },
+  "pure/n-decane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.637772,
+    "source": "coolprop",
+    "detail": "CoolProp n-Decane: eos Lemmon-JCED-2006"
+   }
+  },
+  "pure/n-dodecane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 593.9978,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004; saturated liquid"
+   }
+  },
+  "pure/n-dodecane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.964114,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004; saturated liquid"
+   }
+  },
+  "pure/n-dodecane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 256.1585,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-dodecane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.1946057,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004; viscosity Huber-EF-2004; saturated liquid"
+   }
+  },
+  "pure/n-dodecane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.09508426,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004; conductivity Huber-EF-2004; saturated liquid"
+   }
+  },
+  "pure/n-dodecane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.633848,
+    "source": "coolprop",
+    "detail": "CoolProp n-Dodecane: eos Lemmon-EF-2004"
+   }
+  },
+  "pure/1-butene/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 625.6327,
+    "source": "coolprop",
+    "detail": "CoolProp 1-Butene: eos Lemmon-FPE-2005; saturated liquid"
+   }
+  },
+  "pure/1-butene/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.166588,
+    "source": "coolprop",
+    "detail": "CoolProp 1-Butene: eos Lemmon-FPE-2005; saturated liquid"
+   }
+  },
+  "pure/1-butene/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 392.2257,
+    "source": "coolprop",
+    "detail": "CoolProp 1-Butene: eos Lemmon-FPE-2005; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/1-butene/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for 1-Butene"
+   }
+  },
+  "pure/1-butene/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for 1-Butene"
+   }
+  },
+  "pure/1-butene/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.516496,
+    "source": "coolprop",
+    "detail": "CoolProp 1-Butene: eos Lemmon-FPE-2005"
+   }
+  },
+  "pure/isopentane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 612.0764,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/isopentane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.288813,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/isopentane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 343.2837,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/isopentane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.1888423,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006; viscosity Chung-IECR-1988; saturated liquid"
+   }
+  },
+  "pure/isopentane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.1008512,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006; conductivity Vassiliou-JPCRD-2015-pentanes; saturated liquid"
+   }
+  },
+  "pure/isopentane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.647834,
+    "source": "coolprop",
+    "detail": "CoolProp Isopentane: eos Lemmon-JCED-2006"
+   }
+  },
+  "pure/n-undecane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 599.3482,
+    "source": "coolprop",
+    "detail": "CoolProp n-Undecane: eos Aleksandrov-TE-2011; saturated liquid"
+   }
+  },
+  "pure/n-undecane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.882368,
+    "source": "coolprop",
+    "detail": "CoolProp n-Undecane: eos Aleksandrov-TE-2011; saturated liquid"
+   }
+  },
+  "pure/n-undecane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 265.052,
+    "source": "coolprop",
+    "detail": "CoolProp n-Undecane: eos Aleksandrov-TE-2011; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/n-undecane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for n-Undecane"
+   }
+  },
+  "pure/n-undecane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for n-Undecane"
+   }
+  },
+  "pure/n-undecane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.636173,
+    "source": "coolprop",
+    "detail": "CoolProp n-Undecane: eos Aleksandrov-TE-2011"
+   }
+  },
+  "pure/dimethyl-carbonate/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 974.0024,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylCarbonate: eos Zhou-JPCRD-2011; saturated liquid"
+   }
+  },
+  "pure/dimethyl-carbonate/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 1.958176,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylCarbonate: eos Zhou-JPCRD-2011; saturated liquid"
+   }
+  },
+  "pure/dimethyl-carbonate/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 375.645,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylCarbonate: eos Zhou-JPCRD-2011; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/dimethyl-carbonate/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for DimethylCarbonate"
+   }
+  },
+  "pure/dimethyl-carbonate/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for DimethylCarbonate"
+   }
+  },
+  "pure/dimethyl-carbonate/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.185803,
+    "source": "coolprop",
+    "detail": "CoolProp DimethylCarbonate: eos Zhou-JPCRD-2011"
+   }
+  },
+  "pure/methyl-palmitate/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 629.1345,
+    "source": "coolprop",
+    "detail": "CoolProp MethylPalmitate: eos Huber-EF-2009; saturated liquid"
+   }
+  },
+  "pure/methyl-palmitate/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.94396,
+    "source": "coolprop",
+    "detail": "CoolProp MethylPalmitate: eos Huber-EF-2009; saturated liquid"
+   }
+  },
+  "pure/methyl-palmitate/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 209.9697,
+    "source": "coolprop",
+    "detail": "CoolProp MethylPalmitate: eos Huber-EF-2009; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/methyl-palmitate/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for MethylPalmitate"
+   }
+  },
+  "pure/methyl-palmitate/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for MethylPalmitate"
+   }
+  },
+  "pure/methyl-palmitate/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.523074,
+    "source": "coolprop",
+    "detail": "CoolProp MethylPalmitate: eos Huber-EF-2009"
+   }
+  },
+  "pure/methyl-stearate/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 604.7835,
+    "source": "coolprop",
+    "detail": "CoolProp MethylStearate: eos Huber-EF-2009; saturated liquid"
+   }
+  },
+  "pure/methyl-stearate/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 3.023957,
+    "source": "coolprop",
+    "detail": "CoolProp MethylStearate: eos Huber-EF-2009; saturated liquid"
+   }
+  },
+  "pure/methyl-stearate/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 203.68,
+    "source": "coolprop",
+    "detail": "CoolProp MethylStearate: eos Huber-EF-2009; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/methyl-stearate/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for MethylStearate"
+   }
+  },
+  "pure/methyl-stearate/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for MethylStearate"
+   }
+  },
+  "pure/methyl-stearate/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.535565,
+    "source": "coolprop",
+    "detail": "CoolProp MethylStearate: eos Huber-EF-2009"
+   }
+  },
+  "pure/methyl-oleate/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 617.9862,
+    "source": "coolprop",
+    "detail": "CoolProp MethylOleate: eos Huber-EF-2009; saturated liquid"
+   }
+  },
+  "pure/methyl-oleate/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.958145,
+    "source": "coolprop",
+    "detail": "CoolProp MethylOleate: eos Huber-EF-2009; saturated liquid"
+   }
+  },
+  "pure/methyl-oleate/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 197.0677,
+    "source": "coolprop",
+    "detail": "CoolProp MethylOleate: eos Huber-EF-2009; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/methyl-oleate/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for MethylOleate"
+   }
+  },
+  "pure/methyl-oleate/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for MethylOleate"
+   }
+  },
+  "pure/methyl-oleate/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.501594,
+    "source": "coolprop",
+    "detail": "CoolProp MethylOleate: eos Huber-EF-2009"
+   }
+  },
+  "pure/methyl-linoleate/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 641.2311,
+    "source": "coolprop",
+    "detail": "CoolProp MethylLinoleate: eos Huber-EF-2009; saturated liquid"
+   }
+  },
+  "pure/methyl-linoleate/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.901789,
+    "source": "coolprop",
+    "detail": "CoolProp MethylLinoleate: eos Huber-EF-2009; saturated liquid"
+   }
+  },
+  "pure/methyl-linoleate/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 197.5839,
+    "source": "coolprop",
+    "detail": "CoolProp MethylLinoleate: eos Huber-EF-2009; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/methyl-linoleate/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for MethylLinoleate"
+   }
+  },
+  "pure/methyl-linoleate/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for MethylLinoleate"
+   }
+  },
+  "pure/methyl-linoleate/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.467169,
+    "source": "coolprop",
+    "detail": "CoolProp MethylLinoleate: eos Huber-EF-2009"
+   }
+  },
   "pure/oxygen/density/300K/1bar": {
    "rho_kg_m3": {
     "value": 1.283671,

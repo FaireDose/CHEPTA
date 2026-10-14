@@ -27,6 +27,7 @@ liquid at the triple point), which is CoolProp's default for water.
 """
 import json
 import math
+import sys
 from pathlib import Path
 
 import CoolProp
@@ -49,9 +50,10 @@ threeref = json.loads((ROOT / "validation/fixtures/three_phase.json").read_text(
 xu = json.loads((ROOT / "validation/data/water_ethyl-acetate_lle_xu2017.json").read_text())
 weaz = json.loads((ROOT / "validation/data/water_ethyl-acetate_azeotrope_101kPa.json").read_text())
 
-COOLPROP = {"water": "Water", "methanol": "Methanol", "ethanol": "Ethanol", "acetone": "Acetone",
-            "benzene": "Benzene", "toluene": "Toluene", "oxygen": "Oxygen", "nitrogen": "Nitrogen",
-            "hydrogen": "Hydrogen", "methane": "Methane", "ethane": "Ethane", "ethylene": "Ethylene"}
+# the CoolProp fluids of the component registry (validation/data/component_registry.json)
+sys.path.insert(0, str(ROOT / "validation/python"))
+from registry import REG  # noqa: E402
+COOLPROP = dict(REG.coolprop)
 
 WEBBOOK_URL = "https://webbook.nist.gov/cgi/cbook.cgi?ID=C{cas}&Units=SI&Mask={mask}"
 # NIST Chemistry WebBook, transcribed from the pages (opened 2026-10-01).
@@ -245,6 +247,15 @@ def reference(case, key):
             v, u, note = WEBBOOK_TB[c]
             url = WEBBOOK_URL.format(cas=components[c]["cas"].replace("-", ""), mask=4)
             return val(v - 273.15, "nist-webbook", f"Tboil = {v} ± {u} K ({note}), {url}")
+        wb = ROOT / f"validation/data/pure/measured/webbook_{c}.json"
+        if wb.exists():
+            # components built from measured data: the Tboil average of their stored WebBook page
+            d = json.loads(wb.read_text())
+            t = next(t for t in d["pages"]["phase change"]["tables"] if t["header"][0] == "Quantity")
+            r = next((r for r in t["rows"] if r[0] == "Tboil" and r[3] == "AVG"), None)
+            if r:
+                v, u = (float(x) for x in r[1].split("±"))
+                return val(v - 273.15, "nist-webbook", f"Tboil = {r[1]} K ({r[5]}), {d['pages']['phase change']['url']}")
         return none("No open reference")
     if t == "azeotrope":
         for a in azeo["binary"]:

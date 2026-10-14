@@ -4,7 +4,7 @@
  "sources": {
   "three-phase-ref": {
    "citation": "Independent Python reference (validation/python/reference_three_phase.py): binary from the liquid-liquid equilibrium, bubble pressure and lever rule of reference_model.py; ternary from the minimum of the Gibbs energy polished by the equal-fugacity equations (scipy)",
-   "url": "https://github.com/FaireDose/Fugacity/blob/main/validation/python/reference_three_phase.py",
+   "url": "https://github.com/FaireDose/CHEPTA/blob/main/validation/python/reference_three_phase.py",
    "access": "Open source (MIT license)"
   },
   "xu2017": {
