@@ -129,7 +129,7 @@ test("ethanol + cyclohexane: databank sets against the open azeotrope and excess
   const n1 = (100 - wt2) / pure("ethanol").MW, n2 = wt2 / pure("cyclohexane").MW;
   const xAz = n1 / (n1 + n2);
   // the ChemSep set, chosen explicitly: since the batch of 2026-10-11 the default NRTL set is the one fitted to
-  // Reddy et al. (2013), which gives 65.11 degC, x 0.457 against this azeotrope (docs/DECISIONS.md)
+  // Reddy et al. (2013), which gives 65.11 degC, x 0.457 against this azeotrope (docs/decisions/2026-10-11-01.md)
   const n = system({ components: ["ethanol", "cyclohexane"], model: "NRTL", sets: { "ethanol+cyclohexane": "chemsep" } });
   assert.equal(n.info.pairs[0].tier, "databank");
   const [z] = binaryAzeotropes(n, az.P_kPa);

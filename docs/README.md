@@ -8,7 +8,7 @@ by hand; the script is named at the top of each.
 | Page | What it is |
 |---|---|
 | [../README.md](../README.md) | What CHEPTA is, how to use it, licences |
-| [DECISIONS.md](DECISIONS.md) | What has been decided, and what is pending |
+| [DECISIONS.md](DECISIONS.md) | What is pending, and the standing rules; the decisions of each pull request are in [decisions/](decisions/), one file each, by date |
 | [../ROADMAP.md](../ROADMAP.md) | Where the project is going: tracks and releases |
 | [../ARCHITECTURE.md](../ARCHITECTURE.md) | The layers (data, property package, equilibrium, stream, blocks, flowsheet, interface) |
 | [../proposals/README.md](../proposals/README.md) | Design proposals and their status |
