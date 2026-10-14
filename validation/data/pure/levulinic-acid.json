@@ -1,0 +1,179 @@
+{
+ "component": "levulinic-acid",
+ "name": "Levulinic acid",
+ "about": "Measured values each record of this component was fitted to (validation/python/measured_components.py). test/properties.test.js checks that the coefficients in src/data/components.json reproduce them within the maximum deviation stated in each record.",
+ "records": {
+  "liquidDensity": {
+   "units": "kg/m3",
+   "source": {
+    "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+    "fit": "9 measured values, 293.15-343.15 K, max deviation 0.33 %"
+   },
+   "T_K": [
+    293.15,
+    293.15,
+    293.15,
+    298.15,
+    303.15,
+    313.15,
+    323.15,
+    333.15,
+    343.15
+   ],
+   "values": [
+    1133.5,
+    1133.5,
+    1140.1,
+    1135.71,
+    1131.6,
+    1123.0,
+    1114.5,
+    1105.9,
+    1097.4
+   ],
+   "references": [
+    "Uslu 2008",
+    "Uslu 2009",
+    "Gajardo-Parra 2019",
+    "Riveiro 2019",
+    "Gajardo-Parra 2019",
+    "Gajardo-Parra 2019",
+    "Gajardo-Parra 2019",
+    "Gajardo-Parra 2019",
+    "Gajardo-Parra 2019"
+   ]
+  },
+  "heatOfVaporization": {
+   "units": "J/mol",
+   "source": {
+    "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
+    "fit": "25 Clapeyron values and 0 measured values, 375.00-518.20 K, max deviation 0.34 %"
+   },
+   "T_K": [
+    375.0,
+    380.96667,
+    386.93333,
+    392.9,
+    398.86667,
+    404.83333,
+    410.8,
+    416.76667,
+    422.73333,
+    428.7,
+    434.66667,
+    440.63333,
+    446.6,
+    452.56667,
+    458.53333,
+    464.5,
+    470.46667,
+    476.43333,
+    482.4,
+    488.36667,
+    494.33333,
+    500.3,
+    506.26667,
+    512.23333,
+    518.2
+   ],
+   "values": [
+    75784.073,
+    75715.948,
+    75645.693,
+    75572.859,
+    75496.912,
+    75417.22,
+    75333.035,
+    75243.483,
+    75147.54,
+    75044.022,
+    74931.556,
+    74808.567,
+    74673.256,
+    74523.574,
+    74357.207,
+    74171.546,
+    73963.673,
+    73730.332,
+    73467.915,
+    73172.438,
+    72839.524,
+    72464.391,
+    72041.834,
+    71566.217,
+    71031.472
+   ],
+   "references": [
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record"
+   ]
+  },
+  "vapourPressure": {
+   "units": "Pa",
+   "source": {
+    "name": "measured vapour pressures and the critical point",
+    "fit": "10 measured values (0 from the ThermoML Archive), the normal boiling temperature 518.20 K (Uslu et al., Fluid Phase Equilib. 273 (2008) 21-26, doi:10.1016/j.fluid.2008.08.004 (normal boiling temperature, NIST TRC ThermoML Archive), fitted as 101.325 kPa, never left out) and the critical point, 375.00-766.00 K, max deviation 2.9 %. Between 518.20 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Stull, 1947 (Antoine equation, NIST WebBook) +0.41 %. The transpiration values of Verevkin et al. (2012, 328-373 K) lie 11-43 % above this curve and are left out: no curve with a physical enthalpy of vaporization meets both them and the measured normal boiling temperature; transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high (a likely reason, not checked). Below 375 K the record refuses. The open liquid densities end at 343 K, so above 375 K the liquid density is refused too (no open data; wanted: densities above 375 K, or vapour pressures between 343 and 375 K by a static or ebulliometric method)."
+   },
+   "T_K": [
+    375.0,
+    393.0,
+    411.0,
+    429.0,
+    447.0,
+    465.0,
+    483.0,
+    501.0,
+    518.2,
+    766.0
+   ],
+   "values": [
+    131.61905,
+    406.76329,
+    1125.5224,
+    2831.9285,
+    6562.2389,
+    14152.894,
+    28661.115,
+    54906.481,
+    101325.0,
+    5310000.0
+   ],
+   "references": [
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Stull, 1947 (Antoine equation, NIST WebBook)",
+    "Uslu et al., Fluid Phase Equilib. 273 (2008) 21-26, doi:10.1016/j.fluid.2008.08.004 (normal boiling temperature, NIST TRC ThermoML Archive)",
+    "Nikitin 2019 (critical point, NIST TRC ThermoML Archive)"
+   ],
+   "Tb_K_at_101325Pa": 518.2012
+  }
+ }
+}

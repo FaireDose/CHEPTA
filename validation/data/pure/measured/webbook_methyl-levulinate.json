@@ -1,0 +1,84 @@
+{
+ "component": "methyl-levulinate",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "469.2",
+       "K",
+       "N/A",
+       "Weast and Grasselli, 1989",
+       "BS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "50.4",
+       "327.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 312. to 471. K. See also  Stull, 1947.; AC"
+      ],
+      [
+       "51.1",
+       "410.",
+       "N/A",
+       "Schuette and Cowley, 1931",
+       "AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Temperature (K)",
+      "A",
+      "B",
+      "C",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "312.9 to 470.9",
+       "4.88915",
+       "2086.056",
+       "-44.271",
+       "Stull, 1947",
+       "Coefficents calculated by NIST from author's data."
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

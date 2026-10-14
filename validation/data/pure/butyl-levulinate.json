@@ -1,0 +1,179 @@
+{
+ "component": "butyl-levulinate",
+ "name": "Butyl levulinate",
+ "about": "Measured values each record of this component was fitted to (validation/python/measured_components.py). test/properties.test.js checks that the coefficients in src/data/components.json reproduce them within the maximum deviation stated in each record.",
+ "records": {
+  "liquidDensity": {
+   "units": "kg/m3",
+   "source": {
+    "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+    "fit": "6 measured values, 293.15-333.15 K, max deviation 0.089 %"
+   },
+   "T_K": [
+    293.15,
+    298.15,
+    303.15,
+    313.15,
+    323.15,
+    333.15
+   ],
+   "values": [
+    975.6,
+    969.935,
+    966.5,
+    958.2,
+    949.3,
+    939.8
+   ],
+   "references": [
+    "Han 2016",
+    "Lomba 2013",
+    "Han 2016",
+    "Han 2016",
+    "Han 2016",
+    "Han 2016"
+   ]
+  },
+  "heatOfVaporization": {
+   "units": "J/mol",
+   "source": {
+    "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
+    "fit": "25 Clapeyron values and 0 measured values, 298.20-510.70 K, max deviation 0.28 %"
+   },
+   "T_K": [
+    298.2,
+    307.05417,
+    315.90833,
+    324.7625,
+    333.61667,
+    342.47083,
+    351.325,
+    360.17917,
+    369.03333,
+    377.8875,
+    386.74167,
+    395.59583,
+    404.45,
+    413.30417,
+    422.15833,
+    431.0125,
+    439.86667,
+    448.72083,
+    457.575,
+    466.42917,
+    475.28333,
+    484.1375,
+    492.99167,
+    501.84583,
+    510.7
+   ],
+   "values": [
+    69622.297,
+    68484.047,
+    67380.746,
+    66312.081,
+    65277.617,
+    64276.761,
+    63308.738,
+    62372.567,
+    61467.045,
+    60590.734,
+    59741.965,
+    58918.838,
+    58119.237,
+    57340.85,
+    56581.18,
+    55837.572,
+    55107.224,
+    54387.203,
+    53674.447,
+    52965.767,
+    52257.835,
+    51547.164,
+    50830.078,
+    50102.671,
+    49360.755
+   ],
+   "references": [
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record"
+   ]
+  },
+  "vapourPressure": {
+   "units": "Pa",
+   "source": {
+    "name": "measured vapour pressures and the critical point",
+    "fit": "13 measured values (11 from the ThermoML Archive), the normal boiling temperature 510.70 K (Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook), fitted as 101.325 kPa, never left out) and the critical point, 298.20-692.00 K, max deviation 5.3 %. Between 510.70 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Emel'yanenko 2018 +0.01 %."
+   },
+   "T_K": [
+    298.2,
+    303.2,
+    308.1,
+    313.0,
+    318.0,
+    323.0,
+    327.9,
+    332.8,
+    337.8,
+    342.8,
+    347.8,
+    510.7,
+    692.0
+   ],
+   "values": [
+    3.93,
+    6.11,
+    8.95,
+    14.21,
+    19.99,
+    30.06,
+    44.3,
+    63.2,
+    93.9,
+    128.9,
+    181.0,
+    101325.0,
+    2410000.0
+   ],
+   "references": [
+    "Emel'yanenko 2018",
+    "Emel'yanenko 2018",
+    "Emel'yanenko 2018",
+    "Emel'yanenko 2018",
+    "Emel'yanenko 2018",
+    "Emel'yanenko 2018",
+    "Emel'yanenko 2018",
+    "Emel'yanenko 2018",
+    "Emel'yanenko 2018",
+    "Emel'yanenko 2018",
+    "Emel'yanenko 2018",
+    "Weast and Grasselli, 1989 (normal boiling temperature, NIST WebBook)",
+    "Nikitin 2019 (critical point, NIST TRC ThermoML Archive)"
+   ],
+   "Tb_K_at_101325Pa": 510.7
+  }
+ }
+}

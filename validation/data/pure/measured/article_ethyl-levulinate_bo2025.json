@@ -1,0 +1,88 @@
+{
+ "component": "ethyl-levulinate",
+ "cas": "539-88-8",
+ "about": "Measured values of an open-access article, in the format of thermoml_<id>.json (read by measured_components.ThermoML together with the ThermoML file). The pure ethyl levulinate end points (x1 = y1 = 1) of the isobaric vapour-liquid equilibrium sets of Table 2 (modified Rose-Williams still) and the boiling temperature of Table 1 (exp. column; the lit. column is calculated with Aspen and is not used), read from the page images and checked against the PDF's text layer. Each row is a vapour pressure: the stated pressure at the measured boiling temperature. Uncertainty: expanded (k = 2) from the stated standard uncertainties u(T) = 0.04 K and u(P) = 0.1 kPa (Table 2 footnote; Table 1 states u(T) = 0.04 K and no u(P), the same 0.1 kPa is assumed), U(P) = 2 sqrt(u(P)^2 + (P dlnP/dT u(T))^2) with dlnP/dT = 0.0288 1/K from the article's own end points at 40.0 and 80.0 kPa.",
+ "source": {
+  "citation": "W. Bo, X. Zhang, Q. Zhang, L. Chen, J. Liu, L. Ma, S. Ma, Isobaric Vapor-Liquid Equilibrium of Biomass-Derived Ethyl Levulinate and Ethanol at 40.0, 60.0 and 80.0 kPa, Energies 18 (2025) 3939",
+  "doi": "10.3390/en18153939",
+  "open_copy": "https://www.mdpi.com/1996-1073/18/15/3939",
+  "access": "Open access, CC BY 4.0 (MDPI)",
+  "tables": "Table 1 (boiling temperature at 101.3 kPa, exp.), Table 2 (pure ethyl levulinate rows, x1 = 1, at 40.0, 60.0 and 80.0 kPa)"
+ },
+ "articles": {
+  "10.3390/en18153939": {
+   "authors": [
+    "Bo, Wenteng",
+    "Zhang, Xinghua",
+    "Zhang, Qi",
+    "Chen, Lungang",
+    "Liu, Jianguo",
+    "Ma, Longlong",
+    "Ma, Shengyong"
+   ],
+   "title": "Isobaric Vapor-Liquid Equilibrium of Biomass-Derived Ethyl Levulinate and Ethanol at 40.0, 60.0 and 80.0 kPa",
+   "journal": "Energies",
+   "volume": "18",
+   "year": "2025",
+   "pages": "3939"
+  }
+ },
+ "rows": [
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 445.93,
+   "P_kPa": null,
+   "value": 40.0,
+   "uncertainty": 0.22,
+   "doi": "10.3390/en18153939",
+   "set": "Table 2, x1 = y1 = 1 at 40.0 kPa",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 459.64,
+   "P_kPa": null,
+   "value": 60.0,
+   "uncertainty": 0.243,
+   "doi": "10.3390/en18153939",
+   "set": "Table 2, x1 = y1 = 1 at 60.0 kPa",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 470.0,
+   "P_kPa": null,
+   "value": 80.0,
+   "uncertainty": 0.272,
+   "doi": "10.3390/en18153939",
+   "set": "Table 2, x1 = y1 = 1 at 80.0 kPa",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 478.88,
+   "P_kPa": null,
+   "value": 101.3,
+   "uncertainty": 0.307,
+   "doi": "10.3390/en18153939",
+   "set": "Table 1, boiling temperature at 101.3 kPa (exp.)",
+   "binary_with": null
+  }
+ ]
+}

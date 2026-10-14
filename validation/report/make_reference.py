@@ -26,6 +26,7 @@ Steam enthalpy and entropy use the IAPWS-95 convention (u = s = 0 for the satura
 liquid at the triple point), which is CoolProp's default for water.
 """
 import json
+import statistics
 import math
 import sys
 from pathlib import Path
@@ -256,6 +257,16 @@ def reference(case, key):
             if r:
                 v, u = (float(x) for x in r[1].split("±"))
                 return val(v - 273.15, "nist-webbook", f"Tboil = {r[1]} K ({r[5]}), {d['pages']['phase change']['url']}")
+            # no average: the one Tboil row of the page (a compilation, for the levulinate esters)
+            rows = [r for r in t["rows"] if r[0] == "Tboil" and r[2] == "K"]
+            if len(rows) == 1:
+                r = rows[0]
+                return val(float(r[1].split("±")[0]) - 273.15, "nist-webbook",
+                           f"Tboil = {r[1]} K ({r[4]}, the only value on the page), {d['pages']['phase change']['url']}")
+            if rows:  # several values and no average: their median
+                v = statistics.median(float(r[1].split("±")[0]) for r in rows)
+                return val(v - 273.15, "nist-webbook", "Tboil = %g K, the median of %s (no average on the page), %s" % (
+                    v, "; ".join(f"{r[1]} K ({r[4]})" for r in rows), d['pages']['phase change']['url']))
         return none("No open reference")
     if t == "azeotrope":
         for a in azeo["binary"]:

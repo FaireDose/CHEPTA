@@ -427,6 +427,34 @@
     "source": "nist-webbook",
     "detail": "Tboil = 487. ± 3. K (Average of 11 out of 12 values; Individual data points), https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Units=SI&Mask=4"
    }
+  },
+  "tb/methyl-levulinate": {
+   "T_C": {
+    "value": 196.05,
+    "source": "nist-webbook",
+    "detail": "Tboil = 469.2 K (Weast and Grasselli, 1989, the only value on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4"
+   }
+  },
+  "tb/ethyl-levulinate": {
+   "T_C": {
+    "value": 205.85,
+    "source": "nist-webbook",
+    "detail": "Tboil = 479.0 K (Weast and Grasselli, 1989, the only value on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4"
+   }
+  },
+  "tb/butyl-levulinate": {
+   "T_C": {
+    "value": 237.55,
+    "source": "nist-webbook",
+    "detail": "Tboil = 510.7 K (Weast and Grasselli, 1989, the only value on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4"
+   }
+  },
+  "tb/levulinic-acid": {
+   "T_C": {
+    "value": 245.55,
+    "source": "nist-webbook",
+    "detail": "Tboil = 518.7 K (Aldrich Chemical Company Inc., 1990, the only value on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C123762&Units=SI&Mask=4"
+   }
   }
  }
 }

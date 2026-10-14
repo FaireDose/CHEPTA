@@ -317,6 +317,19 @@
         "validation/data/vle/isooctane_mibk_10-1016-j-fluid-2011-05-011_333.15K.json"
       ]
     },
+    "bo2025-article-ethyl-levulinate": {
+      "title": "Isobaric Vapor-Liquid Equilibrium of Biomass-Derived Ethyl Levulinate and Ethanol at 40.0, 60.0 and 80.0 kPa",
+      "authors": "W. Bo, X. Zhang, Q. Zhang, L. Chen, J. Liu, L. Ma, S. Ma",
+      "year": 2025,
+      "published": "Energies 18 (2025) 3939",
+      "kind": "open-access article",
+      "doi": "10.3390/en18153939",
+      "url": "https://www.mdpi.com/1996-1073/18/15/3939",
+      "access": "Open access, CC BY 4.0 (MDPI)",
+      "files": [
+        "validation/data/pure/measured/article_ethyl-levulinate_bo2025.json"
+      ]
+    },
     "brandt2014-acetic-acid-ethanol": {
       "title": "Phase equilibria and excess properties for binary systems in reactive distillation processes Part II. Ethyl acetate synthesis",
       "authors": "S. Brandt, S. Horstmann, S. Steinigeweg, J. Gmehling",

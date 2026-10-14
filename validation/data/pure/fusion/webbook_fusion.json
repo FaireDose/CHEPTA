@@ -1535,6 +1535,16 @@
    }
   ]
  },
+ "butyl-levulinate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
  "carbon-dioxide": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C124389&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -2509,6 +2519,16 @@
     "comment": "DH"
    }
   ]
+ },
+ "ethyl-levulinate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
  },
  "ethylbenzene": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C100414&Units=SI&Mask=4",
@@ -3641,6 +3661,41 @@
   },
   "enthalpy_of_fusion": []
  },
+ "levulinic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123762&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 306.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Buechner, 1906",
+     "comment": "Uncertainty assigned by TRC = 2. K; TRC"
+    },
+    {
+     "value": 310.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Berthelot, 1897",
+     "comment": "Uncertainty assigned by TRC = 1. K; TRC"
+    }
+   ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 9.22,
+    "T_K": 306.2,
+    "method": "",
+    "reference": "Acree, 1991",
+    "comment": "AC"
+   }
+  ]
+ },
  "m-xylene": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108383&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -4003,6 +4058,16 @@
      "comment": "Uncertainty assigned by TRC = 0.05 K; TRC"
     }
    ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
+ "methyl-levulinate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [],
    "Ttriple": [],
    "ΔfusH": []
   },

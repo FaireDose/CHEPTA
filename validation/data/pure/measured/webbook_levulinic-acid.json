@@ -1,0 +1,117 @@
+{
+ "component": "levulinic-acid",
+ "retrieved": "2026-10-14",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123762&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123762&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123762&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "518.7",
+       "K",
+       "N/A",
+       "Aldrich Chemical Company Inc., 1990",
+       "BS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tfus",
+       "306.",
+       "K",
+       "N/A",
+       "Buechner, 1906",
+       "Uncertainty assigned by TRC =  2. K; TRC"
+      ],
+      [
+       "Tfus",
+       "310.",
+       "K",
+       "N/A",
+       "Berthelot, 1897",
+       "Uncertainty assigned by TRC =  1. K; TRC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "74.4",
+       "390.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 375. to 519. K. See also  Stull, 1947.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Temperature (K)",
+      "A",
+      "B",
+      "C",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "375. to 519.0",
+       "6.63219",
+       "3152.908",
+       "-43.564",
+       "Stull, 1947",
+       "Coefficents calculated by NIST from author's data."
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "9.22",
+       "306.2",
+       "Acree, 1991",
+       "AC"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}
