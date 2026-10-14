@@ -86,6 +86,12 @@
   the substituent (CH3; CH2 and a primary OH). The atom balance is exact; the second double bond and the aromatic
   character are not represented, which each record says. Maleic anhydride still has no groups: no anhydride group,
   and no subgroup for a C=O carbon without hydrogen.
+- **Groups chosen by the user (the maintainer, 2026-10-14):** "when there are no clear ways to construct the molecule
+  then it can be left to the user to select the groups themselves. so there will be needed an extra interface for the
+  groups selection when using complicated molecules", and then: "this can be done when we work on having the
+  possibility to add own data like we discussed so not now". So it waits for the user-data work: then a component's
+  subgroups given for the page only (tier "user", like the parameter sets of `library.add`), checked against the
+  method's table and the atom balance against the formula, with a group picker in the interface.
 - **gamma-Butyrolactone (the maintainer, 2026-10-14):** "I accept the gamma butyrolactone": Sun 2017's narrow miss
   (1.93 % against its stated 1.71 %) accepted, with the gap already accepted. Modified UNIFAC 2.0 groups as DDBST
   assigns them (CH2COO and two CY-CH2; the SMARTS match had taken a nitrogen subgroup).
