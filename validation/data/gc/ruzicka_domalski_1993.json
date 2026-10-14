@@ -1,0 +1,28 @@
+{
+ "_about": "Group contributions for the heat capacity of organic liquids, Cp/R = sum n_i dc_i, dc_i = a_i + b_i (T/100) + d_i (T/100)^2 with T in K and R = 8.31451 J/(K mol) (the paper's eq. 1-2). Transcribed from the page images of the NIST reprints (not from their text layer, which has OCR errors); only the groups CHEPTA uses so far. A person compares every row with the table named (AGENTS.md rule 4).",
+ "sources": {
+  "part1": {"citation": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618", "doi": "10.1063/1.555923", "open_copy": "https://srd.nist.gov/jpcrdreprint/1.555923.pdf", "access": "Free to read: reprint hosted by NIST (Standard Reference Data)", "table": "Table 5, p. 604"},
+  "part2": {"citation": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657", "doi": "10.1063/1.555924", "open_copy": "https://srd.nist.gov/jpcrdreprint/1.555924.pdf", "access": "Free to read: reprint hosted by NIST (Standard Reference Data)", "table": "Table 8, p. 632 (oxygen groups)"}
+ },
+ "R": 8.31451,
+ "groups": {
+  "C-(H)3(C)":                {"a": 3.8452,     "b": -3.3997e-1, "d": 1.9489e-1,  "T_K": [80, 490],  "from": "part1"},
+  "C-(H)2(C)2":               {"a": 2.7972,     "b": -5.4967e-2, "d": 1.0679e-1,  "T_K": [80, 490],  "from": "part1"},
+  "C-(H)(C)3":                {"a": -4.2867e-1, "b": 9.3805e-1,  "d": 2.9498e-3,  "T_K": [85, 385],  "from": "part1"},
+  "C-(C)4":                   {"a": -2.9353,    "b": 1.4255,     "d": -8.5271e-2, "T_K": [145, 395], "from": "part1"},
+  "O-(H)(C)":                 {"a": 1.2952e+1,  "b": -1.0145e+1, "d": 2.6261,     "T_K": [155, 505], "from": "part2"},
+  "O-(H)(C) (diol)":          {"a": 5.2302,     "b": -1.5124,    "d": 5.4075e-1,  "T_K": [195, 475], "from": "part2"},
+  "C-(H)2(C)(O)":             {"a": 1.4596,     "b": 1.4657,     "d": -2.7140e-1, "T_K": [135, 505], "from": "part2"},
+  "C-(H)(C)2(O) (alcohol)":   {"a": 2.2209,     "b": -1.4350,    "d": 6.9508e-1,  "T_K": [185, 460], "from": "part2"},
+  "C-(C)3(O) (alcohol)":      {"a": -4.4690e+1, "b": 3.1769e+1,  "d": -4.8791,    "T_K": [200, 355], "from": "part2"},
+  "O-(C)2":                   {"a": 5.0312,     "b": -1.5718,    "d": 3.7860e-1,  "T_K": [130, 350], "from": "part2"},
+  "C-(H)2(C)(CO)":            {"a": 6.6782,     "b": -2.4473,    "d": 4.7121e-1,  "T_K": [180, 465], "from": "part2"},
+  "C-(H)(C)2(CO)":            {"a": 3.9238,     "b": -2.1210,    "d": 4.9646e-1,  "T_K": [185, 375], "from": "part2"},
+  "CO-(H)(C)":                {"a": -3.8268,    "b": 7.6719,     "d": -1.2711,    "T_K": [180, 430], "from": "part2"},
+  "CO-(C)2":                  {"a": 5.4375,     "b": 7.2091e-1,  "d": -1.8312e-1, "T_K": [185, 380], "from": "part2"},
+  "CO-(H)(O)":                {"a": 1.3118e+1,  "b": 1.6120e+1,  "d": -5.1273,    "T_K": [280, 340], "from": "part2"},
+  "CO-(C)(O)":                {"a": 2.9246e+1,  "b": 3.4261,     "d": -2.8962,    "T_K": [180, 445], "from": "part2"},
+  "O-(C)(CO)":                {"a": -2.1434e+1, "b": -4.0164,    "d": 3.0531,     "T_K": [175, 440], "from": "part2"},
+  "O-(H)(CO)":                {"a": -2.7587e+1, "b": -1.6485e-1, "d": 2.7483,     "T_K": [230, 500], "from": "part2"}
+ }
+}
