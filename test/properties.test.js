@@ -40,7 +40,7 @@ function statedMaxDeviation(rec) {
 }
 
 test("every component has every property, as a record or an explicit 'no open data' marker", () => {
-  assert.equal(listComponents().length, 140);
+  assert.equal(listComponents().length, 141);
   assert.equal(GASES.length, 23);
   for (const { id, name } of listComponents()) {
     const props = components[id].properties;
@@ -49,7 +49,9 @@ test("every component has every property, as a record or an explicit 'no open da
       const r = props[p];
       assert.ok(r, `${name}: ${p} is neither a record nor a "no open data" marker`);
       if (r.available === false) {
-        assert.ok(Array.isArray(r.searched) && r.searched.length > 0, `${name} ${p}: list the sources searched`);
+        // a property that does not apply (the vapour of a nonvolatile component) says why instead
+        if (r.notApplicable) assert.match(r.notApplicable, /nonvolatile/, `${name} ${p}: why not applicable`);
+        else assert.ok(Array.isArray(r.searched) && r.searched.length > 0, `${name} ${p}: list the sources searched`);
       }
     }
     for (const p of Object.keys(props)) assert.ok(PROPERTIES[p], `${name}: unknown property ${p}`);
@@ -67,6 +69,12 @@ test("records are complete: units, range, tier, source and stated fit quality", 
       assert.ok(TIERS.has(r.tier), `${where}: tier ${r.tier}`);
       for (const k of ["name", "reference", "access", "fit"]) assert.ok(r.source?.[k], `${where}: source.${k}`);
       if (r.equation === "DIPPR106") assert.ok(r.Tc_K > r.Tmax_K - 1e-9, `${where}: Tc_K`);
+      // a predicted record (no open measured values; docs/DATA_RULES.md section 10) is not fitted to data: it names
+      // its method's groups and states the method's accuracy instead of a maximum deviation (test/nonvolatile.test.js)
+      if (r.tier === "predicted") {
+        assert.ok(r.source.groups && /Accuracy of the method/.test(r.source.notes), `${where}: groups and accuracy`);
+        continue;
+      }
       // targets of the task: 1 % for thermodynamic properties, 3 % for transport properties
       const target = TRANSPORT.has(p) ? 0.03 : 0.01;
       assert.ok(statedMaxDeviation(r) <= target, `${where}: stated deviation above the ${target * 100} % target`);
@@ -93,7 +101,8 @@ test("stored coefficients reproduce the source points within the stated maximum 
       });
     }
     for (const p of PROPERTY_NAMES) {
-      if (components[id].properties[p].available !== false) assert.ok(file.records[p], `${name}: no source points for ${p}`);
+      const r = components[id].properties[p];
+      if (r.available !== false && r.tier !== "predicted") assert.ok(file.records[p], `${name}: no source points for ${p}`);
     }
   }
   assert.ok(n > 5000, `only ${n} points checked`);
@@ -149,6 +158,20 @@ test("props() returns liquid and vapour properties for every component at a typi
   for (const { id, name } of listComponents()) {
     const p = pure(id);
     const isGas = GASES.includes(id);
+    if (p.nonvolatile) {
+      // a nonvolatile component (lactic acid) is a liquid at any pressure: its liquid properties at 25 °C are values or
+      // "no open data" notes, its enthalpy is the integral of its liquid heat capacity, and it has no vapour state
+      const L = p.props(298.15, 101.325);
+      assert.equal(L.phase, "liquid", name);
+      const none = new Set(Object.entries(components[id].properties).filter(([, r]) => r.available === false).map(([k]) => k));
+      const rec = { rho_kg_m3: "liquidDensity", cp_J_molK: "liquidHeatCapacity", mu_Pa_s: "liquidViscosity", k_W_mK: "liquidThermalConductivity" };
+      for (const [k, r] of Object.entries(rec)) {
+        if (none.has(r)) { assert.equal(L[k], null, `${name} liquid ${k}`); continue; }
+        assert.ok(Number.isFinite(L[k]), `${name} liquid ${k}: ${L.notes.join(" ")}`);
+      }
+      assert.ok(Math.abs(L.h_J_mol) < 1e-9, `${name}: h at the 298.15 K reference ${L.h_J_mol}`);
+      continue;
+    }
     // liquid: 25 °C for the liquids (acetic acid: 30 °C, above its melting point), below Tb for the gases
     // without a normal boiling point (carbon dioxide): midway along the vapour-pressure curve, at twice the
     // vapour pressure for the liquid and a hundredth of it for the vapour

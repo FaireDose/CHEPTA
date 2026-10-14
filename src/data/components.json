@@ -45752,8 +45752,7 @@
         },
         "idealGasHeatCapacity": {
           "available": false,
-          "searched": [],
-          "note": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
+          "notApplicable": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
         },
         "liquidHeatCapacity": {
           "equation": "DIPPR100",
@@ -45780,8 +45779,7 @@
         },
         "heatOfVaporization": {
           "available": false,
-          "searched": [],
-          "note": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
+          "notApplicable": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
         },
         "liquidViscosity": {
           "available": false,
@@ -45794,8 +45792,7 @@
         },
         "vapourViscosity": {
           "available": false,
-          "searched": [],
-          "note": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
+          "notApplicable": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
         },
         "liquidThermalConductivity": {
           "available": false,
@@ -45808,8 +45805,7 @@
         },
         "vapourThermalConductivity": {
           "available": false,
-          "searched": [],
-          "note": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
+          "notApplicable": "not defined: Lactic acid is nonvolatile, it is never in the vapour"
         },
         "surfaceTension": {
           "available": false,
@@ -45820,19 +45816,6 @@
             "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"dl-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened)"
           ]
         }
-      },
-      "modUnifac": {
-        "groups": {
-          "1": 1,
-          "3": 1,
-          "42": 1,
-          "81": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH, 1 COOH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
       },
       "fusion": {
         "Tm_K": 290.0,
@@ -45848,6 +45831,19 @@
         "source_ids": [
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "3": 1,
+          "42": 1,
+          "81": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH, 1 COOH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
       }
     }
   }

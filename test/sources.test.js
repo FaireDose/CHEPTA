@@ -43,7 +43,7 @@ test("every record with a source refers to sources.json, and every source_id res
   // "no open data" markers say where they were searched
   for (const [id, c] of Object.entries(components)) {
     for (const [k, r] of Object.entries(c.properties ?? {})) {
-      if (r.available === false) assert.ok(Array.isArray(r.searched) && r.searched.length >= 2, `${id}.${k}: searched`);
+      if (r.available === false && !r.notApplicable) assert.ok(Array.isArray(r.searched) && r.searched.length >= 2, `${id}.${k}: searched`);
     }
   }
   // the text source stays for old readers

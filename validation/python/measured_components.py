@@ -1603,7 +1603,7 @@ def build_nonvolatile(cid, log):
                       "Measured values (NIST TRC ThermoML Archive)", THERMOML_ACCESS)
     gas_note = "not defined: %s is nonvolatile, it is never in the vapour" % C["name"]
     for prop in ("idealGasHeatCapacity", "heatOfVaporization", "vapourViscosity", "vapourThermalConductivity"):
-        records[prop] = {"available": False, "searched": [], "note": gas_note}
+        records[prop] = {"available": False, "notApplicable": gas_note}
     records = {p: records[p] for p in PROPS}
     tb = ["%.2f K (%s)" % (p["y"], tml.cite(p["doi"])) for p in tml.values("Tb")]
     comp = {
@@ -1662,6 +1662,9 @@ def write_doc(comps):
                 re.search(r"max deviation ([0-9.]+ %)", vp["source"]).group(1)))
         for p, r in c["properties"].items():
             if r.get("available") is False:
+                if r.get("notApplicable"):
+                    L.append("| %s | — | — | — | — | %s |" % (p, r["notApplicable"].split(":")[0]))
+                    continue
                 L.append("| %s | — | — | — | — | no open data%s |" % (p, " (%s)" % r["note"].split(":")[0] if r.get("note") else ""))
                 continue
             f = r["source"]["fit"]

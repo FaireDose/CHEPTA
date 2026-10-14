@@ -384,13 +384,13 @@ Left out of liquidViscosity: 303.15 K, Boodida 2008, +4.28 % (stated uncertainty
 | Property | Range (K) | Values used | Left out | Max deviation | Sources |
 |---|---|---|---|---|---|
 | liquidDensity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
-| idealGasHeatCapacity | — | — | — | — | no open data (not defined) |
+| idealGasHeatCapacity | — | — | — | — | not defined |
 | liquidHeatCapacity | 230.00-445.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
-| heatOfVaporization | — | — | — | — | no open data (not defined) |
+| heatOfVaporization | — | — | — | — | not defined |
 | liquidViscosity | — | — | — | — | no open data |
-| vapourViscosity | — | — | — | — | no open data (not defined) |
+| vapourViscosity | — | — | — | — | not defined |
 | liquidThermalConductivity | — | — | — | — | no open data |
-| vapourThermalConductivity | — | — | — | — | no open data (not defined) |
+| vapourThermalConductivity | — | — | — | — | not defined |
 | surfaceTension | — | — | — | — | no open data |
 
 ## 1,3-Propanediol (C3H8O2, CAS 504-63-2)

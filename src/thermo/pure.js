@@ -316,6 +316,8 @@ export function pure(key, opts = {}) {
     TbNote: c.Tb_note ?? null,
     // no measured critical constants: { available: false, searched } (critical.js), else null
     critical: crit ? null : (c.critical ?? { available: false, searched: [] }),
+    // nonvolatile (proposal 0009, step 5): no vapour pressure, it stays in the liquid
+    nonvolatile,
     // melting (triple-point) temperature and enthalpy of fusion with their source, or null (no open data)
     fusion: c.fusion && c.fusion.available !== false
       ? { Tm_K: c.fusion.Tm_K, Hfus_J_mol: c.fusion.Hfus_J_mol, tier: c.fusion.tier, source: c.fusion.source } : null,

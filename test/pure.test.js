@@ -32,6 +32,7 @@ test("correlations refuse temperatures outside their range", () => {
 test("pure() vapour pressure and boiling point agree with the VLE data", () => {
   for (const c of listComponents().filter(c => c.activity)) {
     const p = pure(c.id);
+    if (p.nonvolatile) continue;   // no vapour pressure (proposal 0009, step 5): test/nonvolatile.test.js
     const tb = p.tsat(101.325);
     assert.ok(Math.abs(tb - p.Tb_K) < 0.2, `${c.name}: ${tb.toFixed(2)} vs ${p.Tb_K}`);
     assert.ok(Math.abs(p.psat(tb) / 101.325 - 1) < 1e-9);
@@ -39,7 +40,7 @@ test("pure() vapour pressure and boiling point agree with the VLE data", () => {
 });
 
 test("every component has critical constants and an acentric factor, or says why not", () => {
-  assert.equal(listComponents().length, 140);
+  assert.equal(listComponents().length, 141);
   for (const c of listComponents()) {
     const p = pure(c.id);
     assert.ok(Number.isFinite(p.MW), `${c.name} MW`);
@@ -54,7 +55,9 @@ test("every component has critical constants and an acentric factor, or says why
     }
     // a normal boiling point, except for carbon dioxide, which has no liquid at 1 atm (it sublimes), and a component
     // whose measured vapour pressures stop below 101.325 kPa, which says so (TbNote; tetrahydrofurfuryl alcohol)
+    // (a nonvolatile component, lactic acid, has no vapour pressure and so no normal boiling point; its TbNote says why)
     if (c.id === "carbon-dioxide") assert.equal(p.Tb_K, null);
+    else if (p.nonvolatile) { assert.equal(p.Tb_K, null); assert.match(p.TbNote, /nonvolatile/, c.name); }
     else if (p.TbNote) { assert.equal(p.Tb_K, null); assert.ok(p.psat(p.record("vapourPressure").Tmax_K) < 101.325, c.name); }
     else assert.ok(Number.isFinite(p.Tb_K), `${c.name} Tb_K`);
   }
