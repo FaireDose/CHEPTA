@@ -79,7 +79,8 @@ export const INPUTS = {
   azeotropes: { kind: "list", min: 2, max: 4, liquid: true, what: "an azeotrope search" },
   pxy: { kind: "slots", n: 2, liquid: true, what: "a P-x-y diagram", roles: ["x axis", "1 − x"] },
   envelope: { kind: "list", min: 1, minActivity: 2, max: 6, liquid: true, what: "a phase envelope" },
-  flash: { kind: "list", min: 1, minActivity: 2, max: 6, liquid: true, what: "a flash" },
+  // one component is a pure substance heated, cooled or boiled (any model)
+  flash: { kind: "list", min: 1, max: 6, liquid: true, what: "a flash" },
   henry: { kind: "henry", what: "a gas solubility" },
   // solid-liquid equilibrium (proposal 0007, step 4): `solid` lists the slots whose component crystallizes (melting data needed)
   solid: { kind: "slots", n: 2, liquid: true, solid: [0], activityOnly: true, what: "a solid solubility", roles: ["the solid", "the solvent"] },

@@ -52,7 +52,9 @@ export function createSystem(cfg) {
   if (isEos && vapourModel !== model) {
     throw fail("BAD_INPUT", `Model "${model}" describes both phases; the vapour option is for activity-coefficient models (${MODELS.join(", ")}).`);
   }
-  if (!Array.isArray(cfg.components) || cfg.components.length < (isEos ? 1 : 2)) throw fail("BAD_INPUT", isEos ? "Give at least one component." : "Give at least two components.");
+  // one component is allowed with every model: a pure substance heated, compressed or boiled (its activity coefficient
+  // is 1, so the activity models reduce to the pure component's vapour pressure and enthalpies)
+  if (!Array.isArray(cfg.components) || cfg.components.length < 1) throw fail("BAD_INPUT", "Give at least one component.");
   const ids = cfg.components.map(findComponent);
   if (new Set(ids).size !== ids.length) throw fail("BAD_INPUT", "A component appears twice.");
   const sel = selection(cfg); // checked for every model, so that a typo never passes silently

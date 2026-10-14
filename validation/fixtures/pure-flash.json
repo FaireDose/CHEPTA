@@ -1,0 +1,45 @@
+{
+ "_about": "Saturation temperature and enthalpy of vaporization of pure components with Peng-Robinson and SRK, from CoolProp's cubic backends (validation/python/reference_pure_flash.py, CoolProp 8.0.0); for test/pure-flowsheet.test.js.",
+ "cases": [
+  {
+   "component": "water",
+   "model": "PR",
+   "P_kPa": 101.325,
+   "Tsat_K": 374.532822,
+   "dHvap_J_mol": 41998.4204,
+   "Tc_K": 647.096,
+   "Pc_Pa": 22064000.0,
+   "omega": 0.3442920843
+  },
+  {
+   "component": "water",
+   "model": "PR",
+   "P_kPa": 1000.0,
+   "Tsat_K": 453.13148,
+   "dHvap_J_mol": 37502.2455,
+   "Tc_K": 647.096,
+   "Pc_Pa": 22064000.0,
+   "omega": 0.3442920843
+  },
+  {
+   "component": "n-butane",
+   "model": "PR",
+   "P_kPa": 101.325,
+   "Tsat_K": 272.705115,
+   "dHvap_J_mol": 22447.6785,
+   "Tc_K": 425.125,
+   "Pc_Pa": 3796000.0,
+   "omega": 0.200810094644
+  },
+  {
+   "component": "methane",
+   "model": "SRK",
+   "P_kPa": 2000.0,
+   "Tsat_K": 165.483813,
+   "dHvap_J_mol": 5512.32,
+   "Tc_K": 190.564,
+   "Pc_Pa": 4599200.0,
+   "omega": 0.01142
+  }
+ ]
+}

@@ -69,7 +69,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
    from the archive; other solvents need PSRK or MHV2, not in CHEPTA yet.
 3. Review the two pairs whose 1-atm data sets disagree by more than 1 K (methanol + 2-propanol,
    water + 2-propanol; docs/PAIR_SCAN.md).
-4. Compressor, pump and valve blocks (shown as "coming later"). Optionally, then the energy side
+4. Compressor, pump and valve blocks (shown as "coming later"); asked for again on 2026-10-14, to follow the enthalpy of
+   a pure component through a compression (one-component flowsheets work since then). Optionally, then the energy side
    of the Cavett problem (no published values to compare with).
 5. A "measured solubility" option next to the model, for a future crystallizer block.
 6. Grow the flowsheet suite: more seeds, P-H drums, and reactive cases once proposal 0010 exists.
