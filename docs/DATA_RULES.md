@@ -41,6 +41,13 @@ Never:
 If nothing open has a number, write **"no open data"** with the sources searched. Search the open literature too, not
 only the databases (the maintainer, 2026-10-13).
 
+**A paywalled article may have a legal free copy** (the maintainer, 2026-10-15): before setting an article aside as
+paywalled, look it up in Unpaywall (`python validation/python/open_copy.py DOI ... --cache DIR`; in a batch,
+`gap_report.py --open-copies`). A copy Unpaywall lists (the publisher's open-access version, or an accepted or
+submitted manuscript in a repository) is open: cite the published article, the link to the copy and its version, and
+check the numbers in that copy. Unpaywall does not know every copy (the free NIST reprints of J. Phys. Chem. Ref. Data
+are not in it), so "no copy found" is not "no open data" by itself.
+
 ## 2. Which path a component takes
 
 | The component is | Script | Records from |

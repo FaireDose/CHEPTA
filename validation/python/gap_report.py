@@ -20,6 +20,10 @@ article, before the batch is fitted. Values are not read here, only what exists 
 
 --new ID:CAS: a component not in the registry yet (a batch being planned); its name and the ThermoML search names come
 from the open `chemicals` library (name, IUPAC name), checked against the CAS number.
+
+--open-copies: for each component, the articles behind its ThermoML values, with the legal free copy Unpaywall knows
+for each (open_copy.py). The ThermoML values are open whatever the article's access; the article itself is what a
+reviewer reads to check them, and may hold values the archive does not (other properties, uncertainties).
 """
 import argparse
 import html as H
@@ -135,6 +139,16 @@ def thermoml(cid):
     return txt
 
 
+def thermoml_articles(cid):
+    """{doi: set of properties} of the pure-component ThermoML values of a component."""
+    out = {}
+    for r in json.loads((MEASURED_DIR / ("thermoml_%s.json" % cid)).read_text())["rows"]:
+        p = THERMOML.get(r["property"])
+        if p and not r["binary_with"] and r.get("doi"):
+            out.setdefault(r["doi"], set()).add(p)
+    return dict(sorted(out.items()))
+
+
 def coolprop(fluid):
     """{property: text} for a CoolProp fluid: the equation of state gives the thermodynamic properties; transport and
     surface tension only where CoolProp has a model."""
@@ -194,6 +208,7 @@ def main():
     ap.add_argument("--fetch", action="store_true", help="fetch the ThermoML values first")
     ap.add_argument("--md", type=Path, help="also write the report as Markdown")
     ap.add_argument("--new", nargs="+", default=[], metavar="ID:CAS", help="components not in the registry yet")
+    ap.add_argument("--open-copies", action="store_true", help="list the ThermoML articles with their legal free copies (Unpaywall)")
     a = ap.parse_args()
     ids = ([c[0] for c in REG.batch(a.batch)] if a.batch else list(a.ids))
     entries = {c["id"]: c for c in REG.all}
@@ -253,6 +268,12 @@ def main():
                 gaps.setdefault(cid, []).append(p)
             lines.append("| %s | %s | %s | %s | %s | %s |" % (p, cp.get(p, ""), ch.get(p, ""), w, t, "" if have else "**GAP**"))
         lines.append("")
+        if a.open_copies and tm is not None:
+            from open_copy import describe
+            arts = thermoml_articles(cid)
+            lines += ["Articles of the ThermoML values, and their legal free copies (Unpaywall):", ""]
+            lines += ["- %s (%s): %s" % (doi, ", ".join(sorted(ps)), describe(doi, a.cache)) for doi, ps in arts.items()]
+            lines.append("")
     lines += ["## Gaps", ""] + (["- %s: %s" % (cid, ", ".join(ps)) for cid, ps in gaps.items()] or ["none"]) + [""]
     text = "\n".join(lines)
     print(text)
