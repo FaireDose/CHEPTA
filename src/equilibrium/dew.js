@@ -134,10 +134,17 @@ function splitError(what, r, where) {
  * @param {number} T    K
  * @returns {{P:number, x:number[], gamma:number[], iterations:number, warnings:string[]}}  P in kPa
  */
+/** A vapour with a nonvolatile component (proposal 0009, step 5) has no dew point: it never condenses from a vapour. */
+function noNonvolatile(sys, y, what) {
+  const k = sys.nonvolatile ? sys.nonvolatile.findIndex((nv, i) => nv && y[i] > 0) : -1;
+  if (k >= 0) throw fail("BAD_INPUT", `${what}: ${sys.names[k]} is nonvolatile, so a vapour with it has no dew point (it is never in the vapour).`);
+}
+
 export function dewP(sys, y, T) {
   y = checkComposition(y, sys.n, "Vapour composition");
   T = checkTemperature(T);
   const what = `${sys.model} dew pressure at T = ${T} K`;
+  noNonvolatile(sys, y, what);
   const { best, unstable, lastX, rangeError } = dewPSolutions(sys, y, T);
   if (!best && unstable) throw splitError(what, unstable, `${unstable.P.toFixed(2)} kPa`);
   if (!best && rangeError) throw rangeError;
@@ -156,6 +163,7 @@ export function dewT(sys, y, P) {
   y = checkComposition(y, sys.n, "Vapour composition");
   P = checkPressure(P);
   const what = `${sys.model} dew temperature at P = ${P} kPa`;
+  noNonvolatile(sys, y, what);
   const tb = pureBoilingPoints(sys, P);
   const lo = Math.min(...tb) - 80, hi = Math.max(...tb) + 20;
 

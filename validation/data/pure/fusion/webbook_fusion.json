@@ -3754,6 +3754,42 @@
   },
   "enthalpy_of_fusion": []
  },
+ "lactic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4",
+  "retrieved": "2026-10-14",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 290.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Yoshida, 1944",
+     "comment": "Uncertainty assigned by TRC = 2. K; TRC"
+    }
+   ],
+   "Ttriple": [
+    {
+     "value": 290.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Wilhoit, Chao, et al., 1985",
+     "comment": "Uncertainty assigned by TRC = 0.2 K; TRC"
+    }
+   ],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 11.34,
+    "T_K": 289.9,
+    "method": "",
+    "reference": "Domalski and Hearing, 1996",
+    "comment": "AC"
+   }
+  ]
+ },
  "levulinic-acid": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123762&Units=SI&Mask=4",
   "retrieved": "2026-10-14",

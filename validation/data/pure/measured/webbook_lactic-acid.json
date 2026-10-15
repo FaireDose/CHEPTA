@@ -3,11 +3,11 @@
  "retrieved": "2026-10-14",
  "pages": {
   "gas phase thermochemistry": {
-   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79334&Units=SI&Mask=1",
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=1",
    "tables": []
   },
   "condensed phase thermochemistry": {
-   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79334&Units=SI&Mask=2",
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=2",
    "tables": [
     {
      "header": [
@@ -20,12 +20,37 @@
      ],
      "rows": [
       [
-       "ΔfH°solid",
-       "-694.08",
+       "ΔcH°solid",
+       "-1362.8",
        "kJ/mol",
        "Ccb",
-       "Saville and Gundry, 1959",
-       ""
+       "Meyerhof, 1922",
+       "Corresponding ΔfHºsolid = -675.21 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tfus",
+       "290.",
+       "K",
+       "N/A",
+       "Yoshida, 1944",
+       "Uncertainty assigned by TRC =  2. K; TRC"
       ],
       [
        "Quantity",
@@ -36,20 +61,32 @@
        "Comment"
       ],
       [
-       "ΔcH°solid",
-       "-1343.98 ± 0.46",
-       "kJ/mol",
-       "Ccb",
-       "Saville and Gundry, 1959",
-       "Corresponding ΔfHºsolid = -694.034 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+       "Ttriple",
+       "290.",
+       "K",
+       "N/A",
+       "Wilhoit, Chao, et al., 1985",
+       "Uncertainty assigned by TRC =  0.2 K; TRC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "11.34",
+       "289.9",
+       "Domalski and Hearing, 1996",
+       "AC"
       ]
      ]
     }
    ]
-  },
-  "phase change": {
-   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79334&Units=SI&Mask=4",
-   "tables": []
   }
  }
 }

@@ -1160,7 +1160,7 @@ function pureEosFlash(sys, kind, z, T, P, VF, H) {
     }
     if (psHi === null || psHi < Pq) return null;   // within the last fraction of a kelvin of Tc: treated as above it
     while (psat(lo) > Pq && lo > 0.05 * Tc) lo *= 0.8;
-    if (psat(lo) > Pq) throw failRange(`${sys.names[0]}: ${Pq} kPa is below the pressures where its saturation temperature can be found.`);
+    if (psat(lo) > Pq) throw failRange("OUT_OF_RANGE", `${sys.names[0]}: ${Pq} kPa is below the pressures where its saturation temperature can be found.`);
     return brent(Tq => Math.log(psat(Tq) / Pq), lo, hi, { xtol: 1e-10 });
   };
   const above = what => fail("NOT_AVAILABLE", `${sys.names[0]} alone has no ${what} above its critical point (${Tc.toFixed(2)} K, ${Pc.toPrecision(5)} kPa): a pure substance there is one phase.`);
@@ -1210,6 +1210,13 @@ export function flash(sys, spec = {}, opts = {}) {
   }
   const T = has("T") ? checkTemperature(spec.T) : null;
   const P = has("P") ? checkPressure(spec.P) : null;
+  // nonvolatile components (proposal 0009, step 5) stay in the liquid: the feed can never be all vapour, and the
+  // vapour fraction stays below 1 - (their share of the feed)
+  const nvShare = sys.nonvolatile ? z.reduce((s, zi, i) => s + (sys.nonvolatile[i] ? zi : 0), 0) : 0;
+  if (nvShare > 0 && has("VF") && Number(spec.VF) >= 1 - nvShare - 1e-9) {
+    const names = sys.names.filter((_, i) => sys.nonvolatile[i] && z[i] > 0).join(", ");
+    throw fail("BAD_INPUT", `flash: ${names} ${names.includes(",") ? "are" : "is"} nonvolatile and stay${names.includes(",") ? "" : "s"} in the liquid, so the vapour fraction stays below ${(1 - nvShare).toPrecision(4)} (the feed's other components); VF = ${spec.VF} cannot be reached.`);
+  }
   let out;
   if (isEos(sys) && sys.n === 1 && kind !== "PT") {
     const VF = has("VF") ? Number(spec.VF) : null;
@@ -1225,6 +1232,7 @@ export function flash(sys, spec = {}, opts = {}) {
     // the fast path returns null when the feed splits into two liquids at its bubble point
     const general = r => result(sys, kind, z, r.T, r.P, r.core, { incipient: r.incipient ?? null });
     const run = (fast, slow) => {
+      if (nvShare > 0) return slow();   // no dew point: the search from the bubble point
       if (!canThree(sys)) return fast();
       let r;
       try { r = fast(); } catch (e) { if (!isSplitError(e)) throw e; r = null; }

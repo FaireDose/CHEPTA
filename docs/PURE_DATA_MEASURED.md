@@ -404,6 +404,23 @@ Left out of liquidViscosity: 303.15 K, Roy 2006, +3.11 % (stated uncertainty 4.5
 
 Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 4.7 % is above the 1 % target); 308.15 K, Bagheri 2014, +6.07 % (stated uncertainty 4.8 % is above the 1 % target); 318.15 K, Bagheri 2014, +5.95 % (stated uncertainty 5 % is above the 1 % target); 328.15 K, Bagheri 2014, +6.32 % (stated uncertainty 5.1 % is above the 1 % target).
 
+## Lactic acid (C3H6O3, CAS 50-21-5)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): lactic acid has no open measured vapour pressures and, in the aqueous processes where it appears, hardly evaporates (it forms oligomers on heating); CHEPTA keeps it in the liquid; M 90.0779 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, step 5): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 230.00-445.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
 ## 1,3-Propanediol (C3H8O2, CAS 504-63-2)
 
 - Tc 721.00 K, Pc 6.38 MPa, Tb 487.073 K, ω 0.5799, M 76.0944 g/mol

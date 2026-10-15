@@ -30,6 +30,11 @@
  *           the derivative by central differences (+- 0.01 K). The pressure effect on the
  *           liquid is neglected: about v_L (P - P_sat), 18 J/mol for water 10 bar above its
  *           vapour pressure (test/enthalpy.test.js).
+ *           A nonvolatile component (proposal 0009, step 5) has no vapour and no heat of vaporization: its
+ *           liquid enthalpy is the integral of cp_L from T0, so its reference state is the liquid at 298.15 K
+ *           (h = 0). That is enough for energy balances without reactions, since it never changes phase; with
+ *           reactions (proposal 0010) the formation enthalpies will join the references. In the vapour its mole
+ *           fraction is below 1e-20 (system.js, NV_PSAT_KPA) and it adds nothing.
  * Equation-of-state systems (PR, SRK): h = sum z_i h_IG,i(T) + h_R(T, P, z) for either phase.
  *
  * Fugacities (kPa), for the flash: liquid f_i = x_i gamma_i P_i^sat phi_i^sat exp[v_i^L (P - P_i^sat)/RT]
@@ -80,6 +85,7 @@ function named(name, what, fn) {
  */
 export function activityPhaseMethods(ctx) {
   const { ids, comps, n, gammas, psat, cubicVapour, assoc, warnings } = ctx;
+  const nonvolatile = ctx.nonvolatile ?? ids.map(() => false);
   const pures = ids.map(id => pure(id));
   const hIG = (i, T) => named(comps[i].name, "ideal-gas enthalpy", () => pures[i].hIdealGas(T));
   const dHvap = (i, T) => named(comps[i].name, "heat of vaporization", () => pures[i].property("heatOfVaporization", T));
@@ -99,6 +105,7 @@ export function activityPhaseMethods(ctx) {
         if (assoc[i]) return NaN;
         const rec = cpRec[i];
         if (!rec) throw fail("MISSING_DATA", `${comps[i].name}: no liquid heat capacity in the databank, so its liquid enthalpy cannot be calculated.`);
+        if (nonvolatile[i]) return 0;   // reference: the liquid at T0
         return satResidual(i, T0) - dHvap(i, T0);
       });
     }
@@ -125,6 +132,9 @@ export function activityPhaseMethods(ctx) {
     const h0 = anchors()[i];
     const Tend = cpRec[i].Tmax_K;
     if (T <= Tend) return { h: h0 + cpIntegral(i, T), note: null };
+    if (nonvolatile[i]) {
+      throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record ends at ${Tend} K, so its liquid enthalpy at ${T.toFixed(1)} K cannot be calculated (a nonvolatile component has no vapour route to continue it).`);
+    }
     return {
       h: h0 + cpIntegral(i, Tend) + oldBasis(i, T) - oldBasis(i, Tend),
       note: `${comps[i].name}: its liquid heat-capacity record ends at ${Tend} K; above it (T = ${T.toFixed(1)} K) the liquid enthalpy follows h_IG + h_R,sat - dHvap, joined at ${Tend} K, whose sensible heat is too high for polar liquids (by about 5-30 % between 300 and 400 K).`,
@@ -160,7 +170,16 @@ export function activityPhaseMethods(ctx) {
     const notes = [];
     if (ph === "vapour") {
       let h = 0;
-      for (let i = 0; i < n; i++) if (z[i] > 0) h += z[i] * hIG(i, T);
+      for (let i = 0; i < n; i++) {
+        if (!(z[i] > 0)) continue;
+        if (nonvolatile[i]) {
+          // its share of the flash vapour is below 1e-20 (NV_PSAT_KPA) and adds nothing; a vapour given with more of
+          // it is not a state the model describes
+          if (z[i] > 1e-12) throw fail("BAD_INPUT", `${comps[i].name} is nonvolatile: it is not in the vapour (mole fraction ${z[i].toPrecision(3)} given).`);
+          continue;
+        }
+        h += z[i] * hIG(i, T);
+      }
       let lnPhi = new Array(n).fill(0), Z = 1;
       if (cubicVapour) {
         const st = cubicVapour.vapourState(T, P, z);

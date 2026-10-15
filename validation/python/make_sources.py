@@ -191,6 +191,20 @@ SEEDS = {
         "license": "GPL-3.0",
         "note": "Implements the IAPWS releases and guidelines; used to transcribe and cross-check coefficients of the standards, which are cited themselves.",
     },
+    # predicted liquid heat capacities (validation/python/predict_cp.py, proposal 0009 step 5)
+    "ruzicka-domalski-1993": {
+        "title": "Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group "
+                 "Additivity. I. Hydrocarbon Compounds; II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur",
+        "authors": "V. Ruzicka Jr., E. S. Domalski",
+        "year": 1993,
+        "published": "J. Phys. Chem. Ref. Data 22 (1993) 597-618 and 619-657",
+        "doi": "10.1063/1.555924",
+        "kind": "open-access article",
+        "url": "https://srd.nist.gov/jpcrdreprint/1.555924.pdf",
+        "access": "Free to read: reprints hosted by NIST (Standard Reference Data), part I at https://srd.nist.gov/jpcrdreprint/1.555923.pdf",
+        "license": "Copyright AIP for NIST; free to read",
+        "note": "Group parameters transcribed from the page images into validation/data/gc/ruzicka_domalski_1993.json; tier predicted.",
+    },
     # src/data/henry.json (ethylene); src/data/LICENSES.md
     "sander2023-henry": {
         "title": "Compilation of Henry's law constants (version 5.0.0) for water as solvent",
@@ -322,6 +336,7 @@ def text_rules(val):
         (r"Sander, Compilation of Henry's law constants", "sander2023-henry"),
         (r"Wikipedia 'Azeotrope tables'|Azeotrope tables, Wikipedia", "wikipedia-azeotrope-tables"),
         (r"Wikipedia ethylene glycol data page", "wikipedia-ethylene-glycol-data"),
+        (r"Ruzicka and Domalski 1993", "ruzicka-domalski-1993"),
     ]
     for sid, entry, rel in val:
         if entry is None:

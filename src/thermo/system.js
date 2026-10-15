@@ -41,6 +41,9 @@ export { EOS_MODELS, listComponents, findComponent };
  *        ideal gas, or a Peng-Robinson or SRK vapour with phi_sat and the Poynting correction
  *        (gamma-phi-vapour.js); its k_ij come from the databank (or cfg.kij)
  */
+/** The vapour pressure (kPa) a nonvolatile component is given in an activity-model system: effectively zero. */
+export const NV_PSAT_KPA = 1e-20;
+
 export function createSystem(cfg) {
   const model = (cfg.model || "NRTL").toUpperCase() === "IDEAL" ? "ideal" : (cfg.model || "NRTL").toUpperCase();
   const isEos = EOS_MODELS.includes(model);
@@ -60,8 +63,13 @@ export function createSystem(cfg) {
   const sel = selection(cfg); // checked for every model, so that a typo never passes silently
   if (isEos) return createEosSystem(ids, { ...cfg, model }, sel); // Peng-Robinson / SRK: see eos/system.js
   const comps = ids.map(id => componentData.components[id]);
+  // nonvolatile components (proposal 0009, step 5): no vapour pressure; they stay in the liquid (NV_PSAT_KPA below)
+  const nonvolatile = comps.map(c => c.class === "nonvolatile");
+  if (nonvolatile.every(Boolean)) {
+    throw fail("BAD_INPUT", `${comps.map(c => c.name).join(", ")} ${comps.length > 1 ? "are" : "is"} nonvolatile: a system needs at least one component that evaporates (water, for example).`);
+  }
   for (const c of comps) {
-    if (!c.vapourPressure && !cfg.psat) {
+    if (!c.vapourPressure && !cfg.psat && c.class !== "nonvolatile") {
       throw fail("MISSING_DATA", `${c.name} has no vapour-pressure record, so it cannot be used with activity-coefficient models. Use an equation of state for gases.`);
     }
     if (model === "UNIQUAC" && !c.uniquac) throw fail("MISSING_DATA", `${c.name} has no UNIQUAC r and q.`);
@@ -109,10 +117,14 @@ export function createSystem(cfg) {
   }
   const cubicVapour = vapourModel === "ideal" ? null : createCubicVapour(ids, comps, vapourModel, cfg);
 
-  /** Vapour pressures, kPa. cfg.psat can override them (array in kPa, or a function of T). */
+  /**
+   * Vapour pressures, kPa. cfg.psat can override them (array in kPa, or a function of T). A nonvolatile component
+   * has none: NV_PSAT_KPA, far below anything measurable, keeps its K-value finite for the flash (its mole fraction in
+   * the vapour stays below 1e-20) while it stays, for every practical purpose, in the liquid.
+   */
   const psat = cfg.psat
     ? (typeof cfg.psat === "function" ? cfg.psat : () => cfg.psat.slice())
-    : T => comps.map(c => vapourPressure(c.vapourPressure, T) / 1000);
+    : T => comps.map((c, i) => (nonvolatile[i] ? NV_PSAT_KPA : vapourPressure(c.vapourPressure, T) / 1000));
 
   /**
    * Partial pressures for a liquid x at T.
@@ -187,9 +199,10 @@ export function createSystem(cfg) {
     });
   };
 
-  const phaseMethods = activityPhaseMethods({ ids, comps, n, model, gammas, psat, cubicVapour, assoc: dimerizing, warnings });
+  const phaseMethods = activityPhaseMethods({ ids, comps, n, model, gammas, psat, cubicVapour, assoc: dimerizing, warnings, nonvolatile });
   // melting temperature and enthalpy of fusion (solid-liquid equilibrium, src/equilibrium/sle.js); null: no open data
   const fusion = comps.map(c => (c.fusion && c.fusion.available !== false
     ? { Tm_K: c.fusion.Tm_K, Hfus_J_mol: c.fusion.Hfus_J_mol, tier: c.fusion.tier, source: c.fusion.source } : null));
-  return { ids, names: comps.map(c => c.name), n, model, vapour: vapourModel, gammas, psat, equilibrium, lnKValues, info, warnings, fusion, ...phaseMethods };
+  return { ids, names: comps.map(c => c.name), n, model, vapour: vapourModel, gammas, psat, equilibrium, lnKValues, info, warnings, fusion,
+    nonvolatile, ...phaseMethods };
 }

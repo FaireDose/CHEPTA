@@ -22,6 +22,7 @@ export function pureBoilingPoints(sys, P) {
     });
   }
   return sys.ids.map((_, i) => {
+    if (sys.nonvolatile?.[i]) return NaN;   // it does not boil (proposal 0009, step 5)
     const x = new Array(sys.n).fill(1e-12); x[i] = 1;
     const f = T => sys.equilibrium(x, T).P - P;
     const [a, b] = scanBracket(f, 150, 900, 30);
@@ -56,8 +57,9 @@ export function bubbleT(sys, x, P) {
 export function bubbleTCore(sys, x, P) {
   x = clean(x);
   const f = T => sys.equilibrium(x, T).P - P;
-  const tb = boilingRange(sys, P);
-  const lo = Math.min(...tb) - 80, hi = Math.max(...tb) + 20;
+  const tb = boilingRange(sys, P).filter(Number.isFinite);
+  // a nonvolatile solute raises the boiling point, by much more than 20 K in a concentrated solution
+  const lo = Math.min(...tb) - 80, hi = Math.min(Math.max(...tb) + (sys.nonvolatile?.some(Boolean) ? 300 : 20), 1000);
   const [a, b] = scanBracketInRange(f, lo, hi, 40);
   const T = brent(f, a, b, { xtol: 1e-7 });
   const e = sys.equilibrium(x, T);

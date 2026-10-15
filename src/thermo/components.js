@@ -18,7 +18,7 @@ import { fail } from "../util/errors.js";
  */
 export function listComponents() {
   return Object.entries(componentData.components).map(([id, c]) => ({
-    id, name: c.name, formula: c.formula, cas: c.cas, aliases: c.aliases ?? [], activity: Boolean(c.vapourPressure && (c.uniquac || c.Tb_K > 298.15)), uniquac: Boolean(c.uniquac), modUnifac: Boolean(c.modUnifac?.groups),
+    id, name: c.name, formula: c.formula, cas: c.cas, aliases: c.aliases ?? [], activity: Boolean((c.vapourPressure && (c.uniquac || c.Tb_K > 298.15)) || c.class === "nonvolatile"), uniquac: Boolean(c.uniquac), modUnifac: Boolean(c.modUnifac?.groups),
     // melting temperature and enthalpy of fusion (solid-liquid equilibrium)
     fusion: Boolean(c.fusion && c.fusion.available !== false),
   }));
