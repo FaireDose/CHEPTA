@@ -11,7 +11,7 @@ will grow through volunteer contributions, one tested layer at a time, toward a 
 **Try the workbench now: <https://fairedose.github.io/CHEPTA/>** (runs in your browser,
 nothing to install).
 
-![The CHEPTA workbench: a solved flowsheet of ethanol and water with a mixer, flash drum, splitter and recycle, the stream table and the material and energy balances](docs/images/flowsheet.png)
+![The CHEPTA workbench: a solved flowsheet of ethanol and water with a mixer, flash drum, splitter and recycle, the stream table and the material and energy balances](docs/images/flowsheet-dark.png)
 
 > **Status: early (v0.3.0).** 92 components, activity models and cubic equations of state,
 > pure-component properties, steam tables, the flash unit, and a first flowsheet in a workbench with files that can exported or saved.
