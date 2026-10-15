@@ -160,6 +160,8 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
     result by independent evidence (measured boiling points of other articles, calorimetric
     enthalpies of vaporization); when they disagree, choose or leave out a set only with a stated
     physical reason, or hold the component.
+  - Paywalled articles (2026-10-15): look for a legal free copy in Unpaywall before setting an
+    article aside (`open_copy.py`; contact address info@cheptasim.org).
 - **Your files are yours:** files and results made with Fugacity belong to the people who
   make them ([#68](https://github.com/FaireDose/Fugacity/pull/68)).
 - **Two licences on purpose:** MIT for the code, and the Artistic License 2.0 that must travel
