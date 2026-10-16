@@ -30,6 +30,13 @@ export function pureBoilingPoints(sys, P) {
   });
 }
 
+/** A liquid of nonvolatile components alone (proposal 0009, step 5) never boils: refused with the reason. */
+function onlyNonvolatile(sys, x, what) {
+  if (!sys.nonvolatile || x.some((xi, i) => xi > 1e-10 && !sys.nonvolatile[i])) return;
+  const names = sys.names.filter((_, i) => x[i] > 1e-10);
+  throw fail("BAD_INPUT", `${what}: nothing in this liquid evaporates (${names.join(", ")} ${names.length > 1 ? "are" : "is"} nonvolatile), so it has no bubble point.`);
+}
+
 const tbCache = new WeakMap();
 function boilingRange(sys, P) {
   let m = tbCache.get(sys);
@@ -56,6 +63,7 @@ export function bubbleT(sys, x, P) {
  */
 export function bubbleTCore(sys, x, P) {
   x = clean(x);
+  onlyNonvolatile(sys, x, "bubble temperature");
   const f = T => sys.equilibrium(x, T).P - P;
   const tb = boilingRange(sys, P).filter(Number.isFinite);
   // a nonvolatile solute raises the boiling point, by much more than 20 K in a concentrated solution
@@ -77,6 +85,7 @@ export function bubbleP(sys, x, T) {
 /** bubbleP without the input checks (see bubbleTCore). */
 export function bubblePCore(sys, x, T) {
   x = clean(x);
+  onlyNonvolatile(sys, x, "bubble pressure");
   const e = sys.equilibrium(x, T);
   return { P: e.P, y: e.y, gamma: e.gamma, warnings: sys.warnings ? sys.warnings(T, e.P) : [] };
 }
