@@ -34,7 +34,7 @@ import { modelPicker, liquidPicker } from "./model-picker.js";
 import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, checkInputs, examplesFor, rotateInputs, solventsFor, needsFor, isEosModel } from "./workspaces.js";
 import { UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
-import { flowsheetRibbon, flowsheetInputs, ensureUi } from "./flowsheet-view.js";
+import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey } from "./flowsheet-view.js";
 import { projectOf, projectText, projectFileName, stateFromProject } from "./project.js";
 import { browserStore, hostStore, autosave, lastAutosave, clearAutosave } from "./project-store.js";
 import { FLASH_SPECS, FLOW_UNITS, feedComposition, convertBasis, flowIn } from "./flash-logic.js";
@@ -755,7 +755,7 @@ export function app(target, cfg = {}) {
     if (rec && rec.key === flashKey()) results.flash = rec.record;
     // the solved flowsheet: its streams and energy streams as a record (never read back)
     const fsc = ui.fs?.cache;
-    if (fsc?.result && fsc.key === JSON.stringify(state.flowsheet)) {
+    if (fsc?.result && fsc.key === flowsheetKey(state)) {
       const r = fsc.result;
       results.flowsheet = {
         streams: Object.fromEntries(Object.entries(r.streams).map(([id, s]) => [id, { T_K: s.T_K, P_kPa: s.P_kPa, VF: s.VF, F_kmol_h: s.F_kmol_h, mass_kg_h: s.mass_kg_h, H_kW: s.H_kW, flow_kmol_h: s.flow_kmol_h }])),
@@ -1034,7 +1034,7 @@ export function app(target, cfg = {}) {
       v === "henry" ? [state.inputs.henry, state.henryT_K, state.henryP_kPa, state.compareGases] : null,
       v === "solid" || v === "sle" ? [state.sleT_K, state.solidUnit] : null, state.steamP_kPa, state.sets, state.prefer,
       v === "flash" ? state.flash : null,
-      v === "flowsheet" ? [state.flowsheet, ensureUi(ui).sel, ui.fs.auto, ui.fs.solveKey, ui.fs.zoom] : null]);
+      v === "flowsheet" ? [state.flowsheet, state.userData, ensureUi(ui).sel, ui.fs.auto, ui.fs.solveKey, ui.fs.zoom] : null]);
   };
   let canvasRendered = false, token = 0;
   function renderCanvas(now = false) {
