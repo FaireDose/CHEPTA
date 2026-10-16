@@ -8,7 +8,7 @@
  *
  *   {
  *     "properties": { "<component>": { "<property>": record, "vapourPressure": record, "fusion": { Tm_K, Hfus_J_mol } } },
- *     "components": { "user:<name>": { name, MW, formula?, class?: "nonvolatile", why?, Tc_K?, Pc_Pa?, omega?,
+ *     "components": { "user:<name>": { name, MW, formula?, cas?, class?: "nonvolatile", why?, Tc_K?, Pc_Pa?, omega?,
  *                                      aliases?, vapourPressure?: record, properties?: { ... }, fusion?, groups?,
  *                                      source } },
  *     "pairs":      { "<component>+<component>": { NRTL?: { a_ij?, a_ji?, b_ij, b_ji, alpha? }, UNIQUAC?: { ... },
@@ -159,7 +159,7 @@ function userComponent(id, c) {
   if (c.class != null && c.class !== "nonvolatile") throw bad(`${what}: class can only be "nonvolatile" (or left out for a component that evaporates).`);
   const nonvolatile = c.class === "nonvolatile";
   const out = {
-    name: c.name.trim(), formula: c.formula ?? null, cas: null, MW, aliases: (c.aliases ?? []).map(a => String(a).toLowerCase()),
+    name: c.name.trim(), formula: c.formula ?? null, cas: typeof c.cas === "string" && c.cas.trim() ? c.cas.trim() : null, MW, aliases: (c.aliases ?? []).map(a => String(a).toLowerCase()),
     tier: "user", source, constants_source: `Your own data: ${source.name}`,
     Tc_K: null, Pc_Pa: null, omega: null, Tb_K: null,
     properties: {},
@@ -262,6 +262,10 @@ export function checkUserData(userData) {
   const names = new Map();
   for (const [id, c] of Object.entries(userData.components ?? {})) {
     const rec = userComponent(id, c);
+    if (rec.cas) {
+      const bank = Object.entries(componentData.components).find(([, d]) => d.cas === rec.cas);
+      if (bank) throw bad(`components["${id}"]: ${rec.cas} is the CAS number of ${bank[1].name}, which is in the databank; add your records to it with properties["${bank[0]}"] instead of a component of your own.`);
+    }
     for (const n of [rec.name, ...rec.aliases].map(s => s.toLowerCase())) {
       let clash = null;
       try { clash = findComponent(n); } catch { /* not a databank name: fine */ }

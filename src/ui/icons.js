@@ -69,6 +69,8 @@ const P = {
   // a speech bubble: feedback and discussion
   chat: '<path d="M4.5 5.5h15v10.5h-8.5L7 19.5v-3.5H4.5z"/><path d="M8 9.5h8M8 12.5h5" class="a"/>',
   // the library: an open book
+  // a data cylinder with a pencil stroke: the user's own numbers
+  mydata: '<ellipse cx="11" cy="6" rx="6.5" ry="2.5"/><path d="M4.5 6v11c0 1.4 2.9 2.5 6.5 2.5"/><path d="M4.5 11.5c0 1.4 2.9 2.5 6.5 2.5" /><path d="M17.5 6v4" /><path d="m14 20 .6-2.6 5.2-5.2 2 2-5.2 5.2z" class="a"/>',
   book: '<path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13" class="a"/>',
   star: '<path d="m12 4 2.4 5 5.4.6-4 3.7 1.1 5.4L12 16l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6z"/><path d="M12 8.2v5.3" class="a"/>',
 };

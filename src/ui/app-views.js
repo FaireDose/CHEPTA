@@ -26,7 +26,7 @@ import { ternaryAzeotropes, binaryAzeotropes } from "../equilibrium/azeotrope.js
 import { library, sourceEntry } from "../thermo/library.js";
 import {
   knownIssuesFor, pxyTemperature, tierCounts, tierSummary, normalizeComposition, interpolate, fmtP, fmtTemp, parseP, parseT,
-  setsFor, filterSources, sourceUsedFor, modelLabel,
+  setsFor, filterSources, sourceUsedFor, modelLabel, userOverlay,
 } from "./app-logic.js";
 import { HENRY_PAIRS, isEosModel } from "./workspaces.js";
 import { flowsheetView } from "./flowsheet-view.js";
@@ -40,7 +40,9 @@ import {
 } from "./properties-logic.js";
 
 const SERIES = n => `var(--fug-s${(n % 6) + 1})`;
-const nameOf = id => listComponents().find(c => c.id === id)?.name ?? id;
+const nameOf = (state, id) => listComponents({ userData: state ? userOverlay(state) : null }).find(c => c.id === id)?.name ?? id;
+/** The user's own data of the workbench, for pure() and system() (proposal 0012). */
+const own = state => ({ userData: userOverlay(state) });
 const tU = u => (u.T === "K" ? "K" : "°C");
 
 /**
@@ -161,7 +163,7 @@ function vleView(view, ctx) {
   for (const k of onDefaults(sys) ? knownIssuesFor(sys.ids, sys.model) : []) {
     notes.append(h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${modelName(k.model)}): `), k.message, ` Reference: ${k.reference}.`));
   }
-  const look = { basis: state.basis, MW: sys.ids.map(id => pure(id).MW), T: state.units.T };
+  const look = { basis: state.basis, MW: sys.ids.map(id => pure(id, own(state)).MW), T: state.units.T };
   const drawn = view === "txy" ? renderTxy(plot, side, sys, state.P_kPa, look)
     : renderTernary(plot, side, sys, state.P_kPa, {
       ...look, residueCurves: state.residueCurves, isotherms: state.isotherms, grid: state.grid,
@@ -230,12 +232,12 @@ function azeotropeView(ctx) {
   const { state, plot, side, below, extra, set } = ctx;
   const u = state.units, P = state.P_kPa;
   const ids = state.components;
-  const MW = Object.fromEntries(ids.map(id => [id, pure(id).MW]));
+  const MW = Object.fromEntries(ids.map(id => [id, pure(id, own(state)).MW]));
   const opts = setsFor(state, state.model);
   const comp = (x, pairIds) => {
     const bv = basisView(state.basis, pairIds.map(id => MW[id]));
     const w = bv.conv(x);
-    return pairIds.map((id, k) => (x[k] > 1e-6 ? `${nameOf(id)} ${state.basis === "mass" ? bv.f(w[k]) + " wt %" : fmtNum(x[k], 3)}` : null)).filter(Boolean).join(", ");
+    return pairIds.map((id, k) => (x[k] > 1e-6 ? `${nameOf(state, id)} ${state.basis === "mass" ? bv.f(w[k]) + " wt %" : fmtNum(x[k], 3)}` : null)).filter(Boolean).join(", ");
   };
   const cards = [], points = [], sources = new Map(), errors = [], drawnPairs = [];
   for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) {
@@ -243,7 +245,7 @@ function azeotropeView(ctx) {
     let sys;
     try { sys = modelSystem(state, pair); } catch (e) {
       errors.push(friendly(e));
-      cards.push(h("div", { class: "fa-card is-missing" }, h("div", { class: "fa-card-head" }, h("strong", {}, `${nameOf(pair[0])} + ${nameOf(pair[1])}`), ctx.badge("none")),
+      cards.push(h("div", { class: "fa-card is-missing" }, h("div", { class: "fa-card-head" }, h("strong", {}, `${nameOf(state, pair[0])} + ${nameOf(state, pair[1])}`), ctx.badge("none")),
         h("div", { class: "fa-empty" }, friendly(e))));
       continue;
     }
@@ -251,8 +253,8 @@ function azeotropeView(ctx) {
     let sample, az;
     try { sample = sampleTxy(sys, P, 61); az = binaryAzeotropes(sys, P, 200, { gaps: true }); } catch (e) {
       if (!(e && e.code) && !/bubble point/i.test(e.message)) throw e;
-      errors.push(`${nameOf(pair[0])} + ${nameOf(pair[1])}: ${e.message}`);
-      cards.push(h("div", { class: "fa-card is-missing" }, h("div", { class: "fa-card-head" }, h("strong", {}, `${nameOf(pair[0])} + ${nameOf(pair[1])}`)),
+      errors.push(`${nameOf(state, pair[0])} + ${nameOf(state, pair[1])}: ${e.message}`);
+      cards.push(h("div", { class: "fa-card is-missing" }, h("div", { class: "fa-card-head" }, h("strong", {}, `${nameOf(state, pair[0])} + ${nameOf(state, pair[1])}`)),
         h("div", { class: "fa-empty" }, e.message)));
       continue;
     }
@@ -261,11 +263,11 @@ function azeotropeView(ctx) {
     for (const z of az) points.push({ T: z.T, kind: z.type === "minimum-boiling" ? "Minimum-boiling azeotrope" : "Maximum-boiling azeotrope", what: comp([z.x, 1 - z.x], pair) });
     const tier = sys.info.pairs[0]?.tier ?? (state.model === "ideal" ? "ideal" : "none");
     cards.push(h("div", { class: "fa-card" },
-      h("div", { class: "fa-card-head" }, h("strong", {}, `${nameOf(pair[0])} + ${nameOf(pair[1])}`), state.model === "ideal" ? null : ctx.badge(tier)),
+      h("div", { class: "fa-card-head" }, h("strong", {}, `${nameOf(state, pair[0])} + ${nameOf(state, pair[1])}`), state.model === "ideal" ? null : ctx.badge(tier)),
       miniTxy(sys, data, az, P, u, basisView(state.basis, pair.map(id => MW[id]))),
       h("div", { class: "fa-card-text" }, az.length
         ? az.map(z => h("div", {}, `${z.type === "minimum-boiling" ? "Minimum" : "Maximum"}-boiling azeotrope at ${fmtTemp(z.T, u, 1)}: ${comp([z.x, 1 - z.x], pair)}`,
-          z.within ? h("small", {}, ` (${nameOf(pair[0])} mole fraction between ${fmtNum(z.within[0], 4)} and ${fmtNum(z.within[1], 4)}: the equation-of-state solver stops at y = x)`) : null))
+          z.within ? h("small", {}, ` (${nameOf(state, pair[0])} mole fraction between ${fmtNum(z.within[0], 4)} and ${fmtNum(z.within[1], 4)}: the equation-of-state solver stops at y = x)`) : null))
         : "No azeotrope at this pressure.",
       az.gaps ? h("div", { class: "fug-warn" }, `${az.gaps.points} of 200 search points had no bubble point from the solver and were skipped${sample.missed ? " (gaps in the curves)" : ""}: an azeotrope there would be missed. ${az.gaps.message}`) : null),
       h("button", { type: "button", class: "fa-link-btn", on: { click: () => set({ inputs: { txy: pair }, view: "txy" }) } }, "Open as T-x-y diagram")));
@@ -285,8 +287,8 @@ function azeotropeView(ctx) {
   // pure-component boiling points do not depend on the mixing rules: the vapour-pressure
   // correlations for activity models, the equation of state's own saturation curve otherwise
   try {
-    const tb = (isEosModel(state.model) ? modelSystem(state, ids) : system({ components: ids, model: "ideal" })).boilingPoints(P);
-    ids.forEach((id, k) => points.push({ T: tb[k], kind: "Pure component", what: nameOf(id) }));
+    const tb = (isEosModel(state.model) ? modelSystem(state, ids) : system({ components: ids, model: "ideal", ...own(state) })).boilingPoints(P);
+    ids.forEach((id, k) => points.push({ T: tb[k], kind: "Pure component", what: nameOf(state, id) }));
   } catch (e) { errors.push(e.message); }
   points.sort((a, b) => a.T - b.T);
 
@@ -347,7 +349,7 @@ function bubbleDewCalculator(ctx, sys, ids) {
   const z = normalizeComposition(state.z, ids.length);
   const calc = { T: pxyTemperature(state), P: state.P_kPa };
   const out = h("div", { class: "fa-calc-out", "aria-live": "polite" });
-  const zIns = ids.map((id, k) => h("input", { type: "text", inputmode: "decimal", id: `fa-z${k}-${uid}`, value: fmtShort(z[k], 4), "aria-label": `Mole fraction of ${nameOf(id)}` }));
+  const zIns = ids.map((id, k) => h("input", { type: "text", inputmode: "decimal", id: `fa-z${k}-${uid}`, value: fmtShort(z[k], 4), "aria-label": `Mole fraction of ${nameOf(state, id)}` }));
   const commitZ = () => {
     const v = zIns.map(i => Number(i.value));
     if (v.some(x => !(x >= 0)) || !(v.reduce((a, b) => a + b, 0) > 0)) return;
@@ -369,7 +371,7 @@ function bubbleDewCalculator(ctx, sys, ids) {
       try {
         const [v, phase, comp] = f();
         return h("div", { class: "fa-result" }, h("div", { class: "fa-result-head" }, h("span", {}, `${label} `, h("small", {}, at)), h("b", { class: "fug-num" }, v)),
-          ids.length > 1 ? h("div", { class: "fug-sub" }, `Incipient ${phase}: ${comp.map((c, k) => `${nameOf(ids[k])} ${fmtNum(c, 3)}`).join(", ")}`) : null);
+          ids.length > 1 ? h("div", { class: "fug-sub" }, `Incipient ${phase}: ${comp.map((c, k) => `${nameOf(state, ids[k])} ${fmtNum(c, 3)}`).join(", ")}`) : null);
       } catch (e) {
         return h("div", { class: "fa-result is-err" }, h("div", { class: "fa-result-head" }, h("span", {}, `${label} `, h("small", {}, at)), h("b", {}, "none")),
           h("div", { class: "fug-sub" }, e.message.length > 240 ? e.message.slice(0, 240) + "…" : e.message));
@@ -379,7 +381,7 @@ function bubbleDewCalculator(ctx, sys, ids) {
   run();
   return section("Bubble and dew points",
     h("div", { class: "fa-form" },
-      ...ids.map((id, k) => h("label", { for: zIns[k].id }, h("span", {}, `z ${nameOf(id)}`), zIns[k])),
+      ...ids.map((id, k) => h("label", { for: zIns[k].id }, h("span", {}, `z ${nameOf(state, id)}`), zIns[k])),
       h("label", { for: tIn.id }, h("span", {}, `T, ${tU(u)}`), tIn), h("label", { for: pIn.id }, h("span", {}, `P, ${u.P}`), pIn)),
     h("div", { class: "fug-foot" }, "Feed mole fractions are normalized to sum to 1. The feed is also the composition of the phase envelope."),
     out);
@@ -405,7 +407,7 @@ function pxyView(ctx) {
   try { sys = modelSystem(state, ids); } catch (e) { throw new Error(friendly(e)); }
   const T = pxyTemperature(state);
   // the composition axis in the display basis: mole fraction, or wt % (0 to 100)
-  const bv = basisView(state.basis, ids.map(id => pure(id).MW));
+  const bv = basisView(state.basis, ids.map(id => pure(id, own(state)).MW));
   const scale = bv.mass ? 100 : 1;
   const X = x1 => scale * bv.conv([x1, 1 - x1])[0];
   const fromX = v => bv.inv([v / scale, 1 - v / scale])[0];
@@ -448,7 +450,7 @@ function pxyView(ctx) {
   return { data: pairData(sys), export: () => ({
     title: `P-x-y diagram of ${listNames(sys.names)} at ${fmtTemp(T, u)}`, file: `pxy ${ids.join(" ")}`,
     about: aboutRows(state, sys, [["Temperature", fmtTemp(T, u)]]),
-    tables: pxyTables({ names: sys.names, MW: ids.map(id => pure(id).MW), units: u, basis: state.basis, points: raw }),
+    tables: pxyTables({ names: sys.names, MW: ids.map(id => pure(id, own(state)).MW), units: u, basis: state.basis, points: raw }),
   }) };
 }
 
@@ -460,7 +462,7 @@ function envelopeView(ctx) {
   const z = normalizeComposition(state.z, ids.length);
   const reasons = new Map();
   let series, xLo, xHi, raw;
-  const comps = ids.map(id => pure(id));
+  const comps = ids.map(id => pure(id, own(state)));
   if (ids.length === 1) {
     const Tc = comps[0].Tc_K;
     raw = linspace(0.45 * Tc, 0.9995 * Tc, 70).map(T => { const ps = sys.psatEos(T)[0]; return { T, P: ps > 0 ? ps : null }; });
@@ -506,14 +508,14 @@ function envelopeView(ctx) {
   plot.append(h("div", { class: "fug-legend" },
     h("span", { class: "fug-key", style: "color:var(--fug-liq)" }, h("i"), h("span", { style: "color:var(--fug-fg2)" }, ids.length === 1 ? "Vapour pressure" : "Bubble points")),
     ids.length > 1 ? h("span", { class: "fug-key", style: "color:var(--fug-vap)" }, h("i", { style: "border-top-style:dashed" }), h("span", { style: "color:var(--fug-fg2)" }, "Dew points")) : null,
-    ids.length > 1 ? h("span", {}, `Feed: ${ids.map((id, k) => `${nameOf(id)} ${fmtNum(z[k], 3)}`).join(", ")}`) : null),
+    ids.length > 1 ? h("span", {}, `Feed: ${ids.map((id, k) => `${nameOf(state, id)} ${fmtNum(z[k], 3)}`).join(", ")}`) : null),
   gapNote(reasons, "bubble or dew point") ?? "");
   side.replaceChildren(read);
   move((xLo + xHi) / 2);
   extra.append(bubbleDewCalculator(ctx, sys, ids), ...sourcesOf(ctx, sys));
   return { data: ids.length > 1 ? pairData(sys) : "Critical constants from the component record", export: () => ({
     title: ids.length > 1 ? `Phase envelope of ${listNames(sys.names)}` : `Vapour pressure of ${sys.names[0]}`, file: `envelope ${ids.join(" ")}`,
-    about: aboutRows(state, sys, ids.length > 1 ? [["Feed", ids.map((id, k) => `${nameOf(id)} ${fmtNum(z[k], 4)}`).join(", ") + " (mole fractions)"]] : []),
+    about: aboutRows(state, sys, ids.length > 1 ? [["Feed", ids.map((id, k) => `${nameOf(state, id)} ${fmtNum(z[k], 4)}`).join(", ") + " (mole fractions)"]] : []),
     tables: envelopeTables({ names: sys.names, units: u, z, points: raw, single: ids.length === 1 }),
   }) };
 }
@@ -559,7 +561,7 @@ function flashView(ctx) {
     notes.append(h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${modelName(k.model)}): `), k.message, ` Reference: ${k.reference}.`));
   }
   const { result: r, z } = runFlash(sys, state.flash);
-  const names = sys.names, MW = ids.map(id => pure(id).MW);
+  const names = sys.names, MW = ids.map(id => pure(id, own(state)).MW);
   const fu = state.flash.flowUnit;
   const flow = molarFlow(state.flash, z.reduce((a, v, i) => a + v * MW[i], 0));   // kmol/h
   const table = flashTable(r, { names, MW, z, units: u, flow, flowUnit: fu });
@@ -647,15 +649,15 @@ function henryView(ctx) {
   const { state, plot, side, extra, compact } = ctx;
   const u = state.units, p = state.henryP_kPa, Tset = state.henryT_K;
   const { gas, solvent } = state.inputs.henry;
-  const solventName = nameOf(solvent);
+  const solventName = nameOf(state, solvent);
   const others = state.compareGases ? HENRY_PAIRS.filter(q => q.solvent === solvent && q.gas !== gas).map(q => q.gas) : [];
   const gases = [gas, ...others].map(id => ({ id, info: henryInfo(id, solvent) }));
   const drawnGases = [];
   const series = gases.map((g, i) => {
     const temps = linspace(g.info.Tmin_K, g.info.Tmax_K, 90);
-    drawnGases.push({ name: nameOf(g.id), points: temps.map(T => ({ T, x: gasSolubility(g.id, T, p, solvent), H: henry(g.id, solvent, T) })) });
+    drawnGases.push({ name: nameOf(state, g.id), points: temps.map(T => ({ T, x: gasSolubility(g.id, T, p, solvent), H: henry(g.id, solvent, T) })) });
     const pts = drawnGases[i].points.map(d => ({ x: tToDisplay(d.T, u), y: d.x }));
-    return { name: nameOf(g.id), color: SERIES(i), width: i === 0 && gases.length > 1 ? 2.6 : undefined, segments: [{ points: pts }] };
+    return { name: nameOf(state, g.id), color: SERIES(i), width: i === 0 && gases.length > 1 ? 2.6 : undefined, segments: [{ points: pts }] };
   });
   const x0 = tToDisplay(Math.min(...gases.map(g => g.info.Tmin_K)), u), x1 = tToDisplay(Math.max(...gases.map(g => g.info.Tmax_K)), u);
 
@@ -663,14 +665,14 @@ function henryView(ctx) {
   const result = h("div", { class: "fa-result-card" });
   try {
     const H = henry(gas, solvent, Tset), x = gasSolubility(gas, Tset, p, solvent);
-    const ratio = x / (1 - x) * pure(gas).MW / pure(solvent).MW * 1e6; // mg of gas per kg of solvent
+    const ratio = x / (1 - x) * pure(gas, own(state)).MW / pure(solvent, own(state)).MW * 1e6; // mg of gas per kg of solvent
     result.append(
-      h("div", { class: "fug-eyebrow" }, `${nameOf(gas)} in ${solventName.toLowerCase()} at ${fmtTemp(Tset, u)}, ${fmtP(p, u)}`),
+      h("div", { class: "fug-eyebrow" }, `${nameOf(state, gas)} in ${solventName.toLowerCase()} at ${fmtTemp(Tset, u)}, ${fmtP(p, u)}`),
       h("div", { class: "fa-result-main" }, h("span", {}, "Mole fraction x"), h("b", { class: "fug-big" }, fmtNum(x, 4))),
       kv([["Henry's constant H", fmtNum(pToDisplay(H, u), 4), u.P], ["Mass ratio", fmtNum(ratio, 4), `mg per kg ${solventName.toLowerCase()}`]]),
       h("div", { class: "fug-foot" }, `x = p / H, valid for dilute solutions. Mass ratio = x / (1 − x) × M gas / M ${solventName.toLowerCase()}.`));
   } catch (e) {
-    result.append(h("div", { class: "fug-eyebrow" }, `${nameOf(gas)} in ${solventName.toLowerCase()}`),
+    result.append(h("div", { class: "fug-eyebrow" }, `${nameOf(state, gas)} in ${solventName.toLowerCase()}`),
       h("div", { class: "fug-err", role: "alert" }, e.message),
       h("div", { class: "fug-foot" }, `Change the temperature in the inputs: the equation is valid from ${fmtTemp(info0(gases).Tmin_K, u, 1)} to ${fmtTemp(info0(gases).Tmax_K, u, 1)}.`));
   }
@@ -680,12 +682,12 @@ function henryView(ctx) {
     const T = tFromDisplay(Tx, u);
     const vals = gases.map(g => (T >= g.info.Tmin_K && T <= g.info.Tmax_K ? gasSolubility(g.id, T, p, solvent) : null));
     read.replaceChildren(h("div", { class: "fug-eyebrow" }, `On the curve${gases.length > 1 ? "s" : ""}: mole fraction at ${fmtShort(+Tx.toFixed(2))} ${tU(u)}`),
-      ...gases.map((g, i) => h("div", { class: "fa-row" }, h("span", {}, h("span", { class: "sw", style: `border-color:${SERIES(i)}` }), nameOf(g.id)),
+      ...gases.map((g, i) => h("div", { class: "fa-row" }, h("span", {}, h("span", { class: "sw", style: `border-color:${SERIES(i)}` }), nameOf(state, g.id)),
         h("b", { class: "fug-num" }, vals[i] == null ? "outside range" : fmtNum(vals[i], 3)))));
     return vals;
   };
   const move = drawPlot(plot, { compact, series, x0, x1, log: true, xLabel: `T, ${tU(u)}`, yLabel: "x gas (mole fraction)", show,
-    aria: `Solubility of ${gases.map(g => nameOf(g.id)).join(", ")} in ${solventName.toLowerCase()} against temperature` });
+    aria: `Solubility of ${gases.map(g => nameOf(state, g.id)).join(", ")} in ${solventName.toLowerCase()} against temperature` });
   plot.append(h("div", { class: "fug-legend" }, `Each curve spans the validity range of its equation. Gas partial pressure ${fmtP(p, u)}; x = p / H, valid for dilute solutions.`));
   side.replaceChildren(result, read);
   move(Math.min(x1, Math.max(x0, tToDisplay(Tset, u))));
@@ -693,7 +695,7 @@ function henryView(ctx) {
   return { data: tierSummary(tierCounts(gases.map(g => ({ tier: g.info.tier }))), "gas", "gases"), export: () => ({
     title: `Solubility of ${listNames(drawnGases.map(g => g.name))} in ${solventName.toLowerCase()}`, file: `solubility ${[gas, ...others].join(" ")} ${solvent}`,
     about: [["Gas partial pressure", fmtP(p, u)], ["Model", "Henry's law, x = p / H (dilute solutions)"],
-      ...gases.map(g => [`${nameOf(g.id)} in ${solventName.toLowerCase()}`, `${g.info.tier}; ${g.info.source}; valid ${fmtTemp(g.info.Tmin_K, u, 1)} to ${fmtTemp(g.info.Tmax_K, u, 1)}`])],
+      ...gases.map(g => [`${nameOf(state, g.id)} in ${solventName.toLowerCase()}`, `${g.info.tier}; ${g.info.source}; valid ${fmtTemp(g.info.Tmin_K, u, 1)} to ${fmtTemp(g.info.Tmax_K, u, 1)}`])],
     tables: henryTables({ units: u, solvent: solventName, p_kPa: p, gases: drawnGases }),
   }) };
 }
@@ -709,7 +711,7 @@ const info0 = gases => gases[0].info;
 function sleSystem(state, ids) {
   try { return { sys: system({ components: ids, model: state.model, ...setsFor(state, state.model) }), note: null }; } catch (e) {
     if (e.code !== "MISSING_DATA" || state.model === "ideal") throw e;
-    return { sys: system({ components: ids, model: "ideal" }),
+    return { sys: system({ components: ids, model: "ideal", ...own(state) }),
       note: `No ${modelName(state.model)} parameters for ${ids.map(nameOf).join(" + ")} (none fitted to solid-liquid or vapour-liquid data yet): this shows the ideal solubility (γ = 1), which can be far off for chemically different components.` };
   }
 }
@@ -723,10 +725,10 @@ function solidView(ctx) {
   const { sys, note } = sleSystem(state, [solid, solvent]);
   if (note) notes.append(h("div", { class: "fug-warn", role: "note" }, note));
   const f = sys.fusion[0], fs = sys.fusion[1];
-  const MW = [pure(solid).MW, pure(solvent).MW];
+  const MW = [pure(solid, own(state)).MW, pure(solvent, own(state)).MW];
   const unit = SOLID_UNITS.find(su => su.id === state.solidUnit) ?? SOLID_UNITS[0];
   // the solvent's liquid density (g/L): only for "g per L of solvent"; null where its correlation has no value
-  const rho = T => { try { return pure(solvent).property("liquidDensity", T); } catch { return null; } };
+  const rho = T => { try { return pure(solvent, own(state)).property("liquidDensity", T); } catch { return null; } };
   const conv = (x, T, id = unit.id) => {
     if (id === "gL") { const r = rho(T); return r == null ? null : solidIn(id, x, MW, r); }
     return solidIn(id, x, MW);
@@ -755,14 +757,14 @@ function solidView(ctx) {
   const series = [{ name: sys.model === "ideal" ? "ideal" : modelName(sys.model), color: SERIES(0), segments: [{ points: pts }] }];
   if (sys.model !== "ideal") series.push({ name: "ideal", color: "var(--fug-muted)", dash: "5 4", segments: [{ points: ideal }] });
   if (splits) notes.append(h("div", { class: "fug-warn", role: "note" }, `The ${modelName(sys.model)} model splits the liquid into two phases at some temperatures: the solvent-rich solubility is drawn there; a liquid-liquid check is needed.`));
-  if (noRho) notes.append(h("div", { class: "fug-warn", role: "note" }, `No liquid density of ${nameOf(solvent).toLowerCase()} at some of these temperatures (outside its correlation): g/L is not drawn there. g/100 g needs no density.`));
+  if (noRho) notes.append(h("div", { class: "fug-warn", role: "note" }, `No liquid density of ${nameOf(state, solvent).toLowerCase()} at some of these temperatures (outside its correlation): g/L is not drawn there. g/100 g needs no density.`));
   const gap = gapNote(reasons, "solubility");
   if (gap) notes.append(gap);
 
   // the result at the chosen temperature, in every unit
   const result = h("div", { class: "fa-result-card" });
   const T = state.sleT_K;
-  result.append(h("div", { class: "fug-eyebrow" }, `${nameOf(solid)} in ${nameOf(solvent).toLowerCase()} at ${fmtTemp(T, u)}`));
+  result.append(h("div", { class: "fug-eyebrow" }, `${nameOf(state, solid)} in ${nameOf(state, solvent).toLowerCase()} at ${fmtTemp(T, u)}`));
   try {
     const r = sys.solidSolubility(0, T);
     const val = (x, id) => { const y = conv(x, T, id); return y == null ? "–" : fmtNum(y, 4); };
@@ -778,7 +780,7 @@ function solidView(ctx) {
         ["Ideal solubility", val(r.xIdeal, unit.id), unit.axis],
         ["Melting point of the solid", meltText(f, u)]]),
       ...r.notes.filter(n => !/ΔCp/.test(n)).map(n => h("div", { class: "fug-warn" }, n)),
-      h("div", { class: "fug-foot" }, `x is the mole fraction of ${nameOf(solid).toLowerCase()} in the saturated solution (moles of dissolved solid per mole of solution), not the share of the solid that dissolves: x = 0.5 is one mole of solid per mole of solvent. At the melting point x reaches 1: the molten solid mixes with the solvent in any ratio. g/L is per litre of pure solvent at this temperature, before the solid is added.`),
+      h("div", { class: "fug-foot" }, `x is the mole fraction of ${nameOf(state, solid).toLowerCase()} in the saturated solution (moles of dissolved solid per mole of solution), not the share of the solid that dissolves: x = 0.5 is one mole of solid per mole of solvent. At the melting point x reaches 1: the molten solid mixes with the solvent in any ratio. g/L is per litre of pure solvent at this temperature, before the solid is added.`),
       h("div", { class: "fug-foot" }, "Pure solid in equilibrium with the solution: ln(x γ) = −(ΔH_fus / R T)(1 − T / T_m), ΔCp of fusion taken as 0."));
   } catch (e) {
     result.append(h("div", { class: "fug-err", role: "alert" }, e.message));
@@ -797,17 +799,17 @@ function solidView(ctx) {
     plot.replaceChildren(h("div", { class: "fug-err", role: "alert" }, "No solubility could be calculated in this temperature range."));
   } else {
     const move = drawPlot(plot, { compact, series, x0, x1, log: true, xLabel: `T, ${tU(u)}`,
-      yLabel: `${nameOf(solid)} (${unit.axis})`, show,
-      aria: `Solubility of ${nameOf(solid)} in ${nameOf(solvent).toLowerCase()} against temperature, ${unit.axis}` });
-    plot.append(h("div", { class: "fug-legend" }, `Up to the melting point of ${nameOf(solid).toLowerCase()} (${fmtTemp(f.Tm_K, u)})${fs && T0 <= fs.Tm_K + 0.6 ? `, from the melting point of ${nameOf(solvent).toLowerCase()} (below it the solvent freezes)` : ""}.${cut ? ` Drawn up to x = ${XMAX}: per gram of solvent the solubility grows without limit at the melting point.` : ""}`));
+      yLabel: `${nameOf(state, solid)} (${unit.axis})`, show,
+      aria: `Solubility of ${nameOf(state, solid)} in ${nameOf(state, solvent).toLowerCase()} against temperature, ${unit.axis}` });
+    plot.append(h("div", { class: "fug-legend" }, `Up to the melting point of ${nameOf(state, solid).toLowerCase()} (${fmtTemp(f.Tm_K, u)})${fs && T0 <= fs.Tm_K + 0.6 ? `, from the melting point of ${nameOf(state, solvent).toLowerCase()} (below it the solvent freezes)` : ""}.${cut ? ` Drawn up to x = ${XMAX}: per gram of solvent the solubility grows without limit at the melting point.` : ""}`));
     move(Math.min(x1, Math.max(x0, tToDisplay(T, u))));
   }
   side.replaceChildren(result, read);
   return { data: `${sys.model === "ideal" ? "Ideal solution" : modelName(sys.model)}${note ? " (no pair parameters)" : ""}`, export: () => ({
-    title: `Solubility of ${nameOf(solid)} in ${nameOf(solvent).toLowerCase()}`, file: `solubility ${solid} ${solvent}`,
+    title: `Solubility of ${nameOf(state, solid)} in ${nameOf(state, solvent).toLowerCase()}`, file: `solubility ${solid} ${solvent}`,
     about: [...aboutRows(state, sys), ["Melting point of the solid", meltText(f, u)], ...(note ? [["Note", note]] : []),
       ["Equation", "ln(x γ) = −(ΔH_fus / R T)(1 − T / T_m), ΔCp of fusion taken as 0"]],
-    tables: solidTables({ units: u, solid: nameOf(solid), solvent: nameOf(solvent), model: sys.model, unit, points: raw }),
+    tables: solidTables({ units: u, solid: nameOf(state, solid), solvent: nameOf(state, solvent), model: sys.model, unit, points: raw }),
   }) };
 }
 
@@ -816,7 +818,7 @@ function sleView(ctx) {
   const u = state.units, ids = state.components;
   const { sys, note } = sleSystem(state, ids);
   if (note) notes.append(h("div", { class: "fug-warn", role: "note" }, note));
-  const MW = ids.map(id => pure(id).MW);
+  const MW = ids.map(id => pure(id, own(state)).MW);
   const bv = basisView(state.basis, MW);
   const conv1 = x1 => bv.conv([x1, 1 - x1])[0];
   let d;
@@ -827,19 +829,19 @@ function sleView(ctx) {
   }
   for (const n of d.notes) notes.append(h("div", { class: "fug-warn", role: "note" }, n));
   // unlabelled curves (their names would collide at the eutectic): the legend under the plot names them
-  const branch = (b, k) => ({ name: "", label: `solid ${nameOf(ids[k]).toLowerCase()}`, color: SERIES(k), segments: [{ points: b.points.map(p => ({ x: conv1(p.x1), y: tToDisplay(p.T_K, u) })) }] });
+  const branch = (b, k) => ({ name: "", label: `solid ${nameOf(state, ids[k]).toLowerCase()}`, color: SERIES(k), segments: [{ points: b.points.map(p => ({ x: conv1(p.x1), y: tToDisplay(p.T_K, u) })) }] });
   const Te = tToDisplay(d.eutectic.T_K, u);
   const series = [branch(d.branches[0], 0), branch(d.branches[1], 1),
     { name: "", label: "eutectic", color: "var(--fug-muted)", dash: "5 4", segments: [{ points: [{ x: 0, y: Te }, { x: 1, y: Te }] }] }];
   const read = h("div", { class: "fa-read" });
   const show = xv => {
     const vals = series.map(sr => interpolate(sr.segments[0].points.slice().sort((a, b) => a.x - b.x), xv));
-    read.replaceChildren(h("div", { class: "fug-eyebrow" }, `At ${bv.mass ? "w" : "x"} ${nameOf(ids[0]).toLowerCase()} = ${bv.f(xv)}${bv.mass ? " wt %" : ""}`),
+    read.replaceChildren(h("div", { class: "fug-eyebrow" }, `At ${bv.mass ? "w" : "x"} ${nameOf(state, ids[0]).toLowerCase()} = ${bv.f(xv)}${bv.mass ? " wt %" : ""}`),
       ...series.slice(0, 2).map((sr, i) => h("div", { class: "fa-row" }, h("span", {}, h("span", { class: "sw", style: `border-color:${sr.color}` }), `${sr.label} appears at`),
         h("b", { class: "fug-num" }, vals[i] == null ? "–" : `${fmtNum(vals[i], 4)} ${tU(u)}`))));
     return vals;
   };
-  const move = drawPlot(plot, { compact, series, x0: 0, x1: 1, xLabel: `${nameOf(ids[0])} (${bv.axis})`, yLabel: `T, ${tU(u)}`, show,
+  const move = drawPlot(plot, { compact, series, x0: 0, x1: 1, xLabel: `${nameOf(state, ids[0])} (${bv.axis})`, yLabel: `T, ${tU(u)}`, show,
     aria: `Solid-liquid diagram of ${ids.map(nameOf).join(" and ")} with the eutectic` });
   plot.append(h("div", { class: "fug-legend" },
     ...series.map(sr => h("span", { class: "fa-leg" }, h("span", { class: "sw", style: `border-color:${sr.color}${sr.dash ? ";border-top-style:dashed" : ""}` }), ` ${sr.label}   `)),
@@ -847,27 +849,27 @@ function sleView(ctx) {
   // the result at the chosen temperature: where each solid starts to crystallize
   const T = state.sleT_K, f = sys.fusion;
   const rows = [["Eutectic temperature", fmtShort(+Te.toFixed(2)), tU(u)],
-    [`Eutectic composition, ${bv.mass ? "wt %" : "mole fraction"} ${nameOf(ids[0]).toLowerCase()}`, bv.f(conv1(d.eutectic.x1))]];
+    [`Eutectic composition, ${bv.mass ? "wt %" : "mole fraction"} ${nameOf(state, ids[0]).toLowerCase()}`, bv.f(conv1(d.eutectic.x1))]];
   const at = [];
-  const xn = `${bv.mass ? "w" : "x"} ${nameOf(ids[0]).toLowerCase()}`;
+  const xn = `${bv.mass ? "w" : "x"} ${nameOf(state, ids[0]).toLowerCase()}`;
   if (T < d.eutectic.T_K) at.push(`Below the eutectic: both solids, no liquid.`);
   else for (const k of [0, 1]) {
-    if (T >= f[k].Tm_K) { at.push(`No solid ${nameOf(ids[k]).toLowerCase()}: above its melting point (${fmtTemp(f[k].Tm_K, u)}).`); continue; }
+    if (T >= f[k].Tm_K) { at.push(`No solid ${nameOf(state, ids[k]).toLowerCase()}: above its melting point (${fmtTemp(f[k].Tm_K, u)}).`); continue; }
     try {
       const r = sys.solidSolubility(k, T), x1 = k === 0 ? r.xSolute : 1 - r.xSolute;
-      at.push(`Solid ${nameOf(ids[k]).toLowerCase()} appears where ${xn} ${k === 0 ? "≥" : "≤"} ${bv.f(conv1(x1))}${bv.mass ? " wt %" : ""}.`);
+      at.push(`Solid ${nameOf(state, ids[k]).toLowerCase()} appears where ${xn} ${k === 0 ? "≥" : "≤"} ${bv.f(conv1(x1))}${bv.mass ? " wt %" : ""}.`);
     } catch (e) { at.push(e.message); }
   }
   side.replaceChildren(h("div", { class: "fa-result-card" },
     h("div", { class: "fug-eyebrow" }, `${ids.map(nameOf).join(" + ")}`),
-    kv([...rows, ...[0, 1].map(k => [`Melting point, ${nameOf(ids[k]).toLowerCase()}`, fmtShort(+tToDisplay(f[k].Tm_K, u).toFixed(2)), tU(u)])]),
+    kv([...rows, ...[0, 1].map(k => [`Melting point, ${nameOf(state, ids[k]).toLowerCase()}`, fmtShort(+tToDisplay(f[k].Tm_K, u).toFixed(2)), tU(u)])]),
     h("div", { class: "fug-eyebrow" }, `At ${fmtTemp(T, u)}`),
     h("ul", { class: "fa-plain" }, ...at.map(t => h("li", {}, t))),
     h("div", { class: "fug-foot" }, "Each liquidus: ln(x γ) = −(ΔH_fus / R T)(1 − T / T_m) for that pure solid; no solid solutions, ΔCp of fusion taken as 0.")), read);
   move(conv1(d.eutectic.x1));
   return { data: `Eutectic ${fmtTemp(d.eutectic.T_K, u)}`, export: () => ({
     title: `Solid-liquid diagram of ${listNames(ids.map(nameOf))}`, file: `sle ${ids.join(" ")}`,
-    about: [...aboutRows(state, sys), ...(note ? [["Note", note]] : []), ...[0, 1].map(k => [`Melting point, ${nameOf(ids[k]).toLowerCase()}`, meltText(f[k], u)])],
+    about: [...aboutRows(state, sys), ...(note ? [["Note", note]] : []), ...[0, 1].map(k => [`Melting point, ${nameOf(state, ids[k]).toLowerCase()}`, meltText(f[k], u)])],
     tables: sleTables({ names: sys.names, MW, units: u, basis: state.basis, diagram: d }),
   }) };
 }
@@ -878,8 +880,8 @@ function sleView(ctx) {
 function propertiesView(ctx) {
   const { state, plot, side, extra } = ctx;
   const id = state.components[0];
-  const p = pure(id), u = state.units;
-  const explorer = mountProperties(plot, { component: id, property: state.property, units: u, controls: false });
+  const p = pure(id, own(state)), u = state.units;
+  const explorer = mountProperties(plot, { component: id, property: state.property, units: u, controls: false, ...own(state) });
   side.replaceChildren(
     h("div", {}, h("div", { class: "fug-eyebrow" }, p.formula), h("div", { class: "fa-comp-name" }, p.name), h("div", { class: "fug-sub" }, `CAS ${p.cas}`)),
     kv([["Molar mass", fmtNum(p.MW, 5), "g/mol"],
@@ -1055,7 +1057,7 @@ function sourceCard(s) {
     const g = u.type === "component" ? `Pure-component data: ${u.label.split(": ")[1]}` : u.type === "kij" ? "Equation-of-state k_ij"
       : u.type === "pair-set" ? `${u.model} parameter sets` : u.type === "henry" ? "Henry's law" : "Known-deviation notes";
     if (!groups.has(g)) groups.set(g, []);
-    groups.get(g).push(u.type === "component" ? nameOf(u.component) : u.type === "pair-set" || u.type === "kij" ? `${u.pair.join(" + ")}${u.default ? "" : ` (${u.set}, alternative)`}` : u.label);
+    groups.get(g).push(u.type === "component" ? nameOf(null, u.component) : u.type === "pair-set" || u.type === "kij" ? `${u.pair.join(" + ")}${u.default ? "" : ` (${u.set}, alternative)`}` : u.label);
   }
   const usedRows = [...groups].map(([g, items]) => h("li", {}, h("b", {}, `${g}: `), [...new Set(items)].join("; ")));
   if (files.length) usedRows.push(h("li", {}, h("b", {}, "Files: "), files.map(f => f.file).join(", ")));

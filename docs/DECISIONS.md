@@ -130,7 +130,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   8. benchmarks.
 - **0012, your own data** (accepted 2026-10-16): property records, components, pairs and Modified UNIFAC 2.0 groups
   of the user's own, in the project and in a file of their own; My data docked, with an optional separate window:
-  1. the engine overlay (done); 2. project format 3, the My data file, the contribution-package export (done); 3. the My data panel;
+  1. the engine overlay (done); 2. project format 3, the My data file, the contribution-package export (done); 3. the My data panel (done);
   4. the separate window; 5. pairs and the groups panel (the database's groups as a proposal, or the user's own).
 - **0011, agents:**
   1. the tool interface;

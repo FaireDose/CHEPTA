@@ -47,6 +47,7 @@ export const sectionOf = ws => SECTIONS.find(s => s.workspaces.includes(ws))?.id
 export const UTILITIES = [
   { id: "project", label: "Project", icon: "file", title: "Project", intro: "Save your work as a file and open it again." },
   { id: "library", label: "Library", icon: "book", title: "Library", intro: "Which parameter set each binary pair uses." },
+  { id: "mydata", label: "My data", icon: "mydata", title: "My data", intro: "Your own property records and components, kept with this project." },
   { id: "sources", label: "Sources", icon: "search", title: "Sources", intro: "Every source behind CHEPTA's data, why it is open and what uses it." },
   { id: "settings", label: "Settings", icon: "units", title: "Settings", intro: "Units, composition basis and panels. They apply to every workspace." },
   { id: "feedback", label: "Feedback", icon: "chat", title: "Feedback", intro: "Report a bug, suggest an improvement or ask a question, on CHEPTA's GitHub pages." },
@@ -92,11 +93,12 @@ export const INPUTS = {
 
 const WORDS = ["no", "one", "two", "three", "four", "five", "six"];
 const word = n => WORDS[n] ?? String(n);
-const cmap = () => new Map(listComponents().map(c => [c.id, c]));
+// ud: the user's own data, checked (proposal 0012): their components are known too
+const cmap = (ud = null) => new Map(listComponents({ userData: ud }).map(c => [c.id, c]));
 const nameIn = (m, id) => m.get(id)?.name ?? id;
 
 /** Is this component usable with activity-coefficient models (a liquid with the data they need)? */
-export const isLiquid = id => !!cmap().get(id)?.activity;
+export const isLiquid = (id, ud = null) => !!cmap(ud).get(id)?.activity;
 
 /** Is the model an equation of state (PR, SRK), which describes gases and liquids alike? */
 export const isEosModel = model => EOS_MODELS.includes(String(model ?? "").toUpperCase());
@@ -120,9 +122,9 @@ export function solventsFor(gas) {
 }
 
 /** A component id from a name, alias, formula or CAS number; null for an empty entry (an empty slot). */
-export function pickId(v) {
+export function pickId(v, ud = null) {
   if (v == null || v === "") return null;
-  return findComponent(v);
+  return findComponent(v, ud);
 }
 
 /**
@@ -130,15 +132,15 @@ export function pickId(v) {
  * max. Duplicates and components the view cannot use are KEPT, so that checkInputs can say
  * what is wrong; nothing is silently replaced.
  */
-export function normalizeInputs(view, value) {
+export function normalizeInputs(view, value, ud = null) {
   const spec = INPUTS[view];
   if (!spec) throw new Error(`Unknown view "${view}".`);
   if (spec.kind === "none") return [];
   if (spec.kind === "henry") {
     const v = value ?? {};
-    return { gas: pickId(v.gas), solvent: pickId(v.solvent) };
+    return { gas: pickId(v.gas, ud), solvent: pickId(v.solvent, ud) };
   }
-  const list = (Array.isArray(value) ? value : value == null ? [] : [value]).map(pickId);
+  const list = (Array.isArray(value) ? value : value == null ? [] : [value]).map(v => pickId(v, ud));
   if (spec.kind === "slots") return Array.from({ length: spec.n }, (_, i) => list[i] ?? null);
   return list.filter(id => id != null).slice(0, spec.max);
 }
@@ -149,9 +151,9 @@ export function normalizeInputs(view, value) {
  *   `use`: the component ids the view calculates with (when ok); `problems`: one plain-language
  *   message per issue, with the slot it concerns (0-based; null for the whole selection).
  */
-export function checkInputs(view, value, model = "NRTL") {
+export function checkInputs(view, value, model = "NRTL", ud = null) {
   const spec = needsFor(view, model);
-  const m = cmap();
+  const m = cmap(ud);
   const problems = [];
   if (spec.kind === "none") return { ok: true, use: view === "steam" ? ["water"] : [], problems };
   if (spec.kind === "henry") {
@@ -204,23 +206,23 @@ export function checkInputs(view, value, model = "NRTL") {
  * component for the properties. A slot with nothing to take stays empty. With an equation of
  * state (`model` PR or SRK), the diagrams take gases too.
  */
-export function seedInputs(components = [], { gas, solvent, propComponent, model } = {}) {
-  const ids = components.map(pickId).filter(Boolean);
-  const liq = isEosModel(model) ? ids : ids.filter(isLiquid);
+export function seedInputs(components = [], { gas, solvent, propComponent, model, ud = null } = {}) {
+  const ids = components.map(c => pickId(c, ud)).filter(Boolean);
+  const liq = isEosModel(model) ? ids : ids.filter(id => isLiquid(id, ud));
   const firstGas = ids.find(id => HENRY_GASES.includes(id));
-  const g = pickId(gas) ?? firstGas ?? (HENRY_GASES.includes("oxygen") ? "oxygen" : HENRY_GASES[0]);
+  const g = pickId(gas, ud) ?? firstGas ?? (HENRY_GASES.includes("oxygen") ? "oxygen" : HENRY_GASES[0]);
   return {
-    txy: normalizeInputs("txy", liq.slice(0, 2)),
-    ternary: normalizeInputs("ternary", liq.slice(0, 3)),
-    azeotropes: normalizeInputs("azeotropes", liq.slice(0, 4)),
-    pxy: normalizeInputs("pxy", ids.slice(0, 2)),
-    envelope: normalizeInputs("envelope", ids.slice(0, 6)),
-    flash: normalizeInputs("flash", liq.slice(0, 6)),
-    henry: { gas: g, solvent: pickId(solvent) ?? solventsFor(g)[0] ?? "water" },
+    txy: normalizeInputs("txy", liq.slice(0, 2), ud),
+    ternary: normalizeInputs("ternary", liq.slice(0, 3), ud),
+    azeotropes: normalizeInputs("azeotropes", liq.slice(0, 4), ud),
+    pxy: normalizeInputs("pxy", ids.slice(0, 2), ud),
+    envelope: normalizeInputs("envelope", ids.slice(0, 6), ud),
+    flash: normalizeInputs("flash", liq.slice(0, 6), ud),
+    henry: { gas: g, solvent: pickId(solvent, ud) ?? solventsFor(g)[0] ?? "water" },
     // a solid in a solvent, and a binary with a eutectic: examples until the person chooses
     solid: normalizeInputs("solid", ["benzoic-acid", "ethanol"]),
     sle: normalizeInputs("sle", ["benzene", "naphthalene"]),
-    properties: [pickId(propComponent) ?? ids[0] ?? "water"],
+    properties: [pickId(propComponent, ud) ?? ids[0] ?? "water"],
     steam: [],
     flowsheet: [],
   };

@@ -92,8 +92,9 @@ export function readUserDataFile(input) {
  * "components.<id>", "pairs.<id>+<id>" (ids in alphabetical order) and "groups.<id>".
  * @returns {Map<string, {part:string, path:string[], value:any}>}
  */
-function entries(raw) {
-  const ud = checkUserData(raw ?? {});
+function entries(raw, context = null) {
+  // context: user data whose components `raw` may name (the project's, for entries being added to it)
+  const ud = checkUserData(context?.components ? { ...(raw ?? {}), components: { ...context.components, ...(raw?.components ?? {}) } } : raw ?? {});
   const out = new Map();
   const id = (k, where) => {
     try { return findComponent(k, ud); } catch (e) { throw new Error(`user data: ${where}: ${e.message}`); }
@@ -143,7 +144,7 @@ function describe(key, merged) {
  *          userData: the result, checked (null when empty)
  */
 export function mergeUserData(current, incoming, choose = {}) {
-  const a = entries(current), b = entries(incoming);
+  const a = entries(current), b = entries(incoming, current);
   for (const [k, v] of Object.entries(choose ?? {})) {
     if (v !== "current" && v !== "incoming") throw new Error(`choose["${k}"] must be "current" or "incoming" (got ${JSON.stringify(v)}).`);
   }
@@ -156,16 +157,54 @@ export function mergeUserData(current, incoming, choose = {}) {
     if (kept === "incoming") result.set(key, e);
     conflicts.push({ key, current: copy(a.get(key).value), incoming: copy(e.value), kept });
   }
+  const merged = fromEntries(result);   // checked: e.g. two components of the same name under different ids are refused
+  for (const c of conflicts) c.what = describe(c.key, merged ?? {});
+  return { userData: merged, added, same, conflicts };
+}
+
+/** User data from entries (keys as component ids), checked; null when empty. */
+function fromEntries(map) {
   const out = {};
-  for (const { part, path, value } of result.values()) {
+  for (const { part, path, value } of map.values()) {
     out[part] ??= {};
     if (part === "properties") (out.properties[path[0]] ??= {})[path[1]] = copy(value);
     else out[part][path[0]] = copy(value);
   }
-  const merged = PARTS.some(p => out[p]) ? Object.fromEntries(PARTS.filter(p => out[p]).map(p => [p, out[p]])) : null;
-  if (merged) checkUserData(merged);   // e.g. two components of the same name under different ids: refused, naming them
-  for (const c of conflicts) c.what = describe(c.key, merged ?? {});
-  return { userData: merged, added, same, conflicts };
+  const ud = PARTS.some(p => out[p]) ? Object.fromEntries(PARTS.filter(p => out[p]).map(p => [p, out[p]])) : null;
+  if (ud) checkUserData(ud);
+  return ud;
+}
+
+/**
+ * User data without one entry (a key of userDataKeys); null when nothing is left. Throws when another entry needs it
+ * (a pair or the groups of a component of the user's own that is being removed), naming it.
+ */
+export function removeUserDataEntry(userData, key) {
+  const e = entries(userData);
+  if (!e.has(key)) throw new Error(`user data has no entry "${key}".`);
+  e.delete(key);
+  return fromEntries(e);
+}
+
+/**
+ * Put entries into user data, replacing those with the same key (the person saves them on purpose); keys as component
+ * ids. The result is checked.
+ */
+export function putUserData(userData, piece) {
+  const choose = Object.fromEntries([...entries(piece, userData).keys()].map(k => [k, "incoming"]));
+  return mergeUserData(userData, piece, choose).userData;
+}
+
+/** The entries of user data for a list: [{ key, what, component, source, value }], by component. */
+export function userDataList(userData) {
+  const ud = userData ?? {};
+  const out = [];
+  for (const [key, e] of entries(ud)) {
+    const value = e.value;
+    const src = typeof value.source === "string" ? value.source : value.source?.name ?? "";
+    out.push({ key, part: e.part, component: e.part === "pairs" ? null : e.path[0], what: describe(key, ud), source: src, fit: value.source?.fit ?? null, value: copy(value) });
+  }
+  return out;
 }
 
 /** The entry keys of user data (as mergeUserData names them), for choosing what to export. */

@@ -25,7 +25,11 @@ import { flowsheetXlsx } from "./flowsheet-excel.js";
 import pkg from "../../package.json" with { type: "json" };
 import { parseP, parseT, fmtTemp, fmtP, userOverlay } from "./app-logic.js";
 
-const byId = () => new Map(listComponents().map(c => [c.id, c]));
+// the user's own data of the workbench being drawn (proposal 0012), set by each entry point below from its state;
+// the drawing is synchronous, so it never mixes two workbenches
+let drawing = null;
+const enter = state => { drawing = userOverlay(state); };
+const byId = () => new Map(listComponents({ userData: drawing }).map(c => [c.id, c]));
 const nameOf = id => byId().get(id)?.name ?? id;
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater / cooler", product: "Product" };
 const HINT = {
@@ -60,6 +64,7 @@ function feedSel(f, fs) {
 
 /** Delete what is selected (a block, or a stream as far as the flowsheet allows) and say what happened. */
 export function deleteSelected(state, set, ui) {
+  enter(state);
   const f = ensureUi(ui), fs = state.flowsheet;
   if (!f.sel) return;
   if (f.sel.kind === "block") {
@@ -82,6 +87,7 @@ export const flowsheetKey = state => JSON.stringify(state.userData ? [state.flow
 
 /** The status and, when it can be had, the solution of the flowsheet in the state (with the project's own data). */
 export function solution(state, ui) {
+  enter(state);
   const f = ensureUi(ui), fs = state.flowsheet, ud = userOverlay(state);
   let status;
   try { status = flowsheetDocStatus(fs, ud); } catch (e) { return { status: { ready: false, message: e.message, structure: [], blocks: {} }, result: null, error: e.message }; }
@@ -101,6 +107,7 @@ export function solution(state, ui) {
 
 /** The toolbar groups of the Flowsheet workspace (helpers from app.js: group, bigButton, smallButton). */
 export function flowsheetRibbon({ state, set, ui, group, bigButton, smallButton }) {
+  enter(state);
   const f = ensureUi(ui), fs = state.flowsheet;
   const ready = fs.components.length > 0;
   const place = type => () => {
@@ -169,6 +176,7 @@ function dofBadge(st) {
 
 /** The sections of the Inputs panel. env: { state, set, ui, uid, inputsSection } */
 export function flowsheetInputs(env) {
+  enter(env.state);
   const f = ensureUi(env.ui);
   const note = f.note; f.note = "";
   const secs = inputsFor(env);
@@ -312,7 +320,7 @@ function methodProblem(ids, thermo) {
 
 function setupSections({ state, set, ui, uid, inputsSection, st }) {
   const f = ensureUi(ui), fs = state.flowsheet;
-  const all = listComponents();
+  const all = listComponents({ userData: drawing });
   const eos = ["PR", "SRK"].includes(fs.thermo.model);
   const changeComps = ids => { const r = setComponents(fs, ids); f.note = r.note; set({ flowsheet: r.fs }); };
   // type a name, formula or CAS number (component-picker.js); every component can be chosen, and the Components and
@@ -468,6 +476,7 @@ function shape(type, w, hh) {
 /** Draw the flowsheet (canvas, results panel and stream table). ctx from app-views renderView. */
 export function flowsheetView(ctx) {
   const { state, set, plot, side, below, notes, ui } = ctx;
+  enter(state);
   const f = ensureUi(ui), fs = state.flowsheet, u = state.units;
   feedSel(f, fs);
   if (!fs.components.length) {
@@ -810,7 +819,7 @@ function csvTools(ctx, fs, res, u) {
   const status = h("div", { class: "fug-foot", "aria-live": "polite" }), box = h("div");
   const excel = concept => () => {
     try {
-      const bytes = flowsheetXlsx(fs, res, { version: pkg.version, concept });
+      const bytes = flowsheetXlsx(fs, res, { version: pkg.version, concept, userData: drawing });
       const name = `${(ctx.state.title || "flowsheet").replace(/[\\/:*?"<>|]+/g, "-")}${concept ? " - concept model" : ""}.xlsx`;
       const url = URL.createObjectURL(new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
       const a = h("a", { href: url, download: name, style: "display:none" });

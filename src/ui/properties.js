@@ -12,6 +12,7 @@ import { h } from "./dom.js";
 import { drawPlot } from "./plot.js";
 import { pure, PROPERTIES } from "../thermo/pure.js";
 import { listComponents, findComponent } from "../thermo/system.js";
+import { checkUserData } from "../thermo/user-data.js";
 import { componentPicker } from "./component-picker.js";
 import {
   normalizeUnits, UNIT_CHOICES, toDisplay, unitLabel, tToDisplay, tFromDisplay, pToDisplay, pFromDisplay,
@@ -38,6 +39,7 @@ const FEEDBACK = "https://github.com/FaireDose/CHEPTA/issues/new/choose";
  * @param {[number, number]} [cfg.T_K]  temperature range of the plot, K (default: the data's range)
  * @param {boolean} [cfg.logScale]      logarithmic property axis (default: automatic)
  * @param {string} [cfg.title]
+ * @param {object} [cfg.userData]  the user's own data (proposal 0012), checked (CHEPTA.checkUserData)
  * @param {boolean} [cfg.controls=true]  false hides the title, the component and property
  *   menus and the unit switches (for a page, like the workbench, that sets them through update())
  * @returns {{update:(patch:object)=>void, state:object, plotted:()=>object|null}}  plotted(): the
@@ -53,7 +55,8 @@ export function mountProperties(target, cfg = {}) {
   injectPropertiesStyles(root.ownerDocument);
 
   const state = {
-    component: findComponent(cfg.component ?? "water"),
+    userData: cfg.userData ? checkUserData(cfg.userData) : null,
+    component: findComponent(cfg.component ?? "water", cfg.userData ? checkUserData(cfg.userData) : null),
     property: findExplorerProperty(cfg.property ?? "density").key,
     pressures_kPa: cleanPressures(cfg.pressures_kPa ?? [100, 500, 1000]),
     units: normalizeUnits(cfg.units),
@@ -79,7 +82,7 @@ export function mountProperties(target, cfg = {}) {
   let lastPlot = null;   // what the plot shows now (plotted())
   function render() {
     lastPlot = null;
-    const p = pure(state.component);
+    const p = pure(state.component, { userData: state.userData });
     const prop = findExplorerProperty(state.property);
     const u = state.units;
     const tU = unitLabel("temperature", u);
@@ -405,7 +408,7 @@ export function mountProperties(target, cfg = {}) {
     plotted() { return lastPlot; },
     /** Change the view: any of component, property, pressures_kPa, units, T_K, logScale, title. */
     update(patch = {}) {
-      if (patch.component != null) { state.component = findComponent(patch.component); state.T_K = null; }
+      if (patch.component != null) { state.component = findComponent(patch.component, state.userData); state.T_K = null; }
       if (patch.property != null) { state.property = findExplorerProperty(patch.property).key; state.T_K = null; state.logScale = null; }
       if (patch.pressures_kPa != null) state.pressures_kPa = cleanPressures(patch.pressures_kPa);
       if (patch.units != null) state.units = normalizeUnits(patch.units, state.units);
