@@ -178,6 +178,19 @@ it throws.
   the panel into a window the main window builds (no second file is loaded); the main window keeps the data, and
   changes in either appear in both. Not on phones; where the page or the browser refuses a window (AI chats), the panel
   stays docked and says why. Closing the window docks the panel again.
+- **Pairs and groups side by side** ([`src/ui/my-data-pairs-groups.js`](../../src/ui/my-data-pairs-groups.js),
+  [`src/ui/pairs-groups-logic.js`](../../src/ui/pairs-groups-logic.js)): for a pair and a model (NRTL, UNIQUAC, PR or
+  SRK k_ij), one table holds every databank set, turned to the order the person chose (i, j), next to an empty column
+  for one's own; a set can be copied into it, and "Compare" gives the bubble point of an equimolar liquid at 1 atm
+  with each set and with one's own. Saved into the pair's existing entry in that entry's order, keeping its other
+  models. For Modified UNIFAC 2.0, the database's groups of a component (subgroup, main group, R, Q, how they were
+  found) stand next to the selection of one's own (search, add, count, remove), with the interaction parameters between
+  their main groups below. Groups of one's own must pass the atom balance against the component's formula
+  ([`src/thermo/formula.js`](../../src/thermo/formula.js); one H over is allowed, as for the database's, section 7 of
+  DATA_RULES); the atoms of each subgroup are those of thermo (`DOUFSG`), written into `mod-unifac-2.json` by
+  `mod_unifac_2.py`. Checked by [test/pairs-groups.test.js](../../test/pairs-groups.test.js): a databank set entered as
+  one's own gives the same bubble point in either order; every component's database groups entered as one's own give
+  identical activity coefficients.
 - **Inert solids** ([`src/equilibrium/inert-solids.js`](../../src/equilibrium/inert-solids.js)): a component of one's own
   with `class: "solid"` and a solid heat capacity neither evaporates, dissolves nor melts. `system()` flashes the fluid
   part as it would alone and adds a solid phase whose enthalpy is the integral of the solid heat capacity from 298.15 K;

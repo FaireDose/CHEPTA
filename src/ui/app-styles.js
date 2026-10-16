@@ -394,6 +394,15 @@ export const APP_CSS = `
 .fa-restore{display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; font-size:12.5px; padding:8px 10px; margin:0 0 12px; border-radius:8px; background:color-mix(in srgb, var(--fug-accent) 10%, transparent)}
 .fa-dgrid.fa-mydata{grid-template-columns:minmax(0,1fr)}
 .fa-window{min-height:100vh}
+.fa-side2{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px; margin:8px 0}
+.fa-side-col{min-width:0; padding:8px 10px; border:1px solid var(--fug-rule); border-radius:8px}
+.fa-side-col h4,.fa-mydata h4{font-size:12.5px; font-weight:600; margin:0 0 6px}
+.fa-mydata table{border-collapse:collapse; font-size:12px; width:100%}
+.fa-mydata th,.fa-mydata td{padding:3px 6px; border-bottom:1px solid var(--fug-rule); text-align:left; vertical-align:middle}
+.fa-mydata td.fug-num{text-align:right; font-variant-numeric:tabular-nums}
+.fa-mydata .fa-mine-col{background:color-mix(in srgb, var(--fug-accent) 7%, transparent)}
+.fa-side-table{margin:6px 0}
+.fa-sub-main{display:block; color:var(--fug-muted); font-size:10.5px}
 .fa-window-body{padding:16px 20px 32px; max-width:760px; margin:0 auto}
 .fa-window-title{display:flex; align-items:center; gap:8px; font-size:17px; font-weight:600; margin:0 0 12px}
 .fa-window-bar{margin:0}

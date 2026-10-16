@@ -248,15 +248,21 @@ def main():
     if not args.write:
         return
     usable = [g for g, s in sub.items() if s["main"] in main_groups]
+    # the atoms of each subgroup, for the atom balance of groups a person chooses (proposal 0012, step 5): the thermo
+    # library's (MIT; thermo.unifac.DOUFSG) with the corrections of ATOMS_FIX; null where it has none (BTI-)
+    import thermo.unifac as u
+    atoms = {g: (atoms_of({g: 1}, u.DOUFSG) if g in u.DOUFSG else None) for g in usable}
     data = {
         "_about": ("Modified UNIFAC 2.0 (%s; %s), CC BY 4.0. Subgroups with R, Q and main group; the a (K) and b (-) "
                    "tables of the main groups, a[i][j] and b[i][j] for main groups main[i] and main[j], "
                    "Psi = exp(-(a + b T)/T). Written by validation/python/mod_unifac_2.py from the arXiv files in "
-                   "validation/data/unifac/mod-unifac-2.0/ (unchanged)." % (CITATION, OPEN_COPY)),
+                   "validation/data/unifac/mod-unifac-2.0/ (unchanged). The atoms of each subgroup (for the atom "
+                   "balance) are the thermo library's (MIT; thermo.unifac.DOUFSG), with the corrections of "
+                   "mod_unifac_2.py; null where it has none." % (CITATION, OPEN_COPY)),
         "source": {"citation": CITATION, "doi": DOI, "open_copy": OPEN_COPY, "access": ACCESS,
                    "tables": "ancillary files Size_Parameters_modUNIFAC20.csv, a_Parameters_modUNIFAC20.csv, "
                              "b_Parameters_modUNIFAC20.csv"},
-        "subgroups": {str(g): {"name": s["name"], "main": s["main"], "R": s["R"], "Q": s["Q"]} for g, s in sub.items() if g in usable},
+        "subgroups": {str(g): {"name": s["name"], "main": s["main"], "R": s["R"], "Q": s["Q"], "atoms": atoms[g]} for g, s in sub.items() if g in usable},
         "mainGroups": {str(s["main"]): s["mainName"] for s in sub.values()},
         "main": main_groups,
         "a": [[a[m][n] for n in main_groups] for m in main_groups],
