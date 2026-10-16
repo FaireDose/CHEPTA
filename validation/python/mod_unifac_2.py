@@ -87,16 +87,21 @@ FROM_STRUCTURE = {
                                                             "CHO, the substituted ring double bond as CH=C, the remaining "
                                                             "ring CH as CY-CH, and CH2 with a primary OH; the second "
                                                             "double bond and the aromatic character are not represented"),
+    "hmf": ({61: 1, 2: 1, 14: 1}, "the ring with its aldehyde as the method's FURFURAL subgroup, and the CH2OH as CH2 "
+                                  "with a primary OH (the SMARTS match took the ether subgroup CH2O for the alcohol's "
+                                  "CH2-O, leaving out the OH); the substituted ring carbon is counted in FURFURAL"),
 }
 # assignments that count a substituted ring carbon in the ring's subgroup (THF: CH2-O-CH2; (CH2)2CB: the ring of ethylene
 # carbonate): their atom balance is one H above the formula, the way DDBST counts such rings
-ONE_H_OVER = {"2-methyltetrahydrofuran", "thfa", "propylene-carbonate"}
+ONE_H_OVER = {"2-methyltetrahydrofuran", "thfa", "propylene-carbonate", "hmf"}
 # components without a DDBST assignment whose structure-based assignment was checked (and passes the atom balance)
 REVIEWED = {
     "glycerol": "two primary OH (P), one secondary OH (S), two CH2 and one CH",
     "methyl-linoleate": "ester CH2COO, the methyl ester's CH3 and the chain's CH3, two CH=CH, eleven CH2",
     "triolein": "per oleoyl chain one CH3, thirteen CH2, one CH=CH and one CH2COO; the glycerol backbone two CH2 and one CH",
     "ethylene-carbonate": "the whole molecule is the cyclic carbonate subgroup (CH2)2CB",
+    "fructose": "the open-chain ketone form (as for glucose, which DDBST assigns open-chain): the C(=O) with C1 as "
+                "CH2CO, C6 as CH2, three CH; two primary OH (P) and three secondary OH (S)",
     "cyrene": "the ring ketone C(=O) with its CH2 as CH2CO, the CH2-O of the bridge as TRIOXAN and the other ring ether "
               "CH-O as CHO, one ring CH2 and one ring CH",
 }

@@ -1,0 +1,55 @@
+{
+ "component": "glucose",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tfus",
+       "423.",
+       "K",
+       "N/A",
+       "Kofler and Sitte, 1950",
+       "Uncertainty assigned by TRC =  3. K; With \"hot stage\""
+      ],
+      [
+       "Tfus",
+       "420.",
+       "K",
+       "N/A",
+       "Kofler and Sitte, 1950",
+       "Uncertainty assigned by TRC =  4. K; By \"differntial thermal absorption\""
+      ],
+      [
+       "Tfus",
+       "414.",
+       "K",
+       "N/A",
+       "Parks and Thomas, 1934",
+       "Uncertainty assigned by TRC =  2. K"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

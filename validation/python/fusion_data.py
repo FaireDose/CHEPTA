@@ -160,6 +160,15 @@ def choose(rec, chemsep=None):
         Tm_unc = avg[0]["uncertainty"]
     elif ind:
         Tm, how, Tm_unc = statistics.median(ind), "median of %d WebBook melting temperatures (Tfus)" % len(ind), None
+    elif [r for r in rec.get("enthalpy_of_fusion", []) if r["T_K"]] and not (chemsep and chemsep.get("Tm_K")):
+        # no melting temperature listed, but the enthalpy of fusion was measured at a stated temperature (a DSC melting
+        # peak: HMF, Verevkin et al. 2009): that temperature is the melting temperature. Only where ChemSep has no
+        # melting data: such a temperature is not always the melting point (diethyl carbonate: 198.2 K, against
+        # ChemSep's melting point of 230.15 K)
+        hT = [r for r in rec["enthalpy_of_fusion"] if r["T_K"]]
+        Tm, Tm_unc = statistics.median(r["T_K"] for r in hT), None
+        how = "temperature of the WebBook's measured enthalpy of fusion (%s; no Tfus or Ttriple listed)" % "; ".join(
+            "%g K, %s" % (r["T_K"], r["reference"]) for r in hT)
     else:
         return None, "no melting or triple-point temperature on the WebBook page"
     vals = []

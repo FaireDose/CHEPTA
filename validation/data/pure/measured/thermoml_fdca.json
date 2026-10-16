@@ -1,0 +1,56 @@
+{
+ "component": "fdca",
+ "cas": "3238-40-2",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-16",
+ "searched": "ThermoML-API full-text search for \"2,5-furandicarboxylic acid\", \"furan-2,5-dicarboxylic acid\"; 3 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1021/acs.jced.7b01112": {
+   "authors": [
+    "Ban, Heng",
+    "Pan, Teng",
+    "Cheng, Youwei",
+    "Wang, Lijun",
+    "Li, Xi"
+   ],
+   "title": "Solubilities of 2,5-Furandicarboxylic Acid in Binary Acetic Acid + Water, Methanol + Water, and Ethanol + Water Solvent Mixtures",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "63",
+   "year": "2018",
+   "pages": "1987-1993"
+  }
+ },
+ "rows": [
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 614.45,
+   "uncertainty": 0.7,
+   "doi": "10.1021/acs.jced.7b01112",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 55.131,
+   "uncertainty": 3.469,
+   "doi": "10.1021/acs.jced.7b01112",
+   "set": 2,
+   "binary_with": null
+  }
+ ]
+}

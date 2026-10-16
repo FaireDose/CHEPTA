@@ -1,0 +1,37 @@
+{
+ "component": "fdca",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C3238402&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C3238402&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C3238402&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "ΔsubH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "121.3",
+       "391.",
+       "TE,ME",
+       "Spencer and Cliath, 1983",
+       "Based on data from 378. to 402. K."
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

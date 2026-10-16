@@ -1,0 +1,39 @@
+{
+ "component": "glucose",
+ "cas": "50-99-7",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-16",
+ "searched": "ThermoML-API full-text search for \"glucose\", \"d-glucose\", \"dextrose\", \"(2R,3S,4R,5R)-2,3,4,5,6-pentahydroxyhexanal\"; 121 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1016/j.tca.2017.12.015": {
+   "authors": [
+    "Rojek, B.[Barbara]",
+    "Suchacz, B.[Bogdan]",
+    "Wesolowski, M.[Marek]"
+   ],
+   "title": "Artificial neural networks as a supporting tool for compatibility study based on thermogravimetric data",
+   "journal": "Thermochim. Acta",
+   "volume": "659",
+   "year": "2018",
+   "pages": "222-231"
+  }
+ },
+ "rows": [
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal 1",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 435.25,
+   "uncertainty": 2.0,
+   "doi": "10.1016/j.tca.2017.12.015",
+   "set": 6,
+   "binary_with": null
+  }
+ ]
+}

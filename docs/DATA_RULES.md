@@ -116,7 +116,9 @@ density, the component may be added with the gap if its vapour-pressure sets pas
 thermodynamic properties; limonene, `inchi_no_stereo`). Diastereomers (meso and chiral 2,3-butanediol) may not.
 
 **Melting data** (`fusion_data.py`): the WebBook (triple point, else the average of the measured melting points; the
-median of the enthalpies of fusion), else ChemSep, else the ThermoML Archive.
+median of the enthalpies of fusion), else ChemSep, else the ThermoML Archive. Where the WebBook lists no melting
+temperature but an enthalpy of fusion measured at a stated temperature, and ChemSep has no melting data, that
+temperature is taken (HMF: 308.5 K, DSC; such a temperature is not always the melting point, so ChemSep comes first).
 
 ## 4. Records refitted before 2026-10-14
 
@@ -199,8 +201,19 @@ group-contribution method predicts it:
   transcribed from the page images into `validation/data/gc/ruzicka_domalski_1993.json` (`predict_cp.py`);
 - the record has tier "predicted", names the groups and every approximation (a group the method lacks counted as its
   nearest group, as for the furan ring of Modified UNIFAC 2.0), and states the method's accuracy on CHEPTA liquids
-  with CoolProp or ChemSep records: within 3.4 % at 300 K for all fifteen checked; for alcohols and polyols it rises
-  with temperature, +5 to +15 % at 350-400 K.
+  with CoolProp or ChemSep records, computed by `predict_cp.py` on its check set (twenty liquids on 2026-10-16: within
+  5.3 % at 300 K for all; up to 400 K within 8.6 % except alcohols and polyols, which it overpredicts more as the
+  temperature rises, up to +19 % at 400 K). An earlier version of this page said "within 3.4 % at 300 K for all
+  fifteen checked"; that was wrong (diethyl ether -5.3 %, ethyl acetate -3.8 %);
+- the range is where every group was fitted, with its upper end raised by 100 K: the authors find that an
+  extrapolation of up to about 100 K "has no significant effect on the error of prediction" (part II, p. 620), and on
+  furfural the furan ring correction, fitted to 305 K, stays within 3.4 % of the record up to 405 K. Not for polyols
+  (two or more alcohol groups): on the check set the polyol groups drift far beyond their range (glycerol +42 % at
+  560 K);
+- **measured before predicted** (2026-10-16): where the only alternative is a prediction, measured values whose
+  stated uncertainty is above the target of section 3 make the record, with that uncertainty stated (fructose: liquid
+  heat capacities stated to 2 %, where the prediction is 7-22 % above them at 200-370 K). Single measured values that cannot
+  make a record are listed in the predicted record with the prediction's deviation from them.
 
 **Nonvolatile components:** a component that does not evaporate in the processes where it appears (it decomposes,
 polymerizes, or has no measurable vapour pressure) has `"class": "nonvolatile"` and no vapour pressure, critical
@@ -210,4 +223,8 @@ point and the equations of state are refused with the reason. Its liquid enthalp
 capacity from 298.15 K, so its reference state is the liquid there; that is enough for energy balances without
 reactions. `measured_components.py` (`build_nonvolatile`) builds it from the measured values that meet the targets,
 with the heat capacity predicted where none is measured. A volatile liquid without open vapour pressures (solketal,
-alpha-angelica lactone) is not made nonvolatile: that would make every distillation with it wrong.
+alpha-angelica lactone) is not made nonvolatile: that would make every distillation with it wrong. Nor is a substance
+that is distilled or sublimed in its own processes (lactide, isosorbide, BHMF, dimethyl FDCA, levoglucosan; held in
+batch 4 for want of an open liquid vapour pressure). A substance whose measured volatility is negligible beside its
+solvents may be (HMF: its WebBook boiling temperature of 388.2 K at 0.1 kPa, where water's vapour pressure is
+169.5 kPa; its vacuum distillation is then not represented, and the record says so).

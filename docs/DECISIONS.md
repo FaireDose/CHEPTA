@@ -100,11 +100,25 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      - Modified UNIFAC 2.0 groups chosen by the user (asked 2026-10-14): part of the work on adding the user's own
        data, not before (tier "user", subgroups and atom balance checked, a group picker in the interface);
   4. the "nonvolatile" component class: done (lactic acid; predicted heat capacity, Ruzicka-Domalski;
-     docs/decisions/2026-10-14-12-nonvolatile-class.md); check the transcribed groups against the tables; HMF and
-     lactide with batch 4;
-  5. batch 4, sugars and acids as solids.
-  - Six names still need a CAS number: xylose, erythritol, muconic acid, levoglucosenone,
-    glycerol carbonate, ethoxymethylfurfural.
+     docs/decisions/2026-10-14-12-nonvolatile-class.md); check the transcribed groups against the tables;
+  5. batch 4: 17 nonvolatile components added (HMF, sugars, sugar alcohols, polyacids, FDCA, BHET, diphenolic acid;
+     docs/decisions/2026-10-16-01-batch-4.md). Still open:
+     - held, distilled or sublimed in their own processes and without an open liquid vapour pressure: lactide,
+       isosorbide, BHMF, dimethyl FDCA, levoglucosan (its solid's vapour pressure is open: Booth et al. 2011, ACP,
+       CC BY), and from the six extra names glycerol carbonate, levoglucosenone, ethoxymethylfurfural; an open
+       group-contribution vapour pressure (tier "predicted") would let them in, if the maintainer wants that;
+     - xylose (58-86-6) and cis,cis-muconic acid (1119-72-8): nonvolatile, but the open chemicals library files them
+       under other stereo forms; next, a structure source for such cases (PubChem), then the two components;
+     - FDCA has no Modified UNIFAC 2.0 groups (no ether subgroup without a hydrogen); citric acid's predicted heat
+       capacity is far above its one measured value (236 J/(mol K) at 424.9 K): check when more data appear.
+- **The maintainer's order after batch 4 (2026-10-15):**
+  1. an interface where a user adds their own properties (and Modified UNIFAC 2.0 groups) and saves them with the
+     project, labelled as user data: a proposal first;
+  2. the missing properties: liquid heat capacity for the components without one (now predictable for most of them,
+     including furans and aromatics), then thermal conductivity, surface tension and the missing viscosities (open
+     data via `open_copy.py`, else an open prediction method), then the water + lactic acid solution density and
+     viscosity (open: Simion et al. 2012, Food and Environment Safety XI(4), Tables 1-2, 9-85 wt %, 293-353 K); a
+     mixture density and viscosity model is needed to use them.
 - **0010, reactions:**
   1. formation data (ΔfH°, ΔfG°);
   2. the reaction description and its checks;

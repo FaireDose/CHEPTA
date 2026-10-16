@@ -1,0 +1,55 @@
+{
+ "component": "fructose",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°solid",
+       "-1265.6 ± 0.46",
+       "kJ/mol",
+       "Ccb",
+       "Clarke and Stegeman, 1939",
+       "Reanalyzed by  Cox and Pilcher, 1970, Original value = -1265.2 kJ/mol"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°solid",
+       "-2810.4 ± 0.3",
+       "kJ/mol",
+       "Ccb",
+       "Clarke and Stegeman, 1939",
+       "Corresponding ΔfHºsolid = -1265.7 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=4",
+   "tables": []
+  }
+ }
+}

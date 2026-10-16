@@ -1,0 +1,6 @@
+{
+ "component": "3-hydroxypropionic-acid",
+ "name": "3-Hydroxypropionic acid",
+ "about": "Measured values each record of this component was fitted to (validation/python/measured_components.py). test/properties.test.js checks that the coefficients in src/data/components.json reproduce them within the maximum deviation stated in each record.",
+ "records": {}
+}

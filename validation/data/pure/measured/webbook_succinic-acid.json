@@ -1,0 +1,330 @@
+{
+ "component": "succinic-acid",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°solid",
+       "-940. ± 2.",
+       "kJ/mol",
+       "AVG",
+       "N/A",
+       "Average of 7 values; Individual data points"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°solid",
+       "-1491. ± 3.",
+       "kJ/mol",
+       "AVG",
+       "N/A",
+       "Average of 16 values; Individual data points"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "S°solid,1 bar",
+       "167.32",
+       "J/mol*K",
+       "N/A",
+       "Vanderzee and Westrum, 1970",
+       "DH"
+      ],
+      [
+       "S°solid,1 bar",
+       "175.7",
+       "J/mol*K",
+       "N/A",
+       "Parks and Huffman, 1930",
+       "crystaline, I phase; Extrapolation below 90 K, 55.10 J/mol*K.; DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,solid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "152.93",
+       "298.15",
+       "Vanderzee and Westrum, 1970",
+       "T = 5 to 328 K.; DH"
+      ],
+      [
+       "164.0",
+       "323.",
+       "Satoh and Sogabe, 1939",
+       "T = 0 to 100°C. Mean value.; DH"
+      ],
+      [
+       "149.8",
+       "289.8",
+       "Parks and Huffman, 1930",
+       "crystaline, I phase; T = 93 to 290 K. Value is unsmoothed experimental datum.; DH"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tfus",
+       "459. ± 3.",
+       "K",
+       "AVG",
+       "N/A",
+       "Average of 12 values; Individual data points"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Ttriple",
+       "461.",
+       "K",
+       "N/A",
+       "Wilhoit, Chao, et al., 1985",
+       "Crystal phase 1 phase; Uncertainty assigned by TRC =  0.3 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "94.4",
+       "kJ/mol",
+       "CGC",
+       "Roux, Temprado, et al., 2005",
+       "Based on data from 424. to 503. K.; AC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔsubH°",
+       "123.1",
+       "kJ/mol",
+       "N/A",
+       "De Wit, Van Miltenburg, et al., 1983",
+       "AC"
+      ],
+      [
+       "ΔsubH°",
+       "120.3 ± 4.4",
+       "kJ/mol",
+       "N/A",
+       "Cox and Pilcher, 1970",
+       "See also  Davies and Thomas, 1960.; AC"
+      ],
+      [
+       "ΔsubH°",
+       "118. ± 3.",
+       "kJ/mol",
+       "V",
+       "Davies and Thomas, 1960",
+       "ALS"
+      ],
+      [
+       "ΔsubH°",
+       "121.8 ± 3.3",
+       "kJ/mol",
+       "N/A",
+       "Davies and Thomas, 1960",
+       "See also  Ribeiro da Silva, Monte, et al., 1999.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔsubH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "128. ± 2.",
+       "318. to 358.",
+       "TPD",
+       "Cappa, Lovejoy, et al., 2007",
+       "AC"
+      ],
+      [
+       "119.5",
+       "280. to 302.",
+       "TPTD",
+       "Chattopadhyay and Ziemann, 2005",
+       "AC"
+      ],
+      [
+       "120.5",
+       "368.",
+       "TE,ME",
+       "De Wit, Van Miltenburg, et al., 1983",
+       "Based on data from 356. to 376. K.; AC"
+      ],
+      [
+       "118.1 ± 3.3",
+       "386.",
+       "ME",
+       "Cox and Pilcher, 1970",
+       "Based on data from 372. to 401. K. See also  Davies and Thomas, 1960.; AC"
+      ],
+      [
+       "73.6",
+       "306.",
+       "A",
+       "Granovskaya, 1947",
+       "Based on data from 292. to 320. K.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "32.945",
+       "457.0",
+       "Cingolani and Berchiesi, 1974",
+       "DH"
+      ],
+      [
+       "34.",
+       "455.2",
+       "Roux, Temprado, et al., 2005",
+       "AC"
+      ],
+      [
+       "32.95",
+       "457.",
+       "Acree, 1991",
+       "AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusS (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "72.09",
+       "457.0",
+       "Cingolani and Berchiesi, 1974",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔHtrs (kJ/mol)",
+      "Temperature (K)",
+      "Initial Phase",
+      "Final Phase",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "0.172",
+       "272.",
+       "crystaline, II",
+       "crystaline, I",
+       "Parks and Huffman, 1930",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔStrs (J/mol*K)",
+      "Temperature (K)",
+      "Initial Phase",
+      "Final Phase",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "0.63",
+       "272.",
+       "crystaline, II",
+       "crystaline, I",
+       "Parks and Huffman, 1930",
+       "DH"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

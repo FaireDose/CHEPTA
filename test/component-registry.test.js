@@ -12,7 +12,10 @@ const comps = read("../src/data/components.json").components;
 const FROM_MEASURED = ["dichloromethane", "2-methoxyethanol", "furan", "2-methylfuran", "2-methyltetrahydrofuran",
   "1-3-propanediol", "levulinic-acid", "methyl-levulinate", "ethyl-levulinate", "butyl-levulinate",
   "gvl", "thfa", "cpme", "2-3-butanediol", "methyl-lactate", "ethyl-lactate", "limonene", "furfuryl-alcohol", "gbl", "isoamyl-alcohol",
-  "lactic-acid"];
+  "lactic-acid",
+  // proposal 0009, batch 4 (nonvolatile)
+  "hmf", "glucose", "fructose", "sorbitol", "xylitol", "erythritol", "succinic-acid", "itaconic-acid", "fumaric-acid", "malic-acid",
+  "citric-acid", "glycolic-acid", "glucaric-acid", "3-hydroxypropionic-acid", "fdca", "bhet", "diphenolic-acid"];
 
 test("every component is in the registry once, and every registry entry is a component", () => {
   const ids = [...reg.base.components, ...reg.batches.flatMap(b => b.components)].map(c => c.id);

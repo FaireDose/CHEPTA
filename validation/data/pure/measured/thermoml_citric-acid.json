@@ -1,0 +1,396 @@
+{
+ "component": "citric-acid",
+ "cas": "77-92-9",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-16",
+ "searched": "ThermoML-API full-text search for \"citric acid\", \"2-hydroxypropane-1,2,3-tricarboxylic acid\", \"2-oxidanylpropane-1,2,3-tricarboxylic acid\"; 31 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1016/j.tca.2012.09.024": {
+   "authors": [
+    "Klimova, K.",
+    "Leitner, J."
+   ],
+   "title": "DSC study and phase diagrams calculation of binary systems of paracetamol",
+   "journal": "Thermochim. Acta",
+   "volume": "550",
+   "year": "2012",
+   "pages": "59-64"
+  },
+  "10.1021/acs.jced.8b00064": {
+   "authors": [
+    "Santaella, Miguel A.",
+    "Suaza, Andrea",
+    "Berdugo, Claudia E.",
+    "Rivera, Jose L.",
+    "Orjuela, Alvaro"
+   ],
+   "title": "Phase Equilibrium Behavior in Mixtures Containing Tributyl Citrate, Citric Acid, Butan-1-ol, and Water",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "63",
+   "year": "2018",
+   "pages": "3252-3262"
+  }
+ },
+ "rows": [
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 428.55,
+   "uncertainty": 0.7,
+   "doi": "10.1016/j.tca.2012.09.024",
+   "set": 7,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 41.844502656,
+   "uncertainty": 1.15274112,
+   "doi": "10.1016/j.tca.2012.09.024",
+   "set": 8,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 424.9,
+   "uncertainty": 2.0,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 59.2,
+   "uncertainty": 1.3,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 324.9,
+   "P_kPa": 101.325,
+   "value": 239.8,
+   "uncertainty": 25.5,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 328.2,
+   "P_kPa": 101.325,
+   "value": 243.0,
+   "uncertainty": 25.8,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 331.5,
+   "P_kPa": 101.325,
+   "value": 245.9,
+   "uncertainty": 26.1,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 334.9,
+   "P_kPa": 101.325,
+   "value": 248.6,
+   "uncertainty": 26.4,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 338.2,
+   "P_kPa": 101.325,
+   "value": 251.2,
+   "uncertainty": 26.7,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 341.5,
+   "P_kPa": 101.325,
+   "value": 253.6,
+   "uncertainty": 26.9,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 344.9,
+   "P_kPa": 101.325,
+   "value": 255.9,
+   "uncertainty": 27.2,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 348.2,
+   "P_kPa": 101.325,
+   "value": 258.2,
+   "uncertainty": 27.4,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 351.5,
+   "P_kPa": 101.325,
+   "value": 260.4,
+   "uncertainty": 27.6,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 354.9,
+   "P_kPa": 101.325,
+   "value": 262.5,
+   "uncertainty": 27.9,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 358.2,
+   "P_kPa": 101.325,
+   "value": 264.6,
+   "uncertainty": 28.1,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 361.5,
+   "P_kPa": 101.325,
+   "value": 266.6,
+   "uncertainty": 28.3,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 364.9,
+   "P_kPa": 101.325,
+   "value": 268.7,
+   "uncertainty": 28.5,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 368.2,
+   "P_kPa": 101.325,
+   "value": 270.7,
+   "uncertainty": 28.7,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 371.5,
+   "P_kPa": 101.325,
+   "value": 272.6,
+   "uncertainty": 28.9,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 374.9,
+   "P_kPa": 101.325,
+   "value": 274.5,
+   "uncertainty": 29.1,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 378.2,
+   "P_kPa": 101.325,
+   "value": 276.2,
+   "uncertainty": 29.3,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 381.5,
+   "P_kPa": 101.325,
+   "value": 278.1,
+   "uncertainty": 29.5,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 384.9,
+   "P_kPa": 101.325,
+   "value": 279.9,
+   "uncertainty": 29.7,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 388.2,
+   "P_kPa": 101.325,
+   "value": 281.8,
+   "uncertainty": 29.9,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 391.5,
+   "P_kPa": 101.325,
+   "value": 283.7,
+   "uncertainty": 30.1,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 394.9,
+   "P_kPa": 101.325,
+   "value": 286.0,
+   "uncertainty": 30.4,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 3,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 424.9,
+   "P_kPa": 101.325,
+   "value": 236.2,
+   "uncertainty": 25.1,
+   "doi": "10.1021/acs.jced.8b00064",
+   "set": 4,
+   "binary_with": null
+  }
+ ]
+}

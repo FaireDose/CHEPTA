@@ -430,6 +430,127 @@ COMPONENTS = {
         # values of either enantiomer and of the racemate count (mirror images have the same thermodynamic properties)
         "inchi_no_stereo": True,
     },
+    "hmf": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "HMF has no open measured vapour pressure curve; the NIST WebBook gives its enthalpy of vaporization (83.4 kJ/mol, Verevkin, Emel'yanenko et al. 2009, from data at 314-368 K) and a boiling temperature of 388.2 K at 0.1 kPa (Weast and Grasselli 1989), where water's is 169.5 kPa (IAPWS-IF97): in the aqueous and solvent processes where it is made and extracted it stays in the liquid. Its vacuum distillation is not represented",
+        "name": "5-Hydroxymethylfurfural", "cas": "67-47-0", "webbook": "C67470", "proposal": "proposal 0009, batch 4",
+        "aliases": ["hmf", "5-hmf", "5-(hydroxymethyl)furfural", "5-(hydroxymethyl)furan-2-carbaldehyde", "hydroxymethylfurfural"],
+        "thermoml_queries": ["5-hydroxymethylfurfural", "5-(hydroxymethyl)furan-2-carbaldehyde", "hydroxymethylfurfural", "5-(hydroxymethyl)-2-furaldehyde"],
+    },
+    "glucose": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "D-Glucose", "cas": "50-99-7", "webbook": "C50997", "proposal": "proposal 0009, batch 4",
+        "aliases": ["glucose", "dextrose", "d-glucopyranose", "grape sugar"],
+        "thermoml_queries": ["glucose", "d-glucose", "dextrose", "(2R,3S,4R,5R)-2,3,4,5,6-pentahydroxyhexanal"],
+    },
+    "fructose": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "D-Fructose", "cas": "57-48-7", "webbook": "C57487", "proposal": "proposal 0009, batch 4",
+        "aliases": ["fructose", "levulose", "fruit sugar", "d-fructopyranose"],
+        "thermoml_queries": ["fructose", "d-fructose", "levulose", "(3S,4R,5R)-1,3,4,5,6-pentahydroxyhexan-2-one"],
+    },
+    "sorbitol": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); its measured vapour pressure is 1.31 kPa at 523 K (doi:10.1021/je800070y)",
+        "name": "D-Sorbitol", "cas": "50-70-4", "webbook": "C50704", "proposal": "proposal 0009, batch 4",
+        "aliases": ["sorbitol", "d-glucitol", "glucitol", "hexane-1,2,3,4,5,6-hexol"],
+        "thermoml_queries": ["d-sorbitol", "sorbitol", "d-glucitol", "(2r,3r,4r,5s)-hexane-1,2,3,4,5,6-hexol"],
+    },
+    "xylitol": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "Xylitol", "cas": "87-99-0", "webbook": "C87990", "proposal": "proposal 0009, batch 4",
+        "aliases": ["pentane-1,2,3,4,5-pentol", "xylite"],
+        "thermoml_queries": ["xylitol", "pentane-1,2,3,4,5-pentol"],
+    },
+    "erythritol": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "Erythritol", "cas": "149-32-6", "webbook": "C149326", "proposal": "proposal 0009, batch 4",
+        "aliases": ["butane-1,2,3,4-tetrol", "meso-erythritol", "1,2,3,4-butanetetrol"],
+        "thermoml_queries": ["erythritol", "meso-erythritol", "butane-1,2,3,4-tetrol", "1,2,3,4-butanetetrol"],
+    },
+    "succinic-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "Succinic acid", "cas": "110-15-6", "webbook": "C110156", "proposal": "proposal 0009, batch 4",
+        "aliases": ["butanedioic acid", "amber acid"],
+        "thermoml_queries": ["succinic acid", "butanedioic acid"],
+    },
+    "itaconic-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "Itaconic acid", "cas": "97-65-4", "webbook": "C97654", "proposal": "proposal 0009, batch 4",
+        "aliases": ["2-methylidenebutanedioic acid", "methylenesuccinic acid"],
+        "thermoml_queries": ["itaconic acid", "2-methylidenebutanedioic acid", "methylenesuccinic acid"],
+    },
+    "fumaric-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "Fumaric acid", "cas": "110-17-8", "webbook": "C110178", "proposal": "proposal 0009, batch 4",
+        "aliases": ["(e)-but-2-enedioic acid", "trans-butenedioic acid"],
+        "thermoml_queries": ["fumaric acid", "(e)-but-2-enedioic acid"],
+    },
+    "malic-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "Malic acid", "cas": "6915-15-7", "webbook": "C6915157", "proposal": "proposal 0009, batch 4",
+        "aliases": ["2-hydroxybutanedioic acid", "dl-malic acid", "l-malic acid", "hydroxysuccinic acid"],
+        "thermoml_queries": ["malic acid", "dl-malic acid", "l-malic acid", "2-hydroxybutanedioic acid", "2-oxidanylbutanedioic acid"],
+        # values of either enantiomer and of the racemate count (one stereocentre: mirror images only)
+        "inchi_no_stereo": True,
+    },
+    "citric-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "Citric acid", "cas": "77-92-9", "webbook": "C77929", "proposal": "proposal 0009, batch 4",
+        "aliases": ["2-hydroxypropane-1,2,3-tricarboxylic acid"],
+        "thermoml_queries": ["citric acid", "2-hydroxypropane-1,2,3-tricarboxylic acid", "2-oxidanylpropane-1,2,3-tricarboxylic acid"],
+    },
+    "glycolic-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "glycolic acid has no open measured vapour pressure and, like lactic acid, condenses with itself to oligomers on heating; in the aqueous processes where it appears CHEPTA keeps it in the liquid",
+        "name": "Glycolic acid", "cas": "79-14-1", "webbook": "C79141", "proposal": "proposal 0009, batch 4",
+        "aliases": ["hydroxyacetic acid", "2-hydroxyethanoic acid"],
+        "thermoml_queries": ["glycolic acid", "hydroxyacetic acid", "2-hydroxyacetic acid", "2-oxidanylethanoic acid"],
+    },
+    "glucaric-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "D-Glucaric acid", "cas": "87-73-0", "webbook": "C87730", "proposal": "proposal 0009, batch 4",
+        "aliases": ["saccharic acid", "glucaric acid"],
+        "thermoml_queries": ["glucaric acid", "d-glucaric acid", "saccharic acid"],
+    },
+    "3-hydroxypropionic-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "3-hydroxypropionic acid has no open measured vapour pressure; on heating it dehydrates (to acrylic acid) or condenses with itself instead of boiling, so in the aqueous processes where it appears CHEPTA keeps it in the liquid",
+        "name": "3-Hydroxypropionic acid", "cas": "503-66-2", "webbook": "C503662", "proposal": "proposal 0009, batch 4",
+        "aliases": ["3-hp", "hydracrylic acid", "3-hydroxypropanoic acid"],
+        "thermoml_queries": ["3-hydroxypropionic acid", "3-hydroxypropanoic acid", "hydracrylic acid"],
+    },
+    "fdca": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "2,5-Furandicarboxylic acid", "cas": "3238-40-2", "webbook": "C3238402", "proposal": "proposal 0009, batch 4",
+        "aliases": ["fdca", "furan-2,5-dicarboxylic acid", "dehydromucic acid"],
+        "thermoml_queries": ["2,5-furandicarboxylic acid", "furan-2,5-dicarboxylic acid"],
+    },
+    "bhet": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "BHET has no open measured vapour pressure; on heating it polycondenses (it is the monomer of PET and the product of its glycolysis) instead of boiling, so CHEPTA keeps it in the liquid",
+        "name": "Bis(2-hydroxyethyl) terephthalate", "cas": "959-26-2", "webbook": "C959262", "proposal": "proposal 0009, batch 4",
+        "aliases": ["bhet", "bis(2-hydroxyethyl) benzene-1,4-dicarboxylate"],
+        "thermoml_queries": ["bis(2-hydroxyethyl) terephthalate", "bis(2-hydroxyethyl) benzene-1,4-dicarboxylate"],
+    },
+    "diphenolic-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "diphenolic acid has no open measured vapour pressure; a solid used dissolved or as a polymer monomer, it does not evaporate in those processes, so CHEPTA keeps it in the liquid",
+        "name": "Diphenolic acid", "cas": "126-00-1", "webbook": "C126001", "proposal": "proposal 0009, batch 4",
+        "aliases": ["4,4-bis(4-hydroxyphenyl)pentanoic acid", "dpa"],
+        "thermoml_queries": ["diphenolic acid", "4,4-bis(4-hydroxyphenyl)pentanoic acid", "4,4-bis(4-hydroxyphenyl)valeric acid"],
+    },
     "1-3-propanediol": {
         "name": "1,3-Propanediol", "cas": "504-63-2", "webbook": "C504632", "proposal": "proposal 0009, batch 3",
         "aliases": ["propane-1,3-diol", "trimethylene glycol", "1,3-pdo", "pdo"],
@@ -1599,8 +1720,30 @@ def build_nonvolatile(cid, log):
                   searched, "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)", THERMOML_ACCESS)
     fit_or_marker(cid, "liquidHeatCapacity", "DIPPR100", 0.01, tml.values("liquidHeatCapacity"), records, points, log,
                   None, tml, searched, "Measured heat capacities of the liquid (NIST TRC ThermoML Archive)", THERMOML_ACCESS)
+    cps = tml.values("liquidHeatCapacity")
+    if records["liquidHeatCapacity"].get("available") is False and len({round(p["T"], 1) for p in cps}) >= 3:
+        # measured values above the 1 % target, where the only alternative is a prediction (docs/DATA_RULES.md,
+        # section 10): they make the record, with their stated uncertainty
+        u = max(p["u_rel"] for p in cps if p["u_rel"] is not None)
+        fit_or_marker(cid, "liquidHeatCapacity", "DIPPR100", u, cps, records, points, log, None, tml, searched,
+                      "Measured heat capacities of the liquid (NIST TRC ThermoML Archive); stated uncertainties up to "
+                      "%.1f %%, above the 1 %% target, used because the only alternative is a prediction" % (100 * u),
+                      THERMOML_ACCESS)
+        if cid in predict_cp.PREDICT:
+            _, (lo, hi) = predict_cp.coefficients(predict_cp.PREDICT[cid]["groups"])
+            T = np.array(sorted({p["T"] for p in cps if lo <= p["T"] <= hi}))
+            rec = records["liquidHeatCapacity"]
+            dev = 100 * (predict_cp.cp(predict_cp.PREDICT[cid]["groups"], T) / ev(rec["equation"], rec["coefficients"], T) - 1)
+            rec["source"]["notes"] = ("The group-additivity prediction (Ruzicka and Domalski 1993, predict_cp.py) would be "
+                                      "%+.0f to %+.0f %% from this record at the measured temperatures within its groups' range, %.0f-%.0f K." % (
+                                          min(dev), max(dev), T[0], T[-1]))
     if records["liquidHeatCapacity"].get("available") is False:
-        why = "No open measured liquid heat capacity (searched: %s)" % "; ".join(searched)
+        why = "No open measured liquid heat capacity over a temperature range (searched: %s)" % "; ".join(searched)
+        if cps:
+            why += "; the measured values there are: %s" % "; ".join(
+                "%.4g J/(mol K) at %.2f K (%s, stated uncertainty %s), the prediction %+.0f %% from it" % (
+                    p["y"], p["T"], p["ref"], "%.1f %%" % (100 * p["u_rel"]) if p["u_rel"] is not None else "not stated",
+                    100 * (predict_cp.cp(predict_cp.PREDICT[cid]["groups"], p["T"]) / p["y"] - 1)) for p in cps)
         records["liquidHeatCapacity"] = predict_cp.predicted_record(cid, why)
         log.append("%-17s liquidHeatCapacity        predicted (Ruzicka-Domalski), %g-%g K" % (
             cid, records["liquidHeatCapacity"]["Tmin_K"], records["liquidHeatCapacity"]["Tmax_K"]))

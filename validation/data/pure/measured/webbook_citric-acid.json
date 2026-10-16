@@ -1,0 +1,108 @@
+{
+ "component": "citric-acid",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°solid",
+       "-1543.8 ± 4.6",
+       "kJ/mol",
+       "Ccb",
+       "Wilhoit and Shiao, 1964",
+       "Reanalyzed by  Cox and Pilcher, 1970, Original value = -1544. ± 4.6  kJ/mol; ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°solid",
+       "-1960.6 ± 4.6",
+       "kJ/mol",
+       "Ccb",
+       "Wilhoit and Shiao, 1964",
+       "Reanalyzed by  Cox and Pilcher, 1970, Original value = -1964. ± 4.6  kJ/mol; Corresponding ΔfHºsolid = -1543.8 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "S°solid,1 bar",
+       "252.1",
+       "J/mol*K",
+       "N/A",
+       "De Kruif, Van Miltenburg, et al., 1982",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,solid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "226.51",
+       "300.",
+       "De Kruif, Van Miltenburg, et al., 1982",
+       "T = 90 to 330 K.; DH"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tfus",
+       "427.15",
+       "K",
+       "N/A",
+       "Wilhoit and Shiao, 1964",
+       "Uncertainty assigned by TRC =  1.5 K"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

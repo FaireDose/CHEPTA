@@ -1,0 +1,198 @@
+{
+ "component": "sorbitol",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°solid",
+       "-1353.7 ± 1.4",
+       "kJ/mol",
+       "Ccb",
+       "Gerasimov, Blokh, et al., 1985",
+       "ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°solid",
+       "-3009.4 ± 1.4",
+       "kJ/mol",
+       "Ccb",
+       "Gerasimov, Blokh, et al., 1985",
+       "Corresponding ΔfHºsolid = -1352.5 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,solid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "241.43",
+       "298.15",
+       "Lian, Chen, et al., 1982",
+       "DH"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tfus",
+       "366.5",
+       "K",
+       "N/A",
+       "Barone, DellaGatta, et al., 1990",
+       "Uncertainty assigned by TRC =  0.6 K; TRC"
+      ],
+      [
+       "Tfus",
+       "371.85",
+       "K",
+       "N/A",
+       "Quinquenet, Ollivon, et al., 1988",
+       "Uncertainty assigned by TRC =  0.5 K; m.p. of the .gamma., presumably stable, form; TRC"
+      ],
+      [
+       "Tfus",
+       "361.25",
+       "K",
+       "N/A",
+       "Quinquenet, Ollivon, et al., 1988",
+       "Metastable crystal phase; Uncertainty assigned by TRC =  0.5 K; m.p. of the A (presumably metastable) form; TRC"
+      ],
+      [
+       "Tfus",
+       "367.45",
+       "K",
+       "N/A",
+       "Quinquenet, Ollivon, et al., 1988",
+       "Metastable crystal phase; Uncertainty assigned by TRC =  1. K; this is m.p. of the B, presumably a metastable, form; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔsubH°",
+       "186.",
+       "kJ/mol",
+       "B",
+       "Barone, Gatta, et al., 1990",
+       "AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "132.4 ± 2.0",
+       "477.",
+       "TE",
+       "Barone, Gatta, et al., 1990",
+       "Based on data from 461. to 497. K.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "30.200",
+       "366.5",
+       "N/A",
+       "Barone and Della Gatta, 1990",
+       "DH"
+      ],
+      [
+       "30.35",
+       "369.2",
+       "AC",
+       "Tong, Tan, et al., 2008",
+       "Based on data from 80. to 390. K.; AC"
+      ],
+      [
+       "30.2",
+       "366.5",
+       "DSC",
+       "Domalski and Hearing, 1996",
+       "See also  Barone, Gatta, et al., 1990.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusS (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "82.5",
+       "366.5",
+       "Barone and Della Gatta, 1990",
+       "DH"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}
