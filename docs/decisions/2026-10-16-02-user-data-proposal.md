@@ -11,4 +11,8 @@
   and Modified UNIFAC 2.0 groups of the user's own, tier "user", always shown as such, stored in the project file
   (format 3, `user_data`), used through an overlay passed per call, never written into the databank; an export to a
   contribution package for sharing.
-- **Waiting for the maintainer:** accept or change the proposal, and its two questions.
+- **The maintainer's answers (2026-10-16):** user data may both replace a databank record and fill gaps; only My data
+  gets a separate window for now; and the user data can also be saved as a file of its own, besides the project
+  (added as section 3a). Design advice asked for: docked by default (quicker for a short task, always available,
+  also in AI chats and on phones), the separate window as an option.
+- **Waiting for the maintainer:** acceptance of the proposal as updated.

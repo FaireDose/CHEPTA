@@ -1,6 +1,6 @@
 # 0012: Your own data, kept with the project, in panels that can open as separate windows
 
-- **Status:** Draft
+- **Status:** In discussion (the maintainer answered its questions on 2026-10-16; see the end)
 - **Author(s):** the maintainer (request of 2026-10-15 and 2026-10-16), drafted with Claude
 - **Discussion:** the pull request that adds this file
 - **Roadmap item:** track B (bridges: project files) and the open item "user-chosen Modified UNIFAC 2.0 groups"
@@ -95,6 +95,23 @@ The project file gains one optional top-level key, `user_data`. Format 1 and 2 f
 (The zeros only show the format; real entries carry the person's numbers.) User component ids start with `user:`, so
 they can never collide with a databank id.
 
+### 3a. Your data as a file of its own, to reuse in other projects
+
+The maintainer (2026-10-16): someone who adds data saves the project, with the data in it, "but also save the user
+data". So My data can also be saved and opened as a file of its own, a personal or company library of numbers:
+
+```json
+{ "chepta_user_data": 1, "saved_with": "chepta 0.4.0", "title": "Our lab data",
+  "user_data": { "properties": { }, "components": { }, "pairs": { }, "groups": { } } }
+```
+
+- **Save my data** writes this file; **Open my data** adds its entries to the current project. The project keeps its
+  own copy, so a project still opens and calculates the same without the library file (a project and the numbers it
+  was calculated with stay together).
+- When an entry being opened already exists in the project with other numbers, the panel shows both and asks which to
+  keep; nothing is replaced silently.
+- Where a page cannot download files (some AI chats), Copy and Paste work as for projects today.
+
 ### 4. The engine: an overlay, not a change to the databank
 
 ```js
@@ -107,22 +124,25 @@ CHEPTA.listComponents({ userData: mine });                      // the databank'
 `userData` is passed per call, never stored globally, so two workbenches on one page (or a page and its pop-out
 window) cannot leak data into each other, and the library's own tests and results are unchanged when it is absent.
 
-### 5. The interface: a "My data" panel that can open as its own window
+### 5. The interface: a "My data" panel, docked, that can also open as its own window
 
 - **My data** is a new item next to Library, Sources and Settings. It lists what the project holds, by component, and
   offers "Add a property", "Add a component", "Add pair parameters" and "Choose groups".
 - Adding a property: pick the component and property, paste a table (from Excel or a data sheet; units chosen in the
   header) or type coefficients, see the fitted curve plotted over the databank's record (where there is one), and
   save. The plot and the fit's deviation are shown before saving.
-- **Separate windows.** My data, and later the other supporting panels (Sources, Library, the stream table, a
-  diagram), get an "Open in a new window" button. The main window keeps all the data; the new window only shows and
-  edits it, and every change appears in both at once. Closing the new window loses nothing.
+- **Docked by default.** My data opens as a panel sliding over the side of the workspace, like Library and Sources:
+  entering data is a short task (add, check the plot, save, go back), the panel always opens (also inside AI chats and
+  on phones), and the workspace stays where it was.
+- **Separate window as an option** (only My data for now, the maintainer, 2026-10-16). A button in the panel, "Open in
+  a new window", moves it into a window of its own, for a second screen or for comparing data next to a diagram while
+  working. The main window keeps all the data; the new window only shows and edits it, and every change appears in
+  both at once. Closing the new window loses nothing; the panel can be docked again.
   - How: the main window opens an empty window (`window.open`) and builds the panel into it with its own code and
     styles, so no second file has to load and it works offline and from a file on disk.
-  - Where it cannot: pages inside AI chats (artifacts) usually block new windows, and phones have none. There the
-    same panel opens docked in the page, as Library and Sources do today. The button is shown only where a window
-    can actually be opened (detected when it is pressed: if the browser refuses, the panel opens docked and a note
-    says why).
+  - Where it cannot: pages inside AI chats (artifacts) usually block new windows, and phones have none. The button is
+    hidden on phones; where the browser refuses the window when the button is pressed, the panel stays docked and a
+    note says why.
 
 ## Engineering basis
 
@@ -150,8 +170,10 @@ window) cannot leak data into each other, and the library's own tests and result
 - **User data saved in the browser only** (localStorage). Lost with the browser's data, not shareable, and not in the
   project the results belong to. Rejected; the browser's autosave keeps working as today, with the user data inside
   the project it saves.
-- **A separate "user databank" file loaded next to projects.** Useful later for a company's shared data, but it
-  splits a project from the numbers it was calculated with. The contribution-package export covers sharing for now.
+- **Only a separate "user databank" file, not in the project.** It would split a project from the numbers it was
+  calculated with. Taken instead as section 3a: the file exists, and the project keeps its own copy.
+- **Separate windows by default.** Pop-up windows get lost behind the main window, are blocked inside AI chats, and
+  do not exist on phones; for a short data-entry task a docked panel is quicker. Kept as an option.
 - **Separate windows as separate pages** (a second HTML file loaded by URL, talking over BroadcastChannel). Needs a
   server or a second file next to the page, and does not work from a file on disk or inside a chat. Building the
   window from the main page avoids both.
@@ -163,17 +185,19 @@ window) cannot leak data into each other, and the library's own tests and result
 1. The engine overlay: `checkUserData`, `userData` in `system`, `pure` and `listComponents`, user components and pair
    sets; tests (the overlay repeating the databank changes nothing; a user record replaces a databank record; a user
    component in a flash and a flowsheet; refusals with their messages).
-2. Project format 3 with `user_data`, and the contribution-package export; round-trip tests, old formats opening.
+2. Project format 3 with `user_data`, the separate My data file (save, open, merge with the choice on conflicts), and
+   the contribution-package export; round-trip tests, old formats opening.
 3. The My data panel (docked): property tables and coefficients with units, the fit with its deviation and plot,
    user components; the browser fit compared with numpy.
-4. Separate windows: the pop-out mechanism for My data, then for Sources, Library, the stream table and the diagrams;
-   the docked fallback where windows are blocked; tests of both paths.
+4. The separate window for My data (the only panel with one for now), the docked fallback where windows are
+   blocked; tests of both paths.
 5. Pair parameters and Modified UNIFAC 2.0 groups: the group picker with the atom balance; the test with a databank
    component's own groups.
 
-## Questions for the maintainer
+## The maintainer's answers (2026-10-16)
 
-1. Should user data be allowed to **replace** a databank record that has open measured data, or only fill gaps? The
-   proposal allows both, clearly labelled, so a person can use their own measurement.
-2. Which panels should get the separate-window button first, after My data? The proposal suggests Sources, the stream
-   table and the diagrams.
+1. May user data **replace** a databank record that has open measured data, or only fill gaps? **Both** ("yes
+   both"), clearly labelled.
+2. Which panels get a separate window? **Only My data for now.** Asked which is better, a new window or a place in
+   the main window: docked by default, with the separate window as an option (section 5).
+3. Added: the user data can be saved as a file of its own as well as in the project (section 3a).
