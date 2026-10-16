@@ -68,9 +68,6 @@ export function createSystem(cfg) {
   const comps = ids.map(id => componentRecord(id, ud));
   // nonvolatile components (proposal 0009, step 5): no vapour pressure; they stay in the liquid (NV_PSAT_KPA below)
   const nonvolatile = comps.map(c => c.class === "nonvolatile");
-  if (nonvolatile.every(Boolean)) {
-    throw fail("BAD_INPUT", `${comps.map(c => c.name).join(", ")} ${comps.length > 1 ? "are" : "is"} nonvolatile: a system needs at least one component that evaporates (water, for example).`);
-  }
   for (const c of comps) {
     if (!c.vapourPressure && !cfg.psat && c.class !== "nonvolatile") {
       throw fail("MISSING_DATA", `${c.name} has no vapour-pressure record, so it cannot be used with activity-coefficient models. Use an equation of state for gases.`);

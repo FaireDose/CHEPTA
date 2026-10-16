@@ -67,7 +67,8 @@ test("water + lactic acid: lactic acid stays in the liquid, raises the boiling p
     assert.throws(() => s.flash({ z, P: 101.325, VF: 1 }), /nonvolatile/);
     assert.throws(() => s.dewT(z, 101.325), /no dew point/);
   }
-  assert.throws(() => system({ components: ["lactic-acid"], model: "NRTL" }), /needs at least one component that evaporates/);
+  // nonvolatile components alone make a system too (the maintainer, 2026-10-16: heat a nonvolatile chemical, then cool
+  // it); this replaces the earlier refusal. Tested below.
   // Peng-Robinson needs critical constants, which a nonvolatile component does not have (on purpose: the refusal)
   assert.throws(() => system({ components: ["water", "lactic-acid"], model: "PR" }), /Lactic acid is nonvolatile.*cannot be used/);
 });
@@ -152,4 +153,41 @@ test("batch 4 in water: the solute stays in the liquid and raises the boiling po
   // with the ideal solution it works (on purpose: the model that needs no groups)
   const s = system({ components: ["water", "fdca"], model: "ideal" });
   assert.ok(s.bubbleT([0.99, 0.01], 101.325).T > Tw);
+});
+
+test("nonvolatile components alone: heated and cooled as a liquid; no boiling point, no vapour fraction", () => {
+  // the maintainer's case (2026-10-16): 2,5-furandicarboxylic acid alone, heated, then cooled in a flowsheet
+  for (const model of ["NRTL", "ideal"]) {
+    const sys = system({ components: ["fdca"], model });
+    const r = solveFlowsheet(sys, {
+      blocks: [
+        { id: "F1", type: "feed", spec: { flow_kmol_h: { fdca: 1 }, T_K: 300, P_kPa: 101.325 } },
+        { id: "H1", type: "heater", spec: { T_K: 380 } },
+        { id: "C1", type: "heater", spec: { duty_kW: -2 } },
+        { id: "P1", type: "product" },
+      ],
+      streams: [{ id: "S1", from: "F1.out", to: "H1.in" }, { id: "S2", from: "H1.out", to: "C1.in" }, { id: "S3", from: "C1.out", to: "P1.in" }],
+    });
+    const S = r.streams;
+    for (const s of Object.values(S)) assert.equal(s.VF, 0, `${model}: always liquid`);
+    // the duties are the enthalpy changes, and the liquid enthalpy is the integral of the liquid heat capacity
+    const p = pure("fdca");
+    const cp = T => p.property("liquidHeatCapacity", T);
+    let integral = 0;
+    for (let k = 0; k < 800; k++) { const T = 300 + (k + 0.5) * 0.1; integral += cp(T) * 0.1; }
+    assert.ok(Math.abs(r.blocks.H1.duty_kW - integral / 3600) < 1e-4, `${model}: heater ${r.blocks.H1.duty_kW} kW, integral ${integral / 3600} kW`);
+    assert.ok(Math.abs(r.blocks.C1.duty_kW + 2) < 1e-9 && Math.abs(S.S3.H_kW - S.S2.H_kW + 2) < 1e-6, `${model}: cooler`);
+    assert.ok(S.S3.T_K > 300 && S.S3.T_K < 380, `${model}: cooled to ${S.S3.T_K} K`);
+    // more cooling than the heat-capacity record covers: refused with the reason
+    assert.throws(() => sys.flash({ z: [1], P: 101.325, H: -1e5 }), /starts at 298\.15 K, so its liquid enthalpy below it cannot be calculated/);
+  }
+  const two = system({ components: ["fdca", "lactic-acid"], model: "ideal" });
+  const z = [0.5, 0.5];
+  assert.equal(two.flash({ z, T: 350, P: 101.325 }).VF, 0);
+  const tp = two.flash({ z, T: 350, P: 101.325 });
+  assert.ok(Math.abs(two.flash({ z, P: 101.325, H: tp.H_J_mol }).T - 350) < 1e-6, "P-H gives the T-P state back");
+  assert.throws(() => two.flash({ z, P: 101.325, VF: 0 }), /nothing in this feed evaporates.*vapour fraction cannot be specified/);
+  assert.throws(() => two.bubbleT(z, 101.325), /nothing in this liquid evaporates.*no bubble point/);
+  assert.throws(() => two.bubbleP(z, 350), /no bubble point/);
+  assert.throws(() => two.dewT(z, 101.325), /no dew point/);
 });

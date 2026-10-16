@@ -825,6 +825,9 @@ function stepBracket(f, T0, dir, limit, step = 5) {
   return null;
 }
 
+/** True when every component of z is nonvolatile (proposal 0009, step 5): the feed never evaporates. */
+const onlyNonvolatile = (sys, z) => Boolean(sys.nonvolatile) && z.every((zi, i) => !(zi > 1e-10) || sys.nonvolatile[i]);
+
 const T_FLOOR = 30, T_CEIL = 2000; // K: limits of the temperature search of a P-H flash
 
 // ------------------------------------------------------------------ specifications across two liquids
@@ -1046,6 +1049,16 @@ function phFast(sys, z, P, H) {
     const core = tpCore(sys, z, T, P, { K: ctx.K });
     return [T, P, core];
   };
+  if (onlyNonvolatile(sys, z)) {
+    // nothing in the feed evaporates (proposal 0009, step 5): it stays liquid, and T follows from the liquid enthalpy
+    let br;
+    try { br = stepBracket(hLiq, 300, hLiq(300) < 0 ? +1 : -1, hLiq(300) < 0 ? T_CEIL : T_FLOOR); } catch (e) {
+      if (e && e.code === "OUT_OF_RANGE") throw failRange("OUT_OF_RANGE", `${what}: the enthalpy ${H.toFixed(1)} J/mol is not reached within the temperatures the liquid heat-capacity records cover. ${e.message}`, { z, P, H });
+      throw e;
+    }
+    if (!br) throw failRange("OUT_OF_RANGE", `${what}: no temperature gives the liquid enthalpy ${H.toFixed(1)} J/mol.`, { z, P, H });
+    return [brent(hLiq, br[0], br[1], { xtol: 1e-9 }), P, single("liquid", z)];
+  }
   let Tb = null;
   try { Tb = (isEos(sys) ? eosBubbleT(sys, z, P, { stability: false }) : bubbleTCore(sys, z, P)).T; } catch (e) {
     if (!(e && (e.code === "NO_CONVERGENCE" || e.code === "PHASE_SPLIT" || e.code === "OUT_OF_RANGE"))) throw e;
@@ -1137,6 +1150,7 @@ function phFlash(sys, z, P, H) {
 /** A start for the searches: the bubble temperature of the feed as one liquid, else 300 K. */
 function bubbleStart(sys, z, P) {
   let T0 = 300;
+  if (onlyNonvolatile(sys, z)) return T0;
   try { T0 = bubbleTCore(sys, z, P).T; } catch (e) { if (!(e && (e.code === "NO_CONVERGENCE" || e.code === "OUT_OF_RANGE"))) throw e; }
   return Math.min(Math.max(T0, T_FLOOR), T_CEIL);
 }
@@ -1213,6 +1227,10 @@ export function flash(sys, spec = {}, opts = {}) {
   // nonvolatile components (proposal 0009, step 5) stay in the liquid: the feed can never be all vapour, and the
   // vapour fraction stays below 1 - (their share of the feed)
   const nvShare = sys.nonvolatile ? z.reduce((s, zi, i) => s + (sys.nonvolatile[i] ? zi : 0), 0) : 0;
+  if (has("VF") && onlyNonvolatile(sys, z)) {
+    const names = sys.names.filter((_, i) => z[i] > 0).join(", ");
+    throw fail("BAD_INPUT", `flash: nothing in this feed evaporates (${names} ${names.includes(",") ? "are" : "is"} nonvolatile), so it stays liquid and has no boiling point; a vapour fraction cannot be specified. Give the temperature or the enthalpy (in a flowsheet, T_K or duty_kW).`);
+  }
   if (nvShare > 0 && has("VF") && Number(spec.VF) >= 1 - nvShare - 1e-9) {
     const names = sys.names.filter((_, i) => sys.nonvolatile[i] && z[i] > 0).join(", ");
     throw fail("BAD_INPUT", `flash: ${names} ${names.includes(",") ? "are" : "is"} nonvolatile and stay${names.includes(",") ? "" : "s"} in the liquid, so the vapour fraction stays below ${(1 - nvShare).toPrecision(4)} (the feed's other components); VF = ${spec.VF} cannot be reached.`);

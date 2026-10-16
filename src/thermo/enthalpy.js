@@ -127,13 +127,18 @@ export function activityPhaseMethods(ctx) {
     return s;
   }
   const oldBasis = (i, T) => hIG(i, T) + satResidual(i, T) - dHvap(i, T);
+  // the temperature asked, unless it is so close to the range's end that it would print as the end itself
+  const atT = (T, end, side) => (Math.abs(T - end) < 0.05 ? side : `at ${T.toFixed(1)} K`);
   /** Liquid enthalpy of pure i at T (J/mol), and a warning text when the cp_L record has ended. */
   function hLiquidPure(i, T) {
     const h0 = anchors()[i];
     const Tend = cpRec[i].Tmax_K;
+    if (T < cpRec[i].Tmin_K) {
+      throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record starts at ${cpRec[i].Tmin_K} K, so its liquid enthalpy ${atT(T, cpRec[i].Tmin_K, "below it")} cannot be calculated.`);
+    }
     if (T <= Tend) return { h: h0 + cpIntegral(i, T), note: null };
     if (nonvolatile[i]) {
-      throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record ends at ${Tend} K, so its liquid enthalpy at ${T.toFixed(1)} K cannot be calculated (a nonvolatile component has no vapour route to continue it).`);
+      throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record ends at ${Tend} K, so its liquid enthalpy ${atT(T, Tend, "above it")} cannot be calculated (a nonvolatile component has no vapour route to continue it).`);
     }
     return {
       h: h0 + cpIntegral(i, Tend) + oldBasis(i, T) - oldBasis(i, Tend),

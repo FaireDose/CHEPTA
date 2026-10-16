@@ -219,7 +219,9 @@ group-contribution method predicts it:
 polymerizes, or has no measurable vapour pressure) has `"class": "nonvolatile"` and no vapour pressure, critical
 constants or vapour properties. Activity models keep it in the liquid (a vapour pressure of 1e-20 kPa keeps the flash
 finite: its vapour mole fraction stays below 1e-20); a vapour fraction above the share of the other components, a dew
-point and the equations of state are refused with the reason. Its liquid enthalpy is the integral of its liquid heat
+point and the equations of state are refused with the reason. Nonvolatile components alone make a system too (the
+maintainer, 2026-10-16: heat a nonvolatile chemical, then cool it): the feed stays liquid, and a bubble point or a
+vapour-fraction specification is refused with the reason. Its liquid enthalpy is the integral of its liquid heat
 capacity from 298.15 K, so its reference state is the liquid there; that is enough for energy balances without
 reactions. `measured_components.py` (`build_nonvolatile`) builds it from the measured values that meet the targets,
 with the heat capacity predicted where none is measured. A volatile liquid without open vapour pressures (solketal,
