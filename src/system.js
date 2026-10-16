@@ -14,6 +14,9 @@ import { eosMethods } from "./equilibrium/phi-phi.js";
 import { flash } from "./equilibrium/flash.js";
 import { solidSolubility, solubilityCurve, liquidusT, sleBinary } from "./equilibrium/sle.js";
 import { fail } from "./util/errors.js";
+import { withInertSolids } from "./equilibrium/inert-solids.js";
+import { findComponent, componentRecord } from "./thermo/components.js";
+import { checkUserData } from "./thermo/user-data.js";
 
 /**
  * Create a system with calculation methods attached.
@@ -23,6 +26,26 @@ import { fail } from "./util/errors.js";
  * s.bubbleT([0.5, 0.5], 101.325)   // { T: 377.2, y: [...], gamma: [...] }
  */
 export function system(cfg) {
+  // inert solids (class "solid", the user's own components for now): the fluid part is a system of its own, and the
+  // solids pass through as a phase of their own (src/equilibrium/inert-solids.js)
+  if (Array.isArray(cfg?.components) && cfg.components.length) {
+    const ud = checkUserData(cfg.userData);
+    let recs = null;
+    try { recs = cfg.components.map(k => componentRecord(findComponent(k, ud), ud)); } catch { /* createSystem names the problem */ }
+    if (recs?.some(r => r.class === "solid")) {
+      const ids = cfg.components.map(k => findComponent(k, ud));
+      if (new Set(ids).size !== ids.length) throw fail("BAD_INPUT", "A component appears twice.");
+      const solid = recs.map(r => r.class === "solid");
+      const fluidKeys = ids.filter((_, i) => !solid[i]);
+      const fluid = fluidKeys.length ? system({ ...cfg, components: fluidKeys, userData: ud }) : null;
+      const base = fluid
+        ? { model: fluid.model, vapour: fluid.vapour, kind: fluid.kind, userData: ud, warnings: fluid.warnings,
+          info: { ...fluid.info, solids: recs.filter(r => r.class === "solid").map(r => r.name) } }
+        : { model: cfg.model ?? "NRTL", userData: ud, warnings: () => [], info: { pairs: [], missingPairs: [], solids: recs.map(r => r.name) } };
+      return withInertSolids({ ids, names: recs.map(r => r.name), MW: recs.map(r => r.MW), solid,
+        cp: recs.map(r => (r.class === "solid" ? r.properties.solidHeatCapacity : null)), fluid, base });
+    }
+  }
   const sys = createSystem(cfg);
   sys.flash = (spec, opts) => flash(sys, spec, opts);
   // diagrams work with every model: they use the system's own bubble point (bubble-any.js)

@@ -63,6 +63,8 @@ export function createSystem(cfg) {
   const ud = checkUserData(cfg.userData);
   const ids = cfg.components.map(k => findComponent(k, ud));
   if (new Set(ids).size !== ids.length) throw fail("BAD_INPUT", "A component appears twice.");
+  const solids = ids.map(id => componentRecord(id, ud)).filter(c => c.class === "solid");
+  if (solids.length) throw fail("BAD_INPUT", `${solids.map(c => c.name).join(", ")}: an inert solid takes no part in the phase equilibrium; build the system with CHEPTA.system(), which passes inert solids through as a phase of their own.`);
   const sel = selection(cfg, ud); // checked for every model, so that a typo never passes silently
   if (isEos) return createEosSystem(ids, { ...cfg, model, userData: ud }, sel); // Peng-Robinson / SRK: see eos/system.js
   const comps = ids.map(id => componentRecord(id, ud));

@@ -22,12 +22,13 @@ import { evaluate, CORRELATION_EQUATIONS } from "../thermo/correlations.js";
 import { RECORD_UNITS } from "../thermo/user-data.js";
 import { USER_PREFIX } from "../thermo/components.js";
 import { FIT_EQUATION, INPUT_UNITS, T_UNITS, parseTable, toRecordUnits, fitPoints, autoFit, recordFromFit } from "../thermo/user-fit.js";
-import { userDataDoc, userDataText, userDataFileName, readUserDataFile, mergeUserData, userDataPackage, removeUserDataEntry, putUserData, userDataList } from "./user-data-file.js";
+import { userDataDoc, userDataText, userDataFileName, readUserDataFile, mergeUserData, userDataPackage, removeUserDataEntry, putUserData, userDataList, setEntryUse } from "./user-data-file.js";
 import { fmtShort } from "./properties-logic.js";
 import pkg from "../../package.json" with { type: "json" };
 
 /** Property labels, the vapour pressure included. */
-export const PROPERTY_LABEL = { ...Object.fromEntries(Object.entries(PROPERTIES).map(([k, p]) => [k, p.label])), vapourPressure: "Vapour pressure" };
+export const PROPERTY_LABEL = { ...Object.fromEntries(Object.entries(PROPERTIES).map(([k, p]) => [k, p.label])), vapourPressure: "Vapour pressure",
+  solidHeatCapacity: "Solid heat capacity" };
 const PROPERTY_ORDER = ["vapourPressure", "liquidDensity", "liquidHeatCapacity", "heatOfVaporization", "idealGasHeatCapacity", "liquidViscosity",
   "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity", "surfaceTension"];
 const T_LABEL = { K: "K", "°C": "°C", "°F": "°F" };
@@ -49,8 +50,8 @@ function pubFields(env, d, prefix) {
     return h("label", { class: "fa-field fa-field-wide", for: id }, h("span", {}, label),
       h("input", { type: "text", id, value: d.pub[k], placeholder, style: "width:100%", "data-fk": `mydata-${prefix}${k}`, on: { input: ev => { d.pub[k] = ev.target.value; } } }));
   };
-  return h("details", { class: "fa-paste" }, h("summary", { "data-fk": `mydata-${prefix}pub` }, "Published source (optional; for a contribution to CHEPTA)"),
-    h("p", { class: "fa-in-hint" }, "Only if the numbers come from a source anyone can read for free: then a contribution draft made from this entry has what the Data form needs."),
+  return h("details", { class: "fa-paste" }, h("summary", { "data-fk": `mydata-${prefix}pub` }, "Published source (optional): this information will not be saved in CHEPTA's database unless you submit it as an improvement"),
+    h("p", { class: "fa-in-hint" }, "It stays in your project and goes only into a contribution draft made from this entry. CHEPTA does not check it: before anything enters the database, a reviewer opens the link and checks every number. Only sources anyone can read for free count; an article behind a paywall does not, even if you have a copy."),
     field("citation", "Citation", "Authors, title, journal volume (year) pages"),
     field("doi", "DOI", "10.xxxx/xxxx"),
     field("open_copy", "Link to a free copy", "https://…"),
@@ -98,7 +99,7 @@ function entryList(env, m, draw) {
   const names = new Map(listComponents({ userData: userOverlay(state) }).map(c => [c.id, c.name]));
   const label = e => {
     if (e.part === "properties") return `${names.get(e.component) ?? e.component}: ${PROPERTY_LABEL[e.key.split(".").slice(2).join(".")] ?? e.key.split(".").slice(2).join(".")}`;
-    if (e.part === "components") return `${e.value.name} (your component${e.value.class === "nonvolatile" ? ", nonvolatile" : ""})`;
+    if (e.part === "components") return `${e.value.name} (your component${e.value.class === "nonvolatile" ? ", nonvolatile" : e.value.class === "solid" ? ", inert solid" : ""})`;
     return e.what;
   };
   const range = v => (v.Tmin_K != null ? `${fmtShort(v.Tmin_K, 5)}-${fmtShort(v.Tmax_K, 5)} K` : "");
@@ -122,8 +123,20 @@ function entryList(env, m, draw) {
     };
     return h("li", { class: "fa-mydata-item", "data-key": e.key },
       h("div", { class: "fa-mydata-head" },
-        h("b", {}, label(e)), h("span", { class: "fa-tier fa-tier-user", title: "Tier: user (your own data)" }, "user"),
+        h("b", {}, label(e)), e.used ? h("span", { class: "fa-tier fa-tier-user", title: "Tier: user (your own data), used in this project" }, "user")
+          : h("span", { class: "fa-tier", title: "Kept, but the databank's record is used" }, "switched off"),
         h("span", { class: "fa-mydata-actions" },
+          // which record the calculations use: yours, or the databank's (yours is kept either way)
+          e.part === "components" ? null : h("div", { class: "fug-seg fa-seg", role: "group", "aria-label": `Record used for ${label(e)}` },
+            ...[[true, "Mine"], [false, e.part === "pairs" ? "Databank's set" : e.part === "groups" ? "Database's groups" : "Databank's"]].map(([on, text]) =>
+              h("button", { type: "button", "aria-pressed": String(e.used === on), "data-fk": `mydata-use-${on ? "mine" : "bank"}-${e.key}`,
+                title: on ? "The calculations use your record" : "The calculations use the databank's record; yours is kept",
+                on: { click: () => {
+                  if (e.used === on) return;
+                  try { env.set({ userData: setEntryUse(env.get().userData, e.key, on) }); m.note = on ? `${label(e)}: your record is used again.` : `${label(e)}: the databank's record is used; yours is kept (switch back with Mine).`; }
+                  catch (err) { m.note = `Not switched: ${err.message}`; }
+                  draw();
+                } } }, text))),
           h("button", { type: "button", class: "fa-mini", "data-fk": `mydata-draft-${e.key}`, title: "A contribution package for the Data form, from this entry",
             on: { click: () => { if (draft.childElementCount) draft.replaceChildren(); else showDraft(); } } }, icon("book", 14), "Contribution draft"),
           h("button", { type: "button", class: "fa-mini", "aria-label": `Remove ${label(e)}`, "data-fk": `mydata-rm-${e.key}`,
@@ -145,7 +158,8 @@ function propertyForm(env, m, draw) {
   const record = comps.find(c => c.id === p.comp);
   const isUser = p.comp?.startsWith(USER_PREFIX);
   const nonvolatile = p.comp ? pure(p.comp, { userData: ud }).nonvolatile : false;
-  const props = PROPERTY_ORDER.filter(k => !(k === "vapourPressure" && nonvolatile));
+  // an inert solid of one's own takes only its solid heat capacity; the others take the fluid properties
+  const props = record?.solid ? ["solidHeatCapacity"] : PROPERTY_ORDER.filter(k => !(k === "vapourPressure" && nonvolatile));
   if (!props.includes(p.property)) p.property = props[0];
   const units = Object.keys(INPUT_UNITS[p.property]);
   if (!units.includes(p.unit)) p.unit = units[0];
@@ -208,16 +222,24 @@ function propertyForm(env, m, draw) {
       plot(f, state.units?.T === "K" ? "K" : "°C"),
       f.databank ? h("p", { class: "fa-in-hint" }, `Dashed: the databank's record (${f.databank.tier ?? "databank"}), which yours replaces in this project.`) : h("p", { class: "fa-in-hint" }, "The databank has no record of this property for this component: yours fills the gap."),
       h("div", { class: "fa-in-actions" },
-        h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-save", disabled: !p.source.trim(), title: p.source.trim() ? "" : "Write where the numbers come from first",
+        h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-save",
           on: { click: () => {
+            // always clickable: without a source it says what is missing and goes to the field (typing in a field does
+            // not redraw the panel, so a button disabled while the source was empty would stay disabled)
+            if (!p.source.trim()) {
+              p.error = "Write where these numbers come from in Source (for example \"own measurement, lab book 12\"), then save.";
+              draw();
+              env.focus?.("mydata-source");
+              return;
+            }
             try {
               const rec = { ...f.record, source: { ...f.record.source, ...sourceOf(p) } };
               env.set({ userData: putUserData(env.get().userData, isUser ? componentPiece(env.get().userData, p.comp, p.property, rec) : { properties: { [p.comp]: { [p.property]: rec } } }) });
-              m.note = `Saved: ${record?.name ?? p.comp}, ${PROPERTY_LABEL[p.property].toLowerCase()}. Every view that uses it is calculated again.`;
+              m.note = `Added to this project: ${record?.name ?? p.comp}, ${PROPERTY_LABEL[p.property].toLowerCase()}. Every view that uses it is calculated again; it is saved with the project (File, Save).`;
               m.prop = { ...blankProperty(), comp: p.comp, property: p.property, Tunit: p.Tunit };
             } catch (err) { p.error = `Not saved: ${err.message}`; }
             draw();
-          } } }, icon("check", 15), "Save to my data"))));
+          } } }, icon("check", 15), "Add to this project"))));
   }
   return out;
 }
@@ -326,20 +348,28 @@ function componentForm(env, m, draw) {
   const out = [
     h("p", { class: "fa-in-hint" }, "A component the databank does not have: an intermediate of your process, an oligomer, a proprietary solvent. Its id starts with \"user:\". More records (density, viscosity, …) can be added with Add a property once it is saved."),
     h("div", { class: "fa-in-row fa-wrap" }, text("name", "Name", { width: "14em" }), text("formula", "Formula (optional)", { width: "8em" }), text("MW", "Molar mass, g/mol", { width: "7em", mode: "decimal" })),
-    sel("kind", "It", [["volatile", "evaporates (give its vapour pressure)"], ["nonvolatile", "does not evaporate (nonvolatile: it stays in the liquid)"]]),
+    sel("kind", "It", [["volatile", "evaporates (give its vapour pressure)"],
+      ["nonvolatile", "does not evaporate: it stays in the liquid, dissolved or molten (nonvolatile)"],
+      ["solid", "stays a solid: an inert solid that does not dissolve, melt or react"]]),
   ];
+  const solidKind = c.kind === "solid";
   if (c.kind === "volatile") {
     out.push(
       h("div", { class: "fa-in-row" }, sel("vpTunit", "Temperature in", Object.keys(T_UNITS).map(u => [u, u])), sel("vpUnit", "Vapour pressure in", Object.keys(INPUT_UNITS.vapourPressure).map(u => [u, u]))),
       area("vpText", "Vapour pressure: temperature and pressure on each line (fitted with DIPPR 101)", "50\t12.3\n80\t47.4\n110\t140.2"),
       h("details", { class: "fa-paste" }, h("summary", { "data-fk": "mydata-ncrit" }, "Critical constants (optional, for Peng–Robinson and SRK)"),
         h("div", { class: "fa-in-row fa-wrap" }, text("Tc", "Tc, K", { width: "7em", mode: "decimal" }), text("Pc", "Pc, bar", { width: "7em", mode: "decimal" }), text("omega", "Acentric factor", { width: "7em", mode: "decimal" }))));
+  } else if (solidKind) {
+    out.push(
+      h("p", { class: "fa-in-hint" }, "A catalyst, a filter aid, crystals that do not dissolve: it passes through the units as a solid phase of its own and leaves a flash drum with the liquid; a component separator can take it out, as a filter. It takes no part in the phase equilibrium, so it is used in flowsheets (not in the phase diagrams)."),
+      text("why", "What it is (optional)", { placeholder: "silica catalyst support" }));
   } else {
     out.push(text("why", "Why it does not evaporate (optional)", { placeholder: "decomposes before it boils" }));
   }
   out.push(
     h("div", { class: "fa-in-row" }, sel("cpTunit", "Temperature in", Object.keys(T_UNITS).map(u => [u, u])), sel("cpUnit", "Heat capacity in", Object.keys(INPUT_UNITS.liquidHeatCapacity).map(u => [u, u]))),
-    area("cpText", "Liquid heat capacity (needed for energy balances): temperature and value on each line", "25\t210\n60\t228\n100\t247"),
+    area("cpText", solidKind ? "Solid heat capacity (needed: the energy balances use it): temperature and value on each line"
+      : "Liquid heat capacity (needed for energy balances): temperature and value on each line", "25\t210\n60\t228\n100\t247"),
     text("cas", "CAS number (optional)", { width: "10em", placeholder: "50-21-5" }),
     text("source", "Source (where these numbers come from)", { placeholder: "own measurement, lab book 12, 2026" }),
     pubFields(env, c, "n"),
@@ -368,7 +398,11 @@ function saveComponent(env, m) {
     if (c.formula.trim()) entry.formula = c.formula.trim();
     if (c.cas.trim()) entry.cas = c.cas.trim();
     if (c.kind === "nonvolatile") { entry.class = "nonvolatile"; if (c.why.trim()) entry.why = c.why.trim(); }
-    else {
+    else if (c.kind === "solid") {
+      entry.class = "solid";
+      if (c.why.trim()) entry.why = c.why.trim();
+      if (!c.cpText.trim()) throw new Error("An inert solid needs its solid heat capacity: the energy balances of every unit it passes use it.");
+    } else {
       if (!c.vpText.trim()) throw new Error("A component that evaporates needs its vapour pressure (or choose \"does not evaporate\").");
       entry.vapourPressure = fitTable(c.vpText, "vapourPressure", c.vpTunit, c.vpUnit);
       const crit = [c.Tc, c.Pc, c.omega].map(v => String(v).trim());
@@ -378,7 +412,8 @@ function saveComponent(env, m) {
         Object.assign(entry, { Tc_K: Tc, Pc_Pa: Pc * 1e5, omega: w });
       }
     }
-    if (c.cpText.trim()) entry.properties = { liquidHeatCapacity: fitTable(c.cpText, "liquidHeatCapacity", c.cpTunit, c.cpUnit) };
+    const cpProp = c.kind === "solid" ? "solidHeatCapacity" : "liquidHeatCapacity";
+    if (c.cpText.trim()) entry.properties = { [cpProp]: fitTable(c.cpText, cpProp, c.cpTunit, c.cpUnit) };
     const ud = env.get().userData;
     let id = `${USER_PREFIX}${slug(name)}`;
     for (let k = 2; ud?.components?.[id]; k++) id = `${USER_PREFIX}${slug(name)}-${k}`;
@@ -414,12 +449,12 @@ function filesSection(env, m, draw) {
     on: { change: ev => { const f = ev.target.files?.[0]; if (f) f.text().then(t => open(t, f.name), e => { m.note = `Not opened: ${e.message}`; draw(); }); } } });
   const paste = h("textarea", { class: "fa-csv-text", rows: 4, "aria-label": "The text of a My data file", placeholder: '{ "chepta_user_data": 1, "user_data": { … } }', "data-fk": "mydata-paste" });
   const out = [
-    h("p", {}, "The project keeps its own copy of your data, so it always opens with the numbers it was calculated with. Save it also as a file of its own to use it in other projects (a personal or company library)."),
+    h("p", {}, "Your data is saved with the project (File, Save), so the project always opens with the numbers it was calculated with. To use the same data in other projects, download it also as a file of its own (a personal or company library) and open that file there."),
     h("div", { class: "fa-in-actions" },
-      h("button", { type: "button", class: "fa-mini", disabled: !has, "data-fk": "mydata-save-file", on: { click: () => saveText(text(), userDataFileName(title), "application/json", status, { copyLabel: "Copy", bom: false }) } }, icon("download", 15), "Save my data…"),
+      h("button", { type: "button", class: "fa-mini", disabled: !has, "data-fk": "mydata-save-file", on: { click: () => saveText(text(), userDataFileName(title), "application/json", status, { copyLabel: "Copy", bom: false }) } }, icon("download", 15), "Download as a file…"),
       h("button", { type: "button", class: "fa-mini", disabled: !has, "data-fk": "mydata-copy", on: { click: () => copyText(text(), status, box, { what: "My data file", done: "My data copied: paste it into a file or another workbench." }) } }, icon("copy", 15), "Copy"),
       h("label", { class: "fa-mini", for: fileId, role: "button", tabindex: "0", "data-fk": "mydata-open",
-        on: { keydown: ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); file.click(); } } } }, icon("file", 15), "Open my data…"), file),
+        on: { keydown: ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); file.click(); } } } }, icon("file", 15), "Open a My data file…"), file),
     status, box,
     h("details", { class: "fa-paste" },
       h("summary", { "data-fk": "mydata-paste-toggle" }, "Paste a My data file's text instead (from Copy)"),

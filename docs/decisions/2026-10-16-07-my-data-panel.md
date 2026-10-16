@@ -31,3 +31,25 @@
 - **Not yet:** pair parameters and groups (step 5); with NRTL or UNIQUAC a component of one's own needs pair
   parameters, so until then it calculates with the ideal solution or Modified UNIFAC 2.0 groups given in code.
 - **Next:** step 4, the separate window.
+
+## After the maintainer's review (2026-10-16)
+
+- **Where the source information goes.** The maintainer asked whether a published source a person enters reaches the
+  database, given that it may be fake or behind a paywall. It does not: it stays in the person's project and My data
+  file, and goes only into a contribution draft, which a reviewer checks (the link opens for free, every number
+  matches) before anything enters the databank. The fields are now headed, in the maintainer's words, "this
+  information will not be saved in CHEPTA's database unless you submit it as an improvement", with the reviewer's
+  check stated; the draft says the source has not been checked yet.
+- **Inert solids.** "If it doesn't evaporate it can also be a solid": the choice for a component of one's own is now
+  evaporates / stays in the liquid, dissolved or molten (nonvolatile) / stays a solid. An inert solid is allowed "for
+  the moment" (the maintainer), with the component separator as a filter: `src/equilibrium/inert-solids.js` (the
+  fluid flashed alone, a solid phase with the integral of its solid heat capacity, the vapour fraction over every
+  mole); the flash drum's liquid outlet carries it; the diagrams refuse it with the reason. Tested in
+  `test/inert-solids.test.js`. A real solid phase (dissolving, crystallizing, drying) needs a proposal.
+- **The Save button.** "Add to this project" could not be pressed when the source was typed after the fit (the
+  button was disabled at the time of the fit). It is always clickable now, and says what is missing. The two "save"
+  buttons are now named for what they do: "Add to this project" and "Download as a file…".
+- **Switching back.** On the canvas the note "Uses your own data" has a switch per record, "Use the databank's" and
+  back "Use mine", and the My data list has Mine / Databank's; a record switched off (`use: false`) is kept.
+- **The Properties page.** The source boxes on the page (under the plot and under the saturation table) are gone in
+  the workbench: the sources are listed in the Results panel.

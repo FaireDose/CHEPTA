@@ -209,6 +209,7 @@ export const APP_CSS = `
 .fa-tier-standard{background:var(--fa-t-standard-bg); color:var(--fa-t-standard)}
 .fa-tier-none{background:var(--fa-t-none-bg); color:var(--fa-t-none)}
 .fa-tier-predicted{background:var(--fa-t-predicted-bg); color:var(--fa-t-predicted)}
+.fa-userdata-row{display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; margin:4px 0}
 .fa-tier-user{background:var(--fa-t-user-bg); color:var(--fa-t-user)}
 
 /* the library: set selectors, source lists, the source browser */

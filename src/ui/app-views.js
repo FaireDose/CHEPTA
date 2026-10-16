@@ -524,7 +524,7 @@ function envelopeView(ctx) {
 // Flash (proposal 0001, step 6): the feed flashed with the model of the Model group; a bar of
 // the phase split, the stream table (feed and phases), CSV export; readouts and sources
 
-const PHASE_COLOR = { vapour: "var(--fug-vap)", liquid: "var(--fug-liq)" };
+const PHASE_COLOR = { vapour: "var(--fug-vap)", liquid: "var(--fug-liq)", solid: "var(--fug-muted)" };
 
 /**
  * Save text as a file (a Blob link), or say why the page cannot. `copyLabel` names the
@@ -881,7 +881,7 @@ function propertiesView(ctx) {
   const { state, plot, side, extra } = ctx;
   const id = state.components[0];
   const p = pure(id, own(state)), u = state.units;
-  const explorer = mountProperties(plot, { component: id, property: state.property, units: u, controls: false, ...own(state) });
+  const explorer = mountProperties(plot, { component: id, property: state.property, units: u, controls: false, sources: false, ...own(state) });
   side.replaceChildren(
     h("div", {}, h("div", { class: "fug-eyebrow" }, p.formula), h("div", { class: "fa-comp-name" }, p.name), h("div", { class: "fug-sub" }, `CAS ${p.cas}`)),
     kv([["Molar mass", fmtNum(p.MW, 5), "g/mol"],

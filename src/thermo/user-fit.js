@@ -23,12 +23,14 @@ export const FIT_EQUATION = {
   liquidDensity: "DIPPR100", liquidHeatCapacity: "DIPPR100", idealGasHeatCapacity: "DIPPR100", heatOfVaporization: "DIPPR100",
   liquidThermalConductivity: "DIPPR100", vapourThermalConductivity: "DIPPR100", surfaceTension: "DIPPR100",
   liquidViscosity: "DIPPR101", vapourViscosity: "DIPPR101", vapourPressure: "DIPPR101",
+  solidHeatCapacity: "DIPPR100",   // an inert solid of the user's own
 };
 
 /** The units a value may be typed in, per property: factor to the record's units, or a function of the molar mass. */
 export const INPUT_UNITS = {
   liquidDensity: { "kg/m3": 1, "g/cm3": 1000, "g/mL": 1000, "kg/L": 1000 },
   liquidHeatCapacity: { "J/mol/K": 1, "kJ/kmol/K": 1, "kJ/mol/K": 1000, "cal/mol/K": 4.184, "J/g/K": MW => MW, "kJ/kg/K": MW => MW },
+  solidHeatCapacity: { "J/mol/K": 1, "kJ/kmol/K": 1, "kJ/mol/K": 1000, "cal/mol/K": 4.184, "J/g/K": MW => MW, "kJ/kg/K": MW => MW },
   idealGasHeatCapacity: { "J/mol/K": 1, "kJ/kmol/K": 1, "kJ/mol/K": 1000, "cal/mol/K": 4.184, "J/g/K": MW => MW, "kJ/kg/K": MW => MW },
   heatOfVaporization: { "J/mol": 1, "kJ/mol": 1000, "kJ/kmol": 1, "cal/mol": 4.184, "kcal/mol": 4184, "J/g": MW => MW, "kJ/kg": MW => MW },
   liquidViscosity: { "Pa s": 1, "mPa s": 1e-3, cP: 1e-3, "uPa s": 1e-6 },

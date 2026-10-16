@@ -42,7 +42,7 @@ with the same shape, `registerUnit({ type, inlets, outlets, checkSpec, solve })`
 | `mixer` | Adds streams; the outlet is flashed at the lowest inlet pressure (or a given one) |
 | `splitter` | The same composition in every outlet, split by fractions |
 | `separator` | Component splitter: a split fraction per component and outlet |
-| `flash` | Flash drum: vapour and liquid outlets at the given conditions or duty |
+| `flash` | Flash drum: vapour and liquid outlets at the given conditions or duty; an inert solid leaves with the liquid (a slurry) |
 | `heater` | Heater or cooler: outlet T, VF or duty |
 | `product` | End of a stream |
 

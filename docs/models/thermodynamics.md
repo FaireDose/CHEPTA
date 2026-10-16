@@ -171,4 +171,12 @@ it throws.
   coefficients that meet the points within 0.5 %, or the number the person chooses; its largest deviation is shown
   and written into the record's source. Checked against numpy on the same points to 1e-9
   ([test/user-fit.test.js](../../test/user-fit.test.js), `validation/python/reference_user_fit.py`). A result that
-  uses the person's data says so on the canvas ("Uses your own data: ...").
+  uses the person's data says so on the canvas ("Uses your own data: ..."), with a switch per record between the
+  person's record and the databank's: a record switched off (`use: false`) is kept in the data and the files, and
+  the databank's is used.
+- **Inert solids** ([`src/equilibrium/inert-solids.js`](../../src/equilibrium/inert-solids.js)): a component of one's own
+  with `class: "solid"` and a solid heat capacity neither evaporates, dissolves nor melts. `system()` flashes the fluid
+  part as it would alone and adds a solid phase whose enthalpy is the integral of the solid heat capacity from 298.15 K;
+  the vapour fraction counts every mole. In a flowsheet it leaves a flash drum with the liquid, and a component
+  separator filters it out. Bubble and dew points and the diagrams refuse it with the reason. Checked by
+  [test/inert-solids.test.js](../../test/inert-solids.test.js).

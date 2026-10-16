@@ -8,7 +8,7 @@
  *
  *   {
  *     "properties": { "<component>": { "<property>": record, "vapourPressure": record, "fusion": { Tm_K, Hfus_J_mol } } },
- *     "components": { "user:<name>": { name, MW, formula?, cas?, class?: "nonvolatile", why?, Tc_K?, Pc_Pa?, omega?,
+ *     "components": { "user:<name>": { name, MW, formula?, cas?, class?: "nonvolatile" | "solid", why?, Tc_K?, Pc_Pa?, omega?,
  *                                      aliases?, vapourPressure?: record, properties?: { ... }, fusion?, groups?,
  *                                      source } },
  *     "pairs":      { "<component>+<component>": { NRTL?: { a_ij?, a_ji?, b_ij, b_ji, alpha? }, UNIQUAC?: { ... },
@@ -16,10 +16,15 @@
  *     "groups":     { "<component>": { subgroups: { "<subgroup id>": count }, source } }
  *   }
  *
+ * A property record, a pair or a component's groups may carry use: false: it is checked and kept in the data (and in
+ * the files), but not used, so the databank's record or set is (the switch in the My data panel).
+ *
  * A record is a correlation in the format of components.json: { equation, coefficients: { A..E }, units, Tmin_K,
  * Tmax_K, Tc_K? (DIPPR106), points?: [[T_K, value], ...], source }, in the units the databank stores (RECORD_UNITS).
  * A vapour pressure is DIPPR101 in Pa, the only form the phase-equilibrium code evaluates (psat.js). Every item needs
- * a source: { name: "own measurement, lab book 12" }. Components are named by anything findComponent accepts; the
+ * a source: { name: "own measurement, lab book 12" }. An inert solid (class "solid": it neither evaporates, dissolves nor
+ * melts, and passes through the units as a phase of its own; src/equilibrium/inert-solids.js) needs its solid heat
+ * capacity, properties.solidHeatCapacity, for the energy balances. Components are named by anything findComponent accepts; the
  * user's own components by their "user:" id or name.
  *
  * checkUserData() checks all of it and returns the overlay the engine reads, or throws BAD_INPUT naming the problem.
@@ -37,6 +42,8 @@ export const RECORD_UNITS = {
   liquidDensity: "kg/m3", idealGasHeatCapacity: "J/mol/K", liquidHeatCapacity: "J/mol/K", heatOfVaporization: "J/mol",
   liquidViscosity: "Pa s", vapourViscosity: "Pa s", liquidThermalConductivity: "W/m/K", vapourThermalConductivity: "W/m/K",
   surfaceTension: "N/m", vapourPressure: "Pa",
+  // an inert solid of the user's own (class "solid"); the databank has no solids in its streams yet
+  solidHeatCapacity: "J/mol/K",
 };
 const PAIR_PARAMS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij"], SRK: ["kij"] };
 const CHECKED = Symbol("checked user data");
@@ -126,6 +133,13 @@ function groupsRecord(g, what) {
   return { groups, tier: "user", source: `Modified UNIFAC 2.0 subgroups (${names}): your own assignment (${source.name})`, userSource: source };
 }
 
+/** True when an entry is switched off (use: false): checked and kept, but not used (the databank's is). */
+function switchedOff(entry, what) {
+  if (!isObj(entry) || entry.use == null) return false;
+  if (typeof entry.use !== "boolean") throw bad(`${what}: use must be true or false (got ${JSON.stringify(entry.use)}).`);
+  return entry.use === false;
+}
+
 function propertiesOf(props, what, comp) {
   if (!isObj(props)) throw bad(`${what} must be an object { property: record }.`);
   const out = {};
@@ -133,9 +147,14 @@ function propertiesOf(props, what, comp) {
     const w = `${what}.${name}`;
     if (name === "vapourPressure") {
       if (comp?.class === "nonvolatile") throw bad(`${w}: ${comp.name} is nonvolatile in CHEPTA, so it has no vapour pressure.`);
+      if (comp?.class === "solid") throw bad(`${w}: ${comp.name} is an inert solid, so it has no vapour pressure.`);
       out.vapourPressure = vapourPressureRecord(r, w);
     } else if (name === "fusion") out.fusion = fusionRecord(r, w);
-    else out[name] = propertyRecord(r, name, w);
+    else if (name === "solidHeatCapacity" && comp?.class !== "solid") {
+      throw bad(`${w}: a solid heat capacity is for an inert solid of your own (class "solid"); ${comp?.name ?? "this component"} is not one.`);
+    } else if (comp?.class === "solid" && name !== "solidHeatCapacity") {
+      throw bad(`${w}: ${comp.name} is an inert solid, so it takes only a solid heat capacity (solidHeatCapacity).`);
+    } else out[name] = propertyRecord(r, name, w);
   }
   return out;
 }
@@ -156,8 +175,11 @@ function userComponent(id, c) {
   const MW = num(c.MW, `${what}: MW (g/mol)`);
   if (!(MW > 0)) throw bad(`${what}: MW must be positive.`);
   const source = sourceOf(c.source, what);
-  if (c.class != null && c.class !== "nonvolatile") throw bad(`${what}: class can only be "nonvolatile" (or left out for a component that evaporates).`);
-  const nonvolatile = c.class === "nonvolatile";
+  if (c.class != null && c.class !== "nonvolatile" && c.class !== "solid") {
+    throw bad(`${what}: class can only be "nonvolatile" (it stays in the liquid), "solid" (an inert solid) or left out (it evaporates).`);
+  }
+  const solid = c.class === "solid";
+  const nonvolatile = c.class === "nonvolatile" || solid;
   const out = {
     name: c.name.trim(), formula: c.formula ?? null, cas: typeof c.cas === "string" && c.cas.trim() ? c.cas.trim() : null, MW, aliases: (c.aliases ?? []).map(a => String(a).toLowerCase()),
     tier: "user", source, constants_source: `Your own data: ${source.name}`,
@@ -167,14 +189,20 @@ function userComponent(id, c) {
   const crit = ["Tc_K", "Pc_Pa", "omega"].filter(k => c[k] != null);
   if (crit.length && crit.length < 3) throw bad(`${what}: give Tc_K, Pc_Pa and omega together, or none of them.`);
   if (crit.length) {
-    if (nonvolatile) throw bad(`${what}: a nonvolatile component has no critical constants.`);
+    if (nonvolatile) throw bad(`${what}: ${solid ? "an inert solid" : "a nonvolatile component"} has no critical constants.`);
     out.Tc_K = num(c.Tc_K, `${what}: Tc_K`); out.Pc_Pa = num(c.Pc_Pa, `${what}: Pc_Pa`); out.omega = num(c.omega, `${what}: omega`);
   } else {
     out.critical = { available: false, searched: ["your own data (no critical constants given)"] };
   }
   const props = c.properties != null ? propertiesOf(c.properties, `${what}.properties`, { ...out, class: c.class }) : {};
   const vpIn = c.vapourPressure ?? null;
-  if (nonvolatile) {
+  if (solid) {
+    if (vpIn) throw bad(`${what}: an inert solid has no vapour pressure.`);
+    if (!props.solidHeatCapacity) throw bad(`${what}: an inert solid needs its solid heat capacity (properties.solidHeatCapacity, J/mol/K) for the energy balances.`);
+    out.class = "solid";
+    out.solid = { why: typeof c.why === "string" && c.why.trim() ? c.why.trim() : "your own data: an inert solid", source: "your own data" };
+    out.Tb_note = "an inert solid (your own data)";
+  } else if (nonvolatile) {
     if (vpIn || props.vapourPressure) throw bad(`${what}: a nonvolatile component has no vapour pressure.`);
     out.class = "nonvolatile";
     out.nonvolatile = { why: typeof c.why === "string" && c.why.trim() ? c.why.trim() : "your own data: it does not evaporate", source: "your own data" };
@@ -218,7 +246,7 @@ function pairSets(key, p, ud) {
   }
   const sets = [];
   for (const [model, given] of Object.entries(p)) {
-    if (model === "source" || model === "valid") continue;
+    if (model === "source" || model === "valid" || model === "use") continue;
     if (!PAIR_PARAMS[model]) throw bad(`${what}: unknown model "${model}". Use ${Object.keys(PAIR_PARAMS).join(", ")}.`);
     if (!isObj(given)) throw bad(`${what}.${model} must be an object of parameters (${PAIR_PARAMS[model].join(", ")}).`);
     for (const k of Object.keys(given)) if (!PAIR_PARAMS[model].includes(k)) throw bad(`${what}.${model}: unknown parameter "${k}". Use ${PAIR_PARAMS[model].join(", ")}.`);
@@ -259,6 +287,7 @@ export function checkUserData(userData) {
 
   // the user's own components first: the other parts may name them
   const ud = { components: {}, properties: {}, pairs: [], groups: {} };
+  const given = new Set();
   const names = new Map();
   for (const [id, c] of Object.entries(userData.components ?? {})) {
     const rec = userComponent(id, c);
@@ -283,15 +312,21 @@ export function checkUserData(userData) {
       throw bad(`properties["${key}"]: water is calculated from IAPWS-IF97, the international standard, so records of your own are not used for it.`);
     }
     const c = componentData.components[id];
-    if (ud.properties[id]) throw bad(`properties: ${c.name} is given twice ("${key}").`);
-    ud.properties[id] = propertiesOf(props, `properties["${key}"]`, c);
+    if (given.has(`p|${id}`)) throw bad(`properties: ${c.name} is given twice ("${key}").`);
+    given.add(`p|${id}`);
+    const recs = propertiesOf(props, `properties["${key}"]`, c);
+    // a record switched off (use: false) is checked and kept in the data, but the databank's record is used
+    for (const name of Object.keys(recs)) if (switchedOff(props[name], `properties["${key}"].${name}`)) delete recs[name];
+    if (Object.keys(recs).length) ud.properties[id] = recs;
   }
   for (const [key, g] of Object.entries(userData.groups ?? {})) {
     let id;
     try { id = findComponent(key, ud); } catch (e) { throw bad(`groups["${key}"]: ${e.message}`); }
     if (id.startsWith(USER_PREFIX)) throw bad(`groups["${key}"]: give the groups of your own component in its own entry (components["${id}"].groups).`);
-    if (ud.groups[id]) throw bad(`groups: ${componentData.components[id].name} is given twice ("${key}").`);
-    ud.groups[id] = groupsRecord(g, `groups["${key}"]`);
+    if (given.has(`g|${id}`)) throw bad(`groups: ${componentData.components[id].name} is given twice ("${key}").`);
+    given.add(`g|${id}`);
+    const rec = groupsRecord(g, `groups["${key}"]`);
+    if (!switchedOff(g, `groups["${key}"]`)) ud.groups[id] = rec;
   }
   const seen = new Set();
   for (const [key, p] of Object.entries(userData.pairs ?? {})) {
@@ -299,7 +334,7 @@ export function checkUserData(userData) {
       const k = `${s.model}|${[s.i, s.j].sort().join("|")}`;
       if (seen.has(k)) throw bad(`pairs: ${s.model} parameters for ${key} are given twice.`);
       seen.add(k);
-      ud.pairs.push(s);
+      if (!switchedOff(p, `pairs["${key}"]`)) ud.pairs.push(s);
     }
   }
   Object.defineProperty(ud, CHECKED, { value: true });

@@ -187,6 +187,21 @@ export function removeUserDataEntry(userData, key) {
 }
 
 /**
+ * Switch an entry on or off (use: false): off, it stays in the data and the files, but the databank's record (or the
+ * pair's databank set, or the database's groups) is used. A component of the user's own cannot be switched off.
+ */
+export function setEntryUse(userData, key, on) {
+  const e = entries(userData);
+  const x = e.get(key);
+  if (!x) throw new Error(`user data has no entry "${key}".`);
+  if (x.part === "components") throw new Error("A component of your own cannot be switched off: remove it, or take it out of the calculation.");
+  const value = copy(x.value);
+  if (on) delete value.use; else value.use = false;
+  e.set(key, { ...x, value });
+  return fromEntries(e);
+}
+
+/**
  * Put entries into user data, replacing those with the same key (the person saves them on purpose); keys as component
  * ids. The result is checked.
  */
@@ -202,7 +217,8 @@ export function userDataList(userData) {
   for (const [key, e] of entries(ud)) {
     const value = e.value;
     const src = typeof value.source === "string" ? value.source : value.source?.name ?? "";
-    out.push({ key, part: e.part, component: e.part === "pairs" ? null : e.path[0], what: describe(key, ud), source: src, fit: value.source?.fit ?? null, value: copy(value) });
+    out.push({ key, part: e.part, component: e.part === "pairs" ? null : e.path[0], what: describe(key, ud), source: src, fit: value.source?.fit ?? null,
+      used: value.use !== false, value: copy(value) });
   }
   return out;
 }
@@ -294,7 +310,7 @@ export function userDataPackage(userData, key, { prepared_with = "CHEPTA (My dat
     pkg.user_parameters = copy(e.value);
     problems.push("Pair parameters are not contributed as such: the repository fits its own parameters to cited measured data (AGENTS.md rule 5). Add the measured mixture data the parameters were fitted to (\"data\": isobaric T-x-y, isothermal P-x-y, ...), from an open source.");
   }
-  pkg.notes = "Exported from the person's own data in CHEPTA (tier \"user\"). Before submitting, compare every number with the source (AGENTS.md rule 4).";
+  pkg.notes = "Exported from the person's own data in CHEPTA (tier \"user\"). The source was entered by the person and has not been checked by a reviewer yet. Before submitting, compare every number with the source (AGENTS.md rule 4).";
   for (const k of Object.keys(pkg.source)) if (pkg.source[k] === "") delete pkg.source[k];
   if (!pkg.data.length) delete pkg.data;
   const { errors, warnings } = checkPackage(pkg, componentData.components);

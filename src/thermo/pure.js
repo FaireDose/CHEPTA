@@ -101,6 +101,8 @@ export function pure(key, opts = {}) {
   const c = componentRecord(id, ud);
   const data = { ...(c.properties || {}), ...(opts.properties || {}) };
   for (const [name, rec] of Object.entries(data)) {
+    // an inert solid's heat capacity (the user's own, src/equilibrium/inert-solids.js) is read by the flash, not here
+    if (name === "solidHeatCapacity" && c.class === "solid") continue;
     if (!PROPERTIES[name]) throw fail("BAD_INPUT", `${c.name}: unknown property "${name}"${opts.properties?.[name] ? "" : " in components.json"}.`);
     if (rec.available === false) continue;
     if (rec.units !== PROPERTIES[name].recordUnits) {

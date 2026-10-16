@@ -35,7 +35,7 @@ import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, checkInputs, exampl
 import { UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
 import { myDataPanel, PROPERTY_LABEL } from "./my-data-panel.js";
-import { userDataUsed } from "../thermo/user-data.js";
+import { userDataList, setEntryUse } from "./user-data-file.js";
 import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey } from "./flowsheet-view.js";
 import { projectOf, projectText, projectFileName, stateFromProject } from "./project.js";
 import { browserStore, hostStore, autosave, lastAutosave, clearAutosave } from "./project-store.js";
@@ -944,7 +944,7 @@ export function app(target, cfg = {}) {
     if (id === "project") return projectPanel();
     if (id === "feedback") return feedbackPanel();
     // My data (proposal 0012): it redraws itself; a change of the data recalculates the canvas
-    if (id === "mydata") return myDataPanel({ get: () => state, set: patch => set(patch), ui, uid, section: drawerSection });
+    if (id === "mydata") return myDataPanel({ get: () => state, set: patch => set(patch), ui, uid, section: drawerSection, focus: restoreFocus });
     if (id === "sources") {
       const check = checkInputs(state.view, state.inputs[state.view], state.model, userOverlay(state));
       return sourcesPanel({ ids: check.ok ? check.use : [], what: check.ok ? calculationName() : VIEWS[state.view].label, uid, look: ui.sources });
@@ -1045,6 +1045,7 @@ export function app(target, cfg = {}) {
       state.units, state.basis, state.residueCurves, state.isotherms, state.grid, state.property, state.z[v] ?? null,
       v === "henry" ? [state.inputs.henry, state.henryT_K, state.henryP_kPa, state.compareGases] : null,
       v === "solid" || v === "sle" ? [state.sleT_K, state.solidUnit] : null, state.steamP_kPa, state.sets, state.prefer,
+      state.userData,   // the user's own data (proposal 0012): a change or a switch recalculates every view
       v === "flash" ? state.flash : null,
       v === "flowsheet" ? [state.flowsheet, state.userData, ensureUi(ui).sel, ui.fs.auto, ui.fs.solveKey, ui.fs.zoom] : null]);
   };
@@ -1106,18 +1107,27 @@ export function app(target, cfg = {}) {
       state.panels.left ? null : h("button", { type: "button", class: "fa-mini", "data-fk": "show-inputs", on: { click: () => set({ panels: { left: true } }, { canvas: false }) } }, icon("panelL", 15), "Show the Inputs panel"));
   }
 
-  /** A note on the canvas naming the user's own data this result uses (proposal 0012: visible everywhere). */
+  /**
+   * A note on the canvas naming the user's own data this result uses (proposal 0012: visible everywhere), with a switch
+   * per record between the person's record and the databank's (setEntryUse; the person's is kept either way).
+   */
   function userDataNote(ids) {
-    const ud = userOverlay(state);
-    if (!ud || !ids?.length) return;
-    const pairs = ud.pairs.filter(p => ids.includes(p.i) && ids.includes(p.j)).map(p => ({ tier: "user", pair: [nameOf(p.i), nameOf(p.j)], source: p.source }));
-    const used = userDataUsed(ids, ud, pairs);
-    if (!used.length) return;
-    const what = u => (u.pair ? `${u.pair.join(" + ")}, ${u.what}` : u.what === "component" ? `${nameOf(u.component)} (your component)`
-      : `${nameOf(u.component)}, ${(PROPERTY_LABEL[u.what] ?? u.what).toLowerCase()}`);
-    notes.append(h("div", { class: "fug-warn fa-userdata-note", role: "note", "data-fk": "userdata-note" }, h("strong", {}, "Uses your own data: "),
-      used.map(u => `${what(u)} (${u.source})`).join("; "), ". ",
-      h("button", { type: "button", class: "fa-link", "data-fk": "userdata-open", on: { click: () => set({ utility: "mydata" }, { canvas: false }) } }, "My data")));
+    if (!state.userData || !ids?.length) return;
+    const list = userDataList(state.userData).filter(e => (e.part === "pairs" ? e.key.slice(6).split("+").every(i => ids.includes(i)) : ids.includes(e.component)));
+    if (!list.length) return;
+    const what = e => (e.part === "components" ? `${nameOf(e.component)} (your component)` : e.part === "pairs" ? e.what
+      : e.part === "groups" ? `${nameOf(e.component)}, Modified UNIFAC 2.0 groups` : `${nameOf(e.component)}, ${(PROPERTY_LABEL[e.key.split(".").slice(2).join(".")] ?? e.key).toLowerCase()}`);
+    const toggle = e => (e.part === "components" ? null : h("button", { type: "button", class: "fa-mini", "data-fk": `userdata-use-${e.key}`,
+      title: e.used ? "Calculate with the databank's record instead; yours is kept in My data" : "Calculate with your record again",
+      on: { click: () => { try { set({ userData: setEntryUse(state.userData, e.key, !e.used) }); } catch (err) { ui.status.error = err.message; renderStatus(); } } } },
+      e.used ? "Use the databank's" : "Use mine"));
+    const used = list.filter(e => e.used), off = list.filter(e => !e.used);
+    notes.append(h("div", { class: "fug-warn fa-userdata-note", role: "note", "data-fk": "userdata-note" },
+      used.length ? h("div", {}, h("strong", {}, "Uses your own data:")) : null,
+      ...used.map(e => h("div", { class: "fa-userdata-row" }, h("span", {}, `${what(e)} (${e.source})`), toggle(e))),
+      off.length ? h("div", {}, h("strong", {}, "Your data switched off here (the databank's is used):")) : null,
+      ...off.map(e => h("div", { class: "fa-userdata-row" }, h("span", {}, `${what(e)} (${e.source})`), toggle(e))),
+      h("button", { type: "button", class: "fa-link", "data-fk": "userdata-open", on: { click: () => set({ utility: "mydata" }, { canvas: false }) } }, "Open My data")));
   }
 
   function badge(tier) {

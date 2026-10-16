@@ -172,6 +172,10 @@ export function checkInputs(view, value, model = "NRTL", ud = null) {
     const label = spec.kind === "slots" && spec.n > 1 ? `Component ${i + 1}` : spec.kind === "slots" ? "The component" : nameIn(m, id);
     if (!id) { problems.push({ slot: i, message: `${label} is empty: choose ${spec.liquid ? "a liquid" : "a component"}.` }); return; }
     if (!m.has(id)) { problems.push({ slot: i, message: `${label}: unknown component "${id}".` }); return; }
+    if (m.get(id).solid) {
+      problems.push({ slot: i, message: `${nameIn(m, id)} is an inert solid: it takes no part in ${spec.what}. Use it in a flowsheet, where it passes through the units as a solid phase (a component separator can filter it out).` });
+      return;
+    }
     if (spec.liquid && !m.get(id).activity && spec.activityOnly) {
       problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no activity-model data (it is not a liquid with a vapour-pressure record), so ${spec.what} cannot use it yet.` });
     } else if (spec.liquid && !m.get(id).activity) {

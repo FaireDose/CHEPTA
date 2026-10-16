@@ -24,7 +24,7 @@
  * Units: K, kPa, kmol/h, kW.
  */
 import { fail } from "../util/errors.js";
-import { stream, componentFlows, scaleStream, phaseStream } from "../stream/stream.js";
+import { stream, componentFlows, scaleStream, phaseStream, phasesStream } from "../stream/stream.js";
 import { findComponent } from "../thermo/components.js";
 
 const UNITS = new Map();
@@ -211,7 +211,18 @@ registerUnit({
     const liquids = all.phases.filter(p => p.type === "liquid").length;
     if (liquids > 1 && outletCount < 3) notes.push("The drum holds two liquids; connect the liquid2 outlet to take the second one apart (now both leave by liquid).");
     const outlets = { vapour: phaseStream(all, "vapour") };
-    if (liquids > 1 && outletCount < 3) {
+    // an inert solid (src/equilibrium/inert-solids.js) leaves with the liquid, as a slurry; a separator after the
+    // drum can take it out (a filter)
+    const solid = all.phases.some(p => p.type === "solid") ? [["solid", 0]] : null;
+    if (solid) {
+      if (liquids > 1 && outletCount < 3) {
+        outlets.liquid = phasesStream(all, [["liquid", 0], ["liquid", 1], ...solid]);
+      } else {
+        outlets.liquid = phasesStream(all, [["liquid", 0], ...solid]);
+        if (outletCount >= 3) outlets.liquid2 = phaseStream(all, "liquid", 1);
+      }
+      if (liquids > 0 || all.phases.some(p => p.type === "vapour")) notes.push("The inert solid leaves with the liquid outlet.");
+    } else if (liquids > 1 && outletCount < 3) {
       const l1 = phaseStream(all, "liquid", 0), l2 = phaseStream(all, "liquid", 1);
       outlets.liquid = stream(sys, { flow_kmol_h: l1.flows.map((v, i) => v + l2.flows[i]), T_K: all.T_K, P_kPa: all.P_kPa });
     } else {

@@ -309,11 +309,13 @@ function methodProblem(ids, thermo) {
   const eos = ["PR", "SRK"].includes(thermo.model);
   const list = xs => `${xs.map(nameOf).join(", ")} ha${xs.length === 1 ? "s" : "ve"}`;
   const them = xs => (xs.length === 1 ? "it" : "them");
-  const gases = eos ? [] : ids.filter(c => !byId().get(c)?.activity);
+  // an inert solid passes every method (src/equilibrium/inert-solids.js): it takes no part in the phase equilibrium
+  const fluid = ids.filter(c => !byId().get(c)?.solid);
+  const gases = eos ? [] : fluid.filter(c => !byId().get(c)?.activity);
   if (gases.length) return `${gases.map(nameOf).join(", ")} need${gases.length === 1 ? "s" : ""} an equation of state (no activity-model data: not a liquid with a vapour-pressure record): choose Peng–Robinson or SRK in the Method page, or remove ${them(gases)}.`;
-  const noRq = thermo.model === "UNIQUAC" ? ids.filter(c => !byId().get(c)?.uniquac) : [];
+  const noRq = thermo.model === "UNIQUAC" ? fluid.filter(c => !byId().get(c)?.uniquac) : [];
   if (noRq.length) return `${list(noRq)} no UNIQUAC r and q (no open data yet), so UNIQUAC cannot use ${them(noRq)}: choose NRTL in the Method page.`;
-  const noGroups = thermo.model === "MOD-UNIFAC-2" ? ids.filter(c => !byId().get(c)?.modUnifac) : [];
+  const noGroups = thermo.model === "MOD-UNIFAC-2" ? fluid.filter(c => !byId().get(c)?.modUnifac) : [];
   if (noGroups.length) return `${list(noGroups)} no Mod. UNIFAC 2.0 groups, so Mod. UNIFAC 2.0 cannot use ${them(noGroups)}: choose NRTL in the Method page.`;
   return "";
 }
