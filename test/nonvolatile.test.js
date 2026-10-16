@@ -191,3 +191,51 @@ test("nonvolatile components alone: heated and cooled as a liquid; no boiling po
   assert.throws(() => two.bubbleP(z, 350), /no bubble point/);
   assert.throws(() => two.dewT(z, 101.325), /no dew point/);
 });
+
+test("a nonvolatile component through every block of a flowsheet, with a recycle and a feed at 298.15 K", () => {
+  // the maintainer (2026-10-16): the nonvolatile class must work with the other units, e.g. after a reaction that
+  // turns it into volatile products. Here: HMF (nonvolatile) with formic acid and water, the kind of mixture an HMF
+  // rehydration leaves (reactors come with proposal 0010). HMF's liquid heat capacity starts at 298.15 K, the feed's
+  // temperature, so the mixer has to reach the end of the record.
+  for (const model of ["MOD-UNIFAC-2", "ideal"]) {
+    const sys = system({ components: ["water", "formic-acid", "hmf"], model });
+    const r = solveFlowsheet(sys, {
+      blocks: [
+        { id: "F1", type: "feed", spec: { flow_kmol_h: { water: 85, "formic-acid": 10, hmf: 5 }, T_K: 298.15, P_kPa: 101.325 } },
+        { id: "M1", type: "mixer" },
+        { id: "E1", type: "heater", spec: { T_K: 355 } },
+        { id: "V1", type: "flash", spec: { P_kPa: 101.325, VF: 0.5 } },
+        { id: "C1", type: "heater", spec: { VF: 0 } },
+        { id: "SP1", type: "splitter", spec: { fractions: [0.2, "rest"] } },
+        { id: "X1", type: "separator", spec: { fractions: { water: [0, "rest"], "formic-acid": [0, "rest"], hmf: [1, "rest"] } } },
+        { id: "E2", type: "heater", spec: { duty_kW: 5 } },
+        { id: "E3", type: "heater", spec: { T_K: 300 } },
+        { id: "P1", type: "product" }, { id: "P2", type: "product" }, { id: "P3", type: "product" },
+      ],
+      streams: [
+        { id: "S1", from: "F1.out", to: "M1.in" }, { id: "S2", from: "M1.out", to: "E1.in" }, { id: "S3", from: "E1.out", to: "V1.in" },
+        { id: "S4", from: "V1.vapour", to: "C1.in" }, { id: "S5", from: "C1.out", to: "P1.in" },
+        { id: "S6", from: "V1.liquid", to: "SP1.in" }, { id: "S7", from: "SP1.out", to: "M1.in" }, { id: "S8", from: "SP1.out", to: "X1.in" },
+        { id: "S9", from: "X1.out", to: "E2.in" }, { id: "S10", from: "E2.out", to: "P2.in" },
+        { id: "S11", from: "X1.out", to: "E3.in" }, { id: "S12", from: "E3.out", to: "P3.in" },
+      ],
+    });
+    const S = r.streams;
+    // HMF stays in the liquid: none in the vapour or the condensate; all of it leaves with the separated stream
+    assert.ok(S.S4.flow_kmol_h.hmf < 1e-15, `${model}: HMF in the vapour ${S.S4.flow_kmol_h.hmf}`);   // NV_PSAT_KPA: effectively none
+    assert.ok(Math.abs(S.S10.flow_kmol_h.hmf - 5) < 1e-6, `${model}: HMF out ${S.S10.flow_kmol_h.hmf}`);
+    // the stream of HMF alone is liquid, and its heater with a duty gives a higher temperature
+    assert.equal(S.S10.VF, 0);
+    assert.ok(S.S10.T_K > S.S9.T_K);
+    // every component balances, and the energy balance closes with the duties
+    for (const id of ["water", "formic-acid", "hmf"]) {
+      const out = ["S5", "S10", "S12"].reduce((s, k) => s + S[k].flow_kmol_h[id], 0);
+      assert.ok(Math.abs(out - S.S1.flow_kmol_h[id]) < 1e-6, `${model}: ${id} balance`);
+    }
+    const Q = Object.values(r.blocks).reduce((s, b) => s + (b.duty_kW || 0), 0);
+    const dH = ["S5", "S10", "S12"].reduce((s, k) => s + S[k].H_kW, 0) - S.S1.H_kW;
+    assert.ok(Math.abs(dH - Q) < 1e-5, `${model}: energy balance ${dH - Q} kW`);
+    // the vapour fraction of the flash counts the volatile part only
+    assert.ok(Math.abs(S.S4.F_kmol_h / (S.S4.F_kmol_h + S.S6.F_kmol_h) - 0.5) < 1e-9);
+  }
+});

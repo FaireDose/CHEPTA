@@ -212,6 +212,8 @@ Needs A6, A7, A8, A10, A11.
 
 - [ ] Shortcut column (Fenske–Underwood–Gilliland); McCabe–Thiele view
 - [ ] Rigorous equilibrium-stage column (MESH equations)
+- [ ] Columns with nonvolatile components (proposal 0009, step 5): they stay in the liquid and leave with the
+      bottoms; the reboiler's bubble point includes the boiling-point rise they cause
 
 ### v0.6 – Reactors and more units
 

@@ -57,6 +57,10 @@ import { checkComposition, checkPressure, checkTemperature } from "../util/input
 const R = 8.314462618;      // J/(mol K)
 const DT = 0.01;            // K, step of the temperature derivative of ln gamma
 const T0 = 298.15;          // K, anchor of the liquid enthalpy (and the reference state)
+// K: a temperature this close outside a liquid heat-capacity record takes the record's end value, so that a search for
+// the temperature of a given enthalpy can reach a state at the end of the record (a feed at 298.15 K where the record
+// starts at 298.15 K); at most cp x 1 mK, about 0.3 J/mol, far below the uncertainty of any record
+const EDGE_K = 1e-3;
 // 8-point Gauss-Legendre nodes and weights on [-1, 1] (Abramowitz & Stegun, table 25.4)
 const GL8_X = [-0.9602898564975363, -0.7966664774136267, -0.5255324099163290, -0.1834346424956498,
   0.1834346424956498, 0.5255324099163290, 0.7966664774136267, 0.9602898564975363];
@@ -111,6 +115,8 @@ export function activityPhaseMethods(ctx) {
     }
     return anchor;
   }
+  // within EDGE_K outside the record: its end; farther out the record refuses as usual
+  const atEdge = (rec, t) => (t < rec.Tmin_K && t >= rec.Tmin_K - EDGE_K ? rec.Tmin_K : t > rec.Tmax_K && t <= rec.Tmax_K + EDGE_K ? rec.Tmax_K : t);
   const cpCache = ids.map(() => new Map());
   /** integral of cp_L,i from T0 to T (J/mol), composite 8-point Gauss-Legendre on <= 25 K pieces. */
   function cpIntegral(i, T) {
@@ -120,7 +126,7 @@ export function activityPhaseMethods(ctx) {
     let s = 0;
     for (let k = 0; k < m; k++) {
       const a = T0 + k * w, mid = a + w / 2, r = w / 2;
-      for (let q = 0; q < 8; q++) s += GL8_W[q] * r * cpL(i, mid + r * GL8_X[q]);
+      for (let q = 0; q < 8; q++) s += GL8_W[q] * r * cpL(i, atEdge(cpRec[i], mid + r * GL8_X[q]));
     }
     if (c.size > 64) c.clear();
     c.set(T, s);
@@ -133,10 +139,10 @@ export function activityPhaseMethods(ctx) {
   function hLiquidPure(i, T) {
     const h0 = anchors()[i];
     const Tend = cpRec[i].Tmax_K;
-    if (T < cpRec[i].Tmin_K) {
+    if (T < cpRec[i].Tmin_K - EDGE_K) {
       throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record starts at ${cpRec[i].Tmin_K} K, so its liquid enthalpy ${atT(T, cpRec[i].Tmin_K, "below it")} cannot be calculated.`);
     }
-    if (T <= Tend) return { h: h0 + cpIntegral(i, T), note: null };
+    if (T <= Tend || (nonvolatile[i] && T <= Tend + EDGE_K)) return { h: h0 + cpIntegral(i, T), note: null };
     if (nonvolatile[i]) {
       throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record ends at ${Tend} K, so its liquid enthalpy ${atT(T, Tend, "above it")} cannot be calculated (a nonvolatile component has no vapour route to continue it).`);
     }
