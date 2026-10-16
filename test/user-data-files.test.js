@@ -58,8 +58,10 @@ test("a project with user data saves as format 3 and opens with the same data an
   assert.equal(none.userData, null);
   assert.equal(projectOf(none).fugacity_project, 2);
   assert.ok(!("user_data" in projectOf(none)));
+  // a component the flowsheet uses cannot be taken away from the data (step 3: the My data panel removes entries)
+  assert.throws(() => applyPatch(s, { userData: { properties: {}, pairs: {} } }), /The flowsheet uses user:pla-oligomer/);
   // empty parts are not kept
-  assert.equal(applyPatch(s, { userData: { properties: {}, pairs: {} } }).userData, null);
+  assert.equal(applyPatch(none, { userData: { properties: {}, pairs: {} } }).userData, null);
 });
 
 test("older formats open; wrong user data in a project is refused with the reason", () => {
@@ -171,7 +173,9 @@ test("a contribution-package draft has the person's numbers and lists what is mi
   assert.equal(comp.package.component_entry.class, "nonvolatile");
   assert.ok(comp.problems.some(p => /CAS number/.test(p)));
   // vapour-pressure points become a data block in kPa
-  const vp = { components: { "user:x": { name: "X", MW: 100, cas: "50-21-5",
+  // (123-45-5: a well-formed CAS number that no databank component has; one that a databank component has is refused)
+  assert.throws(() => checkUserData({ components: { "user:x": { name: "X", MW: 100, class: "nonvolatile", cas: "50-21-5", source: src("own") } } }), /50-21-5 is the CAS number of Lactic acid/);
+  const vp = { components: { "user:x": { name: "X", MW: 100, cas: "123-45-5",
     vapourPressure: { equation: "DIPPR101", coefficients: { A: 20, B: -5000 }, units: "Pa", Tmin_K: 300, Tmax_K: 400, points: [[300, 3000], [350, 30000]], source: src("own") },
     source: src("own") } } };
   const d = userDataPackage(vp, "components.user:x").package.data[0];

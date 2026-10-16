@@ -20,7 +20,8 @@ test("one navigation: six task workspaces holding every view; four supporting pa
   assert.deepEqual(SECTIONS.flatMap(x => x.workspaces), WORKSPACES.map(w => w.id));
   assert.equal(sectionOf("steam"), "thermo"); assert.equal(sectionOf("flash"), "units"); assert.equal(sectionOf("flowsheet"), "flowsheet");
   assert.deepEqual(SECTIONS.find(x => x.id === "units").locked.map(l => l.label), ["Reaction", "Distillation"]);
-  assert.deepEqual(UTILITIES.map(u => u.id), ["project", "library", "sources", "settings", "feedback"]);
+  // My data (proposal 0012, step 3) joins the supporting panels, next to the Library
+  assert.deepEqual(UTILITIES.map(u => u.id), ["project", "library", "mydata", "sources", "settings", "feedback"]);
   // every view is in exactly one workspace, and every workspace view has its inputs defined
   const all = WORKSPACES.flatMap(w => w.views);
   assert.deepEqual(all.slice().sort(), Object.keys(VIEWS).sort());

@@ -209,6 +209,7 @@ export const APP_CSS = `
 .fa-tier-standard{background:var(--fa-t-standard-bg); color:var(--fa-t-standard)}
 .fa-tier-none{background:var(--fa-t-none-bg); color:var(--fa-t-none)}
 .fa-tier-predicted{background:var(--fa-t-predicted-bg); color:var(--fa-t-predicted)}
+.fa-userdata-row{display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; margin:4px 0}
 .fa-tier-user{background:var(--fa-t-user-bg); color:var(--fa-t-user)}
 
 /* the library: set selectors, source lists, the source browser */
@@ -391,6 +392,21 @@ export const APP_CSS = `
 .fa-paste{margin-top:8px}
 .fa-paste summary{cursor:pointer; font-size:12.5px; color:var(--fug-fg2)}
 .fa-restore{display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; font-size:12.5px; padding:8px 10px; margin:0 0 12px; border-radius:8px; background:color-mix(in srgb, var(--fug-accent) 10%, transparent)}
+.fa-dgrid.fa-mydata{grid-template-columns:minmax(0,1fr)}
+.fa-mydata select,.fa-mydata textarea,.fa-mydata input{max-width:100%; min-width:0}
+.fa-mydata .fa-field{flex-direction:column; align-items:stretch; justify-content:flex-start; gap:3px}
+.fa-mydata .fa-field select,.fa-mydata .fa-field textarea{max-width:100%}
+.fa-in-row{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:flex-end; margin:6px 0}
+.fa-mydata-list{list-style:none; margin:0; padding:0; display:grid; gap:8px}
+.fa-mydata-item{padding:8px 10px; border:1px solid var(--fug-rule); border-radius:8px}
+.fa-mydata-head{display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; font-size:12.5px}
+.fa-mydata-actions{margin-left:auto; display:flex; gap:6px; flex-wrap:wrap}
+.fa-mydata-draft:not(:empty){margin-top:8px}
+.fa-mydata-fig{margin:8px 0}
+.fa-mydata-plot{width:100%; max-width:420px; height:auto; display:block; color:var(--fug-fg)}
+.fa-mydata-conflicts ul{list-style:none; padding:0; margin:6px 0; display:grid; gap:10px}
+.fa-radio{display:flex; gap:6px; align-items:flex-start; font-size:12.5px; margin:4px 0}
+.fa-tier-user{background:color-mix(in srgb, var(--fug-accent) 14%, transparent); color:var(--fug-accent)}
 .fa-store-list{list-style:none; margin:6px 0 0; padding:0; display:grid; gap:4px}
 .fa-store-list li{display:flex; align-items:center; gap:8px; font-size:12.5px}
 .fa-store-list .fa-store-name{font-weight:600}

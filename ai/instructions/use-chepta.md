@@ -167,7 +167,9 @@ it does so on my computer at no cost to this chat. So:
   as `userData` (`CHEPTA.checkUserData` checks them; see docs/models/thermodynamics.md), with
   the source line I give, and say in the answer which results use them. Never present them
   as data from CHEPTA's databank. A project file keeps them as `user_data` (format 3); a My data
-  file (`"chepta_user_data": 1`) holds them alone.
+  file (`"chepta_user_data": 1`) holds them alone. In the workbench, the My data panel enters
+  them (a table of points is fitted, with its deviation shown) and says on the canvas which
+  results use them.
 - Results are model predictions; say so and mention the parameter sources shown under the
   diagram.
 - If the library does not load, tell me; do not replace it with hand-written thermodynamics.

@@ -27,13 +27,15 @@ import { HENRY_GASES } from "../thermo/henry.js";
 import { system } from "../system.js";
 import {
   VIEWS, PRESETS, initialState, applyPatch, TIER_SHORT, fmtP, parseP, parseT, fmtTemp, pxyTemperature,
-  RULES, ruleOf, setsFor, setChoices, pairKeyOf, modelLabel, feedbackLinks,
+  RULES, ruleOf, setsFor, setChoices, pairKeyOf, modelLabel, feedbackLinks, userOverlay,
 } from "./app-logic.js";
 import { diagramXlsx, exportFileName } from "./diagram-export.js";
 import { modelPicker, liquidPicker } from "./model-picker.js";
 import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, checkInputs, examplesFor, rotateInputs, solventsFor, needsFor, isEosModel } from "./workspaces.js";
 import { UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
+import { myDataPanel, PROPERTY_LABEL } from "./my-data-panel.js";
+import { userDataList, setEntryUse } from "./user-data-file.js";
 import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey } from "./flowsheet-view.js";
 import { projectOf, projectText, projectFileName, stateFromProject } from "./project.js";
 import { browserStore, hostStore, autosave, lastAutosave, clearAutosave } from "./project-store.js";
@@ -135,9 +137,17 @@ export function app(target, cfg = {}) {
   let previous = useAutosave && cfg.project == null ? lastAutosave() : null;
   let autosaveTimer = null;
   const uid = Math.random().toString(36).slice(2, 7);
-  const all = listComponents();
-  const byId = new Map(all.map(c => [c.id, c]));
-  const nameOf = id => byId.get(id)?.name ?? id;
+  // the databank's components and the project's own (proposal 0012), listed again when the user data changes
+  let listed = { for: undefined, all: [], byId: new Map() };
+  const comps = () => {
+    if (listed.for !== state.userData) {
+      const list = listComponents({ userData: userOverlay(state) });
+      listed = { for: state.userData, all: list, byId: new Map(list.map(c => [c.id, c])) };
+    }
+    return listed;
+  };
+  const all = () => comps().all;
+  const nameOf = id => comps().byId.get(id)?.name ?? id;
   const sizeOf = w => (w < 720 ? "narrow" : w < 1080 ? "mid" : "wide");
   const ui = {
     size: sizeOf(root.clientWidth || 1200), status: { busy: false, ms: null, error: null, info: null },
@@ -428,7 +438,7 @@ export function app(target, cfg = {}) {
     return h("div", { class: "fa-slots" }, ...value.map((id, i) => {
       const sid = `fa-slot-${view}-${i}-${uid}`;
       const picker = componentPicker({
-        id: sid, fk: `slot-${view}-${i}`, label: spec.n > 1 ? `Component ${i + 1}` : "Component", components: all, value: id,
+        id: sid, fk: `slot-${view}-${i}`, label: spec.n > 1 ? `Component ${i + 1}` : "Component", components: all(), value: id,
         placeholder: spec.liquid ? "Liquid: name, formula, CAS…" : "Name, formula, CAS…",
         status: pickStatus(view, i), invalid: bad.has(i), describedBy: bad.has(i) ? `fa-problems-${uid}` : undefined,
         onPick: pid => { if (!pid) return; const next = value.slice(); next[i] = pid; set({ inputs: { [view]: next } }); },
@@ -447,14 +457,14 @@ export function app(target, cfg = {}) {
     const chips = value.map((id, i) => h("li", { class: "fa-chip" },
       h("span", { class: "fa-chip-n", "aria-hidden": "true" }, String(i + 1)),
       h("span", { class: "fa-chip-name" }, nameOf(id)),
-      h("span", { class: "fa-chip-f" }, byId.get(id)?.formula ?? ""),
+      h("span", { class: "fa-chip-f" }, comps().byId.get(id)?.formula ?? ""),
       h("button", { type: "button", class: "fa-x", "aria-label": `Remove ${nameOf(id)}`, title: "Remove", "data-fk": `rm-${view}-${i}`,
         on: { click: () => set({ inputs: { [view]: value.filter((_, k) => k !== i) } }) } }, icon("close", 14))));
     const full = value.length >= spec.max;
     const addId = `fa-add-${view}-${uid}`;
     const add = componentPicker({
       id: addId, fk: `add-${view}`, label: "Add a component", disabled: full, clearOnPick: true,
-      components: all.filter(c => !value.includes(c.id)), status: pickStatus(view, -1),
+      components: all().filter(c => !value.includes(c.id)), status: pickStatus(view, -1),
       placeholder: full ? `Full: at most ${spec.max}` : spec.liquid ? "Add a liquid: name, formula, CAS…" : "Add: name, formula, CAS…",
       onPick: pid => { if (pid) set({ inputs: { [view]: [...value, pid] } }); },
     });
@@ -473,7 +483,7 @@ export function app(target, cfg = {}) {
   }
 
   function renderLeft() {
-    const v = state.view, spec = needsFor(v, state.model), check = checkInputs(v, state.inputs[v], state.model);
+    const v = state.view, spec = needsFor(v, state.model), check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
     const u = state.units;
     const secs = [];
     if (state.workspace === "equilibrium") {
@@ -534,14 +544,14 @@ export function app(target, cfg = {}) {
       // every component is listed and can be picked; those without a Henry's law constant (for this gas) say so, and the
       // check of the inputs explains it when one is chosen
       const gasSel = componentPicker({
-        id: `fa-gas-${uid}`, fk: "gas", label: "Gas", components: all, value: gas, invalid: bad.has(0),
+        id: `fa-gas-${uid}`, fk: "gas", label: "Gas", components: all(), value: gas, invalid: bad.has(0),
         status: c => (HENRY_GASES.includes(c.id) ? {} : { note: "no Henry's law constant" }),
         group: c => (HENRY_GASES.includes(c.id) ? "With Henry's law constants" : "Others"),
         onPick: g => { if (g) set({ gas: g }); },
       });
       const solvents = solventsFor(HENRY_GASES.includes(gas) ? gas : null);
       const solvSel = componentPicker({
-        id: `fa-solv-${uid}`, fk: "solvent", label: "Solvent", components: all, value: solvent,
+        id: `fa-solv-${uid}`, fk: "solvent", label: "Solvent", components: all(), value: solvent,
         invalid: bad.has(1),
         status: c => (solvents.includes(c.id) ? {} : { note: "no constant for this gas" }),
         group: c => (solvents.includes(c.id) ? "With a constant for this gas" : "Others"),
@@ -580,7 +590,7 @@ export function app(target, cfg = {}) {
   // ---- Flash workspace: the feed composition (in the display basis) and the specification
   function feedSection(ids) {
     const f = state.flash, mass = state.basis === "mass";
-    const MW = ids.map(id => pure(id).MW);
+    const MW = ids.map(id => pure(id, { userData: userOverlay(state) }).MW);
     const z = feedComposition(f, ids.length);
     const shown = mass ? convertBasis(z, MW, true).map(v => 100 * v) : z;
     const commit = (k, text) => {
@@ -644,10 +654,10 @@ export function app(target, cfg = {}) {
     try { info = system({ components: ids, model, allowMissingPairs: true, ...setsFor(state, model) }).info; } catch (e) {
       return h("section", { class: "fa-in-sec fa-pairs" }, head, h("div", { class: "fa-empty" }, e.message));
     }
-    const nameToId = new Map(all.map(c => [c.name, c.id]));
+    const nameToId = new Map(all().map(c => [c.name, c.id]));
     const rows = info.pairs.filter(p => p.tier !== "none").map(p => {
       const choices = setChoices(p);
-      const key = pairKeyOf(nameToId.get(p.pair[0]) ?? p.pair[0], nameToId.get(p.pair[1]) ?? p.pair[1]);
+      const key = pairKeyOf(nameToId.get(p.pair[0]) ?? p.pair[0], nameToId.get(p.pair[1]) ?? p.pair[1], userOverlay(state));
       const sel = choices.length ? h("select", { class: "fa-set-sel", id: `fa-set-${key.replace(/[^a-z0-9]+/g, "-")}-${uid}`, "data-fk": `set-${key}`,
         "aria-label": `Parameter set for ${p.pair.join(" + ")}`, title: "Parameter set: switching recalculates the diagram",
         on: { change: ev => {
@@ -711,7 +721,7 @@ export function app(target, cfg = {}) {
   }
 
   function renderCanvasBar() {
-    const v = state.view, u = state.units, check = checkInputs(v, state.inputs[v], state.model);
+    const v = state.view, u = state.units, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
     const title = v === "flowsheet" ? state.title || "Flowsheet" : check.ok ? state.title || calculationName() : VIEWS[v].label;
     const prop = v === "properties" ? explorerProperties().find(p => p.key === state.property) : null;
     const ml = modelLabel(state);
@@ -916,7 +926,7 @@ export function app(target, cfg = {}) {
 
   /** The Feedback panel: GitHub issue forms and the Discussions forum, the bug form filled with the setup. */
   function feedbackPanel() {
-    const v = state.view, check = checkInputs(v, state.inputs[v], state.model);
+    const v = state.view, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
     const setup = v === "flowsheet" ? `Flowsheet "${state.title || "untitled"}", ${state.flowsheet.thermo.model}`
       : `${WORKSPACES.find(w => w.id === state.workspace).label}${state.workspace === "equilibrium" ? `, ${VIEWS[v].label}` : ""}${check.ok ? `: ${calculationName()}` : ""}; ${modelLabel(state)}`;
     const links = feedbackLinks({ version: pkg.version, setup });
@@ -933,8 +943,10 @@ export function app(target, cfg = {}) {
     const u = state.units;
     if (id === "project") return projectPanel();
     if (id === "feedback") return feedbackPanel();
+    // My data (proposal 0012): it redraws itself; a change of the data recalculates the canvas
+    if (id === "mydata") return myDataPanel({ get: () => state, set: patch => set(patch), ui, uid, section: drawerSection, focus: restoreFocus });
     if (id === "sources") {
-      const check = checkInputs(state.view, state.inputs[state.view], state.model);
+      const check = checkInputs(state.view, state.inputs[state.view], state.model, userOverlay(state));
       return sourcesPanel({ ids: check.ok ? check.use : [], what: check.ok ? calculationName() : VIEWS[state.view].label, uid, look: ui.sources });
     }
     if (id === "library") {
@@ -974,7 +986,7 @@ export function app(target, cfg = {}) {
     for (const el of [subnav, ribbon, body, statusBar]) el.inert = !!id;
     if (!id) { drawer.replaceChildren(); ui.drawnUtility = null; return; }
     // the source browser keeps its scroll and search while it is open; the others follow the state
-    if (id === "sources" && ui.drawnUtility === "sources") return;
+    if ((id === "sources" || id === "mydata") && ui.drawnUtility === id) return;
     const u = UTILITIES.find(x => x.id === id);
     const ws = WORKSPACES.find(w => w.id === state.workspace);
     drawer.dataset.utility = id;
@@ -1028,11 +1040,12 @@ export function app(target, cfg = {}) {
 
   // ---- canvas
   const canvasKey = () => {
-    const v = state.view, check = checkInputs(v, state.inputs[v], state.model);
+    const v = state.view, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
     return JSON.stringify([v, check.ok ? check.use : ["invalid", state.inputs[v]], state.model, state.eos, state.vapour, state.P_kPa, state.T_K,
       state.units, state.basis, state.residueCurves, state.isotherms, state.grid, state.property, state.z[v] ?? null,
       v === "henry" ? [state.inputs.henry, state.henryT_K, state.henryP_kPa, state.compareGases] : null,
       v === "solid" || v === "sle" ? [state.sleT_K, state.solidUnit] : null, state.steamP_kPa, state.sets, state.prefer,
+      state.userData,   // the user's own data (proposal 0012): a change or a switch recalculates every view
       v === "flash" ? state.flash : null,
       v === "flowsheet" ? [state.flowsheet, state.userData, ensureUi(ui).sel, ui.fs.auto, ui.fs.solveKey, ui.fs.zoom] : null]);
   };
@@ -1046,7 +1059,7 @@ export function app(target, cfg = {}) {
     const run = () => {
       if (my !== token) return;
       const t0 = performance.now();
-      const v = state.view, check = checkInputs(v, state.inputs[v], state.model);
+      const v = state.view, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
       let info = null, error = null;
       notes.replaceChildren(); below.replaceChildren(); inspectorExtra.replaceChildren(); provenance.replaceChildren(); side.hidden = false;
       canvasFoot.hidden = true; exportNote.textContent = "";
@@ -1059,6 +1072,7 @@ export function app(target, cfg = {}) {
           const viewState = { ...state, components: check.use, z: state.z[v] ?? null };
           info = renderView(v, { state: viewState, set, plot, side, notes, below, extra: inspectorExtra, compact: ui.size === "narrow", uid, badge, ui });
           if (info?.record?.flash) ui.records.flash = { key: flashKey(), record: info.record.flash };
+          userDataNote(v === "flowsheet" ? state.flowsheet.components : check.use);
           provenance.append(h("button", { type: "button", class: "fa-mini", "data-fk": "src-here",
             on: { click: () => { ui.sources.mine = true; ui.sources.query = ""; ui.sources.kind = "all"; set({ utility: "sources" }, { canvas: false }); } } },
           icon("book", 15), "Sources used here"));
@@ -1091,6 +1105,29 @@ export function app(target, cfg = {}) {
       h("ul", {}, ...check.problems.map(p => h("li", {}, p.message))),
       h("p", {}, `Choose them in the Inputs panel${ui.size === "narrow" ? " above" : ""}. Nothing is calculated until the inputs fit; your choices are kept as they are.`),
       state.panels.left ? null : h("button", { type: "button", class: "fa-mini", "data-fk": "show-inputs", on: { click: () => set({ panels: { left: true } }, { canvas: false }) } }, icon("panelL", 15), "Show the Inputs panel"));
+  }
+
+  /**
+   * A note on the canvas naming the user's own data this result uses (proposal 0012: visible everywhere), with a switch
+   * per record between the person's record and the databank's (setEntryUse; the person's is kept either way).
+   */
+  function userDataNote(ids) {
+    if (!state.userData || !ids?.length) return;
+    const list = userDataList(state.userData).filter(e => (e.part === "pairs" ? e.key.slice(6).split("+").every(i => ids.includes(i)) : ids.includes(e.component)));
+    if (!list.length) return;
+    const what = e => (e.part === "components" ? `${nameOf(e.component)} (your component)` : e.part === "pairs" ? e.what
+      : e.part === "groups" ? `${nameOf(e.component)}, Modified UNIFAC 2.0 groups` : `${nameOf(e.component)}, ${(PROPERTY_LABEL[e.key.split(".").slice(2).join(".")] ?? e.key).toLowerCase()}`);
+    const toggle = e => (e.part === "components" ? null : h("button", { type: "button", class: "fa-mini", "data-fk": `userdata-use-${e.key}`,
+      title: e.used ? "Calculate with the databank's record instead; yours is kept in My data" : "Calculate with your record again",
+      on: { click: () => { try { set({ userData: setEntryUse(state.userData, e.key, !e.used) }); } catch (err) { ui.status.error = err.message; renderStatus(); } } } },
+      e.used ? "Use the databank's" : "Use mine"));
+    const used = list.filter(e => e.used), off = list.filter(e => !e.used);
+    notes.append(h("div", { class: "fug-warn fa-userdata-note", role: "note", "data-fk": "userdata-note" },
+      used.length ? h("div", {}, h("strong", {}, "Uses your own data:")) : null,
+      ...used.map(e => h("div", { class: "fa-userdata-row" }, h("span", {}, `${what(e)} (${e.source})`), toggle(e))),
+      off.length ? h("div", {}, h("strong", {}, "Your data switched off here (the databank's is used):")) : null,
+      ...off.map(e => h("div", { class: "fa-userdata-row" }, h("span", {}, `${what(e)} (${e.source})`), toggle(e))),
+      h("button", { type: "button", class: "fa-link", "data-fk": "userdata-open", on: { click: () => set({ utility: "mydata" }, { canvas: false }) } }, "Open My data")));
   }
 
   function badge(tier) {

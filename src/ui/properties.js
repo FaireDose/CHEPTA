@@ -12,6 +12,7 @@ import { h } from "./dom.js";
 import { drawPlot } from "./plot.js";
 import { pure, PROPERTIES } from "../thermo/pure.js";
 import { listComponents, findComponent } from "../thermo/system.js";
+import { checkUserData } from "../thermo/user-data.js";
 import { componentPicker } from "./component-picker.js";
 import {
   normalizeUnits, UNIT_CHOICES, toDisplay, unitLabel, tToDisplay, tFromDisplay, pToDisplay, pFromDisplay,
@@ -38,6 +39,8 @@ const FEEDBACK = "https://github.com/FaireDose/CHEPTA/issues/new/choose";
  * @param {[number, number]} [cfg.T_K]  temperature range of the plot, K (default: the data's range)
  * @param {boolean} [cfg.logScale]      logarithmic property axis (default: automatic)
  * @param {string} [cfg.title]
+ * @param {object} [cfg.userData]  the user's own data (proposal 0012), checked (CHEPTA.checkUserData)
+ * @param {boolean} [cfg.sources=true]  false leaves the sources out of the page (shown elsewhere, as in the workbench)
  * @param {boolean} [cfg.controls=true]  false hides the title, the component and property
  *   menus and the unit switches (for a page, like the workbench, that sets them through update())
  * @returns {{update:(patch:object)=>void, state:object, plotted:()=>object|null}}  plotted(): the
@@ -53,7 +56,8 @@ export function mountProperties(target, cfg = {}) {
   injectPropertiesStyles(root.ownerDocument);
 
   const state = {
-    component: findComponent(cfg.component ?? "water"),
+    userData: cfg.userData ? checkUserData(cfg.userData) : null,
+    component: findComponent(cfg.component ?? "water", cfg.userData ? checkUserData(cfg.userData) : null),
     property: findExplorerProperty(cfg.property ?? "density").key,
     pressures_kPa: cleanPressures(cfg.pressures_kPa ?? [100, 500, 1000]),
     units: normalizeUnits(cfg.units),
@@ -63,6 +67,8 @@ export function mountProperties(target, cfg = {}) {
     calc: { T_K: 298.15, P_kPa: 101.325 },
     feedbackUrl: cfg.feedbackUrl ?? FEEDBACK,
     controls: cfg.controls !== false,
+    // false: no source text on the page (the workbench lists the sources in its Results panel)
+    sources: cfg.sources !== false,
   };
   const uid = Math.random().toString(36).slice(2, 7);
   const components = listComponents();
@@ -79,7 +85,7 @@ export function mountProperties(target, cfg = {}) {
   let lastPlot = null;   // what the plot shows now (plotted())
   function render() {
     lastPlot = null;
-    const p = pure(state.component);
+    const p = pure(state.component, { userData: state.userData });
     const prop = findExplorerProperty(state.property);
     const u = state.units;
     const tU = unitLabel("temperature", u);
@@ -115,7 +121,7 @@ export function mountProperties(target, cfg = {}) {
     const srcs = h("div", { class: "fug-srcs" });
     const curve = prop.kind === "state" ? stateCurves(p, prop, plot, side, srcs) : tCurve(p, prop, plot, side, srcs);
 
-    box.replaceChildren(...(state.controls ? [head, controls, units] : []), curve.controls, h("div", { class: "fug-main" }, plot, side), srcs,
+    box.replaceChildren(...(state.controls ? [head, controls, units] : []), curve.controls, h("div", { class: "fug-main" }, plot, side), ...(state.sources ? [srcs] : []),
       satSection(p, prop), calcSection(p),
       h("div", { class: "fug-foot" },
         h("div", {}, "Calculated live in this page by CHEPTA from the engine's SI values; units are converted for display only. Enthalpy reference: ideal gas at 25 °C (298.15 K) = 0."),
@@ -324,7 +330,7 @@ export function mountProperties(target, cfg = {}) {
   function noData(p, label, message) {
     return h("div", { class: "fug-nodata", role: "status" },
       h("strong", {}, `No curve: ${label} of ${p.name}`),
-      h("div", {}, message || "No open data."),
+      h("div", {}, state.sources ? message || "No open data." : `No open data for ${label.toLowerCase()} of ${p.name}: the sources searched are listed under Results.`),
       h("div", { class: "fug-sub" }, "Nothing is estimated silently. ",
         h("a", { href: "https://github.com/FaireDose/CHEPTA/blob/main/docs/DATA_WANTED.md", target: "_blank", rel: "noopener" }, "Help find open data")));
   }
@@ -351,7 +357,7 @@ export function mountProperties(target, cfg = {}) {
       h("div", { class: "fug-scroll", tabindex: "0", role: "region", "aria-label": "Saturation table" }, table),
       h("div", { class: "fug-foot" },
         `Saturated liquid (just above Psat) and saturated vapour (just below Psat) from the engine. “–”: no data at that temperature.` +
-        (tab.psatSource ? ` Psat: ${formatSource(tab.psatSource.source)} (${TIER_LABEL[tab.psatSource.tier] ?? tab.psatSource.tier ?? "tier not stated"}).` : "") +
+        (tab.psatSource && state.sources ? ` Psat: ${formatSource(tab.psatSource.source)} (${TIER_LABEL[tab.psatSource.tier] ?? tab.psatSource.tier ?? "tier not stated"}).` : "") +
         (missing.length ? ` No data yet for: ${missing.join(", ")}.` : "")));
   }
 
@@ -405,7 +411,7 @@ export function mountProperties(target, cfg = {}) {
     plotted() { return lastPlot; },
     /** Change the view: any of component, property, pressures_kPa, units, T_K, logScale, title. */
     update(patch = {}) {
-      if (patch.component != null) { state.component = findComponent(patch.component); state.T_K = null; }
+      if (patch.component != null) { state.component = findComponent(patch.component, state.userData); state.T_K = null; }
       if (patch.property != null) { state.property = findExplorerProperty(patch.property).key; state.T_K = null; state.logScale = null; }
       if (patch.pressures_kPa != null) state.pressures_kPa = cleanPressures(patch.pressures_kPa);
       if (patch.units != null) state.units = normalizeUnits(patch.units, state.units);

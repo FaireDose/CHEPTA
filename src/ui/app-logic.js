@@ -13,6 +13,7 @@
 import { normalizeFlowsheet } from "../flowsheet/document.js";
 import { checkUserData } from "../thermo/user-data.js";
 import { listComponents, findComponent, MODELS, EOS_MODELS } from "../thermo/system.js";
+import { USER_PREFIX } from "../thermo/components.js";
 import { library, selection } from "../thermo/library.js";
 import { HENRY_GASES } from "../thermo/henry.js";
 import { pure } from "../thermo/pure.js";
@@ -102,24 +103,25 @@ const START_ALIASES = { drum: "flash", eos: "eos", "pt": "envelope", "p-x-y": "p
 const normModel = m => (String(m ?? "NRTL").toUpperCase() === "IDEAL" ? "ideal" : String(m ?? "NRTL").toUpperCase());
 const normEos = m => String(m ?? "PR").toUpperCase();
 
-/** Component ids from names, aliases, formulas or CAS numbers; duplicates dropped; at most MAX_COMPONENTS. */
-export function normalizeComponents(list) {
+/** Component ids from names, aliases, formulas or CAS numbers; duplicates dropped; at most MAX_COMPONENTS.
+ *  ud: the user's own data, checked (proposal 0012), here and below: their components are known too. */
+export function normalizeComponents(list, ud = null) {
   const ids = [];
   for (const c of list ?? []) {
-    const id = findComponent(c);
+    const id = findComponent(c, ud);
     if (!ids.includes(id)) ids.push(id);
   }
   return ids.slice(0, MAX_COMPONENTS);
 }
 
 /** The component records (from listComponents) by id. */
-export function componentMap() {
-  return new Map(listComponents().map(c => [c.id, c]));
+export function componentMap(ud = null) {
+  return new Map(listComponents({ userData: ud }).map(c => [c.id, c]));
 }
 
 /** Components usable with activity-coefficient models (liquids with a vapour-pressure record; UNIQUAC also needs r and q). */
-export function liquids(ids) {
-  const m = componentMap();
+export function liquids(ids, ud = null) {
+  const m = componentMap(ud);
   return ids.filter(id => m.get(id)?.activity);
 }
 
@@ -135,9 +137,9 @@ export function henryGases(ids) {
  *   `use`: the components the view will show; `reason`: why it cannot run;
  *   `note`: what the view does with the list (e.g. "first two of three liquids").
  */
-export function viewAvailability(view, ids, model = "NRTL") {
+export function viewAvailability(view, ids, model = "NRTL", ud = null) {
   // with an equation of state every component can be in a diagram
-  const liq = isEosModel(model) ? ids.slice() : liquids(ids);
+  const liq = isEosModel(model) ? ids.slice() : liquids(ids, ud);
   const word = n => ["no", "one", "two", "three", "four", "five", "six"][n] ?? String(n);
   switch (view) {
     case "txy":
@@ -191,17 +193,17 @@ function aliasOf(wanted) {
  * for one or more than two (with an equation of state). Without components: the wanted view
  * with empty inputs, or the T-x-y diagram (the workbench opens empty and asks for them).
  */
-export function resolveView(wanted, ids, model = "NRTL") {
+export function resolveView(wanted, ids, model = "NRTL", ud = null) {
   let v = aliasOf(wanted);
   if (v === "eos") v = ids.length === 2 ? "pxy" : "envelope";
   if (!ids.length) return VIEWS[v] ? v : "txy";
-  if (VIEWS[v] && viewAvailability(v, ids, model).enabled) return v;
-  const liq = liquids(ids).length;
-  if ((v === "pxy" || v === "envelope") && viewAvailability("envelope", ids, model).enabled) return "envelope";
+  if (VIEWS[v] && viewAvailability(v, ids, model, ud).enabled) return v;
+  const liq = liquids(ids, ud).length;
+  if ((v === "pxy" || v === "envelope") && viewAvailability("envelope", ids, model, ud).enabled) return "envelope";
   if (liq >= 3) return "ternary";
   if (liq === 2) return "txy";
-  if (ids.length === 2 && viewAvailability("pxy", ids, model).enabled) return "pxy";
-  if (ids.length && viewAvailability("envelope", ids, model).enabled) return "envelope";
+  if (ids.length === 2 && viewAvailability("pxy", ids, model, ud).enabled) return "pxy";
+  if (ids.length && viewAvailability("envelope", ids, model, ud).enabled) return "envelope";
   return ids.length ? "envelope" : "properties";
 }
 
@@ -233,15 +235,16 @@ const DEFAULTS = {
  *    `propComponent`, the component of the Properties workspace (read-only).
  */
 export function initialState(cfg = {}) {
-  const components = normalizeComponents(cfg.components ?? DEFAULTS.components);
+  const ud = overlayOf(cfg.userData);
+  const components = normalizeComponents(cfg.components ?? DEFAULTS.components, ud);
   let start = aliasOf(cfg.start ?? "");
   const explicit = cfg.model != null;
   let model = checkModel(normModel(cfg.model ?? DEFAULTS.model));
   const eos = checkEos(normEos(isEosModel(model) ? model : cfg.eos ?? DEFAULTS.eos));
   if (!explicit) {
     const asked = cfg.eos != null || ["eos", "pxy", "envelope"].includes(start);
-    const liquidView = resolveView(start === "sources" ? "" : start, components, model);
-    const needsEos = components.length > 0 && VIEWS[liquidView].diagram && !viewAvailability(liquidView, components, model).enabled;
+    const liquidView = resolveView(start === "sources" ? "" : start, components, model, ud);
+    const needsEos = components.length > 0 && VIEWS[liquidView].diagram && !viewAvailability(liquidView, components, model, ud).enabled;
     if (asked || needsEos) model = eos;
   }
   const state = {
@@ -249,7 +252,7 @@ export function initialState(cfg = {}) {
     view: null,
     diagram: null,
     utility: null,
-    inputs: seedInputs(components, { propComponent: cfg.propComponent, gas: cfg.gas, solvent: cfg.solvent, model }),
+    inputs: seedInputs(components, { propComponent: cfg.propComponent, gas: cfg.gas, solvent: cfg.solvent, model, ud }),
     components: [],
     model,
     eos,
@@ -275,18 +278,18 @@ export function initialState(cfg = {}) {
     steamP_kPa: cleanList(cfg.steamP_kPa ?? DEFAULTS.steamP_kPa),
     flash: normalizeFlash(cfg.flash ?? {}, FLASH_DEFAULTS),
     title: cfg.title,
-    sets: normalizeSets(cfg.sets),
+    sets: normalizeSets(cfg.sets, {}, ud),
     // the user's own data (proposal 0012), as entered (it is saved as written); userOverlay() gives it checked
     userData: normalizeUserData(cfg.userData),
-    flowsheet: normalizeFlowsheet(cfg.flowsheet, overlayOf(cfg.userData)),
+    flowsheet: normalizeFlowsheet(cfg.flowsheet, ud),
     prefer: normalizePrefer(cfg.prefer),
   };
   if (start === "sources") { state.utility = "sources"; start = ""; }
-  const view = resolveView(start, components, model);
-  const firstDiagram = resolveView("", components, model);
+  const view = resolveView(start, components, model, ud);
+  const firstDiagram = resolveView("", components, model, ud);
   state.workspace = VIEWS[view].workspace;
   state.diagram = VIEWS[view].workspace === "equilibrium" ? view : VIEWS[firstDiagram].workspace === "equilibrium" ? firstDiagram : "ternary";
-  if (cfg.z != null && view in state.z) state.z[view] = normalizeComposition(cfg.z, checkInputs(view, state.inputs[view], model).use.length);
+  if (cfg.z != null && view in state.z) state.z[view] = normalizeComposition(cfg.z, checkInputs(view, state.inputs[view], model, ud).use.length);
   return derive(state, view);
 }
 
@@ -315,7 +318,7 @@ export const userOverlay = state => overlayOf(state.userData);
 /** Fill in the read-only summary fields: view, components (in use) and propComponent. */
 function derive(state, view) {
   state.view = view ?? (state.workspace === "equilibrium" ? state.diagram : WORKSPACES.find(w => w.id === state.workspace).view);
-  state.components = checkInputs(state.view, state.inputs[state.view], state.model).use;
+  state.components = checkInputs(state.view, state.inputs[state.view], state.model, userOverlay(state)).use;
   state.propComponent = state.inputs.properties[0] ?? null;
   return state;
 }
@@ -379,6 +382,23 @@ export function applyPatch(state, patch = {}) {
   let view = state.view;
   let navigated = false;
 
+  // the user's own data first: the components below may be theirs
+  if ("userData" in patch) {
+    next.userData = normalizeUserData(patch.userData);
+    const known = new Set(listComponents({ userData: overlayOf(next.userData) }).map(c => c.id));
+    const gone = id => id != null && !known.has(id);
+    // a component the flowsheet uses cannot be taken away (its document would no longer read)
+    const used = (("flowsheet" in patch ? patch.flowsheet : next.flowsheet)?.components ?? []).map(String).filter(gone);
+    if (used.length) throw new Error(`The flowsheet uses ${used.join(", ")}; take ${used.length > 1 ? "them" : "it"} out of the flowsheet before removing ${used.length > 1 ? "them" : "it"} from your data.`);
+    // a removed component leaves the inputs of the views (an empty slot, or out of the list)
+    for (const [v, value] of Object.entries(next.inputs)) {
+      if (Array.isArray(value) && value.some(gone)) next.inputs[v] = INPUTS[v]?.kind === "slots" ? value.map(id => (gone(id) ? null : id)) : value.filter(id => !gone(id));
+      else if (value && typeof value === "object" && !Array.isArray(value) && (gone(value.gas) || gone(value.solvent))) next.inputs[v] = { gas: gone(value.gas) ? null : value.gas, solvent: gone(value.solvent) ? null : value.solvent };
+    }
+    next.sets = Object.fromEntries(Object.entries(next.sets).filter(([k]) => !k.split("+").some(gone)));
+  }
+  const ud = overlayOf(next.userData);
+
   // the model first: the inputs are seeded and checked for it
   if (patch.model != null) {
     next.model = checkModel(normModel(patch.model));
@@ -388,13 +408,13 @@ export function applyPatch(state, patch = {}) {
 
   // inputs
   if (patch.components != null) {
-    const comps = normalizeComponents(patch.components);
+    const comps = normalizeComponents(patch.components, ud);
     const keepProp = comps.includes(state.inputs.properties[0]) ? state.inputs.properties[0] : null;
-    next.inputs = seedInputs(comps, { propComponent: keepProp, gas: henryGases(comps)[0] ?? state.inputs.henry.gas, solvent: state.inputs.henry.solvent, model: next.model });
+    next.inputs = seedInputs(comps, { propComponent: keepProp, gas: henryGases(comps)[0] ?? state.inputs.henry.gas, solvent: state.inputs.henry.solvent, model: next.model, ud });
     next.z = { pxy: null, envelope: null };
     next.flash = { ...next.flash, z: null };
     if (patch.view == null && patch.start == null) {
-      const d = resolveView(state.diagram, comps, next.model);
+      const d = resolveView(state.diagram, comps, next.model, ud);
       if (VIEWS[d].workspace === "equilibrium") next.diagram = d;
       if (state.workspace === "equilibrium") {
         if (VIEWS[d].workspace !== "equilibrium") next.workspace = VIEWS[d].workspace;
@@ -409,7 +429,7 @@ export function applyPatch(state, patch = {}) {
   if ("propComponent" in patch) ins.properties = [patch.propComponent ?? next.inputs.properties[0]];
   for (const [v, value] of Object.entries(ins)) {
     if (!(v in INPUTS) || v === "steam") throw new Error(`inputs: unknown view "${v}". Views with inputs: ${Object.keys(INPUTS).filter(k => k !== "steam").join(", ")}.`);
-    next.inputs[v] = normalizeInputs(v, v === "henry" ? { ...next.inputs.henry, ...value } : value);
+    next.inputs[v] = normalizeInputs(v, v === "henry" ? { ...next.inputs.henry, ...value } : value, ud);
     if (v in next.z) next.z[v] = null;
     if (v === "flash") next.flash = { ...next.flash, z: null };
   }
@@ -430,10 +450,9 @@ export function applyPatch(state, patch = {}) {
   if (patch.solidUnit != null) next.solidUnit = checkSolidUnit(patch.solidUnit);
   if (patch.steamP_kPa != null) next.steamP_kPa = cleanList(patch.steamP_kPa);
   if ("title" in patch) next.title = patch.title;
-  if ("sets" in patch) next.sets = patch.sets === null ? {} : normalizeSets(patch.sets, state.sets);
+  if ("sets" in patch) next.sets = patch.sets === null ? {} : normalizeSets(patch.sets, next.sets, ud);
   if ("prefer" in patch) next.prefer = normalizePrefer(patch.prefer);
-  if ("userData" in patch) next.userData = normalizeUserData(patch.userData);
-  if ("flowsheet" in patch) next.flowsheet = normalizeFlowsheet(patch.flowsheet, overlayOf(next.userData));
+  if ("flowsheet" in patch) next.flowsheet = normalizeFlowsheet(patch.flowsheet, ud);
   if (patch.flash != null) next.flash = normalizeFlash(patch.flash, next.flash);
 
   // navigation
@@ -444,7 +463,7 @@ export function applyPatch(state, patch = {}) {
     if (v === "sources") { if (utility === undefined) utility = "sources"; v = null; }
     if (v === "eos") {
       if (!isEosModel(next.model)) next.model = next.eos;
-      v = checkInputs("pxy", next.inputs.pxy, next.model).ok || !checkInputs("envelope", next.inputs.envelope, next.model).ok ? "pxy" : "envelope";
+      v = checkInputs("pxy", next.inputs.pxy, next.model, ud).ok || !checkInputs("envelope", next.inputs.envelope, next.model, ud).ok ? "pxy" : "envelope";
     }
     if (v != null) {
       if (!VIEWS[v]) throw new Error(`Unknown view "${wanted}". Known: ${Object.keys(VIEWS).join(", ")}.`);
@@ -479,7 +498,7 @@ export function applyPatch(state, patch = {}) {
     next.utility = null; // navigating dismisses temporary panels
   }
   if ("z" in patch) {
-    if (view in next.z) next.z[view] = patch.z ? normalizeComposition(patch.z, checkInputs(view, next.inputs[view], next.model).use.length || next.inputs[view].length) : null;
+    if (view in next.z) next.z[view] = patch.z ? normalizeComposition(patch.z, checkInputs(view, next.inputs[view], next.model, ud).use.length || next.inputs[view].length) : null;
     else if (patch.z != null) throw new Error(`z is the feed of the P-x-y and phase-envelope views; the view is "${view}".`);
   }
   return derive(next, view);
@@ -491,10 +510,10 @@ export function applyPatch(state, patch = {}) {
  * and the diagram shows a full two-phase region; for a component without critical constants
  * (critical.js), the middle of its vapour-pressure record. 298.15 K without components.
  */
-export function autoTemperature(ids) {
+export function autoTemperature(ids, ud = null) {
   if (!ids.length) return 298.15;
   const top = id => {
-    const p = pure(id), vp = p.record("vapourPressure");
+    const p = pure(id, { userData: ud }), vp = p.record("vapourPressure");
     return Number.isFinite(p.Tc_K) ? 0.85 * p.Tc_K : vp ? 0.5 * (vp.Tmin_K + vp.Tmax_K) : 298.15;
   };
   const T = Math.min(...ids.map(top));
@@ -502,7 +521,7 @@ export function autoTemperature(ids) {
 }
 
 /** The P-x-y temperature in use: the one set, or autoTemperature of the selection. */
-export const pxyTemperature = state => state.T_K ?? autoTemperature(state.components.slice(0, 2));
+export const pxyTemperature = state => state.T_K ?? autoTemperature(state.components.slice(0, 2), userOverlay(state));
 
 /** Add or remove a component from the selection (at most MAX_COMPONENTS; the oldest stays first). */
 export function toggleComponent(ids, id) {
@@ -649,20 +668,20 @@ export function ruleOf(prefer) {
 }
 
 /** Canonical key of a pair in `sets`: the two component ids, sorted, joined by "+". */
-export const pairKeyOf = (a, b) => [findComponent(a), findComponent(b)].sort().join("+");
+export const pairKeyOf = (a, b, ud = null) => [findComponent(a, ud), findComponent(b, ud)].sort().join("+");
 
 /**
  * Normalize a `sets` setting ({ "pair": "set name" }, pair in any order and any component
  * name) and merge it into `prev`; an empty or null set name removes the choice for that pair.
  */
-export function normalizeSets(sets, prev = {}) {
+export function normalizeSets(sets, prev = {}, ud = null) {
   const out = { ...prev };
   if (sets == null) return out;
   if (typeof sets !== "object" || Array.isArray(sets)) throw new Error('sets must be an object such as { "acetone+chloroform": "chemsep" }.');
   for (const [key, name] of Object.entries(sets)) {
     const parts = String(key).split("+").map(s => s.trim()).filter(Boolean);
     if (parts.length !== 2) throw new Error(`sets: "${key}" is not a pair; write it as "component+component".`);
-    const k = pairKeyOf(parts[0], parts[1]);
+    const k = pairKeyOf(parts[0], parts[1], ud);
     if (name == null || name === "") delete out[k];
     else if (typeof name !== "string") throw new Error(`sets: the set for "${key}" must be a set name (a string).`);
     else out[k] = name;
@@ -685,14 +704,19 @@ export function normalizePrefer(prefer) {
  */
 export function setsFor(state, model) {
   const sets = {};
+  const ud = userOverlay(state);
   if (model !== "ideal") {
     for (const [key, name] of Object.entries(state.sets ?? {})) {
       const [a, b] = key.split("+");
+      // a pair with a component of the user's own has no databank sets: the user's set is its default
+      if (a.startsWith(USER_PREFIX) || b.startsWith(USER_PREFIX)) continue;
       if (library.sets(a, b, model).some(s => s.set === name)) sets[key] = name;
     }
   }
+  // the user's own data goes with every system of the workbench (proposal 0012)
+  const own = ud ? { userData: ud } : {};
   // activity-coefficient models also take the vapour model; equations of state describe both phases
-  return MODELS.includes(model) ? { sets, prefer: state.prefer ?? null, vapour: state.vapour ?? "ideal" } : { sets, prefer: state.prefer ?? null };
+  return MODELS.includes(model) ? { sets, prefer: state.prefer ?? null, vapour: state.vapour ?? "ideal", ...own } : { sets, prefer: state.prefer ?? null, ...own };
 }
 
 /**

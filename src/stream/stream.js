@@ -162,6 +162,21 @@ export function scaleStream(st, fraction) {
 }
 
 /**
+ * Several phases of a stream as one stream, e.g. a flash drum's liquid with the inert solid it carries
+ * (src/equilibrium/inert-solids.js): picks are [type, k] pairs as for phaseStream; phases the stream does not have are
+ * left out. Flows, phases and enthalpy are those of the picked phases, at the stream's T and P.
+ */
+export function phasesStream(st, picks) {
+  const ps = picks.map(([type, k = 0]) => st.phases.filter(q => q.type === type)[k]).filter(p => p && p.fraction > 0);
+  if (!ps.length) return build(st, { flows: st.components.map(() => 0), phases: [], VF: null, h_J_mol: null });
+  const flows = st.components.map(id => ps.reduce((a, p) => a + p.flow_kmol_h[id], 0));
+  const sum = ps.reduce((a, p) => a + p.fraction, 0);
+  const phases = ps.map(p => ({ type: p.type, fraction: p.fraction / sum, composition: p.composition, h_J_mol: p.h_J_mol }));
+  return build(st, { flows, phases, VF: phases.filter(p => p.type === "vapour").reduce((a, p) => a + p.fraction, 0),
+    h_J_mol: phases.reduce((a, p) => a + p.fraction * p.h_J_mol, 0) });
+}
+
+/**
  * One phase of a stream as a stream of its own (a flash drum outlet): its flows,
  * composition and enthalpy, at the stream's T and P. `type` is "vapour" or "liquid"; `k`
  * picks the k-th phase of that type (0: the first liquid, 1: the second). A phase the stream

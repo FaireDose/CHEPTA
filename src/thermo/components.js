@@ -51,6 +51,8 @@ const describe = (id, c) => ({
   // melting temperature and enthalpy of fusion (solid-liquid equilibrium)
   fusion: Boolean(c.fusion && c.fusion.available !== false),
   ...(c.tier === "user" ? { user: true } : {}),
+  // an inert solid (class "solid"): only flowsheets and flashes take it
+  ...(c.class === "solid" ? { solid: true } : {}),
 });
 
 /**

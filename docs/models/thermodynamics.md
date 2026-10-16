@@ -162,3 +162,21 @@ it throws.
   `userDataPackage(userData, key)` drafts a contribution package (AGENTS.md) from one entry and lists what is missing
   before it can go to the Data form (an open copy, the access, a CAS number; for pair parameters, the measured
   mixture data). Checked by [test/user-data-files.test.js](../../test/user-data-files.test.js).
+- **The My data panel** ([`src/ui/my-data-panel.js`](../../src/ui/my-data-panel.js)): lists the project's entries,
+  adds a property of a databank component or of a component of one's own (a pasted table of points, fitted by
+  [`src/thermo/user-fit.js`](../../src/thermo/user-fit.js), or typed coefficients), adds a component of one's own,
+  saves, copies, opens and merges My data files, and drafts a contribution package from an entry. The fit uses the
+  repository's forms by linear least squares: DIPPR 100 on relative deviations (density, heat capacities, enthalpy of
+  vaporization, conductivity, surface tension) and DIPPR 101 on ln y (vapour pressure, viscosities), with the fewest
+  coefficients that meet the points within 0.5 %, or the number the person chooses; its largest deviation is shown
+  and written into the record's source. Checked against numpy on the same points to 1e-9
+  ([test/user-fit.test.js](../../test/user-fit.test.js), `validation/python/reference_user_fit.py`). A result that
+  uses the person's data says so on the canvas ("Uses your own data: ..."), with a switch per record between the
+  person's record and the databank's: a record switched off (`use: false`) is kept in the data and the files, and
+  the databank's is used.
+- **Inert solids** ([`src/equilibrium/inert-solids.js`](../../src/equilibrium/inert-solids.js)): a component of one's own
+  with `class: "solid"` and a solid heat capacity neither evaporates, dissolves nor melts. `system()` flashes the fluid
+  part as it would alone and adds a solid phase whose enthalpy is the integral of the solid heat capacity from 298.15 K;
+  the vapour fraction counts every mole. In a flowsheet it leaves a flash drum with the liquid, and a component
+  separator filters it out. Bubble and dew points and the diagrams refuse it with the reason. Checked by
+  [test/inert-solids.test.js](../../test/inert-solids.test.js).

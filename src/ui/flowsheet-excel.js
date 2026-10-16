@@ -43,9 +43,8 @@
 import { xlsx, ref, colName } from "./xlsx.js";
 import { pure } from "../thermo/pure.js";
 import { unitType } from "../units/units.js";
-import { findComponent } from "../thermo/components.js";
+import { findComponent, componentRecord } from "../thermo/components.js";
 import { flowsheetSystem } from "../flowsheet/document.js";
-import componentData from "../data/components.json" with { type: "json" };
 
 const portOf = end => { const i = end.lastIndexOf("."); return { block: end.slice(0, i), port: end.slice(i + 1) }; };
 const val = v => ({ v, s: "value" });
@@ -56,9 +55,10 @@ const F = (f, v) => ({ f, v });
  * The workbook's sheets for a flowsheet document and its solution (runFlowsheet).
  * @returns {{sheets:object[], notes:string[]}}
  */
-export function flowsheetSheets(fs, res, { version = "", names = {}, concept = false } = {}) {
-  const comps = fs.components, n = comps.length;
-  const nameOf = id => names[id] ?? pure(id).name ?? id;
+export function flowsheetSheets(fs, res, { version = "", names = {}, concept = false, userData = null } = {}) {
+  // userData: the project's own data, checked (proposal 0012); its components and records are used as in the solve
+  const comps = fs.components, n = comps.length, own = { userData };
+  const nameOf = id => names[id] ?? pure(id, own).name ?? id;
   const blocks = new Map(fs.blocks.map(b => [b.id, b]));
   const streams = fs.streams.filter(s => res.streams[s.id]);
 
@@ -68,7 +68,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
   I.push([{ v: "Inputs", s: "head" }], ["Blue: inputs you can change. Grey italics: calculated by CHEPTA. Black: formulas."], []);
   I.push([{ v: "Component", s: "bold" }, { v: "Id", s: "bold" }, { v: "Molar mass, g/mol", s: "bold" }]);
   const mwRow0 = I.length;
-  comps.forEach(c => I.push([nameOf(c), c, val(pure(c).MW)]));
+  comps.forEach(c => I.push([nameOf(c), c, val(pure(c, own).MW)]));
   const mwRange = `Inputs!$C$${mwRow0 + 1}:$C$${mwRow0 + n}`;
   I.push([], [{ v: "Method", s: "bold" }, `${fs.thermo.model}${["PR", "SRK"].includes(fs.thermo.model) ? "" : `, ${fs.thermo.vapour ?? "ideal"} vapour`}`], []);
   const feedCell = {}, fracCell = {}, sepCell = {};
@@ -97,7 +97,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
       I.push([{ v: `Component separator ${b.label || b.id}: fraction of each component to each outlet`, s: "bold" }, null, ...outs.map(s => ({ v: `to ${s.label || s.id}`, s: "bold" }))]);
       sepCell[b.id] = {};
       for (const c of comps) {
-        const key = Object.keys(spec.fractions ?? {}).find(k => { try { return findComponent(k) === c; } catch { return false; } });
+        const key = Object.keys(spec.fractions ?? {}).find(k => { try { return findComponent(k, userData) === c; } catch { return false; } });
         const r = I.length, fr = key == null ? [] : spec.fractions[key];
         sepCell[b.id][c] = outs.map((_, k) => ref(r, 2 + k));
         I.push([nameOf(c), null, ...outs.map((_, k) => {
@@ -125,7 +125,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
   S[R.to] = ["To", null, ...streams.map(s => { const t = portOf(s.to); return blocks.get(t.block)?.type === "product" ? "product" : `${t.block} ${t.port}`; })];
   const flowRef = (sid, i) => `${colName(col.get(sid))}${R.flow0 + i + 1}`;
   // concept model: the drums as formulas on the "Flash models" sheet
-  const flash = concept ? conceptFlashes(fs, res, { comps, nameOf, flowRef, inlets: bid => fs.streams.filter(s => s.to === `${bid}.in` && col.has(s.id)).map(s => s.id) }) : null;
+  const flash = concept ? conceptFlashes(fs, res, { comps, nameOf, flowRef, userData, inlets: bid => fs.streams.filter(s => s.to === `${bid}.in` && col.has(s.id)).map(s => s.id) }) : null;
   const fromFlash = s => (flash ? flash.cond[portOf(s.from).block] : null);
   const cond = (s, k, key) => (res.streams[s.id][k] == null ? null
     : fromFlash(s) ? F(fromFlash(s)[key], res.streams[s.id][k]) : val(res.streams[s.id][k]));
@@ -235,7 +235,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
  *   cell[streamId][i]: the formula reference of component i's flow in that drum outlet;
  *   cond[blockId]: references of the drum's temperature and pressure
  */
-function conceptFlashes(fs, res, { comps, nameOf, flowRef, inlets }) {
+function conceptFlashes(fs, res, { comps, nameOf, flowRef, inlets, userData = null }) {
   const n = comps.length, rows = [], cell = {}, cond = {};
   const drum = {};   // per drum: K cells (or fraction cells for two liquids) and the outlet streams, for the recycle passes
   const X = (r, c) => `'Flash models'!${ref(r, c)}`;
@@ -244,7 +244,7 @@ function conceptFlashes(fs, res, { comps, nameOf, flowRef, inlets }) {
   const XA = (r, c) => `'Flash models'!${abs(r, c)}`;
   if (!drums.length) return { rows, cell, cond, drum };
   let sys = null;
-  try { sys = flowsheetSystem(fs); } catch { /* γ falls back to 1 below */ }
+  try { sys = flowsheetSystem(fs, userData); } catch { /* γ falls back to 1 below */ }
   const eos = ["PR", "SRK"].includes(fs.thermo.model);
 
   rows.push([{ v: "Flash models (concept design)", s: "head" }],
@@ -293,7 +293,7 @@ function conceptFlashes(fs, res, { comps, nameOf, flowRef, inlets }) {
     const zR = `${abs(r0, 2)}:${abs(r0 + n - 1, 2)}`, KR = `${abs(r0, 10)}:${abs(r0 + n - 1, 10)}`;
     comps.forEach((c, i) => {
       // the vapour-pressure record the activity-model flash uses (DIPPR 101 for every component, water included)
-      const r = r0 + i, p = pure(c), rec = componentData.components[c].vapourPressure, co = rec;
+      const r = r0 + i, p = pure(c, { userData }), rec = componentRecord(c, userData).vapourPressure, co = rec;
       const usePsat = rec?.equation === "DIPPR101" && st.T_K < (p.Tc_K ?? Infinity) && st.T_K >= (rec.Tmin_K ?? 0) - 1e-9 && st.T_K <= (rec.Tmax_K ?? Infinity) + 1e-9;
       const xS = two ? res.streams[L.id].z[i] : null, yS = two ? res.streams[V.id].z[i] : null;
       let Ksol = two && xS > 1e-14 ? yS / xS : null;
