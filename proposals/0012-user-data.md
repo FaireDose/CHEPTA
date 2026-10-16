@@ -208,7 +208,10 @@ our database or the user can insert their own".
    blocked; tests of both paths.
 5. Pair parameters, and the Modified UNIFAC 2.0 groups panel (section 6): the database's groups with how they were
    found, the picker with the atom balance; the test that a databank component's own groups entered as user groups
-   give identical activity coefficients.
+   give identical activity coefficients. Side by side (the maintainer, 2026-10-16): for a pair, the databank's
+   coefficients (each set, with its source) next to an empty table of the same coefficients for one's own; for
+   Modified UNIFAC 2.0, the parameters of the subgroups (and the interaction parameters between their main groups)
+   next to the selection of the groups.
 
 ## The maintainer's answers (2026-10-16)
 
@@ -219,3 +222,5 @@ our database or the user can insert their own".
 3. Added: the user data can be saved as a file of its own as well as in the project (section 3a).
 4. Added: for every component, the groups panel shows the database's Modified UNIFAC 2.0 groups as a proposal, which
    the user keeps or replaces with their own (section 6).
+5. Added for step 5 (2026-10-16): the coefficients side by side, the databank's next to an empty table for one's own;
+   for Modified UNIFAC 2.0, the parameters side by side with the selection of the groups.

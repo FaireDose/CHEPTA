@@ -78,14 +78,13 @@ export const CSS = `
 .fug svg text{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 `;
 
-let injected = false;
+/** Inject the base styles (once per document: a window the workbench opens, such as My data, gets its own). */
 export function injectStyles(doc = document) {
-  if (injected || doc.getElementById("chepta-styles")) return;
+  if (doc.getElementById("chepta-styles")) return;
   const s = doc.createElement("style");
   s.id = "chepta-styles";
   s.textContent = CSS;
   doc.head.appendChild(s);
-  injected = true;
 }
 
 // ---------------------------------------------------------------------------------------
