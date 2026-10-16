@@ -56,10 +56,10 @@ const R = 8.314462618; // J/(mol K)
  */
 export function createCubicVapour(ids, comps, model, cfg) {
   requireCritical(comps, `a ${model === "SRK" ? "SRK" : "Peng-Robinson"} vapour`);
-  const { K, pairs, missing } = kijMatrix(ids, model, cfg.kij, selection({ prefer: cfg.prefer }));
+  const { K, pairs, missing } = kijMatrix(ids, model, cfg.kij, selection({ prefer: cfg.prefer }), cfg.userData);
   const eos = cubicEos(model, comps.map(c => ({ name: c.name, Tc_K: c.Tc_K, Pc_Pa: c.Pc_Pa, omega: c.omega })), K);
   const n = ids.length;
-  const pures = ids.map(id => pure(id));
+  const pures = ids.map(id => pure(id, { userData: cfg.userData }));
   const unit = i => { const e = new Array(n).fill(0); e[i] = 1; return e; };
 
   const densityRecords = pures.map(p => p.record("liquidDensity"));

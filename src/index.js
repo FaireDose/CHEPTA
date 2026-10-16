@@ -5,7 +5,8 @@
  * compositions as mole fractions. The interfaces (mount, mountProperties, app) convert
  * for display (°C, bar, wt %).
  */
-import { createSystem, listComponents, findComponent, MODELS } from "./thermo/system.js";
+import { createSystem, listComponents as listDatabank, findComponent as findIn, MODELS } from "./thermo/system.js";
+import { checkUserData } from "./thermo/user-data.js";
 import { bubbleT, bubbleP, pureBoilingPoints } from "./equilibrium/bubble.js";
 import { dewT, dewP } from "./equilibrium/dew.js";
 import { flash, rachfordRice } from "./equilibrium/flash.js";
@@ -35,9 +36,15 @@ import pkg from "../package.json" with { type: "json" };
 
 export const version = pkg.version;
 
+/** The databank's components, and with { userData } the user's own after them (proposal 0012). */
+const listComponents = (opts = {}) => listDatabank({ userData: checkUserData(opts?.userData) });
+/** A component's id from its name, alias, formula or CAS number; with userData the user's own components too. */
+const findComponent = (key, userData = null) =>
+  findIn(key, userData && typeof userData === "object" && !Array.isArray(userData) ? checkUserData(userData) : null);   // (map passes an index)
+
 export {
   system, app,
-  mount, createSystem, listComponents, findComponent, MODELS,
+  mount, createSystem, listComponents, findComponent, checkUserData, MODELS,
   bubbleT, bubbleP, dewT, dewP, flash, rachfordRice, pureBoilingPoints, txy, pxy, ternaryGrid, residueCurve,
   binaryAzeotropes, findAzeotrope, isLiquidStable, checkPackage, validCas,
   pure, PROPERTIES, PROPERTY_NAMES,

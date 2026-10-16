@@ -8,7 +8,8 @@
  * Equations: see cubic.js. Units: T in K, P in kPa, mole fractions.
  */
 import { methodAdvice } from "../method-advice.js";
-import componentData from "../../data/components.json" with { type: "json" };
+import { componentRecord } from "../components.js";
+import { userDataUsed } from "../user-data.js";
 import { cubicEos, CUBICS } from "./cubic.js";
 import { RANGE_MARGIN_K, selection, choosePair, describePair, pairWarnings } from "../library.js";
 import { fail } from "../../util/errors.js";
@@ -26,8 +27,8 @@ export { RANGE_MARGIN_K };
  * Also used for the vapour of activity-coefficient systems with vapour "PR" or "SRK".
  * @returns {{K:number[][], pairs:object[], missing:string[][]}}
  */
-export function kijMatrix(ids, model, kij, sel = selection({})) {
-  const comps = ids.map(id => componentData.components[id]);
+export function kijMatrix(ids, model, kij, sel = selection({}), userData = null) {
+  const comps = ids.map(id => componentRecord(id, userData));
   const n = ids.length;
   const K = Array.from({ length: n }, () => new Array(n).fill(0));
   const pairs = [], missing = [];
@@ -47,7 +48,7 @@ export function kijMatrix(ids, model, kij, sel = selection({})) {
       pairs.push({ pair, kij: kij[i][j], tier: "user", source: "given in the system's setup" });
       continue;
     }
-    const choice = choosePair(model, ids[i], ids[j], sel);
+    const choice = choosePair(model, ids[i], ids[j], sel, userData?.pairs ?? []);
     if (choice) {
       const k = choice.chosen.params.kij;
       K[i][j] = K[j][i] = k;
@@ -66,14 +67,15 @@ export function kijMatrix(ids, model, kij, sel = selection({})) {
  * @param {"PR"|"SRK"} cfg.model
  * @param {number[][]} [cfg.kij] user k_ij matrix (n x n, symmetric); overrides the databank
  * @param {object} [cfg.sets]    k_ij set per pair, and [cfg.prefer] tiers in order (see library.js)
+ * @param {object} [cfg.userData]  the user's own data, checked (user-data.js)
  * @param {object} [sel]  cfg.sets and cfg.prefer as checked by library.selection()
  */
 export function createEosSystem(ids, cfg, sel = selection(cfg)) {
   const model = String(cfg.model).toUpperCase();
-  const comps = ids.map(id => componentData.components[id]);
+  const comps = ids.map(id => componentRecord(id, cfg.userData));
   requireCritical(comps, `the ${model === "SRK" ? "SRK" : "Peng-Robinson"} equation of state`);
   const n = ids.length;
-  const { K, pairs, missing } = kijMatrix(ids, model, cfg.kij, sel);
+  const { K, pairs, missing } = kijMatrix(ids, model, cfg.kij, sel, cfg.userData);
   const eos = cubicEos(model, comps.map(c => ({ name: c.name, Tc_K: c.Tc_K, Pc_Pa: c.Pc_Pa, omega: c.omega })), K);
   const MW = comps.map(c => c.MW);
 
@@ -96,6 +98,8 @@ export function createEosSystem(ids, cfg, sel = selection(cfg)) {
     vapour: eos.name, liquid: eos.name,
     // is this the recommended method for these components? (method-advice.js, docs/METHOD_SELECTION.md)
     advice: methodAdvice({ ids, names: comps.map(c => c.name), formulas: comps.map(c => c.formula), model, eos: true }),
+    // the user's own data this system uses (proposal 0012)
+    userData: userDataUsed(ids, cfg.userData ?? null, pairs),
     notes: [
       "No volume translation: liquid densities from a cubic equation of state are typically 5-20 % off.",
       "Root choice: smallest Z for the liquid, largest for the vapour; with one real root the same root is used for both and labelled liquid-like or vapour-like.",
@@ -118,8 +122,8 @@ export function createEosSystem(ids, cfg, sel = selection(cfg)) {
 
   return {
     ids, names: comps.map(c => c.name), n, model, kind: "eos", eos, kij: K, info,
-    state, warnings,
-    ...eosPhaseMethods({ ids, comps, n, model, eos, warnings }),
+    state, warnings, MW, userData: cfg.userData ?? null,
+    ...eosPhaseMethods({ ids, comps, n, model, eos, warnings, userData: cfg.userData }),
     /** Compressibility factor Z. Arguments (T, P, x, phase) or (x, T, P, phase); phase defaults to "vapour". */
     Z: (a, b, c, d) => state(a, b, c, d).Z,
     /** ln phi_i. Arguments (T, P, x, phase) or (x, T, P, phase). */

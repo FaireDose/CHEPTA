@@ -21,6 +21,8 @@
  * residual enthalpy of polar vapours is approximate (see POLAR_NOTE).
  */
 import componentData from "../data/components.json" with { type: "json" };
+import { componentRecord } from "./components.js";
+import { checkUserData } from "./user-data.js";
 import { evaluate } from "./correlations.js";
 import { brent } from "../util/solve.js";
 import { findComponent } from "./system.js";
@@ -89,11 +91,14 @@ function vapourPressureRecord(c) {
  * @param {string} key  name, id, alias, formula or CAS number
  * @param {object} [opts]
  * @param {object} [opts.properties]  property records that replace or add to the databank's
- *        (same format as components.json; e.g. the user's own data, or test records)
+ *        (same format as components.json; e.g. test records)
+ * @param {object} [opts.userData]  the user's own data (proposal 0012, user-data.js): its records for this
+ *        component, or the user's own component, put over the databank
  */
 export function pure(key, opts = {}) {
-  const id = findComponent(key);
-  const c = componentData.components[id];
+  const ud = checkUserData(opts.userData);
+  const id = findComponent(key, ud);
+  const c = componentRecord(id, ud);
   const data = { ...(c.properties || {}), ...(opts.properties || {}) };
   for (const [name, rec] of Object.entries(data)) {
     if (!PROPERTIES[name]) throw fail("BAD_INPUT", `${c.name}: unknown property "${name}"${opts.properties?.[name] ? "" : " in components.json"}.`);

@@ -163,6 +163,10 @@ it does so on my computer at no cost to this chat. So:
   in the databank yet and point me to
   https://github.com/FaireDose/CHEPTA/blob/main/CONTRIBUTING.md. Never invent
   parameters.
+- If I give numbers of my own (a measured property, a component, pair parameters), pass them
+  as `userData` (`CHEPTA.checkUserData` checks them; see docs/models/thermodynamics.md), with
+  the source line I give, and say in the answer which results use them. Never present them
+  as data from CHEPTA's databank.
 - Results are model predictions; say so and mention the parameter sources shown under the
   diagram.
 - If the library does not load, tell me; do not replace it with hand-written thermodynamics.

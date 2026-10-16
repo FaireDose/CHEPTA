@@ -138,3 +138,18 @@ it throws.
 - **Several parameter sets per pair:** a pair can carry more than one set. The user chooses one
   with `sets` or `prefer`; otherwise the default set is used.
 - **No thermodynamics:** the file only records sources and selects sets.
+
+## Your own data: an overlay on the databank
+
+[`user-data.js`](../../src/thermo/user-data.js) (proposal 0012):
+
+- **What:** property records, components, pair parameters (NRTL, UNIQUAC, PR, SRK) and Modified UNIFAC 2.0 groups of
+  the user's own, every item with a source line the person writes and the tier "user".
+- **How:** `checkUserData(userData)` checks it (the databank's units, equations and ranges; a DIPPR101 vapour pressure;
+  subgroup ids of the method) and `system({ ..., userData })`, `pure(id, { userData })` and
+  `listComponents({ userData })` put it over the databank for that call only. A user record replaces the databank's
+  record of that property; a user pair set is that pair's default (the databank's set stays selectable with `sets`);
+  the user's own components have ids starting with `user:`. `info.userData` lists what a system uses.
+- **Not stored:** nothing is written into the databank or kept between calls; water stays on IAPWS-IF97.
+- **Checked by:** [test/user-data.test.js](../../test/user-data.test.js): an overlay repeating the databank's own
+  records gives exactly the databank's results; a component copied as the user's own gives the same equilibrium.

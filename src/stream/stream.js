@@ -35,8 +35,13 @@ const finite = (v, what) => {
   return x;
 };
 
-/** Molar masses of the system's components, g/mol (= kg/kmol). */
-export const molarMasses = sys => sys.ids.map(id => pure(id).MW);
+/** Molar masses of the system's components, g/mol (= kg/kmol); the system carries them (with the user's own
+ *  components, proposal 0012). */
+export const molarMasses = sys => (sys.MW ? sys.MW.slice() : sys.ids.map(id => pure(id).MW));
+// the molar masses of every stream built here, by stream (a stream's components may be the user's own, which pure()
+// alone cannot find)
+const streamMW = new WeakMap();
+const remember = (st, MW) => { streamMW.set(st, MW); return st; };
 
 /**
  * Component flows of a stream specification as an array in the system's order, kmol/h.
@@ -53,7 +58,7 @@ export function componentFlows(sys, flows, unit = "kmol/h") {
   } else if (flows && typeof flows === "object") {
     for (const [key, v] of Object.entries(flows)) {
       let id;
-      try { id = findComponent(key); } catch (e) { throw fail("BAD_INPUT", `stream: ${what}: ${e.message}`); }
+      try { id = findComponent(key, sys.userData); } catch (e) { throw fail("BAD_INPUT", `stream: ${what}: ${e.message}`); }
       const i = sys.ids.indexOf(id);
       if (i < 0) throw fail("BAD_INPUT", `stream: ${what}: ${key} is not a component of this system (${sys.ids.join(", ")}).`);
       out[i] += finite(v, `${what}.${key}`);
@@ -96,10 +101,10 @@ export function stream(sys, spec = {}) {
     if (!has("T_K") || !has("P_kPa")) {
       if (has("P_kPa") && has("H_kW") && finite(spec.H_kW, "H_kW") !== 0) throw fail("BAD_INPUT", `stream: a stream without flow cannot carry an enthalpy flow (H_kW = ${spec.H_kW}).`);
     }
-    return Object.freeze({
+    return remember(Object.freeze({
       ...base, z: flows.map(() => 0), T_K: has("T_K") ? finite(spec.T_K, "T_K") : null, P_kPa: has("P_kPa") ? finite(spec.P_kPa, "P_kPa") : null,
       VF: null, phases: [], h_J_mol: null, H_kW: 0, MW: null, warnings: ["The stream has no flow."], sources: [],
-    });
+    }), MW);
   }
   const z = flows.map(v => v / F);
   const fspec = { z };
@@ -113,12 +118,12 @@ export function stream(sys, spec = {}) {
     F_kmol_h: F * p.fraction,
     flow_kmol_h: Object.fromEntries(sys.ids.map((id, i) => [id, F * p.fraction * p.composition[i]])),
   }));
-  return Object.freeze({
+  return remember(Object.freeze({
     ...base, z, T_K: r.T, P_kPa: r.P, VF: r.VF, phases,
     h_J_mol: r.H_J_mol, H_kW: r.H_J_mol == null ? null : r.H_J_mol * F * KW_PER,
     MW: z.reduce((a, v, i) => a + v * MW[i], 0),
     warnings: r.warnings ?? [], sources: r.sources ?? [],
-  });
+  }), MW);
 }
 
 /** Heat duty in kW between two enthalpy flows (out minus in), e.g. of a heater. */
@@ -127,22 +132,22 @@ export const dutyKW = (H_in_kW, H_out_kW) => H_out_kW - H_in_kW;
 /** A frozen stream from its parts (the shape stream() returns). */
 function build(st, { flows, phases, VF, h_J_mol }) {
   const ids = st.components, F = flows.reduce((a, v) => a + v, 0);
-  const MW = ids.map(id => pure(id).MW);
+  const MW = streamMW.get(st) ?? ids.map(id => pure(id).MW);
   const base = {
     id: null, name: null, spec: st.spec, components: ids.slice(),
     flow_kmol_h: Object.fromEntries(ids.map((id, i) => [id, flows[i]])), flows: flows.slice(), F_kmol_h: F,
     mass_kg_h: flows.reduce((a, v, i) => a + v * MW[i], 0), T_K: st.T_K, P_kPa: st.P_kPa,
   };
-  if (!(F > 0)) return Object.freeze({ ...base, z: flows.map(() => 0), VF: null, phases: [], h_J_mol: null, H_kW: 0, MW: null, warnings: ["The stream has no flow."], sources: st.sources ?? [] });
+  if (!(F > 0)) return remember(Object.freeze({ ...base, z: flows.map(() => 0), VF: null, phases: [], h_J_mol: null, H_kW: 0, MW: null, warnings: ["The stream has no flow."], sources: st.sources ?? [] }), MW);
   const z = flows.map(v => v / F);
-  return Object.freeze({
+  return remember(Object.freeze({
     ...base, z, VF, phases: phases.map(p => Object.freeze({
       ...p, composition: p.composition.slice(), F_kmol_h: F * p.fraction,
       flow_kmol_h: Object.fromEntries(ids.map((id, i) => [id, F * p.fraction * p.composition[i]])),
     })),
     h_J_mol, H_kW: h_J_mol == null ? null : h_J_mol * F * KW_PER, MW: z.reduce((a, v, i) => a + v * MW[i], 0),
     warnings: st.warnings ?? [], sources: st.sources ?? [],
-  });
+  }), MW);
 }
 
 /**
