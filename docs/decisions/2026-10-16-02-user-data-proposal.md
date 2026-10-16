@@ -15,4 +15,5 @@
   gets a separate window for now; and the user data can also be saved as a file of its own, besides the project
   (added as section 3a). Design advice asked for: docked by default (quicker for a short task, always available,
   also in AI chats and on phones), the separate window as an option.
-- **Waiting for the maintainer:** acceptance of the proposal as updated.
+- **Accepted** (2026-10-16, "ok"), with one addition: "for each chemical you could give the proposed structure for
+  unifac 2.0 combinations by our database or the user can insert their own" (section 6 of the proposal).

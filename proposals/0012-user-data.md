@@ -1,6 +1,6 @@
 # 0012: Your own data, kept with the project, in panels that can open as separate windows
 
-- **Status:** In discussion (the maintainer answered its questions on 2026-10-16; see the end)
+- **Status:** Accepted (the maintainer, 2026-10-16: "ok", after answering its questions; see the end)
 - **Author(s):** the maintainer (request of 2026-10-15 and 2026-10-16), drafted with Claude
 - **Discussion:** the pull request that adds this file
 - **Roadmap item:** track B (bridges: project files) and the open item "user-chosen Modified UNIFAC 2.0 groups"
@@ -144,6 +144,21 @@ window) cannot leak data into each other, and the library's own tests and result
     hidden on phones; where the browser refuses the window when the button is pressed, the panel stays docked and a
     note says why.
 
+### 6. Modified UNIFAC 2.0 groups: the database's proposal, or your own
+
+The maintainer (2026-10-16): "for each chemical you could give the proposed structure for unifac 2.0 combinations by
+our database or the user can insert their own".
+
+- For every component, the groups panel shows the subgroups CHEPTA uses (name, count, the main group they belong to)
+  and how they were found: DDBST's published assignment, the structure-based one checked against it, chosen, reviewed
+  or corrected (with the note `mod_unifac_2.py` writes), and the atom balance against the formula.
+- For a component without groups (FDCA, maleic anhydride, the small gases) it shows why, and the closest assignment
+  the structure gives, as a starting point.
+- **Use these** keeps the database's groups; **Edit** opens a picker of the method's subgroups (searchable by name and
+  main group) with counts; the atom balance is checked as the counts change (a stated one-H difference allowed, as
+  for substituted rings), and saving stores the result as user groups (tier "user") in My data.
+- A user component (section 1) gets its groups the same way, from nothing or from a formula.
+
 ## Engineering basis
 
 - Correlation equations: the ones the databank already uses (src/thermo/correlations.js, with their references).
@@ -191,8 +206,9 @@ window) cannot leak data into each other, and the library's own tests and result
    user components; the browser fit compared with numpy.
 4. The separate window for My data (the only panel with one for now), the docked fallback where windows are
    blocked; tests of both paths.
-5. Pair parameters and Modified UNIFAC 2.0 groups: the group picker with the atom balance; the test with a databank
-   component's own groups.
+5. Pair parameters, and the Modified UNIFAC 2.0 groups panel (section 6): the database's groups with how they were
+   found, the picker with the atom balance; the test that a databank component's own groups entered as user groups
+   give identical activity coefficients.
 
 ## The maintainer's answers (2026-10-16)
 
@@ -201,3 +217,5 @@ window) cannot leak data into each other, and the library's own tests and result
 2. Which panels get a separate window? **Only My data for now.** Asked which is better, a new window or a place in
    the main window: docked by default, with the separate window as an option (section 5).
 3. Added: the user data can be saved as a file of its own as well as in the project (section 3a).
+4. Added: for every component, the groups panel shows the database's Modified UNIFAC 2.0 groups as a proposal, which
+   the user keeps or replaces with their own (section 6).
