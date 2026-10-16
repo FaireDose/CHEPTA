@@ -114,6 +114,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   6. Gibbs reactor;
   7. views;
   8. benchmarks.
+- **0012, your own data** (draft, 2026-10-16): the maintainer's next step after batch 4 ("add your own data", with
+  supporting panels that can open as separate windows). Accept or change it, and answer its two questions (may user
+  data replace a measured databank record; which panels get a separate window first); then the five steps.
 - **0011, agents:**
   1. the tool interface;
   2. the route-file format and its checker;

@@ -1,0 +1,179 @@
+# 0012: Your own data, kept with the project, in panels that can open as separate windows
+
+- **Status:** Draft
+- **Author(s):** the maintainer (request of 2026-10-15 and 2026-10-16), drafted with Claude
+- **Discussion:** the pull request that adds this file
+- **Roadmap item:** track B (bridges: project files) and the open item "user-chosen Modified UNIFAC 2.0 groups"
+  (docs/DECISIONS.md, proposal 0009)
+
+## Problem
+
+CHEPTA only calculates with its own databank, and every number in it must come from an open source (AGENTS.md
+rule 1). That keeps it checkable, but it leaves people stuck in three common situations:
+
+1. **A property the databank does not have.** Lactic acid has no open liquid density, and 25 components lack a
+   thermal conductivity. A company or a lab often has its own measurement, or a supplier's value it trusts for a
+   first design.
+2. **A component the databank does not have.** An intermediate of the person's own process, an oligomer, a
+   proprietary solvent.
+3. **Parameters the databank cannot give.** An NRTL pair the person fitted to their own data, or Modified UNIFAC 2.0
+   groups for a molecule the automatic assignment cannot describe (FDCA, the anhydrides).
+
+Today the only way in is a contribution to the shared databank, which is right for open data and wrong for private
+or provisional numbers. The workbench is also getting crowded: one more panel on the main screen would make it
+harder to read.
+
+## Proposal
+
+### 1. What a person can add ("your data")
+
+| Kind | What they enter | Used for |
+|---|---|---|
+| A property record of a databank component | a table of measured points (temperature, value), or the coefficients of a correlation (the equations components.json uses: DIPPR 100, 101, 102, 104, 105, 106, 107) with its range | that property, replacing the databank's record or filling a "no open data" gap |
+| A new component | name, formula (optional), molar mass, nonvolatile or volatile; for a volatile one a vapour-pressure record; optional Tc, Pc and acentric factor; any property records | everything the databank components do, as far as its data reach |
+| Pair parameters | NRTL (or UNIQUAC) parameters for a pair, in the units of data/binaries.json | that pair, as a parameter set next to the databank's |
+| Modified UNIFAC 2.0 groups | subgroup counts for a component, picked from the method's subgroup list | the MOD-UNIFAC-2 model |
+
+Every item carries a **source line the person writes** ("own measurement, lab book 12, 2026"; "supplier data
+sheet"; "fit to our pilot data") and gets the tier **"user"**.
+
+### 2. Rules that keep it honest
+
+- **Visible everywhere.** A result that uses your data says so: the Sources panel lists "Your data" with the source
+  lines, the result notes name the records used, and exported tables (CSV, Excel, project) carry them.
+- **Your data wins, but only in your project.** Inside the project where it was entered, a user record replaces the
+  databank's record for that property, and a user pair set becomes that pair's default (the person added it on
+  purpose). The databank's record stays available, so the two can be compared. Nothing is written into the shared
+  databank.
+- **Checked like the databank.** The same checks as components.json: known property names and equations, SI units
+  inside (the form converts °C, g/cm³, mPa·s and so on), a range for every record, and out-of-range refusals rather
+  than extrapolation. A table of points is fitted by the same equation forms the repository uses, and the fit's
+  maximum deviation is shown before the record is saved. User Modified UNIFAC groups must pass the atom balance
+  against the formula when one is given.
+- **Not open data.** User data is never counted as an open source. To share it, the panel can export a contribution
+  package (the format of AGENTS.md, type `component` or `pair-data`) for the Data form, where it is reviewed like any
+  other contribution.
+
+### 3. Where it is stored: the project file, format 3
+
+The project file gains one optional top-level key, `user_data`. Format 1 and 2 files still open (they have none).
+
+```json
+{
+  "fugacity_project": 3,
+  "saved_with": "chepta 0.4.0",
+  "workbench": { "...": "unchanged" },
+  "user_data": {
+    "properties": {
+      "lactic-acid": {
+        "liquidDensity": {
+          "equation": "DIPPR100", "coefficients": { "A": 0, "B": 0 }, "units": "kg/m3",
+          "Tmin_K": 293.15, "Tmax_K": 353.15,
+          "points": [[293.15, 0], [313.15, 0], [333.15, 0]],
+          "tier": "user", "source": { "name": "own measurement, lab book 12", "fit": "3 points, max deviation 0.2 %" }
+        }
+      }
+    },
+    "components": {
+      "user:pla-oligomer": {
+        "name": "PLA oligomer (n = 4)", "MW": 0, "class": "nonvolatile",
+        "properties": { "liquidHeatCapacity": { "...": "a record as above" } },
+        "source": { "name": "own estimate" }
+      }
+    },
+    "pairs": {
+      "water+lactic-acid": { "NRTL": { "...": "the parameters, in the format of data/binaries.json" },
+                             "tier": "user", "source": { "name": "fit to our VLE data, 2026" } }
+    },
+    "groups": {
+      "fdca": { "subgroups": { "...": "subgroup id: count" }, "source": { "name": "my assignment" } }
+    }
+  }
+}
+```
+
+(The zeros only show the format; real entries carry the person's numbers.) User component ids start with `user:`, so
+they can never collide with a databank id.
+
+### 4. The engine: an overlay, not a change to the databank
+
+```js
+const mine = CHEPTA.checkUserData(project.user_data);          // throws an error that names the problem
+const sys = CHEPTA.system({ components: ["water", "lactic-acid"], model: "MOD-UNIFAC-2", userData: mine });
+const p = CHEPTA.pure("lactic-acid", { userData: mine });      // pure() already takes extra property records
+CHEPTA.listComponents({ userData: mine });                      // the databank's components plus the user's
+```
+
+`userData` is passed per call, never stored globally, so two workbenches on one page (or a page and its pop-out
+window) cannot leak data into each other, and the library's own tests and results are unchanged when it is absent.
+
+### 5. The interface: a "My data" panel that can open as its own window
+
+- **My data** is a new item next to Library, Sources and Settings. It lists what the project holds, by component, and
+  offers "Add a property", "Add a component", "Add pair parameters" and "Choose groups".
+- Adding a property: pick the component and property, paste a table (from Excel or a data sheet; units chosen in the
+  header) or type coefficients, see the fitted curve plotted over the databank's record (where there is one), and
+  save. The plot and the fit's deviation are shown before saving.
+- **Separate windows.** My data, and later the other supporting panels (Sources, Library, the stream table, a
+  diagram), get an "Open in a new window" button. The main window keeps all the data; the new window only shows and
+  edits it, and every change appears in both at once. Closing the new window loses nothing.
+  - How: the main window opens an empty window (`window.open`) and builds the panel into it with its own code and
+    styles, so no second file has to load and it works offline and from a file on disk.
+  - Where it cannot: pages inside AI chats (artifacts) usually block new windows, and phones have none. There the
+    same panel opens docked in the page, as Library and Sources do today. The button is shown only where a window
+    can actually be opened (detected when it is pressed: if the browser refuses, the panel opens docked and a note
+    says why).
+
+## Engineering basis
+
+- Correlation equations: the ones the databank already uses (src/thermo/correlations.js, with their references).
+- Fitting a table of points: linear least squares, the DIPPR 100 polynomial directly and DIPPR 101 in its
+  logarithmic form with E fixed, as `validation/python/fit_properties.py` does. A test compares the browser fit with
+  numpy on the same points (a fixture made by a new reference script), to 1e-9 relative.
+- Modified UNIFAC 2.0 with user groups: the same code as the databank's groups; a test checks that entering a
+  databank component's own groups as user groups gives identical activity coefficients.
+- Validation of results with user data: the existing tests, run with an overlay that repeats the databank's records,
+  must give the same numbers (the overlay changes nothing by itself).
+
+## Effect on existing work
+
+- Project files: format 3 adds `user_data`; formats 1 and 2 open unchanged. A format 3 file opened by an older CHEPTA
+  is refused with a message to update (as for format 2 today).
+- The library: `system`, `pure` and `listComponents` take an optional `userData`; without it nothing changes. New:
+  `checkUserData`, and `userDataPackage` (the contribution-package export).
+- The workbench: one new item (My data); the pop-out button on the supporting panels. Nothing moves on the main
+  screen.
+- The databank, its scripts and the data rules are not touched: user data never enters src/data.
+
+## Alternatives considered
+
+- **User data saved in the browser only** (localStorage). Lost with the browser's data, not shareable, and not in the
+  project the results belong to. Rejected; the browser's autosave keeps working as today, with the user data inside
+  the project it saves.
+- **A separate "user databank" file loaded next to projects.** Useful later for a company's shared data, but it
+  splits a project from the numbers it was calculated with. The contribution-package export covers sharing for now.
+- **Separate windows as separate pages** (a second HTML file loaded by URL, talking over BroadcastChannel). Needs a
+  server or a second file next to the page, and does not work from a file on disk or inside a chat. Building the
+  window from the main page avoids both.
+- **No separate windows: tabs inside the page.** Simpler, but it does not free the main screen, which is the point.
+  Kept as the fallback where windows cannot open.
+
+## Steps
+
+1. The engine overlay: `checkUserData`, `userData` in `system`, `pure` and `listComponents`, user components and pair
+   sets; tests (the overlay repeating the databank changes nothing; a user record replaces a databank record; a user
+   component in a flash and a flowsheet; refusals with their messages).
+2. Project format 3 with `user_data`, and the contribution-package export; round-trip tests, old formats opening.
+3. The My data panel (docked): property tables and coefficients with units, the fit with its deviation and plot,
+   user components; the browser fit compared with numpy.
+4. Separate windows: the pop-out mechanism for My data, then for Sources, Library, the stream table and the diagrams;
+   the docked fallback where windows are blocked; tests of both paths.
+5. Pair parameters and Modified UNIFAC 2.0 groups: the group picker with the atom balance; the test with a databank
+   component's own groups.
+
+## Questions for the maintainer
+
+1. Should user data be allowed to **replace** a databank record that has open measured data, or only fill gaps? The
+   proposal allows both, clearly labelled, so a person can use their own measurement.
+2. Which panels should get the separate-window button first, after My data? The proposal suggests Sources, the stream
+   table and the diagrams.
