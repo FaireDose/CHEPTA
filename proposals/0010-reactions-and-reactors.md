@@ -107,6 +107,17 @@ The enthalpy reference does not change for existing results: `H_kW` keeps the id
 comes out of the balance and is never typed in. A flowsheet without reactors gives the same
 numbers as today.
 
+**Nonvolatile components** (proposal 0009, step 5; the maintainer, 2026-10-16: a nonvolatile component can react into
+something else, for example a volatile product that is then distilled or separated). In CHEPTA they have no
+ideal-gas state: their enthalpy reference is the liquid at 298.15 K. So they carry the formation properties of the
+liquid instead, `Hf_liq_J_mol` and `Gf_liq_J_mol` (298.15 K, 1 bar), and `Hf_kW` adds n (ΔfH°liq + h_L(T)) for them.
+Sources in the order above: the WebBook's condensed-phase thermochemistry (ΔfH° of the liquid, or of the solid with
+the enthalpy of fusion, the path stated), ChemSep, then open articles (combustion calorimetry) and the ThermoML
+Archive. In an equilibrium reactor the standard state of a nonvolatile component is its pure liquid, its activity γx.
+Reactants and products may be nonvolatile or volatile in any combination (sugar to HMF and water; HMF to levulinic
+and formic acid), and the outlet is flashed like any other stream (the flowsheet blocks already handle nonvolatile
+components with volatile ones: `test/nonvolatile.test.js`).
+
 ### 3. Reactor blocks (`src/units/`, through the A6 interface)
 
 | Block | Specifications | What it does | Needs |
@@ -218,5 +229,7 @@ character 12; known: C, x, p, f, a, T, P, K").
    (the concept model of the Excel export: extents as formulas).
 8. **Tests with reactions:** methanol from CO₂ (equilibrium), ethyl acetate esterification
    (equilibrium and kinetics from an open article), ethanol to ethylene (conversion with side
-   reactions), defined in the test files with their sources and documented in docs/BENCHMARKS.md
+   reactions), a nonvolatile reactant to volatile products separated downstream (HMF rehydration to levulinic and
+   formic acid in water, then a flash or a column; it needs a liquid heat capacity of levulinic acid, which has none
+   open yet), defined in the test files with their sources and documented in docs/BENCHMARKS.md
    as worked examples a user can copy; not shipped as a library.

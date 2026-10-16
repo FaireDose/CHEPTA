@@ -110,12 +110,17 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      - xylose (58-86-6) and cis,cis-muconic acid (1119-72-8): nonvolatile, but the open chemicals library files them
        under other stereo forms; next, a structure source for such cases (PubChem), then the two components;
      - FDCA has no Modified UNIFAC 2.0 groups (no ether subgroup without a hydrogen); citric acid's predicted heat
-       capacity is far above its one measured value (236 J/(mol K) at 424.9 K): check when more data appear.
+       capacity is far above its one measured value (236 J/(mol K) at 424.9 K): check when more data appear;
+     - nonvolatile components in every flowsheet block with volatile ones, alone, and at the end of their heat-capacity
+       record: done (docs/decisions/2026-10-16-04-nonvolatile-alone.md, 2026-10-16-06-nonvolatile-units.md). In
+       reactors (proposal 0010: liquid formation data, pure-liquid standard state) and columns (roadmap v0.5) when
+       those come.
 - **The maintainer's order after batch 4 (2026-10-15):**
   1. an interface where a user adds their own properties (and Modified UNIFAC 2.0 groups) and saves them with the
      project, labelled as user data: a proposal first;
-  2. the missing properties: liquid heat capacity for the components without one (now predictable for most of them,
-     including furans and aromatics), then thermal conductivity, surface tension and the missing viscosities (open
+  2. the missing properties: liquid heat capacity for the components without one (21 on 2026-10-16, among them
+     levulinic acid, GVL, the levulinates, the lactates, furfuryl alcohol; without it a component cannot be in a
+     flowsheet energy balance; now predictable for most of them, including furans and aromatics), then thermal conductivity, surface tension and the missing viscosities (open
      data via `open_copy.py`, else an open prediction method), then the water + lactic acid solution density and
      viscosity (open: Simion et al. 2012, Food and Environment Safety XI(4), Tables 1-2, 9-85 wt %, 293-353 K); a
      mixture density and viscosity model is needed to use them.
