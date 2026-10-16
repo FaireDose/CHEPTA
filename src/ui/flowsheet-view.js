@@ -23,7 +23,7 @@ import {
 import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { flowsheetXlsx } from "./flowsheet-excel.js";
 import pkg from "../../package.json" with { type: "json" };
-import { parseP, parseT, fmtTemp, fmtP } from "./app-logic.js";
+import { parseP, parseT, fmtTemp, fmtP, userOverlay } from "./app-logic.js";
 
 const byId = () => new Map(listComponents().map(c => [c.id, c]));
 const nameOf = id => byId().get(id)?.name ?? id;
@@ -77,17 +77,20 @@ export function deleteSelected(state, set, ui) {
 // ---------------------------------------------------------------------------------------
 // Solving (cached by the flowsheet's text)
 
-/** The status and, when it can be had, the solution of the flowsheet in the state. */
+/** What the solution depends on, as text: the flowsheet, and the user's own data when the project has some. */
+export const flowsheetKey = state => JSON.stringify(state.userData ? [state.flowsheet, state.userData] : state.flowsheet);
+
+/** The status and, when it can be had, the solution of the flowsheet in the state (with the project's own data). */
 export function solution(state, ui) {
-  const f = ensureUi(ui), fs = state.flowsheet;
+  const f = ensureUi(ui), fs = state.flowsheet, ud = userOverlay(state);
   let status;
-  try { status = flowsheetDocStatus(fs); } catch (e) { return { status: { ready: false, message: e.message, structure: [], blocks: {} }, result: null, error: e.message }; }
-  const key = JSON.stringify(fs);
+  try { status = flowsheetDocStatus(fs, ud); } catch (e) { return { status: { ready: false, message: e.message, structure: [], blocks: {} }, result: null, error: e.message }; }
+  const key = flowsheetKey(state);
   if (!status.ready) return { status, result: null, error: null, stale: false };
   if (!(f.auto || f.solveKey === key)) return { status, result: null, error: null, stale: true };
   if (f.cache?.key !== key) {
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
-    try { f.cache = { key, result: runFlowsheet(fs), error: null, ms: (typeof performance !== "undefined" ? performance.now() : 0) - t0 }; }
+    try { f.cache = { key, result: runFlowsheet(fs, ud), error: null, ms: (typeof performance !== "undefined" ? performance.now() : 0) - t0 }; }
     catch (e) { f.cache = { key, result: null, error: e.message, loop: e.details?.loop ?? null }; }
   }
   return { status, result: f.cache.result, error: f.cache.error, loop: f.cache.loop, ms: f.cache.ms, stale: false };
@@ -122,7 +125,7 @@ export function flowsheetRibbon({ state, set, ui, group, bigButton, smallButton 
     })),
     group("Run",
       bigButton({ ico: "solve", label: "Solve", fk: "fs-solve", title: "Calculate the flowsheet now",
-        onClick: () => { f.solveKey = JSON.stringify(fs); set({}); } }),
+        onClick: () => { f.solveKey = flowsheetKey(state); set({}); } }),
       smallButton({ ico: "check", label: "Solve on change", pressed: f.auto, fk: "fs-auto",
         title: "Recalculate whenever the flowsheet is complete and changes", onClick: () => { f.auto = !f.auto; set({}); } })),
     group("Canvas", h("div", { class: "fa-canvas-grid" },
@@ -175,7 +178,7 @@ export function flowsheetInputs(env) {
 function inputsFor({ state, set, ui, uid, inputsSection }) {
   const f = ensureUi(ui), fs = state.flowsheet, u = state.units;
   let st = null;
-  try { st = flowsheetDocStatus(fs); } catch { /* shown on the canvas */ }
+  try { st = flowsheetDocStatus(fs, userOverlay(state)); } catch { /* shown on the canvas */ }
   const put = next => set({ flowsheet: next });
   feedSel(f, fs);
   const sel = f.sel && (f.sel.kind === "block" ? fs.blocks.find(b => b.id === f.sel.id) : fs.streams.find(s => s.id === f.sel.id));

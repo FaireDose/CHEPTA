@@ -108,6 +108,7 @@ CHEPTA.steam(573.15, 1000);                 // { region: 2, h_kJ_kg: 3051.7, v_m
 const mine = { properties: { "lactic acid": { liquidDensity: { equation: "DIPPR100", coefficients: { A: 0, B: 0 },
   units: "kg/m3", Tmin_K: 290, Tmax_K: 360, source: { name: "own measurement" } } } } };   // your numbers here
 CHEPTA.pure("lactic acid", { userData: mine }).property("liquidDensity", 300);
+CHEPTA.userDataDoc(mine, { title: "Our lab data" });   // a My data file; a project keeps its own copy as "user_data"
 
 const g = CHEPTA.system({ components: ["methane", "ethane"], model: "PR" });
 g.bubbleP([0.3, 0.7], 200);                   // { P: 1618.1, y: [0.862, 0.138], stability, warnings }

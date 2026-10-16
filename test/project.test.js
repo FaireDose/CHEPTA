@@ -24,7 +24,10 @@ function worked() {
 test("a project keeps the settings of every workspace and opens to the same workbench", () => {
   const s = worked();
   const doc = projectOf(s, { version: "9.9.9", now: new Date("2026-10-06T12:00:00Z") });
-  assert.equal(doc.fugacity_project, PROJECT_FORMAT);
+  // without user data a project is written as format 2, which older versions still open (format 3 adds user_data,
+  // proposal 0012; test/user-data-files.test.js)
+  assert.equal(PROJECT_FORMAT, 3);
+  assert.equal(doc.fugacity_project, 2);
   assert.equal(doc.saved_with, "chepta 9.9.9");
   assert.equal(doc.saved_at, "2026-10-06T12:00:00.000Z");
   assert.equal(doc.title, "Column feed");
@@ -69,7 +72,7 @@ test("a wrong file is refused with the reason", () => {
     ["[]", /expected a JSON object/],
     [JSON.stringify({ workbench: {} }), /"fugacity_project" key is missing/],
     [JSON.stringify({ fugacity_package: 1, type: "pair-data" }), /contribution package/],
-    [JSON.stringify({ ...ok, fugacity_project: 3 }), /format 3.*reads formats 1 to 2/],
+    [JSON.stringify({ ...ok, fugacity_project: 4 }), /format 4.*reads formats 1 to 3/],
     [JSON.stringify({ ...ok, fugacity_project: "1" }), /format number/],
     [JSON.stringify({ fugacity_project: 1 }), /no "workbench"/],
     [JSON.stringify({ ...ok, workbench: { ...ok.workbench, modle: "NRTL" } }), /unknown key "modle"/],
@@ -81,7 +84,7 @@ test("a wrong file is refused with the reason", () => {
   ];
   for (const [text, re] of bad) assert.throws(() => stateFromProject(text), re, text.slice(0, 80));
   // a byte-order mark (files saved by some editors) is accepted
-  assert.equal(readProject("\uFEFF" + projectText(ok)).fugacity_project, PROJECT_FORMAT);
+  assert.equal(readProject("\uFEFF" + projectText(ok)).fugacity_project, 2);
 });
 
 test("a component this library does not know is refused by name", () => {

@@ -153,3 +153,12 @@ it throws.
 - **Not stored:** nothing is written into the databank or kept between calls; water stays on IAPWS-IF97.
 - **Checked by:** [test/user-data.test.js](../../test/user-data.test.js): an overlay repeating the databank's own
   records gives exactly the databank's results; a component copied as the user's own gives the same equilibrium.
+- **Files** ([`src/ui/project.js`](../../src/ui/project.js), [`src/ui/user-data-file.js`](../../src/ui/user-data-file.js)):
+  a project keeps its own copy as `user_data` (project format 3, written only when there is user data; formats 1 and
+  2 still open), so it calculates the same without any other file. The same data can be saved as a My data file
+  (`"chepta_user_data": 1`, `userDataDoc`, `readUserDataFile`) and opened into another project with
+  `mergeUserData(current, incoming, choose)`: new entries are added, equal ones kept once, and an entry held with other
+  numbers is a conflict that keeps the project's entry unless the person chooses the incoming one.
+  `userDataPackage(userData, key)` drafts a contribution package (AGENTS.md) from one entry and lists what is missing
+  before it can go to the Data form (an open copy, the access, a CAS number; for pair parameters, the measured
+  mixture data). Checked by [test/user-data-files.test.js](../../test/user-data-files.test.js).

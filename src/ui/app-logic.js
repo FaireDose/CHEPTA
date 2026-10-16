@@ -11,6 +11,7 @@
  * 1 bar = 100 kPa).
  */
 import { normalizeFlowsheet } from "../flowsheet/document.js";
+import { checkUserData } from "../thermo/user-data.js";
 import { listComponents, findComponent, MODELS, EOS_MODELS } from "../thermo/system.js";
 import { library, selection } from "../thermo/library.js";
 import { HENRY_GASES } from "../thermo/henry.js";
@@ -275,7 +276,9 @@ export function initialState(cfg = {}) {
     flash: normalizeFlash(cfg.flash ?? {}, FLASH_DEFAULTS),
     title: cfg.title,
     sets: normalizeSets(cfg.sets),
-    flowsheet: normalizeFlowsheet(cfg.flowsheet),
+    // the user's own data (proposal 0012), as entered (it is saved as written); userOverlay() gives it checked
+    userData: normalizeUserData(cfg.userData),
+    flowsheet: normalizeFlowsheet(cfg.flowsheet, overlayOf(cfg.userData)),
     prefer: normalizePrefer(cfg.prefer),
   };
   if (start === "sources") { state.utility = "sources"; start = ""; }
@@ -286,6 +289,28 @@ export function initialState(cfg = {}) {
   if (cfg.z != null && view in state.z) state.z[view] = normalizeComposition(cfg.z, checkInputs(view, state.inputs[view], model).use.length);
   return derive(state, view);
 }
+
+// ---- the user's own data (proposal 0012)
+
+const overlays = new WeakMap();   // as entered -> checked (checkUserData), computed once per object
+/** The checked overlay of user data as entered (null when there is none); throws, naming the problem, when wrong. */
+function overlayOf(raw) {
+  if (raw == null) return null;
+  if (!overlays.has(raw)) overlays.set(raw, checkUserData(raw));
+  return overlays.get(raw);
+}
+/** User data as entered, checked, with empty parts dropped; null when nothing is left. */
+export function normalizeUserData(raw) {
+  if (raw == null) return null;
+  checkUserData(raw);
+  const out = {};
+  for (const k of ["properties", "components", "pairs", "groups"]) {
+    if (raw[k] && Object.keys(raw[k]).length) out[k] = JSON.parse(JSON.stringify(raw[k]));
+  }
+  return Object.keys(out).length ? out : null;
+}
+/** The workbench's user data, checked: what system(), pure() and listComponents() take as userData. */
+export const userOverlay = state => overlayOf(state.userData);
 
 /** Fill in the read-only summary fields: view, components (in use) and propComponent. */
 function derive(state, view) {
@@ -407,7 +432,8 @@ export function applyPatch(state, patch = {}) {
   if ("title" in patch) next.title = patch.title;
   if ("sets" in patch) next.sets = patch.sets === null ? {} : normalizeSets(patch.sets, state.sets);
   if ("prefer" in patch) next.prefer = normalizePrefer(patch.prefer);
-  if ("flowsheet" in patch) next.flowsheet = normalizeFlowsheet(patch.flowsheet);
+  if ("userData" in patch) next.userData = normalizeUserData(patch.userData);
+  if ("flowsheet" in patch) next.flowsheet = normalizeFlowsheet(patch.flowsheet, overlayOf(next.userData));
   if (patch.flash != null) next.flash = normalizeFlash(patch.flash, next.flash);
 
   // navigation

@@ -8,8 +8,8 @@
  * carry `results`, the stream table of the flash as it was at save time, so the mass balance
  * can be read without CHEPTA (it is a record and is never read back into a calculation).
  *
- * Format 2 (the "fugacity_project" key is the format version; format 1 is the same without
- * "flowsheet"):
+ * Format 3 (the "fugacity_project" key is the format version; format 2 is the same without "user_data", format 1
+ * also without "flowsheet"). A project without user data is written as format 2, so that older versions still open it:
  *
  *   {
  *     "fugacity_project": 1,
@@ -30,7 +30,8 @@
  *       "background", "residueCurves", "isotherms", "grid", "panels", "ribbon"
  *     },
  *     "flowsheet": { "components", "thermo", "blocks", "streams", "solver" },   // optional; src/flowsheet/document.js
- *     "results": { "flash": { "columns", "rows", "summary", "model", "spec", "sources" } }   // optional
+ *     "results": { "flash": { "columns", "rows", "summary", "model", "spec", "sources" } },  // optional
+ *     "user_data": { "properties", "components", "pairs", "groups" }   // optional; format 3 (src/thermo/user-data.js)
  *   }
  *
  * SI units throughout (K, kPa, J/mol), as in the engine; `units` is only how the workbench
@@ -39,12 +40,14 @@
  *
  * A view helper (layer 6): no thermodynamics here.
  */
-import { initialState, applyPatch, VIEWS } from "./app-logic.js";
+import { initialState, applyPatch, VIEWS, userOverlay } from "./app-logic.js";
 import { normalizeFlowsheet, flowsheetDocStatus } from "../flowsheet/document.js";
+import { checkUserData } from "../thermo/user-data.js";
 
-/** The format version this library writes; it reads this one and every older one. Format 2
- *  adds the flowsheet (proposal 0006, step 4); a format 1 file is a format 2 file without it. */
-export const PROJECT_FORMAT = 2;
+/** The newest format this library writes; it reads this one and every older one. Format 3 adds the user's own data
+ *  (proposal 0012) and is written only when there is some; format 2 adds the flowsheet (proposal 0006, step 4); a
+ *  format 1 file is a format 2 file without it. */
+export const PROJECT_FORMAT = 3;
 
 /** The keys of `workbench`, in the order they are written. */
 const KEYS = ["view", "diagram", "model", "eos", "vapour", "P_kPa", "T_K", "units", "basis", "inputs", "z", "flash", "sets", "prefer",
@@ -65,12 +68,13 @@ export function projectOf(state, { version = "", results, now = new Date() } = {
   for (const k of KEYS) w[k] = copy(state[k]);
   const { steam, ...inputs } = w.inputs;   // steam takes no inputs (always water)
   w.inputs = inputs;
-  const doc = { fugacity_project: PROJECT_FORMAT, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
+  const doc = { fugacity_project: state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
   if (state.title) doc.title = String(state.title);
   doc.workbench = w;
   const fs = state.flowsheet;
-  if (fs && (fs.components?.length || fs.blocks?.length)) doc.flowsheet = normalizeFlowsheet(fs);
+  if (fs && (fs.components?.length || fs.blocks?.length)) doc.flowsheet = normalizeFlowsheet(fs, userOverlay(state));
   if (results && Object.keys(results).length) doc.results = copy(results);
+  if (state.userData) doc.user_data = copy(state.userData);
   return doc;
 }
 
@@ -114,6 +118,10 @@ export function readProject(input) {
   const unknown = Object.keys(w).filter(k => !KEYS.includes(k));
   if (unknown.length) throw new Error(`workbench: unknown key${unknown.length > 1 ? "s" : ""} ${unknown.map(k => `"${k}"`).join(", ")}. Known: ${KEYS.join(", ")}.`);
   if (doc.results != null && (typeof doc.results !== "object" || Array.isArray(doc.results))) throw new Error("results must be an object.");
+  if (doc.user_data != null) {
+    if (f < 3) throw new Error(`user_data needs format 3 (this file says format ${f}).`);
+    checkUserData(doc.user_data);   // throws "user data: ..." naming the problem
+  }
   return doc;
 }
 
@@ -138,6 +146,7 @@ export function stateFromProject(input) {
   }
   if (doc.title) cfg.title = String(doc.title);
   if (doc.flowsheet != null) cfg.flowsheet = doc.flowsheet;
+  if (doc.user_data != null) cfg.userData = doc.user_data;
   let s = initialState(cfg);
   if (w.inputs != null) {
     if (typeof w.inputs !== "object" || Array.isArray(w.inputs)) throw new Error("workbench.inputs must be an object such as { txy: [\"ethanol\", \"water\"] }.");
@@ -172,7 +181,7 @@ export function checkProject(input) {
   try { stateFromProject(doc); } catch (e) { problems.push(e.message); }
   if (doc.flowsheet != null) {
     try {
-      flowsheet = flowsheetDocStatus(doc.flowsheet);
+      flowsheet = flowsheetDocStatus(doc.flowsheet, checkUserData(doc.user_data));
       if (flowsheet.setup === false) problems.push(`flowsheet: ${flowsheet.message}`);
       problems.push(...flowsheet.structure.map(p => `flowsheet: ${p.message}`));
       problems.push(...Object.values(flowsheet.blocks).filter(b => !b.ok).map(b => `flowsheet: ${b.message}`));
