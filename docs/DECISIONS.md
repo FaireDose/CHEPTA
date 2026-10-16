@@ -136,7 +136,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **0012, your own data** (accepted 2026-10-16): property records, components, pairs and Modified UNIFAC 2.0 groups
   of the user's own, in the project and in a file of their own; My data docked, with an optional separate window:
   1. the engine overlay (done); 2. project format 3, the My data file, the contribution-package export (done); 3. the My data panel (done);
-  4. the separate window; 5. pairs and the groups panel (the database's groups as a proposal, or the user's own).
+  4. the separate window (done); 5. pairs and the groups panel (the database's groups as a proposal, or the user's own),
+  with the databank's coefficients next to an empty table for one's own, and the Modified UNIFAC 2.0 parameters next
+  to the selection of the groups (the maintainer, 2026-10-16).
   - inert solids (class "solid", the user's own components) pass through the flowsheet as a solid phase; a component
     separator serves as a filter (the maintainer, 2026-10-16: "for the moment"). A real solid phase (dissolving,
     crystallizing, drying, solids in the databank) needs a proposal first.

@@ -35,6 +35,7 @@ import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, checkInputs, exampl
 import { UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
 import { myDataPanel, PROPERTY_LABEL } from "./my-data-panel.js";
+import { canOpenWindow, openDataWindow } from "./my-data-window.js";
 import { userDataList, setEntryUse } from "./user-data-file.js";
 import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey } from "./flowsheet-view.js";
 import { projectOf, projectText, projectFileName, stateFromProject } from "./project.js";
@@ -944,7 +945,16 @@ export function app(target, cfg = {}) {
     if (id === "project") return projectPanel();
     if (id === "feedback") return feedbackPanel();
     // My data (proposal 0012): it redraws itself; a change of the data recalculates the canvas
-    if (id === "mydata") return myDataPanel({ get: () => state, set: patch => set(patch), ui, uid, section: drawerSection, focus: restoreFocus });
+    if (id === "mydata") {
+      if (ui.mydataWin) {
+        return h("div", { class: "fa-dgrid" }, drawerSection("In a window of its own",
+          h("p", {}, "My data is open in its own window. Every change made there appears here at once, and closing the window loses nothing."),
+          h("div", { class: "fa-in-actions" },
+            h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-show-window", on: { click: () => ui.mydataWin?.focus() } }, icon("layers", 15), "Show the window"),
+            h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-dock-here", on: { click: () => dockMyData() } }, icon("panelR", 15), "Back into the workbench"))));
+      }
+      return myDataPanel(myDataEnv(false));
+    }
     if (id === "sources") {
       const check = checkInputs(state.view, state.inputs[state.view], state.model, userOverlay(state));
       return sourcesPanel({ ids: check.ok ? check.use : [], what: check.ok ? calculationName() : VIEWS[state.view].label, uid, look: ui.sources });
@@ -978,6 +988,43 @@ export function app(target, cfg = {}) {
         smallButton({ ico: "layers", label: "Background layers", pressed: state.background, onClick: () => set({ background: !state.background }, { canvas: false }) }))),
       drawerSection("Theme", h("div", { class: "fa-theme" }, icon("theme", 18), "Follows the page"),
         h("p", { class: "fa-in-hint" }, "Light or dark, as the host page or system is set.")));
+  }
+
+  // ---- My data in a window of its own (proposal 0012, step 4): the main window keeps the state; the window shows the
+  // panel and edits through set(), and is drawn again when the data change
+  function myDataEnv(windowed, focus) {
+    const win = doc.defaultView;
+    return { get: () => state, set: patch => set(patch), ui, uid, section: drawerSection, focus: focus ?? restoreFocus,
+      windowed, dock: dockMyData, popOut: !windowed && canOpenWindow({ size: ui.size, win }) ? popOutMyData : null };
+  }
+  const windowKey = () => JSON.stringify([state.userData, state.units, state.title]);
+  function popOutMyData() {
+    let panel = null;   // one panel in the window, drawn again in place when the data change
+    const r = openDataWindow({
+      win: doc.defaultView, name: `chepta-mydata-${uid}`,
+      render: (root, focus) => {
+        if (panel) { panel.redraw(); return; }
+        panel = myDataPanel(myDataEnv(true, focus));
+        root.replaceChildren(h("h1", { class: "fa-window-title" }, icon("mydata", 18), "My data"), panel);
+      },
+      onClose: () => { ui.mydataWin = null; renderChrome(true); },
+    });
+    if (!r.ok) {
+      // blocked (an AI chat's page, or the browser's pop-up setting): the panel stays docked and says why
+      if (ui.mydata) ui.mydata.note = r.reason;
+      ui.drawnUtility = null;
+      renderDrawer();
+      return;
+    }
+    ui.mydataWin = r; ui.mydataKey = windowKey();
+    set({ utility: null }, { canvas: false });
+  }
+  function dockMyData() {
+    const w = ui.mydataWin;
+    ui.mydataWin = null;
+    w?.close();
+    ui.drawnUtility = null;
+    set({ utility: "mydata" }, { canvas: false });
   }
 
   function renderDrawer() {
@@ -1020,6 +1067,7 @@ export function app(target, cfg = {}) {
     renderStatus();
     if (force) ui.drawnUtility = null;
     renderDrawer();
+    if (ui.mydataWin && windowKey() !== ui.mydataKey) { ui.mydataKey = windowKey(); ui.mydataWin.redraw(); }
   }
 
   /** Download the numbers behind the diagram on the canvas (the view's export()) as .xlsx. */

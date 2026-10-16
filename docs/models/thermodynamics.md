@@ -174,6 +174,10 @@ it throws.
   uses the person's data says so on the canvas ("Uses your own data: ..."), with a switch per record between the
   person's record and the databank's: a record switched off (`use: false`) is kept in the data and the files, and
   the databank's is used.
+- **A window of its own** ([`src/ui/my-data-window.js`](../../src/ui/my-data-window.js)): "Open in a new window" moves
+  the panel into a window the main window builds (no second file is loaded); the main window keeps the data, and
+  changes in either appear in both. Not on phones; where the page or the browser refuses a window (AI chats), the panel
+  stays docked and says why. Closing the window docks the panel again.
 - **Inert solids** ([`src/equilibrium/inert-solids.js`](../../src/equilibrium/inert-solids.js)): a component of one's own
   with `class: "solid"` and a solid heat capacity neither evaporates, dissolves nor melts. `system()` flashes the fluid
   part as it would alone and adds a solid phase whose enthalpy is the integral of the solid heat capacity from 298.15 K;

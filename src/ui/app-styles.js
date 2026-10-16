@@ -393,6 +393,10 @@ export const APP_CSS = `
 .fa-paste summary{cursor:pointer; font-size:12.5px; color:var(--fug-fg2)}
 .fa-restore{display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; font-size:12.5px; padding:8px 10px; margin:0 0 12px; border-radius:8px; background:color-mix(in srgb, var(--fug-accent) 10%, transparent)}
 .fa-dgrid.fa-mydata{grid-template-columns:minmax(0,1fr)}
+.fa-window{min-height:100vh}
+.fa-window-body{padding:16px 20px 32px; max-width:760px; margin:0 auto}
+.fa-window-title{display:flex; align-items:center; gap:8px; font-size:17px; font-weight:600; margin:0 0 12px}
+.fa-window-bar{margin:0}
 .fa-mydata select,.fa-mydata textarea,.fa-mydata input{max-width:100%; min-width:0}
 .fa-mydata .fa-field{flex-direction:column; align-items:stretch; justify-content:flex-start; gap:3px}
 .fa-mydata .fa-field select,.fa-mydata .fa-field textarea{max-width:100%}

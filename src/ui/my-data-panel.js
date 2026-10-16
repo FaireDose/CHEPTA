@@ -69,6 +69,7 @@ export function myDataPanel(env) {
   const wrap = h("div", { class: "fa-dgrid fa-mydata" });
   const draw = () => wrap.replaceChildren(...sections(env, m, draw).filter(Boolean));
   draw();
+  wrap.redraw = draw;   // drawn again in place (the separate window keeps one panel)
   return wrap;
 }
 
@@ -76,7 +77,17 @@ function sections(env, m, draw) {
   const { get, section } = env;
   const state = get();
   const note = m.note; m.note = "";
+  // a window of its own (step 4): offered where one can open; in the window, the way back
+  const windowBar = env.windowed
+    ? h("div", { class: "fa-in-actions fa-window-bar" },
+      h("span", { class: "fa-in-hint" }, "My data, in its own window: every change also appears in the workbench."),
+      h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-dock", on: { click: () => env.dock() } }, icon("panelR", 15), "Back into the workbench"))
+    : env.popOut ? h("div", { class: "fa-in-actions fa-window-bar" },
+      h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-popout", title: "For a second screen, or to keep your data next to a diagram",
+        on: { click: () => env.popOut() } }, icon("layers", 15), "Open in a new window"))
+      : null;
   return [
+    windowBar,
     note ? h("div", { class: "fa-restore", role: "status" }, note) : null,
     section("In this project", ...entryList(env, m, draw)),
     section("Add a property", ...propertyForm(env, m, draw)),
