@@ -104,6 +104,11 @@ CHEPTA.pure("water").tsat(101.325);         // 373.1243 K (IAPWS-IF97)
 CHEPTA.pure("benzene").props(298.15, 101.325); // { phase, rho_kg_m3, cp_J_molK, h_J_mol, mu_Pa_s, k_W_mK, sources, notes }
 CHEPTA.steam(573.15, 1000);                 // { region: 2, h_kJ_kg: 3051.7, v_m3_kg: 0.25798, ... }
 
+// your own data (tier "user"), for this call only: a record the databank lacks, your own components and pairs
+const mine = { properties: { "lactic acid": { liquidDensity: { equation: "DIPPR100", coefficients: { A: 0, B: 0 },
+  units: "kg/m3", Tmin_K: 290, Tmax_K: 360, source: { name: "own measurement" } } } } };   // your numbers here
+CHEPTA.pure("lactic acid", { userData: mine }).property("liquidDensity", 300);
+
 const g = CHEPTA.system({ components: ["methane", "ethane"], model: "PR" });
 g.bubbleP([0.3, 0.7], 200);                   // { P: 1618.1, y: [0.862, 0.138], stability, warnings }
 CHEPTA.gasSolubility("oxygen", 298.15, 21.2); // mole fraction in water, 4.86e-6

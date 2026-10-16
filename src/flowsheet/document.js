@@ -17,6 +17,7 @@
 import { fail } from "../util/errors.js";
 import { system } from "../system.js";
 import { findComponent } from "../thermo/components.js";
+import { checkUserData } from "../thermo/user-data.js";
 import { solveFlowsheet, flowsheetStatus } from "./flowsheet.js";
 
 const MODELS = ["NRTL", "UNIQUAC", "MOD-UNIFAC-2", "ideal", "PR", "SRK"];
@@ -31,13 +32,13 @@ export const emptyFlowsheet = () => ({ components: [], thermo: { model: "NRTL", 
  * model, blocks and streams as lists of objects with known keys. Throws BAD_INPUT naming the
  * problem. (The connections and the specifications are checked by flowsheetStatus.)
  */
-export function normalizeFlowsheet(doc) {
+export function normalizeFlowsheet(doc, userData = null) {
   if (doc == null) return emptyFlowsheet();
   if (typeof doc !== "object" || Array.isArray(doc)) throw fail("BAD_INPUT", "flowsheet must be an object with components, thermo, blocks and streams.");
   const known = ["components", "thermo", "blocks", "streams", "solver"];
   for (const k of Object.keys(doc)) if (!known.includes(k)) throw fail("BAD_INPUT", `flowsheet: unknown key "${k}". Known: ${known.join(", ")}.`);
   const components = (doc.components ?? []).map(c => {
-    try { return findComponent(c); } catch (e) { throw fail("BAD_INPUT", `flowsheet.components: ${e.message}`); }
+    try { return findComponent(c, userData); } catch (e) { throw fail("BAD_INPUT", `flowsheet.components: ${e.message}`); }
   });
   const dup = components.find((c, i) => components.indexOf(c) !== i);
   if (dup) throw fail("BAD_INPUT", `flowsheet.components: ${dup} is listed twice.`);
@@ -63,30 +64,36 @@ export function normalizeFlowsheet(doc) {
   return out;
 }
 
-/** The property package of a flowsheet: system() with its components and method. */
-export function flowsheetSystem(doc) {
-  const d = normalizeFlowsheet(doc);
+/** The property package of a flowsheet: system() with its components and method; userData: the project's own data
+ *  (proposal 0012). */
+export function flowsheetSystem(doc, userData = null) {
+  const d = normalizeFlowsheet(doc, userData);
   if (!d.components.length) throw fail("BAD_INPUT", "The flowsheet has no components: choose them first (Setup, step 1).");
   const t = d.thermo;
   const eos = t.model === "PR" || t.model === "SRK";
-  return system({ components: d.components, model: t.model, ...(eos ? {} : { vapour: t.vapour }), ...(t.sets ? { sets: t.sets } : {}), ...(t.prefer ? { prefer: t.prefer } : {}) });
+  return system({ components: d.components, model: t.model, ...(eos ? {} : { vapour: t.vapour }), ...(t.sets ? { sets: t.sets } : {}), ...(t.prefer ? { prefer: t.prefer } : {}),
+    ...(userData ? { userData } : {}) });
 }
 
 /** Status of a flowsheet document: setup, structure and degrees of freedom (no calculation). */
-export function flowsheetDocStatus(doc) {
-  const d = normalizeFlowsheet(doc);
+export function flowsheetDocStatus(doc, userData = null) {
+  const d = normalizeFlowsheet(doc, userData);
   if (!d.components.length) return { ready: false, setup: false, needed: 0, given: 0, dof: 0, structure: [], blocks: {}, message: "Choose the components of the simulation first." };
-  const sys = flowsheetSystem(d);
+  const sys = flowsheetSystem(d, userData);
   return { setup: true, ...flowsheetStatus(sys, d) };
 }
 
 /**
- * Solve a flowsheet document (or a project with a `flowsheet`): build its property package
+ * Solve a flowsheet document (or a project with a `flowsheet`, and its `user_data`): build its property package
  * and run solveFlowsheet. Throws BAD_INPUT when it is not ready (with every problem listed),
  * NO_CONVERGENCE when a loop does not converge.
+ * @param {object} input
+ * @param {object} [userData]  the user's own data (a project's `user_data` is used when not given)
  */
-export function runFlowsheet(input) {
-  const doc = input && typeof input === "object" && "fugacity_project" in input ? input.flowsheet : input;
-  const d = normalizeFlowsheet(doc);
-  return solveFlowsheet(flowsheetSystem(d), d);
+export function runFlowsheet(input, userData = null) {
+  const isProject = input && typeof input === "object" && "fugacity_project" in input;
+  const doc = isProject ? input.flowsheet : input;
+  const ud = checkUserData(userData ?? (isProject ? input.user_data : null));
+  const d = normalizeFlowsheet(doc, ud);
+  return solveFlowsheet(flowsheetSystem(d, ud), d);
 }

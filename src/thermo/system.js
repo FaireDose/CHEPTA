@@ -1,5 +1,4 @@
 import { methodAdvice, pressureAdvice } from "./method-advice.js";
-import componentData from "../data/components.json" with { type: "json" };
 import { vapourPressure } from "./psat.js";
 import { nrtl } from "./activity/nrtl.js";
 import { uniquac } from "./activity/uniquac.js";
@@ -7,7 +6,8 @@ import { modUnifac } from "./activity/mod-unifac.js";
 import modUnifacTables from "../data/mod-unifac-2.json" with { type: "json" };
 import { dimerK, monomerPressure } from "./vapour.js";
 import { createEosSystem, EOS_MODELS } from "./eos/system.js";
-import { listComponents, findComponent } from "./components.js";
+import { listComponents, findComponent, componentRecord } from "./components.js";
+import { checkUserData, userDataUsed } from "./user-data.js";
 import { selection, choosePair, describePair, pairWarnings, sourceEntry } from "./library.js";
 import { createCubicVapour } from "./gamma-phi-vapour.js";
 import { activityPhaseMethods } from "./enthalpy.js";
@@ -40,6 +40,8 @@ export { EOS_MODELS, listComponents, findComponent };
  * @param {"ideal"|"PR"|"SRK"} [cfg.vapour="ideal"]  vapour model of an activity-coefficient system:
  *        ideal gas, or a Peng-Robinson or SRK vapour with phi_sat and the Poynting correction
  *        (gamma-phi-vapour.js); its k_ij come from the databank (or cfg.kij)
+ * @param {object} [cfg.userData]  the user's own data (proposal 0012, user-data.js): property records, components,
+ *        pair sets and groups put over the databank for this system only; info.userData lists what it uses
  */
 /** The vapour pressure (kPa) a nonvolatile component is given in an activity-model system: effectively zero. */
 export const NV_PSAT_KPA = 1e-20;
@@ -58,11 +60,12 @@ export function createSystem(cfg) {
   // one component is allowed with every model: a pure substance heated, compressed or boiled (its activity coefficient
   // is 1, so the activity models reduce to the pure component's vapour pressure and enthalpies)
   if (!Array.isArray(cfg.components) || cfg.components.length < 1) throw fail("BAD_INPUT", "Give at least one component.");
-  const ids = cfg.components.map(findComponent);
+  const ud = checkUserData(cfg.userData);
+  const ids = cfg.components.map(k => findComponent(k, ud));
   if (new Set(ids).size !== ids.length) throw fail("BAD_INPUT", "A component appears twice.");
-  const sel = selection(cfg); // checked for every model, so that a typo never passes silently
-  if (isEos) return createEosSystem(ids, { ...cfg, model }, sel); // Peng-Robinson / SRK: see eos/system.js
-  const comps = ids.map(id => componentData.components[id]);
+  const sel = selection(cfg, ud); // checked for every model, so that a typo never passes silently
+  if (isEos) return createEosSystem(ids, { ...cfg, model, userData: ud }, sel); // Peng-Robinson / SRK: see eos/system.js
+  const comps = ids.map(id => componentRecord(id, ud));
   // nonvolatile components (proposal 0009, step 5): no vapour pressure; they stay in the liquid (NV_PSAT_KPA below)
   const nonvolatile = comps.map(c => c.class === "nonvolatile");
   if (nonvolatile.every(Boolean)) {
@@ -92,7 +95,7 @@ export function createSystem(cfg) {
         sources: [sourceEntry("hayer2025-mod-unifac-2")].filter(Boolean), valid: null, alternatives: [] });
       continue;
     }
-    const choice = choosePair(model, ids[i], ids[j], sel);
+    const choice = choosePair(model, ids[i], ids[j], sel, ud?.pairs ?? []);
     if (!choice) { missing.push([comps[i].name, comps[j].name]); continue; }
     const p = choice.chosen.params;
     const [aij, aji, bij, bji] = choice.flipped ? [p.a_ji, p.a_ij, p.b_ji, p.b_ij] : [p.a_ij, p.a_ji, p.b_ij, p.b_ji];
@@ -115,7 +118,7 @@ export function createSystem(cfg) {
   if (vapourModel !== "ideal" && assoc.some(Boolean)) {
     throw fail("NOT_AVAILABLE", `${comps.filter((_, i) => assoc[i]).map(c => c.name).join(", ")} dimerizes in the vapour (chemical theory); combining it with a ${vapourModel} vapour is not available. Use vapour: "ideal".`);
   }
-  const cubicVapour = vapourModel === "ideal" ? null : createCubicVapour(ids, comps, vapourModel, cfg);
+  const cubicVapour = vapourModel === "ideal" ? null : createCubicVapour(ids, comps, vapourModel, { ...cfg, userData: ud });
 
   /**
    * Vapour pressures, kPa. cfg.psat can override them (array in kPa, or a function of T). A nonvolatile component
@@ -163,6 +166,8 @@ export function createSystem(cfg) {
     ...(cubicVapour ? { vapourPairs: cubicVapour.pairs } : {}),
     // is this the recommended method for these components? (method-advice.js, docs/METHOD_SELECTION.md)
     advice: methodAdvice({ ids, names: comps.map(c => c.name), formulas: comps.map(c => c.formula), model, eos: false }),
+    // the user's own data this system uses (proposal 0012): [{ component or pair, what, source }]
+    userData: userDataUsed(ids, ud, pairs),
   };
 
   /**
@@ -199,10 +204,10 @@ export function createSystem(cfg) {
     });
   };
 
-  const phaseMethods = activityPhaseMethods({ ids, comps, n, model, gammas, psat, cubicVapour, assoc: dimerizing, warnings, nonvolatile });
+  const phaseMethods = activityPhaseMethods({ ids, comps, n, model, gammas, psat, cubicVapour, assoc: dimerizing, warnings, nonvolatile, userData: ud });
   // melting temperature and enthalpy of fusion (solid-liquid equilibrium, src/equilibrium/sle.js); null: no open data
   const fusion = comps.map(c => (c.fusion && c.fusion.available !== false
     ? { Tm_K: c.fusion.Tm_K, Hfus_J_mol: c.fusion.Hfus_J_mol, tier: c.fusion.tier, source: c.fusion.source } : null));
   return { ids, names: comps.map(c => c.name), n, model, vapour: vapourModel, gammas, psat, equilibrium, lnKValues, info, warnings, fusion,
-    nonvolatile, ...phaseMethods };
+    nonvolatile, MW: comps.map(c => c.MW), userData: ud, ...phaseMethods };
 }

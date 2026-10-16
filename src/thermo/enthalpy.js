@@ -86,7 +86,7 @@ function named(name, what, fn) {
 export function activityPhaseMethods(ctx) {
   const { ids, comps, n, gammas, psat, cubicVapour, assoc, warnings } = ctx;
   const nonvolatile = ctx.nonvolatile ?? ids.map(() => false);
-  const pures = ids.map(id => pure(id));
+  const pures = ids.map(id => pure(id, { userData: ctx.userData }));
   const hIG = (i, T) => named(comps[i].name, "ideal-gas enthalpy", () => pures[i].hIdealGas(T));
   const dHvap = (i, T) => named(comps[i].name, "heat of vaporization", () => pures[i].property("heatOfVaporization", T));
 
@@ -230,7 +230,7 @@ export function activityPhaseMethods(ctx) {
  */
 export function eosPhaseMethods(ctx) {
   const { ids, comps, n, eos, warnings } = ctx;
-  const pures = ids.map(id => pure(id));
+  const pures = ids.map(id => pure(id, { userData: ctx.userData }));
   function phase(ph, T, P, z) {
     ph = checkPhase(ph);
     T = checkTemperature(T); P = checkPressure(P);

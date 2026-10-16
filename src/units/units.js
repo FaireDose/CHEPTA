@@ -173,7 +173,7 @@ registerUnit({
     const byId = new Map();
     for (const [key, v] of Object.entries(fr)) {
       let id;
-      try { id = findComponent(key); } catch (e) { throw fail("BAD_INPUT", `Component separator: ${e.message}`); }
+      try { id = findComponent(key, sys.userData); } catch (e) { throw fail("BAD_INPUT", `Component separator: ${e.message}`); }
       const i = sys.ids.indexOf(id);
       if (i < 0) throw fail("BAD_INPUT", `Component separator: ${key} is not a component of this system (${sys.ids.join(", ")}).`);
       byId.set(sys.ids[i], splitFractions(asList(v), outletCount, `Component separator: fractions of ${sys.names[i]}`));
@@ -306,7 +306,7 @@ const DOF = {
     const fr = spec?.fractions && typeof spec.fractions === "object" && !Array.isArray(spec.fractions) ? spec.fractions : {};
     const out = { needed: 0, given: 0, missing: [], extra: [] };
     for (const [i, id] of (sys?.ids ?? []).entries()) {
-      const key = Object.keys(fr).find(k => { try { return findComponent(k) === id; } catch { return false; } });
+      const key = Object.keys(fr).find(k => { try { return findComponent(k, sys.userData) === id; } catch { return false; } });
       const d = fractionsDof(key == null ? null : fr[key], outletCount, sys.names[i]);
       out.needed += d.needed; out.given += d.given; out.missing.push(...d.missing); out.extra.push(...d.extra);
     }

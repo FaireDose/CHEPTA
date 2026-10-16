@@ -94,11 +94,13 @@ function allSets() {
   return dataSets.concat(userSets);
 }
 
-/** The sets of one pair and model, default first; `flipped` when stored as (b, a). */
-function candidates(model, a, b) {
-  const out = allSets().filter(s => s.model === model && ((s.i === a && s.j === b) || (s.i === b && s.j === a)))
-    .map(s => ({ ...s, flipped: s.i !== a }));
-  return out.sort((x, y) => (y.default - x.default));
+/** The sets of one pair and model, default first; `flipped` when stored as (b, a). `extra`: the user's own sets of
+ *  a project (user-data.js), passed per call; such a set comes first and is the pair's default (proposal 0012). */
+function candidates(model, a, b, extra = []) {
+  const match = s => s.model === model && ((s.i === a && s.j === b) || (s.i === b && s.j === a));
+  const mine = extra.filter(match).map(s => ({ ...s, flipped: s.i !== a }));
+  const out = allSets().filter(match).map(s => ({ ...s, flipped: s.i !== a, ...(mine.length ? { default: false } : {}) }));
+  return [...mine, ...out.sort((x, y) => (y.default - x.default))];
 }
 
 // ---------------------------------------------------------------------------------------
@@ -108,14 +110,14 @@ function candidates(model, a, b) {
  * Check and normalize the `sets` and `prefer` settings of a system.
  * @returns {{sets: Map<string,string>, prefer: string[]|null}}
  */
-export function selection(cfg = {}) {
+export function selection(cfg = {}, userData = null) {
   const sets = new Map();
   if (cfg.sets != null) {
     if (typeof cfg.sets !== "object" || Array.isArray(cfg.sets)) throw fail("BAD_INPUT", 'sets must be an object such as { "acetone+chloroform": "chemsep" }.');
     for (const [key, name] of Object.entries(cfg.sets)) {
       const parts = String(key).split("+").map(s => s.trim()).filter(Boolean);
       if (parts.length !== 2) throw fail("BAD_INPUT", `sets: "${key}" is not a pair; write it as "component+component", e.g. "acetone+chloroform".`);
-      const [a, b] = parts.map(findComponent);
+      const [a, b] = parts.map(k => findComponent(k, userData));
       if (a === b) throw fail("BAD_INPUT", `sets: "${key}" names the same component twice.`);
       if (name == null || name === "") continue; // no choice: the default set
       if (typeof name !== "string") throw fail("BAD_INPUT", `sets: the set for "${key}" must be a set name (a string), got ${JSON.stringify(name)}.`);
@@ -133,11 +135,12 @@ export function selection(cfg = {}) {
 
 /**
  * The parameter set used for a pair: the set named in `sel.sets`, else the first tier of
- * `sel.prefer` that has a set, else the default set. Null when the pair has no set.
+ * `sel.prefer` that has a set, else the default set (the user's own set when `extra` has one). Null when the pair
+ * has no set.
  * @returns {null|{chosen:object, flipped:boolean, by:"sets"|"prefer"|"default", note:string|null, alternatives:object[]}}
  */
-export function choosePair(model, a, b, sel = { sets: new Map(), prefer: null }) {
-  const cands = candidates(model, a, b);
+export function choosePair(model, a, b, sel = { sets: new Map(), prefer: null }, extra = []) {
+  const cands = candidates(model, a, b, extra);
   if (!cands.length) return null;
   const def = cands.find(c => c.default) ?? cands[0];
   let chosen = def, by = "default", note = null;
