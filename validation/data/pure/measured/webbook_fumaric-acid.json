@@ -1,0 +1,227 @@
+{
+ "component": "fumaric-acid",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°liquid",
+       "-810.2 ± 1.3",
+       "kJ/mol",
+       "Chyd",
+       "Flitcroft, Skinner, et al., 1957",
+       "Reanalyzed by  Cox and Pilcher, 1970, Original value = -812.0 ± 0.4  kJ/mol; ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔfH°solid",
+       "-811.03 ± 0.88",
+       "kJ/mol",
+       "Ccb",
+       "Wilhoit and Shiao, 1964",
+       "ALS"
+      ],
+      [
+       "ΔfH°solid",
+       "-810.98",
+       "kJ/mol",
+       "Ccb",
+       "Schwabe and Wagner, 1958",
+       "ALS"
+      ],
+      [
+       "ΔfH°solid",
+       "-812.24",
+       "kJ/mol",
+       "Ccb",
+       "Huffman and Fox, 1938",
+       "Author's hf298_condensed=-194.88 kcal/mol; ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°solid",
+       "-1334.7 ± 0.8",
+       "kJ/mol",
+       "Ccb",
+       "Wilhoit and Shiao, 1964",
+       "Corresponding ΔfHºsolid = -810.98 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "ΔcH°solid",
+       "-1334.7",
+       "kJ/mol",
+       "Ccb",
+       "Schwabe and Wagner, 1958",
+       "Corresponding ΔfHºsolid = -810.94 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "ΔcH°solid",
+       "-1333.5",
+       "kJ/mol",
+       "Ccb",
+       "Huffman and Fox, 1938",
+       "Author's hf298_condensed=-194.88 kcal/mol; Corresponding ΔfHºsolid = -812.20 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "S°solid,1 bar",
+       "166.1",
+       "J/mol*K",
+       "N/A",
+       "Parks and Huffman, 1930",
+       "Extrapolation below 90 K, 51.51 J/mol*K.; DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,solid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "141.8",
+       "297.1",
+       "Parks and Huffman, 1930",
+       "T = 91 to 297.1 K. Value is unsmoothed experimental datum.; DH"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tfus",
+       "560.45",
+       "K",
+       "N/A",
+       "Wilhoit and Shiao, 1964",
+       "Uncertainty assigned by TRC =  4. K; TRC"
+      ],
+      [
+       "Tfus",
+       "562.55",
+       "K",
+       "N/A",
+       "Wilhoit and Shiao, 1964",
+       "Uncertainty assigned by TRC =  0.5 K; TRC"
+      ],
+      [
+       "Tfus",
+       "375.",
+       "K",
+       "N/A",
+       "Timmermans, 1935",
+       "Uncertainty assigned by TRC =  2. K; TRC"
+      ],
+      [
+       "Tfus",
+       "473.",
+       "K",
+       "N/A",
+       "Kern, Shriner, et al., 1925",
+       "Uncertainty assigned by TRC =  4. K; TRC"
+      ],
+      [
+       "Tfus",
+       "557.15",
+       "K",
+       "N/A",
+       "Weiss and Downs, 1923",
+       "Uncertainty assigned by TRC =  4. K; TRC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔsubH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "123.6 ± 2.0",
+       "381.",
+       "TE,ME",
+       "De Kruif and Van Ginkel, 1977",
+       "Based on data from 371. to 391. K.; AC"
+      ],
+      [
+       "136. ± 6.3",
+       "365.",
+       "QF",
+       "Wolf and Weghofer, 1938",
+       "See also  Trieschmann, 1935 and  Jones, 1960.; AC"
+      ],
+      [
+       "136. ± 6.3",
+       "365.",
+       "V",
+       "Wolf and Weghofer, 1938, 2",
+       "ALS"
+      ],
+      [
+       "134. ± 4.2",
+       "358. to 371.",
+       "N/A",
+       "Wolf and Trieschmann, 1934",
+       "AC"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

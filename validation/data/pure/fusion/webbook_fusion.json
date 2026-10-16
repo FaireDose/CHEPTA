@@ -721,6 +721,11 @@
    }
   ]
  },
+ "3-hydroxypropionic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C503662&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "none": "no phase-change data on the page"
+ },
  "acetaldehyde": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C75070&Units=SI&Mask=4",
   "retrieved": "2026-10-11",
@@ -1554,6 +1559,11 @@
    }
   ]
  },
+ "bhet": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C959262&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "none": "no phase-change data on the page"
+ },
  "butyl-levulinate": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4",
   "retrieved": "2026-10-14",
@@ -1661,6 +1671,25 @@
     "comment": "AC"
    }
   ]
+ },
+ "citric-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 427.15,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Wilhoit and Shiao, 1964",
+     "comment": "Uncertainty assigned by TRC = 1.5 K"
+    }
+   ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
  },
  "cpme": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C5614379&Units=SI&Mask=4",
@@ -2164,6 +2193,11 @@
    }
   ]
  },
+ "diphenolic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C126001&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "none": "no phase-change data on the page"
+ },
  "dmf": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C68122&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -2348,6 +2382,62 @@
     "T_K": 413.8,
     "method": "",
     "reference": "Acree, 1993",
+    "comment": "AC"
+   }
+  ]
+ },
+ "erythritol": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 390.9,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Barone, DellaGatta, et al., 1990",
+     "comment": "Uncertainty assigned by TRC = 0.2 K; TRC"
+    },
+    {
+     "value": 391.6,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Spaght, Thomas, et al., 1932",
+     "comment": "Uncertainty assigned by TRC = 0.2 K; TRC"
+    }
+   ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 39.4,
+    "T_K": 390.9,
+    "method": "",
+    "reference": "Barone and Della Gatta, 1990",
+    "comment": "DH"
+   },
+   {
+    "Hfus_kJ_mol": 42.359,
+    "T_K": 381.6,
+    "method": "",
+    "reference": "Spaght, Thomas, et al., 1932, 2",
+    "comment": "DH"
+   },
+   {
+    "Hfus_kJ_mol": 38.9,
+    "T_K": 391.2,
+    "method": "",
+    "reference": "Lopes Jesus, Tomé, et al., 2005",
+    "comment": "AC"
+   },
+   {
+    "Hfus_kJ_mol": 40.3,
+    "T_K": 392.2,
+    "method": "",
+    "reference": "Jónsdóttir, Cooke, et al., 2002",
     "comment": "AC"
    }
   ]
@@ -2894,6 +2984,16 @@
    }
   ]
  },
+ "fdca": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C3238402&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
  "formaldehyde": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50000&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -2981,6 +3081,62 @@
     "comment": "DH"
    }
   ]
+ },
+ "fructose": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "none": "no phase-change data on the page"
+ },
+ "fumaric-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 560.45,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Wilhoit and Shiao, 1964",
+     "comment": "Uncertainty assigned by TRC = 4. K; TRC"
+    },
+    {
+     "value": 562.55,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Wilhoit and Shiao, 1964",
+     "comment": "Uncertainty assigned by TRC = 0.5 K; TRC"
+    },
+    {
+     "value": 375.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Timmermans, 1935",
+     "comment": "Uncertainty assigned by TRC = 2. K; TRC"
+    },
+    {
+     "value": 473.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Kern, Shriner, et al., 1925",
+     "comment": "Uncertainty assigned by TRC = 4. K; TRC"
+    },
+    {
+     "value": 557.15,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Weiss and Downs, 1923",
+     "comment": "Uncertainty assigned by TRC = 4. K; TRC"
+    }
+   ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
  },
  "furan": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Units=SI&Mask=4",
@@ -3216,6 +3372,46 @@
    }
   ]
  },
+ "glucaric-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C87730&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "none": "no phase-change data on the page"
+ },
+ "glucose": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 423.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Kofler and Sitte, 1950",
+     "comment": "Uncertainty assigned by TRC = 3. K; With \"hot stage\""
+    },
+    {
+     "value": 420.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Kofler and Sitte, 1950",
+     "comment": "Uncertainty assigned by TRC = 4. K; By \"differntial thermal absorption\""
+    },
+    {
+     "value": 414.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Parks and Thomas, 1934",
+     "comment": "Uncertainty assigned by TRC = 2. K"
+    }
+   ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
  "glycerol": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C56815&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -3281,6 +3477,16 @@
    }
   ]
  },
+ "glycolic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
  "gvl": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4",
   "retrieved": "2026-10-14",
@@ -3290,6 +3496,24 @@
    "ΔfusH": []
   },
   "enthalpy_of_fusion": []
+ },
+ "hmf": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C67470&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 19.8,
+    "T_K": 308.5,
+    "method": "DSC",
+    "reference": "Verevkin, Emel'yanenko, et al., 2009",
+    "comment": "AC"
+   }
+  ]
  },
  "hydrogen": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C1333740&Units=SI&Mask=4",
@@ -3754,6 +3978,33 @@
   },
   "enthalpy_of_fusion": []
  },
+ "itaconic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 438.25,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Wilhoit and Lei, 1965",
+     "comment": "Uncertainty assigned by TRC = 1. K"
+    },
+    {
+     "value": 439.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Wilhoit and Lei, 1965",
+     "comment": "Uncertainty assigned by TRC = 0.7 K"
+    }
+   ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
  "lactic-acid": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4",
   "retrieved": "2026-10-14",
@@ -3965,6 +4216,25 @@
     "comment": "DH"
    }
   ]
+ },
+ "malic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C6915157&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 400.75,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Wilhoit and Shiao, 1964",
+     "comment": "Uncertainty assigned by TRC = 0.6 K; TRC"
+    }
+   ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
  },
  "mdea": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C105599&Units=SI&Mask=4",
@@ -6380,6 +6650,71 @@
    }
   ]
  },
+ "sorbitol": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 366.5,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Barone, DellaGatta, et al., 1990",
+     "comment": "Uncertainty assigned by TRC = 0.6 K; TRC"
+    },
+    {
+     "value": 371.85,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Quinquenet, Ollivon, et al., 1988",
+     "comment": "Uncertainty assigned by TRC = 0.5 K; m.p. of the .gamma., presumably stable, form; TRC"
+    },
+    {
+     "value": 361.25,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Quinquenet, Ollivon, et al., 1988",
+     "comment": "Metastable crystal phase; Uncertainty assigned by TRC = 0.5 K; m.p. of the A (presumably metastable) form; TRC"
+    },
+    {
+     "value": 367.45,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Quinquenet, Ollivon, et al., 1988",
+     "comment": "Metastable crystal phase; Uncertainty assigned by TRC = 1. K; this is m.p. of the B, presumably a metastable, form; TRC"
+    }
+   ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 30.2,
+    "T_K": 366.5,
+    "method": "N/A",
+    "reference": "Barone and Della Gatta, 1990",
+    "comment": "DH"
+   },
+   {
+    "Hfus_kJ_mol": 30.35,
+    "T_K": 369.2,
+    "method": "AC",
+    "reference": "Tong, Tan, et al., 2008",
+    "comment": "Based on data from 80. to 390. K.; AC"
+   },
+   {
+    "Hfus_kJ_mol": 30.2,
+    "T_K": 366.5,
+    "method": "DSC",
+    "reference": "Domalski and Hearing, 1996",
+    "comment": "See also Barone, Gatta, et al., 1990.; AC"
+   }
+  ]
+ },
  "stearic-acid": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C57114&Units=SI&Mask=4",
   "retrieved": "2026-10-13",
@@ -6557,6 +6892,56 @@
     "T_K": 242.3,
     "method": "",
     "reference": "Domalski and Hearing, 1996",
+    "comment": "AC"
+   }
+  ]
+ },
+ "succinic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 459.0,
+     "uncertainty": 3.0,
+     "units": "K",
+     "method": "AVG",
+     "reference": "N/A",
+     "comment": "Average of 12 values; Individual data points"
+    }
+   ],
+   "Ttriple": [
+    {
+     "value": 461.0,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Wilhoit, Chao, et al., 1985",
+     "comment": "Crystal phase 1 phase; Uncertainty assigned by TRC = 0.3 K; TRC"
+    }
+   ],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 32.945,
+    "T_K": 457.0,
+    "method": "",
+    "reference": "Cingolani and Berchiesi, 1974",
+    "comment": "DH"
+   },
+   {
+    "Hfus_kJ_mol": 34.0,
+    "T_K": 455.2,
+    "method": "",
+    "reference": "Roux, Temprado, et al., 2005",
+    "comment": "AC"
+   },
+   {
+    "Hfus_kJ_mol": 32.95,
+    "T_K": 457.0,
+    "method": "",
+    "reference": "Acree, 1991",
     "comment": "AC"
    }
   ]
@@ -6986,5 +7371,53 @@
    "ΔfusH": []
   },
   "enthalpy_of_fusion": []
+ },
+ "xylitol": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=4",
+  "retrieved": "2026-10-16",
+  "one_dimensional": {
+   "Tfus": [
+    {
+     "value": 365.7,
+     "uncertainty": null,
+     "units": "K",
+     "method": "N/A",
+     "reference": "Barone, DellaGatta, et al., 1990",
+     "comment": "Uncertainty assigned by TRC = 0.2 K; TRC"
+    }
+   ],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 37.4,
+    "T_K": 365.7,
+    "method": "N/A",
+    "reference": "Barone and Della Gatta, 1990",
+    "comment": "DH"
+   },
+   {
+    "Hfus_kJ_mol": 33.26,
+    "T_K": 369.0,
+    "method": "N/A",
+    "reference": "Tong, Tan, et al., 2007",
+    "comment": "AC"
+   },
+   {
+    "Hfus_kJ_mol": 37.7,
+    "T_K": 368.0,
+    "method": "DSC",
+    "reference": "Carpentier, Desprez, et al., 2003",
+    "comment": "AC"
+   },
+   {
+    "Hfus_kJ_mol": 37.4,
+    "T_K": 365.7,
+    "method": "DSC",
+    "reference": "Domalski and Hearing, 1996",
+    "comment": "See also Barone, Gatta, et al., 1990.; AC"
+   }
+  ]
  }
 }

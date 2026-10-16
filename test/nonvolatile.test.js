@@ -96,3 +96,60 @@ test("the maintainer's example: heat a lactic acid solution, then evaporate wate
   const q = r.blocks.V1.duty_kW * 3.6 / 60;   // kJ per mol of water evaporated
   assert.ok(q > 38 && q < 46, `evaporation duty per mol of water ${q.toFixed(1)} kJ/mol`);
 });
+
+// proposal 0009, batch 4: sugars, sugar alcohols, polyacids and HMF, all nonvolatile
+const BATCH4 = ["hmf", "glucose", "fructose", "sorbitol", "xylitol", "erythritol", "succinic-acid", "itaconic-acid", "fumaric-acid",
+  "malic-acid", "citric-acid", "glycolic-acid", "glucaric-acid", "3-hydroxypropionic-acid", "fdca", "bhet", "diphenolic-acid"];
+
+test("batch 4: each liquid heat capacity is measured, or exactly the group sum over the range the rules give", () => {
+  for (const id of ["lactic-acid", ...BATCH4]) {
+    const c = comps[id];
+    assert.equal(c.class, "nonvolatile", id);
+    assert.ok(c.nonvolatile.why.length > 20, `${id}: why it is nonvolatile`);
+    const cp = c.properties.liquidHeatCapacity;
+    // the enthalpy is integrated from 298.15 K, so every record reaches it
+    assert.ok(cp.Tmin_K <= 298.15 && cp.Tmax_K > 340, `${id}: ${cp.Tmin_K}-${cp.Tmax_K} K`);
+    if (id === "fructose") {
+      // measured liquid heat capacities (stated about 2 %, above the 1 % target) beat the prediction, which is far off
+      assert.equal(cp.tier, "fitted");
+      assert.match(cp.source.name, /stated uncertainties up to 2\.\d %, above the 1 % target/);
+      assert.match(cp.source.notes, /prediction .* would be [+-]\d+ to [+-]\d+ % from this record/);
+      continue;
+    }
+    assert.equal(cp.tier, "predicted", id);
+    assert.match(cp.source.notes, /Accuracy of the method on 20 CHEPTA liquids/);
+    const groups = Object.fromEntries(cp.source.groups.split(", ").map(s => { const [n, ...g] = s.split(" "); return [g.join(" "), +n]; }));
+    for (const g of Object.keys(groups)) assert.ok(gc.groups[g], `${id}: group ${g} transcribed`);
+    for (let k = 0; k <= 8; k++) {
+      const T = cp.Tmin_K + (cp.Tmax_K - cp.Tmin_K) * k / 8;
+      let sum = 0;
+      for (const [g, n] of Object.entries(groups)) { const p = gc.groups[g]; sum += n * (p.a + p.b * T / 100 + p.d * (T / 100) ** 2); }
+      const rec = cp.coefficients.A + cp.coefficients.B * T + cp.coefficients.C * T * T;
+      assert.ok(Math.abs(rec / (gc.R * sum) - 1) < 1e-9, `${id} at ${T} K`);
+    }
+    // the range: where every group was fitted, the upper end raised by 100 K (part II, p. 620), except for polyols
+    const hi = Math.min(...Object.keys(groups).map(g => gc.groups[g].T_K[1]));
+    const polyol = (groups["O-(H)(C) (diol)"] ?? 0) >= 2;
+    assert.equal(cp.Tmax_K, polyol ? hi : hi + gc.extrapolation_K, id);
+  }
+});
+
+test("batch 4 in water: the solute stays in the liquid and raises the boiling point; FDCA has no Mod. UNIFAC 2.0 groups", () => {
+  // Method (docs/METHOD_SELECTION.md): an activity model for aqueous solutions of polar solutes at 1 atm; Modified
+  // UNIFAC 2.0 is the only one with parameters for these pairs
+  const Tw = pure("water").Tb_K;
+  for (const id of ["sorbitol", "glucose", "hmf", "succinic-acid", "citric-acid"]) {
+    const s = system({ components: ["water", id], model: "MOD-UNIFAC-2" });
+    const z = [0.95, 0.05];
+    const b = s.bubbleT(z, 101.325);
+    assert.ok(b.T > Tw && b.T < Tw + 5, `${id}: bubble point ${b.T} K`);
+    assert.ok(b.y[1] < 1e-15, `${id} in the vapour ${b.y[1]}`);
+    const tp = s.flash({ z, T: 380, P: 101.325 });
+    const ph = s.flash({ z, P: 101.325, H: tp.H_J_mol });
+    assert.ok(Math.abs(ph.T - 380) < 1e-5 && Math.abs(ph.VF - tp.VF) < 1e-7, `${id}: P-H ${ph.T} ${ph.VF}`);
+  }
+  assert.throws(() => system({ components: ["water", "fdca"], model: "MOD-UNIFAC-2" }), /no Modified UNIFAC 2\.0 groups/);
+  // with the ideal solution it works (on purpose: the model that needs no groups)
+  const s = system({ components: ["water", "fdca"], model: "ideal" });
+  assert.ok(s.bubbleT([0.99, 0.01], 101.325).T > Tw);
+});

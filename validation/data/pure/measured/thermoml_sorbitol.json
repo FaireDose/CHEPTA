@@ -1,0 +1,205 @@
+{
+ "component": "sorbitol",
+ "cas": "50-70-4",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-16",
+ "searched": "ThermoML-API full-text search for \"d-sorbitol\", \"sorbitol\", \"d-glucitol\", \"(2r,3r,4r,5s)-hexane-1,2,3,4,5,6-hexol\"; 36 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1016/j.fluid.2015.06.002": {
+   "authors": [
+    "Paduszynski, K.[Kamil]",
+    "Okuniewski, M.[Marcin]",
+    "Domanska, U.[Urszula]"
+   ],
+   "title": "Solid-liquid phase equilibria in binary mixtures of functionalized ionic liquids with sugar alcohols: New experimental data and modelling",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "403",
+   "year": "2015",
+   "pages": "167-175"
+  },
+  "10.1016/j.jct.2014.04.021": {
+   "authors": [
+    "Okuniewski, M.[Marcin]",
+    "Ramjugernath, D.[Deresh]",
+    "Naidoo, P.[Paramespri]",
+    "Domanska, U.[Urszula]"
+   ],
+   "title": "Solubility data and modeling for sugar alcohols in ionic liquids",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "77",
+   "year": "2014",
+   "pages": "23-30"
+  },
+  "10.1016/j.tca.2017.12.015": {
+   "authors": [
+    "Rojek, B.[Barbara]",
+    "Suchacz, B.[Bogdan]",
+    "Wesolowski, M.[Marek]"
+   ],
+   "title": "Artificial neural networks as a supporting tool for compatibility study based on thermogravimetric data",
+   "journal": "Thermochim. Acta",
+   "volume": "659",
+   "year": "2018",
+   "pages": "222-231"
+  },
+  "10.1021/je800070y": {
+   "authors": [
+    "Yan, W.[Wei]",
+    "Suppes, G. J.[Galen J.]"
+   ],
+   "title": "Vapor Pressures and Evaporation Studies of Sugars and Sugar Alcohols",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "53",
+   "year": "2008",
+   "pages": "2033-2040"
+  }
+ },
+ "rows": [
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 371.7,
+   "uncertainty": 0.4,
+   "doi": "10.1016/j.fluid.2015.06.002",
+   "set": 7,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 370.2,
+   "uncertainty": 0.4,
+   "doi": "10.1016/j.fluid.2015.06.002",
+   "set": 8,
+   "binary_with": null
+  },
+  {
+   "property": "Molar enthalpy of transition or fusion, kJ/mol",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 30.5,
+   "uncertainty": 0.7,
+   "doi": "10.1016/j.fluid.2015.06.002",
+   "set": 9,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 371.7,
+   "uncertainty": 0.4,
+   "doi": "10.1016/j.jct.2014.04.021",
+   "set": 6,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal 1",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 372.85,
+   "uncertainty": 2.0,
+   "doi": "10.1016/j.tca.2017.12.015",
+   "set": 4,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 523.15,
+   "P_kPa": null,
+   "value": 1.31,
+   "uncertainty": 0.1,
+   "doi": "10.1021/je800070y",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 548.15,
+   "P_kPa": null,
+   "value": 4.49,
+   "uncertainty": 0.35,
+   "doi": "10.1021/je800070y",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 573.15,
+   "P_kPa": null,
+   "value": 12.3,
+   "uncertainty": 1.0,
+   "doi": "10.1021/je800070y",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 598.15,
+   "P_kPa": null,
+   "value": 30.0,
+   "uncertainty": 2.3,
+   "doi": "10.1021/je800070y",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 623.15,
+   "P_kPa": null,
+   "value": 65.0,
+   "uncertainty": 5.0,
+   "doi": "10.1021/je800070y",
+   "set": 1,
+   "binary_with": null
+  }
+ ]
+}

@@ -1,0 +1,165 @@
+{
+ "component": "xylitol",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°liquid",
+       "-1118.6 ± 0.63",
+       "kJ/mol",
+       "Ccb",
+       "Oberemok-Yakubova and Balandin, 1963",
+       ""
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2564.0 ± 0.63",
+       "kJ/mol",
+       "Ccb",
+       "Oberemok-Yakubova and Balandin, 1963",
+       "Corresponding ΔfHºliquid = -1118.5 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tfus",
+       "365.7",
+       "K",
+       "N/A",
+       "Barone, DellaGatta, et al., 1990",
+       "Uncertainty assigned by TRC =  0.2 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔsubH°",
+       "161.",
+       "kJ/mol",
+       "B",
+       "Barone, Gatta, et al., 1990",
+       "AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "111.1 ± 0.8",
+       "433.",
+       "TE",
+       "Barone, Gatta, et al., 1990",
+       "Based on data from 406. to 460. K.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "37.400",
+       "365.7",
+       "N/A",
+       "Barone and Della Gatta, 1990",
+       "DH"
+      ],
+      [
+       "33.26",
+       "369.",
+       "N/A",
+       "Tong, Tan, et al., 2007",
+       "AC"
+      ],
+      [
+       "37.7",
+       "368.0",
+       "DSC",
+       "Carpentier, Desprez, et al., 2003",
+       "AC"
+      ],
+      [
+       "37.4",
+       "365.7",
+       "DSC",
+       "Domalski and Hearing, 1996",
+       "See also  Barone, Gatta, et al., 1990.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusS (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "102.3",
+       "365.7",
+       "Barone and Della Gatta, 1990",
+       "DH"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

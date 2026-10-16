@@ -1,0 +1,75 @@
+{
+ "component": "malic-acid",
+ "cas": "6915-15-7",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-16",
+ "searched": "ThermoML-API full-text search for \"malic acid\", \"dl-malic acid\", \"l-malic acid\", \"2-hydroxybutanedioic acid\", \"2-oxidanylbutanedioic acid\"; 12 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1016/j.fluid.2013.10.011": {
+   "authors": [
+    "Kai, Y.[Yumei]",
+    "Hu, Y.[Yonghong]",
+    "Wang, C.[Chaoyuan]",
+    "Liu, X.[Xiang]",
+    "Liu, Y.[Yan]",
+    "Yang, W.[Wenge]"
+   ],
+   "title": "Measurement and correlation solubility and mixing properties of L-malic acid in pure and  mixture organic solvents",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "360",
+   "year": "2013",
+   "pages": "466-471"
+  },
+  "10.1016/j.jct.2015.02.002": {
+   "authors": [
+    "Zhang, Q.[Qi]",
+    "Yang, Y.[Yang]",
+    "Cheng, L.[Limin]",
+    "Cao, C.[Cuicui]",
+    "Ding, Z.[Zhiwen]",
+    "Wang, C.[Chunxiao]",
+    "Yang, W.[Wenge]",
+    "Hu, Y.[Yonghong]",
+    "Li, Y.[Yonglan]"
+   ],
+   "title": "Thermodynamic models for determination of the solubility of DL-malic acid in methanol plus (acetonitrile, N,N-dimethylformamide, isopropyl alcohol) binary solvent mixtures",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "85",
+   "year": "2015",
+   "pages": "148-154"
+  }
+ },
+ "rows": [
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 372.65,
+   "uncertainty": 1.63,
+   "doi": "10.1016/j.fluid.2013.10.011",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Normal melting temperature, K",
+   "phases": [
+    "Crystal",
+    "Liquid",
+    "Air at 1 atmosphere"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 403.15,
+   "uncertainty": 0.5,
+   "doi": "10.1016/j.jct.2015.02.002",
+   "set": 1,
+   "binary_with": null
+  }
+ ]
+}

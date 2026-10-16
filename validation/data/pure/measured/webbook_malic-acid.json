@@ -1,0 +1,67 @@
+{
+ "component": "malic-acid",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C6915157&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C6915157&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C6915157&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tfus",
+       "400.75",
+       "K",
+       "N/A",
+       "Wilhoit and Shiao, 1964",
+       "Uncertainty assigned by TRC =  0.6 K; TRC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔHtrs (kJ/mol)",
+      "Temperature (K)",
+      "Initial Phase",
+      "Final Phase",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "33.522",
+       "402.",
+       "crystaline, I",
+       "liquid",
+       "Ceolin, Szwarc, et al., 1990",
+       "Stable form I.; DH"
+      ],
+      [
+       "30.170",
+       "396.",
+       "crystaline, II",
+       "liquid",
+       "Ceolin, Szwarc, et al., 1990",
+       "Stable form II.; DH"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

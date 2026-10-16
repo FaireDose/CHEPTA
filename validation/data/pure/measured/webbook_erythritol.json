@@ -1,0 +1,298 @@
+{
+ "component": "erythritol",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°liquid",
+       "-910.48 ± 0.54",
+       "kJ/mol",
+       "Ccb",
+       "Parks, West, et al., 1946",
+       "see  McClaine, 1947; ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°liquid",
+       "-2092.8 ± 1.3",
+       "kJ/mol",
+       "Ccb",
+       "Parks, West, et al., 1946",
+       "see  McClaine, 1947; Corresponding ΔfHºliquid = -910.44 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°solid",
+       "-2118.0",
+       "kJ/mol",
+       "Cm",
+       "Parks and Manchester, 1952",
+       "from heat of solution; Corresponding ΔfHºsolid = -885.21 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "S°solid,1 bar",
+       "166.5",
+       "J/mol*K",
+       "N/A",
+       "Parks, Kelley, et al., 1929",
+       "Extrapolation below 90 K, 44.35 J/mol*K. Revision of previous data.; DH"
+      ],
+      [
+       "S°solid,1 bar",
+       "177.8",
+       "J/mol*K",
+       "N/A",
+       "Parks and Anderson, 1926",
+       "Extrapolation below 90 K, 55.48 J/mol*K.; DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,solid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "170.7",
+       "303.",
+       "Spaght, Thomas, et al., 1932",
+       "T = 30 to 150°C.; DH"
+      ],
+      [
+       "161.9",
+       "291.7",
+       "Parks and Anderson, 1926",
+       "T = 87 to 292 K. Value is unsmoothed experimental datum.; DH"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "603.7",
+       "K",
+       "N/A",
+       "Weast and Grasselli, 1989",
+       "BS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tfus",
+       "390.9",
+       "K",
+       "N/A",
+       "Barone, DellaGatta, et al., 1990",
+       "Uncertainty assigned by TRC =  0.2 K; TRC"
+      ],
+      [
+       "Tfus",
+       "391.6",
+       "K",
+       "N/A",
+       "Spaght, Thomas, et al., 1932",
+       "Uncertainty assigned by TRC =  0.2 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "93.3",
+       "kJ/mol",
+       "V",
+       "Nitta, Seki, et al., 1950",
+       "ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔsubH°",
+       "140.",
+       "kJ/mol",
+       "Vap+Fus",
+       "Lopes Jesus, Tomé, et al., 2005",
+       "AC"
+      ],
+      [
+       "ΔsubH°",
+       "157.",
+       "kJ/mol",
+       "B",
+       "Barone, Gatta, et al., 1990",
+       "AC"
+      ],
+      [
+       "ΔsubH°",
+       "135.",
+       "kJ/mol",
+       "V",
+       "Nitta, Seki, et al., 1950",
+       "ALS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "97. ± 1.",
+       "398.",
+       "C",
+       "Lopes Jesus, Tomé, et al., 2005",
+       "AC"
+      ],
+      [
+       "113.6 ± 1.1",
+       "412.",
+       "TE",
+       "Barone, Gatta, et al., 1990",
+       "Based on data from 397. to 428. K.; AC"
+      ],
+      [
+       "93.3",
+       "397.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 394. to 401. K.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "39.400",
+       "390.9",
+       "Barone and Della Gatta, 1990",
+       "DH"
+      ],
+      [
+       "42.359",
+       "381.6",
+       "Spaght, Thomas, et al., 1932, 2",
+       "DH"
+      ],
+      [
+       "38.9",
+       "391.2",
+       "Lopes Jesus, Tomé, et al., 2005",
+       "AC"
+      ],
+      [
+       "40.3",
+       "392.2",
+       "Jónsdóttir, Cooke, et al., 2002",
+       "AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusS (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "100.8",
+       "390.9",
+       "Barone and Della Gatta, 1990",
+       "DH"
+      ],
+      [
+       "111.0",
+       "381.6",
+       "Spaght, Thomas, et al., 1932, 2",
+       "DH"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

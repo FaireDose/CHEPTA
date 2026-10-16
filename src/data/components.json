@@ -46170,15 +46170,15 @@
           },
           "units": "J/mol/K",
           "Tmin_K": 230.0,
-          "Tmax_K": 445.0,
+          "Tmax_K": 545.0,
           "tier": "predicted",
           "source": {
             "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
             "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
             "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
             "groups": "1 C-(H)3(C), 1 C-(H)(C)2(O) (alcohol), 1 O-(H)(C), 1 CO-(C)(O), 1 O-(H)(CO)",
-            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Table 8 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (230-445 K)",
-            "notes": "No open measured liquid heat capacity (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"dl-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened)). The alpha carbon CH(OH)(COOH) is C-(H)(C)(O)(CO), a group the method does not have; it is counted as the secondary alcohol carbon C-(H)(C)2(O), its nearest group. Accuracy of the method on 15 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 3.4 % at 300 K for all of them; for alcohols and polyols it rises with temperature, +5 to +15 % at 350-400 K (ethanol, 2-propanol, propylene glycol, glycerol), while acids and ketones stay within about 2-6 %."
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (230-445 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620)",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"dl-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened)). The alpha carbon CH(OH)(COOH) is C-(H)(C)(O)(CO), a group the method does not have; it is counted as the secondary alcohol carbon C-(H)(C)2(O), its nearest group. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
           },
           "source_ids": [
             "ruzicka-domalski-1993"
@@ -46251,6 +46251,2411 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH, 1 COOH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
+      }
+    },
+    "hmf": {
+      "name": "5-Hydroxymethylfurfural",
+      "formula": "C6H6O3",
+      "cas": "67-47-0",
+      "aliases": [
+        "hmf",
+        "5-hmf",
+        "5-(hydroxymethyl)furfural",
+        "5-(hydroxymethyl)furan-2-carbaldehyde",
+        "hydroxymethylfurfural"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "HMF has no open measured vapour pressure curve; the NIST WebBook gives its enthalpy of vaporization (83.4 kJ/mol, Verevkin, Emel'yanenko et al. 2009, from data at 314-368 K) and a boiling temperature of 388.2 K at 0.1 kPa (Weast and Grasselli 1989), where water's is 169.5 kPa (IAPWS-IF97): in the aqueous and solvent processes where it is made and extracted it stays in the liquid. Its vacuum distillation is not represented",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 126.11,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: HMF has no open measured vapour pressure curve; the NIST WebBook gives its enthalpy of vaporization (83.4 kJ/mol, Verevkin, Emel'yanenko et al. 2009, from data at 314-368 K) and a boiling temperature of 388.2 K at 0.1 kPa (Weast and Grasselli 1989), where water's is 169.5 kPa (IAPWS-IF97): in the aqueous and solvent processes where it is made and extracted it stays in the liquid. Its vacuum distillation is not represented",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C67470&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-hydroxymethylfurfural\", \"5-(hydroxymethyl)furan-2-carbaldehyde\", \"hydroxymethylfurfural\", \"5-(hydroxymethyl)-2-furaldehyde\"; 15 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C67470&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-hydroxymethylfurfural\", \"5-(hydroxymethyl)furan-2-carbaldehyde\", \"hydroxymethylfurfural\", \"5-(hydroxymethyl)-2-furaldehyde\"; 15 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: 5-Hydroxymethylfurfural is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": -57.42000606,
+            "B": 1.473783481,
+            "C": -0.001596885622
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 298.15,
+          "Tmax_K": 405.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "2 CB-(H), 1 CB-(C), 1 CB-(CO), 1 O-(CB)2, 1 furan rsc, 1 C-(H)2(CB)(O), 1 O-(H)(C), 1 CO-(H)(Cd)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (300-305 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620); lower end taken down to 298.15 K, the reference temperature of the liquid enthalpy",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C67470&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-hydroxymethylfurfural\", \"5-(hydroxymethyl)furan-2-carbaldehyde\", \"hydroxymethylfurfural\", \"5-(hydroxymethyl)-2-furaldehyde\"; 15 records opened)). The furan ring is counted as the authors count furan: ring carbons as CB groups, the ring oxygen as O-(CB)2, plus the furan ring strain correction (part II, Table 3); the aldehyde CO-(H)(CB) is counted as CO-(H)(Cd), as the authors do (part II, Table 2). Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K). The furan ring correction was fitted to 305 K only; on furfural the prediction stays within 3.4 % of its record from 300 to 405 K."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: 5-Hydroxymethylfurfural is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C67470&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-hydroxymethylfurfural\", \"5-(hydroxymethyl)furan-2-carbaldehyde\", \"hydroxymethylfurfural\", \"5-(hydroxymethyl)-2-furaldehyde\"; 15 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: 5-Hydroxymethylfurfural is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C67470&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-hydroxymethylfurfural\", \"5-(hydroxymethyl)furan-2-carbaldehyde\", \"hydroxymethylfurfural\", \"5-(hydroxymethyl)-2-furaldehyde\"; 15 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: 5-Hydroxymethylfurfural is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C67470&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-hydroxymethylfurfural\", \"5-(hydroxymethyl)furan-2-carbaldehyde\", \"hydroxymethylfurfural\", \"5-(hydroxymethyl)-2-furaldehyde\"; 15 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "Tm_K": 308.5,
+        "Hfus_J_mol": 19800.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST Chemistry WebBook (SRD 69), phase change data",
+          "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C67470&Units=SI&Mask=4",
+          "access": "Free to read online (NIST Standard Reference Database 69); values cited per record",
+          "reference": "Verevkin, Emel'yanenko, et al., 2009",
+          "selection": "melting temperature: temperature of the WebBook's measured enthalpy of fusion (308.5 K, Verevkin, Emel'yanenko, et al., 2009; no Tfus or Ttriple listed); enthalpy of fusion: the only one of 1 measured value (19.8-19.8 kJ/mol) within 3 K of it"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "14": 1,
+          "61": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 FURFURAL): chosen from the structure: the ring with its aldehyde as the method's FURFURAL subgroup, and the CH2OH as CH2 with a primary OH (the SMARTS match took the ether subgroup CH2O for the alcohol's CH2-O, leaving out the OH); the substituted ring carbon is counted in FURFURAL; DDBST lists no assignment (atom balance one H above C6H6O3: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H6O3"
+      }
+    },
+    "glucose": {
+      "name": "D-Glucose",
+      "formula": "C6H12O6",
+      "cas": "50-99-7",
+      "aliases": [
+        "glucose",
+        "dextrose",
+        "d-glucopyranose",
+        "grape sugar"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 180.1559,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucose\", \"d-glucose\", \"dextrose\", \"(2R,3S,4R,5R)-2,3,4,5,6-pentahydroxyhexanal\"; 121 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucose\", \"d-glucose\", \"dextrose\", \"(2R,3S,4R,5R)-2,3,4,5,6-pentahydroxyhexanal\"; 121 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: D-Glucose is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 271.613424,
+            "B": -0.3462494544,
+            "C": 0.003277222318
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 195.0,
+          "Tmax_K": 430.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "1 CO-(H)(C), 4 C-(H)(C)2(O) (alcohol), 1 C-(H)2(C)(O), 5 O-(H)(C) (diol)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (195-430 K); not raised for a polyol, as the check shows the polyol groups drifting beyond their range",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucose\", \"d-glucose\", \"dextrose\", \"(2R,3S,4R,5R)-2,3,4,5,6-pentahydroxyhexanal\"; 121 records opened)). Glucose is counted in its open-chain (aldehyde) form: in solution it is mostly the six-membered ring, whose anomeric carbon C-(H)(C)(O)2 the method has no group for; the carbon next to the aldehyde, C-(H)(C)(CO)(O), is counted as C-(H)(C)2(O); the authors note that their estimates for diols and 1,2,3-propanetriol are poor (part II, p. 641); for polyols the check below shows the prediction rising above the records with temperature. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: D-Glucose is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucose\", \"d-glucose\", \"dextrose\", \"(2R,3S,4R,5R)-2,3,4,5,6-pentahydroxyhexanal\"; 121 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: D-Glucose is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucose\", \"d-glucose\", \"dextrose\", \"(2R,3S,4R,5R)-2,3,4,5,6-pentahydroxyhexanal\"; 121 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: D-Glucose is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucose\", \"d-glucose\", \"dextrose\", \"(2R,3S,4R,5R)-2,3,4,5,6-pentahydroxyhexanal\"; 121 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=4): no enthalpy of fusion within 3 K of the melting temperature on the WebBook page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: a melting temperature but no enthalpy of fusion"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "3": 4,
+          "14": 1,
+          "20": 1,
+          "81": 4
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 4 CH, 1 OH (P), 1 CHO, 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O6"
+      }
+    },
+    "fructose": {
+      "name": "D-Fructose",
+      "formula": "C6H12O6",
+      "cas": "57-48-7",
+      "aliases": [
+        "fructose",
+        "levulose",
+        "fruit sugar",
+        "d-fructopyranose"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 180.1559,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"fructose\", \"d-fructose\", \"levulose\", \"(3S,4R,5R)-1,3,4,5,6-pentahydroxyhexan-2-one\"; 52 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"fructose\", \"d-fructose\", \"levulose\", \"(3S,4R,5R)-1,3,4,5,6-pentahydroxyhexan-2-one\"; 52 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: D-Fructose is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 152.7025837,
+            "B": 0.814199725
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 200.0,
+          "Tmax_K": 600.0,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive); stated uncertainties up to 2.0 %, above the 1 % target, used because the only alternative is a prediction",
+            "reference": "Magon and Pyda, J. Chem. Thermodyn. 56 (2013) 67-82, doi:10.1016/j.jct.2012.07.003",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "10 measured values, 200.00-600.00 K, max deviation 0.14 %",
+            "notes": "The group-additivity prediction (Ruzicka and Domalski 1993, predict_cp.py) would be +7 to +22 % from this record at the measured temperatures within its groups' range, 200-370 K."
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: D-Fructose is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"fructose\", \"d-fructose\", \"levulose\", \"(3S,4R,5R)-1,3,4,5,6-pentahydroxyhexan-2-one\"; 52 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: D-Fructose is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"fructose\", \"d-fructose\", \"levulose\", \"(3S,4R,5R)-1,3,4,5,6-pentahydroxyhexan-2-one\"; 52 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: D-Fructose is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"fructose\", \"d-fructose\", \"levulose\", \"(3S,4R,5R)-1,3,4,5,6-pentahydroxyhexan-2-one\"; 52 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=4): no phase-change data on the page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "3": 3,
+          "14": 2,
+          "19": 1,
+          "81": 3
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 3 CH, 2 OH (P), 1 CH2CO, 3 OH (S)): assigned from the structure and checked (the open-chain ketone form (as for glucose, which DDBST assigns open-chain): the C(=O) with C1 as CH2CO, C6 as CH2, three CH; two primary OH (P) and three secondary OH (S)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O6"
+      }
+    },
+    "sorbitol": {
+      "name": "D-Sorbitol",
+      "formula": "C6H14O6",
+      "cas": "50-70-4",
+      "aliases": [
+        "sorbitol",
+        "d-glucitol",
+        "glucitol",
+        "hexane-1,2,3,4,5,6-hexol"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); its measured vapour pressure is 1.31 kPa at 523 K (doi:10.1021/je800070y)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 182.1718,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); its measured vapour pressure is 1.31 kPa at 523 K (doi:10.1021/je800070y)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"d-sorbitol\", \"sorbitol\", \"d-glucitol\", \"(2r,3r,4r,5s)-hexane-1,2,3,4,5,6-hexol\"; 36 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"d-sorbitol\", \"sorbitol\", \"d-glucitol\", \"(2r,3r,4r,5s)-hexane-1,2,3,4,5,6-hexol\"; 36 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: D-Sorbitol is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 359.0537998,
+            "B": -0.9880132233,
+            "C": 0.004558031011
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 195.0,
+          "Tmax_K": 460.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "2 C-(H)2(C)(O), 4 C-(H)(C)2(O) (alcohol), 6 O-(H)(C) (diol)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (195-460 K); not raised for a polyol, as the check shows the polyol groups drifting beyond their range",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"d-sorbitol\", \"sorbitol\", \"d-glucitol\", \"(2r,3r,4r,5s)-hexane-1,2,3,4,5,6-hexol\"; 36 records opened)). Every group exists in the method; the authors note that their estimates for diols and 1,2,3-propanetriol are poor (part II, p. 641); for polyols the check below shows the prediction rising above the records with temperature. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: D-Sorbitol is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"d-sorbitol\", \"sorbitol\", \"d-glucitol\", \"(2r,3r,4r,5s)-hexane-1,2,3,4,5,6-hexol\"; 36 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: D-Sorbitol is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"d-sorbitol\", \"sorbitol\", \"d-glucitol\", \"(2r,3r,4r,5s)-hexane-1,2,3,4,5,6-hexol\"; 36 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: D-Sorbitol is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"d-sorbitol\", \"sorbitol\", \"d-glucitol\", \"(2r,3r,4r,5s)-hexane-1,2,3,4,5,6-hexol\"; 36 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "Tm_K": 366.975,
+        "Hfus_J_mol": 30200.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST Chemistry WebBook (SRD 69), phase change data",
+          "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=4",
+          "access": "Free to read online (NIST Standard Reference Database 69); values cited per record",
+          "reference": "Barone and Della Gatta, 1990; Domalski and Hearing, 1996; Tong, Tan, et al., 2008",
+          "selection": "melting temperature: median of 4 WebBook melting temperatures (Tfus); enthalpy of fusion: median of 3 measured values (30.2-30.35 kJ/mol) within 3 K of it"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "3": 4,
+          "14": 2,
+          "81": 4
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 4 CH, 2 OH (P), 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H14O6"
+      }
+    },
+    "xylitol": {
+      "name": "Xylitol",
+      "formula": "C5H12O5",
+      "cas": "87-99-0",
+      "aliases": [
+        "pentane-1,2,3,4,5-pentol",
+        "xylite"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 152.1458,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"xylitol\", \"pentane-1,2,3,4,5-pentol\"; 31 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"xylitol\", \"pentane-1,2,3,4,5-pentol\"; 31 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: Xylitol is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 297.1015544,
+            "B": -0.7429513556,
+            "C": 0.003530498922
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 195.0,
+          "Tmax_K": 460.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "2 C-(H)2(C)(O), 3 C-(H)(C)2(O) (alcohol), 5 O-(H)(C) (diol)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (195-460 K); not raised for a polyol, as the check shows the polyol groups drifting beyond their range",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"xylitol\", \"pentane-1,2,3,4,5-pentol\"; 31 records opened)). Every group exists in the method; the authors note that their estimates for diols and 1,2,3-propanetriol are poor (part II, p. 641); for polyols the check below shows the prediction rising above the records with temperature. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: Xylitol is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"xylitol\", \"pentane-1,2,3,4,5-pentol\"; 31 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: Xylitol is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"xylitol\", \"pentane-1,2,3,4,5-pentol\"; 31 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: Xylitol is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"xylitol\", \"pentane-1,2,3,4,5-pentol\"; 31 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "Tm_K": 365.7,
+        "Hfus_J_mol": 37400.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST Chemistry WebBook (SRD 69), phase change data",
+          "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=4",
+          "access": "Free to read online (NIST Standard Reference Database 69); values cited per record",
+          "reference": "Barone and Della Gatta, 1990; Carpentier, Desprez, et al., 2003; Domalski and Hearing, 1996",
+          "selection": "melting temperature: median of 1 WebBook melting temperatures (Tfus); enthalpy of fusion: median of 3 measured values (37.4-37.7 kJ/mol) within 3 K of it"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "3": 3,
+          "14": 2,
+          "81": 3
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 3 CH, 2 OH (P), 3 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12O5"
+      }
+    },
+    "succinic-acid": {
+      "name": "Succinic acid",
+      "formula": "C4H6O4",
+      "cas": "110-15-6",
+      "aliases": [
+        "butanedioic acid",
+        "amber acid"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 118.088,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"succinic acid\", \"butanedioic acid\"; 80 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"succinic acid\", \"butanedioic acid\"; 80 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: Succinic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 138.6394655,
+            "B": 0.1353519083,
+            "C": 0.0005376328456
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 230.0,
+          "Tmax_K": 545.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "2 C-(H)2(C)(CO), 2 CO-(C)(O), 2 O-(H)(CO)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (230-445 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620)",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"succinic acid\", \"butanedioic acid\"; 80 records opened)). Every group exists in the method. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: Succinic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"succinic acid\", \"butanedioic acid\"; 80 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: Succinic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"succinic acid\", \"butanedioic acid\"; 80 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: Succinic acid is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"succinic acid\", \"butanedioic acid\"; 80 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "Tm_K": 458.04,
+        "Hfus_J_mol": 32720.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST TRC ThermoML Archive",
+          "reference": "Huang 2019, doi:10.1021/acs.jced.8b01127; Li 2014, doi:10.1021/je500682v; Roux 2005, doi:10.1016/j.jct.2004.12.011; Yu 2009, doi:10.1021/je900021g",
+          "access": "NIST open data (the archive's values are free to use, also where the article is paywalled)",
+          "url": "https://trc.nist.gov/ThermoML/",
+          "file": "validation/data/pure/measured/thermoml_succinic-acid.json",
+          "selection": "melting temperature: median of 4 articles; enthalpy of fusion: median of 3 articles (32.56-34.0 kJ/mol) whose melting temperature is within 3 K of it; NIST WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Units=SI&Mask=4): no enthalpy of fusion within 3 K of the melting temperature on the WebBook page; ChemSep: no value"
+        },
+        "source_ids": [
+          "nist-thermoml-archive"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "42": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O4"
+      }
+    },
+    "itaconic-acid": {
+      "name": "Itaconic acid",
+      "formula": "C5H6O4",
+      "cas": "97-65-4",
+      "aliases": [
+        "2-methylidenebutanedioic acid",
+        "methylenesuccinic acid"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 130.0987,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"itaconic acid\", \"2-methylidenebutanedioic acid\", \"methylenesuccinic acid\"; 3 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"itaconic acid\", \"2-methylidenebutanedioic acid\", \"methylenesuccinic acid\"; 3 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: Itaconic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 114.104178,
+            "B": 0.2812948394,
+            "C": 0.0005413976557
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 230.0,
+          "Tmax_K": 450.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "1 Cd-(H)2, 1 Cd-(C)(CO), 1 C-(H)2(C)(CO), 1 CO-(Cd)(O), 1 CO-(C)(O), 2 O-(H)(CO)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (230-350 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620)",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"itaconic acid\", \"2-methylidenebutanedioic acid\", \"methylenesuccinic acid\"; 3 records opened)). The CH2 between the double bond and the carboxyl, C-(H)2(Cd)(CO), is counted as C-(H)2(C)(CO). Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: Itaconic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"itaconic acid\", \"2-methylidenebutanedioic acid\", \"methylenesuccinic acid\"; 3 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: Itaconic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"itaconic acid\", \"2-methylidenebutanedioic acid\", \"methylenesuccinic acid\"; 3 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: Itaconic acid is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"itaconic acid\", \"2-methylidenebutanedioic acid\", \"methylenesuccinic acid\"; 3 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=4): no enthalpy of fusion within 3 K of the melting temperature on the WebBook page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: a melting temperature but no enthalpy of fusion"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "7": 1,
+          "42": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH2=C, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O4"
+      }
+    },
+    "fumaric-acid": {
+      "name": "Fumaric acid",
+      "formula": "C4H4O4",
+      "cas": "110-17-8",
+      "aliases": [
+        "(e)-but-2-enedioic acid",
+        "trans-butenedioic acid"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 116.0722,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"fumaric acid\", \"(e)-but-2-enedioic acid\"; 6 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"fumaric acid\", \"(e)-but-2-enedioic acid\"; 6 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: Fumaric acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 83.43111914,
+            "B": 0.3648656423,
+            "C": 0.000400776011
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 230.0,
+          "Tmax_K": 450.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "2 Cd-(H)(CO), 2 CO-(Cd)(O), 2 O-(H)(CO)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (230-350 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620)",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"fumaric acid\", \"(e)-but-2-enedioic acid\"; 6 records opened)). Every group exists in the method (it does not tell cis from trans). Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: Fumaric acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"fumaric acid\", \"(e)-but-2-enedioic acid\"; 6 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: Fumaric acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"fumaric acid\", \"(e)-but-2-enedioic acid\"; 6 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: Fumaric acid is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"fumaric acid\", \"(e)-but-2-enedioic acid\"; 6 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Units=SI&Mask=4): no enthalpy of fusion within 3 K of the melting temperature on the WebBook page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "6": 1,
+          "42": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH=CH, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H4O4"
+      }
+    },
+    "malic-acid": {
+      "name": "Malic acid",
+      "formula": "C4H6O5",
+      "cas": "6915-15-7",
+      "aliases": [
+        "2-hydroxybutanedioic acid",
+        "dl-malic acid",
+        "l-malic acid",
+        "hydroxysuccinic acid"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 134.0874,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C6915157&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"malic acid\", \"dl-malic acid\", \"l-malic acid\", \"2-hydroxybutanedioic acid\", \"2-oxidanylbutanedioic acid\"; 12 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C6915157&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"malic acid\", \"dl-malic acid\", \"l-malic acid\", \"2-hydroxybutanedioic acid\", \"2-oxidanylbutanedioic acid\"; 12 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: Malic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 209.2687336,
+            "B": -0.6239873465,
+            "C": 0.002907243252
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 230.0,
+          "Tmax_K": 545.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "1 C-(H)(C)2(O) (alcohol), 1 C-(H)2(C)(CO), 2 CO-(C)(O), 2 O-(H)(CO), 1 O-(H)(C)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (230-445 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620)",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C6915157&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"malic acid\", \"dl-malic acid\", \"l-malic acid\", \"2-hydroxybutanedioic acid\", \"2-oxidanylbutanedioic acid\"; 12 records opened)). A carbon bearing OH next to a carboxyl, C-(H)(C)(O)(CO), is a group the method does not have; it is counted as the secondary alcohol carbon C-(H)(C)2(O), its nearest group. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: Malic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C6915157&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"malic acid\", \"dl-malic acid\", \"l-malic acid\", \"2-hydroxybutanedioic acid\", \"2-oxidanylbutanedioic acid\"; 12 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: Malic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C6915157&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"malic acid\", \"dl-malic acid\", \"l-malic acid\", \"2-hydroxybutanedioic acid\", \"2-oxidanylbutanedioic acid\"; 12 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: Malic acid is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C6915157&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"malic acid\", \"dl-malic acid\", \"l-malic acid\", \"2-hydroxybutanedioic acid\", \"2-oxidanylbutanedioic acid\"; 12 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C6915157&Units=SI&Mask=4): no enthalpy of fusion within 3 K of the melting temperature on the WebBook page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: a melting temperature but no enthalpy of fusion"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "3": 1,
+          "42": 2,
+          "81": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH, 2 COOH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O5"
+      }
+    },
+    "citric-acid": {
+      "name": "Citric acid",
+      "formula": "C6H8O7",
+      "cas": "77-92-9",
+      "aliases": [
+        "2-hydroxypropane-1,2,3-tricarboxylic acid"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 192.1235,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"citric acid\", \"2-hydroxypropane-1,2,3-tricarboxylic acid\", \"2-oxidanylpropane-1,2,3-tricarboxylic acid\"; 31 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"citric acid\", \"2-hydroxypropane-1,2,3-tricarboxylic acid\", \"2-oxidanylpropane-1,2,3-tricarboxylic acid\"; 31 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: Citric acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": -111.4526807,
+            "B": 2.204438508,
+            "C": -0.00145859786
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 230.0,
+          "Tmax_K": 455.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "1 C-(C)3(O) (alcohol), 2 C-(H)2(C)(CO), 3 CO-(C)(O), 3 O-(H)(CO), 1 O-(H)(C)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (230-355 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620)",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"citric acid\", \"2-hydroxypropane-1,2,3-tricarboxylic acid\", \"2-oxidanylpropane-1,2,3-tricarboxylic acid\"; 31 records opened)); the measured values there are: 236.2 J/(mol K) at 424.90 K (Santaella 2018, stated uncertainty 10.6 %), the prediction +138 % from it. The central carbon C-(C)2(CO)(O) is counted as the tertiary alcohol carbon C-(C)3(O), its nearest group. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: Citric acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"citric acid\", \"2-hydroxypropane-1,2,3-tricarboxylic acid\", \"2-oxidanylpropane-1,2,3-tricarboxylic acid\"; 31 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: Citric acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"citric acid\", \"2-hydroxypropane-1,2,3-tricarboxylic acid\", \"2-oxidanylpropane-1,2,3-tricarboxylic acid\"; 31 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: Citric acid is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"citric acid\", \"2-hydroxypropane-1,2,3-tricarboxylic acid\", \"2-oxidanylpropane-1,2,3-tricarboxylic acid\"; 31 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "Tm_K": 426.73,
+        "Hfus_J_mol": 50520.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST TRC ThermoML Archive",
+          "reference": "Klimova 2012, doi:10.1016/j.tca.2012.09.024; Santaella 2018, doi:10.1021/acs.jced.8b00064",
+          "access": "NIST open data (the archive's values are free to use, also where the article is paywalled)",
+          "url": "https://trc.nist.gov/ThermoML/",
+          "file": "validation/data/pure/measured/thermoml_citric-acid.json",
+          "selection": "melting temperature: median of 2 articles; enthalpy of fusion: median of 2 articles (41.844502656-59.2 kJ/mol) whose melting temperature is within 3 K of it; the measured values disagree by 34 % of the median: the enthalpy of fusion is uncertain; NIST WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Units=SI&Mask=4): no enthalpy of fusion within 3 K of the melting temperature on the WebBook page; ChemSep: no value"
+        },
+        "source_ids": [
+          "nist-thermoml-archive"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "4": 1,
+          "42": 3,
+          "82": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 C, 3 COOH, 1 OH (T)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H8O7"
+      }
+    },
+    "glycolic-acid": {
+      "name": "Glycolic acid",
+      "formula": "C2H4O3",
+      "cas": "79-14-1",
+      "aliases": [
+        "hydroxyacetic acid",
+        "2-hydroxyethanoic acid"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "glycolic acid has no open measured vapour pressure and, like lactic acid, condenses with itself to oligomers on heating; in the aqueous processes where it appears CHEPTA keeps it in the liquid",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 76.05136,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: glycolic acid has no open measured vapour pressure and, like lactic acid, condenses with itself to oligomers on heating; in the aqueous processes where it appears CHEPTA keeps it in the liquid",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycolic acid\", \"hydroxyacetic acid\", \"2-hydroxyacetic acid\", \"2-oxidanylethanoic acid\"; 18 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycolic acid\", \"hydroxyacetic acid\", \"2-hydroxyacetic acid\", \"2-oxidanylethanoic acid\"; 18 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: Glycolic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 133.6191644,
+            "B": -0.4504843091,
+            "C": 0.001834846067
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 230.0,
+          "Tmax_K": 545.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "1 C-(H)2(C)(O), 1 CO-(C)(O), 1 O-(H)(CO), 1 O-(H)(C)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (230-445 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620)",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycolic acid\", \"hydroxyacetic acid\", \"2-hydroxyacetic acid\", \"2-oxidanylethanoic acid\"; 18 records opened)). The carbon C-(H)2(CO)(O) is counted as C-(H)2(C)(O), its nearest group. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: Glycolic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycolic acid\", \"hydroxyacetic acid\", \"2-hydroxyacetic acid\", \"2-oxidanylethanoic acid\"; 18 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: Glycolic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycolic acid\", \"hydroxyacetic acid\", \"2-hydroxyacetic acid\", \"2-oxidanylethanoic acid\"; 18 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: Glycolic acid is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycolic acid\", \"hydroxyacetic acid\", \"2-hydroxyacetic acid\", \"2-oxidanylethanoic acid\"; 18 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "Tm_K": 350.75,
+        "Hfus_J_mol": 19900.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST TRC ThermoML Archive",
+          "reference": "Huang 2017, doi:10.1016/j.jct.2017.01.004",
+          "access": "NIST open data (the archive's values are free to use, also where the article is paywalled)",
+          "url": "https://trc.nist.gov/ThermoML/",
+          "file": "validation/data/pure/measured/thermoml_glycolic-acid.json",
+          "selection": "melting temperature: median of 1 articles; enthalpy of fusion: one article whose melting temperature is within 3 K of it; NIST WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page; ChemSep: no value"
+        },
+        "source_ids": [
+          "nist-thermoml-archive"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "14": 1,
+          "42": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4O3"
+      }
+    },
+    "glucaric-acid": {
+      "name": "D-Glucaric acid",
+      "formula": "C6H10O8",
+      "cas": "87-73-0",
+      "aliases": [
+        "saccharic acid",
+        "glucaric acid"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 210.1388,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87730&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucaric acid\", \"d-glucaric acid\", \"saccharic acid\"; 0 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87730&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucaric acid\", \"d-glucaric acid\", \"saccharic acid\"; 0 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: D-Glucaric acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 275.396526,
+            "B": -0.4379335562,
+            "C": 0.003864185152
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 230.0,
+          "Tmax_K": 445.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "4 C-(H)(C)2(O) (alcohol), 2 CO-(C)(O), 2 O-(H)(CO), 4 O-(H)(C) (diol)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (230-445 K); not raised for a polyol, as the check shows the polyol groups drifting beyond their range",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87730&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucaric acid\", \"d-glucaric acid\", \"saccharic acid\"; 0 records opened)). The two carbons next to the carboxyls, C-(H)(C)(CO)(O), are counted as C-(H)(C)2(O); the authors note that their estimates for diols and 1,2,3-propanetriol are poor (part II, p. 641); for polyols the check below shows the prediction rising above the records with temperature. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: D-Glucaric acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87730&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucaric acid\", \"d-glucaric acid\", \"saccharic acid\"; 0 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: D-Glucaric acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87730&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucaric acid\", \"d-glucaric acid\", \"saccharic acid\"; 0 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: D-Glucaric acid is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87730&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glucaric acid\", \"d-glucaric acid\", \"saccharic acid\"; 0 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87730&Units=SI&Mask=4): no phase-change data on the page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "3": 4,
+          "42": 2,
+          "81": 4
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (4 CH, 2 COOH, 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O8"
+      }
+    },
+    "3-hydroxypropionic-acid": {
+      "name": "3-Hydroxypropionic acid",
+      "formula": "C3H6O3",
+      "cas": "503-66-2",
+      "aliases": [
+        "3-hp",
+        "hydracrylic acid",
+        "3-hydroxypropanoic acid"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "3-hydroxypropionic acid has no open measured vapour pressure; on heating it dehydrates (to acrylic acid) or condenses with itself instead of boiling, so in the aqueous processes where it appears CHEPTA keeps it in the liquid",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 90.07794,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: 3-hydroxypropionic acid has no open measured vapour pressure; on heating it dehydrates (to acrylic acid) or condenses with itself instead of boiling, so in the aqueous processes where it appears CHEPTA keeps it in the liquid",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C503662&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"3-hydroxypropionic acid\", \"3-hydroxypropanoic acid\", \"hydracrylic acid\"; 52 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C503662&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"3-hydroxypropionic acid\", \"3-hydroxypropanoic acid\", \"hydracrylic acid\"; 52 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: 3-Hydroxypropionic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 189.1451251,
+            "B": -0.6539653123,
+            "C": 0.002226634093
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 230.0,
+          "Tmax_K": 545.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "1 C-(H)2(C)(O), 1 C-(H)2(C)(CO), 1 CO-(C)(O), 1 O-(H)(CO), 1 O-(H)(C)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (230-445 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620)",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C503662&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"3-hydroxypropionic acid\", \"3-hydroxypropanoic acid\", \"hydracrylic acid\"; 52 records opened)). Every group exists in the method. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: 3-Hydroxypropionic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C503662&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"3-hydroxypropionic acid\", \"3-hydroxypropanoic acid\", \"hydracrylic acid\"; 52 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: 3-Hydroxypropionic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C503662&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"3-hydroxypropionic acid\", \"3-hydroxypropanoic acid\", \"hydracrylic acid\"; 52 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: 3-Hydroxypropionic acid is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C503662&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"3-hydroxypropionic acid\", \"3-hydroxypropanoic acid\", \"hydracrylic acid\"; 52 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C503662&Units=SI&Mask=4): no phase-change data on the page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "14": 1,
+          "42": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 OH (P), 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
+      }
+    },
+    "fdca": {
+      "name": "2,5-Furandicarboxylic acid",
+      "formula": "C6H4O5",
+      "cas": "3238-40-2",
+      "aliases": [
+        "fdca",
+        "furan-2,5-dicarboxylic acid",
+        "dehydromucic acid"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 156.093,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C3238402&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-furandicarboxylic acid\", \"furan-2,5-dicarboxylic acid\"; 3 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C3238402&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-furandicarboxylic acid\", \"furan-2,5-dicarboxylic acid\"; 3 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: 2,5-Furandicarboxylic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 99.05408343,
+            "B": 0.4036860895,
+            "C": 0.0004604492493
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 298.15,
+          "Tmax_K": 405.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "2 CB-(H), 2 CB-(CO), 1 O-(CB)2, 1 furan rsc, 2 CO-(CB)(O), 2 O-(H)(CO)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (300-305 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620); lower end taken down to 298.15 K, the reference temperature of the liquid enthalpy",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C3238402&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-furandicarboxylic acid\", \"furan-2,5-dicarboxylic acid\"; 3 records opened)). The furan ring is counted as the authors count furan: ring carbons as CB groups, the ring oxygen as O-(CB)2, plus the furan ring strain correction (part II, Table 3). Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K). The furan ring correction was fitted to 305 K only; on furfural the prediction stays within 3.4 % of its record from 300 to 405 K."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: 2,5-Furandicarboxylic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C3238402&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-furandicarboxylic acid\", \"furan-2,5-dicarboxylic acid\"; 3 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: 2,5-Furandicarboxylic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C3238402&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-furandicarboxylic acid\", \"furan-2,5-dicarboxylic acid\"; 3 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: 2,5-Furandicarboxylic acid is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C3238402&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-furandicarboxylic acid\", \"furan-2,5-dicarboxylic acid\"; 3 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "Tm_K": 614.45,
+        "Hfus_J_mol": 55130.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST TRC ThermoML Archive",
+          "reference": "Ban 2018, doi:10.1021/acs.jced.7b01112",
+          "access": "NIST open data (the archive's values are free to use, also where the article is paywalled)",
+          "url": "https://trc.nist.gov/ThermoML/",
+          "file": "validation/data/pure/measured/thermoml_fdca.json",
+          "selection": "melting temperature: median of 1 articles; enthalpy of fusion: one article whose melting temperature is within 3 K of it; NIST WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C3238402&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page; ChemSep: no value"
+        },
+        "source_ids": [
+          "nist-thermoml-archive"
+        ]
+      },
+      "modUnifac": {
+        "available": false,
+        "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      }
+    },
+    "bhet": {
+      "name": "Bis(2-hydroxyethyl) terephthalate",
+      "formula": "C12H14O6",
+      "cas": "959-26-2",
+      "aliases": [
+        "bhet",
+        "bis(2-hydroxyethyl) benzene-1,4-dicarboxylate"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "BHET has no open measured vapour pressure; on heating it polycondenses (it is the monomer of PET and the product of its glycolysis) instead of boiling, so CHEPTA keeps it in the liquid",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 254.236,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: BHET has no open measured vapour pressure; on heating it polycondenses (it is the monomer of PET and the product of its glycolysis) instead of boiling, so CHEPTA keeps it in the liquid",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C959262&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"bis(2-hydroxyethyl) terephthalate\", \"bis(2-hydroxyethyl) benzene-1,4-dicarboxylate\"; 0 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C959262&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"bis(2-hydroxyethyl) terephthalate\", \"bis(2-hydroxyethyl) benzene-1,4-dicarboxylate\"; 0 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: Bis(2-hydroxyethyl) terephthalate is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 332.1513713,
+            "B": 0.1132768842,
+            "C": 0.0008155037698
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 195.0,
+          "Tmax_K": 440.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "4 CB-(H), 2 CB-(CO), 2 CO-(CB)(O), 2 O-(C)(CO), 4 C-(H)2(C)(O), 2 O-(H)(C) (diol)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (195-440 K); not raised for a polyol, as the check shows the polyol groups drifting beyond their range",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C959262&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"bis(2-hydroxyethyl) terephthalate\", \"bis(2-hydroxyethyl) benzene-1,4-dicarboxylate\"; 0 records opened)). Every group exists in the method. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: Bis(2-hydroxyethyl) terephthalate is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C959262&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"bis(2-hydroxyethyl) terephthalate\", \"bis(2-hydroxyethyl) benzene-1,4-dicarboxylate\"; 0 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: Bis(2-hydroxyethyl) terephthalate is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C959262&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"bis(2-hydroxyethyl) terephthalate\", \"bis(2-hydroxyethyl) benzene-1,4-dicarboxylate\"; 0 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: Bis(2-hydroxyethyl) terephthalate is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C959262&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"bis(2-hydroxyethyl) terephthalate\", \"bis(2-hydroxyethyl) benzene-1,4-dicarboxylate\"; 0 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C959262&Units=SI&Mask=4): no phase-change data on the page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 4,
+          "9": 4,
+          "10": 2,
+          "14": 2,
+          "77": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (4 CH2, 4 ACH, 2 AC, 2 OH (P), 2 COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C12H14O6"
+      }
+    },
+    "diphenolic-acid": {
+      "name": "Diphenolic acid",
+      "formula": "C17H18O4",
+      "cas": "126-00-1",
+      "aliases": [
+        "4,4-bis(4-hydroxyphenyl)pentanoic acid",
+        "dpa"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "diphenolic acid has no open measured vapour pressure; a solid used dissolved or as a polymer monomer, it does not evaporate in those processes, so CHEPTA keeps it in the liquid",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 286.3224,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: diphenolic acid has no open measured vapour pressure; a solid used dissolved or as a polymer monomer, it does not evaporate in those processes, so CHEPTA keeps it in the liquid",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C126001&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"diphenolic acid\", \"4,4-bis(4-hydroxyphenyl)pentanoic acid\", \"4,4-bis(4-hydroxyphenyl)valeric acid\"; 0 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C126001&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"diphenolic acid\", \"4,4-bis(4-hydroxyphenyl)pentanoic acid\", \"4,4-bis(4-hydroxyphenyl)valeric acid\"; 0 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: Diphenolic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 125.1724537,
+            "B": 1.898235309,
+            "C": -0.001463156706
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 285.0,
+          "Tmax_K": 495.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "8 CB-(H), 2 CB-(O), 2 O-(H)(CB), 2 CB-(C), 1 C-(C)4, 1 C-(H)3(C), 1 C-(H)2(C)2, 1 C-(H)2(C)(CO), 1 CO-(C)(O), 1 O-(H)(CO)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (285-395 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620)",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C126001&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"diphenolic acid\", \"4,4-bis(4-hydroxyphenyl)pentanoic acid\", \"4,4-bis(4-hydroxyphenyl)valeric acid\"; 0 records opened)). The quaternary carbon C-(C)2(CB)2 is counted as C-(C)4, its nearest group. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: Diphenolic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C126001&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"diphenolic acid\", \"4,4-bis(4-hydroxyphenyl)pentanoic acid\", \"4,4-bis(4-hydroxyphenyl)valeric acid\"; 0 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: Diphenolic acid is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C126001&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"diphenolic acid\", \"4,4-bis(4-hydroxyphenyl)pentanoic acid\", \"4,4-bis(4-hydroxyphenyl)valeric acid\"; 0 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: Diphenolic acid is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C126001&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"diphenolic acid\", \"4,4-bis(4-hydroxyphenyl)pentanoic acid\", \"4,4-bis(4-hydroxyphenyl)valeric acid\"; 0 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C126001&Units=SI&Mask=4): no phase-change data on the page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "2": 2,
+          "4": 1,
+          "9": 8,
+          "10": 2,
+          "17": 2,
+          "42": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 2 CH2, 1 C, 8 ACH, 2 AC, 2 ACOH, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C17H18O4"
+      }
+    },
+    "erythritol": {
+      "name": "Erythritol",
+      "formula": "C4H10O4",
+      "cas": "149-32-6",
+      "aliases": [
+        "butane-1,2,3,4-tetrol",
+        "meso-erythritol",
+        "1,2,3,4-butanetetrol"
+      ],
+      "class": "nonvolatile",
+      "nonvolatile": {
+        "why": "sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "source": "proposal 0009, batch 4"
+      },
+      "MW": 122.1198,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "nonvolatile in CHEPTA: sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"erythritol\", \"meso-erythritol\", \"butane-1,2,3,4-tetrol\", \"1,2,3,4-butanetetrol\"; 15 records opened)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"erythritol\", \"meso-erythritol\", \"butane-1,2,3,4-tetrol\", \"1,2,3,4-butanetetrol\"; 15 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "notApplicable": "not defined: Erythritol is nonvolatile, it is never in the vapour"
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 235.1493089,
+            "B": -0.4978894878,
+            "C": 0.002502966832
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 195.0,
+          "Tmax_K": 460.0,
+          "tier": "predicted",
+          "source": {
+            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
+            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
+            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
+            "groups": "2 C-(H)2(C)(O), 2 C-(H)(C)2(O) (alcohol), 4 O-(H)(C) (diol)",
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (195-460 K); not raised for a polyol, as the check shows the polyol groups drifting beyond their range",
+            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"erythritol\", \"meso-erythritol\", \"butane-1,2,3,4-tetrol\", \"1,2,3,4-butanetetrol\"; 15 records opened)). Every group exists in the method; the authors note that their estimates for diols and 1,2,3-propanetriol are poor (part II, p. 641); for polyols the check below shows the prediction rising above the records with temperature. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+          },
+          "source_ids": [
+            "ruzicka-domalski-1993"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "notApplicable": "not defined: Erythritol is nonvolatile, it is never in the vapour"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"erythritol\", \"meso-erythritol\", \"butane-1,2,3,4-tetrol\", \"1,2,3,4-butanetetrol\"; 15 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "notApplicable": "not defined: Erythritol is nonvolatile, it is never in the vapour"
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"erythritol\", \"meso-erythritol\", \"butane-1,2,3,4-tetrol\", \"1,2,3,4-butanetetrol\"; 15 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "notApplicable": "not defined: Erythritol is nonvolatile, it is never in the vapour"
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"erythritol\", \"meso-erythritol\", \"butane-1,2,3,4-tetrol\", \"1,2,3,4-butanetetrol\"; 15 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "Tm_K": 391.25,
+        "Hfus_J_mol": 39400.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST Chemistry WebBook (SRD 69), phase change data",
+          "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=4",
+          "access": "Free to read online (NIST Standard Reference Database 69); values cited per record",
+          "reference": "Barone and Della Gatta, 1990; Jónsdóttir, Cooke, et al., 2002; Lopes Jesus, Tomé, et al., 2005",
+          "selection": "melting temperature: median of 2 WebBook melting temperatures (Tfus); enthalpy of fusion: median of 3 measured values (38.9-40.3 kJ/mol) within 3 K of it"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "3": 2,
+          "14": 2,
+          "81": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 2 CH, 2 OH (P), 2 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O4"
       }
     }
   }

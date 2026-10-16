@@ -1,0 +1,122 @@
+{
+ "component": "glycolic-acid",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=1",
+   "tables": [
+    {
+     "header": [
+      "Cp,gas (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "37.86",
+       "50.",
+       "Dorofeeva O.V., 1997",
+       "p=1 bar."
+      ],
+      [
+       "46.44",
+       "100."
+      ],
+      [
+       "56.01",
+       "150."
+      ],
+      [
+       "65.66",
+       "200."
+      ],
+      [
+       "85. ± 2.",
+       "298.15"
+      ],
+      [
+       "85.09",
+       "300."
+      ],
+      [
+       "104.05",
+       "400."
+      ],
+      [
+       "120.61",
+       "500."
+      ],
+      [
+       "133.95",
+       "600."
+      ],
+      [
+       "144.36",
+       "700."
+      ],
+      [
+       "152.48",
+       "800."
+      ],
+      [
+       "158.94",
+       "900."
+      ],
+      [
+       "164.19",
+       "1000."
+      ],
+      [
+       "168.54",
+       "1100."
+      ],
+      [
+       "172.22",
+       "1200."
+      ],
+      [
+       "175.37",
+       "1300."
+      ],
+      [
+       "178.10",
+       "1400."
+      ],
+      [
+       "180.47",
+       "1500."
+      ]
+     ]
+    }
+   ]
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "51.8",
+       "362.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 350. to 375. K."
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,84 @@
+{
+ "component": "itaconic-acid",
+ "retrieved": "2026-10-16",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°solid",
+       "-841.11 ± 0.59",
+       "kJ/mol",
+       "Ccb",
+       "Wilhoit and Lei, 1965",
+       ""
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°solid",
+       "-1983.9 ± 0.50",
+       "kJ/mol",
+       "Ccb",
+       "Wilhoit and Lei, 1965",
+       "Reanalyzed by  Cox and Pilcher, 1970, Original value = -1985.1 kJ/mol; Corresponding ΔfHºsolid = -841.11 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tfus",
+       "438.25",
+       "K",
+       "N/A",
+       "Wilhoit and Lei, 1965",
+       "Uncertainty assigned by TRC =  1. K"
+      ],
+      [
+       "Tfus",
+       "439.",
+       "K",
+       "N/A",
+       "Wilhoit and Lei, 1965",
+       "Uncertainty assigned by TRC =  0.7 K"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

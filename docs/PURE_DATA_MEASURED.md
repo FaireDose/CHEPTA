@@ -413,7 +413,296 @@ Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 
 |---|---|---|---|---|---|
 | liquidDensity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
 | idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 230.00-545.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## 5-Hydroxymethylfurfural (C6H6O3, CAS 67-47-0)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): HMF has no open measured vapour pressure curve; the NIST WebBook gives its enthalpy of vaporization (83.4 kJ/mol, Verevkin, Emel'yanenko et al. 2009, from data at 314-368 K) and a boiling temperature of 388.2 K at 0.1 kPa (Weast and Grasselli 1989), where water's is 169.5 kPa (IAPWS-IF97): in the aqueous and solvent processes where it is made and extracted it stays in the liquid. Its vacuum distillation is not represented; M 126.1100 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 298.15-405.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## D-Glucose (C6H12O6, CAS 50-99-7)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 180.1559 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 195.00-430.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## D-Fructose (C6H12O6, CAS 57-48-7)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 180.1559 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 200.00-600.00 | 10 | 0 | 0.14 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive); stated uncertainties up to 2.0 %, above the 1 % target, used because the only alternative is a prediction |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## D-Sorbitol (C6H14O6, CAS 50-70-4)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); its measured vapour pressure is 1.31 kPa at 523 K (doi:10.1021/je800070y); M 182.1718 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 195.00-460.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## Xylitol (C5H12O5, CAS 87-99-0)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 152.1458 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 195.00-460.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## Erythritol (C4H10O4, CAS 149-32-6)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 122.1198 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 195.00-460.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## Succinic acid (C4H6O4, CAS 110-15-6)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 118.0880 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 230.00-545.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## Itaconic acid (C5H6O4, CAS 97-65-4)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 130.0987 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 230.00-450.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## Fumaric acid (C4H4O4, CAS 110-17-8)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 116.0722 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 230.00-450.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## Malic acid (C4H6O5, CAS 6915-15-7)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 134.0874 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 230.00-545.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## Citric acid (C6H8O7, CAS 77-92-9)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 192.1235 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 230.00-455.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## Glycolic acid (C2H4O3, CAS 79-14-1)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): glycolic acid has no open measured vapour pressure and, like lactic acid, condenses with itself to oligomers on heating; in the aqueous processes where it appears CHEPTA keeps it in the liquid; M 76.0514 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 230.00-545.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## D-Glucaric acid (C6H10O8, CAS 87-73-0)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 210.1388 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
 | liquidHeatCapacity | 230.00-445.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## 3-Hydroxypropionic acid (C3H6O3, CAS 503-66-2)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): 3-hydroxypropionic acid has no open measured vapour pressure; on heating it dehydrates (to acrylic acid) or condenses with itself instead of boiling, so in the aqueous processes where it appears CHEPTA keeps it in the liquid; M 90.0779 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 230.00-545.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## 2,5-Furandicarboxylic acid (C6H4O5, CAS 3238-40-2)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 156.0930 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 298.15-405.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## Bis(2-hydroxyethyl) terephthalate (C12H14O6, CAS 959-26-2)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): BHET has no open measured vapour pressure; on heating it polycondenses (it is the monomer of PET and the product of its glycolysis) instead of boiling, so CHEPTA keeps it in the liquid; M 254.2360 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 195.00-440.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## Diphenolic acid (C17H18O4, CAS 126-00-1)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): diphenolic acid has no open measured vapour pressure; a solid used dissolved or as a polymer monomer, it does not evaporate in those processes, so CHEPTA keeps it in the liquid; M 286.3224 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 285.00-495.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | — | — | — | — | not defined |
 | liquidViscosity | — | — | — | — | no open data |
 | vapourViscosity | — | — | — | — | not defined |

@@ -2,9 +2,12 @@
  "_about": "Group contributions for the heat capacity of organic liquids, Cp/R = sum n_i dc_i, dc_i = a_i + b_i (T/100) + d_i (T/100)^2 with T in K and R = 8.31451 J/(K mol) (the paper's eq. 1-2). Transcribed from the page images of the NIST reprints (not from their text layer, which has OCR errors); only the groups CHEPTA uses so far. A person compares every row with the table named (AGENTS.md rule 4).",
  "sources": {
   "part1": {"citation": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618", "doi": "10.1063/1.555923", "open_copy": "https://srd.nist.gov/jpcrdreprint/1.555923.pdf", "access": "Free to read: reprint hosted by NIST (Standard Reference Data)", "table": "Table 5, p. 604"},
-  "part2": {"citation": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657", "doi": "10.1063/1.555924", "open_copy": "https://srd.nist.gov/jpcrdreprint/1.555924.pdf", "access": "Free to read: reprint hosted by NIST (Standard Reference Data)", "table": "Table 8, p. 632 (oxygen groups)"}
+  "part2": {"citation": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657", "doi": "10.1063/1.555924", "open_copy": "https://srd.nist.gov/jpcrdreprint/1.555924.pdf", "access": "Free to read: reprint hosted by NIST (Standard Reference Data)", "table": "Table 8, p. 632 (oxygen groups); Table 9, p. 633 (ring strain corrections: \"from\": \"part2-rsc\")"}
  },
  "R": 8.31451,
+ "equivalent": {"_about": "equivalences the authors used to calculate the parameters (part II, Table 2, p. 626)", "CO-(H)(CB)": "CO-(H)(Cd)", "C-(H)3(O)": "C-(H)3(C)"},
+ "extrapolation_K": 100,
+ "_extrapolation": "part II, section 2.2, p. 620: an extrapolation of up to about 100 K beyond a group's range 'has no significant effect on the error of prediction'; a predicted record covers the groups' common range with its upper end raised by up to this much",
  "groups": {
   "C-(H)3(C)":                {"a": 3.8452,     "b": -3.3997e-1, "d": 1.9489e-1,  "T_K": [80, 490],  "from": "part1"},
   "C-(H)2(C)2":               {"a": 2.7972,     "b": -5.4967e-2, "d": 1.0679e-1,  "T_K": [80, 490],  "from": "part1"},
@@ -23,6 +26,20 @@
   "CO-(H)(O)":                {"a": 1.3118e+1,  "b": 1.6120e+1,  "d": -5.1273,    "T_K": [280, 340], "from": "part2"},
   "CO-(C)(O)":                {"a": 2.9246e+1,  "b": 3.4261,     "d": -2.8962,    "T_K": [180, 445], "from": "part2"},
   "O-(C)(CO)":                {"a": -2.1434e+1, "b": -4.0164,    "d": 3.0531,     "T_K": [175, 440], "from": "part2"},
-  "O-(H)(CO)":                {"a": -2.7587e+1, "b": -1.6485e-1, "d": 2.7483,     "T_K": [230, 500], "from": "part2"}
+  "O-(H)(CO)":                {"a": -2.7587e+1, "b": -1.6485e-1, "d": 2.7483,     "T_K": [230, 500], "from": "part2"},
+  "Cd-(H)2":                  {"a": 4.1763,     "b": -4.7392e-1, "d": 9.9928e-2,  "T_K": [90, 355],   "from": "part1"},
+  "CB-(H)":                   {"a": 2.2609,     "b": -2.5000e-1, "d": 1.2592e-1,  "T_K": [180, 670],  "from": "part1"},
+  "CB-(C)":                   {"a": 1.5070,     "b": -1.3366e-1, "d": 1.1799e-2,  "T_K": [180, 670],  "from": "part1"},
+  "O-(H)(CB)":                {"a": -7.9768,    "b": 8.1045,     "d": -8.7263e-1, "T_K": [285, 400],  "from": "part2"},
+  "C-(H)2(CB)(O)":            {"a": -3.5127e+1, "b": 2.8409e+1,  "d": -4.9593,    "T_K": [260, 460],  "from": "part2"},
+  "O-(CB)2":                  {"a": -4.5788,    "b": 9.4150e-1,  "d": 3.1655e-1,  "T_K": [300, 535],  "from": "part2"},
+  "CB-(O)":                   {"a": -1.0686,    "b": 3.5221,     "d": -7.9259e-1, "T_K": [285, 530],  "from": "part2"},
+  "CO-(H)(Cd)":               {"a": -8.0024,    "b": 3.6379,     "d": -1.5377e-1, "T_K": [220, 430],  "from": "part2"},
+  "CO-(Cd)(O)":               {"a": 4.1615e+1,  "b": -1.2789e+1, "d": 5.3631e-1,  "T_K": [195, 350],  "from": "part2"},
+  "Cd-(H)(CO)":               {"a": -9.0108,    "b": 1.5148e+1,  "d": -3.0436,    "T_K": [195, 355],  "from": "part2"},
+  "Cd-(C)(CO)":               {"a": -1.2818e+1, "b": 1.5997e+1,  "d": -3.0567,    "T_K": [195, 430],  "from": "part2"},
+  "CB-(CO)":                  {"a": 1.2151e+1,  "b": -1.6705,    "d": -1.2758e-1, "T_K": [175, 500],  "from": "part2"},
+  "CO-(CB)(O)":               {"a": 1.6586e+1,  "b": 5.4491,     "d": -2.6849,    "T_K": [175, 500],  "from": "part2"},
+  "furan rsc":                {"a": 9.6704,     "b": -2.8138,    "d": 1.1376e-1,  "T_K": [190, 305],  "from": "part2-rsc"}
  }
 }
