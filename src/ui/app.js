@@ -967,7 +967,7 @@ export function app(target, cfg = {}) {
             type: "button", class: "fa-rule", "aria-pressed": String(rule === r.id), "data-fk": `rule-${r.id}`, on: { click: () => set({ prefer: r.id }) } },
           h("b", {}, r.label), h("span", {}, r.hint))))),
         drawerSection("Per pair",
-          h("p", {}, chosen ? `${chosen} pair${chosen === 1 ? "" : "s"} set by hand.` : "Each pair can use another set: its menu is in the Inputs panel of the phase-equilibrium diagrams."),
+          h("p", {}, chosen ? `${chosen} pair${chosen === 1 ? "" : "s"} set by hand.` : "Each pair can use another set: its menu is in the Inputs panel of the phase-equilibrium diagrams. The diagrams, the flash and the flowsheet all use these choices."),
           h("button", { type: "button", class: "fa-mini", disabled: !chosen && rule === "best", "data-fk": "lib-reset",
             on: { click: () => set({ sets: null, prefer: null }) } }, icon("clear", 15), "Back to the defaults"),
           h("p", { class: "fa-in-hint" }, "Sets from a paper: CHEPTA.library.add() (this page only).")),

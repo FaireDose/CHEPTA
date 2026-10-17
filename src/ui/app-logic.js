@@ -720,6 +720,27 @@ export function setsFor(state, model) {
 }
 
 /**
+ * The flowsheet as it is calculated in the workbench: with the parameter sets of the Library (its rule for every pair,
+ * and the per-pair choices that exist for the flowsheet's model), as the diagrams and the flash use them (the
+ * maintainer, 2026-10-17). Sets or a rule that the flowsheet document names itself (written from code) win.
+ */
+export function calculatedFlowsheet(state) {
+  const fs = state.flowsheet, t = fs?.thermo ?? {};
+  if (!fs) return fs;
+  const { sets, prefer } = setsFor(state, t.model ?? "NRTL");
+  const all = { ...sets, ...(t.sets ?? {}) }, rule = t.prefer ?? prefer;
+  if (!Object.keys(all).length && !rule) return fs;
+  return { ...fs, thermo: { ...t, ...(Object.keys(all).length ? { sets: all } : {}), ...(rule ? { prefer: rule } : {}) } };
+}
+
+/** The Library's choice in words, for the flowsheet's results: the rule, and how many pairs are set by hand. */
+export function setsLabel(state) {
+  const rule = ruleOf(state.prefer), hand = Object.keys(state.sets ?? {}).length;
+  const name = rule === "best" ? "each pair's default" : rule === "custom" ? `tiers ${state.prefer.join(", ")}` : RULES.find(r => r.id === rule).label;
+  return `${name}${hand ? `, ${hand} pair${hand === 1 ? "" : "s"} set by hand` : ""}`;
+}
+
+/**
  * The sets offered for a pair in the Inputs panel: the default first, then the others,
  * each with a short label and `current` for the one in use. Empty when the pair has only one set.
  * @param {object} info  an info.pairs entry of a system

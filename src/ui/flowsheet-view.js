@@ -23,7 +23,7 @@ import {
 import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { flowsheetXlsx } from "./flowsheet-excel.js";
 import pkg from "../../package.json" with { type: "json" };
-import { parseP, parseT, fmtTemp, fmtP, userOverlay } from "./app-logic.js";
+import { parseP, parseT, fmtTemp, fmtP, userOverlay, calculatedFlowsheet, setsLabel } from "./app-logic.js";
 
 // the user's own data of the workbench being drawn (proposal 0012), set by each entry point below from its state;
 // the drawing is synchronous, so it never mixes two workbenches
@@ -31,6 +31,8 @@ let drawing = null;
 const enter = state => { drawing = userOverlay(state); };
 const byId = () => new Map(listComponents({ userData: drawing }).map(c => [c.id, c]));
 const nameOf = id => byId().get(id)?.name ?? id;
+// the models with parameters per pair (Modified UNIFAC 2.0 and the ideal solution have none)
+const PAIR_MODELS = ["NRTL", "UNIQUAC", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater / cooler", product: "Product" };
 const HINT = {
   feed: "A stream entering the flowsheet: its flows and two of T, P and vapour fraction.",
@@ -82,13 +84,15 @@ export function deleteSelected(state, set, ui) {
 // ---------------------------------------------------------------------------------------
 // Solving (cached by the flowsheet's text)
 
-/** What the solution depends on, as text: the flowsheet, and the user's own data when the project has some. */
-export const flowsheetKey = state => JSON.stringify(state.userData ? [state.flowsheet, state.userData] : state.flowsheet);
+/** What the solution depends on, as text: the flowsheet with the Library's parameter sets, and the user's own data
+ *  when the project has some. */
+export const flowsheetKey = state => JSON.stringify(state.userData ? [calculatedFlowsheet(state), state.userData] : calculatedFlowsheet(state));
 
 /** The status and, when it can be had, the solution of the flowsheet in the state (with the project's own data). */
 export function solution(state, ui) {
   enter(state);
-  const f = ensureUi(ui), fs = state.flowsheet, ud = userOverlay(state);
+  // the flowsheet with the parameter sets chosen in the Library and the diagrams
+  const f = ensureUi(ui), fs = calculatedFlowsheet(state), ud = userOverlay(state);
   let status;
   try { status = flowsheetDocStatus(fs, ud); } catch (e) { return { status: { ready: false, message: e.message, structure: [], blocks: {} }, result: null, error: e.message }; }
   const key = flowsheetKey(state);
@@ -343,7 +347,7 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
   };
   if (f.setup === "method") {
     // the Method page: the property method and the recycle solver
-    return [methodSection({ fs, eos, setThermo, inputsSection, uid, problem: methodProblem(fs.components, fs.thermo) }),
+    return [methodSection({ state, fs, eos, setThermo, inputsSection, uid, problem: methodProblem(fs.components, fs.thermo) }),
       ...solverSection({ fs, set, uid, inputsSection })];
   }
   const secs = [];
@@ -370,7 +374,7 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
 }
 
 /** The property method of the whole flowsheet: an activity model with a vapour model, or an equation of state. */
-function methodSection({ fs, eos, setThermo, inputsSection, uid, problem }) {
+function methodSection({ state, fs, eos, setThermo, inputsSection, uid, problem }) {
   // is this the recommended method for these components? (docs/METHOD_SELECTION.md)
   const advice = methodAdvice({ ids: fs.components, names: fs.components.map(nameOf), formulas: fs.components.map(id => byId().get(id)?.formula),
     model: fs.thermo.model, eos });
@@ -381,6 +385,9 @@ function methodSection({ fs, eos, setThermo, inputsSection, uid, problem }) {
     modelPicker({ model: fs.thermo.model, vapour: fs.thermo.vapour ?? "ideal", id: `fs-model-${uid}`, fk: "fs-model",
       onChange: p => setThermo(p.model === fs.thermo.model ? { vapour: p.vapour } : { model: p.model, vapour: p.vapour }) }),
     problem ? h("div", { class: "fug-err", role: "alert", "data-fk": "fs-method-problem" }, problem) : null,
+    // the pair parameter sets: the same choice as the diagrams and the flash
+    PAIR_MODELS.includes(fs.thermo.model) ? h("p", { class: "fa-in-hint", "data-fk": "fs-sets" },
+      `Pair parameter sets: ${setsLabel(state)}. The rule for every pair is in the Library; a pair's own set is chosen in the Inputs panel of the phase-equilibrium diagrams. The flowsheet uses the same choice.`) : null,
     // on the roadmap, for other kinds of mixture: locked, with what each is for (other models: in the lists above)
     h("div", { class: "fa-fs-later", role: "note" },
       h("div", { class: "fa-in-hint" }, "Not available yet:"),
@@ -769,7 +776,7 @@ function resultsPanel({ state, f, sol, u }) {
         ["Heat in", `${fmtShort(qin, 5)} kW`], ["Heat out", `${fmtShort(-qout, 5)} kW`],
         ["Material balance", Object.values(res.balance.material_kmol_h).every(v => Math.abs(v) < 1e-6) ? "closed" : "check"],
         ["Energy balance", `${fmtShort(res.balance.energy_kW, 3)} kW`],
-      ]), h("div", { class: "fug-foot" }, `Model: ${fs.thermo.model}${["PR", "SRK"].includes(fs.thermo.model) ? "" : `, ${fs.thermo.vapour} vapour`}. Model predictions, not measurements; the parameter sources are in Sources.`));
+      ]), h("div", { class: "fug-foot" }, `Model: ${fs.thermo.model}${["PR", "SRK"].includes(fs.thermo.model) ? "" : `, ${fs.thermo.vapour} vapour`}${PAIR_MODELS.includes(fs.thermo.model) ? `; parameter sets (Library): ${setsLabel(state)}` : ""}. Model predictions, not measurements; the parameter sources are in Sources.`));
     }
   }
   return out;
@@ -821,7 +828,7 @@ function csvTools(ctx, fs, res, u) {
   const status = h("div", { class: "fug-foot", "aria-live": "polite" }), box = h("div");
   const excel = concept => () => {
     try {
-      const bytes = flowsheetXlsx(fs, res, { version: pkg.version, concept, userData: drawing });
+      const bytes = flowsheetXlsx(calculatedFlowsheet(ctx.state), res, { version: pkg.version, concept, userData: drawing });
       const name = `${(ctx.state.title || "flowsheet").replace(/[\\/:*?"<>|]+/g, "-")}${concept ? " - concept model" : ""}.xlsx`;
       const url = URL.createObjectURL(new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
       const a = h("a", { href: url, download: name, style: "display:none" });

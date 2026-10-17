@@ -63,6 +63,11 @@ components, the method (`thermo`), the blocks with positions, the streams and th
   [../schema/project-2.json](../schema/project-2.json).
 - **Writing and solving it:** an AI assistant can write the document, check it with
   `CHEPTA.checkProject` and solve it with `CHEPTA.runFlowsheet`.
+- **Parameter sets:** `thermo.sets` and `thermo.prefer` choose a pair's set as in `system()`. In the workbench the
+  flowsheet uses the Library's choice, as the diagrams and the flash do: the rule for every pair (each pair's default,
+  fitted to data first, databank only) and a pair's own set chosen in a diagram's Inputs panel, where that set exists
+  for the flowsheet's model (`calculatedFlowsheet` in [`src/ui/app-logic.js`](../../src/ui/app-logic.js)). Sets the
+  document names itself win. Changing the choice calculates the flowsheet again; its results name the choice.
 
 ## Flowsheet solver (layer 5)
 
