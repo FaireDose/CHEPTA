@@ -34,7 +34,11 @@ test("the parameter file is the arXiv files: R, Q and the a and b tables", () =>
   const size = csv("Size_Parameters_modUNIFAC20.csv").slice(1);
   assert.equal(Object.keys(tables.subgroups).length, size.length);
   for (const [id, name, main, , R, Q] of size) {
-    assert.deepEqual(tables.subgroups[id], { name, main: Number(main), R: Number(R), Q: Number(Q) }, `subgroup ${id}`);
+    // name, main group, R and Q are the paper's; the atoms (for the atom balance, proposal 0012 step 5) are added from
+    // the thermo library, for every subgroup it knows
+    const { atoms, ...fromPaper } = tables.subgroups[id];
+    assert.deepEqual(fromPaper, { name, main: Number(main), R: Number(R), Q: Number(Q) }, `subgroup ${id}`);
+    assert.ok(atoms === null ? name === "BTI-" : Object.values(atoms).every(n => Number.isInteger(n) && n >= 0) && Object.values(atoms).some(n => n > 0), `atoms of subgroup ${id}`);
   }
   for (const [file, key] of [["a_Parameters_modUNIFAC20.csv", "a"], ["b_Parameters_modUNIFAC20.csv", "b"]]) {
     const rows = csv(file);

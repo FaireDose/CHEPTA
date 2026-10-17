@@ -142,10 +142,12 @@ test("Modified UNIFAC 2.0 groups of the user's own: the databank's own groups gi
   assert.deepEqual(b.gammas([0.7, 0.3], 350), a.gammas([0.7, 0.3], 350));
   assert.ok(b.info.userData.some(u => u.what === "Modified UNIFAC 2.0 groups"));
   // maleic anhydride has no groups (the method cannot describe the anhydride): refused, then usable with the user's own
-  // (made-up groups: the point is the path, not the chemistry)
+  // (made-up groups: the point is the path, not the chemistry; since step 5 they must pass the atom balance against
+  // C4H2O3, so AC + CH2CO + COO, and the earlier unbalanced choice is refused)
   assert.throws(() => system({ components: ["water", "maleic-anhydride"], model: "MOD-UNIFAC-2" }), /no Modified UNIFAC 2\.0 groups/);
+  assert.throws(() => checkUserData({ groups: { "maleic anhydride": { subgroups: { 6: 1, 22: 1 }, source: { name: "my assignment" } } } }), /atom balance does not close/);
   const m = system({ components: ["water", "maleic-anhydride"], model: "MOD-UNIFAC-2",
-    userData: { groups: { "maleic anhydride": { subgroups: { 6: 1, 22: 1 }, source: { name: "my assignment" } } } } });
+    userData: { groups: { "maleic anhydride": { subgroups: { 10: 1, 19: 1, 77: 1 }, source: { name: "my assignment" } } } } });
   assert.ok(m.gammas([0.5, 0.5], 330).every(g => g > 0));
 });
 

@@ -25,6 +25,7 @@ import { FIT_EQUATION, INPUT_UNITS, T_UNITS, parseTable, toRecordUnits, fitPoint
 import { userDataDoc, userDataText, userDataFileName, readUserDataFile, mergeUserData, userDataPackage, removeUserDataEntry, putUserData, userDataList, setEntryUse } from "./user-data-file.js";
 import { fmtShort } from "./properties-logic.js";
 import pkg from "../../package.json" with { type: "json" };
+import { pairSection, groupsSection } from "./my-data-pairs-groups.js";
 
 /** Property labels, the vapour pressure included. */
 export const PROPERTY_LABEL = { ...Object.fromEntries(Object.entries(PROPERTIES).map(([k, p]) => [k, p.label])), vapourPressure: "Vapour pressure",
@@ -92,6 +93,8 @@ function sections(env, m, draw) {
     section("In this project", ...entryList(env, m, draw)),
     section("Add a property", ...propertyForm(env, m, draw)),
     section("Add a component of your own", ...componentForm(env, m, draw)),
+    section("Pair parameters", ...pairSection(env, m, draw)),
+    section("Modified UNIFAC 2.0 groups", ...groupsSection(env, m, draw)),
     section("My data as a file", ...filesSection(env, m, draw)),
     section("What your data is",
       h("p", { class: "fa-in-hint" }, "Your numbers are used only in this project, labelled \"user\" wherever a result uses them. A record of yours replaces the databank's for that property; the databank's stays in CHEPTA, so you can compare by removing yours."),

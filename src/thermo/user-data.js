@@ -35,6 +35,7 @@ import { CORRELATION_EQUATIONS } from "./correlations.js";
 import { vapourPressure } from "./psat.js";
 import { findComponent, USER_PREFIX } from "./components.js";
 import { brent } from "../util/solve.js";
+import { atomBalance } from "./formula.js";
 import { fail } from "../util/errors.js";
 
 /** The units a record of each property is stored in (the same as PROPERTIES[name].recordUnits in pure.js). */
@@ -119,7 +120,7 @@ function fusionRecord(f, what) {
 }
 
 /** Modified UNIFAC 2.0 groups, checked against the method's subgroups; in the format of components.json. */
-function groupsRecord(g, what) {
+function groupsRecord(g, what, formula = null) {
   if (!isObj(g) || !isObj(g.subgroups)) throw bad(`${what} must be { subgroups: { "<subgroup id>": count }, source }.`);
   const groups = {};
   for (const [id, n] of Object.entries(g.subgroups)) {
@@ -128,6 +129,10 @@ function groupsRecord(g, what) {
     groups[id] = n;
   }
   if (!Object.keys(groups).length) throw bad(`${what}: give at least one subgroup.`);
+  // the atom balance against the formula, as for the database's groups (docs/DATA_RULES.md section 7): the same atoms,
+  // or one H over (a substituted ring carbon counted in the ring's subgroup)
+  const bal = atomBalance(groups, formula);
+  if (bal.ok === false && !bal.oneHOver && !bal.unknown.length) throw bad(`${what}: the atom balance does not close: ${bal.text}.`);
   const source = sourceOf(g.source, what);
   const names = Object.entries(groups).map(([id, n]) => `${n} ${modUnifacData.subgroups[id].name}`).join(", ");
   return { groups, tier: "user", source: `Modified UNIFAC 2.0 subgroups (${names}): your own assignment (${source.name})`, userSource: source };
@@ -218,7 +223,7 @@ function userComponent(id, c) {
   out.properties = rest;
   if (fusion) out.fusion = fusion;
   if (c.fusion != null) out.fusion = fusionRecord(c.fusion, `${what}.fusion`);
-  if (c.groups != null) out.modUnifac = groupsRecord(c.groups, `${what}.groups`);
+  if (c.groups != null) out.modUnifac = groupsRecord(c.groups, `${what}.groups`, out.formula);
   else out.modUnifac = { note: "no Modified UNIFAC 2.0 groups: give them in your own data (groups)" };
   return out;
 }
@@ -325,7 +330,7 @@ export function checkUserData(userData) {
     if (id.startsWith(USER_PREFIX)) throw bad(`groups["${key}"]: give the groups of your own component in its own entry (components["${id}"].groups).`);
     if (given.has(`g|${id}`)) throw bad(`groups: ${componentData.components[id].name} is given twice ("${key}").`);
     given.add(`g|${id}`);
-    const rec = groupsRecord(g, `groups["${key}"]`);
+    const rec = groupsRecord(g, `groups["${key}"]`, componentData.components[id].formula);
     if (!switchedOff(g, `groups["${key}"]`)) ud.groups[id] = rec;
   }
   const seen = new Set();
