@@ -560,6 +560,20 @@
         "validation/data/vle/ethylene-carbonate_water_10-1021-je700689w_tpx.json"
       ]
     },
+    "chua2022-article-fructose": {
+      "title": "The melting properties of D-alpha-glucose, D-beta-fructose, D-sucrose, D-alpha-galactose, and D-alpha-xylose and their solubility in water: A revision",
+      "authors": "Y. Z. Chua, H. T. Do, A. Kumar, M. Hallermann, D. Zaitsau, C. Schick, C. Held",
+      "year": 2022,
+      "published": "Food Biophys. 17 (2022) 181-197",
+      "kind": "open-access article",
+      "doi": "10.1007/s11483-021-09707-6",
+      "url": "http://hdl.handle.net/2003/40946",
+      "access": "Open access, CC BY 4.0 (Springer); the published version is also in the TU Dortmund repository Eldorado (hdl:2003/40946)",
+      "files": [
+        "validation/data/pure/measured/article_fructose_chua2022.json",
+        "validation/data/pure/measured/article_glucose_chua2022.json"
+      ]
+    },
     "clara2006-2-butanone-chloroform": {
       "title": "Density, Viscosity, Vapor-Liquid Equilibrium, Excess Molar Volume, Viscosity Deviation, and Their Correlations for the Chloroform + 2-Butanone Binary System",
       "authors": "R. A. Clara, A. C. G. Marigliano, H. N. Solimo",
@@ -3445,6 +3459,19 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/methanol_methyl-oleate_10-1016-j-fluid-2015-09-049_101.0kPa.json"
+      ]
+    },
+    "simic2021-article-furfuryl-alcohol": {
+      "title": "Thermodynamic and Transport Properties of Biomass-Derived Furfural, Furfuryl Alcohol and Their Mixtures",
+      "authors": "Z. V. Simic, M. Lj. Kijevcanin, I. R. Radovic, M. Grilc, G. R. Ivanis",
+      "year": 2021,
+      "published": "Energies 14 (2021) 7769",
+      "kind": "open-access article",
+      "doi": "10.3390/en14227769",
+      "url": "https://www.mdpi.com/1996-1073/14/22/7769",
+      "access": "Open access, CC BY 4.0 (MDPI)",
+      "files": [
+        "validation/data/pure/measured/article_furfuryl-alcohol_simic2021.json"
       ]
     },
     "soujanya2016-2-propanol-glycerol": {

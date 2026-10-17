@@ -279,6 +279,40 @@
     "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)"
    ]
   },
+  "liquidViscosity": {
+   "units": "Pa s",
+   "source": {
+    "name": "Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 4.2 %, above the 3 % target, used because no open values meet the target",
+    "fit": "7 measured values, 293.15-323.15 K, max deviation 0.32 %"
+   },
+   "T_K": [
+    293.15,
+    298.15,
+    303.15,
+    308.15,
+    313.15,
+    318.15,
+    323.15
+   ],
+   "values": [
+    0.00199,
+    0.00182,
+    0.00167,
+    0.00153,
+    0.00142,
+    0.00132,
+    0.00123
+   ],
+   "references": [
+    "Papovic 2017",
+    "Papovic 2017",
+    "Papovic 2017",
+    "Papovic 2017",
+    "Papovic 2017",
+    "Papovic 2017",
+    "Papovic 2017"
+   ]
+  },
   "vapourPressure": {
    "units": "Pa",
    "source": {

@@ -718,6 +718,64 @@
     "Reghem 2005"
    ]
   },
+  "surfaceTension": {
+   "units": "N/m",
+   "source": {
+    "name": "Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 2.9 %, above the 1 % target, used because no open values meet the target",
+    "fit": "15 measured values, 298.15-393.17 K, max deviation 1.6 %"
+   },
+   "T_K": [
+    298.15,
+    298.15,
+    303.16,
+    308.15,
+    313.14,
+    313.15,
+    318.15,
+    323.16,
+    333.14,
+    343.16,
+    353.16,
+    363.16,
+    373.16,
+    383.17,
+    393.17
+   ],
+   "values": [
+    0.03082,
+    0.03088,
+    0.03006,
+    0.03002,
+    0.02901,
+    0.02942,
+    0.0291,
+    0.02798,
+    0.0269,
+    0.02588,
+    0.0247,
+    0.0236,
+    0.02256,
+    0.02158,
+    0.02051
+   ],
+   "references": [
+    "Kumar 2003",
+    "Deng 2006",
+    "Wang 2017",
+    "Kumar 2003",
+    "Wang 2017",
+    "Deng 2006",
+    "Kumar 2003",
+    "Wang 2017",
+    "Wang 2017",
+    "Wang 2017",
+    "Wang 2017",
+    "Wang 2017",
+    "Wang 2017",
+    "Wang 2017",
+    "Wang 2017"
+   ]
+  },
   "vapourPressure": {
    "units": "Pa",
    "source": {

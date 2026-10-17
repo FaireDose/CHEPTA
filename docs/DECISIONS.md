@@ -127,8 +127,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      only in paywalled sources: a record from the open single values at 292.5-303.2 K, or a source the maintainer
      names?), and the ideal-gas heat capacity of 2-methoxyethanol, the levulinates, levulinic acid, THFA and
      2,3-butanediol, and of all 15 above the range derived from their liquid (an open group-contribution method, tier
-     "predicted"?); then thermal conductivity, surface tension and the missing viscosities (open
-     data via `open_copy.py`, else an open prediction method), then the water + lactic acid solution density and
+     "predicted"?); surface tension, viscosity, density and fusion: 12 records added on 2026-10-17 (same file); still
+     open: the remaining thermal conductivities, surface tensions and viscosities (leads: Lomba et al. 2011, Green
+     Chem., supplement not retrievable; Sharma et al. 2024, J. Chem. Eng. Data, paywalled; Nikitin et al. 2020-2023
+     critical constants of GVL, furfuryl alcohol and THFA, no open copy verified; xylitol and erythritol liquid density,
+     Materials 10 (2017) 444, CC BY, one temperature each in the text; levulinate conductivity from the diffusivities
+     of Nikitin et al. 2019; the 1,3-propanediol enthalpy of fusion at 249 K, 3.5 K from its triple point, beyond the
+     3 K rule), else an open prediction method, then the water + lactic acid solution density and
      viscosity (open: Simion et al. 2012, Food and Environment Safety XI(4), Tables 1-2, 9-85 wt %, 293-353 K); a
      mixture density and viscosity model is needed to use them.
 - **0010, reactions:**

@@ -874,7 +874,10 @@ class ThermoML:
                 continue
             if record not in ("vapourPressure", "Tb", "Tc", "Pc") and r["P_kPa"] is not None and r["P_kPa"] > pmax:
                 continue
-            if record in ("liquidDensity", "liquidHeatCapacity", "liquidViscosity", "surfaceTension") and "Gas" in r["phases"]:
+            # a liquid property measured with a gas phase present is left out, except the surface tension, whose
+            # liquid-gas values the archive lists with both phases (against the liquid's own vapour; against air at
+            # 1 atm it lists "Air at 1 atmosphere"); until 2026-10-17 these were left out too
+            if record in ("liquidDensity", "liquidHeatCapacity", "liquidViscosity") and "Gas" in r["phases"]:
                 continue
             key = (r["doi"], r["T_K"], r["value"])
             if key in seen:
@@ -1154,9 +1157,12 @@ def record(prop, form, coeffs, use, excluded, m, Tc, source_text, references, ac
     return rec, pts
 
 
-def fit_or_marker(cid, prop, form, target, pts, records, points, log, Tc, tml, searched, name, access):
-    """A fitted record when at least three temperatures have values within the target uncertainty, else a
-    "no open data" marker that says what there is."""
+def fit_or_marker(cid, prop, form, target, pts, records, points, log, Tc, tml, searched, name, access, loose=True):
+    """A fitted record when at least three temperatures have values within the target uncertainty; else, by the rule
+    "measured before predicted" (docs/DATA_RULES.md, section 10; for every property since 2026-10-17), a record of the
+    measured values whose stated uncertainties are above the target, held to those uncertainties and saying so
+    (`stated_uncertainty_percent`), when they cover three temperatures; else a "no open data" marker that says what
+    there is."""
     ok = [p for p in pts if p["u_rel"] is None or p["u_rel"] <= target]
     temps = {round(p["T"], 1) for p in ok if not p.get("webbook_single")}
     if len(temps) >= 2 and len({round(p["T"], 1) for p in ok}) >= 3:
@@ -1166,6 +1172,17 @@ def fit_or_marker(cid, prop, form, target, pts, records, points, log, Tc, tml, s
             refs_of([p for p in use if p.get("doi")], tml) + sorted({p["ref"] for p in use if not p.get("doi")}), access)
         log.append("%-17s %-25s %3d values, %d left out, max dev %s %%" % (cid, prop, len(use), len(exc), pct(m)))
         return
+    stated = [p for p in pts if p["u_rel"] is not None]
+    if loose and len({round(p["T"], 1) for p in stated}) >= 3 and max(p["u_rel"] for p in stated) > target:
+        u = max(p["u_rel"] for p in stated)
+        why = "the only alternative is a prediction" if prop == "liquidHeatCapacity" else "no open values meet the target"
+        fit_or_marker(cid, prop, form, u, pts, records, points, log, Tc, tml, searched,
+                      "%s; stated uncertainties up to %.1f %%, above the %g %% target, used because %s" % (
+                          name, 100 * u, 100 * target, why), access, loose=False)
+        if records[prop].get("available") is not False:
+            # the target this record is held to, in place of the usual one (test/properties.test.js reads it)
+            records[prop]["source"]["stated_uncertainty_percent"] = rnd(100 * u, 3)
+            return
     r = {"available": False, "searched": searched}
     if pts:
         loose = [p for p in pts if p["u_rel"] is not None and p["u_rel"] > target]
@@ -1190,26 +1207,19 @@ def cp_measured_or_predicted(cid, cps, records, points, log, Tc, tml, searched, 
     import predict_cp
     name = name or "Measured heat capacities of the liquid (NIST TRC ThermoML Archive)"
     access = access or THERMOML_ACCESS
-    if records["liquidHeatCapacity"].get("available") is not False:
-        return
-    stated = [p for p in cps if p["u_rel"] is not None]
-    if len({round(p["T"], 1) for p in stated}) >= 3:
-        u = max(p["u_rel"] for p in stated)
-        fit_or_marker(cid, "liquidHeatCapacity", "DIPPR100", u, cps, records, points, log, Tc, tml, searched,
-                      "%s; stated uncertainties up to %.1f %%, above the 1 %% target, used because the only alternative "
-                      "is a prediction" % (name, 100 * u), access)
-        rec = records["liquidHeatCapacity"]
-        if rec.get("available") is not False:
-            # the target this record was held to, in place of the 1 % one (test/properties.test.js reads it)
-            rec["source"]["stated_uncertainty_percent"] = rnd(100 * u, 3)
-        if cid in predict_cp.PREDICT and rec.get("available") is not False:
-            _, (lo, hi) = predict_cp.coefficients(predict_cp.PREDICT[cid]["groups"])
-            T = np.array(sorted({p["T"] for p in cps if lo <= p["T"] <= hi and rec["Tmin_K"] <= p["T"] <= rec["Tmax_K"]}))
-            if len(T):
-                dev = 100 * (predict_cp.cp(predict_cp.PREDICT[cid]["groups"], T) / ev(rec["equation"], rec["coefficients"], T) - 1)
-                rec["source"]["notes"] = ("The group-additivity prediction (Ruzicka and Domalski 1993, predict_cp.py) would be "
-                                          "%+.0f to %+.0f %% from this record at the measured temperatures within its groups' "
-                                          "range, %.0f-%.0f K." % (min(dev), max(dev), T[0], T[-1]))
+    if records["liquidHeatCapacity"].get("available") is False:
+        # measured values above the target first (fit_or_marker; where the caller has already called it, the same
+        # marker again)
+        fit_or_marker(cid, "liquidHeatCapacity", "DIPPR100", 0.01, cps, records, points, log, Tc, tml, searched, name, access)
+    rec = records["liquidHeatCapacity"]
+    if rec.get("available") is not False and rec["source"].get("stated_uncertainty_percent") and cid in predict_cp.PREDICT:
+        _, (lo, hi) = predict_cp.coefficients(predict_cp.PREDICT[cid]["groups"])
+        T = np.array(sorted({p["T"] for p in cps if lo <= p["T"] <= hi and rec["Tmin_K"] <= p["T"] <= rec["Tmax_K"]}))
+        if len(T):
+            dev = 100 * (predict_cp.cp(predict_cp.PREDICT[cid]["groups"], T) / ev(rec["equation"], rec["coefficients"], T) - 1)
+            rec["source"]["notes"] = ("The group-additivity prediction (Ruzicka and Domalski 1993, predict_cp.py) would be "
+                                      "%+.0f to %+.0f %% from this record at the measured temperatures within its groups' "
+                                      "range, %.0f-%.0f K." % (min(dev), max(dev), T[0], T[-1]))
     if records["liquidHeatCapacity"].get("available") is False and cid in predict_cp.PREDICT:
         why = "No open measured liquid heat capacity over a temperature range (searched: %s)" % "; ".join(searched)
         if cps:

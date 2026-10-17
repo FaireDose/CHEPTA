@@ -124,7 +124,56 @@
     predicted ones "predicted (p)";
   - `make_sources.py` added the article ids that records already cite, from pair data added since they were last
     written.
+- **Second round, the other properties** (the maintainer: "take your suggestion and take the 6 and in the same time look
+  in this .md file", a research report by another assistant; its leads were checked here, not copied):
+  - **A filter bug, found from that report.** ThermoML Archive surface tensions name the phases liquid and gas (719
+    rows) or liquid and air (1047). The script dropped every row with a gas phase, meant for vapour densities, so it
+    dropped surface tensions measured against the vapour. Now only liquid-density, heat-capacity and viscosity rows with
+    a gas phase are left out (DATA_RULES section 3).
+  - **"Measured before predicted" for every property** (the suggestion the maintainer took): where no open values meet
+    the target, measured values above it make the record, held to the largest stated uncertainty, at three
+    temperatures or more (`fit_or_marker` in `measured_components.py`; DATA_RULES section 10). The test checks each
+    such record against that uncertainty.
+  - **New records:**
+
+    | Component | Property | Values | Range | Fit | Stated uncertainty |
+    |---|---|---|---|---|---|
+    | THFA | surface tension | 25 | 278–338 K | 0.014 % | within target |
+    | CPME | surface tension | 9 (1 left out, −1.6 %) | 283–353 K | 0.58 % | within target |
+    | methyl lactate | surface tension | 25 | 278–338 K | 0.47 % | up to 1.1 % |
+    | ethyl lactate | surface tension | 25 | 278–338 K | 0.42 % | up to 1.2 % |
+    | methyl levulinate | surface tension | 25 | 278–338 K | 0.27 % | up to 3.4 % |
+    | 2-methoxyethanol | surface tension | 15 | 298–393 K | 1.6 % | up to 2.9 % |
+    | GVL | liquid viscosity | 7 | 293–323 K | 0.32 % | up to 4.2 % |
+    | lactic acid | liquid density | 3 | 293–298 K | 0.32 % | up to 7.2 % |
+    | furfuryl alcohol | liquid viscosity | 18 | 288–373 K | 0.92 % | 0.007 mPa·s (k = 2) |
+
+    - Lactic acid's density is weak: three values within 5 K, so the record is a constant, 1203 kg/m³, and refuses
+      outside 293–298 K.
+    - **Furfuryl alcohol viscosity:** Simić et al., Energies 14 (2021) 7769, doi:10.3390/en14227769, CC BY 4.0, Table 2,
+      the x1 = 0.0000 rows (component 1 is furfural), 98 wt % purity
+      (`validation/data/pure/measured/article_furfuryl-alcohol_simic2021.json`).
+  - **New fusion data: D-glucose and D-fructose.**
+    - Values: glucose 448 ± 7 K and 40 ± 5 kJ/mol; fructose 420 ± 7 K and 35 ± 4 kJ/mol.
+    - Source: Chua et al., Food Biophys. 17 (2022) 181, doi:10.1007/s11483-021-09707-6, CC BY 4.0, Table 2, fast scanning
+      calorimetry. The published version was read in the TU Dortmund repository, hdl:2003/40946.
+    - The authors find the lower DSC values lowered by decomposition before melting.
+  - **Leads from the report that were not taken:**
+    - **Lomba et al.**, Green Chem. 13 (2011) 2062: the supplement could not be retrieved (404, then 403), and Unpaywall
+      knows no free copy.
+    - **Sharma et al.**, J. Chem. Eng. Data 69 (2024) 3747: paywalled, no free copy.
+    - **Nikitin et al. 2020–2023** (critical constants of GVL, furfuryl alcohol and THFA): no open copy verified.
+    - **The levulinic acid ideal-gas coefficients** (Reichert et al. 2010 supplement): CC BY-NC, so not usable in
+      software that may be commercial.
+    - **Xylitol and erythritol density** (Materials 10 (2017) 444, CC BY): one liquid temperature each in the text, not
+      yet read from the tables.
+    - **The 1,3-propanediol enthalpy of fusion** at 249 K: 3.5 K from its triple point, beyond the 3 K rule.
+    - **Levulinate conductivity** from measured diffusivities: needs a derivation, not done.
+
+    These remain open items.
 - **Tests:**
+  - `test/user-data.test.js`: the user-record example used lactic acid as "no open liquid density"; it now has one, so
+    the example uses succinic acid, which has none. The behaviour checked is unchanged.
   - `test/properties.test.js` holds such a record to its stated uncertainty, where the source says why. This is
     section 10's rule; before, the test had only the 1 % target.
   - Levulinic acid's heat capacity joins its density in the list of records that do not reach the temperature the

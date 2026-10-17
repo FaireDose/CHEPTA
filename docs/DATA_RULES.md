@@ -62,9 +62,14 @@ are not in it), so "no copy found" is not "no open data" by itself.
 
 **Targets.** A record must meet the values it is fitted to within 1 % (vapour pressure, liquid density, heat
 capacity, enthalpy of vaporization, surface tension) or 3 % (viscosity, thermal conductivity). Values whose stated
-uncertainty is above the target do not make a record by themselves: with fewer than three temperatures within the
-target, the property is "no open data at the target", with the values listed (for example the liquid heat capacities
-of Nikitin et al. 2019, stated 2.4 %).
+uncertainty is above the target make a record only where no open values meet it, at three temperatures or more: the
+record is then held to the largest stated uncertainty and says so (`stated_uncertainty_percent`; section 10, "measured
+before predicted"). With fewer than three temperatures, the property is "no open data at the target", with the values
+listed.
+
+**Surface tension rows** of the ThermoML Archive name the phases liquid and gas (or air at 1 atm). They are kept;
+only liquid-density, heat-capacity and viscosity rows that name a gas phase are left out (2026-10-17: the old filter
+dropped every surface tension measured against the vapour).
 
 **Ranges.** A record covers the temperatures that were measured. Outside them the engine refuses with an
 out-of-range error instead of extrapolating. With a measured critical point, the vapour-pressure curve runs to the
@@ -221,7 +226,10 @@ group-contribution method predicts it:
   component, volatile or not (2026-10-17: the levulinates, levulinic acid, GVL, 2-MeTHF, 1,3-propanediol, isoamyl
   alcohol and diethyl carbonate, with stated uncertainties of 1.5-5.2 %; `cp_measured_or_predicted` in
   `measured_components.py`, also called by `fit_properties.py`); such a record carries `stated_uncertainty_percent`,
-  the target it is held to (`test/properties.test.js`).
+  the target it is held to (`test/properties.test.js`). The same holds for every other property of section 3
+  (2026-10-17): where no open values meet the target, measured values above it make the record, named "used because
+  no open values meet the target" (GVL viscosity, 4.2 %; lactic acid density, 7.2 %; 2-methoxyethanol surface tension,
+  2.9 %; `fit_or_marker` in `measured_components.py`).
 
 **Ideal-gas heat capacity without open data** (the maintainer, 2026-10-17, after a literature search found none open
 for 15 volatile components): it is derived from the liquid's records by Kirchhoff's path, h_IG(T) = integral of

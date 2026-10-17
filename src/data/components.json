@@ -17163,14 +17163,26 @@
           ]
         },
         "surfaceTension": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C109864&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2-methoxyethanol\", \"ethylene glycol monomethyl ether\"; 73 records opened)"
-          ],
-          "note": "no open data at the 1 % target of the records: 13 measured values, 298.15-393.17 K, but their stated uncertainties (2.6-2.9 %) are larger than the target"
+          "equation": "DIPPR106",
+          "coefficients": {
+            "A": 0.06519001098,
+            "B": 1.081266082
+          },
+          "units": "N/m",
+          "Tmin_K": 298.15,
+          "Tmax_K": 393.17,
+          "Tc_K": 597.6,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 2.9 %, above the 1 % target, used because no open values meet the target",
+            "reference": "Wang et al., Fluid Phase Equilib. 452 (2017) 9-15, doi:10.1016/j.fluid.2017.08.016; Kumar et al., J. Chem. Eng. Data 48 (2003) 1318-1322, doi:10.1021/je030173e; Deng et al., J. Chem. Eng. Data 51 (2006) 725-729, doi:10.1021/je050484k",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "15 measured values, 298.15-393.17 K, max deviation 1.6 %",
+            "stated_uncertainty_percent": 2.86
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
         }
       },
       "fusion": {
@@ -42109,7 +42121,8 @@
             "ChemSep v8.3 and v8.31 data 2 (compound not included)",
             "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C96479&Units=SI&Mask=4)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2-methyltetrahydrofuran\", \"2-methyloxolane\"; 19 records opened)"
-          ]
+          ],
+          "note": "no open data over a temperature range: 298.15 K: 0.02468 (Gascon 2005); 298.15 K: 0.02456 (Villares 2005); 313.15 K: 0.02302 (Villares 2005)"
         }
       },
       "fusion": {
@@ -42735,14 +42748,26 @@
           ]
         },
         "surfaceTension": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C624453&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"methyl levulinate\", \"methyl 4-oxidanylidenepentanoate\"; 4 records opened)"
-          ],
-          "note": "no open data at the 1 % target of the records: 25 measured values, 278.15-338.15 K, but their stated uncertainties (2.9-3.4 %) are larger than the target"
+          "equation": "DIPPR106",
+          "coefficients": {
+            "A": 0.07082533835,
+            "B": 1.174701649
+          },
+          "units": "N/m",
+          "Tmin_K": 278.15,
+          "Tmax_K": 338.15,
+          "Tc_K": 668.0,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 3.4 %, above the 1 % target, used because no open values meet the target",
+            "reference": "Lomba et al., J. Chem. Thermodyn. 65 (2013) 34-41, doi:10.1016/j.jct.2013.05.025",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "25 measured values, 278.15-338.15 K, max deviation 0.27 %",
+            "stated_uncertainty_percent": 3.43
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
         }
       },
       "fusion": {
@@ -43670,14 +43695,28 @@
           ]
         },
         "liquidViscosity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"gamma-valerolactone\", \"5-methyloxolan-2-one\"; 16 records opened)"
-          ],
-          "note": "no open data at the 3 % target of the records: 7 measured values, 293.15-323.15 K, but their stated uncertainties (3.8-4.2 %) are larger than the target"
+          "equation": "DIPPR101",
+          "coefficients": {
+            "A": -56.53156681,
+            "B": 3585.170282,
+            "C": 6.703985096,
+            "D": 0.0,
+            "E": 0.0
+          },
+          "units": "Pa s",
+          "Tmin_K": 293.15,
+          "Tmax_K": 323.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 4.2 %, above the 3 % target, used because no open values meet the target",
+            "reference": "Papovic et al., J. Chem. Thermodyn. 107 (2017) 170-181, doi:10.1016/j.jct.2016.12.032",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "7 measured values, 293.15-323.15 K, max deviation 0.32 %",
+            "stated_uncertainty_percent": 4.23
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
         },
         "vapourViscosity": {
           "available": false,
@@ -43937,12 +43976,23 @@
           ]
         },
         "surfaceTension": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97994&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"tetrahydrofurfuryl alcohol\", \"oxolan-2-ylmethanol\"; 4 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 0.06774716297,
+            "B": -0.000101406339
+          },
+          "units": "N/m",
+          "Tmin_K": 278.15,
+          "Tmax_K": 338.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (NIST TRC ThermoML Archive)",
+            "reference": "Lomba et al., J. Chem. Eng. Data 59 (2014) 329-338, doi:10.1021/je400783h",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "25 measured values, 278.15-338.15 K, max deviation 0.014 %"
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
           ]
         }
       },
@@ -44141,12 +44191,34 @@
           ]
         },
         "surfaceTension": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C5614379&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"cyclopentyl methyl ether\", \"methoxycyclopentane\"; 10 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 0.08702650267,
+            "B": -0.0002871223568,
+            "C": 2.702625206e-07
+          },
+          "units": "N/m",
+          "Tmin_K": 283.15,
+          "Tmax_K": 353.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (NIST TRC ThermoML Archive)",
+            "reference": "Mejia and Cartes, J. Chem. Eng. Data 64 (2019) 1970-1977, doi:10.1021/acs.jced.8b01000",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "9 measured values, 283.15-353.15 K, max deviation 0.58 %",
+            "excluded": [
+              {
+                "T_K": 313.15,
+                "value": 0.02401,
+                "reference": "Mejia 2019",
+                "deviation_percent": -1.64,
+                "why": "deviates most from a robust fit of the others"
+              }
+            ]
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "mejia2019-cpme-ethanol"
           ]
         }
       },
@@ -44646,14 +44718,25 @@
           ]
         },
         "surfaceTension": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C547648&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"methyl lactate\", \"methyl 2-oxidanylpropanoate\"; 8 records opened)"
-          ],
-          "note": "no open data at the 1 % target of the records: 25 measured values, 278.15-338.15 K, but their stated uncertainties (1.1-1.1 %) are larger than the target"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 0.06906427267,
+            "B": -0.0001217019209
+          },
+          "units": "N/m",
+          "Tmin_K": 278.15,
+          "Tmax_K": 338.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 1.1 %, above the 1 % target, used because no open values meet the target",
+            "reference": "Lomba et al., Thermochim. Acta 575 (2014) 305-12, doi:10.1016/j.tca.2013.11.010",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "25 measured values, 278.15-338.15 K, max deviation 0.47 %",
+            "stated_uncertainty_percent": 1.15
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
         }
       },
       "critical": {
@@ -44884,14 +44967,25 @@
           ]
         },
         "surfaceTension": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97643&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl lactate\", \"ethyl 2-oxidanylpropanoate\"; 26 records opened)"
-          ],
-          "note": "no open data at the 1 % target of the records: 25 measured values, 278.15-338.15 K, but their stated uncertainties (1.1-1.2 %) are larger than the target"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 0.06184592325,
+            "B": -0.0001088473024
+          },
+          "units": "N/m",
+          "Tmin_K": 278.15,
+          "Tmax_K": 338.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 1.2 %, above the 1 % target, used because no open values meet the target",
+            "reference": "Lomba et al., Thermochim. Acta 575 (2014) 305-12, doi:10.1016/j.tca.2013.11.010",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "25 measured values, 278.15-338.15 K, max deviation 0.42 %",
+            "stated_uncertainty_percent": 1.16
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
         }
       },
       "critical": {
@@ -45156,7 +45250,8 @@
             "ChemSep v8.3 and v8.31 data 2 (compound not included)",
             "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C138863&Units=SI&Mask=4)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"limonene\", \"d-limonene\", \"(R)-limonene\", \"dipentene\", \"1-methyl-4-prop-1-en-2-yl-cyclohexene\", \"(+)-limonene\"; 38 records opened)"
-          ]
+          ],
+          "note": "no open data over a temperature range: 298.20 K: 0.0276 (Goncalves 2018)"
         }
       },
       "critical": {
@@ -45339,12 +45434,27 @@
           ]
         },
         "liquidViscosity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"furfuryl alcohol\", \"furan-2-ylmethanol\"; 10 records opened)"
+          "equation": "DIPPR101",
+          "coefficients": {
+            "A": -99.94222104,
+            "B": 6660.41919,
+            "C": 12.6891528,
+            "D": 0.0,
+            "E": 0.0
+          },
+          "units": "Pa s",
+          "Tmin_K": 288.15,
+          "Tmax_K": 373.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (NIST TRC ThermoML Archive)",
+            "reference": "Simic et al., Energies 14 (2021) 7769, doi:10.3390/en14227769",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "18 measured values, 288.15-373.15 K, max deviation 0.92 %"
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "simic2021-article-furfuryl-alcohol"
           ]
         },
         "vapourViscosity": {
@@ -46409,14 +46519,24 @@
       },
       "properties": {
         "liquidDensity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactic acid\", \"l-lactic acid\", \"dl-lactic acid\", \"2-hydroxypropanoic acid\", \"(2S)-2-hydroxypropanoic acid\"; 51 records opened)"
-          ],
-          "note": "no open data at the 1 % target of the records: 3 measured values, 293.15-298.20 K, but their stated uncertainties (2.9-7.2 %) are larger than the target"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 1203.147147
+          },
+          "units": "kg/m3",
+          "Tmin_K": 293.15,
+          "Tmax_K": 298.2,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive); stated uncertainties up to 7.2 %, above the 1 % target, used because no open values meet the target",
+            "reference": "Domingues et al., Fluid Phase Equilib. 354 (2013) 12-18, doi:10.1016/j.fluid.2013.06.007; Sahin et al., J. Chem. Thermodyn. 41 (2009) 97-102, doi:10.1016/j.jct.2008.07.014; Riveiro et al., J. Chem. Eng. Data 64 (2019) 4717-4723, doi:10.1021/acs.jced.9b00041",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "3 measured values, 293.15-298.20 K, max deviation 0.32 %",
+            "stated_uncertainty_percent": 7.25
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
         },
         "idealGasHeatCapacity": {
           "available": false,
@@ -46780,11 +46900,20 @@
         }
       },
       "fusion": {
-        "available": false,
-        "searched": [
-          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=4): no enthalpy of fusion within 3 K of the melting temperature on the WebBook page",
-          "ChemSep v8.3: no value",
-          "NIST TRC ThermoML Archive: a melting temperature but no enthalpy of fusion"
+        "Tm_K": 448,
+        "Hfus_J_mol": 40000,
+        "tier": "databank",
+        "source": {
+          "name": "Open-access article",
+          "reference": "Y. Z. Chua, H. T. Do, A. Kumar, M. Hallermann, D. Zaitsau, C. Schick, C. Held, The melting properties of D-alpha-glucose, D-beta-fructose, D-sucrose, D-alpha-galactose, and D-alpha-xylose and their solubility in water: A revision, Food Biophys. 17 (2022) 181-197, doi:10.1007/s11483-021-09707-6",
+          "access": "Open access, CC BY 4.0 (Springer); the published version is also in the TU Dortmund repository Eldorado (hdl:2003/40946)",
+          "url": "http://hdl.handle.net/2003/40946",
+          "file": "validation/data/pure/measured/article_glucose_chua2022.json",
+          "Tm_uncertainty_K": 7,
+          "selection": "melting temperature 448 +/- 7 K and enthalpy of fusion 40 +/- 5 kJ/mol, Table 2, fast scanning calorimetry (FSC) at 2000-10000 K/s; the authors find the lower values of DSC and the older literature (their Table 3) lowered by decomposition in the crystal before melting, and take the FSC values as the equilibrium melting properties; uncertainties as printed; solid: D-alpha-glucose (crystalline); NIST WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C50997&Units=SI&Mask=4): no enthalpy of fusion within 3 K of the melting temperature on the WebBook page; ChemSep: no value"
+        },
+        "source_ids": [
+          "chua2022-article-fructose"
         ]
       },
       "modUnifac": {
@@ -46872,6 +47001,7 @@
             "reference": "Magon and Pyda, J. Chem. Thermodyn. 56 (2013) 67-82, doi:10.1016/j.jct.2012.07.003",
             "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
             "fit": "10 measured values, 200.00-600.00 K, max deviation 0.14 %",
+            "stated_uncertainty_percent": 2.0,
             "notes": "The group-additivity prediction (Ruzicka and Domalski 1993, predict_cp.py) would be +7 to +22 % from this record at the measured temperatures within its groups' range, 200-370 K."
           },
           "source_ids": [
@@ -46919,11 +47049,20 @@
         }
       },
       "fusion": {
-        "available": false,
-        "searched": [
-          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=4): no phase-change data on the page",
-          "ChemSep v8.3: no value",
-          "NIST TRC ThermoML Archive: no melting data"
+        "Tm_K": 420,
+        "Hfus_J_mol": 35000,
+        "tier": "databank",
+        "source": {
+          "name": "Open-access article",
+          "reference": "Y. Z. Chua, H. T. Do, A. Kumar, M. Hallermann, D. Zaitsau, C. Schick, C. Held, The melting properties of D-alpha-glucose, D-beta-fructose, D-sucrose, D-alpha-galactose, and D-alpha-xylose and their solubility in water: A revision, Food Biophys. 17 (2022) 181-197, doi:10.1007/s11483-021-09707-6",
+          "access": "Open access, CC BY 4.0 (Springer); the published version is also in the TU Dortmund repository Eldorado (hdl:2003/40946)",
+          "url": "http://hdl.handle.net/2003/40946",
+          "file": "validation/data/pure/measured/article_fructose_chua2022.json",
+          "Tm_uncertainty_K": 7,
+          "selection": "melting temperature 420 +/- 7 K and enthalpy of fusion 35 +/- 4 kJ/mol, Table 2, fast scanning calorimetry (FSC) at 2000-10000 K/s; the authors find the lower values of DSC and the older literature (their Table 3) lowered by decomposition in the crystal before melting, and take the FSC values as the equilibrium melting properties; uncertainties as printed; solid: D-beta-fructose (crystalline); NIST WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Units=SI&Mask=4): no phase-change data on the page; ChemSep: no value"
+        },
+        "source_ids": [
+          "chua2022-article-fructose"
         ]
       },
       "modUnifac": {

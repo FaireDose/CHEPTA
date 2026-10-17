@@ -76,10 +76,11 @@ test("records are complete: units, range, tier, source and stated fit quality", 
         continue;
       }
       // targets of the task: 1 % for thermodynamic properties, 3 % for transport properties; a record made of measured
-      // values whose stated uncertainties are above the target, because the only alternative is a prediction
-      // (docs/DATA_RULES.md, section 10: "measured before predicted"), is held to those uncertainties, which it states
+      // values whose stated uncertainties are above the target, because the only alternative is a prediction or no
+      // record at all (docs/DATA_RULES.md, section 10: "measured before predicted"), is held to those uncertainties,
+      // which it states
       const stated = r.source.stated_uncertainty_percent;
-      if (stated != null) assert.match(r.source.name, /above the 1 % target, used because the only alternative is a prediction/, `${where}: why`);
+      if (stated != null) assert.match(r.source.name, /above the [0-9.]+ % target, used because (the only alternative is a prediction|no open values meet the target)/, `${where}: why`);
       const target = stated != null ? stated / 100 : TRANSPORT.has(p) ? 0.03 : 0.01;
       assert.ok(statedMaxDeviation(r) <= target, `${where}: stated deviation above the ${target * 100} % target`);
     }

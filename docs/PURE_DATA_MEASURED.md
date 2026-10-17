@@ -52,7 +52,7 @@ Left out of heatOfVaporization: 298.15 K, An and Hu, 1989 (ΔvapH° at 298.15 K,
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| surfaceTension | 298.15-393.17 | 15 | 0 | 1.6 % | Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 2.9 %, above the 1 % target, used because no open values meet the target |
 
 Left out of vapourPressure: 336.18 K, Lladosa 2007, -1.34 % (stated uncertainty 2 % is above the 1 % target); 340.22 K, Lladosa 2007, -1.24 % (stated uncertainty 1.7 % is above the 1 % target); 343.74 K, Lladosa 2007, -0.94 % (stated uncertainty 1.4 % is above the 1 % target); 346.79 K, Lladosa 2007, -0.73 % (stated uncertainty 1.3 % is above the 1 % target); 349.63 K, Lladosa 2007, -0.67 % (stated uncertainty 1.1 % is above the 1 % target); 352.13 K, Lladosa 2007, -0.75 % (stated uncertainty 1 % is above the 1 % target); 364.15 K, Reddy 2012, +13.41 % (stated uncertainty 21 % is above the 1 % target); 368.84 K, Reddy 2012, +11.26 % (stated uncertainty 18 % is above the 1 % target); 373.48 K, Reddy 2012, +9.23 % (stated uncertainty 15 % is above the 1 % target); 377.22 K, Reddy 2012, +7.63 % (stated uncertainty 13 % is above the 1 % target); 380.17 K, Reddy 2012, +6.44 % (stated uncertainty 11 % is above the 1 % target); 383.30 K, Reddy 2012, +5.19 % (stated uncertainty 9.9 % is above the 1 % target); 386.66 K, Reddy 2012, +3.86 % (stated uncertainty 8.7 % is above the 1 % target); 389.59 K, Reddy 2012, +2.72 % (stated uncertainty 7.9 % is above the 1 % target); 391.28 K, Reddy 2012, +2.11 % (stated uncertainty 7.4 % is above the 1 % target); 393.75 K, Reddy 2012, +1.19 % (stated uncertainty 6.8 % is above the 1 % target); 395.78 K, Reddy 2012, +0.43 % (stated uncertainty 6.3 % is above the 1 % target); 346.40 K, Bejarano 2012, +3.15 % (stated uncertainty 2 % is above the 1 % target); 356.90 K, Bejarano 2012, +1.99 % (stated uncertainty 1.7 % is above the 1 % target); 364.70 K, Bejarano 2012, +1.71 % (stated uncertainty 1.2 % is above the 1 % target); 397.67 K, Wang 2017, +0.24 % (stated uncertainty 1.5 % is above the 1 % target); 345.94 K, Marrufo 2010, +1.25 % (stated uncertainty 1.3 % is above the 1 % target); 349.54 K, Marrufo 2010, +1.04 % (stated uncertainty 1.1 % is above the 1 % target).
 
@@ -96,7 +96,7 @@ Left out of vapourPressure: 328.40 K, Verevkin 2012, -40.69 % (transpiration tak
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| surfaceTension | 278.15-338.15 | 25 | 0 | 0.27 % | Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 3.4 %, above the 1 % target, used because no open values meet the target |
 
 ## Ethyl levulinate (C7H12O3, CAS 539-88-8)
 
@@ -146,7 +146,7 @@ Left out of vapourPressure: 328.40 K, Verevkin 2012, -40.69 % (transpiration tak
 | idealGasHeatCapacity | — | — | — | — | no open data |
 | liquidHeatCapacity | 265.37-358.50 | 20 | 0 | 0.32 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 3.9 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 238.07-401.38 | 17 | 8 | 0.91 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
-| liquidViscosity | — | — | — | — | no open data (no open data at the 3 % target of the records) |
+| liquidViscosity | 293.15-323.15 | 7 | 0 | 0.32 % | Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 4.2 %, above the 3 % target, used because no open values meet the target |
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
@@ -166,7 +166,7 @@ Left out of heatOfVaporization: 292.51 K, Clapeyron equation with the vapour-pre
 | idealGasHeatCapacity | — | — | — | — | no open data |
 | liquidHeatCapacity | 298.15-405.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | 273.11-379.72 | 25 | 0 | 0.0001 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
-| liquidViscosity | — | — | — | — | no open data |
+| liquidViscosity | 288.15-373.15 | 18 | 0 | 0.92 % | Measured values (NIST TRC ThermoML Archive) |
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
@@ -190,7 +190,7 @@ Left out of vapourPressure: 353.30 K, Tai 2014, +7.22 % (its three values at 353
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data |
+| surfaceTension | 278.15-338.15 | 25 | 0 | 0.014 % | Measured values (NIST TRC ThermoML Archive) |
 
 Left out of vapourPressure: 428.15 K, Lomba 2014, -1.71 % (more than three times its stated uncertainty from the fit of all the sets).
 
@@ -210,7 +210,7 @@ Left out of vapourPressure: 428.15 K, Lomba 2014, -1.71 % (more than three times
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| surfaceTension | 278.15-338.15 | 25 | 0 | 0.47 % | Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 1.1 %, above the 1 % target, used because no open values meet the target |
 
 ## Ethyl lactate (C5H10O3, CAS 97-64-3)
 
@@ -228,7 +228,7 @@ Left out of vapourPressure: 428.15 K, Lomba 2014, -1.71 % (more than three times
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| surfaceTension | 278.15-338.15 | 25 | 0 | 0.42 % | Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 1.2 %, above the 1 % target, used because no open values meet the target |
 
 Left out of vapourPressure: 396.91 K, Matsuda 2016, +3.12 % (more than three times its stated uncertainty from the fit of all the sets); 424.98 K, Resa 2006, -4.99 % (more than three times its stated uncertainty from the fit of all the sets).
 
@@ -248,7 +248,9 @@ Left out of vapourPressure: 396.91 K, Matsuda 2016, +3.12 % (more than three tim
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data |
+| surfaceTension | 283.15-353.15 | 9 | 1 | 0.58 % | Measured values (NIST TRC ThermoML Archive) |
+
+Left out of surfaceTension: 313.15 K, Mejia 2019, -1.64 % (deviates most from a robust fit of the others).
 
 ## Limonene (C10H16, CAS 138-86-3)
 
@@ -266,7 +268,7 @@ Left out of vapourPressure: 396.91 K, Matsuda 2016, +3.12 % (more than three tim
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data (no open data over a temperature range) |
 
 Left out of liquidDensity: 293.20 K, Ngema 2012, +3.48 % (deviates most from a robust fit of the others).
 
@@ -350,7 +352,7 @@ Left out of surfaceTension: 333.15 K, Lomba 2015, +0.13 % (stated uncertainty 1 
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data (no open data over a temperature range) |
 
 Left out of liquidViscosity: 293.15 K, Francesconi 2007, +0.78 % (stated uncertainty 8.1 % is above the 3 % target); 303.15 K, Francesconi 2007, +1.05 % (stated uncertainty 9 % is above the 3 % target); 313.15 K, Francesconi 2007, -0.94 % (stated uncertainty 9.6 % is above the 3 % target).
 
@@ -411,7 +413,7 @@ Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 
 
 | Property | Range (K) | Values used | Left out | Max deviation | Sources |
 |---|---|---|---|---|---|
-| liquidDensity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| liquidDensity | 293.15-298.20 | 3 | 0 | 0.32 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive); stated uncertainties up to 7.2 %, above the 1 % target, used because no open values meet the target |
 | idealGasHeatCapacity | — | — | — | — | not defined |
 | liquidHeatCapacity | 230.00-545.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | — | — | — | — | not defined |
