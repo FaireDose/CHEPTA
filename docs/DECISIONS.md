@@ -14,6 +14,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
+- **The Library rule "Best available"** (2026-10-17): it is each pair's default set, which is not the best for every
+  use (ethanol + water: the default follows the 1 atm T-x-y data, the "-etal" set the excess enthalpies). Rename it,
+  for example "Default sets (fitted to data where there are any)"? One model for the whole project (diagrams and
+  flowsheet) was discussed as a proposal, not asked for now.
 - **Proposals 0010 and 0011:** merged in [#83](https://github.com/FaireDose/Fugacity/pull/83) with status
   **Draft**. Accept or decline each one, then set its status in the file and in `proposals/README.md`. Proposal
   0009 was accepted on 2026-10-11 (batch 1 in its pull request).

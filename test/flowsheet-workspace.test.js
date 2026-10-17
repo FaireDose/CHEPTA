@@ -284,3 +284,35 @@ test("on the drawing a feed is its stream: feedOf and feedStreamOf", () => {
   fs = setStreamLabel(fs, r.stream, "Wine");
   assert.equal(streamName(feedStreamOf(fs, r.id)), "Wine");
 });
+
+// The flowsheet uses the parameter sets of the Library (the rule for every pair, and a pair's own choice), as the
+// diagrams and the flash do (the maintainer, 2026-10-17). NRTL for ethanol + water at 1 atm (docs/METHOD_SELECTION.md).
+test("the flowsheet follows the Library's rule and a pair's chosen set", async () => {
+  const { calculatedFlowsheet, setsLabel } = await import("../src/ui/app-logic.js");
+  const { flowsheetKey } = await import("../src/ui/flowsheet-view.js");
+  let { fs } = addBlock(base(), "flash");
+  ({ fs } = addFeedTo(fs, "V1.in"));
+  fs = setSpec(fs, "F1", { flow_kmol_h: { ethanol: 30, water: 70 }, T_K: 300, P_kPa: 101.325 });
+  fs = setSpec(fs, "V1", { P_kPa: 101.325, VF: 0.4 });
+  const state = applyPatch(initialState({ components: ["ethanol", "water"] }), { workspace: "flowsheet", flowsheet: { ...fs, thermo: { model: "NRTL" } } });
+  const T = st => runFlowsheet(calculatedFlowsheet(st)).blocks.V1.state.T_K;
+  // the defaults: the flowsheet as it is
+  assert.equal(calculatedFlowsheet(state), state.flowsheet);
+  assert.equal(setsLabel(state), "each pair's default");
+  const Tdef = T(state);
+  // "Databank only": the ChemSep set, the same as naming it in the flowsheet document
+  const bank = applyPatch(state, { prefer: "databank" });
+  assert.deepEqual(calculatedFlowsheet(bank).thermo.prefer, ["databank"]);
+  assert.equal(T(bank), runFlowsheet({ ...state.flowsheet, thermo: { model: "NRTL", sets: { "ethanol+water": "chemsep" } } }).blocks.V1.state.T_K);
+  assert.notEqual(T(bank), Tdef);
+  assert.notEqual(flowsheetKey(bank), flowsheetKey(state), "a new rule calculates the flowsheet again");
+  // a pair's own set (chosen in a diagram's Inputs panel)
+  const hand = applyPatch(state, { sets: { "water+ethanol": "fitted-kamihama2012-etal" } });
+  assert.equal(T(hand), runFlowsheet({ ...state.flowsheet, thermo: { model: "NRTL", sets: { "ethanol+water": "fitted-kamihama2012-etal" } } }).blocks.V1.state.T_K);
+  assert.match(setsLabel(hand), /1 pair set by hand/);
+  // the same set name under UNIQUAC is used too; Peng-Robinson has no set of that name, so the choice is not passed
+  const uq = applyPatch(hand, { flowsheet: { ...hand.flowsheet, thermo: { model: "UNIQUAC" } } });
+  assert.deepEqual(calculatedFlowsheet(uq).thermo.sets, { "ethanol+water": "fitted-kamihama2012-etal" });
+  const pr = applyPatch(hand, { flowsheet: { ...hand.flowsheet, thermo: { model: "PR" } } });
+  assert.equal(calculatedFlowsheet(pr), pr.flowsheet);
+});
