@@ -209,7 +209,7 @@ group-contribution method predicts it:
   extrapolation of up to about 100 K "has no significant effect on the error of prediction" (part II, p. 620), and on
   furfural the furan ring correction, fitted to 305 K, stays within 3.4 % of the record up to 405 K. Not for polyols
   (two or more alcohol groups): on the check set the polyol groups drift far beyond their range (glycerol +42 % at
-  560 K). One group is used beyond that rule, up to 380 K (2026-10-17, for the maintainer to confirm): the ether and
+  560 K). One group is used beyond that rule, up to 380 K (confirmed by the maintainer, 2026-10-17): the ether and
   ester carbon C-(H)(C)2(O), fitted at 130-170 K only, which THFA, CPME and the triglycerides need; on isopropyl acetate
   (ChemSep record) the prediction with it stays within 8.1 % from 220 to 380 K, and on 2-methyltetrahydrofuran within
   4.5 % of the measured values (`ether_check` in `predict_cp.py`, stated in each record that uses it). Methane
@@ -223,6 +223,15 @@ group-contribution method predicts it:
   `measured_components.py`, also called by `fit_properties.py`); such a record carries `stated_uncertainty_percent`,
   the target it is held to (`test/properties.test.js`).
 
+**Ideal-gas heat capacity without open data** (the maintainer, 2026-10-17, after a literature search found none open
+for 15 volatile components): it is derived from the liquid's records by Kirchhoff's path, h_IG(T) = integral of
+cp_L + (dHvap - h_R,sat)(T) - (dHvap - h_R,sat)(298.15 K), where the liquid heat capacity and the heat of
+vaporization both apply from 298.15 K (`src/thermo/pure.js`); outside that range it refuses. On the CHEPTA liquids with
+an ideal-gas record it is within 5 % at 300 K for half of them, 22 % for 90 %, and within 2.6 % for furan and
+2-methylfuran, whose records are made the same way as those of the components that use it
+(`test/derived-ideal-gas.test.js`). The Burcat–Ruscic database is free to read but forbids inclusion in commercial
+software without permission, so it is not used.
+
 **Nonvolatile components:** a component that does not evaporate in the processes where it appears (it decomposes,
 polymerizes, or has no measurable vapour pressure) has `"class": "nonvolatile"` and no vapour pressure, critical
 constants or vapour properties. Activity models keep it in the liquid (a vapour pressure of 1e-20 kPa keeps the flash
@@ -233,7 +242,8 @@ vapour-fraction specification is refused with the reason. Its liquid enthalpy is
 capacity from 298.15 K, so its reference state is the liquid there; that is enough for energy balances without
 reactions. `measured_components.py` (`build_nonvolatile`) builds it from the measured values that meet the targets,
 with the heat capacity predicted where none is measured. A volatile liquid without open vapour pressures (solketal,
-alpha-angelica lactone) is not made nonvolatile: that would make every distillation with it wrong. Nor is a substance
+alpha-angelica lactone) is not made nonvolatile: that would make every distillation with it wrong. Terephthalic acid is a nonvolatile liquid up to an assumed melting temperature of 400 degC, by the
+maintainer's choice (2026-10-17; it sublimes at 402-404 degC). Nor is a substance
 that is distilled or sublimed in its own processes (lactide, isosorbide, BHMF, dimethyl FDCA, levoglucosan; held in
 batch 4 for want of an open liquid vapour pressure). A substance whose measured volatility is negligible beside its
 solvents may be (HMF: its WebBook boiling temperature of 388.2 K at 0.1 kPa, where water's vapour pressure is

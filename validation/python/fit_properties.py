@@ -272,14 +272,9 @@ _TML = "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/dat
 _LIT = ("open literature: Europe PMC and OpenAlex (open-access status), web search in English and Chinese (CIESC Journal, "
         "which has the liquid thermal conductivity of dimethyl carbonate (2008) and diethyl adipate (2010), not of "
         "diethyl carbonate)")
-_TPA = ("NIST Chemistry WebBook phase-change data (no melting or triple-point temperature: "
-        "validation/data/pure/fusion/webbook_fusion.json); open literature: web search")
 SEARCHED_BEYOND = {
     "diethyl-carbonate": {"liquidThermalConductivity": [_TML % ("diethyl-carbonate", "thermal conductivity"), _LIT],
                           "vapourThermalConductivity": [_TML % ("diethyl-carbonate", "thermal conductivity"), _LIT]},
-    "terephthalic-acid": {p: [_TML % ("terephthalic-acid", "liquid values"), _TPA]
-                          for p in ("liquidHeatCapacity", "heatOfVaporization", "liquidViscosity",
-                                    "liquidThermalConductivity", "surfaceTension")},
 }
 # proposal 0009, batch 2 (searched 2026-10-13)
 _LIT2 = ("open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer "
@@ -1428,16 +1423,14 @@ class Builder:
 
     def build(self, cid, prop):
         r = self._build(cid, prop)
-        if prop == "liquidHeatCapacity" and r[0].get("available") is False and cid != "terephthalic-acid":
+        if prop == "liquidHeatCapacity" and r[0].get("available") is False:
             r = self.cp_measured_or_predicted(cid, r[0])
         return r
 
     def cp_measured_or_predicted(self, cid, marker):
         """No liquid heat capacity in the sources above: the rule "measured before predicted" of
         measured_components.cp_measured_or_predicted (docs/DATA_RULES.md, section 10), with the ThermoML Archive
-        values of the component and the sources searched (the marker's). Terephthalic acid is left out: no open source
-        has its melting temperature (validation/data/pure/fusion/webbook_fusion.json), so where its liquid exists is not
-        known."""
+        values of the component and the sources searched (the marker's)."""
         from measured_components import ThermoML, cp_measured_or_predicted
         prop = "liquidHeatCapacity"
         file = Path(__file__).resolve().parents[2] / "validation" / "data" / "pure" / "measured" / ("thermoml_%s.json" % cid)

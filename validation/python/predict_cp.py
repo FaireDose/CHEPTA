@@ -101,6 +101,16 @@ PREDICT = {
                        "O-(H)(C)": 1, "CO-(H)(Cd)": 1},
             "approximation": FURAN + "; the aldehyde CO-(H)(CB) is counted as CO-(H)(Cd), as the authors do (part II, "
                              "Table 2)"},
+    # terephthalic acid: a liquid that does not evaporate up to an assumed melting temperature of 400 degC (the
+    # maintainer, 2026-10-17: "assume the melting is at 400 and keep it liquid until then"; no open source has its
+    # melting temperature)
+    "terephthalic-acid": {"groups": {"CB-(H)": 4, "CB-(CO)": 2, "CO-(CB)(O)": 2, "O-(H)(CO)": 2},
+                          "approximation": "every group exists in the method",
+                          "Tmax_K": 673.15,
+                          "Tmax_why": "the maintainer's choice (2026-10-17): terephthalic acid is kept a liquid up to an "
+                                      "assumed melting temperature of 400 degC (673.15 K), so the record runs to it, 73 K "
+                                      "beyond the authors' 100 K extrapolation; the ECHA registration dossier (free to "
+                                      "read) reports sublimation at 402-404 degC and melting at 427 degC in a sealed tube"},
     # the components of batches 1-3 without open measured heat capacities over a temperature range (2026-10-17)
     "furan": {"groups": {"CB-(H)": 4, "O-(CB)2": 1, "furan rsc": 1}, "approximation": FURAN},
     "2-methylfuran": {"groups": {"CB-(H)": 3, "CB-(C)": 1, "O-(CB)2": 1, "furan rsc": 1, "C-(H)3(C)": 1},
@@ -300,6 +310,9 @@ def predicted_record(cid, why_no_data):
     if ext:
         rng = rng.replace("where every group's", "where every other group's") + "; at most %g K, for the group %s" % (
             EXTENDED[ext[0]], ext[0])
+    if p.get("Tmax_K"):
+        hi = p["Tmax_K"]
+        rng += "; upper end %g K: %s" % (hi, p["Tmax_why"])
     notes = "%s. %s. %s." % (why_no_data, p["approximation"][0].upper() + p["approximation"][1:], acc)
     if "furan rsc" in p["groups"]:
         notes += (" The furan ring correction was fitted to 305 K only; on furfural the prediction stays within %.1f %% "

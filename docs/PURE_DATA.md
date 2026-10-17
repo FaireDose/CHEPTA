@@ -112,7 +112,6 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | p-Cymene | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.49 (f) | ChemSep 0.0011 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.19 (f) | ChemSep 0.0001 (d) | ChemSep 0.52 (f) |
 | Adipic acid | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.21 (f) | ChemSep 0.21 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.23 (f) | ChemSep 0.0001 (d) | ChemSep 0.076 (f) |
 | Maleic anhydride | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.095 (f) | ChemSep 0.026 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.14 (f) | ChemSep 0.0001 (d) | ChemSep 0.29 (f) |
-| Terephthalic acid | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.073 (f) | no open data | no open data | no open data | ChemSep 0.0001 (d) | no open data | ChemSep 0.0001 (d) | no open data |
 | Dimethyl terephthalate | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.045 (f) | ChemSep 0.094 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.16 (f) | ChemSep 0.0001 (d) | ChemSep 0.054 (f) |
 | Methyl laurate | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.13 (f) |
 | Methyl myristate | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.13 (f) |
@@ -240,7 +239,6 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | p-Cymene | 205.25–652 | 200–1500 | 205.25–450.28 | 205.25–651.34 | 205.25–600 | 205.25–1000 | 205.25–593.15 | 205.25–1000 | 205.25–598.69 |
 | Adipic acid | 425.5–809 | 273–1500 | 425.5–611 | 425.5–808.19 | 433.15–466.15 | 425.5–1000 | 425.5–642.7 | 274–1000 | 425.5–768.55 |
 | Maleic anhydride | 325.73–721 | 273–1000.1 | 325.73–540.5 | 325.73–720.27 | 325.73–475.15 | 325.72–1000 | 325.73–475.15 | 274–1000 | 325.73–684.95 |
-| Terephthalic acid | 700.15–943.065 | 273–1500 | – | – | – | 700.15–1000 | – | 274–1000 | – |
 | Dimethyl terephthalate | 413.8–753.15 | 273–1000.15 | 423.15–466.35 | 413.8–753.15 | 413.8–561.15 | 413.8–1550 | 413.8–561.15 | 274–1000 | 413.8–733.4 |
 | Methyl laurate | 278.15–712 | 298.15–1500 | 278.15–540 | 278.15–711.28 | 278.15–540 | 278.15–1000 | 278.15–540 | 540–1000 | 278.15–676.4 |
 | Methyl myristate | 291.85–741.2 | 298.15–1500 | 297.85–569.9 | 291.85–740.45 | 291.85–569.9 | 291.85–1000 | 291.85–569.9 | 569.9–1000 | 291.05–704.14 |
@@ -1840,21 +1838,6 @@ At 25 °C (298.15 K) for the liquids and at the normal boiling point for the gas
 | μV | μPa·s | – | – | – | – |
 | kL | mW/(m·K) | – | – | – | – |
 | kV | mW/(m·K) | 11.661 | 11.661 | 0.00 % | – |
-| σ | mN/m | – | – | – | – |
-
-### Terephthalic acid, T = 298.15 K
-
-| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
-|---|---|---|---|---|---|
-| Psat | kPa | 5.0036e-16 | (table) | – | – |
-| ρL | kg/m³ | – | – | – | – |
-| cp° | J/(mol·K) | 125.33 | 125.25 | 0.06 % | – |
-| cpL | J/(mol·K) | – | – | – | – |
-| ΔHvap | kJ/mol | – | – | – | – |
-| μL | mPa·s | – | – | – | – |
-| μV | μPa·s | – | – | – | – |
-| kL | mW/(m·K) | – | – | – | – |
-| kV | mW/(m·K) | 6.1241 | 6.1241 | 0.00 % | – |
 | σ | mN/m | – | – | – | – |
 
 ### Dimethyl terephthalate, T = 298.15 K

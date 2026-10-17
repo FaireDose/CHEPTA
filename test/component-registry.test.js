@@ -15,7 +15,9 @@ const FROM_MEASURED = ["dichloromethane", "2-methoxyethanol", "furan", "2-methyl
   "lactic-acid",
   // proposal 0009, batch 4 (nonvolatile)
   "hmf", "glucose", "fructose", "sorbitol", "xylitol", "erythritol", "succinic-acid", "itaconic-acid", "fumaric-acid", "malic-acid",
-  "citric-acid", "glycolic-acid", "glucaric-acid", "3-hydroxypropionic-acid", "fdca", "bhet", "diphenolic-acid"];
+  "citric-acid", "glycolic-acid", "glucaric-acid", "3-hydroxypropionic-acid", "fdca", "bhet", "diphenolic-acid",
+  // a nonvolatile liquid up to 400 °C since 2026-10-17 (the maintainer), no longer a ChemSep component
+  "terephthalic-acid"];
 
 test("every component is in the registry once, and every registry entry is a component", () => {
   const ids = [...reg.base.components, ...reg.batches.flatMap(b => b.components)].map(c => c.id);

@@ -207,7 +207,10 @@ test("props() returns liquid and vapour properties for every component at a typi
     const hKeys = ENTHALPY_NOT_CONSISTENT.has(id) ? [] : ["h_J_mol"];
     // a property with an explicit "no open data" marker (propylene glycol: transport properties) is null, with
     // a note that says so; every other one has a value
-    const none = new Set(Object.entries(components[id].properties).filter(([, r]) => r.available === false).map(([k]) => k));
+    // (an ideal-gas heat capacity derived from the liquid's records where no open one exists, pure.js, 2026-10-17,
+    // counts as data: test/derived-ideal-gas.test.js)
+    const derivedIG = !!p.record("idealGasHeatCapacity")?.derived;
+    const none = new Set(Object.entries(components[id].properties).filter(([k, r]) => r.available === false && !(derivedIG && k === "idealGasHeatCapacity")).map(([k]) => k));
     // the enthalpy needs the ideal-gas heat capacity: without it (2-methoxyethanol, no open data) h is null too;
     // the liquid enthalpy, h(ideal gas) - ΔHvap, also needs the heat of vaporization (terephthalic acid: no liquid
     // record, ChemSep's covers only the solid range)
@@ -231,6 +234,10 @@ test("props() returns liquid and vapour properties for every component at a typi
       h_J_mol: "idealGasHeatCapacity" };
     for (const k of ["cp_J_molK", "mu_Pa_s", "k_W_mK", ...hKeys]) {
       if (none.has(recordOfV[k])) { assert.equal(V[k], null, `${name} vapour ${k}`); continue; }
+      // a derived ideal-gas heat capacity ends with the liquid's records, below this vapour state: refused, saying why
+      if (derivedIG && recordOfV[k] === "idealGasHeatCapacity" && V.T_K > p.record("idealGasHeatCapacity").Tmax_K) {
+        assert.equal(V[k], null, `${name} vapour ${k}`); assert.match(V.notes.join(" "), /derived from its liquid heat capacity/); continue;
+      }
       assert.ok(Number.isFinite(V[k]), `${name} vapour ${k}: ${V.notes.join(" ")}`);
     }
   }

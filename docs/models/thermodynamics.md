@@ -96,6 +96,10 @@ library documentation:
   and source, and "no open data" is written where nothing was found.
   - Enthalpy reference: the ideal gas at 298.15 K.
   - Vapour and supercritical states use Peng–Robinson.
+  - Without an open ideal-gas heat capacity, one is derived from the liquid's records (Kirchhoff):
+    h_IG(T) = ∫cp_L dT + (ΔHvap − h_R,sat)(T) − (ΔHvap − h_R,sat)(298.15 K), where both records apply from
+    298.15 K; it says so in its source and refuses outside that range. Checked in
+    [test/derived-ideal-gas.test.js](../../test/derived-ideal-gas.test.js) (DATA_RULES section 10).
 - **Data**:
   - [src/data/components.json](../../src/data/components.json);
   - fit quality: [../PURE_DATA.md](../PURE_DATA.md);

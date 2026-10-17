@@ -1,0 +1,163 @@
+{
+ "component": "terephthalic-acid",
+ "retrieved": "2026-10-17",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C100210&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C100210&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°solid",
+       "-816.3 ± 1.5",
+       "kJ/mol",
+       "Ccb",
+       "Karyakin, Rabinovich, et al., 1978",
+       "ALS"
+      ],
+      [
+       "ΔfH°solid",
+       "-816.17",
+       "kJ/mol",
+       "Ccb",
+       "Schwabe and Wagner, 1961",
+       "ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°solid",
+       "-3189.3 ± 1.5",
+       "kJ/mol",
+       "Ccb",
+       "Karyakin, Rabinovich, et al., 1978",
+       "Corresponding ΔfHºsolid = -816.3 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "ΔcH°solid",
+       "-3189.5 ± 0.42",
+       "kJ/mol",
+       "Ccb",
+       "Schwabe and Wagner, 1961",
+       "Corresponding ΔfHºsolid = -816.09 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "ΔcH°solid",
+       "-3227.96",
+       "kJ/mol",
+       "Ccb",
+       "Hirsbrunner, 1934",
+       "Corresponding ΔfHºsolid = -777.613 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,solid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "199.6",
+       "323.",
+       "Satoh and Sogabe, 1941",
+       "T = 0 to 100 C. Mean value.; DH"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C100210&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔsubH°",
+       "146.6 ± 0.5",
+       "kJ/mol",
+       "C",
+       "Sabbah and Perez, 1999",
+       "AC"
+      ],
+      [
+       "ΔsubH°",
+       "98.115",
+       "kJ/mol",
+       "V",
+       "Hirsbrunner, 1934",
+       "ALS"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔsubH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "142.2 ± 1.5",
+       "471.",
+       "ME",
+       "Kozyro, Maksimuk, et al., 2000",
+       "Based on data from 442. to 500. K.; AC"
+      ],
+      [
+       "139.2",
+       "538.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 523. to 633. K. See also  Kraus, Beranek, et al., 1962.; AC"
+      ],
+      [
+       "139.3 ± 3.8",
+       "568. to 675.",
+       "DTA",
+       "Lucchesi and Lewis, 1968",
+       "AC"
+      ],
+      [
+       "131.",
+       "573.",
+       "GS",
+       "Kraus, Beranek, et al., 1962",
+       "Based on data from 523. to 633. K.; AC"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

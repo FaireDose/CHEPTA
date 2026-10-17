@@ -710,6 +710,23 @@ Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 
 | vapourThermalConductivity | — | — | — | — | not defined |
 | surfaceTension | — | — | — | — | no open data |
 
+## Terephthalic acid (C8H6O4, CAS 100-21-0)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): the maintainer's choice (2026-10-17): terephthalic acid is kept a liquid that does not evaporate up to an assumed melting temperature of 400 degC; it sublimes at 402-404 degC at atmospheric pressure (ECHA registration dossier, free to read), and in its liquid-phase processes (oxidation and crystallization in acetic acid and water) it does not evaporate. Until 2026-10-17 it was a ChemSep component, whose liquid records covered only temperatures above 700 K; M 166.1308 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). Nonvolatile (the maintainer, 2026-10-17): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 230.00-673.15 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
 ## 1,3-Propanediol (C3H8O2, CAS 504-63-2)
 
 - Tc 721.00 K, Pc 6.38 MPa, Tb 487.073 K, ω 0.5799, M 76.0944 g/mol

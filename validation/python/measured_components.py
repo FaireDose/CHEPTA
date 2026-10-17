@@ -551,6 +551,17 @@ COMPONENTS = {
         "aliases": ["4,4-bis(4-hydroxyphenyl)pentanoic acid", "dpa"],
         "thermoml_queries": ["diphenolic acid", "4,4-bis(4-hydroxyphenyl)pentanoic acid", "4,4-bis(4-hydroxyphenyl)valeric acid"],
     },
+    "terephthalic-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "the maintainer's choice (2026-10-17): terephthalic acid is kept a liquid that does not evaporate "
+                           "up to an assumed melting temperature of 400 degC; it sublimes at 402-404 degC at atmospheric "
+                           "pressure (ECHA registration dossier, free to read), and in its liquid-phase processes "
+                           "(oxidation and crystallization in acetic acid and water) it does not evaporate. Until 2026-10-17 "
+                           "it was a ChemSep component, whose liquid records covered only temperatures above 700 K",
+        "name": "Terephthalic acid", "cas": "100-21-0", "webbook": "C100210", "proposal": "the maintainer, 2026-10-17",
+        "aliases": ["benzene-1,4-dicarboxylic acid", "pta", "tpa"],
+        "thermoml_queries": ["1,4-benzenedicarboxylic acid", "terephthalic acid"],
+    },
     "1-3-propanediol": {
         "name": "1,3-Propanediol", "cas": "504-63-2", "webbook": "C504632", "proposal": "proposal 0009, batch 3",
         "aliases": ["propane-1,3-diol", "trimethylene glycol", "1,3-pdo", "pdo"],
