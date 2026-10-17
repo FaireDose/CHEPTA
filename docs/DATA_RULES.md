@@ -209,11 +209,19 @@ group-contribution method predicts it:
   extrapolation of up to about 100 K "has no significant effect on the error of prediction" (part II, p. 620), and on
   furfural the furan ring correction, fitted to 305 K, stays within 3.4 % of the record up to 405 K. Not for polyols
   (two or more alcohol groups): on the check set the polyol groups drift far beyond their range (glycerol +42 % at
-  560 K);
+  560 K). One group is used beyond that rule, up to 380 K (2026-10-17, for the maintainer to confirm): the ether and
+  ester carbon C-(H)(C)2(O), fitted at 130-170 K only, which THFA, CPME and the triglycerides need; on isopropyl acetate
+  (ChemSep record) the prediction with it stays within 8.1 % from 220 to 380 K, and on 2-methyltetrahydrofuran within
+  4.5 % of the measured values (`ether_check` in `predict_cp.py`, stated in each record that uses it). Methane
+  derivatives (dichloromethane) have no group in the method;
 - **measured before predicted** (2026-10-16): where the only alternative is a prediction, measured values whose
   stated uncertainty is above the target of section 3 make the record, with that uncertainty stated (fructose: liquid
   heat capacities stated to 2 %, where the prediction is 7-22 % above them at 200-370 K). Single measured values that cannot
-  make a record are listed in the predicted record with the prediction's deviation from them.
+  make a record are listed in the predicted record with the prediction's deviation from them. This holds for every
+  component, volatile or not (2026-10-17: the levulinates, levulinic acid, GVL, 2-MeTHF, 1,3-propanediol, isoamyl
+  alcohol and diethyl carbonate, with stated uncertainties of 1.5-5.2 %; `cp_measured_or_predicted` in
+  `measured_components.py`, also called by `fit_properties.py`); such a record carries `stated_uncertainty_percent`,
+  the target it is held to (`test/properties.test.js`).
 
 **Nonvolatile components:** a component that does not evaporate in the processes where it appears (it decomposes,
 polymerizes, or has no measurable vapour pressure) has `"class": "nonvolatile"` and no vapour pressure, critical

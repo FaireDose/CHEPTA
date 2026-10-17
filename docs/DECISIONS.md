@@ -122,9 +122,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **The maintainer's order after batch 4 (2026-10-15):**
   1. an interface where a user adds their own properties (and Modified UNIFAC 2.0 groups) and saves them with the
      project, labelled as user data: a proposal first;
-  2. the missing properties: liquid heat capacity for the components without one (21 on 2026-10-16, among them
-     levulinic acid, GVL, the levulinates, the lactates, furfuryl alcohol; without it a component cannot be in a
-     flowsheet energy balance; now predictable for most of them, including furans and aromatics), then thermal conductivity, surface tension and the missing viscosities (open
+  2. the missing properties: liquid heat capacity for the components without one (21 on 2026-10-16; 2026-10-17: 9
+     from measured values with their stated uncertainty, 10 predicted, dichloromethane and terephthalic acid still
+     without one, docs/decisions/2026-10-17-02-liquid-heat-capacity.md); the ideal-gas heat capacity of the 15
+     volatile components without one (without it their liquid and vapour enthalpies are refused, so they cannot be in
+     a flowsheet energy balance: a choice for the maintainer, the same decision file), then thermal conductivity, surface tension and the missing viscosities (open
      data via `open_copy.py`, else an open prediction method), then the water + lactic acid solution density and
      viscosity (open: Simion et al. 2012, Food and Environment Safety XI(4), Tables 1-2, 9-85 wt %, 293-353 K); a
      mixture density and viscosity model is needed to use them.

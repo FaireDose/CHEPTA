@@ -1,11 +1,11 @@
 {
- "_about": "Group contributions for the heat capacity of organic liquids, Cp/R = sum n_i dc_i, dc_i = a_i + b_i (T/100) + d_i (T/100)^2 with T in K and R = 8.31451 J/(K mol) (the paper's eq. 1-2). Transcribed from the page images of the NIST reprints (not from their text layer, which has OCR errors); only the groups CHEPTA uses so far. A person compares every row with the table named (AGENTS.md rule 4).",
+ "_about": "Group contributions for the heat capacity of organic liquids, Cp/R = sum n_i dc_i, dc_i = a_i + b_i (T/100) + d_i (T/100)^2 with T in K and R = 8.31451 J/(K mol) (the paper's eq. 1-2). Transcribed from the page images of the NIST reprints (not from their text layer, which has OCR errors); only the groups CHEPTA uses so far. \"single_compound\": the table's footnote b, parameters calculated from the heat capacities of a single compound. A person compares every row with the table named (AGENTS.md rule 4).",
  "sources": {
-  "part1": {"citation": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618", "doi": "10.1063/1.555923", "open_copy": "https://srd.nist.gov/jpcrdreprint/1.555923.pdf", "access": "Free to read: reprint hosted by NIST (Standard Reference Data)", "table": "Table 5, p. 604"},
+  "part1": {"citation": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618", "doi": "10.1063/1.555923", "open_copy": "https://srd.nist.gov/jpcrdreprint/1.555923.pdf", "access": "Free to read: reprint hosted by NIST (Standard Reference Data)", "table": "Table 5, p. 604 (groups); Table 6, p. 605 (ring strain corrections: \"from\": \"part1-rsc\")"},
   "part2": {"citation": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657", "doi": "10.1063/1.555924", "open_copy": "https://srd.nist.gov/jpcrdreprint/1.555924.pdf", "access": "Free to read: reprint hosted by NIST (Standard Reference Data)", "table": "Table 8, p. 632 (oxygen groups); Table 9, p. 633 (ring strain corrections: \"from\": \"part2-rsc\")"}
  },
  "R": 8.31451,
- "equivalent": {"_about": "equivalences the authors used to calculate the parameters (part II, Table 2, p. 626)", "CO-(H)(CB)": "CO-(H)(Cd)", "C-(H)3(O)": "C-(H)3(C)"},
+ "equivalent": {"_about": "equivalences the authors used to calculate the parameters (part I, Table 2, p. 600; part II, Table 2, p. 626)", "CO-(H)(CB)": "CO-(H)(Cd)", "C-(H)3(O)": "C-(H)3(C)", "C-(H)3(Cd)": "C-(H)3(C)", "C-(H)3(CB)": "C-(H)3(C)"},
  "extrapolation_K": 100,
  "_extrapolation": "part II, section 2.2, p. 620: an extrapolation of up to about 100 K beyond a group's range 'has no significant effect on the error of prediction'; a predicted record covers the groups' common range with its upper end raised by up to this much",
  "groups": {
@@ -31,7 +31,7 @@
   "CB-(H)":                   {"a": 2.2609,     "b": -2.5000e-1, "d": 1.2592e-1,  "T_K": [180, 670],  "from": "part1"},
   "CB-(C)":                   {"a": 1.5070,     "b": -1.3366e-1, "d": 1.1799e-2,  "T_K": [180, 670],  "from": "part1"},
   "O-(H)(CB)":                {"a": -7.9768,    "b": 8.1045,     "d": -8.7263e-1, "T_K": [285, 400],  "from": "part2"},
-  "C-(H)2(CB)(O)":            {"a": -3.5127e+1, "b": 2.8409e+1,  "d": -4.9593,    "T_K": [260, 460],  "from": "part2"},
+  "C-(H)2(CB)(O)":            {"a": -3.5127e+1, "b": 2.8409e+1,  "d": -4.9593,    "T_K": [260, 460],  "from": "part2", "single_compound": true},
   "O-(CB)2":                  {"a": -4.5788,    "b": 9.4150e-1,  "d": 3.1655e-1,  "T_K": [300, 535],  "from": "part2"},
   "CB-(O)":                   {"a": -1.0686,    "b": 3.5221,     "d": -7.9259e-1, "T_K": [285, 530],  "from": "part2"},
   "CO-(H)(Cd)":               {"a": -8.0024,    "b": 3.6379,     "d": -1.5377e-1, "T_K": [220, 430],  "from": "part2"},
@@ -40,6 +40,14 @@
   "Cd-(C)(CO)":               {"a": -1.2818e+1, "b": 1.5997e+1,  "d": -3.0567,    "T_K": [195, 430],  "from": "part2"},
   "CB-(CO)":                  {"a": 1.2151e+1,  "b": -1.6705,    "d": -1.2758e-1, "T_K": [175, 500],  "from": "part2"},
   "CO-(CB)(O)":               {"a": 1.6586e+1,  "b": 5.4491,     "d": -2.6849,    "T_K": [175, 500],  "from": "part2"},
-  "furan rsc":                {"a": 9.6704,     "b": -2.8138,    "d": 1.1376e-1,  "T_K": [190, 305],  "from": "part2-rsc"}
+  "furan rsc":                {"a": 9.6704,     "b": -2.8138,    "d": 1.1376e-1,  "T_K": [190, 305],  "from": "part2-rsc"},
+  "Cd-(H)(C)":                {"a": 4.0749,     "b": -1.0735,    "d": 2.1413e-1,  "T_K": [90, 355],   "from": "part1"},
+  "Cd-(C)2":                  {"a": 1.9570,     "b": -3.1938e-1, "d": 1.1911e-1,  "T_K": [140, 315],  "from": "part1"},
+  "C-(H)2(C)(Cd)":            {"a": 2.0268,     "b": 2.0137e-1,  "d": 1.1624e-1,  "T_K": [90, 355],   "from": "part1"},
+  "C-(H)(C)2(Cd)":            {"a": -8.7558e-1, "b": 8.2109e-1,  "d": 1.8415e-1,  "T_K": [110, 300],  "from": "part1", "single_compound": true},
+  "cyclopentane (sub) rsc":   {"a": 2.1983e-1,  "b": -1.5118,    "d": 2.3172e-1,  "T_K": [135, 365],  "from": "part1-rsc"},
+  "cyclohexene rsc":          {"a": -1.2086,    "b": -1.5041,    "d": 4.2863e-1,  "T_K": [160, 320],  "from": "part1-rsc"},
+  "C-(H)(C)2(O) (ether, ester)": {"a": 9.8790e-1, "b": 3.9403e-1, "d": -1.6124e-2, "T_K": [130, 170], "from": "part2"},
+  "tetrahydrofuran rsc":      {"a": 3.2842,     "b": -5.8260,    "d": 1.2681,     "T_K": [160, 320],  "from": "part2-rsc", "single_compound": true}
  }
 }

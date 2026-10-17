@@ -70,7 +70,7 @@ Left out of liquidViscosity: 293.15 K, Guo 2019, +1.55 % (stated uncertainty 4.2
 | Vapour pressure | 375.00-766.00 | 10 | 13 | 2.9 % | ThermoML, WebBook |
 | liquidDensity | 293.15-343.15 | 9 | 0 | 0.33 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| liquidHeatCapacity | 302.62-374.12 | 144 | 0 | 0.50 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 2.5 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 375.00-518.20 | 25 | 0 | 0.34 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data |
 | vapourViscosity | — | — | — | — | no open data |
@@ -90,7 +90,7 @@ Left out of vapourPressure: 328.40 K, Verevkin 2012, -40.69 % (transpiration tak
 | Vapour pressure | 293.50-668.00 | 39 | 0 | 8.3 % | ThermoML, WebBook |
 | liquidDensity | 278.15-338.15 | 38 | 0 | 0.0061 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| liquidHeatCapacity | 302.68-373.68 | 143 | 0 | 0.59 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 2.5 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 293.50-453.15 | 25 | 0 | 0.67 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | 278.15-338.15 | 25 | 0 | 0.57 % | Measured values (NIST TRC ThermoML Archive) |
 | vapourViscosity | — | — | — | — | no open data |
@@ -108,7 +108,7 @@ Left out of vapourPressure: 328.40 K, Verevkin 2012, -40.69 % (transpiration tak
 | Vapour pressure | 293.50-669.00 | 17 | 0 | 5.8 % | ThermoML, WebBook |
 | liquidDensity | 293.15-333.15 | 6 | 0 | 0.13 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| liquidHeatCapacity | 302.98-373.98 | 143 | 0 | 0.62 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 2.5 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 293.50-478.88 | 25 | 0 | 0.96 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data |
 | vapourViscosity | — | — | — | — | no open data |
@@ -126,7 +126,7 @@ Left out of vapourPressure: 328.40 K, Verevkin 2012, -40.69 % (transpiration tak
 | Vapour pressure | 298.20-692.00 | 13 | 0 | 5.3 % | ThermoML, WebBook |
 | liquidDensity | 293.15-333.15 | 6 | 0 | 0.089 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| liquidHeatCapacity | 302.66-374.16 | 144 | 0 | 0.61 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 2.5 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 298.20-510.70 | 25 | 0 | 0.28 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data |
 | vapourViscosity | — | — | — | — | no open data |
@@ -144,7 +144,7 @@ Left out of vapourPressure: 328.40 K, Verevkin 2012, -40.69 % (transpiration tak
 | Vapour pressure | 238.07-480.20 | 86 | 0 | 39 % | ThermoML, WebBook |
 | liquidDensity | 288.15-363.15 | 40 | 0 | 0.19 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| liquidHeatCapacity | 265.37-358.50 | 20 | 0 | 0.32 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 3.9 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 238.07-401.38 | 17 | 8 | 0.91 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data (no open data at the 3 % target of the records) |
 | vapourViscosity | — | — | — | — | no open data |
@@ -164,7 +164,7 @@ Left out of heatOfVaporization: 292.51 K, Clapeyron equation with the vapour-pre
 | Vapour pressure | 273.11-412.11 | 27 | 3 | 2.3 % | ThermoML, WebBook |
 | liquidDensity | 283.15-313.15 | 5 | 0 | 0.20 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data over a temperature range) |
+| liquidHeatCapacity | 298.15-405.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | 273.11-379.72 | 25 | 0 | 0.0001 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data |
 | vapourViscosity | — | — | — | — | no open data |
@@ -184,7 +184,7 @@ Left out of vapourPressure: 353.30 K, Tai 2014, +7.22 % (its three values at 353
 | Vapour pressure | 303.15-448.15 | 29 | 1 | 29 % | ThermoML, WebBook |
 | liquidDensity | 278.15-338.15 | 38 | 0 | 0.072 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data over a temperature range) |
+| liquidHeatCapacity | 160.00-380.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | 303.15-380.61 | 25 | 0 | 0.0001 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | 278.15-338.15 | 25 | 0 | 0.24 % | Measured values (NIST TRC ThermoML Archive) |
 | vapourViscosity | — | — | — | — | no open data |
@@ -204,7 +204,7 @@ Left out of vapourPressure: 428.15 K, Lomba 2014, -1.71 % (more than three times
 | Vapour pressure | 283.15-413.15 | 26 | 0 | 32 % | ThermoML, WebBook |
 | liquidDensity | 278.15-338.15 | 39 | 0 | 0.039 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | 185.00-540.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | 283.15-351.29 | 25 | 0 | 0.52 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | 278.15-338.15 | 25 | 0 | 0.89 % | Measured values (NIST TRC ThermoML Archive) |
 | vapourViscosity | — | — | — | — | no open data |
@@ -222,7 +222,7 @@ Left out of vapourPressure: 428.15 K, Lomba 2014, -1.71 % (more than three times
 | Vapour pressure | 274.60-427.60 | 57 | 2 | 8.1 % | ThermoML, WebBook |
 | liquidDensity | 278.15-338.15 | 70 | 0 | 0.13 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | 185.00-540.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | 274.60-360.14 | 25 | 0 | 0.0001 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | 278.15-338.15 | 45 | 0 | 1.8 % | Measured values (NIST TRC ThermoML Archive) |
 | vapourViscosity | — | — | — | — | no open data |
@@ -242,7 +242,7 @@ Left out of vapourPressure: 396.91 K, Matsuda 2016, +3.12 % (more than three tim
 | Vapour pressure | 258.55-379.30 | 47 | 0 | 3.4 % | ThermoML, WebBook |
 | liquidDensity | 288.15-328.15 | 8 | 0 | 0.22 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | 135.00-380.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | 258.55-314.66 | 25 | 0 | 0.0001 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data |
 | vapourViscosity | — | — | — | — | no open data |
@@ -260,7 +260,7 @@ Left out of vapourPressure: 396.91 K, Matsuda 2016, +3.12 % (more than three tim
 | Vapour pressure | 238.20-450.00 | 81 | 0 | 6.3 % | ThermoML, WebBook |
 | liquidDensity | 283.15-373.15 | 31 | 1 | 0.30 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data over a temperature range) |
+| liquidHeatCapacity | 160.00-400.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | 238.20-375.64 | 25 | 0 | 0.0001 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | 283.15-373.15 | 20 | 5 | 3.0 % | Measured values (NIST TRC ThermoML Archive) |
 | vapourViscosity | — | — | — | — | no open data |
@@ -304,7 +304,7 @@ Left out of liquidViscosity: 318.15 K, George 2003, +72.13 % (deviates most from
 | Vapour pressure | 275.70-490.20 | 33 | 0 | 0.63 % | ThermoML, WebBook |
 | liquidDensity | 278.15-303.15 | 20 | 0 | 0.26 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | 200.00-1500.00 | 16 | 0 | 0.26 % | NIST Chemistry WebBook |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data over a temperature range) |
+| liquidHeatCapacity | 298.15-405.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | 275.70-357.04 | 25 | 0 | 0.45 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data |
 | vapourViscosity | — | — | — | — | no open data |
@@ -322,7 +322,7 @@ Left out of liquidViscosity: 318.15 K, George 2003, +72.13 % (deviates most from
 | Vapour pressure | 285.37-528.00 | 60 | 23 | 1.2 % | ThermoML, WebBook |
 | liquidDensity | 278.15-338.15 | 37 | 0 | 0.28 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | 200.00-1500.00 | 16 | 0 | 0.28 % | NIST Chemistry WebBook |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data over a temperature range) |
+| liquidHeatCapacity | 298.15-405.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | 285.37-394.88 | 25 | 0 | 0.24 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data |
 | vapourViscosity | — | — | — | — | no open data |
@@ -344,7 +344,7 @@ Left out of surfaceTension: 333.15 K, Lomba 2015, +0.13 % (stated uncertainty 1 
 | Vapour pressure | 279.00-537.00 | 47 | 0 | 0.93 % | ThermoML, WebBook |
 | liquidDensity | 283.15-313.15 | 20 | 0 | 0.15 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| liquidHeatCapacity | 288.15-323.15 | 11 | 0 | 0.23 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 2.0 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 279.00-414.71 | 25 | 0 | 0.84 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | 283.15-313.15 | 6 | 3 | 1.7 % | Measured values (NIST TRC ThermoML Archive) |
 | vapourViscosity | — | — | — | — | no open data |
@@ -386,7 +386,7 @@ Left out of liquidViscosity: 303.15 K, Boodida 2008, +4.28 % (stated uncertainty
 | Vapour pressure | 335.85-577.20 | 115 | 4 | 2.9 % | ThermoML, WebBook |
 | liquidDensity | 288.15-332.70 | 53 | 11 | 0.77 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | 451.65-499.15 | 4 | 0 | 0.0094 % | NIST Chemistry WebBook |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| liquidHeatCapacity | 123.04-347.00 | 45 | 0 | 1.6 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 2.4 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 298.15-404.20 | 7 | 1 | 0.38 % | Measured enthalpies of vaporization (NIST Chemistry WebBook; calorimetric and critically evaluated values) |
 | liquidViscosity | 288.15-323.15 | 19 | 7 | 2.7 % | Measured values (NIST TRC ThermoML Archive) |
 | vapourViscosity | — | — | — | — | no open data |
@@ -720,7 +720,7 @@ Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 
 | Vapour pressure | 292.50-721.00 | 61 | 0 | 8.9 % | ThermoML, WebBook |
 | liquidDensity | 253.15-363.15 | 171 | 0 | 0.23 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data at the 1 % target of the records) |
+| liquidHeatCapacity | 283.15-353.15 | 47 | 0 | 0.98 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 4.2 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 292.50-487.43 | 25 | 0 | 0.87 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | 288.15-333.15 | 59 | 26 | 2.4 % | Measured values (NIST TRC ThermoML Archive) |
 | vapourViscosity | — | — | — | — | no open data |

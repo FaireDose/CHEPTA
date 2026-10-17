@@ -75,8 +75,12 @@ test("records are complete: units, range, tier, source and stated fit quality", 
         assert.ok(r.source.groups && /Accuracy of the method/.test(r.source.notes), `${where}: groups and accuracy`);
         continue;
       }
-      // targets of the task: 1 % for thermodynamic properties, 3 % for transport properties
-      const target = TRANSPORT.has(p) ? 0.03 : 0.01;
+      // targets of the task: 1 % for thermodynamic properties, 3 % for transport properties; a record made of measured
+      // values whose stated uncertainties are above the target, because the only alternative is a prediction
+      // (docs/DATA_RULES.md, section 10: "measured before predicted"), is held to those uncertainties, which it states
+      const stated = r.source.stated_uncertainty_percent;
+      if (stated != null) assert.match(r.source.name, /above the 1 % target, used because the only alternative is a prediction/, `${where}: why`);
+      const target = stated != null ? stated / 100 : TRANSPORT.has(p) ? 0.03 : 0.01;
       assert.ok(statedMaxDeviation(r) <= target, `${where}: stated deviation above the ${target * 100} % target`);
     }
   }
@@ -151,7 +155,9 @@ const ENTHALPY_NOT_CONSISTENT = new Set(["acetic-acid"]);
 // (375 K) the density is refused with an out-of-range note instead of being extrapolated. gamma-Butyrolactone the same:
 // its liquid densities end at 333 K, its viscosities at 323 K, and its vapour-pressure record starts at 377 K. Isoamyl
 // alcohol too: densities to 332.7 K, viscosities to 323.15 K, vapour pressures from 335.85 K.
-const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3"], gbl: ["rho_kg_m3", "mu_Pa_s"],
+// (levulinic acid: its liquid records do not overlap, docs/DATA_RULES.md section 3, "a gap"; the measured heat
+// capacity, added on 2026-10-17, ends at 374.12 K, below the 375 K where its vapour pressure starts)
+const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3", "cp_J_molK"], gbl: ["rho_kg_m3", "mu_Pa_s"],
   "isoamyl-alcohol": ["rho_kg_m3", "mu_Pa_s"] };
 
 test("props() returns liquid and vapour properties for every component at a typical state", () => {
