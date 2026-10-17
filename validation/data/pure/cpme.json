@@ -128,6 +128,46 @@
     "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)"
    ]
   },
+  "surfaceTension": {
+   "units": "N/m",
+   "source": {
+    "name": "Measured values (NIST TRC ThermoML Archive)",
+    "fit": "9 measured values, 283.15-353.15 K, max deviation 0.58 %"
+   },
+   "T_K": [
+    283.15,
+    293.15,
+    298.15,
+    298.15,
+    303.15,
+    323.15,
+    333.15,
+    343.15,
+    353.15
+   ],
+   "values": [
+    0.02753,
+    0.02612,
+    0.0253,
+    0.02533,
+    0.02481,
+    0.02256,
+    0.02143,
+    0.0203,
+    0.01931
+   ],
+   "references": [
+    "Mejia 2019",
+    "Mejia 2019",
+    "Mejia 2019",
+    "Mejia 2019",
+    "Mejia 2019",
+    "Mejia 2019",
+    "Mejia 2019",
+    "Mejia 2019",
+    "Mejia 2019"
+   ]
+  },
   "vapourPressure": {
    "units": "Pa",
    "source": {

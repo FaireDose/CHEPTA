@@ -1,0 +1,38 @@
+{
+ "component": "glucose",
+ "cas": "50-99-7",
+ "about": "Melting data of an open-access article (read by validation/python/fusion_data.py, step 5 of rule 1), transcribed from Table 2 of the published version; solid form: D-alpha-glucose (crystalline). No other values of the article are used.",
+ "source": {
+  "citation": "Y. Z. Chua, H. T. Do, A. Kumar, M. Hallermann, D. Zaitsau, C. Schick, C. Held, The melting properties of D-alpha-glucose, D-beta-fructose, D-sucrose, D-alpha-galactose, and D-alpha-xylose and their solubility in water: A revision, Food Biophys. 17 (2022) 181-197",
+  "doi": "10.1007/s11483-021-09707-6",
+  "open_copy": "http://hdl.handle.net/2003/40946",
+  "access": "Open access, CC BY 4.0 (Springer); the published version is also in the TU Dortmund repository Eldorado (hdl:2003/40946)",
+  "tables": "Table 2 (melting temperature and enthalpy of fusion from fast scanning calorimetry, FSC, extrapolated to zero scanning rate)"
+ },
+ "articles": {
+  "10.1007/s11483-021-09707-6": {
+   "authors": [
+    "Chua, Y. Z.",
+    "Do, H. T.",
+    "Kumar, A.",
+    "Hallermann, M.",
+    "Zaitsau, D.",
+    "Schick, C.",
+    "Held, C."
+   ],
+   "title": "The melting properties of D-alpha-glucose, D-beta-fructose, D-sucrose, D-alpha-galactose, and D-alpha-xylose and their solubility in water: A revision",
+   "journal": "Food Biophys.",
+   "volume": "17",
+   "year": "2022",
+   "pages": "181-197"
+  }
+ },
+ "rows": [],
+ "fusion": {
+  "Tm_K": 448,
+  "Tm_uncertainty_K": 7,
+  "Hfus_kJ_mol": 40,
+  "Hfus_uncertainty_kJ_mol": 5,
+  "where": "Table 2, fast scanning calorimetry (FSC) at 2000-10000 K/s; the authors find the lower values of DSC and the older literature (their Table 3) lowered by decomposition in the crystal before melting, and take the FSC values as the equilibrium melting properties; uncertainties as printed; solid: D-alpha-glucose (crystalline)"
+ }
+}

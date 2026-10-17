@@ -272,14 +272,9 @@ _TML = "NIST TRC ThermoML Archive (ThermoML-API full-text search; validation/dat
 _LIT = ("open literature: Europe PMC and OpenAlex (open-access status), web search in English and Chinese (CIESC Journal, "
         "which has the liquid thermal conductivity of dimethyl carbonate (2008) and diethyl adipate (2010), not of "
         "diethyl carbonate)")
-_TPA = ("NIST Chemistry WebBook phase-change data (no melting or triple-point temperature: "
-        "validation/data/pure/fusion/webbook_fusion.json); open literature: web search")
 SEARCHED_BEYOND = {
     "diethyl-carbonate": {"liquidThermalConductivity": [_TML % ("diethyl-carbonate", "thermal conductivity"), _LIT],
                           "vapourThermalConductivity": [_TML % ("diethyl-carbonate", "thermal conductivity"), _LIT]},
-    "terephthalic-acid": {p: [_TML % ("terephthalic-acid", "liquid values"), _TPA]
-                          for p in ("liquidHeatCapacity", "heatOfVaporization", "liquidViscosity",
-                                    "liquidThermalConductivity", "surfaceTension")},
 }
 # proposal 0009, batch 2 (searched 2026-10-13)
 _LIT2 = ("open literature: web search (English) and Europe PMC (searched 2026-10-13), and the articles the maintainer "
@@ -1427,6 +1422,28 @@ class Builder:
         return rec, pts
 
     def build(self, cid, prop):
+        r = self._build(cid, prop)
+        if prop == "liquidHeatCapacity" and r[0].get("available") is False:
+            r = self.cp_measured_or_predicted(cid, r[0])
+        return r
+
+    def cp_measured_or_predicted(self, cid, marker):
+        """No liquid heat capacity in the sources above: the rule "measured before predicted" of
+        measured_components.cp_measured_or_predicted (docs/DATA_RULES.md, section 10), with the ThermoML Archive
+        values of the component and the sources searched (the marker's)."""
+        from measured_components import ThermoML, cp_measured_or_predicted
+        prop = "liquidHeatCapacity"
+        file = Path(__file__).resolve().parents[2] / "validation" / "data" / "pure" / "measured" / ("thermoml_%s.json" % cid)
+        tml = ThermoML(cid) if file.exists() else None
+        vals = set_aside(cid, tml.values(prop), prop)[0] if tml else []
+        cas = self.comps[cid]["cas"]
+        Tc = self.coolprop(cid).Tc if cid in COOLPROP else self.cs.const(cas, "CriticalTemperature")
+        records, points, log = {prop: marker}, {}, []
+        cp_measured_or_predicted(cid, vals, records, points, log, Tc, tml, marker["searched"])
+        self.log.extend(log)
+        return records[prop], points.get(prop)
+
+    def _build(self, cid, prop):
         src = chosen_source(cid, prop)
         if src == "measured":
             return self.from_measured(cid, prop)
@@ -1802,6 +1819,8 @@ def short_source(rec):
         return "CoolProp"
     if s.startswith("NIST"):
         return "WebBook"
+    if s.startswith(("Measured", "Correlation of measured")):
+        return "measured"
     return "ChemSep"
 
 
@@ -1852,7 +1871,9 @@ def write_doc(comps, records, builder, vp_gas, measured=()):
     L.append("Each cell: source of the record and the maximum deviation of the correlation from that source "
              "over its range (%). Sources: **CoolProp** 8.0.0 (reference equations cited in each record), "
              "**WebBook** = NIST Chemistry WebBook, **ChemSep** = ChemSep pure-component database v8.3 "
-             "(Artistic License 2.0). Tier: (f) fitted by CHEPTA, (d) databank coefficients taken over.\n")
+             "(Artistic License 2.0), **measured** = fitted to measured values of the NIST TRC ThermoML Archive or "
+             "an open article (named in the record). Tier: (f) fitted by CHEPTA, (d) databank coefficients taken over, "
+             "(p) predicted by group additivity (validation/python/predict_cp.py), no open measured values.\n")
     head = "| Component | Psat | " + " | ".join(SHORT[p] for p in PROPS) + " |"
     L.append(head)
     L.append("|" + "---|" * (len(PROPS) + 2))
@@ -1866,6 +1887,8 @@ def write_doc(comps, records, builder, vp_gas, measured=()):
             r = records[cid][p]
             if r.get("available") is False:
                 cells.append("no open data")
+            elif r["tier"] == "predicted":
+                cells.append("predicted (p)")
             else:
                 cells.append("%s %s (%s)" % (short_source(r), max_dev_text(r), r["tier"][0]))
         L.append("| %s | %s | %s |" % (c["name"], vps, " | ".join(cells)))

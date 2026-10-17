@@ -33,6 +33,12 @@ NEAR_ALPHA = ("a carbon bearing OH next to a carboxyl, C-(H)(C)(O)(CO), is a gro
               "counted as the secondary alcohol carbon C-(H)(C)2(O), its nearest group")
 POLYOL = ("the authors note that their estimates for diols and 1,2,3-propanetriol are poor (part II, p. 641); for "
           "polyols the check below shows the prediction rising above the records with temperature")
+ETHER_CH = "C-(H)(C)2(O) (ether, ester)"
+LACTATE = ("the alpha carbon CH(OH)(COOR) is C-(H)(C)(O)(CO), a group the method does not have; it is counted as the "
+           "secondary alcohol carbon C-(H)(C)2(O), its nearest group, as for lactic acid")
+# a group used beyond the range where it was fitted, up to the temperature where checks on CHEPTA liquids with records
+# hold it within the method's accuracy (ether_check below)
+EXTENDED = {ETHER_CH: 380.0}
 FURAN = ("the furan ring is counted as the authors count furan: ring carbons as CB groups, the ring oxygen as O-(CB)2, "
          "plus the furan ring strain correction (part II, Table 3)")
 PREDICT = {
@@ -95,6 +101,44 @@ PREDICT = {
                        "O-(H)(C)": 1, "CO-(H)(Cd)": 1},
             "approximation": FURAN + "; the aldehyde CO-(H)(CB) is counted as CO-(H)(Cd), as the authors do (part II, "
                              "Table 2)"},
+    # terephthalic acid: a liquid that does not evaporate up to an assumed melting temperature of 400 degC (the
+    # maintainer, 2026-10-17: "assume the melting is at 400 and keep it liquid until then"; no open source has its
+    # melting temperature)
+    "terephthalic-acid": {"groups": {"CB-(H)": 4, "CB-(CO)": 2, "CO-(CB)(O)": 2, "O-(H)(CO)": 2},
+                          "approximation": "every group exists in the method",
+                          "Tmax_K": 673.15,
+                          "Tmax_why": "the maintainer's choice (2026-10-17): terephthalic acid is kept a liquid up to an "
+                                      "assumed melting temperature of 400 degC (673.15 K), so the record runs to it, 73 K "
+                                      "beyond the authors' 100 K extrapolation; the ECHA registration dossier (free to "
+                                      "read) reports sublimation at 402-404 degC and melting at 427 degC in a sealed tube"},
+    # the components of batches 1-3 without open measured heat capacities over a temperature range (2026-10-17)
+    "furan": {"groups": {"CB-(H)": 4, "O-(CB)2": 1, "furan rsc": 1}, "approximation": FURAN},
+    "2-methylfuran": {"groups": {"CB-(H)": 3, "CB-(C)": 1, "O-(CB)2": 1, "furan rsc": 1, "C-(H)3(C)": 1},
+                      "approximation": FURAN + "; the methyl group C-(H)3(CB) is C-(H)3(C), an equivalence of the method "
+                                               "(part I, Table 2)"},
+    "furfuryl-alcohol": {"groups": {"CB-(H)": 3, "CB-(C)": 1, "O-(CB)2": 1, "furan rsc": 1, "C-(H)2(CB)(O)": 1, "O-(H)(C)": 1},
+                         "approximation": FURAN},
+    "thfa": {"groups": {"O-(C)2": 1, "C-(H)2(C)(O)": 2, "C-(H)2(C)2": 2, ETHER_CH: 1, "O-(H)(C)": 1, "tetrahydrofuran rsc": 1},
+             "approximation": "the ring is counted as tetrahydrofuran with its ring strain correction (part II, Table 9)"},
+    "cpme": {"groups": {"C-(H)3(C)": 1, "O-(C)2": 1, ETHER_CH: 1, "C-(H)2(C)2": 4, "cyclopentane (sub) rsc": 1},
+             "approximation": "the methyl group C-(H)3(O) is C-(H)3(C), an equivalence of the method (part II, Table 2); the "
+                              "ring is counted with the substituted cyclopentane ring strain correction (part I, Table 6)"},
+    "methyl-lactate": {"groups": {"C-(H)3(C)": 2, ALC: 1, "O-(H)(C)": 1, "CO-(C)(O)": 1, "O-(C)(CO)": 1},
+                       "approximation": LACTATE + "; the methoxy group C-(H)3(O) is C-(H)3(C), an equivalence of the method "
+                                                  "(part II, Table 2)"},
+    "ethyl-lactate": {"groups": {"C-(H)3(C)": 2, ALC: 1, "O-(H)(C)": 1, "CO-(C)(O)": 1, "O-(C)(CO)": 1, "C-(H)2(C)(O)": 1},
+                      "approximation": LACTATE},
+    "limonene": {"groups": {"Cd-(C)2": 2, "Cd-(H)(C)": 1, "Cd-(H)2": 1, "C-(H)2(C)(Cd)": 2, "C-(H)(C)2(Cd)": 1,
+                            "C-(H)2(C)2": 1, "C-(H)3(C)": 2, "cyclohexene rsc": 1},
+                 "approximation": "the methyl groups on double-bonded carbons, C-(H)3(Cd), are C-(H)3(C), an equivalence of "
+                                  "the method (part I, Table 2); the ring is counted with the cyclohexene ring strain "
+                                  "correction (part I, Table 6); the method does not tell the enantiomers apart"},
+    "triolein": {"groups": {"C-(H)2(C)(O)": 2, ETHER_CH: 1, "O-(C)(CO)": 3, "CO-(C)(O)": 3, "C-(H)2(C)(CO)": 3,
+                            "C-(H)2(C)2": 33, "C-(H)2(C)(Cd)": 6, "Cd-(H)(C)": 6, "C-(H)3(C)": 3},
+                 "approximation": "every group exists in the method (it does not tell cis from trans)"},
+    "tripalmitin": {"groups": {"C-(H)2(C)(O)": 2, ETHER_CH: 1, "O-(C)(CO)": 3, "CO-(C)(O)": 3, "C-(H)2(C)(CO)": 3,
+                               "C-(H)2(C)2": 39, "C-(H)3(C)": 3},
+                    "approximation": "every group exists in the method"},
 }
 
 # check set: components with a liquid heat-capacity record from CoolProp or ChemSep, and their groups
@@ -130,9 +174,14 @@ def coefficients(groups, extrapolate=False):
     b = sum(n * GC["groups"][g]["b"] for g, n in groups.items())
     d = sum(n * GC["groups"][g]["d"] for g, n in groups.items())
     lo = max(GC["groups"][g]["T_K"][0] for g in groups)
-    hi = min(GC["groups"][g]["T_K"][1] for g in groups)
+    others = [GC["groups"][g]["T_K"][1] for g in groups if g not in EXTENDED]
+    hi = min(others) if others else min(EXTENDED[g] for g in groups)
     if extrapolate:
         hi += GC["extrapolation_K"]
+    # a group of EXTENDED: up to the temperature where the checks hold it (ether_check), not its own range
+    ext = [EXTENDED[g] for g in groups if g in EXTENDED]
+    if ext:
+        hi = min(hi, min(ext))
     return {"A": R * a, "B": R * b / 100, "C": R * d / 1e4}, (lo, hi)
 
 
@@ -210,6 +259,28 @@ def accuracy():
     return text, furan
 
 
+def ether_check():
+    """The group C-(H)(C)2(O) (ether, ester) was fitted at 130-170 K only (part II, Table 8). How it does far above
+    that: the prediction against the liquid heat-capacity record of isopropyl acetate (the only CHEPTA liquid with a
+    record and this group) every 20 K from the record's start to the cap of EXTENDED, and against the measured heat
+    capacities of 2-methyltetrahydrofuran (NIST TRC ThermoML Archive, stated uncertainties 1.5-2 %). Returns the text."""
+    from measured_components import ThermoML
+    comps = json.loads((ROOT / "src" / "data" / "components.json").read_text())["components"]
+    rec = comps["isopropyl-acetate"]["properties"]["liquidHeatCapacity"]
+    groups = {"C-(H)3(C)": 3, "CO-(C)(O)": 1, "O-(C)(CO)": 1, ETHER_CH: 1}
+    T = np.arange(20 * np.ceil(rec["Tmin_K"] / 20), EXTENDED[ETHER_CH] + 1, 20.0)
+    dev = 100 * (cp(groups, T) / ev(rec["equation"], rec["coefficients"], T, rec.get("Tc_K")) - 1)
+    mthf = {"C-(H)3(C)": 1, "O-(C)2": 1, "C-(H)2(C)(O)": 1, "C-(H)2(C)2": 2, "tetrahydrofuran rsc": 1, ETHER_CH: 1}
+    pts = ThermoML("2-methyltetrahydrofuran").values("liquidHeatCapacity")
+    d2 = [100 * (cp(mthf, p["T"]) / p["y"] - 1) for p in pts]
+    return ("The group %s was fitted at %g-%g K only (part II, Table 8); it is used up to %g K, where it holds on the CHEPTA "
+            "liquids that have it: on isopropyl acetate (ChemSep record) the prediction is %+.1f to %+.1f %% from the "
+            "record at %g-%g K, and on 2-methyltetrahydrofuran %+.1f to %+.1f %% from %d measured values at %.0f-%.0f K "
+            "(NIST TRC ThermoML Archive)" % (
+                ETHER_CH, *GC["groups"][ETHER_CH]["T_K"], EXTENDED[ETHER_CH], min(dev), max(dev), T[0], T[-1],
+                min(d2), max(d2), len(pts), min(p["T"] for p in pts), max(p["T"] for p in pts)))
+
+
 def predicted_record(cid, why_no_data):
     """The liquid heat-capacity record of a component of PREDICT, tier "predicted", with the method's accuracy on the
     check set stated. The range is where every group was fitted, raised by the 100 K the authors allow (part II,
@@ -225,6 +296,10 @@ def predicted_record(cid, why_no_data):
         lo = 298.15
     acc, furan = accuracy()
     s = GC["sources"]
+    ext = [g for g in p["groups"] if g in EXTENDED]
+    if ext:
+        # the range where the other groups were fitted; the extended group is stated below
+        hi0 = min(GC["groups"][g]["T_K"][1] for g in p["groups"] if g not in EXTENDED)
     rng = ("where every group's parameters were fitted (%g-%g K)" % (lo0, hi0) if polyol else
            "where every group's parameters were fitted (%g-%g K), raised by %g K, the extrapolation the authors find "
            "has no significant effect on the error (part II, p. 620)" % (lo0, hi0, GC["extrapolation_K"]))
@@ -232,11 +307,23 @@ def predicted_record(cid, why_no_data):
         rng += "; not raised for a polyol, as the check shows the polyol groups drifting beyond their range"
     if low:
         rng += "; lower end taken down to 298.15 K, the reference temperature of the liquid enthalpy"
+    if ext:
+        rng = rng.replace("where every group's", "where every other group's") + "; at most %g K, for the group %s" % (
+            EXTENDED[ext[0]], ext[0])
+    if p.get("Tmax_K"):
+        hi = p["Tmax_K"]
+        rng += "; upper end %g K: %s" % (hi, p["Tmax_why"])
     notes = "%s. %s. %s." % (why_no_data, p["approximation"][0].upper() + p["approximation"][1:], acc)
     if "furan rsc" in p["groups"]:
         notes += (" The furan ring correction was fitted to 305 K only; on furfural the prediction stays within %.1f %% "
                   "of its record from %g to %g K." % (furan, GC["groups"]["furan rsc"]["T_K"][1] - 5,
                                                          GC["groups"]["furan rsc"]["T_K"][1] + GC["extrapolation_K"]))
+    if ext:
+        notes += " " + ether_check() + "."
+    single = [g for g in p["groups"] if GC["groups"][g].get("single_compound")]
+    if single:
+        notes += (" The parameters of %s were calculated by the authors from the heat capacities of a single compound "
+                  "(their footnote b)." % " and ".join(single))
     return {
         "equation": "DIPPR100", "coefficients": {k: float("%.10g" % v) for k, v in c.items()}, "units": "J/mol/K",
         "Tmin_K": float(lo), "Tmax_K": float(hi), "tier": "predicted",
@@ -245,8 +332,9 @@ def predicted_record(cid, why_no_data):
             "reference": "%s, doi:%s; %s, doi:%s" % (s["part1"]["citation"], s["part1"]["doi"], s["part2"]["citation"], s["part2"]["doi"]),
             "access": "%s (%s; %s)" % (s["part2"]["access"], s["part1"]["open_copy"], s["part2"]["open_copy"]),
             "groups": ", ".join("%d %s" % (n, g) for g, n in p["groups"].items()),
-            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 "
-                   "and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: %s" % rng,
+            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (%s of part I, Tables 8 "
+                   "and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: %s" % (
+                       "Tables 5 and 6" if any(GC["groups"][g]["from"] == "part1-rsc" for g in p["groups"]) else "Table 5", rng),
             "notes": notes,
         },
     }
