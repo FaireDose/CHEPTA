@@ -123,8 +123,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   1. an interface where a user adds their own properties (and Modified UNIFAC 2.0 groups) and saves them with the
      project, labelled as user data: a proposal first;
   2. the missing properties (docs/decisions/2026-10-17-02-liquid-heat-capacity.md): liquid heat capacity done for
-     all 21 (terephthalic acid a nonvolatile liquid to 400 °C; dichloromethane a constant from single values over
-     292.5-303.2 K, 2026-10-18: extend it to its boiling point, 313.1 K?); surface tension, viscosity, density and
+     all 21 (terephthalic acid a nonvolatile liquid to 400 °C; dichloromethane a constant from single values,
+     292.5 K to its boiling point, 313.1 K, 2026-10-18); surface tension, viscosity, density and
      fusion: 23 records added on 2026-10-17 and -18 (same file); **on hold** (the maintainer, 2026-10-18): the ideal-gas
      heat capacity of 2-methoxyethanol, the levulinates, levulinic acid, THFA and 2,3-butanediol, and of all 15 above
      the range derived from their liquid, by an open group-contribution method (tier "predicted", its group values

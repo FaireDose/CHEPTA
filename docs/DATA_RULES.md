@@ -131,8 +131,8 @@ the maintainer's decision (2026-10-18: its only value, at 249 K, against the tri
 
 **Single values only.** Where the open values of a property are single temperatures from several articles, with no
 series, there is no record, except where the maintainer decides otherwise. Dichloromethane's liquid heat capacity
-(2026-10-18) is the mean of its open single values, a constant over the temperatures they span, held to their largest
-deviation from it (`cp_single_values`).
+(2026-10-18) is the mean of its open single values, a constant over 292.5 K to its normal boiling point, 313.1 K (10 K
+beyond the values, also by the maintainer's decision), held to their largest deviation from it (`cp_single_values`).
 
 ## 4. Records refitted before 2026-10-14
 

@@ -22,7 +22,7 @@ the sources searched.
 | Vapour pressure | 233.00-508.00 | 26 | 4 | 0.79 % | ThermoML, WebBook |
 | liquidDensity | 278.15-308.15 | 26 | 1 | 0.32 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | 298.00-1200.00 | 200 | 0 | 0.12 % | NIST Chemistry WebBook |
-| liquidHeatCapacity | 292.50-303.20 | 8 | 1 | 5.2 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); measured at single temperatures only, so the record is their mean, a constant, by the maintainer's decision (2026-10-18: "use this values you found because dichlormethane has a lower boiling point"); their deviations from it, up to 5.2 %, are above the 1 % target, used because no open values meet the target |
+| liquidHeatCapacity | 292.50-313.12 | 8 | 1 | 5.2 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); measured at single temperatures only, so the record is their mean, a constant, by the maintainer's decision (2026-10-18: "use this values you found because dichlormethane has a lower boiling point"); their deviations from it, up to 5.2 %, are above the 1 % target, used because no open values meet the target |
 | heatOfVaporization | 298.15-313.00 | 4 | 1 | 0.50 % | Measured enthalpies of vaporization (NIST Chemistry WebBook; calorimetric and critically evaluated values) |
 | liquidViscosity | — | — | — | — | no open data (no open data over a temperature range) |
 | vapourViscosity | — | — | — | — | no open data |

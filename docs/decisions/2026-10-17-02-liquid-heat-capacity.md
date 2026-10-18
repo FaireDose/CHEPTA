@@ -213,8 +213,9 @@
     - **The record:** the mean of the eight open single values, 100.3 J/(mol K), a constant over 292.5–303.2 K, held
       to their largest deviation from it, 5.2 % (`cp_single_values` in `measured_components.py`).
     - **Left out:** Kurbatov 1948 (129.3), a mean over −76 to 41 °C, not a value at 298 K.
-    - **It refuses outside that range, so also at the normal boiling point, 313.1 K.** Extending it to the boiling
-      point would be an extrapolation of 10 K; that is for the maintainer to decide.
+    - **Extended to the normal boiling point, 313.1 K** (the maintainer: "yes for dichloremethane"). The constant is
+      used 10 K beyond the measured temperatures, and the record says so. Above 313.1 K (a liquid under pressure) it
+      refuses.
   - **Ideal-gas heat capacity by group contribution: on hold,** with the idea recorded in the open items.
   - **Also fixed:** records fitted to values of articles outside the ThermoML Archive were named "NIST TRC ThermoML
     Archive" with its access text (furfuryl alcohol viscosity, Simić et al.). They now name "an article outside the

@@ -107,8 +107,8 @@ COMPONENTS = {
                           "a mean heat capacity over -76 to 41 degC (four temperatures), as the WebBook says, not a value "
                           "at 298 K; 29 % above the others"},
             "notes": ("The values span 292.5-303.2 K and scatter by about 10 %, more than any change of the heat capacity "
-                      "over those 11 K, so no temperature dependence is fitted. Outside that range the record refuses; "
-                      "the normal boiling point, 313.1 K, is above it."),
+                      "over those 11 K, so no temperature dependence is fitted."),
+            "to_Tb": "2026-10-18, \"yes for dichloremethane\"",
         },
         # WebBook phase change data: Tc 508 K and Pc 63.55 bar of the same article (Majer and Svoboda, 1985
         # list Tc 510 K without a Pc)
@@ -1213,7 +1213,7 @@ def fit_or_marker(cid, prop, form, target, pts, records, points, log, Tc, tml, s
     log.append("%-17s %-25s no open data%s" % (cid, prop, " (%d values: %s)" % (len(pts), r["note"][:60]) if pts else ""))
 
 
-def cp_measured_or_predicted(cid, cps, records, points, log, Tc, tml, searched, name=None, access=None):
+def cp_measured_or_predicted(cid, cps, records, points, log, Tc, tml, searched, name=None, access=None, Tb=None):
     """Where the liquid heat capacity has no record at the 1 % target (fit_or_marker), the rule "measured before
     predicted" (docs/DATA_RULES.md, section 10; the maintainer, 2026-10-16): measured values whose stated uncertainty is
     above the target make the record, with that uncertainty stated, when they cover three temperatures; else the
@@ -1247,6 +1247,13 @@ def cp_measured_or_predicted(cid, cps, records, points, log, Tc, tml, searched, 
             notes=single["notes"])
         # the deviation as the fit text prints it, which the test compares with
         records["liquidHeatCapacity"]["source"]["stated_uncertainty_percent"] = float(pct(m))
+        if single.get("to_Tb") and Tb and Tb > records["liquidHeatCapacity"]["Tmax_K"]:
+            # extended to the normal boiling point, so that the liquid at 1 atm is covered (the maintainer's decision)
+            hi = records["liquidHeatCapacity"]["Tmax_K"]
+            records["liquidHeatCapacity"]["Tmax_K"] = Tb
+            records["liquidHeatCapacity"]["source"]["notes"] += (
+                " Extended from %g K to the normal boiling point, %.1f K, by the maintainer's decision (%s): the "
+                "constant is used %.0f K beyond the measured temperatures." % (hi, Tb, single["to_Tb"], Tb - hi))
         log.append("%-17s liquidHeatCapacity        constant from %d single values, max dev %s %%" % (cid, len(use), pct(m)))
     rec = records["liquidHeatCapacity"]
     if rec.get("available") is not False and rec["source"].get("stated_uncertainty_percent") and cid in predict_cp.PREDICT:
@@ -1736,7 +1743,7 @@ def build(cid, log):
                   THERMOML_ACCESS + "; " + WEBBOOK_ACCESS)
     cp_measured_or_predicted(cid, pts, records, points, log, Tc, tml, searched_common,
                              "Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook)",
-                             THERMOML_ACCESS + "; " + WEBBOOK_ACCESS)
+                             THERMOML_ACCESS + "; " + WEBBOOK_ACCESS, Tb=Tb)
 
     # enthalpy of vaporization: the WebBook values chosen by method and reference, and ThermoML values
     pts = [{"T": e["T_K"], "y": 1000 * e["value"], "u_rel": (e["unc"] / e["value"]) if e["unc"] else None, "doi": None,

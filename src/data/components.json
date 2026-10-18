@@ -16383,14 +16383,14 @@
           },
           "units": "J/mol/K",
           "Tmin_K": 292.5,
-          "Tmax_K": 303.2,
+          "Tmax_K": 313.1185,
           "tier": "fitted",
           "source": {
             "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); measured at single temperatures only, so the record is their mean, a constant, by the maintainer's decision (2026-10-18: \"use this values you found because dichlormethane has a lower boiling point\"); their deviations from it, up to 5.2 %, are above the 1 % target, used because no open values meet the target",
             "reference": "Tjahjono and Garland, J. Chem. Thermodyn. 40 (2008) 1600-1606, doi:10.1016/j.jct.2008.06.008; Harrison and Moelwyn-Hughes, 1957 (NIST WebBook, DH); Moseeva, Rabinovich, et al., 1978 (NIST WebBook, DH); Perlick, 1937 (NIST WebBook, DH); Perlick, 1937, 2 (NIST WebBook, DH); Riedel, 1940 (NIST WebBook, DH); Riedel, 1941 (NIST WebBook, DH)",
             "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not; free to read (NIST SRD 69)",
             "fit": "8 measured values, 292.50-303.20 K, max deviation 5.2 %",
-            "notes": "The values span 292.5-303.2 K and scatter by about 10 %, more than any change of the heat capacity over those 11 K, so no temperature dependence is fitted. Outside that range the record refuses; the normal boiling point, 313.1 K, is above it.",
+            "notes": "The values span 292.5-303.2 K and scatter by about 10 %, more than any change of the heat capacity over those 11 K, so no temperature dependence is fitted. Extended from 303.2 K to the normal boiling point, 313.1 K, by the maintainer's decision (2026-10-18, \"yes for dichloremethane\"): the constant is used 10 K beyond the measured temperatures.",
             "excluded": [
               {
                 "T_K": 298.0,
