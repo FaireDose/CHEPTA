@@ -122,7 +122,7 @@
   "liquidViscosity": {
    "units": "Pa s",
    "source": {
-    "name": "Measured values (NIST TRC ThermoML Archive)",
+    "name": "Measured values (an article outside the archive)",
     "fit": "18 measured values, 288.15-373.15 K, max deviation 0.92 %"
    },
    "T_K": [
@@ -184,6 +184,88 @@
     "Simic 2021",
     "Simic 2021",
     "Simic 2021"
+   ]
+  },
+  "surfaceTension": {
+   "units": "N/m",
+   "source": {
+    "name": "Measured values (an article outside the archive)",
+    "fit": "23 measured values, 278.15-333.15 K, max deviation 0.28 %"
+   },
+   "T_K": [
+    278.15,
+    280.65,
+    283.15,
+    285.65,
+    288.15,
+    290.65,
+    293.15,
+    295.65,
+    298.15,
+    300.65,
+    303.15,
+    305.65,
+    308.15,
+    310.65,
+    313.15,
+    315.65,
+    318.15,
+    320.65,
+    323.15,
+    325.65,
+    328.15,
+    330.65,
+    333.15
+   ],
+   "values": [
+    0.04097,
+    0.04067,
+    0.04051,
+    0.04027,
+    0.04006,
+    0.03974,
+    0.0396,
+    0.03924,
+    0.03906,
+    0.03883,
+    0.03857,
+    0.03834,
+    0.03809,
+    0.03781,
+    0.03757,
+    0.03731,
+    0.03703,
+    0.03676,
+    0.03651,
+    0.03624,
+    0.03597,
+    0.03571,
+    0.03553
+   ],
+   "references": [
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011"
    ]
   },
   "vapourPressure": {

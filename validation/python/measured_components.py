@@ -99,6 +99,17 @@ COMPONENTS = {
         "name": "Dichloromethane", "cas": "75-09-2", "webbook": "C75092",
         "aliases": ["methylene chloride", "methylene dichloride", "dcm"],
         "thermoml_queries": ["dichloromethane", "methylene chloride"],
+        # liquid heat capacity: only single values are open (the measurements over a range, Harrison and
+        # Moelwyn-Hughes 1957 and Chorazewski et al. 2015, are paywalled; docs/decisions/2026-10-17-02-liquid-heat-capacity.md)
+        "cp_single_values": {
+            "decided": "2026-10-18: \"use this values you found because dichlormethane has a lower boiling point\"",
+            "leave_out": {"Kurbatov, 1948 (NIST WebBook, DH)":
+                          "a mean heat capacity over -76 to 41 degC (four temperatures), as the WebBook says, not a value "
+                          "at 298 K; 29 % above the others"},
+            "notes": ("The values span 292.5-303.2 K and scatter by about 10 %, more than any change of the heat capacity "
+                      "over those 11 K, so no temperature dependence is fitted. Outside that range the record refuses; "
+                      "the normal boiling point, 313.1 K, is above it."),
+        },
         # WebBook phase change data: Tc 508 K and Pc 63.55 bar of the same article (Majer and Svoboda, 1985
         # list Tc 510 K without a Pc)
         "critical": "Garcia-Sanchez, Romero-Martinez, et al., 1989",
@@ -836,7 +847,7 @@ class ThermoML:
         arts = sorted(used & self.from_article)
         if not arts:
             return "NIST TRC ThermoML Archive", "open data (NIST TRC ThermoML Archive), free to read even where the article is not"
-        what = "an open-access article" if len(arts) == 1 else "%d open-access articles" % len(arts)
+        what = "an article outside the archive" if len(arts) == 1 else "%d articles outside the archive" % len(arts)
         acc = "; ".join("%s: %s" % (self.short(d), self.access[d]) for d in arts)
         if used - self.from_article:
             return "the NIST TRC ThermoML Archive and " + what, \
@@ -1167,6 +1178,10 @@ def fit_or_marker(cid, prop, form, target, pts, records, points, log, Tc, tml, s
     temps = {round(p["T"], 1) for p in ok if not p.get("webbook_single")}
     if len(temps) >= 2 and len({round(p["T"], 1) for p in ok}) >= 3:
         coeffs, use, exc, m = fit_measured(cid, prop, form, pts, target, Tc=Tc)
+        if tml is not None and access == THERMOML_ACCESS and "(NIST TRC ThermoML Archive)" in name:
+            # values of articles outside the archive (article_<id>_*.json) are named as such, with their access
+            where, access = tml.origin(use)
+            name = name.replace("(NIST TRC ThermoML Archive)", "(%s)" % where)
         records[prop], points[prop] = record(
             prop, form, coeffs, use, exc, m, Tc, name,
             refs_of([p for p in use if p.get("doi")], tml) + sorted({p["ref"] for p in use if not p.get("doi")}), access)
@@ -1211,6 +1226,28 @@ def cp_measured_or_predicted(cid, cps, records, points, log, Tc, tml, searched, 
         # measured values above the target first (fit_or_marker; where the caller has already called it, the same
         # marker again)
         fit_or_marker(cid, "liquidHeatCapacity", "DIPPR100", 0.01, cps, records, points, log, Tc, tml, searched, name, access)
+    single = COMPONENTS.get(cid, {}).get("cp_single_values")
+    if records["liquidHeatCapacity"].get("available") is False and single and cid not in predict_cp.PREDICT:
+        # no group-additivity prediction and no values over a range: the single values of several articles, as a
+        # constant over the temperatures they span, by the maintainer's decision (dichloromethane, 2026-10-18); held to
+        # their largest deviation from the mean, which the record states
+        use = [p for p in cps if p["ref"] not in single["leave_out"]]
+        A = float(np.mean([p["y"] for p in use]))
+        for p in use:
+            p["deviation_percent"] = rnd(100 * (p["y"] / A - 1), 3)
+        exc = [dict(p, deviation_percent=rnd(100 * (p["y"] / A - 1), 3), why=single["leave_out"][p["ref"]])
+               for p in cps if p["ref"] in single["leave_out"]]
+        m = max(abs(p["y"] / A - 1) for p in use)
+        records["liquidHeatCapacity"], points["liquidHeatCapacity"] = record(
+            "liquidHeatCapacity", "DIPPR100", {"A": rnd(A, 6)}, use, exc, m, Tc,
+            "%s; measured at single temperatures only, so the record is their mean, a constant, by the maintainer's "
+            "decision (%s); their deviations from it, up to %s %%, are above the 1 %% target, used because no open "
+            "values meet the target" % (name, single["decided"], pct(m)),
+            refs_of([p for p in use if p.get("doi")], tml) + sorted({p["ref"] for p in use if not p.get("doi")}), access,
+            notes=single["notes"])
+        # the deviation as the fit text prints it, which the test compares with
+        records["liquidHeatCapacity"]["source"]["stated_uncertainty_percent"] = float(pct(m))
+        log.append("%-17s liquidHeatCapacity        constant from %d single values, max dev %s %%" % (cid, len(use), pct(m)))
     rec = records["liquidHeatCapacity"]
     if rec.get("available") is not False and rec["source"].get("stated_uncertainty_percent") and cid in predict_cp.PREDICT:
         _, (lo, hi) = predict_cp.coefficients(predict_cp.PREDICT[cid]["groups"])
@@ -1602,9 +1639,10 @@ def build(cid, log):
     pts = tml.values("liquidDensity")
     rho_form = "DIPPR100" if nocrit else "DIPPR105"
     coeffs, use, exc, m = fit_measured(cid, "liquidDensity", rho_form, pts, 0.01, Tc=Tc)
+    where, acc = tml.origin(use)
     records["liquidDensity"], points["liquidDensity"] = record(
         "liquidDensity", rho_form, coeffs, use, exc, m, Tc,
-        "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)", refs_of(use, tml), THERMOML_ACCESS,
+        "Measured densities of the liquid at 0.1 MPa (%s)" % where, refs_of(use, tml), acc,
         notes=("DIPPR 100 (a polynomial in T; no measured critical temperature)." if nocrit else
                "DIPPR 105 with C fixed at the critical temperature %.2f K (%s, %s)." % (Tc, crit_who, crit_where)))
     log.append("%-17s liquidDensity             %3d values, %d left out, max dev %s %%" % (cid, len(use), len(exc), pct(m)))

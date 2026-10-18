@@ -2,5 +2,40 @@
  "component": "xylitol",
  "name": "Xylitol",
  "about": "Measured values each record of this component was fitted to (validation/python/measured_components.py). test/properties.test.js checks that the coefficients in src/data/components.json reproduce them within the maximum deviation stated in each record.",
- "records": {}
+ "records": {
+  "liquidDensity": {
+   "units": "kg/m3",
+   "source": {
+    "name": "Measured densities of the liquid at 0.1 MPa (an article outside the archive)",
+    "fit": "7 measured values, 363.15-423.15 K, max deviation 0.0001 %"
+   },
+   "T_K": [
+    363.15,
+    373.15,
+    383.15,
+    393.15,
+    403.15,
+    413.15,
+    423.15
+   ],
+   "values": [
+    1364.85,
+    1358.1,
+    1351.35,
+    1344.6,
+    1337.85,
+    1331.1,
+    1324.35
+   ],
+   "references": [
+    "Hohlein 2017",
+    "Hohlein 2017",
+    "Hohlein 2017",
+    "Hohlein 2017",
+    "Hohlein 2017",
+    "Hohlein 2017",
+    "Hohlein 2017"
+   ]
+  }
+ }
 }

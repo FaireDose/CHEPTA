@@ -576,6 +576,128 @@
     "Clapeyron equation with the vapour-pressure record"
    ]
   },
+  "liquidViscosity": {
+   "units": "Pa s",
+   "source": {
+    "name": "Measured values (an article outside the archive)",
+    "fit": "17 measured values, 298.15-338.15 K, max deviation 0.41 %"
+   },
+   "T_K": [
+    298.15,
+    300.65,
+    303.15,
+    305.65,
+    308.15,
+    310.65,
+    313.15,
+    315.65,
+    318.15,
+    320.65,
+    323.15,
+    325.65,
+    328.15,
+    330.65,
+    333.15,
+    335.65,
+    338.15
+   ],
+   "values": [
+    0.0294429,
+    0.0259758,
+    0.023003,
+    0.0204683,
+    0.0183161,
+    0.0164476,
+    0.0148235,
+    0.0134424,
+    0.0122335,
+    0.0111717,
+    0.0102315,
+    0.0094032,
+    0.0086758,
+    0.0080239,
+    0.0074377,
+    0.0069144,
+    0.0064319
+   ],
+   "references": [
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011"
+   ]
+  },
+  "surfaceTension": {
+   "units": "N/m",
+   "source": {
+    "name": "Measured values (an article outside the archive)",
+    "fit": "15 measured values, 298.15-333.15 K, max deviation 0.21 %"
+   },
+   "T_K": [
+    298.15,
+    300.65,
+    303.15,
+    305.65,
+    308.15,
+    310.65,
+    313.15,
+    315.65,
+    318.15,
+    320.65,
+    323.15,
+    325.65,
+    328.15,
+    330.65,
+    333.15
+   ],
+   "values": [
+    0.04253,
+    0.04225,
+    0.04203,
+    0.04174,
+    0.04152,
+    0.04123,
+    0.04107,
+    0.0408,
+    0.04057,
+    0.04037,
+    0.0401,
+    0.03981,
+    0.03958,
+    0.03923,
+    0.03897
+   ],
+   "references": [
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011",
+    "Lomba 2011"
+   ]
+  },
   "vapourPressure": {
    "units": "Pa",
    "source": {

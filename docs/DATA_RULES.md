@@ -17,7 +17,9 @@ Only from sources anyone can read for free and legally, so that every reviewer c
 4. open databanks and libraries: **ChemSep** (Artistic License 2.0), thermo, chemicals. A table copied from a handbook
    or a commercial databank is not open just because an open library ships it;
 5. the NIST TRC ThermoML Archive (its data are open even where the article is paywalled), open-access articles, open
-   repositories;
+   repositories, and the supplementary information of a paywalled article where the publisher makes it free to read
+   (kind "free supplement"; Lomba et al. 2011): its numbers are used, but not the article's own (its stated
+   uncertainties, for example);
 6. free books (public domain or openly licensed).
 
 What to take from where (the maintainer, 2026-10-14): take a number from the source that has it, and do not take a
@@ -124,6 +126,13 @@ thermodynamic properties; limonene, `inchi_no_stereo`). Diastereomers (meso and 
 median of the enthalpies of fusion), else ChemSep, else the ThermoML Archive. Where the WebBook lists no melting
 temperature but an enthalpy of fusion measured at a stated temperature, and ChemSep has no melting data, that
 temperature is taken (HMF: 308.5 K, DSC; such a temperature is not always the melting point, so ChemSep comes first).
+An enthalpy of fusion counts when it was measured within 3 K of the melting temperature; for 1,3-propanediol 3.5 K, by
+the maintainer's decision (2026-10-18: its only value, at 249 K, against the triple point of 245.5 K).
+
+**Single values only.** Where the open values of a property are single temperatures from several articles, with no
+series, there is no record, except where the maintainer decides otherwise. Dichloromethane's liquid heat capacity
+(2026-10-18) is the mean of its open single values, a constant over the temperatures they span, held to their largest
+deviation from it (`cp_single_values`).
 
 ## 4. Records refitted before 2026-10-14
 

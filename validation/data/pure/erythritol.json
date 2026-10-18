@@ -2,5 +2,34 @@
  "component": "erythritol",
  "name": "Erythritol",
  "about": "Measured values each record of this component was fitted to (validation/python/measured_components.py). test/properties.test.js checks that the coefficients in src/data/components.json reproduce them within the maximum deviation stated in each record.",
- "records": {}
+ "records": {
+  "liquidDensity": {
+   "units": "kg/m3",
+   "source": {
+    "name": "Measured densities of the liquid at 0.1 MPa (an article outside the archive)",
+    "fit": "5 measured values, 391.25-423.15 K, max deviation 0.70 %"
+   },
+   "T_K": [
+    391.25,
+    398.15,
+    403.15,
+    413.15,
+    423.15
+   ],
+   "values": [
+    1290.07,
+    1286.55,
+    1284.01,
+    1278.92,
+    1273.82
+   ],
+   "references": [
+    "Hohlein 2017",
+    "Hohlein 2017",
+    "Hohlein 2017",
+    "Hohlein 2017",
+    "Hohlein 2017"
+   ]
+  }
+ }
 }

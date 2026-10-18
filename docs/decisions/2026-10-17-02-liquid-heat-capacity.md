@@ -171,7 +171,58 @@
     - **Levulinate conductivity** from measured diffusivities: needs a derivation, not done.
 
     These remain open items.
+- **Third round (2026-10-18), the maintainer's answers.**
+  - **Lomba et al. 2011** (Green Chem. 13, 2062): the maintainer downloaded the supplementary information from the
+    publisher's site, where it is free to read; the article itself is paywalled. Its tables 6 and 8 give surface
+    tensions (278–333 K) and viscosities (278–338 K) of five liquids.
+    - Taken only where CHEPTA had no record:
+
+      | Component | Property | Values | Range | Fit |
+      |---|---|---|---|---|
+      | furfuryl alcohol | surface tension | 23 | 278–333 K | 0.28 % |
+      | levulinic acid | surface tension | 15 | 298–333 K | 0.21 % |
+      | levulinic acid | viscosity | 17 | 298–338 K | 0.41 % |
+      | ethyl levulinate | surface tension | 23 | 278–333 K | 0.22 % |
+      | ethyl levulinate | viscosity | 25 | 278–338 K | 0.54 % |
+      | butyl levulinate | surface tension | 23 | 278–333 K | 0.18 % |
+      | butyl levulinate | viscosity | 25 | 278–338 K | 0.33 % |
+
+    - **No uncertainties.** The supplement states none; they are in the paywalled article, so they are not used
+      (DATA_RULES section 1).
+    - **A new kind of source,** "free supplement" (`make_sources.py`, `test/sources.test.js`, the Library view).
+    - **Not taken:** its densities, vapour pressures and furfuryl alcohol viscosities, because those records already
+      exist (DATA_RULES section 1: take a number only where it is missing).
+  - **Xylitol and erythritol liquid density** (the maintainer: "read the values"), Höhlein et al., Materials 10 (2017)
+    444, CC BY 4.0.
+    - **What the article prints:** the measured points are in a figure only. Table 4 gives the liquid density at
+      120 °C and the expansion coefficient from the melting point to 150 °C, from a linear fit the authors state is
+      within 0.3 % of their points.
+    - **What the record is:** that linear fit, evaluated at the listed temperatures, and not read off the figure
+      (`article_<id>_hohlein2017.json` says how):
+      - xylitol: 363–423 K;
+      - erythritol: 391–423 K, where the fit with fewest terms that meets 1 % is a constant, 1283 kg/m³.
+    - **Both refuse at 25 °C,** below their melting points.
+    - **Not taken:** the liquid thermal conductivities, one temperature each.
+  - **1,3-propanediol enthalpy of fusion** (the maintainer: "is ok"): 11.4 kJ/mol (Jabrane, Létoffé et al. 1998, DSC,
+    at 249 K) with the triple point 245.5 K. It is taken with a 3.5 K window for this component only
+    (`NEAR_TM_K_FOR` in `fusion_data.py`); the record says so.
+  - **Dichloromethane liquid heat capacity** (the maintainer: "look also at methylene chloride, but use this values
+    you found because dichlormethane has a lower boiling point").
+    - **The search under that name found nothing new.** The ThermoML search already included "methylene chloride",
+      and a web search for open data under that name found no temperature series.
+    - **The record:** the mean of the eight open single values, 100.3 J/(mol K), a constant over 292.5–303.2 K, held
+      to their largest deviation from it, 5.2 % (`cp_single_values` in `measured_components.py`).
+    - **Left out:** Kurbatov 1948 (129.3), a mean over −76 to 41 °C, not a value at 298 K.
+    - **It refuses outside that range, so also at the normal boiling point, 313.1 K.** Extending it to the boiling
+      point would be an extrapolation of 10 K; that is for the maintainer to decide.
+  - **Ideal-gas heat capacity by group contribution: on hold,** with the idea recorded in the open items.
+  - **Also fixed:** records fitted to values of articles outside the ThermoML Archive were named "NIST TRC ThermoML
+    Archive" with its access text (furfuryl alcohol viscosity, Simić et al.). They now name "an article outside the
+    archive" with that article's access (`ThermoML.origin` in `measured_components.py`).
 - **Tests:**
+  - `test/properties.test.js`: levulinic acid's viscosity, and the xylitol and erythritol densities, join the list of
+    records that do not reach the temperature the test picks (each with a comment).
+  - `test/sources.test.js`: the list of source kinds gains "free supplement".
   - `test/user-data.test.js`: the user-record example used lactic acid as "no open liquid density"; it now has one, so
     the example uses succinic acid, which has none. The behaviour checked is unchanged.
   - `test/properties.test.js` holds such a record to its stated uncertainty, where the source says why. This is
@@ -182,4 +233,4 @@
     vapour state beyond its range to be refused with the reason.
   - Terephthalic acid joins the measured-data components listed in `test/component-registry.test.js`.
   - New: `test/derived-ideal-gas.test.js`.
-  - `npm test`: 1093 pass, 1 to-do.
+  - `npm test`: 1093 pass, 1 to-do (2026-10-18).

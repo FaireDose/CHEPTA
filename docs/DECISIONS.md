@@ -123,17 +123,16 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   1. an interface where a user adds their own properties (and Modified UNIFAC 2.0 groups) and saves them with the
      project, labelled as user data: a proposal first;
   2. the missing properties (docs/decisions/2026-10-17-02-liquid-heat-capacity.md): liquid heat capacity done for
-     20 of 21 (terephthalic acid a nonvolatile liquid to 400 °C); still open: dichloromethane (measured over a range
-     only in paywalled sources: a record from the open single values at 292.5-303.2 K, or a source the maintainer
-     names?), and the ideal-gas heat capacity of 2-methoxyethanol, the levulinates, levulinic acid, THFA and
-     2,3-butanediol, and of all 15 above the range derived from their liquid (an open group-contribution method, tier
-     "predicted"?); surface tension, viscosity, density and fusion: 12 records added on 2026-10-17 (same file); still
-     open: the remaining thermal conductivities, surface tensions and viscosities (leads: Lomba et al. 2011, Green
-     Chem., supplement not retrievable; Sharma et al. 2024, J. Chem. Eng. Data, paywalled; Nikitin et al. 2020-2023
-     critical constants of GVL, furfuryl alcohol and THFA, no open copy verified; xylitol and erythritol liquid density,
-     Materials 10 (2017) 444, CC BY, one temperature each in the text; levulinate conductivity from the diffusivities
-     of Nikitin et al. 2019; the 1,3-propanediol enthalpy of fusion at 249 K, 3.5 K from its triple point, beyond the
-     3 K rule), else an open prediction method, then the water + lactic acid solution density and
+     all 21 (terephthalic acid a nonvolatile liquid to 400 °C; dichloromethane a constant from single values over
+     292.5-303.2 K, 2026-10-18: extend it to its boiling point, 313.1 K?); surface tension, viscosity, density and
+     fusion: 23 records added on 2026-10-17 and -18 (same file); **on hold** (the maintainer, 2026-10-18): the ideal-gas
+     heat capacity of 2-methoxyethanol, the levulinates, levulinic acid, THFA and 2,3-butanediol, and of all 15 above
+     the range derived from their liquid, by an open group-contribution method (tier "predicted", its group values
+     open and without a non-commercial licence, checked on the CHEPTA components with an ideal-gas record); still
+     open: the remaining thermal conductivities, surface tensions and viscosities (leads: Sharma et al. 2024, J. Chem.
+     Eng. Data, paywalled; Nikitin et al. 2020-2023 critical constants of GVL, furfuryl alcohol and THFA, no open copy
+     verified; levulinate conductivity from the diffusivities of Nikitin et al. 2019), else an open prediction method,
+     then the water + lactic acid solution density and
      viscosity (open: Simion et al. 2012, Food and Environment Safety XI(4), Tables 1-2, 9-85 wt %, 293-353 K); a
      mixture density and viscosity model is needed to use them.
 - **0010, reactions:**

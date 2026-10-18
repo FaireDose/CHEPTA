@@ -190,6 +190,43 @@
     91.298425
    ]
   },
+  "liquidHeatCapacity": {
+   "units": "J/mol/K",
+   "source": {
+    "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); measured at single temperatures only, so the record is their mean, a constant, by the maintainer's decision (2026-10-18: \"use this values you found because dichlormethane has a lower boiling point\"); their deviations from it, up to 5.2 %, are above the 1 % target, used because no open values meet the target",
+    "fit": "8 measured values, 292.50-303.20 K, max deviation 5.2 %"
+   },
+   "T_K": [
+    292.5,
+    292.5,
+    298.0,
+    298.1,
+    298.15,
+    298.15,
+    298.15,
+    303.2
+   ],
+   "values": [
+    100.5,
+    100.8,
+    100.0,
+    100.0,
+    95.61,
+    97.97,
+    102.3,
+    105.5
+   ],
+   "references": [
+    "Perlick, 1937 (NIST WebBook, DH)",
+    "Perlick, 1937, 2 (NIST WebBook, DH)",
+    "Riedel, 1941 (NIST WebBook, DH)",
+    "Riedel, 1940 (NIST WebBook, DH)",
+    "Tjahjono 2008",
+    "Tjahjono 2008",
+    "Moseeva, Rabinovich, et al., 1978 (NIST WebBook, DH)",
+    "Harrison and Moelwyn-Hughes, 1957 (NIST WebBook, DH)"
+   ]
+  },
   "heatOfVaporization": {
    "units": "J/mol",
    "source": {

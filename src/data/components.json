@@ -16377,14 +16377,35 @@
           ]
         },
         "liquidHeatCapacity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"dichloromethane\", \"methylene chloride\"; 139 records opened)"
-          ],
-          "note": "no open data over a temperature range: 292.50 K: 100.5 (Perlick, 1937 (NIST WebBook, DH)); 292.50 K: 100.8 (Perlick, 1937, 2 (NIST WebBook, DH)); 298.00 K: 129.3 (Kurbatov, 1948 (NIST WebBook, DH)); 298.00 K: 100 (Riedel, 1941 (NIST WebBook, DH)); 298.10 K: 100 (Riedel, 1940 (NIST WebBook, DH)); 298.15 K: 97.97 (Tjahjono 2008); 298.15 K: 95.61 (Tjahjono 2008); 298.15 K: 102.3 (Moseeva, Rabinovich, et al., 1978 (NIST WebBook, DH)); 303.20 K: 105.5 (Harrison and Moelwyn-Hughes, 1957 (NIST WebBook, DH))"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 100.335
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 292.5,
+          "Tmax_K": 303.2,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); measured at single temperatures only, so the record is their mean, a constant, by the maintainer's decision (2026-10-18: \"use this values you found because dichlormethane has a lower boiling point\"); their deviations from it, up to 5.2 %, are above the 1 % target, used because no open values meet the target",
+            "reference": "Tjahjono and Garland, J. Chem. Thermodyn. 40 (2008) 1600-1606, doi:10.1016/j.jct.2008.06.008; Harrison and Moelwyn-Hughes, 1957 (NIST WebBook, DH); Moseeva, Rabinovich, et al., 1978 (NIST WebBook, DH); Perlick, 1937 (NIST WebBook, DH); Perlick, 1937, 2 (NIST WebBook, DH); Riedel, 1940 (NIST WebBook, DH); Riedel, 1941 (NIST WebBook, DH)",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not; free to read (NIST SRD 69)",
+            "fit": "8 measured values, 292.50-303.20 K, max deviation 5.2 %",
+            "notes": "The values span 292.5-303.2 K and scatter by about 10 %, more than any change of the heat capacity over those 11 K, so no temperature dependence is fitted. Outside that range the record refuses; the normal boiling point, 313.1 K, is above it.",
+            "excluded": [
+              {
+                "T_K": 298.0,
+                "value": 129.3,
+                "reference": "Kurbatov, 1948 (NIST WebBook, DH)",
+                "deviation_percent": 28.9,
+                "why": "a mean heat capacity over -76 to 41 degC (four temperatures), as the WebBook says, not a value at 298 K; 29 % above the others"
+              }
+            ],
+            "stated_uncertainty_percent": 5.2
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "nist-webbook"
+          ]
         },
         "heatOfVaporization": {
           "equation": "DIPPR106",
@@ -42539,11 +42560,18 @@
         }
       },
       "fusion": {
-        "available": false,
-        "searched": [
-          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Units=SI&Mask=4): no enthalpy of fusion within 3 K of the melting temperature on the WebBook page",
-          "ChemSep v8.3: no value",
-          "NIST TRC ThermoML Archive: no melting data"
+        "Tm_K": 245.5,
+        "Hfus_J_mol": 11400.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST Chemistry WebBook (SRD 69), phase change data",
+          "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Units=SI&Mask=4",
+          "access": "Free to read online (NIST Standard Reference Database 69); values cited per record",
+          "reference": "Jabrane, Létoffé, et al., 1998",
+          "selection": "melting temperature: median of 1 WebBook triple-point temperatures (Knauth and Sabbah, 1990); enthalpy of fusion: the only one of 1 measured value (11.4-11.4 kJ/mol) within 3.5 K of it; the window is 3.5 K instead of 3 K for this component, by the maintainer's decision (2026-10-18)"
+        },
+        "source_ids": [
+          "nist-webbook"
         ]
       },
       "modUnifac": {
@@ -42933,12 +42961,26 @@
           ]
         },
         "liquidViscosity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl levulinate\", \"ethyl 4-oxidanylidenepentanoate\"; 7 records opened)"
+          "equation": "DIPPR101",
+          "coefficients": {
+            "A": -71.44958552,
+            "B": 4475.254691,
+            "C": 8.809206613,
+            "D": 0.0,
+            "E": 0.0
+          },
+          "units": "Pa s",
+          "Tmin_K": 278.15,
+          "Tmax_K": 338.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (an article outside the archive)",
+            "reference": "Lomba et al., Green Chem. 13 (2011) 2062-2070, doi:10.1039/C0GC00853B",
+            "access": "Lomba 2011: The article is paywalled; its electronic supplementary information, which holds the measured values, is free to read on the publisher's site (copyright RSC 2011)",
+            "fit": "25 measured values, 278.15-338.15 K, max deviation 0.54 %"
+          },
+          "source_ids": [
+            "lomba2011-article-butyl-levulinate"
           ]
         },
         "vapourViscosity": {
@@ -42969,12 +43011,24 @@
           ]
         },
         "surfaceTension": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C539888&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl levulinate\", \"ethyl 4-oxidanylidenepentanoate\"; 7 records opened)"
+          "equation": "DIPPR106",
+          "coefficients": {
+            "A": 0.06599360756,
+            "B": 1.19038171
+          },
+          "units": "N/m",
+          "Tmin_K": 278.15,
+          "Tmax_K": 333.15,
+          "Tc_K": 669.0,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (an article outside the archive)",
+            "reference": "Lomba et al., Green Chem. 13 (2011) 2062-2070, doi:10.1039/C0GC00853B",
+            "access": "Lomba 2011: The article is paywalled; its electronic supplementary information, which holds the measured values, is free to read on the publisher's site (copyright RSC 2011)",
+            "fit": "23 measured values, 278.15-333.15 K, max deviation 0.22 %"
+          },
+          "source_ids": [
+            "lomba2011-article-butyl-levulinate"
           ]
         }
       },
@@ -43131,12 +43185,26 @@
           ]
         },
         "liquidViscosity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"butyl levulinate\", \"butyl 4-oxidanylidenepentanoate\"; 5 records opened)"
+          "equation": "DIPPR101",
+          "coefficients": {
+            "A": -87.05041832,
+            "B": 5336.525384,
+            "C": 11.08797474,
+            "D": 0.0,
+            "E": 0.0
+          },
+          "units": "Pa s",
+          "Tmin_K": 278.15,
+          "Tmax_K": 338.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (an article outside the archive)",
+            "reference": "Lomba et al., Green Chem. 13 (2011) 2062-2070, doi:10.1039/C0GC00853B",
+            "access": "Lomba 2011: The article is paywalled; its electronic supplementary information, which holds the measured values, is free to read on the publisher's site (copyright RSC 2011)",
+            "fit": "25 measured values, 278.15-338.15 K, max deviation 0.33 %"
+          },
+          "source_ids": [
+            "lomba2011-article-butyl-levulinate"
           ]
         },
         "vapourViscosity": {
@@ -43167,12 +43235,24 @@
           ]
         },
         "surfaceTension": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C2052155&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"butyl levulinate\", \"butyl 4-oxidanylidenepentanoate\"; 5 records opened)"
+          "equation": "DIPPR106",
+          "coefficients": {
+            "A": 0.059219163,
+            "B": 1.152868477
+          },
+          "units": "N/m",
+          "Tmin_K": 278.15,
+          "Tmax_K": 333.15,
+          "Tc_K": 692.0,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (an article outside the archive)",
+            "reference": "Lomba et al., Green Chem. 13 (2011) 2062-2070, doi:10.1039/C0GC00853B",
+            "access": "Lomba 2011: The article is paywalled; its electronic supplementary information, which holds the measured values, is free to read on the publisher's site (copyright RSC 2011)",
+            "fit": "23 measured values, 278.15-333.15 K, max deviation 0.18 %"
+          },
+          "source_ids": [
+            "lomba2011-article-butyl-levulinate"
           ]
         }
       },
@@ -43423,12 +43503,26 @@
           ]
         },
         "liquidViscosity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C123762&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levulinic acid\", \"4-oxidanylidenepentanoic acid\"; 23 records opened)"
+          "equation": "DIPPR101",
+          "coefficients": {
+            "A": -259.6505743,
+            "B": 15236.64019,
+            "C": 35.98346166,
+            "D": 0.0,
+            "E": 0.0
+          },
+          "units": "Pa s",
+          "Tmin_K": 298.15,
+          "Tmax_K": 338.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (an article outside the archive)",
+            "reference": "Lomba et al., Green Chem. 13 (2011) 2062-2070, doi:10.1039/C0GC00853B",
+            "access": "Lomba 2011: The article is paywalled; its electronic supplementary information, which holds the measured values, is free to read on the publisher's site (copyright RSC 2011)",
+            "fit": "17 measured values, 298.15-338.15 K, max deviation 0.41 %"
+          },
+          "source_ids": [
+            "lomba2011-article-butyl-levulinate"
           ]
         },
         "vapourViscosity": {
@@ -43459,12 +43553,24 @@
           ]
         },
         "surfaceTension": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C123762&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levulinic acid\", \"4-oxidanylidenepentanoic acid\"; 23 records opened)"
+          "equation": "DIPPR106",
+          "coefficients": {
+            "A": 0.07304218739,
+            "B": 1.097063372
+          },
+          "units": "N/m",
+          "Tmin_K": 298.15,
+          "Tmax_K": 333.15,
+          "Tc_K": 766.0,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (an article outside the archive)",
+            "reference": "Lomba et al., Green Chem. 13 (2011) 2062-2070, doi:10.1039/C0GC00853B",
+            "access": "Lomba 2011: The article is paywalled; its electronic supplementary information, which holds the measured values, is free to read on the publisher's site (copyright RSC 2011)",
+            "fit": "15 measured values, 298.15-333.15 K, max deviation 0.21 %"
+          },
+          "source_ids": [
+            "lomba2011-article-butyl-levulinate"
           ]
         }
       },
@@ -45447,13 +45553,12 @@
           "Tmax_K": 373.15,
           "tier": "fitted",
           "source": {
-            "name": "Measured values (NIST TRC ThermoML Archive)",
+            "name": "Measured values (an article outside the archive)",
             "reference": "Simic et al., Energies 14 (2021) 7769, doi:10.3390/en14227769",
-            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "access": "Simic 2021: Open access, CC BY 4.0 (MDPI)",
             "fit": "18 measured values, 288.15-373.15 K, max deviation 0.92 %"
           },
           "source_ids": [
-            "nist-thermoml-archive",
             "simic2021-article-furfuryl-alcohol"
           ]
         },
@@ -45485,12 +45590,23 @@
           ]
         },
         "surfaceTension": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"furfuryl alcohol\", \"furan-2-ylmethanol\"; 10 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 0.06887111702,
+            "B": -0.0001000927495
+          },
+          "units": "N/m",
+          "Tmin_K": 278.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (an article outside the archive)",
+            "reference": "Lomba et al., Green Chem. 13 (2011) 2062-2070, doi:10.1039/C0GC00853B",
+            "access": "Lomba 2011: The article is paywalled; its electronic supplementary information, which holds the measured values, is free to read on the publisher's site (copyright RSC 2011)",
+            "fit": "23 measured values, 278.15-333.15 K, max deviation 0.28 %"
+          },
+          "source_ids": [
+            "lomba2011-article-butyl-levulinate"
           ]
         }
       },
@@ -47268,12 +47384,23 @@
       },
       "properties": {
         "liquidDensity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"xylitol\", \"pentane-1,2,3,4,5-pentol\"; 31 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 1609.97625,
+            "B": -0.675
+          },
+          "units": "kg/m3",
+          "Tmin_K": 363.15,
+          "Tmax_K": 423.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured densities of the liquid at 0.1 MPa (an article outside the archive)",
+            "reference": "Hohlein et al., Materials 10 (2017) 444, doi:10.3390/ma10040444",
+            "access": "Hohlein 2017: Open access, CC BY 4.0 (MDPI; full text in PubMed Central)",
+            "fit": "7 measured values, 363.15-423.15 K, max deviation 0.0001 %"
+          },
+          "source_ids": [
+            "hohlein2017-article-erythritol"
           ]
         },
         "idealGasHeatCapacity": {
@@ -48954,12 +49081,22 @@
       },
       "properties": {
         "liquidDensity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"erythritol\", \"meso-erythritol\", \"butane-1,2,3,4-tetrol\", \"1,2,3,4-butanetetrol\"; 15 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 1282.622755
+          },
+          "units": "kg/m3",
+          "Tmin_K": 391.25,
+          "Tmax_K": 423.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured densities of the liquid at 0.1 MPa (an article outside the archive)",
+            "reference": "Hohlein et al., Materials 10 (2017) 444, doi:10.3390/ma10040444",
+            "access": "Hohlein 2017: Open access, CC BY 4.0 (MDPI; full text in PubMed Central)",
+            "fit": "5 measured values, 391.25-423.15 K, max deviation 0.70 %"
+          },
+          "source_ids": [
+            "hohlein2017-article-erythritol"
           ]
         },
         "idealGasHeatCapacity": {

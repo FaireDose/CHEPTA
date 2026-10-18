@@ -22,7 +22,7 @@ the sources searched.
 | Vapour pressure | 233.00-508.00 | 26 | 4 | 0.79 % | ThermoML, WebBook |
 | liquidDensity | 278.15-308.15 | 26 | 1 | 0.32 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | 298.00-1200.00 | 200 | 0 | 0.12 % | NIST Chemistry WebBook |
-| liquidHeatCapacity | — | — | — | — | no open data (no open data over a temperature range) |
+| liquidHeatCapacity | 292.50-303.20 | 8 | 1 | 5.2 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); measured at single temperatures only, so the record is their mean, a constant, by the maintainer's decision (2026-10-18: "use this values you found because dichlormethane has a lower boiling point"); their deviations from it, up to 5.2 %, are above the 1 % target, used because no open values meet the target |
 | heatOfVaporization | 298.15-313.00 | 4 | 1 | 0.50 % | Measured enthalpies of vaporization (NIST Chemistry WebBook; calorimetric and critically evaluated values) |
 | liquidViscosity | — | — | — | — | no open data (no open data over a temperature range) |
 | vapourViscosity | — | — | — | — | no open data |
@@ -33,6 +33,8 @@ the sources searched.
 Left out of vapourPressure: 301.80 K, Molino Cornejo 2016, -1.24 % (stated uncertainty 4 % is above the 1 % target); 296.80 K, Molino Cornejo 2016, -2.21 % (stated uncertainty 4.1 % is above the 1 % target); 291.90 K, Molino Cornejo 2016, -2.08 % (stated uncertainty 4.2 % is above the 1 % target); 287.00 K, Molino Cornejo 2016, -2.00 % (stated uncertainty 4 % is above the 1 % target).
 
 Left out of liquidDensity: 293.15 K, Sunder 2003, -11.01 % (stated uncertainty 6.7 % is above the 1 % target).
+
+Left out of liquidHeatCapacity: 298.00 K, Kurbatov, 1948 (NIST WebBook, DH), +28.90 % (a mean heat capacity over -76 to 41 degC (four temperatures), as the WebBook says, not a value at 298 K; 29 % above the others).
 
 Left out of heatOfVaporization: 298.15 K, An and Hu, 1989 (ΔvapH° at 298.15 K, method C, NIST WebBook), -5.41 % (deviates most from a robust fit of the others).
 
@@ -72,11 +74,11 @@ Left out of liquidViscosity: 293.15 K, Guo 2019, +1.55 % (stated uncertainty 4.2
 | idealGasHeatCapacity | — | — | — | — | no open data |
 | liquidHeatCapacity | 302.62-374.12 | 144 | 0 | 0.50 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 2.5 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 375.00-518.20 | 25 | 0 | 0.34 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
-| liquidViscosity | — | — | — | — | no open data |
+| liquidViscosity | 298.15-338.15 | 17 | 0 | 0.41 % | Measured values (an article outside the archive) |
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data |
+| surfaceTension | 298.15-333.15 | 15 | 0 | 0.21 % | Measured values (an article outside the archive) |
 
 Left out of vapourPressure: 328.40 K, Verevkin 2012, -40.69 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 333.40 K, Verevkin 2012, -39.17 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 338.30 K, Verevkin 2012, -33.07 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 343.30 K, Verevkin 2012, -33.02 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 343.40 K, Verevkin 2012, -29.92 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 348.30 K, Verevkin 2012, -23.82 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 353.30 K, Verevkin 2012, -21.66 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 358.30 K, Verevkin 2012, -18.86 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 358.40 K, Verevkin 2012, -16.22 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 363.40 K, Verevkin 2012, -19.28 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 368.40 K, Verevkin 2012, -14.70 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 373.40 K, Verevkin 2012, -11.09 % (transpiration takes the vapour as monomer, and a carboxylic acid partly dimerizes in the gas, which makes the apparent pressure too high; these values lie 11-43 % above the curve of Stull (1947), the measured boiling temperature and the critical point); 519.00 K, Stull, 1947 (Antoine equation, NIST WebBook), +3.87 % (more than three times its stated uncertainty from the fit of all the sets).
 
@@ -110,11 +112,11 @@ Left out of vapourPressure: 328.40 K, Verevkin 2012, -40.69 % (transpiration tak
 | idealGasHeatCapacity | — | — | — | — | no open data |
 | liquidHeatCapacity | 302.98-373.98 | 143 | 0 | 0.62 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 2.5 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 293.50-478.88 | 25 | 0 | 0.96 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
-| liquidViscosity | — | — | — | — | no open data |
+| liquidViscosity | 278.15-338.15 | 25 | 0 | 0.54 % | Measured values (an article outside the archive) |
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data |
+| surfaceTension | 278.15-333.15 | 23 | 0 | 0.22 % | Measured values (an article outside the archive) |
 
 ## Butyl levulinate (C9H16O3, CAS 2052-15-5)
 
@@ -128,11 +130,11 @@ Left out of vapourPressure: 328.40 K, Verevkin 2012, -40.69 % (transpiration tak
 | idealGasHeatCapacity | — | — | — | — | no open data |
 | liquidHeatCapacity | 302.66-374.16 | 144 | 0 | 0.61 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 2.5 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 298.20-510.70 | 25 | 0 | 0.28 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook) |
-| liquidViscosity | — | — | — | — | no open data |
+| liquidViscosity | 278.15-338.15 | 25 | 0 | 0.33 % | Measured values (an article outside the archive) |
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data |
+| surfaceTension | 278.15-333.15 | 23 | 0 | 0.18 % | Measured values (an article outside the archive) |
 
 ## gamma-Valerolactone (C5H8O2, CAS 108-29-2)
 
@@ -166,11 +168,11 @@ Left out of heatOfVaporization: 292.51 K, Clapeyron equation with the vapour-pre
 | idealGasHeatCapacity | — | — | — | — | no open data |
 | liquidHeatCapacity | 298.15-405.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | 273.11-379.72 | 25 | 0 | 0.0001 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
-| liquidViscosity | 288.15-373.15 | 18 | 0 | 0.92 % | Measured values (NIST TRC ThermoML Archive) |
+| liquidViscosity | 288.15-373.15 | 18 | 0 | 0.92 % | Measured values (an article outside the archive) |
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |
 | vapourThermalConductivity | — | — | — | — | no open data |
-| surfaceTension | — | — | — | — | no open data |
+| surfaceTension | 278.15-333.15 | 23 | 0 | 0.28 % | Measured values (an article outside the archive) |
 
 Left out of vapourPressure: 353.30 K, Tai 2014, +7.22 % (its three values at 353-408 K lie 4-7 % above Negadi 2014, beyond the stated uncertainties, and no independent check singles out one set; the maintainer chose Negadi 2014, with 27 values over 273-412 K (2026-10-14)); 373.00 K, Tai 2014, +5.41 % (its three values at 353-408 K lie 4-7 % above Negadi 2014, beyond the stated uncertainties, and no independent check singles out one set; the maintainer chose Negadi 2014, with 27 values over 273-412 K (2026-10-14)); 407.90 K, Tai 2014, +3.99 % (its three values at 353-408 K lie 4-7 % above Negadi 2014, beyond the stated uncertainties, and no independent check singles out one set; the maintainer chose Negadi 2014, with 27 values over 273-412 K (2026-10-14)).
 
@@ -498,7 +500,7 @@ Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 
 
 | Property | Range (K) | Values used | Left out | Max deviation | Sources |
 |---|---|---|---|---|---|
-| liquidDensity | — | — | — | — | no open data |
+| liquidDensity | 363.15-423.15 | 7 | 0 | 0.0001 % | Measured densities of the liquid at 0.1 MPa (an article outside the archive) |
 | idealGasHeatCapacity | — | — | — | — | not defined |
 | liquidHeatCapacity | 195.00-460.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | — | — | — | — | not defined |
@@ -515,7 +517,7 @@ Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 
 
 | Property | Range (K) | Values used | Left out | Max deviation | Sources |
 |---|---|---|---|---|---|
-| liquidDensity | — | — | — | — | no open data |
+| liquidDensity | 391.25-423.15 | 5 | 0 | 0.70 % | Measured densities of the liquid at 0.1 MPa (an article outside the archive) |
 | idealGasHeatCapacity | — | — | — | — | not defined |
 | liquidHeatCapacity | 195.00-460.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
 | heatOfVaporization | — | — | — | — | not defined |

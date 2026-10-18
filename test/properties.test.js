@@ -158,8 +158,12 @@ const ENTHALPY_NOT_CONSISTENT = new Set(["acetic-acid"]);
 // alcohol too: densities to 332.7 K, viscosities to 323.15 K, vapour pressures from 335.85 K.
 // (levulinic acid: its liquid records do not overlap, docs/DATA_RULES.md section 3, "a gap"; the measured heat
 // capacity, added on 2026-10-17, ends at 374.12 K, below the 375 K where its vapour pressure starts)
-const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3", "cp_J_molK"], gbl: ["rho_kg_m3", "mu_Pa_s"],
-  "isoamyl-alcohol": ["rho_kg_m3", "mu_Pa_s"] };
+// levulinic acid's viscosity (Lomba et al. 2011, 298-338 K, added 2026-10-18) does not reach the temperature either
+const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3", "cp_J_molK", "mu_Pa_s"], gbl: ["rho_kg_m3", "mu_Pa_s"],
+  "isoamyl-alcohol": ["rho_kg_m3", "mu_Pa_s"],
+  // the liquid densities of xylitol and erythritol (Hohlein et al. 2017, added 2026-10-18) were measured above their
+  // melting points only, so 25 °C is outside them
+  xylitol: ["rho_kg_m3"], erythritol: ["rho_kg_m3"] };
 
 test("props() returns liquid and vapour properties for every component at a typical state", () => {
   // styrene at 25 °C: below its measured vapour pressure, so the liquid enthalpy is refused with a reason
@@ -176,6 +180,9 @@ test("props() returns liquid and vapour properties for every component at a typi
       const rec = { rho_kg_m3: "liquidDensity", cp_J_molK: "liquidHeatCapacity", mu_Pa_s: "liquidViscosity", k_W_mK: "liquidThermalConductivity" };
       for (const [k, r] of Object.entries(rec)) {
         if (none.has(r)) { assert.equal(L[k], null, `${name} liquid ${k}`); continue; }
+        if (REFUSED_AT_TYPICAL_STATE[id]?.includes(k)) {
+          assert.equal(L[k], null, `${name} liquid ${k}`); assert.match(L.notes.join(" "), /outside the range/); continue;
+        }
         assert.ok(Number.isFinite(L[k]), `${name} liquid ${k}: ${L.notes.join(" ")}`);
       }
       assert.ok(Math.abs(L.h_J_mol) < 1e-9, `${name}: h at the 298.15 K reference ${L.h_J_mol}`);
