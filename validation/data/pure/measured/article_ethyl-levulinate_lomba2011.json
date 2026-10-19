@@ -1,0 +1,677 @@
+{
+ "component": "ethyl-levulinate",
+ "cas": "539-88-8",
+ "about": "Measured values of an article whose electronic supplementary information (ESI) is free to read, in the format of thermoml_<id>.json (read by measured_components.ThermoML together with the ThermoML file). Extracted with pdftotext from the text layer of the ESI PDF; values converted from mN/m to N/m and from mPa*s to Pa*s (the units of the ThermoML property names). Only the properties this component had no record of are taken. The ESI states no uncertainties and no pressure; the uncertainties are in the article itself, which is paywalled, so they are not used (DATA_RULES section 1) and the values carry none. Surface tension against the vapour, listed with the phases liquid and gas as the ThermoML Archive lists it.",
+ "source": {
+  "citation": "L. Lomba, B. Giner, I. Bandres, C. Lafuente, M. R. Pino, Physicochemical properties of green solvents derived from biomass, Green Chem. 13 (2011) 2062-2070",
+  "doi": "10.1039/C0GC00853B",
+  "open_copy": "https://www.rsc.org/suppdata/gc/c0/c0gc00853b/c0gc00853b.pdf",
+  "access": "The article is paywalled; its electronic supplementary information, which holds the measured values, is free to read on the publisher's site (copyright RSC 2011)",
+  "tables": "Table 6, surface tension, mN/m, 278.15-333.15 K (23 values); Table 8, dynamic viscosity, mPa*s, 278.15-338.15 K (25 values)"
+ },
+ "articles": {
+  "10.1039/C0GC00853B": {
+   "authors": [
+    "Lomba, L.",
+    "Giner, B.",
+    "Bandres, I.",
+    "Lafuente, C.",
+    "Pino, M. R."
+   ],
+   "title": "Physicochemical properties of green solvents derived from biomass",
+   "journal": "Green Chem.",
+   "volume": "13",
+   "year": "2011",
+   "pages": "2062-2070"
+  }
+ },
+ "rows": [
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 278.15,
+   "P_kPa": null,
+   "value": 0.03484,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 280.65,
+   "P_kPa": null,
+   "value": 0.03454,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 283.15,
+   "P_kPa": null,
+   "value": 0.03424,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 285.65,
+   "P_kPa": null,
+   "value": 0.03397,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 288.15,
+   "P_kPa": null,
+   "value": 0.03374,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 290.65,
+   "P_kPa": null,
+   "value": 0.03344,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 293.15,
+   "P_kPa": null,
+   "value": 0.03325,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 295.65,
+   "P_kPa": null,
+   "value": 0.033,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 298.15,
+   "P_kPa": null,
+   "value": 0.0327,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 300.65,
+   "P_kPa": null,
+   "value": 0.03242,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 303.15,
+   "P_kPa": null,
+   "value": 0.03219,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 305.65,
+   "P_kPa": null,
+   "value": 0.03197,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 308.15,
+   "P_kPa": null,
+   "value": 0.03167,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 310.65,
+   "P_kPa": null,
+   "value": 0.03138,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 313.15,
+   "P_kPa": null,
+   "value": 0.03114,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 315.65,
+   "P_kPa": null,
+   "value": 0.03085,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 318.15,
+   "P_kPa": null,
+   "value": 0.03065,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 320.65,
+   "P_kPa": null,
+   "value": 0.0303,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 323.15,
+   "P_kPa": null,
+   "value": 0.03003,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 325.65,
+   "P_kPa": null,
+   "value": 0.02984,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 328.15,
+   "P_kPa": null,
+   "value": 0.02953,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 330.65,
+   "P_kPa": null,
+   "value": 0.0293,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Surface tension liquid-gas, N/m",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 333.15,
+   "P_kPa": null,
+   "value": 0.02912,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 6",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 278.15,
+   "P_kPa": null,
+   "value": 0.0031004,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 280.65,
+   "P_kPa": null,
+   "value": 0.0028983,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 283.15,
+   "P_kPa": null,
+   "value": 0.0027176,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 285.65,
+   "P_kPa": null,
+   "value": 0.0025566,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 288.15,
+   "P_kPa": null,
+   "value": 0.0024061,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 290.65,
+   "P_kPa": null,
+   "value": 0.0022709,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 293.15,
+   "P_kPa": null,
+   "value": 0.0021458,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 295.65,
+   "P_kPa": null,
+   "value": 0.0020342,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": null,
+   "value": 0.0019296,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 300.65,
+   "P_kPa": null,
+   "value": 0.001834,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": null,
+   "value": 0.0017455,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 305.65,
+   "P_kPa": null,
+   "value": 0.0016673,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": null,
+   "value": 0.0015898,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 310.65,
+   "P_kPa": null,
+   "value": 0.0015262,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": null,
+   "value": 0.0014545,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 315.65,
+   "P_kPa": null,
+   "value": 0.0013925,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 318.15,
+   "P_kPa": null,
+   "value": 0.0013351,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 320.65,
+   "P_kPa": null,
+   "value": 0.0012815,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": null,
+   "value": 0.0012319,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 325.65,
+   "P_kPa": null,
+   "value": 0.0011855,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 328.15,
+   "P_kPa": null,
+   "value": 0.0011415,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 330.65,
+   "P_kPa": null,
+   "value": 0.0011003,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 333.15,
+   "P_kPa": null,
+   "value": 0.0010619,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 335.65,
+   "P_kPa": null,
+   "value": 0.0010251,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 338.15,
+   "P_kPa": null,
+   "value": 0.0009904,
+   "uncertainty": null,
+   "doi": "10.1039/C0GC00853B",
+   "set": "ESI Table 8",
+   "binary_with": null
+  }
+ ]
+}

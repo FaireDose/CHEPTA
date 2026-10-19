@@ -1,0 +1,264 @@
+{
+ "component": "furfuryl-alcohol",
+ "cas": "98-00-0",
+ "about": "Measured values of an open-access article, in the format of thermoml_<id>.json (read by measured_components.ThermoML together with the ThermoML file). Extracted with pdftotext from the text layer of the article's PDF; viscosities converted from mPa*s to Pa*s (the unit of the ThermoML property name). Only the pure furfuryl alcohol row (x1 = 0.0000, component 1 being furfural) of the viscosity block is taken. Uncertainty: the expanded (95 %, k = 2) uncertainty stated in the article, 0.007 mPa*s for every value. Sample: 98 wt.% (the article's Table 1).",
+ "source": {
+  "citation": "Z. V. Simic, M. Lj. Kijevcanin, I. R. Radovic, M. Grilc, G. R. Ivanis, Thermodynamic and Transport Properties of Biomass-Derived Furfural, Furfuryl Alcohol and Their Mixtures, Energies 14 (2021) 7769",
+  "doi": "10.3390/en14227769",
+  "open_copy": "https://www.mdpi.com/1996-1073/14/22/7769",
+  "access": "Open access, CC BY 4.0 (MDPI)",
+  "tables": "Table 2, dynamic viscosity at p = 0.1 MPa, row x1 = 0.0000 (pure furfuryl alcohol), 288.15-373.15 K"
+ },
+ "articles": {
+  "10.3390/en14227769": {
+   "authors": [
+    "Simic, Z. V.",
+    "Kijevcanin, M. Lj.",
+    "Radovic, I. R.",
+    "Grilc, M.",
+    "Ivanis, G. R."
+   ],
+   "title": "Thermodynamic and Transport Properties of Biomass-Derived Furfural, Furfuryl Alcohol and Their Mixtures",
+   "journal": "Energies",
+   "volume": "14",
+   "year": "2021",
+   "pages": "7769"
+  }
+ },
+ "rows": [
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 288.15,
+   "P_kPa": 100.0,
+   "value": 0.007056,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 293.15,
+   "P_kPa": 100.0,
+   "value": 0.005886,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 100.0,
+   "value": 0.004934,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": 100.0,
+   "value": 0.004216,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.15,
+   "P_kPa": 100.0,
+   "value": 0.003635,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": 100.0,
+   "value": 0.00316,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 318.15,
+   "P_kPa": 100.0,
+   "value": 0.002771,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": 100.0,
+   "value": 0.002448,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 328.15,
+   "P_kPa": 100.0,
+   "value": 0.002176,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 333.15,
+   "P_kPa": 100.0,
+   "value": 0.001947,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 338.15,
+   "P_kPa": 100.0,
+   "value": 0.001753,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 343.15,
+   "P_kPa": 100.0,
+   "value": 0.001586,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 348.15,
+   "P_kPa": 100.0,
+   "value": 0.001442,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 353.15,
+   "P_kPa": 100.0,
+   "value": 0.001317,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 358.15,
+   "P_kPa": 100.0,
+   "value": 0.001208,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 363.15,
+   "P_kPa": 100.0,
+   "value": 0.001112,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 368.15,
+   "P_kPa": 100.0,
+   "value": 0.001027,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Viscosity, Pa*s",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 373.15,
+   "P_kPa": 100.0,
+   "value": 0.000955,
+   "uncertainty": 7e-06,
+   "doi": "10.3390/en14227769",
+   "set": "Table 2",
+   "binary_with": null
+  }
+ ]
+}

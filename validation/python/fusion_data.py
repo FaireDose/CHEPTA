@@ -52,6 +52,10 @@ COMP_FILE = ROOT / "src" / "data" / "components.json"
 DATA_FILE = ROOT / "validation" / "data" / "pure" / "fusion" / "webbook_fusion.json"
 URL = "https://webbook.nist.gov/cgi/cbook.cgi?ID={ID}&Units=SI&Mask=4"
 NEAR_TM_K = 3.0
+# a wider window for one component, by the maintainer's decision (2026-10-18: "for 1,3 propanediol is ok"): its only
+# measured enthalpy of fusion (Jabrane, Letoffe et al. 1998, DSC) is stated at 249 K, 3.5 K above the triple point of
+# 245.5 K (Knauth and Sabbah 1990); no other solid phase is reported, so it is taken as the melting enthalpy
+NEAR_TM_K_FOR = {"1-3-propanediol": 3.5}
 ACCESS = "Free to read online (NIST Standard Reference Database 69); values cited per record"
 
 
@@ -135,7 +139,7 @@ def fetch(comps):
     DATA_FILE.write_text(json.dumps({k: data[k] for k in sorted(data)}, indent=1, ensure_ascii=False) + "\n")
 
 
-def choose(rec, chemsep=None):
+def choose(rec, chemsep=None, near=NEAR_TM_K):
     """(Tm_K, Hfus_J_mol, description) by the rule in the module docstring, or None and the reason."""
     one = rec.get("one_dimensional", {})
     avg = [r for r in one.get("Tfus", []) if r["method"] == "AVG" and r["units"] == "K"]
@@ -180,14 +184,14 @@ def choose(rec, chemsep=None):
             return
         vals.append((v, ref, T))
     for r in rec.get("enthalpy_of_fusion", []):
-        if r["T_K"] is None or abs(r["T_K"] - Tm) <= NEAR_TM_K:
+        if r["T_K"] is None or abs(r["T_K"] - Tm) <= near:
             add(r["Hfus_kJ_mol"], r["reference"], r["T_K"])
     for r in one.get("ΔfusH", []):
         if r["units"] == "kJ/mol" and r["method"] != "AVG":
             add(r["value"], r["reference"], None)
     if not vals:
         return {"Tm_K": Tm, "Tm_uncertainty_K": Tm_unc, "Tm_how": how}, \
-            "no enthalpy of fusion within %g K of the melting temperature on the WebBook page" % NEAR_TM_K
+            "no enthalpy of fusion within %g K of the melting temperature on the WebBook page" % near
     Hs = sorted(v[0] for v in vals)
     H, pick = statistics.median(Hs), None
     if len(Hs) == 2 and (Hs[1] - Hs[0]) / H > 0.10 and chemsep and chemsep.get("Hfus_J_mol"):
@@ -275,7 +279,7 @@ def build(comps, data, cs):
             raise SystemExit("%s: not downloaded (run with --fetch)" % cid)
         url = rec["url"]
         x = chemsep_values(cs, c["cas"])
-        ch, why = (None, rec["none"]) if "none" in rec else choose(rec, x)
+        ch, why = (None, rec["none"]) if "none" in rec else choose(rec, x, NEAR_TM_K_FOR.get(cid, NEAR_TM_K))
         if ch is None or why:
             # the next source of rule 1: the ChemSep databank, where it has both values
             if x and x["Tm_K"] and x["Hfus_J_mol"]:
@@ -339,7 +343,10 @@ def build(comps, data, cs):
         spread = (ch["Hfus_max"] - ch["Hfus_min"]) / ch["Hfus_kJ_mol"]
         sel = ("melting temperature: %s; enthalpy of fusion: %s of %d measured value%s (%s-%s kJ/mol) within %g K of it" % (
             ch["Tm_how"], "median" if ch["n"] > 1 else "the only one", ch["n"], "s" if ch["n"] > 1 else "",
-            ch["Hfus_min"], ch["Hfus_max"], NEAR_TM_K))
+            ch["Hfus_min"], ch["Hfus_max"], NEAR_TM_K_FOR.get(cid, NEAR_TM_K)))
+        if cid in NEAR_TM_K_FOR:
+            sel += ("; the window is %g K instead of %g K for this component, by the maintainer's decision (2026-10-18)"
+                    % (NEAR_TM_K_FOR[cid], NEAR_TM_K))
         if ch["pick"]:
             sel = sel.replace("median of 2", "one of 2") + "; " + ch["pick"]
         elif spread > 0.10:

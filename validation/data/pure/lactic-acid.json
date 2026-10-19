@@ -2,5 +2,28 @@
  "component": "lactic-acid",
  "name": "Lactic acid",
  "about": "Measured values each record of this component was fitted to (validation/python/measured_components.py). test/properties.test.js checks that the coefficients in src/data/components.json reproduce them within the maximum deviation stated in each record.",
- "records": {}
+ "records": {
+  "liquidDensity": {
+   "units": "kg/m3",
+   "source": {
+    "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive); stated uncertainties up to 7.2 %, above the 1 % target, used because no open values meet the target",
+    "fit": "3 measured values, 293.15-298.20 K, max deviation 0.32 %"
+   },
+   "T_K": [
+    293.15,
+    298.15,
+    298.2
+   ],
+   "values": [
+    1207.0,
+    1202.57,
+    1199.914
+   ],
+   "references": [
+    "Sahin 2009",
+    "Riveiro 2019",
+    "Domingues 2013"
+   ]
+  }
+ }
 }

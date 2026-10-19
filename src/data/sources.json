@@ -1,5 +1,5 @@
 {
-  "_about": "The CHEPTA Library (proposal 0003): every source once, with an id. Records in the other data files refer to it in `source_ids`. kind: standard, open-source library, databank, thermoml, open-access article, free book, handbook via open compilation. url: where anyone can read the numbers (the open copy); doi: the original publication; access: why it is open; via: the open copy the numbers were taken from, when it is not the source itself; files: repository files (code, validation data) that use the source besides the data records. Made by validation/python/make_sources.py; entries can be corrected by hand (the script keeps them).",
+  "_about": "The CHEPTA Library (proposal 0003): every source once, with an id. Records in the other data files refer to it in `source_ids`. kind: standard, open-source library, databank, thermoml, open-access article, free supplement, free book, handbook via open compilation. url: where anyone can read the numbers (the open copy); doi: the original publication; access: why it is open; via: the open copy the numbers were taken from, when it is not the source itself; files: repository files (code, validation data) that use the source besides the data records. Made by validation/python/make_sources.py; entries can be corrected by hand (the script keeps them).",
   "sources": {
     "ahmad2004-1-butanol-n-nonane": {
       "title": "Vapor-Liquid Equilibrium Studies for Systems Containing n-Butylisocyanate at Temperatures between 323.15 K and 371.15 K",
@@ -558,6 +558,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/ethylene-carbonate_water_10-1021-je700689w_tpx.json"
+      ]
+    },
+    "chua2022-article-fructose": {
+      "title": "The melting properties of D-alpha-glucose, D-beta-fructose, D-sucrose, D-alpha-galactose, and D-alpha-xylose and their solubility in water: A revision",
+      "authors": "Y. Z. Chua, H. T. Do, A. Kumar, M. Hallermann, D. Zaitsau, C. Schick, C. Held",
+      "year": 2022,
+      "published": "Food Biophys. 17 (2022) 181-197",
+      "kind": "open-access article",
+      "doi": "10.1007/s11483-021-09707-6",
+      "url": "http://hdl.handle.net/2003/40946",
+      "access": "Open access, CC BY 4.0 (Springer); the published version is also in the TU Dortmund repository Eldorado (hdl:2003/40946)",
+      "files": [
+        "validation/data/pure/measured/article_fructose_chua2022.json",
+        "validation/data/pure/measured/article_glucose_chua2022.json"
       ]
     },
     "clara2006-2-butanone-chloroform": {
@@ -1186,6 +1200,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/diethyl-carbonate_ethyl-acetate_10-1016-j-jct-2015-07-024_tpx.json"
+      ]
+    },
+    "hohlein2017-article-erythritol": {
+      "title": "Thermophysical Characterization of MgCl2*6H2O, Xylitol and Erythritol as Phase Change Materials (PCM) for Latent Heat Thermal Energy Storage (LHTES)",
+      "authors": "S. Hohlein, A. Konig-Haagen, D. Bruggemann",
+      "year": 2017,
+      "published": "Materials 10 (2017) 444",
+      "kind": "open-access article",
+      "doi": "10.3390/ma10040444",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5506912/",
+      "access": "Open access, CC BY 4.0 (MDPI; full text in PubMed Central)",
+      "files": [
+        "validation/data/pure/measured/article_erythritol_hohlein2017.json",
+        "validation/data/pure/measured/article_xylitol_hohlein2017.json"
       ]
     },
     "horstmann2004-methanol-nmp": {
@@ -1987,6 +2015,22 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/2-butanone_n-hexane_10-1016-j-fluid-2011-05-004_101.3kPa_tx.json"
+      ]
+    },
+    "lomba2011-article-butyl-levulinate": {
+      "title": "Physicochemical properties of green solvents derived from biomass",
+      "authors": "L. Lomba, B. Giner, I. Bandres, C. Lafuente, M. R. Pino",
+      "year": 2011,
+      "published": "Green Chem. 13 (2011) 2062-2070",
+      "kind": "free supplement",
+      "doi": "10.1039/C0GC00853B",
+      "url": "https://www.rsc.org/suppdata/gc/c0/c0gc00853b/c0gc00853b.pdf",
+      "access": "The article is paywalled; its electronic supplementary information, which holds the measured values, is free to read on the publisher's site (copyright RSC 2011)",
+      "files": [
+        "validation/data/pure/measured/article_butyl-levulinate_lomba2011.json",
+        "validation/data/pure/measured/article_ethyl-levulinate_lomba2011.json",
+        "validation/data/pure/measured/article_furfuryl-alcohol_lomba2011.json",
+        "validation/data/pure/measured/article_levulinic-acid_lomba2011.json"
       ]
     },
     "luis2012-acetonitrile-toluene": {
@@ -3445,6 +3489,19 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/methanol_methyl-oleate_10-1016-j-fluid-2015-09-049_101.0kPa.json"
+      ]
+    },
+    "simic2021-article-furfuryl-alcohol": {
+      "title": "Thermodynamic and Transport Properties of Biomass-Derived Furfural, Furfuryl Alcohol and Their Mixtures",
+      "authors": "Z. V. Simic, M. Lj. Kijevcanin, I. R. Radovic, M. Grilc, G. R. Ivanis",
+      "year": 2021,
+      "published": "Energies 14 (2021) 7769",
+      "kind": "open-access article",
+      "doi": "10.3390/en14227769",
+      "url": "https://www.mdpi.com/1996-1073/14/22/7769",
+      "access": "Open access, CC BY 4.0 (MDPI)",
+      "files": [
+        "validation/data/pure/measured/article_furfuryl-alcohol_simic2021.json"
       ]
     },
     "soujanya2016-2-propanol-glycerol": {

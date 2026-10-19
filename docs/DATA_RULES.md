@@ -17,7 +17,9 @@ Only from sources anyone can read for free and legally, so that every reviewer c
 4. open databanks and libraries: **ChemSep** (Artistic License 2.0), thermo, chemicals. A table copied from a handbook
    or a commercial databank is not open just because an open library ships it;
 5. the NIST TRC ThermoML Archive (its data are open even where the article is paywalled), open-access articles, open
-   repositories;
+   repositories, and the supplementary information of a paywalled article where the publisher makes it free to read
+   (kind "free supplement"; Lomba et al. 2011): its numbers are used, but not the article's own (its stated
+   uncertainties, for example);
 6. free books (public domain or openly licensed).
 
 What to take from where (the maintainer, 2026-10-14): take a number from the source that has it, and do not take a
@@ -62,9 +64,14 @@ are not in it), so "no copy found" is not "no open data" by itself.
 
 **Targets.** A record must meet the values it is fitted to within 1 % (vapour pressure, liquid density, heat
 capacity, enthalpy of vaporization, surface tension) or 3 % (viscosity, thermal conductivity). Values whose stated
-uncertainty is above the target do not make a record by themselves: with fewer than three temperatures within the
-target, the property is "no open data at the target", with the values listed (for example the liquid heat capacities
-of Nikitin et al. 2019, stated 2.4 %).
+uncertainty is above the target make a record only where no open values meet it, at three temperatures or more: the
+record is then held to the largest stated uncertainty and says so (`stated_uncertainty_percent`; section 10, "measured
+before predicted"). With fewer than three temperatures, the property is "no open data at the target", with the values
+listed.
+
+**Surface tension rows** of the ThermoML Archive name the phases liquid and gas (or air at 1 atm). They are kept;
+only liquid-density, heat-capacity and viscosity rows that name a gas phase are left out (2026-10-17: the old filter
+dropped every surface tension measured against the vapour).
 
 **Ranges.** A record covers the temperatures that were measured. Outside them the engine refuses with an
 out-of-range error instead of extrapolating. With a measured critical point, the vapour-pressure curve runs to the
@@ -119,6 +126,13 @@ thermodynamic properties; limonene, `inchi_no_stereo`). Diastereomers (meso and 
 median of the enthalpies of fusion), else ChemSep, else the ThermoML Archive. Where the WebBook lists no melting
 temperature but an enthalpy of fusion measured at a stated temperature, and ChemSep has no melting data, that
 temperature is taken (HMF: 308.5 K, DSC; such a temperature is not always the melting point, so ChemSep comes first).
+An enthalpy of fusion counts when it was measured within 3 K of the melting temperature; for 1,3-propanediol 3.5 K, by
+the maintainer's decision (2026-10-18: its only value, at 249 K, against the triple point of 245.5 K).
+
+**Single values only.** Where the open values of a property are single temperatures from several articles, with no
+series, there is no record, except where the maintainer decides otherwise. Dichloromethane's liquid heat capacity
+(2026-10-18) is the mean of its open single values, a constant over 292.5 K to its normal boiling point, 313.1 K (10 K
+beyond the values, also by the maintainer's decision), held to their largest deviation from it (`cp_single_values`).
 
 ## 4. Records refitted before 2026-10-14
 
@@ -209,11 +223,31 @@ group-contribution method predicts it:
   extrapolation of up to about 100 K "has no significant effect on the error of prediction" (part II, p. 620), and on
   furfural the furan ring correction, fitted to 305 K, stays within 3.4 % of the record up to 405 K. Not for polyols
   (two or more alcohol groups): on the check set the polyol groups drift far beyond their range (glycerol +42 % at
-  560 K);
+  560 K). One group is used beyond that rule, up to 380 K (confirmed by the maintainer, 2026-10-17): the ether and
+  ester carbon C-(H)(C)2(O), fitted at 130-170 K only, which THFA, CPME and the triglycerides need; on isopropyl acetate
+  (ChemSep record) the prediction with it stays within 8.1 % from 220 to 380 K, and on 2-methyltetrahydrofuran within
+  4.5 % of the measured values (`ether_check` in `predict_cp.py`, stated in each record that uses it). Methane
+  derivatives (dichloromethane) have no group in the method;
 - **measured before predicted** (2026-10-16): where the only alternative is a prediction, measured values whose
   stated uncertainty is above the target of section 3 make the record, with that uncertainty stated (fructose: liquid
   heat capacities stated to 2 %, where the prediction is 7-22 % above them at 200-370 K). Single measured values that cannot
-  make a record are listed in the predicted record with the prediction's deviation from them.
+  make a record are listed in the predicted record with the prediction's deviation from them. This holds for every
+  component, volatile or not (2026-10-17: the levulinates, levulinic acid, GVL, 2-MeTHF, 1,3-propanediol, isoamyl
+  alcohol and diethyl carbonate, with stated uncertainties of 1.5-5.2 %; `cp_measured_or_predicted` in
+  `measured_components.py`, also called by `fit_properties.py`); such a record carries `stated_uncertainty_percent`,
+  the target it is held to (`test/properties.test.js`). The same holds for every other property of section 3
+  (2026-10-17): where no open values meet the target, measured values above it make the record, named "used because
+  no open values meet the target" (GVL viscosity, 4.2 %; lactic acid density, 7.2 %; 2-methoxyethanol surface tension,
+  2.9 %; `fit_or_marker` in `measured_components.py`).
+
+**Ideal-gas heat capacity without open data** (the maintainer, 2026-10-17, after a literature search found none open
+for 15 volatile components): it is derived from the liquid's records by Kirchhoff's path, h_IG(T) = integral of
+cp_L + (dHvap - h_R,sat)(T) - (dHvap - h_R,sat)(298.15 K), where the liquid heat capacity and the heat of
+vaporization both apply from 298.15 K (`src/thermo/pure.js`); outside that range it refuses. On the CHEPTA liquids with
+an ideal-gas record it is within 5 % at 300 K for half of them, 22 % for 90 %, and within 2.6 % for furan and
+2-methylfuran, whose records are made the same way as those of the components that use it
+(`test/derived-ideal-gas.test.js`). The Burcat–Ruscic database is free to read but forbids inclusion in commercial
+software without permission, so it is not used.
 
 **Nonvolatile components:** a component that does not evaporate in the processes where it appears (it decomposes,
 polymerizes, or has no measurable vapour pressure) has `"class": "nonvolatile"` and no vapour pressure, critical
@@ -225,7 +259,8 @@ vapour-fraction specification is refused with the reason. Its liquid enthalpy is
 capacity from 298.15 K, so its reference state is the liquid there; that is enough for energy balances without
 reactions. `measured_components.py` (`build_nonvolatile`) builds it from the measured values that meet the targets,
 with the heat capacity predicted where none is measured. A volatile liquid without open vapour pressures (solketal,
-alpha-angelica lactone) is not made nonvolatile: that would make every distillation with it wrong. Nor is a substance
+alpha-angelica lactone) is not made nonvolatile: that would make every distillation with it wrong. Terephthalic acid is a nonvolatile liquid up to an assumed melting temperature of 400 degC, by the
+maintainer's choice (2026-10-17; it sublimes at 402-404 degC). Nor is a substance
 that is distilled or sublimed in its own processes (lactide, isosorbide, BHMF, dimethyl FDCA, levoglucosan; held in
 batch 4 for want of an open liquid vapour pressure). A substance whose measured volatility is negligible beside its
 solvents may be (HMF: its WebBook boiling temperature of 388.2 K at 0.1 kPa, where water's vapour pressure is

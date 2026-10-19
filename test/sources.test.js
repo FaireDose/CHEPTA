@@ -11,7 +11,9 @@ const kij = load("../src/data/kij.json").pairs;
 const henry = load("../src/data/henry.json");
 const components = load("../src/data/components.json").components;
 const issues = load("../src/data/known-issues.json").issues;
-const KINDS = ["standard", "open-source library", "databank", "thermoml", "open-access article", "free book", "handbook via open compilation"];
+// "free supplement" added on 2026-10-18: a paywalled article whose supplementary information, which holds the numbers,
+// is free to read (Lomba et al. 2011)
+const KINDS = ["standard", "open-source library", "databank", "thermoml", "open-access article", "free supplement", "free book", "handbook via open compilation"];
 
 /** Every record that refers to sources: [where, source_ids]. */
 function referencing() {

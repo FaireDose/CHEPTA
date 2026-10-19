@@ -122,10 +122,17 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **The maintainer's order after batch 4 (2026-10-15):**
   1. an interface where a user adds their own properties (and Modified UNIFAC 2.0 groups) and saves them with the
      project, labelled as user data: a proposal first;
-  2. the missing properties: liquid heat capacity for the components without one (21 on 2026-10-16, among them
-     levulinic acid, GVL, the levulinates, the lactates, furfuryl alcohol; without it a component cannot be in a
-     flowsheet energy balance; now predictable for most of them, including furans and aromatics), then thermal conductivity, surface tension and the missing viscosities (open
-     data via `open_copy.py`, else an open prediction method), then the water + lactic acid solution density and
+  2. the missing properties (docs/decisions/2026-10-17-02-liquid-heat-capacity.md): liquid heat capacity done for
+     all 21 (terephthalic acid a nonvolatile liquid to 400 °C; dichloromethane a constant from single values,
+     292.5 K to its boiling point, 313.1 K, 2026-10-18); surface tension, viscosity, density and
+     fusion: 23 records added on 2026-10-17 and -18 (same file); **on hold** (the maintainer, 2026-10-18): the ideal-gas
+     heat capacity of 2-methoxyethanol, the levulinates, levulinic acid, THFA and 2,3-butanediol, and of all 15 above
+     the range derived from their liquid, by an open group-contribution method (tier "predicted", its group values
+     open and without a non-commercial licence, checked on the CHEPTA components with an ideal-gas record); still
+     open: the remaining thermal conductivities, surface tensions and viscosities (leads: Sharma et al. 2024, J. Chem.
+     Eng. Data, paywalled; Nikitin et al. 2020-2023 critical constants of GVL, furfuryl alcohol and THFA, no open copy
+     verified; levulinate conductivity from the diffusivities of Nikitin et al. 2019), else an open prediction method,
+     then the water + lactic acid solution density and
      viscosity (open: Simion et al. 2012, Food and Environment Safety XI(4), Tables 1-2, 9-85 wt %, 293-353 K); a
      mixture density and viscosity model is needed to use them.
 - **0010, reactions:**

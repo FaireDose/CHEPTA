@@ -1,0 +1,119 @@
+{
+ "component": "xylitol",
+ "cas": "87-99-0",
+ "about": "Liquid densities of an open-access article, in the format of thermoml_<id>.json. The measured points are printed only in a figure (Figure 7); the article gives, in Table 4, the liquid density at 120 degC (1.3446 g/cm3) and the liquid volumetric expansion coefficient alpha_V = 5.02e-04 1/K from the melting temperature to 150 degC, from a linear fit that the authors state is within 0.3 % of the measured points (section 3.2). The values here are that linear fit, rho(T) = rho(120 degC) [1 - alpha_V (T - 393.15 K)], at the listed temperatures, not read off the figure. Eq. (2) defines alpha_V with the density at the first measured liquid temperature, which is not printed; taking rho(120 degC) for it changes the slope by under alpha_V x 30 K (1.5 % of the slope), under 0.03 % of the density over the range. Range: 90 degC (the DSC melting temperature of Table 4) to 150 degC. Uncertainty: 0.3 %, the authors' largest deviation of the fit from the points (the measurement uncertainty is below 0.1 %, k = 1). Technical-grade samples.",
+ "source": {
+  "citation": "S. Hohlein, A. Konig-Haagen, D. Bruggemann, Thermophysical Characterization of MgCl2*6H2O, Xylitol and Erythritol as Phase Change Materials (PCM) for Latent Heat Thermal Energy Storage (LHTES), Materials 10 (2017) 444",
+  "doi": "10.3390/ma10040444",
+  "open_copy": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5506912/",
+  "access": "Open access, CC BY 4.0 (MDPI; full text in PubMed Central)",
+  "tables": "Table 4 (rho_l at 120 degC, alpha_V,l from the melting temperature to 150 degC) and section 3.2; Figure 7 for the points"
+ },
+ "articles": {
+  "10.3390/ma10040444": {
+   "authors": [
+    "Hohlein, S.",
+    "Konig-Haagen, A.",
+    "Bruggemann, D."
+   ],
+   "title": "Thermophysical Characterization of MgCl2*6H2O, Xylitol and Erythritol as Phase Change Materials (PCM) for Latent Heat Thermal Energy Storage (LHTES)",
+   "journal": "Materials",
+   "volume": "10",
+   "year": "2017",
+   "pages": "444"
+  }
+ },
+ "rows": [
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 363.15,
+   "P_kPa": null,
+   "value": 1364.85,
+   "uncertainty": 4.03,
+   "doi": "10.3390/ma10040444",
+   "set": "Table 4, linear fit",
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 373.15,
+   "P_kPa": null,
+   "value": 1358.1,
+   "uncertainty": 4.03,
+   "doi": "10.3390/ma10040444",
+   "set": "Table 4, linear fit",
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 383.15,
+   "P_kPa": null,
+   "value": 1351.35,
+   "uncertainty": 4.03,
+   "doi": "10.3390/ma10040444",
+   "set": "Table 4, linear fit",
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 393.15,
+   "P_kPa": null,
+   "value": 1344.6,
+   "uncertainty": 4.03,
+   "doi": "10.3390/ma10040444",
+   "set": "Table 4, linear fit",
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 403.15,
+   "P_kPa": null,
+   "value": 1337.85,
+   "uncertainty": 4.03,
+   "doi": "10.3390/ma10040444",
+   "set": "Table 4, linear fit",
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 413.15,
+   "P_kPa": null,
+   "value": 1331.1,
+   "uncertainty": 4.03,
+   "doi": "10.3390/ma10040444",
+   "set": "Table 4, linear fit",
+   "binary_with": null
+  },
+  {
+   "property": "Mass density, kg/m3",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 423.15,
+   "P_kPa": null,
+   "value": 1324.35,
+   "uncertainty": 4.03,
+   "doi": "10.3390/ma10040444",
+   "set": "Table 4, linear fit",
+   "binary_with": null
+  }
+ ]
+}

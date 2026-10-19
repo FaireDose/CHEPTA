@@ -51,20 +51,22 @@ test("an overlay repeating the databank's records and parameters gives exactly t
 });
 
 test("a user record replaces the databank's for that property only, and only where it is passed", () => {
-  // lactic acid has no open liquid density; a person's own (here: a made-up linear record)
-  const ud = checkUserData({ properties: { "lactic acid": { liquidDensity: {
+  // succinic acid has no open liquid density; a person's own (here: a made-up linear record). This test used lactic
+  // acid until 2026-10-17, when it gained a measured density (293-298 K) from values above the 1 % target
+  // (DATA_RULES section 10); the behaviour checked is unchanged
+  const ud = checkUserData({ properties: { "succinic acid": { liquidDensity: {
     equation: "DIPPR100", coefficients: { A: 1450, B: -0.8 }, units: "kg/m3", Tmin_K: 290, Tmax_K: 360,
     source: { name: "own measurement, lab book 12" } } } } });
-  assert.throws(() => pure("lactic-acid").property("liquidDensity", 300), /No open data/);
-  const p = pure("lactic-acid", { userData: ud });
+  assert.throws(() => pure("succinic-acid").property("liquidDensity", 300), /No open data/);
+  const p = pure("succinic-acid", { userData: ud });
   assert.equal(p.property("liquidDensity", 300), 1450 - 0.8 * 300);
   assert.equal(p.record("liquidDensity").tier, "user");
   assert.equal(p.record("liquidDensity").source.name, "own measurement, lab book 12");
   assert.equal(p.props(300, 101.325).rho_kg_m3, 1450 - 0.8 * 300);
   // the rest is the databank's
-  assert.equal(p.property("liquidHeatCapacity", 300), pure("lactic-acid").property("liquidHeatCapacity", 300));
+  assert.equal(p.property("liquidHeatCapacity", 300), pure("succinic-acid").property("liquidHeatCapacity", 300));
   // nothing leaked: the databank is unchanged after the calls above
-  assert.throws(() => pure("lactic-acid").property("liquidDensity", 300), /No open data/);
+  assert.throws(() => pure("succinic-acid").property("liquidDensity", 300), /No open data/);
   assert.throws(() => p.property("liquidDensity", 400), /outside the range/);
 });
 

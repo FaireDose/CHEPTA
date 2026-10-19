@@ -75,8 +75,13 @@ test("records are complete: units, range, tier, source and stated fit quality", 
         assert.ok(r.source.groups && /Accuracy of the method/.test(r.source.notes), `${where}: groups and accuracy`);
         continue;
       }
-      // targets of the task: 1 % for thermodynamic properties, 3 % for transport properties
-      const target = TRANSPORT.has(p) ? 0.03 : 0.01;
+      // targets of the task: 1 % for thermodynamic properties, 3 % for transport properties; a record made of measured
+      // values whose stated uncertainties are above the target, because the only alternative is a prediction or no
+      // record at all (docs/DATA_RULES.md, section 10: "measured before predicted"), is held to those uncertainties,
+      // which it states
+      const stated = r.source.stated_uncertainty_percent;
+      if (stated != null) assert.match(r.source.name, /above the [0-9.]+ % target, used because (the only alternative is a prediction|no open values meet the target)/, `${where}: why`);
+      const target = stated != null ? stated / 100 : TRANSPORT.has(p) ? 0.03 : 0.01;
       assert.ok(statedMaxDeviation(r) <= target, `${where}: stated deviation above the ${target * 100} % target`);
     }
   }
@@ -151,8 +156,14 @@ const ENTHALPY_NOT_CONSISTENT = new Set(["acetic-acid"]);
 // (375 K) the density is refused with an out-of-range note instead of being extrapolated. gamma-Butyrolactone the same:
 // its liquid densities end at 333 K, its viscosities at 323 K, and its vapour-pressure record starts at 377 K. Isoamyl
 // alcohol too: densities to 332.7 K, viscosities to 323.15 K, vapour pressures from 335.85 K.
-const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3"], gbl: ["rho_kg_m3", "mu_Pa_s"],
-  "isoamyl-alcohol": ["rho_kg_m3", "mu_Pa_s"] };
+// (levulinic acid: its liquid records do not overlap, docs/DATA_RULES.md section 3, "a gap"; the measured heat
+// capacity, added on 2026-10-17, ends at 374.12 K, below the 375 K where its vapour pressure starts)
+// levulinic acid's viscosity (Lomba et al. 2011, 298-338 K, added 2026-10-18) does not reach the temperature either
+const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3", "cp_J_molK", "mu_Pa_s"], gbl: ["rho_kg_m3", "mu_Pa_s"],
+  "isoamyl-alcohol": ["rho_kg_m3", "mu_Pa_s"],
+  // the liquid densities of xylitol and erythritol (Hohlein et al. 2017, added 2026-10-18) were measured above their
+  // melting points only, so 25 °C is outside them
+  xylitol: ["rho_kg_m3"], erythritol: ["rho_kg_m3"] };
 
 test("props() returns liquid and vapour properties for every component at a typical state", () => {
   // styrene at 25 °C: below its measured vapour pressure, so the liquid enthalpy is refused with a reason
@@ -169,6 +180,9 @@ test("props() returns liquid and vapour properties for every component at a typi
       const rec = { rho_kg_m3: "liquidDensity", cp_J_molK: "liquidHeatCapacity", mu_Pa_s: "liquidViscosity", k_W_mK: "liquidThermalConductivity" };
       for (const [k, r] of Object.entries(rec)) {
         if (none.has(r)) { assert.equal(L[k], null, `${name} liquid ${k}`); continue; }
+        if (REFUSED_AT_TYPICAL_STATE[id]?.includes(k)) {
+          assert.equal(L[k], null, `${name} liquid ${k}`); assert.match(L.notes.join(" "), /outside the range/); continue;
+        }
         assert.ok(Number.isFinite(L[k]), `${name} liquid ${k}: ${L.notes.join(" ")}`);
       }
       assert.ok(Math.abs(L.h_J_mol) < 1e-9, `${name}: h at the 298.15 K reference ${L.h_J_mol}`);
@@ -201,7 +215,10 @@ test("props() returns liquid and vapour properties for every component at a typi
     const hKeys = ENTHALPY_NOT_CONSISTENT.has(id) ? [] : ["h_J_mol"];
     // a property with an explicit "no open data" marker (propylene glycol: transport properties) is null, with
     // a note that says so; every other one has a value
-    const none = new Set(Object.entries(components[id].properties).filter(([, r]) => r.available === false).map(([k]) => k));
+    // (an ideal-gas heat capacity derived from the liquid's records where no open one exists, pure.js, 2026-10-17,
+    // counts as data: test/derived-ideal-gas.test.js)
+    const derivedIG = !!p.record("idealGasHeatCapacity")?.derived;
+    const none = new Set(Object.entries(components[id].properties).filter(([k, r]) => r.available === false && !(derivedIG && k === "idealGasHeatCapacity")).map(([k]) => k));
     // the enthalpy needs the ideal-gas heat capacity: without it (2-methoxyethanol, no open data) h is null too;
     // the liquid enthalpy, h(ideal gas) - ΔHvap, also needs the heat of vaporization (terephthalic acid: no liquid
     // record, ChemSep's covers only the solid range)
@@ -225,6 +242,10 @@ test("props() returns liquid and vapour properties for every component at a typi
       h_J_mol: "idealGasHeatCapacity" };
     for (const k of ["cp_J_molK", "mu_Pa_s", "k_W_mK", ...hKeys]) {
       if (none.has(recordOfV[k])) { assert.equal(V[k], null, `${name} vapour ${k}`); continue; }
+      // a derived ideal-gas heat capacity ends with the liquid's records, below this vapour state: refused, saying why
+      if (derivedIG && recordOfV[k] === "idealGasHeatCapacity" && V.T_K > p.record("idealGasHeatCapacity").Tmax_K) {
+        assert.equal(V[k], null, `${name} vapour ${k}`); assert.match(V.notes.join(" "), /derived from its liquid heat capacity/); continue;
+      }
       assert.ok(Number.isFinite(V[k]), `${name} vapour ${k}: ${V.notes.join(" ")}`);
     }
   }

@@ -19,6 +19,15 @@
  * of a departure function (ideal gas -> real saturated vapour -> saturated liquid).
  * Limits: dimerizing components (acetic acid) get no enthalpy (null, with a note); the
  * residual enthalpy of polar vapours is approximate (see POLAR_NOTE).
+ *
+ * A component without an ideal-gas heat capacity record (no open data: GVL, the lactates, ...) has one derived from
+ * its liquid (the maintainer, 2026-10-17, docs/decisions/2026-10-17-02-liquid-heat-capacity.md), by the same path
+ * read the other way (Kirchhoff): the liquid heats along its heat capacity and evaporates with its heat of
+ * vaporization, so
+ *   h_IG(T) = integral of cp_L from 298.15 K to T + g(T) - g(298.15 K),  g = dHvap - h_R(T, psat(T)),
+ *   cp_IG(T) = dh_IG/dT = cp_L(T) + dg/dT,
+ * where the liquid heat capacity, the heat of vaporization (and the vapour pressure, with Peng-Robinson residuals)
+ * all apply, from 298.15 K: the reference stays the ideal gas at 298.15 K. Outside that range it refuses.
  */
 import componentData from "../data/components.json" with { type: "json" };
 import { componentRecord } from "./components.js";
@@ -127,6 +136,7 @@ export function pure(key, opts = {}) {
   const NONVOLATILE_NOTE = `${c.name} is nonvolatile in CHEPTA: it has no vapour pressure and stays in the liquid${c.nonvolatile?.why ? ` (${c.nonvolatile.why})` : ""}.`;
   const record = name => {
     if (name === "vapourPressure") return vpRec;
+    if (name === "idealGasHeatCapacity" && derivedIG) return derivedIG.record;
     const r = data[name];
     return r && r.available !== false ? r : null;
   };
@@ -139,12 +149,52 @@ export function pure(key, opts = {}) {
       : `${what} of ${c.name} is not in the databank yet.`;
   };
 
+  // ---- no ideal-gas heat capacity: derived from the liquid (see the header), where it can be
+  const derivedIG = (() => {
+    const own = data.idealGasHeatCapacity;
+    if ((own && own.available !== false) || nonvolatile || c.association) return null;
+    const cl = record("liquidHeatCapacity"), dh = record("heatOfVaporization");
+    if (!cl || !dh || (crit && !vpRec)) return null;
+    const lo = Math.max(cl.Tmin_K, dh.Tmin_K, crit ? vpRec.Tmin_K : 0);
+    const hi = Math.min(cl.Tmax_K, dh.Tmax_K, crit ? vpRec.Tmax_K : Infinity);
+    if (!(lo <= T_REF && T_REF < hi)) return null;
+    const g = T => evaluate(dh, T) - (crit ? hResSat(T, evaluate(vpRec, T) / 1000) : 0);
+    const inRange = T => {
+      if (!(T >= lo - 1e-9 && T <= hi + 1e-9)) {
+        throw failRange("OUT_OF_RANGE", `${c.name}: its ideal-gas heat capacity is derived from its liquid heat capacity and heat of vaporization, which both apply at ${lo}-${hi} K only; T = ${Number(T).toFixed(2)} K is outside (no open ideal-gas heat capacity: ${(own?.searched || []).join(", ")}).`);
+      }
+    };
+    const g0 = g(T_REF);
+    const h = T => { inRange(T); return integrate(t => evaluate(cl, t), T_REF, T) + g(T) - g0; };
+    const dT = 0.01;
+    const cp = T => {
+      inRange(T);
+      const a = Math.max(lo, T - dT), b = Math.min(hi, T + dT);
+      return evaluate(cl, T) + (g(b) - g(a)) / (b - a);
+    };
+    const srcName = s => (typeof s === "string" ? s : s?.name ?? "");
+    const tier = cl.tier === "predicted" || dh.tier === "predicted" ? "predicted" : "fitted";
+    return {
+      h, cp,
+      record: {
+        derived: true, units: "J/mol/K", Tmin_K: lo, Tmax_K: hi, tier,
+        source: {
+          name: "Derived from the liquid heat capacity and the heat of vaporization (Kirchhoff): no open ideal-gas heat capacity",
+          reference: `liquid heat capacity: ${srcName(cl.source)}; heat of vaporization: ${srcName(dh.source)}`,
+          fit: `cp_IG = cp_L + d(dHvap - h_R,sat)/dT${crit ? " (h_R,sat: Peng-Robinson residual enthalpy of the saturated vapour)" : " (ideal-gas vapour)"}, where both records apply: ${lo}-${hi} K`,
+          notes: `No open ideal-gas heat capacity (searched: ${(own?.searched || []).join(", ")}). The liquid's pressure effect is neglected, as for every liquid enthalpy.`,
+        },
+      },
+    };
+  })();
+
   /** Property value at T (K), in engine units (see PROPERTIES). Throws if missing or out of range. */
   function property(name, T, opts) {
     if (name !== "vapourPressure" && !PROPERTIES[name]) {
       throw fail("BAD_INPUT", `Unknown property "${name}". Known: vapourPressure, ${PROPERTY_NAMES.join(", ")}.`);
     }
     if (name === "vapourPressure" && nonvolatile) throw fail("NOT_AVAILABLE", NONVOLATILE_NOTE);
+    if (name === "idealGasHeatCapacity" && derivedIG) return derivedIG.cp(T);
     const r = record(name);
     if (!r) throw fail("MISSING_DATA", missingMessage(name));
     const v = evaluate(r, T, opts);
@@ -168,6 +218,7 @@ export function pure(key, opts = {}) {
 
   /** Ideal-gas enthalpy relative to the ideal gas at 298.15 K, J/mol. */
   function hIdealGas(T) {
+    if (derivedIG) return derivedIG.h(T);
     const r = record("idealGasHeatCapacity");
     if (!r) throw fail("MISSING_DATA", missingMessage("idealGasHeatCapacity"));
     return integrate(t => evaluate(r, t, { extrapolate: true }), T_REF, T);
