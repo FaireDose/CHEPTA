@@ -102,6 +102,9 @@ REVIEWED = {
     "ethylene-carbonate": "the whole molecule is the cyclic carbonate subgroup (CH2)2CB",
     "fructose": "the open-chain ketone form (as for glucose, which DDBST assigns open-chain): the C(=O) with C1 as "
                 "CH2CO, C6 as CH2, three CH; two primary OH (P) and three secondary OH (S)",
+    "xylose": "the open-chain aldehyde form (as for glucose, which DDBST assigns open-chain; structure from PubChem, "
+              "aldehydo-D-xylose): the aldehyde CHO, three CH, one CH2; one primary OH (P) and three secondary OH (S)",
+    "muconic-acid": "two COOH and two CH=CH (the subgroups do not tell cis from trans; structure from PubChem)",
     "cyrene": "the ring ketone C(=O) with its CH2 as CH2CO, the CH2-O of the bridge as TRIOXAN and the other ring ether "
               "CH-O as CHO, one ring CH2 and one ring CH",
 }
@@ -155,7 +158,7 @@ def atoms_of(groups, DOUFSG):
 
 def assign(comps, sub):
     from chemicals.elements import simple_formula_parser
-    from chemicals.identifiers import search_chemical
+    from pubchem import chemical as search_chemical  # PubChem where `chemicals` files the compound under another form
     from rdkit import Chem, RDLogger
     import thermo.unifac as u
     from thermo.group_contribution.group_contribution_base import smarts_fragment_priority

@@ -60,6 +60,12 @@ are not in it), so "no copy found" is not "no open data" by itself.
 | in the ChemSep databank | `fit_properties.py` | ChemSep, taken as it is |
 | in neither | `measured_components.py` | measured data only: ThermoML Archive, WebBook, open-access articles |
 
+A component's identity (formula, structure, CAS) comes from the `chemicals` library. Where that library files the
+compound under another CAS number or stereo form (D-xylose as dl-xylose; cis,cis-muconic acid without its double-bond
+geometry), it comes from PubChem instead, stored in `validation/data/pure/identity/` (`pubchem.py`); the data scripts
+read it through `pubchem.chemical()`. A sugar is described in its open-chain form, for groups and for matching the
+ThermoML Archive's compounds, as glucose and fructose are.
+
 ## 3. Records fitted to measured data (`measured_components.py`)
 
 **Targets.** A record must meet the values it is fitted to within 1 % (vapour pressure, liquid density, heat

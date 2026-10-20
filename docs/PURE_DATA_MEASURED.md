@@ -714,6 +714,40 @@ Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 
 | vapourThermalConductivity | — | — | — | — | not defined |
 | surfaceTension | — | — | — | — | no open data |
 
+## D-Xylose (C5H10O5, CAS 58-86-6)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 150.1299 g/mol
+- Constants: Formula, structure and CAS: PubChem CID 135191 (D-Xylose), https://pubchem.ncbi.nlm.nih.gov/compound/135191; groups and the ThermoML Archive's compound from PubChem CID 644160 (aldehydo-D-Xylose): the open-chain (aldehyde) form, aldehydo-D-xylose: groups are counted in the open-chain form, as for glucose and fructose, and the ThermoML Archive lists D-xylose under this InChI; MW from the formula (chemicals library, MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 195.00-430.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
+## cis,cis-Muconic acid (C6H6O4, CAS 1119-72-8)
+
+- Nonvolatile (no vapour pressure; it stays in the liquid): most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009); M 142.1094 g/mol
+- Constants: Formula, structure and CAS: PubChem CID 5280518 (cis,cis-Muconic acid), https://pubchem.ncbi.nlm.nih.gov/compound/5280518; MW from the formula (chemicals library, MIT). Nonvolatile (proposal 0009, batch 4): no vapour pressure, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | not defined |
+| liquidHeatCapacity | 230.00-450.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | — | — | — | — | not defined |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | not defined |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | not defined |
+| surfaceTension | — | — | — | — | no open data |
+
 ## Terephthalic acid (C8H6O4, CAS 100-21-0)
 
 - Nonvolatile (no vapour pressure; it stays in the liquid): the maintainer's choice (2026-10-17): terephthalic acid is kept a liquid that does not evaporate up to an assumed melting temperature of 400 degC; it sublimes at 402-404 degC at atmospheric pressure (ECHA registration dossier, free to read), and in its liquid-phase processes (oxidation and crystallization in acetic acid and water) it does not evaporate. Until 2026-10-17 it was a ChemSep component, whose liquid records covered only temperatures above 700 K; M 166.1308 g/mol

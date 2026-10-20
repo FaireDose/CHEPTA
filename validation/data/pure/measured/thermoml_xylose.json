@@ -1,0 +1,2432 @@
+{
+ "component": "xylose",
+ "cas": "58-86-6",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-20",
+ "searched": "ThermoML-API full-text search for \"xylose\", \"d-xylose\", \"(2R,3S,4R)-2,3,4,5-tetrahydroxypentanal\", \"(3R,4S,5R)-oxane-2,3,4,5-tetrol\"; 39 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {
+  "10.1016/j.jct.2012.09.028": {
+   "authors": [
+    "Ribeiro da Silva, M. A. V.[Manuel A. V.]",
+    "Ribeiro da Silva, M. D. M. C.[Maria D. M. C.]",
+    "Lobo Ferreira, A. I. M. C.[Ana I.M.C.]",
+    "Shi, Q.[Quan]",
+    "Woodfield, B. F.[Brian F.]",
+    "Goldberg, R. N.[Robert N.]"
+   ],
+   "title": "Thermochemistry of a-D-xylose(cr)",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "58",
+   "year": "2013",
+   "pages": "20-28"
+  }
+ },
+ "rows": [
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 1.9001,
+   "P_kPa": 101.325,
+   "value": 0.006645,
+   "uncertainty": 0.0406295,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 2.0829,
+   "P_kPa": 101.325,
+   "value": 0.0087877,
+   "uncertainty": 0.0406326,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 2.2997,
+   "P_kPa": 101.325,
+   "value": 0.011872,
+   "uncertainty": 0.040636,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 2.5385,
+   "P_kPa": 101.325,
+   "value": 0.01596,
+   "uncertainty": 0.040642,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 2.7871,
+   "P_kPa": 101.325,
+   "value": 0.021242,
+   "uncertainty": 0.040648,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 3.0782,
+   "P_kPa": 101.325,
+   "value": 0.029069,
+   "uncertainty": 0.040658,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 3.4135,
+   "P_kPa": 101.325,
+   "value": 0.040371,
+   "uncertainty": 0.040675,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 3.7729,
+   "P_kPa": 101.325,
+   "value": 0.055612,
+   "uncertainty": 0.040696,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 4.2031,
+   "P_kPa": 101.325,
+   "value": 0.079312,
+   "uncertainty": 0.040733,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 4.6605,
+   "P_kPa": 101.325,
+   "value": 0.11237,
+   "uncertainty": 0.04079,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 5.1791,
+   "P_kPa": 101.325,
+   "value": 0.16193,
+   "uncertainty": 0.04087,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 5.7752,
+   "P_kPa": 101.325,
+   "value": 0.23856,
+   "uncertainty": 0.04102,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 6.4662,
+   "P_kPa": 101.325,
+   "value": 0.35907,
+   "uncertainty": 0.04126,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 7.1587,
+   "P_kPa": 101.325,
+   "value": 0.51889,
+   "uncertainty": 0.04157,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 7.9594,
+   "P_kPa": 101.325,
+   "value": 0.75843,
+   "uncertainty": 0.04218,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 8.8628,
+   "P_kPa": 101.325,
+   "value": 1.1009,
+   "uncertainty": 0.043,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 9.8635,
+   "P_kPa": 101.325,
+   "value": 1.5685,
+   "uncertainty": 0.0443,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 10.97,
+   "P_kPa": 101.325,
+   "value": 2.2125,
+   "uncertainty": 0.0454,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 12.188,
+   "P_kPa": 101.325,
+   "value": 2.7359,
+   "uncertainty": 0.0474,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 13.562,
+   "P_kPa": 101.325,
+   "value": 4.0281,
+   "uncertainty": 0.0505,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 15.067,
+   "P_kPa": 101.325,
+   "value": 5.2376,
+   "uncertainty": 0.0538,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 16.591,
+   "P_kPa": 101.325,
+   "value": 6.4705,
+   "uncertainty": 0.0567,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 18.418,
+   "P_kPa": 101.325,
+   "value": 8.1942,
+   "uncertainty": 0.0609,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 20.269,
+   "P_kPa": 101.325,
+   "value": 9.9692,
+   "uncertainty": 0.0636,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 22.576,
+   "P_kPa": 101.325,
+   "value": 12.061,
+   "uncertainty": 0.058,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 25.132,
+   "P_kPa": 101.325,
+   "value": 14.387,
+   "uncertainty": 0.06,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 27.981,
+   "P_kPa": 101.325,
+   "value": 16.854,
+   "uncertainty": 0.06,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 31.146,
+   "P_kPa": 101.325,
+   "value": 19.422,
+   "uncertainty": 0.063,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 34.685,
+   "P_kPa": 101.325,
+   "value": 22.144,
+   "uncertainty": 0.067,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 38.593,
+   "P_kPa": 101.325,
+   "value": 25.087,
+   "uncertainty": 0.071,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 42.932,
+   "P_kPa": 101.325,
+   "value": 27.975,
+   "uncertainty": 0.075,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 47.756,
+   "P_kPa": 101.325,
+   "value": 31.183,
+   "uncertainty": 0.08,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 53.125,
+   "P_kPa": 101.325,
+   "value": 34.565,
+   "uncertainty": 0.086,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 59.085,
+   "P_kPa": 101.325,
+   "value": 38.301,
+   "uncertainty": 0.091,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 65.768,
+   "P_kPa": 101.325,
+   "value": 42.388,
+   "uncertainty": 0.097,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 73.117,
+   "P_kPa": 101.325,
+   "value": 46.673,
+   "uncertainty": 0.104,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 81.258,
+   "P_kPa": 101.325,
+   "value": 51.824,
+   "uncertainty": 0.112,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 90.302,
+   "P_kPa": 101.325,
+   "value": 57.699,
+   "uncertainty": 0.2,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 100.35,
+   "P_kPa": 101.325,
+   "value": 63.676,
+   "uncertainty": 0.205,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 110.61,
+   "P_kPa": 101.325,
+   "value": 69.547,
+   "uncertainty": 0.209,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 120.64,
+   "P_kPa": 101.325,
+   "value": 75.357,
+   "uncertainty": 0.214,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 130.77,
+   "P_kPa": 101.325,
+   "value": 81.561,
+   "uncertainty": 0.218,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 140.87,
+   "P_kPa": 101.325,
+   "value": 87.466,
+   "uncertainty": 0.223,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 151.03,
+   "P_kPa": 101.325,
+   "value": 93.154,
+   "uncertainty": 0.227,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 161.11,
+   "P_kPa": 101.325,
+   "value": 99.114,
+   "uncertainty": 0.232,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 171.25,
+   "P_kPa": 101.325,
+   "value": 104.92,
+   "uncertainty": 0.24,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 181.48,
+   "P_kPa": 101.325,
+   "value": 110.56,
+   "uncertainty": 0.24,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 191.69,
+   "P_kPa": 101.325,
+   "value": 116.09,
+   "uncertainty": 0.25,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 201.94,
+   "P_kPa": 101.325,
+   "value": 122.16,
+   "uncertainty": 0.25,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 212.26,
+   "P_kPa": 101.325,
+   "value": 128.07,
+   "uncertainty": 0.25,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 222.61,
+   "P_kPa": 101.325,
+   "value": 134.51,
+   "uncertainty": 0.26,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 232.87,
+   "P_kPa": 101.325,
+   "value": 140.48,
+   "uncertainty": 0.26,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 243.02,
+   "P_kPa": 101.325,
+   "value": 146.31,
+   "uncertainty": 0.27,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 253.18,
+   "P_kPa": 101.325,
+   "value": 152.43,
+   "uncertainty": 0.27,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 263.22,
+   "P_kPa": 101.325,
+   "value": 158.02,
+   "uncertainty": 0.28,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 273.41,
+   "P_kPa": 101.325,
+   "value": 163.59,
+   "uncertainty": 0.28,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 283.51,
+   "P_kPa": 101.325,
+   "value": 169.47,
+   "uncertainty": 0.29,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 293.61,
+   "P_kPa": 101.325,
+   "value": 175.31,
+   "uncertainty": 0.29,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 303.66,
+   "P_kPa": 101.325,
+   "value": 181.61,
+   "uncertainty": 0.3,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 2.0404,
+   "P_kPa": 101.325,
+   "value": 0.0082424,
+   "uncertainty": 0.0406316,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 2.2425,
+   "P_kPa": 101.325,
+   "value": 0.010966,
+   "uncertainty": 0.040635,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 2.4717,
+   "P_kPa": 101.325,
+   "value": 0.014708,
+   "uncertainty": 0.04064,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 2.6324,
+   "P_kPa": 101.325,
+   "value": 0.017828,
+   "uncertainty": 0.040644,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 2.9014,
+   "P_kPa": 101.325,
+   "value": 0.024009,
+   "uncertainty": 0.040651,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 3.2037,
+   "P_kPa": 101.325,
+   "value": 0.032882,
+   "uncertainty": 0.040664,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 3.5443,
+   "P_kPa": 101.325,
+   "value": 0.045253,
+   "uncertainty": 0.040681,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 3.939,
+   "P_kPa": 101.325,
+   "value": 0.06374,
+   "uncertainty": 0.04071,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 4.3835,
+   "P_kPa": 101.325,
+   "value": 0.090965,
+   "uncertainty": 0.040753,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 4.8696,
+   "P_kPa": 101.325,
+   "value": 0.13054,
+   "uncertainty": 0.04082,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 5.4361,
+   "P_kPa": 101.325,
+   "value": 0.19159,
+   "uncertainty": 0.04093,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 6.0817,
+   "P_kPa": 101.325,
+   "value": 0.28662,
+   "uncertainty": 0.04112,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 6.7445,
+   "P_kPa": 101.325,
+   "value": 0.41814,
+   "uncertainty": 0.04136,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 7.4966,
+   "P_kPa": 101.325,
+   "value": 0.61191,
+   "uncertainty": 0.04179,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 8.3533,
+   "P_kPa": 101.325,
+   "value": 0.89694,
+   "uncertainty": 0.04251,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 9.2999,
+   "P_kPa": 101.325,
+   "value": 1.2924,
+   "uncertainty": 0.0435,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 10.354,
+   "P_kPa": 101.325,
+   "value": 1.8302,
+   "uncertainty": 0.0449,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 11.523,
+   "P_kPa": 101.325,
+   "value": 2.5459,
+   "uncertainty": 0.0469,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 12.718,
+   "P_kPa": 101.325,
+   "value": 3.4082,
+   "uncertainty": 0.0491,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 14.253,
+   "P_kPa": 101.325,
+   "value": 4.5512,
+   "uncertainty": 0.0521,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 15.841,
+   "P_kPa": 101.325,
+   "value": 5.8725,
+   "uncertainty": 0.055,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 17.611,
+   "P_kPa": 101.325,
+   "value": 7.4369,
+   "uncertainty": 0.0592,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 18.989,
+   "P_kPa": 101.325,
+   "value": 8.794,
+   "uncertainty": 0.0619,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 21.17,
+   "P_kPa": 101.325,
+   "value": 10.744,
+   "uncertainty": 0.055,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 23.637,
+   "P_kPa": 101.325,
+   "value": 13.081,
+   "uncertainty": 0.059,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 26.286,
+   "P_kPa": 101.325,
+   "value": 15.413,
+   "uncertainty": 0.061,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 29.319,
+   "P_kPa": 101.325,
+   "value": 17.967,
+   "uncertainty": 0.059,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 32.679,
+   "P_kPa": 101.325,
+   "value": 20.558,
+   "uncertainty": 0.065,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 36.332,
+   "P_kPa": 101.325,
+   "value": 23.551,
+   "uncertainty": 0.069,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 40.526,
+   "P_kPa": 101.325,
+   "value": 26.514,
+   "uncertainty": 0.073,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 45.127,
+   "P_kPa": 101.325,
+   "value": 29.461,
+   "uncertainty": 0.078,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 50.198,
+   "P_kPa": 101.325,
+   "value": 32.512,
+   "uncertainty": 0.082,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 55.822,
+   "P_kPa": 101.325,
+   "value": 36.429,
+   "uncertainty": 0.088,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 62.207,
+   "P_kPa": 101.325,
+   "value": 40.201,
+   "uncertainty": 0.094,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 69.146,
+   "P_kPa": 101.325,
+   "value": 44.367,
+   "uncertainty": 0.1,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 76.877,
+   "P_kPa": 101.325,
+   "value": 49.051,
+   "uncertainty": 0.108,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 85.507,
+   "P_kPa": 101.325,
+   "value": 54.655,
+   "uncertainty": 0.116,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 95.148,
+   "P_kPa": 101.325,
+   "value": 60.594,
+   "uncertainty": 0.202,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 105.25,
+   "P_kPa": 101.325,
+   "value": 66.606,
+   "uncertainty": 0.207,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 115.43,
+   "P_kPa": 101.325,
+   "value": 72.274,
+   "uncertainty": 0.211,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 125.54,
+   "P_kPa": 101.325,
+   "value": 78.608,
+   "uncertainty": 0.216,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 135.74,
+   "P_kPa": 101.325,
+   "value": 84.749,
+   "uncertainty": 0.221,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 145.76,
+   "P_kPa": 101.325,
+   "value": 90.112,
+   "uncertainty": 0.225,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 155.98,
+   "P_kPa": 101.325,
+   "value": 95.918,
+   "uncertainty": 0.23,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 166.15,
+   "P_kPa": 101.325,
+   "value": 102.13,
+   "uncertainty": 0.23,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 176.34,
+   "P_kPa": 101.325,
+   "value": 107.5,
+   "uncertainty": 0.24,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 186.59,
+   "P_kPa": 101.325,
+   "value": 113.51,
+   "uncertainty": 0.24,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 196.81,
+   "P_kPa": 101.325,
+   "value": 119.53,
+   "uncertainty": 0.25,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 207.17,
+   "P_kPa": 101.325,
+   "value": 125.24,
+   "uncertainty": 0.25,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 217.5,
+   "P_kPa": 101.325,
+   "value": 130.91,
+   "uncertainty": 0.26,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 227.74,
+   "P_kPa": 101.325,
+   "value": 137.35,
+   "uncertainty": 0.26,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 237.95,
+   "P_kPa": 101.325,
+   "value": 142.93,
+   "uncertainty": 0.27,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 248.07,
+   "P_kPa": 101.325,
+   "value": 148.9,
+   "uncertainty": 0.27,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 258.24,
+   "P_kPa": 101.325,
+   "value": 154.94,
+   "uncertainty": 0.28,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 268.36,
+   "P_kPa": 101.325,
+   "value": 160.56,
+   "uncertainty": 0.28,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 278.46,
+   "P_kPa": 101.325,
+   "value": 166.47,
+   "uncertainty": 0.28,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 288.47,
+   "P_kPa": 101.325,
+   "value": 172.37,
+   "uncertainty": 0.29,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 298.67,
+   "P_kPa": 101.325,
+   "value": 177.87,
+   "uncertainty": 0.29,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 1,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 0.5,
+   "P_kPa": 101.325,
+   "value": 0.00034481,
+   "uncertainty": 0.01000361,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 1.0,
+   "P_kPa": 101.325,
+   "value": 0.0012996,
+   "uncertainty": 0.0100133,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 1.5,
+   "P_kPa": 101.325,
+   "value": 0.0035325,
+   "uncertainty": 0.0100352,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 2.0,
+   "P_kPa": 101.325,
+   "value": 0.0078253,
+   "uncertainty": 0.010078,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 2.5,
+   "P_kPa": 101.325,
+   "value": 0.015121,
+   "uncertainty": 0.010151,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 3.0,
+   "P_kPa": 101.325,
+   "value": 0.026561,
+   "uncertainty": 0.010265,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 3.5,
+   "P_kPa": 101.325,
+   "value": 0.043514,
+   "uncertainty": 0.010437,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 4.0,
+   "P_kPa": 101.325,
+   "value": 0.067582,
+   "uncertainty": 0.010682,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 4.5,
+   "P_kPa": 101.325,
+   "value": 0.1006,
+   "uncertainty": 0.01102,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 5.0,
+   "P_kPa": 101.325,
+   "value": 0.14459,
+   "uncertainty": 0.01147,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 5.5,
+   "P_kPa": 101.325,
+   "value": 0.20176,
+   "uncertainty": 0.01207,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 6.0,
+   "P_kPa": 101.325,
+   "value": 0.27439,
+   "uncertainty": 0.01282,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 6.5,
+   "P_kPa": 101.325,
+   "value": 0.36478,
+   "uncertainty": 0.01374,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 7.0,
+   "P_kPa": 101.325,
+   "value": 0.47517,
+   "uncertainty": 0.01485,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 7.5,
+   "P_kPa": 101.325,
+   "value": 0.60759,
+   "uncertainty": 0.01615,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 8.0,
+   "P_kPa": 101.325,
+   "value": 0.76377,
+   "uncertainty": 0.01764,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 8.5,
+   "P_kPa": 101.325,
+   "value": 0.94503,
+   "uncertainty": 0.01932,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 9.0,
+   "P_kPa": 101.325,
+   "value": 1.1521,
+   "uncertainty": 0.0212,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 9.5,
+   "P_kPa": 101.325,
+   "value": 1.3852,
+   "uncertainty": 0.0233,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 10.0,
+   "P_kPa": 101.325,
+   "value": 1.6438,
+   "uncertainty": 0.0252,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 11.0,
+   "P_kPa": 101.325,
+   "value": 2.2187,
+   "uncertainty": 0.0295,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 12.0,
+   "P_kPa": 101.325,
+   "value": 2.8713,
+   "uncertainty": 0.034,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 13.0,
+   "P_kPa": 101.325,
+   "value": 3.59,
+   "uncertainty": 0.0386,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 14.0,
+   "P_kPa": 101.325,
+   "value": 4.3635,
+   "uncertainty": 0.0432,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 15.0,
+   "P_kPa": 101.325,
+   "value": 5.1818,
+   "uncertainty": 0.0477,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 16.0,
+   "P_kPa": 101.325,
+   "value": 6.0357,
+   "uncertainty": 0.0521,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 17.0,
+   "P_kPa": 101.325,
+   "value": 6.917,
+   "uncertainty": 0.0562,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 18.0,
+   "P_kPa": 101.325,
+   "value": 7.8186,
+   "uncertainty": 0.06,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 19.0,
+   "P_kPa": 101.325,
+   "value": 8.7339,
+   "uncertainty": 0.0635,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 20.0,
+   "P_kPa": 101.325,
+   "value": 9.6573,
+   "uncertainty": 0.0667,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 25.0,
+   "P_kPa": 101.325,
+   "value": 14.247,
+   "uncertainty": 0.076,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 30.0,
+   "P_kPa": 101.325,
+   "value": 18.555,
+   "uncertainty": 0.079,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 35.0,
+   "P_kPa": 101.325,
+   "value": 22.467,
+   "uncertainty": 0.086,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 40.0,
+   "P_kPa": 101.325,
+   "value": 26.032,
+   "uncertainty": 0.093,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 45.0,
+   "P_kPa": 101.325,
+   "value": 29.364,
+   "uncertainty": 0.1,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 50.0,
+   "P_kPa": 101.325,
+   "value": 32.577,
+   "uncertainty": 0.106,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 55.0,
+   "P_kPa": 101.325,
+   "value": 35.677,
+   "uncertainty": 0.112,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 60.0,
+   "P_kPa": 101.325,
+   "value": 38.818,
+   "uncertainty": 0.118,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 65.0,
+   "P_kPa": 101.325,
+   "value": 41.94,
+   "uncertainty": 0.125,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 70.0,
+   "P_kPa": 101.325,
+   "value": 45.047,
+   "uncertainty": 0.131,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 75.0,
+   "P_kPa": 101.325,
+   "value": 48.137,
+   "uncertainty": 0.137,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 80.0,
+   "P_kPa": 101.325,
+   "value": 51.21,
+   "uncertainty": 0.143,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 85.0,
+   "P_kPa": 101.325,
+   "value": 54.266,
+   "uncertainty": 0.149,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 90.0,
+   "P_kPa": 101.325,
+   "value": 57.304,
+   "uncertainty": 0.258,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 95.0,
+   "P_kPa": 101.325,
+   "value": 60.324,
+   "uncertainty": 0.261,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 100.0,
+   "P_kPa": 101.325,
+   "value": 63.326,
+   "uncertainty": 0.264,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 110.0,
+   "P_kPa": 101.325,
+   "value": 69.281,
+   "uncertainty": 0.27,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 120.0,
+   "P_kPa": 101.325,
+   "value": 75.177,
+   "uncertainty": 0.275,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 130.0,
+   "P_kPa": 101.325,
+   "value": 81.024,
+   "uncertainty": 0.281,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 140.0,
+   "P_kPa": 101.325,
+   "value": 86.831,
+   "uncertainty": 0.287,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 150.0,
+   "P_kPa": 101.325,
+   "value": 92.608,
+   "uncertainty": 0.293,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 160.0,
+   "P_kPa": 101.325,
+   "value": 98.362,
+   "uncertainty": 0.299,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 170.0,
+   "P_kPa": 101.325,
+   "value": 104.1,
+   "uncertainty": 0.3,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 180.0,
+   "P_kPa": 101.325,
+   "value": 109.83,
+   "uncertainty": 0.31,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 190.0,
+   "P_kPa": 101.325,
+   "value": 115.56,
+   "uncertainty": 0.32,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 200.0,
+   "P_kPa": 101.325,
+   "value": 121.29,
+   "uncertainty": 0.32,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 210.0,
+   "P_kPa": 101.325,
+   "value": 127.02,
+   "uncertainty": 0.33,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 220.0,
+   "P_kPa": 101.325,
+   "value": 132.76,
+   "uncertainty": 0.33,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 230.0,
+   "P_kPa": 101.325,
+   "value": 138.51,
+   "uncertainty": 0.34,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 240.0,
+   "P_kPa": 101.325,
+   "value": 144.27,
+   "uncertainty": 0.34,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 250.0,
+   "P_kPa": 101.325,
+   "value": 150.04,
+   "uncertainty": 0.35,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 260.0,
+   "P_kPa": 101.325,
+   "value": 155.83,
+   "uncertainty": 0.36,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 270.0,
+   "P_kPa": 101.325,
+   "value": 161.64,
+   "uncertainty": 0.36,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 273.15,
+   "P_kPa": 101.325,
+   "value": 163.47,
+   "uncertainty": 0.36,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 280.0,
+   "P_kPa": 101.325,
+   "value": 167.46,
+   "uncertainty": 0.37,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 290.0,
+   "P_kPa": 101.325,
+   "value": 173.3,
+   "uncertainty": 0.37,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 298.15,
+   "P_kPa": 101.325,
+   "value": 178.08,
+   "uncertainty": 0.38,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Crystal"
+   ],
+   "T_K": 300.0,
+   "P_kPa": 101.325,
+   "value": 179.16,
+   "uncertainty": 0.38,
+   "doi": "10.1016/j.jct.2012.09.028",
+   "set": 2,
+   "binary_with": null
+  }
+ ]
+}

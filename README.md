@@ -13,7 +13,7 @@ nothing to install).
 
 ![The CHEPTA workbench: a solved flowsheet of ethanol and water with a mixer, flash drum, splitter and recycle, the stream table and the material and energy balances](docs/images/flowsheet-dark.png)
 
-> **Status: early (v0.3.0).** 159 components, activity models and cubic equations of state,
+> **Status: early (v0.3.0).** 161 components, activity models and cubic equations of state,
 > pure-component properties, steam tables, the flash unit, and a first flowsheet in a workbench with files that can exported or saved.
 > Results are real model predictions. They are calculated with published thermodynamic models and parameters; the workbench shows the source and quality tier of each one. As with any simulator, check them against measured data before you use them for design.
 
@@ -57,7 +57,7 @@ ask, for example *"Open the CHEPTA workbench with ethanol and water"*.
 
 | | |
 |---|---|
-| **Components** | liquids, gases and few solids: around 159 compounds which can grow fast |
+| **Components** | liquids, gases and few solids: around 161 compounds which can grow fast |
 | **Pure-component properties** | vapour pressure, liquid density, heat capacity (liquid and ideal gas), heat of vaporization, viscosity and thermal conductivity (liquid and vapour), surface tension, enthalpy; each with its source, range and fit deviation |
 | **Water and steam** | IAPWS-IF97 (all regions), IAPWS viscosity (2008) and thermal conductivity (2011) |
 | **Binary parameters** | NRTL/UNIQUAC for > 200 pairs, each labelled *fitted to data* or *databank*; Peng–Robinson and SRK k_ij for >120 pairs; Henry constants for 10 gases in water |

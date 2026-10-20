@@ -111,8 +111,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
        isosorbide, BHMF, dimethyl FDCA, levoglucosan (its solid's vapour pressure is open: Booth et al. 2011, ACP,
        CC BY), and from the six extra names glycerol carbonate, levoglucosenone, ethoxymethylfurfural; an open
        group-contribution vapour pressure (tier "predicted") would let them in, if the maintainer wants that;
-     - xylose (58-86-6) and cis,cis-muconic acid (1119-72-8): nonvolatile, but the open chemicals library files them
-       under other stereo forms; next, a structure source for such cases (PubChem), then the two components;
+     - xylose (58-86-6) and cis,cis-muconic acid (1119-72-8): added 2026-10-20 with their identity from PubChem
+       (docs/decisions/2026-10-20-01-xylose-muconic-acid.md); muconic acid has no open melting data (its aqueous
+       solubility is open: Scelfo et al. 2017, Iran. J. Chem. Chem. Eng. 36(4) 129, which needs melting data to be used);
      - FDCA has no Modified UNIFAC 2.0 groups (no ether subgroup without a hydrogen); citric acid's predicted heat
        capacity is far above its one measured value (236 J/(mol K) at 424.9 K): check when more data appear;
      - nonvolatile components in every flowsheet block with volatile ones, alone, and at the end of their heat-capacity

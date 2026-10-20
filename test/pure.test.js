@@ -40,7 +40,8 @@ test("pure() vapour pressure and boiling point agree with the VLE data", () => {
 });
 
 test("every component has critical constants and an acentric factor, or says why not", () => {
-  assert.equal(listComponents().length, 159);
+  // 161 since 2026-10-20: D-xylose and cis,cis-muconic acid (proposal 0009, batch 4; identity from PubChem)
+  assert.equal(listComponents().length, 161);
   for (const c of listComponents()) {
     const p = pure(c.id);
     assert.ok(Number.isFinite(p.MW), `${c.name} MW`);

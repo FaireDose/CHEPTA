@@ -16,6 +16,8 @@ const FROM_MEASURED = ["dichloromethane", "2-methoxyethanol", "furan", "2-methyl
   // proposal 0009, batch 4 (nonvolatile)
   "hmf", "glucose", "fructose", "sorbitol", "xylitol", "erythritol", "succinic-acid", "itaconic-acid", "fumaric-acid", "malic-acid",
   "citric-acid", "glycolic-acid", "glucaric-acid", "3-hydroxypropionic-acid", "fdca", "bhet", "diphenolic-acid",
+  // identity from PubChem (validation/python/pubchem.py), 2026-10-20
+  "xylose", "muconic-acid",
   // a nonvolatile liquid up to 400 °C since 2026-10-17 (the maintainer), no longer a ChemSep component
   "terephthalic-acid"];
 

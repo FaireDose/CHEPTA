@@ -40,7 +40,8 @@ function statedMaxDeviation(rec) {
 }
 
 test("every component has every property, as a record or an explicit 'no open data' marker", () => {
-  assert.equal(listComponents().length, 159);
+  // 161 since 2026-10-20: D-xylose and cis,cis-muconic acid (proposal 0009, batch 4; identity from PubChem)
+  assert.equal(listComponents().length, 161);
   assert.equal(GASES.length, 23);
   for (const { id, name } of listComponents()) {
     const props = components[id].properties;

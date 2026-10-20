@@ -1,0 +1,84 @@
+{
+ "component": "xylose",
+ "retrieved": "2026-10-20",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C58866&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C58866&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "S°solid,1 bar",
+       "143.5",
+       "J/mol*K",
+       "N/A",
+       "Miller, 1935",
+       "Extrapolation below 90 K, 31.38 J/mol*K."
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C58866&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "ΔsubH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "158.0 ± 3.1",
+       "382.",
+       "ME",
+       "Oja and Suuberg, 1999",
+       "Based on data from 370. to 395. K."
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Reference"
+     ],
+     "rows": [
+      [
+       "31.7",
+       "416.2",
+       "Jónsdóttir, Cooke, et al., 2002"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH",
+      "Enthalpy of fusion"
+     ],
+     "rows": [
+      [
+       "ΔsubH",
+       "Enthalpy of sublimation"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

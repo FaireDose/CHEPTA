@@ -61,6 +61,16 @@ PREDICT = {
     },
     "sorbitol": {"groups": {"C-(H)2(C)(O)": 2, ALC: 4, DIOL: 6},
                  "approximation": "every group exists in the method; " + POLYOL},
+    "xylose": {
+        "groups": {"CO-(H)(C)": 1, ALC: 3, "C-(H)2(C)(O)": 1, DIOL: 4},
+        "approximation": "xylose is counted in its open-chain (aldehyde) form, for the reason given for glucose; the "
+                         "carbon next to the aldehyde, C-(H)(C)(CO)(O), is counted as C-(H)(C)2(O); " + POLYOL,
+    },
+    "muconic-acid": {
+        "groups": {"Cd-(H)(CO)": 2, "Cd-(H)(C)": 2, "CO-(Cd)(O)": 2, "O-(H)(CO)": 2},
+        "approximation": "the two inner carbons of the conjugated diene, Cd-(H)(Cd), are a group the method does not "
+                         "have; they are counted as Cd-(H)(C), its nearest group; the method does not tell cis from trans",
+    },
     "xylitol": {"groups": {"C-(H)2(C)(O)": 2, ALC: 3, DIOL: 5},
                 "approximation": "every group exists in the method; " + POLYOL},
     "erythritol": {"groups": {"C-(H)2(C)(O)": 2, ALC: 2, DIOL: 4},

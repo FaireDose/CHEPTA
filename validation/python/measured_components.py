@@ -562,6 +562,22 @@ COMPONENTS = {
         "aliases": ["4,4-bis(4-hydroxyphenyl)pentanoic acid", "dpa"],
         "thermoml_queries": ["diphenolic acid", "4,4-bis(4-hydroxyphenyl)pentanoic acid", "4,4-bis(4-hydroxyphenyl)valeric acid"],
     },
+    # identity from PubChem (validation/python/pubchem.py): the chemicals library files D-xylose as dl-xylose (CAS
+    # 25990-60-7) and cis,cis-muconic acid without its double-bond geometry (the trans,trans CAS 3588-17-8)
+    "xylose": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "sugars and sugar alcohols decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "D-Xylose", "cas": "58-86-6", "webbook": "C58866", "proposal": "proposal 0009, batch 4",
+        "aliases": ["xylose", "wood sugar", "d-xylopyranose", "(2r,3s,4r)-2,3,4,5-tetrahydroxypentanal"],
+        "thermoml_queries": ["xylose", "d-xylose", "(2R,3S,4R)-2,3,4,5-tetrahydroxypentanal", "(3R,4S,5R)-oxane-2,3,4,5-tetrol"],
+    },
+    "muconic-acid": {
+        "class": "nonvolatile",
+        "why_nonvolatile": "most polyacids decompose before they boil; in processes they are dissolved in water or crystallized (proposal 0009)",
+        "name": "cis,cis-Muconic acid", "cas": "1119-72-8", "webbook": "C1119728", "proposal": "proposal 0009, batch 4",
+        "aliases": ["muconic acid", "(2z,4z)-hexa-2,4-dienedioic acid", "cis,cis-2,4-hexadienedioic acid"],
+        "thermoml_queries": ["muconic acid", "cis,cis-muconic acid", "hexa-2,4-dienedioic acid", "(2Z,4Z)-hexa-2,4-dienedioic acid"],
+    },
     "terephthalic-acid": {
         "class": "nonvolatile",
         "why_nonvolatile": "the maintainer's choice (2026-10-17): terephthalic acid is kept a liquid that does not evaporate "
@@ -660,7 +676,7 @@ def norm_inchi(s):
 def fetch_thermoml(cid, cache, C=None):
     """Every pure-component value of the compound in the archive, and the pure end points of binary sets.
     C: {"cas", "thermoml_queries"} (default: COMPONENTS[cid]); also used by gap_report.py."""
-    from chemicals.identifiers import search_chemical
+    from pubchem import chemical as search_chemical  # PubChem where `chemicals` files the compound under another form
     C = C or COMPONENTS[cid]
     meta = search_chemical(C["cas"])
     if meta.CASs != C["cas"]:
@@ -1475,7 +1491,7 @@ def dh_clapeyron(cid, C, wb, tml, measured, psat, Tlow, Tdata, Tc, Pc, omega, re
 
 
 def build(cid, log):
-    from chemicals.identifiers import search_chemical
+    from pubchem import chemical as search_chemical  # PubChem where `chemicals` files the compound under another form
     C = COMPONENTS[cid]
     wb, tml = WebBook(cid), ThermoML(cid)
     meta = search_chemical(C["cas"])
@@ -1818,7 +1834,7 @@ def build_nonvolatile(cid, log):
     """A nonvolatile component (proposal 0009, step 5): no vapour pressure, no critical constants, no vapour
     properties; the liquid's records from measured values where they meet the targets, the liquid heat capacity
     predicted by group additivity (predict_cp.py, tier "predicted") where no open measured values exist."""
-    from chemicals.identifiers import search_chemical
+    from pubchem import chemical as search_chemical  # PubChem where `chemicals` files the compound under another form
     import predict_cp
     C = COMPONENTS[cid]
     wb, tml = WebBook(cid), ThermoML(cid)
@@ -1852,10 +1868,19 @@ def build_nonvolatile(cid, log):
             "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence "
                     "of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it "
                     "is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."},
-        "constants_source": ("MW, formula and CAS: chemicals library (MIT). Nonvolatile (%s): no vapour pressure, critical "
-                             "constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank." %
-                             C.get("proposal")),
-        "constants_source_ids": ["nist-webbook"],
+        "constants_source": ("%s. Nonvolatile (%s): no vapour pressure, critical constants or acentric factor; not a "
+                             "CoolProp 8.0.0 fluid and not in the ChemSep databank." % (
+                                 ("Formula, structure and CAS: PubChem CID %s (%s), %s%s; MW from the formula (chemicals "
+                                  "library, MIT)" % (meta.pubchem["compound"]["cid"], meta.pubchem["compound"]["title"],
+                                                     meta.pubchem["compound"]["url"],
+                                                     "; groups and the ThermoML Archive's compound from PubChem CID %s "
+                                                     "(%s): %s" % (meta.pubchem["structure"]["cid"],
+                                                                   meta.pubchem["structure"]["title"],
+                                                                   meta.pubchem["structure"]["why"])
+                                                     if "structure" in meta.pubchem else ""))
+                                 if hasattr(meta, "pubchem") else "MW, formula and CAS: chemicals library (MIT)",
+                                 C.get("proposal"))),
+        "constants_source_ids": ["nist-webbook"] + (["pubchem"] if hasattr(meta, "pubchem") else []),
         "critical": {"available": False, "searched": searched},
         "properties": records,
     }

@@ -1,0 +1,28 @@
+{
+ "component": "xylose",
+ "cas": "58-86-6",
+ "retrieved": "2026-10-20",
+ "source": "PubChem PUG REST, https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/58-86-6/property/Title,IUPACName,MolecularFormula,SMILES,InChI,InChIKey/JSON",
+ "access": "PubChem (National Library of Medicine), free to read; computed descriptors in the public domain",
+ "compound": {
+  "cid": 135191,
+  "title": "D-Xylose",
+  "iupac": "(3R,4S,5R)-oxane-2,3,4,5-tetrol",
+  "formula": "C5H10O5",
+  "smiles": "C1[C@H]([C@@H]([C@H](C(O1)O)O)O)O",
+  "inchi": "InChI=1S/C5H10O5/c6-2-1-10-5(9)4(8)3(2)7/h2-9H,1H2/t2-,3+,4-,5?/m1/s1",
+  "inchikey": "SRBFZHDQGSBBOR-IOVATXLUSA-N",
+  "url": "https://pubchem.ncbi.nlm.nih.gov/compound/135191"
+ },
+ "structure": {
+  "cid": 644160,
+  "title": "aldehydo-D-Xylose",
+  "iupac": "(2R,3S,4R)-2,3,4,5-tetrahydroxypentanal",
+  "formula": "C5H10O5",
+  "smiles": "C([C@H]([C@@H]([C@H](C=O)O)O)O)O",
+  "inchi": "InChI=1S/C5H10O5/c6-1-3(8)5(10)4(9)2-7/h1,3-5,7-10H,2H2/t3-,4+,5+/m0/s1",
+  "inchikey": "PYMYPHUHKUWMLA-VPENINKCSA-N",
+  "url": "https://pubchem.ncbi.nlm.nih.gov/compound/644160",
+  "why": "the open-chain (aldehyde) form, aldehydo-D-xylose: groups are counted in the open-chain form, as for glucose and fructose, and the ThermoML Archive lists D-xylose under this InChI"
+ }
+}
