@@ -66,6 +66,63 @@ export function feedbackLinks({ version = "", setup = "", repo = REPO_URL } = {}
   ];
 }
 
+// the views CHEPTA.app takes as `start` (ai/instructions/use-chepta.md)
+const START_VIEWS = ["txy", "ternary", "azeotropes", "pxy", "envelope", "flash", "henry", "solid", "sle", "properties", "steam"];
+
+/**
+ * The AI assistants of the AI chat panel: where a new chat opens (`url`, with the message in the query parameter
+ * `param` where the site fills it in) and how the assistant shows a live page. Whether a site fills the message in from
+ * the link is not documented by most vendors (2026-10-20): claude.ai and ChatGPT are widely reported to take `?q=`;
+ * HuggingChat (open-weight models, Hugging Face's open-source chat-ui) takes `?prompt=` in its source code
+ * (src/lib/utils/linkParams.ts: the box is filled and the person presses send); Gemini takes no message from a link
+ * without a browser extension; Ollama runs on the person's own computer with no web address. Every button also copies
+ * the message.
+ */
+export const AI_CHATS = {
+  claude: { label: "Claude", url: "https://claude.ai/new", param: "q", page: "Make an HTML artifact with exactly this code" },
+  chatgpt: { label: "ChatGPT", url: "https://chatgpt.com/", param: "q", page: "Make an HTML page in a canvas with exactly this code and show its preview" },
+  gemini: { label: "Gemini", url: "https://gemini.google.com/app", param: null, page: "Make an HTML page in Canvas with exactly this code and show its preview" },
+  huggingchat: { label: "HuggingChat", url: "https://huggingface.co/chat/", param: "prompt", page: "Make an HTML artifact with exactly this code" },
+  ollama: { label: "Ollama", url: null, param: null, page: null },
+};
+
+/** The workbench page (one line of HTML) opened on the current components, model, pressure and diagram. */
+export function workbenchPage({ version = "", components = [], model = null, P_kPa = null, view = null } = {}) {
+  const ids = components.filter(id => !String(id).startsWith("user:"));
+  const cfg = { ...(START_VIEWS.includes(view) ? { start: view } : {}), components: ids,
+    ...(ids.length && model ? { model } : {}), ...(ids.length && P_kPa ? { P_kPa: +P_kPa.toPrecision(6) } : {}) };
+  return `<div id="app"></div><script src="https://cdn.jsdelivr.net/npm/chepta@${version}/dist/chepta.js"></script>` +
+    `<script>CHEPTA.app("#app", ${JSON.stringify(cfg)})</script>`;
+}
+
+const INTRO = "Do not check or describe the page or the library: I see the page myself. Right after it, introduce " +
+  "yourself in a few sentences: what we can do together with CHEPTA (phase diagrams, flashes, flowsheets, " +
+  "pure-component properties, my own data), and ask me what I want to calculate. For every number you give me, read " +
+  "https://fairedose.github.io/CHEPTA/use.md and follow it.";
+
+/**
+ * The message the AI chat panel puts into a new chat of an assistant (AI_CHATS): build the workbench as a live page,
+ * with the same one-line page as ai/START_PROMPTS.md ("Load the workbench"), opened on the current components,
+ * model, pressure and diagram, then a short introduction. For Ollama, whose chats show no live pages, the page is
+ * saved as a file and opened in the browser, and the chat gets the introduction only. The person's own account (or
+ * computer) does the work; nothing is sent from the workbench. Components of the person's own (user:...) are left
+ * out: the new chat does not have this project's data.
+ * @returns {{message:string, url:string|null, left:string[], page:string}}  `left`: the components of one's own left out
+ */
+export function aiChatMessage(assistant, opts = {}) {
+  const a = AI_CHATS[assistant];
+  if (!a) throw new Error(`Unknown assistant "${assistant}". Known: ${Object.keys(AI_CHATS).join(", ")}.`);
+  const page = workbenchPage(opts);
+  const left = (opts.components ?? []).filter(id => String(id).startsWith("user:"));
+  const message = a.page
+    ? `Load the CHEPTA workbench. ${a.page}, and do not download or inspect the library first:\n${page}\n\n${INTRO}`
+    : "I have the CHEPTA workbench open in my browser (an open-source chemical process simulator: " +
+      "https://fairedose.github.io/CHEPTA/). Introduce yourself in a few sentences: how you can help me with it " +
+      "(choosing components and models, reading phase diagrams, setting up flowsheets, checking results), and ask " +
+      "me what I want to do. You cannot run it yourself: tell me what to enter, and I tell you what it shows.";
+  return { message, url: a.url ? (a.param ? `${a.url}?${a.param}=${encodeURIComponent(message)}` : a.url) : null, left, page };
+}
+
 /** Every model of the Model group: activity-coefficient models, then equations of state. */
 export const ALL_MODELS = [...MODELS, ...EOS_MODELS];
 

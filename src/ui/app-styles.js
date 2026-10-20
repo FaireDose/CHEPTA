@@ -313,6 +313,7 @@ export const APP_CSS = `
 .fa-mini{display:inline-flex; align-items:center; gap:5px; border:1px solid var(--fug-rule); background:var(--fug-bg); color:var(--fug-fg); border-radius:6px;
   padding:3px 9px 3px 7px; font-size:12px; cursor:pointer}
 .fa-mini:hover:not(:disabled){border-color:var(--fug-accent); color:var(--fug-accent)}
+a.fa-mini{text-decoration:none}
 .fa-mini:disabled{opacity:.45; cursor:default}
 .fa-mini .fug-ico{flex:none}
 .fa-list .fa-chips{padding:0}
