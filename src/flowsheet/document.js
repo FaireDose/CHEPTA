@@ -8,6 +8,7 @@
  *     "thermo": { "model": "NRTL", "vapour": "ideal", "sets": { "ethanol+water": "chemsep" } },
  *     "blocks": [ { "id": "F1", "type": "feed", "x": 40, "y": 120, "spec": { ... } }, ... ],
  *     "streams": [ { "id": "S1", "from": "F1.out", "to": "M1.in" }, ... ],
+ *     "energyStreams": [ { "id": "Q1", "to": "E1", "duty_kW": 500 }, { "id": "Q2", "from": "E2", "to": "E3" } ],   // optional
  *     "solver": { "maxIterations": 50, "tolerance": 1e-8 }
  *   }
  *
@@ -23,6 +24,7 @@ import { solveFlowsheet, flowsheetStatus } from "./flowsheet.js";
 const MODELS = ["NRTL", "UNIQUAC", "MOD-UNIFAC-2", "ideal", "PR", "SRK"];
 const BLOCK_KEYS = ["id", "type", "x", "y", "spec", "energy", "label"];
 const STREAM_KEYS = ["id", "from", "to", "tear", "guess", "label"];
+const ENERGY_KEYS = ["id", "from", "to", "duty_kW", "tear", "guess", "label", "x", "y"];
 
 /** An empty flowsheet: no components, NRTL, no blocks. */
 export const emptyFlowsheet = () => ({ components: [], thermo: { model: "NRTL", vapour: "ideal" }, blocks: [], streams: [] });
@@ -35,7 +37,7 @@ export const emptyFlowsheet = () => ({ components: [], thermo: { model: "NRTL", 
 export function normalizeFlowsheet(doc, userData = null) {
   if (doc == null) return emptyFlowsheet();
   if (typeof doc !== "object" || Array.isArray(doc)) throw fail("BAD_INPUT", "flowsheet must be an object with components, thermo, blocks and streams.");
-  const known = ["components", "thermo", "blocks", "streams", "solver"];
+  const known = ["components", "thermo", "blocks", "streams", "energyStreams", "solver"];
   for (const k of Object.keys(doc)) if (!known.includes(k)) throw fail("BAD_INPUT", `flowsheet: unknown key "${k}". Known: ${known.join(", ")}.`);
   const components = (doc.components ?? []).map(c => {
     try { return findComponent(c, userData); } catch (e) { throw fail("BAD_INPUT", `flowsheet.components: ${e.message}`); }
@@ -60,6 +62,9 @@ export function normalizeFlowsheet(doc, userData = null) {
     });
   };
   const out = { components, thermo, blocks: objList(doc.blocks, BLOCK_KEYS, "blocks"), streams: objList(doc.streams, STREAM_KEYS, "streams") };
+  // energy streams (proposal 0013): kept only when there are some, so a flowsheet without them is written as before
+  const q = objList(doc.energyStreams, ENERGY_KEYS, "energyStreams");
+  if (q.length) out.energyStreams = q;
   if (doc.solver != null) out.solver = { ...doc.solver };
   return out;
 }
