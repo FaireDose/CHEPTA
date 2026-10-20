@@ -3,6 +3,7 @@
 | File | What it is for |
 |---|---|
 | [START_PROMPTS.md](START_PROMPTS.md) | Copy-paste prompts: develop models and algorithms, shape the roadmap, review, add data |
+| The workbench's **Claude** panel | Opens a new claude.ai chat that loads the workbench with your components, model and pressure, and asks Claude for a short introduction (your own account; nothing is sent from the page) |
 | [instructions/use-chepta.md](instructions/use-chepta.md) | Instructions any assistant can follow to build CHEPTA diagrams in a chat |
 | [skills/chepta/](skills/chepta/SKILL.md) | The same, as a skill |
 | [skills/chepta-contributor/](skills/chepta-contributor/SKILL.md) | Contribute by the project's rules, as a skill |

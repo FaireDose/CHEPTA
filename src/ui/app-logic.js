@@ -66,6 +66,33 @@ export function feedbackLinks({ version = "", setup = "", repo = REPO_URL } = {}
   ];
 }
 
+// the views CHEPTA.app takes as `start` (ai/instructions/use-chepta.md)
+const START_VIEWS = ["txy", "ternary", "azeotropes", "pxy", "envelope", "flash", "henry", "solid", "sle", "properties", "steam"];
+export const CLAUDE_NEW_CHAT = "https://claude.ai/new";
+
+/**
+ * The message the "Open in Claude" panel puts into a new claude.ai chat: build the workbench as an artifact, with the
+ * same one-line page as ai/START_PROMPTS.md ("Load the workbench"), opened on the current components, model,
+ * pressure and diagram, then a short introduction. The person's own claude.ai account does the work; nothing is sent
+ * from the workbench, the link only opens claude.ai with the message typed in (claude.ai may wait for Send).
+ * Components of the person's own (user:...) are left out: the new chat does not have this project's data.
+ * @returns {{message:string, url:string, left:string[]}}  `left`: the components of one's own that were left out
+ */
+export function claudeMessage({ version = "", components = [], model = null, P_kPa = null, view = null } = {}) {
+  const ids = components.filter(id => !String(id).startsWith("user:"));
+  const left = components.filter(id => String(id).startsWith("user:"));
+  const cfg = { ...(START_VIEWS.includes(view) ? { start: view } : {}), components: ids,
+    ...(ids.length && model ? { model } : {}), ...(ids.length && P_kPa ? { P_kPa: +P_kPa.toPrecision(6) } : {}) };
+  const page = `<div id="app"></div><script src="https://cdn.jsdelivr.net/npm/chepta@${version}/dist/chepta.js"></script>` +
+    `<script>CHEPTA.app("#app", ${JSON.stringify(cfg)})</script>`;
+  const message = "Load the CHEPTA workbench. Make an HTML artifact with exactly this code, and do not download or inspect the library first:\n" +
+    page + "\n\n" +
+    "Then introduce yourself in a few sentences: what we can do together here with CHEPTA (phase diagrams, flashes, " +
+    "flowsheets, pure-component properties, my own data), and ask me what I want to calculate. For every number you " +
+    "give me, read https://fairedose.github.io/CHEPTA/use.md and follow it.";
+  return { message, url: `${CLAUDE_NEW_CHAT}?q=${encodeURIComponent(message)}`, left };
+}
+
 /** Every model of the Model group: activity-coefficient models, then equations of state. */
 export const ALL_MODELS = [...MODELS, ...EOS_MODELS];
 

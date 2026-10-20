@@ -155,6 +155,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     separator serves as a filter (the maintainer, 2026-10-16: "for the moment"). A real solid phase (dissolving,
     crystallizing, drying, solids in the databank) needs a proposal first.
 - **0011, agents:**
+  0. "Open in Claude" (a new claude.ai chat that loads the workbench): done, 2026-10-20
+     (docs/decisions/2026-10-20-03-open-in-claude.md); the maintainer to try the link in a browser (does claude.ai send
+     the message or only fill the box?); a CHEPTA connector (MCP) for claude.ai later, with step 1;
   1. the tool interface;
   2. the route-file format and its checker;
   3. two-pass extraction;

@@ -27,7 +27,7 @@ import { HENRY_GASES } from "../thermo/henry.js";
 import { system } from "../system.js";
 import {
   VIEWS, PRESETS, initialState, applyPatch, TIER_SHORT, fmtP, parseP, parseT, fmtTemp, pxyTemperature,
-  RULES, ruleOf, setsFor, setChoices, pairKeyOf, modelLabel, feedbackLinks, userOverlay,
+  RULES, ruleOf, setsFor, setChoices, pairKeyOf, modelLabel, feedbackLinks, claudeMessage, userOverlay,
 } from "./app-logic.js";
 import { diagramXlsx, exportFileName } from "./diagram-export.js";
 import { modelPicker, liquidPicker } from "./model-picker.js";
@@ -940,10 +940,37 @@ export function app(target, cfg = {}) {
         h("p", { class: "fa-in-hint" }, "A security problem: report it privately, as SECURITY.md says, not in a public issue.")));
   }
 
+  /** The Claude panel: a new claude.ai chat that loads this workbench as an artifact (the person's own account). */
+  function claudePanel() {
+    const v = state.view, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
+    const { message, url, left } = claudeMessage({ version: pkg.version, components: check.ok ? check.use : [],
+      model: state.model, P_kPa: state.P_kPa, view: v });
+    const text = h("textarea", { class: "fa-csv-text", rows: 8, readonly: true, "aria-label": "The message for Claude",
+      "data-fk": "claude-message" }, message);
+    const note = h("p", { class: "fa-in-hint", role: "status", "data-fk": "claude-status" });
+    const copy = async () => {
+      try { await navigator.clipboard.writeText(message); note.textContent = "Copied. Paste it into a new chat on claude.ai."; }
+      catch { text.select(); note.textContent = "Selected: copy it with Ctrl+C (Cmd+C on a Mac), then paste it into a new chat on claude.ai."; }
+    };
+    return h("div", { class: "fa-dgrid" },
+      drawerSection("A new chat",
+        h("p", {}, "Opens a new chat on claude.ai with a message that loads this workbench as an artifact, with your components, model and pressure, and asks Claude to introduce what you can do together."),
+        h("div", { class: "fa-in-actions" },
+          h("a", { class: "fa-mini", href: url, target: "_blank", rel: "noopener", "data-fk": "claude-open" }, icon("spark", 15), "Open in Claude"),
+          h("button", { type: "button", class: "fa-mini", "data-fk": "claude-copy", on: { click: copy } }, icon("copy", 15), "Copy the message")),
+        note,
+        left.length ? h("p", { class: "fa-in-hint" }, `Your own components (${left.join(", ")}) are left out: the new chat does not have this project's data. Save the project (File) and attach it to the chat to use them there.`) : null),
+      drawerSection("The message", text),
+      drawerSection("How it works",
+        h("p", { class: "fa-in-hint" }, "It uses your own Claude account (any plan) and costs nothing extra. Nothing is sent from this page: the link only opens claude.ai with the message typed in. If claude.ai shows it without sending it, press Send; if the box stays empty, use Copy the message and paste it."),
+        h("p", { class: "fa-in-hint" }, "Claude then builds the workbench in the chat from the published library on jsDelivr, the same as the start prompts in CHEPTA's ai folder.")));
+  }
+
   function drawerBody(id) {
     const u = state.units;
     if (id === "project") return projectPanel();
     if (id === "feedback") return feedbackPanel();
+    if (id === "claude") return claudePanel();
     // My data (proposal 0012): it redraws itself; a change of the data recalculates the canvas
     if (id === "mydata") {
       if (ui.mydataWin) {

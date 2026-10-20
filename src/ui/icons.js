@@ -67,6 +67,8 @@ const P = {
   grid: '<path d="M12 3.5 21 19.5H3z"/><path d="M7.5 11.5h9M5.2 15.5h13.6M9.8 7.5l5.4 12M14.2 7.5l-5.4 12" stroke-width="1"/>',
   check: '<path d="m5.5 12.5 4 4 9-9"/>',
   // a speech bubble: feedback and discussion
+  // a four-point spark: a chat with an AI assistant (generic, not a brand mark)
+  spark: '<path d="M12 3.5c.6 3.9 2.1 5.4 6 6-3.9.6-5.4 2.1-6 6-.6-3.9-2.1-5.4-6-6 3.9-.6 5.4-2.1 6-6z"/><path d="M18.5 15.5c.3 1.6.9 2.2 2.5 2.5-1.6.3-2.2.9-2.5 2.5-.3-1.6-.9-2.2-2.5-2.5 1.6-.3 2.2-.9 2.5-2.5z" class="a"/>',
   chat: '<path d="M4.5 5.5h15v10.5h-8.5L7 19.5v-3.5H4.5z"/><path d="M8 9.5h8M8 12.5h5" class="a"/>',
   // the library: an open book
   // a data cylinder with a pencil stroke: the user's own numbers
