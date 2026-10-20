@@ -73,7 +73,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
    from the archive; other solvents need PSRK or MHV2, not in CHEPTA yet.
 3. Review the two pairs whose 1-atm data sets disagree by more than 1 K (methanol + 2-propanol,
    water + 2-propanol; docs/PAIR_SCAN.md).
-4. Compressor, pump and valve blocks (shown as "coming later"); asked for again on 2026-10-14, to follow the enthalpy of
+4. Compressor, pump and valve blocks (shown as "coming later"; now in proposal 0013, 2026-10-20); asked for again on 2026-10-14, to follow the enthalpy of
    a pure component through a compression (one-component flowsheets work since then). Optionally, then the energy side
    of the Cavett problem (no published values to compare with).
 5. A "measured solubility" option next to the model, for a future crystallizer block.
@@ -139,6 +139,20 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      then the water + lactic acid solution density and
      viscosity (open: Simion et al. 2012, Food and Environment Safety XI(4), Tables 1-2, 9-85 wt %, 293-353 K); a
      mixture density and viscosity model is needed to use them.
+- **0013, heat exchangers, energy streams, pumps, valves and compressors** (accepted 2026-10-20;
+  docs/decisions/2026-10-20-04-heat-exchanger-proposal.md): Lienhard and Lienhard's free textbook as a source; the
+  allowable stress is the user's; no material recommendation; the low end of a U range; typical efficiencies from an
+  open source as defaults; recycles through a two-stream exchanger and loops closed by energy streams are torn; no
+  pinch analysis. Steps:
+  1. the heat-exchange calculation;
+  2. the Heat exchanger workspace in Unit models (Rating locked);
+  3. energy streams in the flowsheet, the heater's utility and area;
+  4. the two-stream heat exchanger block;
+  5. valve and pump (an open source for the typical pump efficiency);
+  6. mixture entropy, the P-S flash, compressor and expander;
+  7. Charts: the gas phase envelope traced through the critical point, P-H, T-S and H-S charts, with the steam charts;
+  8. later, Rating.
+  Then 0010.
 - **0010, reactions:**
   1. formation data (ΔfH°, ΔfG°);
   2. the reaction description and its checks;
