@@ -60,7 +60,8 @@ test("every source has a kind, why it is open and a link; the files it names exi
     assert.ok(KINDS.includes(s.kind), `${id}: kind ${s.kind}`);
     assert.ok(s.title && s.access, `${id}: title and access`);
     assert.ok(/^https?:\/\//.test(s.url ?? "") || s.doi, `${id}: a link`);
-    if (s.year != null) assert.ok(Number.isInteger(s.year) && s.year > 1900 && s.year < 2100, `${id}: year`);
+    // public-domain books may be old: Lamé 1852 (proposal 0013, the wall thickness); the bound was 1900 before it
+    if (s.year != null) assert.ok(Number.isInteger(s.year) && s.year > 1700 && s.year < 2100, `${id}: year`);
     if (s.doi) assert.match(s.doi, /^10\.\d{4,}\//, `${id}: doi`);
     for (const f of s.files ?? []) assert.ok(existsSync(new URL(`../${f}`, import.meta.url)), `${id}: ${f}`);
   }
