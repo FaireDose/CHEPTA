@@ -64,6 +64,17 @@ CHOSEN = {
                                           "1,3,5-trioxane)"),
     "gbl": ({22: 1, 78: 2}, "the lactone's ring ester O-C(=O)-CH2 as CH2COO and two ring CH2, as DDBST assigns it (the "
                             "SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen)"),
+    "isosorbide": ({27: 2, 79: 2, 81: 2}, "each of the two fused tetrahydrofuran rings' CH-O-CH2 as the THF subgroup, the "
+                                          "two remaining ring CH as CY-CH, two secondary OH, as DDBST assigns it (the "
+                                          "SMARTS match took TRIOXAN groups, the subgroup of 1,3,5-trioxane)"),
+}
+# components whose DDBST assignment (as the thermo library lists it) fails the atom balance: the assignment used, and why
+DDBST_FAILS_BALANCE = {
+    "solketal": ({83: 1, 26: 1, 80: 1, 1: 2, 2: 1, 14: 1},
+                 "the 1,3-dioxolane ring's CH2-O as CY-CH2O (the subgroup DDBST uses for it), its CH-O as CHO, the ring "
+                 "carbon C(CH3)2 as CY-C with two CH3, and CH2 with a primary OH; DDBST's assignment as the thermo library "
+                 "lists it (two CY-CH2O, two CH3, CH2, OH (P)) gives C5H13O3, not C6H12O3, and the SMARTS match took a "
+                 "TRIOXAN group, the subgroup of 1,3,5-trioxane"),
 }
 # components without a DDBST assignment whose structure-based assignment is wrong: the assignment used, and why
 FROM_STRUCTURE = {
@@ -90,10 +101,31 @@ FROM_STRUCTURE = {
     "hmf": ({61: 1, 2: 1, 14: 1}, "the ring with its aldehyde as the method's FURFURAL subgroup, and the CH2OH as CH2 "
                                   "with a primary OH (the SMARTS match took the ether subgroup CH2O for the alcohol's "
                                   "CH2-O, leaving out the OH); the substituted ring carbon is counted in FURFURAL"),
+    "emf": ({61: 1, 25: 1, 2: 1, 1: 1}, "the ring with its aldehyde as the method's FURFURAL subgroup, as for HMF, and the "
+                                        "ethoxymethyl group CH2-O-CH2-CH3 as CH2O, CH2 and CH3; the substituted ring carbon "
+                                        "is counted in FURFURAL"),
+    "glycerol-carbonate": ({113: 1, 2: 1, 14: 1}, "the cyclic carbonate subgroup (CH2)2CB, as for ethylene and "
+                                                  "propylene carbonate, and CH2 with a primary OH for the hydroxymethyl "
+                                                  "group (the SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, "
+                                                  "for a molecule without nitrogen)"),
+}
+# components the subgroups cannot describe, and why (the structure-based match fails or is wrong)
+NO_GROUPS = {
+    "bhmf": "a furan ring with both ring carbons next to the oxygen substituted: the method has no furan-ring subgroup, "
+            "and the ether subgroups (CH3O, CH2O, CHO) all need a hydrogen on the carbon, so the ring cannot be built from "
+            "them as for furan (the same reason as for FDCA)",
+    "dimethyl-fdca": "a furan ring with both ring carbons next to the oxygen substituted: the method has no furan-ring "
+                     "subgroup, and the ether subgroups (CH3O, CH2O, CHO) all need a hydrogen on the carbon (the same "
+                     "reason as for FDCA)",
+    "levoglucosenone": "the ring ketone sits between a ring C=C and a ring CH: the method's ketone subgroups (CH3CO, CH2CO) "
+                       "need a CH3 or CH2 next to the C=O, which levoglucosenone does not have (Cyrene, its hydrogenated "
+                       "form, has groups)",
 }
 # assignments that count a substituted ring carbon in the ring's subgroup (THF: CH2-O-CH2; (CH2)2CB: the ring of ethylene
 # carbonate): their atom balance is one H above the formula, the way DDBST counts such rings
-ONE_H_OVER = {"2-methyltetrahydrofuran", "thfa", "propylene-carbonate", "hmf"}
+ONE_H_OVER = {"2-methyltetrahydrofuran", "thfa", "propylene-carbonate", "hmf", "glycerol-carbonate", "emf"}
+# the same, with two such rings: two H above the formula
+TWO_H_OVER = {"isosorbide"}
 # components without a DDBST assignment whose structure-based assignment was checked (and passes the atom balance)
 REVIEWED = {
     "glycerol": "two primary OH (P), one secondary OH (S), two CH2 and one CH",
@@ -105,6 +137,8 @@ REVIEWED = {
     "xylose": "the open-chain aldehyde form (as for glucose, which DDBST assigns open-chain; structure from PubChem, "
               "aldehydo-D-xylose): the aldehyde CHO, three CH, one CH2; one primary OH (P) and three secondary OH (S)",
     "muconic-acid": "two COOH and two CH=CH (the subgroups do not tell cis from trans; structure from PubChem)",
+    "levoglucosan": "the bicyclic acetal as for Cyrene (the same 6,8-dioxabicyclo[3.2.1]octane skeleton): the CH2-O of the "
+                    "bridge as TRIOXAN and the ring CH-O as CHO, four ring CH and three secondary OH",
     "cyrene": "the ring ketone C(=O) with its CH2 as CH2CO, the CH2-O of the bridge as TRIOXAN and the other ring ether "
               "CH-O as CHO, one ring CH2 and one ring CH",
 }
@@ -173,7 +207,19 @@ def assign(comps, sub):
         smarts = dict(counts) if success else None
         ddbst = u.DDBST_MODIFIED_UNIFAC_assignments.get(meta.InChI_key)
         formula = {k: v for k, v in simple_formula_parser(meta.formula).items()}
-        if cid in CHOSEN:
+        if cid in NO_GROUPS:
+            if ddbst is not None:
+                raise SystemExit("%s: DDBST now lists an assignment (%s)" % (cid, ddbst))
+            why = NO_GROUPS[cid]
+            out[cid] = {"available": False, "note": "no Modified UNIFAC 2.0 groups: " + why}
+            log.append("%-24s not available: %s" % (cid, why))
+            continue
+        if cid in DDBST_FAILS_BALANCE:
+            groups, why = DDBST_FAILS_BALANCE[cid]
+            if ddbst is None or atoms_of(ddbst, u.DOUFSG) == formula:
+                raise SystemExit("%s: DDBST's assignment (%s) now passes the atom balance; use CHOSEN" % (cid, ddbst))
+            how = "chosen: %s" % why
+        elif cid in CHOSEN:
             groups, why = CHOSEN[cid]
             if ddbst != groups:
                 raise SystemExit("%s: the chosen assignment is not DDBST's (%s)" % (cid, ddbst))
@@ -203,9 +249,13 @@ def assign(comps, sub):
         bad = [g for g in groups if g not in sub]
         if bad:
             raise SystemExit("%s: subgroups %s are not in Modified UNIFAC 2.0" % (cid, bad))
-        expected = dict(formula, H=formula["H"] + 1) if cid in ONE_H_OVER else formula
-        if cid in ONE_H_OVER:
+        over = 1 if cid in ONE_H_OVER else 2 if cid in TWO_H_OVER else 0
+        expected = dict(formula, H=formula["H"] + over) if over else formula
+        if over == 1:
             how += " (atom balance one H above %s: a substituted ring carbon counted in the ring's subgroup)" % meta.formula
+        elif over:
+            how += (" (atom balance two H above %s: in each of the two rings a substituted ring carbon counted in the "
+                    "ring's subgroup)" % meta.formula)
         if atoms_of(groups, u.DOUFSG) != expected:
             raise SystemExit("%s: the subgroups %s give %s, not the formula %s" % (cid, groups, atoms_of(groups, u.DOUFSG), formula))
         out[cid] = {"groups": {str(g): n for g, n in sorted(groups.items())},

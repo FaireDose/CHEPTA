@@ -29,7 +29,10 @@ import { pairSection, groupsSection } from "./my-data-pairs-groups.js";
 
 /** Property labels, the vapour pressure included. */
 export const PROPERTY_LABEL = { ...Object.fromEntries(Object.entries(PROPERTIES).map(([k, p]) => [k, p.label])), vapourPressure: "Vapour pressure",
-  solidHeatCapacity: "Solid heat capacity" };
+  solidHeatCapacity: "Solid heat capacity", fusion: "Melting data (melting temperature and enthalpy of fusion)" };
+// melting data: two numbers, no fit (the solid-liquid equilibrium of src/equilibrium/sle.js)
+const FUSION_T_UNITS = { "°C": t => t + 273.15, K: t => t, "°F": t => (t - 32) * 5 / 9 + 273.15 };
+const FUSION_H_UNITS = { "kJ/mol": (h) => 1000 * h, "J/mol": (h) => h, "kJ/kg": (h, MW) => h * MW, "J/g": (h, MW) => h * MW, "cal/mol": (h) => 4.184 * h };
 const PROPERTY_ORDER = ["vapourPressure", "liquidDensity", "liquidHeatCapacity", "heatOfVaporization", "idealGasHeatCapacity", "liquidViscosity",
   "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity", "surfaceTension"];
 const T_LABEL = { K: "K", "°C": "°C", "°F": "°F" };
@@ -173,9 +176,9 @@ function propertyForm(env, m, draw) {
   const isUser = p.comp?.startsWith(USER_PREFIX);
   const nonvolatile = p.comp ? pure(p.comp, { userData: ud }).nonvolatile : false;
   // an inert solid of one's own takes only its solid heat capacity; the others take the fluid properties
-  const props = record?.solid ? ["solidHeatCapacity"] : PROPERTY_ORDER.filter(k => !(k === "vapourPressure" && nonvolatile));
+  const props = record?.solid ? ["solidHeatCapacity"] : [...PROPERTY_ORDER.filter(k => !(k === "vapourPressure" && nonvolatile)), "fusion"];
   if (!props.includes(p.property)) p.property = props[0];
-  const units = Object.keys(INPUT_UNITS[p.property]);
+  const units = p.property === "fusion" ? [] : Object.keys(INPUT_UNITS[p.property]);
   if (!units.includes(p.unit)) p.unit = units[0];
   const reset = () => { p.fit = null; p.error = ""; };
   const picker = componentPicker({
@@ -193,8 +196,10 @@ function propertyForm(env, m, draw) {
     h("p", { class: "fa-in-hint" }, "Any component of the databank, or one of your own; not water, which is calculated from IAPWS-IF97, the international standard."),
     h("div", { class: "fa-in-row" },
       select("prop", "Property", p.property, props.map(k => [k, PROPERTY_LABEL[k]]), v => { p.property = v; reset(); }),
-      select("mode", "Enter", p.mode, [["table", "a table of measured points"], ["coef", "the coefficients of an equation"]], v => { p.mode = v; reset(); })),
+      p.property === "fusion" ? null
+        : select("mode", "Enter", p.mode, [["table", "a table of measured points"], ["coef", "the coefficients of an equation"]], v => { p.mode = v; reset(); })),
   ];
+  if (p.property === "fusion") return [...out, ...fusionFields(env, m, p, record, isUser, draw)];
   if (p.mode === "table") {
     const ta = h("textarea", { class: "fa-csv-text", rows: 6, id: `fa-md-text-${env.uid}`, "data-fk": "mydata-table",
       placeholder: "T\tvalue\n20\t1.2091\n40\t1.1935\n60\t1.1772", on: { input: ev => { p.text = ev.target.value; p.fit = null; } } });
@@ -258,9 +263,59 @@ function propertyForm(env, m, draw) {
   return out;
 }
 
+/** Melting data: the melting temperature and the enthalpy of fusion, with their units and source (no fit). */
+function fusionFields(env, m, p, record, isUser, draw) {
+  const f = p.fus ??= { T: "", Tunit: "°C", H: "", Hunit: "kJ/mol" };
+  let databank = null;
+  try { databank = p.comp && !isUser ? pure(p.comp).fusion : null; } catch { databank = null; }
+  const num = (k, label) => {
+    const id = `fa-md-f${k}-${env.uid}`;
+    return h("label", { class: "fa-field", for: id }, h("span", {}, label),
+      h("input", { type: "text", inputmode: "decimal", id, value: f[k], style: "width:8em", "data-fk": `mydata-fus-${k}`, on: { input: ev => { f[k] = ev.target.value; } } }));
+  };
+  const unit = (k, label, options) => {
+    const id = `fa-md-f${k}-${env.uid}`;
+    return h("label", { class: "fa-field", for: id }, h("span", {}, label),
+      h("select", { id, "data-fk": `mydata-fus-${k}`, on: { change: ev => { f[k] = ev.target.value; } } },
+        ...options.map(u => h("option", { value: u, selected: u === f[k] }, u))));
+  };
+  const src = h("input", { type: "text", id: `fa-md-src-${env.uid}`, value: p.source, style: "width:100%", "data-fk": "mydata-source",
+    placeholder: "own DSC measurement, 2026", on: { input: ev => { p.source = ev.target.value; } } });
+  const save = () => {
+    p.error = "";
+    try {
+      const n = v => Number(String(v).trim().replace(",", "."));
+      const T = n(f.T), H = n(f.H);
+      if (!(String(f.T).trim() && Number.isFinite(T))) throw new Error("Give the melting temperature.");
+      if (!(String(f.H).trim() && Number.isFinite(H) && H > 0)) throw new Error("Give the enthalpy of fusion, a positive number.");
+      if (!p.source.trim()) { p.error = "Write where these numbers come from in Source (for example \"own DSC measurement\"), then save."; draw(); env.focus?.("mydata-source"); return; }
+      const MW = pure(p.comp, { userData: userOverlay(env.get()) }).MW;   // g/mol, for kJ/kg and J/g
+      const rec = { Tm_K: FUSION_T_UNITS[f.Tunit](T), Hfus_J_mol: FUSION_H_UNITS[f.Hunit](H, MW), source: sourceOf(p) };
+      const ud = env.get().userData;
+      env.set({ userData: putUserData(ud, isUser ? componentPiece(ud, p.comp, "fusion", rec) : { properties: { [p.comp]: { fusion: rec } } }) });
+      m.note = `Added to this project: ${record?.name ?? p.comp}, melting data (${fmtShort(rec.Tm_K, 5)} K, ${fmtShort(rec.Hfus_J_mol / 1000, 4)} kJ/mol). The solubility views use it; it is saved with the project (File, Save).`;
+      m.prop = { ...blankProperty(), comp: p.comp, property: "fusion" };
+    } catch (err) { p.error = `Not saved: ${err.message}`; }
+    draw();
+  };
+  const out = [
+    h("p", { class: "fa-in-hint" }, "The melting (or triple-point) temperature and the enthalpy of fusion of the solid, as the solid-liquid equilibrium uses them (Solubility workspace: solid solubility and the solid-liquid diagram)."),
+    databank && databank.Tm_K ? h("p", { class: "fa-in-hint" }, `The databank has ${fmtShort(databank.Tm_K, 5)} K and ${fmtShort(databank.Hfus_J_mol / 1000, 4)} kJ/mol; yours replaces them in this project.`) : null,
+    h("div", { class: "fa-in-row fa-wrap" }, num("T", "Melting temperature"), unit("Tunit", "in", Object.keys(FUSION_T_UNITS))),
+    h("div", { class: "fa-in-row fa-wrap" }, num("H", "Enthalpy of fusion"), unit("Hunit", "in", Object.keys(FUSION_H_UNITS))),
+    h("label", { class: "fa-field fa-field-wide", for: src.id }, h("span", {}, "Source (where these numbers come from)"), src),
+    pubFields(env, p, "p"),
+    h("div", { class: "fa-in-actions" },
+      h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-save", disabled: !p.comp, on: { click: save } }, icon("check", 15), "Add to this project")),
+  ];
+  if (p.error) out.push(h("div", { class: "fug-err", role: "alert", "data-fk": "mydata-error" }, p.error));
+  return out;
+}
+
 /** The user's component with one property record added (a vapour pressure as its top-level record). */
 function componentPiece(userData, id, property, rec) {
   const c = JSON.parse(JSON.stringify(userData.components[id]));
+  if (property === "fusion") { c.fusion = rec; return { components: { [id]: c } }; }
   if (property === "vapourPressure") { c.vapourPressure = rec; if (c.properties) delete c.properties.vapourPressure; }
   else c.properties = { ...(c.properties ?? {}), [property]: rec };
   return { components: { [id]: c } };

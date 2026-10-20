@@ -18,6 +18,9 @@ const FROM_MEASURED = ["dichloromethane", "2-methoxyethanol", "furan", "2-methyl
   "citric-acid", "glycolic-acid", "glucaric-acid", "3-hydroxypropionic-acid", "fdca", "bhet", "diphenolic-acid",
   // identity from PubChem (validation/python/pubchem.py), 2026-10-20
   "xylose", "muconic-acid",
+  // the components held for want of an open vapour pressure, added 2026-10-20 (glycerol carbonate with a measured one)
+  "glycerol-carbonate", "solketal", "angelica-lactone", "lactide", "isosorbide", "levoglucosan", "dimethyl-fdca", "bhmf",
+  "levoglucosenone", "emf",
   // a nonvolatile liquid up to 400 °C since 2026-10-17 (the maintainer), no longer a ChemSep component
   "terephthalic-acid"];
 

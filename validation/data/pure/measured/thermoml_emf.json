@@ -1,0 +1,10 @@
+{
+ "component": "emf",
+ "cas": "1917-65-3",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-20",
+ "searched": "ThermoML-API full-text search for \"5-ethoxymethylfurfural\", \"5-(ethoxymethyl)furfural\", \"ethoxymethylfurfural\", \"5-(ethoxymethyl)furan-2-carbaldehyde\"; 0 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {},
+ "rows": []
+}

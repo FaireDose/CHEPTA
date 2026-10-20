@@ -1,5 +1,6 @@
 import { methodAdvice, pressureAdvice } from "./method-advice.js";
 import { vapourPressure } from "./psat.js";
+import { noVapourPressureMessage } from "./components.js";
 import { nrtl } from "./activity/nrtl.js";
 import { uniquac } from "./activity/uniquac.js";
 import { modUnifac } from "./activity/mod-unifac.js";
@@ -71,7 +72,9 @@ export function createSystem(cfg) {
   // nonvolatile components (proposal 0009, step 5): no vapour pressure; they stay in the liquid (NV_PSAT_KPA below)
   const nonvolatile = comps.map(c => c.class === "nonvolatile");
   for (const c of comps) {
-    if (!c.vapourPressure && !cfg.psat && c.class !== "nonvolatile") {
+    // a liquid without an open vapour pressure (vapourPressure_missing, 2026-10-20) is accepted: activity coefficients,
+    // liquid-liquid and solid-liquid equilibria do not need it; psat() below refuses it with the reason
+    if (!c.vapourPressure && !cfg.psat && c.class !== "nonvolatile" && !c.vapourPressure_missing) {
       throw fail("MISSING_DATA", `${c.name} has no vapour-pressure record, so it cannot be used with activity-coefficient models. Use an equation of state for gases.`);
     }
     if (model === "UNIQUAC" && !c.uniquac) throw fail("MISSING_DATA", `${c.name} has no UNIQUAC r and q.`);
@@ -126,7 +129,11 @@ export function createSystem(cfg) {
    */
   const psat = cfg.psat
     ? (typeof cfg.psat === "function" ? cfg.psat : () => cfg.psat.slice())
-    : T => comps.map((c, i) => (nonvolatile[i] ? NV_PSAT_KPA : vapourPressure(c.vapourPressure, T) / 1000));
+    : T => comps.map((c, i) => {
+      if (nonvolatile[i]) return NV_PSAT_KPA;
+      if (!c.vapourPressure) throw fail("MISSING_DATA", noVapourPressureMessage(c));
+      return vapourPressure(c.vapourPressure, T) / 1000;
+    });
 
   /**
    * Partial pressures for a liquid x at T.

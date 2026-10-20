@@ -53,7 +53,8 @@ test("known-issues.json names real components and models", () => {
 test("every component with activity-model data boils at its normal boiling point", () => {
   // a nonvolatile component (proposal 0009, step 5) does not boil: test/nonvolatile.test.js
   const nonvolatile = id => JSON.parse(readFileSync(new URL("../src/data/components.json", import.meta.url))).components[id].class === "nonvolatile";
-  for (const c of listComponents().filter(c => c.activity && !nonvolatile(c.id))) {
+  // nor does a liquid without an open vapour pressure (2026-10-20: noVapourPressure; test/no-vapour-pressure.test.js)
+  for (const c of listComponents().filter(c => c.activity && !nonvolatile(c.id) && !c.noVapourPressure)) {
     const other = c.id === "water" ? "acetic acid" : "water";
     const s = system({ components: [c.id, other], model: "ideal" });
     const tb = s.boilingPoints(101.325)[0];

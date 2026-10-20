@@ -49481,6 +49481,1599 @@
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH=CH, 2 COOH): assigned from the structure and checked (two COOH and two CH=CH (the subgroups do not tell cis from trans; structure from PubChem)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H6O4"
       }
+    },
+    "glycerol-carbonate": {
+      "name": "Glycerol carbonate",
+      "formula": "C4H6O4",
+      "cas": "931-40-8",
+      "aliases": [
+        "4-(hydroxymethyl)-1,3-dioxolan-2-one",
+        "glycerine carbonate",
+        "glycerol 1,2-carbonate"
+      ],
+      "MW": 118.088,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "vapourPressure": {
+        "equation": "DIPPR101",
+        "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
+        "units": "Pa",
+        "A": 62.35125294,
+        "B": -11523.39553,
+        "C": -4.94286622,
+        "D": 0.0,
+        "E": 0.0,
+        "Tmin_K": 330.2,
+        "Tmax_K": 455.61,
+        "tier": "fitted",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Verevkin et al., Fluid Phase Equilib. 268 (2008) 1-6, doi:10.1016/j.fluid.2008.03.013; Chernyak and Clements, J. Chem. Eng. Data 49 (2004) 1180-1184, doi:10.1021/je034173q. 29 measured values (29 from the ThermoML Archive), 330.20-455.61 K, max deviation 6.8 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Chernyak 2004 +0.13 %; Verevkin 2008 -0.00 %.",
+        "source_ids": [
+          "nist-thermoml-archive",
+          "nist-webbook"
+        ]
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "omega": null,
+      "constants_source": "Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-20)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009). Tb: not reached, the measured vapour pressures stay below 101.325 kPa.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycerine carbonate\", \"glycerol carbonate\", \"4-(hydroxymethyl)-1,3-dioxolan-2-one\"; 2 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycerine carbonate\", \"glycerol carbonate\", \"4-(hydroxymethyl)-1,3-dioxolan-2-one\"; 2 records opened)",
+            "NIST Chemistry WebBook, gas phase thermochemistry: no gas heat capacity",
+            "ThermoML Archive: no gas-phase heat capacity"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 163.8150298,
+            "B": 0.1676014759
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 283.15,
+          "Tmax_K": 373.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 3.1 %, above the 1 % target, used because the only alternative is a prediction",
+            "reference": "Chernyak and Clements, J. Chem. Eng. Data 49 (2004) 1180-1184, doi:10.1021/je034173q",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not; free to read (NIST SRD 69)",
+            "fit": "10 measured values, 283.15-373.15 K, max deviation 0.55 %",
+            "stated_uncertainty_percent": 3.14
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "nist-webbook"
+          ]
+        },
+        "heatOfVaporization": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 95810.93718,
+            "B": -41.09729011
+          },
+          "units": "J/mol",
+          "Tmin_K": 330.2,
+          "Tmax_K": 455.61,
+          "tier": "fitted",
+          "source": {
+            "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook)",
+            "reference": "validation/python/measured_components.py (clapeyron_ideal)",
+            "access": "calculated from the open measured data of the vapour-pressure record; free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=4)",
+            "fit": "25 Clapeyron values and 0 measured values, 330.20-455.61 K, max deviation 0.0001 %",
+            "notes": "No measured critical constants (proposal 0009): dHvap = R T^2 dln(Psat)/dT, the Clapeyron equation with an ideal-gas vapour and the liquid volume neglected (no liquid density in this range), Psat from the vapour-pressure record of this component, 330.20-455.61 K (up to Psat = 10 kPa or the last measured vapour pressure); DIPPR 100 (a polynomial in T). Chosen because the calorimetric values on the WebBook (Verevkin et al. 2008; Wilson et al. 2002) are at 298.15 K only. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none."
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "nist-webbook"
+          ]
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycerine carbonate\", \"glycerol carbonate\", \"4-(hydroxymethyl)-1,3-dioxolan-2-one\"; 2 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycerine carbonate\", \"glycerol carbonate\", \"4-(hydroxymethyl)-1,3-dioxolan-2-one\"; 2 records opened)"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycerine carbonate\", \"glycerol carbonate\", \"4-(hydroxymethyl)-1,3-dioxolan-2-one\"; 2 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycerine carbonate\", \"glycerol carbonate\", \"4-(hydroxymethyl)-1,3-dioxolan-2-one\"; 2 records opened)"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"glycerine carbonate\", \"glycerol carbonate\", \"4-(hydroxymethyl)-1,3-dioxolan-2-one\"; 2 records opened)"
+          ]
+        }
+      },
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-20)"
+        ]
+      },
+      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 455.61 K, where it gives 0.8984 kPa, below 101.325 kPa: no normal boiling temperature from measured data",
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "14": 1,
+          "113": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 (CH2)2CB): chosen from the structure: the cyclic carbonate subgroup (CH2)2CB, as for ethylene and propylene carbonate, and CH2 with a primary OH for the hydroxymethyl group (the SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen); DDBST lists no assignment (atom balance one H above C4H6O4: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O4"
+      }
+    },
+    "solketal": {
+      "name": "Solketal",
+      "formula": "C6H12O3",
+      "cas": "100-79-8",
+      "aliases": [
+        "(2,2-dimethyl-1,3-dioxolan-4-yl)methanol",
+        "isopropylidene glycerol",
+        "2,2-dimethyl-1,3-dioxolane-4-methanol"
+      ],
+      "MW": 132.1577,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "no normal boiling point: no open liquid vapour pressure (the WebBook lists a normal boiling temperature of 461.7 K from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); the ThermoML Archive has its vapour-liquid data with carbon dioxide only)",
+      "vapourPressure_missing": {
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)",
+          "open literature (web search, 2026-10-20)"
+        ],
+        "note": "No open liquid vapour pressure (the WebBook lists a normal boiling temperature of 461.7 K from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); the ThermoML Archive has its vapour-liquid data with carbon dioxide only). Add your own vapour pressure in My data (proposal 0012); until then the activity models refuse it. Group-contribution predictions (SIMPOL.1) were checked and not accepted (the maintainer, 2026-10-20: errors of a factor of 2 and more)."
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-20)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 1357.901617,
+            "B": -0.9817760468
+          },
+          "units": "kg/m3",
+          "Tmin_K": 293.15,
+          "Tmax_K": 323.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+            "reference": "Yakovleva et al., Fluid Phase Equilib. 405 (2015) 107-113, doi:10.1016/j.fluid.2015.07.016; Li et al., J. Chem. Eng. Data 61 (2016) 3355-3362, doi:10.1021/acs.jced.6b00399",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "5 measured values, 293.15-323.15 K, max deviation 0.39 %"
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "li2016-2-butanone-methanol",
+            "li2016-acetonitrile-methanol",
+            "li2016-methyl-myristate-n-hexadecane"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)"
+          ],
+          "note": "needs the vapour pressure (Clapeyron) or calorimetric values over a range: no open liquid vapour pressure (the WebBook lists a normal boiling temperature of 461.7 K from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); the ThermoML Archive has its vapour-liquid data with carbon dioxide only)"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)"
+          ],
+          "note": "no open data over a temperature range: 298.15 K: 0.01006 (Li 2016); 298.15 K: 0.01006 (Duan 2019)"
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 2,
+          "2": 1,
+          "14": 1,
+          "26": 1,
+          "80": 1,
+          "83": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 OH (P), 1 CHO, 1 CY-C, 1 CY-CH2O): chosen: the 1,3-dioxolane ring's CH2-O as CY-CH2O (the subgroup DDBST uses for it), its CH-O as CHO, the ring carbon C(CH3)2 as CY-C with two CH3, and CH2 with a primary OH; DDBST's assignment as the thermo library lists it (two CY-CH2O, two CH3, CH2, OH (P)) gives C5H13O3, not C6H12O3, and the SMARTS match took a TRIOXAN group, the subgroup of 1,3,5-trioxane. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O3"
+      }
+    },
+    "angelica-lactone": {
+      "name": "alpha-Angelica lactone",
+      "formula": "C5H6O2",
+      "cas": "591-12-8",
+      "aliases": [
+        "5-methylfuran-2(3h)-one",
+        "alpha-angelica lactone",
+        "angelica lactone"
+      ],
+      "MW": 98.09994,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "no normal boiling point: no open liquid vapour pressure (the WebBook lists boiling temperatures at 0.016 bar of a compilation (Weast and Grasselli, 1989, 329.2 K) and a supplier catalogue (American Tokyo Kasei, 1988), which are not used (DATA_RULES section 1))",
+      "vapourPressure_missing": {
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"alpha-angelica lactone\", \"angelica lactone\", \"5-methylfuran-2(3H)-one\", \"2(3H)-furanone, 5-methyl-\"; 1 records opened)",
+          "open literature (web search, 2026-10-20)"
+        ],
+        "note": "No open liquid vapour pressure (the WebBook lists boiling temperatures at 0.016 bar of a compilation (Weast and Grasselli, 1989, 329.2 K) and a supplier catalogue (American Tokyo Kasei, 1988), which are not used (DATA_RULES section 1)). Add your own vapour pressure in My data (proposal 0012); until then the activity models refuse it. Group-contribution predictions (SIMPOL.1) were checked and not accepted (the maintainer, 2026-10-20: errors of a factor of 2 and more)."
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-20)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 1410.049156,
+            "B": -1.078319254
+          },
+          "units": "kg/m3",
+          "Tmin_K": 288.15,
+          "Tmax_K": 323.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+            "reference": "Dohnal et al., J. Chem. Eng. Data 64 (2019) 1577-1585, doi:10.1021/acs.jced.8b01146",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
+            "fit": "8 measured values, 288.15-323.15 K, max deviation 0.00096 %"
+          },
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"alpha-angelica lactone\", \"angelica lactone\", \"5-methylfuran-2(3H)-one\", \"2(3H)-furanone, 5-methyl-\"; 1 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"alpha-angelica lactone\", \"angelica lactone\", \"5-methylfuran-2(3H)-one\", \"2(3H)-furanone, 5-methyl-\"; 1 records opened)"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"alpha-angelica lactone\", \"angelica lactone\", \"5-methylfuran-2(3H)-one\", \"2(3H)-furanone, 5-methyl-\"; 1 records opened)"
+          ],
+          "note": "needs the vapour pressure (Clapeyron) or calorimetric values over a range: no open liquid vapour pressure (the WebBook lists boiling temperatures at 0.016 bar of a compilation (Weast and Grasselli, 1989, 329.2 K) and a supplier catalogue (American Tokyo Kasei, 1988), which are not used (DATA_RULES section 1))"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"alpha-angelica lactone\", \"angelica lactone\", \"5-methylfuran-2(3H)-one\", \"2(3H)-furanone, 5-methyl-\"; 1 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"alpha-angelica lactone\", \"angelica lactone\", \"5-methylfuran-2(3H)-one\", \"2(3H)-furanone, 5-methyl-\"; 1 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"alpha-angelica lactone\", \"angelica lactone\", \"5-methylfuran-2(3H)-one\", \"2(3H)-furanone, 5-methyl-\"; 1 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"alpha-angelica lactone\", \"angelica lactone\", \"5-methylfuran-2(3H)-one\", \"2(3H)-furanone, 5-methyl-\"; 1 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"alpha-angelica lactone\", \"angelica lactone\", \"5-methylfuran-2(3H)-one\", \"2(3H)-furanone, 5-methyl-\"; 1 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "8": 1,
+          "22": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH=C, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O2"
+      }
+    },
+    "lactide": {
+      "name": "Lactide",
+      "formula": "C6H8O4",
+      "cas": "95-96-5",
+      "aliases": [
+        "3,6-dimethyl-1,4-dioxane-2,5-dione",
+        "dilactide",
+        "rac-lactide"
+      ],
+      "MW": 144.1253,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "no normal boiling point: no open liquid vapour pressure (the WebBook lists a boiling temperature of 415.2 K at 0.01 bar from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); CAS 95-96-5 does not specify the stereoisomer, and the archive's lactide data are of L-lactide (a different solid), which are not used for it)",
+      "vapourPressure_missing": {
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactide\", \"3,6-dimethyl-1,4-dioxane-2,5-dione\", \"1,4-dioxane-2,5-dione, 3,6-dimethyl-\"; 3 records opened)",
+          "open literature (web search, 2026-10-20)"
+        ],
+        "note": "No open liquid vapour pressure (the WebBook lists a boiling temperature of 415.2 K at 0.01 bar from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); CAS 95-96-5 does not specify the stereoisomer, and the archive's lactide data are of L-lactide (a different solid), which are not used for it). Add your own vapour pressure in My data (proposal 0012); until then the activity models refuse it. Group-contribution predictions (SIMPOL.1) were checked and not accepted (the maintainer, 2026-10-20: errors of a factor of 2 and more)."
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-20)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactide\", \"3,6-dimethyl-1,4-dioxane-2,5-dione\", \"1,4-dioxane-2,5-dione, 3,6-dimethyl-\"; 3 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactide\", \"3,6-dimethyl-1,4-dioxane-2,5-dione\", \"1,4-dioxane-2,5-dione, 3,6-dimethyl-\"; 3 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactide\", \"3,6-dimethyl-1,4-dioxane-2,5-dione\", \"1,4-dioxane-2,5-dione, 3,6-dimethyl-\"; 3 records opened)"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactide\", \"3,6-dimethyl-1,4-dioxane-2,5-dione\", \"1,4-dioxane-2,5-dione, 3,6-dimethyl-\"; 3 records opened)"
+          ],
+          "note": "needs the vapour pressure (Clapeyron) or calorimetric values over a range: no open liquid vapour pressure (the WebBook lists a boiling temperature of 415.2 K at 0.01 bar from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); CAS 95-96-5 does not specify the stereoisomer, and the archive's lactide data are of L-lactide (a different solid), which are not used for it)"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactide\", \"3,6-dimethyl-1,4-dioxane-2,5-dione\", \"1,4-dioxane-2,5-dione, 3,6-dimethyl-\"; 3 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactide\", \"3,6-dimethyl-1,4-dioxane-2,5-dione\", \"1,4-dioxane-2,5-dione, 3,6-dimethyl-\"; 3 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactide\", \"3,6-dimethyl-1,4-dioxane-2,5-dione\", \"1,4-dioxane-2,5-dione, 3,6-dimethyl-\"; 3 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactide\", \"3,6-dimethyl-1,4-dioxane-2,5-dione\", \"1,4-dioxane-2,5-dione, 3,6-dimethyl-\"; 3 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactide\", \"3,6-dimethyl-1,4-dioxane-2,5-dione\", \"1,4-dioxane-2,5-dione, 3,6-dimethyl-\"; 3 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "Tm_K": 397.5,
+        "Hfus_J_mol": 24700.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST Chemistry WebBook (SRD 69), phase change data",
+          "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4",
+          "access": "Free to read online (NIST Standard Reference Database 69); values cited per record",
+          "reference": "Domalski and Hearing, 1996",
+          "selection": "melting temperature: temperature of the WebBook's measured enthalpy of fusion (397.5 K, Domalski and Hearing, 1996; no Tfus or Ttriple listed); enthalpy of fusion: the only one of 1 measured value (24.7-24.7 kJ/mol) within 3 K of it"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 2,
+          "77": 2,
+          "79": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 COO, 2 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H8O4"
+      }
+    },
+    "isosorbide": {
+      "name": "Isosorbide",
+      "formula": "C6H10O4",
+      "cas": "652-67-5",
+      "aliases": [
+        "1,4:3,6-dianhydro-d-glucitol",
+        "1,4:3,6-dianhydro-d-sorbitol"
+      ],
+      "MW": 146.1412,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "no normal boiling point: no open liquid vapour pressure (not a WebBook compound; nothing in the ThermoML Archive)",
+      "vapourPressure_missing": {
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"isosorbide\", \"1,4:3,6-dianhydro-D-glucitol\", \"1,4:3,6-dianhydro-D-sorbitol\"; 0 records opened)",
+          "open literature (web search, 2026-10-20)"
+        ],
+        "note": "No open liquid vapour pressure (not a WebBook compound; nothing in the ThermoML Archive). Add your own vapour pressure in My data (proposal 0012); until then the activity models refuse it. Group-contribution predictions (SIMPOL.1) were checked and not accepted (the maintainer, 2026-10-20: errors of a factor of 2 and more)."
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-20)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"isosorbide\", \"1,4:3,6-dianhydro-D-glucitol\", \"1,4:3,6-dianhydro-D-sorbitol\"; 0 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"isosorbide\", \"1,4:3,6-dianhydro-D-glucitol\", \"1,4:3,6-dianhydro-D-sorbitol\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"isosorbide\", \"1,4:3,6-dianhydro-D-glucitol\", \"1,4:3,6-dianhydro-D-sorbitol\"; 0 records opened)"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"isosorbide\", \"1,4:3,6-dianhydro-D-glucitol\", \"1,4:3,6-dianhydro-D-sorbitol\"; 0 records opened)"
+          ],
+          "note": "needs the vapour pressure (Clapeyron) or calorimetric values over a range: no open liquid vapour pressure (not a WebBook compound; nothing in the ThermoML Archive)"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"isosorbide\", \"1,4:3,6-dianhydro-D-glucitol\", \"1,4:3,6-dianhydro-D-sorbitol\"; 0 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"isosorbide\", \"1,4:3,6-dianhydro-D-glucitol\", \"1,4:3,6-dianhydro-D-sorbitol\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"isosorbide\", \"1,4:3,6-dianhydro-D-glucitol\", \"1,4:3,6-dianhydro-D-sorbitol\"; 0 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"isosorbide\", \"1,4:3,6-dianhydro-D-glucitol\", \"1,4:3,6-dianhydro-D-sorbitol\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"isosorbide\", \"1,4:3,6-dianhydro-D-glucitol\", \"1,4:3,6-dianhydro-D-sorbitol\"; 0 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4): no phase-change data on the page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "27": 2,
+          "79": 2,
+          "81": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 THF, 2 CY-CH, 2 OH (S)): chosen: each of the two fused tetrahydrofuran rings' CH-O-CH2 as the THF subgroup, the two remaining ring CH as CY-CH, two secondary OH, as DDBST assigns it (the SMARTS match took TRIOXAN groups, the subgroup of 1,3,5-trioxane); structure-based (SMARTS) assignment {84: 2, 81: 2, 79: 4} (atom balance two H above C6H10O4: in each of the two rings a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O4"
+      }
+    },
+    "levoglucosan": {
+      "name": "Levoglucosan",
+      "formula": "C6H10O5",
+      "cas": "498-07-7",
+      "aliases": [
+        "1,6-anhydro-beta-d-glucopyranose",
+        "1,6-anhydroglucose"
+      ],
+      "MW": 162.1406,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "no normal boiling point: no open liquid vapour pressure (the ThermoML Archive has sublimation pressures of the crystal (doi:10.1021/je400207t, doi:10.1016/j.jct.2015.01.005), not of the liquid)",
+      "vapourPressure_missing": {
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosan\", \"1,6-anhydro-beta-D-glucopyranose\"; 3 records opened)",
+          "open literature (web search, 2026-10-20)"
+        ],
+        "note": "No open liquid vapour pressure (the ThermoML Archive has sublimation pressures of the crystal (doi:10.1021/je400207t, doi:10.1016/j.jct.2015.01.005), not of the liquid). Add your own vapour pressure in My data (proposal 0012); until then the activity models refuse it. Group-contribution predictions (SIMPOL.1) were checked and not accepted (the maintainer, 2026-10-20: errors of a factor of 2 and more)."
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-20)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosan\", \"1,6-anhydro-beta-D-glucopyranose\"; 3 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosan\", \"1,6-anhydro-beta-D-glucopyranose\"; 3 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosan\", \"1,6-anhydro-beta-D-glucopyranose\"; 3 records opened)"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosan\", \"1,6-anhydro-beta-D-glucopyranose\"; 3 records opened)"
+          ],
+          "note": "needs the vapour pressure (Clapeyron) or calorimetric values over a range: no open liquid vapour pressure (the ThermoML Archive has sublimation pressures of the crystal (doi:10.1021/je400207t, doi:10.1016/j.jct.2015.01.005), not of the liquid)"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosan\", \"1,6-anhydro-beta-D-glucopyranose\"; 3 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosan\", \"1,6-anhydro-beta-D-glucopyranose\"; 3 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosan\", \"1,6-anhydro-beta-D-glucopyranose\"; 3 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosan\", \"1,6-anhydro-beta-D-glucopyranose\"; 3 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosan\", \"1,6-anhydro-beta-D-glucopyranose\"; 3 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "Tm_K": 454.7,
+        "Hfus_J_mol": 3100.0,
+        "tier": "databank",
+        "source": {
+          "name": "NIST TRC ThermoML Archive",
+          "reference": "Kabo 2015, doi:10.1016/j.jct.2015.01.005; Rocha 2013, doi:10.1021/je400207t",
+          "access": "NIST open data (the archive's values are free to use, also where the article is paywalled)",
+          "url": "https://trc.nist.gov/ThermoML/",
+          "file": "validation/data/pure/measured/thermoml_levoglucosan.json",
+          "selection": "melting temperature: median of 2 articles; enthalpy of fusion: median of 2 articles (2.9-3.3 kJ/mol) whose melting temperature is within 3 K of it; the measured values disagree by 13 % of the median: the enthalpy of fusion is uncertain; NIST WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page; ChemSep: no value; the enthalpy of fusion is that of the high-temperature crystal (Crystal 1, melting at 454-455 K); below 384-385 K the stable solid is Crystal 2, which turns into Crystal 1 with 23-25 kJ/mol (the same articles). The solid-liquid equation with these two values alone leaves that transition out, so it overpredicts the solubility of the solid below 384 K"
+        },
+        "source_ids": [
+          "nist-thermoml-archive"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "26": 1,
+          "79": 4,
+          "81": 3,
+          "84": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CHO, 4 CY-CH, 3 OH (S), 1 TRIOXAN): assigned from the structure and checked (the bicyclic acetal as for Cyrene (the same 6,8-dioxabicyclo[3.2.1]octane skeleton): the CH2-O of the bridge as TRIOXAN and the ring CH-O as CHO, four ring CH and three secondary OH); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O5"
+      }
+    },
+    "dimethyl-fdca": {
+      "name": "Dimethyl 2,5-furandicarboxylate",
+      "formula": "C8H8O5",
+      "cas": "4282-32-0",
+      "aliases": [
+        "dimethyl furan-2,5-dicarboxylate",
+        "dmfdca",
+        "fdca dimethyl ester"
+      ],
+      "MW": 184.1461,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "no normal boiling point: no open liquid vapour pressure (no phase-change data on the WebBook; nothing in the ThermoML Archive)",
+      "vapourPressure_missing": {
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"dimethyl 2,5-furandicarboxylate\", \"dimethyl furan-2,5-dicarboxylate\", \"2,5-furandicarboxylic acid, dimethyl ester\"; 0 records opened)",
+          "open literature (web search, 2026-10-20)"
+        ],
+        "note": "No open liquid vapour pressure (no phase-change data on the WebBook; nothing in the ThermoML Archive). Add your own vapour pressure in My data (proposal 0012); until then the activity models refuse it. Group-contribution predictions (SIMPOL.1) were checked and not accepted (the maintainer, 2026-10-20: errors of a factor of 2 and more)."
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-20)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"dimethyl 2,5-furandicarboxylate\", \"dimethyl furan-2,5-dicarboxylate\", \"2,5-furandicarboxylic acid, dimethyl ester\"; 0 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"dimethyl 2,5-furandicarboxylate\", \"dimethyl furan-2,5-dicarboxylate\", \"2,5-furandicarboxylic acid, dimethyl ester\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"dimethyl 2,5-furandicarboxylate\", \"dimethyl furan-2,5-dicarboxylate\", \"2,5-furandicarboxylic acid, dimethyl ester\"; 0 records opened)"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"dimethyl 2,5-furandicarboxylate\", \"dimethyl furan-2,5-dicarboxylate\", \"2,5-furandicarboxylic acid, dimethyl ester\"; 0 records opened)"
+          ],
+          "note": "needs the vapour pressure (Clapeyron) or calorimetric values over a range: no open liquid vapour pressure (no phase-change data on the WebBook; nothing in the ThermoML Archive)"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"dimethyl 2,5-furandicarboxylate\", \"dimethyl furan-2,5-dicarboxylate\", \"2,5-furandicarboxylic acid, dimethyl ester\"; 0 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"dimethyl 2,5-furandicarboxylate\", \"dimethyl furan-2,5-dicarboxylate\", \"2,5-furandicarboxylic acid, dimethyl ester\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"dimethyl 2,5-furandicarboxylate\", \"dimethyl furan-2,5-dicarboxylate\", \"2,5-furandicarboxylic acid, dimethyl ester\"; 0 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"dimethyl 2,5-furandicarboxylate\", \"dimethyl furan-2,5-dicarboxylate\", \"2,5-furandicarboxylic acid, dimethyl ester\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"dimethyl 2,5-furandicarboxylate\", \"dimethyl furan-2,5-dicarboxylate\", \"2,5-furandicarboxylic acid, dimethyl ester\"; 0 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4): no phase-change data on the page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "available": false,
+        "note": "no Modified UNIFAC 2.0 groups: a furan ring with both ring carbons next to the oxygen substituted: the method has no furan-ring subgroup, and the ether subgroups (CH3O, CH2O, CHO) all need a hydrogen on the carbon (the same reason as for FDCA)"
+      }
+    },
+    "bhmf": {
+      "name": "2,5-Bis(hydroxymethyl)furan",
+      "formula": "C6H8O3",
+      "cas": "1883-75-6",
+      "aliases": [
+        "bhmf",
+        "2,5-furandimethanol",
+        "[5-(hydroxymethyl)furan-2-yl]methanol"
+      ],
+      "MW": 128.1259,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "no normal boiling point: no open liquid vapour pressure (not a WebBook compound with phase-change data; nothing in the ThermoML Archive)",
+      "vapourPressure_missing": {
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-bis(hydroxymethyl)furan\", \"2,5-furandimethanol\", \"furan-2,5-diyldimethanol\"; 0 records opened)",
+          "open literature (web search, 2026-10-20)"
+        ],
+        "note": "No open liquid vapour pressure (not a WebBook compound with phase-change data; nothing in the ThermoML Archive). Add your own vapour pressure in My data (proposal 0012); until then the activity models refuse it. Group-contribution predictions (SIMPOL.1) were checked and not accepted (the maintainer, 2026-10-20: errors of a factor of 2 and more)."
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-20)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-bis(hydroxymethyl)furan\", \"2,5-furandimethanol\", \"furan-2,5-diyldimethanol\"; 0 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-bis(hydroxymethyl)furan\", \"2,5-furandimethanol\", \"furan-2,5-diyldimethanol\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-bis(hydroxymethyl)furan\", \"2,5-furandimethanol\", \"furan-2,5-diyldimethanol\"; 0 records opened)"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-bis(hydroxymethyl)furan\", \"2,5-furandimethanol\", \"furan-2,5-diyldimethanol\"; 0 records opened)"
+          ],
+          "note": "needs the vapour pressure (Clapeyron) or calorimetric values over a range: no open liquid vapour pressure (not a WebBook compound with phase-change data; nothing in the ThermoML Archive)"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-bis(hydroxymethyl)furan\", \"2,5-furandimethanol\", \"furan-2,5-diyldimethanol\"; 0 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-bis(hydroxymethyl)furan\", \"2,5-furandimethanol\", \"furan-2,5-diyldimethanol\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-bis(hydroxymethyl)furan\", \"2,5-furandimethanol\", \"furan-2,5-diyldimethanol\"; 0 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-bis(hydroxymethyl)furan\", \"2,5-furandimethanol\", \"furan-2,5-diyldimethanol\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"2,5-bis(hydroxymethyl)furan\", \"2,5-furandimethanol\", \"furan-2,5-diyldimethanol\"; 0 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4): no phase-change data on the page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "available": false,
+        "note": "no Modified UNIFAC 2.0 groups: a furan ring with both ring carbons next to the oxygen substituted: the method has no furan-ring subgroup, and the ether subgroups (CH3O, CH2O, CHO) all need a hydrogen on the carbon, so the ring cannot be built from them as for furan (the same reason as for FDCA)"
+      }
+    },
+    "levoglucosenone": {
+      "name": "Levoglucosenone",
+      "formula": "C6H6O3",
+      "cas": "37112-31-5",
+      "aliases": [
+        "lgo",
+        "6,8-dioxabicyclo[3.2.1]oct-2-en-4-one"
+      ],
+      "MW": 126.11,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "no normal boiling point: no open liquid vapour pressure (no phase-change data on the WebBook; nothing in the ThermoML Archive)",
+      "vapourPressure_missing": {
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosenone\", \"6,8-dioxabicyclo[3.2.1]oct-2-en-4-one\"; 0 records opened)",
+          "open literature (web search, 2026-10-20)"
+        ],
+        "note": "No open liquid vapour pressure (no phase-change data on the WebBook; nothing in the ThermoML Archive). Add your own vapour pressure in My data (proposal 0012); until then the activity models refuse it. Group-contribution predictions (SIMPOL.1) were checked and not accepted (the maintainer, 2026-10-20: errors of a factor of 2 and more)."
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "Formula, structure and CAS: PubChem CID 699486 (Levoglucosenone), https://pubchem.ncbi.nlm.nih.gov/compound/699486; MW from the formula (chemicals library, MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook",
+        "pubchem"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-20)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosenone\", \"6,8-dioxabicyclo[3.2.1]oct-2-en-4-one\"; 0 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosenone\", \"6,8-dioxabicyclo[3.2.1]oct-2-en-4-one\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosenone\", \"6,8-dioxabicyclo[3.2.1]oct-2-en-4-one\"; 0 records opened)"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosenone\", \"6,8-dioxabicyclo[3.2.1]oct-2-en-4-one\"; 0 records opened)"
+          ],
+          "note": "needs the vapour pressure (Clapeyron) or calorimetric values over a range: no open liquid vapour pressure (no phase-change data on the WebBook; nothing in the ThermoML Archive)"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosenone\", \"6,8-dioxabicyclo[3.2.1]oct-2-en-4-one\"; 0 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosenone\", \"6,8-dioxabicyclo[3.2.1]oct-2-en-4-one\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosenone\", \"6,8-dioxabicyclo[3.2.1]oct-2-en-4-one\"; 0 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosenone\", \"6,8-dioxabicyclo[3.2.1]oct-2-en-4-one\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosenone\", \"6,8-dioxabicyclo[3.2.1]oct-2-en-4-one\"; 0 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4): no phase-change data on the page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "available": false,
+        "note": "no Modified UNIFAC 2.0 groups: the ring ketone sits between a ring C=C and a ring CH: the method's ketone subgroups (CH3CO, CH2CO) need a CH3 or CH2 next to the C=O, which levoglucosenone does not have (Cyrene, its hydrogenated form, has groups)"
+      }
+    },
+    "emf": {
+      "name": "5-(Ethoxymethyl)furfural",
+      "formula": "C8H10O3",
+      "cas": "1917-65-3",
+      "aliases": [
+        "emf",
+        "ethoxymethylfurfural",
+        "5-(ethoxymethyl)furan-2-carbaldehyde"
+      ],
+      "MW": 154.1632,
+      "Tc_K": null,
+      "Pc_Pa": null,
+      "Tb_K": null,
+      "omega": null,
+      "Tb_note": "no normal boiling point: no open liquid vapour pressure (no phase-change data on the WebBook; nothing in the ThermoML Archive)",
+      "vapourPressure_missing": {
+        "searched": [
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4)",
+          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-ethoxymethylfurfural\", \"5-(ethoxymethyl)furfural\", \"ethoxymethylfurfural\", \"5-(ethoxymethyl)furan-2-carbaldehyde\"; 0 records opened)",
+          "open literature (web search, 2026-10-20)"
+        ],
+        "note": "No open liquid vapour pressure (no phase-change data on the WebBook; nothing in the ThermoML Archive). Add your own vapour pressure in My data (proposal 0012); until then the activity models refuse it. Group-contribution predictions (SIMPOL.1) were checked and not accepted (the maintainer, 2026-10-20: errors of a factor of 2 and more)."
+      },
+      "uniquac_missing": {
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "thermo and chemicals libraries (no UNIQUAC r and q tables)"
+        ],
+        "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
+      },
+      "constants_source": "Formula, structure and CAS: PubChem CID 12648080 (Ethoxymethylfurfural), https://pubchem.ncbi.nlm.nih.gov/compound/12648080; MW from the formula (chemicals library, MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "constants_source_ids": [
+        "nist-webbook",
+        "pubchem"
+      ],
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-20)"
+        ]
+      },
+      "properties": {
+        "liquidDensity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-ethoxymethylfurfural\", \"5-(ethoxymethyl)furfural\", \"ethoxymethylfurfural\", \"5-(ethoxymethyl)furan-2-carbaldehyde\"; 0 records opened)"
+          ]
+        },
+        "idealGasHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-ethoxymethylfurfural\", \"5-(ethoxymethyl)furfural\", \"ethoxymethylfurfural\", \"5-(ethoxymethyl)furan-2-carbaldehyde\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidHeatCapacity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-ethoxymethylfurfural\", \"5-(ethoxymethyl)furfural\", \"ethoxymethylfurfural\", \"5-(ethoxymethyl)furan-2-carbaldehyde\"; 0 records opened)"
+          ]
+        },
+        "heatOfVaporization": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-ethoxymethylfurfural\", \"5-(ethoxymethyl)furfural\", \"ethoxymethylfurfural\", \"5-(ethoxymethyl)furan-2-carbaldehyde\"; 0 records opened)"
+          ],
+          "note": "needs the vapour pressure (Clapeyron) or calorimetric values over a range: no open liquid vapour pressure (no phase-change data on the WebBook; nothing in the ThermoML Archive)"
+        },
+        "liquidViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-ethoxymethylfurfural\", \"5-(ethoxymethyl)furfural\", \"ethoxymethylfurfural\", \"5-(ethoxymethyl)furan-2-carbaldehyde\"; 0 records opened)"
+          ]
+        },
+        "vapourViscosity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-ethoxymethylfurfural\", \"5-(ethoxymethyl)furfural\", \"ethoxymethylfurfural\", \"5-(ethoxymethyl)furan-2-carbaldehyde\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "liquidThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-ethoxymethylfurfural\", \"5-(ethoxymethyl)furfural\", \"ethoxymethylfurfural\", \"5-(ethoxymethyl)furan-2-carbaldehyde\"; 0 records opened)"
+          ]
+        },
+        "vapourThermalConductivity": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-ethoxymethylfurfural\", \"5-(ethoxymethyl)furfural\", \"ethoxymethylfurfural\", \"5-(ethoxymethyl)furan-2-carbaldehyde\"; 0 records opened)",
+            "no vapour data without a vapour pressure"
+          ]
+        },
+        "surfaceTension": {
+          "available": false,
+          "searched": [
+            "CoolProp 8.0.0 (not a fluid)",
+            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4)",
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"5-ethoxymethylfurfural\", \"5-(ethoxymethyl)furfural\", \"ethoxymethylfurfural\", \"5-(ethoxymethyl)furan-2-carbaldehyde\"; 0 records opened)"
+          ]
+        }
+      },
+      "fusion": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4): no phase-change data on the page",
+          "ChemSep v8.3: no value",
+          "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "2": 1,
+          "25": 1,
+          "61": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH2O, 1 FURFURAL): chosen from the structure: the ring with its aldehyde as the method's FURFURAL subgroup, as for HMF, and the ethoxymethyl group CH2-O-CH2-CH3 as CH2O, CH2 and CH3; the substituted ring carbon is counted in FURFURAL; DDBST lists no assignment (atom balance one H above C8H10O3: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H10O3"
+      }
     }
   }
 }

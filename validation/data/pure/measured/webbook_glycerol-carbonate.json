@@ -1,0 +1,47 @@
+{
+ "component": "glycerol-carbonate",
+ "retrieved": "2026-10-20",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=2",
+   "tables": []
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔvapH°",
+       "85.4 ± 0.4",
+       "kJ/mol",
+       "GS",
+       "Verevkin, Toktonov, et al., 2008",
+       "Based on data from 330. to 398. K."
+      ],
+      [
+       "ΔvapH°",
+       "87.8 ± 0.4",
+       "kJ/mol",
+       "EB",
+       "Wilson, VonNiederhausern, et al., 2002",
+       "Based on data from 430. to 455. K. See also  Verevkin, Toktonov, et al., 2008."
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

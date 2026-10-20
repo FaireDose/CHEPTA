@@ -1,0 +1,44 @@
+{
+ "component": "angelica-lactone",
+ "name": "alpha-Angelica lactone",
+ "about": "Measured values each record of this component was fitted to (validation/python/measured_components.py). test/properties.test.js checks that the coefficients in src/data/components.json reproduce them within the maximum deviation stated in each record.",
+ "records": {
+  "liquidDensity": {
+   "units": "kg/m3",
+   "source": {
+    "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+    "fit": "8 measured values, 288.15-323.15 K, max deviation 0.00096 %"
+   },
+   "T_K": [
+    288.15,
+    293.15,
+    298.15,
+    303.15,
+    308.15,
+    313.15,
+    318.15,
+    323.15
+   ],
+   "values": [
+    1099.321,
+    1093.937,
+    1088.553,
+    1083.165,
+    1077.774,
+    1072.377,
+    1066.979,
+    1061.581
+   ],
+   "references": [
+    "Dohnal 2019",
+    "Dohnal 2019",
+    "Dohnal 2019",
+    "Dohnal 2019",
+    "Dohnal 2019",
+    "Dohnal 2019",
+    "Dohnal 2019",
+    "Dohnal 2019"
+   ]
+  }
+ }
+}

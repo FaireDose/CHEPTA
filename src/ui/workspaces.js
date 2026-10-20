@@ -186,7 +186,7 @@ export function checkInputs(view, value, model = "NRTL", ud = null) {
       problems.push({ slot: i, message: `${spec.kind === "slots" ? `${label}, ${nameIn(m, id)}` : nameIn(m, id)}, has no Mod. UNIFAC 2.0 groups (its structure is not covered by the method's groups, or not checked yet), so Mod. UNIFAC 2.0 cannot use it: choose NRTL in the Model group.` });
     }
     if (spec.solid?.includes(i) && !m.get(id).fusion) {
-      problems.push({ slot: i, message: `${nameIn(m, id)} has no melting temperature and enthalpy of fusion in the databank (no open data), so it cannot be the solid.` });
+      problems.push({ slot: i, message: `${nameIn(m, id)} has no melting temperature and enthalpy of fusion in the databank (no open data), so it cannot be the solid. If you have them, add them in My data: Add a property, then Melting data.` });
     }
     if (seen.has(id)) problems.push({ slot: i, message: `Components ${seen.get(id) + 1} and ${i + 1} are both ${nameIn(m, id)}: choose different components.` });
     else seen.set(id, i);

@@ -44,9 +44,23 @@ export function componentRecord(id, userData = null) {
   return out;
 }
 
+/**
+ * Why a component without an open vapour pressure (vapourPressure_missing, 2026-10-20) cannot be used where one is
+ * needed, and how to give one: the sources searched and the user's own data (My data, proposal 0012).
+ */
+export function noVapourPressureMessage(c) {
+  const m = c.vapourPressure_missing;
+  return m
+    ? `No open data for the vapour pressure of ${c.name} (searched: ${(m.searched || []).join(", ")}). Add your own vapour pressure for it in My data (Add a property, then Vapour pressure); until then calculations that need it (bubble and dew points, flashes, vapour-liquid diagrams) refuse it. Activity coefficients, liquid-liquid and solid-liquid equilibria work without it.`
+    : `${c.name} has no vapour-pressure record.`;
+}
+
 const describe = (id, c) => ({
   id, name: c.name, formula: c.formula, cas: c.cas, aliases: c.aliases ?? [],
-  activity: Boolean((c.vapourPressure && (c.uniquac || c.Tb_K > 298.15 || c.tier === "user")) || c.class === "nonvolatile"),
+  // a liquid without an open vapour pressure is still a liquid for the activity models (vapourPressure_missing)
+  activity: Boolean((c.vapourPressure && (c.uniquac || c.Tb_K > 298.15 || c.tier === "user")) || c.class === "nonvolatile" ||
+    (c.vapourPressure_missing && !c.vapourPressure)),
+  ...(c.vapourPressure_missing && !c.vapourPressure ? { noVapourPressure: true } : {}),
   uniquac: Boolean(c.uniquac), modUnifac: Boolean(c.modUnifac?.groups),
   // melting temperature and enthalpy of fusion (solid-liquid equilibrium)
   fusion: Boolean(c.fusion && c.fusion.available !== false),

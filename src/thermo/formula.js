@@ -40,9 +40,13 @@ const show = o => Object.entries(o).sort().map(([el, k]) => `${el}${k === 1 ? ""
  * @param {Object<string, number>} groups  subgroup id -> count
  * @param {string|null} formula
  * @returns {{atoms, formula, diff, ok, oneHOver, unknown: string[], text: string}}  ok is null when there is nothing to
- *          check against; oneHOver: one H above the formula, as when a substituted ring carbon is counted in the ring's
- *          subgroup (the way DDBST counts it; allowed)
+ *          check against; oneHOver: H above the formula, one per ring, as when a substituted ring carbon is counted in
+ *          the ring's subgroup (the way DDBST counts it; allowed): one H, or as many as the groups have whole-ring
+ *          subgroups (THF, (CH2)2CB, FURFURAL; isosorbide's two THF rings: two H)
  */
+// the subgroups that stand for a whole ring (or most of one), in which DDBST counts a substituted ring carbon
+const RING_SUBGROUPS = new Set(["THF", "(CH2)2CB", "FURFURAL"]);
+
 export function atomBalance(groups, formula) {
   const sub = modUnifac.subgroups;
   const atoms = {}, unknown = [];
@@ -57,9 +61,10 @@ export function atomBalance(groups, formula) {
   const els = [...new Set([...Object.keys(atoms), ...Object.keys(want)])].sort();
   const diff = Object.fromEntries(els.map(el => [el, (atoms[el] ?? 0) - (want[el] ?? 0)]).filter(([, d]) => d !== 0));
   const ok = !unknown.length && !Object.keys(diff).length;
-  const oneHOver = !unknown.length && Object.keys(diff).length === 1 && diff.H === 1;
+  const rings = Object.entries(groups ?? {}).filter(([id]) => RING_SUBGROUPS.has(sub[id]?.name)).reduce((a, [, n]) => a + n, 0);
+  const oneHOver = !unknown.length && Object.keys(diff).length === 1 && diff.H >= 1 && diff.H <= Math.max(1, rings);
   const text = unknown.length ? `cannot check: no atoms known for ${unknown.map(id => sub[id]?.name ?? id).join(", ")}`
     : ok ? `the groups add up to ${show(atoms)}, the formula`
-      : `the groups add up to ${show(atoms) || "nothing"}; the formula is ${show(want)} (${Object.entries(diff).map(([el, d]) => `${d > 0 ? "+" : ""}${d} ${el}`).join(", ")})${oneHOver ? ": one H over, as when a substituted ring carbon is counted in the ring's subgroup" : ""}`;
+      : `the groups add up to ${show(atoms) || "nothing"}; the formula is ${show(want)} (${Object.entries(diff).map(([el, d]) => `${d > 0 ? "+" : ""}${d} ${el}`).join(", ")})${oneHOver ? (diff.H === 1 ? ": one H over, as when a substituted ring carbon is counted in the ring's subgroup" : `: ${diff.H} H over, as when a substituted ring carbon is counted in each ring's subgroup`) : ""}`;
   return { atoms, formula: want, diff, ok, oneHOver, unknown, text };
 }

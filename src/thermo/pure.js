@@ -30,7 +30,7 @@
  * all apply, from 298.15 K: the reference stays the ideal gas at 298.15 K. Outside that range it refuses.
  */
 import componentData from "../data/components.json" with { type: "json" };
-import { componentRecord } from "./components.js";
+import { componentRecord, noVapourPressureMessage } from "./components.js";
 import { checkUserData } from "./user-data.js";
 import { evaluate } from "./correlations.js";
 import { brent } from "../util/solve.js";
@@ -142,6 +142,7 @@ export function pure(key, opts = {}) {
   };
   const has = name => record(name) !== null;
   const missingMessage = name => {
+    if (name === "vapourPressure" && !c.vapourPressure && c.vapourPressure_missing) return noVapourPressureMessage(c);
     const r = data[name];
     const what = PROPERTIES[name]?.label ?? name;
     return r && r.available === false
@@ -249,6 +250,22 @@ export function pure(key, opts = {}) {
       tryGet("cp_J_molK", () => property("liquidHeatCapacity", T), "liquidHeatCapacity");
       tryGet("h_J_mol", () => integrate(t => property("liquidHeatCapacity", t), T_REF, T));
       out.notes.push("Liquid enthalpy h = integral of cp_L from 298.15 K: the reference state of a nonvolatile component is its liquid at 298.15 K.");
+      tryGet("mu_Pa_s", () => property("liquidViscosity", T), "liquidViscosity");
+      tryGet("k_W_mK", () => property("liquidThermalConductivity", T), "liquidThermalConductivity");
+      out.notes.push("Liquid properties at saturation; the effect of pressure is neglected.");
+      return out;
+    }
+    if (!vpRec && c.vapourPressure_missing) {
+      // no open vapour pressure (2026-10-20): the phase cannot be decided, so the liquid's properties are given; its
+      // enthalpy needs the heat of vaporization and an ideal-gas reference (the user's own data can give both)
+      out.phase = "liquid";
+      out.psat_kPa = null;
+      out.notes.push(noVapourPressureMessage(c));
+      out.notes.push(`Taken as a liquid: without a vapour pressure the phase cannot be decided (${c.name} is a liquid or a solid at room conditions).`);
+      tryGet("rho_kg_m3", () => property("liquidDensity", T), "liquidDensity");
+      tryGet("cp_J_molK", () => property("liquidHeatCapacity", T), "liquidHeatCapacity");
+      out.h_J_mol = null;
+      out.notes.push("Enthalpy not given: the liquid's enthalpy is referred to the ideal gas at 298.15 K, which needs the heat of vaporization (from a vapour pressure) and an ideal-gas heat capacity.");
       tryGet("mu_Pa_s", () => property("liquidViscosity", T), "liquidViscosity");
       tryGet("k_W_mK", () => property("liquidThermalConductivity", T), "liquidThermalConductivity");
       out.notes.push("Liquid properties at saturation; the effect of pressure is neglected.");
