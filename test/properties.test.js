@@ -40,8 +40,9 @@ function statedMaxDeviation(rec) {
 }
 
 test("every component has every property, as a record or an explicit 'no open data' marker", () => {
-  // 161 since 2026-10-20: D-xylose and cis,cis-muconic acid (proposal 0009, batch 4; identity from PubChem)
-  assert.equal(listComponents().length, 161);
+  // 161 since 2026-10-20: D-xylose and cis,cis-muconic acid (proposal 0009, batch 4; identity from PubChem); 171 with
+  // the ten held for want of an open vapour pressure (glycerol carbonate has one; nine have none)
+  assert.equal(listComponents().length, 171);
   assert.equal(GASES.length, 23);
   for (const { id, name } of listComponents()) {
     const props = components[id].properties;
@@ -187,6 +188,15 @@ test("props() returns liquid and vapour properties for every component at a typi
         assert.ok(Number.isFinite(L[k]), `${name} liquid ${k}: ${L.notes.join(" ")}`);
       }
       assert.ok(Math.abs(L.h_J_mol) < 1e-9, `${name}: h at the 298.15 K reference ${L.h_J_mol}`);
+      continue;
+    }
+    if (!components[id].vapourPressure && components[id].vapourPressure_missing) {
+      // a liquid without an open vapour pressure (2026-10-20): taken as a liquid, its liquid records or "no open data"
+      // notes, no enthalpy (no heat of vaporization), the reason in the notes; test/no-vapour-pressure.test.js
+      const L = p.props(298.15, 101.325);
+      assert.equal(L.phase, "liquid", name);
+      assert.equal(L.h_J_mol, null, name);
+      assert.match(L.notes.join(" "), /No open data for the vapour pressure/, name);
       continue;
     }
     // liquid: 25 °C for the liquids (acetic acid: 30 °C, above its melting point), below Tb for the gases

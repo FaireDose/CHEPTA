@@ -1,0 +1,91 @@
+{
+ "component": "levoglucosan",
+ "retrieved": "2026-10-20",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=1",
+   "tables": []
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔcH°solid",
+       "-2832. ± 0.8",
+       "kJ/mol",
+       "Ccb",
+       "Skuratov, Kozina, et al., 1957",
+       "At 20C; Corresponding ΔfHºsolid = -958.6 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+      ],
+      [
+       "ΔcH°solid",
+       "-2875.1",
+       "kJ/mol",
+       "Ccb",
+       "Karrer, Nageli, et al., 1921",
+       "Corresponding ΔfHºsolid = -915.08 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "92.2",
+       "483.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 468. to 528. K. See also  Einstein, Duronina, et al., 1964 and  Dykyj, 1972."
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔsubH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "125.1 ± 1.0",
+       "365.",
+       "ME",
+       "Oja and Suuberg, 1999",
+       "Based on data from 344. to 386. K."
+      ],
+      [
+       "100.3 ± 5.9",
+       "395.",
+       "ME",
+       "Oja and Suuberg, 1999",
+       "Based on data from 386. to 405. K."
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

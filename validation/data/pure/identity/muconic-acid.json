@@ -3,7 +3,7 @@
  "cas": "1119-72-8",
  "retrieved": "2026-10-20",
  "source": "PubChem PUG REST, https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/1119-72-8/property/Title,IUPACName,MolecularFormula,SMILES,InChI,InChIKey/JSON",
- "access": "PubChem (National Library of Medicine), free to read; computed descriptors in the public domain",
+ "access": "PubChem (National Library of Medicine), free to read; computed descriptors created by NCBI, in the public domain (https://www.ncbi.nlm.nih.gov/home/about/policies/)",
  "compound": {
   "cid": 5280518,
   "title": "cis,cis-Muconic acid",

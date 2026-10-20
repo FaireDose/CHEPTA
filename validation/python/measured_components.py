@@ -578,6 +578,91 @@ COMPONENTS = {
         "aliases": ["muconic acid", "(2z,4z)-hexa-2,4-dienedioic acid", "cis,cis-2,4-hexadienedioic acid"],
         "thermoml_queries": ["muconic acid", "cis,cis-muconic acid", "hexa-2,4-dienedioic acid", "(2Z,4Z)-hexa-2,4-dienedioic acid"],
     },
+    # the components held in proposal 0009 for want of an open liquid vapour pressure (2026-10-20). Glycerol carbonate
+    # has one after all: the ThermoML Archive names it "glycerine carbonate"
+    "glycerol-carbonate": {
+        "name": "Glycerol carbonate", "cas": "931-40-8", "webbook": "C931408", "proposal": "proposal 0009",
+        "aliases": ["4-(hydroxymethyl)-1,3-dioxolan-2-one", "glycerine carbonate", "glycerol 1,2-carbonate"],
+        "thermoml_queries": ["glycerine carbonate", "glycerol carbonate", "4-(hydroxymethyl)-1,3-dioxolan-2-one"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "the calorimetric values on the WebBook (Verevkin et al. 2008; Wilson et al. 2002) are at 298.15 K only",
+        "cp0": None,
+    },
+    "solketal": {
+        "class": "no_vapour_pressure",
+        "name": 'Solketal', "cas": '100-79-8', "webbook": 'C100798', "proposal": "proposal 0009",
+        "aliases": ['(2,2-dimethyl-1,3-dioxolan-4-yl)methanol', 'isopropylidene glycerol', '2,2-dimethyl-1,3-dioxolane-4-methanol'],
+        "thermoml_queries": ['solketal', '2,2-dimethyl-1,3-dioxolane-4-methanol', '(2,2-dimethyl-1,3-dioxolan-4-yl)methanol', 'isopropylidene glycerol'],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
+        "no_vapour_pressure": 'the WebBook lists a normal boiling temperature of 461.7 K from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); the ThermoML Archive has its vapour-liquid data with carbon dioxide only',
+    },
+    "angelica-lactone": {
+        "class": "no_vapour_pressure",
+        "name": 'alpha-Angelica lactone', "cas": '591-12-8', "webbook": 'C591128', "proposal": "proposal 0009",
+        "aliases": ['5-methylfuran-2(3h)-one', 'alpha-angelica lactone', 'angelica lactone'],
+        "thermoml_queries": ['alpha-angelica lactone', 'angelica lactone', '5-methylfuran-2(3H)-one', '2(3H)-furanone, 5-methyl-'],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
+        "no_vapour_pressure": 'the WebBook lists boiling temperatures at 0.016 bar of a compilation (Weast and Grasselli, 1989, 329.2 K) and a supplier catalogue (American Tokyo Kasei, 1988), which are not used (DATA_RULES section 1)',
+    },
+    "lactide": {
+        "class": "no_vapour_pressure",
+        "name": 'Lactide', "cas": '95-96-5', "webbook": 'C95965', "proposal": "proposal 0009",
+        "aliases": ['3,6-dimethyl-1,4-dioxane-2,5-dione', 'dilactide', 'rac-lactide'],
+        "thermoml_queries": ['lactide', '3,6-dimethyl-1,4-dioxane-2,5-dione', '1,4-dioxane-2,5-dione, 3,6-dimethyl-'],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
+        "no_vapour_pressure": "the WebBook lists a boiling temperature of 415.2 K at 0.01 bar from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); CAS 95-96-5 does not specify the stereoisomer, and the archive's lactide data are of L-lactide (a different solid), which are not used for it",
+    },
+    "isosorbide": {
+        "class": "no_vapour_pressure",
+        "name": 'Isosorbide', "cas": '652-67-5', "webbook": 'C652675', "proposal": "proposal 0009",
+        "aliases": ['1,4:3,6-dianhydro-d-glucitol', '1,4:3,6-dianhydro-d-sorbitol'],
+        "thermoml_queries": ['isosorbide', '1,4:3,6-dianhydro-D-glucitol', '1,4:3,6-dianhydro-D-sorbitol'],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
+        "no_vapour_pressure": 'not a WebBook compound; nothing in the ThermoML Archive',
+    },
+    "levoglucosan": {
+        "class": "no_vapour_pressure",
+        "name": 'Levoglucosan', "cas": '498-07-7', "webbook": 'C498077', "proposal": "proposal 0009",
+        "aliases": ['1,6-anhydro-beta-d-glucopyranose', '1,6-anhydroglucose'],
+        "thermoml_queries": ['levoglucosan', '1,6-anhydro-beta-D-glucopyranose'],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
+        "no_vapour_pressure": 'the ThermoML Archive has sublimation pressures of the crystal (doi:10.1021/je400207t, doi:10.1016/j.jct.2015.01.005), not of the liquid',
+    },
+    "dimethyl-fdca": {
+        "class": "no_vapour_pressure",
+        "name": 'Dimethyl 2,5-furandicarboxylate', "cas": '4282-32-0', "webbook": 'C4282320', "proposal": "proposal 0009",
+        "aliases": ['dimethyl furan-2,5-dicarboxylate', 'dmfdca', 'fdca dimethyl ester'],
+        "thermoml_queries": ['dimethyl 2,5-furandicarboxylate', 'dimethyl furan-2,5-dicarboxylate', '2,5-furandicarboxylic acid, dimethyl ester'],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
+        "no_vapour_pressure": 'no phase-change data on the WebBook; nothing in the ThermoML Archive',
+    },
+    "bhmf": {
+        "class": "no_vapour_pressure",
+        "name": '2,5-Bis(hydroxymethyl)furan', "cas": '1883-75-6', "webbook": 'C1883756', "proposal": "proposal 0009",
+        "aliases": ['bhmf', '2,5-furandimethanol', '[5-(hydroxymethyl)furan-2-yl]methanol'],
+        "thermoml_queries": ['2,5-bis(hydroxymethyl)furan', '2,5-furandimethanol', 'furan-2,5-diyldimethanol'],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
+        "no_vapour_pressure": 'not a WebBook compound with phase-change data; nothing in the ThermoML Archive',
+    },
+    "levoglucosenone": {
+        "class": "no_vapour_pressure",
+        "name": 'Levoglucosenone', "cas": '37112-31-5', "webbook": 'C37112315', "proposal": "proposal 0009",
+        "aliases": ['lgo', '6,8-dioxabicyclo[3.2.1]oct-2-en-4-one'],
+        "thermoml_queries": ['levoglucosenone', '6,8-dioxabicyclo[3.2.1]oct-2-en-4-one'],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
+        "no_vapour_pressure": 'no phase-change data on the WebBook; nothing in the ThermoML Archive',
+    },
+    "emf": {
+        "class": "no_vapour_pressure",
+        "name": '5-(Ethoxymethyl)furfural', "cas": '1917-65-3', "webbook": 'C1917653', "proposal": "proposal 0009",
+        "aliases": ['emf', 'ethoxymethylfurfural', '5-(ethoxymethyl)furan-2-carbaldehyde'],
+        "thermoml_queries": ['5-ethoxymethylfurfural', '5-(ethoxymethyl)furfural', 'ethoxymethylfurfural', '5-(ethoxymethyl)furan-2-carbaldehyde'],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
+        "no_vapour_pressure": 'no phase-change data on the WebBook; nothing in the ThermoML Archive',
+    },
     "terephthalic-acid": {
         "class": "nonvolatile",
         "why_nonvolatile": "the maintainer's choice (2026-10-17): terephthalic acid is kept a liquid that does not evaporate "
@@ -1661,14 +1746,20 @@ def build(cid, log):
     # liquid density
     pts = tml.values("liquidDensity")
     rho_form = "DIPPR100" if nocrit else "DIPPR105"
-    coeffs, use, exc, m = fit_measured(cid, "liquidDensity", rho_form, pts, 0.01, Tc=Tc)
-    where, acc = tml.origin(use)
-    records["liquidDensity"], points["liquidDensity"] = record(
-        "liquidDensity", rho_form, coeffs, use, exc, m, Tc,
-        "Measured densities of the liquid at 0.1 MPa (%s)" % where, refs_of(use, tml), acc,
-        notes=("DIPPR 100 (a polynomial in T; no measured critical temperature)." if nocrit else
-               "DIPPR 105 with C fixed at the critical temperature %.2f K (%s, %s)." % (Tc, crit_who, crit_where)))
-    log.append("%-17s liquidDensity             %3d values, %d left out, max dev %s %%" % (cid, len(use), len(exc), pct(m)))
+    if not pts:
+        # no open liquid density at all (glycerol carbonate, 2026-10-20): the "no open data" marker; phase equilibrium
+        # with an activity model and an ideal-gas vapour does not need it
+        fit_or_marker(cid, "liquidDensity", rho_form, 0.01, pts, records, points, log, Tc, tml, searched_common,
+                      "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)", THERMOML_ACCESS)
+    else:
+        coeffs, use, exc, m = fit_measured(cid, "liquidDensity", rho_form, pts, 0.01, Tc=Tc)
+        where, acc = tml.origin(use)
+        records["liquidDensity"], points["liquidDensity"] = record(
+            "liquidDensity", rho_form, coeffs, use, exc, m, Tc,
+            "Measured densities of the liquid at 0.1 MPa (%s)" % where, refs_of(use, tml), acc,
+            notes=("DIPPR 100 (a polynomial in T; no measured critical temperature)." if nocrit else
+                   "DIPPR 105 with C fixed at the critical temperature %.2f K (%s, %s)." % (Tc, crit_who, crit_where)))
+        log.append("%-17s liquidDensity             %3d values, %d left out, max dev %s %%" % (cid, len(use), len(exc), pct(m)))
 
     # ideal-gas heat capacity: the WebBook Shomate equation (JANAF), as for chloroform in fit_properties.py
     sh = wb.shomate() if C["cp0"] == "shomate" else None
@@ -1888,6 +1979,69 @@ def build_nonvolatile(cid, log):
     return comp, points
 
 
+def build_no_vp(cid, log):
+    """A volatile component without an open liquid vapour pressure (the maintainer, 2026-10-20): its liquid records
+    from measured values where they meet the targets, and a "no open data" marker for the vapour pressure
+    (`vapourPressure_missing`, with the sources searched). Activity-model calculations refuse it with that reason
+    until the user gives a vapour pressure of their own (My data, proposal 0012), which replaces the marker. No
+    critical constants (none are measured), no normal boiling point, no vapour records: they all need the vapour
+    pressure. It is not made nonvolatile, which would make every distillation with it wrong (DATA_RULES section 10)."""
+    from pubchem import chemical as search_chemical  # PubChem where `chemicals` files the compound under another form
+    C = COMPONENTS[cid]
+    wb, tml = WebBook(cid), ThermoML(cid)
+    meta = search_chemical(C["cas"])
+    searched = ["CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+                "NIST Chemistry WebBook (%s)" % wb.url("phase change"), "NIST TRC ThermoML Archive (%s)" % tml.d["searched"]]
+    records, points = {}, {}
+    fit_or_marker(cid, "liquidDensity", "DIPPR100", 0.01, tml.values("liquidDensity"), records, points, log, None, tml,
+                  searched, "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)", THERMOML_ACCESS)
+    fit_or_marker(cid, "liquidHeatCapacity", "DIPPR100", 0.01, tml.values("liquidHeatCapacity"), records, points, log,
+                  None, tml, searched, "Measured heat capacities of the liquid (NIST TRC ThermoML Archive)", THERMOML_ACCESS)
+    cp_measured_or_predicted(cid, tml.values("liquidHeatCapacity"), records, points, log, None, tml, searched)
+    for prop, form, target in (("liquidViscosity", "DIPPR101", 0.03), ("surfaceTension", "DIPPR100", 0.01),
+                               ("liquidThermalConductivity", "DIPPR100", 0.03)):
+        fit_or_marker(cid, prop, form, target, tml.values(prop), records, points, log, None, tml, searched,
+                      "Measured values (NIST TRC ThermoML Archive)", THERMOML_ACCESS)
+    no_vp = "no open liquid vapour pressure (%s)" % C["no_vapour_pressure"]
+    dh = ["%.4g kJ/mol at %.2f K (%s)" % (v / 1000, T0, ref) for T0, v, ref in
+          [(p["T"], p["y"], p["ref"]) for p in tml.values("heatOfVaporization")]]
+    records["heatOfVaporization"] = {"available": False, "searched": searched,
+                                     "note": "needs the vapour pressure (Clapeyron) or calorimetric values over a range: "
+                                             "%s%s" % (no_vp, "; single values: %s" % "; ".join(dh) if dh else "")}
+    for prop in ("idealGasHeatCapacity", "vapourViscosity", "vapourThermalConductivity"):
+        records[prop] = {"available": False, "searched": searched + ["no vapour data without a vapour pressure"]}
+    records = {p: records[p] for p in PROPS}
+    for prop in ("heatOfVaporization", "idealGasHeatCapacity", "vapourViscosity", "vapourThermalConductivity"):
+        log.append("%-17s %-25s no open data" % (cid, prop))
+    pub = getattr(meta, "pubchem", None)
+    comp = {
+        "name": C["name"], "formula": meta.formula, "cas": C["cas"], "aliases": C["aliases"],
+        "MW": rnd(meta.MW, 7), "Tc_K": None, "Pc_Pa": None, "Tb_K": None, "omega": None,
+        "Tb_note": "no normal boiling point: %s" % no_vp,
+        "vapourPressure_missing": {
+            "searched": searched + ["open literature (web search, 2026-10-20)"],
+            "note": ("%s. Add your own vapour pressure in My data (proposal 0012); until then the activity models "
+                     "refuse it. Group-contribution predictions (SIMPOL.1) were checked and not accepted (the maintainer, "
+                     "2026-10-20: errors of a factor of 2 and more)." % (no_vp[0].upper() + no_vp[1:]))},
+        "uniquac_missing": {
+            "searched": ["ChemSep v8.3 and v8.31 data 2 (compound not included)",
+                         "thermo and chemicals libraries (no UNIQUAC r and q tables)"],
+            "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence "
+                    "of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it "
+                    "is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."},
+        "constants_source": ("%s. No open liquid vapour pressure, so no normal boiling point, critical constants or "
+                             "acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank." % (
+                                 ("Formula, structure and CAS: PubChem CID %s (%s), %s; MW from the formula (chemicals "
+                                  "library, MIT)" % (pub["compound"]["cid"], pub["compound"]["title"], pub["compound"]["url"]))
+                                 if pub else "MW, formula and CAS: chemicals library (MIT)")),
+        "constants_source_ids": ["nist-webbook"] + (["pubchem"] if pub else []),
+        "critical": {"available": False, "searched": C["no_critical"]},
+        "properties": records,
+    }
+    log.append("%-17s no open vapour pressure, MW %.4f" % (cid, meta.MW))
+    return comp, points
+
+
 # ---------------------------------------------------------------------------------------------
 # Report
 # ---------------------------------------------------------------------------------------------
@@ -1970,7 +2124,8 @@ def main():
             fetch_thermoml(cid, args.cache)
     log, comps, pts = [], {}, {}
     for cid in COMPONENTS:
-        comps[cid], pts[cid] = (build_nonvolatile if COMPONENTS[cid].get("class") == "nonvolatile" else build)(cid, log)
+        cls = COMPONENTS[cid].get("class")
+        comps[cid], pts[cid] = {"nonvolatile": build_nonvolatile, "no_vapour_pressure": build_no_vp}.get(cls, build)(cid, log)
     print("\n".join(log))
     if args.write:
         data = json.loads(COMP_FILE.read_text())

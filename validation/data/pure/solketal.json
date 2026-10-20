@@ -1,0 +1,35 @@
+{
+ "component": "solketal",
+ "name": "Solketal",
+ "about": "Measured values each record of this component was fitted to (validation/python/measured_components.py). test/properties.test.js checks that the coefficients in src/data/components.json reproduce them within the maximum deviation stated in each record.",
+ "records": {
+  "liquidDensity": {
+   "units": "kg/m3",
+   "source": {
+    "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
+    "fit": "5 measured values, 293.15-323.15 K, max deviation 0.39 %"
+   },
+   "T_K": [
+    293.15,
+    298.15,
+    303.15,
+    313.15,
+    323.15
+   ],
+   "values": [
+    1067.8,
+    1069.3,
+    1058.9,
+    1049.9,
+    1040.8
+   ],
+   "references": [
+    "Li 2016",
+    "Yakovleva 2015",
+    "Li 2016",
+    "Li 2016",
+    "Li 2016"
+   ]
+  }
+ }
+}

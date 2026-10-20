@@ -18,6 +18,8 @@ const fromChemSep = id => /^ChemSep pure-component database/.test(comps[id].cons
 // A nonvolatile component (proposal 0009, step 5) has no boiling point or vapour pressure to compare, and its liquid
 // heat capacity may be predicted (no reference to compare with): test/nonvolatile.test.js checks it instead.
 const nonvolatile = id => comps[id].class === "nonvolatile";
+// Nor has a liquid without an open vapour pressure (2026-10-20): test/no-vapour-pressure.test.js checks it.
+const noVapourPressure = id => !comps[id].vapourPressure && Boolean(comps[id].vapourPressure_missing);
 
 test("every component whose records are built here is in at least one case of the engineering report", () => {
   const used = new Set();
@@ -25,7 +27,7 @@ test("every component whose records are built here is in at least one case of th
     if (c.component) used.add(c.component);
     for (const id of c.components ?? []) used.add(id);
   }
-  assert.deepEqual(Object.keys(comps).filter(id => !used.has(id) && !fromChemSep(id) && !nonvolatile(id)), [],
+  assert.deepEqual(Object.keys(comps).filter(id => !used.has(id) && !fromChemSep(id) && !nonvolatile(id) && !noVapourPressure(id)), [],
     "components without a case: rerun the report scripts");
 });
 

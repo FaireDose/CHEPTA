@@ -30,7 +30,8 @@ test("correlations refuse temperatures outside their range", () => {
 });
 
 test("pure() vapour pressure and boiling point agree with the VLE data", () => {
-  for (const c of listComponents().filter(c => c.activity)) {
+  // a liquid without an open vapour pressure (2026-10-20) has none to compare: test/no-vapour-pressure.test.js
+  for (const c of listComponents().filter(c => c.activity && !c.noVapourPressure)) {
     const p = pure(c.id);
     if (p.nonvolatile) continue;   // no vapour pressure (proposal 0009, step 5): test/nonvolatile.test.js
     const tb = p.tsat(101.325);
@@ -40,8 +41,9 @@ test("pure() vapour pressure and boiling point agree with the VLE data", () => {
 });
 
 test("every component has critical constants and an acentric factor, or says why not", () => {
-  // 161 since 2026-10-20: D-xylose and cis,cis-muconic acid (proposal 0009, batch 4; identity from PubChem)
-  assert.equal(listComponents().length, 161);
+  // 161 since 2026-10-20: D-xylose and cis,cis-muconic acid (proposal 0009, batch 4; identity from PubChem); 171 with
+  // the ten held for want of an open vapour pressure (glycerol carbonate has one; nine have none)
+  assert.equal(listComponents().length, 171);
   for (const c of listComponents()) {
     const p = pure(c.id);
     assert.ok(Number.isFinite(p.MW), `${c.name} MW`);
@@ -59,6 +61,8 @@ test("every component has critical constants and an acentric factor, or says why
     // (a nonvolatile component, lactic acid, has no vapour pressure and so no normal boiling point; its TbNote says why)
     if (c.id === "carbon-dioxide") assert.equal(p.Tb_K, null);
     else if (p.nonvolatile) { assert.equal(p.Tb_K, null); assert.match(p.TbNote, /nonvolatile/, c.name); }
+    // a liquid without an open vapour pressure (2026-10-20) has no normal boiling point, and says why
+    else if (c.noVapourPressure) { assert.equal(p.Tb_K, null); assert.match(p.TbNote, /no open liquid vapour pressure/, c.name); }
     else if (p.TbNote) { assert.equal(p.Tb_K, null); assert.ok(p.psat(p.record("vapourPressure").Tmax_K) < 101.325, c.name); }
     else assert.ok(Number.isFinite(p.Tb_K), `${c.name} Tb_K`);
   }

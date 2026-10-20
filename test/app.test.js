@@ -215,7 +215,10 @@ test("selection helpers: toggle, rotate, search", () => {
       "2-methylfuran", "2-methyltetrahydrofuran", "methyl-levulinate", "ethyl-levulinate", "cpme", "methyl-lactate",
       "ethyl-lactate",
       // proposal 0009, batch 4 ("5-Hydroxymethylfurfural", "Bis(2-hydroxyethyl) terephthalate")
-      "hmf", "bhet"].sort());
+      "hmf", "bhet",
+      // the held components added 2026-10-20 ("Dimethyl 2,5-furandicarboxylate", "2,5-furandimethanol",
+      // "5-(Ethoxymethyl)furfural")
+      "dimethyl-fdca", "bhmf", "emf"].sort());
   assert.deepEqual(filterComponents(all, "7732-18-5").map(c => c.id), ["water"]);
   assert.deepEqual(filterComponents(all, "chcl3").map(c => c.id), ["chloroform"]);
   assert.deepEqual(filterComponents(all, "zzz"), []);

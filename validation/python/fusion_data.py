@@ -56,6 +56,13 @@ NEAR_TM_K = 3.0
 # measured enthalpy of fusion (Jabrane, Letoffe et al. 1998, DSC) is stated at 249 K, 3.5 K above the triple point of
 # 245.5 K (Knauth and Sabbah 1990); no other solid phase is reported, so it is taken as the melting enthalpy
 NEAR_TM_K_FOR = {"1-3-propanediol": 3.5}
+# what a record must say beyond its selection (the measured values themselves, in the component's ThermoML file)
+FUSION_NOTES = {
+    "levoglucosan": ("the enthalpy of fusion is that of the high-temperature crystal (Crystal 1, melting at 454-455 K); "
+                     "below 384-385 K the stable solid is Crystal 2, which turns into Crystal 1 with 23-25 kJ/mol "
+                     "(the same articles). The solid-liquid equation with these two values alone leaves that transition "
+                     "out, so it overpredicts the solubility of the solid below 384 K"),
+}
 ACCESS = "Free to read online (NIST Standard Reference Database 69); values cited per record"
 
 
@@ -325,6 +332,8 @@ def build(comps, data, cs):
                 if spread > 0.10:
                     sel += "; the measured values disagree by %.0f %% of the median: the enthalpy of fusion is uncertain" % (100 * spread)
                 sel += "; NIST WebBook (%s): %s; ChemSep: %s" % (url, why, "no enthalpy of fusion" if x and x["Tm_K"] else "no value")
+                if cid in FUSION_NOTES:
+                    sel += "; " + FUSION_NOTES[cid]
                 out[cid] = {"Tm_K": tml["Tm_K"], "Hfus_J_mol": round(tml["Hfus_kJ_mol"] * 1000, 1), "tier": "databank",
                             "source": {"name": "NIST TRC ThermoML Archive", "reference": "; ".join(tml["references"]),
                                        "access": "NIST open data (the archive's values are free to use, also where the "

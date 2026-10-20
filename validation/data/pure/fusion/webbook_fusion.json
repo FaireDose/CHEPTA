@@ -1151,6 +1151,16 @@
   },
   "enthalpy_of_fusion": []
  },
+ "angelica-lactone": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
  "aniline": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C62533&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -1562,6 +1572,11 @@
  "bhet": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C959262&Units=SI&Mask=4",
   "retrieved": "2026-10-16",
+  "none": "no phase-change data on the page"
+ },
+ "bhmf": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C1883756&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
   "none": "no phase-change data on the page"
  },
  "butyl-levulinate": {
@@ -2150,6 +2165,11 @@
    }
   ]
  },
+ "dimethyl-fdca": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C4282320&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
+  "none": "no phase-change data on the page"
+ },
  "dioxane": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123911&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -2385,6 +2405,11 @@
     "comment": "AC"
    }
   ]
+ },
+ "emf": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C1917653&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
+  "none": "no phase-change data on the page"
  },
  "erythritol": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Units=SI&Mask=4",
@@ -3477,6 +3502,16 @@
    }
   ]
  },
+ "glycerol-carbonate": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C931408&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
  "glycolic-acid": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79141&Units=SI&Mask=4",
   "retrieved": "2026-10-16",
@@ -3978,6 +4013,11 @@
   },
   "enthalpy_of_fusion": []
  },
+ "isosorbide": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C652675&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
+  "none": "no phase-change data on the page"
+ },
  "itaconic-acid": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Units=SI&Mask=4",
   "retrieved": "2026-10-16",
@@ -4040,6 +4080,39 @@
     "comment": "AC"
    }
   ]
+ },
+ "lactide": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 24.7,
+    "T_K": 397.5,
+    "method": "",
+    "reference": "Domalski and Hearing, 1996",
+    "comment": "AC"
+   }
+  ]
+ },
+ "levoglucosan": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
+ },
+ "levoglucosenone": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
+  "none": "no phase-change data on the page"
  },
  "levulinic-acid": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123762&Units=SI&Mask=4",
@@ -6654,6 +6727,16 @@
     "comment": "See also Sabbah and Le, 1993.; AC"
    }
   ]
+ },
+ "solketal": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": []
  },
  "sorbitol": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Units=SI&Mask=4",

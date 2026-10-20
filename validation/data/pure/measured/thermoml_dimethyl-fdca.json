@@ -1,0 +1,10 @@
+{
+ "component": "dimethyl-fdca",
+ "cas": "4282-32-0",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-10-20",
+ "searched": "ThermoML-API full-text search for \"dimethyl 2,5-furandicarboxylate\", \"dimethyl furan-2,5-dicarboxylate\", \"2,5-furandicarboxylic acid, dimethyl ester\"; 0 records opened",
+ "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
+ "articles": {},
+ "rows": []
+}

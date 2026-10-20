@@ -107,10 +107,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      docs/decisions/2026-10-14-12-nonvolatile-class.md); check the transcribed groups against the tables;
   5. batch 4: 17 nonvolatile components added (HMF, sugars, sugar alcohols, polyacids, FDCA, BHET, diphenolic acid;
      docs/decisions/2026-10-16-01-batch-4.md). Still open:
-     - held, distilled or sublimed in their own processes and without an open liquid vapour pressure: lactide,
-       isosorbide, BHMF, dimethyl FDCA, levoglucosan (its solid's vapour pressure is open: Booth et al. 2011, ACP,
-       CC BY), and from the six extra names glycerol carbonate, levoglucosenone, ethoxymethylfurfural; an open
-       group-contribution vapour pressure (tier "predicted") would let them in, if the maintainer wants that;
+     - the ten held for want of an open liquid vapour pressure: added 2026-10-20
+       (docs/decisions/2026-10-20-02-no-vapour-pressure.md). Glycerol carbonate has measured vapour pressures after
+       all (the archive calls it "glycerine carbonate"); the other nine (solketal, alpha-angelica lactone, lactide,
+       isosorbide, levoglucosan, dimethyl FDCA, BHMF, levoglucosenone, EMF) have a "no open data" marker: VLE refuses
+       them until the user gives a vapour pressure (My data). Wanted: open measured liquid vapour pressures of the nine;
+       liquid heat capacities of all ten but glycerol carbonate; groups for BHMF, dimethyl FDCA and levoglucosenone
+       (the subgroups cannot describe them);
      - xylose (58-86-6) and cis,cis-muconic acid (1119-72-8): added 2026-10-20 with their identity from PubChem
        (docs/decisions/2026-10-20-01-xylose-muconic-acid.md); muconic acid has no open melting data (its aqueous
        solubility is open: Scelfo et al. 2017, Iran. J. Chem. Chem. Eng. 36(4) 129, which needs melting data to be used);

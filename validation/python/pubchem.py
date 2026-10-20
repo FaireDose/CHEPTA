@@ -41,6 +41,9 @@ IDENTITY = {
                "why": "the open-chain (aldehyde) form, aldehydo-D-xylose: groups are counted in the open-chain form, as "
                       "for glucose and fructose, and the ThermoML Archive lists D-xylose under this InChI"},
     "muconic-acid": {"cas": "1119-72-8"},
+    # not in the chemicals library at all (2026-10-20)
+    "levoglucosenone": {"cas": "37112-31-5"},
+    "emf": {"cas": "1917-65-3"},
 }
 
 

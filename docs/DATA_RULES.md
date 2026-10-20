@@ -182,7 +182,9 @@ prediction tool for when there are no data, so every component whose structure t
 without waiting for a person to choose (the maintainer, 2026-10-14). A component's groups come from its structure
 (thermo SMARTS) and must pass the atom balance; DDBST's published assignment is the check. When the two differ, DDBST's
 is used (`CHOSEN` in `mod_unifac_2.py`); a substituted ring carbon counted in the ring's subgroup, as DDBST does, may
-leave the balance one H over, which is stated. Without a DDBST assignment, the structure-based one is used after a
+leave the balance one H over per such ring (THF, (CH2)2CB, FURFURAL; isosorbide's two THF rings: two H), which is
+stated. Where DDBST's assignment itself fails the atom balance (solketal, as the thermo library lists it), it is not
+used (`DDBST_FAILS_BALANCE`). Without a DDBST assignment, the structure-based one is used after a
 check of the structure (`REVIEWED`), or corrected when it is plainly wrong (`FROM_STRUCTURE`). A ring the method has
 no subgroup for is built from the groups it has (the maintainer, 2026-10-14): a furan ring as the ether CH-O (CHO), one
 C=C and a ring CH, with what is not represented (the second double bond, the aromatic character) stated. An
@@ -265,7 +267,17 @@ vapour-fraction specification is refused with the reason. Its liquid enthalpy is
 capacity from 298.15 K, so its reference state is the liquid there; that is enough for energy balances without
 reactions. `measured_components.py` (`build_nonvolatile`) builds it from the measured values that meet the targets,
 with the heat capacity predicted where none is measured. A volatile liquid without open vapour pressures (solketal,
-alpha-angelica lactone) is not made nonvolatile: that would make every distillation with it wrong. Terephthalic acid is a nonvolatile liquid up to an assumed melting temperature of 400 degC, by the
+alpha-angelica lactone) is not made nonvolatile: that would make every distillation with it wrong.
+
+**Liquids without an open vapour pressure** (the maintainer, 2026-10-20): such a component is added with a "no open
+data" marker for its vapour pressure (`vapourPressure_missing`, with the sources searched; `build_no_vp` in
+`measured_components.py`) and its other records from measured data. It has no normal boiling point, critical
+constants or vapour records. Activity coefficients, liquid-liquid and solid-liquid equilibria work with it; whatever
+needs its vapour pressure (bubble and dew points, flashes, vapour-liquid diagrams) refuses with the sources searched,
+until the user gives a vapour pressure of their own in My data (proposal 0012). No vapour pressure is predicted:
+SIMPOL.1, the only open group-contribution method that covers these molecules, was checked on 109 CHEPTA components and
+not accepted (errors of a factor of 2 and more). Supplier catalogues and compilations that give a single boiling point
+are listed in the marker, never fitted (section 1). Terephthalic acid is a nonvolatile liquid up to an assumed melting temperature of 400 degC, by the
 maintainer's choice (2026-10-17; it sublimes at 402-404 degC). Nor is a substance
 that is distilled or sublimed in its own processes (lactide, isosorbide, BHMF, dimethyl FDCA, levoglucosan; held in
 batch 4 for want of an open liquid vapour pressure). A substance whose measured volatility is negligible beside its

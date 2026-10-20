@@ -748,6 +748,177 @@ Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 
 | vapourThermalConductivity | — | — | — | — | not defined |
 | surfaceTension | — | — | — | — | no open data |
 
+## Glycerol carbonate (C4H6O4, CAS 931-40-8)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 118.0880 g/mol
+- Constants: Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-20)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009). Tb: not reached, the measured vapour pressures stay below 101.325 kPa.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| Vapour pressure | 330.20-455.61 | 29 | 0 | 6.8 % | ThermoML, WebBook |
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | 283.15-373.15 | 10 | 0 | 0.55 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 3.1 %, above the 1 % target, used because the only alternative is a prediction |
+| heatOfVaporization | 330.20-455.61 | 25 | 0 | 0.0001 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+## Solketal (C6H12O3, CAS 100-79-8)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 132.1577 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | 293.15-323.15 | 5 | 0 | 0.39 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data |
+| heatOfVaporization | — | — | — | — | no open data (needs the vapour pressure (Clapeyron) or calorimetric values over a range) |
+| liquidViscosity | — | — | — | — | no open data (no open data over a temperature range) |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+## alpha-Angelica lactone (C5H6O2, CAS 591-12-8)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 98.0999 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | 288.15-323.15 | 8 | 0 | 0.00096 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data |
+| heatOfVaporization | — | — | — | — | no open data (needs the vapour pressure (Clapeyron) or calorimetric values over a range) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+## Lactide (C6H8O4, CAS 95-96-5)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 144.1253 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data |
+| heatOfVaporization | — | — | — | — | no open data (needs the vapour pressure (Clapeyron) or calorimetric values over a range) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+## Isosorbide (C6H10O4, CAS 652-67-5)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 146.1412 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data |
+| heatOfVaporization | — | — | — | — | no open data (needs the vapour pressure (Clapeyron) or calorimetric values over a range) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+## Levoglucosan (C6H10O5, CAS 498-07-7)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 162.1406 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data |
+| heatOfVaporization | — | — | — | — | no open data (needs the vapour pressure (Clapeyron) or calorimetric values over a range) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+## Dimethyl 2,5-furandicarboxylate (C8H8O5, CAS 4282-32-0)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 184.1461 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data |
+| heatOfVaporization | — | — | — | — | no open data (needs the vapour pressure (Clapeyron) or calorimetric values over a range) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+## 2,5-Bis(hydroxymethyl)furan (C6H8O3, CAS 1883-75-6)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 128.1259 g/mol
+- Constants: MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data |
+| heatOfVaporization | — | — | — | — | no open data (needs the vapour pressure (Clapeyron) or calorimetric values over a range) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+## Levoglucosenone (C6H6O3, CAS 37112-31-5)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 126.1100 g/mol
+- Constants: Formula, structure and CAS: PubChem CID 699486 (Levoglucosenone), https://pubchem.ncbi.nlm.nih.gov/compound/699486; MW from the formula (chemicals library, MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data |
+| heatOfVaporization | — | — | — | — | no open data (needs the vapour pressure (Clapeyron) or calorimetric values over a range) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
+## 5-(Ethoxymethyl)furfural (C8H10O3, CAS 1917-65-3)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 154.1632 g/mol
+- Constants: Formula, structure and CAS: PubChem CID 12648080 (Ethoxymethylfurfural), https://pubchem.ncbi.nlm.nih.gov/compound/12648080; MW from the formula (chemicals library, MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | — | — | — | — | no open data |
+| heatOfVaporization | — | — | — | — | no open data (needs the vapour pressure (Clapeyron) or calorimetric values over a range) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
 ## Terephthalic acid (C8H6O4, CAS 100-21-0)
 
 - Nonvolatile (no vapour pressure; it stays in the liquid): the maintainer's choice (2026-10-17): terephthalic acid is kept a liquid that does not evaporate up to an assumed melting temperature of 400 degC; it sublimes at 402-404 degC at atmospheric pressure (ECHA registration dossier, free to read), and in its liquid-phase processes (oxidation and crystallization in acetic acid and water) it does not evaporate. Until 2026-10-17 it was a ChemSep component, whose liquid records covered only temperatures above 700 K; M 166.1308 g/mol

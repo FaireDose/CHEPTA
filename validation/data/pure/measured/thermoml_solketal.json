@@ -2,8 +2,8 @@
  "component": "solketal",
  "cas": "100-79-8",
  "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
- "retrieved": "2026-10-14",
- "searched": "ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"isopropylidene glycerol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\"; 5 records opened",
+ "retrieved": "2026-10-20",
+ "searched": "ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened",
  "about": "Values as stored in the archive records (property units as named); 'uncertainty' is the expanded (or combined) uncertainty stated there; 'binary_with' marks the pure end point of a binary set.",
  "articles": {
   "10.1016/j.fluid.2015.07.016": {
