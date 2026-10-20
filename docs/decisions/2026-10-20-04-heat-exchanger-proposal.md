@@ -25,4 +25,26 @@
   - Allowable stresses: no open table. ASME Section II, Part D is paywalled; the Northwestern process-design wiki
     quotes it (12,900 psi for 304 stainless at 500 °F) and states no licence.
   - Material by pressure, default efficiencies, utility temperature levels: no open source found.
-- **Next:** the maintainer's answers to the six questions; then step 1.
+- **The maintainer's answers (2026-10-20):** "1-4 do what you recommend, 5- add a typical recommendation as default,
+  6- i do not understand, but if i have a heat exchanger where i put two streams i expect that i can put one from
+  recycle. we do not need to do pinch analysis now." Recorded in the proposal (status Accepted):
+  1. Lienhard and Lienhard's numbers are taken, cited by table and page;
+  2. the allowable stress is the user's;
+  3. no material recommendation from the pressure;
+  4. the low end of a U range by default;
+  5. pump and compressor efficiencies default to a typical value from an open source, found in their step (a first
+     search found only trade pages and an irrigation extension page; the US Department of Energy's public-domain
+     sourcebooks are the next place to look);
+  6. a recycle into a two-stream exchanger is torn as any material recycle; a loop closed by an energy stream is torn
+     on its duty; no pinch analysis.
+- **Also asked:** "the energy stream can put only at the heat exchanger, or other units as well? I assume at heat
+  exchanger, or heater, if i select the outlet temperature, then the energy stream calculates the duty itself,
+  otherwise it calculates the outlet temperature if i define the energy stream." Yes: every block with a duty takes
+  one (heater / cooler, flash drum, component separator, later reactors), and pumps and compressors take a work
+  stream. Given the outlet state, the energy stream is a result; given the energy stream, the outlet is calculated
+  (proposal section 6, the table).
+- **Added to the proposal (section 9, step 7):** charts for gases and mixtures with the steam charts, asked the same
+  day ("phase envelopes of different gases ... so I know where to compress them, something like an enthalpy entropy
+  diagram ... maybe you can combine this with steam properties from water"): the envelope traced through the critical
+  point, and P-H, T-S and H-S charts.
+- **Next:** step 1, the heat-exchange calculation, in its own pull request after this one.
