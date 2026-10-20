@@ -27,7 +27,7 @@ import { HENRY_GASES } from "../thermo/henry.js";
 import { system } from "../system.js";
 import {
   VIEWS, PRESETS, initialState, applyPatch, TIER_SHORT, fmtP, parseP, parseT, fmtTemp, pxyTemperature,
-  RULES, ruleOf, setsFor, setChoices, pairKeyOf, modelLabel, feedbackLinks, claudeMessage, userOverlay,
+  RULES, ruleOf, setsFor, setChoices, pairKeyOf, modelLabel, feedbackLinks, aiChatMessage, AI_CHATS, userOverlay,
 } from "./app-logic.js";
 import { diagramXlsx, exportFileName } from "./diagram-export.js";
 import { modelPicker, liquidPicker } from "./model-picker.js";
@@ -940,37 +940,69 @@ export function app(target, cfg = {}) {
         h("p", { class: "fa-in-hint" }, "A security problem: report it privately, as SECURITY.md says, not in a public issue.")));
   }
 
-  /** The Claude panel: a new claude.ai chat that loads this workbench as an artifact (the person's own account). */
-  function claudePanel() {
+  /** The AI chat panel: a new chat with Claude, ChatGPT or Gemini that loads this workbench as a live page (the
+   *  person's own account), or the page as a file for Ollama, whose chats show no live pages. */
+  function aiChatPanel() {
     const v = state.view, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
-    const { message, url, left } = claudeMessage({ version: pkg.version, components: check.ok ? check.use : [],
-      model: state.model, P_kPa: state.P_kPa, view: v });
-    const text = h("textarea", { class: "fa-csv-text", rows: 8, readonly: true, "aria-label": "The message for Claude",
-      "data-fk": "claude-message" }, message);
-    const note = h("p", { class: "fa-in-hint", role: "status", "data-fk": "claude-status" });
-    const copy = async () => {
-      try { await navigator.clipboard.writeText(message); note.textContent = "Copied. Paste it into a new chat on claude.ai."; }
-      catch { text.select(); note.textContent = "Selected: copy it with Ctrl+C (Cmd+C on a Mac), then paste it into a new chat on claude.ai."; }
+    const opts = { version: pkg.version, components: check.ok ? check.use : [], model: state.model, P_kPa: state.P_kPa, view: v };
+    const shown = ui.aiChat ?? "claude";
+    const msg = aiChatMessage(shown, opts);
+    const note = h("p", { class: "fa-in-hint", role: "status", "data-fk": "ai-status" });
+    const text = h("textarea", { class: "fa-csv-text", rows: 8, readonly: true, "aria-label": `The message for ${AI_CHATS[shown].label}`,
+      "data-fk": "ai-message" }, msg.message);
+    // copied: the note says so; not (the browser refuses the clipboard): the note says what to do instead
+    const copy = async (id, done, instead) => {
+      const { message } = aiChatMessage(id, opts);
+      try { await navigator.clipboard.writeText(message); note.textContent = done; }
+      catch { if (id === shown) text.select(); note.textContent = instead; }
     };
+    const download = () => {
+      const html = `<!doctype html>\n<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CHEPTA workbench</title></head>\n<body>${msg.page}</body></html>\n`;
+      const a = h("a", { href: URL.createObjectURL(new Blob([html], { type: "text/html" })), download: "chepta-workbench.html" });
+      document.body.append(a); a.click(); a.remove();
+    };
+    const open = id => {
+      const a = AI_CHATS[id], m = aiChatMessage(id, opts);
+      return h("a", { class: "fa-mini", href: m.url, target: "_blank", rel: "noopener", "data-fk": `ai-open-${id}`,
+        on: { click: () => { ui.aiChat = id; copy(id, a.prefill
+          ? `The message is copied as well: if ${a.label} opens with an empty box, paste it.`
+          : `The message is copied: paste it into the new ${a.label} chat (${a.label} does not take a message from a link).`,
+          `If ${a.label} opens with an empty box, copy the message for ${a.label} below (choose it in For) and paste it.`); } } },
+        icon("spark", 15), a.label);
+    };
+    const ollama = h("button", { type: "button", class: "fa-mini", "data-fk": "ai-open-ollama",
+      on: { click: () => { download(); copy("ollama", "Downloaded chepta-workbench.html: open it in your browser. The message for your Ollama chat is copied: paste it there.",
+        "Downloaded chepta-workbench.html: open it in your browser. For your Ollama chat, choose Ollama in For below and copy the message."); } } },
+      icon("download", 15), "Ollama");
+    const pick = h("select", { id: `fa-ai-pick-${uid}`, "data-fk": "ai-pick", on: { change: ev => { ui.aiChat = ev.target.value; set({}, { canvas: false }); } } },
+      ...Object.entries(AI_CHATS).map(([id, a]) => h("option", { value: id, selected: id === shown }, a.label)));
     return h("div", { class: "fa-dgrid" },
-      drawerSection("A new chat",
-        h("p", {}, "Opens a new chat on claude.ai with a message that loads this workbench as an artifact, with your components, model and pressure, and asks Claude to introduce what you can do together."),
-        h("div", { class: "fa-in-actions" },
-          h("a", { class: "fa-mini", href: url, target: "_blank", rel: "noopener", "data-fk": "claude-open" }, icon("spark", 15), "Open in Claude"),
-          h("button", { type: "button", class: "fa-mini", "data-fk": "claude-copy", on: { click: copy } }, icon("copy", 15), "Copy the message")),
+      drawerSection("Open a new chat",
+        h("p", {}, "A new chat with your AI assistant, with a message that loads this workbench as a live page (your components, model and pressure) and asks the assistant to introduce what you can do together."),
+        h("div", { class: "fa-in-actions fa-wrap" }, open("claude"), open("chatgpt"), open("gemini"), ollama),
         note,
-        left.length ? h("p", { class: "fa-in-hint" }, `Your own components (${left.join(", ")}) are left out: the new chat does not have this project's data. Save the project (File) and attach it to the chat to use them there.`) : null),
-      drawerSection("The message", text),
+        msg.left.length ? h("p", { class: "fa-in-hint" }, `Your own components (${msg.left.join(", ")}) are left out: the new chat does not have this project's data. Save the project (File) and attach it to the chat to use them there.`) : null),
+      drawerSection("The message",
+        h("label", { class: "fa-field", for: pick.id }, h("span", {}, "For"), pick),
+        text,
+        h("div", { class: "fa-in-actions" },
+          h("button", { type: "button", class: "fa-mini", "data-fk": "ai-copy", on: { click: () => copy(shown, "Copied.", "The browser does not allow copying here: the message is selected; copy it with Ctrl+C (Cmd+C on a Mac).") } }, icon("copy", 15), "Copy the message"),
+          h("button", { type: "button", class: "fa-mini", "data-fk": "ai-download", on: { click: download } }, icon("download", 15), "Download the page"))),
       drawerSection("How it works",
-        h("p", { class: "fa-in-hint" }, "It uses your own Claude account (any plan) and costs nothing extra. Nothing is sent from this page: the link only opens claude.ai with the message typed in. If claude.ai shows it without sending it, press Send; if the box stays empty, use Copy the message and paste it."),
-        h("p", { class: "fa-in-hint" }, "Claude then builds the workbench in the chat from the published library on jsDelivr, the same as the start prompts in CHEPTA's ai folder.")));
+        h("p", { class: "fa-in-hint" }, "Your own account does the work, on any plan, and costs nothing extra. Nothing is sent from this page: a button only opens the assistant's site, and copies the message so that you can paste it if the box stays empty."),
+        h("ul", { class: "fa-feedback" },
+          h("li", {}, h("b", {}, "Claude: "), "builds the workbench as an artifact (tested)."),
+          h("li", {}, h("b", {}, "ChatGPT: "), "builds it in a canvas with a preview (not tested yet; please report)."),
+          h("li", {}, h("b", {}, "Gemini: "), "the link opens Gemini without the message: paste it. Gemini builds it in Canvas (not tested yet)."),
+          h("li", {}, h("b", {}, "Ollama: "), "runs on your computer, and its chats show no live pages: the button downloads the workbench as a page to open in your browser, and copies a message for your Ollama chat.")),
+        h("p", { class: "fa-in-hint" }, "The workbench comes from the published library on jsDelivr, the same as the start prompts in CHEPTA's ai folder.")));
   }
 
   function drawerBody(id) {
     const u = state.units;
     if (id === "project") return projectPanel();
     if (id === "feedback") return feedbackPanel();
-    if (id === "claude") return claudePanel();
+    if (id === "aichat") return aiChatPanel();
     // My data (proposal 0012): it redraws itself; a change of the data recalculates the canvas
     if (id === "mydata") {
       if (ui.mydataWin) {
