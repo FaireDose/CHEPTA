@@ -70,16 +70,20 @@ export function feedbackLinks({ version = "", setup = "", repo = REPO_URL } = {}
 const START_VIEWS = ["txy", "ternary", "azeotropes", "pxy", "envelope", "flash", "henry", "solid", "sle", "properties", "steam"];
 
 /**
- * The AI assistants of the AI chat panel: where a new chat opens (`url`, with the message in `?q=` where the site
- * fills it in) and how the assistant shows a live page. Whether a site fills the message in from the link is not
- * documented by the vendors (2026-10-20): claude.ai and ChatGPT are widely reported to, Gemini needs an extension, and
- * Ollama runs on the person's own computer with no web address; every button also copies the message.
+ * The AI assistants of the AI chat panel: where a new chat opens (`url`, with the message in the query parameter
+ * `param` where the site fills it in) and how the assistant shows a live page. Whether a site fills the message in from
+ * the link is not documented by most vendors (2026-10-20): claude.ai and ChatGPT are widely reported to take `?q=`;
+ * HuggingChat (open-weight models, Hugging Face's open-source chat-ui) takes `?prompt=` in its source code
+ * (src/lib/utils/linkParams.ts: the box is filled and the person presses send); Gemini takes no message from a link
+ * without a browser extension; Ollama runs on the person's own computer with no web address. Every button also copies
+ * the message.
  */
 export const AI_CHATS = {
-  claude: { label: "Claude", url: "https://claude.ai/new", prefill: true, page: "Make an HTML artifact with exactly this code" },
-  chatgpt: { label: "ChatGPT", url: "https://chatgpt.com/", prefill: true, page: "Make an HTML page in a canvas with exactly this code and show its preview" },
-  gemini: { label: "Gemini", url: "https://gemini.google.com/app", prefill: false, page: "Make an HTML page in Canvas with exactly this code and show its preview" },
-  ollama: { label: "Ollama", url: null, prefill: false, page: null },
+  claude: { label: "Claude", url: "https://claude.ai/new", param: "q", page: "Make an HTML artifact with exactly this code" },
+  chatgpt: { label: "ChatGPT", url: "https://chatgpt.com/", param: "q", page: "Make an HTML page in a canvas with exactly this code and show its preview" },
+  gemini: { label: "Gemini", url: "https://gemini.google.com/app", param: null, page: "Make an HTML page in Canvas with exactly this code and show its preview" },
+  huggingchat: { label: "HuggingChat", url: "https://huggingface.co/chat/", param: "prompt", page: "Make an HTML artifact with exactly this code" },
+  ollama: { label: "Ollama", url: null, param: null, page: null },
 };
 
 /** The workbench page (one line of HTML) opened on the current components, model, pressure and diagram. */
@@ -116,7 +120,7 @@ export function aiChatMessage(assistant, opts = {}) {
       "https://fairedose.github.io/CHEPTA/). Introduce yourself in a few sentences: how you can help me with it " +
       "(choosing components and models, reading phase diagrams, setting up flowsheets, checking results), and ask " +
       "me what I want to do. You cannot run it yourself: tell me what to enter, and I tell you what it shows.";
-  return { message, url: a.url ? (a.prefill ? `${a.url}?q=${encodeURIComponent(message)}` : a.url) : null, left, page };
+  return { message, url: a.url ? (a.param ? `${a.url}?${a.param}=${encodeURIComponent(message)}` : a.url) : null, left, page };
 }
 
 /** Every model of the Model group: activity-coefficient models, then equations of state. */

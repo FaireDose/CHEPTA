@@ -50,7 +50,7 @@ export const UTILITIES = [
   { id: "mydata", label: "My data", icon: "mydata", title: "My data", intro: "Your own property records and components, kept with this project." },
   { id: "sources", label: "Sources", icon: "search", title: "Sources", intro: "Every source behind CHEPTA's data, why it is open and what uses it." },
   { id: "settings", label: "Settings", icon: "units", title: "Settings", intro: "Units, composition basis and panels. They apply to every workspace." },
-  { id: "aichat", label: "AI chat", icon: "spark", title: "AI chat", intro: "Open a new chat with Claude, ChatGPT, Gemini or Ollama that loads this workbench with your components, using your own account." },
+  { id: "aichat", label: "AI chat", icon: "spark", title: "AI chat", intro: "Open a new chat with Claude, ChatGPT, Gemini, HuggingChat or Ollama that loads this workbench with your components, using your own account." },
   { id: "feedback", label: "Feedback", icon: "chat", title: "Feedback", intro: "Report a bug, suggest an improvement or ask a question, on CHEPTA's GitHub pages." },
 ];
 

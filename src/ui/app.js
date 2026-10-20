@@ -940,7 +940,7 @@ export function app(target, cfg = {}) {
         h("p", { class: "fa-in-hint" }, "A security problem: report it privately, as SECURITY.md says, not in a public issue.")));
   }
 
-  /** The AI chat panel: a new chat with Claude, ChatGPT or Gemini that loads this workbench as a live page (the
+  /** The AI chat panel: a new chat with Claude, ChatGPT, Gemini or HuggingChat that loads this workbench as a live page (the
    *  person's own account), or the page as a file for Ollama, whose chats show no live pages. */
   function aiChatPanel() {
     const v = state.view, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
@@ -964,7 +964,7 @@ export function app(target, cfg = {}) {
     const open = id => {
       const a = AI_CHATS[id], m = aiChatMessage(id, opts);
       return h("a", { class: "fa-mini", href: m.url, target: "_blank", rel: "noopener", "data-fk": `ai-open-${id}`,
-        on: { click: () => { ui.aiChat = id; copy(id, a.prefill
+        on: { click: () => { ui.aiChat = id; copy(id, a.param
           ? `The message is copied as well: if ${a.label} opens with an empty box, paste it.`
           : `The message is copied: paste it into the new ${a.label} chat (${a.label} does not take a message from a link).`,
           `If ${a.label} opens with an empty box, copy the message for ${a.label} below (choose it in For) and paste it.`); } } },
@@ -979,7 +979,7 @@ export function app(target, cfg = {}) {
     return h("div", { class: "fa-dgrid" },
       drawerSection("Open a new chat",
         h("p", {}, "A new chat with your AI assistant, with a message that loads this workbench as a live page (your components, model and pressure) and asks the assistant to introduce what you can do together."),
-        h("div", { class: "fa-in-actions fa-wrap" }, open("claude"), open("chatgpt"), open("gemini"), ollama),
+        h("div", { class: "fa-in-actions fa-wrap" }, open("claude"), open("chatgpt"), open("gemini"), open("huggingchat"), ollama),
         note,
         msg.left.length ? h("p", { class: "fa-in-hint" }, `Your own components (${msg.left.join(", ")}) are left out: the new chat does not have this project's data. Save the project (File) and attach it to the chat to use them there.`) : null),
       drawerSection("The message",
@@ -993,7 +993,8 @@ export function app(target, cfg = {}) {
         h("ul", { class: "fa-feedback" },
           h("li", {}, h("b", {}, "Claude: "), "builds the workbench as an artifact (tested)."),
           h("li", {}, h("b", {}, "ChatGPT: "), "builds it in a canvas with a preview (not tested yet; please report)."),
-          h("li", {}, h("b", {}, "Gemini: "), "the link opens Gemini without the message: paste it. Gemini builds it in Canvas (not tested yet)."),
+          h("li", {}, h("b", {}, "Gemini: "), "Google gives no way to put a message into a Gemini link, so Gemini opens with an empty box: paste the message (Ctrl+V, Cmd+V on a Mac) and send it. Gemini builds it in Canvas (not tested yet)."),
+          h("li", {}, h("b", {}, "HuggingChat: "), "open-weight models on Hugging Face (a free account). The message is filled in; press send. Its default model builds the workbench as an artifact (not tested yet)."),
           h("li", {}, h("b", {}, "Ollama: "), "runs on your computer, and its chats show no live pages: the button downloads the workbench as a page to open in your browser, and copies a message for your Ollama chat.")),
         h("p", { class: "fa-in-hint" }, "The workbench comes from the published library on jsDelivr, the same as the start prompts in CHEPTA's ai folder.")));
   }
