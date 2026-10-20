@@ -2958,6 +2958,18 @@
         "validation/data/vle/2-propanol_mibk_10-1016-j-fluid-2005-05-024_330.0K.json"
       ]
     },
+    "pubchem": {
+      "title": "PubChem (compound records: formula, SMILES, InChI)",
+      "authors": "National Library of Medicine, National Center for Biotechnology Information",
+      "kind": "databank",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/",
+      "access": "Free to read online; computed descriptors in the public domain",
+      "note": "Used for the identity of components that the chemicals library files under another stereo form; the records are stored in validation/data/pure/identity/.",
+      "files": [
+        "validation/data/pure/identity/",
+        "validation/python/pubchem.py"
+      ]
+    },
     "qian2013-1-propanol-ethylene-glycol": {
       "title": "(Vapour + liquid) equilibria in the ternary system (acetonitrile + n-propanol + ethylene glycol) and corresponding binary systems at 101.3 kPa",
       "authors": "G. F. Qian, W. Liu, L. T. Wang, D. C. Wang, H. Song",

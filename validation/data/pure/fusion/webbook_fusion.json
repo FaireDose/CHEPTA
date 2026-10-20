@@ -4821,6 +4821,11 @@
    }
   ]
  },
+ "muconic-acid": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C1119728&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
+  "none": "no phase-change data on the page"
+ },
  "n-butane": {
   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C106978&Units=SI&Mask=4",
   "retrieved": "2026-10-07",
@@ -7417,6 +7422,24 @@
     "method": "DSC",
     "reference": "Domalski and Hearing, 1996",
     "comment": "See also Barone, Gatta, et al., 1990.; AC"
+   }
+  ]
+ },
+ "xylose": {
+  "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C58866&Units=SI&Mask=4",
+  "retrieved": "2026-10-20",
+  "one_dimensional": {
+   "Tfus": [],
+   "Ttriple": [],
+   "ΔfusH": []
+  },
+  "enthalpy_of_fusion": [
+   {
+    "Hfus_kJ_mol": 31.7,
+    "T_K": 416.2,
+    "method": "",
+    "reference": "Jónsdóttir, Cooke, et al., 2002",
+    "comment": ""
    }
   ]
  }

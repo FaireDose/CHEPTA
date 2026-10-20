@@ -38,7 +38,7 @@ P_MAX_KPA = 110.0
 
 
 def inchi_index(comps):
-    from chemicals.identifiers import search_chemical
+    from pubchem import chemical as search_chemical  # PubChem where `chemicals` files the compound under another form
     out = {}
     for cid, c in comps.items():
         try:

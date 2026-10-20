@@ -130,6 +130,17 @@ SEEDS = {
         "note": "Values cited per record, not redistributed as a database.",
         "files": ["validation/report/reference/", "validation/data/pure/fusion/webbook_fusion.json"],
     },
+    # validation/python/pubchem.py docstring: the identity (formula, structure, CAS) of D-xylose and cis,cis-muconic acid
+    "pubchem": {
+        "title": "PubChem (compound records: formula, SMILES, InChI)",
+        "authors": "National Library of Medicine, National Center for Biotechnology Information",
+        "kind": "databank",
+        "url": "https://pubchem.ncbi.nlm.nih.gov/",
+        "access": "Free to read online; computed descriptors in the public domain",
+        "note": "Used for the identity of components that the chemicals library files under another stereo form; the "
+                "records are stored in validation/data/pure/identity/.",
+        "files": ["validation/python/pubchem.py", "validation/data/pure/identity/"],
+    },
     # validation/python/thermoml_read.py docstring ("the archive is public, NIST open license"); the
     # pure-component values of validation/python/measured_components.py (proposal 0008, Part B)
     "nist-thermoml-archive": {
@@ -335,6 +346,7 @@ def text_rules(val):
         (r"open-source thermo library", "thermo-library"),
         (r"NIST Chemistry WebBook", "nist-webbook"),
         (r"NIST TRC ThermoML Archive", "nist-thermoml-archive"),
+        (r"PubChem CID", "pubchem"),
         (r"IAPWS G7-04", "iapws-g7-04"),
         (r"iapws Python package", "iapws-python"),
         (r"Sander, Compilation of Henry's law constants", "sander2023-henry"),

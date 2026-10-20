@@ -28,7 +28,7 @@ OUT = ROOT / "validation" / "data" / "vle" / "archive_index.json"
 
 
 def inchi_index():
-    from chemicals.identifiers import search_chemical
+    from pubchem import chemical as search_chemical  # PubChem where `chemicals` files the compound under another form
     out = {}
     for cid, c in COMPS.items():
         try:
