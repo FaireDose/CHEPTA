@@ -304,3 +304,17 @@ test("P-x-y temperature: set, or 85 % of the lowest critical temperature rounded
   assert.equal(pxyTemperature(initialState({ components: ["methane", "ethane"] })), T);
   assert.equal(pxyTemperature(initialState({ components: ["methane", "ethane"], T_K: 150 })), 150);
 });
+
+test("phase envelope with an activity model: the top pressure and the readout's note (2026-10-20: the note read an undefined Pmax)", async () => {
+  const { envelopeTop, envelopeNote, initialState: init } = await import("../src/ui/app-logic.js");
+  const units = init().units;
+  const sys = CHEPTA.system({ components: ["ethanol", "water"] });
+  const comps = ["ethanol", "water"].map(id => pure(id));
+  const Pmax = envelopeTop(sys, comps);
+  assert.equal(Pmax, Math.min(...comps.map(c => c.Pc_kPa)), "the lowest critical pressure");
+  assert.match(envelopeNote(sys, comps, Pmax, units), /With an activity model the curves end at the lowest critical pressure, or where a vapour-pressure record ends \(\d/);
+  const eos = CHEPTA.system({ components: ["nitrogen", "oxygen"], model: "PR" });
+  const gas = ["nitrogen", "oxygen"].map(id => pure(id));
+  assert.equal(envelopeTop(eos, gas), 1.4 * Math.max(...gas.map(c => c.Pc_kPa)));
+  assert.match(envelopeNote(eos, gas, envelopeTop(eos, gas), units), /Near the mixture critical point/);
+});

@@ -25,7 +25,7 @@ import { henry, henryInfo, gasSolubility } from "../thermo/henry.js";
 import { ternaryAzeotropes, binaryAzeotropes } from "../equilibrium/azeotrope.js";
 import { library, sourceEntry } from "../thermo/library.js";
 import {
-  knownIssuesFor, pxyTemperature, tierCounts, tierSummary, normalizeComposition, interpolate, fmtP, fmtTemp, parseP, parseT,
+  knownIssuesFor, pxyTemperature, envelopeTop, envelopeNote, tierCounts, tierSummary, normalizeComposition, interpolate, fmtP, fmtTemp, parseP, parseT,
   setsFor, filterSources, sourceUsedFor, modelLabel, userOverlay,
 } from "./app-logic.js";
 import { HENRY_PAIRS, isEosModel } from "./workspaces.js";
@@ -461,7 +461,7 @@ function envelopeView(ctx) {
   try { sys = modelSystem(state, ids); } catch (e) { throw new Error(friendly(e)); }
   const z = normalizeComposition(state.z, ids.length);
   const reasons = new Map();
-  let series, xLo, xHi, raw;
+  let series, xLo, xHi, raw, Pmax = null;   // Pmax: the top pressure of a mixture's envelope (read by the readout too)
   const comps = ids.map(id => pure(id, own(state)));
   if (ids.length === 1) {
     const Tc = comps[0].Tc_K;
@@ -474,8 +474,7 @@ function envelopeView(ctx) {
     // an equation of state reaches the mixture critical region; the vapour-pressure
     // correlations of an activity model end at the lowest critical pressure
     // (a component without critical constants: the vapour pressure where its record ends)
-    const pTop = c => (Number.isFinite(c.Pc_kPa) ? c.Pc_kPa : c.psat(c.record("vapourPressure").Tmax_K));
-    const Pmax = sys.kind === "eos" ? 1.4 * Math.max(...comps.map(c => c.Pc_kPa)) : Math.min(...comps.map(pTop));
+    Pmax = envelopeTop(sys, comps);
     const Ps = linspace(Math.log(10), Math.log(Pmax), 46).map(Math.exp);
     const bub = [], dew = [];
     raw = [];
@@ -496,11 +495,7 @@ function envelopeView(ctx) {
     const vals = series.map(sr => interpSegs(sr.segments, Tx));
     read.replaceChildren(h("div", { class: "fug-eyebrow" }, `At ${fmtShort(+Tx.toFixed(2))} ${tU(u)}`),
       ...series.map((sr, i) => h("div", { class: "fa-row" }, h("span", {}, ids.length === 1 ? "Vapour pressure" : `${sr.name} pressure`), h("b", {}, vals[i] == null ? "–" : `${fmtNum(vals[i], 4)} ${u.P}`))),
-      h("div", { class: "fug-sub" }, ids.length === 1
-        ? `Equation-of-state vapour pressure up to the critical point (open circle), ${fmtTemp(comps[0].Tc_K, u)}, ${fmtP(comps[0].Pc_kPa, u)}.`
-        : sys.kind === "eos"
-          ? "Liquid left of the bubble curve, vapour right of the dew curve. Near the mixture critical point the solver stops; no curve is drawn there."
-          : `Liquid left of the bubble curve, vapour right of the dew curve. With an activity model the curves end at the lowest critical pressure, or where a vapour-pressure record ends (${fmtP(Pmax, u)}); an equation of state reaches the critical region.`));
+      h("div", { class: "fug-sub" }, envelopeNote(sys, comps, Pmax, u)));
     return vals;
   };
   const move = drawPlot(plot, { compact, series, x0: xLo, x1: xHi, log: true, xLabel: `T, ${tU(u)}`, yLabel: `P, ${u.P}`, show,
