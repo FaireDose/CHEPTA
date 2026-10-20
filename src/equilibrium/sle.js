@@ -41,7 +41,7 @@ function fusionOf(sys, i, opts) {
   const Tm = opts.Tm_K ?? f?.Tm_K, Hfus = opts.Hfus_J_mol ?? f?.Hfus_J_mol;
   if (!(Tm > 0) || !(Hfus > 0)) {
     throw fail("MISSING_DATA", `${sys.names[i]}: no melting temperature and enthalpy of fusion (no open data in the ` +
-      `NIST WebBook or ChemSep); give Tm_K and Hfus_J_mol.`);
+      `open sources); give Tm_K and Hfus_J_mol, or add them as your own data (in the workbench: My data, Add a property, Melting data).`);
   }
   return { Tm, Hfus, dCp: opts.dCp_J_molK ?? 0 };
 }

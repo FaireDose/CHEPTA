@@ -69,6 +69,15 @@
   - **The atom balance allows one H over per ring subgroup** (THF, (CH2)2CB, FURFURAL), and at least one as before,
     for the database's groups and for the user's own (`src/thermo/formula.js`). This was needed for isosorbide's two
     THF rings.
+- **Melting data in My data** (the maintainer: "it tells me to add some properties, like melting point ... but i do not
+  know where to add these"):
+  - **What was missing:** the engine took one's own melting data, but the My data panel had no form for them.
+  - **The form:** "Add a property" now offers "Melting data": the melting temperature (°C, K or °F) and the enthalpy of
+    fusion (kJ/mol, J/mol, kJ/kg, J/g or cal/mol), with a source.
+  - **The messages:** the refusals say where to add the data (My data, Add a property, then Melting data or Vapour
+    pressure).
+  - **Checked in Chromium:** melting data typed for isosorbide make its solubility in water appear, marked "Uses your
+    own data".
 - **Tests:**
   - **New:** `test/no-vapour-pressure.test.js`.
   - **Changed, with a comment in each:**

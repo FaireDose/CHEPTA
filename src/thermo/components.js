@@ -51,7 +51,7 @@ export function componentRecord(id, userData = null) {
 export function noVapourPressureMessage(c) {
   const m = c.vapourPressure_missing;
   return m
-    ? `No open data for the vapour pressure of ${c.name} (searched: ${(m.searched || []).join(", ")}). Add your own vapour pressure for it in My data; until then calculations that need it (bubble and dew points, flashes, vapour-liquid diagrams) refuse it. Activity coefficients, liquid-liquid and solid-liquid equilibria work without it.`
+    ? `No open data for the vapour pressure of ${c.name} (searched: ${(m.searched || []).join(", ")}). Add your own vapour pressure for it in My data (Add a property, then Vapour pressure); until then calculations that need it (bubble and dew points, flashes, vapour-liquid diagrams) refuse it. Activity coefficients, liquid-liquid and solid-liquid equilibria work without it.`
     : `${c.name} has no vapour-pressure record.`;
 }
 

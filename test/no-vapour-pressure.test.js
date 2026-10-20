@@ -75,3 +75,11 @@ test("the atom balance allows one H over per ring subgroup, as DDBST counts subs
   assert.equal(atomBalance({ 1: 2 }, "C2H5").oneHOver, true);
   assert.equal(atomBalance({ 1: 2 }, "C2H4").oneHOver, false);
 });
+
+test("the user's own melting data make solid solubility work (isosorbide has none open; made-up values, for the test only)", () => {
+  assert.throws(() => system({ components: ["isosorbide", "water"], model: "MOD-UNIFAC-2" }).solidSolubility("isosorbide", 320),
+    /no melting temperature and enthalpy of fusion .*My data, Add a property, Melting data/);
+  const ud = checkUserData({ properties: { isosorbide: { fusion: { Tm_K: 335, Hfus_J_mol: 25000, source: { name: "made-up values for this test" } } } } });
+  const r = system({ components: ["isosorbide", "water"], model: "MOD-UNIFAC-2", userData: ud }).solidSolubility("isosorbide", 320);
+  assert.ok(r.xSolute > 0 && r.xSolute < 1, JSON.stringify(r));
+});
