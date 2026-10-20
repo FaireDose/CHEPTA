@@ -2,8 +2,11 @@
 CAS number (proposal 0009, batch 4: D-xylose, which `chemicals` files as dl-xylose, CAS 25990-60-7; cis,cis-muconic
 acid, which it files without its double-bond geometry under the trans,trans CAS 3588-17-8).
 
-PubChem (https://pubchem.ncbi.nlm.nih.gov/, National Library of Medicine) is free to read and its computed
-descriptors (formula, SMILES, InChI) are in the public domain. Each record is stored as fetched in
+PubChem (https://pubchem.ncbi.nlm.nih.gov/, National Library of Medicine) is free to read. Its computed descriptors
+(formula, SMILES, InChI) are created by NCBI, and "information that is created by or for the US government on this
+site is within the public domain"; material deposited by others keeps its depositors' terms
+(https://www.ncbi.nlm.nih.gov/home/about/policies/). Only the computed descriptors are used. Each record is stored as
+fetched in
 validation/data/pure/identity/<id>.json:
 
   - "compound": the PubChem compound that the component's CAS number names (its title, IUPAC name, formula,
@@ -28,7 +31,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 IDENTITY_DIR = ROOT / "validation" / "data" / "pure" / "identity"
 PUG = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/%s/%s/property/Title,IUPACName,MolecularFormula,SMILES,InChI,InChIKey/JSON"
-ACCESS = "PubChem (National Library of Medicine), free to read; computed descriptors in the public domain"
+ACCESS = ("PubChem (National Library of Medicine), free to read; computed descriptors created by NCBI, in the public "
+          "domain (https://www.ncbi.nlm.nih.gov/home/about/policies/)")
 
 # component id -> CAS, and the PubChem compound of the structure used for groups and matching where it is not the
 # CAS's own (with why)

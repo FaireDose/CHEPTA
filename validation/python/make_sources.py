@@ -136,7 +136,7 @@ SEEDS = {
         "authors": "National Library of Medicine, National Center for Biotechnology Information",
         "kind": "databank",
         "url": "https://pubchem.ncbi.nlm.nih.gov/",
-        "access": "Free to read online; computed descriptors in the public domain",
+        "access": "Free to read online; computed descriptors created by NCBI are in the public domain (NCBI policies, https://www.ncbi.nlm.nih.gov/home/about/policies/); deposited material keeps its depositors' terms",
         "note": "Used for the identity of components that the chemicals library files under another stereo form; the "
                 "records are stored in validation/data/pure/identity/.",
         "files": ["validation/python/pubchem.py", "validation/data/pure/identity/"],
