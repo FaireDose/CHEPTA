@@ -21,6 +21,7 @@ import knownIssues from "../data/known-issues.json" with { type: "json" };
 import { WORKSPACES, UTILITIES, INPUTS, checkInputs, normalizeInputs, seedInputs, isEosModel } from "./workspaces.js";
 import { normalizeUnits, tToDisplay, tFromDisplay, pToDisplay, pFromDisplay, fmtShort } from "./properties-logic.js";
 import { normalizeFlash, FLASH_DEFAULTS } from "./flash-logic.js";
+import { normalizeHx } from "./hx-logic.js";
 import { solidUnitIds } from "./solubility-units.js";
 
 /**
@@ -35,6 +36,7 @@ export const VIEWS = {
   pxy: { workspace: "equilibrium", diagram: true, label: "P-x-y diagram" },
   envelope: { workspace: "equilibrium", diagram: true, label: "Phase envelope" },
   flash: { workspace: "flash", label: "Flash" },
+  hx: { workspace: "hx", label: "Heat exchanger" },
   flowsheet: { workspace: "flowsheet", label: "Flowsheet" },
   henry: { workspace: "solubility", label: "Gas solubility" },
   solid: { workspace: "solubility", label: "Solid solubility" },
@@ -154,7 +156,7 @@ export const PRESETS = [
 ];
 
 export const MAX_COMPONENTS = 6;
-const START_ALIASES = { drum: "flash", eos: "eos", "pt": "envelope", "p-x-y": "pxy", "t-x-y": "txy", vle: "ternary", gases: "henry", solubility: "henry", explorer: "properties", library: "sources",
+const START_ALIASES = { drum: "flash", exchanger: "hx", "heat-exchanger": "hx", eos: "eos", "pt": "envelope", "p-x-y": "pxy", "t-x-y": "txy", vle: "ternary", gases: "henry", solubility: "henry", explorer: "properties", library: "sources",
   solids: "solid", eutectic: "sle", "solid-liquid": "sle" };
 
 const normModel = m => (String(m ?? "NRTL").toUpperCase() === "IDEAL" ? "ideal" : String(m ?? "NRTL").toUpperCase());
@@ -216,9 +218,9 @@ export function viewAvailability(view, ids, model = "NRTL", ud = null) {
       if (liq.length < min) return { enabled: false, use: [], reason: min === 1 ? "Select at least one component." : `With an activity model the phase envelope needs two liquids; ${word(liq.length)} selected.` };
       return { enabled: true, use: liq.slice(0, 6) };
     }
-    case "flash": {
+    case "flash": case "hx": {
       // one component is a pure substance heated, cooled or boiled, with any model
-      if (liq.length < 1) return { enabled: false, use: [], reason: `A flash needs a component; ${word(liq.length)} selected.` };
+      if (liq.length < 1) return { enabled: false, use: [], reason: `A ${view === "hx" ? "heat exchanger" : "flash"} needs a component; ${word(liq.length)} selected.` };
       return { enabled: true, use: liq.slice(0, 6) };
     }
     case "henry": {
@@ -334,6 +336,8 @@ export function initialState(cfg = {}) {
     compareGases: !!cfg.compareGases,
     steamP_kPa: cleanList(cfg.steamP_kPa ?? DEFAULTS.steamP_kPa),
     flash: normalizeFlash(cfg.flash ?? {}, FLASH_DEFAULTS),
+    // the Heat exchanger workspace (proposal 0013): null until a setting is changed (hx-logic.js HX_DEFAULTS)
+    hx: cfg.hx == null ? null : normalizeHx(cfg.hx),
     title: cfg.title,
     sets: normalizeSets(cfg.sets, {}, ud),
     // the user's own data (proposal 0012), as entered (it is saved as written); userOverlay() gives it checked
@@ -511,6 +515,7 @@ export function applyPatch(state, patch = {}) {
   if ("prefer" in patch) next.prefer = normalizePrefer(patch.prefer);
   if ("flowsheet" in patch) next.flowsheet = normalizeFlowsheet(patch.flowsheet, ud);
   if (patch.flash != null) next.flash = normalizeFlash(patch.flash, next.flash);
+  if ("hx" in patch) next.hx = patch.hx == null ? null : normalizeHx(patch.hx, next.hx ?? undefined);
 
   // navigation
   let utility = "utility" in patch ? patch.utility : undefined;

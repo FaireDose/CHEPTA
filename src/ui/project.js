@@ -71,7 +71,9 @@ const copy = v => (v == null ? v : JSON.parse(JSON.stringify(v)));
 export function projectOf(state, { version = "", results, now = new Date() } = {}) {
   const w = {};
   for (const k of KEYS) w[k] = copy(state[k]);
-  if (w.hx == null) delete w.hx;   // the Heat exchanger workspace: kept only when it was used (format 4)
+  // the Heat exchanger workspace: kept only when it was used (format 4), with its components (so the inputs of
+  // format 3 stay as they were)
+  if (w.hx == null) delete w.hx; else w.hx = { ...w.hx, components: copy(state.inputs.hx ?? []) };
   const { steam, hx, ...inputs } = w.inputs;   // steam takes no inputs (always water); the exchanger keeps its own
   w.inputs = inputs;
   const fs = state.flowsheet;
@@ -154,6 +156,11 @@ export function stateFromProject(input) {
     const { z, ...rest } = w.flash;
     cfg.flash = rest;
   }
+  if (w.hx != null) {
+    if (typeof w.hx !== "object" || Array.isArray(w.hx)) throw new Error("workbench.hx must be an object.");
+    const { components, ...rest } = w.hx;
+    cfg.hx = rest;
+  }
   if (doc.title) cfg.title = String(doc.title);
   if (doc.flowsheet != null) cfg.flowsheet = doc.flowsheet;
   if (doc.user_data != null) cfg.userData = doc.user_data;
@@ -163,6 +170,9 @@ export function stateFromProject(input) {
     const { steam, ...inputs } = w.inputs;
     s = applyPatch(s, { inputs });
   }
+  // the Heat exchanger's components: saved with the workspace (format 4); else seeded as a new workbench seeds them,
+  // like the flash's
+  s = applyPatch(s, { inputs: { hx: Array.isArray(w.hx?.components) ? w.hx.components : s.inputs.flash } });
   // compositions after the inputs (new inputs reset them)
   if (w.flash?.z != null) s = applyPatch(s, { flash: { z: w.flash.z } });
   for (const v of ["pxy", "envelope"]) {

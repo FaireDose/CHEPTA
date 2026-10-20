@@ -322,7 +322,7 @@ function sizeHeater(sys, inlet, out, duty, z) {
 /** What a block reports of a sizing (exchangerArea without its streams). */
 const summary = hx => ({
   duty_kW: hx.duty_kW, area_m2: hx.area_m2, U_W_m2K: hx.U_W_m2K, U_how: hx.U_how, UA_kW_K: hx.UA_kW_K, dT_mean_K: hx.dT_mean_K,
-  dT_min_K: hx.dT_min_K, F: hx.F, arrangement: hx.arrangement, shells: hx.shells, zones: hx.zones, hot: hx.hot, cold: hx.cold, notes: hx.notes,
+  dT_min_K: hx.dT_min_K, pinch: hx.pinch, F: hx.F, arrangement: hx.arrangement, shells: hx.shells, zones: hx.zones, hot: hx.hot, cold: hx.cold, notes: hx.notes,
   ...(hx.hot.kind !== "process" ? { utility: hx.hot } : hx.cold.kind !== "process" ? { utility: hx.cold } : {}),
 });
 
@@ -368,8 +368,9 @@ registerUnit({
       const Pc = cold.P_kPa - spec.dP_cold_kPa, Ph = hot.P_kPa - spec.dP_hot_kPa;
       const qMax = Math.min(hot.H_kW - stream(sys, { flow_kmol_h: hot.flows, T_K: cold.T_K, P_kPa: Ph }).H_kW,
         stream(sys, { flow_kmol_h: cold.flows, T_K: hot.T_K, P_kPa: Pc }).H_kW - cold.H_kW);
-      // (10 zones while searching, to a duty within 1e-4 of the largest; the result is sized with the full zones and reports its own dT_min)
-      const dmin = q => { try { return exchangerArea(sys, { ...base(q), U: undefined, zones: 10 }).dT_min_K; } catch (e) { if (e.code === "BAD_INPUT" && /Temperature cross/.test(e.message)) return -1; throw e; } };
+      // (10 zones while searching, to a duty within 1e-5 of the largest; the result is sized with the full zones and reports its own
+      // dT_min; a duty the arrangement cannot reach counts as a temperature cross: the search stays below it)
+      const dmin = q => { try { return exchangerArea(sys, { ...base(q), U: undefined, zones: 10 }).dT_min_K; } catch (e) { if (e.code === "BAD_INPUT" && /Temperature cross|cannot reach these temperatures/.test(e.message)) return -1; throw e; } };
       if (!(dmin(qMax * 1e-6) > spec.value)) throw fail("BAD_INPUT", `Heat exchanger: the inlets are ${+(hot.T_K - cold.T_K).toFixed(2)} K apart, not more than the minimum approach of ${spec.value} K.`);
       // bisection until the upper end has no temperature cross, then the Illinois variant of regula falsi
       let lo = qMax * 1e-6, hi = qMax, flo = dmin(lo) - spec.value, fhi = dmin(hi) - spec.value, cross = fhi <= -1 - spec.value + 1e-12, side = 0;
@@ -381,6 +382,11 @@ registerUnit({
         else { hi = m; fhi = fm; cross = fm <= -1 - spec.value + 1e-12; if (side === -1) flo /= 2; side = -1; }
       }
       hx = exchangerArea(sys, base(lo));
+      // the arrangement (a shell-and-tube or crossflow exchanger) may stop the duty before the smallest difference
+      // reaches dTmin: then the specification cannot be met, and that is said, not returned
+      if (Math.abs(hx.dT_min_K - spec.value) > Math.max(0.05, 0.01 * spec.value)) {
+        throw fail("BAD_INPUT", `Heat exchanger: a ${spec.sizing.arrangement === "shell-and-tube" ? `${spec.sizing.shells ?? 1}-shell exchanger` : "crossflow exchanger"} reaches its limit at ${+hx.duty_kW.toPrecision(4)} kW, where the smallest temperature difference is still ${+hx.dT_min_K.toFixed(2)} K: it cannot approach ${spec.value} K. Put more shells in series, use counterflow, or give a larger minimum approach.`);
+      }
     } else hx = exchangerArea(sys, base(null));
     return { outlets: { hot: hx.outlets.hot, cold: hx.outlets.cold }, duty_kW: 0, sizing: summary(hx), state: { duty_kW: hx.duty_kW } };
   },

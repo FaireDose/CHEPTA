@@ -37,6 +37,8 @@ import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
 import { myDataPanel, PROPERTY_LABEL } from "./my-data-panel.js";
 import { canOpenWindow, openDataWindow } from "./my-data-window.js";
 import { userDataList, setEntryUse } from "./user-data-file.js";
+import { hxInputs, ratingChip } from "./hx-view.js";
+import { HX_DEFAULTS } from "./hx-logic.js";
 import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey } from "./flowsheet-view.js";
 import { projectOf, projectText, projectFileName, stateFromProject } from "./project.js";
 import { browserStore, hostStore, autosave, lastAutosave, clearAutosave } from "./project-store.js";
@@ -49,17 +51,17 @@ const PROPERTY_GLYPHS = [
   ["density", () => "ρ", "Density"], ["enthalpy", () => "h", "Enthalpy"], ["cp", () => ["c", h("sub", {}, "p")], "Heat capacity"],
   ["viscosity", () => "μ", "Viscosity"], ["conductivity", () => "k", "Conductivity"], ["vapourPressure", () => ["P", h("sup", {}, "sat")], "Vapour pressure"],
 ];
-const VIEW_ICON = { flash: "drum", txy: "txy", ternary: "ternary", azeotropes: "azeo", pxy: "pxy", envelope: "envelope", henry: "henry", solid: "flask", sle: "azeo", properties: "curves", steam: "dome" };
+const VIEW_ICON = { flash: "drum", hx: "hx", txy: "txy", ternary: "ternary", azeotropes: "azeo", pxy: "pxy", envelope: "envelope", henry: "henry", solid: "flask", sle: "azeo", properties: "curves", steam: "dome" };
 /** A label inside a sentence: "Ternary map" → "ternary map", but "T-x-y diagram" stays. */
 const lower = s => (/^[A-Z]-/.test(s) ? s : s[0].toLowerCase() + s.slice(1));
 const NEEDS_ACTIVITY = {
   txy: "Two liquids", ternary: "Three liquids", azeotropes: "Two to four liquids", pxy: "Two liquids",
-  envelope: "Two to six liquids", flash: "Two to six liquids", henry: "A gas and a solvent", properties: "One component", steam: "Water",
+  envelope: "Two to six liquids", flash: "Two to six liquids", hx: "One to six liquids", henry: "A gas and a solvent", properties: "One component", steam: "Water",
   solid: "A solid and a solvent", sle: "Two components with melting data",
 };
 const NEEDS_EOS = {
   ...NEEDS_ACTIVITY, txy: "Two components", ternary: "Three components", azeotropes: "Two to four components", pxy: "Two components",
-  envelope: "One to six components", flash: "One to six components",
+  envelope: "One to six components", flash: "One to six components", hx: "One to six components",
 };
 /** What a view needs with the model in use (an equation of state takes gases too). */
 const needsOf = (view, model) => (isEosModel(model) ? NEEDS_EOS : NEEDS_ACTIVITY)[view];
@@ -363,6 +365,18 @@ export function app(target, cfg = {}) {
         modelGroup(),
         group("Composition", seg("Composition basis", [["mole", "mol frac"], ["mass", "wt %"]], state.basis, b => set({ basis: b }))),
       ];
+      case "hx": {
+        const hx = state.hx ?? HX_DEFAULTS;
+        return [
+          group("Calculation", h("div", { class: "fa-stack" },
+            h("div", { class: "fa-locked-row" }, smallButton({ ico: "hx", label: "Design", pressed: true, fk: "hx-design", title: "Pre-sizing: the area for a duty", onClick: () => {} }), ratingChip()),
+            h("div", { class: "fa-hint" }, "Rating comes later"))),
+          group("Exchanger", h("div", { class: "fa-stack" },
+            seg("Exchanger", [["utility", "With a utility"], ["two", "Two streams"]], hx.mode, m => set({ hx: { mode: m } })),
+            h("div", { class: "fa-hint" }, hx.mode === "two" ? "Two process streams" : "A process stream and a utility"))),
+          modelGroup(),
+        ];
+      }
       case "solubility": {
         const views = group("Views", diagramButton("henry", "Gas"), diagramButton("solid", "Solid"), diagramButton("sle", "Solid-liquid"));
         if (v === "henry") return [views,
@@ -525,6 +539,9 @@ export function app(target, cfg = {}) {
           on: { change: ev => { const p = examplesFor("flash", PRESETS, state.model)[+ev.target.value]; if (p) set({ inputs: { flash: p.components } }); } } },
           h("option", { value: "" }, "Examples…"), ...examplesFor("flash", PRESETS, state.model).map((p, i) => h("option", { value: i }, p.label)))) : null));
       if (check.ok) secs.push(feedSection(check.use), specSection());
+      if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
+    } else if (state.workspace === "hx") {
+      secs.push(...hxInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf }));
       if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
     } else if (state.workspace === "solubility" && (v === "solid" || v === "sle")) {
       secs.push(inputsSection(v === "solid" ? "Solid and solvent" : "Components",
@@ -733,6 +750,7 @@ export function app(target, cfg = {}) {
       pxy: `P-x-y diagram at ${fmtTemp(pxyTemperature(state), u)}, ${ml}`,
       envelope: `Bubble and dew points of the feed, ${ml}`,
       flash: `${FLASH_SPECS.find(f => f.id === state.flash.spec).title} flash, ${ml}`,
+      hx: `Pre-sizing ${(state.hx ?? HX_DEFAULTS).mode === "two" ? "between two streams" : "with a utility"}, ${ml}`,
       henry: `Solubility at ${fmtTemp(state.henryT_K, u)} and a gas partial pressure of ${fmtP(state.henryP_kPa, u)}, Henry's law`,
       solid: `Solubility of the solid against temperature, ${ml}`,
       sle: `Solid-liquid diagram with the eutectic, ${ml}`,
@@ -1155,6 +1173,7 @@ export function app(target, cfg = {}) {
       v === "solid" || v === "sle" ? [state.sleT_K, state.solidUnit] : null, state.steamP_kPa, state.sets, state.prefer,
       state.userData,   // the user's own data (proposal 0012): a change or a switch recalculates every view
       v === "flash" ? state.flash : null,
+      v === "hx" ? state.hx : null,
       v === "flowsheet" ? [state.flowsheet, state.userData, ensureUi(ui).sel, ui.fs.auto, ui.fs.solveKey, ui.fs.zoom] : null]);
   };
   let canvasRendered = false, token = 0;

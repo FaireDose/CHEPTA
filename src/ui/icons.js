@@ -35,6 +35,8 @@ const P = {
   separator: '<rect x="6" y="3.5" width="12" height="17" rx="1.5"/><path d="m6 17 12-10" class="a"/>',
   heater: '<circle cx="12" cy="12" r="8"/><path d="M6.5 13.5 9 9l3 6 3-6 2.5 4.5" class="a"/>',
   solve: '<path d="M7 5v14l11-7z" class="a"/>',
+  // a shell-and-tube heat exchanger: the shell, two tubes, the nozzles
+  hx: '<rect x="3" y="7" width="18" height="10" rx="5"/><path d="M6.5 10.5h11M6.5 13.5h11" class="a"/><path d="M8 4.5V7M16 17v2.5"/>',
   lock: '<rect x="5.5" y="10.5" width="13" height="9.5" rx="1.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" class="a"/>',
   column: '<rect x="8.5" y="2.5" width="7" height="19" rx="3.5"/><path d="M8.5 7.5h7M8.5 11h7M8.5 14.5h7" class="a"/><path d="M15.5 4.5h3M15.5 19.5h3M5 12h3.5"/>',
   pump: '<circle cx="11" cy="13" r="7"/><path d="M11 6h9v3" class="a"/><path d="M8 12.5l3-3 3 3" class="a"/><path d="M6 20h10"/>',
