@@ -671,6 +671,23 @@ export function tierSummary(counts, noun = "pair", plural = noun + "s") {
 }
 
 /** Pressure (kPa) as text in the display unit, e.g. "1.01325 bar". */
+/**
+ * The top pressure of a mixture's phase envelope: with an equation of state 1.4 times the highest critical pressure
+ * (it reaches the mixture critical region); with an activity model the lowest critical pressure, or for a component
+ * without critical constants the vapour pressure where its record ends.
+ */
+export function envelopeTop(sys, comps) {
+  const pTop = c => (Number.isFinite(c.Pc_kPa) ? c.Pc_kPa : c.psat(c.record("vapourPressure").Tmax_K));
+  return sys.kind === "eos" ? 1.4 * Math.max(...comps.map(c => c.Pc_kPa)) : Math.min(...comps.map(pTop));
+}
+
+/** The readout's note under the phase envelope: one component, a mixture with an equation of state, or with an activity model up to `Pmax`. */
+export function envelopeNote(sys, comps, Pmax, units) {
+  if (comps.length === 1) return `Equation-of-state vapour pressure up to the critical point (open circle), ${fmtTemp(comps[0].Tc_K, units)}, ${fmtP(comps[0].Pc_kPa, units)}.`;
+  if (sys.kind === "eos") return "Liquid left of the bubble curve, vapour right of the dew curve. Near the mixture critical point the solver stops; no curve is drawn there.";
+  return `Liquid left of the bubble curve, vapour right of the dew curve. With an activity model the curves end at the lowest critical pressure, or where a vapour-pressure record ends (${fmtP(Pmax, units)}); an equation of state reaches the critical region.`;
+}
+
 export const fmtP = (P_kPa, units) => `${fmtShort(pToDisplay(P_kPa, units), 6)} ${units.P}`;
 /** Temperature (K) as text in the display unit, e.g. "25 °C". */
 export const fmtTemp = (T_K, units, digits = 2) => `${+tToDisplay(T_K, units).toFixed(digits)} ${units.T === "K" ? "K" : "°C"}`;

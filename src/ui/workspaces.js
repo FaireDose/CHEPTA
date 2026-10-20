@@ -233,10 +233,14 @@ export function seedInputs(components = [], { gas, solvent, propComponent, model
   };
 }
 
+// views without an Examples menu
+const NO_EXAMPLES = ["properties", "ternary", "envelope"];
+
 /** Ready-made inputs (the Examples menu of the Inputs panel) that fit a view and the model. */
 export function examplesFor(view, presets, model = "NRTL") {
   const spec = INPUTS[view];
-  if (!spec || (spec.kind !== "slots" && spec.kind !== "list") || view === "properties") return [];
+  // no Examples menu on the ternary map and the phase envelope (the maintainer, 2026-10-20: "not needed")
+  if (!spec || (spec.kind !== "slots" && spec.kind !== "list") || NO_EXAMPLES.includes(view)) return [];
   return presets.filter(p => {
     const fits = spec.kind === "slots" ? p.components.length === spec.n : p.components.length >= spec.min && p.components.length <= spec.max;
     return fits && checkInputs(view, normalizeInputs(view, p.components), model).ok;

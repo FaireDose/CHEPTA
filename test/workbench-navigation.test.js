@@ -148,12 +148,14 @@ test("one list of components seeds every view; examples fit their view", () => {
   assert.deepEqual(seedInputs([]).properties, ["water"]);
   assert.deepEqual(seedInputs(["ethanol"], { propComponent: "acetone" }).properties, ["acetone"]);
 
-  for (const v of ["txy", "ternary", "azeotropes", "pxy", "envelope"]) {
+  for (const v of ["txy", "azeotropes", "pxy"]) {
     const ex = examplesFor(v, PRESETS);
     assert.ok(ex.length > 0, v);
     for (const p of ex) assert.equal(checkInputs(v, normalizeInputs(v, p.components)).ok, true, `${v}: ${p.label}`);
   }
   assert.deepEqual(examplesFor("txy", PRESETS).map(p => p.label), ["Ethanol, water", "Benzene, toluene"]);
+  // the ternary map and the phase envelope have no Examples menu (the maintainer, 2026-10-20)
+  for (const v of ["ternary", "envelope"]) for (const m of ["NRTL", "PR"]) assert.deepEqual(examplesFor(v, PRESETS, m), [], `${v}, ${m}`);
   assert.deepEqual(rotateInputs(MAC), ["acetone", "chloroform", "methanol"]);
   assert.deepEqual(rotateInputs(["water", null]), [null, "water"]);
 });
