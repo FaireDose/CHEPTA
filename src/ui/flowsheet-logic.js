@@ -11,15 +11,15 @@
  */
 import { unitType } from "../units/units.js";
 
-/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, P1. */
-export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", product: "P" };
+/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, P1. */
+export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", product: "P" };
 /** The block types of the palette, in order (products are automatic). */
-export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater"];
+export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater", "hx", "valve", "pump"];
 
 const clone = fs => JSON.parse(JSON.stringify(fs));
 const nextId = (taken, prefix) => { let i = 1; while (taken.has(prefix + i)) i++; return prefix + i; };
 const blockIds = fs => new Set(fs.blocks.map(b => b.id));
-const streamIds = fs => new Set([...fs.streams.map(s => s.id), ...fs.blocks.map(b => b.energy).filter(Boolean)]);
+const streamIds = fs => new Set([...fs.streams.map(s => s.id), ...(fs.energyStreams ?? []).map(q => q.id), ...fs.blocks.map(b => b.energy).filter(Boolean)]);
 const portOf = end => { const i = end.lastIndexOf("."); return { block: end.slice(0, i), port: end.slice(i + 1) }; };
 const isProduct = (fs, id) => fs.blocks.find(b => b.id === id)?.type === "product";
 
@@ -41,7 +41,7 @@ function clearSpot(fs, x, y) {
 /** Where the Product of outlet `from` (BLOCK.port) goes: right of the unit, by port, on a free spot. */
 function productSpot(fs, from, k = 0) {
   const src = fs.blocks.find(b => b.id === portOf(from).block);
-  const dy = { vapour: -60, liquid: 60, liquid2: 100 }[portOf(from).port] ?? (k - 0.5) * 70;
+  const dy = { vapour: -60, liquid: 60, liquid2: 100, hot: -40, cold: 40 }[portOf(from).port] ?? (k - 0.5) * 70;
   return clearSpot(fs, (src?.x ?? 0) + 130, (src?.y ?? 0) + dy);
 }
 
@@ -157,7 +157,10 @@ export function removeBlock(fs, id) {
     feeds.push(streamName(s));
   });
   out.blocks = out.blocks.filter(x => x.id !== id);
-  const note = [`Deleted ${blockName(b)}; its streams are kept.`,
+  // its energy streams go with it (an energy stream needs both of its blocks)
+  const gone = (out.energyStreams ?? []).filter(q => q.from === id || q.to === id);
+  if (gone.length) { out.energyStreams = out.energyStreams.filter(q => !gone.includes(q)); if (!out.energyStreams.length) delete out.energyStreams; }
+  const note = [`Deleted ${blockName(b)}; its streams are kept${gone.length ? ` (its energy stream${gone.length > 1 ? "s" : ""} ${gone.map(q => q.id).join(", ")} ${gone.length > 1 ? "are" : "is"} removed)` : ""}.`,
     leave.length ? `${leave.join(", ")} now leave${leave.length === 1 ? "s" : ""} the flowsheet (drag the end onto an inlet to connect again).` : "",
     feeds.length ? `${feeds.join(", ")} now ${feeds.length === 1 ? "starts as a feed stream" : "start as feed streams"} where ${blockName(b)} was; fill in ${feeds.length === 1 ? "its" : "their"} flows or delete ${feeds.length === 1 ? "it" : "them"}.` : ""]
     .filter(Boolean).join(" ");
@@ -352,4 +355,63 @@ export function deleteStream(fs, sid) {
     return { fs: out, note: `Removed the outlet ${sid} of ${src.id}.` };
   }
   return { fs, note: `${sid} is how ${src?.id ?? "a unit"} sends its ${portOf(s.from).port} out of the flowsheet; every outlet must go somewhere. To remove it, delete ${src?.id ?? "the unit"}, or connect ${sid} to another block.` };
+}
+
+// ---------------------------------------------------------------------------------------
+// Energy streams (proposal 0013, section 6): an energy feed into a block, or the heat of one block into another
+
+/** The block types whose duty can be given by an energy stream, and those that can give their heat to one. */
+export const ENERGY_TARGETS = ["heater", "flash"];
+export const ENERGY_SOURCES = ["heater", "flash", "separator"];
+
+/** A block's energy stream, if it has one: { stream, role: "in" | "out" }. */
+export function energyOf(fs, id) {
+  const q = (fs.energyStreams ?? []).find(x => x.to === id || x.from === id);
+  return q ? { stream: q, role: q.to === id ? "in" : "out" } : null;
+}
+
+/** The blocks that can take the heat of `id` (an energy stream into them): a heater or drum without an energy stream. */
+export const energyTargets = (fs, id) => fs.blocks.filter(b => b.id !== id && ENERGY_TARGETS.includes(b.type) && !energyOf(fs, b.id)).map(b => b.id);
+
+/** Give a heater or flash drum an energy feed of `duty_kW` (+ heat in): its duty comes from it, so it needs one specification fewer. */
+export function addEnergyFeed(fs, id, duty_kW = 0) {
+  const out = clone(fs);
+  const b = out.blocks.find(x => x.id === id);
+  if (!b || !ENERGY_TARGETS.includes(b.type)) throw new Error(`${id} takes no energy stream (a heater or a flash drum does).`);
+  if (energyOf(out, id)) throw new Error(`${id} already has an energy stream.`);
+  const qid = nextId(streamIds(out), "Q");
+  (out.energyStreams ??= []).push({ id: qid, to: id, duty_kW });
+  if (b.spec) delete b.spec.duty_kW;   // the duty is the stream's now
+  return { fs: out, id: qid };
+}
+
+/** Send the heat of block `from` (a heater, drum or separator) into block `to` (a heater or drum). */
+export function connectEnergy(fs, from, to) {
+  const out = clone(fs);
+  const a = out.blocks.find(x => x.id === from), b = out.blocks.find(x => x.id === to);
+  if (!a || !ENERGY_SOURCES.includes(a.type)) throw new Error(`${from} gives up no heat (a heater, flash drum or separator does).`);
+  if (!b || !ENERGY_TARGETS.includes(b.type)) throw new Error(`${to} takes no energy stream (a heater or a flash drum does).`);
+  if (from === to) throw new Error("A block cannot send its heat to itself.");
+  if (energyOf(out, from) || energyOf(out, to)) throw new Error(`${energyOf(out, from) ? from : to} already has an energy stream.`);
+  const qid = nextId(streamIds(out), "Q");
+  (out.energyStreams ??= []).push({ id: qid, from, to });
+  if (b.spec) delete b.spec.duty_kW;
+  return { fs: out, id: qid };
+}
+
+/** Remove an energy stream (the block it went into needs its own specification again). */
+export function removeEnergy(fs, qid) {
+  const out = clone(fs);
+  out.energyStreams = (out.energyStreams ?? []).filter(q => q.id !== qid);
+  if (!out.energyStreams.length) delete out.energyStreams;
+  return out;
+}
+
+/** Change an energy feed's duty (kW, + heat in). */
+export function setEnergyDuty(fs, qid, duty_kW) {
+  const out = clone(fs);
+  const q = (out.energyStreams ?? []).find(x => x.id === qid);
+  if (!q || q.from) throw new Error(`${qid} is not an energy feed.`);
+  q.duty_kW = duty_kW;
+  return out;
 }

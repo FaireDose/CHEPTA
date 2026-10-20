@@ -255,6 +255,8 @@ function aliasOf(wanted) {
 export function resolveView(wanted, ids, model = "NRTL", ud = null) {
   let v = aliasOf(wanted);
   if (v === "eos") v = ids.length === 2 ? "pxy" : "envelope";
+  // the flowsheet has its own components and method (state.flowsheet): a start link to it opens it as it is
+  if (v === "flowsheet") return v;
   if (!ids.length) return VIEWS[v] ? v : "txy";
   if (VIEWS[v] && viewAvailability(v, ids, model, ud).enabled) return v;
   const liq = liquids(ids, ud).length;

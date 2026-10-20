@@ -180,3 +180,28 @@ test("the Excel export writes the new blocks' outlets as formulas of their inlet
   const bytes = flowsheetXlsx(fsDoc, res, { version: "test" });
   assert.ok(bytes.length > 1000);
 });
+
+test("editing: new blocks from the palette, an energy feed, a block's heat into another, removed with its block", async () => {
+  const L = await import("../src/ui/flowsheet-logic.js");
+  let fs = { components: ["ethanol", "water"], thermo: { model: "NRTL", vapour: "ideal" }, blocks: [], streams: [] };
+  for (const t of ["hx", "valve", "pump"]) assert.ok(L.PALETTE.includes(t), t);
+  let r = L.addBlock(fs, "hx"); fs = r.fs;
+  assert.equal(r.id, "HX1");
+  assert.deepEqual(fs.streams.map(s => s.from).sort(), ["HX1.cold", "HX1.hot"], "both outlets start as products");
+  assert.deepEqual(L.openInlets(fs).sort(), ["HX1.cold", "HX1.hot"]);
+  fs = L.addBlock(fs, "heater").fs; fs = L.addBlock(fs, "heater").fs;   // E1, E2
+  r = L.addEnergyFeed(fs, "E1", 250); fs = r.fs;
+  assert.deepEqual(fs.energyStreams, [{ id: r.id, to: "E1", duty_kW: 250 }]);
+  assert.throws(() => L.addEnergyFeed(fs, "E1", 5), /already has an energy stream/);
+  assert.throws(() => L.addEnergyFeed(fs, "HX1", 5), /takes no energy stream/);
+  assert.deepEqual(L.energyTargets(fs, "E2"), [], "E1 is taken, HX1 takes none");
+  fs = L.setEnergyDuty(fs, r.id, 300);
+  assert.equal(fs.energyStreams[0].duty_kW, 300);
+  fs = L.removeEnergy(fs, r.id);
+  assert.equal("energyStreams" in fs, false);
+  r = L.connectEnergy(fs, "E1", "E2"); fs = r.fs;
+  assert.deepEqual(L.energyOf(fs, "E2"), { stream: { id: r.id, from: "E1", to: "E2" }, role: "in" });
+  const del = L.removeBlock(fs, "E1");
+  assert.equal("energyStreams" in del.fs, false);
+  assert.match(del.note, /its energy stream Q\d is removed/);
+});

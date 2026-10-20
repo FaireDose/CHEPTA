@@ -101,18 +101,26 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
   `feed` (flow_kmol_h or flow_kg_h, and two of T_K, P_kPa, VF), `mixer` (P_kPa optional),
   `splitter` (fractions, one per outlet, one may be "rest"), `separator` (fractions per
   component, e.g. `{ ethanol: [0.95, "rest"], water: [0.1, "rest"] }`), `flash` (two of T_K,
-  P_kPa, VF, duty_kW), `heater` (one of T_K, duty_kW, VF; P_kPa or dP_kPa optional),
-  `product` (the end of a stream). Every outlet must go to a block or a product. Streams
-  are written "BLOCK.port": feed out; mixer in, out; splitter and separator in, out (one
-  stream per outlet); flash in, vapour, liquid, liquid2 (optional); heater in, out; product in.
-  Splitters, separators and heaters may take several inlets (mixed first).
+  P_kPa, VF, duty_kW), `heater` (one of T_K, duty_kW, VF; P_kPa or dP_kPa optional; optional
+  `sizing: { utility: { kind: "steam", P_kPa: 500 }, U: { service: "steam-water-oil" } }` gives the
+  area), `hx` (two streams: one of T_hot_out_K, T_cold_out_K, VF_hot_out, VF_cold_out, duty_kW,
+  dTmin_K; optional `U` for the area), `valve` (P_kPa or dP_kPa), `pump` (P_kPa or dP_kPa;
+  efficiency, 0.75 if not given), `product` (the end of a stream). Every outlet must go to a
+  block or a product. Streams are written "BLOCK.port": feed out; mixer in, out; splitter and
+  separator in, out (one stream per outlet); flash in, vapour, liquid, liquid2 (optional);
+  heater, valve, pump in, out; hx hot, cold (in and out); product in. Splitters, separators and
+  heaters may take several inlets (mixed first).
+- Energy streams (format 4): `energyStreams: [{ id: "Q1", to: "E1", duty_kW: 500 }]` gives a
+  heater or drum its duty (it then needs one specification fewer: a heater calculates its
+  outlet), and `{ id: "Q2", from: "E2", to: "E3" }` sends one block's heat into another.
 - Before giving me the page, check the project in code you can run:
   `CHEPTA.checkProject(project)` lists every problem (connections and degrees of freedom,
   e.g. "Flash drum V1: missing: one more of T_K, P_kPa, VF or duty_kW"); fix them all.
   `CHEPTA.runFlowsheet(project)` solves it (streams, energy streams in kW, recycles; a
   recycle without a way out throws an error that says so), but the workbench does that
   itself when it opens: see "Let the workbench do the work" below. The schema is at
-  https://fairedose.github.io/CHEPTA/schema/project-2.json.
+  https://fairedose.github.io/CHEPTA/schema/project-4.json
+  (format 2 files: project-2.json).
 - If the user gives a project file (`.chepta.json`), open it the same way with `{ project }`;
   to change it, edit the JSON, check it again and open it.
 

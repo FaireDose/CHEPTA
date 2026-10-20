@@ -222,6 +222,9 @@ section 8 makes it possible:
 
 ## Steps
 
+Steps 1-5 are done, together, as the maintainer asked (2026-10-20: "can you do in the same time 1-5?"), in the pull
+request of this proposal (docs/decisions/2026-10-20-06-heat-exchangers.md).
+
 1. **The heat-exchange calculation** (layer 4): zones, arrangements (F from ε-NTU), U from the three sources, the
    data file from Lienhard and Lienhard, utilities, the wall thickness; tests and the Python reference.
 2. **Unit models, Heat exchanger workspace**: both modes, the material drop-down with the user's own, the thickness,

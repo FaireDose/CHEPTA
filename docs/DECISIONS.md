@@ -144,11 +144,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   allowable stress is the user's; no material recommendation; the low end of a U range; typical efficiencies from an
   open source as defaults; recycles through a two-stream exchanger and loops closed by energy streams are torn; no
   pinch analysis. Steps:
-  1. the heat-exchange calculation;
-  2. the Heat exchanger workspace in Unit models (Rating locked);
-  3. energy streams in the flowsheet, the heater's utility and area;
-  4. the two-stream heat exchanger block;
-  5. valve and pump (an open source for the typical pump efficiency);
+  1-5 done (2026-10-20, docs/decisions/2026-10-20-06-heat-exchangers.md): the heat-exchange calculation (Lienhard
+  and Lienhard's tables, transcribed: the maintainer to compare them with the book), the Heat exchanger workspace in
+  Unit models (Rating locked), energy streams, the heater's sizing, the two-stream block, valve and pump (75 % by
+  default, NC State Extension AG-452-6); project format 4; open: CHEPTA's flash of pure water takes the vapour as an
+  ideal gas or Peng-Robinson, not IAPWS (latent heat about 1.2 % above IF97 at 300 kPa), which a water process stream
+  in an exchanger carries;
   6. mixture entropy, the P-S flash, compressor and expander;
   7. Charts: the gas phase envelope traced through the critical point, P-H, T-S and H-S charts, with the steam charts;
   8. later, Rating.
