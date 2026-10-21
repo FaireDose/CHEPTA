@@ -165,8 +165,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      docs/decisions/2026-10-21-01-phase-envelope.md; neopentane, helium and methylcyclohexane added for its natural
      gases); P-H, T-S and H-S charts, with the steam charts (done 2026-10-21, with step 6: the Steam workspace is now
      Charts; project format 5);
-  next, by the maintainer's request (2026-10-21): every error of the workbench as a small warning that opens its
-  details when pressed;
+  every error of the workbench as a small warning that opens its details when pressed, by the maintainer's request
+  (done 2026-10-21, docs/decisions/2026-10-21-05-warnings.md), with the new logo (docs/decisions/2026-10-21-04-logo.md);
   8. Rating (done 2026-10-21, docs/decisions/2026-10-21-06-rating.md): the duty and outlets of a given area, U and
      arrangement, in the workspace (Design or Rating) and as the flowsheet block's A_m2;
   Then 0010.

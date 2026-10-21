@@ -11,6 +11,7 @@
          font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
   body > header { max-width: 1240px; margin: 0 auto 12px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
   body > header h1 { font-size: 1.6rem; margin: 0; line-height: 1.2; }
+  body > header .chepta-logo { display: block; width: 140px; height: auto; }
   body > header .tagline { display: block; font-size: .95rem; font-weight: normal; }
   body > header a { color: inherit; }
   #app { max-width: 1240px; margin: 0 auto; }
@@ -19,7 +20,7 @@
 </head>
 <body>
 <header>
-    <h1>CHEPTA <span class="tagline">Chemical Engineering Process Tools for Agents</span></h1>
+    <h1><span id="chepta-brand">CHEPTA</span><span class="tagline">Chemical Engineering Process Tools for Agents</span></h1>
   <span style="margin-left: 4rem">
   Open Source Process Simulator<br>
   that calculates in your browser and in AI chats.
@@ -32,6 +33,7 @@
 <script src="chepta.js"></script>
 <script>
   // opens empty: choose components in Inputs, or load one of the Examples
+  document.getElementById("chepta-brand").replaceChildren(CHEPTA.brandLogo());
   CHEPTA.app("#app", { components: [] });
 </script>
   <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "9c08ee7b8beb4e559b8f50d047060233"}'></script><!-- End Cloudflare Web Analytics -->

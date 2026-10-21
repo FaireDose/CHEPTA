@@ -7,6 +7,7 @@
  *
  * A view (layer 6): the tables come from src/ui/pairs-groups-logic.js, the checks from src/thermo/user-data.js.
  */
+import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { h } from "./dom.js";
 import { icon } from "./icons.js";
 import { componentPicker } from "./component-picker.js";
@@ -37,9 +38,9 @@ export function pairSection(env, m, draw) {
     h("div", { class: "fa-in-row fa-wrap" }, pick("a", "Component i"), pick("b", "Component j")), modelSel,
   ];
   if (!p.a || !p.b) return out;
-  if (p.a === p.b) { out.push(h("div", { class: "fug-err", role: "alert" }, "Choose two different components.")); return out; }
+  if (p.a === p.b) { out.push(warning("Choose two different components.", { attrs: { role: "alert" } })); return out; }
   let cols;
-  try { cols = pairColumns(p.a, p.b, p.model, state.userData); } catch (e) { out.push(h("div", { class: "fug-err", role: "alert" }, e.message)); return out; }
+  try { cols = pairColumns(p.a, p.b, p.model, state.userData); } catch (e) { out.push(warning(e.message, { attrs: { role: "alert" } })); return out; }
   const key = JSON.stringify([p.a, p.b, p.model]);
   if (p.loaded !== key) {
     // the person's own set, when there is one, fills the empty column
@@ -79,7 +80,7 @@ export function pairSection(env, m, draw) {
     h("div", { class: "fa-in-actions" },
       h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-pair-compare", on: { click: () => { p.error = ""; draw(); } } }, icon("calc", 15), "Compare"),
       h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-pair-save", on: { click: () => { savePair(env, m, p, names); draw(); } } }, icon("check", 15), "Add to this project")));
-  if (p.error) out.push(h("div", { class: "fug-err", role: "alert", "data-fk": "mydata-pair-error" }, p.error));
+  if (p.error) out.push(warning(p.error, { attrs: { role: "alert", "data-fk": "mydata-pair-error" } }));
   return out;
 }
 
@@ -197,7 +198,7 @@ export function groupsSection(env, m, draw) {
       h("input", { type: "text", id: `fa-md-gsource-${env.uid}`, value: g.source, style: "width:100%", placeholder: "my assignment from the structure", "data-fk": "mydata-grp-source",
         on: { input: ev => { g.source = ev.target.value; } } })),
     h("div", { class: "fa-in-actions" }, h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-grp-save", on: { click: () => { saveGroups(env, m, g, comps); draw(); } } }, icon("check", 15), "Add to this project")));
-  if (g.error) out.push(h("div", { class: "fug-err", role: "alert", "data-fk": "mydata-grp-error" }, g.error));
+  if (g.error) out.push(warning(g.error, { attrs: { role: "alert", "data-fk": "mydata-grp-error" } }));
   return out;
 }
 

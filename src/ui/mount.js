@@ -1,4 +1,5 @@
 import { injectStyles } from "./styles.js";
+import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { h } from "./dom.js";
 import { listComponents, findComponent, modelName } from "../thermo/system.js";
 import { system } from "../system.js";
@@ -140,13 +141,13 @@ export function mount(target, cfg = {}) {
         sys ? h("span", { class: "fug-sub" }, `${n === 2 ? "T-x-y" : "Ternary"} · P = ${state.P} kPa · ${modelName(state.model)} · vapour: ${sys.info.vapour}`) : null),
       state.picker ? picker() : null,
       h("div", { class: "fug-controls" }, seg, h("label", { for: pIn.id }, "Pressure, kPa", pIn), basisSeg, ...checks),
-      ...issues.map(k => h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${modelName(k.model)}): `), k.message, ` Reference: ${k.reference}.`)),
+      ...issues.map(k => warning(`${k.message} Reference: ${k.reference}.`, { title: `Known deviation (${modelName(k.model)}): ${summaryOf(k.message)}` })),
       h("div", { class: "fug-main" }, plot, side),
       h("div", { class: "fug-foot" }, sources.length ? h("div", {}, "Parameter sources:") : null, ...sources,
         h("div", {}, "Calculated live in this page by CHEPTA. Predictions, not measurements. ",
           state.feedbackUrl ? h("a", { href: state.feedbackUrl, target: "_blank", rel: "noopener" }, "Report a problem or suggest data") : null)));
 
-    if (error) { plot.replaceChildren(h("div", { class: "fug-err", role: "alert" }, error)); side.hidden = true; return; }
+    if (error) { plot.replaceChildren(warning(error, { attrs: { role: "alert" } })); side.hidden = true; return; }
     try {
       if (n === 2) renderTxy(plot, side, sys, state.P, view);
       else if (n === 3) renderTernary(plot, side, sys, state.P, {
@@ -154,7 +155,7 @@ export function mount(target, cfg = {}) {
       });
       else throw new Error("The interface shows 2 or 3 components so far. Use the calculation functions for more.");
     } catch (e) {
-      plot.replaceChildren(h("div", { class: "fug-err", role: "alert" }, e.message));
+      plot.replaceChildren(warning(e.message, { attrs: { role: "alert" } }));
       side.hidden = true;
     }
   }

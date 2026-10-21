@@ -23,6 +23,7 @@ import { steam, steamSat } from "./thermo/iapws/steam.js";
 import { mount } from "./ui/mount.js";
 import { mountProperties } from "./ui/properties.js";
 import { app } from "./ui/app.js";
+import { brandLogo } from "./ui/brand.js";
 import { system } from "./system.js";
 import { EOS_MODELS } from "./thermo/system.js";
 import { eosBubbleP, eosBubbleT, eosDewP, eosDewT } from "./equilibrium/phi-phi.js";
@@ -47,7 +48,7 @@ const findComponent = (key, userData = null) =>
   findIn(key, userData && typeof userData === "object" && !Array.isArray(userData) ? checkUserData(userData) : null);   // (map passes an index)
 
 export {
-  system, app,
+  system, app, brandLogo,
   mount, createSystem, listComponents, findComponent, checkUserData, MODELS,
   bubbleT, bubbleP, dewT, dewP, flash, rachfordRice, pureBoilingPoints, txy, pxy, ternaryGrid, residueCurve,
   binaryAzeotropes, findAzeotrope, isLiquidStable, phaseEnvelope, propertyChart, checkPackage, validCas,
