@@ -43,24 +43,40 @@ with the same shape, `registerUnit({ type, inlets, outlets, checkSpec, solve })`
 | `splitter` | The same composition in every outlet, split by fractions |
 | `separator` | Component splitter: a split fraction per component and outlet |
 | `flash` | Flash drum: vapour and liquid outlets at the given conditions or duty; an inert solid leaves with the liquid (a slurry) |
-| `heater` | Heater or cooler: outlet T, VF or duty |
+| `heater` | Heater or cooler: outlet T, VF or duty; with an optional `sizing` (a utility and U), also the area and the utility's flow |
+| `hx` | Heat exchanger between two process streams (ports `hot` and `cold`): one outlet T or VF, the duty, or the minimum approach; with U, the area (proposal 0013) |
+| `valve` | Adiabatic pressure drop: the outlet pressure or the drop |
+| `pump` | A liquid to a higher pressure: power = V ΔP / efficiency (0.75 if not given), V from the liquid densities |
 | `product` | End of a stream |
 
-Every block with a duty has an energy stream (kW, positive = heat in).
+Every block with a duty has an energy stream (kW, positive = heat in); a pump's power is a work stream (`W-` and its
+id). **Energy streams** (proposal 0013, `energyStreams` of the document, format 4): an energy feed gives a heater or a
+flash drum its duty, so it needs one specification fewer (a heater calculates its outlet temperature); a heater, drum or
+separator can send its heat into a heater or drum. They are edges of the graph: they set the order, and a loop closed by
+one is torn on its duty. In the editor, **Energy feed** in the palette places one on the drawing; dragged onto a
+heater/cooler or a flash drum it connects (until then `to` is missing and the flowsheet is not ready). A block's own
+energy stream can be taken out of the drawing (`"energy": false`): its duty is still calculated, listed and counted in
+the energy balance. **Undo** and **Redo** (Edit group; Ctrl + Z, Ctrl + Y) take back and redo every change of the
+flowsheet made in its workspace, 100 at most; the history lasts as long as the page.
+
+**Heat-exchanger sizing** ([`src/units/heat-exchange.js`](../../src/units/heat-exchange.js), the reference in
+[heat-exchangers.md](heat-exchangers.md)): zones along each side's temperature-heat curve, the arrangement's correction
+F from effectiveness-NTU, U from a service, from film coefficients and a wall, or the user's.
 
 **Degrees of freedom:** `specStatus` and `flowsheetStatus` count what each block needs, what is
 given, and what is missing or extra. A flowsheet is solved only when every block is complete.
 
-**Shown as "coming later" in the workbench:** pump, compressor, valve, reactors, distillation and
-extraction. Reactors are designed in proposal 0010 (Draft).
+**Shown as "coming later" in the workbench:** compressor (after the mixture entropy, proposal 0013 step 6), reactors,
+distillation and extraction. Reactors are designed in proposal 0010 (Draft).
 
 ## Flowsheet document (layer 5)
 
 [`src/flowsheet/document.js`](../../src/flowsheet/document.js) (proposal 0006, step 4) holds the
 components, the method (`thermo`), the blocks with positions, the streams and the solver settings.
 
-- **Where it is kept:** project files of format 2, with the schema in
-  [../schema/project-2.json](../schema/project-2.json).
+- **Where it is kept:** project files of format 2 (format 4 with energy streams or the blocks of proposal 0013), with
+  the schema in [../schema/project-4.json](../schema/project-4.json) ([project-2.json](../schema/project-2.json) for
+  format 2).
 - **Writing and solving it:** an AI assistant can write the document, check it with
   `CHEPTA.checkProject` and solve it with `CHEPTA.runFlowsheet`.
 - **Parameter sets:** `thermo.sets` and `thermo.prefer` choose a pair's set as in `system()`. In the workbench the

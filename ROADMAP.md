@@ -202,7 +202,7 @@ Needs A4, A5 and D6; B1, B2.
 Needs A6, A7, A8, A10, A11.
 
 - [x] Mixer, splitter, component separator, heater/cooler, flash drum, with degrees of freedom and energy streams (proposal 0006, step 2)
-- [ ] Pump, valve
+- [x] Pump, valve (proposal 0013, step 5)
 - [x] Flowsheet solver with recycles; flowsheet drawing and stream tables (proposal 0006, steps 3 and 5)
 - [x] Flowsheet test suite: the Cavett problem against its published solutions, 16 generated recycle flowsheets of 3 to 7 components against an equation-oriented reference, and solver-independence checks ([docs/FLOWSHEET_TESTS.md](docs/FLOWSHEET_TESTS.md))
 - [x] Assistants can write, check and edit flowsheet files (proposal 0006, steps 4 and 7)
@@ -220,8 +220,10 @@ Needs A6, A7, A8, A10, A11.
 Needs A13 and D8.
 
 - [ ] Reactors: conversion, equilibrium (Gibbs energy minimization), CSTR, plug flow
-- [ ] Heat exchangers, compressors and expanders, and further units towards models of all
-      the common unit operations
+- [x] Heat exchangers: pre-sizing in Unit models, the heater's sizing and a two-stream block in the flowsheet, energy
+      streams (proposal 0013, steps 1-4)
+- [ ] Compressors and expanders (proposal 0013, step 6, after the mixture entropy), and further units towards models of
+      all the common unit operations
 - [ ] Reactive systems in flowsheets, with heat of reaction in the energy balance
 
 ### v0.7 – Cost engineering

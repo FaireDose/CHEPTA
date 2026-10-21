@@ -21,6 +21,7 @@ by hand; the script is named at the top of each.
 | [models/thermodynamics.md](models/thermodynamics.md) | Activity models (NRTL, UNIQUAC), Peng–Robinson and SRK, the gamma-phi vapour, pure-component correlations, mixture enthalpy, IAPWS steam, Henry's law, the Library of parameter sets |
 | [models/equilibrium.md](models/equilibrium.md) | Bubble and dew points, flash (vapour-liquid, two liquids, three phases), stability tests, diagrams, azeotropes, residue curves, solid-liquid equilibrium |
 | [models/flowsheet.md](models/flowsheet.md) | Streams, blocks, the flowsheet document and the recycle solver |
+| [models/heat-exchangers.md](models/heat-exchangers.md) | Heat-exchanger pre-sizing (zones, arrangements, U, utilities, wall thickness), valves and pumps |
 | [METHOD_SELECTION.md](METHOD_SELECTION.md) | Which property method for which mixture and conditions |
 
 ## Data and how good it is
@@ -48,5 +49,6 @@ by hand; the script is named at the top of each.
 
 | Page | Covers |
 |---|---|
-| [schema/project-2.json](schema/project-2.json) | JSON schema of project files (format 2, with the flowsheet) |
+| [schema/project-4.json](schema/project-4.json) | JSON schema of project files (formats 2 to 4: the flowsheet, user data, energy streams and the blocks of proposal 0013) |
+| [schema/project-2.json](schema/project-2.json) | JSON schema of project files of format 2 (with the flowsheet) |
 | [../ai/README.md](../ai/README.md) | Instructions and skills for AI assistants; contribution packages |

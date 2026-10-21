@@ -50,9 +50,12 @@ a. **Zones, not one LMTD.** A stream that boils or condenses has a curved temper
    (ΔT ≤ 0 anywhere) is an error that names where, never an area.
 b. **Pressure drop**: given per side (default none), spread evenly over the zones.
 c. **Arrangement**: counterflow (F = 1), cocurrent, one shell pass with 2, 4, ... tube passes, and crossflow, through
-   the effectiveness-NTU relations of Lienhard and Lienhard (Table 3.1 and eqns. 3.20-3.21): for each zone, NTU from
-   ε and R, compared with the counterflow NTU, gives F. An arrangement whose relation has no solution for the zone
-   (ε above the arrangement's limit) is refused with the reason ("needs more shells in series").
+   the effectiveness-NTU relations of Lienhard and Lienhard (Table 3.1 and eqns. 3.20-3.21): NTU from ε and R of the
+   terminal temperatures, compared with the counterflow NTU, gives one F for the exchanger, applied to the zones'
+   counterflow UA. An arrangement whose relation has no solution (ε above the arrangement's limit) is refused with the
+   reason ("needs more shells in series"). (Step 1 first applied F zone by zone; that hides the temperature cross of a
+   multipass exchanger, since every small zone looks feasible, so F is taken from the terminal temperatures, and the
+   result says it is an approximation when a side changes phase.)
 
 ### 2. Where U comes from: a service table, film coefficients, or the user
 
@@ -218,6 +221,9 @@ section 8 makes it possible:
 - **Allowable stresses from secondary web tables**: they copy ASME II-D, which is paywalled (AGENTS.md rule 1).
 
 ## Steps
+
+Steps 1-5 are done, together, as the maintainer asked (2026-10-20: "can you do in the same time 1-5?"), in the pull
+request of this proposal (docs/decisions/2026-10-20-06-heat-exchangers.md).
 
 1. **The heat-exchange calculation** (layer 4): zones, arrangements (F from ε-NTU), U from the three sources, the
    data file from Lienhard and Lienhard, utilities, the wall thickness; tests and the Python reference.

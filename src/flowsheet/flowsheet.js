@@ -4,6 +4,7 @@
  *   CHEPTA.solveFlowsheet(sys, {
  *     blocks:  [{ id: "F1", type: "feed", spec: { ... } }, { id: "M1", type: "mixer" }, ...],
  *     streams: [{ id: "S1", from: "F1.out", to: "M1.in" }, ..., { id: "S5", from: "SP1.out", to: "M1.in", tear: true }],
+ *     energyStreams: [{ id: "Q1", to: "E1", duty_kW: 500 }, { id: "Q2", from: "E2", to: "E3" }],   // optional
  *     solver:  { maxIterations: 50, tolerance: 1e-8 }
  *   })
  *   → { streams: { S1: stream, ... }, blocks: { M1: { duty_kW, balance, notes }, ... },
@@ -35,6 +36,13 @@
  *     temperature).
  *  4. A loop that does not converge throws NO_CONVERGENCE naming the loop, the tear streams,
  *     the remaining change and what usually helps; no numbers are returned.
+ *  5. Energy streams (proposal 0013, section 6): an energy feed (no `from`, a given duty_kW) or the heat one block
+ *     gives up (`from`, a block with a duty: heater, flash drum, separator) into a block whose duty can be given
+ *     (`to`: heater, flash drum). The block it goes into takes its duty from the stream, so it needs one specification
+ *     fewer (a heater with an energy stream calculates its outlet temperature). Q = -duty of the block it comes from
+ *     = duty of the block it goes into, so the flowsheet's energy balance is unchanged. A block has at most one energy
+ *     stream. Energy streams are edges of the graph like material streams: they set the calculation order, and a
+ *     loop closed by an energy stream is torn on its duty (one number), as a recycle is torn on its flows.
  * References: https://pyomo.readthedocs.io/en/6.9.3/_modules/pyomo/network/foqus_graph.html and
  * https://pyomo.readthedocs.io/en/6.4.0/_modules/pyomo/network/decomposition.html (open source,
  * 3-clause BSD); Tarjan, SIAM Journal on Computing 1(2), 1972 (as cited there).
@@ -101,7 +109,31 @@ export function inspectFlowsheet(fs) {
     (b.ins[to.port] ??= []).push(s.id);
     edges.push({ id: s.id, from: a.id, fromPort: from.port, to: b.id, toPort: to.port, tear: !!s.tear, guess: s.guess ?? null });
   }
-  const energyIds = new Set();
+  // energy streams (proposal 0013): an energy feed or a block's heat into a block whose duty can be given
+  const energyEdges = [];
+  const qList = Array.isArray(fs.energyStreams) ? fs.energyStreams : fs.energyStreams == null ? [] : (add(null, "energyStreams must be a list."), []);
+  const qIds = new Set();
+  for (const q of qList) {
+    if (!q || typeof q.id !== "string" || !q.id) { add(null, "Every energy stream needs an id such as \"Q1\"."); continue; }
+    if (qIds.has(q.id) || sids.has(q.id)) { add(q.id, `Two streams are called ${q.id}.`); continue; }
+    qIds.add(q.id);
+    const to = byId.get(q.to), from = q.from == null ? null : byId.get(q.from);
+    if (q.to == null) { add(q.id, `Energy ${q.from == null ? "feed" : "stream"} ${q.id} is not connected: connect it to a heater or a flash drum.`); continue; }
+    if (!to) { add(q.id, `Energy stream ${q.id} goes to ${q.to}, which is not a block of the flowsheet.`); continue; }
+    if (!to.unit.dutySpec) { add(q.id, `Energy stream ${q.id}: ${to.unit.label} ${to.id} takes no energy stream (a heater or a flash drum does).`); continue; }
+    if (q.from != null && !from) { add(q.id, `Energy stream ${q.id} comes from ${q.from}, which is not a block of the flowsheet.`); continue; }
+    if (from && from.unit.energy !== "heat") { add(q.id, `Energy stream ${q.id}: ${from.unit.label} ${from.id} gives up no heat (a heater, flash drum or separator does).`); continue; }
+    if (from && from.id === to.id) { add(q.id, `Energy stream ${q.id} cannot go back into the block it comes from.`); continue; }
+    if (from && q.duty_kW != null) { add(q.id, `Energy stream ${q.id}: its duty comes from ${from.id}; leave out duty_kW (or remove "from" to make it an energy feed).`); continue; }
+    if (!from && !Number.isFinite(Number(q.duty_kW))) { add(q.id, `Energy feed ${q.id}: give its duty_kW (+ heat into ${to.id}, - heat out).`); continue; }
+    if (to.qin) { add(q.id, `${to.unit.label} ${to.id} has two energy streams in (${to.qin.id}, ${q.id}); it takes one.`); continue; }
+    if (from && (from.qout || from.qin)) { add(q.id, `${from.unit.label} ${from.id} already has an energy stream (${(from.qout ?? from.qin).id}); a block has one.`); continue; }
+    if (to.qout) { add(q.id, `${to.unit.label} ${to.id} already sends its heat out by ${to.qout.id}; a block has one energy stream.`); continue; }
+    const e = { id: q.id, from: from?.id ?? null, to: to.id, energy: true, duty_kW: from ? null : Number(q.duty_kW), tear: !!q.tear, guess: q.guess ?? null, label: q.label ?? null };
+    to.qin = e; if (from) from.qout = e;
+    energyEdges.push(e);
+  }
+  const energyIds = new Set(qIds);
   for (const b of byId.values()) {
     for (const p of b.unit.inlets) {
       const n = (b.ins[p.port] ?? []).length;
@@ -113,17 +145,21 @@ export function inspectFlowsheet(fs) {
       if (!p.optional && n < p.min) add(b.id, `${b.unit.label} ${b.id}: connect ${p.min === 1 ? "a stream" : `at least ${p.min} streams`} to its ${p.label} outlet${p.min === 1 ? " (end it with a Product block if it leaves the flowsheet)" : ""}.`);
       if (n > p.max) add(b.id, `${b.unit.label} ${b.id}: its ${p.label} outlet takes one stream (${n} connected); use a Splitter to divide it.`);
     }
-    if (b.unit.duty) {
+    if (b.unit.duty && !b.qin && !b.qout) {
       const q = energyName(b);
       if (sids.has(q) || energyIds.has(q)) add(b.id, `${b.unit.label} ${b.id}: its energy stream ${q} has the name of another stream.`);
       energyIds.add(q);
-    } else if (b.energy) add(b.id, `${b.unit.label} ${b.id} has no duty, so it cannot have an energy stream (${b.energy}).`);
+    } else if (b.energy && !b.unit.duty) add(b.id, `${b.unit.label} ${b.id} has no duty, so it cannot have an energy stream (${b.energy}).`);
   }
-  return { blocks: byId, edges, problems };
+  return { blocks: byId, edges, energyEdges, problems };
 }
 
-/** The name of a block's energy stream: given as `energy`, else "Q-" and the block id. */
-const energyName = b => b.energy || `Q-${b.id}`;
+/** The name of a block's energy stream: the one connected to it, else given as `energy`, else "Q-" (a pump's power:
+ *  "W-") and the block id. */
+const energyName = b => (b.qin ?? b.qout)?.id || b.energy || `${b.unit.energy === "work" ? "W" : "Q"}-${b.id}`;
+
+/** A block's specification with the duty an energy stream brings in (a placeholder for the count; the value at solve). */
+const withEnergy = (b, duty = 0) => (b.qin ? { ...(b.spec ?? {}), duty_kW: duty } : b.spec);
 
 /**
  * Check the flowsheet's structure and return it with its connections resolved: every block
@@ -134,7 +170,7 @@ const energyName = b => b.energy || `Q-${b.id}`;
 export function checkFlowsheet(fs) {
   const r = inspectFlowsheet(fs);
   if (r.problems.length) throw fail("BAD_INPUT", r.problems[0].message, { problems: r.problems });
-  return { blocks: r.blocks, edges: r.edges };
+  return { blocks: r.blocks, edges: r.edges, energyEdges: r.energyEdges };
 }
 
 /**
@@ -149,7 +185,11 @@ export function flowsheetStatus(sys, fs) {
   for (const b of blocks.values()) {
     const multi = b.unit.outlets.find(p => p.max > 1);
     const outletCount = multi ? Math.max((b.outs[multi.port] ?? []).length, multi.min) : undefined;
-    const st = specStatus(b.type, b.spec, { sys, outletCount });
+    let st = specStatus(b.type, withEnergy(b), { sys, outletCount });
+    // an energy stream in counts as the block's duty: say so in its own words
+    if (b.qin && b.spec && b.spec.duty_kW != null && b.spec.duty_kW !== "") {
+      st = { ...st, ok: false, status: "extra", message: `${b.unit.label}: its duty comes from the energy stream ${b.qin.id}; leave out duty_kW.` };
+    } else if (b.qin && st.message) st = { ...st, message: st.message.replace(/duty_kW/g, `the energy stream ${b.qin.id}`) };
     // name the block in the message: "Flash drum V1: ..."
     out[b.id] = st.message ? { ...st, message: st.message.startsWith(`${b.unit.label}:`) ? `${b.unit.label} ${b.id}:${st.message.slice(b.unit.label.length + 1)}` : `${b.unit.label} ${b.id}: ${st.message}` } : st;
     needed += st.needed ?? 0; given += st.given ?? 0;
@@ -215,6 +255,8 @@ function order(nodes, edges) {
 
 /** The smallest set of edges whose removal breaks every cycle of the loop. */
 function chooseTears(nodes, edges) {
+  // energy streams first: a duty is one number to converge, a material stream several
+  edges = [...edges.filter(e => e.energy), ...edges.filter(e => !e.energy)];
   const marked = edges.filter(e => e.tear);
   if (marked.length) {
     const rest = edges.filter(e => !e.tear);
@@ -253,11 +295,16 @@ export function solveFlowsheet(sys, fs) {
     const lines = [...status.structure.map(p => p.message), ...Object.values(status.blocks).filter(b => !b.ok).map(b => b.message)];
     throw fail("BAD_INPUT", `The flowsheet is not ready to solve: ${status.message} ${lines.join(" ")}`, { status });
   }
-  const { blocks, edges } = checkFlowsheet(fs);
+  const { blocks, edges, energyEdges } = checkFlowsheet(fs);
   const nodes = [...blocks.keys()];
   const values = new Map();   // stream id → stream
+  const qvals = new Map();    // energy stream id → duty, kW
   const results = {};
   const outEdges = id => edges.filter(e => e.from === id);
+  // the graph: material streams and the energy streams between blocks (an energy feed has no `from`)
+  const graph = [...edges, ...energyEdges.filter(e => e.from)];
+  const outGraph = id => graph.filter(e => e.from === id);
+  for (const e of energyEdges) if (!e.from) qvals.set(e.id, e.duty_kW);
 
   /** Calculate one block from the streams known now, and store its outlet streams. */
   const calc = id => {
@@ -267,7 +314,7 @@ export function solveFlowsheet(sys, fs) {
     const multi = b.unit.outlets.find(p => p.max > 1);
     const outletCount = multi ? (b.outs[multi.port] ?? []).length : b.unit.outlets.filter(p => !p.optional || (b.outs[p.port] ?? []).length).length;
     let r;
-    try { r = runUnit(b.type, { sys, inlets, spec: b.spec, outletCount }); } catch (e) {
+    try { r = runUnit(b.type, { sys, inlets, spec: b.qin ? withEnergy(b, qvals.get(b.qin.id)) : b.spec, outletCount }); } catch (e) {
       e.message = `${b.unit.label} ${b.id}: ${e.message.replace(new RegExp(`^${b.unit.label}: `), "")}`;
       throw e;
     }
@@ -276,31 +323,36 @@ export function solveFlowsheet(sys, fs) {
       const list = Array.isArray(got) ? got : [got];
       sids.forEach((sid, k) => values.set(sid, Object.freeze({ ...list[k], id: sid })));
     }
-    results[id] = { type: b.type, duty_kW: r.duty_kW, balance: r.balance, notes: r.notes, ...(r.state ? { state: r.state } : {}) };
+    if (b.qout) qvals.set(b.qout.id, -r.duty_kW);   // the heat this block gives up
+    results[id] = { type: b.type, duty_kW: r.duty_kW, balance: r.balance, notes: r.notes, ...(r.state ? { state: r.state } : {}), ...(r.sizing ? { sizing: r.sizing } : {}) };
   };
 
   /** Total flow of the feed streams calculated so far (kmol/h). */
   const feedTotal = () => nodes.filter(id => blocks.get(id).type === "feed")
     .flatMap(id => outEdges(id).map(e => values.get(e.id))).reduce((a, s) => a + (s?.F_kmol_h ?? 0), 0);
-  const comps = tarjan(nodes, id => outEdges(id).map(e => e.to)).reverse();   // topological order
-  const inLoop = new Set(comps.flatMap(c => { const set = new Set(c); return edges.filter(e => set.has(e.from) && set.has(e.to)).map(e => e.id); }));
-  const stray = edges.filter(e => e.tear && !inLoop.has(e.id));
+  const comps = tarjan(nodes, id => outGraph(id).map(e => e.to)).reverse();   // topological order
+  const inLoop = new Set(comps.flatMap(c => { const set = new Set(c); return graph.filter(e => set.has(e.from) && set.has(e.to)).map(e => e.id); }));
+  const stray = [...edges, ...energyEdges].filter(e => e.tear && !inLoop.has(e.id));
   if (stray.length) throw fail("BAD_INPUT", `${stray.map(e => e.id).join(", ")} ${stray.length > 1 ? "are" : "is"} marked as a tear stream but ${stray.length > 1 ? "are" : "is"} not part of a recycle loop.`);
   const loops = [];
   for (const comp of comps) {
     const set = new Set(comp);
-    const inner = edges.filter(e => set.has(e.from) && set.has(e.to));
+    const inner = graph.filter(e => set.has(e.from) && set.has(e.to));
     if (!inner.length) { calc(comp[0]); continue; }
     const tears = chooseTears(comp, inner);
     const tearIds = new Set(tears.map(e => e.id));
     const seq = order(comp, inner.filter(e => !tearIds.has(e.id)));
-    // start: the guess, else no flow (at the guess's or 298.15 K and the lowest known pressure)
+    // start: the guess, else no flow (at the guess's or 298.15 K and the lowest known pressure); an energy stream: its
+    // guessed duty, else none
     for (const e of tears) {
       const g = e.guess ?? {};
+      if (e.energy) { qvals.set(e.id, Number.isFinite(Number(g.duty_kW)) ? Number(g.duty_kW) : 0); continue; }
       values.set(e.id, Object.freeze({ ...stream(sys, { flow_kmol_h: g.flow_kmol_h ?? new Array(sys.n).fill(0), T_K: g.T_K ?? 298.15, P_kPa: g.P_kPa ?? 101.325 }), id: e.id }));
     }
-    const vec = s => s.flows.slice();
-    let x = tears.map(e => vec(values.get(e.id)));
+    // a tear's value: a material stream's component flows, an energy stream's duty
+    const tearValue = e => (e.energy ? { duty_kW: qvals.get(e.id) } : values.get(e.id));
+    const vec = (s, e) => (e?.energy ? [s.duty_kW] : s.flows.slice());
+    let x = tears.map(e => vec(tearValue(e), e));
     let xPrev = null, gPrev = null, it = 0, err = Infinity;
     let H = null, bPrev = null;   // Broyden: inverse Jacobian approximation of F(x) = g(x) - x, last point
     const history = [];
@@ -318,6 +370,7 @@ export function solveFlowsheet(sys, fs) {
      */
     const broydenStep = g => {
       const xf = x.flat(), gf = g.flat(), m = xf.length;
+      const sizes = g.map(v => v.length);   // material tears: n flows each; energy tears: one duty
       const F = gf.map((v, i) => v - xf[i]);
       if (!H) H = Array.from({ length: m }, (_, i) => Array.from({ length: m }, (_, j) => (i === j ? -1 : 0)));
       else if (bPrev) {
@@ -331,13 +384,15 @@ export function solveFlowsheet(sys, fs) {
       }
       bPrev = { x: xf, F, err };
       const step = H.map(row => -row.reduce((a, h, j) => a + h * F[j], 0));
-      const out = xf.map((v, i) => Math.max(0, v + step[i]));
+      // flows stay non-negative; a duty may have either sign
+      const isFlow = sizes.flatMap((n, k) => new Array(n).fill(!tears[k].energy));
+      const out = xf.map((v, i) => (isFlow[i] ? Math.max(0, v + step[i]) : v + step[i]));
       if (!out.every(Number.isFinite)) { H = null; return g; }
-      const n = g[0].length;
-      return g.map((_, k) => out.slice(k * n, (k + 1) * n));
+      let at = 0;
+      return sizes.map(n => { const part = out.slice(at, at + n); at += n; return part; });
     };
     for (; it < opt.maxIterations; it++) {
-      const before = tears.map(e => values.get(e.id));
+      const before = tears.map(tearValue);
       try { for (const id of seq) calc(id); } catch (e) {
         if (it === 0) {
           // the first pass is a plain calculation: its error is the block's own, but its inlets are those of
@@ -355,10 +410,12 @@ export function solveFlowsheet(sys, fs) {
         }
         throw stop(`: at iteration ${it + 1}, ${e.message}`, { cause: e.message });
       }
-      const after = tears.map(e => values.get(e.id));
-      const g = after.map(vec);
-      // the change of the tear streams: flows relative to the total flow, T relative to T
+      const after = tears.map(tearValue);
+      const g = after.map((s, k) => vec(s, tears[k]));
+      // the change of the tear streams: flows relative to the total flow, T relative to T; a duty relative to itself
+      // (at least 1e-6 kW, so that a duty near zero does not count as a large change)
       err = Math.max(...after.map((s, k) => {
+        if (tears[k].energy) return Math.abs(s.duty_kW - before[k].duty_kW) / Math.max(Math.abs(s.duty_kW), Math.abs(before[k].duty_kW), 1e-6);
         const Fs = Math.max(s.F_kmol_h, before[k].F_kmol_h);
         const dF = Fs > 0 ? Math.max(...s.flows.map((v, i) => Math.abs(v - before[k].flows[i]))) / Fs : 0;
         const dT = s.T_K != null && before[k].T_K != null && Fs > 0 ? Math.abs(s.T_K - before[k].T_K) / s.T_K : 0;
@@ -368,7 +425,7 @@ export function solveFlowsheet(sys, fs) {
       // a loop without a way out for some component accumulates it: its flows grow without bound, and a
       // method that extrapolates (Broyden) can reach flows so large that the relative change looks converged
       const Ffeed = feedTotal();
-      const big = after.find(s => !(s.F_kmol_h <= GROWTH_LIMIT * Math.max(Ffeed, 1e-12)));
+      const big = after.find((s, k) => !tears[k].energy && !(s.F_kmol_h <= GROWTH_LIMIT * Math.max(Ffeed, 1e-12)));
       if (big) throw stop(`: the recycle grows without bound (tear stream ${tears[after.indexOf(big)].id} carries more than ${GROWTH_LIMIT.toExponential(0)} times the feed): material accumulates in the loop`);
       if (err < opt.tolerance) { it++; break; }
       // next tear values: direct substitution for two steps, then bounded Wegstein per variable
@@ -385,6 +442,7 @@ export function solveFlowsheet(sys, fs) {
       }
       xPrev = x; gPrev = g; x = xNew;
       tears.forEach((e, k) => {
+        if (e.energy) { qvals.set(e.id, xNew[k][0]); return; }
         const s = after[k];
         const flows = xNew[k].slice(0, sys.n).map(v => Math.max(0, v));
         const F = flows.reduce((a, v) => a + v, 0);
@@ -412,9 +470,14 @@ export function solveFlowsheet(sys, fs) {
   }
   const duties = Object.values(results).reduce((a, r) => a + (r.duty_kW ?? 0), 0);
   const H = list => list.reduce((a, s) => a + (s.H_kW ?? 0), 0);
-  // energy streams: one per block with a duty (heater, drum, separator), in kW (+ heat in, - heat out)
-  const energy = Object.fromEntries([...blocks.values()].filter(b => b.unit.duty)
-    .map(b => [energyName(b), { id: energyName(b), block: b.id, duty_kW: results[b.id]?.duty_kW ?? 0 }]));
+  // energy streams: the ones given (an energy feed into a block, or a block's heat into another), then one per block with
+  // a duty and no energy stream (heater, drum, separator; a pump's power), in kW (+ into the block, - out of it)
+  const energy = Object.fromEntries([
+    ...energyEdges.map(e => [e.id, { id: e.id, block: e.to, from: e.from, to: e.to, kind: "heat", duty_kW: results[e.to]?.duty_kW ?? qvals.get(e.id) ?? 0,
+      internal: !!e.from, ...(e.label ? { label: e.label } : {}) }]),
+    ...[...blocks.values()].filter(b => b.unit.duty && !b.qin && !b.qout)
+      .map(b => [energyName(b), { id: energyName(b), block: b.id, kind: b.unit.energy, duty_kW: results[b.id]?.duty_kW ?? 0 }]),
+  ]);
   return {
     components: sys.ids.slice(),
     streams: Object.fromEntries(edges.map(e => [e.id, values.get(e.id)])),

@@ -1,0 +1,108 @@
+{
+  "_about": "Typical heat transfer coefficients, fouling resistances and wall materials for pre-sizing heat exchangers (proposal 0013, step 1; src/units/heat-exchange.js). Transcribed from the page images of the source below, value by value, in the units printed there; temperatures of Table A.1 in degrees C as printed. A range is [low, high]; a single bound has `bound`. Marks of Table A.1: '+' a little above the printed value, '-' a little below; the value is the printed number, the mark is kept. The person who reviews this file compares every value with the page named in its block.",
+  "source": {
+    "citation": "J. H. Lienhard V and J. H. Lienhard IV, A Heat Transfer Textbook, 6th edition, version 6.00 (19 April 2024), Phlogiston Press, Cambridge, Massachusetts",
+    "open_copy": "https://ahtt.mit.edu/wp-content/uploads/2024/04/AHTTv600.pdf",
+    "access": "Free book: free to download from https://ahtt.mit.edu/ (\"the authors grant you the right to download and print it for your personal use or for non-profit instructional use\", title page verso); its numbers are taken, cited by table and page, not its text or figures (the maintainer, 2026-10-20)",
+    "source_ids": ["lienhard-ahtt-6"]
+  },
+  "services": {
+    "_table": "Table 2.2, Typical ranges or magnitudes of U, p. 82 (PDF page 96). The rows for walls, roofs and windows of dwellings are left out (not process heat exchangers).",
+    "units": "W/m2K",
+    "rows": [
+      { "id": "air-heavy-oils", "label": "Air to heavy tars and oils", "U": [45, null], "bound": "as low as 45" },
+      { "id": "air-light-liquids", "label": "Air to low-viscosity liquids", "U": [null, 600], "bound": "as high as 600" },
+      { "id": "air-gases", "label": "Air to various gases", "U": [60, 550] },
+      { "id": "steam-water-oil", "label": "Steam or water to oil", "U": [60, 340] },
+      { "id": "coils-in-liquids", "label": "Liquids in coils immersed in liquids", "U": [110, 2000] },
+      { "id": "feedwater-heaters", "label": "Feedwater heaters", "U": [110, 8500] },
+      { "id": "steam-jacketed-vessels", "label": "Steam-jacketed, agitated vessels", "U": [500, 1900] },
+      { "id": "ammonia-condensers", "label": "Shell-and-tube ammonia condensers", "U": [800, 1400] },
+      { "id": "steam-condensers", "label": "Steam condensers with 25 °C water", "U": [1500, 5000] },
+      { "id": "steam-to-boiling-water", "label": "Condensing steam to high-pressure boiling water", "U": [1500, 10000] }
+    ]
+  },
+  "film": {
+    "_table": "Table 1.1, Some approximate values of convective heat transfer coefficients, p. 21 (PDF page 35). \"T near room temperature unless otherwise stated\".",
+    "units": "W/m2K",
+    "rows": [
+      { "id": "nat-gas-wall", "group": "Natural convection in gases", "label": "0.3 m vertical wall in air, ΔT = 30 °C", "h": 4.2 },
+      { "id": "nat-gas-wire", "group": "Natural convection in gases", "label": "1 mm diameter horizontal wire in air, ΔT = 100 °C", "h": 29 },
+      { "id": "nat-liq-pipe", "group": "Natural convection in liquids", "label": "40 mm O.D. horizontal pipe in water, ΔT = 30 °C", "h": 570 },
+      { "id": "nat-liq-wire", "group": "Natural convection in liquids", "label": "0.25 mm diameter wire in methanol, ΔT = 50 °C", "h": 4000 },
+      { "id": "forced-gas-tube", "group": "Forced convection of gases", "label": "Air at 10 m/s inside 20 mm I.D. tube", "h": 45 },
+      { "id": "forced-gas-plate", "group": "Forced convection of gases", "label": "Air at 30 m/s over a 1 m flat plate", "h": 80 },
+      { "id": "forced-water-plate", "group": "Forced convection of liquids", "label": "Water at 2 m/s over a 60 mm plate", "h": 590 },
+      { "id": "forced-organic-tube", "group": "Forced convection of liquids", "label": "Aniline-alcohol mixture at 3 m/s in a 25 mm I.D. tube", "h": 2600 },
+      { "id": "forced-water-tube", "group": "Forced convection of liquids", "label": "Water at 10 m/s inside 20 mm I.D. tube", "h": 34500 },
+      { "id": "forced-sodium-tube", "group": "Forced convection of liquids", "label": "Liquid sodium at 5 m/s in a 13 mm I.D. tube at 370 °C", "h": 75000 },
+      { "id": "boil-film", "group": "Boiling water at 100 °C and 1 atm", "label": "During film boiling", "h": 300 },
+      { "id": "boil-kettle", "group": "Boiling water at 100 °C and 1 atm", "label": "In a tea kettle", "h": 4000 },
+      { "id": "boil-pool-max", "group": "Boiling water at 100 °C and 1 atm", "label": "At the highest pool-boiling heat flux", "h": 40000 },
+      { "id": "cond-steam", "group": "Condensation", "label": "In a typical horizontal cold-water-tube steam condenser", "h": 15000 },
+      { "id": "cond-benzene", "group": "Condensation", "label": "Same, but condensing benzene", "h": 1700 },
+      { "id": "cond-dropwise", "group": "Condensation", "label": "Dropwise condensation of water at 1 atm", "h": 160000 }
+    ],
+    "_left_out": "\"During convective-boiling, range of highest values: 10^5-10^6\" (a range of extremes, not a design value)."
+  },
+  "fouling": {
+    "_table": "Table 2.3, Some typical fouling resistances for a unit area, p. 84 (PDF page 98). \"The values given in the table are based on reasonable maintenance and the use of conventional shell-and-tube heat exchangers\" (p. 83).",
+    "units": "m2K/W",
+    "rows": [
+      { "id": "distilled-water", "label": "Distilled water", "Rf": [0.0001, 0.0001] },
+      { "id": "seawater", "label": "Seawater", "Rf": [0.0001, 0.0004] },
+      { "id": "boiler-feedwater", "label": "Treated boiler feedwater", "Rf": [0.0001, 0.0002] },
+      { "id": "river-water", "label": "Clean river or lake water", "Rf": [0.0002, 0.0006] },
+      { "id": "worst-waters", "label": "About the worst waters used in heat exchangers", "Rf": [null, 0.0020], "bound": "< 0.0020" },
+      { "id": "fuel-oil-6", "label": "No. 6 fuel oil", "Rf": [0.0001, 0.0001] },
+      { "id": "lube-oil", "label": "Transformer or lubricating oil", "Rf": [0.0002, 0.0002] },
+      { "id": "industrial-liquids", "label": "Most industrial liquids", "Rf": [0.0002, 0.0002] },
+      { "id": "refinery-liquids", "label": "Most refinery liquids", "Rf": [0.0002, 0.0009] },
+      { "id": "steam-clean", "label": "Steam, non-oil-bearing", "Rf": [0.0001, 0.0001] },
+      { "id": "steam-oily", "label": "Steam, oil-bearing (e.g., turbine exhaust)", "Rf": [0.0003, 0.0003] },
+      { "id": "stable-gases", "label": "Most stable gases", "Rf": [0.0002, 0.0004] },
+      { "id": "flue-gases", "label": "Flue gases", "Rf": [0.0010, 0.0020] },
+      { "id": "refrigerant-vapours", "label": "Refrigerant vapors (oil-bearing)", "Rf": [0.0040, 0.0040] }
+    ]
+  },
+  "metals": {
+    "_table": "Table A.1, Properties of metallic solids, pp. 739-740 (PDF pages 753-754): density, specific heat and conductivity at 20 °C, and the conductivity at the temperatures printed (°C). Metals used for heat-exchanger walls; the others of the table (gold, lead, mercury, silver, tin, tungsten, uranium, zinc, silicon, chromium, magnesium, molybdenum, platinum, bronzes, thermocouple alloys) are left out.",
+    "units": { "rho": "kg/m3", "cp": "J/(kg K)", "k": "W/(m K)", "T": "degC" },
+    "rows": [
+      { "id": "aluminium-pure", "label": "Aluminium, pure", "rho": 2707, "cp": 905, "k20": 237,
+        "k": [[-170, 302], [-100, 242], [0, 236], [100, 240], [200, 238], [300, 234], [400, 228], [600, 215]] },
+      { "id": "aluminium-6061-t6", "label": "Aluminium alloy 6061-T6", "rho": 2700, "cp": 896, "k20": 167,
+        "k": [[0, 166], [100, 172], [200, 177], [300, 180]] },
+      { "id": "copper-pure", "label": "Copper, pure", "rho": 8954, "cp": 384, "k20": 398,
+        "k": [[-170, 483], [-100, 420], [0, 401], [100, 391], [200, 389], [300, 384], [400, 378], [600, 366], [800, 352], [1000, 336]] },
+      { "id": "brass-30zn", "label": "Brass (30 % Zn)", "rho": 8522, "cp": 385, "k20": 109,
+        "k": [[-170, 73], [-100, 89], [0, 106], [100, 133], [200, 143], [300, 146], [400, 147]] },
+      { "id": "steel-aisi-1010", "label": "Carbon steel AISI 1010 (0.1 % C, hot-rolled)", "rho": 7830, "cp": 434, "k20": 64,
+        "k": [[-100, 70], [0, 65], [100, 61], [200, 55], [300, 50], [400, 45], [600, 36], [800, 29]],
+        "note": "k and α for carbon steels can vary greatly, owing to trace elements (Table A.1, footnote)." },
+      { "id": "steel-0.5c", "label": "Carbon steel, 0.5 % carbon", "rho": 7833, "cp": 465, "k20": 54,
+        "k": [[0, 55], [100, 52], [200, 48], [300, 45], [400, 42], [600, 35], [800, 31], [1000, 29]],
+        "note": "k and α for carbon steels can vary greatly, owing to trace elements (Table A.1, footnote)." },
+      { "id": "steel-1.0c", "label": "Carbon steel, 1.0 % carbon", "rho": 7801, "cp": 473, "k20": 43,
+        "k": [[0, 43], [100, 43], [200, 42], [300, 40], [400, 36], [600, 33], [800, 29], [1000, 28]],
+        "note": "k and α for carbon steels can vary greatly, owing to trace elements (Table A.1, footnote)." },
+      { "id": "stainless-304", "label": "Stainless steel AISI 304", "rho": 8000, "cp": 400, "k20": 13.8,
+        "k": [[100, 15], [200, 17, "+"], [300, 19, "-"], [400, 21], [600, 25]] },
+      { "id": "stainless-316", "label": "Stainless steel AISI 316", "rho": 8000, "cp": 460, "k20": 13.5,
+        "k": [[-100, 12], [100, 15], [200, 16], [300, 17, "+"], [400, 19, "-"], [600, 21, "+"], [800, 24], [1000, 26, "+"]] },
+      { "id": "stainless-347", "label": "Stainless steel AISI 347", "rho": 8000, "cp": 420, "k20": 15,
+        "k": [[-100, 13], [100, 16, "+"], [200, 18, "-"], [300, 19], [400, 20], [600, 23], [800, 26], [1000, 28]] },
+      { "id": "stainless-410", "label": "Stainless steel AISI 410", "rho": 7700, "cp": 460, "k20": 25,
+        "k": [[100, 25, "+"], [200, 26], [300, 27], [400, 27, "+"], [600, 28, "+"]] },
+      { "id": "nickel-pure", "label": "Nickel, pure", "rho": 8906, "cp": 445, "k20": 91,
+        "k": [[-170, 156], [-100, 114], [0, 94], [100, 83], [200, 74], [300, 67], [400, 64], [600, 69], [800, 73], [1000, 78]] },
+      { "id": "inconel-x750", "label": "Inconel X-750", "rho": 8510, "cp": 442, "k20": 11.6,
+        "k": [[-170, 8.8], [-100, 10.6], [0, 11.3], [100, 13.0], [200, 14.7], [300, 16.0], [400, 18.3], [600, 21.8], [800, 25.3], [1000, 29]],
+        "note": "73 % Ni, 15 % Cr, 6.75 % Fe, 2.5 % Ti, 0.85 % Nb, 0.8 % Al, 0.7 % Mn, 0.3 % Si (Table A.1, footnote)." },
+      { "id": "titanium-pure", "label": "Titanium, pure (polycrystalline)", "rho": 4540, "cp": 523, "k20": 22,
+        "k": [[-170, 31], [-100, 26], [0, 22], [100, 21], [200, 20], [300, 20], [400, 19], [600, 21], [800, 21], [1000, 22]] },
+      { "id": "titanium-6al-4v", "label": "Titanium alloy Ti-6%Al-4%V", "rho": 4430, "cp": 580, "k20": 7.1,
+        "k": [[100, 7.8], [200, 8.8], [300, 10], [400, 12, "-"]] }
+    ]
+  }
+}
