@@ -119,7 +119,7 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
   `feed` (flow_kmol_h or flow_kg_h, and two of T_K, P_kPa, VF), `mixer` (P_kPa optional),
   `splitter` (fractions, one per outlet, one may be "rest"), `separator` (fractions per
   component, e.g. `{ ethanol: [0.95, "rest"], water: [0.1, "rest"] }`), `flash` (two of T_K,
-  P_kPa, VF, duty_kW), `heater` (one of T_K, duty_kW, VF; P_kPa or dP_kPa optional; optional
+  P_kPa, VF, duty_kW), `heater` (one of T_K, duty_kW, VF, or A_m2 with its sizing to rate it; P_kPa or dP_kPa optional; optional
   `sizing: { utility: { kind: "steam", P_kPa: 500 }, U: { service: "steam-water-oil" } }` gives the
   area), `hx` (two streams: one of T_hot_out_K, T_cold_out_K, VF_hot_out, VF_cold_out, duty_kW,
   dTmin_K, or the area A_m2 of an existing exchanger with `U`, which gives the outlets: rating;

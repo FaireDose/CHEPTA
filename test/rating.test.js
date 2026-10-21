@@ -136,3 +136,44 @@ test("the flowsheet heater rated (A_m2 with its sizing): designed for an outlet,
   assert.throws(() => runUnit("heater", { sys, inlets: { in: cold }, spec: { A_m2: 3 } }), /needs its sizing: a utility/);
   assert.throws(() => runUnit("heater", { sys, inlets: { in: cold }, spec: { A_m2: 3, T_K: 320, sizing: { utility: { kind: "steam", P_kPa: 300 }, U: { value: 500 } } } }), /give the outlet temperature/);
 });
+
+test("the flowsheet's Rate this exchanger: a design solved, then rated with its area and U, gives the same outlets; back to the design", async () => {
+  const { solveFlowsheet } = await import("../src/index.js");
+  const { ratingPatch, designPatch, setSpec } = await import("../src/ui/flowsheet-logic.js");
+  // F1 → X1 (cold side) → E1 (cooler, cooling water) → X1 (hot side) → P1: the exchanger heats the feed with its own effluent
+  const fs = {
+    blocks: [{ id: "F1", type: "feed", spec: { flow_kmol_h: { water: 60, ethanol: 40 }, T_K: 300, P_kPa: 101.325 } },
+      { id: "H1", type: "heater", spec: { T_K: 350 } },
+      { id: "X1", type: "hx", spec: { T_cold_out_K: 330, U: { service: "steam-water-oil" } } },
+      { id: "E1", type: "heater", spec: { T_K: 310, sizing: { utility: { kind: "water", T_in_K: C(20), T_out_K: C(30) }, U: { value: 500 } } } },
+      { id: "P1", type: "product" }],
+    streams: [{ id: "S1", from: "F1.out", to: "H1.in" }, { id: "S2", from: "H1.out", to: "X1.hot" }, { id: "S3", from: "X1.hot", to: "E1.in" },
+      { id: "S4", from: "E1.out", to: "P1.in" }, { id: "S5", from: "F1.out", to: "X1.cold" }],
+  };
+  // (the feed has one outlet: a second feed for the cold side)
+  fs.blocks.push({ id: "F2", type: "feed", spec: { flow_kmol_h: { water: 60, ethanol: 40 }, T_K: 300, P_kPa: 101.325 } }, { id: "P2", type: "product" });
+  fs.streams[4] = { id: "S5", from: "F2.out", to: "X1.cold" };
+  fs.streams.push({ id: "S6", from: "X1.cold", to: "P2.in" });
+  const design = solveFlowsheet(sys, fs);
+  let rated = fs;
+  for (const id of ["X1", "E1"]) {
+    const b = fs.blocks.find(x => x.id === id), patch = ratingPatch(b.type, b.spec, design.blocks[id]);
+    assert.ok(patch && patch.A_m2 > 0, `${id} can be rated`);
+    rated = setSpec(rated, id, patch);
+  }
+  const e1 = rated.blocks.find(b => b.id === "E1").spec;
+  assert.equal(e1.T_K, undefined, "the outlet is no longer given");
+  assert.ok(e1.sizing.utility.flow_kg_h > 0 && e1.sizing.utility.T_out_K === undefined, "the water's flow of the design instead of its outlet");
+  const r = solveFlowsheet(sys, rated);
+  assert.ok(Math.abs(r.streams.S6.T_K - 330) < 0.05, `X1 cold outlet ${r.streams.S6.T_K}`);
+  assert.ok(Math.abs(r.streams.S4.T_K - 310) < 0.05, `E1 outlet ${r.streams.S4.T_K}`);
+  close(r.blocks.E1.duty_kW, design.blocks.E1.duty_kW, 3e-3, "cooler duty");
+  // back to the design: the specification as it was
+  const back = setSpec(rated, "E1", designPatch(e1));
+  assert.deepEqual(back.blocks.find(b => b.id === "E1").spec, fs.blocks.find(b => b.id === "E1").spec);
+  const x1 = rated.blocks.find(b => b.id === "X1").spec;
+  assert.deepEqual(setSpec(rated, "X1", designPatch(x1)).blocks.find(b => b.id === "X1").spec, fs.blocks.find(b => b.id === "X1").spec);
+  // electric heating, or no U, cannot be rated
+  assert.equal(ratingPatch("heater", { T_K: 350, sizing: { utility: { kind: "electric" } } }, { sizing: { area_m2: null } }), null);
+  assert.equal(ratingPatch("hx", { T_cold_out_K: 330 }, { sizing: { area_m2: null, U_W_m2K: null } }), null);
+});

@@ -382,7 +382,11 @@ export function app(target, cfg = {}) {
         const hx = state.hx ?? HX_DEFAULTS;
         return [
           group("Calculation", h("div", { class: "fa-stack" },
-            seg("Calculation", HX_TASKS.map(([k, label]) => [k, label]), hx.task, t => set({ hx: { task: t } })),
+            // Rating starts from the exchanger the design just sized: its area, and the utility's flow
+            seg("Calculation", HX_TASKS.map(([k, label]) => [k, label]), hx.task, t => {
+              const d = t === "rating" && hx.task !== "rating" ? ui.hxDesign : null;
+              set({ hx: { task: t, ...(d ? { rating: { area_m2: d.area_m2 }, ...(d.flow_kg_h ? { utility: { flow_kg_h: d.flow_kg_h } } : {}) } : {}) } });
+            }),
             h("div", { class: "fa-hint" }, HX_TASKS.find(([k]) => k === hx.task)[2]))),
           group("Exchanger", h("div", { class: "fa-stack" },
             seg("Exchanger", HX_MODES.map(([k, label]) => [k, label]), hx.mode, m => set({ hx: { mode: m } })),

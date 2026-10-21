@@ -730,7 +730,7 @@ function flashView(ctx) {
 const ARR = { counterflow: "counterflow", cocurrent: "cocurrent", "shell-and-tube": "shell and tube", "crossflow-unmixed": "crossflow" };
 
 function hxView(ctx) {
-  const { state, plot, side, notes, below, extra, compact } = ctx;
+  const { state, plot, side, notes, below, extra, compact, ui } = ctx;
   const u = state.units, hx = state.hx ?? HX_DEFAULTS, two = hx.mode === "two";
   // a utility exchanger: the workspace's components and model; a process exchanger: each stream its own system
   const setups = two ? hxSetups(state) : null;
@@ -744,6 +744,11 @@ function hxView(ctx) {
   let calc;
   try { calc = hxCalc(sys, hx, systems); } catch (e) { throw new Error(friendly(e)); }
   const { result: r, electric, wall } = calc;
+  // the last design, which Rating starts from (its area and the utility's flow; U from the same settings)
+  if (ui && r && !r.rating && r.area_m2 > 0) {
+    const util = r.hot.kind !== "process" ? r.hot : r.cold.kind !== "process" ? r.cold : null;
+    ui.hxDesign = { area_m2: +r.area_m2.toPrecision(6), flow_kg_h: util?.flow_kg_h > 0 ? +util.flow_kg_h.toPrecision(6) : null };
+  }
   const T = K => +tToDisplay(K, u).toFixed(2);
   const wallRows = wall ? [["Minimum wall thickness", fmtShort(wall.t_mm, 4), "mm"], ["of which for the pressure", fmtShort(wall.t_pressure_mm, 4), "mm"]] : [];
   if (electric) {

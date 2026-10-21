@@ -60,13 +60,20 @@ flow (`flow_kg_h`) instead of the outlet temperature; steam and a fluid at one t
   of that last calculation is said when it differs from the one given by more than 0.2 %.
 - **What it is not.** U is the one of section 2 (a service, the films or the user's): the film coefficients are not
   calculated from the exchanger's geometry and flows (a later proposal, as for pre-sizing).
-- **In the workspace**: Design or Rating in the ribbon. In rating the area replaces the process outlet (utility
-  exchanger) or the specification (process exchanger), and water or a fluid gives its flow. The utility heats when it
-  enters hotter than the process stream, else it cools; electric heating has no area to rate.
+- **Design first, then rate** (the maintainer, 2026-10-21: "the area should be calculated at the design phase as a
+  pre-sizing and then it is kept that area and U"). In the workspace, Design or Rating in the ribbon: switching to
+  Rating starts from the area the design just calculated, and from the utility's flow; U comes from the same settings.
+  The area then replaces the process outlet (utility exchanger) or the specification (process exchanger). The utility
+  heats when it enters hotter than the process stream, else it cools; electric heating has no area to rate.
+- **In the flowsheet**, a heater with a utility and U, or a two-stream exchanger with U, is designed and solved first;
+  "Rate this exchanger" then keeps the area and U of that solution as its specification (`A_m2`; U as a value; water
+  or a fluid with its flow of the design instead of its outlet), and remembers the design (`spec.design`): "Back to the
+  design" restores it.
 
 ## In the flowsheet
 
 - `heater` with `sizing: { utility, U, arrangement }`: the area and the utility's flow; the outlet stays as specified.
+  Rated: `A_m2` with the sizing (water or a fluid gives `flow_kg_h`) instead of the outlet: the outlet follows.
 - `hx`: two process streams (ports `hot` and `cold`), adiabatic overall; one specification: an outlet temperature or
   vapour fraction of either side, the duty, the minimum approach (`dTmin_K`, found by bisection and regula falsi;
   a target the arrangement cannot reach is an error), or the area of an existing exchanger (`A_m2`, with `U`:
