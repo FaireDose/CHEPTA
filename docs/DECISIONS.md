@@ -14,10 +14,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
-- **Older ChemSep pairs not imported** (found 2026-10-21 while adding neopentane, helium and methylcyclohexane):
-  `chemsep_pairs.py --all` offers NRTL sets for 2,3-butanediol + water, ethanol + isoamyl alcohol and isoamyl
-  alcohol + water, and `eos_kij_from_chemsep.py` a k_ij for n-hexane + isoamyl alcohol. They were left out of the
-  envelope pull request so that it changes only its own pairs. Import them in a pull request of their own?
+- **Values the maintainer adds** (2026-10-21; [MISSING_PROPERTIES_2026-10-21.md](MISSING_PROPERTIES_2026-10-21.md)):
+  a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
+  with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
 - **The Library rule "Best available"** (2026-10-17): it is each pair's default set, which is not the best for every
   use (ethanol + water: the default follows the 1 atm T-x-y data, the "-etal" set the excess enthalpies). Rename it,
   for example "Default sets (fitted to data where there are any)"? One model for the whole project (diagrams and
