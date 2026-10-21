@@ -144,11 +144,18 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   allowable stress is the user's; no material recommendation; the low end of a U range; typical efficiencies from an
   open source as defaults; recycles through a two-stream exchanger and loops closed by energy streams are torn; no
   pinch analysis. Steps:
-  1. the heat-exchange calculation;
-  2. the Heat exchanger workspace in Unit models (Rating locked);
-  3. energy streams in the flowsheet, the heater's utility and area;
-  4. the two-stream heat exchanger block;
-  5. valve and pump (an open source for the typical pump efficiency);
+  1-5 done (2026-10-20, docs/decisions/2026-10-20-06-heat-exchangers.md): the heat-exchange calculation (Lienhard
+  and Lienhard's tables, transcribed: the maintainer to compare them with the book), the Heat exchanger workspace in
+  Unit models (Rating locked), energy streams, the heater's sizing, the two-stream block, valve and pump (75 % by
+  default, NC State Extension AG-452-6); project format 4; open: CHEPTA's flash of pure water takes the vapour as an
+  ideal gas or Peng-Robinson, not IAPWS (latent heat about 1.2 % above IF97 at 300 kPa), which a water process stream
+  in an exchanger carries;
+  review of 2026-10-21 (same decision file): one mode switch (Utility exchanger, Process exchanger), each stream of a
+  process exchanger with its own components (at most 3) and method, the energy feed in the flowsheet's palette, a
+  block's own energy stream can be taken out of the drawing, the canvas scrolls instead of shrinking; open: film
+  coefficients calculated from correlations with the stream's own properties and the exchanger's geometry (Lienhard
+  and Lienhard, chapters 7-9) instead of the single examples of Table 1.1, proposed, for the maintainer to decide;
+  the canvas's size and drawing speed for large flowsheets, later (the maintainer, 2026-10-21: "not now");
   6. mixture entropy, the P-S flash, compressor and expander;
   7. Charts: the gas phase envelope traced through the critical point (done 2026-10-21,
      docs/decisions/2026-10-21-01-phase-envelope.md); P-H, T-S and H-S charts, with the steam charts, next, with step 6

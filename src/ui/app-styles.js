@@ -186,6 +186,8 @@ export const APP_CSS = `
 .fa-link-btn{justify-self:start; border:0; background:none; color:var(--fug-accent); padding:0; font-size:12px; cursor:pointer; text-decoration:underline; text-underline-offset:2px}
 .fa-table{font-size:12.5px}
 .fug-app .fa-table th,.fug-app .fa-table td{text-align:left; padding:5px 8px 5px 0}
+.fug-app .fa-table th.fa-th2{vertical-align:bottom; line-height:1.25; max-width:9em}
+.fug-app .fa-th-unit{display:block; font-weight:400; color:var(--fug-fg2)}
 .fug-app .fa-num-table th,.fug-app .fa-num-table td{text-align:right; padding:4px 8px; white-space:nowrap}
 .fug-app .fa-num-table th:first-child,.fug-app .fa-num-table td:first-child{text-align:right}
 .fug-app th .u{display:block; font-weight:400; font-size:.7rem}
@@ -332,12 +334,14 @@ a.fa-mini{text-decoration:none}
 .fa-role-tag{display:inline-block; vertical-align:3px; font-size:11px; font-weight:500; color:var(--fa-pressed-fg); background:var(--fa-pressed);
   border:1px solid var(--fa-pressed-edge); border-radius:999px; padding:0 8px; margin-right:8px}
 /* Flowsheet workspace (flowsheet-view.js) */
-.fs-wrap{position:relative}
-.fs-canvas{display:block; width:100%; height:auto; min-height:320px; max-height:620px; touch-action:none; user-select:none; background:
-  radial-gradient(circle, var(--fug-rule) 1px, transparent 1.2px) 0 0/20px 20px}
+.fs-wrap{position:relative; overflow:auto; min-height:320px; max-height:620px; background:
+  radial-gradient(circle, var(--fug-rule) 1px, transparent 1.2px) 0 0/20px 20px; background-attachment:local}
+.fug-plot svg.fs-canvas,.fa-card svg.fs-canvas,.fs-canvas{display:block; width:auto; height:auto; max-width:none; touch-action:none; user-select:none; cursor:grab}
+.fs-canvas.is-panning{cursor:grabbing}
+.fs-wrap:focus{outline:none}
 .fs-shape{fill:var(--fug-bg); stroke:var(--fug-fg); stroke-width:1.6}
 .fs-detail{fill:none; stroke:var(--fug-fg); stroke-width:1.3; opacity:.7}
-.fs-block{cursor:grab}
+.fs-block{cursor:move}
 .fs-block:focus{outline:none}
 .fs-block:focus-visible .fs-shape,.fs-block.is-sel .fs-shape{stroke:var(--fug-accent); stroke-width:2.6}
 .fs-block.is-incomplete .fs-shape{stroke-dasharray:5 3}
@@ -367,7 +371,6 @@ a.fa-mini{text-decoration:none}
 .fug-app .fa-fs-later{margin-top:10px; padding-top:8px; border-top:1px solid var(--fug-rule)}
 .fa-canvas-grid{display:grid; grid-template-columns:repeat(2, auto); gap:2px 4px}
 .fa-soon-grid{display:grid; grid-template-columns:repeat(3, auto); gap:2px 4px}
-.fs-wrap{overflow:auto}
 .fs-port-in{fill:var(--fug-bg); stroke:var(--fug-fg2); stroke-width:1.4}
 .fs-port-in.is-open{stroke:var(--fug-accent)}
 .fs-canvas.is-connecting .fs-port-in{opacity:.35}
@@ -378,6 +381,13 @@ a.fa-mini{text-decoration:none}
 .fs-q{fill:none; stroke:#c0392b; stroke-width:1.4; stroke-dasharray:4 3}
 .fs-qarrow{fill:#c0392b}
 .fs-qlabel{font-size:10px; fill:#c0392b; paint-order:stroke; stroke:var(--fug-halo); stroke-width:3px}
+.fs-qstub,.fs-qfeed{cursor:pointer}
+.fs-qfeed{cursor:move}
+.fs-qsource{fill:var(--fug-bg); stroke:#c0392b; stroke-width:1.4}
+.fs-qbolt{fill:#c0392b}
+.fs-qfeed.is-incomplete .fs-qsource{stroke-dasharray:3 2}
+.fs-qstub.is-sel .fs-q,.fs-qfeed.is-sel .fs-q{stroke-width:2.4}
+.fs-qfeed.is-sel .fs-qsource,.fs-qfeed:focus-visible .fs-qsource,.fs-qstub:focus-visible .fs-q{stroke-width:2.6}
 .fs-drag{pointer-events:none; fill:none; stroke:var(--fug-accent); stroke-width:1.6; stroke-dasharray:4 3}
 .fs-empty-hint{position:absolute; inset:auto 0 45% 0; text-align:center; color:var(--fug-fg2); font-size:13px; pointer-events:none}
 .fs-tables h3{font-size:13px; margin:14px 0 6px}

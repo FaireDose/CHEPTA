@@ -12,9 +12,10 @@ import {
 const MAC = ["methanol", "acetone", "chloroform"];
 const go = (s, ...patches) => patches.reduce(applyPatch, s);
 
-test("one navigation: six task workspaces holding every view; four supporting panels", () => {
-  assert.deepEqual(WORKSPACES.map(w => w.id), ["equilibrium", "steam", "solubility", "properties", "flash", "flowsheet"]);
-  assert.deepEqual(WORKSPACES.map(w => w.label), ["Phase equilibrium", "Steam", "Solubility", "Properties", "Flash", "Flowsheet"]);
+test("one navigation: seven task workspaces holding every view; four supporting panels", () => {
+  // the Heat exchanger joins the Unit models (proposal 0013, step 2, 2026-10-20)
+  assert.deepEqual(WORKSPACES.map(w => w.id), ["equilibrium", "steam", "solubility", "properties", "flash", "hx", "flowsheet"]);
+  assert.deepEqual(WORKSPACES.map(w => w.label), ["Phase equilibrium", "Steam", "Solubility", "Properties", "Flash", "Heat exchanger", "Flowsheet"]);
   // the top navigation: File, then three sections holding every workspace once, in order
   assert.deepEqual(SECTIONS.map(x => x.label), ["Properties & Equilibria", "Unit models", "Flowsheet"]);
   assert.deepEqual(SECTIONS.flatMap(x => x.workspaces), WORKSPACES.map(w => w.id));

@@ -182,6 +182,47 @@ SEEDS = {
         "access": "Published international standard, free from IAPWS and intended for implementation; equations and coefficients reproduced with citation",
         "files": ["src/thermo/iapws/transport.js"],
     },
+    # src/data/heat-transfer.json "source" block (citation, open_copy, access); src/units/heat-exchange.js header
+    "lienhard-ahtt-6": {
+        "title": "A Heat Transfer Textbook, 6th edition, version 6.00 (19 April 2024)",
+        "authors": "J. H. Lienhard V and J. H. Lienhard IV",
+        "year": 2024,
+        "published": "Phlogiston Press, Cambridge, Massachusetts",
+        "kind": "free book",
+        "url": "https://ahtt.mit.edu/wp-content/uploads/2024/04/AHTTv600.pdf",
+        "access": "Free book: free to download from https://ahtt.mit.edu/ (\"the authors grant you the right to download and print it for your personal use or for non-profit instructional use\", title page verso); its numbers are taken, cited by table and page, not its text or figures (the maintainer, 2026-10-20)",
+        "files": ["src/data/heat-transfer.json", "src/units/heat-exchange.js"],
+    },
+    # src/units/heat-exchange.js header (Lamé, § 80, eqns. (22)-(23), the Internet Archive copy)
+    "lame-1852": {
+        "title": "Leçons sur la théorie mathématique de l'élasticité des corps solides",
+        "authors": "G. Lamé",
+        "year": 1852,
+        "kind": "free book",
+        "url": "https://archive.org/details/leonssurlathori05lamgoog",
+        "access": "Public domain (1852); scanned copy on the Internet Archive",
+        "files": ["src/units/heat-exchange.js"],
+    },
+    # src/units/units.js header (the pump's typical efficiency)
+    "ncsu-ag-452-6": {
+        "title": "Pumping plant performance, N.C. Cooperative Extension AG-452-6 (1996, revised 2024)",
+        "authors": "R. Evans, R. E. Sneed, J. H. Hunt",
+        "year": 1996,
+        "kind": "open-access article",
+        "url": "https://content.ces.ncsu.edu/pumping-plant-performance",
+        "access": "Free to read online (N.C. Cooperative Extension); one number is taken, cited, not its text",
+        "files": ["src/units/units.js"],
+    },
+    # src/units/units.js header (the range of pump efficiencies)
+    "doe-pumping-2006": {
+        "title": "Improving Pumping System Performance: A Sourcebook for Industry, 2nd edition",
+        "authors": "U.S. Department of Energy, Industrial Technologies Program, and the Hydraulic Institute",
+        "year": 2006,
+        "kind": "free book",
+        "url": "https://www.energy.gov/sites/prod/files/2014/05/f16/pump.pdf",
+        "access": "A work of the U.S. government, free to read (DOE/GO-102006-2079)",
+        "files": ["src/units/units.js"],
+    },
     # src/thermo/henry.js header; src/data/henry.json; src/data/LICENSES.md (Henry row)
     "iapws-g7-04": {
         "title": "IAPWS G7-04, Guideline on the Henry's constant and vapor-liquid distribution constant for gases in H2O and D2O at high temperatures",

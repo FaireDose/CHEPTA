@@ -20,6 +20,8 @@ export const WORKSPACES = [
   { id: "solubility", label: "Solubility", short: "Solubility", icon: "henry", views: ["henry", "solid", "sle"], view: "henry" },
   { id: "properties", label: "Properties", short: "Properties", icon: "curves", views: ["properties"], view: "properties" },
   { id: "flash", label: "Flash", short: "Flash", icon: "drum", views: ["flash"], view: "flash" },
+  // proposal 0013, step 2: pre-sizing a heat exchanger (a Rating button, locked, for later)
+  { id: "hx", label: "Heat exchanger", short: "Exchanger", icon: "hx", views: ["hx"], view: "hx" },
   { id: "flowsheet", label: "Flowsheet", short: "Flowsheet", icon: "flowsheet", views: ["flowsheet"], view: "flowsheet" },
 ];
 
@@ -29,7 +31,7 @@ export const WORKSPACES = [
  */
 export const SECTIONS = [
   { id: "thermo", label: "Properties & Equilibria", short: "Prop. & eq.", icon: "ternary", workspaces: ["equilibrium", "steam", "solubility", "properties"] },
-  { id: "units", label: "Unit models", short: "Units", icon: "drum", workspaces: ["flash"],
+  { id: "units", label: "Unit models", short: "Units", icon: "drum", workspaces: ["flash", "hx"],
     locked: [
       { id: "reaction", label: "Reaction", icon: "flask", note: "Reactors and reactions: roadmap A13, not available yet." },
       { id: "distillation", label: "Distillation", icon: "column", note: "Shortcut and rigorous columns: roadmap v0.5, not available yet." },
@@ -84,6 +86,8 @@ export const INPUTS = {
   envelope: { kind: "list", min: 1, minActivity: 2, max: 12, liquid: true, what: "a phase envelope" },
   // one component is a pure substance heated, cooled or boiled (any model)
   flash: { kind: "list", min: 1, max: 6, liquid: true, what: "a flash" },
+  // the components of the exchanger's streams (both streams of the two-stream mode use them)
+  hx: { kind: "list", min: 1, max: 6, liquid: true, what: "a heat exchanger" },
   henry: { kind: "henry", what: "a gas solubility" },
   // solid-liquid equilibrium (proposal 0007, step 4): `solid` lists the slots whose component crystallizes (melting data needed)
   solid: { kind: "slots", n: 2, liquid: true, solid: [0], activityOnly: true, what: "a solid solubility", roles: ["the solid", "the solvent"] },
@@ -224,6 +228,7 @@ export function seedInputs(components = [], { gas, solvent, propComponent, model
     pxy: normalizeInputs("pxy", ids.slice(0, 2), ud),
     envelope: normalizeInputs("envelope", ids.slice(0, INPUTS.envelope.max), ud),
     flash: normalizeInputs("flash", liq.slice(0, 6), ud),
+    hx: normalizeInputs("hx", liq.slice(0, 6), ud),
     henry: { gas: g, solvent: pickId(solvent, ud) ?? solventsFor(g)[0] ?? "water" },
     // a solid in a solvent, and a binary with a eutectic: examples until the person chooses
     solid: normalizeInputs("solid", ["benzoic-acid", "ethanol"]),

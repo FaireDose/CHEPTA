@@ -21,6 +21,7 @@ import knownIssues from "../data/known-issues.json" with { type: "json" };
 import { WORKSPACES, UTILITIES, INPUTS, checkInputs, normalizeInputs, seedInputs, isEosModel } from "./workspaces.js";
 import { normalizeUnits, tToDisplay, tFromDisplay, pToDisplay, pFromDisplay, fmtShort } from "./properties-logic.js";
 import { normalizeFlash, FLASH_DEFAULTS } from "./flash-logic.js";
+import { normalizeHx, hxStreamSetup } from "./hx-logic.js";
 import { solidUnitIds } from "./solubility-units.js";
 import ENVELOPE_EXAMPLES from "../data/envelope-examples.json" with { type: "json" };
 
@@ -36,6 +37,7 @@ export const VIEWS = {
   pxy: { workspace: "equilibrium", diagram: true, label: "P-x-y diagram" },
   envelope: { workspace: "equilibrium", diagram: true, label: "Phase envelope" },
   flash: { workspace: "flash", label: "Flash" },
+  hx: { workspace: "hx", label: "Heat exchanger" },
   flowsheet: { workspace: "flowsheet", label: "Flowsheet" },
   henry: { workspace: "solubility", label: "Gas solubility" },
   solid: { workspace: "solubility", label: "Solid solubility" },
@@ -160,7 +162,7 @@ export const PRESETS = [
 
 // 12: a natural gas on the phase envelope (each view takes what it needs: two for T-x-y, six for the flash)
 export const MAX_COMPONENTS = 12;
-const START_ALIASES = { drum: "flash", eos: "eos", "pt": "envelope", "p-x-y": "pxy", "t-x-y": "txy", vle: "ternary", gases: "henry", solubility: "henry", explorer: "properties", library: "sources",
+const START_ALIASES = { drum: "flash", exchanger: "hx", "heat-exchanger": "hx", eos: "eos", "pt": "envelope", "p-x-y": "pxy", "t-x-y": "txy", vle: "ternary", gases: "henry", solubility: "henry", explorer: "properties", library: "sources",
   solids: "solid", eutectic: "sle", "solid-liquid": "sle" };
 
 const normModel = m => (String(m ?? "NRTL").toUpperCase() === "IDEAL" ? "ideal" : String(m ?? "NRTL").toUpperCase());
@@ -222,9 +224,9 @@ export function viewAvailability(view, ids, model = "NRTL", ud = null) {
       if (liq.length < min) return { enabled: false, use: [], reason: min === 1 ? "Select at least one component." : `With an activity model the phase envelope needs two liquids; ${word(liq.length)} selected.` };
       return { enabled: true, use: liq.slice(0, 12) };
     }
-    case "flash": {
+    case "flash": case "hx": {
       // one component is a pure substance heated, cooled or boiled, with any model
-      if (liq.length < 1) return { enabled: false, use: [], reason: `A flash needs a component; ${word(liq.length)} selected.` };
+      if (liq.length < 1) return { enabled: false, use: [], reason: `A ${view === "hx" ? "heat exchanger" : "flash"} needs a component; ${word(liq.length)} selected.` };
       return { enabled: true, use: liq.slice(0, 6) };
     }
     case "henry": {
@@ -259,6 +261,8 @@ function aliasOf(wanted) {
 export function resolveView(wanted, ids, model = "NRTL", ud = null) {
   let v = aliasOf(wanted);
   if (v === "eos") v = ids.length === 2 ? "pxy" : "envelope";
+  // the flowsheet has its own components and method (state.flowsheet): a start link to it opens it as it is
+  if (v === "flowsheet") return v;
   if (!ids.length) return VIEWS[v] ? v : "txy";
   if (VIEWS[v] && viewAvailability(v, ids, model, ud).enabled) return v;
   const liq = liquids(ids, ud).length;
@@ -340,6 +344,8 @@ export function initialState(cfg = {}) {
     compareGases: !!cfg.compareGases,
     steamP_kPa: cleanList(cfg.steamP_kPa ?? DEFAULTS.steamP_kPa),
     flash: normalizeFlash(cfg.flash ?? {}, FLASH_DEFAULTS),
+    // the Heat exchanger workspace (proposal 0013): null until a setting is changed (hx-logic.js HX_DEFAULTS)
+    hx: cfg.hx == null ? null : normalizeHx(cfg.hx),
     title: cfg.title,
     sets: normalizeSets(cfg.sets, {}, ud),
     // the user's own data (proposal 0012), as entered (it is saved as written); userOverlay() gives it checked
@@ -378,10 +384,33 @@ export function normalizeUserData(raw) {
 /** The workbench's user data, checked: what system(), pure() and listComponents() take as userData. */
 export const userOverlay = state => overlayOf(state.userData);
 
+/** The two streams of a process exchanger (two-stream mode): each one's components, method and vapour; until chosen,
+ *  the workspace's. */
+export function hxSetups(state) {
+  const base = { ids: state.inputs.hx ?? [], model: state.model, vapour: state.vapour ?? "ideal" };
+  return { hot: hxStreamSetup(state.hx, "hot", base), cold: hxStreamSetup(state.hx, "cold", base) };
+}
+
+/** checkInputs of a view with the state's inputs and model; for a process exchanger (two streams that never mix),
+ *  both streams', each with its own method, and the problems named by stream. */
+export function viewCheck(state, view = state.view) {
+  const ud = userOverlay(state);
+  if (view === "hx" && state.hx?.mode === "two") {
+    const s = hxSetups(state), problems = [];
+    for (const [k, name] of [["hot", "Hot stream"], ["cold", "Cold stream"]]) {
+      const c = checkInputs("hx", s[k].ids, s[k].model, ud);
+      problems.push(...c.problems.map(p => ({ slot: null, stream: k, message: `${name}: ${p.message.replace(/in the Model group/g, "in its Method")}` })));
+    }
+    const ok = !problems.length;
+    return { ok, use: ok ? [...new Set([...s.hot.ids, ...s.cold.ids])] : [], problems };
+  }
+  return checkInputs(view, state.inputs[view], state.model, ud);
+}
+
 /** Fill in the read-only summary fields: view, components (in use) and propComponent. */
 function derive(state, view) {
   state.view = view ?? (state.workspace === "equilibrium" ? state.diagram : WORKSPACES.find(w => w.id === state.workspace).view);
-  state.components = checkInputs(state.view, state.inputs[state.view], state.model, userOverlay(state)).use;
+  state.components = viewCheck(state).use;
   state.propComponent = state.inputs.properties[0] ?? null;
   return state;
 }
@@ -517,6 +546,7 @@ export function applyPatch(state, patch = {}) {
   if ("prefer" in patch) next.prefer = normalizePrefer(patch.prefer);
   if ("flowsheet" in patch) next.flowsheet = normalizeFlowsheet(patch.flowsheet, ud);
   if (patch.flash != null) next.flash = normalizeFlash(patch.flash, next.flash);
+  if ("hx" in patch) next.hx = patch.hx == null ? null : normalizeHx(patch.hx, next.hx ?? undefined);
 
   // navigation
   let utility = "utility" in patch ? patch.utility : undefined;

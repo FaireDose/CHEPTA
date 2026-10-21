@@ -733,6 +733,17 @@
         "validation/data/vle/diethyl-carbonate_p-xylene_10-1021-acs-jced-6b00085_101.33kPa.json"
       ]
     },
+    "doe-pumping-2006": {
+      "title": "Improving Pumping System Performance: A Sourcebook for Industry, 2nd edition",
+      "authors": "U.S. Department of Energy, Industrial Technologies Program, and the Hydraulic Institute",
+      "year": 2006,
+      "kind": "free book",
+      "url": "https://www.energy.gov/sites/prod/files/2014/05/f16/pump.pdf",
+      "access": "A work of the U.S. government, free to read (DOE/GO-102006-2079)",
+      "files": [
+        "src/units/units.js"
+      ]
+    },
     "domanska2005-acetone-nmp": {
       "title": "Thermodynamics of binary mixtures of N-methyl-2-pyrrolidinone and ketone. Experimental results and modelling of the solid-liquid equilibrium and vapou-liquid equilibrium. The Modified UNIFAC (Do) model characterization",
       "authors": "U. Domanska, J. Lachwa",
@@ -1591,6 +1602,17 @@
         "validation/data/vle/1-3-propanediol_water_10-1016-j-jct-2013-08-020_101.3kPa.json"
       ]
     },
+    "lame-1852": {
+      "title": "Leçons sur la théorie mathématique de l'élasticité des corps solides",
+      "authors": "G. Lamé",
+      "year": 1852,
+      "kind": "free book",
+      "url": "https://archive.org/details/leonssurlathori05lamgoog",
+      "access": "Public domain (1852); scanned copy on the Internet Archive",
+      "files": [
+        "src/units/heat-exchange.js"
+      ]
+    },
     "li2012-cyclohexane-n-butyl-acetate": {
       "title": "Determination and Prediction of Vapor Liquid Equilibria for a System Containing Water + Butyl Acetate + Cyclohexane + Ethanol",
       "authors": "G. Li, Z. Li",
@@ -1856,6 +1878,19 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/ethanol_cyclohexane_HE_lien2003.json"
+      ]
+    },
+    "lienhard-ahtt-6": {
+      "title": "A Heat Transfer Textbook, 6th edition, version 6.00 (19 April 2024)",
+      "authors": "J. H. Lienhard V and J. H. Lienhard IV",
+      "year": 2024,
+      "published": "Phlogiston Press, Cambridge, Massachusetts",
+      "kind": "free book",
+      "url": "https://ahtt.mit.edu/wp-content/uploads/2024/04/AHTTv600.pdf",
+      "access": "Free book: free to download from https://ahtt.mit.edu/ (\"the authors grant you the right to download and print it for your personal use or for non-profit instructional use\", title page verso); its numbers are taken, cited by table and page, not its text or figures (the maintainer, 2026-10-20)",
+      "files": [
+        "src/data/heat-transfer.json",
+        "src/units/heat-exchange.js"
       ]
     },
     "lin2012-2-propanol-isooctane": {
@@ -2577,6 +2612,17 @@
       "files": [
         "validation/data/vle/ethanol_n-decane_10-1021-acs-jced-7b00875_328.17K.json",
         "validation/data/vle/ethanol_n-nonane_10-1021-acs-jced-7b00875_333.21K.json"
+      ]
+    },
+    "ncsu-ag-452-6": {
+      "title": "Pumping plant performance, N.C. Cooperative Extension AG-452-6 (1996, revised 2024)",
+      "authors": "R. Evans, R. E. Sneed, J. H. Hunt",
+      "year": 1996,
+      "kind": "open-access article",
+      "url": "https://content.ces.ncsu.edu/pumping-plant-performance",
+      "access": "Free to read online (N.C. Cooperative Extension); one number is taken, cited, not its text",
+      "files": [
+        "src/units/units.js"
       ]
     },
     "nelson2018-2-propanol-n-pentane": {

@@ -21,11 +21,30 @@
  * The first blocks: feed, mixer, splitter, separator (component splitter), flash (drum),
  * heater (heater / cooler), product. They are steady-state material and energy balances
  * around the flash and the stream of layers 2 and 3; nothing here is a correlation.
+ *
+ * Proposal 0013 adds (steps 3-5):
+ *  - the heater's optional `sizing` ({ utility, U, arrangement, shells, zones }): the area and the utility's
+ *    consumption by the zone method of src/units/heat-exchange.js; it is not a specification (it changes no outlet);
+ *  - "hx", a heat exchanger between two process streams (inlets and outlets hot and cold), adiabatic overall: one
+ *    specification, an outlet temperature or vapour fraction of either side, the duty, or the minimum approach dTmin_K;
+ *  - "valve": an adiabatic pressure drop (a P-H flash at the inlet enthalpy);
+ *  - "pump": a liquid to a higher pressure, power = V dP / efficiency, V the inlet's volume flow from the liquid-density
+ *    records of its components (ideal mixing: the molar volumes add up); the outlet from the energy balance,
+ *    H_out = H_in + power. The efficiency defaults to 0.75, the low end of the "target pump efficiencies ... in the
+ *    range from 75 to 85 percent" of R. Evans, R. E. Sneed and J. H. Hunt, Pumping plant performance, N.C. Cooperative
+ *    Extension AG-452-6 (1996, revised 2024), https://content.ces.ncsu.edu/pumping-plant-performance (free to read);
+ *    the U.S. Department of Energy's Improving Pumping System Performance: A Sourcebook for Industry, 2nd ed. (2006),
+ *    https://www.energy.gov/sites/prod/files/2014/05/f16/pump.pdf (a public-domain work of the U.S. government), p. 7:
+ *    "Efficiencies range widely, from 35% to more than 90%". The person's own efficiency replaces it.
+ * A block's `energy` kind is "heat" (a duty) or "work" (a pump's power); `dutySpec`: its duty can be given, so an
+ * energy stream can go into it (src/flowsheet/flowsheet.js).
  * Units: K, kPa, kmol/h, kW.
  */
 import { fail } from "../util/errors.js";
 import { stream, componentFlows, scaleStream, phaseStream, phasesStream } from "../stream/stream.js";
 import { findComponent } from "../thermo/components.js";
+import { pure } from "../thermo/pure.js";
+import { exchangerArea, exchangerApproach, ARRANGEMENTS } from "./heat-exchange.js";
 
 const UNITS = new Map();
 
@@ -35,7 +54,8 @@ export function registerUnit(def, { replace = false } = {}) {
   if (UNITS.has(def.type) && !replace) throw fail("BAD_INPUT", `registerUnit: "${def.type}" is already registered.`);
   if (typeof def.solve !== "function") throw fail("BAD_INPUT", `registerUnit: "${def.type}" needs a solve function.`);
   const ports = list => (list ?? []).map(p => ({ port: p.port, min: p.min ?? 1, max: p.max ?? 1, optional: !!p.optional, label: p.label ?? p.port }));
-  UNITS.set(def.type, Object.freeze({ ...def, label: def.label ?? def.type, inlets: ports(def.inlets), outlets: ports(def.outlets) }));
+  UNITS.set(def.type, Object.freeze({ ...def, label: def.label ?? def.type, inlets: ports(def.inlets), outlets: ports(def.outlets),
+    energy: def.energy ?? (def.duty ? "heat" : null), dutySpec: !!def.dutySpec }));
 }
 
 /** A registered block type, or a BAD_INPUT error listing the known ones. */
@@ -201,7 +221,7 @@ registerUnit({
 });
 
 registerUnit({
-  type: "flash", label: "Flash drum", duty: true, inlets: [{ port: "in", min: 1, max: Infinity }],
+  type: "flash", label: "Flash drum", duty: true, dutySpec: true, inlets: [{ port: "in", min: 1, max: Infinity }],
   outlets: [{ port: "vapour" }, { port: "liquid" }, { port: "liquid2", optional: true, label: "second liquid" }],
   checkSpec(spec) { return flashConditions(spec, "Flash drum"); },
   solve({ sys, inlets, spec, outletCount }) {
@@ -235,7 +255,7 @@ registerUnit({
 });
 
 registerUnit({
-  type: "heater", label: "Heater / cooler", duty: true, inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out" }],
+  type: "heater", label: "Heater / cooler", duty: true, dutySpec: true, inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out" }],
   checkSpec(spec) {
     // the outlet: T_K, duty_kW or VF, at P_kPa or the inlet pressure minus dP_kPa; or T_K and VF
     const has = k => spec[k] !== undefined && spec[k] !== null;
@@ -249,15 +269,16 @@ registerUnit({
     if (has("duty_kW")) c.duty_kW = num(spec.duty_kW, "Heater: duty_kW");
     if (has("VF")) { c.VF = num(spec.VF, "Heater: VF", { min: 0 }); if (c.VF > 1) throw fail("BAD_INPUT", `Heater: VF must be between 0 and 1 (got ${spec.VF}).`); }
     if (has("P_kPa")) c.P_kPa = num(spec.P_kPa, "Heater: P_kPa", { positive: true });
-    return { ...c, dP_kPa: has("dP_kPa") ? num(spec.dP_kPa, "Heater: dP_kPa", { min: 0 }) : 0 };
+    return { ...c, dP_kPa: has("dP_kPa") ? num(spec.dP_kPa, "Heater: dP_kPa", { min: 0 }) : 0, sizing: checkSizing(spec.sizing, "Heater") };
   },
   solve({ sys, inlets, spec }) {
     const s = mixed(sys, inlets.in).stream;   // several inlets: mixed first
-    const { dP_kPa, ...c } = spec;
+    const { dP_kPa, sizing, ...c } = spec;
     if (c.P_kPa == null && !(c.T_K != null && c.VF != null)) c.P_kPa = s.P_kPa - dP_kPa;   // T and VF fix P themselves
     if (c.P_kPa != null && !(c.P_kPa > 0)) throw fail("BAD_INPUT", `Heater: the pressure drop (${dP_kPa} kPa) is larger than the inlet pressure (${s.P_kPa} kPa).`);
     const out = outletAt(sys, s.flows, s.H_kW ?? 0, c);
-    return { outlets: { out }, duty_kW: (out.H_kW ?? 0) - (s.H_kW ?? 0) };
+    const duty = (out.H_kW ?? 0) - (s.H_kW ?? 0);
+    return { outlets: { out }, duty_kW: duty, ...(sizing ? { sizing: sizeHeater(sys, s, out, duty, sizing) } : {}) };
   },
 });
 
@@ -266,6 +287,151 @@ registerUnit({
   checkSpec() { return {}; },
   solve() { return { outlets: {}, duty_kW: 0 }; },
 });
+
+/**
+ * The heater's optional sizing: { utility: { kind: "steam" | "water" | "fluid" | "electric", ... }, U, arrangement,
+ * shells, zones } (src/units/heat-exchange.js). Checked here, used after the outlet is known.
+ */
+function checkSizing(z, who) {
+  if (z == null) return null;
+  if (typeof z !== "object" || Array.isArray(z)) throw fail("BAD_INPUT", `${who}: sizing must be an object such as { utility: { kind: "steam", P_kPa: 500 }, U: { service: "steam-water-oil" } }.`);
+  const known = ["utility", "U", "arrangement", "shells", "zones"];
+  const bad = Object.keys(z).filter(k => !known.includes(k));
+  if (bad.length) throw fail("BAD_INPUT", `${who}: sizing: unknown key${bad.length > 1 ? "s" : ""} ${bad.join(", ")}. Known: ${known.join(", ")}.`);
+  if (!z.utility || typeof z.utility !== "object") throw fail("BAD_INPUT", `${who}: sizing needs a utility, e.g. { kind: "steam", P_kPa: 500 }, { kind: "water", T_in_K, T_out_K } or { kind: "electric" }.`);
+  if (!["steam", "water", "fluid", "electric"].includes(z.utility.kind)) throw fail("BAD_INPUT", `${who}: sizing: unknown utility "${z.utility.kind}". Known: steam, water, fluid, electric.`);
+  if (z.arrangement != null && !ARRANGEMENTS.includes(z.arrangement)) throw fail("BAD_INPUT", `${who}: sizing: unknown arrangement "${z.arrangement}". Known: ${ARRANGEMENTS.join(", ")}.`);
+  return JSON.parse(JSON.stringify(z));
+}
+
+/** The area and utility of a heater (or cooler) from its inlet, outlet and duty. */
+function sizeHeater(sys, inlet, out, duty, z) {
+  if (Math.abs(duty) < 1e-9) return { note: "No duty: nothing to size." };
+  if (z.utility.kind === "electric") {
+    if (duty < 0) throw fail("BAD_INPUT", "Heater: electric heating cannot cool; choose water or a fluid of your own.");
+    return { utility: { kind: "electric", power_kW: duty }, area_m2: null, note: "Electric heating: the power is the duty; no heat-transfer area." };
+  }
+  const proc = { stream: inlet, dP_kPa: Math.max(0, inlet.P_kPa - out.P_kPa) };
+  const hx = exchangerArea(sys, {
+    duty_kW: Math.abs(duty), U: z.U ?? undefined, arrangement: z.arrangement, shells: z.shells, zones: z.zones,
+    ...(duty > 0 ? { hot: { utility: z.utility }, cold: proc } : { hot: proc, cold: { utility: z.utility } }),
+  });
+  return summary(hx);
+}
+
+/** What a block reports of a sizing (exchangerArea without its streams). */
+const summary = hx => ({
+  duty_kW: hx.duty_kW, area_m2: hx.area_m2, U_W_m2K: hx.U_W_m2K, U_how: hx.U_how, UA_kW_K: hx.UA_kW_K, dT_mean_K: hx.dT_mean_K,
+  dT_min_K: hx.dT_min_K, pinch: hx.pinch, F: hx.F, arrangement: hx.arrangement, shells: hx.shells, zones: hx.zones, hot: hx.hot, cold: hx.cold, notes: hx.notes,
+  ...(hx.hot.kind !== "process" ? { utility: hx.hot } : hx.cold.kind !== "process" ? { utility: hx.cold } : {}),
+});
+
+// ---------------------------------------------------------------------------------------
+// Proposal 0013: heat exchanger (two streams), valve, pump
+
+const HX_SPECS = ["T_hot_out_K", "T_cold_out_K", "VF_hot_out", "VF_cold_out", "duty_kW", "dTmin_K"];
+
+registerUnit({
+  type: "hx", label: "Heat exchanger", inlets: [{ port: "hot", label: "hot" }, { port: "cold", label: "cold" }],
+  outlets: [{ port: "hot", label: "hot" }, { port: "cold", label: "cold" }],
+  checkSpec(spec) {
+    const has = k => spec[k] !== undefined && spec[k] !== null;
+    const given = HX_SPECS.filter(has);
+    if (given.length !== 1) throw fail("BAD_INPUT", `Heat exchanger: give one of the hot outlet T_hot_out_K, the cold outlet T_cold_out_K, a vapour fraction VF_hot_out or VF_cold_out, the duty duty_kW, or the minimum approach dTmin_K (got ${given.join(", ") || "none"}).`);
+    const c = { kind: given[0] };
+    const k = given[0];
+    if (k.startsWith("VF")) { c.value = num(spec[k], `Heat exchanger: ${k}`, { min: 0 }); if (c.value > 1) throw fail("BAD_INPUT", `Heat exchanger: ${k} must be between 0 and 1 (got ${spec[k]}).`); }
+    else c.value = num(spec[k], `Heat exchanger: ${k}`, { positive: true });
+    for (const d of ["dP_hot_kPa", "dP_cold_kPa"]) c[d] = has(d) ? num(spec[d], `Heat exchanger: ${d}`, { min: 0 }) : 0;
+    c.sizing = spec.U != null || spec.arrangement != null ? { U: spec.U, arrangement: spec.arrangement, shells: spec.shells, zones: spec.zones } : { zones: spec.zones };
+    if (c.sizing.arrangement != null && !ARRANGEMENTS.includes(c.sizing.arrangement)) throw fail("BAD_INPUT", `Heat exchanger: unknown arrangement "${c.sizing.arrangement}". Known: ${ARRANGEMENTS.join(", ")}.`);
+    return c;
+  },
+  solve({ sys, inlets, spec }) {
+    const hot = inlets.hot[0], cold = inlets.cold[0];
+    // a side without flow (an empty recycle at its start): nothing is exchanged, the streams pass at their outlet pressures
+    if (!(hot.F_kmol_h > 0) || !(cold.F_kmol_h > 0)) {
+      const pass = (s, dP) => (s.F_kmol_h > 0 ? stream(sys, { flow_kmol_h: s.flows, P_kPa: s.P_kPa - dP, H_kW: s.H_kW }) : stream(sys, { flow_kmol_h: s.flows, T_K: s.T_K ?? 298.15, P_kPa: (s.P_kPa ?? 101.325) - dP }));
+      return { outlets: { hot: pass(hot, spec.dP_hot_kPa), cold: pass(cold, spec.dP_cold_kPa) }, duty_kW: 0,
+        notes: [`The ${!(hot.F_kmol_h > 0) ? "hot" : "cold"} side has no flow: nothing is exchanged.`], state: { duty_kW: 0 } };
+    }
+    const base = q => ({
+      ...spec.sizing, ...(q != null ? { duty_kW: q } : {}),
+      hot: { stream: hot, dP_kPa: spec.dP_hot_kPa, ...(spec.kind === "T_hot_out_K" ? { T_out_K: spec.value } : spec.kind === "VF_hot_out" ? { VF_out: spec.value } : {}) },
+      cold: { stream: cold, dP_kPa: spec.dP_cold_kPa, ...(spec.kind === "T_cold_out_K" ? { T_out_K: spec.value } : spec.kind === "VF_cold_out" ? { VF_out: spec.value } : {}) },
+    });
+    if (!(hot.T_K > cold.T_K)) throw fail("BAD_INPUT", `Heat exchanger: the hot inlet (${+(hot.T_K - 273.15).toFixed(2)} °C) must be hotter than the cold inlet (${+(cold.T_K - 273.15).toFixed(2)} °C); swap the streams.`);
+    let hx;
+    if (spec.kind === "duty_kW") hx = exchangerArea(sys, base(spec.value));
+    else if (spec.kind === "dTmin_K") hx = exchangerApproach(sys, { ...base(null), dTmin_K: spec.value });
+    else hx = exchangerArea(sys, base(null));
+    return { outlets: { hot: hx.outlets.hot, cold: hx.outlets.cold }, duty_kW: 0, sizing: summary(hx), state: { duty_kW: hx.duty_kW } };
+  },
+});
+
+registerUnit({
+  type: "valve", label: "Valve", inlets: [{ port: "in" }], outlets: [{ port: "out" }],
+  checkSpec(spec) { return pressureSpec(spec, "Valve"); },
+  solve({ sys, inlets, spec }) {
+    const s = inlets.in[0];
+    const P = spec.P_kPa ?? s.P_kPa - spec.dP_kPa;
+    if (!(P > 0)) throw fail("BAD_INPUT", `Valve: the pressure drop (${spec.dP_kPa} kPa) is larger than the inlet pressure (${s.P_kPa} kPa).`);
+    if (P > s.P_kPa + 1e-9) throw fail("BAD_INPUT", `Valve: the outlet pressure (${P} kPa) is above the inlet pressure (${s.P_kPa} kPa); a valve only lowers the pressure (a pump or compressor raises it).`);
+    const out = s.F_kmol_h > 0 ? stream(sys, { flow_kmol_h: s.flows, P_kPa: P, H_kW: s.H_kW }) : stream(sys, { flow_kmol_h: s.flows, T_K: s.T_K, P_kPa: P });
+    const notes = out.VF != null && s.VF != null && out.VF > s.VF + 1e-6 ? [`Part of the liquid flashes across the valve: vapour fraction ${+s.VF.toFixed(4)} to ${+out.VF.toFixed(4)}.`] : [];
+    // an ideal gas keeps its temperature through a throttle (no Joule-Thomson effect): said when a vapour is throttled
+    // with an activity model's ideal-gas vapour, as real gases cool (or warm)
+    if (sys.kind !== "eos" && (sys.vapour ?? "ideal") === "ideal" && (s.VF ?? 0) > 1e-9) {
+      notes.push("The vapour is an ideal gas in this method, so it does not cool across the valve (no Joule-Thomson effect); for a gas, choose Peng–Robinson or SRK, or a Peng–Robinson or SRK vapour.");
+    }
+    return { outlets: { out }, duty_kW: 0, notes };
+  },
+});
+
+/** The pump's typical efficiency (see the file header): the low end of the NC State Extension's target range. */
+export const PUMP_EFFICIENCY = 0.75;
+
+registerUnit({
+  type: "pump", label: "Pump", duty: true, energy: "work", inlets: [{ port: "in" }], outlets: [{ port: "out" }],
+  checkSpec(spec) {
+    const c = pressureSpec(spec, "Pump");
+    const eta = spec.efficiency == null ? PUMP_EFFICIENCY : num(spec.efficiency, "Pump: efficiency", { positive: true });
+    if (eta > 1) throw fail("BAD_INPUT", `Pump: the efficiency is a fraction, at most 1 (got ${spec.efficiency}); 75 % is 0.75.`);
+    return { ...c, efficiency: eta, typical: spec.efficiency == null };
+  },
+  solve({ sys, inlets, spec }) {
+    const s = inlets.in[0];
+    const P = spec.P_kPa ?? s.P_kPa + spec.dP_kPa;
+    if (!(P >= s.P_kPa)) throw fail("BAD_INPUT", `Pump: the outlet pressure (${P} kPa) is below the inlet pressure (${s.P_kPa} kPa); a pump raises the pressure (a valve lowers it).`);
+    if (!(s.F_kmol_h > 0)) return { outlets: { out: stream(sys, { flow_kmol_h: s.flows, T_K: s.T_K, P_kPa: P }) }, duty_kW: 0, notes: ["No flow: no power."] };
+    if (s.VF == null || s.VF > 1e-6 || s.phases.some(p => p.type === "vapour" && p.fraction > 1e-6)) {
+      throw fail("BAD_INPUT", `Pump: a pump needs a liquid; its inlet has a vapour fraction of ${+(s.VF ?? 1).toFixed(4)}. Cool or condense it first, or use a compressor (coming later).`);
+    }
+    // volume flow of the liquid, m³/s: the molar volumes of the components add up (their liquid-density records)
+    const T = s.T_K;
+    let V = 0;
+    s.components.forEach((id, i) => {
+      const n = s.flows[i];
+      if (!(n > 0)) return;
+      const c = pure(id, { userData: sys.userData });
+      let rho;
+      try { rho = c.property("liquidDensity", T); } catch (e) { e.message = `Pump: the volume flow needs the liquid density of ${c.name}: ${e.message}`; throw e; }
+      V += n * c.MW / rho / 3600;   // kmol/h × kg/kmol / (kg/m³) / (s/h)
+    });
+    const W = V * (P - s.P_kPa) / spec.efficiency;   // m³/s × kPa = kW
+    const out = stream(sys, { flow_kmol_h: s.flows, P_kPa: P, H_kW: s.H_kW + W });
+    const notes = [spec.typical ? `Efficiency ${spec.efficiency * 100} % (a typical value; give the pump's own). Volume flow ${+(V * 3600).toPrecision(5)} m³/h from the liquid densities.` : `Volume flow ${+(V * 3600).toPrecision(5)} m³/h from the liquid densities.`];
+    return { outlets: { out }, duty_kW: W, notes, state: { power_kW: W, efficiency: spec.efficiency, volume_m3_h: V * 3600, dP_kPa: P - s.P_kPa } };
+  },
+});
+
+/** One of P_kPa (outlet) or dP_kPa (the change) for a valve or a pump. */
+function pressureSpec(spec, who) {
+  const has = k => spec[k] !== undefined && spec[k] !== null;
+  if (has("P_kPa") === has("dP_kPa")) throw fail("BAD_INPUT", `${who}: give the outlet pressure P_kPa or the pressure ${who === "Valve" ? "drop" : "rise"} dP_kPa (one of them).`);
+  return has("P_kPa") ? { P_kPa: num(spec.P_kPa, `${who}: P_kPa`, { positive: true }) } : { dP_kPa: num(spec.dP_kPa, `${who}: dP_kPa`, { min: 0 }) };
+}
+
 
 
 // ---------------------------------------------------------------------------------------
@@ -336,7 +502,21 @@ const DOF = {
     };
   },
   product: () => ({ needed: 0, given: 0, missing: [], extra: [] }),
+  hx(spec) {
+    const given = HX_SPECS.filter(k => hasKey(spec, k));
+    return { needed: 1, given: Math.min(1, given.length) + Math.max(0, given.length - 1),
+      missing: given.length ? [] : ["one of the hot or cold outlet temperature, a vapour fraction, the duty or the minimum approach dTmin_K"],
+      extra: given.length > 1 ? [`give one of them (now ${given.join(", ")})`] : [] };
+  },
+  valve: spec => onePressure(spec, "drop"),
+  pump: spec => onePressure(spec, "rise"),
 };
+
+function onePressure(spec, word) {
+  const P = hasKey(spec, "P_kPa"), dP = hasKey(spec, "dP_kPa");
+  return { needed: 1, given: (P ? 1 : 0) + (dP ? 1 : 0), missing: P || dP ? [] : [`the outlet pressure P_kPa or the pressure ${word} dP_kPa`],
+    extra: P && dP ? ["P_kPa and dP_kPa: give one"] : [] };
+}
 
 /**
  * The degrees of freedom of one block: { needed, given, missing, extra, ok, status, message }.
@@ -407,5 +587,6 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount } = {})
     if (material > 1e-9) throw new Error(`Internal: ${u.label} does not close its material balance (relative error ${material.toExponential(2)}). Please report this.`);
   }
   const energy_kW = type === "feed" || type === "product" ? 0 : sumH(inList) + r.duty_kW - sumH(outs);
-  return { type, outlets: r.outlets, duty_kW: r.duty_kW, balance: { material, energy_kW }, notes: r.notes ?? [], ...(r.state ? { state: r.state } : {}) };
+  return { type, outlets: r.outlets, duty_kW: r.duty_kW, balance: { material, energy_kW }, notes: r.notes ?? [], ...(r.state ? { state: r.state } : {}),
+    ...(r.sizing ? { sizing: r.sizing } : {}) };
 }

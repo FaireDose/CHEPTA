@@ -8,8 +8,11 @@
  * carry `results`, the stream table of the flash as it was at save time, so the mass balance
  * can be read without CHEPTA (it is a record and is never read back into a calculation).
  *
- * Format 3 (the "fugacity_project" key is the format version; format 2 is the same without "user_data", format 1
- * also without "flowsheet"). A project without user data is written as format 2, so that older versions still open it:
+ * Format 4 (the "fugacity_project" key is the format version): format 3 with the flowsheet's energy streams, its heat
+ * exchanger, valve and pump blocks, and the Heat exchanger workspace (`workbench.hx`) of proposal 0013. Format 3 is
+ * format 2 with "user_data"; format 1 is format 2 without "flowsheet". A project is written in the lowest format
+ * that holds it (4 only with the features of proposal 0013, 3 only with user data, else 2), so older versions still
+ * open it:
  *
  *   {
  *     "fugacity_project": 1,
@@ -47,11 +50,13 @@ import { checkUserData } from "../thermo/user-data.js";
 /** The newest format this library writes; it reads this one and every older one. Format 3 adds the user's own data
  *  (proposal 0012) and is written only when there is some; format 2 adds the flowsheet (proposal 0006, step 4); a
  *  format 1 file is a format 2 file without it. */
-export const PROJECT_FORMAT = 3;
+export const PROJECT_FORMAT = 4;
+/** The flowsheet block types that need format 4 (proposal 0013). */
+const FORMAT_4_BLOCKS = ["hx", "valve", "pump"];
 
 /** The keys of `workbench`, in the order they are written. */
 const KEYS = ["view", "diagram", "model", "eos", "vapour", "P_kPa", "T_K", "units", "basis", "inputs", "z", "flash", "sets", "prefer",
-  "henryT_K", "henryP_kPa", "compareGases", "sleT_K", "solidUnit", "property", "steamP_kPa", "background", "residueCurves", "isotherms", "grid", "panels", "ribbon"];
+  "henryT_K", "henryP_kPa", "compareGases", "sleT_K", "solidUnit", "property", "steamP_kPa", "background", "residueCurves", "isotherms", "grid", "panels", "ribbon", "hx"];
 
 const copy = v => (v == null ? v : JSON.parse(JSON.stringify(v)));
 
@@ -66,13 +71,18 @@ const copy = v => (v == null ? v : JSON.parse(JSON.stringify(v)));
 export function projectOf(state, { version = "", results, now = new Date() } = {}) {
   const w = {};
   for (const k of KEYS) w[k] = copy(state[k]);
-  const { steam, ...inputs } = w.inputs;   // steam takes no inputs (always water)
+  // the Heat exchanger workspace: kept only when it was used (format 4), with its components (so the inputs of
+  // format 3 stay as they were)
+  if (w.hx == null) delete w.hx; else w.hx = { ...w.hx, components: copy(state.inputs.hx ?? []) };
+  const { steam, hx, ...inputs } = w.inputs;   // steam takes no inputs (always water); the exchanger keeps its own
   w.inputs = inputs;
-  const doc = { fugacity_project: state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
+  const fs = state.flowsheet;
+  const flowsheet = fs && (fs.components?.length || fs.blocks?.length) ? normalizeFlowsheet(fs, userOverlay(state)) : null;
+  const needs4 = w.hx != null || !!flowsheet?.energyStreams || !!flowsheet?.blocks.some(b => FORMAT_4_BLOCKS.includes(b.type));
+  const doc = { fugacity_project: needs4 ? 4 : state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
   if (state.title) doc.title = String(state.title);
   doc.workbench = w;
-  const fs = state.flowsheet;
-  if (fs && (fs.components?.length || fs.blocks?.length)) doc.flowsheet = normalizeFlowsheet(fs, userOverlay(state));
+  if (flowsheet) doc.flowsheet = flowsheet;
   if (results && Object.keys(results).length) doc.results = copy(results);
   if (state.userData) doc.user_data = copy(state.userData);
   return doc;
@@ -118,6 +128,8 @@ export function readProject(input) {
   const unknown = Object.keys(w).filter(k => !KEYS.includes(k));
   if (unknown.length) throw new Error(`workbench: unknown key${unknown.length > 1 ? "s" : ""} ${unknown.map(k => `"${k}"`).join(", ")}. Known: ${KEYS.join(", ")}.`);
   if (doc.results != null && (typeof doc.results !== "object" || Array.isArray(doc.results))) throw new Error("results must be an object.");
+  if (w.hx != null && f < 4) throw new Error(`workbench.hx needs format 4 (this file says format ${f}).`);
+  if (doc.flowsheet?.energyStreams != null && f < 4) throw new Error(`flowsheet.energyStreams needs format 4 (this file says format ${f}).`);
   if (doc.user_data != null) {
     if (f < 3) throw new Error(`user_data needs format 3 (this file says format ${f}).`);
     checkUserData(doc.user_data);   // throws "user data: ..." naming the problem
@@ -144,6 +156,11 @@ export function stateFromProject(input) {
     const { z, ...rest } = w.flash;
     cfg.flash = rest;
   }
+  if (w.hx != null) {
+    if (typeof w.hx !== "object" || Array.isArray(w.hx)) throw new Error("workbench.hx must be an object.");
+    const { components, ...rest } = w.hx;
+    cfg.hx = rest;
+  }
   if (doc.title) cfg.title = String(doc.title);
   if (doc.flowsheet != null) cfg.flowsheet = doc.flowsheet;
   if (doc.user_data != null) cfg.userData = doc.user_data;
@@ -153,6 +170,9 @@ export function stateFromProject(input) {
     const { steam, ...inputs } = w.inputs;
     s = applyPatch(s, { inputs });
   }
+  // the Heat exchanger's components: saved with the workspace (format 4); else seeded as a new workbench seeds them,
+  // like the flash's
+  s = applyPatch(s, { inputs: { hx: Array.isArray(w.hx?.components) ? w.hx.components : s.inputs.flash } });
   // compositions after the inputs (new inputs reset them)
   if (w.flash?.z != null) s = applyPatch(s, { flash: { z: w.flash.z } });
   for (const v of ["pxy", "envelope"]) {
