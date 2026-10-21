@@ -582,7 +582,7 @@ const DOF = {
   heater(spec) {
     const given = ["T_K", "duty_kW", "VF", "A_m2"].filter(k => hasKey(spec, k));
     const TVF = given.length === 2 && given.includes("T_K") && given.includes("VF");
-    const extra = given.length > 1 && !TVF ? [`give one of T_K, duty_kW, VF or the area A_m2 (now ${given.join(", ")})`] : [];
+    const extra = given.length > 1 && !TVF ? [`give one of T_K, duty_kW or VF, or the area A_m2 for rating (now ${given.join(", ")})`] : [];
     if (hasKey(spec, "P_kPa") && hasKey(spec, "dP_kPa")) extra.push("P_kPa and dP_kPa: give one");
     if (TVF && (hasKey(spec, "P_kPa") || hasKey(spec, "dP_kPa"))) extra.push("T_K and VF fix the pressure: leave out P_kPa and dP_kPa");
     return {
