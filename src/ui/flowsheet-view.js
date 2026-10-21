@@ -103,6 +103,34 @@ export function deleteSelected(state, set, ui) {
 }
 
 // ---------------------------------------------------------------------------------------
+// Undo and redo: the flowsheets before each change made in the workspace (app.js records them), 100 at most
+
+const HISTORY = 100;
+/** Record a change of the flowsheet from `before` to `after` (nothing when they are the same, or when the change is
+ *  itself an undo or a redo). A new change clears what could be redone. */
+export function recordFlowsheet(ui, before, after, how = null) {
+  const hst = (ui.fsHistory ??= { undo: [], redo: [] });
+  if (how === "undo" || how === "redo" || !before || JSON.stringify(before) === JSON.stringify(after)) return;
+  hst.undo.push(before);
+  if (hst.undo.length > HISTORY) hst.undo.shift();
+  hst.redo = [];
+}
+
+/** Undo (dir "undo") or redo the last change of the flowsheet; the selection is cleared if what it named is gone. */
+export function stepFlowsheet(state, set, ui, dir) {
+  const f = ensureUi(ui), hst = (ui.fsHistory ??= { undo: [], redo: [] });
+  const from = dir === "undo" ? hst.undo : hst.redo, to = dir === "undo" ? hst.redo : hst.undo;
+  if (!from.length) return false;
+  to.push(state.flowsheet);
+  const next = from.pop();
+  const has = s => !s || (s.kind === "block" ? next.blocks.some(b => b.id === s.id) : s.kind === "stream" ? next.streams.some(x => x.id === s.id)
+    : (next.energyStreams ?? []).some(q => q.id === s.id) || (s.block && next.blocks.some(b => b.id === s.block && b.energy !== false)));
+  if (!has(f.sel)) f.sel = null;
+  set({ flowsheet: next }, { history: dir });
+  return true;
+}
+
+// ---------------------------------------------------------------------------------------
 // Solving (cached by the flowsheet's text)
 
 /** What the solution depends on, as text: the flowsheet with the Library's parameter sets, and the user's own data
@@ -161,6 +189,21 @@ export function flowsheetRibbon({ state, set, ui, group, bigButton, smallButton 
       q.disabled = !ready;
       return [b, q];
     })),
+    group("Edit", h("div", { class: "fa-stack" },
+      (() => {
+        const n = ui.fsHistory?.undo.length ?? 0;
+        const b = smallButton({ ico: "undo", label: "Undo", fk: "fs-undo", title: n ? `Undo the last change (Ctrl + Z); ${n} can be undone` : "Nothing to undo yet",
+          onClick: () => stepFlowsheet(state, set, ui, "undo") });
+        b.disabled = !n;
+        return b;
+      })(),
+      (() => {
+        const n = ui.fsHistory?.redo.length ?? 0;
+        const b = smallButton({ ico: "redo", label: "Redo", fk: "fs-redo", title: n ? "Redo what was undone (Ctrl + Y)" : "Nothing to redo",
+          onClick: () => stepFlowsheet(state, set, ui, "redo") });
+        b.disabled = !n;
+        return b;
+      })())),
     group("Run",
       bigButton({ ico: "solve", label: "Solve", fk: "fs-solve", title: "Calculate the flowsheet now",
         onClick: () => { f.solveKey = flowsheetKey(state); set({}); } }),
@@ -688,7 +731,8 @@ export function flowsheetView(ctx) {
 
   // ---- the drawing
   const pos = new Map(fs.blocks.map(b => [b.id, b]));
-  const wrap = h("div", { class: "fs-wrap" });
+  // focusable (and kept focused across redraws by its data-fk), so that the keys (Ctrl + Z) reach the workbench after a click
+  const wrap = h("div", { class: "fs-wrap", tabindex: -1, "data-fk": "fs-canvas" });
   const xs = fs.blocks.length ? fs.blocks.map(b => b.x ?? 0) : [120], ys = fs.blocks.length ? fs.blocks.map(b => b.y ?? 0) : [160];
   // the view fits the drawing (with room for labels and recycles), at least 520 x 300
   let minX = Math.min(...xs) - 90, maxX = Math.max(...xs) + 110, minY = Math.min(...ys) - 80, maxY = Math.max(...ys) + 120;
@@ -895,6 +939,7 @@ export function flowsheetView(ctx) {
     if (blk) { const b = pos.get(blk.dataset.block); drag = { kind: "move", id: b.id, start: toSvg(ev), x0: b.x ?? 0, y0: b.y ?? 0, moved: false, doc: fs }; svg.setPointerCapture?.(ev.pointerId); ev.preventDefault(); return; }
     if (str) { select("stream", str.dataset.stream); return; }
     // the empty canvas: drag to move the view (the box scrolls), click to clear the selection
+    wrap.focus({ preventScroll: true });
     drag = { kind: "pan", x: ev.clientX, y: ev.clientY, left: wrap.scrollLeft, top: wrap.scrollTop, moved: false };
     svg.setPointerCapture?.(ev.pointerId);
   });
@@ -999,7 +1044,10 @@ export function flowsheetView(ctx) {
   });
 
   const units = fs.blocks.filter(b => b.type !== "product");
+  // the canvas is drawn after the workbench restores the focus: a focused canvas stays focused
+  const hadFocus = plot.contains(document.activeElement) && document.activeElement?.dataset?.fk === "fs-canvas";
   plot.replaceChildren(wrap);
+  if (hadFocus) wrap.focus({ preventScroll: true });
   wrap.append(svg);
   if (!units.length) wrap.append(h("div", { class: "fs-empty-hint" }, "Place a block from the toolbar: Flash drum, Heater/Cooler, Mixer, Splitter, Separator or Feed."));
   // what "Fit" in the toolbar measures: the box shown and the drawing's extent; the view stays where it was scrolled

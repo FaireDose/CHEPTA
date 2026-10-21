@@ -52,7 +52,12 @@ Code: [`src/units/heat-exchange.js`](../../src/units/heat-exchange.js) (the calc
   vapour fraction of either side, the duty, or the minimum approach (`dTmin_K`, found by bisection and regula falsi;
   a target the arrangement cannot reach is an error). A recycle through it is torn as any recycle (a feed-effluent
   exchanger). On the first pass of a recycle, a side without flow exchanges nothing.
-- `valve`: a P-H flash at the inlet enthalpy and the outlet pressure.
+- `valve`: a P-H flash at the inlet enthalpy and the outlet pressure: a throttle. A gas cools by the Joule-Thomson
+  effect and a saturated liquid partly flashes, when the method has a real-gas vapour (Peng-Robinson or SRK); an
+  activity model's ideal-gas vapour keeps its temperature, and the valve says so. Checked against CoolProp's
+  Peng-Robinson ([`validation/python/reference_valve.py`](../../validation/python/reference_valve.py)): methane from 50
+  to 10 bar, 300.00 to 280.21 K; liquid propane and n-butane flashing, within 0.005 K and 0.0015 in vapour fraction.
+  CoolProp's reference equations of state give 282.45 K for the methane: the 2.2 K is Peng-Robinson's own.
 - `pump`: power = V ΔP / η, with V the inlet's volume flow from the liquid-density records (molar volumes added); the
   outlet from H_out = H_in + power. A vapour at the inlet is refused. η defaults to 0.75, the low end of the "target
   pump efficiencies ... 75 to 85 percent" of NC State Extension AG-452-6; the U.S. DOE's Improving Pumping System

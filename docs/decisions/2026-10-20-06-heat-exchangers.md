@@ -88,3 +88,20 @@ The maintainer's comments on the pull request, and what was done:
   scale (one unit, one pixel, times the zoom) in a box with scrollbars; dragging the empty canvas moves the view; the
   view stays where it was scrolled when a block is selected; **Fit** sets the zoom that shows all of it (40 % at
   least). "resolution wise kinda large ... not now": left for later (DECISIONS.md).
+
+## Second review, 2026-10-21
+
+- "need undo button on flowsheet in case i made a mistake": **Undo** and **Redo** in a new Edit group of the
+  flowsheet's toolbar, and Ctrl (Cmd) + Z, Ctrl + Y or Ctrl + Shift + Z on the canvas. Every change of the flowsheet
+  made in its workspace is recorded (blocks, streams, specifications, moves, energy streams, the method), 100 at most,
+  for as long as the page is open; a new change clears what could be redone.
+- "is the valve model working as a throttle valve also?": yes: it keeps the enthalpy (a P-H flash at the outlet
+  pressure). Checked against CoolProp 8.0.0's Peng-Robinson (`validation/python/reference_valve.py`,
+  `validation/fixtures/valve.json`, `test/energy-streams.test.js`): methane from 50 to 10 bar at 300 K comes out at
+  280.215 K against 280.210 K (CoolProp's reference equation of state: 282.45 K, the difference is Peng-Robinson's);
+  liquid propane from 15 to 2 bar, 247.725 K and vapour fraction 0.3213 against 247.725 K and 0.3228; n-butane from 10
+  to 1.5 bar, 283.536 K and 0.1048 against 283.536 K and 0.1050. One limit, now said by the valve: with an activity
+  model and an ideal-gas vapour, a gas does not cool across a valve (an ideal gas has no Joule-Thomson effect); for
+  gases, Peng-Robinson or SRK.
+- The phase envelope of gases and the enthalpy-entropy charts (proposal 0013, step 7) go in their own pull request
+  from main.

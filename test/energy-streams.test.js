@@ -251,3 +251,26 @@ test("a block's own energy stream taken out of the drawing: its duty is still ca
   const placed = L.placeEnergyFeed(L.setSpec(hidden, "E1", { T_K: null }), 100);
   assert.equal("energy" in L.connectEnergyFeed(placed.fs, placed.id, "E1").blocks[1], false);
 });
+
+test("the valve is a throttle: the outlet at the inlet enthalpy, against CoolProp's Peng–Robinson (validation/fixtures/valve.json)", async () => {
+  // Method (docs/METHOD_SELECTION.md): light hydrocarbons, gas and liquid at pressure: Peng–Robinson for both phases
+  const { readFileSync } = await import("node:fs");
+  const ref = JSON.parse(readFileSync(new URL("../validation/fixtures/valve.json", import.meta.url), "utf8"));
+  for (const c of ref.cases) {
+    const s1 = system({ components: [c.component], model: "PR" });
+    const inlet = stream(s1, { flow_kmol_h: [100], T_K: c.T_in_K, P_kPa: c.P_in_kPa });
+    const r = runUnit("valve", { sys: s1, inlets: { in: inlet }, spec: { P_kPa: c.P_out_kPa } });
+    const o = r.outlets.out;
+    assert.ok(Math.abs(o.H_kW - inlet.H_kW) < 1e-9 * Math.max(1, Math.abs(inlet.H_kW)), `${c.component}: adiabatic`);
+    assert.ok(Math.abs(o.T_K - c.PR.T_out_K) < 0.05, `${c.component}: T ${o.T_K} against ${c.PR.T_out_K}`);
+    assert.ok(Math.abs(o.VF - c.PR.VF_out) < 0.003, `${c.component}: VF ${o.VF} against ${c.PR.VF_out}`);
+    assert.ok(!r.notes.some(n => /ideal gas/.test(n)));
+  }
+  // methane cools by the Joule-Thomson effect (about 20 K from 50 to 10 bar); with an ideal-gas vapour it would not, and that is said
+  const m = ref.cases[0];
+  assert.ok(m.T_in_K - m.PR.T_out_K > 15);
+  const gas = stream(sys, { flow_kmol_h: { water: 50, ethanol: 50 }, T_K: 420, P_kPa: 300 });
+  const ig = runUnit("valve", { sys, inlets: { in: gas }, spec: { P_kPa: 100 } });
+  assert.ok(Math.abs(ig.outlets.out.T_K - 420) < 1e-6);
+  assert.match(ig.notes.join(" "), /does not cool across the valve \(no Joule-Thomson effect\)/);
+});

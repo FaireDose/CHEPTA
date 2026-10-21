@@ -316,3 +316,28 @@ test("the flowsheet follows the Library's rule and a pair's chosen set", async (
   const pr = applyPatch(hand, { flowsheet: { ...hand.flowsheet, thermo: { model: "PR" } } });
   assert.equal(calculatedFlowsheet(pr), pr.flowsheet);
 });
+
+test("undo and redo: every change of the flowsheet can be taken back, and done again", async () => {
+  const { recordFlowsheet, stepFlowsheet } = await import("../src/ui/flowsheet-view.js");
+  // a stand-in for the workbench's set(): applies the patch and records it, as app.js does
+  let state = applyPatch(initialState({ components: [] }), { workspace: "flowsheet", flowsheet: base() });
+  const ui = {};
+  const set = (patch, { history = null } = {}) => { const before = state.flowsheet; state = applyPatch(state, patch); if ("flowsheet" in patch) recordFlowsheet(ui, before, state.flowsheet, history); };
+  const v1 = addBlock(state.flowsheet, "flash");
+  set({ flowsheet: v1.fs });
+  set({ flowsheet: addBlock(state.flowsheet, "heater").fs });
+  set({ flowsheet: state.flowsheet });   // no change: nothing recorded
+  assert.equal(ui.fsHistory.undo.length, 2);
+  ui.fs = { sel: { kind: "block", id: "E1" } };
+  assert.equal(stepFlowsheet(state, set, ui, "undo"), true);
+  assert.deepEqual(state.flowsheet.blocks.filter(b => b.type !== "product").map(b => b.id), ["V1"]);
+  assert.equal(ui.fs.sel, null, "the selected heater is gone: the selection is cleared");
+  stepFlowsheet(state, set, ui, "undo");
+  assert.deepEqual(state.flowsheet.blocks, []);
+  assert.equal(stepFlowsheet(state, set, ui, "undo"), false, "nothing more to undo");
+  stepFlowsheet(state, set, ui, "redo"); stepFlowsheet(state, set, ui, "redo");
+  assert.deepEqual(state.flowsheet.blocks.filter(b => b.type !== "product").map(b => b.id), ["V1", "E1"]);
+  stepFlowsheet(state, set, ui, "undo");
+  set({ flowsheet: moveBlock(state.flowsheet, "V1", 300, 300) });
+  assert.equal(ui.fsHistory.redo.length, 0, "a new change clears what could be redone");
+});

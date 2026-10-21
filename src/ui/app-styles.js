@@ -338,6 +338,7 @@ a.fa-mini{text-decoration:none}
   radial-gradient(circle, var(--fug-rule) 1px, transparent 1.2px) 0 0/20px 20px; background-attachment:local}
 .fug-plot svg.fs-canvas,.fa-card svg.fs-canvas,.fs-canvas{display:block; width:auto; height:auto; max-width:none; touch-action:none; user-select:none; cursor:grab}
 .fs-canvas.is-panning{cursor:grabbing}
+.fs-wrap:focus{outline:none}
 .fs-shape{fill:var(--fug-bg); stroke:var(--fug-fg); stroke-width:1.6}
 .fs-detail{fill:none; stroke:var(--fug-fg); stroke-width:1.3; opacity:.7}
 .fs-block{cursor:move}

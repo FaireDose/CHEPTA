@@ -379,6 +379,11 @@ registerUnit({
     if (P > s.P_kPa + 1e-9) throw fail("BAD_INPUT", `Valve: the outlet pressure (${P} kPa) is above the inlet pressure (${s.P_kPa} kPa); a valve only lowers the pressure (a pump or compressor raises it).`);
     const out = s.F_kmol_h > 0 ? stream(sys, { flow_kmol_h: s.flows, P_kPa: P, H_kW: s.H_kW }) : stream(sys, { flow_kmol_h: s.flows, T_K: s.T_K, P_kPa: P });
     const notes = out.VF != null && s.VF != null && out.VF > s.VF + 1e-6 ? [`Part of the liquid flashes across the valve: vapour fraction ${+s.VF.toFixed(4)} to ${+out.VF.toFixed(4)}.`] : [];
+    // an ideal gas keeps its temperature through a throttle (no Joule-Thomson effect): said when a vapour is throttled
+    // with an activity model's ideal-gas vapour, as real gases cool (or warm)
+    if (sys.kind !== "eos" && (sys.vapour ?? "ideal") === "ideal" && (s.VF ?? 0) > 1e-9) {
+      notes.push("The vapour is an ideal gas in this method, so it does not cool across the valve (no Joule-Thomson effect); for a gas, choose Peng–Robinson or SRK, or a Peng–Robinson or SRK vapour.");
+    }
     return { outlets: { out }, duty_kW: 0, notes };
   },
 });

@@ -56,7 +56,8 @@ separator can send its heat into a heater or drum. They are edges of the graph: 
 one is torn on its duty. In the editor, **Energy feed** in the palette places one on the drawing; dragged onto a
 heater/cooler or a flash drum it connects (until then `to` is missing and the flowsheet is not ready). A block's own
 energy stream can be taken out of the drawing (`"energy": false`): its duty is still calculated, listed and counted in
-the energy balance.
+the energy balance. **Undo** and **Redo** (Edit group; Ctrl + Z, Ctrl + Y) take back and redo every change of the
+flowsheet made in its workspace, 100 at most; the history lasts as long as the page.
 
 **Heat-exchanger sizing** ([`src/units/heat-exchange.js`](../../src/units/heat-exchange.js), the reference in
 [heat-exchangers.md](heat-exchangers.md)): zones along each side's temperature-heat curve, the arrangement's correction

@@ -43,6 +43,8 @@ const P = {
   compressor: '<path d="M5 6.5 19 9.5v5L5 17.5z"/><path d="M2 12h3M19 12h3" class="a"/>',
   valve: '<path d="M4 7v10l8-5zM20 7v10l-8-5z"/><path d="M12 12V5M9 5h6" class="a"/>',
   energy: '<path d="M13.5 3 6 13.5h5L10 21l8-11h-5.2z"/>',
+  undo: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" class="a"/>',
+  redo: '<path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13" class="a"/>',
   extract: '<rect x="7.5" y="2.5" width="9" height="19" rx="2"/><path d="M7.5 9.5h9M7.5 14.5h9" class="a"/><circle cx="10.5" cy="12" r=".8" fill="currentColor"/><circle cx="13.5" cy="17" r=".8" fill="currentColor"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   minus: '<path d="M5 12h14"/>',

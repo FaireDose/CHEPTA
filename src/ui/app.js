@@ -40,7 +40,7 @@ import { canOpenWindow, openDataWindow } from "./my-data-window.js";
 import { userDataList, setEntryUse } from "./user-data-file.js";
 import { hxInputs, ratingChip } from "./hx-view.js";
 import { HX_DEFAULTS, HX_MODES, HX_STREAM_MAX } from "./hx-logic.js";
-import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey } from "./flowsheet-view.js";
+import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey, recordFlowsheet, stepFlowsheet } from "./flowsheet-view.js";
 import { projectOf, projectText, projectFileName, stateFromProject } from "./project.js";
 import { browserStore, hostStore, autosave, lastAutosave, clearAutosave } from "./project-store.js";
 import { FLASH_SPECS, FLOW_UNITS, feedComposition, convertBasis, flowIn } from "./flash-logic.js";
@@ -197,6 +197,12 @@ export function app(target, cfg = {}) {
   // Escape closes the open panel (from anywhere in the workbench)
   box.addEventListener("keydown", ev => {
     if (ev.key === "Escape" && state.utility && !ev.defaultPrevented) { ev.preventDefault(); set({ utility: null }, { canvas: false }); }
+    // the flowsheet's undo and redo: Ctrl (or Cmd) + Z, Ctrl + Y or Ctrl + Shift + Z, outside the text fields
+    if (state.workspace === "flowsheet" && (ev.ctrlKey || ev.metaKey) && !ev.altKey && /^[zy]$/i.test(ev.key)
+      && !ev.target.closest?.("input, textarea, select, [contenteditable]")) {
+      ev.preventDefault();
+      stepFlowsheet(state, set, ui, ev.key.toLowerCase() === "y" || ev.shiftKey ? "redo" : "undo");
+    }
   });
 
   // ---- size classes (the container, not the window: artifacts can be narrow on a wide screen)
@@ -228,11 +234,13 @@ export function app(target, cfg = {}) {
   }
 
   // ---- state changes
-  function set(patch, { canvas: redraw = true } = {}) {
+  function set(patch, { canvas: redraw = true, history = null } = {}) {
     if (useAutosave && Object.keys(patch).some(k => k !== "utility" && k !== "panels" && k !== "ribbon")) scheduleAutosave();
     const fk = focusKey();
-    const util0 = state.utility;
+    const util0 = state.utility, fs0 = state.flowsheet, ws0 = state.workspace;
     state = applyPatch(state, patch);
+    // every change of the flowsheet made in its workspace can be undone (history: "undo" or "redo" when it is one)
+    if ("flowsheet" in patch && ws0 === "flowsheet" && state.workspace === "flowsheet") recordFlowsheet(ui, fs0, state.flowsheet, history);
     api.state = state;
     renderChrome();
     // redraw when what the canvas shows differs from what it last drew (also for changes made
