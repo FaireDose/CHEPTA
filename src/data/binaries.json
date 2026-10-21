@@ -17183,6 +17183,60 @@
       ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "2-3-butanediol",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -381.4421173384784,
+      "b_ji": 1274.0211223840722,
+      "alpha": 0.302,
+      "source": "ChemSep NRTL databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(2-3-butanediol) 0.0574-0.138), not checked against data in this import.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "ethanol",
+      "j": "isoamyl-alcohol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 25.749995138898594,
+      "b_ji": -21.56864339115065,
+      "alpha": 0.3009,
+      "source": "ChemSep NRTL databank (via the open-source thermo library).",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "isoamyl-alcohol",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -249.01260041504244,
+      "b_ji": 1828.464781212371,
+      "alpha": 0.2816,
+      "source": "ChemSep NRTL databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(isoamyl-alcohol) 0.00161-0.379; 298.15 K: x(isoamyl-alcohol) 0.00281-0.397; 323.15 K: x(isoamyl-alcohol) 0.00489-0.41; 348.15 K: x(isoamyl-alcohol) 0.00752-0.416; 373.15 K: x(isoamyl-alcohol) 0.0116-0.418), not checked against data in this import.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     }
   ]
 }
