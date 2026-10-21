@@ -7,6 +7,7 @@
  * for the conversions and for the sampling rules that keep every curve inside the
  * validity range of the data behind it).
  */
+import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { injectPropertiesStyles } from "./styles.js";
 import { h } from "./dom.js";
 import { drawPlot } from "./plot.js";
@@ -371,7 +372,7 @@ export function mountProperties(target, cfg = {}) {
     const out = h("div", { class: "fug-calc", "aria-live": "polite" });
     function cells() {
       let st;
-      try { st = singleState(p, state.calc.T_K, state.calc.P_kPa); } catch (e) { return [h("div", { class: "fug-err", role: "alert" }, e.message)]; }
+      try { st = singleState(p, state.calc.T_K, state.calc.P_kPa); } catch (e) { return [warning(e.message, { attrs: { role: "alert" } })]; }
       const src = f => {
         if (st.outOfRange.includes(f)) return "outside the data range";
         const x = st.sources?.[f];

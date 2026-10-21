@@ -18,9 +18,11 @@
  * renderTernary, the property explorer). State changes, the workspaces and the checks of
  * the inputs live in app-logic.js and workspaces.js (tested without a DOM).
  */
+import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { injectAppStyles } from "./app-styles.js";
 import { h } from "./dom.js";
 import { icon } from "./icons.js";
+import { brandLogo } from "./brand.js";
 import { componentPicker } from "./component-picker.js";
 import { listComponents, modelName } from "../thermo/system.js";
 import { HENRY_GASES } from "../thermo/henry.js";
@@ -321,7 +323,7 @@ export function app(target, cfg = {}) {
       } } },
       icon(u.icon, 17), h("span", { class: "fa-util-label" }, u.label))));
     titleBar.replaceChildren(
-      h("div", { class: "fa-brand" }, icon("logo", 22), h("span", { class: "fa-name" }, "CHEPTA")),
+      h("div", { class: "fa-brand" }, brandLogo({ width: 84 })),
       nav, utils,
       h("button", { type: "button", class: "fa-icon-btn fa-collapse", title: state.ribbon ? "Hide the toolbar" : "Show the toolbar",
         "aria-label": state.ribbon ? "Hide the toolbar" : "Show the toolbar", "aria-expanded": String(state.ribbon), "aria-controls": ribbon.id, "data-fk": "collapse",
@@ -529,7 +531,7 @@ export function app(target, cfg = {}) {
 
   function problemsBox(check) {
     return h("div", { class: "fa-problems", id: `fa-problems-${uid}`, "aria-live": "polite" },
-      ...(check.ok || blank(state.view) ? [] : [h("ul", {}, ...check.problems.map(p => h("li", {}, p.message)))]));
+      ...(check.ok || blank(state.view) ? [] : [problemsWarning(check.problems.map(p => p.message), { what: "problems with these inputs" })]));
   }
 
   function inputsSection(title, ...children) {
@@ -770,7 +772,7 @@ export function app(target, cfg = {}) {
     const missing = info.missingPairs.length;
     return h("section", { class: "fa-in-sec fa-pairs" },
       // is this the recommended method for these components? (docs/METHOD_SELECTION.md)
-      ...(info.advice ?? []).map(a => h("div", { class: "fug-warn", role: "note", "data-fk": "method-advice" }, a)),
+      ...(info.advice ?? []).map(a => warning(a, { attrs: { role: "note", "data-fk": "method-advice" } })),
       h("details", { open, on: { toggle: ev => { ui.pairsOpen = ev.target.open; } } },
         h("summary", { "data-fk": "pairs-summary" }, head.textContent, h("span", { class: "fa-count" }, missing ? ` ${missing} without data` : ` ${rows.length}`)),
         h("ul", {}, ...rows),
@@ -885,7 +887,7 @@ export function app(target, cfg = {}) {
     const status = h("div", { class: "fug-foot", "aria-live": "polite" }), box = h("div");
     const openStatus = h("div", { class: "fug-foot", "aria-live": "polite" }, ui.projectNote);
     ui.projectNote = "";
-    const fail = e => { openStatus.textContent = ""; openStatus.append(h("div", { class: "fug-err", role: "alert" }, `Not opened: ${e.message}`)); };
+    const fail = e => { openStatus.textContent = ""; openStatus.append(warning(`Not opened: ${e.message}`, { attrs: { role: "alert" } })); };
     const open = (text, name) => {
       try { loadProject(text); } catch (e) { fail(e); return; }
       ui.projectNote = `Opened ${name}. Everything was calculated again with CHEPTA ${pkg.version}.`;
@@ -968,7 +970,7 @@ export function app(target, cfg = {}) {
               const t = paste.value.trim();
               if (!t) return;
               if (!t.startsWith("{")) {
-                openStatus.replaceChildren(h("div", { class: "fug-err", role: "alert" }, "This is not a project's text. Paste the text that Copy gave you (it starts with { \"fugacity_project\": … }). To describe what you want in words, ask your AI assistant instead."));
+                openStatus.replaceChildren(warning("This is not a project's text. Paste the text that Copy gave you (it starts with { \"fugacity_project\": … }). To describe what you want in words, ask your AI assistant instead.", { attrs: { role: "alert" } }));
                 return;
               }
               open(t, "the pasted project");
@@ -994,7 +996,7 @@ export function app(target, cfg = {}) {
         h("button", { type: "button", class: "fa-mini", "aria-label": `Delete ${it.name}`, "data-fk": `store-del-${store.id}-${it.name}`, on: { click: () => {
           store.remove(it.name).then(refresh, e => { status.textContent = e.message; });
         } } }, icon("trash", 14)))) : [h("li", { class: "fa-empty" }, "Nothing kept here yet.")]));
-    }, e => { list.replaceChildren(h("li", { class: "fug-err" }, `This storage did not answer: ${e.message}`)); });
+    }, e => { list.replaceChildren(h("li", {}, warning(`This storage did not answer: ${e.message}`))); });
     refresh();
     return drawerSection(store.label,
       h("p", { class: "fa-in-hint" }, store.id === "browser"
@@ -1283,7 +1285,7 @@ export function app(target, cfg = {}) {
           icon("book", 15), "Sources used here"));
         } catch (e) {
           error = e.message;
-          plot.replaceChildren(h("div", { class: "fug-err", role: "alert" }, e.message));
+          plot.replaceChildren(warning(e.message, { attrs: { role: "alert" } }));
           side.replaceChildren(h("div", { class: "fa-empty" }, "No readout: the calculation stopped with the error shown on the canvas."));
         }
       }
@@ -1305,10 +1307,12 @@ export function app(target, cfg = {}) {
         h("p", {}, `Choose them in the Inputs panel${ui.size === "narrow" ? " above" : ""}${examples ? ", or load one of the Examples there" : ""}. The ${lower(VIEWS[v].label)} is calculated as soon as the inputs fit; the ribbon switches between diagrams, models and the other workspaces.`),
         state.panels.left ? null : h("button", { type: "button", class: "fa-mini", "data-fk": "show-inputs", on: { click: () => set({ panels: { left: true } }, { canvas: false }) } }, icon("panelL", 15), "Show the Inputs panel"));
     }
-    return h("div", { class: "fa-need", role: "status" },
-      h("h3", {}, `The ${lower(VIEWS[v].label)} needs: ${needsOf(v, state.model).toLowerCase()}${isEosModel(state.model) || !VIEWS[v].diagram ? "" : ` with ${state.model === "ideal" ? "an ideal solution" : modelName(state.model)}`}`),
-      h("ul", {}, ...check.problems.map(p => h("li", {}, p.message))),
-      h("p", {}, `Choose them in the Inputs panel${ui.size === "narrow" ? " above" : ""}. Nothing is calculated until the inputs fit; your choices are kept as they are.`),
+    // a small warning (the maintainer, 2026-10-21): what is missing, the problems and the hint when pressed
+    const needs = `The ${lower(VIEWS[v].label)} needs ${needsOf(v, state.model).toLowerCase()}${isEosModel(state.model) || !VIEWS[v].diagram ? "" : ` with ${state.model === "ideal" ? "an ideal solution" : modelName(state.model)}`}`;
+    return h("div", { class: "fa-need is-compact", role: "status" },
+      warning("", { title: check.problems.length === 1 ? summaryOf(check.problems[0].message) : `${needs}: ${check.problems.length} problems`,
+        details: [h("p", {}, `${needs}.`), h("ul", {}, ...check.problems.map(p => h("li", {}, p.message))),
+          h("p", {}, `Choose them in the Inputs panel${ui.size === "narrow" ? " above" : ""}. Nothing is calculated until the inputs fit; your choices are kept as they are.`)] }),
       state.panels.left ? null : h("button", { type: "button", class: "fa-mini", "data-fk": "show-inputs", on: { click: () => set({ panels: { left: true } }, { canvas: false }) } }, icon("panelL", 15), "Show the Inputs panel"));
   }
 

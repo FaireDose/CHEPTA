@@ -3,6 +3,7 @@
  * null until one is changed, then HX_DEFAULTS merged with the changes); the canvas and the results are drawn by
  * app-views.js (hxView). A view (layer 6): no calculation here.
  */
+import { problemsWarning } from "./warning.js";
 import { h } from "./dom.js";
 import { icon } from "./icons.js";
 import { HX_DEFAULTS, HX_STREAM_MAX, UTILITY_KINDS, TWO_SPECS, streamZ } from "./hx-logic.js";
@@ -60,7 +61,7 @@ export function hxInputs({ state, set, uid, inputsSection, field, seg, listInput
         h("p", { class: "fa-in-hint" }, `Up to ${HX_STREAM_MAX} components and the stream's own method: the two streams never mix.`),
         streamList({ key, ids: own.ids, model: own.model, onChange: next => put({ [key]: { components: next, z: null } }) }),
         modelPicker({ model: own.model, vapour: own.vapour, id: `fa-hx-${key}-m-${uid}`, fk: `hx-${key}-m`, onChange: m => put({ [key]: { model: m.model, vapour: m.vapour } }) }),
-        mine.length ? h("div", { class: "fa-problems", "aria-live": "polite" }, h("ul", {}, ...mine.map(p => h("li", {}, p.message)))) : null,
+        mine.length ? h("div", { class: "fa-problems", "aria-live": "polite" }, problemsWarning(mine.map(p => p.message), { what: "problems with this stream" })) : null,
       ] : []),
       nField("Flow, kmol/h", s.flow, v => put({ [key]: { flow: v } }), `hx-${key}-flow`, { min: 1e-12 }),
       tField("Inlet temperature", s.T_K, v => put({ [key]: { T_K: v } }), `hx-${key}-t`),

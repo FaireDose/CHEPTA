@@ -1,3 +1,4 @@
+import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { s, h, text, ticks, svgPoint, tempUnit, fmt, basisView } from "./dom.js";
 
 /**
@@ -82,8 +83,8 @@ export function renderTxy(plot, side, sys, P, view = {}) {
     h("div", {}, h("div", { class: "fug-eyebrow" }, "Liquid composition"), xOut),
     h("div", {}, h("div", { class: "fug-eyebrow" }, "Bubble temperature"), tOut),
     h("table", {}, h("thead", {}, h("tr", {}, h("th", {}, bv.short), h("th", {}, "x"), h("th", {}, "y"), h("th", {}, sys.kind === "eos" ? "" : "γ"))), tab),
-    unstable.length ? h("div", { class: "fug-err" }, "The liquid is predicted to split into two phases in the shaded range. The curves there assume a single liquid and are not reliable.") : null,
-    missed ? h("div", { class: "fug-warn" }, `${missed} of ${N} points not drawn: no bubble point found there. ${firstError.message}`) : null,
+    unstable.length ? warning("The liquid is predicted to split into two phases in the shaded range. The curves there assume a single liquid and are not reliable.") : null,
+    missed ? warning(`${missed} of ${N} points not drawn: no bubble point found there. ${firstError.message}`) : null,
     h("div", { class: "fug-foot" }, azeo.length
       ? azeo.map(z => `Azeotrope near ${sys.names[0]} ${bv.f(bv.conv([z.x, 1 - z.x])[0])}${view.basis === "mass" ? " wt %" : ""}, T = ${fmt(C(z.T), 1)} ${tl}`)
       : "No azeotrope at this pressure."),

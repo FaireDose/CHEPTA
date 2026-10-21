@@ -10,6 +10,7 @@
  * throws, the view says so and draws nothing there; nothing is estimated. Sources come from
  * the library (CHEPTA.library, src/thermo/library.js).
  */
+import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { h, s, text, ticks, basisView } from "./dom.js";
 import { icon } from "./icons.js";
 import { renderTxy } from "./txy.js";
@@ -167,7 +168,7 @@ function vleView(view, ctx) {
   let sys;
   try { sys = modelSystem(state, av.use); } catch (e) { throw new Error(friendly(e)); }
   for (const k of onDefaults(sys) ? knownIssuesFor(sys.ids, sys.model) : []) {
-    notes.append(h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${modelName(k.model)}): `), k.message, ` Reference: ${k.reference}.`));
+    notes.append(warning(`${k.message} Reference: ${k.reference}.`, { title: `Known deviation (${modelName(k.model)}): ${summaryOf(k.message)}` }));
   }
   const look = { basis: state.basis, MW: sys.ids.map(id => pure(id, own(state)).MW), T: state.units.T };
   const drawn = view === "txy" ? renderTxy(plot, side, sys, state.P_kPa, look)
@@ -275,7 +276,7 @@ function azeotropeView(ctx) {
         ? az.map(z => h("div", {}, `${z.type === "minimum-boiling" ? "Minimum" : "Maximum"}-boiling azeotrope at ${fmtTemp(z.T, u, 1)}: ${comp([z.x, 1 - z.x], pair)}`,
           z.within ? h("small", {}, ` (${nameOf(state, pair[0])} mole fraction between ${fmtNum(z.within[0], 4)} and ${fmtNum(z.within[1], 4)}: the equation-of-state solver stops at y = x)`) : null))
         : "No azeotrope at this pressure.",
-      az.gaps ? h("div", { class: "fug-warn" }, `${az.gaps.points} of 200 search points had no bubble point from the solver and were skipped${sample.missed ? " (gaps in the curves)" : ""}: an azeotrope there would be missed. ${az.gaps.message}`) : null),
+      az.gaps ? warning(`${az.gaps.points} of 200 search points had no bubble point from the solver and were skipped${sample.missed ? " (gaps in the curves)" : ""}: an azeotrope there would be missed. ${az.gaps.message}`) : null),
       h("button", { type: "button", class: "fa-link-btn", on: { click: () => set({ inputs: { txy: pair }, view: "txy" }) } }, "Open as T-x-y diagram")));
   }
   if (ids.length >= 3) {
@@ -283,11 +284,11 @@ function azeotropeView(ctx) {
       const tri = ids.slice(0, 3);
       const sys3 = modelSystem(state, tri);
       const found = ternaryAzeotropes(sys3, P, pids => modelSystem(state, pids), { gaps: true });
-      if (found.notSearched) ctx.notes.append(h("div", { class: "fug-warn", role: "note" }, found.notSearched));
+      if (found.notSearched) ctx.notes.append(warning(found.notSearched, { attrs: { role: "note" } }));
       for (const z of found.filter(z => z.kind === "ternary")) {
         points.push({ T: z.T, kind: "Ternary azeotrope", what: comp(z.x, tri) });
       }
-      for (const k of onDefaults(sys3) ? knownIssuesFor(sys3.ids, sys3.model) : []) ctx.notes.append(h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${modelName(k.model)}): `), k.message, ` Reference: ${k.reference}.`));
+      for (const k of onDefaults(sys3) ? knownIssuesFor(sys3.ids, sys3.model) : []) ctx.notes.append(warning(`${k.message} Reference: ${k.reference}.`, { title: `Known deviation (${modelName(k.model)}): ${summaryOf(k.message)}` }));
     } catch (e) { errors.push(`Ternary search (${ids.slice(0, 3).map(nameOf).join(", ")}): ${friendly(e)}`); }
   }
   // pure-component boiling points do not depend on the mixing rules: the vapour-pressure
@@ -318,7 +319,7 @@ function azeotropeView(ctx) {
   side.replaceChildren(
     h("div", {}, h("div", { class: "fug-eyebrow" }, "Azeotropes found"), h("div", { class: "fug-big" }, String(nAz))),
     h("div", { class: "fug-sub" }, `${ids.length} components, ${ids.length * (ids.length - 1) / 2} pairs, at ${fmtP(P, u)}.`),
-    ...(errors.length ? [h("div", { class: "fug-err" }, ...errors.map(e => h("div", {}, e)))] : []));
+    ...(errors.length ? [problemsWarning(errors, { what: "pairs not calculated" })] : []));
   if (isEosModel(state.model)) {
     extra.append(...eosSources(ctx, modelSystem(state, ids)));
     return { data: tierSummary(tierCounts([...sources.values()]), "k_ij pair"), error: errors.length ? errors[0] : null, export: exp };
@@ -429,7 +430,7 @@ function pxyView(ctx) {
   }
   const bs = segmentsOf(bub), ds = segmentsOf(dew);
   if (!bs.length) throw new Error(`No two-phase region at ${fmtTemp(T, u)} for ${sys.names.join(" + ")} (${sys.info.equation ?? sys.model}). ${[...reasons.values()][0]?.example ?? ""}`);
-  for (const w of warnings) notes.append(h("div", { class: "fug-warn", role: "note" }, w));
+  for (const w of warnings) notes.append(warning(w, { attrs: { role: "note" } }));
   const series = [
     { name: "Bubble", color: "var(--fug-liq)", segments: bs, label: false },
     { name: "Dew", color: "var(--fug-vap)", dash: "6 4", label: false, segments: ds.map(g => ({ points: g.points.slice().sort((a, b) => a.x - b.x) })) },
@@ -587,7 +588,7 @@ function tracedEnvelopeView(ctx, sys, ids, z) {
   const pt = p => (p ? `${fmtTemp(p.T_K, u)}, ${fmtP(p.P_kPa, u)}` : "–");
   side.replaceChildren(kv([
     ["Critical point", pt(env.critical)], ["Cricondenbar", pt(env.cricondenbar)], ["Cricondentherm", pt(env.cricondentherm)],
-  ]), ...env.notes.map(n => h("div", { class: "fug-warn" }, n)),
+  ]), ...env.notes.map(n => warning(n)),
   ex?.note ? h("div", { class: "fug-foot" }, ex.note) : h("span"),
   h("div", { class: "fug-foot" }, `${sys.info.equation}: the line is traced from a dew point at 50 kPa through the critical point (Michelsen's continuation), and ends at the bubble point at 50 kPa.`),
   read);
@@ -639,7 +640,7 @@ function flashView(ctx) {
   let sys;
   try { sys = modelSystem(state, ids); } catch (e) { throw new Error(friendly(e)); }
   for (const k of sys.kind !== "eos" && onDefaults(sys) ? knownIssuesFor(sys.ids, sys.model) : []) {
-    notes.append(h("div", { class: "fug-warn", role: "note" }, h("strong", {}, `Known deviation (${modelName(k.model)}): `), k.message, ` Reference: ${k.reference}.`));
+    notes.append(warning(`${k.message} Reference: ${k.reference}.`, { title: `Known deviation (${modelName(k.model)}): ${summaryOf(k.message)}` }));
   }
   const { result: r, z } = runFlash(sys, state.flash);
   const names = sys.names, MW = ids.map(id => pure(id, own(state)).MW);
@@ -710,7 +711,7 @@ function flashView(ctx) {
       r.duty_J_mol != null ? ["Heat duty Q", fmtShort(dutyKW(r.duty_J_mol, flow), 5), `kW at ${feedFlowText}`] : null,
       ["Iterations", String(r.iterations)],
     ]),
-    ...(r.warnings ?? []).map(w => h("div", { class: "fug-warn" }, w)),
+    ...(r.warnings ?? []).map(w => warning(w)),
     h("div", { class: "fug-foot" }, spec.hint));
   extra.append(...sourcesOf(ctx, sys));
   // the stream table as a record for project files (src/ui/project.js), each row with its unit
@@ -790,7 +791,7 @@ function hxView(ctx) {
     ]),
     r.U_how ? h("div", { class: "fug-foot" }, `U: ${r.U_how}`) : null,
     util ? h("div", { class: "fug-foot" }, `Utility: ${util.describe}.`) : null,
-    ...r.notes.map(n => h("div", { class: "fug-warn" }, n)),
+    ...r.notes.map(n => warning(n)),
     hx.wall.S_MPa == null ? h("div", { class: "fug-foot" }, "Wall thickness: give the allowable stress in Inputs.") : wall ? h("div", { class: "fug-foot" }, `Wall: ${wall.method}.`) : null,
     read].filter(Boolean));
   move(r.duty_kW / 2);
@@ -846,7 +847,7 @@ function henryView(ctx) {
       h("div", { class: "fug-foot" }, `x = p / H, valid for dilute solutions. Mass ratio = x / (1 − x) × M gas / M ${solventName.toLowerCase()}.`));
   } catch (e) {
     result.append(h("div", { class: "fug-eyebrow" }, `${nameOf(state, gas)} in ${solventName.toLowerCase()}`),
-      h("div", { class: "fug-err", role: "alert" }, e.message),
+      warning(e.message, { attrs: { role: "alert" } }),
       h("div", { class: "fug-foot" }, `Change the temperature in the inputs: the equation is valid from ${fmtTemp(info0(gases).Tmin_K, u, 1)} to ${fmtTemp(info0(gases).Tmax_K, u, 1)}.`));
   }
 
@@ -896,7 +897,7 @@ function solidView(ctx) {
   const { state, plot, side, notes, extra, compact } = ctx;
   const u = state.units, [solid, solvent] = state.components;
   const { sys, note } = sleSystem(state, [solid, solvent]);
-  if (note) notes.append(h("div", { class: "fug-warn", role: "note" }, note));
+  if (note) notes.append(warning(note, { attrs: { role: "note" } }));
   const f = sys.fusion[0], fs = sys.fusion[1];
   const MW = [pure(solid, own(state)).MW, pure(solvent, own(state)).MW];
   const unit = SOLID_UNITS.find(su => su.id === state.solidUnit) ?? SOLID_UNITS[0];
@@ -929,8 +930,8 @@ function solidView(ctx) {
   }
   const series = [{ name: sys.model === "ideal" ? "ideal" : modelName(sys.model), color: SERIES(0), segments: [{ points: pts }] }];
   if (sys.model !== "ideal") series.push({ name: "ideal", color: "var(--fug-muted)", dash: "5 4", segments: [{ points: ideal }] });
-  if (splits) notes.append(h("div", { class: "fug-warn", role: "note" }, `The ${modelName(sys.model)} model splits the liquid into two phases at some temperatures: the solvent-rich solubility is drawn there; a liquid-liquid check is needed.`));
-  if (noRho) notes.append(h("div", { class: "fug-warn", role: "note" }, `No liquid density of ${nameOf(state, solvent).toLowerCase()} at some of these temperatures (outside its correlation): g/L is not drawn there. g/100 g needs no density.`));
+  if (splits) notes.append(warning(`The ${modelName(sys.model)} model splits the liquid into two phases at some temperatures: the solvent-rich solubility is drawn there; a liquid-liquid check is needed.`, { attrs: { role: "note" } }));
+  if (noRho) notes.append(warning(`No liquid density of ${nameOf(state, solvent).toLowerCase()} at some of these temperatures (outside its correlation): g/L is not drawn there. g/100 g needs no density.`, { attrs: { role: "note" } }));
   const gap = gapNote(reasons, "solubility");
   if (gap) notes.append(gap);
 
@@ -952,11 +953,11 @@ function solidView(ctx) {
         ["Activity coefficient γ", fmtNum(r.gamma, 4)],
         ["Ideal solubility", val(r.xIdeal, unit.id), unit.axis],
         ["Melting point of the solid", meltText(f, u)]]),
-      ...r.notes.filter(n => !/ΔCp/.test(n)).map(n => h("div", { class: "fug-warn" }, n)),
+      ...r.notes.filter(n => !/ΔCp/.test(n)).map(n => warning(n)),
       h("div", { class: "fug-foot" }, `x is the mole fraction of ${nameOf(state, solid).toLowerCase()} in the saturated solution (moles of dissolved solid per mole of solution), not the share of the solid that dissolves: x = 0.5 is one mole of solid per mole of solvent. At the melting point x reaches 1: the molten solid mixes with the solvent in any ratio. g/L is per litre of pure solvent at this temperature, before the solid is added.`),
       h("div", { class: "fug-foot" }, "Pure solid in equilibrium with the solution: ln(x γ) = −(ΔH_fus / R T)(1 − T / T_m), ΔCp of fusion taken as 0."));
   } catch (e) {
-    result.append(h("div", { class: "fug-err", role: "alert" }, e.message));
+    result.append(warning(e.message, { attrs: { role: "alert" } }));
   }
   const read = h("div", { class: "fa-read" });
   const show = Tx => {
@@ -969,7 +970,7 @@ function solidView(ctx) {
   };
   const x0 = tToDisplay(T0, u), x1 = tToDisplay(f.Tm_K, u);
   if (!pts.length) {
-    plot.replaceChildren(h("div", { class: "fug-err", role: "alert" }, "No solubility could be calculated in this temperature range."));
+    plot.replaceChildren(warning("No solubility could be calculated in this temperature range.", { attrs: { role: "alert" } }));
   } else {
     const move = drawPlot(plot, { compact, series, x0, x1, log: true, xLabel: `T, ${tU(u)}`,
       yLabel: `${nameOf(state, solid)} (${unit.axis})`, show,
@@ -990,17 +991,17 @@ function sleView(ctx) {
   const { state, plot, side, notes, extra, compact } = ctx;
   const u = state.units, ids = state.components;
   const { sys, note } = sleSystem(state, ids);
-  if (note) notes.append(h("div", { class: "fug-warn", role: "note" }, note));
+  if (note) notes.append(warning(note, { attrs: { role: "note" } }));
   const MW = ids.map(id => pure(id, own(state)).MW);
   const bv = basisView(state.basis, MW);
   const conv1 = x1 => bv.conv([x1, 1 - x1])[0];
   let d;
   try { d = sys.sleDiagram({ n: 61 }); } catch (e) {
-    plot.replaceChildren(h("div", { class: "fug-err", role: "alert" }, e.message));
+    plot.replaceChildren(warning(e.message, { attrs: { role: "alert" } }));
     side.replaceChildren();
     return { data: "No diagram" };
   }
-  for (const n of d.notes) notes.append(h("div", { class: "fug-warn", role: "note" }, n));
+  for (const n of d.notes) notes.append(warning(n, { attrs: { role: "note" } }));
   // unlabelled curves (their names would collide at the eutectic): the legend under the plot names them
   const branch = (b, k) => ({ name: "", label: `solid ${nameOf(state, ids[k]).toLowerCase()}`, color: SERIES(k), segments: [{ points: b.points.map(p => ({ x: conv1(p.x1), y: tToDisplay(p.T_K, u) })) }] });
   const Te = tToDisplay(d.eutectic.T_K, u);
@@ -1183,7 +1184,7 @@ function steamView(ctx) {
   const out = h("div", { class: "fa-calc-out", "aria-live": "polite" });
   const run = () => {
     const T = parseT(tIn.value, u), P = parseP(pIn.value, u);
-    if (!T || P == null) { out.replaceChildren(h("div", { class: "fug-err" }, "Enter a temperature and a positive pressure.")); return; }
+    if (!T || P == null) { out.replaceChildren(warning("Enter a temperature and a positive pressure.")); return; }
     try {
       const st = steam(T, P);
       out.replaceChildren(h("div", { class: "fa-phase" }, `${st.phase[0].toUpperCase()}${st.phase.slice(1)}`, h("small", {}, ` IF97 region ${st.region}`)),
@@ -1192,7 +1193,7 @@ function steamView(ctx) {
           ["cv", fmtNum(st.cv_kJ_kgK, 5), "kJ/(kg·K)"], ["Speed of sound w", fmtNum(st.w_m_s, 5), "m/s"],
           ["Viscosity μ", st.mu_Pa_s == null ? null : fmtNum(st.mu_Pa_s * 1000, 5), "mPa·s"], ["Conductivity k", st.k_W_mK == null ? null : fmtNum(st.k_W_mK, 4), "W/(m·K)"]]),
         ...st.notes.map(n => h("div", { class: "fug-foot" }, n)));
-    } catch (e) { out.replaceChildren(h("div", { class: "fug-err" }, e.message)); }
+    } catch (e) { out.replaceChildren(warning(e.message)); }
   };
   tIn.addEventListener("change", run); pIn.addEventListener("change", run);
   run();

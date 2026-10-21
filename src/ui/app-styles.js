@@ -38,7 +38,7 @@ export const APP_CSS = `
 /* navigation bar: workspaces (tasks), then the supporting utilities */
 .fa-titlebar{margin:0; max-width:none; align-self:stretch; flex-wrap:nowrap; display:flex; align-items:stretch; gap:18px; background:var(--fa-bar); color:var(--fa-bar-fg); padding:0 6px 0 14px; min-height:44px}
 .fa-brand{display:flex; align-items:center; gap:8px; color:var(--fa-bar-strong); font-weight:600; font-size:14px; letter-spacing:.01em}
-.fa-brand .fug-ico .a{stroke:var(--fa-bar-accent)}
+.fa-brand .chepta-logo{display:block; width:84px; height:auto; flex:none}
 .fa-nav{display:flex; align-items:flex-end; gap:2px; min-width:0}
 .fa-nav-btn{display:flex; align-items:center; gap:7px; border:0; background:transparent; color:inherit; font-size:13px; font-weight:500;
   padding:9px 14px 10px; border-radius:7px 7px 0 0; cursor:pointer; white-space:nowrap; position:relative}
@@ -314,7 +314,7 @@ export const APP_CSS = `
 .fa-slot.is-bad{border-color:var(--fa-bad)}
 .fa-slot.is-bad label{color:var(--fa-bad)}
 .fug-app .fa-slot.is-bad select{border-color:var(--fa-bad)}
-.fa-problems ul{margin:8px 0 0; padding:7px 10px 7px 24px; background:var(--fug-warn-bg); color:var(--fug-warn-fg); border-radius:6px; font-size:11.5px; display:grid; gap:3px; line-height:1.4}
+.fa-problems .fa-warn{margin-top:8px}
 .fa-in-actions{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; align-items:center}
 .fug-app .fa-examples{flex:1 1 120px; font-size:12px}
 .fa-mini{display:inline-flex; align-items:center; gap:5px; border:1px solid var(--fug-rule); background:var(--fug-bg); color:var(--fug-fg); border-radius:6px;
@@ -445,6 +445,9 @@ a.fa-mini{text-decoration:none}
 .fa-need h3{margin:0 0 8px; font-size:14px; font-weight:600}
 .fa-need ul{margin:0 0 10px; padding-left:18px; display:grid; gap:4px; color:var(--fug-fg)}
 .fa-need p{margin:0 0 10px; color:var(--fug-fg2); font-size:12.5px}
+/* inputs still missing: a small warning, its details when pressed (warning.js) */
+.fa-need.is-compact{border:0; background:none; padding:0; margin:16px auto}
+.fa-need.is-compact .fa-warn-body p, .fa-need.is-compact .fa-warn-body ul{color:inherit; font-size:12px}
 
 /* results */
 .fa-result-card{display:grid; gap:6px; padding-bottom:10px; border-bottom:1px solid var(--fug-rule)}
