@@ -504,6 +504,16 @@ a.fa-mini{text-decoration:none}
 .fa-state.is-err i{background:var(--fa-bad)}
 .fa-state.is-wait i{background:transparent; border:1.5px solid var(--fa-busy)}
 
+/* a title bar that overflows (app.js fitTitle): icon-only utilities, then the short section names */
+.fug-app[data-tight] .fa-titlebar{gap:10px}
+.fug-app[data-tight] .fa-nav-btn{padding-left:10px; padding-right:10px}
+.fug-app[data-tight] .fa-util-btn{padding-left:6px; padding-right:6px}
+.fug-app[data-tight] .fa-util-btn.is-icon .fa-util-label{display:none}
+.fug-app:is([data-tight="3"],[data-tight="4"]) .fa-nav-long{display:none}
+.fug-app:is([data-tight="3"],[data-tight="4"]) .fa-nav-short{display:inline}
+.fug-app[data-tight="4"] .fa-titlebar{flex-wrap:wrap}
+.fug-app[data-tight="4"] .fa-utils{order:3; flex:1 1 100%; border-left:0; padding:0 0 4px; margin-left:0}
+
 /* mid width: short workspace names, icon-only utilities, the results move under the canvas */
 .fug-app[data-size="mid"] .fa-nav-long,.fug-app[data-size="narrow"] .fa-nav-long{display:none}
 .fug-app[data-size="mid"] .fa-nav-short,.fug-app[data-size="narrow"] .fa-nav-short{display:inline}

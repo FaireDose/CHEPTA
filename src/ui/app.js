@@ -210,7 +210,24 @@ export function app(target, cfg = {}) {
   });
 
   // ---- size classes (the container, not the window: artifacts can be narrow on a wide screen)
+  // the title bar's labels: dropped a step at a time while it overflows (the logo, the sections and the supporting
+  // tools do not fit at every width of a size class), so no label ever runs into another
+  const fitTitle = () => {
+    delete box.dataset.tight;
+    for (const b of titleBar.querySelectorAll(".fa-util-btn.is-icon")) b.classList.remove("is-icon");
+    if (ui.size === "narrow") return;
+    const nav = titleBar.querySelector(".fa-nav");
+    const over = () => titleBar.scrollWidth > titleBar.clientWidth + 1 || (nav && nav.scrollWidth > nav.clientWidth + 1);
+    // 1: less space between the buttons; 2: the supporting tools as icons, one at a time from the right; 3: and the short
+    // section names; 4: and the supporting tools on a row of their own
+    if (!over()) return;
+    box.dataset.tight = "1";
+    const tools = [...titleBar.querySelectorAll(".fa-util-btn")].reverse();
+    for (const b of tools) { if (!over()) return; b.classList.add("is-icon"); }
+    for (const step of ["3", "4"]) { if (!over()) return; box.dataset.tight = step; }
+  };
   const measure = () => {
+    fitTitle();
     const size = sizeOf(root.clientWidth || 1200);
     if (size !== ui.size) {
       ui.size = size;
@@ -1214,6 +1231,7 @@ export function app(target, cfg = {}) {
     box.classList.toggle("fa-ribbon-closed", !state.ribbon);
     box.dataset.workspace = state.workspace;
     renderTitleBar();
+    fitTitle();
     const ws = WORKSPACES.find(w => w.id === state.workspace);
     ribbon.setAttribute("aria-label", `${ws.label}: diagrams and options`);
     ribbon.hidden = !state.ribbon;
