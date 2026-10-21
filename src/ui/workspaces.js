@@ -16,7 +16,8 @@ import henryData from "../data/henry.json" with { type: "json" };
 export const WORKSPACES = [
   { id: "equilibrium", label: "Phase equilibrium", short: "Phase eq.", icon: "ternary",
     views: ["txy", "ternary", "azeotropes", "pxy", "envelope"], view: "ternary" },
-  { id: "steam", label: "Steam", short: "Steam", icon: "dome", views: ["steam"], view: "steam" },
+  // the steam charts and, since proposal 0013 step 7, the charts of any fluid with an equation of state
+  { id: "steam", label: "Charts", short: "Charts", icon: "dome", views: ["steam", "charts"], view: "steam" },
   { id: "solubility", label: "Solubility", short: "Solubility", icon: "henry", views: ["henry", "solid", "sle"], view: "henry" },
   { id: "properties", label: "Properties", short: "Properties", icon: "curves", views: ["properties"], view: "properties" },
   { id: "flash", label: "Flash", short: "Flash", icon: "drum", views: ["flash"], view: "flash" },
@@ -70,7 +71,8 @@ export function workspaceOf(view) {
  *  - kind "henry": a gas and a solvent;
  *  - kind "none": nothing to choose (steam is water).
  * `solid`: the slots whose component must have a melting temperature and enthalpy of fusion;
- * `activityOnly`: the view needs an activity model (NRTL, UNIQUAC or ideal) for the liquid.
+ * `activityOnly`: the view needs an activity model (NRTL, UNIQUAC or ideal) for the liquid; `eosOnly`: an equation of
+ * state (Peng–Robinson or SRK).
  * `liquid`: with an activity-coefficient model (NRTL, UNIQUAC, ideal), only components with
  * activity-model data (a liquid with a vapour-pressure record; UNIQUAC also needs r and q); with an equation of state (PR, SRK)
  * every component, gases too. `minActivity`: the smallest list with an activity model, where
@@ -94,6 +96,8 @@ export const INPUTS = {
   sle: { kind: "slots", n: 2, liquid: true, solid: [0, 1], activityOnly: true, what: "a solid-liquid diagram", roles: ["x axis", "1 − x"] },
   properties: { kind: "slots", n: 1, liquid: false, what: "the property curves", roles: ["pure component"] },
   steam: { kind: "none", what: "the steam tables" },
+  // a pure fluid or a mixture with an equation of state (proposal 0013, step 7)
+  charts: { kind: "list", min: 1, max: 6, liquid: false, eosOnly: true, what: "a fluid chart" },
   flowsheet: { kind: "none", what: "the flowsheet" },   // its own setup: components and method of the flowsheet
 };
 
@@ -200,6 +204,9 @@ export function checkInputs(view, value, model = "NRTL", ud = null) {
   if (spec.activityOnly && isEosModel(model)) {
     problems.push({ slot: null, message: `${spec.what[0].toUpperCase()}${spec.what.slice(1)} needs an activity model for the liquid: choose NRTL, UNIQUAC or Ideal in the Model group.` });
   }
+  if (spec.eosOnly && !isEosModel(model)) {
+    problems.push({ slot: null, message: `${spec.what[0].toUpperCase()}${spec.what.slice(1)} needs an equation of state, which describes the gas and the liquid up to the critical point: choose Peng–Robinson or SRK.` });
+  }
   if (spec.kind === "list" && ids.length < spec.min) {
     const why = !isEosModel(model) && spec.minActivity
       ? ` with an activity model (one pure component needs an equation of state: Peng–Robinson or SRK)` : "";
@@ -235,6 +242,7 @@ export function seedInputs(components = [], { gas, solvent, propComponent, model
     sle: normalizeInputs("sle", ["benzene", "naphthalene"]),
     properties: [pickId(propComponent, ud) ?? ids[0] ?? "water"],
     steam: [],
+    charts: normalizeInputs("charts", ids.slice(0, 6), ud),
     flowsheet: [],
   };
 }

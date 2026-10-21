@@ -184,7 +184,7 @@ test("the Excel export writes the new blocks' outlets as formulas of their inlet
 test("editing: new blocks from the palette, an energy feed, a block's heat into another, removed with its block", async () => {
   const L = await import("../src/ui/flowsheet-logic.js");
   let fs = { components: ["ethanol", "water"], thermo: { model: "NRTL", vapour: "ideal" }, blocks: [], streams: [] };
-  for (const t of ["hx", "valve", "pump"]) assert.ok(L.PALETTE.includes(t), t);
+  for (const t of ["hx", "valve", "pump", "compressor", "expander"]) assert.ok(L.PALETTE.includes(t), t);
   let r = L.addBlock(fs, "hx"); fs = r.fs;
   assert.equal(r.id, "HX1");
   assert.deepEqual(fs.streams.map(s => s.from).sort(), ["HX1.cold", "HX1.hot"], "both outlets start as products");

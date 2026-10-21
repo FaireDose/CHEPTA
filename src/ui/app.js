@@ -35,6 +35,7 @@ import { modelPicker, liquidPicker } from "./model-picker.js";
 import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, examplesFor, rotateInputs, solventsFor, needsFor, isEosModel } from "./workspaces.js";
 import { UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
+import { CHART_KINDS, CHART_TITLE } from "./charts-view.js";
 import { myDataPanel, PROPERTY_LABEL } from "./my-data-panel.js";
 import { canOpenWindow, openDataWindow } from "./my-data-window.js";
 import { userDataList, setEntryUse } from "./user-data-file.js";
@@ -52,17 +53,18 @@ const PROPERTY_GLYPHS = [
   ["density", () => "ρ", "Density"], ["enthalpy", () => "h", "Enthalpy"], ["cp", () => ["c", h("sub", {}, "p")], "Heat capacity"],
   ["viscosity", () => "μ", "Viscosity"], ["conductivity", () => "k", "Conductivity"], ["vapourPressure", () => ["P", h("sup", {}, "sat")], "Vapour pressure"],
 ];
-const VIEW_ICON = { flash: "drum", hx: "hx", txy: "txy", ternary: "ternary", azeotropes: "azeo", pxy: "pxy", envelope: "envelope", henry: "henry", solid: "flask", sle: "azeo", properties: "curves", steam: "dome" };
+const VIEW_ICON = { flash: "drum", hx: "hx", txy: "txy", ternary: "ternary", azeotropes: "azeo", pxy: "pxy", envelope: "envelope", henry: "henry", solid: "flask", sle: "azeo", properties: "curves", steam: "dome", charts: "envelope" };
 /** A label inside a sentence: "Ternary map" → "ternary map", but "T-x-y diagram" stays. */
 const lower = s => (/^[A-Z]-/.test(s) ? s : s[0].toLowerCase() + s.slice(1));
 const NEEDS_ACTIVITY = {
   txy: "Two liquids", ternary: "Three liquids", azeotropes: "Two to four liquids", pxy: "Two liquids",
   envelope: "Two to 24 liquids", flash: "Two to six liquids", hx: "One to six liquids", henry: "A gas and a solvent", properties: "One component", steam: "Water",
+  charts: "One to six components (an equation of state)",
   solid: "A solid and a solvent", sle: "Two components with melting data",
 };
 const NEEDS_EOS = {
   ...NEEDS_ACTIVITY, txy: "Two components", ternary: "Three components", azeotropes: "Two to four components", pxy: "Two components",
-  envelope: "One to 24 components", flash: "One to six components", hx: "One to six components",
+  envelope: "One to 24 components", flash: "One to six components", hx: "One to six components", charts: "One to six components",
 };
 /** What a view needs with the model in use (an equation of state takes gases too). */
 const needsOf = (view, model) => (isEosModel(model) ? NEEDS_EOS : NEEDS_ACTIVITY)[view];
@@ -423,9 +425,15 @@ export function app(target, cfg = {}) {
       }
       case "flowsheet": return flowsheetRibbon({ state, set, ui, group, bigButton, smallButton });
       case "steam": return [
-        group("Standard", h("div", { class: "fa-stack fa-about" },
-          h("div", { class: "fa-theme" }, icon("dome", 18), "IAPWS-IF97 water and steam"),
-          h("div", { class: "fa-hint" }, "Viscosity IAPWS R12-08, conductivity R15-11"))),
+        // the Charts workspace (proposal 0013, step 7): water and steam, or any fluid with an equation of state
+        group("Fluid", diagramButton("steam", "Water and steam"), diagramButton("charts", "Any fluid")),
+        group("Chart", seg("Chart", CHART_KINDS, state.chart.kind, k => set({ chart: { kind: k } }), { title: "Temperature-entropy, pressure-enthalpy or enthalpy-entropy (Mollier) chart" })),
+        v === "charts"
+          ? group("Equation", seg("Equation of state", [["PR", "Peng–Robinson"], ["SRK", "SRK"]], isEosModel(state.model) ? state.model : null, m => set({ model: m }),
+            { title: "The fluid charts use an equation of state for the gas and the liquid" }))
+          : group("Standard", h("div", { class: "fa-stack fa-about" },
+            h("div", { class: "fa-theme" }, icon("dome", 18), "IAPWS-IF97 water and steam"),
+            h("div", { class: "fa-hint" }, "Viscosity IAPWS R12-08, conductivity R15-11"))),
         group("Display", stack(bg)),
       ];
       default: return [];
@@ -634,6 +642,32 @@ export function app(target, cfg = {}) {
         slotsInput("properties", check), problemsBox(check)));
     } else if (state.workspace === "flowsheet") {
       secs.push(...flowsheetInputs({ state, set, ui, uid, inputsSection }));
+    } else if (state.workspace === "steam" && v === "charts") {
+      // a fluid's chart (proposal 0013, step 7): its components, isobars or isotherms, and a compression drawn on it
+      const c = state.chart, list = (vals, parse) => String(vals).split(/[\s,;]+/).map(parse).filter(x => x != null);
+      secs.push(inputsSection("Components",
+        h("p", { class: "fa-in-hint" }, "One fluid, or a mixture of up to six (its feed under Results)."),
+        listInput("charts"), problemsBox(check),
+        !isEosModel(state.model) ? h("div", { class: "fa-in-actions" }, h("button", { type: "button", class: "fa-mini", "data-fk": "act-pr",
+          title: "The charts need an equation of state", on: { click: () => set({ model: "PR" }) } }, icon("envelope", 15), "Use Peng–Robinson")) : null));
+      secs.push(inputsSection(c.kind === "PH" ? "Isotherms" : "Isobars",
+        c.kind === "PH"
+          ? field(`Temperatures, ${u.T === "K" ? "K" : "°C"}`, c.T_K.map(T => String(+tToDisplay(T, u).toFixed(2))).join(", "),
+            t => { const l = list(t, x => parseT(x, u)); if (!l.length) return false; set({ chart: { T_K: l } }); }, { id: "cht", width: "100%", title: "Up to six temperatures, separated by commas" })
+          : field(`Pressures, ${u.P}`, c.P_kPa.map(P => fmtShort(pToDisplay(P, u), 6)).join(", "),
+            t => { const l = list(t, x => parseP(x, u)); if (!l.length) return false; set({ chart: { P_kPa: l } }); }, { id: "chp", width: "100%", title: "Up to six pressures, separated by commas" }),
+        h("p", { class: "fa-in-hint" }, "Up to six, separated by commas.")));
+      const k = c.compression;
+      const kSet = patch => set({ chart: { compression: { ...(k ?? { T_K: 300, P_kPa: 100, P_out_kPa: 1000, efficiency: 0.75 }), ...patch } } });
+      secs.push(inputsSection("Compression or expansion",
+        h("label", { class: "fa-check-label" }, h("input", { type: "checkbox", checked: !!k, "data-fk": "ch-k",
+          on: { change: ev => (ev.target.checked ? kSet({}) : set({ chart: { compression: null } })) } }), " Draw one on the chart"),
+        k ? field(`Inlet temperature, ${u.T === "K" ? "K" : "°C"}`, String(+tToDisplay(k.T_K, u).toFixed(2)), t => { const val = parseT(t, u); if (val == null) return false; kSet({ T_K: val }); }, { id: "chkt" }) : null,
+        k ? field(`Inlet pressure, ${u.P}`, fmtShort(pToDisplay(k.P_kPa, u), 6), t => { const val = parseP(t, u); if (val == null) return false; kSet({ P_kPa: val }); }, { id: "chkp" }) : null,
+        k ? field(`Outlet pressure, ${u.P}`, fmtShort(pToDisplay(k.P_out_kPa, u), 6), t => { const val = parseP(t, u); if (val == null) return false; kSet({ P_out_kPa: val }); }, { id: "chko" }) : null,
+        k ? field("Isentropic efficiency", String(k.efficiency), t => { const val = Number(String(t).replace(",", ".")); if (!(val > 0 && val <= 1)) return false; kSet({ efficiency: val }); }, { id: "chke", title: "A fraction, at most 1 (0.75 is 75 %)" }) : null,
+        h("p", { class: "fa-in-hint" }, "A higher outlet pressure is a compression, a lower one an expansion; the outlet follows from the isentropic efficiency.")));
+      if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
     } else if (state.workspace === "steam") {
       secs.push(inputsSection("Substance", h("div", { class: "fa-fixed" }, h("b", {}, "Water"), h("span", { class: "fa-chip-f" }, "H2O")),
         h("p", { class: "fa-in-hint" }, "IAPWS-IF97 covers water and steam only.")));
@@ -641,7 +675,9 @@ export function app(target, cfg = {}) {
         field(`Pressures, ${u.P}`, state.steamP_kPa.map(P => fmtShort(pToDisplay(P, u), 6)).join(", "),
           t => { const list = String(t).split(/[\s,;]+/).map(x => parseP(x, u)).filter(x => x != null); if (!list.length) return false; set({ steamP_kPa: list }); },
           { id: "sp", width: "100%", title: "Up to six pressures, separated by commas" }),
-        h("p", { class: "fa-in-hint" }, "Up to six, separated by commas.")));
+        h("p", { class: "fa-in-hint" }, state.chart.kind === "PH"
+          ? "Up to six, separated by commas; for the T-s and h-s charts. The P-h chart shows isotherms at 100 to 500 °C."
+          : "Up to six, separated by commas.")));
     }
     left.replaceChildren(h("div", { class: "fa-panel-head" }, h("h2", {}, "Inputs"), h("span", { class: "fa-count" }, VIEWS[v].label)), ...secs);
   }
@@ -796,7 +832,8 @@ export function app(target, cfg = {}) {
       solid: `Solubility of the solid against temperature, ${ml}`,
       sle: `Solid-liquid diagram with the eutectic, ${ml}`,
       properties: `${prop?.label ?? "Property"} against temperature, pure component`,
-      steam: "Temperature–entropy chart with isobars, IAPWS-IF97",
+      steam: `${CHART_TITLE[state.chart.kind]} with ${state.chart.kind === "PH" ? "isotherms" : "isobars"}, IAPWS-IF97`,
+      charts: `${CHART_TITLE[state.chart.kind]} with ${state.chart.kind === "PH" ? "isotherms" : "isobars"}, ${ml}`,
       flowsheet: state.flowsheet.components.length
         ? `${state.flowsheet.components.map(nameOf).join(", ")}; ${state.flowsheet.thermo.model}${["PR", "SRK"].includes(state.flowsheet.thermo.model) ? "" : `, ${state.flowsheet.thermo.vapour} vapour`}`
         : "Setup: components, then method, then blocks",
@@ -1211,7 +1248,7 @@ export function app(target, cfg = {}) {
     return JSON.stringify([v, check.ok ? check.use : ["invalid", state.inputs[v]], state.model, state.eos, state.vapour, state.P_kPa, state.T_K,
       state.units, state.basis, state.residueCurves, state.isotherms, state.grid, state.property, state.z[v] ?? null,
       v === "henry" ? [state.inputs.henry, state.henryT_K, state.henryP_kPa, state.compareGases] : null,
-      v === "solid" || v === "sle" ? [state.sleT_K, state.solidUnit] : null, state.steamP_kPa, state.sets, state.prefer,
+      v === "solid" || v === "sle" ? [state.sleT_K, state.solidUnit] : null, state.steamP_kPa, state.chart, state.sets, state.prefer,
       state.userData,   // the user's own data (proposal 0012): a change or a switch recalculates every view
       v === "flash" ? state.flash : null,
       v === "hx" ? state.hx : null,

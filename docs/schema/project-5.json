@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fairedose.github.io/CHEPTA/schema/project-5.json",
+  "title": "CHEPTA project, format 5",
+  "description": "A CHEPTA project file of format 2, 3, 4 or 5 (src/ui/project.js). Format 3 adds user_data (proposal 0012); format 4 adds the flowsheet's energy streams, its hx, valve, pump, compressor and expander blocks, and workbench.hx (proposal 0013); format 5 adds workbench.chart, the charts of the Charts workspace (proposal 0013, step 7: kind TS, PH or HS, P_kPa, T_K, compression, points and waterPoints (up to 12 each, two of T_K, P_kPa, h_kJ_kg, s_kJ_kgK, VF), components, z). A project is written in the lowest format that holds it.",
+  "type": "object",
+  "required": [
+    "fugacity_project",
+    "workbench"
+  ],
+  "properties": {
+    "fugacity_project": {
+      "enum": [
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "saved_with": {
+      "type": "string"
+    },
+    "saved_at": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "workbench": {
+      "type": "object",
+      "description": "Settings and inputs of every workspace (see src/ui/project.js); {} gives the defaults."
+    },
+    "flowsheet": {
+      "$ref": "#/$defs/flowsheet"
+    },
+    "results": {
+      "type": "object",
+      "description": "A record of results at save time; never read back into a calculation."
+    },
+    "user_data": {
+      "type": "object",
+      "description": "The user's own data (format 3 and later; src/thermo/user-data.js)."
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "flowsheet": {
+      "type": "object",
+      "properties": {
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Names, ids, formulas or CAS numbers of CHEPTA.listComponents()."
+        },
+        "thermo": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "enum": [
+                "NRTL",
+                "UNIQUAC",
+                "MOD-UNIFAC-2",
+                "ideal",
+                "PR",
+                "SRK"
+              ]
+            },
+            "vapour": {
+              "enum": [
+                "ideal",
+                "PR",
+                "SRK"
+              ]
+            },
+            "sets": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "prefer": {}
+          },
+          "additionalProperties": false
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/block"
+          }
+        },
+        "streams": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stream"
+          }
+        },
+        "solver": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "enum": [
+                "broyden",
+                "wegstein",
+                "direct"
+              ]
+            },
+            "maxIterations": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "tolerance": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "energyStreams": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/energyStream"
+          },
+          "description": "Format 4: energy feeds into a heater or flash drum, or the heat of one block into another."
+        }
+      },
+      "additionalProperties": false
+    },
+    "block": {
+      "type": "object",
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "feed",
+            "mixer",
+            "splitter",
+            "separator",
+            "flash",
+            "heater",
+            "hx",
+            "valve",
+            "pump",
+            "compressor",
+            "expander",
+            "product"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "energy": {
+          "type": [
+            "string",
+            "boolean"
+          ],
+          "description": "Name of the block's energy stream (heater, flash, separator); default Q-<id>. false: the drawing shows no energy stream for the block (its duty is still calculated and counted in the energy balance)."
+        },
+        "spec": {
+          "type": "object",
+          "description": "feed: flow_kmol_h or flow_kg_h, and two of T_K, P_kPa, VF. mixer: P_kPa (optional). splitter: fractions [one per outlet, one may be \"rest\"]. separator: fractions { component: [one per outlet] }, outlets [{ T_K, P_kPa } or null]. flash: two of T_K, P_kPa, VF, duty_kW. heater: one of T_K, duty_kW, VF (or T_K and VF), with P_kPa or dP_kPa. product: none. heater (format 4): sizing { utility: { kind: steam|water|fluid|electric, ... }, U, arrangement } (optional). hx: one of T_hot_out_K, T_cold_out_K, VF_hot_out, VF_cold_out, duty_kW, dTmin_K; dP_hot_kPa, dP_cold_kPa; U and arrangement (optional); ports hot and cold. valve: P_kPa or dP_kPa. pump: P_kPa or dP_kPa, efficiency (0 to 1, default 0.75). compressor and expander: one of P_kPa, dP_kPa, ratio (outlet over inlet), and the isentropic efficiency (0 to 1, default 0.75 and 0.8)."
+        }
+      },
+      "additionalProperties": false
+    },
+    "stream": {
+      "type": "object",
+      "required": [
+        "id",
+        "from",
+        "to"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string",
+          "pattern": "^[^.\\s]+\\.[A-Za-z0-9]+$",
+          "description": "BLOCK.port, e.g. V1.vapour"
+        },
+        "to": {
+          "type": "string",
+          "pattern": "^[^.\\s]+\\.[A-Za-z0-9]+$"
+        },
+        "tear": {
+          "type": "boolean"
+        },
+        "guess": {
+          "type": "object",
+          "properties": {
+            "flow_kmol_h": {},
+            "T_K": {
+              "type": "number"
+            },
+            "P_kPa": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "energyStream": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string",
+          "description": "A heater, flash drum or separator whose heat goes to `to`; leave out for an energy feed."
+        },
+        "to": {
+          "type": "string",
+          "description": "A heater or flash drum: its duty comes from the stream. An energy feed placed on the drawing but not connected yet has none (the flowsheet is then not ready)."
+        },
+        "duty_kW": {
+          "type": "number",
+          "description": "An energy feed's duty (+ heat in); not with `from`."
+        },
+        "tear": {
+          "type": "boolean"
+        },
+        "guess": {
+          "type": "object",
+          "properties": {
+            "duty_kW": {
+              "type": "number"
+            }
+          }
+        },
+        "label": {
+          "type": "string"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

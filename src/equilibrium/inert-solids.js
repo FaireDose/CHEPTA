@@ -65,6 +65,7 @@ export function withInertSolids({ ids, names, MW, solid, cp, fluid, base }) {
     if (!spec || typeof spec !== "object") throw fail("BAD_INPUT", "flash needs a specification such as { z, T, P }.");
     const z = checkComposition(spec.z, n, "Feed composition");
     const has = k => spec[k] !== undefined && spec[k] !== null;
+    if (has("S")) throw fail("NOT_AVAILABLE", `flash: a feed with an inert solid (${solidNames.join(", ")}) has no P-S flash yet (the solid's entropy is not modelled); compressors and expanders take fluids only.`);
     const keys = ["T", "P", "H", "VF"].filter(has).sort().join("");
     const KIND = { PT: "TP", HP: "PH", PVF: "PVF", TVF: "TVF" }[keys];
     if (!KIND) throw fail("BAD_INPUT", `flash: give the feed z and two of T, P, H, VF as { z, T, P }, { z, P, H }, { z, P, VF } or { z, T, VF } (got ${keys || "none"}).`);

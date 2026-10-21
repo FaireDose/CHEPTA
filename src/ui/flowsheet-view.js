@@ -23,7 +23,7 @@ import {
   placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy,
 } from "./flowsheet-logic.js";
 import { HEAT_TRANSFER } from "../units/heat-exchange.js";
-import { PUMP_EFFICIENCY } from "../units/units.js";
+import { PUMP_EFFICIENCY, COMPRESSOR_EFFICIENCY, EXPANDER_EFFICIENCY } from "../units/units.js";
 import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { flowsheetXlsx } from "./flowsheet-excel.js";
 import pkg from "../../package.json" with { type: "json" };
@@ -38,7 +38,7 @@ const nameOf = id => byId().get(id)?.name ?? id;
 // the models with parameters per pair (Modified UNIFAC 2.0 and the ideal solution have none)
 const PAIR_MODELS = ["NRTL", "UNIQUAC", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
-  hx: "Heat exchanger", valve: "Valve", pump: "Pump", product: "Product" };
+  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", product: "Product" };
 const HINT = {
   feed: "A stream entering the flowsheet: its flows and two of T, P and vapour fraction.",
   mixer: "Joins streams; adiabatic, at the lowest inlet pressure unless you set one.",
@@ -49,16 +49,17 @@ const HINT = {
   hx: "Two process streams exchange heat: one outlet temperature, a vapour fraction, the duty or the minimum approach; the other outlet from the energy balance. With U, the area.",
   valve: "Lowers the pressure, adiabatically (the outlet has the inlet's enthalpy): the outlet pressure or the pressure drop.",
   pump: "Raises a liquid's pressure: the outlet pressure or the rise, and the efficiency (75 % if not given). Its power is a work stream.",
+  compressor: "Raises a gas's pressure along the isentropic path: the outlet pressure, the rise or the ratio, and the isentropic efficiency (75 % if not given). Its power is a work stream.",
+  expander: "Lowers a gas's pressure and gives power: the outlet pressure, the drop or the ratio, and the isentropic efficiency (80 % if not given). Its power is a work stream (negative: out).",
 };
 /** Blocks on the roadmap, shown in the toolbar but not available yet. */
 const COMING = [
-  { id: "compressor", label: "Compressor", icon: "compressor", note: "proposal 0013, after the mixture entropy (step 6)" },
   { id: "reactor", label: "Reactor", icon: "flask", note: "roadmap v0.6 and A13" },
   { id: "column", label: "Distillation", icon: "column", note: "roadmap v0.5" },
   { id: "extraction", label: "Extraction", icon: "extract", note: "after liquid-liquid equilibria in the flash" },
 ];
 // a feed is drawn as the start of its stream (a tab), not as a block; its size is that point
-const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], product: [0, 0] };
+const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40], product: [0, 0] };
 // the inlet and outlet ports of a two-stream exchanger: hot above, cold below
 const PORT_DY = { hot: -11, cold: 11 };
 
@@ -379,6 +380,18 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
   // proposal 0013: the heater's optional sizing, the two-stream exchanger, the valve, the pump, energy streams
   if (b.type === "heater") secs.push(sizingSection({ b, spec, setS, inputsSection, uid, u }));
   if (b.type === "hx") secs.push(...hxSections({ b, spec, setS, inputsSection, uid, u, T, P, plain }));
+  if (b.type === "compressor" || b.type === "expander") {
+    const up = b.type === "compressor", word = up ? "rise" : "drop", eta = up ? COMPRESSOR_EFFICIENCY : EXPANDER_EFFICIENCY;
+    const mode = spec.ratio != null ? "r" : spec.dP_kPa != null ? "dP" : "P";
+    secs.push(inputsSection("Pressure and efficiency",
+      segRow("Pressure", [["P", "Outlet pressure"], ["dP", `Pressure ${word}`], ["r", "Ratio"]], mode,
+        m => setS(m === "P" ? { dP_kPa: null, ratio: null, P_kPa: spec.P_kPa ?? 101.325 } : m === "dP" ? { P_kPa: null, ratio: null, dP_kPa: spec.dP_kPa ?? 100 } : { P_kPa: null, dP_kPa: null, ratio: spec.ratio ?? (up ? 3 : 0.3) }), `fs-pmode-${b.id}`),
+      mode === "r" ? plain("ratio", "Pressure ratio", "outlet over inlet", up ? "3" : "0.3") : mode === "dP" ? P("dP_kPa", `Pressure ${word}`) : P("P_kPa", "Outlet pressure"),
+      plain("efficiency", "Isentropic efficiency", "0 to 1", `${eta} (typical)`),
+      h("p", { class: "fa-in-hint" }, up
+        ? `Empty: ${eta * 100} %, the lower of the single-stage compressor efficiencies (75 and 84 %) in NETL's Process Modeling Design Parameters (2019). Give your compressor's own.`
+        : `Empty: ${eta * 100} %, the lowest turbine efficiency (a boiler feed pump turbine; its steam turbines: 85 to 93.5 %) in NETL's Process Modeling Design Parameters (2019). Give your expander's own.`)));
+  }
   if (b.type === "valve" || b.type === "pump") {
     const word = b.type === "valve" ? "drop" : "rise";
     secs.push(inputsSection("Pressure",
@@ -706,6 +719,9 @@ function shape(type, w, hh) {
     case "hx": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: hh / 2, class: "fs-shape" }), svgEl("path", { d: `M${-w / 2 + 8} -11 H${w / 2 - 8} M${-w / 2 + 8} 11 H${w / 2 - 8}`, class: "fs-detail" })); return g; }
     case "valve": return svgEl("path", { d: `M${-w / 2} ${-hh / 2} L${w / 2} ${hh / 2} L${w / 2} ${-hh / 2} L${-w / 2} ${hh / 2} Z`, class: "fs-shape" });
     case "pump": { const g = svgEl("g", {}); g.append(svgEl("circle", { r: w / 2, class: "fs-shape" }), svgEl("path", { d: "M-8 8 L12 0 L-8 -8", class: "fs-detail" })); return g; }
+    // a compressor narrows towards its discharge, an expander widens
+    case "compressor": return svgEl("path", { d: `M${-w / 2} ${-hh / 2} L${w / 2} ${-hh / 5} L${w / 2} ${hh / 5} L${-w / 2} ${hh / 2} Z`, class: "fs-shape" });
+    case "expander": return svgEl("path", { d: `M${-w / 2} ${-hh / 5} L${w / 2} ${-hh / 2} L${w / 2} ${hh / 2} L${-w / 2} ${hh / 5} Z`, class: "fs-shape" });
     default: return svgEl("g", {});
   }
 }
@@ -1125,7 +1141,7 @@ function resultsPanel({ state, f, sol, u }) {
       out.push(kvList([
         ["Recycles", res.loops.length ? res.loops.map(l => `${l.tears.join(", ")}: ${l.iterations} iterations`).join("; ") : "none"],
         ["Heat in", `${fmtShort(qin, 5)} kW`], ["Heat out", `${fmtShort(-qout, 5)} kW`],
-        wk ? ["Work in (pumps)", `${fmtShort(wk, 5)} kW`] : null,
+        wk ? ["Work (pumps and compressors in, expanders out)", `${wk >= 0 ? "+" : "−"}${fmtShort(Math.abs(wk), 5)} kW`] : null,
         inner ? ["Heat recovered (energy streams)", `${fmtShort(inner, 5)} kW`] : null,
         ["Material balance", Object.values(res.balance.material_kmol_h).every(v => Math.abs(v) < 1e-6) ? "closed" : "check"],
         ["Energy balance", `${fmtShort(res.balance.energy_kW, 3)} kW`],
@@ -1171,7 +1187,7 @@ function streamTable({ fs, res, u, state }) {
       h("tbody", {}, ...qs.map(q => h("tr", {}, h("th", { scope: "row" }, q.id), h("td", {}, q.from ? `${q.from} → ${q.to}` : q.block),
         h("td", {}, q.kind === "work" ? "work" : q.internal ? "heat between blocks" : q.from === null ? "energy feed" : fs.blocks.find(b => b.id === q.block)?.energy === false ? "heat (not drawn)" : "heat"),
         h("td", { class: "fug-num" }, `${q.duty_kW >= 0 ? "+" : "−"}${fmtShort(Math.abs(q.duty_kW), 5)}`))))) : null,
-    h("p", { class: "fug-foot" }, "Duty: + heat into the block, − heat out; between two blocks, the heat the first gives up and the second takes. A pump's power is work. Enthalpy reference: each component as an ideal gas at 298.15 K."));
+    h("p", { class: "fug-foot" }, "Duty: + heat into the block, − heat out; between two blocks, the heat the first gives up and the second takes. The power of a pump, compressor or expander is work (an expander's is negative: it gives power). Enthalpy reference: each component as an ideal gas at 298.15 K."));
 }
 
 function csvTools(ctx, fs, res, u) {

@@ -27,8 +27,9 @@ test("a project keeps the settings of every workspace and opens to the same work
   // without user data a project is written as format 2, which older versions still open (format 3 adds user_data,
   // proposal 0012; test/user-data-files.test.js)
   // format 4 (proposal 0013, accepted 2026-10-20) adds energy streams, the exchanger, valve and pump blocks and the
-  // Heat exchanger workspace; it is written only for those (test/energy-streams.test.js)
-  assert.equal(PROJECT_FORMAT, 4);
+  // Heat exchanger workspace; it is written only for those (test/energy-streams.test.js); format 5 (proposal 0013,
+  // step 7) adds the fluid charts, written only when they are used (test/charts.test.js)
+  assert.equal(PROJECT_FORMAT, 5);
   assert.equal(doc.fugacity_project, 2);
   assert.equal(doc.saved_with, "chepta 9.9.9");
   assert.equal(doc.saved_at, "2026-10-06T12:00:00.000Z");
@@ -74,7 +75,7 @@ test("a wrong file is refused with the reason", () => {
     ["[]", /expected a JSON object/],
     [JSON.stringify({ workbench: {} }), /"fugacity_project" key is missing/],
     [JSON.stringify({ fugacity_package: 1, type: "pair-data" }), /contribution package/],
-    [JSON.stringify({ ...ok, fugacity_project: 5 }), /format 5.*reads formats 1 to 4/],   // the newest format is 4 since proposal 0013
+    [JSON.stringify({ ...ok, fugacity_project: 6 }), /format 6.*reads formats 1 to 5/],   // the newest format is 5 since the fluid charts (proposal 0013, step 7)
     [JSON.stringify({ ...ok, fugacity_project: "1" }), /format number/],
     [JSON.stringify({ fugacity_project: 1 }), /no "workbench"/],
     [JSON.stringify({ ...ok, workbench: { ...ok.workbench, modle: "NRTL" } }), /unknown key "modle"/],

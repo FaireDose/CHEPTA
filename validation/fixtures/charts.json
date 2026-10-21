@@ -1,0 +1,252 @@
+{
+  "_about": "Saturated liquid and vapour and isobar points of pure fluids, Peng-Robinson as CoolProp 8.0.0 cp0 plus thermo's departures (CHEPTA's Tc, Pc, omega), h in J/mol and s in J/(mol K) relative to the ideal gas at 298.15 K and 101.325 kPa. Written by validation/python/reference_charts.py.",
+  "fluids": [
+    {
+      "component": "propane",
+      "dome": [
+        {
+          "T_K": 221.934,
+          "Psat_kPa": 67.036329,
+          "liquid": {
+            "h_J_mol": -24216.552,
+            "s_J_molK": -102.189686
+          },
+          "vapour": {
+            "h_J_mol": -5159.7729,
+            "s_J_molK": -16.32281
+          },
+          "HEOS": {
+            "Psat_kPa": 66.5674,
+            "dh_vap_J_mol": 19179.479,
+            "ds_vap_J_molK": 86.41974
+          }
+        },
+        {
+          "T_K": 258.923,
+          "Psat_kPa": 298.79289,
+          "liquid": {
+            "h_J_mol": -20577.4852,
+            "s_J_molK": -87.116143
+          },
+          "vapour": {
+            "h_J_mol": -3158.9345,
+            "s_J_molK": -19.843051
+          },
+          "HEOS": {
+            "Psat_kPa": 299.4771,
+            "dh_vap_J_mol": 17359.703,
+            "ds_vap_J_molK": 67.04581
+          }
+        },
+        {
+          "T_K": 295.912,
+          "Psat_kPa": 898.258986,
+          "liquid": {
+            "h_J_mol": -16414.1573,
+            "s_J_molK": -72.284859
+          },
+          "vapour": {
+            "h_J_mol": -1329.9906,
+            "s_J_molK": -21.309682
+          },
+          "HEOS": {
+            "Psat_kPa": 898.9667,
+            "dh_vap_J_mol": 14976.151,
+            "ds_vap_J_molK": 50.61015
+          }
+        },
+        {
+          "T_K": 332.901,
+          "Psat_kPa": 2115.499502,
+          "liquid": {
+            "h_J_mol": -11378.9523,
+            "s_J_molK": -56.65124
+          },
+          "vapour": {
+            "h_J_mol": -31.5733,
+            "s_J_molK": -22.564893
+          },
+          "HEOS": {
+            "Psat_kPa": 2105.9305,
+            "dh_vap_J_mol": 11461.116,
+            "ds_vap_J_molK": 34.428
+          }
+        },
+        {
+          "T_K": 358.7933,
+          "Psat_kPa": 3493.587766,
+          "liquid": {
+            "h_J_mol": -6641.3073,
+            "s_J_molK": -43.45224
+          },
+          "vapour": {
+            "h_J_mol": -141.5223,
+            "s_J_molK": -25.336559
+          },
+          "HEOS": {
+            "Psat_kPa": 3476.9103,
+            "dh_vap_J_mol": 7113.645,
+            "ds_vap_J_molK": 19.82658
+          }
+        }
+      ],
+      "isobars": [
+        {
+          "P_kPa": 1000.0,
+          "points": [
+            {
+              "T_K": 406.879,
+              "h_J_mol": 8424.5667,
+              "s_J_molK": 5.736659
+            },
+            {
+              "T_K": 480.857,
+              "h_J_mol": 16155.5073,
+              "s_J_molK": 23.164817
+            },
+            {
+              "T_K": 591.824,
+              "h_J_mol": 29442.8324,
+              "s_J_molK": 47.965017
+            }
+          ]
+        },
+        {
+          "P_kPa": 3000.0,
+          "points": [
+            {
+              "T_K": 406.879,
+              "h_J_mol": 6723.6593,
+              "s_J_molK": -6.405893
+            },
+            {
+              "T_K": 480.857,
+              "h_J_mol": 15023.4491,
+              "s_J_molK": 12.321222
+            },
+            {
+              "T_K": 591.824,
+              "h_J_mol": 28714.9413,
+              "s_J_molK": 37.886917
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "component": "carbon-dioxide",
+      "dome": [
+        {
+          "T_K": 218.972304,
+          "Psat_kPa": 570.851819,
+          "liquid": {
+            "h_J_mol": -18390.643,
+            "s_J_molK": -95.818738
+          },
+          "vapour": {
+            "h_J_mol": -3189.4146,
+            "s_J_molK": -26.397957
+          },
+          "HEOS": {
+            "Psat_kPa": 573.7116,
+            "dh_vap_J_mol": 15252.618,
+            "ds_vap_J_molK": 69.65547
+          }
+        },
+        {
+          "T_K": 243.30256,
+          "Psat_kPa": 1422.464482,
+          "liquid": {
+            "h_J_mol": -16343.9944,
+            "s_J_molK": -87.104737
+          },
+          "vapour": {
+            "h_J_mol": -2879.8608,
+            "s_J_molK": -31.765683
+          },
+          "HEOS": {
+            "Psat_kPa": 1435.0918,
+            "dh_vap_J_mol": 13342.848,
+            "ds_vap_J_molK": 54.84056
+          }
+        },
+        {
+          "T_K": 273.71538,
+          "Psat_kPa": 3530.207229,
+          "liquid": {
+            "h_J_mol": -13242.4576,
+            "s_J_molK": -75.481937
+          },
+          "vapour": {
+            "h_J_mol": -3108.7903,
+            "s_J_molK": -38.459293
+          },
+          "HEOS": {
+            "Psat_kPa": 3537.5882,
+            "dh_vap_J_mol": 10085.923,
+            "ds_vap_J_molK": 36.84822
+          }
+        },
+        {
+          "T_K": 295.004354,
+          "Psat_kPa": 5997.744511,
+          "liquid": {
+            "h_J_mol": -10108.8508,
+            "s_J_molK": -64.971896
+          },
+          "vapour": {
+            "h_J_mol": -4298.2363,
+            "s_J_molK": -45.275189
+          },
+          "HEOS": {
+            "Psat_kPa": 5982.7776,
+            "dh_vap_J_mol": 6215.651,
+            "ds_vap_J_molK": 21.06969
+          }
+        }
+      ],
+      "isobars": [
+        {
+          "P_kPa": 1000.0,
+          "points": [
+            {
+              "T_K": 334.54102,
+              "h_J_mol": 1031.9881,
+              "s_J_molK": -15.390778
+            },
+            {
+              "T_K": 395.36666,
+              "h_J_mol": 3554.4459,
+              "s_J_molK": -8.467142
+            },
+            {
+              "T_K": 486.60512,
+              "h_J_mol": 7539.7106,
+              "s_J_molK": 0.593172
+            }
+          ]
+        },
+        {
+          "P_kPa": 5000.0,
+          "points": [
+            {
+              "T_K": 334.54102,
+              "h_J_mol": -582.8018,
+              "s_J_molK": -32.278452
+            },
+            {
+              "T_K": 395.36666,
+              "h_J_mol": 2474.739,
+              "s_J_molK": -23.869785
+            },
+            {
+              "T_K": 486.60512,
+              "h_J_mol": 6854.497,
+              "s_J_molK": -13.901115
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

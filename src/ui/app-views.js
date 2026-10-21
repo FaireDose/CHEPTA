@@ -33,6 +33,7 @@ import { flowsheetView } from "./flowsheet-view.js";
 import { runFlash, flashTable, flashCsv, phaseName, FLASH_SPECS, dutyKW, molarFlow } from "./flash-logic.js";
 import { HX_DEFAULTS, hxCalc, hxTables } from "./hx-logic.js";
 import { phaseEnvelope } from "../equilibrium/envelope.js";
+import { waterChart, fluidChart, drawChart, chartTables, CHART_TITLE, fluidPoint, waterPoint, statePoints, pointsSection, linesSection, MAX_POINTS } from "./charts-view.js";
 import ENVELOPE_EXAMPLES from "../data/envelope-examples.json" with { type: "json" };
 import pkg from "../../package.json" with { type: "json" };
 import {
@@ -67,6 +68,7 @@ export function renderView(view, ctx) {
     case "sle": return sleView(ctx);
     case "properties": return propertiesView(ctx);
     case "steam": return steamView(ctx);
+    case "charts": return chartsView(ctx);
     case "flowsheet": return flowsheetView({ ...ctx, saveText, copyText });
     default: throw new Error(`Unknown view "${view}".`);
   }
@@ -1084,9 +1086,21 @@ function propertiesView(ctx) {
 
 const T_TRIPLE = 273.16, T_CRIT = 647.096, P_CRIT = 22064;
 
+/** The isotherms of water's pressure-enthalpy chart, K. */
+const WATER_ISOTHERMS = [373.15, 473.15, 573.15, 673.15, 773.15];
+
 function steamView(ctx) {
-  const { state, plot, side, below, extra, compact, uid } = ctx;
+  const { state, set, plot, side, below, extra, compact, uid } = ctx;
   const u = state.units;
+  const kind = state.chart?.kind ?? "TS";
+  // the pressure-enthalpy and Mollier charts (proposal 0013, step 7), drawn as a fluid's are; the T-s chart as before
+  const other = kind !== "TS" ? waterChart({ P_kPa: state.steamP_kPa, T_K: WATER_ISOTHERMS, VF: [0.25, 0.5, 0.75] }) : null;
+  // the state points (a click on the chart, or typed under Results), from IAPWS-IF97
+  const specs = state.chart?.waterPoints ?? [];
+  const points = statePoints(specs, waterPoint);
+  const putPoints = list => set({ chart: { waterPoints: list } });
+  const addPick = spec => { if (specs.length < MAX_POINTS) putPoints([...specs, spec]); };
+  if (other) { const r = drawChart({ plot, side, compact, data: other, kind, units: u, name: "water", points, onPick: addPick }); r.move((r.x0 + r.x1) / 2); }
   // saturation dome, denser near the critical point
   const domeT = linspace(0, 1, 70).map(f => T_TRIPLE + (T_CRIT - 0.01 - T_TRIPLE) * (1 - (1 - f) ** 2));
   const sat = domeT.map(T => steamSat({ T_K: T }));
@@ -1107,6 +1121,17 @@ function steamView(ctx) {
     return { P, ts, raw, series: { name: fmtP(P, u), color: SERIES(i), segments: [{ points: pts }] } };
   });
   const series = [{ name: "", color: "var(--fug-fg)", width: 1.6, segments: [{ points: dome }] }, ...isobars.map(b => b.series)];
+  const placed = points.filter(p => p.point);
+  if (!other && placed.length) {
+    series.push({ name: "", color: "var(--fug-fg)", width: 1, dash: "1 3", segments: [{ points: placed.map(p => ({ x: p.point.s, y: tToDisplay(p.point.T_K, u) })) }],
+      markers: placed.map(p => ({ x: p.point.s, y: tToDisplay(p.point.T_K, u), label: p.label, shape: "dot" })) });
+  }
+  // a click on the T-s chart places a point on the isobar nearest to it, at the entropy clicked
+  const pickTs = ({ x, y }) => {
+    let best = null;
+    isobars.forEach(b => { const Ty = interpolate(b.series.segments[0].points, x); if (Ty != null && (!best || Math.abs(Ty - y) < best.d)) best = { d: Math.abs(Ty - y), P: b.P }; });
+    if (best) addPick({ P_kPa: best.P, s_kJ_kgK: x });
+  };
   const xMax = Math.ceil(Math.max(...series.flatMap(sr => sr.segments[0].points.map(q => q.x))));
   const read = h("div", { class: "fa-read" });
   const show = sx => {
@@ -1126,13 +1151,15 @@ function steamView(ctx) {
     read.replaceChildren(...rows);
     return vals;
   };
-  const move = drawPlot(plot, { compact, series, x0: 0, x1: xMax, xLabel: "s, kJ/(kg·K)", yLabel: `T, ${tU(u)}`, show, labels: "top",
-    aria: "Temperature-entropy chart of water with the saturation dome and isobars" });
-  plot.append(h("div", { class: "fug-legend" },
-    h("span", { class: "fug-key", style: "color:var(--fug-fg)" }, h("i"), h("span", { style: "color:var(--fug-fg2)" }, "Saturation dome")),
-    h("span", {}, "Coloured lines: isobars, labelled where they leave the chart. Wet-steam quality from the lever rule on entropy.")));
-  side.replaceChildren(read);
-  move(6.5);
+  if (!other) {
+    const move = drawPlot(plot, { compact, series, x0: 0, x1: xMax, xLabel: "s, kJ/(kg·K)", yLabel: `T, ${tU(u)}`, show, labels: "top", onPick: pickTs,
+      aria: "Temperature-entropy chart of water with the saturation dome and isobars" });
+    plot.append(h("div", { class: "fug-legend" },
+      h("span", { class: "fug-key", style: "color:var(--fug-fg)" }, h("i"), h("span", { style: "color:var(--fug-fg2)" }, "Saturation dome")),
+      h("span", {}, "Coloured lines: isobars, labelled where they leave the chart. Wet-steam quality from the lever rule on entropy.")));
+    side.replaceChildren(read);
+    move(6.5);
+  }
 
   // saturation table at round temperatures
   const rowsT = niceValues(tToDisplay(T_TRIPLE, u), tToDisplay(T_CRIT - 0.01, u), 12).map(v => tFromDisplay(v, u)).filter(T => T >= T_TRIPLE && T < T_CRIT);
@@ -1169,14 +1196,65 @@ function steamView(ctx) {
   };
   tIn.addEventListener("change", run); pIn.addEventListener("change", run);
   run();
+  // the state points under the chart (their table is wide), before the saturation table
+  below.prepend(pointsSection({ points, specs, units: u, kind, name: "water", uid, onChange: putPoints, tools: { save: saveText, copy: copyText } }));
   extra.append(
+    ...(other ? [linesSection({ data: other, kind, units: u, name: "water", tools: { save: saveText, copy: copyText } })] : []),
     section("State calculator", h("div", { class: "fa-form" }, h("label", { for: tIn.id }, h("span", {}, `T, ${tU(u)}`), tIn), h("label", { for: pIn.id }, h("span", {}, `P, ${u.P}`), pIn)), out));
-  return { data: `IAPWS-IF97 (${TIER_LABEL.standard})`, export: () => ({
+  return { data: `IAPWS-IF97 (${TIER_LABEL.standard})`, export: () => (other ? {
+    title: `Water and steam: ${CHART_TITLE[kind].toLowerCase()}`, file: `steam ${kind}`,
+    about: [["Standard", "IAPWS-IF97 (IAPWS R7-97(2012))"], ["Reference state", "internal energy and entropy of the saturated liquid at the triple point are zero"], ["Units", `T in ${tU(u)}, P in ${u.P}; per kg`]],
+    tables: chartTables({ data: other, kind, units: u, name: "water" }),
+  } : {
     title: "Water and steam: temperature-entropy chart and saturation table", file: "steam",
     about: [["Standard", "IAPWS-IF97 (IAPWS R7-97(2012)); viscosity IAPWS R12-08, thermal conductivity IAPWS R15-11"],
       ["Reference state", "internal energy and entropy of the saturated liquid at the triple point are zero"], ["Units", `T in ${tU(u)}, P in ${u.P}; per kg`]],
     tables: steamTables({ units: u, dome: sat, isobars: isobars.map(b => ({ P: b.P, points: b.raw, note: `${b.raw.length} points, ordered by entropy as drawn` })),
       table: rowsT.map(T => steamSat({ T_K: T })) }),
+  }) };
+}
+
+/**
+ * A fluid's chart (proposal 0013, step 7; src/equilibrium/charts.js): one component or a mixture with an equation of
+ * state, per kg; the feed of a mixture is edited under Results, as the phase envelope's.
+ */
+function chartsView(ctx) {
+  const { state, set, plot, side, below, extra, compact, uid } = ctx;
+  const u = state.units, ids = state.components;
+  let sys;
+  try { sys = modelSystem(state, ids); } catch (e) { throw new Error(friendly(e)); }
+  const z = normalizeComposition(state.z, ids.length);
+  const MW = ids.reduce((a, id, k) => a + z[k] * pure(id, own(state)).MW, 0);
+  const kind = state.chart.kind;
+  let data;
+  try { data = fluidChart(sys, z, state.chart, MW); } catch (e) { throw new Error(friendly(e)); }
+  const name = listNames(sys.names);
+  // the state points (a click on the chart, or typed under Results): flashes of the feed
+  const specs = state.chart.points ?? [];
+  const points = statePoints(specs, spec => fluidPoint(sys, z, MW, spec));
+  const putPoints = list => set({ chart: { points: list } });
+  const { move, x0, x1 } = drawChart({ plot, side, compact, data, kind, units: u, name, points,
+    onPick: spec => { if (specs.length < MAX_POINTS) putPoints([...specs, spec]); } });
+  move((x0 + x1) / 2);
+  below.replaceChildren(pointsSection({ points, specs, units: u, kind, name, uid, onChange: putPoints, tools: { save: saveText, copy: copyText } }));
+  extra.append(linesSection({ data, kind, units: u, name, tools: { save: saveText, copy: copyText } }));
+  if (ids.length > 1) {
+    const zIns = ids.map((id, k) => h("input", { type: "text", inputmode: "decimal", id: `fa-cz${k}-${uid}`, value: fmtShort(z[k], 4), "aria-label": `Mole fraction of ${nameOf(state, id)}` }));
+    const commit = () => {
+      const v = zIns.map(i => Number(i.value));
+      if (v.some(x => !(x >= 0)) || !(v.reduce((a, b) => a + b, 0) > 0)) return;
+      set({ z: v });
+    };
+    zIns.forEach(i => i.addEventListener("change", commit));
+    extra.append(section("Feed", h("div", { class: "fa-form" }, ...ids.map((id, k) => h("label", { for: zIns[k].id }, h("span", {}, `z ${nameOf(state, id)}`), zIns[k]))),
+      h("div", { class: "fug-foot" }, "Mole fractions, normalized to sum to 1. A mixture's dome is the feed at its bubble and dew points (its phase envelope).")));
+  }
+  extra.append(...sourcesOf(ctx, sys));
+  return { data: ids.length > 1 ? pairData(sys) : "Critical constants from the component record", export: () => ({
+    title: `${CHART_TITLE[kind]} of ${name}`, file: `chart ${kind} ${ids.join(" ")}`,
+    about: aboutRows(state, sys, [...(ids.length > 1 ? [["Feed", ids.map((id, k) => `${nameOf(state, id)} ${fmtNum(z[k], 4)}`).join(", ") + " (mole fractions)"]] : []),
+      ["Reference state", "each component as an ideal gas at 298.15 K and 101.325 kPa (h = 0, s = 0)"], ["Units", `T in ${tU(u)}, P in ${u.P}; per kg (molar mass ${fmtNum(MW, 5)} g/mol)`]]),
+    tables: chartTables({ data, kind, units: u, name }),
   }) };
 }
 

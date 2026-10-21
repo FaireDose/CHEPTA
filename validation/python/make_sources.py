@@ -299,6 +299,16 @@ SEEDS = {
         "license": "Apache License 2.0",
         "note": "Cited for the equations of the phase-envelope continuation in ln K, ln T, ln P (after Michelsen 1980); no numbers taken.",
     },
+    # src/units/units.js (the compressor's and expander's typical isentropic efficiencies)
+    "netl-qgess-2019": {
+        "title": "Quality Guidelines for Energy System Studies: Process Modeling Design Parameters, NETL-PUB-22478 (June 2019)",
+        "authors": "U.S. Department of Energy, National Energy Technology Laboratory",
+        "kind": "free book",
+        "url": "https://netl.doe.gov/projects/files/QualityGuidelinesforEnergySystemStudiesProcessModelingDesignParameters_062819.pdf",
+        "access": "Free to read; a work of the U.S. government (public domain)",
+        "license": "Public domain (U.S. government work)",
+        "note": "Typical isentropic efficiencies: single-stage syngas recycle compressors 84 % (Exhibit 4-8, p. 23) and 75 % (Exhibit 5-7, p. 47), the lower taken for the compressor; boiler feed water pump turbine 80 % (Exhibit 4-3, p. 17) for the expander.",
+    },
 }
 
 # validation files whose source is one of the seeds (matched by url)

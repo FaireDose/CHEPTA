@@ -117,6 +117,26 @@ library documentation:
 - **Equations of state:** Σ z_i h_IG,i + h_R(T, P, z), for either phase.
 - **Limits:** the header states them, including dimerizing acids and the end of the cp_L records.
 
+## Mixture entropy
+
+[`enthalpy.js`](../../src/thermo/enthalpy.js) (proposal 0013, step 6): `sys.phase(phase, T, P, z, { entropy: true })`
+(`s_J_molK`, `g_J_mol`), `sys.entropy(phase, T, P, z)`, and `S_J_molK` in a flash with `{ entropy: true }`. Reference:
+each component as an ideal gas at 298.15 K and 101.325 kPa, s = 0 (a nonvolatile component: its liquid at 298.15 K).
+
+- **Every model, from the Gibbs energy:** s = (h − g)/T, with g = Σ z_i μ_i and μ_i = g_IG,i(T, P0) + RT ln(f_i/P0),
+  from the same fugacities the flash uses. Two phases in equilibrium then differ by exactly the latent heat over T.
+- **Ideal gas:** s_IG,i = ∫ cp_IG/T dT = h_IG,i/T + ∫ h_IG,i/T² dT, so every ideal-gas enthalpy works (records,
+  IAPWS-IF97, the one derived from the liquid).
+- **Equations of state:** this gives Σ z_i s_IG,i − R Σ z_i ln(z_i P/P0) + s_R, the cubic's own residual entropy
+  (checked to 1e-5 J/(mol K)).
+- **Activity models' liquid:** it holds the excess entropy (h^E − g^E)/T. Its entropy follows the vapour-pressure
+  record through f_i, its enthalpy the heat-capacity record, so dS/dT is cp_L/T only as far as the two agree: water's
+  entropy rise from 300 to 370 K is within 0.8 % of IAPWS-IF97's.
+- **Checks:** [test/entropy.test.js](../../test/entropy.test.js), against an independent Peng–Robinson
+  ([validation/python/reference_compressor.py](../../validation/python/reference_compressor.py): CoolProp's ideal-gas
+  cp0 plus the thermo library's departure functions). CoolProp's own cubic backend is not used: its entropy does not
+  follow from its ideal-gas and residual parts.
+
 ## Water and steam
 
 - **IAPWS-IF97** ([iapws/if97.js](../../src/thermo/iapws/if97.js)): IAPWS R7-97(2012), regions 1–5.

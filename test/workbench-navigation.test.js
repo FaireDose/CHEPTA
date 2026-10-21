@@ -13,9 +13,11 @@ const MAC = ["methanol", "acetone", "chloroform"];
 const go = (s, ...patches) => patches.reduce(applyPatch, s);
 
 test("one navigation: seven task workspaces holding every view; four supporting panels", () => {
-  // the Heat exchanger joins the Unit models (proposal 0013, step 2, 2026-10-20)
+  // the Heat exchanger joins the Unit models (proposal 0013, step 2, 2026-10-20); Steam becomes Charts, with the
+  // charts of any fluid beside water's (proposal 0013, step 7; its id stays "steam", so saved projects open)
   assert.deepEqual(WORKSPACES.map(w => w.id), ["equilibrium", "steam", "solubility", "properties", "flash", "hx", "flowsheet"]);
-  assert.deepEqual(WORKSPACES.map(w => w.label), ["Phase equilibrium", "Steam", "Solubility", "Properties", "Flash", "Heat exchanger", "Flowsheet"]);
+  assert.deepEqual(WORKSPACES.map(w => w.label), ["Phase equilibrium", "Charts", "Solubility", "Properties", "Flash", "Heat exchanger", "Flowsheet"]);
+  assert.deepEqual(WORKSPACES.find(w => w.id === "steam").views, ["steam", "charts"]);
   // the top navigation: File, then three sections holding every workspace once, in order
   assert.deepEqual(SECTIONS.map(x => x.label), ["Properties & Equilibria", "Unit models", "Flowsheet"]);
   assert.deepEqual(SECTIONS.flatMap(x => x.workspaces), WORKSPACES.map(w => w.id));

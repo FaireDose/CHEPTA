@@ -36,7 +36,7 @@ name components, a diagram or conditions, pass them:
 
 ```js
 CHEPTA.app("#app", {
-  start: "ternary",          // "txy", "ternary", "azeotropes", "pxy", "envelope", "flash", "henry", "solid", "sle", "properties", "steam"
+  start: "ternary",          // "txy", "ternary", "azeotropes", "pxy", "envelope", "flash", "henry", "solid", "sle", "properties", "steam", "charts"
   components: ["methanol", "acetone", "chloroform"],
   model: "NRTL",             // "NRTL", "UNIQUAC", "ideal", "PR" or "SRK"
   P_kPa: 101.325
@@ -71,6 +71,11 @@ CHEPTA.steam(573.15, 1000);                      // steam tables (IAPWS-IF97)
 CHEPTA.system({ components: ["methane", "ethane"], model: "PR" }).bubbleP([0.3, 0.7], 200);
 // the phase envelope of a gas mixture, through its critical point: { points, critical, cricondenbar, cricondentherm }
 CHEPTA.phaseEnvelope(CHEPTA.system({ components: ["methane", "n-butane"], model: "PR" }), [0.7, 0.3]);
+// entropy and the isentropic outlet (P-S flash; J/(mol K), reference the ideal gas at 298.15 K and 101.325 kPa)
+const g = CHEPTA.system({ components: ["methane", "ethane"], model: "PR" });
+g.flash({ z: [0.8, 0.2], P: 6000, S: g.entropy("vapour", 300, 2000, [0.8, 0.2]) });   // { T, VF, H_J_mol, S_J_molK }
+// a P-h, T-s or h-s chart's data: dome, isobars, isotherms, vapour-fraction lines, a compression
+CHEPTA.propertyChart(g, [0.8, 0.2], { P_kPa: [1000, 3000], compression: { T_K: 300, P_kPa: 2000, P_out_kPa: 6000, efficiency: 0.75 } });
 // solubility of a solid (pure solid + liquid; melting data from the databank), and a binary's eutectic
 CHEPTA.system({ components: ["naphthalene", "toluene"], model: "ideal" }).solidSolubility("naphthalene", 298.15);
 CHEPTA.system({ components: ["benzene", "naphthalene"], model: "ideal" }).sleDiagram();   // { branches, eutectic }
@@ -118,10 +123,12 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
   `sizing: { utility: { kind: "steam", P_kPa: 500 }, U: { service: "steam-water-oil" } }` gives the
   area), `hx` (two streams: one of T_hot_out_K, T_cold_out_K, VF_hot_out, VF_cold_out, duty_kW,
   dTmin_K; optional `U` for the area), `valve` (P_kPa or dP_kPa), `pump` (P_kPa or dP_kPa;
-  efficiency, 0.75 if not given), `product` (the end of a stream). Every outlet must go to a
+  efficiency, 0.75 if not given), `compressor` and `expander` (a gas: one of P_kPa, dP_kPa or
+  ratio, the outlet over the inlet pressure; isentropic efficiency, 0.75 and 0.80 if not given),
+  `product` (the end of a stream). Every outlet must go to a
   block or a product. Streams are written "BLOCK.port": feed out; mixer in, out; splitter and
   separator in, out (one stream per outlet); flash in, vapour, liquid, liquid2 (optional);
-  heater, valve, pump in, out; hx hot, cold (in and out); product in. Splitters, separators and
+  heater, valve, pump, compressor, expander in, out; hx hot, cold (in and out); product in. Splitters, separators and
   heaters may take several inlets (mixed first).
 - Energy streams (format 4): `energyStreams: [{ id: "Q1", to: "E1", duty_kW: 500 }]` gives a
   heater or drum its duty (it then needs one specification fewer: a heater calculates its

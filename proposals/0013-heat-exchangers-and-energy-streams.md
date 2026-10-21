@@ -233,8 +233,10 @@ request of this proposal (docs/decisions/2026-10-20-06-heat-exchangers.md).
    the file format; the heater's optional utility and area.
 4. **Flowsheet heat exchanger** (two streams).
 5. **Valve and pump** blocks.
-6. **Mixture entropy and the P-S flash**, then the **compressor and expander** blocks.
-7. **Charts**: the envelope traced through the critical point, and the P-H, T-S and H-S charts with the steam charts.
+6. **Mixture entropy and the P-S flash**, then the **compressor and expander** blocks. Done 2026-10-21
+   (docs/decisions/2026-10-21-03-entropy-compressor-charts.md).
+7. **Charts**: the envelope traced through the critical point (done 2026-10-21, docs/decisions/2026-10-21-01-phase-envelope.md),
+   and the P-H, T-S and H-S charts with the steam charts (done 2026-10-21, with step 6).
 8. Later: **Rating** (unlocked).
 
 Then proposal 0010 (reactions): formation data first, then the reactor blocks.

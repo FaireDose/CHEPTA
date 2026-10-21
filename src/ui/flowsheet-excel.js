@@ -140,7 +140,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
     const { block: bid } = portOf(s.from), b = blocks.get(bid);
     const ins = inletsOf(bid), sumIn = ins.length > 1 ? `(${ins.map(x => refOf(x, i)).join("+")})` : refOf(ins[0], i);
     if (b.type === "feed") { const fc = feedCell[bid][c]; return fc.mass ? `${at(fc.r, 2)}/${at(mwRow0 + i, 2)}` : at(fc.r, 2); }
-    if (b.type === "mixer" || b.type === "heater" || b.type === "valve" || b.type === "pump") return ins.map(x => refOf(x, i)).join("+");
+    if (["mixer", "heater", "valve", "pump", "compressor", "expander"].includes(b.type)) return ins.map(x => refOf(x, i)).join("+");
     // a heat exchanger: each side's outlet carries that side's inlet (proposal 0013)
     if (b.type === "hx") return inletsOf(bid, portOf(s.from).port).map(x => refOf(x, i)).join("+");
     if (b.type === "splitter") { const k = fs.streams.filter(x => x.from === `${bid}.out`).findIndex(x => x.id === s.id); return `${sumIn}*Inputs!${fracCell[bid][k]}`; }

@@ -36,7 +36,19 @@
  *    the U.S. Department of Energy's Improving Pumping System Performance: A Sourcebook for Industry, 2nd ed. (2006),
  *    https://www.energy.gov/sites/prod/files/2014/05/f16/pump.pdf (a public-domain work of the U.S. government), p. 7:
  *    "Efficiencies range widely, from 35% to more than 90%". The person's own efficiency replaces it.
- * A block's `energy` kind is "heat" (a duty) or "work" (a pump's power); `dutySpec`: its duty can be given, so an
+ *  - "compressor" and "expander" (proposal 0013, step 6): a gas to a higher or lower pressure along the isentropic path,
+ *    then the efficiency: the isentropic outlet is the P-S flash at the inlet's entropy (src/equilibrium/flash.js, the
+ *    entropy of src/thermo/enthalpy.js), w_s = h_s - h_in, and the real work w = w_s / eta (compressor) or eta w_s
+ *    (expander, negative: power out); outlet from the enthalpy balance, H_out = H_in + power. Outlet: the pressure P_kPa,
+ *    the change dP_kPa or the pressure ratio `ratio` (outlet over inlet). The efficiencies default to typical values of
+ *    the U.S. National Energy Technology Laboratory's Quality Guidelines for Energy System Studies: Process Modeling
+ *    Design Parameters, NETL-PUB-22478 (June 2019),
+ *    https://netl.doe.gov/projects/files/QualityGuidelinesforEnergySystemStudiesProcessModelingDesignParameters_062819.pdf
+ *    (a work of the U.S. government, public domain): compressor 0.75, the lower of its single-stage syngas recycle
+ *    compressors' isentropic efficiencies (84 %, Exhibit 4-8, p. 23; 75 %, Exhibit 5-7, p. 47); expander 0.80, its
+ *    boiler feed water pump turbine's isentropic efficiency (Exhibit 4-3, p. 17; its steam turbines: 85-93.5 %). Both
+ *    take a gas: an inlet with liquid is refused. The person's own efficiency replaces them.
+ * A block's `energy` kind is "heat" (a duty) or "work" (a pump's, compressor's or expander's power); `dutySpec`: its duty can be given, so an
  * energy stream can go into it (src/flowsheet/flowsheet.js).
  * Units: K, kPa, kmol/h, kW.
  */
@@ -405,7 +417,7 @@ registerUnit({
     if (!(P >= s.P_kPa)) throw fail("BAD_INPUT", `Pump: the outlet pressure (${P} kPa) is below the inlet pressure (${s.P_kPa} kPa); a pump raises the pressure (a valve lowers it).`);
     if (!(s.F_kmol_h > 0)) return { outlets: { out: stream(sys, { flow_kmol_h: s.flows, T_K: s.T_K, P_kPa: P }) }, duty_kW: 0, notes: ["No flow: no power."] };
     if (s.VF == null || s.VF > 1e-6 || s.phases.some(p => p.type === "vapour" && p.fraction > 1e-6)) {
-      throw fail("BAD_INPUT", `Pump: a pump needs a liquid; its inlet has a vapour fraction of ${+(s.VF ?? 1).toFixed(4)}. Cool or condense it first, or use a compressor (coming later).`);
+      throw fail("BAD_INPUT", `Pump: a pump needs a liquid; its inlet has a vapour fraction of ${+(s.VF ?? 1).toFixed(4)}. Cool or condense it first, or use a compressor for a gas.`);
     }
     // volume flow of the liquid, m³/s: the molar volumes of the components add up (their liquid-density records)
     const T = s.T_K;
@@ -424,6 +436,56 @@ registerUnit({
     return { outlets: { out }, duty_kW: W, notes, state: { power_kW: W, efficiency: spec.efficiency, volume_m3_h: V * 3600, dP_kPa: P - s.P_kPa } };
   },
 });
+
+/** Typical isentropic efficiencies of the compressor and the expander (see the file header, NETL 2019). */
+export const COMPRESSOR_EFFICIENCY = 0.75;
+export const EXPANDER_EFFICIENCY = 0.8;
+const TURBO = { compressor: { label: "Compressor", up: true, eta: COMPRESSOR_EFFICIENCY }, expander: { label: "Expander", up: false, eta: EXPANDER_EFFICIENCY } };
+
+for (const [type, t] of Object.entries(TURBO)) {
+  registerUnit({
+    type, label: t.label, duty: true, energy: "work", inlets: [{ port: "in" }], outlets: [{ port: "out" }],
+    checkSpec(spec) {
+      const has = k => spec[k] !== undefined && spec[k] !== null;
+      const given = ["P_kPa", "dP_kPa", "ratio"].filter(has);
+      if (given.length !== 1) throw fail("BAD_INPUT", `${t.label}: give one of the outlet pressure P_kPa, the pressure ${t.up ? "rise" : "drop"} dP_kPa or the pressure ratio (outlet over inlet) (got ${given.join(", ") || "none"}).`);
+      const c = { [given[0]]: num(spec[given[0]], `${t.label}: ${given[0]}`, given[0] === "dP_kPa" ? { min: 0 } : { positive: true }) };
+      if (c.ratio != null && (t.up ? c.ratio < 1 : c.ratio > 1)) throw fail("BAD_INPUT", `${t.label}: the pressure ratio is the outlet over the inlet pressure, so it is ${t.up ? "at least" : "at most"} 1 (got ${spec.ratio}).`);
+      const eta = spec.efficiency == null ? t.eta : num(spec.efficiency, `${t.label}: efficiency`, { positive: true });
+      if (eta > 1) throw fail("BAD_INPUT", `${t.label}: the efficiency is a fraction, at most 1 (got ${spec.efficiency}); 75 % is 0.75.`);
+      return { ...c, efficiency: eta, typical: spec.efficiency == null };
+    },
+    solve({ sys, inlets, spec }) {
+      const s = inlets.in[0];
+      const P = spec.P_kPa ?? (spec.ratio != null ? s.P_kPa * spec.ratio : t.up ? s.P_kPa + spec.dP_kPa : s.P_kPa - spec.dP_kPa);
+      if (!(P > 0)) throw fail("BAD_INPUT", `${t.label}: the pressure drop (${spec.dP_kPa} kPa) is larger than the inlet pressure (${s.P_kPa} kPa).`);
+      if (t.up ? P < s.P_kPa - 1e-9 : P > s.P_kPa + 1e-9) {
+        throw fail("BAD_INPUT", `${t.label}: the outlet pressure (${+P.toPrecision(6)} kPa) is ${t.up ? "below" : "above"} the inlet pressure (${s.P_kPa} kPa); ${t.up ? "a compressor raises the pressure (an expander or a valve lowers it)" : "an expander lowers the pressure (a compressor raises it)"}.`);
+      }
+      if (!(s.F_kmol_h > 0)) return { outlets: { out: stream(sys, { flow_kmol_h: s.flows, T_K: s.T_K, P_kPa: P }) }, duty_kW: 0, notes: ["No flow: no power."] };
+      const liquid = s.phases.filter(p => p.type !== "vapour").reduce((a, p) => a + p.fraction, 0);
+      if (liquid > 1e-6) {
+        throw fail("BAD_INPUT", `${t.label}: ${t.up ? "a compressor" : "an expander"} takes a gas; its inlet is ${+(liquid * 100).toPrecision(3)} % liquid (vapour fraction ${+(s.VF ?? 0).toFixed(4)}). Heat it or separate the liquid first${t.up ? ", or use a pump for a liquid" : ""}.`);
+      }
+      // the inlet's molar entropy, from its phases (one vapour here)
+      let s1 = 0;
+      for (const p of s.phases) s1 += p.fraction * sys.phase(p.type, s.T_K, s.P_kPa, p.composition, { entropy: true }).s_J_molK;
+      const iso = sys.flash({ z: s.z, P, S: s1 });
+      const ws = iso.H_J_mol - s.h_J_mol;                       // J/mol
+      const w = t.up ? ws / spec.efficiency : spec.efficiency * ws;
+      const W = w * s.F_kmol_h / 3600;                          // kmol/h × J/mol = kW × 3600
+      const out = stream(sys, { flow_kmol_h: s.flows, P_kPa: P, H_kW: s.H_kW + W });
+      const notes = [];
+      if (spec.typical) notes.push(`Isentropic efficiency ${spec.efficiency * 100} % (a typical value; give the machine's own).`);
+      if (iso.VF < 1 - 1e-6) notes.push(`Liquid forms along the isentropic path (vapour fraction ${+iso.VF.toFixed(4)} at ${+(iso.T - 273.15).toFixed(2)} °C)${out.VF != null && out.VF < 1 - 1e-6 ? `, and at the outlet (vapour fraction ${+out.VF.toFixed(4)})` : ""}: a real machine may not take it.`);
+      if (sys.kind !== "eos" && (sys.vapour ?? "ideal") === "ideal") notes.push("The vapour is an ideal gas in this method; for a gas at pressure, choose Peng–Robinson or SRK, or a Peng–Robinson or SRK vapour.");
+      return {
+        outlets: { out }, duty_kW: W, notes,
+        state: { power_kW: W, efficiency: spec.efficiency, isentropic_T_K: iso.T, isentropic_VF: iso.VF, isentropic_power_kW: ws * s.F_kmol_h / 3600, ratio: P / s.P_kPa, dP_kPa: P - s.P_kPa },
+      };
+    },
+  });
+}
 
 /** One of P_kPa (outlet) or dP_kPa (the change) for a valve or a pump. */
 function pressureSpec(spec, who) {
@@ -510,7 +572,15 @@ const DOF = {
   },
   valve: spec => onePressure(spec, "drop"),
   pump: spec => onePressure(spec, "rise"),
+  compressor: spec => turboPressure(spec, "rise"),
+  expander: spec => turboPressure(spec, "drop"),
 };
+
+function turboPressure(spec, word) {
+  const given = ["P_kPa", "dP_kPa", "ratio"].filter(k => hasKey(spec, k));
+  return { needed: 1, given: given.length, missing: given.length ? [] : [`the outlet pressure P_kPa, the pressure ${word} dP_kPa or the pressure ratio`],
+    extra: given.length > 1 ? [`give one of them (now ${given.join(", ")})`] : [] };
+}
 
 function onePressure(spec, word) {
   const P = hasKey(spec, "P_kPa"), dP = hasKey(spec, "dP_kPa");

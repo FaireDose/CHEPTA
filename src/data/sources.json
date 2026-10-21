@@ -2639,6 +2639,15 @@
         "validation/data/vle/2-propanol_n-pentane_10-1021-acs-jced-7b00892_tpx.json"
       ]
     },
+    "netl-qgess-2019": {
+      "title": "Quality Guidelines for Energy System Studies: Process Modeling Design Parameters, NETL-PUB-22478 (June 2019)",
+      "authors": "U.S. Department of Energy, National Energy Technology Laboratory",
+      "kind": "free book",
+      "url": "https://netl.doe.gov/projects/files/QualityGuidelinesforEnergySystemStudiesProcessModelingDesignParameters_062819.pdf",
+      "access": "Free to read; a work of the U.S. government (public domain)",
+      "license": "Public domain (U.S. government work)",
+      "note": "Typical isentropic efficiencies: single-stage syngas recycle compressors 84 % (Exhibit 4-8, p. 23) and 75 % (Exhibit 5-7, p. 47), the lower taken for the compressor; boiler feed water pump turbine 80 % (Exhibit 4-3, p. 17) for the expander."
+    },
     "nist-thermoml-archive": {
       "title": "NIST TRC ThermoML Archive (pure-component data sets of the cited articles)",
       "authors": "NIST Thermodynamics Research Center",

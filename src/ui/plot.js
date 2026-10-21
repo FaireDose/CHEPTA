@@ -39,8 +39,10 @@ export function tickLabel(v, step) {
  * @param {[number, number]} [o.y]  y range (default: from the data)
  * @param {"end"|"top"} [o.labels="end"]  curve names right of each curve's last point, or
  *   above it (for curves that leave the plot at the top, e.g. isobars on a T-s chart)
+ * @param {function} [o.onPick]  called with { x, y } in data units when the plot area is clicked (a state point on a
+ *   property chart); the cursor then shows a crosshair
  */
-export function drawPlot(plot, { compact, series, xLabel, yLabel, log, show, x0, x1, aria, y: yRange, labels: labelMode = "end" }) {
+export function drawPlot(plot, { compact, series, xLabel, yLabel, log, show, x0, x1, aria, y: yRange, labels: labelMode = "end", onPick }) {
   const W = compact ? 400 : 600, H = compact ? 320 : 360, R = labelMode === "top" ? 24 : 60, T = labelMode === "top" ? 44 : 14, B = 42;
   let L = 58;
   const all = series.flatMap(sr => sr.segments.flatMap(g => g.points.map(pt => pt.y))).filter(v => Number.isFinite(v) && (!log || v > 0));
@@ -160,6 +162,15 @@ export function drawPlot(plot, { compact, series, xLabel, yLabel, log, show, x0,
   const onPointer = ev => { const pt = svgPoint(svg, ev); move(x0 + (pt.x - L) / (W - L - R) * (x1 - x0)); };
   svg.addEventListener("pointermove", onPointer);
   svg.addEventListener("pointerdown", onPointer);
+  if (onPick) {
+    svg.style.cursor = "crosshair";
+    svg.addEventListener("click", ev => {
+      const pt = svgPoint(svg, ev);
+      if (pt.x < L || pt.x > W - R || pt.y < T || pt.y > H - B) return;
+      const f = (H - B - pt.y) / (H - T - B);
+      onPick({ x: x0 + (pt.x - L) / (W - L - R) * (x1 - x0), y: log ? Math.exp(Math.log(y0) + f * (Math.log(y1) - Math.log(y0))) : y0 + f * (y1 - y0) });
+    });
+  }
   plot.replaceChildren(svg);
   return move;
 }

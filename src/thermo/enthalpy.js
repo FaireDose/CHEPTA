@@ -37,6 +37,22 @@
  *           fraction is below 1e-20 (system.js, NV_PSAT_KPA) and it adds nothing.
  * Equation-of-state systems (PR, SRK): h = sum z_i h_IG,i(T) + h_R(T, P, z) for either phase.
  *
+ * Entropy and Gibbs energy (proposal 0013, step 6), with phase(..., { entropy: true }) and system.entropy():
+ * reference state for every component the ideal gas at 298.15 K and 101.325 kPa, s = 0 (a nonvolatile component:
+ * its liquid at 298.15 K, as for its enthalpy). Every phase takes its entropy from its Gibbs energy,
+ *     s = (h - g) / T,   g = sum z_i mu_i,   mu_i = g_IG,i(T, P0) + R T ln(f_i / P0),
+ * with g_IG,i = h_IG,i - T s_IG,i and the fugacities f_i that the phase equilibrium uses (below). So the entropy is
+ * consistent with the flash: where two phases are in equilibrium (equal f_i), s_V - s_L = (h_V - h_L) / T exactly,
+ * which is what an isentropic compression or expansion through the two-phase region needs. The ideal-gas entropy at P0
+ * is s_IG,i(T) = integral of cp_IG/t dt = h_IG,i(T)/T + integral from T0 to T of h_IG,i/t^2 dt (by parts), so it works
+ * with every ideal-gas enthalpy CHEPTA has (records, IAPWS-IF97, the one derived from the liquid). For an equation of
+ * state the result is the familiar s = sum z_i s_IG,i - R sum z_i ln(z_i P/P0) + s_R; for an activity model's liquid it
+ * holds the excess entropy (h^E - g^E)/T. A nonvolatile component's mu_i is its pure liquid's h - T s, with
+ * s = integral of cp_L/t from 298.15 K, plus R T ln(x_i gamma_i). The price of the gamma-phi liquid: its entropy
+ * follows the vapour-pressure record through f_i, and its enthalpy the heat-capacity record, so its dS/dT is cp_L/T
+ * only as far as the two records agree (Clausius-Clapeyron with the heat of vaporization); test/entropy.test.js
+ * measures it against IAPWS-IF97 for water.
+ *
  * Fugacities (kPa), for the flash: liquid f_i = x_i gamma_i P_i^sat phi_i^sat exp[v_i^L (P - P_i^sat)/RT]
  * (gamma-phi-vapour.js; phi^sat = 1 and no Poynting term for the ideal gas), vapour
  * f_i = y_i phi_i P; equations of state f_i = z_i phi_i P.
@@ -57,6 +73,7 @@ import { checkComposition, checkPressure, checkTemperature } from "../util/input
 const R = 8.314462618;      // J/(mol K)
 const DT = 0.01;            // K, step of the temperature derivative of ln gamma
 const T0 = 298.15;          // K, anchor of the liquid enthalpy (and the reference state)
+const P0 = 101.325;         // kPa, the pressure of the entropy reference state
 // K: a temperature this close outside a liquid heat-capacity record takes the record's end value, so that a search for
 // the temperature of a given enthalpy can reach a state at the end of the record (a feed at 298.15 K where the record
 // starts at 298.15 K); at most cp x 1 mK, about 0.3 J/mol, far below the uncertainty of any record
@@ -66,6 +83,48 @@ const GL8_X = [-0.9602898564975363, -0.7966664774136267, -0.5255324099163290, -0
   0.1834346424956498, 0.5255324099163290, 0.7966664774136267, 0.9602898564975363];
 const GL8_W = [0.1012285362903763, 0.2223810344533745, 0.3137066458778873, 0.3626837833783620,
   0.3626837833783620, 0.3137066458778873, 0.2223810344533745, 0.1012285362903763];
+
+/** One 8-point Gauss-Legendre piece of the integral of f from a to b. */
+function gl8(f, a, b) {
+  const mid = (a + b) / 2, r = (b - a) / 2;
+  let s = 0;
+  for (let q = 0; q < 8; q++) s += GL8_W[q] * r * f(mid + r * GL8_X[q]);
+  return s;
+}
+
+/**
+ * Ideal-gas entropy at P0 relative to the ideal gas at T0 and P0, J/(mol K), from the ideal-gas enthalpy h(T)
+ * (h(T0) = 0): s(T) = h(T)/T - h(T0)/T0 + integral from T0 to T of h(t)/t^2 dt. The integral is kept on a 50 K grid
+ * from T0, so a new temperature costs one 8-point piece.
+ */
+export function idealGasEntropy(h) {
+  const W = 50, grid = new Map([[0, 0]]), memo = new Map();
+  const f = t => h(t) / (t * t);
+  let h0 = null;   // h(T0)/T0, on first use: a component without an ideal-gas record fails only when its entropy is asked
+  const cum = k => {
+    if (grid.has(k)) return grid.get(k);
+    const v = k > 0 ? cum(k - 1) + gl8(f, T0 + (k - 1) * W, T0 + k * W) : cum(k + 1) - gl8(f, T0 + k * W, T0 + (k + 1) * W);
+    grid.set(k, v);
+    return v;
+  };
+  return T => {
+    if (memo.has(T)) return memo.get(T);
+    const k = Math.trunc((T - T0) / W), base = T0 + k * W;
+    if (h0 === null) h0 = h(T0) / T0;
+    const v = h(T) / T - h0 + cum(k) + (T >= base ? gl8(f, base, T) : -gl8(f, T, base));
+    if (memo.size > 256) memo.clear();
+    memo.set(T, v);
+    return v;
+  };
+}
+
+/** g = sum z_i mu_i and s = (h - g)/T of a phase, from mu(i) for the components present. */
+function addEntropy(out, z, mu) {
+  let g = 0;
+  for (let i = 0; i < z.length; i++) if (z[i] > 0) g += z[i] * mu(i);
+  out.g_J_mol = g;
+  out.s_J_molK = (out.h_J_mol - g) / out.T;
+}
 
 function checkPhase(phase) {
   const p = String(phase).toLowerCase();
@@ -132,6 +191,17 @@ export function activityPhaseMethods(ctx) {
     c.set(T, s);
     return s;
   }
+  /** integral of cp_L,i / T from T0 to T (J/(mol K)), the pure-liquid entropy of a nonvolatile component. */
+  function cpOverTIntegral(i, T) {
+    const m = Math.max(1, Math.ceil(Math.abs(T - T0) / 25)), w = (T - T0) / m;
+    let s = 0;
+    for (let k = 0; k < m; k++) s += gl8(t => cpL(i, atEdge(cpRec[i], t)) / t, T0 + k * w, T0 + (k + 1) * w);
+    return s;
+  }
+  const sIGs = ids.map((_, i) => idealGasEntropy(T => hIG(i, T)));
+  const named0 = (i, fn) => named(comps[i].name, "ideal-gas entropy", fn);
+  /** g_IG,i(T, P0) = h_IG,i - T s_IG,i (J/mol). */
+  const gIG = (i, T) => hIG(i, T) - T * named0(i, () => sIGs[i](T));
   const oldBasis = (i, T) => hIG(i, T) + satResidual(i, T) - dHvap(i, T);
   // the temperature asked, unless it is so close to the range's end that it would print as the end itself
   const atT = (T, end, side) => (Math.abs(T - end) < 0.05 ? side : `at ${T.toFixed(1)} K`);
@@ -172,7 +242,7 @@ export function activityPhaseMethods(ctx) {
    * @returns {{phase:string, T:number, P:number, composition:number[], h_J_mol:number,
    *   lnFugacity:number[], gamma?:number[], hE_J_mol?:number, phi?:number[], Z?:number, warnings:string[]}}
    */
-  function phase(ph, T, P, z) {
+  function phase(ph, T, P, z, opts = {}) {
     ph = checkPhase(ph);
     T = checkTemperature(T); P = checkPressure(P);
     z = checkComposition(z, n, ph === "liquid" ? "Liquid composition" : "Vapour composition");
@@ -197,6 +267,7 @@ export function activityPhaseMethods(ctx) {
         h += st.hR_J_mol; lnPhi = st.lnPhi; Z = st.Z;
       }
       Object.assign(out, { h_J_mol: h, phi: lnPhi.map(Math.exp), Z, lnFugacity: z.map((y, i) => Math.log(y * P) + lnPhi[i]) });
+      if (opts.entropy) addEntropy(out, z.map((y, i) => (nonvolatile[i] ? 0 : y)), i => gIG(i, T) + R * T * (out.lnFugacity[i] - Math.log(P0)));
     } else {
       const ps = psat(T), g = gammas(z, T);
       const t = cubicVapour ? cubicVapour.pureTerms(T, ps) : null;
@@ -219,6 +290,11 @@ export function activityPhaseMethods(ctx) {
       }
       const e = hE(z, T);
       Object.assign(out, { h_J_mol: h + e, hE_J_mol: e, gamma: g, lnFugacity: lnf });
+      if (opts.entropy) {
+        addEntropy(out, z, i => (nonvolatile[i]
+          ? hLiquidPure(i, T).h - T * cpOverTIntegral(i, T) + R * T * Math.log(z[i] * g[i])
+          : gIG(i, T) + R * T * (lnf[i] - Math.log(P0))));
+      }
     }
     out.warnings = [...(warnings ? warnings(T, P) : []), ...notes];
     return out;
@@ -228,6 +304,8 @@ export function activityPhaseMethods(ctx) {
     phase,
     /** Molar enthalpy (J/mol) of one phase; reference: ideal gas at 298.15 K. */
     enthalpy: (ph, T, P, z) => phase(ph, T, P, z).h_J_mol,
+    /** Molar entropy (J/(mol K)) of one phase; reference: ideal gas at 298.15 K and 101.325 kPa. */
+    entropy: (ph, T, P, z) => phase(ph, T, P, z, { entropy: true }).s_J_molK,
     /** Excess enthalpy h^E (J/mol) of liquid x at T, from the activity model. */
     excessEnthalpy(x, T) {
       return hE(checkComposition(x, n, "Liquid composition"), checkTemperature(T));
@@ -242,18 +320,29 @@ export function activityPhaseMethods(ctx) {
 export function eosPhaseMethods(ctx) {
   const { ids, comps, n, eos, warnings } = ctx;
   const pures = ids.map(id => pure(id, { userData: ctx.userData }));
-  function phase(ph, T, P, z) {
+  const hIG = (i, T) => named(comps[i].name, "ideal-gas enthalpy", () => pures[i].hIdealGas(T));
+  const sIGs = ids.map((_, i) => idealGasEntropy(T => hIG(i, T)));
+  function phase(ph, T, P, z, opts = {}) {
     ph = checkPhase(ph);
     T = checkTemperature(T); P = checkPressure(P);
     z = checkComposition(z, n, ph === "liquid" ? "Liquid composition" : "Vapour composition");
     const st = eos.state(T, P, z, ph);
     let h = st.hR_J_mol;
-    for (let i = 0; i < n; i++) if (z[i] > 0) h += z[i] * named(comps[i].name, "ideal-gas enthalpy", () => pures[i].hIdealGas(T));
-    return {
+    for (let i = 0; i < n; i++) if (z[i] > 0) h += z[i] * hIG(i, T);
+    const out = {
       phase: ph, T, P, composition: z, h_J_mol: h, Z: st.Z, rootType: st.rootType,
       phi: st.lnPhi.map(Math.exp), lnFugacity: z.map((v, i) => Math.log(v * P) + st.lnPhi[i]),
       warnings: warnings ? warnings(T, P) : [],
     };
+    if (opts.entropy) {
+      addEntropy(out, z, i => hIG(i, T) - T * named(comps[i].name, "ideal-gas entropy", () => sIGs[i](T)) + R * T * (out.lnFugacity[i] - Math.log(P0)));
+    }
+    return out;
   }
-  return { phase, enthalpy: (ph, T, P, z) => phase(ph, T, P, z).h_J_mol };
+  return {
+    phase,
+    enthalpy: (ph, T, P, z) => phase(ph, T, P, z).h_J_mol,
+    /** Molar entropy (J/(mol K)) of one phase; reference: ideal gas at 298.15 K and 101.325 kPa. */
+    entropy: (ph, T, P, z) => phase(ph, T, P, z, { entropy: true }).s_J_molK,
+  };
 }
