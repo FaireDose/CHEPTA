@@ -118,7 +118,11 @@ equation of state: the data of a pressure-enthalpy, temperature-entropy or entha
 - **Compression:** the inlet, the isentropic outlet (P-S flash) and the outlet at the efficiency; the path between
   them is drawn straight.
 - **Workbench:** the Charts workspace (formerly Steam): Water and steam (IAPWS-IF97, now also P-h and h-s) or Any fluid,
-  per kg.
+  per kg. **State points** (up to 12): a click on the chart places one (on the P-h chart at the P and h clicked, on the
+  T-s and h-s charts on the nearest isobar at the s clicked), or one is typed from two of T, P, h, s and the vapour
+  fraction; each is a flash (IAPWS-IF97 for water), listed with Δh and Δs from the point before, as CSV too. **Lines as
+  data:** every line of the chart (dome, isobars or isotherms, vapour-fraction lines) to download or copy as CSV on its
+  own, with the points as calculated.
 - **Checks** ([test/charts.test.js](../../test/charts.test.js)): the dome and isobars of propane and carbon dioxide
   within 0.5 % of an independent Peng–Robinson ([validation/python/reference_charts.py](../../validation/python/reference_charts.py)).
 

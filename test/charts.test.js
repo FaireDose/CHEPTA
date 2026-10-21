@@ -112,3 +112,39 @@ test("the Charts workspace: a fluid chart in the workbench, saved as project for
   assert.throws(() => applyPatch(s, { chart: { kind: "PV" } }), /chart.kind must be one of TS, PH, HS/);
   assert.throws(() => applyPatch(s, { chart: { compression: { efficiency: 1.5 } } }), /at most 1/);
 });
+
+test("state points: typed or clicked specifications give the states of the engine and of IAPWS-IF97, and travel with the project", async () => {
+  const { fluidPoint, waterPoint, statePoints } = await import("../src/ui/charts-view.js");
+  const { steam, steamSat } = await import("../src/index.js");
+  // a fluid: every specification is a flash of the feed (per kg: h and s over the molar mass)
+  const sys = system({ components: ["propane"], model: "PR" });
+  const MW = 44.0956;
+  const a = fluidPoint(sys, [1], MW, { T_K: 300, P_kPa: 200 });
+  const b = fluidPoint(sys, [1], MW, { P_kPa: 1500, s_kJ_kgK: a.s });   // the isentropic compression of a
+  const r = sys.flash({ z: [1], P: 1500, S: a.s * MW });
+  assert.ok(Math.abs(b.T_K - r.T) < 1e-9 && Math.abs(b.s - a.s) < 1e-9);
+  const c = fluidPoint(sys, [1], MW, { P_kPa: 1000, VF: 0.5 });
+  assert.ok(Math.abs(c.VF - 0.5) < 1e-9);
+  assert.ok(Math.abs(fluidPoint(sys, [1], MW, { P_kPa: 1000, h_kJ_kg: c.h }).T_K - c.T_K) < 1e-6);
+  // water: T and P is IF97 itself; P and s, P and h are solved on it (in the dome by the lever rule)
+  const st = steam(573.15, 1000);
+  const w = waterPoint({ P_kPa: 1000, s_kJ_kgK: st.s_kJ_kgK });
+  assert.ok(Math.abs(w.T_K - 573.15) < 1e-6 && Math.abs(w.h - st.h_kJ_kg) < 1e-4);
+  const sat = steamSat({ P_kPa: 100 });
+  const wet = waterPoint({ P_kPa: 100, h_kJ_kg: (sat.liquid.h_kJ_kg + sat.vapour.h_kJ_kg) / 2 });
+  assert.ok(Math.abs(wet.VF - 0.5) < 1e-9 && Math.abs(wet.T_K - sat.T_K) < 1e-9);
+  assert.equal(waterPoint({ T_K: 300, P_kPa: 100 }).VF, 0);
+  // a point that cannot be calculated says why, and the others stay
+  const pts = statePoints([{ T_K: 300, P_kPa: 100 }, { T_K: 3000, P_kPa: 100 }], waterPoint)   // IF97 ends at 2273.15 K;
+  assert.ok(pts[0].point && !pts[1].point && pts[1].error && pts[1].label === "B");
+  // in the workbench state and the project file
+  const { initialState, applyPatch } = await import("../src/ui/app-logic.js");
+  const { projectOf, stateFromProject } = await import("../src/ui/project.js");
+  let s = initialState({ components: ["propane"], model: "PR" });
+  s = applyPatch(s, { view: "charts", chart: { points: [{ T_K: 300, P_kPa: 200 }, { P_kPa: 1500, s_kJ_kgK: a.s }], waterPoints: [{ P_kPa: 100, VF: 0.5 }] } });
+  const back = stateFromProject(JSON.stringify(projectOf(s)));
+  assert.deepEqual(back.chart.points, s.chart.points);
+  assert.deepEqual(back.chart.waterPoints, [{ P_kPa: 100, VF: 0.5 }]);
+  assert.throws(() => applyPatch(s, { chart: { points: [{ T_K: 300 }] } }), /give two of T_K, P_kPa, h_kJ_kg, s_kJ_kgK, VF/);
+  assert.throws(() => applyPatch(s, { chart: { points: Array.from({ length: 13 }, () => ({ T_K: 300, P_kPa: 100 })) } }), /at most 12 points/);
+});

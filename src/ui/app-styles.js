@@ -203,6 +203,11 @@ export const APP_CSS = `
 .fa-sec h3{font-size:12px; font-weight:600; margin:0 0 8px; padding-top:12px; border-top:1px solid var(--fug-rule)}
 .fa-below .fa-sec h3{font-size:13px; border-top:0; padding-top:4px}
 .fa-sources{list-style:none; margin:0; padding:0; display:grid; gap:9px}
+/* the lines of a property chart, each with its CSV buttons (charts-view.js linesSection) */
+.fa-lines{list-style:none; margin:0; padding:0; display:grid; gap:2px}
+.fa-lines li{display:flex; align-items:center; gap:4px}
+.fa-lines li>span{flex:1; min-width:0}
+.fa-lines small{color:var(--fug-fg2)}
 .fa-src-head{display:flex; justify-content:space-between; align-items:flex-start; gap:8px; font-size:12px; font-weight:500}
 .fa-src-text{font-size:11.5px; color:var(--fug-fg2); overflow-wrap:anywhere; line-height:1.4; margin-top:1px}
 .fa-src-text.is-clamped{display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; cursor:pointer}

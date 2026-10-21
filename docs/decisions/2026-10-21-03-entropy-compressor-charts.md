@@ -41,4 +41,14 @@ Results (`test/entropy.test.js`, `test/charts.test.js`):
 Both are per kg. The workspace id stays "steam", so saved projects open. A project that uses the fluid charts is
 written as format 5 (`workbench.chart`); every other project keeps its older format.
 
+**Review of 2026-10-21.** The maintainer: "would be nice if can draw more points there somehow on the H-E charts. so i
+can make calculations . or if not possible because it is too complicated and takes visual space, the opportunity to save
+some data from one line". Both were done:
+- **State points**, up to 12 per chart. A click on the chart places one: on the P-h chart at the P and h clicked; on the
+  T-s and h-s charts on the nearest isobar, at the entropy clicked. A point can also be typed from two of T, P, h, s and
+  the vapour fraction. Each point is calculated exactly (a flash of the feed; IAPWS-IF97 for water), drawn as A, B, …,
+  and listed under the chart with T, P, h, s, VF and Δh, Δs from the point before, also as CSV. The points are saved
+  with the project (`chart.points`, `chart.waterPoints`; format 5).
+- **Lines as data:** each line of the chart can be downloaded or copied as CSV on its own.
+
 **To check:** the two NETL efficiencies against the report, pages 17, 23 and 47.

@@ -291,7 +291,9 @@ const DEFAULTS = {
  * enthalpy, "HS" enthalpy-entropy), the isobars (kPa) and isotherms (K) of a fluid's chart, and a compression drawn on it
  * (null, or { T_K, P_kPa, P_out_kPa, efficiency }). The water chart takes its isobars from steamP_kPa.
  */
-export const CHART_DEFAULTS = { kind: "TS", P_kPa: [100, 1000, 3000, 6000], T_K: [250, 300, 350, 400], compression: null };
+export const CHART_DEFAULTS = { kind: "TS", P_kPa: [100, 1000, 3000, 6000], T_K: [250, 300, 350, 400], compression: null, points: [], waterPoints: [] };
+// the keys of a state point (charts-view.js POINT_SPECS): K, kPa, kJ/kg, kJ/(kg K), mol/mol
+const POINT_KEYS = ["T_K", "P_kPa", "h_kJ_kg", "s_kJ_kgK", "VF"];
 const CHART_KINDS = ["TS", "PH", "HS"];
 
 /** The chart settings, checked: a patch merged into `base`. */
@@ -300,6 +302,17 @@ export function normalizeChart(patch = {}, base = CHART_DEFAULTS) {
   if (!CHART_KINDS.includes(out.kind)) throw new Error(`chart.kind must be one of ${CHART_KINDS.join(", ")} (got ${JSON.stringify(out.kind)}).`);
   out.P_kPa = cleanList(out.P_kPa);
   out.T_K = cleanList(out.T_K);
+  // the state points of the fluid chart and of the water chart: specifications, recalculated when drawn (at most 12)
+  for (const key of ["points", "waterPoints"]) {
+    const list = out[key] ?? [];
+    if (!Array.isArray(list)) throw new Error(`chart.${key} must be a list of points such as { "P_kPa": 1000, "s_kJ_kgK": 1.5 }.`);
+    if (list.length > 12) throw new Error(`chart.${key}: at most 12 points (got ${list.length}).`);
+    out[key] = list.map((p, k) => {
+      const keys = Object.keys(p ?? {}).filter(x => p[x] != null);
+      if (keys.length !== 2 || keys.some(x => !POINT_KEYS.includes(x))) throw new Error(`chart.${key}[${k}]: give two of ${POINT_KEYS.join(", ")} (got ${JSON.stringify(p)}).`);
+      return Object.fromEntries(keys.map(x => { const v = Number(p[x]); if (!Number.isFinite(v)) throw new Error(`chart.${key}[${k}].${x} must be a number.`); return [x, v]; }));
+    });
+  }
   if (out.compression != null) {
     const c = { ...(base.compression ?? {}), ...out.compression };
     for (const k of ["T_K", "P_kPa", "P_out_kPa"]) c[k] = positive(c[k], `chart.compression.${k}`);

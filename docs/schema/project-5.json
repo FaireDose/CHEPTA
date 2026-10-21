@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://fairedose.github.io/CHEPTA/schema/project-5.json",
   "title": "CHEPTA project, format 5",
-  "description": "A CHEPTA project file of format 2, 3, 4 or 5 (src/ui/project.js). Format 3 adds user_data (proposal 0012); format 4 adds the flowsheet's energy streams, its hx, valve, pump, compressor and expander blocks, and workbench.hx (proposal 0013); format 5 adds workbench.chart, the fluid charts of the Charts workspace (proposal 0013, step 7: kind TS, PH or HS, P_kPa, T_K, compression, components, z). A project is written in the lowest format that holds it.",
+  "description": "A CHEPTA project file of format 2, 3, 4 or 5 (src/ui/project.js). Format 3 adds user_data (proposal 0012); format 4 adds the flowsheet's energy streams, its hx, valve, pump, compressor and expander blocks, and workbench.hx (proposal 0013); format 5 adds workbench.chart, the charts of the Charts workspace (proposal 0013, step 7: kind TS, PH or HS, P_kPa, T_K, compression, points and waterPoints (up to 12 each, two of T_K, P_kPa, h_kJ_kg, s_kJ_kgK, VF), components, z). A project is written in the lowest format that holds it.",
   "type": "object",
   "required": [
     "fugacity_project",

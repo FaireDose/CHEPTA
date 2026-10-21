@@ -9,7 +9,9 @@ import { h } from "./dom.js";
 import { drawPlot } from "./plot.js";
 import { steam, steamSat } from "../thermo/iapws/steam.js";
 import { propertyChart } from "../equilibrium/charts.js";
-import { tToDisplay, pToDisplay, fmtNum, fmtShort, linspace } from "./properties-logic.js";
+import { flash } from "../equilibrium/flash.js";
+import { icon } from "./icons.js";
+import { tToDisplay, pToDisplay, tFromDisplay, pFromDisplay, fmtNum, fmtShort, linspace } from "./properties-logic.js";
 import { fmtP, fmtTemp } from "./app-logic.js";
 
 const SERIES = n => `var(--fug-s${(n % 6) + 1})`;
@@ -59,6 +61,63 @@ export function fluidChart(sys, z, chart, MW) {
   };
 }
 
+// ---------------------------------------------------------------------------------------
+// State points: placed by a click on the chart or typed, each a state from two of T, P, h, s, VF (h and s per kg)
+
+/** The specifications of a state point, as the form offers them: [id, label, the two keys]. */
+export const POINT_SPECS = [["TP", "T and P", ["T_K", "P_kPa"]], ["Ph", "P and h", ["P_kPa", "h_kJ_kg"]], ["Ps", "P and s", ["P_kPa", "s_kJ_kgK"]],
+  ["PVF", "P and vapour fraction", ["P_kPa", "VF"]], ["TVF", "T and vapour fraction", ["T_K", "VF"]]];
+/** At most this many points on a chart. */
+export const MAX_POINTS = 12;
+const specKind = spec => POINT_SPECS.find(([, , keys]) => keys.every(k => spec?.[k] != null) && Object.keys(spec).filter(k => spec[k] != null).length === 2);
+
+/** A fluid's state point (per kg; MW in g/mol) from its specification: a flash of the feed with its entropy. */
+export function fluidPoint(sys, z, MW, spec) {
+  const kind = specKind(spec);
+  if (!kind) throw new Error("A point needs two of T, P, h, s and VF: T and P, P and h, P and s, P and VF, or T and VF.");
+  const f = { T_K: "T", P_kPa: "P", VF: "VF" };
+  const fs = { z };
+  for (const k of kind[2]) {
+    if (k === "h_kJ_kg") fs.H = spec.h_kJ_kg * MW;
+    else if (k === "s_kJ_kgK") fs.S = spec.s_kJ_kgK * MW;
+    else fs[f[k]] = spec[k];
+  }
+  const r = flash(sys, fs, { entropy: true });
+  return { T_K: r.T, P_kPa: r.P, h: r.H_J_mol / MW, s: r.S_J_molK / MW, VF: r.VF };
+}
+
+/** Water's state point from IAPWS-IF97 (per kg): T and P, or P (or T) with a vapour fraction, or P with h or s. */
+export function waterPoint(spec) {
+  const kind = specKind(spec);
+  if (!kind) throw new Error("A point needs two of T, P, h, s and VF: T and P, P and h, P and s, P and VF, or T and VF.");
+  const fromState = (T, P, st, VF) => ({ T_K: T, P_kPa: P, h: st.h_kJ_kg, s: st.s_kJ_kgK, VF });
+  const lever = (r, q) => ({ T_K: r.T_K, P_kPa: r.P_kPa, VF: q, h: r.liquid.h_kJ_kg + q * (r.vapour.h_kJ_kg - r.liquid.h_kJ_kg), s: r.liquid.s_kJ_kgK + q * (r.vapour.s_kJ_kgK - r.liquid.s_kJ_kgK) });
+  const id = kind[0];
+  if (id === "TP") { const st = steam(spec.T_K, spec.P_kPa); return fromState(spec.T_K, spec.P_kPa, st, st.phase === "liquid" ? 0 : /vapour/.test(st.phase) ? 1 : null); }
+  if (id === "PVF" || id === "TVF") {
+    if (!(spec.VF >= 0 && spec.VF <= 1)) throw new Error(`The vapour fraction is between 0 and 1 (got ${spec.VF}).`);
+    return lever(steamSat(id === "PVF" ? { P_kPa: spec.P_kPa } : { T_K: spec.T_K }), spec.VF);
+  }
+  // P and h, or P and s: in the dome by the lever rule, else the temperature where the one phase has it (bisection)
+  const key = id === "Ph" ? "h_kJ_kg" : "s_kJ_kgK", X = spec[key], P = spec.P_kPa;
+  const r = P < P_CRIT ? steamSat({ P_kPa: P }) : null;
+  if (r && X >= r.liquid[key] && X <= r.vapour[key]) return lever(r, (X - r.liquid[key]) / (r.vapour[key] - r.liquid[key]));
+  let lo = r && X > r.vapour[key] ? r.T_K + 1e-9 : T_TRIPLE, hi = r && X < r.liquid[key] ? r.T_K - 1e-9 : 1073.15;
+  const f = T => steam(T, P)[key] - X;
+  if (f(lo) * f(hi) > 0) throw new Error(`No state of water at ${P} kPa has ${id === "Ph" ? "h" : "s"} = ${X} (IAPWS-IF97 covers 273.16 to 1073.15 K).`);
+  for (let k = 0; k < 80; k++) { const m = (lo + hi) / 2; if (f(lo) * f(m) <= 0) hi = m; else lo = m; }
+  const T = (lo + hi) / 2;
+  return fromState(T, P, steam(T, P), r ? (T > r.T_K ? 1 : 0) : null);
+}
+
+/** Compute the stored point specifications: [{ label, spec, point | null, error | null }]. */
+export function statePoints(specs, compute) {
+  return (specs ?? []).map((spec, k) => {
+    const label = String.fromCharCode(65 + k);
+    try { return { label, spec, point: compute(spec), error: null }; } catch (e) { return { label, spec, point: null, error: e.message }; }
+  });
+}
+
 /** The coordinates of a point on a chart: x = s (T-s, h-s) or h (P-h); y = T, P or h, in the display units. */
 function axes(kind, u) {
   if (kind === "PH") return { x: p => p.h, y: p => pToDisplay(p.P_kPa, u), xLabel: "h, kJ/kg", yLabel: `P, ${u.P}`, log: true, lines: "isotherms" };
@@ -79,7 +138,7 @@ function yAt(points, x) {
  * Draw a chart into `plot` and its readout into `side`. data: waterChart or fluidChart; kind "TS", "PH" or "HS".
  * @returns {{move:function, series:object[]}}
  */
-export function drawChart({ plot, side, compact, data, kind, units: u, name }) {
+export function drawChart({ plot, side, compact, data, kind, units: u, name, points = [], onPick }) {
   const A = axes(kind, u);
   const xy = p => ({ x: A.x(p), y: A.y(p) });
   const domePts = [...data.dome.liquid.map(xy), ...(data.dome.critical ? [xy(data.dome.critical)] : []), ...data.dome.vapour.slice().reverse().map(xy)];
@@ -98,6 +157,12 @@ export function drawChart({ plot, side, compact, data, kind, units: u, name }) {
     series.push({ name: "", color: "var(--fug-accent, var(--fug-s1))", width: 1.4, dash: "5 4", segments: [{ points: [xy(k.inlet), xy(k.isentropic)] }],
       markers: [{ ...xy(k.isentropic), label: "2s", shape: "open", place: "below" }] });
   }
+  // the state points, as labelled dots (A, B, ...) joined in order
+  const placed = points.filter(p => p.point);
+  if (placed.length) {
+    series.push({ name: "", color: "var(--fug-fg)", width: 1, dash: "1 3", segments: [{ points: placed.map(p => xy(p.point)) }],
+      markers: placed.map(p => ({ ...xy(p.point), label: p.label, shape: "dot" })) });
+  }
   const xs = series.flatMap(sr => sr.segments.flatMap(g => g.points.map(p => p.x))).filter(Number.isFinite);
   const span = Math.max(...xs) - Math.min(...xs) || 1;
   const x0 = Math.min(...xs) - 0.02 * span, x1 = Math.max(...xs) + 0.02 * span;
@@ -110,7 +175,15 @@ export function drawChart({ plot, side, compact, data, kind, units: u, name }) {
         h("b", { class: "fug-num" }, vals[i + 1] == null ? "–" : `${fmtNum(vals[i + 1], 4)} ${yUnit}`))));
     return vals;
   };
-  const move = drawPlot(plot, { compact, series, x0, x1, xLabel: A.xLabel, yLabel: A.yLabel, log: A.log, show, labels: kind === "PH" ? "end" : "top",
+  // a click places a state point: on the P-h chart where it is clicked (P and h), on the T-s and h-s charts on the
+  // isobar nearest to the click at that entropy (P and s)
+  const pick = onPick && (({ x, y }) => {
+    if (kind === "PH") return onPick({ P_kPa: pFromDisplay(y, u), h_kJ_kg: x });
+    let best = null;
+    lines.forEach(sr => { const yl = yAt(sr.segments[0].points, x); if (yl != null && (!best || Math.abs(yl - y) < best.d)) best = { d: Math.abs(yl - y), P: sr.raw.P_kPa }; });
+    if (best) onPick({ P_kPa: best.P, s_kJ_kgK: x });
+  });
+  const move = drawPlot(plot, { compact, series, x0, x1, xLabel: A.xLabel, yLabel: A.yLabel, log: A.log, show, labels: kind === "PH" ? "end" : "top", onPick: pick,
     aria: `${CHART_TITLE[kind]} of ${name} with the two-phase dome and ${A.lines}` });
   plot.append(h("div", { class: "fug-legend" },
     h("span", { class: "fug-key", style: "color:var(--fug-fg)" }, h("i"), h("span", { style: "color:var(--fug-fg2)" }, data.dome.liquid.length && data.dome.critical ? "Two-phase dome" : "Saturation")),
@@ -144,4 +217,80 @@ export function chartTables({ data, kind, units: u, name }) {
       columns: [{ label: "Point" }, ...cols], rows: [["1 inlet", ...rows([k.inlet])[0]], ["2s isentropic", ...rows([k.isentropic])[0]], ["2 outlet", ...rows([k.outlet])[0]]] });
   }
   return out;
+}
+
+const csvOf = (head, rows) => [head.join(","), ...rows.map(r => r.map(v => (typeof v === "string" && /[",]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v)).join(","))].join("\n");
+const lineRows = (pts, u) => pts.map(p => [+tToDisplay(p.T_K, u).toFixed(4), +pToDisplay(p.P_kPa, u).toPrecision(8), +p.h.toFixed(4), +p.s.toFixed(6), p.VF ?? ""]);
+const lineHead = u => [`T (${tU(u)})`, `P (${u.P})`, "h (kJ/kg)", "s (kJ/(kg K))", "VF"];
+
+/**
+ * The state points under Results: a table (T, P, h, s, VF, and the change of h and s from the point before), a form
+ * to add one, and the table as CSV. tools: { save, copy } (app-views.js saveText, copyText); onChange(specs).
+ */
+export function pointsSection({ points, specs, units: u, kind, name, uid, onChange, tools }) {
+  const status = h("div", { class: "fug-foot", "aria-live": "polite" }), box = h("div");
+  const rows = points.map((p, k) => {
+    const prev = k ? points[k - 1].point : null, q = p.point;
+    const del = h("button", { type: "button", class: "fa-icon-btn", title: `Remove point ${p.label}`, "aria-label": `Remove point ${p.label}`, "data-fk": `pt-del-${k}`,
+      on: { click: () => onChange(specs.filter((_, i) => i !== k)) } }, icon("close", 14));
+    if (!q) return h("tr", { class: "is-err" }, h("td", {}, p.label), h("td", { colspan: 7 }, p.error), h("td", {}, del));
+    return h("tr", {}, h("td", {}, p.label), h("td", {}, fmtShort(+tToDisplay(q.T_K, u).toFixed(2))), h("td", {}, fmtNum(pToDisplay(q.P_kPa, u), 5)),
+      h("td", {}, fmtNum(q.h, 5)), h("td", {}, fmtNum(q.s, 5)), h("td", {}, q.VF == null ? "" : fmtNum(q.VF, 4)),
+      h("td", {}, prev ? fmtNum(q.h - prev.h, 5) : ""), h("td", {}, prev ? fmtNum(q.s - prev.s, 5) : ""), h("td", {}, del));
+  });
+  const th = (a, b) => h("th", { scope: "col" }, a, b ? h("span", { class: "u" }, b) : null);
+  const table = points.length ? h("div", { class: "fug-scroll", tabindex: "0", role: "region", "aria-label": "State points" }, h("table", { class: "fa-table fa-num-table" },
+    h("thead", {}, h("tr", {}, th("Point"), th("T", tU(u)), th("P", u.P), th("h", "kJ/kg"), th("s", "kJ/(kg·K)"), th("VF"), th("Δh", "kJ/kg"), th("Δs", "kJ/(kg·K)"), th(""))),
+    h("tbody", { class: "fug-num" }, ...rows))) : null;
+  // the form: a specification and its two values, in the display units
+  let pick = POINT_SPECS[0];
+  const LABEL = { T_K: `T, ${tU(u)}`, P_kPa: `P, ${u.P}`, h_kJ_kg: "h, kJ/kg", s_kJ_kgK: "s, kJ/(kg·K)", VF: "VF" };
+  const read = { T_K: v => tFromDisplay(v, u), P_kPa: v => pFromDisplay(v, u), h_kJ_kg: v => v, s_kJ_kgK: v => v, VF: v => v };
+  const inA = h("input", { type: "text", inputmode: "decimal", id: `fa-pa-${uid}`, "data-fk": "pt-a" }), inB = h("input", { type: "text", inputmode: "decimal", id: `fa-pb-${uid}`, "data-fk": "pt-b" });
+  const labA = h("span", {}, LABEL[pick[2][0]]), labB = h("span", {}, LABEL[pick[2][1]]);
+  const sel = h("select", { id: `fa-ps-${uid}`, "data-fk": "pt-spec", on: { change: ev => { pick = POINT_SPECS.find(x => x[0] === ev.target.value); labA.textContent = LABEL[pick[2][0]]; labB.textContent = LABEL[pick[2][1]]; } } },
+    ...POINT_SPECS.map(([id, label]) => h("option", { value: id }, label)));
+  const add = () => {
+    const a = Number(String(inA.value).replace(",", ".")), b = Number(String(inB.value).replace(",", "."));
+    if (!Number.isFinite(a) || !Number.isFinite(b) || String(inA.value).trim() === "" || String(inB.value).trim() === "") { status.textContent = "Enter both values."; return; }
+    if (specs.length >= MAX_POINTS) { status.textContent = `At most ${MAX_POINTS} points: remove one first.`; return; }
+    onChange([...specs, { [pick[2][0]]: read[pick[2][0]](a), [pick[2][1]]: read[pick[2][1]](b) }]);
+  };
+  const csv = () => csvOf(["Point", ...lineHead(u), "dh (kJ/kg)", "ds (kJ/(kg K))"], points.filter(p => p.point).map((p, k, arr) => [p.label, ...lineRows([p.point], u)[0],
+    k ? +(p.point.h - arr[k - 1].point.h).toFixed(4) : "", k ? +(p.point.s - arr[k - 1].point.s).toFixed(6) : ""]));
+  const file = `chepta-points-${kind}-${name.replace(/[^\w]+/g, "-").toLowerCase()}.csv`;
+  return h("section", { class: "fa-sec" }, h("h3", {}, "State points"),
+    h("p", { class: "fa-in-hint" }, kind === "PH" ? "Click the chart to place a point where you click, or type one below." : "Click the chart to place a point on the nearest isobar, or type one below."),
+    table,
+    h("div", { class: "fa-form" }, h("label", { for: sel.id }, h("span", {}, "Given"), sel), h("label", { for: inA.id }, labA, inA), h("label", { for: inB.id }, labB, inB)),
+    h("div", { class: "fa-in-actions" },
+      h("button", { type: "button", class: "fa-mini", "data-fk": "pt-add", on: { click: add } }, icon("plus", 15), "Add point"),
+      points.length ? h("button", { type: "button", class: "fa-mini", "data-fk": "pt-csv", on: { click: () => tools.save(csv(), file, "text/csv;charset=utf-8", status) } }, icon("download", 15), "Download CSV") : null,
+      points.length ? h("button", { type: "button", class: "fa-mini", "data-fk": "pt-copy", on: { click: () => tools.copy(csv(), status, box) } }, icon("copy", 15), "Copy") : null,
+      points.length ? h("button", { type: "button", class: "fa-mini", "data-fk": "pt-clear", on: { click: () => onChange([]) } }, icon("close", 15), "Clear") : null),
+    status, box,
+    h("div", { class: "fug-foot" }, "Δh and Δs: from the point before. Per kg; the work of an adiabatic machine between two points is Δh."));
+}
+
+/** Every line of the chart, each to download or copy as CSV on its own (T, P, h, s, VF per point, as drawn). */
+export function linesSection({ data, kind, units: u, name, tools }) {
+  const A = axes(kind, u);
+  const status = h("div", { class: "fug-foot", "aria-live": "polite" }), box = h("div");
+  const slug = name.replace(/[^\w]+/g, "-").toLowerCase();
+  const items = [
+    ["Dome: saturated liquid", data.dome.liquid, "dome-liquid"], ["Dome: saturated vapour", data.dome.vapour, "dome-vapour"],
+    ...data[A.lines].map(l => (A.lines === "isotherms" ? [`Isotherm ${fmtTemp(l.T_K, u)}`, l.points, `T-${+tToDisplay(l.T_K, u).toFixed(2)}`] : [`Isobar ${fmtP(l.P_kPa, u)}`, l.points, `P-${fmtShort(pToDisplay(l.P_kPa, u), 6)}`])),
+    ...data.quality.map(q => [`Vapour fraction ${q.VF}`, q.points, `VF-${q.VF}`]),
+  ];
+  return h("section", { class: "fa-sec" }, h("h3", {}, "Lines as data"),
+    h("ul", { class: "fa-lines" }, ...items.map(([label, pts, key]) => {
+      const text = () => csvOf(lineHead(u), lineRows(pts, u));
+      return h("li", {}, h("span", {}, label, h("small", {}, ` ${pts.length} points`)),
+        h("button", { type: "button", class: "fa-icon-btn", title: `Download ${label} as CSV`, "aria-label": `Download ${label} as CSV`, "data-fk": `ln-save-${key}`,
+          on: { click: () => tools.save(text(), `chepta-${slug}-${kind}-${key}.csv`, "text/csv;charset=utf-8", status) } }, icon("download", 15)),
+        h("button", { type: "button", class: "fa-icon-btn", title: `Copy ${label}`, "aria-label": `Copy ${label}`, "data-fk": `ln-copy-${key}`,
+          on: { click: () => tools.copy(text(), status, box) } }, icon("copy", 15)));
+    })),
+    status, box,
+    h("div", { class: "fug-foot" }, "Each line as its points were calculated (not interpolated); the Excel download has every line."));
 }
