@@ -7966,6 +7966,44 @@
     "chemsep-eos-ipd"
    ],
    "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "n-hexane",
+   "j": "isoamyl-alcohol",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0485,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".485e-1",
+    "conditions": "n-Hexane/Isopentanol p747",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "n-hexane",
+   "j": "isoamyl-alcohol",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.0496,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".496e-1",
+    "conditions": "n-Hexane/Isopentanol p747",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
   }
  ]
 }
