@@ -120,3 +120,19 @@ test("refusals: no U, an outlet or a duty given, water without a flow, two const
   assert.throws(() => exchangerArea(sys, { U: { value: 500 }, hot: { stream: hot, T_out_K: 320 }, cold: { utility: { kind: "water", T_in_K: C(20), flow_kg_h: 8000 } } }),
     /give the duty, or rate the exchanger/);
 });
+
+test("the flowsheet heater rated (A_m2 with its sizing): designed for an outlet, then rated with that area, U and utility flow, gives the outlet back", () => {
+  const inlet = stream(sys, { flow_kmol_h: { water: 60, ethanol: 40 }, T_K: 350, P_kPa: 101.325 });
+  const sizing = { utility: { kind: "water", T_in_K: C(20), T_out_K: C(35) }, U: { value: 500 } };
+  const d = runUnit("heater", { sys, inlets: { in: inlet }, spec: { T_K: 310, sizing } });
+  const rated = runUnit("heater", { sys, inlets: { in: inlet }, spec: { A_m2: d.sizing.area_m2,
+    sizing: { utility: { kind: "water", T_in_K: C(20), flow_kg_h: d.sizing.utility.flow_kg_h }, U: { value: d.sizing.U_W_m2K } } } });
+  assert.ok(Math.abs(rated.outlets.out.T_K - 310) < 0.1, `outlet ${rated.outlets.out.T_K} K`);
+  close(rated.duty_kW, d.duty_kW, 3e-3, "duty");
+  // steam heats a cold stream; a rating without a utility and U is refused
+  const cold = stream(sys, { flow_kmol_h: { water: 60, ethanol: 40 }, T_K: 300, P_kPa: 101.325 });
+  const st = runUnit("heater", { sys, inlets: { in: cold }, spec: { A_m2: 3, sizing: { utility: { kind: "steam", P_kPa: 300 }, U: { value: 500 } } } });
+  assert.ok(st.duty_kW > 0 && st.outlets.out.T_K > 300);
+  assert.throws(() => runUnit("heater", { sys, inlets: { in: cold }, spec: { A_m2: 3 } }), /needs its sizing: a utility/);
+  assert.throws(() => runUnit("heater", { sys, inlets: { in: cold }, spec: { A_m2: 3, T_K: 320, sizing: { utility: { kind: "steam", P_kPa: 300 }, U: { value: 500 } } } }), /give the outlet temperature/);
+});
