@@ -16,7 +16,8 @@ export function tickLabel(v, step) {
   const a = Math.abs(v);
   if (a >= 1e6 || a < 1e-3) return v.toExponential(step && Math.abs(step / v) < 0.1 ? 2 : 1).replace("e+", "e");
   const d = step ? Math.max(0, -Math.floor(Math.log10(step) + 1e-9)) : 2;
-  return v.toFixed(Math.min(d + (step && String(step).includes("25") ? 1 : 0), 6));
+  // steps such as 0.25 need one decimal more; 2500 none
+  return v.toFixed(Math.min(d + (step && step < 1 && String(step).includes("25") ? 1 : 0), 6));
 }
 
 /**
@@ -27,7 +28,11 @@ export function tickLabel(v, step) {
  * @param {HTMLElement} plot
  * @param {object} o
  * @param {{name:string, color:string, dash?:string, segments:{points:{x:number,y:number}[]}[],
- *   transitions?:{x:number,y0:number|null,y1:number|null}[]}[]} o.series
+ *   transitions?:{x:number,y0:number|null,y1:number|null}[], fill?:string,
+ *   markers?:{x:number,y:number,label?:string,shape?:"open"|"dot"|"cross",place?:"below"}[]}[]} o.series
+ *   fill: each segment also drawn closed and filled (a region: the two-phase area of a phase envelope);
+ *   markers: points drawn on the curve with a label (a critical point); show(x) may return a list of values for a
+ *   series (a curve with several y at one x), each drawn as a dot
  * @param {boolean} [o.compact]  smaller drawing for narrow containers
  * @param {boolean} [o.log]      logarithmic y axis
  * @param {number} o.x0, o.x1   x range
@@ -79,6 +84,14 @@ export function drawPlot(plot, { compact, series, xLabel, yLabel, log, show, x0,
 
   const inY = v => Number.isFinite(v) && (!log || v > 0);
   const labels = [];
+  // filled regions first, under every curve
+  for (const sr of series) {
+    if (!sr.fill) continue;
+    for (const g of sr.segments) {
+      const pts = g.points.filter(pt => inY(pt.y));
+      if (pts.length > 2) s("path", { d: "M" + pts.map(pt => `${sx(pt.x).toFixed(1)},${sy(pt.y).toFixed(1)}`).join("L") + "Z", fill: sr.fill, "fill-opacity": sr.fillOpacity ?? 0.12, stroke: "none" }, svg);
+    }
+  }
   series.forEach(sr => {
     for (const g of sr.segments) {
       const pts = g.points.filter(pt => inY(pt.y));
@@ -92,6 +105,18 @@ export function drawPlot(plot, { compact, series, xLabel, yLabel, log, show, x0,
         s("line", { x1: X, x2: X, y1: sy(t.y0), y2: sy(t.y1), stroke: sr.color, "stroke-width": 1.5, "stroke-dasharray": "2 3" }, svg);
       }
       for (const y of [t.y0, t.y1]) if (y != null) s("circle", { cx: X, cy: sy(y), r: 4, fill: "var(--fug-bg)", stroke: sr.color, "stroke-width": 2 }, svg);
+    }
+    for (const m of sr.markers || []) {
+      if (!inY(m.y) || m.x < Math.min(x0, x1) || m.x > Math.max(x0, x1)) continue;
+      const X = sx(m.x), Y = sy(m.y);
+      if (m.shape === "cross") {
+        s("path", { d: `M${X - 3.5},${Y - 3.5}L${X + 3.5},${Y + 3.5}M${X - 3.5},${Y + 3.5}L${X + 3.5},${Y - 3.5}`, stroke: sr.color, "stroke-width": 1.6 }, svg);
+      } else {
+        s("circle", { cx: X, cy: Y, r: m.shape === "dot" ? 3.5 : 4.5, fill: m.shape === "dot" ? sr.color : "var(--fug-bg)", stroke: sr.color, "stroke-width": 2 }, svg);
+      }
+      // a label near the right edge goes left of its point
+      // above right of its point; left of it near the right edge; below it with place: "below"
+      if (m.label) { const left = X > W - R - 6.6 * m.label.length; text(svg, left ? X - 7 : X + 7, m.place === "below" ? Y + 16 : Y - 7, m.label, { fill: "var(--fug-fg2)", "font-size": 11, ...(left ? { "text-anchor": "end" } : {}) }); }
     }
     const last = sr.segments.filter(g => g.points.some(pt => inY(pt.y))).at(-1);
     if (sr.name && last && sr.label !== false) {
@@ -126,8 +151,10 @@ export function drawPlot(plot, { compact, series, xLabel, yLabel, log, show, x0,
     hover.replaceChildren();
     s("line", { x1: sx(x), x2: sx(x), y1: T, y2: H - B, stroke: "var(--fug-muted)", "stroke-dasharray": "3 3" }, hover);
     vals.forEach((v, i) => {
-      if (v == null || !inY(v) || v < Math.min(y0, y1) || v > Math.max(y0, y1)) return;
-      s("circle", { cx: sx(x), cy: sy(v), r: 4.5, fill: series[i]?.color ?? "var(--fug-fg)", stroke: "var(--fug-halo)", "stroke-width": 2 }, hover);
+      for (const w of Array.isArray(v) ? v : [v]) {
+        if (w == null || !inY(w) || w < Math.min(y0, y1) || w > Math.max(y0, y1)) continue;
+        s("circle", { cx: sx(x), cy: sy(w), r: 4.5, fill: series[i]?.color ?? "var(--fug-fg)", stroke: "var(--fug-halo)", "stroke-width": 2 }, hover);
+      }
     });
   };
   const onPointer = ev => { const pt = svgPoint(svg, ev); move(x0 + (pt.x - L) / (W - L - R) * (x1 - x0)); };

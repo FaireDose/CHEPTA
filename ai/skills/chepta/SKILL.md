@@ -181,6 +181,7 @@ CHEPTA.steamSat({ P_kPa: 1000 });
 const g = CHEPTA.system({ components: ["methane", "ethane"], model: "PR" });   // or "SRK"
 g.bubbleP([0.3, 0.7], 200);       // { P, y, stability, warnings }
 g.dewT([0.5, 0.5], 2000);         // { T, x, ... }
+CHEPTA.phaseEnvelope(g, [0.9, 0.1]);   // dew and bubble curves through the critical point; cricondenbar, cricondentherm
 CHEPTA.gasSolubility("oxygen", 298.15, 21.2);   // mole fraction in water
 ```
 

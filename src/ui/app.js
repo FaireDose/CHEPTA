@@ -54,12 +54,12 @@ const VIEW_ICON = { flash: "drum", txy: "txy", ternary: "ternary", azeotropes: "
 const lower = s => (/^[A-Z]-/.test(s) ? s : s[0].toLowerCase() + s.slice(1));
 const NEEDS_ACTIVITY = {
   txy: "Two liquids", ternary: "Three liquids", azeotropes: "Two to four liquids", pxy: "Two liquids",
-  envelope: "Two to six liquids", flash: "Two to six liquids", henry: "A gas and a solvent", properties: "One component", steam: "Water",
+  envelope: "Two to twelve liquids", flash: "Two to six liquids", henry: "A gas and a solvent", properties: "One component", steam: "Water",
   solid: "A solid and a solvent", sle: "Two components with melting data",
 };
 const NEEDS_EOS = {
   ...NEEDS_ACTIVITY, txy: "Two components", ternary: "Three components", azeotropes: "Two to four components", pxy: "Two components",
-  envelope: "One to six components", flash: "One to six components",
+  envelope: "One to twelve components", flash: "One to six components",
 };
 /** What a view needs with the model in use (an equation of state takes gases too). */
 const needsOf = (view, model) => (isEosModel(model) ? NEEDS_EOS : NEEDS_ACTIVITY)[view];
@@ -496,9 +496,15 @@ export function app(target, cfg = {}) {
           title: spec.n === 3 ? "Move the first component to the end (turns the ternary diagram)" : "Swap the two components",
           on: { click: () => set({ inputs: { [v]: rotateInputs(value) } }) } }, icon(spec.n === 3 ? "rotate" : "swap", 15), spec.n === 3 ? "Rotate" : "Swap"));
       }
+      // the phase envelope of gases needs an equation of state: one click instead of the Model group
+      if (v === "envelope" && !isEosModel(state.model) && !check.ok && !blank(v)) {
+        actions.push(h("button", { type: "button", class: "fa-mini", "data-fk": "act-pr", title: "Gases, and a single component, need an equation of state for the phase envelope",
+          on: { click: () => set({ model: "PR" }) } }, icon("envelope", 15), "Use Peng–Robinson"));
+      }
       if (examples.length) {
         actions.push(h("select", { class: "fa-examples", "aria-label": "Load an example", "data-fk": "examples",
-          on: { change: ev => { const p = examples[+ev.target.value]; if (p) set({ inputs: { [v]: p.components } }); } } },
+          // an example may name its method (an equation of state for gases) and its feed (a natural gas)
+          on: { change: ev => { const p = examples[+ev.target.value]; if (p) set({ inputs: { [v]: p.components }, ...(p.model && p.model !== state.model ? { model: p.model } : {}), ...(p.z && v in state.z ? { z: p.z } : {}) }); } } },
           h("option", { value: "" }, "Examples…"), ...examples.map((p, i) => h("option", { value: i }, p.label))));
       }
       secs.push(inputsSection(`Components`,
@@ -731,7 +737,7 @@ export function app(target, cfg = {}) {
       ternary: `Bubble-temperature map and residue curves at ${fmtP(state.P_kPa, u)}, ${ml}`,
       azeotropes: `Binary and ternary azeotropes at ${fmtP(state.P_kPa, u)}, ${ml}`,
       pxy: `P-x-y diagram at ${fmtTemp(pxyTemperature(state), u)}, ${ml}`,
-      envelope: `Bubble and dew points of the feed, ${ml}`,
+      envelope: state.components.length > 1 && isEosModel(state.model) ? `Phase envelope of the feed through its critical point, ${ml}` : `Bubble and dew points of the feed, ${ml}`,
       flash: `${FLASH_SPECS.find(f => f.id === state.flash.spec).title} flash, ${ml}`,
       henry: `Solubility at ${fmtTemp(state.henryT_K, u)} and a gas partial pressure of ${fmtP(state.henryP_kPa, u)}, Henry's law`,
       solid: `Solubility of the solid against temperature, ${ml}`,

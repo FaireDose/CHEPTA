@@ -22,6 +22,7 @@ import { WORKSPACES, UTILITIES, INPUTS, checkInputs, normalizeInputs, seedInputs
 import { normalizeUnits, tToDisplay, tFromDisplay, pToDisplay, pFromDisplay, fmtShort } from "./properties-logic.js";
 import { normalizeFlash, FLASH_DEFAULTS } from "./flash-logic.js";
 import { solidUnitIds } from "./solubility-units.js";
+import ENVELOPE_EXAMPLES from "../data/envelope-examples.json" with { type: "json" };
 
 /**
  * Canvas views: the workspace each belongs to and its name. The phase-equilibrium diagrams
@@ -151,9 +152,14 @@ export const PRESETS = [
   { label: "Benzene, toluene", components: ["benzene", "toluene"], view: "txy" },
   { label: "Methane, ethane", components: ["methane", "ethane"], view: "pxy", model: "PR" },
   { label: "Nitrogen, oxygen", components: ["nitrogen", "oxygen"], view: "envelope", model: "PR" },
+  // phase envelopes (proposal 0013, step 7): a classic retrograde binary, and natural gases with measured dew points
+  // (src/data/envelope-examples.json, from validation/data/envelope/); z: the feed, model: the method they need
+  { label: "Methane 0.7, n-butane 0.3", components: ["methane", "n-butane"], z: [0.7, 0.3], view: "envelope", model: "PR" },
+  ...ENVELOPE_EXAMPLES.examples.map(ex => ({ label: ex.label, components: ex.components, z: ex.z, view: "envelope", model: "PR" })),
 ];
 
-export const MAX_COMPONENTS = 6;
+// 12: a natural gas on the phase envelope (each view takes what it needs: two for T-x-y, six for the flash)
+export const MAX_COMPONENTS = 12;
 const START_ALIASES = { drum: "flash", eos: "eos", "pt": "envelope", "p-x-y": "pxy", "t-x-y": "txy", vle: "ternary", gases: "henry", solubility: "henry", explorer: "properties", library: "sources",
   solids: "solid", eutectic: "sle", "solid-liquid": "sle" };
 
@@ -214,7 +220,7 @@ export function viewAvailability(view, ids, model = "NRTL", ud = null) {
     case "envelope": {
       const min = isEosModel(model) ? 1 : 2;
       if (liq.length < min) return { enabled: false, use: [], reason: min === 1 ? "Select at least one component." : `With an activity model the phase envelope needs two liquids; ${word(liq.length)} selected.` };
-      return { enabled: true, use: liq.slice(0, 6) };
+      return { enabled: true, use: liq.slice(0, 12) };
     }
     case "flash": {
       // one component is a pure substance heated, cooled or boiled, with any model

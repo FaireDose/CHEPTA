@@ -80,7 +80,8 @@ export const INPUTS = {
   ternary: { kind: "slots", n: 3, liquid: true, what: "a ternary map", roles: ["top corner", "lower left", "lower right"] },
   azeotropes: { kind: "list", min: 2, max: 4, liquid: true, what: "an azeotrope search" },
   pxy: { kind: "slots", n: 2, liquid: true, what: "a P-x-y diagram", roles: ["x axis", "1 − x"] },
-  envelope: { kind: "list", min: 1, minActivity: 2, max: 6, liquid: true, what: "a phase envelope" },
+  // up to 12: a natural gas (the examples have ten components)
+  envelope: { kind: "list", min: 1, minActivity: 2, max: 12, liquid: true, what: "a phase envelope" },
   // one component is a pure substance heated, cooled or boiled (any model)
   flash: { kind: "list", min: 1, max: 6, liquid: true, what: "a flash" },
   henry: { kind: "henry", what: "a gas solubility" },
@@ -221,7 +222,7 @@ export function seedInputs(components = [], { gas, solvent, propComponent, model
     ternary: normalizeInputs("ternary", liq.slice(0, 3), ud),
     azeotropes: normalizeInputs("azeotropes", liq.slice(0, 4), ud),
     pxy: normalizeInputs("pxy", ids.slice(0, 2), ud),
-    envelope: normalizeInputs("envelope", ids.slice(0, 6), ud),
+    envelope: normalizeInputs("envelope", ids.slice(0, INPUTS.envelope.max), ud),
     flash: normalizeInputs("flash", liq.slice(0, 6), ud),
     henry: { gas: g, solvent: pickId(solvent, ud) ?? solventsFor(g)[0] ?? "water" },
     // a solid in a solvent, and a binary with a eutectic: examples until the person chooses
@@ -234,16 +235,19 @@ export function seedInputs(components = [], { gas, solvent, propComponent, model
 }
 
 // views without an Examples menu
-const NO_EXAMPLES = ["properties", "ternary", "envelope"];
+// no Examples menu on the ternary map (the maintainer, 2026-10-20: "not needed"); the phase envelope has its own: real
+// gases with measured dew points (the maintainer, 2026-10-21: "make some real industrial examples")
+const NO_EXAMPLES = ["properties", "ternary"];
 
 /** Ready-made inputs (the Examples menu of the Inputs panel) that fit a view and the model. */
 export function examplesFor(view, presets, model = "NRTL") {
   const spec = INPUTS[view];
-  // no Examples menu on the ternary map and the phase envelope (the maintainer, 2026-10-20: "not needed")
   if (!spec || (spec.kind !== "slots" && spec.kind !== "list") || NO_EXAMPLES.includes(view)) return [];
   return presets.filter(p => {
     const fits = spec.kind === "slots" ? p.components.length === spec.n : p.components.length >= spec.min && p.components.length <= spec.max;
-    return fits && checkInputs(view, normalizeInputs(view, p.components), model).ok;
+    // an example made for this view that names its method (an equation of state for gases) is checked with it:
+    // choosing it sets it; in the other views, the current method decides
+    return fits && checkInputs(view, normalizeInputs(view, p.components), p.view === view ? p.model ?? model : model).ok;
   });
 }
 

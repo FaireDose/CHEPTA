@@ -150,7 +150,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   4. the two-stream heat exchanger block;
   5. valve and pump (an open source for the typical pump efficiency);
   6. mixture entropy, the P-S flash, compressor and expander;
-  7. Charts: the gas phase envelope traced through the critical point, P-H, T-S and H-S charts, with the steam charts;
+  7. Charts: the gas phase envelope traced through the critical point (done 2026-10-21,
+     docs/decisions/2026-10-21-01-phase-envelope.md); P-H, T-S and H-S charts, with the steam charts, next, with step 6
+     (they need its entropy);
   8. later, Rating.
   Then 0010.
 - **0010, reactions:**

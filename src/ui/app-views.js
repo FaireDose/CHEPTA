@@ -31,6 +31,8 @@ import {
 import { HENRY_PAIRS, isEosModel } from "./workspaces.js";
 import { flowsheetView } from "./flowsheet-view.js";
 import { runFlash, flashTable, flashCsv, phaseName, FLASH_SPECS, dutyKW, molarFlow } from "./flash-logic.js";
+import { phaseEnvelope } from "../equilibrium/envelope.js";
+import ENVELOPE_EXAMPLES from "../data/envelope-examples.json" with { type: "json" };
 import pkg from "../../package.json" with { type: "json" };
 import {
   txyTables, ternaryTables, pxyTables, envelopeTables, azeotropeTables, flashTables, henryTables, solidTables, sleTables, propertyTables, steamTables,
@@ -460,6 +462,8 @@ function envelopeView(ctx) {
   let sys;
   try { sys = modelSystem(state, ids); } catch (e) { throw new Error(friendly(e)); }
   const z = normalizeComposition(state.z, ids.length);
+  // a mixture with an equation of state: the whole line, traced through the critical point
+  if (ids.length > 1 && sys.kind === "eos") return tracedEnvelopeView(ctx, sys, ids, z);
   const reasons = new Map();
   let series, xLo, xHi, raw, Pmax = null;   // Pmax: the top pressure of a mixture's envelope (read by the readout too)
   const comps = ids.map(id => pure(id, own(state)));
@@ -512,6 +516,84 @@ function envelopeView(ctx) {
     title: ids.length > 1 ? `Phase envelope of ${listNames(sys.names)}` : `Vapour pressure of ${sys.names[0]}`, file: `envelope ${ids.join(" ")}`,
     about: aboutRows(state, sys, ids.length > 1 ? [["Feed", ids.map((id, k) => `${nameOf(state, id)} ${fmtNum(z[k], 4)}`).join(", ") + " (mole fractions)"]] : []),
     tables: envelopeTables({ names: sys.names, units: u, z, points: raw, single: ids.length === 1 }),
+  }) };
+}
+
+/** Crossings of a line (points {T_K, P_kPa}) at temperature T: the pressures there (linear in ln P). */
+function pressuresAt(points, T) {
+  const out = [];
+  for (let i = 1; i < points.length; i++) {
+    const a = points[i - 1], b = points[i];
+    if ((a.T_K - T) * (b.T_K - T) <= 0 && a.T_K !== b.T_K) out.push(Math.exp(Math.log(a.P_kPa) + (T - a.T_K) / (b.T_K - a.T_K) * (Math.log(b.P_kPa) - Math.log(a.P_kPa))));
+  }
+  return out;
+}
+
+/** The example gas (src/data/envelope-examples.json) whose components and feed are these, with its measured dew points. */
+function measuredExample(ids, z) {
+  return ENVELOPE_EXAMPLES.examples.find(ex => ex.components.length === ids.length && ex.components.every((c, i) => c === ids[i])
+    && ex.z.every((v, i) => Math.abs(v / ex.z.reduce((a, w) => a + w, 0) - z[i]) < 1e-6)) ?? null;
+}
+
+/**
+ * Phase envelope of a mixture with an equation of state (proposal 0013, step 7; src/equilibrium/envelope.js): the dew
+ * and bubble curves as one line through the critical point, the two-phase region shaded, the critical point, the
+ * cricondenbar and the cricondentherm marked; the measured dew points when the feed is one of the example gases.
+ */
+function tracedEnvelopeView(ctx, sys, ids, z) {
+  const { state, plot, side, extra, compact } = ctx;
+  const u = state.units;
+  let env;
+  try { env = phaseEnvelope(sys, z); } catch (e) { throw new Error(friendly(e)); }
+  const X = p => ({ x: tToDisplay(p.T_K, u), y: pToDisplay(p.P_kPa, u) });
+  const dew = env.points.filter(p => p.branch === "dew"), bub = env.points.filter(p => p.branch === "bubble");
+  // the bubble curve starts where the dew curve ends, so that the line is drawn without a gap at the critical point
+  const bubLine = dew.length && bub.length ? [dew.at(-1), ...bub] : bub;
+  const ex = measuredExample(ids, z);
+  const mk = (p, label, shape, place) => (p ? { ...X(p), label, shape, place } : null);
+  const series = [
+    { name: "", label: false, color: "var(--fug-vap)", fill: "var(--fug-vap)", fillOpacity: 0.1, width: 0, segments: [{ points: env.points.map(X) }] },
+    // (named in the legend: direct labels would sit on the line near the critical point)
+    { name: "Dew", label: false, color: "var(--fug-vap)", segments: [{ points: dew.map(X) }] },
+    { name: "Bubble", label: false, color: "var(--fug-liq)", segments: [{ points: bubLine.map(X) }] },
+    { name: "", label: false, color: "var(--fug-fg)", segments: [],
+      markers: [mk(env.critical, "Critical point", "open", "below"), mk(env.cricondenbar, "Cricondenbar", "dot"), mk(env.cricondentherm, "Cricondentherm", "dot")].filter(Boolean) },
+    ...(ex ? [{ name: "", label: false, color: "var(--fug-fg)", segments: [], markers: ex.dew_points.map(([T_K, P_kPa]) => ({ ...X({ T_K, P_kPa }), shape: "cross" })) }] : []),
+  ];
+  const xs = env.points.map(p => tToDisplay(p.T_K, u)), span = Math.max(...xs) - Math.min(...xs) || 10;
+  const [xLo, xHi] = [Math.min(...xs) - 0.04 * span, Math.max(...xs) + 0.06 * span];
+  const read = h("div", { class: "fa-read" });
+  const show = Tx => {
+    const T = tFromDisplay(Tx, u);
+    const dP = pressuresAt(dew, T), bP = pressuresAt(bubLine, T);
+    const list = ps => (ps.length ? ps.map(P => `${fmtNum(pToDisplay(P, u), 4)} ${u.P}`).join(" and ") : "–");
+    read.replaceChildren(h("div", { class: "fug-eyebrow" }, `At ${fmtShort(+Tx.toFixed(2))} ${tU(u)}`),
+      h("div", { class: "fa-row" }, h("span", {}, dP.length > 1 ? "Dew points (upper: retrograde)" : "Dew point"), h("b", {}, list(dP))),
+      h("div", { class: "fa-row" }, h("span", {}, "Bubble point"), h("b", {}, list(bP))),
+      h("div", { class: "fug-sub" }, "Two phases inside the shaded region; liquid left of the bubble curve, vapour right of the dew curve and above the cricondenbar."));
+    return [null, dP.map(P => pToDisplay(P, u)), bP.map(P => pToDisplay(P, u)), null, null];
+  };
+  const move = drawPlot(plot, { compact, series, x0: xLo, x1: xHi, xLabel: `T, ${tU(u)}`, yLabel: `P, ${u.P}`, show,
+    aria: `Phase envelope of ${sys.names.join(", ")}, with its critical point` });
+  plot.append(h("div", { class: "fug-legend" },
+    h("span", { class: "fug-key", style: "color:var(--fug-vap)" }, h("i"), h("span", { style: "color:var(--fug-fg2)" }, "Dew curve")),
+    h("span", { class: "fug-key", style: "color:var(--fug-liq)" }, h("i"), h("span", { style: "color:var(--fug-fg2)" }, "Bubble curve")),
+    ex ? h("span", {}, `× measured dew points: ${ex.source}`) : null,
+    h("span", {}, `Feed: ${ids.map((id, k) => `${nameOf(state, id)} ${fmtNum(z[k], 3)}`).join(", ")}`)));
+  const pt = p => (p ? `${fmtTemp(p.T_K, u)}, ${fmtP(p.P_kPa, u)}` : "–");
+  side.replaceChildren(kv([
+    ["Critical point", pt(env.critical)], ["Cricondenbar", pt(env.cricondenbar)], ["Cricondentherm", pt(env.cricondentherm)],
+  ]), ...env.notes.map(n => h("div", { class: "fug-warn" }, n)),
+  ex?.note ? h("div", { class: "fug-foot" }, ex.note) : h("span"),
+  h("div", { class: "fug-foot" }, `${sys.info.equation}: the line is traced from a dew point at 50 kPa through the critical point (Michelsen's continuation), and ends at the bubble point at 50 kPa.`),
+  read);
+  move(tToDisplay(env.cricondentherm.T_K, u) - 0.15 * span);
+  extra.append(bubbleDewCalculator(ctx, sys, ids), ...sourcesOf(ctx, sys));
+  return { data: pairData(sys), export: () => ({
+    title: `Phase envelope of ${listNames(sys.names)}`, file: `envelope ${ids.join(" ")}`,
+    about: aboutRows(state, sys, [["Feed", ids.map((id, k) => `${nameOf(state, id)} ${fmtNum(z[k], 4)}`).join(", ") + " (mole fractions)"],
+      ...(ex ? [["Measured dew points", `${ex.source} (shown on the chart, not in the tables)`]] : [])]),
+    tables: envelopeTables({ names: sys.names, units: u, z, points: [], traced: env }),
   }) };
 }
 
