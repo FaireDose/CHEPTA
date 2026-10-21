@@ -52,7 +52,7 @@ import { checkUserData } from "../thermo/user-data.js";
  *  format 1 file is a format 2 file without it. */
 export const PROJECT_FORMAT = 4;
 /** The flowsheet block types that need format 4 (proposal 0013). */
-const FORMAT_4_BLOCKS = ["hx", "valve", "pump"];
+const FORMAT_4_BLOCKS = ["hx", "valve", "pump", "compressor", "expander"];
 
 /** The keys of `workbench`, in the order they are written. */
 const KEYS = ["view", "diagram", "model", "eos", "vapour", "P_kPa", "T_K", "units", "basis", "inputs", "z", "flash", "sets", "prefer",

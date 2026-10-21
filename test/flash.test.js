@@ -100,8 +100,9 @@ test("speed: a two-phase T-P flash of a ternary under 5 ms", () => {
 test("flash errors: specification, acetic acid enthalpy, liquid split", () => {
   const s = system({ components: ["ethanol", "water"], model: "NRTL" });
   const code = (fn, c, re) => assert.throws(fn, e => e instanceof CheptaError && e.code === c && re.test(e.message), String(re));
-  code(() => s.flash({ z: [0.5, 0.5], T: 350 }), "BAD_INPUT", /two of T, P, H, VF/);
-  code(() => s.flash({ z: [0.5, 0.5], T: 350, P: 100, H: 0 }), "BAD_INPUT", /two of T, P, H, VF/);
+  // the message lists the entropy S since the P-S flash (proposal 0013, step 6)
+  code(() => s.flash({ z: [0.5, 0.5], T: 350 }), "BAD_INPUT", /two of T, P, H, S, VF/);
+  code(() => s.flash({ z: [0.5, 0.5], T: 350, P: 100, H: 0 }), "BAD_INPUT", /two of T, P, H, S, VF/);
   code(() => s.flash({ z: [0.5, 0.5], P: 100, VF: 1.5 }), "BAD_INPUT", /VF must be between 0 and 1/);
   code(() => s.flash({ z: [0.5], T: 350, P: 100 }), "BAD_INPUT", /Feed composition/);
   // acetic acid: T-P flash works, the enthalpy is null with the reason; P-H is refused

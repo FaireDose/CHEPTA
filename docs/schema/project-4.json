@@ -146,6 +146,8 @@
             "hx",
             "valve",
             "pump",
+            "compressor",
+            "expander",
             "product"
           ]
         },
@@ -167,7 +169,7 @@
         },
         "spec": {
           "type": "object",
-          "description": "feed: flow_kmol_h or flow_kg_h, and two of T_K, P_kPa, VF. mixer: P_kPa (optional). splitter: fractions [one per outlet, one may be \"rest\"]. separator: fractions { component: [one per outlet] }, outlets [{ T_K, P_kPa } or null]. flash: two of T_K, P_kPa, VF, duty_kW. heater: one of T_K, duty_kW, VF (or T_K and VF), with P_kPa or dP_kPa. product: none. heater (format 4): sizing { utility: { kind: steam|water|fluid|electric, ... }, U, arrangement } (optional). hx: one of T_hot_out_K, T_cold_out_K, VF_hot_out, VF_cold_out, duty_kW, dTmin_K; dP_hot_kPa, dP_cold_kPa; U and arrangement (optional); ports hot and cold. valve: P_kPa or dP_kPa. pump: P_kPa or dP_kPa, efficiency (0 to 1, default 0.75)."
+          "description": "feed: flow_kmol_h or flow_kg_h, and two of T_K, P_kPa, VF. mixer: P_kPa (optional). splitter: fractions [one per outlet, one may be \"rest\"]. separator: fractions { component: [one per outlet] }, outlets [{ T_K, P_kPa } or null]. flash: two of T_K, P_kPa, VF, duty_kW. heater: one of T_K, duty_kW, VF (or T_K and VF), with P_kPa or dP_kPa. product: none. heater (format 4): sizing { utility: { kind: steam|water|fluid|electric, ... }, U, arrangement } (optional). hx: one of T_hot_out_K, T_cold_out_K, VF_hot_out, VF_cold_out, duty_kW, dTmin_K; dP_hot_kPa, dP_cold_kPa; U and arrangement (optional); ports hot and cold. valve: P_kPa or dP_kPa. pump: P_kPa or dP_kPa, efficiency (0 to 1, default 0.75). compressor and expander: one of P_kPa, dP_kPa, ratio (outlet over inlet), and the isentropic efficiency (0 to 1, default 0.75 and 0.8)."
         }
       },
       "additionalProperties": false

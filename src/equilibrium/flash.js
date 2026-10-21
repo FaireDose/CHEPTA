@@ -4,6 +4,8 @@
  *
  *   sys.flash({ z, T, P })     isothermal flash
  *   sys.flash({ z, P, H })     given enthalpy (J/mol of feed): adiabatic flash, valve
+ *   sys.flash({ z, P, S })     given entropy (J/(mol K) of feed): isentropic compression or expansion (proposal 0013,
+ *                              step 6); the same search as P-H, on the entropy of thermo/enthalpy.js
  *   sys.flash({ z, P, VF })    given vapour fraction (0 = bubble point, 1 = dew point)
  *   sys.flash({ z, T, VF })
  * One component with an equation of state (a pure substance): two phases exist only on its saturation curve, so the
@@ -706,18 +708,23 @@ function tpCore(sys, z, T, P, ctx = {}) {
 
 // ------------------------------------------------------------------ enthalpy and results
 
-/** Phase enthalpies and the total; null (with a note) when enthalpy is not available. */
-function withEnthalpy(sys, core, T, P) {
+/** Phase enthalpies (and entropies, when asked) and the totals; null (with a note) when enthalpy is not available. */
+function withEnthalpy(sys, core, T, P, entropy = false) {
   const notes = [];
   const phases = [];
-  let H = 0, available = true;
+  let H = 0, S = 0, available = true;
   const add = (type, fraction, comp) => {
-    let h = null;
-    try { const st = sys.phase(type, T, P, comp); h = st.h_J_mol; notes.push(...st.warnings.filter(w => !notes.includes(w))); } catch (e) {
+    let h = null, s = null;
+    try {
+      const st = sys.phase(type, T, P, comp, entropy ? { entropy: true } : undefined);
+      h = st.h_J_mol; s = entropy ? st.s_J_molK : null;
+      notes.push(...st.warnings.filter(w => !notes.includes(w)));
+    } catch (e) {
       if (e && e.code === "NOT_AVAILABLE") { available = false; if (!notes.includes(e.message)) notes.push(e.message); } else throw e;
     }
-    phases.push({ type, fraction, composition: comp, h_J_mol: h });
+    phases.push({ type, fraction, composition: comp, h_J_mol: h, ...(entropy ? { s_J_molK: s } : {}) });
     if (h !== null) H += fraction * h;
+    if (s !== null) S += fraction * s;
   };
   if (core.single === "liquid") add("liquid", 1, core.x);
   else if (core.single === "vapour") add("vapour", 1, core.y);
@@ -728,7 +735,7 @@ function withEnthalpy(sys, core, T, P) {
     if (core.liquid2) add("liquid", f2, core.liquid2.x);
     if (core.labels) phases.filter(p => p.type === "liquid").forEach((p, k) => { p.label = core.labels[k]; });
   }
-  return { phases, H: available ? H : null, notes };
+  return { phases, H: available ? H : null, S: available && entropy ? S : null, notes };
 }
 
 function sourcesOf(sys) {
@@ -739,8 +746,8 @@ function sourcesOf(sys) {
   return out;
 }
 
-function result(sys, spec, z, T, P, core, extra = {}) {
-  const e = withEnthalpy(sys, core, T, P);
+function result(sys, spec, z, T, P, core, extra = {}, entropy = false) {
+  const e = withEnthalpy(sys, core, T, P, entropy || spec === "PS");
   // mass balance check
   const V = core.single === "vapour" ? 1 : core.single === "liquid" ? 0 : core.V;
   if (core.single === null) {
@@ -749,7 +756,7 @@ function result(sys, spec, z, T, P, core, extra = {}) {
   }
   const warnings = [...new Set([...(sys.warnings ? sys.warnings(T, P) : []), ...e.notes])];
   return {
-    spec, T, P, VF: V, H_J_mol: e.H, phases: e.phases,
+    spec, T, P, VF: V, H_J_mol: e.H, ...(e.S !== null ? { S_J_molK: e.S } : {}), phases: e.phases,
     iterations: core.iterations, warnings, sources: sourcesOf(sys), ...extra,
   };
 }
@@ -796,12 +803,12 @@ function eosVfFromDew(sys, z, P, VF, why) {
   return { T, core };
 }
 
-/** Enthalpy of the feed z flashed at T, P (J/mol); throws NOT_AVAILABLE as phase() does. */
-function enthalpyAt(sys, z, T, P, ctx = {}) {
+/** Enthalpy (J/mol) and, when asked, entropy (J/(mol K)) of the feed z flashed at T, P; throws NOT_AVAILABLE as phase() does. */
+function enthalpyAt(sys, z, T, P, ctx = {}, entropy = false) {
   const core = tpCore(sys, z, T, P, ctx);
-  const r = withEnthalpy(sys, core, T, P);
+  const r = withEnthalpy(sys, core, T, P, entropy);
   if (r.H === null) throw fail("NOT_AVAILABLE", r.notes[0] ?? `${sys.model}: enthalpy not available.`);
-  return { H: r.H, core };
+  return { H: r.H, S: r.S, core };
 }
 
 /** Bracket a root of f (increasing in T) by stepping from T0 in direction dir. */
@@ -975,22 +982,32 @@ function vapourEnd(z, ll, y3) {
   return null;
 }
 
-/** The enthalpy of a core (J/mol), or NOT_AVAILABLE. */
-function coreH(sys, core, T, P) {
-  const r = withEnthalpy(sys, core, T, P);
+/** The enthalpy (key "H", J/mol) or entropy (key "S", J/(mol K)) of a core, or NOT_AVAILABLE. */
+function coreH(sys, core, T, P, key = "H") {
+  const r = withEnthalpy(sys, core, T, P, key === "S");
   if (r.H === null) throw fail("NOT_AVAILABLE", r.notes[0] ?? `${sys.model}: enthalpy not available.`);
-  return r.H;
+  return r[key];
 }
 
-/** P-H flash with fully checked T-P flashes (two liquids resolved), from T0. */
-function phSearch(sys, z, P, H, T0) {
+/** The words of a P-H or P-S flash: the property, its value with its unit, and the phase-state field. */
+function specWords(key, X) {
+  return key === "S"
+    ? { name: "P-S", prop: "entropy", val: `${X.toFixed(3)} J/(mol K)`, field: "s_J_molK", opts: { entropy: true } }
+    : { name: "P-H", prop: "enthalpy", val: `${X.toFixed(1)} J/mol`, field: "h_J_mol", opts: undefined };
+}
+
+/** P-H (or P-S, key "S") flash with fully checked T-P flashes (two liquids resolved), from T0. */
+function phSearch(sys, z, P, H, T0, key = "H") {
+  const w = specWords(key, H);
+  const val = (type, T, Pq, c) => sys.phase(type, T, Pq, c, w.opts)[w.field];
   const hRow = (T, Pq) => ({
-    row: (xa, xb, y) => [sys.phase("liquid", T, Pq, xa).h_J_mol, sys.phase("liquid", T, Pq, xb).h_J_mol, sys.phase("vapour", T, Pq, y).h_J_mol],
+    row: (xa, xb, y) => [val("liquid", T, Pq, xa), val("liquid", T, Pq, xb), val("vapour", T, Pq, y)],
     rhs: H,
   });
   const r = searchSpec(sys, z, {
-    what: `${sys.model} P-H flash at ${P.toPrecision(6)} kPa`, at: T => ({ T, P }), value: coreH.bind(null, sys),
-    target: H, s0: T0, sMin: T_FLOOR, sMax: T_CEIL, step: 5, xtol: 1e-9, eps: 1e-8, alongT: true, tol: 1e-3, looseTol: 1, row: hRow,
+    what: `${sys.model} ${w.name} flash at ${P.toPrecision(6)} kPa`, at: T => ({ T, P }), value: (c, T, Pq) => coreH(sys, c, T, Pq, key),
+    target: H, s0: T0, sMin: T_FLOOR, sMax: T_CEIL, step: 5, xtol: 1e-9, eps: 1e-8, alongT: true,
+    tol: key === "S" ? 1e-5 : 1e-3, looseTol: key === "S" ? 3e-3 : 1, row: hRow,
   });
   return [r.T, r.P, r.core];
 }
@@ -1036,10 +1053,12 @@ function vfSearch(sys, z, VF, given, s0) {
  * the highest two-phase pressure), T-P flashes stepped out from 300 K. The liquid of the
  * result is checked with the tangent-plane test.
  */
-function phFast(sys, z, P, H) {
-  const what = `${sys.model} P-H flash at ${P.toPrecision(6)} kPa`;
-  const hLiq = Tq => sys.phase("liquid", Tq, P, z).h_J_mol - H;
-  const hVap = Tq => sys.phase("vapour", Tq, P, z).h_J_mol - H;
+function phFast(sys, z, P, H, key = "H") {
+  const w = specWords(key, H), E = key === "S";
+  const what = `${sys.model} ${w.name} flash at ${P.toPrecision(6)} kPa`;
+  const hOf = (type, Tq) => sys.phase(type, Tq, P, z, w.opts)[w.field];
+  const hLiq = Tq => hOf("liquid", Tq) - H;
+  const hVap = Tq => hOf("vapour", Tq) - H;
   const ctx = { check: false };
   // the enthalpy of a two-phase state comes from an iterative T-P flash whose start (the warm-started
   // K-values of the last call) changes its last digits: within one search, each temperature is
@@ -1053,10 +1072,10 @@ function phFast(sys, z, P, H) {
     // nothing in the feed evaporates (proposal 0009, step 5): it stays liquid, and T follows from the liquid enthalpy
     let br;
     try { br = stepBracket(hLiq, 300, hLiq(300) < 0 ? +1 : -1, hLiq(300) < 0 ? T_CEIL : T_FLOOR); } catch (e) {
-      if (e && e.code === "OUT_OF_RANGE") throw failRange("OUT_OF_RANGE", `${what}: the enthalpy ${H.toFixed(1)} J/mol is not reached within the temperatures the liquid heat-capacity records cover. ${e.message}`, { z, P, H });
+      if (e && e.code === "OUT_OF_RANGE") throw failRange("OUT_OF_RANGE", `${what}: the ${w.prop} ${w.val} is not reached within the temperatures the liquid heat-capacity records cover. ${e.message}`, { z, P, H });
       throw e;
     }
-    if (!br) throw failRange("OUT_OF_RANGE", `${what}: no temperature gives the liquid enthalpy ${H.toFixed(1)} J/mol.`, { z, P, H });
+    if (!br) throw failRange("OUT_OF_RANGE", `${what}: no temperature gives the liquid ${w.prop} ${w.val}.`, { z, P, H });
     return [brent(hLiq, br[0], br[1], { xtol: 1e-9 }), P, single("liquid", z)];
   }
   let Tb = null;
@@ -1072,19 +1091,19 @@ function phFast(sys, z, P, H) {
   }
   if (Tb === null) {
     // without a vapour-liquid bubble point: T-P flashes stepped out from 300 K
-    const f = memo(Tq => enthalpyAt(sys, z, Tq, P, ctx).H - H);
+    const f = memo(Tq => enthalpyAt(sys, z, Tq, P, ctx, E)[key] - H);
     const f300 = f(300);
     const br = stepBracket(f, 300, f300 < 0 ? +1 : -1, f300 < 0 ? T_CEIL : T_FLOOR);
-    if (!br) throw failRange("OUT_OF_RANGE", `${what}: no temperature between ${T_FLOOR} K and ${T_CEIL} K gives the enthalpy ${H.toFixed(1)} J/mol.`, { z, P, H });
+    if (!br) throw failRange("OUT_OF_RANGE", `${what}: no temperature between ${T_FLOOR} K and ${T_CEIL} K gives the ${w.prop} ${w.val}.`, { z, P, H });
     return finish(brent(f, br[0], br[1], { xtol: 1e-9 }));
   }
   return phFromBubble(Tb);
 
   function phFromBubble(Tb) {
-    const hb = sys.phase("liquid", Tb, P, z).h_J_mol;
+    const hb = hOf("liquid", Tb);
     if (H <= hb) {
       const br = stepBracket(hLiq, Tb, -1, T_FLOOR);
-      if (!br) throw failRange("OUT_OF_RANGE", `${what}: the enthalpy ${H.toFixed(1)} J/mol is below that of the liquid at ${T_FLOOR} K.`, { z, P, H });
+      if (!br) throw failRange("OUT_OF_RANGE", `${what}: the ${w.prop} ${w.val} is below that of the liquid at ${T_FLOOR} K.`, { z, P, H });
       const T = brent(hLiq, br[0], br[1], { xtol: 1e-9 });
       checkLiquid(sys, z, T, `${what}: the liquid feed at ${T.toFixed(2)} K`, P);
       return [T, P, single("liquid", z)];
@@ -1093,14 +1112,14 @@ function phFast(sys, z, P, H) {
     const probe = tpCore(sys, z, Tb + 2 * NARROW_K, P, ctx);
     if (probe.single === "vapour") {
       const Td = (isEos(sys) ? eosDewT(sys, z, P, { stability: false }) : dewT(sys, z, P)).T;
-      const hd = sys.phase("vapour", Td, P, z).h_J_mol;
+      const hd = hOf("vapour", Td);
       if (H < hd) {
         const V = (H - hb) / (hd - hb);
         checkLiquid(sys, z, Tb, `${what}: the liquid`, P);
         return [Tb + V * (Td - Tb), P, { V, x: z, y: z, single: null, iterations: 0 }];
       }
       const br = stepBracket(hVap, Td, +1, T_CEIL);
-      if (!br) throw failRange("OUT_OF_RANGE", `${what}: the enthalpy ${H.toFixed(1)} J/mol is above that of the vapour at ${T_CEIL} K.`, { z, P, H });
+      if (!br) throw failRange("OUT_OF_RANGE", `${what}: the ${w.prop} ${w.val} is above that of the vapour at ${T_CEIL} K.`, { z, P, H });
       return [brent(hVap, br[0], br[1], { xtol: 1e-9 }), P, single("vapour", z)];
     }
     // step up from the bubble point with warm-started T-P flashes
@@ -1111,23 +1130,23 @@ function phFast(sys, z, P, H) {
       if (core.single === "vapour") {
         if (hVap(b) >= 0) {
           // the root lies in [a, b]: two-phase up to the dew point, vapour above
-          const f = memo(Tq => enthalpyAt(sys, z, Tq, P, ctx).H - H);
+          const f = memo(Tq => enthalpyAt(sys, z, Tq, P, ctx, E)[key] - H);
           const T = brent(f, a, b, { xtol: 1e-9 });
           return finish(T);
         }
         const br = stepBracket(hVap, b, +1, T_CEIL);
-        if (!br) throw failRange("OUT_OF_RANGE", `${what}: the enthalpy ${H.toFixed(1)} J/mol is above that of the vapour at ${T_CEIL} K.`, { z, P, H });
+        if (!br) throw failRange("OUT_OF_RANGE", `${what}: the ${w.prop} ${w.val} is above that of the vapour at ${T_CEIL} K.`, { z, P, H });
         return [brent(hVap, br[0], br[1], { xtol: 1e-9 }), P, single("vapour", z)];
       }
-      const fb = withEnthalpy(sys, core, b, P).H - H;
+      const fb = withEnthalpy(sys, core, b, P, E)[key] - H;
       if (fb >= 0) {
-        const f = memo(Tq => enthalpyAt(sys, z, Tq, P, ctx).H - H);
+        const f = memo(Tq => enthalpyAt(sys, z, Tq, P, ctx, E)[key] - H);
         return finish(brent(f, a, b, { xtol: 1e-9 }));
       }
       if (b === T_CEIL) break;
       a = b; step *= 1.5;
     }
-    throw failRange("OUT_OF_RANGE", `${what}: the enthalpy ${H.toFixed(1)} J/mol is not reached below ${T_CEIL} K.`, { z, P, H });
+    throw failRange("OUT_OF_RANGE", `${what}: the ${w.prop} ${w.val} is not reached below ${T_CEIL} K.`, { z, P, H });
   }
 }
 
@@ -1136,15 +1155,15 @@ function phFast(sys, z, P, H) {
  * models without the acid chemical theory), the general search with fully checked T-P flashes,
  * which also finds a binary's three-phase temperature (phSearch).
  */
-function phFlash(sys, z, P, H) {
-  if (!canThree(sys)) return phFast(sys, z, P, H);
+function phFlash(sys, z, P, H, key = "H") {
+  if (!canThree(sys)) return phFast(sys, z, P, H, key);
   let out = null;
-  try { out = phFast(sys, z, P, H); } catch (e) { if (!(isSplitError(e) || (e && e.code === "NO_CONVERGENCE"))) throw e; }
+  try { out = phFast(sys, z, P, H, key); } catch (e) { if (!(isSplitError(e) || (e && e.code === "NO_CONVERGENCE"))) throw e; }
   if (out) {
     const [T, Pq, core] = out;
-    if (!core.liquid2 && Math.abs(coreH(sys, core, T, Pq) - H) <= 0.05) return out;
+    if (!core.liquid2 && Math.abs(coreH(sys, core, T, Pq, key) - H) <= (key === "S" ? 1e-4 : 0.05)) return out;
   }
-  return phSearch(sys, z, P, H, out ? out[0] : bubbleStart(sys, z, P));
+  return phSearch(sys, z, P, H, out ? out[0] : bubbleStart(sys, z, P), key);
 }
 
 /** A start for the searches: the bubble temperature of the feed as one liquid, else 300 K. */
@@ -1160,7 +1179,7 @@ function bubbleStart(sys, z, P) {
  * sys.psatEos, and the vapour fraction from the enthalpies of the saturated liquid and vapour (P-H). Returns the
  * arguments of result(), or throws with the reason.
  */
-function pureEosFlash(sys, kind, z, T, P, VF, H) {
+function pureEosFlash(sys, kind, z, T, P, VF, H, key = "H") {
   const c = sys.eos.comps[0];
   const Tc = c.Tc_K, Pc = c.Pc_Pa / 1000;
   const psat = Tq => sys.psatEos(Tq)[0];
@@ -1188,15 +1207,17 @@ function pureEosFlash(sys, kind, z, T, P, VF, H) {
     if (!(T < Tc)) throw above("vapour fraction");
     return [T, psat(T), two(VF)];
   }
-  // P-H: on the saturation curve between the saturated liquid and vapour, else one phase at the T where its enthalpy is H
-  const h = (type, Tq) => sys.phase(type, Tq, P, z).h_J_mol;
+  // P-H (P-S): on the saturation curve between the saturated liquid and vapour, else one phase at the T where its
+  // enthalpy (entropy) is H
+  const w = specWords(key, H);
+  const h = (type, Tq) => sys.phase(type, Tq, P, z, w.opts)[w.field];
   const Ts = tsat(P);
   const solve = (type, lo, hi) => {
     let a = lo, b = hi, k = 0;
     while (h(type, a) > H && k++ < 60) a = Math.max(a * 0.9, 1);
     k = 0;
     while (h(type, b) < H && k++ < 60) b *= 1.1;
-    if (h(type, a) > H || h(type, b) < H) throw fail("NO_CONVERGENCE", `${sys.names[0]}: no ${type} temperature with H = ${H.toFixed(1)} J/mol at ${P} kPa.`);
+    if (h(type, a) > H || h(type, b) < H) throw fail("NO_CONVERGENCE", `${sys.names[0]}: no ${type} temperature with the ${w.prop} ${w.val} at ${P} kPa.`);
     return brent(Tq => h(type, Tq) - H, a, b, { xtol: 1e-9 });
   };
   if (Ts === null) return null;   // above the critical pressure: one phase, the ordinary P-H flash
@@ -1216,12 +1237,18 @@ export function flash(sys, spec = {}, opts = {}) {
   if (!spec || typeof spec !== "object") throw fail("BAD_INPUT", "flash needs a specification such as { z, T, P }.");
   const z = checkComposition(spec.z, sys.n, "Feed composition");
   const has = k => spec[k] !== undefined && spec[k] !== null;
-  const keys = ["T", "P", "H", "VF"].filter(has);
+  const keys = ["T", "P", "H", "S", "VF"].filter(has);
   const kind = keys.slice().sort().join("");
-  const SPECS = { PT: "TP", HP: "PH", PVF: "PVF", TVF: "TVF" };
+  const SPECS = { PT: "TP", HP: "PH", PS: "PS", PVF: "PVF", TVF: "TVF" };
   if (!SPECS[kind]) {
-    throw fail("BAD_INPUT", `flash: give the feed z and two of T, P, H, VF as { z, T, P }, { z, P, H }, { z, P, VF } or { z, T, VF } (got ${keys.join(", ") || "none"}).`);
+    throw fail("BAD_INPUT", `flash: give the feed z and two of T, P, H, S, VF as { z, T, P }, { z, P, H }, { z, P, S }, { z, P, VF } or { z, T, VF } (got ${keys.join(", ") || "none"}).`);
   }
+  // the given enthalpy (P-H) or entropy (P-S), checked
+  const X = kind === "HP" || kind === "PS" ? Number(spec[kind === "PS" ? "S" : "H"]) : null;
+  if (X !== null && !Number.isFinite(X)) {
+    throw fail("BAD_INPUT", kind === "PS" ? `flash: S must be a number of J/(mol K) (got ${JSON.stringify(spec.S)}).` : `flash: H must be a number of J/mol (got ${JSON.stringify(spec.H)}).`);
+  }
+  const key = kind === "PS" ? "S" : "H";
   const T = has("T") ? checkTemperature(spec.T) : null;
   const P = has("P") ? checkPressure(spec.P) : null;
   // nonvolatile components (proposal 0009, step 5) stay in the liquid: the feed can never be all vapour, and the
@@ -1239,10 +1266,8 @@ export function flash(sys, spec = {}, opts = {}) {
   if (isEos(sys) && sys.n === 1 && kind !== "PT") {
     const VF = has("VF") ? Number(spec.VF) : null;
     if (VF !== null && !(VF >= 0 && VF <= 1)) throw fail("BAD_INPUT", `flash: VF must be between 0 and 1 (got ${JSON.stringify(spec.VF)}).`);
-    const H = has("H") ? Number(spec.H) : null;
-    if (kind === "HP" && !Number.isFinite(H)) throw fail("BAD_INPUT", `flash: H must be a number of J/mol (got ${JSON.stringify(spec.H)}).`);
-    const r = pureEosFlash(sys, kind, z, T, P, VF, H);
-    out = r ? result(sys, SPECS[kind], z, ...r) : result(sys, "PH", z, ...phFlash(sys, z, P, H));
+    const r = pureEosFlash(sys, kind, z, T, P, VF, X, key);
+    out = r ? result(sys, SPECS[kind], z, ...r) : result(sys, SPECS[kind], z, ...phFlash(sys, z, P, X, key));
   } else if (kind === "PT") out = result(sys, "TP", z, T, P, tpCore(sys, z, T, P));
   else if (kind === "PVF" || kind === "TVF") {
     const VF = Number(spec.VF);
@@ -1308,10 +1333,8 @@ export function flash(sys, spec = {}, opts = {}) {
       }, () => general(vfSearch(sys, z, VF, { T }, Math.log(bd ? bd.Pd : sys.equilibrium(z, T).P))));
     }
   } else {
-    // P-H flash
-    const H = Number(spec.H);
-    if (!Number.isFinite(H)) throw fail("BAD_INPUT", `flash: H must be a number of J/mol (got ${JSON.stringify(spec.H)}).`);
-    out = result(sys, "PH", z, ...phFlash(sys, z, P, H));
+    // P-H or P-S flash
+    out = result(sys, SPECS[kind], z, ...phFlash(sys, z, P, X, key));
   }
   if (opts && opts.feed) {
     const Tf = checkTemperature(opts.feed.T, "Feed temperature"), Pf = checkPressure(opts.feed.P, "Feed pressure");
