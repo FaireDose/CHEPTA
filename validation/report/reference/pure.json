@@ -3443,6 +3443,88 @@
     "detail": "CoolProp MethylLinoleate: eos Huber-EF-2009"
    }
   },
+  "pure/neopentane/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 601.1715,
+    "source": "coolprop",
+    "detail": "CoolProp Neopentane: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/neopentane/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 2.219125,
+    "source": "coolprop",
+    "detail": "CoolProp Neopentane: eos Lemmon-JCED-2006; saturated liquid"
+   }
+  },
+  "pure/neopentane/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 315.6916,
+    "source": "coolprop",
+    "detail": "CoolProp Neopentane: eos Lemmon-JCED-2006; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/neopentane/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": null,
+    "why": "CoolProp has no viscosity model for Neopentane"
+   }
+  },
+  "pure/neopentane/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": null,
+    "why": "CoolProp has no thermal conductivity model for Neopentane"
+   }
+  },
+  "pure/neopentane/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 1.675932,
+    "source": "coolprop",
+    "detail": "CoolProp Neopentane: eos Lemmon-JCED-2006"
+   }
+  },
+  "pure/helium/liquidDensity/Tb": {
+   "rho_kg_m3": {
+    "value": 124.7444,
+    "source": "coolprop",
+    "detail": "CoolProp Helium: eos OrtizVega-JPCRD-2019; saturated liquid"
+   }
+  },
+  "pure/helium/liquidHeatCapacity/Tb": {
+   "cp_kJ_kgK": {
+    "value": 5.163488,
+    "source": "coolprop",
+    "detail": "CoolProp Helium: eos OrtizVega-JPCRD-2019; saturated liquid"
+   }
+  },
+  "pure/helium/heatOfVaporization/Tb": {
+   "dHvap_kJ_kg": {
+    "value": 20.58654,
+    "source": "coolprop",
+    "detail": "CoolProp Helium: eos OrtizVega-JPCRD-2019; h(vapour) - h(liquid) at saturation"
+   }
+  },
+  "pure/helium/liquidViscosity/Tb": {
+   "mu_mPa_s": {
+    "value": 0.00315753,
+    "source": "coolprop",
+    "detail": "CoolProp Helium: eos OrtizVega-JPCRD-2019; viscosity Arp-NIST-1998; saturated liquid"
+   }
+  },
+  "pure/helium/liquidThermalConductivity/Tb": {
+   "k_W_mK": {
+    "value": 0.01861683,
+    "source": "coolprop",
+    "detail": "CoolProp Helium: eos OrtizVega-JPCRD-2019; conductivity Hands-CRYO-1981; saturated liquid"
+   }
+  },
+  "pure/helium/idealGasHeatCapacity/25C": {
+   "cp_kJ_kgK": {
+    "value": 5.193159,
+    "source": "coolprop",
+    "detail": "CoolProp Helium: eos OrtizVega-JPCRD-2019"
+   }
+  },
   "pure/oxygen/density/300K/1bar": {
    "rho_kg_m3": {
     "value": 1.283671,

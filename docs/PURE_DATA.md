@@ -126,6 +126,9 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | Stearic acid | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) |
 | n-Hexadecane | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.45 (f) | ChemSep 0.011 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.36 (f) | ChemSep 0.0001 (d) | ChemSep 0.12 (f) |
 | n-Octadecane | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.40 (f) | ChemSep 0.048 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.68 (f) | ChemSep 0.0001 (d) | ChemSep 0.45 (f) |
+| Neopentane | CoolProp 0.079 (f) | CoolProp 0.045 (f) | CoolProp 0.014 (f) | CoolProp 0.79 (f) | CoolProp 0.041 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.016 (f) | ChemSep 0.0001 (d) | CoolProp 0.00026 (f) |
+| Helium | CoolProp 0.064 (f) | CoolProp 0.17 (f) | CoolProp 0.0001 (f) | CoolProp 0.62 (f) | CoolProp 0.44 (f) | CoolProp 0.48 (f) | CoolProp 2.9 (f) | CoolProp 0.62 (f) | CoolProp 1.4 (f) | CoolProp 0.055 (f) |
+| Methylcyclohexane | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.34 (f) | ChemSep 0.019 (f) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.0001 (d) | ChemSep 0.12 (f) | ChemSep 0.0001 (d) | ChemSep 0.39 (f) |
 
 "existing": the vapour-pressure records of the ten liquids from v0.1 (not changed).
 
@@ -253,6 +256,9 @@ Each cell: source of the record and the maximum deviation of the correlation fro
 | Stearic acid | 342.75–803 | 300–1500 | 342.75–648.35 | 342.75–802.19 | 342.75–648.35 | 342.75–1000 | 342.75–648.35 | 648.35–1000 | 342.75–802.19 |
 | n-Hexadecane | 291.31–723 | 200–1500 | 291.31–560.01 | 291.31–722.27 | 291.31–723 | 273.15–1000 | 291.31–560.01 | 291.308–1000 | 291.31–686.85 |
 | n-Octadecane | 301.33–747 | 200–1500 | 301.33–589.86 | 301.33–723.54 | 301.33–613.15 | 301.31–1000 | 301.33–589.86 | 301.33–1000 | 301.33–689.23 |
+| Neopentane | 256.61–412.05 | 256.61–550 | 256.61–412.05 | 256.61–412.05 | 256.61–333 | 250–1000 | 256.61–282.65 | 256.6–1000 | 256.61–412.05 |
+| Helium | 2.18–4.93 | 2.18–1500 | 2.32–4.51 | 2.18–4.93 | 2.18–4.93 | 2.18–1000 | 2.18–4.93 | 2.18–1000 | 2.18–4.93 |
+| Methylcyclohexane | 146.59–572.1 | 200–1500 | 146.59–320 | 146.59–572.1 | 146.59–457.68 | 146.58–1000 | 273.15–374.08 | 146.58–1000 | 146.59–543.58 |
 
 Temperatures in K.
 
@@ -2050,6 +2056,51 @@ At 25 °C (298.15 K) for the liquids and at the normal boiling point for the gas
 | kV | mW/(m·K) | – | – | – | – |
 | σ | mN/m | – | – | – | – |
 
+### Neopentane, T = 282.65 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 101.26 | 101.33 | -0.06 % | – |
+| ρL | kg/m³ | 601.23 | 601.17 | 0.01 % | 602.7 |
+| cp° | J/(mol·K) | 115.06 | 115.07 | -0.01 % | 115.33 |
+| cpL | J/(mol·K) | 159.17 | 160.11 | -0.59 % | 164.26 |
+| ΔHvap | kJ/mol | 22.785 | 22.776 | 0.04 % | 22.696 |
+| μL | mPa·s | 0.28263 | 0.28263 | 0.00 % | – |
+| μV | μPa·s | 6.7711 | 6.7711 | 0.00 % | – |
+| kL | mW/(m·K) | – | – | – | – |
+| kV | mW/(m·K) | 13.146 | 13.146 | 0.00 % | – |
+| σ | mN/m | 12.463 | 12.463 | -0.00 % | 12.441 |
+
+### Helium, T = 4.22 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 101.26 | 101.33 | -0.06 % | – |
+| ρL | kg/m³ | 124.87 | 124.67 | 0.16 % | 124.77 |
+| cp° | J/(mol·K) | 20.786 | 20.786 | 0.00 % | 20.786 |
+| cpL | J/(mol·K) | 20.763 | 20.733 | 0.14 % | 22.745 |
+| ΔHvap | kJ/mol | 0.082581 | 0.082311 | 0.33 % | 0.083201 |
+| μL | mPa·s | 0.0031483 | 0.0031555 | -0.23 % | 0.0031971 |
+| μV | μPa·s | 1.1382 | 1.0761 | 5.77 % | – |
+| kL | mW/(m·K) | 18.668 | 18.619 | 0.27 % | 18.961 |
+| kV | mW/(m·K) | 8.7253 | 8.1221 | 7.43 % | – |
+| σ | mN/m | 0.08844 | 0.088398 | 0.05 % | 0.15742 |
+
+### Methylcyclohexane, T = 298.15 K
+
+| Property | Unit | CHEPTA | Source | Deviation | ChemSep |
+|---|---|---|---|---|---|
+| Psat | kPa | 6.1656 | 6.1656 | 0.00 % | – |
+| ρL | kg/m³ | 766.31 | 766.31 | 0.00 % | – |
+| cp° | J/(mol·K) | 136.06 | 136.01 | 0.04 % | – |
+| cpL | J/(mol·K) | 184.75 | 184.78 | -0.02 % | – |
+| ΔHvap | kJ/mol | 35.67 | 35.67 | 0.00 % | – |
+| μL | mPa·s | 0.68261 | 0.68261 | 0.00 % | – |
+| μV | μPa·s | 6.5272 | 6.5272 | 0.00 % | – |
+| kL | mW/(m·K) | 110.74 | 110.86 | -0.11 % | – |
+| kV | mW/(m·K) | 13.249 | 13.249 | 0.00 % | – |
+| σ | mN/m | 23.274 | 23.354 | -0.34 % | – |
+
 ## Comparison with measured data
 
 Measured values from the NIST WebBook in `validation/data/pure/measured/webbook.json` (rules and references there), checked by `test/properties.test.js` at 2 %. Liquid heat capacity at 298.15 K against the mean of the values measured in 1970 or later; heat of vaporization at the normal boiling point against Majer and Svoboda (1985). Ethylene glycol has no Majer-Svoboda value at Tb on its WebBook page. Liquid densities of the four ChemSep liquids are not compared with measurements: the WebBook has none and the ThermoML Archive could not be reached.
@@ -2090,6 +2141,7 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
 - Methyl myristate, kV: starts at 569.9 K, above the normal boiling point 569.651 K (ChemSep range); vapour states between Tb and 569.9 K have no value.
 - Palmitic acid, kV: starts at 624.15 K, above the normal boiling point 623.151 K (ChemSep range); vapour states between Tb and 624.15 K have no value.
 - Stearic acid, kV: starts at 648.35 K, above the normal boiling point 647.101 K (ChemSep range); vapour states between Tb and 648.35 K have no value.
+- Helium, cpL: starts at 2.32 K, above the other liquid properties (2.18 K): range narrowed from 2.18-4.93 K (max deviation there 7.4 %) to meet the 1 % target
 
 ## Cross-checks
 
@@ -2185,6 +2237,7 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
 
 - CoolProp 8.0.0: Bell, Ian H. et al., Pure and Pseudo-pure Fluid Thermophysical Property Evaluation and the Open-Source Thermophysical Property Library CoolProp, Ind. Eng. Chem. Res. 53 (2014) 2498-2508, doi:10.1021/ie4033999; https://github.com/CoolProp/CoolProp (MIT). The equations it implements for these fluids:
   - Aleksandrov-TE-2011: I. S. Aleksandrov et al., Using Fundamental Equations of State for Calculating the Thermodynamic Properties of Normal Undecane, Thermal Engineering 58 (2011) 691-698, doi:10.1134/S0040601511080027
+  - Arp-NIST-1998: V.D. Arp et al., Thermophysical Properties of Helium-4 from 0.8 to 1500 K with Pressures to 2000 MPa - NIST Technical Note 1334 (revised),  (1998)
   - Assael-JPCRD-2011-Hydrogen: M. J. Assael et al., Correlation of the Thermal Conductivity of Normal and Parahydrogen from the Triple Point to 1000 K and up to 100 MPa, J. Phys. Chem. Ref. Data 40 (2011) 033101-1:13, doi:10.1063/1.3606499
   - Assael-JPCRD-2012-Benzene: M.J. Assael et al., Reference Correlation of the Thermal Conductivity of Benzene from the Triple Point to 725 K and up to 500 MPa, J. Phys. Chem. Ref. Data 41 (2012) 043102-1:9, doi:10.1063/1.4755781
   - Assael-JPCRD-2012-Toluene: M. J. Assael et al., Reference Correlation of the Thermal Conductivity of Toluene from the Triple Point to 1000 K and up to 1000 MPa, J. Phys. Chem. Ref. Data 41 (2012) 023101-1:12, doi:10.1063/1.3700155
@@ -2207,6 +2260,7 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
   - Friend-JPCRD-1991: Daniel G. Friend et al., Thermophysical Properties of Ethane, J. Phys. Chem. Ref. Data 20 (1991) 275-347, doi:10.1063/1.555881
   - Gao-JCED-2016: Kehui Gao et al., A Helmholtz Energy Equation of State for Sulfur Dioxide, J. Chem. Eng. Data  (2016)
   - Gao-JPCRD-2020: K. Gao et al., Thermodynamic Properties of Ammonia for Temperatures from the Melting Line to 725 K and Pressures to 1000 MPa, J. Phys. Chem. Ref. Data  ()
+  - Hands-CRYO-1981: B.A. Hands and V.D. Arp, A Correlation of Thermal Conductivity Data for Helium, Cryogenics 21 (1981) 697-703, doi:10.1016/0011-2275(81)90211-3
   - Huber-EF-2004: Marcia L. Huber et al., Transport Properties of n-Dodecane, Energy & Fuels 18 (2004) 968-975, doi:10.1021/ef034109e
   - Huber-EF-2009: Marcia L. Huber et al., Model for the Thermodynamic Properties of a Biodiesel Fuel, Energy & Fuels 23 (2009) 3790-3797, doi:10.1021/ef900159g
   - Huber-FPE-2004: Marcia L. Huber et al., Viscosity correlations for minor constituent fluids in natural gas: n-octane, n-nonane and n-decane, Fluid Phase Equilib. 224 (2004) 263-270, doi:10.1016/j.fluid.2004.07.012
@@ -2233,6 +2287,7 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
   - Mulero-JPCRD-2014: A. Mulero and I. Cachadiña, Recommended Correlations for the Surface Tension of Several Fluids Included in the REFPROP Program, J. Phys. Chem. Ref. Data 43 (2014) 023104-1:8, doi:10.1063/1.4878755
   - Muzny-JCED-2013: Chris D. Muzny et al., Correlation for the Viscosity of Normal Hydrogen Obtained from Symbolic Regression, J. Chem. Eng. Data  (2013) , doi:10.1021/je301273j
   - Mylona-JPCRD-2014-xylenes: S. K. Mylona et al., Reference Correlations of the Thermal Conductivity of o-Xylene, m-Xylene, p-Xylene, and Ethylbenzene from the Triple Point to 700 K and Moderate Pressures, J. Phys. Chem. Ref. Data 43 (2014) 043104, doi:10.1063/1.4901166
+  - OrtizVega-JPCRD-2019: D. O. Ortiz-Vega et al., Equation of state for Helium-4,  ()
   - Perkins-JCED-2002-Isobutane: R.A. Perkins, Measurement and Correlation of the Thermal Conductivity of Isobutane from 114 K to 600 K at Pressures to 70 MPa, J. Chem. Eng. Data 47 (2002) 1272-1279, doi:10.1021/je010121u
   - Perkins-JCED-2002-nButane: R.A. Perkins et al., Measurement and Correlation of the Thermal Conductivity of Butane from 135 K to 600 K at Pressures to 70 MPa, J. Chem. Eng. Data 47 (2002.) 1263-1271, doi:10.1021/je0101202
   - QuinonesCisneros-JCED-2012: Sergio E. Quiñones-Cisneros et al., Reference Correlation for the Viscosity Surface of Hydrogen Sulfide, J. Chem. Eng. Data 57 (2012) 3014-3018, doi:10.1021/je300601h

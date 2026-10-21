@@ -75,8 +75,9 @@ test("a natural gas of ten components: bubble and dew temperatures as CoolProp's
   assert.ok(Math.abs(r.cricondenbar.P_kPa / c.cricondenbar.P_kPa - 1) < 2e-3 && Math.abs(r.cricondenbar.T_K - c.cricondenbar.T_K) < 0.5, JSON.stringify(r.cricondenbar));
 });
 
-test("three natural gases: the dew curve against the measured dew points, with CHEPTA's k_ij (Zhang et al. 2020)", () => {
-  // the paper's own averages (Table 4) for these gases: Peng-Robinson 4.66, 3.41, 3.45 K; SRK 2.81, 1.93, 1.41 K
+test("four natural gases: the dew curve against the measured dew points, with CHEPTA's k_ij (Zhang et al. 2020)", () => {
+  // the paper's own averages for these gases (Tables 4 and 5): Peng-Robinson 4.66, 3.41, 3.45 K and 1.58 K (RG14);
+  // SRK 2.81, 1.93, 1.41 K and 2.12 K
   const found = {};
   for (const m of zhang.mixtures.filter(x => x.chepta_mole_fractions)) {
     const ids = Object.keys(m.chepta_mole_fractions), z = Object.values(m.chepta_mole_fractions);
@@ -93,7 +94,8 @@ test("three natural gases: the dew curve against the measured dew points, with C
       assert.ok(dev.length >= m.dew_points.rows.length - 5, `${m.id} ${model}: ${dev.length} of ${m.dew_points.rows.length}`);
     }
   }
-  // what CHEPTA gives (2026-10-21): PR 4.50, 3.09, 3.16 K; SRK 2.43, 1.80, 1.76 K: held to 5 K (PR) and 3 K (SRK)
+  // what CHEPTA gives (2026-10-21; neopentane, helium and methylcyclohexane in the databank): PR 4.61, 3.14, 3.24, 2.72 K;
+  // SRK 2.47, 1.82, 1.79, 1.26 K: held to 5 K (PR) and 3 K (SRK)
   for (const [k, v] of Object.entries(found)) assert.ok(v < (k.endsWith("PR") ? 5 : 3), `${k}: mean deviation ${v} K`);
 });
 

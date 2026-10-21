@@ -6,7 +6,7 @@
   "access": "Open access, ACS AuthorChoice License (free to read; copying and redistribution for non-commercial purposes)",
   "tables": "Table 2 (compositions, mol %), Table 3 (hydrocarbon dew points, P in MPa and T in °C); Table 6 (the method checked on pure propane: within 0.5 °C)"
  },
- "_about": "Measured hydrocarbon dew points (chilled mirror) of three gravimetrically prepared synthetic natural gases (SNG26-28, certified reference gases, expanded uncertainty below 2 % per component) and one real gas from a gas field (RG14). Values as printed, read from the article's full text (PubMed Central XML, tables 2 and 3) by script. chepta_mole_fractions: the composition as CHEPTA components, mol % / 100, with neopentane (0.0060-0.0089 mol %) counted as isopentane, as CHEPTA has no neopentane; RG14 is not used: helium and methylcyclohexane are not CHEPTA components.",
+ "_about": "Measured hydrocarbon dew points (chilled mirror) of three gravimetrically prepared synthetic natural gases (SNG26-28, certified reference gases, expanded uncertainty below 2 % per component) and one real gas from a gas field (RG14). Values as printed, read from the article's full text (PubMed Central XML, tables 2 and 3) by script. chepta_mole_fractions: the composition as CHEPTA components, mol % / 100 (neopentane, helium and methylcyclohexane were added to CHEPTA for these gases on 2026-10-21; before, neopentane was counted as isopentane and RG14 was not used). Components printed as 0.0000 mol % (n-C11, n-C12 in RG14) are left out.",
  "mixtures": [
   {
    "id": "SNG26",
@@ -31,7 +31,8 @@
     "propane": 0.00935,
     "isobutane": 0.00241,
     "n-butane": 0.00149,
-    "isopentane": 0.000885,
+    "neopentane": 7.1e-05,
+    "isopentane": 0.000814,
     "n-pentane": 0.000308,
     "n-hexane": 0.00115
    },
@@ -160,7 +161,8 @@
     "propane": 0.0294,
     "isobutane": 0.00606,
     "n-butane": 0.00582,
-    "isopentane": 0.00227,
+    "neopentane": 6e-05,
+    "isopentane": 0.00221,
     "n-pentane": 0.00112,
     "n-hexane": 0.00212
    },
@@ -329,7 +331,8 @@
     "propane": 0.0191,
     "isobutane": 0.00348,
     "n-butane": 0.00428,
-    "isopentane": 0.001529,
+    "neopentane": 8.9e-05,
+    "isopentane": 0.00144,
     "n-pentane": 0.00133,
     "n-hexane": 0.00301
    },
@@ -506,11 +509,30 @@
     "n-C11": 0.0,
     "n-C12": 0.0
    },
-   "chepta_mole_fractions": null,
-   "not_in_chepta": [
-    "He",
-    "methylcyclohexane"
-   ],
+   "chepta_mole_fractions": {
+    "helium": 0.000109,
+    "hydrogen": 0.000148,
+    "nitrogen": 0.008611,
+    "carbon-dioxide": 0.000541,
+    "methane": 0.907842,
+    "ethane": 0.064497,
+    "propane": 0.010973,
+    "isobutane": 0.001642,
+    "n-butane": 0.002053,
+    "neopentane": 4.2e-05,
+    "isopentane": 0.00071,
+    "n-pentane": 0.000675,
+    "n-hexane": 0.000756,
+    "benzene": 0.000234,
+    "cyclohexane": 0.000119,
+    "n-heptane": 0.00045,
+    "methylcyclohexane": 0.000256,
+    "toluene": 8.7e-05,
+    "n-octane": 0.00019,
+    "n-nonane": 5.9e-05,
+    "n-decane": 6e-06
+   },
+   "not_in_chepta": [],
    "dew_points": {
     "columns": [
      "P_MPa",

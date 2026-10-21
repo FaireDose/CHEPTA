@@ -82,8 +82,8 @@ export const INPUTS = {
   ternary: { kind: "slots", n: 3, liquid: true, what: "a ternary map", roles: ["top corner", "lower left", "lower right"] },
   azeotropes: { kind: "list", min: 2, max: 4, liquid: true, what: "an azeotrope search" },
   pxy: { kind: "slots", n: 2, liquid: true, what: "a P-x-y diagram", roles: ["x axis", "1 − x"] },
-  // up to 12: a natural gas (the examples have ten components)
-  envelope: { kind: "list", min: 1, minActivity: 2, max: 12, liquid: true, what: "a phase envelope" },
+  // up to 24: a natural gas (the examples have 11 and 21 components)
+  envelope: { kind: "list", min: 1, minActivity: 2, max: 24, liquid: true, what: "a phase envelope" },
   // one component is a pure substance heated, cooled or boiled (any model)
   flash: { kind: "list", min: 1, max: 6, liquid: true, what: "a flash" },
   // the components of the exchanger's streams (both streams of the two-stream mode use them)

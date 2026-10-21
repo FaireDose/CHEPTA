@@ -26,11 +26,11 @@ def main():
                 continue
             comp = m["chepta_mole_fractions"]
             out["examples"].append({
-                "id": m["id"], "label": f"Natural gas {m['id']} (measured dew points)",
+                "id": m["id"], "label": f"Natural gas {m['id']}{', from a gas field' if m['id'].startswith('RG') else ''} (measured dew points)",
                 "components": list(comp), "z": list(comp.values()),
                 "dew_points": [[round(T + 273.15, 2), round(P * 1000, 1)] for P, T in m["dew_points"]["rows"]],
                 "source_ids": [sid], "source": where, "file": rel,
-                "note": "Neopentane counted as isopentane (CHEPTA has no neopentane)." if "neoC5" in m["composition_mol_percent"] else None,
+                "note": None,
             })
     OUT.write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n")
     print(f"wrote {OUT.relative_to(ROOT)}: {len(out['examples'])} examples")

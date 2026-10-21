@@ -198,7 +198,8 @@ test("selection helpers: toggle, rotate, search", () => {
   assert.deepEqual(toggleComponent(["water"], "ethanol"), ["water", "ethanol"]);
   assert.deepEqual(toggleComponent(["water", "ethanol"], "water"), ["ethanol"]);
   const full = listComponents().slice(0, MAX_COMPONENTS).map(c => c.id);
-  assert.deepEqual(toggleComponent(full, "ethylene"), full, "no seventh component");
+  // (the component after the full list: with MAX_COMPONENTS 24 since 2026-10-21, ethylene is inside it)
+  assert.deepEqual(toggleComponent(full, listComponents()[MAX_COMPONENTS].id), full, "no component beyond the most");
   assert.deepEqual(rotate(MAC), ["acetone", "chloroform", "methanol"]);
   assert.deepEqual(rotate(["water"]), ["water"]);
 
@@ -218,7 +219,9 @@ test("selection helpers: toggle, rotate, search", () => {
       "hmf", "bhet",
       // the held components added 2026-10-20 ("Dimethyl 2,5-furandicarboxylate", "2,5-furandimethanol",
       // "5-(Ethoxymethyl)furfural")
-      "dimethyl-fdca", "bhmf", "emf"].sort());
+      "dimethyl-fdca", "bhmf", "emf",
+      // added 2026-10-21 ("Methylcyclohexane")
+      "methylcyclohexane"].sort());
   assert.deepEqual(filterComponents(all, "7732-18-5").map(c => c.id), ["water"]);
   assert.deepEqual(filterComponents(all, "chcl3").map(c => c.id), ["chloroform"]);
   assert.deepEqual(filterComponents(all, "zzz"), []);

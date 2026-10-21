@@ -160,8 +160,8 @@ export const PRESETS = [
   ...ENVELOPE_EXAMPLES.examples.map(ex => ({ label: ex.label, components: ex.components, z: ex.z, view: "envelope", model: "PR" })),
 ];
 
-// 12: a natural gas on the phase envelope (each view takes what it needs: two for T-x-y, six for the flash)
-export const MAX_COMPONENTS = 12;
+// 24: a natural gas on the phase envelope (each view takes what it needs: two for T-x-y, six for the flash)
+export const MAX_COMPONENTS = 24;
 const START_ALIASES = { drum: "flash", exchanger: "hx", "heat-exchanger": "hx", eos: "eos", "pt": "envelope", "p-x-y": "pxy", "t-x-y": "txy", vle: "ternary", gases: "henry", solubility: "henry", explorer: "properties", library: "sources",
   solids: "solid", eutectic: "sle", "solid-liquid": "sle" };
 
@@ -222,7 +222,7 @@ export function viewAvailability(view, ids, model = "NRTL", ud = null) {
     case "envelope": {
       const min = isEosModel(model) ? 1 : 2;
       if (liq.length < min) return { enabled: false, use: [], reason: min === 1 ? "Select at least one component." : `With an activity model the phase envelope needs two liquids; ${word(liq.length)} selected.` };
-      return { enabled: true, use: liq.slice(0, 12) };
+      return { enabled: true, use: liq.slice(0, 24) };
     }
     case "flash": case "hx": {
       // one component is a pure substance heated, cooled or boiled, with any model

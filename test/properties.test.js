@@ -41,9 +41,11 @@ function statedMaxDeviation(rec) {
 
 test("every component has every property, as a record or an explicit 'no open data' marker", () => {
   // 161 since 2026-10-20: D-xylose and cis,cis-muconic acid (proposal 0009, batch 4; identity from PubChem); 171 with
-  // the ten held for want of an open vapour pressure (glycerol carbonate has one; nine have none)
-  assert.equal(listComponents().length, 171);
-  assert.equal(GASES.length, 23);
+  // the ten held for want of an open vapour pressure (glycerol carbonate has one; nine have none); 174 with
+  // neopentane, helium and methylcyclohexane (2026-10-21, the natural gases of the phase-envelope examples)
+  assert.equal(listComponents().length, 174);
+  // 25: neopentane (Tb 282.7 K) and helium are gases at 25 °C
+  assert.equal(GASES.length, 25);
   for (const { id, name } of listComponents()) {
     const props = components[id].properties;
     assert.ok(props, `${name}: no properties object`);
@@ -247,7 +249,8 @@ test("props() returns liquid and vapour properties for every component at a typi
     // in chemsep2.xml starts at 420 K)
     const vapourMin = ["idealGasHeatCapacity", "vapourViscosity", "vapourThermalConductivity"]
       .map(n => components[id].properties[n]?.Tmin_K ?? 0);
-    const V = TmidV ? p.props(TmidV, p.psat(TmidV) / 100) : p.props(Math.max(p.Tb_K + 10, ...vapourMin), 1);
+    // (at most halfway to the critical point: helium's is 1 K above its boiling point, so Tb + 10 K is supercritical)
+    const V = TmidV ? p.props(TmidV, p.psat(TmidV) / 100) : p.props(Math.max(Number.isFinite(p.Tc_K) ? Math.min(p.Tb_K + 10, (p.Tb_K + p.Tc_K) / 2) : p.Tb_K + 10, ...vapourMin), 1);
     assert.equal(V.phase, "vapour", name);
     const recordOfV = { cp_J_molK: "idealGasHeatCapacity", mu_Pa_s: "vapourViscosity", k_W_mK: "vapourThermalConductivity",
       h_J_mol: "idealGasHeatCapacity" };

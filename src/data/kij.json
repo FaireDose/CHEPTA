@@ -7928,6 +7928,44 @@
     "chemsep-eos-ipd"
    ],
    "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "helium",
+   "j": "carbon-monoxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.5463,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep pr.ipd",
+    "printed": ".5463",
+    "conditions": "Helium-4/Carbon Monoxide p203",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
+  },
+  {
+   "model": "SRK",
+   "i": "helium",
+   "j": "carbon-monoxide",
+   "set": "chemsep",
+   "default": true,
+   "kij": 0.6507,
+   "tier": "databank",
+   "source": {
+    "file": "ChemSep srk.ipd",
+    "printed": ".6507",
+    "conditions": "Helium-4/Carbon Monoxide p203",
+    "entries_in_file": 1
+   },
+   "source_ids": [
+    "chemsep-eos-ipd"
+   ],
+   "alternatives": []
   }
  ]
 }

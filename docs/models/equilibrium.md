@@ -98,10 +98,13 @@ Checked ([`test/envelope.test.js`](../../test/envelope.test.js)):
   0.05 K and 0.1 %; a natural gas of ten components, the bubble temperatures of CoolProp's saturation solver within
   0.01 K and its dew temperatures within 0.1 K, the critical point between the pressures where CoolProp's bubble and
   dew temperatures meet (CoolProp's separate critical-point solver gives a point 0.2 K off its own flash curve);
-- against the measured dew points of three natural gases (Zhang et al., ACS Omega 5 (2020) 8463, open access;
-  [`validation/data/envelope/zhang2020_natural_gas.json`](../../validation/data/envelope/zhang2020_natural_gas.json)),
-  with CHEPTA's k_ij: mean deviations 3.1-4.5 K (Peng–Robinson) and 1.8-2.4 K (SRK), as the paper's own Table 4
-  (3.4-4.7 and 1.4-2.8 K). The three gases are the Examples of the envelope view, with their measured points drawn.
+- against the measured dew points of four natural gases (Zhang et al., ACS Omega 5 (2020) 8463, open access;
+  [`validation/data/envelope/zhang2020_natural_gas.json`](../../validation/data/envelope/zhang2020_natural_gas.json)):
+  three synthetic gases of 11 components and a real gas of 21 (with hydrogen and helium), with CHEPTA's k_ij: mean
+  deviations 2.7-4.6 K (Peng–Robinson) and 1.3-2.5 K (SRK), as the paper's own Tables 4 and 5 (1.6-4.7 and 1.4-2.8 K).
+  The four gases are the Examples of the envelope view, with their measured points drawn.
+- a bubble curve that turns back up (hydrogen and helium dissolve less in the cold liquid, so the bubble pressure has
+  a lowest point): the line ends at three times that lowest pressure, and says so.
 
 ## Solids: solid-liquid equilibrium
 

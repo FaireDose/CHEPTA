@@ -79,8 +79,8 @@ test("each view asks for what it needs: one, two, three components, a list, or a
   }
   assert.deepEqual([needsFor("envelope", "UNIQUAC").min, needsFor("envelope", "SRK").min], [2, 1]);
   assert.deepEqual([INPUTS.azeotropes.min, INPUTS.azeotropes.max], [2, 4]);
-  // 12 since the natural-gas examples of the envelope (ten components; the maintainer, 2026-10-21)
-  assert.deepEqual([INPUTS.envelope.min, INPUTS.envelope.max], [1, 12]);
+  // 24 since the natural-gas examples of the envelope (11 and 21 components; the maintainer, 2026-10-21)
+  assert.deepEqual([INPUTS.envelope.min, INPUTS.envelope.max], [1, 24]);
   assert.equal(INPUTS.henry.kind, "henry");
   assert.equal(INPUTS.steam.kind, "none");
   for (const v of ["txy", "ternary", "pxy", "properties"]) assert.equal(INPUTS[v].roles.length, INPUTS[v].n, v);

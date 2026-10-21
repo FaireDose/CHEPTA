@@ -386,6 +386,20 @@
     "detail": "CoolProp MethylLinoleate: eos Huber-EF-2009"
    }
   },
+  "tb/neopentane": {
+   "T_C": {
+    "value": 9.504976,
+    "source": "coolprop",
+    "detail": "CoolProp Neopentane: eos Lemmon-JCED-2006"
+   }
+  },
+  "tb/helium": {
+   "T_C": {
+    "value": -268.9262,
+    "source": "coolprop",
+    "detail": "CoolProp Helium: eos OrtizVega-JPCRD-2019"
+   }
+  },
   "tb/dichloromethane": {
    "T_C": {
     "value": 39.85,

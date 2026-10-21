@@ -143,6 +143,7 @@ export function phaseEnvelope(sys, z, opts = {}) {
   const pts = [{ X: X.slice() }];
   let s = n + 1, dS = 0.05, notes = [], complete = false;
   const sign0 = refSign;
+  let bubMin = { P: Infinity, T: null };
   while (pts.length < maxPoints) {
     // sensitivities at the current point: J dX/dS = e_(n+2)
     const e = new Array(N).fill(0); e[n + 1] = 1;
@@ -160,10 +161,13 @@ export function phaseEnvelope(sys, z, opts = {}) {
     const Js = sol.J.map(r => r.slice()); Js[n + 1] = new Array(N).fill(0); Js[n + 1][s] = 1;
     const dXs = solveLinear(Js, e);
     if (!dXs) { notes.push("The line stops where its equations become singular."); break; }
-    if (nearCrit && s < n && Math.sign(dS) !== Math.sign(X[s]) && Math.abs(dS) >= Math.abs(X[s]) * 0.5) {
-      // the step over the critical point: to the mirror point, where this ln K has the other sign
+    const heading = nearCrit && s < n && Math.sign(dS) !== Math.sign(X[s]);
+    if (heading && Math.abs(X[s]) <= 0.03) {
+      // close to the critical point: the step over it, to the mirror point where this ln K has the other sign
       dS = -2 * X[s];
     } else {
+      // (heading for it from farther: no closer than 0.025 in this ln K, so that the next step is the jump)
+      if (heading) dS = Math.sign(dS) * Math.min(Math.abs(dS), Math.abs(X[s]) - 0.025);
       // a step of at most 0.25 in ln K, 0.02 in ln T (2 %) and 0.1 in ln P (10 %), so that the line drawn and read
       // between its points stays within about 0.05 K of the equations near the cricondentherm
       const lims = dXs.map((v, k) => (k < n ? 0.25 : k === n ? 0.02 : 0.1) / Math.max(Math.abs(v), 1e-300));
@@ -171,13 +175,20 @@ export function phaseEnvelope(sys, z, opts = {}) {
       if (Math.abs(dS) > lim) dS = Math.sign(dS) * lim;
     }
     let next = null;
+    // a jump over the critical point that fails lands further on the other side (3, 5, 9 times the remaining ln K),
+    // before the step is halved: close to the critical point Newton cannot creep up to it
+    const jump = heading && Math.abs(X[s]) <= 0.03;
+    const farther = jump ? [3, 5, 9].map(f => -f * X[s]) : [];
     for (let tries = 0; tries < 16 && !next; tries++) {
-      const guess = X.map((v, k) => v + dXs[k] * dS);
+      // the first try of a jump starts from the mirror point (every ln K negated, the same T and P), as thermopack's
+      // change of formulation: near the critical point the line is symmetric to first order, while the sensitivities
+      // of T and P can be too large for the linear prediction
+      const guess = jump && tries === 0 ? X.map((v, k) => (k < n ? -v : v)) : X.map((v, k) => v + dXs[k] * dS);
       next = newton(guess, s, X[s] + dS);
       // a point far from its prediction has jumped to another part of the line (as thermopack's "excessive jump"):
       // refused, and the step halved
       if (next && (Math.abs(next.X[n] - guess[n]) > 0.02 + 0.5 * Math.abs(guess[n] - X[n]) || Math.abs(next.X[n + 1] - guess[n + 1]) > 0.05 + 0.5 * Math.abs(guess[n + 1] - X[n + 1]))) next = null;
-      if (!next) dS /= 2;
+      if (!next) dS = farther.length ? farther.shift() : dS / 2;
     }
     if (!next) { notes.push(`The line stops at ${(+Math.exp(X[n]).toFixed(2))} K, ${+Math.exp(X[n + 1]).toPrecision(5)} kPa, where the steps could not continue.`); break; }
     X = next.X; sol = next;
@@ -191,6 +202,17 @@ export function phaseEnvelope(sys, z, opts = {}) {
       break;
     }
     if (Math.exp(X[n]) < 20) { notes.push("The bubble curve is followed down to 20 K."); complete = true; break; }
+    // a bubble curve that turns back up: with light gases (hydrogen, helium) the bubble pressure has a lowest point and
+    // rises again as the temperature falls, since they dissolve less in the cold liquid; the line ends there
+    if (Math.sign(X[ref]) !== sign0) {
+      const P = Math.exp(X[n + 1]);
+      if (P < bubMin.P) bubMin = { P, T: Math.exp(X[n]) };
+      else if (P > 3 * bubMin.P && X[n] < pts.at(-2).X[n]) {
+        notes.push(`The bubble pressure is lowest at ${+bubMin.T.toFixed(1)} K, ${+bubMin.P.toPrecision(3)} kPa and rises again as the temperature falls (light gases such as hydrogen and helium dissolve less in the cold liquid): the bubble curve is drawn to three times that pressure and does not return to the starting pressure.`);
+        complete = true; break;
+      }
+    }
+    if (Math.exp(X[n + 1]) > 1e6) { notes.push("The line stops above 1000 MPa."); break; }
   }
   if (pts.length >= maxPoints) notes.push(`The line stops after ${maxPoints} points.`);
 

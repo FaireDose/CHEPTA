@@ -12,6 +12,7 @@
     "propane",
     "isobutane",
     "n-butane",
+    "neopentane",
     "isopentane",
     "n-pentane",
     "n-hexane"
@@ -24,7 +25,8 @@
     0.00935,
     0.00241,
     0.00149,
-    0.000885,
+    7.1e-05,
+    0.000814,
     0.000308,
     0.00115
    ],
@@ -127,7 +129,7 @@
    ],
    "source": "Zhang et al., ACS Omega 5 (2020) 8463, Tables 2 and 3",
    "file": "validation/data/envelope/zhang2020_natural_gas.json",
-   "note": "Neopentane counted as isopentane (CHEPTA has no neopentane)."
+   "note": null
   },
   {
    "id": "SNG27",
@@ -140,6 +142,7 @@
     "propane",
     "isobutane",
     "n-butane",
+    "neopentane",
     "isopentane",
     "n-pentane",
     "n-hexane"
@@ -152,7 +155,8 @@
     0.0294,
     0.00606,
     0.00582,
-    0.00227,
+    6e-05,
+    0.00221,
     0.00112,
     0.00212
    ],
@@ -295,7 +299,7 @@
    ],
    "source": "Zhang et al., ACS Omega 5 (2020) 8463, Tables 2 and 3",
    "file": "validation/data/envelope/zhang2020_natural_gas.json",
-   "note": "Neopentane counted as isopentane (CHEPTA has no neopentane)."
+   "note": null
   },
   {
    "id": "SNG28",
@@ -308,6 +312,7 @@
     "propane",
     "isobutane",
     "n-butane",
+    "neopentane",
     "isopentane",
     "n-pentane",
     "n-hexane"
@@ -320,7 +325,8 @@
     0.0191,
     0.00348,
     0.00428,
-    0.001529,
+    8.9e-05,
+    0.00144,
     0.00133,
     0.00301
    ],
@@ -467,7 +473,109 @@
    ],
    "source": "Zhang et al., ACS Omega 5 (2020) 8463, Tables 2 and 3",
    "file": "validation/data/envelope/zhang2020_natural_gas.json",
-   "note": "Neopentane counted as isopentane (CHEPTA has no neopentane)."
+   "note": null
+  },
+  {
+   "id": "RG14",
+   "label": "Natural gas RG14, from a gas field (measured dew points)",
+   "components": [
+    "helium",
+    "hydrogen",
+    "nitrogen",
+    "carbon-dioxide",
+    "methane",
+    "ethane",
+    "propane",
+    "isobutane",
+    "n-butane",
+    "neopentane",
+    "isopentane",
+    "n-pentane",
+    "n-hexane",
+    "benzene",
+    "cyclohexane",
+    "n-heptane",
+    "methylcyclohexane",
+    "toluene",
+    "n-octane",
+    "n-nonane",
+    "n-decane"
+   ],
+   "z": [
+    0.000109,
+    0.000148,
+    0.008611,
+    0.000541,
+    0.907842,
+    0.064497,
+    0.010973,
+    0.001642,
+    0.002053,
+    4.2e-05,
+    0.00071,
+    0.000675,
+    0.000756,
+    0.000234,
+    0.000119,
+    0.00045,
+    0.000256,
+    8.7e-05,
+    0.00019,
+    5.9e-05,
+    6e-06
+   ],
+   "dew_points": [
+    [
+     275.65,
+     8500.0
+    ],
+    [
+     280.15,
+     7500.0
+    ],
+    [
+     283.65,
+     6600.0
+    ],
+    [
+     287.75,
+     5560.0
+    ],
+    [
+     288.65,
+     4550.0
+    ],
+    [
+     288.75,
+     4020.0
+    ],
+    [
+     288.15,
+     3570.0
+    ],
+    [
+     287.95,
+     3050.0
+    ],
+    [
+     285.35,
+     1900.0
+    ],
+    [
+     280.95,
+     1200.0
+    ],
+    [
+     272.55,
+     600.0
+    ]
+   ],
+   "source_ids": [
+    "zhang2020-natural-gas"
+   ],
+   "source": "Zhang et al., ACS Omega 5 (2020) 8463, Tables 2 and 3",
+   "file": "validation/data/envelope/zhang2020_natural_gas.json",
+   "note": null
   }
  ]
 }

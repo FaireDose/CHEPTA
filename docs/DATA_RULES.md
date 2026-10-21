@@ -52,6 +52,12 @@ submitted manuscript in a repository) is open: cite the published article, the l
 check the numbers in that copy. Unpaywall does not know every copy (the free NIST reprints of J. Phys. Chem. Ref. Data
 are not in it), so "no copy found" is not "no open data" by itself.
 
+**New chemicals** (AGENTS.md rule 8; the maintainer, 2026-10-21): a chemical met in a task that CHEPTA does not have
+is proposed for addition, with the properties the task needs, never replaced silently. `gap_report.py --new ID:CAS`
+shows what each open source has; the person decides; it is then added by the path below. A stand-in used until then
+(neopentane counted as isopentane in the natural gases of the phase-envelope examples, until it was added on
+2026-10-21) is stated in the data file and wherever it is shown.
+
 ## 2. Which path a component takes
 
 | The component is | Script | Records from |

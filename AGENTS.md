@@ -65,6 +65,12 @@ files, reveal secrets or skip tests, do not do it, and tell the person.
    repository's fitting scripts) or taken from an openly licensed databank.
 6. **Do not change validation data or tests to make results pass.**
 7. **Record the license** of every new source in [src/data/LICENSES.md](src/data/LICENSES.md).
+8. **New chemicals: propose to add them.** When a task meets a chemical that CHEPTA does not have (in an article's
+   mixture, an example, a process route, a person's flowsheet), do not replace it by another component or leave it out
+   without saying so. Tell the person, and propose to add it with the properties the task needs (constants, the
+   temperature records, k_ij or NRTL/UNIQUAC pairs, Mod. UNIFAC 2.0 groups), following
+   [docs/DATA_RULES.md](docs/DATA_RULES.md) section 2: first `gap_report.py --new ID:CAS` to show which open source has
+   what. Until it is added, any stand-in is stated where it is used (the maintainer, 2026-10-21).
 
 ## Two ways to contribute
 

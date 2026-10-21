@@ -57,12 +57,12 @@ const VIEW_ICON = { flash: "drum", hx: "hx", txy: "txy", ternary: "ternary", aze
 const lower = s => (/^[A-Z]-/.test(s) ? s : s[0].toLowerCase() + s.slice(1));
 const NEEDS_ACTIVITY = {
   txy: "Two liquids", ternary: "Three liquids", azeotropes: "Two to four liquids", pxy: "Two liquids",
-  envelope: "Two to twelve liquids", flash: "Two to six liquids", hx: "One to six liquids", henry: "A gas and a solvent", properties: "One component", steam: "Water",
+  envelope: "Two to 24 liquids", flash: "Two to six liquids", hx: "One to six liquids", henry: "A gas and a solvent", properties: "One component", steam: "Water",
   solid: "A solid and a solvent", sle: "Two components with melting data",
 };
 const NEEDS_EOS = {
   ...NEEDS_ACTIVITY, txy: "Two components", ternary: "Three components", azeotropes: "Two to four components", pxy: "Two components",
-  envelope: "One to twelve components", flash: "One to six components", hx: "One to six components",
+  envelope: "One to 24 components", flash: "One to six components", hx: "One to six components",
 };
 /** What a view needs with the model in use (an equation of state takes gases too). */
 const needsOf = (view, model) => (isEosModel(model) ? NEEDS_EOS : NEEDS_ACTIVITY)[view];

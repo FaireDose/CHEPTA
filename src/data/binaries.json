@@ -17113,6 +17113,76 @@
         "dias2014-2-propanol-isoamyl-alcohol"
       ],
       "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "methanol",
+      "j": "methylcyclohexane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 726.9433897993146,
+      "b_ji": 865.2651545624409,
+      "alpha": 0.4397,
+      "source": "ChemSep NRTL databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(methanol) 0.0373-0.441; 298.15 K: x(methanol) 0.0574-0.459; 323.15 K: x(methanol) 0.0831-0.468; 348.15 K: x(methanol) 0.121-0.461; 373.15 K: x(methanol) 0.176-0.424), not checked against data in this import.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "methanol",
+      "j": "methylcyclohexane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -0.504376938425813,
+      "b_ji": -781.3639152836786,
+      "source": "ChemSep UNIQUAC databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(methanol) 0.0397-0.906; 298.15 K: x(methanol) 0.0611-0.895; 323.15 K: x(methanol) 0.0884-0.882; 348.15 K: x(methanol) 0.121-0.867; 373.15 K: x(methanol) 0.164-0.848), not checked against data in this import.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "methylcyclohexane",
+      "j": "phenol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 1302.2682438140516,
+      "b_ji": -221.1382640154788,
+      "alpha": 0.2836,
+      "source": "ChemSep NRTL databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(methylcyclohexane) 0.632-0.984; 298.15 K: x(methylcyclohexane) 0.642-0.974; 323.15 K: x(methylcyclohexane) 0.662-0.958; 348.15 K: x(methylcyclohexane) 0.694-0.935; 373.15 K: x(methylcyclohexane) 0.747-0.892), not checked against data in this import.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "methylcyclohexane",
+      "j": "phenol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -767.6790613579931,
+      "b_ji": 259.6906673061195,
+      "source": "ChemSep UNIQUAC databank (via the open-source thermo library). The set predicts two liquid phases (273.15 K: x(methylcyclohexane) 0.806-0.976; 298.15 K: x(methylcyclohexane) 0.795-0.963; 323.15 K: x(methylcyclohexane) 0.795-0.939; 348.15 K: x(methylcyclohexane) 0.817-0.9), not checked against data in this import.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     }
   ]
 }

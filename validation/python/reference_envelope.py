@@ -5,8 +5,8 @@ around", stepping in the vapour density: src/Backends/Helmholtz/PhaseEnvelopeRou
 critical points by its own method (all_critical_points). CoolProp shares no code with the JavaScript engine. Its
 critical constants and acentric factors are those of CHEPTA's records for these components (both from CoolProp's fluid
 files); the binary parameters are set to zero on both sides, so that the comparison checks the algorithm, not the
-parameters. Natural gas SNG27 of Zhang et al., ACS Omega 5 (2020) 9235 (Table 2), with its neopentane counted as
-isopentane (CHEPTA has no neopentane), as in validation/data/envelope/zhang2020_natural_gas.json.
+parameters. Natural gas SNG27 of Zhang et al., ACS Omega 5 (2020) 8463 (Table 2; eleven components), as in
+validation/data/envelope/zhang2020_natural_gas.json.
 
 Writes validation/fixtures/envelope.json.
 
@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "fixtures" / "envelope.json"
 COOLPROP = {"methane": "Methane", "ethane": "Ethane", "propane": "Propane", "isobutane": "IsoButane", "n-butane": "n-Butane",
             "isopentane": "Isopentane", "n-pentane": "n-Pentane", "n-hexane": "n-Hexane", "nitrogen": "Nitrogen",
-            "carbon-dioxide": "CarbonDioxide"}
+            "carbon-dioxide": "CarbonDioxide", "neopentane": "Neopentane"}
 
 
 def cases():
