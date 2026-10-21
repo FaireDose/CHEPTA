@@ -62,6 +62,16 @@ Code: [`src/units/heat-exchange.js`](../../src/units/heat-exchange.js) (the calc
   outlet from H_out = H_in + power. A vapour at the inlet is refused. η defaults to 0.75, the low end of the "target
   pump efficiencies ... 75 to 85 percent" of NC State Extension AG-452-6; the U.S. DOE's Improving Pumping System
   Performance (2006) gives "from 35% to more than 90%".
+- `compressor` and `expander` (proposal 0013, step 6): the isentropic outlet is the P-S flash at the inlet's entropy
+  ([thermodynamics.md](thermodynamics.md#mixture-entropy)), w_s = h_s − h_in; the work is w_s/η (compressor) or η w_s
+  (expander, negative), the outlet from H_out = H_in + power. An inlet with liquid is refused; liquid that forms along
+  the isentropic path is said. η defaults to the U.S. NETL's Process Modeling Design Parameters (2019, public domain):
+  0.75 for a compressor, the lower of its single-stage compressors' 75 and 84 % (Exhibits 5-7 and 4-8); 0.80 for an
+  expander, its boiler feed pump turbine (Exhibit 4-3; its steam turbines 85-93.5 %). Checked against an independent
+  Peng–Robinson ([`validation/python/reference_compressor.py`](../../validation/python/reference_compressor.py)):
+  methane, nitrogen and carbon dioxide compressed, methane + ethane compressed and expanded, propane expanded from
+  saturated vapour into the dome: isentropic outlets within 0.11 K (0.10 K for the mixture: CHEPTA's ethane ideal-gas
+  record is 0.6 % below CoolProp's cp0), work within 0.1 %.
 - Energy streams: [flowsheet.md](flowsheet.md#blocks-layer-4).
 
 ## How it is checked

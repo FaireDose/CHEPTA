@@ -49,6 +49,6 @@ by hand; the script is named at the top of each.
 
 | Page | Covers |
 |---|---|
-| [schema/project-4.json](schema/project-4.json) | JSON schema of project files (formats 2 to 4: the flowsheet, user data, energy streams and the blocks of proposal 0013) |
+| [schema/project-5.json](schema/project-5.json) | JSON schema of project files (formats 2 to 5: the flowsheet, user data, energy streams and the blocks of proposal 0013, the fluid charts); [project-4.json](schema/project-4.json) for format 4 |
 | [schema/project-2.json](schema/project-2.json) | JSON schema of project files of format 2 (with the flowsheet) |
 | [../ai/README.md](../ai/README.md) | Instructions and skills for AI assistants; contribution packages |

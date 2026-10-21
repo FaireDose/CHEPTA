@@ -105,10 +105,12 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
   `sizing: { utility: { kind: "steam", P_kPa: 500 }, U: { service: "steam-water-oil" } }` gives the
   area), `hx` (two streams: one of T_hot_out_K, T_cold_out_K, VF_hot_out, VF_cold_out, duty_kW,
   dTmin_K; optional `U` for the area), `valve` (P_kPa or dP_kPa), `pump` (P_kPa or dP_kPa;
-  efficiency, 0.75 if not given), `product` (the end of a stream). Every outlet must go to a
+  efficiency, 0.75 if not given), `compressor` and `expander` (a gas: one of P_kPa, dP_kPa or
+  ratio, the outlet over the inlet pressure; isentropic efficiency, 0.75 and 0.80 if not given),
+  `product` (the end of a stream). Every outlet must go to a
   block or a product. Streams are written "BLOCK.port": feed out; mixer in, out; splitter and
   separator in, out (one stream per outlet); flash in, vapour, liquid, liquid2 (optional);
-  heater, valve, pump in, out; hx hot, cold (in and out); product in. Splitters, separators and
+  heater, valve, pump, compressor, expander in, out; hx hot, cold (in and out); product in. Splitters, separators and
   heaters may take several inlets (mixed first).
 - Energy streams (format 4): `energyStreams: [{ id: "Q1", to: "E1", duty_kW: 500 }]` gives a
   heater or drum its duty (it then needs one specification fewer: a heater calculates its

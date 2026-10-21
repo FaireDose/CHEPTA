@@ -32,8 +32,8 @@ Independent checks:
 
 ## Flash
 
-[`flash.js`](../../src/equilibrium/flash.js): `sys.flash({ z, T, P })`, `{ z, P, H }`, `{ z, P, VF }` and
-`{ z, T, VF }`, with the optional heat duty.
+[`flash.js`](../../src/equilibrium/flash.js): `sys.flash({ z, T, P })`, `{ z, P, H }`, `{ z, P, S }` (proposal 0013,
+step 6: the P-H search on the entropy), `{ z, P, VF }` and `{ z, T, VF }`, with the optional heat duty and entropy.
 
 - **Rachford–Rice:** Newton steps kept inside the bracket, with bisection as a fallback.
 - **K-values:**
@@ -105,6 +105,22 @@ Checked ([`test/envelope.test.js`](../../test/envelope.test.js)):
   The four gases are the Examples of the envelope view, with their measured points drawn.
 - a bubble curve that turns back up (hydrogen and helium dissolve less in the cold liquid, so the bubble pressure has
   a lowest point): the line ends at three times that lowest pressure, and says so.
+
+## Property charts
+
+[charts.js](../../src/equilibrium/charts.js), `CHEPTA.propertyChart(sys, z, opts)` (proposal 0013, step 7), with an
+equation of state: the data of a pressure-enthalpy, temperature-entropy or enthalpy-entropy chart.
+- **Dome:** for one component, its saturated liquid and vapour from the equation's vapour pressure up to the critical
+  point, from 0.55 Tc or the melting point; for a mixture, the feed at its bubble and dew points along the phase
+  envelope.
+- **Lines:** isobars, isotherms (a pure fluid's flat inside the dome) and lines of constant vapour fraction, each
+  point a flash with its enthalpy and entropy.
+- **Compression:** the inlet, the isentropic outlet (P-S flash) and the outlet at the efficiency; the path between
+  them is drawn straight.
+- **Workbench:** the Charts workspace (formerly Steam): Water and steam (IAPWS-IF97, now also P-h and h-s) or Any fluid,
+  per kg.
+- **Checks** ([test/charts.test.js](../../test/charts.test.js)): the dome and isobars of propane and carbon dioxide
+  within 0.5 % of an independent Peng–Robinson ([validation/python/reference_charts.py](../../validation/python/reference_charts.py)).
 
 ## Solids: solid-liquid equilibrium
 

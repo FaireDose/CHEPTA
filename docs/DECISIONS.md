@@ -77,8 +77,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
    from the archive; other solvents need PSRK or MHV2, not in CHEPTA yet.
 3. Review the two pairs whose 1-atm data sets disagree by more than 1 K (methanol + 2-propanol,
    water + 2-propanol; docs/PAIR_SCAN.md).
-4. Compressor, pump and valve blocks (shown as "coming later"; now in proposal 0013, 2026-10-20); asked for again on 2026-10-14, to follow the enthalpy of
-   a pure component through a compression (one-component flowsheets work since then). Optionally, then the energy side
+4. Compressor, pump and valve blocks: done (proposal 0013, 2026-10-20 and 2026-10-21). Optionally, the energy side
    of the Cavett problem (no published values to compare with).
 5. A "measured solubility" option next to the model, for a future crystallizer block.
 6. Grow the flowsheet suite: more seeds, P-H drums, and reactive cases once proposal 0010 exists.
@@ -160,10 +159,15 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   coefficients calculated from correlations with the stream's own properties and the exchanger's geometry (Lienhard
   and Lienhard, chapters 7-9) instead of the single examples of Table 1.1, proposed, for the maintainer to decide;
   the canvas's size and drawing speed for large flowsheets, later (the maintainer, 2026-10-21: "not now");
-  6. mixture entropy, the P-S flash, compressor and expander;
+  6. mixture entropy, the P-S flash, compressor and expander (done 2026-10-21,
+     docs/decisions/2026-10-21-03-entropy-compressor-charts.md; efficiencies 75 % and 80 % by default, from NETL's
+     Process Modeling Design Parameters, 2019);
   7. Charts: the gas phase envelope traced through the critical point (done 2026-10-21,
      docs/decisions/2026-10-21-01-phase-envelope.md; neopentane, helium and methylcyclohexane added for its natural
-     gases); P-H, T-S and H-S charts, with the steam charts, next, with step 6 (they need its entropy);
+     gases); P-H, T-S and H-S charts, with the steam charts (done 2026-10-21, with step 6: the Steam workspace is now
+     Charts; project format 5);
+  next, by the maintainer's request (2026-10-21): every error of the workbench as a small warning that opens its
+  details when pressed;
   8. later, Rating.
   Then 0010.
 - **0010, reactions:**

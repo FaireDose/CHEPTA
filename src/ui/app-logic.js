@@ -44,6 +44,8 @@ export const VIEWS = {
   sle: { workspace: "solubility", label: "Solid-liquid diagram" },
   properties: { workspace: "properties", label: "Property curves" },
   steam: { workspace: "steam", label: "Steam tables" },
+  // proposal 0013, step 7: P-h, T-s and h-s charts of any fluid or mixture with an equation of state
+  charts: { workspace: "steam", label: "Fluid chart" },
 };
 
 /** CHEPTA's repository: its issue forms (.github/ISSUE_TEMPLATE) and its Discussions forum. */
@@ -70,7 +72,7 @@ export function feedbackLinks({ version = "", setup = "", repo = REPO_URL } = {}
 }
 
 // the views CHEPTA.app takes as `start` (ai/instructions/use-chepta.md)
-const START_VIEWS = ["txy", "ternary", "azeotropes", "pxy", "envelope", "flash", "henry", "solid", "sle", "properties", "steam"];
+const START_VIEWS = ["txy", "ternary", "azeotropes", "pxy", "envelope", "flash", "henry", "solid", "sle", "properties", "steam", "charts"];
 
 /**
  * The AI assistants of the AI chat panel: where a new chat opens (`url`, with the message in the query parameter
@@ -240,6 +242,9 @@ export function viewAvailability(view, ids, model = "NRTL", ud = null) {
       return { enabled: true, use: ids.length ? [ids[0]] : ["water"] };
     case "steam":
       return { enabled: true, use: ["water"] };
+    case "charts":
+      if (!ids.length) return { enabled: false, use: [], reason: "Select a component or a mixture." };
+      return { enabled: true, use: ids.slice(0, 6) };
     default:
       throw new Error(`Unknown view "${view}". Known: ${Object.keys(VIEWS).join(", ")}.`);
   }
@@ -280,6 +285,30 @@ const DEFAULTS = {
   background: true, residueCurves: true, isotherms: true, grid: 40,
   property: "density", henryP_kPa: 101.325, henryT_K: 298.15, sleT_K: 298.15, solidUnit: "mole", steamP_kPa: [10, 100, 1000, 10000],
 };
+
+/**
+ * The settings of the Charts workspace (proposal 0013, step 7): the chart ("TS" temperature-entropy, "PH" pressure-
+ * enthalpy, "HS" enthalpy-entropy), the isobars (kPa) and isotherms (K) of a fluid's chart, and a compression drawn on it
+ * (null, or { T_K, P_kPa, P_out_kPa, efficiency }). The water chart takes its isobars from steamP_kPa.
+ */
+export const CHART_DEFAULTS = { kind: "TS", P_kPa: [100, 1000, 3000, 6000], T_K: [250, 300, 350, 400], compression: null };
+const CHART_KINDS = ["TS", "PH", "HS"];
+
+/** The chart settings, checked: a patch merged into `base`. */
+export function normalizeChart(patch = {}, base = CHART_DEFAULTS) {
+  const out = { ...base, ...(patch ?? {}) };
+  if (!CHART_KINDS.includes(out.kind)) throw new Error(`chart.kind must be one of ${CHART_KINDS.join(", ")} (got ${JSON.stringify(out.kind)}).`);
+  out.P_kPa = cleanList(out.P_kPa);
+  out.T_K = cleanList(out.T_K);
+  if (out.compression != null) {
+    const c = { ...(base.compression ?? {}), ...out.compression };
+    for (const k of ["T_K", "P_kPa", "P_out_kPa"]) c[k] = positive(c[k], `chart.compression.${k}`);
+    c.efficiency = c.efficiency == null ? 0.75 : positive(c.efficiency, "chart.compression.efficiency");
+    if (c.efficiency > 1) throw new Error(`chart.compression.efficiency is a fraction, at most 1 (got ${c.efficiency}).`);
+    out.compression = c;
+  }
+  return out;
+}
 
 /**
  * Normalize the configuration of CHEPTA.app into the initial state. Unknown models,
@@ -336,13 +365,14 @@ export function initialState(cfg = {}) {
     grid: [24, 40, 60].includes(cfg.grid) ? cfg.grid : DEFAULTS.grid,
     property: cfg.property ?? DEFAULTS.property,
     propComponent: null,
-    z: { pxy: null, envelope: null },
+    z: { pxy: null, envelope: null, charts: null },
     henryP_kPa: positive(cfg.henryP_kPa ?? DEFAULTS.henryP_kPa, "henryP_kPa"),
     henryT_K: positive(cfg.henryT_K ?? DEFAULTS.henryT_K, "henryT_K"),
     sleT_K: positive(cfg.sleT_K ?? DEFAULTS.sleT_K, "sleT_K"),
     solidUnit: checkSolidUnit(cfg.solidUnit ?? DEFAULTS.solidUnit),
     compareGases: !!cfg.compareGases,
     steamP_kPa: cleanList(cfg.steamP_kPa ?? DEFAULTS.steamP_kPa),
+    chart: normalizeChart(cfg.chart ?? {}),
     flash: normalizeFlash(cfg.flash ?? {}, FLASH_DEFAULTS),
     // the Heat exchanger workspace (proposal 0013): null until a setting is changed (hx-logic.js HX_DEFAULTS)
     hx: cfg.hx == null ? null : normalizeHx(cfg.hx),
@@ -503,7 +533,7 @@ export function applyPatch(state, patch = {}) {
     const comps = normalizeComponents(patch.components, ud);
     const keepProp = comps.includes(state.inputs.properties[0]) ? state.inputs.properties[0] : null;
     next.inputs = seedInputs(comps, { propComponent: keepProp, gas: henryGases(comps)[0] ?? state.inputs.henry.gas, solvent: state.inputs.henry.solvent, model: next.model, ud });
-    next.z = { pxy: null, envelope: null };
+    next.z = { pxy: null, envelope: null, charts: null };
     next.flash = { ...next.flash, z: null };
     if (patch.view == null && patch.start == null) {
       const d = resolveView(state.diagram, comps, next.model, ud);
@@ -541,6 +571,7 @@ export function applyPatch(state, patch = {}) {
   if (patch.sleT_K != null) next.sleT_K = positive(patch.sleT_K, "sleT_K");
   if (patch.solidUnit != null) next.solidUnit = checkSolidUnit(patch.solidUnit);
   if (patch.steamP_kPa != null) next.steamP_kPa = cleanList(patch.steamP_kPa);
+  if (patch.chart != null) next.chart = normalizeChart(patch.chart, next.chart ?? CHART_DEFAULTS);
   if ("title" in patch) next.title = patch.title;
   if ("sets" in patch) next.sets = patch.sets === null ? {} : normalizeSets(patch.sets, next.sets, ud);
   if ("prefer" in patch) next.prefer = normalizePrefer(patch.prefer);
@@ -592,7 +623,7 @@ export function applyPatch(state, patch = {}) {
   }
   if ("z" in patch) {
     if (view in next.z) next.z[view] = patch.z ? normalizeComposition(patch.z, checkInputs(view, next.inputs[view], next.model, ud).use.length || next.inputs[view].length) : null;
-    else if (patch.z != null) throw new Error(`z is the feed of the P-x-y and phase-envelope views; the view is "${view}".`);
+    else if (patch.z != null) throw new Error(`z is the feed of the P-x-y and phase-envelope views and of the fluid charts; the view is "${view}".`);
   }
   return derive(next, view);
 }

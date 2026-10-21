@@ -1229,6 +1229,8 @@ function pureEosFlash(sys, kind, z, T, P, VF, H, key = "H") {
 
 /**
  * The flash. See the file header for the specifications.
+ * @param {object} [opts]  { feed: { T, P } } adds the heat duty from that feed; { entropy: true } adds S_J_molK (and each
+ *   phase's s_J_molK), J/(mol K), reference the ideal gas at 298.15 K and 101.325 kPa (thermo/enthalpy.js)
  * @returns {{spec:string, T:number, P:number, VF:number, H_J_mol:number|null,
  *   phases:{type:string, fraction:number, composition:number[], h_J_mol:number|null}[],
  *   iterations:number, warnings:string[], sources:object[], duty_J_mol?:number}}
@@ -1335,6 +1337,16 @@ export function flash(sys, spec = {}, opts = {}) {
   } else {
     // P-H or P-S flash
     out = result(sys, SPECS[kind], z, ...phFlash(sys, z, P, X, key));
+  }
+  // the entropy of the result (and of each phase) when asked; a P-S flash has it already
+  if (opts && opts.entropy && out.S_J_molK === undefined && out.H_J_mol !== null) {
+    let S = 0;
+    out.phases = out.phases.map(p => {
+      const s = sys.phase(p.type, out.T, out.P, p.composition, { entropy: true }).s_J_molK;
+      S += p.fraction * s;
+      return { ...p, s_J_molK: s };
+    });
+    out.S_J_molK = S;
   }
   if (opts && opts.feed) {
     const Tf = checkTemperature(opts.feed.T, "Feed temperature"), Pf = checkPressure(opts.feed.P, "Feed pressure");
