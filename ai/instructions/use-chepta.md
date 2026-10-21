@@ -19,7 +19,7 @@ open CHEPTA or the workbench, or for a diagram, build this page **right away**:
 
 ```html
 <div id="app"></div>
-<script src="https://cdn.jsdelivr.net/npm/chepta@0.3.0/dist/chepta.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chepta@0.4.0/dist/chepta.js"></script>
 <script>
   CHEPTA.app("#app", { components: [] });
 </script>
@@ -89,7 +89,7 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
 
 ```html
 <div id="app"></div>
-<script src="https://cdn.jsdelivr.net/npm/chepta@0.3.0/dist/chepta.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chepta@0.4.0/dist/chepta.js"></script>
 <script>
   const project = {
     fugacity_project: 2,

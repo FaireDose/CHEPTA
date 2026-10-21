@@ -197,7 +197,7 @@ Needs A4, A5 and D6; B1, B2.
 - [ ] Liquid-liquid and vapour-liquid-liquid equilibria
 - [x] Solid solubility, liquidus and eutectic of a pure solid in a liquid (`solidSolubility`, `sleDiagram`), with melting data for 90 components ([proposal 0007](proposals/0007-solubility-and-liquid-liquid.md), step 4: engine and data; the workbench views next)
 
-### v0.4 – Flowsheets (first part in 0.3.0)
+### v0.4 – Flowsheets (0.4.0)
 
 Needs A6, A7, A8, A10, A11.
 
@@ -222,9 +222,9 @@ Needs A13 and D8.
 
 - [ ] Reactors: conversion, equilibrium (Gibbs energy minimization), CSTR, plug flow
 - [x] Heat exchangers: pre-sizing in Unit models, the heater's sizing and a two-stream block in the flowsheet, energy
-      streams (proposal 0013, steps 1-4)
-- [ ] Compressors and expanders (proposal 0013, step 6, after the mixture entropy), and further units towards models of
-      all the common unit operations
+      streams (proposal 0013, steps 1-4); rating of a designed exchanger, its area and U kept (step 8; in 0.4.0)
+- [x] Compressors and expanders (proposal 0013, step 6; in 0.4.0)
+- [ ] Further units towards models of all the common unit operations
 - [ ] Reactive systems in flowsheets, with heat of reaction in the energy balance
 
 ### v0.7 – Cost engineering

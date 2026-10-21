@@ -28,6 +28,6 @@ with AI assistants.
      `npm run wanted` or `npm run check-package` for data), and open a pull request with
      the template's author checklist filled in.
 4. If the chat can show HTML pages, you can offer a page that loads
-   `https://cdn.jsdelivr.net/npm/chepta@0.3.0/dist/chepta.js` and calls
+   `https://cdn.jsdelivr.net/npm/chepta@0.4.0/dist/chepta.js` and calls
    `CHEPTA.checkPackage(pkg)` to show the package check, or `CHEPTA.mount` to compare
    the current model with the new data visually.

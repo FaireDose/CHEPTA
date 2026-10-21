@@ -18,7 +18,7 @@ whole page:
 
 ```html
 <div id="app"></div>
-<script src="https://cdn.jsdelivr.net/npm/chepta@0.3.0/dist/chepta.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chepta@0.4.0/dist/chepta.js"></script>
 <script>
   CHEPTA.app("#app", { components: [] });
 </script>
@@ -44,7 +44,7 @@ For one diagram without the ribbon, call `CHEPTA.mount`:
 
 ```html
 <div id="app"></div>
-<script src="https://cdn.jsdelivr.net/npm/chepta@0.3.0/dist/chepta.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chepta@0.4.0/dist/chepta.js"></script>
 <script>
   CHEPTA.mount("#app", {
     components: ["water", "acetic acid", "ethylene glycol"],
@@ -71,7 +71,7 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
 
 ```html
 <div id="app"></div>
-<script src="https://cdn.jsdelivr.net/npm/chepta@0.3.0/dist/chepta.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chepta@0.4.0/dist/chepta.js"></script>
 <script>
   const project = {
     fugacity_project: 2,
