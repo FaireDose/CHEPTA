@@ -7,6 +7,7 @@
  * The person's selection and the last solution live in `ui.fs` (not in the saved state):
  *   ui.fs = { sel: null | { kind: "block" | "stream", id }, auto: true, solveKey, cache, note }
  */
+import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { h, s as svgEl } from "./dom.js";
 import { icon } from "./icons.js";
 import { FUTURE_MODELS } from "./future-models.js";
@@ -261,7 +262,7 @@ export function flowsheetInputs(env) {
   const f = ensureUi(env.ui);
   const note = f.note; f.note = "";
   const secs = inputsFor(env);
-  return note ? [h("div", { class: "fug-warn", role: "note" }, note), ...secs] : secs;
+  return note ? [warning(note, { attrs: { role: "note" } }), ...secs] : secs;
 }
 
 function inputsFor({ state, set, ui, uid, inputsSection }) {
@@ -583,7 +584,7 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
   secs.push(inputsSection("1. Components",
     h("p", { class: "fa-in-hint" }, "The components of the whole simulation. Every feed lists exactly these."),
     chips.length ? h("ol", { class: "fa-chips", "aria-label": "Components of the flowsheet" }, ...chips) : h("div", { class: "fa-empty" }, "None chosen yet."),
-    methodProblem(fs.components, fs.thermo) ? h("div", { class: "fug-err", role: "alert", "data-fk": "fs-comp-problem" }, methodProblem(fs.components, fs.thermo)) : null,
+    methodProblem(fs.components, fs.thermo) ? warning(methodProblem(fs.components, fs.thermo), { attrs: { role: "alert", "data-fk": "fs-comp-problem" } }) : null,
     h("div", { class: "fa-add" }, add),
     h("p", { class: "fa-in-hint" }, "Property method: ",
       h("button", { type: "button", class: "fa-link", "data-fk": "fs-go-method", title: "Change it on the Method page",
@@ -608,11 +609,11 @@ function methodSection({ state, fs, eos, setThermo, inputsSection, uid, problem 
     model: fs.thermo.model, eos });
   return inputsSection("2. Method",
     h("p", { class: "fa-in-hint" }, "One property method for every block and stream."),
-    ...advice.map(a => h("div", { class: "fug-warn", role: "note", "data-fk": "fs-method-advice" }, a)),
+    ...advice.map(a => warning(a, { attrs: { role: "note", "data-fk": "fs-method-advice" } })),
     // the same drop-down lists as the workbench's Model group (model-picker.js)
     modelPicker({ model: fs.thermo.model, vapour: fs.thermo.vapour ?? "ideal", id: `fs-model-${uid}`, fk: "fs-model",
       onChange: p => setThermo(p.model === fs.thermo.model ? { vapour: p.vapour } : { model: p.model, vapour: p.vapour }) }),
-    problem ? h("div", { class: "fug-err", role: "alert", "data-fk": "fs-method-problem" }, problem) : null,
+    problem ? warning(problem, { attrs: { role: "alert", "data-fk": "fs-method-problem" } }) : null,
     // the pair parameter sets: the same choice as the diagrams and the flash
     PAIR_MODELS.includes(fs.thermo.model) ? h("p", { class: "fa-in-hint", "data-fk": "fs-sets" },
       `Pair parameter sets: ${setsLabel(state)}. The rule for every pair is in the Library; a pair's own set is chosen in the Inputs panel of the phase-equilibrium diagrams. The flowsheet uses the same choice.`) : null,
@@ -741,9 +742,9 @@ export function flowsheetView(ctx) {
   }
   const sol = solution(state, ui);
   const res = sol.result;
-  if (sol.error) notes.append(h("div", { class: "fug-err", role: "alert" }, h("strong", {}, "Not solved. "), sol.error,
-    sol.loop ? h("div", { class: "fa-in-hint" }, "The blocks of that recycle are outlined in red. The solver settings are in the Inputs panel (with nothing selected): 4. Recycle solver.") : null));
-  if (sol.stale) notes.append(h("div", { class: "fug-warn", role: "note" }, "The results are not up to date: press Solve."));
+  if (sol.error) notes.append(warning(sol.error, { title: `Not solved: ${summaryOf(sol.error)}`, attrs: { role: "alert" },
+    details: [sol.loop ? h("p", { class: "fa-in-hint" }, "The blocks of that recycle are outlined in red. The solver settings are in the Inputs panel (with nothing selected): 4. Recycle solver.") : null] }));
+  if (sol.stale) notes.append(warning("The results are not up to date: press Solve.", { attrs: { role: "note" } }));
 
   // ---- the drawing
   const pos = new Map(fs.blocks.map(b => [b.id, b]));
@@ -1109,7 +1110,7 @@ function resultsPanel({ state, f, sol, u }) {
         z?.utility?.flow_kg_h != null ? ["Utility", `${fmtShort(z.utility.flow_kg_h, 5)} kg/h`] : null,
         ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)],
       ]), ...(z?.utility?.describe ? [h("div", { class: "fug-foot" }, `Utility: ${z.utility.describe}.`)] : []), ...(z?.note ? [h("div", { class: "fug-foot" }, z.note)] : []),
-      ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)), ...r.notes.map(n => h("div", { class: "fug-warn" }, n)));
+      ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)), ...r.notes.map(n => warning(n)));
     } else out.push(h("div", { class: "fa-empty" }, sol.status.blocks?.[f.sel.id]?.ok === false ? sol.status.blocks[f.sel.id].message : "Not calculated yet."));
   } else if (f.sel?.kind === "energy") {
     const q = res?.energy?.[f.sel.id];

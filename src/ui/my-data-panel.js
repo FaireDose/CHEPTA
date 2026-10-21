@@ -11,6 +11,7 @@
  * A view (layer 6): the fit is src/thermo/user-fit.js, the checks src/thermo/user-data.js, the files
  * src/ui/user-data-file.js.
  */
+import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { h, s as svgEl, ticks } from "./dom.js";
 import { icon } from "./icons.js";
 import { componentPicker } from "./component-picker.js";
@@ -125,12 +126,13 @@ function entryList(env, m, draw) {
     const draft = h("div", { class: "fa-mydata-draft" });
     const showDraft = () => {
       let r;
-      try { r = userDataPackage(env.get().userData, e.key, { prepared_with: `CHEPTA ${pkg.version} (My data)` }); } catch (err) { draft.replaceChildren(h("div", { class: "fug-err" }, err.message)); return; }
+      try { r = userDataPackage(env.get().userData, e.key, { prepared_with: `CHEPTA ${pkg.version} (My data)` }); } catch (err) { draft.replaceChildren(warning(err.message)); return; }
       const text = JSON.stringify(r.package, null, 2) + "\n";
       draft.replaceChildren(
         r.problems.length
-          ? h("div", { class: "fug-warn", role: "note" }, h("b", {}, "Not ready to submit yet:"), h("ul", {}, ...r.problems.map(p => h("li", {}, p))),
-            h("p", { class: "fa-in-hint" }, "Give the source's citation, a link anyone can open (open_copy) and why it is open (access) in the entry's source, or edit the draft before you submit it."))
+          ? warning("", { title: `Not ready to submit yet: ${r.problems.length} ${r.problems.length > 1 ? "problems" : "problem"}`, open: true,
+            details: [h("ul", {}, ...r.problems.map(p => h("li", {}, p))),
+              h("p", { class: "fa-in-hint" }, "Give the source's citation, a link anyone can open (open_copy) and why it is open (access) in the entry's source, or edit the draft before you submit it.")] })
           : h("p", { class: "fa-in-hint" }, "The draft has what the Data form needs. Before you submit it, compare every number with the source."),
         h("div", { class: "fa-in-actions" },
           h("button", { type: "button", class: "fa-mini", "data-fk": `mydata-draft-save-${e.key}`, on: { click: () => saveText(text, `${e.key.replace(/[^\w.+-]+/g, "-")}.package.json`, "application/json", status, { copyLabel: "Copy", bom: false }) } }, icon("download", 15), "Save the draft"),
@@ -232,7 +234,7 @@ function propertyForm(env, m, draw) {
     h("div", { class: "fa-in-actions" },
       h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-fit", disabled: !p.comp, on: { click: () => { preview(env, p, record); draw(); } } },
         icon("calc", 15), p.mode === "table" ? "Fit and show" : "Show")));
-  if (p.error) out.push(h("div", { class: "fug-err", role: "alert", "data-fk": "mydata-error" }, p.error));
+  if (p.error) out.push(warning(p.error, { attrs: { role: "alert", "data-fk": "mydata-error" } }));
   if (p.fit) {
     const f = p.fit;
     out.push(h("div", { class: "fa-mydata-fit", "data-fk": "mydata-fit-result" },
@@ -308,7 +310,7 @@ function fusionFields(env, m, p, record, isUser, draw) {
     h("div", { class: "fa-in-actions" },
       h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-save", disabled: !p.comp, on: { click: save } }, icon("check", 15), "Add to this project")),
   ];
-  if (p.error) out.push(h("div", { class: "fug-err", role: "alert", "data-fk": "mydata-error" }, p.error));
+  if (p.error) out.push(warning(p.error, { attrs: { role: "alert", "data-fk": "mydata-error" } }));
   return out;
 }
 
@@ -443,7 +445,7 @@ function componentForm(env, m, draw) {
     text("source", "Source (where these numbers come from)", { placeholder: "own measurement, lab book 12, 2026" }),
     pubFields(env, c, "n"),
     h("div", { class: "fa-in-actions" }, h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-nsave", on: { click: () => { saveComponent(env, m); draw(); } } }, icon("plus", 15), "Add the component")));
-  if (c.error) out.push(h("div", { class: "fug-err", role: "alert", "data-fk": "mydata-nerror" }, c.error));
+  if (c.error) out.push(warning(c.error, { attrs: { role: "alert", "data-fk": "mydata-nerror" } }));
   return out;
 }
 

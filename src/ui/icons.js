@@ -68,6 +68,10 @@ const P = {
   chevronDown: '<path d="m6 9.5 6 6 6-6"/>',
   menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   close: '<path d="m6.5 6.5 11 11m0-11-11 11"/>',
+  // a warning sign: a triangle with an exclamation mark (warning.js)
+  warn: '<path d="M12 4.5 2.8 19.5h18.4z"/><path d="M12 10v4.5M12 17v.3" class="a"/>',
+  // a warning sign: a triangle with an exclamation mark (warning.js)
+  warn: '<path d="M12 4.5 2.8 19.5h18.4z"/><path d="M12 10v4.5M12 17v.3" class="a"/>',
   info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5" class="a"/><path d="M12 7.8h.01" stroke-width="2.4" stroke-linecap="round"/>',
   theme: '<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/>',
   grid: '<path d="M12 3.5 21 19.5H3z"/><path d="M7.5 11.5h9M5.2 15.5h13.6M9.8 7.5l5.4 12M14.2 7.5l-5.4 12" stroke-width="1"/>',

@@ -1,4 +1,5 @@
 import { s, h, text, svgPoint, rampColor, RAMP, tempUnit, fmt, basisView } from "./dom.js";
+import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { ternaryAzeotropes } from "../equilibrium/azeotrope.js";
 
 // First component at the top, second bottom-left, third bottom-right.
@@ -144,13 +145,13 @@ export function renderTernary(plot, side, sys, P, opts) {
     h("div", {}, h("div", { class: "fug-eyebrow" }, "Liquid composition"), xOut),
     h("div", {}, h("div", { class: "fug-eyebrow" }, "Bubble temperature"), tOut),
     h("table", {}, h("thead", {}, h("tr", {}, h("th", {}, bv.short), h("th", {}, "x"), h("th", {}, "y"))), tab),
-    anyUnstable ? h("div", { class: "fug-err" }, "The liquid is predicted to split into two liquid phases in the hatched region. Results there assume a single liquid and are not reliable.") : null,
+    anyUnstable ? warning("The liquid is predicted to split into two liquid phases in the hatched region. Results there assume a single liquid and are not reliable.") : null,
     h("div", {}, h("div", { class: "fug-eyebrow" }, "Azeotropes at this pressure"),
       azeo.length ? h("div", { class: "fug-num" }, ...azeo.map(z => { const w = bv.conv(z.x); return h("div", {}, `${fmt(C(z.T), 1)} ${tl}  ${z.x.map((v, k) => v > 1e-6 ? `${sys.names[k]} ${opts.basis === "mass" ? bv.f(w[k]) : fmt(v, 2)}` : null).filter(Boolean).join(", ")}${opts.basis === "mass" ? " wt %" : ""}${z.kind === "ternary" ? " (ternary)" : ""}`); }))
         : h("div", { class: "fug-sub" }, azeoError ? `Search stopped: ${azeoError.message}` : "None found."),
       azeo.notSearched ? h("div", { class: "fug-sub" }, azeo.notSearched) : null,
-      azeo.gaps ? h("div", { class: "fug-warn" }, `${azeo.gaps.points} points of the search had no bubble point from the solver and were skipped, so an azeotrope there would be missed. ${azeo.gaps.message}`) : null),
-    missed ? h("div", { class: "fug-warn" }, `${missed} grid points left blank: no bubble point found there. ${firstError.message}`) : null,
+      azeo.gaps ? warning(`${azeo.gaps.points} points of the search had no bubble point from the solver and were skipped, so an azeotrope there would be missed. ${azeo.gaps.message}`) : null),
+    missed ? warning(`${missed} grid points left blank: no bubble point found there. ${firstError.message}`) : null,
     h("div", { class: "fug-foot" }, "Hover or tap the diagram. ○ liquid, ● equilibrium vapour. Grid step " + (1 / n).toFixed(3) + " in mole fraction." + (opts.basis === "mass" ? " The triangle and the readouts are in wt %." : "")),
   ].filter(Boolean));
 

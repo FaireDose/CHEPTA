@@ -1,6 +1,7 @@
 // Styles for the CHEPTA interface. Everything is scoped under .fug so the
 // widget can sit inside any page. Colours follow the host's light/dark setting:
 // prefers-color-scheme, overridden by data-theme="light|dark" on <html>.
+import { WARNING_CSS } from "./warning.js";
 const LIGHT = `
   --fug-bg:#ffffff; --fug-panel:#f5f7f9; --fug-fg:#15191d; --fug-fg2:#4c555e; --fug-muted:#7b848c;
   --fug-rule:#dde1e5; --fug-accent:#1c5cab; --fug-on-accent:#ffffff; --fug-liq:#2a78d6; --fug-vap:#eb6834;
@@ -83,7 +84,7 @@ export function injectStyles(doc = document) {
   if (doc.getElementById("chepta-styles")) return;
   const s = doc.createElement("style");
   s.id = "chepta-styles";
-  s.textContent = CSS;
+  s.textContent = CSS + WARNING_CSS;
   doc.head.appendChild(s);
 }
 
