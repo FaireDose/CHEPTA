@@ -24,7 +24,9 @@
  *
  * Proposal 0013 adds (steps 3-5):
  *  - the heater's optional `sizing` ({ utility, U, arrangement, shells, zones }): the area and the utility's
- *    consumption by the zone method of src/units/heat-exchange.js; it is not a specification (it changes no outlet);
+ *    consumption by the zone method of src/units/heat-exchange.js; it is not a specification (it changes no outlet).
+ *    Rating (step 8): `A_m2` with the sizing (a utility, U; water or a fluid with its flow_kg_h) is the heater's
+ *    specification instead of its outlet: the outlet follows from the area;
  *  - "hx", a heat exchanger between two process streams (inlets and outlets hot and cold), adiabatic overall: one
  *    specification, an outlet temperature or vapour fraction of either side, the duty, or the minimum approach dTmin_K;
  *  - "valve": an adiabatic pressure drop (a P-H flash at the inlet enthalpy);
@@ -56,7 +58,7 @@ import { fail } from "../util/errors.js";
 import { stream, componentFlows, scaleStream, phaseStream, phasesStream } from "../stream/stream.js";
 import { findComponent } from "../thermo/components.js";
 import { pure } from "../thermo/pure.js";
-import { exchangerArea, exchangerApproach, ARRANGEMENTS } from "./heat-exchange.js";
+import { exchangerArea, exchangerApproach, exchangerRating, ARRANGEMENTS } from "./heat-exchange.js";
 
 const UNITS = new Map();
 
@@ -271,9 +273,9 @@ registerUnit({
   checkSpec(spec) {
     // the outlet: T_K, duty_kW or VF, at P_kPa or the inlet pressure minus dP_kPa; or T_K and VF
     const has = k => spec[k] !== undefined && spec[k] !== null;
-    const given = ["T_K", "duty_kW", "VF"].filter(has);
+    const given = ["T_K", "duty_kW", "VF", "A_m2"].filter(has);
     const TVF = given.length === 2 && has("T_K") && has("VF");
-    if (!(given.length === 1 || TVF)) throw fail("BAD_INPUT", `Heater: give the outlet temperature T_K, the duty duty_kW or the vapour fraction VF (or T_K and VF together) (got ${given.join(", ") || "none"}).`);
+    if (!(given.length === 1 || TVF)) throw fail("BAD_INPUT", `Heater: give the outlet temperature T_K, the duty duty_kW or the vapour fraction VF (or T_K and VF together), or the area A_m2 of an existing exchanger with its sizing (rating) (got ${given.join(", ") || "none"}).`);
     if (has("P_kPa") && has("dP_kPa")) throw fail("BAD_INPUT", "Heater: give the outlet pressure P_kPa or the pressure drop dP_kPa, not both.");
     if (TVF && (has("P_kPa") || has("dP_kPa"))) throw fail("BAD_INPUT", "Heater: T_K and VF fix the outlet pressure; leave out P_kPa and dP_kPa.");
     const c = {};
@@ -281,11 +283,17 @@ registerUnit({
     if (has("duty_kW")) c.duty_kW = num(spec.duty_kW, "Heater: duty_kW");
     if (has("VF")) { c.VF = num(spec.VF, "Heater: VF", { min: 0 }); if (c.VF > 1) throw fail("BAD_INPUT", `Heater: VF must be between 0 and 1 (got ${spec.VF}).`); }
     if (has("P_kPa")) c.P_kPa = num(spec.P_kPa, "Heater: P_kPa", { positive: true });
+    if (has("A_m2")) {
+      c.A_m2 = num(spec.A_m2, "Heater: A_m2", { positive: true });
+      const z = spec.sizing;
+      if (!z?.utility || z.utility.kind === "electric" || z.U == null) throw fail("BAD_INPUT", "Heater: rating an exchanger of a given area (A_m2) needs its sizing: a utility (steam, water or a fluid) and U.");
+    }
     return { ...c, dP_kPa: has("dP_kPa") ? num(spec.dP_kPa, "Heater: dP_kPa", { min: 0 }) : 0, sizing: checkSizing(spec.sizing, "Heater") };
   },
   solve({ sys, inlets, spec }) {
     const s = mixed(sys, inlets.in).stream;   // several inlets: mixed first
     const { dP_kPa, sizing, ...c } = spec;
+    if (c.A_m2 != null) return rateHeater(sys, s, c.P_kPa != null ? s.P_kPa - c.P_kPa : dP_kPa, c.A_m2, sizing);
     if (c.P_kPa == null && !(c.T_K != null && c.VF != null)) c.P_kPa = s.P_kPa - dP_kPa;   // T and VF fix P themselves
     if (c.P_kPa != null && !(c.P_kPa > 0)) throw fail("BAD_INPUT", `Heater: the pressure drop (${dP_kPa} kPa) is larger than the inlet pressure (${s.P_kPa} kPa).`);
     const out = outletAt(sys, s.flows, s.H_kW ?? 0, c);
@@ -331,17 +339,34 @@ function sizeHeater(sys, inlet, out, duty, z) {
   return summary(hx);
 }
 
+/**
+ * A heater rated (proposal 0013, step 8): the area, U and the utility give the outlet. The utility heats when it enters
+ * hotter than the process stream (steam always heats), else it cools.
+ */
+function rateHeater(sys, inlet, dP, A, z) {
+  if (!(dP >= 0 && inlet.P_kPa - dP > 0)) throw fail("BAD_INPUT", `Heater: the outlet pressure must lie between 0 and the inlet pressure (${inlet.P_kPa} kPa).`);
+  const ut = z.utility, Tu = ut.kind === "steam" ? Infinity : ut.T_K ?? ut.T_in_K;
+  const heat = Tu > inlet.T_K;
+  const proc = { stream: inlet, dP_kPa: dP }, util = { utility: ut };
+  const hx = exchangerRating(sys, { area_m2: A, U: z.U, arrangement: z.arrangement, shells: z.shells, zones: z.zones,
+    ...(heat ? { hot: util, cold: proc } : { hot: proc, cold: util }) });
+  const out = heat ? hx.outlets.cold : hx.outlets.hot;
+  return { outlets: { out }, duty_kW: (out.H_kW ?? 0) - (inlet.H_kW ?? 0), sizing: summary(hx) };
+}
+
 /** What a block reports of a sizing (exchangerArea without its streams). */
 const summary = hx => ({
   duty_kW: hx.duty_kW, area_m2: hx.area_m2, U_W_m2K: hx.U_W_m2K, U_how: hx.U_how, UA_kW_K: hx.UA_kW_K, dT_mean_K: hx.dT_mean_K,
   dT_min_K: hx.dT_min_K, pinch: hx.pinch, F: hx.F, arrangement: hx.arrangement, shells: hx.shells, zones: hx.zones, hot: hx.hot, cold: hx.cold, notes: hx.notes,
   ...(hx.hot.kind !== "process" ? { utility: hx.hot } : hx.cold.kind !== "process" ? { utility: hx.cold } : {}),
+  ...(hx.rating ? { rating: hx.rating } : {}),
 });
 
 // ---------------------------------------------------------------------------------------
 // Proposal 0013: heat exchanger (two streams), valve, pump
 
-const HX_SPECS = ["T_hot_out_K", "T_cold_out_K", "VF_hot_out", "VF_cold_out", "duty_kW", "dTmin_K"];
+// A_m2: rating (proposal 0013, step 8): the area of an existing exchanger, with U; the outlets follow
+const HX_SPECS = ["T_hot_out_K", "T_cold_out_K", "VF_hot_out", "VF_cold_out", "duty_kW", "dTmin_K", "A_m2"];
 
 registerUnit({
   type: "hx", label: "Heat exchanger", inlets: [{ port: "hot", label: "hot" }, { port: "cold", label: "cold" }],
@@ -349,7 +374,7 @@ registerUnit({
   checkSpec(spec) {
     const has = k => spec[k] !== undefined && spec[k] !== null;
     const given = HX_SPECS.filter(has);
-    if (given.length !== 1) throw fail("BAD_INPUT", `Heat exchanger: give one of the hot outlet T_hot_out_K, the cold outlet T_cold_out_K, a vapour fraction VF_hot_out or VF_cold_out, the duty duty_kW, or the minimum approach dTmin_K (got ${given.join(", ") || "none"}).`);
+    if (given.length !== 1) throw fail("BAD_INPUT", `Heat exchanger: give one of the hot outlet T_hot_out_K, the cold outlet T_cold_out_K, a vapour fraction VF_hot_out or VF_cold_out, the duty duty_kW, the minimum approach dTmin_K, or the area A_m2 of an existing exchanger (rating, with U) (got ${given.join(", ") || "none"}).`);
     const c = { kind: given[0] };
     const k = given[0];
     if (k.startsWith("VF")) { c.value = num(spec[k], `Heat exchanger: ${k}`, { min: 0 }); if (c.value > 1) throw fail("BAD_INPUT", `Heat exchanger: ${k} must be between 0 and 1 (got ${spec[k]}).`); }
@@ -357,6 +382,7 @@ registerUnit({
     for (const d of ["dP_hot_kPa", "dP_cold_kPa"]) c[d] = has(d) ? num(spec[d], `Heat exchanger: ${d}`, { min: 0 }) : 0;
     c.sizing = spec.U != null || spec.arrangement != null ? { U: spec.U, arrangement: spec.arrangement, shells: spec.shells, zones: spec.zones } : { zones: spec.zones };
     if (c.sizing.arrangement != null && !ARRANGEMENTS.includes(c.sizing.arrangement)) throw fail("BAD_INPUT", `Heat exchanger: unknown arrangement "${c.sizing.arrangement}". Known: ${ARRANGEMENTS.join(", ")}.`);
+    if (k === "A_m2" && spec.U == null) throw fail("BAD_INPUT", "Heat exchanger: rating an exchanger of a given area (A_m2) needs U: a service, film coefficients or a value.");
     return c;
   },
   solve({ sys, inlets, spec }) {
@@ -376,6 +402,7 @@ registerUnit({
     let hx;
     if (spec.kind === "duty_kW") hx = exchangerArea(sys, base(spec.value));
     else if (spec.kind === "dTmin_K") hx = exchangerApproach(sys, { ...base(null), dTmin_K: spec.value });
+    else if (spec.kind === "A_m2") hx = exchangerRating(sys, { ...base(null), area_m2: spec.value });
     else hx = exchangerArea(sys, base(null));
     return { outlets: { hot: hx.outlets.hot, cold: hx.outlets.cold }, duty_kW: 0, sizing: summary(hx), state: { duty_kW: hx.duty_kW } };
   },
@@ -553,21 +580,21 @@ const DOF = {
   },
   flash: spec => twoOf(spec, ["T_K", "P_kPa", "VF", "duty_kW"], "the drum's conditions"),
   heater(spec) {
-    const given = ["T_K", "duty_kW", "VF"].filter(k => hasKey(spec, k));
+    const given = ["T_K", "duty_kW", "VF", "A_m2"].filter(k => hasKey(spec, k));
     const TVF = given.length === 2 && given.includes("T_K") && given.includes("VF");
-    const extra = given.length > 1 && !TVF ? [`give one of T_K, duty_kW or VF (now ${given.join(", ")})`] : [];
+    const extra = given.length > 1 && !TVF ? [`give one of T_K, duty_kW or VF, or the area A_m2 for rating (now ${given.join(", ")})`] : [];
     if (hasKey(spec, "P_kPa") && hasKey(spec, "dP_kPa")) extra.push("P_kPa and dP_kPa: give one");
     if (TVF && (hasKey(spec, "P_kPa") || hasKey(spec, "dP_kPa"))) extra.push("T_K and VF fix the pressure: leave out P_kPa and dP_kPa");
     return {
       needed: TVF ? 2 : 1, given: given.length + (extra.length && !TVF ? 0 : 0),
-      missing: given.length ? [] : ["the outlet temperature T_K, the duty duty_kW or the vapour fraction VF"], extra,
+      missing: given.length ? [] : ["the outlet temperature T_K, the duty duty_kW, the vapour fraction VF, or the area A_m2 (rating)"], extra,
     };
   },
   product: () => ({ needed: 0, given: 0, missing: [], extra: [] }),
   hx(spec) {
     const given = HX_SPECS.filter(k => hasKey(spec, k));
     return { needed: 1, given: Math.min(1, given.length) + Math.max(0, given.length - 1),
-      missing: given.length ? [] : ["one of the hot or cold outlet temperature, a vapour fraction, the duty or the minimum approach dTmin_K"],
+      missing: given.length ? [] : ["one of the hot or cold outlet temperature, a vapour fraction, the duty, the minimum approach dTmin_K or the area A_m2 (rating)"],
       extra: given.length > 1 ? [`give one of them (now ${given.join(", ")})`] : [] };
   },
   valve: spec => onePressure(spec, "drop"),

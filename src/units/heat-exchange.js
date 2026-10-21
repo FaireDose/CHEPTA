@@ -29,6 +29,10 @@
  *    (Table 1.1), fouling resistances (Table 2.3; the high end by default) and a plane wall of a metal (Table A.1,
  *    k interpolated linearly in temperature, refused outside the table), 1/U = 1/h_hot + Rf_hot + t/k + Rf_cold +
  *    1/h_cold (eqn. 2.36 for fouling), or the user's own value.
+ * Rating (proposal 0013, step 8): exchangerRating(sys, { hot, cold, U, area_m2, arrangement }) finds the duty whose
+ * required area (the zones above) is the given area, so the outlets of both sides follow; the effectiveness is that
+ * duty over the largest one (each side brought to the other's inlet temperature). In rating a water or fluid utility
+ * gives its flow (flow_kg_h) instead of its outlet temperature.
  * Wall thickness: G. Lamé, Leçons sur la théorie mathématique de l'élasticité des corps solides (1852), § 80,
  * eqns. (22)-(23), pp. 190-191 (public domain; https://archive.org/details/leonssurlathori05lamgoog): the hoop stress
  * of a thick cylinder is largest at the inner wall, A = P (R² + R'²) / (R'² - R²) with no outer pressure, so the
@@ -268,7 +272,8 @@ function processSide(sys, s, role) {
 }
 
 /** A utility side: { kind: "steam", P_kPa } (condensing, hot only), { kind: "water", T_in_K, T_out_K, P_kPa },
- *  { kind: "fluid", T_K } (constant temperature) or { kind: "fluid", T_in_K, T_out_K, cp_J_kgK }. */
+ *  { kind: "fluid", T_K } (constant temperature) or { kind: "fluid", T_in_K, T_out_K, cp_J_kgK }; in rating the water
+ *  and the fluid may give flow_kg_h instead of T_out_K (the outlet then follows from the heat). */
 function utilitySide(u, role) {
   const kind = u.kind;
   if (kind === "steam") {
@@ -277,6 +282,26 @@ function utilitySide(u, role) {
     const sat = steamSat({ P_kPa: P });
     return { kind, T: () => sat.T_K, T_in: sat.T_K, P_in: P, flow: Q => Q / sat.hfg_kJ_kg * 3600,
       describe: Q => `saturated steam at ${P} kPa condensing at ${fmtK(sat.T_K)}: ${+(Q / sat.hfg_kJ_kg * 3600).toPrecision(5)} kg/h (latent heat ${+sat.hfg_kJ_kg.toFixed(1)} kJ/kg, IAPWS-IF97)` };
+  }
+  if (kind === "water" && u.flow_kg_h != null) {
+    // a given flow (rating): the outlet follows from the heat, along IAPWS-IF97 at P, below the boiling point
+    const P = u.P_kPa == null ? 101.325 : finite(u.P_kPa, "Water pressure P_kPa", { positive: true });
+    const Ti = finite(u.T_in_K, "Water inlet T_in_K", { positive: true }), m = finite(u.flow_kg_h, "Water flow flow_kg_h", { positive: true }) / 3600;
+    const Tb = steamSat({ P_kPa: P }).T_K;
+    if (!(Ti < Tb)) throw fail("BAD_INPUT", `Water at ${P} kPa boils at ${fmtK(Tb)}; its inlet (${fmtK(Ti)}) must be below that: raise its pressure.`);
+    const hi = steam(Ti, P).h_kJ_kg, sign = role === "cold" ? 1 : -1;
+    const lo = role === "cold" ? Ti : 273.16, top = role === "cold" ? Tb - 1e-6 : Ti;
+    const hTop = steam(top, P).h_kJ_kg, hLo = steam(lo, P).h_kJ_kg;
+    return { kind, T_in: Ti, P_in: P, flowGiven: true,
+      T: q => {
+        const h = hi + sign * q / m;
+        if (h > hTop + 1e-9 || h < hLo - 1e-9) throw fail("BAD_INPUT", `The water (${+(m * 3600).toPrecision(5)} kg/h at ${P} kPa) would ${role === "cold" ? "reach its boiling point" : "freeze"} with ${+q.toPrecision(4)} kW: give more water${role === "cold" ? " or a higher pressure" : ""}.`);
+        return waterT(h, P, lo, top);
+      },
+      // the most heat it can take or give: to `T`, the other side's inlet (bounded by boiling or freezing)
+      qTo: T => m * Math.abs(steam(Math.min(Math.max(T, lo), top), P).h_kJ_kg - hi),
+      flow: () => m * 3600,
+      describe: Q => `water at ${P} kPa, ${+(m * 3600).toPrecision(5)} kg/h, from ${fmtK(Ti)} to ${fmtK(waterT(hi + sign * Q / m, P, lo, top))} (IAPWS-IF97)` };
   }
   if (kind === "water") {
     const P = u.P_kPa == null ? 101.325 : finite(u.P_kPa, "Water pressure P_kPa", { positive: true });
@@ -295,6 +320,14 @@ function utilitySide(u, role) {
     if (u.T_K != null) {
       const T = finite(u.T_K, "Utility T_K", { positive: true });
       return { kind, T: () => T, T_in: T, P_in: null, flow: () => null, describe: () => `a fluid of your own at a constant ${fmtK(T)}` };
+    }
+    if (u.flow_kg_h != null) {
+      // a given flow (rating): the outlet follows from the heat, at a constant heat capacity
+      const Ti = finite(u.T_in_K, "Utility T_in_K", { positive: true }), cp = finite(u.cp_J_kgK, "Utility heat capacity cp_J_kgK", { positive: true });
+      const C = finite(u.flow_kg_h, "Utility flow flow_kg_h", { positive: true }) / 3600 * cp / 1000;   // kW/K
+      const sign = role === "cold" ? 1 : -1;
+      return { kind, T_in: Ti, P_in: null, flowGiven: true, T: q => Ti + sign * q / C, qTo: T => C * Math.abs(T - Ti), flow: () => C * 3600 * 1000 / cp,
+        describe: Q => `a fluid of your own, ${+(C * 3600 * 1000 / cp).toPrecision(5)} kg/h, cp ${cp} J/(kg K), from ${fmtK(Ti)} to ${fmtK(Ti + sign * Q / C)}` };
     }
     const Ti = finite(u.T_in_K, "Utility T_in_K", { positive: true }), To = finite(u.T_out_K, "Utility T_out_K", { positive: true });
     const cp = finite(u.cp_J_kgK, "Utility heat capacity cp_J_kgK", { positive: true });
@@ -332,6 +365,7 @@ export function exchangerArea(sys, o = {}) {
   };
   const H = make(o.hot, "hot"), C = make(o.cold, "cold");
   if (H.kind !== "process" && C.kind !== "process" && o.duty_kW == null) throw fail("BAD_INPUT", "With a utility on both sides, give the duty.");
+  if ((H.flowGiven || C.flowGiven) && o.duty_kW == null) throw fail("BAD_INPUT", "A utility with a given flow (rating) takes its outlet from the duty: give the duty, or rate the exchanger (exchangerRating, the area).");
   // the heat: given, or from the one process side with an outlet specification
   const own = [H, C].map(s => (s.kind === "process" ? s.ownQ() : null));
   let Q;
@@ -453,4 +487,63 @@ export function exchangerApproach(sys, o = {}) {
     throw fail("BAD_INPUT", `Heat exchanger: a ${arr} reaches its limit at ${+hx.duty_kW.toPrecision(4)} kW, where the smallest temperature difference is still ${+hx.dT_min_K.toFixed(2)} K: it cannot approach ${dT} K. Put more shells in series, use counterflow, or give a larger minimum approach.`);
   }
   return hx;
+}
+
+/**
+ * Rate an exchanger (proposal 0013, step 8): given its area, U and arrangement, the duty and the outlets of both sides.
+ * o: as exchangerArea, with `area_m2` and `U`, and no outlet specification or duty on either side (a water or fluid
+ * utility gives its flow, flow_kg_h; steam and a constant-temperature fluid need nothing more). The duty is found by
+ * bisection and the Illinois variant of regula falsi on the required area, which grows with the duty and has no bound
+ * as the duty reaches its largest value (a pinch at an end, or an arrangement at its limit); a duty with a temperature
+ * cross counts as too large.
+ * @returns the exchangerArea result at that duty, with `rating: { area_m2, duty_max_kW, effectiveness }`
+ */
+export function exchangerRating(sys, o = {}) {
+  const A = finite(o.area_m2, "area_m2", { positive: true });
+  if (o.U == null) throw fail("BAD_INPUT", "Rating needs U: a service, film coefficients or a value.");
+  if (o.duty_kW != null) throw fail("BAD_INPUT", "Rating finds the duty from the area: leave the duty out.");
+  for (const role of ["hot", "cold"]) {
+    const sd = o[role];
+    if (!sd || typeof sd !== "object") throw fail("BAD_INPUT", `Give the ${role} side: a process stream or a utility.`);
+    if (sd.T_out_K != null || sd.VF_out != null) throw fail("BAD_INPUT", `Rating finds the outlets: leave out the ${role} side's outlet (T_out_K or VF_out).`);
+    if (sd.utility && ["water", "fluid"].includes(sd.utility.kind) && sd.utility.T_K == null && sd.utility.flow_kg_h == null) {
+      throw fail("BAD_INPUT", `In rating the ${sd.utility.kind === "water" ? "water" : "fluid"} on the ${role} side gives its flow (flow_kg_h) instead of its outlet temperature: the outlet follows from the heat.`);
+    }
+  }
+  const { area_m2, ...rest } = o;
+  // the largest duty: each side brought to the other's inlet temperature (a constant-temperature utility sets no bound)
+  const sideOf = (sd, role) => (sd.utility ? utilitySide(sd.utility, role) : processSide(sd.sys ?? sys, sd, role));
+  const H = sideOf(o.hot, "hot"), C = sideOf(o.cold, "cold");
+  if (!(H.T_in > C.T_in)) throw fail("BAD_INPUT", `The hot side (${fmtK(H.T_in)}) must enter hotter than the cold side (${fmtK(C.T_in)}).`);
+  const bound = (s, role, Tother) => {
+    if (s.kind === "process") {
+      const P = s.st.P_kPa - (s.dP ?? 0);
+      const to = stream(role === "hot" ? o.hot.sys ?? sys : o.cold.sys ?? sys, { flow_kmol_h: s.st.flows, T_K: Tother, P_kPa: P });
+      return Math.abs(to.H_kW - s.st.H_kW);
+    }
+    return s.qTo ? s.qTo(Tother) : Infinity;
+  };
+  const qMax = Math.min(bound(H, "hot", C.T_in), bound(C, "cold", H.T_in));
+  if (!Number.isFinite(qMax)) throw fail("BAD_INPUT", "With a constant-temperature utility on both sides the duty has no bound: give a process stream or a utility with a flow.");
+  const area = q => {
+    try { return exchangerArea(sys, { ...rest, duty_kW: q, zones: 10 }).area_m2; }
+    catch (e) { if (e.code === "BAD_INPUT" && /Temperature cross|cannot reach these temperatures|would (reach its boiling point|freeze)/.test(e.message)) return Infinity; throw e; }
+  };
+  let lo = qMax * 1e-7, hi = qMax * (1 - 1e-9);
+  if (!(area(lo) < A)) throw fail("BAD_INPUT", `Heat exchanger: even a very small duty needs more than ${A} m²: check U and the inlets.`);
+  let flo = area(lo) - A, fhi = area(hi) - A, side = 0;
+  for (let i = 0; i < 100 && hi - lo > 1e-7 * qMax; i++) {
+    const inf = !Number.isFinite(fhi);
+    const m = inf ? (lo + hi) / 2 : (lo * fhi - hi * flo) / (fhi - flo);
+    const fm = area(m) - A;
+    if (Math.abs(fm) < 1e-7 * A) { lo = hi = m; break; }
+    if (fm < 0) { lo = m; flo = fm; if (side === 1 && !inf) fhi /= 2; side = 1; }
+    else { hi = m; fhi = fm; if (side === -1) flo /= 2; side = -1; }
+  }
+  const q = (lo + hi) / 2;
+  const hx = exchangerArea(sys, { ...rest, duty_kW: q });
+  const summary = `Rated: ${A} m² with U = ${+hx.U_W_m2K.toPrecision(4)} W/(m² K) transfers ${+q.toPrecision(5)} kW, ${+(100 * q / qMax).toFixed(1)} % of the most these inlets allow (${+qMax.toPrecision(5)} kW).`;
+  const notes = [];
+  if (Math.abs(hx.area_m2 / A - 1) > 2e-3) notes.push(`With all ${o.zones ?? 20} zones the area at this duty is ${+hx.area_m2.toPrecision(5)} m² (the search used 10).`);
+  return { ...hx, notes: [...notes, ...hx.notes], rating: { area_m2: A, duty_max_kW: qMax, effectiveness: q / qMax, summary } };
 }

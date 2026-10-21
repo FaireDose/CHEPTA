@@ -5,7 +5,6 @@
  */
 import { problemsWarning } from "./warning.js";
 import { h } from "./dom.js";
-import { icon } from "./icons.js";
 import { HX_DEFAULTS, HX_STREAM_MAX, UTILITY_KINDS, TWO_SPECS, streamZ } from "./hx-logic.js";
 import { modelPicker } from "./model-picker.js";
 import { HEAT_TRANSFER, ARRANGEMENTS } from "../units/heat-exchange.js";
@@ -16,17 +15,14 @@ const ARR_LABEL = { counterflow: "Counterflow", cocurrent: "Cocurrent (parallel 
 const num = t => { const v = Number(String(t).trim().replace(",", ".")); return Number.isFinite(v) ? v : null; };
 const rangeText = r => (r.bound ? r.bound : `${r.U[0]}-${r.U[1]}`);
 
-/** The locked Rating button: given an exchanger, the outlets of a flow (later). */
-export const RATING_NOTE = "Rating: given an exchanger (its area, U and arrangement), the outlet temperatures of a given flow. Not available yet (proposal 0013, a later step).";
-export const ratingChip = () => h("span", { class: "fa-locked-chip", title: RATING_NOTE, "aria-disabled": "true", "data-fk": "hx-rating" }, icon("lock", 11), "Rating");
 
 /**
  * The sections of the Inputs panel. env: { state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf,
  * streamList, setups } (setups: each stream's components and method in two-stream mode, app-logic.js hxSetups).
- * The mode (utility or process exchanger) and the locked Rating button are in the ribbon.
+ * The task (design or rating) and the mode (utility or process exchanger) are in the ribbon.
  */
 export function hxInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf, streamList, setups }) {
-  const hx = state.hx ?? HX_DEFAULTS, u = state.units, two = hx.mode === "two";
+  const hx = state.hx ?? HX_DEFAULTS, u = state.units, two = hx.mode === "two", rating = hx.task === "rating";
   const put = patch => set({ hx: patch });
   const tU = u.T === "K" ? "K" : "°C";
   const tField = (label, value, onT, id, title) => field(`${label}, ${tU}`, value == null ? "" : String(+tToDisplay(value, u).toFixed(3)),
@@ -74,10 +70,15 @@ export function hxInputs({ state, set, uid, inputsSection, field, seg, listInput
       pField("Pressure drop", s.dP_kPa ?? 0, v => put({ [key]: { dP_kPa: v } }), `hx-${key}-dp`, "Spread evenly along the exchanger"));
   };
 
+  // rating: the exchanger's area replaces the outlet (utility mode) or the specification (two-stream mode)
+  const areaSec = () => inputsSection("Exchanger",
+    nField("Heat-transfer area, m²", hx.rating.area_m2, v => put({ rating: { area_m2: v } }), "hx-area", { min: 1e-9 }),
+    h("p", { class: "fa-in-hint" }, "The duty and both outlets follow from the area, U and the arrangement below."));
   if (hx.mode === "utility") {
     const p = hx.process;
     secs.push(streamSec("Process stream", "process"));
-    secs.push(inputsSection("Process outlet",
+    if (rating) secs.push(areaSec());
+    else secs.push(inputsSection("Process outlet",
       seg("Outlet", [["T", "Temperature"], ["VF", "Vapour fraction"]], p.out, o => put({ process: { out: o } })),
       p.out === "T" ? tField("Outlet temperature", p.T_out_K, v => put({ process: { T_out_K: v } }), "hx-tout")
         : nField("Outlet vapour fraction", p.VF_out, v => put({ process: { VF_out: v } }), "hx-vfout", { min: 0, max: 1 }),
@@ -86,18 +87,22 @@ export function hxInputs({ state, set, uid, inputsSection, field, seg, listInput
     const fields = [];
     if (ut.kind === "steam") fields.push(pField("Steam pressure", ut.P_kPa, v => put({ utility: { P_kPa: v } }), "hx-steam-p", "Saturated steam, condensing at the saturation temperature (IAPWS-IF97)"));
     if (ut.kind === "water" || ut.kind === "fluid") {
-      fields.push(tField("Inlet", ut.T_in_K, v => put({ utility: { T_in_K: v } }), "hx-ut-in"), tField("Outlet", ut.T_out_K, v => put({ utility: { T_out_K: v } }), "hx-ut-out"));
+      fields.push(tField("Inlet", ut.T_in_K, v => put({ utility: { T_in_K: v } }), "hx-ut-in"),
+        rating ? nField("Flow, kg/h", ut.flow_kg_h, v => put({ utility: { flow_kg_h: v } }), "hx-ut-flow", { min: 1e-9, title: "In rating the outlet follows from the heat" })
+          : tField("Outlet", ut.T_out_K, v => put({ utility: { T_out_K: v } }), "hx-ut-out"));
     }
     if (ut.kind === "water") fields.push(pField("Water pressure", ut.water_P_kPa, v => put({ utility: { water_P_kPa: v } }), "hx-ut-p"));
     if (ut.kind === "fluid") fields.push(nField("Heat capacity, J/(kg K)", ut.cp_J_kgK, v => put({ utility: { cp_J_kgK: v } }), "hx-ut-cp", { min: 1e-9 }));
     if (ut.kind === "fluid-T") fields.push(tField("Temperature", ut.T_K, v => put({ utility: { T_K: v } }), "hx-ut-t"));
     secs.push(inputsSection("Utility",
       select("Utility", UTILITY_KINDS, ut.kind, k => put({ utility: { kind: k } }), "hx-ut-kind"), ...fields,
-      h("p", { class: "fa-in-hint" }, ut.kind === "electric" ? "Electric heating: the power is the duty; there is no heat-transfer area." : "Temperatures and prices of utilities are yours: no open table was found.")));
+      h("p", { class: "fa-in-hint" }, ut.kind === "electric" ? `Electric heating: the power is the duty; there is no heat-transfer area${rating ? " to rate" : ""}.`
+        : `Temperatures and prices of utilities are yours: no open table was found.${rating ? " The utility heats when it enters hotter than the process stream, else it cools." : ""}`)));
   } else {
     secs.push(streamSec("Hot stream", "hot"), streamSec("Cold stream", "cold"));
+    if (rating) secs.push(areaSec());
     const sp = hx.spec, isT = sp.kind === "T_hot_out_K" || sp.kind === "T_cold_out_K";
-    secs.push(inputsSection("Specification",
+    if (!rating) secs.push(inputsSection("Specification",
       seg("Specification", TWO_SPECS, sp.kind, k => put({ spec: { kind: k, value: k === "duty_kW" ? 100 : k === "dTmin_K" ? 10 : k === "T_cold_out_K" ? hx.cold.T_K + 20 : hx.hot.T_K - 20 } })),
       isT ? tField(sp.kind === "T_hot_out_K" ? "Hot outlet" : "Cold outlet", sp.value, v => put({ spec: { value: v } }), "hx-spec-t")
         : nField(sp.kind === "duty_kW" ? "Duty, kW" : "Minimum ΔT, K", sp.value, v => put({ spec: { value: v } }), "hx-spec-v", { min: 1e-9 }),

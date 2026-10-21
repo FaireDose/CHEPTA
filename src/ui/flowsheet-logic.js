@@ -252,6 +252,38 @@ export function setSpec(fs, id, patch) {
   return out;
 }
 
+/*
+ * Rating in the flowsheet (proposal 0013, step 8): a block is designed first (an outlet, a duty or an approach gives its
+ * area), then rated: its area and U are kept as its specification (A_m2), and the outlets follow from them. The design
+ * is kept in spec.design, to go back to.
+ */
+const HEATER_DESIGN = ["T_K", "duty_kW", "VF"];
+const HX_DESIGN = ["T_hot_out_K", "T_cold_out_K", "VF_hot_out", "VF_cold_out", "duty_kW", "dTmin_K"];
+const pick = (o, keys) => Object.fromEntries(keys.filter(k => o[k] != null).map(k => [k, o[k]]));
+const keep = v => +v.toPrecision(6);
+
+/** The patch that rates a solved block: its area and U kept, its design remembered (null when it cannot be rated). */
+export function ratingPatch(type, spec, done) {
+  const z = done?.sizing;
+  if (!(z?.area_m2 > 0) || !(z.U_W_m2K > 0)) return null;
+  const U = { value: keep(z.U_W_m2K) };
+  if (type === "hx") {
+    return { ...Object.fromEntries(HX_DESIGN.map(k => [k, null])), A_m2: keep(z.area_m2), U, design: { ...pick(spec, HX_DESIGN), U: spec.U ?? null } };
+  }
+  const ut = spec.sizing?.utility;
+  if (!ut || ut.kind === "electric") return null;
+  // water or a fluid with inlet and outlet: its flow of the design instead of its outlet
+  const { T_out_K, ...rest } = ut;
+  const utility = T_out_K != null && z.utility?.flow_kg_h > 0 ? { ...rest, flow_kg_h: keep(z.utility.flow_kg_h) } : ut;
+  return { ...Object.fromEntries(HEATER_DESIGN.map(k => [k, null])), A_m2: keep(z.area_m2), sizing: { ...spec.sizing, utility, U },
+    design: { ...pick(spec, HEATER_DESIGN), sizing: spec.sizing } };
+}
+
+/** Back from rating to the design that was rated (or to no specification, when the file had none). */
+export function designPatch(spec) {
+  return { A_m2: null, design: null, ...(spec.design ?? {}) };
+}
+
 /** Move a block. */
 export function moveBlock(fs, id, x, y) {
   const out = clone(fs);

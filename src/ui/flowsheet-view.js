@@ -21,7 +21,7 @@ import {
   PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
   energyOf, energyTargets, addEnergyFeed, connectEnergy, removeEnergy, setEnergyDuty, ENERGY_TARGETS, ENERGY_SOURCES,
-  placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy,
+  placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy, ratingPatch, designPatch,
 } from "./flowsheet-logic.js";
 import { HEAT_TRANSFER } from "../units/heat-exchange.js";
 import { PUMP_EFFICIENCY, COMPRESSOR_EFFICIENCY, EXPANDER_EFFICIENCY } from "../units/units.js";
@@ -288,6 +288,8 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
     nameField(b, `${LABEL[b.type].toLowerCase()} ${b.id}`, v => put(setBlockLabel(fs, b.id, v))), dofBadge(bst))];
   const spec = b.spec ?? {};
   const setS = patch => put(setSpec(fs, b.id, patch));
+  // the block's last solved result: rating keeps the area and U of its design
+  const done = f.cache?.result?.blocks?.[b.id] ?? null;
   const T = (key, label = "Temperature") => numberField(label, spec[key] == null ? "" : String(+tToDisplay(spec[key], u).toFixed(3)),
     t => { if (t === "") return setS({ [key]: null }); const v = parseT(t, u); if (v == null) return false; setS({ [key]: v }); }, { id: `${b.id}-${key}`, uid, unit: u.T === "K" ? "K" : "°C" });
   const P = (key, label = "Pressure") => numberField(label, spec[key] == null ? "" : fmtShort(pToDisplay(spec[key], u), 6),
@@ -336,6 +338,12 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
     const modes = [["T_K+P_kPa", "T, P"], ["P_kPa+duty_kW", "P, Q"], ["P_kPa+VF", "P, VF"], ["T_K+VF", "T, VF"]];
     secs.push(inputsSection("Conditions", modeSeg(modes, ["T_K", "P_kPa", "VF", "duty_kW"]), ...shown(modes, ["T_K", "P_kPa", "VF", "duty_kW"]).map(fieldFor),
       h("p", { class: "fa-in-hint" }, "P and Q = 0: an adiabatic drum.")));
+  } else if (b.type === "heater" && spec.A_m2 != null) {
+    secs.push(inputsSection("Rating",
+      plain("A_m2", "Area of the exchanger", "m²"),
+      h("p", { class: "fa-in-hint" }, "The area and U of the design are kept (Sizing below); the outlet follows from them. Change the area to rate another exchanger."),
+      backToDesign(spec, setS, b.id)),
+      inputsSection("Pressure", spec.P_kPa != null ? P("P_kPa", "Outlet pressure") : P("dP_kPa", "Pressure drop"), h("p", { class: "fa-in-hint" }, "Empty pressure drop: none.")));
   } else if (b.type === "heater") {
     const modes = [["T_K", "T"], ["duty_kW", "Duty"], ["VF", "VF"], ["T_K+VF", "T, VF"]];
     const keys = shown(modes, ["T_K", "duty_kW", "VF"]);
@@ -379,8 +387,8 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
     }
   }
   // proposal 0013: the heater's optional sizing, the two-stream exchanger, the valve, the pump, energy streams
-  if (b.type === "heater") secs.push(sizingSection({ b, spec, setS, inputsSection, uid, u }));
-  if (b.type === "hx") secs.push(...hxSections({ b, spec, setS, inputsSection, uid, u, T, P, plain }));
+  if (b.type === "heater") secs.push(sizingSection({ b, spec, setS, inputsSection, uid, u, done, rateable: energyOf(fs, b.id)?.role !== "in" }));
+  if (b.type === "hx") secs.push(...hxSections({ b, spec, setS, inputsSection, uid, u, T, P, plain, done }));
   if (b.type === "compressor" || b.type === "expander") {
     const up = b.type === "compressor", word = up ? "rise" : "drop", eta = up ? COMPRESSOR_EFFICIENCY : EXPANDER_EFFICIENCY;
     const mode = spec.ratio != null ? "r" : spec.dP_kPa != null ? "dP" : "P";
@@ -441,8 +449,24 @@ function uFields(U, onU, uid, id, { optional = true } = {}) {
   ];
 }
 
+/** Rating (flowsheet-logic.js ratingPatch): back to the design that was rated. */
+function backToDesign(spec, setS, id) {
+  return h("button", { type: "button", class: "fa-mini", "data-fk": `fs-design-${id}`, on: { click: () => setS(designPatch(spec)) } },
+    icon("undo", 14), spec.design ? "Back to the design" : "Design instead");
+}
+
+/** The "Rate this exchanger" button of a designed block, or why it cannot be rated yet. */
+function rateButton(type, spec, setS, done, id) {
+  const patch = ratingPatch(type, spec, done);
+  if (!patch) return h("p", { class: "fa-in-hint" }, `Rating keeps the area and U that the design gives: ${type === "hx" ? "give U" : "choose a utility (not electric) and U"}, and let the flowsheet solve first.`);
+  return h("button", { type: "button", class: "fa-mini", "data-fk": `fs-rate-${id}`,
+    title: "Keep this area and U as the exchanger's specification: the outlets then follow from them",
+    on: { click: () => setS(patch) } }, icon("hx", 14), `Rate this exchanger: keep ${fmtShort(patch.A_m2, 4)} m² and U = ${fmtShort(patch.U?.value ?? patch.sizing.U.value, 4)} W/(m² K)`);
+}
+
 /** The heater's optional sizing: a utility and U give the area and the utility's consumption (not a specification). */
-function sizingSection({ b, spec, setS, inputsSection, uid, u }) {
+function sizingSection({ b, spec, setS, inputsSection, uid, u, done, rateable }) {
+  const rating = spec.A_m2 != null;
   const z = spec.sizing ?? null, ut = z?.utility ?? null;
   const kind = !ut ? "" : ut.kind === "fluid" && ut.T_K != null ? "fluid-T" : ut.kind;
   const putZ = patch => setS({ sizing: patch == null ? null : { ...(z ?? {}), ...patch } });
@@ -451,20 +475,36 @@ function sizingSection({ b, spec, setS, inputsSection, uid, u }) {
   const pf = (key, label) => numberField(label, ut?.[key] == null ? "" : fmtShort(pToDisplay(ut[key], u), 6), t => { const v = parseP(t, u); if (v == null) return false; putU({ [key]: v }); }, { id: `${b.id}-sz-${key}`, uid, unit: u.P });
   const DEF = { steam: { kind: "steam", P_kPa: 300 }, water: { kind: "water", T_in_K: 303.15, T_out_K: 313.15 }, "fluid-T": { kind: "fluid", T_K: 423.15 },
     fluid: { kind: "fluid", T_in_K: 473.15, T_out_K: 423.15, cp_J_kgK: 2000 }, electric: { kind: "electric" } };
-  return inputsSection("Sizing (optional)",
-    h("p", { class: "fa-in-hint" }, "A utility and U give the area and the utility's flow; the outlet stays as specified."),
-    selectField("Utility", UTIL_KINDS, kind, v => putZ(v ? { utility: DEF[v], ...(v === "electric" ? {} : { U: z?.U ?? { service: "steam-water-oil" } }) } : null), `${b.id}-sz-kind`, uid),
+  return inputsSection(rating ? "Sizing (kept from the design)" : "Sizing (optional)",
+    h("p", { class: "fa-in-hint" }, rating ? "The utility, its flow and U of the design. The utility heats when it enters hotter than the stream, else it cools."
+      : "A utility and U give the area and the utility's flow; the outlet stays as specified."),
+    rating ? h("p", { class: "fa-in-hint" }, `Utility: ${UTIL_KINDS.find(([k]) => k === kind)?.[1] ?? "none"}.`)
+      : selectField("Utility", UTIL_KINDS, kind, v => putZ(v ? { utility: DEF[v], ...(v === "electric" ? {} : { U: z?.U ?? { service: "steam-water-oil" } }) } : null), `${b.id}-sz-kind`, uid),
     kind === "steam" ? pf("P_kPa", "Steam pressure") : null,
     kind === "water" || kind === "fluid" ? tf("T_in_K", "Utility inlet") : null,
-    kind === "water" || kind === "fluid" ? tf("T_out_K", "Utility outlet") : null,
+    (kind === "water" || kind === "fluid") && !rating ? tf("T_out_K", "Utility outlet") : null,
+    (kind === "water" || kind === "fluid") && rating ? numberField("Utility flow", ut.flow_kg_h == null ? "" : String(ut.flow_kg_h), t => { const v = num(t); if (!(v > 0)) return false; putU({ flow_kg_h: v }); }, { id: `${b.id}-sz-flow`, uid, unit: "kg/h" }) : null,
     kind === "fluid-T" ? tf("T_K", "Utility temperature") : null,
     kind === "fluid" ? numberField("Utility heat capacity", String(ut.cp_J_kgK), t => { const v = num(t); if (!(v > 0)) return false; putU({ cp_J_kgK: v }); }, { id: `${b.id}-sz-cp`, uid, unit: "J/(kg K)" }) : null,
     ...(kind && kind !== "electric" ? [...uFields(z.U, U => putZ({ U }), uid, `${b.id}-sz`, { optional: false }),
-      selectField("Arrangement", ARRS, z.arrangement ?? "counterflow", v => putZ({ arrangement: v }), `${b.id}-sz-arr`, uid)] : []));
+      selectField("Arrangement", ARRS, z.arrangement ?? "counterflow", v => putZ({ arrangement: v }), `${b.id}-sz-arr`, uid)] : []),
+    !rating && rateable && kind ? rateButton("heater", spec, setS, done, b.id) : null);
 }
 
 /** The two-stream exchanger: one specification, pressure drops, and U (optional) for the area. */
-function hxSections({ b, spec, setS, inputsSection, uid, u, T, P, plain }) {
+function hxSections({ b, spec, setS, inputsSection, uid, u, T, P, plain, done }) {
+  if (spec.A_m2 != null) {
+    return [
+      inputsSection("Rating",
+        plain("A_m2", "Area of the exchanger", "m²"),
+        h("p", { class: "fa-in-hint" }, "The area and U of the design are kept; both outlets follow from them. Change the area or U to rate another exchanger."),
+        backToDesign(spec, setS, b.id),
+        P("dP_hot_kPa", "Hot side pressure drop"), P("dP_cold_kPa", "Cold side pressure drop")),
+      inputsSection("U and arrangement (kept from the design)",
+        ...uFields(spec.U, U => setS({ U }), uid, `${b.id}-hx`, { optional: false }),
+        selectField("Arrangement", ARRS, spec.arrangement ?? "counterflow", v => setS({ arrangement: v }), `${b.id}-hx-arr`, uid)),
+    ];
+  }
   const KINDS = [["T_hot_out_K", "Hot T out"], ["T_cold_out_K", "Cold T out"], ["VF_hot_out", "Hot VF"], ["VF_cold_out", "Cold VF"], ["duty_kW", "Duty"], ["dTmin_K", "Min ΔT"]];
   const cur = KINDS.find(([k]) => spec[k] != null)?.[0] ?? null;
   return [
@@ -477,7 +517,8 @@ function hxSections({ b, spec, setS, inputsSection, uid, u, T, P, plain }) {
     inputsSection("Area (optional)",
       ...uFields(spec.U, U => setS({ U }), uid, `${b.id}-hx`),
       selectField("Arrangement", ARRS, spec.arrangement ?? "counterflow", v => setS({ arrangement: v }), `${b.id}-hx-arr`, uid),
-      h("p", { class: "fa-in-hint" }, "Each side's temperature follows its own curve, in zones; a temperature cross is an error.")),
+      h("p", { class: "fa-in-hint" }, "Each side's temperature follows its own curve, in zones; a temperature cross is an error."),
+      cur ? rateButton("hx", spec, setS, done, b.id) : null),
   ];
 }
 
@@ -1104,13 +1145,14 @@ function resultsPanel({ state, f, sol, u }) {
         r.state?.efficiency != null ? ["Efficiency", `${fmtShort(100 * r.state.efficiency, 4)} %`] : null,
         r.state?.volume_m3_h != null ? ["Volume flow", `${fmtShort(r.state.volume_m3_h, 5)} m³/h`] : null,
         b.type === "hx" && r.state?.duty_kW != null ? ["Heat exchanged", `${fmtShort(r.state.duty_kW, 5)} kW`] : null,
-        z?.area_m2 != null ? ["Area", `${fmtShort(z.area_m2, 4)} m²`] : null,
+        z?.area_m2 != null ? [z.rating ? "Area (given)" : "Area", `${fmtShort(z.rating?.area_m2 ?? z.area_m2, 4)} m²`] : null,
+        z?.rating ? ["Effectiveness", fmtShort(z.rating.effectiveness, 4)] : null,
         z?.U_W_m2K != null ? ["U", `${fmtShort(z.U_W_m2K, 4)} W/(m² K)`] : null,
         z?.dT_min_K != null ? ["Smallest ΔT", `${fmtShort(z.dT_min_K, 4)} K`] : null,
         z?.utility?.flow_kg_h != null ? ["Utility", `${fmtShort(z.utility.flow_kg_h, 5)} kg/h`] : null,
         ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)],
       ]), ...(z?.utility?.describe ? [h("div", { class: "fug-foot" }, `Utility: ${z.utility.describe}.`)] : []), ...(z?.note ? [h("div", { class: "fug-foot" }, z.note)] : []),
-      ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)), ...r.notes.map(n => warning(n)));
+      ...(z?.rating ? [h("div", { class: "fug-foot" }, z.rating.summary)] : []), ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)), ...r.notes.map(n => warning(n)));
     } else out.push(h("div", { class: "fa-empty" }, sol.status.blocks?.[f.sel.id]?.ok === false ? sol.status.blocks[f.sel.id].message : "Not calculated yet."));
   } else if (f.sel?.kind === "energy") {
     const q = res?.energy?.[f.sel.id];

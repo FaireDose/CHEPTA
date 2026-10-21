@@ -113,7 +113,7 @@ workspace's components and model, as in Flash), the outlet specification (outlet
 side), the utility or the second stream, the arrangement, the U (section 2) and the wall (section 4). Results: duty,
 area, UA, mean and minimum ΔT, the utility's consumption, the zones as a table, and the temperature-heat diagram of
 both sides (with the pinch marked); CSV and Excel export as for the flash. A locked **Rating** button: "Given an
-exchanger (area, U, arrangement), the outlet temperatures of a given flow: not available yet."
+exchanger (area, U, arrangement), the outlet temperatures of a given flow: not available yet." (Unlocked in step 8.)
 
 ### 6. Energy streams in the flowsheet: a specification, carried between blocks
 
@@ -215,7 +215,7 @@ section 8 makes it possible:
 - **One LMTD for the whole exchanger**: simple, and wrong for any condensing or boiling stream with a superheat or a
   subcool. The zones cost one P-H flash per zone per side; twenty zones run in well under a second.
 - **A detailed thermal design (Kern, Bell-Delaware) now**: it needs tube layouts, baffles and the shell-side
-  correlations; it belongs to the Rating step, which this proposal leaves locked.
+  correlations; it belongs to a later proposal. The Rating of step 8 rates with the U of section 2.
 - **Default efficiencies and utility temperatures**: tempting, but no open source gives general values; the user's
   numbers, labelled as theirs, are honest.
 - **Allowable stresses from secondary web tables**: they copy ASME II-D, which is paywalled (AGENTS.md rule 1).
@@ -237,7 +237,8 @@ request of this proposal (docs/decisions/2026-10-20-06-heat-exchangers.md).
    (docs/decisions/2026-10-21-03-entropy-compressor-charts.md).
 7. **Charts**: the envelope traced through the critical point (done 2026-10-21, docs/decisions/2026-10-21-01-phase-envelope.md),
    and the P-H, T-S and H-S charts with the steam charts (done 2026-10-21, with step 6).
-8. Later: **Rating** (unlocked).
+8. **Rating** (unlocked): the area, U and the arrangement give the duty and the outlets, in the workspace and as the
+   flowsheet block's `A_m2`. Done 2026-10-21 (docs/decisions/2026-10-21-06-rating.md).
 
 Then proposal 0010 (reactions): formation data first, then the reactor blocks.
 

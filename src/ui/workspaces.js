@@ -21,7 +21,7 @@ export const WORKSPACES = [
   { id: "solubility", label: "Solubility", short: "Solubility", icon: "henry", views: ["henry", "solid", "sle"], view: "henry" },
   { id: "properties", label: "Properties", short: "Properties", icon: "curves", views: ["properties"], view: "properties" },
   { id: "flash", label: "Flash", short: "Flash", icon: "drum", views: ["flash"], view: "flash" },
-  // proposal 0013, step 2: pre-sizing a heat exchanger (a Rating button, locked, for later)
+  // proposal 0013: pre-sizing a heat exchanger (step 2) and rating one of a given area (step 8)
   { id: "hx", label: "Heat exchanger", short: "Exchanger", icon: "hx", views: ["hx"], view: "hx" },
   { id: "flowsheet", label: "Flowsheet", short: "Flowsheet", icon: "flowsheet", views: ["flowsheet"], view: "flowsheet" },
 ];

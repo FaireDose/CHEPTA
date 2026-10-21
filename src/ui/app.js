@@ -41,8 +41,8 @@ import { CHART_KINDS, CHART_TITLE } from "./charts-view.js";
 import { myDataPanel, PROPERTY_LABEL } from "./my-data-panel.js";
 import { canOpenWindow, openDataWindow } from "./my-data-window.js";
 import { userDataList, setEntryUse } from "./user-data-file.js";
-import { hxInputs, ratingChip } from "./hx-view.js";
-import { HX_DEFAULTS, HX_MODES, HX_STREAM_MAX } from "./hx-logic.js";
+import { hxInputs } from "./hx-view.js";
+import { HX_DEFAULTS, HX_MODES, HX_TASKS, HX_STREAM_MAX } from "./hx-logic.js";
 import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey, recordFlowsheet, stepFlowsheet } from "./flowsheet-view.js";
 import { projectOf, projectText, projectFileName, stateFromProject } from "./project.js";
 import { browserStore, hostStore, autosave, lastAutosave, clearAutosave } from "./project-store.js";
@@ -399,8 +399,12 @@ export function app(target, cfg = {}) {
         const hx = state.hx ?? HX_DEFAULTS;
         return [
           group("Calculation", h("div", { class: "fa-stack" },
-            h("div", { class: "fa-locked-row" }, smallButton({ ico: "hx", label: "Design", pressed: true, fk: "hx-design", title: "Pre-sizing: the area for a duty", onClick: () => {} }), ratingChip()),
-            h("div", { class: "fa-hint" }, "Rating comes later"))),
+            // Rating starts from the exchanger the design just sized: its area, and the utility's flow
+            seg("Calculation", HX_TASKS.map(([k, label]) => [k, label]), hx.task, t => {
+              const d = t === "rating" && hx.task !== "rating" ? ui.hxDesign : null;
+              set({ hx: { task: t, ...(d ? { rating: { area_m2: d.area_m2 }, ...(d.flow_kg_h ? { utility: { flow_kg_h: d.flow_kg_h } } : {}) } : {}) } });
+            }),
+            h("div", { class: "fa-hint" }, HX_TASKS.find(([k]) => k === hx.task)[2]))),
           group("Exchanger", h("div", { class: "fa-stack" },
             seg("Exchanger", HX_MODES.map(([k, label]) => [k, label]), hx.mode, m => set({ hx: { mode: m } })),
             h("div", { class: "fa-hint" }, HX_MODES.find(([k]) => k === hx.mode)[2]))),
@@ -846,7 +850,8 @@ export function app(target, cfg = {}) {
       pxy: `P-x-y diagram at ${fmtTemp(pxyTemperature(state), u)}, ${ml}`,
       envelope: state.components.length > 1 && isEosModel(state.model) ? `Phase envelope of the feed through its critical point, ${ml}` : `Bubble and dew points of the feed, ${ml}`,
       flash: `${FLASH_SPECS.find(f => f.id === state.flash.spec).title} flash, ${ml}`,
-      hx: (state.hx ?? HX_DEFAULTS).mode === "two" ? "Process exchanger, pre-sizing: each stream with its own method" : `Utility exchanger, pre-sizing, ${ml}`,
+      hx: (() => { const x = state.hx ?? HX_DEFAULTS, task = x.task === "rating" ? "rating" : "pre-sizing";
+        return x.mode === "two" ? `Process exchanger, ${task}: each stream with its own method` : `Utility exchanger, ${task}, ${ml}`; })(),
       henry: `Solubility at ${fmtTemp(state.henryT_K, u)} and a gas partial pressure of ${fmtP(state.henryP_kPa, u)}, Henry's law`,
       solid: `Solubility of the solid against temperature, ${ml}`,
       sle: `Solid-liquid diagram with the eutectic, ${ml}`,
