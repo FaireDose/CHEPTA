@@ -15,6 +15,7 @@ import { txy, pxy, ternaryGrid } from "./equilibrium/diagrams.js";
 import { residueCurve } from "./equilibrium/residue.js";
 import { binaryAzeotropes, findAzeotrope } from "./equilibrium/azeotrope.js";
 import { isLiquidStable } from "./equilibrium/stability.js";
+import { phaseEnvelope } from "./equilibrium/envelope.js";
 import { checkPackage, validCas } from "./contrib/package-check.js";
 import { pure, PROPERTIES, PROPERTY_NAMES } from "./thermo/pure.js";
 import { steam, steamSat } from "./thermo/iapws/steam.js";
@@ -48,7 +49,7 @@ export {
   system, app,
   mount, createSystem, listComponents, findComponent, checkUserData, MODELS,
   bubbleT, bubbleP, dewT, dewP, flash, rachfordRice, pureBoilingPoints, txy, pxy, ternaryGrid, residueCurve,
-  binaryAzeotropes, findAzeotrope, isLiquidStable, checkPackage, validCas,
+  binaryAzeotropes, findAzeotrope, isLiquidStable, phaseEnvelope, checkPackage, validCas,
   pure, PROPERTIES, PROPERTY_NAMES,
   mountProperties,
   EOS_MODELS, cubicEos, eosBubbleP, eosBubbleT, eosDewP, eosDewT,

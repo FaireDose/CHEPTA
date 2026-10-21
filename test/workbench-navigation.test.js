@@ -79,7 +79,8 @@ test("each view asks for what it needs: one, two, three components, a list, or a
   }
   assert.deepEqual([needsFor("envelope", "UNIQUAC").min, needsFor("envelope", "SRK").min], [2, 1]);
   assert.deepEqual([INPUTS.azeotropes.min, INPUTS.azeotropes.max], [2, 4]);
-  assert.deepEqual([INPUTS.envelope.min, INPUTS.envelope.max], [1, 6]);
+  // 24 since the natural-gas examples of the envelope (11 and 21 components; the maintainer, 2026-10-21)
+  assert.deepEqual([INPUTS.envelope.min, INPUTS.envelope.max], [1, 24]);
   assert.equal(INPUTS.henry.kind, "henry");
   assert.equal(INPUTS.steam.kind, "none");
   for (const v of ["txy", "ternary", "pxy", "properties"]) assert.equal(INPUTS[v].roles.length, INPUTS[v].n, v);
@@ -152,11 +153,17 @@ test("one list of components seeds every view; examples fit their view", () => {
   for (const v of ["txy", "azeotropes", "pxy"]) {
     const ex = examplesFor(v, PRESETS);
     assert.ok(ex.length > 0, v);
-    for (const p of ex) assert.equal(checkInputs(v, normalizeInputs(v, p.components)).ok, true, `${v}: ${p.label}`);
+    // an example made for the view that names its method is checked with it (choosing it sets the method)
+    for (const p of ex) assert.equal(checkInputs(v, normalizeInputs(v, p.components), p.view === v ? p.model : undefined).ok, true, `${v}: ${p.label}`);
   }
   assert.deepEqual(examplesFor("txy", PRESETS).map(p => p.label), ["Ethanol, water", "Benzene, toluene"]);
-  // the ternary map and the phase envelope have no Examples menu (the maintainer, 2026-10-20)
-  for (const v of ["ternary", "envelope"]) for (const m of ["NRTL", "PR"]) assert.deepEqual(examplesFor(v, PRESETS, m), [], `${v}, ${m}`);
+  // the ternary map has no Examples menu (the maintainer, 2026-10-20); the phase envelope has real gases with measured
+  // dew points, with Peng–Robinson (the maintainer, 2026-10-21: "make some real industrial examples")
+  for (const m of ["NRTL", "PR"]) assert.deepEqual(examplesFor("ternary", PRESETS, m), [], `ternary, ${m}`);
+  for (const m of ["NRTL", "PR"]) {
+    const env = examplesFor("envelope", PRESETS, m);
+    assert.ok(env.some(p => /Natural gas SNG27/.test(p.label)) && env.filter(p => /Natural gas/.test(p.label)).every(p => p.model === "PR"), `envelope, ${m}`);
+  }
   assert.deepEqual(rotateInputs(MAC), ["acetone", "chloroform", "methanol"]);
   assert.deepEqual(rotateInputs(["water", null]), [null, "water"]);
 });

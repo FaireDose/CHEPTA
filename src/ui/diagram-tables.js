@@ -101,7 +101,21 @@ export function pxyTables({ names, MW, units, basis, points }) {
 }
 
 /** Phase envelope: bubble and dew temperatures of the feed at each pressure; one component: its vapour pressure. */
-export function envelopeTables({ names, units, z, points, single = false }) {
+export function envelopeTables({ names, units, z, points, single = false, traced = null }) {
+  if (traced) {
+    // the line of an equation of state traced through the critical point (src/equilibrium/envelope.js)
+    const mark = (label, p) => (p ? [[label, T(p.T_K, units), P(p.P_kPa, units)]] : []);
+    return [{
+      name: "Phase envelope", title: `Phase envelope of the feed: ${names.map((nm, i) => `${nm} ${z[i]}`).join(", ")} (mole fractions)`,
+      note: `${plural(traced.points.length, "point")} along the line, dew curve first, through the critical point, then the bubble curve.`,
+      columns: [{ label: "Curve" }, tCol(units), pCol(units)],
+      rows: traced.points.map(p => [p.branch, T(p.T_K, units), P(p.P_kPa, units)]),
+    }, {
+      name: "Special points", title: "Critical point, cricondenbar and cricondentherm",
+      columns: [{ label: "Point" }, tCol(units), pCol(units)],
+      rows: [...mark("critical point", traced.critical), ...mark("cricondenbar", traced.cricondenbar), ...mark("cricondentherm", traced.cricondentherm)],
+    }];
+  }
   if (single) {
     return [{
       name: "Vapour pressure", title: `Vapour pressure of ${names[0]} (equation of state)`,

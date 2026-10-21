@@ -289,6 +289,16 @@ SEEDS = {
         "license": "CC BY-SA",
         "note": "Secondary compilation with visible scatter. To be replaced by an open primary source.",
     },
+    # src/equilibrium/envelope.js (the equations of the phase-envelope continuation, as its code writes them)
+    "thermopack": {
+        "title": "thermopack: thermodynamic model library, src/saturation.f90 (sat_fun_newton) and src/saturation_curve.f90 (newton_extrapolate)",
+        "authors": "SINTEF Energy Research and the thermotools contributors",
+        "kind": "open-source library",
+        "url": "https://github.com/thermotools/thermopack",
+        "access": "Open: Apache License 2.0",
+        "license": "Apache License 2.0",
+        "note": "Cited for the equations of the phase-envelope continuation in ln K, ln T, ln P (after Michelsen 1980); no numbers taken.",
+    },
 }
 
 # validation files whose source is one of the seeds (matched by url)

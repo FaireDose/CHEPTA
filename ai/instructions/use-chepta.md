@@ -69,6 +69,8 @@ CHEPTA.listComponents();        // what the databank holds
 CHEPTA.pure("benzene").props(298.15, 101.325);   // density, cp, enthalpy, viscosity, ...
 CHEPTA.steam(573.15, 1000);                      // steam tables (IAPWS-IF97)
 CHEPTA.system({ components: ["methane", "ethane"], model: "PR" }).bubbleP([0.3, 0.7], 200);
+// the phase envelope of a gas mixture, through its critical point: { points, critical, cricondenbar, cricondentherm }
+CHEPTA.phaseEnvelope(CHEPTA.system({ components: ["methane", "n-butane"], model: "PR" }), [0.7, 0.3]);
 // solubility of a solid (pure solid + liquid; melting data from the databank), and a binary's eutectic
 CHEPTA.system({ components: ["naphthalene", "toluene"], model: "ideal" }).solidSolubility("naphthalene", 298.15);
 CHEPTA.system({ components: ["benzene", "naphthalene"], model: "ideal" }).sleDiagram();   // { branches, eutectic }

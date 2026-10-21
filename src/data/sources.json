@@ -3716,6 +3716,15 @@
       "access": "Open source, MIT",
       "license": "MIT"
     },
+    "thermopack": {
+      "title": "thermopack: thermodynamic model library, src/saturation.f90 (sat_fun_newton) and src/saturation_curve.f90 (newton_extrapolate)",
+      "authors": "SINTEF Energy Research and the thermotools contributors",
+      "kind": "open-source library",
+      "url": "https://github.com/thermotools/thermopack",
+      "access": "Open: Apache License 2.0",
+      "license": "Apache License 2.0",
+      "note": "Cited for the equations of the phase-envelope continuation in ln K, ln T, ln P (after Michelsen 1980); no numbers taken."
+    },
     "theveneau2017-furan-toluene": {
       "title": "Vapor Liquid Equilibrium Data for the Furan-Toluene Binary System between 313.02 and 352.99 K",
       "authors": "P. Theveneau, A. Valtz, C. Coquelet",
@@ -4546,6 +4555,19 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/methanol_water_10-1016-j-jct-2019-05-005_101.3kPa.json"
+      ]
+    },
+    "zhang2020-natural-gas": {
+      "title": "Hydrocarbon Dew Point Measurement and Model Evaluation of Synthetic and Real Natural Gases",
+      "authors": "P. Zhang, L. Zhou, W. Zeng, G. Xiong, H. Huang, L. Cai, H. Ye, S. Qu",
+      "year": 2020,
+      "published": "ACS Omega 5 (2020) 8463-8473",
+      "kind": "open-access article",
+      "doi": "10.1021/acsomega.9b03469",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7178342/",
+      "access": "Open access, ACS AuthorChoice License (free to read; copying and redistribution for non-commercial purposes)",
+      "files": [
+        "validation/data/envelope/zhang2020_natural_gas.json"
       ]
     },
     "zhao2014-2-methoxyethanol-toluene": {

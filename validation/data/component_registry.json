@@ -156,6 +156,12 @@
     {"id": "stearic-acid", "name": "Stearic acid", "coolprop": null, "aliases": ["octadecanoic acid", "c18:0", "fatty acid"], "cas": "57-11-4", "chemsep_file": 2, "thermoml": ["octadecanoic acid", "stearic acid"]},
     {"id": "n-hexadecane", "name": "n-Hexadecane", "coolprop": null, "aliases": ["hexadecane", "cetane"], "cas": "544-76-3", "thermoml": ["hexadecane"]},
     {"id": "n-octadecane", "name": "n-Octadecane", "coolprop": null, "aliases": ["octadecane"], "cas": "593-45-3", "thermoml": ["octadecane"]}
+   ]},
+  {"number": 11, "proposal": "0013", "note": "the components of the natural gases of Zhang et al. 2020 (ACS Omega 5, 8463; the phase-envelope examples) that CHEPTA lacked: neopentane and helium (CoolProp fluids), methylcyclohexane (ChemSep); the maintainer, 2026-10-21",
+   "components": [
+    {"id": "neopentane", "name": "Neopentane", "coolprop": "Neopentane", "aliases": ["2,2-dimethylpropane", "neo-pentane", "neoc5", "tetramethylmethane"], "thermoml": ["2,2-dimethylpropane", "neopentane"]},
+    {"id": "helium", "name": "Helium", "coolprop": "Helium", "aliases": ["he"], "thermoml": ["helium"]},
+    {"id": "methylcyclohexane", "name": "Methylcyclohexane", "coolprop": null, "aliases": ["cyclohexylmethane", "hexahydrotoluene", "mch"], "cas": "108-87-2", "thermoml": ["methylcyclohexane"]}
    ]}
  ]
 }

@@ -81,6 +81,31 @@ Independent checks:
 - **Residue curves** ([residue.js](../../src/equilibrium/residue.js)): dx/dξ = x − y, integrated in
   both directions.
 
+## Phase envelope of a gas mixture
+
+[envelope.js](../../src/equilibrium/envelope.js), `CHEPTA.phaseEnvelope(sys, z)`, with an equation of state (Peng–Robinson
+or SRK; proposal 0013, step 7). The dew curve and the bubble curve are one line, traced from a dew point at 50 kPa
+through the cricondentherm, the cricondenbar and the mixture critical point, and down the bubble curve to 50 kPa. The
+unknowns are ln K_i, ln T and ln P, with one of them specified at each point, after Michelsen (1980), as the
+open-source thermopack (Apache 2.0) writes the equations: the unknown that changes fastest is specified, and near the
+critical point (every |ln K| below 0.1) the largest ln K, which is stepped over zero to its mirror value; there the
+parent phase becomes the liquid. The critical point is where that ln K passes zero (interpolated). Steps are at most
+0.02 in ln T and 0.1 in ln P; a point far from its prediction is refused and the step halved.
+
+Checked ([`test/envelope.test.js`](../../test/envelope.test.js)):
+- against CoolProp 8.0.0's Peng–Robinson ([`validation/python/reference_envelope.py`](../../validation/python/reference_envelope.py),
+  k_ij = 0 on both sides): methane + n-butane, every CoolProp point on the line within 0.4 %, the critical point within
+  0.05 K and 0.1 %; a natural gas of ten components, the bubble temperatures of CoolProp's saturation solver within
+  0.01 K and its dew temperatures within 0.1 K, the critical point between the pressures where CoolProp's bubble and
+  dew temperatures meet (CoolProp's separate critical-point solver gives a point 0.2 K off its own flash curve);
+- against the measured dew points of four natural gases (Zhang et al., ACS Omega 5 (2020) 8463, open access;
+  [`validation/data/envelope/zhang2020_natural_gas.json`](../../validation/data/envelope/zhang2020_natural_gas.json)):
+  three synthetic gases of 11 components and a real gas of 21 (with hydrogen and helium), with CHEPTA's k_ij: mean
+  deviations 2.7-4.6 K (Peng–Robinson) and 1.3-2.5 K (SRK), as the paper's own Tables 4 and 5 (1.6-4.7 and 1.4-2.8 K).
+  The four gases are the Examples of the envelope view, with their measured points drawn.
+- a bubble curve that turns back up (hydrogen and helium dissolve less in the cold liquid, so the bubble pressure has
+  a lowest point): the line ends at three times that lowest pressure, and says so.
+
 ## Solids: solid-liquid equilibrium
 
 [`sle.js`](../../src/equilibrium/sle.js) (proposal 0007):

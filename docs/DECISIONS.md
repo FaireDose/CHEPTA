@@ -14,6 +14,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
+- **Older ChemSep pairs not imported** (found 2026-10-21 while adding neopentane, helium and methylcyclohexane):
+  `chemsep_pairs.py --all` offers NRTL sets for 2,3-butanediol + water, ethanol + isoamyl alcohol and isoamyl
+  alcohol + water, and `eos_kij_from_chemsep.py` a k_ij for n-hexane + isoamyl alcohol. They were left out of the
+  envelope pull request so that it changes only its own pairs. Import them in a pull request of their own?
 - **The Library rule "Best available"** (2026-10-17): it is each pair's default set, which is not the best for every
   use (ethanol + water: the default follows the 1 atm T-x-y data, the "-etal" set the excess enthalpies). Rename it,
   for example "Default sets (fitted to data where there are any)"? One model for the whole project (diagrams and
@@ -157,7 +161,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   and Lienhard, chapters 7-9) instead of the single examples of Table 1.1, proposed, for the maintainer to decide;
   the canvas's size and drawing speed for large flowsheets, later (the maintainer, 2026-10-21: "not now");
   6. mixture entropy, the P-S flash, compressor and expander;
-  7. Charts: the gas phase envelope traced through the critical point, P-H, T-S and H-S charts, with the steam charts;
+  7. Charts: the gas phase envelope traced through the critical point (done 2026-10-21,
+     docs/decisions/2026-10-21-01-phase-envelope.md; neopentane, helium and methylcyclohexane added for its natural
+     gases); P-H, T-S and H-S charts, with the steam charts, next, with step 6 (they need its entropy);
   8. later, Rating.
   Then 0010.
 - **0010, reactions:**
