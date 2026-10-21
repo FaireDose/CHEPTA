@@ -45,12 +45,32 @@ Code: [`src/units/heat-exchange.js`](../../src/units/heat-exchange.js) (the calc
   stress is the user's: ASME Section II, Part D is paywalled, and no open table of allowable stresses was found. No
   material is recommended from the pressure.
 
+## Rating: the duty and outlets of a given exchanger
+
+`exchangerRating` (proposal 0013, step 8) takes the area, U and the arrangement and finds the duty at which the zone
+areas of pre-sizing add up to the area given; the outlets follow. Water and a fluid with inlet and outlet give their
+flow (`flow_kg_h`) instead of the outlet temperature; steam and a fluid at one temperature need nothing more.
+
+- **The largest duty** of the inlets: each side brought to the other's inlet temperature (a process stream by a P-H
+  flash, water by IAPWS-IF97); the effectiveness is the duty over it. Two sides at constant temperature have no bound,
+  and are refused.
+- **The search.** The area grows with the duty from zero; a duty that would cross the temperatures, or that the
+  arrangement cannot reach, counts as an infinite area, so the search stays where the exchanger can work. Bisection
+  with the Illinois form of regula falsi, on 10 zones; the result is then calculated with all the zones, and the area
+  of that last calculation is said when it differs from the one given by more than 0.2 %.
+- **What it is not.** U is the one of section 2 (a service, the films or the user's): the film coefficients are not
+  calculated from the exchanger's geometry and flows (a later proposal, as for pre-sizing).
+- **In the workspace**: Design or Rating in the ribbon. In rating the area replaces the process outlet (utility
+  exchanger) or the specification (process exchanger), and water or a fluid gives its flow. The utility heats when it
+  enters hotter than the process stream, else it cools; electric heating has no area to rate.
+
 ## In the flowsheet
 
 - `heater` with `sizing: { utility, U, arrangement }`: the area and the utility's flow; the outlet stays as specified.
 - `hx`: two process streams (ports `hot` and `cold`), adiabatic overall; one specification: an outlet temperature or
-  vapour fraction of either side, the duty, or the minimum approach (`dTmin_K`, found by bisection and regula falsi;
-  a target the arrangement cannot reach is an error). A recycle through it is torn as any recycle (a feed-effluent
+  vapour fraction of either side, the duty, the minimum approach (`dTmin_K`, found by bisection and regula falsi;
+  a target the arrangement cannot reach is an error), or the area of an existing exchanger (`A_m2`, with `U`:
+  rating). A recycle through it is torn as any recycle (a feed-effluent
   exchanger). On the first pass of a recycle, a side without flow exchanges nothing.
 - `valve`: a P-H flash at the inlet enthalpy and the outlet pressure: a throttle. A gas cools by the Joule-Thomson
   effect and a saturated liquid partly flashes, when the method has a real-gas vapour (Peng-Robinson or SRK); an
@@ -78,10 +98,15 @@ Code: [`src/units/heat-exchange.js`](../../src/units/heat-exchange.js) (the calc
 
 [`test/heat-exchange.test.js`](../../test/heat-exchange.test.js),
 [`test/energy-streams.test.js`](../../test/energy-streams.test.js),
-[`test/hx-workspace.test.js`](../../test/hx-workspace.test.js):
+[`test/hx-workspace.test.js`](../../test/hx-workspace.test.js), [`test/rating.test.js`](../../test/rating.test.js):
 
 - Lienhard and Lienhard's worked examples: Example 3.6 (LMTD 52.79 K, 22.73 m²), the steam condenser of section 3.2
-  (LMTD 28.85 K), Example 3.5 sized back (30 m²);
+  (LMTD 28.85 K), Example 3.5 sized back (30 m²) and rated (30 m²: ε 0.596, 656.0 kW, 84.4 and 72.8 °C; the book
+  rounds ε and reads 655.6 kW);
+- rating against the effectiveness-NTU relations of every arrangement (one and two shells, R below and above 1,
+  within 0.2 %), against 1 − exp(−NTU) with one side at a constant temperature, and on real curves (a process stream
+  against steam and against cooling water, the flowsheet block): sized back by pre-sizing, the area is the one given
+  within 0.3 %;
 - an independent calculation with CoolProp 8.0.0 ([`validation/python/reference_heat_exchange.py`](../../validation/python/reference_heat_exchange.py)):
   n-butane condensed and subcooled against cooling water, and boiled by steam (Peng-Robinson, IAPWS-IF97), duty, area,
   water and steam flows within 0.5 % (0.05-0.13 % found);

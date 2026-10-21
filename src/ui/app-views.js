@@ -724,7 +724,7 @@ function flashView(ctx) {
 }
 
 // ---------------------------------------------------------------------------------------
-// Heat exchanger (proposal 0013, step 2): pre-sizing by zones (src/units/heat-exchange.js); the inputs: hx-view.js
+// Heat exchanger (proposal 0013, steps 2 and 8): pre-sizing by zones, or rating a given area (src/units/heat-exchange.js); the inputs: hx-view.js
 
 const ARR = { counterflow: "counterflow", cocurrent: "cocurrent", "shell-and-tube": "shell and tube", "crossflow-unmixed": "crossflow" };
 
@@ -775,9 +775,13 @@ function hxView(ctx) {
   const util = r.hot.kind !== "process" ? r.hot : r.cold.kind !== "process" ? r.cold : null;
   // (replaceChildren writes null as text: the rows that do not apply are left out)
   side.replaceChildren(...[
-    h("div", {}, h("div", { class: "fug-eyebrow" }, "Area"), h("div", { class: "fug-big" }, r.area_m2 == null ? "–" : `${fmtShort(r.area_m2, 4)} m²`)),
+    // rating: the duty is the answer, the area is given
+    r.rating ? h("div", {}, h("div", { class: "fug-eyebrow" }, "Duty"), h("div", { class: "fug-big" }, `${fmtShort(r.duty_kW, 5)} kW`))
+      : h("div", {}, h("div", { class: "fug-eyebrow" }, "Area"), h("div", { class: "fug-big" }, r.area_m2 == null ? "–" : `${fmtShort(r.area_m2, 4)} m²`)),
     kv([
-      ["Duty", fmtShort(r.duty_kW, 5), "kW"],
+      r.rating ? ["Area (given)", fmtShort(r.rating.area_m2, 5), "m²"] : ["Duty", fmtShort(r.duty_kW, 5), "kW"],
+      r.rating ? ["Effectiveness", fmtShort(r.rating.effectiveness, 4)] : null,
+      r.rating ? ["Largest duty of these inlets", fmtShort(r.rating.duty_max_kW, 5), "kW"] : null,
       ["U", r.U_W_m2K == null ? null : fmtShort(r.U_W_m2K, 4), "W/(m² K)"],
       ["UA", fmtShort(r.UA_kW_K, 5), "kW/K"],
       ["Mean ΔT (Q / UA)", fmtShort(r.dT_mean_K, 4), "K"],
@@ -790,6 +794,7 @@ function hxView(ctx) {
     ]),
     r.U_how ? h("div", { class: "fug-foot" }, `U: ${r.U_how}`) : null,
     util ? h("div", { class: "fug-foot" }, `Utility: ${util.describe}.`) : null,
+    r.rating ? h("div", { class: "fug-foot" }, r.rating.summary) : null,
     ...r.notes.map(n => h("div", { class: "fug-warn" }, n)),
     hx.wall.S_MPa == null ? h("div", { class: "fug-foot" }, "Wall thickness: give the allowable stress in Inputs.") : wall ? h("div", { class: "fug-foot" }, `Wall: ${wall.method}.`) : null,
     read].filter(Boolean));
@@ -801,14 +806,14 @@ function hxView(ctx) {
     h("div", { class: "fug-scroll" }, h("table", { class: "fa-table" },
       h("thead", {}, h("tr", {}, ...tb.columns.map(c => h("th", { scope: "col", class: "fug-num fa-th2" }, c.label, c.unit ? h("span", { class: "fa-th-unit" }, c.unit) : null)))),
       h("tbody", {}, ...tb.rows.map(row => h("tr", {}, ...row.map(v => h("td", { class: "fug-num" }, v == null ? "–" : fmtShort(v, 5)))))))),
-    h("p", { class: "fug-foot" }, "Pre-sizing: Lienhard and Lienhard, A Heat Transfer Textbook, 6th ed. (2024), sections 3.2-3.3, and Tables 1.1, 2.2, 2.3, A.1 for U. Each side's temperature comes from its own curve (a P-H flash of the process stream, or IAPWS-IF97 for steam and water).")));
+    h("p", { class: "fug-foot" }, `${r.rating ? "Rating: the duty at which the zone areas add up to the area given, by the zone model of pre-sizing" : "Pre-sizing"}: Lienhard and Lienhard, A Heat Transfer Textbook, 6th ed. (2024), sections 3.2-3.3, and Tables 1.1, 2.2, 2.3, A.1 for U. Each side's temperature comes from its own curve (a P-H flash of the process stream, or IAPWS-IF97 for steam and water).`)));
   extra.append(...(two ? [...sourcesOf(ctx, systems.hot), ...sourcesOf(ctx, systems.cold)] : sourcesOf(ctx, sys)));
   const about = two
     ? [...aboutRows(state, systems.hot).map(([k, v]) => [`Hot stream: ${k}`, v]), ...aboutRows(state, systems.cold).map(([k, v]) => [`Cold stream: ${k}`, v])]
     : aboutRows(state, sys);
   return { data: r.area_m2 == null ? `Duty ${fmtShort(r.duty_kW, 4)} kW` : `Area ${fmtShort(r.area_m2, 4)} m², duty ${fmtShort(r.duty_kW, 4)} kW`, export: () => ({
     title: two ? `Process exchanger: ${listNames(systems.hot.names)} against ${listNames(systems.cold.names)}` : `Heat exchanger: ${listNames(sys.names)}`, file: `heat exchanger ${ids.join(" ")}`,
-    about: [...about, ["Arrangement", `${ARR[r.arrangement]}${r.shells ? `, ${r.shells} shell(s)` : ""}`], ["Duty", `${fmtShort(r.duty_kW, 6)} kW`],
+    about: [...about, ...(r.rating ? [["Calculation", `Rating: ${fmtShort(r.rating.area_m2, 6)} m² given; effectiveness ${fmtShort(r.rating.effectiveness, 5)}`]] : []), ["Arrangement", `${ARR[r.arrangement]}${r.shells ? `, ${r.shells} shell(s)` : ""}`], ["Duty", `${fmtShort(r.duty_kW, 6)} kW`],
       ["Area", r.area_m2 == null ? "no U given" : `${fmtShort(r.area_m2, 6)} m²`], ["U", r.U_how ?? "–"], ...(util ? [["Utility", util.describe]] : []),
       ...(wall ? [["Minimum wall thickness", `${fmtShort(wall.t_mm, 5)} mm (${wall.method})`]] : [])],
     tables,

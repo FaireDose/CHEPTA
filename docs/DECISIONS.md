@@ -167,7 +167,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      Charts; project format 5);
   next, by the maintainer's request (2026-10-21): every error of the workbench as a small warning that opens its
   details when pressed;
-  8. later, Rating.
+  8. Rating (done 2026-10-21, docs/decisions/2026-10-21-06-rating.md): the duty and outlets of a given area, U and
+     arrangement, in the workspace (Design or Rating) and as the flowsheet block's A_m2;
   Then 0010.
 - **0010, reactions:**
   1. formation data (ΔfH°, ΔfG°);

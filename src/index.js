@@ -31,7 +31,7 @@ import { henry, henryInfo, gasSolubility, HENRY_GASES } from "./thermo/henry.js"
 import { library } from "./thermo/library.js";
 import { stream, componentFlows, scaleStream, phaseStream } from "./stream/stream.js";
 import { registerUnit, runUnit, unitTypes, unitType, specStatus } from "./units/units.js";
-import { exchangerArea, exchangerApproach, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER } from "./units/heat-exchange.js";
+import { exchangerArea, exchangerApproach, exchangerRating, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER } from "./units/heat-exchange.js";
 import { solveFlowsheet, checkFlowsheet, inspectFlowsheet, flowsheetStatus } from "./flowsheet/flowsheet.js";
 import { runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus } from "./flowsheet/document.js";
 import { checkProject, readProject, PROJECT_FORMAT } from "./ui/project.js";
@@ -59,7 +59,7 @@ export {
   library,
   stream, componentFlows, scaleStream, phaseStream,
   registerUnit, runUnit, unitTypes, unitType, specStatus,
-  exchangerArea, exchangerApproach, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER,
+  exchangerArea, exchangerApproach, exchangerRating, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER,
   solveFlowsheet, checkFlowsheet, inspectFlowsheet, flowsheetStatus,
   runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus,
   checkProject, readProject, PROJECT_FORMAT,

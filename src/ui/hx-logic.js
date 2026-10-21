@@ -2,15 +2,16 @@
  * Heat exchanger workspace of the workbench (proposal 0013, step 2): the DOM-free part. The settings kept in the
  * state (`state.hx`, null until the person changes one), the request sent to the engine (src/units/heat-exchange.js),
  * and the tables of the result for the exports. No thermodynamics here: hxCalc builds the streams with
- * CHEPTA.stream and calls exchangerArea and wallThickness.
+ * CHEPTA.stream and calls exchangerArea (exchangerRating in rating) and wallThickness.
  *
- * Two modes: "utility" (one process stream of the workspace's components and model, against steam, water or a fluid
+ * Two tasks (proposal 0013, step 8): "design" (the area for an outlet or a duty) and "rating" (the duty and the outlets
+ * of an exchanger of a given area). Two modes: "utility" (one process stream of the workspace's components and model, against steam, water or a fluid
  * of the person's own, or electric heating) and "two" (two process streams that never mix: each has its own
  * components, at most HX_STREAM_MAX, and its own method; until they are chosen, the workspace's). U from a service (Table 2.2 of Lienhard
  * and Lienhard), from film coefficients and a wall, or the person's own. Units inside: K, kPa, kmol/h, kW, m².
  */
 import { stream } from "../stream/stream.js";
-import { exchangerArea, exchangerApproach, wallThickness, HEAT_TRANSFER, ARRANGEMENTS } from "../units/heat-exchange.js";
+import { exchangerArea, exchangerApproach, exchangerRating, wallThickness, HEAT_TRANSFER, ARRANGEMENTS } from "../units/heat-exchange.js";
 
 // components and model null: the workspace's (two-stream mode sets them per stream)
 const side = (T_K, P_kPa) => ({ flow: 100, z: null, T_K, P_kPa, dP_kPa: 0, components: null, model: null, vapour: null });
@@ -20,9 +21,11 @@ export const HX_STREAM_MAX = 3;
 /** The settings of a new Heat exchanger workspace. */
 export const HX_DEFAULTS = Object.freeze({
   mode: "utility",
+  // "design": the area for an outlet or a duty; "rating": the duty and the outlets of the area given
+  task: "design", rating: { area_m2: 10 },
   // utility mode: the process stream, its outlet (T or VF) and the utility
   process: { ...side(298.15, 101.325), out: "T", T_out_K: 333.15, VF_out: 1 },
-  utility: { kind: "steam", P_kPa: 300, T_in_K: 303.15, T_out_K: 313.15, T_K: 423.15, cp_J_kgK: 2000, water_P_kPa: 101.325 },
+  utility: { kind: "steam", P_kPa: 300, T_in_K: 303.15, T_out_K: 313.15, T_K: 423.15, cp_J_kgK: 2000, water_P_kPa: 101.325, flow_kg_h: 5000 },
   // two-stream mode: both streams and one specification
   hot: side(393.15, 300), cold: side(298.15, 101.325), spec: { kind: "T_hot_out_K", value: 333.15 },
   // U: "service" (Table 2.2), "film" (Tables 1.1, 2.3 and A.1) or "value"
@@ -39,6 +42,9 @@ export const UTILITY_KINDS = [
   ["fluid", "A fluid of your own, inlet and outlet"], ["electric", "Electric heating"],
 ];
 export const TWO_SPECS = [["T_hot_out_K", "Hot outlet T"], ["T_cold_out_K", "Cold outlet T"], ["duty_kW", "Duty"], ["dTmin_K", "Minimum ΔT"]];
+/** The two tasks, as the ribbon names them. */
+export const HX_TASKS = [["design", "Design", "Pre-sizing: the area for an outlet"],
+  ["rating", "Rating", "The outlets of a given area"]];
 /** The two modes, as the ribbon names them. */
 export const HX_MODES = [["utility", "Utility exchanger", "A process stream heated or cooled by a utility"],
   ["two", "Process exchanger", "Heat recovery between two process streams"]];
@@ -61,6 +67,8 @@ function merge(prev, patch) {
 /** The settings with a patch merged in, checked (an unknown mode, arrangement or utility throws, naming it). */
 export function normalizeHx(patch, prev = HX_DEFAULTS) {
   const s = merge(prev ?? HX_DEFAULTS, patch ?? {});
+  if (!["design", "rating"].includes(s.task)) throw new Error(`hx.task must be "design" or "rating" (got ${JSON.stringify(s.task)}).`);
+  if (!(s.rating.area_m2 > 0)) throw new Error(`hx.rating.area_m2 must be a positive area in m² (got ${s.rating.area_m2}).`);
   if (!["utility", "two"].includes(s.mode)) throw new Error(`hx.mode must be "utility" or "two" (got ${JSON.stringify(s.mode)}).`);
   if (!ARRANGEMENTS.includes(s.arrangement)) throw new Error(`hx.arrangement "${s.arrangement}" is not one of ${ARRANGEMENTS.join(", ")}.`);
   if (!UTILITY_KINDS.some(([k]) => k === s.utility.kind)) throw new Error(`hx.utility.kind "${s.utility.kind}" is not one of ${UTILITY_KINDS.map(k => k[0]).join(", ")}.`);
@@ -91,12 +99,16 @@ export function uRequest(U) {
   return { film: { hot: sideOf(f.hot), cold: sideOf(f.cold), wall: { ...(f.wall.k_W_mK != null ? { k_W_mK: f.wall.k_W_mK } : { material: f.wall.material }), t_mm: f.wall.t_mm } } };
 }
 
-/** The utility request of the engine from the settings ("fluid-T" is the constant-temperature fluid). */
-export function utilityRequest(u) {
+/**
+ * The utility request of the engine from the settings ("fluid-T" is the constant-temperature fluid). In rating, water
+ * and a fluid with inlet and outlet give their flow instead of the outlet.
+ */
+export function utilityRequest(u, rating = false) {
+  const out = rating ? { flow_kg_h: u.flow_kg_h } : { T_out_K: u.T_out_K };
   if (u.kind === "steam") return { kind: "steam", P_kPa: u.P_kPa };
-  if (u.kind === "water") return { kind: "water", T_in_K: u.T_in_K, T_out_K: u.T_out_K, P_kPa: u.water_P_kPa };
+  if (u.kind === "water") return { kind: "water", T_in_K: u.T_in_K, ...out, P_kPa: u.water_P_kPa };
   if (u.kind === "fluid-T") return { kind: "fluid", T_K: u.T_K };
-  if (u.kind === "fluid") return { kind: "fluid", T_in_K: u.T_in_K, T_out_K: u.T_out_K, cp_J_kgK: u.cp_J_kgK };
+  if (u.kind === "fluid") return { kind: "fluid", T_in_K: u.T_in_K, ...out, cp_J_kgK: u.cp_J_kgK };
   return { kind: "electric" };
 }
 
@@ -109,7 +121,24 @@ export function hxCalc(sys, hx, systems = {}) {
   const mk = (s, sy = sys) => stream(sy, { flow_kmol_h: streamZ(s.z, sy.n).map(v => v * s.flow), T_K: s.T_K, P_kPa: s.P_kPa });
   const common = { U: uRequest(hx.U), arrangement: hx.arrangement, shells: hx.shells, zones: hx.zones };
   let result = null, electric = null, process = null;
-  if (hx.mode === "utility") {
+  if (hx.task === "rating") {
+    const A = hx.rating.area_m2;
+    if (hx.mode === "utility") {
+      const p = hx.process, ut = hx.utility;
+      if (ut.kind === "electric") throw new Error("Electric heating has no heat-transfer area to rate: choose steam, water or a fluid, or design.");
+      process = mk(p);
+      // the utility heats when it is hotter than the process inlet (steam only heats)
+      const heat = ut.kind === "steam" || (ut.kind === "fluid-T" ? ut.T_K : ut.T_in_K) > p.T_K;
+      const proc = { stream: process, dP_kPa: p.dP_kPa }, util = { utility: utilityRequest(ut, true) };
+      result = exchangerRating(sys, { ...common, area_m2: A, ...(heat ? { hot: util, cold: proc } : { hot: proc, cold: util }) });
+    } else {
+      const sh = systems.hot ?? sys, sc = systems.cold ?? sys;
+      const hot = mk(hx.hot, sh), cold = mk(hx.cold, sc);
+      if (!(hot.T_K > cold.T_K)) throw new Error("The hot stream must enter hotter than the cold stream; swap them.");
+      result = exchangerRating(sys, { ...common, area_m2: A,
+        hot: { stream: hot, sys: sh, dP_kPa: hx.hot.dP_kPa }, cold: { stream: cold, sys: sc, dP_kPa: hx.cold.dP_kPa } });
+    }
+  } else if (hx.mode === "utility") {
     const p = hx.process;
     process = mk(p);
     const out = p.out === "VF" ? { VF_out: p.VF_out } : { T_out_K: p.T_out_K };

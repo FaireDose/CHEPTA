@@ -464,16 +464,19 @@ function sizingSection({ b, spec, setS, inputsSection, uid, u }) {
 
 /** The two-stream exchanger: one specification, pressure drops, and U (optional) for the area. */
 function hxSections({ b, spec, setS, inputsSection, uid, u, T, P, plain }) {
-  const KINDS = [["T_hot_out_K", "Hot T out"], ["T_cold_out_K", "Cold T out"], ["VF_hot_out", "Hot VF"], ["VF_cold_out", "Cold VF"], ["duty_kW", "Duty"], ["dTmin_K", "Min ΔT"]];
+  // A_m2: rating an existing exchanger (proposal 0013, step 8): its area and U give the outlets
+  const KINDS = [["T_hot_out_K", "Hot T out"], ["T_cold_out_K", "Cold T out"], ["VF_hot_out", "Hot VF"], ["VF_cold_out", "Cold VF"], ["duty_kW", "Duty"], ["dTmin_K", "Min ΔT"], ["A_m2", "Area (rating)"]];
   const cur = KINDS.find(([k]) => spec[k] != null)?.[0] ?? null;
   return [
     inputsSection("Specification",
-      segRow("Specification", KINDS, cur, k => setS(Object.fromEntries(KINDS.map(([x]) => [x, x === k ? spec[x] ?? { T_hot_out_K: 320, T_cold_out_K: 330, VF_hot_out: 0, VF_cold_out: 1, duty_kW: 100, dTmin_K: 10 }[x] : null]))), `fs-hxspec-${b.id}`),
+      segRow("Specification", KINDS, cur, k => setS(Object.fromEntries(KINDS.map(([x]) => [x, x === k ? spec[x] ?? { T_hot_out_K: 320, T_cold_out_K: 330, VF_hot_out: 0, VF_cold_out: 1, duty_kW: 100, dTmin_K: 10, A_m2: 10 }[x] : null]),
+        ...(k === "A_m2" && spec.U == null ? { U: { service: "steam-water-oil" } } : {}))), `fs-hxspec-${b.id}`),
       cur === "T_hot_out_K" || cur === "T_cold_out_K" ? T(cur, cur === "T_hot_out_K" ? "Hot outlet temperature" : "Cold outlet temperature")
         : cur === "duty_kW" ? plain("duty_kW", "Duty", "kW", "heat exchanged") : cur === "dTmin_K" ? plain("dTmin_K", "Minimum approach", "K")
+        : cur === "A_m2" ? plain("A_m2", "Area of the exchanger", "m²", "with U below: the outlets follow (rating)")
         : cur ? plain(cur, cur === "VF_hot_out" ? "Hot outlet vapour fraction" : "Cold outlet vapour fraction", "mol/mol", "0 to 1") : h("p", { class: "fa-in-hint" }, "Choose one; the other outlet follows from the energy balance."),
       P("dP_hot_kPa", "Hot side pressure drop"), P("dP_cold_kPa", "Cold side pressure drop")),
-    inputsSection("Area (optional)",
+    inputsSection(cur === "A_m2" ? "U and arrangement (needed for rating)" : "Area (optional)",
       ...uFields(spec.U, U => setS({ U }), uid, `${b.id}-hx`),
       selectField("Arrangement", ARRS, spec.arrangement ?? "counterflow", v => setS({ arrangement: v }), `${b.id}-hx-arr`, uid),
       h("p", { class: "fa-in-hint" }, "Each side's temperature follows its own curve, in zones; a temperature cross is an error.")),
@@ -1103,13 +1106,14 @@ function resultsPanel({ state, f, sol, u }) {
         r.state?.efficiency != null ? ["Efficiency", `${fmtShort(100 * r.state.efficiency, 4)} %`] : null,
         r.state?.volume_m3_h != null ? ["Volume flow", `${fmtShort(r.state.volume_m3_h, 5)} m³/h`] : null,
         b.type === "hx" && r.state?.duty_kW != null ? ["Heat exchanged", `${fmtShort(r.state.duty_kW, 5)} kW`] : null,
-        z?.area_m2 != null ? ["Area", `${fmtShort(z.area_m2, 4)} m²`] : null,
+        z?.area_m2 != null ? [z.rating ? "Area (given)" : "Area", `${fmtShort(z.rating?.area_m2 ?? z.area_m2, 4)} m²`] : null,
+        z?.rating ? ["Effectiveness", fmtShort(z.rating.effectiveness, 4)] : null,
         z?.U_W_m2K != null ? ["U", `${fmtShort(z.U_W_m2K, 4)} W/(m² K)`] : null,
         z?.dT_min_K != null ? ["Smallest ΔT", `${fmtShort(z.dT_min_K, 4)} K`] : null,
         z?.utility?.flow_kg_h != null ? ["Utility", `${fmtShort(z.utility.flow_kg_h, 5)} kg/h`] : null,
         ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)],
       ]), ...(z?.utility?.describe ? [h("div", { class: "fug-foot" }, `Utility: ${z.utility.describe}.`)] : []), ...(z?.note ? [h("div", { class: "fug-foot" }, z.note)] : []),
-      ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)), ...r.notes.map(n => h("div", { class: "fug-warn" }, n)));
+      ...(z?.rating ? [h("div", { class: "fug-foot" }, z.rating.summary)] : []), ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)), ...r.notes.map(n => h("div", { class: "fug-warn" }, n)));
     } else out.push(h("div", { class: "fa-empty" }, sol.status.blocks?.[f.sel.id]?.ok === false ? sol.status.blocks[f.sel.id].message : "Not calculated yet."));
   } else if (f.sel?.kind === "energy") {
     const q = res?.energy?.[f.sel.id];
