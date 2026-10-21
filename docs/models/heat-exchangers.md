@@ -21,12 +21,22 @@ Code: [`src/units/heat-exchange.js`](../../src/units/heat-exchange.js) (the calc
   changes phase, F from the terminal temperatures is an approximation, and the result says so. An effectiveness above
   what the arrangement can give is an error ("put more shells in series"). The crossflow relations of Table 3.1 are
   approximate (≃).
+- **Two process streams** (the Process exchanger of the workspace) never mix, so each side may have its own
+  system: `hot: { stream, sys }` (its components and method). The flowsheet block uses the flowsheet's one system.
+  The minimum approach (`exchangerApproach`): the duty by bisection and regula falsi.
 - **U.** One of:
   - a service of Table 2.2 (typical ranges), the low end by default (the larger, safer area);
   - film coefficients (Table 1.1), fouling resistances (Table 2.3, the high end by default) and a plane wall:
     1/U = 1/h_hot + R_f,hot + t/k + R_f,cold + 1/h_cold (eqn. 2.36), with k of a metal of Table A.1, interpolated
     linearly in temperature at the mean of the two sides, refused outside the table;
   - the user's own value.
+
+  Film coefficients are not a more rigorous route: Table 1.1 gives single examples of each order of magnitude (water
+  at 10 m/s, an aniline-alcohol mixture at 3 m/s), not values for a given stream, so the U from them can lie far from
+  a service range of Table 2.2 (with the defaults 1125 against 60 W/(m² K)). Coefficients calculated from the stream's
+  properties and the geometry (Lienhard and Lienhard, chapters 7-9) are proposed for later.
+- **F = 1 with an isothermal side.** Against condensing steam (or a fluid at one temperature) F is 1 for every
+  arrangement ("If one flow remains at constant temperature ... F must go to one", section 3.2, p. 116).
 - **Utilities.** Saturated steam at a pressure (condensing; its flow from the latent heat), water between two
   temperatures (IAPWS-IF97), a fluid of the user's own (a constant temperature, or two with a heat capacity), electric
   heating (no area). Utility temperatures and prices are the user's: no open table was found.

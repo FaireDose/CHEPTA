@@ -11,7 +11,7 @@
      used for exchanger walls are left out, and said so.
   2. Unit models, **Heat exchanger**: with a utility (steam, water, a fluid of your own, electric) or two streams; the
      U from its three sources; the arrangement; the wall thickness; a temperature-heat diagram; the zones as a table;
-     the Excel export; a locked **Rating** button (in the toolbar and the Inputs panel).
+     the Excel export; a locked **Rating** button (in the toolbar).
   3. Flowsheet: **energy streams** (`energyStreams`): an energy feed into a heater or flash drum (it needs one
      specification fewer and calculates its outlet), or a heater's, drum's or separator's heat into a heater or drum;
      counted in the degrees of freedom; drawn dashed; a loop closed by one is torn on its duty (energy streams are
@@ -26,8 +26,8 @@
   - Project **format 4**, written only with these features (energy streams, the hx, valve or pump blocks, the Heat
     exchanger workspace); older files open unchanged. `docs/schema/project-4.json`; the AI instructions list the new
     blocks and energy streams.
-  - `start: "flowsheet"` now opens the Flowsheet workspace (it was refused before: the view had no case in
-    `viewAvailability`).
+  - A start link to the flowsheet with components (`start: "flowsheet"`) no longer throws (`resolveView` returns the
+    flowsheet, which has its own components; `viewAvailability` still refuses it, as `test/app.test.js` asks).
 - **Changed on the way:** F was first applied zone by zone; that hides the temperature cross of a multipass exchanger
   (each small zone looks feasible), so F comes from the terminal temperatures (proposal section 1c updated). The
   minimum-approach specification refuses a target that the arrangement stops short of, instead of returning another
@@ -46,3 +46,45 @@
 - **For the maintainer to check:** every value of `src/data/heat-transfer.json` against the pages named in it (the
   "+" and "-" marks of Table A.1 are kept); the Lamé citation (§ 80, eqns. 22-23, pp. 190-191 of the Internet Archive
   copy: the OCR is poor, so compare the equations on the page images); the NC State and DOE quotes.
+
+## Review of 2026-10-21
+
+The maintainer's comments on the pull request, and what was done:
+
+- "there is twice written: With a utility and Two streams. make it only once and change the names": the mode is in the
+  ribbon only, named **Utility exchanger** (a process stream heated or cooled by a utility) and **Process exchanger**
+  (heat recovery between two process streams). The Inputs panel's copy and its second Rating button are gone.
+- "Heat from the hot inlet ... make this on two rows": every column header of the zone table has its unit on a second
+  line.
+- "The shell and tube doesn't bring any difference compared with countercurrent. Is there a factor?": the factor F is
+  applied, and it changes the area when both temperatures change (in the check of the review, two water-ethanol
+  streams: 75 m² in shell and tube against 58 m² in counterflow, F = 0.783). Against condensing steam,
+  the default, one side stays at one temperature, and F is exactly 1 for every arrangement: "If one flow remains at
+  constant temperature ... F must go to one" (Lienhard and Lienhard, section 3.2, p. 116). The Inputs panel now says
+  so under the arrangement.
+- "for heat exchanger model with two components, the two are not mixed ... should be two streams maybe with max 3
+  components and the method should be for each stream": each stream of a process exchanger has its own components
+  (at most three) and its own method (an activity model with its vapour, or an equation of state); until chosen, the
+  workspace's. The engine takes a system per side (`exchangerArea`: `hot: { stream, sys }`); the search for a
+  minimum approach is `exchangerApproach`, used by the flowsheet block too (one system there: a flowsheet has one
+  property method).
+- "what is the films and wall? is this more rigorous design? the difference is two order of magnitude": the equation
+  is right (1/U adds the five resistances, Lienhard and Lienhard eqn. 2.36; with the defaults 1125 W/(m² K), the
+  aniline-alcohol film being 43 % of the resistance); it is not more rigorous. Table 1.1 gives single examples of each order of
+  magnitude (water at 10 m/s, 34 500 W/(m² K)), not values for a given stream, while the default service, "steam or
+  water to oil", is a viscous oil at its low end, 60 W/(m² K). The Inputs panel says this. A rigorous U needs film
+  coefficients calculated from the stream's own properties and the exchanger's geometry (tube diameter, velocity:
+  Lienhard and Lienhard, chapters 7 to 9); proposed as a next step, not done.
+- "i want also a energy stream similar like a feed stream where i can put a duty": **Energy feed** in the palette,
+  next to Feed. It is placed on the drawing with a duty; dragged onto a heater/cooler or a flash drum (or chosen in its
+  form) it connects; it can be disconnected (it stays on the drawing) or deleted. A placed energy feed not yet
+  connected makes the flowsheet not ready, with the reason (`energyStreams` entries may now lack `to`; schema 4).
+- "the flowsheet automatically assigns a duty stream ... but i want to be able to take it out": a block's own energy
+  stream (Q- and the id) can be selected and taken out of the drawing (`"energy": false` on the block). Its duty is
+  still calculated, listed in the results and counted in the energy balance; the block's form shows it again.
+- "The heater icon make it Heater/Cooler": done, in the palette and the forms (the engine's messages still say
+  "Heater / cooler", which the tests check).
+- "a bar in the flowsheet so when it gets crowded i can move up and down. a bar or drag along": the drawing keeps its
+  scale (one unit, one pixel, times the zoom) in a box with scrollbars; dragging the empty canvas moves the view; the
+  view stays where it was scrolled when a block is selected; **Fit** sets the zoom that shows all of it (40 % at
+  least). "resolution wise kinda large ... not now": left for later (DECISIONS.md).

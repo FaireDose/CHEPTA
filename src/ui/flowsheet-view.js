@@ -20,6 +20,7 @@ import {
   PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
   energyOf, energyTargets, addEnergyFeed, connectEnergy, removeEnergy, setEnergyDuty, ENERGY_TARGETS, ENERGY_SOURCES,
+  placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy,
 } from "./flowsheet-logic.js";
 import { HEAT_TRANSFER } from "../units/heat-exchange.js";
 import { PUMP_EFFICIENCY } from "../units/units.js";
@@ -36,7 +37,7 @@ const byId = () => new Map(listComponents({ userData: drawing }).map(c => [c.id,
 const nameOf = id => byId().get(id)?.name ?? id;
 // the models with parameters per pair (Modified UNIFAC 2.0 and the ideal solution have none)
 const PAIR_MODELS = ["NRTL", "UNIQUAC", "PR", "SRK"];
-const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater / cooler",
+const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
   hx: "Heat exchanger", valve: "Valve", pump: "Pump", product: "Product" };
 const HINT = {
   feed: "A stream entering the flowsheet: its flows and two of T, P and vapour fraction.",
@@ -76,6 +77,19 @@ export function deleteSelected(state, set, ui) {
   enter(state);
   const f = ensureUi(ui), fs = state.flowsheet;
   if (!f.sel) return;
+  if (f.sel.kind === "energy") {
+    const q = (fs.energyStreams ?? []).find(x => x.id === f.sel.id), bid = f.sel.block;
+    f.sel = null;
+    if (q) {
+      f.note = q.from ? `${q.id} removed: ${q.to} needs its own specification again.` : `Energy feed ${q.id} deleted${q.to ? `: ${q.to} needs its own specification again` : ""}.`;
+      set({ flowsheet: removeEnergy(fs, q.id) });
+    } else if (bid) {
+      // a block's own energy stream: taken out of the drawing; the block still has its duty
+      f.note = `${bid}'s energy stream is taken out of the drawing; ${bid} still calculates its duty (in its results and in the energy balance). Its form can show it again.`;
+      set({ flowsheet: showEnergy(fs, bid, false) });
+    } else set({});
+    return;
+  }
   if (f.sel.kind === "block") {
     const r = removeBlock(fs, f.sel.id);
     f.sel = null; f.note = r.note;
@@ -135,11 +149,17 @@ export function flowsheetRibbon({ state, set, ui, group, bigButton, smallButton 
       bigButton({ ico: "cubic", label: "Method", fk: "fs-method", pressed: !f.sel && f.setup === "method",
         title: "2. The property method of the whole flowsheet, and the recycle solver", note: method,
         onClick: () => { f.sel = null; f.setup = "method"; set({}); } })),
-    group("Blocks", ...PALETTE.map(type => {
-      const b = bigButton({ ico: type === "flash" ? "drum" : type, label: LABEL[type].replace(" / cooler", ""), fk: `fs-add-${type}`,
+    group("Blocks", ...PALETTE.flatMap(type => {
+      const b = bigButton({ ico: type === "flash" ? "drum" : type, label: LABEL[type], fk: `fs-add-${type}`,
         title: ready ? `Place a ${LABEL[type].toLowerCase()}: ${HINT[type]}` : "Choose the components first", onClick: place(type) });
       b.disabled = !ready;
-      return b;
+      if (type !== "feed") return [b];
+      // an energy feed, placed like a feed: a given duty, dragged onto a heater or flash drum
+      const q = bigButton({ ico: "energy", label: "Energy feed", fk: "fs-add-energy",
+        title: ready ? "Place an energy feed: a given duty (+ heat in, − heat out). Drag it onto a heater/cooler or a flash drum: the block then calculates its outlet from it." : "Choose the components first",
+        onClick: () => { const r = placeEnergyFeed(fs); f.sel = { kind: "energy", id: r.id }; set({ flowsheet: r.fs }); } });
+      q.disabled = !ready;
+      return [b, q];
     })),
     group("Run",
       bigButton({ ico: "solve", label: "Solve", fk: "fs-solve", title: "Calculate the flowsheet now",
@@ -150,15 +170,21 @@ export function flowsheetRibbon({ state, set, ui, group, bigButton, smallButton 
       smallButton({ ico: "plus", label: "Zoom in", fk: "fs-zoom-in", title: "Zoom in (Ctrl + mouse wheel)", onClick: () => { f.zoom = Math.min(3, (f.zoom ?? 1) * 1.25); set({}); } }),
       (() => {
         feedSel(f, fs);
-        const name = !f.sel ? "" : f.sel.kind === "block" ? blockName(fs.blocks.find(x => x.id === f.sel.id)) ?? f.sel.id : streamName(fs.streams.find(x => x.id === f.sel.id)) ?? f.sel.id;
-        const what = f.sel ? `${f.sel.kind === "block" ? "" : "stream "}${name}` : "";
+        const name = !f.sel ? "" : f.sel.kind === "block" ? blockName(fs.blocks.find(x => x.id === f.sel.id)) ?? f.sel.id
+          : f.sel.kind === "energy" ? f.sel.id : streamName(fs.streams.find(x => x.id === f.sel.id)) ?? f.sel.id;
+        const what = f.sel ? `${f.sel.kind === "block" ? "" : f.sel.kind === "energy" ? "energy stream " : "stream "}${name}` : "";
         const b = smallButton({ ico: "trash", label: f.sel ? `Delete ${name}` : "Delete", fk: "fs-delete",
           title: f.sel ? `Delete ${what} (Delete key)` : "Select a block or a stream on the canvas first", onClick: () => deleteSelected(state, set, ui) });
         b.disabled = !f.sel;
         return b;
       })(),
       smallButton({ ico: "minus", label: "Zoom out", fk: "fs-zoom-out", title: "Zoom out (Ctrl + mouse wheel)", onClick: () => { f.zoom = Math.max(0.4, (f.zoom ?? 1) / 1.25); set({}); } }),
-      smallButton({ ico: "search", label: `Fit, ${Math.round((f.zoom ?? 1) * 100)} %`, fk: "fs-zoom-fit", title: "Back to the whole drawing at 100 %", onClick: () => { f.zoom = 1; set({}); } }))),
+      smallButton({ ico: "search", label: `Fit, ${Math.round((f.zoom ?? 1) * 100)} %`, fk: "fs-zoom-fit", title: "Show the whole drawing (at most 100 %); scroll, or drag the empty canvas, to move around", onClick: () => {
+        // the zoom that shows the whole drawing in the box (at most 100 %), from the top left
+        const v = f.view, W = v?.wrap?.clientWidth ?? 0, H = Math.max(v?.wrap?.clientHeight ?? 0, 320);
+        f.zoom = W > 0 ? Math.max(0.4, Math.min(1, (W - 4) / v.w, (H - 4) / v.h)) : 1;
+        f.scroll = { left: 0, top: 0 }; set({});
+      } }))),
     group("Coming later", h("div", { class: "fa-soon-grid" }, ...COMING.map(c => {
       const b = smallButton({ ico: c.icon, label: c.label, fk: `fs-soon-${c.id}`, title: `${c.label}: not available yet (${c.note})`, onClick: () => {} });
       b.disabled = true; b.classList.add("is-locked");
@@ -200,9 +226,14 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
   try { st = flowsheetDocStatus(fs, userOverlay(state)); } catch { /* shown on the canvas */ }
   const put = next => set({ flowsheet: next });
   feedSel(f, fs);
+  const back = h("button", { type: "button", class: "fa-mini", "data-fk": "fs-back", on: { click: () => { f.sel = null; set({}); } } }, icon("chevronUp", 14), "Setup and status");
+  if (f.sel?.kind === "energy") {
+    const secs = energyInputs({ fs, f, put, set, inputsSection, uid, back });
+    if (secs) return secs;
+    f.sel = null;
+  }
   const sel = f.sel && (f.sel.kind === "block" ? fs.blocks.find(b => b.id === f.sel.id) : fs.streams.find(s => s.id === f.sel.id));
   if (!sel) { f.sel = null; return setupSections({ state, set, ui, uid, inputsSection, st }); }
-  const back = h("button", { type: "button", class: "fa-mini", "data-fk": "fs-back", on: { click: () => { f.sel = null; set({}); } } }, icon("chevronUp", 14), "Setup and status");
   // a feed stream: the stream, then its flows and state (kept in its Feed block, which is not drawn)
   const feed = f.sel.kind === "stream" ? feedOf(fs, sel.id) : null;
   if (f.sel.kind === "stream" && !feed) return streamSections({ fs, put, sel, f, inputsSection, back, set });
@@ -393,6 +424,36 @@ function hxSections({ b, spec, setS, inputsSection, uid, u, T, P, plain }) {
   ];
 }
 
+/** The form of a selected energy stream: an energy feed (its duty and the block it goes to), the heat of one block into
+ *  another, or a block's own energy stream (its duty, which can be taken out of the drawing). Null when it is gone. */
+function energyInputs({ fs, f, put, set, inputsSection, uid, back }) {
+  const tryPut = fn => { try { put(fn()); } catch (e) { f.note = e.message; set({}); } };
+  const q = (fs.energyStreams ?? []).find(x => x.id === f.sel.id);
+  const del = (label, fn) => h("button", { type: "button", class: "fa-mini", "data-fk": "fs-qdelete", on: { click: fn } }, icon("trash", 14), label);
+  if (q && !q.from) {
+    const targets = [...(q.to ? [q.to] : []), ...fs.blocks.filter(b => ENERGY_TARGETS.includes(b.type) && !energyOf(fs, b.id)).map(b => b.id)];
+    return [back, inputsSection(`Energy feed ${q.id}`,
+      h("p", { class: "fa-in-hint" }, "A given duty into a heater/cooler or a flash drum: the block calculates its outlet from it. + heat in, − heat out."),
+      numberField("Duty", String(q.duty_kW ?? 0), t => { const v = num(t); if (v == null) return false; put(setEnergyDuty(fs, q.id, v)); }, { id: `${q.id}-duty`, uid, unit: "kW", title: "+ heat into the block, − heat out" }),
+      selectField("Goes to", [["", "Not connected"], ...targets.map(t => [t, t])], q.to ?? "", v => tryPut(() => (v ? connectEnergyFeed(fs, q.id, v) : disconnectEnergy(fs, q.id))), `${q.id}-to`, uid),
+      h("p", { class: "fa-in-hint" }, q.to ? `Drag it to move it; disconnect it here, and ${q.to} needs its own specification again.` : "Drag it onto a heater/cooler or a flash drum, or choose one here."),
+      del(`Delete ${q.id}`, () => { f.sel = null; f.note = `Energy feed ${q.id} deleted${q.to ? `: ${q.to} needs its own specification again` : ""}.`; put(removeEnergy(fs, q.id)); }))];
+  }
+  if (q) {
+    return [back, inputsSection(`Energy stream ${q.id}`,
+      h("p", { class: "fa-in-hint" }, `The heat that ${q.from} gives up goes into ${q.to}; ${q.to} calculates its outlet from it.`),
+      del(`Remove ${q.id}`, () => { f.sel = null; f.note = `${q.id} removed: ${q.to} needs its own specification again.`; put(removeEnergy(fs, q.id)); }))];
+  }
+  const b = f.sel.block && fs.blocks.find(x => x.id === f.sel.block);
+  if (!b || b.energy === false) return null;
+  const work = unitType(b.type).energy === "work";
+  return [back, inputsSection(`${work ? "Work" : "Energy"} stream ${f.sel.id}`,
+    h("p", { class: "fa-in-hint" }, `The ${work ? "power" : "duty"} of ${blockName(b)}, calculated from its specification (+ into the block, − out).`),
+    work ? null : h("p", { class: "fa-in-hint" }, "Taken out of the drawing, the block still calculates its duty: it stays in its results and in the energy balance."),
+    work ? null : del("Take it out of the drawing", () => { f.sel = null; put(showEnergy(fs, b.id, false)); }),
+    h("button", { type: "button", class: "fa-mini", "data-fk": "fs-qblock", on: { click: () => { f.sel = { kind: "block", id: b.id }; set({}); } } }, icon("chevronUp", 14), `Go to ${blockName(b)}`))];
+}
+
 /** A block's energy stream: an energy feed (a given duty), or its heat into another block; or a way to add one. */
 function energySection({ fs, b, put, inputsSection, uid, f, set }) {
   const conn = energyOf(fs, b.id);
@@ -407,7 +468,12 @@ function energySection({ fs, b, put, inputsSection, uid, f, set }) {
       h("button", { type: "button", class: "fa-mini", "data-fk": `fs-qrm-${b.id}`, on: { click: () => put(removeEnergy(fs, q.id)) } }, icon("trash", 14), `Remove ${q.id}`));
   }
   const targets = ENERGY_SOURCES.includes(b.type) ? energyTargets(fs, b.id) : [];
+  // energy feeds on the drawing that are not connected yet
+  const loose = ENERGY_TARGETS.includes(b.type) ? (fs.energyStreams ?? []).filter(q => !q.from && !q.to).map(q => q.id) : [];
   return inputsSection("Energy stream",
+    b.energy === false ? h("p", { class: "fa-in-hint" }, "Its energy stream is not drawn; its duty is still calculated (in the results and the energy balance).") : null,
+    b.energy === false ? h("button", { type: "button", class: "fa-mini", "data-fk": `fs-qshow-${b.id}`, on: { click: () => put(showEnergy(fs, b.id, true)) } }, icon("energy", 14), "Show its energy stream") : null,
+    loose.length ? selectField("Connect an energy feed", [["", "Choose an energy feed…"], ...loose.map(q => [q, q])], "", v => { if (v) tryPut(() => connectEnergyFeed(fs, v, b.id)); }, `${b.id}-qloose`, uid) : null,
     ENERGY_TARGETS.includes(b.type) ? h("button", { type: "button", class: "fa-mini", "data-fk": `fs-qfeed-${b.id}`,
       on: { click: () => tryPut(() => addEnergyFeed(fs, b.id, b.spec?.duty_kW ?? 100).fs) } }, icon("plus", 14), "Add an energy feed (a given duty)") : null,
     targets.length ? selectField("Send its heat to", [["", "Choose a heater or drum…"], ...targets.map(t => [t, t])], "", v => { if (v) tryPut(() => connectEnergy(fs, b.id, v).fs); }, `${b.id}-qto`, uid) : null,
@@ -622,14 +688,17 @@ export function flowsheetView(ctx) {
 
   // ---- the drawing
   const pos = new Map(fs.blocks.map(b => [b.id, b]));
+  const wrap = h("div", { class: "fs-wrap" });
   const xs = fs.blocks.length ? fs.blocks.map(b => b.x ?? 0) : [120], ys = fs.blocks.length ? fs.blocks.map(b => b.y ?? 0) : [160];
   // the view fits the drawing (with room for labels and recycles), at least 520 x 300
   let minX = Math.min(...xs) - 90, maxX = Math.max(...xs) + 110, minY = Math.min(...ys) - 80, maxY = Math.max(...ys) + 120;
   if (maxX - minX < 520) { const c = (maxX + minX) / 2; minX = c - 260; maxX = c + 260; }
   if (maxY - minY < 300) { const c = (maxY + minY) / 2; minY = c - 150; maxY = c + 150; }
+  // a fixed scale (one drawing unit = one pixel times the zoom) in a box that scrolls: a larger flowsheet gets
+  // scrollbars, not smaller blocks; "Fit" in the toolbar sets the zoom that shows all of it
   const zoom = f.zoom ?? 1;
   const svg = svgEl("svg", { class: "fs-canvas", viewBox: `${minX} ${minY} ${maxX - minX} ${maxY - minY}`, role: "group", "aria-label": "Flowsheet drawing",
-    style: zoom === 1 ? undefined : `width:${zoom * 100}%; max-height:none` });
+    width: Math.round((maxX - minX) * zoom), height: Math.round((maxY - minY) * zoom) });
   // Ctrl + mouse wheel zooms
   svg.addEventListener("wheel", ev => {
     if (!ev.ctrlKey) return;
@@ -733,17 +802,50 @@ export function flowsheetView(ctx) {
         const tt = svgEl("title", {}); tt.textContent = sol.status.blocks[b.id].message; warn.append(tt); g.append(warn);
       }
       // energy stream: its own (an energy feed, or heat from or to another block), else the block's duty (a pump: its power)
-      if (unitType(b.type).duty) {
+      // (a block whose energy stream was taken out of the drawing, energy: false, shows none)
+      if (unitType(b.type).duty && b.energy !== false) {
         const conn = energyOf(doc, b.id);
         const name = conn?.stream.id || b.energy || `${unitType(b.type).energy === "work" ? "W" : "Q"}-${b.id}`;
         const q = conn?.role === "out" ? (res?.energy?.[name]?.duty_kW == null ? null : -res.energy[name].duty_kW) : res?.energy?.[name]?.duty_kW;
         const x0 = -w / 2 - 6, y0 = hh / 2 + 2, x1 = x0 - 26, y1 = y0 + 30;
         const into = q == null || q >= 0;
-        const ln = svgEl("path", { d: into ? `M${x1} ${y1} L${x0} ${y0}` : `M${x0} ${y0} L${x1} ${y1}`, class: "fs-q", "marker-end": `url(#${uidM}-q)` });
-        const qt = svgEl("text", { x: x1 - 4, y: y1 + 4, class: "fs-qlabel", "text-anchor": "end" });
-        qt.textContent = q == null ? name : `${name} ${q >= 0 ? "+" : "−"}${fmtShort(Math.abs(q), 4)} kW`;
-        g.append(ln, qt);
+        // an energy feed placed on the drawing carries its own label at its tab
+        const placed = conn?.role === "in" && !conn.stream.from && conn.stream.x != null;
+        const d = into ? `M${x1} ${y1} L${x0} ${y0}` : `M${x0} ${y0} L${x1} ${y1}`;
+        const qg = svgEl("g", { class: "fs-qstub" + (selected("energy", name) ? " is-sel" : ""), "data-qstub": b.id, "data-qname": name, tabindex: 0, role: "button",
+          "aria-label": `Energy stream ${name}${q == null ? "" : `, ${fmtShort(q, 4)} kW`}` });
+        const ln = svgEl("path", { d, class: "fs-q", "marker-end": `url(#${uidM}-q)` });
+        const qtip = svgEl("title", {});
+        qtip.textContent = conn ? `${name}: click for its form` : `${name}: the ${unitType(b.type).energy === "work" ? "power" : "duty"} of ${b.id}. Click for its form (it can be taken out of the drawing).`;
+        qg.append(svgEl("path", { d, class: "fs-hit" }), ln, qtip);
+        if (!placed) {
+          const qt = svgEl("text", { x: x1 - 4, y: y1 + 4, class: "fs-qlabel", "text-anchor": "end" });
+          qt.textContent = q == null ? name : `${name} ${q >= 0 ? "+" : "−"}${fmtShort(Math.abs(q), 4)} kW`;
+          qg.append(qt);
+        }
+        g.append(qg);
       }
+      layer.append(g);
+    }
+    // energy feeds placed on the drawing: a tab with the duty, and a dashed line to the end of their block's stub
+    for (const q of doc.energyStreams ?? []) {
+      if (q.from || q.x == null) continue;
+      const g = svgEl("g", { class: "fs-qfeed" + (selected("energy", q.id) ? " is-sel" : "") + (q.to ? "" : " is-incomplete"), "data-qfeed": q.id, tabindex: 0, role: "button",
+        "aria-label": `Energy feed ${q.id}, ${fmtShort(q.duty_kW ?? 0, 4)} kW${q.to ? `, into ${q.to}` : ", not connected"}` });
+      const tb = q.to && doc.blocks.find(x => x.id === q.to);
+      if (tb) {
+        const [w, hh] = SIZE[tb.type] ?? [40, 40];
+        const ex = (tb.x ?? 0) - w / 2 - 32, ey = (tb.y ?? 0) + hh / 2 + 32;
+        g.append(svgEl("path", { d: `M${q.x + 12} ${q.y} L${ex} ${q.y} L${ex} ${ey}`, class: "fs-q" }));
+      }
+      g.append(svgEl("rect", { x: q.x - 12, y: q.y - 9, width: 24, height: 18, rx: 4, class: "fs-qsource" }),
+        svgEl("path", { d: `M${q.x + 1.5} ${q.y - 6} L${q.x - 4} ${q.y + 1} h4 L${q.x - 1.5} ${q.y + 6} L${q.x + 4} ${q.y - 1} h-4z`, class: "fs-qbolt" }));
+      const t = svgEl("text", { x: q.x, y: q.y + 22, class: "fs-qlabel", "text-anchor": "middle" });
+      const v = Number(q.duty_kW ?? 0);
+      t.textContent = `${q.id} ${v >= 0 ? "+" : "−"}${fmtShort(Math.abs(v), 4)} kW${q.to ? "" : " (not connected)"}`;
+      const tip = svgEl("title", {});
+      tip.textContent = `Energy feed ${q.id}${q.to ? ` into ${q.to}` : ""}: drag it onto a heater/cooler or a flash drum to connect it; click for its duty.`;
+      g.append(t, tip);
       layer.append(g);
     }
     // energy streams between two blocks: a dashed line from the end of one block's energy stub to the other's
@@ -784,19 +886,32 @@ export function flowsheetView(ctx) {
   const toSvg = ev => { const m = svg.getScreenCTM(); if (!m) return { x: 0, y: 0 }; const p = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(m.inverse()); return { x: p.x, y: p.y }; };
   let drag = null;
   svg.addEventListener("pointerdown", ev => {
+    const qf = ev.target.closest?.("[data-qfeed]"), qs = ev.target.closest?.("[data-qstub]");
+    if (qf) { const q = fs.energyStreams.find(x => x.id === qf.dataset.qfeed); drag = { kind: "qmove", id: q.id, start: toSvg(ev), x0: q.x ?? 0, y0: q.y ?? 0, moved: false, doc: fs }; svg.setPointerCapture?.(ev.pointerId); ev.preventDefault(); return; }
+    if (qs) { const conn = energyOf(fs, qs.dataset.qstub); f.sel = conn ? { kind: "energy", id: conn.stream.id } : { kind: "energy", id: qs.dataset.qname, block: qs.dataset.qstub }; set({}); ev.preventDefault(); return; }
     const hnd = ev.target.closest?.("[data-handle]"), blk = ev.target.closest?.("[data-block]"), str = ev.target.closest?.("[data-stream]"), tab = ev.target.closest?.("[data-feed]");
     if (tab) { const b = pos.get(tab.dataset.feed); drag = { kind: "move", id: b.id, sid: tab.dataset.sid, start: toSvg(ev), x0: b.x ?? 0, y0: b.y ?? 0, moved: false, doc: fs }; svg.setPointerCapture?.(ev.pointerId); ev.preventDefault(); return; }
     if (hnd) { drag = { kind: "connect", sid: hnd.dataset.handle, start: toSvg(ev), moved: false, fromEnd: !!hnd.dataset.end }; svg.setPointerCapture?.(ev.pointerId); ev.preventDefault(); return; }
     if (blk) { const b = pos.get(blk.dataset.block); drag = { kind: "move", id: b.id, start: toSvg(ev), x0: b.x ?? 0, y0: b.y ?? 0, moved: false, doc: fs }; svg.setPointerCapture?.(ev.pointerId); ev.preventDefault(); return; }
     if (str) { select("stream", str.dataset.stream); return; }
-    if (f.sel) select(null);
+    // the empty canvas: drag to move the view (the box scrolls), click to clear the selection
+    drag = { kind: "pan", x: ev.clientX, y: ev.clientY, left: wrap.scrollLeft, top: wrap.scrollTop, moved: false };
+    svg.setPointerCapture?.(ev.pointerId);
   });
   svg.addEventListener("pointermove", ev => {
     if (!drag) return;
+    if (drag.kind === "pan") {
+      const dx = ev.clientX - drag.x, dy = ev.clientY - drag.y;
+      if (!drag.moved && Math.hypot(dx, dy) < 4) return;
+      drag.moved = true; svg.classList.add("is-panning");
+      wrap.scrollLeft = drag.left - dx; wrap.scrollTop = drag.top - dy;
+      return;
+    }
     const p = toSvg(ev), dx = p.x - drag.start.x, dy = p.y - drag.start.y;
     if (!drag.moved && Math.hypot(dx, dy) < 4) return;
     drag.moved = true;
     if (drag.kind === "move") { drag.doc = moveBlock(fs, drag.id, drag.x0 + dx, drag.y0 + dy); draw(drag.doc); }
+    else if (drag.kind === "qmove") { drag.doc = moveEnergy(fs, drag.id, drag.x0 + dx, drag.y0 + dy); draw(drag.doc); }
     else {
       draw(fs);
       svg.classList.add("is-connecting");
@@ -810,6 +925,21 @@ export function flowsheetView(ctx) {
   svg.addEventListener("pointerup", ev => {
     if (!drag) return;
     const d = drag; drag = null;
+    if (d.kind === "pan") { svg.classList.remove("is-panning"); if (!d.moved && f.sel) select(null); return; }
+    if (d.kind === "qmove") {
+      if (!d.moved) { select("energy", d.id); return; }
+      // dropped on a heater/cooler or a flash drum: connected to it
+      const p = toSvg(ev);
+      const on = fs.blocks.find(b => ENERGY_TARGETS.includes(b.type) && (() => { const [w, hh] = SIZE[b.type]; return Math.abs(p.x - (b.x ?? 0)) <= w / 2 + 12 && Math.abs(p.y - (b.y ?? 0)) <= hh / 2 + 12; })());
+      f.sel = { kind: "energy", id: d.id };
+      if (on && fs.energyStreams.find(x => x.id === d.id)?.to !== on.id) {
+        // the tab stays where it was picked up, linked to the block it now feeds
+        try { set({ flowsheet: connectEnergyFeed(fs, d.id, on.id) }); } catch (e) { f.note = e.message; set({ flowsheet: d.doc }); }
+        return;
+      }
+      set({ flowsheet: d.doc });
+      return;
+    }
     if (d.kind === "move") {
       if (d.moved) { if (d.sid) f.sel = { kind: "stream", id: d.sid }; set({ flowsheet: d.doc }); } else d.sid ? select("stream", d.sid) : select("block", d.id);
       return;
@@ -841,6 +971,16 @@ export function flowsheetView(ctx) {
     } else draw(fs);
   });
   svg.addEventListener("keydown", ev => {
+    const qf = ev.target.closest?.("[data-qfeed]"), qs = ev.target.closest?.("[data-qstub]");
+    if (qf || qs) {
+      const conn = qs && energyOf(fs, qs.dataset.qstub);
+      const sel = qf ? { kind: "energy", id: qf.dataset.qfeed } : conn ? { kind: "energy", id: conn.stream.id } : { kind: "energy", id: qs.dataset.qname, block: qs.dataset.qstub };
+      const step = { ArrowLeft: [-10, 0], ArrowRight: [10, 0], ArrowUp: [0, -10], ArrowDown: [0, 10] }[ev.key];
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); f.sel = sel; set({}); }
+      else if (step && qf) { ev.preventDefault(); const q = fs.energyStreams.find(x => x.id === qf.dataset.qfeed); f.sel = sel; set({ flowsheet: moveEnergy(fs, q.id, (q.x ?? 0) + step[0], (q.y ?? 0) + step[1]) }); }
+      else if (ev.key === "Delete" || ev.key === "Backspace") { ev.preventDefault(); f.sel = sel; deleteSelected(state, set, ui); }
+      return;
+    }
     const str = ev.target.closest?.("[data-stream]");
     if (str) {
       const step = { ArrowLeft: [-10, 0], ArrowRight: [10, 0], ArrowUp: [0, -10], ArrowDown: [0, 10] }[ev.key], fd = feedOf(fs, str.dataset.stream);
@@ -859,8 +999,13 @@ export function flowsheetView(ctx) {
   });
 
   const units = fs.blocks.filter(b => b.type !== "product");
-  plot.replaceChildren(h("div", { class: "fs-wrap" }, svg,
-    units.length ? null : h("div", { class: "fs-empty-hint" }, "Place a block from the toolbar: Flash drum, Heater, Mixer, Splitter, Separator or Feed.")));
+  plot.replaceChildren(wrap);
+  wrap.append(svg);
+  if (!units.length) wrap.append(h("div", { class: "fs-empty-hint" }, "Place a block from the toolbar: Flash drum, Heater/Cooler, Mixer, Splitter, Separator or Feed."));
+  // what "Fit" in the toolbar measures: the box shown and the drawing's extent; the view stays where it was scrolled
+  f.view = { wrap, w: maxX - minX, h: maxY - minY };
+  if (f.scroll) { wrap.scrollLeft = f.scroll.left; wrap.scrollTop = f.scroll.top; }
+  wrap.addEventListener("scroll", () => { f.scroll = { left: wrap.scrollLeft, top: wrap.scrollTop }; }, { passive: true });
 
   // ---- results panel
   side.replaceChildren(...resultsPanel({ state, f, sol, u }));
@@ -902,6 +1047,12 @@ function resultsPanel({ state, f, sol, u }) {
       ]), ...(z?.utility?.describe ? [h("div", { class: "fug-foot" }, `Utility: ${z.utility.describe}.`)] : []), ...(z?.note ? [h("div", { class: "fug-foot" }, z.note)] : []),
       ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)), ...r.notes.map(n => h("div", { class: "fug-warn" }, n)));
     } else out.push(h("div", { class: "fa-empty" }, sol.status.blocks?.[f.sel.id]?.ok === false ? sol.status.blocks[f.sel.id].message : "Not calculated yet."));
+  } else if (f.sel?.kind === "energy") {
+    const q = res?.energy?.[f.sel.id];
+    out.push(h("div", { class: "fug-eyebrow" }, `Energy stream ${f.sel.id}`));
+    out.push(q ? kvList([[q.kind === "work" ? "Power" : "Duty", `${q.duty_kW >= 0 ? "+" : "−"}${fmtShort(Math.abs(q.duty_kW), 5)} kW`],
+      ["Block", q.from ? `${q.from} → ${q.to}` : q.block ?? q.to], ["Kind", q.kind === "work" ? "work" : q.internal ? "heat between blocks" : q.from === null ? "energy feed" : "heat"]])
+      : h("div", { class: "fa-empty" }, "Not calculated yet."));
   } else if (f.sel?.kind === "stream") {
     const s = res?.streams?.[f.sel.id];
     out.push(h("div", { class: "fug-eyebrow" }, `Stream ${streamName(fs.streams.find(x => x.id === f.sel.id)) ?? f.sel.id}`));
@@ -970,7 +1121,7 @@ function streamTable({ fs, res, u, state }) {
     qs.length ? h("h3", {}, "Energy streams") : null,
     qs.length ? h("table", { class: "fa-table" }, h("thead", {}, h("tr", {}, h("th", {}, "Stream"), h("th", {}, "Block"), h("th", {}, "Kind"), h("th", { class: "fug-num" }, "kW"))),
       h("tbody", {}, ...qs.map(q => h("tr", {}, h("th", { scope: "row" }, q.id), h("td", {}, q.from ? `${q.from} → ${q.to}` : q.block),
-        h("td", {}, q.kind === "work" ? "work" : q.internal ? "heat between blocks" : q.from === null ? "energy feed" : "heat"),
+        h("td", {}, q.kind === "work" ? "work" : q.internal ? "heat between blocks" : q.from === null ? "energy feed" : fs.blocks.find(b => b.id === q.block)?.energy === false ? "heat (not drawn)" : "heat"),
         h("td", { class: "fug-num" }, `${q.duty_kW >= 0 ? "+" : "−"}${fmtShort(Math.abs(q.duty_kW), 5)}`))))) : null,
     h("p", { class: "fug-foot" }, "Duty: + heat into the block, − heat out; between two blocks, the heat the first gives up and the second takes. A pump's power is work. Enthalpy reference: each component as an ideal gas at 298.15 K."));
 }

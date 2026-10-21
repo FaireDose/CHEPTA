@@ -21,7 +21,7 @@ import knownIssues from "../data/known-issues.json" with { type: "json" };
 import { WORKSPACES, UTILITIES, INPUTS, checkInputs, normalizeInputs, seedInputs, isEosModel } from "./workspaces.js";
 import { normalizeUnits, tToDisplay, tFromDisplay, pToDisplay, pFromDisplay, fmtShort } from "./properties-logic.js";
 import { normalizeFlash, FLASH_DEFAULTS } from "./flash-logic.js";
-import { normalizeHx } from "./hx-logic.js";
+import { normalizeHx, hxStreamSetup } from "./hx-logic.js";
 import { solidUnitIds } from "./solubility-units.js";
 
 /**
@@ -378,10 +378,33 @@ export function normalizeUserData(raw) {
 /** The workbench's user data, checked: what system(), pure() and listComponents() take as userData. */
 export const userOverlay = state => overlayOf(state.userData);
 
+/** The two streams of a process exchanger (two-stream mode): each one's components, method and vapour; until chosen,
+ *  the workspace's. */
+export function hxSetups(state) {
+  const base = { ids: state.inputs.hx ?? [], model: state.model, vapour: state.vapour ?? "ideal" };
+  return { hot: hxStreamSetup(state.hx, "hot", base), cold: hxStreamSetup(state.hx, "cold", base) };
+}
+
+/** checkInputs of a view with the state's inputs and model; for a process exchanger (two streams that never mix),
+ *  both streams', each with its own method, and the problems named by stream. */
+export function viewCheck(state, view = state.view) {
+  const ud = userOverlay(state);
+  if (view === "hx" && state.hx?.mode === "two") {
+    const s = hxSetups(state), problems = [];
+    for (const [k, name] of [["hot", "Hot stream"], ["cold", "Cold stream"]]) {
+      const c = checkInputs("hx", s[k].ids, s[k].model, ud);
+      problems.push(...c.problems.map(p => ({ slot: null, stream: k, message: `${name}: ${p.message.replace(/in the Model group/g, "in its Method")}` })));
+    }
+    const ok = !problems.length;
+    return { ok, use: ok ? [...new Set([...s.hot.ids, ...s.cold.ids])] : [], problems };
+  }
+  return checkInputs(view, state.inputs[view], state.model, ud);
+}
+
 /** Fill in the read-only summary fields: view, components (in use) and propComponent. */
 function derive(state, view) {
   state.view = view ?? (state.workspace === "equilibrium" ? state.diagram : WORKSPACES.find(w => w.id === state.workspace).view);
-  state.components = checkInputs(state.view, state.inputs[state.view], state.model, userOverlay(state)).use;
+  state.components = viewCheck(state).use;
   state.propComponent = state.inputs.properties[0] ?? null;
   return state;
 }

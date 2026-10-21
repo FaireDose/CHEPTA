@@ -42,6 +42,7 @@ const P = {
   pump: '<circle cx="11" cy="13" r="7"/><path d="M11 6h9v3" class="a"/><path d="M8 12.5l3-3 3 3" class="a"/><path d="M6 20h10"/>',
   compressor: '<path d="M5 6.5 19 9.5v5L5 17.5z"/><path d="M2 12h3M19 12h3" class="a"/>',
   valve: '<path d="M4 7v10l8-5zM20 7v10l-8-5z"/><path d="M12 12V5M9 5h6" class="a"/>',
+  energy: '<path d="M13.5 3 6 13.5h5L10 21l8-11h-5.2z"/>',
   extract: '<rect x="7.5" y="2.5" width="9" height="19" rx="2"/><path d="M7.5 9.5h9M7.5 14.5h9" class="a"/><circle cx="10.5" cy="12" r=".8" fill="currentColor"/><circle cx="13.5" cy="17" r=".8" fill="currentColor"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   minus: '<path d="M5 12h14"/>',

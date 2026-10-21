@@ -28,17 +28,18 @@ import { system } from "../system.js";
 import {
   VIEWS, PRESETS, initialState, applyPatch, TIER_SHORT, fmtP, parseP, parseT, fmtTemp, pxyTemperature,
   RULES, ruleOf, setsFor, setChoices, pairKeyOf, modelLabel, feedbackLinks, aiChatMessage, AI_CHATS, userOverlay,
+  viewCheck, hxSetups,
 } from "./app-logic.js";
 import { diagramXlsx, exportFileName } from "./diagram-export.js";
 import { modelPicker, liquidPicker } from "./model-picker.js";
-import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, checkInputs, examplesFor, rotateInputs, solventsFor, needsFor, isEosModel } from "./workspaces.js";
+import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, examplesFor, rotateInputs, solventsFor, needsFor, isEosModel } from "./workspaces.js";
 import { UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
 import { myDataPanel, PROPERTY_LABEL } from "./my-data-panel.js";
 import { canOpenWindow, openDataWindow } from "./my-data-window.js";
 import { userDataList, setEntryUse } from "./user-data-file.js";
 import { hxInputs, ratingChip } from "./hx-view.js";
-import { HX_DEFAULTS } from "./hx-logic.js";
+import { HX_DEFAULTS, HX_MODES, HX_STREAM_MAX } from "./hx-logic.js";
 import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey } from "./flowsheet-view.js";
 import { projectOf, projectText, projectFileName, stateFromProject } from "./project.js";
 import { browserStore, hostStore, autosave, lastAutosave, clearAutosave } from "./project-store.js";
@@ -372,9 +373,10 @@ export function app(target, cfg = {}) {
             h("div", { class: "fa-locked-row" }, smallButton({ ico: "hx", label: "Design", pressed: true, fk: "hx-design", title: "Pre-sizing: the area for a duty", onClick: () => {} }), ratingChip()),
             h("div", { class: "fa-hint" }, "Rating comes later"))),
           group("Exchanger", h("div", { class: "fa-stack" },
-            seg("Exchanger", [["utility", "With a utility"], ["two", "Two streams"]], hx.mode, m => set({ hx: { mode: m } })),
-            h("div", { class: "fa-hint" }, hx.mode === "two" ? "Two process streams" : "A process stream and a utility"))),
-          modelGroup(),
+            seg("Exchanger", HX_MODES.map(([k, label]) => [k, label]), hx.mode, m => set({ hx: { mode: m } })),
+            h("div", { class: "fa-hint" }, HX_MODES.find(([k]) => k === hx.mode)[2]))),
+          // a process exchanger: each stream has its own method (Inputs), as the two streams never mix
+          ...(hx.mode === "two" ? [] : [modelGroup()]),
         ];
       }
       case "solubility": {
@@ -426,21 +428,22 @@ export function app(target, cfg = {}) {
   /** True while no component is chosen for a view that takes them (the workbench opened empty):
    *  the inputs then show a neutral start hint instead of problems. */
   function blank(view) {
+    if (view === "hx" && state.hx?.mode === "two") { const st = hxSetups(state); return !st.hot.ids.length && !st.cold.ids.length; }
     const value = state.inputs[view];
     return Array.isArray(value) && view !== "steam" && !value.some(Boolean);
   }
 
   /** How a component appears in the pickers of a view: a note on what the chosen model or view cannot do with it. */
-  function pickStatus(view, slot) {
-    const spec = needsFor(view, state.model), value = state.inputs[view];
+  function pickStatus(view, slot, { model = state.model, value = state.inputs[view] } = {}) {
+    const spec = needsFor(view, model);
     const usedElsewhere = new Map((Array.isArray(value) ? value : []).map((id, i) => [id, i]).filter(([id, i]) => id && i !== slot));
     return c => {
       const bad = spec.liquid && !c.activity;
       const noMelt = !bad && spec.solid?.includes(slot) && !c.fusion;
       const other = usedElsewhere.get(c.id);
       // no UNIQUAC r and q: still offered (NRTL works); the check says what to do if UNIQUAC is chosen
-      const noRq = !bad && spec.liquid && state.model === "UNIQUAC" && !c.uniquac;
-      const noGroups = !bad && spec.liquid && state.model === "MOD-UNIFAC-2" && !c.modUnifac;
+      const noRq = !bad && spec.liquid && model === "UNIQUAC" && !c.uniquac;
+      const noGroups = !bad && spec.liquid && model === "MOD-UNIFAC-2" && !c.modUnifac;
       // every component can be chosen; the Inputs panel says when the model (or the view) cannot use it
       return { note: bad ? "gas: needs Peng–Robinson or SRK" : noMelt ? "no melting data" : noRq ? "NRTL only (no UNIQUAC r and q)"
         : noGroups ? "no Mod. UNIFAC 2.0 groups" : other != null ? `also component ${other + 1}` : null };
@@ -488,6 +491,26 @@ export function app(target, cfg = {}) {
       h("div", { class: "fa-add" }, h("label", { class: "fa-visually-hidden", for: addId }, "Add a component"), add));
   }
 
+  /** The components of one stream of a process exchanger (at most HX_STREAM_MAX), with its own method. */
+  function streamList({ key, ids, model, onChange }) {
+    const chips = ids.map((id, i) => h("li", { class: "fa-chip" },
+      h("span", { class: "fa-chip-n", "aria-hidden": "true" }, String(i + 1)),
+      h("span", { class: "fa-chip-name" }, nameOf(id)),
+      h("span", { class: "fa-chip-f" }, comps().byId.get(id)?.formula ?? ""),
+      h("button", { type: "button", class: "fa-x", "aria-label": `Remove ${nameOf(id)}`, title: "Remove", "data-fk": `rm-hx-${key}-${i}`,
+        on: { click: () => onChange(ids.filter((_, k) => k !== i)) } }, icon("close", 14))));
+    const full = ids.length >= HX_STREAM_MAX, addId = `fa-add-hx-${key}-${uid}`;
+    const add = componentPicker({
+      id: addId, fk: `add-hx-${key}`, label: "Add a component", disabled: full, clearOnPick: true,
+      components: all().filter(c => !ids.includes(c.id)), status: pickStatus("hx", -1, { model, value: ids }),
+      placeholder: full ? `Full: at most ${HX_STREAM_MAX}` : "Add: name, formula, CAS…",
+      onPick: pid => { if (pid) onChange([...ids, pid]); },
+    });
+    return h("div", { class: "fa-list" },
+      ids.length ? h("ol", { class: "fa-chips", "aria-label": "Components of the stream" }, ...chips) : h("div", { class: "fa-empty" }, "None chosen yet."),
+      h("div", { class: "fa-add" }, h("label", { class: "fa-visually-hidden", for: addId }, "Add a component"), add));
+  }
+
   function problemsBox(check) {
     return h("div", { class: "fa-problems", id: `fa-problems-${uid}`, "aria-live": "polite" },
       ...(check.ok || blank(state.view) ? [] : [h("ul", {}, ...check.problems.map(p => h("li", {}, p.message)))]));
@@ -498,7 +521,7 @@ export function app(target, cfg = {}) {
   }
 
   function renderLeft() {
-    const v = state.view, spec = needsFor(v, state.model), check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
+    const v = state.view, spec = needsFor(v, state.model), check = viewCheck(state, v);
     const u = state.units;
     const secs = [];
     if (state.workspace === "equilibrium") {
@@ -541,8 +564,12 @@ export function app(target, cfg = {}) {
       if (check.ok) secs.push(feedSection(check.use), specSection());
       if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
     } else if (state.workspace === "hx") {
-      secs.push(...hxInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf }));
-      if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
+      const setups = hxSetups(state);
+      secs.push(...hxInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf, streamList, setups }));
+      if (check.ok && state.hx?.mode === "two") {
+        // each stream's pairs with its own method (the two streams never mix: no pair across them)
+        for (const [k, name] of [["hot", "Hot stream: "], ["cold", "Cold stream: "]]) { const pairs = pairRows(setups[k].ids, { model: setups[k].model, title: name }); if (pairs) secs.push(pairs); }
+      } else if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
     } else if (state.workspace === "solubility" && (v === "solid" || v === "sle")) {
       secs.push(inputsSection(v === "solid" ? "Solid and solvent" : "Components",
         h("p", { class: "fa-in-hint" }, v === "solid"
@@ -663,10 +690,10 @@ export function app(target, cfg = {}) {
   }
 
   // binary pairs of the inputs with the tier of their parameters, for the model in use
-  function pairRows(ids) {
-    const model = state.model, eosView = isEosModel(model);
+  function pairRows(ids, { model = state.model, title = "" } = {}) {
+    const eosView = isEosModel(model);
     if (ids.length < 2) return null;
-    const head = h("h3", {}, eosView ? `Pairs, ${model} k_ij` : `Parameter sets, ${modelName(model)}`);
+    const head = h("h3", {}, `${title}${eosView ? `Pairs, ${model} k_ij` : `Parameter sets, ${modelName(model)}`}`);
     if (model === "ideal") return h("section", { class: "fa-in-sec fa-pairs" }, head, h("p", { class: "fa-in-hint" }, "Ideal solution: no pair parameters."));
     let info;
     try { info = system({ components: ids, model, allowMissingPairs: true, ...setsFor(state, model) }).info; } catch (e) {
@@ -739,7 +766,7 @@ export function app(target, cfg = {}) {
   }
 
   function renderCanvasBar() {
-    const v = state.view, u = state.units, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
+    const v = state.view, u = state.units, check = viewCheck(state, v);
     const title = v === "flowsheet" ? state.title || "Flowsheet" : check.ok ? state.title || calculationName() : VIEWS[v].label;
     const prop = v === "properties" ? explorerProperties().find(p => p.key === state.property) : null;
     const ml = modelLabel(state);
@@ -750,7 +777,7 @@ export function app(target, cfg = {}) {
       pxy: `P-x-y diagram at ${fmtTemp(pxyTemperature(state), u)}, ${ml}`,
       envelope: `Bubble and dew points of the feed, ${ml}`,
       flash: `${FLASH_SPECS.find(f => f.id === state.flash.spec).title} flash, ${ml}`,
-      hx: `Pre-sizing ${(state.hx ?? HX_DEFAULTS).mode === "two" ? "between two streams" : "with a utility"}, ${ml}`,
+      hx: (state.hx ?? HX_DEFAULTS).mode === "two" ? "Process exchanger, pre-sizing: each stream with its own method" : `Utility exchanger, pre-sizing, ${ml}`,
       henry: `Solubility at ${fmtTemp(state.henryT_K, u)} and a gas partial pressure of ${fmtP(state.henryP_kPa, u)}, Henry's law`,
       solid: `Solubility of the solid against temperature, ${ml}`,
       sle: `Solid-liquid diagram with the eutectic, ${ml}`,
@@ -945,7 +972,7 @@ export function app(target, cfg = {}) {
 
   /** The Feedback panel: GitHub issue forms and the Discussions forum, the bug form filled with the setup. */
   function feedbackPanel() {
-    const v = state.view, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
+    const v = state.view, check = viewCheck(state, v);
     const setup = v === "flowsheet" ? `Flowsheet "${state.title || "untitled"}", ${state.flowsheet.thermo.model}`
       : `${WORKSPACES.find(w => w.id === state.workspace).label}${state.workspace === "equilibrium" ? `, ${VIEWS[v].label}` : ""}${check.ok ? `: ${calculationName()}` : ""}; ${modelLabel(state)}`;
     const links = feedbackLinks({ version: pkg.version, setup });
@@ -961,7 +988,7 @@ export function app(target, cfg = {}) {
   /** The AI chat panel: a new chat with Claude, ChatGPT, Gemini or HuggingChat that loads this workbench as a live page (the
    *  person's own account), or the page as a file for Ollama, whose chats show no live pages. */
   function aiChatPanel() {
-    const v = state.view, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
+    const v = state.view, check = viewCheck(state, v);
     const opts = { version: pkg.version, components: check.ok ? check.use : [], model: state.model, P_kPa: state.P_kPa, view: v };
     const shown = ui.aiChat ?? "claude";
     const msg = aiChatMessage(shown, opts);
@@ -1034,7 +1061,7 @@ export function app(target, cfg = {}) {
       return myDataPanel(myDataEnv(false));
     }
     if (id === "sources") {
-      const check = checkInputs(state.view, state.inputs[state.view], state.model, userOverlay(state));
+      const check = viewCheck(state);
       return sourcesPanel({ ids: check.ok ? check.use : [], what: check.ok ? calculationName() : VIEWS[state.view].label, uid, look: ui.sources });
     }
     if (id === "library") {
@@ -1166,7 +1193,7 @@ export function app(target, cfg = {}) {
 
   // ---- canvas
   const canvasKey = () => {
-    const v = state.view, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
+    const v = state.view, check = viewCheck(state, v);
     return JSON.stringify([v, check.ok ? check.use : ["invalid", state.inputs[v]], state.model, state.eos, state.vapour, state.P_kPa, state.T_K,
       state.units, state.basis, state.residueCurves, state.isotherms, state.grid, state.property, state.z[v] ?? null,
       v === "henry" ? [state.inputs.henry, state.henryT_K, state.henryP_kPa, state.compareGases] : null,
@@ -1186,7 +1213,7 @@ export function app(target, cfg = {}) {
     const run = () => {
       if (my !== token) return;
       const t0 = performance.now();
-      const v = state.view, check = checkInputs(v, state.inputs[v], state.model, userOverlay(state));
+      const v = state.view, check = viewCheck(state, v);
       let info = null, error = null;
       notes.replaceChildren(); below.replaceChildren(); inspectorExtra.replaceChildren(); provenance.replaceChildren(); side.hidden = false;
       canvasFoot.hidden = true; exportNote.textContent = "";

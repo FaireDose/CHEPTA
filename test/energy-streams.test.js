@@ -205,3 +205,49 @@ test("editing: new blocks from the palette, an energy feed, a block's heat into 
   assert.equal("energyStreams" in del.fs, false);
   assert.match(del.note, /its energy stream Q\d is removed/);
 });
+
+test("an energy feed placed on the drawing: not connected, the flowsheet is not ready; dropped on a heater, it solves as one written to it", async () => {
+  const L = await import("../src/ui/flowsheet-logic.js");
+  const base = {
+    components: ["water", "ethanol"], thermo: { model: "NRTL", vapour: "ideal" },
+    blocks: [{ ...feed("F1", 300), x: 40, y: 120 }, { id: "E1", type: "heater", x: 200, y: 120, spec: { T_K: 340 } }, { id: "P1", type: "product", x: 340, y: 120 }],
+    streams: [{ id: "S1", from: "F1.out", to: "E1.in" }, { id: "S2", from: "E1.out", to: "P1.in" }],
+  };
+  let r = L.placeEnergyFeed(base, 500);
+  assert.equal(r.id, "Q1");
+  assert.deepEqual(r.fs.energyStreams, [{ id: "Q1", duty_kW: 500, x: 110, y: 210 }], "left of the first unit, below the units");
+  const loose = flowsheetStatus(sys, normalizeFlowsheet(r.fs));
+  assert.equal(loose.ready, false);
+  assert.ok(loose.structure.some(p => /Energy feed Q1 is not connected: connect it to a heater or a flash drum/.test(p.message)), JSON.stringify(loose.structure));
+  let fs = L.connectEnergyFeed(r.fs, "Q1", "E1");
+  assert.equal(fs.blocks[1].spec.T_K, 340, "the heater keeps its temperature: now one specification too many, said by the status");
+  fs = L.setSpec(fs, "E1", { T_K: null });
+  const placed = solveFlowsheet(sys, normalizeFlowsheet(fs));
+  const written = solveFlowsheet(sys, normalizeFlowsheet({ ...base, blocks: [base.blocks[0], { ...base.blocks[1], spec: {} }, base.blocks[2]], energyStreams: [{ id: "Q1", to: "E1", duty_kW: 500 }] }));
+  assert.equal(placed.streams.S2.T_K, written.streams.S2.T_K, "where it is drawn changes nothing");
+  assert.throws(() => L.connectEnergyFeed(fs, "Q1", "P1"), /takes no energy stream/);
+  fs = L.moveEnergy(fs, "Q1", 20.4, 300.6);
+  assert.deepEqual([fs.energyStreams[0].x, fs.energyStreams[0].y], [20, 301]);
+  fs = L.disconnectEnergy(fs, "Q1");
+  assert.equal("to" in fs.energyStreams[0], false, "disconnected, it stays on the drawing");
+  assert.equal(L.placeEnergyFeed(fs, 10).fs.energyStreams[1].y, 210, "a second feed goes to a free spot");
+});
+
+test("a block's own energy stream taken out of the drawing: its duty is still calculated and counted in the energy balance", async () => {
+  const L = await import("../src/ui/flowsheet-logic.js");
+  const fs = {
+    components: ["water", "ethanol"], thermo: { model: "NRTL", vapour: "ideal" },
+    blocks: [feed("F1", 300), { id: "E1", type: "heater", spec: { T_K: 340 } }, product("P1")],
+    streams: [{ id: "S1", from: "F1.out", to: "E1.in" }, { id: "S2", from: "E1.out", to: "P1.in" }],
+  };
+  const hidden = L.showEnergy(fs, "E1", false);
+  assert.equal(hidden.blocks[1].energy, false);
+  const a = solveFlowsheet(sys, normalizeFlowsheet(fs)), b = solveFlowsheet(sys, normalizeFlowsheet(hidden));
+  assert.equal(b.blocks.E1.duty_kW, a.blocks.E1.duty_kW);
+  assert.equal(b.energy["Q-E1"].duty_kW, a.energy["Q-E1"].duty_kW, "the results still list the duty");
+  assert.ok(Math.abs(b.balance.energy_kW) < 1e-6);
+  assert.equal("energy" in L.showEnergy(hidden, "E1", true).blocks[1], false, "shown again");
+  // an energy feed connected to it shows it again
+  const placed = L.placeEnergyFeed(L.setSpec(hidden, "E1", { T_K: null }), 100);
+  assert.equal("energy" in L.connectEnergyFeed(placed.fs, placed.id, "E1").blocks[1], false);
+});

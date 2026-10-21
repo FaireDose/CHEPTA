@@ -53,7 +53,10 @@ Every block with a duty has an energy stream (kW, positive = heat in); a pump's 
 id). **Energy streams** (proposal 0013, `energyStreams` of the document, format 4): an energy feed gives a heater or a
 flash drum its duty, so it needs one specification fewer (a heater calculates its outlet temperature); a heater, drum or
 separator can send its heat into a heater or drum. They are edges of the graph: they set the order, and a loop closed by
-one is torn on its duty.
+one is torn on its duty. In the editor, **Energy feed** in the palette places one on the drawing; dragged onto a
+heater/cooler or a flash drum it connects (until then `to` is missing and the flowsheet is not ready). A block's own
+energy stream can be taken out of the drawing (`"energy": false`): its duty is still calculated, listed and counted in
+the energy balance.
 
 **Heat-exchanger sizing** ([`src/units/heat-exchange.js`](../../src/units/heat-exchange.js), the reference in
 [heat-exchangers.md](heat-exchangers.md)): zones along each side's temperature-heat curve, the arrangement's correction

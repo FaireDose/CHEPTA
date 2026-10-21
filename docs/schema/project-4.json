@@ -159,8 +159,11 @@
           "type": "number"
         },
         "energy": {
-          "type": "string",
-          "description": "Name of the block's energy stream (heater, flash, separator); default Q-<id>."
+          "type": [
+            "string",
+            "boolean"
+          ],
+          "description": "Name of the block's energy stream (heater, flash, separator); default Q-<id>. false: the drawing shows no energy stream for the block (its duty is still calculated and counted in the energy balance)."
         },
         "spec": {
           "type": "object",
@@ -213,8 +216,7 @@
     "energyStream": {
       "type": "object",
       "required": [
-        "id",
-        "to"
+        "id"
       ],
       "additionalProperties": false,
       "properties": {
@@ -227,7 +229,7 @@
         },
         "to": {
           "type": "string",
-          "description": "A heater or flash drum: its duty comes from the stream."
+          "description": "A heater or flash drum: its duty comes from the stream. An energy feed placed on the drawing but not connected yet has none (the flowsheet is then not ready)."
         },
         "duty_kW": {
           "type": "number",

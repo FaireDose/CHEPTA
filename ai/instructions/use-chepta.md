@@ -124,6 +124,8 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
 - Energy streams (format 4): `energyStreams: [{ id: "Q1", to: "E1", duty_kW: 500 }]` gives a
   heater or drum its duty (it then needs one specification fewer: a heater calculates its
   outlet), and `{ id: "Q2", from: "E2", to: "E3" }` sends one block's heat into another.
+  `"energy": false` on a block leaves its own energy stream out of the drawing (its duty is still
+  calculated). An energy feed without `to` is not connected: the flowsheet is then not ready.
 - Before giving me the page, check the project in code you can run:
   `CHEPTA.checkProject(project)` lists every problem (connections and degrees of freedom,
   e.g. "Flash drum V1: missing: one more of T_K, P_kPa, VF or duty_kW"); fix them all.

@@ -118,7 +118,8 @@ export function inspectFlowsheet(fs) {
     if (qIds.has(q.id) || sids.has(q.id)) { add(q.id, `Two streams are called ${q.id}.`); continue; }
     qIds.add(q.id);
     const to = byId.get(q.to), from = q.from == null ? null : byId.get(q.from);
-    if (!to) { add(q.id, `Energy stream ${q.id} goes to ${q.to ?? "nothing"}, which is not a block of the flowsheet.`); continue; }
+    if (q.to == null) { add(q.id, `Energy ${q.from == null ? "feed" : "stream"} ${q.id} is not connected: connect it to a heater or a flash drum.`); continue; }
+    if (!to) { add(q.id, `Energy stream ${q.id} goes to ${q.to}, which is not a block of the flowsheet.`); continue; }
     if (!to.unit.dutySpec) { add(q.id, `Energy stream ${q.id}: ${to.unit.label} ${to.id} takes no energy stream (a heater or a flash drum does).`); continue; }
     if (q.from != null && !from) { add(q.id, `Energy stream ${q.id} comes from ${q.from}, which is not a block of the flowsheet.`); continue; }
     if (from && from.unit.energy !== "heat") { add(q.id, `Energy stream ${q.id}: ${from.unit.label} ${from.id} gives up no heat (a heater, flash drum or separator does).`); continue; }

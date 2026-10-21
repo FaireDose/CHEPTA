@@ -44,7 +44,7 @@ import { fail } from "../util/errors.js";
 import { stream, componentFlows, scaleStream, phaseStream, phasesStream } from "../stream/stream.js";
 import { findComponent } from "../thermo/components.js";
 import { pure } from "../thermo/pure.js";
-import { exchangerArea, ARRANGEMENTS } from "./heat-exchange.js";
+import { exchangerArea, exchangerApproach, ARRANGEMENTS } from "./heat-exchange.js";
 
 const UNITS = new Map();
 
@@ -363,31 +363,8 @@ registerUnit({
     if (!(hot.T_K > cold.T_K)) throw fail("BAD_INPUT", `Heat exchanger: the hot inlet (${+(hot.T_K - 273.15).toFixed(2)} °C) must be hotter than the cold inlet (${+(cold.T_K - 273.15).toFixed(2)} °C); swap the streams.`);
     let hx;
     if (spec.kind === "duty_kW") hx = exchangerArea(sys, base(spec.value));
-    else if (spec.kind === "dTmin_K") {
-      // the duty whose smallest temperature difference is dTmin: bisection (the smallest difference falls as the duty grows)
-      const Pc = cold.P_kPa - spec.dP_cold_kPa, Ph = hot.P_kPa - spec.dP_hot_kPa;
-      const qMax = Math.min(hot.H_kW - stream(sys, { flow_kmol_h: hot.flows, T_K: cold.T_K, P_kPa: Ph }).H_kW,
-        stream(sys, { flow_kmol_h: cold.flows, T_K: hot.T_K, P_kPa: Pc }).H_kW - cold.H_kW);
-      // (10 zones while searching, to a duty within 1e-5 of the largest; the result is sized with the full zones and reports its own
-      // dT_min; a duty the arrangement cannot reach counts as a temperature cross: the search stays below it)
-      const dmin = q => { try { return exchangerArea(sys, { ...base(q), U: undefined, zones: 10 }).dT_min_K; } catch (e) { if (e.code === "BAD_INPUT" && /Temperature cross|cannot reach these temperatures/.test(e.message)) return -1; throw e; } };
-      if (!(dmin(qMax * 1e-6) > spec.value)) throw fail("BAD_INPUT", `Heat exchanger: the inlets are ${+(hot.T_K - cold.T_K).toFixed(2)} K apart, not more than the minimum approach of ${spec.value} K.`);
-      // bisection until the upper end has no temperature cross, then the Illinois variant of regula falsi
-      let lo = qMax * 1e-6, hi = qMax, flo = dmin(lo) - spec.value, fhi = dmin(hi) - spec.value, cross = fhi <= -1 - spec.value + 1e-12, side = 0;
-      for (let i = 0; i < 60 && hi - lo > 1e-5 * qMax; i++) {
-        const m = cross ? (lo + hi) / 2 : (lo * fhi - hi * flo) / (fhi - flo);
-        const fm = dmin(m) - spec.value;
-        if (Math.abs(fm) < 1e-4 * spec.value) { lo = hi = m; break; }
-        if (fm > 0) { lo = m; flo = fm; if (side === 1) fhi /= 2; side = 1; }
-        else { hi = m; fhi = fm; cross = fm <= -1 - spec.value + 1e-12; if (side === -1) flo /= 2; side = -1; }
-      }
-      hx = exchangerArea(sys, base(lo));
-      // the arrangement (a shell-and-tube or crossflow exchanger) may stop the duty before the smallest difference
-      // reaches dTmin: then the specification cannot be met, and that is said, not returned
-      if (Math.abs(hx.dT_min_K - spec.value) > Math.max(0.05, 0.01 * spec.value)) {
-        throw fail("BAD_INPUT", `Heat exchanger: a ${spec.sizing.arrangement === "shell-and-tube" ? `${spec.sizing.shells ?? 1}-shell exchanger` : "crossflow exchanger"} reaches its limit at ${+hx.duty_kW.toPrecision(4)} kW, where the smallest temperature difference is still ${+hx.dT_min_K.toFixed(2)} K: it cannot approach ${spec.value} K. Put more shells in series, use counterflow, or give a larger minimum approach.`);
-      }
-    } else hx = exchangerArea(sys, base(null));
+    else if (spec.kind === "dTmin_K") hx = exchangerApproach(sys, { ...base(null), dTmin_K: spec.value });
+    else hx = exchangerArea(sys, base(null));
     return { outlets: { hot: hx.outlets.hot, cold: hx.outlets.cold }, duty_kW: 0, sizing: summary(hx), state: { duty_kW: hx.duty_kW } };
   },
 });

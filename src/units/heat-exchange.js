@@ -310,9 +310,9 @@ function utilitySide(u, role) {
 
 /**
  * Pre-size an exchanger: the duty, the temperature-heat curves of both sides by zones, and with U the area.
- * @param {object} sys   the system of the process streams (any side may be a utility instead)
+ * @param {object} sys   the system of the process streams (any side may be a utility instead, or carry its own `sys`)
  * @param {object} o
- * @param {object} o.hot, o.cold   { stream, T_out_K | VF_out, dP_kPa } or { utility }
+ * @param {object} o.hot, o.cold   { stream, T_out_K | VF_out, dP_kPa, sys? } or { utility }
  * @param {number} [o.duty_kW]     the heat exchanged (> 0), instead of an outlet specification
  * @param {number|object} [o.U]    see overallU; without it, no area
  * @param {string} [o.arrangement="counterflow"]  with `shells` for "shell-and-tube" (one shell pass, two tube passes each)
@@ -327,7 +327,8 @@ export function exchangerArea(sys, o = {}) {
   if (!Number.isInteger(N) || N > 500) throw fail("BAD_INPUT", `zones must be a whole number from 1 to 500 (got ${o.zones}).`);
   const make = (s, role) => {
     if (!s || typeof s !== "object") throw fail("BAD_INPUT", `Give the ${role} side: a process stream or a utility.`);
-    return s.utility ? utilitySide(s.utility, role) : processSide(sys, s, role);
+    // a process side may carry its own system (two streams that never mix need not share components or a method)
+    return s.utility ? utilitySide(s.utility, role) : processSide(s.sys ?? sys, s, role);
   };
   const H = make(o.hot, "hot"), C = make(o.cold, "cold");
   if (H.kind !== "process" && C.kind !== "process" && o.duty_kW == null) throw fail("BAD_INPUT", "With a utility on both sides, give the duty.");
@@ -412,4 +413,44 @@ export function exchangerArea(sys, o = {}) {
     outlets: { hot: H.kind === "process" ? hc[N].st : null, cold: C.kind === "process" ? cc[N].st : null },
     notes,
   };
+}
+
+/**
+ * The exchanger whose smallest temperature difference is dTmin_K, between two process streams: the duty by bisection
+ * and the Illinois variant of regula falsi (the smallest difference falls as the duty grows). o: as exchangerArea, with
+ * `dTmin_K` instead of an outlet or the duty; each side may carry its own `sys`. A target the arrangement cannot reach
+ * (a shell-and-tube or crossflow exchanger stops the duty first) is an error, never a wrong approach.
+ */
+export function exchangerApproach(sys, o = {}) {
+  const dT = finite(o.dTmin_K, "dTmin_K", { positive: true });
+  const { dTmin_K, ...rest } = o;
+  const H = o.hot, C = o.cold;
+  if (!H?.stream || !C?.stream) throw fail("BAD_INPUT", "The minimum approach needs two process streams.");
+  const hot = H.stream, cold = C.stream, sh = H.sys ?? sys, sc = C.sys ?? sys;
+  const Ph = hot.P_kPa - (H.dP_kPa ?? 0), Pc = cold.P_kPa - (C.dP_kPa ?? 0);
+  // the largest duty: each stream brought to the other's inlet temperature
+  const qMax = Math.min(hot.H_kW - stream(sh, { flow_kmol_h: hot.flows, T_K: cold.T_K, P_kPa: Ph }).H_kW,
+    stream(sc, { flow_kmol_h: cold.flows, T_K: hot.T_K, P_kPa: Pc }).H_kW - cold.H_kW);
+  // 10 zones while searching, to a duty within 1e-5 of the largest; the result is sized with the full zones and reports
+  // its own dT_min; a duty the arrangement cannot reach counts as a temperature cross: the search stays below it
+  const dmin = q => {
+    try { return exchangerArea(sys, { ...rest, duty_kW: q, U: undefined, zones: 10 }).dT_min_K; }
+    catch (e) { if (e.code === "BAD_INPUT" && /Temperature cross|cannot reach these temperatures/.test(e.message)) return -1; throw e; }
+  };
+  if (!(dmin(qMax * 1e-6) > dT)) throw fail("BAD_INPUT", `Heat exchanger: the inlets are ${+(hot.T_K - cold.T_K).toFixed(2)} K apart, not more than the minimum approach of ${dT} K.`);
+  // bisection until the upper end has no temperature cross, then the Illinois variant of regula falsi
+  let lo = qMax * 1e-6, hi = qMax, flo = dmin(lo) - dT, fhi = dmin(hi) - dT, cross = fhi <= -1 - dT + 1e-12, side = 0;
+  for (let i = 0; i < 60 && hi - lo > 1e-5 * qMax; i++) {
+    const m = cross ? (lo + hi) / 2 : (lo * fhi - hi * flo) / (fhi - flo);
+    const fm = dmin(m) - dT;
+    if (Math.abs(fm) < 1e-4 * dT) { lo = hi = m; break; }
+    if (fm > 0) { lo = m; flo = fm; if (side === 1) fhi /= 2; side = 1; }
+    else { hi = m; fhi = fm; cross = fm <= -1 - dT + 1e-12; if (side === -1) flo /= 2; side = -1; }
+  }
+  const hx = exchangerArea(sys, { ...rest, duty_kW: lo });
+  if (Math.abs(hx.dT_min_K - dT) > Math.max(0.05, 0.01 * dT)) {
+    const arr = o.arrangement === "shell-and-tube" ? `${o.shells ?? 1}-shell exchanger` : "crossflow exchanger";
+    throw fail("BAD_INPUT", `Heat exchanger: a ${arr} reaches its limit at ${+hx.duty_kW.toPrecision(4)} kW, where the smallest temperature difference is still ${+hx.dT_min_K.toFixed(2)} K: it cannot approach ${dT} K. Put more shells in series, use counterflow, or give a larger minimum approach.`);
+  }
+  return hx;
 }

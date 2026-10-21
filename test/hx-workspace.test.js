@@ -5,7 +5,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { system, stream, exchangerArea } from "../src/index.js";
 import { HX_DEFAULTS, normalizeHx, hxCalc, streamZ, uRequest } from "../src/ui/hx-logic.js";
-import { initialState, applyPatch } from "../src/ui/app-logic.js";
+import { initialState, applyPatch, hxSetups, viewCheck } from "../src/ui/app-logic.js";
 import { projectOf, stateFromProject } from "../src/ui/project.js";
 import { WORKSPACES, SECTIONS } from "../src/ui/workspaces.js";
 
@@ -55,4 +55,32 @@ test("the workspace sits in Unit models; it is saved (format 4) only once it was
   const back = stateFromProject(JSON.parse(JSON.stringify(doc)));
   assert.equal(back.hx.process.T_out_K, 340);
   assert.deepEqual(back.inputs.hx, ["water"]);
+});
+
+test("a process exchanger: each stream with its own components (at most 3) and method, as the two never mix", () => {
+  // Methods (docs/METHOD_SELECTION.md): water alone, a pure liquid: an activity model reduces to its vapour pressure
+  // (NRTL, ideal-gas vapour); n-hexane, a hydrocarbon: Peng–Robinson
+  let st = initialState({ start: "hx", components: ["water", "ethanol"] });
+  st = applyPatch(st, { hx: { mode: "two", hot: { components: ["water"], T_K: 393.15, P_kPa: 300 }, cold: { components: ["n-hexane"], model: "PR", T_K: 298.15 },
+    spec: { kind: "T_hot_out_K", value: 333.15 } } });
+  const S = hxSetups(st);
+  assert.deepEqual([S.hot.ids, S.hot.model, S.cold.ids, S.cold.model], [["water"], "NRTL", ["n-hexane"], "PR"]);
+  assert.deepEqual(viewCheck(st), { ok: true, use: ["water", "n-hexane"], problems: [] });
+  assert.deepEqual(st.components, ["water", "n-hexane"]);
+  const sh = system({ components: ["water"], model: "NRTL" }), sc = system({ components: ["n-hexane"], model: "PR" });
+  const r = hxCalc(sh, st.hx, { hot: sh, cold: sc }).result;
+  // the duty from the hot stream alone (its own system), the cold outlet from the hexane's own
+  const hot = stream(sh, { flow_kmol_h: [100], T_K: 393.15, P_kPa: 300 }), hotOut = stream(sh, { flow_kmol_h: [100], T_K: 333.15, P_kPa: 300 });
+  assert.ok(Math.abs(r.duty_kW - (hot.H_kW - hotOut.H_kW)) < 1e-9);
+  const cold = stream(sc, { flow_kmol_h: [100], T_K: 298.15, P_kPa: 101.325 });
+  assert.ok(Math.abs(stream(sc, { flow_kmol_h: [100], T_K: r.cold.T_out_K, P_kPa: 101.325 }).H_kW - cold.H_kW - r.duty_kW) < 1e-6 * r.duty_kW);
+  // the minimum approach with the two systems
+  const a = hxCalc(sh, { ...st.hx, spec: { kind: "dTmin_K", value: 10 } }, { hot: sh, cold: sc }).result;
+  assert.ok(Math.abs(a.dT_min_K - 10) < 0.05, `${a.dT_min_K}`);
+  // a stream's problems are named by stream; until chosen, a stream takes the workspace's components and model
+  const gas = applyPatch(st, { hx: { cold: { model: "NRTL", components: ["n-hexane", "methane"] } } });
+  assert.equal(viewCheck(gas).ok, false);
+  assert.ok(viewCheck(gas).problems.every(p => p.stream === "cold" && /^Cold stream: /.test(p.message)), JSON.stringify(viewCheck(gas).problems));
+  assert.deepEqual(hxSetups(applyPatch(initialState({ start: "hx", components: ["water", "ethanol"] }), { hx: { mode: "two" } })).hot.ids, ["water", "ethanol"]);
+  assert.throws(() => normalizeHx({ hot: { components: ["water", "ethanol", "methanol", "acetone"] } }), /at most 3 components/);
 });

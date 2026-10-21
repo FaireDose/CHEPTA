@@ -5,7 +5,8 @@
  */
 import { h } from "./dom.js";
 import { icon } from "./icons.js";
-import { HX_DEFAULTS, UTILITY_KINDS, TWO_SPECS, streamZ } from "./hx-logic.js";
+import { HX_DEFAULTS, HX_STREAM_MAX, UTILITY_KINDS, TWO_SPECS, streamZ } from "./hx-logic.js";
+import { modelPicker } from "./model-picker.js";
 import { HEAT_TRANSFER, ARRANGEMENTS } from "../units/heat-exchange.js";
 import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { parseT, parseP } from "./app-logic.js";
@@ -19,10 +20,12 @@ export const RATING_NOTE = "Rating: given an exchanger (its area, U and arrangem
 export const ratingChip = () => h("span", { class: "fa-locked-chip", title: RATING_NOTE, "aria-disabled": "true", "data-fk": "hx-rating" }, icon("lock", 11), "Rating");
 
 /**
- * The sections of the Inputs panel. env: { state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf }.
+ * The sections of the Inputs panel. env: { state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf,
+ * streamList, setups } (setups: each stream's components and method in two-stream mode, app-logic.js hxSetups).
+ * The mode (utility or process exchanger) and the locked Rating button are in the ribbon.
  */
-export function hxInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf }) {
-  const hx = state.hx ?? HX_DEFAULTS, u = state.units, ids = check.ok ? check.use : [];
+export function hxInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf, streamList, setups }) {
+  const hx = state.hx ?? HX_DEFAULTS, u = state.units, two = hx.mode === "two";
   const put = patch => set({ hx: patch });
   const tU = u.T === "K" ? "K" : "°C";
   const tField = (label, value, onT, id, title) => field(`${label}, ${tU}`, value == null ? "" : String(+tToDisplay(value, u).toFixed(3)),
@@ -39,18 +42,26 @@ export function hxInputs({ state, set, uid, inputsSection, field, seg, listInput
   };
   const secs = [];
 
-  secs.push(inputsSection("Components",
-    h("p", { class: "fa-in-hint" }, hx.mode === "two" ? "The components of both streams (each has its own composition)." : "The components of the process stream."),
-    listInput("hx"), problemsBox(check)));
+  // a utility exchanger: the process stream's components and the ribbon's model; a process exchanger: each stream its own
+  if (!two) {
+    secs.push(inputsSection("Components",
+      h("p", { class: "fa-in-hint" }, "The components of the process stream."),
+      listInput("hx"), problemsBox(check)));
+  }
 
-  secs.push(inputsSection("Calculation",
-    seg("Exchanger", [["utility", "With a utility"], ["two", "Two streams"]], hx.mode, m => put({ mode: m })),
-    h("div", { class: "fa-locked-row" }, h("span", { class: "fa-in-hint" }, "Design (pre-sizing): the area for a duty."), ratingChip())));
-
-  /** A stream's flow, state, composition and pressure drop. */
+  /** A stream's components and method (process exchanger), flow, state, composition and pressure drop. */
   const streamSec = (title, key) => {
-    const s = hx[key], z = streamZ(s.z, ids.length);
+    const s = hx[key], own = two ? setups[key] : null;
+    const ids = two ? own.ids : check.ok ? check.use : [];
+    const z = streamZ(s.z, ids.length);
+    const mine = two ? check.problems.filter(p => p.stream === key) : [];
     return inputsSection(title,
+      ...(two ? [
+        h("p", { class: "fa-in-hint" }, `Up to ${HX_STREAM_MAX} components and the stream's own method: the two streams never mix.`),
+        streamList({ key, ids: own.ids, model: own.model, onChange: next => put({ [key]: { components: next, z: null } }) }),
+        modelPicker({ model: own.model, vapour: own.vapour, id: `fa-hx-${key}-m-${uid}`, fk: `hx-${key}-m`, onChange: m => put({ [key]: { model: m.model, vapour: m.vapour } }) }),
+        mine.length ? h("div", { class: "fa-problems", "aria-live": "polite" }, h("ul", {}, ...mine.map(p => h("li", {}, p.message)))) : null,
+      ] : []),
       nField("Flow, kmol/h", s.flow, v => put({ [key]: { flow: v } }), `hx-${key}-flow`, { min: 1e-12 }),
       tField("Inlet temperature", s.T_K, v => put({ [key]: { T_K: v } }), `hx-${key}-t`),
       pField("Inlet pressure", s.P_kPa, v => put({ [key]: { P_kPa: v } }), `hx-${key}-p`),
@@ -92,6 +103,8 @@ export function hxInputs({ state, set, uid, inputsSection, field, seg, listInput
       h("p", { class: "fa-in-hint" }, "The other outlet follows from the energy balance.")));
   }
 
+  // one side at a constant temperature (condensing steam, a fluid of one temperature): R = 0, so F = 1 whatever the arrangement
+  const isothermal = !two && (hx.utility.kind === "steam" || hx.utility.kind === "fluid-T");
   if (!(hx.mode === "utility" && hx.utility.kind === "electric")) {
     const U = hx.U, srv = HEAT_TRANSFER.services.rows, row = srv.find(r => r.id === U.service);
     const filmRows = [["", "Your own"], ...HEAT_TRANSFER.film.rows.map(r => [r.id, `${r.label} (${r.h})`])];
@@ -117,10 +130,13 @@ export function hxInputs({ state, set, uid, inputsSection, field, seg, listInput
         w.k_W_mK != null ? nField("Your conductivity, W/(m K)", w.k_W_mK, v => put({ U: { film: { wall: { k_W_mK: v } } } }), "hx-kval", { min: 1e-9 }) : null,
         nField("Wall thickness, mm", w.t_mm, v => put({ U: { film: { wall: { t_mm: v } } } }), "hx-twall", { min: 0 }),
         h("p", { class: "fa-in-hint" }, "1/U = 1/h hot + fouling + wall + fouling + 1/h cold (a plane wall). The metal's conductivity is taken at the mean temperature of the two sides."),
+        h("p", { class: "fa-in-hint" }, "Not a more rigorous design: the h of Table 1.1 are single examples of their order of magnitude (water at 10 m/s, an aniline-alcohol mixture at 3 m/s), not values for your stream, so U from them can lie far from the service ranges of Table 2.2. Choose the rows closest to your fluids and compare with a service."),
       ] : [nField("U, W/(m² K)", U.value, v => put({ U: { value: v } }), "hx-uval", { min: 1e-9 })])));
     secs.push(inputsSection("Arrangement",
       select("Flow arrangement", ARRANGEMENTS.map(a => [a, ARR_LABEL[a]]), hx.arrangement, a => put({ arrangement: a }), "hx-arr"),
       hx.arrangement === "shell-and-tube" ? nField("Shells in series", hx.shells, v => { if (!Number.isInteger(v)) return false; put({ shells: v }); }, "hx-shells", { min: 1, max: 10 }) : null,
+      isothermal && (hx.arrangement === "shell-and-tube" || hx.arrangement === "crossflow-unmixed")
+        ? h("p", { class: "fa-in-hint" }, `The ${hx.utility.kind === "steam" ? "condensing steam stays at one temperature" : "utility stays at one temperature"}, so the LMTD correction F is 1 for every arrangement ("If one flow remains at constant temperature … F must go to one", Lienhard and Lienhard, section 3.2, p. 116): the area is that of counterflow. F matters when both temperatures change (water, a fluid with inlet and outlet, or a process exchanger).`) : null,
       nField("Zones along the exchanger", hx.zones, v => { if (!Number.isInteger(v)) return false; put({ zones: v }); }, "hx-zones", { min: 2, max: 200, title: "Equal heat steps; each side's temperature from its own curve" })));
   }
 

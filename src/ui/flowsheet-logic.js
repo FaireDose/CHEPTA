@@ -399,6 +399,62 @@ export function connectEnergy(fs, from, to) {
   return { fs: out, id: qid };
 }
 
+/** Place an energy feed of `duty_kW` (+ heat in) on the drawing, not connected yet: drag it onto a heater or flash
+ *  drum, or choose one in its form (connectEnergyFeed). */
+export function placeEnergyFeed(fs, duty_kW = 100, pos) {
+  const out = clone(fs);
+  const qid = nextId(streamIds(out), "Q");
+  const units = out.blocks.filter(b => b.type !== "product" && b.type !== "feed");
+  // left of the first unit (not off the drawing), below the units and the feeds already placed
+  const x = pos?.x ?? (units.length ? Math.max(40, Math.min(...units.map(b => b.x ?? 0)) - 90) : 60);
+  let y = pos?.y ?? (units.length ? Math.max(...units.map(b => b.y ?? 0)) + 90 : 240);
+  while ((out.energyStreams ?? []).some(q => q.x != null && Math.abs(q.x - x) < 40 && Math.abs(q.y - y) < 24)) y += 40;
+  (out.energyStreams ??= []).push({ id: qid, duty_kW, x, y });
+  return { fs: out, id: qid };
+}
+
+/** Connect an energy feed to a heater or flash drum (its duty then comes from the feed). */
+export function connectEnergyFeed(fs, qid, to) {
+  const out = clone(fs);
+  const q = (out.energyStreams ?? []).find(x => x.id === qid), b = out.blocks.find(x => x.id === to);
+  if (!q || q.from) throw new Error(`${qid} is not an energy feed.`);
+  if (!b || !ENERGY_TARGETS.includes(b.type)) throw new Error(`${to} takes no energy stream (a heater or a flash drum does).`);
+  const other = energyOf(out, to);
+  if (other && other.stream.id !== qid) throw new Error(`${to} already has an energy stream (${other.stream.id}).`);
+  q.to = to;
+  if (b.spec) delete b.spec.duty_kW;   // the duty is the feed's now
+  if (b.energy === false) delete b.energy;
+  return out;
+}
+
+/** Disconnect an energy feed from its block: it stays on the drawing, and the block needs its own specification again. */
+export function disconnectEnergy(fs, qid) {
+  const out = clone(fs);
+  const q = (out.energyStreams ?? []).find(x => x.id === qid);
+  if (!q || q.from) throw new Error(`${qid} is not an energy feed.`);
+  delete q.to;
+  return out;
+}
+
+/** Move an energy feed on the drawing. */
+export function moveEnergy(fs, qid, x, y) {
+  const out = clone(fs);
+  const q = (out.energyStreams ?? []).find(v => v.id === qid);
+  if (q) { q.x = Math.round(x); q.y = Math.round(y); }
+  return out;
+}
+
+/** Take a block's own energy stream (its duty, "Q-" and the id) out of the drawing, or show it again. The duty is still
+ *  calculated and counted in the energy balance, and the results still list it; only the drawing leaves it out. */
+export function showEnergy(fs, id, shown) {
+  const out = clone(fs);
+  const b = out.blocks.find(x => x.id === id);
+  if (!b) throw new Error(`No block ${id}.`);
+  if (shown) { if (b.energy === false) delete b.energy; }
+  else b.energy = false;
+  return out;
+}
+
 /** Remove an energy stream (the block it went into needs its own specification again). */
 export function removeEnergy(fs, qid) {
   const out = clone(fs);
