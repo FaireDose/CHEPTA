@@ -37,6 +37,9 @@ jobs:
         run: |
           mkdir -p _site
           cp site/index.html site/install.html _site/
+          # a new chepta.js for every commit: the page asks for chepta.js?v=<commit>, so no cached older copy is used
+          sed -i "s/chepta\.js?v=dev/chepta.js?v=${GITHUB_SHA}/" _site/index.html
+          grep -q "chepta.js?v=${GITHUB_SHA}" _site/index.html
           (cd ai/skills && zip -qr ../../_site/skill.zip chepta && zip -qr ../../_site/contributor-skill.zip chepta-contributor)
           cp dist/chepta.js _site/chepta.js
           cp ai/instructions/use-chepta.md _site/use.md

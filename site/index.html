@@ -15,7 +15,6 @@
   body > header .tagline { display: block; font-size: .95rem; font-weight: normal; }
   body > header a { color: inherit; }
   #app { max-width: 1240px; margin: 0 auto; }
-  footer { max-width: 1240px; margin: 12px auto 0; font-size: .85rem; opacity: .75; }
 </style>
 </head>
 <body>
@@ -29,12 +28,13 @@
   <a href="https://github.com/FaireDose/CHEPTA/blob/main/ROADMAP.md">Roadmap</a>
 </header>
 <div id="app"></div>
-<footer>Model predictions, not measurements. Every parameter shows its source in the interface.</footer>
-<script src="chepta.js"></script>
+<!-- ?v= is replaced by the commit when the site is published (.github/workflows/pages.yml), so a browser never pairs
+     this page with an older chepta.js from its cache -->
+<script src="chepta.js?v=dev"></script>
 <script>
-  // opens empty: choose components in Inputs, or load one of the Examples
-  document.getElementById("chepta-brand").replaceChildren(CHEPTA.brandLogo());
+  // opens empty: choose components in Inputs, or load one of the Examples. The workbench first: the logo must never stop it.
   CHEPTA.app("#app", { components: [] });
+  try { document.getElementById("chepta-brand").replaceChildren(CHEPTA.brandLogo()); } catch { /* the word CHEPTA stays */ }
 </script>
   <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "9c08ee7b8beb4e559b8f50d047060233"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
