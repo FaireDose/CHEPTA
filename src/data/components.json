@@ -25605,16 +25605,36 @@
       "formation": {
         "state": "ideal gas",
         "T_K": 298.15,
-        "Hf_ig_J_mol": -393629.0,
-        "Gf_ig_J_mol": -365940.0,
+        "Hf_ig_J_mol": -378600.0,
+        "Gf_ig_J_mol": -350910.2,
         "tier": "databank",
         "source": {
-          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
-          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
-          "access": "Artistic License 2.0"
+          "name": "Measured gas values: NIST Chemistry WebBook (SRD 69), in place of ChemSep's",
+          "access": "Free to read online (WebBook, SRD 69); CODATA key values, open table",
+          "reference": "ΔfH°gas -378.6 kJ/mol, Guthrie, 1974; ΔfH°gas -379.0 kJ/mol, Lebedeva, 1964; ΔfH°gas -379.2 kJ/mol, Lebedeva, 1964; ΔfH°gas -378.3 kJ/mol, Sinke, 1959; ΔfH°gas -378.5 kJ/mol, Sinke, 1959; S°gas 248.7 J/(mol K), Millikan R.C., 1957",
+          "selection": "median of 5 ΔfH° values and of 1 S° value(s); ΔfG° = ΔfH° - T (S° - Σ S°(elements)), the elements' entropies the CODATA key values (https://www.codata.info/resources/databases/key1.html)",
+          "why": "ChemSep's ideal-gas enthalpy of formation (-393.6 kJ/mol) is 15 kJ/mol below the measured gas values of the WebBook (Guthrie 1974, Lebedeva 1964, Sinke 1959), which Chao and Zwolinski (J. Phys. Chem. Ref. Data 7 (1978) 363) also take; with ChemSep's value and the dimers of the vapour, the liquid's enthalpy of formation would be 16.6 kJ/mol off the measured liquid values (the maintainer, 2026-10-22: the WebBook gas value)"
         },
         "source_ids": [
-          "chemsep-8.31-2"
+          "nist-webbook",
+          "codata-key-values"
+        ]
+      },
+      "association": {
+        "type": "dimer",
+        "log10K": {
+          "A": -11.4026,
+          "B": 3301.7
+        },
+        "K_unit": "1/mmHg",
+        "T_range_K": [
+          298.15,
+          600.0
+        ],
+        "source": "J. Chao, B. J. Zwolinski, Ideal gas thermodynamic properties of methanoic and ethanoic acids, J. Phys. Chem. Ref. Data 7 (1978) 363-377, Table 8 (equilibrium constants K_eq, 1/atm), p. 369; Table 5 (reported enthalpies of dimerization), p. 368 (open copy: https://srd.nist.gov/jpcrdreprint/1.555571.pdf); log10 K = A + B/T fitted to 5 values at 298.15-600.00 K, largest deviation 2.9 %; dimerization enthalpy -R ln(10) B = -63.2 kJ/mol. The constants come from the authors' statistical-thermodynamic tables for monomer and dimer, with the enthalpy of dimerization (-15.25 kcal/mol at 298.15 K, uncertainty 0.15 kcal/mol, p. 374) chosen so that they reproduce the measured vapour densities of Coolidge (1928). Table 5 lists the measured values: P-V-T (vapour density) by Coolidge 1928 (283-429 K), Halford 1942, Taylor and Bruton 1952 (323-423 K) and Barton and Hsu 1969, and spectroscopic values.",
+        "file": "validation/data/association/formic-acid_chao1978.json",
+        "source_ids": [
+          "chao-zwolinski-1978"
         ]
       }
     },

@@ -17,8 +17,9 @@
  * h_vapour - h_liquid = dHvap at saturation. The pressure effect on the liquid is
  * neglected (valid well below the critical point). This is the usual path construction
  * of a departure function (ideal gas -> real saturated vapour -> saturated liquid).
- * Limits: dimerizing components (acetic acid) get no enthalpy (null, with a note); the
- * residual enthalpy of polar vapours is approximate (see POLAR_NOTE).
+ * A dimerizing acid (acetic acid) has, in place of h_R, the enthalpy of the dimers in its vapour (chemical theory,
+ * vapour.js: an ideal gas of monomers and dimers; the dimerization enthalpy from the temperature dependence of K).
+ * Limits: the residual enthalpy of polar vapours is approximate (see POLAR_NOTE).
  *
  * A component without an ideal-gas heat capacity record (no open data: GVL, the lactates, ...) has one derived from
  * its liquid (the maintainer, 2026-10-17, docs/decisions/2026-10-17-02-liquid-heat-capacity.md), by the same path
@@ -40,7 +41,7 @@ import { hIdealGas as hIdealGasIF97, cpIdealGas as cpIdealGasIF97, psat as psatI
   TC as TC_IF97 } from "./iapws/if97.js";
 import { viscosity as viscosityIAPWS, thermalConductivityParts as conductivityIAPWS } from "./iapws/transport.js";
 import { cubicEos, CUBICS } from "./eos/cubic.js";
-import { dimerK, monomerPressure } from "./vapour.js";
+import { dimerK, monomerPressure, pureDimerEnthalpy, dimerEnthalpy } from "./vapour.js";
 import { fail, failRange } from "../util/errors.js";
 import { hasCritical, criticalT, requireCritical } from "./critical.js";
 
@@ -143,8 +144,11 @@ export function pure(key, opts = {}) {
   // without critical constants (critical.js) the vapour is an ideal gas and no critical point bounds the liquid
   const crit = hasCritical(c), Tc = criticalT(c);
   const IDEAL_VAPOUR_NOTE = `${c.name} has no measured critical constants: its vapour is taken as an ideal gas (no residual enthalpy or heat capacity), which holds at low pressure.`;
-  /** Residual enthalpy (J/mol) of the saturated vapour: Peng-Robinson, or 0 for an ideal gas. */
-  const hResSat = (T, pS) => (crit ? eosPR().state(T, pS, [1], "vapour").hR_J_mol : 0);
+  // a dimerizing acid (vapour.js): its vapour is an ideal gas of monomers and dimers, and its enthalpy against the
+  // ideal-gas monomer is the dimers' enthalpy of formation
+  const dimer = c.association?.type === "dimer" ? c.association : null;
+  /** Residual enthalpy (J/mol) of the saturated vapour: the dimers' for a dimerizing acid, else Peng-Robinson, or 0 for an ideal gas. */
+  const hResSat = (T, pS) => (dimer ? pureDimerEnthalpy(dimer, T, pS) : crit ? eosPR().state(T, pS, [1], "vapour").hR_J_mol : 0);
 
   // a nonvolatile component (proposal 0009, step 5): no vapour pressure, always a liquid
   const nonvolatile = c.class === "nonvolatile";
@@ -313,16 +317,15 @@ export function pure(key, opts = {}) {
       return out;
     }
     const MWkg = c.MW / 1000;
-    const assocNote = `${c.name} dimerizes in the vapour; enthalpy is not given (null) until the association model is used for enthalpy: the ideal-gas (monomer) cp and the heat of vaporization to the dimerized vapour do not share a reference (about 28 kJ/mol apart for acetic acid).`;
+    const assocNote = dimer && `${c.name} dimerizes in the vapour: its vapour enthalpy is the ideal-gas monomer's plus that of the dimers formed (chemical theory, ${c.association.source}), with the dimerization enthalpy ${(dimerEnthalpy(dimer) / 1000).toFixed(1)} kJ/mol from the temperature dependence of K.`;
     if (out.phase === "liquid") {
       tryGet("rho_kg_m3", () => property("liquidDensity", T), "liquidDensity");
       tryGet("cp_J_molK", () => property("liquidHeatCapacity", T), "liquidHeatCapacity");
       tryGet("dHvap_J_mol", () => property("heatOfVaporization", T), "heatOfVaporization");
-      if (c.association) {
-        out.h_J_mol = null;
-        out.notes.push(assocNote);
+      tryGet("h_J_mol", () => liquidEnthalpy(T, ps));
+      if (dimer) {
+        out.notes.push(assocNote, "Liquid enthalpy h = h_ideal-gas(monomer) + h_dimers(saturated vapour) - dHvap, so that h_vapour - h_liquid = dHvap at saturation.");
       } else {
-        tryGet("h_J_mol", () => liquidEnthalpy(T, ps));
         out.notes.push(crit ? "Liquid enthalpy h = h_ideal-gas + h_residual(saturated vapour, Peng-Robinson) - dHvap, so that h_vapour - h_liquid = dHvap at saturation."
           : "Liquid enthalpy h = h_ideal-gas - dHvap (ideal-gas vapour), so that h_vapour - h_liquid = dHvap at saturation.");
         if (!crit) out.notes.push(IDEAL_VAPOUR_NOTE);
@@ -337,10 +340,12 @@ export function pure(key, opts = {}) {
       out.rho_kg_m3 = MWkg * (pm + 2 * pd) * 1000 / (R * T);
       out.sources.rho_kg_m3 = { tier: "databank", source: `Chemical theory (ideal monomer + dimer gas): ${c.association.source}` };
       out.dimerFraction = pd / P;
-      out.h_J_mol = null;
-      tryGet("cp_J_molK", () => property("idealGasHeatCapacity", T), "idealGasHeatCapacity");
-      out.notes.push(assocNote);
-      if (out.cp_J_molK !== null) out.notes.push(`cp_J_molK is the ideal-gas heat capacity of the ${c.name} monomer; it excludes the heat of dissociating the dimers (${(100 * 2 * pd / (pm + 2 * pd)).toFixed(0)} % of the molecules are dimerized here), so the real vapour's cp is higher.`);
+      out.hResidual_J_mol = pureDimerEnthalpy(dimer, T, P);
+      tryGet("h_J_mol", () => hIdealGas(T) + out.hResidual_J_mol);
+      // cp of the real vapour at constant P: the monomer's, plus the heat taken by the dimers dissociating as T rises
+      const dT = 0.01;
+      tryGet("cp_J_molK", () => property("idealGasHeatCapacity", T) + (pureDimerEnthalpy(dimer, T + dT, P) - pureDimerEnthalpy(dimer, T - dT, P)) / (2 * dT), "idealGasHeatCapacity");
+      out.notes.push(assocNote, `cp_J_molK includes the heat of dissociating the dimers as the temperature rises (${(100 * 2 * pd / (pm + 2 * pd)).toFixed(0)} % of the acid is dimerized here).`);
       tryGet("mu_Pa_s", () => property("vapourViscosity", T), "vapourViscosity");
       tryGet("k_W_mK", () => property("vapourThermalConductivity", T), "vapourThermalConductivity");
     } else if (!crit) {
@@ -382,10 +387,9 @@ export function pure(key, opts = {}) {
    * with h_R,V the Peng-Robinson residual enthalpy of the saturated vapour, so that the
    * vapour (h_IG + h_R from Peng-Robinson) and the liquid join at saturation:
    * h_V - h_L = dHvap. psat from the vapour-pressure correlation, or from Peng-Robinson
-   * when there is none. Not available for dimerizing components (see props()).
+   * when there is none. A dimerizing acid: h_R,V is the enthalpy of the dimers in its saturated vapour.
    */
   function liquidEnthalpy(T, ps = null) {
-    if (c.association) throw fail("NOT_AVAILABLE", `${c.name} dimerizes in the vapour: liquid enthalpy is not available yet.`);
     const pS = ps ?? (vpRec ? psat(T) : eosPR().psat(0, T));
     return hIdealGas(T) + hResSat(T, pS) - property("heatOfVaporization", T);
   }
@@ -394,8 +398,8 @@ export function pure(key, opts = {}) {
   function saturation(T) {
     if (!(T < Tc)) throw failRange("OUT_OF_RANGE", `${c.name}: no saturation state at ${T} K (critical temperature ${c.Tc_K} K).`);
     const pS = vpRec ? psat(T) : eosPR().psat(0, T);
-    const hV = c.association ? null : hIdealGas(T) + hResSat(T, pS);
-    const hL = c.association ? null : liquidEnthalpy(T, pS);
+    const hV = hIdealGas(T) + hResSat(T, pS);
+    const hL = liquidEnthalpy(T, pS);
     return { T_K: T, P_kPa: pS, hV_J_mol: hV, hL_J_mol: hL, dHvap_J_mol: property("heatOfVaporization", T) };
   }
 

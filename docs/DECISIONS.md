@@ -20,6 +20,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   open data. Compare the transcribed values with their sources.
 - **Supplier data** (docs/decisions/2026-10-22-06-supplier-data.md): the rule is written (3 suppliers within 2 K or
   1 %, assay of at least 98 %, single constants only, tier `supplier`); no record uses it yet.
+- **Reactions, step 2** (proposal 0010; docs/decisions/2026-10-22-05-reactions.md): confirm the standard pressure of
+  100 kPa, the pure-liquid standard state and its paths (through the saturated vapour, for acetic acid with its
+  monomers and dimers; crystal to liquid with ΔHfus); compare the WebBook liquid values of
+  validation/data/reactions/liquid_formation_webbook.json with their pages. Acetic acid enthalpies now work everywhere
+  (flowsheets included), and so do those of acids that are solid at 25 °C. Formic acid has its dimer constants (Chao and
+  Zwolinski 1978) and the WebBook gas ΔfH°; propionic and acrylic acid have none open yet (their liquid values are
+  12-26 kJ/mol off). No open source with the Eley–Rideal and Mars–van Krevelen forms was found.
 - **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-22.md](MISSING_PROPERTIES_2026-10-22.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.

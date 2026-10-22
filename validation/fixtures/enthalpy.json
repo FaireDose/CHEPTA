@@ -259,6 +259,129 @@
    "h_J_mol": 11185.100743882358
   },
   {
+   "kind": "activity",
+   "model": "ideal",
+   "vapour": "ideal",
+   "components": [
+    "adipic-acid",
+    "benzoic-acid"
+   ],
+   "phase": "liquid",
+   "z": [
+    0.5,
+    0.5
+   ],
+   "T_K": 450.0,
+   "P_kPa": 101.325,
+   "h_J_mol": -50934.7903712735,
+   "hE_J_mol": 0.0
+  },
+  {
+   "kind": "activity",
+   "model": "ideal",
+   "vapour": "ideal",
+   "components": [
+    "adipic-acid",
+    "benzoic-acid"
+   ],
+   "phase": "liquid",
+   "z": [
+    1.0,
+    0.0
+   ],
+   "T_K": 470.0,
+   "P_kPa": 101.325,
+   "h_J_mol": -51048.6324835641,
+   "hE_J_mol": 0.0
+  },
+  {
+   "kind": "activity",
+   "model": "NRTL",
+   "vapour": "ideal",
+   "components": [
+    "acetic-acid",
+    "water"
+   ],
+   "phase": "liquid",
+   "z": [
+    0.5,
+    0.5
+   ],
+   "T_K": 330.0,
+   "P_kPa": 101.325,
+   "h_J_mol": -43629.98492896426,
+   "hE_J_mol": 177.81367347638417
+  },
+  {
+   "kind": "activity",
+   "model": "NRTL",
+   "vapour": "ideal",
+   "components": [
+    "acetic-acid",
+    "water"
+   ],
+   "phase": "liquid",
+   "z": [
+    1.0,
+    0.0
+   ],
+   "T_K": 360.0,
+   "P_kPa": 101.325,
+   "h_J_mol": -41944.910150210504,
+   "hE_J_mol": 0.0
+  },
+  {
+   "kind": "activity",
+   "model": "NRTL",
+   "vapour": "ideal",
+   "components": [
+    "acetic-acid",
+    "water"
+   ],
+   "phase": "vapour",
+   "z": [
+    0.5,
+    0.5
+   ],
+   "T_K": 390.0,
+   "P_kPa": 101.325,
+   "h_J_mol": -4692.3045593274055
+  },
+  {
+   "kind": "activity",
+   "model": "NRTL",
+   "vapour": "ideal",
+   "components": [
+    "acetic-acid",
+    "water"
+   ],
+   "phase": "vapour",
+   "z": [
+    1.0,
+    0.0
+   ],
+   "T_K": 400.0,
+   "P_kPa": 101.325,
+   "h_J_mol": -13674.667781484168
+  },
+  {
+   "kind": "activity",
+   "model": "NRTL",
+   "vapour": "ideal",
+   "components": [
+    "acetic-acid",
+    "water"
+   ],
+   "phase": "vapour",
+   "z": [
+    0.3,
+    0.7
+   ],
+   "T_K": 450.0,
+   "P_kPa": 300.0,
+   "h_J_mol": 4394.518652495055
+  },
+  {
    "kind": "excess",
    "model": "NRTL",
    "components": [

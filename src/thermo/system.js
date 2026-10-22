@@ -187,9 +187,8 @@ export function createSystem(cfg) {
     return cubicVapour ? [...w, ...cubicVapour.warnings(T)] : w;
   }
 
-  // enthalpies need the association enthalpy of a dimerizing acid whether or not the chemical
-  // theory is switched on for the phase equilibrium (association: false), as pure() says
-  const dimerizing = comps.map(c => !!(c.association && c.association.type === "dimer"));
+  // (enthalpies use the dimers of a dimerizing acid whether or not the chemical theory is switched on for the phase
+  // equilibrium, association: false: the heat of vaporization is to the dimerized vapour; enthalpy.js)
   /**
    * ln K_i = ln(y_i / x_i) at equilibrium for liquid x and vapour y at T, P (the flash's
    * K-values): ln gamma_i P_i^sat / P, plus, with a cubic vapour, ln phi_i^sat + Poynting -
@@ -210,7 +209,7 @@ export function createSystem(cfg) {
     });
   };
 
-  const phaseMethods = activityPhaseMethods({ ids, comps, n, model, gammas, psat, cubicVapour, assoc: dimerizing, warnings, nonvolatile, userData: ud });
+  const phaseMethods = activityPhaseMethods({ ids, comps, n, model, gammas, psat, cubicVapour, warnings, nonvolatile, userData: ud });
   // melting temperature and enthalpy of fusion (solid-liquid equilibrium, src/equilibrium/sle.js); null: no open data
   const fusion = comps.map(c => (c.fusion && c.fusion.available !== false
     ? { Tm_K: c.fusion.Tm_K, Hfus_J_mol: c.fusion.Hfus_J_mol, tier: c.fusion.tier, source: c.fusion.source } : null));

@@ -115,7 +115,7 @@ test("errors carry codes and keep their class", () => {
   code(() => system({ components: ["benzene", "water"], model: "PR" }).bubbleT([0.5, 0.5], 101.325), "PHASE_SPLIT");
   code(() => system({ components: ["methane", "ethane"], model: "PR" }).bubbleP([0.9, 0.1], 260), "NO_CONVERGENCE");
   code(() => system({ components: ["methane", "ethane"], model: "PR" }).gammas([0.5, 0.5], 200), "NOT_AVAILABLE");
-  code(() => pure("acetic acid").liquidEnthalpy(330), "NOT_AVAILABLE");
+  // (acetic acid's liquid enthalpy was a NOT_AVAILABLE case until 2026-10-22; it is now modelled)
   // messages are unchanged, so pages that show e.message keep working
   assert.throws(() => system({ components: ["water", "water"] }), /appears twice/);
   // a plain Error is not a CheptaError
