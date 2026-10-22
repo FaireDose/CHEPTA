@@ -468,6 +468,7 @@ export const TIER_LABEL = {
   fitted: "fitted by CHEPTA to an open source",
   databank: "open databank",
   predicted: "predicted (estimation method)",
+  supplier: "average of supplier values, not a measurement",
 };
 
 /** One-line text for a record's or props() `source` (a string or an object). */

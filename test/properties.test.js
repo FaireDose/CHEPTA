@@ -20,7 +20,8 @@ const points = Object.fromEntries(readdirSync(POINTS_DIR).filter(f => f.endsWith
 // (carbon dioxide has no normal boiling point: Tb_K is null, it has no liquid at 1 atm)
 const GASES = listComponents().map(c => c.id).filter(id => !components[id].Tb_note && (components[id].Tb_K ?? 0) < 298.15);
 const TRANSPORT = new Set(["liquidViscosity", "vapourViscosity", "liquidThermalConductivity", "vapourThermalConductivity"]);
-const TIERS = new Set(["standard", "fitted", "databank", "predicted"]);
+// "supplier": the average of supplier values for a single constant (docs/DATA_RULES.md section 1, 2026-10-22)
+const TIERS = new Set(["standard", "fitted", "databank", "predicted", "supplier"]);
 
 /** The record as correlations.js evaluates it (the gases' vapour pressure is stored flat). */
 function recordOf(id, name) {
