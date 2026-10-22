@@ -15,7 +15,8 @@ src/data/components.json:
        H(T) = H(T0) + integral of cp,  S(T) = (H(T0) - G(T0))/T0 + integral of cp/T,  G = H - T S,
      with the integrals by scipy.integrate.quad. A liquid species from an ideal-gas record:
        G_L = G_IG + RT ln(phi_sat psat / P°),  H_L(T) = H_IG(T0) + h_R,sat(T0) - ΔHvap(T0) + integral of cp_L,
-     phi_sat and h_R,sat from reference_eos.Cubic (Peng-Robinson, written separately from the engine); a crystal record:
+     with phi_sat = 1 and h_R,sat = 0 (ideal-gas vapour), and for a dimerizing acid the monomer's saturation pressure
+     and the dimers' enthalpy (chemical theory); a crystal record:
        H_L(T0) = H_S(T0) + ΔHfus,  G_L(T0) = G_S(T0) + ΔHfus (1 - T0/Tm),
      then the liquid by cp_L.
 
@@ -31,7 +32,6 @@ import numpy as np
 from scipy.integrate import quad
 
 from reference_model import COMPONENTS, psat_kpa, dimer_k
-from reference_eos import Cubic
 from reference_enthalpy import dippr107, h_ig, dhvap, cp_liquid
 
 OUT = Path(__file__).resolve().parents[1] / "fixtures" / "reactions.json"
@@ -164,16 +164,14 @@ def q(f, a, b):
 
 
 def psat(cid, T):
-    if cid == "water":
-        from iapws import IAPWS97
-        return IAPWS97(T=T, x=0).P * 1000
+    # the vapour-pressure record of components.json, as the engine's activity systems use it (for water too)
     return psat_kpa(COMPONENTS[cid], T)
 
 
 def sat_vapour(cid, T):
     """ln(f_sat / psat) and the residual enthalpy of the saturated vapour against the formation record's ideal gas:
     for a dimerizing acid the monomer (chemical theory: p_D = K p_M^2, the dimerization enthalpy R T^2 d ln K/dT by a
-    central difference), else Peng-Robinson, or 0 without critical constants."""
+    central difference), else 0 and 0 (the ideal-gas vapour of the engine's one-component system)."""
     c = COMPONENTS[cid]
     if c.get("association"):
         a = c["association"]
@@ -184,10 +182,7 @@ def sat_vapour(cid, T):
         h = 1e-3
         dH = R * T ** 2 * (math.log(dimer_k(a, T + h)) - math.log(dimer_k(a, T - h))) / (2 * h)
         return math.log(yM), yD * dH / (yM + 2 * yD)
-    if c.get("Tc_K") is None:
-        return 0.0, 0.0
-    cub, x, P = Cubic("PR", [cid]), np.array([1.0]), psat(cid, T) * 1000
-    return float(cub.lnphi(T, P, x, "vapour")[0]), float(cub.h_res(T, P, x, "vapour"))
+    return 0.0, 0.0   # the ideal-gas vapour, as the engine's one-component system
 
 
 def species_gas(cid, T):

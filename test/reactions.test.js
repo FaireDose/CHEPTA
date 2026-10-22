@@ -9,7 +9,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  checkReaction, checkReactions, reactionBalance, reactionProperties, reactionRate, rateSpecies, RATE_FORMS, isCheptaError,
+  checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties, reactionRate, rateSpecies, RATE_FORMS, isCheptaError,
 } from "../src/index.js";
 
 const ref = JSON.parse(readFileSync(new URL("../validation/fixtures/reactions.json", import.meta.url)));
@@ -229,4 +229,14 @@ test("unknown forms and constants are refused with what is known; your own formu
   // a negative order at zero concentration
   const inh = mk({ form: "power-law", forward: { k: 1, orders: { ethanol: 1, water: -1 } } });
   throwsCode(() => reactionRate(inh, { T_K: 500, values: { ethanol: 1, water: 0 } }), "BAD_INPUT", /negative order .* the rate is infinite/);
+});
+
+test("one species alone (speciesProperties): an acid solid at 25 °C has a liquid where its records start, and says why not below", () => {
+  const a = speciesProperties("adipic acid", "liquid", 480);
+  assert.equal(a.record, "ideal gas");
+  assert.ok(Number.isFinite(a.H_J_mol) && Number.isFinite(a.G_J_mol));
+  assert.ok(a.notes.some(n => /Adipic acid: ideal gas to pure liquid/.test(n)));
+  assert.throws(() => speciesProperties("adipic acid", "liquid", 298.15), e => isCheptaError(e) && /^Adipic acid, pure liquid at 298\.15 K: /.test(e.message));
+  // a crystal record without open melting data cannot reach the liquid
+  assert.throws(() => speciesProperties("fumaric acid", "liquid", 320), /formation record is for the crystal, and without melting data/);
 });

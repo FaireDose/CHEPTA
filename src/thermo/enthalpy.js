@@ -57,9 +57,12 @@
  * (gamma-phi-vapour.js; phi^sat = 1 and no Poynting term for the ideal gas), vapour
  * f_i = y_i phi_i P; equations of state f_i = z_i phi_i P.
  *
- * Not available: systems with a dimerizing acid (acetic acid), whose vapour enthalpy needs the
- * association enthalpy (as pure() says). excessEnthalpy() works for them: it is a liquid
- * property.
+ * A dimerizing acid (acetic acid; vapour.js, the chemical theory of the phase equilibrium): the vapour is an ideal gas
+ * of monomers and dimers, so its enthalpy adds xi_i ΔH_dim for the xi_i dimers per mole of the apparent composition
+ * (ΔH_dim from the temperature dependence of the dimerization constant), and the acid's fugacity is its monomer's
+ * partial pressure; in the liquid the saturated vapour's term h_R,sat is that of the dimers in the pure acid's
+ * saturated vapour, and f_i = x_i gamma_i p_monomer,sat. This holds whether or not the chemical theory is switched
+ * on for the phase equilibrium (association: false), since the heat of vaporization is to the dimerized vapour.
  *
  * Open references: the Gibbs-Helmholtz relation for the excess enthalpy and the gamma-phi
  * liquid enthalpy as documented for the `thermo` library (MIT): thermo.activity.GibbsExcess.HE
@@ -68,6 +71,7 @@
  */
 import { pure } from "./pure.js";
 import { fail, failRange } from "../util/errors.js";
+import { dimerK, monomerPressure, dimerEnthalpy, dimerSplit, pureDimerEnthalpy } from "./vapour.js";
 import { checkComposition, checkPressure, checkTemperature } from "../util/inputs.js";
 
 const R = 8.314462618;      // J/(mol K)
@@ -143,11 +147,12 @@ function named(name, what, fn) {
 
 /**
  * Methods for an activity-coefficient system.
- * @param {object} ctx  { ids, comps, n, model, gammas, psat, cubicVapour, assoc, warnings }; assoc[i] is
- *        true for a dimerizing acid, whether or not the system uses the chemical theory
+ * @param {object} ctx  { ids, comps, n, model, gammas, psat, cubicVapour, warnings }
  */
 export function activityPhaseMethods(ctx) {
-  const { ids, comps, n, gammas, psat, cubicVapour, assoc, warnings } = ctx;
+  const { ids, comps, n, gammas, psat, cubicVapour, warnings } = ctx;
+  // dimerizing acids (src/thermo/vapour.js): their association record, for the vapour's enthalpy and fugacity
+  const dimers = comps.map(c => (c.association?.type === "dimer" ? c.association : null));
   const nonvolatile = ctx.nonvolatile ?? ids.map(() => false);
   const pures = ids.map(id => pure(id, { userData: ctx.userData }));
   const hIG = (i, T) => named(comps[i].name, "ideal-gas enthalpy", () => pures[i].hIdealGas(T));
@@ -155,21 +160,32 @@ export function activityPhaseMethods(ctx) {
 
   // ---- pure-liquid enthalpy on the liquid-heat-capacity basis (maintainer's decision, #34):
   //   h_L,i(T) = h_R,i^sat(T0) - dHvap_i(T0) + integral from T0 to T of cp_L,i dT,  T0 = 298.15 K
-  // (h_IG,i(T0) = 0 by the reference state). Above the end of the cp_L record, Tend, the old
+  // (h_IG,i(T0) = 0 by the reference state); for a liquid whose records start above T0, the same from their start Ta,
+  // h_L,i(T) = h_IG,i(Ta) + h_R,i^sat(Ta) - dHvap_i(Ta) + integral from Ta to T of cp_L,i dT. Above the end of the cp_L record, Tend, the old
   // basis continues, shifted to join: h_L,i(T) = h_L,i(Tend) + [g_i(T) - g_i(Tend)] with
   // g_i = h_IG,i + h_R,i^sat - dHvap_i (a warning says so).
   const cpRec = pures.map(p => p.record("liquidHeatCapacity"));
   const cpL = (i, T) => named(comps[i].name, "liquid heat capacity", () => pures[i].property("liquidHeatCapacity", T));
-  let anchor = null; // h_L,i(T0) for every component, computed once
-  const satResidual = (i, T) => (cubicVapour ? cubicVapour.pureTerms(T, psat(T)).hRsat[i] : 0);
+  let anchor = null; // h_L,i(Ta,i) for every component, computed once
+  // the anchor temperature: T0, or, for a liquid whose records start above T0 (a solid at 298.15 K: adipic,
+  // benzoic, stearic acid), the lowest temperature where its heat-capacity, heat-of-vaporization and vapour-pressure
+  // records all apply; the liquid enthalpy then starts there, h_L(Ta) = h_IG(Ta) + h_R,sat(Ta) - dHvap(Ta)
+  const covers = (rec, T) => !rec || (rec.Tmin_K <= T && T <= rec.Tmax_K);
+  const anchorT = ids.map((_, i) => {
+    if (nonvolatile[i] || !cpRec[i]) return T0;
+    const recs = [cpRec[i], pures[i].record("heatOfVaporization"), pures[i].record("vapourPressure")];
+    return recs.every(r => covers(r, T0)) ? T0 : Math.max(...recs.filter(Boolean).map(r => r.Tmin_K));
+  });
+  // the saturated vapour's enthalpy against the ideal gas: a cubic vapour's residual, or the dimers' of an acid
+  const satResidual = (i, T) => (dimers[i] ? pureDimerEnthalpy(dimers[i], T, psat(T)[i]) : cubicVapour ? cubicVapour.pureTerms(T, psat(T)).hRsat[i] : 0);
   function anchors() {
     if (!anchor) {
       anchor = ids.map((_, i) => {
-        if (assoc[i]) return NaN;
         const rec = cpRec[i];
         if (!rec) throw fail("MISSING_DATA", `${comps[i].name}: no liquid heat capacity in the databank, so its liquid enthalpy cannot be calculated.`);
         if (nonvolatile[i]) return 0;   // reference: the liquid at T0
-        return satResidual(i, T0) - dHvap(i, T0);
+        const Ta = anchorT[i];
+        return (Ta === T0 ? 0 : hIG(i, Ta)) + satResidual(i, Ta) - dHvap(i, Ta);
       });
     }
     return anchor;
@@ -177,14 +193,15 @@ export function activityPhaseMethods(ctx) {
   // within EDGE_K outside the record: its end; farther out the record refuses as usual
   const atEdge = (rec, t) => (t < rec.Tmin_K && t >= rec.Tmin_K - EDGE_K ? rec.Tmin_K : t > rec.Tmax_K && t <= rec.Tmax_K + EDGE_K ? rec.Tmax_K : t);
   const cpCache = ids.map(() => new Map());
-  /** integral of cp_L,i from T0 to T (J/mol), composite 8-point Gauss-Legendre on <= 25 K pieces. */
+  /** integral of cp_L,i from its anchor temperature (T0, or Ta) to T (J/mol), composite 8-point Gauss-Legendre on <= 25 K pieces. */
   function cpIntegral(i, T) {
     const c = cpCache[i];
     if (c.has(T)) return c.get(T);
-    const m = Math.max(1, Math.ceil(Math.abs(T - T0) / 25)), w = (T - T0) / m;
+    const Ta = anchorT[i];
+    const m = Math.max(1, Math.ceil(Math.abs(T - Ta) / 25)), w = (T - Ta) / m;
     let s = 0;
     for (let k = 0; k < m; k++) {
-      const a = T0 + k * w, mid = a + w / 2, r = w / 2;
+      const a = Ta + k * w, mid = a + w / 2, r = w / 2;
       for (let q = 0; q < 8; q++) s += GL8_W[q] * r * cpL(i, atEdge(cpRec[i], mid + r * GL8_X[q]));
     }
     if (c.size > 64) c.clear();
@@ -230,12 +247,6 @@ export function activityPhaseMethods(ctx) {
     return -R * T * T * s;
   }
 
-  function noAssociation(z) {
-    const k = assoc.findIndex((a, i) => a && z[i] > 0);
-    if (k >= 0) {
-      throw fail("NOT_AVAILABLE", `${comps[k].name} dimerizes in the vapour: enthalpies of systems with it are not available yet (the association enthalpy is not modelled). Its excess enthalpy is: use excessEnthalpy().`);
-    }
-  }
 
   /**
    * One phase at T (K), P (kPa) and composition z.
@@ -246,7 +257,6 @@ export function activityPhaseMethods(ctx) {
     ph = checkPhase(ph);
     T = checkTemperature(T); P = checkPressure(P);
     z = checkComposition(z, n, ph === "liquid" ? "Liquid composition" : "Vapour composition");
-    noAssociation(z);
     const out = { phase: ph, T, P, composition: z };
     const notes = [];
     if (ph === "vapour") {
@@ -265,6 +275,18 @@ export function activityPhaseMethods(ctx) {
       if (cubicVapour) {
         const st = cubicVapour.vapourState(T, P, z);
         h += st.hR_J_mol; lnPhi = st.lnPhi; Z = st.Z;
+      }
+      if (dimers.some(Boolean)) {
+        // a dimerizing acid (chemical theory): xi_i dimers per mole of the apparent composition, each with the
+        // dimerization enthalpy; the acid's fugacity is its monomer's partial pressure, the others' their true one
+        const { xi, N } = dimerSplit(z, dimers.map(a => a && dimerK(a, T)), P);
+        for (let i = 0; i < n; i++) {
+          if (!dimers[i] || !(z[i] > 0)) continue;
+          h += xi[i] * dimerEnthalpy(dimers[i]);
+          lnPhi[i] = Math.log((z[i] - 2 * xi[i]) / (z[i] * N));
+        }
+        for (let i = 0; i < n; i++) if (!dimers[i]) lnPhi[i] = -Math.log(N);
+        Z = N;
       }
       Object.assign(out, { h_J_mol: h, phi: lnPhi.map(Math.exp), Z, lnFugacity: z.map((y, i) => Math.log(y * P) + lnPhi[i]) });
       if (opts.entropy) addEntropy(out, z.map((y, i) => (nonvolatile[i] ? 0 : y)), i => gIG(i, T) + R * T * (out.lnFugacity[i] - Math.log(P0)));
@@ -286,6 +308,7 @@ export function activityPhaseMethods(ctx) {
           h += z[i] * hl.h;
           if (hl.note) notes.push(hl.note);
         }
+        if (dimers[i]) lnPhiSat = Math.log(monomerPressure(ps[i], dimerK(dimers[i], T)) / ps[i]);
         lnf[i] = Math.log(z[i] * g[i] * ps[i]) + lnPhiSat + poy;
       }
       const e = hE(z, T);

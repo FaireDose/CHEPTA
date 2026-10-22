@@ -25,14 +25,14 @@
  * A formation record is for one state (src/data/components.json: the ideal gas for ChemSep's, the liquid or the
  * crystal for the measured ones, docs/DATA_RULES.md section 11). It is taken to the reaction's standard state by
  * these paths, each stated in the result:
- *   ideal gas -> pure liquid:  G_L = G_IG + RT ln(phi_sat psat / P°), and
- *       H_L(T) = H_IG(T0) + h_R,sat(T0) - ΔHvap(T0) + integral from T0 to T of cp_L, the liquid-heat-capacity basis of
- *       the mixture enthalpies (src/thermo/enthalpy.js); phi_sat and h_R,sat of the saturated vapour from
- *       Peng-Robinson where the component has critical constants, else 1 and 0 (as src/thermo/pure.js does); the
- *       Poynting factor is neglected. A dimerizing acid (acetic acid; src/thermo/vapour.js) has a saturated vapour of
- *       monomers and dimers: its formation record is the ideal-gas monomer, so f_sat = p_monomer, and
- *       h_R,sat = y_D ΔH_dim / (y_M + 2 y_D) per mole of acid, ΔH_dim = -R ln(10) B from the van 't Hoff slope of
- *       its dimerization constant log10 K = A + B/T;
+ *   ideal gas -> pure liquid:  G_L = G_IG + RT ln(f_L / P°) and H_L = H_IG(T0) + h_L(T), with f_L and h_L of the
+ *       pure liquid from the mixture enthalpies (src/thermo/enthalpy.js; a one-component system with the ideal-gas
+ *       vapour): f_L = psat, and h_L on the liquid-heat-capacity basis, h_L(Ta) = h_IG(Ta) - ΔHvap(Ta) at Ta =
+ *       298.15 K or where the liquid's records start (a solid at 298.15 K: adipic, benzoic, stearic acid), then the
+ *       integral of cp_L. The Poynting factor is neglected. A dimerizing acid (acetic acid; src/thermo/vapour.js) has a
+ *       saturated vapour of monomers and dimers: its formation record is the ideal-gas monomer, so f_L is the
+ *       monomer's saturation pressure, and h_L(Ta) adds the dimers' enthalpy y_D ΔH_dim / (y_M + 2 y_D) per mole of
+ *       acid, ΔH_dim = -R ln(10) B from the van 't Hoff slope of its dimerization constant log10 K = A + B/T;
  *   pure liquid -> ideal gas:  the same equation the other way;
  *   crystal -> pure liquid:  H_L(T0) = H_S(T0) + ΔHfus, G_L(T0) = G_S(T0) + ΔHfus (1 - T0/Tm), with the melting data
  *       of the component; the difference of the heat capacities of liquid and crystal is neglected.
@@ -41,9 +41,8 @@ import { pure } from "../thermo/pure.js";
 import { componentRecord, findComponent } from "../thermo/components.js";
 import { checkUserData } from "../thermo/user-data.js";
 import { parseFormula } from "../thermo/formula.js";
-import { cubicEos } from "../thermo/eos/cubic.js";
-import { hasCritical } from "../thermo/critical.js";
-import { dimerK, monomerPressure } from "../thermo/vapour.js";
+import { dimerEnthalpy } from "../thermo/vapour.js";
+import { createSystem } from "../thermo/system.js";
 import { fail } from "../util/errors.js";
 import { checkRate } from "./kinetics.js";
 
@@ -183,7 +182,10 @@ function integrate(f, a, b) {
 
 /**
  * One species in a standard state: H(T) and G(T) on the formation basis (J/mol), with the path from its formation
- * record. G is null when the record has no Gibbs energy of formation.
+ * record. G is null when the record has no Gibbs energy of formation. The pure liquid's enthalpy and fugacity are
+ * those of the mixture enthalpies (src/thermo/enthalpy.js, a one-component system with the ideal-gas vapour), so
+ * that reactions and flowsheet energy balances share one basis: the liquid-heat-capacity basis, anchored at
+ * 298.15 K or where the liquid's records start, with the dimers of a dimerizing acid's vapour.
  */
 function speciesState(id, state, ud) {
   const c = componentRecord(id, ud);
@@ -193,32 +195,19 @@ function speciesState(id, state, ud) {
     throw fail("MISSING_DATA", `${c.name} has no open enthalpy of formation (searched: ${(f?.searched ?? []).join("; ") || "-"}), so the heat of reaction and K cannot be computed from formation data. Give K as a correlation, or use a conversion or yield reactor with a given duty.`);
   }
   const notes = [];
-  let pr = null;
-  const eos = () => pr ?? (pr = cubicEos("PR", [{ name: c.name, Tc_K: c.Tc_K, Pc_Pa: c.Pc_Pa, omega: c.omega }]));
-  // the saturated vapour against the ideal gas of the record: ln(f_sat / psat) and the residual enthalpy h_R,sat.
-  // A dimerizing acid (vapour.js, chemical theory): the monomer is the ideal gas of the formation record, so
-  // f_sat = p_monomer and h_R,sat = y_dimer ΔH_dim / (y_monomer + 2 y_dimer) per mole of acid, with ΔH_dim from the
-  // temperature dependence of the dimerization constant, log10 K = A + B/T: ΔH_dim = -R ln(10) B (van 't Hoff).
-  // Otherwise Peng-Robinson where the component has critical constants, else the ideal gas (0 and 0).
-  const assoc = c.association?.type === "dimer" ? c.association : null;
-  const dHdim = assoc ? -R * Math.LN10 * assoc.log10K.B : 0;
-  const satVapour = T => {
-    const ps = p.psat(T);
-    if (assoc) {
-      const y1 = monomerPressure(ps, dimerK(assoc, T)) / ps, y2 = 1 - y1;
-      return { lnF: Math.log(y1), hR: y2 * dHdim / (y1 + 2 * y2) };
-    }
-    if (!hasCritical(c)) return { lnF: 0, hR: 0 };
-    const st = eos().state(T, ps, [1], "vapour");
-    return { lnF: st.lnPhi[0], hR: st.hR_J_mol };
+  let liq = null;
+  const liquid = () => liq ?? (liq = createSystem({ components: [id], model: "ideal", userData: ud }));
+  /** the pure liquid at T: its enthalpy (ideal gas at T0 = 0) and ln(f / P°) */
+  const L = T => {
+    const ph = liquid().phase("liquid", T, P_STANDARD_KPA, [1]);
+    return { h: ph.h_J_mol, lnf: ph.lnFugacity[0] - Math.log(P_STANDARD_KPA) };
   };
-  const satNote = () => (assoc
-    ? `vapour pressure; the saturated vapour as monomers and dimers (chemical theory, ${c.association.source}), the monomer being the ideal gas of the formation record, with the dimerization enthalpy ${(dHdim / 1000).toFixed(1)} kJ/mol from the temperature dependence of K`
-    : `vapour pressure${hasCritical(c) ? ", Peng-Robinson fugacity coefficient" : ""}`);
-  // the liquid enthalpy on the liquid-heat-capacity basis of the mixtures (src/thermo/enthalpy.js):
-  // h_L(T) = h_L(T0) + integral from T0 to T of cp_L; h_L(T0) = h_R,sat(T0) - ΔHvap(T0) from the ideal gas
-  const cpL = T => integrate(t => p.property("liquidHeatCapacity", t), T0, T);
-  const hL0 = () => satVapour(T0).hR - p.property("heatOfVaporization", T0);
+  const pathNote = () => {
+    const dimer = c.association?.type === "dimer";
+    return dimer
+      ? `vapour pressure; the saturated vapour as monomers and dimers (chemical theory, ${c.association.source}), the monomer being the ideal gas of the formation record, with the dimerization enthalpy ${(dimerEnthalpy(c.association) / 1000).toFixed(1)} kJ/mol from the temperature dependence of K`
+      : "vapour pressure; ideal-gas vapour";
+  };
   const needPsat = () => {
     if (c.class === "nonvolatile") throw fail("MISSING_DATA", `${c.name} is nonvolatile in CHEPTA (no vapour pressure), so its formation record for the ${f.state} cannot be taken to the ${state === "vapour" ? "ideal gas" : "pure liquid"}.`);
   };
@@ -232,32 +221,34 @@ function speciesState(id, state, ud) {
     notes.push(`${c.name}: crystal to liquid at 298.15 K with ΔHfus ${(fu.Hfus_J_mol / 1000).toFixed(2)} kJ/mol at Tm ${fu.Tm_K} K (heat capacities of liquid and crystal taken equal)`);
     from = "liquid";
   }
+  const gh = H => (G0 === null ? null : T => T * (G0 / T0 - integrate(t => H(t) / (t * t), T0, T)));
   if (from === "ideal gas") {
-    const hIG = T => p.hIdealGas(T);
-    const H = T => H0 + hIG(T);
-    const Gig = G0 === null ? null : T => T * (G0 / T0 - integrate(t => H(t) / (t * t), T0, T));
+    const H = T => H0 + p.hIdealGas(T);
+    const Gig = gh(H);
     if (state === "vapour") return { H, G: Gig, notes, record: f.state };
     needPsat();
-    notes.push(`${c.name}: ideal gas to pure liquid through the saturated vapour (${satNote()}; Poynting factor neglected)`);
-    const h0 = hL0();
-    return {
-      H: T => H0 + h0 + cpL(T),
-      G: Gig && (T => Gig(T) + R * T * (Math.log(p.psat(T) / P_STANDARD_KPA) + satVapour(T).lnF)),
-      notes, record: f.state,
-    };
+    notes.push(`${c.name}: ideal gas to pure liquid through the saturated vapour (${pathNote()}; Poynting factor neglected)`);
+    return { H: T => H0 + L(T).h, G: Gig && (T => Gig(T) + R * T * L(T).lnf), notes, record: f.state };
   }
-  // the liquid at T0
-  const HL = T => H0 + cpL(T);
-  const GL = G0 === null ? null : T => T * (G0 / T0 - integrate(t => HL(t) / (t * t), T0, T));
+  // the liquid at T0: its enthalpy follows the liquid's records from there
+  const hL0 = L(T0).h;
+  const HL = T => H0 + L(T).h - hL0;
+  const GL = gh(HL);
   if (state === "liquid") return { H: HL, G: GL, notes, record: f.state };
   needPsat();
-  notes.push(`${c.name}: pure liquid to ideal gas through the saturated vapour (${satNote()}; Poynting factor neglected)`);
-  const h0 = hL0();
-  return {
-    H: T => H0 - h0 + p.hIdealGas(T),
-    G: GL && (T => GL(T) - R * T * (Math.log(p.psat(T) / P_STANDARD_KPA) + satVapour(T).lnF)),
-    notes, record: f.state,
-  };
+  notes.push(`${c.name}: pure liquid to ideal gas through the saturated vapour (${pathNote()}; Poynting factor neglected)`);
+  return { H: T => H0 - hL0 + p.hIdealGas(T), G: GL && (T => GL(T) - R * T * L(T).lnf), notes, record: f.state };
+}
+
+/** A species' H and G that name the species and its standard state when a record refuses (out of range). */
+function withContext(s, name, state) {
+  const wrap = f => f && (T => {
+    try { return f(T); } catch (e) {
+      e.message = `${name}, ${state === "vapour" ? "ideal gas" : "pure liquid"} at ${T.toFixed(2)} K: ${e.message}`;
+      throw e;
+    }
+  });
+  return { ...s, H: wrap(s.H), G: wrap(s.G) };
 }
 
 /** The temperature ranges of the records a species' standard state uses, for the warnings. */
@@ -291,7 +282,7 @@ export function reactionProperties(reaction, T_K, opts = {}) {
   let dH = 0, dG = 0, haveG = true, formationError = null;
   try {
     for (const [id, nu] of Object.entries(r.stoichiometry)) {
-      const s = speciesState(id, state, ud);
+      const s = withContext(speciesState(id, state, ud), componentRecord(id, ud).name, state);
       const H = s.H(T_K), G = s.G ? s.G(T_K) : null;
       dH += nu * H;
       if (G === null) haveG = false; else dG += nu * G;
@@ -326,6 +317,22 @@ export function reactionProperties(reaction, T_K, opts = {}) {
     out.K = Math.exp(out.lnK);
   }
   return out;
+}
+
+/**
+ * One species in a reaction's standard state at T: H and G on the formation basis (J/mol; G null without a Gibbs
+ * energy of formation), the record's state and the path taken (notes). Throws with the reason where there is no path.
+ * @param {string} key  component
+ * @param {"vapour"|"liquid"} phase
+ */
+export function speciesProperties(key, phase, T_K, opts = {}) {
+  const ud = checkUserData(opts.userData);
+  const id = findComponent(key, ud);
+  const state = PHASES[String(phase ?? "").toLowerCase()];
+  if (!state) throw fail("BAD_INPUT", `The phase must be "vapour" or "liquid", found ${JSON.stringify(phase)}.`);
+  const s = withContext(speciesState(id, state, ud), componentRecord(id, ud).name, state);
+  return { id, phase: state, standardState: STANDARD_STATE[state], T_K, record: s.record, H_J_mol: s.H(T_K), G_J_mol: s.G ? s.G(T_K) : null,
+    notes: s.notes, warnings: rangeWarnings(id, state, T_K, ud) };
 }
 
 /** The equilibrium constant of a checked reaction at T, or a MISSING_DATA error that says why there is none. */

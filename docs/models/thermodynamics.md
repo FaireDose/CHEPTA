@@ -60,7 +60,12 @@ components, or an activity model above 1000 kPa
     record. The header compares this with thermo's convention.
   - Reference: thermo `GibbsExcessLiquid`, equilibrium basis "Poynting&PhiSat".
 - **Dimerizing acids** ([vapour.js](../../src/thermo/vapour.js)): the chemical theory. Monomers and
-  dimers are in equilibrium in the vapour, p_A2 = K p_A². Cross-dimers are not modelled.
+  dimers are in equilibrium in the vapour, p_A2 = K p_A². Cross-dimers are not modelled. The enthalpy of
+  dimerization, ΔH = −R ln10 · B (−60.6 kJ/mol for acetic acid), comes from the temperature dependence of
+  log10 K = A + B/T (van 't Hoff). The vapour's enthalpy adds ξ ΔH for the ξ dimers per mole, and the liquid's
+  anchor uses the dimers of the pure acid's saturated vapour. With the liquid on its heat-capacity basis, the pure
+  acid's h_V − h_L is ChemSep's ΔHvap at 298.15 K and 8.7 % below it at the normal boiling point (21.4 against
+  23.5 kJ/mol): ChemSep's records and the dimerization constant are not fully consistent there.
 - **Parameters**: [src/data/binaries.json](../../src/data/binaries.json), each pair with a tier
   (fitted, databank, user) and its sources. Pairs that are still missing are listed in
   [../DATA_WANTED.md](../DATA_WANTED.md).
@@ -116,11 +121,13 @@ library documentation:
 298.15 K, with h = 0.
 
 - **Activity models:**
-  - vapour: Σ y_i h_IG,i + h_R;
+  - vapour: Σ y_i h_IG,i + h_R, plus ξ ΔH_dim for a dimerizing acid;
   - liquid: Σ x_i h_L,i + h^E, with the pure liquid on the liquid heat-capacity basis (the
-    decision in pull request #34) and h^E from Gibbs–Helmholtz.
+    decision in pull request #34) and h^E from Gibbs–Helmholtz. The pure liquid is anchored at 298.15 K, or, for a
+    liquid whose records start above it (a solid at 25 °C: adipic, benzoic, stearic acid), where they start:
+    h_L(Ta) = h_IG(Ta) + h_R,sat(Ta) − ΔHvap(Ta), then the integral of cp_L;
 - **Equations of state:** Σ z_i h_IG,i + h_R(T, P, z), for either phase.
-- **Limits:** the header states them, including dimerizing acids and the end of the cp_L records.
+- **Limits:** the header states them, including the end of the cp_L records.
 
 ## Mixture entropy
 

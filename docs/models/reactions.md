@@ -63,8 +63,8 @@ result says which one it used (`notes`):
 
 | Record | Standard state | Path |
 |---|---|---|
-| ideal gas | pure liquid | G_L = G_IG + RT ln(φ_sat psat/P°). H_L(T) = H_IG(T0) + h_R,sat(T0) − ΔHvap(T0) + ∫ cp_L, the liquid basis of the mixture enthalpies. φ_sat and h_R,sat come from Peng–Robinson where the component has critical constants. The Poynting factor is neglected. |
-| ideal gas (a dimerizing acid: acetic acid) | pure liquid | The record is the ideal-gas monomer; the saturated vapour is monomers and dimers (the chemical theory of `src/thermo/vapour.js`). So f_sat = p_monomer, and h_R,sat = y_D ΔH_dim/(y_M + 2 y_D) per mole of acid. ΔH_dim = −R ln10 · B = −60.6 kJ/mol comes from the temperature dependence of the dimerization constant log10 K = A + B/T (van 't Hoff). |
+| ideal gas | pure liquid | G_L = G_IG + RT ln(f_L/P°) and H_L = H_IG(T0) + h_L(T). f_L and h_L are those of the mixture enthalpies, from a one-component system with the ideal-gas vapour, so reactions and flowsheets share one basis. f_L = psat. h_L is on the liquid-heat-capacity basis, anchored at 298.15 K, or where the liquid's records start for a solid at 25 °C (adipic, benzoic, stearic acid). The Poynting factor is neglected. |
+| ideal gas (a dimerizing acid: acetic acid) | pure liquid | The record is the ideal-gas monomer, and the saturated vapour is monomers and dimers (the chemical theory of `src/thermo/vapour.js`). So f_L = the monomer's saturation pressure, and the liquid's anchor adds the dimers' enthalpy, y_D ΔH_dim/(y_M + 2 y_D) per mole of acid. ΔH_dim = −R ln10 · B = −60.6 kJ/mol comes from the temperature dependence of the dimerization constant log10 K = A + B/T (van 't Hoff). |
 | liquid | ideal gas | the same equation the other way |
 | crystal | pure liquid | H_L = H_S + ΔHfus and G_L = G_S + ΔHfus (1 − T0/Tm) at 298.15 K, with the component's melting data. The heat capacities of liquid and crystal are taken as equal. |
 
@@ -84,6 +84,8 @@ Checked against `validation/python/reference_reactions.py`:
   the reverse water-gas shift, ethanol dehydration and ammonia synthesis.
 - Liquid reactions, against the scipy route: ln K within 1e-6. The reactions are diethyl ether from ethanol, glucose
   to fructose from their crystal records, and ethyl acetate esterification with acetic acid.
+- Other acids that dimerize (formic, propionic, acrylic) have no dimerization constant in CHEPTA yet, so their liquid
+  values are 11–26 kJ/mol off the WebBook ([the decision](../decisions/2026-10-22-05-reactions.md)).
 - The liquid values the paths give, against measured liquid values of the NIST WebBook: within 2 kJ/mol in ΔfH° and
   ΔfG° for acetic acid, ethanol, ethyl acetate and water at 298.15 K
   (`validation/data/reactions/liquid_formation_webbook.json`). For acetic acid the dimer path gives −482.9 kJ/mol
