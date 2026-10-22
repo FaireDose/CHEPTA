@@ -39,12 +39,14 @@ jobs:
       id-token: write    # for npm trusted publishing and provenance
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      # no registry-url: it writes an .npmrc that logs in with NODE_AUTH_TOKEN, the old token path;
+      # trusted publishing logs in by OpenID Connect and needs no .npmrc (npm's default registry)
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org
-      # staged publishing needs npm 11.15.0 or newer; npm 11 runs on Node 22
+      # staged publishing needs npm 11.15.0 or newer; trusted publishing npm 11.5.1 and Node 22.14.0
       - run: npm install -g npm@11
+      - run: node --version && npm --version
       - run: npm ci
       # A release must carry the version in package.json, and npm never accepts a version
       # twice: stop early with a clear message instead of an npm error.
@@ -62,21 +64,12 @@ jobs:
             exit 1
           fi
       # Trusted publishing: npm checks this workflow by OpenID Connect; no token is used, and the version
-      # is staged for approval on npmjs.com. Exception, the first upload of a new package name: npm adds a
-      # trusted publisher only to a package that exists, so that one upload uses an NPM_TOKEN secret (a
-      # granular token with write access, a day's expiry). It is staged too: npm no longer accepts direct
-      # publishing with a token ("restricting npm bypass-2FA granular access tokens", GitHub changelog
-      # 2026-07-31), and staging creates a new package since 2026-10-02 ("npm staged publishing now
-      # supports creating new packages"). Approve it on npmjs.com, delete the secret and the token, then
-      # add this workflow as the package's trusted publisher.
+      # is staged for approval on npmjs.com. The trusted publisher on npmjs.com (chepta > Settings) names
+      # FaireDose, CHEPTA and publish.yml, exactly. The first upload of the package (0.3.0) used a one-day
+      # token instead, because npm adds a trusted publisher only to a package that exists; that token and
+      # its secret are deleted. --loglevel verbose: a failed OpenID Connect login says why in the log.
       - name: Stage the version on npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ -n "$NODE_AUTH_TOKEN" ]; then
-            echo "::warning::NPM_TOKEN is set: first upload with a token. Approve the staged version on npmjs.com, then delete the secret and the token."
-          fi
-          npm stage publish --provenance --access public
+        run: npm stage publish --provenance --access public --loglevel verbose
 
   skills:
     needs: verify
