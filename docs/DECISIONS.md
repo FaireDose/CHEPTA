@@ -18,7 +18,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   crystal energies of combustion disagree by about 100 kJ/mol); five records are uncertain (the values disagree by more
   than 10 kJ/mol: 2-methoxyethanol, 1,3-propanediol, limonene, gamma-butyrolactone, levoglucosan); 22 components have no
   open data. Compare the transcribed values with their sources.
-- **Values the maintainer adds** (2026-10-21; [MISSING_PROPERTIES_2026-10-21.md](MISSING_PROPERTIES_2026-10-21.md)):
+- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-22.md](MISSING_PROPERTIES_2026-10-22.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
 - **The Library rule "Best available"** (2026-10-17): it is each pair's default set, which is not the best for every
@@ -236,6 +236,9 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
 - **No two liquids with a plain cubic equation (2026-10-09):** if nobody uses it, Fugacity
   doesn't either.
 - **Data:**
+  - The list of missing properties is a new dated file at every update, `docs/MISSING_PROPERTIES_<date>.md`, made by
+    `validation/python/missing_properties.py`; the earlier files stay, so the gaps can be followed over time
+    (2026-10-22; DATA_RULES section 12).
   - Good data and fits for everything. When ChemSep lacks something, go on to the NIST WebBook,
     the ThermoML Archive and other open sources (2026-10-06).
   - Known deviations go in the engineering report rather than being hidden (for example
