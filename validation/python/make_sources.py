@@ -268,6 +268,19 @@ SEEDS = {
         "license": "Copyright AIP for NIST; free to read",
         "note": "Group parameters transcribed from the page images into validation/data/gc/ruzicka_domalski_1993.json; tier predicted.",
     },
+    # the dimerization constant of formic acid (validation/python/dimerization.py)
+    "chao-zwolinski-1978": {
+        "title": "Ideal gas thermodynamic properties of methanoic and ethanoic acids",
+        "authors": "J. Chao, B. J. Zwolinski",
+        "year": 1978,
+        "published": "J. Phys. Chem. Ref. Data 7 (1978) 363-377",
+        "doi": "10.1063/1.555571",
+        "kind": "open-access article",
+        "url": "https://srd.nist.gov/jpcrdreprint/1.555571.pdf",
+        "access": "Free to read: reprint hosted by NIST (Standard Reference Data)",
+        "license": "Copyright AIP for NIST; free to read",
+        "note": "Dimerization constants of formic acid, Table 8, transcribed into validation/data/association/formic-acid_chao1978.json; matched by the authors to the measured vapour densities of Coolidge (1928).",
+    },
     # src/data/henry.json (ethylene); src/data/LICENSES.md
     "sander2023-henry": {
         "title": "Compilation of Henry's law constants (version 5.0.0) for water as solvent",
@@ -425,6 +438,7 @@ def text_rules(val):
         (r"Wikipedia 'Azeotrope tables'|Azeotrope tables, Wikipedia", "wikipedia-azeotrope-tables"),
         (r"Wikipedia ethylene glycol data page", "wikipedia-ethylene-glycol-data"),
         (r"Ruzicka and Domalski 1993", "ruzicka-domalski-1993"),
+        (r"J\. Chao, B\. J\. Zwolinski", "chao-zwolinski-1978"),
     ]
     for sid, entry, rel in val:
         if entry is None:

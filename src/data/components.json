@@ -25616,6 +25616,23 @@
         "source_ids": [
           "chemsep-8.31-2"
         ]
+      },
+      "association": {
+        "type": "dimer",
+        "log10K": {
+          "A": -11.4026,
+          "B": 3301.7
+        },
+        "K_unit": "1/mmHg",
+        "T_range_K": [
+          298.15,
+          600.0
+        ],
+        "source": "J. Chao, B. J. Zwolinski, Ideal gas thermodynamic properties of methanoic and ethanoic acids, J. Phys. Chem. Ref. Data 7 (1978) 363-377, Table 8 (equilibrium constants K_eq, 1/atm), p. 369; Table 5 (reported enthalpies of dimerization), p. 368 (open copy: https://srd.nist.gov/jpcrdreprint/1.555571.pdf); log10 K = A + B/T fitted to 5 values at 298.15-600.00 K, largest deviation 2.9 %; dimerization enthalpy -R ln(10) B = -63.2 kJ/mol. The constants come from the authors' statistical-thermodynamic tables for monomer and dimer, with the enthalpy of dimerization (-15.25 kcal/mol at 298.15 K, uncertainty 0.15 kcal/mol, p. 374) chosen so that they reproduce the measured vapour densities of Coolidge (1928). Table 5 lists the measured values: P-V-T (vapour density) by Coolidge 1928 (283-429 K), Halford 1942, Taylor and Bruton 1952 (323-423 K) and Barton and Hsu 1969, and spectroscopic values.",
+        "file": "validation/data/association/formic-acid_chao1978.json",
+        "source_ids": [
+          "chao-zwolinski-1978"
+        ]
       }
     },
     "propionic-acid": {

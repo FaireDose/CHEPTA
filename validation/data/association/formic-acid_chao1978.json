@@ -1,0 +1,44 @@
+{
+  "component": "formic-acid",
+  "kind": "dimerization-constant",
+  "reaction": "2 HCOOH(g) = (HCOOH)2(g), ideal gas",
+  "source": {
+    "citation": "J. Chao, B. J. Zwolinski, Ideal gas thermodynamic properties of methanoic and ethanoic acids, J. Phys. Chem. Ref. Data 7 (1978) 363-377",
+    "doi": "10.1063/1.555571",
+    "open_copy": "https://srd.nist.gov/jpcrdreprint/1.555571.pdf",
+    "access": "Free NIST reprint of J. Phys. Chem. Ref. Data (NIST Standard Reference Data)",
+    "tables": "Table 8 (equilibrium constants K_eq, 1/atm), p. 369; Table 5 (reported enthalpies of dimerization), p. 368"
+  },
+  "basis": "The constants come from the authors' statistical-thermodynamic tables for monomer and dimer, with the enthalpy of dimerization (-15.25 kcal/mol at 298.15 K, uncertainty 0.15 kcal/mol, p. 374) chosen so that they reproduce the measured vapour densities of Coolidge (1928). Table 5 lists the measured values: P-V-T (vapour density) by Coolidge 1928 (283-429 K), Halford 1942, Taylor and Bruton 1952 (323-423 K) and Barton and Hsu 1969, and spectroscopic values.",
+  "check": "Each K_eq agrees with the table's own dimer mole fractions at 1 atm, y_D / (1 - y_D)^2 (for example 400 K: 0.276 / 0.724^2 = 0.527 against 0.525).",
+  "columns": [
+    "T_K",
+    "K_atm-1"
+  ],
+  "rows": [
+    [
+      298.15,
+      360.0
+    ],
+    [
+      300,
+      307.0
+    ],
+    [
+      400,
+      0.525
+    ],
+    [
+      500,
+      0.0119
+    ],
+    [
+      600,
+      0.000982
+    ]
+  ],
+  "notes": "Transcribed from the page image of Table 8; the rows at 100, 200, 700 and 800 K (6.33e24, 1.15e8, 1.68e-4, 4.51e-5) are outside the range fitted. The person compares each value with the table.",
+  "source_ids": [
+    "chao-zwolinski-1978"
+  ]
+}
