@@ -10,8 +10,8 @@ import { system, pure, listComponents, checkUserData } from "../src/index.js";
 import { atomBalance } from "../src/thermo/formula.js";
 
 const comps = JSON.parse(readFileSync(new URL("../src/data/components.json", import.meta.url))).components;
-const NO_VP = ["solketal", "angelica-lactone", "lactide", "isosorbide", "levoglucosan", "dimethyl-fdca", "bhmf",
-  "levoglucosenone", "emf"];
+// (levoglucosenone left this list on 2026-10-22: Baird et al. 2019, open access, measured its vapour pressure)
+const NO_VP = ["solketal", "angelica-lactone", "lactide", "isosorbide", "levoglucosan", "dimethyl-fdca", "bhmf", "emf"];
 
 test("the components without an open vapour pressure are liquids for the activity models, with the sources searched", () => {
   const listed = listComponents().filter(c => c.noVapourPressure).map(c => c.id).sort();
@@ -27,6 +27,9 @@ test("the components without an open vapour pressure are liquids for the activit
   }
   // glycerol carbonate was held too, but the ThermoML Archive has its liquid vapour pressures ("glycerine carbonate")
   assert.equal(comps["glycerol-carbonate"].vapourPressure.tier, "fitted");
+  // and levoglucosenone's are in an open-access article (Baird et al., Int. J. Thermophys. 40 (2019) 102, Table 19)
+  assert.equal(comps.levoglucosenone.vapourPressure.tier, "fitted");
+  assert.match(comps.levoglucosenone.vapourPressure.source, /Baird et al\., Int\. J\. Thermophys\. 40 \(2019\) 102/);
 });
 
 test("activity coefficients work, and what needs a vapour pressure refuses with the reason", () => {

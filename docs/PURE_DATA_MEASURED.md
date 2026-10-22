@@ -888,14 +888,15 @@ Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 
 ## Levoglucosenone (C6H6O3, CAS 37112-31-5)
 
 - No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 126.1100 g/mol
-- Constants: Formula, structure and CAS: PubChem CID 699486 (Levoglucosenone), https://pubchem.ncbi.nlm.nih.gov/compound/699486; MW from the formula (chemicals library, MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+- Constants: Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-20 and 2026-10-22)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009). Tb: not reached, the measured vapour pressures stay below 101.325 kPa.
 
 | Property | Range (K) | Values used | Left out | Max deviation | Sources |
 |---|---|---|---|---|---|
-| liquidDensity | — | — | — | — | no open data |
+| Vapour pressure | 298.26-403.30 | 12 | 0 | 20 % | ThermoML, WebBook |
+| liquidDensity | 293.15-363.15 | 7 | 0 | 0.0027 % | Measured densities of the liquid at 0.1 MPa (an article outside the archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
 | liquidHeatCapacity | — | — | — | — | no open data |
-| heatOfVaporization | — | — | — | — | no open data (needs the vapour pressure (Clapeyron) or calorimetric values over a range) |
+| heatOfVaporization | 298.26-403.30 | 25 | 0 | 0.0001 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data |
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |

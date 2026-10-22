@@ -254,7 +254,8 @@
       "url": "https://link.springer.com/content/pdf/10.1007/s10765-019-2570-9.pdf",
       "access": "Open access, CC BY 4.0 (Springer); data also deposited at the Open Science Framework (doi:10.31219/osf.io/vbqrn)",
       "files": [
-        "validation/data/pure/measured/article_cyrene_ijt2019.json"
+        "validation/data/pure/measured/article_cyrene_ijt2019.json",
+        "validation/data/pure/measured/article_levoglucosenone_ijt2019.json"
       ]
     },
     "belabbaci2009-mea-water": {

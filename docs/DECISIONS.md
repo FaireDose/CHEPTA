@@ -30,6 +30,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-22.md](MISSING_PROPERTIES_2026-10-22.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
+- **Missing properties, round 3** (docs/decisions/2026-10-22-07-missing-round3.md): levoglucosenone's vapour
+  pressure and density from Baird et al. 2019 (open access); compare the transcribed values. Supplier pages to
+  download: glycerol carbonate and 5-(ethoxymethyl)furfural liquid densities.
 - **The Library rule "Best available"** (2026-10-17): it is each pair's default set, which is not the best for every
   use (ethanol + water: the default follows the 1 atm T-x-y data, the "-etal" set the excess enthalpies). Rename it,
   for example "Default sets (fitted to data where there are any)"? One model for the whole project (diagrams and

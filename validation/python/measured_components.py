@@ -648,12 +648,18 @@ COMPONENTS = {
         "no_vapour_pressure": 'not a WebBook compound with phase-change data; nothing in the ThermoML Archive',
     },
     "levoglucosenone": {
-        "class": "no_vapour_pressure",
+        # until 2026-10-22 without a vapour pressure ("no_vapour_pressure"); then the vapour pressures and densities
+        # of Baird et al. (Int. J. Thermophys. 40 (2019) 102, open access, already used for cyrene) were found
+        # (article_levoglucosenone_ijt2019.json; the maintainer, 2026-10-22: look in the modelling papers too)
         "name": 'Levoglucosenone', "cas": '37112-31-5', "webbook": 'C37112315', "proposal": "proposal 0009",
         "aliases": ['lgo', '6,8-dioxabicyclo[3.2.1]oct-2-en-4-one'],
         "thermoml_queries": ['levoglucosenone', '6,8-dioxabicyclo[3.2.1]oct-2-en-4-one'],
-        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
-        "no_vapour_pressure": 'no phase-change data on the WebBook; nothing in the ThermoML Archive',
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20 and 2026-10-22)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric enthalpy of vaporization in the open sources",
+        "cp0": None,
     },
     "emf": {
         "class": "no_vapour_pressure",
