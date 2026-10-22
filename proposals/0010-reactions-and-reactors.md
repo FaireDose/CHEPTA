@@ -1,6 +1,6 @@
 # 0010: Reactions and reactors: one reaction description, five reactor blocks
 
-- **Status:** Draft
+- **Status:** Accepted (the maintainer, 2026-10-22, with the changes of "The maintainer's answers" below)
 - **Author(s):** CHEPTA maintainers (drafted with an AI assistant)
 - **Discussion:** this pull request
 - **Roadmap item:** core track A13 (reactions), data track D8 (formation data of the
@@ -72,11 +72,25 @@ One JSON object per reaction, in the project or flowsheet file:
   ideal-gas heat capacities already in the databank (Gibbs–Helmholtz integration). Or a cited
   correlation `{ "lnK": { "A": …, "B": …, "C": … }, "T_K": [lo, hi], "source": … }`. The standard
   state (ideal gas at 1 bar, or pure liquid) is stated and checked against `phase`.
-- **Rate forms:** `power-law` (irreversible or reversible), `LHHW` (Langmuir–Hinshelwood–
-  Hougen–Watson: kinetic, driving-force and adsorption groups) and `expression` (user-written,
-  below). Basis: concentration, mole fraction, activity, or partial pressure / fugacity. The
-  reverse rate may be `from-equilibrium`, so the kinetics and K stay consistent. Rates per
-  reactor volume or per catalyst mass.
+- **Kinetics belong to the reaction** (the maintainer, 2026-10-22): they are written when the reaction is defined,
+  in the **Reactions** setup block (section 5), and every reactor that needs rates (CSTR, plug flow) takes them from
+  there. A reaction without kinetics can still be used in the conversion, yield, equilibrium and Gibbs reactors.
+- **Rate forms**, each with the rate constants following Arrhenius, k = k0 exp(−Ea/RT), optionally with
+  k0 = A·T^B (Rawlings and Ekerdt, 2nd ed., eqn 5.37, p. 204):
+
+  | `form` | Rate | Typical use | Rawlings and Ekerdt, 2nd ed. |
+  |---|---|---|---|
+  | `power-law` | r = k ∏ cj^αj: zero, first, second, n-th order, any order per species | homogeneous reactions, empirical fits | eqn 5.38, p. 204; simple rate laws, section 4.2.1, p. 111 |
+  | `power-law` with `reverse` | r = kf ∏ cj^αj − kr ∏ cj^βj; kr from K (`from-equilibrium`) or the user's own | reversible reactions (esterification) | eqn 5.38, p. 204 |
+  | `LHHW` (Hougen–Watson) | r = (kinetic factor)(driving force) / (1 + Σ Kj cj, with √(Kj cj) for dissociative adsorption)^n | heterogeneous catalysis | section 5.6, pp. 237-255; eqn 5.148, p. 251; dissociative adsorption, pp. 246-250; section 7.4.4, p. 376 |
+  | `michaelis-menten` | r = k cS / (1 + K cS) | enzymes | Exercise 9.15, p. 569 |
+  | `monod` | μ = μm S / (Ks + S), with substrate inhibition μm S / (Ks + S + K1 S²) or product inhibition | cell growth, fermentation | section 10.5 (nonsegregated fermentation model), p. 596 |
+  | `growth` | the Tessier, Moser, Contois and Blackman equations, as printed | cell growth | p. 596 |
+
+  Basis: concentration, mole fraction, activity, or partial pressure / fugacity. Rates per reactor volume or per
+  catalyst mass. The reverse rate may be `from-equilibrium`, so the kinetics and K stay consistent. Eley–Rideal and
+  Mars–van Krevelen rate forms are not in this book: they are added when an open source with their forms is found
+  (searched in step 2), and until then can be written as `expression` (section 4).
 - **Sources:** the user's own numbers (k0, Ea, orders, a K correlation, a conversion) are the
   user's responsibility. Each reaction has an optional `source` field, which the results and
   exports show next to the numbers, so a reader can see where a rate law came from. CHEPTA's
@@ -128,6 +142,14 @@ components with volatile ones: `test/nonvolatile.test.js`).
 | **Gibbs** | species allowed, T and P (or duty) | minimizes the total Gibbs energy with element balances (no reactions listed); the method of open equilibrium codes | ΔfG° of every species |
 | **CSTR / plug flow** | reactions with rates, volume or catalyst mass, T or duty (isothermal or adiabatic), P, number of phases | CSTR: algebraic balance solved by Newton; PFR: the ODEs integrated by a stiff, error-controlled method along the length | rates |
 
+**Equilibrium or Gibbs.** Both give the outlet that thermodynamics allows. The equilibrium reactor is given the
+reactions and solves each to its K: only the listed reactions happen, and a partial approach (a fraction of the
+extent, or an approach ΔT) is possible. The Gibbs reactor is given only the species that may appear and finds the
+composition of lowest total Gibbs energy with the elements balanced: every reaction among them is possible, and it is
+always full equilibrium (reformers, gasifiers, combustion; "how far can it go at most"). With the same species and
+enough independent reactions listed, the two agree: Rawlings and Ekerdt's algebraic and optimization approaches
+(section 3.5.1, p. 88; section 3.5.2, p. 92).
+
 All of them:
 
 - close the **element** balance to 1e-9 relative (the component balance no longer holds), and
@@ -140,7 +162,11 @@ All of them:
   a recycle loop with a purge is the classic case; the flowsheet suite (docs/FLOWSHEET_TESTS.md)
   gains reactive cases.
 
-### 4. User-written rates without `eval`
+### 4. User-written rates without `eval` (a later step)
+
+In the Reactions block, a **"Write your own kinetics"** button opens a text box where the user types the rate as a
+formula (the maintainer, 2026-10-22: "a button where you press and you get a text box and someone can code
+themselves a kinetics"). It comes after the built-in forms of section 1 (step 9):
 
 `{ "form": "expression", "rate": "k1 * a['acetic-acid'] * a['ethanol'] - k1 / K * a['ethyl-acetate'] * a['water']", "k1": { "k0": …, "Ea_J_mol": … } }`
 
@@ -153,10 +179,10 @@ character 12; known: C, x, p, f, a, T, P, K").
 
 ### 5. Views
 
-- A **Reactions** page in the flowsheet's Setup group (after Components and Method): a reaction
-  table with stoichiometry chips, balance check (✓ C H O), ΔrH°(298 K) and K(298 K) where
-  formation data exist (computed from the components, so the user sees at once whether a
-  reaction is exothermic and how far it can go), and the source the user gave.
+- A **Reactions** setup block next to Components and Method (the maintainer, 2026-10-22): a reaction table with
+  stoichiometry chips, balance check (✓ C H O), ΔrH°(298 K) and K(298 K) where formation data exist (computed from
+  the components, so the user sees at once whether a reaction is exothermic and how far it can go), the kinetics of
+  each reaction (a form of section 1 and its constants), and the source the user gave.
 - Reactor blocks in the Blocks group (the **Reactor** button is already there as "Coming
   later").
 - In the stream table: extents and conversions per reactor; a Q-stream for the duty, as for
@@ -222,8 +248,8 @@ character 12; known: C, x, p, f, a, T, P, K").
    and energy balances against hand calculations; a reactive recycle in the flowsheet suite.
 4. **Equilibrium reactor** (listed reactions), gas and liquid. Tests: Cantera (gas), Python
    reference (liquid with NRTL).
-5. **CSTR and plug flow** with power-law and LHHW rates. Tests: scipy and the Rawlings and
-   Ekerdt examples.
+5. **CSTR and plug flow** with the rate forms of section 1 (power law, reversible, LHHW, Michaelis–Menten, Monod and
+   the other growth laws). Tests: scipy and the Rawlings and Ekerdt examples.
 6. **Gibbs reactor.** Test: Cantera.
 7. **Reactions page and reactor views**, export and import of reaction lists, Excel export of conversion reactors
    (the concept model of the Excel export: extents as formulas).
@@ -233,3 +259,16 @@ character 12; known: C, x, p, f, a, T, P, K").
    formic acid in water, then a flash or a column; it needs a liquid heat capacity of levulinic acid, which has none
    open yet), defined in the test files with their sources and documented in docs/BENCHMARKS.md
    as worked examples a user can copy; not shipped as a library.
+9. **Your own kinetics**: the "Write your own kinetics" button and its text box (section 4), with the parser and its
+   error messages; Eley–Rideal and Mars–van Krevelen as built-in forms if an open source with their forms was found.
+
+## The maintainer's answers (2026-10-22)
+
+- Sections 1 and 2 (the reaction description; the formation properties): accepted as written.
+- Equilibrium and Gibbs reactors: kept, both (the difference is in section 3).
+- Kinetics are defined with the reaction, in a Reactions setup block next to Components and the thermodynamic
+  method; "the kinetics can be 3-6 or even more types of kinetics ... from zero order, 1 order, to heterogeneous type
+  of kinetics like LHHW and similar": the forms of section 1.
+- User-written kinetics later, as a button that opens a text box (section 4, step 9).
+- Rawlings and Ekerdt's book (full text free to read on the authors' site, copyrighted, not openly licensed) is used
+  for equation forms and worked examples, not for data.

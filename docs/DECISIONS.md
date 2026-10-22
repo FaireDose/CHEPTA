@@ -21,9 +21,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   use (ethanol + water: the default follows the 1 atm T-x-y data, the "-etal" set the excess enthalpies). Rename it,
   for example "Default sets (fitted to data where there are any)"? One model for the whole project (diagrams and
   flowsheet) was discussed as a proposal, not asked for now.
-- **Proposals 0010 and 0011:** merged in [#83](https://github.com/FaireDose/Fugacity/pull/83) with status
-  **Draft**. Accept or decline each one, then set its status in the file and in `proposals/README.md`. Proposal
-  0009 was accepted on 2026-10-11 (batch 1 in its pull request).
+- **Proposal 0011:** merged in [#83](https://github.com/FaireDose/Fugacity/pull/83) with status **Draft**. Accept
+  or decline it, then set its status in the file and in `proposals/README.md`. Proposal 0010 was accepted on
+  2026-10-22 (docs/decisions/2026-10-22-02-reactions-proposal.md), proposal 0009 on 2026-10-11.
 - **Make the new name official** (decided 2026-10-09: **CHEPTA**, *Chemical Engineering Process Tools
   for Agents*). In this order:
   1. GitHub: Settings → General → Repository name: `CHEPTA`. GitHub redirects the old links,
@@ -171,7 +171,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   8. Rating (done 2026-10-21, docs/decisions/2026-10-21-06-rating.md): the duty and outlets of a given area, U and
      arrangement, in the workspace (Design or Rating) and as the flowsheet block's A_m2;
   Then 0010.
-- **0010, reactions:**
+- **0010, reactions** (accepted 2026-10-22; kinetics defined with the reaction in a Reactions setup block; the
+  user's own kinetics in a text box later, step 9):
   1. formation data (ΔfH°, ΔfG°);
   2. the reaction description and its checks;
   3. conversion and yield reactors;
@@ -179,7 +180,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   5. CSTR and plug flow;
   6. Gibbs reactor;
   7. views;
-  8. benchmarks.
+  8. benchmarks;
+  9. the user's own kinetics (a text box).
 - **0012, your own data** (accepted 2026-10-16): property records, components, pairs and Modified UNIFAC 2.0 groups
   of the user's own, in the project and in a file of their own; My data docked, with an optional separate window:
   1. the engine overlay (done); 2. project format 3, the My data file, the contribution-package export (done); 3. the My data panel (done);
