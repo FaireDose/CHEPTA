@@ -104,6 +104,40 @@ def chemsep_record(cs, cas):
             "source_ids": [sid]}
 
 
+# ChemSep records replaced by the WebBook's measured gas values, by the maintainer's decision, each with the reason
+# (2026-10-22: formic acid; docs/decisions/2026-10-22-05-reactions.md)
+WEBBOOK_GAS_OVER_CHEMSEP = {
+    "formic-acid": "ChemSep's ideal-gas enthalpy of formation (-393.6 kJ/mol) is 15 kJ/mol below the measured gas values "
+                   "of the WebBook (Guthrie 1974, Lebedeva 1964, Sinke 1959), which Chao and Zwolinski (J. Phys. Chem. Ref. "
+                   "Data 7 (1978) 363) also take; with ChemSep's value and the dimers of the vapour, the liquid's enthalpy of "
+                   "formation would be 16.6 kJ/mol off the measured liquid values (the maintainer, 2026-10-22: the WebBook "
+                   "gas value)",
+}
+
+
+def webbook_gas_record(cid, c, cache, why):
+    """The ideal-gas formation record from the WebBook's measured gas values: the median ΔfH°(gas) of the rows, and
+    ΔfG° from the median S°(gas) with the CODATA entropies of the elements."""
+    rows = [r for r in webbook_rows(c["cas"], cache) if r["state"] == "gas"]
+    hs = sorted(r["value"] * 1000 for r in rows if r["quantity"] == "ΔfH°")
+    ss = sorted(r["value"] for r in rows if r["quantity"] == "S°")
+    if not hs or not ss:
+        raise SystemExit(f"{cid}: the WebBook page has no gas ΔfH° or S°")
+    med = lambda v: v[len(v) // 2] if len(v) % 2 else (v[len(v) // 2 - 1] + v[len(v) // 2]) / 2
+    H, S = med(hs), med(ss)
+    G = H - T_REF_K * (S - elements_entropy(formula(c["formula"])))
+    refs = "; ".join(f"ΔfH°gas {r['value']} kJ/mol, {r['reference']}" for r in rows if r["quantity"] == "ΔfH°")
+    sref = "; ".join(f"S°gas {r['value']} J/(mol K), {r['reference']}" for r in rows if r["quantity"] == "S°")
+    return {"state": "ideal gas", "T_K": T_REF_K, "Hf_ig_J_mol": round(H, 1), "Gf_ig_J_mol": round(G, 1), "tier": "databank",
+            "source": {"name": "Measured gas values: NIST Chemistry WebBook (SRD 69), in place of ChemSep's",
+                       "access": "Free to read online (WebBook, SRD 69); CODATA key values, open table",
+                       "reference": f"{refs}; {sref}",
+                       "selection": f"median of {len(hs)} ΔfH° values and of {len(ss)} S° value(s); ΔfG° = ΔfH° - T (S° - "
+                                    f"Σ S°(elements)), the elements' entropies the CODATA key values ({CODATA_URL})",
+                       "why": why},
+            "source_ids": ["nist-webbook", "codata-key-values"]}
+
+
 # ---------------------------------------------------------------------------------------
 # fetching: the WebBook page and the ThermoML Archive, stored as found
 
@@ -410,7 +444,12 @@ def main():
     out, n = {}, {"chemsep": 0, "measured": 0, "none": 0}
     for cid, c in comps.items():
         rec = chemsep_record(cs, c["cas"])
-        if rec is not None:
+        if rec is not None and cid in WEBBOOK_GAS_OVER_CHEMSEP:
+            rec = webbook_gas_record(cid, c, a.cache, WEBBOOK_GAS_OVER_CHEMSEP[cid])
+            print("%-26s WebBook gas values in place of ChemSep's: Hf %.1f kJ/mol, Gf %.1f kJ/mol"
+                  % (cid, rec["Hf_ig_J_mol"] / 1000, rec["Gf_ig_J_mol"] / 1000))
+            n["measured"] += 1
+        elif rec is not None:
             n["chemsep"] += 1
         else:
             rec, line = build_measured(cid, c, measured.get(cid, {}))

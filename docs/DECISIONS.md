@@ -18,8 +18,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   crystal energies of combustion disagree by about 100 kJ/mol); five records are uncertain (the values disagree by more
   than 10 kJ/mol: 2-methoxyethanol, 1,3-propanediol, limonene, gamma-butyrolactone, levoglucosan); 22 components have no
   open data. Compare the transcribed values with their sources.
-- **Proposal 0014** (Draft; docs/decisions/2026-10-22-08-skills-review.md): what CHEPTA could take from the K-Dense
-  scientific agent skills, five steps; accept or decline, or single steps. Nothing was added.
+- **Reactions, step 2** (proposal 0010; docs/decisions/2026-10-22-05-reactions.md): confirm the standard pressure of
+  100 kPa, the pure-liquid standard state and its paths (through the saturated vapour, for acetic acid with its
+  monomers and dimers; crystal to liquid with ΔHfus); compare the WebBook liquid values of
+  validation/data/reactions/liquid_formation_webbook.json with their pages. Acetic acid enthalpies now work everywhere
+  (flowsheets included), and so do those of acids that are solid at 25 °C. Formic acid has its dimer constants (Chao and
+  Zwolinski 1978) and the WebBook gas ΔfH°; propionic and acrylic acid have none open yet (their liquid values are
+  12-26 kJ/mol off). No open source with the Eley–Rideal and Mars–van Krevelen forms was found.
 - **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-22.md](MISSING_PROPERTIES_2026-10-22.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
@@ -30,6 +35,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **Proposal 0011:** merged in [#83](https://github.com/FaireDose/Fugacity/pull/83) with status **Draft**. Accept
   or decline it, then set its status in the file and in `proposals/README.md`. Proposal 0010 was accepted on
   2026-10-22 (docs/decisions/2026-10-22-02-reactions-proposal.md), proposal 0009 on 2026-10-11.
+- **Proposal 0014** (Draft; docs/decisions/2026-10-22-08-skills-review.md): what CHEPTA could take from the K-Dense
+  scientific agent skills, five steps; accept or decline, or single steps. Nothing was added.
 - **Make the new name official** (decided 2026-10-09: **CHEPTA**, *Chemical Engineering Process Tools
   for Agents*). In this order:
   1. GitHub: Settings → General → Repository name: `CHEPTA`. GitHub redirects the old links,

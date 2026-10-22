@@ -47,6 +47,9 @@ const listComponents = (opts = {}) => listDatabank({ userData: checkUserData(opt
 const findComponent = (key, userData = null) =>
   findIn(key, userData && typeof userData === "object" && !Array.isArray(userData) ? checkUserData(userData) : null);   // (map passes an index)
 
+import { checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties } from "./reactions/reaction.js";
+import { reactionRate, rateSpecies, RATE_FORMS, RATE_BASES } from "./reactions/kinetics.js";
+
 export {
   system, app, brandLogo,
   mount, createSystem, listComponents, findComponent, checkUserData, MODELS,
@@ -65,6 +68,7 @@ export {
   runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus,
   checkProject, readProject, PROJECT_FORMAT,
   userDataDoc, readUserDataFile, mergeUserData, userDataPackage, userDataKeys, USER_DATA_FORMAT,
+  checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties, reactionRate, rateSpecies, RATE_FORMS, RATE_BASES,
   CheptaError, ERROR_CODES, isCheptaError,
   // the names before the rename to CHEPTA (version 0.3): the same class and function
   CheptaError as FugacityError, isCheptaError as isFugacityError,

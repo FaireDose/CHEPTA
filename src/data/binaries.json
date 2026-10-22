@@ -16914,10 +16914,10 @@
       "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
-      "b_ij": 545.2899959582323,
-      "b_ji": -665.9028457519698,
-      "alpha": 0.47,
-      "source": "Fitted to 35 T-x-y points at 51.0 kPa from Havasi et al., J. Chem. Eng. Data 62 (2017) 1058-1062 (data public in the NIST TRC ThermoML Archive; validation/data/vle/formic-acid_gvl_10-1021-acs-jced-6b00867_51.0kPa.json). AAD 0.44 K in T, 0.0038 in y (max 1.30 K, 0.0161). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
+      "b_ij": 351.17558126947216,
+      "b_ji": -481.55358006894926,
+      "alpha": 0.3,
+      "source": "Fitted to 35 T-x-y points at 51.0 kPa from Havasi et al., J. Chem. Eng. Data 62 (2017) 1058-1062 (data public in the NIST TRC ThermoML Archive; validation/data/vle/formic-acid_gvl_10-1021-acs-jced-6b00867_51.0kPa.json). AAD 0.35 K in T, 0.0020 in y (max 0.98 K, 0.0091). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.002 (passes, < 0.01).",
       "source_ids": [
         "havasi2017-formic-acid-gvl",
         "nist-thermoml-archive"
