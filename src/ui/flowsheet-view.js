@@ -167,7 +167,7 @@ export function solution(state, ui) {
 // Ribbon
 
 /** The toolbar groups of the Flowsheet workspace (helpers from app.js: group, bigButton, smallButton). */
-export function flowsheetRibbon({ state, set, ui, group, bigButton, smallButton }) {
+export function flowsheetRibbon({ state, set, ui, group, smallButton }) {
   enter(state);
   const f = ensureUi(ui), fs = state.flowsheet;
   const ready = fs.components.length > 0;
@@ -176,80 +176,68 @@ export function flowsheetRibbon({ state, set, ui, group, bigButton, smallButton 
     f.sel = { kind: "block", id: r.id }; feedSel(f, r.fs);
     set({ flowsheet: r.fs });
   };
+  // one band of groups, at most two rows of buttons each (the maintainer, 2026-10-22: "two line only. zoom and do and
+  // undo and solver on one side. the blocks in the middle"): the setup on the left, the blocks in the middle, editing,
+  // view and solving on the right; the frequent tools as icon buttons with their name as tooltip
+  const rows2 = (...children) => h("div", { class: "fa-rows2" }, ...children);
+  const iconBtn = ({ ico, label, fk, onClick, disabled, pressed }) => {
+    const b = h("button", { type: "button", class: "fa-btn fa-small fa-icon-only", title: label, "aria-label": label, "data-fk": fk,
+      "aria-pressed": pressed == null ? undefined : String(!!pressed), on: { click: onClick } }, icon(ico, 18));
+    b.disabled = !!disabled;
+    return b;
+  };
   const method = fs.thermo.model + (["PR", "SRK"].includes(fs.thermo.model) || fs.thermo.vapour === "ideal" ? "" : ` + ${fs.thermo.vapour}`);
+  const setupBtn = (ico, label, page, fk, title) => {
+    const b = smallButton({ ico, label, fk, title, pressed: !f.sel && (f.setup ?? "components") === page, onClick: () => { f.sel = null; f.setup = page; set({}); } });
+    return b;
+  };
+  const blockBtn = type => {
+    const b = smallButton({ ico: type === "flash" ? "drum" : REACTORS.includes(type) ? "reactor" : type, label: LABEL[type].replace(" reactor", ""), fk: `fs-add-${type}`,
+      title: ready ? `Place a ${LABEL[type].toLowerCase()}: ${HINT[type]}` : "Choose the components first", onClick: place(type) });
+    b.disabled = !ready;
+    return b;
+  };
+  const energyBtn = (() => {
+    const q = smallButton({ ico: "energy", label: "Energy feed", fk: "fs-add-energy",
+      title: ready ? "Place an energy feed: a given duty (+ heat in, − heat out). Drag it onto a heater/cooler or a flash drum: the block then calculates its outlet from it." : "Choose the components first",
+      onClick: () => { const r = placeEnergyFeed(fs); f.sel = { kind: "energy", id: r.id }; set({ flowsheet: r.fs }); } });
+    q.disabled = !ready;
+    return q;
+  })();
+  const blocks = PALETTE.filter(type => !REACTORS.includes(type));
+  feedSel(f, fs);
+  const selName = !f.sel ? "" : f.sel.kind === "block" ? blockName(fs.blocks.find(x => x.id === f.sel.id)) ?? f.sel.id
+    : f.sel.kind === "energy" ? f.sel.id : streamName(fs.streams.find(x => x.id === f.sel.id)) ?? f.sel.id;
+  const nUndo = ui.fsHistory?.undo.length ?? 0, nRedo = ui.fsHistory?.redo.length ?? 0;
+  const tools = group("Edit, view and solve", h("div", { class: "fa-rows2 fa-tools" },
+    iconBtn({ ico: "undo", label: nUndo ? `Undo (Ctrl + Z); ${nUndo} can be undone` : "Undo: nothing yet", fk: "fs-undo", disabled: !nUndo, onClick: () => stepFlowsheet(state, set, ui, "undo") }),
+    iconBtn({ ico: "redo", label: nRedo ? "Redo (Ctrl + Y)" : "Redo: nothing to redo", fk: "fs-redo", disabled: !nRedo, onClick: () => stepFlowsheet(state, set, ui, "redo") }),
+    iconBtn({ ico: "plus", label: "Zoom in (Ctrl + mouse wheel)", fk: "fs-zoom-in", onClick: () => { f.zoom = Math.min(3, (f.zoom ?? 1) * 1.25); set({}); } }),
+    iconBtn({ ico: "minus", label: "Zoom out (Ctrl + mouse wheel)", fk: "fs-zoom-out", onClick: () => { f.zoom = Math.max(0.4, (f.zoom ?? 1) / 1.25); set({}); } }),
+    iconBtn({ ico: "search", label: `Fit the whole drawing (now ${Math.round((f.zoom ?? 1) * 100)} %)`, fk: "fs-zoom-fit", onClick: () => {
+      // the zoom that shows the whole drawing in the box (at most 100 %), from the top left
+      const v = f.view, W = v?.wrap?.clientWidth ?? 0, H = Math.max(v?.wrap?.clientHeight ?? 0, 320);
+      f.zoom = W > 0 ? Math.max(0.4, Math.min(1, (W - 4) / v.w, (H - 4) / v.h)) : 1;
+      f.scroll = { left: 0, top: 0 }; set({});
+    } }),
+    iconBtn({ ico: "trash", label: f.sel ? `Delete ${selName} (Delete key)` : "Delete: select a block or a stream first", fk: "fs-delete", disabled: !f.sel, onClick: () => deleteSelected(state, set, ui) }),
+    smallButton({ ico: "solve", label: "Solve", fk: "fs-solve", title: "Calculate the flowsheet now", onClick: () => { f.solveKey = flowsheetKey(state); set({}); } }),
+    smallButton({ ico: "check", label: "On change", pressed: f.auto, fk: "fs-auto",
+      title: "Solve on change: recalculate whenever the flowsheet is complete and changes", onClick: () => { f.auto = !f.auto; set({}); } })));
+  tools.classList.add("fa-push");
   return [
-    group("Setup",
-      bigButton({ ico: "flask", label: "Components", fk: "fs-setup", pressed: !f.sel && f.setup !== "method",
-        title: "1. Choose the components of the simulation (and see the status of the flowsheet)", note: ready ? `${fs.components.length} chosen` : "start here",
-        onClick: () => { f.sel = null; f.setup = "components"; set({}); } }),
-      bigButton({ ico: "cubic", label: "Method", fk: "fs-method", pressed: !f.sel && f.setup === "method",
-        title: "2. The property method of the whole flowsheet, and the recycle solver", note: method,
-        onClick: () => { f.sel = null; f.setup = "method"; set({}); } }),
-      bigButton({ ico: "spark", label: "Reactions", fk: "fs-reactions", pressed: !f.sel && f.setup === "reactions",
-        title: "3. The reactions of the process, written once for every reactor: stoichiometry, balance check, heat of reaction and K", note: fs.reactions?.length ? `${fs.reactions.length} written` : "optional",
-        onClick: () => { f.sel = null; f.setup = "reactions"; set({}); } })),
-    group("Blocks", ...PALETTE.filter(type => !REACTORS.includes(type)).flatMap(type => {
-      const b = bigButton({ ico: type === "flash" ? "drum" : type, label: LABEL[type], fk: `fs-add-${type}`,
-        title: ready ? `Place a ${LABEL[type].toLowerCase()}: ${HINT[type]}` : "Choose the components first", onClick: place(type) });
-      b.disabled = !ready;
-      if (type !== "feed") return [b];
-      // an energy feed, placed like a feed: a given duty, dragged onto a heater or flash drum
-      const q = bigButton({ ico: "energy", label: "Energy feed", fk: "fs-add-energy",
-        title: ready ? "Place an energy feed: a given duty (+ heat in, − heat out). Drag it onto a heater/cooler or a flash drum: the block then calculates its outlet from it." : "Choose the components first",
-        onClick: () => { const r = placeEnergyFeed(fs); f.sel = { kind: "energy", id: r.id }; set({ flowsheet: r.fs }); } });
-      q.disabled = !ready;
-      return [b, q];
-    })),
-    group("Reactors", ...REACTORS.map(type => {
-      const b = bigButton({ ico: "reactor", label: LABEL[type].replace(" reactor", ""), fk: `fs-add-${type}`,
-        title: ready ? `Place a ${LABEL[type].toLowerCase()}: ${HINT[type]}` : "Choose the components first", onClick: place(type) });
-      b.disabled = !ready;
+    group("Setup", rows2(
+      setupBtn("flask", `Components${ready ? ` (${fs.components.length})` : ""}`, "components", "fs-setup", "1. Choose the components of the simulation (and see the status of the flowsheet)"),
+      setupBtn("cubic", `Method: ${method}`, "method", "fs-method", "2. The property method of the whole flowsheet, and the recycle solver"),
+      setupBtn("spark", `Reactions${fs.reactions?.length ? ` (${fs.reactions.length})` : ""}`, "reactions", "fs-reactions", "3. The reactions of the process, written once for every reactor: stoichiometry, balance check, heat of reaction and K"))),
+    group("Blocks", rows2(blockBtn("feed"), energyBtn, ...blocks.filter(t => t !== "feed").map(blockBtn))),
+    // the blocks still to come: one locked button, with what they are in its tooltip
+    group("Reactors", rows2(...REACTORS.map(blockBtn), (() => {
+      const b = iconBtn({ ico: "lock", label: `Coming later: ${COMING.map(c => `${c.label} (${c.note})`).join("; ")}`, fk: "fs-soon", disabled: true, onClick: () => {} });
+      b.classList.add("is-locked");
       return b;
-    })),
-    group("Edit", h("div", { class: "fa-stack" },
-      (() => {
-        const n = ui.fsHistory?.undo.length ?? 0;
-        const b = smallButton({ ico: "undo", label: "Undo", fk: "fs-undo", title: n ? `Undo the last change (Ctrl + Z); ${n} can be undone` : "Nothing to undo yet",
-          onClick: () => stepFlowsheet(state, set, ui, "undo") });
-        b.disabled = !n;
-        return b;
-      })(),
-      (() => {
-        const n = ui.fsHistory?.redo.length ?? 0;
-        const b = smallButton({ ico: "redo", label: "Redo", fk: "fs-redo", title: n ? "Redo what was undone (Ctrl + Y)" : "Nothing to redo",
-          onClick: () => stepFlowsheet(state, set, ui, "redo") });
-        b.disabled = !n;
-        return b;
-      })())),
-    group("Run",
-      bigButton({ ico: "solve", label: "Solve", fk: "fs-solve", title: "Calculate the flowsheet now",
-        onClick: () => { f.solveKey = flowsheetKey(state); set({}); } }),
-      smallButton({ ico: "check", label: "Solve on change", pressed: f.auto, fk: "fs-auto",
-        title: "Recalculate whenever the flowsheet is complete and changes", onClick: () => { f.auto = !f.auto; set({}); } })),
-    group("Canvas", h("div", { class: "fa-canvas-grid" },
-      smallButton({ ico: "plus", label: "Zoom in", fk: "fs-zoom-in", title: "Zoom in (Ctrl + mouse wheel)", onClick: () => { f.zoom = Math.min(3, (f.zoom ?? 1) * 1.25); set({}); } }),
-      (() => {
-        feedSel(f, fs);
-        const name = !f.sel ? "" : f.sel.kind === "block" ? blockName(fs.blocks.find(x => x.id === f.sel.id)) ?? f.sel.id
-          : f.sel.kind === "energy" ? f.sel.id : streamName(fs.streams.find(x => x.id === f.sel.id)) ?? f.sel.id;
-        const what = f.sel ? `${f.sel.kind === "block" ? "" : f.sel.kind === "energy" ? "energy stream " : "stream "}${name}` : "";
-        const b = smallButton({ ico: "trash", label: f.sel ? `Delete ${name}` : "Delete", fk: "fs-delete",
-          title: f.sel ? `Delete ${what} (Delete key)` : "Select a block or a stream on the canvas first", onClick: () => deleteSelected(state, set, ui) });
-        b.disabled = !f.sel;
-        return b;
-      })(),
-      smallButton({ ico: "minus", label: "Zoom out", fk: "fs-zoom-out", title: "Zoom out (Ctrl + mouse wheel)", onClick: () => { f.zoom = Math.max(0.4, (f.zoom ?? 1) / 1.25); set({}); } }),
-      smallButton({ ico: "search", label: `Fit, ${Math.round((f.zoom ?? 1) * 100)} %`, fk: "fs-zoom-fit", title: "Show the whole drawing (at most 100 %); scroll, or drag the empty canvas, to move around", onClick: () => {
-        // the zoom that shows the whole drawing in the box (at most 100 %), from the top left
-        const v = f.view, W = v?.wrap?.clientWidth ?? 0, H = Math.max(v?.wrap?.clientHeight ?? 0, 320);
-        f.zoom = W > 0 ? Math.max(0.4, Math.min(1, (W - 4) / v.w, (H - 4) / v.h)) : 1;
-        f.scroll = { left: 0, top: 0 }; set({});
-      } }))),
-    group("Coming later", h("div", { class: "fa-soon-grid" }, ...COMING.map(c => {
-      const b = smallButton({ ico: c.icon, label: c.label, fk: `fs-soon-${c.id}`, title: `${c.label}: not available yet (${c.note})`, onClick: () => {} });
-      b.disabled = true; b.classList.add("is-locked");
-      return b;
-    })))
+    })())),
+    tools,
   ];
 }
 

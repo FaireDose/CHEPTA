@@ -49,6 +49,14 @@ pull request is merged).
   - On the flowsheet: no hint on the empty canvas, no "Property method: ..." line, and the Flowsheet status only once
     there are blocks.
   - Warnings and errors stay as they were.
+- **The flowsheet ribbon in one band** (the maintainer: "two line only. zoom and do and undo and solver on one side.
+  the blocks in the middle"):
+  - groups of at most two rows of small buttons: Setup (Components, Method, Reactions), Blocks (in pairs: feed and
+    energy feed, mixer and splitter, separator and flash drum, heater and exchanger, valve and pump, compressor and
+    expander), Reactors (conversion, yield, and one locked button whose tooltip lists the blocks still to come), and,
+    pushed to the right, Edit, view and solve;
+  - undo, redo, zoom in, zoom out, fit and delete are icon buttons with their name as tooltip;
+  - it fits in one band from about 1250 px of width; narrower, the tools group moves under the others.
 - **Tests:**
   - `test/reactor-workspace.test.js`: the edits; a flowsheet built with them solves.
   - `test/flowsheet-excel.test.js`: the reactor's formulas, evaluated, give CHEPTA's flows, in parallel and in series.
