@@ -11,6 +11,7 @@
  * 1 bar = 100 kPa).
  */
 import { normalizeFlowsheet } from "../flowsheet/document.js";
+import { usedReactions } from "./flowsheet-logic.js";
 import { checkUserData } from "../thermo/user-data.js";
 import { listComponents, findComponent, MODELS, EOS_MODELS } from "../thermo/system.js";
 import { USER_PREFIX } from "../thermo/components.js";
@@ -879,7 +880,8 @@ export function setsFor(state, model) {
  * maintainer, 2026-10-17). Sets or a rule that the flowsheet document names itself (written from code) win.
  */
 export function calculatedFlowsheet(state) {
-  const fs = state.flowsheet, t = fs?.thermo ?? {};
+  // the reactions a reactor uses (flowsheet-logic.js): one still being written on the Reactions page stops nothing
+  const fs = usedReactions(state.flowsheet), t = fs?.thermo ?? {};
   if (!fs) return fs;
   const { sets, prefer } = setsFor(state, t.model ?? "NRTL");
   const all = { ...sets, ...(t.sets ?? {}) }, rule = t.prefer ?? prefer;

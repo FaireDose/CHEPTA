@@ -251,7 +251,8 @@ character 12; known: C, x, p, f, a, T, P, K").
 5. **CSTR and plug flow** with the rate forms of section 1 (power law, reversible, LHHW, Michaelis–Menten, Monod and
    the other growth laws). Tests: scipy and the Rawlings and Ekerdt examples.
 6. **Gibbs reactor.** Test: Cantera.
-7. **Reactions page and reactor views**, export and import of reaction lists, Excel export of conversion reactors
+7. **Reactions page and reactor views** (the conversion and yield reactors: 2026-10-22,
+   docs/decisions/2026-10-22-11-reactor-views.md), export and import of reaction lists, Excel export of conversion reactors
    (the concept model of the Excel export: extents as formulas).
 8. **Tests with reactions:** methanol from CO₂ (equilibrium), ethyl acetate esterification
    (equilibrium and kinetics from an open article), ethanol to ethylene (conversion with side

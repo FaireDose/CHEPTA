@@ -10,11 +10,15 @@
  * structure, and the degrees of freedom are the only thing left to fill in.
  */
 import { unitType } from "../units/units.js";
+import "../units/reactors.js";   // the reactor blocks, registered
 
-/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, P1. */
-export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", compressor: "K", expander: "EX", product: "P" };
+/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, P1; reactors R1 (conversion), RY1 (yield). */
+export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", compressor: "K", expander: "EX",
+  "conversion-reactor": "R", "yield-reactor": "RY", product: "P" };
+/** The reactor blocks (proposal 0010, step 3), shown in their own toolbar group. */
+export const REACTORS = ["conversion-reactor", "yield-reactor"];
 /** The block types of the palette, in order (products are automatic). */
-export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater", "hx", "valve", "pump", "compressor", "expander"];
+export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater", "hx", "valve", "pump", "compressor", "expander", ...REACTORS];
 
 const clone = fs => JSON.parse(JSON.stringify(fs));
 const nextId = (taken, prefix) => { let i = 1; while (taken.has(prefix + i)) i++; return prefix + i; };
@@ -62,6 +66,14 @@ function outletEnds(type) {
 /** Default specification of a new block (left to fill in; a splitter starts at half and half). */
 function defaultSpec(type, fs) {
   if (type === "splitter") return { fractions: [0.5, "rest"] };
+  // a conversion reactor starts with the first reaction written, its first reactant as the key (the conversion left
+  // to fill in); a yield reactor with the mass basis
+  if (type === "conversion-reactor") {
+    const r = (fs.reactions ?? [])[0];
+    const key = r && Object.entries(r.stoichiometry ?? {}).find(([, v]) => v < 0)?.[0];
+    return { reactions: r ? [{ reaction: r.id, ...(key ? { key } : {}) }] : [], order: "parallel" };
+  }
+  if (type === "yield-reactor") return { basis: "mass", yields: {} };
   if (type === "separator") return { fractions: Object.fromEntries(fs.components.map(c => [c, [0.5, "rest"]])) };
   return {};
 }
@@ -318,11 +330,21 @@ export function setComponents(fs, ids) {
         }
       }
     }
+    if (b.type === "yield-reactor" && b.spec) {
+      for (const c of removed) if (b.spec.yields && c in b.spec.yields) { delete b.spec.yields[c]; touched++; }
+      for (const k of ["key", "closure"]) if (removed.includes(b.spec[k])) { delete b.spec[k]; touched++; }
+    }
+    if (b.type === "conversion-reactor" && Array.isArray(b.spec?.reactions)) {
+      for (const e of b.spec.reactions) if (removed.includes(e.key)) { delete e.key; touched++; }
+    }
     if (b.type === "separator" && b.spec?.fractions) {
       const n = out.streams.filter(s => s.from === `${b.id}.out`).length;
       for (const c of removed) if (c in b.spec.fractions) { delete b.spec.fractions[c]; touched++; }
       for (const c of added) b.spec.fractions[c] = [...Array(Math.max(1, n - 1)).fill(0), "rest"];
     }
+  }
+  for (const r of out.reactions ?? []) {
+    for (const c of removed) if (r.stoichiometry && c in r.stoichiometry) { delete r.stoichiometry[c]; touched++; }
   }
   const units = out.blocks.filter(b => b.type !== "product").length;
   const note = !units || (!removed.length && !added.length) ? ""
@@ -501,5 +523,88 @@ export function setEnergyDuty(fs, qid, duty_kW) {
   const q = (out.energyStreams ?? []).find(x => x.id === qid);
   if (!q || q.from) throw new Error(`${qid} is not an energy feed.`);
   q.duty_kW = duty_kW;
+  return out;
+}
+
+// ---------------------------------------------------------------------------------------
+// Reactions (proposal 0010, step 7): the flowsheet's list, written once and used by its reactors
+
+const nextReactionId = fs => { const taken = new Set((fs.reactions ?? []).map(r => r.id)); let i = 1; while (taken.has(`r${i}`)) i++; return `r${i}`; };
+
+/** A new reaction, empty: its name, the vapour phase, no coefficients yet. */
+export function addReaction(fs) {
+  const out = clone(fs), id = nextReactionId(out);
+  out.reactions = [...(out.reactions ?? []), { id, name: `Reaction ${id.slice(1)}`, phase: "vapour", stoichiometry: {} }];
+  return { fs: out, id };
+}
+
+/**
+ * Change a reaction: `name`, `phase`, `heatOfReaction` ({ dH_J_mol, source }, or null to remove it), and
+ * `stoichiometry` as a patch of coefficients (a component's coefficient, or null or 0 to take it out).
+ */
+export function setReaction(fs, id, patch) {
+  const out = clone(fs), r = (out.reactions ?? []).find(x => x.id === id);
+  if (!r) throw new Error(`No reaction ${id}.`);
+  for (const [k, v] of Object.entries(patch)) {
+    if (k === "stoichiometry") {
+      const st = { ...(r.stoichiometry ?? {}) };
+      for (const [c, nu] of Object.entries(v)) { if (nu == null || nu === 0) delete st[c]; else st[c] = nu; }
+      r.stoichiometry = st;
+    } else if (v == null || v === "") delete r[k];
+    else r[k] = v;
+  }
+  return out;
+}
+
+/** Remove a reaction; the conversion reactors that used it lose it from their list (and say so). */
+export function removeReaction(fs, id) {
+  const out = clone(fs);
+  out.reactions = (out.reactions ?? []).filter(r => r.id !== id);
+  if (!out.reactions.length) delete out.reactions;
+  const touched = [];
+  for (const b of out.blocks) {
+    if (b.type === "conversion-reactor" && Array.isArray(b.spec?.reactions) && b.spec.reactions.some(e => e.reaction === id)) {
+      b.spec.reactions = b.spec.reactions.filter(e => e.reaction !== id);
+      touched.push(blockName(b));
+    }
+  }
+  return { fs: out, note: touched.length ? `${touched.join(", ")} no longer use${touched.length === 1 ? "s" : ""} it.` : "" };
+}
+
+/** The reaction list as a file of its own, to copy reactions between projects (no reaction catalogue is shipped). */
+export function reactionsFile(fs) {
+  return { chepta_reactions: 1, reactions: JSON.parse(JSON.stringify(fs.reactions ?? [])) };
+}
+
+/**
+ * Add the reactions of a file (reactionsFile, or a plain list) to the flowsheet. A reaction whose id is taken gets a
+ * new id. Returns the flowsheet and a note; a file that is not a reaction list throws, saying why.
+ */
+export function importReactions(fs, file) {
+  const list = Array.isArray(file) ? file : file?.reactions;
+  if (!Array.isArray(list)) throw new Error("This file has no reaction list (a file saved with Export reactions, or a list of reactions).");
+  let out = clone(fs);
+  const added = [], renamed = [];
+  for (const r of list) {
+    if (!r || typeof r !== "object" || !r.stoichiometry || typeof r.stoichiometry !== "object") throw new Error("Every reaction needs its stoichiometry, for example { \"carbon-dioxide\": -1, \"hydrogen\": -3, \"methanol\": 1, \"water\": 1 }.");
+    const taken = new Set((out.reactions ?? []).map(x => x.id));
+    const id = r.id && !taken.has(r.id) ? r.id : nextReactionId(out);
+    if (r.id && r.id !== id) renamed.push(`${r.id} → ${id}`);
+    out.reactions = [...(out.reactions ?? []), { ...JSON.parse(JSON.stringify(r)), id }];
+    added.push(r.name ?? id);
+  }
+  const missing = [...new Set(list.flatMap(r => Object.keys(r.stoichiometry)))].filter(c => !out.components.includes(c));
+  const note = [`Added ${added.length} reaction${added.length === 1 ? "" : "s"}${renamed.length ? ` (new ids: ${renamed.join(", ")})` : ""}.`,
+    missing.length ? `They use ${missing.join(", ")}, not among the components: add ${missing.length === 1 ? "it" : "them"} in Components.` : ""].filter(Boolean).join(" ");
+  return { fs: out, note };
+}
+
+/** The reactions a conversion reactor uses: only these are checked and solved, so a reaction still being written does not stop the flowsheet. */
+export function usedReactions(fs) {
+  if (!fs?.reactions) return fs;
+  const used = new Set(fs.blocks.filter(b => b.type === "conversion-reactor").flatMap(b => (b.spec?.reactions ?? []).map(e => e.reaction)));
+  const reactions = fs.reactions.filter(r => used.has(r.id));
+  const out = { ...fs };
+  if (reactions.length) out.reactions = reactions; else delete out.reactions;
   return out;
 }

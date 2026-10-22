@@ -90,6 +90,13 @@ export const APP_CSS = `
   min-width:26px; text-align:center; line-height:1}
 .fa-glyph sub,.fa-glyph sup{font-size:.62em; font-style:normal}
 .fa-stack{display:flex; flex-direction:column; gap:4px; justify-content:center; min-height:72px}
+.fa-rows2{display:grid; grid-template-rows:repeat(2, auto); grid-auto-flow:column; gap:2px 2px; align-content:center}
+.fa-tools{grid-template-columns:repeat(3, auto) auto}
+.fa-icon-only{padding:4px 6px}
+.fa-rows2 .fa-small{gap:5px; padding:3px 6px 3px 4px}
+.fa-ribbon .fa-group:has(.fa-rows2){padding:0 7px}
+.fa-icon-only span{display:none}
+.fa-group.fa-push{margin-left:auto}
 .fa-cols{display:grid; grid-template-rows:repeat(3, auto); grid-auto-flow:column; gap:1px 2px}
 .fug-app .fa-field{display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:12px; color:var(--fug-fg2)}
 .fug-app .fa-field-wide{justify-content:flex-start; margin-bottom:4px} .fug-app .fa-field-wide input{flex:1; min-width:0}
@@ -440,7 +447,19 @@ a.fa-mini{text-decoration:none}
 .fa-store-list li{display:flex; align-items:center; gap:8px; font-size:12.5px}
 .fa-store-list .fa-store-name{font-weight:600}
 .fa-store-list small{color:var(--fug-muted); margin-right:auto}
+.fa-rx-eq{display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin:6px 0}
+.fa-rx-chip{display:inline-block; padding:2px 8px; border-radius:999px; background:var(--fug-bg); border:1px solid var(--fug-rule); font-size:12px}
+.fa-rx-arrow{font-weight:600; padding:0 2px}
+.fa-rx-coefs{display:grid; gap:2px; margin:6px 0}
+.fa-rx-given{margin:6px 0}
+.fa-rx-given summary{cursor:pointer; font-size:12px; color:var(--fug-muted)}
+.fa-rx-use{border-top:1px solid var(--fug-rule); padding:6px 0}
+.fa-rx-use-head{display:flex; gap:6px; align-items:flex-start; cursor:pointer}
+.fa-rx-use-row{display:grid; gap:4px; margin:4px 0 0 22px}
+.fa-rx-props{display:grid; gap:2px; margin:6px 0; font-size:12.5px}
+.fa-rx-list{margin:6px 0; padding-left:16px; font-size:12.5px; display:grid; gap:3px}
 .fa-chip-x{background:none; border:0; cursor:pointer; font-size:14px; line-height:1; padding:0 2px; color:inherit}
+.fa-need-start{max-width:520px; margin:32px auto}
 .fa-need{max-width:520px; margin:32px auto; border:1px dashed var(--fug-rule); border-radius:10px; padding:18px 20px; background:var(--fa-panel); font-size:13px}
 .fa-need h3{margin:0 0 8px; font-size:14px; font-weight:600}
 .fa-need ul{margin:0 0 10px; padding-left:18px; display:grid; gap:4px; color:var(--fug-fg)}

@@ -100,3 +100,45 @@ test("the concept model: drums as formulas (K = γ Psat / P, Rachford-Rice), rec
   assert.equal(flowsheetSheets(fs, res).circular, true);
   assert.ok(!flowsheetSheets(fs, res).sheets.some(s => s.name === "Flash models"));
 });
+
+test("a conversion reactor: its outlet flows are formulas of the conversions (in parallel and in series), its duty adds the heat of the reactions", () => {
+  // methanol synthesis and the reverse water-gas shift on one key (CO2), Peng-Robinson (gases above their critical
+  // temperatures, as in test/reactors.test.js)
+  const reactions = [
+    { id: "meoh", name: "Methanol", stoichiometry: { "carbon-dioxide": -1, hydrogen: -3, methanol: 1, water: 1 }, phase: "vapour" },
+    { id: "rwgs", name: "RWGS", stoichiometry: { "carbon-dioxide": -1, hydrogen: -1, "carbon-monoxide": 1, water: 1 }, phase: "vapour" },
+  ];
+  for (const order of ["parallel", "series"]) {
+    const fs = normalizeFlowsheet({
+      components: ["carbon-dioxide", "hydrogen", "methanol", "water", "carbon-monoxide"], thermo: { model: "PR" }, reactions,
+      blocks: [
+        { id: "F1", type: "feed", spec: { flow_kmol_h: { "carbon-dioxide": 100, hydrogen: 300 }, T_K: 523.15, P_kPa: 5000 } },
+        { id: "R1", type: "conversion-reactor", spec: { reactions: [{ reaction: "meoh", key: "carbon-dioxide", conversion: 0.3 }, { reaction: "rwgs", key: "carbon-dioxide", conversion: 0.2 }], order, T_K: 523.15 } },
+        { id: "P1", type: "product" },
+      ],
+      streams: [{ id: "S1", from: "F1.out", to: "R1.in" }, { id: "S2", from: "R1.out", to: "P1.in" }],
+    });
+    const res = runFlowsheet(fs);
+    const { sheets } = flowsheetSheets(fs, res);
+    const byName = Object.fromEntries(sheets.map(s => [s.name, s.rows]));
+    // a small evaluator: the references replaced by the cells' cached values (inputs and formulas alike)
+    const valueOf = (sheet, ref) => {
+      const m = /^\$?([A-Z]+)\$?(\d+)$/.exec(ref), col = [...m[1]].reduce((a, ch) => a * 26 + ch.charCodeAt(0) - 64, 0) - 1;
+      const c = byName[sheet][+m[2] - 1][col];
+      return typeof c === "object" && c !== null ? c.v : c;
+    };
+    const evaluate = f => Function(`return ${f.replace(/(?:(Inputs|Streams)!)?(\$?[A-Z]+\$?\d+)/g, (_, sh, ref) => String(valueOf(sh ?? "Streams", ref)))}`)();
+    const streams = byName.Streams, header = streams[0].map(c => c?.v ?? c);
+    res.streams.S2.flows.forEach((v, i) => {
+      const cell = streams[6 + i][header.indexOf("S2")];
+      assert.ok(cell.f, `${order}: component ${i} is a formula`);
+      assert.ok(Math.abs(evaluate(cell.f) - v) < 1e-9 * 400, `${order}: the formula gives ${evaluate(cell.f)}, CHEPTA ${v}`);
+    });
+    // the conversions are inputs
+    assert.ok(byName.Inputs.some(r => /Methanol: conversion of/.test(r?.[0] ?? "") && r[2]?.s === "input"));
+    // the duty: out minus in plus the heat of the reactions
+    const q = byName["Energy and balances"].find(r => r?.[0] === "Q-R1");
+    assert.match(q[3], /plus the heat of the reactions/);
+    assert.ok(Math.abs(q[2].v - res.blocks.R1.duty_kW) < 1e-9);
+  }
+});

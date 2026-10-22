@@ -12,7 +12,7 @@ import { h, s as svgEl } from "./dom.js";
 import { icon } from "./icons.js";
 import { FUTURE_MODELS } from "./future-models.js";
 import { modelPicker } from "./model-picker.js";
-import { listComponents, modelName } from "../thermo/system.js";
+import { listComponents } from "../thermo/system.js";
 import { methodAdvice } from "../thermo/method-advice.js";
 import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
@@ -22,7 +22,9 @@ import {
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
   energyOf, energyTargets, addEnergyFeed, connectEnergy, removeEnergy, setEnergyDuty, ENERGY_TARGETS, ENERGY_SOURCES,
   placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy, ratingPatch, designPatch,
+  REACTORS, addReaction, setReaction, removeReaction, reactionsFile, importReactions, usedReactions,
 } from "./flowsheet-logic.js";
+import { checkReaction, reactionProperties } from "../reactions/reaction.js";
 import { HEAT_TRANSFER } from "../units/heat-exchange.js";
 import { PUMP_EFFICIENCY, COMPRESSOR_EFFICIENCY, EXPANDER_EFFICIENCY } from "../units/units.js";
 import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
@@ -39,7 +41,8 @@ const nameOf = id => byId().get(id)?.name ?? id;
 // the models with parameters per pair (Modified UNIFAC 2.0 and the ideal solution have none)
 const PAIR_MODELS = ["NRTL", "UNIQUAC", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
-  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", product: "Product" };
+  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", product: "Product",
+  "conversion-reactor": "Conversion reactor", "yield-reactor": "Yield reactor" };
 const HINT = {
   feed: "A stream entering the flowsheet: its flows and two of T, P and vapour fraction.",
   mixer: "Joins streams; adiabatic, at the lowest inlet pressure unless you set one.",
@@ -52,19 +55,22 @@ const HINT = {
   pump: "Raises a liquid's pressure: the outlet pressure or the rise, and the efficiency (75 % if not given). Its power is a work stream.",
   compressor: "Raises a gas's pressure along the isentropic path: the outlet pressure, the rise or the ratio, and the isentropic efficiency (75 % if not given). Its power is a work stream.",
   expander: "Lowers a gas's pressure and gives power: the outlet pressure, the drop or the ratio, and the isentropic efficiency (80 % if not given). Its power is a work stream (negative: out).",
+  "conversion-reactor": "Converts a given fraction of a key reactant by each reaction of the Reactions page; then the outlet temperature, duty or vapour fraction. Its duty carries the heat of the reactions.",
+  "yield-reactor": "Turns a given fraction of a key reactant into the products you give per kg (or mol) of it, for a reaction known by its products (a fermentation, a pyrolysis). The mass must close; the elements are reported.",
 };
 /** Blocks on the roadmap, shown in the toolbar but not available yet. */
 const COMING = [
-  { id: "reactor", label: "Reactor", icon: "flask", note: "roadmap v0.6 and A13" },
+  { id: "reactor", label: "Equilibrium, CSTR, PFR", icon: "reactor", note: "proposal 0010, steps 4 to 6" },
   { id: "column", label: "Distillation", icon: "column", note: "roadmap v0.5" },
   { id: "extraction", label: "Extraction", icon: "extract", note: "after liquid-liquid equilibria in the flash" },
 ];
 // a feed is drawn as the start of its stream (a tab), not as a block; its size is that point
-const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40], product: [0, 0] };
+const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40],
+  "conversion-reactor": [44, 58], "yield-reactor": [44, 58], product: [0, 0] };
 // the inlet and outlet ports of a two-stream exchanger: hot above, cold below
 const PORT_DY = { hot: -11, cold: 11 };
 
-// setup: which setup page the Inputs panel shows while nothing is selected ("components" or "method")
+// setup: which setup page the Inputs panel shows while nothing is selected ("components", "method" or "reactions")
 export const ensureUi = ui => (ui.fs ??= { sel: null, setup: "components", auto: true, solveKey: null, cache: null, note: "" });
 
 /** On the drawing a feed is its stream: a selected Feed block becomes its stream (a feed with no stream stays a block). */
@@ -161,7 +167,7 @@ export function solution(state, ui) {
 // Ribbon
 
 /** The toolbar groups of the Flowsheet workspace (helpers from app.js: group, bigButton, smallButton). */
-export function flowsheetRibbon({ state, set, ui, group, bigButton, smallButton }) {
+export function flowsheetRibbon({ state, set, ui, group, smallButton }) {
   enter(state);
   const f = ensureUi(ui), fs = state.flowsheet;
   const ready = fs.components.length > 0;
@@ -170,71 +176,68 @@ export function flowsheetRibbon({ state, set, ui, group, bigButton, smallButton 
     f.sel = { kind: "block", id: r.id }; feedSel(f, r.fs);
     set({ flowsheet: r.fs });
   };
+  // one band of groups, at most two rows of buttons each (the maintainer, 2026-10-22: "two line only. zoom and do and
+  // undo and solver on one side. the blocks in the middle"): the setup on the left, the blocks in the middle, editing,
+  // view and solving on the right; the frequent tools as icon buttons with their name as tooltip
+  const rows2 = (...children) => h("div", { class: "fa-rows2" }, ...children);
+  const iconBtn = ({ ico, label, fk, onClick, disabled, pressed }) => {
+    const b = h("button", { type: "button", class: "fa-btn fa-small fa-icon-only", title: label, "aria-label": label, "data-fk": fk,
+      "aria-pressed": pressed == null ? undefined : String(!!pressed), on: { click: onClick } }, icon(ico, 18));
+    b.disabled = !!disabled;
+    return b;
+  };
   const method = fs.thermo.model + (["PR", "SRK"].includes(fs.thermo.model) || fs.thermo.vapour === "ideal" ? "" : ` + ${fs.thermo.vapour}`);
+  const setupBtn = (ico, label, page, fk, title) => {
+    const b = smallButton({ ico, label, fk, title, pressed: !f.sel && (f.setup ?? "components") === page, onClick: () => { f.sel = null; f.setup = page; set({}); } });
+    return b;
+  };
+  const blockBtn = type => {
+    const b = smallButton({ ico: type === "flash" ? "drum" : REACTORS.includes(type) ? "reactor" : type, label: LABEL[type].replace(" reactor", ""), fk: `fs-add-${type}`,
+      title: ready ? `Place a ${LABEL[type].toLowerCase()}: ${HINT[type]}` : "Choose the components first", onClick: place(type) });
+    b.disabled = !ready;
+    return b;
+  };
+  const energyBtn = (() => {
+    const q = smallButton({ ico: "energy", label: "Energy feed", fk: "fs-add-energy",
+      title: ready ? "Place an energy feed: a given duty (+ heat in, − heat out). Drag it onto a heater/cooler or a flash drum: the block then calculates its outlet from it." : "Choose the components first",
+      onClick: () => { const r = placeEnergyFeed(fs); f.sel = { kind: "energy", id: r.id }; set({ flowsheet: r.fs }); } });
+    q.disabled = !ready;
+    return q;
+  })();
+  const blocks = PALETTE.filter(type => !REACTORS.includes(type));
+  feedSel(f, fs);
+  const selName = !f.sel ? "" : f.sel.kind === "block" ? blockName(fs.blocks.find(x => x.id === f.sel.id)) ?? f.sel.id
+    : f.sel.kind === "energy" ? f.sel.id : streamName(fs.streams.find(x => x.id === f.sel.id)) ?? f.sel.id;
+  const nUndo = ui.fsHistory?.undo.length ?? 0, nRedo = ui.fsHistory?.redo.length ?? 0;
+  const tools = group("Edit, view and solve", h("div", { class: "fa-rows2 fa-tools" },
+    iconBtn({ ico: "undo", label: nUndo ? `Undo (Ctrl + Z); ${nUndo} can be undone` : "Undo: nothing yet", fk: "fs-undo", disabled: !nUndo, onClick: () => stepFlowsheet(state, set, ui, "undo") }),
+    iconBtn({ ico: "redo", label: nRedo ? "Redo (Ctrl + Y)" : "Redo: nothing to redo", fk: "fs-redo", disabled: !nRedo, onClick: () => stepFlowsheet(state, set, ui, "redo") }),
+    iconBtn({ ico: "plus", label: "Zoom in (Ctrl + mouse wheel)", fk: "fs-zoom-in", onClick: () => { f.zoom = Math.min(3, (f.zoom ?? 1) * 1.25); set({}); } }),
+    iconBtn({ ico: "minus", label: "Zoom out (Ctrl + mouse wheel)", fk: "fs-zoom-out", onClick: () => { f.zoom = Math.max(0.4, (f.zoom ?? 1) / 1.25); set({}); } }),
+    iconBtn({ ico: "search", label: `Fit the whole drawing (now ${Math.round((f.zoom ?? 1) * 100)} %)`, fk: "fs-zoom-fit", onClick: () => {
+      // the zoom that shows the whole drawing in the box (at most 100 %), from the top left
+      const v = f.view, W = v?.wrap?.clientWidth ?? 0, H = Math.max(v?.wrap?.clientHeight ?? 0, 320);
+      f.zoom = W > 0 ? Math.max(0.4, Math.min(1, (W - 4) / v.w, (H - 4) / v.h)) : 1;
+      f.scroll = { left: 0, top: 0 }; set({});
+    } }),
+    iconBtn({ ico: "trash", label: f.sel ? `Delete ${selName} (Delete key)` : "Delete: select a block or a stream first", fk: "fs-delete", disabled: !f.sel, onClick: () => deleteSelected(state, set, ui) }),
+    smallButton({ ico: "solve", label: "Solve", fk: "fs-solve", title: "Calculate the flowsheet now", onClick: () => { f.solveKey = flowsheetKey(state); set({}); } }),
+    smallButton({ ico: "check", label: "On change", pressed: f.auto, fk: "fs-auto",
+      title: "Solve on change: recalculate whenever the flowsheet is complete and changes", onClick: () => { f.auto = !f.auto; set({}); } })));
+  tools.classList.add("fa-push");
   return [
-    group("Setup",
-      bigButton({ ico: "flask", label: "Components", fk: "fs-setup", pressed: !f.sel && f.setup !== "method",
-        title: "1. Choose the components of the simulation (and see the status of the flowsheet)", note: ready ? `${fs.components.length} chosen` : "start here",
-        onClick: () => { f.sel = null; f.setup = "components"; set({}); } }),
-      bigButton({ ico: "cubic", label: "Method", fk: "fs-method", pressed: !f.sel && f.setup === "method",
-        title: "2. The property method of the whole flowsheet, and the recycle solver", note: method,
-        onClick: () => { f.sel = null; f.setup = "method"; set({}); } })),
-    group("Blocks", ...PALETTE.flatMap(type => {
-      const b = bigButton({ ico: type === "flash" ? "drum" : type, label: LABEL[type], fk: `fs-add-${type}`,
-        title: ready ? `Place a ${LABEL[type].toLowerCase()}: ${HINT[type]}` : "Choose the components first", onClick: place(type) });
-      b.disabled = !ready;
-      if (type !== "feed") return [b];
-      // an energy feed, placed like a feed: a given duty, dragged onto a heater or flash drum
-      const q = bigButton({ ico: "energy", label: "Energy feed", fk: "fs-add-energy",
-        title: ready ? "Place an energy feed: a given duty (+ heat in, − heat out). Drag it onto a heater/cooler or a flash drum: the block then calculates its outlet from it." : "Choose the components first",
-        onClick: () => { const r = placeEnergyFeed(fs); f.sel = { kind: "energy", id: r.id }; set({ flowsheet: r.fs }); } });
-      q.disabled = !ready;
-      return [b, q];
-    })),
-    group("Edit", h("div", { class: "fa-stack" },
-      (() => {
-        const n = ui.fsHistory?.undo.length ?? 0;
-        const b = smallButton({ ico: "undo", label: "Undo", fk: "fs-undo", title: n ? `Undo the last change (Ctrl + Z); ${n} can be undone` : "Nothing to undo yet",
-          onClick: () => stepFlowsheet(state, set, ui, "undo") });
-        b.disabled = !n;
-        return b;
-      })(),
-      (() => {
-        const n = ui.fsHistory?.redo.length ?? 0;
-        const b = smallButton({ ico: "redo", label: "Redo", fk: "fs-redo", title: n ? "Redo what was undone (Ctrl + Y)" : "Nothing to redo",
-          onClick: () => stepFlowsheet(state, set, ui, "redo") });
-        b.disabled = !n;
-        return b;
-      })())),
-    group("Run",
-      bigButton({ ico: "solve", label: "Solve", fk: "fs-solve", title: "Calculate the flowsheet now",
-        onClick: () => { f.solveKey = flowsheetKey(state); set({}); } }),
-      smallButton({ ico: "check", label: "Solve on change", pressed: f.auto, fk: "fs-auto",
-        title: "Recalculate whenever the flowsheet is complete and changes", onClick: () => { f.auto = !f.auto; set({}); } })),
-    group("Canvas", h("div", { class: "fa-canvas-grid" },
-      smallButton({ ico: "plus", label: "Zoom in", fk: "fs-zoom-in", title: "Zoom in (Ctrl + mouse wheel)", onClick: () => { f.zoom = Math.min(3, (f.zoom ?? 1) * 1.25); set({}); } }),
-      (() => {
-        feedSel(f, fs);
-        const name = !f.sel ? "" : f.sel.kind === "block" ? blockName(fs.blocks.find(x => x.id === f.sel.id)) ?? f.sel.id
-          : f.sel.kind === "energy" ? f.sel.id : streamName(fs.streams.find(x => x.id === f.sel.id)) ?? f.sel.id;
-        const what = f.sel ? `${f.sel.kind === "block" ? "" : f.sel.kind === "energy" ? "energy stream " : "stream "}${name}` : "";
-        const b = smallButton({ ico: "trash", label: f.sel ? `Delete ${name}` : "Delete", fk: "fs-delete",
-          title: f.sel ? `Delete ${what} (Delete key)` : "Select a block or a stream on the canvas first", onClick: () => deleteSelected(state, set, ui) });
-        b.disabled = !f.sel;
-        return b;
-      })(),
-      smallButton({ ico: "minus", label: "Zoom out", fk: "fs-zoom-out", title: "Zoom out (Ctrl + mouse wheel)", onClick: () => { f.zoom = Math.max(0.4, (f.zoom ?? 1) / 1.25); set({}); } }),
-      smallButton({ ico: "search", label: `Fit, ${Math.round((f.zoom ?? 1) * 100)} %`, fk: "fs-zoom-fit", title: "Show the whole drawing (at most 100 %); scroll, or drag the empty canvas, to move around", onClick: () => {
-        // the zoom that shows the whole drawing in the box (at most 100 %), from the top left
-        const v = f.view, W = v?.wrap?.clientWidth ?? 0, H = Math.max(v?.wrap?.clientHeight ?? 0, 320);
-        f.zoom = W > 0 ? Math.max(0.4, Math.min(1, (W - 4) / v.w, (H - 4) / v.h)) : 1;
-        f.scroll = { left: 0, top: 0 }; set({});
-      } }))),
-    group("Coming later", h("div", { class: "fa-soon-grid" }, ...COMING.map(c => {
-      const b = smallButton({ ico: c.icon, label: c.label, fk: `fs-soon-${c.id}`, title: `${c.label}: not available yet (${c.note})`, onClick: () => {} });
-      b.disabled = true; b.classList.add("is-locked");
+    group("Setup", rows2(
+      setupBtn("flask", `Components${ready ? ` (${fs.components.length})` : ""}`, "components", "fs-setup", "1. Choose the components of the simulation (and see the status of the flowsheet)"),
+      setupBtn("cubic", `Method: ${method}`, "method", "fs-method", "2. The property method of the whole flowsheet, and the recycle solver"),
+      setupBtn("spark", `Reactions${fs.reactions?.length ? ` (${fs.reactions.length})` : ""}`, "reactions", "fs-reactions", "3. The reactions of the process, written once for every reactor: stoichiometry, balance check, heat of reaction and K"))),
+    group("Blocks", rows2(blockBtn("feed"), energyBtn, ...blocks.filter(t => t !== "feed").map(blockBtn))),
+    // the blocks still to come: one locked button, with what they are in its tooltip
+    group("Reactors", rows2(...REACTORS.map(blockBtn), (() => {
+      const b = iconBtn({ ico: "lock", label: `Coming later: ${COMING.map(c => `${c.label} (${c.note})`).join("; ")}`, fk: "fs-soon", disabled: true, onClick: () => {} });
+      b.classList.add("is-locked");
       return b;
-    })))
+    })())),
+    tools,
   ];
 }
 
@@ -268,7 +271,7 @@ export function flowsheetInputs(env) {
 function inputsFor({ state, set, ui, uid, inputsSection }) {
   const f = ensureUi(ui), fs = state.flowsheet, u = state.units;
   let st = null;
-  try { st = flowsheetDocStatus(fs, userOverlay(state)); } catch { /* shown on the canvas */ }
+  try { st = flowsheetDocStatus(usedReactions(fs), userOverlay(state)); } catch { /* shown on the canvas */ }
   const put = next => set({ flowsheet: next });
   feedSel(f, fs);
   const back = h("button", { type: "button", class: "fa-mini", "data-fk": "fs-back", on: { click: () => { f.sel = null; set({}); } } }, icon("chevronUp", 14), "Setup and status");
@@ -385,6 +388,74 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
         }),
         h("p", { class: "fa-in-hint" }, "Each outlet is flashed at the inlet's T and P."), outletTools));
     }
+  }
+  // proposal 0010, step 7: the reactors; the reactions themselves are on the Reactions page
+  if (REACTORS.includes(b.type)) {
+    const reactants = r => Object.entries(r.stoichiometry ?? {}).filter(([, v]) => v < 0).map(([c]) => c);
+    if (b.type === "conversion-reactor") {
+      const list = fs.reactions ?? [], used = Array.isArray(spec.reactions) ? spec.reactions : [];
+      const setList = next => setS({ reactions: next });
+      const rows = list.map(r => {
+        const k = used.findIndex(e => e.reaction === r.id), e = used[k], chk = reactionCheck(r);
+        const on = h("input", { type: "checkbox", checked: !!e, "data-fk": `fs-rxuse-${b.id}-${r.id}`, "aria-label": `Use ${r.name || r.id} in ${blockName(b)}`,
+          on: { change: ev => setList(ev.target.checked ? [...used, { reaction: r.id, ...(reactants(r)[0] ? { key: reactants(r)[0] } : {}) }] : used.filter(x => x.reaction !== r.id)) } });
+        return h("div", { class: "fa-rx-use" },
+          h("label", { class: "fa-rx-use-head" }, on, h("span", {}, h("b", {}, r.name || r.id), " ", h("span", { class: "fa-in-hint" }, equation(r)))),
+          !chk.ok && Object.keys(r.stoichiometry ?? {}).length ? warning(chk.message, { attrs: { role: "note" } }) : null,
+          e ? h("div", { class: "fa-rx-use-row" },
+            selectField("Key reactant", [["", "choose"], ...reactants(r).map(c => [c, nameOf(c)])], e.key ?? "",
+              v => setList(used.map((x, j) => (j === k ? { ...x, key: v || null } : x)).map(x => Object.fromEntries(Object.entries(x).filter(([, y]) => y != null)))),
+              `fs-rxkey-${b.id}-${r.id}`, uid),
+            numberField("Conversion", e.conversion == null ? "" : String(e.conversion), t => {
+              const v = num(t); if (v === undefined || (v != null && (v < 0 || v > 1))) return false;
+              setList(used.map((x, j) => { if (j !== k) return x; const y = { ...x }; if (v == null) delete y.conversion; else y.conversion = v; return y; }));
+            }, { id: `${b.id}-x-${r.id}`, uid, unit: "0 to 1", placeholder: "0.5" })) : null);
+      });
+      secs.push(inputsSection("Reactions",
+        list.length ? h("div", {}, ...rows) : h("p", { class: "fa-in-hint" }, "No reaction written yet."),
+        h("button", { type: "button", class: "fa-mini", "data-fk": `fs-go-reactions-${b.id}`, on: { click: () => { f.sel = null; f.setup = "reactions"; set({}); } } },
+          icon("spark", 14), list.length ? "Write or change reactions" : "Write a reaction"),
+        used.length > 1 ? segRow("Order", [["parallel", "In parallel"], ["series", "In series"]], spec.order === "series" ? "series" : "parallel", v => setS({ order: v }), `fs-rxorder-${b.id}`) : null,
+        used.length > 1 ? h("p", { class: "fa-in-hint" }, spec.order === "series"
+          ? "In series: each reaction converts its fraction of what the reactions above it left of its key."
+          : "In parallel: each reaction converts its fraction of the key's inlet flow; the conversions of one key add up (at most 1).") : null));
+    } else {
+      const basis = spec.basis === "mole" ? "mole" : "mass", yields = spec.yields ?? {};
+      const yu = basis === "mass" ? "kg/kg" : "mol/mol";
+      const others = fs.components.filter(c => c !== spec.key);
+      const heatGiven = spec.heatOfReaction ?? {};
+      const setHeat = patch => { const n = { ...heatGiven, ...patch }; for (const k of Object.keys(n)) if (n[k] == null || n[k] === "") delete n[k]; setS({ heatOfReaction: Object.keys(n).length ? { phase: "vapour", ...n } : null }); };
+      const sum = Object.entries(yields).filter(([c]) => c !== spec.closure).reduce((a, [, v]) => a + (Number(v) || 0), 0);
+      secs.push(inputsSection("Key reactant",
+        selectField("Key reactant", [["", "choose"], ...fs.components.map(c => [c, nameOf(c)])], spec.key ?? "", v => setS({ key: v || null }), `fs-ykey-${b.id}`, uid),
+        plain("conversion", "Conversion", "0 to 1", "1"),
+        segRow("Basis of the yields", [["mass", "Mass (kg per kg)"], ["mole", "Mole (mol per mol)"]], basis, v => setS({ basis: v }), `fs-ybasis-${b.id}`)),
+        inputsSection("Yields",
+          h("p", { class: "fa-in-hint" }, `What forms per ${basis === "mass" ? "kg" : "mol"} of the key converted; a negative yield is a co-reactant consumed (water in a hydrolysis). ${basis === "mass" ? "On the mass basis they add up to 1." : ""}`),
+          ...others.map(c => numberField(nameOf(c), yields[c] == null ? "" : String(yields[c]), t => {
+            const v = num(t); if (v === undefined) return false;
+            const n = { ...yields }; if (v == null) delete n[c]; else n[c] = v;
+            setS({ yields: n });
+          }, { id: `${b.id}-y-${c}`, uid, unit: yu, placeholder: "0" })),
+          selectField("Closure (takes the rest of the mass)", [["", "none"], ...others.map(c => [c, nameOf(c)])], spec.closure ?? "", v => setS({ closure: v || null }), `fs-yclosure-${b.id}`, uid),
+          basis === "mass" && !spec.closure && Object.keys(yields).length ? h("p", { class: "fa-in-hint", "data-fk": `fs-ysum-${b.id}` }, `They add up to ${fmtShort(sum, 6)} kg per kg${Math.abs(sum - 1) > 1e-6 ? " (must be 1, or name a closure component)" : ""}.`) : null),
+        inputsSection("Heat of reaction",
+          h("p", { class: "fa-in-hint" }, "From the formation data of every component that changes. Where one has none, give it here with its source: per mol of the key converted, at 298.15 K."),
+          numberField("ΔrH at 298.15 K", heatGiven.dH_J_mol == null ? "" : String(heatGiven.dH_J_mol / 1000), t => {
+            const v = num(t); if (v === undefined) return false; setHeat({ dH_J_mol: v == null ? null : v * 1000 });
+          }, { id: `${b.id}-ydh`, uid, unit: "kJ/mol", placeholder: "– exothermic" }),
+          segRow("Standard state", [["vapour", "Ideal gases"], ["liquid", "Pure liquids"]], heatGiven.phase === "liquid" ? "liquid" : "vapour", v => setHeat({ phase: v }), `fs-yphase-${b.id}`),
+          h("label", { class: "fa-field fa-field-stack" }, h("span", {}, "Its source"),
+            h("input", { type: "text", value: heatGiven.source ?? "", placeholder: "article, table, page", "data-fk": `fs-ysrc-${b.id}`,
+              on: { change: ev => setHeat({ source: ev.target.value.trim() || null }) } }))));
+    }
+    const modes = [["T_K", "T"], ["duty_kW", "Duty"], ["VF", "VF"]];
+    secs.push(inputsSection("Outlet", modeSeg(modes, ["T_K", "duty_kW", "VF"]), ...shown(modes, ["T_K", "duty_kW", "VF"]).map(fieldFor),
+      h("p", { class: "fa-in-hint" }, "Duty 0: an adiabatic reactor. The duty includes the heat of the reactions."),
+      spec.P_kPa != null ? P("P_kPa", "Outlet pressure") : P("dP_kPa", "Pressure drop"),
+      h("button", { type: "button", class: "fa-mini", "data-fk": `fs-pmode-${b.id}`, on: { click: () => setS(spec.P_kPa != null ? { P_kPa: null } : { dP_kPa: null, P_kPa: 101.325 }) } },
+        spec.P_kPa != null ? "Give a pressure drop instead" : "Give the outlet pressure instead"),
+      h("p", { class: "fa-in-hint" }, "Empty pressure drop: none.")));
   }
   // proposal 0013: the heater's optional sizing, the two-stream exchanger, the valve, the pump, energy streams
   if (b.type === "heater") secs.push(sizingSection({ b, spec, setS, inputsSection, uid, u, done, rateable: energyOf(fs, b.id)?.role !== "in" }));
@@ -615,6 +686,7 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
     f.note = "";
     set({ flowsheet: { ...fs, thermo } });
   };
+  if (f.setup === "reactions") return reactionSections({ state, fs, f, set, uid, inputsSection });
   if (f.setup === "method") {
     // the Method page: the property method and the recycle solver
     return [methodSection({ state, fs, eos, setThermo, inputsSection, uid, problem: methodProblem(fs.components, fs.thermo) }),
@@ -622,24 +694,111 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
   }
   const secs = [];
 
+  // the components and, once there are blocks, what is missing; no hints (the maintainer, 2026-10-22: "do not write
+  // anything, people would know. only if there are errors"): the method is in the toolbar, the blocks in the palette
   secs.push(inputsSection("1. Components",
-    h("p", { class: "fa-in-hint" }, "The components of the whole simulation. Every feed lists exactly these."),
-    chips.length ? h("ol", { class: "fa-chips", "aria-label": "Components of the flowsheet" }, ...chips) : h("div", { class: "fa-empty" }, "None chosen yet."),
+    chips.length ? h("ol", { class: "fa-chips", "aria-label": "Components of the flowsheet" }, ...chips) : null,
     methodProblem(fs.components, fs.thermo) ? warning(methodProblem(fs.components, fs.thermo), { attrs: { role: "alert", "data-fk": "fs-comp-problem" } }) : null,
-    h("div", { class: "fa-add" }, add),
-    h("p", { class: "fa-in-hint" }, "Property method: ",
-      h("button", { type: "button", class: "fa-link", "data-fk": "fs-go-method", title: "Change it on the Method page",
-        on: { click: () => { f.setup = "method"; set({}); } } },
-        modelName(fs.thermo.model) + (eos || (fs.thermo.vapour ?? "ideal") === "ideal" ? "" : ` + ${fs.thermo.vapour}`)),
-      " (Method in the toolbar).")));
+    h("div", { class: "fa-add" }, add)));
   const units = fs.blocks.filter(b => b.type !== "product");
-  secs.push(inputsSection("Flowsheet status",
-    !fs.components.length ? h("p", { class: "fa-in-hint" }, "Choose the components first; then place blocks from the toolbar.")
-      : !units.length ? h("p", { class: "fa-in-hint" }, "Place a block from the toolbar (for example a Flash drum), then add a feed to it. Its outlets leave the flowsheet until you connect them: drag from an outlet dot (●) to another block's inlet ring (○).")
-        : h("div", {}, st ? h("div", { class: `fa-dof ${st.ready ? "is-ok" : "is-bad"}`, role: "status" }, st.message) : null,
+  if (fs.components.length && units.length) secs.push(inputsSection("Flowsheet status",
+        h("div", {}, st ? h("div", { class: `fa-dof ${st.ready ? "is-ok" : "is-bad"}`, role: "status" }, st.message) : null,
           h("ul", { class: "fa-dof-list" }, ...(st ? [...st.structure.map(p => h("li", {}, p.message)),
             ...Object.entries(st.blocks).filter(([, b]) => !b.ok).map(([id, b]) => h("li", {}, h("button", { type: "button", class: "fa-link", "data-fk": `fs-go-${id}`,
               on: { click: () => { f.sel = { kind: "block", id }; set({}); } } }, feedStreamOf(fs, id) ? streamName(feedStreamOf(fs, id)) : blockName(fs.blocks.find(x => x.id === id)) ?? id), ": ", b.message.replace(/^[^:]+: /, "")))] : [])))));
+  return secs;
+}
+
+/** A reaction as words: reactants → products, each with its coefficient (1 is left out). */
+function equation(r) {
+  const side = sign => Object.entries(r.stoichiometry ?? {}).filter(([, v]) => Math.sign(v) === sign)
+    .map(([c, v]) => `${Math.abs(v) === 1 ? "" : `${fmtShort(Math.abs(v), 4)} `}${nameOf(c)}`);
+  const a = side(-1), b = side(1);
+  return a.length || b.length ? `${a.join(" + ") || "…"} → ${b.join(" + ") || "…"}` : "no coefficients yet";
+}
+
+/** What CHEPTA makes of a reaction: its check (balance), and ΔrH° and K at 298.15 K where the formation data allow. */
+function reactionCheck(r) {
+  let c;
+  try { c = checkReaction(r, { userData: drawing }); } catch (e) { return { ok: false, message: e.message.replace(/^[^:]+: /, "") }; }
+  let props = null, missing = null;
+  try { props = reactionProperties(c, 298.15, { userData: drawing }); } catch (e) { missing = e.message.replace(/^[^:]+: /, ""); }
+  return { ok: true, checked: c, props, missing };
+}
+
+/** The Reactions page (proposal 0010, step 7): the flowsheet's reactions, each with its check, heat and K. */
+function reactionSections({ state, fs, f, set, uid, inputsSection }) {
+  const put = (next, note = "") => { f.note = note; set({ flowsheet: next }); };
+  const list = fs.reactions ?? [];
+  const intro = inputsSection("3. Reactions",
+    h("p", { class: "fa-in-hint" }, "The reactions of the process, written once; each conversion reactor uses those you choose in it. CHEPTA ships components, not reactions: write your own, or import a list saved from another project."),
+    !fs.components.length ? h("p", { class: "fa-in-hint" }, "Choose the components first: a reaction is written with them.") : null,
+    h("div", { class: "fa-in-actions" },
+      h("button", { type: "button", class: "fa-mini", "data-fk": "fs-rx-add", disabled: !fs.components.length,
+        on: { click: () => { const r = addReaction(fs); f.open = r.id; put(r.fs); } } }, icon("plus", 14), "Add a reaction"),
+      h("button", { type: "button", class: "fa-mini", "data-fk": "fs-rx-export", disabled: !list.length, title: "Save the reactions as a file, to use them in another project",
+        on: { click: () => {
+          const url = URL.createObjectURL(new Blob([JSON.stringify(reactionsFile(fs), null, 1)], { type: "application/json" }));
+          const a = h("a", { href: url, download: `${(state.title || "flowsheet").replace(/[\\/:*?"<>|]+/g, "-")} - reactions.json`, style: "display:none" });
+          document.body.append(a); a.click(); a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 2000);
+        } } }, icon("download", 14), "Export reactions"),
+      h("label", { class: "fa-mini", "data-fk": "fs-rx-import", title: "Add the reactions of a file saved with Export reactions" }, icon("file", 14), "Import reactions",
+        h("input", { type: "file", accept: ".json,application/json", style: "display:none", on: { change: async ev => {
+          const file = ev.target.files?.[0]; if (!file) return;
+          try { const r = importReactions(fs, JSON.parse(await file.text())); put(r.fs, r.note); }
+          catch (e) { f.note = `The reactions could not be imported: ${e.message}`; set({}); }
+        } } }))));
+  const secs = [intro];
+  for (const r of list) {
+    const chk = reactionCheck(r), coef = r.stoichiometry ?? {};
+    const users = fs.blocks.filter(b => b.type === "conversion-reactor" && (b.spec?.reactions ?? []).some(e => e.reaction === r.id)).map(blockName);
+    const nameInp = h("input", { type: "text", value: r.name ?? "", placeholder: r.id, maxlength: 60, "data-fk": `fs-rx-name-${r.id}`, "aria-label": `Name of reaction ${r.id}`,
+      on: { change: ev => put(setReaction(fs, r.id, { name: ev.target.value.trim() || null })) } });
+    const chips = side => Object.entries(coef).filter(([, v]) => Math.sign(v) === side).map(([c, v]) =>
+      h("span", { class: "fa-rx-chip" }, `${Math.abs(v) === 1 ? "" : `${fmtShort(Math.abs(v), 4)} `}${nameOf(c)}`));
+    const status = !Object.keys(coef).length ? h("div", { class: "fa-dof is-bad", role: "status" }, "Give the coefficients below: negative for reactants, positive for products.")
+      : chk.ok ? h("div", { class: "fa-dof is-ok", role: "status", "data-fk": `fs-rx-ok-${r.id}` }, icon("check", 14), chk.checked.balance.text.replace(/^balanced: /, "Balanced: "))
+        : h("div", { class: "fa-dof is-bad", role: "status", "data-fk": `fs-rx-bad-${r.id}` }, chk.message);
+    const p = chk.props;
+    const heat = !chk.ok ? null : p ? h("div", { class: "fa-rx-props", "data-fk": `fs-rx-props-${r.id}` },
+      h("div", {}, h("b", {}, `ΔrH° = ${fmtShort(p.dH_J_mol / 1000, 5)} kJ/mol`), `, ${p.dH_J_mol < 0 ? "exothermic" : "endothermic"}`),
+      h("div", {}, `ΔrG° = ${fmtShort(p.dG_J_mol / 1000, 5)} kJ/mol, K = ${fmtShort(p.K, 4)}`),
+      h("div", { class: "fa-in-hint" }, `At 298.15 K; standard state: ${p.standardState}; from the components' formation data.`))
+      : warning(`No heat of reaction from formation data: ${chk.missing} Give it below, with its source, to use this reaction in a reactor.`, { attrs: { role: "note" } });
+    const given = r.heatOfReaction ?? {};
+    const setGiven = patch => {
+      const next = { ...given, ...patch };
+      for (const k of Object.keys(next)) if (next[k] == null || next[k] === "") delete next[k];
+      put(setReaction(fs, r.id, { heatOfReaction: Object.keys(next).length ? next : null }));
+    };
+    secs.push(inputsSection(`Reaction ${r.name || r.id}`,
+      h("label", { class: "fa-field fa-field-stack" }, h("span", {}, "Name"), nameInp),
+      h("div", { class: "fa-rx-eq", "aria-label": `Equation: ${equation(r)}` }, ...chips(-1), h("span", { class: "fa-rx-arrow" }, "→"), ...chips(1)),
+      status,
+      segRow("Phase", [["vapour", "Vapour"], ["liquid", "Liquid"]], r.phase === "liquid" ? "liquid" : "vapour", v => put(setReaction(fs, r.id, { phase: v })), `fs-rx-phase-${r.id}`),
+      h("p", { class: "fa-in-hint" }, r.phase === "liquid" ? "Standard state: each pure liquid; K = Π (γ x)^ν." : "Standard state: each ideal gas at 100 kPa; K = Π (f / P°)^ν."),
+      h("div", { class: "fa-rx-coefs", role: "group", "aria-label": "Coefficients" },
+        h("div", { class: "fa-in-hint" }, "Coefficients (− reactant, + product, empty: not in the reaction)"),
+        ...fs.components.map(c => numberField(nameOf(c), coef[c] == null ? "" : String(coef[c]), t => {
+          const v = num(t); if (v === undefined) return false;
+          put(setReaction(fs, r.id, { stoichiometry: { [c]: v } }));
+        }, { id: `rx-${r.id}-${c}`, uid, placeholder: "–" }))),
+      heat,
+      h("details", { class: "fa-rx-given", ...(given.dH_J_mol != null || (chk.ok && !p) ? { open: true } : {}) },
+        h("summary", {}, "Heat of reaction you give (used only where a component has no open enthalpy of formation)"),
+        numberField("ΔrH at 298.15 K", given.dH_J_mol == null ? "" : String(given.dH_J_mol / 1000), t => {
+          const v = num(t); if (v === undefined) return false; setGiven({ dH_J_mol: v == null ? null : v * 1000 });
+        }, { id: `rx-dh-${r.id}`, uid, unit: "kJ/mol", placeholder: "– exothermic" }),
+        h("label", { class: "fa-field fa-field-stack" }, h("span", {}, "Its source"),
+          h("input", { type: "text", value: given.source ?? "", placeholder: "article, table, page", "data-fk": `fs-rx-src-${r.id}`,
+            on: { change: ev => setGiven({ source: ev.target.value.trim() || null }) } }))),
+      h("p", { class: "fa-in-hint" }, r.rate ? `Rate law: ${r.rate.form}${r.rate.source ? ` (${r.rate.source})` : ""}; used by the CSTR and plug-flow reactors (proposal 0010, step 5).`
+        : "Kinetics: with the CSTR and plug-flow reactors (proposal 0010, step 5). The conversion and yield reactors need none."),
+      h("p", { class: "fa-in-hint" }, users.length ? `Used by ${users.join(", ")}.` : "Not used by a reactor yet: choose it in a conversion reactor."),
+      h("div", { class: "fa-in-actions" }, h("button", { type: "button", class: "fa-mini", "data-fk": `fs-rx-del-${r.id}`,
+        on: { click: () => { const x = removeReaction(fs, r.id); put(x.fs, x.note); } } }, icon("trash", 14), `Delete ${r.name || r.id}`))));
+  }
   return secs;
 }
 
@@ -764,6 +923,13 @@ function shape(type, w, hh) {
     // a compressor narrows towards its discharge, an expander widens
     case "compressor": return svgEl("path", { d: `M${-w / 2} ${-hh / 2} L${w / 2} ${-hh / 5} L${w / 2} ${hh / 5} L${-w / 2} ${hh / 2} Z`, class: "fs-shape" });
     case "expander": return svgEl("path", { d: `M${-w / 2} ${-hh / 5} L${w / 2} ${-hh / 2} L${w / 2} ${hh / 2} L${-w / 2} ${hh / 5} Z`, class: "fs-shape" });
+    // a vessel with its agitator; the yield reactor's blades are a fan of products
+    case "conversion-reactor": case "yield-reactor": {
+      const g = svgEl("g", {});
+      g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 10, class: "fs-shape" }),
+        svgEl("path", { d: type === "conversion-reactor" ? `M0 ${-hh / 2 - 6} V8 M-9 4 L9 12 M-9 12 L9 4` : `M0 ${-hh / 2 - 6} V6 M0 6 L-10 14 M0 6 L0 16 M0 6 L10 14`, class: "fs-detail" }));
+      return g;
+    }
     default: return svgEl("g", {});
   }
 }
@@ -774,11 +940,10 @@ export function flowsheetView(ctx) {
   enter(state);
   const f = ensureUi(ui), fs = state.flowsheet, u = state.units;
   feedSel(f, fs);
+  // nothing written before the components are chosen: the Components page is open in the Inputs panel
   if (!fs.components.length) {
-    plot.replaceChildren(h("div", { class: "fa-need is-start", role: "status" },
-      h("h3", {}, "Start by choosing the components of the simulation"),
-      h("p", {}, "1. Components and 2. Method are in the Inputs panel (or the Setup group of the toolbar). Then place blocks from the toolbar: a Flash drum, a Heater, a Splitter… Every outlet leaves the flowsheet as a product until you connect it to another block.")));
-    side.replaceChildren(h("div", { class: "fa-empty" }, "No flowsheet yet."));
+    plot.replaceChildren();
+    side.replaceChildren();
     return { data: "Setup: choose the components" };
   }
   const sol = solution(state, ui);
@@ -1107,7 +1272,6 @@ export function flowsheetView(ctx) {
   plot.replaceChildren(wrap);
   if (hadFocus) wrap.focus({ preventScroll: true });
   wrap.append(svg);
-  if (!units.length) wrap.append(h("div", { class: "fs-empty-hint" }, "Place a block from the toolbar: Flash drum, Heater/Cooler, Mixer, Splitter, Separator or Feed."));
   // what "Fit" in the toolbar measures: the box shown and the drawing's extent; the view stays where it was scrolled
   f.view = { wrap, w: maxX - minX, h: maxY - minY };
   if (f.scroll) { wrap.scrollLeft = f.scroll.left; wrap.scrollTop = f.scroll.top; }
@@ -1120,6 +1284,13 @@ export function flowsheetView(ctx) {
   const it = res?.loops?.reduce((a, l) => a + l.iterations, 0);
   if (sol.error) return { data: "Not solved: see the message above the drawing" };
   return { data: res ? `Solved${res.loops.length ? `, ${res.loops.length} recycle${res.loops.length > 1 ? "s" : ""} in ${it} iterations` : ""}` : sol.status.message };
+}
+
+/** A conversion reactor's reactions, one line each (the table under the streams has the columns). */
+function reactionList(fs, rx) {
+  const byId = new Map((fs.reactions ?? []).map(r => [r.id, r]));
+  return h("ul", { class: "fa-rx-list" }, ...Object.entries(rx.extents_kmol_h).map(([id, xi]) => h("li", {},
+    h("b", {}, byId.get(id)?.name || id), `: ${fmtShort(rx.conversions[id]?.conversion, 4)} of ${nameOf(rx.conversions[id]?.key)}, extent ${fmtShort(xi, 5)} kmol/h, ΔrH ${fmtShort(rx.heats[id].dH_J_mol / 1000, 5)} kJ/mol`)));
 }
 
 function kvList(rows) {
@@ -1150,8 +1321,17 @@ function resultsPanel({ state, f, sol, u }) {
         z?.U_W_m2K != null ? ["U", `${fmtShort(z.U_W_m2K, 4)} W/(m² K)`] : null,
         z?.dT_min_K != null ? ["Smallest ΔT", `${fmtShort(z.dT_min_K, 4)} K`] : null,
         z?.utility?.flow_kg_h != null ? ["Utility", `${fmtShort(z.utility.flow_kg_h, 5)} kg/h`] : null,
-        ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)],
-      ]), ...(z?.utility?.describe ? [h("div", { class: "fug-foot" }, `Utility: ${z.utility.describe}.`)] : []), ...(z?.note ? [h("div", { class: "fug-foot" }, z.note)] : []),
+        r.reaction ? ["Heat of the reactions at 298.15 K (− released)", `${fmtShort(r.reaction.heat_kW, 5)} kW`] : null,
+        ...(r.reaction ? Object.entries(r.reaction.keyConversion ?? {}).map(([c, x]) => [`Conversion of ${nameOf(c)}`, fmtShort(x, 5)]) : []),
+        r.reaction?.heat ? ["ΔrH at 298.15 K, per mol of key", `${fmtShort(r.reaction.heat.dH_J_mol / 1000, 5)} kJ/mol`] : null,
+        r.reaction ? ["Element balance", r.balance.elements ? (Object.values(r.balance.elements).every(d => d < 1e-9) ? "closed" : "check")
+          : Object.keys(r.reaction.elementImbalance ?? {}).length ? "not closed (see the note)" : "closed"] : null,
+        r.balance.material != null ? ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)]
+          : ["Mass balance", r.balance.mass < 1e-9 ? "closed" : r.balance.mass.toExponential(1)],
+      ]), ...(r.reaction?.extents_kmol_h ? [reactionList(fs, r.reaction)] : []),
+      ...(r.reaction ? [h("div", { class: "fug-foot" }, "The duty is the enthalpy out minus in plus the heat of the reactions at 298.15 K (the enthalpies are against each ideal gas at 298.15 K), so at another temperature it differs from that heat.")] : []),
+      ...(r.reaction?.heat ? [h("div", { class: "fug-foot" }, `Heat of reaction: ${r.reaction.heat.from}.`)] : []),
+      ...(z?.utility?.describe ? [h("div", { class: "fug-foot" }, `Utility: ${z.utility.describe}.`)] : []), ...(z?.note ? [h("div", { class: "fug-foot" }, z.note)] : []),
       ...(z?.rating ? [h("div", { class: "fug-foot" }, z.rating.summary)] : []), ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)), ...r.notes.map(n => warning(n)));
     } else out.push(h("div", { class: "fa-empty" }, sol.status.blocks?.[f.sel.id]?.ok === false ? sol.status.blocks[f.sel.id].message : "Not calculated yet."));
   } else if (f.sel?.kind === "energy") {
@@ -1186,6 +1366,7 @@ function resultsPanel({ state, f, sol, u }) {
         ["Heat in", `${fmtShort(qin, 5)} kW`], ["Heat out", `${fmtShort(-qout, 5)} kW`],
         wk ? ["Work (pumps and compressors in, expanders out)", `${wk >= 0 ? "+" : "−"}${fmtShort(Math.abs(wk), 5)} kW`] : null,
         inner ? ["Heat recovered (energy streams)", `${fmtShort(inner, 5)} kW`] : null,
+        res.balance.reaction_kW != null ? ["Heat of the reactions", `${fmtShort(res.balance.reaction_kW, 5)} kW`] : null,
         ["Material balance", Object.values(res.balance.material_kmol_h).every(v => Math.abs(v) < 1e-6) ? "closed" : "check"],
         ["Energy balance", `${fmtShort(res.balance.energy_kW, 3)} kW`],
       ]), h("div", { class: "fug-foot" }, `Model: ${fs.thermo.model}${["PR", "SRK"].includes(fs.thermo.model) ? "" : `, ${fs.thermo.vapour} vapour`}${PAIR_MODELS.includes(fs.thermo.model) ? `; parameter sets (Library): ${setsLabel(state)}` : ""}. Model predictions, not measurements; the parameter sources are in Sources.`));
@@ -1225,12 +1406,29 @@ function streamTable({ fs, res, u, state }) {
     h("div", { class: "fug-scroll" }, h("table", { class: "fa-table fa-stream" },
       h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Stream"), h("th", { scope: "col" }, "Unit"), ...ids.map(id => h("th", { scope: "col", class: "fug-num" }, streamName(fs.streams.find(s => s.id === id)))))),
       h("tbody", {}, ...rows.map(([label, unit, vals]) => h("tr", {}, h("th", { scope: "row" }, label), h("td", {}, unit), ...vals.map(v => h("td", { class: "fug-num" }, fmt(v)))))))),
+    ...reactorRows(fs, res),
     qs.length ? h("h3", {}, "Energy streams") : null,
     qs.length ? h("table", { class: "fa-table" }, h("thead", {}, h("tr", {}, h("th", {}, "Stream"), h("th", {}, "Block"), h("th", {}, "Kind"), h("th", { class: "fug-num" }, "kW"))),
       h("tbody", {}, ...qs.map(q => h("tr", {}, h("th", { scope: "row" }, q.id), h("td", {}, q.from ? `${q.from} → ${q.to}` : q.block),
         h("td", {}, q.kind === "work" ? "work" : q.internal ? "heat between blocks" : q.from === null ? "energy feed" : fs.blocks.find(b => b.id === q.block)?.energy === false ? "heat (not drawn)" : "heat"),
         h("td", { class: "fug-num" }, `${q.duty_kW >= 0 ? "+" : "−"}${fmtShort(Math.abs(q.duty_kW), 5)}`))))) : null,
     h("p", { class: "fug-foot" }, "Duty: + heat into the block, − heat out; between two blocks, the heat the first gives up and the second takes. The power of a pump, compressor or expander is work (an expander's is negative: it gives power). Enthalpy reference: each component as an ideal gas at 298.15 K."));
+}
+
+/** Under the stream table: each reactor's conversions, extents and heat (proposal 0010, step 7). */
+function reactorRows(fs, res) {
+  const rx = fs.blocks.filter(b => REACTORS.includes(b.type) && res.blocks[b.id]?.reaction);
+  if (!rx.length) return [];
+  const byId = new Map((fs.reactions ?? []).map(r => [r.id, r]));
+  const rows = rx.flatMap(b => {
+    const r = res.blocks[b.id].reaction;
+    if (r.extents_kmol_h) return Object.entries(r.extents_kmol_h).map(([id, xi]) => [blockName(b), byId.get(id)?.name || id, nameOf(r.conversions[id].key), r.conversions[id].conversion, xi, r.heats[id].dH_J_mol / 1000, xi * r.heats[id].dH_J_mol / 3600]);
+    const [key, X] = Object.entries(r.keyConversion)[0];
+    return [[blockName(b), "yields", nameOf(key), X, r.converted_kmol_h[key], r.heat.dH_J_mol / 1000, r.heat_kW]];
+  });
+  return [h("h3", {}, "Reactors"), h("table", { class: "fa-table" },
+    h("thead", {}, h("tr", {}, ...["Reactor", "Reaction", "Key", "Conversion", "Extent, kmol/h", "ΔrH (298.15 K), kJ/mol", "Heat (298.15 K), kW"].map((t, k) => h("th", { class: k > 2 ? "fug-num" : null }, t)))),
+    h("tbody", {}, ...rows.map(row => h("tr", {}, ...row.map((v, k) => (k === 0 ? h("th", { scope: "row" }, v) : h("td", { class: k > 2 ? "fug-num" : null }, typeof v === "number" ? fmtShort(v, 5) : v)))))))];
 }
 
 function csvTools(ctx, fs, res, u) {
