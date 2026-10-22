@@ -18,6 +18,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   crystal energies of combustion disagree by about 100 kJ/mol); five records are uncertain (the values disagree by more
   than 10 kJ/mol: 2-methoxyethanol, 1,3-propanediol, limonene, gamma-butyrolactone, levoglucosan); 22 components have no
   open data. Compare the transcribed values with their sources.
+- **Proposal 0014** (Draft; docs/decisions/2026-10-22-08-skills-review.md): what CHEPTA could take from the K-Dense
+  scientific agent skills, five steps; accept or decline, or single steps. Nothing was added.
 - **Values the maintainer adds** (2026-10-21; [MISSING_PROPERTIES_2026-10-21.md](MISSING_PROPERTIES_2026-10-21.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
