@@ -12,7 +12,7 @@ import { h, s as svgEl } from "./dom.js";
 import { icon } from "./icons.js";
 import { FUTURE_MODELS } from "./future-models.js";
 import { modelPicker } from "./model-picker.js";
-import { listComponents, modelName } from "../thermo/system.js";
+import { listComponents } from "../thermo/system.js";
 import { methodAdvice } from "../thermo/method-advice.js";
 import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
@@ -706,21 +706,15 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
   }
   const secs = [];
 
+  // the components and, once there are blocks, what is missing; no hints (the maintainer, 2026-10-22: "do not write
+  // anything, people would know. only if there are errors"): the method is in the toolbar, the blocks in the palette
   secs.push(inputsSection("1. Components",
-    h("p", { class: "fa-in-hint" }, "The components of the whole simulation. Every feed lists exactly these."),
-    chips.length ? h("ol", { class: "fa-chips", "aria-label": "Components of the flowsheet" }, ...chips) : h("div", { class: "fa-empty" }, "None chosen yet."),
+    chips.length ? h("ol", { class: "fa-chips", "aria-label": "Components of the flowsheet" }, ...chips) : null,
     methodProblem(fs.components, fs.thermo) ? warning(methodProblem(fs.components, fs.thermo), { attrs: { role: "alert", "data-fk": "fs-comp-problem" } }) : null,
-    h("div", { class: "fa-add" }, add),
-    h("p", { class: "fa-in-hint" }, "Property method: ",
-      h("button", { type: "button", class: "fa-link", "data-fk": "fs-go-method", title: "Change it on the Method page",
-        on: { click: () => { f.setup = "method"; set({}); } } },
-        modelName(fs.thermo.model) + (eos || (fs.thermo.vapour ?? "ideal") === "ideal" ? "" : ` + ${fs.thermo.vapour}`)),
-      " (Method in the toolbar).")));
+    h("div", { class: "fa-add" }, add)));
   const units = fs.blocks.filter(b => b.type !== "product");
-  secs.push(inputsSection("Flowsheet status",
-    !fs.components.length ? h("p", { class: "fa-in-hint" }, "Choose the components first; then place blocks from the toolbar.")
-      : !units.length ? h("p", { class: "fa-in-hint" }, "Place a block from the toolbar (for example a Flash drum), then add a feed to it. Its outlets leave the flowsheet until you connect them: drag from an outlet dot (●) to another block's inlet ring (○).")
-        : h("div", {}, st ? h("div", { class: `fa-dof ${st.ready ? "is-ok" : "is-bad"}`, role: "status" }, st.message) : null,
+  if (fs.components.length && units.length) secs.push(inputsSection("Flowsheet status",
+        h("div", {}, st ? h("div", { class: `fa-dof ${st.ready ? "is-ok" : "is-bad"}`, role: "status" }, st.message) : null,
           h("ul", { class: "fa-dof-list" }, ...(st ? [...st.structure.map(p => h("li", {}, p.message)),
             ...Object.entries(st.blocks).filter(([, b]) => !b.ok).map(([id, b]) => h("li", {}, h("button", { type: "button", class: "fa-link", "data-fk": `fs-go-${id}`,
               on: { click: () => { f.sel = { kind: "block", id }; set({}); } } }, feedStreamOf(fs, id) ? streamName(feedStreamOf(fs, id)) : blockName(fs.blocks.find(x => x.id === id)) ?? id), ": ", b.message.replace(/^[^:]+: /, "")))] : [])))));
@@ -958,11 +952,10 @@ export function flowsheetView(ctx) {
   enter(state);
   const f = ensureUi(ui), fs = state.flowsheet, u = state.units;
   feedSel(f, fs);
+  // nothing written before the components are chosen: the Components page is open in the Inputs panel
   if (!fs.components.length) {
-    plot.replaceChildren(h("div", { class: "fa-need is-start", role: "status" },
-      h("h3", {}, "Start by choosing the components of the simulation"),
-      h("p", {}, "1. Components and 2. Method are in the Inputs panel (or the Setup group of the toolbar). Then place blocks from the toolbar: a Flash drum, a Heater, a Splitter… Every outlet leaves the flowsheet as a product until you connect it to another block.")));
-    side.replaceChildren(h("div", { class: "fa-empty" }, "No flowsheet yet."));
+    plot.replaceChildren();
+    side.replaceChildren();
     return { data: "Setup: choose the components" };
   }
   const sol = solution(state, ui);
@@ -1291,7 +1284,6 @@ export function flowsheetView(ctx) {
   plot.replaceChildren(wrap);
   if (hadFocus) wrap.focus({ preventScroll: true });
   wrap.append(svg);
-  if (!units.length) wrap.append(h("div", { class: "fs-empty-hint" }, "Place a block from the toolbar: Flash drum, Heater/Cooler, Mixer, Splitter, Separator or Feed."));
   // what "Fit" in the toolbar measures: the box shown and the drawing's extent; the view stays where it was scrolled
   f.view = { wrap, w: maxX - minX, h: maxY - minY };
   if (f.scroll) { wrap.scrollLeft = f.scroll.left; wrap.scrollTop = f.scroll.top; }

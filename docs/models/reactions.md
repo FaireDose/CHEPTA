@@ -198,3 +198,13 @@ products, and its energy balance subtracts the heat of the reactions. Its result
   reaction.
 - A methanol loop with a recycle and a purge against the hand calculation, with the overall material, element and
   energy balances.
+
+**In the workbench** (step 7): the Flowsheet workspace has a Reactions page next to Components and Method.
+
+- Each reaction is written with one coefficient per component. Its balance check and, where the formation data allow,
+  ΔrH°, ΔrG° and K at 298.15 K are shown at once.
+- Reactions can be exported as a file and imported into another project.
+- The Reactors group of the toolbar places the two blocks.
+- Their results give the duty, the heat of the reactions and the conversions; the table under the streams gives a row
+  per reaction.
+- The Excel export writes a conversion reactor's outlet flows as formulas of its conversions.

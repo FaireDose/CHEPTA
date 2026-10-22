@@ -526,7 +526,7 @@ export function app(target, cfg = {}) {
       onPick: pid => { if (pid) set({ inputs: { [view]: [...value, pid] } }); },
     });
     return h("div", { class: "fa-list" },
-      value.length ? h("ol", { class: "fa-chips", "aria-label": "Chosen components" }, ...chips) : h("div", { class: "fa-empty" }, "None chosen yet."),
+      value.length ? h("ol", { class: "fa-chips", "aria-label": "Chosen components" }, ...chips) : null,
       h("div", { class: "fa-add" }, h("label", { class: "fa-visually-hidden", for: addId }, "Add a component"), add));
   }
 
@@ -546,7 +546,7 @@ export function app(target, cfg = {}) {
       onPick: pid => { if (pid) onChange([...ids, pid]); },
     });
     return h("div", { class: "fa-list" },
-      ids.length ? h("ol", { class: "fa-chips", "aria-label": "Components of the stream" }, ...chips) : h("div", { class: "fa-empty" }, "None chosen yet."),
+      ids.length ? h("ol", { class: "fa-chips", "aria-label": "Components of the stream" }, ...chips) : null,
       h("div", { class: "fa-add" }, h("label", { class: "fa-visually-hidden", for: addId }, "Add a component"), add));
   }
 
@@ -702,7 +702,7 @@ export function app(target, cfg = {}) {
           ? "Up to six, separated by commas; for the T-s and h-s charts. The P-h chart shows isotherms at 100 to 500 °C."
           : "Up to six, separated by commas.")));
     }
-    left.replaceChildren(h("div", { class: "fa-panel-head" }, h("h2", {}, "Inputs"), h("span", { class: "fa-count" }, VIEWS[v].label)), ...secs);
+    left.replaceChildren(h("div", { class: "fa-panel-head" }, h("h2", {}, "Inputs")), ...secs);
   }
 
   // ---- Flash workspace: the feed composition (in the display basis) and the specification
@@ -839,36 +839,12 @@ export function app(target, cfg = {}) {
   }
 
   function renderCanvasBar() {
-    const v = state.view, u = state.units, check = viewCheck(state, v);
-    const title = v === "flowsheet" ? state.title || "Flowsheet" : check.ok ? state.title || calculationName() : VIEWS[v].label;
-    const prop = v === "properties" ? explorerProperties().find(p => p.key === state.property) : null;
-    const ml = modelLabel(state);
-    const sub = !check.ok ? `${needsOf(v, state.model)} needed: choose them in Inputs` : {
-      txy: `T-x-y diagram at ${fmtP(state.P_kPa, u)}, ${ml}`,
-      ternary: `Bubble-temperature map and residue curves at ${fmtP(state.P_kPa, u)}, ${ml}`,
-      azeotropes: `Binary and ternary azeotropes at ${fmtP(state.P_kPa, u)}, ${ml}`,
-      pxy: `P-x-y diagram at ${fmtTemp(pxyTemperature(state), u)}, ${ml}`,
-      envelope: state.components.length > 1 && isEosModel(state.model) ? `Phase envelope of the feed through its critical point, ${ml}` : `Bubble and dew points of the feed, ${ml}`,
-      flash: `${FLASH_SPECS.find(f => f.id === state.flash.spec).title} flash, ${ml}`,
-      hx: (() => { const x = state.hx ?? HX_DEFAULTS, task = x.task === "rating" ? "rating" : "pre-sizing";
-        return x.mode === "two" ? `Process exchanger, ${task}: each stream with its own method` : `Utility exchanger, ${task}, ${ml}`; })(),
-      henry: `Solubility at ${fmtTemp(state.henryT_K, u)} and a gas partial pressure of ${fmtP(state.henryP_kPa, u)}, Henry's law`,
-      solid: `Solubility of the solid against temperature, ${ml}`,
-      sle: `Solid-liquid diagram with the eutectic, ${ml}`,
-      properties: `${prop?.label ?? "Property"} against temperature, pure component`,
-      steam: `${CHART_TITLE[state.chart.kind]} with ${state.chart.kind === "PH" ? "isotherms" : "isobars"}, IAPWS-IF97`,
-      charts: `${CHART_TITLE[state.chart.kind]} with ${state.chart.kind === "PH" ? "isotherms" : "isobars"}, ${ml}`,
-      flowsheet: state.flowsheet.components.length
-        ? `${state.flowsheet.components.map(nameOf).join(", ")}; ${state.flowsheet.thermo.model}${["PR", "SRK"].includes(state.flowsheet.thermo.model) ? "" : `, ${state.flowsheet.thermo.vapour} vapour`}`
-        : "Setup: components, then method, then blocks",
-    }[v];
+    // no line above or below the title: the tabs, the ribbon, the Inputs panel and the status bar already say what is
+    // calculated and how (the maintainer, 2026-10-22: "do not write anything, people would know. only if there are
+    // errors"); the title only when the person gave the project one
     const tog = (ico, label, pressed, onClick, fk) => h("button", { type: "button", class: "fa-icon-btn", "aria-pressed": String(pressed), title: label, "aria-label": label, "data-fk": fk, on: { click: onClick } }, icon(ico, 18));
-    const ws = WORKSPACES.find(w => w.id === state.workspace);
     canvasBar.replaceChildren(
-      h("div", { class: "fa-canvas-title" },
-        h("div", { class: "fa-crumb" }, ws.label, state.workspace === "equilibrium" ? ` / ${VIEWS[v].label}` : ""),
-        h("h2", {}, v === "properties" && check.ok ? [h("span", { class: "fa-role-tag" }, "Component"), title] : title),
-        h("div", { class: "fa-sub" }, sub)),
+      h("div", { class: "fa-canvas-title" }, state.title ? h("h2", {}, state.title) : null),
       h("div", { class: "fa-canvas-tools", role: "toolbar", "aria-label": "Panels" },
         tog("panelL", "Inputs panel", state.panels.left, () => set({ panels: { left: !state.panels.left } }, { canvas: false }), "tog-left"),
         tog("layers", state.background ? "Hide background layers" : "Show background layers", state.background, () => set({ background: !state.background }, { canvas: false }), "tog-bg"),
@@ -1296,7 +1272,7 @@ export function app(target, cfg = {}) {
       delete plot.dataset.view;
       if (!check.ok) {
         plot.replaceChildren(needInputs(v, check));
-        side.replaceChildren(h("div", { class: "fa-empty" }, blank(v) ? "No results yet: choose the components." : "No results yet: the inputs are incomplete."));
+        side.replaceChildren();
       } else {
         try {
           const viewState = { ...state, components: check.use, z: state.z[v] ?? null };
@@ -1323,11 +1299,10 @@ export function app(target, cfg = {}) {
 
   function needInputs(v, check) {
     if (blank(v)) {
-      const examples = examplesFor(v, PRESETS, state.model).length;
-      return h("div", { class: "fa-need is-start", role: "status" },
+      // nothing to say before anything is chosen (the Inputs panel shows what to choose); only the box that restores
+      // the work of an earlier visit, and the button that opens the Inputs panel when it is closed
+      return h("div", { class: "fa-need-start", role: "status" },
         restoreBox(),
-        h("h3", {}, `Start by choosing ${needsOf(v, state.model).toLowerCase()}`),
-        h("p", {}, `Choose them in the Inputs panel${ui.size === "narrow" ? " above" : ""}${examples ? ", or load one of the Examples there" : ""}. The ${lower(VIEWS[v].label)} is calculated as soon as the inputs fit; the ribbon switches between diagrams, models and the other workspaces.`),
         state.panels.left ? null : h("button", { type: "button", class: "fa-mini", "data-fk": "show-inputs", on: { click: () => set({ panels: { left: true } }, { canvas: false }) } }, icon("panelL", 15), "Show the Inputs panel"));
     }
     // a small warning (the maintainer, 2026-10-21): what is missing, the problems and the hint when pressed

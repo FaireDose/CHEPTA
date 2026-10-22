@@ -452,6 +452,7 @@ a.fa-mini{text-decoration:none}
 .fa-rx-props{display:grid; gap:2px; margin:6px 0; font-size:12.5px}
 .fa-rx-list{margin:6px 0; padding-left:16px; font-size:12.5px; display:grid; gap:3px}
 .fa-chip-x{background:none; border:0; cursor:pointer; font-size:14px; line-height:1; padding:0 2px; color:inherit}
+.fa-need-start{max-width:520px; margin:32px auto}
 .fa-need{max-width:520px; margin:32px auto; border:1px dashed var(--fug-rule); border-radius:10px; padding:18px 20px; background:var(--fa-panel); font-size:13px}
 .fa-need h3{margin:0 0 8px; font-size:14px; font-weight:600}
 .fa-need ul{margin:0 0 10px; padding-left:18px; display:grid; gap:4px; color:var(--fug-fg)}

@@ -21,10 +21,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **Supplier data** (docs/decisions/2026-10-22-06-supplier-data.md): the rule is written (3 suppliers within 2 K or
   1 %, assay of at least 98 %, single constants only, tier `supplier`); no record uses it yet.
 - **Reactors, step 3** (proposal 0010; docs/decisions/2026-10-22-10-reactors.md): confirm the energy basis (the
-  stream enthalpies against each ideal gas at 298.15 K, the heat of reaction on the same basis), parallel conversions
-  as the default, and the yield reactor's element balance reported, not enforced. HMF rehydration (step 8) waits for an
-  open ideal-gas heat capacity of levulinic acid. A flash of a system with hydrogen and the "ideal" model at 550 K does
-  not finish (on main too); to look into.
+  stream enthalpies against each ideal gas at 298.15 K, the heat of reaction on the same basis) and parallel
+  conversions as the default; the yield reactor's element balance is reported, not enforced (the maintainer,
+  2026-10-22: "it is ok to report the imbalances"). The views came next (step 7,
+  docs/decisions/2026-10-22-11-reactor-views.md): check the Reactions page and the reactor blocks in the workbench.
+  HMF rehydration (step 8) waits for an open ideal-gas heat capacity of levulinic acid. A flash of a system with
+  hydrogen and the "ideal" model at 550 K does not finish (on main too); to look into.
 - **Reactions, step 2** (proposal 0010; docs/decisions/2026-10-22-05-reactions.md): confirm the standard pressure of
   100 kPa, the pure-liquid standard state and its paths (through the saturated vapour, for acetic acid with its
   monomers and dimers; crystal to liquid with ΔHfus); compare the WebBook liquid values of
@@ -202,7 +204,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   4. equilibrium reactor;
   5. CSTR and plug flow;
   6. Gibbs reactor;
-  7. views;
+  7. views (pull request of docs/decisions/2026-10-22-11-reactor-views.md: the Reactions page, the reactor blocks, Excel);
   8. benchmarks;
   9. the user's own kinetics (a text box).
 - **0012, your own data** (accepted 2026-10-16): property records, components, pairs and Modified UNIFAC 2.0 groups

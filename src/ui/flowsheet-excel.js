@@ -71,7 +71,8 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
   comps.forEach(c => I.push([nameOf(c), c, val(pure(c, own).MW)]));
   const mwRange = `Inputs!$C$${mwRow0 + 1}:$C$${mwRow0 + n}`;
   I.push([], [{ v: "Method", s: "bold" }, `${fs.thermo.model}${["PR", "SRK"].includes(fs.thermo.model) ? "" : `, ${fs.thermo.vapour ?? "ideal"} vapour`}`], []);
-  const feedCell = {}, fracCell = {}, sepCell = {};
+  const feedCell = {}, fracCell = {}, sepCell = {}, convCell = {};
+  const reactionsById = new Map((fs.reactions ?? []).map(r => [r.id, r]));
   for (const b of fs.blocks) {
     const spec = b.spec ?? {};
     if (b.type === "feed") {
@@ -106,6 +107,16 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
           return F(`1-${others.length ? `SUM(${others.join(",")})` : "0"}`);
         })]);
       }
+      I.push([]);
+    } else if (b.type === "conversion-reactor") {
+      // the conversion of each reaction's key: an input; the outlet flows are formulas of it (proposal 0010, step 7)
+      I.push([{ v: `Conversion reactor ${b.label || b.id}: conversion of each reaction's key (${spec.order === "series" ? "in series" : "in parallel"})`, s: "bold" }]);
+      convCell[b.id] = (spec.reactions ?? []).map(e => {
+        const r = reactionsById.get(e.reaction);
+        const row = I.length;
+        I.push([`${r?.name || e.reaction}: conversion of ${nameOf(e.key)}`, null, inp(Number(e.conversion ?? 0))]);
+        return { r, key: comps.indexOf(e.key), cell: at(row, 2) };
+      });
       I.push([]);
     } else if (["flash", "heater", "mixer"].includes(b.type) && Object.keys(spec).length) {
       I.push([{ v: `${unitType(b.type).label} ${b.label || b.id}`, s: "bold" }, concept && b.type === "flash"
@@ -145,6 +156,18 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
     if (b.type === "hx") return inletsOf(bid, portOf(s.from).port).map(x => refOf(x, i)).join("+");
     if (b.type === "splitter") { const k = fs.streams.filter(x => x.from === `${bid}.out`).findIndex(x => x.id === s.id); return `${sumIn}*Inputs!${fracCell[bid][k]}`; }
     if (b.type === "separator") { const k = fs.streams.filter(x => x.from === `${bid}.out`).findIndex(x => x.id === s.id); return `${sumIn}*Inputs!${sepCell[bid][c][k]}`; }
+    if (b.type === "conversion-reactor" && convCell[bid]) {
+      // out = in + Σ ν ξ, with ξ = X × (the key's inlet flow, or in series what the reactions before left) / −ν_key
+      const inflow = j => `(${ins.map(x => refOf(x, j)).join("+")})`;
+      const steps = convCell[bid].filter(st => st.r && st.key >= 0);
+      const xi = [];
+      for (const st of steps) {
+        const nuKey = st.r.stoichiometry[comps[st.key]];
+        const before = b.spec.order === "series" ? xi.map((x, q) => { const nu = steps[q].r.stoichiometry[comps[st.key]]; return nu ? `+(${nu})*${x}` : ""; }).join("") : "";
+        xi.push(`(${st.cell}*(${inflow(st.key)}${before})/${-nuKey})`);
+      }
+      return inflow(i) + steps.map((st, k) => { const nu = st.r.stoichiometry[c]; return nu ? `+(${nu})*${xi[k]}` : ""; }).join("");
+    }
     return drum(s, i);   // flash drum outlets: the concept model, or null (phase equilibrium, from CHEPTA)
   };
   // concept model with recycles: the tear streams are solved by explicit passes (no circular reference)
@@ -174,13 +197,22 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
   for (const q of Object.values(res.energy ?? {})) {
     const ins = fs.streams.filter(s => portOf(s.to).block === q.block && col.has(s.id)).map(s => s.id);
     const outs = fs.streams.filter(s => portOf(s.from).block === q.block && col.has(s.id)).map(s => s.id);
-    E.push([q.id, q.block, F(`${outs.map(Hcell).join("+") || "0"}-(${ins.map(Hcell).join("+") || "0"})`, q.duty_kW), "enthalpy flows out minus in"]);
+    // a reactor: plus the heat of its reactions at 298.15 K, a value from CHEPTA (the enthalpies are against each ideal gas there)
+    const heat = res.blocks[q.block]?.reaction?.heat_kW;
+    E.push([q.id, q.block, F(`${outs.map(Hcell).join("+") || "0"}-(${ins.map(Hcell).join("+") || "0"})${heat != null ? `+(${+heat.toPrecision(12)})` : ""}`, q.duty_kW),
+      heat != null ? "enthalpy flows out minus in, plus the heat of the reactions at 298.15 K (from CHEPTA)" : "enthalpy flows out minus in"]);
   }
-  E.push([], [{ v: "Material balance: feeds minus products", s: "bold" }, { v: "kmol/h", s: "bold" }]);
+  const reactors = fs.blocks.filter(b => res.blocks[b.id]?.reaction);
+  E.push([], [{ v: reactors.length ? "Material balance: feeds plus what the reactors make, minus products" : "Material balance: feeds minus products", s: "bold" }, { v: "kmol/h", s: "bold" }]);
   const feedsOut = streams.filter(s => blocks.get(portOf(s.from).block)?.type === "feed").map(s => s.id);
   const prodIn = streams.filter(s => blocks.get(portOf(s.to).block)?.type === "product").map(s => s.id);
   comps.forEach((c, i) => {
-    const f = `${feedsOut.map(x => `Streams!${flowRef(x, i)}`).join("+") || "0"}-(${prodIn.map(x => `Streams!${flowRef(x, i)}`).join("+") || "0"})`;
+    // what a reactor makes: its outlets minus its inlets
+    const gen = reactors.map(b => {
+      const io = side => fs.streams.filter(s => portOf(side === "out" ? s.from : s.to).block === b.id && col.has(s.id)).map(s => `Streams!${flowRef(s.id, i)}`).join("+") || "0";
+      return `+(${io("out")})-(${io("in")})`;
+    }).join("");
+    const f = `${feedsOut.map(x => `Streams!${flowRef(x, i)}`).join("+") || "0"}${gen}-(${prodIn.map(x => `Streams!${flowRef(x, i)}`).join("+") || "0"})`;
     E.push([nameOf(c), null, F(f, res.balance.material_kmol_h[c] ?? 0)]);
   });
 
