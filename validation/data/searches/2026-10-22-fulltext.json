@@ -647,7 +647,7 @@
     "downloaded": {
      "doi": "10.2139/ssrn.6083032",
      "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
-     "held": "**measured, held for the maintainer**: Bogatishcheva et al., SSRN preprint 2026 (not peer reviewed), doi:10.2139/ssrn.6083032, Tables 3 and 4: Tc = 612 K (U_r 1.5 %), pc = 3.73 MPa (U_r 4.5 %), pulse heating; as a fixed point of the vapour-pressure curve it raises the miss of Lomba 2014 from the accepted 2.96 % to 3.37 % (stated 2.59 %). Its heat capacities (Eq. 24, 298-417 K, 3 %) and thermal conductivities (Eq. 27, 303-373 K, 8.5 %) were added"
+     "held": "**measured, added** (the maintainer accepted the larger vapour-pressure miss, 2026-10-22): Bogatishcheva et al., SSRN preprint 2026 (not peer reviewed), doi:10.2139/ssrn.6083032, Tables 3 and 4: Tc = 612 K (U_r 1.5 %), pc = 3.73 MPa (U_r 4.5 %), pulse heating; with it the vapour-pressure set of Lomba 2014 misses the curve by 3.37 % (stated 2.59 %). With its heat capacities (Eq. 24, 298-417 K, 3 %) and thermal conductivities (Eq. 27, 303-373 K, 8.5 %)"
     }
    },
    "Tb": {
@@ -719,7 +719,7 @@
     "downloaded": {
      "doi": "10.2139/ssrn.6083032",
      "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
-     "held": "**measured, held for the maintainer**: Bogatishcheva et al. 2026 (as for methyl lactate): Tc = 617 K, pc = 3.32 MPa; as a fixed point it raises the miss of Resa 2010 from the accepted 1.94 % to 2.35 % (stated 1.70 %). Its heat capacities (298-398 K) and thermal conductivities were added"
+     "held": "**measured, added** (as for methyl lactate): Bogatishcheva et al. 2026: Tc = 617 K, pc = 3.32 MPa; Resa 2010 misses the curve by 2.35 % (stated 1.70 %). With its heat capacities (298-398 K) and thermal conductivities"
     }
    }
   },

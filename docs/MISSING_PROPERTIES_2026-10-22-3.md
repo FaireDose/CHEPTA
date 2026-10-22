@@ -9,8 +9,8 @@ Each gap is a "no open data" marker in `src/data/components.json` with the sourc
 | Property | Missing | Predicted only | What it blocks today |
 |---|---|---|---|
 | Vapour pressure | 7 | - | Everything with a vapour: bubble and dew points, flashes, diagrams, distillation. The worst gap. |
-| Critical constants (Tc, Pc, ω) | 16 | - | Peng–Robinson and SRK, for either phase. Activity models with an ideal-gas vapour still work. |
-| Normal boiling point | 13 | - | Only where it is shown; the vapour-pressure record still works over its measured range. |
+| Critical constants (Tc, Pc, ω) | 14 | - | Peng–Robinson and SRK, for either phase. Activity models with an ideal-gas vapour still work. |
+| Normal boiling point | 12 | - | Only where it is shown; the vapour-pressure record still works over its measured range. |
 | Liquid density | 25 | - | Volumes, pump work, velocities; mass-to-volume conversions. |
 | Liquid heat capacity | 9 | 26 | Energy balances: heaters, coolers, exchangers. Predicted values are within about 5 % at 300 K, worse for alcohols and polyols at higher temperature. |
 | Ideal-gas heat capacity | 25 | - | Covered for the volatile ones by Kirchhoff's path from the liquid records; missing outright for those without a vapour pressure. |
@@ -28,8 +28,8 @@ Each gap is a "no open data" marker in `src/data/components.json` with the sourc
 
 ## What changed since the previous file (components.json at `db83677`)
 
-- Critical constants (Tc, Pc, ω) found for 2: Tetrahydrofurfuryl alcohol, Furfuryl alcohol.
-- Normal boiling point found for 2: Tetrahydrofurfuryl alcohol, Furfuryl alcohol.
+- Critical constants (Tc, Pc, ω) found for 4: Tetrahydrofurfuryl alcohol, Methyl lactate, Ethyl lactate, Furfuryl alcohol.
+- Normal boiling point found for 3: Tetrahydrofurfuryl alcohol, Methyl lactate, Furfuryl alcohol.
 - Liquid thermal conductivity found for 4: Tetrahydrofurfuryl alcohol, Methyl lactate, Ethyl lactate, Furfuryl alcohol.
 
 ## The full-text search of 2026-10-22
@@ -61,10 +61,10 @@ Each gap is a "no open data" marker in `src/data/components.json` with the sourc
 | 2,3-Butanediol | critical constants (Tc, Pc, ω) | 62, 2 | 4, 1, 0 | critical temperatures used as inputs of a machine-learning model (Sci. Rep. 2022, doi:10.1038/s41598-022-08842-5), not measured |
 | 2,3-Butanediol | normal boiling point | 176, 5 | 74, 2, 1 | none of the pure compound |
 | Methyl lactate | melting point and enthalpy of fusion | 40, 2 | 175, 4, 1 | none of the pure compound |
-| Methyl lactate | critical constants (Tc, Pc, ω) | 16, 1 | 56, 2, 0 | **measured, held for the maintainer**: Bogatishcheva et al., SSRN preprint 2026 (not peer reviewed), doi:10.2139/ssrn.6083032, Tables 3 and 4: Tc = 612 K (U_r 1.5 %), pc = 3.73 MPa (U_r 4.5 %), pulse heating; as a fixed point of the vapour-pressure curve it raises the miss of Lomba 2014 from the accepted 2.96 % to 3.37 % (stated 2.59 %). Its heat capacities (Eq. 24, 298-417 K, 3 %) and thermal conductivities (Eq. 27, 303-373 K, 8.5 %) were added (downloaded by the maintainer and read) |
+| Methyl lactate | critical constants (Tc, Pc, ω) | 16, 1 | 56, 2, 0 | **measured, added** (the maintainer accepted the larger vapour-pressure miss, 2026-10-22): Bogatishcheva et al., SSRN preprint 2026 (not peer reviewed), doi:10.2139/ssrn.6083032, Tables 3 and 4: Tc = 612 K (U_r 1.5 %), pc = 3.73 MPa (U_r 4.5 %), pulse heating; with it the vapour-pressure set of Lomba 2014 misses the curve by 3.37 % (stated 2.59 %). With its heat capacities (Eq. 24, 298-417 K, 3 %) and thermal conductivities (Eq. 27, 303-373 K, 8.5 %) (downloaded by the maintainer and read) |
 | Methyl lactate | normal boiling point | 33, 2 | 165, 0, 0 | none of the pure compound |
 | Ethyl lactate | melting point and enthalpy of fusion | 144, 1 | 528, 0, 0 | **measured, held for the maintainer**: Ashraf, MS thesis, St. John's University 2015 (open repository, doi:10.57912/23844132), Table 8 and Figures 27-29 (modulated DSC): racemate (CAS 97-64-3, CHEPTA's component) peak 247.51 K (-25.64 degC; onset -31.08 degC), 83.46 J/g = 9.86 kJ/mol; L-form -6.22 degC, 40.12 J/g; D-form -4.23 degC, 159.4 J/g. Mirror images have the same enthalpy of fusion, so the factor of four between them makes the thesis's enthalpies doubtful; the temperatures are DSC peaks, not onsets (downloaded by the maintainer and read) |
-| Ethyl lactate | critical constants (Tc, Pc, ω) | 78, 2 | 283, 0, 0 | **measured, held for the maintainer**: Bogatishcheva et al. 2026 (as for methyl lactate): Tc = 617 K, pc = 3.32 MPa; as a fixed point it raises the miss of Resa 2010 from the accepted 1.94 % to 2.35 % (stated 1.70 %). Its heat capacities (298-398 K) and thermal conductivities were added (downloaded by the maintainer and read) |
+| Ethyl lactate | critical constants (Tc, Pc, ω) | 78, 2 | 283, 0, 0 | **measured, added** (as for methyl lactate): Bogatishcheva et al. 2026: Tc = 617 K, pc = 3.32 MPa; Resa 2010 misses the curve by 2.35 % (stated 1.70 %). With its heat capacities (298-398 K) and thermal conductivities (downloaded by the maintainer and read) |
 | Limonene | melting point and enthalpy of fusion | 1088, 4 | 2912, 5, 2 | none of the pure compound |
 | Limonene | critical constants (Tc, Pc, ω) | 493, 1 | 1198, 3, 2 | none of the pure compound |
 | Limonene | normal boiling point | 916, 5 | 2749, 1, 0 | none of the pure compound |
@@ -155,17 +155,18 @@ and figures. The earlier updates of today are in [MISSING_PROPERTIES_2026-10-22-
   its curve follows Lomba 2014 better than before (mean deviation +1.33 %, was +3.32 %). CHEPTA's acentric factors,
   from its own curves at 0.7 Tc, beyond the last measured vapour pressure: 0.443 and 0.417 (the authors: 0.466 and
   0.419). Furfuryl acetate, the fourth compound of the article, is not in CHEPTA: it can be added (AGENTS.md rule 8).
-- **Methyl and ethyl lactate, liquid heat capacity and liquid thermal conductivity**: Bogatishcheva et al., SSRN
-  preprint 2026, doi:10.2139/ssrn.6083032 (not peer reviewed). Heat capacities from their Eq. (24) and Table 5 (DSC,
-  3 %; 298-417 K and 298-398 K), replacing the predicted records; thermal conductivities from Eq. (27) and Table 7
-  (8.5 %).
+- **Methyl and ethyl lactate, critical constants, liquid heat capacity and liquid thermal conductivity**:
+  Bogatishcheva et al., SSRN preprint 2026, doi:10.2139/ssrn.6083032 (not peer reviewed). Pulse heating (the esters
+  decompose near their critical points): Tc = 612 and 617 K (1.5 %), pc = 3.73 and 3.32 MPa (4.5 %; Table 4's header
+  prints "K", the values are MPa). With the critical point, the measured vapour-pressure sets miss the curve by more
+  than the narrow misses accepted on 2026-10-14: methyl lactate, Lomba 2014 +3.37 % (was 2.96 %, stated 2.59 %); ethyl
+  lactate, Resa 2010 +2.35 % (was 1.94 %, stated 1.70 %). The maintainer accepted them (2026-10-22: "i accept the
+  error"). Both now work with Peng–Robinson and SRK; methyl lactate's curve now reaches 101.325 kPa, at 416.04 K (Lecat's
+  measured 417.0 K), and ethyl lactate's at 426.76 K. CHEPTA's acentric factors: 0.416 and 0.455 (the authors: 0.435
+  and 0.467). Heat capacities from their Eq. (24) and Table 5 (DSC, 3 %; 298-417 K and 298-398 K), replacing the
+  predicted records; thermal conductivities from Eq. (27) and Table 7 (8.5 %).
 
 **Held for the maintainer:**
-- **Methyl and ethyl lactate, critical constants** (same preprint, Tables 3 and 4): Tc = 612 and 617 K (1.5 %),
-  pc = 3.73 and 3.32 MPa (4.5 %; the table header prints "K", the values are MPa). With the critical point as a fixed
-  point of the vapour-pressure curve, the measured sets miss it by more than the narrow misses accepted on 2026-10-14:
-  methyl lactate, Lomba 2014 +3.37 % (accepted 2.96 %, stated 2.59 %); ethyl lactate, Resa 2010 +2.35 % (accepted
-  1.94 %, stated 1.70 %). To accept the larger misses, or to leave the lactates without Tc and Pc.
 - **Tripalmitin, heat of vaporization**: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266, doi:10.3390/thermo2030018
   (CC BY 4.0), Table 1: 169.5 ± 4.2 kJ/mol at about 409 K (quartz-crystal microbalance, 384.9-433.2 K). One value only,
   so no record without a decision; and the slope of the ChemSep vapour-pressure record gives 189.7 kJ/mol there
@@ -214,15 +215,13 @@ exist), levoglucosan (doi:10.1021/es302276t, doi:10.1021/je980119b), HMF and gly
 | 2,5-Bis(hydroxymethyl)furan | vapour pressure, critical constants (Tc, Pc, ω), normal boiling point, liquid density, liquid heat capacity, ideal-gas heat capacity, heat of vaporization, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
 | 5-(Ethoxymethyl)furfural | vapour pressure, critical constants (Tc, Pc, ω), normal boiling point, liquid density, liquid heat capacity, ideal-gas heat capacity, heat of vaporization, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
 
-### B. No critical constants (with a vapour pressure) (9)
+### B. No critical constants (with a vapour pressure) (7)
 
 | Component | Missing (no open data found) | Predicted only |
 |---|---|---|
 | gamma-Valerolactone | critical constants (Tc, Pc, ω), ideal-gas heat capacity, surface tension, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, Gibbs energy of formation | - |
 | Cyclopentyl methyl ether | critical constants (Tc, Pc, ω), ideal-gas heat capacity, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | liquid heat capacity |
 | 2,3-Butanediol | critical constants (Tc, Pc, ω), normal boiling point, ideal-gas heat capacity, surface tension, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, Gibbs energy of formation | - |
-| Methyl lactate | critical constants (Tc, Pc, ω), normal boiling point, ideal-gas heat capacity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
-| Ethyl lactate | critical constants (Tc, Pc, ω), ideal-gas heat capacity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, Gibbs energy of formation | - |
 | Limonene | critical constants (Tc, Pc, ω), normal boiling point, ideal-gas heat capacity, surface tension, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, Gibbs energy of formation | liquid heat capacity |
 | Glycerol carbonate | critical constants (Tc, Pc, ω), normal boiling point, liquid density, ideal-gas heat capacity, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
 | Solketal | critical constants (Tc, Pc, ω), normal boiling point, liquid heat capacity, ideal-gas heat capacity, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
@@ -254,7 +253,7 @@ exist), levoglucosan (doi:10.1021/es302276t, doi:10.1021/je980119b), HMF and gly
 | D-Xylose | liquid density, surface tension, liquid viscosity, liquid thermal conductivity | liquid heat capacity |
 | cis,cis-Muconic acid | liquid density, surface tension, liquid viscosity, liquid thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | liquid heat capacity |
 
-### D. Other components with gaps (20)
+### D. Other components with gaps (22)
 
 | Component | Missing (no open data found) | Predicted only |
 |---|---|---|
@@ -275,6 +274,8 @@ exist), levoglucosan (doi:10.1021/es302276t, doi:10.1021/je980119b), HMF and gly
 | Butyl levulinate | ideal-gas heat capacity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, Gibbs energy of formation | - |
 | Levulinic acid | ideal-gas heat capacity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, Gibbs energy of formation | - |
 | Tetrahydrofurfuryl alcohol | ideal-gas heat capacity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion | - |
+| Methyl lactate | ideal-gas heat capacity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
+| Ethyl lactate | ideal-gas heat capacity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, Gibbs energy of formation | - |
 | Furfuryl alcohol | ideal-gas heat capacity, vapour viscosity, vapour thermal conductivity | - |
 | gamma-Butyrolactone | surface tension, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity | - |
 | Isoamyl alcohol | liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, Gibbs energy of formation | - |

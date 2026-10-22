@@ -3657,12 +3657,6 @@
     "why": "No open reference equation for this component in CoolProp; NIST WebBook vapour-pressure data not transcribed for this report yet"
    }
   },
-  "pure/methyl-lactate/psat/413.15K": {
-   "psat_kPa": {
-    "value": null,
-    "why": "No open reference equation for this component in CoolProp; NIST WebBook vapour-pressure data not transcribed for this report yet"
-   }
-  },
   "pure/limonene/psat/450K": {
    "psat_kPa": {
     "value": null,

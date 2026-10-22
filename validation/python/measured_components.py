@@ -269,14 +269,14 @@ COMPONENTS = {
         # Lomba 2014 misses the agreement test narrowly (2.96 % against its stated 2.59 %; Sanz 2005: three values at
         # 283-303 K, stated 4.6-24 %); Lomba's own curve meets the measured boiling temperature of Lecat (417.0 K) within
         # 0.3 K. The maintainer accepted the narrow miss (2026-10-14)
-        "vp_accept": {"Lomba 2014": 2.96},
+        "vp_accept": {"Lomba 2014": 3.37},  # 2.96 % without the critical point (2026-10-14); with it 3.37 %, accepted by the maintainer (2026-10-22: "i accept the error")
         "name": "Methyl lactate", "cas": "547-64-8", "webbook": "C547648", "proposal": "proposal 0009, batch 3",
         "aliases": ["methyl 2-hydroxypropanoate", "lactic acid methyl ester"],
         "thermoml_queries": ["methyl lactate", "methyl 2-oxidanylpropanoate"],
-        # the critical point of Bogatishcheva et al. (2026, SSRN preprint; article_methyl-lactate_bogatishcheva2026.json) is held for
-        # the maintainer: as a fixed point of the vapour-pressure curve it raises the miss of Lomba 2014 to 3.37 % beyond the
-        # accepted narrow miss (2026-10-22)
-        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        # the critical point: Bogatishcheva et al. (2026, SSRN preprint, not peer reviewed;
+        # article_methyl-lactate_bogatishcheva2026.json)
+        "critical_thermoml": "10.2139/ssrn.6083032",
+        "critical_note": "measured by the pulse-heating method, as the ester decomposes near its critical point; the authors' acentric factor (Table 4) is 0.435, CHEPTA's is from its own vapour-pressure record",
         "antoine_fit": [],
         "vp_fit": "consensus",
         "dHvap": "clapeyron",
@@ -287,14 +287,14 @@ COMPONENTS = {
         # Resa 2010 (two boiling temperatures at 101 kPa, 427.6 K) misses the agreement test narrowly (1.94 % against its
         # stated 1.70 %); the other boiling temperatures are 425.0 K (Resa 2006) and 426.2-426.7 K (Matsuda 2016, Lomba
         # 2014). The maintainer accepted the narrow miss (2026-10-14)
-        "vp_accept": {"Resa 2010": 1.94},
+        "vp_accept": {"Resa 2010": 2.35},  # 1.94 % without the critical point (2026-10-14); with it 2.35 %, accepted by the maintainer (2026-10-22: "i accept the error")
         "name": "Ethyl lactate", "cas": "97-64-3", "webbook": "C97643", "proposal": "proposal 0009, batch 3",
         "aliases": ["ethyl 2-hydroxypropanoate", "lactic acid ethyl ester"],
         "thermoml_queries": ["ethyl lactate", "ethyl 2-oxidanylpropanoate"],
-        # the critical point of Bogatishcheva et al. (2026, SSRN preprint; article_ethyl-lactate_bogatishcheva2026.json) is held for
-        # the maintainer: as a fixed point of the vapour-pressure curve it raises the miss of Resa 2010 to 2.35 % beyond the
-        # accepted narrow miss (2026-10-22)
-        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        # the critical point: Bogatishcheva et al. (2026, SSRN preprint, not peer reviewed;
+        # article_ethyl-lactate_bogatishcheva2026.json)
+        "critical_thermoml": "10.2139/ssrn.6083032",
+        "critical_note": "measured by the pulse-heating method, as the ester decomposes near its critical point; the authors' acentric factor (Table 4) is 0.467, CHEPTA's is from its own vapour-pressure record",
         "antoine_fit": [],
         "vp_fit": "consensus",
         "dHvap": "clapeyron",

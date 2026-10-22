@@ -490,6 +490,13 @@
     "why": "No open reference: no measured normal boiling temperature on the component's WebBook page"
    }
   },
+  "tb/methyl-lactate": {
+   "T_C": {
+    "value": 143.85,
+    "source": "nist-webbook",
+    "detail": "Tboil = 417 K, the median of 417.0 K (Lecat, 1927); 417.0 K (Lecat, 1926); 417.0 K (Lecat, 1926, 2) (no average on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C547648&Units=SI&Mask=4"
+   }
+  },
   "tb/ethyl-lactate": {
    "T_C": {
     "value": null,

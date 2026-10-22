@@ -129,11 +129,16 @@ found but scripts could not fetch. Each was read, text, tables and figures; the 
     (`article_furfuryl-alcohol_nikitin2023.json`, `article_thfa_nikitin2023.json`).
   - Methyl and ethyl lactate: liquid heat capacities and liquid thermal conductivities, from Bogatishcheva et al., SSRN
     preprint 2026 (`article_*_bogatishcheva2026.json`). Their heat capacities are the authors' Eq. (24) with Table 5's
-    constants at 298.15 K and every 10 K; their raw points are in a supplement that is not in the preprint file.
+    constants at 298.15 K and every 10 K; their raw points are in a supplement that is not in the preprint file. Their
+    critical constants, as the maintainer decided (below).
   - The measured heat capacities (3 %) replace the predicted records of all four, by "measured before predicted". The
     thermal conductivities (8-8.5 %) are records held to that uncertainty, as "no open values meet the target".
-- **Held for the maintainer**: the lactates' critical constants, tripalmitin's heat of vaporization, ethyl lactate's
-  melting data (the reasons are in the list of missing properties).
+- **The lactates' critical constants** (Bogatishcheva et al. 2026, Tables 3 and 4): with the critical point the
+  vapour-pressure sets miss by more than the narrow misses accepted on 2026-10-14 (Lomba 2014, methyl lactate: 3.37 %,
+  was 2.96 %; Resa 2010, ethyl lactate: 2.35 %, was 1.94 %). The maintainer: "i accept the error" (2026-10-22). Both
+  now have Tc, Pc and ω, and methyl lactate a normal boiling point (416.04 K; Lecat's measured 417.0 K).
+- **Held for the maintainer**: tripalmitin's heat of vaporization, ethyl lactate's melting data (the reasons are in
+  the list of missing properties).
 - **Code changes.**
   - `measured_components.py`: a critical point from an article outside the archive (`critical_thermoml` with its
     access text, `critical_note`).
