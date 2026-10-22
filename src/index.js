@@ -32,6 +32,7 @@ import { henry, henryInfo, gasSolubility, HENRY_GASES } from "./thermo/henry.js"
 import { library } from "./thermo/library.js";
 import { stream, componentFlows, scaleStream, phaseStream } from "./stream/stream.js";
 import { registerUnit, runUnit, unitTypes, unitType, specStatus } from "./units/units.js";
+import "./units/reactors.js";   // registers the conversion and yield reactors (proposal 0010, step 3)
 import { exchangerArea, exchangerApproach, exchangerRating, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER } from "./units/heat-exchange.js";
 import { solveFlowsheet, checkFlowsheet, inspectFlowsheet, flowsheetStatus } from "./flowsheet/flowsheet.js";
 import { runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus } from "./flowsheet/document.js";
@@ -47,7 +48,7 @@ const listComponents = (opts = {}) => listDatabank({ userData: checkUserData(opt
 const findComponent = (key, userData = null) =>
   findIn(key, userData && typeof userData === "object" && !Array.isArray(userData) ? checkUserData(userData) : null);   // (map passes an index)
 
-import { checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties } from "./reactions/reaction.js";
+import { checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties, formationReference, reactionHeat } from "./reactions/reaction.js";
 import { reactionRate, rateSpecies, RATE_FORMS, RATE_BASES } from "./reactions/kinetics.js";
 
 export {
@@ -68,7 +69,7 @@ export {
   runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus,
   checkProject, readProject, PROJECT_FORMAT,
   userDataDoc, readUserDataFile, mergeUserData, userDataPackage, userDataKeys, USER_DATA_FORMAT,
-  checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties, reactionRate, rateSpecies, RATE_FORMS, RATE_BASES,
+  checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties, formationReference, reactionHeat, reactionRate, rateSpecies, RATE_FORMS, RATE_BASES,
   CheptaError, ERROR_CODES, isCheptaError,
   // the names before the rename to CHEPTA (version 0.3): the same class and function
   CheptaError as FugacityError, isCheptaError as isFugacityError,

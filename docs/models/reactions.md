@@ -1,8 +1,8 @@
 # Reactions
 
 How CHEPTA describes a reaction and computes its heat of reaction, equilibrium constant and rate (proposal 0010,
-step 2; code in `src/reactions/`). The reactors that use them come in the next steps (conversion and yield, then
-equilibrium, CSTR and plug flow, Gibbs).
+step 2; code in `src/reactions/`), and the conversion and yield reactors that use them (step 3; `src/units/reactors.js`,
+[below](#reactors)). The equilibrium, CSTR, plug-flow and Gibbs reactors come in the next steps.
 
 CHEPTA ships components, not reactions. The user writes the reactions of their process in the project or flowsheet
 file (or, later, in the Reactions setup block next to Components and Method). CHEPTA checks them and computes what
@@ -128,3 +128,73 @@ A warning appears outside the rate law's range, `T_K`.
 Eley–Rideal and Mars–van Krevelen forms are not in the book. No open source with their forms was found
 (docs/decisions/2026-10-22-05-reactions.md), so they are not built in. Your own formula ("Write your own kinetics",
 proposal 0010 step 9) will cover them.
+
+## Reactors
+
+Two reactor blocks (proposal 0010, step 3; `src/units/reactors.js`) work alone (`runUnit`) and in flowsheets. The
+reactions are written once, in the flowsheet file's `reactions` list (as above), and each reactor names those it uses.
+
+**Conversion reactor** (`conversion-reactor`). Each reaction converts a given fraction of a key reactant:
+
+```json
+{ "id": "R1", "type": "conversion-reactor",
+  "spec": { "reactions": [{ "reaction": "meoh", "key": "carbon-dioxide", "conversion": 0.25 }],
+            "order": "parallel", "T_K": 550, "dP_kPa": 0 } }
+```
+
+- In parallel (the default) a conversion is of the key's inlet flow: ξ = X F_key,in / (−ν_key). The conversions of
+  reactions that share a key add up, to 1 at most.
+- In series it is of what the reactions listed before it left.
+- A reaction that would need more of a co-reactant than comes in is refused, naming it.
+- The outlet is given by its temperature, duty or vapour fraction, and its pressure (or pressure drop). It is
+  flashed, so it may leave as two phases.
+
+**Yield reactor** (`yield-reactor`), for reactions known by their products (a fermentation, a pyrolysis, a black box
+from a paper):
+
+```json
+{ "id": "R2", "type": "yield-reactor",
+  "spec": { "key": "acetic-acid", "conversion": 0.6, "basis": "mass",
+            "yields": { "ethanol": -0.7672, "ethyl-acetate": 1.4672 }, "closure": "water", "T_K": 298.15 } }
+```
+
+(The stoichiometric yields of the esterification, from the molar masses; water takes the rest, 0.3000.)
+
+- The yields are what forms per unit of key converted: kg per kg, or mol per mol with `"basis": "mole"`. A negative
+  yield is a co-reactant consumed.
+- They must close the mass within 1e-6: per kg of key converted, the mass yields add up to 1. The products are then
+  scaled to close it exactly.
+- `closure` names the component that takes what the others leave.
+- The element balance is reported, not enforced. A lumped product often has no exact formula, so the notes say by how
+  much each element is off.
+- The heat of reaction comes from the formation data of every component that changes. Where one has none, give
+  `heatOfReaction: { dH_J_mol, phase, source }`: per mol of key converted, at 298.15 K, every species as the ideal gas
+  (`"vapour"`) or as the pure liquid (`"liquid"`), with its source. Without it, the reactor refuses and names the
+  component.
+
+**The energy balance.** The stream enthalpies are referred to each component's ideal gas at 298.15 K (a nonvolatile
+component: its liquid there). The heat of reaction is put on the same basis: ΔrH_ref = Σ ν_j Hf_j, with Hf_j the
+enthalpy of formation of j in that reference state, from its formation record by the paths of "Heat of reaction and
+K(T)" (`formationReference`, `reactionHeat`). A given heat of reaction (`heatOfReaction` on a reaction or a yield
+reactor) is shifted from its standard state to that basis. Then
+
+duty = H_out − H_in + Σ_r ξ_r ΔrH_ref,r
+
+with ξ in kmol/h, so the heat of reactions in kW is ξ ΔrH / 3600. An isothermal reactor's duty is therefore the heat of
+reaction at its temperature, and an adiabatic one (`duty_kW: 0`) heats or cools by it.
+
+**Balances.** Every reactor checks in + generation = out for each component, and the element balance of the
+generation (the mass balance for the yield reactor) to 1e-9. A flowsheet with reactors closes feeds + generation =
+products, and its energy balance subtracts the heat of the reactions. Its results give `generation_kmol_h` and
+`reaction_kW`, and each reactor's `reaction`: the generation, the extents, the conversions and the heat.
+
+**Tests** (`test/reactors.test.js`):
+
+- Methanol from CO₂ with Peng–Robinson at 1 kPa (close to the ideal gas): the isothermal duty against Cantera's heat
+  of reaction at 350, 550 and 700 K (validation/fixtures/reactions.json), within 1e-4.
+- An adiabatic reactor and the isothermal one at its outlet temperature, which needs no duty.
+- Parallel and series reactions, and what is refused.
+- The yield reactor on esterification, mass and mole basis, with closure, a lumped product and a given heat of
+  reaction.
+- A methanol loop with a recycle and a purge against the hand calculation, with the overall material, element and
+  energy balances.

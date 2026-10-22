@@ -60,7 +60,7 @@ an implementation, and tests. A step can start when the steps it depends on are 
 | **A10** AI authoring contract | How an assistant writes configurations and flowsheet files: the skill, a schema it can check against, and error messages that tell it what to fix. | A7, A9 | Open |
 | **A11** Views | Flowsheet drawing, stream tables, column profiles, results export; views only call the layers below. | A7, A9 | Open |
 | **A12** Stability policy for 1.0 | Which interfaces are frozen, deprecation rules, long-term support of old versions. | A1–A11 | Open |
-| **A13** Reactions | How reactions are described: stoichiometry, heats of reaction from the property package, equilibrium constants from Gibbs energies, rate laws and their parameters with sources, so that reactor models (conversion, equilibrium, CSTR, plug flow, batch) share one description. | A1, A6 | Started: proposal 0010 accepted; the description, element balance, K(T) from formation data and the rate forms (`src/reactions/`, [docs/models/reactions.md](docs/models/reactions.md)) |
+| **A13** Reactions | How reactions are described: stoichiometry, heats of reaction from the property package, equilibrium constants from Gibbs energies, rate laws and their parameters with sources, so that reactor models (conversion, equilibrium, CSTR, plug flow, batch) share one description. | A1, A6 | Started: proposal 0010 accepted; the description, element balance, K(T) from formation data and the rate forms (`src/reactions/`, [docs/models/reactions.md](docs/models/reactions.md)); conversion and yield reactors (step 3) |
 
 ## Bridges track
 
@@ -220,12 +220,13 @@ Needs A6, A7, A8, A10, A11.
 
 Needs A13 and D8.
 
-- [ ] Reactors: conversion, equilibrium (Gibbs energy minimization), CSTR, plug flow
+- [ ] Reactors: conversion and yield (proposal 0010, step 3), equilibrium, Gibbs energy minimization, CSTR, plug flow
 - [x] Heat exchangers: pre-sizing in Unit models, the heater's sizing and a two-stream block in the flowsheet, energy
       streams (proposal 0013, steps 1-4); rating of a designed exchanger, its area and U kept (step 8; in 0.4.0)
 - [x] Compressors and expanders (proposal 0013, step 6; in 0.4.0)
 - [ ] Further units towards models of all the common unit operations
-- [ ] Reactive systems in flowsheets, with heat of reaction in the energy balance
+- [ ] Reactive systems in flowsheets, with heat of reaction in the energy balance (started: conversion and yield
+      reactors in a recycle, proposal 0010, step 3; views in step 7)
 
 ### v0.7 – Cost engineering
 

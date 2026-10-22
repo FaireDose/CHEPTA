@@ -256,8 +256,8 @@ character 12; known: C, x, p, f, a, T, P, K").
 8. **Tests with reactions:** methanol from CO₂ (equilibrium), ethyl acetate esterification
    (equilibrium and kinetics from an open article), ethanol to ethylene (conversion with side
    reactions), a nonvolatile reactant to volatile products separated downstream (HMF rehydration to levulinic and
-   formic acid in water, then a flash or a column; it needs a liquid heat capacity of levulinic acid, which has none
-   open yet), defined in the test files with their sources and documented in docs/BENCHMARKS.md
+   formic acid in water, then a flash or a column; levulinic acid melts above 298.15 K, so its liquid enthalpy needs
+   its ideal-gas heat capacity, which has none open yet), defined in the test files with their sources and documented in docs/BENCHMARKS.md
    as worked examples a user can copy; not shipped as a library.
 9. **Your own kinetics**: the "Write your own kinetics" button and its text box (section 4), with the parser and its
    error messages; Eley–Rideal and Mars–van Krevelen as built-in forms if an open source with their forms was found.

@@ -52,11 +52,18 @@
  *    take a gas: an inlet with liquid is refused. The person's own efficiency replaces them.
  * A block's `energy` kind is "heat" (a duty) or "work" (a pump's, compressor's or expander's power); `dutySpec`: its duty can be given, so an
  * energy stream can go into it (src/flowsheet/flowsheet.js).
+ * Reactors (proposal 0010, step 3; src/units/reactors.js) are registered with `reactive: "elements"` (the conversion
+ * reactor: the reactions balance every element) or `reactive: "mass"` (the yield reactor: the yields close the mass,
+ * and the element balance is reported). Their solve returns `reaction`: { generation (kmol/h per component), heat_kW
+ * (Σ ξ ΔrH on the basis of the stream enthalpies), extents, conversions, notes }. runUnit then checks, instead of
+ * each component's flow: in + generation = out, and the elements (or the mass) of the generation; the energy balance
+ * is H_in + duty = H_out + heat_kW. The reactions of the flowsheet reach the blocks in `reactions`.
  * Units: K, kPa, kmol/h, kW.
  */
 import { fail } from "../util/errors.js";
 import { stream, componentFlows, scaleStream, phaseStream, phasesStream } from "../stream/stream.js";
-import { findComponent } from "../thermo/components.js";
+import { findComponent, componentRecord } from "../thermo/components.js";
+import { parseFormula } from "../thermo/formula.js";
 import { pure } from "../thermo/pure.js";
 import { exchangerArea, exchangerApproach, exchangerRating, ARRANGEMENTS } from "./heat-exchange.js";
 
@@ -68,8 +75,9 @@ export function registerUnit(def, { replace = false } = {}) {
   if (UNITS.has(def.type) && !replace) throw fail("BAD_INPUT", `registerUnit: "${def.type}" is already registered.`);
   if (typeof def.solve !== "function") throw fail("BAD_INPUT", `registerUnit: "${def.type}" needs a solve function.`);
   const ports = list => (list ?? []).map(p => ({ port: p.port, min: p.min ?? 1, max: p.max ?? 1, optional: !!p.optional, label: p.label ?? p.port }));
+  if (def.reactive != null && !["elements", "mass"].includes(def.reactive)) throw fail("BAD_INPUT", `registerUnit: "${def.type}": reactive must be "elements" or "mass".`);
   UNITS.set(def.type, Object.freeze({ ...def, label: def.label ?? def.type, inlets: ports(def.inlets), outlets: ports(def.outlets),
-    energy: def.energy ?? (def.duty ? "heat" : null), dutySpec: !!def.dutySpec }));
+    energy: def.energy ?? (def.duty ? "heat" : null), dutySpec: !!def.dutySpec, reactive: def.reactive ?? null }));
 }
 
 /** A registered block type, or a BAD_INPUT error listing the known ones. */
@@ -622,14 +630,14 @@ function onePressure(spec, word) {
  * `message` says which). Block types registered without a count are checked by their
  * specification check only.
  */
-export function specStatus(type, spec = {}, { sys, outletCount } = {}) {
+export function specStatus(type, spec = {}, { sys, outletCount, reactions } = {}) {
   const u = unitType(type);
   const multi = u.outlets.find(p => p.max > 1);
   const n = outletCount ?? (multi ? multi.min : u.outlets.filter(p => !p.optional).length);
-  const d = (u.dof ?? DOF[type])?.(spec ?? {}, { sys, outletCount: n }) ?? { needed: null, given: null, missing: [], extra: [] };
+  const d = (u.dof ?? DOF[type])?.(spec ?? {}, { sys, outletCount: n, reactions }) ?? { needed: null, given: null, missing: [], extra: [] };
   let status = d.missing.length ? "missing" : d.extra.length ? "extra" : "ok", message = "";
   if (status === "ok" && sys && u.checkSpec) {
-    try { u.checkSpec(spec ?? {}, { sys, outletCount: n }); } catch (e) { status = "invalid"; message = e.message; }
+    try { u.checkSpec(spec ?? {}, { sys, outletCount: n, reactions }); } catch (e) { status = "invalid"; message = e.message; }
   }
   if (status === "missing") message = `${u.label}: ${d.missing.length === 1 ? "missing" : `${d.missing.length} specifications missing`}: ${d.missing.join("; ")}.`;
   if (status === "extra") message = `${u.label}: too many specifications: ${d.extra.join("; ")}.`;
@@ -647,10 +655,11 @@ export function specStatus(type, spec = {}, { sys, outletCount } = {}) {
  * @param {object} [args.spec]       the block's specification
  * @param {number} [args.outletCount]  streams on the block's multi-stream outlet port (splitter,
  *   separator: default 2), or the number of outlet ports used (flash: 2, or 3 with liquid2)
+ * @param {object[]} [args.reactions]  the flowsheet's reactions (src/reactions/reaction.js), for the reactors
  * @returns {{type:string, outlets:object, duty_kW:number, balance:{material:number, energy_kW:number},
- *   notes:string[], state?:object}}
+ *   notes:string[], state?:object, reaction?:object}}
  */
-export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount } = {}) {
+export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reactions = [] } = {}) {
   const u = unitType(type);
   if (!sys || typeof sys.flash !== "function") throw fail("BAD_INPUT", `${u.label}: a system (property package) is needed.`);
   if (spec == null || typeof spec !== "object" || Array.isArray(spec)) throw fail("BAD_INPUT", `${u.label}: the specification must be an object.`);
@@ -671,19 +680,53 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount } = {})
     }
     ins[p.port] = list;
   }
-  const s = u.checkSpec ? u.checkSpec(spec, { sys, outletCount: n }) : spec;
-  const r = u.solve({ sys, inlets: ins, spec: s, outletCount: n });
+  const s = u.checkSpec ? u.checkSpec(spec, { sys, outletCount: n, reactions }) : spec;
+  const r = u.solve({ sys, inlets: ins, spec: s, outletCount: n, reactions });
   const outs = Object.values(r.outlets).flatMap(asList);
   const inList = Object.values(ins).flat();
-  // material balance per component (a feed creates its flow; a product takes it out of the flowsheet)
+  // material balance per component (a feed creates its flow; a product takes it out of the flowsheet); a reactor:
+  // in + generation = out, and the generation balances the elements (or the mass)
   let material = 0;
+  const gen = u.reactive ? r.reaction.generation : null;
   if (type !== "feed" && type !== "product") {
     const fin = sumFlows(sys, inList), fout = sumFlows(sys, outs);
     const scale = Math.max(1e-30, fin.reduce((a, v) => a + v, 0));
-    material = Math.max(0, ...fin.map((v, i) => Math.abs(v - fout[i]) / scale));
+    material = Math.max(0, ...fin.map((v, i) => Math.abs(v + (gen ? gen[i] : 0) - fout[i]) / scale));
     if (material > 1e-9) throw new Error(`Internal: ${u.label} does not close its material balance (relative error ${material.toExponential(2)}). Please report this.`);
   }
-  const energy_kW = type === "feed" || type === "product" ? 0 : sumH(inList) + r.duty_kW - sumH(outs);
-  return { type, outlets: r.outlets, duty_kW: r.duty_kW, balance: { material, energy_kW }, notes: r.notes ?? [], ...(r.state ? { state: r.state } : {}),
-    ...(r.sizing ? { sizing: r.sizing } : {}) };
+  let elements = null;
+  if (u.reactive) {
+    elements = generationBalance(sys, gen, sumFlows(sys, inList));
+    const bad = u.reactive === "elements" ? Object.entries(elements.relative).filter(([, d]) => d > 1e-9) : elements.mass > 1e-9 ? [["mass", elements.mass]] : [];
+    if (bad.length) throw new Error(`Internal: ${u.label} does not close its ${u.reactive === "elements" ? "element" : "mass"} balance (${bad.map(([k, d]) => `${k} ${d.toExponential(2)}`).join(", ")}). Please report this.`);
+  }
+  const energy_kW = type === "feed" || type === "product" ? 0 : sumH(inList) + r.duty_kW - sumH(outs) - (u.reactive ? r.reaction.heat_kW : 0);
+  return { type, outlets: r.outlets, duty_kW: r.duty_kW, balance: { material, energy_kW, ...(elements ? { elements: elements.relative, mass: elements.mass } : {}) },
+    notes: r.notes ?? [], ...(r.state ? { state: r.state } : {}), ...(r.sizing ? { sizing: r.sizing } : {}), ...(u.reactive ? { reaction: r.reaction } : {}) };
+}
+
+/** The atoms of a component of the system ({C: 2, H: 6, O: 1}), or null without a formula CHEPTA can read. */
+export function componentAtoms(sys, i) {
+  try { return parseFormula(componentRecord(sys.ids[i], sys.userData).formula ?? ""); } catch { return null; }
+}
+
+/**
+ * The elements and the mass of a reactor's generation (kmol/h per component), relative to what comes in: an element
+ * created or destroyed shows up here. A component without a formula CHEPTA can read must not change.
+ * @returns {{relative: Object<string, number>, mass: number}}
+ */
+export function generationBalance(sys, gen, fin) {
+  const net = {}, scale = {};
+  let mass = 0, massIn = 0;
+  gen.forEach((g, i) => {
+    mass += g * sys.MW[i]; massIn += fin[i] * sys.MW[i];
+    const atoms = componentAtoms(sys, i);
+    if (g !== 0 && !atoms) throw fail("MISSING_DATA", `${sys.names[i]} has no formula CHEPTA can read, so it cannot react.`);
+    for (const [el, k] of Object.entries(atoms ?? {})) {
+      net[el] = (net[el] ?? 0) + g * k;
+      scale[el] = (scale[el] ?? 0) + fin[i] * k;
+    }
+  });
+  const relative = Object.fromEntries(Object.entries(net).map(([el, d]) => [el, Math.abs(d) / Math.max(scale[el] ?? 0, 1e-30)]));
+  return { relative, mass: Math.abs(mass) / Math.max(massIn, 1e-30) };
 }

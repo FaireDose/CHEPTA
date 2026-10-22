@@ -9,8 +9,12 @@
  *     "blocks": [ { "id": "F1", "type": "feed", "x": 40, "y": 120, "spec": { ... } }, ... ],
  *     "streams": [ { "id": "S1", "from": "F1.out", "to": "M1.in" }, ... ],
  *     "energyStreams": [ { "id": "Q1", "to": "E1", "duty_kW": 500 }, { "id": "Q2", "from": "E2", "to": "E3" } ],   // optional
+ *     "reactions": [ { "id": "R1", "stoichiometry": { "carbon-dioxide": -1, ... }, "phase": "vapour" } ],   // optional
  *     "solver": { "maxIterations": 50, "tolerance": 1e-8 }
  *   }
+ *
+ * The reactions (proposal 0010) are written once for the flowsheet, as src/reactions/reaction.js describes them, and
+ * the reactor blocks refer to them by id.
  *
  * Positions (x, y) are for the drawing only. A block with a duty may name its energy stream
  * ("energy": "Q1"; default "Q-" and the block id). Units: K, kPa, kmol/h, kW.
@@ -20,6 +24,7 @@ import { system } from "../system.js";
 import { findComponent } from "../thermo/components.js";
 import { checkUserData } from "../thermo/user-data.js";
 import { solveFlowsheet, flowsheetStatus } from "./flowsheet.js";
+import { checkReactions } from "../reactions/reaction.js";
 
 const MODELS = ["NRTL", "UNIQUAC", "MOD-UNIFAC-2", "ideal", "PR", "SRK"];
 const BLOCK_KEYS = ["id", "type", "x", "y", "spec", "energy", "label"];
@@ -37,7 +42,7 @@ export const emptyFlowsheet = () => ({ components: [], thermo: { model: "NRTL", 
 export function normalizeFlowsheet(doc, userData = null) {
   if (doc == null) return emptyFlowsheet();
   if (typeof doc !== "object" || Array.isArray(doc)) throw fail("BAD_INPUT", "flowsheet must be an object with components, thermo, blocks and streams.");
-  const known = ["components", "thermo", "blocks", "streams", "energyStreams", "solver"];
+  const known = ["components", "thermo", "blocks", "streams", "energyStreams", "reactions", "solver"];
   for (const k of Object.keys(doc)) if (!known.includes(k)) throw fail("BAD_INPUT", `flowsheet: unknown key "${k}". Known: ${known.join(", ")}.`);
   const components = (doc.components ?? []).map(c => {
     try { return findComponent(c, userData); } catch (e) { throw fail("BAD_INPUT", `flowsheet.components: ${e.message}`); }
@@ -65,6 +70,11 @@ export function normalizeFlowsheet(doc, userData = null) {
   // energy streams (proposal 0013): kept only when there are some, so a flowsheet without them is written as before
   const q = objList(doc.energyStreams, ENERGY_KEYS, "energyStreams");
   if (q.length) out.energyStreams = q;
+  // reactions (proposal 0010): kept as written (checked against the components when the flowsheet is solved)
+  if (doc.reactions != null) {
+    if (!Array.isArray(doc.reactions)) throw fail("BAD_INPUT", "flowsheet.reactions must be a list of reactions.");
+    if (doc.reactions.length) out.reactions = JSON.parse(JSON.stringify(doc.reactions));
+  }
   if (doc.solver != null) out.solver = { ...doc.solver };
   return out;
 }
@@ -85,7 +95,19 @@ export function flowsheetDocStatus(doc, userData = null) {
   const d = normalizeFlowsheet(doc, userData);
   if (!d.components.length) return { ready: false, setup: false, needed: 0, given: 0, dof: 0, structure: [], blocks: {}, message: "Choose the components of the simulation first." };
   const sys = flowsheetSystem(d, userData);
-  return { setup: true, ...flowsheetStatus(sys, d) };
+  return { setup: true, ...flowsheetStatus(sys, withReactions(d, userData)) };
+}
+
+/** The document with its reactions checked (src/reactions/reaction.js), each one's components among the flowsheet's. */
+function withReactions(d, userData) {
+  if (!d.reactions) return d;
+  let reactions;
+  try { reactions = checkReactions(d.reactions, { userData }); } catch (e) { throw fail(e.code ?? "BAD_INPUT", `flowsheet.reactions: ${e.message}`); }
+  for (const r of reactions) {
+    const out = Object.keys(r.stoichiometry).filter(id => !d.components.includes(id));
+    if (out.length) throw fail("BAD_INPUT", `flowsheet.reactions: ${r.name} uses ${out.join(", ")}, which ${out.length > 1 ? "are" : "is"} not among the components of the flowsheet. Add ${out.length > 1 ? "them" : "it"} in the setup.`);
+  }
+  return { ...d, reactions };
 }
 
 /**
@@ -100,5 +122,5 @@ export function runFlowsheet(input, userData = null) {
   const doc = isProject ? input.flowsheet : input;
   const ud = checkUserData(userData ?? (isProject ? input.user_data : null));
   const d = normalizeFlowsheet(doc, ud);
-  return solveFlowsheet(flowsheetSystem(d, ud), d);
+  return solveFlowsheet(flowsheetSystem(d, ud), withReactions(d, ud));
 }
