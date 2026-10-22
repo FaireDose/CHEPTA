@@ -22,10 +22,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   100 kPa, the pure-liquid standard state and its paths (through the saturated vapour, for acetic acid with its
   monomers and dimers; crystal to liquid with ΔHfus); compare the WebBook liquid values of
   validation/data/reactions/liquid_formation_webbook.json with their pages. Acetic acid enthalpies now work everywhere
-  (flowsheets included), and so do those of acids that are solid at 25 °C. Decide whether to search open dimerization
-  constants for formic, propionic and acrylic acid (their liquid values are 11-26 kJ/mol off). No open source with the
-  Eley–Rideal and Mars–van Krevelen forms was found.
-- **Values the maintainer adds** (2026-10-21; [MISSING_PROPERTIES_2026-10-21.md](MISSING_PROPERTIES_2026-10-21.md)):
+  (flowsheets included), and so do those of acids that are solid at 25 °C. Formic acid has its dimer constants (Chao and
+  Zwolinski 1978) and the WebBook gas ΔfH°; propionic and acrylic acid have none open yet (their liquid values are
+  12-26 kJ/mol off). No open source with the Eley–Rideal and Mars–van Krevelen forms was found.
+- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-22.md](MISSING_PROPERTIES_2026-10-22.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
 - **The Library rule "Best available"** (2026-10-17): it is each pair's default set, which is not the best for every
@@ -243,6 +243,9 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
 - **No two liquids with a plain cubic equation (2026-10-09):** if nobody uses it, Fugacity
   doesn't either.
 - **Data:**
+  - The list of missing properties is a new dated file at every update, `docs/MISSING_PROPERTIES_<date>.md`, made by
+    `validation/python/missing_properties.py`; the earlier files stay, so the gaps can be followed over time
+    (2026-10-22; DATA_RULES section 12).
   - Good data and fits for everything. When ChemSep lacks something, go on to the NIST WebBook,
     the ThermoML Archive and other open sources (2026-10-06).
   - Known deviations go in the engineering report rather than being hidden (for example

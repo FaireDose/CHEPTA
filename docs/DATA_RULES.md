@@ -212,7 +212,8 @@ decides.
 
 1. Run the scripts in this order after a component change: the component script, `fusion_data.py --write`,
    `formation_data.py --write`, `make_sources.py`, `mod_unifac_2.py --write`, then `validation/report/make_cases.py` and `make_reference.py`; then
-   `npm run wanted`, `npm run build` and `npm test`.
+   `npm run wanted`, `npm run build` and `npm test`. When the change fills a gap or finds a new one, write a new
+   dated list of the missing properties (section 12).
 2. Never change validation data or tests to make results pass (AGENTS.md rule 6). Changing a test that counts or
    lists components, or that a new kind of component makes wrong, is fine; say why in the test.
 3. Ask the person to compare every transcribed value with its source (AGENTS.md rule 4).
@@ -316,3 +317,16 @@ solvents may be (HMF: its WebBook boiling temperature of 388.2 K at 0.1 kPa, whe
     group-additivity values are not data and are not used.
 - The record keeps the state measured. Turning a liquid or crystal value into the ideal gas, or into the liquid of a
   nonvolatile component, is the reactor step's (proposal 0010, step 3), with the component's own records.
+
+## 12. The list of missing properties: one dated file per update
+
+The maintainer, 2026-10-22: "make a new file with the day of today so we keep track. add this as a rule".
+
+- What the databank still lacks (every "no open data" marker, the predicted-only records, the components without
+  UNIQUAC r and q or Modified UNIFAC 2.0 groups) is written to a new file, `docs/MISSING_PROPERTIES_<date>.md`, at
+  every update. It is made by `validation/python/missing_properties.py --date <date> --since <revision>`; `--since`
+  is the commit of the previous file, and the new file says what changed since then.
+- The earlier files are not edited, so the gaps can be followed over time; `docs/README.md` and `docs/DECISIONS.md`
+  link the latest one.
+- Prose the script does not write (what a search found, the recommendation still to decide) is added below its
+  tables, and carried over from the previous file while it is open.
