@@ -130,6 +130,17 @@ SEEDS = {
         "note": "Values cited per record, not redistributed as a database.",
         "files": ["validation/report/reference/", "validation/data/pure/fusion/webbook_fusion.json"],
     },
+    # validation/python/formation_data.py (CODATA, CODATA_URL): the reference values of the combustion cycle and the
+    # entropies of the elements
+    "codata-key-values": {
+        "title": "CODATA Key Values for Thermodynamics",
+        "authors": "J. D. Cox, D. D. Wagman, V. A. Medvedev",
+        "year": 1989,
+        "kind": "standard",
+        "url": "https://www.codata.info/resources/databases/key1.html",
+        "access": "Free to read online (CODATA); the table states: use of these recommended, internally consistent values is encouraged",
+        "note": "Hemisphere Publishing Corp., New York, 1989; standard pressure 1 bar.",
+    },
     # validation/python/pubchem.py docstring: the identity (formula, structure, CAS) of D-xylose and cis,cis-muconic acid
     "pubchem": {
         "title": "PubChem (compound records: formula, SMILES, InChI)",
@@ -568,7 +579,7 @@ def annotate_henry_text(text, rules, unmapped):
     return text
 
 
-PROPERTY_SOURCE_KEYS = ("vapourPressure", "uniquac", "association", "fusion")
+PROPERTY_SOURCE_KEYS = ("vapourPressure", "uniquac", "association", "fusion", "formation")
 
 
 def annotate_components(doc, rules, unmapped):
@@ -616,7 +627,7 @@ def annotate_known_issues(doc, rules, unmapped):
 # Who uses each source (for LICENSES.md; the engine computes the same at run time)
 
 PROPERTY_LABELS = {"vapourPressure": "vapour pressure", "uniquac": "UNIQUAC r and q", "association": "vapour association",
-                   "fusion": "melting temperature and enthalpy of fusion",
+                   "fusion": "melting temperature and enthalpy of fusion", "formation": "enthalpy and Gibbs energy of formation",
                    "constants_source": "critical constants and normal boiling point", "omega_source": "acentric factor"}
 
 

@@ -100,6 +100,11 @@ library documentation:
     h_IG(T) = ∫cp_L dT + (ΔHvap − h_R,sat)(T) − (ΔHvap − h_R,sat)(298.15 K), where both records apply from
     298.15 K; it says so in its source and refuses outside that range. Checked in
     [test/derived-ideal-gas.test.js](../../test/derived-ideal-gas.test.js) (DATA_RULES section 10).
+- **Formation** (`pure(id).formation`, proposal 0010, step 1): the enthalpy and Gibbs energy of formation at
+  298.15 K, of the ideal gas (ChemSep, taken as it is) or of the liquid or crystal measured (the WebBook and the ThermoML
+  Archive's combustion data, by the combustion cycle with the CODATA key values), with its source; or "no open data"
+  with the sources searched. Made by [formation_data.py](../../validation/python/formation_data.py), checked in
+  [test/formation.test.js](../../test/formation.test.js) (DATA_RULES section 11).
 - **Data**:
   - [src/data/components.json](../../src/data/components.json);
   - fit quality: [../PURE_DATA.md](../PURE_DATA.md);

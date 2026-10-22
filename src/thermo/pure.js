@@ -104,6 +104,21 @@ function vapourPressureRecord(c) {
  * @param {object} [opts.userData]  the user's own data (proposal 0012, user-data.js): its records for this
  *        component, or the user's own component, put over the databank
  */
+
+/**
+ * The formation record of a component: the state it refers to ("ideal gas", or "liquid" / "solid" for a component
+ * measured only so), the enthalpy and Gibbs energy of formation at 298.15 K (J/mol; Gf null where no open entropy
+ * gives it), tier and source; or { available: false, searched }.
+ */
+function formationOf(c) {
+  const f = c.formation;
+  if (!f) return { available: false, searched: [] };
+  if (f.available === false) return { available: false, searched: f.searched ?? [] };
+  const gas = f.state === "ideal gas";
+  return { state: f.state, T_K: f.T_K, Hf_J_mol: gas ? f.Hf_ig_J_mol : f.Hf_J_mol, Gf_J_mol: (gas ? f.Gf_ig_J_mol : f.Gf_J_mol) ?? null,
+    tier: f.tier, source: f.source };
+}
+
 export function pure(key, opts = {}) {
   const ud = checkUserData(opts.userData);
   const id = findComponent(key, ud);
@@ -396,6 +411,9 @@ export function pure(key, opts = {}) {
     // melting (triple-point) temperature and enthalpy of fusion with their source, or null (no open data)
     fusion: c.fusion && c.fusion.available !== false
       ? { Tm_K: c.fusion.Tm_K, Hfus_J_mol: c.fusion.Hfus_J_mol, tier: c.fusion.tier, source: c.fusion.source } : null,
+    // enthalpy and Gibbs energy of formation at 298.15 K with their source (proposal 0010, step 1;
+    // validation/python/formation_data.py), or { available: false, searched } (no open data)
+    formation: formationOf(c),
     has, record, property, psat, tsat, hIdealGas, props, liquidEnthalpy, saturation,
     /** Names of the properties with data, and those marked "no open data". */
     available() {

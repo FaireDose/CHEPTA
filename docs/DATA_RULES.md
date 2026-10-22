@@ -211,7 +211,7 @@ decides.
 ## 9. Before the pull request
 
 1. Run the scripts in this order after a component change: the component script, `fusion_data.py --write`,
-   `make_sources.py`, `mod_unifac_2.py --write`, then `validation/report/make_cases.py` and `make_reference.py`; then
+   `formation_data.py --write`, `make_sources.py`, `mod_unifac_2.py --write`, then `validation/report/make_cases.py` and `make_reference.py`; then
    `npm run wanted`, `npm run build` and `npm test`.
 2. Never change validation data or tests to make results pass (AGENTS.md rule 6). Changing a test that counts or
    lists components, or that a new kind of component makes wrong, is fine; say why in the test.
@@ -289,3 +289,28 @@ that is distilled or sublimed in its own processes (lactide, isosorbide, BHMF, d
 batch 4 for want of an open liquid vapour pressure). A substance whose measured volatility is negligible beside its
 solvents may be (HMF: its WebBook boiling temperature of 388.2 K at 0.1 kPa, where water's vapour pressure is
 169.5 kPa; its vacuum distillation is then not represented, and the record says so).
+
+## 11. Enthalpy and Gibbs energy of formation (proposal 0010, step 1)
+
+`formation_data.py` makes each component's `formation` record (the maintainer, 2026-10-22):
+
+- **ChemSep has the compound:** its ideal-gas enthalpy and Gibbs energy of formation at 298.15 K, **taken as they
+  are** (section 1); the elements in their reference state are zero. ChemSep does not state the standard pressure of
+  its Gibbs energies in the file.
+- **ChemSep does not:** the measured values, searched in the NIST WebBook, the ThermoML Archive's combustion
+  reactions and entropies, and the open literature (the maintainer, 2026-10-22: "search everything now"), stored as
+  found in `validation/data/pure/formation/measured.json`:
+  - one value per article: a measured enthalpy of formation of the liquid or the crystal, or an enthalpy or energy
+    of combustion turned into one with the CODATA key values of CO2 (g) and H2O (l) (open table, codata.info);
+  - the state the component is in at 298.15 K (the crystal above its melting temperature, else the liquid); values of
+    the other condensed state are left out and named;
+  - a liquid or gas value may come from either enantiomer or the racemate; a crystal value only from the crystal the
+    component's own records refer to (a racemic and an enantiopure crystal, or two anomers, are different solids);
+  - the median of the articles, with their number and spread; a spread above 10 kJ/mol is stated as "uncertain";
+  - the Gibbs energy of formation only where an open standard entropy of the same state and form exists, with the
+    CODATA entropies of the elements; else none;
+  - values that disagree with nothing open to decide between them are held for the maintainer (`HOLD`, xylitol);
+  - nothing open: `{available: false, searched}`, the sources searched. Computed (quantum-chemical) and
+    group-additivity values are not data and are not used.
+- The record keeps the state measured. Turning a liquid or crystal value into the ideal gas, or into the liquid of a
+  nonvolatile component, is the reactor step's (proposal 0010, step 3), with the component's own records.

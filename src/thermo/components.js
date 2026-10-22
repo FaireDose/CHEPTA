@@ -64,6 +64,8 @@ const describe = (id, c) => ({
   uniquac: Boolean(c.uniquac), modUnifac: Boolean(c.modUnifac?.groups),
   // melting temperature and enthalpy of fusion (solid-liquid equilibrium)
   fusion: Boolean(c.fusion && c.fusion.available !== false),
+  // enthalpy (and Gibbs energy) of formation at 298.15 K (reactions, proposal 0010)
+  formation: Boolean(c.formation && c.formation.available !== false),
   ...(c.tier === "user" ? { user: true } : {}),
   // an inert solid (class "solid"): only flowsheets and flashes take it
   ...(c.class === "solid" ? { solid: true } : {}),

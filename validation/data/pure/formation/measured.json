@@ -1,0 +1,2559 @@
+{
+ "1-3-propanediol": {
+  "webbook": [
+   {
+    "cas": "504-63-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -408.4,
+    "uncertainty": 5.1,
+    "units": "kJ/mol",
+    "method": "Ccr",
+    "reference": "Knauth and Sabbah, 1990",
+    "comment": "see  Knauth and Sabbah, 1989"
+   },
+   {
+    "cas": "504-63-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -392.0,
+    "uncertainty": 3.0,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Gardner and Hussain, 1972",
+    "comment": ""
+   },
+   {
+    "cas": "504-63-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -480.8,
+    "uncertainty": 5.1,
+    "units": "kJ/mol",
+    "method": "Ccr",
+    "reference": "Knauth and Sabbah, 1990",
+    "comment": "see  Knauth and Sabbah, 1989"
+   },
+   {
+    "cas": "504-63-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -465.0,
+    "uncertainty": 3.0,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Gardner and Hussain, 1972",
+    "comment": ""
+   },
+   {
+    "cas": "504-63-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -1843.0,
+    "uncertainty": 5.1,
+    "units": "kJ/mol",
+    "method": "Ccr",
+    "reference": "Knauth and Sabbah, 1990",
+    "comment": "see  Knauth and Sabbah, 1989; Corresponding ΔfHºliquid = -480.9 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   },
+   {
+    "cas": "504-63-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C504632&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -1859.0,
+    "uncertainty": 2.3,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Gardner and Hussain, 1972",
+    "comment": "Corresponding ΔfHºliquid = -464.8 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   }
+  ],
+  "thermoml": [
+   {
+    "kind": "combustion",
+    "compound_name": "propan-1,3-diol",
+    "exact_inchi": true,
+    "phase": "Liquid",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Static bomb calorimetry",
+    "T_K": 298.15,
+    "value": -24171.9,
+    "uncertainty": 41.3,
+    "doi": "10.1016/j.jct.2015.01.014",
+    "year": "2015",
+    "authors": [
+     "Emel'yanenko, V. N.[Vladimir N.]",
+     "Verevkin, S. P.[Sergey P.]"
+    ],
+    "title": "Benchmark thermodynamic properties of 1,3-propanediol: Comprehensive experimental and theoretical study",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2015.01.014.xml"
+   }
+  ]
+ },
+ "2-3-butanediol": {
+  "webbook": [
+   {
+    "cas": "513-85-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C513859&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -544.8,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Baroody and Carpenter, 1972",
+    "comment": "ALS"
+   },
+   {
+    "cas": "513-85-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C513859&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -541.8,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Moureu and Dode, 1937",
+    "comment": "ALS"
+   },
+   {
+    "cas": "513-85-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C513859&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2461.0,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Moureu and Dode, 1937",
+    "comment": "Corresponding ΔfHºliquid = -541.8 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   }
+  ],
+  "thermoml": []
+ },
+ "2-methoxyethanol": {
+  "webbook": [
+   {
+    "cas": "109-86-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C109864&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -376.9,
+    "uncertainty": 8.1,
+    "units": "kJ/mol",
+    "method": "Cm",
+    "reference": "Guthrie, 1977",
+    "comment": "Hydrolysis; ALS"
+   },
+   {
+    "cas": "109-86-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C109864&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -395.9,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "N/A",
+    "reference": "Simonetta, 1947",
+    "comment": "Value computed using ΔfHliquid° value of -441.0 kj/mol from  Simonetta, 1947 and ΔvapH° value of 45.1 kj/mol from  Guthrie, 1977.; DRB"
+   },
+   {
+    "cas": "109-86-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C109864&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -422.0,
+    "uncertainty": 7.6,
+    "units": "kJ/mol",
+    "method": "Cm",
+    "reference": "Guthrie, 1977",
+    "comment": "Hydrolysis; ALS"
+   },
+   {
+    "cas": "109-86-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C109864&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -441.0,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Simonetta, 1947",
+    "comment": "Author value for hf298-condensed=-123 kcal/mol; ALS"
+   },
+   {
+    "cas": "109-86-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C109864&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -1880.0,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Simonetta, 1947",
+    "comment": "Author value for hf298-condensed=-123 kcal/mol; Corresponding ΔfHºliquid = -439. kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   }
+  ],
+  "thermoml": []
+ },
+ "2-methylfuran": {
+  "webbook": [
+   {
+    "cas": "534-22-5",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C534225&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "liquid",
+    "value": 213.89,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Carlson and Westrum, 1965",
+    "comment": ""
+   }
+  ],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "2-methyltetrahydrofuran": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+   "Only computed (quantum-chemical) values found; not data (AGENTS.md rule 1)"
+  ]
+ },
+ "3-hydroxypropionic-acid": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "_about": "Measured formation data of the components ChemSep does not have, as found on their NIST WebBook pages and in the NIST TRC ThermoML Archive (bulk file ThermoML.v2020-09-30.tgz), by validation/python/formation_data.py --fetch / --fetch-thermoml; chosen by the rule of that script.",
+ "_codata": {
+  "source": "https://www.codata.info/resources/databases/key1.html",
+  "dHf_CO2_g_J_mol": -393510.0,
+  "dHf_H2O_l_J_mol": -285830.0,
+  "S_J_molK": {
+   "C": 5.74,
+   "H2": 130.68,
+   "O2": 205.152,
+   "N2": 191.609,
+   "Cl2": 223.081
+  }
+ },
+ "angelica-lactone": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+   "Only computed values found in open articles; a commercial databank (DETHERM) lists values, not used (AGENTS.md rule 1)"
+  ]
+ },
+ "bhet": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "bhmf": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "butyl-levulinate": {
+  "webbook": [],
+  "thermoml": [
+   {
+    "kind": "combustion",
+    "compound_name": "butyl levulinate",
+    "exact_inchi": true,
+    "phase": "Liquid",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Static bomb calorimetry",
+    "T_K": 298.15,
+    "value": -29528.8,
+    "uncertainty": 15.4,
+    "doi": "10.1016/j.tca.2017.12.006",
+    "year": "2018",
+    "authors": [
+     "Emel'yanenko, Vladimir N.",
+     "Altuntepe, Emrah",
+     "Held, Christoph",
+     "Pimerzin, Andrey A.",
+     "Verevkin, Sergey P."
+    ],
+    "title": "Renewable platform chemicals: Thermochemical study of levulinic acid esters",
+    "journal": "Thermochim. Acta",
+    "file": "10.1016/j.tca.2017.12.006.xml"
+   }
+  ]
+ },
+ "citric-acid": {
+  "webbook": [
+   {
+    "cas": "77-92-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -1543.8,
+    "uncertainty": 4.6,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Wilhoit and Shiao, 1964",
+    "comment": "Reanalyzed by  Cox and Pilcher, 1970, Original value = -1544. ± 4.6  kJ/mol; ALS"
+   },
+   {
+    "cas": "77-92-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -1960.6,
+    "uncertainty": 4.6,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Wilhoit and Shiao, 1964",
+    "comment": "Reanalyzed by  Cox and Pilcher, 1970, Original value = -1964. ± 4.6  kJ/mol; Corresponding ΔfHºsolid = -1543.8 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "77-92-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C77929&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 252.1,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "De Kruif, Van Miltenburg, et al., 1982",
+    "comment": "DH"
+   }
+  ],
+  "thermoml": []
+ },
+ "cpme": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "dichloromethane": {
+  "webbook": [
+   {
+    "cas": "75-09-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -95.52,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Review",
+    "reference": "Chase, 1998",
+    "comment": "Data last reviewed in December, 1968"
+   },
+   {
+    "cas": "75-09-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -95.1,
+    "uncertainty": 2.5,
+    "units": "kJ/mol",
+    "method": "Review",
+    "reference": "Manion, 2002",
+    "comment": "derived from recommended ΔfHliquid° and ΔvapH°; DRB"
+   },
+   {
+    "cas": "75-09-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -95.7,
+    "uncertainty": 1.3,
+    "units": "kJ/mol",
+    "method": "Chyd",
+    "reference": "Lacher, Amador, et al., 1967",
+    "comment": "Reanalyzed by  Cox and Pilcher, 1970, Original value = -96.0 ± 1.3  kJ/mol; At 250 C; ALS"
+   },
+   {
+    "cas": "75-09-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "gas",
+    "value": 270.28,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "Review",
+    "reference": "Chase, 1998",
+    "comment": "Data last reviewed in December, 1968"
+   },
+   {
+    "cas": "75-09-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -124.1,
+    "uncertainty": 2.5,
+    "units": "kJ/mol",
+    "method": "Review",
+    "reference": "Manion, 2002",
+    "comment": "adopted combustion calorimetry data of  Hu and Sinke, 1969 with increased uncertainty to reflect other data; DRB"
+   },
+   {
+    "cas": "75-09-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -124.3,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccr",
+    "reference": "Hu and Sinke, 1969, 2",
+    "comment": "ALS"
+   },
+   {
+    "cas": "75-09-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -602.5,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccr",
+    "reference": "Hu and Sinke, 1969, 2",
+    "comment": "ALS"
+   },
+   {
+    "cas": "75-09-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -605.8,
+    "uncertainty": 8.4,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Smith, Bjellerup, et al., 1953",
+    "comment": "Reanalyzed by  Cox and Pilcher, 1970, Original value = -605. ± 4.  kJ/mol; ALS"
+   },
+   {
+    "cas": "75-09-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C75092&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "liquid",
+    "value": 174.5,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Moseeva, Rabinovich, et al., 1978",
+    "comment": "DH"
+   }
+  ],
+  "thermoml": []
+ },
+ "dimethyl-fdca": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "diphenolic-acid": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "emf": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "erythritol": {
+  "webbook": [
+   {
+    "cas": "149-32-6",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -910.48,
+    "uncertainty": 0.54,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Parks, West, et al., 1946",
+    "comment": "see  McClaine, 1947; ALS"
+   },
+   {
+    "cas": "149-32-6",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2092.8,
+    "uncertainty": 1.3,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Parks, West, et al., 1946",
+    "comment": "see  McClaine, 1947; Corresponding ΔfHºliquid = -910.44 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "149-32-6",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -2118.0,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Cm",
+    "reference": "Parks and Manchester, 1952",
+    "comment": "from heat of solution; Corresponding ΔfHºsolid = -885.21 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "149-32-6",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 166.5,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Parks, Kelley, et al., 1929",
+    "comment": "Extrapolation below 90 K, 44.35 J/mol*K. Revision of previous data.; DH"
+   },
+   {
+    "cas": "149-32-6",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C149326&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 177.8,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Parks and Anderson, 1926",
+    "comment": "Extrapolation below 90 K, 55.48 J/mol*K.; DH"
+   }
+  ],
+  "thermoml": [
+   {
+    "kind": "entropy",
+    "compound_name": "meso-1,2,3,4-butanetetrol",
+    "exact_inchi": false,
+    "phase": "Crystal",
+    "T_K": 298.15,
+    "value": 165.43,
+    "doi": "10.1016/j.jct.2017.08.004",
+    "year": "2017",
+    "authors": [
+     "Jia, R.[Rui]",
+     "Sun, K.[Keyan]",
+     "Li, R.[Rongchun]",
+     "Zhang, Y.[Youyou]",
+     "Wang, W.[Wenxia]",
+     "Yin, H.[Heng]",
+     "Fang, D.[Dawei]",
+     "Shi, Q.[Quan]",
+     "Tan, Z.[Zhicheng]"
+    ],
+    "title": "Heat capacities of some sugar alcohols as phase change materials for thermal energy storage applications",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2017.08.004.xml"
+   }
+  ]
+ },
+ "ethyl-lactate": {
+  "webbook": [],
+  "thermoml": [
+   {
+    "kind": "combustion",
+    "compound_name": "ethyl D-lactate",
+    "exact_inchi": false,
+    "phase": "Liquid",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Static bomb calorimetry",
+    "T_K": 298.15,
+    "value": -22941.2,
+    "uncertainty": 24.9,
+    "doi": "10.1016/j.jct.2018.07.029",
+    "year": "2019",
+    "authors": [
+     "Emel'yanenko, Vladimir N.",
+     "Yermalayeu, Andrei V.",
+     "Portnova, Svetlana V.",
+     "Pimerzin, Andrey A.",
+     "Verevkin, Sergey P."
+    ],
+    "title": "Renewable platform chemicals: Evaluation of thermochemical data of alkyl lactates with complementary experimental and computational methods",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2018.07.029.xml"
+   }
+  ]
+ },
+ "ethyl-levulinate": {
+  "webbook": [],
+  "thermoml": [
+   {
+    "kind": "combustion",
+    "compound_name": "ethyl levulinate",
+    "exact_inchi": true,
+    "phase": "Liquid",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Static bomb calorimetry",
+    "T_K": 298.15,
+    "value": -26219.2,
+    "uncertainty": 14.4,
+    "doi": "10.1016/j.tca.2017.12.006",
+    "year": "2018",
+    "authors": [
+     "Emel'yanenko, Vladimir N.",
+     "Altuntepe, Emrah",
+     "Held, Christoph",
+     "Pimerzin, Andrey A.",
+     "Verevkin, Sergey P."
+    ],
+    "title": "Renewable platform chemicals: Thermochemical study of levulinic acid esters",
+    "journal": "Thermochim. Acta",
+    "file": "10.1016/j.tca.2017.12.006.xml"
+   }
+  ]
+ },
+ "fdca": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+   "Only its fusion data and computed gas-phase values of furan derivatives found"
+  ]
+ },
+ "fructose": {
+  "webbook": [
+   {
+    "cas": "57-48-7",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -1265.6,
+    "uncertainty": 0.46,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Clarke and Stegeman, 1939",
+    "comment": "Reanalyzed by  Cox and Pilcher, 1970, Original value = -1265.2 kJ/mol"
+   },
+   {
+    "cas": "57-48-7",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C57487&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -2810.4,
+    "uncertainty": 0.3,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Clarke and Stegeman, 1939",
+    "comment": "Corresponding ΔfHºsolid = -1265.7 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   }
+  ],
+  "thermoml": [
+   {
+    "kind": "entropy",
+    "compound_name": "D-fructose",
+    "exact_inchi": true,
+    "phase": "Crystal",
+    "T_K": 298.15,
+    "value": 214.09,
+    "doi": "10.1016/j.jct.2018.11.014",
+    "year": "2019",
+    "authors": [
+     "Yamamura, Yasuhisa",
+     "Iwagaki, Sakiko",
+     "Hishida, Mafumi",
+     "Nagatomo, Shigenori",
+     "Fukada, Kazuhiro",
+     "Saito, Kazuya"
+    ],
+    "title": "Heat capacity and standard thermodynamic functions of three ketohexoses in monosaccharides including rare sugars: D-fructose, D-psicose, and D-tagatose",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2018.11.014.xml"
+   },
+   {
+    "kind": "entropy",
+    "compound_name": "D-psicose",
+    "exact_inchi": false,
+    "phase": "Crystal",
+    "T_K": 298.15,
+    "value": 209.9,
+    "doi": "10.1016/j.jct.2018.11.014",
+    "year": "2019",
+    "authors": [
+     "Yamamura, Yasuhisa",
+     "Iwagaki, Sakiko",
+     "Hishida, Mafumi",
+     "Nagatomo, Shigenori",
+     "Fukada, Kazuhiro",
+     "Saito, Kazuya"
+    ],
+    "title": "Heat capacity and standard thermodynamic functions of three ketohexoses in monosaccharides including rare sugars: D-fructose, D-psicose, and D-tagatose",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2018.11.014.xml"
+   },
+   {
+    "kind": "entropy",
+    "compound_name": "D-(-)-tagatose",
+    "exact_inchi": false,
+    "phase": "Crystal",
+    "T_K": 298.15,
+    "value": 208.54,
+    "doi": "10.1016/j.jct.2018.11.014",
+    "year": "2019",
+    "authors": [
+     "Yamamura, Yasuhisa",
+     "Iwagaki, Sakiko",
+     "Hishida, Mafumi",
+     "Nagatomo, Shigenori",
+     "Fukada, Kazuhiro",
+     "Saito, Kazuya"
+    ],
+    "title": "Heat capacity and standard thermodynamic functions of three ketohexoses in monosaccharides including rare sugars: D-fructose, D-psicose, and D-tagatose",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2018.11.014.xml"
+   }
+  ]
+ },
+ "fumaric-acid": {
+  "webbook": [
+   {
+    "cas": "110-17-8",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -810.2,
+    "uncertainty": 1.3,
+    "units": "kJ/mol",
+    "method": "Chyd",
+    "reference": "Flitcroft, Skinner, et al., 1957",
+    "comment": "Reanalyzed by  Cox and Pilcher, 1970, Original value = -812.0 ± 0.4  kJ/mol; ALS"
+   },
+   {
+    "cas": "110-17-8",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -811.03,
+    "uncertainty": 0.88,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Wilhoit and Shiao, 1964",
+    "comment": "ALS"
+   },
+   {
+    "cas": "110-17-8",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -810.98,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Schwabe and Wagner, 1958",
+    "comment": "ALS"
+   },
+   {
+    "cas": "110-17-8",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -812.24,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Huffman and Fox, 1938",
+    "comment": "Author's hf298_condensed=-194.88 kcal/mol; ALS"
+   },
+   {
+    "cas": "110-17-8",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -1334.7,
+    "uncertainty": 0.8,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Wilhoit and Shiao, 1964",
+    "comment": "Corresponding ΔfHºsolid = -810.98 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "110-17-8",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -1334.7,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Schwabe and Wagner, 1958",
+    "comment": "Corresponding ΔfHºsolid = -810.94 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "110-17-8",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -1333.5,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Huffman and Fox, 1938",
+    "comment": "Author's hf298_condensed=-194.88 kcal/mol; Corresponding ΔfHºsolid = -812.20 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "110-17-8",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110178&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 166.1,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Parks and Huffman, 1930",
+    "comment": "Extrapolation below 90 K, 51.51 J/mol*K.; DH"
+   }
+  ],
+  "thermoml": []
+ },
+ "furan": {
+  "webbook": [
+   {
+    "cas": "110-00-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -27.7,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "N/A",
+    "reference": "Zaheeruddin and Lodhi, 1991",
+    "comment": "Value computed using ΔfHliquid° value of -55.4 kj/mol from  Zaheeruddin and Lodhi, 1991 and ΔvapH° value of 27.6 kj/mol from  Guthrie, Scott, et al., 1952.; DRB"
+   },
+   {
+    "cas": "110-00-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -34.7,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Guthrie, Scott, et al., 1952",
+    "comment": "ALS"
+   },
+   {
+    "cas": "110-00-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -29.8,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "N/A",
+    "reference": "Landrieu, Baylocq, et al., 1929",
+    "comment": "Value computed using ΔfHliquid° value of -57.5 kj/mol from  Landrieu, Baylocq, et al., 1929 and ΔvapH° value of 27.6 kj/mol from  Guthrie, Scott, et al., 1952.; DRB"
+   },
+   {
+    "cas": "110-00-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -62.34,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Guthrie, Scott, et al., 1952",
+    "comment": "ALS"
+   },
+   {
+    "cas": "110-00-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -57.45,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Landrieu, Baylocq, et al., 1929",
+    "comment": "ALS"
+   },
+   {
+    "cas": "110-00-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2083.5,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Guthrie, Scott, et al., 1952",
+    "comment": "Corresponding ΔfHºliquid = -62.17 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "110-00-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2088.0,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Landrieu, Baylocq, et al., 1929",
+    "comment": "Corresponding ΔfHºliquid = -57.3 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "110-00-9",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110009&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "liquid",
+    "value": 176.65,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Guthrie, Scott, et al., 1952, 2",
+    "comment": "DH"
+   }
+  ],
+  "thermoml": []
+ },
+ "furfuryl-alcohol": {
+  "webbook": [
+   {
+    "cas": "98-00-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -212.0,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "N/A",
+    "reference": "Parks, Mosley, et al., 1950",
+    "comment": "Value computed using ΔfHliquid° value of -276.4 kj/mol from  Parks, Mosley, et al., 1950 and ΔvapH° value of 64.4 kj/mol from  Landrieu, Baylocq, et al., 1929.; DRB"
+   },
+   {
+    "cas": "98-00-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -212.6,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "N/A",
+    "reference": "Miller, 1936",
+    "comment": "Value computed using ΔfHliquid° value of -277.0 kj/mol from  Miller, 1936 and ΔvapH° value of 64.4 kj/mol from  Landrieu, Baylocq, et al., 1929.; DRB"
+   },
+   {
+    "cas": "98-00-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -211.8,
+    "uncertainty": 2.1,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Landrieu, Baylocq, et al., 1929",
+    "comment": "Heat of formation derived by  Cox and Pilcher, 1970; ALS"
+   },
+   {
+    "cas": "98-00-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -276.4,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Parks, Mosley, et al., 1950",
+    "comment": "ALS"
+   },
+   {
+    "cas": "98-00-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -277.0,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Miller, 1936",
+    "comment": "%hf calculated possible error by author; ALS"
+   },
+   {
+    "cas": "98-00-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -276.2,
+    "uncertainty": 1.3,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Landrieu, Baylocq, et al., 1929",
+    "comment": "Reanalyzed by  Cox and Pilcher, 1970, Original value = -285. kJ/mol; ALS"
+   },
+   {
+    "cas": "98-00-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2548.7,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Parks, Mosley, et al., 1950",
+    "comment": "Corresponding ΔfHºliquid = -276.3 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "98-00-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2548.0,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Miller, 1936",
+    "comment": "%hf calculated possible error by author; Corresponding ΔfHºliquid = -277. kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "98-00-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2540.0,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Landrieu, Baylocq, et al., 1929",
+    "comment": "Corresponding ΔfHºliquid = -285. kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "98-00-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "liquid",
+    "value": 215.9,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Parks, Kennedy, et al., 1956",
+    "comment": "Extrapolation below 80 K, 48.99 J/mol*K.; DH"
+   },
+   {
+    "cas": "98-00-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "liquid",
+    "value": 215.5,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Miller, 1935",
+    "comment": "Extrapolation below 90 K, 42.97 J/mol*K.; DH"
+   }
+  ],
+  "thermoml": []
+ },
+ "gbl": {
+  "webbook": [
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -364.0,
+    "uncertainty": 3.0,
+    "units": "kJ/mol",
+    "method": "Cm",
+    "reference": "Wiberg and Waldron, 1991",
+    "comment": "Heat of reduction; ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -366.5,
+    "uncertainty": 0.8,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Leitao, Pilcher, et al., 1990",
+    "comment": "See  Brown, Conn, et al., 1989; ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -365.61,
+    "uncertainty": 0.44,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Steele, Chirico, et al., 1989",
+    "comment": "ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -377.7,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "N/A",
+    "reference": "Ismailov, Gabzalilova, et al., 1988",
+    "comment": "Value computed using ΔfHliquid° value of -431.2±2.7 kj/mol from  Ismailov, Gabzalilova, et al., 1988 and ΔvapH° value of 53.5 kj/mol from  Steele, Chirico, et al., 1989.; DRB"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -368.5,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "N/A",
+    "reference": "Yevstropov, Lebedev, et al., 1980",
+    "comment": "Value computed using ΔfHliquid° value of -422.0±1.1 kj/mol from  Yevstropov, Lebedev, et al., 1980 and ΔvapH° value of 53.5 kj/mol from  Steele, Chirico, et al., 1989.; DRB"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -419.0,
+    "uncertainty": 3.0,
+    "units": "kJ/mol",
+    "method": "Cm",
+    "reference": "Wiberg and Waldron, 1991",
+    "comment": "Heat of reduction; ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -420.9,
+    "uncertainty": 0.7,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Leitao, Pilcher, et al., 1990",
+    "comment": "See  Brown, Conn, et al., 1989; ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -419.07,
+    "uncertainty": 0.36,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Steele, Chirico, et al., 1989",
+    "comment": "ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -431.2,
+    "uncertainty": 2.7,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Ismailov, Gabzalilova, et al., 1988",
+    "comment": "ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -422.0,
+    "uncertainty": 1.1,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Yevstropov, Lebedev, et al., 1980",
+    "comment": "ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2010.6,
+    "uncertainty": 0.5,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Leitao, Pilcher, et al., 1990",
+    "comment": "See  Brown, Conn, et al., 1989; Corresponding ΔfHºliquid = -420.9 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2012.46,
+    "uncertainty": 0.28,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Steele, Chirico, et al., 1989",
+    "comment": "Corresponding ΔfHºliquid = -419.07 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2000.4,
+    "uncertainty": 6.4,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Ismailov, Gabzalilova, et al., 1988",
+    "comment": "Corresponding ΔfHºliquid = -431.14 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2009.2,
+    "uncertainty": 0.8,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Yevstropov, Lebedev, et al., 1980",
+    "comment": "Corresponding ΔfHºliquid = -422.3 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "liquid",
+    "value": 197.4,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Lebedev and Yevstropov, 1983",
+    "comment": "DH"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "liquid",
+    "value": 197.5,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Yevstropov, Lebedev, et al., 1980, 2",
+    "comment": "DH"
+   },
+   {
+    "cas": "96-48-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C96480&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "liquid",
+    "value": 201.28,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Ismailov, Gabzalilova, et al., 1988",
+    "comment": "DH"
+   }
+  ],
+  "thermoml": []
+ },
+ "glucaric-acid": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "glucose": {
+  "webbook": [
+   {
+    "cas": "492-62-6",
+    "form": "alpha-D-glucopyranose",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C492626&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -2805.0,
+    "uncertainty": 1.3,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Ponomarev and Migarskaya, 1960",
+    "comment": "Reanalyzed by  Cox and Pilcher, 1970, Original value = -2806.2 ± 1.3  kJ/mol; Corresponding ΔfHºsolid = -1271.1 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "492-62-6",
+    "form": "alpha-D-glucopyranose",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C492626&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 209.19,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Boerio-Goates, 1991",
+    "comment": "DH"
+   }
+  ],
+  "thermoml": []
+ },
+ "glycerol-carbonate": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+   "Only computed values found (not data)"
+  ]
+ },
+ "glycolic-acid": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+   "The 2010 article on glycolic acid and glycolide in the Russian Journal of Physical Chemistry, doi:10.1134/S0036024410080054: paywalled, no free copy known to Unpaywall"
+  ]
+ },
+ "gvl": {
+  "webbook": [
+   {
+    "cas": "108-29-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -406.5,
+    "uncertainty": 1.1,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Leitao, Pilcher, et al., 1990",
+    "comment": "See  Brown, Conn, et al., 1989"
+   },
+   {
+    "cas": "108-29-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -461.3,
+    "uncertainty": 1.0,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Leitao, Pilcher, et al., 1990",
+    "comment": "See  Brown, Conn, et al., 1989"
+   },
+   {
+    "cas": "108-29-2",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2649.6,
+    "uncertainty": 0.8,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Leitao, Pilcher, et al., 1990",
+    "comment": "See  Brown, Conn, et al., 1989; Corresponding ΔfHºliquid = -461.3 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   }
+  ],
+  "thermoml": []
+ },
+ "hmf": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+   "Verevkin et al., Biomass-derived platform chemicals: thermodynamic studies on the conversion of 5-hydroxymethylfurfural into bulk intermediates, Ind. Eng. Chem. Res. (2009), doi:10.1021/ie901012g: paywalled, no free copy known to Unpaywall, journal not in the ThermoML Archive"
+  ]
+ },
+ "isoamyl-alcohol": {
+  "webbook": [
+   {
+    "cas": "123-51-3",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -300.8,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "N/A",
+    "reference": "Markovnik, Shvarko, et al., 1987",
+    "comment": "Value computed using ΔfHliquid° value of -355.9±1.6 kj/mol from  Markovnik, Shvarko, et al., 1987 and ΔvapH° value of 55.1 kj/mol from  Chao and Rossini, 1965.; DRB"
+   },
+   {
+    "cas": "123-51-3",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -301.3,
+    "uncertainty": 1.5,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Chao and Rossini, 1965",
+    "comment": "Heat of formation derived by  Cox and Pilcher, 1970; ALS"
+   },
+   {
+    "cas": "123-51-3",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -355.9,
+    "uncertainty": 1.6,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Markovnik, Shvarko, et al., 1987",
+    "comment": "Uc =-3320.42 kJ/mol; ALS"
+   },
+   {
+    "cas": "123-51-3",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -356.4,
+    "uncertainty": 0.59,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Chao and Rossini, 1965",
+    "comment": "ALS"
+   },
+   {
+    "cas": "123-51-3",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -3326.6,
+    "uncertainty": 1.6,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Markovnik, Shvarko, et al., 1987",
+    "comment": "Uc =-3320.42 kJ/mol; Corresponding ΔfHºliquid = -355.92 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "123-51-3",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C123513&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -3326.2,
+    "uncertainty": 0.5,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Chao and Rossini, 1965",
+    "comment": "Corresponding ΔfHºliquid = -356.4 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   }
+  ],
+  "thermoml": []
+ },
+ "isosorbide": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "itaconic-acid": {
+  "webbook": [
+   {
+    "cas": "97-65-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -841.11,
+    "uncertainty": 0.59,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Wilhoit and Lei, 1965",
+    "comment": ""
+   },
+   {
+    "cas": "97-65-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97654&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -1983.9,
+    "uncertainty": 0.5,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Wilhoit and Lei, 1965",
+    "comment": "Reanalyzed by  Cox and Pilcher, 1970, Original value = -1985.1 kJ/mol; Corresponding ΔfHºsolid = -841.11 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   }
+  ],
+  "thermoml": []
+ },
+ "lactic-acid": {
+  "webbook": [
+   {
+    "cas": "50-21-5",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50215&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -1362.8,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Meyerhof, 1922",
+    "comment": "Corresponding ΔfHºsolid = -675.21 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   },
+   {
+    "cas": "79-33-4",
+    "form": "L-lactic acid",
+    "crystal_is_components": false,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79334&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -694.08,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Saville and Gundry, 1959",
+    "comment": ""
+   },
+   {
+    "cas": "79-33-4",
+    "form": "L-lactic acid",
+    "crystal_is_components": false,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C79334&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -1343.98,
+    "uncertainty": 0.46,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Saville and Gundry, 1959",
+    "comment": "Corresponding ΔfHºsolid = -694.034 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   }
+  ],
+  "thermoml": []
+ },
+ "lactide": {
+  "webbook": [
+   {
+    "cas": "95-96-5",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -792.1,
+    "uncertainty": 1.7,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Kulagina, Lebedev, et al., 1982",
+    "comment": ""
+   },
+   {
+    "cas": "95-96-5",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -2712.5,
+    "uncertainty": 1.7,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Kulagina, Lebedev, et al., 1982",
+    "comment": "Corresponding ΔfHºsolid = -791.9 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   }
+  ],
+  "thermoml": []
+ },
+ "levoglucosan": {
+  "webbook": [
+   {
+    "cas": "498-07-7",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -2832.0,
+    "uncertainty": 0.8,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Skuratov, Kozina, et al., 1957",
+    "comment": "At 20C; Corresponding ΔfHºsolid = -958.6 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   },
+   {
+    "cas": "498-07-7",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C498077&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -2875.1,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Karrer, Nageli, et al., 1921",
+    "comment": "Corresponding ΔfHºsolid = -915.08 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   }
+  ],
+  "thermoml": [
+   {
+    "kind": "combustion",
+    "compound_name": "1,6-anhydro-.beta.-D-glucopyranose",
+    "exact_inchi": true,
+    "phase": "Crystal 2",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Static bomb calorimetry",
+    "T_K": 298.15,
+    "value": -17475.1,
+    "uncertainty": 22.7,
+    "doi": "10.1016/j.jct.2015.01.005",
+    "year": "2015",
+    "authors": [
+     "Kabo, G. J.[Gennady J.]",
+     "Paulechka, Y. U.[Yauheni U.]",
+     "Voitkevich, O. V.[Olga V.]",
+     "Blokhin, A. V.[Andrey V.]",
+     "Stepurko, E. N.[Elena N.]",
+     "Kohut, S. V.[Sviataslau V.]",
+     "Voznyi, Y. V.[Yakov V.]"
+    ],
+    "title": "Experimental and theoretical study of thermodynamic properties of levoglucosan",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2015.01.005.xml"
+   },
+   {
+    "kind": "entropy",
+    "compound_name": "1,6-anhydro-.beta.-D-glucopyranose",
+    "exact_inchi": true,
+    "phase": "Crystal 2",
+    "T_K": 298.15,
+    "value": 181.4,
+    "doi": "10.1016/j.jct.2015.01.005",
+    "year": "2015",
+    "authors": [
+     "Kabo, G. J.[Gennady J.]",
+     "Paulechka, Y. U.[Yauheni U.]",
+     "Voitkevich, O. V.[Olga V.]",
+     "Blokhin, A. V.[Andrey V.]",
+     "Stepurko, E. N.[Elena N.]",
+     "Kohut, S. V.[Sviataslau V.]",
+     "Voznyi, Y. V.[Yakov V.]"
+    ],
+    "title": "Experimental and theoretical study of thermodynamic properties of levoglucosan",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2015.01.005.xml"
+   },
+   {
+    "kind": "combustion",
+    "compound_name": "1,6-anhydro-.beta.-D-glucopyranose",
+    "exact_inchi": true,
+    "phase": "Crystal 2",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Static bomb calorimetry",
+    "T_K": 298.15,
+    "value": -17461.0,
+    "uncertainty": 9.1,
+    "doi": "10.1021/je400207t",
+    "year": "2013",
+    "authors": [
+     "Rocha, I. M.[Ines M.]",
+     "Galvao, T. L. P.[Tiago L.P.]",
+     "Sapei, E.[Erlin]",
+     "Ribeiro da Silva, M. D. M. C.[Maria D. M. C.]",
+     "Ribeiro da Silva, M. A. V.[Manuel A. V.]"
+    ],
+    "title": "Levoglucosan: A Calorimetric, Thermodynamic, Spectroscopic, and Computational Investigation",
+    "journal": "J. Chem. Eng. Data",
+    "file": "10.1021/je400207t.xml"
+   }
+  ]
+ },
+ "levoglucosenone": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "levulinic-acid": {
+  "webbook": [],
+  "thermoml": [
+   {
+    "kind": "combustion",
+    "compound_name": "4-oxopentanoic acid",
+    "exact_inchi": true,
+    "phase": "Crystal",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Static bomb calorimetry",
+    "T_K": 298.15,
+    "value": -20891.8,
+    "uncertainty": 16.3,
+    "doi": "10.1016/j.jct.2011.07.014",
+    "year": "2012",
+    "authors": [
+     "Verevkin, S. P.[Sergey P.]",
+     "Emelyanenko, V. N.[Vladimir N.]"
+    ],
+    "title": "Renewable platform-chemicals and materials: Thermochemical study of levulinic acid",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2011.07.014.xml"
+   }
+  ]
+ },
+ "limonene": {
+  "webbook": [
+   {
+    "cas": "138-86-3",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C138863&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -6128.3,
+    "uncertainty": null,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Auwsers, Roth, et al., 1910",
+    "comment": "Corresponding ΔfHºliquid = -93.3 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "5989-27-5",
+    "form": "(R)-(+)-limonene",
+    "crystal_is_components": false,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C5989275&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -6167.2,
+    "uncertainty": 2.1,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Hawkins and Eriksen, 1954",
+    "comment": "Reanalyzed by  Cox and Pilcher, 1970, Original value = -6166.8 ± 1.1  kJ/mol; Corresponding ΔfHºliquid = -54.52 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   }
+  ],
+  "thermoml": []
+ },
+ "malic-acid": {
+  "webbook": [
+   {
+    "cas": "97-67-6",
+    "form": "L-malic acid",
+    "crystal_is_components": false,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97676&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -1103.7,
+    "uncertainty": 4.2,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Wilhoit and Shiao, 1964",
+    "comment": ""
+   },
+   {
+    "cas": "97-67-6",
+    "form": "L-malic acid",
+    "crystal_is_components": false,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97676&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -1328.0,
+    "uncertainty": 4.2,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Wilhoit and Shiao, 1964",
+    "comment": "Corresponding ΔfHºsolid = -1103.6 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   },
+   {
+    "cas": "636-61-3",
+    "form": "D-malic acid",
+    "crystal_is_components": false,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C636613&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -1105.7,
+    "uncertainty": 0.63,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Wilhoit and Shiao, 1964",
+    "comment": ""
+   },
+   {
+    "cas": "636-61-3",
+    "form": "D-malic acid",
+    "crystal_is_components": false,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C636613&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -1325.9,
+    "uncertainty": 0.59,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Wilhoit and Shiao, 1964",
+    "comment": "Corresponding ΔfHºsolid = -1105.7 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   }
+  ],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "methyl-lactate": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+   "The alkyl lactates article in the ThermoML Archive (doi:10.1016/j.jct.2018.07.029) holds the combustion of ethyl lactate only"
+  ]
+ },
+ "methyl-levulinate": {
+  "webbook": [],
+  "thermoml": [
+   {
+    "kind": "combustion",
+    "compound_name": "methyl levulinate",
+    "exact_inchi": true,
+    "phase": "Liquid",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Static bomb calorimetry",
+    "T_K": 298.15,
+    "value": -24100.1,
+    "uncertainty": 17.1,
+    "doi": "10.1016/j.tca.2017.12.006",
+    "year": "2018",
+    "authors": [
+     "Emel'yanenko, Vladimir N.",
+     "Altuntepe, Emrah",
+     "Held, Christoph",
+     "Pimerzin, Andrey A.",
+     "Verevkin, Sergey P."
+    ],
+    "title": "Renewable platform chemicals: Thermochemical study of levulinic acid esters",
+    "journal": "Thermochim. Acta",
+    "file": "10.1016/j.tca.2017.12.006.xml"
+   }
+  ]
+ },
+ "muconic-acid": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "solketal": {
+  "webbook": [],
+  "thermoml": [],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+   "Only a group-additivity estimate found (not data, docs/DATA_RULES.md section 1)"
+  ]
+ },
+ "sorbitol": {
+  "webbook": [
+   {
+    "cas": "50-70-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -1353.7,
+    "uncertainty": 1.4,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Gerasimov, Blokh, et al., 1985",
+    "comment": "ALS"
+   },
+   {
+    "cas": "50-70-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C50704&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -3009.4,
+    "uncertainty": 1.4,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Gerasimov, Blokh, et al., 1985",
+    "comment": "Corresponding ΔfHºsolid = -1352.5 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   }
+  ],
+  "thermoml": [
+   {
+    "kind": "entropy",
+    "compound_name": "D-mannitol",
+    "exact_inchi": false,
+    "phase": "Crystal",
+    "T_K": 298.15,
+    "value": 227.01,
+    "doi": "10.1016/j.jct.2017.08.004",
+    "year": "2017",
+    "authors": [
+     "Jia, R.[Rui]",
+     "Sun, K.[Keyan]",
+     "Li, R.[Rongchun]",
+     "Zhang, Y.[Youyou]",
+     "Wang, W.[Wenxia]",
+     "Yin, H.[Heng]",
+     "Fang, D.[Dawei]",
+     "Shi, Q.[Quan]",
+     "Tan, Z.[Zhicheng]"
+    ],
+    "title": "Heat capacities of some sugar alcohols as phase change materials for thermal energy storage applications",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2017.08.004.xml"
+   }
+  ]
+ },
+ "succinic-acid": {
+  "webbook": [
+   {
+    "cas": "110-15-6",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -940.0,
+    "uncertainty": 2.0,
+    "units": "kJ/mol",
+    "method": "AVG",
+    "reference": "N/A",
+    "comment": "Average of 7 values; Individual data points"
+   },
+   {
+    "cas": "110-15-6",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -1491.0,
+    "uncertainty": 3.0,
+    "units": "kJ/mol",
+    "method": "AVG",
+    "reference": "N/A",
+    "comment": "Average of 16 values; Individual data points"
+   },
+   {
+    "cas": "110-15-6",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 167.32,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Vanderzee and Westrum, 1970",
+    "comment": "DH"
+   },
+   {
+    "cas": "110-15-6",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C110156&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 175.7,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Parks and Huffman, 1930",
+    "comment": "crystaline, I phase; Extrapolation below 90 K, 55.10 J/mol*K.; DH"
+   }
+  ],
+  "thermoml": [
+   {
+    "kind": "combustion",
+    "compound_name": "butanedioic acid",
+    "exact_inchi": true,
+    "phase": "Crystal",
+    "property": "Molar internal energy of reaction at constant volume, kJ/mol",
+    "method": null,
+    "T_K": 303.15,
+    "value": -1494.38,
+    "uncertainty": 2.2,
+    "doi": "10.1016/j.jct.2004.04.002",
+    "year": "2004",
+    "authors": [
+     "Rojas-Aguilar, A.[Aaron]",
+     "Valdes-Ordonoz, A.[Alejandro]"
+    ],
+    "title": "Micro-combustion calorimetry employing a Calvet heat flux calorimeter",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2004.04.002.xml"
+   },
+   {
+    "kind": "combustion",
+    "compound_name": "butanedioic acid",
+    "exact_inchi": true,
+    "phase": "Crystal",
+    "property": "Molar internal energy of reaction at constant volume, kJ/mol",
+    "method": null,
+    "T_K": 303.15,
+    "value": -1493.34,
+    "uncertainty": 1.44,
+    "doi": "10.1016/j.jct.2004.04.002",
+    "year": "2004",
+    "authors": [
+     "Rojas-Aguilar, A.[Aaron]",
+     "Valdes-Ordonoz, A.[Alejandro]"
+    ],
+    "title": "Micro-combustion calorimetry employing a Calvet heat flux calorimeter",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2004.04.002.xml"
+   },
+   {
+    "kind": "combustion",
+    "compound_name": "butanedioic acid",
+    "exact_inchi": true,
+    "phase": "Crystal",
+    "property": "Molar internal energy of reaction at constant volume, kJ/mol",
+    "method": null,
+    "T_K": 303.15,
+    "value": -1493.35,
+    "uncertainty": 2.02,
+    "doi": "10.1016/j.jct.2004.04.002",
+    "year": "2004",
+    "authors": [
+     "Rojas-Aguilar, A.[Aaron]",
+     "Valdes-Ordonoz, A.[Alejandro]"
+    ],
+    "title": "Micro-combustion calorimetry employing a Calvet heat flux calorimeter",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2004.04.002.xml"
+   },
+   {
+    "kind": "combustion",
+    "compound_name": "butanedioic acid",
+    "exact_inchi": true,
+    "phase": "Crystal",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Micro-bomb calorimetry",
+    "T_K": 298.15,
+    "value": -12630.1,
+    "uncertainty": 4.0,
+    "doi": "10.1016/j.jct.2006.10.013",
+    "year": "2007",
+    "authors": [
+     "Ribeiro da Silva, M. A. V.[Manuel A. V.]",
+     "Pilcher, G.[Geoffrey]",
+     "Santos, L. M. N. B. F.[Luis M. N. B. F.]",
+     "Lima, L. M. S. S. M. S. S.[Luis M. Spencer S.]"
+    ],
+    "title": "Calibration and test of an aneroid mini-bomb combustion calorimeter",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2006.10.013.xml"
+   },
+   {
+    "kind": "combustion",
+    "compound_name": "butanedioic acid",
+    "exact_inchi": true,
+    "phase": "Crystal",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Static bomb calorimetry",
+    "T_K": 298.15,
+    "value": -12636.1,
+    "uncertainty": 3.0,
+    "doi": "10.1016/j.jct.2017.09.007",
+    "year": "2018",
+    "authors": [
+     "Ledo, J. Manuel",
+     "Flores, Henoc",
+     "Hernandez-Perez, Julio M.",
+     "Ramos, Fernando",
+     "Camarillo, E. Adriana",
+     "Solano-Altamirano, J.M."
+    ],
+    "title": "Gas-phase enthalpies of formation of ethyl hydroxybenzoates: An experimental and theoretical approach",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2017.09.007.xml"
+   }
+  ]
+ },
+ "thfa": {
+  "webbook": [
+   {
+    "cas": "97-99-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97994&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": -369.0,
+    "uncertainty": 6.3,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Landrieu, Baylocq, et al., 1929",
+    "comment": "Heat of formation derived by  Cox and Pilcher, 1970"
+   },
+   {
+    "cas": "97-99-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97994&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -435.6,
+    "uncertainty": 5.9,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Landrieu, Baylocq, et al., 1929",
+    "comment": "Heat of formation derived by  Cox and Pilcher, 1970; ALS"
+   },
+   {
+    "cas": "97-99-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C97994&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "liquid",
+    "value": 219.2,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Miller, 1935",
+    "comment": "Extrapolation below 90 K, 45.23 J/mol*K.; DH"
+   }
+  ],
+  "thermoml": []
+ },
+ "xylitol": {
+  "webbook": [
+   {
+    "cas": "87-99-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "liquid",
+    "value": -1118.6,
+    "uncertainty": 0.63,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Oberemok-Yakubova and Balandin, 1963",
+    "comment": ""
+   },
+   {
+    "cas": "87-99-0",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C87990&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "liquid",
+    "value": -2564.0,
+    "uncertainty": 0.63,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Oberemok-Yakubova and Balandin, 1963",
+    "comment": "Corresponding ΔfHºliquid = -1118.5 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   }
+  ],
+  "thermoml": [
+   {
+    "kind": "entropy",
+    "compound_name": "xylitol",
+    "exact_inchi": false,
+    "phase": "Crystal",
+    "T_K": 298.15,
+    "value": 198.13,
+    "doi": "10.1016/j.jct.2017.08.004",
+    "year": "2017",
+    "authors": [
+     "Jia, R.[Rui]",
+     "Sun, K.[Keyan]",
+     "Li, R.[Rongchun]",
+     "Zhang, Y.[Youyou]",
+     "Wang, W.[Wenxia]",
+     "Yin, H.[Heng]",
+     "Fang, D.[Dawei]",
+     "Shi, Q.[Quan]",
+     "Tan, Z.[Zhicheng]"
+    ],
+    "title": "Heat capacities of some sugar alcohols as phase change materials for thermal energy storage applications",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2017.08.004.xml"
+   },
+   {
+    "kind": "entropy",
+    "compound_name": "D-arabitol",
+    "exact_inchi": false,
+    "phase": "Crystal",
+    "T_K": 298.15,
+    "value": 199.73,
+    "doi": "10.1016/j.jct.2017.08.004",
+    "year": "2017",
+    "authors": [
+     "Jia, R.[Rui]",
+     "Sun, K.[Keyan]",
+     "Li, R.[Rongchun]",
+     "Zhang, Y.[Youyou]",
+     "Wang, W.[Wenxia]",
+     "Yin, H.[Heng]",
+     "Fang, D.[Dawei]",
+     "Shi, Q.[Quan]",
+     "Tan, Z.[Zhicheng]"
+    ],
+    "title": "Heat capacities of some sugar alcohols as phase change materials for thermal energy storage applications",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2017.08.004.xml"
+   },
+   {
+    "kind": "entropy",
+    "compound_name": "L-(-)-arabitol",
+    "exact_inchi": false,
+    "phase": "Crystal",
+    "T_K": 298.15,
+    "value": 201.89,
+    "doi": "10.1016/j.jct.2017.08.004",
+    "year": "2017",
+    "authors": [
+     "Jia, R.[Rui]",
+     "Sun, K.[Keyan]",
+     "Li, R.[Rongchun]",
+     "Zhang, Y.[Youyou]",
+     "Wang, W.[Wenxia]",
+     "Yin, H.[Heng]",
+     "Fang, D.[Dawei]",
+     "Shi, Q.[Quan]",
+     "Tan, Z.[Zhicheng]"
+    ],
+    "title": "Heat capacities of some sugar alcohols as phase change materials for thermal energy storage applications",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2017.08.004.xml"
+   },
+   {
+    "kind": "combustion",
+    "compound_name": "xylitol",
+    "exact_inchi": false,
+    "phase": "Crystal",
+    "property": "Molar internal energy of reaction at constant volume, kJ/mol",
+    "method": null,
+    "T_K": 298.15,
+    "value": -2463.2,
+    "uncertainty": 100.0,
+    "doi": "10.1016/j.tca.2007.02.022",
+    "year": "2007",
+    "authors": [
+     "Tong, B.[Bo]",
+     "Tan, Z.-C.[Zhi-Cheng]",
+     "Shi, Q.[Quan]",
+     "Li, Y.-S.[Yan-Sheng]",
+     "Yue, D.-T.[Dan-Ting]",
+     "Wang, S.-X.[Shao-Xu]"
+    ],
+    "title": "Thermodynamic investigation of several natural polyols (I): Heat capacities and thermodynamic properties of xylitol",
+    "journal": "Thermochim. Acta",
+    "file": "10.1016/j.tca.2007.02.022.xml"
+   },
+   {
+    "kind": "combustion",
+    "compound_name": "SRS-1,2,3,4,5-pentanepentol",
+    "exact_inchi": false,
+    "phase": "Crystal",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Static bomb calorimetry",
+    "T_K": 298.15,
+    "value": -16833.39,
+    "uncertainty": 16.55,
+    "doi": "10.1016/j.tca.2009.11.011",
+    "year": "2010",
+    "authors": [
+     "Tong, B.[Bo]",
+     "Yu, Y.[Ying]",
+     "Tan, Z.-C.[Zhi-Cheng]",
+     "Meng, C.-G.[Chang-Gong]",
+     "Cui, L.-J.[Li-Jun]",
+     "Xiao, G.[Guang]",
+     "Liu, R.-B.[Rui-Bin]"
+    ],
+    "title": "Thermodynamic investigation of several natural polyols ( IV): Heat capacities and thermodynamic properties of adonitol",
+    "journal": "Thermochim. Acta",
+    "file": "10.1016/j.tca.2009.11.011.xml"
+   },
+   {
+    "kind": "entropy",
+    "compound_name": "SRS-1,2,3,4,5-pentanepentol",
+    "exact_inchi": false,
+    "phase": "Crystal 1",
+    "T_K": 298.15,
+    "value": 0.0,
+    "doi": "10.1016/j.tca.2009.11.011",
+    "year": "2010",
+    "authors": [
+     "Tong, B.[Bo]",
+     "Yu, Y.[Ying]",
+     "Tan, Z.-C.[Zhi-Cheng]",
+     "Meng, C.-G.[Chang-Gong]",
+     "Cui, L.-J.[Li-Jun]",
+     "Xiao, G.[Guang]",
+     "Liu, R.-B.[Rui-Bin]"
+    ],
+    "title": "Thermodynamic investigation of several natural polyols ( IV): Heat capacities and thermodynamic properties of adonitol",
+    "journal": "Thermochim. Acta",
+    "file": "10.1016/j.tca.2009.11.011.xml"
+   }
+  ],
+  "searched_also": [
+   "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+  ]
+ },
+ "xylose": {
+  "webbook": [
+   {
+    "cas": "58-86-6",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C58866&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 143.5,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Miller, 1935",
+    "comment": "Extrapolation below 90 K, 31.38 J/mol*K."
+   }
+  ],
+  "thermoml": [
+   {
+    "kind": "combustion",
+    "compound_name": "D-xylose",
+    "exact_inchi": true,
+    "phase": "Crystal",
+    "property": "Specific internal energy of reaction at constant volume, J/g",
+    "method": "Static bomb calorimetry",
+    "T_K": 298.15,
+    "value": -15601.3,
+    "uncertainty": 5.2,
+    "doi": "10.1016/j.jct.2012.09.028",
+    "year": "2013",
+    "authors": [
+     "Ribeiro da Silva, M. A. V.[Manuel A. V.]",
+     "Ribeiro da Silva, M. D. M. C.[Maria D. M. C.]",
+     "Lobo Ferreira, A. I. M. C.[Ana I.M.C.]",
+     "Shi, Q.[Quan]",
+     "Woodfield, B. F.[Brian F.]",
+     "Goldberg, R. N.[Robert N.]"
+    ],
+    "title": "Thermochemistry of a-D-xylose(cr)",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2012.09.028.xml"
+   },
+   {
+    "kind": "entropy",
+    "compound_name": "D-xylose",
+    "exact_inchi": true,
+    "phase": "Crystal",
+    "T_K": 298.15,
+    "value": 175.29,
+    "doi": "10.1016/j.jct.2012.09.028",
+    "year": "2013",
+    "authors": [
+     "Ribeiro da Silva, M. A. V.[Manuel A. V.]",
+     "Ribeiro da Silva, M. D. M. C.[Maria D. M. C.]",
+     "Lobo Ferreira, A. I. M. C.[Ana I.M.C.]",
+     "Shi, Q.[Quan]",
+     "Woodfield, B. F.[Brian F.]",
+     "Goldberg, R. N.[Robert N.]"
+    ],
+    "title": "Thermochemistry of a-D-xylose(cr)",
+    "journal": "J. Chem. Thermodyn.",
+    "file": "10.1016/j.jct.2012.09.028.xml"
+   }
+  ]
+ }
+}

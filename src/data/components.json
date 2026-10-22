@@ -279,6 +279,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 H2O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against H2O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -241814.0,
+        "Gf_ig_J_mol": -228590.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "acetic-acid": {
@@ -576,6 +591,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -432800.0,
+        "Gf_ig_J_mol": -374500.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "ethylene-glycol": {
@@ -860,6 +890,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 DOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H6O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -392200.0,
+        "Gf_ig_J_mol": -301800.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "methanol": {
@@ -1144,6 +1189,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3OH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CH4O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -200940.0,
+        "Gf_ig_J_mol": -162320.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "ethanol": {
@@ -1427,6 +1487,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H6O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -234950.0,
+        "Gf_ig_J_mol": -167850.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "acetone": {
@@ -1708,6 +1783,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH3CO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -215700.0,
+        "Gf_ig_J_mol": -151300.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "chloroform": {
@@ -1991,6 +2081,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CHCL3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CHCl3"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -102900.0,
+        "Gf_ig_J_mol": -70100.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "benzene": {
@@ -2271,6 +2376,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (6 ACH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H6"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 82880.0,
+        "Gf_ig_J_mol": 129600.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "toluene": {
@@ -2553,6 +2673,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (5 ACH, 1 ACCH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H8"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 50170.0,
+        "Gf_ig_J_mol": 122200.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "ethyl-acetate": {
@@ -2840,6 +2975,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH3COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -444500.0,
+        "Gf_ig_J_mol": -328000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "oxygen": {
@@ -3106,6 +3256,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 0.0,
+        "Gf_ig_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "nitrogen": {
@@ -3372,6 +3537,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 0.0,
+        "Gf_ig_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "hydrogen": {
@@ -3643,6 +3823,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 0.0,
+        "Gf_ig_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "methane": {
@@ -3911,6 +4106,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -74520.0,
+        "Gf_ig_J_mol": -50490.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "ethane": {
@@ -4190,6 +4400,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H6"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -83820.0,
+        "Gf_ig_J_mol": -31920.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "ethylene": {
@@ -4461,6 +4686,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 52510.0,
+        "Gf_ig_J_mol": 68440.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "carbon-monoxide": {
@@ -4735,6 +4975,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -110530.0,
+        "Gf_ig_J_mol": -137150.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "carbon-dioxide": {
@@ -4999,6 +5254,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -393510.0,
+        "Gf_ig_J_mol": -394370.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "hydrogen-sulfide": {
@@ -5266,6 +5536,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -20630.0,
+        "Gf_ig_J_mol": -33440.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "argon": {
@@ -5529,6 +5814,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 0.0,
+        "Gf_ig_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "propane": {
@@ -5811,6 +6111,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -104680.0,
+        "Gf_ig_J_mol": -24390.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "propylene": {
@@ -6089,6 +6404,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2=CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 20230.0,
+        "Gf_ig_J_mol": 62640.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "n-butane": {
@@ -6367,6 +6697,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -125790.0,
+        "Gf_ig_J_mol": -16700.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "isobutane": {
@@ -6647,6 +6992,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH3, 1 CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -134990.0,
+        "Gf_ig_J_mol": -21440.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "ammonia": {
@@ -6917,6 +7277,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -45898.0,
+        "Gf_ig_J_mol": -16400.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "dimethyl-ether": {
@@ -7193,6 +7568,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH3O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H6O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -184100.0,
+        "Gf_ig_J_mol": -112800.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "cyclohexane": {
@@ -7482,6 +7872,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (6 CY-CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -123300.0,
+        "Gf_ig_J_mol": 31910.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "o-xylene": {
@@ -7768,6 +8173,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 2 ACCH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H10"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 19080.0,
+        "Gf_ig_J_mol": 122000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "m-xylene": {
@@ -8052,6 +8472,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 2 ACCH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H10"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 17320.0,
+        "Gf_ig_J_mol": 118760.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "p-xylene": {
@@ -8337,6 +8772,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 2 ACCH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H10"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 18030.0,
+        "Gf_ig_J_mol": 121400.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "ethylbenzene": {
@@ -8625,6 +9075,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 5 ACH, 1 ACCH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H10"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 29920.0,
+        "Gf_ig_J_mol": 130730.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "styrene": {
@@ -8932,6 +9397,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2=CH, 5 ACH, 1 AC): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H8"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 147400.0,
+        "Gf_ig_J_mol": 213900.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "n-pentane": {
@@ -9220,6 +9700,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 3 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -146760.0,
+        "Gf_ig_J_mol": -8813.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "n-hexane": {
@@ -9507,6 +10002,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 4 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H14"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -166940.0,
+        "Gf_ig_J_mol": -66.34,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "n-heptane": {
@@ -9795,6 +10305,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 5 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H16"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -187650.0,
+        "Gf_ig_J_mol": 8165.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "n-octane": {
@@ -10083,6 +10608,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 6 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H18"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -208750.0,
+        "Gf_ig_J_mol": 16000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "diethyl-ether": {
@@ -10370,6 +10910,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 CH2O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -252100.0,
+        "Gf_ig_J_mol": -122100.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "propylene-glycol": {
@@ -10661,6 +11216,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH, 1 OH (P), 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -421500.0,
+        "Gf_ig_J_mol": -304000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "tetrahydrofuran": {
@@ -10948,6 +11518,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 THF, 2 CY-CH2): chosen: the method has a subgroup for the ring ether, THF (CH2-O-CH2 in a ring); the SMARTS match took a TRIOXAN group and three CY-CH2 instead. Used as DDBST assigns it; structure-based (SMARTS) assignment {84: 1, 78: 3}. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -184180.0,
+        "Gf_ig_J_mol": -79690.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "1-propanol": {
@@ -11266,6 +11851,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 2 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -255200.0,
+        "Gf_ig_J_mol": -159900.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "2-propanol": {
@@ -11577,6 +12177,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -272700.0,
+        "Gf_ig_J_mol": -173470.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "1-butanol": {
@@ -13239,6 +13854,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 3 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -274600.0,
+        "Gf_ig_J_mol": -150300.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "2-butanone": {
@@ -13539,6 +14169,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH3CO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -239000.0,
+        "Gf_ig_J_mol": -147000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "methyl-acetate": {
@@ -13836,6 +14481,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH3COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -411900.0,
+        "Gf_ig_J_mol": -324200.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "n-butyl-acetate": {
@@ -14135,6 +14795,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 3 CH2, 1 CH3COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -485600.0,
+        "Gf_ig_J_mol": -312300.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "acetonitrile": {
@@ -14785,6 +15460,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3CN): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H3N"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 74040.0,
+        "Gf_ig_J_mol": 91868.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "mtbe": {
@@ -15080,6 +15770,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH3, 1 C, 1 CH3O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -283500.0,
+        "Gf_ig_J_mol": -117500.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "glycerol": {
@@ -15905,6 +16610,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 CH, 2 OH (P), 1 OH (S)): assigned from the structure and checked (two primary OH (P), one secondary OH (S), two CH2 and one CH); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O3"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -582800.0,
+        "Gf_ig_J_mol": -447100.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "phenol": {
@@ -16227,6 +16947,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (5 ACH, 1 ACOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H6O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -96399.0,
+        "Gf_ig_J_mol": -32637.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "dichloromethane": {
@@ -16509,6 +17244,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2CL2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CH2Cl2"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -124200.0,
+        "Gf_J_mol": -69042.0,
+        "values": 2,
+        "spread_J_mol": 200.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°liquid -124.1 kJ/mol, Manion, 2002 (WebBook); ΔfH°liquid -124.3 kJ/mol, Hu and Sinke, 1969, 2 (WebBook)",
+          "selection": "median of 2 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°liquid 174.5 J/(mol K), Moseeva, Rabinovich, et al., 1978 (WebBook), and the CODATA key entropies of the elements"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-webbook"
+        ]
       }
     },
     "2-methoxyethanol": {
@@ -17225,6 +17979,24 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 OH (P), 1 CH3O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O2"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -431500.0,
+        "Gf_J_mol": null,
+        "values": 2,
+        "spread_J_mol": 19000.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°liquid -422.0 kJ/mol, Guthrie, 1977 (WebBook); ΔfH°liquid -441.0 kJ/mol, Simonetta, 1947 (WebBook)",
+          "selection": "median of 2 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°; the values disagree by 19.0 kJ/mol: the enthalpy of formation is uncertain"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
       }
     },
     "dichloroethane": {
@@ -17511,6 +18283,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2CL): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4Cl2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -129790.0,
+        "Gf_ig_J_mol": -73945.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "mibk": {
@@ -17812,6 +18599,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 CH, 1 CH3CO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -288000.0,
+        "Gf_ig_J_mol": -135100.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "cyclohexanone": {
@@ -18112,6 +18914,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2CO, 4 CY-CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -226100.0,
+        "Gf_ig_J_mol": -90280.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "dmf": {
@@ -18410,6 +19227,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 DMF): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H7NO"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -191700.0,
+        "Gf_ig_J_mol": -88400.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "dmso": {
@@ -18716,6 +19548,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 DMSO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H6OS"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -209200.0,
+        "Gf_ig_J_mol": -115700.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "nmp": {
@@ -19191,6 +20038,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CY-CH2, 1 NMP): chosen: the method has a subgroup for N-methylpyrrolidone's ring amide, NMP; the SMARTS match took the open-chain amide AMCH3CH2. Used as DDBST assigns it; structure-based (SMARTS) assignment {102: 1, 78: 2}. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H9NO"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -210900.0,
+        "Gf_ig_J_mol": -71600.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "sulfolane": {
@@ -19484,6 +20346,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CY-CH2, 1 (CH2)2SU): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O2S"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -372700.0,
+        "Gf_ig_J_mol": -243100.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "furfural": {
@@ -19784,6 +20661,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 FURFURAL): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H4O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -151000.0,
+        "Gf_ig_J_mol": -102800.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "dioxane": {
@@ -20083,6 +20975,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 THF): chosen: two THF subgroups (CH2-O-CH2 in a ring); the SMARTS match took TRIOXAN and CY-CH2 groups. Used as DDBST assigns it; structure-based (SMARTS) assignment {84: 2, 78: 2}. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -315800.0,
+        "Gf_ig_J_mol": -181600.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "isobutanol": {
@@ -20395,6 +21302,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 CH, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -283200.0,
+        "Gf_ig_J_mol": -154900.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "2-butanol": {
@@ -22371,6 +23293,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 CH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -292900.0,
+        "Gf_ig_J_mol": -169600.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "mea": {
@@ -23136,6 +24073,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 CH2NH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H7NO"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -196000.0,
+        "Gf_ig_J_mol": -103300.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "dea": {
@@ -23445,6 +24397,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH2, 2 OH (P), 1 CH2NH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H11NO2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -373000.0,
+        "Gf_ig_J_mol": -225740.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "mdea": {
@@ -23733,6 +24700,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH2, 2 OH (P), 1 CH3N): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H13NO2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -380000.0,
+        "Gf_ig_J_mol": -169000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "sulfur-dioxide": {
@@ -24012,6 +24994,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -296840.0,
+        "Gf_ig_J_mol": -300120.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "nitrous-oxide": {
@@ -24288,6 +25285,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 82050.0,
+        "Gf_ig_J_mol": 104160.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "formic-acid": {
@@ -24589,6 +25601,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 HCOOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CH2O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -393629.0,
+        "Gf_ig_J_mol": -365940.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "propionic-acid": {
@@ -24889,6 +25916,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -453500.0,
+        "Gf_ig_J_mol": -356800.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "acrylic-acid": {
@@ -25184,6 +26226,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2=CH, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H4O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -337100.0,
+        "Gf_ig_J_mol": -286100.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "vinyl-acetate": {
@@ -25489,6 +26546,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2=CH, 1 CH3COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -315700.0,
+        "Gf_ig_J_mol": -228700.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "isopropyl-acetate": {
@@ -25787,6 +26859,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH, 1 CH3COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -481700.0,
+        "Gf_ig_J_mol": -333700.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "ethylene-oxide": {
@@ -26065,6 +27152,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 H2COCH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -52630.0,
+        "Gf_ig_J_mol": -13230.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "propylene-oxide": {
@@ -26372,6 +27474,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 H2COCH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -93720.0,
+        "Gf_ig_J_mol": -25800.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "formaldehyde": {
@@ -26655,6 +27772,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -108600.0,
+        "Gf_ig_J_mol": -102600.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "hydrogen-peroxide": {
@@ -26942,6 +28074,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -136310.0,
+        "Gf_ig_J_mol": -105570.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "cumene": {
@@ -27245,6 +28392,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 5 ACH, 1 ACCH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C9H12"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 4000.0,
+        "Gf_ig_J_mol": 137900.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "mesitylene": {
@@ -27543,6 +28705,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 ACH, 3 ACCH3): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C9H12"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -16050.0,
+        "Gf_ig_J_mol": 118100.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "n-nonane": {
@@ -27829,6 +29006,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 7 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C9H20"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -228740.0,
+        "Gf_ig_J_mol": 24980.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "n-decane": {
@@ -28114,6 +29306,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 8 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C10H22"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -249460.0,
+        "Gf_ig_J_mol": 33180.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "n-dodecane": {
@@ -28401,6 +29608,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 10 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C12H26"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -290720.0,
+        "Gf_ig_J_mol": 49810.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "isooctane": {
@@ -28710,6 +29932,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (5 CH3, 1 CH2, 1 CH, 1 C): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H18"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -224010.0,
+        "Gf_ig_J_mol": 13940.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "1-butene": {
@@ -28991,6 +30228,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH2=CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -500.0,
+        "Gf_ig_J_mol": 70410.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "isoprene": {
@@ -29300,6 +30552,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2=CH, 1 CH2=C): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H8"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 75730.4,
+        "Gf_ig_J_mol": 145896.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "etbe": {
@@ -29735,6 +31002,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH3, 1 C, 1 CH2O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H14O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -316500.0,
+        "Gf_ig_J_mol": -121700.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "pyridine": {
@@ -30035,6 +31317,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 ACH, 1 AC2H2N): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H5N"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 140370.0,
+        "Gf_ig_J_mol": 190490.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "aniline": {
@@ -30334,6 +31631,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (5 ACH, 1 ACNH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H7N"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 87100.0,
+        "Gf_ig_J_mol": 166800.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "acrylonitrile": {
@@ -30640,6 +31952,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 ACRY): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H3N"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 183700.0,
+        "Gf_ig_J_mol": 193700.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "methylamine": {
@@ -30932,6 +32259,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3NH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CH5N"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -22970.0,
+        "Gf_ig_J_mol": 32070.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "naphthalene": {
@@ -31240,6 +32582,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (8 ACH, 2 AC): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C10H8"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 150580.0,
+        "Gf_ig_J_mol": 224080.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "benzoic-acid": {
@@ -31538,6 +32895,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (5 ACH, 1 AC, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H6O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -290200.0,
+        "Gf_ig_J_mol": -214200.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "salicylic-acid": {
@@ -31837,6 +33209,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 1 AC, 1 ACOH, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H6O3"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -494800.0,
+        "Gf_ig_J_mol": -395400.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "isopentane": {
@@ -32127,6 +33514,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH3, 1 CH2, 1 CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -153700.0,
+        "Gf_ig_J_mol": -14050.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "n-undecane": {
@@ -32412,6 +33814,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 9 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C11H24"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -270430.0,
+        "Gf_ig_J_mol": 41160.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "bdo": {
@@ -32707,6 +34124,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH2, 2 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -426700.0,
+        "Gf_ig_J_mol": -278000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "cyrene": {
@@ -33433,6 +34865,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2CO, 1 CHO, 1 CY-CH2, 1 CY-CH, 1 TRIOXAN): assigned from the structure and checked (the ring ketone C(=O) with its CH2 as CH2CO, the CH2-O of the bridge as TRIOXAN and the other ring ether CH-O as CHO, one ring CH2 and one ring CH); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H8O3"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -442960.1,
+        "Gf_ig_J_mol": -183281.8,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "dimethyl-carbonate": {
@@ -33714,6 +35161,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 (CH3)2CB): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -570100.0,
+        "Gf_ig_J_mol": -452400.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "diethyl-carbonate": {
@@ -34043,6 +35505,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 (CH2)2CB): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O3"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -639100.0,
+        "Gf_ig_J_mol": -464651.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "ethylene-carbonate": {
@@ -34334,6 +35811,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 (CH2)2CB): assigned from the structure and checked (the whole molecule is the cyclic carbonate subgroup (CH2)2CB); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H4O3"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -506900.0,
+        "Gf_ig_J_mol": -410000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "propylene-carbonate": {
@@ -34625,6 +36117,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 (CH2)2CB): chosen from the structure: the cyclic carbonate subgroup (CH2)2CB, as for ethylene carbonate, and CH3 for the methyl on the ring (the SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen); DDBST lists no assignment (atom balance one H above C4H6O3: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O3"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -601160.0,
+        "Gf_ig_J_mol": -455500.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "acetaldehyde": {
@@ -34925,6 +36432,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CHO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -166400.0,
+        "Gf_ig_J_mol": -133300.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "1-pentanol": {
@@ -35245,6 +36767,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 4 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -300160.0,
+        "Gf_ig_J_mol": -146022.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "1-hexanol": {
@@ -35558,6 +37095,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 5 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H14O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -318000.0,
+        "Gf_ig_J_mol": -134400.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "1-octanol": {
@@ -35900,6 +37452,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 7 CH2, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H18O"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -357300.0,
+        "Gf_ig_J_mol": -117000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "diethylene-glycol": {
@@ -36195,6 +37762,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH2, 2 OH (P), 1 CH2O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O3"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -546400.0,
+        "Gf_ig_J_mol": -384000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "p-cymene": {
@@ -36498,6 +38080,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 4 ACH, 1 ACCH3, 1 ACCH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C10H14"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -27990.0,
+        "Gf_ig_J_mol": 133520.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "adipic-acid": {
@@ -36793,6 +38390,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH2, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O4"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -865000.0,
+        "Gf_ig_J_mol": -682000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "maleic-anhydride": {
@@ -37085,6 +38697,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -416700.0,
+        "Gf_ig_J_mol": -355000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "terephthalic-acid": {
@@ -37223,6 +38850,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 2 AC, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H6O4"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -717900.0,
+        "Gf_ig_J_mol": -599000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "dmt": {
@@ -37516,6 +39158,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 4 ACH, 2 AC, 2 COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C10H10O4"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -637000.0,
+        "Gf_ig_J_mol": -474000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "methyl-laurate": {
@@ -37816,6 +39473,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 9 CH2, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C13H26O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -617400.0,
+        "Gf_ig_J_mol": -244500.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "methyl-myristate": {
@@ -38127,6 +39799,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 11 CH2, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C15H30O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -654800.0,
+        "Gf_ig_J_mol": -219887.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "methyl-palmitate": {
@@ -38417,6 +40104,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 13 CH2, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C17H34O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -700700.0,
+        "Gf_ig_J_mol": -254000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "methyl-stearate": {
@@ -38707,6 +40409,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 15 CH2, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C19H38O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -741900.0,
+        "Gf_ig_J_mol": -242200.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "methyl-oleate": {
@@ -38988,6 +40705,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 13 CH2, 1 CH=CH, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C19H36O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -629000.0,
+        "Gf_ig_J_mol": -117000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "methyl-linoleate": {
@@ -39280,6 +41012,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 11 CH2, 2 CH=CH, 1 CH2COO): assigned from the structure and checked (ester CH2COO, the methyl ester's CH3 and the chain's CH3, two CH=CH, eleven CH2); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C19H34O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -518330.0,
+        "Gf_ig_J_mol": -96895.54,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "triolein": {
@@ -39525,6 +41272,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH3, 41 CH2, 1 CH, 3 CH=CH, 3 CH2COO): assigned from the structure and checked (per oleoyl chain one CH3, thirteen CH2, one CH=CH and one CH2COO; the glycerol backbone two CH2 and one CH); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C57H104O6"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -1825270.0,
+        "Gf_ig_J_mol": -421646.8,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "tripalmitin": {
@@ -39770,6 +41532,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH3, 41 CH2, 1 CH, 3 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C51H98O6"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -2053090.0,
+        "Gf_ig_J_mol": -709008.3,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "oleic-acid": {
@@ -40075,6 +41852,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 14 CH2, 1 CH=CH, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C18H34O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -649700.0,
+        "Gf_ig_J_mol": -227800.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "palmitic-acid": {
@@ -40379,6 +42171,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 14 CH2, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C16H32O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -723000.0,
+        "Gf_ig_J_mol": -260000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "stearic-acid": {
@@ -40683,6 +42490,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 16 CH2, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C18H36O2"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -764000.0,
+        "Gf_ig_J_mol": -244000.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.31-2"
+        ]
       }
     },
     "n-hexadecane": {
@@ -40983,6 +42805,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 14 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C16H34"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -374170.0,
+        "Gf_ig_J_mol": 82160.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "n-octadecane": {
@@ -41281,6 +43118,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 16 CH2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C18H38"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -414570.0,
+        "Gf_ig_J_mol": 99210.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "furan": {
@@ -41513,6 +43365,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH=CH, 1 CHO, 1 CY-CH): chosen from the structure: built from the groups the method has (no furan-ring subgroup), as the maintainer decided: the ring ether CH-O as CHO, one ring double bond as CH=CH, the remaining ring CH as CY-CH; the second double bond and the aromatic character are not represented; DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H4O"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -59895.0,
+        "Gf_J_mol": 2789.8,
+        "values": 2,
+        "spread_J_mol": 4890.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°liquid -62.34 kJ/mol, Guthrie, Scott, et al., 1952 (WebBook); ΔfH°liquid -57.45 kJ/mol, Landrieu, Baylocq, et al., 1929 (WebBook)",
+          "selection": "median of 2 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°liquid 176.65 J/(mol K), Guthrie, Scott, et al., 1952, 2 (WebBook), and the CODATA key entropies of the elements"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-webbook"
+        ]
       }
     },
     "2-methylfuran": {
@@ -41928,6 +43799,15 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH=C, 1 CHO, 1 CY-CH): chosen from the structure: built from the groups the method has (no furan-ring subgroup), as the maintainer decided: the ring ether CH-O as CHO, the substituted ring double bond as CH=C, the remaining ring CH as CY-CH, and CH3; the second double bond and the aromatic character are not represented; DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "2-methyltetrahydrofuran": {
@@ -42165,6 +44045,16 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 THF, 2 CY-CH2): chosen: the ring ether CH-O-CH2 counted as the THF subgroup and the methyl as CH3, as DDBST assigns it (the SMARTS match took a TRIOXAN group, the subgroup of 1,3,5-trioxane); structure-based (SMARTS) assignment {84: 1, 1: 1, 78: 2, 79: 1} (atom balance one H above C5H10O: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Only computed (quantum-chemical) values found; not data (AGENTS.md rule 1)"
+        ]
       }
     },
     "1-3-propanediol": {
@@ -42584,6 +44474,26 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (3 CH2, 2 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O2"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -480800.0,
+        "Gf_J_mol": null,
+        "values": 3,
+        "spread_J_mol": 17024.3,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°liquid -480.8 kJ/mol, Knauth and Sabbah, 1990 (WebBook); ΔfH°liquid -465.0 kJ/mol, Gardner and Hussain, 1972 (WebBook); ΔcU° -24171.9 J/g at 298.15 K (Static bomb calorimetry), Emel'yanenko, Verevkin 2015, doi:10.1016/j.jct.2015.01.014 (ThermoML Archive)",
+          "selection": "median of 3 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°; the values disagree by 17.0 kJ/mol: the enthalpy of formation is uncertain"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-thermoml-archive",
+          "nist-webbook"
+        ]
       }
     },
     "methyl-levulinate": {
@@ -42818,6 +44728,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O3"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -651300.6,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔcU° -24100.1 J/g at 298.15 K (Static bomb calorimetry), Emel'yanenko, Altuntepe et al. 2018, doi:10.1016/j.tca.2017.12.006 (ThermoML Archive)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-thermoml-archive"
+        ]
       }
     },
     "ethyl-levulinate": {
@@ -43052,6 +44981,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 2 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H12O3"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -685851.5,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔcU° -26219.2 J/g at 298.15 K (Static bomb calorimetry), Emel'yanenko, Altuntepe et al. 2018, doi:10.1016/j.tca.2017.12.006 (ThermoML Archive)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-thermoml-archive"
+        ]
       }
     },
     "butyl-levulinate": {
@@ -43276,6 +45224,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 4 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C9H16O3"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -736538.4,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔcU° -29528.8 J/g at 298.15 K (Static bomb calorimetry), Emel'yanenko, Altuntepe et al. 2018, doi:10.1016/j.tca.2017.12.006 (ThermoML Archive)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-thermoml-archive"
+        ]
       }
     },
     "levulinic-acid": {
@@ -43600,6 +45567,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 CH3CO, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H8O3"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -683775.0,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔcU° -20891.8 J/g at 298.15 K (Static bomb calorimetry), Verevkin, Emelyanenko 2012, doi:10.1016/j.jct.2011.07.014 (ThermoML Archive)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the solid: no ΔfG°"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-thermoml-archive"
+        ]
       }
     },
     "gvl": {
@@ -43899,6 +45885,24 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2COO, 1 CY-CH2, 1 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H8O2"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -461300.0,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°liquid -461.3 kJ/mol, Leitao, Pilcher, et al., 1990 (WebBook)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
       }
     },
     "thfa": {
@@ -44133,6 +46137,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 THF, 2 CY-CH2): chosen: the ring ether CH-O-CH2 counted as the THF subgroup, with CH2 and a primary OH, as DDBST assigns it (the SMARTS match took a TRIOXAN group, the subgroup of 1,3,5-trioxane); structure-based (SMARTS) assignment {84: 1, 14: 1, 78: 2, 2: 1, 79: 1} (atom balance one H above C5H10O2: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O2"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -435600.0,
+        "Gf_J_mol": -236420.3,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°liquid -435.6 kJ/mol, Landrieu, Baylocq, et al., 1929 (WebBook)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°liquid 219.2 J/(mol K), Miller, 1935 (WebBook), and the CODATA key entropies of the elements"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-webbook"
+        ]
       }
     },
     "cpme": {
@@ -44357,6 +46380,15 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3O, 4 CY-CH2, 1 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "2-3-butanediol": {
@@ -44650,6 +46682,24 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 CH, 2 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O2"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -543300.0,
+        "Gf_J_mol": null,
+        "values": 2,
+        "spread_J_mol": 3000.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°liquid -544.8 kJ/mol, Baroody and Carpenter, 1972 (WebBook); ΔfH°liquid -541.8 kJ/mol, Moureu and Dode, 1937 (WebBook)",
+          "selection": "median of 2 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
       }
     },
     "methyl-lactate": {
@@ -44876,6 +46926,16 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH, 1 COO, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O3"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "The alkyl lactates article in the ThermoML Archive (doi:10.1016/j.jct.2018.07.029) holds the combustion of ethyl lactate only"
+        ]
       }
     },
     "ethyl-lactate": {
@@ -45125,6 +47185,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 CH, 1 COO, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O3"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -684151.9,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔcU° -22941.2 J/g at 298.15 K (Static bomb calorimetry), Emel'yanenko, Yermalayeu et al. 2019, doi:10.1016/j.jct.2018.07.029 (ThermoML Archive)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-thermoml-archive"
+        ]
       }
     },
     "limonene": {
@@ -45392,6 +47471,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2=C, 1 CH=C, 3 CY-CH2, 1 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C10H16"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -73990.0,
+        "Gf_J_mol": null,
+        "values": 2,
+        "spread_J_mol": 38900.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔcH°liquid -6128.3 kJ/mol, Auwsers, Roth, et al., 1910 (WebBook); ΔcH°liquid -6167.2 kJ/mol, Hawkins and Eriksen, 1954 (WebBook, (R)-(+)-limonene)",
+          "selection": "median of 2 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°; the values disagree by 38.9 kJ/mol: the enthalpy of formation is uncertain"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-webbook"
+        ]
       }
     },
     "furfuryl-alcohol": {
@@ -45649,6 +47747,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH=C, 1 OH (P), 1 CHO, 1 CY-CH): chosen from the structure: built from the groups the method has (no furan-ring subgroup), as the maintainer decided: the ring ether CH-O as CHO, the substituted ring double bond as CH=C, the remaining ring CH as CY-CH, and CH2 with a primary OH; the second double bond and the aromatic character are not represented; DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O2"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -276400.0,
+        "Gf_J_mol": -154101.3,
+        "values": 3,
+        "spread_J_mol": 800.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°liquid -276.4 kJ/mol, Parks, Mosley, et al., 1950 (WebBook); ΔfH°liquid -277.0 kJ/mol, Miller, 1936 (WebBook); ΔfH°liquid -276.2 kJ/mol, Landrieu, Baylocq, et al., 1929 (WebBook)",
+          "selection": "median of 3 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°liquid 215.9 J/(mol K), Parks, Kennedy, et al., 1956 (WebBook); S°liquid 215.5 J/(mol K), Miller, 1935 (WebBook), and the CODATA key entropies of the elements"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-webbook"
+        ]
       }
     },
     "gbl": {
@@ -46145,6 +48262,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2COO, 2 CY-CH2): chosen: the lactone's ring ester O-C(=O)-CH2 as CH2COO and two ring CH2, as DDBST assigns it (the SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen); structure-based (SMARTS) assignment {87: 1, 78: 2}. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O2"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -420900.0,
+        "Gf_J_mol": -294886.3,
+        "values": 5,
+        "spread_J_mol": 12200.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°liquid -419.0 kJ/mol, Wiberg and Waldron, 1991 (WebBook); ΔfH°liquid -420.9 kJ/mol, Leitao, Pilcher, et al., 1990 (WebBook); ΔfH°liquid -419.07 kJ/mol, Steele, Chirico, et al., 1989 (WebBook); ΔfH°liquid -431.2 kJ/mol, Ismailov, Gabzalilova, et al., 1988 (WebBook); ΔfH°liquid -422.0 kJ/mol, Yevstropov, Lebedev, et al., 1980 (WebBook)",
+          "selection": "median of 5 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°liquid 197.4 J/(mol K), Lebedev and Yevstropov, 1983 (WebBook); S°liquid 197.5 J/(mol K), Yevstropov, Lebedev, et al., 1980, 2 (WebBook); S°liquid 201.28 J/(mol K), Ismailov, Gabzalilova, et al., 1988 (WebBook), and the CODATA key entropies of the elements; the values disagree by 12.2 kJ/mol: the enthalpy of formation is uncertain"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-webbook"
+        ]
       }
     },
     "isoamyl-alcohol": {
@@ -46590,6 +48726,24 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 CH2, 1 CH, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12O"
+      },
+      "formation": {
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -356150.0,
+        "Gf_J_mol": null,
+        "values": 2,
+        "spread_J_mol": 500.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°liquid -355.9 kJ/mol, Markovnik, Shvarko, et al., 1987 (WebBook); ΔfH°liquid -356.4 kJ/mol, Chao and Rossini, 1965 (WebBook)",
+          "selection": "median of 2 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
       }
     },
     "lactic-acid": {
@@ -46748,6 +48902,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH, 1 COOH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -675220.0,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔcH°solid -1362.8 kJ/mol, Meyerhof, 1922 (WebBook)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the solid: no ΔfG°; left out: ΔfH° Saville and Gundry, 1959 (L-lactic acid): the crystal of another form; ΔcH° Saville and Gundry, 1959 (L-lactic acid): the crystal of another form"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-webbook"
+        ]
       }
     },
     "hmf": {
@@ -46895,6 +49068,16 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 FURFURAL): chosen from the structure: the ring with its aldehyde as the method's FURFURAL subgroup, and the CH2OH as CH2 with a primary OH (the SMARTS match took the ether subgroup CH2O for the alcohol's CH2-O, leaving out the OH); the substituted ring carbon is counted in FURFURAL; DDBST lists no assignment (atom balance one H above C6H6O3: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H6O3"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Verevkin et al., Biomass-derived platform chemicals: thermodynamic studies on the conversion of 5-hydroxymethylfurfural into bulk intermediates, Ind. Eng. Chem. Res. (2009), doi:10.1021/ie901012g: paywalled, no free copy known to Unpaywall, journal not in the ThermoML Archive"
+        ]
       }
     },
     "glucose": {
@@ -47045,6 +49228,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 4 CH, 1 OH (P), 1 CHO, 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O6"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -1271040.0,
+        "Gf_J_mol": -905870.1,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔcH°solid -2805.0 kJ/mol, Ponomarev and Migarskaya, 1960 (WebBook, alpha-D-glucopyranose)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°solid 209.19 J/(mol K), Boerio-Goates, 1991 (WebBook, alpha-D-glucopyranose), and the CODATA key entropies of the elements"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-webbook"
+        ]
       }
     },
     "fructose": {
@@ -47194,6 +49396,26 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 3 CH, 2 OH (P), 1 CH2CO, 3 OH (S)): assigned from the structure and checked (the open-chain ketone form (as for glucose, which DDBST assigns open-chain): the C(=O) with C1 as CH2CO, C6 as CH2, three CH; two primary OH (P) and three secondary OH (S)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O6"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -1265600.0,
+        "Gf_J_mol": -901891.0,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°solid -1265.6 kJ/mol, Clarke and Stegeman, 1939 (WebBook)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°solid 214.09 J/(mol K) at 298.15 K, Yamamura, Iwagaki et al. 2019, doi:10.1016/j.jct.2018.11.014 (ThermoML Archive), and the CODATA key entropies of the elements; left out: entropy 10.1016/j.jct.2018.11.014 (Crystal, 'D-psicose'): matched only without stereo layers; entropy 10.1016/j.jct.2018.11.014 (Crystal, 'D-(-)-tagatose'): matched only without stereo layers"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-thermoml-archive",
+          "nist-webbook"
+        ]
       }
     },
     "sorbitol": {
@@ -47341,6 +49563,24 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 4 CH, 2 OH (P), 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H14O6"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -1353700.0,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°solid -1353.7 kJ/mol, Gerasimov, Blokh, et al., 1985 (WebBook)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the solid: no ΔfG°; left out: entropy 10.1016/j.jct.2017.08.004 (Crystal, 'D-mannitol'): matched only without stereo layers"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
       }
     },
     "xylitol": {
@@ -47497,6 +49737,16 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 3 CH, 2 OH (P), 3 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12O5"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ],
+        "held": "two crystal energies of combustion in the ThermoML Archive disagree by about 100 kJ/mol (doi:10.1016/j.tca.2007.02.022, -2463.2 kJ/mol with a stated uncertainty of 100 kJ/mol; doi:10.1016/j.tca.2009.11.011, -16833.39 J/g, recorded for 'SRS-1,2,3,4,5-pentanepentol', which may be another pentitol), and the WebBook's value (Oberemok-Yakubova and Balandin, 1963, -1118.6 kJ/mol) is labelled liquid for a compound that is crystalline at 298.15 K"
       }
     },
     "succinic-acid": {
@@ -47641,6 +49891,26 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O4"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -940597.7,
+        "Gf_J_mol": -745669.0,
+        "values": 3,
+        "spread_J_mol": 1306.2,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°solid -940.0 kJ/mol, N/A (WebBook); ΔcU° -12630.1 J/g at 298.15 K (Micro-bomb calorimetry), Ribeiro da Silva, Pilcher et al. 2007, doi:10.1016/j.jct.2006.10.013 (ThermoML Archive); ΔcU° -12636.1 J/g at 298.15 K (Static bomb calorimetry), Ledo, Flores et al. 2018, doi:10.1016/j.jct.2017.09.007 (ThermoML Archive)",
+          "selection": "median of 3 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°solid 167.32 J/(mol K), Vanderzee and Westrum, 1970 (WebBook); S°solid 175.7 J/(mol K), Parks and Huffman, 1930 (WebBook), and the CODATA key entropies of the elements; left out: combustion 10.1016/j.jct.2004.04.002 at 303.15 K: not at 298.15 K; combustion 10.1016/j.jct.2004.04.002 at 303.15 K: not at 298.15 K; combustion 10.1016/j.jct.2004.04.002 at 303.15 K: not at 298.15 K"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-thermoml-archive",
+          "nist-webbook"
+        ]
       }
     },
     "itaconic-acid": {
@@ -47778,6 +50048,24 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH2=C, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O4"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -841110.0,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°solid -841.11 kJ/mol, Wilhoit and Lei, 1965 (WebBook)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the solid: no ΔfG°"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
       }
     },
     "fumaric-acid": {
@@ -47914,6 +50202,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH=CH, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H4O4"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -811030.0,
+        "Gf_J_mol": -653450.6,
+        "values": 3,
+        "spread_J_mol": 1260.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°solid -811.03 kJ/mol, Wilhoit and Shiao, 1964 (WebBook); ΔfH°solid -810.98 kJ/mol, Schwabe and Wagner, 1958 (WebBook); ΔfH°solid -812.24 kJ/mol, Huffman and Fox, 1938 (WebBook)",
+          "selection": "median of 3 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°solid 166.1 J/(mol K), Parks and Huffman, 1930 (WebBook), and the CODATA key entropies of the elements"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-webbook"
+        ]
       }
     },
     "malic-acid": {
@@ -48054,6 +50361,16 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH, 2 COOH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O5"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Left out: ΔfH° Wilhoit and Shiao, 1964 (L-malic acid): the crystal of another form; ΔcH° Wilhoit and Shiao, 1964 (L-malic acid): the crystal of another form; ΔfH° Wilhoit and Shiao, 1964 (D-malic acid): the crystal of another form; ΔcH° Wilhoit and Shiao, 1964 (D-malic acid): the crystal of another form"
+        ]
       }
     },
     "citric-acid": {
@@ -48199,6 +50516,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 C, 3 COOH, 1 OH (T)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H8O7"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -1543800.0,
+        "Gf_J_mol": -1238765.1,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°solid -1543.8 kJ/mol, Wilhoit and Shiao, 1964 (WebBook)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°solid 252.1 J/(mol K), De Kruif, Van Miltenburg, et al., 1982 (WebBook), and the CODATA key entropies of the elements"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-webbook"
+        ]
       }
     },
     "glycolic-acid": {
@@ -48344,6 +50680,16 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4O3"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "The 2010 article on glycolic acid and glycolide in the Russian Journal of Physical Chemistry, doi:10.1134/S0036024410080054: paywalled, no free copy known to Unpaywall"
+        ]
       }
     },
     "glucaric-acid": {
@@ -48481,6 +50827,15 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH, 2 COOH, 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O8"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "3-hydroxypropionic-acid": {
@@ -48619,6 +50974,15 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 OH (P), 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "fdca": {
@@ -48757,6 +51121,16 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Only its fusion data and computed gas-phase values of furan derivatives found"
+        ]
       }
     },
     "bhet": {
@@ -48896,6 +51270,15 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH2, 4 ACH, 2 AC, 2 OH (P), 2 COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C12H14O6"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "diphenolic-acid": {
@@ -49037,6 +51420,15 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 2 CH2, 1 C, 8 ACH, 2 AC, 2 ACOH, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C17H18O4"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "erythritol": {
@@ -49193,6 +51585,25 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 2 CH, 2 OH (P), 2 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O4"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -885190.0,
+        "Gf_J_mol": -612527.7,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔcH°solid -2118.0 kJ/mol, Parks and Manchester, 1952 (WebBook)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°solid 166.5 J/(mol K), Parks, Kelley, et al., 1929 (WebBook); S°solid 177.8 J/(mol K), Parks and Anderson, 1926 (WebBook), and the CODATA key entropies of the elements; left out: entropy 10.1016/j.jct.2017.08.004 (Crystal, 'meso-1,2,3,4-butanetetrol'): matched only without stereo layers; ΔfH°liquid -910.48 kJ/mol, Parks, West, et al., 1946 (WebBook): the component is a crystal at 298.15 K (melting temperature 391.2 K)"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-webbook"
+        ]
       }
     },
     "xylose": {
@@ -49342,6 +51753,26 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 3 CH, 1 OH (P), 1 CHO, 3 OH (S)): assigned from the structure and checked (the open-chain aldehyde form (as for glucose, which DDBST assigns open-chain; structure from PubChem, aldehydo-D-xylose): the aldehyde CHO, three CH, one CH2; one primary OH (P) and three secondary OH (S)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O5"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -1054478.4,
+        "Gf_J_mol": -745718.7,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔcU° -15601.3 J/g at 298.15 K (Static bomb calorimetry), Ribeiro da Silva, Ribeiro da Silva et al. 2013, doi:10.1016/j.jct.2012.09.028 (ThermoML Archive)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°solid 143.5 J/(mol K), Miller, 1935 (WebBook); S°solid 175.29 J/(mol K) at 298.15 K, Ribeiro da Silva, Ribeiro da Silva et al. 2013, doi:10.1016/j.jct.2012.09.028 (ThermoML Archive), and the CODATA key entropies of the elements"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-thermoml-archive",
+          "nist-webbook"
+        ]
       }
     },
     "muconic-acid": {
@@ -49480,6 +51911,15 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH=CH, 2 COOH): assigned from the structure and checked (two COOH and two CH=CH (the subgroups do not tell cis from trans; structure from PubChem)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H6O4"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "glycerol-carbonate": {
@@ -49666,6 +52106,16 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 (CH2)2CB): chosen from the structure: the cyclic carbonate subgroup (CH2)2CB, as for ethylene and propylene carbonate, and CH2 with a primary OH for the hydroxymethyl group (the SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen); DDBST lists no assignment (atom balance one H above C4H6O4: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O4"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Only computed values found (not data)"
+        ]
       }
     },
     "solketal": {
@@ -49838,6 +52288,16 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 OH (P), 1 CHO, 1 CY-C, 1 CY-CH2O): chosen: the 1,3-dioxolane ring's CH2-O as CY-CH2O (the subgroup DDBST uses for it), its CH-O as CHO, the ring carbon C(CH3)2 as CY-C with two CH3, and CH2 with a primary OH; DDBST's assignment as the thermo library lists it (two CY-CH2O, two CH3, CH2, OH (P)) gives C5H13O3, not C6H12O3, and the SMARTS match took a TRIOXAN group, the subgroup of 1,3,5-trioxane. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O3"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Only a group-additivity estimate found (not data, docs/DATA_RULES.md section 1)"
+        ]
       }
     },
     "angelica-lactone": {
@@ -50003,6 +52463,16 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH=C, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O2"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Only computed values found in open articles; a commercial databank (DETHERM) lists values, not used (AGENTS.md rule 1)"
+        ]
       }
     },
     "lactide": {
@@ -50164,6 +52634,24 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 COO, 2 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H8O4"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -792100.0,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔfH°solid -792.1 kJ/mol, Kulagina, Lebedev, et al., 1982 (WebBook)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the solid: no ΔfG°"
+        },
+        "source_ids": [
+          "nist-webbook"
+        ]
       }
     },
     "isosorbide": {
@@ -50317,6 +52805,15 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 THF, 2 CY-CH, 2 OH (S)): chosen: each of the two fused tetrahydrofuran rings' CH-O-CH2 as the THF subgroup, the two remaining ring CH as CY-CH, two secondary OH, as DDBST assigns it (the SMARTS match took TRIOXAN groups, the subgroup of 1,3,5-trioxane); structure-based (SMARTS) assignment {84: 2, 81: 2, 79: 4} (atom balance two H above C6H10O4: in each of the two rings a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O4"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "levoglucosan": {
@@ -50479,6 +52976,26 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CHO, 4 CY-CH, 3 OH (S), 1 TRIOXAN): assigned from the structure and checked (the bicyclic acetal as for Cyrene (the same 6,8-dioxabicyclo[3.2.1]octane skeleton): the CH2-O of the bridge as TRIOXAN and the ring CH-O as CHO, four ring CH and three secondary OH); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O5"
+      },
+      "formation": {
+        "state": "solid",
+        "T_K": 298.15,
+        "Hf_J_mol": -957498.4,
+        "Gf_J_mol": -653588.1,
+        "values": 4,
+        "spread_J_mol": 43963.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
+          "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
+          "reference": "ΔcH°solid -2832.0 kJ/mol, Skuratov, Kozina, et al., 1957 (WebBook); ΔcH°solid -2875.1 kJ/mol, Karrer, Nageli, et al., 1921 (WebBook); ΔcU° -17475.1 J/g at 298.15 K (Static bomb calorimetry), Kabo, Paulechka et al. 2015, doi:10.1016/j.jct.2015.01.005 (ThermoML Archive); ΔcU° -17461.0 J/g at 298.15 K (Static bomb calorimetry), Rocha, Galvao et al. 2013, doi:10.1021/je400207t (ThermoML Archive)",
+          "selection": "median of 4 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°solid 181.4 J/(mol K) at 298.15 K, Kabo, Paulechka et al. 2015, doi:10.1016/j.jct.2015.01.005 (ThermoML Archive), and the CODATA key entropies of the elements; the values disagree by 44.0 kJ/mol: the enthalpy of formation is uncertain"
+        },
+        "source_ids": [
+          "codata-key-values",
+          "nist-thermoml-archive",
+          "nist-webbook"
+        ]
       }
     },
     "dimethyl-fdca": {
@@ -50625,6 +53142,15 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: a furan ring with both ring carbons next to the oxygen substituted: the method has no furan-ring subgroup, and the ether subgroups (CH3O, CH2O, CHO) all need a hydrogen on the carbon (the same reason as for FDCA)"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "bhmf": {
@@ -50771,6 +53297,15 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: a furan ring with both ring carbons next to the oxygen substituted: the method has no furan-ring subgroup, and the ether subgroups (CH3O, CH2O, CHO) all need a hydrogen on the carbon, so the ring cannot be built from them as for furan (the same reason as for FDCA)"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "levoglucosenone": {
@@ -50917,6 +53452,15 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: the ring ketone sits between a ring C=C and a ring CH: the method's ketone subgroups (CH3CO, CH2CO) need a CH3 or CH2 next to the C=O, which levoglucosenone does not have (Cyrene, its hydrogenated form, has groups)"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "emf": {
@@ -51073,6 +53617,15 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH2O, 1 FURFURAL): chosen from the structure: the ring with its aldehyde as the method's FURFURAL subgroup, as for HMF, and the ethoxymethyl group CH2-O-CH2-CH3 as CH2O, CH2 and CH3; the substituted ring carbon is counted in FURFURAL; DDBST lists no assignment (atom balance one H above C8H10O3: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H10O3"
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
       }
     },
     "neopentane": {
@@ -51351,6 +53904,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH3, 1 C): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -168070.0,
+        "Gf_ig_J_mol": -17140.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "helium": {
@@ -51617,6 +54185,21 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": 0.0,
+        "Gf_ig_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     },
     "methylcyclohexane": {
@@ -51906,6 +54489,21 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 5 CY-CH2, 1 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H14"
+      },
+      "formation": {
+        "state": "ideal gas",
+        "T_K": 298.15,
+        "Hf_ig_J_mol": -154800.0,
+        "Gf_ig_J_mol": 27330.0,
+        "tier": "databank",
+        "source": {
+          "name": "ChemSep pure-component database v8.3 (Kooijman & Taylor)",
+          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
+          "access": "Artistic License 2.0"
+        },
+        "source_ids": [
+          "chemsep-8.3"
+        ]
       }
     }
   }
