@@ -44,8 +44,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
         link in npm's e-mail). Direct publishing with a token is refused by npm since 2026; staging is
         how a token can create a new package (GitHub changelog, 2026-10-02).
      4. npmjs.com → Packages → chepta → Settings → Trusted publishing → GitHub Actions: owner
-        `FaireDose`, repository `CHEPTA`, workflow `publish.yml`.
-     5. Delete the `NPM_TOKEN` secret on GitHub and the token on npmjs.com. Later releases are staged
+        `FaireDose`, repository `CHEPTA`, workflow `publish.yml` (made again on 2026-10-22: the first one had
+        expired, unused for 2 days; docs/decisions/2026-10-22-01-publish-trusted.md).
+     5. Delete the `NPM_TOKEN` secret on GitHub and the token on npmjs.com (done 2026-10-22). Later releases are staged
         by the workflow without a token and approved on npmjs.com.
   5. npm: deprecate the old package with a pointer, `npm deprecate fugacity "Renamed: use chepta"`.
   6. Optional: check for an existing trademark (for example in the EUIPO and USPTO search
