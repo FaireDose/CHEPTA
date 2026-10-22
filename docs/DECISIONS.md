@@ -18,6 +18,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   crystal energies of combustion disagree by about 100 kJ/mol); five records are uncertain (the values disagree by more
   than 10 kJ/mol: 2-methoxyethanol, 1,3-propanediol, limonene, gamma-butyrolactone, levoglucosan); 22 components have no
   open data. Compare the transcribed values with their sources.
+- **Missing properties, round 3** (docs/decisions/2026-10-22-07-missing-round3.md): levoglucosenone's vapour
+  pressure and density from Baird et al. 2019 (open access); compare the transcribed values. Supplier pages to
+  download: glycerol carbonate and 5-(ethoxymethyl)furfural liquid densities.
 - **Values the maintainer adds** (2026-10-21; [MISSING_PROPERTIES_2026-10-21.md](MISSING_PROPERTIES_2026-10-21.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.

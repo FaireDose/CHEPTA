@@ -2,5 +2,178 @@
  "component": "levoglucosenone",
  "name": "Levoglucosenone",
  "about": "Measured values each record of this component was fitted to (validation/python/measured_components.py). test/properties.test.js checks that the coefficients in src/data/components.json reproduce them within the maximum deviation stated in each record.",
- "records": {}
+ "records": {
+  "liquidDensity": {
+   "units": "kg/m3",
+   "source": {
+    "name": "Measured densities of the liquid at 0.1 MPa (an article outside the archive)",
+    "fit": "7 measured values, 293.15-363.15 K, max deviation 0.0027 %"
+   },
+   "T_K": [
+    293.15,
+    298.15,
+    313.15,
+    328.15,
+    343.15,
+    353.15,
+    363.15
+   ],
+   "values": [
+    1303.6,
+    1298.6,
+    1283.5,
+    1268.4,
+    1253.3,
+    1243.3,
+    1233.2
+   ],
+   "references": [
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019"
+   ]
+  },
+  "heatOfVaporization": {
+   "units": "J/mol",
+   "source": {
+    "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook)",
+    "fit": "25 Clapeyron values and 0 measured values, 298.26-403.30 K, max deviation 0.0001 %"
+   },
+   "T_K": [
+    298.26,
+    302.63667,
+    307.01333,
+    311.39,
+    315.76667,
+    320.14333,
+    324.52,
+    328.89667,
+    333.27333,
+    337.65,
+    342.02667,
+    346.40333,
+    350.78,
+    355.15667,
+    359.53333,
+    363.91,
+    368.28667,
+    372.66333,
+    377.04,
+    381.41667,
+    385.79333,
+    390.17,
+    394.54667,
+    398.92333,
+    403.3
+   ],
+   "values": [
+    68782.084,
+    67971.976,
+    67161.868,
+    66351.761,
+    65541.653,
+    64731.545,
+    63921.438,
+    63111.33,
+    62301.222,
+    61491.114,
+    60681.007,
+    59870.899,
+    59060.791,
+    58250.684,
+    57440.576,
+    56630.468,
+    55820.361,
+    55010.253,
+    54200.145,
+    53390.037,
+    52579.93,
+    51769.822,
+    50959.714,
+    50149.607,
+    49339.499
+   ],
+   "references": [
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)"
+   ]
+  },
+  "vapourPressure": {
+   "units": "Pa",
+   "source": {
+    "name": "measured vapour pressures and the critical point",
+    "fit": "12 measured values (0 from the ThermoML Archive, 12 from open-access articles), 298.26-403.30 K, max deviation 20 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Baird 2019 +1.78 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (4 values, 18-27 %); among the values stated within 10 %, the largest deviation is 14 %."
+   },
+   "T_K": [
+    298.26,
+    303.25,
+    313.26,
+    323.25,
+    333.29,
+    343.24,
+    353.26,
+    363.27,
+    373.27,
+    383.29,
+    393.26,
+    403.3
+   ],
+   "values": [
+    6.2,
+    10.0,
+    26.0,
+    42.2,
+    90.3,
+    205.0,
+    374.0,
+    621.0,
+    909.0,
+    1502.0,
+    2450.0,
+    3480.0
+   ],
+   "references": [
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019",
+    "Baird 2019"
+   ],
+   "Tb_K_at_101325Pa": null
+  }
+ }
 }

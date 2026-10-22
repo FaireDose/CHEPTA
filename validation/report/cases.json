@@ -727,7 +727,8 @@
    {"id": "pure/methyl-lactate/psat/413.15K", "type": "pureProperty", "component": "methyl-lactate", "property": "vapourPressure", "T_K": 413.15, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
    {"id": "pure/limonene/psat/450K", "type": "pureProperty", "component": "limonene", "property": "vapourPressure", "T_K": 450.0, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
    {"id": "pure/furfuryl-alcohol/psat/412.11K", "type": "pureProperty", "component": "furfuryl-alcohol", "property": "vapourPressure", "T_K": 412.11, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
-   {"id": "pure/glycerol-carbonate/psat/455.61K", "type": "pureProperty", "component": "glycerol-carbonate", "property": "vapourPressure", "T_K": 455.61, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]}
+   {"id": "pure/glycerol-carbonate/psat/455.61K", "type": "pureProperty", "component": "glycerol-carbonate", "property": "vapourPressure", "T_K": 455.61, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
+   {"id": "pure/levoglucosenone/psat/403.3K", "type": "pureProperty", "component": "levoglucosenone", "property": "vapourPressure", "T_K": 403.3, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]}
   ]},
   {"id": "steam", "title": "Steam tables (water)", "cases": [
    {"id": "steam/sat/100C", "type": "steamSaturation", "T_K": 373.15, "quantities": [{"key": "P_bar", "tol": "steam"}, {"key": "rhoL_kg_m3", "tol": "steam"}, {"key": "rhoV_kg_m3", "tol": "steam"}, {"key": "hL_kJ_kg", "tol": "steam"}, {"key": "hV_kJ_kg", "tol": "steam"}, {"key": "dHvap_kJ_kg", "tol": "steam"}]},

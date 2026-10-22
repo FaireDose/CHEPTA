@@ -3686,6 +3686,12 @@
     "value": null,
     "why": "No open reference equation for this component in CoolProp; NIST WebBook vapour-pressure data not transcribed for this report yet"
    }
+  },
+  "pure/levoglucosenone/psat/403.3K": {
+   "psat_kPa": {
+    "value": null,
+    "why": "No open reference equation for this component in CoolProp; NIST WebBook vapour-pressure data not transcribed for this report yet"
+   }
   }
  }
 }
