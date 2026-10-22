@@ -11,9 +11,13 @@ It does not know every copy, so two more open indexes are asked for every copy o
 - OpenAlex (https://openalex.org, also by OurResearch) lists each location of a work, repositories included. Baird et
   al. (2019) has five: Unpaywall gave only the publisher's, which refuses scripts; OpenAlex also gives the Aalto and OSF
   copies. Without a key OpenAlex shares one small daily budget among everyone on the same network address; a free key
-  (https://help.openalex.org/api/authentication/) in OPENALEX_API_KEY gives it its own.
+  (https://help.openalex.org/api/authentication/) gives it its own.
 - CORE (https://core.ac.uk, The Open University) aggregates the full texts of open repositories. It needs a free key
-  (https://core.ac.uk/services/api) in CORE_API_KEY; without one it is skipped and the report says so.
+  (https://core.ac.uk/services/api); without one it answers 401 and the report says so.
+
+A key is given either as an environment variable (OPENALEX_API_KEY, CORE_API_KEY), sent as "Authorization: Bearer
+<key>", or as a network secret of the cloud environment for the host api.openalex.org or api.core.ac.uk, which adds
+the same header to every request and is never seen by the script.
 
 Neither knows the free NIST reprints of J. Phys. Chem. Ref. Data, so "no copy found" is still not "no open data" by
 itself: search further before writing it.
@@ -102,15 +106,13 @@ def openalex(doi, cache):
 
 
 def core(doi, cache):
-    """CORE's records of a DOI (list), or None without a key (CORE_API_KEY). Cached in cache/core/."""
-    key = os.environ.get("CORE_API_KEY")
-    if not key:
-        raise Unavailable("no CORE_API_KEY")
+    """CORE's records of a DOI (list). Cached in cache/core/. Raises Unavailable without a key."""
+    key = os.environ.get("CORE_API_KEY")   # without it, a network secret of the environment may add the key
     doi = doi.strip().lower()
     f = _cache_file(cache, "core", doi)
     if f.exists():
         return json.loads(f.read_text())
-    ans = get_json(CORE.format(q=urllib.parse.quote('doi:"%s"' % doi)), headers={"Authorization": "Bearer " + key})
+    ans = get_json(CORE.format(q=urllib.parse.quote('doi:"%s"' % doi)), headers={"Authorization": "Bearer " + key} if key else None)
     recs = (ans or {}).get("results") or []
     f.parent.mkdir(parents=True, exist_ok=True)
     f.write_text(json.dumps(recs))

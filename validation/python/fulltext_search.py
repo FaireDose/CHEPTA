@@ -11,8 +11,8 @@ articles that mention one of the component's names together with the property:
 - Europe PMC (https://europepmc.org, EMBL-EBI): searches the full texts of its open-access articles, no key needed.
   For each hit with a full text there, the text is read, and the paragraphs and tables where a name and the property
   appear together are listed with a short excerpt; a table with numbers ranks first.
-- OpenAlex (`fulltext.search`; OPENALEX_API_KEY, free) and CORE (full texts of open repositories; CORE_API_KEY, free):
-  asked when their key is set, else named in the report as not asked.
+- OpenAlex (`fulltext.search`) and CORE (full texts of open repositories), each with its free key (an environment
+  variable or a network secret, see open_copy.py); an index that refuses is named in the report as not asked.
 
 It finds candidates; it never takes a number. A person (or an assistant, whose reading a person then checks) opens each
 candidate, decides whether its values are measured and where they come from (docs/DATA_RULES.md section 1: values a
@@ -150,16 +150,15 @@ def screen(xml, nm, terms):
 
 
 def openalex_search(cache, nm, terms, n):
-    key = os.environ.get("OPENALEX_API_KEY")
-    if not key:
-        raise Unavailable("no OPENALEX_API_KEY")
+    key = os.environ.get("OPENALEX_API_KEY")   # without it, a network secret may add the key (open_copy.py)
+    auth = {"Authorization": "Bearer " + key} if key else None
     out = []
     for name in nm[:3]:
         for term in terms[:2]:
             f = "fulltext.search:%s,fulltext.search:%s,is_oa:true" % (urllib.parse.quote('"%s"' % name),
                                                                          urllib.parse.quote('"%s"' % term))
             ans = _cached(cache, "openalex_fulltext", name + "|" + term, lambda: get_json(
-                OPENALEX.format(f=f, n=n, e=urllib.parse.quote(EMAIL)), headers={"Authorization": "Bearer " + key}) or {})
+                OPENALEX.format(f=f, n=n, e=urllib.parse.quote(EMAIL)), headers=auth) or {})
             for w in ans.get("results", []):
                 out.append({"doi": (w.get("doi") or "").replace("https://doi.org/", ""), "title": w.get("title"),
                             "pubYear": w.get("publication_year"), "oa_url": (w.get("open_access") or {}).get("oa_url")})
@@ -168,11 +167,10 @@ def openalex_search(cache, nm, terms, n):
 
 def core_search(cache, nm, terms, n):
     key = os.environ.get("CORE_API_KEY")
-    if not key:
-        raise Unavailable("no CORE_API_KEY")
+    auth = {"Authorization": "Bearer " + key} if key else None
     q = "fullText:(%s) AND fullText:(%s)" % (_quoted(nm[:4]), _quoted(terms))
     ans = _cached(cache, "core_fulltext", q, lambda: get_json(CORE.format(q=urllib.parse.quote(q), n=n),
-                                                              headers={"Authorization": "Bearer " + key}) or {})
+                                                              headers=auth) or {})
     return [{"doi": r.get("doi"), "title": r.get("title"), "pubYear": r.get("yearPublished"),
              "oa_url": r.get("downloadUrl")} for r in ans.get("results", [])]
 

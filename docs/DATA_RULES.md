@@ -58,8 +58,8 @@ one stopped: in the marker's `searched`, and for the full-text search in `valida
    property that a table of the article has, so these indexes are searched in the full text. The script lists
    candidates with the paragraph or table where the name and the property appear together; it never takes a number.
    Each candidate is opened and read (below, "Measured values in modelling and simulation papers"). OpenAlex and CORE
-   need a free key each (`OPENALEX_API_KEY`, `CORE_API_KEY`); an index that was not asked is named in the search
-   record.
+   need a free key each (a network secret of the environment for `api.openalex.org` and `api.core.ac.uk`, or the
+   variables `OPENALEX_API_KEY`, `CORE_API_KEY`); an index that was not asked is named in the search record.
 4. **Every article that has the number, or that an open article names as the measurement, is looked up for a legal
    free copy** before it is set aside as paywalled (below, "Free copies").
 5. **The open literature beyond the indexes**: a web search, the free NIST reprints of J. Phys. Chem. Ref. Data,
