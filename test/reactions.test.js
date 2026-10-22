@@ -92,17 +92,13 @@ test("acetic acid (dimerizing in the vapour) in a liquid reaction: its monomer r
 
 test("the liquid path from the ideal-gas records meets measured liquid values (NIST WebBook) within 2 kJ/mol", () => {
   // validation/data/reactions/liquid_formation_webbook.json: the most recent article's liquid ΔfH° (or ΔcH°) and S°;
-  // ΔfG° from them with the CODATA entropies of the elements. Acetic acid tests the dimer path (without it, its
-  // liquid enthalpy would be about 28 kJ/mol off).
+  // ΔfG° from them with the CODATA entropies of the elements. Acetic and formic acid test the dimer path (without it,
+  // acetic acid's liquid enthalpy would be about 28 kJ/mol off).
   const wb = JSON.parse(readFileSync(new URL("../validation/data/reactions/liquid_formation_webbook.json", import.meta.url)));
-  // the species' values are read from a balanced reaction that holds them all (a species alone is no reaction)
-  const rx = checkReaction({ id: "e", stoichiometry: { "acetic-acid": -1, ethanol: -1, "ethyl-acetate": 1, water: 1 }, phase: "liquid" });
-  assert.deepEqual(Object.keys(rx.stoichiometry).sort(), Object.keys(wb.components).sort());
-  const p = reactionProperties(rx, 298.15);
-  for (const s of p.species) {
-    const m = wb.components[s.id];
-    assert.ok(Math.abs(s.H_J_mol - m.Hf_J_mol) < 2000, `${s.id}: H ${s.H_J_mol} vs WebBook ${m.Hf_J_mol} (${m.Hf_from})`);
-    assert.ok(Math.abs(s.G_J_mol - m.Gf_J_mol) < 2000, `${s.id}: G ${s.G_J_mol} vs WebBook ${m.Gf_J_mol} (${m.S_from})`);
+  for (const [id, m] of Object.entries(wb.components)) {
+    const s = speciesProperties(id, "liquid", 298.15);
+    assert.ok(Math.abs(s.H_J_mol - m.Hf_J_mol) < 2000, `${id}: H ${s.H_J_mol} vs WebBook ${m.Hf_J_mol} (${m.Hf_from})`);
+    assert.ok(Math.abs(s.G_J_mol - m.Gf_J_mol) < 2000, `${id}: G ${s.G_J_mol} vs WebBook ${m.Gf_J_mol} (${m.S_from})`);
   }
 });
 

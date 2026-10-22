@@ -296,7 +296,9 @@ solvents may be (HMF: its WebBook boiling temperature of 388.2 K at 0.1 kPa, whe
 
 - **ChemSep has the compound:** its ideal-gas enthalpy and Gibbs energy of formation at 298.15 K, **taken as they
   are** (section 1); the elements in their reference state are zero. ChemSep does not state the standard pressure of
-  its Gibbs energies in the file.
+  its Gibbs energies in the file. The one exception, by the maintainer's decision, is formic acid (2026-10-22): ChemSep's
+  value is 15 kJ/mol below the WebBook's measured gas values, so its record takes those
+  (`WEBBOOK_GAS_OVER_CHEMSEP`, with the reason).
 - **ChemSep does not:** the measured values, searched in the NIST WebBook, the ThermoML Archive's combustion
   reactions and entropies, and the open literature (the maintainer, 2026-10-22: "search everything now"), stored as
   found in `validation/data/pure/formation/measured.json`:

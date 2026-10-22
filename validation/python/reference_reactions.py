@@ -227,7 +227,7 @@ def scipy_results(reactions, temps, species):
 # 3. Measured liquid values (NIST WebBook) for the liquid path from the ideal-gas records
 # ---------------------------------------------------------------------------------------------------------------
 
-WEBBOOK_CHECK = ["acetic-acid", "ethanol", "ethyl-acetate", "water"]
+WEBBOOK_CHECK = ["acetic-acid", "ethanol", "ethyl-acetate", "water", "formic-acid"]
 WEBBOOK_FILE = Path(__file__).resolve().parents[1] / "data" / "reactions" / "liquid_formation_webbook.json"
 
 

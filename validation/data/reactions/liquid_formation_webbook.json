@@ -386,6 +386,97 @@
    "S_J_molK": 69.95,
    "S_from": "S° 69.95 J/(mol K), Chase, 1998",
    "Gf_J_mol": -237140.3161
+  },
+  "formic-acid": {
+   "cas": "64-18-6",
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C64186&Mask=FFFF&Units=SI",
+   "rows": [
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -425.09,
+     "uncertainty": null,
+     "units": "kJ/mol",
+     "method": "Cm",
+     "reference": "Guthrie, 1974",
+     "comment": "Heat of hydrolysis; ALS"
+    },
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -425.5,
+     "uncertainty": 0.3,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Lebedeva, 1964",
+     "comment": "ALS"
+    },
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -424.8,
+     "uncertainty": 0.3,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Sinke, 1959",
+     "comment": "ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -253.8,
+     "uncertainty": 0.3,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Lebedeva, 1964",
+     "comment": "Corresponding ΔfHºliquid = -425.51 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -254.6,
+     "uncertainty": 0.3,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Sinke, 1959",
+     "comment": "Corresponding ΔfHºliquid = -424.72 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 131.84,
+     "uncertainty": null,
+     "units": "J/mol*K",
+     "method": "N/A",
+     "reference": "Stout and Fisher, 1941",
+     "comment": "Includes 2.89 J/mol*K for zero-point entropy.; DH"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 128.4,
+     "uncertainty": null,
+     "units": "J/mol*K",
+     "method": "N/A",
+     "reference": "Parks, Kelley, et al., 1929",
+     "comment": "Extrapolation below 90 K, 29.7 J/mol*K. Revision of previous data.; DH"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 143.1,
+     "uncertainty": null,
+     "units": "J/mol*K",
+     "method": "N/A",
+     "reference": "Gibson, Latimer, et al., 1920",
+     "comment": "Used Berthelot's value, 10125 J/mol for H fusion. Extrapolation below 70 K, no details.; DH"
+    }
+   ],
+   "Hf_J_mol": -425090.0,
+   "Hf_from": "ΔfH° -425.09 kJ/mol, Guthrie, 1974",
+   "S_J_molK": 131.84,
+   "S_from": "S° 131.84 J/(mol K), Stout and Fisher, 1941",
+   "Gf_J_mol": -362558.4042
   }
  }
 }

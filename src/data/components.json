@@ -25605,16 +25605,19 @@
       "formation": {
         "state": "ideal gas",
         "T_K": 298.15,
-        "Hf_ig_J_mol": -393629.0,
-        "Gf_ig_J_mol": -365940.0,
+        "Hf_ig_J_mol": -378600.0,
+        "Gf_ig_J_mol": -350910.2,
         "tier": "databank",
         "source": {
-          "name": "ChemSep pure-component database v8.31, data file 2 (chemsep2.xml, Kooijman & Taylor)",
-          "reference": "Kooijman and Taylor, ChemSep pure-component database (HeatOfFormation, 'IG heat of formation'; GibbsEnergyOfFormation, 'IG Gibbs energy of formation'), taken as printed (J/kmol, divided by 1000)",
-          "access": "Artistic License 2.0"
+          "name": "Measured gas values: NIST Chemistry WebBook (SRD 69), in place of ChemSep's",
+          "access": "Free to read online (WebBook, SRD 69); CODATA key values, open table",
+          "reference": "ΔfH°gas -378.6 kJ/mol, Guthrie, 1974; ΔfH°gas -379.0 kJ/mol, Lebedeva, 1964; ΔfH°gas -379.2 kJ/mol, Lebedeva, 1964; ΔfH°gas -378.3 kJ/mol, Sinke, 1959; ΔfH°gas -378.5 kJ/mol, Sinke, 1959; S°gas 248.7 J/(mol K), Millikan R.C., 1957",
+          "selection": "median of 5 ΔfH° values and of 1 S° value(s); ΔfG° = ΔfH° - T (S° - Σ S°(elements)), the elements' entropies the CODATA key values (https://www.codata.info/resources/databases/key1.html)",
+          "why": "ChemSep's ideal-gas enthalpy of formation (-393.6 kJ/mol) is 15 kJ/mol below the measured gas values of the WebBook (Guthrie 1974, Lebedeva 1964, Sinke 1959), which Chao and Zwolinski (J. Phys. Chem. Ref. Data 7 (1978) 363) also take; with ChemSep's value and the dimers of the vapour, the liquid's enthalpy of formation would be 16.6 kJ/mol off the measured liquid values (the maintainer, 2026-10-22: the WebBook gas value)"
         },
         "source_ids": [
-          "chemsep-8.31-2"
+          "nist-webbook",
+          "codata-key-values"
         ]
       },
       "association": {
