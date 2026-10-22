@@ -741,7 +741,7 @@ export function tierCounts(pairs = [], missing = []) {
 }
 
 /** Short tier names for badges. */
-export const TIER_SHORT = { fitted: "fitted", standard: "standard", databank: "databank", predicted: "predicted", user: "user", none: "no data" };
+export const TIER_SHORT = { fitted: "fitted", standard: "standard", databank: "databank", predicted: "predicted", supplier: "supplier", user: "user", none: "no data" };
 
 /** One-line summary of tier counts, e.g. "2 fitted, 1 databank". */
 export function tierSummary(counts, noun = "pair", plural = noun + "s") {

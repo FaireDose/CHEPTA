@@ -20,7 +20,8 @@ Only from sources anyone can read for free and legally, so that every reviewer c
    repositories, and the supplementary information of a paywalled article where the publisher makes it free to read
    (kind "free supplement"; Lomba et al. 2011): its numbers are used, but not the article's own (its stated
    uncertainties, for example);
-6. free books (public domain or openly licensed).
+6. free books (public domain or openly licensed);
+7. supplier data, as a last resort, for single constants only (below, "Supplier data").
 
 What to take from where (the maintainer, 2026-10-14): take a number from the source that has it, and do not take a
 number that then has to be compared with another source.
@@ -36,7 +37,8 @@ Never:
 - numbers from memory, or from a source not opened in the same session (AGENTS.md rule 2);
 - paywalled articles or commercial databanks (DDB, DIPPR, DECHEMA) unless the same numbers are open. A paywalled
   article may be read to understand a method, but it is not cited and its numbers are not used;
-- supplier catalogues and data sheets as measurements (they may be listed, never fitted);
+- supplier catalogues and data sheets as measurements: they are never fitted, and they are used only as "Supplier
+  data" below, with the tier `supplier`;
 - estimated values presented as data. Group-contribution estimates (Joback, UNIFAC) are not used for constants;
   Modified UNIFAC 2.0 is used only as a model, with the tier "predicted" (section 7). Where a property has no open
   measured value at all, an open group-contribution method may predict it, labelled tier "predicted" with its method
@@ -44,6 +46,29 @@ Never:
 
 If nothing open has a number, write **"no open data"** with the sources searched. Search the open literature too, not
 only the databases (the maintainer, 2026-10-13).
+
+<a id="supplier-data-last-resort"></a>**Supplier data, last resort** (the maintainer, 2026-10-22: "if nothing found in open literature than check
+these websites and if they are similar within a small range take from there and note that it is an average for the
+values from few places"). Chemical suppliers (Merck/Sigma-Aldrich, TCI, Thermo Fisher/Alfa Aesar and the like) print
+a few constants on their product pages and specification sheets, free to read. They may make a record only when:
+
+- the full open search (sources 1-6, the open literature, Unpaywall) found no measured value of that constant, and
+  the record lists what was searched;
+- the constant is a single number: a melting point, a normal boiling point (or a boiling point at a stated
+  pressure), or a density at a stated temperature. Never a temperature curve, an enthalpy, a heat capacity, a
+  dimerization constant or a mixture property, and never fitted into a correlation;
+- the values come from **at least three suppliers**, for products of **at least 98 % assay** (analytical, reagent or
+  "for synthesis" grade), and agree **within 2 K** (temperatures) or **1 %** (densities). A printed range (165-168
+  degC) counts as its midpoint, with half its width as that supplier's spread;
+- the record is their **mean**, with the spread of the values as its uncertainty, tier `supplier`, and says so: "an
+  average of the values printed by N suppliers, not a measurement". Each value is cited with the supplier, the
+  product number, its grade and assay, the page's address and the date it was read. A value marked "decomposes",
+  "sublimes" or "lit." (copied from the literature) is noted as such;
+- suppliers often print the same handbook value, so their agreement is not three measurements: a measured value
+  found later replaces the supplier record, and a supplier record is never mixed with measured values.
+
+If the values disagree by more than the limits, or fewer than three suppliers print the constant, the property stays
+"no open data", with the supplier values listed in the marker.
 
 **A paywalled article may have a legal free copy** (the maintainer, 2026-10-15): before setting an article aside as
 paywalled, look it up in Unpaywall (`python validation/python/open_copy.py DOI ... --cache DIR`; in a batch,
@@ -202,7 +227,7 @@ decides.
 ## 8. What every record carries
 
 - `source` (the citation, the table, the fit and its maximum deviation) and `source_ids` (run `make_sources.py`).
-- `tier`: standard, fitted, databank or predicted.
+- `tier`: standard, fitted, databank, predicted, or supplier (section 1, "Supplier data").
 - The values it was fitted to, in `validation/data/pure/<id>.json` (`test/properties.test.js` checks the record
   against them).
 - Values left out, with their deviation and the reason.
@@ -283,7 +308,7 @@ needs its vapour pressure (bubble and dew points, flashes, vapour-liquid diagram
 until the user gives a vapour pressure of their own in My data (proposal 0012). No vapour pressure is predicted:
 SIMPOL.1, the only open group-contribution method that covers these molecules, was checked on 109 CHEPTA components and
 not accepted (errors of a factor of 2 and more). Supplier catalogues and compilations that give a single boiling point
-are listed in the marker, never fitted (section 1). Terephthalic acid is a nonvolatile liquid up to an assumed melting temperature of 400 degC, by the
+are listed in the marker, never fitted (section 1; a supplier boiling point is not a vapour-pressure curve). Terephthalic acid is a nonvolatile liquid up to an assumed melting temperature of 400 degC, by the
 maintainer's choice (2026-10-17; it sublimes at 402-404 degC). Nor is a substance
 that is distilled or sublimed in its own processes (lactide, isosorbide, BHMF, dimethyl FDCA, levoglucosan; held in
 batch 4 for want of an open liquid vapour pressure). A substance whose measured volatility is negligible beside its

@@ -60,6 +60,7 @@ the interface shows the label next to every result:
 | `standard` | Computed from an official standard (IAPWS for water) |
 | `databank` | Taken from an openly licensed parameter set (ChemSep, Artistic License 2.0) |
 | `predicted` | Group contribution (modified UNIFAC, Dortmund) where no fitted or databank pair exists. **Planned for v0.2** |
+| `supplier` | A single pure-component constant (melting point, boiling point, density) as the average of the values printed by at least three chemical suppliers, only where no open measured value exists ([docs/DATA_RULES.md](docs/DATA_RULES.md#supplier-data-last-resort)) |
 | `user` | Supplied in the page's own setup, for example from a paper being discussed |
 
 The engine uses the best available tier for each pair and never silently falls back
