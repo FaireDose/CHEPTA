@@ -34,94 +34,107 @@ Each gap is a "no open data" marker in `src/data/components.json` with the sourc
 
 ## The full-text search of 2026-10-22
 
-`validation/data/searches/2026-10-22-fulltext.json`, made with `validation/python/fulltext_search.py` (docs/DATA_RULES.md section 1, "How to search for a missing number", step 3). "None of the pure compound": the passages name the component as a reactant, product, solvent or ligand, or give a value of a mixture or a solution. 176 gaps searched (the properties a calculation needs); 78 had at least one open article where a name of the component and the property appear in the same paragraph or table. Each such passage (the passage the script shows, and the article where it pointed to a value) was read on 2026-10-22. One measured value was found: solketal's vapour pressure (Türck et al. 2026), held for the maintainer because it is in a figure only and was measured with a fuel tester. Europe PMC indexes the biomedical literature and the journals deposited in PubMed Central (MDPI, ACS Omega, RSC Advances, Scientific Reports); it does not have J. Chem. Eng. Data, J. Chem. Thermodyn., Fluid Phase Equilib. or Int. J. Thermophys., where most measurements are, so this search does not replace OpenAlex and CORE.
+`validation/data/searches/2026-10-22-fulltext.json`, made with `validation/python/fulltext_search.py` (docs/DATA_RULES.md section 1, "How to search for a missing number", step 3). "None of the pure compound": the passages name the component as a reactant, product, solvent or ligand, or give a value of a mixture or a solution. 176 gaps searched (the properties a calculation needs); 78 had at least one open article where a name of the component and the property appear in the same paragraph or table. Each such passage (the passage the script shows, and the article where it pointed to a value) was read on 2026-10-22. One measured value was found: solketal's vapour pressure (Türck et al. 2026), held for the maintainer because it is in a figure only and was measured with a fuel tester. Europe PMC indexes the biomedical literature and the journals deposited in PubMed Central (MDPI, ACS Omega, RSC Advances, Scientific Reports); it does not have J. Chem. Eng. Data, J. Chem. Thermodyn., Fluid Phase Equilib. or Int. J. Thermophys., where most measurements are, so OpenAlex was asked too, later the same day, with a key. Neither index found a further value usable under the rules: the melting points of DL-malic acid and cis,cis-muconic acid came without an enthalpy of fusion.
 
 - Europe PMC: asked (full texts of open-access articles; 8 articles read per search)
-- OpenAlex: not asked: no OPENALEX_API_KEY (the shared keyless budget of this network was used up)
-- CORE: not asked: no CORE_API_KEY
+- OpenAlex: asked, with a key (a network secret of the environment): one full-text query per gap, open-access works only, 8 articles per query; 1185 articles found, 271 of them could be downloaded as a PDF and read (the others' servers refuse scripts or give no PDF)
+- CORE: not asked: the maintainer has written to CORE to ask which licence fits an MIT-licensed simulator (2026-10-22)
 
-| Component | Property | Articles found | Passages with the name and the property | What they held |
+| Component | Property | Europe PMC: found, with a passage | OpenAlex: found, read, with a passage | What they held |
 |---|---|---|---|---|
-| 2-Methoxyethanol | melting point and enthalpy of fusion | 171 | 1 | none of the pure compound |
-| Methyldiethanolamine | melting point and enthalpy of fusion | 59 | 3 | none of the pure compound |
-| Terephthalic acid | liquid density | 3691 | 3 | none of the pure compound |
-| Terephthalic acid | melting point and enthalpy of fusion | 844 | 3 | none of the pure compound |
-| Methyl oleate | melting point and enthalpy of fusion | 845 | 2 | none of the pure compound |
-| Methyl linoleate | melting point and enthalpy of fusion | 57 | 1 | none of the pure compound |
-| 2-Methylfuran | enthalpy of formation | 6 | 2 | Amaral et al., Molecules 2024, doi:10.3390/molecules29122729: theoretical increments only, no measured enthalpy of 2-methylfuran |
-| 2-Methyltetrahydrofuran | melting point and enthalpy of fusion | 225 | 1 | none of the pure compound |
-| Tetrahydrofurfuryl alcohol | normal boiling point | 59 | 1 | none of the pure compound |
-| 2,3-Butanediol | melting point and enthalpy of fusion | 130 | 1 | none of the pure compound |
-| 2,3-Butanediol | critical constants (Tc, Pc, ω) | 62 | 2 | critical temperatures used as inputs of a machine-learning model (Sci. Rep. 2022, doi:10.1038/s41598-022-08842-5), not measured |
-| 2,3-Butanediol | normal boiling point | 176 | 5 | none of the pure compound |
-| Methyl lactate | melting point and enthalpy of fusion | 40 | 2 | none of the pure compound |
-| Methyl lactate | critical constants (Tc, Pc, ω) | 16 | 1 | the critical point of a mixture with CO2, not of methyl lactate |
-| Methyl lactate | normal boiling point | 33 | 2 | none of the pure compound |
-| Ethyl lactate | melting point and enthalpy of fusion | 144 | 1 | none of the pure compound |
-| Ethyl lactate | critical constants (Tc, Pc, ω) | 78 | 2 | the critical point of a mixture with CO2, not of ethyl lactate |
-| Limonene | melting point and enthalpy of fusion | 1088 | 4 | none of the pure compound |
-| Limonene | critical constants (Tc, Pc, ω) | 493 | 1 | none of the pure compound |
-| Limonene | normal boiling point | 916 | 5 | none of the pure compound |
-| Furfuryl alcohol | critical constants (Tc, Pc, ω) | 77 | 1 | the same machine-learning article (doi:10.1038/s41598-022-08842-5): not measured |
-| Furfuryl alcohol | normal boiling point | 241 | 2 | a QSPR article's input table: not measured |
-| 5-Hydroxymethylfurfural | liquid density | 2874 | 4 | none of the pure compound |
-| D-Glucose | liquid density | 524878 | 4 | none of the pure compound |
-| D-Fructose | liquid density | 46038 | 4 | none of the pure compound |
-| D-Sorbitol | liquid density | 17457 | 5 | none of the pure compound |
-| D-Sorbitol | Gibbs energy of formation | 2 | 1 | none of the pure compound |
-| Xylitol | enthalpy of formation | 25 | 1 | none of the pure compound |
-| Succinic acid | liquid density | 8787 | 7 | none of the pure compound |
-| Itaconic acid | liquid density | 1640 | 6 | none of the pure compound |
-| Itaconic acid | melting point and enthalpy of fusion | 218 | 4 | none of the pure compound |
-| Fumaric acid | liquid density | 3269 | 5 | none of the pure compound |
-| Fumaric acid | melting point and enthalpy of fusion | 316 | 2 | none of the pure compound |
-| Malic acid | liquid density | 7405 | 1 | none of the pure compound |
-| Malic acid | melting point and enthalpy of fusion | 643 | 2 | none of the pure compound |
-| Malic acid | Gibbs energy of formation | 5 | 1 | none of the pure compound |
-| Citric acid | liquid density | 42540 | 6 | none of the pure compound |
-| Glycolic acid | liquid density | 18993 | 5 | none of the pure compound |
-| D-Glucaric acid | liquid density | 659 | 4 | none of the pure compound |
-| D-Glucaric acid | melting point and enthalpy of fusion | 49 | 1 | none of the pure compound |
-| 3-Hydroxypropionic acid | liquid density | 534 | 1 | none of the pure compound |
-| 2,5-Furandicarboxylic acid | liquid density | 627 | 1 | none of the pure compound |
-| Bis(2-hydroxyethyl) terephthalate | melting point and enthalpy of fusion | 146 | 2 | none of the pure compound |
-| Diphenolic acid | liquid density | 68 | 1 | none of the pure compound |
-| D-Xylose | liquid density | 15458 | 3 | none of the pure compound |
-| cis,cis-Muconic acid | liquid density | 560 | 1 | none of the pure compound |
-| Glycerol carbonate | liquid density | 160 | 3 | none of the pure compound |
-| Glycerol carbonate | melting point and enthalpy of fusion | 37 | 1 | none of the pure compound |
-| Glycerol carbonate | critical constants (Tc, Pc, ω) | 10 | 1 | none of the pure compound |
-| Glycerol carbonate | normal boiling point | 72 | 4 | a property table (RSC Adv. 2023, doi:10.1039/d3ra03028h: 354 °C) without the measuring article: not taken |
-| Solketal | vapour pressure | 21 | 2 | **measured, held for the maintainer**: Türck et al., ACS Omega 2026, doi:10.1021/acsomega.5c12056 (CC BY 4.0), Figure 7: the vapour-pressure curve of pure solketal (≥98 %, Merck), 20-100 °C, about 0.2 to 7.1 kPa, Herzog HVP 972 fuel vapour-pressure tester, n = 3, error bar about ±0.5 kPa at 80 °C. In a figure only (the supporting information has no table of it) |
-| Solketal | melting point and enthalpy of fusion | 41 | 1 | none of the pure compound |
-| Solketal | normal boiling point | 39 | 3 | the same article (Türck et al. 2026) gives no boiling point |
-| Lactide | vapour pressure | 217 | 2 | the same review (Cunha et al. 2022): no vapour pressure |
-| Lactide | liquid density | 11089 | 1 | none of the pure compound |
-| Lactide | heat of vaporization | 11 | 1 | Cunha et al., Bioengineering 2022, doi:10.3390/bioengineering9040164, Table 2: 63 kJ/mol, with liquid viscosities at 110-130 °C, 'found in the literature' without the article for each value: not taken (DATA_RULES section 1, modelling papers) |
-| Lactide | liquid heat capacity | 211 | 2 | none of the pure compound |
-| Lactide | critical constants (Tc, Pc, ω) | 531 | 1 | none of the pure compound |
-| Lactide | normal boiling point | 385 | 3 | the same review (Cunha et al. 2022), Table 2: 255 °C without its source: not taken |
-| Isosorbide | vapour pressure | 63 | 3 | no vapour pressure of isosorbide itself (the hits are isosorbide diesters and dimethyl isosorbide) |
-| Isosorbide | liquid density | 1548 | 3 | none of the pure compound |
-| Isosorbide | liquid heat capacity | 24 | 1 | none of the pure compound |
-| Isosorbide | melting point and enthalpy of fusion | 257 | 6 | Hammami et al., Molecules 2025, doi:10.3390/molecules30224364: DSC melting onset 45 °C (endotherm 45-62 °C, sample about 70 % crystalline), no enthalpy of fusion: no melting record (it needs both) |
-| Isosorbide | normal boiling point | 93 | 6 | property tables without the measuring article (a ChemSusChem review, doi:10.1002/cssc.202102525: 433 K, unstated pressure): not taken |
-| Levoglucosan | vapour pressure | 66 | 3 | Zhang et al., Environ. Sci. Technol. Lett. 2024, doi:10.1021/acs.estlett.4c00608, cites four measurements: May et al. 2012 (doi:10.1021/es302276t, no free copy), Kabo et al. 2015 and Rocha et al. 2013 (sublimation pressures of the crystal in the ThermoML Archive), Oja and Suuberg 1999 (doi:10.1021/je980119b, no free copy). No liquid vapour pressure |
-| Levoglucosan | liquid density | 583 | 1 | none of the pure compound |
-| Levoglucosan | liquid heat capacity | 19 | 2 | Madejczyk et al., Sci. Rep. 2017, doi:10.1038/srep42103: only the heat-capacity step at the glass transition (0.696 J/(g K)), not a heat capacity of the liquid |
-| Dimethyl 2,5-furandicarboxylate | liquid density | 54 | 1 | none of the pure compound |
-| Dimethyl 2,5-furandicarboxylate | melting point and enthalpy of fusion | 59 | 2 | none of the pure compound |
-| 2,5-Bis(hydroxymethyl)furan | vapour pressure | 11 | 1 | a review's property table (doi:10.1186/s40643-023-00676-x, Table 1: 0.00248 mmHg at 25 °C) without the measuring article: not taken |
-| 2,5-Bis(hydroxymethyl)furan | liquid density | 140 | 1 | none of the pure compound |
-| 2,5-Bis(hydroxymethyl)furan | melting point and enthalpy of fusion | 35 | 2 | the same review table (melting point 74-77 °C, no enthalpy, no source): not taken |
-| 2,5-Bis(hydroxymethyl)furan | normal boiling point | 25 | 1 | the same review table (275 °C, no source): not taken |
-| Levoglucosenone | liquid heat capacity | 4 | 1 | none of the pure compound |
-| Levoglucosenone | melting point and enthalpy of fusion | 34 | 1 | none of the pure compound |
-| 5-(Ethoxymethyl)furfural | liquid density | 52 | 4 | none of the pure compound |
-| 5-(Ethoxymethyl)furfural | melting point and enthalpy of fusion | 13 | 1 | none of the pure compound |
-| 5-(Ethoxymethyl)furfural | normal boiling point | 16 | 3 | none of the pure compound |
+| 2-Methoxyethanol | melting point and enthalpy of fusion | 171, 1 | 913, 5, 1 | none of the pure compound |
+| Methyldiethanolamine | melting point and enthalpy of fusion | 59, 3 | 351, 3, 2 | none of the pure compound |
+| Terephthalic acid | liquid density | 3691, 3 | 10093, 2, 2 | none of the pure compound |
+| Terephthalic acid | melting point and enthalpy of fusion | 844, 3 | 2786, 1, 1 | none of the pure compound |
+| Methyl oleate | melting point and enthalpy of fusion | 845, 2 | 6805, 0, 0 | none of the pure compound |
+| Methyl linoleate | melting point and enthalpy of fusion | 57, 1 | 353, 5, 2 | none of the pure compound |
+| Triolein | heat of vaporization | 65, 0 | 602, 1, 1 | none of the pure compound |
+| 2-Methylfuran | enthalpy of formation | 6, 2 | 241, 4, 0 | Amaral et al., Molecules 2024, doi:10.3390/molecules29122729: theoretical increments only, no measured enthalpy of 2-methylfuran |
+| 2-Methyltetrahydrofuran | melting point and enthalpy of fusion | 225, 1 | 802, 2, 1 | none of the pure compound |
+| Ethyl levulinate | melting point and enthalpy of fusion | 26, 0 | 169, 4, 1 | none of the pure compound |
+| Butyl levulinate | melting point and enthalpy of fusion | 6, 0 | 41, 4, 1 | none of the pure compound |
+| gamma-Valerolactone | critical constants (Tc, Pc, ω) | 63, 0 | 231, 1, 1 | none of the pure compound |
+| Tetrahydrofurfuryl alcohol | critical constants (Tc, Pc, ω) | 20, 0 | 54, 5, 1 | none of the pure compound |
+| Tetrahydrofurfuryl alcohol | normal boiling point | 59, 1 | 234, 2, 1 | none of the pure compound |
+| 2,3-Butanediol | melting point and enthalpy of fusion | 130, 1 | 32, 0, 0 | none of the pure compound |
+| 2,3-Butanediol | critical constants (Tc, Pc, ω) | 62, 2 | 4, 1, 0 | critical temperatures used as inputs of a machine-learning model (Sci. Rep. 2022, doi:10.1038/s41598-022-08842-5), not measured |
+| 2,3-Butanediol | normal boiling point | 176, 5 | 74, 2, 1 | none of the pure compound |
+| Methyl lactate | melting point and enthalpy of fusion | 40, 2 | 175, 4, 1 | none of the pure compound |
+| Methyl lactate | critical constants (Tc, Pc, ω) | 16, 1 | 56, 2, 0 | the critical point of a mixture with CO2, not of methyl lactate |
+| Methyl lactate | normal boiling point | 33, 2 | 165, 0, 0 | none of the pure compound |
+| Ethyl lactate | melting point and enthalpy of fusion | 144, 1 | 528, 0, 0 | none of the pure compound |
+| Ethyl lactate | critical constants (Tc, Pc, ω) | 78, 2 | 283, 0, 0 | the critical point of a mixture with CO2, not of ethyl lactate |
+| Limonene | melting point and enthalpy of fusion | 1088, 4 | 2912, 5, 2 | none of the pure compound |
+| Limonene | critical constants (Tc, Pc, ω) | 493, 1 | 1198, 3, 2 | none of the pure compound |
+| Limonene | normal boiling point | 916, 5 | 2749, 1, 0 | none of the pure compound |
+| Furfuryl alcohol | critical constants (Tc, Pc, ω) | 77, 1 | 314, 4, 0 | the same machine-learning article (doi:10.1038/s41598-022-08842-5): not measured |
+| Furfuryl alcohol | normal boiling point | 241, 2 | 1041, 0, 0 | a QSPR article's input table: not measured |
+| 5-Hydroxymethylfurfural | liquid density | 2874, 4 | 11653, 0, 0 | none of the pure compound |
+| D-Glucose | liquid density | 524878, 4 | 1090182, 4, 3 | none of the pure compound |
+| D-Fructose | liquid density | 46038, 4 | 119052, 4, 4 | aqueous solutions only (among them J. Res. NBS 8 (1932), doi:10.6028/jres.008.033, public domain) |
+| D-Sorbitol | liquid density | 17457, 5 | 47999, 1, 1 | none of the pure compound |
+| D-Sorbitol | Gibbs energy of formation | 2, 1 | 43, 3, 0 | none of the pure compound |
+| Xylitol | enthalpy of formation | 25, 1 | 407, 2, 0 | none of the pure compound |
+| Succinic acid | liquid density | 8787, 7 | 22964, 3, 2 | none of the pure compound |
+| Itaconic acid | liquid density | 1640, 6 | 5648, 1, 1 | none of the pure compound |
+| Itaconic acid | melting point and enthalpy of fusion | 218, 4 | 1045, 2, 2 | none of the pure compound |
+| Fumaric acid | liquid density | 3269, 5 | 8764, 2, 2 | none of the pure compound |
+| Fumaric acid | melting point and enthalpy of fusion | 316, 2 | 1391, 3, 1 | none of the pure compound |
+| Malic acid | liquid density | 7405, 1 | 30173, 1, 1 | none of the pure compound |
+| Malic acid | melting point and enthalpy of fusion | 643, 2 | 4405, 5, 2 | Marques et al., Arab. J. Chem. 2020, doi:10.1016/j.arabjc.2020.10.036 (CC BY-NC-ND 4.0): DL-malic acid melting point 129.71 °C (melting-point apparatus, ±0.5 K), no enthalpy of fusion: no melting record (it needs both) |
+| Malic acid | Gibbs energy of formation | 5, 1 | 78, 3, 0 | none of the pure compound |
+| Citric acid | liquid density | 42540, 6 | 113743, 3, 3 | none of the pure compound |
+| Glycolic acid | liquid density | 18993, 5 | 37346, 3, 3 | Savannah River National Laboratory reports on OSTI (doi:10.2172/982752, 10.2172/1019026, 10.2172/1371696): densities of 60-75 wt% aqueous glycolic acid only; 'neat glycolic acid was not measured' |
+| Glycolic acid | enthalpy of formation | 21, 0 | 174, 4, 1 | a process model's input table (Chem. Eng. Trans. 2026, doi:10.3303/cet26125044) quoting a market-research report: not taken |
+| D-Glucaric acid | liquid density | 659, 4 | 1505, 0, 0 | none of the pure compound |
+| D-Glucaric acid | melting point and enthalpy of fusion | 49, 1 | 210, 1, 0 | none of the pure compound |
+| 3-Hydroxypropionic acid | liquid density | 534, 1 | 1446, 1, 0 | none of the pure compound |
+| 3-Hydroxypropionic acid | melting point and enthalpy of fusion | 44, 0 | 198, 3, 1 | none of the pure compound |
+| 2,5-Furandicarboxylic acid | liquid density | 627, 1 | 355, 0, 0 | none of the pure compound |
+| Bis(2-hydroxyethyl) terephthalate | melting point and enthalpy of fusion | 146, 2 | 4, 3, 0 | none of the pure compound |
+| Diphenolic acid | liquid density | 68, 1 | 256, 3, 1 | none of the pure compound |
+| D-Xylose | liquid density | 15458, 3 | 44617, 0, 0 | none of the pure compound |
+| cis,cis-Muconic acid | liquid density | 560, 1 | 1591, 2, 1 | none of the pure compound |
+| cis,cis-Muconic acid | melting point and enthalpy of fusion | 62, 0 | 259, 3, 1 | ACS Sustain. Chem. Eng. 2016, doi:10.1021/acssuschemeng.6b01820, Table 3: cis,cis-muconic acid melting point 197 °C (purity 99.2 %), no enthalpy of fusion: no melting record |
+| Glycerol carbonate | liquid density | 160, 3 | 1031, 1, 0 | none of the pure compound |
+| Glycerol carbonate | melting point and enthalpy of fusion | 37, 1 | 245, 2, 0 | none of the pure compound |
+| Glycerol carbonate | critical constants (Tc, Pc, ω) | 10, 1 | 87, 3, 2 | none of the pure compound |
+| Glycerol carbonate | normal boiling point | 72, 4 | 331, 0, 0 | a property table (RSC Adv. 2023, doi:10.1039/d3ra03028h: 354 °C) without the measuring article: not taken |
+| Solketal | vapour pressure | 21, 2 | 119, 1, 1 | **measured, held for the maintainer**: Türck et al., ACS Omega 2026, doi:10.1021/acsomega.5c12056 (CC BY 4.0), Figure 7: the vapour-pressure curve of pure solketal (≥98 %, Merck), 20-100 °C, about 0.2 to 7.1 kPa, Herzog HVP 972 fuel vapour-pressure tester, n = 3, error bar about ±0.5 kPa at 80 °C. In a figure only (the supporting information has no table of it) |
+| Solketal | heat of vaporization | 2, 0 | 21, 2, 1 | a fuel-property table (Int. J. Automot. Eng. Technol. 2018, doi:10.18245/ijaet.486410, Table 1: 374 kJ/kg at 20 °C) citing three references for all its fuels, none named as the measurement for solketal: not taken |
+| Solketal | melting point and enthalpy of fusion | 41, 1 | 187, 0, 0 | none of the pure compound |
+| Solketal | critical constants (Tc, Pc, ω) | 4, 0 | 32, 3, 1 | none of the pure compound |
+| Solketal | normal boiling point | 39, 3 | 198, 1, 1 | the same article (Türck et al. 2026) gives no boiling point |
+| alpha-Angelica lactone | melting point and enthalpy of fusion | 37, 0 | 87, 1, 1 | none of the pure compound |
+| Lactide | vapour pressure | 217, 2 | 1331, 1, 0 | the same review (Cunha et al. 2022): no vapour pressure |
+| Lactide | liquid density | 11089, 1 | 35759, 0, 0 | none of the pure compound |
+| Lactide | heat of vaporization | 11, 1 | 94, 1, 0 | Cunha et al., Bioengineering 2022, doi:10.3390/bioengineering9040164, Table 2: 63 kJ/mol, with liquid viscosities at 110-130 °C, 'found in the literature' without the article for each value: not taken (DATA_RULES section 1, modelling papers) |
+| Lactide | liquid heat capacity | 211, 2 | 1233, 2, 1 | none of the pure compound |
+| Lactide | critical constants (Tc, Pc, ω) | 531, 1 | 1954, 2, 0 | none of the pure compound |
+| Lactide | normal boiling point | 385, 3 | 1679, 1, 1 | the same review (Cunha et al. 2022), Table 2: 255 °C without its source: not taken |
+| Isosorbide | vapour pressure | 63, 3 | 245, 0, 0 | no vapour pressure of isosorbide itself (the hits are isosorbide diesters and dimethyl isosorbide) |
+| Isosorbide | liquid density | 1548, 3 | 5069, 1, 1 | none of the pure compound |
+| Isosorbide | liquid heat capacity | 24, 1 | 119, 1, 0 | none of the pure compound |
+| Isosorbide | melting point and enthalpy of fusion | 257, 6 | 1042, 0, 0 | Hammami et al., Molecules 2025, doi:10.3390/molecules30224364: DSC melting onset 45 °C (endotherm 45-62 °C, sample about 70 % crystalline), no enthalpy of fusion: no melting record (it needs both) |
+| Isosorbide | normal boiling point | 93, 6 | 380, 0, 0 | property tables without the measuring article (a ChemSusChem review, doi:10.1002/cssc.202102525: 433 K, unstated pressure): not taken |
+| Levoglucosan | vapour pressure | 66, 3 | 917, 7, 6 | Zhang et al., Environ. Sci. Technol. Lett. 2024, doi:10.1021/acs.estlett.4c00608, cites four measurements: May et al. 2012 (doi:10.1021/es302276t, no free copy), Kabo et al. 2015 and Rocha et al. 2013 (sublimation pressures of the crystal in the ThermoML Archive), Oja and Suuberg 1999 (doi:10.1021/je980119b, no free copy). No liquid vapour pressure; OpenAlex: field studies of gas-particle partitioning (ACP 2021, 2023, and the discussion of egusphere-2023-1419) that use predicted vapour pressures (SIMPOL): no measurement; OpenAlex: Suuberg and Oja, DOE report DOE/PC92544-18 (1997), doi:10.2172/774960 (OSTI, a US government report): Table D.1, the sublimation pressures of the crystal (71-112 °C); section D.2.1 names the only liquid measurement, Enstein, Duronina and Pashinkin, Zh. Prikl. Khim. 37 (1964) 2543 (static method, three temperatures, 195-255 °C), shown in Figure D.5 as a line only, not as points; the original has no known free copy. No liquid vapour pressure that can be taken |
+| Levoglucosan | liquid density | 583, 1 | 3740, 2, 1 | none of the pure compound |
+| Levoglucosan | heat of vaporization | 7, 0 | 186, 4, 1 | the same DOE report (doi:10.2172/774960): 92.3 kJ/mol from Enstein et al. (1964) and 97 kJ/mol from the report's own extrapolation of sublimation data, neither a calorimetric value nor a value with an open measurement: not taken |
+| Levoglucosan | liquid heat capacity | 19, 2 | 274, 1, 0 | Madejczyk et al., Sci. Rep. 2017, doi:10.1038/srep42103: only the heat-capacity step at the glass transition (0.696 J/(g K)), not a heat capacity of the liquid |
+| Dimethyl 2,5-furandicarboxylate | liquid density | 54, 1 | 35, 1, 1 | none of the pure compound |
+| Dimethyl 2,5-furandicarboxylate | melting point and enthalpy of fusion | 59, 2 | 43, 0, 0 | none of the pure compound |
+| 2,5-Bis(hydroxymethyl)furan | vapour pressure | 11, 1 | 0, 0, 0 | a review's property table (doi:10.1186/s40643-023-00676-x, Table 1: 0.00248 mmHg at 25 °C) without the measuring article: not taken |
+| 2,5-Bis(hydroxymethyl)furan | liquid density | 140, 1 | 3, 0, 0 | none of the pure compound |
+| 2,5-Bis(hydroxymethyl)furan | melting point and enthalpy of fusion | 35, 2 | 0, 0, 0 | the same review table (melting point 74-77 °C, no enthalpy, no source): not taken |
+| 2,5-Bis(hydroxymethyl)furan | normal boiling point | 25, 1 | 0, 0, 0 | the same review table (275 °C, no source): not taken |
+| Levoglucosenone | liquid heat capacity | 4, 1 | 41, 2, 0 | none of the pure compound |
+| Levoglucosenone | melting point and enthalpy of fusion | 34, 1 | 113, 3, 0 | none of the pure compound |
+| 5-(Ethoxymethyl)furfural | liquid density | 52, 4 | 275, 1, 1 | none of the pure compound |
+| 5-(Ethoxymethyl)furfural | melting point and enthalpy of fusion | 13, 1 | 43, 0, 0 | none of the pure compound |
+| 5-(Ethoxymethyl)furfural | enthalpy of formation | 2, 0 | 21, 1, 1 | none of the pure compound |
+| 5-(Ethoxymethyl)furfural | normal boiling point | 16, 3 | 98, 1, 0 | none of the pure compound |
 
-No passage with a name and the property together, in the open full texts searched (98): 2-Methoxyethanol (Gibbs energy of formation); Triolein (heat of vaporization); Tripalmitin (heat of vaporization); 2-Methylfuran (Gibbs energy of formation); 2-Methyltetrahydrofuran (enthalpy of formation); 2-Methyltetrahydrofuran (Gibbs energy of formation); 1,3-Propanediol (Gibbs energy of formation); Methyl levulinate (melting point and enthalpy of fusion); Methyl levulinate (Gibbs energy of formation); Ethyl levulinate (melting point and enthalpy of fusion); Ethyl levulinate (Gibbs energy of formation); Butyl levulinate (melting point and enthalpy of fusion); Butyl levulinate (Gibbs energy of formation); Levulinic acid (Gibbs energy of formation); gamma-Valerolactone (Gibbs energy of formation); gamma-Valerolactone (critical constants (Tc, Pc, ω)); Tetrahydrofurfuryl alcohol (melting point and enthalpy of fusion); Tetrahydrofurfuryl alcohol (critical constants (Tc, Pc, ω)); Cyclopentyl methyl ether (melting point and enthalpy of fusion); Cyclopentyl methyl ether (enthalpy of formation); Cyclopentyl methyl ether (Gibbs energy of formation); Cyclopentyl methyl ether (critical constants (Tc, Pc, ω)); 2,3-Butanediol (Gibbs energy of formation); Methyl lactate (enthalpy of formation); Methyl lactate (Gibbs energy of formation); Ethyl lactate (Gibbs energy of formation); Limonene (Gibbs energy of formation); Isoamyl alcohol (melting point and enthalpy of fusion); Isoamyl alcohol (Gibbs energy of formation); Lactic acid (Gibbs energy of formation); 5-Hydroxymethylfurfural (enthalpy of formation); 5-Hydroxymethylfurfural (Gibbs energy of formation); Xylitol (Gibbs energy of formation); Itaconic acid (Gibbs energy of formation); Malic acid (enthalpy of formation); Glycolic acid (enthalpy of formation); Glycolic acid (Gibbs energy of formation); D-Glucaric acid (enthalpy of formation); D-Glucaric acid (Gibbs energy of formation); 3-Hydroxypropionic acid (melting point and enthalpy of fusion); 3-Hydroxypropionic acid (enthalpy of formation); 3-Hydroxypropionic acid (Gibbs energy of formation); 2,5-Furandicarboxylic acid (enthalpy of formation); 2,5-Furandicarboxylic acid (Gibbs energy of formation); Bis(2-hydroxyethyl) terephthalate (liquid density); Bis(2-hydroxyethyl) terephthalate (enthalpy of formation); Bis(2-hydroxyethyl) terephthalate (Gibbs energy of formation); Diphenolic acid (melting point and enthalpy of fusion); Diphenolic acid (enthalpy of formation); Diphenolic acid (Gibbs energy of formation); cis,cis-Muconic acid (melting point and enthalpy of fusion); cis,cis-Muconic acid (enthalpy of formation); cis,cis-Muconic acid (Gibbs energy of formation); Glycerol carbonate (enthalpy of formation); Glycerol carbonate (Gibbs energy of formation); Solketal (heat of vaporization); Solketal (liquid heat capacity); Solketal (enthalpy of formation); Solketal (Gibbs energy of formation); Solketal (critical constants (Tc, Pc, ω)); alpha-Angelica lactone (vapour pressure); alpha-Angelica lactone (heat of vaporization); alpha-Angelica lactone (liquid heat capacity); alpha-Angelica lactone (melting point and enthalpy of fusion); alpha-Angelica lactone (enthalpy of formation); alpha-Angelica lactone (Gibbs energy of formation); alpha-Angelica lactone (critical constants (Tc, Pc, ω)); alpha-Angelica lactone (normal boiling point); Lactide (Gibbs energy of formation); Isosorbide (heat of vaporization); Isosorbide (enthalpy of formation); Isosorbide (Gibbs energy of formation); Isosorbide (critical constants (Tc, Pc, ω)); Levoglucosan (heat of vaporization); Levoglucosan (critical constants (Tc, Pc, ω)); Levoglucosan (normal boiling point); Dimethyl 2,5-furandicarboxylate (vapour pressure); Dimethyl 2,5-furandicarboxylate (heat of vaporization); Dimethyl 2,5-furandicarboxylate (liquid heat capacity); Dimethyl 2,5-furandicarboxylate (enthalpy of formation); Dimethyl 2,5-furandicarboxylate (Gibbs energy of formation); Dimethyl 2,5-furandicarboxylate (critical constants (Tc, Pc, ω)); Dimethyl 2,5-furandicarboxylate (normal boiling point); 2,5-Bis(hydroxymethyl)furan (heat of vaporization); 2,5-Bis(hydroxymethyl)furan (liquid heat capacity); 2,5-Bis(hydroxymethyl)furan (enthalpy of formation); 2,5-Bis(hydroxymethyl)furan (Gibbs energy of formation); 2,5-Bis(hydroxymethyl)furan (critical constants (Tc, Pc, ω)); Levoglucosenone (enthalpy of formation); Levoglucosenone (Gibbs energy of formation); Levoglucosenone (critical constants (Tc, Pc, ω)); Levoglucosenone (normal boiling point); 5-(Ethoxymethyl)furfural (vapour pressure); 5-(Ethoxymethyl)furfural (heat of vaporization); 5-(Ethoxymethyl)furfural (liquid heat capacity); 5-(Ethoxymethyl)furfural (enthalpy of formation); 5-(Ethoxymethyl)furfural (Gibbs energy of formation); 5-(Ethoxymethyl)furfural (critical constants (Tc, Pc, ω)).
+No passage with a name and the property together, in the open full texts searched (85): 2-Methoxyethanol (Gibbs energy of formation); Tripalmitin (heat of vaporization); 2-Methylfuran (Gibbs energy of formation); 2-Methyltetrahydrofuran (enthalpy of formation); 2-Methyltetrahydrofuran (Gibbs energy of formation); 1,3-Propanediol (Gibbs energy of formation); Methyl levulinate (melting point and enthalpy of fusion); Methyl levulinate (Gibbs energy of formation); Ethyl levulinate (Gibbs energy of formation); Butyl levulinate (Gibbs energy of formation); Levulinic acid (Gibbs energy of formation); gamma-Valerolactone (Gibbs energy of formation); Tetrahydrofurfuryl alcohol (melting point and enthalpy of fusion); Cyclopentyl methyl ether (melting point and enthalpy of fusion); Cyclopentyl methyl ether (enthalpy of formation); Cyclopentyl methyl ether (Gibbs energy of formation); Cyclopentyl methyl ether (critical constants (Tc, Pc, ω)); 2,3-Butanediol (Gibbs energy of formation); Methyl lactate (enthalpy of formation); Methyl lactate (Gibbs energy of formation); Ethyl lactate (Gibbs energy of formation); Limonene (Gibbs energy of formation); Isoamyl alcohol (melting point and enthalpy of fusion); Isoamyl alcohol (Gibbs energy of formation); Lactic acid (Gibbs energy of formation); 5-Hydroxymethylfurfural (enthalpy of formation); 5-Hydroxymethylfurfural (Gibbs energy of formation); Xylitol (Gibbs energy of formation); Itaconic acid (Gibbs energy of formation); Malic acid (enthalpy of formation); Glycolic acid (Gibbs energy of formation); D-Glucaric acid (enthalpy of formation); D-Glucaric acid (Gibbs energy of formation); 3-Hydroxypropionic acid (enthalpy of formation); 3-Hydroxypropionic acid (Gibbs energy of formation); 2,5-Furandicarboxylic acid (enthalpy of formation); 2,5-Furandicarboxylic acid (Gibbs energy of formation); Bis(2-hydroxyethyl) terephthalate (liquid density); Bis(2-hydroxyethyl) terephthalate (enthalpy of formation); Bis(2-hydroxyethyl) terephthalate (Gibbs energy of formation); Diphenolic acid (melting point and enthalpy of fusion); Diphenolic acid (enthalpy of formation); Diphenolic acid (Gibbs energy of formation); cis,cis-Muconic acid (enthalpy of formation); cis,cis-Muconic acid (Gibbs energy of formation); Glycerol carbonate (enthalpy of formation); Glycerol carbonate (Gibbs energy of formation); Solketal (liquid heat capacity); Solketal (enthalpy of formation); Solketal (Gibbs energy of formation); alpha-Angelica lactone (vapour pressure); alpha-Angelica lactone (heat of vaporization); alpha-Angelica lactone (liquid heat capacity); alpha-Angelica lactone (enthalpy of formation); alpha-Angelica lactone (Gibbs energy of formation); alpha-Angelica lactone (critical constants (Tc, Pc, ω)); alpha-Angelica lactone (normal boiling point); Lactide (Gibbs energy of formation); Isosorbide (heat of vaporization); Isosorbide (enthalpy of formation); Isosorbide (Gibbs energy of formation); Isosorbide (critical constants (Tc, Pc, ω)); Levoglucosan (critical constants (Tc, Pc, ω)); Levoglucosan (normal boiling point); Dimethyl 2,5-furandicarboxylate (vapour pressure); Dimethyl 2,5-furandicarboxylate (heat of vaporization); Dimethyl 2,5-furandicarboxylate (liquid heat capacity); Dimethyl 2,5-furandicarboxylate (enthalpy of formation); Dimethyl 2,5-furandicarboxylate (Gibbs energy of formation); Dimethyl 2,5-furandicarboxylate (critical constants (Tc, Pc, ω)); Dimethyl 2,5-furandicarboxylate (normal boiling point); 2,5-Bis(hydroxymethyl)furan (heat of vaporization); 2,5-Bis(hydroxymethyl)furan (liquid heat capacity); 2,5-Bis(hydroxymethyl)furan (enthalpy of formation); 2,5-Bis(hydroxymethyl)furan (Gibbs energy of formation); 2,5-Bis(hydroxymethyl)furan (critical constants (Tc, Pc, ω)); Levoglucosenone (enthalpy of formation); Levoglucosenone (Gibbs energy of formation); Levoglucosenone (critical constants (Tc, Pc, ω)); Levoglucosenone (normal boiling point); 5-(Ethoxymethyl)furfural (vapour pressure); 5-(Ethoxymethyl)furfural (heat of vaporization); 5-(Ethoxymethyl)furfural (liquid heat capacity); 5-(Ethoxymethyl)furfural (Gibbs energy of formation); 5-(Ethoxymethyl)furfural (critical constants (Tc, Pc, ω)).
 
 ## Today's second search (docs/decisions/2026-10-22-09-search-tools.md)
 
@@ -154,9 +167,24 @@ check them; the numbers are not used, AGENTS.md rule 1):
 The 15 other articles that the markers call paywalled were looked up again with `open_copy.py --all`: no new free
 copy.
 
-**Not asked yet:** OpenAlex and CORE, which index the journals where most measurements are (J. Chem. Eng. Data, J.
-Chem. Thermodyn., Fluid Phase Equilib.). Each needs a free key (`OPENALEX_API_KEY`, `CORE_API_KEY`), which the
-maintainer adds in the environment's settings. The next search starts there.
+**OpenAlex** (asked later the same day, with the maintainer's key as a network secret): it indexes the chemistry
+journals too, and its full-text search found Baird et al. 2019 first for levoglucosenone, which Europe PMC could not.
+It found 1185 articles for the 176 gaps; 271 could be downloaded as a PDF and read, the others' publishers refuse
+scripts. Nothing new usable under the rules:
+- DL-malic acid's melting point, 129.71 °C (Marques et al., Arab. J. Chem. 2020, CC BY-NC-ND), and cis,cis-muconic
+  acid's, 197 °C (ACS Sustain. Chem. Eng. 2016), both without an enthalpy of fusion, which a melting record needs;
+- levoglucosan: Suuberg and Oja's DOE report of 1997 (OSTI, doi:10.2172/774960) has the sublimation pressures of the
+  crystal and names the only measurement of the liquid, Enstein, Duronina and Pashinkin, Zh. Prikl. Khim. 37 (1964)
+  2543 (static method, 195-255 °C), shown only as a line in its Figure D.5. The original has no known free copy;
+- the other passages are solutions, mixtures, or property tables without the measuring article.
+
+**To download, if you can** (servers that refuse scripts): the 2022 correction to Baird et al., "Correction: Vapor
+Pressures, Densities, and PC-SAFT Parameters for 11 Bio-compounds", Int. J. Thermophys. 43 (2022),
+doi:10.1007/s10765-022-03105-x (https://link.springer.com/content/pdf/10.1007/s10765-022-03105-x.pdf). Levoglucosenone's
+new records come from that article, so the correction has to be checked against them.
+
+**Not asked: CORE.** The maintainer has written to CORE (2026-10-22) to ask which of its licences fits an
+MIT-licensed simulator; until it answers, the search runs without it.
 
 **Where to start, by what it unlocks** (carried over, updated):
 1. Vapour pressures of the eight liquids in table A (levoglucosenone was added today; solketal is held above).

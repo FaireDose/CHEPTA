@@ -27,20 +27,13 @@
   cross-check only).
 - **Free copies:** `open_copy.py --all` asks Unpaywall, OpenAlex and CORE; `--fetch` keeps only a real PDF.
 
-### The tools (validation/python)
+### The tools (validation/python; described in docs/DATA_RULES.md section 13)
 
-- `open_copy.py` (step 1):
-  - `copies()` gathers every copy that Unpaywall (all its locations, not only the best), OpenAlex and CORE know.
-  - `fetch_pdf()` keeps a download only when it starts with "%PDF". A repository landing page is followed to the
-    PDF its `citation_pdf_url` tag names.
-  - The old `open_copy()` and `describe()` are unchanged, so `gap_report.py --open-copies` works as before.
-- `fulltext_search.py` (step 2), new:
-  - for each "no open data" marker (by default the properties a calculation needs: vapour pressure, liquid density,
-    heat of vaporization, liquid heat capacity, melting data, formation data, critical constants, normal boiling
-    point), it searches Europe PMC's open full texts for the component's names together with the property;
-  - it reads each hit's full text and lists the tables and paragraphs where a name (as a whole word: levoglucosenone
-    is not found in dihydrolevoglucosenone) and the property appear together;
-  - OpenAlex and CORE are asked when their free keys are set (`OPENALEX_API_KEY`, `CORE_API_KEY`).
+- `open_copy.py` (step 1): `--all` and `--fetch`; the old `open_copy()` and `describe()` are unchanged, so
+  `gap_report.py --open-copies` works as before.
+- `fulltext_search.py` (step 2), new: Europe PMC, OpenAlex and CORE (`--indexes`).
+- The maintainer asked (2026-10-22) that the description of the tools be in the data rules, not only here: it is
+  section 13 of docs/DATA_RULES.md.
 
 ### Tested
 
@@ -52,11 +45,10 @@
     link, for a person to download. Four "200 OK" answers that were HTML pages were rejected, as they should be.
   - Chao and Zwolinski 1978 (J. Phys. Chem. Ref. Data): no copy in any index, as expected (the NIST reprints are in
     none of them).
-- `fulltext_search.py`: levoglucosenone's vapour pressure (Baird et al. 2019) is **not** found through Europe PMC,
-  which indexes the biomedical literature and the journals deposited in PubMed Central (MDPI, ACS Omega, Scientific
-  Reports), not Int. J. Thermophys. The validation the proposal named (finding Baird again) needs OpenAlex or CORE,
-  which were not asked: OpenAlex's shared daily budget for keyless requests was used up on this network, and CORE
-  needs a key. Those two branches of the script are written but have not run yet.
+- `fulltext_search.py`: levoglucosenone's vapour pressure (Baird et al. 2019) is not found through Europe PMC, which
+  does not index Int. J. Thermophys. With the maintainer's OpenAlex key (a network secret, added the same day),
+  OpenAlex's full-text search lists Baird et al. 2019 first for levoglucosenone and vapour pressure: the validation
+  the proposal named passes. CORE has not run (below).
 
 ## The new search (docs/MISSING_PROPERTIES_2026-10-22-2.md)
 
@@ -77,8 +69,17 @@
   Chao, Hall, Marsh and Wilhoit (1986, free NIST reprint) treats methanoic and ethanoic acid only.
 - **Data added:** none in this pull request; levoglucosenone's records came with the previous one ([#161](https://github.com/FaireDose/Fugacity/pull/161)).
 
+- **Full-text search, OpenAlex** (later the same day, with the key): 1185 articles found, 271 downloaded and read
+  (the others' publishers refuse scripts). Nothing new usable: DL-malic acid's melting point (129.71 °C; Marques et
+  al., Arab. J. Chem. 2020) and cis,cis-muconic acid's (197 °C) without an enthalpy of fusion; levoglucosan's only
+  liquid measurement (Enstein et al., Zh. Prikl. Khim. 1964) named in Suuberg and Oja's open DOE report of 1997, but
+  shown there as a line only, and the original has no known free copy.
+- **To download:** the 2022 correction to Baird et al. (doi:10.1007/s10765-022-03105-x), found by OpenAlex. The
+  levoglucosenone records of [#161](https://github.com/FaireDose/Fugacity/pull/161) come from that article, so the
+  correction must be checked against them.
+
 ## Not done, and why
 
-- **OpenAlex and CORE keys.** Both are free. The maintainer adds them in the environment's settings
-  (`OPENALEX_API_KEY`, `CORE_API_KEY`); a new session reads them. Until then the full-text search covers Europe PMC
-  only, and the search record says which indexes were not asked.
+- **CORE.** Its terms ask software that "might be monetised now or in the future" to contact it; CHEPTA's MIT licence
+  allows anyone to do that. The maintainer wrote to CORE on 2026-10-22 (the personal licence, and an AI assistant
+  reading the passages, a person checking each value). Until CORE answers, the search runs without it.

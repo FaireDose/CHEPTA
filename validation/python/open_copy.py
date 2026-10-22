@@ -175,9 +175,9 @@ def is_pdf(data):
     return b"%PDF" in data[:1024]
 
 
-def _get(url):
+def _get(url, timeout=90):
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/pdf,text/html;q=0.5"})
-    with urllib.request.urlopen(req, timeout=90) as r:
+    with urllib.request.urlopen(req, timeout=timeout) as r:
         return r.read()
 
 

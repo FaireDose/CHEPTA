@@ -59,7 +59,7 @@ one stopped: in the marker's `searched`, and for the full-text search in `valida
    candidates with the paragraph or table where the name and the property appear together; it never takes a number.
    Each candidate is opened and read (below, "Measured values in modelling and simulation papers"). OpenAlex and CORE
    need a free key each (a network secret of the environment for `api.openalex.org` and `api.core.ac.uk`, or the
-   variables `OPENALEX_API_KEY`, `CORE_API_KEY`); an index that was not asked is named in the search record.
+   variables `OPENALEX_API_KEY`, `CORE_API_KEY`; section 13); an index that was not asked is named in the search record.
 4. **Every article that has the number, or that an open article names as the measurement, is looked up for a legal
    free copy** before it is set aside as paywalled (below, "Free copies").
 5. **The open literature beyond the indexes**: a web search, the free NIST reprints of J. Phys. Chem. Ref. Data,
@@ -397,3 +397,55 @@ The maintainer, 2026-10-22: "make a new file with the day of today so we keep tr
   link the latest one.
 - Prose the script does not write (what a search found, the recommendation still to decide) is added below its
   tables, and carried over from the previous file while it is open.
+
+## 13. The search tools (proposal 0014, steps 1 and 2)
+
+Two scripts in `validation/python/` do steps 3 and 4 of "How to search for a missing number" (section 1). They find
+articles; they never take a number. Each value is read in the article by a person or an assistant, and a person checks
+it against the article before it is added (AGENTS.md rule 4).
+
+**`open_copy.py`: the legal free copies of an article.**
+
+- `python validation/python/open_copy.py DOI ... --cache DIR` prints Unpaywall's best free copy (as before;
+  `gap_report.py --open-copies` uses it).
+- `--all` lists every copy that three indexes know: Unpaywall (all its locations), OpenAlex and CORE. A repository
+  copy is often missing from Unpaywall (Baird et al. 2019: Unpaywall gave only the publisher's copy, OpenAlex also the
+  Aalto and OSF copies).
+- `--fetch DIR` downloads the first copy that really is a PDF (it starts with "%PDF"). A server may answer "200 OK"
+  with an HTML page (a login, a robot check, a landing page): such an answer is never kept. A repository landing page
+  is followed to the PDF named in its `citation_pdf_url` tag. Where a server serves PDFs to browsers only (403 to
+  scripts: Springer, ScienceDirect, the Aalto and DTU repositories on 2026-10-22), the script prints the link and the
+  person downloads it.
+- The answers are cached per DOI in the cache directory.
+
+**`fulltext_search.py`: open articles whose full text names a missing property.**
+
+- `python validation/python/fulltext_search.py --cache DIR --out FILE [--only ID ...] [--props KEY ...]
+  [--indexes europepmc openalex core]`.
+- For each "no open data" marker it asks for articles where one of the component's names (the name, the aliases
+  without acronyms, the CAS number) appears together with a word for the property ("vapor pressure", "vapour
+  pressure", "saturation pressure", ...). By default it searches the properties a calculation needs (vapour pressure,
+  liquid density, heat of vaporization, liquid heat capacity, melting data, formation data, critical constants,
+  normal boiling point); the transport properties and the ideal-gas heat capacity only with `--props`.
+- It reads each article it can get and lists the passages (a table or a paragraph, or twelve lines of a PDF) where a
+  name, as a whole word, and the property word appear together; a passage with numbers ranks first. Each listed
+  passage is then read, and the article where it points to a value.
+- The three indexes:
+
+  | Index | What it covers | Key | How the text is read |
+  |---|---|---|---|
+  | Europe PMC | the biomedical literature and the journals deposited in PubMed Central (MDPI, ACS Omega, RSC Advances, Scientific Reports); not J. Chem. Eng. Data, J. Chem. Thermodyn., Fluid Phase Equilib. or Int. J. Thermophys. | none | its open full text (XML) |
+  | OpenAlex | open-access works of all fields, the chemistry journals included; its data are CC0 | free, a daily budget of US$1 (about 1000 queries); without a key a small budget shared by everyone on the same network address | one query per gap, (names) AND (property words), open-access works only; each hit's open copy fetched as a PDF |
+  | CORE | the full texts of open repositories | free for some uses only: its terms ask software that "might be monetised now or in the future" to contact it, so it is not used until CORE answers the maintainer (asked 2026-10-22) | not yet run |
+
+- **The keys** are network secrets of the cloud environment (the environment's settings, Network secrets): secret
+  type Bearer, allowed website `api.openalex.org` (and `api.core.ac.uk` once CORE allows it), header `Authorization`
+  with the prefix `Bearer` and the key as its value. The secret adds the header to every request to that website; the
+  script never sees the key. On a computer of one's own, the variables `OPENALEX_API_KEY` and `CORE_API_KEY` do the
+  same.
+- Many publishers refuse scripts: on 2026-10-22, 271 of the 1185 articles OpenAlex found could be downloaded and read.
+  An article the script could not read is not "searched": it is listed in the record, for a person to open.
+- **The record of a search** is written to `validation/data/searches/<date>-fulltext.json`: for each gap, the
+  articles found and read per index, the passages, and what they held, in one line ("none of the pure compound" when
+  the passages name the component as a reactant, product, solvent or ligand, or give a value of a mixture). It also
+  says which indexes were asked and which were not, and why. `missing_properties.py` shows it next to the gaps.

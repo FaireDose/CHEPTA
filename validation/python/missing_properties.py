@@ -92,16 +92,18 @@ def search_section(rec, path, comps, label):
          "\"How to search for a missing number\", step 3). " + rec.get("summary", ""), ""]
     for idx, state in rec.get("indexes", {}).items():
         L.append(f"- {idx}: {state}")
-    L += ["", "| Component | Property | Articles found | Passages with the name and the property | What they held |",
+    L += ["", "| Component | Property | Europe PMC: found, with a passage | OpenAlex: found, read, with a passage | What they held |",
           "|---|---|---|---|---|"]
     empty = []
     for cid, props in rec.get("gaps", {}).items():
         name = comps[cid]["name"] if cid in comps else cid
         for key, g in props.items():
-            if not g.get("screened"):
+            oa = g.get("openalex") or {}
+            if not g.get("screened") and not oa.get("screened") and g.get("held", "-") == "-":
                 empty.append(f"{name} ({label.get(key, key)})")
                 continue
-            L.append(f"| {name} | {label.get(key, key)} | {g.get('hits', 0)} | {g['screened']} | "
+            oa_cell = f"{oa.get('hits') or 0}, {oa.get('fetched', 0)}, {oa.get('screened', 0)}" if oa else "not asked"
+            L.append(f"| {name} | {label.get(key, key)} | {g.get('hits', 0)}, {g.get('screened', 0)} | {oa_cell} | "
                      f"{g.get('held', '-')} |")
     if empty:
         L += ["", f"No passage with a name and the property together, in the open full texts searched ({len(empty)}): "
