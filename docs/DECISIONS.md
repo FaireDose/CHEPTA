@@ -40,6 +40,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **Proposal 0011:** merged in [#83](https://github.com/FaireDose/Fugacity/pull/83) with status **Draft**. Accept
   or decline it, then set its status in the file and in `proposals/README.md`. Proposal 0010 was accepted on
   2026-10-22 (docs/decisions/2026-10-22-02-reactions-proposal.md), proposal 0009 on 2026-10-11.
+- **Proposal 0014** (Draft; docs/decisions/2026-10-22-08-skills-review.md): what CHEPTA could take from the K-Dense
+  scientific agent skills, five steps; accept or decline, or single steps. Nothing was added.
 - **Make the new name official** (decided 2026-10-09: **CHEPTA**, *Chemical Engineering Process Tools
   for Agents*). In this order:
   1. GitHub: Settings → General → Repository name: `CHEPTA`. GitHub redirects the old links,
