@@ -27,6 +27,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (flowsheets included), and so do those of acids that are solid at 25 °C. Formic acid has its dimer constants (Chao and
   Zwolinski 1978) and the WebBook gas ΔfH°; propionic and acrylic acid have none open yet (their liquid values are
   12-26 kJ/mol off). No open source with the Eley–Rideal and Mars–van Krevelen forms was found.
+- **Reactors, step 3** (proposal 0010; docs/decisions/2026-10-22-10-reactors.md): confirm the energy basis (the
+  stream enthalpies against each ideal gas at 298.15 K, the heat of reaction on the same basis), parallel conversions
+  as the default, and the yield reactor's element balance reported, not enforced. HMF rehydration (step 8) waits for an
+  open ideal-gas heat capacity of levulinic acid. A flash of a system with hydrogen and the "ideal" model at 550 K does
+  not finish (on main too); to look into.
 - **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-22.md](MISSING_PROPERTIES_2026-10-22.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
@@ -193,7 +198,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   user's own kinetics in a text box later, step 9):
   1. formation data (ΔfH°, ΔfG°);
   2. the reaction description and its checks;
-  3. conversion and yield reactors;
+  3. conversion and yield reactors (pull request of docs/decisions/2026-10-22-10-reactors.md);
   4. equilibrium reactor;
   5. CSTR and plug flow;
   6. Gibbs reactor;

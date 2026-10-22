@@ -43,6 +43,11 @@
  *     = duty of the block it goes into, so the flowsheet's energy balance is unchanged. A block has at most one energy
  *     stream. Energy streams are edges of the graph like material streams: they set the calculation order, and a
  *     loop closed by an energy stream is torn on its duty (one number), as a recycle is torn on its flows.
+ *  6. Reactors (proposal 0010, step 3; src/units/reactors.js): the flowsheet's `reactions` (checked by
+ *     src/reactions/reaction.js) reach every block. The whole flowsheet's balance per component is then
+ *     feeds + what the reactors generate = products, and its energy balance counts the heats of the reactions
+ *     (H_feeds + duties = H_products + Σ heat_kW): the streams' enthalpies keep their reference states, and the
+ *     reactions' heats carry the enthalpies of formation.
  * References: https://pyomo.readthedocs.io/en/6.9.3/_modules/pyomo/network/foqus_graph.html and
  * https://pyomo.readthedocs.io/en/6.4.0/_modules/pyomo/network/decomposition.html (open source,
  * 3-clause BSD); Tarjan, SIAM Journal on Computing 1(2), 1972 (as cited there).
@@ -51,6 +56,8 @@
 import { fail } from "../util/errors.js";
 import { stream } from "../stream/stream.js";
 import { runUnit, unitType, specStatus } from "../units/units.js";
+import "../units/reactors.js";   // registers the conversion and yield reactors
+import { checkReactions } from "../reactions/reaction.js";
 
 /** Solver settings: `method` "broyden" (quasi-Newton on all tear flows together; the default since the
  *  flowsheet suite: it converged every case, mostly fastest), "wegstein" (direct substitution for two
@@ -158,6 +165,18 @@ export function inspectFlowsheet(fs) {
  *  "W-") and the block id. */
 const energyName = b => (b.qin ?? b.qout)?.id || b.energy || `${b.unit.energy === "work" ? "W" : "Q"}-${b.id}`;
 
+/** The flowsheet's reactions, checked (src/reactions/reaction.js) and with every component among the system's. */
+function reactionsOf(sys, fs) {
+  const list = fs?.reactions ?? [];
+  if (!list.length) return [];
+  const checked = list.every(r => r && r.balance) ? list : checkReactions(list, { userData: sys.userData });
+  for (const r of checked) {
+    const out = Object.keys(r.stoichiometry).filter(id => !sys.ids.includes(id));
+    if (out.length) throw fail("BAD_INPUT", `Reaction ${r.name}: ${out.join(", ")} ${out.length > 1 ? "are" : "is"} not among the components of the flowsheet (${sys.names.join(", ")}).`);
+  }
+  return checked;
+}
+
 /** A block's specification with the duty an energy stream brings in (a placeholder for the count; the value at solve). */
 const withEnergy = (b, duty = 0) => (b.qin ? { ...(b.spec ?? {}), duty_kW: duty } : b.spec);
 
@@ -180,12 +199,13 @@ export function checkFlowsheet(fs) {
  */
 export function flowsheetStatus(sys, fs) {
   const { blocks, problems } = inspectFlowsheet(fs);
+  const reactions = reactionsOf(sys, fs);
   const out = {};
   let needed = 0, given = 0;
   for (const b of blocks.values()) {
     const multi = b.unit.outlets.find(p => p.max > 1);
     const outletCount = multi ? Math.max((b.outs[multi.port] ?? []).length, multi.min) : undefined;
-    let st = specStatus(b.type, withEnergy(b), { sys, outletCount });
+    let st = specStatus(b.type, withEnergy(b), { sys, outletCount, reactions });
     // an energy stream in counts as the block's duty: say so in its own words
     if (b.qin && b.spec && b.spec.duty_kW != null && b.spec.duty_kW !== "") {
       st = { ...st, ok: false, status: "extra", message: `${b.unit.label}: its duty comes from the energy stream ${b.qin.id}; leave out duty_kW.` };
@@ -296,6 +316,7 @@ export function solveFlowsheet(sys, fs) {
     throw fail("BAD_INPUT", `The flowsheet is not ready to solve: ${status.message} ${lines.join(" ")}`, { status });
   }
   const { blocks, edges, energyEdges } = checkFlowsheet(fs);
+  const reactions = reactionsOf(sys, fs);
   const nodes = [...blocks.keys()];
   const values = new Map();   // stream id → stream
   const qvals = new Map();    // energy stream id → duty, kW
@@ -314,7 +335,7 @@ export function solveFlowsheet(sys, fs) {
     const multi = b.unit.outlets.find(p => p.max > 1);
     const outletCount = multi ? (b.outs[multi.port] ?? []).length : b.unit.outlets.filter(p => !p.optional || (b.outs[p.port] ?? []).length).length;
     let r;
-    try { r = runUnit(b.type, { sys, inlets, spec: b.qin ? withEnergy(b, qvals.get(b.qin.id)) : b.spec, outletCount }); } catch (e) {
+    try { r = runUnit(b.type, { sys, inlets, spec: b.qin ? withEnergy(b, qvals.get(b.qin.id)) : b.spec, outletCount, reactions }); } catch (e) {
       e.message = `${b.unit.label} ${b.id}: ${e.message.replace(new RegExp(`^${b.unit.label}: `), "")}`;
       throw e;
     }
@@ -324,7 +345,8 @@ export function solveFlowsheet(sys, fs) {
       sids.forEach((sid, k) => values.set(sid, Object.freeze({ ...list[k], id: sid })));
     }
     if (b.qout) qvals.set(b.qout.id, -r.duty_kW);   // the heat this block gives up
-    results[id] = { type: b.type, duty_kW: r.duty_kW, balance: r.balance, notes: r.notes, ...(r.state ? { state: r.state } : {}), ...(r.sizing ? { sizing: r.sizing } : {}) };
+    results[id] = { type: b.type, duty_kW: r.duty_kW, balance: r.balance, notes: r.notes, ...(r.state ? { state: r.state } : {}), ...(r.sizing ? { sizing: r.sizing } : {}),
+      ...(r.reaction ? { reaction: r.reaction } : {}) };
   };
 
   /** Total flow of the feed streams calculated so far (kmol/h). */
@@ -461,9 +483,12 @@ export function solveFlowsheet(sys, fs) {
   const feeds = nodes.filter(id => blocks.get(id).type === "feed").flatMap(id => outEdges(id).map(e => values.get(e.id)));
   const products = nodes.filter(id => blocks.get(id).type === "product").flatMap(id => (blocks.get(id).ins.in ?? []).map(s => values.get(s)));
   const sum = list => list.reduce((acc, s) => acc.map((v, i) => v + s.flows[i]), new Array(sys.n).fill(0));
-  const fin = sum(feeds), fout = sum(products);
+  // what the reactors generate (kmol/h per component) and the heat of their reactions (kW)
+  const reactive = Object.values(results).filter(r => r.reaction);
+  const gen = reactive.reduce((acc, r) => acc.map((v, i) => v + r.reaction.generation[i]), new Array(sys.n).fill(0));
+  const fin = sum(feeds).map((v, i) => v + gen[i]), fout = sum(products);
   // the whole flowsheet must balance: a converged loop that does not is not converged (fail loudly)
-  const Fin = fin.reduce((a, v) => a + v, 0);
+  const Fin = sum(feeds).reduce((a, v) => a + v, 0);
   const off = sys.ids.map((id, i) => [id, fin[i] - fout[i]]).filter(([, d]) => !(Math.abs(d) <= balanceTol(opt.tolerance) * Math.max(Fin, 1e-12)));
   if (off.length && products.length) {
     throw fail("NO_CONVERGENCE", `The flowsheet does not balance: ${off.map(([id, d]) => `${sys.names[sys.ids.indexOf(id)]} ${d > 0 ? "in" : "out"} exceeds ${d > 0 ? "out" : "in"} by ${Math.abs(d).toPrecision(3)} kmol/h`).join(", ")}. A recycle without a way out for a component, or a loop that has not really converged; a purge or another convergence method usually helps.`, { balance: Object.fromEntries(off) });
@@ -487,7 +512,9 @@ export function solveFlowsheet(sys, fs) {
     loops,
     balance: {
       material_kmol_h: Object.fromEntries(sys.ids.map((id, i) => [id, fin[i] - fout[i]])),
-      energy_kW: H(feeds) + duties - H(products),
+      energy_kW: H(feeds) + duties - H(products) - reactive.reduce((a, r) => a + r.reaction.heat_kW, 0),
+      ...(reactive.length ? { generation_kmol_h: Object.fromEntries(sys.ids.map((id, i) => [id, gen[i]])),
+        reaction_kW: reactive.reduce((a, r) => a + r.reaction.heat_kW, 0) } : {}),
     },
   };
 }

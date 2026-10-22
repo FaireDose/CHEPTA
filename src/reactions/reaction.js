@@ -36,6 +36,15 @@
  *   pure liquid -> ideal gas:  the same equation the other way;
  *   crystal -> pure liquid:  H_L(T0) = H_S(T0) + ΔHfus, G_L(T0) = G_S(T0) + ΔHfus (1 - T0/Tm), with the melting data
  *       of the component; the difference of the heat capacities of liquid and crystal is neglected.
+ *
+ * Reactors (proposal 0010, step 3) need the heat of reaction on the basis of the stream enthalpies
+ * (src/thermo/enthalpy.js: h = 0 for the ideal gas at 298.15 K, or for the liquid at 298.15 K of a nonvolatile
+ * component). formationReference() gives each component's enthalpy of formation in that reference state, by the
+ * paths above; reactionHeat() the reaction's ΔrH on that basis, Σ ν Hf_ref, or, where a species has no open enthalpy of
+ * formation, from the heat of reaction the user gives with its source (`heatOfReaction`: ΔrH at 298.15 K in the
+ * reaction's standard state), taken to the reference states with the same pure-liquid enthalpies. With
+ * H_total = H_stream + Σ F_i Hf_ref,i (the enthalpy on the elements' basis), a reactor's energy balance is
+ *   duty = H_out - H_in + Σ_r ξ_r ΔrH_ref,r.
  */
 import { pure } from "../thermo/pure.js";
 import { componentRecord, findComponent } from "../thermo/components.js";
@@ -138,9 +147,17 @@ export function checkReaction(r, opts = {}) {
       throw fail("BAD_INPUT", `${label}: "equilibrium" must be { "from": "formation" } or a correlation { "lnK": { "A": ..., "B": ..., "C": ... }, "T_K": [lo, hi], "source": "..." } (ln K = A + B/T + C ln T).`);
     }
   }
+  let heatOfReaction = null;
+  if (r.heatOfReaction != null) {
+    const h = r.heatOfReaction;
+    if (!h || typeof h !== "object" || Array.isArray(h)) throw fail("BAD_INPUT", `${label}: "heatOfReaction" must be { "dH_J_mol": ..., "source": "..." }: the heat of reaction at 298.15 K in the reaction's standard state (${STANDARD_STATE[phase]}).`);
+    num(h.dH_J_mol, `${label}: heatOfReaction.dH_J_mol`);
+    if (typeof h.source !== "string" || !h.source.trim()) throw fail("BAD_INPUT", `${label}: heatOfReaction needs its "source" (where the value comes from).`);
+    heatOfReaction = { dH_J_mol: h.dH_J_mol, T_K: T0, source: h.source };
+  }
   const out = {
     id: r.id, name: r.name ?? r.id, stoichiometry, phase, standardState: STANDARD_STATE[phase],
-    reversible, equilibrium, rate: null, source: r.source ?? null, balance,
+    reversible, equilibrium, rate: null, source: r.source ?? null, balance, heatOfReaction,
   };
   if (r.rate != null) out.rate = checkRate(r.rate, out, { userData: ud });
   return out;
@@ -342,3 +359,67 @@ export function equilibriumConstant(reaction, T_K, opts = {}) {
   return p;
 }
 
+// ---------------------------------------------------------------------------------------------------------------
+// The basis of the stream enthalpies (reactors)
+// ---------------------------------------------------------------------------------------------------------------
+
+/** Is the component nonvolatile (its enthalpy reference is its liquid at 298.15 K)? */
+const nonvolatile = (id, ud) => componentRecord(id, ud).class === "nonvolatile";
+
+/**
+ * A component's enthalpy of formation in the reference state of the stream enthalpies (J/mol): the ideal gas at
+ * 298.15 K, or the liquid at 298.15 K for a nonvolatile component. Throws MISSING_DATA where there is no open enthalpy
+ * of formation, or no path from its record's state.
+ * @returns {{id, Hf_J_mol, state, record, notes}}
+ */
+export function formationReference(key, opts = {}) {
+  const ud = checkUserData(opts.userData);
+  const id = findComponent(key, ud);
+  const state = nonvolatile(id, ud) ? "liquid" : "vapour";
+  const s = withContext(speciesState(id, state, ud), componentRecord(id, ud).name, state);
+  return { id, Hf_J_mol: s.H(T0), state: state === "liquid" ? "liquid at 298.15 K" : "ideal gas at 298.15 K", record: s.record, notes: s.notes };
+}
+
+/** The enthalpy of a species in a reaction's standard state at 298.15 K minus its enthalpy in the reference state of
+ *  the stream enthalpies (J/mol): 0 for the ideal gas of a volatile component and the liquid of a nonvolatile one, the
+ *  pure liquid's enthalpy at 298.15 K (h_L, negative: about -ΔHvap) for the liquid of a volatile component. */
+export function standardStateShift(id, state, ud) {
+  const c = componentRecord(id, ud);
+  if (state === "vapour") {
+    if (c.class === "nonvolatile") throw fail("MISSING_DATA", `${c.name} is nonvolatile in CHEPTA, so it cannot be in a vapour reaction.`);
+    return 0;
+  }
+  if (c.class === "nonvolatile") return 0;
+  return createSystem({ components: [id], model: "ideal", userData: ud }).phase("liquid", T0, P_STANDARD_KPA, [1]).h_J_mol;
+}
+
+/**
+ * The heat of a reaction on the basis of the stream enthalpies (J/mol of extent): Σ ν Hf_ref from the formation data,
+ * or the user's heatOfReaction (ΔrH at 298.15 K in the reaction's standard state) taken to that basis,
+ * ΔrH_ref = ΔrH° - Σ ν (H_std,i - H_ref,i). Formation data come first; the user's value is used only where a species
+ * has none. Throws MISSING_DATA naming the component, and what to do, when neither is there.
+ * @returns {{dH_J_mol, from, notes}}
+ */
+export function reactionHeat(reaction, opts = {}) {
+  const ud = checkUserData(opts.userData);
+  const r = reaction?.balance ? reaction : checkReaction(reaction, { userData: ud });
+  const notes = [];
+  try {
+    let dH = 0;
+    for (const [id, nu] of Object.entries(r.stoichiometry)) {
+      const f = formationReference(id, { userData: ud });
+      dH += nu * f.Hf_J_mol;
+      notes.push(...f.notes);
+    }
+    return { dH_J_mol: dH, from: "formation data", notes };
+  } catch (e) {
+    if (!r.heatOfReaction) {
+      e.message = `${r.name}: ${e.message} Or give the reaction's heat with its source: "heatOfReaction": { "dH_J_mol": ..., "source": "..." } (at 298.15 K, ${r.standardState}).`;
+      throw e;
+    }
+    let shift = 0;
+    for (const [id, nu] of Object.entries(r.stoichiometry)) shift += nu * standardStateShift(id, r.phase, ud);
+    return { dH_J_mol: r.heatOfReaction.dH_J_mol - shift, from: `the heat of reaction given (${r.heatOfReaction.dH_J_mol} J/mol at 298.15 K, ${r.standardState}; ${r.heatOfReaction.source})`,
+      notes: [`${r.name}: no heat of reaction from formation data (${e.message}); the given heat of reaction is used`] };
+  }
+}
