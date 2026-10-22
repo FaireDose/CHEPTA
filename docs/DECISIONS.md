@@ -14,6 +14,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
+- **Formation data** (proposal 0010, step 1; docs/decisions/2026-10-22-03-formation-data.md): xylitol is held (two
+  crystal energies of combustion disagree by about 100 kJ/mol); five records are uncertain (the values disagree by more
+  than 10 kJ/mol: 2-methoxyethanol, 1,3-propanediol, limonene, gamma-butyrolactone, levoglucosan); 22 components have no
+  open data. Compare the transcribed values with their sources.
 - **Values the maintainer adds** (2026-10-21; [MISSING_PROPERTIES_2026-10-21.md](MISSING_PROPERTIES_2026-10-21.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.

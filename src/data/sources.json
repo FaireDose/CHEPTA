@@ -616,6 +616,15 @@
         "validation/data/vle/chloroform_mtbe_10-1021-je100821g_303.15K.json"
       ]
     },
+    "codata-key-values": {
+      "title": "CODATA Key Values for Thermodynamics",
+      "authors": "J. D. Cox, D. D. Wagman, V. A. Medvedev",
+      "year": 1989,
+      "kind": "standard",
+      "url": "https://www.codata.info/resources/databases/key1.html",
+      "access": "Free to read online (CODATA); the table states: use of these recommended, internally consistent values is encouraged",
+      "note": "Hemisphere Publishing Corp., New York, 1989; standard pressure 1 bar."
+    },
     "coolprop": {
       "title": "CoolProp 8.0.0",
       "authors": "Bell, Wronski, Quoilin, Lemort",
