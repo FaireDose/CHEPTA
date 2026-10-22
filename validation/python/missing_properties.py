@@ -16,6 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 COMP_FILE = ROOT / "src" / "data" / "components.json"
+SEARCHES = ROOT / "validation" / "data" / "searches"
 
 PROPS = [("vapourPressure", "vapour pressure"), ("critical", "critical constants (Tc, Pc, ω)"), ("Tb", "normal boiling point"),
          ("liquidDensity", "liquid density"), ("liquidHeatCapacity", "liquid heat capacity"),
@@ -83,6 +84,31 @@ def load(rev=None):
     return json.loads(text)["components"]
 
 
+def search_section(rec, path, comps, label):
+    """The record of a full-text search (validation/data/searches/<date>-fulltext.json, written after a person or an
+    assistant has read the candidates of fulltext_search.py): what was screened and what the passages held."""
+    L = ["", f"## The full-text search of {rec['date']}", "",
+         f"`{path.relative_to(ROOT)}`, made with `validation/python/fulltext_search.py` (docs/DATA_RULES.md section 1, "
+         "\"How to search for a missing number\", step 3). " + rec.get("summary", ""), ""]
+    for idx, state in rec.get("indexes", {}).items():
+        L.append(f"- {idx}: {state}")
+    L += ["", "| Component | Property | Articles found | Passages with the name and the property | What they held |",
+          "|---|---|---|---|---|"]
+    empty = []
+    for cid, props in rec.get("gaps", {}).items():
+        name = comps[cid]["name"] if cid in comps else cid
+        for key, g in props.items():
+            if not g.get("screened"):
+                empty.append(f"{name} ({label.get(key, key)})")
+                continue
+            L.append(f"| {name} | {label.get(key, key)} | {g.get('hits', 0)} | {g['screened']} | "
+                     f"{g.get('held', '-')} |")
+    if empty:
+        L += ["", f"No passage with a name and the property together, in the open full texts searched ({len(empty)}): "
+              + "; ".join(empty) + "."]
+    return L
+
+
 def report(comps, date, since=None):
     label = dict(PROPS)
     G = {cid: gaps(c) for cid, c in comps.items()}
@@ -128,6 +154,8 @@ def report(comps, date, since=None):
                      and key in ("formation", "formationG")]
             if newly:
                 L.append(f"- {name[:1].upper() + name[1:]}: new property, no open data for {len(newly)} (listed below).")
+    for f in sorted(SEARCHES.glob("*-fulltext.json")):
+        L.extend(search_section(json.loads(f.read_text()), f, comps, label))
     sections = [("A. No vapour pressure", lambda c, g: "vapourPressure" in g),
                 ("B. No critical constants (with a vapour pressure)", lambda c, g: "critical" in g and "vapourPressure" not in g),
                 ("C. Nonvolatile components", lambda c, g: c.get("class") == "nonvolatile"),

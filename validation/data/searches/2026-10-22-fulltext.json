@@ -1,0 +1,1436 @@
+{
+ "date": "2026-10-22",
+ "tool": "validation/python/fulltext_search.py",
+ "summary": "\"None of the pure compound\": the passages name the component as a reactant, product, solvent or ligand, or give a value of a mixture or a solution. 176 gaps searched (the properties a calculation needs); 78 had at least one open article where a name of the component and the property appear in the same paragraph or table. Each such passage (the passage the script shows, and the article where it pointed to a value) was read on 2026-10-22. One measured value was found: solketal's vapour pressure (Türck et al. 2026), held for the maintainer because it is in a figure only and was measured with a fuel tester. Europe PMC indexes the biomedical literature and the journals deposited in PubMed Central (MDPI, ACS Omega, RSC Advances, Scientific Reports); it does not have J. Chem. Eng. Data, J. Chem. Thermodyn., Fluid Phase Equilib. or Int. J. Thermophys., where most measurements are, so this search does not replace OpenAlex and CORE.",
+ "indexes": {
+  "Europe PMC": "asked (full texts of open-access articles; 8 articles read per search)",
+  "OpenAlex": "not asked: no OPENALEX_API_KEY (the shared keyless budget of this network was used up)",
+  "CORE": "not asked: no CORE_API_KEY"
+ },
+ "gaps": {
+  "2-methoxyethanol": {
+   "fusion": {
+    "hits": 171,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.5620/eaht.2022031"
+    ]
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "mdea": {
+   "fusion": {
+    "hits": 59,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.34865/mb10559kske11_1ad",
+     "10.3390/polym17233188",
+     "10.1016/j.crmeth.2026.101375"
+    ]
+   }
+  },
+  "terephthalic-acid": {
+   "liquidDensity": {
+    "hits": 3691,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsaom.6c00229",
+     "10.1039/d5ra09485b",
+     "10.1021/acs.inorgchem.5c06095"
+    ]
+   },
+   "fusion": {
+    "hits": 844,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym18182286",
+     "10.1002/marc.202500776",
+     "10.1021/acs.est.6c01921"
+    ]
+   }
+  },
+  "methyl-oleate": {
+   "fusion": {
+    "hits": 845,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym17192599",
+     "10.1039/d6ra05806j"
+    ]
+   }
+  },
+  "methyl-linoleate": {
+   "fusion": {
+    "hits": 57,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/molecules30061217"
+    ]
+   }
+  },
+  "triolein": {
+   "heatOfVaporization": {
+    "hits": 65,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "tripalmitin": {
+   "heatOfVaporization": {
+    "hits": 63,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "2-methylfuran": {
+   "formation": {
+    "hits": 6,
+    "screened": 2,
+    "held": "Amaral et al., Molecules 2024, doi:10.3390/molecules29122729: theoretical increments only, no measured enthalpy of 2-methylfuran",
+    "articles": [
+     "10.3390/molecules29132976",
+     "10.3390/molecules29122729"
+    ]
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "2-methyltetrahydrofuran": {
+   "fusion": {
+    "hits": 225,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d6sc03749f"
+    ]
+   },
+   "formation": {
+    "hits": 9,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "1-3-propanediol": {
+   "formationG": {
+    "hits": 5,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "methyl-levulinate": {
+   "fusion": {
+    "hits": 17,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "ethyl-levulinate": {
+   "fusion": {
+    "hits": 26,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "butyl-levulinate": {
+   "fusion": {
+    "hits": 6,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "levulinic-acid": {
+   "formationG": {
+    "hits": 9,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "gvl": {
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 63,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "thfa": {
+   "fusion": {
+    "hits": 63,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 20,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "Tb": {
+    "hits": 59,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/nano13020285"
+    ]
+   }
+  },
+  "cpme": {
+   "fusion": {
+    "hits": 73,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formation": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 22,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "2-3-butanediol": {
+   "fusion": {
+    "hits": 130,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym17182467"
+    ]
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 62,
+    "screened": 2,
+    "held": "critical temperatures used as inputs of a machine-learning model (Sci. Rep. 2022, doi:10.1038/s41598-022-08842-5), not measured",
+    "articles": [
+     "10.5851/kosfa.2024.e115",
+     "10.1038/s41598-022-08842-5"
+    ]
+   },
+   "Tb": {
+    "hits": 176,
+    "screened": 5,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d6sc06370e",
+     "10.1021/acsomega.5c10210",
+     "10.1021/acssuschemeng.4c04121",
+     "10.3390/polym16152177",
+     "10.1021/acs.jpcc.6c01905"
+    ]
+   }
+  },
+  "methyl-lactate": {
+   "fusion": {
+    "hits": 40,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "PMC13682532",
+     "10.3390/membranes15070210"
+    ]
+   },
+   "formation": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 16,
+    "screened": 1,
+    "held": "the critical point of a mixture with CO2, not of methyl lactate",
+    "articles": [
+     "10.1021/acsomega.5c05424"
+    ]
+   },
+   "Tb": {
+    "hits": 33,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.5c09431",
+     "10.3390/membranes16060206"
+    ]
+   }
+  },
+  "ethyl-lactate": {
+   "fusion": {
+    "hits": 144,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/antiox13020239"
+    ]
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 78,
+    "screened": 2,
+    "held": "the critical point of a mixture with CO2, not of ethyl lactate",
+    "articles": [
+     "10.1021/acsomega.5c05424",
+     "10.3390/molecules31152589"
+    ]
+   }
+  },
+  "limonene": {
+   "fusion": {
+    "hits": 1088,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.macromol.6c00489",
+     "10.1016/j.fochx.2026.104155",
+     "10.3390/polym18080985",
+     "10.1021/acspolymersau.5c00192"
+    ]
+   },
+   "formationG": {
+    "hits": 6,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 493,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/nu18071126"
+    ]
+   },
+   "Tb": {
+    "hits": 916,
+    "screened": 5,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/molecules31081358",
+     "10.3390/gels12050386",
+     "10.1016/j.fochx.2026.104155",
+     "10.3390/polym18080985",
+     "10.1021/acs.macromol.6c00489"
+    ]
+   }
+  },
+  "furfuryl-alcohol": {
+   "critical": {
+    "hits": 77,
+    "screened": 1,
+    "held": "the same machine-learning article (doi:10.1038/s41598-022-08842-5): not measured",
+    "articles": [
+     "10.1038/s41598-022-08842-5"
+    ]
+   },
+   "Tb": {
+    "hits": 241,
+    "screened": 2,
+    "held": "a QSPR article's input table: not measured",
+    "articles": [
+     "10.1007/s10822-026-00899-y",
+     "10.3390/ma19020334"
+    ]
+   }
+  },
+  "isoamyl-alcohol": {
+   "fusion": {
+    "hits": 547,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "lactic-acid": {
+   "formationG": {
+    "hits": 20,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "hmf": {
+   "liquidDensity": {
+    "hits": 2874,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/foods15183176",
+     "10.3390/molecules31071087",
+     "10.1039/d6ra01120a",
+     "10.1038/s41598-026-44463-y"
+    ]
+   },
+   "formation": {
+    "hits": 32,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "glucose": {
+   "liquidDensity": {
+    "hits": 524878,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/bios16080441",
+     "10.3390/ijms27167176",
+     "10.1021/acsomega.6c08058",
+     "10.1093/plphys/kiag428"
+    ]
+   }
+  },
+  "fructose": {
+   "liquidDensity": {
+    "hits": 46038,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "PMC13637019",
+     "10.1021/acsphyschemau.6c00122",
+     "10.1021/acs.energyfuels.6c02836",
+     "10.3390/foods15142573"
+    ]
+   }
+  },
+  "sorbitol": {
+   "liquidDensity": {
+    "hits": 17457,
+    "screened": 5,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3347/phd.25096",
+     "10.3390/microorganisms14050947",
+     "10.1038/s42003-026-09835-0",
+     "10.1155/bca/5217456",
+     "10.1507/endocrj.ej25-0549"
+    ]
+   },
+   "formationG": {
+    "hits": 2,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1186/1475-2859-12-33"
+    ]
+   }
+  },
+  "xylitol": {
+   "formation": {
+    "hits": 25,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.iecr.1c00397"
+    ]
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "succinic-acid": {
+   "liquidDensity": {
+    "hits": 8787,
+    "screened": 7,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1038/s41467-026-76635-9",
+     "10.1038/s41467-026-69962-4",
+     "10.3390/ani16182965",
+     "10.1021/cbe.6c00021",
+     "10.1128/aem.01155-26",
+     "PMC13643848",
+     "10.3390/ph19091331"
+    ]
+   }
+  },
+  "itaconic-acid": {
+   "liquidDensity": {
+    "hits": 1640,
+    "screened": 6,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.6c04582",
+     "PMC13602338",
+     "10.1021/acssuschemeng.5c13563",
+     "PMC13659735",
+     "10.1021/acsapm.6c01440",
+     "10.1039/d5gc06888f"
+    ]
+   },
+   "fusion": {
+    "hits": 218,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.6c04582",
+     "10.3390/polym18151826",
+     "10.3390/polym17162220",
+     "10.3390/polym16192780"
+    ]
+   },
+   "formationG": {
+    "hits": 5,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "fumaric-acid": {
+   "liquidDensity": {
+    "hits": 3269,
+    "screened": 5,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1371/journal.pone.0355936",
+     "10.3389/fvets.2026.1930766",
+     "10.1177/00368504261477972",
+     "10.1021/acs.jafc.6c02932",
+     "10.1039/d5sc06271c"
+    ]
+   },
+   "fusion": {
+    "hits": 316,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1177/00368504261477972",
+     "10.3390/foods13193195"
+    ]
+   }
+  },
+  "malic-acid": {
+   "liquidDensity": {
+    "hits": 7405,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1177/00368504261477972"
+    ]
+   },
+   "fusion": {
+    "hits": 643,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1177/00368504261477972",
+     "10.1021/acsomega.5c03345"
+    ]
+   },
+   "formation": {
+    "hits": 23,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 5,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acssusresmgt.4c00041"
+    ]
+   }
+  },
+  "citric-acid": {
+   "liquidDensity": {
+    "hits": 42540,
+    "screened": 6,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.6c08058",
+     "10.3390/membranes16090284",
+     "PMC13667178",
+     "PMC13665833",
+     "10.1021/acsomega.6c07665",
+     "10.1021/acsomega.6c03826"
+    ]
+   }
+  },
+  "glycolic-acid": {
+   "liquidDensity": {
+    "hits": 18993,
+    "screened": 5,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1038/s41467-026-75866-0",
+     "10.1002/fsn3.71531",
+     "10.1021/acsomega.6c00721",
+     "10.1002/adma.73384",
+     "10.1002/adma.202515355"
+    ]
+   },
+   "formation": {
+    "hits": 21,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "glucaric-acid": {
+   "liquidDensity": {
+    "hits": 659,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/ijms262010209",
+     "10.3390/molecules30143012",
+     "10.1021/jacs.5c22029",
+     "10.1002/advs.202510649"
+    ]
+   },
+   "fusion": {
+    "hits": 49,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1002/ejoc.201701343"
+    ]
+   },
+   "formation": {
+    "hits": 5,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "3-hydroxypropionic-acid": {
+   "liquidDensity": {
+    "hits": 534,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d6sc03316d"
+    ]
+   },
+   "fusion": {
+    "hits": 44,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formation": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "fdca": {
+   "liquidDensity": {
+    "hits": 627,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.6c05696"
+    ]
+   },
+   "formation": {
+    "hits": 6,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "bhet": {
+   "liquidDensity": {
+    "hits": 266,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "fusion": {
+    "hits": 146,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym17121687",
+     "10.3390/biology15070540"
+    ]
+   },
+   "formation": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "diphenolic-acid": {
+   "liquidDensity": {
+    "hits": 68,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.1c05812"
+    ]
+   },
+   "fusion": {
+    "hits": 10,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formation": {
+    "hits": 4,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "xylose": {
+   "liquidDensity": {
+    "hits": 15458,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1002/cssc.202501562",
+     "10.1038/s41594-026-01784-w",
+     "10.1021/acsomega.6c05861"
+    ]
+   }
+  },
+  "muconic-acid": {
+   "liquidDensity": {
+    "hits": 560,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d4ra05226a"
+    ]
+   },
+   "fusion": {
+    "hits": 62,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formation": {
+    "hits": 5,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "glycerol-carbonate": {
+   "liquidDensity": {
+    "hits": 160,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acspolymersau.6c00002",
+     "10.3390/molecules31152623",
+     "10.3390/molecules31111841"
+    ]
+   },
+   "fusion": {
+    "hits": 37,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acspolymersau.6c00002"
+    ]
+   },
+   "formation": {
+    "hits": 4,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 10,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1186/s40064-016-2643-1"
+    ]
+   },
+   "Tb": {
+    "hits": 72,
+    "screened": 4,
+    "held": "a property table (RSC Adv. 2023, doi:10.1039/d3ra03028h: 354 °C) without the measuring article: not taken",
+    "articles": [
+     "10.3390/molecules31152623",
+     "10.1039/d3ra03028h",
+     "10.1021/acsomega.3c06287",
+     "10.1021/acs.energyfuels.5c01580"
+    ]
+   }
+  },
+  "solketal": {
+   "vapourPressure": {
+    "hits": 21,
+    "screened": 2,
+    "held": "**measured, held for the maintainer**: Türck et al., ACS Omega 2026, doi:10.1021/acsomega.5c12056 (CC BY 4.0), Figure 7: the vapour-pressure curve of pure solketal (≥98 %, Merck), 20-100 °C, about 0.2 to 7.1 kPa, Herzog HVP 972 fuel vapour-pressure tester, n = 3, error bar about ±0.5 kPa at 80 °C. In a figure only (the supporting information has no table of it)",
+    "articles": [
+     "10.1021/acsomega.5c12056",
+     "10.1021/acssuschemeng.5c00258"
+    ]
+   },
+   "heatOfVaporization": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "liquidHeatCapacity": {
+    "hits": 4,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "fusion": {
+    "hits": 41,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acssuschemeng.5c00258"
+    ]
+   },
+   "formation": {
+    "hits": 4,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 4,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "Tb": {
+    "hits": 39,
+    "screened": 3,
+    "held": "the same article (Türck et al. 2026) gives no boiling point",
+    "articles": [
+     "10.1021/acsomega.5c12056",
+     "10.1002/cssc.202401636",
+     "10.1021/acssuschemeng.5c00258"
+    ]
+   }
+  },
+  "angelica-lactone": {
+   "vapourPressure": {
+    "hits": 20,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "heatOfVaporization": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "liquidHeatCapacity": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "fusion": {
+    "hits": 37,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formation": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "Tb": {
+    "hits": 33,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "lactide": {
+   "vapourPressure": {
+    "hits": 217,
+    "screened": 2,
+    "held": "the same review (Cunha et al. 2022): no vapour pressure",
+    "articles": [
+     "10.3390/bioengineering9040164",
+     "10.1021/acs.jpcc.4c04986"
+    ]
+   },
+   "liquidDensity": {
+    "hits": 11089,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym18121484"
+    ]
+   },
+   "heatOfVaporization": {
+    "hits": 11,
+    "screened": 1,
+    "held": "Cunha et al., Bioengineering 2022, doi:10.3390/bioengineering9040164, Table 2: 63 kJ/mol, with liquid viscosities at 110-130 °C, 'found in the literature' without the article for each value: not taken (DATA_RULES section 1, modelling papers)",
+    "articles": [
+     "10.3390/bioengineering9040164"
+    ]
+   },
+   "liquidHeatCapacity": {
+    "hits": 211,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.macromol.5c02464",
+     "10.3390/polym18070817"
+    ]
+   },
+   "formationG": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 531,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.analchem.4c00336"
+    ]
+   },
+   "Tb": {
+    "hits": 385,
+    "screened": 3,
+    "held": "the same review (Cunha et al. 2022), Table 2: 255 °C without its source: not taken",
+    "articles": [
+     "10.3390/bioengineering9040164",
+     "10.3390/polym18050655",
+     "10.1039/d4sc05891g"
+    ]
+   }
+  },
+  "isosorbide": {
+   "vapourPressure": {
+    "hits": 63,
+    "screened": 3,
+    "held": "no vapour pressure of isosorbide itself (the hits are isosorbide diesters and dimethyl isosorbide)",
+    "articles": [
+     "10.3390/membranes16060206",
+     "10.1021/acssuschemeng.4c02266",
+     "10.1155/2021/9970896"
+    ]
+   },
+   "liquidDensity": {
+    "hits": 1548,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/ma18091927",
+     "10.1021/acs.chemrestox.2c00347",
+     "10.3390/polym15173640"
+    ]
+   },
+   "heatOfVaporization": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "liquidHeatCapacity": {
+    "hits": 24,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym14152970"
+    ]
+   },
+   "fusion": {
+    "hits": 257,
+    "screened": 6,
+    "held": "Hammami et al., Molecules 2025, doi:10.3390/molecules30224364: DSC melting onset 45 °C (endotherm 45-62 °C, sample about 70 % crystalline), no enthalpy of fusion: no melting record (it needs both)",
+    "articles": [
+     "10.3390/molecules30224364",
+     "10.1021/acs.biomac.5c01043",
+     "10.1021/acssuschemeng.5c01601",
+     "10.1002/cssc.70675",
+     "10.1021/acspolymersau.6c00068",
+     "10.1002/cssc.202102525"
+    ]
+   },
+   "formation": {
+    "hits": 9,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 40,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "Tb": {
+    "hits": 93,
+    "screened": 6,
+    "held": "property tables without the measuring article (a ChemSusChem review, doi:10.1002/cssc.202102525: 433 K, unstated pressure): not taken",
+    "articles": [
+     "10.3390/molecules30244717",
+     "10.3390/polym15020418",
+     "10.1002/cssc.202501117",
+     "10.3390/membranes16060206",
+     "10.1002/cssc.202102525",
+     "10.3390/polym18182222"
+    ]
+   }
+  },
+  "levoglucosan": {
+   "vapourPressure": {
+    "hits": 66,
+    "screened": 3,
+    "held": "Zhang et al., Environ. Sci. Technol. Lett. 2024, doi:10.1021/acs.estlett.4c00608, cites four measurements: May et al. 2012 (doi:10.1021/es302276t, no free copy), Kabo et al. 2015 and Rocha et al. 2013 (sublimation pressures of the crystal in the ThermoML Archive), Oja and Suuberg 1999 (doi:10.1021/je980119b, no free copy). No liquid vapour pressure",
+    "articles": [
+     "10.1021/acs.est.5c04050",
+     "10.1021/acs.estlett.4c00608",
+     "10.1021/acsestair.4c00294"
+    ]
+   },
+   "liquidDensity": {
+    "hits": 583,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.jpca.6c03212"
+    ]
+   },
+   "heatOfVaporization": {
+    "hits": 7,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "liquidHeatCapacity": {
+    "hits": 19,
+    "screened": 2,
+    "held": "Madejczyk et al., Sci. Rep. 2017, doi:10.1038/srep42103: only the heat-capacity step at the glass transition (0.696 J/(g K)), not a heat capacity of the liquid",
+    "articles": [
+     "10.3390/polym18070819",
+     "10.1038/srep42103"
+    ]
+   },
+   "critical": {
+    "hits": 22,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "Tb": {
+    "hits": 66,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "dimethyl-fdca": {
+   "vapourPressure": {
+    "hits": 5,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "liquidDensity": {
+    "hits": 54,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/ma18174040"
+    ]
+   },
+   "heatOfVaporization": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "liquidHeatCapacity": {
+    "hits": 12,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "fusion": {
+    "hits": 59,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.biomac.3c01433",
+     "10.3390/polym17192599"
+    ]
+   },
+   "formation": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "Tb": {
+    "hits": 12,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "bhmf": {
+   "vapourPressure": {
+    "hits": 11,
+    "screened": 1,
+    "held": "a review's property table (doi:10.1186/s40643-023-00676-x, Table 1: 0.00248 mmHg at 25 °C) without the measuring article: not taken",
+    "articles": [
+     "10.1186/s40643-023-00676-x"
+    ]
+   },
+   "liquidDensity": {
+    "hits": 140,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d5sc06257h"
+    ]
+   },
+   "heatOfVaporization": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "liquidHeatCapacity": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "fusion": {
+    "hits": 35,
+    "screened": 2,
+    "held": "the same review table (melting point 74-77 °C, no enthalpy, no source): not taken",
+    "articles": [
+     "10.1021/acssuschemeng.4c03498",
+     "10.1186/s40643-023-00676-x"
+    ]
+   },
+   "formation": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 6,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "Tb": {
+    "hits": 25,
+    "screened": 1,
+    "held": "the same review table (275 °C, no source): not taken",
+    "articles": [
+     "10.1186/s40643-023-00676-x"
+    ]
+   }
+  },
+  "levoglucosenone": {
+   "liquidHeatCapacity": {
+    "hits": 4,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym18070819"
+    ]
+   },
+   "fusion": {
+    "hits": 34,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1002/cplu.70162"
+    ]
+   },
+   "formation": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 7,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "Tb": {
+    "hits": 47,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   }
+  },
+  "emf": {
+   "vapourPressure": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "liquidDensity": {
+    "hits": 52,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3389/fchem.2026.1905987",
+     "10.3390/ijms27177836",
+     "10.1021/acsomega.6c03202",
+     "10.3389/fchem.2022.900482"
+    ]
+   },
+   "heatOfVaporization": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "liquidHeatCapacity": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "fusion": {
+    "hits": 13,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d4ra03302g"
+    ]
+   },
+   "formation": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "critical": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": []
+   },
+   "Tb": {
+    "hits": 16,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/molecules31040729",
+     "10.3390/ijms27177836",
+     "10.1039/d2ra01866g"
+    ]
+   }
+  }
+ }
+}

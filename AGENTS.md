@@ -188,7 +188,8 @@ npm run check-package -- file.json              # check a contribution package
 python validation/python/fit_parameters.py      # fit parameters
 python validation/python/make_fixtures.py       # after changing parameters
 python validation/python/gap_report.py --batch N --chemsep ... --cache DIR   # before a component batch: sources per property
-python validation/python/open_copy.py DOI ... --cache DIR                     # a legal free copy of a paywalled article (Unpaywall)
+python validation/python/open_copy.py DOI ... --cache DIR --all               # every legal free copy (Unpaywall, OpenAlex, CORE); --fetch DIR checks it is a PDF
+python validation/python/fulltext_search.py --cache DIR --out FILE          # open articles that name a missing property in their full text
 python validation/python/fit_properties.py --chemsep ... --only ID ...       # fit only a batch while building it
 ```
 
