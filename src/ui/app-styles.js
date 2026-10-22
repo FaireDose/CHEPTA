@@ -440,6 +440,17 @@ a.fa-mini{text-decoration:none}
 .fa-store-list li{display:flex; align-items:center; gap:8px; font-size:12.5px}
 .fa-store-list .fa-store-name{font-weight:600}
 .fa-store-list small{color:var(--fug-muted); margin-right:auto}
+.fa-rx-eq{display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin:6px 0}
+.fa-rx-chip{display:inline-block; padding:2px 8px; border-radius:999px; background:var(--fug-bg); border:1px solid var(--fug-rule); font-size:12px}
+.fa-rx-arrow{font-weight:600; padding:0 2px}
+.fa-rx-coefs{display:grid; gap:2px; margin:6px 0}
+.fa-rx-given{margin:6px 0}
+.fa-rx-given summary{cursor:pointer; font-size:12px; color:var(--fug-muted)}
+.fa-rx-use{border-top:1px solid var(--fug-rule); padding:6px 0}
+.fa-rx-use-head{display:flex; gap:6px; align-items:flex-start; cursor:pointer}
+.fa-rx-use-row{display:grid; gap:4px; margin:4px 0 0 22px}
+.fa-rx-props{display:grid; gap:2px; margin:6px 0; font-size:12.5px}
+.fa-rx-list{margin:6px 0; padding-left:16px; font-size:12.5px; display:grid; gap:3px}
 .fa-chip-x{background:none; border:0; cursor:pointer; font-size:14px; line-height:1; padding:0 2px; color:inherit}
 .fa-need{max-width:520px; margin:32px auto; border:1px dashed var(--fug-rule); border-radius:10px; padding:18px 20px; background:var(--fa-panel); font-size:13px}
 .fa-need h3{margin:0 0 8px; font-size:14px; font-weight:600}
