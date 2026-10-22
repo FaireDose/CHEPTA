@@ -41,10 +41,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   or decline it, then set its status in the file and in `proposals/README.md`. Proposal 0010 was accepted on
   2026-10-22 (docs/decisions/2026-10-22-02-reactions-proposal.md), proposal 0009 on 2026-10-11.
 - **Search tools and the new search** (proposal 0014, steps 1 and 2 accepted; docs/decisions/2026-10-22-09-search-tools.md):
-  decide whether solketal's vapour-pressure curve of Türck et al. 2026 (a figure, a fuel tester, about ±15 %) may make
-  a record; download the 2022 correction to Baird et al. (doi:10.1007/s10765-022-03105-x) so it can be checked against
-  levoglucosenone's records; CORE's answer on its licence (asked 2026-10-22) before the search uses it; steps 3 to 5
-  of proposal 0014 are not decided.
+  check solketal's seven vapour pressures read off Figure 7 of Türck et al. 2026
+  (validation/data/pure/measured/article_solketal_acsomega2026.json); CORE's answer on its licence (asked 2026-10-22)
+  before the search uses it; steps 3 to 5 of proposal 0014 are not decided.
 - **Make the new name official** (decided 2026-10-09: **CHEPTA**, *Chemical Engineering Process Tools
   for Agents*). In this order:
   1. GitHub: Settings → General → Repository name: `CHEPTA`. GitHub redirects the old links,

@@ -456,8 +456,9 @@ VIA = {"chemsep-ipd": "thermo-library"}
 def ids_in(text, rules):
     """Source ids named in a text, in order of first appearance."""
     hits = []
+    folded = ascii_fold(text)  # the rules fold the authors' names (Türck -> Turck); fold the text the same way
     for pattern, sid in rules:
-        m = re.search(pattern, text)
+        m = re.search(pattern, text) or re.search(pattern, folded)
         if m:
             hits.append((m.start(), sid))
     out = []

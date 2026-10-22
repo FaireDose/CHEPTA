@@ -8,13 +8,13 @@ Each gap is a "no open data" marker in `src/data/components.json` with the sourc
 
 | Property | Missing | Predicted only | What it blocks today |
 |---|---|---|---|
-| Vapour pressure | 8 | - | Everything with a vapour: bubble and dew points, flashes, diagrams, distillation. The worst gap. |
+| Vapour pressure | 7 | - | Everything with a vapour: bubble and dew points, flashes, diagrams, distillation. The worst gap. |
 | Critical constants (Tc, Pc, ω) | 18 | - | Peng–Robinson and SRK, for either phase. Activity models with an ideal-gas vapour still work. |
 | Normal boiling point | 15 | - | Only where it is shown; the vapour-pressure record still works over its measured range. |
 | Liquid density | 25 | - | Volumes, pump work, velocities; mass-to-volume conversions. |
 | Liquid heat capacity | 9 | 30 | Energy balances: heaters, coolers, exchangers. Predicted values are within about 5 % at 300 K, worse for alcohols and polyols at higher temperature. |
 | Ideal-gas heat capacity | 25 | - | Covered for the volatile ones by Kirchhoff's path from the liquid records; missing outright for those without a vapour pressure. |
-| Heat of vaporization | 10 | - | Energy balances with evaporation or condensation. |
+| Heat of vaporization | 9 | - | Energy balances with evaporation or condensation. |
 | Surface tension | 38 | - | Nothing in a calculation yet; column hydraulics later. |
 | Liquid viscosity | 35 | - | Nothing in a calculation yet (shown in Properties); pumps, pipes and film coefficients later. |
 | Liquid thermal conductivity | 54 | - | Nothing in a calculation yet; exchanger film coefficients from fluid properties later. |
@@ -28,13 +28,13 @@ Each gap is a "no open data" marker in `src/data/components.json` with the sourc
 
 ## What changed since the previous file (components.json at `9e1d145`)
 
-- Vapour pressure found for 1: Levoglucosenone.
+- Vapour pressure found for 2: Solketal, Levoglucosenone.
 - Liquid density found for 1: Levoglucosenone.
-- Heat of vaporization found for 1: Levoglucosenone.
+- Heat of vaporization found for 2: Solketal, Levoglucosenone.
 
 ## The full-text search of 2026-10-22
 
-`validation/data/searches/2026-10-22-fulltext.json`, made with `validation/python/fulltext_search.py` (docs/DATA_RULES.md section 1, "How to search for a missing number", step 3). "None of the pure compound": the passages name the component as a reactant, product, solvent or ligand, or give a value of a mixture or a solution. 176 gaps searched (the properties a calculation needs); 78 had at least one open article where a name of the component and the property appear in the same paragraph or table. Each such passage (the passage the script shows, and the article where it pointed to a value) was read on 2026-10-22. One measured value was found: solketal's vapour pressure (Türck et al. 2026), held for the maintainer because it is in a figure only and was measured with a fuel tester. Europe PMC indexes the biomedical literature and the journals deposited in PubMed Central (MDPI, ACS Omega, RSC Advances, Scientific Reports); it does not have J. Chem. Eng. Data, J. Chem. Thermodyn., Fluid Phase Equilib. or Int. J. Thermophys., where most measurements are, so OpenAlex was asked too, later the same day, with a key. Neither index found a further value usable under the rules: the melting points of DL-malic acid and cis,cis-muconic acid came without an enthalpy of fusion.
+`validation/data/searches/2026-10-22-fulltext.json`, made with `validation/python/fulltext_search.py` (docs/DATA_RULES.md section 1, "How to search for a missing number", step 3). "None of the pure compound": the passages name the component as a reactant, product, solvent or ligand, or give a value of a mixture or a solution. 176 gaps searched (the properties a calculation needs); 78 had at least one open article where a name of the component and the property appear in the same paragraph or table. Each such passage (the passage the script shows, and the article where it pointed to a value) was read on 2026-10-22. One measured value was found: solketal's vapour pressure (Türck et al. 2026), added with the maintainer's agreement, read off its figure and held to its uncertainty of 16-19 %. Europe PMC indexes the biomedical literature and the journals deposited in PubMed Central (MDPI, ACS Omega, RSC Advances, Scientific Reports); it does not have J. Chem. Eng. Data, J. Chem. Thermodyn., Fluid Phase Equilib. or Int. J. Thermophys., where most measurements are, so OpenAlex was asked too, later the same day, with a key. Neither index found a further value usable under the rules: the melting points of DL-malic acid and cis,cis-muconic acid came without an enthalpy of fusion.
 
 - Europe PMC: asked (full texts of open-access articles; 8 articles read per search)
 - OpenAlex: asked, with a key (a network secret of the environment): one full-text query per gap, open-access works only, 8 articles per query; 1185 articles found, 271 of them could be downloaded as a PDF and read (the others' servers refuse scripts or give no PDF)
@@ -100,7 +100,7 @@ Each gap is a "no open data" marker in `src/data/components.json` with the sourc
 | Glycerol carbonate | melting point and enthalpy of fusion | 37, 1 | 245, 2, 0 | none of the pure compound |
 | Glycerol carbonate | critical constants (Tc, Pc, ω) | 10, 1 | 87, 3, 2 | none of the pure compound |
 | Glycerol carbonate | normal boiling point | 72, 4 | 331, 0, 0 | a property table (RSC Adv. 2023, doi:10.1039/d3ra03028h: 354 °C) without the measuring article: not taken |
-| Solketal | vapour pressure | 21, 2 | 119, 1, 1 | **measured, held for the maintainer**: Türck et al., ACS Omega 2026, doi:10.1021/acsomega.5c12056 (CC BY 4.0), Figure 7: the vapour-pressure curve of pure solketal (≥98 %, Merck), 20-100 °C, about 0.2 to 7.1 kPa, Herzog HVP 972 fuel vapour-pressure tester, n = 3, error bar about ±0.5 kPa at 80 °C. In a figure only (the supporting information has no table of it) |
+| Solketal | vapour pressure | 21, 2 | 119, 1, 1 | **measured, added** (the maintainer, 2026-10-22: "yes"; read off the graph, 40-100 °C, held to 19 %): Türck et al., ACS Omega 2026, doi:10.1021/acsomega.5c12056 (CC BY 4.0), Figure 7: the vapour-pressure curve of pure solketal (≥98 %, Merck), 20-100 °C, about 0.2 to 7.1 kPa, Herzog HVP 972 fuel vapour-pressure tester, n = 3, error bar about ±0.5 kPa at 80 °C. In a figure only (the supporting information has no table of it) |
 | Solketal | heat of vaporization | 2, 0 | 21, 2, 1 | a fuel-property table (Int. J. Automot. Eng. Technol. 2018, doi:10.18245/ijaet.486410, Table 1: 374 kJ/kg at 20 °C) citing three references for all its fuels, none named as the measurement for solketal: not taken |
 | Solketal | melting point and enthalpy of fusion | 41, 1 | 187, 0, 0 | none of the pure compound |
 | Solketal | critical constants (Tc, Pc, ω) | 4, 0 | 32, 3, 1 | none of the pure compound |
@@ -141,15 +141,15 @@ No passage with a name and the property together, in the open full texts searche
 The first search with the tools of proposal 0014 (steps 1 and 2), in the order of docs/DATA_RULES.md section 1, "How
 to search for a missing number". The table above is the full-text search; the rest:
 
-**Held for the maintainer:**
-- **Solketal, vapour pressure.** Türck et al., ACS Omega 2026, doi:10.1021/acsomega.5c12056 (CC BY 4.0) measured the
-  curve of pure solketal (≥98 %, Merck) from 20 to 100 °C with a Herzog HVP 972 fuel vapour-pressure tester (n = 3):
-  about 0.2 kPa at 20 °C to 7.1 kPa at 100 °C. Its values are in Figure 7 only, so they would be read off the graph.
-  The same instrument gives methanol and ethanol at 100 °C close to their reference values (about 352 and 225 kPa
-  read off the figure; CoolProp 353.7 and 224.2 kPa), and the paper's ratios (solketal 50.1 times below methanol and 32 times below ethanol at 100 °C) give the
-  same 7.1 kPa. The error bar at 80 °C is about ±15 %. It is the first open measurement of solketal's vapour pressure
-  found; whether a curve read off a graph, from a fuel tester, may make a record (held to about 15 %, section 3 "measured
-  above the target") is the maintainer's decision.
+**Added: solketal's vapour pressure** (the maintainer, 2026-10-22: "yes"). Türck et al., ACS Omega 11 (2026)
+24063-24074, doi:10.1021/acsomega.5c12056 (CC BY 4.0) measured the curve of pure solketal (≥98 %) with a Herzog HVP 972
+fuel vapour-pressure tester (n = 3). The values are in their Figure 7 only and were read off the graph
+(`validation/data/pure/measured/article_solketal_acsomega2026.json`): 40-100 °C, 0.435 to 7.065 kPa, each held to 16 %
+(the one visible error bar) with the reading resolution, so 16-19 %. The readings at 20 and 30 °C are left out (one
+pixel is a quarter of the value there, and they flatten where the curve above 40 °C rises by a factor of 1.6-1.8 per
+10 K). The record runs from 313 to 373 K, so solketal now has bubble points, flashes and distillation in that range; it
+has no normal boiling point (the curve ends at 7 kPa, and the WebBook's 461.7 K is from a supplier catalogue). Check
+the seven values against Figure 7.
 
 **Measured, but in paywalled articles with no free copy in Unpaywall or OpenAlex** (a person who can read them may
 check them; the numbers are not used, AGENTS.md rule 1):
@@ -178,17 +178,16 @@ scripts. Nothing new usable under the rules:
   2543 (static method, 195-255 °C), shown only as a line in its Figure D.5. The original has no known free copy;
 - the other passages are solutions, mixtures, or property tables without the measuring article.
 
-**To download, if you can** (servers that refuse scripts): the 2022 correction to Baird et al., "Correction: Vapor
-Pressures, Densities, and PC-SAFT Parameters for 11 Bio-compounds", Int. J. Thermophys. 43 (2022),
-doi:10.1007/s10765-022-03105-x (https://link.springer.com/content/pdf/10.1007/s10765-022-03105-x.pdf). Levoglucosenone's
-new records come from that article, so the correction has to be checked against them.
+**The 2022 correction to Baird et al.** (Int. J. Thermophys. 43 (2022) 184, doi:10.1007/s10765-022-03105-x, downloaded
+by the maintainer): it corrects only Table 4, the PC-SAFT parameters, after an error in the authors' code; the
+measured vapour pressures and densities (Tables 13 and 19), which levoglucosenone's records use, are unchanged.
 
 **Not asked: CORE.** The maintainer has written to CORE (2026-10-22) to ask which of its licences fits an
 MIT-licensed simulator; until it answers, the search runs without it.
 
 **Where to start, by what it unlocks** (carried over, updated):
-1. Vapour pressures of the eight liquids in table A (levoglucosenone was added today; solketal is held above).
-2. Liquid density and heat of vaporization of the same eight, then liquid heat capacity where it is predicted only.
+1. Vapour pressures of the seven liquids in table A (levoglucosenone and solketal were added today).
+2. Liquid density and heat of vaporization of the same seven, then liquid heat capacity where it is predicted only.
 3. Enthalpies of formation of the green platform chemicals that reactions start from (HMF, glycolic acid, methyl
    lactate, 2-MeTHF), and standard entropies for the measured ones without a Gibbs energy.
 4. Melting data for the acids and esters in tables C and D: crystallization of the green acids.
@@ -200,11 +199,10 @@ MIT-licensed simulator; until it answers, the search runs without it.
 
 "Predicted only" means a group-contribution prediction stands in (tier "predicted").
 
-### A. No vapour pressure (8)
+### A. No vapour pressure (7)
 
 | Component | Missing (no open data found) | Predicted only |
 |---|---|---|
-| Solketal | vapour pressure, critical constants (Tc, Pc, ω), normal boiling point, liquid heat capacity, ideal-gas heat capacity, heat of vaporization, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
 | alpha-Angelica lactone | vapour pressure, critical constants (Tc, Pc, ω), normal boiling point, liquid heat capacity, ideal-gas heat capacity, heat of vaporization, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
 | Lactide | vapour pressure, critical constants (Tc, Pc, ω), normal boiling point, liquid density, liquid heat capacity, ideal-gas heat capacity, heat of vaporization, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, Gibbs energy of formation | - |
 | Isosorbide | vapour pressure, critical constants (Tc, Pc, ω), normal boiling point, liquid density, liquid heat capacity, ideal-gas heat capacity, heat of vaporization, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
@@ -213,7 +211,7 @@ MIT-licensed simulator; until it answers, the search runs without it.
 | 2,5-Bis(hydroxymethyl)furan | vapour pressure, critical constants (Tc, Pc, ω), normal boiling point, liquid density, liquid heat capacity, ideal-gas heat capacity, heat of vaporization, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
 | 5-(Ethoxymethyl)furfural | vapour pressure, critical constants (Tc, Pc, ω), normal boiling point, liquid density, liquid heat capacity, ideal-gas heat capacity, heat of vaporization, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
 
-### B. No critical constants (with a vapour pressure) (10)
+### B. No critical constants (with a vapour pressure) (11)
 
 | Component | Missing (no open data found) | Predicted only |
 |---|---|---|
@@ -226,6 +224,7 @@ MIT-licensed simulator; until it answers, the search runs without it.
 | Limonene | critical constants (Tc, Pc, ω), normal boiling point, ideal-gas heat capacity, surface tension, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, Gibbs energy of formation | liquid heat capacity |
 | Furfuryl alcohol | critical constants (Tc, Pc, ω), normal boiling point, ideal-gas heat capacity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity | liquid heat capacity |
 | Glycerol carbonate | critical constants (Tc, Pc, ω), normal boiling point, liquid density, ideal-gas heat capacity, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
+| Solketal | critical constants (Tc, Pc, ω), normal boiling point, liquid heat capacity, ideal-gas heat capacity, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
 | Levoglucosenone | critical constants (Tc, Pc, ω), normal boiling point, liquid heat capacity, ideal-gas heat capacity, surface tension, liquid viscosity, liquid thermal conductivity, vapour viscosity, vapour thermal conductivity, melting point and enthalpy of fusion, enthalpy of formation, Gibbs energy of formation | - |
 
 ### C. Nonvolatile components (21)

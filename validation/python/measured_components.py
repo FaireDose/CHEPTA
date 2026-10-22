@@ -592,12 +592,27 @@ COMPONENTS = {
         "cp0": None,
     },
     "solketal": {
-        "class": "no_vapour_pressure",
+        # until 2026-10-22 without a vapour pressure ("no_vapour_pressure"); then the curve of Turck et al. (ACS Omega
+        # 2026, CC BY 4.0), read off its Figure 7 (article_solketal_acsomega2026.json), held to its uncertainty of
+        # 16-19 % (the maintainer, 2026-10-22: "yes"). The WebBook's normal boiling temperature (461.7 K) is from a
+        # supplier catalogue and is not used, so the curve stops at 373 K and there is no normal boiling point.
         "name": 'Solketal', "cas": '100-79-8', "webbook": 'C100798', "proposal": "proposal 0009",
         "aliases": ['(2,2-dimethyl-1,3-dioxolan-4-yl)methanol', 'isopropylidene glycerol', '2,2-dimethyl-1,3-dioxolane-4-methanol'],
         "thermoml_queries": ['solketal', '2,2-dimethyl-1,3-dioxolane-4-methanol', '(2,2-dimethyl-1,3-dioxolan-4-yl)methanol', 'isopropylidene glycerol'],
         "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
-        "no_vapour_pressure": 'the WebBook lists a normal boiling temperature of 461.7 K from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); the ThermoML Archive has its vapour-liquid data with carbon dioxide only',
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "vp_why": ("The values are READ OFF A GRAPH: the article prints them only in its Figure 7 (left panel), read by "
+                   "the marker centres with the gridlines as the scale (one pixel = 0.043 kPa). Measured with a Herzog HVP "
+                   "972 vapour-pressure tester, n = 3, solketal of at least 98 %. Stated uncertainty of each value: 16 % "
+                   "(the one error bar visible, at 80 degC) with the reading resolution, 16-19 %, so the record is held "
+                   "to 19 %, above the 1 % target, used because no open values meet the target. The readings at 20 and "
+                   "30 degC (0.174 and 0.196 kPa) are left out: there one pixel is a quarter of the value, and they are "
+                   "almost equal where every 10 K above 40 degC raises the pressure by a factor of 1.6 to 1.8 (the lower "
+                   "end of the tester's range). The maintainer agreed to use the figure (2026-10-22)."),
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric enthalpy of vaporization in the open sources",
+        "cp0": None,
     },
     "angelica-lactone": {
         "class": "no_vapour_pressure",

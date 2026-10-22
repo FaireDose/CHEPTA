@@ -3802,6 +3802,19 @@
         "validation/data/eos/tsuji2005_hydrogen_toluene.json"
       ]
     },
+    "turck2026-article-solketal": {
+      "title": "Drop-In Capability of Solketal in Diesel and Gasoline Fuels Containing Biodiesel, HVO, Fossil Diesel, and Gasoline Based on Standard Physical and Chemical Fuel Properties",
+      "authors": "J. Türck, F. Schmitt, S. Agarwal, J. Utecht, R. Türck, W. Ruck, J. Krahl",
+      "year": 2026,
+      "published": "ACS Omega 11 (2026) 24063-24074",
+      "kind": "open-access article",
+      "doi": "10.1021/acsomega.5c12056",
+      "url": "https://europepmc.org/article/PMC/PMC13130121",
+      "access": "Open access, CC BY 4.0 (ACS Omega; full text in PubMed Central)",
+      "files": [
+        "validation/data/pure/measured/article_solketal_acsomega2026.json"
+      ]
+    },
     "villamanan2006-1-butanol-benzene": {
       "title": "Phase equilibrium properties of binary and ternary systems containing di-isopropyl ether + 1-butanol + benzene at 313.15 K",
       "authors": "R. M. Villamanan, M. C. Martin, C. R. Chamorro, M. A. Villamanan, J. J. Segovia",

@@ -1,0 +1,142 @@
+{
+ "component": "solketal",
+ "cas": "100-79-8",
+ "about": "Measured values of an open-access article, in the format of thermoml_<id>.json (read by measured_components.ThermoML). READ OFF A GRAPH (AGENTS.md rule 3): the article prints the vapour pressure of pure solketal only in Figure 7 (left panel), points at 20, 30, ..., 100 degC; the supporting information has no table of it. The figure image of the article's open files (ao5c12056_0007.jpg, 690 x 290 px) was read by the marker centres, with its gridlines as the scale (one kPa = 23.3 px, 20 degC = 67.75 px): one pixel is 0.043 kPa. Measurement: Herzog HVP 972 vapour-pressure tester, 10 mL in a sealed cell, n = 3; solketal >= 98 % (Merck KGaA). Uncertainty of each value: the only error bar visible in the figure, at 80 degC (2.79 to 3.87 kPa, +-16 %), taken as 16 % at every temperature, combined in quadrature with the reading resolution, 0.043 kPa. The readings at 20 and 30 degC (0.174 and 0.196 kPa) are left out: there one pixel is a quarter of the value, and the two readings are almost equal where every 10 K above 40 degC raises the pressure by a factor of 1.6 to 1.8, the lower end of the tester's range. The same instrument gives methanol and ethanol at 100 degC close to their reference values (about 352 and 225 kPa read off the right panel; CoolProp 353.7 and 224.2 kPa), and the article's ratios at 100 degC (50.1 below methanol, 32 below ethanol) give 7.06 and 7.0 kPa with CoolProp's values. The maintainer agreed to use the figure on 2026-10-22.",
+ "source": {
+  "citation": "J. Türck, F. Schmitt, S. Agarwal, J. Utecht, R. Türck, W. Ruck, J. Krahl, Drop-In Capability of Solketal in Diesel and Gasoline Fuels Containing Biodiesel, HVO, Fossil Diesel, and Gasoline Based on Standard Physical and Chemical Fuel Properties, ACS Omega 11 (2026) 24063-24074",
+  "doi": "10.1021/acsomega.5c12056",
+  "open_copy": "https://europepmc.org/article/PMC/PMC13130121",
+  "access": "Open access, CC BY 4.0 (ACS Omega; full text in PubMed Central)",
+  "tables": "Figure 7, left panel (vapour-pressure curve of pure solketal, 20-100 degC), read off the graph; method in the Experimental Section ('Determination of Vapor Pressure')"
+ },
+ "articles": {
+  "10.1021/acsomega.5c12056": {
+   "authors": [
+    "Türck, J.",
+    "Schmitt, F.",
+    "Agarwal, S.",
+    "Utecht, J.",
+    "Türck, R.",
+    "Ruck, W.",
+    "Krahl, J."
+   ],
+   "title": "Drop-In Capability of Solketal in Diesel and Gasoline Fuels Containing Biodiesel, HVO, Fossil Diesel, and Gasoline Based on Standard Physical and Chemical Fuel Properties",
+   "journal": "ACS Omega",
+   "year": "2026",
+   "volume": "11",
+   "pages": "24063-24074"
+  }
+ },
+ "left_out": [
+  {
+   "T_K": 293.15,
+   "value": 0.174,
+   "why": "one pixel is 25 % of the value; flat against the curve above 40 degC (lower end of the tester's range)"
+  },
+  {
+   "T_K": 303.15,
+   "value": 0.196,
+   "why": "the same"
+  }
+ ],
+ "rows": [
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 313.15,
+   "P_kPa": null,
+   "value": 0.435,
+   "uncertainty": 0.082,
+   "doi": "10.1021/acsomega.5c12056",
+   "set": "Figure 7 (read off the graph)",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 323.15,
+   "P_kPa": null,
+   "value": 0.696,
+   "uncertainty": 0.119,
+   "doi": "10.1021/acsomega.5c12056",
+   "set": "Figure 7 (read off the graph)",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 333.15,
+   "P_kPa": null,
+   "value": 1.213,
+   "uncertainty": 0.199,
+   "doi": "10.1021/acsomega.5c12056",
+   "set": "Figure 7 (read off the graph)",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 343.15,
+   "P_kPa": null,
+   "value": 1.915,
+   "uncertainty": 0.309,
+   "doi": "10.1021/acsomega.5c12056",
+   "set": "Figure 7 (read off the graph)",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 353.15,
+   "P_kPa": null,
+   "value": 3.326,
+   "uncertainty": 0.534,
+   "doi": "10.1021/acsomega.5c12056",
+   "set": "Figure 7 (read off the graph)",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 363.15,
+   "P_kPa": null,
+   "value": 4.674,
+   "uncertainty": 0.749,
+   "doi": "10.1021/acsomega.5c12056",
+   "set": "Figure 7 (read off the graph)",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 373.15,
+   "P_kPa": null,
+   "value": 7.065,
+   "uncertainty": 1.131,
+   "doi": "10.1021/acsomega.5c12056",
+   "set": "Figure 7 (read off the graph)",
+   "binary_with": null
+  }
+ ]
+}

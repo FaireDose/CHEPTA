@@ -44,32 +44,31 @@ Never:
   measured value at all, an open group-contribution method may predict it, labelled tier "predicted" with its method
   and accuracy (section 10); it is never mixed with measured values.
 
-<a id="search-order"></a>**How to search for a missing number** (the maintainer, 2026-10-13, 2026-10-15 and 2026-10-22; proposal
-0014, steps 1 and 2). In this order, and every step is recorded, found or not, so the next search starts where this
-one stopped: in the marker's `searched`, and for the full-text search in `validation/data/searches/<date>-fulltext.json`
-(what was screened, what was read and what it held), which `missing_properties.py` shows next to each gap:
+<a id="search-order"></a>**How to search for a missing number.** When CHEPTA lacks a property of a component, CHEPTA's data
+file `src/data/components.json` holds a **"no open data" note** in its place: what is missing, and the list of places
+already searched (`searched`). The latest `docs/MISSING_PROPERTIES_<date>.md` (section 12) collects all the notes.
+To fill one, do these steps in order and stop when the number is found:
 
-1. **The marker's `searched` list** and the latest `docs/MISSING_PROPERTIES_<date>.md` (section 12): what was already
-   searched, and what a person was asked to download.
-2. **The databases, sources 1-4 and the ThermoML Archive**, through `gap_report.py` (for a new chemical,
-   `--new ID:CAS`).
-3. **The full texts of open articles** (`python validation/python/fulltext_search.py --cache DIR --out FILE`): the
-   component's names together with the property, in Europe PMC, OpenAlex and CORE. A title or abstract rarely names a
-   property that a table of the article has, so these indexes are searched in the full text. The script lists
-   candidates with the paragraph or table where the name and the property appear together; it never takes a number.
-   Each candidate is opened and read (below, "Measured values in modelling and simulation papers"). OpenAlex and CORE
-   need a free key each (a network secret of the environment for `api.openalex.org` and `api.core.ac.uk`, or the
-   variables `OPENALEX_API_KEY`, `CORE_API_KEY`; section 13); an index that was not asked is named in the search record.
-4. **Every article that has the number, or that an open article names as the measurement, is looked up for a legal
-   free copy** before it is set aside as paywalled (below, "Free copies").
-5. **The open literature beyond the indexes**: a web search, the free NIST reprints of J. Phys. Chem. Ref. Data,
-   open theses and free books (source 6). Search the open literature too, not only the databases (the maintainer,
-   2026-10-13).
-6. **Supplier data**, for single constants only, when 1-5 found nothing (below, "Supplier data, last resort").
-7. **Nothing open: "no open data"**, with the sources searched, the candidates read, the articles with no free copy
-   (with their DOI, so a person can try to get them), and the indexes that could not be asked.
+1. **Read the note and the latest missing-properties file**, so the same places are not searched again. Start where
+   the last search stopped, and with what a person was asked to download.
+2. **The databases**: CoolProp, the NIST WebBook, ChemSep and the ThermoML Archive. `gap_report.py` asks them all for a
+   component (`--new ID:CAS` for a chemical CHEPTA does not have yet).
+3. **The full texts of open articles**: `fulltext_search.py` (section 13) lists the articles where the component and
+   the property are named together, with the passage. Read each passage, and take a value only as "Measured values in
+   articles" below says.
+4. **A free copy of every useful article that is behind a paywall**, and of the original measurement an open article
+   names: `open_copy.py --all` (section 13). Where a server refuses scripts, ask the person to download the file.
+5. **Beyond the indexes**: a web search, the free NIST reprints of J. Phys. Chem. Ref. Data, open theses, free books.
+6. **Supplier data**, only for a single constant (a melting point, a boiling point, a density at one temperature),
+   below.
+7. **Nothing found**: the note stays "no open data". Add what was searched, the articles that have the number but no
+   free copy (with their DOI, so a person can try to get them), and the indexes that could not be used.
 
-<a id="modelling-papers"></a>**Measured values in modelling and simulation papers** (the maintainer, 2026-10-22: "in the
+Write down every step, found or not: in the note's `searched` list, and for step 3 in the search record
+`validation/data/searches/<date>-fulltext.json`, which `missing_properties.py` shows next to each gap. (The scripts call
+the note a "marker": `vapourPressure_missing`, `critical`, and `available: false` on a property.)
+
+<a id="modelling-papers"></a>**Measured values in articles, modelling and simulation papers included** (the maintainer, 2026-10-22: "in the
 articles where you see simulations they have some data and cited sources for comparison? use those"). An article that
 fits a model (an equation of state, PC-SAFT, COSMO-RS) or runs a simulation often prints the measured values it
 compares with. An open article counts as the open copy of the measured values it prints:
@@ -116,7 +115,7 @@ a few constants on their product pages and specification sheets, free to read. T
   found later replaces the supplier record, and a supplier record is never mixed with measured values.
 
 If the values disagree by more than the limits, or fewer than three suppliers print the constant, the property stays
-"no open data", with the supplier values listed in the marker.
+"no open data", with the supplier values listed in its note.
 
 **New chemicals** (AGENTS.md rule 8; the maintainer, 2026-10-21): a chemical met in a task that CHEPTA does not have
 is proposed for addition, with the properties the task needs, never replaced silently. `gap_report.py --new ID:CAS`
@@ -238,7 +237,7 @@ new refit of a ChemSep record is made (section 1).
 
 ## 6. Components without measured critical constants (proposal 0009)
 
-Such a component has `Tc_K`, `Pc_Pa` and `omega` null and a `critical` marker with the sources searched.
+Such a component has `Tc_K`, `Pc_Pa` and `omega` null and a `critical` note with the sources searched.
 
 - Activity models (NRTL, UNIQUAC, Modified UNIFAC 2.0, ideal solution) with an ideal-gas vapour use it.
 - Peng–Robinson and SRK, for both phases or for an activity model's vapour, refuse it and say why
@@ -343,14 +342,14 @@ with the heat capacity predicted where none is measured. A volatile liquid witho
 alpha-angelica lactone) is not made nonvolatile: that would make every distillation with it wrong.
 
 **Liquids without an open vapour pressure** (the maintainer, 2026-10-20): such a component is added with a "no open
-data" marker for its vapour pressure (`vapourPressure_missing`, with the sources searched; `build_no_vp` in
+data" note for its vapour pressure (`vapourPressure_missing`, with the sources searched; `build_no_vp` in
 `measured_components.py`) and its other records from measured data. It has no normal boiling point, critical
 constants or vapour records. Activity coefficients, liquid-liquid and solid-liquid equilibria work with it; whatever
 needs its vapour pressure (bubble and dew points, flashes, vapour-liquid diagrams) refuses with the sources searched,
 until the user gives a vapour pressure of their own in My data (proposal 0012). No vapour pressure is predicted:
 SIMPOL.1, the only open group-contribution method that covers these molecules, was checked on 109 CHEPTA components and
 not accepted (errors of a factor of 2 and more). Supplier catalogues and compilations that give a single boiling point
-are listed in the marker, never fitted (section 1; a supplier boiling point is not a vapour-pressure curve). Terephthalic acid is a nonvolatile liquid up to an assumed melting temperature of 400 degC, by the
+are listed in the note, never fitted (section 1; a supplier boiling point is not a vapour-pressure curve). Terephthalic acid is a nonvolatile liquid up to an assumed melting temperature of 400 degC, by the
 maintainer's choice (2026-10-17; it sublimes at 402-404 degC). Nor is a substance
 that is distilled or sublimed in its own processes (lactide, isosorbide, BHMF, dimethyl FDCA, levoglucosan; held in
 batch 4 for want of an open liquid vapour pressure). A substance whose measured volatility is negligible beside its
@@ -388,7 +387,7 @@ solvents may be (HMF: its WebBook boiling temperature of 388.2 K at 0.1 kPa, whe
 
 The maintainer, 2026-10-22: "make a new file with the day of today so we keep track. add this as a rule".
 
-- What the databank still lacks (every "no open data" marker, the predicted-only records, the components without
+- What the databank still lacks (every "no open data" note, the predicted-only records, the components without
   UNIQUAC r and q or Modified UNIFAC 2.0 groups) is written to a new file, `docs/MISSING_PROPERTIES_<date>.md`, at
   every update. It is made by `validation/python/missing_properties.py --date <date> --since <revision>`; `--since`
   is the commit of the previous file, and the new file says what changed since then.
@@ -422,7 +421,7 @@ it against the article before it is added (AGENTS.md rule 4).
 
 - `python validation/python/fulltext_search.py --cache DIR --out FILE [--only ID ...] [--props KEY ...]
   [--indexes europepmc openalex core]`.
-- For each "no open data" marker it asks for articles where one of the component's names (the name, the aliases
+- For each "no open data" note it asks for articles where one of the component's names (the name, the aliases
   without acronyms, the CAS number) appears together with a word for the property ("vapor pressure", "vapour
   pressure", "saturation pressure", ...). By default it searches the properties a calculation needs (vapour pressure,
   liquid density, heat of vaporization, liquid heat capacity, melting data, formation data, critical constants,

@@ -10,6 +10,13 @@
   for free". Agreed: an open paper's measured values, with the measuring article named, are taken. That paper has no
   dimerization constant per acid to take (below).
 
+- Solketal's vapour-pressure curve of Türck et al. (ACS Omega 2026), held for the maintainer: "for 2 yes". It is
+  added, read off the article's Figure 7 (below).
+- CORE: "for 3 we wait", until CORE answers on its licence.
+- "make the data_rules clear as it would start from the beginning to have a lean go": the search procedure of
+  DATA_RULES section 1 is written again as seven plain steps, starting from what is already known, and the "no open
+  data" note is explained where it first appears (the scripts call it a marker; the rules now say note throughout).
+
 ## What was made
 
 ### The rules (docs/DATA_RULES.md, section 1)
@@ -55,7 +62,7 @@
 - **Full-text search, Europe PMC:** 176 gaps; 78 with at least one passage where a name and the property appear
   together; every passage read (`validation/data/searches/2026-10-22-fulltext.json`). Nearly all name the component
   as a reactant, product or solvent, or give a value of a mixture.
-- **Found, held for the maintainer:** solketal's vapour-pressure curve (Türck et al., ACS Omega 2026, CC BY 4.0),
+- **Found, then added with the maintainer's agreement:** solketal's vapour-pressure curve (Türck et al., ACS Omega 2026, CC BY 4.0),
   20-100 °C, in a figure only, measured with a fuel vapour-pressure tester. Not added: whether a curve read off a
   graph may make a record, and to what uncertainty, is the maintainer's decision.
 - **Found, not usable:** isosorbide's DSC melting onset of 45 °C (Hammami et al., Molecules 2025), without an
@@ -67,16 +74,41 @@
 - **Propionic, acrylic and butyric acid dimers:** still no open constant. Tsivintzelis et al. (2017) give a range of
   60-65 kJ/mol for all short acids (Clague and Bernstein 1969, paywalled); the J. Phys. Chem. Ref. Data review of
   Chao, Hall, Marsh and Wilhoit (1986, free NIST reprint) treats methanoic and ethanoic acid only.
-- **Data added:** none in this pull request; levoglucosenone's records came with the previous one ([#161](https://github.com/FaireDose/Fugacity/pull/161)).
+- **Data added:** solketal's vapour pressure (below); levoglucosenone's records came with the previous pull request ([#161](https://github.com/FaireDose/Fugacity/pull/161)).
 
 - **Full-text search, OpenAlex** (later the same day, with the key): 1185 articles found, 271 downloaded and read
   (the others' publishers refuse scripts). Nothing new usable: DL-malic acid's melting point (129.71 °C; Marques et
   al., Arab. J. Chem. 2020) and cis,cis-muconic acid's (197 °C) without an enthalpy of fusion; levoglucosan's only
   liquid measurement (Enstein et al., Zh. Prikl. Khim. 1964) named in Suuberg and Oja's open DOE report of 1997, but
   shown there as a line only, and the original has no known free copy.
-- **To download:** the 2022 correction to Baird et al. (doi:10.1007/s10765-022-03105-x), found by OpenAlex. The
-  levoglucosenone records of [#161](https://github.com/FaireDose/Fugacity/pull/161) come from that article, so the
-  correction must be checked against them.
+- The 2022 correction to Baird et al., found by OpenAlex: checked, below.
+
+## Solketal's vapour pressure (added)
+
+- Source: Türck et al., ACS Omega 11 (2026) 24063-24074, doi:10.1021/acsomega.5c12056, CC BY 4.0; Figure 7, left panel;
+  a Herzog HVP 972 fuel vapour-pressure tester, 10 mL in a sealed cell, n = 3, solketal of at least 98 %.
+- Read off the graph: the figure image of the article's open files (690 x 290 px) by the marker centres, with the
+  gridlines as the scale (one pixel = 0.043 kPa). Seven values, 40-100 °C: 0.435, 0.696, 1.213, 1.915, 3.326, 4.674 and
+  7.065 kPa (`validation/data/pure/measured/article_solketal_acsomega2026.json`).
+- Uncertainty: 16 % (the only error bar visible, at 80 °C: 2.79 to 3.87 kPa) combined with the reading resolution:
+  16-19 %. The record (DIPPR 101, 313-373 K) meets the values within 6.8 % and is held to 19 %.
+- Left out, with the reason in the file and the record: the readings at 20 and 30 °C (0.174 and 0.196 kPa), where one
+  pixel is a quarter of the value and the two are nearly equal although the curve above 40 °C rises 1.6-1.8 times per
+  10 K (the lower end of the tester's range).
+- Checks: the same instrument's methanol and ethanol at 100 °C (about 352 and 225 kPa, read off the right panel)
+  against CoolProp (353.7 and 224.2 kPa); the article's ratios at 100 °C give 7.06 and 7.0 kPa for solketal.
+- The heat of vaporization follows from the curve (Clapeyron, ideal-gas vapour, as for every component without
+  critical constants). No normal boiling point: the curve ends at 7 kPa, and the WebBook's 461.7 K is from a supplier
+  catalogue (DATA_RULES section 1).
+- `make_sources.py` now also matches a citation whose author has an accent (Türck) against its folded rule (Turck).
+- `test/no-vapour-pressure.test.js`: solketal left the list of liquids without a vapour pressure; the examples that
+  used it now use alpha-angelica lactone (a new data source made the old test wrong, DATA_RULES section 9).
+
+## The 2022 correction to Baird et al.
+
+Downloaded by the maintainer (Int. J. Thermophys. 43 (2022) 184). It corrects only Table 4, the PC-SAFT parameters, after
+an error in the authors' PC-SAFT code; it says nothing changes in the other tables. The measured vapour pressures and
+densities (Tables 13 and 19), which levoglucosenone's records use, are unchanged: the records stay.
 
 ## Not done, and why
 

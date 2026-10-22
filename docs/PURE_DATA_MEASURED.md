@@ -769,14 +769,15 @@ Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 
 ## Solketal (C6H12O3, CAS 100-79-8)
 
 - No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 132.1577 g/mol
-- Constants: MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.
+- Constants: Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-20)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009). Tb: not reached, the measured vapour pressures stay below 101.325 kPa.
 
 | Property | Range (K) | Values used | Left out | Max deviation | Sources |
 |---|---|---|---|---|---|
+| Vapour pressure | 313.15-373.15 | 7 | 0 | 6.8 % | ThermoML, WebBook |
 | liquidDensity | 293.15-323.15 | 5 | 0 | 0.39 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
 | liquidHeatCapacity | — | — | — | — | no open data |
-| heatOfVaporization | — | — | — | — | no open data (needs the vapour pressure (Clapeyron) or calorimetric values over a range) |
+| heatOfVaporization | 313.15-373.15 | 25 | 0 | 0.50 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data (no open data over a temperature range) |
 | vapourViscosity | — | — | — | — | no open data |
 | liquidThermalConductivity | — | — | — | — | no open data |

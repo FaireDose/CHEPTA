@@ -52151,17 +52151,24 @@
       "Tc_K": null,
       "Pc_Pa": null,
       "Tb_K": null,
-      "omega": null,
-      "Tb_note": "no normal boiling point: no open liquid vapour pressure (the WebBook lists a normal boiling temperature of 461.7 K from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); the ThermoML Archive has its vapour-liquid data with carbon dioxide only)",
-      "vapourPressure_missing": {
-        "searched": [
-          "CoolProp 8.0.0 (not a fluid)",
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
-          "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)",
-          "open literature (web search, 2026-10-20)"
-        ],
-        "note": "No open liquid vapour pressure (the WebBook lists a normal boiling temperature of 461.7 K from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); the ThermoML Archive has its vapour-liquid data with carbon dioxide only). Add your own vapour pressure in My data (proposal 0012); until then the activity models refuse it. Group-contribution predictions (SIMPOL.1) were checked and not accepted (the maintainer, 2026-10-20: errors of a factor of 2 and more)."
+      "vapourPressure": {
+        "equation": "DIPPR101",
+        "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
+        "units": "Pa",
+        "A": 29.82514379,
+        "B": -5825.655567,
+        "C": -0.9015736477,
+        "D": 0.0,
+        "E": 0.0,
+        "Tmin_K": 313.15,
+        "Tmax_K": 373.15,
+        "tier": "fitted",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Türck et al., ACS Omega 11 (2026) 24063-24074, doi:10.1021/acsomega.5c12056. 7 measured values (0 from the ThermoML Archive, 7 from open-access articles), 313.15-373.15 K, max deviation 6.8 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Türck 2026 +0.00 %. The values are READ OFF A GRAPH: the article prints them only in its Figure 7 (left panel), read by the marker centres with the gridlines as the scale (one pixel = 0.043 kPa). Measured with a Herzog HVP 972 vapour-pressure tester, n = 3, solketal of at least 98 %. Stated uncertainty of each value: 16 % (the one error bar visible, at 80 degC) with the reading resolution, 16-19 %, so the record is held to 19 %, above the 1 % target, used because no open values meet the target. The readings at 20 and 30 degC (0.174 and 0.196 kPa) are left out: there one pixel is a quarter of the value, and they are almost equal where every 10 K above 40 degC raises the pressure by a factor of 1.6 to 1.8 (the lower end of the tester's range). The maintainer agreed to use the figure (2026-10-22).",
+        "source_ids": [
+          "nist-thermoml-archive",
+          "nist-webbook",
+          "turck2026-article-solketal"
+        ]
       },
       "uniquac_missing": {
         "searched": [
@@ -52170,20 +52177,11 @@
         ],
         "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
-      "constants_source": "MW, formula and CAS: chemicals library (MIT). No open liquid vapour pressure, so no normal boiling point, critical constants or acentric factor; not a CoolProp 8.0.0 fluid and not in the ChemSep databank.",
+      "omega": null,
+      "constants_source": "Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-20)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009). Tb: not reached, the measured vapour pressures stay below 101.325 kPa.",
       "constants_source_ids": [
         "nist-webbook"
       ],
-      "critical": {
-        "available": false,
-        "searched": [
-          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
-          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
-          "CoolProp 8.0.0 (not a fluid)",
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "open literature (web search, 2026-10-20)"
-        ]
-      },
       "properties": {
         "liquidDensity": {
           "equation": "DIPPR100",
@@ -52199,7 +52197,8 @@
             "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
             "reference": "Yakovleva et al., Fluid Phase Equilib. 405 (2015) 107-113, doi:10.1016/j.fluid.2015.07.016; Li et al., J. Chem. Eng. Data 61 (2016) 3355-3362, doi:10.1021/acs.jced.6b00399",
             "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
-            "fit": "5 measured values, 293.15-323.15 K, max deviation 0.39 %"
+            "fit": "5 measured values, 293.15-323.15 K, max deviation 0.39 %",
+            "notes": "DIPPR 100 (a polynomial in T; no measured critical temperature)."
           },
           "source_ids": [
             "nist-thermoml-archive",
@@ -52215,7 +52214,8 @@
             "ChemSep v8.3 and v8.31 data 2 (compound not included)",
             "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
             "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)",
-            "no vapour data without a vapour pressure"
+            "NIST Chemistry WebBook, gas phase thermochemistry: no gas heat capacity",
+            "ThermoML Archive: no gas-phase heat capacity"
           ]
         },
         "liquidHeatCapacity": {
@@ -52228,14 +52228,25 @@
           ]
         },
         "heatOfVaporization": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)"
-          ],
-          "note": "needs the vapour pressure (Clapeyron) or calorimetric values over a range: no open liquid vapour pressure (the WebBook lists a normal boiling temperature of 461.7 K from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); the ThermoML Archive has its vapour-liquid data with carbon dioxide only)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 45864.15981
+          },
+          "units": "J/mol",
+          "Tmin_K": 313.15,
+          "Tmax_K": 373.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook)",
+            "reference": "validation/python/measured_components.py (clapeyron_ideal)",
+            "access": "calculated from the open measured data of the vapour-pressure record; free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
+            "fit": "25 Clapeyron values and 0 measured values, 313.15-373.15 K, max deviation 0.50 %",
+            "notes": "No measured critical constants (proposal 0009): dHvap = R T^2 dln(Psat)/dT, the Clapeyron equation with an ideal-gas vapour and the liquid volume neglected (largest P v_L / R T 3.4e-05 where the density record applies), Psat from the vapour-pressure record of this component, 313.15-373.15 K (up to Psat = 10 kPa or the last measured vapour pressure); DIPPR 100 (a polynomial in T). Chosen because no calorimetric enthalpy of vaporization in the open sources. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none."
+          },
+          "source_ids": [
+            "nist-thermoml-archive",
+            "nist-webbook"
+          ]
         },
         "liquidViscosity": {
           "available": false,
@@ -52253,8 +52264,7 @@
             "CoolProp 8.0.0 (not a fluid)",
             "ChemSep v8.3 and v8.31 data 2 (compound not included)",
             "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)",
-            "no vapour data without a vapour pressure"
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)"
           ]
         },
         "liquidThermalConductivity": {
@@ -52272,8 +52282,7 @@
             "CoolProp 8.0.0 (not a fluid)",
             "ChemSep v8.3 and v8.31 data 2 (compound not included)",
             "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)",
-            "no vapour data without a vapour pressure"
+            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"solketal\", \"2,2-dimethyl-1,3-dioxolane-4-methanol\", \"(2,2-dimethyl-1,3-dioxolan-4-yl)methanol\", \"isopropylidene glycerol\"; 5 records opened)"
           ]
         },
         "surfaceTension": {
@@ -52286,12 +52295,33 @@
           ]
         }
       },
+      "critical": {
+        "available": false,
+        "searched": [
+          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
+          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
+          "CoolProp 8.0.0 (not a fluid)",
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "open literature (web search, 2026-10-20)"
+        ]
+      },
+      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 373.15 K, where it gives 7.143 kPa, below 101.325 kPa: no normal boiling temperature from measured data",
       "fusion": {
         "available": false,
         "searched": [
           "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C100798&Units=SI&Mask=4): no melting or triple-point temperature on the WebBook page",
           "ChemSep v8.3: no value",
           "NIST TRC ThermoML Archive: no melting data"
+        ]
+      },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Only a group-additivity estimate found (not data, docs/DATA_RULES.md section 1)"
         ]
       },
       "modUnifac": {
@@ -52308,16 +52338,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 OH (P), 1 CHO, 1 CY-C, 1 CY-CH2O): chosen: the 1,3-dioxolane ring's CH2-O as CY-CH2O (the subgroup DDBST uses for it), its CH-O as CHO, the ring carbon C(CH3)2 as CY-C with two CH3, and CH2 with a primary OH; DDBST's assignment as the thermo library lists it (two CY-CH2O, two CH3, CH2, OH (P)) gives C5H13O3, not C6H12O3, and the SMARTS match took a TRIOXAN group, the subgroup of 1,3,5-trioxane. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O3"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "Only a group-additivity estimate found (not data, docs/DATA_RULES.md section 1)"
-        ]
       }
     },
     "angelica-lactone": {
