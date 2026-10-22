@@ -464,6 +464,21 @@
         "validation/data/water_acetic-acid_101kPa_chang2005.json"
       ]
     },
+    "chao-zwolinski-1978": {
+      "title": "Ideal gas thermodynamic properties of methanoic and ethanoic acids",
+      "authors": "J. Chao, B. J. Zwolinski",
+      "year": 1978,
+      "published": "J. Phys. Chem. Ref. Data 7 (1978) 363-377",
+      "doi": "10.1063/1.555571",
+      "kind": "open-access article",
+      "url": "https://srd.nist.gov/jpcrdreprint/1.555571.pdf",
+      "access": "Free to read: reprint hosted by NIST (Standard Reference Data)",
+      "license": "Copyright AIP for NIST; free to read",
+      "note": "Dimerization constants of formic acid, Table 8, transcribed into validation/data/association/formic-acid_chao1978.json; matched by the authors to the measured vapour densities of Coolidge (1928).",
+      "files": [
+        "validation/data/association/formic-acid_chao1978.json"
+      ]
+    },
     "chemsep-8.3": {
       "title": "ChemSep pure-component database v8.3 (chemsep1.xml)",
       "authors": "Harry Kooijman, Ross Taylor",
@@ -2679,6 +2694,7 @@
       "files": [
         "validation/data/pure/fusion/webbook_fusion.json",
         "validation/data/pure/measured/webbook.json",
+        "validation/data/reactions/liquid_formation_webbook.json",
         "validation/report/reference/"
       ]
     },

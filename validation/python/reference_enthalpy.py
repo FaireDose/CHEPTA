@@ -31,7 +31,10 @@ from pathlib import Path
 import numpy as np
 from scipy.integrate import quad
 
-from reference_model import System, psat_kpa, COMPONENTS
+from reference_model import System, psat_kpa, COMPONENTS, dimer_k
+from scipy.optimize import brentq
+
+R = 8.314462618
 from reference_eos import Cubic
 
 OUT = Path(__file__).resolve().parents[1] / "fixtures" / "enthalpy.json"
@@ -74,12 +77,43 @@ def cp_liquid(cid, T):
     rec = COMPONENTS[cid]["properties"]["liquidHeatCapacity"]
     assert rec["equation"] == "DIPPR100"
     k = rec["coefficients"]
-    assert rec["Tmin_K"] <= min(T, T_REF) and T <= rec["Tmax_K"], (cid, T)
+    assert rec["Tmin_K"] <= T <= rec["Tmax_K"], (cid, T)
     return sum(k.get(n, 0.0) * T ** p for p, n in enumerate("ABCDE"))
+
+
+def dimer_dh(cid):
+    """Dimerization enthalpy (J/mol of dimer) of an acid, R T^2 d ln K / dT by a central difference of the record."""
+    a, T, d = COMPONENTS[cid]["association"], 350.0, 1e-3
+    return R * T ** 2 * (math.log(dimer_k(a, T + d)) - math.log(dimer_k(a, T - d))) / (2 * d)
+
+
+def h_dimers_pure_sat(cid, T):
+    """Enthalpy of the dimers in the pure acid's saturated vapour, per mole of acid: p_D / (p_M + 2 p_D) dH_dim."""
+    P = psat_kpa(COMPONENTS[cid], T)
+    K = dimer_k(COMPONENTS[cid]["association"], T)
+    pm = brentq(lambda p: p + K * p * p - P, 0.0, P)
+    pd = K * pm * pm
+    return pd / (pm + 2 * pd) * dimer_dh(cid)
+
+
+def anchor_T(cid):
+    """298.15 K, or where the liquid's records (cp_L, ΔHvap, vapour pressure) all start for a liquid whose records
+    start above it (a solid at 298.15 K)."""
+    c = COMPONENTS[cid]
+    recs = [c["properties"]["liquidHeatCapacity"], c["properties"]["heatOfVaporization"], c["vapourPressure"]]
+    if all(r["Tmin_K"] <= T_REF <= r["Tmax_K"] for r in recs):
+        return T_REF
+    return max(r["Tmin_K"] for r in recs)
 
 
 def h_liquid_pure(cid, T, cub, i, n, c):
     hrs0 = 0.0
+    Ta = anchor_T(cid) if cid != "water" else T_REF
+    if Ta != T_REF:
+        assert cub is None and not COMPONENTS[cid].get("association"), cid
+        return h_ig(cid, Ta) - dhvap(cid, Ta) + quad(lambda t: cp_liquid(cid, t), Ta, T, epsabs=1e-9, epsrel=1e-12)[0]
+    if COMPONENTS[cid].get("association"):
+        return h_dimers_pure_sat(cid, T_REF) - dhvap(cid, T_REF) + quad(lambda t: cp_liquid(cid, t), T_REF, T, epsabs=1e-9, epsrel=1e-12)[0]
     if cub is not None:
         e = np.zeros(n); e[i] = 1.0
         hrs0 = cub.h_res(T_REF, psat_kpa(c, T_REF) * 1000, e, "vapour")
@@ -111,6 +145,15 @@ def liquid_h(s, x, T, vapour):
 
 def vapour_h(ids, y, T, P_kPa, vapour):
     h = sum(yi * h_ig(cid, T) for cid, yi in zip(ids, y) if yi > 0)
+    acids = [k for k, cid in enumerate(ids) if COMPONENTS[cid].get("association") and y[k] > 0]
+    if acids:
+        # chemical theory, one acid: per mole of apparent vapour, xi dimers and N = 1 - xi true moles, with
+        # p_D = K p_M^2: xi / N P = K P^2 ((y - 2 xi) / N)^2, solved for xi by brentq
+        (k,) = acids
+        K = dimer_k(COMPONENTS[ids[k]]["association"], T)
+        f = lambda xi: xi * (1 - xi) - K * P_kPa * (y[k] - 2 * xi) ** 2
+        xi = brentq(f, 0.0, y[k] / 2, xtol=1e-16, rtol=1e-15)
+        h += xi * dimer_dh(ids[k])
     if vapour != "ideal":
         h += Cubic(vapour, ids).h_res(T, P_kPa * 1000, np.asarray(y, float), "vapour")
     return h
@@ -122,6 +165,11 @@ ACTIVITY = [  # model, vapour, components, liquid cases (x, T), vapour cases (y,
     ("UNIQUAC", "ideal", ["methanol", "acetone", "chloroform"], [([0.3, 0.3, 0.4], 320.0), ([0.6, 0.2, 0.2], 330.0)], [([0.3, 0.3, 0.4], 360.0, 101.325)]),
     ("UNIQUAC", "SRK", ["methanol", "acetone", "chloroform"], [([0.3, 0.3, 0.4], 360.0)], [([0.3, 0.3, 0.4], 420.0, 800.0)]),
     ("NRTL", "ideal", ["benzene", "toluene"], [([0.5, 0.5], 360.0)], [([0.5, 0.5], 400.0, 101.325)]),
+    # liquids whose records start above 298.15 K (solids there): the liquid anchored where its records start
+    ("ideal", "ideal", ["adipic-acid", "benzoic-acid"], [([0.5, 0.5], 450.0), ([1.0, 0.0], 470.0)], []),
+    # a dimerizing acid (chemical theory): the dimers' enthalpy in the vapour and in the liquid's anchor
+    ("NRTL", "ideal", ["acetic-acid", "water"], [([0.5, 0.5], 330.0), ([1.0, 0.0], 360.0)],
+     [([0.5, 0.5], 390.0, 101.325), ([1.0, 0.0], 400.0, 101.325), ([0.3, 0.7], 450.0, 300.0)]),
 ]
 EXCESS = [  # excess enthalpy only (works with acetic acid)
     ("NRTL", ["acetic-acid", "ethylene-glycol"], [0.098, 0.4445, 0.898], 323.15),

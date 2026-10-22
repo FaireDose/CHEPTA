@@ -5,7 +5,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { system, pure, CheptaError } from "../src/index.js";
+import { system, pure, solveFlowsheet, CheptaError } from "../src/index.js";
 
 const load = p => JSON.parse(readFileSync(new URL(p, import.meta.url)));
 const { cases } = load("../validation/fixtures/enthalpy.json");
@@ -116,11 +116,10 @@ test("excess enthalpy of acetic acid + ethylene glycol against Schmid et al. (20
   }
 });
 
-test("errors: dimerizing acid, phase name, above the critical temperature", () => {
+test("errors: phase name, above the critical temperature", () => {
   const code = (fn, c, re) => assert.throws(fn, e => e instanceof CheptaError && e.code === c && re.test(e.message));
-  const a = system({ components: ["acetic acid", "ethylene glycol"], model: "NRTL" });
-  code(() => a.enthalpy("liquid", 350, 101.325, [0.5, 0.5]), "NOT_AVAILABLE", /dimerizes.*excessEnthalpy/);
-  assert.ok(Number.isFinite(a.enthalpy("liquid", 350, 101.325, [0, 1])), "pure glycol has an enthalpy");
+  // (until 2026-10-22 this test also asserted that a dimerizing acid's enthalpy is refused; the dimers' enthalpy is
+  // now modelled, and the values are checked against the Python reference above and in the test below)
   const s = system({ components: ["ethanol", "water"], model: "NRTL" });
   code(() => s.phase("solid", 300, 101.325, [0.5, 0.5]), "BAD_INPUT", /Phase must be/);
   code(() => s.enthalpy("liquid", 500, 101.325, [0.5, 0.5]), "OUT_OF_RANGE", /Ethanol, heat of vaporization/);
@@ -130,8 +129,72 @@ test("errors: dimerizing acid, phase name, above the critical temperature", () =
   assert.ok(Number.isFinite(p.enthalpy("vapour", 520, 101.325, [0.5, 0.5])));
 });
 
-test("acetic acid enthalpies are refused also when the chemical theory is switched off", () => {
-  const s = system({ components: ["acetic acid", "ethylene glycol"], model: "NRTL", association: false });
-  assert.throws(() => s.enthalpy("liquid", 350, 101.325, [0.5, 0.5]), e => e instanceof CheptaError && e.code === "NOT_AVAILABLE");
-  assert.ok(Number.isFinite(s.excessEnthalpy([0.5, 0.5], 323.15)));
+test("acetic acid: the dimers' enthalpy makes h_V - h_L of the pure acid its heat of vaporization, with or without the chemical theory in the phase equilibrium", () => {
+  // (until 2026-10-22 this test asserted that acetic acid enthalpies are refused; they are now modelled)
+  const on = system({ components: ["acetic acid", "ethylene glycol"], model: "NRTL" });
+  const off = system({ components: ["acetic acid", "ethylene glycol"], model: "NRTL", association: false });
+  const p = pure("acetic acid");
+  for (const T of [298.15, 391.1]) {
+    const ps = p.psat(T);
+    const dh = on.enthalpy("vapour", T, ps, [1, 0]) - on.enthalpy("liquid", T, ps, [1, 0]);
+    // exact at 298.15 K (the liquid's anchor). Above it the liquid follows its measured heat capacity (the liquid basis
+    // of #34) and the vapour its monomer heat capacity and dimers, and ChemSep's records with the dimerization constant
+    // are not fully consistent: at the normal boiling point h_V - h_L is 21.44 kJ/mol against the 23.47 kJ/mol of the
+    // heat-of-vaporization record, 8.7 % low (docs/decisions/2026-10-22-05-reactions.md). This pins that gap.
+    const want = T === 298.15 ? 0 : -0.087;
+    assert.ok(Math.abs(dh / p.property("heatOfVaporization", T) - 1 - want) < (T === 298.15 ? 1e-9 : 0.002), `${T} K: ${dh}`);
+    assert.equal(off.enthalpy("liquid", T, ps, [0.5, 0.5]), on.enthalpy("liquid", T, ps, [0.5, 0.5]));
+  }
+  assert.ok(Number.isFinite(off.excessEnthalpy([0.5, 0.5], 323.15)));
+});
+
+test("acetic acid in a flowsheet: heat a solution in water, evaporate part of it; every duty closes the energy balance", () => {
+  // Method (docs/METHOD_SELECTION.md): an activity model with the chemical theory for the acid's vapour, at 1 atm;
+  // NRTL (fitted pair) and Modified UNIFAC 2.0 (predicted). Until 2026-10-22 these blocks refused acetic acid.
+  for (const model of ["NRTL", "MOD-UNIFAC-2"]) {
+    const sys = system({ components: ["water", "acetic-acid"], model });
+    const r = solveFlowsheet(sys, {
+      blocks: [
+        { id: "F1", type: "feed", spec: { flow_kmol_h: { water: 70, "acetic-acid": 30 }, T_K: 298.15, P_kPa: 101.325 } },
+        { id: "E1", type: "heater", spec: { P_kPa: 101.325, T_K: 360 } },
+        { id: "V1", type: "flash", spec: { P_kPa: 101.325, VF: 0.5 } },
+        { id: "P1", type: "product" }, { id: "P2", type: "product" },
+      ],
+      streams: [
+        { id: "S1", from: "F1.out", to: "E1.in" }, { id: "S2", from: "E1.out", to: "V1.in" },
+        { id: "S3", from: "V1.vapour", to: "P1.in" }, { id: "S4", from: "V1.liquid", to: "P2.in" },
+      ],
+    });
+    const S = r.streams;
+    assert.ok(Math.abs(r.blocks.E1.duty_kW - (S.S2.H_kW - S.S1.H_kW)) < 1e-6, model);
+    assert.ok(Math.abs(r.blocks.V1.duty_kW - (S.S3.H_kW + S.S4.H_kW - S.S2.H_kW)) < 1e-6, model);
+    // the evaporation duty per mole evaporated lies between the two heats of vaporization near 100 °C (acetic acid's
+    // to its dimerized vapour, about 23.5 kJ/mol; water's, about 41 kJ/mol), plus a little sensible heat
+    const q = r.blocks.V1.duty_kW * 3.6 / 50;
+    assert.ok(q > 23 && q < 46, `${model}: ${q.toFixed(1)} kJ per mol evaporated`);
+  }
+});
+
+test("an acid that is solid at 25 °C (adipic acid) in a flowsheet: its liquid is anchored where its records start", () => {
+  // Method (docs/METHOD_SELECTION.md): an activity model for a polar mixture at moderate pressure; Modified UNIFAC 2.0
+  // (predicted: no fitted pair). Until 2026-10-22 every liquid enthalpy of adipic acid was refused, its heat of
+  // vaporization record starting at its melting point (425.5 K), above the 298.15 K anchor.
+  const sys = system({ components: ["water", "adipic-acid"], model: "MOD-UNIFAC-2" });
+  const r = solveFlowsheet(sys, {
+    blocks: [
+      { id: "F1", type: "feed", spec: { flow_kmol_h: { water: 50, "adipic-acid": 50 }, T_K: 440, P_kPa: 1000 } },
+      { id: "E1", type: "heater", spec: { P_kPa: 300, T_K: 470 } },
+      { id: "V1", type: "flash", spec: { P_kPa: 300, VF: 0.3 } },
+      { id: "P1", type: "product" }, { id: "P2", type: "product" },
+    ],
+    streams: [
+      { id: "S1", from: "F1.out", to: "E1.in" }, { id: "S2", from: "E1.out", to: "V1.in" },
+      { id: "S3", from: "V1.vapour", to: "P1.in" }, { id: "S4", from: "V1.liquid", to: "P2.in" },
+    ],
+  });
+  const S = r.streams;
+  assert.ok(Math.abs(r.blocks.E1.duty_kW - (S.S2.H_kW - S.S1.H_kW)) < 1e-6);
+  assert.ok(Math.abs(r.blocks.V1.duty_kW - (S.S3.H_kW + S.S4.H_kW - S.S2.H_kW)) < 1e-6);
+  // below the start of its liquid records the liquid is refused with the reason
+  assert.throws(() => sys.enthalpy("liquid", 350, 101.325, [0, 1]), /Adipic acid/);
 });
