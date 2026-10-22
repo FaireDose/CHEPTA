@@ -30,6 +30,129 @@
     "Li 2016",
     "Li 2016"
    ]
+  },
+  "heatOfVaporization": {
+   "units": "J/mol",
+   "source": {
+    "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook)",
+    "fit": "25 Clapeyron values and 0 measured values, 313.15-373.15 K, max deviation 0.50 %"
+   },
+   "T_K": [
+    313.15,
+    315.65,
+    318.15,
+    320.65,
+    323.15,
+    325.65,
+    328.15,
+    330.65,
+    333.15,
+    335.65,
+    338.15,
+    340.65,
+    343.15,
+    345.65,
+    348.15,
+    350.65,
+    353.15,
+    355.65,
+    358.15,
+    360.65,
+    363.15,
+    365.65,
+    368.15,
+    370.65,
+    373.15
+   ],
+   "values": [
+    46089.839,
+    46071.099,
+    46052.359,
+    46033.618,
+    46014.878,
+    45996.138,
+    45977.398,
+    45958.657,
+    45939.917,
+    45921.177,
+    45902.437,
+    45883.696,
+    45864.956,
+    45846.216,
+    45827.476,
+    45808.735,
+    45789.995,
+    45771.255,
+    45752.515,
+    45733.774,
+    45715.034,
+    45696.294,
+    45677.554,
+    45658.813,
+    45640.073
+   ],
+   "references": [
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
+    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)"
+   ]
+  },
+  "vapourPressure": {
+   "units": "Pa",
+   "source": {
+    "name": "measured vapour pressures and the critical point",
+    "fit": "7 measured values (0 from the ThermoML Archive, 7 from open-access articles), 313.15-373.15 K, max deviation 6.8 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Türck 2026 +0.00 %. The values are READ OFF A GRAPH: the article prints them only in its Figure 7 (left panel), read by the marker centres with the gridlines as the scale (one pixel = 0.043 kPa). Measured with a Herzog HVP 972 vapour-pressure tester, n = 3, solketal of at least 98 %. Stated uncertainty of each value: 16 % (the one error bar visible, at 80 degC) with the reading resolution, 16-19 %, so the record is held to 19 %, above the 1 % target, used because no open values meet the target. The readings at 20 and 30 degC (0.174 and 0.196 kPa) are left out: there one pixel is a quarter of the value, and they are almost equal where every 10 K above 40 degC raises the pressure by a factor of 1.6 to 1.8 (the lower end of the tester's range). The maintainer agreed to use the figure (2026-10-22)."
+   },
+   "T_K": [
+    313.15,
+    323.15,
+    333.15,
+    343.15,
+    353.15,
+    363.15,
+    373.15
+   ],
+   "values": [
+    435.0,
+    696.0,
+    1213.0,
+    1915.0,
+    3326.0,
+    4674.0,
+    7065.0
+   ],
+   "references": [
+    "Türck 2026",
+    "Türck 2026",
+    "Türck 2026",
+    "Türck 2026",
+    "Türck 2026",
+    "Türck 2026",
+    "Türck 2026"
+   ],
+   "Tb_K_at_101325Pa": null
   }
  }
 }

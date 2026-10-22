@@ -44,16 +44,65 @@ Never:
   measured value at all, an open group-contribution method may predict it, labelled tier "predicted" with its method
   and accuracy (section 10); it is never mixed with measured values.
 
-If nothing open has a number, write **"no open data"** with the sources searched. Search the open literature too, not
-only the databases (the maintainer, 2026-10-13).
+<a id="search-order"></a>**How to search for a missing number.** When CHEPTA lacks a property of a component, CHEPTA's data
+file `src/data/components.json` holds a **"no open data" note** in its place: what is missing, and the list of places
+already searched (`searched`). The latest `docs/MISSING_PROPERTIES_<date>.md` (section 12) collects all the notes.
+To fill one, do these steps in order and stop when the number is found:
+
+1. **Read the note and the latest missing-properties file**, so the same places are not searched again. Start where
+   the last search stopped, and with what a person was asked to download.
+2. **The databases**: CoolProp, the NIST WebBook, ChemSep and the ThermoML Archive. `gap_report.py` asks them all for a
+   component (`--new ID:CAS` for a chemical CHEPTA does not have yet).
+3. **The full texts of open articles**: `fulltext_search.py` (section 13) lists the articles where the component and
+   the property are named together, with the passage. Read each passage, and take a value only as "Measured values in
+   articles" below says.
+4. **A free copy of every useful article that is behind a paywall**, and of the original measurement an open article
+   names: `open_copy.py --all` (section 13). Where a server refuses scripts, ask the person to download the file.
+5. **Beyond the indexes**: a web search, the free NIST reprints of J. Phys. Chem. Ref. Data, open theses, free books.
+6. **Supplier data**, only for a single constant (a melting point, a boiling point, a density at one temperature),
+   below.
+7. **Nothing found**: the note stays "no open data". Add what was searched, the articles that have the number but no
+   free copy (with their DOI, so a person can try to get them), and the indexes that could not be used.
+
+Write down every step, found or not: in the note's `searched` list, and for step 3 in the search record
+`validation/data/searches/<date>-fulltext.json`, which `missing_properties.py` shows next to each gap. (The scripts call
+the note a "marker": `vapourPressure_missing`, `critical`, and `available: false` on a property.)
+
+<a id="modelling-papers"></a>**Measured values in articles, modelling and simulation papers included** (the maintainer, 2026-10-22: "in the
+articles where you see simulations they have some data and cited sources for comparison? use those"). An article that
+fits a model (an equation of state, PC-SAFT, COSMO-RS) or runs a simulation often prints the measured values it
+compares with. An open article counts as the open copy of the measured values it prints:
+
+- its own measurements (Baird et al. 2019 measured levoglucosenone's vapour pressure for a PC-SAFT paper);
+- values it quotes with the measuring article named: the open article is cited, together with that original. Where
+  the original is open, its numbers are checked there and it is the source;
+- not values it quotes from a commercial databank or a handbook (DIPPR, Yaws, CRC, DDB): they stay that source's, as
+  for open libraries (source 4);
+- not its model's or simulation's results, nor its fitted parameters, even when they carry the name of a physical
+  quantity: a model's association energy is not a measured enthalpy (2026-10-22: the dimerization parameters of the
+  NRHB model, Tsivintzelis et al. 2017). They may be named as a cross-check (Wasik et al. 2025: Monte Carlo
+  dimerization enthalpies of formic acid against the fitted -63.2 kJ/mol), never as data.
+
+<a id="free-copies"></a>**Free copies** (the maintainer, 2026-10-15; proposal 0014, step 1). A paywalled article may have a
+legal free copy: the publisher's open-access version, or an accepted or submitted manuscript in a repository. Look it
+up with `python validation/python/open_copy.py DOI ... --cache DIR --all`, which asks Unpaywall, OpenAlex and CORE for
+every copy (in a batch, `gap_report.py --open-copies`, Unpaywall only). Such a copy is open: cite the published
+article, the link to the copy and its version, and check the numbers in that copy. A preprint or a manuscript is a
+source of the kind "free copy" (`src/data/sources.json`), and the record says when it was not peer reviewed (Nikitin
+et al. 2023 and Bogatishcheva et al. 2026, read on SSRN; 2026-10-22). `--fetch DIR` downloads the first
+copy that really is a PDF: a server may answer "200 OK" with an HTML page (a login, a robot check), which is never
+kept as the article. Where a repository serves its PDFs to browsers only, the script prints the link, for a person to
+download (the maintainer, 2026-10-22: "if you want to stop and ask me to download something let me know"). The
+indexes do not know every copy (the free NIST reprints of J. Phys. Chem. Ref. Data are in none of them), so "no copy
+found" is not "no open data" by itself.
 
 <a id="supplier-data-last-resort"></a>**Supplier data, last resort** (the maintainer, 2026-10-22: "if nothing found in open literature than check
 these websites and if they are similar within a small range take from there and note that it is an average for the
 values from few places"). Chemical suppliers (Merck/Sigma-Aldrich, TCI, Thermo Fisher/Alfa Aesar and the like) print
 a few constants on their product pages and specification sheets, free to read. They may make a record only when:
 
-- the full open search (sources 1-6, the open literature, Unpaywall) found no measured value of that constant, and
-  the record lists what was searched;
+- the full open search (steps 1-5 of "How to search for a missing number") found no measured value of that
+  constant, and the record lists what was searched;
 - the constant is a single number: a melting point, a normal boiling point (or a boiling point at a stated
   pressure), or a density at a stated temperature. Never a temperature curve, an enthalpy, a heat capacity, a
   dimerization constant or a mixture property, and never fitted into a correlation;
@@ -68,14 +117,7 @@ a few constants on their product pages and specification sheets, free to read. T
   found later replaces the supplier record, and a supplier record is never mixed with measured values.
 
 If the values disagree by more than the limits, or fewer than three suppliers print the constant, the property stays
-"no open data", with the supplier values listed in the marker.
-
-**A paywalled article may have a legal free copy** (the maintainer, 2026-10-15): before setting an article aside as
-paywalled, look it up in Unpaywall (`python validation/python/open_copy.py DOI ... --cache DIR`; in a batch,
-`gap_report.py --open-copies`). A copy Unpaywall lists (the publisher's open-access version, or an accepted or
-submitted manuscript in a repository) is open: cite the published article, the link to the copy and its version, and
-check the numbers in that copy. Unpaywall does not know every copy (the free NIST reprints of J. Phys. Chem. Ref. Data
-are not in it), so "no copy found" is not "no open data" by itself.
+"no open data", with the supplier values listed in its note.
 
 **New chemicals** (AGENTS.md rule 8; the maintainer, 2026-10-21): a chemical met in a task that CHEPTA does not have
 is proposed for addition, with the properties the task needs, never replaced silently. `gap_report.py --new ID:CAS`
@@ -197,7 +239,7 @@ new refit of a ChemSep record is made (section 1).
 
 ## 6. Components without measured critical constants (proposal 0009)
 
-Such a component has `Tc_K`, `Pc_Pa` and `omega` null and a `critical` marker with the sources searched.
+Such a component has `Tc_K`, `Pc_Pa` and `omega` null and a `critical` note with the sources searched.
 
 - Activity models (NRTL, UNIQUAC, Modified UNIFAC 2.0, ideal solution) with an ideal-gas vapour use it.
 - Peng–Robinson and SRK, for both phases or for an activity model's vapour, refuse it and say why
@@ -302,14 +344,14 @@ with the heat capacity predicted where none is measured. A volatile liquid witho
 alpha-angelica lactone) is not made nonvolatile: that would make every distillation with it wrong.
 
 **Liquids without an open vapour pressure** (the maintainer, 2026-10-20): such a component is added with a "no open
-data" marker for its vapour pressure (`vapourPressure_missing`, with the sources searched; `build_no_vp` in
+data" note for its vapour pressure (`vapourPressure_missing`, with the sources searched; `build_no_vp` in
 `measured_components.py`) and its other records from measured data. It has no normal boiling point, critical
 constants or vapour records. Activity coefficients, liquid-liquid and solid-liquid equilibria work with it; whatever
 needs its vapour pressure (bubble and dew points, flashes, vapour-liquid diagrams) refuses with the sources searched,
 until the user gives a vapour pressure of their own in My data (proposal 0012). No vapour pressure is predicted:
 SIMPOL.1, the only open group-contribution method that covers these molecules, was checked on 109 CHEPTA components and
 not accepted (errors of a factor of 2 and more). Supplier catalogues and compilations that give a single boiling point
-are listed in the marker, never fitted (section 1; a supplier boiling point is not a vapour-pressure curve). Terephthalic acid is a nonvolatile liquid up to an assumed melting temperature of 400 degC, by the
+are listed in the note, never fitted (section 1; a supplier boiling point is not a vapour-pressure curve). Terephthalic acid is a nonvolatile liquid up to an assumed melting temperature of 400 degC, by the
 maintainer's choice (2026-10-17; it sublimes at 402-404 degC). Nor is a substance
 that is distilled or sublimed in its own processes (lactide, isosorbide, BHMF, dimethyl FDCA, levoglucosan; held in
 batch 4 for want of an open liquid vapour pressure). A substance whose measured volatility is negligible beside its
@@ -347,11 +389,64 @@ solvents may be (HMF: its WebBook boiling temperature of 388.2 K at 0.1 kPa, whe
 
 The maintainer, 2026-10-22: "make a new file with the day of today so we keep track. add this as a rule".
 
-- What the databank still lacks (every "no open data" marker, the predicted-only records, the components without
+- What the databank still lacks (every "no open data" note, the predicted-only records, the components without
   UNIQUAC r and q or Modified UNIFAC 2.0 groups) is written to a new file, `docs/MISSING_PROPERTIES_<date>.md`, at
   every update. It is made by `validation/python/missing_properties.py --date <date> --since <revision>`; `--since`
   is the commit of the previous file, and the new file says what changed since then.
+- A second update on the same day is a new file with `-2` after the date (`MISSING_PROPERTIES_2026-10-22-2.md`).
 - The earlier files are not edited, so the gaps can be followed over time; `docs/README.md` and `docs/DECISIONS.md`
   link the latest one.
 - Prose the script does not write (what a search found, the recommendation still to decide) is added below its
   tables, and carried over from the previous file while it is open.
+
+## 13. The search tools (proposal 0014, steps 1 and 2)
+
+Two scripts in `validation/python/` do steps 3 and 4 of "How to search for a missing number" (section 1). They find
+articles; they never take a number. Each value is read in the article by a person or an assistant, and a person checks
+it against the article before it is added (AGENTS.md rule 4).
+
+**`open_copy.py`: the legal free copies of an article.**
+
+- `python validation/python/open_copy.py DOI ... --cache DIR` prints Unpaywall's best free copy (as before;
+  `gap_report.py --open-copies` uses it).
+- `--all` lists every copy that three indexes know: Unpaywall (all its locations), OpenAlex and CORE. A repository
+  copy is often missing from Unpaywall (Baird et al. 2019: Unpaywall gave only the publisher's copy, OpenAlex also the
+  Aalto and OSF copies).
+- `--fetch DIR` downloads the first copy that really is a PDF (it starts with "%PDF"). A server may answer "200 OK"
+  with an HTML page (a login, a robot check, a landing page): such an answer is never kept. A repository landing page
+  is followed to the PDF named in its `citation_pdf_url` tag. Where a server serves PDFs to browsers only (403 to
+  scripts: Springer, ScienceDirect, the Aalto and DTU repositories on 2026-10-22), the script prints the link and the
+  person downloads it.
+- The answers are cached per DOI in the cache directory.
+
+**`fulltext_search.py`: open articles whose full text names a missing property.**
+
+- `python validation/python/fulltext_search.py --cache DIR --out FILE [--only ID ...] [--props KEY ...]
+  [--indexes europepmc openalex core]`.
+- For each "no open data" note it asks for articles where one of the component's names (the name, the aliases
+  without acronyms, the CAS number) appears together with a word for the property ("vapor pressure", "vapour
+  pressure", "saturation pressure", ...). By default it searches the properties a calculation needs (vapour pressure,
+  liquid density, heat of vaporization, liquid heat capacity, melting data, formation data, critical constants,
+  normal boiling point); the transport properties and the ideal-gas heat capacity only with `--props`.
+- It reads each article it can get and lists the passages (a table or a paragraph, or twelve lines of a PDF) where a
+  name, as a whole word, and the property word appear together; a passage with numbers ranks first. Each listed
+  passage is then read, and the article where it points to a value.
+- The three indexes:
+
+  | Index | What it covers | Key | How the text is read |
+  |---|---|---|---|
+  | Europe PMC | the biomedical literature and the journals deposited in PubMed Central (MDPI, ACS Omega, RSC Advances, Scientific Reports); not J. Chem. Eng. Data, J. Chem. Thermodyn., Fluid Phase Equilib. or Int. J. Thermophys. | none | its open full text (XML) |
+  | OpenAlex | open-access works of all fields, the chemistry journals included; its data are CC0 | free, a daily budget of US$1 (about 1000 queries); without a key a small budget shared by everyone on the same network address | one query per gap, (names) AND (property words), open-access works only; each hit's open copy fetched as a PDF |
+  | CORE | the full texts of open repositories | free for some uses only: its terms ask software that "might be monetised now or in the future" to contact it, so it is not used until CORE answers the maintainer (asked 2026-10-22) | not yet run |
+
+- **The keys** are network secrets of the cloud environment (the environment's settings, Network secrets): secret
+  type Bearer, allowed website `api.openalex.org` (and `api.core.ac.uk` once CORE allows it), header `Authorization`
+  with the prefix `Bearer` and the key as its value. The secret adds the header to every request to that website; the
+  script never sees the key. On a computer of one's own, the variables `OPENALEX_API_KEY` and `CORE_API_KEY` do the
+  same.
+- Many publishers refuse scripts: on 2026-10-22, 271 of the 1185 articles OpenAlex found could be downloaded and read.
+  An article the script could not read is not "searched": it is listed in the record, for a person to open.
+- **The record of a search** is written to `validation/data/searches/<date>-fulltext.json`: for each gap, the
+  articles found and read per index, the passages, and what they held, in one line ("none of the pure compound" when
+  the passages name the component as a reactant, product, solvent or ligand, or give a value of a mixture). It also
+  says which indexes were asked and which were not, and why. `missing_properties.py` shows it next to the gaps.

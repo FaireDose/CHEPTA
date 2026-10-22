@@ -1,0 +1,2839 @@
+{
+ "date": "2026-10-22",
+ "tool": "validation/python/fulltext_search.py",
+ "summary": "\"None of the pure compound\": the passages name the component as a reactant, product, solvent or ligand, or give a value of a mixture or a solution. 176 gaps searched (the properties a calculation needs); 78 had at least one open article where a name of the component and the property appear in the same paragraph or table. Each such passage (the passage the script shows, and the article where it pointed to a value) was read on 2026-10-22. One measured value was found: solketal's vapour pressure (Türck et al. 2026), added with the maintainer's agreement, read off its figure and held to its uncertainty of 16-19 %. Europe PMC indexes the biomedical literature and the journals deposited in PubMed Central (MDPI, ACS Omega, RSC Advances, Scientific Reports); it does not have J. Chem. Eng. Data, J. Chem. Thermodyn., Fluid Phase Equilib. or Int. J. Thermophys., where most measurements are, so OpenAlex was asked too, later the same day, with a key. Neither index found a further value usable under the rules: the melting points of DL-malic acid and cis,cis-muconic acid came without an enthalpy of fusion.",
+ "indexes": {
+  "Europe PMC": "asked (full texts of open-access articles; 8 articles read per search)",
+  "OpenAlex": "asked, with a key (a network secret of the environment): one full-text query per gap, open-access works only, 8 articles per query; 1185 articles found, 271 of them could be downloaded as a PDF and read (the others' servers refuse scripts or give no PDF)",
+  "CORE": "not asked: the maintainer has written to CORE to ask which licence fits an MIT-licensed simulator (2026-10-22)"
+ },
+ "gaps": {
+  "2-methoxyethanol": {
+   "fusion": {
+    "hits": 171,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.5620/eaht.2022031"
+    ],
+    "openalex": {
+     "hits": 913,
+     "read": 8,
+     "fetched": 5,
+     "screened": 1,
+     "articles": [
+      "10.31788/rjc.2023.1628291"
+     ]
+    }
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 20,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "mdea": {
+   "fusion": {
+    "hits": 59,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.34865/mb10559kske11_1ad",
+     "10.3390/polym17233188",
+     "10.1016/j.crmeth.2026.101375"
+    ],
+    "openalex": {
+     "hits": 351,
+     "read": 8,
+     "fetched": 3,
+     "screened": 2,
+     "articles": [
+      "10.3389/fmats.2018.00058",
+      "10.1088/2053-1591/ac47c6"
+     ]
+    }
+   }
+  },
+  "terephthalic-acid": {
+   "liquidDensity": {
+    "hits": 3691,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsaom.6c00229",
+     "10.1039/d5ra09485b",
+     "10.1021/acs.inorgchem.5c06095"
+    ],
+    "openalex": {
+     "hits": 10093,
+     "read": 8,
+     "fetched": 2,
+     "screened": 2,
+     "articles": [
+      "10.48048/tis.2023.7163",
+      "10.2115/fiber.33.12_t597"
+     ]
+    }
+   },
+   "fusion": {
+    "hits": 844,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym18182286",
+     "10.1002/marc.202500776",
+     "10.1021/acs.est.6c01921"
+    ],
+    "openalex": {
+     "hits": 2786,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.1295/koron.40.393"
+     ]
+    }
+   }
+  },
+  "methyl-oleate": {
+   "fusion": {
+    "hits": 845,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym17192599",
+     "10.1039/d6ra05806j"
+    ],
+    "openalex": {
+     "hits": 6805,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "methyl-linoleate": {
+   "fusion": {
+    "hits": 57,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/molecules30061217"
+    ],
+    "openalex": {
+     "hits": 353,
+     "read": 8,
+     "fetched": 5,
+     "screened": 2,
+     "articles": [
+      "10.1080/00021369.1984.10866574",
+      "10.5650/jos.62.427"
+     ]
+    }
+   }
+  },
+  "triolein": {
+   "heatOfVaporization": {
+    "hits": 65,
+    "screened": 0,
+    "held": "none of the pure compound",
+    "articles": [],
+    "openalex": {
+     "hits": 602,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.5935/2447-0228.20200019"
+     ]
+    },
+    "downloaded": {
+     "doi": "10.3390/thermo2030018",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "none of the pure compound: Verevkin and Nagrimanov 2022 (Thermo) has saturated triglycerides only; Garcia Santander et al. 2012 (Fuel) a TGA normal boiling point only (419.10 degC), no enthalpy"
+    }
+   }
+  },
+  "tripalmitin": {
+   "heatOfVaporization": {
+    "hits": 63,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 585,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "downloaded": {
+     "doi": "10.3390/thermo2030018",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, held for the maintainer**: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266, doi:10.3390/thermo2030018 (CC BY 4.0), Table 1: quartz-crystal microbalance, 384.9-433.2 K, 169.5 +- 4.2 kJ/mol at the mean temperature (about 409 K; the values are in its supplementary Table S2), adjusted by the authors to 210.2 +- 9.2 kJ/mol at 298.15 K. A single value: no record without the maintainer's decision; the slope of CHEPTA's ChemSep vapour-pressure record gives 189.7 kJ/mol at 409 K (Clapeyron, ideal gas), 12 % above it. The paper's recommended 211.6 kJ/mol averages it with correlation estimates, which are not data. Also read: Garcia Santander et al., Fuel 92 (2012) 158-161, doi:10.1016/j.fuel.2011.08.011 (Elsevier OA licence), TGA normal boiling points only (416.87 degC), no enthalpy"
+    }
+   }
+  },
+  "2-methylfuran": {
+   "formation": {
+    "hits": 6,
+    "screened": 2,
+    "held": "Amaral et al., Molecules 2024, doi:10.3390/molecules29122729: theoretical increments only, no measured enthalpy of 2-methylfuran",
+    "articles": [
+     "10.3390/molecules29132976",
+     "10.3390/molecules29122729"
+    ],
+    "openalex": {
+     "hits": 241,
+     "read": 8,
+     "fetched": 4,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 23,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "2-methyltetrahydrofuran": {
+   "fusion": {
+    "hits": 225,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d6sc03749f"
+    ],
+    "openalex": {
+     "hits": 802,
+     "read": 8,
+     "fetched": 2,
+     "screened": 1,
+     "articles": [
+      "10.69930/ijgc.v2i2.549"
+     ]
+    }
+   },
+   "formation": {
+    "hits": 9,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 122,
+     "read": 8,
+     "fetched": 4,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 9,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "1-3-propanediol": {
+   "formationG": {
+    "hits": 5,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 3,
+     "read": 3,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "methyl-levulinate": {
+   "fusion": {
+    "hits": 17,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 81,
+     "read": 8,
+     "fetched": 3,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 6,
+     "read": 6,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "ethyl-levulinate": {
+   "fusion": {
+    "hits": 26,
+    "screened": 0,
+    "held": "none of the pure compound",
+    "articles": [],
+    "openalex": {
+     "hits": 169,
+     "read": 8,
+     "fetched": 4,
+     "screened": 1,
+     "articles": [
+      "10.30574/wjaets.2026.19.2.0277"
+     ]
+    }
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 5,
+     "read": 5,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "butyl-levulinate": {
+   "fusion": {
+    "hits": 6,
+    "screened": 0,
+    "held": "none of the pure compound",
+    "articles": [],
+    "openalex": {
+     "hits": 41,
+     "read": 8,
+     "fetched": 4,
+     "screened": 1,
+     "articles": [
+      ""
+     ]
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 3,
+     "read": 3,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "levulinic-acid": {
+   "formationG": {
+    "hits": 9,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 30,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "gvl": {
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 20,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 63,
+    "screened": 0,
+    "held": "none of the pure compound",
+    "articles": [],
+    "openalex": {
+     "hits": 231,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.37934/arfmts.97.2.186196"
+     ]
+    }
+   }
+  },
+  "thfa": {
+   "fusion": {
+    "hits": 63,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 145,
+     "read": 8,
+     "fetched": 3,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 20,
+    "screened": 0,
+    "held": "none of the pure compound",
+    "articles": [],
+    "openalex": {
+     "hits": 54,
+     "read": 8,
+     "fetched": 5,
+     "screened": 1,
+     "articles": [
+      "10.5283/epub.32656"
+     ]
+    },
+    "downloaded": {
+     "doi": "10.1016/j.fluid.2022.113656",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, added**: Nikitin et al. 2023 (as for furfuryl alcohol): Tc = 668 +- 10 K, pc = 4.18 +- 0.17 MPa; with its heat capacities (Table 5, 298-453 K) and thermal conductivities (Table 7, 303-373 K). The vapour-pressure curve now runs to the critical point, and reaches 101.325 kPa at 449.46 K (Tb)"
+    }
+   },
+   "Tb": {
+    "hits": 59,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/nano13020285"
+    ],
+    "openalex": {
+     "hits": 234,
+     "read": 8,
+     "fetched": 2,
+     "screened": 1,
+     "articles": [
+      "10.14419/ijac.v3i2.5048"
+     ]
+    },
+    "downloaded": {
+     "doi": "10.1016/j.fluid.2022.113656",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**now from the vapour-pressure record**, which runs to the measured critical point of Nikitin et al. 2023: 449.46 K. Nikitin et al.'s Table 2 gives 449.9 K, an average of earlier articles"
+    }
+   }
+  },
+  "cpme": {
+   "fusion": {
+    "hits": 73,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 247,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 20,
+     "read": 8,
+     "fetched": 3,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 22,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 68,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "2-3-butanediol": {
+   "fusion": {
+    "hits": 130,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym17182467"
+    ],
+    "openalex": {
+     "hits": 32,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 62,
+    "screened": 2,
+    "held": "critical temperatures used as inputs of a machine-learning model (Sci. Rep. 2022, doi:10.1038/s41598-022-08842-5), not measured",
+    "articles": [
+     "10.5851/kosfa.2024.e115",
+     "10.1038/s41598-022-08842-5"
+    ],
+    "openalex": {
+     "hits": 4,
+     "read": 4,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "Tb": {
+    "hits": 176,
+    "screened": 5,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d6sc06370e",
+     "10.1021/acsomega.5c10210",
+     "10.1021/acssuschemeng.4c04121",
+     "10.3390/polym16152177",
+     "10.1021/acs.jpcc.6c01905"
+    ],
+    "openalex": {
+     "hits": 74,
+     "read": 8,
+     "fetched": 2,
+     "screened": 1,
+     "articles": [
+      "10.15261/serdj.21.181"
+     ]
+    }
+   }
+  },
+  "methyl-lactate": {
+   "fusion": {
+    "hits": 40,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "PMC13682532",
+     "10.3390/membranes15070210"
+    ],
+    "openalex": {
+     "hits": 175,
+     "read": 8,
+     "fetched": 4,
+     "screened": 1,
+     "articles": [
+      "10.2115/fiber.62.199"
+     ]
+    }
+   },
+   "formation": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 29,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 4,
+     "read": 4,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 16,
+    "screened": 1,
+    "held": "the critical point of a mixture with CO2, not of methyl lactate",
+    "articles": [
+     "10.1021/acsomega.5c05424"
+    ],
+    "openalex": {
+     "hits": 56,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    },
+    "downloaded": {
+     "doi": "10.2139/ssrn.6083032",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, added** (the maintainer accepted the larger vapour-pressure miss, 2026-10-22): Bogatishcheva et al., SSRN preprint 2026 (not peer reviewed), doi:10.2139/ssrn.6083032, Tables 3 and 4: Tc = 612 K (U_r 1.5 %), pc = 3.73 MPa (U_r 4.5 %), pulse heating; with it the vapour-pressure set of Lomba 2014 misses the curve by 3.37 % (stated 2.59 %). With its heat capacities (Eq. 24, 298-417 K, 3 %) and thermal conductivities (Eq. 27, 303-373 K, 8.5 %)"
+    }
+   },
+   "Tb": {
+    "hits": 33,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.5c09431",
+     "10.3390/membranes16060206"
+    ],
+    "openalex": {
+     "hits": 165,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "ethyl-lactate": {
+   "fusion": {
+    "hits": 144,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/antiox13020239"
+    ],
+    "openalex": {
+     "hits": 528,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "downloaded": {
+     "doi": "10.57912/23844132",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, held for the maintainer**: Ashraf, MS thesis, St. John's University 2015 (open repository, doi:10.57912/23844132), Table 8 and Figures 27-29 (modulated DSC): racemate (CAS 97-64-3, CHEPTA's component) peak 247.51 K (-25.64 degC; onset -31.08 degC), 83.46 J/g = 9.86 kJ/mol; L-form -6.22 degC, 40.12 J/g; D-form -4.23 degC, 159.4 J/g. Mirror images have the same enthalpy of fusion, so the factor of four between them makes the thesis's enthalpies doubtful; the temperatures are DSC peaks, not onsets"
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 12,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 78,
+    "screened": 2,
+    "held": "the critical point of a mixture with CO2, not of ethyl lactate",
+    "articles": [
+     "10.1021/acsomega.5c05424",
+     "10.3390/molecules31152589"
+    ],
+    "openalex": {
+     "hits": 283,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "downloaded": {
+     "doi": "10.2139/ssrn.6083032",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, added** (as for methyl lactate): Bogatishcheva et al. 2026: Tc = 617 K, pc = 3.32 MPa; Resa 2010 misses the curve by 2.35 % (stated 1.70 %). With its heat capacities (298-398 K) and thermal conductivities"
+    }
+   }
+  },
+  "limonene": {
+   "fusion": {
+    "hits": 1088,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.macromol.6c00489",
+     "10.1016/j.fochx.2026.104155",
+     "10.3390/polym18080985",
+     "10.1021/acspolymersau.5c00192"
+    ],
+    "openalex": {
+     "hits": 2912,
+     "read": 8,
+     "fetched": 5,
+     "screened": 2,
+     "articles": [
+      "",
+      "10.20961/equilibrium.v7i2.80308"
+     ]
+    }
+   },
+   "formationG": {
+    "hits": 6,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 24,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 493,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/nu18071126"
+    ],
+    "openalex": {
+     "hits": 1198,
+     "read": 8,
+     "fetched": 3,
+     "screened": 2,
+     "articles": [
+      "10.1252/kakoronbunshu.22.195",
+      "10.4236/ns.2012.48072"
+     ]
+    }
+   },
+   "Tb": {
+    "hits": 916,
+    "screened": 5,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/molecules31081358",
+     "10.3390/gels12050386",
+     "10.1016/j.fochx.2026.104155",
+     "10.3390/polym18080985",
+     "10.1021/acs.macromol.6c00489"
+    ],
+    "openalex": {
+     "hits": 2749,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "furfuryl-alcohol": {
+   "critical": {
+    "hits": 77,
+    "screened": 1,
+    "held": "the same machine-learning article (doi:10.1038/s41598-022-08842-5): not measured",
+    "articles": [
+     "10.1038/s41598-022-08842-5"
+    ],
+    "openalex": {
+     "hits": 314,
+     "read": 8,
+     "fetched": 4,
+     "screened": 0,
+     "articles": []
+    },
+    "downloaded": {
+     "doi": "10.1016/j.fluid.2022.113656",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, added**: Nikitin et al., Fluid Phase Equilib. 565 (2023) 113656, doi:10.1016/j.fluid.2022.113656, read in the submitted manuscript on SSRN (doi:10.2139/ssrn.4213180), Tables 2 and 3: Tc = 660 +- 10 K, pc = 4.85 +- 0.19 MPa, pulse heating; with its heat capacities (Table 5, 298-373 K) and thermal conductivities (Table 7, 303-353 K)"
+    }
+   },
+   "Tb": {
+    "hits": 241,
+    "screened": 2,
+    "held": "a QSPR article's input table: not measured",
+    "articles": [
+     "10.1007/s10822-026-00899-y",
+     "10.3390/ma19020334"
+    ],
+    "openalex": {
+     "hits": 1041,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "isoamyl-alcohol": {
+   "fusion": {
+    "hits": 547,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 2110,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 25,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "lactic-acid": {
+   "formationG": {
+    "hits": 20,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 164,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "hmf": {
+   "liquidDensity": {
+    "hits": 2874,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/foods15183176",
+     "10.3390/molecules31071087",
+     "10.1039/d6ra01120a",
+     "10.1038/s41598-026-44463-y"
+    ],
+    "openalex": {
+     "hits": 11653,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 32,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 661,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 25,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "glucose": {
+   "liquidDensity": {
+    "hits": 524878,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/bios16080441",
+     "10.3390/ijms27167176",
+     "10.1021/acsomega.6c08058",
+     "10.1093/plphys/kiag428"
+    ],
+    "openalex": {
+     "hits": 1090182,
+     "read": 8,
+     "fetched": 4,
+     "screened": 3,
+     "articles": [
+      "10.1016/j.arabjc.2014.08.027",
+      "10.1016/j.arabjc.2010.07.018",
+      "10.5937/savteh1601053t"
+     ]
+    }
+   }
+  },
+  "fructose": {
+   "liquidDensity": {
+    "hits": 46038,
+    "screened": 4,
+    "held": "aqueous solutions only (among them J. Res. NBS 8 (1932), doi:10.6028/jres.008.033, public domain)",
+    "articles": [
+     "PMC13637019",
+     "10.1021/acsphyschemau.6c00122",
+     "10.1021/acs.energyfuels.6c02836",
+     "10.3390/foods15142573"
+    ],
+    "openalex": {
+     "hits": 119052,
+     "read": 8,
+     "fetched": 4,
+     "screened": 4,
+     "articles": [
+      "10.6028/jres.008.033",
+      "10.61343/jcm.v3i02.161",
+      "10.1016/j.arabjc.2010.07.018",
+      "10.53555/ajbr.v27i3s.3235"
+     ]
+    }
+   }
+  },
+  "sorbitol": {
+   "liquidDensity": {
+    "hits": 17457,
+    "screened": 5,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3347/phd.25096",
+     "10.3390/microorganisms14050947",
+     "10.1038/s42003-026-09835-0",
+     "10.1155/bca/5217456",
+     "10.1507/endocrj.ej25-0549"
+    ],
+    "openalex": {
+     "hits": 47999,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.33263/briac111.80758086"
+     ]
+    }
+   },
+   "formationG": {
+    "hits": 2,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1186/1475-2859-12-33"
+    ],
+    "openalex": {
+     "hits": 43,
+     "read": 8,
+     "fetched": 3,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "xylitol": {
+   "formation": {
+    "hits": 25,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.iecr.1c00397"
+    ],
+    "openalex": {
+     "hits": 407,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 25,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "succinic-acid": {
+   "liquidDensity": {
+    "hits": 8787,
+    "screened": 7,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1038/s41467-026-76635-9",
+     "10.1038/s41467-026-69962-4",
+     "10.3390/ani16182965",
+     "10.1021/cbe.6c00021",
+     "10.1128/aem.01155-26",
+     "PMC13643848",
+     "10.3390/ph19091331"
+    ],
+    "openalex": {
+     "hits": 22964,
+     "read": 8,
+     "fetched": 3,
+     "screened": 2,
+     "articles": [
+      "10.5194/acp-9-1873-2009",
+      "10.3389/fbioe.2022.843887"
+     ]
+    }
+   }
+  },
+  "itaconic-acid": {
+   "liquidDensity": {
+    "hits": 1640,
+    "screened": 6,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.6c04582",
+     "PMC13602338",
+     "10.1021/acssuschemeng.5c13563",
+     "PMC13659735",
+     "10.1021/acsapm.6c01440",
+     "10.1039/d5gc06888f"
+    ],
+    "openalex": {
+     "hits": 5648,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.21203/rs.3.rs-5354028/v1"
+     ]
+    }
+   },
+   "fusion": {
+    "hits": 218,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.6c04582",
+     "10.3390/polym18151826",
+     "10.3390/polym17162220",
+     "10.3390/polym16192780"
+    ],
+    "openalex": {
+     "hits": 1045,
+     "read": 8,
+     "fetched": 2,
+     "screened": 2,
+     "articles": [
+      "10.4236/msce.2014.210007",
+      "10.1271/bbb1961.45.475"
+     ]
+    }
+   },
+   "formationG": {
+    "hits": 5,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 41,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "fumaric-acid": {
+   "liquidDensity": {
+    "hits": 3269,
+    "screened": 5,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1371/journal.pone.0355936",
+     "10.3389/fvets.2026.1930766",
+     "10.1177/00368504261477972",
+     "10.1021/acs.jafc.6c02932",
+     "10.1039/d5sc06271c"
+    ],
+    "openalex": {
+     "hits": 8764,
+     "read": 8,
+     "fetched": 2,
+     "screened": 2,
+     "articles": [
+      "10.5281/zenodo.20071688",
+      "10.4067/s0717-97072011000200007"
+     ]
+    }
+   },
+   "fusion": {
+    "hits": 316,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1177/00368504261477972",
+     "10.3390/foods13193195"
+    ],
+    "openalex": {
+     "hits": 1391,
+     "read": 8,
+     "fetched": 3,
+     "screened": 1,
+     "articles": [
+      "10.1295/koron.62.316"
+     ]
+    }
+   }
+  },
+  "malic-acid": {
+   "liquidDensity": {
+    "hits": 7405,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1177/00368504261477972"
+    ],
+    "openalex": {
+     "hits": 30173,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.23960/analit.v9i02.200"
+     ]
+    }
+   },
+   "fusion": {
+    "hits": 643,
+    "screened": 2,
+    "held": "Marques et al., Arab. J. Chem. 2020, doi:10.1016/j.arabjc.2020.10.036 (CC BY-NC-ND 4.0): DL-malic acid melting point 129.71 °C (melting-point apparatus, ±0.5 K), no enthalpy of fusion: no melting record (it needs both)",
+    "articles": [
+     "10.1177/00368504261477972",
+     "10.1021/acsomega.5c03345"
+    ],
+    "openalex": {
+     "hits": 4405,
+     "read": 8,
+     "fetched": 5,
+     "screened": 2,
+     "articles": [
+      "10.1016/j.arabjc.2020.10.036",
+      "10.1246/nikkashi.1983.1743"
+     ]
+    }
+   },
+   "formation": {
+    "hits": 23,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 340,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 5,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acssusresmgt.4c00041"
+    ],
+    "openalex": {
+     "hits": 78,
+     "read": 8,
+     "fetched": 3,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "citric-acid": {
+   "liquidDensity": {
+    "hits": 42540,
+    "screened": 6,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.6c08058",
+     "10.3390/membranes16090284",
+     "PMC13667178",
+     "PMC13665833",
+     "10.1021/acsomega.6c07665",
+     "10.1021/acsomega.6c03826"
+    ],
+    "openalex": {
+     "hits": 113743,
+     "read": 8,
+     "fetched": 3,
+     "screened": 3,
+     "articles": [
+      "10.5937/savteh1601053t",
+      "10.21817/ijet/2016/v8i6/160806205",
+      "10.11648/j.ajac.20251302.11"
+     ]
+    }
+   }
+  },
+  "glycolic-acid": {
+   "liquidDensity": {
+    "hits": 18993,
+    "screened": 5,
+    "held": "Savannah River National Laboratory reports on OSTI (doi:10.2172/982752, 10.2172/1019026, 10.2172/1371696): densities of 60-75 wt% aqueous glycolic acid only; 'neat glycolic acid was not measured'",
+    "articles": [
+     "10.1038/s41467-026-75866-0",
+     "10.1002/fsn3.71531",
+     "10.1021/acsomega.6c00721",
+     "10.1002/adma.73384",
+     "10.1002/adma.202515355"
+    ],
+    "openalex": {
+     "hits": 37346,
+     "read": 8,
+     "fetched": 3,
+     "screened": 3,
+     "articles": [
+      "10.2172/1371696",
+      "10.2172/982752",
+      "10.2172/1019026"
+     ]
+    }
+   },
+   "formation": {
+    "hits": 21,
+    "screened": 0,
+    "held": "a process model's input table (Chem. Eng. Trans. 2026, doi:10.3303/cet26125044) quoting a market-research report: not taken",
+    "articles": [],
+    "openalex": {
+     "hits": 174,
+     "read": 8,
+     "fetched": 4,
+     "screened": 1,
+     "articles": [
+      "10.3303/cet26125044"
+     ]
+    }
+   },
+   "formationG": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 42,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "glucaric-acid": {
+   "liquidDensity": {
+    "hits": 659,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/ijms262010209",
+     "10.3390/molecules30143012",
+     "10.1021/jacs.5c22029",
+     "10.1002/advs.202510649"
+    ],
+    "openalex": {
+     "hits": 1505,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "fusion": {
+    "hits": 49,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1002/ejoc.201701343"
+    ],
+    "openalex": {
+     "hits": 210,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 5,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 32,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 6,
+     "read": 6,
+     "fetched": 3,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "3-hydroxypropionic-acid": {
+   "liquidDensity": {
+    "hits": 534,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d6sc03316d"
+    ],
+    "openalex": {
+     "hits": 1446,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "fusion": {
+    "hits": 44,
+    "screened": 0,
+    "held": "none of the pure compound",
+    "articles": [],
+    "openalex": {
+     "hits": 198,
+     "read": 8,
+     "fetched": 3,
+     "screened": 1,
+     "articles": [
+      ""
+     ]
+    }
+   },
+   "formation": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 36,
+     "read": 8,
+     "fetched": 3,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 6,
+     "read": 6,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "fdca": {
+   "liquidDensity": {
+    "hits": 627,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.6c05696"
+    ],
+    "openalex": {
+     "hits": 355,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 6,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 3,
+     "read": 3,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "bhet": {
+   "liquidDensity": {
+    "hits": 266,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 7,
+     "read": 7,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "fusion": {
+    "hits": 146,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym17121687",
+     "10.3390/biology15070540"
+    ],
+    "openalex": {
+     "hits": 4,
+     "read": 4,
+     "fetched": 3,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "diphenolic-acid": {
+   "liquidDensity": {
+    "hits": 68,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acsomega.1c05812"
+    ],
+    "openalex": {
+     "hits": 256,
+     "read": 8,
+     "fetched": 3,
+     "screened": 1,
+     "articles": [
+      "10.15625/2525-2518/58/2/14218"
+     ]
+    }
+   },
+   "fusion": {
+    "hits": 10,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 71,
+     "read": 8,
+     "fetched": 5,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 4,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 21,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "xylose": {
+   "liquidDensity": {
+    "hits": 15458,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1002/cssc.202501562",
+     "10.1038/s41594-026-01784-w",
+     "10.1021/acsomega.6c05861"
+    ],
+    "openalex": {
+     "hits": 44617,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "muconic-acid": {
+   "liquidDensity": {
+    "hits": 560,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d4ra05226a"
+    ],
+    "openalex": {
+     "hits": 1591,
+     "read": 8,
+     "fetched": 2,
+     "screened": 1,
+     "articles": [
+      "10.1021/acssuschemeng.6b01820"
+     ]
+    }
+   },
+   "fusion": {
+    "hits": 62,
+    "screened": 0,
+    "held": "ACS Sustain. Chem. Eng. 2016, doi:10.1021/acssuschemeng.6b01820, Table 3: cis,cis-muconic acid melting point 197 °C (purity 99.2 %), no enthalpy of fusion: no melting record",
+    "articles": [],
+    "openalex": {
+     "hits": 259,
+     "read": 8,
+     "fetched": 3,
+     "screened": 1,
+     "articles": [
+      "10.1021/acssuschemeng.6b01820"
+     ]
+    }
+   },
+   "formation": {
+    "hits": 5,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 29,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 5,
+     "read": 5,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "glycerol-carbonate": {
+   "liquidDensity": {
+    "hits": 160,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acspolymersau.6c00002",
+     "10.3390/molecules31152623",
+     "10.3390/molecules31111841"
+    ],
+    "openalex": {
+     "hits": 1031,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "fusion": {
+    "hits": 37,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acspolymersau.6c00002"
+    ],
+    "openalex": {
+     "hits": 245,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 4,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 77,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 10,
+     "read": 8,
+     "fetched": 4,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 10,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1186/s40064-016-2643-1"
+    ],
+    "openalex": {
+     "hits": 87,
+     "read": 8,
+     "fetched": 3,
+     "screened": 2,
+     "articles": [
+      "10.55905/cuadv17n1-032",
+      "10.1016/j.supflu.2017.12.032"
+     ]
+    }
+   },
+   "Tb": {
+    "hits": 72,
+    "screened": 4,
+    "held": "a property table (RSC Adv. 2023, doi:10.1039/d3ra03028h: 354 °C) without the measuring article: not taken",
+    "articles": [
+     "10.3390/molecules31152623",
+     "10.1039/d3ra03028h",
+     "10.1021/acsomega.3c06287",
+     "10.1021/acs.energyfuels.5c01580"
+    ],
+    "openalex": {
+     "hits": 331,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "solketal": {
+   "vapourPressure": {
+    "hits": 21,
+    "screened": 2,
+    "held": "**measured, added** (the maintainer, 2026-10-22: \"yes\"; read off the graph, 40-100 °C, held to 19 %): Türck et al., ACS Omega 2026, doi:10.1021/acsomega.5c12056 (CC BY 4.0), Figure 7: the vapour-pressure curve of pure solketal (≥98 %, Merck), 20-100 °C, about 0.2 to 7.1 kPa, Herzog HVP 972 fuel vapour-pressure tester, n = 3, error bar about ±0.5 kPa at 80 °C. In a figure only (the supporting information has no table of it)",
+    "articles": [
+     "10.1021/acsomega.5c12056",
+     "10.1021/acssuschemeng.5c00258"
+    ],
+    "openalex": {
+     "hits": 119,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.3389/fchem.2018.00573"
+     ]
+    }
+   },
+   "heatOfVaporization": {
+    "hits": 2,
+    "screened": 0,
+    "held": "a fuel-property table (Int. J. Automot. Eng. Technol. 2018, doi:10.18245/ijaet.486410, Table 1: 374 kJ/kg at 20 °C) citing three references for all its fuels, none named as the measurement for solketal: not taken",
+    "articles": [],
+    "openalex": {
+     "hits": 21,
+     "read": 8,
+     "fetched": 2,
+     "screened": 1,
+     "articles": [
+      "10.18245/ijaet.486410"
+     ]
+    }
+   },
+   "liquidHeatCapacity": {
+    "hits": 4,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 28,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "downloaded": {
+     "doi": "10.3390/molecules28227483",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "none of the pure compound: Samoilov et al., Molecules 28 (2023) 7483, doi:10.3390/molecules28227483 (CC BY 4.0), names solketal in its references only; its heat capacities are of glycerol methyl and ethyl ether mixtures"
+    }
+   },
+   "fusion": {
+    "hits": 41,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acssuschemeng.5c00258"
+    ],
+    "openalex": {
+     "hits": 187,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 4,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 48,
+     "read": 8,
+     "fetched": 4,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 8,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 4,
+    "screened": 0,
+    "held": "none of the pure compound",
+    "articles": [],
+    "openalex": {
+     "hits": 32,
+     "read": 8,
+     "fetched": 3,
+     "screened": 1,
+     "articles": [
+      "10.5151/chemeng-cobeq2014-0221-26474-155489"
+     ]
+    }
+   },
+   "Tb": {
+    "hits": 39,
+    "screened": 3,
+    "held": "the same article (Türck et al. 2026) gives no boiling point",
+    "articles": [
+     "10.1021/acsomega.5c12056",
+     "10.1002/cssc.202401636",
+     "10.1021/acssuschemeng.5c00258"
+    ],
+    "openalex": {
+     "hits": 198,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.48548/pubdata-3160"
+     ]
+    }
+   }
+  },
+  "angelica-lactone": {
+   "vapourPressure": {
+    "hits": 20,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 70,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "heatOfVaporization": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 4,
+     "read": 4,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidHeatCapacity": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 8,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "fusion": {
+    "hits": 37,
+    "screened": 0,
+    "held": "none of the pure compound",
+    "articles": [],
+    "openalex": {
+     "hits": 87,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.17516/1998-2836-2016-9-3-345-352"
+     ]
+    }
+   },
+   "formation": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 15,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "downloaded": {
+     "doi": "10.3390/molecules30020399",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "none of the pure compound: Silva et al., Molecules 30 (2025) 399, doi:10.3390/molecules30020399 (CC BY 4.0), names angelica lactones in its references only (gamma- and delta-undecanolactone; its Table 8 quotes gamma-butyrolactone and gamma-valerolactone values of other articles)"
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 1,
+     "read": 1,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 6,
+     "read": 6,
+     "fetched": 3,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "Tb": {
+    "hits": 33,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 101,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "lactide": {
+   "vapourPressure": {
+    "hits": 217,
+    "screened": 2,
+    "held": "the same review (Cunha et al. 2022): no vapour pressure",
+    "articles": [
+     "10.3390/bioengineering9040164",
+     "10.1021/acs.jpcc.4c04986"
+    ],
+    "openalex": {
+     "hits": 1331,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidDensity": {
+    "hits": 11089,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym18121484"
+    ],
+    "openalex": {
+     "hits": 35759,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "heatOfVaporization": {
+    "hits": 11,
+    "screened": 1,
+    "held": "Cunha et al., Bioengineering 2022, doi:10.3390/bioengineering9040164, Table 2: 63 kJ/mol, with liquid viscosities at 110-130 °C, 'found in the literature' without the article for each value: not taken (DATA_RULES section 1, modelling papers)",
+    "articles": [
+     "10.3390/bioengineering9040164"
+    ],
+    "openalex": {
+     "hits": 94,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidHeatCapacity": {
+    "hits": 211,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.macromol.5c02464",
+     "10.3390/polym18070817"
+    ],
+    "openalex": {
+     "hits": 1233,
+     "read": 8,
+     "fetched": 2,
+     "screened": 1,
+     "articles": [
+      "10.2533/chimia.2012.951"
+     ]
+    }
+   },
+   "formationG": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 26,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 531,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.analchem.4c00336"
+    ],
+    "openalex": {
+     "hits": 1954,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "Tb": {
+    "hits": 385,
+    "screened": 3,
+    "held": "the same review (Cunha et al. 2022), Table 2: 255 °C without its source: not taken",
+    "articles": [
+     "10.3390/bioengineering9040164",
+     "10.3390/polym18050655",
+     "10.1039/d4sc05891g"
+    ],
+    "openalex": {
+     "hits": 1679,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.1016/s0141-3910(02)00374-9"
+     ]
+    }
+   }
+  },
+  "isosorbide": {
+   "vapourPressure": {
+    "hits": 63,
+    "screened": 3,
+    "held": "no vapour pressure of isosorbide itself (the hits are isosorbide diesters and dimethyl isosorbide)",
+    "articles": [
+     "10.3390/membranes16060206",
+     "10.1021/acssuschemeng.4c02266",
+     "10.1155/2021/9970896"
+    ],
+    "openalex": {
+     "hits": 245,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidDensity": {
+    "hits": 1548,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/ma18091927",
+     "10.1021/acs.chemrestox.2c00347",
+     "10.3390/polym15173640"
+    ],
+    "openalex": {
+     "hits": 5069,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.1088/1757-899x/505/1/012134"
+     ]
+    }
+   },
+   "heatOfVaporization": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 26,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidHeatCapacity": {
+    "hits": 24,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym14152970"
+    ],
+    "openalex": {
+     "hits": 119,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "fusion": {
+    "hits": 257,
+    "screened": 6,
+    "held": "Hammami et al., Molecules 2025, doi:10.3390/molecules30224364: DSC melting onset 45 °C (endotherm 45-62 °C, sample about 70 % crystalline), no enthalpy of fusion: no melting record (it needs both)",
+    "articles": [
+     "10.3390/molecules30224364",
+     "10.1021/acs.biomac.5c01043",
+     "10.1021/acssuschemeng.5c01601",
+     "10.1002/cssc.70675",
+     "10.1021/acspolymersau.6c00068",
+     "10.1002/cssc.202102525"
+    ],
+    "openalex": {
+     "hits": 1042,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 9,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 66,
+     "read": 8,
+     "fetched": 3,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 10,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 40,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 129,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "Tb": {
+    "hits": 93,
+    "screened": 6,
+    "held": "property tables without the measuring article (a ChemSusChem review, doi:10.1002/cssc.202102525: 433 K, unstated pressure): not taken",
+    "articles": [
+     "10.3390/molecules30244717",
+     "10.3390/polym15020418",
+     "10.1002/cssc.202501117",
+     "10.3390/membranes16060206",
+     "10.1002/cssc.202102525",
+     "10.3390/polym18182222"
+    ],
+    "openalex": {
+     "hits": 380,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "levoglucosan": {
+   "vapourPressure": {
+    "hits": 66,
+    "screened": 3,
+    "held": "Zhang et al., Environ. Sci. Technol. Lett. 2024, doi:10.1021/acs.estlett.4c00608, cites four measurements: May et al. 2012 (doi:10.1021/es302276t, no free copy), Kabo et al. 2015 and Rocha et al. 2013 (sublimation pressures of the crystal in the ThermoML Archive), Oja and Suuberg 1999 (doi:10.1021/je980119b, no free copy). No liquid vapour pressure; OpenAlex: field studies of gas-particle partitioning (ACP 2021, 2023, and the discussion of egusphere-2023-1419) that use predicted vapour pressures (SIMPOL): no measurement; OpenAlex: Suuberg and Oja, DOE report DOE/PC92544-18 (1997), doi:10.2172/774960 (OSTI, a US government report): Table D.1, the sublimation pressures of the crystal (71-112 °C); section D.2.1 names the only liquid measurement, Enstein, Duronina and Pashinkin, Zh. Prikl. Khim. 37 (1964) 2543 (static method, three temperatures, 195-255 °C), shown in Figure D.5 as a line only, not as points; the original has no known free copy. No liquid vapour pressure that can be taken",
+    "articles": [
+     "10.1021/acs.est.5c04050",
+     "10.1021/acs.estlett.4c00608",
+     "10.1021/acsestair.4c00294"
+    ],
+    "openalex": {
+     "hits": 917,
+     "read": 8,
+     "fetched": 7,
+     "screened": 6,
+     "articles": [
+      "10.5194/acp-23-12441-2023",
+      "10.5194/acp-21-12141-2021",
+      "10.5194/egusphere-2023-1419-rc2",
+      "10.5194/egusphere-2023-1419-ac1",
+      "10.5194/egusphere-2023-1419-cc1",
+      "10.5194/egusphere-2023-1419-rc1"
+     ]
+    }
+   },
+   "liquidDensity": {
+    "hits": 583,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.jpca.6c03212"
+    ],
+    "openalex": {
+     "hits": 3740,
+     "read": 8,
+     "fetched": 2,
+     "screened": 1,
+     "articles": [
+      "10.3402/tellusb.v64i0.18196"
+     ]
+    }
+   },
+   "heatOfVaporization": {
+    "hits": 7,
+    "screened": 0,
+    "held": "the same DOE report (doi:10.2172/774960): 92.3 kJ/mol from Enstein et al. (1964) and 97 kJ/mol from the report's own extrapolation of sublimation data, neither a calorimetric value nor a value with an open measurement: not taken",
+    "articles": [],
+    "openalex": {
+     "hits": 186,
+     "read": 8,
+     "fetched": 4,
+     "screened": 1,
+     "articles": [
+      "10.2172/774960"
+     ]
+    }
+   },
+   "liquidHeatCapacity": {
+    "hits": 19,
+    "screened": 2,
+    "held": "Madejczyk et al., Sci. Rep. 2017, doi:10.1038/srep42103: only the heat-capacity step at the glass transition (0.696 J/(g K)), not a heat capacity of the liquid",
+    "articles": [
+     "10.3390/polym18070819",
+     "10.1038/srep42103"
+    ],
+    "openalex": {
+     "hits": 274,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 22,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 197,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "Tb": {
+    "hits": 66,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 516,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "dimethyl-fdca": {
+   "vapourPressure": {
+    "hits": 5,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 4,
+     "read": 4,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidDensity": {
+    "hits": 54,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/ma18174040"
+    ],
+    "openalex": {
+     "hits": 35,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.1016/j.polymer.2025.128880"
+     ]
+    }
+   },
+   "heatOfVaporization": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidHeatCapacity": {
+    "hits": 12,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 9,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "fusion": {
+    "hits": 59,
+    "screened": 2,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1021/acs.biomac.3c01433",
+     "10.3390/polym17192599"
+    ],
+    "openalex": {
+     "hits": 43,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 1,
+     "read": 1,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "Tb": {
+    "hits": 12,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 12,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "bhmf": {
+   "vapourPressure": {
+    "hits": 11,
+    "screened": 1,
+    "held": "a review's property table (doi:10.1186/s40643-023-00676-x, Table 1: 0.00248 mmHg at 25 °C) without the measuring article: not taken",
+    "articles": [
+     "10.1186/s40643-023-00676-x"
+    ],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidDensity": {
+    "hits": 140,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d5sc06257h"
+    ],
+    "openalex": {
+     "hits": 3,
+     "read": 3,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "heatOfVaporization": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidHeatCapacity": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "fusion": {
+    "hits": 35,
+    "screened": 2,
+    "held": "the same review table (melting point 74-77 °C, no enthalpy, no source): not taken",
+    "articles": [
+     "10.1021/acssuschemeng.4c03498",
+     "10.1186/s40643-023-00676-x"
+    ],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 6,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "Tb": {
+    "hits": 25,
+    "screened": 1,
+    "held": "the same review table (275 °C, no source): not taken",
+    "articles": [
+     "10.1186/s40643-023-00676-x"
+    ],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "levoglucosenone": {
+   "liquidHeatCapacity": {
+    "hits": 4,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/polym18070819"
+    ],
+    "openalex": {
+     "hits": 41,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "fusion": {
+    "hits": 34,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1002/cplu.70162"
+    ],
+    "openalex": {
+     "hits": 113,
+     "read": 8,
+     "fetched": 3,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 54,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 2,
+     "read": 2,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 7,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 37,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "Tb": {
+    "hits": 47,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 170,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  },
+  "emf": {
+   "vapourPressure": {
+    "hits": 3,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 37,
+     "read": 8,
+     "fetched": 2,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidDensity": {
+    "hits": 52,
+    "screened": 4,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3389/fchem.2026.1905987",
+     "10.3390/ijms27177836",
+     "10.1021/acsomega.6c03202",
+     "10.3389/fchem.2022.900482"
+    ],
+    "openalex": {
+     "hits": 275,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      ""
+     ]
+    }
+   },
+   "heatOfVaporization": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 4,
+     "read": 4,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidHeatCapacity": {
+    "hits": 1,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 10,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "fusion": {
+    "hits": 13,
+    "screened": 1,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.1039/d4ra03302g"
+    ],
+    "openalex": {
+     "hits": 43,
+     "read": 8,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "formation": {
+    "hits": 2,
+    "screened": 0,
+    "held": "none of the pure compound",
+    "articles": [],
+    "openalex": {
+     "hits": 21,
+     "read": 8,
+     "fetched": 1,
+     "screened": 1,
+     "articles": [
+      "10.34961/2569"
+     ]
+    }
+   },
+   "formationG": {
+    "hits": 0,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 0,
+     "read": 0,
+     "fetched": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "critical": {
+    "hits": 2,
+    "screened": 0,
+    "held": "-",
+    "articles": [],
+    "openalex": {
+     "hits": 22,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "Tb": {
+    "hits": 16,
+    "screened": 3,
+    "held": "none of the pure compound",
+    "articles": [
+     "10.3390/molecules31040729",
+     "10.3390/ijms27177836",
+     "10.1039/d2ra01866g"
+    ],
+    "openalex": {
+     "hits": 98,
+     "read": 8,
+     "fetched": 1,
+     "screened": 0,
+     "articles": []
+    }
+   }
+  }
+ },
+ "downloaded_note": "Articles the indexes found but scripts could not fetch were downloaded by the maintainer and read (the 'downloaded' entries); 'held' there replaces the entry's own 'held' for what the gap now is."
+}

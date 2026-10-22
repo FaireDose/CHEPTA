@@ -1,6 +1,6 @@
 # 0014: Lessons from the scientific agent skills of K-Dense: finding, reading and checking data
 
-- **Status:** Draft
+- **Status:** Accepted for steps 1 and 2 (the maintainer, 2026-10-22); steps 3 to 5 not decided
 - **Author(s):** CHEPTA maintainers (drafted with an AI assistant)
 - **Discussion:** this pull request
 - **Roadmap item:** data track (D), the data rules (docs/DATA_RULES.md), track G (agents)
@@ -105,6 +105,11 @@ and a display. Step 5 adds lines to the pull request template.
   failed.
 
 ## Steps
+
+Steps 1 and 2 were accepted by the maintainer on 2026-10-22 ("at 162 i go first for points 1 and 2") and are in
+docs/DATA_RULES.md, section 1 ("How to search for a missing number", "Free copies"); decision:
+docs/decisions/2026-10-22-09-search-tools.md. Steps 3 to 5 wait for the maintainer.
+
 
 1. `open_copy.py`: OpenAlex and CORE copies, and the PDF check. Test on the DOIs of 2026-10-22.
 2. The full-text candidate search, writing candidates into the markers' `searched`.

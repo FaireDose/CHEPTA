@@ -7,7 +7,7 @@
    "units": "kg/m3",
    "source": {
     "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
-    "fit": "70 measured values, 278.15-338.15 K, max deviation 0.13 %"
+    "fit": "70 measured values, 278.15-338.15 K, max deviation 0.12 %"
    },
    "T_K": [
     278.15,
@@ -226,92 +226,138 @@
     "Lomba 2013"
    ]
   },
+  "liquidHeatCapacity": {
+   "units": "J/mol/K",
+   "source": {
+    "name": "Measured heat capacities of the liquid (an article outside the archive); stated uncertainties up to 3.0 %, above the 1 % target, used because the only alternative is a prediction",
+    "fit": "11 measured values, 298.15-393.15 K, max deviation 0.41 %"
+   },
+   "T_K": [
+    298.15,
+    303.15,
+    313.15,
+    323.15,
+    333.15,
+    343.15,
+    353.15,
+    363.15,
+    373.15,
+    383.15,
+    393.15
+   ],
+   "values": [
+    255.24,
+    256.69,
+    259.45,
+    262.01,
+    264.39,
+    266.6,
+    268.65,
+    270.55,
+    272.3,
+    273.93,
+    275.43
+   ],
+   "references": [
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026"
+   ]
+  },
   "heatOfVaporization": {
    "units": "J/mol",
    "source": {
-    "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook)",
-    "fit": "25 Clapeyron values and 0 measured values, 274.60-360.14 K, max deviation 0.0001 %"
+    "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
+    "fit": "25 Clapeyron values and 0 measured values, 274.60-427.60 K, max deviation 0.025 %"
    },
    "T_K": [
     274.6,
-    278.16432,
-    281.72864,
-    285.29296,
-    288.85728,
-    292.4216,
-    295.98592,
-    299.55024,
-    303.11456,
-    306.67888,
-    310.2432,
-    313.80752,
-    317.37184,
-    320.93616,
-    324.50048,
-    328.0648,
-    331.62912,
-    335.19344,
-    338.75776,
-    342.32208,
-    345.8864,
-    349.45072,
-    353.01504,
-    356.57936,
-    360.14368
+    280.975,
+    287.35,
+    293.725,
+    300.1,
+    306.475,
+    312.85,
+    319.225,
+    325.6,
+    331.975,
+    338.35,
+    344.725,
+    351.1,
+    357.475,
+    363.85,
+    370.225,
+    376.6,
+    382.975,
+    389.35,
+    395.725,
+    402.1,
+    408.475,
+    414.85,
+    421.225,
+    427.6
    ],
    "values": [
-    56794.812,
-    56415.835,
-    56036.859,
-    55657.882,
-    55278.906,
-    54899.929,
-    54520.952,
-    54141.976,
-    53762.999,
-    53384.022,
-    53005.046,
-    52626.069,
-    52247.093,
-    51868.116,
-    51489.139,
-    51110.163,
-    50731.186,
-    50352.209,
-    49973.233,
-    49594.256,
-    49215.28,
-    48836.303,
-    48457.326,
-    48078.35,
-    47699.373
+    59260.138,
+    58172.608,
+    57114.097,
+    56084.218,
+    55082.497,
+    54108.374,
+    53161.196,
+    52240.232,
+    51344.671,
+    50473.642,
+    49626.221,
+    48801.449,
+    47998.346,
+    47215.925,
+    46453.204,
+    45709.213,
+    44983.006,
+    44273.66,
+    43580.274,
+    42901.971,
+    42237.887,
+    41587.165,
+    40948.939,
+    40322.324,
+    39706.397
    ],
    "references": [
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)"
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record"
    ]
   },
   "liquidViscosity": {
@@ -466,7 +512,7 @@
    "units": "N/m",
    "source": {
     "name": "Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 1.2 %, above the 1 % target, used because no open values meet the target",
-    "fit": "25 measured values, 278.15-338.15 K, max deviation 0.42 %"
+    "fit": "25 measured values, 278.15-338.15 K, max deviation 0.45 %"
    },
    "T_K": [
     278.15,
@@ -550,11 +596,48 @@
     "Lomba 2014"
    ]
   },
+  "liquidThermalConductivity": {
+   "units": "W/m/K",
+   "source": {
+    "name": "Measured values (an article outside the archive); stated uncertainties up to 8.5 %, above the 3 % target, used because no open values meet the target",
+    "fit": "8 measured values, 303.15-373.15 K, max deviation 0.026 %"
+   },
+   "T_K": [
+    303.15,
+    313.15,
+    323.15,
+    333.15,
+    343.15,
+    353.15,
+    363.15,
+    373.15
+   ],
+   "values": [
+    0.1703,
+    0.1672,
+    0.1642,
+    0.1612,
+    0.1581,
+    0.1551,
+    0.152,
+    0.149
+   ],
+   "references": [
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026"
+   ]
+  },
   "vapourPressure": {
    "units": "Pa",
    "source": {
     "name": "measured vapour pressures and the critical point",
-    "fit": "57 measured values (57 from the ThermoML Archive), 274.60-427.60 K, max deviation 8.1 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average, except a narrow miss the maintainer accepted (2026-10-14): Resa 2010 (mean deviation +1.94 %, mean stated uncertainty 1.70 %); mean deviation of the fit from each set: Emel'yanenko 2019 +2.41 %; Lomba 2014 -1.44 %; Matsuda 2016 +0.02 %; Resa 2010 +1.94 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (3 values, 12-23 %); among the values stated within 10 %, the largest deviation is 8.1 %."
+    "fit": "58 measured values (57 from the ThermoML Archive) and the critical point, 274.60-617.00 K, max deviation 9.0 %. Between 427.60 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average, except a narrow miss the maintainer accepted (2026-10-14): Resa 2010 (mean deviation +2.35 %, mean stated uncertainty 1.70 %); mean deviation of the fit from each set: Emel'yanenko 2019 +1.30 %; Lomba 2014 -0.73 %; Matsuda 2016 -0.03 %; Resa 2010 +2.35 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (3 values, 12-23 %); among the values stated within 10 %, the largest deviation is 9.0 %."
    },
    "T_K": [
     274.6,
@@ -613,7 +696,8 @@
     423.47,
     426.1,
     427.6,
-    427.6
+    427.6,
+    617.0
    ],
    "values": [
     43.2,
@@ -672,7 +756,8 @@
     93320.0,
     101300.0,
     101330.0,
-    101300.0
+    101300.0,
+    3320000.0
    ],
    "references": [
     "Emel'yanenko 2019",
@@ -731,9 +816,10 @@
     "Matsuda 2016",
     "Matsuda 2016",
     "Resa 2010",
-    "Resa 2010"
+    "Resa 2010",
+    "Bogatishcheva 2026 (critical point, an article outside the archive)"
    ],
-   "Tb_K_at_101325Pa": 426.8857
+   "Tb_K_at_101325Pa": 426.7561
   }
  }
 }

@@ -238,7 +238,8 @@ COMPONENTS = {
         "name": "Furfuryl alcohol", "cas": "98-00-0", "webbook": "C98000", "proposal": "proposal 0009, batch 3",
         "aliases": ["2-furanmethanol", "furan-2-ylmethanol", "2-furylmethanol", "furfural alcohol"],
         "thermoml_queries": ["furfuryl alcohol", "furan-2-ylmethanol"],
-        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "critical_thermoml": "10.1016/j.fluid.2022.113656",  # an article outside the archive (validation/data/pure/measured/article_furfuryl-alcohol_*.json)
+        "critical_note": "measured by the pulse-heating method; the authors' acentric factor (Table 3) is 0.466, CHEPTA's is from its own vapour-pressure record",
         "antoine_fit": [],
         "vp_fit": "consensus",
         "vp_exclude": {"Tai 2014": "its three values at 353-408 K lie 4-7 % above Negadi 2014, beyond the stated "
@@ -252,7 +253,8 @@ COMPONENTS = {
         "name": "Tetrahydrofurfuryl alcohol", "cas": "97-99-4", "webbook": "C97994", "proposal": "proposal 0009, batch 3",
         "aliases": ["tetrahydro-2-furanmethanol", "oxolan-2-ylmethanol", "thfa"],
         "thermoml_queries": ["tetrahydrofurfuryl alcohol", "oxolan-2-ylmethanol"],
-        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        "critical_thermoml": "10.1016/j.fluid.2022.113656",  # an article outside the archive (validation/data/pure/measured/article_thfa_*.json)
+        "critical_note": "measured by the pulse-heating method; the authors' acentric factor (Table 3) is 0.419, CHEPTA's is from its own vapour-pressure record",
         "antoine_fit": [],
         # the measured vapour pressures (Lomba 2014) end at 448 K and 97.9 kPa, so the record has no normal boiling
         # point (Tb_note). The WebBook value of Moshkin (1955, 451.0 K) is not used to complete the curve: fitted with
@@ -267,11 +269,14 @@ COMPONENTS = {
         # Lomba 2014 misses the agreement test narrowly (2.96 % against its stated 2.59 %; Sanz 2005: three values at
         # 283-303 K, stated 4.6-24 %); Lomba's own curve meets the measured boiling temperature of Lecat (417.0 K) within
         # 0.3 K. The maintainer accepted the narrow miss (2026-10-14)
-        "vp_accept": {"Lomba 2014": 2.96},
+        "vp_accept": {"Lomba 2014": 3.37},  # 2.96 % without the critical point (2026-10-14); with it 3.37 %, accepted by the maintainer (2026-10-22: "i accept the error")
         "name": "Methyl lactate", "cas": "547-64-8", "webbook": "C547648", "proposal": "proposal 0009, batch 3",
         "aliases": ["methyl 2-hydroxypropanoate", "lactic acid methyl ester"],
         "thermoml_queries": ["methyl lactate", "methyl 2-oxidanylpropanoate"],
-        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        # the critical point: Bogatishcheva et al. (2026, SSRN preprint, not peer reviewed;
+        # article_methyl-lactate_bogatishcheva2026.json)
+        "critical_thermoml": "10.2139/ssrn.6083032",
+        "critical_note": "measured by the pulse-heating method, as the ester decomposes near its critical point; the authors' acentric factor (Table 4) is 0.435, CHEPTA's is from its own vapour-pressure record",
         "antoine_fit": [],
         "vp_fit": "consensus",
         "dHvap": "clapeyron",
@@ -282,11 +287,14 @@ COMPONENTS = {
         # Resa 2010 (two boiling temperatures at 101 kPa, 427.6 K) misses the agreement test narrowly (1.94 % against its
         # stated 1.70 %); the other boiling temperatures are 425.0 K (Resa 2006) and 426.2-426.7 K (Matsuda 2016, Lomba
         # 2014). The maintainer accepted the narrow miss (2026-10-14)
-        "vp_accept": {"Resa 2010": 1.94},
+        "vp_accept": {"Resa 2010": 2.35},  # 1.94 % without the critical point (2026-10-14); with it 2.35 %, accepted by the maintainer (2026-10-22: "i accept the error")
         "name": "Ethyl lactate", "cas": "97-64-3", "webbook": "C97643", "proposal": "proposal 0009, batch 3",
         "aliases": ["ethyl 2-hydroxypropanoate", "lactic acid ethyl ester"],
         "thermoml_queries": ["ethyl lactate", "ethyl 2-oxidanylpropanoate"],
-        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-14)"],
+        # the critical point: Bogatishcheva et al. (2026, SSRN preprint, not peer reviewed;
+        # article_ethyl-lactate_bogatishcheva2026.json)
+        "critical_thermoml": "10.2139/ssrn.6083032",
+        "critical_note": "measured by the pulse-heating method, as the ester decomposes near its critical point; the authors' acentric factor (Table 4) is 0.467, CHEPTA's is from its own vapour-pressure record",
         "antoine_fit": [],
         "vp_fit": "consensus",
         "dHvap": "clapeyron",
@@ -592,12 +600,27 @@ COMPONENTS = {
         "cp0": None,
     },
     "solketal": {
-        "class": "no_vapour_pressure",
+        # until 2026-10-22 without a vapour pressure ("no_vapour_pressure"); then the curve of Turck et al. (ACS Omega
+        # 2026, CC BY 4.0), read off its Figure 7 (article_solketal_acsomega2026.json), held to its uncertainty of
+        # 16-19 % (the maintainer, 2026-10-22: "yes"). The WebBook's normal boiling temperature (461.7 K) is from a
+        # supplier catalogue and is not used, so the curve stops at 373 K and there is no normal boiling point.
         "name": 'Solketal', "cas": '100-79-8', "webbook": 'C100798', "proposal": "proposal 0009",
         "aliases": ['(2,2-dimethyl-1,3-dioxolan-4-yl)methanol', 'isopropylidene glycerol', '2,2-dimethyl-1,3-dioxolane-4-methanol'],
         "thermoml_queries": ['solketal', '2,2-dimethyl-1,3-dioxolane-4-methanol', '(2,2-dimethyl-1,3-dioxolan-4-yl)methanol', 'isopropylidene glycerol'],
         "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)", "open literature (web search, 2026-10-20)"],
-        "no_vapour_pressure": 'the WebBook lists a normal boiling temperature of 461.7 K from a supplier catalogue (Aldrich Chemical Company Inc., 1990), which is not used (DATA_RULES section 1); the ThermoML Archive has its vapour-liquid data with carbon dioxide only',
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "vp_why": ("The values are READ OFF A GRAPH: the article prints them only in its Figure 7 (left panel), read by "
+                   "the marker centres with the gridlines as the scale (one pixel = 0.043 kPa). Measured with a Herzog HVP "
+                   "972 vapour-pressure tester, n = 3, solketal of at least 98 %. Stated uncertainty of each value: 16 % "
+                   "(the one error bar visible, at 80 degC) with the reading resolution, 16-19 %, so the record is held "
+                   "to 19 %, above the 1 % target, used because no open values meet the target. The readings at 20 and "
+                   "30 degC (0.174 and 0.196 kPa) are left out: there one pixel is a quarter of the value, and they are "
+                   "almost equal where every 10 K above 40 degC raises the pressure by a factor of 1.6 to 1.8 (the lower "
+                   "end of the tester's range). The maintainer agreed to use the figure (2026-10-22)."),
+        "dHvap": "clapeyron",
+        "dHvap_why": "no calorimetric enthalpy of vaporization in the open sources",
+        "cp0": None,
     },
     "angelica-lactone": {
         "class": "no_vapour_pressure",
@@ -965,6 +988,8 @@ class ThermoML:
         a = self.d["articles"][doi]
         first = a["authors"][0].split(",")[0]
         who = first + (" et al." if len(a["authors"]) > 2 else (" and " + a["authors"][1].split(",")[0] if len(a["authors"]) == 2 else ""))
+        if not a["volume"] and not a["pages"]:  # a preprint
+            return "%s, %s (%s), doi:%s" % (who, a["journal"], a["year"], doi)
         return "%s, %s %s (%s) %s, doi:%s" % (who, a["journal"], a["volume"], a["year"], a["pages"], doi)
 
     def short(self, doi):
@@ -1069,8 +1094,12 @@ def robust(form, T, y, Tc, k, fixed_mask):
     return c, d
 
 
-def fit_measured(cid, prop, form, pts, target, Tc=None, fixed=()):
-    """Steps 2-4 of the docstring. `fixed`: points that are never left out (the critical point)."""
+def fit_measured(cid, prop, form, pts, target, Tc=None, fixed=(), accuracy=None):
+    """Steps 2-4 of the docstring. `fixed`: points that are never left out (the critical point). `accuracy`: where the
+    values are held to a stated uncertainty above the usual target (fit_or_marker, "measured before predicted"), the
+    usual target, which the fit is to follow where it can: the simplest variant within the stated uncertainty can
+    otherwise be far cruder than the values (a constant through a smooth line within its 8 %); where no variant meets
+    it, the most flexible one within the stated uncertainty is taken."""
     excluded, use = [], []
     for p in pts:
         if p["u_rel"] is not None and p["u_rel"] > target:
@@ -1087,9 +1116,11 @@ def fit_measured(cid, prop, form, pts, target, Tc=None, fixed=()):
         found = None
         for k in complexities(form, T):
             c = fit_ls(form, T, y, Tc, k, w)
-            if rel_dev(ev(form, c, T, Tc), y) <= target:
+            if rel_dev(ev(form, c, T, Tc), y) <= min(target, accuracy or target):
                 found = c
                 break
+        if found is None and accuracy is not None and accuracy < target and rel_dev(ev(form, c, T, Tc), y) <= target:
+            found = c  # the most flexible variant: within the stated uncertainty, not within the usual target
         if found is None and form == "DIPPR101" and len(T) >= 6:
             # least squares minimise the sum of squares, not the largest deviation: the minimax fit of
             # fit_properties.py (Lawson reweighting) may meet the target where they do not
@@ -1275,7 +1306,8 @@ def record(prop, form, coeffs, use, excluded, m, Tc, source_text, references, ac
     return rec, pts
 
 
-def fit_or_marker(cid, prop, form, target, pts, records, points, log, Tc, tml, searched, name, access, loose=True):
+def fit_or_marker(cid, prop, form, target, pts, records, points, log, Tc, tml, searched, name, access, loose=True,
+                  accuracy=None):
     """A fitted record when at least three temperatures have values within the target uncertainty; else, by the rule
     "measured before predicted" (docs/DATA_RULES.md, section 10; for every property since 2026-10-17), a record of the
     measured values whose stated uncertainties are above the target, held to those uncertainties and saying so
@@ -1284,11 +1316,19 @@ def fit_or_marker(cid, prop, form, target, pts, records, points, log, Tc, tml, s
     ok = [p for p in pts if p["u_rel"] is None or p["u_rel"] <= target]
     temps = {round(p["T"], 1) for p in ok if not p.get("webbook_single")}
     if len(temps) >= 2 and len({round(p["T"], 1) for p in ok}) >= 3:
-        coeffs, use, exc, m = fit_measured(cid, prop, form, pts, target, Tc=Tc)
+        coeffs, use, exc, m = fit_measured(cid, prop, form, pts, target, Tc=Tc, accuracy=accuracy)
         if tml is not None and access == THERMOML_ACCESS and "(NIST TRC ThermoML Archive)" in name:
             # values of articles outside the archive (article_<id>_*.json) are named as such, with their access
             where, access = tml.origin(use)
             name = name.replace("(NIST TRC ThermoML Archive)", "(%s)" % where)
+        both = "(NIST TRC ThermoML Archive and NIST Chemistry WebBook)"
+        if tml is not None and both in name:
+            # the same where the WebBook's single values may join them: name only the sources the record uses
+            dois, webbook = [p for p in use if p.get("doi")], any(not p.get("doi") for p in use)
+            where, acc = tml.origin(dois) if dois else (None, None)
+            name = name.replace(both, "(%s)" % " and ".join(
+                ([where] if where else []) + (["NIST Chemistry WebBook"] if webbook else [])))
+            access = "; ".join(([acc] if acc else []) + ([WEBBOOK_ACCESS] if webbook else []))
         records[prop], points[prop] = record(
             prop, form, coeffs, use, exc, m, Tc, name,
             refs_of([p for p in use if p.get("doi")], tml) + sorted({p["ref"] for p in use if not p.get("doi")}), access)
@@ -1300,7 +1340,7 @@ def fit_or_marker(cid, prop, form, target, pts, records, points, log, Tc, tml, s
         why = "the only alternative is a prediction" if prop == "liquidHeatCapacity" else "no open values meet the target"
         fit_or_marker(cid, prop, form, u, pts, records, points, log, Tc, tml, searched,
                       "%s; stated uncertainties up to %.1f %%, above the %g %% target, used because %s" % (
-                          name, 100 * u, 100 * target, why), access, loose=False)
+                          name, 100 * u, 100 * target, why), access, loose=False, accuracy=target)
         if records[prop].get("available") is not False:
             # the target this record is held to, in place of the usual one (test/properties.test.js reads it)
             records[prop]["source"]["stated_uncertainty_percent"] = rnd(100 * u, 3)
@@ -1413,11 +1453,16 @@ def critical(cid, C, wb, tml):
         if len(tc) != 1 or len(pc) != 1:
             raise SystemExit("%s: %s has %d Tc and %d Pc values in the ThermoML Archive" % (cid, doi, len(tc), len(pc)))
         others = sorted({p["ref"] for p in tml.values("Tc") + tml.values("Pc") if p["doi"] != doi})
-        text = "Tc and Pc: %s, NIST TRC ThermoML Archive (stated uncertainties %.3g K and %.3g kPa)" % (
-            tml.cite(doi), tc[0]["u_rel"] * tc[0]["y"], pc[0]["u_rel"] * pc[0]["y"] / 1000)
+        where, access = tml.origin(tc + pc)
+        if doi in tml.from_article:  # an article outside the archive: its access, as for every other record
+            where = "%s (%s)" % (where, access)
+        text = "Tc and Pc: %s, %s (stated uncertainties %.3g K and %.3g kPa)" % (
+            tml.cite(doi), where, tc[0]["u_rel"] * tc[0]["y"], pc[0]["u_rel"] * pc[0]["y"] / 1000)
+        if C.get("critical_note"):
+            text += "; " + C["critical_note"]
         if others:
             text += "; the archive also has the values of %s, %s" % (", ".join(others), C["critical_why"])
-        return tc[0]["y"], pc[0]["y"], tml.short(doi), "NIST TRC ThermoML Archive", text
+        return tc[0]["y"], pc[0]["y"], tml.short(doi), where.split(" (")[0], text
     tref, pref = C.get("critical_Tc", C.get("critical")), C.get("critical_Pc", C.get("critical"))
     Tc, _ = wb.constant("Tc", tref)
     Pc_bar, unit = wb.constant("Pc", pref)

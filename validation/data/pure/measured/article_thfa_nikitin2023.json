@@ -1,0 +1,382 @@
+{
+ "component": "thfa",
+ "cas": "97-99-4",
+ "about": "Measured values of the submitted manuscript of a published article (read in the preprint on SSRN; the published version was not opened), in the format of thermoml_<id>.json. Purity 0.989 (mole fraction, supplier's certificate; Sigma-Aldrich). Critical temperature and pressure by the pulse-heating method, with the expanded uncertainties printed in Tables 2 and 3 (95 % confidence); the authors' acentric factor, 0.419 (Table 3), is for comparison only. Heat capacity: DSC, the smoothed values of Table 5 (fitted range 298.14-451.14 K), U_r = 3 % (95 %). Thermal conductivity: computed by the authors from their measured thermal diffusivity, their heat capacity and literature densities, the smoothed values of Table 7, U_r = 8 % (95 %). The normal boiling temperature of Table 2 is the average of earlier articles, not measured here.",
+ "source": {
+  "citation": "E.D. Nikitin, A.P. Popov, N.S. Bogatishcheva, M.Z. Faizullin, Measurement of the critical temperatures, pressures, heat capacities, and thermal diffusivities of four furanic compounds involved in the production of second-generation biofuels, Fluid Phase Equilib. 565 (2023) 113656",
+  "doi": "10.1016/j.fluid.2022.113656",
+  "open_copy": "https://doi.org/10.2139/ssrn.4213180",
+  "access": "the authors' submitted manuscript (preprint, not peer reviewed), free to read on SSRN (doi:10.2139/ssrn.4213180); the numbers were read in that copy, not in the published article",
+  "tables": "Table 2 (Tc), Table 3 (pc, omega), Table 5 (smoothed Cp,m), Table 7 (smoothed thermal conductivities)"
+ },
+ "articles": {
+  "10.1016/j.fluid.2022.113656": {
+   "authors": [
+    "Nikitin, E.D.",
+    "Popov, A.P.",
+    "Bogatishcheva, N.S.",
+    "Faizullin, M.Z."
+   ],
+   "title": "Measurement of the critical temperatures, pressures, heat capacities, and thermal diffusivities of four furanic compounds involved in the production of second-generation biofuels",
+   "journal": "Fluid Phase Equilib.",
+   "year": "2023",
+   "volume": "565",
+   "pages": "113656"
+  }
+ },
+ "rows": [
+  {
+   "property": "Critical temperature, K",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 668,
+   "uncertainty": 10,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 2",
+   "binary_with": null
+  },
+  {
+   "property": "Critical pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 4180.0,
+   "uncertainty": 170.0,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 3",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": null,
+   "value": 193.1,
+   "uncertainty": 5.79,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": null,
+   "value": 195.7,
+   "uncertainty": 5.87,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": null,
+   "value": 200.7,
+   "uncertainty": 6.02,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": null,
+   "value": 205.6,
+   "uncertainty": 6.17,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 333.15,
+   "P_kPa": null,
+   "value": 210.4,
+   "uncertainty": 6.31,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 343.15,
+   "P_kPa": null,
+   "value": 215.1,
+   "uncertainty": 6.45,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 353.15,
+   "P_kPa": null,
+   "value": 219.8,
+   "uncertainty": 6.59,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 363.15,
+   "P_kPa": null,
+   "value": 224.3,
+   "uncertainty": 6.73,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 373.15,
+   "P_kPa": null,
+   "value": 228.7,
+   "uncertainty": 6.86,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 383.15,
+   "P_kPa": null,
+   "value": 233.0,
+   "uncertainty": 6.99,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 393.15,
+   "P_kPa": null,
+   "value": 237.3,
+   "uncertainty": 7.12,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 403.15,
+   "P_kPa": null,
+   "value": 241.5,
+   "uncertainty": 7.25,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 413.15,
+   "P_kPa": null,
+   "value": 245.5,
+   "uncertainty": 7.36,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 423.15,
+   "P_kPa": null,
+   "value": 249.6,
+   "uncertainty": 7.49,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 433.15,
+   "P_kPa": null,
+   "value": 253.6,
+   "uncertainty": 7.61,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 443.15,
+   "P_kPa": null,
+   "value": 257.5,
+   "uncertainty": 7.72,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 453.15,
+   "P_kPa": null,
+   "value": 261.3,
+   "uncertainty": 7.84,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 5",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": null,
+   "value": 0.166,
+   "uncertainty": 0.0133,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 7",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": null,
+   "value": 0.166,
+   "uncertainty": 0.0133,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 7",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": null,
+   "value": 0.166,
+   "uncertainty": 0.0133,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 7",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 333.15,
+   "P_kPa": null,
+   "value": 0.166,
+   "uncertainty": 0.0133,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 7",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 343.15,
+   "P_kPa": null,
+   "value": 0.165,
+   "uncertainty": 0.0132,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 7",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 353.15,
+   "P_kPa": null,
+   "value": 0.164,
+   "uncertainty": 0.0131,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 7",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 363.15,
+   "P_kPa": null,
+   "value": 0.163,
+   "uncertainty": 0.013,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 7",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 373.15,
+   "P_kPa": null,
+   "value": 0.162,
+   "uncertainty": 0.013,
+   "doi": "10.1016/j.fluid.2022.113656",
+   "set": "Table 7",
+   "binary_with": null
+  }
+ ]
+}

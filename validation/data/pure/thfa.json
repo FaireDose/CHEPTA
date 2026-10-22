@@ -7,7 +7,7 @@
    "units": "kg/m3",
    "source": {
     "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
-    "fit": "38 measured values, 278.15-338.15 K, max deviation 0.072 %"
+    "fit": "38 measured values, 278.15-338.15 K, max deviation 0.070 %"
    },
    "T_K": [
     278.15,
@@ -130,92 +130,159 @@
     "Lomba 2014"
    ]
   },
+  "liquidHeatCapacity": {
+   "units": "J/mol/K",
+   "source": {
+    "name": "Measured heat capacities of the liquid (an article outside the archive and NIST Chemistry WebBook); stated uncertainties up to 3.0 %, above the 1 % target, used because the only alternative is a prediction",
+    "fit": "18 measured values, 298.15-453.15 K, max deviation 1.1 %"
+   },
+   "T_K": [
+    298.15,
+    298.15,
+    303.15,
+    313.15,
+    323.15,
+    333.15,
+    343.15,
+    353.15,
+    363.15,
+    373.15,
+    383.15,
+    393.15,
+    403.15,
+    413.15,
+    423.15,
+    433.15,
+    443.15,
+    453.15
+   ],
+   "values": [
+    190.0,
+    193.1,
+    195.7,
+    200.7,
+    205.6,
+    210.4,
+    215.1,
+    219.8,
+    224.3,
+    228.7,
+    233.0,
+    237.3,
+    241.5,
+    245.5,
+    249.6,
+    253.6,
+    257.5,
+    261.3
+   ],
+   "references": [
+    "Bonner and Cerutti, 1976 (NIST WebBook, DH)",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023"
+   ]
+  },
   "heatOfVaporization": {
    "units": "J/mol",
    "source": {
-    "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook)",
-    "fit": "25 Clapeyron values and 0 measured values, 303.15-380.61 K, max deviation 0.0001 %"
+    "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
+    "fit": "25 Clapeyron values and 0 measured values, 303.15-448.15 K, max deviation 0.013 %"
    },
    "T_K": [
     303.15,
-    306.37764,
-    309.60528,
-    312.83293,
-    316.06057,
-    319.28821,
-    322.51585,
-    325.7435,
-    328.97114,
-    332.19878,
-    335.42642,
-    338.65407,
-    341.88171,
-    345.10935,
-    348.33699,
-    351.56463,
-    354.79228,
-    358.01992,
-    361.24756,
-    364.4752,
-    367.70285,
-    370.93049,
-    374.15813,
-    377.38577,
-    380.61341
+    309.19167,
+    315.23333,
+    321.275,
+    327.31667,
+    333.35833,
+    339.4,
+    345.44167,
+    351.48333,
+    357.525,
+    363.56667,
+    369.60833,
+    375.65,
+    381.69167,
+    387.73333,
+    393.775,
+    399.81667,
+    405.85833,
+    411.9,
+    417.94167,
+    423.98333,
+    430.025,
+    436.06667,
+    442.10833,
+    448.15
    ],
    "values": [
-    58857.116,
-    58532.465,
-    58207.815,
-    57883.164,
-    57558.514,
-    57233.863,
-    56909.213,
-    56584.562,
-    56259.912,
-    55935.261,
-    55610.611,
-    55285.96,
-    54961.31,
-    54636.659,
-    54312.009,
-    53987.358,
-    53662.708,
-    53338.057,
-    53013.407,
-    52688.756,
-    52364.106,
-    52039.455,
-    51714.805,
-    51390.154,
-    51065.504
+    62166.778,
+    61152.952,
+    60162.839,
+    59196.082,
+    58252.267,
+    57330.921,
+    56431.518,
+    55553.482,
+    54696.193,
+    53858.998,
+    53041.215,
+    52242.145,
+    51461.081,
+    50697.315,
+    49950.147,
+    49218.889,
+    48502.874,
+    47801.454,
+    47114.003,
+    46439.918,
+    45778.617,
+    45129.531,
+    44492.105,
+    43865.786,
+    43250.02
    ],
    "references": [
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)",
-    "Clapeyron equation with the vapour-pressure record (ideal-gas vapour)"
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record",
+    "Clapeyron equation with the vapour-pressure record"
    ]
   },
   "liquidViscosity": {
@@ -394,11 +461,48 @@
     "Lomba 2014"
    ]
   },
+  "liquidThermalConductivity": {
+   "units": "W/m/K",
+   "source": {
+    "name": "Measured values (an article outside the archive); stated uncertainties up to 8.0 %, above the 3 % target, used because no open values meet the target",
+    "fit": "8 measured values, 303.15-373.15 K, max deviation 1.7 %"
+   },
+   "T_K": [
+    303.15,
+    313.15,
+    323.15,
+    333.15,
+    343.15,
+    353.15,
+    363.15,
+    373.15
+   ],
+   "values": [
+    0.166,
+    0.166,
+    0.166,
+    0.166,
+    0.165,
+    0.164,
+    0.163,
+    0.162
+   ],
+   "references": [
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023",
+    "Nikitin 2023"
+   ]
+  },
   "vapourPressure": {
    "units": "Pa",
    "source": {
     "name": "measured vapour pressures and the critical point",
-    "fit": "29 measured values (29 from the ThermoML Archive), 303.15-448.15 K, max deviation 29 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Lomba 2014 +3.32 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (7 values, 12-1.1e+02 %); among the values stated within 10 %, the largest deviation is 5.0 %."
+    "fit": "30 measured values (29 from the ThermoML Archive) and the critical point, 303.15-668.00 K, max deviation 15 %. Between 448.15 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Lomba 2014 +1.33 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (7 values, 12-1.1e+02 %); among the values stated within 10 %, the largest deviation is 2.7 %."
    },
    "T_K": [
     303.15,
@@ -429,7 +533,8 @@
     433.15,
     438.15,
     443.15,
-    448.15
+    448.15,
+    668.0
    ],
    "values": [
     90.0,
@@ -460,7 +565,8 @@
     65020.0,
     74020.0,
     84980.0,
-    97930.0
+    97930.0,
+    4180000.0
    ],
    "references": [
     "Lomba 2014",
@@ -491,9 +597,10 @@
     "Lomba 2014",
     "Lomba 2014",
     "Lomba 2014",
-    "Lomba 2014"
+    "Lomba 2014",
+    "Nikitin 2023 (critical point, an article outside the archive)"
    ],
-   "Tb_K_at_101325Pa": null
+   "Tb_K_at_101325Pa": 449.4628
   }
  }
 }

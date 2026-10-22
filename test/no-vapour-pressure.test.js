@@ -10,8 +10,10 @@ import { system, pure, listComponents, checkUserData } from "../src/index.js";
 import { atomBalance } from "../src/thermo/formula.js";
 
 const comps = JSON.parse(readFileSync(new URL("../src/data/components.json", import.meta.url))).components;
-// (levoglucosenone left this list on 2026-10-22: Baird et al. 2019, open access, measured its vapour pressure)
-const NO_VP = ["solketal", "angelica-lactone", "lactide", "isosorbide", "levoglucosan", "dimethyl-fdca", "bhmf", "emf"];
+// (levoglucosenone left this list on 2026-10-22: Baird et al. 2019, open access, measured its vapour pressure; solketal
+// left it the same day: Turck et al. 2026, open access, measured its curve, read off their Figure 7, so the examples
+// below that used solketal now use alpha-angelica lactone, another liquid of the list)
+const NO_VP = ["angelica-lactone", "lactide", "isosorbide", "levoglucosan", "dimethyl-fdca", "bhmf", "emf"];
 
 test("the components without an open vapour pressure are liquids for the activity models, with the sources searched", () => {
   const listed = listComponents().filter(c => c.noVapourPressure).map(c => c.id).sort();
@@ -30,18 +32,22 @@ test("the components without an open vapour pressure are liquids for the activit
   // and levoglucosenone's are in an open-access article (Baird et al., Int. J. Thermophys. 40 (2019) 102, Table 19)
   assert.equal(comps.levoglucosenone.vapourPressure.tier, "fitted");
   assert.match(comps.levoglucosenone.vapourPressure.source, /Baird et al\., Int\. J\. Thermophys\. 40 \(2019\) 102/);
+  // and solketal's in another (Turck et al., ACS Omega 2026, Figure 7), from 313 to 373 K only: no normal boiling point
+  assert.equal(comps.solketal.vapourPressure.tier, "fitted");
+  assert.match(comps.solketal.vapourPressure.source, /T.rck et al\., ACS Omega 11 \(2026\)/);
+  assert.equal(comps.solketal.Tb_K, null);
 });
 
 test("activity coefficients work, and what needs a vapour pressure refuses with the reason", () => {
-  const s = system({ components: ["solketal", "water"], model: "MOD-UNIFAC-2" });
+  const s = system({ components: ["angelica-lactone", "water"], model: "MOD-UNIFAC-2" });
   const g = s.gammas([0.3, 0.7], 300);
   assert.ok(g.every(Number.isFinite) && g.every(v => v > 0));
   for (const call of [() => s.bubbleT([0.3, 0.7], 101.325), () => s.flash({ z: [0.3, 0.7], T: 360, P: 101.325 })]) {
-    assert.throws(call, /No open data for the vapour pressure of Solketal \(searched: .*\)\. Add your own vapour pressure for it in My data/);
+    assert.throws(call, /No open data for the vapour pressure of alpha-Angelica lactone \(searched: .*\)\. Add your own vapour pressure for it in My data/);
   }
-  assert.throws(() => pure("solketal").psat(300), /No open data for the vapour pressure of Solketal/);
+  assert.throws(() => pure("angelica-lactone").psat(300), /No open data for the vapour pressure of alpha-Angelica lactone/);
   // the liquid's own properties are still given, taken as a liquid, without an enthalpy
-  const L = pure("solketal").props(298.15, 101.325);
+  const L = pure("angelica-lactone").props(298.15, 101.325);
   assert.equal(L.phase, "liquid");
   assert.ok(Number.isFinite(L.rho_kg_m3));
   assert.equal(L.h_J_mol, null);
@@ -54,16 +60,16 @@ test("solid-liquid equilibrium needs no vapour pressure (lactide in water, Modif
 });
 
 test("the user's own vapour pressure replaces the marker (here a made-up record, for the test only)", () => {
-  const ud = checkUserData({ properties: { solketal: { vapourPressure: {
+  const ud = checkUserData({ properties: { "angelica-lactone": { vapourPressure: {
     equation: "DIPPR101", coefficients: { A: 60, B: -9000, C: -5, D: 0, E: 0 }, units: "Pa", Tmin_K: 280, Tmax_K: 480,
     source: { name: "made-up record for this test" } } } } });
-  const p = pure("solketal", { userData: ud });
+  const p = pure("angelica-lactone", { userData: ud });
   const T = 350, expect = Math.exp(60 - 9000 / T - 5 * Math.log(T)) / 1000;
   assert.ok(Math.abs(p.psat(T) / expect - 1) < 1e-12);
-  const s = system({ components: ["solketal", "water"], model: "MOD-UNIFAC-2", userData: ud });
+  const s = system({ components: ["angelica-lactone", "water"], model: "MOD-UNIFAC-2", userData: ud });
   assert.ok(Number.isFinite(s.bubbleT([0.3, 0.7], 101.325).T));
   // the databank is unchanged
-  assert.throws(() => pure("solketal").psat(T), /No open data for the vapour pressure/);
+  assert.throws(() => pure("angelica-lactone").psat(T), /No open data for the vapour pressure/);
 });
 
 test("the atom balance allows one H over per ring subgroup, as DDBST counts substituted ring carbons", () => {

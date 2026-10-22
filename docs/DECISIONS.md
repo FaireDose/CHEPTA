@@ -27,7 +27,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (flowsheets included), and so do those of acids that are solid at 25 °C. Formic acid has its dimer constants (Chao and
   Zwolinski 1978) and the WebBook gas ΔfH°; propionic and acrylic acid have none open yet (their liquid values are
   12-26 kJ/mol off). No open source with the Eley–Rideal and Mars–van Krevelen forms was found.
-- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-22.md](MISSING_PROPERTIES_2026-10-22.md)):
+- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-22-3.md](MISSING_PROPERTIES_2026-10-22-3.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
 - **Missing properties, round 3** (docs/decisions/2026-10-22-07-missing-round3.md): levoglucosenone's vapour
@@ -40,8 +40,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **Proposal 0011:** merged in [#83](https://github.com/FaireDose/Fugacity/pull/83) with status **Draft**. Accept
   or decline it, then set its status in the file and in `proposals/README.md`. Proposal 0010 was accepted on
   2026-10-22 (docs/decisions/2026-10-22-02-reactions-proposal.md), proposal 0009 on 2026-10-11.
-- **Proposal 0014** (Draft; docs/decisions/2026-10-22-08-skills-review.md): what CHEPTA could take from the K-Dense
-  scientific agent skills, five steps; accept or decline, or single steps. Nothing was added.
+- **Search tools and the new search** (proposal 0014, steps 1 and 2 accepted; docs/decisions/2026-10-22-09-search-tools.md):
+  check solketal's seven vapour pressures read off Figure 7 of Türck et al. 2026
+  (validation/data/pure/measured/article_solketal_acsomega2026.json), and the values transcribed from the downloaded
+  articles (Nikitin et al. 2023 for furfuryl alcohol and THFA; Bogatishcheva et al. 2026 for the lactates, whose
+  critical points the maintainer accepted with the larger vapour-pressure misses). To decide: tripalmitin's single heat
+  of vaporization, ethyl lactate's melting data from a thesis whose enantiomer enthalpies disagree fourfold, adding
+  furfuryl acetate. CORE's answer on its licence (asked 2026-10-22) before the search uses it; steps 3 to 5 of
+  proposal 0014 are not decided.
 - **Make the new name official** (decided 2026-10-09: **CHEPTA**, *Chemical Engineering Process Tools
   for Agents*). In this order:
   1. GitHub: Settings → General → Repository name: `CHEPTA`. GitHub redirects the old links,
