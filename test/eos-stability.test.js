@@ -86,21 +86,24 @@ test("enthalpy: liquid and vapour join at saturation (h_V - h_L = dHvap), with t
   }
 });
 
-test("enthalpy of a dimerizing component (acetic acid) is null with a note; vapour density from the chemical theory", () => {
+test("enthalpy of a dimerizing component (acetic acid): the dimers' enthalpy in the vapour; vapour density from the chemical theory", () => {
+  // (until 2026-10-22 the enthalpy was null with a note; the dimers' enthalpy is now modelled)
   const a = pure("acetic-acid", { properties: synthetic(pure("acetic-acid").Tc_K) });
   const L = a.props(330, 101.325);
   assert.equal(L.phase, "liquid");
-  assert.equal(L.h_J_mol, null);
-  assert.match(L.notes.join(" "), /dimerizes in the vapour; enthalpy is not given/);
+  assert.ok(Number.isFinite(L.h_J_mol));
+  assert.match(L.notes.join(" "), /dimerizes in the vapour: its vapour enthalpy is the ideal-gas monomer's plus that of the dimers/);
   const V = a.props(400, 50);
   assert.equal(V.phase, "vapour");
-  assert.equal(V.h_J_mol, null);
   assert.ok(V.dimerFraction > 0.05 && V.dimerFraction < 1);
+  // the dimers lower the enthalpy below the monomer's ideal gas, and their dissociation raises cp above it
+  assert.ok(V.h_J_mol < a.hIdealGas(400) && V.hResidual_J_mol < 0);
+  assert.ok(V.cp_J_molK > a.property("idealGasHeatCapacity", 400));
   // more mass per volume than the ideal gas of monomers, at most twice as much
   const ideal = a.MW / 1000 * 50000 / (8.314462618 * 400);
   assert.ok(V.rho_kg_m3 > ideal && V.rho_kg_m3 < 2 * ideal);
   assert.match(V.sources.rho_kg_m3.source, /Chemical theory/);
-  assert.throws(() => a.liquidEnthalpy(330), /dimerizes/);
+  assert.ok(Number.isFinite(a.liquidEnthalpy(330)));
 });
 
 test("props() notes are not repeated", () => {

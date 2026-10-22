@@ -2229,7 +2229,7 @@ Liquid records whose range was narrowed by the fit so that it starts above the o
 
 ## Notes
 
-- Acetic acid: the ideal-gas heat capacity is that of the monomer. The heat of vaporization (ChemSep) is the enthalpy change to the real, largely dimerized vapour, so h(liquid) = h°(T) − ΔHvap is not consistent for acetic acid; the vapour association model is needed for that.
+- Acetic acid: the ideal-gas heat capacity is that of the monomer. The heat of vaporization (ChemSep) is the enthalpy change to the real, largely dimerized vapour, so the enthalpies add the dimers' enthalpy of the vapour (chemical theory; the dimerization enthalpy from the temperature dependence of the dimerization constant, src/thermo/vapour.js).
 - Liquid properties are along the saturation line; vapour viscosity and thermal conductivity are dilute-gas (low-pressure) values.
 - Water: the correlations are fitted to IAPWS-95 and the IAPWS transport formulations as implemented in CoolProp; `props()` will use IAPWS-IF97 directly for water.
 

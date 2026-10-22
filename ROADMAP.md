@@ -60,7 +60,7 @@ an implementation, and tests. A step can start when the steps it depends on are 
 | **A10** AI authoring contract | How an assistant writes configurations and flowsheet files: the skill, a schema it can check against, and error messages that tell it what to fix. | A7, A9 | Open |
 | **A11** Views | Flowsheet drawing, stream tables, column profiles, results export; views only call the layers below. | A7, A9 | Open |
 | **A12** Stability policy for 1.0 | Which interfaces are frozen, deprecation rules, long-term support of old versions. | A1–A11 | Open |
-| **A13** Reactions | How reactions are described: stoichiometry, heats of reaction from the property package, equilibrium constants from Gibbs energies, rate laws and their parameters with sources, so that reactor models (conversion, equilibrium, CSTR, plug flow, batch) share one description. | A1, A6 | Open |
+| **A13** Reactions | How reactions are described: stoichiometry, heats of reaction from the property package, equilibrium constants from Gibbs energies, rate laws and their parameters with sources, so that reactor models (conversion, equilibrium, CSTR, plug flow, batch) share one description. | A1, A6 | Started: proposal 0010 accepted; the description, element balance, K(T) from formation data and the rate forms (`src/reactions/`, [docs/models/reactions.md](docs/models/reactions.md)) |
 
 ## Bridges track
 

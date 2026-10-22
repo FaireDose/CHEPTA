@@ -47,7 +47,10 @@ test("ChemSep records: the ideal gas, both values; the elements in their referen
     assert.equal(f.state, "ideal gas", id);
     assert.ok(Number.isFinite(f.Hf_ig_J_mol) && Number.isFinite(f.Gf_ig_J_mol), id);
   }
-  assert.equal(n, 124, "the components ChemSep has");
+  // 124 components ChemSep has, less formic acid, whose record is the WebBook's measured gas values by the maintainer's
+  // decision (2026-10-22: ChemSep's is 15 kJ/mol below them)
+  assert.equal(n, 123, "the components ChemSep has, less formic acid");
+  assert.match(comps["formic-acid"].formation.source.name, /Measured gas values: NIST Chemistry WebBook/);
   for (const id of ["hydrogen", "oxygen", "nitrogen", "argon", "helium"]) {
     assert.equal(pure(id).formation.Hf_J_mol, 0, id);
     assert.equal(pure(id).formation.Gf_J_mol, 0, id);
