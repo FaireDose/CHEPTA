@@ -50,7 +50,7 @@ SOURCES_FILE = DATA / "sources.json"
 LICENSES_FILE = DATA / "LICENSES.md"
 
 KINDS = ["standard", "open-source library", "databank", "thermoml", "open-access article",
-         "free supplement", "free book", "handbook via open compilation"]
+         "free supplement", "free copy", "free book", "handbook via open compilation"]
 
 # ------------------------------------------------------------------------------------------
 # Sources cited in free text. Each field is copied from the file named in the comment.
@@ -394,6 +394,9 @@ def validation_sources():
             # to read (Lomba et al. 2011, Green Chem.)
             "kind": "thermoml" if thermoml else ("open-access article" if re.search(r"open access", src.get("access", ""), re.I)
                                                  else "free supplement" if re.search(r"supplementary information[^.;]*free to read", src.get("access", ""), re.I)
+                                                 # "free copy": a preprint or the authors' manuscript, free to read (proposal
+                                                 # 0014, step 1; Bogatishcheva et al. 2026 and Nikitin et al. 2023 on SSRN)
+                                                 else "free copy" if re.search(r"(preprint|manuscript)[^.;]*free to read", src.get("access", ""), re.I)
                                                  else None),
             "doi": src.get("doi") or None,
             "url": url,

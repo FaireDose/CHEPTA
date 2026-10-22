@@ -99,8 +99,10 @@
    {"id": "tb/butyl-levulinate", "type": "normalBoilingPoint", "component": "butyl-levulinate", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointFitted"}]},
    {"id": "tb/levulinic-acid", "type": "normalBoilingPoint", "component": "levulinic-acid", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
    {"id": "tb/gvl", "type": "normalBoilingPoint", "component": "gvl", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
+   {"id": "tb/thfa", "type": "normalBoilingPoint", "component": "thfa", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
    {"id": "tb/cpme", "type": "normalBoilingPoint", "component": "cpme", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
    {"id": "tb/ethyl-lactate", "type": "normalBoilingPoint", "component": "ethyl-lactate", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
+   {"id": "tb/furfuryl-alcohol", "type": "normalBoilingPoint", "component": "furfuryl-alcohol", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointAvgWide"}]},
    {"id": "tb/gbl", "type": "normalBoilingPoint", "component": "gbl", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointSingle"}]},
    {"id": "tb/isoamyl-alcohol", "type": "normalBoilingPoint", "component": "isoamyl-alcohol", "P_kPa": 101.325, "quantities": [{"key": "T_C", "tol": "boilingPointAvgWide"}]}
   ]},
@@ -722,11 +724,9 @@
    {"id": "pure/ethylene/density/300K/1bar", "type": "pureProperty", "component": "ethylene", "property": "density", "T_K": 300.0, "P_kPa": 100.0, "state": "fluid", "quantities": [{"key": "rho_kg_m3", "tol": "gasDensity"}]},
    {"id": "pure/ethylene/density/300K/10bar", "type": "pureProperty", "component": "ethylene", "property": "density", "T_K": 300.0, "P_kPa": 1000.0, "state": "fluid", "quantities": [{"key": "rho_kg_m3", "tol": "gasDensity"}]},
    {"id": "pure/ethylene/density/300K/50bar", "type": "pureProperty", "component": "ethylene", "property": "density", "T_K": 300.0, "P_kPa": 5000.0, "state": "fluid", "quantities": [{"key": "rho_kg_m3", "tol": "gasDensity"}]},
-   {"id": "pure/thfa/psat/448.15K", "type": "pureProperty", "component": "thfa", "property": "vapourPressure", "T_K": 448.15, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
    {"id": "pure/2-3-butanediol/psat/455K", "type": "pureProperty", "component": "2-3-butanediol", "property": "vapourPressure", "T_K": 455.0, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
    {"id": "pure/methyl-lactate/psat/413.15K", "type": "pureProperty", "component": "methyl-lactate", "property": "vapourPressure", "T_K": 413.15, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
    {"id": "pure/limonene/psat/450K", "type": "pureProperty", "component": "limonene", "property": "vapourPressure", "T_K": 450.0, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
-   {"id": "pure/furfuryl-alcohol/psat/412.11K", "type": "pureProperty", "component": "furfuryl-alcohol", "property": "vapourPressure", "T_K": 412.11, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
    {"id": "pure/glycerol-carbonate/psat/455.61K", "type": "pureProperty", "component": "glycerol-carbonate", "property": "vapourPressure", "T_K": 455.61, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
    {"id": "pure/solketal/psat/373.15K", "type": "pureProperty", "component": "solketal", "property": "vapourPressure", "T_K": 373.15, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
    {"id": "pure/levoglucosenone/psat/403.3K", "type": "pureProperty", "component": "levoglucosenone", "property": "vapourPressure", "T_K": 403.3, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]}

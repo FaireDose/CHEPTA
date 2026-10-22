@@ -155,6 +155,11 @@
      "articles": [
       "10.5935/2447-0228.20200019"
      ]
+    },
+    "downloaded": {
+     "doi": "10.3390/thermo2030018",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "none of the pure compound: Verevkin and Nagrimanov 2022 (Thermo) has saturated triglycerides only; Garcia Santander et al. 2012 (Fuel) a TGA normal boiling point only (419.10 degC), no enthalpy"
     }
    }
   },
@@ -170,6 +175,11 @@
      "fetched": 0,
      "screened": 0,
      "articles": []
+    },
+    "downloaded": {
+     "doi": "10.3390/thermo2030018",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, held for the maintainer**: Verevkin and Nagrimanov, Thermo 2 (2022) 250-266, doi:10.3390/thermo2030018 (CC BY 4.0), Table 1: quartz-crystal microbalance, 384.9-433.2 K, 169.5 +- 4.2 kJ/mol at the mean temperature (about 409 K; the values are in its supplementary Table S2), adjusted by the authors to 210.2 +- 9.2 kJ/mol at 298.15 K. A single value: no record without the maintainer's decision; the slope of CHEPTA's ChemSep vapour-pressure record gives 189.7 kJ/mol at 409 K (Clapeyron, ideal gas), 12 % above it. The paper's recommended 211.6 kJ/mol averages it with correlation estimates, which are not data. Also read: Garcia Santander et al., Fuel 92 (2012) 158-161, doi:10.1016/j.fuel.2011.08.011 (Elsevier OA licence), TGA normal boiling points only (416.87 degC), no enthalpy"
     }
    }
   },
@@ -424,6 +434,11 @@
      "articles": [
       "10.5283/epub.32656"
      ]
+    },
+    "downloaded": {
+     "doi": "10.1016/j.fluid.2022.113656",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, added**: Nikitin et al. 2023 (as for furfuryl alcohol): Tc = 668 +- 10 K, pc = 4.18 +- 0.17 MPa; with its heat capacities (Table 5, 298-453 K) and thermal conductivities (Table 7, 303-373 K). The vapour-pressure curve now runs to the critical point, and reaches 101.325 kPa at 449.46 K (Tb)"
     }
    },
    "Tb": {
@@ -441,6 +456,11 @@
      "articles": [
       "10.14419/ijac.v3i2.5048"
      ]
+    },
+    "downloaded": {
+     "doi": "10.1016/j.fluid.2022.113656",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**now from the vapour-pressure record**, which runs to the measured critical point of Nikitin et al. 2023: 449.46 K. Nikitin et al.'s Table 2 gives 449.9 K, an average of earlier articles"
     }
    }
   },
@@ -623,6 +643,11 @@
      "fetched": 2,
      "screened": 0,
      "articles": []
+    },
+    "downloaded": {
+     "doi": "10.2139/ssrn.6083032",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, held for the maintainer**: Bogatishcheva et al., SSRN preprint 2026 (not peer reviewed), doi:10.2139/ssrn.6083032, Tables 3 and 4: Tc = 612 K (U_r 1.5 %), pc = 3.73 MPa (U_r 4.5 %), pulse heating; as a fixed point of the vapour-pressure curve it raises the miss of Lomba 2014 from the accepted 2.96 % to 3.37 % (stated 2.59 %). Its heat capacities (Eq. 24, 298-417 K, 3 %) and thermal conductivities (Eq. 27, 303-373 K, 8.5 %) were added"
     }
    },
    "Tb": {
@@ -656,6 +681,11 @@
      "fetched": 0,
      "screened": 0,
      "articles": []
+    },
+    "downloaded": {
+     "doi": "10.57912/23844132",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, held for the maintainer**: Ashraf, MS thesis, St. John's University 2015 (open repository, doi:10.57912/23844132), Table 8 and Figures 27-29 (modulated DSC): racemate (CAS 97-64-3, CHEPTA's component) peak 247.51 K (-25.64 degC; onset -31.08 degC), 83.46 J/g = 9.86 kJ/mol; L-form -6.22 degC, 40.12 J/g; D-form -4.23 degC, 159.4 J/g. Mirror images have the same enthalpy of fusion, so the factor of four between them makes the thesis's enthalpies doubtful; the temperatures are DSC peaks, not onsets"
     }
    },
    "formationG": {
@@ -685,6 +715,11 @@
      "fetched": 0,
      "screened": 0,
      "articles": []
+    },
+    "downloaded": {
+     "doi": "10.2139/ssrn.6083032",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, held for the maintainer**: Bogatishcheva et al. 2026 (as for methyl lactate): Tc = 617 K, pc = 3.32 MPa; as a fixed point it raises the miss of Resa 2010 from the accepted 1.94 % to 2.35 % (stated 1.70 %). Its heat capacities (298-398 K) and thermal conductivities were added"
     }
    }
   },
@@ -775,6 +810,11 @@
      "fetched": 4,
      "screened": 0,
      "articles": []
+    },
+    "downloaded": {
+     "doi": "10.1016/j.fluid.2022.113656",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "**measured, added**: Nikitin et al., Fluid Phase Equilib. 565 (2023) 113656, doi:10.1016/j.fluid.2022.113656, read in the submitted manuscript on SSRN (doi:10.2139/ssrn.4213180), Tables 2 and 3: Tc = 660 +- 10 K, pc = 4.85 +- 0.19 MPa, pulse heating; with its heat capacities (Table 5, 298-373 K) and thermal conductivities (Table 7, 303-353 K)"
     }
    },
    "Tb": {
@@ -1768,6 +1808,11 @@
      "fetched": 1,
      "screened": 0,
      "articles": []
+    },
+    "downloaded": {
+     "doi": "10.3390/molecules28227483",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "none of the pure compound: Samoilov et al., Molecules 28 (2023) 7483, doi:10.3390/molecules28227483 (CC BY 4.0), names solketal in its references only; its heat capacities are of glycerol methyl and ethyl ether mixtures"
     }
    },
    "fusion": {
@@ -1912,6 +1957,11 @@
      "fetched": 0,
      "screened": 0,
      "articles": []
+    },
+    "downloaded": {
+     "doi": "10.3390/molecules30020399",
+     "how": "downloaded by the maintainer (publishers refuse scripts) and read, text, tables and figures, 2026-10-22",
+     "held": "none of the pure compound: Silva et al., Molecules 30 (2025) 399, doi:10.3390/molecules30020399 (CC BY 4.0), names angelica lactones in its references only (gamma- and delta-undecanolactone; its Table 8 quotes gamma-butyrolactone and gamma-valerolactone values of other articles)"
     }
    },
    "formationG": {
@@ -2784,5 +2834,6 @@
     }
    }
   }
- }
+ },
+ "downloaded_note": "Articles the indexes found but scripts could not fetch were downloaded by the maintainer and read (the 'downloaded' entries); 'held' there replaces the entry's own 'held' for what the gap now is."
 }

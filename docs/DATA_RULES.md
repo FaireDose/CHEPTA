@@ -87,7 +87,9 @@ compares with. An open article counts as the open copy of the measured values it
 legal free copy: the publisher's open-access version, or an accepted or submitted manuscript in a repository. Look it
 up with `python validation/python/open_copy.py DOI ... --cache DIR --all`, which asks Unpaywall, OpenAlex and CORE for
 every copy (in a batch, `gap_report.py --open-copies`, Unpaywall only). Such a copy is open: cite the published
-article, the link to the copy and its version, and check the numbers in that copy. `--fetch DIR` downloads the first
+article, the link to the copy and its version, and check the numbers in that copy. A preprint or a manuscript is a
+source of the kind "free copy" (`src/data/sources.json`), and the record says when it was not peer reviewed (Nikitin
+et al. 2023 and Bogatishcheva et al. 2026, read on SSRN; 2026-10-22). `--fetch DIR` downloads the first
 copy that really is a PDF: a server may answer "200 OK" with an HTML page (a login, a robot check), which is never
 kept as the article. Where a repository serves its PDFs to browsers only, the script prints the link, for a person to
 download (the maintainer, 2026-10-22: "if you want to stop and ask me to download something let me know"). The

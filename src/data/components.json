@@ -17235,16 +17235,6 @@
           "nist-webbook"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "47": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH2CL2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CH2Cl2"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -17263,6 +17253,16 @@
           "codata-key-values",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "47": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2CL2): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against CH2Cl2"
       }
     },
     "2-methoxyethanol": {
@@ -17940,8 +17940,11 @@
         "surfaceTension": {
           "equation": "DIPPR106",
           "coefficients": {
-            "A": 0.06519001098,
-            "B": 1.081266082
+            "A": 2.426688777e-14,
+            "B": -180.9576937,
+            "C": 506.0924228,
+            "D": -572.1641272,
+            "E": 245.9876793
           },
           "units": "N/m",
           "Tmin_K": 298.15,
@@ -17952,7 +17955,7 @@
             "name": "Measured values (NIST TRC ThermoML Archive); stated uncertainties up to 2.9 %, above the 1 % target, used because no open values meet the target",
             "reference": "Wang et al., Fluid Phase Equilib. 452 (2017) 9-15, doi:10.1016/j.fluid.2017.08.016; Kumar et al., J. Chem. Eng. Data 48 (2003) 1318-1322, doi:10.1021/je030173e; Deng et al., J. Chem. Eng. Data 51 (2006) 725-729, doi:10.1021/je050484k",
             "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
-            "fit": "15 measured values, 298.15-393.17 K, max deviation 1.6 %",
+            "fit": "15 measured values, 298.15-393.17 K, max deviation 1.3 %",
             "stated_uncertainty_percent": 2.86
           },
           "source_ids": [
@@ -17967,18 +17970,6 @@
           "ChemSep v8.3: no value",
           "NIST TRC ThermoML Archive: no melting data"
         ]
-      },
-      "modUnifac": {
-        "groups": {
-          "2": 2,
-          "14": 1,
-          "24": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 OH (P), 1 CH3O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O2"
       },
       "formation": {
         "state": "liquid",
@@ -17997,6 +17988,18 @@
         "source_ids": [
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "14": 1,
+          "24": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 OH (P), 1 CH3O): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O2"
       }
     },
     "dichloroethane": {
@@ -38859,18 +38862,6 @@
           "NIST TRC ThermoML Archive: a melting temperature but no enthalpy of fusion"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "9": 4,
-          "10": 2,
-          "42": 2
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 2 AC, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H6O4"
-      },
       "formation": {
         "state": "ideal gas",
         "T_K": 298.15,
@@ -38885,6 +38876,18 @@
         "source_ids": [
           "chemsep-8.3"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "9": 4,
+          "10": 2,
+          "42": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 2 AC, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H6O4"
       }
     },
     "dmt": {
@@ -43374,18 +43377,6 @@
           "nist-webbook"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "6": 1,
-          "26": 1,
-          "79": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH=CH, 1 CHO, 1 CY-CH): chosen from the structure: built from the groups the method has (no furan-ring subgroup), as the maintainer decided: the ring ether CH-O as CHO, one ring double bond as CH=CH, the remaining ring CH as CY-CH; the second double bond and the aromatic character are not represented; DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H4O"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -43404,6 +43395,18 @@
           "codata-key-values",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "6": 1,
+          "26": 1,
+          "79": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH=CH, 1 CHO, 1 CY-CH): chosen from the structure: built from the groups the method has (no furan-ring subgroup), as the maintainer decided: the ring ether CH-O as CHO, one ring double bond as CH=CH, the remaining ring CH as CY-CH; the second double bond and the aromatic character are not represented; DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H4O"
       }
     },
     "2-methylfuran": {
@@ -43807,6 +43810,15 @@
           "nist-webbook"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "1": 1,
@@ -43819,15 +43831,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH=C, 1 CHO, 1 CY-CH): chosen from the structure: built from the groups the method has (no furan-ring subgroup), as the maintainer decided: the ring ether CH-O as CHO, the substituted ring double bond as CH=C, the remaining ring CH as CY-CH, and CH3; the second double bond and the aromatic character are not represented; DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
-        ]
       }
     },
     "2-methyltetrahydrofuran": {
@@ -44054,6 +44057,16 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Only computed (quantum-chemical) values found; not data (AGENTS.md rule 1)"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "1": 1,
@@ -44065,16 +44078,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 THF, 2 CY-CH2): chosen: the ring ether CH-O-CH2 counted as the THF subgroup and the methyl as CH3, as DDBST assigns it (the SMARTS match took a TRIOXAN group, the subgroup of 1,3,5-trioxane); structure-based (SMARTS) assignment {84: 1, 1: 1, 78: 2, 79: 1} (atom balance one H above C5H10O: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "Only computed (quantum-chemical) values found; not data (AGENTS.md rule 1)"
-        ]
       }
     },
     "1-3-propanediol": {
@@ -44484,17 +44487,6 @@
           "nist-webbook"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "2": 3,
-          "14": 2
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (3 CH2, 2 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O2"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -44514,6 +44506,17 @@
           "nist-thermoml-archive",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 3,
+          "14": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (3 CH2, 2 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H8O2"
       }
     },
     "methyl-levulinate": {
@@ -44736,19 +44739,6 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "1": 1,
-          "2": 1,
-          "18": 1,
-          "22": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O3"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -44767,6 +44757,19 @@
           "codata-key-values",
           "nist-thermoml-archive"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "2": 1,
+          "18": 1,
+          "22": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O3"
       }
     },
     "ethyl-levulinate": {
@@ -44989,19 +44992,6 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "1": 1,
-          "2": 2,
-          "18": 1,
-          "22": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 2 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H12O3"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -45020,6 +45010,19 @@
           "codata-key-values",
           "nist-thermoml-archive"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "2": 2,
+          "18": 1,
+          "22": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 2 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C7H12O3"
       }
     },
     "butyl-levulinate": {
@@ -45232,19 +45235,6 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "1": 1,
-          "2": 4,
-          "18": 1,
-          "22": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 4 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C9H16O3"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -45263,6 +45253,19 @@
           "codata-key-values",
           "nist-thermoml-archive"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "2": 4,
+          "18": 1,
+          "22": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 4 CH2, 1 CH3CO, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C9H16O3"
       }
     },
     "levulinic-acid": {
@@ -45576,18 +45579,6 @@
           "nist-webbook"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "2": 2,
-          "18": 1,
-          "42": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 CH3CO, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H8O3"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -45606,6 +45597,18 @@
           "codata-key-values",
           "nist-thermoml-archive"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "18": 1,
+          "42": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 CH3CO, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H8O3"
       }
     },
     "gvl": {
@@ -45893,19 +45896,6 @@
           "nist-thermoml-archive"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "1": 1,
-          "22": 1,
-          "78": 1,
-          "79": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2COO, 1 CY-CH2, 1 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H8O2"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -45923,6 +45913,19 @@
         "source_ids": [
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "22": 1,
+          "78": 1,
+          "79": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2COO, 1 CY-CH2, 1 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H8O2"
       }
     },
     "thfa": {
@@ -45935,22 +45938,22 @@
         "thfa"
       ],
       "MW": 102.1317,
-      "Tc_K": null,
-      "Pc_Pa": null,
-      "Tb_K": null,
+      "Tc_K": 668.0,
+      "Pc_Pa": 4180000.0,
+      "Tb_K": 449.4628,
       "vapourPressure": {
         "equation": "DIPPR101",
         "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
         "units": "Pa",
-        "A": 109.3251871,
-        "B": -10746.23746,
-        "C": -12.09751966,
-        "D": 0.0,
-        "E": 0.0,
+        "A": 308.0181755,
+        "B": -17416.62428,
+        "C": -45.21335248,
+        "D": 0.04098968708,
+        "E": 1.0,
         "Tmin_K": 303.15,
-        "Tmax_K": 448.15,
+        "Tmax_K": 668.0,
         "tier": "fitted",
-        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Lomba et al., J. Chem. Eng. Data 59 (2014) 329-338, doi:10.1021/je400783h. 29 measured values (29 from the ThermoML Archive), 303.15-448.15 K, max deviation 29 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Lomba 2014 +3.32 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (7 values, 12-1.1e+02 %); among the values stated within 10 %, the largest deviation is 5.0 %.",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Lomba et al., J. Chem. Eng. Data 59 (2014) 329-338, doi:10.1021/je400783h; Nikitin 2023 (critical point, an article outside the archive). 30 measured values (29 from the ThermoML Archive) and the critical point, 303.15-668.00 K, max deviation 15 %. Between 448.15 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Lomba 2014 +1.33 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (7 values, 12-1.1e+02 %); among the values stated within 10 %, the largest deviation is 2.7 %.",
         "source_ids": [
           "nist-thermoml-archive",
           "nist-webbook"
@@ -45960,7 +45963,7 @@
             "T_K": 428.15,
             "value": 56310.0,
             "reference": "Lomba 2014",
-            "deviation_percent": -1.71,
+            "deviation_percent": -1.85,
             "why": "more than three times its stated uncertainty from the fit of all the sets"
           }
         ]
@@ -45972,17 +45975,24 @@
         ],
         "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
-      "omega": null,
-      "constants_source": "Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: not reached, the measured vapour pressures stay below 101.325 kPa.",
+      "omega": 0.416632,
+      "constants_source": "Tc and Pc: Nikitin et al., Fluid Phase Equilib. 565 (2023) 113656, doi:10.1016/j.fluid.2022.113656, an article outside the archive (Nikitin 2023: the authors' submitted manuscript (preprint, not peer reviewed), free to read on SSRN (doi:10.2139/ssrn.4213180); the numbers were read in that copy, not in the published article) (stated uncertainties 10 K and 170 kPa); measured by the pulse-heating method; the authors' acentric factor (Table 3) is 0.419, CHEPTA's is from its own vapour-pressure record. MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (449.463 K).",
       "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "omega_source": "From its definition, -log10(Psat(0.7 Tc)/Pc) - 1, with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook; Psat at 467.60 K between the last measured value at 448.15 K and the critical point, so ω is less certain than the measured values).",
+      "omega_source_ids": [
+        "nist-thermoml-archive",
         "nist-webbook"
       ],
       "properties": {
         "liquidDensity": {
-          "equation": "DIPPR100",
+          "equation": "DIPPR105",
           "coefficients": {
-            "A": 1308.090645,
-            "B": -0.8654380632
+            "A": 153.2203834,
+            "B": 0.3459827802,
+            "C": 668.0,
+            "D": 0.3491130452
           },
           "units": "kg/m3",
           "Tmin_K": 278.15,
@@ -45992,8 +46002,8 @@
             "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
             "reference": "Lomba et al., J. Chem. Thermodyn. 66 (2013) 131-136, doi:10.1016/j.jct.2013.06.020; Senol et al., J. Chem. Eng. Data 50 (2005) 688-691, doi:10.1021/je049605r; Lomba et al., J. Chem. Eng. Data 59 (2014) 329-338, doi:10.1021/je400783h",
             "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
-            "fit": "38 measured values, 278.15-338.15 K, max deviation 0.072 %",
-            "notes": "DIPPR 100 (a polynomial in T; no measured critical temperature)."
+            "fit": "38 measured values, 278.15-338.15 K, max deviation 0.070 %",
+            "notes": "DIPPR 105 with C fixed at the critical temperature 668.00 K (Nikitin 2023, an article outside the archive)."
           },
           "source_ids": [
             "nist-thermoml-archive"
@@ -46013,46 +46023,51 @@
         "liquidHeatCapacity": {
           "equation": "DIPPR100",
           "coefficients": {
-            "A": 255.8283267,
-            "B": -1.191245124,
-            "C": 0.003265487219
+            "A": -181.3894051,
+            "B": 2.232071834,
+            "C": -0.004280901286,
+            "D": 3.337160637e-06
           },
           "units": "J/mol/K",
-          "Tmin_K": 160.0,
-          "Tmax_K": 380.0,
-          "tier": "predicted",
+          "Tmin_K": 298.15,
+          "Tmax_K": 453.15,
+          "tier": "fitted",
           "source": {
-            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
-            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
-            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
-            "groups": "1 O-(C)2, 2 C-(H)2(C)(O), 2 C-(H)2(C)2, 1 C-(H)(C)2(O) (ether, ester), 1 O-(H)(C), 1 tetrahydrofuran rsc",
-            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every other group's parameters were fitted (160-320 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620); at most 380 K, for the group C-(H)(C)2(O) (ether, ester)",
-            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97994&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"tetrahydrofurfuryl alcohol\", \"oxolan-2-ylmethanol\"; 4 records opened)); the measured values there are: 190 J/(mol K) at 298.15 K (Bonner and Cerutti, 1976 (NIST WebBook, DH), stated uncertainty not stated), the prediction +0 % from it. The ring is counted as tetrahydrofuran with its ring strain correction (part II, Table 9). Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K). The group C-(H)(C)2(O) (ether, ester) was fitted at 130-170 K only (part II, Table 8); it is used up to 380 K, where it holds on the CHEPTA liquids that have it: on isopropyl acetate (ChemSep record) the prediction is -7.9 to +8.1 % from the record at 220-380 K, and on 2-methyltetrahydrofuran -4.5 to -3.4 % from 11 measured values at 288-323 K (NIST TRC ThermoML Archive). The parameters of tetrahydrofuran rsc were calculated by the authors from the heat capacities of a single compound (their footnote b)."
+            "name": "Measured heat capacities of the liquid (an article outside the archive and NIST Chemistry WebBook); stated uncertainties up to 3.0 %, above the 1 % target, used because the only alternative is a prediction",
+            "reference": "Nikitin et al., Fluid Phase Equilib. 565 (2023) 113656, doi:10.1016/j.fluid.2022.113656; Bonner and Cerutti, 1976 (NIST WebBook, DH)",
+            "access": "Nikitin 2023: the authors' submitted manuscript (preprint, not peer reviewed), free to read on SSRN (doi:10.2139/ssrn.4213180); the numbers were read in that copy, not in the published article; free to read (NIST SRD 69)",
+            "fit": "18 measured values, 298.15-453.15 K, max deviation 1.1 %",
+            "stated_uncertainty_percent": 3.0,
+            "notes": "The group-additivity prediction (Ruzicka and Domalski 1993, predict_cp.py) would be -1 to +1 % from this record at the measured temperatures within its groups' range, 298-313 K."
           },
           "source_ids": [
-            "ruzicka-domalski-1993"
+            "nist-webbook",
+            "nikitin2023-article-furfuryl-alcohol"
           ]
         },
         "heatOfVaporization": {
-          "equation": "DIPPR100",
+          "equation": "DIPPR106",
           "coefficients": {
-            "A": 89349.27899,
-            "B": -100.5844085
+            "A": 166401.5651,
+            "B": 2.497403363,
+            "C": -1.915535394
           },
           "units": "J/mol",
           "Tmin_K": 303.15,
-          "Tmax_K": 380.61341,
+          "Tmax_K": 448.15,
+          "Tc_K": 668.0,
           "tier": "fitted",
           "source": {
-            "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook)",
-            "reference": "validation/python/measured_components.py (clapeyron_ideal)",
+            "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
+            "reference": "validation/python/measured_components.py (clapeyron)",
             "access": "calculated from the open measured data of the vapour-pressure record; free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97994&Units=SI&Mask=4)",
-            "fit": "25 Clapeyron values and 0 measured values, 303.15-380.61 K, max deviation 0.0001 %",
-            "notes": "No measured critical constants (proposal 0009): dHvap = R T^2 dln(Psat)/dT, the Clapeyron equation with an ideal-gas vapour and the liquid volume neglected (largest P v_L / R T 4.3e-05 where the density record applies), Psat from the vapour-pressure record of this component, 303.15-380.61 K (up to Psat = 10 kPa or the last measured vapour pressure); DIPPR 100 (a polynomial in T). Chosen because no calorimetric value; the WebBook values are derived from vapour pressures. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none."
+            "fit": "25 Clapeyron values and 0 measured values, 303.15-448.15 K, max deviation 0.013 %",
+            "notes": "dHvap = T (dPsat/dT) (v_vapour - v_liquid), Psat from the vapour-pressure record of this component, both volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, MIT), 303.15-448.15 K (up to the last measured vapour pressure); DIPPR 106 with the critical temperature 668.00 K. Chosen because the measured values do not give the temperature dependence (no calorimetric value; the WebBook values are derived from vapour pressures). Max deviation from the Clapeyron values 0.013 %. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none. Other values on the WebBook page (most derived by their authors from vapour pressures), compared: Stephenson and Malanowski, 1987 at 408 K (method A): +2.9 %; Bludilina, Baev, et al., 1979 at 388 K (no method given): +7.3 %; Landrieu, Baylocq, et al., 1929 (ΔvapH° at 298.15 K, method E): -5.9 %; Landrieu, Baylocq, et al., 1929 (ΔvapH° at 298.15 K, no method given): -5.4 %."
           },
           "source_ids": [
             "nist-thermoml-archive",
-            "nist-webbook"
+            "nist-webbook",
+            "thermo-library"
           ]
         },
         "liquidViscosity": {
@@ -46088,12 +46103,23 @@
           ]
         },
         "liquidThermalConductivity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97994&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"tetrahydrofurfuryl alcohol\", \"oxolan-2-ylmethanol\"; 4 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 0.1647231834
+          },
+          "units": "W/m/K",
+          "Tmin_K": 303.15,
+          "Tmax_K": 373.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (an article outside the archive); stated uncertainties up to 8.0 %, above the 3 % target, used because no open values meet the target",
+            "reference": "Nikitin et al., Fluid Phase Equilib. 565 (2023) 113656, doi:10.1016/j.fluid.2022.113656",
+            "access": "Nikitin 2023: the authors' submitted manuscript (preprint, not peer reviewed), free to read on SSRN (doi:10.2139/ssrn.4213180); the numbers were read in that copy, not in the published article",
+            "fit": "8 measured values, 303.15-373.15 K, max deviation 1.7 %",
+            "stated_uncertainty_percent": 8.02
+          },
+          "source_ids": [
+            "nikitin2023-article-furfuryl-alcohol"
           ]
         },
         "vapourThermalConductivity": {
@@ -46106,14 +46132,15 @@
           ]
         },
         "surfaceTension": {
-          "equation": "DIPPR100",
+          "equation": "DIPPR106",
           "coefficients": {
-            "A": 0.06774716297,
-            "B": -0.000101406339
+            "A": 0.06774488633,
+            "B": 0.9997873179
           },
           "units": "N/m",
           "Tmin_K": 278.15,
           "Tmax_K": 338.15,
+          "Tc_K": 668.0,
           "tier": "fitted",
           "source": {
             "name": "Measured values (NIST TRC ThermoML Archive)",
@@ -46126,17 +46153,6 @@
           ]
         }
       },
-      "critical": {
-        "available": false,
-        "searched": [
-          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
-          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
-          "CoolProp 8.0.0 (not a fluid)",
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "open literature (web search, 2026-10-14)"
-        ]
-      },
-      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 448.15 K, where it gives 97.65 kPa, below 101.325 kPa: no normal boiling temperature from measured data",
       "fusion": {
         "available": false,
         "searched": [
@@ -46144,19 +46160,6 @@
           "ChemSep v8.3: no value",
           "NIST TRC ThermoML Archive: no melting data"
         ]
-      },
-      "modUnifac": {
-        "groups": {
-          "2": 1,
-          "14": 1,
-          "27": 1,
-          "78": 2
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 THF, 2 CY-CH2): chosen: the ring ether CH-O-CH2 counted as the THF subgroup, with CH2 and a primary OH, as DDBST assigns it (the SMARTS match took a TRIOXAN group, the subgroup of 1,3,5-trioxane); structure-based (SMARTS) assignment {84: 1, 14: 1, 78: 2, 2: 1, 79: 1} (atom balance one H above C5H10O2: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O2"
       },
       "formation": {
         "state": "liquid",
@@ -46176,6 +46179,19 @@
           "codata-key-values",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "14": 1,
+          "27": 1,
+          "78": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 THF, 2 CY-CH2): chosen: the ring ether CH-O-CH2 counted as the THF subgroup, with CH2 and a primary OH, as DDBST assigns it (the SMARTS match took a TRIOXAN group, the subgroup of 1,3,5-trioxane); structure-based (SMARTS) assignment {84: 1, 14: 1, 78: 2, 2: 1, 79: 1} (atom balance one H above C5H10O2: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O2"
       }
     },
     "cpme": {
@@ -46389,6 +46405,15 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "24": 1,
@@ -46400,15 +46425,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3O, 4 CY-CH2, 1 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
-        ]
       }
     },
     "2-3-butanediol": {
@@ -46691,18 +46707,6 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "1": 2,
-          "3": 2,
-          "81": 2
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 CH, 2 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O2"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -46720,6 +46724,18 @@
         "source_ids": [
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 2,
+          "3": 2,
+          "81": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 CH, 2 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O2"
       }
     },
     "methyl-lactate": {
@@ -46801,24 +46817,23 @@
         "liquidHeatCapacity": {
           "equation": "DIPPR100",
           "coefficients": {
-            "A": 255.0500886,
-            "B": -1.06843449,
-            "C": 0.003215936065
+            "A": 189.465246,
+            "B": 0.1376009199
           },
           "units": "J/mol/K",
-          "Tmin_K": 185.0,
-          "Tmax_K": 540.0,
-          "tier": "predicted",
+          "Tmin_K": 298.15,
+          "Tmax_K": 413.15,
+          "tier": "fitted",
           "source": {
-            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
-            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
-            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
-            "groups": "2 C-(H)3(C), 1 C-(H)(C)2(O) (alcohol), 1 O-(H)(C), 1 CO-(C)(O), 1 O-(C)(CO)",
-            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (185-440 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620)",
-            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C547648&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"methyl lactate\", \"methyl 2-oxidanylpropanoate\"; 8 records opened)). The alpha carbon CH(OH)(COOR) is C-(H)(C)(O)(CO), a group the method does not have; it is counted as the secondary alcohol carbon C-(H)(C)2(O), its nearest group, as for lactic acid; the methoxy group C-(H)3(O) is C-(H)3(C), an equivalence of the method (part II, Table 2). Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+            "name": "Measured heat capacities of the liquid (an article outside the archive); stated uncertainties up to 3.0 %, above the 1 % target, used because the only alternative is a prediction",
+            "reference": "Bogatishcheva et al., SSRN preprint, not peer reviewed (2026), doi:10.2139/ssrn.6083032",
+            "access": "Bogatishcheva 2026: preprint, free to read on SSRN (not peer reviewed; the PDF the maintainer downloaded, 2026-10-22)",
+            "fit": "13 measured values, 298.15-413.15 K, max deviation 0.30 %",
+            "stated_uncertainty_percent": 3.0,
+            "notes": "The group-additivity prediction (Ruzicka and Domalski 1993, predict_cp.py) would be -4 to +47 % from this record at the measured temperatures within its groups' range, 298-413 K."
           },
           "source_ids": [
-            "ruzicka-domalski-1993"
+            "bogatishcheva2026-article-ethyl-lactate"
           ]
         },
         "heatOfVaporization": {
@@ -46876,12 +46891,24 @@
           ]
         },
         "liquidThermalConductivity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C547648&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"methyl lactate\", \"methyl 2-oxidanylpropanoate\"; 8 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 0.2949720048,
+            "B": -0.0003843251963
+          },
+          "units": "W/m/K",
+          "Tmin_K": 303.15,
+          "Tmax_K": 373.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (an article outside the archive); stated uncertainties up to 8.5 %, above the 3 % target, used because no open values meet the target",
+            "reference": "Bogatishcheva et al., SSRN preprint, not peer reviewed (2026), doi:10.2139/ssrn.6083032",
+            "access": "Bogatishcheva 2026: preprint, free to read on SSRN (not peer reviewed; the PDF the maintainer downloaded, 2026-10-22)",
+            "fit": "8 measured values, 303.15-373.15 K, max deviation 0.030 %",
+            "stated_uncertainty_percent": 8.52
+          },
+          "source_ids": [
+            "bogatishcheva2026-article-ethyl-lactate"
           ]
         },
         "vapourThermalConductivity": {
@@ -46934,6 +46961,16 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "The alkyl lactates article in the ThermoML Archive (doi:10.1016/j.jct.2018.07.029) holds the combustion of ethyl lactate only"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "1": 2,
@@ -46946,16 +46983,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH, 1 COO, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H8O3"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "The alkyl lactates article in the ThermoML Archive (doi:10.1016/j.jct.2018.07.029) holds the combustion of ethyl lactate only"
-        ]
       }
     },
     "ethyl-lactate": {
@@ -47060,24 +47087,23 @@
         "liquidHeatCapacity": {
           "equation": "DIPPR100",
           "coefficients": {
-            "A": 267.1859474,
-            "B": -0.9465687168,
-            "C": 0.002990280263
+            "A": 192.3326811,
+            "B": 0.2141863377
           },
           "units": "J/mol/K",
-          "Tmin_K": 185.0,
-          "Tmax_K": 540.0,
-          "tier": "predicted",
+          "Tmin_K": 298.15,
+          "Tmax_K": 393.15,
+          "tier": "fitted",
           "source": {
-            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
-            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
-            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
-            "groups": "2 C-(H)3(C), 1 C-(H)(C)2(O) (alcohol), 1 O-(H)(C), 1 CO-(C)(O), 1 O-(C)(CO), 1 C-(H)2(C)(O)",
-            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (185-440 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620)",
-            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97643&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl lactate\", \"ethyl 2-oxidanylpropanoate\"; 26 records opened)). The alpha carbon CH(OH)(COOR) is C-(H)(C)(O)(CO), a group the method does not have; it is counted as the secondary alcohol carbon C-(H)(C)2(O), its nearest group, as for lactic acid. Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K)."
+            "name": "Measured heat capacities of the liquid (an article outside the archive); stated uncertainties up to 3.0 %, above the 1 % target, used because the only alternative is a prediction",
+            "reference": "Bogatishcheva et al., SSRN preprint, not peer reviewed (2026), doi:10.2139/ssrn.6083032",
+            "access": "Bogatishcheva 2026: preprint, free to read on SSRN (not peer reviewed; the PDF the maintainer downloaded, 2026-10-22)",
+            "fit": "11 measured values, 298.15-393.15 K, max deviation 0.41 %",
+            "stated_uncertainty_percent": 3.0,
+            "notes": "The group-additivity prediction (Ruzicka and Domalski 1993, predict_cp.py) would be -2 to +29 % from this record at the measured temperatures within its groups' range, 298-393 K."
           },
           "source_ids": [
-            "ruzicka-domalski-1993"
+            "bogatishcheva2026-article-ethyl-lactate"
           ]
         },
         "heatOfVaporization": {
@@ -47135,12 +47161,24 @@
           ]
         },
         "liquidThermalConductivity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C97643&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"ethyl lactate\", \"ethyl 2-oxidanylpropanoate\"; 26 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 0.2624945888,
+            "B": -0.0003041759373
+          },
+          "units": "W/m/K",
+          "Tmin_K": 303.15,
+          "Tmax_K": 373.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (an article outside the archive); stated uncertainties up to 8.5 %, above the 3 % target, used because no open values meet the target",
+            "reference": "Bogatishcheva et al., SSRN preprint, not peer reviewed (2026), doi:10.2139/ssrn.6083032",
+            "access": "Bogatishcheva 2026: preprint, free to read on SSRN (not peer reviewed; the PDF the maintainer downloaded, 2026-10-22)",
+            "fit": "8 measured values, 303.15-373.15 K, max deviation 0.026 %",
+            "stated_uncertainty_percent": 8.53
+          },
+          "source_ids": [
+            "bogatishcheva2026-article-ethyl-lactate"
           ]
         },
         "vapourThermalConductivity": {
@@ -47192,20 +47230,6 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "1": 2,
-          "2": 1,
-          "3": 1,
-          "77": 1,
-          "81": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 CH, 1 COO, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O3"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -47224,6 +47248,20 @@
           "codata-key-values",
           "nist-thermoml-archive"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 2,
+          "2": 1,
+          "3": 1,
+          "77": 1,
+          "81": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2, 1 CH, 1 COO, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O3"
       }
     },
     "limonene": {
@@ -47478,20 +47516,6 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "1": 2,
-          "7": 1,
-          "8": 1,
-          "78": 3,
-          "79": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2=C, 1 CH=C, 3 CY-CH2, 1 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C10H16"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -47510,6 +47534,20 @@
           "codata-key-values",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 2,
+          "7": 1,
+          "8": 1,
+          "78": 3,
+          "79": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 1 CH2=C, 1 CH=C, 3 CY-CH2, 1 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C10H16"
       }
     },
     "furfuryl-alcohol": {
@@ -47523,22 +47561,22 @@
         "furfural alcohol"
       ],
       "MW": 98.09994,
-      "Tc_K": null,
-      "Pc_Pa": null,
-      "Tb_K": null,
+      "Tc_K": 660.0,
+      "Pc_Pa": 4850000.0,
+      "Tb_K": 442.9173,
       "vapourPressure": {
         "equation": "DIPPR101",
         "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
         "units": "Pa",
-        "A": 80.45888633,
-        "B": -9359.195067,
-        "C": -7.846032728,
+        "A": 78.01588707,
+        "B": -9232.604359,
+        "C": -7.490882152,
         "D": 0.0,
         "E": 0.0,
         "Tmin_K": 273.11,
-        "Tmax_K": 412.11,
+        "Tmax_K": 660.0,
         "tier": "fitted",
-        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Negadi et al., J. Chem. Thermodyn. 70 (2014) 233-238, doi:10.1016/j.jct.2013.10.039. 27 measured values (27 from the ThermoML Archive), 273.11-412.11 K, max deviation 2.3 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Negadi 2014 +0.01 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (1 values, 11-11 %); among the values stated within 10 %, the largest deviation is 1.1 %.",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Negadi et al., J. Chem. Thermodyn. 70 (2014) 233-238, doi:10.1016/j.jct.2013.10.039; Nikitin 2023 (critical point, an article outside the archive). 28 measured values (27 from the ThermoML Archive) and the critical point, 273.11-660.00 K, max deviation 1.9 %. Between 412.11 K and the critical point the curve is held only by the critical point. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Negadi 2014 +0.14 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (1 values, 11-11 %); among the values stated within 10 %, the largest deviation is 1.9 %. Independent checks (not fitted): normal boiling temperature 442.92 K against the WebBook average of the measured values, 430 +/- 70 K.",
         "source_ids": [
           "nist-thermoml-archive",
           "nist-webbook"
@@ -47548,21 +47586,21 @@
             "T_K": 353.3,
             "value": 2600.0,
             "reference": "Tai 2014",
-            "deviation_percent": 7.22,
+            "deviation_percent": 7.12,
             "why": "its three values at 353-408 K lie 4-7 % above Negadi 2014, beyond the stated uncertainties, and no independent check singles out one set; the maintainer chose Negadi 2014, with 27 values over 273-412 K (2026-10-14)"
           },
           {
             "T_K": 373.0,
             "value": 7000.0,
             "reference": "Tai 2014",
-            "deviation_percent": 5.41,
+            "deviation_percent": 5.35,
             "why": "its three values at 353-408 K lie 4-7 % above Negadi 2014, beyond the stated uncertainties, and no independent check singles out one set; the maintainer chose Negadi 2014, with 27 values over 273-412 K (2026-10-14)"
           },
           {
             "T_K": 407.9,
             "value": 30100.0,
             "reference": "Tai 2014",
-            "deviation_percent": 3.99,
+            "deviation_percent": 4.21,
             "why": "its three values at 353-408 K lie 4-7 % above Negadi 2014, beyond the stated uncertainties, and no independent check singles out one set; the maintainer chose Negadi 2014, with 27 values over 273-412 K (2026-10-14)"
           }
         ]
@@ -47574,17 +47612,24 @@
         ],
         "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
-      "omega": null,
-      "constants_source": "Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: not reached, the measured vapour pressures stay below 101.325 kPa.",
+      "omega": 0.443329,
+      "constants_source": "Tc and Pc: Nikitin et al., Fluid Phase Equilib. 565 (2023) 113656, doi:10.1016/j.fluid.2022.113656, an article outside the archive (Nikitin 2023: the authors' submitted manuscript (preprint, not peer reviewed), free to read on SSRN (doi:10.2139/ssrn.4213180); the numbers were read in that copy, not in the published article) (stated uncertainties 10 K and 190 kPa); measured by the pulse-heating method; the authors' acentric factor (Table 3) is 0.466, CHEPTA's is from its own vapour-pressure record. MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (442.917 K).",
       "constants_source_ids": [
+        "nist-webbook"
+      ],
+      "omega_source": "From its definition, -log10(Psat(0.7 Tc)/Pc) - 1, with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook; Psat at 462.00 K between the last measured value at 412.11 K and the critical point, so ω is less certain than the measured values).",
+      "omega_source_ids": [
+        "nist-thermoml-archive",
         "nist-webbook"
       ],
       "properties": {
         "liquidDensity": {
-          "equation": "DIPPR100",
+          "equation": "DIPPR105",
           "coefficients": {
-            "A": 1404.961758,
-            "B": -0.9285324876
+            "A": 8.639450485e-161,
+            "B": 2.530294319e-82,
+            "C": 660.0,
+            "D": 0.00158626438
           },
           "units": "kg/m3",
           "Tmin_K": 283.15,
@@ -47594,8 +47639,8 @@
             "name": "Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive)",
             "reference": "Lomba et al., J. Chem. Thermodyn. 66 (2013) 131-136, doi:10.1016/j.jct.2013.06.020; Zaoui-Djelloul-Daouadji et al., Thermochim. Acta 611 (2015) 47-55, doi:10.1016/j.tca.2015.04.032",
             "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
-            "fit": "5 measured values, 283.15-313.15 K, max deviation 0.20 %",
-            "notes": "DIPPR 100 (a polynomial in T; no measured critical temperature)."
+            "fit": "5 measured values, 283.15-313.15 K, max deviation 0.19 %",
+            "notes": "DIPPR 105 with C fixed at the critical temperature 660.00 K (Nikitin 2023, an article outside the archive)."
           },
           "source_ids": [
             "nist-thermoml-archive"
@@ -47615,46 +47660,59 @@
         "liquidHeatCapacity": {
           "equation": "DIPPR100",
           "coefficients": {
-            "A": -73.11530659,
-            "B": 1.289417537,
-            "C": -0.001258260573
+            "A": -213.1134008,
+            "B": 2.416749002,
+            "C": -0.00419169953,
+            "D": 2.276142961e-06
           },
           "units": "J/mol/K",
           "Tmin_K": 298.15,
-          "Tmax_K": 405.0,
-          "tier": "predicted",
+          "Tmax_K": 373.15,
+          "tier": "fitted",
           "source": {
-            "name": "Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values",
-            "reference": "V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. I. Hydrocarbon Compounds, J. Phys. Chem. Ref. Data 22 (1993) 597-618, doi:10.1063/1.555923; V. Ruzicka Jr., E. S. Domalski, Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group Additivity. II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur, J. Phys. Chem. Ref. Data 22 (1993) 619-657, doi:10.1063/1.555924",
-            "access": "Free to read: reprint hosted by NIST (Standard Reference Data) (https://srd.nist.gov/jpcrdreprint/1.555923.pdf; https://srd.nist.gov/jpcrdreprint/1.555924.pdf)",
-            "groups": "3 CB-(H), 1 CB-(C), 1 O-(CB)2, 1 furan rsc, 1 C-(H)2(CB)(O), 1 O-(H)(C)",
-            "fit": "Cp/R = sum n_i (a_i + b_i T/100 + d_i (T/100)^2) with the groups above (Table 5 of part I, Tables 8 and 9 of part II; validation/data/gc/ruzicka_domalski_1993.json); range: where every group's parameters were fitted (300-305 K), raised by 100 K, the extrapolation the authors find has no significant effect on the error (part II, p. 620); lower end taken down to 298.15 K, the reference temperature of the liquid enthalpy",
-            "notes": "No open measured liquid heat capacity over a temperature range (searched: CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Units=SI&Mask=4); NIST TRC ThermoML Archive (ThermoML-API full-text search for \"furfuryl alcohol\", \"furan-2-ylmethanol\"; 10 records opened)); the measured values there are: 204 J/(mol K) at 298.15 K (Parks, Kennedy, et al., 1956 (NIST WebBook, DH), stated uncertainty not stated), the prediction -2 % from it; 193.3 J/(mol K) at 303.00 K (Hough, Mason, et al., 1950 (NIST WebBook, DH), stated uncertainty not stated), the prediction +5 % from it. The furan ring is counted as the authors count furan: ring carbons as CB groups, the ring oxygen as O-(CB)2, plus the furan ring strain correction (part II, Table 3). Accuracy of the method on 20 CHEPTA liquids with a CoolProp or ChemSep record (validation/python/predict_cp.py): within 5.3 % of the records at 300 K for all of them, and within 8.6 % up to 400 K except alcohols and polyols, which it overpredicts more as the temperature rises (2-propanol +2/+8/+19, ethanol +3/+11/+19, glycerol +3/+8/+14, propylene-glycol +1/+6/+14 % at 300/350/400 K). The furan ring correction was fitted to 305 K only; on furfural the prediction stays within 3.4 % of its record from 300 to 405 K. The parameters of C-(H)2(CB)(O) were calculated by the authors from the heat capacities of a single compound (their footnote b)."
+            "name": "Measured heat capacities of the liquid (an article outside the archive and NIST Chemistry WebBook); stated uncertainties up to 3.0 %, above the 1 % target, used because the only alternative is a prediction",
+            "reference": "Nikitin et al., Fluid Phase Equilib. 565 (2023) 113656, doi:10.1016/j.fluid.2022.113656; Hough, Mason, et al., 1950 (NIST WebBook, DH)",
+            "access": "Nikitin 2023: the authors' submitted manuscript (preprint, not peer reviewed), free to read on SSRN (doi:10.2139/ssrn.4213180); the numbers were read in that copy, not in the published article; free to read (NIST SRD 69)",
+            "fit": "10 measured values, 298.15-373.15 K, max deviation 2.3 %",
+            "excluded": [
+              {
+                "T_K": 298.15,
+                "value": 204.01,
+                "reference": "Parks, Kennedy, et al., 1956 (NIST WebBook, DH)",
+                "deviation_percent": -4.34,
+                "why": "deviates most from a robust fit of the others"
+              }
+            ],
+            "stated_uncertainty_percent": 3.0,
+            "notes": "The group-additivity prediction (Ruzicka and Domalski 1993, predict_cp.py) would be +2 to +2 % from this record at the measured temperatures within its groups' range, 303-303 K."
           },
           "source_ids": [
-            "ruzicka-domalski-1993"
+            "nist-webbook",
+            "nikitin2023-article-furfuryl-alcohol"
           ]
         },
         "heatOfVaporization": {
-          "equation": "DIPPR100",
+          "equation": "DIPPR106",
           "coefficients": {
-            "A": 77816.75534,
-            "B": -65.23556756
+            "A": 73048.64185,
+            "B": 0.3778813774
           },
           "units": "J/mol",
           "Tmin_K": 273.11,
-          "Tmax_K": 379.7216,
+          "Tmax_K": 412.11,
+          "Tc_K": 660.0,
           "tier": "fitted",
           "source": {
-            "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook)",
-            "reference": "validation/python/measured_components.py (clapeyron_ideal)",
+            "name": "Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and the Peng-Robinson equation of state of the open-source thermo library; and measured values (NIST Chemistry WebBook)",
+            "reference": "validation/python/measured_components.py (clapeyron)",
             "access": "calculated from the open measured data of the vapour-pressure record; free to read (NIST SRD 69) (https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Units=SI&Mask=4)",
-            "fit": "25 Clapeyron values and 0 measured values, 273.11-379.72 K, max deviation 0.0001 %",
-            "notes": "No measured critical constants (proposal 0009): dHvap = R T^2 dln(Psat)/dT, the Clapeyron equation with an ideal-gas vapour and the liquid volume neglected (largest P v_L / R T 8.1e-06 where the density record applies), Psat from the vapour-pressure record of this component, 273.11-379.72 K (up to Psat = 10 kPa or the last measured vapour pressure); DIPPR 100 (a polynomial in T). Chosen because no calorimetric value; the WebBook values are derived from vapour pressures. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none."
+            "fit": "25 Clapeyron values and 0 measured values, 273.11-412.11 K, max deviation 0.11 %",
+            "notes": "dHvap = T (dPsat/dT) (v_vapour - v_liquid), Psat from the vapour-pressure record of this component, both volumes from the Peng-Robinson equation of state with Tc, Pc and ω of this component (thermo library, MIT), 273.11-412.11 K (up to the last measured vapour pressure); DIPPR 106 with the critical temperature 660.00 K. Chosen because the measured values do not give the temperature dependence (no calorimetric value; the WebBook values are derived from vapour pressures). Max deviation from the Clapeyron values 0.11 %. Measured values (calorimetric ones fitted with weight 10 and never left out, met within their stated uncertainty, 1 % where none is stated; the others compared): none. Other values on the WebBook page (most derived by their authors from vapour pressures), compared: Stephenson and Malanowski, 1987 at 319 K (method A): +6.2 %; Landrieu, Baylocq, et al., 1929 (ΔvapH° at 298.15 K, method V): -9.6 %; Landrieu, Baylocq, et al., 1929 (ΔvapH° at 298.15 K, no method given): -9.6 %."
           },
           "source_ids": [
             "nist-thermoml-archive",
-            "nist-webbook"
+            "nist-webbook",
+            "thermo-library"
           ]
         },
         "liquidViscosity": {
@@ -47690,12 +47748,23 @@
           ]
         },
         "liquidThermalConductivity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"furfuryl alcohol\", \"furan-2-ylmethanol\"; 10 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 0.1768203951
+          },
+          "units": "W/m/K",
+          "Tmin_K": 303.15,
+          "Tmax_K": 353.15,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured values (an article outside the archive); stated uncertainties up to 8.0 %, above the 3 % target, used because no open values meet the target",
+            "reference": "Nikitin et al., Fluid Phase Equilib. 565 (2023) 113656, doi:10.1016/j.fluid.2022.113656",
+            "access": "Nikitin 2023: the authors' submitted manuscript (preprint, not peer reviewed), free to read on SSRN (doi:10.2139/ssrn.4213180); the numbers were read in that copy, not in the published article",
+            "fit": "6 measured values, 303.15-353.15 K, max deviation 1.1 %",
+            "stated_uncertainty_percent": 8.02
+          },
+          "source_ids": [
+            "nikitin2023-article-furfuryl-alcohol"
           ]
         },
         "vapourThermalConductivity": {
@@ -47708,37 +47777,27 @@
           ]
         },
         "surfaceTension": {
-          "equation": "DIPPR100",
+          "equation": "DIPPR106",
           "coefficients": {
-            "A": 0.06887111702,
-            "B": -0.0001000927495
+            "A": 0.06809560966,
+            "B": 0.9260592657
           },
           "units": "N/m",
           "Tmin_K": 278.15,
           "Tmax_K": 333.15,
+          "Tc_K": 660.0,
           "tier": "fitted",
           "source": {
             "name": "Measured values (an article outside the archive)",
             "reference": "Lomba et al., Green Chem. 13 (2011) 2062-2070, doi:10.1039/C0GC00853B",
             "access": "Lomba 2011: The article is paywalled; its electronic supplementary information, which holds the measured values, is free to read on the publisher's site (copyright RSC 2011)",
-            "fit": "23 measured values, 278.15-333.15 K, max deviation 0.28 %"
+            "fit": "23 measured values, 278.15-333.15 K, max deviation 0.26 %"
           },
           "source_ids": [
             "lomba2011-article-butyl-levulinate"
           ]
         }
       },
-      "critical": {
-        "available": false,
-        "searched": [
-          "NIST Chemistry WebBook (no Tc or Pc on its phase-change page)",
-          "NIST TRC ThermoML Archive (no critical temperature or pressure)",
-          "CoolProp 8.0.0 (not a fluid)",
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "open literature (web search, 2026-10-14)"
-        ]
-      },
-      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 412.11 K, where it gives 36.51 kPa, below 101.325 kPa: no normal boiling temperature from measured data",
       "fusion": {
         "Tm_K": 256.05,
         "Hfus_J_mol": 13129.0,
@@ -47753,20 +47812,6 @@
         "source_ids": [
           "nist-webbook"
         ]
-      },
-      "modUnifac": {
-        "groups": {
-          "2": 1,
-          "8": 1,
-          "14": 1,
-          "26": 1,
-          "79": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH=C, 1 OH (P), 1 CHO, 1 CY-CH): chosen from the structure: built from the groups the method has (no furan-ring subgroup), as the maintainer decided: the ring ether CH-O as CHO, the substituted ring double bond as CH=C, the remaining ring CH as CY-CH, and CH2 with a primary OH; the second double bond and the aromatic character are not represented; DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O2"
       },
       "formation": {
         "state": "liquid",
@@ -47786,6 +47831,20 @@
           "codata-key-values",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "8": 1,
+          "14": 1,
+          "26": 1,
+          "79": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH=C, 1 OH (P), 1 CHO, 1 CY-CH): chosen from the structure: built from the groups the method has (no furan-ring subgroup), as the maintainer decided: the ring ether CH-O as CHO, the substituted ring double bond as CH=C, the remaining ring CH as CY-CH, and CH2 with a primary OH; the second double bond and the aromatic character are not represented; DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O2"
       }
     },
     "gbl": {
@@ -48272,17 +48331,6 @@
           "nist-webbook"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "22": 1,
-          "78": 2
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH2COO, 2 CY-CH2): chosen: the lactone's ring ester O-C(=O)-CH2 as CH2COO and two ring CH2, as DDBST assigns it (the SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen); structure-based (SMARTS) assignment {87: 1, 78: 2}. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O2"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -48301,6 +48349,17 @@
           "codata-key-values",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "22": 1,
+          "78": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2COO, 2 CY-CH2): chosen: the lactone's ring ester O-C(=O)-CH2 as CH2COO and two ring CH2, as DDBST assigns it (the SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen); structure-based (SMARTS) assignment {87: 1, 78: 2}. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O2"
       }
     },
     "isoamyl-alcohol": {
@@ -48734,19 +48793,6 @@
           "NIST TRC ThermoML Archive: a melting temperature but no enthalpy of fusion"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "1": 2,
-          "2": 2,
-          "3": 1,
-          "14": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 CH2, 1 CH, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12O"
-      },
       "formation": {
         "state": "liquid",
         "T_K": 298.15,
@@ -48764,6 +48810,19 @@
         "source_ids": [
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 2,
+          "2": 2,
+          "3": 1,
+          "14": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 CH2, 1 CH, 1 OH (P)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12O"
       }
     },
     "lactic-acid": {
@@ -48910,19 +48969,6 @@
           "nist-webbook"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "1": 1,
-          "3": 1,
-          "42": 1,
-          "81": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH, 1 COOH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -48941,6 +48987,19 @@
           "codata-key-values",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 1,
+          "3": 1,
+          "42": 1,
+          "81": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH, 1 COOH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
       }
     },
     "hmf": {
@@ -49077,6 +49136,16 @@
           "nist-webbook"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Verevkin et al., Biomass-derived platform chemicals: thermodynamic studies on the conversion of 5-hydroxymethylfurfural into bulk intermediates, Ind. Eng. Chem. Res. (2009), doi:10.1021/ie901012g: paywalled, no free copy known to Unpaywall, journal not in the ThermoML Archive"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "2": 1,
@@ -49088,16 +49157,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 FURFURAL): chosen from the structure: the ring with its aldehyde as the method's FURFURAL subgroup, and the CH2OH as CH2 with a primary OH (the SMARTS match took the ether subgroup CH2O for the alcohol's CH2-O, leaving out the OH); the substituted ring carbon is counted in FURFURAL; DDBST lists no assignment (atom balance one H above C6H6O3: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H6O3"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "Verevkin et al., Biomass-derived platform chemicals: thermodynamic studies on the conversion of 5-hydroxymethylfurfural into bulk intermediates, Ind. Eng. Chem. Res. (2009), doi:10.1021/ie901012g: paywalled, no free copy known to Unpaywall, journal not in the ThermoML Archive"
-        ]
       }
     },
     "glucose": {
@@ -49235,20 +49294,6 @@
           "chua2022-article-fructose"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "2": 1,
-          "3": 4,
-          "14": 1,
-          "20": 1,
-          "81": 4
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 4 CH, 1 OH (P), 1 CHO, 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O6"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -49267,6 +49312,20 @@
           "codata-key-values",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "3": 4,
+          "14": 1,
+          "20": 1,
+          "81": 4
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 4 CH, 1 OH (P), 1 CHO, 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O6"
       }
     },
     "fructose": {
@@ -49403,20 +49462,6 @@
           "chua2022-article-fructose"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "2": 1,
-          "3": 3,
-          "14": 2,
-          "19": 1,
-          "81": 3
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 3 CH, 2 OH (P), 1 CH2CO, 3 OH (S)): assigned from the structure and checked (the open-chain ketone form (as for glucose, which DDBST assigns open-chain): the C(=O) with C1 as CH2CO, C6 as CH2, three CH; two primary OH (P) and three secondary OH (S)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O6"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -49436,6 +49481,20 @@
           "nist-thermoml-archive",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "3": 3,
+          "14": 2,
+          "19": 1,
+          "81": 3
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 3 CH, 2 OH (P), 1 CH2CO, 3 OH (S)): assigned from the structure and checked (the open-chain ketone form (as for glucose, which DDBST assigns open-chain): the C(=O) with C1 as CH2CO, C6 as CH2, three CH; two primary OH (P) and three secondary OH (S)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O6"
       }
     },
     "sorbitol": {
@@ -49571,19 +49630,6 @@
           "nist-webbook"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "2": 2,
-          "3": 4,
-          "14": 2,
-          "81": 4
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 4 CH, 2 OH (P), 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H14O6"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -49601,6 +49647,19 @@
         "source_ids": [
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "3": 4,
+          "14": 2,
+          "81": 4
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 4 CH, 2 OH (P), 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H14O6"
       }
     },
     "xylitol": {
@@ -49745,6 +49804,16 @@
           "nist-webbook"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ],
+        "held": "two crystal energies of combustion in the ThermoML Archive disagree by about 100 kJ/mol (doi:10.1016/j.tca.2007.02.022, -2463.2 kJ/mol with a stated uncertainty of 100 kJ/mol; doi:10.1016/j.tca.2009.11.011, -16833.39 J/g, recorded for 'SRS-1,2,3,4,5-pentanepentol', which may be another pentitol), and the WebBook's value (Oberemok-Yakubova and Balandin, 1963, -1118.6 kJ/mol) is labelled liquid for a compound that is crystalline at 298.15 K"
+      },
       "modUnifac": {
         "groups": {
           "2": 2,
@@ -49757,16 +49826,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 3 CH, 2 OH (P), 3 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H12O5"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
-        ],
-        "held": "two crystal energies of combustion in the ThermoML Archive disagree by about 100 kJ/mol (doi:10.1016/j.tca.2007.02.022, -2463.2 kJ/mol with a stated uncertainty of 100 kJ/mol; doi:10.1016/j.tca.2009.11.011, -16833.39 J/g, recorded for 'SRS-1,2,3,4,5-pentanepentol', which may be another pentitol), and the WebBook's value (Oberemok-Yakubova and Balandin, 1963, -1118.6 kJ/mol) is labelled liquid for a compound that is crystalline at 298.15 K"
       }
     },
     "succinic-acid": {
@@ -49901,17 +49960,6 @@
           "nist-thermoml-archive"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "2": 2,
-          "42": 2
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O4"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -49931,6 +49979,17 @@
           "nist-thermoml-archive",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "42": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O4"
       }
     },
     "itaconic-acid": {
@@ -50057,18 +50116,6 @@
           "NIST TRC ThermoML Archive: a melting temperature but no enthalpy of fusion"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "2": 1,
-          "7": 1,
-          "42": 2
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH2=C, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O4"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -50086,6 +50133,18 @@
         "source_ids": [
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "7": 1,
+          "42": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH2=C, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O4"
       }
     },
     "fumaric-acid": {
@@ -50212,17 +50271,6 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "6": 1,
-          "42": 2
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH=CH, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H4O4"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -50241,6 +50289,17 @@
           "codata-key-values",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "6": 1,
+          "42": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH=CH, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H4O4"
       }
     },
     "malic-acid": {
@@ -50369,6 +50428,16 @@
           "NIST TRC ThermoML Archive: a melting temperature but no enthalpy of fusion"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Left out: ΔfH° Wilhoit and Shiao, 1964 (L-malic acid): the crystal of another form; ΔcH° Wilhoit and Shiao, 1964 (L-malic acid): the crystal of another form; ΔfH° Wilhoit and Shiao, 1964 (D-malic acid): the crystal of another form; ΔcH° Wilhoit and Shiao, 1964 (D-malic acid): the crystal of another form"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "2": 1,
@@ -50381,16 +50450,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH, 2 COOH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O5"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "Left out: ΔfH° Wilhoit and Shiao, 1964 (L-malic acid): the crystal of another form; ΔcH° Wilhoit and Shiao, 1964 (L-malic acid): the crystal of another form; ΔfH° Wilhoit and Shiao, 1964 (D-malic acid): the crystal of another form; ΔcH° Wilhoit and Shiao, 1964 (D-malic acid): the crystal of another form"
-        ]
       }
     },
     "citric-acid": {
@@ -50524,19 +50583,6 @@
           "nist-thermoml-archive"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "2": 2,
-          "4": 1,
-          "42": 3,
-          "82": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 C, 3 COOH, 1 OH (T)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H8O7"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -50555,6 +50601,19 @@
           "codata-key-values",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "4": 1,
+          "42": 3,
+          "82": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 C, 3 COOH, 1 OH (T)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H8O7"
       }
     },
     "glycolic-acid": {
@@ -50689,6 +50748,16 @@
           "nist-thermoml-archive"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "The 2010 article on glycolic acid and glycolide in the Russian Journal of Physical Chemistry, doi:10.1134/S0036024410080054: paywalled, no free copy known to Unpaywall"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "2": 1,
@@ -50700,16 +50769,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4O3"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "The 2010 article on glycolic acid and glycolide in the Russian Journal of Physical Chemistry, doi:10.1134/S0036024410080054: paywalled, no free copy known to Unpaywall"
-        ]
       }
     },
     "glucaric-acid": {
@@ -50836,6 +50895,15 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "3": 4,
@@ -50847,15 +50915,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH, 2 COOH, 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O8"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
-        ]
       }
     },
     "3-hydroxypropionic-acid": {
@@ -50983,6 +51042,15 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "2": 2,
@@ -50994,15 +51062,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 OH (P), 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C3H6O3"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
-        ]
       }
     },
     "fdca": {
@@ -51138,10 +51197,6 @@
           "nist-thermoml-archive"
         ]
       },
-      "modUnifac": {
-        "available": false,
-        "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
-      },
       "formation": {
         "available": false,
         "searched": [
@@ -51151,6 +51206,10 @@
           "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
           "Only its fusion data and computed gas-phase values of furan derivatives found"
         ]
+      },
+      "modUnifac": {
+        "available": false,
+        "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
       }
     },
     "bhet": {
@@ -51277,6 +51336,15 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "2": 4,
@@ -51290,15 +51358,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 CH2, 4 ACH, 2 AC, 2 OH (P), 2 COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C12H14O6"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
-        ]
       }
     },
     "diphenolic-acid": {
@@ -51425,6 +51484,15 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "1": 1,
@@ -51440,15 +51508,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 2 CH2, 1 C, 8 ACH, 2 AC, 2 ACOH, 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C17H18O4"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
-        ]
       }
     },
     "erythritol": {
@@ -51593,19 +51652,6 @@
           "nist-webbook"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "2": 2,
-          "3": 2,
-          "14": 2,
-          "81": 2
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 2 CH, 2 OH (P), 2 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O4"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -51624,6 +51670,19 @@
           "codata-key-values",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 2,
+          "3": 2,
+          "14": 2,
+          "81": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 2 CH, 2 OH (P), 2 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H10O4"
       }
     },
     "xylose": {
@@ -51760,20 +51819,6 @@
           "nist-webbook"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "2": 1,
-          "3": 3,
-          "14": 1,
-          "20": 1,
-          "81": 3
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 3 CH, 1 OH (P), 1 CHO, 3 OH (S)): assigned from the structure and checked (the open-chain aldehyde form (as for glucose, which DDBST assigns open-chain; structure from PubChem, aldehydo-D-xylose): the aldehyde CHO, three CH, one CH2; one primary OH (P) and three secondary OH (S)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O5"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -51793,6 +51838,20 @@
           "nist-thermoml-archive",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "2": 1,
+          "3": 3,
+          "14": 1,
+          "20": 1,
+          "81": 3
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 3 CH, 1 OH (P), 1 CHO, 3 OH (S)): assigned from the structure and checked (the open-chain aldehyde form (as for glucose, which DDBST assigns open-chain; structure from PubChem, aldehydo-D-xylose): the aldehyde CHO, three CH, one CH2; one primary OH (P) and three secondary OH (S)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O5"
       }
     },
     "muconic-acid": {
@@ -51921,6 +51980,15 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "6": 2,
@@ -51931,15 +51999,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH=CH, 2 COOH): assigned from the structure and checked (two COOH and two CH=CH (the subgroups do not tell cis from trans; structure from PubChem)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H6O4"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
-        ]
       }
     },
     "glycerol-carbonate": {
@@ -52115,6 +52174,16 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Only computed values found (not data)"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "2": 1,
@@ -52126,16 +52195,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 (CH2)2CB): chosen from the structure: the cyclic carbonate subgroup (CH2)2CB, as for ethylene and propylene carbonate, and CH2 with a primary OH for the hydroxymethyl group (the SMARTS match took NEP, the subgroup of N-ethylpyrrolidone, for a molecule without nitrogen); DDBST lists no assignment (atom balance one H above C4H6O4: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O4"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "Only computed values found (not data)"
-        ]
       }
     },
     "solketal": {
@@ -52492,6 +52551,16 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
+          "Only computed values found in open articles; a commercial databank (DETHERM) lists values, not used (AGENTS.md rule 1)"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "1": 1,
@@ -52503,16 +52572,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH=C, 1 CH2COO): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O2"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "Only computed values found in open articles; a commercial databank (DETHERM) lists values, not used (AGENTS.md rule 1)"
-        ]
       }
     },
     "lactide": {
@@ -52663,18 +52722,6 @@
           "nist-webbook"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "1": 2,
-          "77": 2,
-          "79": 2
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 COO, 2 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H8O4"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -52692,6 +52739,18 @@
         "source_ids": [
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "1": 2,
+          "77": 2,
+          "79": 2
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (2 CH3, 2 COO, 2 CY-CH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H8O4"
       }
     },
     "isosorbide": {
@@ -52834,6 +52893,15 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "27": 2,
@@ -52845,15 +52913,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 THF, 2 CY-CH, 2 OH (S)): chosen: each of the two fused tetrahydrofuran rings' CH-O-CH2 as the THF subgroup, the two remaining ring CH as CY-CH, two secondary OH, as DDBST assigns it (the SMARTS match took TRIOXAN groups, the subgroup of 1,3,5-trioxane); structure-based (SMARTS) assignment {84: 2, 81: 2, 79: 4} (atom balance two H above C6H10O4: in each of the two rings a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O4"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
-        ]
       }
     },
     "levoglucosan": {
@@ -53004,19 +53063,6 @@
           "nist-thermoml-archive"
         ]
       },
-      "modUnifac": {
-        "groups": {
-          "26": 1,
-          "79": 4,
-          "81": 3,
-          "84": 1
-        },
-        "source_ids": [
-          "hayer2025-mod-unifac-2",
-          "thermo-library"
-        ],
-        "source": "Modified UNIFAC 2.0 subgroups (1 CHO, 4 CY-CH, 3 OH (S), 1 TRIOXAN): assigned from the structure and checked (the bicyclic acetal as for Cyrene (the same 6,8-dioxabicyclo[3.2.1]octane skeleton): the CH2-O of the bridge as TRIOXAN and the ring CH-O as CHO, four ring CH and three secondary OH); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O5"
-      },
       "formation": {
         "state": "solid",
         "T_K": 298.15,
@@ -53036,6 +53082,19 @@
           "nist-thermoml-archive",
           "nist-webbook"
         ]
+      },
+      "modUnifac": {
+        "groups": {
+          "26": 1,
+          "79": 4,
+          "81": 3,
+          "84": 1
+        },
+        "source_ids": [
+          "hayer2025-mod-unifac-2",
+          "thermo-library"
+        ],
+        "source": "Modified UNIFAC 2.0 subgroups (1 CHO, 4 CY-CH, 3 OH (S), 1 TRIOXAN): assigned from the structure and checked (the bicyclic acetal as for Cyrene (the same 6,8-dioxabicyclo[3.2.1]octane skeleton): the CH2-O of the bridge as TRIOXAN and the ring CH-O as CHO, four ring CH and three secondary OH); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H10O5"
       }
     },
     "dimethyl-fdca": {
@@ -53179,10 +53238,6 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
-      "modUnifac": {
-        "available": false,
-        "note": "no Modified UNIFAC 2.0 groups: a furan ring with both ring carbons next to the oxygen substituted: the method has no furan-ring subgroup, and the ether subgroups (CH3O, CH2O, CHO) all need a hydrogen on the carbon (the same reason as for FDCA)"
-      },
       "formation": {
         "available": false,
         "searched": [
@@ -53191,6 +53246,10 @@
           "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
           "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
         ]
+      },
+      "modUnifac": {
+        "available": false,
+        "note": "no Modified UNIFAC 2.0 groups: a furan ring with both ring carbons next to the oxygen substituted: the method has no furan-ring subgroup, and the ether subgroups (CH3O, CH2O, CHO) all need a hydrogen on the carbon (the same reason as for FDCA)"
       }
     },
     "bhmf": {
@@ -53334,10 +53393,6 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
-      "modUnifac": {
-        "available": false,
-        "note": "no Modified UNIFAC 2.0 groups: a furan ring with both ring carbons next to the oxygen substituted: the method has no furan-ring subgroup, and the ether subgroups (CH3O, CH2O, CHO) all need a hydrogen on the carbon, so the ring cannot be built from them as for furan (the same reason as for FDCA)"
-      },
       "formation": {
         "available": false,
         "searched": [
@@ -53346,6 +53401,10 @@
           "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
           "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
         ]
+      },
+      "modUnifac": {
+        "available": false,
+        "note": "no Modified UNIFAC 2.0 groups: a furan ring with both ring carbons next to the oxygen substituted: the method has no furan-ring subgroup, and the ether subgroups (CH3O, CH2O, CHO) all need a hydrogen on the carbon, so the ring cannot be built from them as for furan (the same reason as for FDCA)"
       }
     },
     "levoglucosenone": {
@@ -53676,6 +53735,15 @@
           "NIST TRC ThermoML Archive: no melting data"
         ]
       },
+      "formation": {
+        "available": false,
+        "searched": [
+          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
+          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
+          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
+          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        ]
+      },
       "modUnifac": {
         "groups": {
           "1": 1,
@@ -53688,15 +53756,6 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH3, 1 CH2, 1 CH2O, 1 FURFURAL): chosen from the structure: the ring with its aldehyde as the method's FURFURAL subgroup, as for HMF, and the ethoxymethyl group CH2-O-CH2-CH3 as CH2O, CH2 and CH3; the substituted ring carbon is counted in FURFURAL; DDBST lists no assignment (atom balance one H above C8H10O3: a substituted ring carbon counted in the ring's subgroup). Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H10O3"
-      },
-      "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
-        ]
       }
     },
     "neopentane": {

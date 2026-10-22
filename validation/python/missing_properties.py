@@ -99,12 +99,14 @@ def search_section(rec, path, comps, label):
         name = comps[cid]["name"] if cid in comps else cid
         for key, g in props.items():
             oa = g.get("openalex") or {}
-            if not g.get("screened") and not oa.get("screened") and g.get("held", "-") == "-":
+            # an article a script could not fetch, downloaded by a person and read: what it held replaces the passages'
+            dl = g.get("downloaded")
+            if not g.get("screened") and not oa.get("screened") and g.get("held", "-") == "-" and not dl:
                 empty.append(f"{name} ({label.get(key, key)})")
                 continue
             oa_cell = f"{oa.get('hits') or 0}, {oa.get('fetched', 0)}, {oa.get('screened', 0)}" if oa else "not asked"
-            L.append(f"| {name} | {label.get(key, key)} | {g.get('hits', 0)}, {g.get('screened', 0)} | {oa_cell} | "
-                     f"{g.get('held', '-')} |")
+            held = f"{dl['held']} (downloaded by the maintainer and read)" if dl else g.get("held", "-")
+            L.append(f"| {name} | {label.get(key, key)} | {g.get('hits', 0)}, {g.get('screened', 0)} | {oa_cell} | {held} |")
     if empty:
         L += ["", f"No passage with a name and the property together, in the open full texts searched ({len(empty)}): "
               + "; ".join(empty) + "."]

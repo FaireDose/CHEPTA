@@ -133,6 +133,58 @@
     "Lomba 2013"
    ]
   },
+  "liquidHeatCapacity": {
+   "units": "J/mol/K",
+   "source": {
+    "name": "Measured heat capacities of the liquid (an article outside the archive); stated uncertainties up to 3.0 %, above the 1 % target, used because the only alternative is a prediction",
+    "fit": "13 measured values, 298.15-413.15 K, max deviation 0.30 %"
+   },
+   "T_K": [
+    298.15,
+    303.15,
+    313.15,
+    323.15,
+    333.15,
+    343.15,
+    353.15,
+    363.15,
+    373.15,
+    383.15,
+    393.15,
+    403.15,
+    413.15
+   ],
+   "values": [
+    229.81,
+    230.74,
+    232.52,
+    234.17,
+    235.71,
+    237.15,
+    238.52,
+    239.81,
+    241.05,
+    242.25,
+    243.42,
+    244.58,
+    245.74
+   ],
+   "references": [
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026"
+   ]
+  },
   "heatOfVaporization": {
    "units": "J/mol",
    "source": {
@@ -395,6 +447,43 @@
     "Lomba 2014",
     "Lomba 2014",
     "Lomba 2014"
+   ]
+  },
+  "liquidThermalConductivity": {
+   "units": "W/m/K",
+   "source": {
+    "name": "Measured values (an article outside the archive); stated uncertainties up to 8.5 %, above the 3 % target, used because no open values meet the target",
+    "fit": "8 measured values, 303.15-373.15 K, max deviation 0.030 %"
+   },
+   "T_K": [
+    303.15,
+    313.15,
+    323.15,
+    333.15,
+    343.15,
+    353.15,
+    363.15,
+    373.15
+   ],
+   "values": [
+    0.1785,
+    0.1746,
+    0.1708,
+    0.1669,
+    0.1631,
+    0.1592,
+    0.1554,
+    0.1516
+   ],
+   "references": [
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026"
    ]
   },
   "vapourPressure": {

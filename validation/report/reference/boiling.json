@@ -477,6 +477,13 @@
     "detail": "Tboil = 480.7 K (Aldrich Chemical Company Inc., 1990, the only value on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C108292&Units=SI&Mask=4"
    }
   },
+  "tb/thfa": {
+   "T_C": {
+    "value": 177.95,
+    "source": "nist-webbook",
+    "detail": "Tboil = 451.1 K, the median of 451.2 K (Aldrich Chemical Company Inc., 1990); 451. K (Moshkin, 1955) (no average on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C97994&Units=SI&Mask=4"
+   }
+  },
   "tb/cpme": {
    "T_C": {
     "value": null,
@@ -487,6 +494,13 @@
    "T_C": {
     "value": null,
     "why": "No open reference: no measured normal boiling temperature on the component's WebBook page"
+   }
+  },
+  "tb/furfuryl-alcohol": {
+   "T_C": {
+    "value": 156.85,
+    "source": "nist-webbook",
+    "detail": "Tboil = 430. ± 70. K (Average of 6 values; Individual data points), https://webbook.nist.gov/cgi/cbook.cgi?ID=C98000&Units=SI&Mask=4"
    }
   },
   "tb/gbl": {

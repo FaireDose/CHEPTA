@@ -226,6 +226,52 @@
     "Lomba 2013"
    ]
   },
+  "liquidHeatCapacity": {
+   "units": "J/mol/K",
+   "source": {
+    "name": "Measured heat capacities of the liquid (an article outside the archive); stated uncertainties up to 3.0 %, above the 1 % target, used because the only alternative is a prediction",
+    "fit": "11 measured values, 298.15-393.15 K, max deviation 0.41 %"
+   },
+   "T_K": [
+    298.15,
+    303.15,
+    313.15,
+    323.15,
+    333.15,
+    343.15,
+    353.15,
+    363.15,
+    373.15,
+    383.15,
+    393.15
+   ],
+   "values": [
+    255.24,
+    256.69,
+    259.45,
+    262.01,
+    264.39,
+    266.6,
+    268.65,
+    270.55,
+    272.3,
+    273.93,
+    275.43
+   ],
+   "references": [
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026"
+   ]
+  },
   "heatOfVaporization": {
    "units": "J/mol",
    "source": {
@@ -548,6 +594,43 @@
     "Lomba 2014",
     "Lomba 2014",
     "Lomba 2014"
+   ]
+  },
+  "liquidThermalConductivity": {
+   "units": "W/m/K",
+   "source": {
+    "name": "Measured values (an article outside the archive); stated uncertainties up to 8.5 %, above the 3 % target, used because no open values meet the target",
+    "fit": "8 measured values, 303.15-373.15 K, max deviation 0.026 %"
+   },
+   "T_K": [
+    303.15,
+    313.15,
+    323.15,
+    333.15,
+    343.15,
+    353.15,
+    363.15,
+    373.15
+   ],
+   "values": [
+    0.1703,
+    0.1672,
+    0.1642,
+    0.1612,
+    0.1581,
+    0.1551,
+    0.152,
+    0.149
+   ],
+   "references": [
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026",
+    "Bogatishcheva 2026"
    ]
   },
   "vapourPressure": {

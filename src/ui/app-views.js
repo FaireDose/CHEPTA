@@ -91,7 +91,7 @@ function sourceList(ctx, items) {
 
 const KIND_LABEL = {
   "standard": "Standard", "open-source library": "Open-source library", "databank": "Databank", "thermoml": "ThermoML Archive",
-  "open-access article": "Open-access article", "free supplement": "Free supplement", "free book": "Free book", "handbook via open compilation": "Handbook, open compilation", "user": "Given in this page",
+  "open-access article": "Open-access article", "free supplement": "Free supplement", "free copy": "Free copy (preprint or manuscript)", "free book": "Free book", "handbook via open compilation": "Handbook, open compilation", "user": "Given in this page",
 };
 const linkOf = s => s.url || (s.doi ? `https://doi.org/${s.doi}` : null);
 const byline = s => [s.authors, s.published ?? s.year].filter(Boolean).join(", ");

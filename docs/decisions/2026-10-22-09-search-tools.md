@@ -115,3 +115,37 @@ densities (Tables 13 and 19), which levoglucosenone's records use, are unchanged
 - **CORE.** Its terms ask software that "might be monetised now or in the future" to contact it; CHEPTA's MIT licence
   allows anyone to do that. The maintainer wrote to CORE on 2026-10-22 (the personal licence, and an AI assistant
   reading the passages, a person checking each value). Until CORE answers, the search runs without it.
+
+## The articles the maintainer downloaded (2026-10-22)
+
+The maintainer: "for 163 i attach all the docs you ask. read also charts but also text". Seven articles the search had
+found but scripts could not fetch. Each was read, text, tables and figures; the details are in
+[MISSING_PROPERTIES_2026-10-22-3.md](../MISSING_PROPERTIES_2026-10-22-3.md) and in the search record
+(`validation/data/searches/2026-10-22-fulltext.json`, the `downloaded` entries).
+
+- **Added.**
+  - Furfuryl alcohol and THFA: critical constants, liquid heat capacities and liquid thermal conductivities, from
+    Nikitin et al., Fluid Phase Equilib. 565 (2023) 113656, read in the submitted manuscript on SSRN
+    (`article_furfuryl-alcohol_nikitin2023.json`, `article_thfa_nikitin2023.json`).
+  - Methyl and ethyl lactate: liquid heat capacities and liquid thermal conductivities, from Bogatishcheva et al., SSRN
+    preprint 2026 (`article_*_bogatishcheva2026.json`). Their heat capacities are the authors' Eq. (24) with Table 5's
+    constants at 298.15 K and every 10 K; their raw points are in a supplement that is not in the preprint file.
+  - The measured heat capacities (3 %) replace the predicted records of all four, by "measured before predicted". The
+    thermal conductivities (8-8.5 %) are records held to that uncertainty, as "no open values meet the target".
+- **Held for the maintainer**: the lactates' critical constants, tripalmitin's heat of vaporization, ethyl lactate's
+  melting data (the reasons are in the list of missing properties).
+- **Code changes.**
+  - `measured_components.py`: a critical point from an article outside the archive (`critical_thermoml` with its
+    access text, `critical_note`).
+  - The same script: a record held to a stated uncertainty above the target follows its values within the usual
+    target where it can. Before, the simplest curve within the stated uncertainty was taken: a constant through the
+    lactates' conductivities, 8 % off. The only other record that changed is 2-methoxyethanol's surface tension (max
+    deviation 1.6 to 1.3 %).
+  - The same script: a record names only the sources it uses ("an article outside the archive", the WebBook).
+  - A preprint's citation without volume and pages.
+- **A new kind of source, "free copy"**: a preprint or the authors' manuscript, free to read
+  (`make_sources.py`, `test/sources.test.js`, the Library view).
+- **Check against the articles** (AGENTS.md rule 4):
+  - Nikitin et al., SSRN 4213180: Tables 2, 3, 5 and 7, pages 27-33;
+  - Bogatishcheva et al., SSRN 6083032: Tables 3, 4, 5 and 7, pages 18, 19, 24 and 27, and Eq. (27) on page 29
+    (λ = d0 − d1 T).

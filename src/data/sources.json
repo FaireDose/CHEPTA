@@ -1,5 +1,5 @@
 {
-  "_about": "The CHEPTA Library (proposal 0003): every source once, with an id. Records in the other data files refer to it in `source_ids`. kind: standard, open-source library, databank, thermoml, open-access article, free supplement, free book, handbook via open compilation. url: where anyone can read the numbers (the open copy); doi: the original publication; access: why it is open; via: the open copy the numbers were taken from, when it is not the source itself; files: repository files (code, validation data) that use the source besides the data records. Made by validation/python/make_sources.py; entries can be corrected by hand (the script keeps them).",
+  "_about": "The CHEPTA Library (proposal 0003): every source once, with an id. Records in the other data files refer to it in `source_ids`. kind: standard, open-source library, databank, thermoml, open-access article, free supplement, free copy, free book, handbook via open compilation. url: where anyone can read the numbers (the open copy); doi: the original publication; access: why it is open; via: the open copy the numbers were taken from, when it is not the source itself; files: repository files (code, validation data) that use the source besides the data records. Made by validation/python/make_sources.py; entries can be corrected by hand (the script keeps them).",
   "sources": {
     "ahmad2004-1-butanol-n-nonane": {
       "title": "Vapor-Liquid Equilibrium Studies for Systems Containing n-Butylisocyanate at Temperatures between 323.15 K and 371.15 K",
@@ -343,6 +343,20 @@
       "access": "Open access, CC BY 4.0 (MDPI)",
       "files": [
         "validation/data/pure/measured/article_ethyl-levulinate_bo2025.json"
+      ]
+    },
+    "bogatishcheva2026-article-ethyl-lactate": {
+      "title": "Experimental critical pressures, temperatures, thermal diffusivities, and heat capacities of methyl, ethyl, propyl, butyl, and pentyl lactates",
+      "authors": "N.S. Bogatishcheva, A.P. Popov, M.Z. Faizullin, I.S. Romanov, S.V. Portnova, E.D. Nikitin",
+      "year": 2026,
+      "published": "SSRN preprint (2026), not peer reviewed",
+      "kind": "free copy",
+      "doi": "10.2139/ssrn.6083032",
+      "url": "https://ssrn.com/abstract=6083032",
+      "access": "preprint, free to read on SSRN (not peer reviewed; the PDF the maintainer downloaded, 2026-10-22)",
+      "files": [
+        "validation/data/pure/measured/article_ethyl-lactate_bogatishcheva2026.json",
+        "validation/data/pure/measured/article_methyl-lactate_bogatishcheva2026.json"
       ]
     },
     "brandt2014-acetic-acid-ethanol": {
@@ -2672,6 +2686,20 @@
       "access": "Free to read; a work of the U.S. government (public domain)",
       "license": "Public domain (U.S. government work)",
       "note": "Typical isentropic efficiencies: single-stage syngas recycle compressors 84 % (Exhibit 4-8, p. 23) and 75 % (Exhibit 5-7, p. 47), the lower taken for the compressor; boiler feed water pump turbine 80 % (Exhibit 4-3, p. 17) for the expander."
+    },
+    "nikitin2023-article-furfuryl-alcohol": {
+      "title": "Measurement of the critical temperatures, pressures, heat capacities, and thermal diffusivities of four furanic compounds involved in the production of second-generation biofuels",
+      "authors": "E.D. Nikitin, A.P. Popov, N.S. Bogatishcheva, M.Z. Faizullin",
+      "year": 2023,
+      "published": "Fluid Phase Equilib. 565 (2023) 113656",
+      "kind": "free copy",
+      "doi": "10.1016/j.fluid.2022.113656",
+      "url": "https://doi.org/10.2139/ssrn.4213180",
+      "access": "the authors' submitted manuscript (preprint, not peer reviewed), free to read on SSRN (doi:10.2139/ssrn.4213180); the numbers were read in that copy, not in the published article",
+      "files": [
+        "validation/data/pure/measured/article_furfuryl-alcohol_nikitin2023.json",
+        "validation/data/pure/measured/article_thfa_nikitin2023.json"
+      ]
     },
     "nist-thermoml-archive": {
       "title": "NIST TRC ThermoML Archive (pure-component data sets of the cited articles)",

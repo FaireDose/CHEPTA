@@ -1,0 +1,332 @@
+{
+ "component": "methyl-lactate",
+ "cas": "547-64-8",
+ "about": "Measured values of a preprint (not peer reviewed), in the format of thermoml_<id>.json. DL-methyl lactate, mass fraction purity 0.98424 (GC, supplier's certificate; Macklin). Critical temperature and pressure by the pulse-heating method (the compound decomposes near its critical point; the apparent values were extrapolated to zero heating time and corrected, section 2.2), expanded uncertainties 1.5 % (Tc) and 4.5 % (pc) at 95 % confidence; the authors' acentric factor, from their Tc, pc and a vapour-pressure equation, is 0.435 (Table 4), for comparison only. Heat capacity: DSC, three-step method, corrected from the two-phase to the isobaric heat capacity; U_r = 3 % (95 %). The values here are the authors' Eq. (24) with their Table 5 constants, at 298.15 K and every 10 K within its range (298.1-417.1 K); the raw points are in a supplementary table that is not in the preprint file; Eq. (24) gives 229.81 J/(mol K) at 298.15 K, as Table 6 prints. Thermal conductivity: computed by the authors from their measured thermal diffusivity (laser flash, U_r = 5 %), their heat capacity and the densities of Lomba et al.; U_r = 8.5 % (95 %); here from their Eq. (27), lambda = d0 - d1 T, over 303-373 K. The normal boiling temperature in Table 3 is quoted from earlier articles (Lecat, 417.0 K), not measured here.",
+ "source": {
+  "citation": "N.S. Bogatishcheva, A.P. Popov, M.Z. Faizullin, I.S. Romanov, S.V. Portnova, E.D. Nikitin, Experimental critical pressures, temperatures, thermal diffusivities, and heat capacities of methyl, ethyl, propyl, butyl, and pentyl lactates, SSRN preprint (2026), not peer reviewed",
+  "doi": "10.2139/ssrn.6083032",
+  "open_copy": "https://ssrn.com/abstract=6083032",
+  "access": "preprint, free to read on SSRN (not peer reviewed; the PDF the maintainer downloaded, 2026-10-22)",
+  "tables": "Table 3 (Tc), Table 4 (pc, printed with the unit 'K' in its header, but the values are in MPa as in Fig. 3 and the text), Table 5 (Eq. 24 constants for Cp,m), Table 7 (Eq. 27 constants for the thermal conductivity, lambda = d0 - d1 T)"
+ },
+ "articles": {
+  "10.2139/ssrn.6083032": {
+   "authors": [
+    "Bogatishcheva, N.S.",
+    "Popov, A.P.",
+    "Faizullin, M.Z.",
+    "Romanov, I.S.",
+    "Portnova, S.V.",
+    "Nikitin, E.D."
+   ],
+   "title": "Experimental critical pressures, temperatures, thermal diffusivities, and heat capacities of methyl, ethyl, propyl, butyl, and pentyl lactates",
+   "journal": "SSRN preprint, not peer reviewed",
+   "year": "2026",
+   "volume": "",
+   "pages": ""
+  }
+ },
+ "rows": [
+  {
+   "property": "Critical temperature, K",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 612,
+   "uncertainty": 9.18,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Table 3",
+   "binary_with": null
+  },
+  {
+   "property": "Critical pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": null,
+   "P_kPa": null,
+   "value": 3730.0,
+   "uncertainty": 167.8,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Table 4",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 298.15,
+   "P_kPa": null,
+   "value": 229.81,
+   "uncertainty": 6.89,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": null,
+   "value": 230.74,
+   "uncertainty": 6.92,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": null,
+   "value": 232.52,
+   "uncertainty": 6.98,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": null,
+   "value": 234.17,
+   "uncertainty": 7.03,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 333.15,
+   "P_kPa": null,
+   "value": 235.71,
+   "uncertainty": 7.07,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 343.15,
+   "P_kPa": null,
+   "value": 237.15,
+   "uncertainty": 7.11,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 353.15,
+   "P_kPa": null,
+   "value": 238.52,
+   "uncertainty": 7.16,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 363.15,
+   "P_kPa": null,
+   "value": 239.81,
+   "uncertainty": 7.19,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 373.15,
+   "P_kPa": null,
+   "value": 241.05,
+   "uncertainty": 7.23,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 383.15,
+   "P_kPa": null,
+   "value": 242.25,
+   "uncertainty": 7.27,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 393.15,
+   "P_kPa": null,
+   "value": 243.42,
+   "uncertainty": 7.3,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 403.15,
+   "P_kPa": null,
+   "value": 244.58,
+   "uncertainty": 7.34,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 413.15,
+   "P_kPa": null,
+   "value": 245.74,
+   "uncertainty": 7.37,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (24), Table 5 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 303.15,
+   "P_kPa": null,
+   "value": 0.1785,
+   "uncertainty": 0.0152,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (27), Table 7 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.15,
+   "P_kPa": null,
+   "value": 0.1746,
+   "uncertainty": 0.0148,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (27), Table 7 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.15,
+   "P_kPa": null,
+   "value": 0.1708,
+   "uncertainty": 0.0145,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (27), Table 7 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 333.15,
+   "P_kPa": null,
+   "value": 0.1669,
+   "uncertainty": 0.0142,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (27), Table 7 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 343.15,
+   "P_kPa": null,
+   "value": 0.1631,
+   "uncertainty": 0.0139,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (27), Table 7 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 353.15,
+   "P_kPa": null,
+   "value": 0.1592,
+   "uncertainty": 0.0135,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (27), Table 7 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 363.15,
+   "P_kPa": null,
+   "value": 0.1554,
+   "uncertainty": 0.0132,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (27), Table 7 constants",
+   "binary_with": null
+  },
+  {
+   "property": "Thermal conductivity, W/m/K",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 373.15,
+   "P_kPa": null,
+   "value": 0.1516,
+   "uncertainty": 0.0129,
+   "doi": "10.2139/ssrn.6083032",
+   "set": "Eq. (27), Table 7 constants",
+   "binary_with": null
+  }
+ ]
+}
