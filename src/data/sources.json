@@ -2678,6 +2678,7 @@
       "files": [
         "validation/data/pure/fusion/webbook_fusion.json",
         "validation/data/pure/measured/webbook.json",
+        "validation/data/reactions/liquid_formation_webbook.json",
         "validation/report/reference/"
       ]
     },

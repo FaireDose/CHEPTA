@@ -19,8 +19,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   than 10 kJ/mol: 2-methoxyethanol, 1,3-propanediol, limonene, gamma-butyrolactone, levoglucosan); 22 components have no
   open data. Compare the transcribed values with their sources.
 - **Reactions, step 2** (proposal 0010; docs/decisions/2026-10-22-05-reactions.md): confirm the standard pressure of
-  100 kPa, the pure-liquid standard state and its paths (through the saturated vapour; crystal to liquid with ΔHfus),
-  and that dimerizing acids wait for the association enthalpy in liquid reactions. No open source with the
+  100 kPa, the pure-liquid standard state and its paths (through the saturated vapour, for acetic acid with its
+  monomers and dimers; crystal to liquid with ΔHfus); compare the WebBook liquid values of
+  validation/data/reactions/liquid_formation_webbook.json with their pages. No open source with the
   Eley–Rideal and Mars–van Krevelen forms was found.
 - **Values the maintainer adds** (2026-10-21; [MISSING_PROPERTIES_2026-10-21.md](MISSING_PROPERTIES_2026-10-21.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used

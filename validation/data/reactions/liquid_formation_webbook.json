@@ -1,0 +1,391 @@
+{
+ "_note": "NIST Chemistry WebBook (SRD 69), condensed-phase thermochemistry, liquid rows as printed; the selection is the most recent article with a year. Made by validation/python/reference_reactions.py --webbook CACHE. Compare the values with the WebBook pages.",
+ "codata": {
+  "url": "https://www.codata.info/resources/databases/key1.html",
+  "dHf_CO2_g_J_mol": -393510.0,
+  "dHf_H2O_l_J_mol": -285830.0,
+  "S_J_molK": {
+   "C": 5.74,
+   "H2": 130.68,
+   "O2": 205.152,
+   "N2": 191.609,
+   "Cl2": 223.081
+  }
+ },
+ "components": {
+  "acetic-acid": {
+   "cas": "64-19-7",
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C64197&Mask=FFFF&Units=SI",
+   "rows": [
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -483.52,
+     "uncertainty": 0.36,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Steele, Chirico, et al., 1997",
+     "comment": "ALS"
+    },
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -484.5,
+     "uncertainty": 0.2,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Lebedeva, 1964",
+     "comment": "ALS"
+    },
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -484.1,
+     "uncertainty": 0.4,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Evans and Skinner, 1959",
+     "comment": "ALS"
+    },
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -487.0,
+     "uncertainty": null,
+     "units": "kJ/mol",
+     "method": "Cm",
+     "reference": "Carson and Skinner, 1949",
+     "comment": "Unpublished result by Rossini; ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -875.16,
+     "uncertainty": 0.34,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Steele, Chirico, et al., 1997",
+     "comment": "Corresponding ΔfHºliquid = -483.52 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -874.2,
+     "uncertainty": 0.2,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Lebedeva, 1964",
+     "comment": "Corresponding ΔfHºliquid = -484.47 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -874.5,
+     "uncertainty": 0.4,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Evans and Skinner, 1959",
+     "comment": "Corresponding ΔfHºliquid = -484.1 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -872.4,
+     "uncertainty": null,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Schjanberg, 1935",
+     "comment": "Corresponding ΔfHºliquid = -486.2 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 158.0,
+     "uncertainty": null,
+     "units": "J/mol*K",
+     "method": "N/A",
+     "reference": "Martin and Andon, 1982",
+     "comment": "DH"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 193.7,
+     "uncertainty": null,
+     "units": "J/mol*K",
+     "method": "N/A",
+     "reference": "Parks and Kelley, 1925",
+     "comment": "Extrapolation below 90 K. 76.82 J/mol*K.; DH"
+    }
+   ],
+   "Hf_J_mol": -483520.0,
+   "Hf_from": "ΔfH° -483.52 kJ/mol, Steele, Chirico, et al., 1997",
+   "S_J_molK": 158.0,
+   "S_from": "S° 158.0 J/(mol K), Martin and Andon, 1982",
+   "Gf_J_mol": -388114.3852
+  },
+  "ethanol": {
+   "cas": "64-17-5",
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C64175&Mask=FFFF&Units=SI",
+   "rows": [
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -276.0,
+     "uncertainty": 2.0,
+     "units": "kJ/mol",
+     "method": "AVG",
+     "reference": "N/A",
+     "comment": "Average of 6 values; Individual data points"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -1367.6,
+     "uncertainty": 0.3,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Chao and Rossini, 1965",
+     "comment": "see  Rossini, 1934; Corresponding ΔfHºliquid = -276.9 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -1367.0,
+     "uncertainty": 0.42,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Green, 1960",
+     "comment": "Corresponding ΔfHºliquid = -277.6 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -1370.9,
+     "uncertainty": null,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Parks, 1925",
+     "comment": "Corresponding ΔfHºliquid = -273.6 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -1368.34,
+     "uncertainty": null,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Richards and Davis, 1920",
+     "comment": "At 291 K; Corresponding ΔfHºliquid = -276.17 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -1368.6,
+     "uncertainty": null,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Emery and Benedict, 1911",
+     "comment": "Corresponding ΔfHºliquid = -275.9 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 159.86,
+     "uncertainty": null,
+     "units": "J/mol*K",
+     "method": "N/A",
+     "reference": "Haida, Suga, et al., 1977",
+     "comment": "DH"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 161.21,
+     "uncertainty": null,
+     "units": "J/mol*K",
+     "method": "N/A",
+     "reference": "Green J.H.S., 1961",
+     "comment": "DH"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 160.7,
+     "uncertainty": null,
+     "units": "J/mol*K",
+     "method": "N/A",
+     "reference": "Kelley, 1929",
+     "comment": "DH"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 177.0,
+     "uncertainty": null,
+     "units": "J/mol*K",
+     "method": "N/A",
+     "reference": "Parks, 1925",
+     "comment": "Extrapolation below 90 K, 55.19 J/mol*K.; DH"
+    }
+   ],
+   "Hf_J_mol": -276910.0,
+   "Hf_from": "ΔcH° -1367.6 kJ/mol, Chao and Rossini, 1965",
+   "S_J_molK": 159.86,
+   "S_from": "S° 159.86 J/(mol K), Haida, Suga, et al., 1977",
+   "Gf_J_mol": -173679.7366
+  },
+  "ethyl-acetate": {
+   "cas": "141-78-6",
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C141786&Mask=FFFF&Units=SI",
+   "rows": [
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -480.57,
+     "uncertainty": 0.79,
+     "units": "kJ/mol",
+     "method": "Cm",
+     "reference": "Wiberg, Crocker, et al., 1991",
+     "comment": "ALS"
+    },
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -479.86,
+     "uncertainty": 0.46,
+     "units": "kJ/mol",
+     "method": "Cm",
+     "reference": "Wiberg and Waldron, 1991",
+     "comment": "Heat of hydrolysis; ALS"
+    },
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -478.82,
+     "uncertainty": 0.73,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Fenwick, Harrop, et al., 1978",
+     "comment": "ALS"
+    },
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -482.0,
+     "uncertainty": 4.0,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Butwill and Rockenfeller, 1970",
+     "comment": "ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -2238.54,
+     "uncertainty": 0.48,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Fenwick, Harrop, et al., 1978",
+     "comment": "Corresponding ΔfHºliquid = -478.82 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -2235.4,
+     "uncertainty": 3.9,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Butwill and Rockenfeller, 1970",
+     "comment": "Corresponding ΔfHºliquid = -481.95 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -2256.0,
+     "uncertainty": null,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Roth and Muller, 1929",
+     "comment": "Corresponding ΔfHºliquid = -461.9 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "ΔcH°",
+     "state": "liquid",
+     "value": -2246.0,
+     "uncertainty": null,
+     "units": "kJ/mol",
+     "method": "Ccb",
+     "reference": "Guinchant, 1918",
+     "comment": "Corresponding ΔfHºliquid = -471.1 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 259.4,
+     "uncertainty": null,
+     "units": "J/mol*K",
+     "method": "N/A",
+     "reference": "Parks, Huffman, et al., 1933",
+     "comment": "Extrapolation below 90 K, 62.80 J/mol*K.; DH"
+    }
+   ],
+   "Hf_J_mol": -480570.0,
+   "Hf_from": "ΔfH° -480.57 kJ/mol, Wiberg, Crocker, et al., 1991",
+   "S_J_molK": 259.4,
+   "S_from": "S° 259.4 J/(mol K), Parks, Huffman, et al., 1933",
+   "Gf_J_mol": -334049.5492
+  },
+  "water": {
+   "cas": "7732-18-5",
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&Mask=FFFF&Units=SI",
+   "rows": [
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -285.83,
+     "uncertainty": 0.04,
+     "units": "kJ/mol",
+     "method": "Review",
+     "reference": "Cox, Wagman, et al., 1984",
+     "comment": "CODATA Review value"
+    },
+    {
+     "quantity": "ΔfH°",
+     "state": "liquid",
+     "value": -285.83,
+     "uncertainty": null,
+     "units": "kJ/mol",
+     "method": "Review",
+     "reference": "Chase, 1998",
+     "comment": "Data last reviewed in March, 1979"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 69.95,
+     "uncertainty": 0.03,
+     "units": "J/mol*K",
+     "method": "Review",
+     "reference": "Cox, Wagman, et al., 1984",
+     "comment": "CODATA Review value"
+    },
+    {
+     "quantity": "S°",
+     "state": "liquid",
+     "value": 69.95,
+     "uncertainty": null,
+     "units": "J/mol*K",
+     "method": "Review",
+     "reference": "Chase, 1998",
+     "comment": "Data last reviewed in March, 1979"
+    }
+   ],
+   "Hf_J_mol": -285830.0,
+   "Hf_from": "ΔfH° -285.83 kJ/mol, Chase, 1998",
+   "S_J_molK": 69.95,
+   "S_from": "S° 69.95 J/(mol K), Chase, 1998",
+   "Gf_J_mol": -237140.3161
+  }
+ }
+}

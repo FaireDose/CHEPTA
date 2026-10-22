@@ -81,6 +81,31 @@ test("K(T) of liquid reactions (pure-liquid standard state) agrees with the scip
   assert.ok(iso.notes.some(n => /D-Glucose: crystal to liquid at 298\.15 K with ΔHfus 40\.00 kJ\/mol at Tm 448 K/.test(n)), iso.notes.join("; "));
 });
 
+test("acetic acid (dimerizing in the vapour) in a liquid reaction: its monomer record reaches the liquid through the dimer equilibrium", () => {
+  const ester = checkReaction({ id: "ester", stoichiometry: { "acetic-acid": -1, ethanol: -1, "ethyl-acetate": 1, water: 1 }, phase: "liquid", reversible: true });
+  const p = reactionProperties(ester, 323.15);
+  assert.ok(p.notes.some(n => /Acetic acid: ideal gas to pure liquid .* monomers and dimers .* dimerization enthalpy -60\.6 kJ\/mol/.test(n)), p.notes.join("; "));
+  assert.ok(Number.isFinite(p.K) && p.K > 1);
+  // in the vapour, the standard state is the ideal-gas monomer of the record
+  assert.ok(Number.isFinite(reactionProperties({ ...ester, phase: "vapour", standardState: "ideal gas at 100 kPa" }, 340).K));
+});
+
+test("the liquid path from the ideal-gas records meets measured liquid values (NIST WebBook) within 2 kJ/mol", () => {
+  // validation/data/reactions/liquid_formation_webbook.json: the most recent article's liquid ΔfH° (or ΔcH°) and S°;
+  // ΔfG° from them with the CODATA entropies of the elements. Acetic acid tests the dimer path (without it, its
+  // liquid enthalpy would be about 28 kJ/mol off).
+  const wb = JSON.parse(readFileSync(new URL("../validation/data/reactions/liquid_formation_webbook.json", import.meta.url)));
+  // the species' values are read from a balanced reaction that holds them all (a species alone is no reaction)
+  const rx = checkReaction({ id: "e", stoichiometry: { "acetic-acid": -1, ethanol: -1, "ethyl-acetate": 1, water: 1 }, phase: "liquid" });
+  assert.deepEqual(Object.keys(rx.stoichiometry).sort(), Object.keys(wb.components).sort());
+  const p = reactionProperties(rx, 298.15);
+  for (const s of p.species) {
+    const m = wb.components[s.id];
+    assert.ok(Math.abs(s.H_J_mol - m.Hf_J_mol) < 2000, `${s.id}: H ${s.H_J_mol} vs WebBook ${m.Hf_J_mol} (${m.Hf_from})`);
+    assert.ok(Math.abs(s.G_J_mol - m.Gf_J_mol) < 2000, `${s.id}: G ${s.G_J_mol} vs WebBook ${m.Gf_J_mol} (${m.S_from})`);
+  }
+});
+
 test("the vapour and liquid standard states of one reaction differ by the species' saturation terms", () => {
   const st = { ethanol: -2, "diethyl-ether": 1, water: 1 };
   const T = 330;
@@ -103,11 +128,6 @@ test("what cannot be computed is refused with the reason, and a cited K correlat
   assert.equal(p.dH_J_mol, null);
   assert.match(p.from, /correlation .*a test value, not data/);
   assert.match(reactionProperties(withK, 500).warnings.join(), /outside the range of its K correlation \(350-450 K\)/);
-  // a dimerizing acid in a liquid reaction: its ideal-gas record cannot reach the liquid yet
-  const ester = checkReaction({ id: "ester", stoichiometry: { "acetic-acid": -1, ethanol: -1, "ethyl-acetate": 1, water: 1 }, phase: "liquid" });
-  throwsCode(() => reactionProperties(ester, 340), "NOT_AVAILABLE", /Acetic acid dimerizes in the vapour/);
-  // in the vapour (ideal-gas monomer standard state) it works
-  assert.ok(Number.isFinite(reactionProperties({ ...ester, phase: "vapour", standardState: "ideal gas at 100 kPa" }, 340).K));
   // a nonvolatile species in a vapour reaction
   throwsCode(() => reactionProperties(checkReaction({ id: "iso", stoichiometry: { glucose: -1, fructose: 1 }, phase: "vapour" }), 300), "MISSING_DATA", /nonvolatile/);
 });

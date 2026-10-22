@@ -20,7 +20,8 @@ src/data/components.json:
      then the liquid by cp_L.
 
 Writes validation/fixtures/reactions.json, which test/reactions.test.js compares with the engine.
-Usage: python validation/python/reference_reactions.py
+Usage: python validation/python/reference_reactions.py [--webbook CACHE]   (--webbook: refresh the measured liquid
+values of validation/data/reactions/liquid_formation_webbook.json from the NIST WebBook)
 """
 import json
 import math
@@ -29,7 +30,7 @@ from pathlib import Path
 import numpy as np
 from scipy.integrate import quad
 
-from reference_model import COMPONENTS, psat_kpa
+from reference_model import COMPONENTS, psat_kpa, dimer_k
 from reference_eos import Cubic
 from reference_enthalpy import dippr107, h_ig, dhvap, cp_liquid
 
@@ -48,6 +49,7 @@ VAPOUR = {
 LIQUID = {
     "diethyl-ether-from-ethanol": {"ethanol": -2, "diethyl-ether": 1, "water": 1},
     "glucose-isomerization": {"glucose": -1, "fructose": 1},
+    "ethyl-acetate-esterification": {"acetic-acid": -1, "ethanol": -1, "ethyl-acetate": 1, "water": 1},
 }
 T_VAPOUR = [298.15, 350.0, 450.0, 550.0, 700.0]
 T_LIQUID = [298.15, 320.0, 345.0]
@@ -169,8 +171,19 @@ def psat(cid, T):
 
 
 def sat_vapour(cid, T):
-    """ln phi and the residual enthalpy of the saturated vapour (Peng-Robinson), or 0 without critical constants."""
+    """ln(f_sat / psat) and the residual enthalpy of the saturated vapour against the formation record's ideal gas:
+    for a dimerizing acid the monomer (chemical theory: p_D = K p_M^2, the dimerization enthalpy R T^2 d ln K/dT by a
+    central difference), else Peng-Robinson, or 0 without critical constants."""
     c = COMPONENTS[cid]
+    if c.get("association"):
+        a = c["association"]
+        P = psat(cid, T)
+        K = dimer_k(a, T)
+        pm = (math.sqrt(1 + 4 * K * P) - 1) / (2 * K)
+        yM, yD = pm / P, 1 - pm / P
+        h = 1e-3
+        dH = R * T ** 2 * (math.log(dimer_k(a, T + h)) - math.log(dimer_k(a, T - h))) / (2 * h)
+        return math.log(yM), yD * dH / (yM + 2 * yD)
     if c.get("Tc_K") is None:
         return 0.0, 0.0
     cub, x, P = Cubic("PR", [cid]), np.array([1.0]), psat(cid, T) * 1000
@@ -215,7 +228,52 @@ def scipy_results(reactions, temps, species):
     return out
 
 
+# ---------------------------------------------------------------------------------------------------------------
+# 3. Measured liquid values (NIST WebBook) for the liquid path from the ideal-gas records
+# ---------------------------------------------------------------------------------------------------------------
+
+WEBBOOK_CHECK = ["acetic-acid", "ethanol", "ethyl-acetate", "water"]
+WEBBOOK_FILE = Path(__file__).resolve().parents[1] / "data" / "reactions" / "liquid_formation_webbook.json"
+
+
+def webbook_check(cache):
+    """The WebBook's liquid ΔfH°, ΔcH° and S° rows of the WEBBOOK_CHECK components, and the most recent article's
+    values: ΔfH° (or ΔcH° turned into ΔfH° with the CODATA key values) and S°, giving ΔfG° with the CODATA entropies
+    of the elements (formation_data.py, which this reuses for the WebBook pages and the CODATA values)."""
+    import re
+    import formation_data as fd
+    out = {"_note": "NIST Chemistry WebBook (SRD 69), condensed-phase thermochemistry, liquid rows as printed; the "
+                    "selection is the most recent article with a year. Made by "
+                    "validation/python/reference_reactions.py --webbook CACHE. Compare the values with the WebBook pages.",
+           "codata": {"url": fd.CODATA_URL, **fd.CODATA}, "components": {}}
+
+    def year(r):
+        m = re.search(r"(18|19|20)\d{2}", r["reference"])
+        return int(m.group(0)) if m else -1
+    for cid in WEBBOOK_CHECK:
+        c = COMPONENTS[cid]
+        rows = [r for r in fd.webbook_rows(c["cas"], Path(cache)) if r["state"] == "liquid"]
+        f = fd.formula(c["formula"])
+        hf = [(year(r), r["value"] * 1000, f"ΔfH° {r['value']} kJ/mol, {r['reference']}") for r in rows if r["quantity"] == "ΔfH°"]
+        hf += [(year(r), fd.from_combustion(r["value"] * 1000, f), f"ΔcH° {r['value']} kJ/mol, {r['reference']}") for r in rows if r["quantity"] == "ΔcH°"]
+        ss = [(year(r), r["value"], f"S° {r['value']} J/(mol K), {r['reference']}") for r in rows if r["quantity"] == "S°"]
+        h, s = max(hf, key=lambda x: x[0]), max(ss, key=lambda x: x[0])
+        out["components"][cid] = {
+            "cas": c["cas"], "url": fd.WEBBOOK.format(ID="C" + c["cas"].replace("-", "")),
+            "rows": rows, "Hf_J_mol": h[1], "Hf_from": h[2], "S_J_molK": s[1], "S_from": s[2],
+            "Gf_J_mol": h[1] - T0 * (s[1] - fd.elements_entropy(f)),
+        }
+    WEBBOOK_FILE.parent.mkdir(parents=True, exist_ok=True)
+    WEBBOOK_FILE.write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n")
+    for cid, v in out["components"].items():
+        print(f"{cid:14s} ΔfH° {v['Hf_J_mol'] / 1000:9.2f} ({v['Hf_from']})  ΔfG° {v['Gf_J_mol'] / 1000:9.2f} ({v['S_from']})")
+
+
 def main():
+    import sys
+    if "--webbook" in sys.argv:
+        webbook_check(sys.argv[sys.argv.index("--webbook") + 1])
+        return
     cantera, version = cantera_results()
     gas = scipy_results(VAPOUR, T_VAPOUR, species_gas)
     liq = scipy_results(LIQUID, T_LIQUID, species_liquid)

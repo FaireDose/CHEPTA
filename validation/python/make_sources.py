@@ -128,7 +128,7 @@ SEEDS = {
         "url": "https://webbook.nist.gov/chemistry/",
         "access": "Free to read online (NIST); an allowed source under AGENTS.md rule 1",
         "note": "Values cited per record, not redistributed as a database.",
-        "files": ["validation/report/reference/", "validation/data/pure/fusion/webbook_fusion.json"],
+        "files": ["validation/report/reference/", "validation/data/pure/fusion/webbook_fusion.json", "validation/data/reactions/liquid_formation_webbook.json"],
     },
     # validation/python/formation_data.py (CODATA, CODATA_URL): the reference values of the combustion cycle and the
     # entropies of the elements

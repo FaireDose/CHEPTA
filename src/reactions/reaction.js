@@ -29,7 +29,10 @@
  *       H_L(T) = H_IG(T0) + h_R,sat(T0) - ΔHvap(T0) + integral from T0 to T of cp_L, the liquid-heat-capacity basis of
  *       the mixture enthalpies (src/thermo/enthalpy.js); phi_sat and h_R,sat of the saturated vapour from
  *       Peng-Robinson where the component has critical constants, else 1 and 0 (as src/thermo/pure.js does); the
- *       Poynting factor is neglected;
+ *       Poynting factor is neglected. A dimerizing acid (acetic acid; src/thermo/vapour.js) has a saturated vapour of
+ *       monomers and dimers: its formation record is the ideal-gas monomer, so f_sat = p_monomer, and
+ *       h_R,sat = y_D ΔH_dim / (y_M + 2 y_D) per mole of acid, ΔH_dim = -R ln(10) B from the van 't Hoff slope of
+ *       its dimerization constant log10 K = A + B/T;
  *   pure liquid -> ideal gas:  the same equation the other way;
  *   crystal -> pure liquid:  H_L(T0) = H_S(T0) + ΔHfus, G_L(T0) = G_S(T0) + ΔHfus (1 - T0/Tm), with the melting data
  *       of the component; the difference of the heat capacities of liquid and crystal is neglected.
@@ -40,6 +43,7 @@ import { checkUserData } from "../thermo/user-data.js";
 import { parseFormula } from "../thermo/formula.js";
 import { cubicEos } from "../thermo/eos/cubic.js";
 import { hasCritical } from "../thermo/critical.js";
+import { dimerK, monomerPressure } from "../thermo/vapour.js";
 import { fail } from "../util/errors.js";
 import { checkRate } from "./kinetics.js";
 
@@ -189,16 +193,32 @@ function speciesState(id, state, ud) {
     throw fail("MISSING_DATA", `${c.name} has no open enthalpy of formation (searched: ${(f?.searched ?? []).join("; ") || "-"}), so the heat of reaction and K cannot be computed from formation data. Give K as a correlation, or use a conversion or yield reactor with a given duty.`);
   }
   const notes = [];
-  const lnPhiSat = T => {
-    if (!hasCritical(c)) return 0;
-    return eos().state(T, p.psat(T), [1], "vapour").lnPhi[0];
-  };
   let pr = null;
   const eos = () => pr ?? (pr = cubicEos("PR", [{ name: c.name, Tc_K: c.Tc_K, Pc_Pa: c.Pc_Pa, omega: c.omega }]));
+  // the saturated vapour against the ideal gas of the record: ln(f_sat / psat) and the residual enthalpy h_R,sat.
+  // A dimerizing acid (vapour.js, chemical theory): the monomer is the ideal gas of the formation record, so
+  // f_sat = p_monomer and h_R,sat = y_dimer ΔH_dim / (y_monomer + 2 y_dimer) per mole of acid, with ΔH_dim from the
+  // temperature dependence of the dimerization constant, log10 K = A + B/T: ΔH_dim = -R ln(10) B (van 't Hoff).
+  // Otherwise Peng-Robinson where the component has critical constants, else the ideal gas (0 and 0).
+  const assoc = c.association?.type === "dimer" ? c.association : null;
+  const dHdim = assoc ? -R * Math.LN10 * assoc.log10K.B : 0;
+  const satVapour = T => {
+    const ps = p.psat(T);
+    if (assoc) {
+      const y1 = monomerPressure(ps, dimerK(assoc, T)) / ps, y2 = 1 - y1;
+      return { lnF: Math.log(y1), hR: y2 * dHdim / (y1 + 2 * y2) };
+    }
+    if (!hasCritical(c)) return { lnF: 0, hR: 0 };
+    const st = eos().state(T, ps, [1], "vapour");
+    return { lnF: st.lnPhi[0], hR: st.hR_J_mol };
+  };
+  const satNote = () => (assoc
+    ? `vapour pressure; the saturated vapour as monomers and dimers (chemical theory, ${c.association.source}), the monomer being the ideal gas of the formation record, with the dimerization enthalpy ${(dHdim / 1000).toFixed(1)} kJ/mol from the temperature dependence of K`
+    : `vapour pressure${hasCritical(c) ? ", Peng-Robinson fugacity coefficient" : ""}`);
   // the liquid enthalpy on the liquid-heat-capacity basis of the mixtures (src/thermo/enthalpy.js):
   // h_L(T) = h_L(T0) + integral from T0 to T of cp_L; h_L(T0) = h_R,sat(T0) - ΔHvap(T0) from the ideal gas
   const cpL = T => integrate(t => p.property("liquidHeatCapacity", t), T0, T);
-  const hResSat = T => (hasCritical(c) ? eos().state(T, p.psat(T), [1], "vapour").hR_J_mol : 0);
+  const hL0 = () => satVapour(T0).hR - p.property("heatOfVaporization", T0);
   const needPsat = () => {
     if (c.class === "nonvolatile") throw fail("MISSING_DATA", `${c.name} is nonvolatile in CHEPTA (no vapour pressure), so its formation record for the ${f.state} cannot be taken to the ${state === "vapour" ? "ideal gas" : "pure liquid"}.`);
   };
@@ -218,12 +238,11 @@ function speciesState(id, state, ud) {
     const Gig = G0 === null ? null : T => T * (G0 / T0 - integrate(t => H(t) / (t * t), T0, T));
     if (state === "vapour") return { H, G: Gig, notes, record: f.state };
     needPsat();
-    if (c.association) throw fail("NOT_AVAILABLE", `${c.name} dimerizes in the vapour: taking its formation record (the ideal-gas monomer) to the liquid needs the association enthalpy, which is not modelled yet. Give K as a correlation (equilibrium.lnK).`);
-    notes.push(`${c.name}: ideal gas to pure liquid through the saturated vapour (vapour pressure${hasCritical(c) ? ", Peng-Robinson fugacity coefficient" : ""}; Poynting factor neglected)`);
-    const hL0 = hResSat(T0) - p.property("heatOfVaporization", T0);
+    notes.push(`${c.name}: ideal gas to pure liquid through the saturated vapour (${satNote()}; Poynting factor neglected)`);
+    const h0 = hL0();
     return {
-      H: T => H0 + hL0 + cpL(T),
-      G: Gig && (T => Gig(T) + R * T * (Math.log(p.psat(T) / P_STANDARD_KPA) + lnPhiSat(T))),
+      H: T => H0 + h0 + cpL(T),
+      G: Gig && (T => Gig(T) + R * T * (Math.log(p.psat(T) / P_STANDARD_KPA) + satVapour(T).lnF)),
       notes, record: f.state,
     };
   }
@@ -232,11 +251,11 @@ function speciesState(id, state, ud) {
   const GL = G0 === null ? null : T => T * (G0 / T0 - integrate(t => HL(t) / (t * t), T0, T));
   if (state === "liquid") return { H: HL, G: GL, notes, record: f.state };
   needPsat();
-  notes.push(`${c.name}: pure liquid to ideal gas through the saturated vapour (vapour pressure${hasCritical(c) ? ", Peng-Robinson fugacity coefficient" : ""}; Poynting factor neglected)`);
-  const hL0 = hResSat(T0) - p.property("heatOfVaporization", T0);
+  notes.push(`${c.name}: pure liquid to ideal gas through the saturated vapour (${satNote()}; Poynting factor neglected)`);
+  const h0 = hL0();
   return {
-    H: T => H0 - hL0 + p.hIdealGas(T),
-    G: GL && (T => GL(T) - R * T * (Math.log(p.psat(T) / P_STANDARD_KPA) + lnPhiSat(T))),
+    H: T => H0 - h0 + p.hIdealGas(T),
+    G: GL && (T => GL(T) - R * T * (Math.log(p.psat(T) / P_STANDARD_KPA) + satVapour(T).lnF)),
     notes, record: f.state,
   };
 }
