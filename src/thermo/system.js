@@ -71,15 +71,19 @@ export function createSystem(cfg) {
   const comps = ids.map(id => componentRecord(id, ud));
   // nonvolatile components (proposal 0009, step 5): no vapour pressure; they stay in the liquid (NV_PSAT_KPA below)
   const nonvolatile = comps.map(c => c.class === "nonvolatile");
+  // the light gases (they boil below 25 °C and have no UNIQUAC data: hydrogen, carbon monoxide, ...): an activity model
+  // describes liquids, so its errors about them say which method to use (docs/METHOD_SELECTION.md, step 1)
+  const gases = comps.filter(c => c.Tb_K != null && c.Tb_K < 298.15 && !c.uniquac && c.class !== "nonvolatile");
+  const gasHint = gases.length ? ` ${gases.map(c => c.name).join(", ")} ${gases.length === 1 ? "is a gas" : "are gases"} at room temperature: an activity model (NRTL, UNIQUAC, Modified UNIFAC 2.0) describes liquids, so use Peng–Robinson or SRK, as gas-phase reactors and synthesis loops are simulated.` : "";
   for (const c of comps) {
     // a liquid without an open vapour pressure (vapourPressure_missing, 2026-10-20) is accepted: activity coefficients,
     // liquid-liquid and solid-liquid equilibria do not need it; psat() below refuses it with the reason
     if (!c.vapourPressure && !cfg.psat && c.class !== "nonvolatile" && !c.vapourPressure_missing) {
       throw fail("MISSING_DATA", `${c.name} has no vapour-pressure record, so it cannot be used with activity-coefficient models. Use an equation of state for gases.`);
     }
-    if (model === "UNIQUAC" && !c.uniquac) throw fail("MISSING_DATA", `${c.name} has no UNIQUAC r and q.`);
+    if (model === "UNIQUAC" && !c.uniquac) throw fail("MISSING_DATA", `${c.name} has no UNIQUAC r and q.${gasHint}`);
     if (model === "MOD-UNIFAC-2" && !c.modUnifac?.groups) {
-      throw fail("MISSING_DATA", `${c.name} has no Modified UNIFAC 2.0 groups${c.modUnifac?.note ? ` (${c.modUnifac.note.replace(/^no Modified UNIFAC 2\.0 groups: /, "")})` : ""}.`);
+      throw fail("MISSING_DATA", `${c.name} has no Modified UNIFAC 2.0 groups${c.modUnifac?.note ? ` (${c.modUnifac.note.replace(/^no Modified UNIFAC 2\.0 groups: /, "")})` : ""}.${gasHint}`);
     }
   }
   const n = ids.length;
@@ -107,7 +111,7 @@ export function createSystem(cfg) {
   }
   if (missing.length && !cfg.allowMissingPairs) {
     const list = missing.map(m => m.join(" + ")).join("; ");
-    throw fail("MISSING_DATA", `No ${model} parameters for: ${list}. Pass allowMissingPairs: true to treat them as ideal, or add parameters to data/binaries.json.`);
+    throw fail("MISSING_DATA", `No ${model} parameters for: ${list}. Pass allowMissingPairs: true to treat them as ideal, or add parameters to data/binaries.json.${gasHint}`);
   }
   // missing pairs: NRTL with zero tau is ideal; UNIQUAC with tau = 1 keeps only the combinatorial term
   let gammas;

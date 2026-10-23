@@ -53,8 +53,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   articles (Nikitin et al. 2023 for furfuryl alcohol and THFA; Bogatishcheva et al. 2026 for the lactates, whose
   critical points the maintainer accepted with the larger vapour-pressure misses). To decide: tripalmitin's single heat
   of vaporization, ethyl lactate's melting data from a thesis whose enantiomer enthalpies disagree fourfold, adding
-  furfuryl acetate. CORE's answer on its licence (asked 2026-10-22) before the search uses it; steps 3 to 5 of
-  proposal 0014 are not decided.
+  furfuryl acetate. CORE agreed to its personal licence (2026-10-23; docs/decisions/2026-10-23-01-light-gases-core.md):
+  the next search asks it once its key is a network secret; steps 3 to 5 of proposal 0014 are not decided.
 - **Make the new name official** (decided 2026-10-09: **CHEPTA**, *Chemical Engineering Process Tools
   for Agents*). In this order:
   1. GitHub: Settings → General → Repository name: `CHEPTA`. GitHub redirects the old links,

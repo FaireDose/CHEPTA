@@ -12,7 +12,7 @@ import { h, s as svgEl } from "./dom.js";
 import { icon } from "./icons.js";
 import { FUTURE_MODELS } from "./future-models.js";
 import { modelPicker } from "./model-picker.js";
-import { listComponents } from "../thermo/system.js";
+import { listComponents, modelName } from "../thermo/system.js";
 import { methodAdvice } from "../thermo/method-advice.js";
 import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
@@ -150,6 +150,10 @@ export function solution(state, ui) {
   enter(state);
   // the flowsheet with the parameter sets chosen in the Library and the diagrams
   const f = ensureUi(ui), fs = calculatedFlowsheet(state), ud = userOverlay(state);
+  // a method that cannot describe a component (light gases with an activity model): that is the one thing to say,
+  // with its remedy, not the error of the calculation it would start
+  const problem = methodProblem(fs.components, fs.thermo);
+  if (problem) return { status: { ready: false, message: problem, structure: [], blocks: {} }, result: null, error: problem, method: true };
   let status;
   try { status = flowsheetDocStatus(fs, ud); } catch (e) { return { status: { ready: false, message: e.message, structure: [], blocks: {} }, result: null, error: e.message }; }
   const key = flowsheetKey(state);
@@ -650,6 +654,12 @@ function energySection({ fs, b, put, inputsSection, uid, f, set }) {
 }
 
 /** What the property method cannot do with the chosen components, as one message ("" when it can use them all). */
+/** One click to the method a mixture with light gases needs: Peng-Robinson for both phases. */
+function usePR(state, set) {
+  return h("button", { type: "button", class: "fa-mini", "data-fk": "fs-use-pr", title: "Peng–Robinson for every block and stream (Method page)",
+    on: { click: () => set({ flowsheet: { ...state.flowsheet, thermo: { ...state.flowsheet.thermo, model: "PR", vapour: "ideal" } } }) } }, icon("cubic", 15), "Use Peng–Robinson");
+}
+
 function methodProblem(ids, thermo) {
   const eos = ["PR", "SRK"].includes(thermo.model);
   const list = xs => `${xs.map(nameOf).join(", ")} ha${xs.length === 1 ? "s" : "ve"}`;
@@ -657,7 +667,7 @@ function methodProblem(ids, thermo) {
   // an inert solid passes every method (src/equilibrium/inert-solids.js): it takes no part in the phase equilibrium
   const fluid = ids.filter(c => !byId().get(c)?.solid);
   const gases = eos ? [] : fluid.filter(c => !byId().get(c)?.activity);
-  if (gases.length) return `${gases.map(nameOf).join(", ")} need${gases.length === 1 ? "s" : ""} an equation of state (no activity-model data: not a liquid with a vapour-pressure record): choose Peng–Robinson or SRK in the Method page, or remove ${them(gases)}.`;
+  if (gases.length) return `${gases.map(nameOf).join(", ").replace(/, ([^,]*)$/, " and $1")} ${gases.length === 1 ? "is a light gas" : "are light gases"}: an activity model (${modelName(thermo.model)}) describes liquids, so it cannot calculate ${them(gases)}. Use Peng–Robinson or SRK, as gas-phase reactors and synthesis loops are simulated.`;
   const noRq = thermo.model === "UNIQUAC" ? fluid.filter(c => !byId().get(c)?.uniquac) : [];
   if (noRq.length) return `${list(noRq)} no UNIQUAC r and q (no open data yet), so UNIQUAC cannot use ${them(noRq)}: choose NRTL in the Method page.`;
   const noGroups = thermo.model === "MOD-UNIFAC-2" ? fluid.filter(c => !byId().get(c)?.modUnifac) : [];
@@ -689,7 +699,7 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
   if (f.setup === "reactions") return reactionSections({ state, fs, f, set, uid, inputsSection });
   if (f.setup === "method") {
     // the Method page: the property method and the recycle solver
-    return [methodSection({ state, fs, eos, setThermo, inputsSection, uid, problem: methodProblem(fs.components, fs.thermo) }),
+    return [methodSection({ state, set, fs, eos, setThermo, inputsSection, uid, problem: methodProblem(fs.components, fs.thermo) }),
       ...solverSection({ fs, set, uid, inputsSection })];
   }
   const secs = [];
@@ -698,7 +708,7 @@ function setupSections({ state, set, ui, uid, inputsSection, st }) {
   // anything, people would know. only if there are errors"): the method is in the toolbar, the blocks in the palette
   secs.push(inputsSection("1. Components",
     chips.length ? h("ol", { class: "fa-chips", "aria-label": "Components of the flowsheet" }, ...chips) : null,
-    methodProblem(fs.components, fs.thermo) ? warning(methodProblem(fs.components, fs.thermo), { attrs: { role: "alert", "data-fk": "fs-comp-problem" } }) : null,
+    methodProblem(fs.components, fs.thermo) ? warning(methodProblem(fs.components, fs.thermo), { attrs: { role: "alert", "data-fk": "fs-comp-problem" }, details: [usePR(state, set)] }) : null,
     h("div", { class: "fa-add" }, add)));
   const units = fs.blocks.filter(b => b.type !== "product");
   if (fs.components.length && units.length) secs.push(inputsSection("Flowsheet status",
@@ -803,7 +813,7 @@ function reactionSections({ state, fs, f, set, uid, inputsSection }) {
 }
 
 /** The property method of the whole flowsheet: an activity model with a vapour model, or an equation of state. */
-function methodSection({ state, fs, eos, setThermo, inputsSection, uid, problem }) {
+function methodSection({ state, set, fs, eos, setThermo, inputsSection, uid, problem }) {
   // is this the recommended method for these components? (docs/METHOD_SELECTION.md)
   const advice = methodAdvice({ ids: fs.components, names: fs.components.map(nameOf), formulas: fs.components.map(id => byId().get(id)?.formula),
     model: fs.thermo.model, eos });
@@ -813,7 +823,7 @@ function methodSection({ state, fs, eos, setThermo, inputsSection, uid, problem 
     // the same drop-down lists as the workbench's Model group (model-picker.js)
     modelPicker({ model: fs.thermo.model, vapour: fs.thermo.vapour ?? "ideal", id: `fs-model-${uid}`, fk: "fs-model",
       onChange: p => setThermo(p.model === fs.thermo.model ? { vapour: p.vapour } : { model: p.model, vapour: p.vapour }) }),
-    problem ? warning(problem, { attrs: { role: "alert", "data-fk": "fs-method-problem" } }) : null,
+    problem ? warning(problem, { attrs: { role: "alert", "data-fk": "fs-method-problem" }, details: [usePR(state, set)] }) : null,
     // the pair parameter sets: the same choice as the diagrams and the flash
     PAIR_MODELS.includes(fs.thermo.model) ? h("p", { class: "fa-in-hint", "data-fk": "fs-sets" },
       `Pair parameter sets: ${setsLabel(state)}. The rule for every pair is in the Library; a pair's own set is chosen in the Inputs panel of the phase-equilibrium diagrams. The flowsheet uses the same choice.`) : null,
@@ -948,7 +958,9 @@ export function flowsheetView(ctx) {
   }
   const sol = solution(state, ui);
   const res = sol.result;
-  if (sol.error) notes.append(warning(sol.error, { title: `Not solved: ${summaryOf(sol.error)}`, attrs: { role: "alert" },
+  if (sol.method) notes.append(warning(sol.error, { title: summaryOf(sol.error), attrs: { role: "alert", "data-fk": "fs-canvas-method" }, open: true,
+    details: [usePR(state, set)] }));
+  else if (sol.error) notes.append(warning(sol.error, { title: `Not solved: ${summaryOf(sol.error)}`, attrs: { role: "alert" },
     details: [sol.loop ? h("p", { class: "fa-in-hint" }, "The blocks of that recycle are outlined in red. The solver settings are in the Inputs panel (with nothing selected): 4. Recycle solver.") : null] }));
   if (sol.stale) notes.append(warning("The results are not up to date: press Solve.", { attrs: { role: "note" } }));
 
