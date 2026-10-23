@@ -33,6 +33,13 @@ const REF = "docs/METHOD_SELECTION.md";
  */
 export function methodAdvice({ ids, names, formulas, model, eos }) {
   const polar = ids.map((id, i) => (isPolar(id, formulas[i]) ? names[i] : null)).filter(Boolean);
+  const gases = ids.map((id, i) => (EOS_GASES.has(id) ? names[i] : null)).filter(Boolean);
+  if (eos && polar.length && gases.length) {
+    // light gases with polar components (methanol from syngas, hydrogenations): the equation of state is the method for
+    // the gas-phase reactor and the high-pressure loop, which no activity model can describe; the polar liquid alone
+    // (its distillation) is what an activity model would do better
+    return [`${model} is the method here: ${gases.join(", ")} ${gases.length === 1 ? "is a light gas" : "are light gases"}, which only an equation of state describes (gas-phase reactors and high-pressure loops are simulated so). For a liquid of the polar components alone (${polar.join(", ")}) below about 10 bar, such as their distillation, an activity model (NRTL or UNIQUAC) would be more accurate (${REF}).`];
+  }
   if (eos && polar.length && ids.length > 1) {
     return [`${model} for a mixture with polar components (${polar.join(", ")}) is not the recommended method for their liquid: below about 10 bar an activity model (NRTL or UNIQUAC) describes it better; above 10 bar PSRK or a cubic equation with Wong-Sandler or MHV2 mixing rules, which CHEPTA does not have yet (${REF}).`];
   }

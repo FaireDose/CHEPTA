@@ -42,6 +42,7 @@ P0_KPA = 100.0
 # the reactions of the check; defined here and in test/reactions.test.js (CHEPTA ships no reactions)
 VAPOUR = {
     "methanol-from-co2": {"carbon-dioxide": -1, "hydrogen": -3, "methanol": 1, "water": 1},
+    "methanol-from-co": {"carbon-monoxide": -1, "hydrogen": -2, "methanol": 1},
     "reverse-water-gas-shift": {"carbon-dioxide": -1, "hydrogen": -1, "carbon-monoxide": 1, "water": 1},
     "ethanol-dehydration": {"ethanol": -1, "ethylene": 1, "water": 1},
     "ammonia-synthesis": {"nitrogen": -1, "hydrogen": -3, "ammonia": 2},
