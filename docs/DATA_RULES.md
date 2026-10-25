@@ -412,6 +412,8 @@ it against the article before it is added (AGENTS.md rule 4).
 - `--all` lists every copy that three indexes know: Unpaywall (all its locations), OpenAlex and CORE. A repository
   copy is often missing from Unpaywall (Baird et al. 2019: Unpaywall gave only the publisher's copy, OpenAlex also the
   Aalto and OSF copies).
+- A CORE record with neither a download nor a text is CORE's copy of the Crossref metadata: it is not listed as a
+  copy (2026-10-25).
 - `--fetch DIR` downloads the first copy that really is a PDF (it starts with "%PDF"). A server may answer "200 OK"
   with an HTML page (a login, a robot check, a landing page): such an answer is never kept. A repository landing page
   is followed to the PDF named in its `citation_pdf_url` tag. Where a server serves PDFs to browsers only (403 to

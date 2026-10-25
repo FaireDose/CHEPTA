@@ -1,0 +1,1715 @@
+{
+ "date": "2026-10-25",
+ "tool": "validation/python/fulltext_search.py --indexes core",
+ "summary": "CORE (the full texts of open repositories: theses, reports, accepted manuscripts) asked for every gap of the properties a calculation needs, with the key the maintainer obtained under CORE's personal licence (2026-10-23). 167 gaps of 51 components; CORE found works for 108 of them; 891 works returned (up to 20 per name form), 371 of them with a text CORE serves or a PDF that could be read; 30 gaps had a passage where a name of the component and the property appear together. Each passage was read on 2026-10-25. One measured set was found, limonene's own vapour pressures up to 101.4 kPa in an open thesis (Gowda 2018), held for the maintainer because it lies outside the stated uncertainty of the pooled curve. The other passages name the component as a reactant, product, solvent or ligand, give a value of a mixture or another substance, quote a handbook or a supplier, or give pressures over the crystal (levoglucosan, lactide).",
+ "indexes": {
+  "CORE": "asked, with a key (a network secret of the environment, api.core.ac.uk): one query per name form and gap, single words joined by AND and OR (CORE ignores a group that holds an AND inside an OR), up to 20 works each; paced at one query per 7 s",
+  "Europe PMC": "not asked again (asked on 2026-10-22)",
+  "OpenAlex": "not asked again (asked on 2026-10-22)"
+ },
+ "gaps": {
+  "2-methoxyethanol": {
+   "fusion": {
+    "core": {
+     "hits": 32,
+     "read": 6,
+     "screened": 1,
+     "articles": [
+      "A review of the deposition of Sb2S3 film by spin coating method for thin film solar cell applications"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "formationG": {
+    "core": {
+     "hits": 3,
+     "read": 2,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "mdea": {
+   "fusion": {
+    "core": {
+     "hits": 16,
+     "read": 4,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "terephthalic-acid": {
+   "liquidDensity": {
+    "core": {
+     "hits": 339,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 141,
+     "read": 2,
+     "screened": 1,
+     "articles": [
+      "SOLVOTHERMAL SYNTHESIS AND CHARACTERIZATION OF TEREPHTHALIC ACID-BASED METAL-ORGANIC FRAMEWORKS AND THEIR CATALYTIC APPLICATION IN BIODIESEL PRODUCTION"
+     ]
+    },
+    "held": "none of the pure compound"
+   }
+  },
+  "methyl-oleate": {
+   "fusion": {
+    "core": {
+     "hits": 502,
+     "read": 4,
+     "screened": 1,
+     "articles": [
+      "10.17877/de290r-24173"
+     ]
+    },
+    "held": "none of the pure compound"
+   }
+  },
+  "methyl-linoleate": {
+   "fusion": {
+    "core": {
+     "hits": 23,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "triolein": {
+   "heatOfVaporization": {
+    "core": {
+     "hits": 3,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "tripalmitin": {
+   "heatOfVaporization": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "2-methylfuran": {
+   "formation": {
+    "core": {
+     "hits": 139,
+     "read": 4,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 4,
+     "read": 4,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "2-methyltetrahydrofuran": {
+   "fusion": {
+    "core": {
+     "hits": 3,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 51,
+     "read": 2,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "1-3-propanediol": {
+   "formationG": {
+    "core": {
+     "hits": 1,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "methyl-levulinate": {
+   "fusion": {
+    "core": {
+     "hits": 2,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "ethyl-levulinate": {
+   "fusion": {
+    "core": {
+     "hits": 5,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "butyl-levulinate": {
+   "fusion": {
+    "core": {
+     "hits": 2,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "levulinic-acid": {
+   "formationG": {
+    "core": {
+     "hits": 6,
+     "read": 3,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "gvl": {
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 55,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "thfa": {
+   "fusion": {
+    "core": {
+     "hits": 2,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "cpme": {
+   "fusion": {
+    "core": {
+     "hits": 7,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 7,
+     "read": 2,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 4,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "2-3-butanediol": {
+   "fusion": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "Tb": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "methyl-lactate": {
+   "fusion": {
+    "core": {
+     "hits": 43,
+     "read": 4,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 165,
+     "read": 10,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 13,
+     "read": 8,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "ethyl-lactate": {
+   "fusion": {
+    "core": {
+     "hits": 47,
+     "read": 7,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 8,
+     "read": 8,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "limonene": {
+   "fusion": {
+    "core": {
+     "hits": 222,
+     "read": 3,
+     "screened": 3,
+     "articles": [
+      "The effect of limonene on bloom of cocoa butter and seeded dark chocolate model",
+      "The effect of limonene on bloom of cocoa butter and seeded dark chocolate model",
+      "The effect of limonene on bloom of cocoa butter and seeded dark chocolate model"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "formationG": {
+    "core": {
+     "hits": 20,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 382,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "Tb": {
+    "core": {
+     "hits": 113,
+     "read": 5,
+     "screened": 3,
+     "articles": [
+      "10.4314/tjs.v46i2.",
+      "10.51415/10321/3746",
+      "Phase equilibrium of limonene, p-cymene, indane, butylbenzene and 1,2,3-trimethylbenzene at subatmospheric conditions"
+     ]
+    },
+    "held": "Gowda, MEng thesis, Stellenbosch University 2018 (open, SUNScholar): limonene's own vapour pressures, 40.0-101.4 kPa at 417.0-450.9 K (Table 8.12, +-0.32 K), which reach 101.325 kPa; held for the maintainer, since they lie 2.0 % below CHEPTA's curve, beyond their stated 0.88 % (validation/data/searches/held/article_limonene_gowda2018.json). The normal boiling point of 449.65 K the thesis prints is Yaws' handbook's (its reference [59]): not taken"
+   }
+  },
+  "isoamyl-alcohol": {
+   "fusion": {
+    "core": {
+     "hits": 37,
+     "read": 4,
+     "screened": 1,
+     "articles": [
+      "Deoxyribonucleic acid base composition of Simonsiella and Alysiella strains from ungulates"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "formationG": {
+    "core": {
+     "hits": 2,
+     "read": 2,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "lactic-acid": {
+   "formationG": {
+    "core": {
+     "hits": 120,
+     "read": 6,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "hmf": {
+   "liquidDensity": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "glucose": {
+   "liquidDensity": {
+    "core": {
+     "hits": 72362,
+     "read": 4,
+     "screened": 4,
+     "articles": [
+      "Improvements in electrochemical glucose biosensors",
+      "Improvements in electrochemical glucose biosensors",
+      "Density alteration in non-physiological cells",
+      "10.1186/s12933-017-0605-8"
+     ]
+    },
+    "held": "none of the pure compound"
+   }
+  },
+  "fructose": {
+   "liquidDensity": {
+    "core": {
+     "hits": 4044,
+     "read": 2,
+     "screened": 2,
+     "articles": [
+      "Volumetric Behavior of Sodium Saccharin in Water and (0.1, 0.3, and 0.5) m Fructose at (298.15, 303.15, 308.15, and 313.15) K",
+      "Exercise performed immediately after fructose ingestion enhances fructose oxidation and suppresses fructose storage"
+     ]
+    },
+    "held": "none of the pure compound"
+   }
+  },
+  "sorbitol": {
+   "liquidDensity": {
+    "core": {
+     "hits": 1614,
+     "read": 7,
+     "screened": 3,
+     "articles": [
+      "Polyethylene/Dibenzylidene Sorbitol: effect of composition on space charge of polymeric insulation systems",
+      "Polyethylene/Dibenzylidene Sorbitol: effect of composition on space charge of polymeric insulation systems",
+      "Methyl-2,5- and -3,5-Anhydropentofuranosides Containing Oxygen, Sulfur, Selenium or Tellurium in the Anhydrobridge"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "formationG": {
+    "core": {
+     "hits": 42,
+     "read": 10,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "xylitol": {
+   "formation": {
+    "core": {
+     "hits": 123,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 13,
+     "read": 8,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "succinic-acid": {
+   "liquidDensity": {
+    "core": {
+     "hits": 718,
+     "read": 9,
+     "screened": 6,
+     "articles": [
+      "Production of succinic acid from glycerol and glycerol waste",
+      "Production of succinic acid from glycerol and glycerol waste",
+      "Effect of Time, Inoculum size (%) and Mass Substrate on succinic acid production from glycerol residue using immobilized Escherichia Coli",
+      "Effect of Time, Inoculum size (%) and Mass Substrate on succinic acid production from glycerol residue using immobilized Escherichia Coli",
+      "Optimization of succinic acid production from immobilized escherichia coli",
+      "Optimization of succinic acid production from immobilized escherichia coli"
+     ]
+    },
+    "held": "none of the pure compound"
+   }
+  },
+  "itaconic-acid": {
+   "liquidDensity": {
+    "core": {
+     "hits": 205,
+     "read": 2,
+     "screened": 1,
+     "articles": [
+      "10.24355/dbbs.084-202107281114-0"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "fusion": {
+    "core": {
+     "hits": 36,
+     "read": 4,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 3,
+     "read": 2,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "fumaric-acid": {
+   "liquidDensity": {
+    "core": {
+     "hits": 210,
+     "read": 7,
+     "screened": 3,
+     "articles": [
+      "Electrosynthesis of tartaric acid from maleic and fumaric acids",
+      "A New Approach to the Anodic Decarboxylation of Unsaturated Dicarboxylic Acids. Part 1: Fumaric, Maleic and Acetylenedicarboxylic Acids.",
+      "10.1556/aalim.30.2001.1.6"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "fusion": {
+    "core": {
+     "hits": 59,
+     "read": 1,
+     "screened": 1,
+     "articles": [
+      "10.18178/ijcea.2017.8.2.645"
+     ]
+    },
+    "held": "none of the pure compound"
+   }
+  },
+  "malic-acid": {
+   "liquidDensity": {
+    "core": {
+     "hits": 1226,
+     "read": 1,
+     "screened": 1,
+     "articles": [
+      "10.1023/b:joec.0000006395.45516.e8"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "fusion": {
+    "core": {
+     "hits": 222,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 350,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 8,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "citric-acid": {
+   "liquidDensity": {
+    "core": {
+     "hits": 2352,
+     "read": 5,
+     "screened": 3,
+     "articles": [
+      "10.1016/j.indcrop.2011.11.034",
+      "10.3390/coatings14070816",
+      "10.4314/ajb.v7i5.58490"
+     ]
+    },
+    "held": "none of the pure compound"
+   }
+  },
+  "glycolic-acid": {
+   "liquidDensity": {
+    "core": {
+     "hits": 651,
+     "read": 3,
+     "screened": 3,
+     "articles": [
+      "10.1021/acscatal.4c00483",
+      "10.2172/1019026",
+      "10.2172/982752"
+     ]
+    },
+    "held": "SRNL reports on glycolic acid (OSTI, doi:10.2172/982752 and doi:10.2172/1019026): the neat acid was not measured, the values are the vendor's specification sheet: not taken"
+   },
+   "formation": {
+    "core": {
+     "hits": 220,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 13,
+     "read": 6,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "glucaric-acid": {
+   "liquidDensity": {
+    "core": {
+     "hits": 45,
+     "read": 5,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 11,
+     "read": 2,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 36,
+     "read": 6,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "3-hydroxypropionic-acid": {
+   "liquidDensity": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "fdca": {
+   "liquidDensity": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "bhet": {
+   "liquidDensity": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "diphenolic-acid": {
+   "liquidDensity": {
+    "core": {
+     "hits": 15,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 7,
+     "read": 3,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 4,
+     "read": 3,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "xylose": {
+   "liquidDensity": {
+    "core": {
+     "hits": 2094,
+     "read": 9,
+     "screened": 2,
+     "articles": [
+      "Análise da fermentação de glicose e xilose por leveduras Spathaspora isoladas de madeira em decomposição",
+      "Influência dos transportadores de açucares na fermentação de xilose por linhagens recombinantes de Saccharomyces cerevisiae"
+     ]
+    },
+    "held": "none of the pure compound"
+   }
+  },
+  "muconic-acid": {
+   "liquidDensity": {
+    "core": {
+     "hits": 45,
+     "read": 6,
+     "screened": 3,
+     "articles": [
+      "Optimization of Pseudomonas putida KT2440 as host for the production of cis, cis-muconate from benzoate",
+      "Electrochemical hydrogenation of bioprivileged cis, cis-muconic acid to trans-3-hexenedioic acid: from lab synthesis to bench-scale production and beyond",
+      "Benzene and lipid asset"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "fusion": {
+    "core": {
+     "hits": 22,
+     "read": 2,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 25,
+     "read": 4,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 2,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "glycerol-carbonate": {
+   "liquidDensity": {
+    "core": {
+     "hits": 236,
+     "read": 9,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 43,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 139,
+     "read": 7,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 2,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 87,
+     "read": 11,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "Tb": {
+    "core": {
+     "hits": 32,
+     "read": 8,
+     "screened": 1,
+     "articles": [
+      "The Synthesis of Glycerol Carbonate From Biodiesel by Product Glycerol and Urea Over Amberlyst 15"
+     ]
+    },
+    "held": "none of the pure compound"
+   }
+  },
+  "solketal": {
+   "liquidHeatCapacity": {
+    "core": {
+     "hits": 8,
+     "read": 5,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 9,
+     "read": 4,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 22,
+     "read": 3,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 6,
+     "read": 5,
+     "screened": 1,
+     "articles": [
+      "10.1016/j.supflu.2011.04.012"
+     ]
+    },
+    "held": "acetone's critical temperature, not solketal's: none"
+   },
+   "Tb": {
+    "core": {
+     "hits": 2,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "angelica-lactone": {
+   "vapourPressure": {
+    "core": {
+     "hits": 1,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "heatOfVaporization": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "liquidHeatCapacity": {
+    "core": {
+     "hits": 2,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 13,
+     "read": 6,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 9,
+     "read": 8,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "Tb": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "lactide": {
+   "vapourPressure": {
+    "core": {
+     "hits": 72,
+     "read": 3,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "liquidDensity": {
+    "core": {
+     "hits": 1114,
+     "read": 6,
+     "screened": 6,
+     "articles": [
+      "10.1038/ncomms6746",
+      "Equilíbrio de fases do monômero L,L-Lactídeo em altas pressões: dados experimentais e modelagem",
+      "10.71781/4746",
+      "10.1002/mabi.201100226",
+      "10.1016/j.jorganchem.2013.08.023",
+      "10.7488/era/1537"
+     ]
+    },
+    "held": "a UFSC thesis (2014, L,L-lactide with CO2 and propane at high pressure) measured L-lactide's melting (90.2 degC, 17.02 kJ/mol), a different crystal from CHEPTA's DL-lactide; its critical constants are Joback estimates, and the lactide vapour pressures it quotes (Emel'yanenko et al. 2009, 60-80 degC) are below the melting point, over the crystal: none"
+   },
+   "heatOfVaporization": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "liquidHeatCapacity": {
+    "core": {
+     "hits": 59,
+     "read": 2,
+     "screened": 2,
+     "articles": [
+      "Excess reversing Heat Capacity during Quasi-isothermal Crystallization in Poly(L-lactide) Melt",
+      "Excess reversing Heat Capacity during Quasi-isothermal Crystallization in Poly(L-lactide) Melt"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "formationG": {
+    "core": {
+     "hits": 15,
+     "read": 8,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 334,
+     "read": 5,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "Tb": {
+    "core": {
+     "hits": 20,
+     "read": 4,
+     "screened": 1,
+     "articles": [
+      "10.1039/d4sc05891g"
+     ]
+    },
+    "held": "none of the pure compound"
+   }
+  },
+  "isosorbide": {
+   "vapourPressure": {
+    "core": {
+     "hits": 18,
+     "read": 2,
+     "screened": 1,
+     "articles": [
+      "10.34657/30379"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "liquidDensity": {
+    "core": {
+     "hits": 102,
+     "read": 1,
+     "screened": 1,
+     "articles": [
+      "10.1002/cctc.202201095"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "heatOfVaporization": {
+    "core": {
+     "hits": 2,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "liquidHeatCapacity": {
+    "core": {
+     "hits": 10,
+     "read": 6,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 41,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 52,
+     "read": 3,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 14,
+     "read": 6,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 28,
+     "read": 7,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "Tb": {
+    "core": {
+     "hits": 5,
+     "read": 2,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "levoglucosan": {
+   "vapourPressure": {
+    "core": {
+     "hits": 33,
+     "read": 3,
+     "screened": 3,
+     "articles": [
+      "10.5194/acp-11-655-2011",
+      "10.5194/acp-23-12441-2023",
+      "10.5194/acp-11-67-2011"
+     ]
+    },
+    "held": "Booth et al., Atmos. Chem. Phys. 11 (2011) 655-665 (CC BY 3.0): pressures over the crystal, 298-318 K (Knudsen effusion, +-40 %), and a sub-cooled liquid value at 298 K derived from them with melting data, not measured on the liquid: no liquid record. It names Epshtein et al., Zh. Prikl. Khim. 37 (1964) 2543, measured at 468-528 K, above the melting point: no free copy known"
+   },
+   "liquidDensity": {
+    "core": {
+     "hits": 131,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "heatOfVaporization": {
+    "core": {
+     "hits": 7,
+     "read": 6,
+     "screened": 4,
+     "articles": [
+      "Determining how levoglucosan partitions between gas and particle phases Investigating temperature effects in the presence of ammonium sulphate aerosols",
+      "Proposal of a representative chemical composition for fast pyrolysis lignocellulosic bio-oil and estimation of the thermodynamic properties of the bio- oil compounds",
+      "Proposal of a representative chemical composition for fast pyrolysis lignocellulosic bio-oil and estimation of the thermodynamic properties of the bio- oil compounds",
+      "Determining how levoglucosan partitions between gas and particle phases Investigating temperature effects in the presence of ammonium sulphate aerosols"
+     ]
+    },
+    "held": "a 2025 student thesis (aerosol partitioning with ammonium sulphate, FIGAERO-CIMS) gives 31 +- 6 kJ/mol, which its author says vapour wall losses distort; the 52 kJ/mol of Booth et al. 2011 is their sublimation enthalpy minus an enthalpy of fusion, not measured: none"
+   },
+   "liquidHeatCapacity": {
+    "core": {
+     "hits": 6,
+     "read": 2,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 49,
+     "read": 5,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "Tb": {
+    "core": {
+     "hits": 9,
+     "read": 4,
+     "screened": 4,
+     "articles": [
+      "Factors Influencing Cellulosic Sugar Production during Acid-Catalyzed Solvent Liquefaction in 1,4-dioxane",
+      "10.31274/etd-180810-5987",
+      "10.31274/etd-180810-5770",
+      "Proposal of a representative chemical composition for fast pyrolysis lignocellulosic bio-oil and estimation of the thermodynamic properties of the bio- oil compounds"
+     ]
+    },
+    "held": "a 2001 Iowa State thesis lists 384 degC in a table whose cited reference is a sorption paper (no traceable source); levoglucosan decomposes: not taken"
+   }
+  },
+  "dimethyl-fdca": {
+   "vapourPressure": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "liquidDensity": {
+    "core": {
+     "hits": 2,
+     "read": 1,
+     "screened": 1,
+     "articles": [
+      "10.1016/j.jcat.2019.11.029"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "heatOfVaporization": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "liquidHeatCapacity": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 3,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "Tb": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "bhmf": {
+   "vapourPressure": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "liquidDensity": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "heatOfVaporization": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "liquidHeatCapacity": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "Tb": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "levoglucosenone": {
+   "liquidHeatCapacity": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 3,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 30,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 8,
+     "read": 8,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "Tb": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  },
+  "emf": {
+   "vapourPressure": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "liquidDensity": {
+    "core": {
+     "hits": 14,
+     "read": 1,
+     "screened": 1,
+     "articles": [
+      "10.9767/bcrec.18330"
+     ]
+    },
+    "held": "none of the pure compound"
+   },
+   "heatOfVaporization": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "liquidHeatCapacity": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "fusion": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formation": {
+    "core": {
+     "hits": 10,
+     "read": 1,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "formationG": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "critical": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   },
+   "Tb": {
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    },
+    "held": "-"
+   }
+  }
+ }
+}

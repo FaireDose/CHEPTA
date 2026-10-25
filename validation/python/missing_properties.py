@@ -153,6 +153,7 @@ def report(comps, date, since=None):
         L.append("")
         L.append(f"## What changed since the previous file (components.json at `{since}`)")
         L.append("")
+        n_before = len(L)
         new_c = [comps[c]["name"] for c in comps if c not in old]
         if new_c:
             L.append(f"- New components: {', '.join(new_c)}.")
@@ -165,6 +166,8 @@ def report(comps, date, since=None):
                      and key in ("formation", "formationG")]
             if newly:
                 L.append(f"- {name[:1].upper() + name[1:]}: new property, no open data for {len(newly)} (listed below).")
+        if len(L) == n_before:
+            L.append("- No record changed: this update records a search.")
     for f in sorted(SEARCHES.glob("*-fulltext.json")):
         L.extend(search_section(json.loads(f.read_text()), f, comps, label))
     sections = [("A. No vapour pressure", lambda c, g: "vapourPressure" in g),

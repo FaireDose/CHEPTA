@@ -162,6 +162,10 @@ def copies(doi, cache):
         notes.append("OpenAlex not asked: %s" % e)
     try:
         for r in core(doi, cache) or []:
+            # a record with neither a download nor a text is CORE's copy of the Crossref metadata, not a free copy
+            # (2026-10-25: the paywalled articles carried over in MISSING_PROPERTIES all had such records)
+            if not r.get("downloadUrl") and not r.get("fullText"):
+                continue
             add((r.get("links") or [{}])[0].get("url") if r.get("links") else None, r.get("downloadUrl"),
                 None, (r.get("dataProviders") or [{}])[0].get("name") if r.get("dataProviders") else "CORE",
                 None, "CORE")
