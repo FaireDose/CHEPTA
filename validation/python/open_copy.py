@@ -45,7 +45,7 @@ from pathlib import Path
 
 API = "https://api.unpaywall.org/v2/{doi}?email={email}"
 OPENALEX = "https://api.openalex.org/works/doi:{doi}?mailto={email}"
-CORE = "https://api.core.ac.uk/v3/search/works?q={q}&limit=20"
+CORE = "https://api.core.ac.uk/v3/search/works/?q={q}&limit=20"
 EMAIL = os.environ.get("CHEPTA_CONTACT_EMAIL", "info@cheptasim.org")
 UA = "CHEPTA data script (https://github.com/FaireDose/CHEPTA)"
 VERSION = {"publishedVersion": "published version", "acceptedVersion": "accepted manuscript",

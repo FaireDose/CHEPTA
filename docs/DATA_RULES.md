@@ -437,7 +437,7 @@ it against the article before it is added (AGENTS.md rule 4).
   |---|---|---|---|
   | Europe PMC | the biomedical literature and the journals deposited in PubMed Central (MDPI, ACS Omega, RSC Advances, Scientific Reports); not J. Chem. Eng. Data, J. Chem. Thermodyn., Fluid Phase Equilib. or Int. J. Thermophys. | none | its open full text (XML) |
   | OpenAlex | open-access works of all fields, the chemistry journals included; its data are CC0 | free, a daily budget of US$1 (about 1000 queries); without a key a small budget shared by everyone on the same network address | one query per gap, (names) AND (property words), open-access works only; each hit's open copy fetched as a PDF |
-  | CORE | the full texts of open repositories | free, under CORE's personal licence: the maintainer asked CORE (2026-10-22) and has the agreement (2026-10-23) | one full-text query per gap, (names) AND (property words); each hit's open copy fetched as a PDF |
+  | CORE | the full texts of open repositories | free, under CORE's personal licence: the maintainer asked CORE (2026-10-22) and has the agreement (2026-10-23) | one query per name form and gap, of single words joined by AND and OR (its parser ignores a group that holds an AND inside an OR, finds nothing for a quoted phrase, and refuses a field name); the passages are then screened for the exact names and property words; the text comes with each hit, else its open copy is fetched as a PDF; paced at one query per 7 s (its limit is 10 per minute) |
 
 - **The keys** are network secrets of the cloud environment (the environment's settings, Network secrets): secret
   type Bearer, allowed website `api.openalex.org` (one secret) and `api.core.ac.uk` (another), header `Authorization`

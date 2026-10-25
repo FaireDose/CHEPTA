@@ -92,21 +92,28 @@ def search_section(rec, path, comps, label):
          "\"How to search for a missing number\", step 3). " + rec.get("summary", ""), ""]
     for idx, state in rec.get("indexes", {}).items():
         L.append(f"- {idx}: {state}")
-    L += ["", "| Component | Property | Europe PMC: found, with a passage | OpenAlex: found, read, with a passage | What they held |",
-          "|---|---|---|---|---|"]
+    # the indexes this search asked (a later search may ask one index only: CORE, 2026-10-25)
+    cols = [c for c, k in (("Europe PMC", "europepmc"), ("OpenAlex", "openalex"), ("CORE", "core"))
+            if any(k in g or (k == "europepmc" and "hits" in g) for p in rec.get("gaps", {}).values() for g in p.values())]
+    head = {"Europe PMC": "Europe PMC: found, with a passage", "OpenAlex": "OpenAlex: found, read, with a passage",
+            "CORE": "CORE: found, read, with a passage"}
+    L += ["", "| Component | Property | " + " | ".join(head[c] for c in cols) + " | What they held |",
+          "|---|---|" + "---|" * len(cols) + "---|"]
     empty = []
     for cid, props in rec.get("gaps", {}).items():
         name = comps[cid]["name"] if cid in comps else cid
         for key, g in props.items():
-            oa = g.get("openalex") or {}
+            oa, co = g.get("openalex") or {}, g.get("core") or {}
             # an article a script could not fetch, downloaded by a person and read: what it held replaces the passages'
             dl = g.get("downloaded")
-            if not g.get("screened") and not oa.get("screened") and g.get("held", "-") == "-" and not dl:
+            if not g.get("screened") and not oa.get("screened") and not co.get("screened") and g.get("held", "-") == "-" and not dl:
                 empty.append(f"{name} ({label.get(key, key)})")
                 continue
-            oa_cell = f"{oa.get('hits') or 0}, {oa.get('fetched', 0)}, {oa.get('screened', 0)}" if oa else "not asked"
+            cell = {"Europe PMC": f"{g.get('hits', 0)}, {g.get('screened', 0)}",
+                    "OpenAlex": f"{oa.get('hits') or 0}, {oa.get('fetched', 0)}, {oa.get('screened', 0)}" if oa else "not asked",
+                    "CORE": f"{co.get('hits') or 0}, {co.get('read', 0)}, {co.get('screened', 0)}" if co else "not asked"}
             held = f"{dl['held']} (downloaded by the maintainer and read)" if dl else g.get("held", "-")
-            L.append(f"| {name} | {label.get(key, key)} | {g.get('hits', 0)}, {g.get('screened', 0)} | {oa_cell} | {held} |")
+            L.append(f"| {name} | {label.get(key, key)} | " + " | ".join(cell[c] for c in cols) + f" | {held} |")
     if empty:
         L += ["", f"No passage with a name and the property together, in the open full texts searched ({len(empty)}): "
               + "; ".join(empty) + "."]
