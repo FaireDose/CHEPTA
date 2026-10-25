@@ -365,6 +365,8 @@ def validation_sources():
     out = []
     for f in sorted(VAL.rglob("*.json")):
         rel = f.relative_to(ROOT).as_posix()
+        if rel.startswith("validation/data/searches/"):
+            continue   # search records and sets held for the maintainer: no record cites them yet
         d = json.loads(f.read_text())
         src = d.get("source") if isinstance(d, dict) else None
         if not isinstance(src, dict):
