@@ -3651,18 +3651,6 @@
     "detail": "CoolProp Ethylene: eos Smukala-JPCRD-2000; phase supercritical_gas"
    }
   },
-  "pure/2-3-butanediol/psat/455K": {
-   "psat_kPa": {
-    "value": null,
-    "why": "No open reference equation for this component in CoolProp; NIST WebBook vapour-pressure data not transcribed for this report yet"
-   }
-  },
-  "pure/limonene/psat/450K": {
-   "psat_kPa": {
-    "value": null,
-    "why": "No open reference equation for this component in CoolProp; NIST WebBook vapour-pressure data not transcribed for this report yet"
-   }
-  },
   "pure/glycerol-carbonate/psat/455.61K": {
    "psat_kPa": {
     "value": null,

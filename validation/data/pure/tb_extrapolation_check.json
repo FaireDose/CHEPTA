@@ -1,0 +1,2257 @@
+{
+ "about": "Error of a normal boiling point taken from a vapour-pressure curve extended beyond the last measured value (validation/python/tb_extrapolation_check.py; docs/DATA_RULES.md section 3). error95_K: the 95th percentile of |Tb(fitted, extended) - Tb(CoolProp)| over 200 trials.",
+ "reference": "CoolProp 8.0.0",
+ "fluids": [
+  "Water",
+  "Methanol",
+  "Ethanol",
+  "Acetone",
+  "Benzene",
+  "Toluene",
+  "n-Hexane",
+  "n-Octane",
+  "n-Decane",
+  "n-Dodecane",
+  "Cyclohexane",
+  "EthylBenzene",
+  "m-Xylene",
+  "DimethylEther",
+  "MethylLinoleate",
+  "MethylOleate",
+  "Dichloroethane",
+  "MD2M",
+  "D4"
+ ],
+ "points_per_set": 10,
+ "pressure_span": 30.0,
+ "summary": [
+  {
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "median_K_below_Tb": 2.2,
+   "error95_K_median_fluid": 0.31,
+   "error95_K_worst_fluid": 0.55
+  },
+  {
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "median_K_below_Tb": 2.2,
+   "error95_K_median_fluid": 0.62,
+   "error95_K_worst_fluid": 0.92
+  },
+  {
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "median_K_below_Tb": 8.1,
+   "error95_K_median_fluid": 0.42,
+   "error95_K_worst_fluid": 0.77
+  },
+  {
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "median_K_below_Tb": 8.1,
+   "error95_K_median_fluid": 0.77,
+   "error95_K_worst_fluid": 1.25
+  },
+  {
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "median_K_below_Tb": 23.1,
+   "error95_K_median_fluid": 0.78,
+   "error95_K_worst_fluid": 1.63
+  },
+  {
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "median_K_below_Tb": 23.1,
+   "error95_K_median_fluid": 1.27,
+   "error95_K_worst_fluid": 2.52
+  },
+  {
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "median_K_below_Tb": 48.7,
+   "error95_K_median_fluid": 1.74,
+   "error95_K_worst_fluid": 4.24
+  },
+  {
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "median_K_below_Tb": 48.7,
+   "error95_K_median_fluid": 3.07,
+   "error95_K_worst_fluid": 6.22
+  },
+  {
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "median_K_below_Tb": 73.2,
+   "error95_K_median_fluid": 3.45,
+   "error95_K_worst_fluid": 9.14
+  },
+  {
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "median_K_below_Tb": 73.2,
+   "error95_K_median_fluid": 6.13,
+   "error95_K_worst_fluid": 13.79
+  },
+  {
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "median_K_below_Tb": 90.1,
+   "error95_K_median_fluid": 5.9,
+   "error95_K_worst_fluid": 13.63
+  },
+  {
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "median_K_below_Tb": 90.1,
+   "error95_K_median_fluid": 9.11,
+   "error95_K_worst_fluid": 24.01
+  },
+  {
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "median_K_below_Tb": 109.0,
+   "error95_K_median_fluid": 9.14,
+   "error95_K_worst_fluid": 36.72
+  },
+  {
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "median_K_below_Tb": 109.0,
+   "error95_K_median_fluid": 16.77,
+   "error95_K_worst_fluid": null
+  }
+ ],
+ "rows": [
+  {
+   "fluid": "Water",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 1.8,
+   "error95_K": 0.24,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 1.8,
+   "error95_K": 0.49,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 6.49,
+   "error95_K": 0.28,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 6.49,
+   "error95_K": 0.62,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 18.66,
+   "error95_K": 0.5,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 18.66,
+   "error95_K": 0.89,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 39.92,
+   "error95_K": 1.13,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 39.92,
+   "error95_K": 1.94,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 60.97,
+   "error95_K": 1.92,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 60.97,
+   "error95_K": 4.27,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 75.9,
+   "error95_K": 3.41,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 75.9,
+   "error95_K": 5.99,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 93.0,
+   "error95_K": 4.64,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Water",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 93.0,
+   "error95_K": 8.4,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 1.63,
+   "error95_K": 0.22,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 1.63,
+   "error95_K": 0.43,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 5.89,
+   "error95_K": 0.23,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 5.89,
+   "error95_K": 0.47,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 16.94,
+   "error95_K": 0.48,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 16.94,
+   "error95_K": 0.9,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 36.3,
+   "error95_K": 0.81,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 36.3,
+   "error95_K": 1.63,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 55.52,
+   "error95_K": 1.55,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 55.52,
+   "error95_K": 3.27,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 69.17,
+   "error95_K": 2.55,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 69.17,
+   "error95_K": 5.38,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 84.86,
+   "error95_K": 3.57,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Methanol",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 84.86,
+   "error95_K": 8.67,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 1.62,
+   "error95_K": 0.22,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 1.62,
+   "error95_K": 0.39,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 5.87,
+   "error95_K": 0.25,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 5.87,
+   "error95_K": 0.52,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 16.9,
+   "error95_K": 0.41,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 16.9,
+   "error95_K": 0.84,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 36.23,
+   "error95_K": 0.97,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 36.23,
+   "error95_K": 1.74,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 55.47,
+   "error95_K": 1.72,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 55.47,
+   "error95_K": 3.22,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 69.16,
+   "error95_K": 2.46,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 69.16,
+   "error95_K": 5.48,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 84.94,
+   "error95_K": 4.01,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Ethanol",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 84.94,
+   "error95_K": 7.98,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 1.87,
+   "error95_K": 0.23,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 1.87,
+   "error95_K": 0.51,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 6.75,
+   "error95_K": 0.28,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 6.75,
+   "error95_K": 0.66,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 19.25,
+   "error95_K": 0.64,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 19.25,
+   "error95_K": 1.22,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 40.66,
+   "error95_K": 1.32,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 40.66,
+   "error95_K": 2.12,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 61.31,
+   "error95_K": 2.95,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 61.31,
+   "error95_K": 4.95,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 75.63,
+   "error95_K": 4.37,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 75.63,
+   "error95_K": 8.15,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 91.74,
+   "error95_K": 6.53,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Acetone",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 91.74,
+   "error95_K": 12.85,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.08,
+   "error95_K": 0.28,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.08,
+   "error95_K": 0.51,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 7.48,
+   "error95_K": 0.37,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 7.48,
+   "error95_K": 0.77,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 21.31,
+   "error95_K": 0.79,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 21.31,
+   "error95_K": 1.39,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 44.81,
+   "error95_K": 1.74,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 44.81,
+   "error95_K": 3.03,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 67.32,
+   "error95_K": 3.47,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 67.32,
+   "error95_K": 5.29,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 82.82,
+   "error95_K": 6.27,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 82.82,
+   "error95_K": 9.83,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 100.16,
+   "error95_K": 36.72,
+   "trials_without_Tb": 0.01
+  },
+  {
+   "fluid": "Benzene",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 100.16,
+   "error95_K": null,
+   "trials_without_Tb": 0.15
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.25,
+   "error95_K": 0.32,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.25,
+   "error95_K": 0.64,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 8.12,
+   "error95_K": 0.42,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 8.12,
+   "error95_K": 0.78,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 23.12,
+   "error95_K": 0.77,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 23.12,
+   "error95_K": 1.22,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 48.67,
+   "error95_K": 1.85,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 48.67,
+   "error95_K": 3.07,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 73.18,
+   "error95_K": 3.45,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 73.18,
+   "error95_K": 6.63,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 90.09,
+   "error95_K": 5.84,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 90.09,
+   "error95_K": 9.11,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 109.03,
+   "error95_K": 8.76,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Toluene",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 109.03,
+   "error95_K": 16.67,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.04,
+   "error95_K": 0.28,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.04,
+   "error95_K": 0.61,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 7.33,
+   "error95_K": 0.36,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 7.33,
+   "error95_K": 0.74,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 20.88,
+   "error95_K": 0.69,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 20.88,
+   "error95_K": 1.19,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 43.9,
+   "error95_K": 1.74,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 43.9,
+   "error95_K": 3.05,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 65.93,
+   "error95_K": 3.23,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 65.93,
+   "error95_K": 6.13,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 81.09,
+   "error95_K": 4.87,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 81.09,
+   "error95_K": 9.05,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 98.04,
+   "error95_K": 8.48,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Hexane",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 98.04,
+   "error95_K": 12.98,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.31,
+   "error95_K": 0.31,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.31,
+   "error95_K": 0.65,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 8.3,
+   "error95_K": 0.43,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 8.3,
+   "error95_K": 0.8,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 23.64,
+   "error95_K": 0.92,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 23.64,
+   "error95_K": 1.26,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 49.74,
+   "error95_K": 1.65,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 49.74,
+   "error95_K": 3.31,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 74.75,
+   "error95_K": 3.5,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 74.75,
+   "error95_K": 6.37,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 91.99,
+   "error95_K": 6.65,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 91.99,
+   "error95_K": 9.49,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 111.3,
+   "error95_K": 9.14,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Octane",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 111.3,
+   "error95_K": 15.69,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.52,
+   "error95_K": 0.35,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.52,
+   "error95_K": 0.69,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 9.07,
+   "error95_K": 0.49,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 9.07,
+   "error95_K": 0.92,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 25.83,
+   "error95_K": 0.87,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 25.83,
+   "error95_K": 1.55,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 54.38,
+   "error95_K": 2.14,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 54.38,
+   "error95_K": 3.57,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 81.77,
+   "error95_K": 4.42,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 81.77,
+   "error95_K": 6.9,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 100.67,
+   "error95_K": 6.85,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 100.67,
+   "error95_K": 10.62,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 121.87,
+   "error95_K": 10.63,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Decane",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 121.87,
+   "error95_K": 22.98,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.69,
+   "error95_K": 0.4,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.69,
+   "error95_K": 0.71,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 9.69,
+   "error95_K": 0.54,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 9.69,
+   "error95_K": 0.97,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 27.62,
+   "error95_K": 1.03,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 27.62,
+   "error95_K": 1.73,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 58.18,
+   "error95_K": 2.53,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 58.18,
+   "error95_K": 3.79,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 87.52,
+   "error95_K": 5.01,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 87.52,
+   "error95_K": 8.51,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 107.77,
+   "error95_K": 8.45,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 107.77,
+   "error95_K": 15.05,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 130.49,
+   "error95_K": 13.21,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "n-Dodecane",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 130.49,
+   "error95_K": 21.02,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.13,
+   "error95_K": 0.3,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.13,
+   "error95_K": 0.57,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 7.66,
+   "error95_K": 0.39,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 7.66,
+   "error95_K": 0.75,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 21.81,
+   "error95_K": 0.78,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 21.81,
+   "error95_K": 1.26,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 45.82,
+   "error95_K": 1.58,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 45.82,
+   "error95_K": 3.09,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 68.76,
+   "error95_K": 3.22,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 68.76,
+   "error95_K": 5.35,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 84.54,
+   "error95_K": 4.94,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 84.54,
+   "error95_K": 8.29,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 102.18,
+   "error95_K": 20.85,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Cyclohexane",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 102.18,
+   "error95_K": 31.62,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.38,
+   "error95_K": 0.31,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.38,
+   "error95_K": 0.68,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 8.58,
+   "error95_K": 0.44,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 8.58,
+   "error95_K": 0.71,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 24.45,
+   "error95_K": 0.71,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 24.45,
+   "error95_K": 1.4,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 51.48,
+   "error95_K": 1.73,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 51.48,
+   "error95_K": 3.01,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 77.42,
+   "error95_K": 3.75,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 77.42,
+   "error95_K": 6.96,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 95.32,
+   "error95_K": 6.0,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 95.32,
+   "error95_K": 8.19,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 115.39,
+   "error95_K": 10.66,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "EthylBenzene",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 115.39,
+   "error95_K": 18.78,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.39,
+   "error95_K": 0.35,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.39,
+   "error95_K": 0.69,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 8.59,
+   "error95_K": 0.44,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 8.59,
+   "error95_K": 0.86,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 24.5,
+   "error95_K": 0.82,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 24.5,
+   "error95_K": 1.53,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 51.63,
+   "error95_K": 1.98,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 51.63,
+   "error95_K": 3.13,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 77.72,
+   "error95_K": 3.35,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 77.72,
+   "error95_K": 5.88,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 95.74,
+   "error95_K": 5.9,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 95.74,
+   "error95_K": 11.59,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 115.97,
+   "error95_K": 8.04,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "m-Xylene",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 115.97,
+   "error95_K": 16.77,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 1.47,
+   "error95_K": 0.2,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 1.47,
+   "error95_K": 0.39,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 5.3,
+   "error95_K": 0.24,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 5.3,
+   "error95_K": 0.49,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 15.09,
+   "error95_K": 0.54,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 15.09,
+   "error95_K": 0.75,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 31.79,
+   "error95_K": 1.04,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 31.79,
+   "error95_K": 2.0,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 47.83,
+   "error95_K": 2.14,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 47.83,
+   "error95_K": 3.69,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 58.91,
+   "error95_K": 3.07,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 58.91,
+   "error95_K": 6.33,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 71.33,
+   "error95_K": 4.97,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "DimethylEther",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 71.33,
+   "error95_K": 8.73,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 3.29,
+   "error95_K": 0.51,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 3.29,
+   "error95_K": 0.9,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 11.85,
+   "error95_K": 0.77,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 11.85,
+   "error95_K": 1.25,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 33.83,
+   "error95_K": 1.63,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 33.83,
+   "error95_K": 2.52,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 71.36,
+   "error95_K": 4.24,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 71.36,
+   "error95_K": 6.01,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 107.4,
+   "error95_K": 9.14,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 107.4,
+   "error95_K": 13.79,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 132.24,
+   "error95_K": 13.63,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 132.24,
+   "error95_K": 24.01,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 160.08,
+   "error95_K": 22.58,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylLinoleate",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 160.08,
+   "error95_K": 43.66,
+   "trials_without_Tb": 0.005
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 3.24,
+   "error95_K": 0.55,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 3.24,
+   "error95_K": 0.92,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 11.67,
+   "error95_K": 0.75,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 11.67,
+   "error95_K": 1.18,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 33.36,
+   "error95_K": 1.55,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 33.36,
+   "error95_K": 2.48,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 70.46,
+   "error95_K": 3.74,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 70.46,
+   "error95_K": 6.22,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 106.13,
+   "error95_K": 8.59,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 106.13,
+   "error95_K": 12.11,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 130.77,
+   "error95_K": 12.75,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 130.77,
+   "error95_K": 23.64,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 158.4,
+   "error95_K": 20.06,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MethylOleate",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 158.4,
+   "error95_K": 39.92,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.04,
+   "error95_K": 0.27,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.04,
+   "error95_K": 0.56,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 7.35,
+   "error95_K": 0.34,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 7.35,
+   "error95_K": 0.68,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 20.98,
+   "error95_K": 0.63,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 20.98,
+   "error95_K": 1.27,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 44.27,
+   "error95_K": 1.43,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 44.27,
+   "error95_K": 2.63,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 66.74,
+   "error95_K": 2.8,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 66.74,
+   "error95_K": 4.72,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 82.32,
+   "error95_K": 3.83,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 82.32,
+   "error95_K": 6.19,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 99.85,
+   "error95_K": 6.07,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "Dichloroethane",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 99.85,
+   "error95_K": 12.03,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.64,
+   "error95_K": 0.37,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.64,
+   "error95_K": 0.68,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 9.49,
+   "error95_K": 0.58,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 9.49,
+   "error95_K": 0.87,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 26.96,
+   "error95_K": 1.18,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 26.96,
+   "error95_K": 1.96,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 56.5,
+   "error95_K": 2.73,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 56.5,
+   "error95_K": 4.46,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 84.58,
+   "error95_K": 6.1,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 84.58,
+   "error95_K": 10.25,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 103.81,
+   "error95_K": 9.43,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 103.81,
+   "error95_K": 15.29,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 125.26,
+   "error95_K": 13.64,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "MD2M",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 125.26,
+   "error95_K": 32.11,
+   "trials_without_Tb": 0.005
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 95,
+   "scatter": 0.005,
+   "K_below_Tb": 2.52,
+   "error95_K": 0.38,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 95,
+   "scatter": 0.01,
+   "K_below_Tb": 2.52,
+   "error95_K": 0.62,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 80,
+   "scatter": 0.005,
+   "K_below_Tb": 9.07,
+   "error95_K": 0.56,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 80,
+   "scatter": 0.01,
+   "K_below_Tb": 9.07,
+   "error95_K": 0.93,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 50,
+   "scatter": 0.005,
+   "K_below_Tb": 25.78,
+   "error95_K": 1.03,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 50,
+   "scatter": 0.01,
+   "K_below_Tb": 25.78,
+   "error95_K": 1.69,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 20,
+   "scatter": 0.005,
+   "K_below_Tb": 54.09,
+   "error95_K": 2.72,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 20,
+   "scatter": 0.01,
+   "K_below_Tb": 54.09,
+   "error95_K": 4.16,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 7,
+   "scatter": 0.005,
+   "K_below_Tb": 81.03,
+   "error95_K": 4.87,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 7,
+   "scatter": 0.01,
+   "K_below_Tb": 81.03,
+   "error95_K": 9.75,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 3,
+   "scatter": 0.005,
+   "K_below_Tb": 99.51,
+   "error95_K": 8.54,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 3,
+   "scatter": 0.01,
+   "K_below_Tb": 99.51,
+   "error95_K": 12.74,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 1,
+   "scatter": 0.005,
+   "K_below_Tb": 120.15,
+   "error95_K": 12.71,
+   "trials_without_Tb": 0.0
+  },
+  {
+   "fluid": "D4",
+   "last_kPa": 1,
+   "scatter": 0.01,
+   "K_below_Tb": 120.15,
+   "error95_K": 23.84,
+   "trials_without_Tb": 0.0
+  }
+ ]
+}
