@@ -1487,7 +1487,8 @@
   "thermoml": [],
   "searched_also": [
    "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-   "The 2010 article on glycolic acid and glycolide in the Russian Journal of Physical Chemistry, doi:10.1134/S0036024410080054: paywalled, no free copy known to Unpaywall"
+   "The 2010 article on glycolic acid and glycolide in the Russian Journal of Physical Chemistry, doi:10.1134/S0036024410080054: paywalled, no free copy known to Unpaywall",
+   "Emel'yanenko, Verevkin, Stepurko, Roganov, Georgieva, Thermodynamic properties of glycolic acid and glycolide, Russ. J. Phys. Chem. A 84 (2010) 1301-1308 (doi:10.1134/S0036024410080054): paywalled, no supplement; a search report of 2026-10-27 names a crystal enthalpy of formation in a copy posted on ResearchGate, which scripts cannot open; not read in this project, so not used: held until a person opens it and the maintainer decides whether that copy counts as open"
   ]
  },
  "gvl": {
@@ -1542,7 +1543,8 @@
   "thermoml": [],
   "searched_also": [
    "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-   "Verevkin et al., Biomass-derived platform chemicals: thermodynamic studies on the conversion of 5-hydroxymethylfurfural into bulk intermediates, Ind. Eng. Chem. Res. (2009), doi:10.1021/ie901012g: paywalled, no free copy known to Unpaywall, journal not in the ThermoML Archive"
+   "Verevkin et al., Biomass-derived platform chemicals: thermodynamic studies on the conversion of 5-hydroxymethylfurfural into bulk intermediates, Ind. Eng. Chem. Res. (2009), doi:10.1021/ie901012g: paywalled, no free copy known to Unpaywall, journal not in the ThermoML Archive",
+   "Andreeva, doctoral thesis, Universitaet Rostock (2021), open in RosDok, printed page 58: ΔfH°(liq, 298.15 K) = -417.6 +- 1.4 kJ/mol for HMF, from the authors' earlier work (Verevkin et al., Ind. Eng. Chem. Res. 48 (2009) 10087, doi:10.1021/ie901012g); HMF is a crystal at 298.15 K (melting at 308.5 K), so the liquid value is left out by the rule of formation_data.py (the state at 298.15 K), and held for the maintainer: CHEPTA's own records of HMF, a nonvolatile component, take the liquid at 298.15 K as their reference (docs/decisions/2026-10-27-01-supplements.md). The supplement of the 2009 article (figshare, CC BY-NC 4.0), Table S1, gives a density and a heat capacity below the melting temperature only"
   ]
  },
  "isoamyl-alcohol": {
@@ -1750,6 +1752,76 @@
     "method": "Ccb",
     "reference": "Kulagina, Lebedev, et al., 1982",
     "comment": "Corresponding ΔfHºsolid = -791.9 kJ/mol (simple calculation by NIST; no Washburn corrections)"
+   },
+   {
+    "cas": "615-95-2",
+    "form": "DL-lactide",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C615952&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": -792.1,
+    "uncertainty": 1.7,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Kulagina, Lebedev, et al., 1980",
+    "comment": "see  Lebedev, Kulagina, et al., 1982; ALS"
+   },
+   {
+    "cas": "615-95-2",
+    "form": "DL-lactide",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C615952&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -2712.5,
+    "uncertainty": 1.7,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Kulagina, Lebedev, et al., 1980",
+    "comment": "see  Lebedev, Kulagina, et al., 1982; Corresponding ΔfHºsolid = -791.9 kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "615-95-2",
+    "form": "DL-lactide",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C615952&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 213.1,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Kulagina, Lebedev, et al., 1982",
+    "comment": "DH"
+   },
+   {
+    "cas": "615-95-2",
+    "form": "DL-lactide",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C615952&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 213.1,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Lebedev, Kulagina, et al., 1982, 2",
+    "comment": "DH"
+   },
+   {
+    "cas": "615-95-2",
+    "form": "DL-lactide",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C615952&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 213.1,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Kulagina, Lebedev, et al., 1980",
+    "comment": "DH"
    }
   ],
   "thermoml": []
@@ -1992,7 +2064,8 @@
   "thermoml": [],
   "searched_also": [
    "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-   "The alkyl lactates article in the ThermoML Archive (doi:10.1016/j.jct.2018.07.029) holds the combustion of ethyl lactate only"
+   "The alkyl lactates article in the ThermoML Archive (doi:10.1016/j.jct.2018.07.029) holds the combustion of ethyl lactate only",
+   "Supporting information of the alkyl lactates article (doi:10.1016/j.jct.2018.07.029, free on the publisher's site, mmc1.docx, read 2026-10-27), Table S3: DL-methyl lactate ΔfH°(liq, 298.15 K) = -646.5 +- 1.1 kJ/mol, 'this work'; how it was obtained is not stated in the supplement, and the article's ThermoML record holds the combustion of ethyl lactate only (the title names 'complementary experimental and computational methods'), so it may rest on a computed gas-phase value: held for the maintainer (docs/decisions/2026-10-27-01-supplements.md)"
   ]
  },
  "methyl-levulinate": {

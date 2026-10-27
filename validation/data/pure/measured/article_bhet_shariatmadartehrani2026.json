@@ -1,0 +1,19 @@
+{
+ "component": "bhet",
+ "cas": "959-26-2",
+ "about": "Melting data measured in an open-access article, read in its full text at Europe PMC (PMC13647430) and its supporting information (figshare). Table 3 of the article and Table S.8 of the supporting information give, for BHET (CAS 959-26-2, Sigma-Aldrich, grade MQ100 in Table 1, no numerical purity stated), the melting point 109.6 +- 0.5 degC (382.75 K in Table S.8) and the enthalpy of fusion 34.0 +- 1.2 kJ/mol, both measured by the authors (section 3.3: NETZSCH 204 F1 DSC at 10 K/min, sealed aluminium crucibles; the melting point is the peak temperature of the melting transition, not the onset; the enthalpy of fusion is the area under the melting peak). The QSPR and COSMO columns of the same tables are predictions and are not used; the terephthalic acid row is taken by the authors from Aspen Plus and is not used. Cross-check in the same table: DMT 146.7 degC and 31.5 kJ/mol, NIST 31.6 kJ/mol.",
+ "source": {
+  "citation": "A. Shariatmadar Tehrani, R. Goeminne, P. Cnudde, V. Van Speybroeck, K. Elst, K. Vanbroekhoven, E. Feghali, K. M. Van Geem, S. De Meester, Enhancing Solubility Predictions of Plastic Additives in Depolymerization Solvents Using Quantum Chemical Conformer Analysis and COSMO-RS, ACS Omega 11 (2026) 59039-59053",
+  "doi": "10.1021/acsomega.6c04278",
+  "open_copy": "https://europepmc.org/article/PMC/PMC13647430",
+  "access": "Open access, CC BY-NC-ND 4.0 (ACS Omega); supporting information free on figshare (https://ndownloader.figshare.com/files/69206815)",
+  "tables": "Table 3 (melting point and enthalpy of fusion, with uncertainties); supporting information Table S.8; method section 3.3"
+ },
+ "fusion": {
+  "Tm_K": 382.75,
+  "Tm_uncertainty_K": 0.5,
+  "Hfus_kJ_mol": 34.0,
+  "Hfus_uncertainty_kJ_mol": 1.2,
+  "where": "Table 3, DSC at 10 K/min; melting point: the peak temperature of the melting transition (the onset is not stated); uncertainties as printed"
+ }
+}

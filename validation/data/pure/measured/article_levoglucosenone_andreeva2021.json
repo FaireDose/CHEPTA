@@ -1,0 +1,941 @@
+{
+ "component": "levoglucosenone",
+ "cas": "37112-31-5",
+ "about": "Measured values of the free supporting information of a paywalled article (the article itself was not opened), in the format of thermoml_<id>.json (read by measured_components.ThermoML). Extracted with pdftotext from the text layer of the supporting information's PDF (ACS, deposited on figshare, CC BY-NC 4.0), Table S2, the two right-hand column pairs (levoglucosenone; the left-hand pair is dihydrolevoglucosenone), PDF page 4: 70 values at 1 K steps, 306.5-375.5 K, as printed. The caption says 'at T = 298.15 K' although the table lists a temperature series: the tabulated temperatures are used. DSC with a sapphire reference; 'the expanded uncertainty (k = 2) ... was estimated to be 0.02 Cp', used as each value's uncertainty. Pressure not stated.",
+ "source": {
+  "citation": "I. V. Andreeva, A. A. Pimerzin, V. V. Turovtsev, S. Qian, J. E. Bara, S. P. Verevkin, Commodity Chemicals and Fuels from Biomass: Thermodynamic Properties of Levoglucosan Derivatives, Ind. Eng. Chem. Res. 60 (2021) 17183-17194",
+  "doi": "10.1021/acs.iecr.1c02230",
+  "open_copy": "https://ndownloader.figshare.com/files/31383536",
+  "access": "The article is paywalled; its supplementary information, which holds the measured heat capacities, is free to read (ACS, on figshare, CC BY-NC 4.0)",
+  "tables": "Supporting information Table S2, heat capacity of liquid levoglucosenone, 306.5-375.5 K (70 values); method and uncertainty on PDF page 3"
+ },
+ "articles": {
+  "10.1021/acs.iecr.1c02230": {
+   "authors": [
+    "Andreeva, I.V.",
+    "Pimerzin, A.A.",
+    "Turovtsev, V.V.",
+    "Qian, S.",
+    "Bara, J.E.",
+    "Verevkin, S.P."
+   ],
+   "title": "Commodity Chemicals and Fuels from Biomass: Thermodynamic Properties of Levoglucosan Derivatives",
+   "journal": "Ind. Eng. Chem. Res.",
+   "year": "2021",
+   "volume": "60",
+   "pages": "17183-17194"
+  }
+ },
+ "rows": [
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 306.5,
+   "P_kPa": null,
+   "value": 205.5,
+   "uncertainty": 4.11,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 307.5,
+   "P_kPa": null,
+   "value": 205.9,
+   "uncertainty": 4.12,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 308.5,
+   "P_kPa": null,
+   "value": 206.4,
+   "uncertainty": 4.13,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 309.5,
+   "P_kPa": null,
+   "value": 207.0,
+   "uncertainty": 4.14,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 310.5,
+   "P_kPa": null,
+   "value": 207.5,
+   "uncertainty": 4.15,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 311.5,
+   "P_kPa": null,
+   "value": 208.0,
+   "uncertainty": 4.16,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 312.5,
+   "P_kPa": null,
+   "value": 208.6,
+   "uncertainty": 4.17,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 313.5,
+   "P_kPa": null,
+   "value": 209.1,
+   "uncertainty": 4.18,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 314.5,
+   "P_kPa": null,
+   "value": 209.6,
+   "uncertainty": 4.19,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 315.5,
+   "P_kPa": null,
+   "value": 210.1,
+   "uncertainty": 4.2,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 316.5,
+   "P_kPa": null,
+   "value": 210.6,
+   "uncertainty": 4.21,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 317.5,
+   "P_kPa": null,
+   "value": 211.1,
+   "uncertainty": 4.22,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 318.5,
+   "P_kPa": null,
+   "value": 211.6,
+   "uncertainty": 4.23,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 319.5,
+   "P_kPa": null,
+   "value": 212.1,
+   "uncertainty": 4.24,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 320.5,
+   "P_kPa": null,
+   "value": 212.6,
+   "uncertainty": 4.25,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 321.5,
+   "P_kPa": null,
+   "value": 213.1,
+   "uncertainty": 4.26,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 322.5,
+   "P_kPa": null,
+   "value": 213.5,
+   "uncertainty": 4.27,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 323.5,
+   "P_kPa": null,
+   "value": 214.0,
+   "uncertainty": 4.28,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 324.5,
+   "P_kPa": null,
+   "value": 214.4,
+   "uncertainty": 4.29,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 325.5,
+   "P_kPa": null,
+   "value": 214.8,
+   "uncertainty": 4.3,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 326.5,
+   "P_kPa": null,
+   "value": 215.2,
+   "uncertainty": 4.3,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 327.5,
+   "P_kPa": null,
+   "value": 215.6,
+   "uncertainty": 4.31,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 328.5,
+   "P_kPa": null,
+   "value": 216.0,
+   "uncertainty": 4.32,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 329.5,
+   "P_kPa": null,
+   "value": 216.3,
+   "uncertainty": 4.33,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 330.5,
+   "P_kPa": null,
+   "value": 216.6,
+   "uncertainty": 4.33,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 331.5,
+   "P_kPa": null,
+   "value": 216.9,
+   "uncertainty": 4.34,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 332.5,
+   "P_kPa": null,
+   "value": 217.2,
+   "uncertainty": 4.34,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 333.5,
+   "P_kPa": null,
+   "value": 217.5,
+   "uncertainty": 4.35,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 334.5,
+   "P_kPa": null,
+   "value": 217.8,
+   "uncertainty": 4.36,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 335.5,
+   "P_kPa": null,
+   "value": 218.1,
+   "uncertainty": 4.36,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 336.5,
+   "P_kPa": null,
+   "value": 218.3,
+   "uncertainty": 4.37,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 337.5,
+   "P_kPa": null,
+   "value": 218.6,
+   "uncertainty": 4.37,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 338.5,
+   "P_kPa": null,
+   "value": 218.8,
+   "uncertainty": 4.38,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 339.5,
+   "P_kPa": null,
+   "value": 219.1,
+   "uncertainty": 4.38,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 340.5,
+   "P_kPa": null,
+   "value": 219.3,
+   "uncertainty": 4.39,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 341.5,
+   "P_kPa": null,
+   "value": 219.6,
+   "uncertainty": 4.39,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 342.5,
+   "P_kPa": null,
+   "value": 219.8,
+   "uncertainty": 4.4,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 343.5,
+   "P_kPa": null,
+   "value": 220.0,
+   "uncertainty": 4.4,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 344.5,
+   "P_kPa": null,
+   "value": 220.3,
+   "uncertainty": 4.41,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 345.5,
+   "P_kPa": null,
+   "value": 220.6,
+   "uncertainty": 4.41,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 346.5,
+   "P_kPa": null,
+   "value": 220.9,
+   "uncertainty": 4.42,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 347.5,
+   "P_kPa": null,
+   "value": 221.2,
+   "uncertainty": 4.42,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 348.5,
+   "P_kPa": null,
+   "value": 221.5,
+   "uncertainty": 4.43,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 349.5,
+   "P_kPa": null,
+   "value": 221.8,
+   "uncertainty": 4.44,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 350.5,
+   "P_kPa": null,
+   "value": 222.1,
+   "uncertainty": 4.44,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 351.5,
+   "P_kPa": null,
+   "value": 222.4,
+   "uncertainty": 4.45,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 352.5,
+   "P_kPa": null,
+   "value": 222.7,
+   "uncertainty": 4.45,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 353.5,
+   "P_kPa": null,
+   "value": 223.1,
+   "uncertainty": 4.46,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 354.5,
+   "P_kPa": null,
+   "value": 223.4,
+   "uncertainty": 4.47,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 355.5,
+   "P_kPa": null,
+   "value": 223.7,
+   "uncertainty": 4.47,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 356.5,
+   "P_kPa": null,
+   "value": 224.0,
+   "uncertainty": 4.48,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 357.5,
+   "P_kPa": null,
+   "value": 224.3,
+   "uncertainty": 4.49,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 358.5,
+   "P_kPa": null,
+   "value": 224.7,
+   "uncertainty": 4.49,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 359.5,
+   "P_kPa": null,
+   "value": 225.0,
+   "uncertainty": 4.5,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 360.5,
+   "P_kPa": null,
+   "value": 225.4,
+   "uncertainty": 4.51,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 361.5,
+   "P_kPa": null,
+   "value": 225.7,
+   "uncertainty": 4.51,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 362.5,
+   "P_kPa": null,
+   "value": 226.0,
+   "uncertainty": 4.52,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 363.5,
+   "P_kPa": null,
+   "value": 226.3,
+   "uncertainty": 4.53,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 364.5,
+   "P_kPa": null,
+   "value": 226.6,
+   "uncertainty": 4.53,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 365.5,
+   "P_kPa": null,
+   "value": 226.9,
+   "uncertainty": 4.54,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 366.5,
+   "P_kPa": null,
+   "value": 227.2,
+   "uncertainty": 4.54,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 367.5,
+   "P_kPa": null,
+   "value": 227.6,
+   "uncertainty": 4.55,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 368.5,
+   "P_kPa": null,
+   "value": 227.9,
+   "uncertainty": 4.56,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 369.5,
+   "P_kPa": null,
+   "value": 228.2,
+   "uncertainty": 4.56,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 370.5,
+   "P_kPa": null,
+   "value": 228.5,
+   "uncertainty": 4.57,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 371.5,
+   "P_kPa": null,
+   "value": 228.8,
+   "uncertainty": 4.58,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 372.5,
+   "P_kPa": null,
+   "value": 229.1,
+   "uncertainty": 4.58,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 373.5,
+   "P_kPa": null,
+   "value": 229.3,
+   "uncertainty": 4.59,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 374.5,
+   "P_kPa": null,
+   "value": 229.7,
+   "uncertainty": 4.59,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 375.5,
+   "P_kPa": null,
+   "value": 230.0,
+   "uncertainty": 4.6,
+   "doi": "10.1021/acs.iecr.1c02230",
+   "set": "Table S2",
+   "binary_with": null
+  }
+ ]
+}

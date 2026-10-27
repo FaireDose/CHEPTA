@@ -32,6 +32,10 @@ Answers are cached per DOI in the cache directory.
 
     python validation/python/open_copy.py 10.1016/j.fluid.2014.06.010 10.1021/je500123x --cache DIR
     python validation/python/open_copy.py 10.1007/s10765-019-2570-9 --cache DIR --all --fetch DIR/pdf
+    python validation/python/open_copy.py 10.1016/j.fluid.2022.113523 10.1021/acs.iecr.1c02230 --cache DIR --supplements
+
+The supplementary files of a paywalled article are often free (--supplements): its numbers may then be used, with the
+kind "free supplement" (docs/DATA_RULES.md, section 1).
 """
 import argparse
 import json
@@ -215,6 +219,75 @@ def fetch_pdf(doi, cache, dest):
     return None, log
 
 
+FIGSHARE = "https://api.figshare.com/v2/articles/search"
+CROSSREF = "https://api.crossref.org/works/{doi}?mailto={email}"
+ELSEVIER_SI = "https://ars.els-cdn.com/content/image/1-s2.0-{pii}-mmc{n}.{ext}"
+
+
+def _post_json(url, body):
+    req = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST",
+                                 headers={"User-Agent": UA, "Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=60) as r:
+        return json.loads(r.read().decode("utf-8"))
+
+
+def _exists(url):
+    """True when the URL answers with a file that is not an HTML page (the first bytes only)."""
+    req = urllib.request.Request(url, headers={"User-Agent": UA, "Range": "bytes=0-1023"})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            return "html" not in (r.headers.get("Content-Type") or "") and "xml" not in (r.headers.get("Content-Type") or "")
+    except urllib.error.HTTPError:
+        return False
+
+
+def supplements(doi, cache):
+    """The supplementary files of an article, free even where the article is paywalled (the maintainer, 2026-10-27:
+    "we can have also supplements that are free from paywalled papers"): (files, notes); each file {"url", "name",
+    "licence", "host"}. Found by script for two publishers:
+
+    - ACS (10.1021/...): its supporting information is deposited on figshare, whose API finds it by the article's DOI
+      (Andreeva et al. 2021, levoglucosenone: CC BY-NC 4.0);
+    - Elsevier (10.1016/...): its files are at ars.els-cdn.com under the article's PII, which Crossref gives
+      (Nikitin et al. 2022, alpha-angelica lactone: mmc1.pdf); mmc1 to mmc4 are tried.
+
+    For the others the article page is given, for a person to open: MDPI and RSC refuse scripts (403 and moved pages,
+    2026-10-27), and Wiley, Springer and Taylor & Francis name their files on the article page only."""
+    f = _cache_file(cache, "supplements", doi)
+    if f.exists():
+        return json.loads(f.read_text())
+    files, notes = [], []
+    d = doi.strip().lower()
+    if d.startswith("10.1021/"):
+        for a in _post_json(FIGSHARE, {"resource_doi": doi, "page_size": 10}):
+            if (a.get("resource_doi") or "").lower() != d:
+                continue
+            art = get_json("https://api.figshare.com/v2/articles/%d" % a["id"]) or {}
+            for x in art.get("files", []):
+                files.append({"url": x["download_url"], "name": x["name"], "licence": (art.get("license") or {}).get("name"),
+                              "host": "figshare (ACS)"})
+        if not files:
+            notes.append("figshare has no supporting information for this DOI")
+    elif d.startswith("10.1016/"):
+        m = (get_json(CROSSREF.format(doi=urllib.parse.quote(doi), email=EMAIL)) or {}).get("message", {})
+        pii = next((x for x in m.get("alternative-id", []) if re.match(r"^S\d{4}", x)), None)
+        if not pii:
+            notes.append("Crossref gives no PII for this DOI")
+        for n in range(1, 5) if pii else []:
+            hit = next((ELSEVIER_SI.format(pii=pii, n=n, ext=e) for e in ("pdf", "docx", "xlsx", "doc", "zip")
+                        if _exists(ELSEVIER_SI.format(pii=pii, n=n, ext=e))), None)
+            if not hit:
+                break
+            files.append({"url": hit, "name": hit.rsplit("/", 1)[1], "licence": None, "host": "Elsevier"})
+        if pii and not files:
+            notes.append("no mmc file under PII %s" % pii)
+    else:
+        notes.append("no script route for this publisher: open https://doi.org/%s and look for the supplementary material" % doi)
+    f.parent.mkdir(parents=True, exist_ok=True)
+    f.write_text(json.dumps([files, notes]))
+    return files, notes
+
+
 def describe(doi, cache):
     """One line for a report: the copy, or that Unpaywall has none."""
     c = open_copy(doi, cache)
@@ -229,9 +302,18 @@ def main():
     ap.add_argument("--cache", type=Path, required=True, help="directory for the cached answers")
     ap.add_argument("--all", action="store_true", help="every copy from Unpaywall, OpenAlex and CORE, not only Unpaywall's best")
     ap.add_argument("--fetch", type=Path, help="download the first copy that is a real PDF into this directory")
+    ap.add_argument("--supplements", action="store_true", help="the article's supplementary files (free even where the "
+                    "article is paywalled): ACS on figshare, Elsevier by its PII; the article page for the others")
     a = ap.parse_args()
     for doi in a.dois:
-        if a.fetch:
+        if a.supplements:
+            files, notes = supplements(doi, a.cache)
+            print("%s: %d supplementary file%s" % (doi, len(files), "" if len(files) == 1 else "s"))
+            for x in files:
+                print("    %s (%s; %s)" % (x["url"], x["host"], x["licence"] or "no licence stated"))
+            for n in notes:
+                print("    " + n)
+        elif a.fetch:
             path, log = fetch_pdf(doi, a.cache, a.fetch)
             print("%s: %s" % (doi, path or "no PDF could be fetched"))
             for line in log:

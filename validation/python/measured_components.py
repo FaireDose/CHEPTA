@@ -988,6 +988,8 @@ class ThermoML:
         a = self.d["articles"][doi]
         first = a["authors"][0].split(",")[0]
         who = first + (" et al." if len(a["authors"]) > 2 else (" and " + a["authors"][1].split(",")[0] if len(a["authors"]) == 2 else ""))
+        if not doi.startswith("10."):  # an open thesis without a DOI: its key is not a DOI (Buchholz 2018, lactide)
+            return "%s, %s (%s)" % (who, a["journal"], a["year"])
         if not a["volume"] and not a["pages"]:  # a preprint
             return "%s, %s (%s), doi:%s" % (who, a["journal"], a["year"], doi)
         return "%s, %s %s (%s) %s, doi:%s" % (who, a["journal"], a["volume"], a["year"], a["pages"], doi)

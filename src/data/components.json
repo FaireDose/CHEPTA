@@ -46970,7 +46970,8 @@
           "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
           "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
           "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "The alkyl lactates article in the ThermoML Archive (doi:10.1016/j.jct.2018.07.029) holds the combustion of ethyl lactate only"
+          "The alkyl lactates article in the ThermoML Archive (doi:10.1016/j.jct.2018.07.029) holds the combustion of ethyl lactate only",
+          "Supporting information of the alkyl lactates article (doi:10.1016/j.jct.2018.07.029, free on the publisher's site, mmc1.docx, read 2026-10-27), Table S3: DL-methyl lactate ΔfH°(liq, 298.15 K) = -646.5 +- 1.1 kJ/mol, 'this work'; how it was obtained is not stated in the supplement, and the article's ThermoML record holds the combustion of ethyl lactate only (the title names 'complementary experimental and computational methods'), so it may rest on a computed gas-phase value: held for the maintainer (docs/decisions/2026-10-27-01-supplements.md)"
         ]
       },
       "modUnifac": {
@@ -49150,7 +49151,8 @@
           "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
           "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
           "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "Verevkin et al., Biomass-derived platform chemicals: thermodynamic studies on the conversion of 5-hydroxymethylfurfural into bulk intermediates, Ind. Eng. Chem. Res. (2009), doi:10.1021/ie901012g: paywalled, no free copy known to Unpaywall, journal not in the ThermoML Archive"
+          "Verevkin et al., Biomass-derived platform chemicals: thermodynamic studies on the conversion of 5-hydroxymethylfurfural into bulk intermediates, Ind. Eng. Chem. Res. (2009), doi:10.1021/ie901012g: paywalled, no free copy known to Unpaywall, journal not in the ThermoML Archive",
+          "Andreeva, doctoral thesis, Universitaet Rostock (2021), open in RosDok, printed page 58: ΔfH°(liq, 298.15 K) = -417.6 +- 1.4 kJ/mol for HMF, from the authors' earlier work (Verevkin et al., Ind. Eng. Chem. Res. 48 (2009) 10087, doi:10.1021/ie901012g); HMF is a crystal at 298.15 K (melting at 308.5 K), so the liquid value is left out by the rule of formation_data.py (the state at 298.15 K), and held for the maintainer: CHEPTA's own records of HMF, a nonvolatile component, take the liquid at 298.15 K as their reference (docs/decisions/2026-10-27-01-supplements.md). The supplement of the 2009 article (figshare, CC BY-NC 4.0), Table S1, gives a density and a heat capacity below the melting temperature only"
         ]
       },
       "modUnifac": {
@@ -50762,7 +50764,8 @@
           "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
           "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
           "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "The 2010 article on glycolic acid and glycolide in the Russian Journal of Physical Chemistry, doi:10.1134/S0036024410080054: paywalled, no free copy known to Unpaywall"
+          "The 2010 article on glycolic acid and glycolide in the Russian Journal of Physical Chemistry, doi:10.1134/S0036024410080054: paywalled, no free copy known to Unpaywall",
+          "Emel'yanenko, Verevkin, Stepurko, Roganov, Georgieva, Thermodynamic properties of glycolic acid and glycolide, Russ. J. Phys. Chem. A 84 (2010) 1301-1308 (doi:10.1134/S0036024410080054): paywalled, no supplement; a search report of 2026-10-27 names a crystal enthalpy of formation in a copy posted on ResearchGate, which scripts cannot open; not read in this project, so not used: held until a person opens it and the maintainer decides whether that copy counts as open"
         ]
       },
       "modUnifac": {
@@ -51336,11 +51339,20 @@
         }
       },
       "fusion": {
-        "available": false,
-        "searched": [
-          "NIST Chemistry WebBook, phase change data (https://webbook.nist.gov/cgi/cbook.cgi?ID=C959262&Units=SI&Mask=4): no phase-change data on the page",
-          "ChemSep v8.3: no value",
-          "NIST TRC ThermoML Archive: no melting data"
+        "Tm_K": 382.75,
+        "Hfus_J_mol": 34000.0,
+        "tier": "databank",
+        "source": {
+          "name": "Open-access article",
+          "reference": "A. Shariatmadar Tehrani, R. Goeminne, P. Cnudde, V. Van Speybroeck, K. Elst, K. Vanbroekhoven, E. Feghali, K. M. Van Geem, S. De Meester, Enhancing Solubility Predictions of Plastic Additives in Depolymerization Solvents Using Quantum Chemical Conformer Analysis and COSMO-RS, ACS Omega 11 (2026) 59039-59053, doi:10.1021/acsomega.6c04278",
+          "access": "Open access, CC BY-NC-ND 4.0 (ACS Omega); supporting information free on figshare (https://ndownloader.figshare.com/files/69206815)",
+          "url": "https://europepmc.org/article/PMC/PMC13647430",
+          "file": "validation/data/pure/measured/article_bhet_shariatmadartehrani2026.json",
+          "Tm_uncertainty_K": 0.5,
+          "selection": "melting temperature 382.75 +/- 0.5 K and enthalpy of fusion 34 +/- 1.2 kJ/mol, Table 3, DSC at 10 K/min; melting point: the peak temperature of the melting transition (the onset is not stated); uncertainties as printed; NIST WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C959262&Units=SI&Mask=4): no phase-change data on the page; ChemSep: no value"
+        },
+        "source_ids": [
+          "tehrani2026-article-bhet"
         ]
       },
       "formation": {
@@ -52483,12 +52495,24 @@
           ]
         },
         "liquidHeatCapacity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C591128&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"alpha-angelica lactone\", \"angelica lactone\", \"5-methylfuran-2(3H)-one\", \"2(3H)-furanone, 5-methyl-\"; 1 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 102.5077855,
+            "B": 0.2142690228
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 298.6,
+          "Tmax_K": 440.6,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured heat capacities of the liquid (an article outside the archive); stated uncertainties up to 3.0 %, above the 1 % target, used because the only alternative is a prediction",
+            "reference": "Nikitin et al., Fluid Phase Equilib. 561 (2022) 113523, doi:10.1016/j.fluid.2022.113523",
+            "access": "Nikitin 2022: The article is paywalled; its supplementary information, which holds the measured heat capacities, is free to read on the publisher's site (Elsevier); no open licence stated",
+            "fit": "285 measured values, 298.60-440.60 K, max deviation 0.49 %",
+            "stated_uncertainty_percent": 3.0
+          },
+          "source_ids": [
+            "nikitin2022-article-angelica-lactone"
           ]
         },
         "heatOfVaporization": {
@@ -52647,12 +52671,23 @@
           ]
         },
         "liquidHeatCapacity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C95965&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"lactide\", \"3,6-dimethyl-1,4-dioxane-2,5-dione\", \"1,4-dioxane-2,5-dione, 3,6-dimethyl-\"; 3 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 292.7560142
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 408.7,
+          "Tmax_K": 428.8,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured heat capacities of the liquid (an article outside the archive); stated uncertainties up to 1.1 %, above the 1 % target, used because the only alternative is a prediction",
+            "reference": "Buchholz, doctoral thesis, Otto-von-Guericke-Universitaet Magdeburg (2018)",
+            "access": "Buchholz 2018: Open thesis, free to read in the MPG.PuRe repository of the Max Planck Society",
+            "fit": "3 measured values, 408.70-428.80 K, max deviation 0.57 %",
+            "stated_uncertainty_percent": 1.1
+          },
+          "source_ids": [
+            "buchholz2018-article-lactide"
           ]
         },
         "heatOfVaporization": {
@@ -52732,17 +52767,18 @@
         "state": "solid",
         "T_K": 298.15,
         "Hf_J_mol": -792100.0,
-        "Gf_J_mol": null,
-        "values": 1,
+        "Gf_J_mol": -567186.4,
+        "values": 2,
         "spread_J_mol": 0.0,
         "tier": "databank",
         "source": {
           "name": "Measured values: NIST Chemistry WebBook (SRD 69) and the NIST TRC ThermoML Archive",
           "access": "Free to read online (WebBook, SRD 69); NIST open license (ThermoML Archive); CODATA key values, open table",
-          "reference": "ΔfH°solid -792.1 kJ/mol, Kulagina, Lebedev, et al., 1982 (WebBook)",
-          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the solid: no ΔfG°"
+          "reference": "ΔfH°solid -792.1 kJ/mol, Kulagina, Lebedev, et al., 1982 (WebBook); ΔfH°solid -792.1 kJ/mol, Kulagina, Lebedev, et al., 1980 (WebBook, DL-lactide)",
+          "selection": "median of 2 articles (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); ΔfG° from the standard entropy: S°solid 213.1 J/(mol K), Kulagina, Lebedev, et al., 1982 (WebBook, DL-lactide); S°solid 213.1 J/(mol K), Lebedev, Kulagina, et al., 1982, 2 (WebBook, DL-lactide); S°solid 213.1 J/(mol K), Kulagina, Lebedev, et al., 1980 (WebBook, DL-lactide), and the CODATA key entropies of the elements"
         },
         "source_ids": [
+          "codata-key-values",
           "nist-webbook"
         ]
       },
@@ -53490,12 +53526,24 @@
           ]
         },
         "liquidHeatCapacity": {
-          "available": false,
-          "searched": [
-            "CoolProp 8.0.0 (not a fluid)",
-            "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-            "NIST Chemistry WebBook (https://webbook.nist.gov/cgi/cbook.cgi?ID=C37112315&Units=SI&Mask=4)",
-            "NIST TRC ThermoML Archive (ThermoML-API full-text search for \"levoglucosenone\", \"6,8-dioxabicyclo[3.2.1]oct-2-en-4-one\"; 0 records opened)"
+          "equation": "DIPPR100",
+          "coefficients": {
+            "A": 104.297681,
+            "B": 0.3364033441
+          },
+          "units": "J/mol/K",
+          "Tmin_K": 306.5,
+          "Tmax_K": 375.5,
+          "tier": "fitted",
+          "source": {
+            "name": "Measured heat capacities of the liquid (an article outside the archive); stated uncertainties up to 2.0 %, above the 1 % target, used because the only alternative is a prediction",
+            "reference": "Andreeva et al., Ind. Eng. Chem. Res. 60 (2021) 17183-17194, doi:10.1021/acs.iecr.1c02230",
+            "access": "Andreeva 2021: The article is paywalled; its supplementary information, which holds the measured heat capacities, is free to read (ACS, on figshare, CC BY-NC 4.0)",
+            "fit": "70 measured values, 306.50-375.50 K, max deviation 0.93 %",
+            "stated_uncertainty_percent": 2.0
+          },
+          "source_ids": [
+            "andreeva2021-article-levoglucosenone"
           ]
         },
         "heatOfVaporization": {
@@ -53586,12 +53634,22 @@
         ]
       },
       "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -383300.0,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: open articles and theses",
+          "access": "Open thesis, free to read in RosDok, the repository of the University of Rostock",
+          "reference": "ΔfH°liquid -383.3 +- 1.5 kJ/mol, Andreeva, doctoral thesis, Universitaet Rostock (2021), Table D.1, measured in Andreeva et al., Ind. Eng. Chem. Res. 60 (2021) 17183-17194, doi:10.1021/acs.iecr.1c02230 (combustion calorimetry, ΔcH° -2835.3 +- 1.2 kJ/mol)",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°"
+        },
+        "source_ids": [
+          "andreeva2021-article-levoglucosenone-thesis",
+          "andreeva2021-article-levoglucosenone"
         ]
       },
       "modUnifac": {

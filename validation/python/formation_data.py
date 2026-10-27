@@ -75,6 +75,10 @@ OTHER_FORMS = {
     "lactic-acid": [("79-33-4", "L-lactic acid", False)],
     "malic-acid": [("97-67-6", "L-malic acid", False), ("636-61-3", "D-malic acid", False)],
     "limonene": [("5989-27-5", "(R)-(+)-limonene", False)],
+    # the WebBook's DL-lactide page holds the same crystal as the component's own page (both: ΔfH°solid -792.1 +- 1.7 kJ/mol,
+    # Lebedev et al.; DL-lactide melts at 397 K, the component's melting data 397.5 K) and adds its standard entropy
+    # (2026-10-27, from the supplement audit of 2026-10-27)
+    "lactide": [("615-95-2", "DL-lactide", True)],
 }
 # held for the maintainer: the open values disagree and nothing open decides between them
 HOLD = {
@@ -377,6 +381,17 @@ def build_measured(cid, c, m):
             continue   # the same article on the WebBook already
         vals[st][key] = (from_combustion(dcH, f), "ΔcU° %s %s at 298.15 K (%s), %s" % (r["value"], r["property"].split(",")[-1].strip(), r["method"], cite),
                          {"nist-thermoml-archive", "codata-key-values"})
+    # measured values printed in open articles and theses (validation/data/pure/formation/article_<id>_*.json; DATA_RULES
+    # section 1, "Measured values in articles"): the open source read, with the original measurement it names
+    arts = set()
+    for af in sorted((ROOT / "validation" / "data" / "pure" / "formation").glob("article_%s_*.json" % cid)):
+        a = json.loads(af.read_text())
+        for e in a["formation"]:
+            key = tuple(e["key"])
+            if key in vals[e["state"]] or e["quantity"] != "ΔfH°":
+                continue
+            vals[e["state"]][key] = (e["value"] * 1000, "ΔfH°%s %s +- %s kJ/mol, %s" % (e["state"], e["value"], e["uncertainty"], e["reference"]), set())
+            arts.add((e["state"], key, a["source"]["access"]))
     Tm = (c.get("fusion") or {}).get("Tm_K")
     stable = None if Tm is None else ("solid" if Tm > T_REF_K else "liquid")
     if stable and vals[stable]:
@@ -413,6 +428,14 @@ def build_measured(cid, c, m):
                       + ("; the values disagree by %.1f kJ/mol: the enthalpy of formation is uncertain" % ((xs[-1] - xs[0]) / 1000) if uncertain else "")
                       + ("; left out: " + "; ".join(left) if left else "")},
            "source_ids": sorted(sids)}
+    used = [x for x in arts if x[0] == state]
+    if used:
+        # an open article or thesis among the values: make_sources.py names the sources from the text
+        only = len(used) == len(xs)
+        rec["source"]["name"] = "Measured values: " + ("open articles and theses" if only else
+                                                      "NIST Chemistry WebBook (SRD 69), NIST TRC ThermoML Archive, open articles and theses")
+        rec["source"]["access"] = "; ".join(sorted({x[2] for x in used})) + ("" if only else "; " + rec["source"]["access"])
+        del rec["source_ids"]
     return rec, "%s Hf %.1f kJ/mol (%d values, spread %.1f)%s" % (state, Hf / 1000, len(xs), (xs[-1] - xs[0]) / 1000,
                                                                      "  Gf %.1f" % (Gf / 1000) if Gf is not None else "")
 
@@ -424,11 +447,12 @@ def main():
     ap.add_argument("--fetch-thermoml", metavar="ARCHIVE", help="read their combustion and entropy data from the bulk archive")
     ap.add_argument("--cache", type=Path, default=ROOT / ".cache" / "webbook", help="directory for the WebBook pages")
     ap.add_argument("--write", action="store_true")
+    ap.add_argument("--only", nargs="+", metavar="ID", help="fetch only these components (the others keep their stored values)")
     a = ap.parse_args()
     doc = json.loads(COMP_FILE.read_text())
     comps = doc["components"]
     cs = ChemSep(a.chemsep)
-    todo = [cid for cid, c in comps.items() if chemsep_record(cs, c["cas"]) is None]
+    todo = [cid for cid, c in comps.items() if chemsep_record(cs, c["cas"]) is None and (not a.only or cid in a.only)]
     measured = json.loads(MEASURED_FILE.read_text()) if MEASURED_FILE.exists() else {}
     if a.fetch:
         fetch_webbook(comps, todo, a.cache, measured)
