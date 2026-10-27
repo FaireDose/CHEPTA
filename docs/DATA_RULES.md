@@ -437,10 +437,10 @@ it against the article before it is added (AGENTS.md rule 4).
   |---|---|---|---|
   | Europe PMC | the biomedical literature and the journals deposited in PubMed Central (MDPI, ACS Omega, RSC Advances, Scientific Reports); not J. Chem. Eng. Data, J. Chem. Thermodyn., Fluid Phase Equilib. or Int. J. Thermophys. | none | its open full text (XML) |
   | OpenAlex | open-access works of all fields, the chemistry journals included; its data are CC0 | free, a daily budget of US$1 (about 1000 queries); without a key a small budget shared by everyone on the same network address | one query per gap, (names) AND (property words), open-access works only; each hit's open copy fetched as a PDF |
-  | CORE | the full texts of open repositories | free for some uses only: its terms ask software that "might be monetised now or in the future" to contact it, so it is not used until CORE answers the maintainer (asked 2026-10-22) | not yet run |
+  | CORE | the full texts of open repositories | free, under CORE's personal licence: the maintainer asked CORE (2026-10-22) and has the agreement (2026-10-23) | one full-text query per gap, (names) AND (property words); each hit's open copy fetched as a PDF |
 
 - **The keys** are network secrets of the cloud environment (the environment's settings, Network secrets): secret
-  type Bearer, allowed website `api.openalex.org` (and `api.core.ac.uk` once CORE allows it), header `Authorization`
+  type Bearer, allowed website `api.openalex.org` (one secret) and `api.core.ac.uk` (another), header `Authorization`
   with the prefix `Bearer` and the key as its value. The secret adds the header to every request to that website; the
   script never sees the key. On a computer of one's own, the variables `OPENALEX_API_KEY` and `CORE_API_KEY` do the
   same.

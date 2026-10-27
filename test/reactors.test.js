@@ -172,3 +172,34 @@ test("a reactive recycle: methanol loop with a purge balances the elements, the 
   assert.ok(meoh / 100 > 0.7, `overall conversion ${meoh / 100}`);
   assert.ok(r.blocks.R1.reaction.heat_kW < 0);
 });
+
+test("methanol from CO (CO + 2 H2): the duty as Cantera's heat of reaction; at 50 bar with PR and SRK; activity models refuse, naming the light gases", () => {
+  // the maintainer's case (2026-10-23). The gases above their critical temperatures (hydrogen, carbon monoxide) need an
+  // equation of state (docs/METHOD_SELECTION.md, step 1); an activity model is tried here on purpose, for its message
+  const CO = { id: "co", name: "Methanol from CO", stoichiometry: { "carbon-monoxide": -1, hydrogen: -2, methanol: 1 }, phase: "vapour" };
+  const comps = ["carbon-monoxide", "hydrogen", "methanol"];
+  const sys = system({ components: comps, model: "PR" });
+  for (const ref of fixtures.vapour["methanol-from-co"].cantera.filter(r => [350, 550, 700].includes(r.T_K))) {
+    const r = runUnit("conversion-reactor", { sys, inlets: { in: stream(sys, { flow_kmol_h: { "carbon-monoxide": 100, hydrogen: 200 }, T_K: ref.T_K, P_kPa: 1 }) },
+      reactions: checkReactions([CO]), spec: { reactions: [{ reaction: "co", key: "carbon-monoxide", conversion: 0.5 }], T_K: ref.T_K } });
+    assert.ok(Math.abs(r.duty_kW / (50 * ref.dH_J_mol / 3600) - 1) < 1e-4, `${ref.T_K} K: duty ${r.duty_kW} kW, Cantera ${50 * ref.dH_J_mol / 3600} kW`);
+  }
+  const doc = model => ({
+    components: comps, thermo: { model }, reactions: [CO],
+    blocks: [
+      { id: "F1", type: "feed", spec: { flow_kmol_h: { "carbon-monoxide": 100, hydrogen: 200 }, T_K: 523.15, P_kPa: 5000 } },
+      { id: "R1", type: "conversion-reactor", spec: { reactions: [{ reaction: "co", key: "carbon-monoxide", conversion: 0.5 }], T_K: 523.15 } },
+      { id: "P1", type: "product" },
+    ],
+    streams: [{ id: "S1", from: "F1.out", to: "R1.in" }, { id: "S2", from: "R1.out", to: "P1.in" }],
+  });
+  for (const model of ["PR", "SRK"]) {
+    const r = runFlowsheet(doc(model));
+    assert.ok(Math.abs(r.balance.generation_kmol_h.methanol - 50) < 1e-9);
+    assert.ok(Math.abs(r.balance.energy_kW) < 1e-6 * Math.abs(r.blocks.R1.duty_kW));
+    assert.ok(r.blocks.R1.duty_kW < 0, `${model}: the exothermic reactor is cooled`);
+  }
+  for (const model of ["MOD-UNIFAC-2", "NRTL"]) {
+    assert.throws(() => runFlowsheet(doc(model)), /Carbon monoxide, Hydrogen are gases at room temperature: .*use Peng–Robinson or SRK/);
+  }
+});
