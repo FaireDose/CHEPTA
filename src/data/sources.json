@@ -94,6 +94,7 @@
       "url": "https://rosdok.uni-rostock.de/file/rosdok_disshab_0000002577/rosdok_derivate_0000104472/Andreeva_Dissertation_2021.pdf",
       "access": "Open thesis, free to read in RosDok, the repository of the University of Rostock",
       "files": [
+        "validation/data/pure/formation/article_hmf_andreeva2021_thesis.json",
         "validation/data/pure/formation/article_levoglucosenone_andreeva2021_thesis.json"
       ]
     },

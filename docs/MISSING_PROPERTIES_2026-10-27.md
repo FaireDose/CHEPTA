@@ -21,7 +21,7 @@ Each gap is a "no open data" marker in `src/data/components.json` with the sourc
 | Vapour viscosity | 33 | - | Nothing in a calculation yet. |
 | Vapour thermal conductivity | 34 | - | Nothing in a calculation yet. |
 | Melting point and enthalpy of fusion | 31 | - | Solid solubility, crystallization, freezing checks. |
-| Enthalpy of formation | 21 | - | Heats of reaction in the reactors (proposal 0010): a component without it can only be in a conversion or yield reactor with a given duty. |
+| Enthalpy of formation | 20 | - | Heats of reaction in the reactors (proposal 0010): a component without it can only be in a conversion or yield reactor with a given duty. |
 | Gibbs energy of formation | 36 | - | Equilibrium constants from formation data (equilibrium and Gibbs reactors); heats of reaction still work with the enthalpy alone. |
 | UNIQUAC r and q | 51 | - | UNIQUAC for those components (NRTL works). |
 | Modified UNIFAC 2.0 groups | 20 | - | Prediction for those components; small gases and some rings cannot be described by the method. |
@@ -30,7 +30,7 @@ Each gap is a "no open data" marker in `src/data/components.json` with the sourc
 
 - Liquid heat capacity found for 3: alpha-Angelica lactone, Lactide, Levoglucosenone.
 - Melting point and enthalpy of fusion found for 1: Bis(2-hydroxyethyl) terephthalate.
-- Enthalpy of formation found for 1: Levoglucosenone.
+- Enthalpy of formation found for 2: 5-Hydroxymethylfurfural, Levoglucosenone.
 - Gibbs energy of formation found for 1: Lactide.
 
 ## The full-text search of 2026-10-22
@@ -217,7 +217,7 @@ No passage with a name and the property together, in the open full texts searche
 |---|---|---|
 | Terephthalic acid | liquid density, surface tension, liquid viscosity, liquid thermal conductivity, melting point and enthalpy of fusion | liquid heat capacity |
 | Lactic acid | surface tension, liquid viscosity, liquid thermal conductivity, Gibbs energy of formation | liquid heat capacity |
-| 5-Hydroxymethylfurfural | liquid density, surface tension, liquid viscosity, liquid thermal conductivity, enthalpy of formation, Gibbs energy of formation | liquid heat capacity |
+| 5-Hydroxymethylfurfural | liquid density, surface tension, liquid viscosity, liquid thermal conductivity, Gibbs energy of formation | liquid heat capacity |
 | D-Glucose | liquid density, surface tension, liquid viscosity, liquid thermal conductivity | liquid heat capacity |
 | D-Fructose | liquid density, surface tension, liquid viscosity, liquid thermal conductivity | - |
 | D-Sorbitol | liquid density, surface tension, liquid viscosity, liquid thermal conductivity, Gibbs energy of formation | liquid heat capacity |
@@ -278,11 +278,12 @@ The previous file is [MISSING_PROPERTIES_2026-10-25-2.md](MISSING_PROPERTIES_202
 2026-10-27 (another agent's, given by the maintainer) were followed up; every value was read in its source here.
 
 - **Found:** alpha-angelica lactone and levoglucosenone liquid heat capacities (free supplements of paywalled articles),
-  levoglucosenone's enthalpy of formation (Andreeva's open thesis, measured in the group's 2021 article), the lactide
+  levoglucosenone's and HMF's enthalpies of formation (Andreeva's open thesis; measured in the group's 2021 and 2009 articles), the lactide
   melt's heat capacity (Buchholz's open thesis), lactide's Gibbs energy of formation (the WebBook's DL-lactide entropy),
   BHET's melting data (an open-access article).
-- **Held for the maintainer:** HMF's liquid enthalpy of formation, -417.6 +- 1.4 kJ/mol (HMF is a crystal at 298.15 K, but
-  its records take the liquid as reference); methyl lactate's -646.5 +- 1.1 kJ/mol (a free supplement marks it "this
+- **HMF's enthalpy of formation:** the liquid, -417.6 +- 1.4 kJ/mol (Andreeva's thesis, from Verevkin et al. 2009), by
+  the maintainer's decision: HMF is a crystal at 298.15 K, but its records take the liquid as reference.
+- **Held for the maintainer:** methyl lactate's -646.5 +- 1.1 kJ/mol (a free supplement marks it "this
   work" without saying how it was obtained); glycolic acid (the value is in a copy on ResearchGate, not opened here).
 - **New tool:** `open_copy.py --supplements` (ACS on figshare, Elsevier by PII). On the seven paywalled articles named in
   the gap notes it found four supplements; their findings are above.
@@ -316,7 +317,7 @@ Zh. Prikl. Khim. 37 (1964) 2543 (named by Booth et al. 2011).
 
 **Still paywalled, carried over:** alpha-angelica lactone (critical point and heat capacity, Nikitin et al., Fluid
 Phase Equilib. 2022, doi:10.1016/j.fluid.2022.113523), levoglucosan (doi:10.1021/es302276t, doi:10.1021/je980119b),
-HMF and glycolic acid formation (doi:10.1021/ie901012g, doi:10.1134/S0036024410080054), propionic and butyric acid
+glycolic acid formation (doi:10.1134/S0036024410080054) and methyl lactate formation (doi:10.1016/j.jct.2018.07.029), propionic and butyric acid
 dimerization (Clague and Bernstein 1969). CORE was asked for them on 2026-10-25: it holds their metadata only, no
 copy (`open_copy.py` no longer counts such records as copies).
 
@@ -326,8 +327,8 @@ links, for the maintainer to download.
 **Where to start, by what it unlocks** (carried over):
 1. Vapour pressures of the seven liquids in table A.
 2. Liquid density and heat of vaporization of the same seven, then liquid heat capacity where it is predicted only.
-3. Enthalpies of formation of the green platform chemicals that reactions start from (HMF, glycolic acid, methyl
-   lactate, 2-MeTHF), and standard entropies for the measured ones without a Gibbs energy.
+3. Enthalpies of formation of the green platform chemicals that reactions start from (glycolic acid, methyl lactate,
+   2-MeTHF), and standard entropies for the measured ones without a Gibbs energy.
 4. Melting data for the acids and esters in tables C and D: crystallization of the green acids.
 5. Critical constants of table B: only for equations of state; activity models already work.
 6. Transport properties last: no calculation uses them yet.

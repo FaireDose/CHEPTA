@@ -46971,7 +46971,8 @@
           "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
           "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
           "The alkyl lactates article in the ThermoML Archive (doi:10.1016/j.jct.2018.07.029) holds the combustion of ethyl lactate only",
-          "Supporting information of the alkyl lactates article (doi:10.1016/j.jct.2018.07.029, free on the publisher's site, mmc1.docx, read 2026-10-27), Table S3: DL-methyl lactate ΔfH°(liq, 298.15 K) = -646.5 +- 1.1 kJ/mol, 'this work'; how it was obtained is not stated in the supplement, and the article's ThermoML record holds the combustion of ethyl lactate only (the title names 'complementary experimental and computational methods'), so it may rest on a computed gas-phase value: held for the maintainer (docs/decisions/2026-10-27-01-supplements.md)"
+          "Supporting information of the alkyl lactates article (doi:10.1016/j.jct.2018.07.029, free on the publisher's site, mmc1.docx, read 2026-10-27), Table S3: DL-methyl lactate ΔfH°(liq, 298.15 K) = -646.5 +- 1.1 kJ/mol, 'this work'; how it was obtained is not stated in the supplement, and the article's ThermoML record holds the combustion of ethyl lactate only (the title names 'complementary experimental and computational methods'), so it may rest on a computed gas-phase value: held for the maintainer (docs/decisions/2026-10-27-01-supplements.md)",
+          "Yamshchikova, Portnova, Krasnykh, Vapor Pressures and Enthalpies of Vaporization of Malic Acid Esters, Russ. J. Phys. Chem. A 98 (2024) 2943-2951 (doi:10.1134/S003602442470225X; paywalled, downloaded by the maintainer on 2026-10-27 and read only to check, then deleted): it cites the 2018 alkyl lactates article for vaporization enthalpies only and says nothing about the enthalpy of formation of methyl lactate; the 2018 article itself (doi:10.1016/j.jct.2018.07.029) is still needed to know how -646.5 kJ/mol was obtained"
         ]
       },
       "modUnifac": {
@@ -49145,14 +49146,21 @@
         ]
       },
       "formation": {
-        "available": false,
-        "searched": [
-          "ChemSep v8.3 and v8.31 data 2 (compound not included)",
-          "NIST Chemistry WebBook (no enthalpy of formation or combustion)",
-          "NIST TRC ThermoML Archive, bulk file ThermoML.v2020-09-30.tgz (no combustion reaction of the compound)",
-          "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found",
-          "Verevkin et al., Biomass-derived platform chemicals: thermodynamic studies on the conversion of 5-hydroxymethylfurfural into bulk intermediates, Ind. Eng. Chem. Res. (2009), doi:10.1021/ie901012g: paywalled, no free copy known to Unpaywall, journal not in the ThermoML Archive",
-          "Andreeva, doctoral thesis, Universitaet Rostock (2021), open in RosDok, printed page 58: ΔfH°(liq, 298.15 K) = -417.6 +- 1.4 kJ/mol for HMF, from the authors' earlier work (Verevkin et al., Ind. Eng. Chem. Res. 48 (2009) 10087, doi:10.1021/ie901012g); HMF is a crystal at 298.15 K (melting at 308.5 K), so the liquid value is left out by the rule of formation_data.py (the state at 298.15 K), and held for the maintainer: CHEPTA's own records of HMF, a nonvolatile component, take the liquid at 298.15 K as their reference (docs/decisions/2026-10-27-01-supplements.md). The supplement of the 2009 article (figshare, CC BY-NC 4.0), Table S1, gives a density and a heat capacity below the melting temperature only"
+        "state": "liquid",
+        "T_K": 298.15,
+        "Hf_J_mol": -417600.0,
+        "Gf_J_mol": null,
+        "values": 1,
+        "spread_J_mol": 0.0,
+        "tier": "databank",
+        "source": {
+          "name": "Measured values: open articles and theses",
+          "access": "Open thesis, free to read in RosDok, the repository of the University of Rostock",
+          "reference": "ΔfH°liquid -417.6 +- 1.4 kJ/mol, Andreeva, doctoral thesis, Universitaet Rostock (2021), printed page 58, from Verevkin et al., Ind. Eng. Chem. Res. 48 (2009) 10087-10093, doi:10.1021/ie901012g",
+          "selection": "median of 1 article (ΔfH°, or ΔcH° turned into ΔfH° with the CODATA key values of CO2 (g) and H2O (l), https://www.codata.info/resources/databases/key1.html); no open standard entropy of the liquid: no ΔfG°; the liquid, not the crystal: HMF melts at 308.5 K; its records (a nonvolatile component) take the liquid at 298.15 K as their reference state, so the liquid value is used (the maintainer, 2026-10-27)"
+        },
+        "source_ids": [
+          "andreeva2021-article-levoglucosenone-thesis"
         ]
       },
       "modUnifac": {

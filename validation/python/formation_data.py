@@ -80,6 +80,12 @@ OTHER_FORMS = {
     # (2026-10-27, from the supplement audit of 2026-10-27)
     "lactide": [("615-95-2", "DL-lactide", True)],
 }
+# a component whose records take the supercooled liquid at 298.15 K as their reference although it is a crystal there:
+# its liquid value is the one its energy balances need (the maintainer, 2026-10-27, for HMF: "ok for hmf")
+LIQUID_REFERENCE = {
+    "hmf": "HMF melts at 308.5 K; its records (a nonvolatile component) take the liquid at 298.15 K as their reference "
+           "state, so the liquid value is used (the maintainer, 2026-10-27)",
+}
 # held for the maintainer: the open values disagree and nothing open decides between them
 HOLD = {
     "xylitol": ("two crystal energies of combustion in the ThermoML Archive disagree by about 100 kJ/mol (doi:10.1016/j.tca.2007.02.022, "
@@ -394,6 +400,9 @@ def build_measured(cid, c, m):
             arts.add((e["state"], key, a["source"]["access"]))
     Tm = (c.get("fusion") or {}).get("Tm_K")
     stable = None if Tm is None else ("solid" if Tm > T_REF_K else "liquid")
+    state_note = None
+    if cid in LIQUID_REFERENCE and vals["liquid"]:
+        stable, state_note = "liquid", LIQUID_REFERENCE[cid]
     if stable and vals[stable]:
         state = stable
         other = "liquid" if stable == "solid" else "solid"
@@ -426,6 +435,7 @@ def build_measured(cid, c, m):
                       + ("; ΔfG° from the standard entropy: %s, and the CODATA key entropies of the elements" % sdesc if sdesc else
                          "; no open standard entropy of the %s: no ΔfG°" % state)
                       + ("; the values disagree by %.1f kJ/mol: the enthalpy of formation is uncertain" % ((xs[-1] - xs[0]) / 1000) if uncertain else "")
+                      + ("; the liquid, not the crystal: " + state_note if state_note else "")
                       + ("; left out: " + "; ".join(left) if left else "")},
            "source_ids": sorted(sids)}
     used = [x for x in arts if x[0] == state]

@@ -58,10 +58,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   0014 are not decided.
 - **Supplements and the two search reports of 2026-10-27** (docs/decisions/2026-10-27-01-supplements.md): check the
   added values against their sources (alpha-angelica lactone and levoglucosenone heat capacities, levoglucosenone's
-  enthalpy of formation, the lactide melt and its Gibbs energy of formation, BHET's melting data). To decide: HMF's
-  liquid enthalpy of formation (the component is a crystal at 298.15 K, but its records take the liquid as reference),
-  methyl lactate's -646.5 kJ/mol (method not stated in the free supplement), and whether a copy on ResearchGate counts
-  as open (glycolic acid).
+  enthalpy of formation, the lactide melt and its Gibbs energy of formation, BHET's melting data). HMF's liquid enthalpy of
+  formation was accepted (2026-10-27). To decide: methyl lactate's -646.5 kJ/mol (method not stated in the free
+  supplement; the article that would say, doi:10.1016/j.jct.2018.07.029, is still needed), and whether a copy on
+  ResearchGate counts as open (glycolic acid).
 - **CORE search** (docs/decisions/2026-10-25-01-core-search.md): to decide whether limonene's vapour pressures of
   Gowda 2018 (an open MEng thesis, 40.0-101.4 kPa) join the pooled curve with both narrow misses accepted (Gowda
   +1.38 % against its stated 0.88 %, Wu 2019 -2.49 % against 1.62 %), which moves the curve by about 2 % (normal

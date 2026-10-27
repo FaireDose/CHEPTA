@@ -386,7 +386,9 @@ solvents may be (HMF: its WebBook boiling temperature of 388.2 K at 0.1 kPa, whe
   - one value per article: a measured enthalpy of formation of the liquid or the crystal, or an enthalpy or energy
     of combustion turned into one with the CODATA key values of CO2 (g) and H2O (l) (open table, codata.info);
   - the state the component is in at 298.15 K (the crystal above its melting temperature, else the liquid); values of
-    the other condensed state are left out and named;
+    the other condensed state are left out and named. One exception, by the maintainer's decision (2026-10-27): HMF,
+    which melts at 308.5 K but whose records take the supercooled liquid at 298.15 K as their reference state, takes
+    its liquid value (`LIQUID_REFERENCE` in formation_data.py);
   - a liquid or gas value may come from either enantiomer or the racemate; a crystal value only from the crystal the
     component's own records refer to (a racemic and an enantiopure crystal, or two anomers, are different solids);
   - the median of the articles, with their number and spread; a spread above 10 kJ/mol is stated as "uncertain";

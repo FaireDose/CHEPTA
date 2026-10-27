@@ -113,11 +113,13 @@ test("the vapour and liquid standard states of one reaction differ by the specie
 });
 
 test("what cannot be computed is refused with the reason, and a cited K correlation takes over", () => {
-  // no open formation data (HMF): refused; with a correlation, K is the correlation's and ΔrH° unknown
-  const st = { hmf: -1, water: -2, "levulinic-acid": 1, "formic-acid": 1 };
-  const rx = checkReaction({ id: "hmf", stoichiometry: st, phase: "liquid" });
-  throwsCode(() => reactionProperties(rx, 400), "MISSING_DATA", /5-Hydroxymethylfurfural|HMF/i);
-  const withK = checkReaction({ id: "hmf", stoichiometry: st, phase: "liquid", reversible: true,
+  // no open formation data (glycolic acid): refused; with a correlation, K is the correlation's and ΔrH° unknown.
+  // (HMF was the example until its liquid enthalpy of formation was added on 2026-10-27; its rehydration now stops at
+  // levulinic acid's missing ideal-gas heat capacity instead, so another component without formation data is used)
+  const st = { "glycolic-acid": -1, formaldehyde: 1, "formic-acid": 1 };
+  const rx = checkReaction({ id: "ga", stoichiometry: st, phase: "liquid" });
+  throwsCode(() => reactionProperties(rx, 400), "MISSING_DATA", /Glycolic acid has no open enthalpy of formation/);
+  const withK = checkReaction({ id: "ga", stoichiometry: st, phase: "liquid", reversible: true,
     equilibrium: { lnK: { A: 1, B: 100, C: 0 }, T_K: [350, 450], source: "a test value, not data" } });
   const p = reactionProperties(withK, 400);
   assert.ok(Math.abs(p.lnK - (1 + 100 / 400)) < 1e-12);

@@ -51,13 +51,15 @@ Every value below was read in its source in this project. The reports were used 
   - The QSPR and COSMO columns are predictions and are not used.
   - Cross-check in the same table: DMT 31.5 kJ/mol against NIST 31.6 kJ/mol.
 
+- **HMF, enthalpy of formation** (was missing): liquid, -417.6 ± 1.4 kJ/mol at 298.15 K.
+  - Source: Andreeva's open thesis, printed p. 58, "from our previous work [104]": Verevkin et al., Ind. Eng. Chem. Res.
+    48 (2009) 10087-10093, doi:10.1021/ie901012g.
+  - HMF is a crystal at 298.15 K (it melts at 308.5 K), so the rule takes the crystal. But CHEPTA's own records of HMF,
+    a nonvolatile component, take the supercooled liquid at 298.15 K as their reference state. The maintainer chose
+    the liquid value ("ok for hmf", 2026-10-27): `LIQUID_REFERENCE` in formation_data.py, and DATA_RULES section 11.
+
 ### Held for the maintainer
 
-- **HMF, enthalpy of formation:** liquid, -417.6 ± 1.4 kJ/mol at 298.15 K.
-  - Source: Andreeva's thesis, p. 58, from Verevkin et al. 2009, doi:10.1021/ie901012g.
-  - HMF is a crystal at 298.15 K (it melts at 308.5 K), so formation_data.py leaves the liquid value out. But CHEPTA's
-    own records of HMF, a nonvolatile component, take the liquid at 298.15 K as their reference state.
-  - To decide: use the liquid value for HMF.
 - **Methyl lactate, enthalpy of formation:** liquid, -646.5 ± 1.1 kJ/mol.
   - Source: the free supplement of doi:10.1016/j.jct.2018.07.029, Table S3, marked "this work".
   - The supplement does not say how it was obtained. The same table's ethyl lactate value, -684.2 ± 2.3, matches
@@ -65,6 +67,12 @@ Every value below was read in its source in this project. The reports were used 
     holds no combustion, and the title names "complementary experimental and computational methods".
   - It may rest on a computed gas-phase value. To decide after a look at the paywalled article: the maintainer could
     download it.
+  - On 2026-10-27 the maintainer downloaded a paywalled article to check: Yamshchikova et al., Russ. J. Phys. Chem. A 98
+    (2024) 2943-2951 (doi:10.1134/S003602442470225X), on the vapour pressures of malic acid esters. It was read only to
+    check, then deleted, and none of its numbers are used. It cites the 2018 article for the vaporization enthalpies of
+    alkyl lactates only. It does not say how methyl lactate's enthalpy of formation was obtained, so the 2018 article
+    itself (doi:10.1016/j.jct.2018.07.029) is still needed. Recorded in the note of the gap
+    (validation/data/pure/formation/measured.json).
 - **Glycolic acid, enthalpy of formation:** the report's value is in a copy on ResearchGate, which scripts cannot open,
   so it was not read here.
   - To decide: whether a published version posted on ResearchGate counts as an open copy (DATA_RULES section 1 names
@@ -104,6 +112,6 @@ Every value below was read in its source in this project. The reports were used 
 
 ## Still open
 
-- The three held values above.
+- The two held values above (methyl lactate, glycolic acid).
 - The list of articles whose servers refused the scripts, with links, for the maintainer to download (next week). Run
   `--supplements` on them first, so only what has no free supplement remains.
