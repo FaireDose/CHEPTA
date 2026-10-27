@@ -258,12 +258,12 @@ Left out of surfaceTension: 313.15 K, Mejia 2019, -1.64 % (deviates most from a 
 
 ## Limonene (C10H16, CAS 138-86-3)
 
-- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 136.2340 g/mol
-- Constants: Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: not reached, the measured vapour pressures stay below 101.325 kPa; measured normal boiling temperatures in the ThermoML Archive: 450.34 K (Sun 2011).
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb 450.196 K, M 136.2340 g/mol
+- Constants: Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (450.196 K); measured normal boiling temperatures in the ThermoML Archive: 450.34 K (Sun 2011).
 
 | Property | Range (K) | Values used | Left out | Max deviation | Sources |
 |---|---|---|---|---|---|
-| Vapour pressure | 238.20-450.00 | 81 | 0 | 6.3 % | ThermoML, WebBook |
+| Vapour pressure | 238.20-450.20 | 81 | 0 | 6.3 % | ThermoML, WebBook |
 | liquidDensity | 283.15-373.15 | 31 | 1 | 0.30 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
 | liquidHeatCapacity | 160.00-400.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
@@ -280,15 +280,15 @@ Left out of liquidViscosity: 298.20 K, Goncalves 2015, -5.41 % (stated uncertain
 
 ## 2,3-Butanediol (C4H10O2, CAS 513-85-9)
 
-- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 90.1210 g/mol
-- Constants: Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: not reached, the measured vapour pressures stay below 101.325 kPa; measured normal boiling temperatures in the ThermoML Archive: 454.21 K (Wu 2007); 454.21 K (Wu 2008); 454.21 K (Wu 2008); 454.21 K (Wu 2008).
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb 455.751 K, M 90.1210 g/mol
+- Constants: Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (455.751 K); measured normal boiling temperatures in the ThermoML Archive: 454.21 K (Wu 2007); 454.21 K (Wu 2008); 454.21 K (Wu 2008); 454.21 K (Wu 2008).
 
 | Property | Range (K) | Values used | Left out | Max deviation | Sources |
 |---|---|---|---|---|---|
-| Vapour pressure | 317.00-455.00 | 9 | 0 | 0.014 % | ThermoML, WebBook |
+| Vapour pressure | 317.00-455.76 | 9 | 0 | 0.014 % | ThermoML, WebBook |
 | liquidDensity | 298.15-338.15 | 12 | 0 | 0.54 % | Measured densities of the liquid at 0.1 MPa (NIST TRC ThermoML Archive) |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | 298.15-353.15 | 12 | 9 | 0.19 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook) |
+| liquidHeatCapacity | 298.15-353.15 | 12 | 9 | 0.19 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive) |
 | heatOfVaporization | 317.00-394.45 | 25 | 0 | 0.11 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | 298.15-338.15 | 7 | 2 | 0.00013 % | Measured values (NIST TRC ThermoML Archive) |
 | vapourViscosity | — | — | — | — | no open data |
@@ -760,7 +760,7 @@ Left out of surfaceTension: 298.15 K, Bagheri 2014, +5.78 % (stated uncertainty 
 | Vapour pressure | 330.20-455.61 | 29 | 0 | 6.8 % | ThermoML, WebBook |
 | liquidDensity | — | — | — | — | no open data |
 | idealGasHeatCapacity | — | — | — | — | no open data |
-| liquidHeatCapacity | 283.15-373.15 | 10 | 0 | 0.55 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 3.1 %, above the 1 % target, used because the only alternative is a prediction |
+| liquidHeatCapacity | 283.15-373.15 | 10 | 0 | 0.55 % | Measured heat capacities of the liquid (NIST TRC ThermoML Archive); stated uncertainties up to 3.1 %, above the 1 % target, used because the only alternative is a prediction |
 | heatOfVaporization | 330.20-455.61 | 25 | 0 | 0.0001 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
 | liquidViscosity | — | — | — | — | no open data |
 | vapourViscosity | — | — | — | — | no open data |

@@ -6,7 +6,7 @@
   "liquidHeatCapacity": {
    "units": "J/mol/K",
    "source": {
-    "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 3.1 %, above the 1 % target, used because the only alternative is a prediction",
+    "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive); stated uncertainties up to 3.1 %, above the 1 % target, used because the only alternative is a prediction",
     "fit": "10 measured values, 283.15-373.15 K, max deviation 0.55 %"
    },
    "T_K": [

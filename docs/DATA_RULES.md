@@ -186,8 +186,14 @@ the record then says so.
 **The normal boiling point** is where the vapour-pressure record reaches 101.325 kPa. When the measured vapour
 pressures stop far below it, the WebBook's measured boiling temperature may complete the curve, with the maintainer's
 agreement (butyl levulinate). It is not used when it contradicts measured vapour pressures near it (tetrahydrofurfuryl
-alcohol). When the measured vapour pressures stop just short of 101.325 kPa and nothing else completes the curve, the
-component has no normal boiling point, and says why (`Tb_note`).
+alcohol). When the measured vapour pressures stop short of 101.325 kPa, the curve is extended to it only from a last
+measured value at **50 kPa or more** (the maintainer, 2026-10-25: limonene's curve stopped 0.2 K short). The record
+then covers the boiling point, says how far it was extended, and states the error that
+`validation/python/tb_extrapolation_check.py` measured for such an extension on CoolProp's reference curves of 22
+liquids (10 values over a factor of 30 in pressure, 1 % scatter, the worst liquid): from 95 kPa within 0.9 K, from
+50 kPa within 2.5 K; from 20 kPa up to 6 K, and from 7 kPa up to 14 K. Below 50 kPa the component has no normal
+boiling point, and its `Tb_note` says why and gives the extended value only as an indication (solketal, glycerol
+carbonate, levoglucosenone).
 
 **Enthalpy of vaporization.** Calorimetric values over a temperature range: fitted directly. Only one temperature or
 none: the Clapeyron equation with the vapour-pressure record, fitted together with the calorimetric values, which it

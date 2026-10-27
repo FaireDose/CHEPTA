@@ -34,7 +34,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (flowsheets included), and so do those of acids that are solid at 25 °C. Formic acid has its dimer constants (Chao and
   Zwolinski 1978) and the WebBook gas ΔfH°; propionic and acrylic acid have none open yet (their liquid values are
   12-26 kJ/mol off). No open source with the Eley–Rideal and Mars–van Krevelen forms was found.
-- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-25.md](MISSING_PROPERTIES_2026-10-25.md)):
+- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-25-2.md](MISSING_PROPERTIES_2026-10-25-2.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
 - **Missing properties, round 3** (docs/decisions/2026-10-22-07-missing-round3.md): levoglucosenone's vapour
@@ -58,8 +58,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   0014 are not decided.
 - **CORE search** (docs/decisions/2026-10-25-01-core-search.md): to decide whether limonene's vapour pressures of
   Gowda 2018 (an open MEng thesis, 40.0-101.4 kPa) join the pooled curve with both narrow misses accepted (Gowda
-  +1.38 % against its stated 0.88 %, Wu 2019 -2.49 % against 1.62 %), which gives limonene a normal boiling point of
-  450.47 K, or stay out. Download the thesis PDF (https://scholar.sun.ac.za/handle/10019.1/103666) and compare
+  +1.38 % against its stated 0.88 %, Wu 2019 -2.49 % against 1.62 %), which moves the curve by about 2 % (normal
+  boiling point 450.47 K instead of 450.20 K), or stay out. Since the rule of
+  docs/decisions/2026-10-25-02-tb-extension.md limonene has its boiling point without the thesis. For next week: the
+  list of articles whose servers refused the scripts, with their links, for the maintainer to download. Download the thesis PDF (https://scholar.sun.ac.za/handle/10019.1/103666) and compare
   Table 8.12 with validation/data/searches/held/article_limonene_gowda2018.json.
 - **Make the new name official** (decided 2026-10-09: **CHEPTA**, *Chemical Engineering Process Tools
   for Agents*). In this order:

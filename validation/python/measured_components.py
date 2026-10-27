@@ -1758,8 +1758,22 @@ def build(cid, log):
     log.append("%-17s vapourPressure            %3d values, %d left out, max dev %s %%" % (cid, len(use), len(exc), pct(m)))
     vpc = dict(coeffs)  # (coeffs is reused by the records below)
     psat = lambda T: float(ev("DIPPR101", vpc, np.array([T]))[0])  # noqa: E731
+    tb_ext = None
     if nocrit and psat(vp["Tmax_K"]) < 101325.0:
-        Tb = None  # the measured vapour pressures stay below 101.325 kPa
+        # the measured vapour pressures stay below 101.325 kPa. From a last value at 50 kPa or more the curve is
+        # extended to the normal boiling point, and says by how much (the maintainer, 2026-10-25;
+        # tb_extrapolation_check.py: within about 1-2.5 K from there, several kelvin and more below 20 kPa)
+        tb_ext = tb_extension(vp["Tmax_K"], psat)
+        Tb = tb_ext["Tb_K"] if tb_ext["extended"] else None
+        if Tb:
+            vp["Tmax_K"] = math.ceil(Tb * 100) / 100   # rounded up, so that 101.325 kPa lies inside the range
+            vp["source"] += (" Extended by %.2f K beyond the last measured value (%.2f K, %.4g kPa) to the normal boiling "
+                             "point, %.2f K: the last measured value is at 50 kPa or more (docs/DATA_RULES.md section 3); "
+                             "estimated error of that boiling point %.2g K (tb_extrapolation_check.py, CoolProp curves, 1 %% "
+                             "scatter, the worst of %d liquids)." % (
+                                 Tb - tb_ext["from_K"], tb_ext["from_K"], tb_ext["from_kPa"], Tb, tb_ext["error_K"],
+                                 tb_ext["n_fluids"]))
+            vp["extended_to_Tb"] = {k: tb_ext[k] for k in ("from_K", "from_kPa", "error_K")}
     else:
         Tb = float("%.7g" % brentq(lambda T: psat(T) - 101325.0, vp["Tmin_K"], vp["Tmax_K"] if nocrit else Tc - 1))
     omega = None if nocrit else float("%.6g" % (-math.log10(psat(0.7 * Tc) / Pc) - 1))
@@ -1966,11 +1980,50 @@ def build(cid, log):
         comp["Tb_note"] = ("the vapour-pressure record ends with the measured temperatures at %.2f K, where it gives "
                            "%.4g kPa, below 101.325 kPa: no normal boiling temperature from measured data" % (
                                vp["Tmax_K"], psat(vp["Tmax_K"]) / 1000))
+        if tb_ext and tb_ext.get("Tb_K"):
+            comp["Tb_note"] += ("; the curve is not extended from below 50 kPa (docs/DATA_RULES.md section 3). Extended "
+                                "anyway, it would reach 101.325 kPa at about %.0f K, %.0f K beyond the data, an indication "
+                                "only: %s" % (tb_ext["Tb_K"], tb_ext["Tb_K"] - tb_ext["from_K"], tb_ext["error_text"]))
     points["vapourPressure"] = vp_pts
     log.append("%-17s Tc %s, Pc %s, Tb %s, omega %s, MW %.4f" % (
         cid, "%.2f K" % Tc if Tc else "none", "%.0f Pa" % Pc if Pc else "none", "%.3f K" % Tb if Tb else "none",
         "%.4f" % omega if omega is not None else "none", meta.MW))
     return comp, points
+
+TB_CHECK = Path(__file__).resolve().parents[2] / "validation" / "data" / "pure" / "tb_extrapolation_check.json"
+
+
+def tb_extension(T_last, psat):
+    """The normal boiling point of a curve whose measured values stop below 101.325 kPa (the maintainer, 2026-10-25).
+    Extended when the last measured value is at 50 kPa or more; the error stated is that of tb_extrapolation_check.py
+    for the nearest checked last pressure at or below it (1 % scatter, the worst liquid)."""
+    p_last = psat(T_last) / 1000
+    chk = json.loads(TB_CHECK.read_text())
+    rows = [r for r in chk["summary"] if r["scatter"] == 0.01 and r["last_kPa"] <= p_last]
+    row = max(rows, key=lambda r: r["last_kPa"]) if rows else None
+    # the first crossing of 101.325 kPa within 400 K (far beyond the data a fitted curve can turn down again:
+    # levoglucosenone's, from 3.5 kPa, peaks near 700 K)
+    grid = np.arange(T_last, T_last + 400.5, 0.5)
+    up = [i for i in range(1, len(grid)) if psat(grid[i]) >= 101325.0]
+    Tb = float("%.7g" % brentq(lambda T: psat(T) - 101325.0, grid[up[0] - 1], grid[up[0]])) if up else None
+    if row is None:
+        text = "below 1 kPa the check finds errors of tens of kelvin, or no boiling point at all"
+    elif row["error95_K_worst_fluid"] is None:
+        text = ("from a last value at %d kPa the check finds errors of %.0f K for the median liquid, and for some "
+                "liquids no boiling point at all" % (row["last_kPa"], row["error95_K_median_fluid"]))
+    else:
+        text = ("from a last value at %d kPa the check finds errors of %.0f K for the median liquid and %.0f K for the "
+                "worst (tb_extrapolation_check.py)" % (row["last_kPa"], row["error95_K_median_fluid"],
+                                                        row["error95_K_worst_fluid"]))
+    far = max(r["median_K_below_Tb"] for r in chk["summary"])
+    if Tb and Tb - T_last > far:
+        text = ("that is farther than the check goes (about %.0f K, where it finds errors of tens of kelvin), and "
+                "the fitted curve turns down again above it" % far if psat(T_last + 400) < 101325.0 else
+                "that is farther than the check goes (about %.0f K, where it finds errors of tens of kelvin)" % far)
+    return {"extended": bool(Tb) and p_last >= 50.0, "Tb_K": Tb, "from_K": T_last, "from_kPa": float("%.4g" % p_last),
+            "error_K": row["error95_K_worst_fluid"] if row else None, "error_text": text,
+            "n_fluids": len(chk["fluids"])}
+
 
 def build_nonvolatile(cid, log):
     """A nonvolatile component (proposal 0009, step 5): no vapour pressure, no critical constants, no vapour

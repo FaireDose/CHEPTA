@@ -55,7 +55,7 @@
   "liquidHeatCapacity": {
    "units": "J/mol/K",
    "source": {
-    "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook)",
+    "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive)",
     "fit": "12 measured values, 298.15-353.15 K, max deviation 0.19 %"
    },
    "T_K": [
@@ -262,7 +262,7 @@
     "Stull, 1947 (Antoine equation, NIST WebBook)",
     "Stull, 1947 (Antoine equation, NIST WebBook)"
    ],
-   "Tb_K_at_101325Pa": null
+   "Tb_K_at_101325Pa": 455.7512
   }
  }
 }

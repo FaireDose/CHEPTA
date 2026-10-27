@@ -490,6 +490,13 @@
     "why": "No open reference: no measured normal boiling temperature on the component's WebBook page"
    }
   },
+  "tb/2-3-butanediol": {
+   "T_C": {
+    "value": 182.25,
+    "source": "nist-webbook",
+    "detail": "Tboil = 455.4 K, the median of 456.7 K (Aldrich Chemical Company Inc., 1990); 455.65 K (Mellan, 1962); 455.15 K (Walpole, 1911); 415.15 K (Sabatier and Mailhe, 1907) (no average on the page), https://webbook.nist.gov/cgi/cbook.cgi?ID=C513859&Units=SI&Mask=4"
+   }
+  },
   "tb/methyl-lactate": {
    "T_C": {
     "value": 143.85,
@@ -501,6 +508,13 @@
    "T_C": {
     "value": null,
     "why": "No open reference: no measured normal boiling temperature on the component's WebBook page"
+   }
+  },
+  "tb/limonene": {
+   "T_C": {
+    "value": 177.85,
+    "source": "nist-webbook",
+    "detail": "Tboil = 451. ± 4. K (Average of 13 values; Individual data points), https://webbook.nist.gov/cgi/cbook.cgi?ID=C138863&Units=SI&Mask=4"
    }
   },
   "tb/furfuryl-alcohol": {

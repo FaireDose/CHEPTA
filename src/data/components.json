@@ -46440,7 +46440,7 @@
       "MW": 90.121,
       "Tc_K": null,
       "Pc_Pa": null,
-      "Tb_K": null,
+      "Tb_K": 455.7512,
       "vapourPressure": {
         "equation": "DIPPR101",
         "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
@@ -46451,13 +46451,18 @@
         "D": 0.007329475765,
         "E": 1.0,
         "Tmin_K": 317.0,
-        "Tmax_K": 455.0,
+        "Tmax_K": 455.76,
         "tier": "fitted",
-        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Stull, 1947 (Antoine equation, NIST WebBook). 9 measured values (0 from the ThermoML Archive), 317.00-455.00 K, max deviation 0.014 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Stull, 1947 (Antoine equation, NIST WebBook) +0.00 %. Independent checks (not fitted): at the measured normal boiling temperature 454.21 K (4 articles) the record gives 96.37 kPa, -4.9 % from 101.325 kPa.",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Stull, 1947 (Antoine equation, NIST WebBook). 9 measured values (0 from the ThermoML Archive), 317.00-455.00 K, max deviation 0.014 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average; mean deviation of the fit from each set: Stull, 1947 (Antoine equation, NIST WebBook) +0.00 %. Extended by 0.75 K beyond the last measured value (455.00 K, 98.88 kPa) to the normal boiling point, 455.75 K: the last measured value is at 50 kPa or more (docs/DATA_RULES.md section 3); estimated error of that boiling point 0.92 K (tb_extrapolation_check.py, CoolProp curves, 1 % scatter, the worst of 19 liquids). Independent checks (not fitted): normal boiling temperature 455.75 K against the measured 454.21-454.21 K (4 articles, median 454.21 K).",
         "source_ids": [
           "nist-thermoml-archive",
           "nist-webbook"
-        ]
+        ],
+        "extended_to_Tb": {
+          "from_K": 455.0,
+          "from_kPa": 98.88,
+          "error_K": 0.92
+        }
       },
       "uniquac_missing": {
         "searched": [
@@ -46467,7 +46472,7 @@
         "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
       "omega": null,
-      "constants_source": "Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: not reached, the measured vapour pressures stay below 101.325 kPa; measured normal boiling temperatures in the ThermoML Archive: 454.21 K (Wu 2007); 454.21 K (Wu 2008); 454.21 K (Wu 2008); 454.21 K (Wu 2008).",
+      "constants_source": "Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (455.751 K); measured normal boiling temperatures in the ThermoML Archive: 454.21 K (Wu 2007); 454.21 K (Wu 2008); 454.21 K (Wu 2008); 454.21 K (Wu 2008).",
       "constants_source_ids": [
         "nist-webbook"
       ],
@@ -46515,9 +46520,9 @@
           "Tmax_K": 353.15,
           "tier": "fitted",
           "source": {
-            "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook)",
+            "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive)",
             "reference": "Zorebski and Goralski, J. Chem. Thermodyn. 39 (2007) 1601-1607, doi:10.1016/j.jct.2007.04.011",
-            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not; free to read (NIST SRD 69)",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
             "fit": "12 measured values, 298.15-353.15 K, max deviation 0.19 %",
             "excluded": [
               {
@@ -46586,8 +46591,7 @@
             ]
           },
           "source_ids": [
-            "nist-thermoml-archive",
-            "nist-webbook"
+            "nist-thermoml-archive"
           ]
         },
         "heatOfVaporization": {
@@ -46698,7 +46702,6 @@
           "open literature (web search, 2026-10-14)"
         ]
       },
-      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 455.00 K, where it gives 98.88 kPa, below 101.325 kPa: no normal boiling temperature from measured data",
       "fusion": {
         "available": false,
         "searched": [
@@ -47277,7 +47280,7 @@
       "MW": 136.234,
       "Tc_K": null,
       "Pc_Pa": null,
-      "Tb_K": null,
+      "Tb_K": 450.1961,
       "vapourPressure": {
         "equation": "DIPPR101",
         "form": "ln(P/Pa) = A + B/T + C ln T + D T^E",
@@ -47288,15 +47291,20 @@
         "D": 0.0,
         "E": 0.0,
         "Tmin_K": 238.2,
-        "Tmax_K": 450.0,
+        "Tmax_K": 450.2,
         "tier": "fitted",
-        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Clara et al., Fluid Phase Equilib. 293 (2010) 151-156, doi:10.1016/j.fluid.2010.03.001; Stejfa et al., J. Chem. Thermodyn. 79 (2014) 280-289, doi:10.1016/j.jct.2014.04.022; Wu et al., J. Chem. Eng. Data 64 (2019) 905-915, doi:10.1021/acs.jced.8b00672; Ngema et al., J. Chem. Eng. Data 57 (2012) 2053-2058, doi:10.1021/je300347z; Wang et al., J. Chem. Eng. Data 59 (2014) 494-498, doi:10.1021/je400951k; Clara et al., J. Chem. Eng. Data 54 (2009) 1087-1090, doi:10.1021/je8007414. 81 measured values (81 from the ThermoML Archive), 238.20-450.00 K, max deviation 6.3 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average, except a narrow miss the maintainer accepted (2026-10-14): Wu 2019 (mean deviation -1.83 %, mean stated uncertainty 1.62 %); mean deviation of the fit from each set: Clara 2009 +0.86 %; Clara 2010 +2.58 %; Ngema 2012 -0.96 %; Stejfa 2014 +0.42 %; Wang 2014 -1.48 %; Wu 2019 -1.83 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (7 values, 11-20 %); among the values stated within 10 %, the largest deviation is 3.2 %.",
+        "source": "Measured vapour pressures (NIST TRC ThermoML Archive and NIST Chemistry WebBook): Clara et al., Fluid Phase Equilib. 293 (2010) 151-156, doi:10.1016/j.fluid.2010.03.001; Stejfa et al., J. Chem. Thermodyn. 79 (2014) 280-289, doi:10.1016/j.jct.2014.04.022; Wu et al., J. Chem. Eng. Data 64 (2019) 905-915, doi:10.1021/acs.jced.8b00672; Ngema et al., J. Chem. Eng. Data 57 (2012) 2053-2058, doi:10.1021/je300347z; Wang et al., J. Chem. Eng. Data 59 (2014) 494-498, doi:10.1021/je400951k; Clara et al., J. Chem. Eng. Data 54 (2009) 1087-1090, doi:10.1021/je8007414. 81 measured values (81 from the ThermoML Archive), 238.20-450.00 K, max deviation 6.3 %. No measured critical constants: the record covers the measured temperatures only. All the measured sets fitted together, each article with the same weight (no set preferred for a smaller stated uncertainty), pooled because they agree: each set lies within its mean stated uncertainty of the curve on average, except a narrow miss the maintainer accepted (2026-10-14): Wu 2019 (mean deviation -1.83 %, mean stated uncertainty 1.62 %); mean deviation of the fit from each set: Clara 2009 +0.86 %; Clara 2010 +2.58 %; Ngema 2012 -0.96 %; Stejfa 2014 +0.42 %; Wang 2014 -1.48 %; Wu 2019 -1.83 %. The largest deviations are at values whose stated uncertainty exceeds 10 % (7 values, 11-20 %); among the values stated within 10 %, the largest deviation is 3.2 %. Extended by 0.20 K beyond the last measured value (450.00 K, 100.8 kPa) to the normal boiling point, 450.20 K: the last measured value is at 50 kPa or more (docs/DATA_RULES.md section 3); estimated error of that boiling point 0.92 K (tb_extrapolation_check.py, CoolProp curves, 1 % scatter, the worst of 19 liquids). Independent checks (not fitted): normal boiling temperature 450.20 K against the measured 450.34-450.34 K (1 articles, median 450.34 K); normal boiling temperature 450.20 K against the WebBook average of the measured values, 451 +/- 4 K.",
         "source_ids": [
           "nist-thermoml-archive",
           "nist-webbook",
           "clara2010-chloroform-mtbe",
           "wang2014-2-butanol-methanol"
-        ]
+        ],
+        "extended_to_Tb": {
+          "from_K": 450.0,
+          "from_kPa": 100.8,
+          "error_K": 0.92
+        }
       },
       "uniquac_missing": {
         "searched": [
@@ -47306,7 +47314,7 @@
         "note": "no open data: UNIQUAC r and q could be computed from UNIFAC group volumes and areas, but the licence of those group tables is the open question of roadmap A3 (proposal 0008, Part A, on hold); until it is settled the component has no UNIQUAC data (NRTL and the ideal solution work without r and q)."
       },
       "omega": null,
-      "constants_source": "Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: not reached, the measured vapour pressures stay below 101.325 kPa; measured normal boiling temperatures in the ThermoML Archive: 450.34 K (Sun 2011).",
+      "constants_source": "Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included); open literature (web search, 2026-10-14)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0009, batch 3). Tb: where the vapour-pressure record reaches 101.325 kPa (450.196 K); measured normal boiling temperatures in the ThermoML Archive: 450.34 K (Sun 2011).",
       "constants_source_ids": [
         "nist-webbook"
       ],
@@ -47507,7 +47515,6 @@
           "open literature (web search, 2026-10-14)"
         ]
       },
-      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 450.00 K, where it gives 100.8 kPa, below 101.325 kPa: no normal boiling temperature from measured data",
       "fusion": {
         "available": false,
         "searched": [
@@ -52076,15 +52083,14 @@
           "Tmax_K": 373.15,
           "tier": "fitted",
           "source": {
-            "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive and NIST Chemistry WebBook); stated uncertainties up to 3.1 %, above the 1 % target, used because the only alternative is a prediction",
+            "name": "Measured heat capacities of the liquid (NIST TRC ThermoML Archive); stated uncertainties up to 3.1 %, above the 1 % target, used because the only alternative is a prediction",
             "reference": "Chernyak and Clements, J. Chem. Eng. Data 49 (2004) 1180-1184, doi:10.1021/je034173q",
-            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not; free to read (NIST SRD 69)",
+            "access": "open data (NIST TRC ThermoML Archive), free to read even where the article is not",
             "fit": "10 measured values, 283.15-373.15 K, max deviation 0.55 %",
             "stated_uncertainty_percent": 3.14
           },
           "source_ids": [
-            "nist-thermoml-archive",
-            "nist-webbook"
+            "nist-thermoml-archive"
           ]
         },
         "heatOfVaporization": {
@@ -52165,7 +52171,7 @@
           "open literature (web search, 2026-10-20)"
         ]
       },
-      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 455.61 K, where it gives 0.8984 kPa, below 101.325 kPa: no normal boiling temperature from measured data",
+      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 455.61 K, where it gives 0.8984 kPa, below 101.325 kPa: no normal boiling temperature from measured data; the curve is not extended from below 50 kPa (docs/DATA_RULES.md section 3). Extended anyway, it would reach 101.325 kPa at about 600 K, 144 K beyond the data, an indication only: that is farther than the check goes (about 109 K, where it finds errors of tens of kelvin)",
       "fusion": {
         "available": false,
         "searched": [
@@ -52364,7 +52370,7 @@
           "open literature (web search, 2026-10-20)"
         ]
       },
-      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 373.15 K, where it gives 7.143 kPa, below 101.325 kPa: no normal boiling temperature from measured data",
+      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 373.15 K, where it gives 7.143 kPa, below 101.325 kPa: no normal boiling temperature from measured data; the curve is not extended from below 50 kPa (docs/DATA_RULES.md section 3). Extended anyway, it would reach 101.325 kPa at about 456 K, 83 K beyond the data, an indication only: from a last value at 7 kPa the check finds errors of 6 K for the median liquid and 14 K for the worst (tb_extrapolation_check.py)",
       "fusion": {
         "available": false,
         "searched": [
@@ -53570,7 +53576,7 @@
           "open literature (web search, 2026-10-20 and 2026-10-22)"
         ]
       },
-      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 403.30 K, where it gives 3.473 kPa, below 101.325 kPa: no normal boiling temperature from measured data",
+      "Tb_note": "the vapour-pressure record ends with the measured temperatures at 403.30 K, where it gives 3.473 kPa, below 101.325 kPa: no normal boiling temperature from measured data; the curve is not extended from below 50 kPa (docs/DATA_RULES.md section 3). Extended anyway, it would reach 101.325 kPa at about 629 K, 226 K beyond the data, an indication only: that is farther than the check goes (about 109 K, where it finds errors of tens of kelvin), and the fitted curve turns down again above it",
       "fusion": {
         "available": false,
         "searched": [
