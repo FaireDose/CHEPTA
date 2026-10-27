@@ -12,11 +12,14 @@
 import { unitType } from "../units/units.js";
 import "../units/reactors.js";   // the reactor blocks, registered
 
-/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, P1; reactors R1 (conversion), RY1 (yield). */
+/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, P1; reactors R1 (conversion), RE1 (equilibrium), RY1 (yield). */
 export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", compressor: "K", expander: "EX",
-  "conversion-reactor": "R", "yield-reactor": "RY", product: "P" };
-/** The reactor blocks (proposal 0010, step 3), shown in their own toolbar group. */
-export const REACTORS = ["conversion-reactor", "yield-reactor"];
+  "conversion-reactor": "R", "equilibrium-reactor": "RE", "yield-reactor": "RY", product: "P" };
+/** The reactor blocks (proposal 0010, steps 3 and 4), shown in their own toolbar group. */
+export const REACTORS = ["conversion-reactor", "equilibrium-reactor", "yield-reactor"];
+/** The reactors that use the reactions of the Reactions page; their spec.reactions lists ids or { reaction, ... }. */
+export const REACTION_USERS = ["conversion-reactor", "equilibrium-reactor"];
+const reactionIdOf = e => (typeof e === "string" ? e : e?.reaction);
 /** The block types of the palette, in order (products are automatic). */
 export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater", "hx", "valve", "pump", "compressor", "expander", ...REACTORS];
 
@@ -72,6 +75,11 @@ function defaultSpec(type, fs) {
     const r = (fs.reactions ?? [])[0];
     const key = r && Object.entries(r.stoichiometry ?? {}).find(([, v]) => v < 0)?.[0];
     return { reactions: r ? [{ reaction: r.id, ...(key ? { key } : {}) }] : [], order: "parallel" };
+  }
+  // an equilibrium reactor starts with the first reaction written, at equilibrium (no approach)
+  if (type === "equilibrium-reactor") {
+    const r = (fs.reactions ?? [])[0];
+    return { reactions: r ? [{ reaction: r.id }] : [] };
   }
   if (type === "yield-reactor") return { basis: "mass", yields: {} };
   if (type === "separator") return { fractions: Object.fromEntries(fs.components.map(c => [c, [0.5, "rest"]])) };
@@ -556,15 +564,15 @@ export function setReaction(fs, id, patch) {
   return out;
 }
 
-/** Remove a reaction; the conversion reactors that used it lose it from their list (and say so). */
+/** Remove a reaction; the conversion and equilibrium reactors that used it lose it from their list (and say so). */
 export function removeReaction(fs, id) {
   const out = clone(fs);
   out.reactions = (out.reactions ?? []).filter(r => r.id !== id);
   if (!out.reactions.length) delete out.reactions;
   const touched = [];
   for (const b of out.blocks) {
-    if (b.type === "conversion-reactor" && Array.isArray(b.spec?.reactions) && b.spec.reactions.some(e => e.reaction === id)) {
-      b.spec.reactions = b.spec.reactions.filter(e => e.reaction !== id);
+    if (REACTION_USERS.includes(b.type) && Array.isArray(b.spec?.reactions) && b.spec.reactions.some(e => reactionIdOf(e) === id)) {
+      b.spec.reactions = b.spec.reactions.filter(e => reactionIdOf(e) !== id);
       touched.push(blockName(b));
     }
   }
@@ -599,10 +607,10 @@ export function importReactions(fs, file) {
   return { fs: out, note };
 }
 
-/** The reactions a conversion reactor uses: only these are checked and solved, so a reaction still being written does not stop the flowsheet. */
+/** The reactions the reactors use: only these are checked and solved, so a reaction still being written does not stop the flowsheet. */
 export function usedReactions(fs) {
   if (!fs?.reactions) return fs;
-  const used = new Set(fs.blocks.filter(b => b.type === "conversion-reactor").flatMap(b => (b.spec?.reactions ?? []).map(e => e.reaction)));
+  const used = new Set(fs.blocks.filter(b => REACTION_USERS.includes(b.type)).flatMap(b => (b.spec?.reactions ?? []).map(reactionIdOf)));
   const reactions = fs.reactions.filter(r => used.has(r.id));
   const out = { ...fs };
   if (reactions.length) out.reactions = reactions; else delete out.reactions;

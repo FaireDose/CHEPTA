@@ -40,6 +40,7 @@ import { stream } from "../stream/stream.js";
 import { findComponent } from "../thermo/components.js";
 import { reactionHeat, formationReference, standardStateShift } from "../reactions/reaction.js";
 import { registerUnit, componentAtoms } from "./units.js";
+import { reactionEquilibrium } from "../equilibrium/reaction-equilibrium.js";
 
 const has = (spec, k) => spec?.[k] !== undefined && spec?.[k] !== null && spec?.[k] !== "";
 const num = (v, what, { min = -Infinity, max = Infinity } = {}) => {
@@ -311,5 +312,131 @@ registerUnit({
       reaction: { generation, heat_kW, converted_kmol_h: { [sys.ids[spec.key]]: converted }, keyConversion: { [sys.ids[spec.key]]: spec.conversion },
         heat: { dH_J_mol: dH, per: `mol of ${sys.names[spec.key]} converted`, from }, elementImbalance: off,
         ...(spec.closure != null ? { closure: { [sys.ids[spec.closure]]: spec.dn[spec.closure] } } : {}) } };
+  },
+});
+
+// ---------------------------------------------------------------------------------------------------------------
+// Equilibrium reactor (proposal 0010, step 4)
+
+function checkEquilibrium(spec, { sys, reactions = [] }) {
+  const who = "Equilibrium reactor";
+  const list = spec.reactions;
+  if (!Array.isArray(list) || !list.length) throw fail("BAD_INPUT", `${who}: give the reactions that reach equilibrium: { reactions: [{ reaction: "R1" }] }. The reactions themselves are written in the flowsheet's reactions list.`);
+  if (has(spec, "VF")) throw fail("BAD_INPUT", `${who}: give the outlet temperature T_K or the duty duty_kW; an outlet vapour fraction is not a specification of an equilibrium reactor.`);
+  const byId = new Map(reactions.map(r => [r.id, r]));
+  const seen = new Set();
+  const steps = list.map((e, k) => {
+    const where = `${who}, reaction ${k + 1}`;
+    const id = typeof e === "string" ? e : e?.reaction;
+    const r = byId.get(id);
+    if (!r) throw fail("BAD_INPUT", `${where}: no reaction "${id}" in the flowsheet's reactions (${[...byId.keys()].join(", ") || "none written yet"}).`);
+    if (seen.has(r.id)) throw fail("BAD_INPUT", `${where}: ${r.name} is listed twice.`);
+    seen.add(r.id);
+    for (const c of Object.keys(r.stoichiometry)) if (!sys.ids.includes(c)) throw fail("BAD_INPUT", `${where} (${r.name}): ${c} is in the reaction but not a component of this simulation (${sys.names.join(", ")}).`);
+    const a = typeof e === "object" ? e.approach : null;
+    let approach = null;
+    if (a != null && a !== "") {
+      if (typeof a !== "object" || (has(a, "dT_K") && has(a, "fraction")) || (!has(a, "dT_K") && !has(a, "fraction"))) {
+        throw fail("BAD_INPUT", `${where} (${r.name}): an approach to equilibrium is { dT_K } (K at the outlet temperature plus dT) or { fraction } (that fraction of the equilibrium extent), one of them.`);
+      }
+      approach = has(a, "dT_K") ? { dT_K: num(a.dT_K, `${where} (${r.name}): approach dT_K`) } : { fraction: num(a.fraction, `${where} (${r.name}): approach fraction`, { min: 0, max: 1 }) };
+    }
+    return { reaction: r, approach };
+  });
+  const phases = [...new Set(steps.map(s => s.reaction.phase))];
+  if (phases.length > 1) throw fail("BAD_INPUT", `${who}: its reactions must all be vapour reactions or all liquid reactions (${steps.map(s => `${s.reaction.name}: ${s.reaction.phase}`).join(", ")}). Use two reactors.`);
+  return { steps, phase: phases[0], ...outletConditions(spec, who) };
+}
+
+/** Where f changes sign, from x0 outward (steps of 25 K growing by half each time), within [lo, hi]. */
+function bracket(f, x0, lo, hi) {
+  let a = x0, fa = f(a), d = 25;
+  if (fa === 0) return [a, a, fa, fa];
+  for (let k = 0; k < 40; k++) {
+    for (const b of [a + d, a - d]) {
+      if (b < lo || b > hi) continue;
+      const fb = f(b);
+      if (Math.sign(fb) !== Math.sign(fa)) return b > a ? [a, b, fa, fb] : [b, a, fb, fa];
+    }
+    d *= 1.5;
+    if (x0 - d < lo && x0 + d > hi) break;
+  }
+  return null;
+}
+
+registerUnit({
+  type: "equilibrium-reactor", label: "Equilibrium reactor", duty: true, dutySpec: true, reactive: "elements",
+  inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out" }],
+  checkSpec: checkEquilibrium,
+  dof(spec) {
+    const list = Array.isArray(spec?.reactions) ? spec.reactions : [];
+    const missing = [], extra = [];
+    if (!list.length) missing.push("the reactions that reach equilibrium");
+    list.forEach((e, k) => { if (!(typeof e === "string" ? e : e?.reaction)) missing.push(`reaction ${k + 1}: which reaction`); });
+    const thermal = ["T_K", "duty_kW"].filter(k => has(spec, k));
+    if (!thermal.length) missing.push("the outlet temperature T_K or the duty duty_kW");
+    if (thermal.length > 1) extra.push("give T_K or duty_kW, not both");
+    if (has(spec, "VF")) extra.push("VF is not a specification of an equilibrium reactor");
+    if (has(spec, "P_kPa") && has(spec, "dP_kPa")) extra.push("P_kPa and dP_kPa: give one");
+    return { needed: 2, given: (list.length ? 1 : 0) + thermal.length + (has(spec, "VF") ? 1 : 0), missing, extra };
+  },
+  solve({ sys, inlets, spec }) {
+    const who = "Equilibrium reactor";
+    const inlet = inletOf(sys, inlets.in);
+    const fin = inlet.flows;
+    const P = spec.P_kPa ?? inlet.P_kPa - spec.dP_kPa;
+    if (!(P > 0)) throw fail("BAD_INPUT", `${who}: the pressure drop (${spec.dP_kPa} kPa) is larger than the inlet pressure (${inlet.P_kPa} kPa).`);
+    const reactions = spec.steps.map(s => s.reaction), approach = spec.steps.map(s => s.approach);
+    const heats = reactions.map(r => reactionHeat(r, { userData: sys.userData }));
+    const F = fin.reduce((a, v) => a + v, 0);
+    if (!(F > 0)) {
+      // nothing comes in yet (a recycle at its start)
+      const out = stream(sys, { flow_kmol_h: fin, T_K: spec.T_K ?? inlet.T_K ?? 298.15, P_kPa: P });
+      return { outlets: { out }, duty_kW: spec.duty_kW ?? 0, notes: [],
+        reaction: { generation: fin.map(() => 0), heat_kW: 0, extents_kmol_h: {}, keyConversion: {}, heats: {},
+          equilibrium: { T_K: out.T_K, P_kPa: P, phase: spec.phase, residual: 0, iterations: 0, reactions: {} } } };
+    }
+    let guess = null;
+    const at = T => {
+      const eq = reactionEquilibrium(sys, { reactions, feed: fin, T_K: T, P_kPa: P, approach, guess });
+      guess = eq.equilibriumExtents;
+      const heat_kW = eq.extents.reduce((s, x, r) => s + x * heats[r].dH_J_mol / 3600, 0);
+      return { eq, heat_kW };
+    };
+    let T = spec.T_K, sol;
+    if (T != null) sol = at(T);
+    else {
+      // the duty given: the outlet temperature where H_out + heat of reaction = H_in + duty
+      const f = t => { const s = at(t); return stream(sys, { flow_kmol_h: s.eq.flows, T_K: t, P_kPa: P }).H_kW + s.heat_kW - inlet.H_kW - spec.duty_kW; };
+      const br = bracket(f, inlet.T_K, 150, 2500);
+      if (!br) throw fail("NO_CONVERGENCE", `${who}: no outlet temperature from 150 to 2500 K meets the duty of ${spec.duty_kW} kW with the reactions at equilibrium. Check the duty's sign (heat added is positive), or give the outlet temperature.`);
+      let [a, b, fa, fb] = br, side = 0;
+      for (let k = 0; k < 100 && b - a > 1e-7; k++) {
+        const c = (a * fb - b * fa) / (fb - fa), fc = f(c);
+        if (Math.sign(fc) === Math.sign(fa)) { a = c; fa = fc; if (side === -1) fb /= 2; side = -1; } else { b = c; fb = fc; if (side === 1) fa /= 2; side = 1; }
+        if (Math.abs(fc) < 1e-9 * Math.max(1, Math.abs(inlet.H_kW))) { a = b = c; break; }
+      }
+      T = (a + b) / 2;
+      sol = at(T);
+    }
+    const { eq, heat_kW } = sol;
+    const flows = eq.flows;
+    const generation = flows.map((v, i) => v - fin[i]);
+    const out = stream(sys, { flow_kmol_h: flows, T_K: T, P_kPa: P });
+    const duty = spec.duty_kW ?? out.H_kW - inlet.H_kW + heat_kW;
+    const notes = [...eq.notes, ...eq.warnings];
+    for (const h of heats) for (const n of h.notes) if (!notes.includes(n)) notes.push(n);
+    const other = spec.phase === "vapour" ? (out.VF != null && out.VF < 1 - 1e-6) : (out.VF != null && out.VF > 1e-6);
+    if (other) {
+      notes.push(`The outlet at ${T.toFixed(2)} K and ${+P.toPrecision(6)} kPa is ${spec.phase === "vapour" ? "partly liquid" : "partly vapour"} (vapour fraction ${out.VF.toFixed(4)}), but the equilibrium was computed for the whole mixture as ${spec.phase}. A reactive flash (both phases at chemical and phase equilibrium) is not done: check that the reaction happens in the ${spec.phase} at these conditions.`);
+    }
+    const extents = Object.fromEntries(reactions.map((r, k) => [r.id, eq.extents[k]]));
+    const keyConversion = Object.fromEntries(sys.ids.map((id, i) => [id, fin[i] > 0 && generation[i] < 0 ? -generation[i] / fin[i] : null]).filter(([, v]) => v != null));
+    return { outlets: { out }, duty_kW: duty, notes,
+      reaction: { generation, heat_kW, extents_kmol_h: extents, keyConversion,
+        heats: Object.fromEntries(reactions.map((r, k) => [r.id, { dH_J_mol: heats[k].dH_J_mol, from: heats[k].from }])),
+        equilibrium: { T_K: T, P_kPa: P, phase: spec.phase, residual: eq.residual, iterations: eq.iterations,
+          reactions: Object.fromEntries(reactions.map((r, k) => [r.id, { lnK: eq.constants[k].lnK, K: Math.exp(eq.constants[k].lnK), T_K: eq.constants[k].T_K,
+            from: eq.constants[k].from, approach: approach[k], equilibriumExtent: eq.equilibriumExtents[k] }])) } } };
   },
 });

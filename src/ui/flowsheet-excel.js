@@ -118,6 +118,15 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
         return { r, key: comps.indexOf(e.key), cell: at(row, 2) };
       });
       I.push([]);
+    } else if (b.type === "equilibrium-reactor" && res.blocks[b.id]?.reaction?.equilibrium) {
+      // chemical equilibrium is not a spreadsheet formula: its outlet flows are values from CHEPTA, listed with K here
+      const q = res.blocks[b.id].reaction;
+      I.push([{ v: `Equilibrium reactor ${b.label || b.id}`, s: "bold" }, "(solved in CHEPTA: its outlet flows are values; change the reactions there)"]);
+      for (const [id, xi] of Object.entries(q.extents_kmol_h)) {
+        const e = q.equilibrium.reactions[id], r = reactionsById.get(id);
+        I.push([`${r?.name || id}: K at ${+e.T_K.toPrecision(6)} K`, null, val(e.K)], [`${r?.name || id}: extent, kmol/h`, null, val(xi)]);
+      }
+      I.push([]);
     } else if (["flash", "heater", "mixer"].includes(b.type) && Object.keys(spec).length) {
       I.push([{ v: `${unitType(b.type).label} ${b.label || b.id}`, s: "bold" }, concept && b.type === "flash"
         ? "(as specified in CHEPTA; in this workbook change T and P on the Flash models sheet)" : "(used by CHEPTA; change it there)"]);

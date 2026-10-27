@@ -89,3 +89,27 @@ test("reactions are exported as a file of their own and imported into another pr
   assert.throws(() => importReactions(other, { something: 1 }), /no reaction list/);
   assert.throws(() => importReactions(other, [{ id: "x" }]), /needs its stoichiometry/);
 });
+
+test("an equilibrium reactor (proposal 0010, step 4): added with the first reaction, solved in a flowsheet, and losing a removed reaction", () => {
+  let { fs } = methanol(base());
+  let id;
+  ({ fs, id } = addBlock(fs, "equilibrium-reactor"));
+  assert.equal(id, "RE1");
+  assert.deepEqual(fs.blocks.find(b => b.id === "RE1").spec, { reactions: [{ reaction: "r1" }] });
+  ({ fs } = addFeedTo(fs, `${id}.in`));
+  fs = setSpec(fs, "F1", { flow_kmol_h: { "carbon-dioxide": 100, hydrogen: 300 }, T_K: 523.15, P_kPa: 5000 });
+  fs = setSpec(fs, id, { reactions: [{ reaction: "r1", approach: { dT_K: 10 } }], T_K: 523.15 });
+  // a second reaction still being written is not checked: only the reactions the reactors use
+  fs = addReaction(fs).fs;
+  const used = usedReactions(fs);
+  assert.deepEqual(used.reactions.map(r => r.id), ["r1"]);
+  const res = runFlowsheet(used);
+  const rx = res.blocks[id].reaction;
+  assert.equal(rx.equilibrium.reactions.r1.T_K, 533.15, "K at the outlet temperature plus the approach");
+  assert.ok(rx.extents_kmol_h.r1 > 0 && rx.extents_kmol_h.r1 < 100);
+  assert.ok(Math.abs(res.balance.generation_kmol_h.methanol - rx.extents_kmol_h.r1) < 1e-9);
+  assert.ok(Math.abs(res.balance.energy_kW) < 1e-6 * Math.abs(res.blocks[id].duty_kW));
+  const r = removeReaction(fs, "r1");
+  assert.deepEqual(r.fs.blocks.find(b => b.id === "RE1").spec.reactions, []);
+  assert.match(r.note, /RE1 no longer uses it/);
+});

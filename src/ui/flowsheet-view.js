@@ -22,7 +22,7 @@ import {
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
   energyOf, energyTargets, addEnergyFeed, connectEnergy, removeEnergy, setEnergyDuty, ENERGY_TARGETS, ENERGY_SOURCES,
   placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy, ratingPatch, designPatch,
-  REACTORS, addReaction, setReaction, removeReaction, reactionsFile, importReactions, usedReactions,
+  REACTORS, REACTION_USERS, addReaction, setReaction, removeReaction, reactionsFile, importReactions, usedReactions,
 } from "./flowsheet-logic.js";
 import { checkReaction, reactionProperties } from "../reactions/reaction.js";
 import { HEAT_TRANSFER } from "../units/heat-exchange.js";
@@ -42,7 +42,7 @@ const nameOf = id => byId().get(id)?.name ?? id;
 const PAIR_MODELS = ["NRTL", "UNIQUAC", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
   hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", product: "Product",
-  "conversion-reactor": "Conversion reactor", "yield-reactor": "Yield reactor" };
+  "conversion-reactor": "Conversion reactor", "equilibrium-reactor": "Equilibrium reactor", "yield-reactor": "Yield reactor" };
 const HINT = {
   feed: "A stream entering the flowsheet: its flows and two of T, P and vapour fraction.",
   mixer: "Joins streams; adiabatic, at the lowest inlet pressure unless you set one.",
@@ -56,17 +56,18 @@ const HINT = {
   compressor: "Raises a gas's pressure along the isentropic path: the outlet pressure, the rise or the ratio, and the isentropic efficiency (75 % if not given). Its power is a work stream.",
   expander: "Lowers a gas's pressure and gives power: the outlet pressure, the drop or the ratio, and the isentropic efficiency (80 % if not given). Its power is a work stream (negative: out).",
   "conversion-reactor": "Converts a given fraction of a key reactant by each reaction of the Reactions page; then the outlet temperature, duty or vapour fraction. Its duty carries the heat of the reactions.",
+  "equilibrium-reactor": "The reactions of the Reactions page reach chemical equilibrium at the outlet temperature and pressure (K from the formation data, or the reaction's own K), all in the vapour or all in the liquid; then the outlet temperature or the duty. Its duty carries the heat of the reactions.",
   "yield-reactor": "Turns a given fraction of a key reactant into the products you give per kg (or mol) of it, for a reaction known by its products (a fermentation, a pyrolysis). The mass must close; the elements are reported.",
 };
 /** Blocks on the roadmap, shown in the toolbar but not available yet. */
 const COMING = [
-  { id: "reactor", label: "Equilibrium, CSTR, PFR", icon: "reactor", note: "proposal 0010, steps 4 to 6" },
+  { id: "reactor", label: "CSTR, PFR", icon: "reactor", note: "proposal 0010, steps 5 and 6" },
   { id: "column", label: "Distillation", icon: "column", note: "roadmap v0.5" },
   { id: "extraction", label: "Extraction", icon: "extract", note: "after liquid-liquid equilibria in the flash" },
 ];
 // a feed is drawn as the start of its stream (a tab), not as a block; its size is that point
 const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40],
-  "conversion-reactor": [44, 58], "yield-reactor": [44, 58], product: [0, 0] };
+  "conversion-reactor": [44, 58], "equilibrium-reactor": [44, 58], "yield-reactor": [44, 58], product: [0, 0] };
 // the inlet and outlet ports of a two-stream exchanger: hot above, cold below
 const PORT_DY = { hot: -11, cold: 11 };
 
@@ -423,6 +424,32 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
         used.length > 1 ? h("p", { class: "fa-in-hint" }, spec.order === "series"
           ? "In series: each reaction converts its fraction of what the reactions above it left of its key."
           : "In parallel: each reaction converts its fraction of the key's inlet flow; the conversions of one key add up (at most 1).") : null));
+    } else if (b.type === "equilibrium-reactor") {
+      // proposal 0010, step 4: each reaction checked reaches equilibrium, or an approach to it
+      const list = fs.reactions ?? [];
+      const used = (Array.isArray(spec.reactions) ? spec.reactions : []).map(e => (typeof e === "string" ? { reaction: e } : e));
+      const setList = next => setS({ reactions: next });
+      const rows = list.map(r => {
+        const k = used.findIndex(e => e.reaction === r.id), e = used[k], chk = reactionCheck(r);
+        const on = h("input", { type: "checkbox", checked: !!e, "data-fk": `fs-rxuse-${b.id}-${r.id}`, "aria-label": `Use ${r.name || r.id} in ${blockName(b)}`,
+          on: { change: ev => setList(ev.target.checked ? [...used, { reaction: r.id }] : used.filter(x => x.reaction !== r.id)) } });
+        const a = e?.approach ?? {}, mode = a.dT_K != null ? "dT" : a.fraction != null ? "fraction" : "none";
+        const setApproach = ap => setList(used.map((x, j) => (j === k ? (ap ? { reaction: x.reaction, approach: ap } : { reaction: x.reaction }) : x)));
+        return h("div", { class: "fa-rx-use" },
+          h("label", { class: "fa-rx-use-head" }, on, h("span", {}, h("b", {}, r.name || r.id), " ", h("span", { class: "fa-in-hint" }, `${equation(r)} (${r.phase === "liquid" ? "liquid" : "vapour"})`))),
+          !chk.ok && Object.keys(r.stoichiometry ?? {}).length ? warning(chk.message, { attrs: { role: "note" } }) : null,
+          e ? h("div", { class: "fa-rx-use-row" },
+            segRow("Approach to equilibrium", [["none", "Full"], ["dT", "ΔT"], ["fraction", "Fraction"]], mode,
+              m => setApproach(m === "dT" ? { dT_K: a.dT_K ?? 0 } : m === "fraction" ? { fraction: a.fraction ?? 1 } : null), `fs-rxapp-${b.id}-${r.id}`),
+            mode === "dT" ? numberField("K at T +", String(a.dT_K), t => { const v = num(t); if (v == null) return false; setApproach({ dT_K: v }); },
+              { id: `${b.id}-adt-${r.id}`, uid, unit: "K", placeholder: "0" }) : null,
+            mode === "fraction" ? numberField("Of the equilibrium extent", String(a.fraction), t => { const v = num(t); if (v == null || v < 0 || v > 1) return false; setApproach({ fraction: v }); },
+              { id: `${b.id}-afr-${r.id}`, uid, unit: "0 to 1", placeholder: "1" }) : null) : null);
+      });
+      secs.push(inputsSection("Reactions",
+        list.length ? h("div", {}, ...rows) : h("p", { class: "fa-in-hint" }, "No reaction written yet."),
+        h("button", { type: "button", class: "fa-mini", "data-fk": `fs-go-reactions-${b.id}`, on: { click: () => { f.sel = null; f.setup = "reactions"; set({}); } } },
+          icon("spark", 14), list.length ? "Write or change reactions" : "Write a reaction")));
     } else {
       const basis = spec.basis === "mole" ? "mole" : "mass", yields = spec.yields ?? {};
       const yu = basis === "mass" ? "kg/kg" : "mol/mol";
@@ -453,8 +480,10 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
             h("input", { type: "text", value: heatGiven.source ?? "", placeholder: "article, table, page", "data-fk": `fs-ysrc-${b.id}`,
               on: { change: ev => setHeat({ source: ev.target.value.trim() || null }) } }))));
     }
-    const modes = [["T_K", "T"], ["duty_kW", "Duty"], ["VF", "VF"]];
-    secs.push(inputsSection("Outlet", modeSeg(modes, ["T_K", "duty_kW", "VF"]), ...shown(modes, ["T_K", "duty_kW", "VF"]).map(fieldFor),
+    // an equilibrium reactor has no vapour-fraction specification: its equilibrium is of one phase
+    const keys = b.type === "equilibrium-reactor" ? ["T_K", "duty_kW"] : ["T_K", "duty_kW", "VF"];
+    const modes = [["T_K", "T"], ["duty_kW", "Duty"], ["VF", "VF"]].filter(([m]) => keys.includes(m));
+    secs.push(inputsSection("Outlet", modeSeg(modes, keys), ...shown(modes, keys).map(fieldFor),
       h("p", { class: "fa-in-hint" }, "Duty 0: an adiabatic reactor. The duty includes the heat of the reactions."),
       spec.P_kPa != null ? P("P_kPa", "Outlet pressure") : P("dP_kPa", "Pressure drop"),
       h("button", { type: "button", class: "fa-mini", "data-fk": `fs-pmode-${b.id}`, on: { click: () => setS(spec.P_kPa != null ? { P_kPa: null } : { dP_kPa: null, P_kPa: 101.325 }) } },
@@ -762,7 +791,7 @@ function reactionSections({ state, fs, f, set, uid, inputsSection }) {
   const secs = [intro];
   for (const r of list) {
     const chk = reactionCheck(r), coef = r.stoichiometry ?? {};
-    const users = fs.blocks.filter(b => b.type === "conversion-reactor" && (b.spec?.reactions ?? []).some(e => e.reaction === r.id)).map(blockName);
+    const users = fs.blocks.filter(b => REACTION_USERS.includes(b.type) && (b.spec?.reactions ?? []).some(e => (typeof e === "string" ? e : e.reaction) === r.id)).map(blockName);
     const nameInp = h("input", { type: "text", value: r.name ?? "", placeholder: r.id, maxlength: 60, "data-fk": `fs-rx-name-${r.id}`, "aria-label": `Name of reaction ${r.id}`,
       on: { change: ev => put(setReaction(fs, r.id, { name: ev.target.value.trim() || null })) } });
     const chips = side => Object.entries(coef).filter(([, v]) => Math.sign(v) === side).map(([c, v]) =>
@@ -934,10 +963,12 @@ function shape(type, w, hh) {
     case "compressor": return svgEl("path", { d: `M${-w / 2} ${-hh / 2} L${w / 2} ${-hh / 5} L${w / 2} ${hh / 5} L${-w / 2} ${hh / 2} Z`, class: "fs-shape" });
     case "expander": return svgEl("path", { d: `M${-w / 2} ${-hh / 5} L${w / 2} ${-hh / 2} L${w / 2} ${hh / 2} L${-w / 2} ${hh / 5} Z`, class: "fs-shape" });
     // a vessel with its agitator; the yield reactor's blades are a fan of products
-    case "conversion-reactor": case "yield-reactor": {
+    // the equilibrium reactor carries the two half-arrows of a reversible reaction
+    case "conversion-reactor": case "equilibrium-reactor": case "yield-reactor": {
       const g = svgEl("g", {});
-      g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 10, class: "fs-shape" }),
-        svgEl("path", { d: type === "conversion-reactor" ? `M0 ${-hh / 2 - 6} V8 M-9 4 L9 12 M-9 12 L9 4` : `M0 ${-hh / 2 - 6} V6 M0 6 L-10 14 M0 6 L0 16 M0 6 L10 14`, class: "fs-detail" }));
+      const d = type === "conversion-reactor" ? `M0 ${-hh / 2 - 6} V8 M-9 4 L9 12 M-9 12 L9 4`
+        : type === "equilibrium-reactor" ? "M-11 -3 H11 L6 -8 M11 4 H-11 L-6 9" : `M0 ${-hh / 2 - 6} V6 M0 6 L-10 14 M0 6 L0 16 M0 6 L10 14`;
+      g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 10, class: "fs-shape" }), svgEl("path", { d, class: "fs-detail" }));
       return g;
     }
     default: return svgEl("g", {});
@@ -1298,9 +1329,19 @@ export function flowsheetView(ctx) {
   return { data: res ? `Solved${res.loops.length ? `, ${res.loops.length} recycle${res.loops.length > 1 ? "s" : ""} in ${it} iterations` : ""}` : sol.status.message };
 }
 
-/** A conversion reactor's reactions, one line each (the table under the streams has the columns). */
+/** An approach to equilibrium in words. */
+const approachText = a => (a?.dT_K != null ? `K at T ${a.dT_K < 0 ? "−" : "+"} ${fmtShort(Math.abs(a.dT_K), 4)} K` : a?.fraction != null ? `${fmtShort(a.fraction, 4)} of the equilibrium extent` : "at equilibrium");
+
+/** A conversion or equilibrium reactor's reactions, one line each (the table under the streams has the columns). */
 function reactionList(fs, rx) {
   const byId = new Map((fs.reactions ?? []).map(r => [r.id, r]));
+  if (rx.equilibrium) {
+    return h("ul", { class: "fa-rx-list" }, ...Object.entries(rx.extents_kmol_h).map(([id, xi]) => {
+      const q = rx.equilibrium.reactions[id];
+      return h("li", {}, h("b", {}, byId.get(id)?.name || id),
+        `: extent ${fmtShort(xi, 5)} kmol/h (${approachText(q.approach)}), K = ${fmtShort(q.K, 5)} at ${fmtShort(q.T_K, 6)} K (${q.from}), ΔrH ${fmtShort(rx.heats[id].dH_J_mol / 1000, 5)} kJ/mol`);
+    }));
+  }
   return h("ul", { class: "fa-rx-list" }, ...Object.entries(rx.extents_kmol_h).map(([id, xi]) => h("li", {},
     h("b", {}, byId.get(id)?.name || id), `: ${fmtShort(rx.conversions[id]?.conversion, 4)} of ${nameOf(rx.conversions[id]?.key)}, extent ${fmtShort(xi, 5)} kmol/h, ΔrH ${fmtShort(rx.heats[id].dH_J_mol / 1000, 5)} kJ/mol`)));
 }
@@ -1434,6 +1475,8 @@ function reactorRows(fs, res) {
   const byId = new Map((fs.reactions ?? []).map(r => [r.id, r]));
   const rows = rx.flatMap(b => {
     const r = res.blocks[b.id].reaction;
+    // an equilibrium reactor has no key: its "key" column says the approach, the conversion column stays empty
+    if (r.equilibrium) return Object.entries(r.extents_kmol_h).map(([id, xi]) => [blockName(b), byId.get(id)?.name || id, approachText(r.equilibrium.reactions[id].approach), "–", xi, r.heats[id].dH_J_mol / 1000, xi * r.heats[id].dH_J_mol / 3600]);
     if (r.extents_kmol_h) return Object.entries(r.extents_kmol_h).map(([id, xi]) => [blockName(b), byId.get(id)?.name || id, nameOf(r.conversions[id].key), r.conversions[id].conversion, xi, r.heats[id].dH_J_mol / 1000, xi * r.heats[id].dH_J_mol / 3600]);
     const [key, X] = Object.entries(r.keyConversion)[0];
     return [[blockName(b), "yields", nameOf(key), X, r.converted_kmol_h[key], r.heat.dH_J_mol / 1000, r.heat_kW]];

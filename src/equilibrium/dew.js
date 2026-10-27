@@ -83,7 +83,8 @@ function dewPIter(sys, y, T, x0) {
       xn = normalize(x.map((v, i) => Math.exp((1 - step) * Math.log(v) + step * Math.log(Math.max(target[i], 1e-300)))));
       en = sys.equilibrium(xn, T);
       errn = maxDiff(en.y, y);
-      if (Number.isFinite(errn) && (errn < err || step < 1 / 64)) break;
+      // stop at the smallest step even when the error stays non-finite (a vapour pressure that overflows)
+      if (step < 1 / 64 || (Number.isFinite(errn) && errn < err)) break;
       step /= 2;
     }
     if (!Number.isFinite(errn)) return { converged: false, x };

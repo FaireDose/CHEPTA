@@ -142,3 +142,26 @@ test("a conversion reactor: its outlet flows are formulas of the conversions (in
     assert.ok(Math.abs(q[2].v - res.blocks.R1.duty_kW) < 1e-9);
   }
 });
+
+test("an equilibrium reactor: its outlet flows are values from CHEPTA, its K and extents listed on the Inputs sheet", () => {
+  // Peng-Robinson, as for the conversion reactor above (gases above their critical temperatures)
+  const fs = normalizeFlowsheet({
+    components: ["carbon-dioxide", "hydrogen", "methanol", "water"], thermo: { model: "PR" },
+    reactions: [{ id: "meoh", name: "Methanol", stoichiometry: { "carbon-dioxide": -1, hydrogen: -3, methanol: 1, water: 1 }, phase: "vapour" }],
+    blocks: [
+      { id: "F1", type: "feed", spec: { flow_kmol_h: { "carbon-dioxide": 100, hydrogen: 300 }, T_K: 523.15, P_kPa: 5000 } },
+      { id: "RE1", type: "equilibrium-reactor", spec: { reactions: ["meoh"], T_K: 523.15 } },
+      { id: "P1", type: "product" },
+    ],
+    streams: [{ id: "S1", from: "F1.out", to: "RE1.in" }, { id: "S2", from: "RE1.out", to: "P1.in" }],
+  });
+  const res = runFlowsheet(fs);
+  const byName = Object.fromEntries(flowsheetSheets(fs, res).sheets.map(s => [s.name, s.rows]));
+  const streams = byName.Streams, col = streams[0].map(c => c?.v ?? c).indexOf("S2");
+  res.streams.S2.flows.forEach((v, i) => {
+    const cell = streams[6 + i][col];
+    assert.ok(!cell.f && Math.abs(cell.v - v) < 1e-12, `component ${i}: a value`);
+  });
+  const k = byName.Inputs.find(r => /^Methanol: K at 523\.15 K$/.test(r?.[0] ?? ""));
+  assert.ok(Math.abs(k[2].v - res.blocks.RE1.reaction.equilibrium.reactions.meoh.K) < 1e-12);
+});

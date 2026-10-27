@@ -28,7 +28,9 @@ Read on 2026-10-09:
      2026-10-23). An activity model cannot hold the gases: Modified UNIFAC 2.0 has no groups for H₂ or CO, NRTL and
      UNIQUAC no pairs, and an activity model with a cubic vapour (γ-φ) needs every liquid component below its critical
      temperature, as H₂ (33 K) and CO (133 K) are not (dissolved gases need Henry's law, which CHEPTA has for six gases
-     in water only). CHEPTA refuses them with that remedy. The polar liquid alone (the methanol–water column) is where
+     in water only). CHEPTA refuses them with that remedy; the "ideal" model (Raoult's law) too, where the gas's
+     vapour-pressure curve, extrapolated far above its critical temperature, has no finite value (hydrogen above about
+     150 K). The polar liquid alone (the methanol–water column) is where
      an activity model is more accurate; PSRK, which puts UNIFAC with gas groups inside an equation of state, would do
      both and is not in CHEPTA yet (step 4).
 3. **Polar, no electrolytes, below 10 bar, with interaction parameters:**
