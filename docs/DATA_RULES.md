@@ -58,6 +58,9 @@ To fill one, do these steps in order and stop when the number is found:
    articles" below says.
 4. **A free copy of every useful article that is behind a paywall**, and of the original measurement an open article
    names: `open_copy.py --all` (section 13). Where a server refuses scripts, ask the person to download the file.
+   **And its supplement**: the supplementary information of a paywalled article is often free, and often holds the
+   measured tables (the maintainer, 2026-10-27): `open_copy.py --supplements` finds it for ACS and Elsevier articles,
+   and gives the article page for the others.
 5. **Beyond the indexes**: a web search, the free NIST reprints of J. Phys. Chem. Ref. Data, open theses, free books.
 6. **Supplier data**, only for a single constant (a melting point, a boiling point, a density at one temperature),
    below.
@@ -74,6 +77,9 @@ fits a model (an equation of state, PC-SAFT, COSMO-RS) or runs a simulation ofte
 compares with. An open article counts as the open copy of the measured values it prints:
 
 - its own measurements (Baird et al. 2019 measured levoglucosenone's vapour pressure for a PC-SAFT paper);
+- an open thesis counts as an open article (kind "open thesis"): its own measurements, and the values it quotes with
+  the measuring article named (Buchholz 2018, the lactide melt; Andreeva 2021, levoglucosenone's enthalpy of
+  formation, measured in the same group's article; 2026-10-27);
 - values it quotes with the measuring article named: the open article is cited, together with that original. Where
   the original is open, its numbers are checked there and it is the source;
 - not values it quotes from a commercial databank or a handbook (DIPPR, Yaws, CRC, DDB): they stay that source's, as
@@ -375,11 +381,14 @@ solvents may be (HMF: its WebBook boiling temperature of 388.2 K at 0.1 kPa, whe
   (`WEBBOOK_GAS_OVER_CHEMSEP`, with the reason).
 - **ChemSep does not:** the measured values, searched in the NIST WebBook, the ThermoML Archive's combustion
   reactions and entropies, and the open literature (the maintainer, 2026-10-22: "search everything now"), stored as
-  found in `validation/data/pure/formation/measured.json`:
+  found in `validation/data/pure/formation/measured.json`, and, for a value printed in an open article or thesis, in
+  `validation/data/pure/formation/article_<id>_*.json` with its source (2026-10-27):
   - one value per article: a measured enthalpy of formation of the liquid or the crystal, or an enthalpy or energy
     of combustion turned into one with the CODATA key values of CO2 (g) and H2O (l) (open table, codata.info);
   - the state the component is in at 298.15 K (the crystal above its melting temperature, else the liquid); values of
-    the other condensed state are left out and named;
+    the other condensed state are left out and named. One exception, by the maintainer's decision (2026-10-27): HMF,
+    which melts at 308.5 K but whose records take the supercooled liquid at 298.15 K as their reference state, takes
+    its liquid value (`LIQUID_REFERENCE` in formation_data.py);
   - a liquid or gas value may come from either enantiomer or the racemate; a crystal value only from the crystal the
     component's own records refer to (a racemic and an enantiopure crystal, or two anomers, are different solids);
   - the median of the articles, with their number and spread; a spread above 10 kJ/mol is stated as "uncertain";
@@ -420,6 +429,10 @@ it against the article before it is added (AGENTS.md rule 4).
   Aalto and OSF copies).
 - A CORE record with neither a download nor a text is CORE's copy of the Crossref metadata: it is not listed as a
   copy (2026-10-25).
+- `--supplements` lists an article's supplementary files, free even where the article is paywalled (2026-10-27): ACS
+  supporting information through the figshare API (by the article's DOI), Elsevier files under the article's PII
+  (from Crossref, `mmc1` to `mmc4`); for MDPI, RSC, Wiley, Springer and Taylor & Francis it gives the article page, for
+  a person to open. Their numbers are used with the kind "free supplement" (section 1, source 5).
 - `--fetch DIR` downloads the first copy that really is a PDF (it starts with "%PDF"). A server may answer "200 OK"
   with an HTML page (a login, a robot check, a landing page): such an answer is never kept. A repository landing page
   is followed to the PDF named in its `citation_pdf_url` tag. Where a server serves PDFs to browsers only (403 to

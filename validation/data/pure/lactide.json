@@ -2,5 +2,28 @@
  "component": "lactide",
  "name": "Lactide",
  "about": "Measured values each record of this component was fitted to (validation/python/measured_components.py). test/properties.test.js checks that the coefficients in src/data/components.json reproduce them within the maximum deviation stated in each record.",
- "records": {}
+ "records": {
+  "liquidHeatCapacity": {
+   "units": "J/mol/K",
+   "source": {
+    "name": "Measured heat capacities of the liquid (an article outside the archive); stated uncertainties up to 1.1 %, above the 1 % target, used because the only alternative is a prediction",
+    "fit": "3 measured values, 408.70-428.80 K, max deviation 0.57 %"
+   },
+   "T_K": [
+    408.7,
+    418.7,
+    428.8
+   ],
+   "values": [
+    291.1,
+    293.1,
+    294.1
+   ],
+   "references": [
+    "Buchholz 2018",
+    "Buchholz 2018",
+    "Buchholz 2018"
+   ]
+  }
+ }
 }

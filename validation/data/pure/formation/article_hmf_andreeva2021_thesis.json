@@ -1,0 +1,26 @@
+{
+ "component": "hmf",
+ "cas": "67-47-0",
+ "about": "Enthalpy of formation printed in an open doctoral thesis, read in the thesis PDF (pdftotext): printed page 58, 'ΔfH°(liq, 298.15 K) = -417.6 +- 1.4 kJ/mol for hydroxymethyl furfural from our previous work [104]'; the thesis's reference [104] is Verevkin, Emel'yanenko, Stepurko, Ralys, Zaitsau, Stark, Biomass-Derived Platform Chemicals: Thermodynamic Studies on the Conversion of 5-Hydroxymethylfurfural into Bulk Intermediates, Ind. Eng. Chem. Res. 48 (2009) 10087-10093 (paywalled; its free supporting information does not hold this value). The state is the liquid: HMF melts at 308.5 K, so at 298.15 K the liquid is supercooled; CHEPTA's records of HMF take that liquid as their reference state, and the maintainer chose this value (2026-10-27). The uncertainty is as printed, its coverage not stated.",
+ "source": {
+  "citation": "I. V. Andreeva, Development of thermodynamic frameworks for the reliable prediction of properties of key compounds and intermediates obtained from biomass, doctoral thesis, Universitaet Rostock (2021)",
+  "doi": null,
+  "open_copy": "https://rosdok.uni-rostock.de/file/rosdok_disshab_0000002577/rosdok_derivate_0000104472/Andreeva_Dissertation_2021.pdf",
+  "access": "Open thesis, free to read in RosDok, the repository of the University of Rostock",
+  "tables": "Table D.1 (printed page 145), levoglucosenone (liquid), enthalpy of formation at 298.15 K"
+ },
+ "formation": [
+  {
+   "quantity": "ΔfH°",
+   "state": "liquid",
+   "value": -417.6,
+   "uncertainty": 1.4,
+   "units": "kJ/mol",
+   "key": [
+    "verevkin",
+    "2009"
+   ],
+   "reference": "Andreeva, doctoral thesis, Universitaet Rostock (2021), printed page 58, from Verevkin et al., Ind. Eng. Chem. Res. 48 (2009) 10087-10093, doi:10.1021/ie901012g"
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+ "component": "levoglucosenone",
+ "cas": "37112-31-5",
+ "about": "Measured enthalpy of formation printed in an open doctoral thesis, read in the thesis PDF (pdftotext, and the table on its page): Table D.1 (Appendix D, printed page 145), 'Thermochemical data for dihydro-levoglucosenone (cyrene) and levoglucosenone at T = 298.15 K (p = 0.1 MPa, in kJ/mol)', row 'levoglucosenone (liq)': enthalpy of combustion -2835.3 +- 1.2 (column 2) and enthalpy of formation -383.3 +- 1.5 (column 3), both 'measured in [111]'; the thesis's reference [111] is the article of the same group, published as Andreeva, Pimerzin, Turovtsev, Qian, Bara, Verevkin, Ind. Eng. Chem. Res. 60 (2021) 17183-17194 (listed in the thesis as submitted). The open thesis is the source read; the article is the original measurement (paywalled; its supporting information, free, holds the heat capacities but not this value). The gas-phase values of the same row (columns 4-6) come from the vaporization enthalpy and from quantum chemistry and are not used. The uncertainty is as printed, its coverage not stated.",
+ "source": {
+  "citation": "I. V. Andreeva, Development of thermodynamic frameworks for the reliable prediction of properties of key compounds and intermediates obtained from biomass, doctoral thesis, Universitaet Rostock (2021)",
+  "doi": null,
+  "open_copy": "https://rosdok.uni-rostock.de/file/rosdok_disshab_0000002577/rosdok_derivate_0000104472/Andreeva_Dissertation_2021.pdf",
+  "access": "Open thesis, free to read in RosDok, the repository of the University of Rostock",
+  "tables": "Table D.1 (printed page 145), levoglucosenone (liquid), enthalpy of formation at 298.15 K"
+ },
+ "formation": [
+  {
+   "quantity": "ΔfH°",
+   "state": "liquid",
+   "value": -383.3,
+   "uncertainty": 1.5,
+   "units": "kJ/mol",
+   "key": [
+    "andreeva",
+    "2021"
+   ],
+   "reference": "Andreeva, doctoral thesis, Universitaet Rostock (2021), Table D.1, measured in Andreeva et al., Ind. Eng. Chem. Res. 60 (2021) 17183-17194, doi:10.1021/acs.iecr.1c02230 (combustion calorimetry, ΔcH° -2835.3 +- 1.2 kJ/mol)"
+  }
+ ]
+}

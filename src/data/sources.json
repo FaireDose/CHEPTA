@@ -1,5 +1,5 @@
 {
-  "_about": "The CHEPTA Library (proposal 0003): every source once, with an id. Records in the other data files refer to it in `source_ids`. kind: standard, open-source library, databank, thermoml, open-access article, free supplement, free copy, free book, handbook via open compilation. url: where anyone can read the numbers (the open copy); doi: the original publication; access: why it is open; via: the open copy the numbers were taken from, when it is not the source itself; files: repository files (code, validation data) that use the source besides the data records. Made by validation/python/make_sources.py; entries can be corrected by hand (the script keeps them).",
+  "_about": "The CHEPTA Library (proposal 0003): every source once, with an id. Records in the other data files refer to it in `source_ids`. kind: standard, open-source library, databank, thermoml, open-access article, free supplement, free copy, open thesis, free book, handbook via open compilation. url: where anyone can read the numbers (the open copy); doi: the original publication; access: why it is open; via: the open copy the numbers were taken from, when it is not the source itself; files: repository files (code, validation data) that use the source besides the data records. Made by validation/python/make_sources.py; entries can be corrected by hand (the script keeps them).",
   "sources": {
     "ahmad2004-1-butanol-n-nonane": {
       "title": "Vapor-Liquid Equilibrium Studies for Systems Containing n-Butylisocyanate at Temperatures between 323.15 K and 371.15 K",
@@ -70,6 +70,32 @@
       "files": [
         "validation/data/vle/dichloroethane_diethyl-ether_10-1016-j-fluid-2008-03-015_tpx.json",
         "validation/data/vle/dichloroethane_mtbe_10-1016-j-fluid-2008-03-015_tpx.json"
+      ]
+    },
+    "andreeva2021-article-levoglucosenone": {
+      "title": "Commodity Chemicals and Fuels from Biomass: Thermodynamic Properties of Levoglucosan Derivatives",
+      "authors": "I. V. Andreeva, A. A. Pimerzin, V. V. Turovtsev, S. Qian, J. E. Bara, S. P. Verevkin",
+      "year": 2021,
+      "published": "Ind. Eng. Chem. Res. 60 (2021) 17183-17194",
+      "kind": "free supplement",
+      "doi": "10.1021/acs.iecr.1c02230",
+      "url": "https://ndownloader.figshare.com/files/31383536",
+      "access": "The article is paywalled; its supplementary information, which holds the measured heat capacities, is free to read (ACS, on figshare, CC BY-NC 4.0)",
+      "files": [
+        "validation/data/pure/measured/article_levoglucosenone_andreeva2021.json"
+      ]
+    },
+    "andreeva2021-article-levoglucosenone-thesis": {
+      "title": "Development of thermodynamic frameworks for the reliable prediction of properties of key compounds and intermediates obtained from biomass, doctoral thesis",
+      "authors": "I. V. Andreeva",
+      "year": 2021,
+      "published": "Universitaet Rostock (2021)",
+      "kind": "open thesis",
+      "url": "https://rosdok.uni-rostock.de/file/rosdok_disshab_0000002577/rosdok_derivate_0000104472/Andreeva_Dissertation_2021.pdf",
+      "access": "Open thesis, free to read in RosDok, the repository of the University of Rostock",
+      "files": [
+        "validation/data/pure/formation/article_hmf_andreeva2021_thesis.json",
+        "validation/data/pure/formation/article_levoglucosenone_andreeva2021_thesis.json"
       ]
     },
     "anugraha2017-diethyl-carbonate-isooctane": {
@@ -374,6 +400,18 @@
         "validation/data/ethanol_acetic-acid_px_brandt2014.json",
         "validation/data/ethyl-acetate_acetic-acid_HE_brandt2014.json",
         "validation/data/ethyl-acetate_acetic-acid_px_brandt2014.json"
+      ]
+    },
+    "buchholz2018-article-lactide": {
+      "title": "Solid-Liquid Phase Equilibria of Chiral Molecules - Theory and Experiment, doctoral thesis",
+      "authors": "H. K. Buchholz",
+      "year": 2018,
+      "published": "Otto-von-Guericke-Universitaet Magdeburg (2018)",
+      "kind": "open thesis",
+      "url": "https://pure.mpg.de/rest/items/item_3009043_7/component/file_3018214/content",
+      "access": "Open thesis, free to read in the MPG.PuRe repository of the Max Planck Society",
+      "files": [
+        "validation/data/pure/measured/article_lactide_buchholz2018.json"
       ]
     },
     "cai2014-1-butanol-n-butyl-acetate": {
@@ -2687,6 +2725,19 @@
       "license": "Public domain (U.S. government work)",
       "note": "Typical isentropic efficiencies: single-stage syngas recycle compressors 84 % (Exhibit 4-8, p. 23) and 75 % (Exhibit 5-7, p. 47), the lower taken for the compressor; boiler feed water pump turbine 80 % (Exhibit 4-3, p. 17) for the expander."
     },
+    "nikitin2022-article-angelica-lactone": {
+      "title": "Experimental critical temperatures, pressures, heat capacities, and thermal diffusivities of triacetin and alpha-angelica lactone",
+      "authors": "E. D. Nikitin, A. P. Popov, N. S. Bogatishcheva, M. Z. Faizullin",
+      "year": 2022,
+      "published": "Fluid Phase Equilib. 561 (2022) 113523",
+      "kind": "free supplement",
+      "doi": "10.1016/j.fluid.2022.113523",
+      "url": "https://ars.els-cdn.com/content/image/1-s2.0-S0378381222001467-mmc1.pdf",
+      "access": "The article is paywalled; its supplementary information, which holds the measured heat capacities, is free to read on the publisher's site (Elsevier); no open licence stated",
+      "files": [
+        "validation/data/pure/measured/article_angelica-lactone_nikitin2022.json"
+      ]
+    },
     "nikitin2023-article-furfuryl-alcohol": {
       "title": "Measurement of the critical temperatures, pressures, heat capacities, and thermal diffusivities of four furanic compounds involved in the production of second-generation biofuels",
       "authors": "E.D. Nikitin, A.P. Popov, N.S. Bogatishcheva, M.Z. Faizullin",
@@ -3770,6 +3821,19 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/isobutanol_n-dodecane_10-1021-je500237g_40.0kPa.json"
+      ]
+    },
+    "tehrani2026-article-bhet": {
+      "title": "Enhancing Solubility Predictions of Plastic Additives in Depolymerization Solvents Using Quantum Chemical Conformer Analysis and COSMO-RS",
+      "authors": "A. Shariatmadar Tehrani, R. Goeminne, P. Cnudde, V. Van Speybroeck, K. Elst, K. Vanbroekhoven, E. Feghali, K. M. Van Geem, S. De Meester",
+      "year": 2026,
+      "published": "ACS Omega 11 (2026) 59039-59053",
+      "kind": "open-access article",
+      "doi": "10.1021/acsomega.6c04278",
+      "url": "https://europepmc.org/article/PMC/PMC13647430",
+      "access": "Open access, CC BY-NC-ND 4.0 (ACS Omega); supporting information free on figshare (https://ndownloader.figshare.com/files/69206815)",
+      "files": [
+        "validation/data/pure/measured/article_bhet_shariatmadartehrani2026.json"
       ]
     },
     "thermo-library": {

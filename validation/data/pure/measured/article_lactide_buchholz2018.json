@@ -1,0 +1,91 @@
+{
+ "component": "lactide",
+ "cas": "95-96-5",
+ "about": "Measured values of an open doctoral thesis, in the format of thermoml_<id>.json (read by measured_components.ThermoML). Extracted with pdftotext from the text layer of the thesis PDF, Table 7.1 (Appendix, printed page 153), 'Heat capacities of the melt', the (RS)-lactide columns (the racemate: CHEPTA's lactide, alias rac-lactide, whose melting data are the racemate's): 3 values, 408.7-428.8 K, high-temperature DSC. The table's 'Abs dev.' column (2.2-3.2 J/(mol K)) is used as each value's uncertainty; the thesis does not say whether it is an expanded uncertainty. Pressure not stated. The (S)-lactide melt values of the same table are not used ((S)-lactide is the enantiomer; at 408.7-428.7 K they lie 0.9-2.7 % above the racemate's): kept below as a cross-check only.",
+ "source": {
+  "citation": "H. K. Buchholz, Solid-Liquid Phase Equilibria of Chiral Molecules - Theory and Experiment, doctoral thesis, Otto-von-Guericke-Universitaet Magdeburg (2018)",
+  "doi": null,
+  "open_copy": "https://pure.mpg.de/rest/items/item_3009043_7/component/file_3018214/content",
+  "access": "Open thesis, free to read in the MPG.PuRe repository of the Max Planck Society",
+  "tables": "Table 7.1 (printed page 153), heat capacities of the melt of (RS)-lactide, 408.7-428.8 K"
+ },
+ "articles": {
+  "buchholz2018-thesis": {
+   "authors": [
+    "Buchholz, H.K."
+   ],
+   "title": "Solid-Liquid Phase Equilibria of Chiral Molecules - Theory and Experiment",
+   "journal": "doctoral thesis, Otto-von-Guericke-Universitaet Magdeburg",
+   "year": "2018",
+   "volume": "",
+   "pages": ""
+  }
+ },
+ "cross_check_S_lactide": [
+  {
+   "T_K": 380.0,
+   "value": 282.3
+  },
+  {
+   "T_K": 390.0,
+   "value": 288.4
+  },
+  {
+   "T_K": 398.8,
+   "value": 291.6
+  },
+  {
+   "T_K": 408.7,
+   "value": 297.0
+  },
+  {
+   "T_K": 418.7,
+   "value": 296.3
+  },
+  {
+   "T_K": 428.7,
+   "value": 301.9
+  }
+ ],
+ "rows": [
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 408.7,
+   "P_kPa": null,
+   "value": 291.1,
+   "uncertainty": 3.2,
+   "doi": "buchholz2018-thesis",
+   "set": "Table 7.1",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 418.7,
+   "P_kPa": null,
+   "value": 293.1,
+   "uncertainty": 2.2,
+   "doi": "buchholz2018-thesis",
+   "set": "Table 7.1",
+   "binary_with": null
+  },
+  {
+   "property": "Molar heat capacity at constant pressure, J/K/mol",
+   "phases": [
+    "Liquid"
+   ],
+   "T_K": 428.8,
+   "P_kPa": null,
+   "value": 294.1,
+   "uncertainty": 3.0,
+   "doi": "buchholz2018-thesis",
+   "set": "Table 7.1",
+   "binary_with": null
+  }
+ ]
+}

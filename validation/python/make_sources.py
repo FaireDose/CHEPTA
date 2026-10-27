@@ -38,6 +38,7 @@ eos_kij_from_chemsep.py, eos_fit_kij.py) drop or do not know these fields; run t
 after them. fit_parameters.py keeps the non-default sets.
 """
 import json
+from collections import Counter
 import re
 import sys
 import unicodedata
@@ -50,7 +51,7 @@ SOURCES_FILE = DATA / "sources.json"
 LICENSES_FILE = DATA / "LICENSES.md"
 
 KINDS = ["standard", "open-source library", "databank", "thermoml", "open-access article",
-         "free supplement", "free copy", "free book", "handbook via open compilation"]
+         "free supplement", "free copy", "open thesis", "free book", "handbook via open compilation"]
 
 # ------------------------------------------------------------------------------------------
 # Sources cited in free text. Each field is copied from the file named in the comment.
@@ -399,6 +400,9 @@ def validation_sources():
                                                  # "free copy": a preprint or the authors' manuscript, free to read (proposal
                                                  # 0014, step 1; Bogatishcheva et al. 2026 and Nikitin et al. 2023 on SSRN)
                                                  else "free copy" if re.search(r"(preprint|manuscript)[^.;]*free to read", src.get("access", ""), re.I)
+                                                 # "open thesis": a thesis free to read in its university's repository
+                                                 # (Buchholz 2018, the lactide melt; 2026-10-27)
+                                                 else "open thesis" if re.search(r"open thesis", src.get("access", ""), re.I)
                                                  else None),
             "doi": src.get("doi") or None,
             "url": url,
@@ -445,11 +449,19 @@ def text_rules(val):
         (r"Ruzicka and Domalski 1993", "ruzicka-domalski-1993"),
         (r"J\. Chao, B\. J\. Zwolinski", "chao-zwolinski-1978"),
     ]
+    first = lambda entry: ascii_fold(entry["authors"].split(", ")[0].split()[-1])  # noqa: E731
+    shared = Counter((first(e), e["year"]) for sid, e in {sid: e for sid, e, _ in val if e is not None}.items())
     for sid, entry, rel in val:
         if entry is None:
             continue
-        surname = ascii_fold(entry["authors"].split(", ")[0].split()[-1])
-        rules.append((rf"\b{re.escape(surname)}\b[^()]{{0,140}}\({entry['year']}\)", sid))
+        surname = first(entry)
+        if shared[(surname, entry["year"])] > 1:
+            # two sources of the same first author and year (Andreeva 2021: an article and a thesis): the first word of
+            # the journal or the university must stand between the name and the year as well
+            word = re.escape(entry["published"].split()[0])
+            rules.append((rf"\b{re.escape(surname)}\b[^()]{{0,140}}{word}[^()]{{0,80}}\({entry['year']}\)", sid))
+        else:
+            rules.append((rf"\b{re.escape(surname)}\b[^()]{{0,140}}\({entry['year']}\)", sid))
         rules.append((re.escape(Path(rel).name), sid))
     return rules
 
