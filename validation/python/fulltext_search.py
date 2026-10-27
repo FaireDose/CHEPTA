@@ -27,7 +27,9 @@ import os
 import re
 import sys
 import time
+import urllib.error
 import urllib.parse
+import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -38,7 +40,7 @@ from open_copy import get_json, Unavailable, EMAIL  # noqa: E402
 EPMC = "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query={q}&format=json&pageSize={n}&resultType=lite"
 EPMC_XML = "https://www.ebi.ac.uk/europepmc/webservices/rest/{pmcid}/fullTextXML"
 OPENALEX = "https://api.openalex.org/works?filter={f}&per-page={n}&select=doi,title,publication_year,open_access&mailto={e}"
-CORE = "https://api.core.ac.uk/v3/search/works?q={q}&limit={n}"
+CORE = "https://api.core.ac.uk/v3/search/works/?q={q}&limit={n}"
 
 TERMS = {
     "vapourPressure": ["vapor pressure", "vapour pressure", "saturated vapor pressure", "saturation pressure"],
@@ -84,7 +86,13 @@ def _quoted(xs):
 
 
 def _cached(cache, kind, key, fetch):
-    f = Path(cache) / kind / (re.sub(r"[^A-Za-z0-9._-]+", "_", key)[:180] + ".json")
+    # a long query is cut in its file name: a hash of the whole query keeps two queries apart (2026-10-25: the CORE
+    # queries of one component's properties shared their first 180 characters)
+    import hashlib
+    name = re.sub(r"[^A-Za-z0-9._-]+", "_", key)
+    if len(name) > 180:
+        name = name[:160] + "_" + hashlib.sha1(key.encode()).hexdigest()[:12]
+    f = Path(cache) / kind / (name + ".json")
     if f.exists():
         return json.loads(f.read_text())
     v = fetch()
@@ -212,14 +220,93 @@ def screen_text(text, nm, terms):
     return hits[:3]
 
 
-def core_search(cache, nm, terms, n):
+_core_last = [0.0]
+
+
+def core_get(url):
+    """One CORE request, paced: the key allows 10 requests a minute (X-RateLimit-Limit), so one every 7 s, and after
+    a 429 the wait until X-RateLimit-Retry-After. The key: CORE_API_KEY, or the network secret for api.core.ac.uk."""
+    import datetime
+    import time
     key = os.environ.get("CORE_API_KEY")
-    auth = {"Authorization": "Bearer " + key} if key else None
-    q = "fullText:(%s) AND fullText:(%s)" % (_quoted(nm[:4]), _quoted(terms))
-    ans = _cached(cache, "core_fulltext", q, lambda: get_json(CORE.format(q=urllib.parse.quote(q), n=n),
-                                                              headers=auth) or {})
-    return [{"doi": r.get("doi"), "title": r.get("title"), "pubYear": r.get("yearPublished"),
-             "oa_url": r.get("downloadUrl")} for r in ans.get("results", [])]
+    headers = {"User-Agent": "CHEPTA data script (https://github.com/FaireDose/CHEPTA)"}
+    if key:
+        headers["Authorization"] = "Bearer " + key
+    for attempt in range(6):
+        time.sleep(max(0.0, 7.0 - (time.time() - _core_last[0])))
+        _core_last[0] = time.time()
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=120) as r:
+                body = r.read().decode("utf-8")
+            return json.loads(body) if body.strip() else {}
+        except urllib.error.HTTPError as e:
+            if e.code == 429:
+                after = e.headers.get("X-RateLimit-Retry-After")
+                try:
+                    wait = (datetime.datetime.fromisoformat(after.replace("+0000", "+00:00")) - datetime.datetime.now(datetime.timezone.utc)).total_seconds()
+                except (AttributeError, ValueError):
+                    wait = 30
+                time.sleep(min(120, max(5, wait + 1)))
+                continue
+            if e.code in (500, 502, 503, 504) and attempt < 5:
+                time.sleep(10)
+                continue
+            raise Unavailable("CORE answered %d" % e.code)
+        except (urllib.error.URLError, TimeoutError) as e:
+            if attempt == 5:
+                raise Unavailable("CORE: %s" % e)
+            time.sleep(10)
+    raise Unavailable("CORE: still limited after 6 tries")
+
+
+# CORE's query parser (2026-10-25): flat queries work ("solketal AND heat AND capacity"; "solketal AND (heat OR
+# critical)"), a field name such as fullText: answers 500, a quoted phrase finds nothing, and a group that holds an AND
+# inside an OR is ignored. So each property is a flat expression of single words, and each name form (a single word, or
+# the words of a longer name joined by AND) is its own query; the passages are then screened for the exact names and
+# terms (screen_text), as for the other indexes
+CORE_TERMS = {
+    "vapourPressure": "(vapor OR vapour OR saturation) AND pressure",
+    "critical": "critical AND (temperature OR pressure OR point)",
+    "Tb": "boiling AND (point OR temperature)",
+    "liquidDensity": "(density OR densities)",
+    "liquidHeatCapacity": "heat AND (capacity OR capacities)",
+    "idealGasHeatCapacity": "(ideal OR gas) AND heat AND capacity",
+    "heatOfVaporization": "(enthalpy OR heat OR enthalpies) AND (vaporization OR vaporisation)",
+    "surfaceTension": "surface AND tension",
+    "liquidViscosity": "(viscosity OR viscosities)",
+    "liquidThermalConductivity": "thermal AND conductivity",
+    "vapourViscosity": "(gas OR vapor OR vapour) AND viscosity",
+    "vapourThermalConductivity": "(gas OR vapor OR vapour) AND thermal AND conductivity",
+    "fusion": "(fusion OR melting)",
+    "formation": "(enthalpy OR energy OR heat) AND (formation OR combustion)",
+    "formationG": "(entropy OR (gibbs AND formation))",
+}
+
+
+def core_search(cache, nm, terms, n, key=None):
+    """CORE's works whose text has one of the names and the property's words: (total hits over the name forms,
+    works). CORE returns each work's full text with it (the repositories' copies), so the passages are read from that
+    text; a work without it is fetched from its download link."""
+    forms = []
+    for x in nm[:4]:
+        w = [t for t in re.findall(r"[A-Za-z]+", x) if len(t) > 2]
+        if w and not re.search(r"\d", x) and " AND ".join(w) not in forms:
+            forms.append(" AND ".join(w))
+    total, seen, works = 0, set(), []
+    for f in forms[:3]:
+        q = "%s AND %s" % (f, CORE_TERMS.get(key) or " AND ".join(re.findall(r"[A-Za-z]+", terms[0])))
+        ans = _cached(cache, "core_fulltext", q, lambda: core_get(CORE.format(q=urllib.parse.quote(q), n=n)))
+        if ans.get("message") and not ans.get("results"):
+            raise Unavailable("CORE: %s" % ans["message"])
+        total += ans.get("totalHits") or 0
+        for r in ans.get("results", []):
+            k = (r.get("doi") or "").lower() or r.get("id")
+            if k in seen:
+                continue
+            seen.add(k)
+            works.append({"doi": r.get("doi"), "title": r.get("title"), "pubYear": r.get("yearPublished"),
+                          "oa_url": r.get("downloadUrl"), "text": r.get("fullText") or ""})
+    return total, works
 
 
 def main():
@@ -268,16 +355,24 @@ def main():
                         cands.append({**w, "index": "OpenAlex", "fetched": bool(t), "blocks": blocks})
                 except Unavailable as e:
                     notes.add("OpenAlex not asked: %s" % e)
+            core_hits = None
             if "core" in a.indexes:
                 try:
-                    cands += [{**r, "index": "CORE", "blocks": []} for r in core_search(a.cache, nm, terms, a.hits)]
+                    core_hits, works = core_search(a.cache, nm, terms, a.hits, key)
+                    known = {(x.get("doi") or "").lower() for x in cands}
+                    works = [w for w in works if not w["doi"] or w["doi"].lower() not in known]
+                    with ThreadPoolExecutor(8) as pool:
+                        texts = list(pool.map(lambda w: w["text"] or (pdf_text(a.cache, w["oa_url"]) if w["oa_url"] else ""), works))
+                    for w, t in zip(works, texts):
+                        w = {k: v for k, v in w.items() if k != "text"}
+                        cands.append({**w, "index": "CORE", "fetched": bool(t), "blocks": screen_text(t, nm, terms) if t else []})
                 except Unavailable as e:
                     notes.add("CORE not asked: %s" % e)
             out.setdefault(cid, {})[key] = {"names": nm, "terms": terms, "europepmc_hits": res["hitCount"],
-                                           "openalex_hits": oa_hits, "candidates": cands}
+                                           "openalex_hits": oa_hits, "core_hits": core_hits, "candidates": cands}
             shown = [x for x in cands if x["blocks"]]
-            print("%s / %s: Europe PMC %s hits, OpenAlex %s hits; %d articles with the name and the property together%s" % (
-                cid, key, res["hitCount"], oa_hits, len(shown),
+            print("%s / %s: Europe PMC %s hits, OpenAlex %s hits, CORE %s hits; %d articles with the name and the property together%s" % (
+                cid, key, res["hitCount"], oa_hits, core_hits, len(shown),
                 "".join("\n    [%s] %s %s (%s): %s %s, %d numbers: ...%s..." % (
                     x["index"], x.get("pubYear"), x.get("doi") or x.get("pmcid"), (x.get("title") or "")[:70],
                     x["blocks"][0]["kind"], x["blocks"][0]["term"], x["blocks"][0]["numbers"],

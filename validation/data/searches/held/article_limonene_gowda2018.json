@@ -1,0 +1,264 @@
+{
+ "component": "limonene",
+ "cas": "5989-27-5",
+ "about": "Measured values of an open MEng thesis (Stellenbosch University; not peer reviewed as a journal article is), in the format of thermoml_<id>.json (read by measured_components.ThermoML). Read in the text of the thesis PDF as CORE (core.ac.uk) serves it; the PDF itself refused scripts (CORE: a robot check; the university repository: 403), so a person checks every value against the PDF (AGENTS.md rule 4). Table 8.12: boiling temperatures of pure limonene in a dynamic VLE still at set pressures, P in kPa and T in K as printed; repeated readings at the same pressure are kept as printed. Sample: (R)-limonene, Sigma-Aldrich, CAS 5989-27-5, 98.38 wt % by the author's GC and KF analysis (Table 4.1); one enantiomer serves CHEPTA's limonene (docs/DATA_RULES.md section 3, stereoisomers). Uncertainty: the thesis states +/-0.32 K (expanded, coverage factor 2, encompassing temperature, pressure and analysis effects; section 3.4 and chapter 4); turned into a pressure uncertainty here through the slope of the set, 0.0274 per K between 417.0 and 450.9 K (0.88 %). The author notes limonene degrades in the still after about 8 h (Figure 4.1, Appendix H).",
+ "source": {
+  "citation": "R. Gowda, Phase equilibrium of limonene, p-cymene, indane, butylbenzene and 1,2,3-trimethylbenzene at subatmospheric conditions, MEng thesis, Stellenbosch University (2018)",
+  "doi": null,
+  "open_copy": "https://scholar.sun.ac.za/handle/10019.1/103666",
+  "access": "open thesis in the university's repository (SUNScholar), also served by CORE (https://core.ac.uk/download/188224369.pdf)",
+  "tables": "Table 8.12 (Appendix G), vapour pressure of limonene, 40.0-101.4 kPa, 417.0-450.9 K (17 values)"
+ },
+ "articles": {
+  "oai:scholar.sun.ac.za:10019.1/103666": {
+   "authors": [
+    "Gowda, R."
+   ],
+   "title": "Phase equilibrium of limonene, p-cymene, indane, butylbenzene and 1,2,3-trimethylbenzene at subatmospheric conditions",
+   "journal": "MEng thesis, Stellenbosch University",
+   "year": "2018",
+   "volume": "",
+   "pages": ""
+  }
+ },
+ "rows": [
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 417.0,
+   "P_kPa": null,
+   "value": 40.0,
+   "uncertainty": 0.351,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 417.4,
+   "P_kPa": null,
+   "value": 40.8,
+   "uncertainty": 0.358,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 417.4,
+   "P_kPa": null,
+   "value": 40.8,
+   "uncertainty": 0.358,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 417.4,
+   "P_kPa": null,
+   "value": 40.8,
+   "uncertainty": 0.358,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 424.6,
+   "P_kPa": null,
+   "value": 50.2,
+   "uncertainty": 0.44,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 424.6,
+   "P_kPa": null,
+   "value": 50.2,
+   "uncertainty": 0.44,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 424.6,
+   "P_kPa": null,
+   "value": 50.2,
+   "uncertainty": 0.44,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 431.4,
+   "P_kPa": null,
+   "value": 60.8,
+   "uncertainty": 0.533,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 431.4,
+   "P_kPa": null,
+   "value": 60.8,
+   "uncertainty": 0.533,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 442.6,
+   "P_kPa": null,
+   "value": 82.1,
+   "uncertainty": 0.72,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 442.6,
+   "P_kPa": null,
+   "value": 82.0,
+   "uncertainty": 0.719,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 446.8,
+   "P_kPa": null,
+   "value": 91.3,
+   "uncertainty": 0.801,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 446.8,
+   "P_kPa": null,
+   "value": 91.2,
+   "uncertainty": 0.8,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 450.2,
+   "P_kPa": null,
+   "value": 99.6,
+   "uncertainty": 0.873,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 450.3,
+   "P_kPa": null,
+   "value": 99.6,
+   "uncertainty": 0.873,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 450.9,
+   "P_kPa": null,
+   "value": 101.4,
+   "uncertainty": 0.889,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  },
+  {
+   "property": "Vapor or sublimation pressure, kPa",
+   "phases": [
+    "Liquid",
+    "Gas"
+   ],
+   "T_K": 450.9,
+   "P_kPa": null,
+   "value": 101.3,
+   "uncertainty": 0.888,
+   "doi": "oai:scholar.sun.ac.za:10019.1/103666",
+   "set": "Table 8.12",
+   "binary_with": null
+  }
+ ]
+}
