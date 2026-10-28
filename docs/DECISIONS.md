@@ -29,13 +29,21 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   the "ideal" model that did not finish is now refused with the remedy (Peng-Robinson or SRK; 2026-10-27).
 - **Reactors, steps 5, 6 and 9** (proposal 0010; docs/decisions/2026-10-28-01-reactors.md): two phases in the
   equilibrium reactor, the CSTR and the PFR; Gibbs as a mode of the equilibrium reactor; one Reactor button; your own
-  kinetics; the PFR's profiles; the Reactor workspace. Confirm the choices under "To check" there. Still open: step 8,
-  a vapour-viscosity mixing rule for Ergun, two liquids in reactors, and a P-H flash with Peng–Robinson that fails
-  through a two-liquid region.
+  kinetics; the PFR's profiles; the Reactor workspace. Confirm the choices under "To check" there. Step 8 and the
+  vapour-viscosity mixing rule: done 2026-10-28 (below). Two liquids in reactors and the P-H flash with Peng–Robinson
+  that fails through a two-liquid region: "Engineering", item 7.
 - **Reactors, round 2** (docs/decisions/2026-10-28-02-reactors-round-2.md): the Gibbs reactor as a block again, global
-  reactions, more units in Settings, biphenyl, p-terphenyl (para isomer: to confirm) and cumene hydroperoxide. Decide
-  on the flash failure: the small fix now (a start temperature, step past the two-liquid refusal) and two liquids
-  for PR/SRK as a proposal.
+  reactions, more units in Settings, biphenyl, p-terphenyl (para isomer: to confirm) and cumene hydroperoxide. The
+  flash failure: no small fix; the real fix later, as an item of "Engineering" below, not a proposal (the maintainer,
+  2026-10-28).
+- **Proposal 0015, the separation units** (draft, 2026-10-28): columns, absorbers and strippers, extraction,
+  decanters, evaporators, crystallizers, filters and dryers, the streams and stages they need (A5, A6) and the
+  liquid-liquid thermodynamics; it takes over steps 1 and 3 of proposal 0007. Answer its five questions.
+- **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
+- **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun
+  gas viscosity by Wilke's rule, the full-text search for the three new components. Check the transcribed constants of
+  the ethanol example against Aali and Hadi 2023, Tables 8 and 9. Waiting for open data: benzene pyrolysis,
+  esterification kinetics, HMF rehydration.
 - **Reactions, step 2** (proposal 0010; docs/decisions/2026-10-22-05-reactions.md): confirm the standard pressure of
   100 kPa, the pure-liquid standard state and its paths (through the saturated vapour, for acetic acid with its
   monomers and dimers; crystal to liquid with ΔHfus); compare the WebBook liquid values of
@@ -43,7 +51,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (flowsheets included), and so do those of acids that are solid at 25 °C. Formic acid has its dimer constants (Chao and
   Zwolinski 1978) and the WebBook gas ΔfH°; propionic and acrylic acid have none open yet (their liquid values are
   12-26 kJ/mol off). No open source with the Eley–Rideal and Mars–van Krevelen forms was found.
-- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-28.md](MISSING_PROPERTIES_2026-10-28.md)):
+- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-28-2.md](MISSING_PROPERTIES_2026-10-28-2.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
 - **Missing properties, round 3** (docs/decisions/2026-10-22-07-missing-round3.md): levoglucosenone's vapour
@@ -137,6 +145,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 6. Grow the flowsheet suite: more seeds, P-H drums, and reactive cases once proposal 0010 exists.
 7. Two liquids with an equation of state: low priority. Only with a proper method such as CPA,
    never a plain cubic equation (decision of 2026-10-09).
+   - **The real fix of the P-H flash failure** (the maintainer, 2026-10-28: "do only the real fix later", kept in this
+     list, not a proposal): with Peng–Robinson, the P-H search of a reactor's outlet (ethanol, water and diethyl ether)
+     tries 300 K, where the cubic predicts two liquids, and the flash refuses ("no vapour-liquid split"), so the whole
+     search fails. The fix is the vapour-liquid-liquid flash for equations of state, then two liquids in the
+     equilibrium reactor, the CSTR and the PFR. By the decision above, with CPA or another method that describes two
+     liquids properly, not the plain cubic; until then the refusal stays, and NRTL or UNIQUAC is the method for such
+     liquids (docs/METHOD_SELECTION.md). The proposal for the separation units (proposal 0015) lists the liquid-liquid
+     thermodynamics it needs.
 
 ### After the proposals are accepted
 
