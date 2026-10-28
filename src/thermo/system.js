@@ -136,7 +136,11 @@ export function createSystem(cfg) {
     : T => comps.map((c, i) => {
       if (nonvolatile[i]) return NV_PSAT_KPA;
       if (!c.vapourPressure) throw fail("MISSING_DATA", noVapourPressureMessage(c));
-      return vapourPressure(c.vapourPressure, T) / 1000;
+      const p = vapourPressure(c.vapourPressure, T) / 1000;
+      // the curve extrapolated far above the critical temperature (hydrogen above about 150 K) overflows: Raoult's law
+      // cannot hold such a gas (docs/METHOD_SELECTION.md), so refuse it instead of iterating on infinities
+      if (!Number.isFinite(p)) throw failRange("OUT_OF_RANGE", `${c.name}: its vapour-pressure curve, extrapolated to ${T.toFixed(2)} K (critical temperature ${c.Tc_K ?? "unknown"} K), has no finite value, so ${model} cannot describe it; use Peng-Robinson or SRK for a mixture with this gas.`);
+      return p;
     });
 
   /**

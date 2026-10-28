@@ -1,0 +1,218 @@
+{
+ "_note": "Made by validation/python/reference_equilibrium.py: gas cases by Cantera's Gibbs minimization of an ideal-gas phase (NASA 9 polynomials fitted to the components' records); liquid cases by scipy with the NRTL of reference_model.py and ln K from reference_reactions.py. Standard states: ideal gas at 100 kPa, pure liquid.",
+ "gas": {
+  "methanol-from-co2": {
+   "reactions": {
+    "methanol": {
+     "carbon-dioxide": -1,
+     "hydrogen": -3,
+     "methanol": 1,
+     "water": 1
+    },
+    "shift": {
+     "carbon-dioxide": -1,
+     "hydrogen": -1,
+     "carbon-monoxide": 1,
+     "water": 1
+    }
+   },
+   "feed": {
+    "carbon-dioxide": 1.0,
+    "hydrogen": 3.0,
+    "methanol": 0.0,
+    "water": 0.0,
+    "carbon-monoxide": 0.0
+   },
+   "results": [
+    {
+     "T_K": 493.15,
+     "P_kPa": 3000.0,
+     "y": {
+      "carbon-dioxide": 0.211607031983492,
+      "hydrogen": 0.6635391628441758,
+      "methanol": 0.048067869138309634,
+      "water": 0.06242690258608399,
+      "carbon-monoxide": 0.014359033447938761
+     },
+     "total": 3.649183089569166,
+     "cantera": "3.2.0"
+    },
+    {
+     "T_K": 523.15,
+     "P_kPa": 5000.0,
+     "y": {
+      "carbon-dioxide": 0.20428457124180818,
+      "hydrogen": 0.655314616041067,
+      "methanol": 0.04896995519721902,
+      "water": 0.07020040635848579,
+      "carbon-monoxide": 0.021230451161420038
+     },
+     "total": 3.643186628069844,
+     "cantera": "3.2.0"
+    },
+    {
+     "T_K": 573.15,
+     "P_kPa": 8000.0,
+     "y": {
+      "carbon-dioxide": 0.1918389641272012,
+      "hydrogen": 0.6580585567725783,
+      "methanol": 0.03378040735463627,
+      "water": 0.07505123955011003,
+      "carbon-monoxide": 0.04127083219547416
+     },
+     "total": 3.7468591436539493,
+     "cantera": "3.2.0"
+    }
+   ]
+  },
+  "ammonia": {
+   "reactions": {
+    "ammonia": {
+     "nitrogen": -1,
+     "hydrogen": -3,
+     "ammonia": 2
+    }
+   },
+   "feed": {
+    "nitrogen": 1.0,
+    "hydrogen": 3.0,
+    "ammonia": 0.0
+   },
+   "results": [
+    {
+     "T_K": 650.0,
+     "P_kPa": 10000.0,
+     "y": {
+      "nitrogen": 0.17490376825525306,
+      "hydrogen": 0.5247113047657598,
+      "ammonia": 0.3003849269789874
+     },
+     "total": 3.076012276836114,
+     "cantera": "3.2.0"
+    },
+    {
+     "T_K": 700.0,
+     "P_kPa": 20000.0,
+     "y": {
+      "nitrogen": 0.1748606749753937,
+      "hydrogen": 0.524582024926181,
+      "ammonia": 0.30055730009842524
+     },
+     "total": 3.0756045886615553,
+     "cantera": "3.2.0"
+    }
+   ]
+  },
+  "ethanol-dehydration": {
+   "reactions": {
+    "dehydration": {
+     "ethanol": -1,
+     "ethylene": 1,
+     "water": 1
+    }
+   },
+   "feed": {
+    "ethanol": 1.0,
+    "ethylene": 0.0,
+    "water": 0.5
+   },
+   "results": [
+    {
+     "T_K": 450.0,
+     "P_kPa": 101.325,
+     "y": {
+      "ethanol": 0.009836089321902655,
+      "ethylene": 0.3940983464068633,
+      "water": 0.596065564271234
+     },
+     "total": 2.4756492924299236,
+     "cantera": "3.2.0"
+    },
+    {
+     "T_K": 550.0,
+     "P_kPa": 500.0,
+     "y": {
+      "ethanol": 0.005024514838491656,
+      "ethylene": 0.39698529109689773,
+      "water": 0.5979901940646106
+     },
+     "total": 2.4875015117435195,
+     "cantera": "3.2.0"
+    }
+   ]
+  }
+ },
+ "liquid": {
+  "ethyl-acetate-esterification": {
+   "reactions": {
+    "esterification": {
+     "acetic-acid": -1,
+     "ethanol": -1,
+     "ethyl-acetate": 1,
+     "water": 1
+    }
+   },
+   "model": "NRTL",
+   "feeds": [
+    {
+     "acetic-acid": 1.0,
+     "ethanol": 1.0,
+     "ethyl-acetate": 0.0,
+     "water": 0.0
+    },
+    {
+     "acetic-acid": 1.0,
+     "ethanol": 2.0,
+     "ethyl-acetate": 0.0,
+     "water": 0.5
+    }
+   ],
+   "results": [
+    {
+     "T_K": 320.0,
+     "lnK": 3.0114677466200606,
+     "feed": {
+      "acetic-acid": 1.0,
+      "ethanol": 1.0,
+      "ethyl-acetate": 0.0,
+      "water": 0.0
+     },
+     "extent": 0.6609178090272289
+    },
+    {
+     "T_K": 320.0,
+     "lnK": 3.0114677466200606,
+     "feed": {
+      "acetic-acid": 1.0,
+      "ethanol": 2.0,
+      "ethyl-acetate": 0.0,
+      "water": 0.5
+     },
+     "extent": 0.7331147138831087
+    },
+    {
+     "T_K": 345.0,
+     "lnK": 2.887925605538454,
+     "feed": {
+      "acetic-acid": 1.0,
+      "ethanol": 1.0,
+      "ethyl-acetate": 0.0,
+      "water": 0.0
+     },
+     "extent": 0.6464364707159543
+    },
+    {
+     "T_K": 345.0,
+     "lnK": 2.887925605538454,
+     "feed": {
+      "acetic-acid": 1.0,
+      "ethanol": 2.0,
+      "ethyl-acetate": 0.0,
+      "water": 0.5
+     },
+     "extent": 0.717469044076786
+    }
+   ]
+  }
+ }
+}

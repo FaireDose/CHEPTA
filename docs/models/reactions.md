@@ -1,8 +1,8 @@
 # Reactions
 
 How CHEPTA describes a reaction and computes its heat of reaction, equilibrium constant and rate (proposal 0010,
-step 2; code in `src/reactions/`), and the conversion and yield reactors that use them (step 3; `src/units/reactors.js`,
-[below](#reactors)). The equilibrium, CSTR, plug-flow and Gibbs reactors come in the next steps.
+step 2; code in `src/reactions/`), and the conversion, yield (step 3) and equilibrium (step 4) reactors that use them
+(`src/units/reactors.js`, [below](#reactors)). The CSTR, plug-flow and Gibbs reactors come in the next steps.
 
 CHEPTA ships components, not reactions. The user writes the reactions of their process in the project or flowsheet
 file (or, later, in the Reactions setup block next to Components and Method). CHEPTA checks them and computes what
@@ -131,7 +131,7 @@ proposal 0010 step 9) will cover them.
 
 ## Reactors
 
-Two reactor blocks (proposal 0010, step 3; `src/units/reactors.js`) work alone (`runUnit`) and in flowsheets. The
+Three reactor blocks (proposal 0010, steps 3 and 4; `src/units/reactors.js`) work alone (`runUnit`) and in flowsheets. The
 reactions are written once, in the flowsheet file's `reactions` list (as above), and each reactor names those it uses.
 
 **Conversion reactor** (`conversion-reactor`). Each reaction converts a given fraction of a key reactant:
@@ -172,6 +172,36 @@ from a paper):
   (`"vapour"`) or as the pure liquid (`"liquid"`), with its source. Without it, the reactor refuses and names the
   component.
 
+**Equilibrium reactor** (`equilibrium-reactor`; step 4). The listed reactions reach chemical equilibrium together at
+the outlet temperature and pressure:
+
+```json
+{ "id": "RE1", "type": "equilibrium-reactor",
+  "spec": { "reactions": [{ "reaction": "meoh" }, { "reaction": "rwgs", "approach": { "dT_K": 10 } }],
+            "T_K": 523.15, "P_kPa": 5000 } }
+```
+
+- The extents ξ_r solve Σ_j ν_rj ln a_j = ln K_r(T) for every reaction (Rawlings and Ekerdt, section 3.5.1, p. 88), by
+  Newton's method (`src/equilibrium/reaction-equilibrium.js`). K is from the formation data, or from the reaction's own
+  correlation, as in "Heat of reaction and K(T)".
+- The activities are those of the reaction's standard state, from the simulation's property package: a vapour reaction
+  a_j = f_j / P° (the ideal gas, Peng–Robinson or SRK); a liquid reaction a_j = f_j / f_j,pure, which is γ_j x_j for
+  an activity model.
+- The reactions must be independent (none a sum of the others) and all vapour or all liquid. The whole mixture is
+  taken to be in that phase: the outlet is flashed afterwards, and a note says when it is not in the reaction's phase
+  (a reactive flash, with both phases at chemical and phase equilibrium, is not done).
+- An approach to equilibrium, per reaction: `{ "dT_K" }` evaluates K at the outlet temperature plus ΔT (an approach
+  temperature), `{ "fraction" }` takes that fraction of the equilibrium extent.
+- The outlet is given by its temperature or the duty (0: adiabatic, the outlet temperature where the energy balance
+  closes with the reactions at equilibrium), and its pressure or pressure drop. A vapour fraction is not a
+  specification of this reactor.
+- A species that takes part and is not fed is first made present by a tiny extent (1e-8 of the feed) of a reaction
+  that forms it. A reaction none of whose species can be fed or formed has no extent, and a note says so.
+- Refused, with the reason: dependent reactions, reactions in both phases, a component without a Gibbs energy of
+  formation when the reaction has no K of its own.
+- In the Excel export its outlet flows are values from CHEPTA (equilibrium is not a spreadsheet formula); the Inputs
+  sheet lists each reaction's K and extent.
+
 **The energy balance.** The stream enthalpies are referred to each component's ideal gas at 298.15 K (a nonvolatile
 component: its liquid there). The heat of reaction is put on the same basis: ΔrH_ref = Σ ν_j Hf_j, with Hf_j the
 enthalpy of formation of j in that reference state, from its formation record by the paths of "Heat of reaction and
@@ -198,6 +228,19 @@ products, and its energy balance subtracts the heat of the reactions. Its result
   reaction.
 - A methanol loop with a recycle and a purge against the hand calculation, with the overall material, element and
   energy balances.
+
+`test/equilibrium-reactor.test.js` (the equilibrium reactor):
+
+- Gas, the ideal gas: methanol from CO₂ with the reverse water-gas shift (493-573 K, 30-80 bar), ammonia synthesis
+  (650-700 K, 100-200 bar) and ethanol dehydration (450-550 K, 1-5 bar), against Cantera's minimization of the Gibbs
+  energy with the same species and records (`validation/python/reference_equilibrium.py`,
+  `validation/fixtures/equilibrium.json`): mole fractions within 2e-4 relative.
+- Liquid: ethyl acetate esterification with NRTL at 320 and 345 K, two feeds, against scipy (brentq) with the NRTL of
+  `reference_model.py`: the extent within 1e-6 relative.
+- With Peng–Robinson, the reactor block closes the element and energy balances in every gas case; it tends to the ideal
+  gas at 10 kPa and differs from it at 50 bar.
+- The duty given (adiabatic, and the duty of a given temperature brings that temperature back), the two approaches, a
+  liquid outlet that is partly vapour, and what is refused.
 
 **In the workbench** (step 7): the Flowsheet workspace has a Reactions page next to Components and Method.
 

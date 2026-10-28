@@ -247,7 +247,8 @@ character 12; known: C, x, p, f, a, T, P, K").
 3. **Conversion and yield reactors** in flowsheets, with `Hf_kW` and the duty. Test: element
    and energy balances against hand calculations; a reactive recycle in the flowsheet suite.
 4. **Equilibrium reactor** (listed reactions), gas and liquid. Tests: Cantera (gas), Python
-   reference (liquid with NRTL).
+   reference (liquid with NRTL). Done 2026-10-27 (docs/decisions/2026-10-27-02-equilibrium-reactor.md), with its
+   block in the workbench; one phase only (a reactive flash is not done).
 5. **CSTR and plug flow** with the rate forms of section 1 (power law, reversible, LHHW, Michaelis–Menten, Monod and
    the other growth laws). Tests: scipy and the Rawlings and Ekerdt examples.
 6. **Gibbs reactor.** Test: Cantera.
