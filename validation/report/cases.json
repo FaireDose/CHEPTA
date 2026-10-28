@@ -729,7 +729,8 @@
    {"id": "pure/ethylene/density/300K/50bar", "type": "pureProperty", "component": "ethylene", "property": "density", "T_K": 300.0, "P_kPa": 5000.0, "state": "fluid", "quantities": [{"key": "rho_kg_m3", "tol": "gasDensity"}]},
    {"id": "pure/glycerol-carbonate/psat/455.61K", "type": "pureProperty", "component": "glycerol-carbonate", "property": "vapourPressure", "T_K": 455.61, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
    {"id": "pure/solketal/psat/373.15K", "type": "pureProperty", "component": "solketal", "property": "vapourPressure", "T_K": 373.15, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
-   {"id": "pure/levoglucosenone/psat/403.3K", "type": "pureProperty", "component": "levoglucosenone", "property": "vapourPressure", "T_K": 403.3, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]}
+   {"id": "pure/levoglucosenone/psat/403.3K", "type": "pureProperty", "component": "levoglucosenone", "property": "vapourPressure", "T_K": 403.3, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]},
+   {"id": "pure/p-terphenyl/psat/500K", "type": "pureProperty", "component": "p-terphenyl", "property": "vapourPressure", "T_K": 500.0, "quantities": [{"key": "psat_kPa", "tol": "vapourPressure"}]}
   ]},
   {"id": "steam", "title": "Steam tables (water)", "cases": [
    {"id": "steam/sat/100C", "type": "steamSaturation", "T_K": 373.15, "quantities": [{"key": "P_bar", "tol": "steam"}, {"key": "rhoL_kg_m3", "tol": "steam"}, {"key": "rhoV_kg_m3", "tol": "steam"}, {"key": "hL_kJ_kg", "tol": "steam"}, {"key": "hV_kJ_kg", "tol": "steam"}, {"key": "dHvap_kJ_kg", "tol": "steam"}]},

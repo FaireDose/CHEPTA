@@ -33,6 +33,7 @@ import { library } from "./thermo/library.js";
 import { stream, componentFlows, scaleStream, phaseStream } from "./stream/stream.js";
 import { registerUnit, runUnit, unitTypes, unitType, specStatus } from "./units/units.js";
 import "./units/reactors.js";   // registers the conversion and yield reactors (proposal 0010, step 3)
+import "./units/kinetic-reactors.js";   // the CSTR and the plug-flow reactor (proposal 0010, step 5)
 import { exchangerArea, exchangerApproach, exchangerRating, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER } from "./units/heat-exchange.js";
 import { solveFlowsheet, checkFlowsheet, inspectFlowsheet, flowsheetStatus } from "./flowsheet/flowsheet.js";
 import { runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus } from "./flowsheet/document.js";

@@ -1,0 +1,168 @@
+{
+ "_note": "Made by validation/python/reference_kinetics.py: the reactive flash by scipy (fsolve flash, brentq extent) with the NRTL of reference_model.py; the PFR by solve_ivp (Radau) and the CSTR by fsolve with an ideal gas; Robertson's problem by solve_ivp (Radau).",
+ "reactive_flash": {
+  "stoichiometry": {
+   "acetic-acid": -1,
+   "ethanol": -1,
+   "ethyl-acetate": 1,
+   "water": 1
+  },
+  "model": "NRTL",
+  "cases": [
+   {
+    "T_K": 350.0,
+    "P_kPa": 101.325,
+    "feed": {
+     "acetic-acid": 1.0,
+     "ethanol": 1.0,
+     "ethyl-acetate": 0.0,
+     "water": 0.0
+    },
+    "lnK": 2.8666873688553,
+    "extent": 0.6735145572241469,
+    "VF": 0.15231437494310293
+   },
+   {
+    "T_K": 355.0,
+    "P_kPa": 101.325,
+    "feed": {
+     "acetic-acid": 1.0,
+     "ethanol": 1.0,
+     "ethyl-acetate": 0.0,
+     "water": 0.0
+    },
+    "lnK": 2.8463576088440896,
+    "extent": 0.8124350014511204,
+    "VF": 0.7524696458125822
+   },
+   {
+    "T_K": 352.0,
+    "P_kPa": 101.325,
+    "feed": {
+     "acetic-acid": 1.0,
+     "ethanol": 1.5,
+     "ethyl-acetate": 0.0,
+     "water": 0.3
+    },
+    "lnK": 2.8584516960176813,
+    "extent": 0.9438475681896773,
+    "VF": 0.8679659207160046
+   }
+  ]
+ },
+ "gas": {
+  "ids": [
+   "ethanol",
+   "ethylene",
+   "water",
+   "diethyl-ether"
+  ],
+  "reactions": [
+   {
+    "id": "R1",
+    "stoichiometry": {
+     "ethanol": -1,
+     "ethylene": 1,
+     "water": 1
+    },
+    "forward": {
+     "k0": 2000000.0,
+     "Ea_J_mol": 80000.0,
+     "orders": {
+      "ethanol": 1
+     }
+    },
+    "reverse": {
+     "k0": 5000.0,
+     "Ea_J_mol": 40000.0,
+     "orders": {
+      "ethylene": 1,
+      "water": 1
+     }
+    }
+   },
+   {
+    "id": "R2",
+    "stoichiometry": {
+     "ethanol": -2,
+     "diethyl-ether": 1,
+     "water": 1
+    },
+    "forward": {
+     "k0": 4000.0,
+     "Ea_J_mol": 60000.0,
+     "orders": {
+      "ethanol": 2
+     }
+    },
+    "reverse": {
+     "k0": 10.0,
+     "Ea_J_mol": 30000.0,
+     "orders": {
+      "diethyl-ether": 1,
+      "water": 1
+     }
+    }
+   }
+  ],
+  "T_K": 600.0,
+  "P_kPa": 200.0,
+  "feed_kmol_h": {
+   "ethanol": 10.0,
+   "ethylene": 0.0,
+   "water": 1.0,
+   "diethyl-ether": 0.0
+  },
+  "pfr": {
+   "L_m": 3.0,
+   "D_m": 0.05,
+   "tubes": 20
+  },
+  "cstr": {
+   "V_m3": 0.2
+  },
+  "pfr_results": [
+   {
+    "z_m": 0.75,
+    "flows_kmol_h": {
+     "ethanol": 6.146456340619769,
+     "ethylene": 0.08590675321199492,
+     "water": 2.9697252062961126,
+     "diethyl-ether": 1.8838184530841176
+    }
+   },
+   {
+    "z_m": 1.5,
+    "flows_kmol_h": {
+     "ethanol": 4.779453746389717,
+     "ethylene": 0.04977292591742546,
+     "water": 3.635159589763854,
+     "diethyl-ether": 2.5853866638464287
+    }
+   },
+   {
+    "z_m": 3.0,
+    "flows_kmol_h": {
+     "ethanol": 3.9131051454579957,
+     "ethylene": 0.0352303347015106,
+     "water": 4.061062594621758,
+     "diethyl-ether": 3.025832259920247
+    }
+   }
+  ],
+  "cstr_results": {
+   "ethanol": 4.656522973170203,
+   "ethylene": 0.044979808339086554,
+   "water": 3.6942284175844415,
+   "diethyl-ether": 2.649248609245355
+  }
+ },
+ "robertson": {
+  "t": 40,
+  "y": [
+   0.7158270687194034,
+   9.185534764558864e-06,
+   0.2841637457458308
+  ]
+ }
+}

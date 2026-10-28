@@ -456,6 +456,17 @@ a.fa-mini{text-decoration:none}
 .fa-rx-use{border-top:1px solid var(--fug-rule); padding:6px 0}
 .fa-rx-use-head{display:flex; gap:6px; align-items:flex-start; cursor:pointer}
 .fa-rx-use-row{display:grid; gap:4px; margin:4px 0 0 22px}
+.fa-menu-wrap{position:relative}
+.fa-menu{position:absolute; z-index:30; top:calc(100% + 4px); left:0; min-width:260px; display:grid; padding:4px; background:var(--fug-bg); border:1px solid var(--fug-rule); border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,.14)}
+.fa-menu-item{display:grid; gap:1px; text-align:left; padding:6px 8px; border:0; border-radius:6px; background:none; color:var(--fug-fg); font:inherit; cursor:pointer}
+.fa-menu-item span{color:var(--fug-muted); font-size:12px}
+.fa-menu-item:hover,.fa-menu-item:focus-visible{background:color-mix(in srgb, var(--fug-accent) 10%, transparent)}
+.fa-rx-kin{display:grid; gap:6px}
+.fa-rx-const{display:grid; grid-template-columns:1fr 1fr; gap:6px}
+.fa-rx-ads{display:grid; gap:4px; border-top:1px dashed var(--fug-rule); padding-top:4px}
+.fa-rx-kin textarea{width:100%; font-family:ui-monospace,monospace; font-size:12px; box-sizing:border-box}
+.fa-rx-profile{display:grid; gap:8px}
+.fa-rx-chart .fug-plot{max-width:640px}
 .fa-rx-props{display:grid; gap:2px; margin:6px 0; font-size:12.5px}
 .fa-rx-list{margin:6px 0; padding-left:16px; font-size:12.5px; display:grid; gap:3px}
 .fa-chip-x{background:none; border:0; cursor:pointer; font-size:14px; line-height:1; padding:0 2px; color:inherit}

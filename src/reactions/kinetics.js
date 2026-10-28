@@ -25,12 +25,16 @@
  * units of each constant follow from these; the user enters them so. The rate r is that of the reaction: component j
  * is formed at ν_j r.
  *
+ *   expression        the user's own formula (src/reactions/expression.js; proposal 0010, section 4 and step 9):
+ *                     { "form": "expression", "rate": "k1 * C['ethanol'] - ...", "constants": { "k1": { k0, Ea_J_mol } } }
+ *
  * Eley-Rideal and Mars-van Krevelen forms are not in the book; no open source with their forms was found in step 2
  * (docs/decisions/2026-10-22-05-reactions.md). Until one is, they can be written as an expression (step 9).
  */
 import { componentRecord, findComponent } from "../thermo/components.js";
 import { fail } from "../util/errors.js";
 import { equilibriumConstant, R, P_STANDARD_KPA } from "./reaction.js";
+import { parseExpression, expressionSpecies, evaluate } from "./expression.js";
 
 export const RATE_FORMS = Object.freeze({
   "power-law": "r = k Π c_j^α_j, optionally minus a reverse term (Rawlings and Ekerdt, eqn 5.38)",
@@ -38,7 +42,11 @@ export const RATE_FORMS = Object.freeze({
   "michaelis-menten": "r = k c_S / (1 + K c_S) (Exercise 9.15)",
   monod: "r = μ c_X, μ = μm S / (Ks + S), with substrate or product inhibition (section 10.5)",
   growth: "r = μ c_X with the Blackman, Tessier, Moser or Contois equation (section 10.5)",
+  expression: "your own formula of T, P, K, C['…'], x['…'], p['…'], f['…'], a['…'] and your constants",
 });
+/** The rate bases as the names of a formula (expression.js) and of the values a reactor supplies. */
+export const BASIS_KEY = Object.freeze({ concentration: "C", "mole-fraction": "x", "partial-pressure": "p", fugacity: "f", activity: "a" });
+const EXPRESSION_KEYS = ["form", "rate", "constants", "per", "T_K", "source", "basis"];
 export const RATE_BASES = Object.freeze({
   concentration: "mol/m3", "mole-fraction": "-", activity: "-", "partial-pressure": "kPa", fugacity: "kPa",
 });
@@ -133,6 +141,7 @@ export function checkRate(rate, rx, opts = {}) {
     const hint = rate.form === "expression" ? " Your own formula (\"expression\") comes in a later step (proposal 0010, step 9)." : "";
     throw fail("BAD_INPUT", `${label}: unknown form ${JSON.stringify(rate.form)}; known: ${Object.keys(RATE_FORMS).join(", ")}.${hint}`);
   }
+  if (form === "expression") return checkExpression(rate, rx, label, ud);
   const bio = form === "monod" || form === "growth" || form === "michaelis-menten";
   const basis = rate.basis ?? "concentration";
   if (!RATE_BASES[basis]) throw fail("BAD_INPUT", `${label}: unknown basis ${JSON.stringify(basis)}; known: ${Object.keys(RATE_BASES).join(", ")}.`);
@@ -201,9 +210,40 @@ export function checkRate(rate, rx, opts = {}) {
   return out;
 }
 
+/** A formula rate (form "expression"): its text parsed, its constants checked. */
+function checkExpression(rate, rx, label, ud) {
+  if (typeof rate.rate !== "string" || !rate.rate.trim()) throw fail("BAD_INPUT", `${label}: write the formula in "rate", e.g. "k1 * C['ethanol'] * C['acetic-acid']".`);
+  const per = rate.per ?? "volume";
+  if (!PER[per]) throw fail("BAD_INPUT", `${label}: "per" must be "volume" or "catalyst-mass", found ${JSON.stringify(per)}.`);
+  const given = { ...(rate.constants ?? {}) };
+  for (const [k, v] of Object.entries(rate)) if (!EXPRESSION_KEYS.includes(k)) given[k] = v;
+  const constants = {};
+  for (const [k, v] of Object.entries(given)) {
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(k)) throw fail("BAD_INPUT", `${label}: the constant name "${k}" must start with a letter and hold only letters, digits and _.`);
+    if (["T", "P", "R", "K", "C", "x", "p", "f", "a", "exp", "ln", "log10", "sqrt", "abs", "min", "max"].includes(k)) throw fail("BAD_INPUT", `${label}: "${k}" is a name of the formula itself; call the constant otherwise.`);
+    constants[k] = checkConstant(v, `${label}: constant "${k}"`);
+  }
+  let range = null;
+  if (rate.T_K !== undefined) {
+    if (!(Array.isArray(rate.T_K) && rate.T_K.length === 2 && rate.T_K.every(Number.isFinite) && rate.T_K[0] < rate.T_K[1])) {
+      throw fail("BAD_INPUT", `${label}: "T_K" must be [lowest, highest] in K, the range of the data the rate law was fitted to.`);
+    }
+    range = rate.T_K;
+  }
+  let tree;
+  try {
+    tree = parseExpression(rate.rate, { constants: Object.keys(constants), species: (key, at) => {
+      try { return speciesId(key, "", ud); } catch { throw fail("BAD_INPUT", `unknown component '${key}' at character ${at}.`); }
+    } });
+  } catch (e) { e.message = `${label}: ${e.message}`; throw e; }
+  return { form: "expression", text: rate.rate, tree, constants, per, units: PER[per], basis: "expression", basisUnits: "", T_K: range, source: rate.source ?? null,
+    reads: expressionSpecies(tree) };
+}
+
 /** The species a rate reads, so that a reactor can supply their values. */
 export function rateSpecies(rate) {
   const s = new Set();
+  for (const r of rate.reads ?? []) s.add(r.id);
   for (const o of [rate.forward?.orders, rate.reverse?.orders]) for (const id of Object.keys(o ?? {})) s.add(id);
   for (const a of rate.adsorption ?? []) s.add(a.species);
   for (const id of [rate.substrate, rate.biomass, rate.product]) if (id) s.add(id);
@@ -223,10 +263,11 @@ export function reactionRate(rx, state, opts = {}) {
   if (!rate) throw fail("MISSING_DATA", `${rx?.name ?? "The reaction"} has no rate law: a CSTR or plug-flow reactor needs one (a conversion, yield, equilibrium or Gibbs reactor does not).`);
   const T = state?.T_K;
   if (!(Number.isFinite(T) && T > 0)) throw fail("BAD_INPUT", `${rx.name}: the temperature must be a positive number in K, found ${T}.`);
-  const vals = {};
-  for (const [key, v] of Object.entries(state.values ?? {})) vals[findComponent(key, ud)] = v;
   const warnings = [];
   if (rate.T_K && (T < rate.T_K[0] || T > rate.T_K[1])) warnings.push(`${rx.name}: ${T.toFixed(2)} K is outside the range of its rate law (${rate.T_K[0]}-${rate.T_K[1]} K)`);
+  if (rate.form === "expression") return expressionRate(rx, rate, state, T, warnings, ud);
+  const vals = {};
+  for (const [key, v] of Object.entries(state.values ?? state.bases?.[BASIS_KEY[rate.basis]] ?? {})) vals[findComponent(key, ud)] = v;
   const val = id => {
     const v = vals[id];
     const name = componentRecord(id, ud).name;
@@ -294,4 +335,20 @@ export function reactionRate(rx, state, opts = {}) {
   }
   if (!Number.isFinite(r)) throw fail("NO_CONVERGENCE", `${rx.name}: the rate is ${r} at ${T.toFixed(2)} K; check the constants and the ${rate.basis} values (a 0/0 in the denominator, or an overflow).`);
   return { r, units: rate.units, forward, reverse, K, warnings };
+}
+
+/** The rate of a formula: state.bases holds C, x, p, f and a by component id; state.P_kPa the pressure. */
+function expressionRate(rx, rate, state, T, warnings, ud) {
+  const constants = Object.fromEntries(Object.entries(rate.constants).map(([k, c]) => [k, constantAt(c, T)]));
+  let K;
+  if (/\bK\b/.test(rate.text)) {
+    const eq = equilibriumConstant(rx, T, { userData: ud });
+    warnings.push(...eq.warnings);
+    K = eq.K;
+  }
+  let r;
+  try { r = evaluate(rate.tree, { T, P: state.P_kPa, R, K, constants, values: state.bases ?? {} }); }
+  catch (e) { e.message = `${rx.name}: ${e.message}`; throw e; }
+  if (!Number.isFinite(r)) throw fail("NO_CONVERGENCE", `${rx.name}: your formula gives ${r} at ${T.toFixed(2)} K; check it for a division by zero, a logarithm or root of a negative number, or an overflow.`);
+  return { r, units: rate.units, forward: null, reverse: null, K: K ?? null, warnings };
 }

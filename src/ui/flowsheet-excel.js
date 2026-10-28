@@ -118,14 +118,21 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
         return { r, key: comps.indexOf(e.key), cell: at(row, 2) };
       });
       I.push([]);
-    } else if (b.type === "equilibrium-reactor" && res.blocks[b.id]?.reaction?.equilibrium) {
+    } else if ((b.type === "equilibrium-reactor" || b.type === "gibbs-reactor") && res.blocks[b.id]?.reaction?.equilibrium) {
       // chemical equilibrium is not a spreadsheet formula: its outlet flows are values from CHEPTA, listed with K here
       const q = res.blocks[b.id].reaction;
       I.push([{ v: `Equilibrium reactor ${b.label || b.id}`, s: "bold" }, "(solved in CHEPTA: its outlet flows are values; change the reactions there)"]);
       for (const [id, xi] of Object.entries(q.extents_kmol_h)) {
-        const e = q.equilibrium.reactions[id], r = reactionsById.get(id);
+        const e = q.equilibrium.reactions[id], r = reactionsById.get(id) ?? q.generated?.find(g => g.id === id);
         I.push([`${r?.name || id}: K at ${+e.T_K.toPrecision(6)} K`, null, val(e.K)], [`${r?.name || id}: extent, kmol/h`, null, val(xi)]);
       }
+      I.push([]);
+    } else if ((b.type === "cstr" || b.type === "pfr") && res.blocks[b.id]?.reaction?.kinetic) {
+      // kinetics are integrated in CHEPTA, not in the sheet: the outlet flows are values, with each extent here
+      const q = res.blocks[b.id].reaction;
+      I.push([{ v: `${unitType(b.type).label} ${b.label || b.id}`, s: "bold" }, "(solved in CHEPTA from the reactions' kinetics: its outlet flows are values; change it there)"]);
+      for (const [id, xi] of Object.entries(q.extents_kmol_h)) I.push([`${reactionsById.get(id)?.name || id}: extent, kmol/h`, null, val(xi)]);
+      if (q.kinetic.V_m3 != null) I.push(["Reactor volume, m3", null, val(q.kinetic.V_m3)]);
       I.push([]);
     } else if (["flash", "heater", "mixer"].includes(b.type) && Object.keys(spec).length) {
       I.push([{ v: `${unitType(b.type).label} ${b.label || b.id}`, s: "bold" }, concept && b.type === "flash"

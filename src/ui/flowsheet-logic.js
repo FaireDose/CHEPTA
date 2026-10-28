@@ -12,13 +12,16 @@
 import { unitType } from "../units/units.js";
 import "../units/reactors.js";   // the reactor blocks, registered
 
-/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, P1; reactors R1 (conversion), RE1 (equilibrium), RY1 (yield). */
+/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, P1; reactors R1 (conversion), RE1 (equilibrium),
+ * RG1 (Gibbs), RY1 (yield), CS1 (CSTR), PF1 (plug flow). */
 export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", compressor: "K", expander: "EX",
-  "conversion-reactor": "R", "equilibrium-reactor": "RE", "yield-reactor": "RY", product: "P" };
-/** The reactor blocks (proposal 0010, steps 3 and 4), shown in their own toolbar group. */
-export const REACTORS = ["conversion-reactor", "equilibrium-reactor", "yield-reactor"];
+  "conversion-reactor": "R", "equilibrium-reactor": "RE", "gibbs-reactor": "RG", "yield-reactor": "RY", cstr: "CS", pfr: "PF", product: "P" };
+/** The reactor blocks (proposal 0010, steps 3 to 6), behind one Reactor button of the toolbar. */
+export const REACTORS = ["conversion-reactor", "yield-reactor", "equilibrium-reactor", "gibbs-reactor", "cstr", "pfr"];
 /** The reactors that use the reactions of the Reactions page; their spec.reactions lists ids or { reaction, ... }. */
-export const REACTION_USERS = ["conversion-reactor", "equilibrium-reactor"];
+export const REACTION_USERS = ["conversion-reactor", "equilibrium-reactor", "cstr", "pfr"];
+/** The reactors whose reactions need a rate law (proposal 0010, step 5). */
+export const KINETIC = ["cstr", "pfr"];
 const reactionIdOf = e => (typeof e === "string" ? e : e?.reaction);
 /** The block types of the palette, in order (products are automatic). */
 export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater", "hx", "valve", "pump", "compressor", "expander", ...REACTORS];
@@ -82,8 +85,29 @@ function defaultSpec(type, fs) {
     return { reactions: r ? [{ reaction: r.id }] : [] };
   }
   if (type === "yield-reactor") return { basis: "mass", yields: {} };
+  // a CSTR or plug-flow reactor starts with the first reaction that has kinetics (else none), one phase
+  if (KINETIC.includes(type)) {
+    const r = (fs.reactions ?? []).find(x => x.rate);
+    return { reactions: r ? [{ reaction: r.id }] : [] };
+  }
   if (type === "separator") return { fractions: Object.fromEntries(fs.components.map(c => [c, [0.5, "rest"]])) };
   return {};
+}
+
+/** Change a block into another type of the same ports (the Reactor workspace's choice of reactor): a new default spec. */
+export function setBlockType(fs, id, type) {
+  if (!PALETTE.includes(type)) throw new Error(`Unknown block type "${type}".`);
+  const out = clone(fs), b = out.blocks.find(x => x.id === id);
+  if (!b) throw new Error(`No block ${id}.`);
+  const keep = ["T_K", "duty_kW", "P_kPa", "dP_kPa"].filter(k => b.spec?.[k] != null);
+  // its id follows the type (RE1 → PF1), and its streams with it
+  const nid = nextId(new Set(out.blocks.filter(x => x !== b).map(x => x.id)), PREFIX[type]);
+  for (const st of out.streams) for (const end of ["from", "to"]) if (st[end]?.startsWith(`${id}.`)) st[end] = `${nid}.${st[end].slice(id.length + 1)}`;
+  b.id = nid;
+  b.type = type;
+  b.spec = { ...defaultSpec(type, out), ...Object.fromEntries(keep.map(k => [k, b.spec[k]])) };
+  if (["pfr", "equilibrium-reactor", "gibbs-reactor", "cstr"].includes(type)) delete b.spec.VF;
+  return out;
 }
 
 /** Place a block of `type` at (x, y) (or a free spot) with automatic products on its outlets. */
@@ -579,6 +603,16 @@ export function removeReaction(fs, id) {
   return { fs: out, note: touched.length ? `${touched.join(", ")} no longer use${touched.length === 1 ? "s" : ""} it.` : "" };
 }
 
+/** A reaction saved to the global list (replacing one of the same name), as written here, without its id's history. */
+export function saveShared(shared, r) {
+  const copy = JSON.parse(JSON.stringify(r));
+  const key = x => x.name || x.id;
+  return [...(shared ?? []).filter(x => key(x) !== key(copy)), copy];
+}
+
+/** Is this global reaction already in the flowsheet (same name and coefficients)? */
+export const hasShared = (fs, g) => (fs.reactions ?? []).some(r => (r.name || r.id) === (g.name || g.id) && JSON.stringify(r.stoichiometry) === JSON.stringify(g.stoichiometry));
+
 /** The reaction list as a file of its own, to copy reactions between projects (no reaction catalogue is shipped). */
 export function reactionsFile(fs) {
   return { chepta_reactions: 1, reactions: JSON.parse(JSON.stringify(fs.reactions ?? [])) };
@@ -611,7 +645,9 @@ export function importReactions(fs, file) {
 export function usedReactions(fs) {
   if (!fs?.reactions) return fs;
   const used = new Set(fs.blocks.filter(b => REACTION_USERS.includes(b.type)).flatMap(b => (b.spec?.reactions ?? []).map(reactionIdOf)));
-  const reactions = fs.reactions.filter(r => used.has(r.id));
+  // a rate still being written stops only the CSTR and plug-flow reactors that use it
+  const kinetic = new Set(fs.blocks.filter(b => KINETIC.includes(b.type)).flatMap(b => (b.spec?.reactions ?? []).map(reactionIdOf)));
+  const reactions = fs.reactions.filter(r => used.has(r.id)).map(r => (r.rate && !kinetic.has(r.id) ? (({ rate, ...rest }) => rest)(r) : r));
   const out = { ...fs };
   if (reactions.length) out.reactions = reactions; else delete out.reactions;
   return out;

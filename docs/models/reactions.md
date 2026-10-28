@@ -131,7 +131,8 @@ proposal 0010 step 9) will cover them.
 
 ## Reactors
 
-Three reactor blocks (proposal 0010, steps 3 and 4; `src/units/reactors.js`) work alone (`runUnit`) and in flowsheets. The
+Six reactor blocks (proposal 0010, steps 3 to 6; `src/units/reactors.js`, `src/units/kinetic-reactors.js`) work alone
+(`runUnit`), in flowsheets, and in the Reactor workspace of the Unit models (below). The
 reactions are written once, in the flowsheet file's `reactions` list (as above), and each reactor names those it uses.
 
 **Conversion reactor** (`conversion-reactor`). Each reaction converts a given fraction of a key reactant:
@@ -187,9 +188,18 @@ the outlet temperature and pressure:
 - The activities are those of the reaction's standard state, from the simulation's property package: a vapour reaction
   a_j = f_j / P° (the ideal gas, Peng–Robinson or SRK); a liquid reaction a_j = f_j / f_j,pure, which is γ_j x_j for
   an activity model.
-- The reactions must be independent (none a sum of the others) and all vapour or all liquid. The whole mixture is
-  taken to be in that phase: the outlet is flashed afterwards, and a note says when it is not in the reaction's phase
-  (a reactive flash, with both phases at chemical and phase equilibrium, is not done).
+- The reactions must be independent (none a sum of the others).
+- `"phases": 1` (the default): the reactions are all vapour or all liquid, and the whole mixture is taken to be in that
+  phase. The outlet is flashed afterwards, and a note says when it is not in the reaction's phase.
+- `"phases": 2`, a reactive flash (2026-10-28): at each set of extents the mixture is flashed at T and P, and the
+  activities come from the fugacities of the phases found (equal in both at phase equilibrium), so chemical and phase
+  equilibrium hold together. Each reaction keeps its own standard state, so vapour and liquid reactions can be mixed.
+- **Gibbs reactor** (`gibbs-reactor`, step 6; a block of its own, on this solver): the species that may react are given
+  (`species`, default all), not the reactions. CHEPTA reduces their element matrix and writes one reaction for each species that is not a pivot (a basis of
+  the null space): a complete set of independent reactions, with K from the formation data in the standard state of
+  `phase` (vapour by default). Their equilibrium is the minimum of the Gibbs energy with the elements balanced
+  (Rawlings and Ekerdt, section 3.5.2, p. 92). The others pass through. The result lists the reactions it wrote
+  (`reaction.generated`). One phase or two, as above.
 - An approach to equilibrium, per reaction: `{ "dT_K" }` evaluates K at the outlet temperature plus ΔT (an approach
   temperature), `{ "fraction" }` takes that fraction of the equilibrium extent.
 - The outlet is given by its temperature or the duty (0: adiabatic, the outlet temperature where the energy balance
@@ -197,8 +207,46 @@ the outlet temperature and pressure:
   specification of this reactor.
 - A species that takes part and is not fed is first made present by a tiny extent (1e-8 of the feed) of a reaction
   that forms it. A reaction none of whose species can be fed or formed has no extent, and a note says so.
-- Refused, with the reason: dependent reactions, reactions in both phases, a component without a Gibbs energy of
-  formation when the reaction has no K of its own.
+- Refused, with the reason: dependent reactions, reactions in both phases with one phase, a component without a Gibbs
+  energy of formation when the reaction has no K of its own.
+
+**CSTR** (`cstr`) and **plug-flow reactor** (`pfr`), step 5: the reactions with their rate laws ("Rate laws" above, or
+your own formula, below).
+
+```json
+{ "id": "CS1", "type": "cstr", "spec": { "reactions": [{ "reaction": "est" }], "V_m3": 2, "T_K": 340, "P_kPa": 101.325 } }
+{ "id": "PF1", "type": "pfr", "spec": { "reactions": ["r1", "r2"], "L_m": 3, "D_m": 0.05, "tubes": 20, "duty_kW": 0,
+  "pressureDrop": { "particle_m": 0.003, "voidage": 0.4, "viscosity_Pa_s": 2e-5 } } }
+```
+
+- Each rate is evaluated in its reaction's phase, from that phase's composition: C_j = x_j / v (v = Z R T / P for a
+  vapour; Σ x_j M_j / ρ_j for a liquid, from the pure liquids' density records), p_j = x_j P, the fugacity f_j, and the
+  activity a_j (f_j / P° for a vapour, f_j / f_j,pure for a liquid). `"phases": 2` flashes the mixture and uses the phase
+  found; with one phase the whole mixture is the reaction's phase.
+- CSTR: ξ_r = 3.6 S_r r_r at the outlet, S_r the reactor volume `V_m3` (with two phases times `liquidFraction`, the
+  liquid's share, or one minus it), or the catalyst mass `W_kg` for a rate per kg of catalyst. Newton's method in the
+  extents, with a continuation in the size when the direct solution fails. T given, or the duty (then the steady state
+  nearest the inlet temperature; a CSTR can have several, Rawlings and Ekerdt section 6.3.1). It reports the residence
+  time V / Q_out.
+- PFR: dξ_r/dz = 3.6 A w_r r_r along the tube (A = tubes π D²/4; w_r = 1 with one phase, the share of the volume flow in
+  the reaction's phase with two, or the bed density `bed_kg_m3` for a rate per kg of catalyst). Energy: isothermal
+  (`T_K`), a duty spread evenly (`duty_kW`, 0 adiabatic), or a coolant (`coolant: { U_W_m2K, T_K }`, through the wall);
+  d(H + Σ ξ ΔrH)/dz = q, and T where the reaction phase's enthalpy (with two phases: a P-H flash) meets H. Pressure:
+  none, a given drop spread along the tube, or the Ergun equation of a packed bed (eqn 7.69, p. 398) with the gas
+  viscosity you give. Integrated by the stiff, error-controlled Rosenbrock pair of ode23s (Shampine and Reichelt 1997;
+  `src/util/ode.js`); `reaction.kinetic.profile` holds z, T, P, the flows, the vapour fraction and the rates at each step.
+- The Excel export lists their extents; the outlet flows are values from CHEPTA.
+
+**Your own kinetics** (`"form": "expression"`, step 9): a formula, parsed without `eval` (`src/reactions/expression.js`):
+
+```json
+{ "form": "expression", "rate": "k1 * C['acetic-acid'] * C['ethanol'] - k1 / K * C['ethyl-acetate'] * C['water']",
+  "constants": { "k1": { "k0": 2.5e3, "Ea_J_mol": 48000 } }, "per": "volume", "source": "..." }
+```
+
+Names: T (K), P (kPa), R, K (the reaction's equilibrium constant at T), C['…'] (mol/m³), x['…'], p['…'] (kPa),
+f['…'] (kPa), a['…'], your constants (a number, or k0 T^B exp(−Ea/RT)); exp, ln, log10, sqrt, abs, min, max; + − * /
+^ (or **). An error names its position ("unknown name 'conc' at character 12; known: …").
 - In the Excel export its outlet flows are values from CHEPTA (equilibrium is not a spreadsheet formula); the Inputs
   sheet lists each reaction's K and extent.
 
@@ -217,6 +265,16 @@ reaction at its temperature, and an adiabatic one (`duty_kW: 0`) heats or cools 
 generation (the mass balance for the yield reactor) to 1e-9. A flowsheet with reactors closes feeds + generation =
 products, and its energy balance subtracts the heat of the reactions. Its results give `generation_kmol_h` and
 `reaction_kW`, and each reactor's `reaction`: the generation, the extents, the conversions and the heat.
+
+**In the workbench.** The flowsheet's toolbar has one Reactor button; its menu lists the six types. A reaction saved
+"global" on a Reactions page can be added on the other workspace's Reactions page without writing it again. A selected
+plug-flow reactor (or a double-click on it) shows its profiles under the drawing, in place of the stream table:
+molar flows, mole fractions, temperature, pressure, conversion, rates and vapour fraction against the length, as the
+profile plots of desktop simulators. The Reactor workspace of the Unit models is a flowsheet of its own (a feed, one
+reactor, its product) with the same panels and engine, and the curves of a preliminary study: the profiles, the
+conversion (or the outlet's mole fractions, or the duty) against the reactor temperature, the conversion against a
+CSTR's volume, ΔrH and ln K of each reaction against temperature, and each rate against temperature at the feed's
+composition. The Reactions page edits each reaction's kinetics (a form and its constants, or your own formula).
 
 **Tests** (`test/reactors.test.js`):
 
@@ -237,6 +295,21 @@ products, and its energy balance subtracts the heat of the reactions. Its result
   `validation/fixtures/equilibrium.json`): mole fractions within 2e-4 relative.
 - Liquid: ethyl acetate esterification with NRTL at 320 and 345 K, two feeds, against scipy (brentq) with the NRTL of
   `reference_model.py`: the extent within 1e-6 relative.
+`test/kinetic-reactors.test.js` (steps 5, 6 and 9; `validation/python/reference_kinetics.py`,
+`validation/fixtures/kinetics.json`):
+
+- The reactive flash: esterification with NRTL and its vapour at 350, 352 and 355 K and 101.325 kPa, against scipy
+  (a flash by fsolve inside brentq on the extent): the extent within 1e-6, the vapour fraction within 1e-4.
+- Gibbs reactor: the reactions it writes for CO₂, H₂, methanol, water and CO give Cantera's Gibbs minimum (the fixture of
+  the equilibrium reactor), mole fractions within 2e-4 relative.
+- PFR and CSTR with two reversible Arrhenius rates (ethanol to ethylene and to diethyl ether, ideal gas): the profile
+  and outlet against scipy's solve_ivp (Radau) within 2e-5 relative at the outlet; the CSTR against fsolve within 1e-8;
+  the same with the rates written as your own formula.
+- Rawlings and Ekerdt Example 4.4 (a 12.2 m tube for 35 % conversion) within 0.002 in the conversion, and Example 4.2's
+  balance X = kτ/(1 + kτ) for a first-order CSTR exactly.
+- An adiabatic PFR with the Ergun pressure drop: balances, and the drop of a short tube against eqn 7.69.
+- The stiff integrator on Robertson's problem against Radau; the formula's error messages.
+
 - With Peng–Robinson, the reactor block closes the element and energy balances in every gas case; it tends to the ideal
   gas at 10 kPa and differs from it at 50 bar.
 - The duty given (adiabatic, and the duty of a given temperature brings that temperature back), the two approaches, a

@@ -39,9 +39,12 @@ test("unit conversions are exact definitions and convert back", () => {
 });
 
 test("unit names are normalized, and a typo is refused", () => {
-  assert.deepEqual(normalizeUnits({ T: "°C", P: "kPa", energy: "kJ/kg", viscosity: "cP" }), { T: "C", P: "kPa", basis: "mass", viscosity: "mPa s" });
-  assert.deepEqual(normalizeUnits({ viscosity: "Pa·s" }, SI), { ...SI });
-  assert.throws(() => normalizeUnits({ P: "psi" }), /Unknown P unit "psi"/);
+  // the flow and duty units since 2026-10-28 (Settings), at their defaults unless given; psi is a unit since then too
+  const flows = { flow: "kmol/h", massFlow: "kg/h", duty: "kW" };
+  assert.deepEqual(normalizeUnits({ T: "°C", P: "kPa", energy: "kJ/kg", viscosity: "cP" }), { T: "C", P: "kPa", basis: "mass", viscosity: "mPa s", ...flows });
+  assert.deepEqual(normalizeUnits({ viscosity: "Pa·s" }, SI), { ...flows, ...SI });
+  assert.equal(normalizeUnits({ P: "psi", duty: "mw" }).P, "psia");
+  assert.throws(() => normalizeUnits({ P: "psx" }), /Unknown P unit "psx"/);
 });
 
 test("pressure lists are parsed in the display unit and returned in kPa", () => {

@@ -20,7 +20,7 @@ import { HENRY_GASES } from "../thermo/henry.js";
 import { pure } from "../thermo/pure.js";
 import knownIssues from "../data/known-issues.json" with { type: "json" };
 import { WORKSPACES, UTILITIES, INPUTS, checkInputs, normalizeInputs, seedInputs, isEosModel } from "./workspaces.js";
-import { normalizeUnits, tToDisplay, tFromDisplay, pToDisplay, pFromDisplay, fmtShort } from "./properties-logic.js";
+import { tLabel, normalizeUnits, tToDisplay, tFromDisplay, pToDisplay, pFromDisplay, fmtShort } from "./properties-logic.js";
 import { normalizeFlash, FLASH_DEFAULTS } from "./flash-logic.js";
 import { normalizeHx, hxStreamSetup } from "./hx-logic.js";
 import { solidUnitIds } from "./solubility-units.js";
@@ -40,6 +40,7 @@ export const VIEWS = {
   flash: { workspace: "flash", label: "Flash" },
   hx: { workspace: "hx", label: "Heat exchanger" },
   flowsheet: { workspace: "flowsheet", label: "Flowsheet" },
+  reactor: { workspace: "reactor", label: "Reactor" },
   henry: { workspace: "solubility", label: "Gas solubility" },
   solid: { workspace: "solubility", label: "Solid solubility" },
   sle: { workspace: "solubility", label: "Solid-liquid diagram" },
@@ -268,7 +269,7 @@ export function resolveView(wanted, ids, model = "NRTL", ud = null) {
   let v = aliasOf(wanted);
   if (v === "eos") v = ids.length === 2 ? "pxy" : "envelope";
   // the flowsheet has its own components and method (state.flowsheet): a start link to it opens it as it is
-  if (v === "flowsheet") return v;
+  if (v === "flowsheet" || v === "reactor") return v;
   if (!ids.length) return VIEWS[v] ? v : "txy";
   if (VIEWS[v] && viewAvailability(v, ids, model, ud).enabled) return v;
   const liq = liquids(ids, ud).length;
@@ -395,6 +396,10 @@ export function initialState(cfg = {}) {
     // the user's own data (proposal 0012), as entered (it is saved as written); userOverlay() gives it checked
     userData: normalizeUserData(cfg.userData),
     flowsheet: normalizeFlowsheet(cfg.flowsheet, ud),
+    // the Reactor workspace of the Unit models: a flowsheet of its own (reactor-workspace.js)
+    reactor: normalizeFlowsheet(cfg.reactor, ud),
+    // reactions saved "global" (the maintainer, 2026-10-28): one list for the Flowsheet and the Reactor workspace
+    sharedReactions: sharedList(cfg.sharedReactions),
     prefer: normalizePrefer(cfg.prefer),
   };
   if (start === "sources") { state.utility = "sources"; start = ""; }
@@ -590,6 +595,8 @@ export function applyPatch(state, patch = {}) {
   if ("sets" in patch) next.sets = patch.sets === null ? {} : normalizeSets(patch.sets, next.sets, ud);
   if ("prefer" in patch) next.prefer = normalizePrefer(patch.prefer);
   if ("flowsheet" in patch) next.flowsheet = normalizeFlowsheet(patch.flowsheet, ud);
+  if ("reactor" in patch) next.reactor = normalizeFlowsheet(patch.reactor, ud);
+  if ("sharedReactions" in patch) next.sharedReactions = sharedList(patch.sharedReactions);
   if (patch.flash != null) next.flash = normalizeFlash(patch.flash, next.flash);
   if ("hx" in patch) next.hx = patch.hx == null ? null : normalizeHx(patch.hx, next.hx ?? undefined);
 
@@ -771,7 +778,7 @@ export function envelopeNote(sys, comps, Pmax, units) {
 
 export const fmtP = (P_kPa, units) => `${fmtShort(pToDisplay(P_kPa, units), 6)} ${units.P}`;
 /** Temperature (K) as text in the display unit, e.g. "25 °C". */
-export const fmtTemp = (T_K, units, digits = 2) => `${+tToDisplay(T_K, units).toFixed(digits)} ${units.T === "K" ? "K" : "°C"}`;
+export const fmtTemp = (T_K, units, digits = 2) => `${+tToDisplay(T_K, units).toFixed(digits)} ${tLabel(units)}`;
 /** Parse a pressure typed in the display unit; returns kPa or null. */
 export function parseP(text, units) {
   const v = Number(String(text).trim().replace(",", "."));
@@ -879,6 +886,13 @@ export function setsFor(state, model) {
  * and the per-pair choices that exist for the flowsheet's model), as the diagrams and the flash use them (the
  * maintainer, 2026-10-17). Sets or a rule that the flowsheet document names itself (written from code) win.
  */
+/** The global reaction list: reactions as written on a Reactions page (each needs its stoichiometry). */
+function sharedList(list) {
+  if (list == null) return [];
+  if (!Array.isArray(list) || list.some(r => !r || typeof r !== "object" || typeof r.stoichiometry !== "object")) throw new Error("sharedReactions must be a list of reactions, each with its stoichiometry.");
+  return JSON.parse(JSON.stringify(list));
+}
+
 export function calculatedFlowsheet(state) {
   // the reactions a reactor uses (flowsheet-logic.js): one still being written on the Reactions page stops nothing
   const fs = usedReactions(state.flowsheet), t = fs?.thermo ?? {};

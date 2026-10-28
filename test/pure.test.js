@@ -43,8 +43,9 @@ test("pure() vapour pressure and boiling point agree with the VLE data", () => {
 test("every component has critical constants and an acentric factor, or says why not", () => {
   // 161 since 2026-10-20: D-xylose and cis,cis-muconic acid (proposal 0009, batch 4; identity from PubChem); 171 with
   // the ten held for want of an open vapour pressure (glycerol carbonate has one; nine have none); 174 with
-  // neopentane, helium and methylcyclohexane (2026-10-21, the natural gases of the phase-envelope examples)
-  assert.equal(listComponents().length, 174);
+  // neopentane, helium and methylcyclohexane (2026-10-21, the natural gases of the phase-envelope examples); 177 with
+  // biphenyl, p-terphenyl and cumene hydroperoxide (2026-10-28, Rawlings and Ekerdt's worked examples)
+  assert.equal(listComponents().length, 177);
   for (const c of listComponents()) {
     const p = pure(c.id);
     assert.ok(Number.isFinite(p.MW), `${c.name} MW`);

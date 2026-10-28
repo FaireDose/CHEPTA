@@ -31,6 +31,7 @@ import {
 } from "./app-logic.js";
 import { HENRY_PAIRS, isEosModel } from "./workspaces.js";
 import { flowsheetView } from "./flowsheet-view.js";
+import { reactorView } from "./reactor-workspace.js";
 import { runFlash, flashTable, flashCsv, phaseName, FLASH_SPECS, dutyKW, molarFlow } from "./flash-logic.js";
 import { HX_DEFAULTS, hxCalc, hxTables } from "./hx-logic.js";
 import { phaseEnvelope } from "../equilibrium/envelope.js";
@@ -40,7 +41,7 @@ import pkg from "../../package.json" with { type: "json" };
 import {
   txyTables, ternaryTables, pxyTables, envelopeTables, azeotropeTables, flashTables, henryTables, solidTables, sleTables, propertyTables, steamTables,
 } from "./diagram-tables.js";
-import {
+import { tLabel,
   tToDisplay, tFromDisplay, pToDisplay, fmtNum, fmtShort, linspace, niceValues, TIER_LABEL, formatSource,
 } from "./properties-logic.js";
 
@@ -48,7 +49,7 @@ const SERIES = n => `var(--fug-s${(n % 6) + 1})`;
 const nameOf = (state, id) => listComponents({ userData: state ? userOverlay(state) : null }).find(c => c.id === id)?.name ?? id;
 /** The user's own data of the workbench, for pure() and system() (proposal 0012). */
 const own = state => ({ userData: userOverlay(state) });
-const tU = u => (u.T === "K" ? "K" : "°C");
+const tU = u => tLabel(u);
 
 /**
  * Draw `view` into the canvas. ctx: { state, set, plot, side, notes, below, extra, compact, uid, badge }.
@@ -71,6 +72,7 @@ export function renderView(view, ctx) {
     case "steam": return steamView(ctx);
     case "charts": return chartsView(ctx);
     case "flowsheet": return flowsheetView({ ...ctx, saveText, copyText });
+    case "reactor": return reactorView(ctx);
     default: throw new Error(`Unknown view "${view}".`);
   }
 }

@@ -114,6 +114,9 @@ PREDICT = {
     # terephthalic acid: a liquid that does not evaporate up to an assumed melting temperature of 400 degC (the
     # maintainer, 2026-10-17: "assume the melting is at 400 and keep it liquid until then"; no open source has its
     # melting temperature)
+    "p-terphenyl": {"groups": {"CB-(H)": 14, "CB-(C)": 4},
+                    "approximation": "the four ring carbons bonded to another ring, CB-(CB), a group the method does not "
+                                     "have, are counted as CB-(C), its nearest group (a ring carbon bonded to a carbon)"},
     "terephthalic-acid": {"groups": {"CB-(H)": 4, "CB-(CO)": 2, "CO-(CB)(O)": 2, "O-(H)(CO)": 2},
                           "approximation": "every group exists in the method",
                           "Tmax_K": 673.15,

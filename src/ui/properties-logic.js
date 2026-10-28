@@ -17,30 +17,47 @@ import { PROPERTIES, PROPERTY_NAMES } from "../thermo/pure.js";
 // Units
 
 /** Default display units. */
-export const DEFAULT_UNITS = Object.freeze({ T: "C", P: "bar", basis: "mass", viscosity: "mPa s" });
+export const DEFAULT_UNITS = Object.freeze({ T: "C", P: "bar", basis: "mass", viscosity: "mPa s", flow: "kmol/h", massFlow: "kg/h", duty: "kW" });
 
-/** The unit switches the explorer offers, with their display labels. */
+/**
+ * The units Settings offers, with their display labels (the maintainer, 2026-10-28: "add more units ... with drop list
+ * for main properties"). Conversion factors from NIST Special Publication 811 (2008 edition, Appendix B.8 and B.9;
+ * free from NIST, https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication811e2008.pdf), to the digits printed
+ * there; the engine keeps K, kPa, kmol/h, kg/h and kW.
+ */
 export const UNIT_CHOICES = {
-  T: [["C", "°C"], ["K", "K"]],
-  P: [["bar", "bar"], ["kPa", "kPa"]],
+  T: [["C", "°C"], ["K", "K"], ["F", "°F"], ["R", "°R"]],
+  P: [["bar", "bar"], ["kPa", "kPa"], ["Pa", "Pa"], ["MPa", "MPa"], ["mbar", "mbar"], ["atm", "atm"], ["psia", "psia"], ["mmHg", "mmHg"], ["kgf/cm²", "kgf/cm²"]],
   basis: [["mass", "kJ/kg"], ["molar", "J/mol"]],
   viscosity: [["mPa s", "mPa·s"], ["Pa s", "Pa·s"]],
+  flow: [["kmol/h", "kmol/h"], ["mol/s", "mol/s"], ["kmol/s", "kmol/s"], ["lbmol/h", "lbmol/h"]],
+  massFlow: [["kg/h", "kg/h"], ["kg/s", "kg/s"], ["t/h", "t/h"], ["lb/h", "lb/h"]],
+  duty: [["kW", "kW"], ["W", "W"], ["MW", "MW"], ["kJ/h", "kJ/h"], ["kcal/h", "kcal/h"], ["Btu/h", "Btu/h"]],
+};
+/** How many engine units (kPa, kmol/h, kg/h, kW) one display unit is. */
+const FACTOR = {
+  P: { bar: 100, kPa: 1, Pa: 1e-3, MPa: 1000, mbar: 0.1, atm: 101.325, psia: 6.894757, mmHg: 0.1333224, "kgf/cm²": 98.0665 },
+  flow: { "kmol/h": 1, "mol/s": 3.6, "kmol/s": 3600, "lbmol/h": 0.4535924 },
+  massFlow: { "kg/h": 1, "kg/s": 3600, "t/h": 1000, "lb/h": 0.4535924 },
+  duty: { kW: 1, W: 1e-3, MW: 1000, "kJ/h": 1 / 3600, "kcal/h": 4.1868 / 3600, "Btu/h": 2.930711e-4 },
 };
 
+const lowerKeys = list => Object.fromEntries(list.map(([v, l]) => [[v.toLowerCase(), v], [l.toLowerCase(), v]]).flat());
 const ALIASES = {
-  T: { c: "C", "°c": "C", degc: "C", celsius: "C", k: "K", kelvin: "K" },
-  P: { bar: "bar", kpa: "kPa" },
+  T: { c: "C", "°c": "C", degc: "C", celsius: "C", k: "K", kelvin: "K", f: "F", "°f": "F", degf: "F", fahrenheit: "F", r: "R", "°r": "R", rankine: "R" },
+  P: { ...lowerKeys(UNIT_CHOICES.P), psi: "psia", "kgf/cm2": "kgf/cm²", at: "kgf/cm²", torr: "mmHg" },
   basis: { mass: "mass", "kj/kg": "mass", molar: "molar", "j/mol": "molar", mol: "molar" },
   viscosity: { "mpa s": "mPa s", "mpa·s": "mPa s", "mpas": "mPa s", cp: "mPa s", "pa s": "Pa s", "pa·s": "Pa s", pas: "Pa s" },
+  flow: lowerKeys(UNIT_CHOICES.flow), massFlow: lowerKeys(UNIT_CHOICES.massFlow), duty: lowerKeys(UNIT_CHOICES.duty),
 };
 
 /**
  * Normalize a units object from the configuration. Accepts e.g.
- * `{ T: "K", P: "kPa", energy: "J/mol", viscosity: "Pa·s" }` (`energy` is an alias of `basis`).
- * Unknown values throw, so a typo is not silently ignored.
+ * `{ T: "K", P: "kPa", energy: "J/mol", viscosity: "Pa·s", flow: "mol/s", massFlow: "t/h", duty: "MW" }` (`energy` is
+ * an alias of `basis`). Unknown values throw, so a typo is not silently ignored.
  */
 export function normalizeUnits(u = {}, base = DEFAULT_UNITS) {
-  const out = { ...base };
+  const out = { ...DEFAULT_UNITS, ...base };
   const src = { ...u };
   if (src.energy != null && src.basis == null) src.basis = src.energy;
   for (const key of Object.keys(ALIASES)) {
@@ -54,21 +71,28 @@ export function normalizeUnits(u = {}, base = DEFAULT_UNITS) {
   return out;
 }
 
-/** Temperature K -> display unit. */
-export const tToDisplay = (T_K, units) => (units.T === "K" ? T_K : T_K - 273.15);
+/** Temperature K -> display unit (SP 811: T/K = (t/°F + 459.67)/1.8, T/K = (T/°R)/1.8). */
+export const tToDisplay = (T_K, units) => (units.T === "K" ? T_K : units.T === "F" ? T_K * 1.8 - 459.67 : units.T === "R" ? T_K * 1.8 : T_K - 273.15);
 /** Temperature display unit -> K. */
-export const tFromDisplay = (v, units) => (units.T === "K" ? v : v + 273.15);
+export const tFromDisplay = (v, units) => (units.T === "K" ? v : units.T === "F" ? (v + 459.67) / 1.8 : units.T === "R" ? v / 1.8 : v + 273.15);
+/** The temperature unit's label. */
+export const tLabel = units => UNIT_CHOICES.T.find(([k]) => k === units?.T)?.[1] ?? "°C";
 /** Pressure kPa -> display unit. */
-export const pToDisplay = (P_kPa, units) => (units.P === "bar" ? P_kPa / 100 : P_kPa);
+export const pToDisplay = (P_kPa, units) => P_kPa / (FACTOR.P[units.P] ?? 1);
 /** Pressure display unit -> kPa. */
-export const pFromDisplay = (v, units) => (units.P === "bar" ? v * 100 : v);
+export const pFromDisplay = (v, units) => v * (FACTOR.P[units.P] ?? 1);
+/** Molar flow (kmol/h), mass flow (kg/h) and duty (kW) in the display unit, and back. */
+export const flowToDisplay = (v, units) => v / FACTOR.flow[units.flow ?? "kmol/h"];
+export const massFlowToDisplay = (v, units) => v / FACTOR.massFlow[units.massFlow ?? "kg/h"];
+export const dutyToDisplay = (v, units) => v / FACTOR.duty[units.duty ?? "kW"];
+export const dutyFromDisplay = (v, units) => v * FACTOR.duty[units.duty ?? "kW"];
 
 /**
  * Quantities shown by the explorer: engine unit and conversion to the display unit.
  * `MW` is the molar mass in g/mol (needed for the mass basis).
  */
 export const QUANTITIES = {
-  temperature: { label: u => (u.T === "K" ? "K" : "°C"), convert: (v, u) => tToDisplay(v, u) },
+  temperature: { label: u => tLabel(u), convert: (v, u) => tToDisplay(v, u) },
   pressure: { label: u => u.P, convert: (v, u) => pToDisplay(v, u) },
   density: { label: () => "kg/m³", convert: v => v },
   energy: {

@@ -14,9 +14,18 @@
  * condition of several reactions as algebraic equations in the extents, solved here by Newton's method; K = Π a_j^ν_j
  * with K = exp(-ΔG°/RT) (eqns 3.10 and 3.11, p. 66).
  *
- * The whole mixture is taken to be in the reaction's phase (one phase): the reactor flashes its outlet afterwards and
- * says when the outlet is not in that phase (a reactive flash, with both phases at chemical and phase equilibrium, is
- * not done here).
+ * One phase (`phases: 1`, the default): the whole mixture is taken to be in the reaction's phase; the reactor flashes its
+ * outlet afterwards and says when the outlet is not in that phase. Vapour and liquid (`phases: 2`, a reactive flash,
+ * the maintainer 2026-10-28): at each set of extents the mixture is flashed at T and P (src/equilibrium/flash.js), and
+ * the fugacities come from the phases found, the same in both at phase equilibrium. Chemical and phase equilibrium then
+ * hold together; each reaction keeps its own standard state (vapour or liquid), so vapour and liquid reactions can be
+ * mixed. The Jacobian's non-ideal part (which then holds the phase split) is taken by differences, as below.
+ *
+ * Gibbs mode (gibbsReactions): the species that may appear are given, not the reactions. Their element matrix A
+ * (elements x species) is reduced to row echelon form, and each species that is not a pivot gives one reaction that
+ * forms it from the pivot species: a basis of the null space of A, so every reaction among the species is a
+ * combination of them. With such a complete set, the equilibrium of the listed reactions is the minimum of the Gibbs
+ * energy with the elements balanced (Rawlings and Ekerdt, section 3.5.2, p. 92: the two approaches agree).
  *
  * Newton's method in the extents, with the Jacobian of the ideal part, ∂ ln x_j / ∂ n_k = δ_jk / n_j - 1 / N, exact,
  * and of the non-ideal part (ln φ_j, ln γ_j) by central differences. Every step keeps each species that takes part
@@ -29,7 +38,10 @@
  * Units: K, kPa, kmol/h (any consistent amount: only the ratios matter).
  */
 import { fail } from "../util/errors.js";
-import { reactionProperties, P_STANDARD_KPA } from "../reactions/reaction.js";
+import { reactionProperties, checkReaction, P_STANDARD_KPA } from "../reactions/reaction.js";
+import { componentRecord } from "../thermo/components.js";
+import { parseFormula } from "../thermo/formula.js";
+import { flash } from "./flash.js";
 
 const MAX_ITER = 200;
 const TOL = 1e-10;      // max |g_r| (ln units)
@@ -47,13 +59,26 @@ function constants(sys, reactions, T, approach) {
   });
 }
 
-/** The activities' logarithms of the mixture n (all of it in one phase) at T and P. */
-function lnActivities(sys, phase, n, T, P, pureLnF) {
+/**
+ * The activities' logarithms of the mixture n at T and P, in the standard state of each phase that a reaction uses:
+ * { vapour: ln(f/P°), liquid: ln(f/f_pure) }. One phase: the whole mixture in the reaction's phase. Two: the mixture
+ * flashed, the fugacities of the phase found (the reaction's own when it is there).
+ */
+function lnActivities(sys, used, n, T, P, pureLnF, two) {
   const N = n.reduce((a, v) => a + v, 0);
   const z = n.map(v => Math.max(v, 0) / N);
-  const ph = sys.phase(phase, T, P, z);
-  if (phase === "vapour") return ph.lnFugacity.map(v => v - Math.log(P_STANDARD_KPA));
-  return ph.lnFugacity.map((v, i) => v - pureLnF[i]);
+  let lnf;
+  if (two) {
+    const fl = flash(sys, { z, T, P });
+    const ph = fl.phases.find(q => q.type === used[0]) ?? fl.phases[0];
+    lnf = sys.phase(ph.type, T, P, ph.composition).lnFugacity;
+  }
+  const out = {};
+  for (const phase of used) {
+    const f = lnf ?? sys.phase(phase, T, P, z).lnFugacity;
+    out[phase] = phase === "vapour" ? f.map(v => v - Math.log(P_STANDARD_KPA)) : f.map((v, i) => v - pureLnF[i]);
+  }
+  return out;
 }
 
 /** ln f of each pure liquid at T and P (the liquid standard state), for the components that take part. */
@@ -91,19 +116,21 @@ function solveLinear(A, b) {
  * The equilibrium extents of the reactions at T and P.
  * @param {object} sys       the property package (createSystem)
  * @param {object} o
- * @param {object[]} o.reactions  checked reactions (src/reactions/reaction.js), all of one phase
+ * @param {object[]} o.reactions  checked reactions (src/reactions/reaction.js), all of one phase with `phases` 1
  * @param {number[]} o.feed       amounts of the system's components (kmol/h)
  * @param {number} o.T_K
  * @param {number} o.P_kPa
  * @param {object[]} [o.approach] per reaction: null, { dT_K } or { fraction }
  * @param {number[]} [o.guess]    extents to start from (a previous solution)
+ * @param {1|2} [o.phases]        1: the whole mixture in the reactions' phase; 2: vapour and liquid (a reactive flash)
  * @returns {{extents:number[], flows:number[], lnK:number[], residual:number, iterations:number, constants:object[], notes:string[], warnings:string[]}}
  */
-export function reactionEquilibrium(sys, { reactions, feed, T_K, P_kPa, approach = [], guess = null }) {
+export function reactionEquilibrium(sys, { reactions, feed, T_K, P_kPa, approach = [], guess = null, phases: nPhases = 1 }) {
   if (!reactions?.length) throw fail("BAD_INPUT", "Equilibrium: give at least one reaction.");
-  const phases = [...new Set(reactions.map(r => r.phase))];
-  if (phases.length > 1) throw fail("BAD_INPUT", `Equilibrium: the reactions of one reactor must be in one phase (${reactions.map(r => `${r.name}: ${r.phase}`).join(", ")}).`);
-  const phase = phases[0];
+  const two = nPhases === 2;
+  const used = [...new Set(reactions.map(r => r.phase))];
+  if (used.length > 1 && !two) throw fail("BAD_INPUT", `Equilibrium: the reactions of one reactor must be in one phase (${reactions.map(r => `${r.name}: ${r.phase}`).join(", ")}), or the reactor must take vapour and liquid together.`);
+  const phase = used[0];
   const nR = reactions.length, nC = sys.n;
   const nu = reactions.map(r => {
     for (const id of Object.keys(r.stoichiometry)) if (!sys.ids.includes(id)) throw fail("BAD_INPUT", `${r.name}: ${id} is in the reaction but not a component of this simulation (${sys.names.join(", ")}).`);
@@ -116,7 +143,8 @@ export function reactionEquilibrium(sys, { reactions, feed, T_K, P_kPa, approach
   const K = constants(sys, reactions, T_K, approach);
   for (const k of K) warnings.push(...k.warnings);
   const lnK = K.map(k => k.lnK);
-  const pureLnF = phase === "liquid" ? pureLiquidLnF(sys, T_K, P_kPa, active) : null;
+  const pureLnF = used.includes("liquid") ? pureLiquidLnF(sys, T_K, P_kPa, active) : null;
+  const rPhase = reactions.map(r => r.phase);
   const amounts = x => feed.map((v, j) => v + nu.reduce((s, row, r) => s + row[j] * x[r], 0));
 
   // the reactions that can run: seed the absent species they need, through the reactions that form them
@@ -129,8 +157,10 @@ export function reactionEquilibrium(sys, { reactions, feed, T_K, P_kPa, approach
       if (!free[r]) continue;
       const missing = s => nu[r].some((v, j) => Math.sign(v) === s && !(n[j] > 0));
       const noReactant = missing(-1), noProduct = missing(1);
-      if (noProduct && !noReactant) { x[r] += SEED * F0; changed = true; }
-      else if (noReactant && !noProduct) { x[r] -= SEED * F0; changed = true; }
+      // a seed takes at most half of what the reaction uses up (a species another reaction has just seeded)
+      const room = s => Math.min(SEED * F0, ...nu[r].map((v, j) => (Math.sign(v) === s && v ? 0.5 * n[j] / Math.abs(v) : Infinity)));
+      if (noProduct && !noReactant) { x[r] += room(-1); changed = true; }
+      else if (noReactant && !noProduct) { x[r] -= room(1); changed = true; }
     }
     if (!changed) break;
   }
@@ -149,14 +179,14 @@ export function reactionEquilibrium(sys, { reactions, feed, T_K, P_kPa, approach
   const residual = xx => {
     const n = amounts(xx);
     if (n.some((v, j) => active[j] && !(v > 0))) return null;
-    const la = lnActivities(sys, phase, n, T_K, P_kPa, pureLnF);
-    return idx.map(r => nu[r].reduce((s, v, j) => s + (v ? v * la[j] : 0), 0) - lnK[r]);
+    const la = lnActivities(sys, used, n, T_K, P_kPa, pureLnF, two);
+    return idx.map(r => nu[r].reduce((s, v, j) => s + (v ? v * la[rPhase[r]][j] : 0), 0) - lnK[r]);
   };
-  // the non-ideal part of ln a (ln a minus ln x), for its derivative
+  // the non-ideal part of ln a (ln a minus ln x), for its derivative, per phase of the standard states
   const nonIdeal = xx => {
     const n = amounts(xx), N = n.reduce((a, v) => a + v, 0);
-    const la = lnActivities(sys, phase, n, T_K, P_kPa, pureLnF);
-    return la.map((v, j) => (active[j] ? v - Math.log(n[j] / N) : 0));
+    const la = lnActivities(sys, used, n, T_K, P_kPa, pureLnF, two);
+    return Object.fromEntries(used.map(ph => [ph, la[ph].map((v, j) => (active[j] ? v - Math.log(n[j] / N) : 0))]));
   };
 
   let g = idx.length ? residual(x) : [];
@@ -175,16 +205,16 @@ export function reactionEquilibrium(sys, { reactions, feed, T_K, P_kPa, approach
       xp[s] += h; xm[s] -= h;
       const np = amounts(xp), nm = amounts(xm);
       const ok = v => v.every((a, j) => !active[j] || a > 0);
-      if (ok(np) && ok(nm)) { const a = nonIdeal(xp), b = nonIdeal(xm); return a.map((v, j) => (v - b[j]) / (2 * h)); }
-      const a = ok(np) ? nonIdeal(xp) : c0, b = ok(np) ? c0 : nonIdeal(xm);
-      return a.map((v, j) => (v - b[j]) / h);
+      const diff = (a, b, w) => Object.fromEntries(used.map(ph => [ph, a[ph].map((v, j) => (v - b[ph][j]) / w)]));
+      if (ok(np) && ok(nm)) return diff(nonIdeal(xp), nonIdeal(xm), 2 * h);
+      return ok(np) ? diff(nonIdeal(xp), c0, h) : diff(c0, nonIdeal(xm), h);
     });
     const dN = idx.map(s => nu[s].reduce((a, v) => a + v, 0));
     idx.forEach((r, a) => idx.forEach((s, b) => {
       let v = 0;
       for (let j = 0; j < nC; j++) {
         if (!nu[r][j]) continue;
-        v += nu[r][j] * ((nu[s][j] / n[j]) - dN[b] / N + dC[b][j]);
+        v += nu[r][j] * ((nu[s][j] / n[j]) - dN[b] / N + dC[b][rPhase[r]][j]);
       }
       J[a][b] = v;
     }));
@@ -210,5 +240,65 @@ export function reactionEquilibrium(sys, { reactions, feed, T_K, P_kPa, approach
   // an approach given as a fraction of the equilibrium extent
   const xEq = x.slice();
   approach.forEach((a, r) => { if (a?.fraction != null) x[r] = a.fraction * xEq[r]; });
-  return { extents: x, equilibriumExtents: xEq, flows: amounts(x).map(v => Math.max(v, 0)), lnK, constants: K, residual: idx.length ? norm(g) : 0, iterations: it, phase, notes, warnings };
+  return { extents: x, equilibriumExtents: xEq, flows: amounts(x).map(v => Math.max(v, 0)), lnK, constants: K, residual: idx.length ? norm(g) : 0, iterations: it, phase, phases: two ? 2 : 1, notes, warnings };
+}
+
+/**
+ * The reactions of a Gibbs reactor: a complete set of independent reactions among the given species (see the file
+ * header), each with K from the formation data, in the given phase's standard state.
+ * @param {object} sys
+ * @param {string[]} species  component ids of the system that may react (the others pass through)
+ * @param {"vapour"|"liquid"} phase
+ * @returns {object[]} checked reactions, ids G1, G2, ...
+ */
+export function gibbsReactions(sys, species, phase = "vapour") {
+  const ud = sys.userData;
+  const atoms = species.map(id => {
+    const rec = componentRecord(id, ud);
+    let a = null;
+    try { a = parseFormula(rec.formula ?? ""); } catch { /* below */ }
+    if (!a || !Object.keys(a).length) throw fail("BAD_INPUT", `Gibbs reactor: ${rec.name} has no formula CHEPTA can read, so its elements cannot be balanced; leave it out of the species that react.`);
+    return a;
+  });
+  const elements = [...new Set(atoms.flatMap(a => Object.keys(a)))].sort();
+  const A = elements.map(e => atoms.map(a => a[e] ?? 0));
+  // reduced row echelon form of A, with partial pivoting
+  const m = A.length, nS = species.length, pivots = [];
+  let row = 0;
+  for (let c = 0; c < nS && row < m; c++) {
+    let p = row;
+    for (let r = row + 1; r < m; r++) if (Math.abs(A[r][c]) > Math.abs(A[p][c])) p = r;
+    if (Math.abs(A[p][c]) < 1e-12) continue;
+    [A[row], A[p]] = [A[p], A[row]];
+    const d = A[row][c];
+    for (let k = 0; k < nS; k++) A[row][k] /= d;
+    for (let r = 0; r < m; r++) {
+      if (r === row || !A[r][c]) continue;
+      const f = A[r][c];
+      for (let k = 0; k < nS; k++) A[r][k] -= f * A[row][k];
+    }
+    pivots.push(c); row++;
+  }
+  const free = [...Array(nS).keys()].filter(c => !pivots.includes(c));
+  if (!free.length) throw fail("BAD_INPUT", `Gibbs reactor: the species ${species.map(id => componentRecord(id, ud).name).join(", ")} cannot react with one another (each is the only one with its combination of elements). Add the products that can form.`);
+  return free.map((f, k) => {
+    const v = new Array(nS).fill(0);
+    v[f] = 1;
+    pivots.forEach((c, r) => { v[c] = -A[r][f]; });
+    // the smallest whole multiple, when there is one up to 60
+    let mult = 1;
+    for (let q = 1; q <= 60; q++) if (v.every(a => Math.abs(a * q - Math.round(a * q)) < 1e-9)) { mult = q; break; }
+    const st = {};
+    v.forEach((a, i) => { const c = Math.abs(a * mult - Math.round(a * mult)) < 1e-9 ? Math.round(a * mult) : a * mult; if (c) st[species[i]] = c; });
+    const name = equationText(st, ud);
+    try { return checkReaction({ id: `G${k + 1}`, name, stoichiometry: st, phase, reversible: true }, { userData: ud }); }
+    catch (e) { e.message = `Gibbs reactor: ${e.message}`; throw e; }
+  });
+}
+
+/** "CO + 3 H2 ⇌ CH3OH" from a stoichiometry, with the components' names. */
+function equationText(st, ud) {
+  const side = s => Object.entries(st).filter(([, v]) => Math.sign(v) === s)
+    .map(([id, v]) => `${Math.abs(v) === 1 ? "" : `${+Math.abs(v).toPrecision(6)} `}${componentRecord(id, ud).name}`).join(" + ");
+  return `${side(-1)} ⇌ ${side(1)}`;
 }

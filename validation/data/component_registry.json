@@ -162,6 +162,11 @@
     {"id": "neopentane", "name": "Neopentane", "coolprop": "Neopentane", "aliases": ["2,2-dimethylpropane", "neo-pentane", "neoc5", "tetramethylmethane"], "thermoml": ["2,2-dimethylpropane", "neopentane"]},
     {"id": "helium", "name": "Helium", "coolprop": "Helium", "aliases": ["he"], "thermoml": ["helium"]},
     {"id": "methylcyclohexane", "name": "Methylcyclohexane", "coolprop": null, "aliases": ["cyclohexylmethane", "hexahydrotoluene", "mch"], "cas": "108-87-2", "thermoml": ["methylcyclohexane"]}
+   ]},
+  {"number": 12, "proposal": "0010", "note": "the components of Rawlings and Ekerdt's worked examples that CHEPTA lacked (Example 4.5, benzene pyrolysis: biphenyl; Example 4.2, phenol from cumene hydroperoxide): from ChemSep, taken as they are; the maintainer, 2026-10-28 (p-terphenyl, in no databank, is built from measured data by measured_components.py)",
+   "components": [
+    {"id": "biphenyl", "name": "Biphenyl", "coolprop": null, "aliases": ["diphenyl", "phenylbenzene", "1,1'-biphenyl"], "cas": "92-52-4", "thermoml": ["biphenyl", "1,1'-biphenyl", "diphenyl"]},
+    {"id": "cumene-hydroperoxide", "name": "Cumene hydroperoxide", "coolprop": null, "aliases": ["cumyl hydroperoxide", "chp", "2-phenylpropan-2-yl hydroperoxide", "alpha,alpha-dimethylbenzyl hydroperoxide"], "cas": "80-15-9", "thermoml": ["cumene hydroperoxide", "cumyl hydroperoxide"]}
    ]}
  ]
 }

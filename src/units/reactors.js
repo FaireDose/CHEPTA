@@ -40,10 +40,10 @@ import { stream } from "../stream/stream.js";
 import { findComponent } from "../thermo/components.js";
 import { reactionHeat, formationReference, standardStateShift } from "../reactions/reaction.js";
 import { registerUnit, componentAtoms } from "./units.js";
-import { reactionEquilibrium } from "../equilibrium/reaction-equilibrium.js";
+import { reactionEquilibrium, gibbsReactions } from "../equilibrium/reaction-equilibrium.js";
 
-const has = (spec, k) => spec?.[k] !== undefined && spec?.[k] !== null && spec?.[k] !== "";
-const num = (v, what, { min = -Infinity, max = Infinity } = {}) => {
+export const has = (spec, k) => spec?.[k] !== undefined && spec?.[k] !== null && spec?.[k] !== "";
+export const num = (v, what, { min = -Infinity, max = Infinity } = {}) => {
   const x = Number(v);
   if (!Number.isFinite(x) || x < min || x > max) {
     throw fail("BAD_INPUT", `${what} must be a number${min > -Infinity && max < Infinity ? ` from ${min} to ${max}` : min > -Infinity ? ` of at least ${min}` : ""} (got ${JSON.stringify(v)}).`);
@@ -53,7 +53,7 @@ const num = (v, what, { min = -Infinity, max = Infinity } = {}) => {
 const THERMAL = ["T_K", "duty_kW", "VF"];
 
 /** The outlet conditions of a reactor: one of T_K, duty_kW and VF, at P_kPa or the inlet pressure minus dP_kPa. */
-function outletConditions(spec, who) {
+export function outletConditions(spec, who) {
   const given = THERMAL.filter(k => has(spec, k));
   if (given.length !== 1) throw fail("BAD_INPUT", `${who}: give one of the outlet temperature T_K, the duty duty_kW or the outlet vapour fraction VF (got ${given.join(", ") || "none"}).`);
   if (has(spec, "P_kPa") && has(spec, "dP_kPa")) throw fail("BAD_INPUT", `${who}: give the outlet pressure P_kPa or the pressure drop dP_kPa, not both.`);
@@ -67,7 +67,7 @@ function outletConditions(spec, who) {
 }
 
 /** The inlets mixed (flows and enthalpy flows added, at the lowest inlet pressure). */
-function inletOf(sys, list) {
+export function inletOf(sys, list) {
   const flows = new Array(sys.n).fill(0);
   let H = 0;
   for (const s of list) { s.flows.forEach((v, i) => { flows[i] += v; }); H += s.H_kW ?? 0; }
@@ -91,7 +91,7 @@ function outletAndDuty(sys, inlet, flows, heat_kW, c, who) {
 }
 
 /** A component of the system, by any of its names, as its index; BAD_INPUT naming the system otherwise. */
-function indexOf(sys, key, who) {
+export function indexOf(sys, key, who) {
   let id;
   try { id = findComponent(key, sys.userData); } catch (e) { throw fail("BAD_INPUT", `${who}: ${e.message}`); }
   const i = sys.ids.indexOf(id);
@@ -319,10 +319,21 @@ registerUnit({
 // Equilibrium reactor (proposal 0010, step 4)
 
 function checkEquilibrium(spec, { sys, reactions = [] }) {
-  const who = "Equilibrium reactor";
+  const who = spec.mode === "gibbs" ? "Gibbs reactor" : "Equilibrium reactor";
+  if (has(spec, "VF")) throw fail("BAD_INPUT", `${who}: give the outlet temperature T_K or the duty duty_kW; an outlet vapour fraction is not a specification of an equilibrium reactor.`);
+  const phases = spec.phases == null ? 1 : Number(spec.phases);
+  if (phases !== 1 && phases !== 2) throw fail("BAD_INPUT", `${who}: "phases" is 1 (the whole mixture in the reactions' phase) or 2 (vapour and liquid at chemical and phase equilibrium together).`);
+  if (spec.mode != null && spec.mode !== "reactions" && spec.mode !== "gibbs") throw fail("BAD_INPUT", `${who}: "mode" is "reactions" (the listed reactions reach equilibrium) or "gibbs" (the given species, every reaction among them).`);
+  if (spec.mode === "gibbs") {
+    const phase = spec.phase ?? "vapour";
+    if (phase !== "vapour" && phase !== "liquid") throw fail("BAD_INPUT", `${who}: "phase" (the standard state of the reactions) is "vapour" or "liquid".`);
+    const species = (spec.species ?? sys.ids).map(k => sys.ids[indexOf(sys, k, who)]);
+    if (new Set(species).size !== species.length) throw fail("BAD_INPUT", `${who}: a species is listed twice.`);
+    const generated = gibbsReactions(sys, species, phase);
+    return { mode: "gibbs", species, phase, phases, steps: generated.map(r => ({ reaction: r, approach: null })), ...outletConditions(spec, who) };
+  }
   const list = spec.reactions;
   if (!Array.isArray(list) || !list.length) throw fail("BAD_INPUT", `${who}: give the reactions that reach equilibrium: { reactions: [{ reaction: "R1" }] }. The reactions themselves are written in the flowsheet's reactions list.`);
-  if (has(spec, "VF")) throw fail("BAD_INPUT", `${who}: give the outlet temperature T_K or the duty duty_kW; an outlet vapour fraction is not a specification of an equilibrium reactor.`);
   const byId = new Map(reactions.map(r => [r.id, r]));
   const seen = new Set();
   const steps = list.map((e, k) => {
@@ -343,13 +354,13 @@ function checkEquilibrium(spec, { sys, reactions = [] }) {
     }
     return { reaction: r, approach };
   });
-  const phases = [...new Set(steps.map(s => s.reaction.phase))];
-  if (phases.length > 1) throw fail("BAD_INPUT", `${who}: its reactions must all be vapour reactions or all liquid reactions (${steps.map(s => `${s.reaction.name}: ${s.reaction.phase}`).join(", ")}). Use two reactors.`);
-  return { steps, phase: phases[0], ...outletConditions(spec, who) };
+  const used = [...new Set(steps.map(s => s.reaction.phase))];
+  if (used.length > 1 && phases === 1) throw fail("BAD_INPUT", `${who}: its reactions must all be vapour reactions or all liquid reactions (${steps.map(s => `${s.reaction.name}: ${s.reaction.phase}`).join(", ")}), or the reactor must take vapour and liquid together (phases: 2). Or use two reactors.`);
+  return { mode: "reactions", steps, phase: used[0], phases, ...outletConditions(spec, who) };
 }
 
 /** Where f changes sign, from x0 outward (steps of 25 K growing by half each time), within [lo, hi]. */
-function bracket(f, x0, lo, hi) {
+export function bracket(f, x0, lo, hi) {
   let a = x0, fa = f(a), d = 25;
   if (fa === 0) return [a, a, fa, fa];
   for (let k = 0; k < 40; k++) {
@@ -364,12 +375,13 @@ function bracket(f, x0, lo, hi) {
   return null;
 }
 
-registerUnit({
-  type: "equilibrium-reactor", label: "Equilibrium reactor", duty: true, dutySpec: true, reactive: "elements",
+const EQUILIBRIUM = {
+  duty: true, dutySpec: true, reactive: "elements",
   inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out" }],
   checkSpec: checkEquilibrium,
   dof(spec) {
-    const list = Array.isArray(spec?.reactions) ? spec.reactions : [];
+    const gibbs = spec?.mode === "gibbs";
+    const list = gibbs ? [{ reaction: "species" }] : Array.isArray(spec?.reactions) ? spec.reactions : [];
     const missing = [], extra = [];
     if (!list.length) missing.push("the reactions that reach equilibrium");
     list.forEach((e, k) => { if (!(typeof e === "string" ? e : e?.reaction)) missing.push(`reaction ${k + 1}: which reaction`); });
@@ -381,7 +393,7 @@ registerUnit({
     return { needed: 2, given: (list.length ? 1 : 0) + thermal.length + (has(spec, "VF") ? 1 : 0), missing, extra };
   },
   solve({ sys, inlets, spec }) {
-    const who = "Equilibrium reactor";
+    const who = spec.mode === "gibbs" ? "Gibbs reactor" : "Equilibrium reactor";
     const inlet = inletOf(sys, inlets.in);
     const fin = inlet.flows;
     const P = spec.P_kPa ?? inlet.P_kPa - spec.dP_kPa;
@@ -394,11 +406,11 @@ registerUnit({
       const out = stream(sys, { flow_kmol_h: fin, T_K: spec.T_K ?? inlet.T_K ?? 298.15, P_kPa: P });
       return { outlets: { out }, duty_kW: spec.duty_kW ?? 0, notes: [],
         reaction: { generation: fin.map(() => 0), heat_kW: 0, extents_kmol_h: {}, keyConversion: {}, heats: {},
-          equilibrium: { T_K: out.T_K, P_kPa: P, phase: spec.phase, residual: 0, iterations: 0, reactions: {} } } };
+          equilibrium: { T_K: out.T_K, P_kPa: P, phase: spec.phase, phases: spec.phases, mode: spec.mode, residual: 0, iterations: 0, reactions: {} } } };
     }
     let guess = null;
     const at = T => {
-      const eq = reactionEquilibrium(sys, { reactions, feed: fin, T_K: T, P_kPa: P, approach, guess });
+      const eq = reactionEquilibrium(sys, { reactions, feed: fin, T_K: T, P_kPa: P, approach, guess, phases: spec.phases });
       guess = eq.equilibriumExtents;
       const heat_kW = eq.extents.reduce((s, x, r) => s + x * heats[r].dH_J_mol / 3600, 0);
       return { eq, heat_kW };
@@ -427,16 +439,28 @@ registerUnit({
     const notes = [...eq.notes, ...eq.warnings];
     for (const h of heats) for (const n of h.notes) if (!notes.includes(n)) notes.push(n);
     const other = spec.phase === "vapour" ? (out.VF != null && out.VF < 1 - 1e-6) : (out.VF != null && out.VF > 1e-6);
-    if (other) {
-      notes.push(`The outlet at ${T.toFixed(2)} K and ${+P.toPrecision(6)} kPa is ${spec.phase === "vapour" ? "partly liquid" : "partly vapour"} (vapour fraction ${out.VF.toFixed(4)}), but the equilibrium was computed for the whole mixture as ${spec.phase}. A reactive flash (both phases at chemical and phase equilibrium) is not done: check that the reaction happens in the ${spec.phase} at these conditions.`);
+    if (other && spec.phases !== 2) {
+      notes.push(`The outlet at ${T.toFixed(2)} K and ${+P.toPrecision(6)} kPa is ${spec.phase === "vapour" ? "partly liquid" : "partly vapour"} (vapour fraction ${out.VF.toFixed(4)}), but the equilibrium was computed for the whole mixture as ${spec.phase}. Choose "vapour and liquid" (phases: 2) for chemical and phase equilibrium together, or check that the reaction happens in the ${spec.phase} at these conditions.`);
     }
     const extents = Object.fromEntries(reactions.map((r, k) => [r.id, eq.extents[k]]));
     const keyConversion = Object.fromEntries(sys.ids.map((id, i) => [id, fin[i] > 0 && generation[i] < 0 ? -generation[i] / fin[i] : null]).filter(([, v]) => v != null));
     return { outlets: { out }, duty_kW: duty, notes,
       reaction: { generation, heat_kW, extents_kmol_h: extents, keyConversion,
         heats: Object.fromEntries(reactions.map((r, k) => [r.id, { dH_J_mol: heats[k].dH_J_mol, from: heats[k].from }])),
-        equilibrium: { T_K: T, P_kPa: P, phase: spec.phase, residual: eq.residual, iterations: eq.iterations,
+        ...(spec.mode === "gibbs" ? { generated: reactions.map(r => ({ id: r.id, name: r.name, stoichiometry: r.stoichiometry })) } : {}),
+        equilibrium: { T_K: T, P_kPa: P, phase: spec.phase, phases: spec.phases, mode: spec.mode, residual: eq.residual, iterations: eq.iterations,
           reactions: Object.fromEntries(reactions.map((r, k) => [r.id, { lnK: eq.constants[k].lnK, K: Math.exp(eq.constants[k].lnK), T_K: eq.constants[k].T_K,
             from: eq.constants[k].from, approach: approach[k], equilibriumExtent: eq.equilibriumExtents[k] }])) } } };
   },
-});
+};
+
+registerUnit({ type: "equilibrium-reactor", label: "Equilibrium reactor", ...EQUILIBRIUM,
+  checkSpec(spec, ctx) {
+    if (spec?.mode === "gibbs") throw fail("BAD_INPUT", "Equilibrium reactor: every reaction among given species is the Gibbs reactor (\"gibbs-reactor\"), a block of its own.");
+    return checkEquilibrium(spec, ctx);
+  } });
+// the Gibbs reactor (proposal 0010, step 6): the species that may react, every reaction among them; a block of its own
+// (the maintainer, 2026-10-28), on the equilibrium reactor's solver
+registerUnit({ type: "gibbs-reactor", label: "Gibbs reactor", ...EQUILIBRIUM,
+  checkSpec: (spec, ctx) => checkEquilibrium({ ...spec, mode: "gibbs" }, ctx),
+  dof: spec => EQUILIBRIUM.dof({ ...spec, mode: "gibbs" }) });

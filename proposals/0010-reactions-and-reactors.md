@@ -248,10 +248,15 @@ character 12; known: C, x, p, f, a, T, P, K").
    and energy balances against hand calculations; a reactive recycle in the flowsheet suite.
 4. **Equilibrium reactor** (listed reactions), gas and liquid. Tests: Cantera (gas), Python
    reference (liquid with NRTL). Done 2026-10-27 (docs/decisions/2026-10-27-02-equilibrium-reactor.md), with its
-   block in the workbench; one phase only (a reactive flash is not done).
+   block in the workbench; one phase only. Vapour and liquid together (a reactive flash) added 2026-10-28
+   (the maintainer: "i want more phases per reactor"; docs/decisions/2026-10-28-01-reactors.md).
 5. **CSTR and plug flow** with the rate forms of section 1 (power law, reversible, LHHW, Michaelis–Menten, Monod and
-   the other growth laws). Tests: scipy and the Rawlings and Ekerdt examples.
-6. **Gibbs reactor.** Test: Cantera.
+   the other growth laws). Tests: scipy and the Rawlings and Ekerdt examples. Done 2026-10-28
+   (docs/decisions/2026-10-28-01-reactors.md), with the profiles along the tube and the Reactor workspace of the Unit
+   models; examples 4.4 and 4.2 (the others use components CHEPTA does not have: biphenyl, terphenyl, cumene
+   hydroperoxide).
+6. **Gibbs reactor.** Test: Cantera. Done 2026-10-28, a block of its own in the one Reactor menu, on the equilibrium
+   reactor's solver, one phase or two (docs/decisions/2026-10-28-02-reactors-round-2.md).
 7. **Reactions page and reactor views** (the conversion and yield reactors: 2026-10-22,
    docs/decisions/2026-10-22-11-reactor-views.md), export and import of reaction lists, Excel export of conversion reactors
    (the concept model of the Excel export: extents as formulas).
@@ -263,6 +268,7 @@ character 12; known: C, x, p, f, a, T, P, K").
    as worked examples a user can copy; not shipped as a library.
 9. **Your own kinetics**: the "Write your own kinetics" button and its text box (section 4), with the parser and its
    error messages; Eley–Rideal and Mars–van Krevelen as built-in forms if an open source with their forms was found.
+   Done 2026-10-28 (the formula and its parser; no open source for the Eley–Rideal and Mars–van Krevelen forms yet).
 
 ## The maintainer's answers (2026-10-22)
 

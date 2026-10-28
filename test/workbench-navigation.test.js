@@ -12,17 +12,18 @@ import {
 const MAC = ["methanol", "acetone", "chloroform"];
 const go = (s, ...patches) => patches.reduce(applyPatch, s);
 
-test("one navigation: seven task workspaces holding every view; four supporting panels", () => {
+test("one navigation: eight task workspaces holding every view; four supporting panels", () => {
   // the Heat exchanger joins the Unit models (proposal 0013, step 2, 2026-10-20); Steam becomes Charts, with the
   // charts of any fluid beside water's (proposal 0013, step 7; its id stays "steam", so saved projects open)
-  assert.deepEqual(WORKSPACES.map(w => w.id), ["equilibrium", "steam", "solubility", "properties", "flash", "hx", "flowsheet"]);
-  assert.deepEqual(WORKSPACES.map(w => w.label), ["Phase equilibrium", "Charts", "Solubility", "Properties", "Flash", "Heat exchanger", "Flowsheet"]);
+  // the Reactor joins the Unit models (proposal 0010, steps 5 and 6; the maintainer, 2026-10-28), in place of the locked "Reaction"
+  assert.deepEqual(WORKSPACES.map(w => w.id), ["equilibrium", "steam", "solubility", "properties", "flash", "hx", "reactor", "flowsheet"]);
+  assert.deepEqual(WORKSPACES.map(w => w.label), ["Phase equilibrium", "Charts", "Solubility", "Properties", "Flash", "Heat exchanger", "Reactor", "Flowsheet"]);
   assert.deepEqual(WORKSPACES.find(w => w.id === "steam").views, ["steam", "charts"]);
   // the top navigation: File, then three sections holding every workspace once, in order
   assert.deepEqual(SECTIONS.map(x => x.label), ["Properties & Equilibria", "Unit models", "Flowsheet"]);
   assert.deepEqual(SECTIONS.flatMap(x => x.workspaces), WORKSPACES.map(w => w.id));
   assert.equal(sectionOf("steam"), "thermo"); assert.equal(sectionOf("flash"), "units"); assert.equal(sectionOf("flowsheet"), "flowsheet");
-  assert.deepEqual(SECTIONS.find(x => x.id === "units").locked.map(l => l.label), ["Reaction", "Distillation"]);
+  assert.deepEqual(SECTIONS.find(x => x.id === "units").locked.map(l => l.label), ["Distillation"]);
   // My data (proposal 0012, step 3) joins the supporting panels, next to the Library
   // "aichat" since 2026-10-20: a new chat with an AI assistant (Claude, ChatGPT, Gemini, Ollama) that loads the workbench
   assert.deepEqual(UTILITIES.map(u => u.id), ["project", "library", "mydata", "sources", "settings", "aichat", "feedback"]);

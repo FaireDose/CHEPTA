@@ -48,7 +48,9 @@ test("initial state: defaults, normalization and errors for typos", () => {
 
   assert.throws(() => initialState({ components: ["unobtainium"] }), /Unknown component/);
   assert.throws(() => initialState({ model: "Wilson" }), /Unknown model "WILSON"/);
-  assert.throws(() => initialState({ units: { T: "F" } }), /Unknown T unit/);
+  // °F and °R are units since 2026-10-28 (Settings, more units); a typo is still refused
+  assert.throws(() => initialState({ units: { T: "Q" } }), /Unknown T unit/);
+  assert.equal(initialState({ units: { T: "F", P: "psi", duty: "Btu/h" } }).units.P, "psia");
   assert.throws(() => initialState({ P_kPa: -1 }), /positive/);
   // duplicates dropped, at most MAX_COMPONENTS kept
   assert.deepEqual(initialState({ components: ["water", "H2O", "methanol"] }).components, ["water", "methanol"]);

@@ -9,7 +9,7 @@
  *
  * Units inside: T in K, P in kPa, enthalpy and duty in J per mol of feed, mole fractions.
  */
-import { tToDisplay, pToDisplay } from "./properties-logic.js";
+import { tLabel, tToDisplay, pToDisplay } from "./properties-logic.js";
 
 /** The specifications of the flash, as in sys.flash. */
 export const FLASH_SPECS = [
@@ -157,7 +157,7 @@ export function phaseName(p) {
  *   (the feed temperature when no feed state was given, an enthalpy the model cannot give)
  */
 export function flashTable(r, { names, MW, z, units, flow, flowUnit = "kmol/h" }) {
-  const tU = units.T === "K" ? "K" : "°C";
+  const tU = tLabel(units);
   const phases = r.phases;
   const feedState = r.feed ?? null;
   const molarMass = x => x.reduce((a, v, i) => a + v * MW[i], 0);

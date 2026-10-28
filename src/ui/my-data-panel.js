@@ -24,7 +24,7 @@ import { RECORD_UNITS } from "../thermo/user-data.js";
 import { USER_PREFIX } from "../thermo/components.js";
 import { FIT_EQUATION, INPUT_UNITS, T_UNITS, parseTable, toRecordUnits, fitPoints, autoFit, recordFromFit } from "../thermo/user-fit.js";
 import { userDataDoc, userDataText, userDataFileName, readUserDataFile, mergeUserData, userDataPackage, removeUserDataEntry, putUserData, userDataList, setEntryUse } from "./user-data-file.js";
-import { fmtShort } from "./properties-logic.js";
+import { tLabel, fmtShort } from "./properties-logic.js";
 import pkg from "../../package.json" with { type: "json" };
 import { pairSection, groupsSection } from "./my-data-pairs-groups.js";
 
@@ -240,7 +240,7 @@ function propertyForm(env, m, draw) {
     out.push(h("div", { class: "fa-mydata-fit", "data-fk": "mydata-fit-result" },
       f.fit ? h("p", {}, `${f.fit.equation} with ${f.fit.terms} coefficient${f.fit.terms > 1 ? "s" : ""}: largest deviation from your points ${(100 * f.fit.maxDev).toPrecision(2)} %.`) : h("p", {}, `${f.record.equation}, ${fmtShort(f.record.Tmin_K, 5)}-${fmtShort(f.record.Tmax_K, 5)} K.`),
       f.fit ? termsChoice(env, p, draw) : null,
-      plot(f, state.units?.T === "K" ? "K" : "°C"),
+      plot(f, tLabel(state.units)),
       f.databank ? h("p", { class: "fa-in-hint" }, `Dashed: the databank's record (${f.databank.tier ?? "databank"}), which yours replaces in this project.`) : h("p", { class: "fa-in-hint" }, "The databank has no record of this property for this component: yours fills the gap."),
       h("div", { class: "fa-in-actions" },
         h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-save",
