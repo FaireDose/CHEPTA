@@ -11,11 +11,11 @@ import { steam, steamSat } from "../thermo/iapws/steam.js";
 import { propertyChart } from "../equilibrium/charts.js";
 import { flash } from "../equilibrium/flash.js";
 import { icon } from "./icons.js";
-import { tToDisplay, pToDisplay, tFromDisplay, pFromDisplay, fmtNum, fmtShort, linspace } from "./properties-logic.js";
+import { tLabel, tToDisplay, pToDisplay, tFromDisplay, pFromDisplay, fmtNum, fmtShort, linspace } from "./properties-logic.js";
 import { fmtP, fmtTemp } from "./app-logic.js";
 
 const SERIES = n => `var(--fug-s${(n % 6) + 1})`;
-const tU = u => (u.T === "K" ? "K" : "°C");
+const tU = u => tLabel(u);
 /** The charts, as the ribbon names them. */
 export const CHART_KINDS = [["TS", "T-s"], ["PH", "P-h"], ["HS", "h-s"]];
 export const CHART_TITLE = { TS: "Temperature-entropy chart", PH: "Pressure-enthalpy chart", HS: "Enthalpy-entropy (Mollier) chart" };

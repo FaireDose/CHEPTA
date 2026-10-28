@@ -255,8 +255,8 @@ character 12; known: C, x, p, f, a, T, P, K").
    (docs/decisions/2026-10-28-01-reactors.md), with the profiles along the tube and the Reactor workspace of the Unit
    models; examples 4.4 and 4.2 (the others use components CHEPTA does not have: biphenyl, terphenyl, cumene
    hydroperoxide).
-6. **Gibbs reactor.** Test: Cantera. Done 2026-10-28 as a mode of the equilibrium reactor, not a block of its own
-   (the maintainer: "the blocks have a lot of reactors and seems crowded"), on the same solver, one phase or two.
+6. **Gibbs reactor.** Test: Cantera. Done 2026-10-28, a block of its own in the one Reactor menu, on the equilibrium
+   reactor's solver, one phase or two (docs/decisions/2026-10-28-02-reactors-round-2.md).
 7. **Reactions page and reactor views** (the conversion and yield reactors: 2026-10-22,
    docs/decisions/2026-10-22-11-reactor-views.md), export and import of reaction lists, Excel export of conversion reactors
    (the concept model of the Excel export: extents as formulas).

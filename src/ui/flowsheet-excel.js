@@ -118,7 +118,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
         return { r, key: comps.indexOf(e.key), cell: at(row, 2) };
       });
       I.push([]);
-    } else if (b.type === "equilibrium-reactor" && res.blocks[b.id]?.reaction?.equilibrium) {
+    } else if ((b.type === "equilibrium-reactor" || b.type === "gibbs-reactor") && res.blocks[b.id]?.reaction?.equilibrium) {
       // chemical equilibrium is not a spreadsheet formula: its outlet flows are values from CHEPTA, listed with K here
       const q = res.blocks[b.id].reaction;
       I.push([{ v: `Equilibrium reactor ${b.label || b.id}`, s: "bold" }, "(solved in CHEPTA: its outlet flows are values; change the reactions there)"]);

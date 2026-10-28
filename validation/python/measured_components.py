@@ -312,6 +312,19 @@ COMPONENTS = {
         "dHvap_why": "no calorimetric value; the WebBook values are derived from vapour pressures",
         "cp0": None,
     },
+    "p-terphenyl": {
+        # Rawlings and Ekerdt, Example 4.5 (benzene pyrolysis; "triphenyl", C18H14, isomer not named there): the para
+        # isomer, the maintainer's choice of 2026-10-28; in no open databank (gap_report.py --new, 2026-10-28)
+        "name": "p-Terphenyl", "cas": "92-94-4", "webbook": "C92944", "proposal": "proposal 0010, step 8",
+        "aliases": ["para-terphenyl", "1,4-diphenylbenzene", "4-phenylbiphenyl", "triphenyl"],
+        "thermoml_queries": ["p-terphenyl", "1,4-diphenylbenzene", "para-terphenyl", "1,1':4',1''-terphenyl"],
+        "no_critical": ["NIST Chemistry WebBook (no Tc or Pc on its phase-change page)", "NIST TRC ThermoML Archive (no critical temperature or pressure)", "CoolProp 8.0.0 (not a fluid)", "ChemSep v8.3 and v8.31 data 2 (compound not included)"],
+        "antoine_fit": [],
+        "vp_fit": "consensus",
+        "dHvap": "clapeyron",
+        "dHvap_why": "the calorimetric values are fitted with the vapour pressures (Clapeyron)",
+        "cp0": None,
+    },
     "limonene": {
         # Wu 2019 (two boiling temperatures at 101 kPa, 449.3-449.6 K) misses the agreement test narrowly (1.83 % against
         # its stated 1.62 %); the other measured boiling temperatures are 450.34 K (Sun 2011) and 450.2-450.8 K from the

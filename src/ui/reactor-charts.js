@@ -6,7 +6,7 @@
  */
 import { h } from "./dom.js";
 import { drawPlot } from "./plot.js";
-import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
+import { tLabel, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 
 const color = n => `var(--fug-s${(n % 6) + 1})`;
 
@@ -26,7 +26,7 @@ export function profileSeries(kin, key, { ids, names, reactions, units: u }) {
   switch (key) {
     case "flows": return { yLabel: "F, kmol/h", series: ids.map((id, i) => line(names[i], pr.map(p => p.flows_kmol_h[i]), i)) };
     case "y": return { yLabel: "y, mol/mol", series: ids.map((id, i) => line(names[i], pr.map(p => p.flows_kmol_h[i] / p.flows_kmol_h.reduce((a, b) => a + b, 0)), i)) };
-    case "T": return { yLabel: `T, ${u.T === "K" ? "K" : "°C"}`, series: [line("T", pr.map(p => tToDisplay(p.T_K, u)), 0)] };
+    case "T": return { yLabel: `T, ${tLabel(u)}`, series: [line("T", pr.map(p => tToDisplay(p.T_K, u)), 0)] };
     case "P": return { yLabel: `P, ${u.P}`, series: [line("P", pr.map(p => pToDisplay(p.P_kPa, u)), 1)] };
     case "X": return { yLabel: "Conversion", series: ids.map((id, i) => (fin[i] > 0 && pr.at(-1).flows_kmol_h[i] < fin[i] ? line(names[i], pr.map(p => 1 - p.flows_kmol_h[i] / fin[i]), i) : null)).filter(Boolean) };
     case "r": return { yLabel: `r, ${reactions[0]?.units ?? "mol/(m3 s)"}`, series: reactions.map((rx, k) => line(rx.name, pr.map(p => p.rates[k]), k)) };

@@ -8,9 +8,9 @@
  * no solution keep their row with empty cells, so a chart of the sheet shows the same gaps as the
  * canvas. DOM-free (tested in test/diagram-export.test.js).
  */
-import { tToDisplay, pToDisplay } from "./properties-logic.js";
+import { tLabel, tToDisplay, pToDisplay } from "./properties-logic.js";
 
-const tUnit = u => (u.T === "K" ? "K" : "°C");
+const tUnit = u => tLabel(u);
 const tCol = (u, label = "T") => ({ label, unit: tUnit(u) });
 const pCol = (u, label = "P") => ({ label, unit: u.P });
 const T = (K, u) => (K == null ? null : tToDisplay(K, u));

@@ -32,6 +32,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   kinetics; the PFR's profiles; the Reactor workspace. Confirm the choices under "To check" there. Still open: step 8,
   a vapour-viscosity mixing rule for Ergun, two liquids in reactors, and a P-H flash with Peng–Robinson that fails
   through a two-liquid region.
+- **Reactors, round 2** (docs/decisions/2026-10-28-02-reactors-round-2.md): the Gibbs reactor as a block again, global
+  reactions, more units in Settings, biphenyl, p-terphenyl (para isomer: to confirm) and cumene hydroperoxide. Decide
+  on the flash failure: the small fix now (a start temperature, step past the two-liquid refusal) and two liquids
+  for PR/SRK as a proposal.
 - **Reactions, step 2** (proposal 0010; docs/decisions/2026-10-22-05-reactions.md): confirm the standard pressure of
   100 kPa, the pure-liquid standard state and its paths (through the saturated vapour, for acetic acid with its
   monomers and dimers; crystal to liquid with ΔHfus); compare the WebBook liquid values of
@@ -39,7 +43,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (flowsheets included), and so do those of acids that are solid at 25 °C. Formic acid has its dimer constants (Chao and
   Zwolinski 1978) and the WebBook gas ΔfH°; propionic and acrylic acid have none open yet (their liquid values are
   12-26 kJ/mol off). No open source with the Eley–Rideal and Mars–van Krevelen forms was found.
-- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-27.md](MISSING_PROPERTIES_2026-10-27.md)):
+- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-28.md](MISSING_PROPERTIES_2026-10-28.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
 - **Missing properties, round 3** (docs/decisions/2026-10-22-07-missing-round3.md): levoglucosenone's vapour

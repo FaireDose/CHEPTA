@@ -256,6 +256,24 @@ Left out of vapourPressure: 396.91 K, Matsuda 2016, +2.76 % (more than three tim
 
 Left out of surfaceTension: 313.15 K, Mejia 2019, -1.64 % (deviates most from a robust fit of the others).
 
+## p-Terphenyl (C18H14, CAS 92-94-4)
+
+- No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb not reached by the measured vapour pressures, M 230.3038 g/mol
+- Constants: Tc and Pc: no measured values in the open sources (searched: NIST Chemistry WebBook (no Tc or Pc on its phase-change page); NIST TRC ThermoML Archive (no critical temperature or pressure); CoolProp 8.0.0 (not a fluid); ChemSep v8.3 and v8.31 data 2 (compound not included)); not estimated, so the component is used with activity models and an ideal-gas vapour only (proposal 0009). MW, formula and CAS: chemicals library (MIT). Measured data only: not a CoolProp 8.0.0 fluid and not in the ChemSep databank (proposal 0010, step 8). Tb: not reached, the measured vapour pressures stay below 101.325 kPa.
+
+| Property | Range (K) | Values used | Left out | Max deviation | Sources |
+|---|---|---|---|---|---|
+| Vapour pressure | 298.15-500.00 | 12 | 0 | 0.044 % | ThermoML, WebBook |
+| liquidDensity | — | — | — | — | no open data |
+| idealGasHeatCapacity | — | — | — | — | no open data |
+| liquidHeatCapacity | 180.00-770.00 | predicted | — | — | Predicted by group additivity (Ruzicka and Domalski 1993): no open measured values |
+| heatOfVaporization | 298.15-500.00 | 25 | 0 | 0.094 % | Clapeyron equation with the vapour-pressure record (measured values of the NIST TRC ThermoML Archive and the NIST Chemistry WebBook) and an ideal-gas vapour; and measured values (NIST Chemistry WebBook) |
+| liquidViscosity | — | — | — | — | no open data |
+| vapourViscosity | — | — | — | — | no open data |
+| liquidThermalConductivity | — | — | — | — | no open data |
+| vapourThermalConductivity | — | — | — | — | no open data |
+| surfaceTension | — | — | — | — | no open data |
+
 ## Limonene (C10H16, CAS 138-86-3)
 
 - No measured Tc and Pc (activity models with an ideal-gas vapour only); Tb 450.196 K, M 136.2340 g/mol

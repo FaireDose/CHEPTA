@@ -375,8 +375,8 @@ export function bracket(f, x0, lo, hi) {
   return null;
 }
 
-registerUnit({
-  type: "equilibrium-reactor", label: "Equilibrium reactor", duty: true, dutySpec: true, reactive: "elements",
+const EQUILIBRIUM = {
+  duty: true, dutySpec: true, reactive: "elements",
   inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out" }],
   checkSpec: checkEquilibrium,
   dof(spec) {
@@ -452,4 +452,15 @@ registerUnit({
           reactions: Object.fromEntries(reactions.map((r, k) => [r.id, { lnK: eq.constants[k].lnK, K: Math.exp(eq.constants[k].lnK), T_K: eq.constants[k].T_K,
             from: eq.constants[k].from, approach: approach[k], equilibriumExtent: eq.equilibriumExtents[k] }])) } } };
   },
-});
+};
+
+registerUnit({ type: "equilibrium-reactor", label: "Equilibrium reactor", ...EQUILIBRIUM,
+  checkSpec(spec, ctx) {
+    if (spec?.mode === "gibbs") throw fail("BAD_INPUT", "Equilibrium reactor: every reaction among given species is the Gibbs reactor (\"gibbs-reactor\"), a block of its own.");
+    return checkEquilibrium(spec, ctx);
+  } });
+// the Gibbs reactor (proposal 0010, step 6): the species that may react, every reaction among them; a block of its own
+// (the maintainer, 2026-10-28), on the equilibrium reactor's solver
+registerUnit({ type: "gibbs-reactor", label: "Gibbs reactor", ...EQUILIBRIUM,
+  checkSpec: (spec, ctx) => checkEquilibrium({ ...spec, mode: "gibbs" }, ctx),
+  dof: spec => EQUILIBRIUM.dof({ ...spec, mode: "gibbs" }) });

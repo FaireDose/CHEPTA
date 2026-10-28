@@ -14,12 +14,12 @@ import { componentPicker } from "./component-picker.js";
 import { userOverlay } from "./app-logic.js";
 import { listComponents } from "../thermo/system.js";
 import { system } from "../system.js";
-import { fmtShort } from "./properties-logic.js";
+import { tLabel, tToDisplay, fmtShort } from "./properties-logic.js";
 import { putUserData } from "./user-data-file.js";
 import { PAIR_MODELS, pairColumns, pairEntry, withPairValues, groupColumns, groupRows, atomBalance, mainGroupInteractions, searchSubgroups } from "./pairs-groups-logic.js";
 
 const num = v => (v == null || v === "" ? "–" : typeof v === "number" ? fmtShort(v, 6) : String(v));
-const fmtT = (T, units) => (units?.T === "K" ? `${fmtShort(T, 5)} K` : `${fmtShort(T - 273.15, 4)} °C`);
+const fmtT = (T, units) => `${fmtShort(tToDisplay(T, units ?? { T: "C" }), 5)} ${tLabel(units ?? { T: "C" })}`;
 
 // ---------------------------------------------------------------------------------------------------------------
 // pair parameters

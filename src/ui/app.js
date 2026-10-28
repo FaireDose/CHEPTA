@@ -35,7 +35,7 @@ import {
 import { diagramXlsx, exportFileName } from "./diagram-export.js";
 import { modelPicker, liquidPicker } from "./model-picker.js";
 import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, examplesFor, rotateInputs, solventsFor, needsFor, isEosModel } from "./workspaces.js";
-import { UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
+import { tLabel, UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
 import { CHART_KINDS, CHART_TITLE } from "./charts-view.js";
 import { myDataPanel, PROPERTY_LABEL } from "./my-data-panel.js";
@@ -593,7 +593,7 @@ export function app(target, cfg = {}) {
       if (v === "txy" || v === "ternary" || v === "azeotropes") secs.push(inputsSection("Conditions", pressureField()));
       else if (v === "pxy") {
         secs.push(inputsSection("Conditions",
-          field(`Temperature, ${u.T === "K" ? "K" : "°C"}`, check.ok ? String(+tToDisplay(pxyTemperature(state), u).toFixed(3)) : "",
+          field(`Temperature, ${tLabel(u)}`, check.ok ? String(+tToDisplay(pxyTemperature(state), u).toFixed(3)) : "",
             t => { if (String(t).trim() === "") { set({ T_K: null }); return; } const val = parseT(t, u); if (val == null) return false; set({ T_K: val }); },
             { id: "t", title: "Temperature of the P-x-y diagram. Leave empty for 85 % of the lowest critical temperature." }),
           h("p", { class: "fa-in-hint" }, state.T_K == null ? "Automatic: 85 % of the lowest critical temperature. Type a value to set it." : "Clear the field for the automatic temperature.")));
@@ -626,7 +626,7 @@ export function app(target, cfg = {}) {
         h("div", { class: "fa-in-actions" }, h("button", { type: "button", class: "fa-mini", "data-fk": "act-order", title: "Swap the two components",
           on: { click: () => set({ inputs: { [v]: rotateInputs(state.inputs[v]) } }) } }, icon("swap", 15), "Swap"))));
       secs.push(inputsSection("Conditions",
-        field(`Temperature, ${u.T === "K" ? "K" : "°C"}`, String(+tToDisplay(state.sleT_K, u).toFixed(2)),
+        field(`Temperature, ${tLabel(u)}`, String(+tToDisplay(state.sleT_K, u).toFixed(2)),
           t => { const val = parseT(t, u); if (val == null) return false; set({ sleT_K: val }); },
           { id: "slet", title: v === "solid" ? "Temperature of the readout: the solubility there" : "Temperature of the readout: the liquid compositions where each solid starts to crystallize" })));
       if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
@@ -656,7 +656,7 @@ export function app(target, cfg = {}) {
         problemsBox(check),
         h("p", { class: "fa-in-hint" }, `The databank has Henry's law constants for ${HENRY_GASES.length} gases in ${solventsFor(null).map(s => nameOf(s).toLowerCase()).join(", ")}.`)));
       secs.push(inputsSection("Conditions",
-        field(`Temperature, ${u.T === "K" ? "K" : "°C"}`, String(+tToDisplay(state.henryT_K, u).toFixed(2)),
+        field(`Temperature, ${tLabel(u)}`, String(+tToDisplay(state.henryT_K, u).toFixed(2)),
           t => { const val = parseT(t, u); if (val == null) return false; set({ henryT_K: val }); }, { id: "ht" }),
         field(`Gas partial pressure, ${u.P}`, fmtShort(pToDisplay(state.henryP_kPa, u), 6),
           t => { const val = parseP(t, u); if (val == null) return false; set({ henryP_kPa: val }); }, { id: "hp", title: "Partial pressure of the gas over the solution" })));
@@ -679,7 +679,7 @@ export function app(target, cfg = {}) {
           title: "The charts need an equation of state", on: { click: () => set({ model: "PR" }) } }, icon("envelope", 15), "Use Peng–Robinson")) : null));
       secs.push(inputsSection(c.kind === "PH" ? "Isotherms" : "Isobars",
         c.kind === "PH"
-          ? field(`Temperatures, ${u.T === "K" ? "K" : "°C"}`, c.T_K.map(T => String(+tToDisplay(T, u).toFixed(2))).join(", "),
+          ? field(`Temperatures, ${tLabel(u)}`, c.T_K.map(T => String(+tToDisplay(T, u).toFixed(2))).join(", "),
             t => { const l = list(t, x => parseT(x, u)); if (!l.length) return false; set({ chart: { T_K: l } }); }, { id: "cht", width: "100%", title: "Up to six temperatures, separated by commas" })
           : field(`Pressures, ${u.P}`, c.P_kPa.map(P => fmtShort(pToDisplay(P, u), 6)).join(", "),
             t => { const l = list(t, x => parseP(x, u)); if (!l.length) return false; set({ chart: { P_kPa: l } }); }, { id: "chp", width: "100%", title: "Up to six pressures, separated by commas" }),
@@ -689,7 +689,7 @@ export function app(target, cfg = {}) {
       secs.push(inputsSection("Compression or expansion",
         h("label", { class: "fa-check-label" }, h("input", { type: "checkbox", checked: !!k, "data-fk": "ch-k",
           on: { change: ev => (ev.target.checked ? kSet({}) : set({ chart: { compression: null } })) } }), " Draw one on the chart"),
-        k ? field(`Inlet temperature, ${u.T === "K" ? "K" : "°C"}`, String(+tToDisplay(k.T_K, u).toFixed(2)), t => { const val = parseT(t, u); if (val == null) return false; kSet({ T_K: val }); }, { id: "chkt" }) : null,
+        k ? field(`Inlet temperature, ${tLabel(u)}`, String(+tToDisplay(k.T_K, u).toFixed(2)), t => { const val = parseT(t, u); if (val == null) return false; kSet({ T_K: val }); }, { id: "chkt" }) : null,
         k ? field(`Inlet pressure, ${u.P}`, fmtShort(pToDisplay(k.P_kPa, u), 6), t => { const val = parseP(t, u); if (val == null) return false; kSet({ P_kPa: val }); }, { id: "chkp" }) : null,
         k ? field(`Outlet pressure, ${u.P}`, fmtShort(pToDisplay(k.P_out_kPa, u), 6), t => { const val = parseP(t, u); if (val == null) return false; kSet({ P_out_kPa: val }); }, { id: "chko" }) : null,
         k ? field("Isentropic efficiency", String(k.efficiency), t => { const val = Number(String(t).replace(",", ".")); if (!(val > 0 && val <= 1)) return false; kSet({ efficiency: val }); }, { id: "chke", title: "A fraction, at most 1 (0.75 is 75 %)" }) : null,
@@ -739,7 +739,7 @@ export function app(target, cfg = {}) {
   }
   function specSection() {
     const f = state.flash, u = state.units, sp = FLASH_SPECS.find(x => x.id === f.spec);
-    const tLab = `Temperature, ${u.T === "K" ? "K" : "°C"}`;
+    const tLab = `Temperature, ${tLabel(u)}`;
     const tField = (label, key, id) => field(label, String(+tToDisplay(f[key], u).toFixed(3)),
       x => { const v = parseT(x, u); if (v == null) return false; set({ flash: { [key]: v } }); }, { id });
     const pField = (label, key, id) => field(label, fmtShort(pToDisplay(f[key], u), 6),
@@ -755,7 +755,7 @@ export function app(target, cfg = {}) {
         field("Heat duty Q, J/mol", String(f.Q_J_mol), x => { const v = Number(String(x).trim().replace(",", ".")); if (!Number.isFinite(v)) return false; set({ flash: { Q_J_mol: v } }); },
           { id: "fq", title: "Heat added per mole of feed; 0 for an adiabatic flash (valve), negative for cooling" }));
     }
-    const feedState = [tField(`Feed temperature, ${u.T === "K" ? "K" : "°C"}`, "feedT_K", "fft"), pField(`Feed pressure, ${u.P}`, "feedP_kPa", "ffp")];
+    const feedState = [tField(`Feed temperature, ${tLabel(u)}`, "feedT_K", "fft"), pField(`Feed pressure, ${u.P}`, "feedP_kPa", "ffp")];
     return h("div", {},
       inputsSection(`Specification: ${sp.title.toLowerCase()}`, h("p", { class: "fa-in-hint" }, sp.hint), ...conds),
       inputsSection("Feed state",
@@ -826,7 +826,7 @@ export function app(target, cfg = {}) {
       cell("", model), ...setsCell,
       ...(cond ? [cell("", cond)] : []),
       st.info?.data ? cell("fa-grow", st.info.data) : h("span", { class: "fa-grow" }),
-      cell("fa-hide-narrow", `${u.T === "K" ? "K" : "°C"}, ${u.P}, ${state.basis === "mass" ? "wt %" : "mol frac"}`),
+      cell("fa-hide-narrow", `${tLabel(u)}, ${u.P}, ${state.basis === "mass" ? "wt %" : "mol frac"}`),
       cell("", `CHEPTA ${pkg.version}`));
   }
 
@@ -1137,11 +1137,13 @@ export function app(target, cfg = {}) {
           h("button", { type: "button", class: "fa-mini", "data-fk": "lib-browse", on: { click: () => { ui.sources.mine = false; set({ utility: "sources" }, { canvas: false }); } } }, icon("book", 15), "Browse sources")));
     }
     return h("div", { class: "fa-dgrid" },
+      // one drop list per quantity (the maintainer, 2026-10-28: "add more units ... with drop list for main properties")
       drawerSection("Units", h("div", { class: "fa-units" },
-        h("span", {}, "Temperature"), seg("Temperature unit", UNIT_CHOICES.T, u.T, x => set({ units: { T: x } })),
-        h("span", {}, "Pressure"), seg("Pressure unit", UNIT_CHOICES.P, u.P, x => set({ units: { P: x } })),
-        h("span", {}, "Composition"), seg("Composition basis", [["mole", "mol frac"], ["mass", "wt %"]], state.basis, b => set({ basis: b })),
-        h("span", {}, "Energy"), seg("Energy basis", UNIT_CHOICES.basis, u.basis, x => set({ units: { basis: x } })))),
+        ...[["T", "Temperature"], ["P", "Pressure"], ["flow", "Molar flow"], ["massFlow", "Mass flow"], ["duty", "Duty, power"], ["basis", "Energy"], ["viscosity", "Viscosity"]]
+          .flatMap(([key, label]) => [h("label", { for: `fa-unit-${key}-${uid}` }, label),
+            h("select", { id: `fa-unit-${key}-${uid}`, "data-fk": `unit-${key}`, on: { change: ev => set({ units: { [key]: ev.target.value } }) } },
+              ...UNIT_CHOICES[key].map(([v, l]) => h("option", { value: v, selected: u[key] === v }, l)))]),
+        h("span", {}, "Composition"), seg("Composition basis", [["mole", "mol frac"], ["mass", "wt %"]], state.basis, b => set({ basis: b })))),
       drawerSection("Show", h("div", { class: "fa-stack" },
         smallButton({ ico: "panelL", label: "Inputs panel", pressed: state.panels.left, onClick: () => set({ panels: { left: !state.panels.left } }, { canvas: false }) }),
         smallButton({ ico: "panelR", label: "Results panel", pressed: state.panels.right, onClick: () => set({ panels: { right: !state.panels.right } }, { canvas: false }) }),

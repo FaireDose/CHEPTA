@@ -37,8 +37,8 @@ test("changing the reactor type keeps its streams, renames it, and starts its ne
   assert.equal(b.id, "RE1");
   assert.equal(b.spec.T_K, 791.15);
   assert.ok(eq.streams.some(s => s.to === "RE1.in") && eq.streams.some(s => s.from === "RE1.out"));
-  const gibbs = setSpec(eq, "RE1", { mode: "gibbs", reactions: null });
-  assert.ok(runFlowsheet(gibbs).blocks.RE1.reaction.generated.length === 1);
+  const gibbs = setBlockType(fs, "PF1", "gibbs-reactor");
+  assert.ok(runFlowsheet(gibbs).blocks.RG1.reaction.generated.length === 1);
   for (const t of REACTORS) assert.ok(setBlockType(fs, "PF1", t).blocks.some(x => x.type === t));
 });
 
@@ -59,4 +59,30 @@ test("the Reactor workspace is saved with the project and opens again", () => {
   assert.equal(doc.reactor.blocks.find(b => b.type === "pfr").spec.L_m, 12.2);
   const back = stateFromProject(JSON.stringify(doc));
   assert.deepEqual(back.reactor.reactions, s1.reactor.reactions);
+});
+
+test("reactions saved global: one list for the Flowsheet and the Reactor workspace, saved with the project", async () => {
+  const { saveShared, hasShared, importReactions } = await import("../src/ui/flowsheet-logic.js");
+  const r = base().reactions[0];
+  let shared = saveShared([], r);
+  shared = saveShared(shared, { ...r, phase: "liquid" });   // the same name again: replaced
+  assert.equal(shared.length, 1);
+  assert.equal(shared[0].phase, "liquid");
+  const fs = { components: ["ethane", "ethylene", "hydrogen"], thermo: { model: "PR" }, blocks: [], streams: [] };
+  assert.ok(!hasShared(fs, shared[0]));
+  assert.ok(hasShared(importReactions(fs, shared).fs, shared[0]));
+  const s1 = applyPatch(initialState({ components: ["ethanol", "water"] }), { sharedReactions: shared });
+  assert.deepEqual(stateFromProject(JSON.stringify(projectOf(s1))).sharedReactions, shared);
+});
+
+test("units of Settings: conversions of NIST SP 811", async () => {
+  const P = await import("../src/ui/properties-logic.js");
+  const u = P.normalizeUnits({ T: "°F", P: "psia", flow: "lbmol/h", massFlow: "t/h", duty: "Btu/h" });
+  assert.ok(Math.abs(P.tFromDisplay(212, u) - 373.15) < 1e-9);
+  assert.ok(Math.abs(P.tToDisplay(P.tFromDisplay(-40, u), u) + 40) < 1e-9);
+  assert.ok(Math.abs(P.pFromDisplay(14.69595, u) - 101.325) < 1e-4);
+  assert.ok(Math.abs(P.flowToDisplay(0.4535924, u) - 1) < 1e-12);
+  assert.equal(P.massFlowToDisplay(2000, u), 2);
+  assert.ok(Math.abs(P.dutyFromDisplay(P.dutyToDisplay(7, u), u) - 7) < 1e-12);
+  assert.equal(P.tLabel(u), "°F");
 });

@@ -131,7 +131,7 @@ proposal 0010 step 9) will cover them.
 
 ## Reactors
 
-Five reactor blocks (proposal 0010, steps 3 to 6; `src/units/reactors.js`, `src/units/kinetic-reactors.js`) work alone
+Six reactor blocks (proposal 0010, steps 3 to 6; `src/units/reactors.js`, `src/units/kinetic-reactors.js`) work alone
 (`runUnit`), in flowsheets, and in the Reactor workspace of the Unit models (below). The
 reactions are written once, in the flowsheet file's `reactions` list (as above), and each reactor names those it uses.
 
@@ -194,8 +194,8 @@ the outlet temperature and pressure:
 - `"phases": 2`, a reactive flash (2026-10-28): at each set of extents the mixture is flashed at T and P, and the
   activities come from the fugacities of the phases found (equal in both at phase equilibrium), so chemical and phase
   equilibrium hold together. Each reaction keeps its own standard state, so vapour and liquid reactions can be mixed.
-- **Gibbs mode** (`"mode": "gibbs"`, step 6): the species that may react are given (`species`, default all), not the
-  reactions. CHEPTA reduces their element matrix and writes one reaction for each species that is not a pivot (a basis of
+- **Gibbs reactor** (`gibbs-reactor`, step 6; a block of its own, on this solver): the species that may react are given
+  (`species`, default all), not the reactions. CHEPTA reduces their element matrix and writes one reaction for each species that is not a pivot (a basis of
   the null space): a complete set of independent reactions, with K from the formation data in the standard state of
   `phase` (vapour by default). Their equilibrium is the minimum of the Gibbs energy with the elements balanced
   (Rawlings and Ekerdt, section 3.5.2, p. 92). The others pass through. The result lists the reactions it wrote
@@ -266,7 +266,8 @@ generation (the mass balance for the yield reactor) to 1e-9. A flowsheet with re
 products, and its energy balance subtracts the heat of the reactions. Its results give `generation_kmol_h` and
 `reaction_kW`, and each reactor's `reaction`: the generation, the extents, the conversions and the heat.
 
-**In the workbench.** The flowsheet's toolbar has one Reactor button; its menu lists the five types. A selected
+**In the workbench.** The flowsheet's toolbar has one Reactor button; its menu lists the six types. A reaction saved
+"global" on a Reactions page can be added on the other workspace's Reactions page without writing it again. A selected
 plug-flow reactor (or a double-click on it) shows its profiles under the drawing, in place of the stream table:
 molar flows, mole fractions, temperature, pressure, conversion, rates and vapour fraction against the length, as the
 profile plots of desktop simulators. The Reactor workspace of the Unit models is a flowsheet of its own (a feed, one
@@ -299,7 +300,7 @@ composition. The Reactions page edits each reaction's kinetics (a form and its c
 
 - The reactive flash: esterification with NRTL and its vapour at 350, 352 and 355 K and 101.325 kPa, against scipy
   (a flash by fsolve inside brentq on the extent): the extent within 1e-6, the vapour fraction within 1e-4.
-- Gibbs mode: the reactions it writes for CO₂, H₂, methanol, water and CO give Cantera's Gibbs minimum (the fixture of
+- Gibbs reactor: the reactions it writes for CO₂, H₂, methanol, water and CO give Cantera's Gibbs minimum (the fixture of
   the equilibrium reactor), mole fractions within 2e-4 relative.
 - PFR and CSTR with two reversible Arrhenius rates (ethanol to ethylene and to diethyl ether, ideal gas): the profile
   and outlet against scipy's solve_ivp (Radau) within 2e-5 relative at the outlet; the CSTR against fsolve within 1e-8;

@@ -23,10 +23,10 @@ import { flowsheetInputs, ensureUi, solution, resultsPanel, flowsheetKey } from 
 import { profilePanel, chartBox } from "./reactor-charts.js";
 import { calculatedFlowsheet, userOverlay } from "./app-logic.js";
 import { listComponents } from "../thermo/system.js";
-import { tToDisplay, fmtShort } from "./properties-logic.js";
+import { tLabel, tToDisplay, fmtShort } from "./properties-logic.js";
 import { warning } from "./warning.js";
 
-export const REACTOR_SHORT = { "conversion-reactor": "Conversion", "yield-reactor": "Yield", "equilibrium-reactor": "Equilibrium", cstr: "CSTR", pfr: "Plug flow" };
+export const REACTOR_SHORT = { "conversion-reactor": "Conversion", "yield-reactor": "Yield", "equilibrium-reactor": "Equilibrium", "gibbs-reactor": "Gibbs", cstr: "CSTR", pfr: "Plug flow" };
 /** The id of the workspace's reactor (its type's prefix: RE1, CS1, PF1, ...). */
 const rid = fs => fs.blocks.find(b => REACTORS.includes(b.type))?.id;
 
@@ -124,7 +124,7 @@ function drawChart(chart, { fs, sol, res, rui, set, u, ud }) {
   const rxs = (usedReactions(fs).reactions ?? []).map(r => { try { return checkReaction(r, { userData: ud }); } catch { return null; } }).filter(Boolean);
   const feedT = sol.result?.streams?.[fs.streams.find(s => s.to === `${RID}.in`)?.id]?.T_K;
   const T0 = res?.reaction?.equilibrium?.T_K ?? res?.reaction?.kinetic?.T_K ?? b.spec.T_K ?? feedT ?? 500;
-  const tU = u.T === "K" ? "K" : "°C";
+  const tU = tLabel(u);
   if (chart === "profile") {
     if (!res?.reaction?.kinetic?.profile) return h("div", { class: "fa-empty" }, sol.error ?? "Solve the reactor first: its inputs are not complete.");
     return profilePanel({ kin: res.reaction.kinetic, ids: fs.components, names, units: u, sel: rui.profileVar, onSel: k => { rui.profileVar = k; set({}); },

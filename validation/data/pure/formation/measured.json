@@ -2103,6 +2103,108 @@
    "Open literature, web search of 2026-10-22 for combustion calorimetry and enthalpies of formation of the compound: no measured value found"
   ]
  },
+ "p-terphenyl": {
+  "webbook": [
+   {
+    "cas": "92-94-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C92944&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": 284.4,
+    "uncertainty": 3.8,
+    "units": "kJ/mol",
+    "method": "Review",
+    "reference": "Roux, Temprado, et al., 2008",
+    "comment": "There are sufficient literature values to make a qualified recommendation where the suggested value is in good agreement with values predicted using thermochemical cycles or from reliable estimates. In general, the evaluated uncertainty limits are on the order of (2 to 4) kJ/mol.; DRB"
+   },
+   {
+    "cas": "92-94-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C92944&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "gas",
+    "value": 279.0,
+    "uncertainty": 6.3,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Balepin, Lebedev, et al., 1977",
+    "comment": "ALS"
+   },
+   {
+    "cas": "92-94-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C92944&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": 158.8,
+    "uncertainty": 3.4,
+    "units": "kJ/mol",
+    "method": "Review",
+    "reference": "Roux, Temprado, et al., 2008",
+    "comment": "There are sufficient literature values to make a qualified recommendation where the suggested value is in good agreement with values predicted using thermochemical cycles or from reliable estimates. In general, the evaluated uncertainty limits are on the order of (2 to 4) kJ/mol.; DRB"
+   },
+   {
+    "cas": "92-94-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C92944&Mask=FFFF&Units=SI",
+    "quantity": "ΔfH°",
+    "state": "solid",
+    "value": 163.0,
+    "uncertainty": 4.6,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Balepin, Lebedev, et al., 1977",
+    "comment": "ALS"
+   },
+   {
+    "cas": "92-94-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C92944&Mask=FFFF&Units=SI",
+    "quantity": "ΔcH°",
+    "state": "solid",
+    "value": -9246.6,
+    "uncertainty": 4.6,
+    "units": "kJ/mol",
+    "method": "Ccb",
+    "reference": "Balepin, Lebedev, et al., 1977",
+    "comment": "Corresponding ΔfHºsolid = 163. kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+   },
+   {
+    "cas": "92-94-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C92944&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 285.23,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Saito, Atake, et al., 1988",
+    "comment": "crystaline, I phase; DH"
+   },
+   {
+    "cas": "92-94-4",
+    "form": "the component",
+    "crystal_is_components": true,
+    "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C92944&Mask=FFFF&Units=SI",
+    "quantity": "S°",
+    "state": "solid",
+    "value": 285.62,
+    "uncertainty": null,
+    "units": "J/mol*K",
+    "method": "N/A",
+    "reference": "Chang, 1983",
+    "comment": "DH"
+   }
+  ]
+ },
  "solketal": {
   "webbook": [],
   "thermoml": [],

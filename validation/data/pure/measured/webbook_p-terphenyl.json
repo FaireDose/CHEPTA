@@ -1,0 +1,560 @@
+{
+ "component": "p-terphenyl",
+ "retrieved": "2026-10-28",
+ "pages": {
+  "gas phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C92944&Units=SI&Mask=1",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°gas",
+       "284.4 ± 3.8",
+       "kJ/mol",
+       "Review",
+       "Roux, Temprado, et al., 2008",
+       "There are sufficient literature values to make a qualified recommendation where the suggested value is in good agreement with values predicted using thermochemical cycles or from reliable estimates. In general, the evaluated uncertainty limits are on the order of (2 to 4) kJ/mol.; DRB"
+      ],
+      [
+       "ΔfH°gas",
+       "279. ± 6.3",
+       "kJ/mol",
+       "Ccb",
+       "Balepin, Lebedev, et al., 1977",
+       "ALS"
+      ]
+     ]
+    }
+   ]
+  },
+  "condensed phase thermochemistry": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C92944&Units=SI&Mask=2",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "ΔfH°solid",
+       "158.8 ± 3.4",
+       "kJ/mol",
+       "Review",
+       "Roux, Temprado, et al., 2008",
+       "There are sufficient literature values to make a qualified recommendation where the suggested value is in good agreement with values predicted using thermochemical cycles or from reliable estimates. In general, the evaluated uncertainty limits are on the order of (2 to 4) kJ/mol.; DRB"
+      ],
+      [
+       "ΔfH°solid",
+       "163. ± 4.6",
+       "kJ/mol",
+       "Ccb",
+       "Balepin, Lebedev, et al., 1977",
+       "ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔcH°solid",
+       "-9246.6 ± 4.6",
+       "kJ/mol",
+       "Ccb",
+       "Balepin, Lebedev, et al., 1977",
+       "Corresponding ΔfHºsolid = 163. kJ/mol (simple calculation by NIST; no Washburn corrections); ALS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "S°solid,1 bar",
+       "285.23",
+       "J/mol*K",
+       "N/A",
+       "Saito, Atake, et al., 1988",
+       "crystaline, I phase; DH"
+      ],
+      [
+       "S°solid,1 bar",
+       "285.62",
+       "J/mol*K",
+       "N/A",
+       "Chang, 1983",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "Cp,solid (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "278.12",
+       "298.15",
+       "Saito, Atake, et al., 1988",
+       "crystaline, I phase; T = 5 to 300 K.; DH"
+      ],
+      [
+       "278.68",
+       "298.15",
+       "Chang, 1983",
+       "T = 4 to 580 K. Cp = 35.12 + 0.58825T + 0.0010062T2 - 8.042x10-7T3 from 80 to 300 K.; DH"
+      ],
+      [
+       "260.",
+       "300.",
+       "Wasicki, Radomska, et al., 1982",
+       "T = 180 to 500 K. Data given graphically. Value estimated from graph.; DH"
+      ]
+     ]
+    }
+   ]
+  },
+  "phase change": {
+   "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C92944&Units=SI&Mask=4",
+   "tables": [
+    {
+     "header": [
+      "Quantity",
+      "Value",
+      "Units",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "Tboil",
+       "662.2",
+       "K",
+       "N/A",
+       "Aldrich Chemical Company Inc., 1990",
+       "BS"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tfus",
+       "493.1",
+       "K",
+       "N/A",
+       "Wasicki, Radomska, et al., 1982",
+       "Uncertainty assigned by TRC =  0.2 K; TRC"
+      ],
+      [
+       "Tfus",
+       "487.5",
+       "K",
+       "N/A",
+       "Sangster and Irvine, 1956",
+       "Uncertainty assigned by TRC =  5. K; TRC"
+      ],
+      [
+       "Tfus",
+       "488.1",
+       "K",
+       "N/A",
+       "Sangster and Irvine, 1956",
+       "Uncertainty assigned by TRC =  4. K; TRC"
+      ],
+      [
+       "Tfus",
+       "486.",
+       "K",
+       "N/A",
+       "Mikhailov and Aronovich, 1955",
+       "Uncertainty assigned by TRC =  3. K; TRC"
+      ],
+      [
+       "Tfus",
+       "480.",
+       "K",
+       "N/A",
+       "Ipatieff, Germain, et al., 1953",
+       "Uncertainty assigned by TRC =  3. K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Ttriple",
+       "487.0",
+       "K",
+       "N/A",
+       "Chang, 1983",
+       "Crystal phase 1 phase; Uncertainty assigned by TRC =  0.2 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Tc",
+       "908. ± 10.",
+       "K",
+       "N/A",
+       "Tsonopoulos and Ambrose, 1995",
+       ""
+      ],
+      [
+       "Tc",
+       "908.",
+       "K",
+       "N/A",
+       "Reiter, 1963",
+       "Uncertainty assigned by TRC =  10. K; TRC"
+      ],
+      [
+       "Tc",
+       "925.9",
+       "K",
+       "N/A",
+       "Mandel and Ewbank, 1960",
+       "Uncertainty assigned by TRC =  16.7 K; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Pc",
+       "30. ± 6.",
+       "bar",
+       "N/A",
+       "Tsonopoulos and Ambrose, 1995",
+       ""
+      ],
+      [
+       "Pc",
+       "29.90",
+       "bar",
+       "N/A",
+       "Reiter, 1963",
+       "Uncertainty assigned by TRC =  6.0795 bar; TRC"
+      ],
+      [
+       "Pc",
+       "33.30",
+       "bar",
+       "N/A",
+       "Mandel and Ewbank, 1960",
+       "Uncertainty assigned by TRC =  3.447 bar; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "Vc",
+       "0.729",
+       "l/mol",
+       "N/A",
+       "Tsonopoulos and Ambrose, 1995",
+       ""
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ρc",
+       "1.4 ± 0.6",
+       "mol/l",
+       "N/A",
+       "Tsonopoulos and Ambrose, 1995",
+       ""
+      ],
+      [
+       "ρc",
+       "1.37",
+       "mol/l",
+       "N/A",
+       "Reiter, 1963",
+       "Uncertainty assigned by TRC =  0.087 mol/l; TRC"
+      ],
+      [
+       "ρc",
+       "1.31",
+       "mol/l",
+       "N/A",
+       "Mandel and Ewbank, 1960",
+       "Uncertainty assigned by TRC =  0.13 mol/l; TRC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔvapH°",
+       "101.7",
+       "kJ/mol",
+       "CGC",
+       "Zhao, Unhannanant, et al., 2008",
+       "AC"
+      ],
+      [
+       "Quantity",
+       "Value",
+       "Units",
+       "Method",
+       "Reference",
+       "Comment"
+      ],
+      [
+       "ΔsubH°",
+       "119. ± 9.",
+       "kJ/mol",
+       "AVG",
+       "N/A",
+       "Average of 7 values; Individual data points"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔvapH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "79.2",
+       "398.",
+       "GC",
+       "Lei, Chankalal, et al., 2002",
+       "Based on data from 323. to 473. K.; AC"
+      ],
+      [
+       "79.2",
+       "514.",
+       "A",
+       "Stephenson and Malanowski, 1987",
+       "Based on data from 499. to 700. K.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔsubH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "116.2 ± 2.4",
+       "368.",
+       "T",
+       "Verevkin, 1997",
+       "Based on data from 353. to 383. K.; AC"
+      ],
+      [
+       "118.4",
+       "397.",
+       "ME",
+       "Wakayama and Inokuchi, 1967",
+       "AC"
+      ],
+      [
+       "120.6",
+       "363.",
+       "N/A",
+       "Hoyer and Peperle, 1958",
+       "Based on data from 333. to 393. K.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusH (kJ/mol)",
+      "Temperature (K)",
+      "Method",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "35.300",
+       "487.0",
+       "N/A",
+       "Chang, 1983, 2",
+       "DH"
+      ],
+      [
+       "35.500",
+       "486.3",
+       "N/A",
+       "Smith, 1979",
+       "DH"
+      ],
+      [
+       "41.600",
+       "493.1",
+       "N/A",
+       "Wasicki, Radomska, et al., 1982, 2",
+       "DH"
+      ],
+      [
+       "35.3",
+       "482.4",
+       "DSC",
+       "Verevkin, 1997",
+       "AC"
+      ],
+      [
+       "35.5",
+       "486.3",
+       "N/A",
+       "Saito, Atake, et al., 1988",
+       "See also  Chang, 1983 and  Acree, 1991.; AC"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔfusS (J/mol*K)",
+      "Temperature (K)",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "72.5",
+       "487.0",
+       "Chang, 1983, 2",
+       "DH"
+      ],
+      [
+       "73.0",
+       "486.3",
+       "Smith, 1979",
+       "DH"
+      ],
+      [
+       "84.4",
+       "493.1",
+       "Wasicki, Radomska, et al., 1982, 2",
+       "DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔHtrs (kJ/mol)",
+      "Temperature (K)",
+      "Initial Phase",
+      "Final Phase",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "0.304",
+       "193.5",
+       "crystaline, II",
+       "crystaline, I",
+       "Saito, Atake, et al., 1988",
+       "DH"
+      ],
+      [
+       "0.095",
+       "193.3",
+       "crystaline, II",
+       "crystaline, I",
+       "Cailleau and Dworkin, 1979",
+       "Obtained T = 191.0 K, S = 0.45 J/mol, from DSC data.; DH"
+      ]
+     ]
+    },
+    {
+     "header": [
+      "ΔStrs (J/mol*K)",
+      "Temperature (K)",
+      "Initial Phase",
+      "Final Phase",
+      "Reference",
+      "Comment"
+     ],
+     "rows": [
+      [
+       "1.63",
+       "193.5",
+       "crystaline, II, Lambda",
+       "crystaline, I, type transition",
+       "Saito, Atake, et al., 1988",
+       "DH"
+      ],
+      [
+       "0.49",
+       "193.3",
+       "crystaline, II",
+       "crystaline, I",
+       "Cailleau and Dworkin, 1979",
+       "Obtained; DH"
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

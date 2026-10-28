@@ -8,7 +8,7 @@ import { h } from "./dom.js";
 import { HX_DEFAULTS, HX_STREAM_MAX, UTILITY_KINDS, TWO_SPECS, streamZ } from "./hx-logic.js";
 import { modelPicker } from "./model-picker.js";
 import { HEAT_TRANSFER, ARRANGEMENTS } from "../units/heat-exchange.js";
-import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
+import { tLabel, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { parseT, parseP } from "./app-logic.js";
 
 const ARR_LABEL = { counterflow: "Counterflow", cocurrent: "Cocurrent (parallel flow)", "shell-and-tube": "Shell and tube (2 tube passes per shell)", "crossflow-unmixed": "Crossflow, neither stream mixed" };
@@ -24,7 +24,7 @@ const rangeText = r => (r.bound ? r.bound : `${r.U[0]}-${r.U[1]}`);
 export function hxInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf, streamList, setups }) {
   const hx = state.hx ?? HX_DEFAULTS, u = state.units, two = hx.mode === "two", rating = hx.task === "rating";
   const put = patch => set({ hx: patch });
-  const tU = u.T === "K" ? "K" : "°C";
+  const tU = tLabel(u);
   const tField = (label, value, onT, id, title) => field(`${label}, ${tU}`, value == null ? "" : String(+tToDisplay(value, u).toFixed(3)),
     t => { const v = parseT(t, u); if (v == null) return false; onT(v); }, { id, title });
   const pField = (label, value, onP, id, title) => field(`${label}, ${u.P}`, value == null ? "" : fmtShort(pToDisplay(value, u), 6),

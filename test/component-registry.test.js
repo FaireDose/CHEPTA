@@ -13,6 +13,8 @@ const FROM_MEASURED = ["dichloromethane", "2-methoxyethanol", "furan", "2-methyl
   "1-3-propanediol", "levulinic-acid", "methyl-levulinate", "ethyl-levulinate", "butyl-levulinate",
   "gvl", "thfa", "cpme", "2-3-butanediol", "methyl-lactate", "ethyl-lactate", "limonene", "furfuryl-alcohol", "gbl", "isoamyl-alcohol",
   "lactic-acid",
+  // proposal 0010, step 8 (2026-10-28): in no databank
+  "p-terphenyl",
   // proposal 0009, batch 4 (nonvolatile)
   "hmf", "glucose", "fructose", "sorbitol", "xylitol", "erythritol", "succinic-acid", "itaconic-acid", "fumaric-acid", "malic-acid",
   "citric-acid", "glycolic-acid", "glucaric-acid", "3-hydroxypropionic-acid", "fdca", "bhet", "diphenolic-acid",

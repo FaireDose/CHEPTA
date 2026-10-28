@@ -41,7 +41,7 @@ import pkg from "../../package.json" with { type: "json" };
 import {
   txyTables, ternaryTables, pxyTables, envelopeTables, azeotropeTables, flashTables, henryTables, solidTables, sleTables, propertyTables, steamTables,
 } from "./diagram-tables.js";
-import {
+import { tLabel,
   tToDisplay, tFromDisplay, pToDisplay, fmtNum, fmtShort, linspace, niceValues, TIER_LABEL, formatSource,
 } from "./properties-logic.js";
 
@@ -49,7 +49,7 @@ const SERIES = n => `var(--fug-s${(n % 6) + 1})`;
 const nameOf = (state, id) => listComponents({ userData: state ? userOverlay(state) : null }).find(c => c.id === id)?.name ?? id;
 /** The user's own data of the workbench, for pure() and system() (proposal 0012). */
 const own = state => ({ userData: userOverlay(state) });
-const tU = u => (u.T === "K" ? "K" : "°C");
+const tU = u => tLabel(u);
 
 /**
  * Draw `view` into the canvas. ctx: { state, set, plot, side, notes, below, extra, compact, uid, badge }.

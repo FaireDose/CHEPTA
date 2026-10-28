@@ -38,7 +38,7 @@ test("reactive flash: esterification with vapour and liquid at equilibrium toget
   }
 });
 
-test("Gibbs mode: the generated reactions give Cantera's Gibbs minimum", () => {
+test("Gibbs reactor: the generated reactions give Cantera's Gibbs minimum", () => {
   // the ideal gas of the Cantera fixture (the solver needs no flash); the block below with Peng-Robinson
   const c = eqRef.gas["methanol-from-co2"];
   const ids = Object.keys(c.feed);
@@ -52,11 +52,11 @@ test("Gibbs mode: the generated reactions give Cantera's Gibbs minimum", () => {
   }
   const pr = system({ components: ids, model: "PR" });
   const feed = stream(pr, { flow_kmol_h: ids.map(id => c.feed[id]), T_K: 523.15, P_kPa: 5000 });
-  const b = runUnit("equilibrium-reactor", { sys: pr, inlets: { in: feed }, spec: { mode: "gibbs", T_K: 523.15, P_kPa: 5000 } });
+  const b = runUnit("gibbs-reactor", { sys: pr, inlets: { in: feed }, spec: { T_K: 523.15, P_kPa: 5000 } });
   assert.equal(b.reaction.generated.length, 2);
   assert.ok(Object.values(b.balance.elements).every(d => d < 1e-9));
   // a species left out stays inert
-  const noCO = runUnit("equilibrium-reactor", { sys: pr, inlets: { in: feed }, spec: { mode: "gibbs", species: ids.filter(id => id !== "carbon-monoxide"), T_K: 523.15, P_kPa: 5000 } });
+  const noCO = runUnit("gibbs-reactor", { sys: pr, inlets: { in: feed }, spec: { species: ids.filter(id => id !== "carbon-monoxide"), T_K: 523.15, P_kPa: 5000 } });
   assert.equal(noCO.outlets.out.flows[ids.indexOf("carbon-monoxide")], 0);
   assert.throws(() => gibbsReactions(sys, ["carbon-dioxide", "water"], "vapour"), /cannot react/);
 });

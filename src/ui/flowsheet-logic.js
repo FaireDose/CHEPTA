@@ -12,12 +12,12 @@
 import { unitType } from "../units/units.js";
 import "../units/reactors.js";   // the reactor blocks, registered
 
-/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, P1; reactors R1 (conversion), RE1 (equilibrium
- * and Gibbs), RY1 (yield), CS1 (CSTR), PF1 (plug flow). */
+/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, P1; reactors R1 (conversion), RE1 (equilibrium),
+ * RG1 (Gibbs), RY1 (yield), CS1 (CSTR), PF1 (plug flow). */
 export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", compressor: "K", expander: "EX",
-  "conversion-reactor": "R", "equilibrium-reactor": "RE", "yield-reactor": "RY", cstr: "CS", pfr: "PF", product: "P" };
+  "conversion-reactor": "R", "equilibrium-reactor": "RE", "gibbs-reactor": "RG", "yield-reactor": "RY", cstr: "CS", pfr: "PF", product: "P" };
 /** The reactor blocks (proposal 0010, steps 3 to 6), behind one Reactor button of the toolbar. */
-export const REACTORS = ["conversion-reactor", "yield-reactor", "equilibrium-reactor", "cstr", "pfr"];
+export const REACTORS = ["conversion-reactor", "yield-reactor", "equilibrium-reactor", "gibbs-reactor", "cstr", "pfr"];
 /** The reactors that use the reactions of the Reactions page; their spec.reactions lists ids or { reaction, ... }. */
 export const REACTION_USERS = ["conversion-reactor", "equilibrium-reactor", "cstr", "pfr"];
 /** The reactors whose reactions need a rate law (proposal 0010, step 5). */
@@ -106,7 +106,7 @@ export function setBlockType(fs, id, type) {
   b.id = nid;
   b.type = type;
   b.spec = { ...defaultSpec(type, out), ...Object.fromEntries(keep.map(k => [k, b.spec[k]])) };
-  if (type === "pfr" || type === "equilibrium-reactor" || type === "cstr") delete b.spec.VF;
+  if (["pfr", "equilibrium-reactor", "gibbs-reactor", "cstr"].includes(type)) delete b.spec.VF;
   return out;
 }
 
@@ -602,6 +602,16 @@ export function removeReaction(fs, id) {
   }
   return { fs: out, note: touched.length ? `${touched.join(", ")} no longer use${touched.length === 1 ? "s" : ""} it.` : "" };
 }
+
+/** A reaction saved to the global list (replacing one of the same name), as written here, without its id's history. */
+export function saveShared(shared, r) {
+  const copy = JSON.parse(JSON.stringify(r));
+  const key = x => x.name || x.id;
+  return [...(shared ?? []).filter(x => key(x) !== key(copy)), copy];
+}
+
+/** Is this global reaction already in the flowsheet (same name and coefficients)? */
+export const hasShared = (fs, g) => (fs.reactions ?? []).some(r => (r.name || r.id) === (g.name || g.id) && JSON.stringify(r.stoichiometry) === JSON.stringify(g.stoichiometry));
 
 /** The reaction list as a file of its own, to copy reactions between projects (no reaction catalogue is shipped). */
 export function reactionsFile(fs) {

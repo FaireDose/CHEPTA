@@ -3668,6 +3668,12 @@
     "value": null,
     "why": "No open reference equation for this component in CoolProp; NIST WebBook vapour-pressure data not transcribed for this report yet"
    }
+  },
+  "pure/p-terphenyl/psat/500K": {
+   "psat_kPa": {
+    "value": null,
+    "why": "No open reference equation for this component in CoolProp; NIST WebBook vapour-pressure data not transcribed for this report yet"
+   }
   }
  }
 }
