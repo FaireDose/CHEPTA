@@ -23,6 +23,7 @@ export const WORKSPACES = [
   { id: "flash", label: "Flash", short: "Flash", icon: "drum", views: ["flash"], view: "flash" },
   // proposal 0013: pre-sizing a heat exchanger (step 2) and rating one of a given area (step 8)
   { id: "hx", label: "Heat exchanger", short: "Exchanger", icon: "hx", views: ["hx"], view: "hx" },
+  { id: "reactor", label: "Reactor", short: "Reactor", icon: "reactor", views: ["reactor"], view: "reactor" },
   { id: "flowsheet", label: "Flowsheet", short: "Flowsheet", icon: "flowsheet", views: ["flowsheet"], view: "flowsheet" },
 ];
 
@@ -32,9 +33,8 @@ export const WORKSPACES = [
  */
 export const SECTIONS = [
   { id: "thermo", label: "Properties & Equilibria", short: "Prop. & eq.", icon: "ternary", workspaces: ["equilibrium", "steam", "solubility", "properties"] },
-  { id: "units", label: "Unit models", short: "Units", icon: "drum", workspaces: ["flash", "hx"],
+  { id: "units", label: "Unit models", short: "Units", icon: "drum", workspaces: ["flash", "hx", "reactor"],
     locked: [
-      { id: "reaction", label: "Reaction", icon: "flask", note: "Reactors and reactions: roadmap A13, not available yet." },
       { id: "distillation", label: "Distillation", icon: "column", note: "Shortcut and rigorous columns: roadmap v0.5, not available yet." },
     ] },
   { id: "flowsheet", label: "Flowsheet", short: "Flowsheet", icon: "flowsheet", workspaces: ["flowsheet"] },
@@ -98,7 +98,8 @@ export const INPUTS = {
   steam: { kind: "none", what: "the steam tables" },
   // a pure fluid or a mixture with an equation of state (proposal 0013, step 7)
   charts: { kind: "list", min: 1, max: 6, liquid: false, eosOnly: true, what: "a fluid chart" },
-  flowsheet: { kind: "none", what: "the flowsheet" },   // its own setup: components and method of the flowsheet
+  flowsheet: { kind: "none", what: "the flowsheet" },
+  reactor: { kind: "none", what: "the reactor" },   // its own setup, as the flowsheet's (state.reactor)   // its own setup: components and method of the flowsheet
 };
 
 const WORDS = ["no", "one", "two", "three", "four", "five", "six"];
@@ -244,6 +245,7 @@ export function seedInputs(components = [], { gas, solvent, propComponent, model
     steam: [],
     charts: normalizeInputs("charts", ids.slice(0, 6), ud),
     flowsheet: [],
+    reactor: [],
   };
 }
 

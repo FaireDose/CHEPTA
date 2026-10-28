@@ -27,10 +27,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   docs/decisions/2026-10-22-11-reactor-views.md): check the Reactions page and the reactor blocks in the workbench.
   HMF rehydration (step 8) waits for an open ideal-gas heat capacity of levulinic acid. The flash of hydrogen with
   the "ideal" model that did not finish is now refused with the remedy (Peng-Robinson or SRK; 2026-10-27).
-- **Reactors, step 4** (proposal 0010; docs/decisions/2026-10-27-02-equilibrium-reactor.md): the equilibrium reactor.
-  Confirm one phase per reactor (the outlet is flashed afterwards and a note says when it is not in the reaction's
-  phase; a reactive flash is not done), the approach to equilibrium as K at T + ΔT or a fraction of the extent, and
-  that the vapour fraction is not a specification of this reactor. Check the block in the workbench.
+- **Reactors, steps 5, 6 and 9** (proposal 0010; docs/decisions/2026-10-28-01-reactors.md): two phases in the
+  equilibrium reactor, the CSTR and the PFR; Gibbs as a mode of the equilibrium reactor; one Reactor button; your own
+  kinetics; the PFR's profiles; the Reactor workspace. Confirm the choices under "To check" there. Still open: step 8,
+  a vapour-viscosity mixing rule for Ergun, two liquids in reactors, and a P-H flash with Peng–Robinson that fails
+  through a two-liquid region.
 - **Reactions, step 2** (proposal 0010; docs/decisions/2026-10-22-05-reactions.md): confirm the standard pressure of
   100 kPa, the pure-liquid standard state and its paths (through the saturated vapour, for acetic acid with its
   monomers and dimers; crystal to liquid with ΔHfus); compare the WebBook liquid values of

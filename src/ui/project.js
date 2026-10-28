@@ -92,6 +92,8 @@ export function projectOf(state, { version = "", results, now = new Date() } = {
   if (state.title) doc.title = String(state.title);
   doc.workbench = w;
   if (flowsheet) doc.flowsheet = flowsheet;
+  // the Reactor workspace's own document, when it has been used
+  if (state.reactor?.components?.length) doc.reactor = normalizeFlowsheet(state.reactor, userOverlay(state));
   if (results && Object.keys(results).length) doc.results = copy(results);
   if (state.userData) doc.user_data = copy(state.userData);
   return doc;
@@ -178,6 +180,7 @@ export function stateFromProject(input) {
   }
   if (doc.title) cfg.title = String(doc.title);
   if (doc.flowsheet != null) cfg.flowsheet = doc.flowsheet;
+  if (doc.reactor != null) cfg.reactor = doc.reactor;
   if (doc.user_data != null) cfg.userData = doc.user_data;
   let s = initialState(cfg);
   if (w.inputs != null) {

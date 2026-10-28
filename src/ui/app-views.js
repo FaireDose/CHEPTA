@@ -31,6 +31,7 @@ import {
 } from "./app-logic.js";
 import { HENRY_PAIRS, isEosModel } from "./workspaces.js";
 import { flowsheetView } from "./flowsheet-view.js";
+import { reactorView } from "./reactor-workspace.js";
 import { runFlash, flashTable, flashCsv, phaseName, FLASH_SPECS, dutyKW, molarFlow } from "./flash-logic.js";
 import { HX_DEFAULTS, hxCalc, hxTables } from "./hx-logic.js";
 import { phaseEnvelope } from "../equilibrium/envelope.js";
@@ -71,6 +72,7 @@ export function renderView(view, ctx) {
     case "steam": return steamView(ctx);
     case "charts": return chartsView(ctx);
     case "flowsheet": return flowsheetView({ ...ctx, saveText, copyText });
+    case "reactor": return reactorView(ctx);
     default: throw new Error(`Unknown view "${view}".`);
   }
 }

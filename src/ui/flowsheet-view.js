@@ -22,13 +22,15 @@ import {
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
   energyOf, energyTargets, addEnergyFeed, connectEnergy, removeEnergy, setEnergyDuty, ENERGY_TARGETS, ENERGY_SOURCES,
   placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy, ratingPatch, designPatch,
-  REACTORS, REACTION_USERS, addReaction, setReaction, removeReaction, reactionsFile, importReactions, usedReactions,
+  REACTORS, REACTION_USERS, KINETIC, addReaction, setReaction, removeReaction, reactionsFile, importReactions, usedReactions,
 } from "./flowsheet-logic.js";
 import { checkReaction, reactionProperties } from "../reactions/reaction.js";
 import { HEAT_TRANSFER } from "../units/heat-exchange.js";
 import { PUMP_EFFICIENCY, COMPRESSOR_EFFICIENCY, EXPANDER_EFFICIENCY } from "../units/units.js";
 import { tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { flowsheetXlsx } from "./flowsheet-excel.js";
+import { kineticsEditor, FORM_LABEL } from "./kinetics-editor.js";
+import { profilePanel } from "./reactor-charts.js";
 import pkg from "../../package.json" with { type: "json" };
 import { parseP, parseT, fmtTemp, fmtP, userOverlay, calculatedFlowsheet, setsLabel } from "./app-logic.js";
 
@@ -42,7 +44,10 @@ const nameOf = id => byId().get(id)?.name ?? id;
 const PAIR_MODELS = ["NRTL", "UNIQUAC", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
   hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", product: "Product",
-  "conversion-reactor": "Conversion reactor", "equilibrium-reactor": "Equilibrium reactor", "yield-reactor": "Yield reactor" };
+  "conversion-reactor": "Conversion reactor", "equilibrium-reactor": "Equilibrium reactor", "yield-reactor": "Yield reactor", cstr: "CSTR", pfr: "Plug-flow reactor" };
+/** One line per reactor type in the Reactor menu of the toolbar. */
+const REACTOR_LINE = { "conversion-reactor": "a given conversion of a key reactant", "yield-reactor": "products per kg of a key reactant",
+  "equilibrium-reactor": "listed reactions, or every reaction (Gibbs), at equilibrium", cstr: "stirred tank, with kinetics", pfr: "tube, with kinetics; profiles along it" };
 const HINT = {
   feed: "A stream entering the flowsheet: its flows and two of T, P and vapour fraction.",
   mixer: "Joins streams; adiabatic, at the lowest inlet pressure unless you set one.",
@@ -56,18 +61,19 @@ const HINT = {
   compressor: "Raises a gas's pressure along the isentropic path: the outlet pressure, the rise or the ratio, and the isentropic efficiency (75 % if not given). Its power is a work stream.",
   expander: "Lowers a gas's pressure and gives power: the outlet pressure, the drop or the ratio, and the isentropic efficiency (80 % if not given). Its power is a work stream (negative: out).",
   "conversion-reactor": "Converts a given fraction of a key reactant by each reaction of the Reactions page; then the outlet temperature, duty or vapour fraction. Its duty carries the heat of the reactions.",
-  "equilibrium-reactor": "The reactions of the Reactions page reach chemical equilibrium at the outlet temperature and pressure (K from the formation data, or the reaction's own K), all in the vapour or all in the liquid; then the outlet temperature or the duty. Its duty carries the heat of the reactions.",
+  "equilibrium-reactor": "The reactions of the Reactions page reach chemical equilibrium at the outlet temperature and pressure (K from the formation data, or the reaction's own K); or, as a Gibbs reactor, every reaction among the species you tick. One phase, or vapour and liquid together; then the outlet temperature or the duty. Its duty carries the heat of the reactions.",
+  cstr: "A stirred tank at steady state: the reactions of the Reactions page with their kinetics, the volume (or catalyst mass), and the temperature or the duty.",
+  pfr: "A tube (or a bundle of tubes) in plug flow: the reactions with their kinetics, the length and diameter; isothermal, a duty or a coolant; a pressure drop. Its profiles show under the drawing (double-click it).",
   "yield-reactor": "Turns a given fraction of a key reactant into the products you give per kg (or mol) of it, for a reaction known by its products (a fermentation, a pyrolysis). The mass must close; the elements are reported.",
 };
 /** Blocks on the roadmap, shown in the toolbar but not available yet. */
 const COMING = [
-  { id: "reactor", label: "CSTR, PFR", icon: "reactor", note: "proposal 0010, steps 5 and 6" },
   { id: "column", label: "Distillation", icon: "column", note: "roadmap v0.5" },
   { id: "extraction", label: "Extraction", icon: "extract", note: "after liquid-liquid equilibria in the flash" },
 ];
 // a feed is drawn as the start of its stream (a tab), not as a block; its size is that point
 const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40],
-  "conversion-reactor": [44, 58], "equilibrium-reactor": [44, 58], "yield-reactor": [44, 58], product: [0, 0] };
+  "conversion-reactor": [44, 58], "equilibrium-reactor": [44, 58], "yield-reactor": [44, 58], cstr: [44, 58], pfr: [76, 30], product: [0, 0] };
 // the inlet and outlet ports of a two-stream exchanger: hot above, cold below
 const PORT_DY = { hot: -11, cold: 11 };
 
@@ -237,7 +243,17 @@ export function flowsheetRibbon({ state, set, ui, group, smallButton }) {
       setupBtn("spark", `Reactions${fs.reactions?.length ? ` (${fs.reactions.length})` : ""}`, "reactions", "fs-reactions", "3. The reactions of the process, written once for every reactor: stoichiometry, balance check, heat of reaction and K"))),
     group("Blocks", rows2(blockBtn("feed"), energyBtn, ...blocks.filter(t => t !== "feed").map(blockBtn))),
     // the blocks still to come: one locked button, with what they are in its tooltip
-    group("Reactors", rows2(...REACTORS.map(blockBtn), (() => {
+    group("Reactors", rows2((() => {
+      // one button; its menu lists the reactor types (the maintainer, 2026-10-28: "the blocks ... seems crowded")
+      const open = !!f.reactorMenu;
+      const b = smallButton({ ico: "reactor", label: "Reactor", fk: "fs-add-reactor", pressed: open,
+        title: ready ? "Place a reactor: choose its type" : "Choose the components first", onClick: () => { f.reactorMenu = !open; set({}); } });
+      b.disabled = !ready;
+      b.setAttribute("aria-haspopup", "menu");
+      return h("div", { class: "fa-menu-wrap" }, b, open && ready ? h("div", { class: "fa-menu", role: "menu" }, ...REACTORS.map(t =>
+        h("button", { type: "button", role: "menuitem", class: "fa-menu-item", "data-fk": `fs-add-${t}`, title: HINT[t],
+          on: { click: () => { f.reactorMenu = false; place(t)(); } } }, h("b", {}, LABEL[t]), h("span", {}, REACTOR_LINE[t])))) : null);
+    })(), (() => {
       const b = iconBtn({ ico: "lock", label: `Coming later: ${COMING.map(c => `${c.label} (${c.note})`).join("; ")}`, fk: "fs-soon", disabled: true, onClick: () => {} });
       b.classList.add("is-locked");
       return b;
@@ -424,9 +440,27 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
         used.length > 1 ? h("p", { class: "fa-in-hint" }, spec.order === "series"
           ? "In series: each reaction converts its fraction of what the reactions above it left of its key."
           : "In parallel: each reaction converts its fraction of the key's inlet flow; the conversions of one key add up (at most 1).") : null));
-    } else if (b.type === "equilibrium-reactor") {
-      // proposal 0010, step 4: each reaction checked reaches equilibrium, or an approach to it
-      const list = fs.reactions ?? [];
+    } else if (b.type === "equilibrium-reactor" || KINETIC.includes(b.type)) {
+      // proposal 0010, step 4: each reaction checked reaches equilibrium, or an approach to it; as a Gibbs reactor
+      // (step 6) the species ticked, every reaction among them; the CSTR and PFR (step 5) use their reactions' kinetics
+      const kinetic = KINETIC.includes(b.type), gibbs = spec.mode === "gibbs";
+      const phasesRow = segRow("Phases", [["1", "One phase"], ["2", "Vapour + liquid"]], String(spec.phases ?? 1), v => setS({ phases: v === "2" ? 2 : null }), `fs-phases-${b.id}`);
+      const phasesHint = h("p", { class: "fa-in-hint" }, Number(spec.phases) === 2
+        ? (kinetic ? "The mixture is flashed at each point; each reaction runs in its own phase." : "Chemical and phase equilibrium together: the outlet may boil or condense as it reacts.")
+        : "The whole mixture in the reactions' phase (the outlet is flashed afterwards).");
+      if (!kinetic) secs.push(inputsSection("Equilibrium of",
+        segRow("Equilibrium of", [["reactions", "Listed reactions"], ["gibbs", "All reactions (Gibbs)"]], gibbs ? "gibbs" : "reactions",
+          v => setS(v === "gibbs" ? { mode: "gibbs", reactions: null } : { mode: null, species: null, phase: null, reactions: (fs.reactions ?? []).slice(0, 1).map(r => ({ reaction: r.id })) }), `fs-eqmode-${b.id}`),
+        phasesRow, phasesHint));
+      if (gibbs) {
+        const species = spec.species ?? fs.components;
+        secs.push(inputsSection("Species that may react",
+          ...fs.components.map(c => h("label", { class: "fa-check" }, h("input", { type: "checkbox", checked: species.includes(c), "data-fk": `fs-gspecies-${b.id}-${c}`,
+            on: { change: ev => { const next = ev.target.checked ? [...species, c] : species.filter(x => x !== c); setS({ species: next.length === fs.components.length ? null : next }); } } }), nameOf(c))),
+          h("p", { class: "fa-in-hint" }, "The others pass through. CHEPTA writes a complete set of independent reactions among the species ticked, with K from their formation data: the outlet is the minimum of the Gibbs energy."),
+          segRow("Standard state", [["vapour", "Ideal gases"], ["liquid", "Pure liquids"]], spec.phase === "liquid" ? "liquid" : "vapour", v => setS({ phase: v === "liquid" ? v : null }), `fs-gphase-${b.id}`)));
+      }
+      const list = gibbs ? [] : fs.reactions ?? [];
       const used = (Array.isArray(spec.reactions) ? spec.reactions : []).map(e => (typeof e === "string" ? { reaction: e } : e));
       const setList = next => setS({ reactions: next });
       const rows = list.map(r => {
@@ -438,7 +472,9 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
         return h("div", { class: "fa-rx-use" },
           h("label", { class: "fa-rx-use-head" }, on, h("span", {}, h("b", {}, r.name || r.id), " ", h("span", { class: "fa-in-hint" }, `${equation(r)} (${r.phase === "liquid" ? "liquid" : "vapour"})`))),
           !chk.ok && Object.keys(r.stoichiometry ?? {}).length ? warning(chk.message, { attrs: { role: "note" } }) : null,
-          e ? h("div", { class: "fa-rx-use-row" },
+          kinetic ? (r.rate ? h("p", { class: "fa-in-hint" }, `Kinetics: ${FORM_LABEL[r.rate.form] ?? r.rate.form}${r.rate.per === "catalyst-mass" ? ", per kg of catalyst" : ""}.`)
+            : e ? warning("No kinetics yet: give them on the Reactions page.", { attrs: { role: "note" } }) : null) : null,
+          e && !kinetic ? h("div", { class: "fa-rx-use-row" },
             segRow("Approach to equilibrium", [["none", "Full"], ["dT", "ΔT"], ["fraction", "Fraction"]], mode,
               m => setApproach(m === "dT" ? { dT_K: a.dT_K ?? 0 } : m === "fraction" ? { fraction: a.fraction ?? 1 } : null), `fs-rxapp-${b.id}-${r.id}`),
             mode === "dT" ? numberField("K at T +", String(a.dT_K), t => { const v = num(t); if (v == null) return false; setApproach({ dT_K: v }); },
@@ -446,10 +482,36 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
             mode === "fraction" ? numberField("Of the equilibrium extent", String(a.fraction), t => { const v = num(t); if (v == null || v < 0 || v > 1) return false; setApproach({ fraction: v }); },
               { id: `${b.id}-afr-${r.id}`, uid, unit: "0 to 1", placeholder: "1" }) : null) : null);
       });
-      secs.push(inputsSection("Reactions",
+      if (!gibbs) secs.push(inputsSection("Reactions",
         list.length ? h("div", {}, ...rows) : h("p", { class: "fa-in-hint" }, "No reaction written yet."),
         h("button", { type: "button", class: "fa-mini", "data-fk": `fs-go-reactions-${b.id}`, on: { click: () => { f.sel = null; f.setup = "reactions"; set({}); } } },
-          icon("spark", 14), list.length ? "Write or change reactions" : "Write a reaction")));
+          icon("spark", 14), list.length ? "Write or change reactions" : "Write a reaction"),
+        kinetic ? phasesRow : null, kinetic ? phasesHint : null));
+      if (kinetic) {
+        const rates = used.map(e => list.find(r => r.id === e.reaction)?.rate).filter(Boolean);
+        const cat = rates.some(q => q.per === "catalyst-mass"), vol = !rates.length || rates.some(q => q.per !== "catalyst-mass");
+        if (b.type === "cstr") {
+          secs.push(inputsSection("Size", vol ? plain("V_m3", "Volume", "m³", "1") : null, cat ? plain("W_kg", "Catalyst mass", "kg") : null,
+            Number(spec.phases) === 2 && vol ? plain("liquidFraction", "Liquid share of the volume", "0 to 1") : null,
+            h("p", { class: "fa-in-hint" }, "The volume the reacting mixture fills; the residence time is the volume over the outlet's volume flow.")));
+        } else {
+          const d = spec.pressureDrop ?? null, dm = d?.particle_m != null ? "ergun" : d?.dP_kPa != null ? "dP" : "none";
+          const setD = patch => setS({ pressureDrop: patch == null ? null : { ...(d ?? {}), ...patch } });
+          const dField = (key, label, unit, ph, scale = 1) => numberField(label, d?.[key] == null ? "" : String(d[key] / scale), t => {
+            const v = num(t); if (v === undefined) return false; setD({ [key]: v == null ? null : v * scale });
+          }, { id: `${b.id}-dp-${key}`, uid, unit, placeholder: ph });
+          secs.push(inputsSection("Tube", plain("L_m", "Length", "m"), plain("D_m", "Inner diameter", "m"), plain("tubes", "Tubes", "", "1"),
+            cat ? plain("bed_kg_m3", "Bed density", "kg/m³") : null),
+          inputsSection("Pressure drop",
+            segRow("Pressure drop", [["none", "None"], ["dP", "Given"], ["ergun", "Ergun (packed bed)"]], dm,
+              v => setS({ pressureDrop: v === "none" ? null : v === "dP" ? { dP_kPa: 0 } : { particle_m: 0.003, voidage: 0.4, viscosity_Pa_s: null } }), `fs-dpmode-${b.id}`),
+            dm === "dP" ? dField("dP_kPa", "Pressure drop over the tube", "kPa", "0") : null,
+            dm === "ergun" ? dField("particle_m", "Particle diameter", "mm", "3", 0.001) : null,
+            dm === "ergun" ? dField("voidage", "Bed voidage", "0 to 1", "0.4") : null,
+            dm === "ergun" ? dField("viscosity_Pa_s", "Gas viscosity", "Pa s", "from your source") : null,
+            dm === "ergun" ? h("p", { class: "fa-in-hint" }, "Ergun (Rawlings and Ekerdt, eqn 7.69): give the gas's viscosity at the reactor's conditions, with its source.") : null));
+        }
+      }
     } else {
       const basis = spec.basis === "mole" ? "mole" : "mass", yields = spec.yields ?? {};
       const yu = basis === "mass" ? "kg/kg" : "mol/mol";
@@ -480,15 +542,20 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
             h("input", { type: "text", value: heatGiven.source ?? "", placeholder: "article, table, page", "data-fk": `fs-ysrc-${b.id}`,
               on: { change: ev => setHeat({ source: ev.target.value.trim() || null }) } }))));
     }
-    // an equilibrium reactor has no vapour-fraction specification: its equilibrium is of one phase
-    const keys = b.type === "equilibrium-reactor" ? ["T_K", "duty_kW"] : ["T_K", "duty_kW", "VF"];
-    const modes = [["T_K", "T"], ["duty_kW", "Duty"], ["VF", "VF"]].filter(([m]) => keys.includes(m));
-    secs.push(inputsSection("Outlet", modeSeg(modes, keys), ...shown(modes, keys).map(fieldFor),
-      h("p", { class: "fa-in-hint" }, "Duty 0: an adiabatic reactor. The duty includes the heat of the reactions."),
-      spec.P_kPa != null ? P("P_kPa", "Outlet pressure") : P("dP_kPa", "Pressure drop"),
-      h("button", { type: "button", class: "fa-mini", "data-fk": `fs-pmode-${b.id}`, on: { click: () => setS(spec.P_kPa != null ? { P_kPa: null } : { dP_kPa: null, P_kPa: 101.325 }) } },
-        spec.P_kPa != null ? "Give a pressure drop instead" : "Give the outlet pressure instead"),
-      h("p", { class: "fa-in-hint" }, "Empty pressure drop: none.")));
+    // the equilibrium reactor and the CSTR have no vapour-fraction specification; a plug-flow reactor has a coolant
+    const pfr = b.type === "pfr";
+    const keys = b.type === "equilibrium-reactor" || b.type === "cstr" ? ["T_K", "duty_kW"] : pfr ? ["T_K", "duty_kW", "coolant"] : ["T_K", "duty_kW", "VF"];
+    const modes = [["T_K", pfr ? "Isothermal" : "T"], ["duty_kW", "Duty"], ["VF", "VF"], ["coolant", "Coolant"]].filter(([m]) => keys.includes(m));
+    const cool = spec.coolant ?? {};
+    const coolant = () => [numberField("U", cool.U_W_m2K == null ? "" : String(cool.U_W_m2K), t => { const v = num(t); if (v === undefined) return false; setS({ coolant: { ...cool, U_W_m2K: v } }); }, { id: `${b.id}-cu`, uid, unit: "W/(m² K)" }),
+      numberField("Coolant temperature", cool.T_K == null ? "" : String(+tToDisplay(cool.T_K, u).toFixed(3)), t => { const v = parseT(t, u); if (v == null) return false; setS({ coolant: { ...cool, T_K: v } }); }, { id: `${b.id}-ct`, uid, unit: u.T === "K" ? "K" : "°C" })];
+    secs.push(inputsSection(pfr ? "Heat" : "Outlet", modeSeg(modes, keys), ...shown(modes, keys).flatMap(k => (k === "coolant" ? coolant() : [fieldFor(k)])),
+      h("p", { class: "fa-in-hint" }, pfr ? "Duty: spread evenly along the tube; 0: adiabatic. Coolant: at a constant temperature, through the tube wall (U on its inner area)." : "Duty 0: an adiabatic reactor. The duty includes the heat of the reactions."),
+      ...(pfr ? [P("P_kPa", "Inlet pressure"), h("p", { class: "fa-in-hint" }, "Empty: the feed's pressure.")] : [
+        spec.P_kPa != null ? P("P_kPa", "Outlet pressure") : P("dP_kPa", "Pressure drop"),
+        h("button", { type: "button", class: "fa-mini", "data-fk": `fs-pmode-${b.id}`, on: { click: () => setS(spec.P_kPa != null ? { P_kPa: null } : { dP_kPa: null, P_kPa: 101.325 }) } },
+          spec.P_kPa != null ? "Give a pressure drop instead" : "Give the outlet pressure instead"),
+        h("p", { class: "fa-in-hint" }, "Empty pressure drop: none.")])));
   }
   // proposal 0013: the heater's optional sizing, the two-stream exchanger, the valve, the pump, energy streams
   if (b.type === "heater") secs.push(sizingSection({ b, spec, setS, inputsSection, uid, u, done, rateable: energyOf(fs, b.id)?.role !== "in" }));
@@ -832,9 +899,11 @@ function reactionSections({ state, fs, f, set, uid, inputsSection }) {
         h("label", { class: "fa-field fa-field-stack" }, h("span", {}, "Its source"),
           h("input", { type: "text", value: given.source ?? "", placeholder: "article, table, page", "data-fk": `fs-rx-src-${r.id}`,
             on: { change: ev => setGiven({ source: ev.target.value.trim() || null }) } }))),
-      h("p", { class: "fa-in-hint" }, r.rate ? `Rate law: ${r.rate.form}${r.rate.source ? ` (${r.rate.source})` : ""}; used by the CSTR and plug-flow reactors (proposal 0010, step 5).`
-        : "Kinetics: with the CSTR and plug-flow reactors (proposal 0010, step 5). The conversion and yield reactors need none."),
-      h("p", { class: "fa-in-hint" }, users.length ? `Used by ${users.join(", ")}.` : "Not used by a reactor yet: choose it in a conversion reactor."),
+      h("details", { class: "fa-rx-given", ...(r.rate ? { open: true } : {}) },
+        h("summary", {}, r.rate ? `Kinetics: ${FORM_LABEL[r.rate.form] ?? r.rate.form}` : "Kinetics (for the CSTR and the plug-flow reactor)"),
+        kineticsEditor({ r, uid, numberField, segRow, nameOf, selectField: (label, options, current, onPick, fk) => selectField(label, options, current, onPick, fk, uid),
+          setRate: (rate, extra) => put(setReaction(fs, r.id, { rate, ...(extra ?? {}) })) })),
+      h("p", { class: "fa-in-hint" }, users.length ? `Used by ${users.join(", ")}.` : "Not used by a reactor yet: choose it in a reactor."),
       h("div", { class: "fa-in-actions" }, h("button", { type: "button", class: "fa-mini", "data-fk": `fs-rx-del-${r.id}`,
         on: { click: () => { const x = removeReaction(fs, r.id); put(x.fs, x.note); } } }, icon("trash", 14), `Delete ${r.name || r.id}`))));
   }
@@ -971,6 +1040,17 @@ function shape(type, w, hh) {
       g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 10, class: "fs-shape" }), svgEl("path", { d, class: "fs-detail" }));
       return g;
     }
+    // a stirred tank: its shaft and impeller; a tube: packed, with the flow's arrow
+    case "cstr": {
+      const g = svgEl("g", {});
+      g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 10, class: "fs-shape" }), svgEl("path", { d: `M0 ${-hh / 2 - 6} V10 M-10 10 H10 M-10 6 V14 M10 6 V14`, class: "fs-detail" }));
+      return g;
+    }
+    case "pfr": {
+      const g = svgEl("g", {});
+      g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: hh / 2, class: "fs-shape" }), svgEl("path", { d: `M${-w / 2 + 12} 0 H${w / 2 - 14} M${w / 2 - 20} -5 L${w / 2 - 14} 0 L${w / 2 - 20} 5`, class: "fs-detail" }));
+      return g;
+    }
     default: return svgEl("g", {});
   }
 }
@@ -1094,6 +1174,7 @@ export function flowsheetView(ctx) {
         transform: `translate(${b.x ?? 0} ${b.y ?? 0})`, "data-block": b.id, tabindex: 0, role: "button",
         "aria-label": `${LABEL[b.type]} ${blockName(b)}${sol.status?.blocks?.[b.id]?.ok === false ? ", not fully specified" : ""}` });
       g.append(shape(b.type, w, hh));
+      if (b.type === "pfr") g.addEventListener("dblclick", () => { f.sel = { kind: "block", id: b.id }; f.below = "profile"; set({}); });
       // inlet ports: a ring on the left; an open one takes another stream
       for (const ip of unitType(b.type).inlets) {
         const key = `${b.id}.${ip.port}`, n = doc.streams.filter(x => x.to === key).length;
@@ -1321,9 +1402,18 @@ export function flowsheetView(ctx) {
   wrap.addEventListener("scroll", () => { f.scroll = { left: wrap.scrollLeft, top: wrap.scrollTop }; }, { passive: true });
 
   // ---- results panel
-  side.replaceChildren(...resultsPanel({ state, f, sol, u }));
+  side.replaceChildren(...resultsPanel({ state, f, sol, u, set }));
   // ---- stream table
-  if (res) below.replaceChildren(streamTable({ fs, res, u, state }), ...csvTools(ctx, fs, res, u));
+  // a selected plug-flow reactor shows its profiles in place of the stream table (the maintainer, 2026-10-28)
+  const kin = f.sel?.kind === "block" ? res?.blocks?.[f.sel.id]?.reaction?.kinetic : null;
+  const toggle = label => h("button", { type: "button", class: "fa-mini", "data-fk": "fs-below-toggle", on: { click: () => { f.below = f.below === "streams" ? "profile" : "streams"; set({}); } } }, label);
+  if (res && kin?.profile && f.below !== "streams") {
+    const b = fs.blocks.find(x => x.id === f.sel.id);
+    below.replaceChildren(h("div", { class: "fs-tables" }, h("h3", {}, `Profiles along ${blockName(b)}`),
+      profilePanel({ kin, ids: fs.components, names: fs.components.map(nameOf), units: u, sel: f.profileVar, onSel: k => { f.profileVar = k; set({}); },
+        reactions: Object.keys(res.blocks[f.sel.id].reaction.extents_kmol_h).map(id => ({ id, name: (fs.reactions ?? []).find(r => r.id === id)?.name || id, units: res.blocks[f.sel.id].reaction.rates[id].units })) }),
+      toggle("Show the stream table")));
+  } else if (res) below.replaceChildren(streamTable({ fs, res, u, state }), ...(kin?.profile ? [toggle("Show the profiles")] : []), ...csvTools(ctx, fs, res, u));
   const it = res?.loops?.reduce((a, l) => a + l.iterations, 0);
   if (sol.error) return { data: "Not solved: see the message above the drawing" };
   return { data: res ? `Solved${res.loops.length ? `, ${res.loops.length} recycle${res.loops.length > 1 ? "s" : ""} in ${it} iterations` : ""}` : sol.status.message };
@@ -1334,7 +1424,11 @@ const approachText = a => (a?.dT_K != null ? `K at T ${a.dT_K < 0 ? "−" : "+"}
 
 /** A conversion or equilibrium reactor's reactions, one line each (the table under the streams has the columns). */
 function reactionList(fs, rx) {
-  const byId = new Map((fs.reactions ?? []).map(r => [r.id, r]));
+  const byId = new Map([...(fs.reactions ?? []), ...(rx.generated ?? [])].map(r => [r.id, r]));
+  if (rx.kinetic) {
+    return h("ul", { class: "fa-rx-list" }, ...Object.entries(rx.extents_kmol_h).map(([id, xi]) => h("li", {}, h("b", {}, byId.get(id)?.name || id),
+      `: extent ${fmtShort(xi, 5)} kmol/h, rate at the outlet ${fmtShort(rx.rates[id].r, 4)} ${rx.rates[id].units}, ΔrH ${fmtShort(rx.heats[id].dH_J_mol / 1000, 5)} kJ/mol`)));
+  }
   if (rx.equilibrium) {
     return h("ul", { class: "fa-rx-list" }, ...Object.entries(rx.extents_kmol_h).map(([id, xi]) => {
       const q = rx.equilibrium.reactions[id];
@@ -1351,7 +1445,7 @@ function kvList(rows) {
     h("tr", {}, h("th", { scope: "row" }, k), h("td", { class: "fug-num" }, v ?? "–")))));
 }
 
-function resultsPanel({ state, f, sol, u }) {
+export function resultsPanel({ state, f, sol, u, set }) {
   const res = sol.result, fs = state.flowsheet;
   const out = [];
   if (f.sel?.kind === "block") {
@@ -1375,6 +1469,10 @@ function resultsPanel({ state, f, sol, u }) {
         z?.dT_min_K != null ? ["Smallest ΔT", `${fmtShort(z.dT_min_K, 4)} K`] : null,
         z?.utility?.flow_kg_h != null ? ["Utility", `${fmtShort(z.utility.flow_kg_h, 5)} kg/h`] : null,
         r.reaction ? ["Heat of the reactions at 298.15 K (− released)", `${fmtShort(r.reaction.heat_kW, 5)} kW`] : null,
+        r.reaction?.kinetic?.V_m3 != null ? ["Reactor volume", `${fmtShort(r.reaction.kinetic.V_m3, 5)} m³`] : null,
+        r.reaction?.kinetic?.residence_s != null ? ["Residence time (V / outlet volume flow)", `${fmtShort(r.reaction.kinetic.residence_s, 5)} s`] : null,
+        r.reaction?.kinetic?.profile ? ["Outlet temperature, pressure", `${fmtTemp(r.reaction.kinetic.profile.at(-1).T_K, u, 2)}, ${fmtP(r.reaction.kinetic.profile.at(-1).P_kPa, u)}`] : null,
+        r.reaction?.equilibrium?.phases === 2 ? ["Phases", "vapour and liquid at chemical and phase equilibrium"] : null,
         ...(r.reaction ? Object.entries(r.reaction.keyConversion ?? {}).map(([c, x]) => [`Conversion of ${nameOf(c)}`, fmtShort(x, 5)]) : []),
         r.reaction?.heat ? ["ΔrH at 298.15 K, per mol of key", `${fmtShort(r.reaction.heat.dH_J_mol / 1000, 5)} kJ/mol`] : null,
         r.reaction ? ["Element balance", r.balance.elements ? (Object.values(r.balance.elements).every(d => d < 1e-9) ? "closed" : "check")
@@ -1382,6 +1480,7 @@ function resultsPanel({ state, f, sol, u }) {
         r.balance.material != null ? ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)]
           : ["Mass balance", r.balance.mass < 1e-9 ? "closed" : r.balance.mass.toExponential(1)],
       ]), ...(r.reaction?.extents_kmol_h ? [reactionList(fs, r.reaction)] : []),
+      ...(r.reaction?.kinetic?.profile ? [h("button", { type: "button", class: "fa-mini", "data-fk": "fs-show-profile", on: { click: () => { f.below = "profile"; set({}); } } }, icon("curves", 14), "Profiles along the tube (under the drawing)")] : []),
       ...(r.reaction ? [h("div", { class: "fug-foot" }, "The duty is the enthalpy out minus in plus the heat of the reactions at 298.15 K (the enthalpies are against each ideal gas at 298.15 K), so at another temperature it differs from that heat.")] : []),
       ...(r.reaction?.heat ? [h("div", { class: "fug-foot" }, `Heat of reaction: ${r.reaction.heat.from}.`)] : []),
       ...(z?.utility?.describe ? [h("div", { class: "fug-foot" }, `Utility: ${z.utility.describe}.`)] : []), ...(z?.note ? [h("div", { class: "fug-foot" }, z.note)] : []),
@@ -1475,7 +1574,10 @@ function reactorRows(fs, res) {
   const byId = new Map((fs.reactions ?? []).map(r => [r.id, r]));
   const rows = rx.flatMap(b => {
     const r = res.blocks[b.id].reaction;
+    const name = id => byId.get(id)?.name || r.generated?.find(g => g.id === id)?.name || id;
+    if (r.kinetic) return Object.entries(r.extents_kmol_h).map(([id, xi]) => [blockName(b), name(id), "kinetics", "–", xi, r.heats[id].dH_J_mol / 1000, xi * r.heats[id].dH_J_mol / 3600]);
     // an equilibrium reactor has no key: its "key" column says the approach, the conversion column stays empty
+    if (r.equilibrium && r.generated) return Object.entries(r.extents_kmol_h).map(([id, xi]) => [blockName(b), name(id), "Gibbs", "–", xi, r.heats[id].dH_J_mol / 1000, xi * r.heats[id].dH_J_mol / 3600]);
     if (r.equilibrium) return Object.entries(r.extents_kmol_h).map(([id, xi]) => [blockName(b), byId.get(id)?.name || id, approachText(r.equilibrium.reactions[id].approach), "–", xi, r.heats[id].dH_J_mol / 1000, xi * r.heats[id].dH_J_mol / 3600]);
     if (r.extents_kmol_h) return Object.entries(r.extents_kmol_h).map(([id, xi]) => [blockName(b), byId.get(id)?.name || id, nameOf(r.conversions[id].key), r.conversions[id].conversion, xi, r.heats[id].dH_J_mol / 1000, xi * r.heats[id].dH_J_mol / 3600]);
     const [key, X] = Object.entries(r.keyConversion)[0];

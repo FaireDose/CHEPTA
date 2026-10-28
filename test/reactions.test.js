@@ -215,10 +215,11 @@ test("Michaelis-Menten, Monod with inhibition, and the Blackman, Tessier, Moser 
   throwsCode(() => mk({ form: "monod", ...base, basis: "activity" }), "BAD_INPUT", /written in concentrations/);
 });
 
-test("unknown forms and constants are refused with what is known; your own formula is a later step", () => {
+test("unknown forms and constants are refused with what is known; your own formula is checked", () => {
   const st = { ethanol: -1, ethylene: 1, water: 1 };
   const mk = rate => checkReaction({ id: "d", stoichiometry: st, phase: "vapour", rate });
-  throwsCode(() => mk({ form: "expression", rate: "k*C" }), "BAD_INPUT", /comes in a later step \(proposal 0010, step 9\)/);
+  // your own formula came with step 9 (2026-10-28; until then this said "a later step"): a name it does not know is refused
+  throwsCode(() => mk({ form: "expression", rate: "k*C" }), "BAD_INPUT", /unknown name 'k' at character 1/);
   throwsCode(() => mk({ form: "second-order" }), "BAD_INPUT", new RegExp(`known: ${Object.keys(RATE_FORMS).join(", ")}`));
   throwsCode(() => mk({ form: "power-law", forward: { k: { k0: 1, Ea: 5 } } }), "BAD_INPUT", /unknown field "Ea"/);
   throwsCode(() => mk({ form: "power-law", forward: { k: "fast" } }), "BAD_INPUT", /must be a number or/);

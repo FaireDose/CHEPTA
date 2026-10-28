@@ -44,6 +44,7 @@ import { userDataList, setEntryUse } from "./user-data-file.js";
 import { hxInputs } from "./hx-view.js";
 import { HX_DEFAULTS, HX_MODES, HX_TASKS, HX_STREAM_MAX } from "./hx-logic.js";
 import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey, recordFlowsheet, stepFlowsheet } from "./flowsheet-view.js";
+import { reactorRibbon, reactorInputs, reactorKey } from "./reactor-workspace.js";
 import { projectOf, projectText, projectFileName, stateFromProject } from "./project.js";
 import { browserStore, hostStore, autosave, lastAutosave, clearAutosave } from "./project-store.js";
 import { FLASH_SPECS, FLOW_UNITS, feedComposition, convertBasis, flowIn } from "./flash-logic.js";
@@ -55,7 +56,7 @@ const PROPERTY_GLYPHS = [
   ["density", () => "ρ", "Density"], ["enthalpy", () => "h", "Enthalpy"], ["cp", () => ["c", h("sub", {}, "p")], "Heat capacity"],
   ["viscosity", () => "μ", "Viscosity"], ["conductivity", () => "k", "Conductivity"], ["vapourPressure", () => ["P", h("sup", {}, "sat")], "Vapour pressure"],
 ];
-const VIEW_ICON = { flash: "drum", hx: "hx", txy: "txy", ternary: "ternary", azeotropes: "azeo", pxy: "pxy", envelope: "envelope", henry: "henry", solid: "flask", sle: "azeo", properties: "curves", steam: "dome", charts: "envelope" };
+const VIEW_ICON = { flash: "drum", hx: "hx", reactor: "reactor", txy: "txy", ternary: "ternary", azeotropes: "azeo", pxy: "pxy", envelope: "envelope", henry: "henry", solid: "flask", sle: "azeo", properties: "curves", steam: "dome", charts: "envelope" };
 /** A label inside a sentence: "Ternary map" → "ternary map", but "T-x-y diagram" stays. */
 const lower = s => (/^[A-Z]-/.test(s) ? s : s[0].toLowerCase() + s.slice(1));
 const NEEDS_ACTIVITY = {
@@ -447,6 +448,7 @@ export function app(target, cfg = {}) {
         ];
       }
       case "flowsheet": return flowsheetRibbon({ state, set, ui, group, bigButton, smallButton });
+      case "reactor": return reactorRibbon({ state, set, ui, group, smallButton });
       case "steam": return [
         // the Charts workspace (proposal 0013, step 7): water and steam, or any fluid with an equation of state
         group("Fluid", diagramButton("steam", "Water and steam"), diagramButton("charts", "Any fluid")),
@@ -665,6 +667,8 @@ export function app(target, cfg = {}) {
         slotsInput("properties", check), problemsBox(check)));
     } else if (state.workspace === "flowsheet") {
       secs.push(...flowsheetInputs({ state, set, ui, uid, inputsSection }));
+    } else if (state.workspace === "reactor") {
+      secs.push(...reactorInputs({ state, set, ui, uid, inputsSection }));
     } else if (state.workspace === "steam" && v === "charts") {
       // a fluid's chart (proposal 0013, step 7): its components, isobars or isotherms, and a compression drawn on it
       const c = state.chart, list = (vals, parse) => String(vals).split(/[\s,;]+/).map(parse).filter(x => x != null);
@@ -804,6 +808,7 @@ export function app(target, cfg = {}) {
     const st = ui.status, u = state.units, v = state.view;
     const model = v === "steam" ? "IAPWS-IF97" : v === "henry" ? "Henry's law" : v === "properties" ? "Pure-component data"
       : v === "flowsheet" ? `Flowsheet: ${state.flowsheet.thermo.model}`
+      : v === "reactor" ? `Reactor: ${state.reactor.thermo.model}`
       : modelLabel(state);
     const fs = state.flash;
     const cond = v === "flash" ? { TP: `T ${fmtTemp(fs.T_K, u)}, P ${fmtP(fs.P_kPa, u)}`, PH: `P ${fmtP(fs.P_kPa, u)}, Q ${fs.Q_J_mol} J/mol`,
@@ -1253,7 +1258,8 @@ export function app(target, cfg = {}) {
       state.userData,   // the user's own data (proposal 0012): a change or a switch recalculates every view
       v === "flash" ? state.flash : null,
       v === "hx" ? state.hx : null,
-      v === "flowsheet" ? [state.flowsheet, state.userData, ensureUi(ui).sel, ui.fs.auto, ui.fs.solveKey, ui.fs.zoom] : null]);
+      v === "flowsheet" ? [state.flowsheet, state.userData, ensureUi(ui).sel, ui.fs.auto, ui.fs.solveKey, ui.fs.zoom] : null,
+      v === "reactor" ? reactorKey(state, ui) : null]);
   };
   let canvasRendered = false, token = 0;
   function renderCanvas(now = false) {
