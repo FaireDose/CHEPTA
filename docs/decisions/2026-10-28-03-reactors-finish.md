@@ -102,3 +102,28 @@ Part II added: what each track contributes (and what stays out), the roles, the 
 nine workstreams with the files each owns, the milestones M0 to M4 with the critical path (the column engine), how the
 work is run (definition of done, at most four pull requests open), and the risks. The roadmap's items taken in link to
 it. The roadmap has no F track.
+
+## Proposal 0015 amended: the review, MCP, the visuals (2026-10-29)
+
+The maintainer: "yes, include the proposal 11 to 15 as you recommend. i also add a recommendation from ChatGPT ... look
+at what is good and useful to integrate. In addition I want in this program to have the website visuals improved
+somehow when needed".
+
+- **Proposal 0011, step 1, moved into 0015** (contracts 6 and 7, workstream W8): one dispatcher over the existing
+  functions with structured results (outcome, residuals by group, qualifications, reproduction data), a command line,
+  and a local MCP server, `chepta-mcp`, run on the user's computer, read-only tools first. A remote connector for web
+  chats needs hosting and stays a later decision. Proposal 0011 and the roadmap's G1 say so.
+- **The review** (ChatGPT, of revision b4aa3bf; uploaded by the maintainer, not committed): every recommendation was
+  taken, with two corrections of the earlier text it found:
+  - two property methods at the same T and P do not give the same enthalpy, even with a shared reference; the
+    boundary now keeps the enthalpy flow and finds the temperature by a P-H flash in the receiving method;
+  - the diameter is set by the largest required area, V̇_j / (f · u_fl,j), not by the stage with the lowest flooding
+    velocity.
+  
+  Also taken: a green main branch and an M0 path end to end; M2 split into M2a (v0.5, one liquid) and M2b; the
+  execution envelope with a worker and cancellation; warm starts as guesses only; the independent references and
+  benchmark cases owned by the simulator expert, ahead of the code; three active tasks to start, measured before
+  adding more. Its answers to the questions are noted under them; the choices stay the maintainer's.
+- **The visuals:** a role (interface designer) and a workstream (W10) that owns the shared style files, writes a short
+  interface guide, reviews the workbench as it is (a list for the maintainer to choose from), and checks every new
+  view, with screenshots at phone and desktop width; visual fixes only when a view needs them.

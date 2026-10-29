@@ -41,8 +41,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   weeping warnings and its own property method where needed; evaporators, crystallizers, membranes (with the area),
   solid-liquid separation and dryers; the size of the flash drum and decanter; the liquid-liquid thermodynamics; it
   takes over steps 1 and 3 of proposal 0007. Part II (2026-10-29): the program across the roadmap's tracks, roles,
-  contracts first (M0), nine workstreams, milestones M0 to M4 (v0.5, v0.6). Answer its eight questions and choose from
-  "Making it leaner".
+  contracts first (M0), workstreams, milestones M0 to M4 (v0.5, v0.6). Amended the same day: the review the maintainer
+  asked ChatGPT for (a green M0 path, M2a and M2b, the P-H boundary between methods, the diameter from the largest
+  required area, the execution envelope), the dispatcher, command line and local MCP server moved from proposal 0011,
+  step 1, and a workstream for the visuals (W10). Answer its ten questions and choose from "Making it leaner".
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun
   gas viscosity by Wilke's rule, the full-text search for the three new components. Check the transcribed constants of

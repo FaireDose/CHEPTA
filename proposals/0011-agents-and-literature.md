@@ -60,6 +60,10 @@ and never edits a databank value. If a paper contradicts a databank value, that 
 
 ### 1. Tools the agent calls (G1)
 
+*Moved to [proposal 0015](0015-separation-units.md), section 9, contracts 6 and 7, and workstream W8 (the maintainer,
+2026-10-29): the dispatcher, the command line and the local MCP server are built there, with the separation units.
+The text below is kept as the design they start from; a remote connector at a public address stays a later decision.*
+
 Every calculation is a deterministic function with JSON in and JSON out, and errors that tell
 the agent what to fix. Most of these already exist in the library (`CHEPTA.system`, `flash`,
 `solveFlowsheet`, `flowsheetStatus`, `checkPackage`, `library`). They are exposed three ways:
@@ -337,7 +341,7 @@ maintainers set.
 
 ## Steps
 
-1. **G1: tool interface.** JSON schemas for the existing functions, `chepta-mcp` (read-only
+1. **G1: tool interface** (moved to proposal 0015, workstream W8, 2026-10-29). JSON schemas for the existing functions, `chepta-mcp` (read-only
    tools), versions in every answer. Tests: the same answers as the library, deterministic.
 2. **Route format and checker.** `check-route`, with three example routes from the attached
    map's mature processes, extracted by hand from open sources. Tests: the checker refuses

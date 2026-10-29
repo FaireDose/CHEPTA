@@ -58,7 +58,7 @@ an implementation, and tests. A step can start when the steps it depends on are 
 | **A8** Flowsheet solver | Calculation order, tear streams, recycle convergence, design specifications, error messages an engineer understands. | A6, A7 | **On-going**: sequential solution with recycles and tear streams, checked by the flowsheet test suite; design specifications open; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **A9** Artifact contract | What a page may rely on: one pinned script, the `mount` configuration, no network access, theming, size and speed budgets (ternary map under 0.5 s, 50-stage column under 5 s), background workers. | A1 | **On-going**: works in Claude artifacts; budgets and workers not written down; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **A10** AI authoring contract | How an assistant writes configurations and flowsheet files: the skill, a schema it can check against, and error messages that tell it what to fix. | A7, A9 | **On-going**: assistants write, check and edit flowsheet files (proposal 0006, steps 4 and 7); the schema follows A7; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
-| **A11** Views | Flowsheet drawing, stream tables, column profiles, results export; views only call the layers below. | A7, A9 | **On-going**: flowsheet drawing, stream tables, reactor profiles, Excel export; column profiles with the columns; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **A11** Views | Flowsheet drawing, stream tables, column profiles, results export; views only call the layers below. | A7, A9 | **On-going**: flowsheet drawing, stream tables, reactor profiles, Excel export; column profiles with the columns; planned in [proposal 0015](proposals/0015-separation-units.md), Part II, with an interface guide and a visual check of every new view (W10) |
 | **A12** Stability policy for 1.0 | Which interfaces are frozen, deprecation rules, long-term support of old versions. | A1–A11 | **Open** |
 | **A13** Reactions | How reactions are described: stoichiometry, heats of reaction from the property package, equilibrium constants from Gibbs energies, rate laws and their parameters with sources, so that reactor models (conversion, equilibrium, CSTR, plug flow, batch) share one description. | A1, A6 | **Closed**: [proposal 0010](proposals/0010-reactions-and-reactors.md), steps 1-9: the description, formation data, conversion, yield, equilibrium, Gibbs, CSTR and plug-flow reactors, your own kinetics, worked examples ([docs/models/reactions.md](docs/models/reactions.md)). Three examples wait for open data; two liquids in reactors wait for the liquid-liquid work of proposal 0015 |
 
@@ -130,7 +130,7 @@ sources, assumptions) that anyone can re-run and check.
 
 | Item | What | Depends on | Status |
 |---|---|---|---|
-| **G1** | Tool interface for agents: every calculation callable as JSON in, JSON out, deterministic, with error messages that tell the agent what to fix | A9, A10 | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **G1** | Tool interface for agents: every calculation callable as JSON in, JSON out, deterministic, with error messages that tell the agent what to fix | A9, A10 | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II: one dispatcher, a command line and a local MCP server (moved from proposal 0011, step 1) |
 | **G2** | Literature to route: an agent reads open papers and expired patents and extracts process routes (reactions, conditions, conversions, yields, separations) into a route file, every value cited | D8 | **Open** |
 | **G3** | Route to flowsheet: an agent builds a flowsheet for each route, simulates it with CHEPTA, and closes material and energy balances | G1, G2, A8 | **Open** |
 | **G4** | Route comparison: yield, energy use, equipment, cost of production (E4), CO₂ and safety flags side by side, with a recommendation that states its assumptions and uncertainty | G3, E4, E5 | **Open** |
@@ -212,7 +212,8 @@ Needs A6, A7, A8, A10, A11.
 
 ### v0.5 – Distillation
 
-Planned with v0.6 in [proposal 0015](proposals/0015-separation-units.md) (Part II: the workstreams and milestones M0 to M4).
+Planned with v0.6 in [proposal 0015](proposals/0015-separation-units.md) (Part II: the workstreams and milestones M0 to M4;
+v0.5 at M2a, the column with one liquid).
 
 - [ ] Shortcut column (Fenske–Underwood–Gilliland); McCabe–Thiele view ([proposal 0015](proposals/0015-separation-units.md))
 - [ ] Rigorous equilibrium-stage column (MESH equations)
