@@ -130,7 +130,7 @@ sources, assumptions) that anyone can re-run and check.
 
 | Item | What | Depends on | Status |
 |---|---|---|---|
-| **G1** | Tool interface for agents: every calculation callable as JSON in, JSON out, deterministic, with error messages that tell the agent what to fix | A9, A10 | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II: one dispatcher, a command line and a local MCP server (moved from proposal 0011, step 1) |
+| **G1** | Tool interface for agents: every calculation callable as JSON in, JSON out, deterministic, with error messages that tell the agent what to fix | A9, A10 | **On-going**: the request dispatcher `CHEPTA.run` with structured results, for the existing blocks (M0); the command line and a local MCP server next (M1); planned in [proposal 0015](proposals/0015-separation-units.md), Part II (moved from proposal 0011, step 1) |
 | **G2** | Literature to route: an agent reads open papers and expired patents and extracts process routes (reactions, conditions, conversions, yields, separations) into a route file, every value cited | D8 | **Open** |
 | **G3** | Route to flowsheet: an agent builds a flowsheet for each route, simulates it with CHEPTA, and closes material and energy balances | G1, G2, A8 | **Open** |
 | **G4** | Route comparison: yield, energy use, equipment, cost of production (E4), CO₂ and safety flags side by side, with a recommendation that states its assumptions and uncertainty | G3, E4, E5 | **Open** |

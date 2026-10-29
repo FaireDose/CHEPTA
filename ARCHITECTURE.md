@@ -30,7 +30,7 @@ Peng–Robinson does not break the flash drum.
 | 3 | Stream | T, P, component flows, phase split, enthalpy flow | `src/stream/` | `stream()`: a flash of component flows (kmol/h or kg/h) at T-P, P-H (enthalpy flow), P-VF or T-VF, with phase flows and enthalpy flow in kW (proposal 0006, step 1) |
 | 4 | Unit operations | Inlet streams + specifications → outlet streams + duties | `src/units/` | `registerUnit`, `runUnit` with port, specification and balance checks; feed, mixer, splitter, component separator, flash drum, heater/cooler, product (proposal 0006, step 2); conversion and yield reactors, with the generation of every component, the element (or mass) balance and the heat of reaction in the energy balance (proposal 0010, step 3); the equilibrium reactor, with an approach to equilibrium and the outlet temperature or the duty (step 4), one phase or two, listed reactions or Gibbs; the CSTR and the plug-flow reactor with the reactions' rate laws or the user's own formula (`src/units/kinetic-reactors.js`, `src/reactions/expression.js`; steps 5 and 9), with the profiles along the tube |
 | 5 | Flowsheet | Connects units, orders the calculation, converges recycles | `src/flowsheet/` | `solveFlowsheet`: structure checks, loops (Tarjan), tear streams (chosen or marked), direct substitution then bounded Wegstein, overall balances; checked against an equation-oriented Python solution (proposal 0006, step 3). File format: step 4 |
-| 6 | Interface | Workbench, diagrams, flowsheet drawing, stream tables, controls | `src/ui/` | Workbench (`app`): File (projects: files, this browser, the host page's `storage`, automatic copy of the open work), then the sections Properties & Equilibria (phase equilibrium, steam, gas solubility, properties), Unit models (flash; reaction and distillation shown as not yet available) and Flowsheet; task workspaces (phase equilibrium, flash, gas solubility, properties, steam), per-workspace inputs and Library, Sources and Settings panels; one model choice for every diagram (activity model with a vapour model, or PR/SRK); T-x-y, P-x-y, ternary, azeotrope and envelope views in mole fraction or wt %; flash stream table with CSV export; Flowsheet workspace (setup of components, method and reactions, block palette with the conversion, equilibrium and yield reactors, canvas with drag to connect, automatic products, degrees of freedom per block, energy streams, stream table with CSV; proposal 0006 step 5); property explorer; Henry and steam views |
+| 6 | Interface | Workbench (the Flowsheet workspace solves through the request path, `src/api/`), diagrams, flowsheet drawing, stream tables, controls | `src/ui/` | Workbench (`app`): File (projects: files, this browser, the host page's `storage`, automatic copy of the open work), then the sections Properties & Equilibria (phase equilibrium, steam, gas solubility, properties), Unit models (flash; reaction and distillation shown as not yet available) and Flowsheet; task workspaces (phase equilibrium, flash, gas solubility, properties, steam), per-workspace inputs and Library, Sources and Settings panels; one model choice for every diagram (activity model with a vapour model, or PR/SRK); T-x-y, P-x-y, ternary, azeotrope and envelope views in mole fraction or wt %; flash stream table with CSV export; Flowsheet workspace (setup of components, method and reactions, block palette with the conversion, equilibrium and yield reactors, canvas with drag to connect, automatic products, degrees of freedom per block, energy streams, stream table with CSV; proposal 0006 step 5); property explorer; Henry and steam views |
 | 7 | Design studio | Cost engineering (sizing, capital and operating cost, cost of product) and agent-run studies that compare process routes from the literature; every result reproducible and sourced | `src/design/` | Not started; roadmap tracks E and G |
 
 Units inside the engine: temperature in K, pressure in kPa, amounts in mol or kmol,
@@ -220,6 +220,46 @@ loop. An equation-oriented mode can come later.
 - Views only call the layers below; they never contain thermodynamics.
 - Heavy calculations (large ternary grids, columns) move to a background worker so
   the page stays responsive. Artifacts allow workers created from the page's own code.
+
+## The request path and the contracts of proposal 0015 (contracts v1, milestone M0)
+
+Contracts written down before the separation units are built ([proposal 0015](proposals/0015-separation-units.md),
+section 9), so that several people or agents can work on them at the same time. After M0, a contract changes only by
+a pull request that gives it a new version and says so here.
+
+| # | Contract | Where | State at M0 |
+|---|---|---|---|
+| 1 | **Stream v2**: phase types `vapour`, `liquid` (`light` or `heavy` when there are two) and `solid` (equilibrium or inert); the solid's enthalpy rule; a stream without them unchanged | `src/stream/` | written down; built with the first block that needs it (W3, W1) |
+| 2 | **Unit v2**: a block may return `profile`, `warnings` (`{ code, message, stage?, remedy? }`, codes `DRY_STAGE`, `FLOODING`, `WEEPING`), `sizing` and `method`; `runUnit` passes them on and refuses an unknown warning code | `src/units/units.js` | built |
+| 3 | **Column engine**: `solveCascade({ sys, stages, feeds, draws, specs, ends, phases, start })`, residuals by group, a phase it cannot represent refused | `src/units/columns/engine.js` | refuses (`NOT_AVAILABLE`) until M1 and M2a |
+| 4 | **Sizing**: `sizeDrum`, `sizeDecanter`, `columnDiameter`, `membraneArea`, each `(unit result, options) → { dimensions, basis, source }` | `src/sizing/sizing.js` | refuses until M1, M2b, M3 |
+| 5 | **Project format 6**: the new blocks, with the upgrade from format 5 | `src/ui/project.js` | a project is written in the lowest format that holds it, so format 6 comes with the first new block (the shortcut column, M1); older files open as before |
+| 6 | **The request path**: `CHEPTA.run(request) → result` | `src/api/` | built for the existing blocks (below) |
+| 7 | **The execution envelope**: run id, input hash, limits, status, cancellation, late results discarded | `src/runtime/envelope.js` | built on the caller's thread; the worker (Web Worker, Node worker thread) comes with M1 |
+
+**The request path** (`src/api/dispatcher.js`). One dispatcher over the existing functions, for the workbench (the
+Flowsheet workspace solves through it), chat pages, and, from milestone M1, the command line and the local MCP server
+(`chepta-mcp`):
+
+```js
+CHEPTA.run({ capability: "solve_flowsheet", input: { project }, limits: { time_ms: 60000 } })
+// { chepta_result: 1, capability, outcome, value, checks, qualifications, reproduction, run }
+CHEPTA.capabilities()   // name, summary, status ("available" or "unsupported"), readOnly, input schema, planned
+```
+
+- **Capabilities at M0:** `capabilities`, `find_component`, `component_info`, `check_project`, `flowsheet_status`,
+  `solve_flowsheet`; `solve_column` is listed as unsupported, with where it is planned.
+- **outcome:** `ok`, `invalid_input` (BAD_INPUT, OUT_OF_RANGE), `missing_data`, `unsupported` (NOT_AVAILABLE,
+  PHASE_SPLIT), `not_converged`, `cancelled`, `out_of_time` (from the worker, M1), `error` (a bug in CHEPTA). An error
+  carries `code`, `message` and `where` (the fields or blocks it concerns).
+- **checks:** the residuals by group (material, energy, each block, each loop's tear residual and tolerance);
+  **qualifications:** the parameter set and tier of each pair, the pairs without parameters, the blocks' notes and
+  warnings; **reproduction:** the library version, the method, the parameter sets, and the hashes of the input, the
+  records used and the user's data (64-bit FNV-1a of the canonical JSON, `src/api/hash.js`). A converged result is not
+  a result validated against data.
+- A request is plain JSON; the property package is built inside the capability from the components, the method and
+  the user's data. Each capability has an input schema (`src/api/schema.js`, a subset of JSON Schema): it checks the
+  form; the engine still checks the physics.
 
 ## Versions and compatibility
 

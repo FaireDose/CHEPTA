@@ -311,7 +311,7 @@ saved project → checks → request → calculation → structured result → s
    `sys` with functions, so it is not a JSON interface by itself). Each capability carries its input schema: units, the
    phase modes and configurations it supports, the specifications that exclude each other, the data it needs. The
    schema checks the form; the engine still checks the physics. A result says:
-   - **outcome:** solved, invalid input, missing data, unsupported, did not converge, cancelled, or out of time, with
+   - **outcome:** ok (solved), invalid input, missing data, unsupported, did not converge, cancelled, or out of time, with
      the field or block it concerns, so an agent can tell "supply a property" from "remove a specification" from "the
      solver failed";
    - **checks:** the residuals by group, the iterations and the tolerances;
@@ -452,7 +452,7 @@ The steps of Part I, each a pull request with its tests, placed in the workstrea
 
 | Step | Workstream | Milestone |
 |---|---|---|
-| 0. The contracts (section 9) and the green M0 path | architect, W8, W9 | M0 |
+| 0. The contracts (section 9) and the green M0 path (done 2026-10-29; ARCHITECTURE.md, "The request path and the contracts") | architect, W8, W9 | M0 |
 | 1. The dispatcher, the command line, the MCP server's read-only tools; the first assistant test | W8, W9 | M1 |
 | 2. The Column block, shortcut mode, with its profile table; W7's first cases and the MESH reference | W2, W5, W7 | M1 |
 | 3. The rigorous column, one liquid: profile, dry-stage warning, phase-stability refusal, in the worker | W2, W9 | M2a |

@@ -477,7 +477,7 @@ export function solveFlowsheet(sys, fs) {
     if (!(err < opt.tolerance)) {
       throw stop(` in ${opt.maxIterations} iterations: the tear stream${tears.length > 1 ? "s" : ""} still change${tears.length > 1 ? "" : "s"} by ${err.toExponential(2)} (relative) per iteration; the tolerance is ${opt.tolerance}`);
     }
-    loops.push({ blocks: seq, tears: tears.map(e => e.id), iterations: it });
+    loops.push({ blocks: seq, tears: tears.map(e => e.id), iterations: it, residual: err, tolerance: opt.tolerance });
   }
 
   // overall balances: feeds in, products out

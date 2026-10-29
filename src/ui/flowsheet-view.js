@@ -3,7 +3,7 @@
  * stream forms with their degrees of freedom) and the results (stream table, energy streams).
  *
  * A view (layer 6): it edits the flowsheet document with flowsheet-logic.js and calculates
- * only through the public functions of the layers below (flowsheetDocStatus, runFlowsheet).
+ * only through the public functions of the layers below (flowsheetDocStatus, and the request path of src/api/ to solve).
  * The person's selection and the last solution live in `ui.fs` (not in the saved state):
  *   ui.fs = { sel: null | { kind: "block" | "stream", id }, auto: true, solveKey, cache, note }
  */
@@ -16,7 +16,8 @@ import { listComponents, modelName } from "../thermo/system.js";
 import { methodAdvice } from "../thermo/method-advice.js";
 import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
-import { flowsheetDocStatus, runFlowsheet } from "../flowsheet/document.js";
+import { flowsheetDocStatus } from "../flowsheet/document.js";
+import { run } from "../api/dispatcher.js";
 import {
   PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
@@ -169,8 +170,11 @@ export function solution(state, ui) {
   if (!(f.auto || f.solveKey === key)) return { status, result: null, error: null, stale: true };
   if (f.cache?.key !== key) {
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
-    try { f.cache = { key, result: runFlowsheet(fs, ud), error: null, ms: (typeof performance !== "undefined" ? performance.now() : 0) - t0 }; }
-    catch (e) { f.cache = { key, result: null, error: e.message, loop: e.details?.loop ?? null }; }
+    // through the request path (proposal 0015, section 9, contract 6), as the command line and the assistants call it
+    const r = run({ capability: "solve_flowsheet", input: { flowsheet: fs, user_data: ud } });
+    f.cache = r.outcome === "ok"
+      ? { key, result: r.value, error: null, ms: (typeof performance !== "undefined" ? performance.now() : 0) - t0, reproduction: r.reproduction }
+      : { key, result: null, error: r.error.message, loop: r.error.details?.loop ?? null };
   }
   return { status, result: f.cache.result, error: f.cache.error, loop: f.cache.loop, ms: f.cache.ms, stale: false };
 }
