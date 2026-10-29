@@ -234,8 +234,8 @@ a pull request that gives it a new version and says so here.
 | 3 | **Column engine**: `solveCascade({ sys, stages, feeds, draws, specs, ends, phases, start })`, residuals by group, a phase it cannot represent refused | `src/units/columns/engine.js` | refuses (`NOT_AVAILABLE`) until M1 and M2a |
 | 4 | **Sizing**: `sizeDrum`, `sizeDecanter`, `columnDiameter`, `membraneArea`, each `(unit result, options) → { dimensions, basis, source }` | `src/sizing/sizing.js` | refuses until M1, M2b, M3 |
 | 5 | **Project format 6**: the new blocks, with the upgrade from format 5 | `src/ui/project.js` | a project is written in the lowest format that holds it, so format 6 comes with the first new block (the shortcut column, M1); older files open as before |
-| 6 | **The request path**: `CHEPTA.run(request) → result` | `src/api/` | built for the existing blocks (below) |
-| 7 | **The execution envelope**: run id, input hash, limits, status, cancellation, late results discarded | `src/runtime/envelope.js` | built on the caller's thread; the worker (Web Worker, Node worker thread) comes with M1 |
+| 6 | **The request path**: `CHEPTA.run(request) → result` | `src/api/`, `bin/` | built for the existing blocks (below); the command line `chepta` and the local MCP server `chepta-mcp` (M1; [docs/models/tools.md](docs/models/tools.md)) |
+| 7 | **The execution envelope**: run id, input hash, limits, status, cancellation, late results discarded | `src/runtime/` | built: `CHEPTA.run` on the caller's thread as before; the worker (M1): a Node worker thread for the command line and the MCP server, a Web Worker for the workbench's flowsheet and `CHEPTA.runAsync` / `startRun`, falling back to the page's thread where a page allows no worker, and saying so |
 
 **The request path** (`src/api/dispatcher.js`). One dispatcher over the existing functions, for the workbench (the
 Flowsheet workspace solves through it), chat pages, and, from milestone M1, the command line and the local MCP server
@@ -257,6 +257,13 @@ CHEPTA.capabilities()   // name, summary, status ("available" or "unsupported"),
   warnings; **reproduction:** the library version, the method, the parameter sets, and the hashes of the input, the
   records used and the user's data (64-bit FNV-1a of the canonical JSON, `src/api/hash.js`). A converged result is not
   a result validated against data.
+- **Command line, MCP server and worker (M1):** `npx chepta run project.json`, `chepta capabilities`, `chepta request
+  request.json` (an exit code per outcome); `chepta-mcp`, a local MCP server over standard streams (revision 2026-07-28,
+  and 2025-11-25 / 2025-06-18 through `initialize`), whose tools are the available capabilities; each run in a worker,
+  so that `limits.time_ms` gives `out_of_time` and a cancel gives `cancelled` (runtime error codes `OUT_OF_TIME`,
+  `CANCELLED`, `WORKER_FAILED`). How to use them and how they are tested: [docs/models/tools.md](docs/models/tools.md).
+- A flowsheet's block results carry a block's Unit v2 `profile`, `warnings` and `method` when it returns them, so they
+  reach the request path's qualifications.
 - A request is plain JSON; the property package is built inside the capability from the components, the method and
   the user's data. Each capability has an input schema (`src/api/schema.js`, a subset of JSON Schema): it checks the
   form; the engine still checks the physics.

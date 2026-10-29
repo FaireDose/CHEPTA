@@ -41,8 +41,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - **M0** done (2026-10-29; docs/decisions/2026-10-29-02-m0-contracts.md): the contracts in ARCHITECTURE.md, the
     request path `CHEPTA.run`, the execution envelope, the column and sizing contracts refusing until built, and the
     heater and flash example through the whole path, in Node and in the browser.
-  - **Next, M1:** W2 (the shortcut column), W7 (the benchmark cases and the MESH reference), W8 with W9 (the command
-    line, the local MCP server, the worker), each as its own session when the maintainer says so.
+  - **Next, M1:** W2 (the shortcut column), W7 (the benchmark cases and the MESH reference), each as its own session
+    when the maintainer says so.
+  - **M1, W8 with W9: built, to review** (docs/decisions/2026-10-29-03-cli-mcp-worker.md): the command line, the local
+    MCP server, the worker. To do: run the first assistant test on your computer (docs/models/tools.md, "The first
+    assistant test") and say whether it passes; then W8's next step, the authoring contract: refuse unknown keys in a
+    flowsheet's `thermo` and in a block's `spec` (an assistant's `thermo.method` was ignored without a word), and a
+    missing-pair message that names the request path's remedy (the user's data) instead of `allowMissingPairs`.
   - Waiting: W1, W3 to W6 and W10 (W10 at M1).
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun
