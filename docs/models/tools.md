@@ -160,11 +160,16 @@ the engine.
 Proposal 0015, section 10: an assistant, through the MCP server in one host (Claude Code), changes a heater
 specification in an existing project, checks the changed project, runs it and explains the difference.
 
-**Procedure** (about five minutes):
+**Procedure** (about five minutes), in a terminal **on your own computer**, with Claude Code installed there. Not in a
+cloud session on claude.ai/code: there `/mcp` is not available, and a server added during a session is not loaded
+into that session's conversation.
+
 
 1. In a terminal, in a clone of the repository: `npm install`, then
    `claude mcp add chepta -- node "$PWD/bin/chepta-mcp.mjs"`.
-2. Start `claude` in the clone and type `/mcp`: `chepta` is connected, with six tools.
+2. Start `claude` in the clone (a new session: a server added while a session runs is not in it) and type `/mcp`
+   alone, without a name: `chepta` is listed as connected, with six tools. Without `/mcp`, `claude mcp get chepta`
+   in the terminal says "Connected".
 3. Ask:
 
    > Use the chepta MCP server. In examples/heater-flash.chepta.json, propose a change of the heater E1's outlet
