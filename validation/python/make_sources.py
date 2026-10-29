@@ -51,7 +51,7 @@ SOURCES_FILE = DATA / "sources.json"
 LICENSES_FILE = DATA / "LICENSES.md"
 
 KINDS = ["standard", "open-source library", "databank", "thermoml", "open-access article",
-         "free supplement", "free copy", "open thesis", "free book", "handbook via open compilation"]
+         "free supplement", "free copy", "open thesis", "free book", "course notes", "handbook via open compilation"]
 
 # ------------------------------------------------------------------------------------------
 # Sources cited in free text. Each field is copied from the file named in the comment.
@@ -345,6 +345,50 @@ SEEDS = {
         "access": "Free to read; a work of the U.S. government (public domain)",
         "license": "Public domain (U.S. government work)",
         "note": "Typical isentropic efficiencies: single-stage syngas recycle compressors 84 % (Exhibit 4-8, p. 23) and 75 % (Exhibit 5-7, p. 47), the lower taken for the compressor; boiler feed water pump turbine 80 % (Exhibit 4-3, p. 17) for the expander.",
+    },
+    # src/sizing/sizing.js header (the vertical drum: the K fit, the heights, the security factor 0.85)
+    "fermeglia-flash-2021": {
+        "title": "Single stage thermal separation: flash (Separation Processes course slides, 22 March 2021), slides 81-88: flash drum design",
+        "authors": "M. Fermeglia, Department of Engineering and Architecture, University of Trieste",
+        "year": 2021,
+        "kind": "course notes",
+        "url": "https://moodle2.units.it/pluginfile.php/389467/mod_resource/content/3/01_Flash.pdf",
+        "access": "Free to read on the University of Trieste's course site; its equations and constants are taken, cited by slide, not its text or figures",
+        "note": "The K fit of slide 83 (A to E), checked against the chart of the same slide read by pixel position (within 7 %, test/sizing.test.js).",
+        "files": ["src/sizing/sizing.js", "validation/python/reference_sizing.py"],
+    },
+    # src/sizing/sizing.js header (the K fit in ft/s, h_v and h_f with the feed line, the 2 min residence time)
+    "ou-che4253-flash": {
+        "title": "ChE 4253 Design I: Flash drum design (2013) and Flash and tray design examples (2018)",
+        "authors": "M. Bagajewicz, School of Chemical, Biological and Materials Engineering, University of Oklahoma",
+        "year": 2018,
+        "kind": "course notes",
+        "url": "https://www.ou.edu/class/che-design/Design&Safety-2018/Flash%20and%20Column%20Design%20Exercises.pdf",
+        "access": "Free to read on the University of Oklahoma's course site (also https://ou.edu/class/che-design/design%201-2013/Flash%20Design.pdf); its rules and worked example are cited, not its text",
+        "note": "The worked example takes log10 in place of ln in the K fit (K = 0.2365 instead of 0.347 ft/s) and 0.30103 m per ft; test/sizing.test.js reproduces its arithmetic and says so.",
+        "files": ["src/sizing/sizing.js", "test/sizing.test.js"],
+    },
+    # src/sizing/sizing.js header (the horizontal drum)
+    "coker-ogj-1993": {
+        "title": "Computer program enhances guidelines for gas-liquid separator designs",
+        "authors": "A. K. Coker",
+        "year": 1993,
+        "published": "Oil & Gas Journal, 10 May 1993",
+        "kind": "open-access article",
+        "url": "https://www.ogj.com/home/article/17222980/computer-program-enhances-guidelines-for-gas-liquid-separator-designs",
+        "access": "Free to read on the publisher's site (ogj.com); three rules are taken, quoted, not its text",
+        "note": "K_H = 1.25 K_V; the vapour in 15-25 % of the cross-section (20 % taken); a vapour space of at least 20 % of D or 12 in; the procedure starts from L/D = 3.",
+        "files": ["src/sizing/sizing.js"],
+    },
+    # src/sizing/sizing.js header (the decanter)
+    "albayati-decanters": {
+        "title": "Liquid-liquid separators (lecture notes)",
+        "authors": "S. D. Al-Bayati, Biochemical Engineering Department, Al-Khwarizmi College of Engineering, University of Baghdad",
+        "kind": "course notes",
+        "url": "https://uomus.edu.iq/img/lectures21/MUCLecture_2024_4232530.pdf",
+        "access": "Free to read on a university site (uomus.edu.iq); its equations, design values and worked examples are cited, not its text",
+        "note": "Stokes' law with 150 um drops, capped at 4e-3 m/s; the interface width of a horizontal vessel; the dispersion band 10 % of the height; examples 1 and 2 (test/sizing.test.js; example 2 writes the inlet flow as 2.932e-3 m3/s where its numbers give 8.49e-3).",
+        "files": ["src/sizing/sizing.js", "test/sizing.test.js"],
     },
 }
 

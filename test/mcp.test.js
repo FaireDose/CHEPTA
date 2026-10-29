@@ -62,9 +62,9 @@ test("MCP (2025-11-25): initialize, tools/list, tools/call — the library's num
   s.notify("notifications/initialized");
   const list = await s.call("tools/list");
   const names = list.result.tools.map(t => t.name);
-  // solve_column is a tool since the shortcut column (proposal 0015, M1); an unsupported capability is not offered
-  // (the later test registers one)
-  assert.deepEqual(names, ["capabilities", "find_component", "component_info", "check_project", "flowsheet_status", "solve_flowsheet", "solve_column"]);
+  // solve_column is a tool since the shortcut column (proposal 0015, M1), size_drum since the drum sizes (W4, M1); an
+  // unsupported capability is not offered (the later test registers one)
+  assert.deepEqual(names, ["capabilities", "find_component", "component_info", "check_project", "flowsheet_status", "solve_flowsheet", "size_drum", "solve_column"]);
   for (const t of list.result.tools) {
     assert.equal(t.inputSchema.type, "object");
     assert.equal(t.annotations.readOnlyHint, true);
