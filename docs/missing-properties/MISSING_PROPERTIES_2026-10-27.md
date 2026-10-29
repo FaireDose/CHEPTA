@@ -1,6 +1,6 @@
 # Missing pure-component properties (2026-10-27)
 
-What CHEPTA's databank still lacks besides vapour-liquid pairs, on 2026-10-27 (174 components). Made by `validation/python/missing_properties.py`; one file per update, named with its day, so the earlier files stay and the gaps can be followed over time (docs/DATA_RULES.md section 12). The pairs are in [DATA_WANTED.md](DATA_WANTED.md).
+What CHEPTA's databank still lacks besides vapour-liquid pairs, on 2026-10-27 (174 components). Made by `validation/python/missing_properties.py`; one file per update, named with its day, so the earlier files stay and the gaps can be followed over time (docs/DATA_RULES.md section 12). The pairs are in [DATA_WANTED.md](../DATA_WANTED.md).
 
 Each gap is a "no open data" marker in `src/data/components.json` with the sources that were searched (`searched`). Start from that list before looking again, so the same sources are not searched twice.
 

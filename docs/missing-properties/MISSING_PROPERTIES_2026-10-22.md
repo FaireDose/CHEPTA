@@ -1,6 +1,6 @@
 # Missing pure-component properties (2026-10-22)
 
-What CHEPTA's databank still lacks besides vapour-liquid pairs, on 2026-10-22 (174 components). Made by `validation/python/missing_properties.py`; one file per update, named with its day, so the earlier files stay and the gaps can be followed over time (docs/DATA_RULES.md section 12). The pairs are in [DATA_WANTED.md](DATA_WANTED.md).
+What CHEPTA's databank still lacks besides vapour-liquid pairs, on 2026-10-22 (174 components). Made by `validation/python/missing_properties.py`; one file per update, named with its day, so the earlier files stay and the gaps can be followed over time (docs/DATA_RULES.md section 12). The pairs are in [DATA_WANTED.md](../DATA_WANTED.md).
 
 Each gap is a "no open data" marker in `src/data/components.json` with the sources that were searched (`searched`). Start from that list before looking again, so the same sources are not searched twice.
 
@@ -33,7 +33,7 @@ Each gap is a "no open data" marker in `src/data/components.json` with the sourc
 
 ## Today's search for formation data (proposal 0010, step 1)
 
-[decisions/2026-10-22-03-formation-data.md](decisions/2026-10-22-03-formation-data.md) has the details.
+[decisions/2026-10-22-03-formation-data.md](../decisions/2026-10-22-03-formation-data.md) has the details.
 
 - **22 with no enthalpy of formation.** Two of them were measured, but only in paywalled articles with no free copy
   known to Unpaywall:
@@ -174,7 +174,7 @@ The interface would show all three, so users see what they rely on.
 **How values could come in**, once the tier is decided:
 - one small JSON file per component (in `validation/data/contributed/`), with the value or the points, the
   temperatures, the kind, the citation and the uncertainty; the scripts fit it like measured data (section 3 of
-  [DATA_RULES.md](DATA_RULES.md)) and the record says `tier: "contributed"`;
+  [DATA_RULES.md](../DATA_RULES.md)) and the record says `tier: "contributed"`;
 - until then, **My data** (proposal 0012) already lets anyone give a vapour pressure or another property for their
   own work, without changing the databank.
 

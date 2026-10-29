@@ -13,7 +13,7 @@ On 2026-10-28 the three components were added from the databases only (ChemSep, 
 the full-text step of the search order (docs/DATA_RULES.md, "How to search for a missing number", step 3) had not been
 run. It is now: Europe PMC, OpenAlex and CORE, for every gap of the two components that have gaps (biphenyl has none),
 recorded in `validation/data/searches/2026-10-28-fulltext.json` and the new list
-[MISSING_PROPERTIES_2026-10-28-2.md](../MISSING_PROPERTIES_2026-10-28-2.md). Nothing open was found for the pure
+[MISSING_PROPERTIES_2026-10-28-2.md](../missing-properties/MISSING_PROPERTIES_2026-10-28-2.md). Nothing open was found for the pure
 compounds. Four documents that may hold values refused the scripts and are on the list to download by hand (the table
 at the end of that file). No free supplement applies: no paywalled article with the numbers was found.
 
@@ -57,11 +57,38 @@ Every status in ROADMAP.md is now one of **Open**, **On-going** or **Closed**, w
 ## Proposal 0015
 
 [Proposal 0015](../../proposals/0015-separation-units.md), a draft: the other common units (columns, absorbers and
-strippers, extraction, decanters, crystallizers, evaporators, solid-liquid separation, dryers), the stream and unit
+strippers, extraction, evaporators, crystallizers, membranes, solid-liquid separation, dryers), the stream and unit
 interfaces they need (A5, A6) and the liquid-liquid thermodynamics.
+
+## The maintainer's comments (2026-10-29), and what changed
+
+- "not clear what i need to download ... maybe you make a folder with missing properties": the dated lists moved to
+  `docs/missing-properties/`, and the documents to download are in one list,
+  [TO_DOWNLOAD.md](../missing-properties/TO_DOWNLOAD.md): what to open, the link, what to look for, what it unlocks.
+  DATA_RULES.md section 12 says so. Before writing it, `open_copy.py --supplements` was run on the paywalled articles
+  of the gaps (the maintainer, 2026-10-27): no new supplement (the three found were read on 2026-10-27).
+- "we already have a decanter right? ... add maybe sizing": yes, the flash drum has a second-liquid outlet. The proposal
+  drops the decanter block and adds the size of the flash drum and the decanter (and the column's diameter).
+- "what do the models filter, centrifuge, dryer bring?": they are balances (cake moisture, wash, the heat of
+  evaporation), not filtration or drying models; the proposal says so in a table, and offers to postpone them.
+- "add also membrane where you introduce some coefficients and it calculates an area": added, by the solution-diffusion
+  model of Aziaba et al., Membranes 12 (2022) 1186 (CC BY 4.0), with the area for a target stage cut or recovery.
+- "the option to switch thermodynamics to work with liquid liquid activity models where needed only for distillations":
+  a column may use its own property method, and "look for two liquids on the stages" is an option, off by default.
+- "outlets by phase ... only for the complicated models": the column gets them only where new (a decanter condenser,
+  side draws); the flash drum already has them.
+- "do a quick research ... how to integrate all these solvers": NeqSim's column documentation, DWSIM's column solvers,
+  the open DWSIM membrane article and the University of Trieste column-design slides were read; the proposal follows
+  them: one column block with several solvers (a robust start, then Newton on all MESH equations), product
+  specifications reached in steps, side draws in an outer loop, solved only when the MESH residuals are small.
+- "for columns you should have warnings when it is flooding or drying": a dry-stage warning always; flooding and
+  weeping warnings by Fair's method when the column has a diameter, or the diameter sized for a fraction of flooding.
+- "what else we can do ... to make it leaner": a "Making it leaner" section: one Column block for distillation,
+  absorber, stripper and extraction with the shortcut as its mode; no separate decanter; CPA out; the solid-liquid
+  separator and the dryer postponed if wanted; the evaporator as a template; sizing with the units.
 
 ## To check
 
 - The transcribed constants of the ethanol example against Aali and Hadi 2023, Tables 8 and 9 (AGENTS.md rule 4).
 - The new statuses of the roadmap.
-- Proposal 0015: accept, change, or reorder its steps.
+- Proposal 0015: its five questions, and which of the "Making it leaner" items to take.

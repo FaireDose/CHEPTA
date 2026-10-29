@@ -2,7 +2,7 @@
 
 What CHEPTA's databank still lacks besides vapour-liquid pairs, on 2026-10-21 (174 components), and a recommendation for
 values the maintainer finds or measures. Written for the maintainer to read later; it is a snapshot, not generated, so
-the numbers below go stale as data are added. The pairs are in [DATA_WANTED.md](DATA_WANTED.md).
+the numbers below go stale as data are added. The pairs are in [DATA_WANTED.md](../DATA_WANTED.md).
 
 Each gap below is a "no open data" marker in `src/data/components.json` with the sources that were searched
 (`searched`: CoolProp, ChemSep, the NIST WebBook, the ThermoML Archive, open literature). Start from that list before
@@ -152,7 +152,7 @@ The interface would show all three, so users see what they rely on.
 **How values could come in**, once the tier is decided:
 - one small JSON file per component (in `validation/data/contributed/`), with the value or the points, the
   temperatures, the kind, the citation and the uncertainty; the scripts fit it like measured data (section 3 of
-  [DATA_RULES.md](DATA_RULES.md)) and the record says `tier: "contributed"`;
+  [DATA_RULES.md](../DATA_RULES.md)) and the record says `tier: "contributed"`;
 - until then, **My data** (proposal 0012) already lets anyone give a vapour pressure or another property for their
   own work, without changing the databank.
 

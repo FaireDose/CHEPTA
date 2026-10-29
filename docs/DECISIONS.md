@@ -36,9 +36,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   reactions, more units in Settings, biphenyl, p-terphenyl (para isomer: to confirm) and cumene hydroperoxide. The
   flash failure: no small fix; the real fix later, as an item of "Engineering" below, not a proposal (the maintainer,
   2026-10-28).
-- **Proposal 0015, the separation units** (draft, 2026-10-28): columns, absorbers and strippers, extraction,
-  decanters, evaporators, crystallizers, filters and dryers, the streams and stages they need (A5, A6) and the
-  liquid-liquid thermodynamics; it takes over steps 1 and 3 of proposal 0007. Answer its five questions.
+- **Proposal 0015, the separation units** (draft, 2026-10-28; revised 2026-10-29 with the maintainer's comments): one
+  Column block (distillation, absorber, stripper, extraction; shortcut or rigorous) with dry-stage, flooding and
+  weeping warnings and its own property method where needed; evaporators, crystallizers, membranes (with the area),
+  solid-liquid separation and dryers; the size of the flash drum and decanter; the liquid-liquid thermodynamics; it
+  takes over steps 1 and 3 of proposal 0007. Answer its five questions and choose from "Making it leaner".
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun
   gas viscosity by Wilke's rule, the full-text search for the three new components. Check the transcribed constants of
@@ -51,7 +53,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (flowsheets included), and so do those of acids that are solid at 25 °C. Formic acid has its dimer constants (Chao and
   Zwolinski 1978) and the WebBook gas ΔfH°; propionic and acrylic acid have none open yet (their liquid values are
   12-26 kJ/mol off). No open source with the Eley–Rideal and Mars–van Krevelen forms was found.
-- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-28-2.md](MISSING_PROPERTIES_2026-10-28-2.md)):
+- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-28-2.md](missing-properties/MISSING_PROPERTIES_2026-10-28-2.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
 - **Missing properties, round 3** (docs/decisions/2026-10-22-07-missing-round3.md): levoglucosenone's vapour
@@ -302,7 +304,7 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
 - **No two liquids with a plain cubic equation (2026-10-09):** if nobody uses it, Fugacity
   doesn't either.
 - **Data:**
-  - The list of missing properties is a new dated file at every update, `docs/MISSING_PROPERTIES_<date>.md`, made by
+  - The list of missing properties is a new dated file at every update, `docs/missing-properties/MISSING_PROPERTIES_<date>.md`, made by
     `validation/python/missing_properties.py`; the earlier files stay, so the gaps can be followed over time
     (2026-10-22; DATA_RULES section 12).
   - Good data and fits for everything. When ChemSep lacks something, go on to the NIST WebBook,

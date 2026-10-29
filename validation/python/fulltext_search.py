@@ -60,7 +60,7 @@ TERMS = {
     "formation": ["enthalpy of formation", "enthalpy of combustion", "energy of combustion", "heat of combustion"],
     "formationG": ["standard molar entropy", "standard entropy", "Gibbs energy of formation", "absolute entropy"],
 }
-# By default the properties a calculation needs (docs/MISSING_PROPERTIES_*.md, "Where to start"). The transport
+# By default the properties a calculation needs (docs/missing-properties/MISSING_PROPERTIES_*.md, "Where to start"). The transport
 # properties, used by no calculation yet, and the ideal-gas heat capacity, derived by Kirchhoff's path, only with
 # --props: their names ("viscosity", "density") also match countless articles about other things.
 DEFAULT_PROPS = ["vapourPressure", "liquidDensity", "heatOfVaporization", "liquidHeatCapacity", "fusion", "formation",
