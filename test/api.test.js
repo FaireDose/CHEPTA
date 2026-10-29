@@ -73,15 +73,16 @@ test("outcomes: invalid input names the block or field; missing data stays missi
   assert.match(md.error.message, /No NRTL parameters for: Benzene \+ Glycerol/);
 });
 
-test("unsupported: the rigorous column is not built yet and refused; an internal error is an outcome of its own", () => {
-  // the shortcut column landed with milestone M1 (proposal 0015, W2), so solve_column is available; its rigorous mode
-  // (M2a) is what is refused now, through the same outcome
+test("unsupported: a purity specification of the column is not built yet and refused; an internal error is an outcome of its own", () => {
+  // the shortcut column landed with milestone M1 and the rigorous column with M2a (proposal 0015, W2), so solve_column
+  // is available; a purity specification (M4) is what is refused now, through the same outcome (this test asked for
+  // the rigorous mode before M2a)
   const list = capabilities();
   for (const name of ["capabilities", "find_component", "component_info", "check_project", "flowsheet_status", "solve_flowsheet", "solve_column"]) {
     assert.equal(list.find(c => c.name === name)?.status, "available", name);
   }
   const r = run({ capability: "solve_column", input: { components: ["benzene", "toluene"], thermo: { model: "ideal" },
-    feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { mode: "rigorous" } } });
+    feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { mode: "rigorous", stages: 10, feed_stage: 5, reflux_ratio: 2, distillate_purity: 0.99 } } });
   assert.equal(r.outcome, "unsupported");
   assert.equal(r.error.code, "NOT_AVAILABLE");
   assert.ok(OUTCOMES.includes(r.outcome));

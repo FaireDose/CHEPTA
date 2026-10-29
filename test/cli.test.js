@@ -67,7 +67,7 @@ test("chepta request: notes and qualifications survive; missing data stays missi
 test("chepta: exit codes per outcome, and the command line's own errors", () => {
   assert.equal(cli(["request", file("bad.json", { capability: "solve_flowsheet", input: {} })]).code, 2);
   assert.equal(cli(["request", file("col.json", { capability: "solve_column", input: { components: ["benzene", "toluene"], thermo: { model: "ideal" },
-    feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { mode: "rigorous" } } })]).code, 4);
+    feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { mode: "rigorous", stages: 10, feed_stage: 5, reflux_ratio: 2, distillate_purity: 0.99 } } })]).code, 4);   // a purity: M4 (the rigorous mode itself landed with M2a)
   const late = cli(["run", EXAMPLE, "--time-ms", "1"]);
   assert.equal(late.code, 7);
   assert.equal(late.json.outcome, "out_of_time");
