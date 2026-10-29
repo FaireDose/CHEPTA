@@ -8,12 +8,13 @@
  * carry `results`, the stream table of the flash as it was at save time, so the mass balance
  * can be read without CHEPTA (it is a record and is never read back into a calculation).
  *
- * Format 5 (the "fugacity_project" key is the format version): format 4 with the Charts workspace's fluid charts
+ * Format 6 (the "fugacity_project" key is the format version): format 5 with the flowsheet's Column block (proposal
+ * 0015, milestone M1; written only when the flowsheet has a column). Format 5: format 4 with the Charts workspace's fluid charts
  * (`workbench.chart`: the chart, isobars, isotherms, compression, components and feed; proposal 0013, step 7). Format 4
  * is format 3 with the flowsheet's energy streams, its heat exchanger, valve, pump, compressor and expander blocks,
  * and the Heat exchanger workspace (`workbench.hx`) of proposal 0013. Format 3 is format 2 with "user_data"; format 1
- * is format 2 without "flowsheet". A project is written in the lowest format that holds it (5 only with the fluid
- * charts, 4 only with the other features of proposal 0013, 3 only with user data, else 2), so older versions still
+ * is format 2 without "flowsheet". A project is written in the lowest format that holds it (6 only with a column, 5 only
+ * with the fluid charts, 4 only with the other features of proposal 0013, 3 only with user data, else 2), so older versions still
  * open it:
  *
  *   {
@@ -52,9 +53,12 @@ import { checkUserData } from "../thermo/user-data.js";
 /** The newest format this library writes; it reads this one and every older one. Format 3 adds the user's own data
  *  (proposal 0012) and is written only when there is some; format 2 adds the flowsheet (proposal 0006, step 4); a
  *  format 1 file is a format 2 file without it. */
-export const PROJECT_FORMAT = 5;
+export const PROJECT_FORMAT = 6;
 /** The flowsheet block types that need format 4 (proposal 0013). */
 const FORMAT_4_BLOCKS = ["hx", "valve", "pump", "compressor", "expander"];
+/** The flowsheet block types that need format 6 (proposal 0015). */
+const FORMAT_6_BLOCKS = ["column"];
+const hasBlock = (fs, types) => !!fs?.blocks?.some(b => types.includes(b?.type));
 
 /** The keys of `workbench`, in the order they are written. */
 const KEYS = ["view", "diagram", "model", "eos", "vapour", "P_kPa", "T_K", "units", "basis", "inputs", "z", "flash", "sets", "prefer",
@@ -88,7 +92,8 @@ export function projectOf(state, { version = "", results, now = new Date() } = {
   const fs = state.flowsheet;
   const flowsheet = fs && (fs.components?.length || fs.blocks?.length) ? normalizeFlowsheet(fs, userOverlay(state)) : null;
   const needs4 = w.hx != null || !!flowsheet?.energyStreams || !!flowsheet?.blocks.some(b => FORMAT_4_BLOCKS.includes(b.type));
-  const doc = { fugacity_project: w.chart ? 5 : needs4 ? 4 : state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
+  const needs6 = hasBlock(flowsheet, FORMAT_6_BLOCKS) || hasBlock(state.reactor, FORMAT_6_BLOCKS);
+  const doc = { fugacity_project: needs6 ? 6 : w.chart ? 5 : needs4 ? 4 : state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
   if (state.title) doc.title = String(state.title);
   doc.workbench = w;
   if (flowsheet) doc.flowsheet = flowsheet;
@@ -142,6 +147,7 @@ export function readProject(input) {
   if (doc.results != null && (typeof doc.results !== "object" || Array.isArray(doc.results))) throw new Error("results must be an object.");
   if (w.hx != null && f < 4) throw new Error(`workbench.hx needs format 4 (this file says format ${f}).`);
   if (w.chart != null && f < 5) throw new Error(`workbench.chart needs format 5 (this file says format ${f}).`);
+  if ((hasBlock(doc.flowsheet, FORMAT_6_BLOCKS) || hasBlock(doc.reactor, FORMAT_6_BLOCKS)) && f < 6) throw new Error(`The flowsheet's column block needs format 6 (this file says format ${f}).`);
   if (doc.flowsheet?.energyStreams != null && f < 4) throw new Error(`flowsheet.energyStreams needs format 4 (this file says format ${f}).`);
   if (doc.user_data != null) {
     if (f < 3) throw new Error(`user_data needs format 3 (this file says format ${f}).`);
