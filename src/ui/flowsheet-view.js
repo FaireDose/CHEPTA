@@ -1638,13 +1638,16 @@ export function resultsPanel({ state, f, sol, u, set }) {
           ["Relative volatility of the keys", `${fmtShort(r.state.alpha_keys.top, 3)} top, ${fmtShort(r.state.alpha_keys.feed, 3)} feed, ${fmtShort(r.state.alpha_keys.bottom, 3)} bottom`],
         ] : []),
         ...(b.type === "column" && r.state?.mode === "rigorous" ? [
-          ["Stages (1 the condenser)", `${r.state.stages}, feed on ${r.state.feed_stages.join(", ")}`],
-          ["Reflux ratio, boil-up ratio", `${fmtShort(r.state.reflux_ratio, 4)}, ${fmtShort(r.state.boilup_ratio, 4)}`],
-          ["Distillate, bottoms", `${fmtShort(r.state.D_kmol_h, 5)}, ${fmtShort(r.state.B_kmol_h, 5)} kmol/h`],
+          ["Stages, feed", `${r.state.stages}, on ${r.state.feed_stages.join(", ")}`],
+          ["Reflux ratio", fmtShort(r.state.reflux_ratio, 4)],
+          ["Boil-up ratio", fmtShort(r.state.boilup_ratio, 4)],
+          ["Distillate", `${fmtShort(r.state.D_kmol_h, 5)} kmol/h`],
+          ["Bottoms", `${fmtShort(r.state.B_kmol_h, 5)} kmol/h`],
           ["Condenser duty", kWText(-r.state.condenser_kW, u, 5)],
           ["Reboiler duty", kWText(r.state.reboiler_kW, u, 5)],
-          ["Top, bottom", `${fmtTemp(r.state.T_distillate_K, u, 2)}, ${fmtTemp(r.state.T_bottoms_K, u, 2)}`],
-          ["Solved", `every stage's balances closed (${r.state.iterations} Newton iteration${r.state.iterations === 1 ? "" : "s"})`],
+          ["Top", fmtTemp(r.state.T_distillate_K, u, 2)],
+          ["Bottom", fmtTemp(r.state.T_bottoms_K, u, 2)],
+          ["Newton iterations", `${r.state.iterations}, balances closed`],
         ] : []),
         r.balance.material != null ? ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)]
           : ["Mass balance", r.balance.mass < 1e-9 ? "closed" : r.balance.mass.toExponential(1)],
@@ -1726,15 +1729,16 @@ function columnTable({ fs, b, r, u }) {
   if (r.state?.mode === "rigorous") {
     // one row per stage (a column has many stages and few components), in a box that scrolls sideways
     const cell = v => h("td", { class: "fug-num" }, v);
-    const frac = v => (v == null ? "–" : Math.abs(v) < 5e-7 ? "0" : fmtShort(v, 4));
+    // the same decimals down a column (docs/UI_GUIDE.md, Tables); a trace below the last decimal in powers of ten
+    const frac = v => (v == null ? "–" : v < 1e-12 ? "0" : v < 5e-5 ? v.toExponential(1) : v.toFixed(4));
     return h("div", { class: "fs-tables", "data-fk": "fs-column-table" }, h("h3", {}, `${blockName(b)}: the profile, stage by stage`),
       h("div", { class: "fug-scroll" }, h("table", { class: "fug-table" },
         h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Stage"), h("th", { scope: "col" }, `T, ${tLabel(u)}`), h("th", { scope: "col" }, "Liquid, kmol/h"),
           h("th", { scope: "col" }, "Vapour, kmol/h"), h("th", { scope: "col" }, `Duty, ${u.duty ?? "kW"}`),
           ...fs.components.map(c => h("th", { scope: "col" }, `x ${nameOf(c)}`)), ...fs.components.map(c => h("th", { scope: "col" }, `y ${nameOf(c)}`)))),
         h("tbody", {}, ...p.map(s => h("tr", {}, h("th", { scope: "row" }, `${s.stage}${s.name === "stage" ? "" : ` ${s.name}`}`),
-          cell(fmtShort(tToDisplay(s.T_K, u), 5)), cell(fmtShort(s.L_kmol_h, 5)), cell(s.V_kmol_h === 0 ? "0" : fmtShort(s.V_kmol_h, 5)),
-          cell(s.duty_kW === 0 ? "0" : fmtShort(dutyToDisplay(s.duty_kW, u), 5)),
+          cell(tToDisplay(s.T_K, u).toFixed(2)), cell(s.L_kmol_h.toFixed(3)), cell(s.V_kmol_h.toFixed(3)),
+          cell(s.duty_kW === 0 ? "0" : dutyToDisplay(s.duty_kW, u).toFixed(1)),
           ...fs.components.map(c => cell(frac(s.x[c]))), ...fs.components.map(c => cell(s.y ? frac(s.y[c]) : "–"))))))),
       h("p", { class: "fa-in-hint" }, `Liquid and vapour leaving each stage; stage 1 is the ${r.state.condenser} condenser${r.state.condenser === "total" ? " (its liquid is the reflux; the distillate leaves as liquid too, so it has no vapour)" : ""}, stage ${r.state.stages} the reboiler. Duty: heat added (the condenser's is negative).`));
   }
