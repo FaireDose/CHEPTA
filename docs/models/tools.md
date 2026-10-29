@@ -68,7 +68,7 @@ error.
 
 **Tools.** One per capability that is available; the ones listed as unsupported (`solve_column` until milestone M1's
 shortcut) are not offered (the `capabilities` tool lists them, with where they are planned). Today:
-`capabilities`, `find_component`, `component_info`, `check_project`, `flowsheet_status`, `solve_flowsheet`. A tool's
+`capabilities`, `find_component`, `component_info`, `check_project`, `flowsheet_status`, `solve_flowsheet`, `size_drum` (a flash drum's size, docs/models/sizing.md), `solve_column`. A tool's
 input schema is the capability's (a subset of JSON Schema 2020-12); its arguments are the request's `input`. Each
 tool is marked read-only.
 
@@ -92,7 +92,7 @@ claude mcp add --scope user chepta -- node /full/path/to/CHEPTA/bin/chepta-mcp.m
 `--scope user` makes it available in every folder; without it, it is registered only for the folder where the
 command was typed, and a `claude` started in another folder does not see it. `claude mcp list` should show
 `chepta: ... Connected`. Then start a new `claude` session and type `/mcp`: `chepta` should be listed as connected, with
-seven tools. On Windows, write the path with forward slashes: `"C:/Users/you/CHEPTA/bin/chepta-mcp.mjs"`.
+eight tools. On Windows, write the path with forward slashes: `"C:/Users/you/CHEPTA/bin/chepta-mcp.mjs"`.
 `claude mcp add --scope project ...` writes the server into the folder's `.mcp.json` instead, to share it with
 others who use the folder (Claude Code asks each of them to approve it once). `claude mcp remove chepta` removes it.
 
@@ -172,7 +172,7 @@ into that session's conversation.
    `claude mcp add --scope user chepta -- node "$PWD/bin/chepta-mcp.mjs"` (typed in the clone, so that `$PWD` is its
    folder), and `claude mcp list` shows `chepta: ... Connected`.
 2. Start `claude` in the clone (a new session: a server added while a session runs is not in it) and type `/mcp`
-   alone, without a name: `chepta` is listed as connected, with seven tools. Without `/mcp`, `claude mcp get chepta`
+   alone, without a name: `chepta` is listed as connected, with eight tools. Without `/mcp`, `claude mcp get chepta`
    in the terminal says "Connected".
 3. Ask:
 

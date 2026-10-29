@@ -135,7 +135,9 @@ test("envelope: limits are checked; a cancelled or overtaken run's result is dis
 
 test("contracts not built yet refuse: the column engine and the sizing layer", () => {
   assert.throws(() => solveCascade({}), e => e.code === "NOT_AVAILABLE" && /M1/.test(e.message));
-  for (const f of [sizeDrum, sizeDecanter, columnDiameter, membraneArea]) assert.throws(() => f({}), e => e.code === "NOT_AVAILABLE");
+  // the drum and decanter sizes landed at M1 (test/sizing.test.js): an empty result is now a wrong input
+  for (const f of [columnDiameter, membraneArea]) assert.throws(() => f({}), e => e.code === "NOT_AVAILABLE");
+  for (const f of [sizeDrum, sizeDecanter]) assert.throws(() => f({}), e => e.code === "BAD_INPUT");
 });
 
 test("unit v2: a block's profile, warnings and method pass through runUnit; an unknown warning code is a bug", () => {

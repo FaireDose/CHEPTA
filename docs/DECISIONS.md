@@ -54,10 +54,16 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - **W7, M1 done** (2026-10-29; docs/decisions/2026-10-29-04-column-cases.md): nine column cases and the MESH and
     shortcut references, ahead of W2. To check: the tolerances, and the equation forms against DWSIM's source. Next for
     W7: the cases of W2's following tasks (M2a: one complete benchmark), then the benchmark separations' pairs.
+  - **W4, M1: the drum and decanter sizes, built, to review** (docs/decisions/2026-10-29-06-drum-sizing.md): a vertical
+    or horizontal flash drum and a decanter from the flash block's result (`sizeDrum`, `sizeDecanter`, the `size_drum`
+    capability, the size under the drum's results). To check: the constants and rules against the four open sources
+    (University of Trieste and Oklahoma slides, Coker 1993, the University of Baghdad notes; the list in the decision
+    file); to decide: the defaults (85 % of the permitted velocity, 2 min of liquid, 150 μm drops). Next for W4: the
+    column diameter by flooding (M2b), with W2's stage traffic.
   - **W10, M1 step 14: the guide and the review merged; round 1 of fixes to review**
-    (docs/decisions/2026-10-29-06-ui-fixes-round-1.md): ten of the review's 17 items fixed. To check: the 1 mW
+    (docs/decisions/2026-10-29-07-ui-fixes-round-1.md): ten of the review's 17 items fixed. To check: the 1 mW
     threshold for a zero duty; which of the items left for later come next. Then W10 checks W5's and W6's new views.
-  - Waiting: W1 and W3 to W6.
+  - Waiting: W1, W3, W5 and W6.
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun
   gas viscosity by Wilke's rule, the full-text search for the three new components. Check the transcribed constants of

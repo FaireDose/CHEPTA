@@ -1,4 +1,4 @@
-# 2026-10-29-06: Proposal 0015, step 14 (W10): the first round of fixes from the workbench review
+# 2026-10-29-07: Proposal 0015, step 14 (W10): the first round of fixes from the workbench review
 
 The maintainer, 2026-10-29, after merging the interface guide and the review (#177): "ok, approved. you select what
 we change". The interface guide's new rules (11 px, "no open data", round-off as 0, no literal colours) are taken as
