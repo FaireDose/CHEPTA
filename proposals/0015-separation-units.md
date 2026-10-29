@@ -1,11 +1,17 @@
-# 0015: Separation units: columns, extraction, evaporators, crystallizers, membranes and solids handling, with the liquid-liquid thermodynamics they need
+# 0015: Separation units, and the program that builds them across the roadmap's tracks
 
-- **Status:** Draft (revised 2026-10-29 with the maintainer's comments)
+- **Status:** Draft (revised 2026-10-29 with the maintainer's comments; Part II added the same day)
 - **Author(s):** CHEPTA maintainers (drafted with an AI assistant)
 - **Discussion:** this pull request
-- **Roadmap item:** core track A5 (streams) and A6 (unit operation interface); release v0.3 "Liquid-liquid and
-  vapour-liquid-liquid equilibria"; v0.5 "Distillation"; v0.6 "Further units towards models of all the common unit
-  operations"; data track D6 (liquid-liquid data); cost track E1 (sizing)
+- **Roadmap item:** releases v0.5 "Distillation" and v0.6 "Further units"; core track A3, A5 to A11; bridges B1, B2,
+  B4; assistants C2 to C4, C6; data D1, D2, D6, D7; cost E1 to E3; agents G1 (Part II, section 7)
+
+**Part I** (sections 1 to 6) describes the separation units: columns, extraction, evaporators, crystallizers, membranes,
+solids handling, sizing, and the liquid-liquid thermodynamics they need. **Part II** (sections 7 to 13) is the program
+that builds them: what each roadmap track contributes, the roles of a team, the contracts fixed first, nine
+workstreams that can run in parallel, the milestones to v0.5 and v0.6, and the risks.
+
+# Part I: the units
 
 ## Problem
 
@@ -216,29 +222,154 @@ Suggested, for the maintainer to choose:
 7. **Sizing with the units, not later:** the drum's size and the column's diameter come with each block (they are
    needed for the warnings), so the cost track E1 starts from blocks that already have their geometry.
 
+# Part II: the program across the roadmap's tracks
+
+Part I describes the units. Part II answers the maintainer's request of 2026-10-29: "think like a full software
+engineering team where you would have more agents to work independently on different tasks". It takes from every track
+of [ROADMAP.md](../ROADMAP.md) what the separation units need or make possible now, and organizes the work so that
+several people or AI agents can work at the same time without editing the same files or waiting for each other.
+
+## 7. What each track contributes
+
+The rest of the roadmap was read item by item. An item is in the program when a separation unit needs it, or when it
+costs little more now that the units are built. The others stay where they are.
+
+| Track | In this program | Why now | Left out, for later |
+|---|---|---|---|
+| **A, core** | A5 streams (a solid that forms; light and heavy liquids); A6 unit interface v2 (stages, profiles, warnings, sizing, a block's own method); A7 file format (the new blocks in project format 6, with the upgrade from format 5); A8 solver (design specifications as a block, the column's warm start in recycles); A9 budgets (the "50-stage column under 5 s" of A9, measured in CI); A10 the authoring contract for the new blocks; A11 views (column and extraction views, profile charts); A3 the tier behind each result | every new block depends on A5 and A6; A7, A8, A10 and A11 must grow with them or the new blocks cannot be saved, solved, written by assistants or seen | A2 data packs; A12 the stability policy for 1.0 |
+| **B, bridges** | B1 export: SVG and PNG of every chart, the column profile in the Excel workbook; B2 share by link (the workbench state in the address); B4 project files (format 6) | the profiles and the new views are the first results people will want in reports | B3 ThermoML file import; B5 notebooks; B6 CAPE-OPEN |
+| **C, assistants** | C2 ChatGPT canvas, C3 Gemini canvas, C4 other assistants: the column examples run in each, and the results are written down; C6 the instructions in `ai/` kept in step with the new blocks | a flowsheet with a column is the test an assistant will be asked for first | C5 the package check page |
+| **D, data** | D6 liquid-liquid data (extraction, decanting); D7 ternary data for the ternary views; D2 the missing pairs of the benchmark separations; D1 the water + ethylene glycol pair (an absorber case: glycol dehydration) | the columns are only as good as the pairs on their stages | D3 one format for all data files; D8 beyond the worked examples |
+| **E, cost** | E1 sizing (drums, decanters, column diameter and height, membrane area, the exchangers already done); E2 purchased and installed cost from open correlations; E3 utilities (steam from the IAPWS tables, cooling water, electricity) | the sizes are computed for the warnings anyway (Part I, section 2); cost is one step more | E4 the economics of a flowsheet, E5 environmental indicators, E6 the cost view |
+| **G, agents** | G1 the tool interface: every new block callable as JSON in, JSON out, with error messages that say what to fix | an agent that designs routes needs the separation units first | G2 to G6 (literature to route, route comparison, design studies) |
+
+The project's own rules stay as they are: open sources only, every number cited and checked by a person, tests
+against independent calculations, one decision file per pull request.
+
+## 8. Roles
+
+A team of five roles, each of which can be a person or an AI agent. One person may hold several.
+
+| Role | Does | Decides |
+|---|---|---|
+| **Architect** | writes and keeps the contracts (section 9); reviews every pull request that touches them; keeps ARCHITECTURE.md | how layers talk to each other; refuses a change that breaks a contract without a new version |
+| **Project manager** | keeps the plan (sections 10 and 11) and its state in DECISIONS.md; hands each workstream its next task; keeps at most one open pull request per workstream; tells the maintainer what waits for a decision | the order of the tasks within the milestones the maintainer accepted |
+| **Simulator expert** | chooses the methods (solvers, correlations, the method guide); finds the open sources; writes the independent Python references and the worked examples | whether a result is physically right; which method a test uses |
+| **Software engineers** (one per workstream) | implement the tasks of their workstream with their tests, in their own files | how the code inside their files is written |
+| **Maintainer** | accepts the proposal and its milestones; answers the questions; checks the numbers against the sources (AGENTS.md rule 4); merges | everything that is the project's choice |
+
+Assistants never review or approve their own work (AGENTS.md).
+
+## 9. Contracts first (milestone M0)
+
+Independent work needs fixed interfaces. Before the workstreams start, one small pull request (the architect's) writes
+the contracts down, with stubs and tests that fail until each workstream fills them:
+
+1. **Stream v2** (`src/stream/`): the phase types `vapour`, `liquid` (with `light` or `heavy` when there are two) and
+   `solid` (equilibrium or inert); the solid's enthalpy rule; backward compatible (a stream without these is unchanged).
+2. **Unit v2** (`src/units/units.js`): what a block may return besides its outlets: `profile` (a list of stages or
+   points, the same shape as the plug-flow reactor's), `warnings` (each with a code, the stage and the remedy: `DRY_STAGE`,
+   `FLOODING`, `WEEPING`), `sizing` (the dimensions it computed and their basis), and `method` (the block's own property
+   method, when it has one). Existing blocks keep working unchanged.
+3. **Column engine API** (`src/units/columns/engine.js`): `solveCascade({ sys, stages, feeds, draws, specs, ends,
+   phases: "VL" | "LL" | "VLL", start })` → `{ stages: [...], converged, residual, iterations, warnings }`; one engine for
+   every column configuration (Part I, section 1).
+4. **Sizing API** (`src/sizing/`, a new layer above `src/units/`): `sizeDrum`, `sizeDecanter`, `columnDiameter`,
+   `membraneArea`, each `(unit result, options) → { dimensions, basis, source }`; cost (E2) reads these.
+5. **Project format 6** (`docs/schema/project-6.json`) and its upgrade from format 5, for the new blocks.
+6. **The tool interface** (G1): the JSON form of each new block, as `runUnit` already takes it, documented in `ai/`.
+
+After M0, a contract changes only by a pull request of the architect, with a version and the change in ARCHITECTURE.md.
+
+## 10. Workstreams
+
+Each workstream owns its files, so their pull requests never edit the same lines. Shared files (`src/index.js`,
+`src/ui/app.js`, the palette, DECISIONS.md, ROADMAP.md) are changed only by the integration task of a milestone (W9), or
+by one line each in a fixed place (an import, a registry entry).
+
+| Workstream | Owns | Tasks, in order | Needs | Roadmap items |
+|---|---|---|---|---|
+| **W1 Liquid-liquid thermodynamics** | `validation/data/lle/`, `validation/python/` LLE fits, `src/equilibrium/lle*.js`, docs/METHOD_SELECTION.md (its LLE section) | data search and joint NRTL fits (extraction, decanting pairs and triples); the method guide's section; the tier of each pair shown with the result (A3) | M0 | D6, D7, D2, A3, v0.3 |
+| **W2 Column engine** | `src/units/columns/`, `validation/python/reference_mesh.py`, `test/columns*.test.js` | shortcut; rigorous distillation; dry-stage warning; the block's own method and "two liquids on the stages"; absorber and stripper; extraction; purity and recovery specifications; side draws | M0; W1 for extraction | A6, A8 (inside the column), v0.5 |
+| **W3 Other units** | `src/units/evaporator.js`, `crystallizer.js`, `membrane.js`, `solids.js`, their tests | evaporator (block or template); membrane; crystallizer with the solid in equilibrium; solid-liquid separator and dryer if kept | M0 (stream v2) | A5, A6, v0.6 |
+| **W4 Sizing and cost** | `src/sizing/`, `src/cost/`, `validation/data/cost/`, their tests | drum and decanter size; column diameter, flooding and weeping (Fair); membrane area; then the open cost correlations (E2) and the utilities (E3) | M0; W2 for the column's traffic | E1, E2, E3 |
+| **W5 Views** | `src/ui/column-*.js`, `src/ui/extraction-*.js`, `src/ui/lle-*.js`, the Column workspace | the Column workspace with McCabe-Thiele; the column profile under the flowsheet; the binary and ternary liquid-liquid views; the extraction view; warnings shown on the block | M0; the engine results of W1, W2 | A11, v0.5 |
+| **W6 Bridges** | `src/ui/export-*.js`, `src/ui/share-*.js`, `src/ui/project.js` (format 6) | SVG and PNG export of every chart; the profile in the Excel workbook; share by link; project format 6 and its upgrade | M0 | B1, B2, B4, A7 |
+| **W7 Data and benchmarks** | `validation/data/` (pairs), `test/benchmark-*.test.js`, docs/BENCHMARKS.md | the pairs of the benchmark separations; the benchmark flowsheets with columns (ethanol dehydration by extractive distillation, ethyl acetate with a decanter, methanol with gas cleaning, glycol dehydration); worked examples from open sources | W1, W2 | D2, D1, D5 (gaps) |
+| **W8 Assistants and agents** | `ai/`, `src/flowsheet/document.js` (the schema checks), the tool interface docs | the authoring contract and error messages for the new blocks; the JSON tool interface; the column examples run in ChatGPT and Gemini canvases and other assistants, results recorded | M0; each block as it lands | A10, G1, C2, C3, C4, C6 |
+| **W9 Quality and release** | CI, `test/performance*.test.js`, the flowsheet suite, the engineering report, release notes | performance budgets in CI (50-stage column under 5 s, A9); new cases in the flowsheet suite; the integration task of each milestone; the release | every workstream | A9, release v0.5, v0.6 |
+
+## 11. Milestones and the critical path
+
+```
+M0 contracts ──► M1 ──► M2 ──► M3 ──► M4
+                 W1 LLE data and fits ─────────┐
+                 W2 shortcut ─► rigorous ─► absorber, stripper ─► extraction ─► specs, side draws
+                 W3 membrane, evaporator ─► crystallizer, solids
+                 W4 drum size ─► column hydraulics ─► cost (E2), utilities (E3)
+                 W5 Column workspace ─► profiles ─► LLE and extraction views
+                 W6 exports, share link, format 6
+                 W7 pairs ─► benchmark flowsheets
+                 W8 tool interface ─► assistants
+                 W9 budgets in CI ─► flowsheet suite ─► release
+```
+
+| Milestone | Done when | Release |
+|---|---|---|
+| **M0 Contracts** | section 9 merged, with failing stubs | – |
+| **M1 Shortcut and liquid-liquid** | the shortcut column and the Column workspace with McCabe-Thiele; liquid-liquid fits for the first systems and their views; the drum's size; SVG and PNG export; budgets in CI | – |
+| **M2 Distillation** | the rigorous column with its profile, dry-stage and flooding warnings, its own method and two liquids on the stages; the column in the Excel export, format 6 and the tool interface; a benchmark column | **v0.5** |
+| **M3 The other separations** | absorber, stripper, extraction and its view; membrane with its area; evaporator; crystallizer; the benchmark flowsheets; share by link | **v0.6** (with the reactors) |
+| **M4 Specifications and cost** | purity and recovery specifications, side draws; cost correlations (E2) and utilities (E3) for every sized unit; the column examples recorded in other assistants | the start of v0.7 |
+
+The critical path is M0, then W2 (the column engine): the views, sizing, benchmarks and the tool interface of a column
+all wait for it. W1, W3, W6 and W8 start at once after M0 and do not wait for W2.
+
+## 12. How the work is run
+
+- **One task, one pull request, one decision file**, as now; a pull request stays within its workstream's files, except
+  the one-line registrations.
+- **Definition of done** for a task: the tests pass and compare with an independent calculation or open data; the
+  balances close; failures are loud and say what to change; the numbers have sources, and the person is asked to check
+  them; docs/models/ explains the method; the project file saves and opens the new state; the time budget holds.
+- **The state of the plan** is kept in DECISIONS.md (an open item per workstream: done, next, waiting for) and in the
+  roadmap's statuses, updated by the integration task of each milestone.
+- **What may run in parallel:** at most one open pull request per workstream, and at most four at a time for the
+  maintainer to review; a workstream whose task waits for a decision works on its next independent task.
+- **Agents' briefs:** each workstream's agent gets this proposal, the contracts, its row of section 10 and its next task;
+  its pull request says which contract version it was written against.
+- **Integration** (W9), at the end of each milestone: the palette and workspace entries, the shared registrations, the
+  roadmap and DECISIONS updates, a check in the browser, and the release notes.
+
+## 13. Risks
+
+| Risk | Effect | What reduces it |
+|---|---|---|
+| The rigorous column does not converge for non-ideal liquids | M2 slips; every workstream that needs columns waits | a robust start before Newton; the shortcut's result as the start; the Python reference from the first task; the hard cases (azeotropic, extractive) tested early |
+| Liquid-liquid data are missing for a benchmark system | an extraction or decanting case cannot be checked | the data search first (W1, step 1); Modified UNIFAC 2.0 as a stated prediction; the system replaced in the benchmark only with the maintainer's agreement |
+| No open source for Fair's chart or for cost correlations | flooding warnings or cost are delayed | the dry-stage warning needs no geometry; cost (M4) is the last milestone; supplier and textbook sources are searched by the rules |
+| Contracts change during the work | workstreams rewrite their code | contracts fixed in M0 and versioned; changes only by the architect |
+| Too many pull requests at once for one maintainer | review becomes the bottleneck | at most four open; the integration task bundles the small shared changes |
+| The bundle grows past the budgets of A9 | pages load slowly in chat artifacts | the budgets in CI from M1; data packs (A2) are the answer if it happens, as a proposal of their own |
+
 ## Steps
 
-Each a pull request with its tests.
+The steps of Part I, each a pull request with its tests, placed in the workstreams and milestones of Part II:
 
-1. **Liquid-liquid thermodynamics:** data and joint fits for the extraction and decanting pairs; the liquid-liquid
-   views; the method guide's section. Tests: the fits against their data; the views' numbers against the engine.
-2. **The Column block, shortcut mode**, and a **Column workspace** in the Unit models with the McCabe-Thiele diagram for
-   binaries. Tests: against an independent Python calculation and an open worked example.
-3. **The Column block, rigorous mode** (distillation): the MESH engine, its profile, the dry-stage warning, its own
-   property method and "look for two liquids". Tests: the Python MESH reference; McCabe-Thiele and shortcut checks; a
-   benchmark column.
-4. **Absorber, stripper**, columns with nonvolatile components (proposal 0009, step 5). Tests: Kremser; the Python
-   reference.
-5. **Extraction** configuration and an **Extraction** view (ternary with the stages stepped off). Tests: the Python
-   reference with two liquids.
-6. **Sizing and hydraulics:** the flash drum's and decanter's size, the column's diameter, flooding and weeping
-   warnings. Tests: against the worked examples of the open source used.
-7. **Membrane** (gas permeation, pervaporation), with the area for a target. Tests: Aziaba et al.'s gas-permeation case;
-   one cell by hand.
-8. **Crystallizer** with the solid in equilibrium; the evaporator (block or template); the solid-liquid separator and
-   the dryer if kept. Tests: the yield against the solubility curve; the balances.
-9. **Column specifications** (purity, recovery), side draws, and the benchmark flowsheets (ethanol dehydration, ethyl
-   acetate). Tests: the specifications met; the flowsheet suite.
+| Step | Workstream | Milestone |
+|---|---|---|
+| 0. The contracts (section 9) | architect | M0 |
+| 1. Liquid-liquid data, joint fits, views, the method guide's section | W1, W5 | M1 |
+| 2. The Column block, shortcut mode; the Column workspace with McCabe-Thiele | W2, W5 | M1 |
+| 3. The rigorous column (distillation): profile, dry-stage warning, its own method, two liquids on the stages | W2, W5 | M2 |
+| 4. Absorber and stripper; columns with nonvolatile components (proposal 0009, step 5) | W2 | M3 |
+| 5. Extraction and its view | W2, W5 | M3 |
+| 6. Sizing and hydraulics: drums, decanters, column diameter, flooding and weeping | W4 | M1 (drums), M2 (columns) |
+| 7. Membrane, with the area for a target | W3, W4 | M3 |
+| 8. Crystallizer; evaporator; solid-liquid separator and dryer if kept | W3 | M3 |
+| 9. Purity and recovery specifications, side draws; the benchmark flowsheets | W2, W7 | M3, M4 |
+| 10. Cost correlations (E2) and utilities (E3) | W4 | M4 |
+| 11. Exports, share by link, format 6; the tool interface; other assistants | W6, W8 | M1 to M4 |
 
 ## Questions for the maintainer
 
@@ -249,3 +380,8 @@ Each a pull request with its tests.
 4. Which of "Making it leaner" 4 and 5 (postpone the solid-liquid separator and dryer; the evaporator as a template)?
 5. The flooding warning: at which fraction of flooding (the usual operating range is 0.65 to 0.90 of flooding; for
    example a warning above 0.90)?
+6. Part II: the tracks taken in (section 7), and the milestones and releases (section 11)?
+7. How many workstreams at once: all nine after M0, or three or four (for example W1, W2, W4, W9 first), so the
+   reviews stay manageable?
+8. Should the agents of the workstreams run as separate sessions, each with its own branch and pull request, with
+   this session as project manager and architect?

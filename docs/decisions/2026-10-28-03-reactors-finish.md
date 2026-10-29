@@ -91,4 +91,14 @@ interfaces they need (A5, A6) and the liquid-liquid thermodynamics.
 
 - The transcribed constants of the ethanol example against Aali and Hadi 2023, Tables 8 and 9 (AGENTS.md rule 4).
 - The new statuses of the roadmap.
-- Proposal 0015: its five questions, and which of the "Making it leaner" items to take.
+- Proposal 0015: its eight questions, and which of the "Making it leaner" items to take.
+
+## Proposal 0015, Part II (2026-10-29)
+
+The maintainer: "i want this proposal to be bigger, as in what i can integrate from the A,B,C,D,E,F..etc part of the
+roadmaps. think like a full software engineering team where you would have more agents to work independently on
+different tasks. you have an advanced architect, project manager skills, good software engineers, simulator expert".
+Part II added: what each track contributes (and what stays out), the roles, the contracts fixed first (milestone M0),
+nine workstreams with the files each owns, the milestones M0 to M4 with the critical path (the column engine), how the
+work is run (definition of done, at most four pull requests open), and the risks. The roadmap's items taken in link to
+it. The roadmap has no F track.

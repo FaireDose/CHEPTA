@@ -54,11 +54,11 @@ an implementation, and tests. A step can start when the steps it depends on are 
 | **A4** Equilibrium solver contract | Common rules for bubble, dew and flash solvers: inputs, convergence criteria, and how failures are reported (never a silent wrong answer). | A1 | **Closed**: [proposal 0001](proposals/0001-property-package.md), step 1 (error codes, input checks, convergence rules) |
 | **A5** Streams and units | The stream object, internal SI units, and conversion only at the edges (interface, files). | A1, A4 | **On-going**: the stream with flows, T, P, phases and enthalpy ([proposal 0006](proposals/0006-first-flowsheet.md), step 1); units chosen in Settings, converted at the interface. two liquids already (the flash drum's second-liquid outlet). Missing: a solid that forms or dissolves ([proposal 0015](proposals/0015-separation-units.md)) |
 | **A6** Unit operation interface | `registerUnit`: ports, specifications with validation, material and energy balance checks, required tests. One interface for every unit, from a mixer to a reactor or a column. | A5 | **On-going**: `registerUnit` with ports, specifications, degrees of freedom and balance checks, used by 18 blocks from the mixer to the plug-flow reactor. Missing: multistage units with internal profiles and warnings, sizing, solids ([proposal 0015](proposals/0015-separation-units.md)) |
-| **A7** Flowsheet file format | JSON schema, format versions, and how older files keep working. | A5, A6 | **On-going**: the flowsheet in project files (format 1); no schema with versions yet |
-| **A8** Flowsheet solver | Calculation order, tear streams, recycle convergence, design specifications, error messages an engineer understands. | A6, A7 | **On-going**: sequential solution with recycles and tear streams, checked by the flowsheet test suite; design specifications open |
-| **A9** Artifact contract | What a page may rely on: one pinned script, the `mount` configuration, no network access, theming, size and speed budgets (ternary map under 0.5 s, 50-stage column under 5 s), background workers. | A1 | **On-going**: works in Claude artifacts; budgets and workers not written down |
-| **A10** AI authoring contract | How an assistant writes configurations and flowsheet files: the skill, a schema it can check against, and error messages that tell it what to fix. | A7, A9 | **On-going**: assistants write, check and edit flowsheet files (proposal 0006, steps 4 and 7); the schema follows A7 |
-| **A11** Views | Flowsheet drawing, stream tables, column profiles, results export; views only call the layers below. | A7, A9 | **On-going**: flowsheet drawing, stream tables, reactor profiles, Excel export; column profiles with the columns |
+| **A7** Flowsheet file format | JSON schema, format versions, and how older files keep working. | A5, A6 | **On-going**: the flowsheet in project files (format 1); no schema with versions yet; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **A8** Flowsheet solver | Calculation order, tear streams, recycle convergence, design specifications, error messages an engineer understands. | A6, A7 | **On-going**: sequential solution with recycles and tear streams, checked by the flowsheet test suite; design specifications open; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **A9** Artifact contract | What a page may rely on: one pinned script, the `mount` configuration, no network access, theming, size and speed budgets (ternary map under 0.5 s, 50-stage column under 5 s), background workers. | A1 | **On-going**: works in Claude artifacts; budgets and workers not written down; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **A10** AI authoring contract | How an assistant writes configurations and flowsheet files: the skill, a schema it can check against, and error messages that tell it what to fix. | A7, A9 | **On-going**: assistants write, check and edit flowsheet files (proposal 0006, steps 4 and 7); the schema follows A7; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **A11** Views | Flowsheet drawing, stream tables, column profiles, results export; views only call the layers below. | A7, A9 | **On-going**: flowsheet drawing, stream tables, reactor profiles, Excel export; column profiles with the columns; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **A12** Stability policy for 1.0 | Which interfaces are frozen, deprecation rules, long-term support of old versions. | A1–A11 | **Open** |
 | **A13** Reactions | How reactions are described: stoichiometry, heats of reaction from the property package, equilibrium constants from Gibbs energies, rate laws and their parameters with sources, so that reactor models (conversion, equilibrium, CSTR, plug flow, batch) share one description. | A1, A6 | **Closed**: [proposal 0010](proposals/0010-reactions-and-reactors.md), steps 1-9: the description, formation data, conversion, yield, equilibrium, Gibbs, CSTR and plug-flow reactors, your own kinetics, worked examples ([docs/models/reactions.md](docs/models/reactions.md)). Three examples wait for open data; two liquids in reactors wait for the liquid-liquid work of proposal 0015 |
 
@@ -70,8 +70,8 @@ formats and open standards only.
 
 | Item | What | Depends on | Status |
 |---|---|---|---|
-| **B1** | Export from every view: tables as CSV (opens in Excel and other spreadsheets), diagrams as SVG and PNG for reports | A9 | **On-going**: every diagram and the property, steam and flash views as an Excel workbook; CSV of the flash; the flowsheet as an Excel workbook with the balances as formulas, and as an "Excel concept model" ([check](docs/EXCEL_CONCEPT_CHECK.md)). SVG and PNG open |
-| **B2** | Share by link: the workbench state (components, model, conditions, view) in the page address, so a colleague opens exactly the same diagram | A9 | **Open** |
+| **B1** | Export from every view: tables as CSV (opens in Excel and other spreadsheets), diagrams as SVG and PNG for reports | A9 | **On-going**: every diagram and the property, steam and flash views as an Excel workbook; CSV of the flash; the flowsheet as an Excel workbook with the balances as formulas, and as an "Excel concept model" ([check](docs/EXCEL_CONCEPT_CHECK.md)). SVG and PNG open; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **B2** | Share by link: the workbench state (components, model, conditions, view) in the page address, so a colleague opens exactly the same diagram | A9 | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **B3** | Import open data files: read NIST ThermoML XML files and turn them into validation data and contribution packages with the source block filled in, which speeds up the data track | D3 | **Open** |
 | **B4** | Project files: save and load a whole study (components, models, overrides, flowsheet) as one readable JSON file | A7 | **Closed**: the whole study in one JSON file: components, models, your data, the flowsheet, the Reactor workspace, global reactions (`src/ui/project.js`) |
 | **B5** | Use from notebooks and spreadsheets: call the engine from Python notebooks and from spreadsheet functions, with the same numbers as in the browser | A1, A9 | **Open** |
@@ -85,11 +85,11 @@ one-line setup, document what works, and fix or report what doesn't.
 | Item | What | Status |
 |---|---|---|
 | **C1** | Claude artifacts | **Closed**: works (0.1.2, 0.2.0) |
-| **C2** | ChatGPT canvas | **Open** |
-| **C3** | Gemini canvas | **Open** |
-| **C4** | Other assistants and coding agents that preview HTML | **Open** |
+| **C2** | ChatGPT canvas | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **C3** | Gemini canvas | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **C4** | Other assistants and coding agents that preview HTML | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **C5** | A package check page: paste a contribution package, see the check and the data plotted against the current model | **Open** |
-| **C6** | Instructions for assistants kept in sync with each release (version numbers in `ai/`) | **Open** |
+| **C6** | Instructions for assistants kept in sync with each release (version numbers in `ai/`) | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 
 ## Data track
 
@@ -101,7 +101,7 @@ one-line setup, document what works, and fix or report what doesn't.
 | **D4** | Ideal-gas heat capacity and heat of vaporization for all components (needed by A1) | **Closed** (0.2.0) |
 | **D5** | Grow to about 50 components: common solvents, alcohols, acids, esters, hydrocarbons, with pairs, chosen by benchmark processes ([proposal 0004](proposals/0004-first-50-components.md)) | **Closed**: 177 components, beyond the 50 of [proposal 0004](proposals/0004-first-50-components.md) (with proposals 0008 and 0009); the gaps in the latest `docs/missing-properties/MISSING_PROPERTIES_<date>.md` |
 | **D6** | Liquid-liquid data for partly miscible pairs (water with benzene, toluene, chloroform, ethyl acetate) | **On-going**: water + ethyl acetate and water + cyclohexane; the extraction pairs in [proposal 0015](proposals/0015-separation-units.md) |
-| **D7** | Ternary VLE data to check ternary predictions, starting with the systems whose ternary azeotropes are tested (methanol + acetone + chloroform, ethanol + water + ethyl acetate) | **Open** |
+| **D7** | Ternary VLE data to check ternary predictions, starting with the systems whose ternary azeotropes are tested (methanol + acetone + chloroform, ethanol + water + ethyl acetate) | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **D8** | Reaction data from open sources: heats of formation, equilibrium constants, kinetics for common reactions (esterification, hydrogenation, reforming), needed by reactors and route comparison | **On-going**: enthalpies and Gibbs energies of formation for 125 components; kinetics from open articles in the worked examples |
 
 ## Cost engineering track
@@ -114,9 +114,9 @@ never quotes.
 
 | Item | What | Depends on | Status |
 |---|---|---|---|
-| **E1** | Equipment sizing from unit results: vessels and flash drums, column diameter and height, heat-exchanger area, pump and compressor power | A6, A8 | **Open** |
-| **E2** | Purchased and installed equipment cost from open correlations, with material and pressure factors, and a cost index to move costs between years | E1 | **Open** |
-| **E3** | Utilities and operating cost: steam (from the IAPWS steam tables), cooling water, electricity, fuel, raw materials, labour; prices as user inputs with sourced defaults | A8 | **Open** |
+| **E1** | Equipment sizing from unit results: vessels and flash drums, column diameter and height, heat-exchanger area, pump and compressor power | A6, A8 | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **E2** | Purchased and installed equipment cost from open correlations, with material and pressure factors, and a cost index to move costs between years | E1 | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **E3** | Utilities and operating cost: steam (from the IAPWS steam tables), cooling water, electricity, fuel, raw materials, labour; prices as user inputs with sourced defaults | A8 | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **E4** | Economics of a flowsheet: capital cost, operating cost, cost of production per kg of product, net present value, payback, with a sensitivity chart for the main assumptions | E2, E3 | **Open** |
 | **E5** | Environmental indicators: CO₂ emissions from energy use and feedstocks, water use, simple safety flags (flammable or toxic inventories, high pressure) | E3 | **Open** |
 | **E6** | Cost view: a capital and operating cost breakdown next to the flowsheet, with every number traced to its correlation and source | E4, A11 | **Open** |
@@ -130,7 +130,7 @@ sources, assumptions) that anyone can re-run and check.
 
 | Item | What | Depends on | Status |
 |---|---|---|---|
-| **G1** | Tool interface for agents: every calculation callable as JSON in, JSON out, deterministic, with error messages that tell the agent what to fix | A9, A10 | **Open** |
+| **G1** | Tool interface for agents: every calculation callable as JSON in, JSON out, deterministic, with error messages that tell the agent what to fix | A9, A10 | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **G2** | Literature to route: an agent reads open papers and expired patents and extracts process routes (reactions, conditions, conversions, yields, separations) into a route file, every value cited | D8 | **Open** |
 | **G3** | Route to flowsheet: an agent builds a flowsheet for each route, simulates it with CHEPTA, and closes material and energy balances | G1, G2, A8 | **Open** |
 | **G4** | Route comparison: yield, energy use, equipment, cost of production (E4), CO₂ and safety flags side by side, with a recommendation that states its assumptions and uncertainty | G3, E4, E5 | **Open** |
@@ -211,6 +211,8 @@ Needs A6, A7, A8, A10, A11.
 - [x] Project files (B4): files, this browser, the host page's storage (proposal 0006, step 6)
 
 ### v0.5 – Distillation
+
+Planned with v0.6 in [proposal 0015](proposals/0015-separation-units.md) (Part II: the workstreams and milestones M0 to M4).
 
 - [ ] Shortcut column (Fenske–Underwood–Gilliland); McCabe–Thiele view ([proposal 0015](proposals/0015-separation-units.md))
 - [ ] Rigorous equilibrium-stage column (MESH equations)

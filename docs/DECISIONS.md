@@ -40,7 +40,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   Column block (distillation, absorber, stripper, extraction; shortcut or rigorous) with dry-stage, flooding and
   weeping warnings and its own property method where needed; evaporators, crystallizers, membranes (with the area),
   solid-liquid separation and dryers; the size of the flash drum and decanter; the liquid-liquid thermodynamics; it
-  takes over steps 1 and 3 of proposal 0007. Answer its five questions and choose from "Making it leaner".
+  takes over steps 1 and 3 of proposal 0007. Part II (2026-10-29): the program across the roadmap's tracks, roles,
+  contracts first (M0), nine workstreams, milestones M0 to M4 (v0.5, v0.6). Answer its eight questions and choose from
+  "Making it leaner".
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun
   gas viscosity by Wilke's rule, the full-text search for the three new components. Check the transcribed constants of
