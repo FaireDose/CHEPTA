@@ -334,6 +334,8 @@ a.fa-mini{text-decoration:none}
 .fa-add{display:block; margin-top:6px}
 .fug-app .fa-add select{width:100%}
 .fa-left .fa-field{display:grid; grid-template-columns:minmax(0,1fr) auto; margin-bottom:6px}
+/* a field whose input takes the whole width (a list of values) puts its label above it, not under it */
+.fa-left .fa-field:has(> input[style*="100%"]){grid-template-columns:minmax(0,1fr); gap:3px}
 .fa-left .fa-field small{display:block; color:var(--fug-muted)}
 .fa-fixed{display:flex; align-items:baseline; gap:8px; font-size:13px; margin-bottom:4px}
 .fa-pairs ul{padding:0; margin-top:6px}
@@ -576,6 +578,9 @@ a.fa-mini{text-decoration:none}
 .fug-app[data-size="narrow"] .fa-group-body{flex-wrap:wrap}
 .fug-app[data-size="narrow"] .fa-cols{grid-template-rows:none; grid-auto-flow:row; grid-template-columns:repeat(2, minmax(0,1fr)); width:100%}
 .fug-app[data-size="narrow"] .fa-cols .fa-small{white-space:normal}
+.fug-app[data-size="narrow"] .fa-rows2{grid-template-rows:none; grid-auto-flow:row; grid-template-columns:repeat(2, minmax(0,1fr)); width:100%}
+.fug-app[data-size="narrow"] .fa-rows2 .fa-small{white-space:normal}
+.fug-app[data-size="narrow"] .fa-group.fa-push{margin-left:0}
 .fug-app[data-size="narrow"] .fa-stack{min-height:0; flex-direction:row; flex-wrap:wrap; align-items:flex-end; gap:6px}
 .fug-app[data-size="narrow"] .fa-big{flex-direction:row; min-width:0; padding:5px 10px 5px 6px; gap:7px}
 .fug-app[data-size="narrow"] .fa-big .fug-ico{width:20px; height:20px}

@@ -466,7 +466,7 @@ The steps of Part I, each a pull request with its tests, placed in the workstrea
 | 11. Purity and recovery specifications, side draws; the benchmark flowsheets | W2, W7 | M3, M4 |
 | 12. Cost correlations (E2) and utilities (E3) | W4 | M4 |
 | 13. Exports, share by link, format 6; other assistants | W6, W8 | M1 to M4 |
-| 14. The interface guide and the review of the workbench; then a visual check of each new view | W10 | M1, then each milestone |
+| 14. The interface guide and the review of the workbench (both written 2026-10-29: docs/UI_GUIDE.md, docs/ui-review/2026-10-29.md); then a visual check of each new view | W10 | M1, then each milestone |
 
 ## Questions for the maintainer
 
