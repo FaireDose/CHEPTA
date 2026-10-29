@@ -255,6 +255,18 @@ SEEDS = {
         "license": "GPL-3.0",
         "note": "Implements the IAPWS releases and guidelines; used to transcribe and cross-check coefficients of the standards, which are cited themselves.",
     },
+    # validation/python/reference_fug.py (docstring): the equation forms of the shortcut column (proposal 0015, W7)
+    "dwsim-shortcut-column": {
+        "title": "DWSIM shortcut column (Fenske, Underwood, Gilliland in Eduljee's form), source file ShortcutColumn.vb",
+        "authors": "D. Medeiros and contributors",
+        "kind": "open-source library",
+        "url": "https://github.com/DanWBR/dwsim/blob/windows/DWSIM.UnitOperations/UnitOperations/ShortcutColumn.vb",
+        "access": "Open source, GPL-3.0 (read 2026-10-29)",
+        "license": "GPL-3.0",
+        "note": "The forms of the Fenske, Underwood and Gilliland (Eduljee) equations and of the feed-stage rule, read in the code; "
+                "CHEPTA's reference is written anew from the equations. No numbers taken.",
+        "files": ["validation/python/reference_fug.py"],
+    },
     # predicted liquid heat capacities (validation/python/predict_cp.py, proposal 0009 step 5)
     "ruzicka-domalski-1993": {
         "title": "Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group "

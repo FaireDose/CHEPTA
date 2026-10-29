@@ -48,6 +48,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     assistant test") and say whether it passes; then W8's next step, the authoring contract: refuse unknown keys in a
     flowsheet's `thermo` and in a block's `spec` (an assistant's `thermo.method` was ignored without a word), and a
     missing-pair message that names the request path's remedy (the user's data) instead of `allowMissingPairs`.
+  - **W7, M1 done** (2026-10-29; docs/decisions/2026-10-29-04-column-cases.md): nine column cases and the MESH and
+    shortcut references, ahead of W2. To check: the tolerances, and the equation forms against DWSIM's source. Next for
+    W7: the cases of W2's following tasks (M2a: one complete benchmark), then the benchmark separations' pairs.
   - Waiting: W1, W3 to W6 and W10 (W10 at M1).
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun

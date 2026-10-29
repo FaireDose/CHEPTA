@@ -1,0 +1,82 @@
+{
+  "chepta_column_case": 1,
+  "id": "A3-ternary-partial-condenser",
+  "title": "Ternary, constant relative volatilities 4 : 2 : 1, partial condenser, two-phase feed",
+  "purpose": "(a) A partial condenser (vapour distillate in equilibrium with the reflux) and a feed that is half vapour.",
+  "method_choice": "constant-alpha model system (no method to choose)",
+  "thermo": {
+    "kind": "constant-alpha",
+    "alpha": [
+      4.0,
+      2.0,
+      1.0
+    ],
+    "reference_vapour_pressure": {
+      "form": "ln(p/kPa) = A - B/T",
+      "A": 16.0,
+      "B_K": 4000.0
+    },
+    "latent_heat_J_mol": 30000.0,
+    "note": "A model system, not a real mixture: K_i = alpha_i p(T) / P with the reference vapour pressure p(T) above (made up; it only fixes the temperatures), liquid enthalpy 0 and vapour enthalpy equal to the latent heat for every component, so the energy balances give constant molar overflow exactly. docs/METHOD_SELECTION.md does not apply: there is no real mixture to choose a method for."
+  },
+  "components": [
+    "A",
+    "B",
+    "C"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 15,
+    "condenser": "partial",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 8,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.3,
+        0.3,
+        0.4
+      ],
+      "q": 0.5
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 1.5
+    },
+    {
+      "kind": "distillate_flow_mol_s",
+      "value": 35.0
+    }
+  ],
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "the distillate is a vapour in equilibrium with the reflux (stage 1 is an equilibrium stage)",
+      "constant molar overflow with the feed split q = 0.5"
+    ],
+    "branch": "One solution expected (constant relative volatility with constant molar overflow and specifications of reflux ratio and a product flow): the reference's solution is the one to match."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    }
+  }
+}

@@ -890,6 +890,18 @@
         "validation/data/vle/dimethyl-carbonate_methanol_10-1021-acs-jced-9b00068_100.17kPa.json"
       ]
     },
+    "dwsim-shortcut-column": {
+      "title": "DWSIM shortcut column (Fenske, Underwood, Gilliland in Eduljee's form), source file ShortcutColumn.vb",
+      "authors": "D. Medeiros and contributors",
+      "kind": "open-source library",
+      "url": "https://github.com/DanWBR/dwsim/blob/windows/DWSIM.UnitOperations/UnitOperations/ShortcutColumn.vb",
+      "access": "Open source, GPL-3.0 (read 2026-10-29)",
+      "license": "GPL-3.0",
+      "note": "The forms of the Fenske, Underwood and Gilliland (Eduljee) equations and of the feed-stage rule, read in the code; CHEPTA's reference is written anew from the equations. No numbers taken.",
+      "files": [
+        "validation/python/reference_fug.py"
+      ]
+    },
     "fang2005-dimethyl-carbonate-ethylene-carbonate": {
       "title": "Isobaric Vapor-Liquid Equilibria of Binary Mixtures Containing the Carbonate Group -OCOO-",
       "authors": "Y. J. Fang, J. M. Qian",

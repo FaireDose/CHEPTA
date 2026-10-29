@@ -1,0 +1,55 @@
+{
+  "chepta_column_case": 1,
+  "id": "E3-purity-above-azeotrope",
+  "title": "Ethanol + water, NRTL: a distillate purity above the azeotrope",
+  "purpose": "(e) A purity specification that no column can meet: ethanol at 0.95 mole fraction in the distillate, above the model's azeotrope at 101.325 kPa (fixture: B1-ethanol-water-nrtl, checks.azeotrope). Purity specifications come with milestone M4: until then the engine refuses the specification kind (unsupported); from M4 it refuses the value and names the azeotrope. Never a converged column.",
+  "method_choice": "docs/METHOD_SELECTION.md rule 3: NRTL (default set), ideal-gas vapour.",
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "ethanol",
+    "water"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 20,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 10,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.5,
+        0.5
+      ],
+      "T_K": 350.0
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 2.0
+    },
+    {
+      "kind": "distillate_purity",
+      "component": "ethanol",
+      "value": 0.95
+    }
+  ],
+  "expected": {
+    "outcome_before_M4": "unsupported",
+    "outcome_from_M4": "invalid_input",
+    "message_names_from_M4": [
+      "azeotrope"
+    ],
+    "never": "a converged result"
+  },
+  "tolerances": {
+    "not_numerical": "a refusal"
+  }
+}
