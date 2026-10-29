@@ -236,6 +236,8 @@ function checkInput({ stages, feeds, draws, specs, ends, phases }, n) {
 
 /** Solve a vapour-liquid cascade; see the file header. */
 export function solveCascade(opts = {}) {
+  if (!opts.thermo && !opts.sys) throw fail("BAD_INPUT", "Column: give the property system (sys) and the pressure (P_kPa), or a thermodynamic adapter (thermo).");
+  if (!opts.thermo && !(opts.P_kPa > 0)) throw fail("BAD_INPUT", `Column: P_kPa must be a positive number (got ${JSON.stringify(opts.P_kPa)}).`);
   const th = opts.thermo ?? cascadeThermo(opts.sys, opts.P_kPa);
   const n = th.n;
   const inp = checkInput({ ...opts, phases: opts.phases ?? "VL" }, n);
