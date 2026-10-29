@@ -131,6 +131,9 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
   separator in, out (one stream per outlet); flash in, vapour, liquid, liquid2 (optional);
   heater, valve, pump, compressor, expander in, out; hx hot, cold (in and out); product in. Splitters, separators and
   heaters may take several inlets (mixed first).
+- Only the keys listed here are read. A key CHEPTA does not know (in `thermo`, which takes `model`,
+  `vapour`, `sets` and `prefer`, or in a block's `spec`) is refused with an error that names it and
+  the known keys; correct the key, never drop it without telling me.
 - Energy streams (format 4): `energyStreams: [{ id: "Q1", to: "E1", duty_kW: 500 }]` gives a
   heater or drum its duty (it then needs one specification fewer: a heater calculates its
   outlet), and `{ id: "Q2", from: "E2", to: "E3" }` sends one block's heat into another.
@@ -152,7 +155,10 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
 https://github.com/FaireDose/CHEPTA/blob/main/docs/models/tools.md), call them for numbers instead
 of computing. A project file goes in as `{ "project": ... }`. Only the outcome `ok` carries numbers:
 `missing_data` means CHEPTA does not have the data, so tell me and never estimate the value;
-`invalid_input` names what to fix (`error.where`). Give me the warnings and notes, the method and the
+`invalid_input` names what to fix (`error.where`; an unknown key in `thermo` or a block's `spec` is
+one). A missing pair's parameters: I may add them, with their source, as my own data (My data;
+`user_data.pairs` in the project or the request), or choose another method; never treat the pair as
+ideal without asking me. Give me the warnings and notes, the method and the
 parameter sets the result reports with the numbers. When you change a project for me, show the change
 as a proposal and keep my file as it is until I apply it.
 

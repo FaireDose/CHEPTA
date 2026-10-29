@@ -271,6 +271,8 @@ function solveSmall(A, b) {
 
 registerUnit({
   type: "cstr", label: "CSTR", duty: true, dutySpec: true, reactive: "elements",
+  // VF is refused by its check with its reason
+  specKeys: ["reactions", "phases", "T_K", "duty_kW", "VF", "P_kPa", "dP_kPa", "V_m3", "W_kg", "liquidFraction"],
   inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out" }],
   checkSpec: checkCstr,
   dof(spec) {
@@ -343,6 +345,7 @@ registerUnit({
 
 registerUnit({
   type: "pfr", label: "Plug-flow reactor", duty: true, dutySpec: true, reactive: "elements",
+  specKeys: ["reactions", "phases", "L_m", "D_m", "tubes", "bed_kg_m3", "T_K", "duty_kW", "coolant", "pressureDrop", "P_kPa", "dP_kPa"],
   inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out" }],
   checkSpec: checkPfr,
   dof(spec) {

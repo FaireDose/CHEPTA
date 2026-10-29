@@ -145,6 +145,7 @@ function checkConversion(spec, { sys, reactions = [] }) {
 
 registerUnit({
   type: "conversion-reactor", label: "Conversion reactor", duty: true, dutySpec: true, reactive: "elements",
+  specKeys: ["reactions", "order", "T_K", "duty_kW", "VF", "P_kPa", "dP_kPa"],
   inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out" }],
   checkSpec: checkConversion,
   dof(spec) {
@@ -262,6 +263,7 @@ function yieldElements(sys, dn) {
 
 registerUnit({
   type: "yield-reactor", label: "Yield reactor", duty: true, dutySpec: true, reactive: "mass",
+  specKeys: ["key", "conversion", "basis", "yields", "closure", "heatOfReaction", "T_K", "duty_kW", "VF", "P_kPa", "dP_kPa"],
   inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out" }],
   checkSpec: checkYield,
   dof(spec) {
@@ -455,6 +457,9 @@ const EQUILIBRIUM = {
 };
 
 registerUnit({ type: "equilibrium-reactor", label: "Equilibrium reactor", ...EQUILIBRIUM,
+  // mode and VF are refused by its check with their own reasons (a Gibbs reactor is a block of its own; VF is no
+  // specification of it)
+  specKeys: ["reactions", "phases", "mode", "T_K", "duty_kW", "VF", "P_kPa", "dP_kPa"],
   checkSpec(spec, ctx) {
     if (spec?.mode === "gibbs") throw fail("BAD_INPUT", "Equilibrium reactor: every reaction among given species is the Gibbs reactor (\"gibbs-reactor\"), a block of its own.");
     return checkEquilibrium(spec, ctx);
@@ -462,5 +467,6 @@ registerUnit({ type: "equilibrium-reactor", label: "Equilibrium reactor", ...EQU
 // the Gibbs reactor (proposal 0010, step 6): the species that may react, every reaction among them; a block of its own
 // (the maintainer, 2026-10-28), on the equilibrium reactor's solver
 registerUnit({ type: "gibbs-reactor", label: "Gibbs reactor", ...EQUILIBRIUM,
+  specKeys: ["species", "phase", "phases", "mode", "T_K", "duty_kW", "VF", "P_kPa", "dP_kPa"],
   checkSpec: (spec, ctx) => checkEquilibrium({ ...spec, mode: "gibbs" }, ctx),
   dof: spec => EQUILIBRIUM.dof({ ...spec, mode: "gibbs" }) });

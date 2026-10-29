@@ -221,8 +221,12 @@ don't fill it in.
   `warnings` for pairs without k_ij. If the user asks for other chemicals or pairs, say
   they are not in the databank yet and point to
   https://github.com/FaireDose/CHEPTA/blob/main/CONTRIBUTING.md; do not invent parameters.
-- Missing binary parameters raise an error that names the pair. Do not switch on
+- Missing binary parameters raise an error that names the pair and the remedies: the user's own
+  parameters, with their source (`userData.pairs`, My data), or another method. Do not switch on
   `allowMissingPairs` without telling the user that those pairs will be treated as ideal.
+- A flowsheet's `thermo` takes `model`, `vapour`, `sets` and `prefer`, and each block's `spec`
+  only its own keys: any other key is refused with an error naming it and the known keys. Correct
+  it; do not drop it silently.
 - Results are model predictions. Say so, and point to the parameter sources the widget
   lists under the diagram.
 - If the library fails to load, tell the user; do not replace it with hand-written

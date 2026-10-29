@@ -28,6 +28,8 @@ import { checkReactions } from "../reactions/reaction.js";
 
 const MODELS = ["NRTL", "UNIQUAC", "MOD-UNIFAC-2", "ideal", "PR", "SRK"];
 const BLOCK_KEYS = ["id", "type", "x", "y", "spec", "energy", "label"];
+// a flowsheet's property method: an unknown key is refused (proposal 0015, W8, the authoring contract)
+const THERMO_KEYS = ["model", "vapour", "sets", "prefer"];
 const STREAM_KEYS = ["id", "from", "to", "tear", "guess", "label"];
 const ENERGY_KEYS = ["id", "from", "to", "duty_kW", "tear", "guess", "label", "x", "y"];
 
@@ -51,6 +53,12 @@ export function normalizeFlowsheet(doc, userData = null) {
   if (dup) throw fail("BAD_INPUT", `flowsheet.components: ${dup} is listed twice.`);
   const t = doc.thermo ?? {};
   if (typeof t !== "object" || Array.isArray(t)) throw fail("BAD_INPUT", "flowsheet.thermo must be an object such as { model: \"NRTL\", vapour: \"ideal\" }.");
+  const badT = Object.keys(t).filter(k => !THERMO_KEYS.includes(k));
+  if (badT.length) {
+    const hint = badT.includes("method") ? ` The property method is "model" (one of ${MODELS.join(", ")}), with "vapour" for an activity model's vapour.` : "";
+    throw fail("BAD_INPUT", `flowsheet.thermo: unknown key${badT.length > 1 ? "s" : ""} ${badT.map(k => `"${k}"`).join(", ")}. Known: ${THERMO_KEYS.join(", ")}.${hint}`,
+      { where: badT.map(k => ({ field: `flowsheet.thermo.${k}` })) });
+  }
   const model = MODELS.find(m => m.toLowerCase() === String(t.model ?? "NRTL").toLowerCase());
   if (!model) throw fail("BAD_INPUT", `flowsheet.thermo.model "${t.model}" is not one of ${MODELS.join(", ")}.`);
   const vapour = t.vapour == null ? "ideal" : ["ideal", "PR", "SRK"].find(v => v.toLowerCase() === String(t.vapour).toLowerCase());

@@ -16,6 +16,21 @@ The capabilities, their input schemas and the outcomes are listed in ARCHITECTUR
 them. Only the outcome `ok` carries numbers. `missing_data` means a property or parameter is not in CHEPTA: supply it
 (My data), never guess it. A converged result is not a result validated against data.
 
+**The authoring contract** (proposal 0015, W8). A flowsheet is checked before anything is calculated, and a key CHEPTA
+does not read is refused rather than ignored:
+
+- an unknown key of the flowsheet's `thermo` (it takes `model`, `vapour`, `sets` and `prefer`; an assistant's
+  `thermo.method` is one) gives `invalid_input` (BAD_INPUT) with the key, the known keys and `where`
+  `[{ field: "flowsheet.thermo.method" }]`;
+- an unknown key of a block's `spec` gives `invalid_input` with the block's known keys and `where`
+  `[{ block: "H1", message }]`. Each block type's keys are its `specKeys` (src/units/units.js and the reactor and
+  column files); `design` on a heater or heat exchanger is the workbench's memory of a rated block's design;
+- a pair without parameters gives `missing_data` (MISSING_DATA) with `details.missing_pairs`; the message names the
+  remedies a user or an assistant has: add the pair's parameters, with their source, as the user's own data (My data;
+  `user_data.pairs` in the project or the request), or choose another method (Modified UNIFAC 2.0 predicts every pair
+  whose groups it has). Treating the pair as ideal (`allowMissingPairs`) is an option of a program that calls
+  `system()` itself; the request path never does it.
+
 ## The command line
 
 Node.js 22 or newer. From a clone of the repository (`npm install` once):

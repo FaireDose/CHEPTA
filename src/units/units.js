@@ -7,12 +7,15 @@
  *     type: "heater", label: "Heater / cooler", duty: true,   // duty: the block has an energy stream
  *     inlets:  [{ port: "in" }],                       // { port, min?, max? }: several streams on
  *     outlets: [{ port: "out" }],                      //   one port when max > 1
+ *     specKeys: ["T_K", "duty_kW", ...],               // the keys its spec may hold (the authoring contract)
  *     checkSpec(spec, ctx) → spec,                     // normalized, or a BAD_INPUT error naming the problem
  *     solve({ sys, inlets, spec, outletCount }) → { outlets: { port: stream | stream[] }, duty_kW, notes }
  *   })
  *
  * and is calculated with runUnit(type, { sys, inlets, spec, outletCount }), which checks the
- * ports and the specification, runs the block, and checks its balances:
+ * ports and the specification, runs the block, and checks its balances. A key of the spec that is not in the type's
+ * specKeys is refused (BAD_INPUT naming it and the known keys; proposal 0015, W8, the authoring contract), so that a
+ * misspelt or invented key is never ignored without a word. Its checks:
  *  - material: every component's flow in = flow out to 1e-9 relative (a failure is a bug in
  *    the block and throws);
  *  - energy: the enthalpy flows in + duty = out, reported (`balance.energy_kW` is the
@@ -80,8 +83,9 @@ export function registerUnit(def, { replace = false } = {}) {
   if (UNITS.has(def.type) && !replace) throw fail("BAD_INPUT", `registerUnit: "${def.type}" is already registered.`);
   if (typeof def.solve !== "function") throw fail("BAD_INPUT", `registerUnit: "${def.type}" needs a solve function.`);
   const ports = list => (list ?? []).map(p => ({ port: p.port, min: p.min ?? 1, max: p.max ?? 1, optional: !!p.optional, label: p.label ?? p.port }));
+  if (def.specKeys != null && !(Array.isArray(def.specKeys) && def.specKeys.every(k => typeof k === "string"))) throw fail("BAD_INPUT", `registerUnit: "${def.type}": specKeys must be a list of key names.`);
   if (def.reactive != null && !["elements", "mass"].includes(def.reactive)) throw fail("BAD_INPUT", `registerUnit: "${def.type}": reactive must be "elements" or "mass".`);
-  UNITS.set(def.type, Object.freeze({ ...def, label: def.label ?? def.type, inlets: ports(def.inlets), outlets: ports(def.outlets),
+  UNITS.set(def.type, Object.freeze({ ...def, specKeys: def.specKeys ? Object.freeze([...def.specKeys]) : null, label: def.label ?? def.type, inlets: ports(def.inlets), outlets: ports(def.outlets),
     energy: def.energy ?? (def.duty ? "heat" : null), dutySpec: !!def.dutySpec, reactive: def.reactive ?? null }));
 }
 
@@ -90,6 +94,16 @@ export function unitType(type) {
   const u = UNITS.get(type);
   if (!u) throw fail("BAD_INPUT", `Unknown block type "${type}". Known: ${[...UNITS.keys()].join(", ")}.`);
   return u;
+}
+
+/** A BAD_INPUT error for a spec key the block type does not know (null when every key is known, or the type was
+ *  registered without specKeys). */
+export function unknownSpecKey(u, spec) {
+  if (!u.specKeys || !spec || typeof spec !== "object" || Array.isArray(spec)) return null;
+  const bad = Object.keys(spec).filter(k => !u.specKeys.includes(k));
+  if (!bad.length) return null;
+  return fail("BAD_INPUT", `${u.label}: unknown specification key${bad.length > 1 ? "s" : ""} ${bad.map(k => `"${k}"`).join(", ")}. Known: ${u.specKeys.join(", ") || "none (this block takes no specification)"}.`,
+    { unknown: bad, known: [...u.specKeys] });
 }
 
 /** The registered block types, in registration order. */
@@ -178,6 +192,7 @@ function mixed(sys, ins, P_kPa = null) {
 
 registerUnit({
   type: "feed", label: "Feed", inlets: [], outlets: [{ port: "out" }],
+  specKeys: ["flow_kmol_h", "flow_kg_h", "T_K", "P_kPa", "VF"],
   checkSpec(spec, { sys }) {
     if (spec.flow_kmol_h == null && spec.flow_kg_h == null) throw fail("BAD_INPUT", "Feed: give the flows, flow_kmol_h or flow_kg_h, e.g. { water: 60, ethanol: 40 }.");
     if (spec.flow_kmol_h != null && spec.flow_kg_h != null) throw fail("BAD_INPUT", "Feed: give flow_kmol_h or flow_kg_h, not both.");
@@ -192,6 +207,7 @@ registerUnit({
 
 registerUnit({
   type: "mixer", label: "Mixer", inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out" }],
+  specKeys: ["P_kPa"],
   checkSpec(spec) {
     return spec.P_kPa == null ? {} : { P_kPa: num(spec.P_kPa, "Mixer: P_kPa", { positive: true }) };
   },
@@ -203,6 +219,7 @@ registerUnit({
 
 registerUnit({
   type: "splitter", label: "Splitter", inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out", min: 2, max: Infinity }],
+  specKeys: ["fractions"],
   checkSpec(spec, { outletCount }) {
     return { fractions: splitFractions(asList(spec.fractions), outletCount, "Splitter: fractions") };
   },
@@ -214,6 +231,7 @@ registerUnit({
 
 registerUnit({
   type: "separator", label: "Component separator", duty: true, inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out", min: 2, max: Infinity }],
+  specKeys: ["fractions", "outlets"],
   checkSpec(spec, { sys, outletCount }) {
     const fr = spec.fractions;
     if (!fr || typeof fr !== "object" || Array.isArray(fr)) throw fail("BAD_INPUT", "Component separator: give the split fractions per component, e.g. { fractions: { ethanol: [0.95, \"rest\"], water: [0.02, \"rest\"] } }.");
@@ -250,6 +268,7 @@ registerUnit({
 registerUnit({
   type: "flash", label: "Flash drum", duty: true, dutySpec: true, inlets: [{ port: "in", min: 1, max: Infinity }],
   outlets: [{ port: "vapour" }, { port: "liquid" }, { port: "liquid2", optional: true, label: "second liquid" }],
+  specKeys: ["T_K", "P_kPa", "VF", "duty_kW"],
   checkSpec(spec) { return flashConditions(spec, "Flash drum"); },
   solve({ sys, inlets, spec, outletCount }) {
     const ins = inlets.in;
@@ -283,6 +302,8 @@ registerUnit({
 
 registerUnit({
   type: "heater", label: "Heater / cooler", duty: true, dutySpec: true, inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out" }],
+  // design: the specification a rated heater came from, kept by the workbench to go back to (not used here)
+  specKeys: ["T_K", "duty_kW", "VF", "A_m2", "P_kPa", "dP_kPa", "sizing", "design"],
   checkSpec(spec) {
     // the outlet: T_K, duty_kW or VF, at P_kPa or the inlet pressure minus dP_kPa; or T_K and VF
     const has = k => spec[k] !== undefined && spec[k] !== null;
@@ -317,6 +338,7 @@ registerUnit({
 
 registerUnit({
   type: "product", label: "Product", inlets: [{ port: "in" }], outlets: [],
+  specKeys: [],
   checkSpec() { return {}; },
   solve() { return { outlets: {}, duty_kW: 0 }; },
 });
@@ -384,6 +406,8 @@ const HX_SPECS = ["T_hot_out_K", "T_cold_out_K", "VF_hot_out", "VF_cold_out", "d
 registerUnit({
   type: "hx", label: "Heat exchanger", inlets: [{ port: "hot", label: "hot" }, { port: "cold", label: "cold" }],
   outlets: [{ port: "hot", label: "hot" }, { port: "cold", label: "cold" }],
+  // design: the specification a rated exchanger came from, kept by the workbench to go back to (not used here)
+  specKeys: [...HX_SPECS, "dP_hot_kPa", "dP_cold_kPa", "U", "arrangement", "shells", "zones", "design"],
   checkSpec(spec) {
     const has = k => spec[k] !== undefined && spec[k] !== null;
     const given = HX_SPECS.filter(has);
@@ -423,6 +447,7 @@ registerUnit({
 
 registerUnit({
   type: "valve", label: "Valve", inlets: [{ port: "in" }], outlets: [{ port: "out" }],
+  specKeys: ["P_kPa", "dP_kPa"],
   checkSpec(spec) { return pressureSpec(spec, "Valve"); },
   solve({ sys, inlets, spec }) {
     const s = inlets.in[0];
@@ -445,6 +470,7 @@ export const PUMP_EFFICIENCY = 0.75;
 
 registerUnit({
   type: "pump", label: "Pump", duty: true, energy: "work", inlets: [{ port: "in" }], outlets: [{ port: "out" }],
+  specKeys: ["P_kPa", "dP_kPa", "efficiency"],
   checkSpec(spec) {
     const c = pressureSpec(spec, "Pump");
     const eta = spec.efficiency == null ? PUMP_EFFICIENCY : num(spec.efficiency, "Pump: efficiency", { positive: true });
@@ -485,6 +511,7 @@ const TURBO = { compressor: { label: "Compressor", up: true, eta: COMPRESSOR_EFF
 for (const [type, t] of Object.entries(TURBO)) {
   registerUnit({
     type, label: t.label, duty: true, energy: "work", inlets: [{ port: "in" }], outlets: [{ port: "out" }],
+    specKeys: ["P_kPa", "dP_kPa", "ratio", "efficiency"],
     checkSpec(spec) {
       const has = k => spec[k] !== undefined && spec[k] !== null;
       const given = ["P_kPa", "dP_kPa", "ratio"].filter(has);
@@ -640,6 +667,8 @@ export function specStatus(type, spec = {}, { sys, outletCount, reactions } = {}
   const multi = u.outlets.find(p => p.max > 1);
   const n = outletCount ?? (multi ? multi.min : u.outlets.filter(p => !p.optional).length);
   const d = (u.dof ?? DOF[type])?.(spec ?? {}, { sys, outletCount: n, reactions }) ?? { needed: null, given: null, missing: [], extra: [] };
+  const unknown = unknownSpecKey(u, spec);
+  if (unknown) return { ...d, ok: false, status: "invalid", message: unknown.message };
   let status = d.missing.length ? "missing" : d.extra.length ? "extra" : "ok", message = "";
   if (status === "ok" && sys && u.checkSpec) {
     try { u.checkSpec(spec ?? {}, { sys, outletCount: n, reactions }); } catch (e) { status = "invalid"; message = e.message; }
@@ -668,6 +697,8 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
   const u = unitType(type);
   if (!sys || typeof sys.flash !== "function") throw fail("BAD_INPUT", `${u.label}: a system (property package) is needed.`);
   if (spec == null || typeof spec !== "object" || Array.isArray(spec)) throw fail("BAD_INPUT", `${u.label}: the specification must be an object.`);
+  const unknown = unknownSpecKey(u, spec);
+  if (unknown) throw unknown;
   const multiOut = u.outlets.find(p => p.max > 1);
   const n = outletCount ?? (multiOut ? multiOut.min : u.outlets.filter(p => !p.optional).length);
   if (multiOut && n < multiOut.min) throw fail("BAD_INPUT", `${u.label}: at least ${multiOut.min} outlets (got ${n}).`);
