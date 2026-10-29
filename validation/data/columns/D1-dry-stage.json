@@ -1,0 +1,100 @@
+{
+  "chepta_column_case": 1,
+  "id": "D1-dry-stage",
+  "title": "Binary, constant relative volatility 2.5, reflux ratio 0.001: the rectifying section runs dry",
+  "purpose": "(d) A stage that runs dry. The A1 column with a reflux ratio of 0.001: above the feed the liquid flow is 0.05 mol/s against a vapour traffic of 50.05 mol/s. The column still has a solution (a poor separation), so the result is ok with DRY_STAGE warnings.",
+  "method_choice": "constant-alpha model system (no method to choose)",
+  "thermo": {
+    "kind": "constant-alpha",
+    "alpha": [
+      2.5,
+      1.0
+    ],
+    "reference_vapour_pressure": {
+      "form": "ln(p/kPa) = A - B/T",
+      "A": 16.0,
+      "B_K": 4000.0
+    },
+    "latent_heat_J_mol": 30000.0,
+    "note": "A model system, not a real mixture: K_i = alpha_i p(T) / P with the reference vapour pressure p(T) above (made up; it only fixes the temperatures), liquid enthalpy 0 and vapour enthalpy equal to the latent heat for every component, so the energy balances give constant molar overflow exactly. docs/METHOD_SELECTION.md does not apply: there is no real mixture to choose a method for."
+  },
+  "components": [
+    "A",
+    "B"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 12,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 6,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.5,
+        0.5
+      ],
+      "q": 1.0
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 0.001
+    },
+    {
+      "kind": "distillate_flow_mol_s",
+      "value": 50.0
+    }
+  ],
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [
+      {
+        "code": "DRY_STAGE",
+        "stages": [
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ],
+    "no_warning_on_stages": [
+      1,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "threshold": "The dry-stage threshold is W2's choice. In this case the liquid leaving stages 2 to 5 is 0.001 of the largest vapour flow and on stages 6 to 11 it is 2.0 of it (the reboiler's liquid is the bottoms product); in A1 (the control, reflux ratio 2) the smallest ratio is 2/3. Any threshold between 0.001 and 2/3 gives this answer: stage 1, the condenser, is not counted (its liquid is reflux plus distillate).",
+    "behaviour": [
+      "the dry-stage warning is a warning, not a failure: the profile is returned",
+      "the warning says the usual cause (too low a reflux) and the remedy"
+    ],
+    "branch": "One solution expected (constant relative volatility with constant molar overflow and specifications of reflux ratio and a product flow): the reference's solution is the one to match."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    }
+  }
+}

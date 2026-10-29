@@ -1,0 +1,65 @@
+{
+  "chepta_column_case": 1,
+  "id": "E1-shortcut-below-minimum-reflux",
+  "title": "The A2 shortcut with a reflux ratio below Underwood's minimum",
+  "purpose": "(e) An infeasible shortcut: the reflux ratio is below R_min for the specified recoveries, so no number of stages reaches them. Expected: a refusal that names R_min, never a stage count (Gilliland's X would be negative).",
+  "method_choice": "constant-alpha model system (no method to choose)",
+  "thermo": {
+    "kind": "constant-alpha",
+    "alpha": [
+      4.0,
+      2.0,
+      1.0
+    ],
+    "reference_vapour_pressure": {
+      "form": "ln(p/kPa) = A - B/T",
+      "A": 16.0,
+      "B_K": 4000.0
+    },
+    "latent_heat_J_mol": 30000.0,
+    "note": "A model system, not a real mixture: K_i = alpha_i p(T) / P with the reference vapour pressure p(T) above (made up; it only fixes the temperatures), liquid enthalpy 0 and vapour enthalpy equal to the latent heat for every component, so the energy balances give constant molar overflow exactly. docs/METHOD_SELECTION.md does not apply: there is no real mixture to choose a method for."
+  },
+  "components": [
+    "A",
+    "B",
+    "C"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": null,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": null,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.3,
+        0.3,
+        0.4
+      ],
+      "q": 1.0
+    }
+  },
+  "specs": [],
+  "shortcut": {
+    "light_key": "A",
+    "heavy_key": "B",
+    "recovery_light_key_in_distillate": 0.98,
+    "recovery_heavy_key_in_bottoms": 0.98,
+    "reflux_ratio": 2.0
+  },
+  "expected": {
+    "outcome": "invalid_input",
+    "code": "BAD_INPUT",
+    "message_names": [
+      "minimum reflux"
+    ],
+    "behaviour": [
+      "no N, no feed stage, no profile"
+    ]
+  },
+  "tolerances": {
+    "not_numerical": "a refusal; the R_min it names agrees with the fixture to 1e-9 relative"
+  }
+}

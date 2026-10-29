@@ -73,15 +73,15 @@ test("outcomes: invalid input names the block or field; missing data stays missi
   assert.match(md.error.message, /No NRTL parameters for: Benzene \+ Glycerol/);
 });
 
-test("unsupported: the column is listed as not built yet and refused; an internal error is an outcome of its own", () => {
+test("unsupported: the rigorous column is not built yet and refused; an internal error is an outcome of its own", () => {
+  // the shortcut column landed with milestone M1 (proposal 0015, W2), so solve_column is available; its rigorous mode
+  // (M2a) is what is refused now, through the same outcome
   const list = capabilities();
-  const col = list.find(c => c.name === "solve_column");
-  assert.equal(col.status, "unsupported");
-  assert.match(col.planned, /M1/);
-  for (const name of ["capabilities", "find_component", "component_info", "check_project", "flowsheet_status", "solve_flowsheet"]) {
+  for (const name of ["capabilities", "find_component", "component_info", "check_project", "flowsheet_status", "solve_flowsheet", "solve_column"]) {
     assert.equal(list.find(c => c.name === name)?.status, "available", name);
   }
-  const r = run({ capability: "solve_column", input: {} });
+  const r = run({ capability: "solve_column", input: { components: ["benzene", "toluene"], thermo: { model: "ideal" },
+    feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { mode: "rigorous" } } });
   assert.equal(r.outcome, "unsupported");
   assert.equal(r.error.code, "NOT_AVAILABLE");
   assert.ok(OUTCOMES.includes(r.outcome));

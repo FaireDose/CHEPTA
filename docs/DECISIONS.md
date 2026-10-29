@@ -41,13 +41,19 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - **M0** done (2026-10-29; docs/decisions/2026-10-29-02-m0-contracts.md): the contracts in ARCHITECTURE.md, the
     request path `CHEPTA.run`, the execution envelope, the column and sizing contracts refusing until built, and the
     heater and flash example through the whole path, in Node and in the browser.
-  - **Next, M1:** W2 (the shortcut column), W7 (the benchmark cases and the MESH reference), each as its own session
-    when the maintainer says so.
+  - **M1, W2: the shortcut column, built, to review** (docs/decisions/2026-10-29-05-shortcut-column.md): the Column
+    block in shortcut mode (Fenske, Underwood, Gilliland) in the palette, its result table, project format 6,
+    `solve_column` through `CHEPTA.run`, the command line and the MCP server. To check: the equation forms against
+    DWSIM's source, the 20 % volatility warning, the net duty as the block's one energy stream. Next for W2: the
+    rigorous column (M2a), when the maintainer says so.
   - **M1, W8 with W9: built, to review** (docs/decisions/2026-10-29-03-cli-mcp-worker.md): the command line, the local
     MCP server, the worker. The first assistant test passed in Claude Code, in the session and on your computer
     (2026-10-29). Next: W8's next step, the authoring contract: refuse unknown keys in a
     flowsheet's `thermo` and in a block's `spec` (an assistant's `thermo.method` was ignored without a word), and a
     missing-pair message that names the request path's remedy (the user's data) instead of `allowMissingPairs`.
+  - **W7, M1 done** (2026-10-29; docs/decisions/2026-10-29-04-column-cases.md): nine column cases and the MESH and
+    shortcut references, ahead of W2. To check: the tolerances, and the equation forms against DWSIM's source. Next for
+    W7: the cases of W2's following tasks (M2a: one complete benchmark), then the benchmark separations' pairs.
   - Waiting: W1, W3 to W6 and W10 (W10 at M1).
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun

@@ -1,0 +1,64 @@
+{
+  "chepta_column_case": 1,
+  "id": "C1-missing-pair",
+  "title": "Methanol + water + ethylene glycol, NRTL: a pair without parameters",
+  "purpose": "(c) Missing data: CHEPTA has no NRTL parameters for methanol + ethylene glycol (src/data/binaries.json, 2026-10-29). The column must refuse with missing_data and name the pair; it must not treat the pair as ideal unless the user asks for that (allowMissingPairs).",
+  "method_choice": "docs/METHOD_SELECTION.md rule 3: polar liquids below 10 bar: NRTL, ideal-gas vapour.",
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "methanol",
+    "water",
+    "ethylene-glycol"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 15,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 8,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.2,
+        0.5,
+        0.3
+      ],
+      "q": 1.0
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 1.5
+    },
+    {
+      "kind": "distillate_flow_mol_s",
+      "value": 20.0
+    }
+  ],
+  "expected": {
+    "outcome": "missing_data",
+    "code": "MISSING_DATA",
+    "message_names": [
+      "Methanol",
+      "Ethylene glycol"
+    ],
+    "applies_to": [
+      "shortcut",
+      "rigorous"
+    ],
+    "behaviour": [
+      "no profile, no product flows: the result carries the error only",
+      "the remedy is said: supply parameters (My data) or allow ideal pairs on purpose"
+    ]
+  },
+  "tolerances": {
+    "not_numerical": "a refusal; nothing to compare"
+  }
+}

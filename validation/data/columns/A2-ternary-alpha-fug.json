@@ -1,0 +1,71 @@
+{
+  "chepta_column_case": 1,
+  "id": "A2-ternary-alpha-fug",
+  "title": "Ternary, constant relative volatilities 4 : 2 : 1, keys A and B, shortcut",
+  "purpose": "(a) The shortcut (Fenske, Underwood, Gilliland) with a heavy non-key, against reference_fug.py; and Underwood's minimum reflux against the rigorous column at many stages.",
+  "method_choice": "constant-alpha model system (no method to choose)",
+  "thermo": {
+    "kind": "constant-alpha",
+    "alpha": [
+      4.0,
+      2.0,
+      1.0
+    ],
+    "reference_vapour_pressure": {
+      "form": "ln(p/kPa) = A - B/T",
+      "A": 16.0,
+      "B_K": 4000.0
+    },
+    "latent_heat_J_mol": 30000.0,
+    "note": "A model system, not a real mixture: K_i = alpha_i p(T) / P with the reference vapour pressure p(T) above (made up; it only fixes the temperatures), liquid enthalpy 0 and vapour enthalpy equal to the latent heat for every component, so the energy balances give constant molar overflow exactly. docs/METHOD_SELECTION.md does not apply: there is no real mixture to choose a method for."
+  },
+  "components": [
+    "A",
+    "B",
+    "C"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": null,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": null,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.3,
+        0.3,
+        0.4
+      ],
+      "q": 1.0
+    }
+  },
+  "specs": [],
+  "shortcut": {
+    "light_key": "A",
+    "heavy_key": "B",
+    "recovery_light_key_in_distillate": 0.98,
+    "recovery_heavy_key_in_bottoms": 0.98,
+    "reflux_over_minimum": 1.3
+  },
+  "expected": {
+    "outcome": "ok",
+    "warnings": [],
+    "behaviour": [
+      "N_min, R_min, N and the feed stage as reference_fug.py (fixture: shortcut)",
+      "the heavy non-key C goes almost entirely to the bottoms (Fenske's distribution)",
+      "the rigorous column with many stages (101) needs a reflux ratio at or just above Underwood's R_min for the same recovery of A (fixture: checks.rmin_against_rigorous)"
+    ],
+    "branch": "Underwood's root theta is the one between alpha_B = 2 and alpha_A = 4 (the keys); the other roots belong to no specification here."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "relative": 1e-09,
+        "why": "Closed formulas and one root of a monotonic function: the shortcut and the reference must agree to rounding."
+      }
+    },
+    "not_a_numerical_check": "Gilliland's correlation (Eduljee's form) is a fit to columns; its N is not compared with the rigorous column."
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "chepta_column_case": 1,
+  "id": "B1-ethanol-water-nrtl",
+  "title": "Ethanol + water, NRTL, 20 stages, subcooled feed",
+  "purpose": "(b) A non-ideal column with energy balances. No open worked example with stage results was found (searched 2026-10-29: the DWSIM tutorial 'Distillation column' gives this setup but no converged values; Unisim and Aspen results in articles use other parameters); the independent Python MESH solution is the reference. The setup follows the DWSIM tutorial (https://dwsim.org/tutorials/en/intermediate/01-distillation-column.html, read 2026-10-29): 100 mol/s, 50/50 mol, 350 K, 1 atm, 20 stages, feed on stage 10, total condenser, reflux ratio 2, bottoms 75 mol/s.",
+  "method_choice": "docs/METHOD_SELECTION.md rule 3: polar, no electrolytes, below 10 bar, with fitted pairs: NRTL (the default set of the pair, fitted-kamihama2012) with an ideal-gas vapour.",
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "ethanol",
+    "water"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 20,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 10,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.5,
+        0.5
+      ],
+      "T_K": 350.0
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 2.0
+    },
+    {
+      "kind": "bottoms_flow_mol_s",
+      "value": 75.0
+    }
+  ],
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "the distillate's ethanol mole fraction stays below the model's azeotrope at 101.325 kPa (fixture: checks.azeotrope)",
+      "the feed is subcooled (below its bubble point): the liquid flow rises across the feed stage by more than the feed",
+      "the molar flows are not constant (the latent heats of ethanol and water differ): energy balances, not constant molar overflow",
+      "a shortcut on this mixture must state that the relative volatility changes along the column (fixture: checks.relative_volatility gives it at the top and the bottom)"
+    ],
+    "branch": "The reference's solution, from a start of linear compositions and constant molar overflow. No second solution is known for these specifications; if the engine finds another one that closes every balance, it is reported for review, not hidden."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    },
+    "agreement_with_data": {
+      "measured_azeotrope": "validation/data/azeotropes_101kPa.json (ethanol + water, x = 0.892, 78.1 degC; handbook values via the Wikipedia azeotrope tables) and validation/data/ethanol_water_101kPa.json (Kamihama et al. 2012, ThermoML Archive)",
+      "why": "For information only: how far the model's azeotrope is from the measured one says how good the NRTL pair is, not whether the column is solved. It is kept apart from the numerical tolerances."
+    }
+  }
+}

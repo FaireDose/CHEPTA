@@ -1,0 +1,65 @@
+{
+  "chepta_column_case": 1,
+  "id": "E2-negative-boilup",
+  "title": "Binary, constant relative volatility 2.5, saturated vapour feed, distillate too small",
+  "purpose": "(e) Specifications with no physical solution: with a saturated-vapour feed of 100 mol/s, a reflux ratio of 1 and a distillate of 20 mol/s, the vapour above the feed (40 mol/s) is less than the feed's vapour, so the boil-up would be -60 mol/s. Expected: a refusal (invalid_input) or not_converged, never a profile with a negative flow.",
+  "method_choice": "constant-alpha model system (no method to choose)",
+  "thermo": {
+    "kind": "constant-alpha",
+    "alpha": [
+      2.5,
+      1.0
+    ],
+    "reference_vapour_pressure": {
+      "form": "ln(p/kPa) = A - B/T",
+      "A": 16.0,
+      "B_K": 4000.0
+    },
+    "latent_heat_J_mol": 30000.0,
+    "note": "A model system, not a real mixture: K_i = alpha_i p(T) / P with the reference vapour pressure p(T) above (made up; it only fixes the temperatures), liquid enthalpy 0 and vapour enthalpy equal to the latent heat for every component, so the energy balances give constant molar overflow exactly. docs/METHOD_SELECTION.md does not apply: there is no real mixture to choose a method for."
+  },
+  "components": [
+    "A",
+    "B"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 12,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 6,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.5,
+        0.5
+      ],
+      "q": 0.0
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 1.0
+    },
+    {
+      "kind": "distillate_flow_mol_s",
+      "value": 20.0
+    }
+  ],
+  "expected": {
+    "outcome_one_of": [
+      "invalid_input",
+      "not_converged"
+    ],
+    "never": "a converged result, or a profile with a negative flow",
+    "behaviour": [
+      "the message says which specification to change (a larger distillate or reflux ratio)",
+      "a solver failure is not reported as an impossible separation, and an impossible separation is not reported as converged"
+    ]
+  },
+  "tolerances": {
+    "not_numerical": "a refusal; the reference only states the constant-molar-overflow arithmetic (fixture: checks.boilup)"
+  }
+}

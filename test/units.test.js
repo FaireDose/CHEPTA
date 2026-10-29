@@ -16,7 +16,7 @@ const tpCases = cases.filter(c => c.spec.T != null && c.spec.P != null);
 test("the first block types are registered with their ports", () => {
   assert.deepEqual(unitTypes().map(u => u.type).slice(0, 7), ["feed", "mixer", "splitter", "separator", "flash", "heater", "product"]);
   assert.deepEqual(unitType("flash").outlets.map(p => p.port), ["vapour", "liquid", "liquid2"]);
-  assert.throws(() => unitType("column"), /Unknown block type "column"/);
+  assert.throws(() => unitType("teleporter"), /Unknown block type "teleporter"/);   // "column" became a block (proposal 0015, M1)
 });
 
 test("flash drum: outlets match the independent flashes", () => {

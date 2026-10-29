@@ -1,0 +1,87 @@
+{
+  "chepta_column_case": 1,
+  "id": "A1-binary-alpha",
+  "title": "Binary, constant relative volatility 2.5, total condenser",
+  "purpose": "(a) A constant-alpha binary where the rigorous column must equal McCabe-Thiele's construction exactly, and where the shortcut's equations can be checked by hand.",
+  "method_choice": "constant-alpha model system (no method to choose)",
+  "thermo": {
+    "kind": "constant-alpha",
+    "alpha": [
+      2.5,
+      1.0
+    ],
+    "reference_vapour_pressure": {
+      "form": "ln(p/kPa) = A - B/T",
+      "A": 16.0,
+      "B_K": 4000.0
+    },
+    "latent_heat_J_mol": 30000.0,
+    "note": "A model system, not a real mixture: K_i = alpha_i p(T) / P with the reference vapour pressure p(T) above (made up; it only fixes the temperatures), liquid enthalpy 0 and vapour enthalpy equal to the latent heat for every component, so the energy balances give constant molar overflow exactly. docs/METHOD_SELECTION.md does not apply: there is no real mixture to choose a method for."
+  },
+  "components": [
+    "A",
+    "B"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 12,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 6,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.5,
+        0.5
+      ],
+      "q": 1.0
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 2.0
+    },
+    {
+      "kind": "distillate_flow_mol_s",
+      "value": 50.0
+    }
+  ],
+  "shortcut": {
+    "light_key": "A",
+    "heavy_key": "B",
+    "recoveries_from": "the rigorous solution (fixture: A1-binary-alpha.rigorous)",
+    "reflux_ratio": 2.0
+  },
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "the profile equals McCabe-Thiele's stage-by-stage construction from x_D with the same flows (fixture: checks.mccabe_thiele)",
+      "constant molar overflow: L = R D above the feed, L + qF below; V = (R + 1) D on every stage below the condenser",
+      "the temperature rises from the top to the bottom",
+      "at a very large reflux ratio the separation tends to Fenske's alpha^(N - 1) (fixture: checks.total_reflux)"
+    ],
+    "branch": "One solution expected (constant relative volatility with constant molar overflow and specifications of reflux ratio and a product flow): the reference's solution is the one to match."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    }
+  }
+}
