@@ -42,7 +42,14 @@ Read on 2026-10-09:
    CHEPTA yet.**
 6. **Reduced temperature** by Kay's rule, Tr = T / Σ zᵢ Tc,ᵢ:
    - above about 0.75 (with no second liquid expected): an equation of state;
-   - below it: an activity model for the liquid.
+   - below it, for **polar** mixtures: an activity model for the liquid;
+   - below it, for **nonpolar hydrocarbons**: Peng–Robinson or SRK, as rule 2 (the maintainer, 2026-10-29, on the
+     benzene + toluene benchmark column: "I was expecting Peng Robinson for the hydrocarbons"). The source gives both
+     here: its decision tree sends nonpolar real components to an equation of state, and its heuristics 3 and 4 give a
+     solution model below 0.75 (Wilson "for C4-C18 hydrocarbons" and "for aromatics"). Its heuristic 8 says when the
+     choice matters: where the infinite-dilution activity coefficients are all below 1.3 and there is no azeotrope,
+     many models are reasonably accurate (benzene + toluene: about 0.98 with NRTL, and the bubble points of NRTL, SRK,
+     Peng–Robinson and Raoult's law at the ChemSep Book's ten stage compositions are within 0.45 K of the book's).
 
    Activity models can be stretched, with growing error, to about 0.9.
 7. **Two liquids:**
@@ -57,7 +64,7 @@ Read on 2026-10-09:
 
 | Mixture | Method in CHEPTA | Status |
 |---|---|---|
-| Hydrocarbons and light gases, any pressure | Peng–Robinson or SRK with the databank's k_ij | covered |
+| Hydrocarbons and light gases, any pressure and reduced temperature | Peng–Robinson or SRK with the databank's k_ij (0 where it has none, with a warning) | covered |
 | Polar liquids below 10 bar | NRTL or UNIQUAC with fitted or databank pairs; ideal-gas or PR/SRK vapour | covered where the pairs exist (docs/DATA_WANTED.md) |
 | Polar mixtures above 10 bar | (PSRK, MHV2, Wong–Sandler, CPA) | **not available** |
 | Water + hydrocarbons (two liquids) | (CPA, or a free-water approach) | **not available**; the engine refuses a second liquid with an equation of state |

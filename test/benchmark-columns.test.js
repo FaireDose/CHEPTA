@@ -1,4 +1,4 @@
-// Proposal 0015, milestone M1 (W7): the benchmark cases of the column engine (validation/data/columns/) and their
+// Proposal 0015, milestones M1 and M2a (W7): the benchmark cases of the column engine (validation/data/columns/) and their
 // independent references (validation/python/reference_mesh.py, reference_fug.py; fixture validation/fixtures/columns.json).
 // These tests pass before any column code exists: they check that the case files are well formed and that the
 // references close their material, equilibrium, summation and energy balances on every stage, recomputed here
@@ -17,17 +17,22 @@ const fixture = JSON.parse(readFileSync(new URL("../validation/fixtures/columns.
 const H_SCALE = fixture.H_scale_J_mol;
 const SPECS = ["reflux_ratio", "distillate_flow_mol_s", "bottoms_flow_mol_s", "distillate_purity"];
 const sum = v => v.reduce((a, b) => a + b, 0);
+const feedsOf = c => c.column.feeds ?? [c.column.feed];
 
 test("column cases: every file is well formed and has its reference", () => {
-  assert.ok(files.length >= 9, "the cases (a) to (e) of proposal 0015, W7");
+  assert.ok(files.length >= 14, "the cases (a) to (e) of proposal 0015, W7, and those of M2a");
   for (const [id, c] of Object.entries(cases)) {
     assert.equal(c.chepta_column_case, 1, id);
     assert.equal(c.id, id, `${id}: the id is the file name`);
     for (const k of ["title", "purpose", "method_choice", "thermo", "components", "pressure_kPa", "column", "specs", "expected", "tolerances"]) assert.ok(k in c, `${id}: ${k}`);
-    const { feed } = c.column;
-    assert.equal(feed.z.length, c.components.length, `${id}: feed composition`);
-    assert.ok(Math.abs(sum(feed.z) - 1) < 1e-12, `${id}: z sums to 1`);
-    assert.ok(feed.flow_mol_s > 0 && ("q" in feed) !== ("T_K" in feed), `${id}: feed flow, and q or T_K`);
+    assert.ok(("feed" in c.column) !== ("feeds" in c.column), `${id}: column.feed or column.feeds`);
+    for (const feed of feedsOf(c)) {
+      assert.equal(feed.z.length, c.components.length, `${id}: feed composition`);
+      assert.ok(Math.abs(sum(feed.z) - 1) < 1e-12, `${id}: z sums to 1`);
+      assert.ok(feed.flow_mol_s > 0 && ("q" in feed) !== ("T_K" in feed), `${id}: feed flow, and q or T_K`);
+      if (c.thermo.kind === "chepta" && "q" in feed) assert.ok(feed.q === 0 || feed.q === 1, `${id}: a real mixture's feed q is 0 or 1 (saturated)`);
+      if (c.column.stages != null) assert.ok(feed.stage > 1 && feed.stage < c.column.stages, `${id}: the feed enters between the condenser and the reboiler`);
+    }
     assert.ok(["total", "partial"].includes(c.column.condenser), `${id}: condenser`);
     if (c.thermo.kind === "constant-alpha") {
       assert.equal(c.thermo.alpha.length, c.components.length, id);
@@ -38,7 +43,6 @@ test("column cases: every file is well formed and has its reference", () => {
     }
     if (c.column.stages != null) {
       assert.equal(c.specs.length, 2, `${id}: two specifications (degrees of freedom)`);
-      assert.ok(feed.stage > 1 && feed.stage < c.column.stages, `${id}: the feed enters between the condenser and the reboiler`);
     }
     for (const s of c.specs) assert.ok(SPECS.includes(s.kind), `${id}: specification ${s.kind}`);
     const outs = [c.expected.outcome, ...(c.expected.outcome_one_of ?? []), c.expected.outcome_before_M4, c.expected.outcome_from_M4].filter(Boolean);
@@ -49,26 +53,61 @@ test("column cases: every file is well formed and has its reference", () => {
 
 /** K-values and molar enthalpies of a case's thermodynamics: the closed forms of a constant-alpha model system, or
  * CHEPTA's own system (gammas, vapour pressures, enthalpies). */
-function thermoOf(c) {
+function thermoOf(c, feedT) {
   const P = c.pressure_kPa;
   if (c.thermo.kind === "constant-alpha") {
     const { alpha, reference_vapour_pressure: rp, latent_heat_J_mol: lam } = c.thermo;
     return { K: (x, T) => alpha.map(a => a * Math.exp(rp.A - rp.B_K / T) / P), hL: () => 0, hV: () => lam,
-      hF: () => (1 - c.column.feed.q) * lam, enthalpyTol: () => 0 };
+      hF: k => (1 - feedsOf(c)[k].q) * lam, enthalpyTol: () => 0 };
   }
   const s = system({ components: c.components, model: c.thermo.model });
-  return { K: (x, T) => { const g = s.gammas(x, T), p = s.psat(T); return g.map((gi, i) => gi * p[i] / P); },
-    hL: (x, T) => s.enthalpy("liquid", T, P, x), hV: (y, T) => s.enthalpy("vapour", T, P, y),
-    hF: () => s.enthalpy("liquid", c.column.feed.T_K, P, c.column.feed.z),
+  const K = (x, T) => kValues(s, x, T, P);
+  // a saturated feed (q = 1 or 0) at the temperature the reference found; it must be the bubble (dew) point here too
+  const hF = k => {
+    const f = feedsOf(c)[k];
+    if (!("q" in f)) return s.enthalpy("liquid", f.T_K, P, f.z);
+    const T = feedT[k], Kz = K(f.z, T);
+    if (f.q === 1) {
+      assert.ok(Math.abs(sum(Kz.map((v, i) => v * f.z[i])) - 1) < 1e-9, `${c.id}: the feed's bubble point`);
+      return s.enthalpy("liquid", T, P, f.z);
+    }
+    const x = f.z.map((v, i) => v / Kz[i]);
+    assert.ok(Math.abs(sum(x) - 1) < 1e-6, `${c.id}: the feed's dew point`);
+    return s.enthalpy("vapour", T, P, f.z);
+  };
+  return { K, hL: (x, T) => s.enthalpy("liquid", T, P, x), hV: (y, T) => s.enthalpy("vapour", T, P, y), hF,
     // the two enthalpy implementations agree within 0.05 J/mol (test/enthalpy.test.js): per mole of each stream
     enthalpyTol: flows => 0.05 * flows };
 }
 
+/** K-values of CHEPTA's own system: gamma p_sat / P (activity model, ideal-gas vapour), or phi_L(x) / phi_V(y) with
+ * y = K x by successive substitution (equation of state). */
+function kValues(s, x, T, P) {
+  if (s.kind !== "eos") { const g = s.gammas(x, T), p = s.psat(T); return g.map((gi, i) => gi * p[i] / P); }
+  const lnL = s.lnPhi(T, P, x, "liquid");
+  let y = x.slice(), K;
+  for (let k = 0; k < 200; k++) {
+    const ys = sum(y), lnV = s.lnPhi(T, P, y.map(v => v / ys), "vapour");
+    K = lnL.map((l, i) => Math.exp(l - lnV[i]));
+    const yn = K.map((v, i) => v * x[i]), step = Math.max(...yn.map((v, i) => Math.abs(v - y[i])));
+    y = yn;
+    if (step < 1e-15) break;
+  }
+  return K;
+}
+
+/** ln of the liquid's fugacity over its pressure-independent part, for the tangent-plane distance. */
+function lnFugLiquid(s, x, T, P) {
+  if (s.kind === "eos") { const l = s.lnPhi(T, P, x, "liquid"); return x.map((v, i) => Math.log(v) + l[i]); }
+  const g = s.gammas(x, T);
+  return x.map((v, i) => Math.log(v) + Math.log(g[i]));
+}
+
 /** Every stage's residuals of the reference profile, recomputed from its stage values. */
-function residuals(c, prof) {
-  const th = thermoOf(c), st = prof.stages, N = st.length, n = c.components.length;
-  const f = c.column.feed.stage - 1, F = c.column.feed.flow_mol_s, z = c.column.feed.z, total = c.column.condenser === "total";
-  const D = prof.D_mol_s, hF = th.hF();
+function residuals(c, prof, feedT) {
+  const th = thermoOf(c, feedT), st = prof.stages, N = st.length, n = c.components.length;
+  const feeds = feedsOf(c).map((f, k) => ({ j: f.stage - 1, F: f.flow_mol_s, z: f.z, h: th.hF(k) })), total = c.column.condenser === "total";
+  const D = prof.D_mol_s;
   const y = st.map((s, j) => (j === 0 && total ? th.K(s.x, s.T_K).map((k, i) => k * s.x[i]) : s.y));
   const hL = st.map(s => th.hL(s.x, s.T_K)), hV = st.map((s, j) => th.hV(y[j], s.T_K));
   return st.map((s, j) => {
@@ -77,7 +116,7 @@ function residuals(c, prof) {
     const add = (flow, comp, h) => { comp.forEach((v, i) => { m[i] += flow * v; }); e += flow * h; flows += Math.abs(flow); };
     if (j > 0) add(st[j - 1].L_mol_s, st[j - 1].x, hL[j - 1]);
     if (j < N - 1) add(st[j + 1].V_mol_s, y[j + 1], hV[j + 1]);
-    if (j === f) add(F, z, hF);
+    for (const f of feeds) if (j === f.j) add(f.F, f.z, f.h);
     if (j === 0 && total) add(-(s.L_mol_s + D), s.x, hL[0]);
     else { add(-s.L_mol_s, s.x, hL[j]); add(-s.V_mol_s, y[j], hV[j]); }
     if (j === 0) e -= prof.Q_condenser_W;
@@ -91,7 +130,7 @@ function residuals(c, prof) {
 
 for (const [id, rec] of Object.entries(fixture.cases).filter(([, r]) => r.rigorous)) {
   test(`column reference ${id}: material, equilibrium, summation and energy balances closed on every stage`, () => {
-    const c = cases[id], prof = rec.rigorous, F = c.column.feed.flow_mol_s;
+    const c = cases[id], prof = rec.rigorous, F = sum(feedsOf(c).map(f => f.flow_mol_s));
     const tol = c.tolerances.numerical.balances_on_every_stage;
     const lim = { material: tol.material_relative_to_feed * F, summation: tol.summation, equilibrium: tol.equilibrium,
       energy: tol.energy_relative_to_feed_times_10kJ_mol * F * H_SCALE };
@@ -103,10 +142,10 @@ for (const [id, rec] of Object.entries(fixture.cases).filter(([, r]) => r.rigoro
       assert.ok(s.L_mol_s >= 0 && s.V_mol_s >= 0 && s.x.every(v => v >= 0), `${id} stage ${s.stage}: negative flow or mole fraction`);
     }
     // recomputed here, from the stage values alone
-    for (const r of residuals(c, prof)) {
+    for (const r of residuals(c, prof, rec.checks.feed_T_K)) {
       assert.ok(r.material <= lim.material, `${id} stage ${r.stage}: material ${r.material} mol/s`);
       assert.ok(r.summation <= lim.summation, `${id} stage ${r.stage}: summation ${r.summation}`);
-      // NRTL: CHEPTA's K-values against the Python reference's (the same records and formulas, written twice)
+      // CHEPTA's K-values against the Python reference's (the same records and formulas, written twice)
       assert.ok(r.equilibrium <= Math.max(lim.equilibrium, c.thermo.kind === "chepta" ? 1e-9 : 0), `${id} stage ${r.stage}: equilibrium ${r.equilibrium}`);
       assert.ok(r.energy <= lim.energy + r.energyTol, `${id} stage ${r.stage}: energy ${r.energy} W (allowed ${lim.energy + r.energyTol})`);
     }
@@ -118,7 +157,7 @@ for (const [id, rec] of Object.entries(fixture.cases).filter(([, r]) => r.rigoro
       if (s.kind === "bottoms_flow_mol_s") assert.ok(Math.abs(prof.B_mol_s - s.value) <= lim.material, `${id}: B`);
     }
     // overall component balance
-    c.column.feed.z.forEach((zi, i) => assert.ok(Math.abs(F * zi - prof.D_mol_s * prof.x_D[i] - prof.B_mol_s * prof.x_B[i]) <= 10 * lim.material, `${id}: overall balance of ${c.components[i]}`));
+    c.components.forEach((name, i) => assert.ok(Math.abs(sum(feedsOf(c).map(f => f.flow_mol_s * f.z[i])) - prof.D_mol_s * prof.x_D[i] - prof.B_mol_s * prof.x_B[i]) <= 10 * lim.material, `${id}: overall balance of ${name}`));
   });
 }
 
@@ -196,4 +235,115 @@ test("column cases E1, E2: below the minimum reflux, and a negative boil-up, hav
   assert.equal(e1.code, cases["E1-shortcut-below-minimum-reflux"].expected.code);
   assert.ok(cases["E1-shortcut-below-minimum-reflux"].shortcut.reflux_ratio < a2.R_min && /minimum reflux/.test(e1.message));
   assert.ok(fixture.cases["E2-negative-boilup"].checks.boilup.V_below_feed_mol_s < 0);
+});
+
+// ---- Milestone M2a (W7): the complete benchmark and the further cases ----
+
+test("column case B2: the transcribed ChemSep Book numbers are consistent with each other (a check of the transcription)", () => {
+  const c = cases["B2-chemsep-benzene-toluene"], p = c.published, F = c.column.feed.flow_mol_s, R = c.specs[0].value;
+  const D = p.D_mol_s, B = p.B_mol_s, xD = p.x_D[0], xB = p.x_B[0], f = c.column.feed.stage;
+  const near = (u, v, tol, what) => assert.ok(Math.abs(u - v) <= tol, `${what}: ${u} against ${v}`);
+  // the figures print six significant digits: the checks hold to that rounding
+  near(D + B, F, 2e-4, "D + B = F");
+  near(p.d_mol_s[0] + p.b_mol_s[0], F * 0.5, 2e-5, "benzene balance"); near(p.d_mol_s[1] + p.b_mol_s[1], F * 0.5, 2e-5, "toluene balance");
+  near(p.d_mol_s[0] / D, xD, 2e-6, "x_D from the flows"); near(p.b_mol_s[0] / B, xB, 2e-6, "x_B from the flows");
+  near(p.x_D[0] + p.x_D[1], 1, 2e-6, "x_D sums to 1"); near(p.x_B[0] + p.x_B[1], 1, 2e-6, "x_B sums to 1");
+  near(p.x_benzene[0], xD, 0, "the condenser's liquid is the distillate"); near(p.x_benzene[9], xB, 0, "the reboiler's liquid is the bottoms");
+  near(p.L_mol_s[0], R * D, 2e-4, "reflux ratio"); near(p.V_mol_s[1], p.L_mol_s[0] + D, 2e-4, "V_2 = L_1 + D");
+  near(p.L_mol_s[f - 1] - p.L_mol_s[f - 2], F, 2e-4, "a saturated-liquid feed adds F to the liquid");
+  near(p.V_mol_s[9] / B, p.boilup_ratio, 1e-4, "boil-up ratio");
+  // the K column is not y/x of the same figure (0.03 % to 2.8 % above it; the case's published.notes): not compared
+  for (let j = 0; j < 10; j++) assert.ok(p.K_benzene[j] / (p.y_benzene[j] / p.x_benzene[j]) - 1 < 0.03, `K and y/x, stage ${j + 1}`);
+  // constant molar overflow: the operating lines carry each stage's liquid to the vapour of the stage below
+  for (let j = 1; j < 10; j++) {
+    const y = j < f ? (p.L_mol_s[j - 1] * p.x_benzene[j - 1] + D * xD) / p.V_mol_s[j] : (p.L_mol_s[j - 1] * p.x_benzene[j - 1] - B * xB) / p.V_mol_s[j];
+    near(y, p.y_benzene[j], 2e-5, `operating line into stage ${j + 1}`);
+  }
+  for (let j = 1; j < 10; j++) assert.ok(p.T_C[j] > p.T_C[j - 1], "the temperature rises downwards");
+});
+
+test("column case B2: CHEPTA's method agrees with the published example within the agreement tolerances", () => {
+  const c = cases["B2-chemsep-benzene-toluene"], p = c.published, rec = fixture.cases["B2-chemsep-benzene-toluene"];
+  const tol = c.tolerances.agreement_with_published_example, prof = rec.rigorous;
+  prof.stages.forEach((s, j) => {
+    assert.ok(Math.abs(s.T_K - 273.15 - p.T_C[j]) <= tol.T_K_absolute, `stage ${s.stage}: T ${s.T_K - 273.15} against ${p.T_C[j]} degC`);
+    assert.ok(Math.abs(s.x[0] - p.x_benzene[j]) <= tol.mole_fractions_absolute, `stage ${s.stage}: x ${s.x[0]} against ${p.x_benzene[j]}`);
+  });
+  assert.ok(Math.abs(prof.x_D[0] - p.x_D[0]) <= tol.mole_fractions_absolute && Math.abs(prof.x_B[0] - p.x_B[0]) <= tol.mole_fractions_absolute);
+  // the K-values of CHEPTA's own method at the published stage compositions and temperatures, as the fixture has them
+  const s = system({ components: c.components, model: c.thermo.model });
+  p.x_benzene.forEach((x, j) => {
+    const T = p.T_C[j] + 273.15, K = kValues(s, [x, 1 - x], T, c.pressure_kPa)[0];
+    assert.ok(Math.abs(K - rec.checks.published.K_benzene_chepta_at_published_x_T[j]) < 1e-9, `K of benzene, stage ${j + 1}`);
+  });
+});
+
+/** The tangent-plane distance of liquid x at T and P for trial w, with CHEPTA's own system. */
+function tpd(s, x, w, T, P) {
+  const fx = lnFugLiquid(s, x, T, P), fw = lnFugLiquid(s, w, T, P);
+  return sum(w.map((wi, i) => wi * (fw[i] - fx[i])));
+}
+
+test("column case F1 (1-butanol + water): a second liquid on stages 1 and 2 of the one-liquid solution, none below", () => {
+  const c = cases["F1-butanol-water-two-liquids"], rec = fixture.cases["F1-butanol-water-two-liquids"], lim = c.tolerances.stability;
+  assert.equal(c.expected.outcome, "unsupported"); assert.equal(c.expected.code, "PHASE_SPLIT");
+  const s = system({ components: c.components, model: c.thermo.model });
+  rec.checks.stability.forEach((r, j) => {
+    const st = rec.rigorous.stages[j];
+    if (r.stage <= 2) {
+      assert.ok(r.tpd_min < lim.tpd_unstable_below, `stage ${r.stage}: ${r.tpd_min}`);
+      assert.ok(tpd(s, st.x, r.trial_x, st.T_K, c.pressure_kPa) < lim.tpd_unstable_below, `stage ${r.stage}: CHEPTA's tpd at the reference's trial liquid`);
+    } else {
+      assert.ok(r.tpd_min > lim.tpd_stable_above, `stage ${r.stage}: ${r.tpd_min}`);
+      // recomputed here on a grid of trial liquids
+      for (let k = 1; k < 2000; k++) { const w = k / 2000; assert.ok(tpd(s, st.x, [w, 1 - w], st.T_K, c.pressure_kPa) > lim.tpd_stable_above, `stage ${r.stage}, trial ${w}`); }
+    }
+  });
+});
+
+test("column cases B2, B3, P1: one liquid on every stage (the phase check passes)", () => {
+  for (const id of ["B2-chemsep-benzene-toluene", "B3-acetone-methanol-azeotrope", "P1-performance-alcohols-water"]) {
+    const c = cases[id], rec = fixture.cases[id], s = system({ components: c.components, model: c.thermo.model });
+    rec.checks.stability.forEach((r, j) => {
+      const st = rec.rigorous.stages[j];
+      assert.ok(r.tpd_min > -1e-9, `${id} stage ${r.stage}: ${r.tpd_min}`);
+      assert.ok(tpd(s, st.x, r.trial_x, st.T_K, c.pressure_kPa) > -1e-9, `${id} stage ${r.stage}: CHEPTA's tpd at the reference's trial liquid`);
+    });
+  }
+});
+
+test("column case B3 (acetone + methanol): the distillate pinches just below the model's azeotrope", () => {
+  const c = cases["B3-acetone-methanol-azeotrope"], { checks, rigorous: p } = fixture.cases["B3-acetone-methanol-azeotrope"];
+  const xa = checks.azeotrope.model_x_acetone;
+  assert.ok(p.x_D[0] < xa && xa - p.x_D[0] < 0.005, `x_D ${p.x_D[0]} against the azeotrope ${xa}`);
+  p.stages.forEach(st => assert.ok(st.x[0] <= xa, `stage ${st.stage} beyond the azeotrope`));
+  assert.ok(p.stages[4].T_K - p.stages[0].T_K < 0.01, "the pinch: the top five stages within 0.01 K");
+  const s = system({ components: c.components, model: c.thermo.model }), x = [xa, 1 - xa], T = checks.azeotrope.model_T_K;
+  const g = s.gammas(x, T), ps = s.psat(T), P = x[0] * g[0] * ps[0] + x[1] * g[1] * ps[1];
+  assert.ok(Math.abs(P - 101.325) < 1e-6 && Math.abs(x[0] * g[0] * ps[0] / P - x[0]) < 1e-8, `azeotrope in CHEPTA's NRTL: P ${P}`);
+});
+
+test("column case A4 (two feeds): McCabe-Thiele with three operating lines equals the profile", () => {
+  const c = cases["A4-binary-two-feeds"], { checks, rigorous: p } = fixture.cases["A4-binary-two-feeds"];
+  assert.ok(checks.mccabe_thiele.max_deviation_from_profile <= checks.mccabe_thiele.tolerance);
+  const R = c.specs[0].value, D = c.specs[1].value, [f1, f2] = c.column.feeds;
+  p.stages.slice(1, -1).forEach(s => {
+    const L = R * D + (s.stage >= f1.stage ? f1.q * f1.flow_mol_s : 0) + (s.stage >= f2.stage ? f2.q * f2.flow_mol_s : 0);
+    const V = (R + 1) * D - (s.stage > f1.stage ? (1 - f1.q) * f1.flow_mol_s : 0) - (s.stage > f2.stage ? (1 - f2.q) * f2.flow_mol_s : 0);
+    assert.ok(Math.abs(s.L_mol_s - L) < 1e-9 && Math.abs(s.V_mol_s - V) < 1e-9, `stage ${s.stage}`);
+  });
+});
+
+test("column cases E4, P1: the iteration limit is below what the column needs; the warm-start reference closes its balances", () => {
+  const e4 = cases["E4-iteration-limit"], r = fixture.cases["E4-iteration-limit"].checks;
+  assert.equal(e4.expected.outcome, "not_converged");
+  assert.ok(r.reference_iterations.newton_steps > e4.solver.max_iterations, "the reference needs more Newton steps, from a better start");
+  assert.deepEqual(e4.column, cases["B1-ethanol-water-nrtl"].column); assert.deepEqual(e4.specs, cases["B1-ethanol-water-nrtl"].specs);
+  const p1 = cases["P1-performance-alcohols-water"], rec = fixture.cases["P1-performance-alcohols-water"];
+  const warm = { ...p1, specs: p1.performance.warm_specs }, F = p1.column.feed.flow_mol_s, tol = p1.tolerances.numerical.balances_on_every_stage;
+  for (const q of residuals(warm, rec.rigorous_warm, rec.checks.feed_T_K)) {
+    assert.ok(q.material <= tol.material_relative_to_feed * F && q.summation <= tol.summation && q.equilibrium <= 1e-9
+      && q.energy <= tol.energy_relative_to_feed_times_10kJ_mol * F * H_SCALE + q.energyTol, `P1 warm stage ${q.stage}: ${JSON.stringify(q)}`);
+  }
+  assert.ok(Math.abs(rec.rigorous_warm.stages[0].L_mol_s - 3.3 * rec.rigorous_warm.D_mol_s) < 1e-7, "the warm specs");
 });

@@ -1,0 +1,76 @@
+{
+  "chepta_column_case": 1,
+  "id": "B3-acetone-methanol-azeotrope",
+  "title": "Acetone + methanol, NRTL, 50 stages, reflux ratio 6: the distillate pinches just below the azeotrope",
+  "purpose": "(b) A hard non-ideal case: a minimum-boiling azeotrope, and a top section that pinches against it. The distillate's acetone mole fraction ends 0.0012 below the model's azeotrope (fixture checks.azeotrope), where the relative volatility is within 1 % of 1, and a second pinch forms below the feed. Small steps in composition over many stages, and a solution close to where K_1 = K_2, are what make a column solver step past the azeotrope or stall.",
+  "method_choice": "docs/METHOD_SELECTION.md rule 3: polar, no electrolytes, below 10 bar, with fitted pairs: NRTL with the default set of the pair (fitted-li2018: Li et al., Fluid Phase Equilib. 459 (2018), ThermoML Archive) and an ideal-gas vapour.",
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "acetone",
+    "methanol"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 50,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 35,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.5,
+        0.5
+      ],
+      "q": 1
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 6.0
+    },
+    {
+      "kind": "distillate_flow_mol_s",
+      "value": 60.0
+    }
+  ],
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "the distillate's acetone mole fraction is below the model's azeotrope, never above it (a profile that crosses the azeotrope is wrong)",
+      "the temperatures of the top stages differ by less than 0.01 K: the pinch",
+      "from the reference's start (constant molar overflow, then 300 sweeps of the bubble-point method) Newton's method needs 12 steps (B1: fewer); the engine reports its iterations"
+    ],
+    "branch": "The reference's solution. Columns with azeotropic mixtures can have more than one steady state for some specifications; none is known for these. If the engine finds another solution that closes every balance, it is reported for review, not hidden."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    },
+    "agreement_with_data": {
+      "measured_azeotrope": "validation/data/azeotropes_101kPa.json (acetone + methanol: x = 0.8, 55.7 degC; handbook values via the Wikipedia azeotrope tables)",
+      "why": "For information only: the model's azeotrope against the measured one says how good the pair is, not whether the column is solved."
+    }
+  }
+}

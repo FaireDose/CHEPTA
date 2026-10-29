@@ -1,0 +1,80 @@
+{
+  "chepta_column_case": 1,
+  "id": "F1-butanol-water-two-liquids",
+  "title": "1-Butanol + water, NRTL, 6 stages: the top stages lie inside the two-liquid region",
+  "purpose": "A second liquid forms on the stages. With one liquid (phases \"VL\", milestone M2a) the engine must find it by the phase-stability check and refuse with PHASE_SPLIT, never return the one-liquid profile, which is metastable. The reference solves the column with one liquid and then tests each stage's liquid for stability (tangent-plane distance on a grid of trial compositions): stages 1 and 2 are unstable, stages 3 to 6 stable.",
+  "method_choice": "docs/METHOD_SELECTION.md rules 3 and 7: polar, below 10 bar, two liquids possible: NRTL (it describes two liquids), the default set of the pair (ChemSep databank, tier databank; its record states that it predicts two liquid phases), ideal-gas vapour.",
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "1-butanol",
+    "water"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 6,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 3,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.6,
+        0.4
+      ],
+      "q": 1
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 2.0
+    },
+    {
+      "kind": "distillate_flow_mol_s",
+      "value": 20.0
+    }
+  ],
+  "expected": {
+    "outcome": "unsupported",
+    "code": "PHASE_SPLIT",
+    "converged": false,
+    "behaviour": [
+      "no profile is returned as the column's result: the one-liquid solution is metastable on stages 1 and 2",
+      "the refusal names the stages where a second liquid forms (the reference's one-liquid solution: stages 1 and 2; fixture checks.stability) and the remedy: two liquids on the stages come with milestone M2b",
+      "the feed (z = 0.6 butanol, saturated liquid) is stable: the split appears only where the column carries the liquid toward the water side"
+    ],
+    "branch": "The reference's one-liquid solution, from its stated start. The refusal does not depend on the branch as long as a stage of the engine's one-liquid solution is unstable; the stages named may differ if the engine finds another one-liquid branch, which is then reported for review."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    },
+    "stability": {
+      "tpd_unstable_below": -0.001,
+      "tpd_stable_above": -1e-09,
+      "why": "The tangent-plane distance (in units of RT, per mole of trial phase) of stages 1 and 2 is about -0.03, of stages 3 to 6 zero (the trial phase is the stage's own liquid). A threshold anywhere between -1e-3 and -1e-9 classifies the stages the same way."
+    },
+    "agreement_with_data": {
+      "note": "The NRTL set's liquid-liquid split is ChemSep's; how far it is from measured mutual solubilities is W1's work (liquid-liquid data and fits, M2b) and is not a test of the column."
+    }
+  }
+}

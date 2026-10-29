@@ -57,8 +57,15 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     well to a user. Next for W8: the authoring contract and messages of each new block as it lands (the rigorous
     column, M2a).
   - **W7, M1 done** (2026-10-29; docs/decisions/2026-10-29-04-column-cases.md): nine column cases and the MESH and
-    shortcut references, ahead of W2. To check: the tolerances, and the equation forms against DWSIM's source. Next for
-    W7: the cases of W2's following tasks (M2a: one complete benchmark), then the benchmark separations' pairs.
+    shortcut references, ahead of W2. To check: the tolerances, and the equation forms against DWSIM's source.
+  - **W7, M2a cases: built, to review** (docs/decisions/2026-10-29-08-benchmark-column.md): the complete benchmark,
+    The ChemSep Book's benzene + toluene column (public domain) with its published stage results, and five more cases
+    (two feeds, near an azeotrope, two liquids on the stages, an iteration limit, the performance benchmark); the
+    reference extended (several feeds, saturated feeds, the phase-stability check). To check: every transcribed number
+    against Figures 1.18 to 1.21 of the book (checked by the maintainer, 2026-10-29); B2 uses Peng–Robinson, and
+    METHOD_SELECTION.md rule 6 sends nonpolar hydrocarbons to an equation of state at any reduced temperature (the
+    maintainer, 2026-10-29). To confirm: the agreement tolerances (1.0 K, 0.02), k_ij = 0 for the pair. Next for W7: the cases of
+    W2's M2b tasks, then the benchmark separations' pairs.
   - **W4, M1: the drum and decanter sizes, built, to review** (docs/decisions/2026-10-29-06-drum-sizing.md): a vertical
     or horizontal flash drum and a decanter from the flash block's result (`sizeDrum`, `sizeDecanter`, the `size_drum`
     capability, the size under the drum's results). To check: the constants and rules against the four open sources

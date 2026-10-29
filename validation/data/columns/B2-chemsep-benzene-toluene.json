@@ -1,0 +1,210 @@
+{
+  "chepta_column_case": 1,
+  "id": "B2-chemsep-benzene-toluene",
+  "title": "Benzene + toluene, 10 stages, saturated-liquid feed: the worked example of The ChemSep Book, section 1.2",
+  "purpose": "The complete benchmark of milestone M2a: a real column from an open source with published stage results. Kooijman and Taylor, The ChemSep Book, 2nd edition (2006, public domain), section 1.2 'Distillation of Benzene and Toluene' (pp. 9-17) and its results in section 1.3 (pp. 18-20): Figure 1.18 (balances), Figure 1.19 (T/P/flow profiles), Figure 1.20 (benzene's liquid and vapour mole fractions and K-values), Figure 1.21 (stream table). The engine is compared twice: numerically with reference_mesh.py on CHEPTA's own method (tight tolerances), and with the published numbers, which come from another property method (agreement tolerances, kept apart).",
+  "source": {
+    "citation": "H.A. Kooijman, R. Taylor, The ChemSep Book, 2nd edition, 2006, section 1.2 (pp. 9-17) and section 1.3 (pp. 18-20)",
+    "open_copy": "http://www.chemsep.org/downloads/docs/book2.pdf",
+    "access": "Public domain ('This publication is public domain', p. 2 of the PDF); read 2026-10-29",
+    "tables": "Figures 1.18, 1.19, 1.20 and 1.21 (screenshots of ChemSep's result tables; the numbers are read off the images, which are sharp text, not graphs)",
+    "source_id": "kooijman-taylor-2006-chemsep-book"
+  },
+  "method_choice": "docs/METHOD_SELECTION.md rules 2 and 6: benzene and toluene are nonpolar hydrocarbons, so Peng-Robinson for both phases (the maintainer, 2026-10-29), at any reduced temperature (here 0.62 to 0.67 by Kay's rule). The databank has no Peng-Robinson k_ij for the pair: k_ij = 0, and CHEPTA says so in a warning. The published example uses an activity model instead, K = gamma p*/P with UNIFAC and ChemSep's Antoine equations and constant molar overflow (p. 13); the pair is nearly ideal (infinite-dilution activity coefficients about 0.98 with NRTL), so the method matters little (METHOD_SELECTION.md, rule 6).",
+  "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+  },
+  "components": [
+    "benzene",
+    "toluene"
+  ],
+  "pressure_kPa": 111.4575,
+  "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 5,
+      "flow_mol_s": 11.7471,
+      "z": [
+        0.5,
+        0.5
+      ],
+      "q": 1
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 2.0
+    },
+    {
+      "kind": "bottoms_flow_mol_s",
+      "value": 5.874
+    }
+  ],
+  "setup_from_source": {
+    "pressure": "1.1 atm in every stage and the condenser, no pressure drop (pp. 14-15); ChemSep shows 1.11458 bar. 1.1 x 101.325 kPa = 111.4575 kPa",
+    "feed": "saturated liquid (vapour fraction 0) at the column pressure, equimolar, 1 kg/s 'corresponds to 11.7471 mol/s' (p. 14); on stage 5 of 10 (p. 11)",
+    "column": "simple distillation, total condenser, partial reboiler, 10 stages counted with both (the condenser is stage 1, the reboiler stage 10: Figure 1.19), Murphree efficiency 1, no heat loss (p. 16)",
+    "specifications": "reflux ratio 2 and bottoms flow 5.874 mol/s (p. 17)",
+    "property_method_of_the_source": "DECHEMA K-model (K = gamma p*/P), UNIFAC activity coefficients, Antoine vapour pressures from ChemSep's databank, enthalpy model 'none' (constant molar overflow) (p. 13); solved to ChemSep's default accuracy of 1e-3 (p. 18)"
+  },
+  "published": {
+    "units": "T in degC, flows in mol/s, mole fractions of benzene",
+    "stages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "T_C": [
+      84.9813,
+      87.211,
+      90.1329,
+      93.2968,
+      96.1318,
+      98.5414,
+      101.669,
+      105.092,
+      108.23,
+      110.688
+    ],
+    "L_mol_s": [
+      11.7462,
+      11.7462,
+      11.7462,
+      11.7462,
+      23.4933,
+      23.4933,
+      23.4933,
+      23.4933,
+      23.4933,
+      null
+    ],
+    "V_mol_s": [
+      null,
+      17.6193,
+      17.6193,
+      17.6193,
+      17.6193,
+      17.6193,
+      17.6193,
+      17.6193,
+      17.6193,
+      17.6193
+    ],
+    "x_benzene": [
+      0.925473,
+      0.826416,
+      0.706363,
+      0.586978,
+      0.488109,
+      0.409455,
+      0.314039,
+      0.217372,
+      0.135155,
+      0.074592
+    ],
+    "y_benzene": [
+      0.97095,
+      0.925473,
+      0.859435,
+      0.779399,
+      0.69981,
+      0.625969,
+      0.521093,
+      0.393866,
+      0.264972,
+      0.155345
+    ],
+    "K_benzene": [
+      1.07974,
+      1.1506,
+      1.24184,
+      1.34184,
+      1.43502,
+      1.53208,
+      1.67021,
+      1.82865,
+      1.97395,
+      2.08334
+    ],
+    "reflux_ratio": 2,
+    "boilup_ratio": 2.99954,
+    "feed_T_C": 95.78,
+    "D_mol_s": 5.8731,
+    "B_mol_s": 5.874,
+    "d_mol_s": [
+      5.4354,
+      0.437703
+    ],
+    "b_mol_s": [
+      0.438153,
+      5.43585
+    ],
+    "x_D": [
+      0.925473,
+      0.0745268
+    ],
+    "x_B": [
+      0.074592,
+      0.925408
+    ],
+    "where": {
+      "T_C, L_mol_s, V_mol_s, reflux_ratio, boilup_ratio, D_mol_s, B_mol_s": "Figure 1.19 (p. 19); L of stage 10 is shown as 'BR=2.99954', V of stage 1 as 'RR=2'",
+      "x_benzene, y_benzene, K_benzene": "Figure 1.20 (p. 20); y of stage 1 (0.97095) is the vapour in equilibrium with the condenser's liquid, not a stream: the condenser is total",
+      "feed_T_C, d_mol_s, b_mol_s, x_D, x_B": "Figure 1.21 (p. 20)",
+      "balances": "Figure 1.18 (p. 19): overall 4.6568E-07 mol/s, benzene 1.5461E-06, toluene 9.8144E-08"
+    },
+    "text": "p. 19: the temperatures 'vary from 85 degC in the condenser to 111 degC in the reboiler'; p. 20: benzene 'condensing at 92 mole%'; p. 23: the relative volatility 'varies from 2.25 in the reboiler to 2.6 in the condenser'; p. 24: the vapour flows are constant and the liquid flows jump at the feed stage (constant molar overflow)",
+    "notes": "The K column of Figure 1.20 is not y/x of the same figure: y/x is 0.03 % to 2.8 % below it, most at the top (stage 1: y/x = 1.0491, K = 1.07974). The x and y columns are consistent with the flows of Figure 1.19 through the operating lines (test/benchmark-columns.test.js), so x, y, T and the flows are compared and the K column is shown only."
+  },
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "the engine, on CHEPTA's method (Peng-Robinson for both phases, k_ij = 0, energy balances), matches reference_mesh.py within the numerical tolerances",
+      "the engine's profile agrees with the published one within the agreement tolerances (agreement_with_published_example)",
+      "the molar flows are nearly, not exactly, constant: CHEPTA solves energy balances where the published example assumes constant molar overflow"
+    ],
+    "branch": "One solution expected (a near-ideal binary with reflux-ratio and bottoms-flow specifications): the reference's solution is the one to match.",
+    "qualifications": [
+      "the Peng-Robinson pair benzene + toluene has no k_ij in the databank: k_ij = 0 is used, and the warning reaches the result's qualifications (src/thermo/eos/system.js)"
+    ]
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    },
+    "agreement_with_published_example": {
+      "T_K_absolute": 1.0,
+      "mole_fractions_absolute": 0.02,
+      "applies_to": "T and the benzene mole fraction x of each of the ten stages, and x_D and x_B",
+      "why": "The published numbers come from another property method (UNIFAC and ChemSep's Antoine equations, constant molar overflow) solved to a norm of 1e-3, so they are not a numerical reference. CHEPTA's method (Peng-Robinson, k_ij = 0) gives, in reference_mesh.py, at most 0.85 K and 0.018 from them (0.73 K and 0.013 with constant molar overflow; fixture checks.published); NRTL with the ChemSep set gave 0.37 K and 0.0059. The tolerances, chosen by W7 after that comparison for the maintainer to confirm, are a little above the Peng-Robinson differences, so a change in CHEPTA's records or in the engine that moves the column more is seen. They state agreement between two property methods, not the accuracy of either against measured data."
+    }
+  }
+}
