@@ -4,7 +4,8 @@ import { s, h, text, ticks, svgPoint, tempUnit, fmt, basisView } from "./dom.js"
 /**
  * T-x-y diagram for a binary system at pressure P (kPa).
  * Draws the bubble (liquid) and dew (vapour) curves, a hover tie line, and a readout.
- * view: { basis: "mole"|"mass", MW: number[], T: "C"|"K" (display unit, default °C) }.
+ * view: { basis: "mole"|"mass", MW: number[], T: "C"|"K" (display unit, default °C), compact: a smaller drawing for
+ * narrow containers, so its text stays readable (11 px or more on a phone) }.
  * The composition axis is drawn in the chosen basis (mole fraction or wt %).
  * Works with any system that has bubbleT (activity models and equations of state); points
  * where the bubble point is not found are left out, and the readout says how many.
@@ -27,7 +28,8 @@ export function renderTxy(plot, side, sys, P, view = {}) {
   const ok = data.filter(Boolean);
   if (ok.length < 2) throw firstError ?? new Error("No bubble point found.");
   const W1 = x1 => bv.conv([x1, 1 - x1])[0];   // mole fraction of component 1 -> display basis
-  const W = 560, H = 380, L = 56, R = 16, T = 16, B = 44;
+  const W = view.compact ? 400 : 560, H = view.compact ? 320 : 380, L = 56, R = 16, T = 16, B = 44;
+  const fs = view.compact ? 14 : 12;
   const Tmin = Math.min(...ok.map(d => d.T)), Tmax = Math.max(...ok.map(d => d.T));
   const pad = Math.max(1, (Tmax - Tmin) * 0.06);
   const yt = ticks(C(Tmin - pad), C(Tmax + pad), 6);
@@ -39,12 +41,12 @@ export function renderTxy(plot, side, sys, P, view = {}) {
   const bg = s("g", { class: "fug-bg-layer" }, svg);
   for (let v = y0; v <= y1 + 1e-9; v += yt.step) {
     s("line", { x1: L, x2: W - R, y1: sy(v), y2: sy(v), stroke: "var(--fug-rule)" }, bg);
-    text(svg, L - 8, sy(v) + 4, +v.toFixed(2), { "text-anchor": "end", "font-size": 12 });
+    text(svg, L - 8, sy(v) + 4, +v.toFixed(2), { "text-anchor": "end", "font-size": fs });
   }
-  for (const v of [0, 0.2, 0.4, 0.6, 0.8, 1]) text(svg, sx(v), H - B + 18, bv.tick(v), { "text-anchor": "middle", "font-size": 12 });
+  for (const v of [0, 0.2, 0.4, 0.6, 0.8, 1]) text(svg, sx(v), H - B + 18, bv.tick(v), { "text-anchor": "middle", "font-size": fs });
   s("line", { x1: L, x2: W - R, y1: H - B, y2: H - B, stroke: "var(--fug-muted)" }, svg);
-  text(svg, (L + W - R) / 2, H - 6, `x, y  ${sys.names[0]} (${bv.axis})`, { "text-anchor": "middle", fill: "var(--fug-fg2)", "font-size": 12 });
-  text(svg, 14, (T + H - B) / 2, `T, ${tl}`, { "text-anchor": "middle", fill: "var(--fug-fg2)", "font-size": 12, transform: `rotate(-90 14 ${(T + H - B) / 2})` });
+  text(svg, (L + W - R) / 2, H - 6, `x, y  ${sys.names[0]} (${bv.axis})`, { "text-anchor": "middle", fill: "var(--fug-fg2)", "font-size": fs });
+  text(svg, 14, (T + H - B) / 2, `T, ${tl}`, { "text-anchor": "middle", fill: "var(--fug-fg2)", "font-size": fs, transform: `rotate(-90 14 ${(T + H - B) / 2})` });
 
   // spinodal check: shade compositions where the liquid would split
   for (const d of ok) d.stable = sys.isLiquidStable([d.x, 1 - d.x], d.T, P);
@@ -52,7 +54,7 @@ export function renderTxy(plot, side, sys, P, view = {}) {
   if (unstable.length) {
     const x0 = W1(Math.min(...unstable.map(d => d.x))), x1 = W1(Math.max(...unstable.map(d => d.x)));
     s("rect", { x: sx(x0), y: T, width: Math.max(2, sx(x1) - sx(x0)), height: H - B - T, fill: "var(--fug-err-bg)", opacity: 0.9 }, bg);
-    text(bg, (sx(x0) + sx(x1)) / 2, T + 14, "two liquids", { "text-anchor": "middle", fill: "var(--fug-err-fg)", "font-size": 12 });
+    text(bg, (sx(x0) + sx(x1)) / 2, T + 14, "two liquids", { "text-anchor": "middle", fill: "var(--fug-err-fg)", "font-size": fs });
   }
 
   // one path per run of solved points (a gap where the bubble point was not found)

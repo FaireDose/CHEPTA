@@ -45,6 +45,8 @@ export function tickLabel(v, step) {
 export function drawPlot(plot, { compact, series, xLabel, yLabel, log, show, x0, x1, aria, y: yRange, labels: labelMode = "end", onPick }) {
   const W = compact ? 400 : 600, H = compact ? 320 : 360, R = labelMode === "top" ? 24 : 60, T = labelMode === "top" ? 44 : 14, B = 42;
   let L = 58;
+  // text in drawing units: a compact drawing is shown on a phone at about 340 px, so 13 units are 11 px (docs/UI_GUIDE.md)
+  const fTick = compact ? 13 : 11, fAxis = compact ? 14 : 12;
   const all = series.flatMap(sr => sr.segments.flatMap(g => g.points.map(pt => pt.y))).filter(v => Number.isFinite(v) && (!log || v > 0));
   let y0 = yRange ? yRange[0] : Math.min(...all), y1 = yRange ? yRange[1] : Math.max(...all);
   let yt;
@@ -58,7 +60,7 @@ export function drawPlot(plot, { compact, series, xLabel, yLabel, log, show, x0,
   }
   // room for the longest tick label left of the axis
   const longest = Math.max(...yt.values.map(v => tickLabel(v, yt.step).length));
-  L = Math.max(L, 26 + 6.7 * longest);
+  L = Math.max(L, 26 + 6.7 * fTick / 11 * longest);
   const xt = ticks(x0, x1, compact ? 4 : 6);
   const sx = v => L + (v - x0) / (x1 - x0 || 1) * (W - L - R);
   const sy = log ? v => H - B - (Math.log(v) - Math.log(y0)) / (Math.log(y1) - Math.log(y0)) * (H - T - B)
@@ -73,16 +75,16 @@ export function drawPlot(plot, { compact, series, xLabel, yLabel, log, show, x0,
   }
   for (const v of yt.values) {
     if (v < y0 - 1e-12 * Math.abs(y0) || v > y1 + 1e-12 * Math.abs(y1)) continue;
-    text(svg, L - 6, sy(v) + 4, tickLabel(v, yt.step), { "text-anchor": "end", "font-size": 11 });
+    text(svg, L - 6, sy(v) + 4, tickLabel(v, yt.step), { "text-anchor": "end", "font-size": fTick });
   }
   for (const v of xt.values) {
     if (v < x0 - 1e-9 || v > x1 + 1e-9) continue;
     s("line", { x1: sx(v), x2: sx(v), y1: H - B, y2: H - B + 4, stroke: "var(--fug-muted)" }, svg);
-    text(svg, sx(v), H - B + 17, tickLabel(v, xt.step), { "text-anchor": "middle", "font-size": 11 });
+    text(svg, sx(v), H - B + 17, tickLabel(v, xt.step), { "text-anchor": "middle", "font-size": fTick });
   }
   s("line", { x1: L, x2: W - R, y1: H - B, y2: H - B, stroke: "var(--fug-muted)" }, svg);
-  text(svg, (L + W - R) / 2, H - 6, xLabel, { "text-anchor": "middle", fill: "var(--fug-fg2)", "font-size": 12 });
-  text(svg, 13, (T + H - B) / 2, yLabel, { "text-anchor": "middle", fill: "var(--fug-fg2)", "font-size": 12, transform: `rotate(-90 13 ${(T + H - B) / 2})` });
+  text(svg, (L + W - R) / 2, H - 6, xLabel, { "text-anchor": "middle", fill: "var(--fug-fg2)", "font-size": fAxis });
+  text(svg, 13, (T + H - B) / 2, yLabel, { "text-anchor": "middle", fill: "var(--fug-fg2)", "font-size": fAxis, transform: `rotate(-90 13 ${(T + H - B) / 2})` });
 
   const inY = v => Number.isFinite(v) && (!log || v > 0);
   const labels = [];

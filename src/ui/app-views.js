@@ -164,7 +164,7 @@ function aboutRows(state, sys, conditions = []) {
 // T-x-y and ternary: the existing renderers
 
 function vleView(view, ctx) {
-  const { state, plot, side, notes, extra } = ctx;
+  const { state, plot, side, notes, extra, compact } = ctx;
   const av = { use: state.components };
   const opts = setsFor(state, state.model);
   let sys;
@@ -172,7 +172,7 @@ function vleView(view, ctx) {
   for (const k of onDefaults(sys) ? knownIssuesFor(sys.ids, sys.model) : []) {
     notes.append(warning(`${k.message} Reference: ${k.reference}.`, { title: `Known deviation (${modelName(k.model)}): ${summaryOf(k.message)}` }));
   }
-  const look = { basis: state.basis, MW: sys.ids.map(id => pure(id, own(state)).MW), T: state.units.T };
+  const look = { basis: state.basis, MW: sys.ids.map(id => pure(id, own(state)).MW), T: state.units.T, compact };
   const drawn = view === "txy" ? renderTxy(plot, side, sys, state.P_kPa, look)
     : renderTernary(plot, side, sys, state.P_kPa, {
       ...look, residueCurves: state.residueCurves, isotherms: state.isotherms, grid: state.grid,

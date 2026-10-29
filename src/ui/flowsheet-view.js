@@ -288,7 +288,7 @@ export function flowsheetRibbon({ state, set, ui, group, smallButton }) {
         h("button", { type: "button", role: "menuitem", class: "fa-menu-item", "data-fk": `fs-add-${t}`, title: HINT[t],
           on: { click: () => { f.reactorMenu = false; place(t)(); } } }, h("b", {}, LABEL[t]), h("span", {}, REACTOR_LINE[t])))) : null);
     })(), (() => {
-      const b = iconBtn({ ico: "lock", label: `Coming later: ${COMING.map(c => `${c.label} (${c.note})`).join("; ")}`, fk: "fs-soon", disabled: true, onClick: () => {} });
+      const b = smallButton({ ico: "lock", label: "Later", title: COMING.map(c => `${c.label}: ${c.note}`).join("; "), fk: "fs-soon", disabled: true, onClick: () => {} });
       b.classList.add("is-locked");
       return b;
     })())),
@@ -1284,7 +1284,7 @@ export function flowsheetView(ctx) {
         qg.append(svgEl("path", { d, class: "fs-hit" }), ln, qtip);
         if (!placed) {
           const qt = svgEl("text", { x: x1 - 4, y: y1 + 4, class: "fs-qlabel", "text-anchor": "end" });
-          qt.textContent = q == null ? name : `${name} ${q >= 0 ? "+" : "−"}${kWText(Math.abs(q), u, 4)}`;
+          qt.textContent = q == null ? name : `${name} ${sign(q)}${kWText(Math.abs(q), u, 4)}`;
           qg.append(qt);
         }
         g.append(qg);
@@ -1519,7 +1519,10 @@ function reactionList(fs, rx) {
 }
 
 /** A duty or heat flow (kW in the engine) in the unit of Settings. */
-const kWText = (v, u, d = 5) => `${fmtShort(dutyToDisplay(v, u), d)} ${u.duty ?? "kW"}`;
+// a duty below 1 mW is the solver's round-off (an adiabatic drum's 7e-9 kW): shown as 0 (docs/UI_GUIDE.md, Tables)
+const zeroed = v => (Math.abs(v) < 1e-6 ? 0 : v);
+const sign = v => (zeroed(v) > 0 ? "+" : zeroed(v) < 0 ? "−" : "");
+const kWText = (v, u, d = 5) => `${fmtShort(dutyToDisplay(zeroed(v), u), d)} ${u.duty ?? "kW"}`;
 
 function kvList(rows) {
   return h("table", { class: "fa-kv" }, h("tbody", {}, ...rows.filter(Boolean).map(([k, v]) =>
@@ -1672,7 +1675,7 @@ function streamTable({ fs, res, u, state }) {
     qs.length ? h("table", { class: "fa-table" }, h("thead", {}, h("tr", {}, h("th", {}, "Stream"), h("th", {}, "Block"), h("th", {}, "Kind"), h("th", { class: "fug-num" }, u.duty ?? "kW"))),
       h("tbody", {}, ...qs.map(q => h("tr", {}, h("th", { scope: "row" }, q.id), h("td", {}, q.from ? `${q.from} → ${q.to}` : q.block),
         h("td", {}, q.kind === "work" ? "work" : q.internal ? "heat between blocks" : q.from === null ? "energy feed" : fs.blocks.find(b => b.id === q.block)?.energy === false ? "heat (not drawn)" : "heat"),
-        h("td", { class: "fug-num" }, `${q.duty_kW >= 0 ? "+" : "−"}${fmtShort(dutyToDisplay(Math.abs(q.duty_kW), u), 5)}`))))) : null,
+        h("td", { class: "fug-num" }, `${sign(q.duty_kW)}${fmtShort(dutyToDisplay(Math.abs(zeroed(q.duty_kW)), u), 5)}`))))) : null,
     h("p", { class: "fug-foot" }, "Duty: + heat into the block, − heat out; between two blocks, the heat the first gives up and the second takes. The power of a pump, compressor or expander is work (an expander's is negative: it gives power). Enthalpy reference: each component as an ideal gas at 298.15 K."));
 }
 
