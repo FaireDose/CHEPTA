@@ -61,9 +61,10 @@
  *    equation of state). A stage where a second liquid would form is refused (PHASE_SPLIT), never returned as a
  *    metastable one-liquid answer (contract 3); two liquids on the stages come with milestone M2b;
  *  - the dry-stage warning (DRY_STAGE): a stage between the condenser and the reboiler whose liquid falls below
- *    DRY_FRACTION of the column's largest vapour flow, or a stage below the condenser whose vapour falls below
- *    DRY_FRACTION of the largest liquid flow. The 1 % is this project's choice; W7's case D1 holds for any threshold
- *    between 0.001 and 2/3.
+ *    DRY_FRACTION (1 %) of the column's largest vapour flow (this project's choice, no open source found; W7's case D1
+ *    holds for any threshold between 0.001 and 2/3), or a stage below the condenser whose vapour falls below 1/TURNDOWN
+ *    of the column's largest vapour flow (the bubble-cap turndown of 5 in the open source cited at TURNDOWN). The
+ *    hydraulic checks with the trays' geometry (flooding, weeping) come with milestone M2b.
  *
  * The thermodynamics reach the engine as an adapter (`thermo`), built from the flowsheet's system by cascadeThermo(sys)
  * or written directly for a model system (test/columns-rigorous.test.js): { n, names, lnK(x, y, T), hL(x, T),
@@ -78,8 +79,14 @@ export const CASCADE_PHASES = Object.freeze(["VL", "LL", "VLL"]);
 /** The specifications of milestone M2a, and those that come later (M4). */
 export const CASCADE_SPECS = Object.freeze(["reflux_ratio", "boilup_ratio", "distillate_rate", "bottoms_rate", "condenser_duty", "reboiler_duty"]);
 const LATER_SPECS = ["distillate_purity", "bottoms_purity", "recovery"];
-/** The dry-stage threshold: a flow below this fraction of the column's largest flow of the other phase. */
+/** The dry-stage threshold of the liquid: below this fraction of the column's largest vapour flow (this project's
+ *  choice: no open source gives one for equilibrium stages without the trays' geometry). */
 export const DRY_FRACTION = 0.01;
+/** The vapour's: the largest turndown ratio of the open source, 5 for bubble-cap trays (sieve 2, valve 4; M. Fermeglia,
+ *  "Staged column design", Separation Processes, University of Trieste, 2021, slide 54, free to read: the ratio of the
+ *  largest vapour flow, at flooding, to the smallest, at excessive weeping). A stage below 1/5 of the column's largest
+ *  vapour flow is outside even that range if the column has one diameter. */
+export const TURNDOWN = 5;
 /** J/mol: the energy residuals are divided by F times this, as W7's reference does. */
 export const H_SCALE = 1e4;
 /** The largest change of the logarithm of a component flow in one Newton step (a factor of e^5, about 150). */
@@ -419,10 +426,13 @@ export function solveCascade(opts = {}) {
       if (!(best.nw < nr)) { stalls += 1; if (stalls > 4) return { u, P, iterations: it, converged: false, why: "the residual stopped falling" }; } else stalls = 0;
       u = best.w; P = best.Pw; nr = best.nw;
     }
-    return { u, P, iterations: it, converged: false, why: `${maxIt} iterations were not enough` };
+    return { u, P, iterations: it, converged: false, why: maxIt === cap ? `it stopped at its iteration limit (maxIterations = ${cap})` : `${maxIt} iterations were not enough` };
   }
 
-  // ---- the start
+  // ---- the start; maxIterations (optional) caps the Newton iterations of every attempt, and a column that reaches it
+  // is not converged (W7's case E4)
+  const cap = opts.maxIterations == null ? Infinity : Number(opts.maxIterations);
+  if (!(cap >= 1 && Number.isInteger(cap) || cap === Infinity)) throw fail("BAD_INPUT", `Column: maxIterations must be a whole number of 1 or more (got ${JSON.stringify(opts.maxIterations)}).`);
   const tried = [], clock = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
   let t0 = clock();
   const took = () => { const t = clock(), d = t - t0; t0 = t; return `${Math.round(d)} ms`; };
@@ -430,7 +440,7 @@ export function solveCascade(opts = {}) {
   const startU = opts.start && Array.isArray(opts.start.stages) && opts.start.stages.length === N && opts.start.stages.every(s => s.l?.length === n && s.v?.length === n)
     ? Float64Array.from(opts.start.stages.flatMap(s => [...s.l.map(a => a * 1), ...s.v, s.T_K])) : null;
   if (startU) {
-    const r = newton(startU, { dTmax: 20, maxIt: 40 });
+    const r = newton(startU, { dTmax: 20, maxIt: Math.min(40, cap) });
     tried.push(`Newton from the previous solution (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
     if (r.converged) result = { ...r, start: "previous solution" };
   }
@@ -438,13 +448,13 @@ export function solveCascade(opts = {}) {
   if (!result && !(opts.homotopy && startU)) {
     for (const a of [{ dTmax: 20, maxIt: 50, patient: true }]) {
       cold ??= bubblePointStart(th, inp, fJ, HF);
-      const r = newton(cold.u, a);
+      const r = newton(cold.u, { ...a, maxIt: Math.min(a.maxIt, cap) });
       tried.push(`Newton from the bubble-point start, steps of at most ${a.dTmax} K (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
       if (r.converged) { result = { ...r, start: "bubble-point method (Wang-Henke)" }; break; }
       cold.last = r;
     }
   }
-  if (!result && !opts.homotopy) {
+  if (!result && !opts.homotopy && cap === Infinity) {
     // continuation: a column whose components all have the same volatility (ln K_i replaced by its mean over the
     // components) is solved first, and the differences are brought back in steps, each solve started from the last.
     // Long columns with very pure products need it: their equations are nearly singular, and Newton from the
@@ -473,8 +483,8 @@ export function solveCascade(opts = {}) {
       const split = last.P.map((p, j) => j).filter(j => { try { return !th.stable(last.P[j].x, last.P[j].T).stable; } catch { return false; } });
       if (split.length) hint += ` On the last iterate the liquid of stage${split.length > 1 ? "s" : ""} ${split.map(j => j + 1).join(", ")} would split into two liquids: the column may hold two liquids there, which this column (one liquid, milestone M2a) does not represent; two liquids on the stages come with milestone M2b.`;
     }
-    throw fail("NO_CONVERGENCE", `Column: the rigorous column did not converge. Tried: ${tried.join("; ")}.${g ? ` Last residuals: material ${fmt(g.material)} mol/s, equilibrium ${fmt(g.equilibrium)}, energy ${fmt(g.energy)} W, specifications ${fmt(g.specifications)}.` : ""}${hint} This does not show that the column has no solution: try other specifications (a larger reflux, another product flow), more stages, or another feed stage.`,
-      { tried, residuals: g });
+    throw fail("NO_CONVERGENCE", `Column: the rigorous column did not converge. Tried: ${tried.join("; ")}.${g ? ` Last residuals: material ${fmt(g.material)} mol/s, equilibrium ${fmt(g.equilibrium)}, energy ${fmt(g.energy)} W, specifications ${fmt(g.specifications)}.` : ""}${hint} This does not show that the column has no solution: ${cap < Infinity ? "raise the iteration limit, or " : ""}try other specifications (a larger reflux, another product flow), more stages, or another feed stage.`,
+      { tried, residuals: g, tolerances: { ...limits, units: { material: "mol/s", energy: "W", equilibrium: "mole fraction", summation: "mole fraction", specifications: "relative" } } });
   }
 
   // ---- the solution
@@ -496,16 +506,16 @@ export function solveCascade(opts = {}) {
     }
   }
   const warnings = [];
-  const Vmax = Math.max(...P.map((p, j) => (j === 0 && total ? 0 : p.V))), Lmax = Math.max(...P.map(p => p.L));
+  const Vmax = Math.max(...P.map((p, j) => (j === 0 && total ? 0 : p.V)));
   const dryL = P.map((p, j) => j).filter(j => j > 0 && j < N - 1 && P[j].L < DRY_FRACTION * Vmax).map(j => j + 1);
-  const dryV = P.map((p, j) => j).filter(j => j > 0 && P[j].V < DRY_FRACTION * Lmax).map(j => j + 1);
+  const dryV = P.map((p, j) => j).filter(j => j > 0 && P[j].V < Vmax / TURNDOWN).map(j => j + 1);
   if (dryL.length) {
     warnings.push({ code: "DRY_STAGE", stage: dryL[0], stages: dryL, message: `Stage${dryL.length > 1 ? "s" : ""} ${dryL.join(", ")} run${dryL.length > 1 ? "" : "s"} dry: the liquid leaving ${dryL.length > 1 ? "them is" : "it is"} ${fmt(Math.min(...dryL.map(k => P[k - 1].L)) / Vmax * 100)} % of the column's largest vapour flow (below ${DRY_FRACTION * 100} %). The usual cause: too low a reflux, or a feed that is all vapour.`,
       remedy: "Raise the reflux ratio (or the condenser duty), or feed the column with more liquid." });
   }
   if (dryV.length) {
-    warnings.push({ code: "DRY_STAGE", stage: dryV[0], stages: dryV, phase: "vapour", message: `Stage${dryV.length > 1 ? "s" : ""} ${dryV.join(", ")} carr${dryV.length > 1 ? "y" : "ies"} almost no vapour: ${fmt(Math.min(...dryV.map(k => P[k - 1].V)) / Lmax * 100)} % of the column's largest liquid flow (below ${DRY_FRACTION * 100} %). The usual cause: too low a boil-up, or a cold feed.`,
-      remedy: "Raise the boil-up (the reboiler duty), or preheat the feed." });
+    warnings.push({ code: "DRY_STAGE", stage: dryV[0], stages: dryV, phase: "vapour", message: `Stage${dryV.length > 1 ? "s" : ""} ${dryV.join(", ")} carr${dryV.length > 1 ? "y" : "ies"} little vapour: ${fmt(Math.min(...dryV.map(k => P[k - 1].V)) / Vmax * 100)} % of the column's largest vapour flow, below 1/${TURNDOWN}, the turndown of bubble-cap trays (sieve trays 1/2, valve trays 1/4; Fermeglia 2021, slide 54). With one diameter for the whole column, ${dryV.length > 1 ? "these trays" : "this tray"} would weep. The usual cause: too low a boil-up, or a cold feed.`,
+      remedy: "Raise the boil-up (the reboiler duty), preheat the feed, or give this section a smaller diameter; the check with the trays' geometry comes with milestone M2b." });
   }
   const notes = [...new Set(P.flatMap(p => (th.warnings ? th.warnings(p.T) : [])))];
   const stages = P.map((p, j) => ({

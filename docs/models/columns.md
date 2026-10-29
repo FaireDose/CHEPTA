@@ -90,7 +90,11 @@ read 2026-10-29):
 **Solved means** every group of residuals within its tolerance, given with the result (`state.residuals`,
 `state.tolerances`, and `checks.columns` through the request path): material 1e-10 of the total feed (mol/s), energy
 1e-10 of the feed times 10 kJ/mol (W), equilibrium and summation 1e-10 in mole fraction, the specifications 1e-10
-relative. Converged is not validated against data.
+relative. Converged is not validated against data. The maintainer kept 1e-10 (2026-10-29): measured against 1e-8 on
+B1, B2, B3 and P1 it costs at most one Newton step and no measurable time (Newton's method squares the error each
+step), the flowsheet checks every block's material balance to 1e-9 of its flow (the column's overall balance is the sum
+of its stages' errors), and W7's case E4 needs it. An optional `max_iterations` (the engine's `maxIterations`) limits
+the Newton iterations; a column that reaches it is not converged (E4).
 
 **What the engine refuses, and what it warns:**
 
@@ -98,7 +102,8 @@ relative. Converged is not validated against data.
 |---|---|
 | a second liquid on a stage (Michelsen's tangent-plane test of each stage's liquid, after convergence) | refuses (`PHASE_SPLIT`, outcome "unsupported"), naming the stages and the liquid that splits off; two liquids on the stages come with M2b |
 | the solver does not converge | `NO_CONVERGENCE` (outcome "not_converged"), with what it tried, the last residuals by group, a hint where constant molar overflow gives no boil-up (W7's E2) or where the last iterate holds two liquids; never a statement that the column has no solution |
-| a stage's liquid below 1 % of the column's largest vapour flow (stages 2 to N − 1), or a stage's vapour below 1 % of the largest liquid flow | warns `DRY_STAGE`, with the stages, the cause and the remedy (W7's D1: stages 2 to 5); the 1 % is this project's choice |
+| a stage's liquid below 1 % of the column's largest vapour flow (stages 2 to N − 1) | warns `DRY_STAGE`, with the stages, the cause and the remedy (W7's D1: stages 2 to 5); the 1 % is this project's choice: no open source gives a threshold for equilibrium stages without the trays' geometry (searched 2026-10-29) |
+| a stage's vapour below 1/5 of the column's largest vapour flow (stages 2 to N) | warns `DRY_STAGE` (vapour): outside the turndown of bubble-cap trays, 5 (sieve 2, valve 4; Fermeglia, "Staged column design", University of Trieste, 2021, slide 54), so with one diameter the trays would weep; the maintainer's choice, 2026-10-29. The checks with the trays' geometry (flooding, weeping) come with M2b |
 | a pair without parameters | missing data, the pair named (C1) |
 | purity or recovery specifications, side draws, phases "LL" or "VLL", no reboiler | not built yet: unsupported |
 | nonvolatile components, inert solids, the dimerizing acids' chemical theory | not built yet: unsupported (columns with nonvolatile components are step 7) |
@@ -118,6 +123,16 @@ about 1e-11 (the cases allow 1e-6 in flows, 1e-7 in mole fractions, 1e-5 K); B1 
 |---|---|---|---|---|
 | B1 | ethanol + water, 20, NRTL with an ideal-gas vapour | TOLERANCES (1e-10) | 0.2-0.3 s, 2 Newton iterations | 10 s |
 | four alcohols and water | methanol, ethanol, 1-propanol, water, 40, NRTL | the same | 7.5 s (Newton gives up after 12 iterations, 5.5 s; continuation in 4 steps, 2 s) | 60 s |
+
+W7's M2a cases (`test/columns-rigorous-m2a.test.js`): A4 (two feeds), B2, B3 (acetone + methanol, pinched 0.0012 below
+the model's azeotrope; it needs the continuation) and P1 agree with the reference within the cases' numerical
+tolerances; E4 (one iteration) is not converged; F1 (1-butanol + water) is refused with PHASE_SPLIT on stages 1 and 2,
+the stages the reference finds. **B2, the complete benchmark** (The ChemSep Book, 2nd ed., section 1.2, benzene +
+toluene, 10 stages; public domain): the engine is within 0.373 K and 0.0059 in benzene's mole fraction of the published
+stages (W7's agreement tolerances 0.6 K and 0.01: two property methods, not a check against measured data). **P1** (the
+named performance benchmark: methanol, ethanol, 1-propanol, water; NRTL; 40 stages; phase check on every stage):
+cold start 1.9 s (6 Newton iterations), warm start at R = 3.3 0.6 s (5 iterations), on the development container
+(2026-10-29, Node 22); W9 sets the budget.
 
 The engine's limits: extremely pure products (impurities below about 1e-30, for example 101 stages at five times the
 minimum reflux) may not converge; they are refused as not converged.

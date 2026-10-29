@@ -1,9 +1,9 @@
-# 2026-10-29-08: Proposal 0015, M2a, step 3 (W2): the rigorous column, one liquid
+# 2026-10-29-10: Proposal 0015, M2a, step 3 (W2): the rigorous column, one liquid
 
 The maintainer, 2026-10-29: start W2's next task, milestone M2a, the rigorous vapour-liquid column. Written against
 contracts v1 (ARCHITECTURE.md, "The request path and the contracts of proposal 0015"), on W7's cases and reference
-(docs/decisions/2026-10-29-04-column-cases.md). W7's complete M2a benchmark case was being prepared in parallel and was
-not on main when this pull request was opened; it is run when it lands.
+(docs/decisions/2026-10-29-04-column-cases.md), and W7's M2a cases (docs/decisions/2026-10-29-08-benchmark-column.md,
+pull request #183, merged into this branch).
 
 ## What was done
 
@@ -43,12 +43,26 @@ not on main when this pull request was opened; it is run when it lands.
   box); the reflux changed in the panel, saved (format 6) and reopened with the new profile; a 40-stage column stopped
   with the Stop button ("Stopped from the workbench"); no page errors.
 
-## Choices made here, for the maintainer to confirm or change
+- **W7's M2a cases** (`test/columns-rigorous-m2a.test.js`): A4, B2, B3 and P1 within the reference's tolerances; E4
+  not converged at its iteration limit (the option is `max_iterations` on the block, `maxIterations` in the engine);
+  F1 refused with PHASE_SPLIT on stages 1 and 2. **B2** (The ChemSep Book): within 0.373 K and 0.0059 in benzene's mole
+  fraction of the published stages (W7's agreement tolerances: 0.6 K, 0.01). **P1:** cold 1.9 s, warm 0.6 s.
 
-- **The dry-stage threshold, 1 %** of the column's largest flow of the other phase (W7's D1 holds for any threshold
-  between 0.1 % and 67 %).
-- **The tolerances, 1e-10** by group (W7's cases ask for 1e-8 of the balances; the engine reaches 1e-10 in a few
-  more iterations, which leaves room under the cases' 1e-6 against the reference).
+## Decided by the maintainer (2026-10-29)
+
+- **The dry-stage warning:** "i cannot decide for the 1% threshold because i do not know, look in literature". No open
+  source gives a threshold for equilibrium stages without the trays' geometry (searched: NeqSim's and DWSIM's column
+  documentation and code, open course notes, a web search). The one open number found: typical turndown ratios of
+  trays, sieve 2, valve 4, bubble cap 5 (M. Fermeglia, "Staged column design", University of Trieste, 2021, slide 54;
+  `fermeglia-staged-2021`). Chosen: the vapour of a stage below 1/5 of the column's largest vapour flow is warned
+  (outside even the bubble-cap turndown with one diameter); the liquid below 1 % of the largest vapour flow stays
+  this project's choice, said so in the warning's documentation. The checks with the trays' geometry come with M2b.
+  To check: the slide's Table 6.2 is reproduced from a textbook it does not name.
+- **The tolerances stay 1e-10** ("seems too small, why not 1e-9, 1e-8"): measured on B1, B2, B3 and P1, 1e-8 saves
+  at most one Newton step and no measurable time; the flowsheet checks each block's material balance to 1e-9 of its
+  flow; and at 1e-8 W7's case E4 would converge in its one iteration.
+
+## Choices made here, for the maintainer to confirm or change
 - **The continuation in the relative volatilities**, after Newton from the bubble-point start gives up (no thousandfold
   fall of the residual in 12 iterations): this project's choice of a continuation method, not taken from a source.
 - **Specifications per end:** a specification is written on the end whose variables it holds (the reflux ratio and the

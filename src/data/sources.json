@@ -1012,6 +1012,18 @@
         "validation/python/reference_sizing.py"
       ]
     },
+    "fermeglia-staged-2021": {
+      "title": "Staged column design (Separation Processes course slides, 19 April 2021), slide 54: Table 6.2, Comparison of types of trays",
+      "authors": "M. Fermeglia, Department of Engineering and Architecture, University of Trieste",
+      "year": 2021,
+      "kind": "course notes",
+      "url": "https://moodle2.units.it/pluginfile.php/395399/mod_resource/content/1/09_StagedColumnDesign.pdf",
+      "access": "Free to read on the University of Trieste's course site; its constants are taken, cited by slide, not its text or figures",
+      "note": "Typical turndown ratios (largest vapour flow, at flooding, over the smallest, at excessive weeping): sieve trays 2, valve trays 4, bubble-cap trays 5; the table on the slide is reproduced from a textbook the slide does not name. Read 2026-10-29.",
+      "files": [
+        "src/units/columns/engine.js"
+      ]
+    },
     "fernandez2010-ethyl-acetate-n-decane": {
       "title": "Measurements of the Excess Properties and Vapor-Liquid Equilibria at 101.32 kPa for Mixtures of Ethyl Ethanoate + Alkanes (from C5 to C10)",
       "authors": "L. Fernandez, E. Perez, J. Ortega, J. Canosa, J. Wisniak",

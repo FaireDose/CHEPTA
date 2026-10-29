@@ -88,6 +88,17 @@ for (const id of ["A1-binary-alpha", "A3-ternary-partial-condenser", "D1-dry-sta
   });
 }
 
+test("rigorous: a vapour feed leaves the stripping section with less than 1/5 of the column's vapour: DRY_STAGE (vapour), below the bubble-cap turndown", () => {
+  // A1's model column with a saturated-vapour feed: 120 mol/s of vapour above the feed, 20 below it (1/6)
+  const c = caseOf("A1-binary-alpha");
+  const q0 = { ...c, column: { ...c.column, feed: { ...c.column.feed, q: 0 } }, specs: [{ kind: "reflux_ratio", value: 1 }, { kind: "distillate_flow_mol_s", value: 60 }] };
+  const r = alphaColumn(q0);
+  const w = r.warnings.find(x => x.code === "DRY_STAGE" && x.phase === "vapour");
+  assert.deepEqual(w.stages, [7, 8, 9, 10, 11, 12]);
+  assert.match(w.message, /turndown of bubble-cap trays/);
+  assert.ok(!r.warnings.some(x => x.phase !== "vapour"), "the liquid does not run dry");
+});
+
 test("rigorous A2: at 101 stages and the reflux W7's reference found, the light key's recovery is 0.98 (Underwood's R_min check, the other way round)", () => {
   const c = caseOf("A2-ternary-alpha-fug"), fx = fixture.cases["A2-ternary-alpha-fug"], m = fx.checks.rmin_against_rigorous;
   const lam = c.thermo.latent_heat_J_mol, f = c.column.feed;

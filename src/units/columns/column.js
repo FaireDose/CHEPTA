@@ -24,7 +24,9 @@
  *     feed_stage: 10,                                     // or one stage per inlet: [8, 14]
  *     condenser: "total" | "partial",                     // default total
  *     P_kPa: 101.325,                                     // default the (first) feed's pressure; no pressure drop
- *     two of: reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW }
+ *     two of: reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW,
+ *     max_iterations: 50 }                                // optional: a limit on the Newton iterations (none: the
+ *                                                         // solver's own limits, and the continuation if needed)
  *
  * The keys of the other mode are kept (so that a person can switch back) and not used. Several feeds: the rigorous mode
  * only; each enters its stage as one stream. Outlets as the shortcut's; `profile` holds every stage (T, P, L, V, x, y,
@@ -55,7 +57,7 @@ export const COLUMN_MODES = Object.freeze([
 
 const SPEC_KEYS = ["mode", "light_key", "heavy_key", "recovery_light_key_in_distillate", "recovery_heavy_key_in_bottoms", "reflux_ratio",
   "reflux_over_minimum", "condenser", "P_kPa", "distillate_purity", "bottoms_purity",
-  "stages", "feed_stage", "boilup_ratio", "distillate_kmol_h", "bottoms_kmol_h", "condenser_duty_kW", "reboiler_duty_kW"];
+  "stages", "feed_stage", "max_iterations", "boilup_ratio", "distillate_kmol_h", "bottoms_kmol_h", "condenser_duty_kW", "reboiler_duty_kW"];
 /** The rigorous mode's specifications (two of them), and the engine's names for them. */
 const RIGOROUS_SPECS = { reflux_ratio: "reflux_ratio", boilup_ratio: "boilup_ratio", distillate_kmol_h: "distillate_rate",
   bottoms_kmol_h: "bottoms_rate", condenser_duty_kW: "condenser_duty", reboiler_duty_kW: "reboiler_duty" };
@@ -133,6 +135,10 @@ function checkRigorous(spec) {
     return { key: k, kind: RIGOROUS_SPECS[k], value: k.endsWith("_kmol_h") ? v * KMOL_H : k.endsWith("_kW") ? v * 1000 : v };
   });
   const out = { mode: "rigorous", N, feedStages, condenser, specs };
+  if (has(spec, "max_iterations")) {
+    out.maxIterations = Number(spec.max_iterations);
+    if (!(Number.isInteger(out.maxIterations) && out.maxIterations >= 1)) throw fail("BAD_INPUT", `Column: max_iterations must be a whole number of 1 or more (got ${JSON.stringify(spec.max_iterations)}).`);
+  }
   if (has(spec, "P_kPa")) {
     out.P = Number(spec.P_kPa);
     if (!(Number.isFinite(out.P) && out.P > 0)) throw fail("BAD_INPUT", `Column: P_kPa must be a positive number (got ${JSON.stringify(spec.P_kPa)}).`);
@@ -250,7 +256,7 @@ function solveRigorous(sys, feeds, s) {
   const P = s.P ?? feeds[0].P_kPa;
   const r = solveCascade({ sys, P_kPa: P, stages: s.N, ends: { condenser: s.condenser }, phases: "VL",
     feeds: feeds.map((f, k) => ({ stage: s.feedStages[k], flows: f.flows.map(v => v * KMOL_H), H_W: f.H_kW * 1000 })),
-    specs: s.specs.map(({ kind, value }) => ({ kind, value })) });
+    specs: s.specs.map(({ kind, value }) => ({ kind, value })), maxIterations: s.maxIterations });
   const total = s.condenser === "total", N = s.N;
   const kmol = v => v / KMOL_H;
   const d = r.products.distillate.flows.map(kmol), b = r.products.bottoms.flows.map(kmol);
