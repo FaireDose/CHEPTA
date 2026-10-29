@@ -138,6 +138,7 @@ CHEPTA.registerUnit({
   type: "heater", label: "Heater / cooler",
   inlets: [{ port: "in" }],
   outlets: [{ port: "out" }],                 // { port, min, max }: several streams on one port when max > 1
+  specKeys: ["T_K", "duty_kW", "P_kPa"],      // any other key of its spec is refused (BAD_INPUT naming it)
   checkSpec(spec, { sys, outletCount }) { /* normalize, or throw BAD_INPUT naming the problem */ },
   solve({ sys, inlets, spec, outletCount }) {
     // material and energy balances + equilibrium (streams from CHEPTA.stream)

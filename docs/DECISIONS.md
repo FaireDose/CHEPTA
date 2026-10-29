@@ -48,9 +48,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     rigorous column (M2a), when the maintainer says so.
   - **M1, W8 with W9: built, to review** (docs/decisions/2026-10-29-03-cli-mcp-worker.md): the command line, the local
     MCP server, the worker. The first assistant test passed in Claude Code, in the session and on your computer
-    (2026-10-29). Next: W8's next step, the authoring contract: refuse unknown keys in a
-    flowsheet's `thermo` and in a block's `spec` (an assistant's `thermo.method` was ignored without a word), and a
-    missing-pair message that names the request path's remedy (the user's data) instead of `allowMissingPairs`.
+    (2026-10-29).
+  - **W8, the authoring contract, and W9, steadier speed tests: built, to review**
+    (docs/decisions/2026-10-29-09-authoring-contract.md): an unknown key in a flowsheet's `thermo` or in a block's
+    `spec` is refused with the key and the known keys (`invalid_input` with `where` on the request path); the
+    missing-pair message names the user's data and another method first; the speed tests compare the fastest of five
+    timings with the same budgets. To check: each block's list of keys (the decision file), and that the message reads
+    well to a user. Next for W8: the authoring contract and messages of each new block as it lands (the rigorous
+    column, M2a).
   - **W7, M1 done** (2026-10-29; docs/decisions/2026-10-29-04-column-cases.md): nine column cases and the MESH and
     shortcut references, ahead of W2. To check: the tolerances, and the equation forms against DWSIM's source. Next for
     W7: the cases of W2's following tasks (M2a: one complete benchmark), then the benchmark separations' pairs.

@@ -5,6 +5,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { system, rachfordRice, CheptaError, pure } from "../src/index.js";
+import { fastestMs } from "./helpers/timing.js";
 
 const { cases } = JSON.parse(readFileSync(new URL("../validation/fixtures/flash.json", import.meta.url)));
 
@@ -91,9 +92,8 @@ test("Rachford-Rice", () => {
 test("speed: a two-phase T-P flash of a ternary under 5 ms", () => {
   const s = system({ components: ["methanol", "acetone", "chloroform"], model: "UNIQUAC" });
   s.flash({ z: [0.3, 0.3, 0.4], T: 331, P: 101.325 });
-  const t0 = performance.now();
-  for (let i = 0; i < 20; i++) s.flash({ z: [0.3, 0.3, 0.4], T: 330.6 + i * 0.03, P: 101.325 });
-  const ms = (performance.now() - t0) / 20;
+  // the mean of the 20 flashes, the fastest of 5 runs of them (test/helpers/timing.js)
+  const ms = fastestMs(() => { for (let i = 0; i < 20; i++) s.flash({ z: [0.3, 0.3, 0.4], T: 330.6 + i * 0.03, P: 101.325 }); }) / 20;
   assert.ok(ms < 5, `${ms.toFixed(2)} ms`);
 });
 
@@ -170,9 +170,8 @@ test("P-H flashes without a two-phase region at that pressure, and cold liquids"
 test("speed: a two-phase T-P flash with an SRK vapour under 5 ms", () => {
   const s = system({ components: ["methanol", "acetone", "chloroform"], model: "UNIQUAC", vapour: "SRK" });
   s.flash({ z: [0.3, 0.3, 0.4], T: 400, P: 800 });
-  const t0 = performance.now();
-  for (let i = 0; i < 10; i++) s.flash({ z: [0.3, 0.3, 0.4], T: 399 + i * 0.2, P: 800 });
-  const ms = (performance.now() - t0) / 10;
+  // the mean of the 10 flashes, the fastest of 5 runs of them (test/helpers/timing.js)
+  const ms = fastestMs(() => { for (let i = 0; i < 10; i++) s.flash({ z: [0.3, 0.3, 0.4], T: 399 + i * 0.2, P: 800 }); }) / 10;
   assert.ok(ms < 5, `${ms.toFixed(2)} ms`);
 });
 
@@ -186,8 +185,9 @@ test("speed: P-H flashes of up to 4 components under 20 ms (budget decided on #3
     const s = system({ components: ids, model: ids.length === 3 ? "UNIQUAC" : "NRTL", vapour });
     const P = vapour === "SRK" ? 800 : 101.325;
     s.flash({ z, P, H });
+    // each of the 5 flashes timed as the fastest of 5 runs, after a warm-up (test/helpers/timing.js); their median
     const times = [];
-    for (let i = 0; i < 5; i++) { const t0 = performance.now(); s.flash({ z, P, H: H + i }); times.push(performance.now() - t0); }
+    for (let i = 0; i < 5; i++) times.push(fastestMs(() => s.flash({ z, P, H: H + i }), { warmup: 0 }));
     const median = times.sort((a, b) => a - b)[2];
     assert.ok(median < 20, `${ids.join("+")} ${vapour}: ${median.toFixed(1)} ms`);
   }

@@ -61,8 +61,7 @@ function fraction(v, what) {
 }
 
 function checkSpec(spec, { sys }) {
-  const bad = Object.keys(spec).filter(k => !SPEC_KEYS.includes(k));
-  if (bad.length) throw fail("BAD_INPUT", `Column: unknown specification ${bad.map(k => `"${k}"`).join(", ")}. Known: ${SPEC_KEYS.join(", ")}.`);
+  // an unknown key is refused by runUnit and specStatus (specKeys)
   const mode = spec.mode ?? "shortcut";
   if (!COLUMN_MODES.some(m => m.mode === mode)) throw fail("BAD_INPUT", `Column: mode "${mode}" is not one of ${COLUMN_MODES.map(m => m.mode).join(", ")}.`);
   // refused when solved (NOT_AVAILABLE, the outcome "unsupported"), not here: the specification is not wrong, the
@@ -186,6 +185,7 @@ registerUnit({
   inlets: [{ port: "in", label: "feed" }],
   outlets: [{ port: "distillate" }, { port: "bottoms" }],
   modes: COLUMN_MODES,
+  specKeys: SPEC_KEYS,
   checkSpec,
   dof,
   solve({ sys, inlets, spec }) {

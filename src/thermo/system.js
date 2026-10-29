@@ -92,7 +92,7 @@ export function createSystem(cfg) {
   // ---- interaction parameters
   const zeros = () => Array.from({ length: n }, () => new Array(n).fill(0));
   const a = zeros(), b = zeros(), alpha = zeros();
-  const pairs = [], missing = [];
+  const pairs = [], missing = [], missingIds = [];
   for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
     if (model === "ideal") continue;
     if (model === "MOD-UNIFAC-2") {
@@ -102,7 +102,7 @@ export function createSystem(cfg) {
       continue;
     }
     const choice = choosePair(model, ids[i], ids[j], sel, ud?.pairs ?? []);
-    if (!choice) { missing.push([comps[i].name, comps[j].name]); continue; }
+    if (!choice) { missing.push([comps[i].name, comps[j].name]); missingIds.push([ids[i], ids[j]]); continue; }
     const p = choice.chosen.params;
     const [aij, aji, bij, bji] = choice.flipped ? [p.a_ji, p.a_ij, p.b_ji, p.b_ij] : [p.a_ij, p.a_ji, p.b_ij, p.b_ji];
     a[i][j] = aij; a[j][i] = aji; b[i][j] = bij; b[j][i] = bji;
@@ -111,7 +111,10 @@ export function createSystem(cfg) {
   }
   if (missing.length && !cfg.allowMissingPairs) {
     const list = missing.map(m => m.join(" + ")).join("; ");
-    throw fail("MISSING_DATA", `No ${model} parameters for: ${list}. Pass allowMissingPairs: true to treat them as ideal, or add parameters to data/binaries.json.${gasHint}`);
+    const key = ids => `"${ids.join("+")}"`;
+    const keys = missingIds.map(key).join(", ");
+    throw fail("MISSING_DATA", `No ${model} parameters for: ${list}. Add ${missing.length > 1 ? "their" : "the pair's"} ${model} parameters as your own data, with their source (My data; in a project or a request: user_data.pairs[${keys}] = { ${model}: { b_ij, b_ji${model === "NRTL" ? ", alpha" : ""} }, source: { name } }), or choose another method (Modified UNIFAC 2.0 predicts every pair whose groups it has). A program calling system() itself may pass allowMissingPairs: true to treat ${missing.length > 1 ? "these pairs" : "the pair"} as ideal.${gasHint}`,
+      { missing_pairs: missingIds.map(ids => ids.join("+")) });
   }
   // missing pairs: NRTL with zero tau is ideal; UNIQUAC with tau = 1 keeps only the combinatorial term
   let gammas;
