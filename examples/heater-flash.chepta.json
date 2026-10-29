@@ -1,0 +1,23 @@
+{
+  "fugacity_project": 2,
+  "workbench": {
+    "view": "flowsheet"
+  },
+  "flowsheet": {
+    "components": ["ethanol", "water"],
+    "thermo": { "model": "NRTL", "vapour": "ideal" },
+    "blocks": [
+      { "id": "F1", "type": "feed", "x": 0, "y": 160, "spec": { "flow_kmol_h": { "ethanol": 40, "water": 60 }, "T_K": 300, "P_kPa": 101.325 } },
+      { "id": "E1", "type": "heater", "x": 150, "y": 160, "spec": { "T_K": 355 } },
+      { "id": "V1", "type": "flash", "x": 300, "y": 160, "spec": { "P_kPa": 101.325, "duty_kW": 0 } },
+      { "id": "P1", "type": "product", "x": 460, "y": 100 },
+      { "id": "P2", "type": "product", "x": 460, "y": 220 }
+    ],
+    "streams": [
+      { "id": "S1", "from": "F1.out", "to": "E1.in" },
+      { "id": "S2", "from": "E1.out", "to": "V1.in" },
+      { "id": "S3", "from": "V1.vapour", "to": "P1.in" },
+      { "id": "S4", "from": "V1.liquid", "to": "P2.in" }
+    ]
+  }
+}

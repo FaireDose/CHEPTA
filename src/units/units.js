@@ -58,6 +58,11 @@
  * (Σ ξ ΔrH on the basis of the stream enthalpies), extents, conversions, notes }. runUnit then checks, instead of
  * each component's flow: in + generation = out, and the elements (or the mass) of the generation; the energy balance
  * is H_in + duty = H_out + heat_kW. The reactions of the flowsheet reach the blocks in `reactions`.
+ * Unit v2 (proposal 0015, section 9, contract 2): besides its outlets, a block's solve may return `profile` (a list of
+ * stages or points, the shape of the plug-flow reactor's), `warnings` (each { code, message, stage?, remedy }, the
+ * code one of WARNING_CODES: DRY_STAGE, FLOODING, WEEPING), `sizing` (the dimensions it computed and their basis) and
+ * `method` (its own property method, when it has one); runUnit passes them on. A block that returns none of them is
+ * unchanged.
  * Units: K, kPa, kmol/h, kW.
  */
 import { fail } from "../util/errors.js";
@@ -657,7 +662,7 @@ export function specStatus(type, spec = {}, { sys, outletCount, reactions } = {}
  *   separator: default 2), or the number of outlet ports used (flash: 2, or 3 with liquid2)
  * @param {object[]} [args.reactions]  the flowsheet's reactions (src/reactions/reaction.js), for the reactors
  * @returns {{type:string, outlets:object, duty_kW:number, balance:{material:number, energy_kW:number},
- *   notes:string[], state?:object, reaction?:object}}
+ *   notes:string[], state?:object, reaction?:object, sizing?:object, profile?:object[], warnings?:object[], method?:object}}
  */
 export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reactions = [] } = {}) {
   const u = unitType(type);
@@ -702,7 +707,19 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
   }
   const energy_kW = type === "feed" || type === "product" ? 0 : sumH(inList) + r.duty_kW - sumH(outs) - (u.reactive ? r.reaction.heat_kW : 0);
   return { type, outlets: r.outlets, duty_kW: r.duty_kW, balance: { material, energy_kW, ...(elements ? { elements: elements.relative, mass: elements.mass } : {}) },
-    notes: r.notes ?? [], ...(r.state ? { state: r.state } : {}), ...(r.sizing ? { sizing: r.sizing } : {}), ...(u.reactive ? { reaction: r.reaction } : {}) };
+    notes: r.notes ?? [], ...(r.state ? { state: r.state } : {}), ...(r.sizing ? { sizing: r.sizing } : {}), ...(u.reactive ? { reaction: r.reaction } : {}),
+    ...(r.profile ? { profile: r.profile } : {}), ...(r.warnings?.length ? { warnings: checkWarnings(u, r.warnings) } : {}), ...(r.method ? { method: r.method } : {}) };
+}
+
+/** The warning codes a block may return (proposal 0015, section 9, contract 2); a block adds its own code here. */
+export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING"];
+
+/** A block's warnings: each { code, message, stage?, remedy? }, its code one of WARNING_CODES (a bug otherwise). */
+function checkWarnings(u, list) {
+  return list.map(w => {
+    if (!w || !WARNING_CODES.includes(w.code) || typeof w.message !== "string") throw new Error(`Internal: ${u.label} returned a warning without a known code and a message (${JSON.stringify(w)}). Please report this.`);
+    return { code: w.code, message: w.message, ...(w.stage != null ? { stage: w.stage } : {}), ...(w.remedy ? { remedy: w.remedy } : {}) };
+  });
 }
 
 /** The atoms of a component of the system ({C: 2, H: 6, O: 1}), or null without a formula CHEPTA can read. */

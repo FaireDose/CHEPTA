@@ -38,6 +38,7 @@ import { exchangerArea, exchangerApproach, exchangerRating, overallU, serviceU, 
 import { solveFlowsheet, checkFlowsheet, inspectFlowsheet, flowsheetStatus } from "./flowsheet/flowsheet.js";
 import { runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus } from "./flowsheet/document.js";
 import { checkProject, readProject, PROJECT_FORMAT } from "./ui/project.js";
+import { run, capabilities, OUTCOMES, RESULT_FORMAT } from "./api/dispatcher.js";
 import { userDataDoc, readUserDataFile, mergeUserData, userDataPackage, userDataKeys, USER_DATA_FORMAT } from "./ui/user-data-file.js";
 import pkg from "../package.json" with { type: "json" };
 
@@ -69,6 +70,7 @@ export {
   solveFlowsheet, checkFlowsheet, inspectFlowsheet, flowsheetStatus,
   runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus,
   checkProject, readProject, PROJECT_FORMAT,
+  run, capabilities, OUTCOMES, RESULT_FORMAT,
   userDataDoc, readUserDataFile, mergeUserData, userDataPackage, userDataKeys, USER_DATA_FORMAT,
   checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties, formationReference, reactionHeat, reactionRate, rateSpecies, RATE_FORMS, RATE_BASES,
   CheptaError, ERROR_CODES, isCheptaError,

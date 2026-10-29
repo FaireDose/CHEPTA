@@ -118,9 +118,16 @@ function withReactions(d, userData) {
  * @param {object} [userData]  the user's own data (a project's `user_data` is used when not given)
  */
 export function runFlowsheet(input, userData = null) {
+  return flowsheetRun(input, userData).result;
+}
+
+/** runFlowsheet, with the property package it built ({ sys, result }): for the request path (src/api/), which reports
+ *  the method and parameter sets a result was calculated with. */
+export function flowsheetRun(input, userData = null) {
   const isProject = input && typeof input === "object" && "fugacity_project" in input;
   const doc = isProject ? input.flowsheet : input;
   const ud = checkUserData(userData ?? (isProject ? input.user_data : null));
   const d = normalizeFlowsheet(doc, ud);
-  return solveFlowsheet(flowsheetSystem(d, ud), withReactions(d, ud));
+  const sys = flowsheetSystem(d, ud);
+  return { sys, userData: ud, result: solveFlowsheet(sys, withReactions(d, ud)) };
 }
