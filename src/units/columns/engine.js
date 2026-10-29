@@ -44,7 +44,8 @@
  *     pivoting inside the band; the step taken in the logarithms of the component flows (a trace flow can fall by
  *     orders of magnitude without turning negative; at most a factor e^5 per step), limited to 20 K on any stage, and
  *     halved until the scaled residual falls;
- *  3. if Newton fails from the start, once more with steps of at most 5 K; then by continuation: the column is solved
+ *     Newton gives up when its residual has not fallen a thousandfold in PATIENCE iterations;
+ *  3. if Newton fails from the start, by continuation: the column is solved
  *     with every component's ln K replaced by their mean (no separation, an easy column), and the differences are
  *     brought back in steps, each solve started from the previous one (this project's choice of a continuation method;
  *     NeqSim reaches its product specifications in steps too). Long columns with very pure products need it: their
@@ -83,6 +84,8 @@ export const DRY_FRACTION = 0.01;
 export const H_SCALE = 1e4;
 /** The largest change of the logarithm of a component flow in one Newton step (a factor of e^5, about 150). */
 const LN_STEP = 5;
+/** Newton gives up when its scaled residual has not fallen a thousandfold in this many iterations. */
+const PATIENCE = 12;
 /**
  * The tolerances a solution must meet, by group: material in mol/s relative to the total feed, energy in W relative to
  * the total feed times H_SCALE, equilibrium and summation in mole fraction, specifications relative to their value
@@ -376,13 +379,16 @@ export function solveCascade(opts = {}) {
   const meets = g => Object.keys(limits).every(k => g[k] <= limits[k]);
 
   // ---- Newton's method with a guarded step
-  function newton(u0, { dTmax, maxIt }) {
+  function newton(u0, { dTmax, maxIt, patient = false }) {
     let u = Float64Array.from(u0), P = allProps(u);
     P.res = residualOf(P);
     let nr = norm(P.res), it = 0, stalls = 0;
+    const n0 = nr;
     for (; it <= maxIt; it++) {
       if (meets(groups(P).g)) return { u, P, iterations: it, converged: true };
       if (it === maxIt) break;
+      // Newton converges fast near a solution: no thousandfold fall in PATIENCE iterations means it is far from one
+      if (patient && it === PATIENCE && nr > 1e-3 * n0) return { u, P, iterations: it, converged: false, why: `the residual fell only from ${fmt(n0)} to ${fmt(nr)} in ${PATIENCE} iterations` };
       const J = jacobian(u, P);
       // the step in the logarithms of the component flows (and in T): a trace flow can fall by orders of magnitude
       // and never turns negative; the columns of the Jacobian are scaled by the flows, d r / d ln u = u d r / d u
@@ -415,21 +421,23 @@ export function solveCascade(opts = {}) {
   }
 
   // ---- the start
-  const tried = [];
+  const tried = [], clock = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
+  let t0 = clock();
+  const took = () => { const t = clock(), d = t - t0; t0 = t; return `${Math.round(d)} ms`; };
   let result = null;
   const startU = opts.start && Array.isArray(opts.start.stages) && opts.start.stages.length === N && opts.start.stages.every(s => s.l?.length === n && s.v?.length === n)
     ? Float64Array.from(opts.start.stages.flatMap(s => [...s.l.map(a => a * 1), ...s.v, s.T_K])) : null;
   if (startU) {
     const r = newton(startU, { dTmax: 20, maxIt: 40 });
-    tried.push(`Newton from the previous solution (${r.iterations} iterations${r.converged ? "" : `: ${r.why}`})`);
+    tried.push(`Newton from the previous solution (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
     if (r.converged) result = { ...r, start: "previous solution" };
   }
   let cold = null;
   if (!result && !(opts.homotopy && startU)) {
-    for (const a of [{ dTmax: 20, maxIt: 50 }, { dTmax: 5, maxIt: 80 }]) {
+    for (const a of [{ dTmax: 20, maxIt: 50, patient: true }]) {
       cold ??= bubblePointStart(th, inp, fJ, HF);
       const r = newton(cold.u, a);
-      tried.push(`Newton from the bubble-point start, steps of at most ${a.dTmax} K (${r.iterations} iterations${r.converged ? "" : `: ${r.why}`})`);
+      tried.push(`Newton from the bubble-point start, steps of at most ${a.dTmax} K (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
       if (r.converged) { result = { ...r, start: "bubble-point method (Wang-Henke)" }; break; }
       cold.last = r;
     }
@@ -446,14 +454,14 @@ export function solveCascade(opts = {}) {
       try {
         const r = solveCascade({ ...opts, thermo: blend, start: prev, homotopy: tn < 1 ? "step" : "last" });
         prev = r; t = tn; dt = Math.min(0.5, dt * 1.5);
-        if (tn === 1) return { ...r, solver: { ...r.solver, start: `continuation in the relative volatilities (${steps0 + 1} steps)`, tried: [...tried, `continuation in the relative volatilities: solved in ${steps0 + 1} steps`] } };
+        if (tn === 1) return { ...r, solver: { ...r.solver, start: `continuation in the relative volatilities (${steps0 + 1} steps)`, tried: [...tried, `continuation in the relative volatilities: solved in ${steps0 + 1} steps, ${took()}`] } };
       } catch (e) {
         if (e?.code !== "NO_CONVERGENCE") throw e;
         if (!prev) break;
         dt /= 2;
       }
     }
-    tried.push(`continuation in the relative volatilities (stopped at ${fmt(t * 100)} % of the way, after ${steps} steps)`);
+    tried.push(`continuation in the relative volatilities (stopped at ${fmt(t * 100)} % of the way, after ${steps} steps, ${took()})`);
   }
   if (!result) {
     const last = cold?.last;

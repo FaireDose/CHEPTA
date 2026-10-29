@@ -35,7 +35,7 @@ export const SECTIONS = [
   { id: "thermo", label: "Properties & Equilibria", short: "Prop. & eq.", icon: "ternary", workspaces: ["equilibrium", "steam", "solubility", "properties"] },
   { id: "units", label: "Unit models", short: "Units", icon: "drum", workspaces: ["flash", "hx", "reactor"],
     locked: [
-      { id: "distillation", label: "Distillation", icon: "column", note: "Shortcut and rigorous columns: roadmap v0.5, not available yet." },
+      { id: "distillation", label: "Distillation", icon: "column", note: "The Column workspace (McCabe-Thiele): roadmap v0.5 updates, not available yet. The flowsheet's Column block has the shortcut and the rigorous methods." },
     ] },
   { id: "flowsheet", label: "Flowsheet", short: "Flowsheet", icon: "flowsheet", workspaces: ["flowsheet"] },
 ];
