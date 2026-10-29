@@ -150,7 +150,7 @@ test("structure errors name the block or stream", () => {
   const mod = f => { const fs = base(); f(fs); return fs; };
   for (const [fs, re] of [
     [mod(fs => { fs.blocks.push({ id: "M1", type: "mixer" }); }), /Two blocks are called M1/],
-    [mod(fs => { fs.blocks[1].type = "column"; }), /Unknown block type "column"/],
+    [mod(fs => { fs.blocks[1].type = "teleporter"; }), /Unknown block type "teleporter"/],   // "column" became a block (proposal 0015, M1)
     [mod(fs => { fs.streams[0].to = "X9.in"; }), /goes to X9, which is not a block/],
     [mod(fs => { fs.streams[2].from = "V1.top"; }), /has no outlet "top"/],
     [mod(fs => { fs.streams[2].from = "V1-vapour"; }), /"BLOCK.port"/],

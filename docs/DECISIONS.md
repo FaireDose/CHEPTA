@@ -41,23 +41,29 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - **M0** done (2026-10-29; docs/decisions/2026-10-29-02-m0-contracts.md): the contracts in ARCHITECTURE.md, the
     request path `CHEPTA.run`, the execution envelope, the column and sizing contracts refusing until built, and the
     heater and flash example through the whole path, in Node and in the browser.
-  - **Next, M1:** W2 (the shortcut column), W7 (the benchmark cases and the MESH reference), each as its own session
-    when the maintainer says so.
+  - **M1, W2: the shortcut column, built, to review** (docs/decisions/2026-10-29-05-shortcut-column.md): the Column
+    block in shortcut mode (Fenske, Underwood, Gilliland) in the palette, its result table, project format 6,
+    `solve_column` through `CHEPTA.run`, the command line and the MCP server. To check: the equation forms against
+    DWSIM's source, the 20 % volatility warning, the net duty as the block's one energy stream. Next for W2: the
+    rigorous column (M2a), when the maintainer says so.
   - **M1, W8 with W9: built, to review** (docs/decisions/2026-10-29-03-cli-mcp-worker.md): the command line, the local
-    MCP server, the worker. To do: run the first assistant test on your computer (docs/models/tools.md, "The first
-    assistant test") and say whether it passes; then W8's next step, the authoring contract: refuse unknown keys in a
+    MCP server, the worker. The first assistant test passed in Claude Code, in the session and on your computer
+    (2026-10-29). Next: W8's next step, the authoring contract: refuse unknown keys in a
     flowsheet's `thermo` and in a block's `spec` (an assistant's `thermo.method` was ignored without a word), and a
     missing-pair message that names the request path's remedy (the user's data) instead of `allowMissingPairs`.
   - **W7, M1 done** (2026-10-29; docs/decisions/2026-10-29-04-column-cases.md): nine column cases and the MESH and
     shortcut references, ahead of W2. To check: the tolerances, and the equation forms against DWSIM's source. Next for
     W7: the cases of W2's following tasks (M2a: one complete benchmark), then the benchmark separations' pairs.
-  - **W4, M1: the drum and decanter sizes, built, to review** (docs/decisions/2026-10-29-05-drum-sizing.md): a vertical
+  - **W4, M1: the drum and decanter sizes, built, to review** (docs/decisions/2026-10-29-06-drum-sizing.md): a vertical
     or horizontal flash drum and a decanter from the flash block's result (`sizeDrum`, `sizeDecanter`, the `size_drum`
     capability, the size under the drum's results). To check: the constants and rules against the four open sources
     (University of Trieste and Oklahoma slides, Coker 1993, the University of Baghdad notes; the list in the decision
     file); to decide: the defaults (85 % of the permitted velocity, 2 min of liquid, 150 μm drops). Next for W4: the
     column diameter by flooding (M2b), with W2's stage traffic.
-  - Waiting: W1, W3, W5, W6 and W10 (W10 at M1).
+  - **W10, M1 step 14: written, to review** (docs/decisions/2026-10-29-05-interface-guide.md): the interface guide
+    (docs/UI_GUIDE.md) and the review of the workbench (docs/ui-review/2026-10-29.md). To do: pick the review's items
+    to fix; W10 then fixes them in small pull requests of their own, and checks W5's and W6's new views against the guide.
+  - Waiting: W1, W3, W5 and W6.
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun
   gas viscosity by Wilke's rule, the full-text search for the three new components. Check the transcribed constants of

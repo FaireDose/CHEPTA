@@ -11,10 +11,11 @@
  */
 import { unitType } from "../units/units.js";
 import "../units/reactors.js";   // the reactor blocks, registered
+import "../units/columns/column.js";   // the Column block, registered
 
-/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, P1; reactors R1 (conversion), RE1 (equilibrium),
+/** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, C1 (column), P1; reactors R1 (conversion), RE1 (equilibrium),
  * RG1 (Gibbs), RY1 (yield), CS1 (CSTR), PF1 (plug flow). */
-export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", compressor: "K", expander: "EX",
+export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", compressor: "K", expander: "EX", column: "C",
   "conversion-reactor": "R", "equilibrium-reactor": "RE", "gibbs-reactor": "RG", "yield-reactor": "RY", cstr: "CS", pfr: "PF", product: "P" };
 /** The reactor blocks (proposal 0010, steps 3 to 6), behind one Reactor button of the toolbar. */
 export const REACTORS = ["conversion-reactor", "yield-reactor", "equilibrium-reactor", "gibbs-reactor", "cstr", "pfr"];
@@ -24,7 +25,7 @@ export const REACTION_USERS = ["conversion-reactor", "equilibrium-reactor", "cst
 export const KINETIC = ["cstr", "pfr"];
 const reactionIdOf = e => (typeof e === "string" ? e : e?.reaction);
 /** The block types of the palette, in order (products are automatic). */
-export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater", "hx", "valve", "pump", "compressor", "expander", ...REACTORS];
+export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater", "hx", "valve", "pump", "compressor", "expander", "column", ...REACTORS];
 
 const clone = fs => JSON.parse(JSON.stringify(fs));
 const nextId = (taken, prefix) => { let i = 1; while (taken.has(prefix + i)) i++; return prefix + i; };
@@ -85,6 +86,13 @@ function defaultSpec(type, fs) {
     return { reactions: r ? [{ reaction: r.id }] : [] };
   }
   if (type === "yield-reactor") return { basis: "mass", yields: {} };
+  // a column starts in shortcut mode with the first two components as its keys, 99 % recoveries and 1.3 times the
+  // minimum reflux: starting values for the person to change
+  if (type === "column") {
+    const [lk, hk] = fs.components;
+    return { mode: "shortcut", ...(lk ? { light_key: lk } : {}), ...(hk ? { heavy_key: hk } : {}), recovery_light_key_in_distillate: 0.99,
+      recovery_heavy_key_in_bottoms: 0.99, reflux_over_minimum: 1.3, condenser: "total" };
+  }
   // a CSTR or plug-flow reactor starts with the first reaction that has kinetics (else none), one phase
   if (KINETIC.includes(type)) {
     const r = (fs.reactions ?? []).find(x => x.rate);

@@ -454,7 +454,7 @@ The steps of Part I, each a pull request with its tests, placed in the workstrea
 |---|---|---|
 | 0. The contracts (section 9) and the green M0 path (done 2026-10-29; ARCHITECTURE.md, "The request path and the contracts") | architect, W8, W9 | M0 |
 | 1. The dispatcher, the command line, the MCP server's read-only tools; the first assistant test | W8, W9 | M1 |
-| 2. The Column block, shortcut mode, with its profile table; W7's first cases and the MESH reference (W7's cases and references done 2026-10-29) | W2, W5, W7 | M1 |
+| 2. The Column block, shortcut mode, with its profile table; W7's first cases and the MESH reference (W7's cases and references done 2026-10-29; W2's shortcut Column block built 2026-10-29, to review) | W2, W5, W7 | M1 |
 | 3. The rigorous column, one liquid: profile, dry-stage warning, phase-stability refusal, in the worker | W2, W9 | M2a |
 | 4. The column's own method (P-H boundary), two liquids on the stages; the Column workspace with McCabe-Thiele | W2, W5 | M2b |
 | 5. Liquid-liquid data, joint fits, views, the method guide's section | W1, W5 | M2b |
@@ -466,7 +466,7 @@ The steps of Part I, each a pull request with its tests, placed in the workstrea
 | 11. Purity and recovery specifications, side draws; the benchmark flowsheets | W2, W7 | M3, M4 |
 | 12. Cost correlations (E2) and utilities (E3) | W4 | M4 |
 | 13. Exports, share by link, format 6; other assistants | W6, W8 | M1 to M4 |
-| 14. The interface guide and the review of the workbench; then a visual check of each new view | W10 | M1, then each milestone |
+| 14. The interface guide and the review of the workbench (both written 2026-10-29: docs/UI_GUIDE.md, docs/ui-review/2026-10-29.md); then a visual check of each new view | W10 | M1, then each milestone |
 
 ## Questions for the maintainer
 

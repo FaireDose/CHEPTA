@@ -68,7 +68,7 @@ error.
 
 **Tools.** One per capability that is available; the ones listed as unsupported (`solve_column` until milestone M1's
 shortcut) are not offered (the `capabilities` tool lists them, with where they are planned). Today:
-`capabilities`, `find_component`, `component_info`, `check_project`, `flowsheet_status`, `solve_flowsheet`, `size_drum` (a flash drum's size, docs/models/sizing.md). A tool's
+`capabilities`, `find_component`, `component_info`, `check_project`, `flowsheet_status`, `solve_flowsheet`, `size_drum` (a flash drum's size, docs/models/sizing.md), `solve_column`. A tool's
 input schema is the capability's (a subset of JSON Schema 2020-12); its arguments are the request's `input`. Each
 tool is marked read-only.
 
@@ -86,17 +86,20 @@ it); a call that the host cancels (`notifications/cancelled`) ends its worker, a
 Until a release carries the server, from a clone of the repository (Node.js 22 or newer, `npm install` once):
 
 ```
-claude mcp add chepta -- node /full/path/to/CHEPTA/bin/chepta-mcp.mjs
+claude mcp add --scope user chepta -- node /full/path/to/CHEPTA/bin/chepta-mcp.mjs
 ```
 
-Then start `claude` in the folder of your project and type `/mcp`: `chepta` should be listed as connected, with seven
-tools. `claude mcp add --scope project ...` writes the server into the folder's `.mcp.json` instead, to share it with
+`--scope user` makes it available in every folder; without it, it is registered only for the folder where the
+command was typed, and a `claude` started in another folder does not see it. `claude mcp list` should show
+`chepta: ... Connected`. Then start a new `claude` session and type `/mcp`: `chepta` should be listed as connected, with
+eight tools. On Windows, write the path with forward slashes: `"C:/Users/you/CHEPTA/bin/chepta-mcp.mjs"`.
+`claude mcp add --scope project ...` writes the server into the folder's `.mcp.json` instead, to share it with
 others who use the folder (Claude Code asks each of them to approve it once). `claude mcp remove chepta` removes it.
 
 Once a release carries it, the clone is not needed:
 
 ```
-claude mcp add chepta -- npx -y -p chepta@VERSION chepta-mcp
+claude mcp add --scope user chepta -- npx -y -p chepta@VERSION chepta-mcp
 ```
 
 ### Adding it to Claude Desktop
@@ -160,11 +163,17 @@ the engine.
 Proposal 0015, section 10: an assistant, through the MCP server in one host (Claude Code), changes a heater
 specification in an existing project, checks the changed project, runs it and explains the difference.
 
-**Procedure** (about five minutes):
+**Procedure** (about five minutes), in a terminal **on your own computer**, with Claude Code installed there. Not in a
+cloud session on claude.ai/code: there `/mcp` is not available, and a server added during a session is not loaded
+into that session's conversation.
+
 
 1. In a terminal, in a clone of the repository: `npm install`, then
-   `claude mcp add chepta -- node "$PWD/bin/chepta-mcp.mjs"`.
-2. Start `claude` in the clone and type `/mcp`: `chepta` is connected, with seven tools.
+   `claude mcp add --scope user chepta -- node "$PWD/bin/chepta-mcp.mjs"` (typed in the clone, so that `$PWD` is its
+   folder), and `claude mcp list` shows `chepta: ... Connected`.
+2. Start `claude` in the clone (a new session: a server added while a session runs is not in it) and type `/mcp`
+   alone, without a name: `chepta` is listed as connected, with eight tools. Without `/mcp`, `claude mcp get chepta`
+   in the terminal says "Connected".
 3. Ask:
 
    > Use the chepta MCP server. In examples/heater-flash.chepta.json, propose a change of the heater E1's outlet
@@ -175,9 +184,12 @@ specification in an existing project, checks the changed project, runs it and ex
 
 4. Then ask, for the missing-data case:
 
-   > Use the chepta MCP server. Solve this flowsheet with solve_flowsheet and give me the outlet composition:
-   > components benzene and glycerol, NRTL; a feed F1 of 50 kmol/h benzene and 50 kmol/h glycerol at 300 K and
-   > 101.325 kPa, going straight to a product P1 (stream S1 from F1.out to P1.in).
+   > Use the chepta MCP server. Benzene and glycerol with NRTL: a feed of 50 kmol/h of each at 300 K and 101.325 kPa
+   > is heated to 350 K and goes to a flash drum at 101.325 kPa with no heat added. Build the flowsheet, solve it,
+   > and give me the drum's vapour and liquid flows and compositions.
+
+   (A result that needs the missing pair. The first version of this prompt sent the feed straight to a product,
+   whose outlet is just the feed: a weak test, the maintainer, 2026-10-29.)
 
 5. Compare with the command line: save the proposed project as `changed.chepta.json` and run
    `node bin/chepta.mjs run changed.chepta.json`.
