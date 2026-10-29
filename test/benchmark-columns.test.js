@@ -61,7 +61,7 @@ function thermoOf(c, feedT) {
       hF: k => (1 - feedsOf(c)[k].q) * lam, enthalpyTol: () => 0 };
   }
   const s = system({ components: c.components, model: c.thermo.model });
-  const K = (x, T) => { const g = s.gammas(x, T), p = s.psat(T); return g.map((gi, i) => gi * p[i] / P); };
+  const K = (x, T) => kValues(s, x, T, P);
   // a saturated feed (q = 1 or 0) at the temperature the reference found; it must be the bubble (dew) point here too
   const hF = k => {
     const f = feedsOf(c)[k];
@@ -78,6 +78,29 @@ function thermoOf(c, feedT) {
   return { K, hL: (x, T) => s.enthalpy("liquid", T, P, x), hV: (y, T) => s.enthalpy("vapour", T, P, y), hF,
     // the two enthalpy implementations agree within 0.05 J/mol (test/enthalpy.test.js): per mole of each stream
     enthalpyTol: flows => 0.05 * flows };
+}
+
+/** K-values of CHEPTA's own system: gamma p_sat / P (activity model, ideal-gas vapour), or phi_L(x) / phi_V(y) with
+ * y = K x by successive substitution (equation of state). */
+function kValues(s, x, T, P) {
+  if (s.kind !== "eos") { const g = s.gammas(x, T), p = s.psat(T); return g.map((gi, i) => gi * p[i] / P); }
+  const lnL = s.lnPhi(T, P, x, "liquid");
+  let y = x.slice(), K;
+  for (let k = 0; k < 200; k++) {
+    const ys = sum(y), lnV = s.lnPhi(T, P, y.map(v => v / ys), "vapour");
+    K = lnL.map((l, i) => Math.exp(l - lnV[i]));
+    const yn = K.map((v, i) => v * x[i]), step = Math.max(...yn.map((v, i) => Math.abs(v - y[i])));
+    y = yn;
+    if (step < 1e-15) break;
+  }
+  return K;
+}
+
+/** ln of the liquid's fugacity over its pressure-independent part, for the tangent-plane distance. */
+function lnFugLiquid(s, x, T, P) {
+  if (s.kind === "eos") { const l = s.lnPhi(T, P, x, "liquid"); return x.map((v, i) => Math.log(v) + l[i]); }
+  const g = s.gammas(x, T);
+  return x.map((v, i) => Math.log(v) + Math.log(g[i]));
 }
 
 /** Every stage's residuals of the reference profile, recomputed from its stage values. */
@@ -122,7 +145,7 @@ for (const [id, rec] of Object.entries(fixture.cases).filter(([, r]) => r.rigoro
     for (const r of residuals(c, prof, rec.checks.feed_T_K)) {
       assert.ok(r.material <= lim.material, `${id} stage ${r.stage}: material ${r.material} mol/s`);
       assert.ok(r.summation <= lim.summation, `${id} stage ${r.stage}: summation ${r.summation}`);
-      // NRTL: CHEPTA's K-values against the Python reference's (the same records and formulas, written twice)
+      // CHEPTA's K-values against the Python reference's (the same records and formulas, written twice)
       assert.ok(r.equilibrium <= Math.max(lim.equilibrium, c.thermo.kind === "chepta" ? 1e-9 : 0), `${id} stage ${r.stage}: equilibrium ${r.equilibrium}`);
       assert.ok(r.energy <= lim.energy + r.energyTol, `${id} stage ${r.stage}: energy ${r.energy} W (allowed ${lim.energy + r.energyTol})`);
     }
@@ -247,18 +270,18 @@ test("column case B2: CHEPTA's method agrees with the published example within t
     assert.ok(Math.abs(s.x[0] - p.x_benzene[j]) <= tol.mole_fractions_absolute, `stage ${s.stage}: x ${s.x[0]} against ${p.x_benzene[j]}`);
   });
   assert.ok(Math.abs(prof.x_D[0] - p.x_D[0]) <= tol.mole_fractions_absolute && Math.abs(prof.x_B[0] - p.x_B[0]) <= tol.mole_fractions_absolute);
-  // the K-values of CHEPTA's own NRTL at the published stage compositions and temperatures, as the fixture has them
+  // the K-values of CHEPTA's own method at the published stage compositions and temperatures, as the fixture has them
   const s = system({ components: c.components, model: c.thermo.model });
   p.x_benzene.forEach((x, j) => {
-    const T = p.T_C[j] + 273.15, K = s.gammas([x, 1 - x], T)[0] * s.psat(T)[0] / c.pressure_kPa;
+    const T = p.T_C[j] + 273.15, K = kValues(s, [x, 1 - x], T, c.pressure_kPa)[0];
     assert.ok(Math.abs(K - rec.checks.published.K_benzene_chepta_at_published_x_T[j]) < 1e-9, `K of benzene, stage ${j + 1}`);
   });
 });
 
-/** The tangent-plane distance of liquid x at T for trial w, with CHEPTA's own activity coefficients. */
-function tpd(s, x, w, T) {
-  const gx = s.gammas(x, T), gw = s.gammas(w, T);
-  return sum(w.map((wi, i) => wi * (Math.log(wi) + Math.log(gw[i]) - Math.log(x[i]) - Math.log(gx[i]))));
+/** The tangent-plane distance of liquid x at T and P for trial w, with CHEPTA's own system. */
+function tpd(s, x, w, T, P) {
+  const fx = lnFugLiquid(s, x, T, P), fw = lnFugLiquid(s, w, T, P);
+  return sum(w.map((wi, i) => wi * (fw[i] - fx[i])));
 }
 
 test("column case F1 (1-butanol + water): a second liquid on stages 1 and 2 of the one-liquid solution, none below", () => {
@@ -269,11 +292,11 @@ test("column case F1 (1-butanol + water): a second liquid on stages 1 and 2 of t
     const st = rec.rigorous.stages[j];
     if (r.stage <= 2) {
       assert.ok(r.tpd_min < lim.tpd_unstable_below, `stage ${r.stage}: ${r.tpd_min}`);
-      assert.ok(tpd(s, st.x, r.trial_x, st.T_K) < lim.tpd_unstable_below, `stage ${r.stage}: CHEPTA's tpd at the reference's trial liquid`);
+      assert.ok(tpd(s, st.x, r.trial_x, st.T_K, c.pressure_kPa) < lim.tpd_unstable_below, `stage ${r.stage}: CHEPTA's tpd at the reference's trial liquid`);
     } else {
       assert.ok(r.tpd_min > lim.tpd_stable_above, `stage ${r.stage}: ${r.tpd_min}`);
       // recomputed here on a grid of trial liquids
-      for (let k = 1; k < 2000; k++) { const w = k / 2000; assert.ok(tpd(s, st.x, [w, 1 - w], st.T_K) > lim.tpd_stable_above, `stage ${r.stage}, trial ${w}`); }
+      for (let k = 1; k < 2000; k++) { const w = k / 2000; assert.ok(tpd(s, st.x, [w, 1 - w], st.T_K, c.pressure_kPa) > lim.tpd_stable_above, `stage ${r.stage}, trial ${w}`); }
     }
   });
 });
@@ -284,7 +307,7 @@ test("column cases B2, B3, P1: one liquid on every stage (the phase check passes
     rec.checks.stability.forEach((r, j) => {
       const st = rec.rigorous.stages[j];
       assert.ok(r.tpd_min > -1e-9, `${id} stage ${r.stage}: ${r.tpd_min}`);
-      assert.ok(tpd(s, st.x, r.trial_x, st.T_K) > -1e-9, `${id} stage ${r.stage}: CHEPTA's tpd at the reference's trial liquid`);
+      assert.ok(tpd(s, st.x, r.trial_x, st.T_K, c.pressure_kPa) > -1e-9, `${id} stage ${r.stage}: CHEPTA's tpd at the reference's trial liquid`);
     });
   }
 });

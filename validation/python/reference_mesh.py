@@ -37,6 +37,9 @@ The thermodynamics:
     A feed is given by its temperature (a liquid below its bubble point) or by q = 1 (saturated liquid) or q = 0
     (saturated vapour). With cmo_latent_heat_J_mol, the enthalpies of the model systems (constant molar overflow), only
     to compare with a published example solved that way (B2).
+  - "chepta" Peng-Robinson or SRK for both phases: the cubic of reference_eos.py (its Z and parameters, the databank's
+    k_ij), with ln phi and the residual enthalpy in closed form; K = phi_L(x) / phi_V(y), y = K x by successive
+    substitution; h = the ideal-gas enthalpy plus the residual enthalpy of the phase.
 
 Besides the profiles, it writes checks with exact or independent answers: McCabe-Thiele's construction for the binary
 (A1, and A4 with two feeds); the phase stability of every stage's liquid by the tangent-plane distance (the cases with
@@ -57,7 +60,8 @@ import numpy as np
 from scipy.optimize import brentq, root
 
 from reference_model import System, psat_kpa, ALL_BINARIES
-from reference_enthalpy import liquid_h, vapour_h
+from reference_enthalpy import liquid_h, vapour_h, h_ig
+from reference_eos import Cubic, R as R_GAS
 import reference_fug
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -121,6 +125,9 @@ class Activity:
             self.memo[key] = vapour_h(self.ids, np.clip(y, 0, None), T, self.P, "ideal")
         return self.memo[key]
 
+    def lnfug_liquid(self, x, T):
+        return np.log(x) + np.log(self.s.gamma(x, T))
+
     def feed_T(self, feed):
         """A feed given by q: q = 1 a saturated liquid (its bubble point), q = 0 a saturated vapour (its dew point)."""
         z = np.asarray(feed["z"], float)
@@ -142,10 +149,113 @@ class Activity:
 Nrtl = Activity
 
 
+class Eos:
+    """Peng-Robinson or SRK for both phases (reference_eos.Cubic, the databank's k_ij, 0 where there is none):
+    K_i = phi_i^L(x) / phi_i^V(y), with y = K x found by successive substitution at the stage's x and T; the
+    enthalpies the ideal-gas enthalpy (reference_enthalpy.h_ig) plus the residual enthalpy of the phase, the form of
+    the engine's equation-of-state systems."""
+
+    def __init__(self, ids, P, model, cmo_latent=None):
+        self.ids, self.P, self.lam = ids, P, cmo_latent
+        self.cub = Cubic(model, ids)
+        self.memo = {}
+
+    def lnphi(self, x, T, phase):
+        """ln phi_i in closed form for the generic cubic (Z from reference_eos.Cubic.Z):
+        ln phi_i = b_i/b (Z - 1) - ln(Z - B) - A / (B (d1 - d2)) (2 sum_j x_j a_ij / a - b_i/b) ln((Z + d1 B)/(Z + d2 B)),
+        the derivative that reference_eos.Cubic.lnphi takes numerically (they agree to about 1e-9; a closed form keeps
+        the column's residuals smooth for Newton's method)."""
+        key = ("phi", phase, T, *x)
+        if key not in self.memo:
+            c, P = self.cub, self.P * 1000
+            x = np.asarray(x, float) / np.sum(x)
+            ai = c.Oa * R_GAS ** 2 * c.Tc ** 2 / c.Pc * (1 + c.m * (1 - np.sqrt(T / c.Tc))) ** 2
+            aij = (1 - c.k) * np.sqrt(np.outer(ai, ai))
+            a, b = x @ aij @ x, x @ c.b_i
+            Z, _ = c.Z(T, P, x, phase)
+            A, B = a * P / (R_GAS * T) ** 2, b * P / (R_GAS * T)
+            br = c.b_i / b
+            L = math.log((Z + c.d1 * B) / (Z + c.d2 * B))
+            self.memo[key] = br * (Z - 1) - math.log(Z - B) - A / (B * (c.d1 - c.d2)) * (2 * (aij @ x) / a - br) * L
+        return self.memo[key]
+
+    def h_res(self, z, T, phase):
+        """H - H_ideal gas in closed form, R T (Z - 1) + (T da/dT - a) / (b (d1 - d2)) ln((Z + d1 B)/(Z + d2 B)), the
+        temperature derivative that reference_eos.Cubic.h_res takes numerically (they agree to about 1e-6 J/mol)."""
+        c, P = self.cub, self.P * 1000
+        sq = np.sqrt(T / c.Tc)
+        ac = c.Oa * R_GAS ** 2 * c.Tc ** 2 / c.Pc
+        ai = ac * (1 + c.m * (1 - sq)) ** 2
+        dai = -ac * c.m * (1 + c.m * (1 - sq)) / np.sqrt(T * c.Tc)
+        g = np.sqrt(np.outer(ai, ai))
+        aij = (1 - c.k) * g
+        daij = (1 - c.k) * (np.outer(dai, ai) + np.outer(ai, dai)) / (2 * g)
+        a, da, b = z @ aij @ z, z @ daij @ z, z @ c.b_i
+        Z, _ = c.Z(T, P, z, phase)
+        B = b * P / (R_GAS * T)
+        return R_GAS * T * (Z - 1) + (T * da - a) / (b * (c.d1 - c.d2)) * math.log((Z + c.d1 * B) / (Z + c.d2 * B))
+
+    def K(self, x, T):
+        x = np.clip(np.asarray(x, float), 1e-300, None); x = x / x.sum()
+        lnL = self.lnphi(x, T, "liquid")
+        y = x * np.exp(lnL - self.lnphi(x, T, "vapour"))
+        last = math.inf
+        for _ in range(500):
+            K = np.exp(lnL - self.lnphi(y / y.sum(), T, "vapour"))
+            yn = K * x
+            step = np.max(np.abs(yn - y)) / np.sum(yn)
+            if step <= 1e-15 or (step < 1e-12 and step >= last):    # converged, or at the rounding floor
+                return K
+            y, last = yn, step
+        raise RuntimeError("the vapour composition of a stage did not converge")
+
+    def lnfug_liquid(self, x, T):
+        return np.log(x) + self.lnphi(x, T, "liquid")
+
+    def bubble_T(self, x):
+        """The bubble temperature, bracketed upwards in steps of 2 K from 40 K below Wilson's estimate (ln K_i =
+        ln(Pc_i/P) + 5.373 (1 + omega_i)(1 - Tc_i/T)), below the temperatures where the two roots merge and K = 1 solves
+        sum K x = 1 trivially."""
+        x = np.asarray(x, float)
+        c = self.cub
+        f = lambda T: float(np.sum(self.K(x, T) * x)) - 1
+        wilson = lambda T: float(np.sum(x * c.Pc / (self.P * 1000) * np.exp(5.373 * (1 + c.w) * (1 - c.Tc / T)))) - 1
+        T = brentq(wilson, 50.0, float(np.max(c.Tc)), xtol=1e-6) - 40.0
+        while f(T) > 0:
+            T -= 40.0
+        while f(T + 2.0) < 0:
+            T += 2.0
+            if T > 1000:
+                raise RuntimeError("no bubble point found")
+        return brentq(f, T, T + 2.0, xtol=1e-12)
+
+    def h(self, z, T, phase):
+        z = np.clip(np.asarray(z, float), 0, None); z = z / z.sum()
+        key = ("h", phase, T, *z)
+        if key not in self.memo:
+            self.memo[key] = sum(zi * h_ig(c, T) for c, zi in zip(self.ids, z) if zi > 0) + self.h_res(z, T, phase)
+        return self.memo[key]
+
+    def hL(self, x, T):
+        return 0.0 if self.lam is not None else self.h(x, T, "liquid")
+
+    def hV(self, y, T):
+        return self.lam if self.lam is not None else self.h(y, T, "vapour")
+
+    feed_T = Activity.feed_T
+
+    def feed_h(self, feed):
+        z, T = np.asarray(feed["z"], float), self.feed_T(feed)
+        return self.hL(z, T) if feed["q"] == 1 else self.hV(z, T)
+
+
 def thermo_of(case):
     th, P = case["thermo"], case["pressure_kPa"]
     if th["kind"] == "constant-alpha":
         return Alpha(th, P)
+    if th["model"] in ("PR", "SRK"):
+        assert th["sets"] == "default"
+        return Eos(case["components"], P, th["model"], th.get("cmo_latent_heat_J_mol"))
     assert th["model"] in ("NRTL", "UNIQUAC") and th["vapour"] == "ideal" and th["sets"] == "default"
     return Activity(case["components"], P, th["model"], th.get("cmo_latent_heat_J_mol"))
 
@@ -415,14 +525,14 @@ def mccabe_thiele(case, prof):
 
 
 def stability(th, x, T):
-    """The liquid's phase stability by the tangent-plane distance, tpd(w) = sum w_i [ln w_i + ln gamma_i(w) - ln x_i -
-    ln gamma_i(x)] (in RT per mole of trial phase): negative for some trial w means a second liquid forms (the
-    tangent-plane criterion; activity form, as both trial and stage are liquids at the same T and P). Binary: a grid of 20001 trial compositions;
+    """The liquid's phase stability by the tangent-plane distance, tpd(w) = sum w_i [ln f_i(w) - ln f_i(x)] / (R T)
+    per mole of trial phase, with ln f_i = ln x_i + ln gamma_i (activity models) or ln x_i + ln phi_i of the liquid root
+    (equations of state; the common ln P cancels): negative for some trial w means a second liquid forms (the
+    tangent-plane criterion; both trial and stage are liquids at the same T and P). Binary: a grid of 20001 trial compositions;
     more components: a minimum from each near-pure start. Returns (smallest tpd, its trial composition)."""
     x = np.asarray(x, float)
-    g = th.s.gamma
-    lnf = np.log(x) + np.log(g(x, T))
-    tpd = lambda w: float(np.sum(w * (np.log(w) + np.log(g(w, T)) - lnf)))
+    lnf = th.lnfug_liquid(x, T)
+    tpd = lambda w: float(np.sum(w * (th.lnfug_liquid(w, T) - lnf)))
     if len(x) == 2:
         best = (math.inf, None)
         for w1 in np.linspace(1e-5, 1 - 1e-5, 20001):

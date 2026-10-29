@@ -57,7 +57,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     The ChemSep Book's benzene + toluene column (public domain) with its published stage results, and five more cases
     (two feeds, near an azeotrope, two liquids on the stages, an iteration limit, the performance benchmark); the
     reference extended (several feeds, saturated feeds, the phase-stability check). To check: every transcribed number
-    against Figures 1.18 to 1.21 of the book, and the agreement tolerances (0.6 K, 0.01). Next for W7: the cases of
+    against Figures 1.18 to 1.21 of the book (checked by the maintainer, 2026-10-29); B2 uses Peng–Robinson, and
+    METHOD_SELECTION.md rule 6 sends nonpolar hydrocarbons to an equation of state at any reduced temperature (the
+    maintainer, 2026-10-29). To confirm: the agreement tolerances (1.0 K, 0.02), k_ij = 0 for the pair. Next for W7: the cases of
     W2's M2b tasks, then the benchmark separations' pairs.
   - **W4, M1: the drum and decanter sizes, built, to review** (docs/decisions/2026-10-29-06-drum-sizing.md): a vertical
     or horizontal flash drum and a decanter from the flash block's result (`sizeDrum`, `sizeDecanter`, the `size_drum`

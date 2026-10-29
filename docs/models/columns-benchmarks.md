@@ -31,7 +31,7 @@ Regenerate the fixture: `python validation/python/reference_mesh.py` (about two 
 | E3 purity above the azeotrope | (e) infeasible, from M4 | 0.95 ethanol in the distillate | unsupported until M4, then invalid_input naming the azeotrope |
 | **M2a** | | | |
 | A4 binary, two feeds | (a) several feeds | a liquid feed on stage 4 and a half-vaporized one on stage 9 of 14; McCabe-Thiele with three operating lines must equal the profile | ok |
-| **B2 benzene + toluene (ChemSep Book)** | **the complete benchmark** | the worked example of The ChemSep Book, section 1.2: 10 stages, 1.1 atm, saturated-liquid feed of 11.7471 mol/s, R = 2, B = 5.874 mol/s; published stage results | ok, within the numerical tolerances of the reference and the agreement tolerances of the published profile |
+| **B2 benzene + toluene (ChemSep Book)** | **the complete benchmark** | the worked example of The ChemSep Book, section 1.2: 10 stages, 1.1 atm, saturated-liquid feed of 11.7471 mol/s, R = 2, B = 5.874 mol/s; published stage results; Peng–Robinson | ok, within the numerical tolerances of the reference and the agreement tolerances of the published profile |
 | B3 acetone + methanol | (b) hard non-ideal | 50 stages, R = 6, D = 60 mol/s: the distillate pinches 0.0012 below the model's azeotrope | ok, never beyond the azeotrope |
 | E4 iteration limit | (e) not converged | the B1 column with an iteration limit of 1 from a cold start | not_converged (NO_CONVERGENCE), residuals reported, no profile |
 | F1 1-butanol + water | two liquids on the stages | 6 stages, feed 0.6 butanol; the one-liquid solution is unstable on stages 1 and 2 | unsupported (PHASE_SPLIT), the stages named |
@@ -61,15 +61,15 @@ partial reboiler (10), feed on stage 5, equimolar, saturated liquid, 11.7471 mol
 
 **Two comparisons, kept apart.**
 
-1. *Numerical:* the engine on CHEPTA's method (NRTL with the ChemSep set of the pair, ideal-gas vapour, energy
-   balances; METHOD_SELECTION rule 6, reduced temperature 0.62 to 0.67) against `reference_mesh.py`, within the
-   numerical tolerances below.
+1. *Numerical:* the engine on CHEPTA's method (Peng–Robinson for both phases, k_ij = 0 as the databank has none for
+   the pair, energy balances; METHOD_SELECTION rules 2 and 6: nonpolar hydrocarbons) against `reference_mesh.py`,
+   within the numerical tolerances below.
 2. *Agreement with the published example:* the published numbers come from another property method (UNIFAC,
    ChemSep's Antoine equations, constant molar overflow, p. 13) solved to a norm of 1e-3. CHEPTA's method is within
-   0.37 K and 0.0059 in benzene's mole fraction of them on every stage (0.39 K and 0.0056 with constant molar overflow
-   in the reference, so the difference is the K-values: CHEPTA's K of benzene is 0.6 % to 1.0 % above the published
-   y/x at the same x and T). The tolerances, 0.6 K and 0.01, state agreement between two property methods, not the
-   accuracy of either against measured data.
+   0.85 K and 0.018 in benzene's mole fraction of them on every stage (0.73 K and 0.013 with constant molar overflow;
+   CHEPTA's K of benzene runs from 1.0 % above the published y/x at the top to 0.6 % below it at the bottom, so the
+   relative volatility differs). NRTL with the ChemSep set came within 0.37 K and 0.0059. The tolerances, 1.0 K and
+   0.02, state agreement between two property methods, not the accuracy of either against measured data.
 
 **What the transcription test checks** (`test/benchmark-columns.test.js`): the published numbers agree with each
 other to their printed rounding: D + B = F, the component balances, x_D and x_B from the product flows, the reflux and
@@ -104,7 +104,7 @@ every component. The energy balances then give constant molar overflow exactly, 
 are exact or nearly so, which is what makes them checks. docs/METHOD_SELECTION.md does not apply to them. The engine
 runs them through a test system with these K-values and enthalpies.
 
-B1, E3 and E4 use NRTL with the default parameter set of ethanol + water (fitted to Kamihama et al. 2012, ThermoML
+B2 uses Peng–Robinson for both phases (nonpolar hydrocarbons, rules 2 and 6). B1, E3 and E4 use NRTL with the default parameter set of ethanol + water (fitted to Kamihama et al. 2012, ThermoML
 Archive) and an ideal-gas vapour: rule 3 of docs/METHOD_SELECTION.md (polar, below 10 bar, fitted pairs).
 
 ## The equations of the references
