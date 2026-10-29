@@ -50,7 +50,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     MCP server, the worker. The first assistant test passed in Claude Code, in the session and on your computer
     (2026-10-29).
   - **W8, the authoring contract, and W9, steadier speed tests: built, to review**
-    (docs/decisions/2026-10-29-08-authoring-contract.md): an unknown key in a flowsheet's `thermo` or in a block's
+    (docs/decisions/2026-10-29-09-authoring-contract.md): an unknown key in a flowsheet's `thermo` or in a block's
     `spec` is refused with the key and the known keys (`invalid_input` with `where` on the request path); the
     missing-pair message names the user's data and another method first; the speed tests compare the fastest of five
     timings with the same budgets. To check: each block's list of keys (the decision file), and that the message reads

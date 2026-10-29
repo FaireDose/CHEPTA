@@ -1,4 +1,4 @@
-# 2026-10-29-08: Proposal 0015, W8 the authoring contract, and W9 steadier speed tests
+# 2026-10-29-09: Proposal 0015, W8 the authoring contract, and W9 steadier speed tests
 
 Asked by the maintainer on 2026-10-29 (the next step of W8 named in docs/DECISIONS.md, and the timing failure of
 `test/three-phase.test.js` on GitHub's runner, 61.7 ms against 60 ms). One pull request, two separate commits.
