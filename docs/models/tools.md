@@ -86,17 +86,20 @@ it); a call that the host cancels (`notifications/cancelled`) ends its worker, a
 Until a release carries the server, from a clone of the repository (Node.js 22 or newer, `npm install` once):
 
 ```
-claude mcp add chepta -- node /full/path/to/CHEPTA/bin/chepta-mcp.mjs
+claude mcp add --scope user chepta -- node /full/path/to/CHEPTA/bin/chepta-mcp.mjs
 ```
 
-Then start `claude` in the folder of your project and type `/mcp`: `chepta` should be listed as connected, with six
-tools. `claude mcp add --scope project ...` writes the server into the folder's `.mcp.json` instead, to share it with
+`--scope user` makes it available in every folder; without it, it is registered only for the folder where the
+command was typed, and a `claude` started in another folder does not see it. `claude mcp list` should show
+`chepta: ... Connected`. Then start a new `claude` session and type `/mcp`: `chepta` should be listed as connected, with
+six tools. On Windows, write the path with forward slashes: `"C:/Users/you/CHEPTA/bin/chepta-mcp.mjs"`.
+`claude mcp add --scope project ...` writes the server into the folder's `.mcp.json` instead, to share it with
 others who use the folder (Claude Code asks each of them to approve it once). `claude mcp remove chepta` removes it.
 
 Once a release carries it, the clone is not needed:
 
 ```
-claude mcp add chepta -- npx -y -p chepta@VERSION chepta-mcp
+claude mcp add --scope user chepta -- npx -y -p chepta@VERSION chepta-mcp
 ```
 
 ### Adding it to Claude Desktop
@@ -166,7 +169,8 @@ into that session's conversation.
 
 
 1. In a terminal, in a clone of the repository: `npm install`, then
-   `claude mcp add chepta -- node "$PWD/bin/chepta-mcp.mjs"`.
+   `claude mcp add --scope user chepta -- node "$PWD/bin/chepta-mcp.mjs"` (typed in the clone, so that `$PWD` is its
+   folder), and `claude mcp list` shows `chepta: ... Connected`.
 2. Start `claude` in the clone (a new session: a server added while a session runs is not in it) and type `/mcp`
    alone, without a name: `chepta` is listed as connected, with six tools. Without `/mcp`, `claude mcp get chepta`
    in the terminal says "Connected".
