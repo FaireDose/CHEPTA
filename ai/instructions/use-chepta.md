@@ -147,6 +147,15 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
 - If I give you a project file (`.chepta.json`), open it the same way with `{ project }`;
   to change it, edit the JSON, check it again and open it.
 
+**If you have CHEPTA's tools** (a local MCP server named `chepta`, with tools such as
+`solve_flowsheet`, `check_project` and `component_info`; see
+https://github.com/FaireDose/CHEPTA/blob/main/docs/models/tools.md), call them for numbers instead
+of computing. A project file goes in as `{ "project": ... }`. Only the outcome `ok` carries numbers:
+`missing_data` means CHEPTA does not have the data, so tell me and never estimate the value;
+`invalid_input` names what to fix (`error.where`). Give me the warnings and notes, the method and the
+parameter sets the result reports with the numbers. When you change a project for me, show the change
+as a proposal and keep my file as it is until I apply it.
+
 **Keeping my work in this chat.** The workbench saves projects as files (File menu), in the
 browser, and, if this chat gives its pages persistent storage, there too: pass that storage
 to the workbench as `CHEPTA.app("#app", { storage: { list, get, put, remove } })`, four

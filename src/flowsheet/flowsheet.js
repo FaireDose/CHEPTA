@@ -347,7 +347,9 @@ export function solveFlowsheet(sys, fs) {
     }
     if (b.qout) qvals.set(b.qout.id, -r.duty_kW);   // the heat this block gives up
     results[id] = { type: b.type, duty_kW: r.duty_kW, balance: r.balance, notes: r.notes, ...(r.state ? { state: r.state } : {}), ...(r.sizing ? { sizing: r.sizing } : {}),
-      ...(r.reaction ? { reaction: r.reaction } : {}) };
+      ...(r.reaction ? { reaction: r.reaction } : {}),
+      // Unit v2 (proposal 0015, contract 2): a block's profile, warnings and method reach the result (and the request path's qualifications)
+      ...(r.profile ? { profile: r.profile } : {}), ...(r.warnings ? { warnings: r.warnings } : {}), ...(r.method ? { method: r.method } : {}) };
   };
 
   /** Total flow of the feed streams calculated so far (kmol/h). */

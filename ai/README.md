@@ -7,6 +7,7 @@
 | [instructions/use-chepta.md](instructions/use-chepta.md) | Instructions any assistant can follow to build CHEPTA diagrams in a chat |
 | [skills/chepta/](skills/chepta/SKILL.md) | The same, as a skill |
 | [skills/chepta-contributor/](skills/chepta-contributor/SKILL.md) | Contribute by the project's rules, as a skill |
+| [../docs/models/tools.md](../docs/models/tools.md) | The command line and the local MCP server `chepta-mcp`: CHEPTA's calculations as tools for assistants that start MCP servers (Claude Code, Claude Desktop), with how to add it |
 | [examples/](examples/) | Example contribution package |
 | [../AGENTS.md](../AGENTS.md) | The rules every assistant, coding agent and contributor follows |
 | [../llms.txt](../llms.txt) | An index of the project for assistants that browse the web |

@@ -1,4 +1,4 @@
-# 2026-10-29-03: Proposal 0015, M1, step 2 (W7): the column cases and the independent references
+# 2026-10-29-04: Proposal 0015, M1, step 2 (W7): the column cases and the independent references
 
 The maintainer, 2026-10-29: start W7 (the benchmark cases and the MESH reference), ahead of the column engine (W2).
 Written against contracts v1 (ARCHITECTURE.md, "The request path and the contracts of proposal 0015").
