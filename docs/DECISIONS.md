@@ -43,6 +43,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     heater and flash example through the whole path, in Node and in the browser.
   - **Next, M1:** W2 (the shortcut column), W7 (the benchmark cases and the MESH reference), W8 with W9 (the command
     line, the local MCP server, the worker), each as its own session when the maintainer says so.
+  - **W7, M1 done** (2026-10-29; docs/decisions/2026-10-29-03-column-cases.md): nine column cases and the MESH and
+    shortcut references, ahead of W2. To check: the tolerances, and the equation forms against DWSIM's source. Next for
+    W7: the cases of W2's following tasks (M2a: one complete benchmark), then the benchmark separations' pairs.
   - Waiting: W1, W3 to W6 and W10 (W10 at M1).
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun
