@@ -10,7 +10,7 @@
     "tables": "Figures 1.18, 1.19, 1.20 and 1.21 (screenshots of ChemSep's result tables; the numbers are read off the images, which are sharp text, not graphs)",
     "source_id": "kooijman-taylor-2006-chemsep-book"
   },
-  "method_choice": "docs/METHOD_SELECTION.md rules 2 and 6: benzene and toluene are nonpolar hydrocarbons, so Peng-Robinson for both phases (the maintainer, 2026-10-29), at any reduced temperature (here 0.62 to 0.67 by Kay's rule). The databank has no Peng-Robinson k_ij for the pair: k_ij = 0, and CHEPTA says so in a warning. The published example uses an activity model instead, K = gamma p*/P with UNIFAC and ChemSep's Antoine equations and constant molar overflow (p. 13); the pair is nearly ideal (infinite-dilution activity coefficients about 0.98 with NRTL), so the method matters little (METHOD_SELECTION.md, rule 6).",
+  "method_choice": "docs/METHOD_SELECTION.md rules 2 and 6: benzene and toluene are nonpolar hydrocarbons, so Peng-Robinson for both phases (the maintainer, 2026-10-29), at any reduced temperature (here 0.62 to 0.67 by Kay's rule). Its Peng-Robinson k_ij is fitted to the isobaric T-x-y data of Li et al. (2014) in the NIST TRC ThermoML Archive (k_ij = -0.0003, 2026-10-29; validation/python/eos_fit_kij.py); until then the databank had none and k_ij = 0 was used, with a warning. The published example uses an activity model instead, K = gamma p*/P with UNIFAC and ChemSep's Antoine equations and constant molar overflow (p. 13); the pair is nearly ideal (infinite-dilution activity coefficients about 0.98 with NRTL), so the method matters little (METHOD_SELECTION.md, rule 6).",
   "thermo": {
     "kind": "chepta",
     "model": "PR",
@@ -180,7 +180,7 @@
     ],
     "branch": "One solution expected (a near-ideal binary with reflux-ratio and bottoms-flow specifications): the reference's solution is the one to match.",
     "qualifications": [
-      "the Peng-Robinson pair benzene + toluene has no k_ij in the databank: k_ij = 0 is used, and the warning reaches the result's qualifications (src/thermo/eos/system.js)"
+      "the Peng-Robinson pair benzene + toluene uses its k_ij fitted to the ThermoML data of Li et al. (2014), tier fitted, shown in the result's qualifications (until 2026-10-29: k_ij = 0, with a warning)"
     ]
   },
   "tolerances": {

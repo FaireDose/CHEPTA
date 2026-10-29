@@ -289,7 +289,9 @@ test("composition, interpolation, tiers, known deviations", () => {
   assert.equal(tierSummary([{ tier: "standard", count: 1 }], "gas", "gases"), "1 gas: 1 standard");
   assert.equal(tierSummary([]), "");
   // EOS systems list pairs without k_ij both in pairs (tier "none") and in missingPairs: counted once
-  const eos = CHEPTA.system({ components: ["benzene", "toluene"], model: "PR" }).info;
+  // (p-xylene + toluene: no k_ij in ChemSep's files nor open data in the archive; benzene + toluene was the example until
+  // its k_ij were fitted to ThermoML data on 2026-10-29)
+  const eos = CHEPTA.system({ components: ["p-xylene", "toluene"], model: "PR" }).info;
   assert.deepEqual(tierCounts(eos.pairs, eos.missingPairs), [{ tier: "none", count: 1 }]);
 
   const ids = ["ethanol", "water", "ethyl-acetate"].map(findComponent);

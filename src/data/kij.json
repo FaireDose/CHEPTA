@@ -8004,6 +8004,64 @@
     "chemsep-eos-ipd"
    ],
    "alternatives": []
+  },
+  {
+   "model": "PR",
+   "i": "benzene",
+   "j": "toluene",
+   "set": "fitted-li2014",
+   "default": true,
+   "kij": -0.0003,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/python/eos_fit_kij.py to the 11 bubble temperatures of Li et al. (2014) at 101.33 kPa: AAD 0.09 K in T (max 0.30 K), 0.0045 in y (max 0.0079)",
+    "data": [
+     "validation/data/eos/benzene_toluene_10-1016-j-fluid-2013-12-002_101.33kPa.json"
+    ],
+    "conditions": "P = 101.33 kPa, T = 354.16-379.14 K",
+    "T_range_K": [
+     354.16,
+     379.14
+    ]
+   },
+   "source_ids": [
+    "li2014-benzene-toluene"
+   ],
+   "valid": {
+    "T_K": [
+     354.16,
+     379.14
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "benzene",
+   "j": "toluene",
+   "set": "fitted-li2014",
+   "default": true,
+   "kij": 0.003,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/python/eos_fit_kij.py to the 11 bubble temperatures of Li et al. (2014) at 101.33 kPa: AAD 0.05 K in T (max 0.10 K), 0.0027 in y (max 0.0051)",
+    "data": [
+     "validation/data/eos/benzene_toluene_10-1016-j-fluid-2013-12-002_101.33kPa.json"
+    ],
+    "conditions": "P = 101.33 kPa, T = 354.16-379.14 K",
+    "T_range_K": [
+     354.16,
+     379.14
+    ]
+   },
+   "source_ids": [
+    "li2014-benzene-toluene"
+   ],
+   "valid": {
+    "T_K": [
+     354.16,
+     379.14
+    ]
+   }
   }
  ]
 }

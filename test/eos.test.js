@@ -69,11 +69,11 @@ test("thermodynamic consistency: G_R/RT = sum x ln phi, cp_R = dH_R/dT", () => {
   }
 });
 
-test("k_ij data: 165 pairs for PR and 164 for SRK (ChemSep for the 49 components, for isopentane and for 1-pentanol, and since 2026-10-13 for the other proposal 0008 components except where a literature fit was rejected; one PR pair refitted, five fitted for the proposal 0004 benchmarks, eleven fitted to open literature, test/eos-literature.test.js; helium + carbon monoxide and n-hexane + isoamyl alcohol since 2026-10-21), each with a source", () => {
+test("k_ij data: 165 pairs for PR and 164 for SRK (ChemSep for the 49 components, for isopentane and for 1-pentanol, and since 2026-10-13 for the other proposal 0008 components except where a literature fit was rejected; one PR pair refitted, five fitted for the proposal 0004 benchmarks, eleven fitted to open literature, test/eos-literature.test.js; helium + carbon monoxide and n-hexane + isoamyl alcohol since 2026-10-21; benzene + toluene fitted to ThermoML data since 2026-10-29), each with a source", () => {
   const ids = new Set(listComponents().map(c => c.id));
   for (const model of ["PR", "SRK"]) {
     const pairs = kij.pairs.filter(p => p.model === model);
-    assert.equal(pairs.length, { PR: 165, SRK: 164 }[model], model);
+    assert.equal(pairs.length, { PR: 166, SRK: 165 }[model], model);
     for (const p of pairs) {
       assert.ok(ids.has(p.i) && ids.has(p.j), `${p.i} ${p.j}`);
       // helium, a quantum gas, needs large k_ij: ChemSep's helium + carbon monoxide is 0.5463 (PR) and 0.6507 (SRK)
@@ -95,7 +95,9 @@ test("k_ij data: 165 pairs for PR and 164 for SRK (ChemSep for the 49 components
     "PR cyclohexane-n-heptane", "SRK cyclohexane-n-heptane", "PR p-xylene-m-xylene", "SRK p-xylene-m-xylene", "PR p-xylene-o-xylene", "SRK p-xylene-o-xylene",
     "PR m-xylene-o-xylene", "SRK m-xylene-o-xylene", "PR ethane-n-decane", "SRK ethane-n-decane", "PR ethane-n-undecane", "SRK ethane-n-undecane",
     "PR ethane-n-dodecane", "SRK ethane-n-dodecane", "PR propane-n-decane", "PR propane-n-undecane", "SRK propane-n-undecane", "PR propane-n-dodecane",
-    "SRK propane-n-dodecane", "PR ethylene-1-butene", "SRK ethylene-1-butene"]);
+    "SRK propane-n-dodecane", "PR ethylene-1-butene", "SRK ethylene-1-butene",
+    // ThermoML Archive, isobaric T-x-y of Li et al. (2014) (2026-10-29)
+    "PR benzene-toluene", "SRK benzene-toluene"]);
   assert.equal(kij.pairs.find(p => p.tier === "fitted" && p.j === "toluene").replaced.kij, -0.51);
   const sys = system({ components: ["methane", "nitrogen", "water"], model: "PR" });
   const byPair = Object.fromEntries(sys.info.pairs.map(p => [p.pair.join("+"), p]));
