@@ -15,7 +15,7 @@ passwords.
 The assistant needs to open no link for this one:
 
 > Load the CHEPTA workbench. Make an HTML artifact with exactly this code, and do not download or inspect the library first:
-> `<div id="app"></div><script src="https://cdn.jsdelivr.net/npm/chepta@0.4.0/dist/chepta.js"></script><script>CHEPTA.app("#app", { components: [] })</script>`
+> `<div id="app"></div><script src="https://cdn.jsdelivr.net/npm/chepta@0.5.0/dist/chepta.js"></script><script>CHEPTA.app("#app", { components: [] })</script>`
 
 It opens empty; choose the components in it.
 
