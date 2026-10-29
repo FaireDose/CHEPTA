@@ -1,8 +1,7 @@
 # 0015: Separation units, and the program that builds them across the roadmap's tracks
 
-- **Status:** Draft (revised 2026-10-29 with the maintainer's comments; Part II added the same day; amended the same
-  day with a review the maintainer asked ChatGPT for, the tool interface and MCP server of proposal 0011, step 1, and
-  a workstream for the visuals)
+- **Status:** Accepted (the maintainer, 2026-10-29, with the recommendations noted under each question; "The
+  maintainer's answers" at the end)
 - **Author(s):** CHEPTA maintainers (drafted with an AI assistant)
 - **Discussion:** this pull request
 - **Roadmap item:** releases v0.5 "Distillation" and v0.6 "Further units"; core track A3, A5 to A11; bridges B1, B2,
@@ -492,3 +491,27 @@ The review's recommendation is given under each question; the choice is the main
    this session as project manager and architect? *Review: yes, for the implementation tasks.*
 9. The first host for the MCP test: Claude Code (as above), or another the maintainer uses?
 10. The interface guide and the first review of the workbench (W10): now, at M1, or only when a view needs it?
+
+## The maintainer's answers (2026-10-29)
+
+"accepted the PR and I will go with your recommendations". So:
+
+1. **The column first**, with the liquid-liquid data work alongside it (W1 is not on the column's path).
+2. **Liquid-liquid fit targets:** the data's stated uncertainty and criteria per system, absolute and relative, with the
+   traces of a solute in view; 0.01 in mole fraction is not a target for every system.
+3. **The solid's enthalpy:** the liquid's minus the enthalpy of fusion, only as a labelled approximation within a
+   stated temperature range and consistent with the solid-liquid model; it does not hold back the vapour-liquid column.
+4. **"Making it leaner" 4 and 5, both:** the solid-liquid separator and the dryer are postponed (the component separator
+   does the separation until a real model comes); the evaporator is a template of heater and flash blocks. Items 1 to 3
+   were in the draft already.
+5. **Flooding:** the design fraction is the user's, configurable; the actual fraction of flooding of each stage is
+   always reported, and the warning is given above the design fraction. Its default, within the slides' 0.65 to 0.90,
+   is chosen and stated in step 6 with its source.
+6. **The tracks and milestones of Part II**, with v0.5 at M2a.
+7. **Three active tasks to start:** W2 (the column), W7 (cases and references), W8 with W9 (the tool path and its
+   runtime); more only when the reviews keep up.
+8. **Separate sessions** for the implementation tasks, each with its own branch and pull request; this session
+   coordinates (architect and project manager). A session is started only when the maintainer says so, one task at a
+   time, with no scheduled check-ins (the maintainer's standing rule on credits).
+9. **Claude Code** is the first host of the MCP test.
+10. **The interface guide and the review of the workbench at M1** (step 14); then a visual check of each new view.
