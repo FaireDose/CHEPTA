@@ -36,15 +36,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   reactions, more units in Settings, biphenyl, p-terphenyl (para isomer: to confirm) and cumene hydroperoxide. The
   flash failure: no small fix; the real fix later, as an item of "Engineering" below, not a proposal (the maintainer,
   2026-10-28).
-- **Proposal 0015, the separation units** (draft, 2026-10-28; revised 2026-10-29 with the maintainer's comments): one
-  Column block (distillation, absorber, stripper, extraction; shortcut or rigorous) with dry-stage, flooding and
-  weeping warnings and its own property method where needed; evaporators, crystallizers, membranes (with the area),
-  solid-liquid separation and dryers; the size of the flash drum and decanter; the liquid-liquid thermodynamics; it
-  takes over steps 1 and 3 of proposal 0007. Part II (2026-10-29): the program across the roadmap's tracks, roles,
-  contracts first (M0), workstreams, milestones M0 to M4 (v0.5, v0.6). Amended the same day: the review the maintainer
-  asked ChatGPT for (a green M0 path, M2a and M2b, the P-H boundary between methods, the diameter from the largest
-  required area, the execution envelope), the dispatcher, command line and local MCP server moved from proposal 0011,
-  step 1, and a workstream for the visuals (W10). Answer its ten questions and choose from "Making it leaner".
+- **Proposal 0015, the separation units: accepted** (2026-10-29; docs/decisions/2026-10-29-01-separation-units-accepted.md),
+  with the recommendations under its ten questions. The program's state, by the active workstreams:
+  - **M0** (next): the contracts of section 9 and the green path with a heater and flash flowsheet (architect, W8, W9).
+  - **W2, W7, W8 with W9**: start after M0, each as its own session when the maintainer says so.
+  - Waiting: W1, W3 to W6 and W10 (W10 at M1).
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun
   gas viscosity by Wilke's rule, the full-text search for the three new components. Check the transcribed constants of
