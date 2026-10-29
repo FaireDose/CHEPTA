@@ -184,9 +184,12 @@ into that session's conversation.
 
 4. Then ask, for the missing-data case:
 
-   > Use the chepta MCP server. Solve this flowsheet with solve_flowsheet and give me the outlet composition:
-   > components benzene and glycerol, NRTL; a feed F1 of 50 kmol/h benzene and 50 kmol/h glycerol at 300 K and
-   > 101.325 kPa, going straight to a product P1 (stream S1 from F1.out to P1.in).
+   > Use the chepta MCP server. Benzene and glycerol with NRTL: a feed of 50 kmol/h of each at 300 K and 101.325 kPa
+   > is heated to 350 K and goes to a flash drum at 101.325 kPa with no heat added. Build the flowsheet, solve it,
+   > and give me the drum's vapour and liquid flows and compositions.
+
+   (A result that needs the missing pair. The first version of this prompt sent the feed straight to a product,
+   whose outlet is just the feed: a weak test, the maintainer, 2026-10-29.)
 
 5. Compare with the command line: save the proposed project as `changed.chepta.json` and run
    `node bin/chepta.mjs run changed.chepta.json`.
