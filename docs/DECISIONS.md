@@ -60,9 +60,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     (University of Trieste and Oklahoma slides, Coker 1993, the University of Baghdad notes; the list in the decision
     file); to decide: the defaults (85 % of the permitted velocity, 2 min of liquid, 150 μm drops). Next for W4: the
     column diameter by flooding (M2b), with W2's stage traffic.
-  - **W10, M1 step 14: written, to review** (docs/decisions/2026-10-29-05-interface-guide.md): the interface guide
-    (docs/UI_GUIDE.md) and the review of the workbench (docs/ui-review/2026-10-29.md). To do: pick the review's items
-    to fix; W10 then fixes them in small pull requests of their own, and checks W5's and W6's new views against the guide.
+  - **W10, M1 step 14: the guide and the review merged; round 1 of fixes to review**
+    (docs/decisions/2026-10-29-07-ui-fixes-round-1.md): ten of the review's 17 items fixed. To check: the 1 mW
+    threshold for a zero duty; which of the items left for later come next. Then W10 checks W5's and W6's new views.
   - Waiting: W1, W3, W5 and W6.
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun

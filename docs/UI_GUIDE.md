@@ -31,6 +31,7 @@ The main tokens:
 | warning | `--fug-warn-bg`, `--fug-warn-fg` | amber | amber |
 | error | `--fug-err-bg`, `--fug-err-fg` | red | red |
 | state dots | `--fa-ok`, `--fa-busy`, `--fa-bad` | green, amber, red | |
+| flowsheet marks | `--fa-mark` (a block's warning dot), `--fa-energy` (energy streams) | `#d9822b`, `#c0392b` | `#e39a4c`, `#f07a6e` |
 | data tier badges | `--fa-t-<tier>`, `--fa-t-<tier>-bg` | standard, fitted, databank, predicted, user, none | |
 
 Rules:
@@ -105,14 +106,16 @@ Nothing smaller than 11 px on screen, chart labels included (at 375 px wide too)
 - Units in the header or in a Unit column, never inside the cells.
 - Significant figures fit the property: the same number of decimals down a column. A value that is zero within
   round-off is shown as 0 (not `7.36e-9`).
-- A wide table scrolls inside its own box (`.fug-scroll`), never the page.
+- A wide table scrolls inside its own box (`.fug-scroll`), never the page; a shadow at the edge shows that more
+  columns are there.
 
 ### Charts
 
 - Axes with the quantity and its unit ("T, °C"); grid lines in `--fug-rule`.
 - A legend under the chart, or direct labels at the curve ends.
 - The selected point is a ring; a fixed point (azeotrope, critical point) is a filled dot.
-- Text in a chart is at least 11 px at the width it is shown.
+- Text in a chart is at least 11 px at the width it is shown: on a phone the chart is drawn smaller (`compact`), not
+  shrunk.
 
 ## 5. Warnings, refusals and errors
 

@@ -762,7 +762,7 @@ export function app(target, cfg = {}) {
         f.spec === "PH"
           ? h("p", { class: "fa-in-hint" }, "The feed enthalpy is taken at this temperature and pressure; the flash outlet has H = H_feed + Q.")
           : h("label", { class: "fa-check-label" }, h("input", { type: "checkbox", checked: f.duty, "data-fk": "fduty", on: { change: ev => set({ flash: { duty: ev.target.checked } }) } }),
-            h("span", {}, "Heat duty from a feed at")),
+            h("span", {}, "Heat duty from the feed's own temperature and pressure")),
         ...(f.spec === "PH" || f.duty ? feedState : [])));
   }
 

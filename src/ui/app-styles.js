@@ -8,7 +8,7 @@ const LIGHT = `
   --fa-bar:#1f2d3b; --fa-bar-fg:#b6c3d0; --fa-bar-strong:#ffffff; --fa-bar-accent:#8ab9f1;
   --fa-ribbon:#f6f7f9; --fa-edge:#d9dee4; --fa-canvas:#ffffff; --fa-panel:#f3f5f7; --fa-status:#e9edf1;
   --fa-hover:rgba(28,92,171,.08); --fa-pressed:#dbe7f6; --fa-pressed-fg:#113b70; --fa-pressed-edge:rgba(28,92,171,.28);
-  --fa-ok:#1a9d6e; --fa-busy:#d99100; --fa-bad:#c93434;
+  --fa-ok:#1a9d6e; --fa-busy:#d99100; --fa-bad:#c93434; --fa-mark:#d9822b; --fa-energy:#c0392b;
   --fa-t-fitted-bg:#e1f3ea; --fa-t-fitted:#0c6443; --fa-t-standard-bg:#e1ebf8; --fa-t-standard:#174f94;
   --fa-t-databank-bg:#eceff2; --fa-t-databank:#46505a; --fa-t-none-bg:#fbe9e9; --fa-t-none:#8a1c1c;
   --fa-t-predicted-bg:#fff2d6; --fa-t-predicted:#6b4a00; --fa-t-user-bg:#f1e6fa; --fa-t-user:#5b2a86;
@@ -17,7 +17,7 @@ const DARK = `
   --fa-bar:#0d1216; --fa-bar-fg:#8d99a5; --fa-bar-strong:#eef1f3; --fa-bar-accent:#6da7ec;
   --fa-ribbon:#20262c; --fa-edge:#323a42; --fa-canvas:#1a1e22; --fa-panel:#1d2227; --fa-status:#14181c;
   --fa-hover:rgba(109,167,236,.10); --fa-pressed:#21344a; --fa-pressed-fg:#d3e5fb; --fa-pressed-edge:rgba(109,167,236,.35);
-  --fa-ok:#2bb582; --fa-busy:#e0a526; --fa-bad:#ef6b6b;
+  --fa-ok:#2bb582; --fa-busy:#e0a526; --fa-bad:#ef6b6b; --fa-mark:#e39a4c; --fa-energy:#f07a6e;
   --fa-t-fitted-bg:#16352a; --fa-t-fitted:#8fdcbc; --fa-t-standard-bg:#1b2e45; --fa-t-standard:#a9cbf5;
   --fa-t-databank-bg:#2a3036; --fa-t-databank:#b3bbc2; --fa-t-none-bg:#3a1c1c; --fa-t-none:#f3b0b0;
   --fa-t-predicted-bg:#3a2e12; --fa-t-predicted:#f2d48a; --fa-t-user-bg:#33233f; --fa-t-user:#dbbdf3;
@@ -86,6 +86,9 @@ export const APP_CSS = `
 .fa-btn[aria-pressed="true"]{background:var(--fa-pressed); color:var(--fa-pressed-fg); border-color:var(--fa-pressed-edge)}
 .fa-btn[aria-pressed="true"] .fug-ico{color:var(--fa-pressed-fg)}
 .fa-btn:disabled{opacity:.4; cursor:default}
+/* a locked block (on the roadmap): small and muted, as "not available yet" in the workspace tabs */
+.fa-btn.fa-small.is-locked{font-size:11px; gap:4px; color:var(--fug-muted); opacity:.8}
+.fa-btn.fa-small.is-locked .fug-ico{width:14px; height:14px}
 .fa-glyph{font-family:"Cambria Math",Cambria,"STIX Two Math","Times New Roman",serif; font-style:italic; font-size:15px; font-weight:500; color:var(--fug-accent);
   min-width:26px; text-align:center; line-height:1}
 .fa-glyph sub,.fa-glyph sup{font-size:.62em; font-style:normal}
@@ -199,6 +202,14 @@ export const APP_CSS = `
 .fug-app .fa-num-table th:first-child,.fug-app .fa-num-table td:first-child{text-align:right}
 .fug-app th .u{display:block; font-weight:400; font-size:.7rem}
 .fug-app .fug-scroll{overflow-x:auto; max-width:100%}
+/* a table wider than its box: a shadow at the edge that has more columns (scroll-linked backgrounds, no script) */
+.fug-app .fug-scroll{background:linear-gradient(to right, var(--fa-canvas) 30%, transparent) left / 24px 100% no-repeat local,
+  linear-gradient(to left, var(--fa-canvas) 30%, transparent) right / 24px 100% no-repeat local,
+  radial-gradient(farthest-side at 0 50%, color-mix(in srgb, var(--fug-fg) 32%, transparent), transparent) left / 14px 100% no-repeat scroll,
+  radial-gradient(farthest-side at 100% 50%, color-mix(in srgb, var(--fug-fg) 32%, transparent), transparent) right / 14px 100% no-repeat scroll}
+/* nothing computed yet: the Results panel says where the results will be */
+.fa-right:has(> .fa-readout:empty):has(> .fa-inspector-extra:empty) > .fa-readout::before{content:"The results appear here once the inputs are complete.";
+  font-size:12px; color:var(--fug-muted)}
 
 /* inspector: readouts from the existing renderers in the workbench's type */
 .fug-app .fug-eyebrow{text-transform:none; letter-spacing:0; font-size:11.5px; font-weight:600; color:var(--fug-fg2)}
@@ -359,25 +370,25 @@ a.fa-mini{text-decoration:none}
 .fs-block:focus{outline:none}
 .fs-block:focus-visible .fs-shape,.fs-block.is-sel .fs-shape{stroke:var(--fug-accent); stroke-width:2.6}
 .fs-block.is-incomplete .fs-shape{stroke-dasharray:5 3}
-.fs-warn-dot{fill:#d9822b; stroke:var(--fug-bg); stroke-width:1.5}
+.fs-warn-dot{fill:var(--fa-mark); stroke:var(--fug-bg); stroke-width:1.5}
 .fs-source{fill:var(--fug-accent); stroke:var(--fug-bg); stroke-width:1.2; cursor:move}
-.fs-source.is-incomplete{fill:var(--fug-bg); stroke:#d9822b; stroke-width:1.8; stroke-dasharray:3 2}
+.fs-source.is-incomplete{fill:var(--fug-bg); stroke:var(--fa-mark); stroke-width:1.8; stroke-dasharray:3 2}
 .fs-stream.is-sel .fs-source,.fs-source:hover{stroke:var(--fug-accent); stroke-width:5; stroke-opacity:.35}
 .fs-name{font-size:12px; font-weight:600; fill:var(--fug-fg)}
 .fs-line{fill:none; stroke:var(--fug-fg2, #555); stroke-width:1.6}
 .fs-hit{fill:none; stroke:transparent; stroke-width:12; cursor:pointer}
 .fs-stream.is-sel .fs-line{stroke:var(--fug-accent); stroke-width:2.6}
 .fs-stream.is-tear .fs-line{stroke-dasharray:6 4}
-.fs-stream.is-broken .fs-line{stroke:#c0392b; stroke-dasharray:4 3}
-.fs-label.fs-broken{fill:#c0392b}
+.fs-stream.is-broken .fs-line{stroke:var(--fa-bad); stroke-dasharray:4 3}
+.fs-label.fs-broken{fill:var(--fa-bad)}
 .fs-arrow{fill:var(--fug-fg2, #555)}
-.fs-label{font-size:10.5px; fill:var(--fug-fg2, #555); paint-order:stroke; stroke:var(--fug-halo); stroke-width:3px}
+.fs-label{font-size:11px; fill:var(--fug-fg2, #555); paint-order:stroke; stroke:var(--fug-halo); stroke-width:3px}
 .fs-handle{fill:var(--fug-bg); stroke:var(--fug-accent); stroke-width:1.6; cursor:crosshair}
 .fs-handle.is-end{fill:var(--fug-bg); stroke:var(--fug-fg2); stroke-width:1.3}
 .fs-handle:hover{fill:var(--fug-accent)}
 .fa-field.fa-field-stack{display:grid; grid-template-columns:1fr; gap:4px}
 .fa-field.fa-field-stack select{width:100%}
-.fs-block.is-failed .fs-shape{stroke:#c0392b; stroke-width:2.6}
+.fs-block.is-failed .fs-shape{stroke:var(--fa-bad); stroke-width:2.6}
 .fa-btn.is-locked{opacity:.5}
 .fug-app .fa-locked-chip{display:inline-flex; align-items:center; gap:3px; padding:2px 7px; border:1px dashed var(--fug-rule); border-radius:6px; font-size:11.5px; color:var(--fug-muted); cursor:not-allowed; white-space:nowrap}
 .fug-app .fa-model-later{flex-wrap:wrap; gap:4px}
@@ -392,13 +403,13 @@ a.fa-mini{text-decoration:none}
 .fs-port-out{fill:var(--fug-accent); stroke:var(--fug-bg); stroke-width:1.2; cursor:crosshair}
 .fs-port-out:hover{stroke:var(--fug-accent); stroke-width:6; stroke-opacity:.3}
 .fs-port-label{font-size:9.5px; fill:var(--fug-muted); pointer-events:none}
-.fs-q{fill:none; stroke:#c0392b; stroke-width:1.4; stroke-dasharray:4 3}
-.fs-qarrow{fill:#c0392b}
-.fs-qlabel{font-size:10px; fill:#c0392b; paint-order:stroke; stroke:var(--fug-halo); stroke-width:3px}
+.fs-q{fill:none; stroke:var(--fa-energy); stroke-width:1.4; stroke-dasharray:4 3}
+.fs-qarrow{fill:var(--fa-energy)}
+.fs-qlabel{font-size:11px; fill:var(--fa-energy); paint-order:stroke; stroke:var(--fug-halo); stroke-width:3px}
 .fs-qstub,.fs-qfeed{cursor:pointer}
 .fs-qfeed{cursor:move}
-.fs-qsource{fill:var(--fug-bg); stroke:#c0392b; stroke-width:1.4}
-.fs-qbolt{fill:#c0392b}
+.fs-qsource{fill:var(--fug-bg); stroke:var(--fa-energy); stroke-width:1.4}
+.fs-qbolt{fill:var(--fa-energy)}
 .fs-qfeed.is-incomplete .fs-qsource{stroke-dasharray:3 2}
 .fs-qstub.is-sel .fs-q,.fs-qfeed.is-sel .fs-q{stroke-width:2.4}
 .fs-qfeed.is-sel .fs-qsource,.fs-qfeed:focus-visible .fs-qsource,.fs-qstub:focus-visible .fs-q{stroke-width:2.6}
@@ -406,8 +417,8 @@ a.fa-mini{text-decoration:none}
 .fs-empty-hint{position:absolute; inset:auto 0 45% 0; text-align:center; color:var(--fug-fg2); font-size:13px; pointer-events:none}
 .fs-tables h3{font-size:13px; margin:14px 0 6px}
 .fa-dof{font-size:12px; border-radius:6px; padding:6px 8px; margin:6px 0; display:flex; gap:6px; align-items:flex-start}
-.fa-dof.is-ok{background:color-mix(in srgb, #2e9a5b 14%, transparent); color:inherit}
-.fa-dof.is-bad{background:color-mix(in srgb, #d9822b 16%, transparent); color:inherit}
+.fa-dof.is-ok{background:color-mix(in srgb, var(--fa-ok) 14%, transparent); color:inherit}
+.fa-dof.is-bad{background:color-mix(in srgb, var(--fa-mark) 16%, transparent); color:inherit}
 .fa-dof-list{margin:4px 0 0; padding-left:18px; font-size:12px; display:grid; gap:3px}
 .fa-link{background:none; border:0; padding:0; color:var(--fug-accent); text-decoration:underline; cursor:pointer; font:inherit}
 .fa-frac-row{display:flex; flex-wrap:wrap; gap:6px; margin:4px 0}
@@ -594,7 +605,10 @@ a.fa-mini{text-decoration:none}
 .fug-app[data-size="narrow"] .fa-hide-narrow,.fug-app[data-size="narrow"] .fa-grow{display:none}
 .fug-app[data-size="narrow"] .fa-units{grid-template-columns:auto auto}
 .fug-app[data-size="narrow"] .fa-field{justify-content:flex-start}
-.fug-app[data-size="narrow"] .fa-drawer{width:100%; border-left:0}
+.fug-app[data-size="narrow"] .fa-drawer{width:100%; border-left:0; height:auto; min-height:100%}
+.fug-app[data-size="narrow"] .fa-status>.fa-cell:last-child{display:none}
+/* the chart box keeps its desktop height basis (420 px) in the stacked canvas: let it be as tall as the chart */
+.fug-app[data-size="narrow"] .fa-canvas>.fa-plot{flex:none}
 .fug-app[data-size="narrow"] .fa-drawer-head{flex-direction:column-reverse; gap:8px}
 .fug-app[data-size="narrow"] .fa-close{align-self:flex-end}
 @media (prefers-reduced-motion: reduce){ .fa-plot{transition:none} }
