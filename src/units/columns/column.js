@@ -3,8 +3,8 @@
  *
  *   "shortcut"   Fenske, Underwood and Gilliland for a light and a heavy key (src/units/columns/shortcut.js, where the
  *                equations, their open source and where the method holds are written);
- *   "rigorous"   MESH on equilibrium stages: planned (milestone M2a); refused until then by the column engine
- *                (src/units/columns/engine.js, NOT_AVAILABLE).
+ *   "rigorous"   MESH on equilibrium stages (milestone M2a): the column engine (src/units/columns/engine.js, where the
+ *                equations, the solver, its open sources and its checks are written), with the flowsheet's method.
  *
  * Absorber, stripper and extraction come later as configurations of the same block (M3). The specification:
  *
@@ -15,6 +15,22 @@
  *     reflux_ratio: 2.5  |  reflux_over_minimum: 1.3,     // one of them
  *     condenser: "total" | "partial",                     // default total (a partial condenser: vapour distillate)
  *     P_kPa: 101.325 }                                    // default the feed's pressure; no pressure drop
+ *
+ * The rigorous mode's specification:
+ *
+ *   { mode: "rigorous",
+ *     stages: 20,                                         // equilibrium stages and the condenser, numbered from the top
+ *                                                         // (1 the condenser, N the partial reboiler, both counted)
+ *     feed_stage: 10,                                     // or one stage per inlet: [8, 14]
+ *     condenser: "total" | "partial",                     // default total
+ *     P_kPa: 101.325,                                     // default the (first) feed's pressure; no pressure drop
+ *     two of: reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW,
+ *     max_iterations: 50 }                                // optional: a limit on the Newton iterations (none: the
+ *                                                         // solver's own limits, and the continuation if needed)
+ *
+ * The keys of the other mode are kept (so that a person can switch back) and not used. Several feeds: the rigorous mode
+ * only; each enters its stage as one stream. Outlets as the shortcut's; `profile` holds every stage (T, P, L, V, x, y,
+ * duty), `state` the products, the duties, the residuals by group, their tolerances and the iterations.
  *
  * Purity specifications (distillate_purity, bottoms_purity) come with milestone M4: refused until then (NOT_AVAILABLE).
  *
@@ -36,11 +52,16 @@ import { fug, boilup, wholeStages, VOLATILITY_TOLERANCE } from "./shortcut.js";
 /** The column's modes: built, and planned. */
 export const COLUMN_MODES = Object.freeze([
   { mode: "shortcut", status: "available", summary: "Fenske, Underwood and Gilliland, for a light and a heavy key" },
-  { mode: "rigorous", status: "planned", summary: "MESH on equilibrium stages (proposal 0015, milestone M2a)" },
+  { mode: "rigorous", status: "available", summary: "MESH on equilibrium stages, solved by Newton's method on all equations (Naphtali-Sandholm)" },
 ]);
 
 const SPEC_KEYS = ["mode", "light_key", "heavy_key", "recovery_light_key_in_distillate", "recovery_heavy_key_in_bottoms", "reflux_ratio",
-  "reflux_over_minimum", "condenser", "P_kPa", "distillate_purity", "bottoms_purity"];
+  "reflux_over_minimum", "condenser", "P_kPa", "distillate_purity", "bottoms_purity",
+  "stages", "feed_stage", "max_iterations", "boilup_ratio", "distillate_kmol_h", "bottoms_kmol_h", "condenser_duty_kW", "reboiler_duty_kW"];
+/** The rigorous mode's specifications (two of them), and the engine's names for them. */
+const RIGOROUS_SPECS = { reflux_ratio: "reflux_ratio", boilup_ratio: "boilup_ratio", distillate_kmol_h: "distillate_rate",
+  bottoms_kmol_h: "bottoms_rate", condenser_duty_kW: "condenser_duty", reboiler_duty_kW: "reboiler_duty" };
+const KMOL_H = 1000 / 3600;   // mol/s per kmol/h
 const PURITY = ["distillate_purity", "bottoms_purity"];
 const has = (spec, k) => spec?.[k] !== undefined && spec?.[k] !== null && spec?.[k] !== "";
 const fmt = v => +Number(v).toPrecision(4);
@@ -64,9 +85,9 @@ function checkSpec(spec, { sys }) {
   // an unknown key is refused by runUnit and specStatus (specKeys)
   const mode = spec.mode ?? "shortcut";
   if (!COLUMN_MODES.some(m => m.mode === mode)) throw fail("BAD_INPUT", `Column: mode "${mode}" is not one of ${COLUMN_MODES.map(m => m.mode).join(", ")}.`);
+  if (mode === "rigorous") return checkRigorous(spec);
   // refused when solved (NOT_AVAILABLE, the outcome "unsupported"), not here: the specification is not wrong, the
   // calculation is not built yet
-  if (mode !== "shortcut") return { mode };
   if (PURITY.some(k => has(spec, k))) return { mode, purity: true };
   const condenser = spec.condenser ?? "total";
   if (!["total", "partial"].includes(condenser)) throw fail("BAD_INPUT", `Column: condenser must be "total" or "partial" (got ${JSON.stringify(condenser)}).`);
@@ -90,10 +111,55 @@ function checkSpec(spec, { sys }) {
   return out;
 }
 
+function checkRigorous(spec) {
+  // a purity reaches the solver, which refuses it as not built yet (M4)
+  if (PURITY.some(k => has(spec, k))) return { mode: "rigorous", purity: true };
+  const N = Number(spec.stages);
+  if (!(Number.isInteger(N) && N >= 3)) throw fail("BAD_INPUT", `Column: stages must be a whole number of 3 or more, the condenser and the reboiler counted (got ${JSON.stringify(spec.stages)}).`);
+  const fsList = Array.isArray(spec.feed_stage) ? spec.feed_stage : [spec.feed_stage];
+  const feedStages = fsList.map(v => {
+    const k = Number(v);
+    if (!(Number.isInteger(k) && k >= 2 && k <= N - 1)) throw fail("BAD_INPUT", `Column: feed_stage must be a whole number from 2 to ${N - 1}, between the condenser (1) and the reboiler (${N}) (got ${JSON.stringify(v)}).`);
+    return k;
+  });
+  const condenser = spec.condenser ?? "total";
+  if (!["total", "partial"].includes(condenser)) throw fail("BAD_INPUT", `Column: condenser must be "total" or "partial" (got ${JSON.stringify(condenser)}).`);
+  const given = Object.keys(RIGOROUS_SPECS).filter(k => has(spec, k));
+  if (given.length !== 2) {
+    throw fail("BAD_INPUT", `Column: the rigorous column needs two specifications, from ${Object.keys(RIGOROUS_SPECS).join(", ")}; ${given.length ? `got ${given.join(", ")}` : "none given"}.`);
+  }
+  const specs = given.map(k => {
+    const v = Number(spec[k]);
+    if (!(Number.isFinite(v) && v > 0)) throw fail("BAD_INPUT", `Column: ${k} must be a positive number (got ${JSON.stringify(spec[k])}).`);
+    return { key: k, kind: RIGOROUS_SPECS[k], value: k.endsWith("_kmol_h") ? v * KMOL_H : k.endsWith("_kW") ? v * 1000 : v };
+  });
+  const out = { mode: "rigorous", N, feedStages, condenser, specs };
+  if (has(spec, "max_iterations")) {
+    out.maxIterations = Number(spec.max_iterations);
+    if (!(Number.isInteger(out.maxIterations) && out.maxIterations >= 1)) throw fail("BAD_INPUT", `Column: max_iterations must be a whole number of 1 or more (got ${JSON.stringify(spec.max_iterations)}).`);
+  }
+  if (has(spec, "P_kPa")) {
+    out.P = Number(spec.P_kPa);
+    if (!(Number.isFinite(out.P) && out.P > 0)) throw fail("BAD_INPUT", `Column: P_kPa must be a positive number (got ${JSON.stringify(spec.P_kPa)}).`);
+  }
+  return out;
+}
+
 /** The degrees of freedom of the shortcut: the two keys, their two recoveries and the reflux (the condenser and the
  *  pressure have defaults). A purity counts in place of its recovery, so that it reaches the solver and is refused
  *  there as not built yet; so does the rigorous mode. */
 function dof(spec) {
+  if (spec.mode === "rigorous") {
+    const out = { needed: 4, given: 0, missing: [], extra: [] };
+    for (const [k, what] of [["stages", "the number of stages"], ["feed_stage", "the feed stage"]]) {
+      if (has(spec, k)) out.given += 1; else out.missing.push(what);
+    }
+    const g = [...Object.keys(RIGOROUS_SPECS), ...PURITY].filter(k => has(spec, k));
+    out.given += Math.min(g.length, 2);
+    if (g.length < 2) out.missing.push(`${2 - g.length === 2 ? "two specifications" : "one more specification"} (reflux ratio, boil-up ratio, distillate or bottoms flow, condenser or reboiler duty)`);
+    if (g.length > 2) out.extra.push(`${g.join(", ")}: give two`);
+    return out;
+  }
   if ((spec.mode ?? "shortcut") !== "shortcut") return { needed: 0, given: 0, missing: [], extra: [] };
   const rows = [
     [["light_key"], "the light key"], [["heavy_key"], "the heavy key"],
@@ -180,17 +246,57 @@ function solveShortcut(sys, feed, s) {
   return { outlets: { distillate, bottoms }, duty_kW: Qr - Qc, notes, warnings, profile, state };
 }
 
+/** The rigorous column (milestone M2a): the column engine with the flowsheet's method; see the file header. */
+function solveRigorous(sys, feeds, s) {
+  if (feeds.length !== s.feedStages.length) {
+    throw fail("BAD_INPUT", `Column: ${feeds.length} feed${feeds.length > 1 ? "s" : ""} and ${s.feedStages.length} feed stage${s.feedStages.length > 1 ? "s" : ""}; give one feed stage per feed (feed_stage: [${feeds.map((_, k) => s.feedStages[k] ?? "?").join(", ")}]).`);
+  }
+  if (feeds.some(f => !(f.F_kmol_h >= 0))) throw fail("BAD_INPUT", "Column: a feed has no flow.");
+  const P = s.P ?? feeds[0].P_kPa;
+  const r = solveCascade({ sys, P_kPa: P, stages: s.N, ends: { condenser: s.condenser }, phases: "VL",
+    feeds: feeds.map((f, k) => ({ stage: s.feedStages[k], flows: f.flows.map(v => v * KMOL_H), H_W: f.H_kW * 1000 })),
+    specs: s.specs.map(({ kind, value }) => ({ kind, value })), maxIterations: s.maxIterations });
+  const total = s.condenser === "total", N = s.N;
+  const kmol = v => v / KMOL_H;
+  const d = r.products.distillate.flows.map(kmol), b = r.products.bottoms.flows.map(kmol);
+  const distillate = stream(sys, { flow_kmol_h: d, P_kPa: P, VF: total ? 0 : 1 });
+  const bottoms = stream(sys, { flow_kmol_h: b, P_kPa: P, VF: 0 });
+  const Qc = r.duties.condenser_W / 1000, Qr = r.duties.reboiler_W / 1000;
+  const byId = arr => Object.fromEntries(sys.ids.map((id, i) => [id, arr[i]]));
+  const D = kmol(sum(r.products.distillate.flows)), B = kmol(sum(r.products.bottoms.flows));
+  const profile = r.stages.map(st => ({ stage: st.stage, name: st.name, T_K: st.T_K, P_kPa: st.P_kPa, L_kmol_h: kmol(st.L_mol_s),
+    V_kmol_h: kmol(st.V_mol_s), duty_kW: st.duty_W / 1000, x: byId(st.x), y: st.y ? byId(st.y) : null }));
+  const R = r.stages[0].L_mol_s / sum(r.products.distillate.flows), boil = r.stages[N - 1].V_mol_s / sum(r.products.bottoms.flows);
+  const notes = [
+    `Rigorous column: ${N} stages (1 the ${total ? "total" : "partial"} condenser, ${N} the reboiler), feed${s.feedStages.length > 1 ? "s" : ""} on stage${s.feedStages.length > 1 ? "s" : ""} ${s.feedStages.join(", ")}, at ${fmt(P)} kPa without pressure drop. The MESH equations of every stage were solved together by Newton's method (Naphtali-Sandholm), started by the ${r.solver.start}, in ${r.iterations} iterations; every group of residuals is within its tolerance (state.residuals). Converged is not validated against data: the result is as good as the method and its parameters.`,
+    ...r.notes,
+  ];
+  if (Math.abs(distillate.T_K - r.stages[0].T_K) > 0.01 || Math.abs(bottoms.T_K - r.stages[N - 1].T_K) > 0.01) {
+    notes.push(`The products' temperatures from the flash (${fmt(distillate.T_K)} and ${fmt(bottoms.T_K)} K) differ from the stages' (${fmt(r.stages[0].T_K)} and ${fmt(r.stages[N - 1].T_K)} K).`);
+  }
+  const state = {
+    mode: "rigorous", P_kPa: P, condenser: s.condenser, stages: N, feed_stages: s.feedStages,
+    specifications: Object.fromEntries(s.specs.map(x => [x.key, x.key.endsWith("_kmol_h") ? kmol(x.value) : x.key.endsWith("_kW") ? x.value / 1000 : x.value])),
+    reflux_ratio: R, boilup_ratio: boil, D_kmol_h: D, B_kmol_h: B, condenser_kW: Qc, reboiler_kW: Qr,
+    T_distillate_K: r.stages[0].T_K, T_bottoms_K: r.stages[N - 1].T_K,
+    converged: r.converged, iterations: r.iterations, residuals: r.residuals, tolerances: r.tolerances, solver: r.solver,
+  };
+  return { outlets: { distillate, bottoms }, duty_kW: Qr - Qc, notes, warnings: r.warnings, profile, state };
+}
+const sum = v => v.reduce((a, c) => a + c, 0);
+
 registerUnit({
   type: "column", label: "Column", duty: true,
-  inlets: [{ port: "in", label: "feed" }],
+  inlets: [{ port: "in", label: "feed", min: 1, max: Infinity }],
   outlets: [{ port: "distillate" }, { port: "bottoms" }],
   modes: COLUMN_MODES,
   specKeys: SPEC_KEYS,
   checkSpec,
   dof,
   solve({ sys, inlets, spec }) {
-    if (spec.mode === "rigorous") return solveCascade();
-    if (spec.purity) throw fail("NOT_AVAILABLE", "Column: purity specifications come with milestone M4 of proposal 0015; give the recoveries of the keys instead.");
+    if (spec.purity) throw fail("NOT_AVAILABLE", `Column: purity specifications come with milestone M4 of proposal 0015; give ${spec.mode === "rigorous" ? "flows, ratios or duties" : "the recoveries of the keys"} instead.`);
+    if (spec.mode === "rigorous") return solveRigorous(sys, inlets.in, spec);
+    if (inlets.in.length > 1) throw fail("BAD_INPUT", "Column: the shortcut column takes one feed; mix the feeds first, or use the rigorous mode, which takes several.");
     return solveShortcut(sys, inlets.in[0], spec);
   },
 });

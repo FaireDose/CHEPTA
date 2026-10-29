@@ -73,15 +73,16 @@ test("outcomes: invalid input names the block or field; missing data stays missi
   assert.match(md.error.message, /No NRTL parameters for: Benzene \+ Glycerol/);
 });
 
-test("unsupported: the rigorous column is not built yet and refused; an internal error is an outcome of its own", () => {
-  // the shortcut column landed with milestone M1 (proposal 0015, W2), so solve_column is available; its rigorous mode
-  // (M2a) is what is refused now, through the same outcome
+test("unsupported: a purity specification of the column is not built yet and refused; an internal error is an outcome of its own", () => {
+  // the shortcut column landed with milestone M1 and the rigorous column with M2a (proposal 0015, W2), so solve_column
+  // is available; a purity specification (M4) is what is refused now, through the same outcome (this test asked for
+  // the rigorous mode before M2a)
   const list = capabilities();
   for (const name of ["capabilities", "find_component", "component_info", "check_project", "flowsheet_status", "solve_flowsheet", "solve_column"]) {
     assert.equal(list.find(c => c.name === name)?.status, "available", name);
   }
   const r = run({ capability: "solve_column", input: { components: ["benzene", "toluene"], thermo: { model: "ideal" },
-    feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { mode: "rigorous" } } });
+    feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { mode: "rigorous", stages: 10, feed_stage: 5, reflux_ratio: 2, distillate_purity: 0.99 } } });
   assert.equal(r.outcome, "unsupported");
   assert.equal(r.error.code, "NOT_AVAILABLE");
   assert.ok(OUTCOMES.includes(r.outcome));
@@ -133,8 +134,13 @@ test("envelope: limits are checked; a cancelled or overtaken run's result is dis
   assert.equal(endRun(r, "done").status, "cancelled");
 });
 
-test("contracts not built yet refuse: the column engine and the sizing layer", () => {
-  assert.throws(() => solveCascade({}), e => e.code === "NOT_AVAILABLE" && /M1/.test(e.message));
+test("contracts not built yet refuse: the column engine's later configurations and the sizing layer", () => {
+  // the rigorous vapour-liquid column landed with M2a (test/columns-rigorous.test.js): an empty request is now a wrong
+  // input, and the configurations of M2b and M3 (a second liquid, extraction) are what is refused as not built
+  assert.throws(() => solveCascade({}), e => e.code === "BAD_INPUT");
+  const thermo = { n: 2, names: ["A", "B"], P_kPa: 100, lnK: () => [0.5, -0.5], hL: () => 0, hV: () => 3e4, bubbleT: () => 350 };
+  const feeds = [{ stage: 2, flows: [1, 1], H_W: 0 }], specs = [{ kind: "reflux_ratio", value: 2 }, { kind: "distillate_rate", value: 1 }];
+  for (const phases of ["LL", "VLL"]) assert.throws(() => solveCascade({ thermo, stages: 4, feeds, specs, phases }), e => e.code === "NOT_AVAILABLE" && /M2b/.test(e.message));
   // the drum and decanter sizes landed at M1 (test/sizing.test.js): an empty result is now a wrong input
   for (const f of [columnDiameter, membraneArea]) assert.throws(() => f({}), e => e.code === "NOT_AVAILABLE");
   for (const f of [sizeDrum, sizeDecanter]) assert.throws(() => f({}), e => e.code === "BAD_INPUT");

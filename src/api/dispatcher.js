@@ -212,6 +212,9 @@ function solvedFlowsheet(flowsheet, userData) {
     checks: {
       material_kmol_h: material, energy_kW: result.balance.energy_kW, blocks,
       loops: result.loops.map(l => ({ tears: l.tears, iterations: l.iterations, residual: l.residual ?? null, tolerance: l.tolerance ?? null })),
+      // the rigorous columns: their residuals by group, the tolerances and the iterations (contract 3)
+      ...(Object.values(result.blocks).some(b => b.state?.residuals) ? { columns: Object.fromEntries(Object.entries(result.blocks).filter(([, b]) => b.state?.residuals)
+        .map(([id, b]) => [id, { residuals: b.state.residuals, tolerances: b.state.tolerances, iterations: b.state.iterations, converged: b.state.converged }])) } : {}),
     },
     qualifications: {
       pairs: (info.pairs ?? []).map(p => ({ pair: p.pair, set: p.set ?? null, tier: p.tier ?? null })),
@@ -257,16 +260,16 @@ registerCapability({
   },
 });
 
-// The column (proposal 0015, milestone M1: the shortcut mode; the rigorous mode at M2a): a feed, the Column block
+// The column (proposal 0015, milestone M1: the shortcut mode; milestone M2a: the rigorous mode): a feed, the Column block
 // and its two products, solved as a flowsheet (src/units/columns/column.js), so the numbers are the flowsheet's.
 registerCapability({
-  name: "solve_column", summary: "Solve a distillation column: the shortcut (Fenske, Underwood, Gilliland) for a light and a heavy key; the rigorous column is planned (M2a)", status: "available",
+  name: "solve_column", summary: "Solve a distillation column: the shortcut (Fenske, Underwood, Gilliland) for a light and a heavy key, or the rigorous column (MESH on every stage, Newton's method)", status: "available",
   input: { type: "object", additionalProperties: false, required: ["components", "feed", "column"],
     properties: {
       components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
       thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default NRTL with an ideal-gas vapour" },
       feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF" },
-      column: { type: "object", description: "the Column block's specification: mode (\"shortcut\"; \"rigorous\" is planned), light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa" },
+      column: { type: "object", description: "the Column block's specification. mode \"shortcut\" (default): light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa. mode \"rigorous\": stages (the condenser and the reboiler counted, 1 the condenser), feed_stage, condenser, P_kPa, and two of reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW" },
       user_data: USER_DATA,
     } },
   run: input => {

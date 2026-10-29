@@ -37,7 +37,7 @@ import { evaluate } from "./correlations.js";
 import { brent } from "../util/solve.js";
 import { findComponent } from "./system.js";
 import { steam, steamSat, STANDARD as IF97_NAME, VISCOSITY_STANDARD, CONDUCTIVITY_STANDARD } from "./iapws/steam.js";
-import { hIdealGas as hIdealGasIF97, cpIdealGas as cpIdealGasIF97, psat as psatIF97, tsat as tsatIF97,
+import { saturationT as saturationIF97, psatMPa as psatMPaIF97, hIdealGas as hIdealGasIF97, cpIdealGas as cpIdealGasIF97, psat as psatIF97, tsat as tsatIF97,
   TC as TC_IF97 } from "./iapws/if97.js";
 import { viscosity as viscosityIAPWS, thermalConductivityParts as conductivityIAPWS } from "./iapws/transport.js";
 import { cubicEos, CUBICS } from "./eos/cubic.js";
@@ -430,10 +430,12 @@ export function pure(key, opts = {}) {
   if (id !== "water") return base;
   // Water: IAPWS for everything, including the saturation enthalpies (consistent with props()).
   const M = c.MW, h0 = hIdealGasIF97(T_REF);
+  // IF97 directly (the same numbers as steamSat, without its viscosity and conductivity, which the enthalpies do not
+  // need and which made every liquid enthalpy of an aqueous mixture several times slower)
   const waterSaturation = T => {
-    const s = steamSat({ T_K: T });
-    const hL = M * (s.liquid.h_kJ_kg - h0), hV = M * (s.vapour.h_kJ_kg - h0);
-    return { T_K: s.T_K, P_kPa: s.P_kPa, hV_J_mol: hV, hL_J_mol: hL, dHvap_J_mol: hV - hL };
+    const s = saturationIF97(T, psatMPaIF97(T));
+    const hL = M * (s.liquid.h - h0), hV = M * (s.vapour.h - h0);
+    return { T_K: T, P_kPa: s.p * 1000, hV_J_mol: hV, hL_J_mol: hL, dHvap_J_mol: hV - hL };
   };
   return { ...base, ...waterMethods(c, base), saturation: waterSaturation, liquidEnthalpy: T => waterSaturation(T).hL_J_mol };
 }
@@ -473,11 +475,14 @@ function waterMethods(c, base) {
   const TT = 273.16, TMIN = 273.15;
   // name: [Tmin, Tmax, source, function of T in engine units]
   const sat = T => steamSat({ T_K: T });
+  // the thermodynamic properties from IF97 directly: steamSat adds the viscosity and the conductivity, which they do
+  // not need (the liquid enthalpy integrates the heat capacity, so this is called often); the same numbers
+  const satIF97 = T => saturationIF97(T, psatMPaIF97(T));
   const IF97_PROPS = {
     vapourPressure: [TMIN, TC_IF97, IF97_SOURCE, T => psatIF97(T)],
-    liquidDensity: [TMIN, TC_IF97, IF97_SOURCE, T => sat(T).liquid.rho_kg_m3],
+    liquidDensity: [TMIN, TC_IF97, IF97_SOURCE, T => satIF97(T).liquid.rho],
     idealGasHeatCapacity: [TMIN, 1073.15, IF97_SOURCE, T => M * cpIdealGasIF97(T)],
-    liquidHeatCapacity: [TMIN, 647.0, IF97_SOURCE, T => M * sat(T).liquid.cp_kJ_kgK],
+    liquidHeatCapacity: [TMIN, 647.0, IF97_SOURCE, T => M * satIF97(T).liquid.cp],
     heatOfVaporization: [TMIN, TC_IF97, IF97_SOURCE, T => M * sat(T).hfg_kJ_kg],
     liquidViscosity: [TT, TC_IF97, MU_SOURCE, T => sat(T).liquid.mu_Pa_s],
     vapourViscosity: [TT, 1173.15, MU_SOURCE, T => viscosityIAPWS(T, 0)],

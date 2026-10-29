@@ -370,6 +370,17 @@ SEEDS = {
         "note": "The K fit of slide 83 (A to E), checked against the chart of the same slide read by pixel position (within 7 %, test/sizing.test.js).",
         "files": ["src/sizing/sizing.js", "validation/python/reference_sizing.py"],
     },
+    # src/units/columns/engine.js (TURNDOWN: the vapour side of the dry-stage warning of the rigorous column)
+    "fermeglia-staged-2021": {
+        "title": "Staged column design (Separation Processes course slides, 19 April 2021), slide 54: Table 6.2, Comparison of types of trays",
+        "authors": "M. Fermeglia, Department of Engineering and Architecture, University of Trieste",
+        "year": 2021,
+        "kind": "course notes",
+        "url": "https://moodle2.units.it/pluginfile.php/395399/mod_resource/content/1/09_StagedColumnDesign.pdf",
+        "access": "Free to read on the University of Trieste's course site; its constants are taken, cited by slide, not its text or figures",
+        "note": "Typical turndown ratios (largest vapour flow, at flooding, over the smallest, at excessive weeping): sieve trays 2, valve trays 4, bubble-cap trays 5; the table on the slide is reproduced from a textbook the slide does not name. Read 2026-10-29.",
+        "files": ["src/units/columns/engine.js"],
+    },
     # src/sizing/sizing.js header (the K fit in ft/s, h_v and h_f with the feed line, the 2 min residence time)
     "ou-che4253-flash": {
         "title": "ChE 4253 Design I: Flash drum design (2013) and Flash and tray design examples (2018)",

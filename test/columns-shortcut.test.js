@@ -144,7 +144,7 @@ test("Column block (shortcut): a distillate beyond the azeotrope (E3's purity, r
   e => e.code === "BAD_INPUT" && /azeotrope/.test(e.message) && e.details.relative_volatility.top < 1);
 });
 
-test("Column E3 and the rigorous mode: refused as not built yet (unsupported), never a column", () => {
+test("Column E3: a purity, in either mode, refused as not built yet (unsupported), never a column", () => {
   const c = caseOf("E3-purity-above-azeotrope");
   const input = { components: c.components, thermo: { model: c.thermo.model },
     feed: { flow_kmol_h: { ethanol: 50, water: 50 }, T_K: c.column.feed.T_K, P_kPa: c.pressure_kPa },
@@ -153,10 +153,11 @@ test("Column E3 and the rigorous mode: refused as not built yet (unsupported), n
   assert.equal(r.outcome, c.expected.outcome_before_M4);
   assert.match(r.error.message, /purity specifications come with milestone M4/);
   assert.equal(r.value, undefined);
-  const rig = run({ capability: "solve_column", input: { ...input, column: { mode: "rigorous" } } });
-  assert.equal(rig.outcome, "unsupported");
-  assert.match(rig.error.message, /M2a/);
-  assert.deepEqual(COLUMN_MODES.map(m => [m.mode, m.status]), [["shortcut", "available"], ["rigorous", "planned"]]);
+  // the rigorous mode landed with milestone M2a (this test refused it before; test/columns-rigorous.test.js tests it)
+  const rig = run({ capability: "solve_column", input: { ...input, column: { mode: "rigorous", stages: 20, feed_stage: 10, reflux_ratio: 2, distillate_purity: c.specs[1].value } } });
+  assert.equal(rig.outcome, c.expected.outcome_before_M4);
+  assert.match(rig.error.message, /purity specifications come with milestone M4/);
+  assert.deepEqual(COLUMN_MODES.map(m => [m.mode, m.status]), [["shortcut", "available"], ["rigorous", "available"]]);
 });
 
 test("Column C1: the pair without NRTL parameters is missing data, named; no column", () => {

@@ -69,12 +69,11 @@ const HINT = {
   "gibbs-reactor": "The species you tick reach the minimum of the Gibbs energy with the elements balanced: every reaction among them, written by CHEPTA (reformers, gasifiers, combustion). One phase, or vapour and liquid together; then the outlet temperature or the duty.",
   cstr: "A stirred tank at steady state: the reactions of the Reactions page with their kinetics, the volume (or catalyst mass), and the temperature or the duty.",
   pfr: "A tube (or a bundle of tubes) in plug flow: the reactions with their kinetics, the length and diameter; isothermal, a duty or a coolant; a pressure drop. Its profiles show under the drawing (double-click it).",
-  column: "Distillation by the shortcut method (Fenske, Underwood, Gilliland): a light and a heavy key, the recovery of each, and the reflux ratio (or a multiple of the minimum). It gives the minimum and the number of stages, the feed stage and the duties; it assumes a constant relative volatility and no azeotrope between the keys. The rigorous column comes later.",
+  column: "Distillation. Shortcut (Fenske, Underwood, Gilliland): a light and a heavy key, the recovery of each, and the reflux ratio (or a multiple of the minimum); it gives the minimum and the number of stages, the feed stage and the duties, assuming a constant relative volatility. Rigorous: the stages, the feed stage and two specifications (reflux, boil-up, a product flow or a duty); every stage's balances are solved, and the profile shows under the drawing.",
   "yield-reactor": "Turns a given fraction of a key reactant into the products you give per kg (or mol) of it, for a reaction known by its products (a fermentation, a pyrolysis). The mass must close; the elements are reported.",
 };
 /** Blocks on the roadmap, shown in the toolbar but not available yet. */
 const COMING = [
-  { id: "column-rigorous", label: "Rigorous column", icon: "column", note: "roadmap v0.5" },
   { id: "extraction", label: "Extraction", icon: "extract", note: "after liquid-liquid equilibria in the flash" },
 ];
 // a feed is drawn as the start of its stream (a tab), not as a block; its size is that point
@@ -414,10 +413,44 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
           spec.P_kPa != null ? "Give a pressure drop instead" : "Give the outlet pressure instead"),
         h("p", { class: "fa-in-hint" }, "Empty pressure drop: none.")));
     }
+  } else if (b.type === "column" && spec.mode === "rigorous") {
+    // the rigorous column (proposal 0015, M2a): stages, the feed stage, two specifications from six
+    const RSPEC = [["reflux_ratio", "Reflux ratio", "L / D"], ["boilup_ratio", "Boil-up ratio", "V / B"], ["distillate_kmol_h", "Distillate flow", "kmol/h"],
+      ["bottoms_kmol_h", "Bottoms flow", "kmol/h"], ["condenser_duty_kW", "Condenser duty (removed)", u.duty ?? "kW"], ["reboiler_duty_kW", "Reboiler duty", u.duty ?? "kW"]];
+    const given = RSPEC.map(r => r[0]).filter(k => spec[k] != null);
+    const pick = [given[0] ?? "reflux_ratio", given[1] ?? (given[0] === "distillate_kmol_h" ? "reflux_ratio" : "distillate_kmol_h")];
+    const specField = (slot) => {
+      const key = pick[slot], other = pick[1 - slot], row = RSPEC.find(r => r[0] === key);
+      const duty = key.endsWith("_kW");
+      return [selectField(`Specification ${slot + 1}`, RSPEC.filter(r => r[0] !== other).map(r => [r[0], r[1]]), key,
+        v => setS({ [key]: null, [v]: spec[key] ?? null }), `fs-rspec${slot}-${b.id}`, uid),
+      numberField(row[1], spec[key] == null ? "" : duty ? String(+dutyToDisplay(spec[key], u).toPrecision(8)) : String(spec[key]),
+        t => { const v = num(t); if (v === undefined || (v != null && !(v > 0))) return false; setS({ [key]: v == null ? null : duty ? dutyFromDisplay(v, u) : v }); },
+        { id: `${b.id}-${key}`, uid, unit: row[2] })];
+    };
+    const nIn = (streamsOf(fs, b.id).in ?? []).length;
+    const fsVal = Array.isArray(spec.feed_stage) ? spec.feed_stage.join(", ") : spec.feed_stage == null ? "" : String(spec.feed_stage);
+    secs.push(inputsSection("Rigorous column (stage by stage)",
+      segRow("Method", [["shortcut", "Shortcut"], ["rigorous", "Rigorous"]], "rigorous", m => setS({ mode: m }), `fs-cmode-${b.id}`),
+      numberField("Stages", spec.stages == null ? "" : String(spec.stages), t => { const v = num(t); if (v === undefined || (v != null && !(Number.isInteger(v) && v >= 3))) return false; setS({ stages: v }); },
+        { id: `${b.id}-stages`, uid, unit: "1 the condenser", placeholder: "20" }),
+      numberField(nIn > 1 ? "Feed stages" : "Feed stage", fsVal, t => {
+        if (t === "") return setS({ feed_stage: null });
+        const v = t.split(/[,;\s]+/).filter(Boolean).map(Number);
+        if (!v.every(k => Number.isInteger(k) && k >= 2)) return false;
+        setS({ feed_stage: v.length === 1 ? v[0] : v });
+      }, { id: `${b.id}-feed_stage`, uid, unit: nIn > 1 ? "one per feed, in order" : "from the top", placeholder: "10" }),
+      ...specField(0), ...specField(1),
+      segRow("Condenser", [["total", "Total"], ["partial", "Partial"]], spec.condenser ?? "total", v => setS({ condenser: v }), `fs-cond-${b.id}`),
+      P("P_kPa", "Column pressure"),
+      h("p", { class: "fa-in-hint" }, "Stages are counted from the top: 1 is the condenser, the last the reboiler. Empty pressure: the feed's; no pressure drop. Every stage's balances are solved together; a stage where a second liquid would form is refused (two liquids on the stages come later), and a stage that runs dry is warned.")));
   } else if (b.type === "column") {
     const comps = fs.components.map(c => [c, nameOf(c)]);
     const R = spec.reflux_over_minimum != null ? "m" : "R";
     secs.push(inputsSection("Shortcut (Fenske, Underwood, Gilliland)",
+      segRow("Method", [["shortcut", "Shortcut"], ["rigorous", "Rigorous"]], "shortcut", m => setS(m === "rigorous" ? { mode: m, stages: spec.stages ?? done?.state?.stages ?? 20,
+        feed_stage: spec.feed_stage ?? done?.state?.feed_stage ?? 10, ...(spec.reflux_ratio == null ? { reflux_ratio: +(done?.state?.R ?? 2).toPrecision(3) } : {}),
+        ...(spec.distillate_kmol_h == null && spec.bottoms_kmol_h == null ? { distillate_kmol_h: done?.state?.D_kmol_h != null ? +done.state.D_kmol_h.toPrecision(4) : null } : {}) } : { mode: m }), `fs-cmode-${b.id}`),
       selectField("Light key", [["", "Choose"], ...comps], spec.light_key ?? "", v => setS({ light_key: v || null }), `fs-lk-${b.id}`, uid),
       plain("recovery_light_key_in_distillate", "Light key recovered in the distillate", "fraction", "0.99"),
       selectField("Heavy key", [["", "Choose"], ...comps], spec.heavy_key ?? "", v => setS({ heavy_key: v || null }), `fs-hk-${b.id}`, uid),
@@ -426,7 +459,7 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       R === "m" ? plain("reflux_over_minimum", "Reflux over the minimum", "R / R_min", "1.3") : plain("reflux_ratio", "Reflux ratio", "L / D", "2"),
       segRow("Condenser", [["total", "Total"], ["partial", "Partial"]], spec.condenser ?? "total", v => setS({ condenser: v }), `fs-cond-${b.id}`),
       P("P_kPa", "Column pressure"),
-      h("p", { class: "fa-in-hint" }, "Empty pressure: the feed's. The relative volatilities are taken at the feed's bubble point and held constant; the column refuses keys that form an azeotrope and a reflux below the minimum, and warns when the volatility changes along the column. The rigorous column (stage by stage) comes later.")));
+      h("p", { class: "fa-in-hint" }, "Empty pressure: the feed's. The relative volatilities are taken at the feed's bubble point and held constant; the column refuses keys that form an azeotrope and a reflux below the minimum, and warns when the volatility changes along the column. The rigorous method solves every stage; switching to it takes the shortcut's stages, feed stage, reflux and distillate as a start.")));
   } else if (b.type === "mixer") {
     secs.push(inputsSection("Outlet", P("P_kPa", "Outlet pressure"), h("p", { class: "fa-in-hint" }, "Empty: the lowest inlet pressure.")));
   } else if (b.type === "splitter" || b.type === "separator") {
@@ -1604,6 +1637,18 @@ export function resultsPanel({ state, f, sol, u, set }) {
           ["Distillate, bottoms", `${fmtTemp(r.state.T_distillate_K, u, 2)}, ${fmtTemp(r.state.T_bottoms_K, u, 2)}`],
           ["Relative volatility of the keys", `${fmtShort(r.state.alpha_keys.top, 3)} top, ${fmtShort(r.state.alpha_keys.feed, 3)} feed, ${fmtShort(r.state.alpha_keys.bottom, 3)} bottom`],
         ] : []),
+        ...(b.type === "column" && r.state?.mode === "rigorous" ? [
+          ["Stages, feed", `${r.state.stages}, on ${r.state.feed_stages.join(", ")}`],
+          ["Reflux ratio", fmtShort(r.state.reflux_ratio, 4)],
+          ["Boil-up ratio", fmtShort(r.state.boilup_ratio, 4)],
+          ["Distillate", `${fmtShort(r.state.D_kmol_h, 5)} kmol/h`],
+          ["Bottoms", `${fmtShort(r.state.B_kmol_h, 5)} kmol/h`],
+          ["Condenser duty", kWText(-r.state.condenser_kW, u, 5)],
+          ["Reboiler duty", kWText(r.state.reboiler_kW, u, 5)],
+          ["Top", fmtTemp(r.state.T_distillate_K, u, 2)],
+          ["Bottom", fmtTemp(r.state.T_bottoms_K, u, 2)],
+          ["Newton iterations", `${r.state.iterations}, balances closed`],
+        ] : []),
         r.balance.material != null ? ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)]
           : ["Mass balance", r.balance.mass < 1e-9 ? "closed" : r.balance.mass.toExponential(1)],
       ]), ...(r.reaction?.extents_kmol_h ? [reactionList(fs, r.reaction)] : []),
@@ -1678,9 +1723,25 @@ function streamRows(fs, res, u, state) {
 }
 const molarMassOf = c => byId().get(c)?.MW ?? NaN;
 
-/** The column's result table: the condenser, the feed stage and the reboiler (the shortcut has no stage-by-stage profile). */
+/** The column's result table: the shortcut's condenser, feed stage and reboiler, or the rigorous column's every stage. */
 function columnTable({ fs, b, r, u }) {
   const p = r.profile;
+  if (r.state?.mode === "rigorous") {
+    // one row per stage (a column has many stages and few components), in a box that scrolls sideways
+    const cell = v => h("td", { class: "fug-num" }, v);
+    // the same decimals down a column (docs/UI_GUIDE.md, Tables); a trace below the last decimal in powers of ten
+    const frac = v => (v == null ? "–" : v < 1e-12 ? "0" : v < 5e-5 ? v.toExponential(1) : v.toFixed(4));
+    return h("div", { class: "fs-tables", "data-fk": "fs-column-table" }, h("h3", {}, `${blockName(b)}: the profile, stage by stage`),
+      h("div", { class: "fug-scroll" }, h("table", { class: "fug-table" },
+        h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Stage"), h("th", { scope: "col" }, `T, ${tLabel(u)}`), h("th", { scope: "col" }, "Liquid, kmol/h"),
+          h("th", { scope: "col" }, "Vapour, kmol/h"), h("th", { scope: "col" }, `Duty, ${u.duty ?? "kW"}`),
+          ...fs.components.map(c => h("th", { scope: "col" }, `x ${nameOf(c)}`)), ...fs.components.map(c => h("th", { scope: "col" }, `y ${nameOf(c)}`)))),
+        h("tbody", {}, ...p.map(s => h("tr", {}, h("th", { scope: "row" }, `${s.stage}${s.name === "stage" ? "" : ` ${s.name}`}`),
+          cell(tToDisplay(s.T_K, u).toFixed(2)), cell(s.L_kmol_h.toFixed(3)), cell(s.V_kmol_h.toFixed(3)),
+          cell(s.duty_kW === 0 ? "0" : dutyToDisplay(s.duty_kW, u).toFixed(1)),
+          ...fs.components.map(c => cell(frac(s.x[c]))), ...fs.components.map(c => cell(s.y ? frac(s.y[c]) : "–"))))))),
+      h("p", { class: "fa-in-hint" }, `Liquid and vapour leaving each stage; stage 1 is the ${r.state.condenser} condenser${r.state.condenser === "total" ? " (its liquid is the reflux; the distillate leaves as liquid too, so it has no vapour)" : ""}, stage ${r.state.stages} the reboiler. Duty: heat added (the condenser's is negative).`));
+  }
   const row = (label, f) => h("tr", {}, h("th", { scope: "row" }, label), ...p.map(s => h("td", { class: "fug-num" }, f(s))));
   return h("div", { class: "fs-tables", "data-fk": "fs-column-table" }, h("h3", {}, `${blockName(b)}: the column`),
     h("table", { class: "fug-table" }, h("thead", {}, h("tr", {}, h("th", {}, ""), ...p.map(s => h("th", { scope: "col" }, `${s.name[0].toUpperCase()}${s.name.slice(1)} (stage ${s.stage})`)))),

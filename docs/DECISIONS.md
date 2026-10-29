@@ -44,8 +44,15 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - **M1, W2: the shortcut column, built, to review** (docs/decisions/2026-10-29-05-shortcut-column.md): the Column
     block in shortcut mode (Fenske, Underwood, Gilliland) in the palette, its result table, project format 6,
     `solve_column` through `CHEPTA.run`, the command line and the MCP server. To check: the equation forms against
-    DWSIM's source, the 20 % volatility warning, the net duty as the block's one energy stream. Next for W2: the
-    rigorous column (M2a), when the maintainer says so.
+    DWSIM's source, the 20 % volatility warning, the net duty as the block's one energy stream.
+  - **M2a, W2: the rigorous column, built, to review** (docs/decisions/2026-10-29-10-rigorous-column.md; W7's M2a cases merged in, B2 within 0.37 K and 0.006 of The
+    ChemSep Book's stages, P1 1.9 s cold): the column
+    engine (`solveCascade`, contract 3) and the Column block's rigorous mode, through the worker, `CHEPTA.run`, the
+    command line and the MCP server, saved in format 6, its profile under the drawing. To check: W7's cases A1, A2, A3,
+    B1, D1 within their tolerances, the refusals (two liquids on the stages, no convergence), the budgets. Decided: the
+    vapour's dry-stage warning at the bubble-cap turndown (1/5), the tolerances kept at 1e-10. To decide: the
+    continuation. Next for W2, when the maintainer says so:
+    M2b (the column's own method, two liquids on the stages).
   - **M1, W8 with W9: built, to review** (docs/decisions/2026-10-29-03-cli-mcp-worker.md): the command line, the local
     MCP server, the worker. The first assistant test passed in Claude Code, in the session and on your computer
     (2026-10-29).
