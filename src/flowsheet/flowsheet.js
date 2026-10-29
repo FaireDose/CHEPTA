@@ -58,6 +58,7 @@ import { stream } from "../stream/stream.js";
 import { runUnit, unitType, specStatus } from "../units/units.js";
 import "../units/reactors.js";   // registers the conversion and yield reactors
 import "../units/kinetic-reactors.js";
+import "../units/columns/column.js";   // the Column block (proposal 0015, M1: shortcut mode)
 import { checkReactions } from "../reactions/reaction.js";
 
 /** Solver settings: `method` "broyden" (quasi-Newton on all tear flows together; the default since the

@@ -197,36 +197,59 @@ registerCapability({
   },
 });
 
+/** A solved flowsheet as a request's result: the value, the checks, the qualifications and the reproduction. */
+function solvedFlowsheet(flowsheet, userData) {
+  normalizeFlowsheet(flowsheet, userData);
+  const { sys, result } = flowsheetRun(flowsheet, userData);
+  const blocks = Object.fromEntries(Object.entries(result.blocks).map(([id, b]) => [id, { material: b.balance?.material ?? null, energy_kW: b.balance?.energy_kW ?? null }]));
+  const material = Object.values(result.balance.material_kmol_h).reduce((a, v) => Math.max(a, Math.abs(v)), 0);
+  const notes = Object.entries(result.blocks).flatMap(([id, b]) => (b.notes ?? []).map(n => ({ block: id, note: n })));
+  const warnings = Object.entries(result.blocks).flatMap(([id, b]) => (b.warnings ?? []).map(w => ({ block: id, ...w })));
+  const info = sys.info ?? {};
+  return {
+    value: result,
+    checks: {
+      material_kmol_h: material, energy_kW: result.balance.energy_kW, blocks,
+      loops: result.loops.map(l => ({ tears: l.tears, iterations: l.iterations, residual: l.residual ?? null, tolerance: l.tolerance ?? null })),
+    },
+    qualifications: {
+      pairs: (info.pairs ?? []).map(p => ({ pair: p.pair, set: p.set ?? null, tier: p.tier ?? null })),
+      missing_pairs: info.missingPairs ?? [],
+      notes, warnings,
+    },
+    reproduction: systemReproduction(sys, userData),
+  };
+}
+
 registerCapability({
   name: "solve_flowsheet", summary: "Solve a flowsheet: every stream, block, duty and balance", status: "available",
   input: FLOWSHEET_INPUT,
   run: input => {
     const { flowsheet, userData } = flowsheetOf(input);
-    normalizeFlowsheet(flowsheet, userData);
-    const { sys, result } = flowsheetRun(flowsheet, userData);
-    const blocks = Object.fromEntries(Object.entries(result.blocks).map(([id, b]) => [id, { material: b.balance?.material ?? null, energy_kW: b.balance?.energy_kW ?? null }]));
-    const material = Object.values(result.balance.material_kmol_h).reduce((a, v) => Math.max(a, Math.abs(v)), 0);
-    const notes = Object.entries(result.blocks).flatMap(([id, b]) => (b.notes ?? []).map(n => ({ block: id, note: n })));
-    const warnings = Object.entries(result.blocks).flatMap(([id, b]) => (b.warnings ?? []).map(w => ({ block: id, ...w })));
-    const info = sys.info ?? {};
-    return {
-      value: result,
-      checks: {
-        material_kmol_h: material, energy_kW: result.balance.energy_kW, blocks,
-        loops: result.loops.map(l => ({ tears: l.tears, iterations: l.iterations, residual: l.residual ?? null, tolerance: l.tolerance ?? null })),
-      },
-      qualifications: {
-        pairs: (info.pairs ?? []).map(p => ({ pair: p.pair, set: p.set ?? null, tier: p.tier ?? null })),
-        missing_pairs: info.missingPairs ?? [],
-        notes, warnings,
-      },
-      reproduction: systemReproduction(sys, userData),
-    };
+    return solvedFlowsheet(flowsheet, userData);
   },
 });
 
+// The column (proposal 0015, milestone M1: the shortcut mode; the rigorous mode at M2a): a feed, the Column block
+// and its two products, solved as a flowsheet (src/units/columns/column.js), so the numbers are the flowsheet's.
 registerCapability({
-  name: "solve_column", summary: "Solve a distillation, absorption, stripping or extraction column", status: "unsupported",
-  readOnly: true, input: { type: "object" },
-  planned: "proposal 0015: the shortcut column at milestone M1, the rigorous column at M2a",
+  name: "solve_column", summary: "Solve a distillation column: the shortcut (Fenske, Underwood, Gilliland) for a light and a heavy key; the rigorous column is planned (M2a)", status: "available",
+  input: { type: "object", additionalProperties: false, required: ["components", "feed", "column"],
+    properties: {
+      components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
+      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default NRTL with an ideal-gas vapour" },
+      feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF" },
+      column: { type: "object", description: "the Column block's specification: mode (\"shortcut\"; \"rigorous\" is planned), light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa" },
+      user_data: USER_DATA,
+    } },
+  run: input => {
+    const flowsheet = { components: input.components, thermo: input.thermo ?? { model: "NRTL", vapour: "ideal" },
+      blocks: [{ id: "F1", type: "feed", spec: input.feed }, { id: "C1", type: "column", spec: input.column },
+        { id: "P1", type: "product" }, { id: "P2", type: "product" }],
+      streams: [{ id: "FEED", from: "F1.out", to: "C1.in" }, { id: "DISTILLATE", from: "C1.distillate", to: "P1.in" }, { id: "BOTTOMS", from: "C1.bottoms", to: "P2.in" }] };
+    const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
+    const c = r.value.blocks.C1;
+    return { ...r, value: { feed: r.value.streams.FEED, distillate: r.value.streams.DISTILLATE, bottoms: r.value.streams.BOTTOMS,
+      column: { ...c.state, duty_kW: c.duty_kW, notes: c.notes, warnings: c.warnings ?? [], profile: c.profile } } };
+  },
 });

@@ -62,8 +62,9 @@ test("MCP (2025-11-25): initialize, tools/list, tools/call — the library's num
   s.notify("notifications/initialized");
   const list = await s.call("tools/list");
   const names = list.result.tools.map(t => t.name);
-  assert.deepEqual(names, ["capabilities", "find_component", "component_info", "check_project", "flowsheet_status", "solve_flowsheet"]);
-  assert.ok(!names.includes("solve_column"), "an unsupported capability is not offered as a tool");
+  // solve_column is a tool since the shortcut column (proposal 0015, M1); an unsupported capability is not offered
+  // (the later test registers one)
+  assert.deepEqual(names, ["capabilities", "find_component", "component_info", "check_project", "flowsheet_status", "solve_flowsheet", "solve_column"]);
   for (const t of list.result.tools) {
     assert.equal(t.inputSchema.type, "object");
     assert.equal(t.annotations.readOnlyHint, true);
@@ -96,8 +97,9 @@ test("MCP (2025-11-25): initialize, tools/list, tools/call — the library's num
   const bad = (await s.call("tools/call", { name: "solve_flowsheet", arguments: { project, colour: "red" } })).result;
   assert.equal(bad.isError, true);
   assert.match(bad.content[0].text, /invalid_input[\s\S]*Where: input\.colour/);
-  // protocol errors: an unknown tool, an unsupported one, an unknown method, a line that is not JSON
-  assert.equal((await s.call("tools/call", { name: "solve_column", arguments: {} })).error.code, -32602);
+  // protocol errors: an unknown tool, an unknown method, a line that is not JSON (an unsupported capability is no tool:
+  // below)
+  assert.equal((await s.call("tools/call", { name: "no_such_tool", arguments: {} })).error.code, -32602);
   assert.equal((await s.call("resources/list")).error.code, -32601);
   assert.deepEqual((await s.call("ping")).result, {});
   s.raw("{ not json");
