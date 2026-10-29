@@ -83,6 +83,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     (docs/decisions/2026-10-29-07-ui-fixes-round-1.md): ten of the review's 17 items fixed. To check: the 1 mW
     threshold for a zero duty; which of the items left for later come next. Then W10 checks W5's and W6's new views.
   - Waiting: W1, W3, W5 and W6.
+- **Version 0.5.0 and publishing** (docs/decisions/2026-10-29-12-release-0.5.0-and-publishing.md): the version now comes
+  from the release's tag. To publish 0.5.0: merge, then Actions, "Publish to npm", "Run workflow", and approve on npmjs.com.
 - **Benzene + toluene k_ij** (docs/decisions/2026-10-29-11-benzene-toluene-kij.md): PR and SRK k_ij fitted to the
   ThermoML data of Li et al. (2014); B2's reference regenerated. Check the 11 rows against the ThermoML record; decide
   whether to fit the other nonpolar pairs without k_ij in a batch after v0.5 (12 with activity sets, 116 with open data).

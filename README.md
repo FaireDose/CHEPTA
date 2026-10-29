@@ -13,7 +13,7 @@ nothing to install).
 
 ![The CHEPTA workbench: a solved flowsheet of ethanol and water with a mixer, flash drum, splitter and recycle, the stream table and the material and energy balances](docs/images/flowsheet-dark.png)
 
-> **Status: early (v0.4.0).** 174 components, activity models and cubic equations of state,
+> **Status: early (v0.5.0).** 174 components, activity models and cubic equations of state,
 > pure-component properties, steam tables and P-h, T-s and h-s charts, the flash unit, heat exchangers (pre-sizing and
 > rating), and flowsheets with pumps, valves, compressors, expanders and energy streams, in a workbench with files that
 > can be exported or saved.
@@ -74,7 +74,7 @@ In any web page:
 
 ```html
 <div id="app"></div>
-<script src="https://cdn.jsdelivr.net/npm/chepta@0.4.0/dist/chepta.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chepta@0.5.0/dist/chepta.js"></script>
 <script>
   CHEPTA.app("#app", { start: "ternary", components: ["methanol", "acetone", "chloroform"] });
   // or a single view: CHEPTA.mount("#app", { components: ["water", "acetic acid", "ethylene glycol"] });
