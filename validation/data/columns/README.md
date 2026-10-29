@@ -11,7 +11,8 @@ Conventions:
   condenser is not an equilibrium stage (its liquid leaves at its bubble point as reflux and distillate, `V` of stage 1
   is 0); a partial condenser is one (its vapour is the distillate). The partial reboiler is an equilibrium stage.
 - **The feed** enters stage `feed.stage` as one stream (liquid and vapour together); `q` is its liquid fraction for a
-  model system, `T_K` its temperature for a real mixture.
+  model system, `T_K` its temperature for a real mixture, or `q` = 1 (saturated liquid) or 0 (saturated vapour) at the
+  column's pressure for a real mixture. Several feeds: `column.feeds`, a list of such feeds (A4).
 - **L_j, V_j** are the liquid and vapour leaving stage j (L_1 the reflux, L_N the bottoms).
 - **Specifications:** `reflux_ratio` (L_1 / D), `distillate_flow_mol_s`, `bottoms_flow_mol_s`, `distillate_purity`
   (milestone M4).
@@ -21,4 +22,8 @@ Conventions:
   unsupported, not_converged, ...), the warnings, the behaviour in words, and the branch where more than one solution
   could exist.
 - **`tolerances.numerical`** (the engine against the reference) is kept apart from **`agreement_with_data`**
-  (information about the model, never a test of the column).
+  (information about the model, never a test of the column) and from **`agreement_with_published_example`** (B2: a
+  published column solved with another property method).
+- **`published`** (B2): the numbers of the open source as printed, with where each is (`where`), and `source`.
+- **`solver`** (E4): solver options the case sets (an iteration limit); **`performance`** (P1): the runs of the time
+  budget (cold and warm start), the budget being W9's.

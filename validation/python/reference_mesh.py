@@ -5,7 +5,8 @@ validation/data/columns/ (their conventions: validation/data/columns/README.md).
 engine (src/units/columns/, W2's).
 
 The equations, per stage j = 1..N from the top (1 the condenser, N the partial reboiler), with L_j and V_j the liquid
-and vapour leaving stage j, F_j the feed (composition z, molar enthalpy h_F), y_j = K_j(x_j, T_j) x_j:
+and vapour leaving stage j, F_j the feed or feeds entering it (composition z, molar enthalpy h_F; a case may have
+several, column.feeds), y_j = K_j(x_j, T_j) x_j:
 
   M  L_{j-1} x_{j-1} + V_{j+1} y_{j+1} + F_j z - L_j x_j - V_j y_j = 0       (one per component)
   E  y_j = K_j x_j                                                            (substituted into M, S and H)
@@ -21,25 +22,31 @@ These are the MESH equations as the open documentation of the column solvers cit
 (NeqSim's column documentation, https://equinor.github.io/neqsim/wiki/distillation_column, and DWSIM's source; read
 2026-10-29); they are the material and energy balances of a stage, written here from first principles. All unknowns
 (x, T, L, V of every stage, and the two duties) are solved together by Newton's method with a finite-difference
-Jacobian and step halving (scipy.optimize.root, hybrid Powell then Levenberg-Marquardt, where Newton stalls), until
+Jacobian (built by groups of columns, as each stage's equations involve only its neighbours) and step halving
+(scipy.optimize.root, hybrid Powell then Levenberg-Marquardt, where Newton stalls), until
 every stage's scaled residual is below 1e-12. The start: constant molar overflow, then the compositions and
 temperatures of the bubble-point method at those flows.
 
 The thermodynamics:
   - "constant-alpha" (model systems): K_i = alpha_i p(T) / P, ln(p/kPa) = A - B/T; h_L = 0 and h_V = latent heat for
     every component, so H gives constant molar overflow exactly; the feed's enthalpy is (1 - q) times the latent heat.
-  - "chepta" NRTL with an ideal-gas vapour: reference_model.System (the parameter records of src/data/binaries.json and
-    the vapour-pressure records of src/data/components.json, the default sets), K = gamma p_sat / P; the enthalpies of
-    reference_enthalpy.py (liquid on the liquid-heat-capacity basis plus the excess enthalpy from the thermo library;
-    ideal-gas vapour), the same formulas as the engine, written independently.
+  - "chepta" NRTL or UNIQUAC with an ideal-gas vapour: reference_model.System (the parameter records of
+    src/data/binaries.json and the vapour-pressure records of src/data/components.json, the default sets),
+    K = gamma p_sat / P; the enthalpies of reference_enthalpy.py (liquid on the liquid-heat-capacity basis plus the
+    excess enthalpy from the thermo library; ideal-gas vapour), the same formulas as the engine, written independently.
+    A feed is given by its temperature (a liquid below its bubble point) or by q = 1 (saturated liquid) or q = 0
+    (saturated vapour). With cmo_latent_heat_J_mol, the enthalpies of the model systems (constant molar overflow), only
+    to compare with a published example solved that way (B2).
 
 Besides the profiles, it writes checks with exact or independent answers: McCabe-Thiele's construction for the binary
-(A1); the limit of a large reflux ratio against Fenske's alpha^(N-1) (A1); the reflux the rigorous column needs at
+(A1, and A4 with two feeds); the phase stability of every stage's liquid by the tangent-plane distance (the cases with
+real mixtures; F1 must split); the published ChemSep Book profile against the reference (B2); the model's azeotropes
+(B1, B3); the limit of a large reflux ratio against Fenske's alpha^(N-1) (A1); the reflux the rigorous column needs at
 101 stages against Underwood's minimum (A2); the model's azeotrope against the measured one, for information (B1); the
 dry-stage ratios (D1); the boil-up arithmetic (E2); and the shortcut results of reference_fug.py.
 
 Writes validation/fixtures/columns.json, which test/benchmark-columns.test.js reads.
-Regenerate: python validation/python/reference_mesh.py      (about a minute; numpy, scipy, thermo, iapws)
+Regenerate: python validation/python/reference_mesh.py      (about two minutes; numpy, scipy, thermo, iapws)
 """
 import json
 import math
@@ -85,32 +92,62 @@ class Alpha:
         return (1 - feed["q"]) * self.lam
 
 
-class Nrtl:
-    def __init__(self, ids, P):
-        self.ids, self.P = ids, P
-        self.s = System(ids, "NRTL")
+class Activity:
+    """NRTL or UNIQUAC with an ideal-gas vapour (CHEPTA's default parameter sets). With enthalpy
+    "constant-molar-overflow" the enthalpies are those of the model systems (h_L = 0, h_V = latent heat), for a
+    comparison with a published example solved that way; otherwise CHEPTA's enthalpies."""
+
+    def __init__(self, ids, P, model="NRTL", cmo_latent=None):
+        self.ids, self.P, self.lam = ids, P, cmo_latent
+        self.s = System(ids, model)
+        self.memo = {}
 
     def K(self, x, T):
         return self.s.gamma(x, T) * np.array([psat_kpa(c, T) for c in self.s.c]) / self.P
 
     def hL(self, x, T):
-        return liquid_h(self.s, np.clip(x, 0, None) / np.sum(np.clip(x, 0, None)), T, "ideal")[0]
+        if self.lam is not None:
+            return 0.0
+        key = ("L", T, *x)        # remembered: the Jacobian's columns leave most stages unchanged
+        if key not in self.memo:
+            self.memo[key] = liquid_h(self.s, np.clip(x, 0, None) / np.sum(np.clip(x, 0, None)), T, "ideal")[0]
+        return self.memo[key]
 
     def hV(self, y, T):
-        return vapour_h(self.ids, np.clip(y, 0, None), T, self.P, "ideal")
+        if self.lam is not None:
+            return self.lam
+        key = ("V", T, *y)
+        if key not in self.memo:
+            self.memo[key] = vapour_h(self.ids, np.clip(y, 0, None), T, self.P, "ideal")
+        return self.memo[key]
+
+    def feed_T(self, feed):
+        """A feed given by q: q = 1 a saturated liquid (its bubble point), q = 0 a saturated vapour (its dew point)."""
+        z = np.asarray(feed["z"], float)
+        if feed["q"] == 1:
+            return bubble_T(self, z)
+        assert feed["q"] == 0, "a real mixture's feed is given by T_K, or by q = 1 or q = 0"
+        return brentq(lambda T: float(np.sum(z / self.K(z / np.sum(z / self.K(z, T)), T))) - 1, 200.0, 700.0, xtol=1e-12)
 
     def feed_h(self, feed):
-        z, T = np.asarray(feed["z"], float), feed["T_K"]
+        z = np.asarray(feed["z"], float)
+        if "q" in feed:
+            T = self.feed_T(feed)
+            return self.hL(z, T) if feed["q"] == 1 else self.hV(z, T)
+        T = feed["T_K"]
         assert np.sum(self.K(z, T) * z) < 1, "the feed is meant to be a liquid below its bubble point"
         return self.hL(z, T)
+
+
+Nrtl = Activity
 
 
 def thermo_of(case):
     th, P = case["thermo"], case["pressure_kPa"]
     if th["kind"] == "constant-alpha":
         return Alpha(th, P)
-    assert th["model"] == "NRTL" and th["vapour"] == "ideal" and th["sets"] == "default"
-    return Nrtl(case["components"], P)
+    assert th["model"] in ("NRTL", "UNIQUAC") and th["vapour"] == "ideal" and th["sets"] == "default"
+    return Activity(case["components"], P, th["model"], th.get("cmo_latent_heat_J_mol"))
 
 
 def bubble_T(th, x, lo=200.0, hi=700.0):
@@ -123,9 +160,14 @@ class Column:
     """The MESH system of one column. Unknowns per stage: x (nc), T, L, V (stage 1: V holds the distillate D);
     then Q_c and Q_r."""
 
-    def __init__(self, th, nc, N, f, F, z, hF, condenser, specs):
-        self.th, self.nc, self.N, self.f, self.F = th, nc, N, f - 1, F
-        self.z, self.hF, self.total = np.asarray(z, float), hF, condenser == "total"
+    def __init__(self, th, nc, N, feeds, condenser, specs):
+        """feeds: one or more (stage from the top, flow, z, molar enthalpy, q for the start)."""
+        self.th, self.nc, self.N = th, nc, N
+        self.feeds = [(f - 1, F, np.asarray(z, float), h, q) for f, F, z, h, q in feeds]
+        self.F = sum(F for _, F, _, _, _ in self.feeds)
+        self.z = sum(F * z for _, F, z, _, _ in self.feeds) / self.F
+        self.f = self.feeds[0][0]
+        self.total = condenser == "total"
         self.specs = specs
         self.w = nc + 3
 
@@ -153,8 +195,9 @@ class Column:
                 m += L[j - 1] * x[j - 1]; e += L[j - 1] * hL[j - 1]
             if j < N - 1:
                 m += V[j + 1] * y[j + 1]; e += V[j + 1] * hV[j + 1]
-            if j == self.f:
-                m += self.F * self.z; e += self.F * self.hF
+            for fj, Ff, zf, hf, _ in self.feeds:
+                if j == fj:
+                    m += Ff * zf; e += Ff * hf
             if j == 0 and self.total:          # reflux L_1 and liquid distillate D = V slot, both x_1
                 m -= (L[0] + V[0]) * x[0]; e -= (L[0] + V[0]) * hL[0] + Qc
             else:
@@ -182,7 +225,7 @@ class Column:
         mat, summ, en, sp, _ = self.groups(u)
         return np.concatenate([(mat / self.F).ravel(), summ.ravel(), en / (self.F * H_SCALE), sp / self.F])
 
-    def start(self, q_guess):
+    def start(self):
         th, N, nc, F, z = self.th, self.N, self.nc, self.F, self.z
         R = next(s["value"] for s in self.specs if s["kind"] == "reflux_ratio")
         D = next((s["value"] for s in self.specs if s["kind"] == "distillate_flow_mol_s"), None)
@@ -200,10 +243,11 @@ class Column:
         xD, xB = d / d.sum(), b / b.sum()
         x = np.array([xD + (xB - xD) * j / (N - 1) for j in range(N)])
         T = np.array([bubble_T(th, x[j]) for j in range(N)])
-        Lr, Vr = R * D, (R + 1) * D
-        Ls, Vs = Lr + q_guess * F, Vr - (1 - q_guess) * F
-        L = np.array([Lr if j < self.f else Ls for j in range(N)]); L[-1] = B
-        V = np.array([Vr if j <= self.f else Vs for j in range(N)]); V[0] = D
+        L, V = np.full(N, R * D), np.full(N, (R + 1) * D)   # constant molar overflow with each feed's q
+        for fj, Ff, _, _, q in self.feeds:
+            L[fj:] += q * Ff
+            V[fj + 1:] -= (1 - q) * Ff
+        L[-1], V[0] = B, D
         x, T = self.bubble_point_start(x, T, L, V)
         u = self.pack(x, T, L, V, 0.0, 0.0)
         _, _, en, _, _ = self.groups(u)
@@ -212,13 +256,15 @@ class Column:
         Qr = -en[-1]
         return self.pack(x_, T_, L_, V_, Qc, Qr)
 
-    def bubble_point_start(self, x, T, L, V, sweeps=20000):
+    def bubble_point_start(self, x, T, L, V, sweeps=300):
         """The compositions and temperatures for the start's flows, by the bubble-point method (the component balances
         as one tridiagonal system per component at fixed K, then each stage's bubble temperature, repeated): only a
         first guess for the simultaneous solution, which closes every equation."""
         from scipy.linalg import solve_banded
         N, nc, F = self.N, self.nc, self.F
-        feed = np.zeros((N, nc)); feed[self.f] = F * self.z
+        feed = np.zeros((N, nc))
+        for fj, Ff, zf, _, _ in self.feeds:
+            feed[fj] += Ff * zf
         for _ in range(sweeps):
             K = self.th.K_all(x, T) if hasattr(self.th, "K_all") else np.array([self.th.K(x[j], T[j]) for j in range(N)])
             xn = np.empty_like(x)
@@ -240,11 +286,29 @@ class Column:
         return x, T
 
     def jacobian(self, u, r):
-        J = np.empty((len(r), len(u)))
-        for k in range(len(u)):
+        """The finite-difference Jacobian, by groups of columns: a stage's equations involve only its own unknowns and
+        those of the stages next to it (and the duties), so the unknowns of stages three apart are perturbed together
+        (the last stage in a group of its own, as the specifications involve the first and the last stage)."""
+        N, nc, w = self.N, self.nc, self.w
+        J = np.zeros((len(r), len(u)))
+        rows = lambda j: np.r_[j * nc:(j + 1) * nc, N * nc + 2 * j:N * nc + 2 * j + 2, N * nc + 2 * N + j]
+        spec = np.arange(N * nc + 3 * N, len(r))
+        colours = [[j for j in range(N - 1) if j % 3 == c] for c in range(3)] + [[N - 1]]
+        for group in colours:
+            for v in range(w):
+                ks = [j * w + v for j in group]
+                h = 1e-7 * np.maximum(1.0, np.abs(u[ks]))
+                uu = u.copy(); uu[ks] += h
+                d = self.residual(uu) - r
+                for j, k, hk in zip(group, ks, h):
+                    for jj in range(max(0, j - 1), min(N, j + 2)):
+                        J[rows(jj), k] = d[rows(jj)] / hk
+                    if j in (0, N - 1):
+                        J[spec, k] = d[spec] / hk
+        for k in (len(u) - 2, len(u) - 1):     # the duties
             h = 1e-7 * max(1.0, abs(u[k]))
-            v = u.copy(); v[k] += h
-            J[:, k] = (self.residual(v) - r) / h
+            uu = u.copy(); uu[k] += h
+            J[:, k] = (self.residual(uu) - r) / h
         return J
 
     def norm(self, u):
@@ -303,45 +367,82 @@ class Column:
         D, B = V[0], L[-1]
         xD = x[0] if self.total else y[0]
         return {"stages": stages, "D_mol_s": D, "B_mol_s": B, "x_D": xD.tolist(), "x_B": x[-1].tolist(),
-                "Q_condenser_W": Qc, "Q_reboiler_W": Qr, "feed_enthalpy_J_mol": self.hF,
+                "Q_condenser_W": Qc, "Q_reboiler_W": Qr, "feed_enthalpy_J_mol": [h for _, _, _, h, _ in self.feeds],
                 "residuals": {"material_mol_s": float(np.abs(mat).max()), "summation": float(np.abs(summ).max()),
                               "equilibrium": float(max(s["residuals"]["equilibrium"] for s in stages)),
                               "energy_W": float(np.abs(en).max()), "specifications_mol_s": float(np.abs(sp).max())},
                 "solver": info}
 
 
+def feeds_of(case):
+    """The case's feeds: column.feed (one) or column.feeds (several)."""
+    col = case["column"]
+    return col["feeds"] if "feeds" in col else [col["feed"]]
+
+
 def column_of(case, th=None, specs=None, stages=None, feed_stage=None):
     th = th or thermo_of(case)
     col = case["column"]
     nc = len(case["components"])
-    return Column(th, nc, stages or col["stages"], feed_stage or col["feed"]["stage"], col["feed"]["flow_mol_s"],
-                  col["feed"]["z"], th.feed_h(col["feed"]), col["condenser"], specs or case["specs"])
+    feeds = [((feed_stage if feed_stage and k == 0 else f["stage"]), f["flow_mol_s"], f["z"], th.feed_h(f), f.get("q", 1.0))
+             for k, f in enumerate(feeds_of(case))]
+    return Column(th, nc, stages or col["stages"], feeds, col["condenser"], specs or case["specs"])
 
 
 def solve_case(case, u0=None, **kw):
     """Solve a case; u0, a solution of the same column with other specifications, is the start when given."""
     c = column_of(case, **kw)
-    u, info = c.solve(c.start(case["column"]["feed"].get("q", 1.0)) if u0 is None else u0)
+    u, info = c.solve(c.start() if u0 is None else u0)
     return c, u, c.profile(u, info)
 
 
 def mccabe_thiele(case, prof):
     """McCabe-Thiele's construction from x_D, with the column's own flows (constant molar overflow): step down from the
-    condenser by the equilibrium curve and the operating lines; the last stage's x must be the column's x_B."""
+    condenser by the equilibrium curve and the operating line of each section (a balance from the top to stage j:
+    V_{j+1} y_{j+1} = L_j x_j + D x_D - the feeds on stages 1..j); the construction must equal the profile."""
     a = case["thermo"]["alpha"][0] / case["thermo"]["alpha"][1]
-    st, f = prof["stages"], case["column"]["feed"]["stage"]
-    F, zA = case["column"]["feed"]["flow_mol_s"], case["column"]["feed"]["z"][0]
-    D, B, xD = prof["D_mol_s"], prof["B_mol_s"], prof["x_D"][0]
-    xB = (F * zA - D * xD) / B
+    st, feeds = prof["stages"], feeds_of(case)
+    D, xD = prof["D_mol_s"], prof["x_D"][0]
     x, out = xD, [xD]
-    for j in range(1, len(st)):              # stage j+1 receives liquid x_j from above
-        Lj, Vn = st[j - 1]["L_mol_s"], st[j]["V_mol_s"]
-        y = (Lj * x + D * xD) / Vn if j < f else (Lj * x - B * xB) / Vn
+    for j in range(1, len(st)):              # stage j+1 receives liquid x_j from stage j
+        fed = sum(f["flow_mol_s"] * f["z"][0] for f in feeds if f["stage"] <= j)
+        y = (st[j - 1]["L_mol_s"] * x + D * xD - fed) / st[j]["V_mol_s"]
         x = y / (a - (a - 1) * y)
         out.append(x)
     dev = max(abs(out[j] - st[j]["x"][0]) for j in range(len(st)))
     return {"x_A_by_stage": out, "max_deviation_from_profile": dev, "tolerance": 1e-9,
             "why": "an exact construction for constant relative volatility and constant molar overflow: only rounding"}
+
+
+def stability(th, x, T):
+    """The liquid's phase stability by the tangent-plane distance, tpd(w) = sum w_i [ln w_i + ln gamma_i(w) - ln x_i -
+    ln gamma_i(x)] (in RT per mole of trial phase): negative for some trial w means a second liquid forms (the
+    tangent-plane criterion; activity form, as both trial and stage are liquids at the same T and P). Binary: a grid of 20001 trial compositions;
+    more components: a minimum from each near-pure start. Returns (smallest tpd, its trial composition)."""
+    x = np.asarray(x, float)
+    g = th.s.gamma
+    lnf = np.log(x) + np.log(g(x, T))
+    tpd = lambda w: float(np.sum(w * (np.log(w) + np.log(g(w, T)) - lnf)))
+    if len(x) == 2:
+        best = (math.inf, None)
+        for w1 in np.linspace(1e-5, 1 - 1e-5, 20001):
+            t = tpd(np.array([w1, 1 - w1]))
+            if t < best[0]:
+                best = (t, [w1, 1 - w1])
+        return best
+    from scipy.optimize import minimize
+    soft = lambda u: np.exp(u - u.max()) / np.sum(np.exp(u - u.max()))
+    best = (math.inf, None)
+    for i in range(len(x)):
+        u0 = np.full(len(x), math.log(1e-3)); u0[i] = 0.0
+        r = minimize(lambda u: tpd(soft(u)), u0, method="Nelder-Mead", options={"xatol": 1e-10, "fatol": 1e-14, "maxiter": 20000})
+        if r.fun < best[0]:
+            best = (float(r.fun), soft(r.x).tolist())
+    return best
+
+
+def stability_by_stage(th, prof):
+    return [{"stage": s["stage"], "tpd_min": t, "trial_x": w} for s in prof["stages"] for t, w in [stability(th, s["x"], s["T_K"])]]
 
 
 def separation(prof, i, k):
@@ -357,10 +458,25 @@ def main():
     for cid, case in cases.items():
         print(cid, flush=True)
         rec = {"title": case["title"]}
-        if cid in ("A1-binary-alpha", "A3-ternary-partial-condenser", "B1-ethanol-water-nrtl", "D1-dry-stage"):
+        if cid in RIGOROUS:
             c, u, prof = solve_case(case)
             rec["rigorous"] = prof
             checks = rec["checks"] = {}
+            if case["thermo"]["kind"] == "chepta":
+                checks["stability"] = stability_by_stage(c.th, prof)
+                checks["feed_T_K"] = [c.th.feed_T(f) if "q" in f else f["T_K"] for f in feeds_of(case)]
+            if cid == "A4-binary-two-feeds":
+                checks["mccabe_thiele"] = mccabe_thiele(case, prof)
+            if cid == "B2-chemsep-benzene-toluene":
+                checks["published"] = published_comparison(case, c, prof)
+            if cid == "B3-acetone-methanol-azeotrope":
+                xa, Ta = model_azeotrope(c.th, 0.5, 0.95)
+                checks["azeotrope"] = {"model_x_acetone": xa, "model_T_K": Ta, "x_D_acetone": prof["x_D"][0],
+                                       "measured_for_information": {"x_acetone": 0.8, "T_K": 55.7 + 273.15,
+                                                                   "source": "validation/data/azeotropes_101kPa.json (acetone + methanol)"}}
+            if cid == "P1-performance-alcohols-water":
+                checks["reference_seconds_for_information"] = prof["solver"]["seconds"]
+                _, _, rec["rigorous_warm"] = solve_case(case, u0=u, specs=case["performance"]["warm_specs"])
             if cid == "A1-binary-alpha":
                 checks["mccabe_thiele"] = mccabe_thiele(case, prof)
                 N, a = case["column"]["stages"], case["thermo"]["alpha"][0] / case["thermo"]["alpha"][1]
@@ -421,11 +537,48 @@ def main():
             rec["checks"] = {"missing_pairs": [["methanol", "ethylene-glycol"]] if not have else [],
                              "other_pairs_present": all(any(p["model"] == "NRTL" and {p["i"], p["j"]} == set(pr) for p in ALL_BINARIES)
                                                         for pr in (("methanol", "water"), ("water", "ethylene-glycol")))}
+        if cid == "E4-iteration-limit":
+            rec["checks"] = {"same_column_as": "B1-ethanol-water-nrtl",
+                             "reference_iterations": out["cases"]["B1-ethanol-water-nrtl"]["rigorous"]["solver"]}
         if cid == "E3-purity-above-azeotrope":
             rec["checks"] = {"azeotrope_from": "B1-ethanol-water-nrtl", "purity": 0.95}
         out["cases"][cid] = rec
     OUT.write_text(json.dumps(out, indent=1, default=float) + "\n")
     print("wrote", OUT)
+
+
+RIGOROUS = ("A1-binary-alpha", "A3-ternary-partial-condenser", "A4-binary-two-feeds", "B1-ethanol-water-nrtl",
+            "B2-chemsep-benzene-toluene", "B3-acetone-methanol-azeotrope", "D1-dry-stage", "F1-butanol-water-two-liquids",
+            "P1-performance-alcohols-water")
+
+
+def model_azeotrope(th, lo, hi):
+    """The binary's azeotrope in the model (K_1 = K_2 at the bubble point) between x_1 = lo and hi."""
+    f = lambda x: (lambda K: K[0] / K[1] - 1)(th.K(np.array([x, 1 - x]), bubble_T(th, np.array([x, 1 - x]))))
+    xa = brentq(f, lo, hi, xtol=1e-12)
+    return xa, bubble_T(th, np.array([xa, 1 - xa]))
+
+
+def published_comparison(case, c, prof):
+    """B2: the reference on CHEPTA's method against the published profile, and the same with constant molar overflow
+    (the published example's enthalpy model), to tell the K-values' share of the difference from the energy balances';
+    and CHEPTA's K of benzene at the published stage compositions and temperatures against the published K."""
+    pub = case["published"]
+    cmo = json.loads(json.dumps(case)); cmo["thermo"]["cmo_latent_heat_J_mol"] = 30000.0
+    _, _, p_cmo = solve_case(cmo)
+
+    def diff(p):
+        dT = [s["T_K"] - 273.15 - t for s, t in zip(p["stages"], pub["T_C"])]
+        dx = [s["x"][0] - x for s, x in zip(p["stages"], pub["x_benzene"])]
+        return {"dT_K": dT, "dx_benzene": dx, "max_abs_dT_K": max(map(abs, dT)), "max_abs_dx": max(map(abs, dx)),
+                "dx_D": p["x_D"][0] - pub["x_D"][0], "dx_B": p["x_B"][0] - pub["x_B"][0]}
+    K = [float(c.th.K(np.array([x, 1 - x]), t + 273.15)[0]) for x, t in zip(pub["x_benzene"], pub["T_C"])]
+    return {"chepta_method": diff(prof), "constant_molar_overflow": diff(p_cmo),
+            "K_benzene_chepta_at_published_x_T": K,
+            "K_relative_difference_from_published_y_over_x": [k * x / y - 1 for k, x, y in zip(K, pub["x_benzene"], pub["y_benzene"])],
+            "K_relative_difference_from_published_K": [k / kp - 1 for k, kp in zip(K, pub["K_benzene"])],
+            "note": "For information and for the agreement tolerances of the case; the published numbers come from "
+                    "another property method (UNIFAC, ChemSep's Antoine equations, constant molar overflow)."}
 
 
 def case_with(case, N, fstage):

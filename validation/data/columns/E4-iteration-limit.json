@@ -1,0 +1,64 @@
+{
+  "chepta_column_case": 1,
+  "id": "E4-iteration-limit",
+  "title": "Ethanol + water (the B1 column) with an iteration limit of one: not converged",
+  "purpose": "(e) A solver that stops before it converges. The B1 column, which has a solution, with the engine's iteration limit set to 1 from a cold start: the result must be not_converged with the residuals by group at the last iterate, never a profile presented as a solution, and the message must say that the column is not shown to be impossible (raise the limit, or start from a previous solution). No open case is known whose reflux-ratio and flow specifications pass the input checks and still have no solution (E1 to E3 are the infeasible ones), so the limit makes the failure certain.",
+  "method_choice": "docs/METHOD_SELECTION.md rule 3: polar, no electrolytes, below 10 bar, with fitted pairs: NRTL (the default set of the pair, fitted-kamihama2012) with an ideal-gas vapour.",
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "ethanol",
+    "water"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 20,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 10,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.5,
+        0.5
+      ],
+      "T_K": 350.0
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 2.0
+    },
+    {
+      "kind": "bottoms_flow_mol_s",
+      "value": 75.0
+    }
+  ],
+  "expected": {
+    "outcome": "not_converged",
+    "code": "NO_CONVERGENCE",
+    "converged": false,
+    "behaviour": [
+      "the residuals by group (material, equilibrium, summation, energy, specifications) at the last iterate are reported, with the tolerances",
+      "the message says the solver stopped at its iteration limit, which is not a statement that the separation is impossible, and what to change",
+      "with the default limit the same column converges (B1)"
+    ],
+    "branch": "none (no solution is returned)"
+  },
+  "tolerances": {
+    "numerical": {
+      "why": "No solution to compare: the case checks the outcome and the report."
+    }
+  },
+  "solver": {
+    "max_iterations": 1,
+    "start": "cold",
+    "note": "The option's name is W2's; one iteration of any method from a constant-molar-overflow start cannot bring every stage's residuals below 1e-8 (the reference's Newton method needs several from its bubble-point start: fixture checks.reference_iterations)."
+  }
+}
