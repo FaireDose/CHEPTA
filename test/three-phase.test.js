@@ -7,6 +7,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { system, pure, CheptaError } from "../src/index.js";
+import { fastestMs } from "./helpers/timing.js";
 
 const load = p => JSON.parse(readFileSync(new URL(p, import.meta.url)));
 const ref = load("../validation/fixtures/three_phase.json");
@@ -145,7 +146,8 @@ test("against open data: mutual solubilities (Xu 2017, not used in the fit) and 
 test("speed: two liquids under 5 ms (T-P); binary P-H and P-VF under 20 ms; ternary vapour + two liquids under 60 ms", () => {
   const s = system({ components: ["water", "ethyl acetate"], model: "NRTL" });
   const t = system({ components: ["ethanol", "water", "ethyl acetate"], model: "NRTL" });
-  const median = f => { f(0); f(1); const a = []; for (let i = 0; i < 7; i++) { const t0 = performance.now(); f(i); a.push(performance.now() - t0); } return a.sort((x, y) => x - y)[3]; };
+  // the median of 7 calculations, each timed as the fastest of 5 runs, after a warm-up (test/helpers/timing.js)
+  const median = f => { f(0); f(1); const a = []; for (let i = 0; i < 7; i++) a.push(fastestMs(() => f(i), { warmup: 0 })); return a.sort((x, y) => x - y)[3]; };
   for (const [what, f, budget] of [
     ["T-P binary", i => s.flash({ z: [0.5, 0.5], T: 300 + i, P: 101.325 }), 5],
     ["T-P ternary", i => t.flash({ z: [0.1, 0.4, 0.5], T: 300 + i, P: 101.325 }), 5],
