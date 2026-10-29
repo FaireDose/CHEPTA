@@ -1,0 +1,94 @@
+{
+  "chepta_column_case": 1,
+  "id": "P1-performance-alcohols-water",
+  "title": "Performance benchmark: methanol + ethanol + 1-propanol + water, NRTL, 40 stages",
+  "purpose": "The named benchmark for the rigorous column's time budget (proposal 0015, W9: components, stages, method, phase mode, tolerances, cold and warm start). A four-component non-ideal column with energy balances, 40 stages, one liquid on every stage (fixture checks.stability). W9 sets the budget and the machine; this case fixes the problem and the accuracy, so a budget is never met by loosening a tolerance or skipping the phase check.",
+  "method_choice": "docs/METHOD_SELECTION.md rule 3: polar, below 10 bar, with interaction parameters for all six pairs: NRTL with the default sets, ideal-gas vapour.",
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "methanol",
+    "ethanol",
+    "1-propanol",
+    "water"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 40,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 20,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.2,
+        0.2,
+        0.2,
+        0.4
+      ],
+      "q": 1
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 3.0
+    },
+    {
+      "kind": "distillate_flow_mol_s",
+      "value": 40.0
+    }
+  ],
+  "performance": {
+    "phase_mode": "VL, with the phase-stability check on every stage",
+    "runs": [
+      "cold start (no previous solution), the case's specs",
+      "warm start from the cold solution, with warm_specs (reference profile: fixture rigorous_warm)"
+    ],
+    "count": "time and iterations both recorded, each run on its own",
+    "budget": "W9's, stated with the machine; the reference's own time is in the fixture for information only (Python, finite-difference Jacobian, not comparable)",
+    "warm_specs": [
+      {
+        "kind": "reflux_ratio",
+        "value": 3.3
+      },
+      {
+        "kind": "distillate_flow_mol_s",
+        "value": 40.0
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "matches the reference within the numerical tolerances, cold and warm",
+      "no stage splits into two liquids (fixture checks.stability)"
+    ],
+    "branch": "The reference's solution, from its stated start."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    }
+  }
+}

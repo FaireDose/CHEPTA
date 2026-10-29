@@ -267,6 +267,19 @@ SEEDS = {
                 "CHEPTA's reference is written anew from the equations. No numbers taken.",
         "files": ["validation/python/reference_fug.py"],
     },
+    # the complete benchmark column of milestone M2a (validation/data/columns/B2-chemsep-benzene-toluene.json, W7)
+    "kooijman-taylor-2006-chemsep-book": {
+        "title": "The ChemSep Book, 2nd edition",
+        "authors": "H. A. Kooijman, R. Taylor",
+        "year": 2006,
+        "kind": "free book",
+        "url": "http://www.chemsep.org/downloads/docs/book2.pdf",
+        "access": "Public domain ('This publication is public domain', p. 2 of the PDF); read 2026-10-29",
+        "license": "Public domain",
+        "note": "Section 1.2, the benzene + toluene column, and its results in section 1.3 (Figures 1.18 to 1.21, pp. 19-20): "
+                "the setup and the published stage temperatures, flows and compositions, transcribed into the benchmark case.",
+        "files": ["validation/data/columns/B2-chemsep-benzene-toluene.json"],
+    },
     # predicted liquid heat capacities (validation/python/predict_cp.py, proposal 0009 step 5)
     "ruzicka-domalski-1993": {
         "title": "Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group "
