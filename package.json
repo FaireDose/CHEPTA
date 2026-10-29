@@ -32,7 +32,9 @@
     },
     "./browser": "./dist/chepta.js"
   },
+  "bin": { "chepta": "bin/chepta.mjs", "chepta-mcp": "bin/chepta-mcp.mjs" },
   "files": [
+    "bin",
     "dist",
     "src",
     "LICENSE",

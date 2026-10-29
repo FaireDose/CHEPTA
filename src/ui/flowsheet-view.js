@@ -5,7 +5,7 @@
  * A view (layer 6): it edits the flowsheet document with flowsheet-logic.js and calculates
  * only through the public functions of the layers below (flowsheetDocStatus, and the request path of src/api/ to solve).
  * The person's selection and the last solution live in `ui.fs` (not in the saved state):
- *   ui.fs = { sel: null | { kind: "block" | "stream", id }, auto: true, solveKey, cache, note }
+ *   ui.fs = { sel: null | { kind: "block" | "stream", id }, auto: true, solveKey, cache, pending, gate, note }
  */
 import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { h, s as svgEl } from "./dom.js";
@@ -18,6 +18,8 @@ import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
 import { flowsheetDocStatus } from "../flowsheet/document.js";
 import { run } from "../api/dispatcher.js";
+import { startRun, workerStatus } from "../runtime/browser-worker.js";
+import { resultGate } from "../runtime/envelope.js";
 import {
   PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
@@ -154,8 +156,18 @@ export function stepFlowsheet(state, set, ui, dir) {
  *  when the project has some. */
 export const flowsheetKey = state => JSON.stringify(state.userData ? [calculatedFlowsheet(state), state.userData] : calculatedFlowsheet(state));
 
-/** The status and, when it can be had, the solution of the flowsheet in the state (with the project's own data). */
-export function solution(state, ui) {
+/** What the cache keeps of a request's result. */
+const cacheOf = (key, r, ms) => (r.outcome === "ok"
+  ? { key, result: r.value, error: null, ms, reproduction: r.reproduction }
+  : { key, result: null, error: r.error?.message ?? r.outcome, loop: r.error?.details?.loop ?? null });
+
+/**
+ * The status and, when it can be had, the solution of the flowsheet in the state (with the project's own data).
+ * With `redraw` (the workspace passes it) and a page that can start a Web Worker, the flowsheet is solved in the worker
+ * (contract 7): the answer is { pending: true } until the result comes, then redraw() is called; a newer revision of the
+ * flowsheet stops the older run, whose result is discarded. Without them it is solved here, synchronously.
+ */
+export function solution(state, ui, redraw = null) {
   enter(state);
   // the flowsheet with the parameter sets chosen in the Library and the diagrams
   const f = ensureUi(ui), fs = calculatedFlowsheet(state), ud = userOverlay(state);
@@ -170,11 +182,27 @@ export function solution(state, ui) {
   if (!(f.auto || f.solveKey === key)) return { status, result: null, error: null, stale: true };
   if (f.cache?.key !== key) {
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
+    const ms = () => (typeof performance !== "undefined" ? performance.now() : 0) - t0;
     // through the request path (proposal 0015, section 9, contract 6), as the command line and the assistants call it
-    const r = run({ capability: "solve_flowsheet", input: { flowsheet: fs, user_data: ud } });
-    f.cache = r.outcome === "ok"
-      ? { key, result: r.value, error: null, ms: (typeof performance !== "undefined" ? performance.now() : 0) - t0, reproduction: r.reproduction }
-      : { key, result: null, error: r.error.message, loop: r.error.details?.loop ?? null };
+    const request = { capability: "solve_flowsheet", input: { flowsheet: fs, user_data: ud } };
+    if (redraw && workerStatus().worker) {
+      if (f.pending?.key !== key) {
+        f.pending?.cancel("A newer version of the flowsheet replaced this calculation.");
+        f.gate ??= resultGate();
+        const gateRun = f.gate.begin(key), h = startRun(request);
+        const pending = f.pending = { key, cancel: reason => { gateRun.status = "cancelled"; h.cancel(reason); } };
+        h.result.then(r => {
+          // a result whose flowsheet was changed or stopped meanwhile is never shown
+          if (f.pending !== pending) return;
+          f.pending = null;
+          if (!f.gate.accept(gateRun) && r.outcome !== "cancelled") return;
+          f.cache = cacheOf(key, r, ms());
+          redraw();
+        });
+      }
+      return { status, result: null, error: null, pending: true, stale: false };
+    }
+    f.cache = cacheOf(key, run(request), ms());
   }
   return { status, result: f.cache.result, error: f.cache.error, loop: f.cache.loop, ms: f.cache.ms, stale: false };
 }
@@ -1088,8 +1116,11 @@ export function flowsheetView(ctx) {
     side.replaceChildren();
     return { data: "Setup: choose the components" };
   }
-  const sol = solution(state, ui);
+  // solved in a Web Worker where the page allows one; when its result comes, the canvas is drawn again
+  const sol = solution(state, ui, () => { ui.drawnKey = null; set({}); });
   const res = sol.result;
+  if (sol.pending) notes.append(h("div", { class: "fa-in-hint", role: "status", "data-fk": "fs-solving" }, "Solving in the background… ",
+    h("button", { type: "button", class: "fa-mini", "data-fk": "fs-stop", on: { click: () => f.pending?.cancel("Stopped from the workbench.") } }, "Stop")));
   if (sol.method) notes.append(warning(sol.error, { title: summaryOf(sol.error), attrs: { role: "alert", "data-fk": "fs-canvas-method" }, open: true,
     details: [usePR(state, set)] }));
   else if (sol.error) notes.append(warning(sol.error, { title: `Not solved: ${summaryOf(sol.error)}`, attrs: { role: "alert" },
