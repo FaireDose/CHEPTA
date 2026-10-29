@@ -39,11 +39,16 @@
  *     balances as one tridiagonal system per component at fixed K, each stage's temperature at its bubble point, and
  *     the vapour flows from the energy balances, alpha_j V_j + beta_j V_j+1 = gamma_j, repeated a few times. Only a
  *     first guess: a previous solution of the same column (`start`) replaces it when given;
- *  2. Newton's method on all N (2C + 1) equations together: the Jacobian by forward differences, stage by stage (a
+ *  2. Newton's method on all N (2C + 1) equations together: the Jacobian by central differences, stage by stage (a
  *     stage's K-values and enthalpies depend on its own variables only), solved by Gaussian elimination with partial
- *     pivoting inside the band; the step limited to 20 K on any stage and to positive flows, and halved until the
- *     scaled residual falls;
- *  3. if Newton fails from the start, once more with steps of at most 5 K. A solver that does not converge says so
+ *     pivoting inside the band; the step taken in the logarithms of the component flows (a trace flow can fall by
+ *     orders of magnitude without turning negative; at most a factor e^5 per step), limited to 20 K on any stage, and
+ *     halved until the scaled residual falls;
+ *  3. if Newton fails from the start, once more with steps of at most 5 K; then by continuation: the column is solved
+ *     with every component's ln K replaced by their mean (no separation, an easy column), and the differences are
+ *     brought back in steps, each solve started from the previous one (this project's choice of a continuation method;
+ *     NeqSim reaches its product specifications in steps too). Long columns with very pure products need it: their
+ *     equations are nearly singular, and a small residual can hide a large distance from the solution. A solver that does not converge says so
  *     (NO_CONVERGENCE) with what it tried and its residuals by group: it is not a statement that the column has no
  *     solution.
  * The column counts as solved only when every group of residuals meets its tolerance (TOLERANCES, stated in the
@@ -76,6 +81,8 @@ const LATER_SPECS = ["distillate_purity", "bottoms_purity", "recovery"];
 export const DRY_FRACTION = 0.01;
 /** J/mol: the energy residuals are divided by F times this, as W7's reference does. */
 export const H_SCALE = 1e4;
+/** The largest change of the logarithm of a component flow in one Newton step (a factor of e^5, about 150). */
+const LN_STEP = 5;
 /**
  * The tolerances a solution must meet, by group: material in mol/s relative to the total feed, energy in W relative to
  * the total feed times H_SCALE, equilibrium and summation in mole fraction, specifications relative to their value
@@ -157,18 +164,16 @@ function bandSolve(B, b) {
   return x.every(Number.isFinite) ? x : null;
 }
 
-/** A tridiagonal system (Thomas' algorithm): sub a, diagonal b, super c, right-hand side d. */
-function thomas(a, b, c, d) {
-  const n = b.length, cp = new Array(n), dp = new Array(n);
-  cp[0] = c[0] / b[0]; dp[0] = d[0] / b[0];
-  for (let j = 1; j < n; j++) {
-    const m = b[j] - a[j] * cp[j - 1];
-    cp[j] = c[j] / m; dp[j] = (d[j] - a[j] * dp[j - 1]) / m;
+/** A tridiagonal system: sub a, diagonal b, super c, right-hand side d; with partial pivoting (Thomas' algorithm
+ *  without pivoting loses the trace components of a long column, whose matrix is not diagonally dominant). */
+function tridiagonal(a, b, c, d) {
+  const n = b.length, B = bandMatrix(n, 1, 1);
+  for (let j = 0; j < n; j++) {
+    B.a[bandAt(B, j, j)] = b[j];
+    if (j > 0) B.a[bandAt(B, j, j - 1)] = a[j];
+    if (j < n - 1) B.a[bandAt(B, j, j + 1)] = c[j];
   }
-  const x = new Array(n);
-  x[n - 1] = dp[n - 1];
-  for (let j = n - 2; j >= 0; j--) x[j] = dp[j] - cp[j] * x[j + 1];
-  return x;
+  return bandSolve(B, d) ?? d.map(() => NaN);
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -313,20 +318,26 @@ export function solveCascade(opts = {}) {
   const allProps = u => Array.from({ length: N }, (_, j) => props(j, u));
   const norm = r => Math.sqrt(r.reduce((a, b) => a + b * b, 0));
 
+  // central differences (forward where a flow would turn negative): near a pinch the Jacobian is nearly singular, and
+  // the error of forward differences (about 1e-8) is enough to turn the Newton step away from the solution
   function jacobian(u, P) {
-    const B = bandMatrix(nv, 2 * m - 1, 2 * m - 1), tmp = new Float64Array(m);
+    const B = bandMatrix(nv, 2 * m - 1, 2 * m - 1), tp = new Float64Array(m), tm = new Float64Array(m);
     for (let j = 0; j < N; j++) {
       const o = j * m;
       for (let k = 0; k < m; k++) {
-        const uk = u[o + k];
-        const h = k === 2 * n ? 1e-6 * Math.max(1, Math.abs(uk)) : 1e-7 * Math.abs(uk) + 1e-13 * F;
+        const uk = u[o + k], isT = k === 2 * n;
+        const h = isT ? 1e-4 * Math.max(1, Math.abs(uk)) / 300 : 1e-5 * Math.abs(uk) + 1e-13 * F;
+        const back = isT || uk - h > 0;
         const w = u.slice(); w[o + k] = uk + h;
-        const pj = props(j, w), dk = w[o + k] - uk;
+        const pp = props(j, w), up = w[o + k];
+        let pm = null, um = uk;
+        if (back) { w[o + k] = uk - h; pm = props(j, w); um = w[o + k]; }
         for (let jj = Math.max(0, j - 1); jj <= Math.min(N - 1, j + 1); jj++) {
-          const pa = jj - 1 === j ? pj : P[jj - 1], p = jj === j ? pj : P[jj], pb = jj + 1 === j ? pj : P[jj + 1];
-          stageResidual(jj, pa, p, pb, tmp, 0);
-          const base = P.res;
-          for (let e = 0; e < m; e++) B.a[bandAt(B, jj * m + e, o + k)] = (tmp[e] - base[jj * m + e]) / dk;
+          const at = q => [jj - 1 === j ? q : P[jj - 1], jj === j ? q : P[jj], jj + 1 === j ? q : P[jj + 1]];
+          stageResidual(jj, ...at(pp), tp, 0);
+          if (pm) stageResidual(jj, ...at(pm), tm, 0);
+          else for (let e = 0; e < m; e++) tm[e] = P.res[jj * m + e];
+          for (let e = 0; e < m; e++) B.a[bandAt(B, jj * m + e, o + k)] = (tp[e] - tm[e]) / (up - um);
         }
       }
     }
@@ -373,6 +384,12 @@ export function solveCascade(opts = {}) {
       if (meets(groups(P).g)) return { u, P, iterations: it, converged: true };
       if (it === maxIt) break;
       const J = jacobian(u, P);
+      // the step in the logarithms of the component flows (and in T): a trace flow can fall by orders of magnitude
+      // and never turns negative; the columns of the Jacobian are scaled by the flows, d r / d ln u = u d r / d u
+      for (let c = 0; c < nv; c++) {
+        if (c % m === 2 * n) continue;
+        for (let r = Math.max(0, c - J.ku); r <= Math.min(nv - 1, c + J.kl); r++) J.a[bandAt(J, r, c)] *= u[c];
+      }
       const du = bandSolve(J, P.res.map(v => -v));
       if (!du) return { u, P, iterations: it, converged: false, why: "the Jacobian is singular" };
       let lam = 1;
@@ -382,8 +399,7 @@ export function solveCascade(opts = {}) {
         const w = Float64Array.from(u);
         for (let k = 0; k < nv; k++) {
           const isT = k % m === 2 * n;
-          const t = u[k] + lam * du[k];
-          w[k] = isT ? t : t > 0 ? t : u[k] * 0.1;
+          w[k] = isT ? u[k] + lam * du[k] : u[k] * Math.exp(Math.max(-LN_STEP, Math.min(LN_STEP, lam * du[k])));
         }
         let Pw, nw;
         try { Pw = allProps(w); Pw.res = residualOf(Pw); nw = norm(Pw.res); } catch { nw = Infinity; }
@@ -393,7 +409,6 @@ export function solveCascade(opts = {}) {
       }
       if (!best) return { u, P, iterations: it, converged: false, why: "every trial step left the range of the property records" };
       if (!(best.nw < nr)) { stalls += 1; if (stalls > 4) return { u, P, iterations: it, converged: false, why: "the residual stopped falling" }; } else stalls = 0;
-      if (process?.env?.CASCADE_DEBUG) console.log("it", it, "norm", best.nw, "lam", lam, "clipped", [...best.w].filter((v, k) => k % m !== 2 * n && u[k] + lam * du[k] <= 0).length);
       u = best.w; P = best.Pw; nr = best.nw;
     }
     return { u, P, iterations: it, converged: false, why: `${maxIt} iterations were not enough` };
@@ -410,15 +425,35 @@ export function solveCascade(opts = {}) {
     if (r.converged) result = { ...r, start: "previous solution" };
   }
   let cold = null;
-  if (!result) {
-    cold = bubblePointStart(th, inp, fJ, HF);
-    for (const dTmax of [20, 5]) {
-      const r = newton(cold.u, { dTmax, maxIt: dTmax === 20 ? 50 : 80 });
-      tried.push(`Newton from the bubble-point start, steps of at most ${dTmax} K (${r.iterations} iterations${r.converged ? "" : `: ${r.why}`})`);
+  if (!result && !(opts.homotopy && startU)) {
+    for (const a of [{ dTmax: 20, maxIt: 50 }, { dTmax: 5, maxIt: 80 }]) {
+      cold ??= bubblePointStart(th, inp, fJ, HF);
+      const r = newton(cold.u, a);
+      tried.push(`Newton from the bubble-point start, steps of at most ${a.dTmax} K (${r.iterations} iterations${r.converged ? "" : `: ${r.why}`})`);
       if (r.converged) { result = { ...r, start: "bubble-point method (Wang-Henke)" }; break; }
-      result = null;
       cold.last = r;
     }
+  }
+  if (!result && !opts.homotopy) {
+    // continuation: a column whose components all have the same volatility (ln K_i replaced by its mean over the
+    // components) is solved first, and the differences are brought back in steps, each solve started from the last.
+    // Long columns with very pure products need it: their equations are nearly singular, and Newton from the
+    // bubble-point start does not reach the solution
+    let t = 0, dt = 0.25, prev = null, steps = 0;
+    while (t < 1 && dt >= 1 / 256 && steps < 60) {
+      const tn = Math.min(1, t + (prev ? dt : 0)), steps0 = steps++;
+      const blend = tn === 1 ? th : { ...th, lnK: (x, y, T) => { const a = th.lnK(x, y, T), mean = sum(a) / a.length; return a.map(v => tn * v + (1 - tn) * mean); } };
+      try {
+        const r = solveCascade({ ...opts, thermo: blend, start: prev, homotopy: tn < 1 ? "step" : "last" });
+        prev = r; t = tn; dt = Math.min(0.5, dt * 1.5);
+        if (tn === 1) return { ...r, solver: { ...r.solver, start: `continuation in the relative volatilities (${steps0 + 1} steps)`, tried: [...tried, `continuation in the relative volatilities: solved in ${steps0 + 1} steps`] } };
+      } catch (e) {
+        if (e?.code !== "NO_CONVERGENCE") throw e;
+        if (!prev) break;
+        dt /= 2;
+      }
+    }
+    tried.push(`continuation in the relative volatilities (stopped at ${fmt(t * 100)} % of the way, after ${steps} steps)`);
   }
   if (!result) {
     const last = cold?.last;
@@ -438,7 +473,7 @@ export function solveCascade(opts = {}) {
   const Qc = energyIn(0, null, P[0], P[1]);           // heat removed by the condenser, W
   const Qr = -energyIn(N - 1, P[N - 2], P[N - 1], null); // heat added by the reboiler, W
   // the phase-stability check: a second liquid on a stage is refused, never returned as a metastable answer
-  if (th.stable) {
+  if (th.stable && opts.homotopy !== "step") {
     const split = [];
     for (let j = 0; j < N; j++) {
       const s = th.stable(P[j].x, P[j].T);
@@ -482,7 +517,7 @@ export function solveCascade(opts = {}) {
  * The start (see the file header): constant molar overflow, then the bubble-point method of Wang and Henke. Returns the
  * variables u, and a note when constant molar overflow gives no boil-up.
  */
-function bubblePointStart(th, inp, fJ, HF) {
+function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3 } = {}) {
   const { N, F, feeds, specs } = inp, n = th.n, total = inp.condenser === "total";
   const z = fJ.reduce((a, f) => a.map((v, i) => v + f[i]), new Array(n).fill(0)).map(v => v / F);
   // the feeds' liquid fractions and a latent heat, at the bubble and dew points of the whole feed
@@ -535,7 +570,7 @@ function bubblePointStart(th, inp, fJ, HF) {
   const Kof = j => th.lnK(x[j], y[j], T[j]).map(Math.exp);
   let K = x.map((_, j) => Kof(j));
   const sweep = () => {
-    for (let s = 0; s < (globalThis.SW ?? 30); s++) {
+    for (let s = 0; s < sweeps; s++) {
       const xn = Array.from({ length: N }, () => new Array(n));
       for (let i = 0; i < n; i++) {
         const a = [], b = [], c = [], d = [];
@@ -546,7 +581,7 @@ function bubblePointStart(th, inp, fJ, HF) {
           c.push(j < N - 1 ? V[j + 1] * K[j + 1][i] : 0);
           d.push(-fJ[j][i]);
         }
-        thomas(a, b, c, d).forEach((v, j) => { xn[j][i] = Math.max(v, 1e-30); });
+        tridiagonal(a, b, c, d).forEach((v, j) => { xn[j][i] = Number.isFinite(v) ? Math.max(v, 1e-30) : x[j][i]; });
       }
       let dT = 0;
       for (let j = 0; j < N; j++) {
@@ -555,7 +590,7 @@ function bubblePointStart(th, inp, fJ, HF) {
         dT = Math.max(dT, Math.abs(Tn - T[j])); T[j] = Tn;
         for (let k = 0; k < 5; k++) { const Kj = th.lnK(x[j], y[j], T[j]).map(Math.exp); const w = x[j].map((v, i) => v * Kj[i]), sw = sum(w); y[j] = w.map(v => v / sw); K[j] = Kj; }
       }
-      if (dT < (globalThis.SWT ?? 1e-3)) break;
+      if (dT < dTstop) break;
     }
   };
   sweep();
