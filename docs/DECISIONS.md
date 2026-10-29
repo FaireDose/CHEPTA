@@ -47,8 +47,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     DWSIM's source, the 20 % volatility warning, the net duty as the block's one energy stream. Next for W2: the
     rigorous column (M2a), when the maintainer says so.
   - **M1, W8 with W9: built, to review** (docs/decisions/2026-10-29-03-cli-mcp-worker.md): the command line, the local
-    MCP server, the worker. To do: run the first assistant test on your computer (docs/models/tools.md, "The first
-    assistant test") and say whether it passes; then W8's next step, the authoring contract: refuse unknown keys in a
+    MCP server, the worker. The first assistant test passed in Claude Code, in the session and on your computer
+    (2026-10-29). Next: W8's next step, the authoring contract: refuse unknown keys in a
     flowsheet's `thermo` and in a block's `spec` (an assistant's `thermo.method` was ignored without a word), and a
     missing-pair message that names the request path's remedy (the user's data) instead of `allowMissingPairs`.
   - **W7, M1 done** (2026-10-29; docs/decisions/2026-10-29-04-column-cases.md): nine column cases and the MESH and

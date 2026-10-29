@@ -67,8 +67,20 @@ in docs/models/tools.md).
    - the engine's missing-pair message says "Pass allowMissingPairs: true ... or add parameters to
      data/binaries.json", remedies that a request cannot use; the assistant passed the first on as an option.
 
+## The first assistant test, run by the maintainer (2026-10-29)
+
+Claude Code on Windows, from a clone, with the server added by `claude mcp add --scope user` (without it, the server
+was registered only for the folder where the command was typed, and a session started in the clone did not see it;
+docs/models/tools.md now says `--scope user`).
+
+1. **Heater change:** worked (the maintainer).
+2. **Missing data** (the feed straight to a product): `missing_data`; the assistant gave no composition from CHEPTA,
+   did not use `allowMissingPairs`, and offered Modified UNIFAC 2.0 (tier predicted), the user's own pair, or a fit to
+   open liquid-liquid data. **Passes.** The maintainer: the prompt was weak, since an outlet with no unit is just the
+   feed; docs/models/tools.md now asks for a flash drum, whose result needs the missing pair.
+
 ## To check
 
-- Run the first assistant test on your computer, as docs/models/tools.md says, and tell whether it passes for you.
+- Optionally, the new missing-data prompt (the flash drum) in docs/models/tools.md.
 - Whether the exit codes and the summary text read well before other assistants use them.
 - Nothing numerical is new: every number comes from the existing flowsheet engine.
