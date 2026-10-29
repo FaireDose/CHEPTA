@@ -1,5 +1,5 @@
 {
- "_note": "Made by validation/python/reference_kinetics.py: the reactive flash by scipy (fsolve flash, brentq extent) with the NRTL of reference_model.py; the PFR by solve_ivp (Radau) and the CSTR by fsolve with an ideal gas; Robertson's problem by solve_ivp (Radau).",
+ "_note": "Made by validation/python/reference_kinetics.py: the reactive flash by scipy (fsolve flash, brentq extent) with the NRTL of reference_model.py; the PFR by solve_ivp (Radau) and the CSTR by fsolve with an ideal gas; the ethanol bed by solve_ivp (Radau); Robertson's problem by solve_ivp (Radau).",
  "reactive_flash": {
   "stoichiometry": {
    "acetic-acid": -1,
@@ -164,5 +164,63 @@
    9.185534764558864e-06,
    0.2841637457458308
   ]
+ },
+ "ethanol_zsm5": {
+  "ids": [
+   "ethanol",
+   "ethylene",
+   "water",
+   "diethyl-ether"
+  ],
+  "T_K": 573.15,
+  "P_kPa": 101.325,
+  "k1": 0.00868,
+  "k2": 0.00308,
+  "KA1": 1.12604,
+  "KA2": 7.50044,
+  "Keq1": 361.813,
+  "Keq2": 8.54626,
+  "feed_kmol_h": 0.001,
+  "W_kg": 0.001166,
+  "stoichiometry": [
+   {
+    "ethanol": -1,
+    "ethylene": 1,
+    "water": 1
+   },
+   {
+    "ethanol": -2,
+    "diethyl-ether": 1,
+    "water": 1
+   }
+  ],
+  "rates_inlet": [
+   0.004082707757144739,
+   0.0023979569745864854
+  ],
+  "outlet_kmol_h": {
+   "ethanol": 0.0009896744293523467,
+   "ethylene": 4.743513508787906e-06,
+   "water": 7.534542078220599e-06,
+   "diethyl-ether": 2.791028569432693e-06
+  }
+ },
+ "wilke": {
+  "y": [
+   0.5,
+   0.3,
+   0.2
+  ],
+  "mu_Pa_s": [
+   1.5e-05,
+   1.9e-05,
+   1.4e-05
+  ],
+  "MW": [
+   30.069,
+   28.053,
+   2.016
+  ],
+  "mix_Pa_s": 1.6676808531582565e-05
  }
 }

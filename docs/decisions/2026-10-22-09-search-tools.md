@@ -57,7 +57,7 @@
   OpenAlex's full-text search lists Baird et al. 2019 first for levoglucosenone and vapour pressure: the validation
   the proposal named passes. CORE has not run (below).
 
-## The new search (docs/MISSING_PROPERTIES_2026-10-22-2.md)
+## The new search (docs/missing-properties/MISSING_PROPERTIES_2026-10-22-2.md)
 
 - **Full-text search, Europe PMC:** 176 gaps; 78 with at least one passage where a name and the property appear
   together; every passage read (`validation/data/searches/2026-10-22-fulltext.json`). Nearly all name the component
@@ -120,7 +120,7 @@ densities (Tables 13 and 19), which levoglucosenone's records use, are unchanged
 
 The maintainer: "for 163 i attach all the docs you ask. read also charts but also text". Seven articles the search had
 found but scripts could not fetch. Each was read, text, tables and figures; the details are in
-[MISSING_PROPERTIES_2026-10-22-3.md](../MISSING_PROPERTIES_2026-10-22-3.md) and in the search record
+[MISSING_PROPERTIES_2026-10-22-3.md](../missing-properties/MISSING_PROPERTIES_2026-10-22-3.md) and in the search record
 (`validation/data/searches/2026-10-22-fulltext.json`, the `downloaded` entries).
 
 - **Added.**

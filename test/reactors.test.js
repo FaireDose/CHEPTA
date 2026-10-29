@@ -65,7 +65,7 @@ test("reactions in parallel convert the key's inlet flow; in series, what the re
 });
 
 test("without an open enthalpy of formation, a reactor refuses unless the heat of reaction is given with its source", () => {
-  // 2-methylfuran has no open enthalpy of formation (docs/MISSING_PROPERTIES_*.md)
+  // 2-methylfuran has no open enthalpy of formation (docs/missing-properties/MISSING_PROPERTIES_*.md)
   const sys = system({ components: ["furfural", "hydrogen", "2-methylfuran", "water"], model: "PR" });
   const hdo = { id: "hdo", name: "Furfural to 2-methylfuran", stoichiometry: { furfural: -1, hydrogen: -2, "2-methylfuran": 1, water: 1 }, phase: "vapour" };
   const inlet = stream(sys, { flow_kmol_h: { furfural: 1, hydrogen: 6 }, T_K: 298.15, P_kPa: 1 });
@@ -83,7 +83,7 @@ test("a yield reactor converts its key into the yields given, closes the mass, a
   // esterification, acetic acid + ethanol -> ethyl acetate + water, written as yields on the mass basis (the yield
   // reactor's use: a product spectrum measured in a laboratory). HMF rehydration to levulinic acid was the first
   // choice; levulinic acid melts above 298.15 K and has no open ideal-gas heat capacity, so its liquid enthalpy cannot
-  // be anchored to the reference state (docs/MISSING_PROPERTIES_*.md).
+  // be anchored to the reference state (docs/missing-properties/MISSING_PROPERTIES_*.md).
   const sys = system({ components: ["acetic-acid", "ethanol", "ethyl-acetate", "water"], model: "ideal" });
   const MW = id => sys.MW[sys.ids.indexOf(id)];
   const per = id => MW(id) / MW("acetic-acid");

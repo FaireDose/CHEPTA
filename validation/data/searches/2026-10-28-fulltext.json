@@ -1,0 +1,204 @@
+{
+ "date": "2026-10-28",
+ "tool": "validation/python/fulltext_search.py --only p-terphenyl cumene-hydroperoxide --props critical Tb liquidDensity idealGasHeatCapacity fusion liquidViscosity surfaceTension",
+ "summary": "The three components added on 2026-10-28 (biphenyl has no gap): every gap asked of Europe PMC, OpenAlex and CORE; the passages read. No open value of the pure compounds was found. Four documents that may hold one could not be read by a script and are listed for a person to download.",
+ "indexes": {
+  "Europe PMC": "asked (it answered 503 once; asked again)",
+  "OpenAlex": "asked, with a key",
+  "CORE": "asked, with a key"
+ },
+ "gaps": {
+  "cumene-hydroperoxide": {
+   "fusion": {
+    "hits": 88,
+    "screened": 1,
+    "held": "none of the pure compound (CHP named as a reagent or an initiator)",
+    "articles": [
+     "Strong Antiproliferative Activity Observed in Hammett-Guided Electronic Modulation of GPx-Mimetic Pathways in Aryl Selen"
+    ],
+    "openalex": {
+     "hits": 1313,
+     "read": 2,
+     "screened": 0,
+     "articles": [],
+     "fetched": 2
+    },
+    "core": {
+     "hits": 18,
+     "read": 3,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidViscosity": {
+    "hits": 146,
+    "screened": 2,
+    "held": "none of the pure compound (viscosities of resins and latexes that CHP initiates)",
+    "articles": [
+     "Dependence of O&lt;sub&gt;2&lt;/sub&gt; Depletion on Transition Metal Catalyst in Radical Polymerization of Cross-Linkin",
+     "Catalytic Thermocuring and Synergistic Photothermocuring of Single-Component Acrylate-Grafted Liquid Oligosilazanes."
+    ],
+    "openalex": {
+     "hits": 551,
+     "read": 2,
+     "screened": 1,
+     "articles": [
+      "Novel thermoplastic vulcanizates (TPVs) based on silicone rubber and polyamide exploring peroxide cross-linking"
+     ],
+     "fetched": 2
+    },
+    "core": {
+     "hits": 8,
+     "read": 1,
+     "screened": 1,
+     "articles": [
+      "Synthesis, characterization and testing of nano-structured particles for effective impact modification of glassy amorpho"
+     ]
+    }
+   }
+  },
+  "p-terphenyl": {
+   "critical": {
+    "hits": 146,
+    "screened": 1,
+    "held": "none (superconductivity and crystal studies); EUR 2282 (Euratom 1965, vapour thermal conductivity of the terphenyls, aei.pitt.edu) not read: the server's certificate failed",
+    "articles": [
+     "Experimental Study on the Inhibition Effect of the Inhibitor on Coal Spontaneous Combustion Under Critical Temperature."
+    ],
+    "openalex": {
+     "hits": 660,
+     "read": 4,
+     "screened": 3,
+     "articles": [
+      "Superconductivity in $p$-Terphenyl",
+      "Anisotropic Thermal Expansion of p-Terphenyl: a Self-Assembled Supramolecular Array of Poly-p-phenyl Nanoribbons",
+      "Superconductivity at 43 K in a single C-C bond linked terphenyl"
+     ],
+     "fetched": 4
+    },
+    "core": {
+     "hits": 60,
+     "read": 6,
+     "screened": 1,
+     "articles": [
+      "Potassium-Doped Para-Terphenyl: Structure, Electrical Transport Properties and Possible Signatures of a Superconducting "
+     ]
+    }
+   },
+   "Tb": {
+    "hits": 202,
+    "screened": 1,
+    "held": "none measured; an OSTI report (4551116, 1965) quotes 427 °C without a source; J. Sci. Instrum. 35 (1958) 307 (doi:10.1088/0950-7671/35/8/307, a viscometer for organic coolants) not read: the publisher served a web page",
+    "articles": [
+     "Assessment of organophosphate pesticides in soils and vegetables from agricultural areas of Delta Central District, Nige"
+    ],
+    "openalex": {
+     "hits": 1282,
+     "read": 2,
+     "screened": 2,
+     "articles": [
+      "MATERIALS FOR 3D PRINTING OF SCINTILLATORS USING LOW-TEMPERATURE PLASTIC MATRICES",
+      "Electron paramagnetic resonance studies of oriented aromatic hydrocarbons in the phosphorescent state at low magnetic fi"
+     ],
+     "fetched": 2
+    },
+    "core": {
+     "hits": 17,
+     "read": 4,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidDensity": {
+    "hits": 5010,
+    "screened": 1,
+    "held": "none; Z. Naturforsch. B 28 (1973) (doi:10.1515/znb-1973-5-621, electrical conductivity of the molten terphenyls) not read: the publisher refused the script",
+    "articles": [
+     "High sensitivity pressure and temperature quantum sensing in pentacene-doped p-terphenyl single crystals."
+    ],
+    "openalex": {
+     "hits": 15153,
+     "read": 2,
+     "screened": 2,
+     "articles": [
+      "Spectroscopic evidence of low-energy gaps persisting up to 120 K in surface-doped p -terphenyl crystals",
+      "Towards novel organic high- Tc superconductors: Data mining using density of states similarity search"
+     ],
+     "fetched": 2
+    },
+    "core": {
+     "hits": 419,
+     "read": 3,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "idealGasHeatCapacity": {
+    "hits": 1,
+    "screened": 0,
+    "held": "none (group-contribution and crystal papers only)",
+    "articles": [],
+    "openalex": {
+     "hits": 4,
+     "read": 1,
+     "screened": 0,
+     "articles": [],
+     "fetched": 1
+    },
+    "core": {
+     "hits": 0,
+     "read": 0,
+     "screened": 0,
+     "articles": []
+    }
+   },
+   "liquidViscosity": {
+    "hits": 697,
+    "screened": 1,
+    "held": "none of the pure liquid read (the OSTI report on organic coolants holds stabilities, not viscosities)",
+    "articles": [
+     "Golgi-Targeted Viscosity Fluorescent Probe for Monitoring Acute Lung Injury."
+    ],
+    "openalex": {
+     "hits": 3037,
+     "read": 2,
+     "screened": 0,
+     "articles": [],
+     "fetched": 2
+    },
+    "core": {
+     "hits": 84,
+     "read": 1,
+     "screened": 1,
+     "articles": [
+      "The effects of reactor irradiation on Santowax OMP at 610°F and 750°F"
+     ]
+    }
+   },
+   "surfaceTension": {
+    "hits": 165,
+    "screened": 1,
+    "held": "none (monolayers and additives)",
+    "articles": [
+     "Solid Additives for Spontaneously Spreading-Processed Organic Photovoltaics."
+    ],
+    "openalex": {
+     "hits": 678,
+     "read": 1,
+     "screened": 0,
+     "articles": [],
+     "fetched": 1
+    },
+    "core": {
+     "hits": 3,
+     "read": 2,
+     "screened": 2,
+     "articles": [
+      "The stability of nanobubbles and its application in contaminated sediment treatment",
+      "The stability of nanobubbles and its application in contaminated sediment treatment"
+     ]
+    }
+   }
+  }
+ }
+}

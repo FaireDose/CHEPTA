@@ -1,4 +1,4 @@
-"""The list of what CHEPTA's databank still lacks, as a dated file: docs/MISSING_PROPERTIES_<date>.md.
+"""The list of what CHEPTA's databank still lacks, as a dated file: docs/missing-properties/MISSING_PROPERTIES_<date>.md.
 
 Every update is a new file named with the day it was made; the earlier files stay as they are, so the gaps can be
 followed over time (the maintainer, 2026-10-22: "make a new file with the day of today so we keep track. add this as a
@@ -7,7 +7,7 @@ that are predicted only, the components without UNIQUAC r and q or Modified UNIF
 the previous file (`--since`, a git revision of components.json, for example the commit of the previous file). The
 recommendation text that the maintainer is still to decide on is carried over from the previous file by hand.
 
-    python validation/python/missing_properties.py --date 2026-10-22 --since 5c27db8 > docs/MISSING_PROPERTIES_2026-10-22.md
+    python validation/python/missing_properties.py --date 2026-10-22 --since 5c27db8 > docs/missing-properties/MISSING_PROPERTIES_2026-10-22.md
 """
 import argparse
 import json
@@ -129,7 +129,7 @@ def report(comps, date, since=None):
     L.append(f"What CHEPTA's databank still lacks besides vapour-liquid pairs, on {date} ({len(comps)} components). Made by "
              "`validation/python/missing_properties.py`; one file per update, named with its day, so the earlier files "
              "stay and the gaps can be followed over time (docs/DATA_RULES.md section 12). The pairs are in "
-             "[DATA_WANTED.md](DATA_WANTED.md).")
+             "[DATA_WANTED.md](../DATA_WANTED.md).")
     L.append("")
     L.append("Each gap is a \"no open data\" marker in `src/data/components.json` with the sources that were searched "
              "(`searched`). Start from that list before looking again, so the same sources are not searched twice.")

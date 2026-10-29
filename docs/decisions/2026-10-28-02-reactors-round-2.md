@@ -36,7 +36,7 @@
   - p-terphenyl from measured data (`measured_components.py`): the vapour pressure (ThermoML Archive), the enthalpy of
     vaporization (Clapeyron, checked against Zhao 2008), melting and formation data (WebBook);
   - p-terphenyl's liquid heat capacity is predicted (Ruzicka and Domalski; the ring-to-ring carbon counted as CB-(C),
-    the nearest group). Its other gaps are "no open data", in `docs/MISSING_PROPERTIES_2026-10-28.md`;
+    the nearest group). Its other gaps are "no open data", in `docs/missing-properties/MISSING_PROPERTIES_2026-10-28.md`;
   - Rawlings and Ekerdt name the third component "triphenyl" without its isomer: the para isomer is my choice, to
     confirm.
 

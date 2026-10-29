@@ -2,7 +2,7 @@
 
 **The missing properties.** The maintainer asked for a dated list of every pure-component property still missing
 besides the vapour-liquid pairs, with the recommendation on values the maintainer finds or measures:
-[../MISSING_PROPERTIES_2026-10-21.md](../MISSING_PROPERTIES_2026-10-21.md). It is a snapshot (174 components), not a
+[../MISSING_PROPERTIES_2026-10-21.md](../missing-properties/MISSING_PROPERTIES_2026-10-21.md). It is a snapshot (174 components), not a
 generated page. The tier for such values is not decided yet (open item in [../DECISIONS.md](../DECISIONS.md)).
 
 **The older ChemSep pairs** found while adding neopentane, helium and methylcyclohexane (2026-10-21) are imported, by

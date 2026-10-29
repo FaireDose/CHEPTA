@@ -152,6 +152,47 @@ def kinetic():
     return pfr, cstr
 
 
+# Ethanol to ethylene and diethyl ether over ZSM-5 (docs/BENCHMARKS.md, "Reactions"): Aali and Hadi, Diyala J. Eng.
+# Sci. 16(2) (2023) 30-49, doi:10.24237/djes.2023.16203, CC BY 4.0. Eqn 4 (ethylene, single site, surface reaction)
+# and eqn 14 (diethyl ether, dual site) with the adsorption terms the article fitted (K_A only), Table 9 at 573.15 K
+# (k in mol/(g_cat h), K_A in 1/atm) and Table 8 (K_eq). Partial pressures in atm; an isothermal packed bed at 1 atm,
+# pure ethanol fed, W/F up to 1.166 g_cat h/mol (the article's range).
+ETOH = {"ids": ["ethanol", "ethylene", "water", "diethyl-ether"], "T_K": 573.15, "P_kPa": 101.325,
+        "k1": 0.00868, "k2": 0.00308, "KA1": 1.12604, "KA2": 7.50044, "Keq1": 361.8130, "Keq2": 8.54626,
+        "feed_kmol_h": 1e-3, "W_kg": 1.166e-3,
+        "stoichiometry": [{"ethanol": -1, "ethylene": 1, "water": 1}, {"ethanol": -2, "diethyl-ether": 1, "water": 1}]}
+
+
+def ethanol_rates(F, P_atm):
+    """r1, r2 in mol/(g_cat h) at the molar flows F (any unit)."""
+    pA, pO, pW, pE = F / F.sum() * P_atm
+    e = ETOH
+    r1 = e["k1"] * (pA - pO * pW / e["Keq1"]) / (1 + pA * e["KA1"])
+    r2 = e["k2"] * e["KA2"] ** 2 * (pA ** 2 - pW * pE / e["Keq2"]) / (1 + pA * e["KA2"]) ** 2
+    return np.array([r1, r2])
+
+
+def ethanol_bed():
+    e = ETOH
+    nu = np.array([[st.get(c, 0) for c in e["ids"]] for st in e["stoichiometry"]], float)
+    F0 = np.array([e["feed_kmol_h"], 0, 0, 0])
+    P = e["P_kPa"] / 101.325
+    # dξ/dW in kmol/(h kg): r [mol/(g h)] = r kmol/(kg h)
+    sol = solve_ivp(lambda w, x: ethanol_rates(F0 + nu.T @ x, P), (0, e["W_kg"]), [0.0, 0.0], method="Radau",
+                    rtol=1e-11, atol=1e-16)
+    out = F0 + nu.T @ sol.y[:, -1]
+    print("ethanol bed outlet", out, "X", 1 - out[0] / F0[0])
+    return {**e, "rates_inlet": ethanol_rates(F0, P).tolist(), "outlet_kmol_h": dict(zip(e["ids"], out.tolist()))}
+
+
+
+def wilke():
+    """Wilke's rule for a gas mixture's viscosity, by the open chemicals library (chemicals.viscosity.Wilke)."""
+    from chemicals.viscosity import Wilke
+    y, mu, M = [0.5, 0.3, 0.2], [1.5e-5, 1.9e-5, 1.4e-5], [30.069, 28.053, 2.016]
+    return {"y": y, "mu_Pa_s": mu, "MW": M, "mix_Pa_s": Wilke(y, mu, M)}
+
+
 def robertson():
     f = lambda t, y: [-0.04 * y[0] + 1e4 * y[1] * y[2], 0.04 * y[0] - 1e4 * y[1] * y[2] - 3e7 * y[1] ** 2, 3e7 * y[1] ** 2]
     s = solve_ivp(f, (0, 40), [1, 0, 0], method="Radau", rtol=1e-10, atol=[1e-12, 1e-16, 1e-12])
@@ -162,10 +203,12 @@ def main():
     pfr, cstr = kinetic()
     doc = {"_note": "Made by validation/python/reference_kinetics.py: the reactive flash by scipy (fsolve flash, brentq "
                     "extent) with the NRTL of reference_model.py; the PFR by solve_ivp (Radau) and the CSTR by fsolve "
-                    "with an ideal gas; Robertson's problem by solve_ivp (Radau).",
+                    "with an ideal gas; the ethanol bed by solve_ivp (Radau); Robertson's problem by solve_ivp (Radau).",
            "reactive_flash": {"stoichiometry": ESTER, "model": "NRTL", "cases": reactive_flash()},
            "gas": {"ids": GAS_IDS, "reactions": GAS_REACTIONS, **GAS_CASE, "pfr_results": pfr, "cstr_results": cstr},
-           "robertson": {"t": 40, "y": robertson()}}
+           "robertson": {"t": 40, "y": robertson()},
+           "ethanol_zsm5": ethanol_bed(),
+           "wilke": wilke()}
     OUT.write_text(json.dumps(doc, indent=1) + "\n")
     print(f"wrote {OUT.relative_to(OUT.parents[2])}")
 

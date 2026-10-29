@@ -28,7 +28,10 @@
  *       H the stream enthalpy (kW), so T follows from a P-H flash at each point; T_K given: isothermal;
  *     dP/dz = 0, -ΔP/L (pressureDrop: { dP_kPa }), or the Ergun equation for a packed bed
  *       (pressureDrop: { particle_m, voidage, viscosity_Pa_s }): -(1-ε) u / (D_p ε³) [150 (1-ε) μ / D_p + 1.75 ρ u],
- *       u = Q / A, a gas only. Rawlings and Ekerdt section 4.6 (p. 144, the PFR balance), section 6.5 (p. 315, its
+ *       u = Q / A, a gas only; μ given, or the gas mixture's from the pure vapours' low-pressure viscosity records by
+ *       Wilke's rule, μ = Σ y_i μ_i / Σ_j y_j φ_ij, φ_ij = (1 + (μ_i/μ_j)^½ (M_j/M_i)^¼)² / (8 (1 + M_i/M_j))^½ (Wilke,
+ *       J. Chem. Phys. 18 (1950) 517, as documented in the open chemicals library, chemicals.viscosity.Wilke, MIT).
+ *       Rawlings and Ekerdt section 4.6 (p. 144, the PFR balance), section 6.5 (p. 315, its
  *       energy balance) and eqn 7.69 (p. 398, Ergun, written there per volume as dP/dV).
  *   Integrated by the stiff, error-controlled method of src/util/ode.js; the profile (T, P, flows, vapour fraction,
  *   rates, conversion) is kept at each accepted step.
@@ -55,6 +58,21 @@ function pureLiquidLnF(sys, T, P) {
     try { return sys.phase("liquid", T, P, sys.ids.map((__, k) => (k === i ? 1 : 0))).lnFugacity[i]; } catch { return NaN; }
   });
 }
+
+/** A gas mixture's viscosity (Pa s) at low pressure: Wilke's rule on the pure vapours' records. */
+export function gasViscosity(sys, y, T, who = "Ergun") {
+  const mu = sys.ids.map((id, i) => {
+    if (!(y[i] > 0)) return 0;
+    try { return pure(id, { userData: sys.userData }).property("vapourViscosity", T); } catch (e) {
+      e.message = `${who}: the gas viscosity needs the vapour viscosity of ${id} (${e.message}); or give the mixture's viscosity_Pa_s.`; throw e;
+    }
+  });
+  return wilke(y, mu, sys.MW);
+}
+
+/** Wilke's rule: the viscosity of a gas mixture from its components' (y mole fractions, mu Pa s, M g/mol). */
+export const wilke = (y, mu, M) => y.reduce((s, yi, i) => (yi > 0 ? s + yi * mu[i] / y.reduce((d, yj, j) =>
+  (yj > 0 ? d + yj * (1 + Math.sqrt(mu[i] / mu[j]) * (M[j] / M[i]) ** 0.25) ** 2 / Math.sqrt(8 * (1 + M[i] / M[j])) : d), 0) : s), 0);
 
 /** Molar volume (m3/mol) of a liquid of composition x: the pure liquids' volumes added. */
 function liquidVolume(sys, x, T) {
@@ -170,7 +188,7 @@ function checkPfr(spec, { sys, reactions = [] }) {
   else if (has(d, "particle_m")) {
     out.pressureDrop = { particle_m: num(d.particle_m, `${who}: Ergun: the particle diameter particle_m`, { min: 1e-9 }),
       voidage: num(d.voidage, `${who}: Ergun: the bed voidage (0 to 1)`, { min: 1e-6, max: 0.999999 }),
-      viscosity_Pa_s: num(d.viscosity_Pa_s, `${who}: Ergun: the gas viscosity viscosity_Pa_s (give it from your source)`, { min: 1e-12 }) };
+      viscosity_Pa_s: has(d, "viscosity_Pa_s") && d.viscosity_Pa_s !== "" ? num(d.viscosity_Pa_s, `${who}: Ergun: the gas viscosity viscosity_Pa_s`, { min: 1e-12 }) : null };
   } else throw fail("BAD_INPUT", `${who}: pressureDrop is { dP_kPa } (spread along the tube) or { particle_m, voidage, viscosity_Pa_s } (Ergun, a packed bed).`);
   if (has(spec, "P_kPa")) out.P_kPa = num(spec.P_kPa, `${who}: the inlet pressure P_kPa`, { min: 1e-9 });
   return out;
@@ -395,7 +413,8 @@ registerUnit({
       if (!ergun) return -spec.pressureDrop.dP_kPa / L;
       const v = pt.ps.phases.vapour;
       if (!v || pt.ps.phases.liquid) throw fail("BAD_INPUT", `${who}: the Ergun pressure drop is for a gas; the mixture at ${pt.T.toFixed(2)} K and ${pt.P.toFixed(3)} kPa is ${v ? "partly liquid" : "liquid"}.`);
-      const { particle_m: dp, voidage: e, viscosity_Pa_s: mu } = spec.pressureDrop;
+      const { particle_m: dp, voidage: e } = spec.pressureDrop;
+      const mu = spec.pressureDrop.viscosity_Pa_s ?? gasViscosity(sys, v.x, pt.T, who);
       const u = pt.ps.Qtot / A, rho = v.x.reduce((s, xi, i) => s + xi * sys.MW[i], 0) / 1000 / v.v;
       return -(1 - e) * u / (dp * e ** 3) * (150 * (1 - e) * mu / dp + 1.75 * rho * u) / 1000;
     };

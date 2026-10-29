@@ -29,13 +29,27 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   the "ideal" model that did not finish is now refused with the remedy (Peng-Robinson or SRK; 2026-10-27).
 - **Reactors, steps 5, 6 and 9** (proposal 0010; docs/decisions/2026-10-28-01-reactors.md): two phases in the
   equilibrium reactor, the CSTR and the PFR; Gibbs as a mode of the equilibrium reactor; one Reactor button; your own
-  kinetics; the PFR's profiles; the Reactor workspace. Confirm the choices under "To check" there. Still open: step 8,
-  a vapour-viscosity mixing rule for Ergun, two liquids in reactors, and a P-H flash with Peng–Robinson that fails
-  through a two-liquid region.
+  kinetics; the PFR's profiles; the Reactor workspace. Confirm the choices under "To check" there. Step 8 and the
+  vapour-viscosity mixing rule: done 2026-10-28 (below). Two liquids in reactors and the P-H flash with Peng–Robinson
+  that fails through a two-liquid region: "Engineering", item 7.
 - **Reactors, round 2** (docs/decisions/2026-10-28-02-reactors-round-2.md): the Gibbs reactor as a block again, global
-  reactions, more units in Settings, biphenyl, p-terphenyl (para isomer: to confirm) and cumene hydroperoxide. Decide
-  on the flash failure: the small fix now (a start temperature, step past the two-liquid refusal) and two liquids
-  for PR/SRK as a proposal.
+  reactions, more units in Settings, biphenyl, p-terphenyl (para isomer: to confirm) and cumene hydroperoxide. The
+  flash failure: no small fix; the real fix later, as an item of "Engineering" below, not a proposal (the maintainer,
+  2026-10-28).
+- **Proposal 0015, the separation units** (draft, 2026-10-28; revised 2026-10-29 with the maintainer's comments): one
+  Column block (distillation, absorber, stripper, extraction; shortcut or rigorous) with dry-stage, flooding and
+  weeping warnings and its own property method where needed; evaporators, crystallizers, membranes (with the area),
+  solid-liquid separation and dryers; the size of the flash drum and decanter; the liquid-liquid thermodynamics; it
+  takes over steps 1 and 3 of proposal 0007. Part II (2026-10-29): the program across the roadmap's tracks, roles,
+  contracts first (M0), workstreams, milestones M0 to M4 (v0.5, v0.6). Amended the same day: the review the maintainer
+  asked ChatGPT for (a green M0 path, M2a and M2b, the P-H boundary between methods, the diameter from the largest
+  required area, the execution envelope), the dispatcher, command line and local MCP server moved from proposal 0011,
+  step 1, and a workstream for the visuals (W10). Answer its ten questions and choose from "Making it leaner".
+- **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
+- **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun
+  gas viscosity by Wilke's rule, the full-text search for the three new components. Check the transcribed constants of
+  the ethanol example against Aali and Hadi 2023, Tables 8 and 9. Waiting for open data: benzene pyrolysis,
+  esterification kinetics, HMF rehydration.
 - **Reactions, step 2** (proposal 0010; docs/decisions/2026-10-22-05-reactions.md): confirm the standard pressure of
   100 kPa, the pure-liquid standard state and its paths (through the saturated vapour, for acetic acid with its
   monomers and dimers; crystal to liquid with ΔHfus); compare the WebBook liquid values of
@@ -43,7 +57,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (flowsheets included), and so do those of acids that are solid at 25 °C. Formic acid has its dimer constants (Chao and
   Zwolinski 1978) and the WebBook gas ΔfH°; propionic and acrylic acid have none open yet (their liquid values are
   12-26 kJ/mol off). No open source with the Eley–Rideal and Mars–van Krevelen forms was found.
-- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-28.md](MISSING_PROPERTIES_2026-10-28.md)):
+- **Values the maintainer adds** (2026-10-21; the latest list: [MISSING_PROPERTIES_2026-10-28-2.md](missing-properties/MISSING_PROPERTIES_2026-10-28-2.md)):
   a new tier for them (for example `contributed`), and its name; whether numbers from paywalled articles may be used
   with their citation (a change to AGENTS.md rule 1); whether CHEPTA publishes its own measurements on Zenodo.
 - **Missing properties, round 3** (docs/decisions/2026-10-22-07-missing-round3.md): levoglucosenone's vapour
@@ -137,6 +151,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 6. Grow the flowsheet suite: more seeds, P-H drums, and reactive cases once proposal 0010 exists.
 7. Two liquids with an equation of state: low priority. Only with a proper method such as CPA,
    never a plain cubic equation (decision of 2026-10-09).
+   - **The real fix of the P-H flash failure** (the maintainer, 2026-10-28: "do only the real fix later", kept in this
+     list, not a proposal): with Peng–Robinson, the P-H search of a reactor's outlet (ethanol, water and diethyl ether)
+     tries 300 K, where the cubic predicts two liquids, and the flash refuses ("no vapour-liquid split"), so the whole
+     search fails. The fix is the vapour-liquid-liquid flash for equations of state, then two liquids in the
+     equilibrium reactor, the CSTR and the PFR. By the decision above, with CPA or another method that describes two
+     liquids properly, not the plain cubic; until then the refusal stays, and NRTL or UNIQUAC is the method for such
+     liquids (docs/METHOD_SELECTION.md). The proposal for the separation units (proposal 0015) lists the liquid-liquid
+     thermodynamics it needs.
 
 ### After the proposals are accepted
 
@@ -286,7 +308,7 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
 - **No two liquids with a plain cubic equation (2026-10-09):** if nobody uses it, Fugacity
   doesn't either.
 - **Data:**
-  - The list of missing properties is a new dated file at every update, `docs/MISSING_PROPERTIES_<date>.md`, made by
+  - The list of missing properties is a new dated file at every update, `docs/missing-properties/MISSING_PROPERTIES_<date>.md`, made by
     `validation/python/missing_properties.py`; the earlier files stay, so the gaps can be followed over time
     (2026-10-22; DATA_RULES section 12).
   - Good data and fits for everything. When ChemSep lacks something, go on to the NIST WebBook,

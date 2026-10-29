@@ -46,7 +46,7 @@ Never:
 
 <a id="search-order"></a>**How to search for a missing number.** When CHEPTA lacks a property of a component, CHEPTA's data
 file `src/data/components.json` holds a **"no open data" note** in its place: what is missing, and the list of places
-already searched (`searched`). The latest `docs/MISSING_PROPERTIES_<date>.md` (section 12) collects all the notes.
+already searched (`searched`). The latest `docs/missing-properties/MISSING_PROPERTIES_<date>.md` (section 12) collects all the notes.
 To fill one, do these steps in order and stop when the number is found:
 
 1. **Read the note and the latest missing-properties file**, so the same places are not searched again. Start where
@@ -405,10 +405,15 @@ solvents may be (HMF: its WebBook boiling temperature of 388.2 K at 0.1 kPa, whe
 The maintainer, 2026-10-22: "make a new file with the day of today so we keep track. add this as a rule".
 
 - What the databank still lacks (every "no open data" note, the predicted-only records, the components without
-  UNIQUAC r and q or Modified UNIFAC 2.0 groups) is written to a new file, `docs/MISSING_PROPERTIES_<date>.md`, at
+  UNIQUAC r and q or Modified UNIFAC 2.0 groups) is written to a new file, `docs/missing-properties/MISSING_PROPERTIES_<date>.md`, at
   every update. It is made by `validation/python/missing_properties.py --date <date> --since <revision>`; `--since`
   is the commit of the previous file, and the new file says what changed since then.
 - A second update on the same day is a new file with `-2` after the date (`MISSING_PROPERTIES_2026-10-22-2.md`).
+- The files are kept in their own folder, `docs/missing-properties/` (the maintainer, 2026-10-29: "make a folder with
+  missing properties otherwise it gets too crowded").
+- The documents a person must download by hand (a free copy whose server refuses scripts) are listed in one place,
+  `docs/missing-properties/TO_DOWNLOAD.md`: what to open, the link, what to look for and what it unlocks. A document
+  moves to its "Done" section when it has been read. The dated files point to it instead of repeating the list.
 - The earlier files are not edited, so the gaps can be followed over time; `docs/README.md` and `docs/DECISIONS.md`
   link the latest one.
 - Prose the script does not write (what a search found, the recommendation still to decide) is added below its

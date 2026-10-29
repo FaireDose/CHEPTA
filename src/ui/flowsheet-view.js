@@ -507,8 +507,8 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
             dm === "dP" ? dField("dP_kPa", "Pressure drop over the tube", "kPa", "0") : null,
             dm === "ergun" ? dField("particle_m", "Particle diameter", "mm", "3", 0.001) : null,
             dm === "ergun" ? dField("voidage", "Bed voidage", "0 to 1", "0.4") : null,
-            dm === "ergun" ? dField("viscosity_Pa_s", "Gas viscosity", "Pa s", "from your source") : null,
-            dm === "ergun" ? h("p", { class: "fa-in-hint" }, "Ergun (Rawlings and Ekerdt, eqn 7.69): give the gas's viscosity at the reactor's conditions, with its source.") : null));
+            dm === "ergun" ? dField("viscosity_Pa_s", "Gas viscosity", "Pa s", "from the records") : null,
+            dm === "ergun" ? h("p", { class: "fa-in-hint" }, "Ergun (Rawlings and Ekerdt, eqn 7.69). Gas viscosity empty: the mixture's at each point along the tube, from the components' vapour viscosity records (Wilke's rule); or give it from your source.") : null));
         }
       }
     } else {

@@ -259,13 +259,21 @@ character 12; known: C, x, p, f, a, T, P, K").
    reactor's solver, one phase or two (docs/decisions/2026-10-28-02-reactors-round-2.md).
 7. **Reactions page and reactor views** (the conversion and yield reactors: 2026-10-22,
    docs/decisions/2026-10-22-11-reactor-views.md), export and import of reaction lists, Excel export of conversion reactors
-   (the concept model of the Excel export: extents as formulas).
+   (the concept model of the Excel export: extents as formulas). Done: the Reactions page with its export and import, the Excel export of every reactor
+   (2026-10-22 to 2026-10-28), and reactions saved global, shared by the Flowsheet and the Reactor workspace.
 8. **Tests with reactions:** methanol from CO₂ (equilibrium), ethyl acetate esterification
    (equilibrium and kinetics from an open article), ethanol to ethylene (conversion with side
    reactions), a nonvolatile reactant to volatile products separated downstream (HMF rehydration to levulinic and
    formic acid in water, then a flash or a column; levulinic acid melts above 298.15 K, so its liquid enthalpy needs
    its ideal-gas heat capacity, which has none open yet), defined in the test files with their sources and documented in docs/BENCHMARKS.md
-   as worked examples a user can copy; not shipped as a library.
+   as worked examples a user can copy; not shipped as a library. Done 2026-10-28 where open data allow (docs/decisions/2026-10-28-03-reactors-finish.md):
+   methanol from CO₂ (equilibrium, against Cantera), esterification (equilibrium, one and two phases, against scipy),
+   ethanol to ethylene and diethyl ether (plug flow with LHHW rates from an open CC BY article, against scipy), phenol
+   from cumene hydroperoxide (CSTR, Rawlings and Ekerdt Example 4.2); listed in docs/models/reactions.md ("Worked
+   examples"), since docs/BENCHMARKS.md is generated. Waiting for open data: benzene pyrolysis (p-terphenyl's ideal-gas
+   heat capacity), esterification kinetics (an open article to download by hand), HMF rehydration (levulinic acid's
+   ideal-gas heat capacity). The Ergun pressure drop takes the gas viscosity from the records (Wilke's rule) when none
+   is given.
 9. **Your own kinetics**: the "Write your own kinetics" button and its text box (section 4), with the parser and its
    error messages; Eley–Rideal and Mars–van Krevelen as built-in forms if an open source with their forms was found.
    Done 2026-10-28 (the formula and its parser; no open source for the Eley–Rideal and Mars–van Krevelen forms yet).
