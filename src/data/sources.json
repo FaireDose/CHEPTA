@@ -1420,7 +1420,10 @@
       "doi": "10.1021/je7005665",
       "url": "https://trc.nist.gov/ThermoML/10.1021/je7005665.html",
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
-      "via": "the NIST TRC ThermoML Archive"
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/benzene_toluene_10-1021-je7005665_101.3kPa.json"
+      ]
     },
     "huang2011-acetic-acid-toluene": {
       "title": "Isobaric Vapor Liquid Equilibrium for Binary Systems of Toluene + Acrylic Acid, Toluene + Acetic Acid, and Cyclohexane + Acrylic Acid at 20 kPa",
@@ -1844,7 +1847,10 @@
       "doi": "10.1016/j.fluid.2013.12.002",
       "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2013.12.002.html",
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
-      "via": "the NIST TRC ThermoML Archive"
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/benzene_toluene_10-1016-j-fluid-2013-12-002_101.33kPa.json"
+      ]
     },
     "li2014-chloroform-methanol": {
       "title": "Isobaric Vapor-Liquid Equilibrium for Chloroform + Methanol + 1,3-Dimethylimidazolium Dimethylphosphate at 101.3 kPa",
@@ -4378,7 +4384,10 @@
       "doi": "10.1016/j.fluid.2012.09.019",
       "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.09.019.html",
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
-      "via": "the NIST TRC ThermoML Archive"
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/benzene_toluene_10-1016-j-fluid-2012-09-019_101.3kPa.json"
+      ]
     },
     "yang2013-m-xylene-n-octane": {
       "title": "Isobaric vapor-liquid equilibrium data of the binary systems of octane with p, o, m-xylene at 20 kPa",

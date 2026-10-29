@@ -41,8 +41,9 @@ test("stable mixtures pass the stability test and return their bubble and dew po
 });
 
 test("warnings: pairs with k_ij = 0, and temperatures outside a k_ij's data range", () => {
-  const bt = system({ components: ["benzene", "toluene"], model: "PR" }).bubbleT([0.4, 0.6], 101.325);
-  assert.match(bt.warnings.join(" "), /No PR k_ij for Benzene \+ Toluene: k_ij = 0 used/);
+  // p-xylene + toluene has no k_ij (benzene + toluene was the example until its k_ij were fitted on 2026-10-29)
+  const bt = system({ components: ["p-xylene", "toluene"], model: "PR" }).bubbleT([0.4, 0.6], 101.325);
+  assert.match(bt.warnings.join(" "), /No PR k_ij for p-Xylene \+ Toluene: k_ij = 0 used/);
   const mw = system({ components: ["methane", "water"], model: "PR" }).dewT([0.99, 0.01], 5000);
   assert.match(mw.warnings.join(" "), /Methane \+ Water/);
   // methane + benzene: ChemSep k_ij from data at 421-501 K

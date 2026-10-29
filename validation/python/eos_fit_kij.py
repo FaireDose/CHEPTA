@@ -93,6 +93,10 @@ TXY_FITS = [
     {"pair": ("p-xylene", "m-xylene"), "file": "eos/rodrigues2005_p-xylene_m-xylene.json", "cite": "Rodrigues et al. (2005)", "gate": True},
     {"pair": ("p-xylene", "o-xylene"), "file": "eos/rodrigues2005_p-xylene_o-xylene.json", "cite": "Rodrigues et al. (2005)", "gate": True},
     {"pair": ("m-xylene", "o-xylene"), "file": "eos/rodrigues2005_m-xylene_o-xylene.json", "cite": "Rodrigues et al. (2005)", "gate": True},
+    # benzene + toluene (2026-10-29): no k_ij in ChemSep's pr.ipd or srk.ipd, and vle_batch.py takes activity-model
+    # pairs only; the set chosen by vle_batch's rules (isobaric T-x-y near 101.3 kPa, best point test) from the NIST
+    # TRC ThermoML Archive, with Huang et al. (2008) and Yang et al. (2013) written beside it as checks
+    {"pair": ("benzene", "toluene"), "file": "eos/benzene_toluene_10-1016-j-fluid-2013-12-002_101.33kPa.json", "cite": "Li et al. (2014)", "gate": True},
 ]
 
 # The limits a k_ij fitted to T-x-y data of the open literature must meet to be written: those of

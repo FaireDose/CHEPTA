@@ -83,6 +83,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     (docs/decisions/2026-10-29-07-ui-fixes-round-1.md): ten of the review's 17 items fixed. To check: the 1 mW
     threshold for a zero duty; which of the items left for later come next. Then W10 checks W5's and W6's new views.
   - Waiting: W1, W3, W5 and W6.
+- **Benzene + toluene k_ij** (docs/decisions/2026-10-29-11-benzene-toluene-kij.md): PR and SRK k_ij fitted to the
+  ThermoML data of Li et al. (2014); B2's reference regenerated. Check the 11 rows against the ThermoML record; decide
+  whether to fit the other nonpolar pairs without k_ij in a batch after v0.5 (12 with activity sets, 116 with open data).
 - **The roadmap's statuses** (2026-10-28): every item is Open, On-going or Closed; check them.
 - **Reactors, finished** (docs/decisions/2026-10-28-03-reactors-finish.md): the worked examples of step 8, the Ergun
   gas viscosity by Wilke's rule, the full-text search for the three new components. Check the transcribed constants of
