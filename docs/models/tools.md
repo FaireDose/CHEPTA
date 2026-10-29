@@ -68,7 +68,7 @@ error.
 
 **Tools.** One per capability that is available; the ones listed as unsupported (`solve_column` until milestone M1's
 shortcut) are not offered (the `capabilities` tool lists them, with where they are planned). Today:
-`capabilities`, `find_component`, `component_info`, `check_project`, `flowsheet_status`, `solve_flowsheet`. A tool's
+`capabilities`, `find_component`, `component_info`, `check_project`, `flowsheet_status`, `solve_flowsheet`, `size_drum` (a flash drum's size, docs/models/sizing.md). A tool's
 input schema is the capability's (a subset of JSON Schema 2020-12); its arguments are the request's `input`. Each
 tool is marked read-only.
 
@@ -89,7 +89,7 @@ Until a release carries the server, from a clone of the repository (Node.js 22 o
 claude mcp add chepta -- node /full/path/to/CHEPTA/bin/chepta-mcp.mjs
 ```
 
-Then start `claude` in the folder of your project and type `/mcp`: `chepta` should be listed as connected, with six
+Then start `claude` in the folder of your project and type `/mcp`: `chepta` should be listed as connected, with seven
 tools. `claude mcp add --scope project ...` writes the server into the folder's `.mcp.json` instead, to share it with
 others who use the folder (Claude Code asks each of them to approve it once). `claude mcp remove chepta` removes it.
 
@@ -164,7 +164,7 @@ specification in an existing project, checks the changed project, runs it and ex
 
 1. In a terminal, in a clone of the repository: `npm install`, then
    `claude mcp add chepta -- node "$PWD/bin/chepta-mcp.mjs"`.
-2. Start `claude` in the clone and type `/mcp`: `chepta` is connected, with six tools.
+2. Start `claude` in the clone and type `/mcp`: `chepta` is connected, with seven tools.
 3. Ask:
 
    > Use the chepta MCP server. In examples/heater-flash.chepta.json, propose a change of the heater E1's outlet

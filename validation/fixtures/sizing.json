@@ -1,0 +1,231 @@
+{
+ "_about": "validation/python/reference_sizing.py: the drum and decanter formulas of src/sizing/sizing.js, written anew",
+ "drums": {
+  "ou-2018-example": {
+   "input": {
+    "WL_kg_s": 1.1784718079999998,
+    "WV_kg_s": 0.17008078229999998,
+    "rhoL": 999.552,
+    "rhoV": 1.20139,
+    "options": {
+     "fraction": 1,
+     "K_m_s": 0.07211568
+    }
+   },
+   "result": {
+    "F": 0.24021673673346328,
+    "K_m_s": 0.07211568,
+    "u_m_s": 2.07887913512838,
+    "D_m": 0.2944598287214993,
+    "H_m": 3.6452389774313994,
+    "hL_m": 2.0775575336438736,
+    "feedLine_m": 0.08736288757505198
+   }
+  },
+  "vertical-defaults": {
+   "input": {
+    "WL_kg_s": 2.0,
+    "WV_kg_s": 0.6,
+    "rhoL": 780.0,
+    "rhoV": 2.4
+   },
+   "result": {
+    "F": 0.1849000654084097,
+    "K_m_s": 0.11509340183242496,
+    "u_m_s": 1.7609290480361017,
+    "D_m": 0.42516169996423325,
+    "H_m": 3.7506612667128247,
+    "hL_m": 2.167297289890587,
+    "feedLine_m": 0.11872795364447575
+   }
+  },
+  "vertical-deep-pool": {
+   "input": {
+    "WL_kg_s": 30.0,
+    "WV_kg_s": 0.4,
+    "rhoL": 950.0,
+    "rhoV": 0.9,
+    "options": {
+     "residence_min": 5
+    }
+   },
+   "result": {
+    "F": 2.308451292191597,
+    "K_m_s": 0.020507549535304023,
+    "u_m_s": 0.5660664647884471,
+    "D_m": 0.9998390318430154,
+    "H_m": 13.71877468978279,
+    "hL_m": 12.066153591543216,
+    "feedLine_m": 0.257242196479148
+   }
+  },
+  "vertical-given": {
+   "input": {
+    "WL_kg_s": 1.0,
+    "WV_kg_s": 1.0,
+    "rhoL": 700.0,
+    "rhoV": 10.0,
+    "options": {
+     "K_m_s": 0.07,
+     "feedLine_m": 0.15,
+     "holdup_m3": 2.0,
+     "fraction": 0.8
+    }
+   },
+   "result": {
+    "F": 0.11952286093343936,
+    "K_m_s": 0.07,
+    "u_m_s": 0.4651709363234123,
+    "D_m": 0.523177156514951,
+    "H_m": 10.902418726468245,
+    "hL_m": 9.303418726468244,
+    "feedLine_m": 0.15
+   }
+  },
+  "horizontal-defaults": {
+   "input": {
+    "WL_kg_s": 2.0,
+    "WV_kg_s": 0.6,
+    "rhoL": 780.0,
+    "rhoV": 2.4,
+    "options": {
+     "orientation": "horizontal"
+    }
+   },
+   "result": {
+    "F": 0.1849000654084097,
+    "K_m_s": 0.1438667522905312,
+    "u_m_s": 2.2011613100451273,
+    "D_m": 0.8503233999284665,
+    "L_m": 2.5509701997853993,
+    "vapourSpace_m": 0.30479999999999996
+   }
+  },
+  "horizontal-large": {
+   "input": {
+    "WL_kg_s": 40.0,
+    "WV_kg_s": 12.0,
+    "rhoL": 800.0,
+    "rhoV": 3.0,
+    "options": {
+     "orientation": "horizontal",
+     "residence_min": 10
+    }
+   },
+   "result": {
+    "F": 0.2041241452319315,
+    "K_m_s": 0.13965110924649543,
+    "u_m_s": 1.9347811551803273,
+    "D_m": 3.627890186330499,
+    "L_m": 10.883670558991497,
+    "vapourSpace_m": 0.9217347351082514
+   }
+  }
+ },
+ "decanters": {
+  "albayati-ex1": {
+   "input": {
+    "light": {
+     "Q_m3_s": 0.00030864197530864197,
+     "rho": 900.0,
+     "mu": 0.003
+    },
+    "heavy": {
+     "Q_m3_s": 0.001388888888888889,
+     "rho": 1000.0,
+     "mu": 0.001
+    },
+    "options": {
+     "dispersed": "light"
+    }
+   },
+   "result": {
+    "settling_m_s": 0.0012258312499999996,
+    "interfaceArea_m2": 1.1330180144199207,
+    "D_m": 1.2010842355375237,
+    "band_residence_s": 195.96241090077027,
+    "entrainedDrop_m": 0.0001224744871391589,
+    "H_m": 2.4021684710750475
+   }
+  },
+  "albayati-ex2": {
+   "input": {
+    "light": {
+     "Q_m3_s": 0.0015432098765432098,
+     "rho": 900.0,
+     "mu": 0.003
+    },
+    "heavy": {
+     "Q_m3_s": 0.006944444444444444,
+     "rho": 1000.0,
+     "mu": 0.001
+    },
+    "options": {
+     "dispersed": "light",
+     "orientation": "horizontal"
+    }
+   },
+   "result": {
+    "settling_m_s": 0.0012258312499999996,
+    "interfaceArea_m2": 5.665090072099603,
+    "D_m": 1.1900724843575288,
+    "band_residence_s": 97.08289655346356,
+    "entrainedDrop_m": 0.0001224744871391589,
+    "L_m": 4.760289937430115
+   }
+  },
+  "capped": {
+   "input": {
+    "light": {
+     "Q_m3_s": 0.002,
+     "rho": 700.0,
+     "mu": 0.0004
+    },
+    "heavy": {
+     "Q_m3_s": 0.001,
+     "rho": 1100.0,
+     "mu": 0.0006
+    },
+    "options": {
+     "droplet_um": 400
+    }
+   },
+   "result": {
+    "settling_m_s": 0.004,
+    "interfaceArea_m2": 0.5,
+    "D_m": 0.7978845608028654,
+    "band_residence_s": 39.894228040143275,
+    "entrainedDrop_m": 7.420557627349047e-05,
+    "H_m": 1.5957691216057308
+   }
+  },
+  "horizontal-low-interface": {
+   "input": {
+    "light": {
+     "Q_m3_s": 0.01,
+     "rho": 860.0,
+     "mu": 0.0011
+    },
+    "heavy": {
+     "Q_m3_s": 0.004,
+     "rho": 1150.0,
+     "mu": 0.00105
+    },
+    "options": {
+     "orientation": "horizontal",
+     "interface": 0.3,
+     "ratio": 5,
+     "dispersed": "heavy"
+    }
+   },
+   "result": {
+    "settling_m_s": 0.0032317369318181806,
+    "interfaceArea_m2": 3.0943112669675075,
+    "D_m": 0.8217262782770854,
+    "band_residence_s": 25.42676881236063,
+    "entrainedDrop_m": 9.268715709799869e-05,
+    "L_m": 4.108631391385427
+   }
+  }
+ }
+}

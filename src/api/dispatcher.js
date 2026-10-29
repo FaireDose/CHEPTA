@@ -37,6 +37,7 @@ import { componentSources } from "../thermo/library.js";
 import { checkUserData } from "../thermo/user-data.js";
 import { flowsheetRun, flowsheetDocStatus, normalizeFlowsheet } from "../flowsheet/document.js";
 import { checkProject, readProject } from "../ui/project.js";
+import { sizeDrum, sizeDecanter, flashBlockResult } from "../sizing/sizing.js";
 
 export const RESULT_FORMAT = 1;
 export const OUTCOMES = Object.freeze(["ok", "invalid_input", "missing_data", "unsupported", "not_converged", "cancelled", "out_of_time", "error"]);
@@ -222,6 +223,32 @@ registerCapability({
       },
       reproduction: systemReproduction(sys, userData),
     };
+  },
+});
+
+// W4 (proposal 0015, milestone M1): the size of a flash drum of a solved flowsheet (src/sizing/sizing.js)
+const SIZE_OPTIONS = { type: "object", description: "options of the size; see docs/models/sizing.md" };
+registerCapability({
+  name: "size_drum", summary: "Size a flash drum of a flowsheet: the vapour-liquid drum and, with two liquids, the decanter", status: "available",
+  input: { ...FLOWSHEET_INPUT, required: ["block"], properties: { ...FLOWSHEET_INPUT.properties,
+    block: { type: "string", minLength: 1, description: "the id of a flash drum block" },
+    drum: { ...SIZE_OPTIONS, description: "sizeDrum options: orientation, fraction, residence_min or holdup_m3, feedLine_m, K_m_s" },
+    decanter: { ...SIZE_OPTIONS, description: "sizeDecanter options: orientation, dispersed, droplet_um, ratio, interface" } } },
+  run: input => {
+    const { flowsheet, userData } = flowsheetOf(input);
+    const d = normalizeFlowsheet(flowsheet, userData);
+    const b = (d.blocks ?? []).find(x => x.id === input.block);
+    if (!b) throw fail("BAD_INPUT", `No block "${input.block}" in the flowsheet.`, { where: [{ field: "input.block" }] });
+    if (b.type !== "flash") throw fail("BAD_INPUT", `Block ${b.id} is a ${b.type}; only a flash drum is sized here.`, { where: [{ field: "input.block", block: b.id }] });
+    const { sys, result } = flowsheetRun(flowsheet, userData);
+    const r = flashBlockResult(d, result, b.id);
+    const two = [r.outlets?.liquid, r.outlets?.liquid2].filter(Boolean).flatMap(s => s.phases).filter(p => p.type === "liquid" && p.F_kmol_h > 0).length === 2;
+    const value = { block: b.id };
+    if (r.outlets?.vapour?.F_kmol_h > 0) value.drum = sizeDrum(r, { ...(input.drum ?? {}), sys });
+    if (two) value.decanter = sizeDecanter(r, { ...(input.decanter ?? {}), sys });
+    if (!value.drum && !value.decanter) throw fail("BAD_INPUT", `Block ${b.id} holds one liquid and no vapour: there is nothing to separate, so no size.`, { where: [{ block: b.id }] });
+    return { value, qualifications: { notes: [...(value.drum?.notes ?? []), ...(value.decanter?.notes ?? [])].map(n => ({ block: b.id, note: n })),
+      sources: [...new Set([...(value.drum?.source ?? []), ...(value.decanter?.source ?? [])])] }, reproduction: systemReproduction(sys, userData) };
   },
 });
 

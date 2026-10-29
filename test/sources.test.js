@@ -13,8 +13,9 @@ const components = load("../src/data/components.json").components;
 const issues = load("../src/data/known-issues.json").issues;
 // "free supplement" added on 2026-10-18: a paywalled article whose supplementary information, which holds the numbers,
 // is free to read (Lomba et al. 2011). "free copy" added on 2026-10-22: a preprint or the authors' manuscript, free to
-// read (SSRN; docs/DATA_RULES.md, "Free copies")
-const KINDS = ["standard", "open-source library", "databank", "thermoml", "open-access article", "free supplement", "free copy", "open thesis", "free book", "handbook via open compilation"];
+// read (SSRN; docs/DATA_RULES.md, "Free copies"). "course notes" added on 2026-10-29: university course slides and
+// lecture notes free to read on the university's own site, for the drum and decanter sizes (src/sizing/sizing.js)
+const KINDS = ["course notes", "standard", "open-source library", "databank", "thermoml", "open-access article", "free supplement", "free copy", "open thesis", "free book", "handbook via open compilation"];
 
 /** Every record that refers to sources: [where, source_ids]. */
 function referencing() {

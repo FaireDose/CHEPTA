@@ -62,7 +62,7 @@ test("MCP (2025-11-25): initialize, tools/list, tools/call — the library's num
   s.notify("notifications/initialized");
   const list = await s.call("tools/list");
   const names = list.result.tools.map(t => t.name);
-  assert.deepEqual(names, ["capabilities", "find_component", "component_info", "check_project", "flowsheet_status", "solve_flowsheet"]);
+  assert.deepEqual(names, ["capabilities", "find_component", "component_info", "check_project", "flowsheet_status", "solve_flowsheet", "size_drum"]);   // size_drum: W4, M1
   assert.ok(!names.includes("solve_column"), "an unsupported capability is not offered as a tool");
   for (const t of list.result.tools) {
     assert.equal(t.inputSchema.type, "object");

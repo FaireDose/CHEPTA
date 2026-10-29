@@ -232,7 +232,7 @@ a pull request that gives it a new version and says so here.
 | 1 | **Stream v2**: phase types `vapour`, `liquid` (`light` or `heavy` when there are two) and `solid` (equilibrium or inert); the solid's enthalpy rule; a stream without them unchanged | `src/stream/` | written down; built with the first block that needs it (W3, W1) |
 | 2 | **Unit v2**: a block may return `profile`, `warnings` (`{ code, message, stage?, remedy? }`, codes `DRY_STAGE`, `FLOODING`, `WEEPING`), `sizing` and `method`; `runUnit` passes them on and refuses an unknown warning code | `src/units/units.js` | built |
 | 3 | **Column engine**: `solveCascade({ sys, stages, feeds, draws, specs, ends, phases, start })`, residuals by group, a phase it cannot represent refused | `src/units/columns/engine.js` | refuses (`NOT_AVAILABLE`) until M1 and M2a |
-| 4 | **Sizing**: `sizeDrum`, `sizeDecanter`, `columnDiameter`, `membraneArea`, each `(unit result, options) → { dimensions, basis, source }` | `src/sizing/sizing.js` | refuses until M1, M2b, M3 |
+| 4 | **Sizing**: `sizeDrum`, `sizeDecanter`, `columnDiameter`, `membraneArea`, each `(unit result, options) → { dimensions, basis, source }` | `src/sizing/sizing.js` | the drum and decanter sizes built (M1; [docs/models/sizing.md](docs/models/sizing.md)), also the capability `size_drum`; the column diameter and the membrane area refuse until M2b, M3 |
 | 5 | **Project format 6**: the new blocks, with the upgrade from format 5 | `src/ui/project.js` | a project is written in the lowest format that holds it, so format 6 comes with the first new block (the shortcut column, M1); older files open as before |
 | 6 | **The request path**: `CHEPTA.run(request) → result` | `src/api/`, `bin/` | built for the existing blocks (below); the command line `chepta` and the local MCP server `chepta-mcp` (M1; [docs/models/tools.md](docs/models/tools.md)) |
 | 7 | **The execution envelope**: run id, input hash, limits, status, cancellation, late results discarded | `src/runtime/` | built: `CHEPTA.run` on the caller's thread as before; the worker (M1): a Node worker thread for the command line and the MCP server, a Web Worker for the workbench's flowsheet and `CHEPTA.runAsync` / `startRun`, falling back to the page's thread where a page allows no worker, and saying so |
@@ -248,7 +248,8 @@ CHEPTA.capabilities()   // name, summary, status ("available" or "unsupported"),
 ```
 
 - **Capabilities at M0:** `capabilities`, `find_component`, `component_info`, `check_project`, `flowsheet_status`,
-  `solve_flowsheet`; `solve_column` is listed as unsupported, with where it is planned.
+  `solve_flowsheet`; `solve_column` is listed as unsupported, with where it is planned. **M1:** `size_drum` (a flash
+  block's drum and decanter sizes, W4).
 - **outcome:** `ok`, `invalid_input` (BAD_INPUT, OUT_OF_RANGE), `missing_data`, `unsupported` (NOT_AVAILABLE,
   PHASE_SPLIT), `not_converged`, `cancelled`, `out_of_time` (from the worker, M1), `error` (a bug in CHEPTA). An error
   carries `code`, `message` and `where` (the fields or blocks it concerns).

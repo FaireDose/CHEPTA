@@ -16,7 +16,8 @@ import { listComponents, modelName } from "../thermo/system.js";
 import { methodAdvice } from "../thermo/method-advice.js";
 import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
-import { flowsheetDocStatus } from "../flowsheet/document.js";
+import { flowsheetDocStatus, flowsheetSystem } from "../flowsheet/document.js";
+import { sizeDrum, sizeDecanter, flashBlockResult } from "../sizing/sizing.js";
 import { run } from "../api/dispatcher.js";
 import { startRun, workerStatus } from "../runtime/browser-worker.js";
 import { resultGate } from "../runtime/envelope.js";
@@ -1500,6 +1501,36 @@ function kvList(rows) {
     h("tr", {}, h("th", { scope: "row" }, k), h("td", { class: "fug-num" }, v ?? "–")))));
 }
 
+/** A flash drum's size with the defaults of src/sizing/sizing.js (proposal 0015, M1), once per result: rows and notes. */
+const drumSizes = new WeakMap();
+function drumSize(state, res, id) {
+  const seen = drumSizes.get(res)?.[id];
+  if (seen) return seen;
+  const rows = [], foot = [];
+  try {
+    const fs = calculatedFlowsheet(state), sys = flowsheetSystem(fs, userOverlay(state)), r = flashBlockResult(fs, res, id);
+    const m = x => `${fmtShort(x, 3)} m`;
+    const liquids = [r.outlets.liquid, r.outlets.liquid2].filter(Boolean).flatMap(x => x.phases).filter(p => p.type === "liquid" && p.F_kmol_h > 0).length;
+    if (r.outlets.vapour?.F_kmol_h > 0) {
+      try {
+        const d = sizeDrum(r, { sys });
+        rows.push(["Drum size (vertical)", `D ${m(d.dimensions.D_m)}, H ${m(d.dimensions.H_m)}`]);
+        foot.push(`Drum: the vapour at ${fmtShort(100 * d.basis.fraction, 3)} % of the permitted velocity K √((ρL − ρV)/ρV), K = ${fmtShort(d.basis.K_m_s, 3)} m/s from the flow parameter; ${fmtShort(d.basis.residence_s / 60, 3)} min of liquid (University of Trieste and Oklahoma course slides). Other choices (horizontal, a fraction, a hold-up): the size_drum capability.`, ...d.notes);
+      } catch (e) { foot.push(`Drum size: ${e.message}`); }
+    }
+    if (liquids === 2) {
+      try {
+        const d = sizeDecanter(r, { sys });
+        rows.push(["Decanter size (vertical)", `D ${m(d.dimensions.D_m)}, H ${m(d.dimensions.H_m)}`]);
+        foot.push(`Decanter: drops of ${fmtShort(d.basis.droplet_m * 1e6, 3)} μm of the ${d.basis.dispersed} liquid settle at ${fmtShort(d.basis.settling_m_s * 1000, 3)} mm/s (Stokes; University of Baghdad lecture notes).`, ...d.notes);
+      } catch (e) { foot.push(`Decanter size: ${e.message}`); }
+    }
+  } catch (e) { foot.push(`Size: ${e.message}`); }
+  const out = { rows, foot };
+  drumSizes.set(res, { ...(drumSizes.get(res) ?? {}), [id]: out });
+  return out;
+}
+
 export function resultsPanel({ state, f, sol, u, set }) {
   const res = sol.result, fs = state.flowsheet;
   const out = [];
@@ -1509,7 +1540,7 @@ export function resultsPanel({ state, f, sol, u, set }) {
     if (r) {
       const conn = energyOf(fs, b.id), work = unitType(b.type).energy === "work";
       const qName = conn?.stream.id || b.energy || `${work ? "W" : "Q"}-${b.id}`;
-      const z = r.sizing;
+      const z = r.sizing, drum = b.type === "flash" ? drumSize(state, res, b.id) : null;
       out.push(kvList([
         unitType(b.type).duty ? [`${work ? "Power" : "Duty"} (${qName})`, kWText(r.duty_kW, u, 5)] : null,
         r.state?.T_K != null ? ["Temperature", fmtTemp(r.state.T_K, u, 2)] : null,
@@ -1523,6 +1554,7 @@ export function resultsPanel({ state, f, sol, u, set }) {
         z?.U_W_m2K != null ? ["U", `${fmtShort(z.U_W_m2K, 4)} W/(m² K)`] : null,
         z?.dT_min_K != null ? ["Smallest ΔT", `${fmtShort(z.dT_min_K, 4)} K`] : null,
         z?.utility?.flow_kg_h != null ? ["Utility", `${fmtShort(z.utility.flow_kg_h, 5)} kg/h`] : null,
+        ...(drum?.rows ?? []),
         r.reaction ? ["Heat of the reactions at 298.15 K (− released)", kWText(r.reaction.heat_kW, u, 5)] : null,
         r.reaction?.kinetic?.V_m3 != null ? ["Reactor volume", `${fmtShort(r.reaction.kinetic.V_m3, 5)} m³`] : null,
         r.reaction?.kinetic?.residence_s != null ? ["Residence time (V / outlet volume flow)", `${fmtShort(r.reaction.kinetic.residence_s, 5)} s`] : null,
@@ -1539,7 +1571,8 @@ export function resultsPanel({ state, f, sol, u, set }) {
       ...(r.reaction ? [h("div", { class: "fug-foot" }, "The duty is the enthalpy out minus in plus the heat of the reactions at 298.15 K (the enthalpies are against each ideal gas at 298.15 K), so at another temperature it differs from that heat.")] : []),
       ...(r.reaction?.heat ? [h("div", { class: "fug-foot" }, `Heat of reaction: ${r.reaction.heat.from}.`)] : []),
       ...(z?.utility?.describe ? [h("div", { class: "fug-foot" }, `Utility: ${z.utility.describe}.`)] : []), ...(z?.note ? [h("div", { class: "fug-foot" }, z.note)] : []),
-      ...(z?.rating ? [h("div", { class: "fug-foot" }, z.rating.summary)] : []), ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)), ...r.notes.map(n => warning(n)));
+      ...(z?.rating ? [h("div", { class: "fug-foot" }, z.rating.summary)] : []), ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)),
+      ...(drum?.foot ?? []).map(n => h("div", { class: "fug-foot" }, n)), ...r.notes.map(n => warning(n)));
     } else out.push(h("div", { class: "fa-empty" }, sol.status.blocks?.[f.sel.id]?.ok === false ? sol.status.blocks[f.sel.id].message : "Not calculated yet."));
   } else if (f.sel?.kind === "energy") {
     const q = res?.energy?.[f.sel.id];
