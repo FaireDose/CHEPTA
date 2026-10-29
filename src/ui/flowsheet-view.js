@@ -46,7 +46,7 @@ const nameOf = id => byId().get(id)?.name ?? id;
 // the models with parameters per pair (Modified UNIFAC 2.0 and the ideal solution have none)
 const PAIR_MODELS = ["NRTL", "UNIQUAC", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
-  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", product: "Product",
+  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", column: "Column", product: "Product",
   "conversion-reactor": "Conversion reactor", "equilibrium-reactor": "Equilibrium reactor", "gibbs-reactor": "Gibbs reactor", "yield-reactor": "Yield reactor", cstr: "CSTR", pfr: "Plug-flow reactor" };
 /** One line per reactor type in the Reactor menu of the toolbar. */
 const REACTOR_LINE = { "conversion-reactor": "a given conversion of a key reactant", "yield-reactor": "products per kg of a key reactant",
@@ -68,15 +68,16 @@ const HINT = {
   "gibbs-reactor": "The species you tick reach the minimum of the Gibbs energy with the elements balanced: every reaction among them, written by CHEPTA (reformers, gasifiers, combustion). One phase, or vapour and liquid together; then the outlet temperature or the duty.",
   cstr: "A stirred tank at steady state: the reactions of the Reactions page with their kinetics, the volume (or catalyst mass), and the temperature or the duty.",
   pfr: "A tube (or a bundle of tubes) in plug flow: the reactions with their kinetics, the length and diameter; isothermal, a duty or a coolant; a pressure drop. Its profiles show under the drawing (double-click it).",
+  column: "Distillation by the shortcut method (Fenske, Underwood, Gilliland): a light and a heavy key, the recovery of each, and the reflux ratio (or a multiple of the minimum). It gives the minimum and the number of stages, the feed stage and the duties; it assumes a constant relative volatility and no azeotrope between the keys. The rigorous column comes later.",
   "yield-reactor": "Turns a given fraction of a key reactant into the products you give per kg (or mol) of it, for a reaction known by its products (a fermentation, a pyrolysis). The mass must close; the elements are reported.",
 };
 /** Blocks on the roadmap, shown in the toolbar but not available yet. */
 const COMING = [
-  { id: "column", label: "Distillation", icon: "column", note: "roadmap v0.5" },
+  { id: "column-rigorous", label: "Rigorous column", icon: "column", note: "roadmap v0.5" },
   { id: "extraction", label: "Extraction", icon: "extract", note: "after liquid-liquid equilibria in the flash" },
 ];
 // a feed is drawn as the start of its stream (a tab), not as a block; its size is that point
-const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40],
+const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40], column: [36, 96],
   "conversion-reactor": [44, 58], "equilibrium-reactor": [44, 58], "yield-reactor": [44, 58], "gibbs-reactor": [44, 58], cstr: [44, 58], pfr: [76, 30], product: [0, 0] };
 // the inlet and outlet ports of a two-stream exchanger: hot above, cold below
 const PORT_DY = { hot: -11, cold: 11 };
@@ -412,6 +413,19 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
           spec.P_kPa != null ? "Give a pressure drop instead" : "Give the outlet pressure instead"),
         h("p", { class: "fa-in-hint" }, "Empty pressure drop: none.")));
     }
+  } else if (b.type === "column") {
+    const comps = fs.components.map(c => [c, nameOf(c)]);
+    const R = spec.reflux_over_minimum != null ? "m" : "R";
+    secs.push(inputsSection("Shortcut (Fenske, Underwood, Gilliland)",
+      selectField("Light key", [["", "Choose"], ...comps], spec.light_key ?? "", v => setS({ light_key: v || null }), `fs-lk-${b.id}`, uid),
+      plain("recovery_light_key_in_distillate", "Light key recovered in the distillate", "fraction", "0.99"),
+      selectField("Heavy key", [["", "Choose"], ...comps], spec.heavy_key ?? "", v => setS({ heavy_key: v || null }), `fs-hk-${b.id}`, uid),
+      plain("recovery_heavy_key_in_bottoms", "Heavy key recovered in the bottoms", "fraction", "0.99"),
+      segRow("Reflux", [["m", "× minimum"], ["R", "Ratio"]], R, m => setS(m === "m" ? { reflux_ratio: null, reflux_over_minimum: spec.reflux_over_minimum ?? 1.3 } : { reflux_over_minimum: null, reflux_ratio: spec.reflux_ratio ?? 2 }), `fs-rmode-${b.id}`),
+      R === "m" ? plain("reflux_over_minimum", "Reflux over the minimum", "R / R_min", "1.3") : plain("reflux_ratio", "Reflux ratio", "L / D", "2"),
+      segRow("Condenser", [["total", "Total"], ["partial", "Partial"]], spec.condenser ?? "total", v => setS({ condenser: v }), `fs-cond-${b.id}`),
+      P("P_kPa", "Column pressure"),
+      h("p", { class: "fa-in-hint" }, "Empty pressure: the feed's. The relative volatilities are taken at the feed's bubble point and held constant; the column refuses keys that form an azeotrope and a reflux below the minimum, and warns when the volatility changes along the column. The rigorous column (stage by stage) comes later.")));
   } else if (b.type === "mixer") {
     secs.push(inputsSection("Outlet", P("P_kPa", "Outlet pressure"), h("p", { class: "fa-in-hint" }, "Empty: the lowest inlet pressure.")));
   } else if (b.type === "splitter" || b.type === "separator") {
@@ -1046,7 +1060,11 @@ function ports(fs, b) {
     return at;
   }
   spread(st.in ?? [], -1);
-  if (b.type === "flash") {
+  if (b.type === "column") {
+    // the distillate leaves at the top (from the condenser), the bottoms at the bottom (from the reboiler)
+    for (const sid of st.distillate ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
+    for (const sid of st.bottoms ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
+  } else if (b.type === "flash") {
     for (const sid of st.vapour ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
     for (const sid of st.liquid ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
     for (const sid of st.liquid2 ?? []) at[sid] = { x: x + w / 2, y: y + hh / 2 - 10, dir: [1, 0] };
@@ -1070,6 +1088,9 @@ function shape(type, w, hh) {
     case "splitter": return svgEl("path", { d: `M${w / 2} ${-hh / 2} L${-w / 2} 0 L${w / 2} ${hh / 2} Z`, class: "fs-shape" });
     case "separator": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 4, class: "fs-shape" }), svgEl("path", { d: `M${-w / 2} ${hh / 2 - 8} L${w / 2} ${-hh / 2 + 8}`, class: "fs-detail" })); return g; }
     case "flash": return svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: w / 2, class: "fs-shape" });
+    // a tall shell with its trays
+    case "column": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: w / 2, class: "fs-shape" }),
+      svgEl("path", { d: [-24, -8, 8, 24].map(t => `M${-w / 2 + 6} ${t} H${w / 2 - 6}`).join(" "), class: "fs-detail" })); return g; }
     case "heater": { const g = svgEl("g", {}); g.append(svgEl("circle", { r: w / 2, class: "fs-shape" }), svgEl("path", { d: "M-12 4 L-6 -6 L0 6 L6 -6 L12 4", class: "fs-detail" })); return g; }
     // a shell with two tube lines; a bow tie; a circle with its discharge
     case "hx": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: hh / 2, class: "fs-shape" }), svgEl("path", { d: `M${-w / 2 + 8} -11 H${w / 2 - 8} M${-w / 2 + 8} 11 H${w / 2 - 8}`, class: "fs-detail" })); return g; }
@@ -1237,7 +1258,7 @@ export function flowsheetView(ctx) {
         g.append(ring);
       }
       // the drum's liquid leaves at the bottom: its name goes on the right
-      const t = b.type === "flash" ? svgEl("text", { x: w / 2 + 6, y: 4, class: "fs-name", "text-anchor": "start" })
+      const t = b.type === "flash" || b.type === "column" ? svgEl("text", { x: w / 2 + 6, y: 4, class: "fs-name", "text-anchor": "start" })
         : svgEl("text", { y: hh / 2 + 15, class: "fs-name", "text-anchor": "middle" });
       t.textContent = blockName(b); g.append(t);
       if (sol.status?.blocks?.[b.id] && !sol.status.blocks[b.id].ok) {
@@ -1308,7 +1329,7 @@ export function flowsheetView(ctx) {
       layer.append(g);
     }
     // outlet ports (drawn last, on top of the blocks): a dot where each stream leaves a unit; drag it onto an inlet to connect
-    const OUT_LABEL = { vapour: "vapour", liquid: "liquid", liquid2: "liquid 2", hot: "hot", cold: "cold" };
+    const OUT_LABEL = { vapour: "vapour", liquid: "liquid", liquid2: "liquid 2", hot: "hot", cold: "cold", distillate: "distillate", bottoms: "bottoms" };
     for (const st of doc.streams) {
       const [fb, port] = st.from.split(".");
       const src = doc.blocks.find(b => b.id === fb);
@@ -1465,7 +1486,12 @@ export function flowsheetView(ctx) {
       profilePanel({ kin, ids: fs.components, names: fs.components.map(nameOf), units: u, sel: f.profileVar, onSel: k => { f.profileVar = k; set({}); },
         reactions: Object.keys(res.blocks[f.sel.id].reaction.extents_kmol_h).map(id => ({ id, name: (fs.reactions ?? []).find(r => r.id === id)?.name || id, units: res.blocks[f.sel.id].reaction.rates[id].units })) }),
       toggle("Show the stream table")));
-  } else if (res) below.replaceChildren(streamTable({ fs, res, u, state }), ...(kin?.profile ? [toggle("Show the profiles")] : []), ...csvTools(ctx, fs, res, u));
+  } else if (res) {
+    // a selected column: its result table above the stream table (proposal 0015, M1: the minimal profile)
+    const col = f.sel?.kind === "block" && res.blocks?.[f.sel.id]?.type === "column" ? res.blocks[f.sel.id] : null;
+    below.replaceChildren(...(col?.profile ? [columnTable({ fs, b: fs.blocks.find(x => x.id === f.sel.id), r: col, u })] : []),
+      streamTable({ fs, res, u, state }), ...(kin?.profile ? [toggle("Show the profiles")] : []), ...csvTools(ctx, fs, res, u));
+  }
   const it = res?.loops?.reduce((a, l) => a + l.iterations, 0);
   if (sol.error) return { data: "Not solved: see the message above the drawing" };
   return { data: res ? `Solved${res.loops.length ? `, ${res.loops.length} recycle${res.loops.length > 1 ? "s" : ""} in ${it} iterations` : ""}` : sol.status.message };
@@ -1532,6 +1558,17 @@ export function resultsPanel({ state, f, sol, u, set }) {
         r.reaction?.heat ? ["ΔrH at 298.15 K, per mol of key", `${fmtShort(r.reaction.heat.dH_J_mol / 1000, 5)} kJ/mol`] : null,
         r.reaction ? ["Element balance", r.balance.elements ? (Object.values(r.balance.elements).every(d => d < 1e-9) ? "closed" : "check")
           : Object.keys(r.reaction.elementImbalance ?? {}).length ? "not closed (see the note)" : "closed"] : null,
+        ...(b.type === "column" && r.state?.mode === "shortcut" ? [
+          ["Minimum stages (Fenske)", fmtShort(r.state.N_min, 4)],
+          ["Minimum reflux ratio (Underwood)", fmtShort(r.state.R_min, 4)],
+          ["Reflux ratio", `${fmtShort(r.state.R, 4)} (${fmtShort(r.state.reflux_over_minimum, 3)} × minimum)`],
+          ["Equilibrium stages (Gilliland)", fmtShort(r.state.N, 4)],
+          ["Stages (1 the condenser)", `${r.state.stages}, feed on ${r.state.feed_stage}`],
+          ["Condenser duty", kWText(-r.state.condenser_kW, u, 5)],
+          ["Reboiler duty", kWText(r.state.reboiler_kW, u, 5)],
+          ["Distillate, bottoms", `${fmtTemp(r.state.T_distillate_K, u, 2)}, ${fmtTemp(r.state.T_bottoms_K, u, 2)}`],
+          ["Relative volatility of the keys", `${fmtShort(r.state.alpha_keys.top, 3)} top, ${fmtShort(r.state.alpha_keys.feed, 3)} feed, ${fmtShort(r.state.alpha_keys.bottom, 3)} bottom`],
+        ] : []),
         r.balance.material != null ? ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)]
           : ["Mass balance", r.balance.mass < 1e-9 ? "closed" : r.balance.mass.toExponential(1)],
       ]), ...(r.reaction?.extents_kmol_h ? [reactionList(fs, r.reaction)] : []),
@@ -1539,7 +1576,8 @@ export function resultsPanel({ state, f, sol, u, set }) {
       ...(r.reaction ? [h("div", { class: "fug-foot" }, "The duty is the enthalpy out minus in plus the heat of the reactions at 298.15 K (the enthalpies are against each ideal gas at 298.15 K), so at another temperature it differs from that heat.")] : []),
       ...(r.reaction?.heat ? [h("div", { class: "fug-foot" }, `Heat of reaction: ${r.reaction.heat.from}.`)] : []),
       ...(z?.utility?.describe ? [h("div", { class: "fug-foot" }, `Utility: ${z.utility.describe}.`)] : []), ...(z?.note ? [h("div", { class: "fug-foot" }, z.note)] : []),
-      ...(z?.rating ? [h("div", { class: "fug-foot" }, z.rating.summary)] : []), ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)), ...r.notes.map(n => warning(n)));
+      ...(z?.rating ? [h("div", { class: "fug-foot" }, z.rating.summary)] : []), ...(z?.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)),
+      ...(r.warnings ?? []).map(w => warning(`${w.message}${w.remedy ? ` ${w.remedy}` : ""}`)), ...r.notes.map(n => warning(n)));
     } else out.push(h("div", { class: "fa-empty" }, sol.status.blocks?.[f.sel.id]?.ok === false ? sol.status.blocks[f.sel.id].message : "Not calculated yet."));
   } else if (f.sel?.kind === "energy") {
     const q = res?.energy?.[f.sel.id];
@@ -1603,6 +1641,22 @@ function streamRows(fs, res, u, state) {
   return { ids, rows };
 }
 const molarMassOf = c => byId().get(c)?.MW ?? NaN;
+
+/** The column's result table: the condenser, the feed stage and the reboiler (the shortcut has no stage-by-stage profile). */
+function columnTable({ fs, b, r, u }) {
+  const p = r.profile;
+  const row = (label, f) => h("tr", {}, h("th", { scope: "row" }, label), ...p.map(s => h("td", { class: "fug-num" }, f(s))));
+  return h("div", { class: "fs-tables", "data-fk": "fs-column-table" }, h("h3", {}, `${blockName(b)}: the column`),
+    h("table", { class: "fug-table" }, h("thead", {}, h("tr", {}, h("th", {}, ""), ...p.map(s => h("th", { scope: "col" }, `${s.name[0].toUpperCase()}${s.name.slice(1)} (stage ${s.stage})`)))),
+      h("tbody", {},
+        row("Temperature", s => fmtTemp(s.T_K, u, 2)),
+        row("Liquid leaving, kmol/h", s => fmtShort(s.L_kmol_h, 5)),
+        row("Vapour leaving, kmol/h", s => fmtShort(s.V_kmol_h, 5)),
+        row("Duty", s => kWText(s.duty_kW, u, 5)),
+        row("Relative volatility of the keys", s => fmtShort(s.alpha_keys, 4)),
+        ...fs.components.map(c => row(`x, ${nameOf(c)}`, s => (s.x ? fmtShort(s.x[c], 4) : "–"))))),
+    h("p", { class: "fa-in-hint" }, "Shortcut: the liquid and vapour flows by constant molar overflow; the feed stage's composition is not calculated (the rigorous column, milestone M2a, gives every stage)."));
+}
 
 function streamTable({ fs, res, u, state }) {
   const { ids, rows } = streamRows(fs, res, u, state);

@@ -24,6 +24,7 @@ by hand; the script is named at the top of each.
 | [models/heat-exchangers.md](models/heat-exchangers.md) | Heat-exchanger pre-sizing (zones, arrangements, U, utilities, wall thickness), valves and pumps |
 | [models/tools.md](models/tools.md) | The tool interface: the command line `chepta`, the local MCP server `chepta-mcp` (how to add it to Claude Code and Claude Desktop), the worker that stops a calculation, and the first assistant test |
 | [models/reactions.md](models/reactions.md) | Reactions: the description and its checks (element balance), heats of reaction and K(T) from formation data, the rate laws (power law, LHHW, Michaelis–Menten, Monod and the other growth laws) |
+| [models/columns.md](models/columns.md) | The Column block: the shortcut mode (Fenske, Underwood, Gilliland), its specification, where it holds and what it refuses; the rigorous mode is planned (M2a) |
 | [models/columns-benchmarks.md](models/columns-benchmarks.md) | The column cases (constant relative volatility, ethanol + water, missing data, dry stages, infeasible specifications) and their independent references (MESH, Fenske-Underwood-Gilliland), ahead of the column engine |
 | [METHOD_SELECTION.md](METHOD_SELECTION.md) | Which property method for which mixture and conditions |
 
@@ -54,6 +55,6 @@ by hand; the script is named at the top of each.
 
 | Page | Covers |
 |---|---|
-| [schema/project-5.json](schema/project-5.json) | JSON schema of project files (formats 2 to 5: the flowsheet, user data, energy streams and the blocks of proposal 0013, the fluid charts); [project-4.json](schema/project-4.json) for format 4 |
+| [schema/project-6.json](schema/project-6.json) | JSON schema of project files (formats 2 to 6: the flowsheet, user data, energy streams and the blocks of proposal 0013, the fluid charts, the Column block); [project-5.json](schema/project-5.json), [project-4.json](schema/project-4.json) for the older formats |
 | [schema/project-2.json](schema/project-2.json) | JSON schema of project files of format 2 (with the flowsheet) |
 | [../ai/README.md](../ai/README.md) | Instructions and skills for AI assistants; contribution packages |

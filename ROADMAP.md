@@ -215,7 +215,8 @@ Needs A6, A7, A8, A10, A11.
 Planned with v0.6 in [proposal 0015](proposals/0015-separation-units.md) (Part II: the workstreams and milestones M0 to M4;
 v0.5 at M2a, the column with one liquid).
 
-- [ ] Shortcut column (Fenske–Underwood–Gilliland); McCabe–Thiele view ([proposal 0015](proposals/0015-separation-units.md))
+- [x] Shortcut column (Fenske–Underwood–Gilliland; 2026-10-29, the Column block in shortcut mode, [docs/models/columns.md](docs/models/columns.md))
+- [ ] McCabe–Thiele view ([proposal 0015](proposals/0015-separation-units.md))
 - [ ] Rigorous equilibrium-stage column (MESH equations)
 - [ ] Columns with nonvolatile components (proposal 0009, step 5): they stay in the liquid and leave with the
       bottoms; the reboiler's bubble point includes the boiling-point rise they cause
