@@ -25,8 +25,11 @@
  *     condenser: "total" | "partial",                     // default total
  *     P_kPa: 101.325,                                     // default the (first) feed's pressure; no pressure drop
  *     two of: reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW,
- *     max_iterations: 50 }                                // optional: a limit on the Newton iterations (none: the
+ *     max_iterations: 50,                                 // optional: a limit on the Newton iterations (none: the
  *                                                         // solver's own limits, and the continuation if needed)
+ *     sizing: { tray_spacing_m: 0.6, design_fraction: 0.8 } }  // optional: the diameter by Fair's method, or with
+ *                                                         // diameter_m a given column checked; the fraction of flooding
+ *                                                         // of every tray, FLOODING and WEEPING (./hydraulics.js)
  *
  * The keys of the other mode are kept (so that a person can switch back) and not used. Several feeds: the rigorous mode
  * only; each enters its stage as one stream. Outlets as the shortcut's; `profile` holds every stage (T, P, L, V, x, y,
@@ -48,6 +51,7 @@ import { anyBubbleT } from "../../equilibrium/bubble-any.js";
 import { registerUnit } from "../units.js";
 import { solveCascade } from "./engine.js";
 import { fug, boilup, wholeStages, VOLATILITY_TOLERANCE } from "./shortcut.js";
+import { hydraulicsOptions, columnHydraulics } from "./hydraulics.js";
 
 /** The column's modes: built, and planned. */
 export const COLUMN_MODES = Object.freeze([
@@ -57,7 +61,7 @@ export const COLUMN_MODES = Object.freeze([
 
 const SPEC_KEYS = ["mode", "light_key", "heavy_key", "recovery_light_key_in_distillate", "recovery_heavy_key_in_bottoms", "reflux_ratio",
   "reflux_over_minimum", "condenser", "P_kPa", "distillate_purity", "bottoms_purity",
-  "stages", "feed_stage", "max_iterations", "boilup_ratio", "distillate_kmol_h", "bottoms_kmol_h", "condenser_duty_kW", "reboiler_duty_kW"];
+  "stages", "feed_stage", "max_iterations", "boilup_ratio", "distillate_kmol_h", "bottoms_kmol_h", "condenser_duty_kW", "reboiler_duty_kW", "sizing"];
 /** The rigorous mode's specifications (two of them), and the engine's names for them. */
 const RIGOROUS_SPECS = { reflux_ratio: "reflux_ratio", boilup_ratio: "boilup_ratio", distillate_kmol_h: "distillate_rate",
   bottoms_kmol_h: "bottoms_rate", condenser_duty_kW: "condenser_duty", reboiler_duty_kW: "reboiler_duty" };
@@ -94,7 +98,7 @@ function checkSpec(spec, { sys }) {
   const lk = keyIndex(sys, spec.light_key, "light key"), hk = keyIndex(sys, spec.heavy_key, "heavy key");
   if (lk === hk) throw fail("BAD_INPUT", "Column: the light and the heavy key must be two different components.");
   if (has(spec, "reflux_ratio") === has(spec, "reflux_over_minimum")) throw fail("BAD_INPUT", "Column: give the reflux ratio (reflux_ratio) or the reflux as a multiple of the minimum (reflux_over_minimum), one of them.");
-  const out = { mode, condenser, lk, hk,
+  const out = { mode, condenser, lk, hk, sizingIgnored: has(spec, "sizing"),
     recoveryLK: fraction(spec.recovery_light_key_in_distillate, "the light key's recovery in the distillate"),
     recoveryHK: fraction(spec.recovery_heavy_key_in_bottoms, "the heavy key's recovery in the bottoms") };
   if (has(spec, "reflux_ratio")) {
@@ -134,6 +138,7 @@ function checkRigorous(spec) {
     return { key: k, kind: RIGOROUS_SPECS[k], value: k.endsWith("_kmol_h") ? v * KMOL_H : k.endsWith("_kW") ? v * 1000 : v };
   });
   const out = { mode: "rigorous", N, feedStages, condenser, specs };
+  if (has(spec, "sizing")) out.sizing = hydraulicsOptions(spec.sizing);
   if (has(spec, "max_iterations")) {
     out.maxIterations = Number(spec.max_iterations);
     if (!(Number.isInteger(out.maxIterations) && out.maxIterations >= 1)) throw fail("BAD_INPUT", `Column: max_iterations must be a whole number of 1 or more (got ${JSON.stringify(spec.max_iterations)}).`);
@@ -281,7 +286,13 @@ function solveRigorous(sys, feeds, s) {
     T_distillate_K: r.stages[0].T_K, T_bottoms_K: r.stages[N - 1].T_K,
     converged: r.converged, iterations: r.iterations, residuals: r.residuals, tolerances: r.tolerances, solver: r.solver,
   };
-  return { outlets: { distillate, bottoms }, duty_kW: Qr - Qc, notes, warnings: r.warnings, profile, state };
+  const warnings = [...r.warnings];
+  let sizing;
+  if (s.sizing) {
+    sizing = columnHydraulics(sys, profile, s.sizing);
+    warnings.push(...sizing.warnings);   // its notes stay in sizing.notes
+  }
+  return { outlets: { distillate, bottoms }, duty_kW: Qr - Qc, notes, warnings, profile, state, ...(sizing ? { sizing } : {}) };
 }
 const sum = v => v.reduce((a, c) => a + c, 0);
 
@@ -297,6 +308,8 @@ registerUnit({
     if (spec.purity) throw fail("NOT_AVAILABLE", `Column: purity specifications come with milestone M4 of proposal 0015; give ${spec.mode === "rigorous" ? "flows, ratios or duties" : "the recoveries of the keys"} instead.`);
     if (spec.mode === "rigorous") return solveRigorous(sys, inlets.in, spec);
     if (inlets.in.length > 1) throw fail("BAD_INPUT", "Column: the shortcut column takes one feed; mix the feeds first, or use the rigorous mode, which takes several.");
-    return solveShortcut(sys, inlets.in[0], spec);
+    const r = solveShortcut(sys, inlets.in[0], spec);
+    if (spec.sizingIgnored) r.notes.push("The column's sizing (diameter, flooding, weeping) needs every stage's flows: it is done in the rigorous mode, not by the shortcut.");
+    return r;
   },
 });

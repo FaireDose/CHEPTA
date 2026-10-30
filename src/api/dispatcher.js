@@ -269,7 +269,7 @@ registerCapability({
       components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
       thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default NRTL with an ideal-gas vapour" },
       feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF" },
-      column: { type: "object", description: "the Column block's specification. mode \"shortcut\" (default): light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa. mode \"rigorous\": stages (the condenser and the reboiler counted, 1 the condenser), feed_stage, condenser, P_kPa, and two of reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW" },
+      column: { type: "object", description: "the Column block's specification. mode \"shortcut\" (default): light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa. mode \"rigorous\": stages (the condenser and the reboiler counted, 1 the condenser), feed_stage, condenser, P_kPa, and two of reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW; optional sizing (rigorous mode): { tray_spacing_m (0.6), design_fraction (0.8 of flooding), diameter_m (a given column checked instead of sized), net_area_fraction (0.9), hole_area_ratio (0.1), hole_diameter_mm (5), foaming_factor (1), tray (\"sieve\", \"valve\", \"bubble-cap\"), K_chart_m_s (your own reading of Fair's chart, in place of CHEPTA's) }: the diameter by Fair's method, the fraction of flooding of every tray, FLOODING and WEEPING; see docs/models/sizing.md" },
       user_data: USER_DATA,
     } },
   run: input => {
@@ -280,6 +280,6 @@ registerCapability({
     const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
     const c = r.value.blocks.C1;
     return { ...r, value: { feed: r.value.streams.FEED, distillate: r.value.streams.DISTILLATE, bottoms: r.value.streams.BOTTOMS,
-      column: { ...c.state, duty_kW: c.duty_kW, notes: c.notes, warnings: c.warnings ?? [], profile: c.profile } } };
+      column: { ...c.state, duty_kW: c.duty_kW, notes: c.notes, warnings: c.warnings ?? [], profile: c.profile, ...(c.sizing ? { sizing: c.sizing } : {}) } } };
   },
 });

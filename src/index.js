@@ -40,7 +40,7 @@ import { solveFlowsheet, checkFlowsheet, inspectFlowsheet, flowsheetStatus } fro
 import { runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus } from "./flowsheet/document.js";
 import { checkProject, readProject, PROJECT_FORMAT } from "./ui/project.js";
 import { run, capabilities, OUTCOMES, RESULT_FORMAT } from "./api/dispatcher.js";
-import { sizeDrum, sizeDecanter, flashBlockResult } from "./sizing/sizing.js";   // the drum and decanter sizes (proposal 0015, M1)
+import { sizeDrum, sizeDecanter, flashBlockResult, columnDiameter } from "./sizing/sizing.js";   // the drum, decanter and column sizes (proposal 0015, M1, M2b)
 import { startRun, runAsync, workerStatus } from "./runtime/browser-worker.js";   // the Web Worker (contract 7, M1)
 import { userDataDoc, readUserDataFile, mergeUserData, userDataPackage, userDataKeys, USER_DATA_FORMAT } from "./ui/user-data-file.js";
 import pkg from "../package.json" with { type: "json" };
@@ -74,7 +74,7 @@ export {
   runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus,
   checkProject, readProject, PROJECT_FORMAT,
   run, capabilities, OUTCOMES, RESULT_FORMAT, startRun, runAsync, workerStatus,
-  sizeDrum, sizeDecanter, flashBlockResult,
+  sizeDrum, sizeDecanter, flashBlockResult, columnDiameter,
   userDataDoc, readUserDataFile, mergeUserData, userDataPackage, userDataKeys, USER_DATA_FORMAT,
   checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties, formationReference, reactionHeat, reactionRate, rateSpecies, RATE_FORMS, RATE_BASES,
   CheptaError, ERROR_CODES, isCheptaError,

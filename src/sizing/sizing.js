@@ -8,11 +8,13 @@
  * the correlation. The column diameter is set by the largest required vapour-flow area of its stages,
  * A_j = V̇_j / (f · u_fl,j) (Part I, section 2), not by the stage with the lowest flooding velocity.
  *
- * Built in workstream W4: the drum and decanter sizes at milestone M1 (here), the column diameter at M2b, the membrane
- * area at M3; those two still refuse. (The heater's area, proposal 0013, stays with the heater: src/units/heat-exchange.js.)
+ * Built in workstream W4: the drum and decanter sizes at milestone M1 (here), the column diameter at M2b (columnDiameter,
+ * whose tray hydraulics stay with the column, src/units/columns/hydraulics.js), the membrane area at M3, which still
+ * refuses. (The heater's area, proposal 0013, stays with the heater: src/units/heat-exchange.js.)
  *
  *   CHEPTA.sizeDrum(flashResult, { sys, orientation: "vertical", fraction: 0.85, residence_min: 2 })
  *   CHEPTA.sizeDecanter(flashResult, { sys, orientation: "horizontal", droplet_um: 150, ratio: 4 })
+ *   CHEPTA.columnDiameter(columnResult, { sys, tray_spacing_m: 0.6, design_fraction: 0.8 })
  *
  * The phases are the flash block's outlets (runUnit or a flowsheet's block result) at the drum's T and P: the vapour's
  * density from the system's own vapour model, ρV = M P / (Z R T); a liquid's from the pure liquids' density records,
@@ -63,6 +65,7 @@
  */
 import { fail, failRange } from "../util/errors.js";
 import { pure, R } from "../thermo/pure.js";
+import { columnHydraulics } from "../units/columns/hydraulics.js";
 
 const IN = 0.0254, FT = 0.3048, LB_FT3 = 0.45359237 / FT ** 3, G = 9.80665;
 /** Fermeglia (2021), slide 83; Bagajewicz (2013, 2018): K (ft/s) against ln F. */
@@ -330,5 +333,21 @@ export function sizeDecanter(unitResult, options = {}) {
 
 const notYet = (what, when) => () => { throw fail("NOT_AVAILABLE", `${what} is not built yet: it comes with milestone ${when} of proposal 0015.`); };
 
-export const columnDiameter = notYet("The column diameter", "M2b");
+/**
+ * The diameter of a rigorous column from its result (runUnit("column", ...) or a flowsheet's column block, with its
+ * profile), or the check of a given diameter: options { sys (required), tray_spacing_m (0.6), design_fraction (0.8),
+ * diameter_m, net_area_fraction (0.9), hole_area_ratio (0.1), hole_diameter_mm (5), foaming_factor (1), tray ("sieve") }.
+ * Fair's method on every tray (src/units/columns/hydraulics.js, where the equations and their open source are
+ * written); the diameter from the largest required vapour-flow area. → { dimensions, basis, stages, warnings, notes,
+ * source }.
+ */
+export function columnDiameter(unitResult, options = {}) {
+  if (options == null || typeof options !== "object" || Array.isArray(options)) throw fail("BAD_INPUT", "Column sizing: the options must be an object.");
+  const { sys, ...o } = options;
+  if (!unitResult || typeof unitResult !== "object" || !Array.isArray(unitResult.profile)) throw fail("BAD_INPUT", "Column sizing: give a rigorous column's result (runUnit(\"column\", ...) or a flowsheet's column block), with its profile.");
+  if (unitResult.type != null && unitResult.type !== "column") throw fail("BAD_INPUT", `Column sizing: the block is a ${unitResult.type}, not a column.`);
+  if (unitResult.state?.mode && unitResult.state.mode !== "rigorous") throw fail("BAD_INPUT", "Column sizing: the diameter needs every stage's flows, the rigorous column's profile; the shortcut gives only its ends and its feed.");
+  if (!sys || typeof sys.phase !== "function") throw fail("BAD_INPUT", "Column sizing: options.sys, the property package of the column, is needed for the densities and the surface tension.");
+  return columnHydraulics(sys, unitResult.profile, o);
+}
 export const membraneArea = notYet("The membrane area", "M3");

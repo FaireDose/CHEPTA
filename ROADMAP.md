@@ -147,7 +147,7 @@ never quotes.
 
 | Item | What | Depends on | Status |
 |---|---|---|---|
-| **E1** | Equipment sizing from unit results: vessels and flash drums, column diameter and height, heat-exchanger area, pump and compressor power | A6, A8 | **On-going**: flash drums and decanters built (2026-10-29, [docs/models/sizing.md](docs/models/sizing.md)); the heater's area exists (proposal 0013); the column diameter next ([proposal 0015](proposals/0015-separation-units.md), M2b) |
+| **E1** | Equipment sizing from unit results: vessels and flash drums, column diameter and height, heat-exchanger area, pump and compressor power | A6, A8 | **On-going**: flash drums and decanters built (2026-10-29, [docs/models/sizing.md](docs/models/sizing.md)); the heater's area exists (proposal 0013); the tray column's diameter, flooding and weeping by Fair's method built (2026-10-30, [proposal 0015](proposals/0015-separation-units.md), M2b); the column's height, packed columns and the membrane area next |
 | **E2** | Purchased and installed equipment cost from open correlations, with material and pressure factors, and a cost index to move costs between years | E1 | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **E3** | Utilities and operating cost: steam (from the IAPWS steam tables), cooling water, electricity, fuel, raw materials, labour; prices as user inputs with sourced defaults | A8 | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **E4** | Economics of a flowsheet: capital cost, operating cost, cost of production per kg of product, net present value, payback, with a sensitivity chart for the main assumptions | E2, E3 | **Open** |
