@@ -2,7 +2,7 @@
   "chepta_column_case": 1,
   "id": "F1-butanol-water-two-liquids",
   "title": "1-Butanol + water, NRTL, 6 stages: the top stages lie inside the two-liquid region",
-  "purpose": "A second liquid forms on the stages. With one liquid (phases \"VL\", milestone M2a) the engine must find it by the phase-stability check and refuse with PHASE_SPLIT, never return the one-liquid profile, which is metastable. The reference solves the column with one liquid and then tests each stage's liquid for stability (tangent-plane distance on a grid of trial compositions): stages 1 and 2 are unstable, stages 3 to 6 stable.",
+  "purpose": "A second liquid forms on the stages. With one liquid (phases \"VL\", milestone M2a) the engine must find it by the phase-stability check and refuse with PHASE_SPLIT, never return the one-liquid profile, which is metastable. The reference solves the column with one liquid and then tests each stage's liquid for stability (tangent-plane distance on a grid of trial compositions): stages 1 and 2 are unstable, stages 3 to 6 stable. Milestone M2b: the same column with phases \"VLL\" must solve, with two liquids on stages 1 and 2 (expected_VLL; fixture rigorous_VLL).",
   "method_choice": "docs/METHOD_SELECTION.md rules 3 and 7: polar, below 10 bar, two liquids possible: NRTL (it describes two liquids), the default set of the pair (ChemSep databank, tier databank; its record states that it predicts two liquid phases), ideal-gas vapour.",
   "thermo": {
     "kind": "chepta",
@@ -76,5 +76,18 @@
     "agreement_with_data": {
       "note": "The NRTL set's liquid-liquid split is ChemSep's; how far it is from measured mutual solubilities is W1's work (liquid-liquid data and fits, M2b) and is not a test of the column."
     }
+  },
+  "expected_VLL": {
+    "phases": "VLL",
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "with phases \"VLL\" (look for two liquids on the stages) the column solves: stages 1 and 2 hold two liquids, stages 3 to 6 one liquid (fixture rigorous_VLL, each stage's `liquids`)",
+      "in this binary at fixed pressure a stage with vapour and two liquids has no degree of freedom left (the phase rule, F = C - P + 2 = 1, taken by the pressure): both two-liquid stages are at the heteroazeotropic temperature and carry the same two liquid compositions; only the share of each liquid changes",
+      "the total condenser has no decanter here: reflux and distillate both carry the condensate's overall composition (two liquids, mixed)",
+      "with phases \"VL\" (the default) the outcome stays PHASE_SPLIT (expected)"
+    ],
+    "branch": "The reference's solution from its stated start (constant molar overflow, then the bubble-point method with each stage's stable liquid). One solution expected."
   }
 }

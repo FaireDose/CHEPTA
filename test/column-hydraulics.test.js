@@ -1,6 +1,6 @@
 // The column's tray hydraulics (proposal 0015, Part I section 2, step 6, milestone M2b; src/units/columns/hydraulics.js
 // and columnDiameter in src/sizing/sizing.js): the formulas against the independent reference
-// (validation/python/reference_hydraulics.py -> validation/fixtures/hydraulics.json), the chart table against the values
+// (validation/python/reference_column_diameter.py -> validation/fixtures/hydraulics.json), the chart table against the values
 // read off Fair's chart (validation/data/sizing/), the worked example of the open source (Fermeglia 2021, slides 45-47),
 // the surface-tension rule against the chemicals library's example, and the rigorous column end to end: the diameter set
 // by the largest required area where the tray with the lowest flooding velocity is another one, FLOODING, WEEPING, a
@@ -78,7 +78,7 @@ test("Fermeglia (2021) slides 45-47: n-hexane at 342 K, 24 in trays, 75 % of flo
   const Kchart = kFlood(s.flowParameter, 0.6096) / FT;
   close(Kchart, 0.36, 0.09, "C_sb against slide 46");
   // with the slide's own K = 0.36 (13.2/20)^0.2 = 0.331 ft/s: u_flood = 4.836 ft/s (slide 47) and, as D ∝ u^-1/2,
-  // D = 11.03 ft (slide 47); CHEPTA's own D is 4.8 % larger, from the lower K of slide 37's chart
+  // D = 11.03 ft (slide 47); CHEPTA's own D, 11.49 ft, is 4.1 % larger, from the lower K of slide 37's chart
   close(0.36 * (13.2 / 20) ** 0.2, 0.331, 2e-3, "K (slide 46)");
   const uSlide = 0.331 * Math.sqrt((41.12 - 0.1917) / 0.1917);
   close(uSlide, 4.836, 1e-3, "u_flood (slide 47)");
@@ -168,4 +168,44 @@ test("columnDiameter on a rigorous column's result gives the block's own sizing;
   const sc = runUnit("column", { sys, inlets: { in: [feed] }, spec: { light_key: "ethanol", heavy_key: "water", recovery_light_key_in_distillate: 0.6,
     recovery_heavy_key_in_bottoms: 0.9, reflux_over_minimum: 1.3, sizing: {} } });
   assert.ok(sc.notes.some(n => /rigorous mode/.test(n)) && sc.sizing === undefined);
+});
+
+// ---- W7's hydraulics cases (validation/data/columns/hydraulics/, docs/decisions/2026-10-30-01-m2b-cases.md) ----
+const hcase = id => JSON.parse(readFileSync(new URL(`../validation/data/columns/hydraulics/${id}.json`, import.meta.url)));
+const hfix = JSON.parse(readFileSync(new URL("../validation/fixtures/column_hydraulics.json", import.meta.url)));
+
+test("W7's case H1 (Fermeglia 2021, slides 45-47): with the slide's C_sb, u_flood = 4.836 ft/s and D = 11.03 ft; CHEPTA's chart stated", () => {
+  const c = hcase("H1-fermeglia-hexane-heptane"), g = c.given, p = c.published, tol = c.tolerances.printed_rounding_relative;
+  // the case's inputs, converted to SI by definition (1 lb, 1 ft, 1 lbmol/h); ρV by the slide's ideal gas
+  const rhoV = g.P_atm * g.MW_V / (g.R_atm_ft3_per_K_lbmol * g.T_K) * LB_FT3, rhoL = g.liquid_specific_gravity_at_20C * g.water_density_lb_ft3 * LB_FT3;
+  const WV = g.D_lbmol_h / (1 - g.L_over_V) * 0.45359237 / 3600 * g.MW_V;
+  const trays = [{ stage: 2, WL_kg_s: g.L_over_V * WV, WV_kg_s: WV, rhoL, rhoV, sigma_N_m: g.sigma_dyn_cm / 1000 }];
+  const opts = { design_fraction: g.fraction_of_flooding, net_area_fraction: g.eta_net_over_total_area, tray_spacing_m: g.tray_spacing_in * 0.0254 };
+  const r = trayHydraulics(trays, { ...opts, K_chart_m_s: g.C_sb_ft_s * FT }), s = r.stages[0];
+  close(s.flowParameter, p.F_lv, tol, "F_lv");
+  close(s.K_chart_m_s * s.K1 / FT, p.K_ft_s, tol, "K");
+  close(s.u_flood_m_s / FT, p.u_flood_ft_s, tol, "u_flood");
+  close(r.dimensions.D_m / FT, p.diameter_ft, tol, "diameter");
+  close(r.dimensions.D_m / FT, hfix.cases[c.id].computed.diameter_ft, 1e-9, "W7's reference");
+  assert.ok(r.notes.some(n => /given/.test(n)) && r.basis.chart === "K_n,fl given");
+  // with CHEPTA's own reading of slide 37's chart: C_sb 0.332 ft/s against the slide's 0.36 (another drawing of the
+  // chart, 8 % apart), D = 11.49 ft, 4.1 % larger
+  const own = trayHydraulics(trays, opts);
+  close(own.stages[0].K_chart_m_s / FT, 0.332, 0.005, "CHEPTA's C_sb");
+  close(own.dimensions.D_m / FT, 11.49, 0.002, "CHEPTA's diameter");
+});
+
+test("W7's case H2: stage 15, with the largest required area, sets the diameter; stage 2 has the lowest flooding velocity", () => {
+  const c = hcase("H2-largest-area-not-slowest-stage"), ref = hfix.cases[c.id];
+  // each stage's mass flows from its volume flow and the case's flow parameter, F_lv = (W_L/W_V)(ρV/ρL)^0.5
+  const trays = c.stages.map(s => ({ stage: s.stage, WV_kg_s: s.Vdot_m3_s * s.rho_V_kg_m3, WL_kg_s: s.Vdot_m3_s * s.rho_V_kg_m3 * s.F_lv * Math.sqrt(s.rho_L_kg_m3 / s.rho_V_kg_m3),
+    rhoL: s.rho_L_kg_m3, rhoV: s.rho_V_kg_m3, sigma_N_m: s.sigma_mN_m / 1000 }));
+  const r = trayHydraulics(trays, { design_fraction: c.design.fraction_of_flooding, tray_spacing_m: c.design.tray_spacing_m });
+  assert.equal(r.basis.lowest_flooding_velocity_stage, ref.lowest_flooding_velocity_stage);
+  assert.equal(r.basis.governing_stage, ref.largest_area_stage);
+  const A = Object.fromEntries(r.stages.map(s => [s.stage, s.area_required_m2]));
+  close(Math.sqrt(A[ref.largest_area_stage] / A[ref.lowest_flooding_velocity_stage]), ref.diameter_ratio_largest_over_slowest_stage, 1e-9, "D ratio");
+  ref.stages.forEach((e, k) => close(r.stages[k].fraction_of_flooding, e.fraction_of_flooding_at_diameter, 1e-9, `stage ${e.stage} fraction`));
+  assert.ok(r.stages.every(s => s.K_chart_m_s === r.stages[0].K_chart_m_s), "the same C_sb on every stage");
+  assert.match(r.notes[0], /set by stage 15/);
 });

@@ -379,7 +379,7 @@ SEEDS = {
         "url": "https://moodle2.units.it/pluginfile.php/395399/mod_resource/content/1/09_StagedColumnDesign.pdf",
         "access": "Free to read on the University of Trieste's course site; its equations and constants are taken, cited by slide, and values read off its chart, not its text or figures",
         "note": "Slide 37: Fair's chart of K_n,fl (m/s) against the flow parameter for tray spacings 0.15-0.9 m, READ OFF THE GRAPH by pixel position (validation/data/sizing/fair_chart_fermeglia2021.json); slide 38: u_n,fl = K_n,fl K1 K2 K3 K4 sqrt((rho_l - rho_v)/rho_v), K1 = (sigma/20)^0.2, K2 = (10 Ah/Aa)^0.44 below Ah/Aa = 0.1, K3 = 0.9 above 6 mm holes; slide 39: K5 = 0.8 to start; slide 44: A_net = eta pi D^2/4, eta 0.85-0.95; slides 45-47: the worked example (n-hexane, 24 in trays, D = 11.03 ft); slide 50: the operating fraction of flooding typically 0.65 to 0.90; slide 54 (Table 6.2, reproduced from a textbook the slide does not name): turndown ratios, sieve trays 2, valve trays 4, bubble-cap trays 5. Read 2026-10-29 and 2026-10-30.",
-        "files": ["src/units/columns/engine.js", "src/units/columns/hydraulics.js", "validation/python/reference_hydraulics.py", "test/column-hydraulics.test.js"],
+        "files": ["src/units/columns/engine.js", "src/units/columns/hydraulics.js", "validation/python/reference_column_diameter.py", "test/column-hydraulics.test.js"],
     },
     # src/units/columns/hydraulics.js (the liquid's surface tension on a tray)
     "chemicals-surface-tension-mixture": {
@@ -390,7 +390,7 @@ SEEDS = {
         "access": "Open source, MIT",
         "license": "MIT",
         "note": "sigma = sum_i sum_j (x_i V_i)(x_j V_j) sqrt(sigma_i sigma_j) / V^2, V = sum x_i V_i (Winterfeld, Scriven and Davis, AIChE J. 24 (1978) 1010, paywalled and not used); the library states it for nonaqueous mixtures (3-4 % AARD on 107 binaries). Its docstring example (0.02496738845043982 N/m) is a test. Read 2026-10-30.",
-        "files": ["src/units/columns/hydraulics.js", "validation/python/reference_hydraulics.py"],
+        "files": ["src/units/columns/hydraulics.js", "validation/python/reference_column_diameter.py"],
     },
     # src/sizing/sizing.js header (the K fit in ft/s, h_v and h_f with the feed line, the 2 min residence time)
     "ou-che4253-flash": {

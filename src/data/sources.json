@@ -553,7 +553,7 @@
       "note": "sigma = sum_i sum_j (x_i V_i)(x_j V_j) sqrt(sigma_i sigma_j) / V^2, V = sum x_i V_i (Winterfeld, Scriven and Davis, AIChE J. 24 (1978) 1010, paywalled and not used); the library states it for nonaqueous mixtures (3-4 % AARD on 107 binaries). Its docstring example (0.02496738845043982 N/m) is a test. Read 2026-10-30.",
       "files": [
         "src/units/columns/hydraulics.js",
-        "validation/python/reference_hydraulics.py"
+        "validation/python/reference_column_diameter.py"
       ]
     },
     "chemsep-8.3": {
@@ -1037,8 +1037,10 @@
         "src/units/columns/engine.js",
         "src/units/columns/hydraulics.js",
         "test/column-hydraulics.test.js",
+        "validation/data/columns/hydraulics/H1-fermeglia-hexane-heptane.json",
+        "validation/data/columns/hydraulics/H2-largest-area-not-slowest-stage.json",
         "validation/data/sizing/fair_chart_fermeglia2021.json",
-        "validation/python/reference_hydraulics.py"
+        "validation/python/reference_column_diameter.py"
       ]
     },
     "fernandez2010-ethyl-acetate-n-decane": {

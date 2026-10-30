@@ -1,0 +1,65 @@
+{
+  "chepta_hydraulics_case": 1,
+  "id": "H1-fermeglia-hexane-heptane",
+  "title": "Fair's method, the published worked example: the top diameter of an n-hexane + n-heptane sieve-tray column (Fermeglia 2021, slides 45-47)",
+  "purpose": "An open worked example of the flooding velocity by Fair's method and of the diameter, with its published numbers, for W4's column diameter (milestone M2b). The example takes the properties as given (pure n-hexane at 69 degC, from Perry), so the check is of the method's arithmetic, not of CHEPTA's properties.",
+  "source": {
+    "citation": "M. Fermeglia, Staged column design, Separation Processes course slides, University of Trieste (19 April 2021), slides 44-47: \"Diameter estimation: simplified method\" and \"Example: D calculation (simple method)\"",
+    "open_copy": "https://moodle2.units.it/pluginfile.php/395399/mod_resource/content/1/09_StagedColumnDesign.pdf",
+    "access": "Free to read on the University of Trieste's course site (source id fermeglia-staged-2021); its equations and numbers are cited by slide, not its text or figures",
+    "where": "PDF pages 44-46 carry slides 45-47 (the slide numbers are printed in each footer); the numbers are printed in images of equations, read from the page images on 2026-10-30",
+    "read_off_a_graph": "C_sb = 0.36 is the slide's own reading of Fair's chart for 24 in tray spacing at F_lv = 0.0546 (slide 46): a value read off a graph by the author"
+  },
+  "units": "as printed: lb/ft3, lbmol/h, ft/s, ft, dyn/cm, K, atm",
+  "given": {
+    "system": "n-hexane + n-heptane, 50 mol % feed, saturated liquid, 1000 lbmol/h; x_D = 0.999, x_B = 0.001; 1 atm; sieve trays at 24 in spacing; internal reflux L/V = 0.8 at the top (slide 45)",
+    "T_K": 342,
+    "MW_V": 86.17,
+    "R_atm_ft3_per_K_lbmol": 1.314,
+    "P_atm": 1,
+    "liquid_specific_gravity_at_20C": 0.659,
+    "water_density_lb_ft3": 62.4,
+    "sigma_dyn_cm": 13.2,
+    "L_over_V": 0.8,
+    "tray_spacing_in": 24,
+    "C_sb_ft_s": 0.36,
+    "eta_net_over_total_area": 0.90,
+    "fraction_of_flooding": 0.75,
+    "D_lbmol_h": 500
+  },
+  "published": {
+    "rho_V_lb_ft3": 0.1917,
+    "rho_L_lb_ft3": 41.12,
+    "W_L_over_W_V": 0.8,
+    "F_lv": 0.0546,
+    "K_ft_s": 0.331,
+    "u_flood_ft_s": 4.836,
+    "V_lbmol_h": 2500,
+    "diameter_ft": 11.03,
+    "where": {
+      "rho_V_lb_ft3": "slide 46, rho_V = p MW / (R T)",
+      "rho_L_lb_ft3": "slide 46, (0.659)(62.4)",
+      "F_lv": "slide 46",
+      "K_ft_s": "slide 46, K = C_sb (sigma/20)^0.2",
+      "u_flood_ft_s": "slide 47",
+      "V_lbmol_h": "slide 47, V = D / (1 - L/V)",
+      "diameter_ft": "slide 47, Dia = [4 V R T / (pi eta 3600 p fraction u_flood)]^(1/2)"
+    }
+  },
+  "equations": {
+    "F_lv": "(W_L / W_V) (rho_V / rho_L)^0.5 (slides 37 and 46; W mass flows)",
+    "K": "C_sb (sigma / 20)^0.2, sigma in dyn/cm (K1 of slide 38; slide 44)",
+    "u_flood": "K ((rho_L - rho_V) / rho_V)^0.5 (slides 38, 44, 47; K2 = K3 = K4 = 1 for this example)",
+    "diameter": "(4 V MW_V / (pi eta rho_V fraction u_flood 3600))^0.5, V in lbmol/h (slide 47); A_net = eta pi D^2 / 4 (slide 44)"
+  },
+  "expected": {
+    "behaviour": [
+      "with the slide's C_sb (0.36 ft/s, read off Fair's chart), W4's columnDiameter reproduces u_flood = 4.836 ft/s and D = 11.03 ft within the rounding of the printed numbers",
+      "with W4's own fitted form of Fair's chart, C_sb at F_lv = 0.0546 and 24 in spacing is compared with 0.36 within the reading accuracy of the chart (W4 states it)"
+    ]
+  },
+  "tolerances": {
+    "printed_rounding_relative": 0.002,
+    "why": "the slides print three to four significant figures; each published number is reproduced from the given inputs within 0.2 %"
+  }
+}

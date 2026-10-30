@@ -1,0 +1,97 @@
+{
+  "chepta_column_case": 1,
+  "components": [
+    "benzene",
+    "toluene"
+  ],
+  "pressure_kPa": 111.4575,
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "flowsheet_thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+  },
+  "method_choice": "Both methods suit this nonpolar, near-ideal pair at 1.1 atm (docs/METHOD_SELECTION.md rules 2 and 6): the flowsheet in Peng-Robinson (B2's method, its k_ij fitted to ThermoML data), the column in NRTL (the ChemSep set, tier databank) with an ideal-gas vapour. The choice is deliberate, to have two methods whose enthalpies differ at the same T and P (Peng-Robinson's departure enthalpies against NRTL's liquid heat capacities and ideal gas), so that the boundary is tested.",
+  "boundary": {
+    "keeps": [
+      "component flows",
+      "pressure",
+      "enthalpy flow"
+    ],
+    "finds": "T (and the vapour fraction) by a P-H flash in the receiving method",
+    "T_search_K": [
+      278.68,
+      600.0
+    ],
+    "why_lower_bound": "278.68 K, where benzene's liquid heat-capacity record starts in CHEPTA (Thol et al. 2012 through CoolProp, its triple point): below it CHEPTA's NRTL liquid enthalpy refuses (OUT_OF_RANGE)"
+  },
+  "id": "G1-own-method-boundary",
+  "title": "Benzene + toluene: a column in NRTL inside a Peng-Robinson flowsheet; the feed and both products cross the boundary",
+  "purpose": "The column's own property method (milestone M2b; proposal 0015, Part I, section 3). The feed, a liquid at 350 K in the flowsheet's method, enters the column with its component flows, pressure and enthalpy flow; its temperature in the column's method is found by a P-H flash. The distillate and the bottoms cross back the same way. No energy is created or lost: the fresh feed's enthalpy flow plus the reboiler duty minus the condenser duty equals the products' enthalpy flows in the flowsheet's method.",
+  "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 5,
+      "flow_mol_s": 11.7471,
+      "z": [
+        0.5,
+        0.5
+      ],
+      "T_K": 350.0,
+      "given_in": "flowsheet_thermo"
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 2.0
+    },
+    {
+      "kind": "bottoms_flow_mol_s",
+      "value": 5.874
+    }
+  ],
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "the feed's temperature changes across the boundary into the column (fixture boundary.column_feed.column_method.T_K against 350 K) and each product's on the way out (products.*.dT_K); the result reports these changes",
+      "the enthalpy flow of every crossing is kept: energy.imbalance_W is zero to the P-H flashes' tolerance",
+      "a round trip (flowsheet to column method and back) returns the starting temperature",
+      "recalculating each stream at the same T in the other method would create or lose energy.imbalance_if_recalculated_at_same_T_W (for information: what the boundary avoids)"
+    ],
+    "branch": "One solution expected."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      },
+      "boundary": {
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "T_K_absolute": 1e-06,
+        "why": "the P-H flash is solved to 1e-10 K; the balance closes to the column's own tolerance"
+      }
+    }
+  }
+}

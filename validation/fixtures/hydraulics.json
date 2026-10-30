@@ -1,5 +1,5 @@
 {
- "generated_by": "validation/python/reference_hydraulics.py",
+ "generated_by": "validation/python/reference_column_diameter.py",
  "chart": "validation/data/sizing/fair_chart_fermeglia2021.json",
  "cases": {
   "trieste-example": {

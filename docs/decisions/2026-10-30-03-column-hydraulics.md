@@ -13,7 +13,7 @@ warnings; contract 4, `columnDiameter`).
   `src/sizing/sizing.js` (contract 4); `solve_column` returns `column.sizing` (command line, MCP); the project schema's
   description; in the Flowsheet workspace, a folded "Diameter and flooding (optional)" section under the rigorous
   column, the diameter and the highest fraction of flooding in its results, and a "Flooding, %" column in its profile.
-- `validation/python/reference_hydraulics.py`, `validation/fixtures/hydraulics.json`,
+- `validation/python/reference_column_diameter.py`, `validation/fixtures/hydraulics.json`,
   `validation/data/sizing/fair_chart_fermeglia2021.json`, `test/column-hydraulics.test.js`; docs/models/sizing.md.
 
 ## The numbers to check against the source
@@ -52,7 +52,7 @@ it is an estimate.
   (0.398 √(1099/1.043)(15/20)^0.2 = 12.2, printed 10.84): not used. NPTEL's notes name the chart without values.
   Lygeros and Magoulas (1986), the usual fit, is in a paywalled journal: not used.
 - Slide 46 reads C_sb = 0.36 ft/s off another drawing of Fair's chart; slide 37's chart gives 0.332 ft/s there (8 %
-  lower), so CHEPTA's diameter for the example is 11.56 ft (4.8 % above the slide's 11.03 ft); with the slide's K the
+  lower), so CHEPTA's diameter for the example is 11.49 ft (4.1 % above the slide's 11.03 ft); with the slide's K the
   same arithmetic gives 11.03 ft (the test checks both).
 - Slide 35 says the diameter "depends on the tray having the lowest flooding velocity"; proposal 0015 (Part I §2)
   takes the largest required area, which the test shows differs with a cold feed (the stripping section's stage 11
@@ -66,4 +66,9 @@ slowest stage not setting the diameter, the chart's span, between spacings with 
 floods, one that weeps with valve trays); the chart table against the data file; the worked example; the
 surface-tension rule; W7's case B1 (ethanol + water, NRTL) through `solve_column`: sized, too small (FLOODING), too
 large (WEEPING, not with valve trays), a cold feed; `columnDiameter` against the block's own sizing; the refusals.
+W7's cases H1 and H2 (PR #191, validation/data/columns/hydraulics/) run against the engine: H1 with the slide's own
+C_sb (the option `K_chart_m_s`, added for it: your own reading of Fair's chart) reproduces u_flood = 4.836 ft/s and
+D = 11.03 ft within the case's 0.2 %; H2: stage 15 sets the diameter, stage 2 is the slowest, the diameter ratio
+1.2119 and every stage's fraction of flooding as W7's reference, within 1e-9. My reference was renamed
+validation/python/reference_column_diameter.py, since W7's reference_hydraulics.py writes the cases' fixture.
 `npm test` passes.

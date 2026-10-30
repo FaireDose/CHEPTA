@@ -1,0 +1,53 @@
+{
+ "_about": "Written by validation/python/reference_hydraulics.py. The cases: validation/data/columns/hydraulics/.",
+ "cases": {
+  "H1-fermeglia-hexane-heptane": {
+   "computed": {
+    "rho_V_lb_ft3": 0.1917496684379645,
+    "rho_L_lb_ft3": 41.1216,
+    "W_L_over_W_V": 0.8,
+    "F_lv": 0.05462887987117593,
+    "K_ft_s": 0.33129225871995266,
+    "u_flood_ft_s": 4.840208336409028,
+    "V_lbmol_h": 2500.0000000000005,
+    "diameter_ft": 11.028098458861109
+   },
+   "diameter_ft_from_printed_u_flood": 11.032895797162926,
+   "relative_deviation_from_published": {
+    "rho_V_lb_ft3": 0.000259094616403166,
+    "rho_L_lb_ft3": 3.8910505836708964e-05,
+    "W_L_over_W_V": 0.0,
+    "F_lv": 0.0005289353695223653,
+    "K_ft_s": 0.0008829568578629932,
+    "u_flood_ft_s": 0.0008702101755639902,
+    "V_lbmol_h": 2.220446049250313e-16,
+    "diameter_ft": -0.00017239720207529174
+   }
+  },
+  "H2-largest-area-not-slowest-stage": {
+   "stages": [
+    {
+     "stage": 2,
+     "u_fl_over_C_sb": 16.299284237863535,
+     "A_times_C_sb_m2_m_s": 0.0766904841806628,
+     "fraction_of_flooding_at_diameter": 0.5446724343892333
+    },
+    {
+     "stage": 8,
+     "u_fl_over_C_sb": 17.86057109949175,
+     "A_times_C_sb_m2_m_s": 0.09098253303032633,
+     "fraction_of_flooding_at_diameter": 0.646177661830722
+    },
+    {
+     "stage": 15,
+     "u_fl_over_C_sb": 19.974984355438178,
+     "A_times_C_sb_m2_m_s": 0.11264088922239575,
+     "fraction_of_flooding_at_diameter": 0.8
+    }
+   ],
+   "lowest_flooding_velocity_stage": 2,
+   "largest_area_stage": 15,
+   "diameter_ratio_largest_over_slowest_stage": 1.211929328052268
+  }
+ }
+}

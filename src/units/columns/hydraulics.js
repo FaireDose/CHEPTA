@@ -65,7 +65,7 @@ export const TURNDOWN_BY_TRAY = Object.freeze({ sieve: 2, valve: 4, "bubble-cap"
 export const HYDRAULICS_DEFAULTS = Object.freeze({ tray_spacing_m: 0.6, design_fraction: 0.8, net_area_fraction: 0.9,
   hole_area_ratio: 0.1, hole_diameter_mm: 5, foaming_factor: 1, tray: "sieve" });
 export const HYDRAULICS_SOURCES = Object.freeze(["fermeglia-staged-2021", "chemicals-surface-tension-mixture"]);
-const OPTION_KEYS = ["tray_spacing_m", "design_fraction", "diameter_m", "net_area_fraction", "hole_area_ratio", "hole_diameter_mm", "foaming_factor", "tray"];
+const OPTION_KEYS = ["tray_spacing_m", "design_fraction", "diameter_m", "net_area_fraction", "hole_area_ratio", "hole_diameter_mm", "foaming_factor", "tray", "K_chart_m_s"];
 const fmt = v => +Number(v).toPrecision(3);
 /** Stage numbers as ranges: [2, 3, 4, 7] → "2-4, 7". */
 const ranges = list => list.reduce((a, k) => { const r = a[a.length - 1]; if (r && k === r[1] + 1) r[1] = k; else a.push([k, k]); return a; }, [])
@@ -112,13 +112,15 @@ export function hydraulicsOptions(z) {
     hole_diameter_mm: g("hole_diameter_mm", 0, Infinity, true),
     foaming_factor: g("foaming_factor", 0, 1, true),
     tray,
+    // your own K_n,fl read off a drawing of Fair's chart, the same on every tray, in place of the table below
+    K_chart_m_s: z.K_chart_m_s == null || z.K_chart_m_s === "" ? null : num(z.K_chart_m_s, "K_chart_m_s", 0, Infinity, true),
   };
 }
 
 /**
  * Fair's method on given trays: trays [{ stage, WL_kg_s, WV_kg_s, rhoL, rhoV, sigma_N_m }] and the options of
  * hydraulicsOptions → { dimensions, basis, stages, warnings, notes, source }. Exported for the independent check
- * (validation/python/reference_hydraulics.py).
+ * (validation/python/reference_column_diameter.py).
  */
 export function trayHydraulics(trays, options = {}) {
   const o = hydraulicsOptions(options);
@@ -130,8 +132,8 @@ export function trayHydraulics(trays, options = {}) {
     if (!(t.WL_kg_s > 0)) throw fail("BAD_INPUT", `Column sizing: stage ${t.stage} carries no liquid; Fair's chart starts at a flow parameter of 0.01.`);
     if (!(t.rhoL > t.rhoV && t.rhoV > 0)) throw fail("BAD_INPUT", `Column sizing: on stage ${t.stage} the liquid (${fmt(t.rhoL)} kg/m³) must be denser than the vapour (${fmt(t.rhoV)} kg/m³).`);
     const F = t.WL_kg_s / t.WV_kg_s * Math.sqrt(t.rhoV / t.rhoL);
-    let Kchart;
-    try { Kchart = kFlood(F, o.tray_spacing_m); } catch (e) { e.message = e.message.replace("Column hydraulics:", `Column sizing, stage ${t.stage}:`); throw e; }
+    let Kchart = o.K_chart_m_s;
+    if (Kchart == null) try { Kchart = kFlood(F, o.tray_spacing_m); } catch (e) { e.message = e.message.replace("Column hydraulics:", `Column sizing, stage ${t.stage}:`); throw e; }
     const K1 = (t.sigma_N_m * 1000 / 20) ** 0.2;
     const u_fl = Kchart * K1 * K2 * K3 * K4 * Math.sqrt((t.rhoL - t.rhoV) / t.rhoV);
     const QV = t.WV_kg_s / t.rhoV, An = QV / (f * u_fl);
@@ -160,13 +162,15 @@ export function trayHydraulics(trays, options = {}) {
     warnings.push({ code: "WEEPING", stage: w.stage, message: `Stage${weep.length > 1 ? "s" : ""} ${ranges(weep.map(r => r.stage))} run${weep.length > 1 ? "" : "s"} below 1/${turndown} of the flooding velocity, the turndown of ${o.tray} trays (Fermeglia 2021, slide 54): the lowest, stage ${w.stage}, at ${fmt(100 * w.fraction_of_flooding)} % (diameter ${fmt(D)} m); ${weep.length > 1 ? "these trays" : "this tray"} would weep. Every stage's fraction: sizing.stages.`,
       remedy: "A smaller diameter for this section (a column with two diameters, Fermeglia 2021, slide 35), valve or bubble-cap trays (turndown 4 and 5), or more vapour on these stages." });
   }
+  if (o.K_chart_m_s != null) notes.push(`K_n,fl = ${fmt(o.K_chart_m_s)} m/s given (your own reading of Fair's chart), on every tray, in place of the chart read off Fermeglia (2021), slide 37.`);
   if (o.foaming_factor === 1) notes.push("Non-foaming system assumed (K4 = 1, the chart's basis); give foaming_factor below 1 for a foaming one.");
   return {
     dimensions: { D_m: D, area_m2: At, netArea_m2: An, downcomerArea_m2: At - An, tray_spacing_m: o.tray_spacing_m },
     basis: { mode: sized ? "sized" : "checked", design_fraction: f, net_area_fraction: eta, tray: o.tray, turndown,
       K2, K3, K4, hole_area_ratio: o.hole_area_ratio, hole_diameter_mm: o.hole_diameter_mm,
       governing_stage: top.stage, lowest_flooding_velocity_stage: slowest.stage,
-      max_fraction_of_flooding: Math.max(...rows.map(r => r.fraction_of_flooding)), chart: "Fair's chart read off Fermeglia (2021), slide 37" },
+      max_fraction_of_flooding: Math.max(...rows.map(r => r.fraction_of_flooding)),
+      chart: o.K_chart_m_s != null ? "K_n,fl given" : "Fair's chart read off Fermeglia (2021), slide 37", ...(o.K_chart_m_s != null ? { K_chart_m_s: o.K_chart_m_s } : {}) },
     stages: rows, warnings, notes, source: HYDRAULICS_SOURCES.slice(),
   };
 }

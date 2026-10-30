@@ -84,7 +84,7 @@ warnings join the column's.
 | trays | stages 2 to N − 1 (not the condenser and the reboiler); each with the vapour and liquid leaving it, at its T and the column's P | this project's choice |
 | properties | ρV = M P/(Z R T); ρL with volumes adding up; σ = (Σ φ_i √σ_i)², φ_i volume fractions (Winterfeld, Scriven and Davis) | CHEPTA's records; the chemicals library (MIT), thermo's first-ranked rule |
 | flow parameter | F = (W_L/W_V) √(ρV/ρL), mass flows | slide 46 (the worked example) |
-| K_n,fl | Fair's chart, tray spacing 0.15-0.9 m, F 0.01-1.8: **values read off the graph** by pixel position at 16 F and 6 spacings; interpolated linearly in ln K against ln F and ln H; outside: refused | slide 37 (`validation/data/sizing/fair_chart_fermeglia2021.json`) |
+| K_n,fl | Fair's chart, tray spacing 0.15-0.9 m, F 0.01-1.8: **values read off the graph** by pixel position at 16 F and 6 spacings; interpolated linearly in ln K against ln F and ln H; outside: refused; `K_chart_m_s`, your own reading of the chart, replaces it on every tray | slide 37 (`validation/data/sizing/fair_chart_fermeglia2021.json`) |
 | flooding velocity | u_fl = K_n,fl K1 K2 K3 K4 √((ρL − ρV)/ρV); K1 = (σ/20)^0.2, σ in mN/m; K2 = (10 Ah/Aa)^0.44 below Ah/Aa = 0.1 (`hole_area_ratio`, 0.1); K3 = 0.9 above 6 mm holes (`hole_diameter_mm`, 5); K4 the foaming factor (`foaming_factor`, 1: the chart's non-foaming systems; the slides give no value) | slide 38 |
 | net area | A_n = η A_t, η = 0.90 (`net_area_fraction`; "0.85-0.95"), the downcomer 1 − η | slides 28, 44, 47 |
 | diameter | A_t,j = V̇_j / (f u_fl,j η); D = √(4 max_j A_t,j / π); f = 0.80 (`design_fraction`) | proposal 0015 Part I §2; slide 39 ("fix K5 = 0.8"), slide 50 ("0.65 to 0.90") |
@@ -104,7 +104,7 @@ fit two curves without saying which spacing, and their worked example does not r
 (667 × 376 pixels, about 1 % in K per pixel); left of F = 0.025 the curve labels cover parts of the curves, and the
 values at 0.01 and 0.02 are read where the curves are clear. The worked example of slides 45-47 (n-hexane, 24 in)
 reads C_sb = 0.36 ft/s from another drawing of Fair's chart; slide 37's chart gives 0.332 ft/s there (8 % lower), so
-CHEPTA's diameter is 11.56 ft where the slide gets 11.03 ft; with the slide's K the same arithmetic gives 11.03 ft.
+CHEPTA's diameter is 11.49 ft (4.1 % more) where the slide gets 11.03 ft; with the slide's K the same arithmetic gives 11.03 ft.
 
 Not done yet: the column's height, the weir and downcomer checks of slides 41-43 (backup, pressure drop), packed
 columns, entrainment.
@@ -134,8 +134,10 @@ its angle, where the engine bisects on its height) into `validation/fixtures/siz
 compares them within 1e-9, the fit with its chart, and the two lecture examples and the Oklahoma example with their
 printed numbers, and runs a flash drum (ethanol and water) and a three-phase drum (ethyl acetate and water) end to end.
 
-`validation/python/reference_hydraulics.py` writes Fair's method anew (numpy interpolation in log10) into
+`validation/python/reference_column_diameter.py` writes Fair's method anew (numpy interpolation in log10) into
 `validation/fixtures/hydraulics.json`; `test/column-hydraulics.test.js` compares it within 1e-9 on six cases, checks
 the engine's chart against the values read off the graph, the Trieste worked example, the surface-tension rule against
 the chemicals library's own example, and W7's case B1 (ethanol + water, NRTL) end to end: sized, a given diameter too
-small (FLOODING) and too large (WEEPING), a cold feed whose stripping section sets the diameter.
+small (FLOODING) and too large (WEEPING), a cold feed whose stripping section sets the diameter. W7's cases H1 (the
+worked example, with the slide's C_sb: 4.836 ft/s and 11.03 ft within 0.2 %) and H2 (the largest area, not the slowest
+stage; the ratios exact) from `validation/data/columns/hydraulics/` run against the engine in the same test file.
