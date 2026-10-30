@@ -227,7 +227,8 @@ test("rigorous: where a second liquid forms on the stages (1-butanol + water), t
   assert.equal(r.outcome, "unsupported");
   assert.equal(r.error.code, "PHASE_SPLIT");
   assert.match(r.error.message, /a second liquid would form on stages? 1/);
-  assert.match(r.error.message, /milestone M2b/);
+  // the remedy: since M2b, the option "look for two liquids on the stages" (phases "VLL", test/columns-vll.test.js)
+  assert.match(r.error.message, /look for two liquids on the stages/);
   assert.ok(r.error.details.stages.length >= 1 && r.error.details.stages[0].trial.length === 2);
   assert.equal(r.value, undefined);
 });
@@ -242,7 +243,7 @@ test("rigorous: the input is checked, and what comes later is refused as not bui
   code({ specs: [{ kind: "reflux_ratio", value: 2 }, { kind: "distillate_purity", value: 0.99 }] }, "NOT_AVAILABLE", /M4/);
   code({ stages: 2 }, "BAD_INPUT", /3 or more/);
   code({ feeds: [{ stage: 12, flows: [50, 50], H_W: 0 }] }, "BAD_INPUT", /2 to 11/);
-  code({ phases: "LL" }, "NOT_AVAILABLE", /M2b and M3/);
+  code({ phases: "LL" }, "NOT_AVAILABLE", /M3/);   // "VLL" landed with M2b (test/columns-vll.test.js); extraction is M3
   code({ draws: [{ stage: 3 }] }, "NOT_AVAILABLE", /side draws/);
   code({ ends: { condenser: "total", reboiler: "none" } }, "NOT_AVAILABLE", /partial reboiler/);
   // the block: two specifications, a whole number of stages, the feed stage between the condenser and the reboiler

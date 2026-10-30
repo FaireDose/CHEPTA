@@ -466,7 +466,7 @@ function splitThree(sys, z, T, P, KV, KL2) {
  * two liquids of the binodal), with the dominant-eigenvalue acceleration of splitThree.
  * Returns { beta, x1, x2, K, iterations }, or null if the two liquids become one.
  */
-function splitLL(sys, z, T, K) {
+export function splitLL(sys, z, T, K) {
   const n = z.length;
   let prev = null;
   for (let it = 1; it <= MAX_IT; it++) {

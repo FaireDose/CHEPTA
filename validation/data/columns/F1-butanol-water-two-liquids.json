@@ -46,7 +46,7 @@
     "converged": false,
     "behaviour": [
       "no profile is returned as the column's result: the one-liquid solution is metastable on stages 1 and 2",
-      "the refusal names the stages where a second liquid forms (the reference's one-liquid solution: stages 1 and 2; fixture checks.stability) and the remedy: two liquids on the stages come with milestone M2b",
+      "the refusal names the stages where a second liquid forms (the reference's one-liquid solution: stages 1 and 2; fixture checks.stability) and the remedy: the option \"look for two liquids on the stages\" (phases \"VLL\", milestone M2b; expected_VLL)",
       "the feed (z = 0.6 butanol, saturated liquid) is stable: the split appears only where the column carries the liquid toward the water side"
     ],
     "branch": "The reference's one-liquid solution, from its stated start. The refusal does not depend on the branch as long as a stage of the engine's one-liquid solution is unstable; the stages named may differ if the engine finds another one-liquid branch, which is then reported for review."

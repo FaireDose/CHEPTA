@@ -2,10 +2,12 @@
 
 One block for distillation ([proposal 0015](../../proposals/0015-separation-units.md), Part I, section 1). Its
 modes: **shortcut** (milestone M1) and **rigorous** (MESH on equilibrium stages, milestone M2a: vapour and one
-liquid). Absorber, stripper and extraction come later as configurations of the same block. Code:
+liquid; milestone M2b: two liquids on the stages, a decanter on the condenser, and the column's own property method).
+Absorber, stripper and extraction come later as configurations of the same block. Code:
 `src/units/columns/shortcut.js` (the shortcut's equations), `src/units/columns/engine.js` (the column engine, the
-rigorous solver), `src/units/columns/column.js` (the block). Tests: `test/columns-shortcut.test.js`,
-`test/columns-rigorous.test.js`, against W7's cases ([columns-benchmarks.md](columns-benchmarks.md)).
+rigorous solver), `src/units/columns/two-liquids.js` (two liquids on the stages), `src/units/columns/column.js` (the
+block, and the P-H boundary of its own method). Tests: `test/columns-shortcut.test.js`,
+`test/columns-rigorous.test.js`, `test/columns-vll.test.js` (M2b), against W7's cases ([columns-benchmarks.md](columns-benchmarks.md)).
 
 ## The shortcut mode
 
@@ -62,7 +64,7 @@ distillate); the pressure (default the first feed's; no pressure drop); and **tw
 boil-up ratio V_N/B, the distillate or the bottoms flow, the condenser duty (heat removed) or the reboiler duty. Not
 both product flows (they add up to the feed), not both duties, and not two specifications of the same end (the reflux
 ratio with the condenser duty, the boil-up ratio with the reboiler duty). Purity and recovery specifications come with
-M4; side draws with M4; two liquids on the stages and the column's own property method with M2b.
+M4; side draws with M4. Two liquids on the stages, the decanter and the column's own property method (M2b) are below.
 
 **The equations** (the engine's file header has them in full): for every stage the component balances, the
 equilibrium y = K x with the flowsheet's method (activity models with their vapour model, or an equation of state), and
@@ -100,12 +102,16 @@ the Newton iterations; a column that reaches it is not converged (E4).
 
 | Situation | What the column does |
 |---|---|
-| a second liquid on a stage (Michelsen's tangent-plane test of each stage's liquid, after convergence) | refuses (`PHASE_SPLIT`, outcome "unsupported"), naming the stages and the liquid that splits off; two liquids on the stages come with M2b |
+| a second liquid on a stage with phases "VL" (Michelsen's tangent-plane test of each stage's liquid, after convergence) | refuses (`PHASE_SPLIT`, outcome "unsupported"), naming the stages and the liquid that splits off, and the remedy: "look for two liquids on the stages" (phases "VLL") |
+| a third liquid on a stage with phases "VLL" (each of a stage's two liquids tested) | refuses (`PHASE_SPLIT`), as the flash does |
+| phases "VLL" with an equation of state, or the dimerizing acids' chemical theory | refuses (`NOT_AVAILABLE`): two liquids need an activity model, as in the flash drum |
+| a decanter whose two liquids come out the same (the condensate holds one liquid) | `NO_CONVERGENCE`, saying so; use a total condenser |
+| a stream the column's own method (or, leaving, the flowsheet's) cannot represent: no P-H solution, a phase it cannot have (two liquids in Peng-Robinson) | refuses with that method's reason (for example `PHASE_SPLIT`), naming the stream |
 | the solver does not converge | `NO_CONVERGENCE` (outcome "not_converged"), with what it tried, the last residuals by group, a hint where constant molar overflow gives no boil-up (W7's E2) or where the last iterate holds two liquids; never a statement that the column has no solution |
 | a stage's liquid below 1 % of the column's largest vapour flow (stages 2 to N − 1) | warns `DRY_STAGE`, with the stages, the cause and the remedy (W7's D1: stages 2 to 5); the 1 % is this project's choice: no open source gives a threshold for equilibrium stages without the trays' geometry (searched 2026-10-29) |
 | a stage's vapour below 1/5 of the column's largest vapour flow (stages 2 to N) | warns `DRY_STAGE` (vapour): outside the turndown of bubble-cap trays, 5 (sieve 2, valve 4; Fermeglia, "Staged column design", University of Trieste, 2021, slide 54), so with one diameter the trays would weep; the maintainer's choice, 2026-10-29. The checks with the trays' geometry (flooding, weeping) come with M2b |
 | a pair without parameters | missing data, the pair named (C1) |
-| purity or recovery specifications, side draws, phases "LL" or "VLL", no reboiler | not built yet: unsupported |
+| purity or recovery specifications, side draws, phases "LL" (extraction), no reboiler | not built yet: unsupported |
 | nonvolatile components, inert solids, the dimerizing acids' chemical theory | not built yet: unsupported (columns with nonvolatile components are step 7) |
 
 **The result:** the distillate and the bottoms (saturated at the column's pressure), the block's duty (the reboiler's
@@ -113,6 +119,84 @@ minus the condenser's) and the two apart, the reflux and boil-up ratios, and the
 liquid and vapour leaving it, x, y and the duty. In the workbench: the block's panel (the method, the stages, the two
 specifications), its results, and the profile table under the drawing when it is selected; solved in the worker, with
 the Stop button. Through the request path: `solve_column` or the block in `solve_flowsheet`. Saved in project format 6.
+
+## Two liquids on the stages (milestone M2b)
+
+**The option** "look for two liquids on the stages" (`phases: "VLL"`), off by default (proposal 0015, Part I,
+section 3: a three-phase calculation on every stage costs time); activity models only (NRTL, UNIQUAC, Modified UNIFAC
+2.0), as the flash drum. With it, a stage holds a vapour and one or two liquids; **the phase-stability check decides
+where a second liquid exists**: at each stage's temperature, Michelsen's tangent-plane test of the stage's whole liquid
+(`src/equilibrium/stability.js`), and where it would split, the two liquids by the liquid-liquid flash at that
+temperature (`splitLL` of `src/equilibrium/flash.js`; near a plait point, where its successive substitution falls back
+to one liquid, Newton's method on the same equations from the trial phase, the neighbouring stages' splits or a liquid
+rich in each component).
+
+**The equations.** Both liquids of a stage leave it together (to the stage below, or as the reboiler's or the total
+condenser's product), so the MESH equations are those of one liquid written for the stage's whole liquid x, with: the
+vapour in equilibrium with both liquids, y_i = K_i(x′) x′_i, so the whole liquid's K-values are K_i(x′) x′_i / x_i; the
+liquid's molar enthalpy (1 − β) h_L(x′) + β h_L(x″); and the bubble temperature of a liquid that splits where
+Σ K_i(x′) x′_i = 1. Where a stage holds one liquid these are the one-liquid equations exactly. This is the usual way to
+write a three-phase stage when its two liquids are not separated (the "effective K-value" of the whole liquid), written
+here from the phase-equilibrium conditions, not taken from a source. A binary with two liquids and a vapour boils at
+one temperature (Gibbs' phase rule): the stages that hold two liquids sit at the heterogeneous boiling point.
+
+**The two liquids are named by density** (proposal 0015, section 5), light and heavy, from the components' liquid
+densities at T mixed ideally (the volumes add); without a density record, by the component each is richest in.
+
+**The decanter** (`condenser: "decanter"`, with `phases: "VLL"`): the condensate splits at its bubble point; one liquid,
+`reflux_liquid` (`"light"`, the default, or `"heavy"`), returns to stage 2 entirely, the other is the distillate. Stage
+1's equations: the component balances, both liquids in equilibrium with one vapour (equal activities), the reflux at its
+bubble point; the condenser's energy balance gives its duty. A decanter fixes the reflux, so the column takes **one**
+specification: the boil-up ratio, the reboiler duty, or a product flow (not the reflux ratio nor the condenser duty).
+No outlet port is added: the decanter's distillate leaves by the distillate port; where both liquids of a condensate
+are wanted as products, the flash drum's liquid2 outlet already does it.
+
+**The result:** each stage's whole liquid (x) as before, and `liquids` (null for one liquid): the light and the heavy
+liquid, their flows and compositions and densities (for the decanter, which one is the reflux); `state.two_liquid_stages`.
+In the workbench: "Liquids on the stages: One / Look for two", the Decanter and the refluxed liquid in the panel; the
+profile table adds the light and heavy flows and x′, x″ of every stage that holds two.
+
+**Checked** (`test/columns-vll.test.js`) against W2's independent reference `validation/python/reference_mesh_vll.py`
+(fixture `validation/fixtures/columns-vll.json`: W7's MESH equations of `reference_mesh.py` with an independent Python
+liquid-liquid split; written by W2 because W7's M2b reference was not on main on 2026-10-30), within F1's numerical
+tolerances: W7's F1 (1-butanol + water, NRTL, 6 stages) with two liquids, stages 1 and 2 two-liquid, within 2e-10 K and
+1e-11 in mole fraction; a ternary of W2 (1-butanol + water + methanol, NRTL, 10 stages: one liquid on stages 1 and 2,
+two below) within 6e-11 K; F1's column with a decanter (the butanol-rich liquid refluxed, D = 35 mol/s) within 2e-10 K.
+F1 with phases "VL" is still refused. **W7's M2b cases** (merged 2026-10-30; `reference_mesh.py`): F1 with phases "VLL",
+F2 (1-butanol + water, 10 stages, a decanter, a water-rich feed of two liquids; the case's branch, 0.994 butanol at the
+bottom) and F3 (ethyl acetate + ethanol + water, two liquids on stages 5 to 10 only) agree within about 1e-10 K, with
+the same two-liquid stages. **The start with two liquids:** the compositions start on a straight line between
+estimates of the products (as W7's reference does), not at the feed's composition, which leads F2 to its other
+solution (two liquids on every stage); a decanter, which fixes no reflux ratio, tries the start reflux ratios 1, 3,
+0.5, 2 and 5 in turn (only the start; this project's choice), skipping a start whose condensate holds one liquid.
+Times on the development container (2026-10-30, Node 22): F1 0.3 s, the ternary
+0.5 s, the decanter 0.3 s; a ternary of ethanol, water and ethyl acetate with stages near a plait point took 7 s.
+
+## The column's own property method (milestone M2b)
+
+**The option** `method: { model, vapour, sets, prefer }` (as a flowsheet's thermo): the column is solved with that
+method (for example NRTL with liquid-liquid parameters) while the flowsheet uses another. **The P-H boundary**
+(proposal 0015, Part I, section 3): a shared enthalpy reference (each ideal gas at 298.15 K) does not make two methods
+agree at the same T and P (their departure and excess enthalpies differ), so every stream that enters or leaves the
+column keeps its **component flows, its pressure and its enthalpy flow**, and its temperature is found by a P-H flash in
+the receiving method: each feed in the column's method, each product in the flowsheet's (the product's enthalpy flow is
+the column's own, from its last stage). The change of temperature is reported (`state.boundary`, the block's notes, the
+panel; through the request path `qualifications.block_methods` and `reproduction.block_methods`). A state the
+receiving method cannot represent (no P-H solution, a phase it cannot have) is refused with that method's reason and
+the stream named. The block's and the flowsheet's energy balances close because the enthalpy flows are kept.
+
+**Checked** (`test/columns-vll.test.js`): the boundary in both directions (a UNIQUAC flowsheet with an NRTL column, and
+an NRTL flowsheet with a UNIQUAC column, 1-butanol + water with a decanter): each feed's temperature in the column's
+method equals an independent P-H flash, the same temperature in the other method would differ by more than 1 kW, each
+product taken back into the column's method returns to the column's temperature within 1e-6 K, and the block's and the
+flowsheet's energy balances close within 1e-6 kW; in a recycle (part of the distillate back to the feed) the flowsheet's
+energy balance closes; a feed of two liquids into a column in Peng-Robinson is refused (`PHASE_SPLIT`, the feed named).
+W7's cases G1 (benzene + toluene, the column in NRTL inside a Peng-Robinson flowsheet), G2 (the same with half of the
+bottoms recycled) and G3 (a PR feed at 265 K that NRTL cannot represent: refused, `OUT_OF_RANGE`, naming benzene's
+liquid heat-capacity record from 278.68 K) agree with W7's reference: every crossing's temperature within 2e-8 K, the
+duties within 2e-10, the energy balance within the case's limit.
+On the butanol + water example the feed at 360 K in UNIQUAC enters the NRTL column at 363.8 K, the distillate leaves at
++0.22 K and the bottoms at −0.53 K.
 
 **The benchmarks** (`test/columns-rigorous.test.js`): W7's A1, A3 and D1 agree with the independent reference within
 about 1e-11 (the cases allow 1e-6 in flows, 1e-7 in mole fractions, 1e-5 K); B1 (ethanol + water, NRTL) within

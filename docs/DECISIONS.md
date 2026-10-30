@@ -51,8 +51,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     command line and the MCP server, saved in format 6, its profile under the drawing. To check: W7's cases A1, A2, A3,
     B1, D1 within their tolerances, the refusals (two liquids on the stages, no convergence), the budgets. Decided: the
     vapour's dry-stage warning at the bubble-cap turndown (1/5), the tolerances kept at 1e-10. To decide: the
-    continuation. Next for W2, when the maintainer says so:
-    M2b (the column's own method, two liquids on the stages).
+    continuation.
+  - **M2b, W2: the column's own method, two liquids on the stages and the decanter, built, to review**
+    (docs/decisions/2026-10-30-02-column-method-vll.md): `phases: "VLL"` (activity models), `condenser: "decanter"`,
+    `method` with the P-H boundary at every stream, end to end (panel, profile table, format 6, request path, command
+    line, MCP, worker); checked against W2's own reference (W7's M2b reference was not on main yet). To check: the
+    equations, the boundary's tests, the panel. To decide: the choices listed in the decision file. Waiting for: W7's
+    M2b cases, to run against the engine. Next for W2, when the maintainer says so: absorber and stripper (M3).
   - **M1, W8 with W9: built, to review** (docs/decisions/2026-10-29-03-cli-mcp-worker.md): the command line, the local
     MCP server, the worker. The first assistant test passed in Claude Code, in the session and on your computer
     (2026-10-29).
