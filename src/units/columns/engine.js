@@ -101,6 +101,9 @@ export const DRY_FRACTION = 0.01;
  *  largest vapour flow, at flooding, to the smallest, at excessive weeping). A stage below 1/5 of the column's largest
  *  vapour flow is outside even that range if the column has one diameter. */
 export const TURNDOWN = 5;
+/** The start reflux ratios a column with a decanter tries in turn (this project's choice; the decanter's reflux is not a
+ *  specification, only the start needs a value). */
+const DECANTER_START_REFLUX = [1, 3, 0.5, 2, 5];
 /** J/mol: the energy residuals are divided by F times this, as W7's reference does. */
 export const H_SCALE = 1e4;
 /** The largest change of the logarithm of a component flow in one Newton step (a factor of e^5, about 150). */
@@ -494,11 +497,17 @@ export function solveCascade(opts = {}) {
   }
   let cold = null;
   if (!result && !(opts.homotopy && startU)) {
-    for (const a of [{ dTmax: 20, maxIt: 50, patient: true }]) {
-      cold ??= bubblePointStart(th, inp, fJ, HF);
-      const r = newton(cold.u, { ...a, maxIt: Math.min(a.maxIt, cap) });
-      tried.push(`Newton from the bubble-point start, steps of at most ${a.dTmax} K (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
-      if (r.converged) { result = { ...r, start: "bubble-point method (Wang-Henke)" }; break; }
+    // a decanter fixes no reflux ratio for the start: a few start values are tried in turn (only the start: the
+    // reflux is the whole refluxed liquid at the solution)
+    const R0s = decanter ? (opts.startReflux ? [opts.startReflux] : DECANTER_START_REFLUX) : [null];
+    for (const R0 of R0s) {
+      const a = { dTmax: 20, maxIt: 50, patient: true };
+      const c = bubblePointStart(th, inp, fJ, HF, { R0 });
+      cold = { ...c, last: cold?.last };
+      if (c.noSplit) { tried.push(`the bubble-point start with a start reflux ratio of ${R0}: its condensate holds one liquid, so it was not used (${took()})`); continue; }
+      const r = newton(c.u, { ...a, maxIt: Math.min(a.maxIt, cap) });
+      tried.push(`Newton from the bubble-point start${R0 != null ? ` (a start reflux ratio of ${R0})` : ""}, steps of at most ${a.dTmax} K (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
+      if (r.converged) { result = { ...r, start: `bubble-point method (Wang-Henke)${R0 != null ? ` with a start reflux ratio of ${R0}` : ""}` }; break; }
       cold.last = r;
     }
   }
@@ -615,8 +624,8 @@ export function solveCascade(opts = {}) {
  * The start (see the file header): constant molar overflow, then the bubble-point method of Wang and Henke. Returns the
  * variables u, and a note when constant molar overflow gives no boil-up.
  */
-function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3 } = {}) {
-  const { N, F, feeds, specs } = inp, n = th.n, total = inp.condenser === "total";
+function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = null } = {}) {
+  const { N, F, feeds, specs } = inp, n = th.n, total = inp.condenser !== "partial";
   const z = fJ.reduce((a, f) => a.map((v, i) => v + f[i]), new Array(n).fill(0)).map(v => v / F);
   // the feeds' liquid fractions and a latent heat, at the bubble and dew points of the whole feed
   const Tb = th.bubbleT(z);
@@ -650,7 +659,7 @@ function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3 } = {}) 
   let boilupWarning = null;
   const Vb = (R + 1) * D - vapourFed;
   if (!(Vb > 0)) boilupWarning = `By constant molar overflow the boil-up would be ${fmt(Vb)} mol/s (the vapour above the feed, ${fmt((R + 1) * D)}, is less than the feed's own vapour, ${fmt(vapourFed)}): these specifications may have no column. Take a larger distillate or a larger reflux ratio (or a feed with less vapour).`;
-  R = Math.max(R ?? 1, 0.05);
+  R = Math.max(R ?? R0 ?? 1, 0.05);
   // flows by constant molar overflow (feeds enter their stage as one stream)
   const L = new Array(N), V = new Array(N);
   let S = 0, Lc = R * D;
@@ -665,6 +674,20 @@ function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3 } = {}) 
   for (let j = 1; j < N - 1; j++) L[j] = Math.max(L[j], 0.01 * F);
   // compositions and temperatures by the bubble-point method, the vapour flows by the energy balances
   let x = Array.from({ length: N }, () => z.slice()), T = new Array(N).fill(Tb), y = x.map(r => r.slice());
+  if (th.twoLiquids) {
+    // two liquids: the compositions start on a straight line between estimates of the products (the distillate takes
+    // the most volatile components first, by their K at the feed's bubble point), so that the stages below a decanter
+    // start between its reflux and the bottoms; from the feed's composition everywhere the start lands on a
+    // solution with two liquids on every stage
+    const d = new Array(n).fill(0);
+    let left = D;
+    for (const i of Kb.map((k, i) => i).sort((a, b) => Kb[b] - Kb[a])) { d[i] = left > 0 ? Math.min(0.97 * F * z[i], left) : 0; left -= d[i]; }
+    const dd = d.map(v => Math.max(v, 1e-6 * F)), bb = z.map((zi, i) => Math.max(F * zi - d[i], 1e-6 * F));
+    const xD = dd.map(v => v / sum(dd)), xB = bb.map(v => v / sum(bb));
+    x = x.map((_, j) => xD.map((a, i) => a + (xB[i] - a) * j / (N - 1)));
+    T = x.map(v => th.bubbleT(v));
+    y = x.map(r => r.slice());
+  }
   const Kof = j => th.lnK(x[j], y[j], T[j]).map(Math.exp);
   let K = x.map((_, j) => Kof(j));
   const sweep = () => {
@@ -727,7 +750,7 @@ function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3 } = {}) 
   if (inp.decanter) {
     // the condensate split at its bubble point: the chosen liquid is the reflux, the other the distillate
     const liq = th.liquids(x[0], T[0], L[0] + D, 0);
-    if (!liq) boilupWarning = `${boilupWarning ? `${boilupWarning} ` : ""}At the start the condensate holds one liquid, so the decanter would have nothing to separate.`;
+    if (!liq) { boilupWarning = `${boilupWarning ? `${boilupWarning} ` : ""}At the start the condensate holds one liquid, so the decanter would have nothing to separate.`; return { u, boilupWarning, noSplit: true }; }
     else {
       const r = liq[inp.refluxLiquid], d = liq[inp.refluxLiquid === "light" ? "heavy" : "light"];
       for (let i = 0; i < n; i++) { u[i] = Math.max(r.flow * r.x[i], 1e-30 * F); u[n + i] = Math.max(d.flow * d.x[i], 1e-30 * F); }

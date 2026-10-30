@@ -162,7 +162,14 @@ liquid-liquid split; written by W2 because W7's M2b reference was not on main on
 tolerances: W7's F1 (1-butanol + water, NRTL, 6 stages) with two liquids, stages 1 and 2 two-liquid, within 2e-10 K and
 1e-11 in mole fraction; a ternary of W2 (1-butanol + water + methanol, NRTL, 10 stages: one liquid on stages 1 and 2,
 two below) within 6e-11 K; F1's column with a decanter (the butanol-rich liquid refluxed, D = 35 mol/s) within 2e-10 K.
-F1 with phases "VL" is still refused. Times on the development container (2026-10-30, Node 22): F1 0.3 s, the ternary
+F1 with phases "VL" is still refused. **W7's M2b cases** (merged 2026-10-30; `reference_mesh.py`): F1 with phases "VLL",
+F2 (1-butanol + water, 10 stages, a decanter, a water-rich feed of two liquids; the case's branch, 0.994 butanol at the
+bottom) and F3 (ethyl acetate + ethanol + water, two liquids on stages 5 to 10 only) agree within about 1e-10 K, with
+the same two-liquid stages. **The start with two liquids:** the compositions start on a straight line between
+estimates of the products (as W7's reference does), not at the feed's composition, which leads F2 to its other
+solution (two liquids on every stage); a decanter, which fixes no reflux ratio, tries the start reflux ratios 1, 3,
+0.5, 2 and 5 in turn (only the start; this project's choice), skipping a start whose condensate holds one liquid.
+Times on the development container (2026-10-30, Node 22): F1 0.3 s, the ternary
 0.5 s, the decanter 0.3 s; a ternary of ethanol, water and ethyl acetate with stages near a plait point took 7 s.
 
 ## The column's own property method (milestone M2b)
@@ -184,6 +191,10 @@ method equals an independent P-H flash, the same temperature in the other method
 product taken back into the column's method returns to the column's temperature within 1e-6 K, and the block's and the
 flowsheet's energy balances close within 1e-6 kW; in a recycle (part of the distillate back to the feed) the flowsheet's
 energy balance closes; a feed of two liquids into a column in Peng-Robinson is refused (`PHASE_SPLIT`, the feed named).
+W7's cases G1 (benzene + toluene, the column in NRTL inside a Peng-Robinson flowsheet), G2 (the same with half of the
+bottoms recycled) and G3 (a PR feed at 265 K that NRTL cannot represent: refused, `OUT_OF_RANGE`, naming benzene's
+liquid heat-capacity record from 278.68 K) agree with W7's reference: every crossing's temperature within 2e-8 K, the
+duties within 2e-10, the energy balance within the case's limit.
 On the butanol + water example the feed at 360 K in UNIQUAC enters the NRTL column at 363.8 K, the distillate leaves at
 +0.22 K and the bottoms at −0.53 K.
 

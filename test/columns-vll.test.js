@@ -258,3 +258,88 @@ test("two liquids, a decanter and the column's own method in a project: format 6
   assert.deepEqual(there.value.blocks.C1.profile, lib.value.blocks.C1.profile);
   closeNodeWorkers();
 });
+
+// ---- W7's M2b cases (validation/data/columns/F1, F2, F3, G1 to G3; reference validation/python/reference_mesh.py,
+// fixture validation/fixtures/columns.json), each within its own tolerances
+
+const w7 = JSON.parse(readFileSync(new URL("../validation/fixtures/columns.json", import.meta.url))).cases;
+const caseOf = id => JSON.parse(readFileSync(new URL(`../validation/data/columns/${id}.json`, import.meta.url)));
+const twoLiquidStages = stages => stages.filter(q => q.liquids && q.liquids.beta_II > 1e-9 && q.liquids.beta_II < 1 - 1e-9).map(q => q.stage);
+
+for (const [id, key] of [["F1-butanol-water-two-liquids", "rigorous_VLL"], ["F2-butanol-water-decanter", "rigorous"], ["F3-ethyl-acetate-ethanol-water-some-stages", "rigorous"]]) {
+  test(`W7's ${id} with two liquids on the stages: the reference's profile and two-liquid stages, within the case's tolerances`, () => {
+    const c = caseOf(id), ref = w7[id][key], f = c.column.feed;
+    const tol = c.tolerances.numerical.engine_against_reference, decanter = c.column.condenser === "decanter";
+    const sys = system({ components: c.components, model: c.thermo.model, vapour: c.thermo.vapour });
+    // the feed's enthalpy as the reference states it (F2's feed is two liquids at its bubble point)
+    const r = solveCascade({ sys, P_kPa: c.pressure_kPa, stages: c.column.stages, phases: "VLL",
+      ends: { condenser: c.column.condenser, ...(decanter ? { reflux_liquid: "light" } : {}) },
+      feeds: [{ stage: f.stage, flows: f.z.map(z => z * f.flow_mol_s), H_W: f.flow_mol_s * ref.feed_enthalpy_J_mol[0] }],
+      specs: c.specs.filter(s => SPEC_OF[s.kind]).map(s => ({ kind: SPEC_OF[s.kind], value: s.value })) });
+    r.stages.forEach((s, j) => {
+      const q = ref.stages[j], where = `${id} stage ${s.stage}`;
+      assert.ok(Math.abs(s.T_K - q.T_K) <= tol.T_K_absolute, `${where}: T ${s.T_K} vs ${q.T_K}`);
+      assert.ok(Math.abs(s.L_mol_s - q.L_mol_s) <= tol.flows_relative * q.L_mol_s, `${where}: L ${s.L_mol_s} vs ${q.L_mol_s}`);
+      assert.ok(Math.abs(s.V_mol_s - q.V_mol_s) <= tol.flows_relative * q.V_mol_s || (q.V_mol_s === 0 && s.V_mol_s === 0), `${where}: V`);
+      // the decanter's stage: W7's x is the condensate, the engine's the reflux (compared below)
+      if (!(decanter && j === 0)) s.x.forEach((v, i) => assert.ok(Math.abs(v - q.x[i]) <= tol.mole_fractions_absolute, `${where}: x ${i}`));
+    });
+    assert.deepEqual(r.stages.filter(s => s.liquids && !(decanter && s.stage === 1)).map(s => s.stage), twoLiquidStages(ref.stages).filter(k => !(decanter && k === 1)));
+    if (decanter) {
+      const d = ref.stages[0].decanter;
+      r.stages[0].x.forEach((v, i) => assert.ok(Math.abs(v - d.reflux_x[i]) <= tol.mole_fractions_absolute, `reflux x ${i}`));
+      r.stages[0].x_distillate.forEach((v, i) => assert.ok(Math.abs(v - d.distillate_x[i]) <= tol.mole_fractions_absolute, `distillate x ${i}`));
+      assert.ok(r.products.bottoms.flows[0] / sum(r.products.bottoms.flows) >= 0.99, "the case's branch: 0.99 or more butanol at the bottom");
+    }
+    const D = sum(r.products.distillate.flows);
+    assert.ok(Math.abs(D - ref.D_mol_s) <= tol.flows_relative * ref.D_mol_s, `D ${D} vs ${ref.D_mol_s}`);
+    assert.ok(Math.abs(r.duties.condenser_W - ref.Q_condenser_W) <= tol.duties_relative * Math.abs(ref.Q_condenser_W), "condenser duty");
+    assert.ok(Math.abs(r.duties.reboiler_W - ref.Q_reboiler_W) <= tol.duties_relative * Math.abs(ref.Q_reboiler_W), "reboiler duty");
+  });
+}
+
+/** G1 (and G2 with the recycle): the column in NRTL inside a Peng-Robinson flowsheet (the case's methods). */
+function gFlowsheet(c, T_K, recycle) {
+  const f = c.column.feed, K = KMOL_H, B = c.specs.find(s => s.kind === "bottoms_flow_mol_s").value;
+  return { components: c.components, thermo: { model: c.flowsheet_thermo.model },
+    blocks: [{ id: "F1", type: "feed", spec: { flow_kmol_h: Object.fromEntries(c.components.map((id, i) => [id, f.flow_mol_s * f.z[i] * K])), T_K, P_kPa: c.pressure_kPa } },
+      ...(recycle ? [{ id: "M1", type: "mixer" }, { id: "S1", type: "splitter", spec: { fractions: [recycle.share_of_bottoms, "rest"] } }] : []),
+      { id: "C1", type: "column", spec: { mode: "rigorous", stages: c.column.stages, feed_stage: f.stage, reflux_ratio: c.specs[0].value,
+        bottoms_kmol_h: B * K / (recycle ? 1 - recycle.share_of_bottoms : 1), method: { model: c.thermo.model, vapour: c.thermo.vapour } } },
+      { id: "P1", type: "product" }, { id: "P2", type: "product" }],
+    streams: recycle
+      ? [{ id: "A", from: "F1.out", to: "M1.in" }, { id: "B", from: "M1.out", to: "C1.in" }, { id: "D", from: "C1.distillate", to: "P1.in" },
+        { id: "W", from: "C1.bottoms", to: "S1.in" }, { id: "W2", from: "S1.out", to: "P2.in" },
+        // the recycle's start: a toluene-rich liquid near the bottoms (only a first guess; the loop converges to the case's)
+        { id: "R", from: "S1.out", to: "M1.in", tear: true, guess: { flow_kmol_h: { benzene: 0.7 * K, toluene: 5.2 * K }, T_K: 382, P_kPa: c.pressure_kPa } }]
+      : [{ id: "A", from: "F1.out", to: "C1.in" }, { id: "D", from: "C1.distillate", to: "P1.in" }, { id: "W2", from: "C1.bottoms", to: "P2.in" }] };
+}
+
+for (const id of ["G1-own-method-boundary", "G2-own-method-recycle"]) {
+  test(`W7's ${id}: each crossing's temperature, the duties and the energy balance, within the case's tolerances`, () => {
+    const c = caseOf(id), b = w7[id].boundary, tol = c.tolerances.numerical;
+    const sys = system({ components: c.components, model: c.flowsheet_thermo.model });
+    const r = solveFlowsheet(sys, gFlowsheet(c, c.column.feed.T_K, c.recycle), c.recycle ? { tolerance: 1e-10 } : undefined);
+    const col = r.blocks.C1, at = Object.fromEntries(col.state.boundary.map(q => [q.stream, q]));
+    const near = (a, e, what) => assert.ok(Math.abs(a - e) <= tol.boundary.T_K_absolute, `${what}: ${a} vs ${e}`);
+    near(at["the feed"].T_after_K, b.column_feed.column_method.T_K, "the feed in the column's method");
+    near(r.streams.D.T_K, b.products.distillate.flowsheet_method.T_K, "the distillate in the flowsheet's method");
+    near(r.streams.W2.T_K, b.products.bottoms.flowsheet_method.T_K, "the bottoms in the flowsheet's method");
+    near(at["the distillate"].dT_K, b.products.distillate.dT_K, "the distillate's change");
+    near(at["the bottoms"].dT_K, b.products.bottoms.dT_K, "the bottoms' change");
+    assert.ok(Math.abs(col.state.condenser_kW * 1000 / b.energy.Q_condenser_W - 1) <= tol.engine_against_reference.duties_relative);
+    assert.ok(Math.abs(col.state.reboiler_kW * 1000 / b.energy.Q_reboiler_W - 1) <= tol.engine_against_reference.duties_relative);
+    // no energy created or lost: the case's limit, relative to the feed times 10 kJ/mol
+    const limit_W = tol.boundary.energy_relative_to_feed_times_10kJ_mol * c.column.feed.flow_mol_s * 1e4;
+    assert.ok(Math.abs(r.balance.energy_kW * 1000) <= limit_W, `energy ${r.balance.energy_kW * 1000} W, limit ${limit_W} W`);
+  });
+}
+
+test("W7's G3-own-method-cannot-represent: a cold Peng-Robinson feed the column's NRTL cannot represent is refused (OUT_OF_RANGE), the feed, the method and the record named", () => {
+  const c = caseOf("G3-own-method-cannot-represent");
+  const r = run({ capability: "solve_flowsheet", input: { flowsheet: gFlowsheet(c, c.column.feed.T_K, null) } });
+  assert.equal(r.outcome, c.expected.outcome);
+  assert.equal(r.error.code, c.expected.code);
+  assert.equal(r.value, undefined);
+  assert.match(r.error.message, /the feed cannot cross into the column's method \(NRTL[\s\S]*Benzene: its liquid heat-capacity record starts at 278\.68 K/);
+});

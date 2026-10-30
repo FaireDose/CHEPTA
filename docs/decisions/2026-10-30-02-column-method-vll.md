@@ -51,13 +51,28 @@ liquids (below); when W7's pull request lands, its cases are to be run against t
   on again and the decanter one specification; no sideways scroll at 375 px and 1280 px (the table scrolls in its box);
   no page errors.
 
+## W7's M2b cases (merged into this branch, 2026-10-30)
+
+W7's pull request #191 landed on main while this one was open; main was merged in (a merge commit) and its cases run
+(`test/columns-vll.test.js`): F1 with phases "VLL", F2 (decanter, water-rich feed of two liquids, the case's branch
+with 0.994 butanol at the bottom) and F3 (ternary, two liquids on stages 5 to 10 only) within about 1e-10 K of W7's
+reference, the same two-liquid stages; G1, G2 (recycle) within 2e-8 K at every crossing and the energy balance within
+the case's limit; G3 refused with OUT_OF_RANGE as the case expects. To reach F2's branch the start changed: with two
+liquids the compositions start on a straight line between product estimates (from the feed's composition everywhere,
+F2 went to its other solution), and a decanter tries the start reflux ratios 1, 3, 0.5, 2 and 5 in turn. F1's text
+named the old remedy ("two liquids on the stages come with milestone M2b"); at the coordinating session's request it
+now names the option (wording only).
+
+## Decided by the maintainer (2026-10-30)
+
+- **The decanter as built:** one whole liquid refluxed; no reflux fraction per liquid.
+
 ## Choices made here, for the maintainer to confirm or change
 
 - **The whole liquid of a stage as the variables** (the "effective K-value" form) rather than separate variables for
   each liquid: exact where both liquids leave the stage together, as on trays without a decanter; written from the
   phase-equilibrium conditions, not taken from a source.
-- **The decanter returns one liquid entirely** (the usual heterogeneous-azeotropic arrangement); a decanter that
-  returns part of the other liquid too is not built.
+- **The start reflux ratios of a decanter** (1, 3, 0.5, 2, 5, tried in turn): only the start; this project's choice.
 - **Names by density** from the components' liquid densities mixed ideally; only to name the liquids, not for any
   calculation.
 - **The products with the column's own method** take the enthalpy flow of the column's last stages, and their
