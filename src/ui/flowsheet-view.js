@@ -69,7 +69,7 @@ const HINT = {
   "gibbs-reactor": "The species you tick reach the minimum of the Gibbs energy with the elements balanced: every reaction among them, written by CHEPTA (reformers, gasifiers, combustion). One phase, or vapour and liquid together; then the outlet temperature or the duty.",
   cstr: "A stirred tank at steady state: the reactions of the Reactions page with their kinetics, the volume (or catalyst mass), and the temperature or the duty.",
   pfr: "A tube (or a bundle of tubes) in plug flow: the reactions with their kinetics, the length and diameter; isothermal, a duty or a coolant; a pressure drop. Its profiles show under the drawing (double-click it).",
-  column: "Distillation. Shortcut (Fenske, Underwood, Gilliland): a light and a heavy key, the recovery of each, and the reflux ratio (or a multiple of the minimum); it gives the minimum and the number of stages, the feed stage and the duties, assuming a constant relative volatility. Rigorous: the stages, the feed stage and two specifications (reflux, boil-up, a product flow or a duty); every stage's balances are solved, and the profile shows under the drawing.",
+  column: "Distillation. Shortcut (Fenske, Underwood, Gilliland): a light and a heavy key, the recovery of each, and the reflux ratio (or a multiple of the minimum); it gives the minimum and the number of stages, the feed stage and the duties, assuming a constant relative volatility. Rigorous: the stages, the feed stage and two specifications (reflux, boil-up, a product flow or a duty); every stage's balances are solved, and the profile shows under the drawing. Options: look for two liquids on the stages (activity models), a decanter on the condenser, and the column's own property method.",
   "yield-reactor": "Turns a given fraction of a key reactant into the products you give per kg (or mol) of it, for a reaction known by its products (a fermentation, a pyrolysis). The mass must close; the elements are reported.",
 };
 /** Blocks on the roadmap, shown in the toolbar but not available yet. */
@@ -417,12 +417,16 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
     // the rigorous column (proposal 0015, M2a): stages, the feed stage, two specifications from six
     const RSPEC = [["reflux_ratio", "Reflux ratio", "L / D"], ["boilup_ratio", "Boil-up ratio", "V / B"], ["distillate_kmol_h", "Distillate flow", "kmol/h"],
       ["bottoms_kmol_h", "Bottoms flow", "kmol/h"], ["condenser_duty_kW", "Condenser duty (removed)", u.duty ?? "kW"], ["reboiler_duty_kW", "Reboiler duty", u.duty ?? "kW"]];
-    const given = RSPEC.map(r => r[0]).filter(k => spec[k] != null);
-    const pick = [given[0] ?? "reflux_ratio", given[1] ?? (given[0] === "distillate_kmol_h" ? "reflux_ratio" : "distillate_kmol_h")];
+    // milestone M2b: a decanter returns one liquid entirely, so it takes one specification, not the reflux or the
+    // condenser duty
+    const vll = spec.phases === "VLL", decanter = vll && spec.condenser === "decanter";
+    const allowed = decanter ? RSPEC.filter(r => !["reflux_ratio", "condenser_duty_kW"].includes(r[0])) : RSPEC;
+    const given = allowed.map(r => r[0]).filter(k => spec[k] != null);
+    const pick = decanter ? [given[0] ?? "distillate_kmol_h"] : [given[0] ?? "reflux_ratio", given[1] ?? (given[0] === "distillate_kmol_h" ? "reflux_ratio" : "distillate_kmol_h")];
     const specField = (slot) => {
       const key = pick[slot], other = pick[1 - slot], row = RSPEC.find(r => r[0] === key);
       const duty = key.endsWith("_kW");
-      return [selectField(`Specification ${slot + 1}`, RSPEC.filter(r => r[0] !== other).map(r => [r[0], r[1]]), key,
+      return [selectField(decanter ? "Specification" : `Specification ${slot + 1}`, allowed.filter(r => r[0] !== other).map(r => [r[0], r[1]]), key,
         v => setS({ [key]: null, [v]: spec[key] ?? null }), `fs-rspec${slot}-${b.id}`, uid),
       numberField(row[1], spec[key] == null ? "" : duty ? String(+dutyToDisplay(spec[key], u).toPrecision(8)) : String(spec[key]),
         t => { const v = num(t); if (v === undefined || (v != null && !(v > 0))) return false; setS({ [key]: v == null ? null : duty ? dutyFromDisplay(v, u) : v }); },
@@ -440,10 +444,22 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
         if (!v.every(k => Number.isInteger(k) && k >= 2)) return false;
         setS({ feed_stage: v.length === 1 ? v[0] : v });
       }, { id: `${b.id}-feed_stage`, uid, unit: nIn > 1 ? "one per feed, in order" : "from the top", placeholder: "10" }),
-      ...specField(0), ...specField(1),
-      segRow("Condenser", [["total", "Total"], ["partial", "Partial"]], spec.condenser ?? "total", v => setS({ condenser: v }), `fs-cond-${b.id}`),
+      ...specField(0), ...(decanter ? [] : specField(1)),
+      segRow("Liquids on the stages", [["VL", "One liquid"], ["VLL", "Look for two liquids"]], vll ? "VLL" : "VL",
+        v => setS(v === "VLL" ? { phases: "VLL" } : { phases: null, ...(spec.condenser === "decanter" ? { condenser: null, reflux_liquid: null, reflux_ratio: spec.reflux_ratio ?? 2 } : {}) }), `fs-phases-${b.id}`),
+      segRow("Condenser", [["total", "Total"], ["partial", "Partial"], ...(vll ? [["decanter", "Decanter"]] : [])], spec.condenser ?? "total", v => {
+        if (v !== "decanter") return setS({ condenser: v === "total" ? null : v, reflux_liquid: null, ...(decanter ? { reflux_ratio: spec.reflux_ratio ?? 2 } : {}) });
+        // to a decanter: drop the reflux and the condenser duty, and keep one specification
+        const keep = allowed.find(r => r[0] !== "reflux_ratio" && r[0] !== "condenser_duty_kW" && spec[r[0]] != null)?.[0];
+        setS({ condenser: "decanter", reflux_ratio: null, condenser_duty_kW: null,
+          ...Object.fromEntries(RSPEC.map(r => r[0]).filter(k => !["reflux_ratio", "condenser_duty_kW"].includes(k) && k !== keep).map(k => [k, null])),
+          ...(keep ? {} : { distillate_kmol_h: done?.state?.D_kmol_h != null ? +done.state.D_kmol_h.toPrecision(4) : null }) });
+      }, `fs-cond-${b.id}`),
+      ...(decanter ? [segRow("Refluxed liquid", [["light", "Light refluxed"], ["heavy", "Heavy refluxed"]], spec.reflux_liquid ?? "light", v => setS({ reflux_liquid: v === "light" ? null : v }), `fs-reflux-${b.id}`)] : []),
       P("P_kPa", "Column pressure"),
-      h("p", { class: "fa-in-hint" }, "Stages are counted from the top: 1 is the condenser, the last the reboiler. Empty pressure: the feed's; no pressure drop. Every stage's balances are solved together; a stage where a second liquid would form is refused (two liquids on the stages come later), and a stage that runs dry is warned.")));
+      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]],
+        spec.method?.model ?? "", v => setS({ method: v ? { model: v, ...(["PR", "SRK"].includes(v) ? {} : { vapour: spec.method?.vapour ?? "ideal" }) } : null }), `fs-cmethod-${b.id}`, uid),
+      h("p", { class: "fa-in-hint" }, `Stages are counted from the top: 1 is the condenser, the last the reboiler. Empty pressure: the feed's; no pressure drop. Every stage's balances are solved together, and a stage that runs dry is warned. ${vll ? "Two liquids are looked for on every stage (activity models only); a decanter refluxes one liquid and sends the other out as the distillate." : "A stage where a second liquid would form is refused; choose \u201cLook for two liquids\u201d to allow two liquids (activity models)."} ${spec.method?.model ? "With its own method, each stream that enters or leaves the column keeps its flows, pressure and enthalpy, and its temperature is found again in the receiving method (the change is in the results)." : ""}`)));
   } else if (b.type === "column") {
     const comps = fs.components.map(c => [c, nameOf(c)]);
     const R = spec.reflux_over_minimum != null ? "m" : "R";
@@ -1648,6 +1664,8 @@ export function resultsPanel({ state, f, sol, u, set }) {
           ["Top", fmtTemp(r.state.T_distillate_K, u, 2)],
           ["Bottom", fmtTemp(r.state.T_bottoms_K, u, 2)],
           ["Newton iterations", `${r.state.iterations}, balances closed`],
+          ...(r.state.phases === "VLL" ? [["Two liquids on stages", r.state.two_liquid_stages.length ? r.state.two_liquid_stages.join(", ") : "none"]] : []),
+          ...(r.state.method ? [["Property method of the column", r.state.method.model], ...r.state.boundary.map(q => [`Temperature change, ${q.stream}`, `${q.dT_K >= 0 ? "+" : ""}${q.dT_K.toFixed(2)} K`])] : []),
         ] : []),
         r.balance.material != null ? ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)]
           : ["Mass balance", r.balance.mass < 1e-9 ? "closed" : r.balance.mass.toExponential(1)],
@@ -1731,16 +1749,23 @@ function columnTable({ fs, b, r, u }) {
     const cell = v => h("td", { class: "fug-num" }, v);
     // the same decimals down a column (docs/UI_GUIDE.md, Tables); a trace below the last decimal in powers of ten
     const frac = v => (v == null ? "–" : v < 1e-12 ? "0" : v < 5e-5 ? v.toExponential(1) : v.toFixed(4));
+    // two liquids on the stages (M2b): the light and the heavy liquid of each stage that holds two
+    const two = r.state.phases === "VLL", lq = (s, k) => s.liquids?.[k] ?? null;
+    const liquidHeads = two ? [h("th", { scope: "col" }, "Light liquid, kmol/h"), h("th", { scope: "col" }, "Heavy liquid, kmol/h"),
+      ...fs.components.map(c => h("th", { scope: "col" }, `x′ ${nameOf(c)} (light)`)), ...fs.components.map(c => h("th", { scope: "col" }, `x″ ${nameOf(c)} (heavy)`))] : [];
+    const liquidCells = s => (two ? [cell(lq(s, "light") ? lq(s, "light").L_kmol_h.toFixed(3) : "–"), cell(lq(s, "heavy") ? lq(s, "heavy").L_kmol_h.toFixed(3) : "–"),
+      ...fs.components.map(c => cell(lq(s, "light") ? frac(lq(s, "light").x[c]) : "–")), ...fs.components.map(c => cell(lq(s, "heavy") ? frac(lq(s, "heavy").x[c]) : "–"))] : []);
+    const cond = r.state.condenser === "decanter" ? `decanter (the ${r.state.reflux_liquid} liquid is the reflux, the other the distillate)` : `${r.state.condenser} condenser`;
     return h("div", { class: "fs-tables", "data-fk": "fs-column-table" }, h("h3", {}, `${blockName(b)}: the profile, stage by stage`),
       h("div", { class: "fug-scroll" }, h("table", { class: "fug-table" },
         h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Stage"), h("th", { scope: "col" }, `T, ${tLabel(u)}`), h("th", { scope: "col" }, "Liquid, kmol/h"),
           h("th", { scope: "col" }, "Vapour, kmol/h"), h("th", { scope: "col" }, `Duty, ${u.duty ?? "kW"}`),
-          ...fs.components.map(c => h("th", { scope: "col" }, `x ${nameOf(c)}`)), ...fs.components.map(c => h("th", { scope: "col" }, `y ${nameOf(c)}`)))),
+          ...fs.components.map(c => h("th", { scope: "col" }, `x ${nameOf(c)}`)), ...fs.components.map(c => h("th", { scope: "col" }, `y ${nameOf(c)}`)), ...liquidHeads)),
         h("tbody", {}, ...p.map(s => h("tr", {}, h("th", { scope: "row" }, `${s.stage}${s.name === "stage" ? "" : ` ${s.name}`}`),
           cell(tToDisplay(s.T_K, u).toFixed(2)), cell(s.L_kmol_h.toFixed(3)), cell(s.V_kmol_h.toFixed(3)),
           cell(s.duty_kW === 0 ? "0" : dutyToDisplay(s.duty_kW, u).toFixed(1)),
-          ...fs.components.map(c => cell(frac(s.x[c]))), ...fs.components.map(c => cell(s.y ? frac(s.y[c]) : "–"))))))),
-      h("p", { class: "fa-in-hint" }, `Liquid and vapour leaving each stage; stage 1 is the ${r.state.condenser} condenser${r.state.condenser === "total" ? " (its liquid is the reflux; the distillate leaves as liquid too, so it has no vapour)" : ""}, stage ${r.state.stages} the reboiler. Duty: heat added (the condenser's is negative).`));
+          ...fs.components.map(c => cell(frac(s.x[c]))), ...fs.components.map(c => cell(s.y ? frac(s.y[c]) : "–")), ...liquidCells(s)))))),
+      h("p", { class: "fa-in-hint" }, `Liquid and vapour leaving each stage; stage 1 is the ${cond}${r.state.condenser === "total" ? " (its liquid is the reflux; the distillate leaves as liquid too, so it has no vapour)" : ""}, stage ${r.state.stages} the reboiler. Duty: heat added (the condenser's is negative).${two ? ` x is the whole liquid; where a stage holds two liquids, the light (x′) and the heavy (x″) one are given, named by density; both leave the stage together${r.state.condenser === "decanter" ? "; in the decanter they are separated: its liquid and x are the reflux's, the other liquid is the distillate" : ""}.` : ""}${r.state.boundary ? ` The column's own method: ${r.state.boundary.map(q => `${q.stream} ${q.dT_K >= 0 ? "+" : ""}${q.dT_K.toFixed(2)} K`).join(", ")} across the boundary.` : ""}`));
   }
   const row = (label, f) => h("tr", {}, h("th", { scope: "row" }, label), ...p.map(s => h("td", { class: "fug-num" }, f(s))));
   return h("div", { class: "fs-tables", "data-fk": "fs-column-table" }, h("h3", {}, `${blockName(b)}: the column`),

@@ -132,7 +132,8 @@ test("rigorous F1: 1-butanol + water, the one-liquid solution is unstable on sta
   assert.throws(() => engineRun(c), e => {
     assert.equal(e.code, c.expected.code);
     assert.deepEqual(e.details.stages.map(s => s.stage), unstable);
-    assert.match(e.message, /milestone M2b/);
+    // the remedy: since M2b, the option "look for two liquids on the stages" (test/columns-vll.test.js solves F1 with it)
+    assert.match(e.message, /look for two liquids on the stages/);
     return true;
   });
   const f = c.column.feed;

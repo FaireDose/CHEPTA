@@ -4,7 +4,8 @@
  *   "shortcut"   Fenske, Underwood and Gilliland for a light and a heavy key (src/units/columns/shortcut.js, where the
  *                equations, their open source and where the method holds are written);
  *   "rigorous"   MESH on equilibrium stages (milestone M2a): the column engine (src/units/columns/engine.js, where the
- *                equations, the solver, its open sources and its checks are written), with the flowsheet's method.
+ *                equations, the solver, its open sources and its checks are written), with the flowsheet's method or
+ *                its own (milestone M2b), and optionally two liquids on the stages and a decanter.
  *
  * Absorber, stripper and extraction come later as configurations of the same block (M3). The specification:
  *
@@ -25,8 +26,20 @@
  *     condenser: "total" | "partial",                     // default total
  *     P_kPa: 101.325,                                     // default the (first) feed's pressure; no pressure drop
  *     two of: reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW,
- *     max_iterations: 50 }                                // optional: a limit on the Newton iterations (none: the
+ *     max_iterations: 50,                                 // optional: a limit on the Newton iterations (none: the
  *                                                         // solver's own limits, and the continuation if needed)
+ *     phases: "VL" | "VLL",                               // optional (M2b): "VLL" looks for two liquids on the stages
+ *                                                         // (activity models only), off by default
+ *     condenser: "decanter", reflux_liquid: "light",      // (M2b, with "VLL") the condensate splits; one liquid (light
+ *                                                         // or heavy, by density) is the reflux, the other the
+ *                                                         // distillate; then one specification, not the reflux ratio
+ *                                                         // or the condenser duty
+ *     method: { model, vapour, sets, prefer } }           // optional (M2b): the column's own property method
+ *
+ * The column's own method (proposal 0015, Part I, section 3): the P-H boundary at every stream that enters or leaves
+ * the column keeps the component flows, the pressure and the enthalpy flow, and finds the temperature by a P-H flash in
+ * the receiving method (the change is reported in state.boundary); a state the receiving method cannot represent is
+ * refused with the reason. The flowsheet's energy balance then closes, since the enthalpy flows are kept.
  *
  * The keys of the other mode are kept (so that a person can switch back) and not used. Several feeds: the rigorous mode
  * only; each enters its stage as one stream. Outlets as the shortcut's; `profile` holds every stage (T, P, L, V, x, y,
@@ -129,9 +142,9 @@ function checkRigorous(spec) {
   const condenser = spec.condenser ?? "total";
   if (!["total", "partial", "decanter"].includes(condenser)) throw fail("BAD_INPUT", `Column: condenser must be "total", "partial" or "decanter" (got ${JSON.stringify(condenser)}).`);
   const phases = spec.phases ?? "VL";
-  if (!["VL", "VLL"].includes(phases)) {
-    throw fail(phases === "LL" ? "NOT_AVAILABLE" : "BAD_INPUT", phases === "LL" ? "Column: phases \"LL\" (extraction) comes with milestone M3 of proposal 0015." : `Column: phases must be "VL" (vapour and one liquid, the default) or "VLL" (look for two liquids on the stages) (got ${JSON.stringify(spec.phases)}).`);
-  }
+  // "LL" is refused when solved (not built yet, the outcome "unsupported"), as a purity is
+  if (phases === "LL") return { mode: "rigorous", extraction: true };
+  if (!["VL", "VLL"].includes(phases)) throw fail("BAD_INPUT", `Column: phases must be "VL" (vapour and one liquid, the default) or "VLL" (look for two liquids on the stages) (got ${JSON.stringify(spec.phases)}).`);
   const decanter = condenser === "decanter";
   if (decanter && phases !== "VLL") throw fail("BAD_INPUT", "Column: a decanter on the condenser separates two liquids; turn on \"look for two liquids on the stages\" (phases: \"VLL\").");
   const refluxLiquid = spec.reflux_liquid ?? "light";
@@ -356,7 +369,7 @@ function solveRigorous(sys, feeds, s) {
   const notes = [
     `Rigorous column: ${N} stages (1 the ${condenserWord}, ${N} the reboiler), feed${s.feedStages.length > 1 ? "s" : ""} on stage${s.feedStages.length > 1 ? "s" : ""} ${s.feedStages.join(", ")}, at ${fmt(P)} kPa without pressure drop. The MESH equations of every stage were solved together by Newton's method (Naphtali-Sandholm), started by the ${r.solver.start}, in ${r.iterations} iterations; every group of residuals is within its tolerance (state.residuals). Converged is not validated against data: the result is as good as the method and its parameters.`,
     ...(s.phases === "VLL" ? [twoLiquidStages.length
-      ? `Two liquids on stage${twoLiquidStages.length > 1 ? "s" : ""} ${twoLiquidStages.join(", ")} (looked for on every stage: the tangent-plane test of each stage's liquid, then the liquid-liquid split at its temperature); both liquids of a stage leave it together. They are named light and heavy by density.`
+      ? `Two liquids on stage${twoLiquidStages.length > 1 ? "s" : ""} ${twoLiquidStages.join(", ")} (looked for on every stage: the tangent-plane test of each stage's liquid, then the liquid-liquid split at its temperature); both liquids of a stage leave it together${s.condenser === "decanter" ? ", except in the decanter, where they are separated" : ""}. They are named light and heavy by density.`
       : "Two liquids were looked for on every stage (phases VLL); every stage holds one liquid."] : []),
     ...(own ? [`The column uses its own property method, ${methodName(s.method)}, while the flowsheet uses ${sys.model}. At each stream that enters or leaves the column the component flows, the pressure and the enthalpy flow are kept and the temperature is found by a P-H flash in the receiving method (state.boundary): ${boundary.map(q => `${q.stream} ${q.dT_K >= 0 ? "+" : ""}${fmt(q.dT_K)} K`).join(", ")}.`] : []),
     ...r.notes,
@@ -389,6 +402,7 @@ registerUnit({
   dof,
   solve({ sys, inlets, spec }) {
     if (spec.purity) throw fail("NOT_AVAILABLE", `Column: purity specifications come with milestone M4 of proposal 0015; give ${spec.mode === "rigorous" ? "flows, ratios or duties" : "the recoveries of the keys"} instead.`);
+    if (spec.extraction) throw fail("NOT_AVAILABLE", "Column: phases \"LL\" (two liquids without a vapour: extraction) comes with milestone M3 of proposal 0015; the column solves \"VL\" and \"VLL\".");
     if (spec.mode === "rigorous") return solveRigorous(sys, inlets.in, spec);
     if (inlets.in.length > 1) throw fail("BAD_INPUT", "Column: the shortcut column takes one feed; mix the feeds first, or use the rigorous mode, which takes several.");
     return solveShortcut(sys, inlets.in[0], spec);

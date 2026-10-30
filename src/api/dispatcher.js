@@ -220,8 +220,13 @@ function solvedFlowsheet(flowsheet, userData) {
       pairs: (info.pairs ?? []).map(p => ({ pair: p.pair, set: p.set ?? null, tier: p.tier ?? null })),
       missing_pairs: info.missingPairs ?? [],
       notes, warnings,
+      // blocks with their own property method (a column, milestone M2b), and the P-H boundary's temperature changes
+      ...(Object.values(result.blocks).some(b => b.method) ? { block_methods: Object.fromEntries(Object.entries(result.blocks).filter(([, b]) => b.method)
+        .map(([id, b]) => [id, { ...b.method, ...(b.state?.boundary ? { boundary_streams: b.state.boundary } : {}) }])) } : {}),
     },
-    reproduction: systemReproduction(sys, userData),
+    reproduction: { ...systemReproduction(sys, userData),
+      ...(Object.values(result.blocks).some(b => b.method) ? { block_methods: Object.fromEntries(Object.entries(result.blocks).filter(([, b]) => b.method)
+        .map(([id, b]) => [id, { model: b.method.model, vapour: b.method.vapour ?? null, sets: b.method.sets ?? null, prefer: b.method.prefer ?? null }])) } : {}) },
   };
 }
 
@@ -269,7 +274,7 @@ registerCapability({
       components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
       thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default NRTL with an ideal-gas vapour" },
       feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF" },
-      column: { type: "object", description: "the Column block's specification. mode \"shortcut\" (default): light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa. mode \"rigorous\": stages (the condenser and the reboiler counted, 1 the condenser), feed_stage, condenser, P_kPa, and two of reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW" },
+      column: { type: "object", description: "the Column block's specification. mode \"shortcut\" (default): light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa. mode \"rigorous\": stages (the condenser and the reboiler counted, 1 the condenser), feed_stage, condenser (\"total\", \"partial\" or \"decanter\"), P_kPa, and two of reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW (one, not the reflux or the condenser duty, with a decanter); phases \"VL\" (default) or \"VLL\" (look for two liquids on the stages; activity models); reflux_liquid \"light\" or \"heavy\" (the decanter's refluxed liquid); method { model, vapour, sets, prefer }: the column's own property method, with the P-H boundary at its streams" },
       user_data: USER_DATA,
     } },
   run: input => {

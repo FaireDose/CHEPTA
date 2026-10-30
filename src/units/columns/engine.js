@@ -1,10 +1,12 @@
 /**
  * The column engine (proposal 0015, Part I, section 1, and section 9, contract 3): one engine for every column
  * configuration (distillation, absorber, stripper, extraction). Milestone M2a builds the vapour-liquid cascade with a
- * condenser (total or partial) and a partial reboiler; the other configurations ("LL", "VLL", side draws) refuse with
- * NOT_AVAILABLE until their milestone.
+ * condenser (total or partial) and a partial reboiler; milestone M2b adds two liquids on the stages (phases "VLL",
+ * src/units/columns/two-liquids.js) and a decanter on the condenser; the other configurations ("LL", side draws) refuse
+ * with NOT_AVAILABLE until their milestone.
  *
- *   solveCascade({ sys | thermo, stages, feeds, draws, specs, ends, phases: "VL", P_kPa, start })
+ *   solveCascade({ sys | thermo, stages, feeds, draws, specs, ends: { condenser, reflux_liquid }, phases: "VL" | "VLL",
+ *                  P_kPa, start })
  *   → { stages: [...], converged, residuals: { material, equilibrium, summation, energy, specifications },
  *       tolerances, iterations, warnings, products, duties, solver }
  *
@@ -26,7 +28,15 @@
  * composition, l_i D - d_i L = 0 for all components but the last, and that the liquid is at its bubble point,
  * sum_i K_i x_i - 1 = 0 (DWSIM writes the same two conditions for its total condenser). The energy balances of the
  * condenser and of the reboiler are replaced by the two specifications; their duties follow from those balances. A
- * specification of a duty keeps that balance, with the duty given. Each specification is written on the stage whose
+ * specification of a duty keeps that balance, with the duty given.
+ * A decanter (condenser "decanter", phases "VLL"; milestone M2b) is a total condenser whose liquid splits into two: its
+ * "liquid" variables hold the reflux (one of the two liquids, returned entirely) and its "vapour" variables the other
+ * liquid, the distillate. Its E equations say that both liquids are in equilibrium with one vapour,
+ * K_i(x_reflux) x_reflux,i - K_i(x_distillate) x_distillate,i = 0 (equal activities), and its energy row that the reflux
+ * is at its bubble point, sum_i K_i x_i - 1 = 0; the condenser's energy balance gives its duty, and the column takes one
+ * specification, on the bottom or a product flow. With two liquids on the stages, each stage's whole liquid takes the
+ * place of the one liquid, its K-values and enthalpy from the stage's liquid-liquid split (two-liquids.js). Each
+ * specification is written on the stage whose
  * variables it holds, so that the Jacobian stays block-tridiagonal; a product flow is written on the other end where
  * needed, as B = F - D (true at every solution, since the material balances then close).
  *
@@ -56,10 +66,11 @@
  * result): proposal 0015's "every stage's balances closed".
  *
  * After it converges:
- *  - the phase-stability check: the liquid of every stage is tested for a split into two liquids (Michelsen's
- *    tangent-plane test of src/equilibrium/stability.js for activity models, src/equilibrium/eos-stability.js for an
- *    equation of state). A stage where a second liquid would form is refused (PHASE_SPLIT), never returned as a
- *    metastable one-liquid answer (contract 3); two liquids on the stages come with milestone M2b;
+ *  - the phase-stability check: with phases "VL" the liquid of every stage is tested for a split into two liquids
+ *    (Michelsen's tangent-plane test of src/equilibrium/stability.js for activity models, src/equilibrium/eos-stability.js
+ *    for an equation of state). A stage where a second liquid would form is refused (PHASE_SPLIT), never returned as a
+ *    metastable one-liquid answer (contract 3). With phases "VLL" each of a stage's two liquids is tested for a third,
+ *    which is refused (as by the flash); a decanter whose two liquids came out the same is refused;
  *  - the dry-stage warning (DRY_STAGE): a stage between the condenser and the reboiler whose liquid falls below
  *    DRY_FRACTION (1 %) of the column's largest vapour flow (this project's choice, no open source found; W7's case D1
  *    holds for any threshold between 0.001 and 2/3), or a stage below the condenser whose vapour falls below 1/TURNDOWN
@@ -67,8 +78,10 @@
  *    hydraulic checks with the trays' geometry (flooding, weeping) come with milestone M2b.
  *
  * The thermodynamics reach the engine as an adapter (`thermo`), built from the flowsheet's system by cascadeThermo(sys)
- * or written directly for a model system (test/columns-rigorous.test.js): { n, names, lnK(x, y, T), hL(x, T),
- * hV(y, T), bubbleT(x), stable?(x, T), warnings?(T) }, at the column's pressure.
+ * or written directly for a model system (test/columns-rigorous.test.js): { n, names, lnK(x, y, T, j?), hL(x, T, j?),
+ * hV(y, T), bubbleT(x), stable?(x, T), warnings?(T) }, at the column's pressure (j, the stage, is only a hint for the
+ * two-liquid adapter's starts). The column's own property method (milestone M2b) is the block's: it passes that
+ * method's system, and the P-H boundary at its streams (src/units/columns/column.js).
  */
 import { fail } from "../../util/errors.js";
 import { anyBubbleT } from "../../equilibrium/bubble-any.js";
