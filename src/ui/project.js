@@ -9,7 +9,8 @@
  * can be read without CHEPTA (it is a record and is never read back into a calculation).
  *
  * Format 6 (the "fugacity_project" key is the format version): format 5 with the flowsheet's Column block (proposal
- * 0015, milestone M1; written only when the flowsheet has a column). Format 5: format 4 with the Charts workspace's fluid charts
+ * 0015, milestone M1; written only when the flowsheet has a column), and the Column workspace's own document ("column",
+ * a flowsheet with one column; M2b). Format 5: format 4 with the Charts workspace's fluid charts
  * (`workbench.chart`: the chart, isobars, isotherms, compression, components and feed; proposal 0013, step 7). Format 4
  * is format 3 with the flowsheet's energy streams, its heat exchanger, valve, pump, compressor and expander blocks,
  * and the Heat exchanger workspace (`workbench.hx`) of proposal 0013. Format 3 is format 2 with "user_data"; format 1
@@ -36,6 +37,7 @@
  *       "background", "residueCurves", "isotherms", "grid", "panels", "ribbon"
  *     },
  *     "flowsheet": { "components", "thermo", "blocks", "streams", "solver" },   // optional; src/flowsheet/document.js
+ *     "column": { ...the same },   // optional, format 6: the Column workspace (column-workspace.js)
  *     "results": { "flash": { "columns", "rows", "summary", "model", "spec", "sources" } },  // optional
  *     "user_data": { "properties", "components", "pairs", "groups" }   // optional; format 3 (src/thermo/user-data.js)
  *   }
@@ -92,13 +94,16 @@ export function projectOf(state, { version = "", results, now = new Date() } = {
   const fs = state.flowsheet;
   const flowsheet = fs && (fs.components?.length || fs.blocks?.length) ? normalizeFlowsheet(fs, userOverlay(state)) : null;
   const needs4 = w.hx != null || !!flowsheet?.energyStreams || !!flowsheet?.blocks.some(b => FORMAT_4_BLOCKS.includes(b.type));
-  const needs6 = hasBlock(flowsheet, FORMAT_6_BLOCKS) || hasBlock(state.reactor, FORMAT_6_BLOCKS);
+  const needs6 = hasBlock(flowsheet, FORMAT_6_BLOCKS) || hasBlock(state.reactor, FORMAT_6_BLOCKS)
+    || !!state.column?.components?.length;
   const doc = { fugacity_project: needs6 ? 6 : w.chart ? 5 : needs4 ? 4 : state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
   if (state.title) doc.title = String(state.title);
   doc.workbench = w;
   if (flowsheet) doc.flowsheet = flowsheet;
   // the Reactor workspace's own document, when it has been used
   if (state.reactor?.components?.length) doc.reactor = normalizeFlowsheet(state.reactor, userOverlay(state));
+  // the Column workspace's own document (format 6), when it has been used
+  if (state.column?.components?.length) doc.column = normalizeFlowsheet(state.column, userOverlay(state));
   if (state.sharedReactions?.length) doc.shared_reactions = copy(state.sharedReactions);
   if (results && Object.keys(results).length) doc.results = copy(results);
   if (state.userData) doc.user_data = copy(state.userData);
@@ -148,6 +153,7 @@ export function readProject(input) {
   if (w.hx != null && f < 4) throw new Error(`workbench.hx needs format 4 (this file says format ${f}).`);
   if (w.chart != null && f < 5) throw new Error(`workbench.chart needs format 5 (this file says format ${f}).`);
   if ((hasBlock(doc.flowsheet, FORMAT_6_BLOCKS) || hasBlock(doc.reactor, FORMAT_6_BLOCKS)) && f < 6) throw new Error(`The flowsheet's column block needs format 6 (this file says format ${f}).`);
+  if (doc.column != null && f < 6) throw new Error(`The Column workspace needs format 6 (this file says format ${f}).`);
   if (doc.flowsheet?.energyStreams != null && f < 4) throw new Error(`flowsheet.energyStreams needs format 4 (this file says format ${f}).`);
   if (doc.user_data != null) {
     if (f < 3) throw new Error(`user_data needs format 3 (this file says format ${f}).`);
@@ -188,6 +194,7 @@ export function stateFromProject(input) {
   if (doc.title) cfg.title = String(doc.title);
   if (doc.flowsheet != null) cfg.flowsheet = doc.flowsheet;
   if (doc.reactor != null) cfg.reactor = doc.reactor;
+  if (doc.column != null) cfg.column = doc.column;
   if (doc.shared_reactions != null) cfg.sharedReactions = doc.shared_reactions;
   if (doc.user_data != null) cfg.userData = doc.user_data;
   let s = initialState(cfg);
