@@ -83,6 +83,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     (docs/decisions/2026-10-29-07-ui-fixes-round-1.md): ten of the review's 17 items fixed. To check: the 1 mW
     threshold for a zero duty; which of the items left for later come next. Then W10 checks W5's and W6's new views.
   - Waiting: W1, W3, W5 and W6.
+- **The methods track** (docs/decisions/2026-10-30-01-methods-track.md): Wilson (v0.6), PSRK/MHV2, CPA, PC-SAFT,
+  electrolytes and ionic liquids (v0.9) added to the roadmap. Decide when Wilson starts and which of the others first.
 - **Version 0.5.0 and publishing** (docs/decisions/2026-10-29-12-release-0.5.0-and-publishing.md): the version now comes
   from the release's tag. To publish 0.5.0: merge, then Actions, "Publish to npm", "Run workflow", and approve on npmjs.com.
 - **Benzene + toluene k_ij** (docs/decisions/2026-10-29-11-benzene-toluene-kij.md): PR and SRK k_ij fitted to the
