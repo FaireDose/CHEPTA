@@ -24,6 +24,8 @@ export const WORKSPACES = [
   // proposal 0013: pre-sizing a heat exchanger (step 2) and rating one of a given area (step 8)
   { id: "hx", label: "Heat exchanger", short: "Exchanger", icon: "hx", views: ["hx"], view: "hx" },
   { id: "reactor", label: "Reactor", short: "Reactor", icon: "reactor", views: ["reactor"], view: "reactor" },
+  // proposal 0015, step 4 (M2b): a column of its own, shortcut or rigorous, with its profile and McCabe-Thiele
+  { id: "column", label: "Column", short: "Column", icon: "column", views: ["column"], view: "column" },
   { id: "flowsheet", label: "Flowsheet", short: "Flowsheet", icon: "flowsheet", views: ["flowsheet"], view: "flowsheet" },
 ];
 
@@ -33,10 +35,7 @@ export const WORKSPACES = [
  */
 export const SECTIONS = [
   { id: "thermo", label: "Properties & Equilibria", short: "Prop. & eq.", icon: "ternary", workspaces: ["equilibrium", "steam", "solubility", "properties"] },
-  { id: "units", label: "Unit models", short: "Units", icon: "drum", workspaces: ["flash", "hx", "reactor"],
-    locked: [
-      { id: "distillation", label: "Distillation", icon: "column", note: "The Column workspace (McCabe-Thiele): roadmap v0.5 updates, not available yet. The flowsheet's Column block has the shortcut and the rigorous methods." },
-    ] },
+  { id: "units", label: "Unit models", short: "Units", icon: "drum", workspaces: ["flash", "hx", "reactor", "column"] },
   { id: "flowsheet", label: "Flowsheet", short: "Flowsheet", icon: "flowsheet", workspaces: ["flowsheet"] },
 ];
 
@@ -99,7 +98,8 @@ export const INPUTS = {
   // a pure fluid or a mixture with an equation of state (proposal 0013, step 7)
   charts: { kind: "list", min: 1, max: 6, liquid: false, eosOnly: true, what: "a fluid chart" },
   flowsheet: { kind: "none", what: "the flowsheet" },
-  reactor: { kind: "none", what: "the reactor" },   // its own setup, as the flowsheet's (state.reactor)   // its own setup: components and method of the flowsheet
+  reactor: { kind: "none", what: "the reactor" },   // its own setup, as the flowsheet's (state.reactor)
+  column: { kind: "none", what: "the column" },     // its own setup, as the flowsheet's (state.column)
 };
 
 const WORDS = ["no", "one", "two", "three", "four", "five", "six"];
@@ -246,6 +246,7 @@ export function seedInputs(components = [], { gas, solvent, propComponent, model
     charts: normalizeInputs("charts", ids.slice(0, 6), ud),
     flowsheet: [],
     reactor: [],
+    column: [],
   };
 }
 

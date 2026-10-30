@@ -75,7 +75,8 @@
  *    DRY_FRACTION (1 %) of the column's largest vapour flow (this project's choice, no open source found; W7's case D1
  *    holds for any threshold between 0.001 and 2/3), or a stage below the condenser whose vapour falls below 1/TURNDOWN
  *    of the column's largest vapour flow (the bubble-cap turndown of 5 in the open source cited at TURNDOWN). The
- *    hydraulic checks with the trays' geometry (flooding, weeping) come with milestone M2b.
+ *    hydraulic checks with the trays' geometry (flooding, weeping) are the Column block's sizing option
+ *    (./hydraulics.js, milestone M2b).
  *
  * The thermodynamics reach the engine as an adapter (`thermo`), built from the flowsheet's system by cascadeThermo(sys)
  * or written directly for a model system (test/columns-rigorous.test.js): { n, names, lnK(x, y, T, j?), hL(x, T, j?),
@@ -599,7 +600,7 @@ export function solveCascade(opts = {}) {
   }
   if (dryV.length) {
     warnings.push({ code: "DRY_STAGE", stage: dryV[0], stages: dryV, phase: "vapour", message: `Stage${dryV.length > 1 ? "s" : ""} ${dryV.join(", ")} carr${dryV.length > 1 ? "y" : "ies"} little vapour: ${fmt(Math.min(...dryV.map(k => P[k - 1].V)) / Vmax * 100)} % of the column's largest vapour flow, below 1/${TURNDOWN}, the turndown of bubble-cap trays (sieve trays 1/2, valve trays 1/4; Fermeglia 2021, slide 54). With one diameter for the whole column, ${dryV.length > 1 ? "these trays" : "this tray"} would weep. The usual cause: too low a boil-up, or a cold feed.`,
-      remedy: "Raise the boil-up (the reboiler duty), preheat the feed, or give this section a smaller diameter; the check with the trays' geometry comes with milestone M2b." });
+      remedy: "Raise the boil-up (the reboiler duty), preheat the feed, or give this section a smaller diameter; the column's sizing option checks every tray against flooding and weeping." });
   }
   const notes = [...new Set(P.flatMap(p => (th.warnings ? th.warnings(p.T) : [])))];
   const stages = P.map((p, j) => ({

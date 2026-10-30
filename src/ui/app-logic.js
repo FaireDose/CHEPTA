@@ -41,6 +41,7 @@ export const VIEWS = {
   hx: { workspace: "hx", label: "Heat exchanger" },
   flowsheet: { workspace: "flowsheet", label: "Flowsheet" },
   reactor: { workspace: "reactor", label: "Reactor" },
+  column: { workspace: "column", label: "Column" },
   henry: { workspace: "solubility", label: "Gas solubility" },
   solid: { workspace: "solubility", label: "Solid solubility" },
   sle: { workspace: "solubility", label: "Solid-liquid diagram" },
@@ -269,7 +270,7 @@ export function resolveView(wanted, ids, model = "NRTL", ud = null) {
   let v = aliasOf(wanted);
   if (v === "eos") v = ids.length === 2 ? "pxy" : "envelope";
   // the flowsheet has its own components and method (state.flowsheet): a start link to it opens it as it is
-  if (v === "flowsheet" || v === "reactor") return v;
+  if (v === "flowsheet" || v === "reactor" || v === "column") return v;
   if (!ids.length) return VIEWS[v] ? v : "txy";
   if (VIEWS[v] && viewAvailability(v, ids, model, ud).enabled) return v;
   const liq = liquids(ids, ud).length;
@@ -398,6 +399,8 @@ export function initialState(cfg = {}) {
     flowsheet: normalizeFlowsheet(cfg.flowsheet, ud),
     // the Reactor workspace of the Unit models: a flowsheet of its own (reactor-workspace.js)
     reactor: normalizeFlowsheet(cfg.reactor, ud),
+    // the Column workspace of the Unit models: a flowsheet of its own too (column-workspace.js)
+    column: normalizeFlowsheet(cfg.column, ud),
     // reactions saved "global" (the maintainer, 2026-10-28): one list for the Flowsheet and the Reactor workspace
     sharedReactions: sharedList(cfg.sharedReactions),
     prefer: normalizePrefer(cfg.prefer),
@@ -596,6 +599,7 @@ export function applyPatch(state, patch = {}) {
   if ("prefer" in patch) next.prefer = normalizePrefer(patch.prefer);
   if ("flowsheet" in patch) next.flowsheet = normalizeFlowsheet(patch.flowsheet, ud);
   if ("reactor" in patch) next.reactor = normalizeFlowsheet(patch.reactor, ud);
+  if ("column" in patch) next.column = normalizeFlowsheet(patch.column, ud);
   if ("sharedReactions" in patch) next.sharedReactions = sharedList(patch.sharedReactions);
   if (patch.flash != null) next.flash = normalizeFlash(patch.flash, next.flash);
   if ("hx" in patch) next.hx = patch.hx == null ? null : normalizeHx(patch.hx, next.hx ?? undefined);

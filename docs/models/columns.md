@@ -220,3 +220,23 @@ cold start 1.9 s (6 Newton iterations), warm start at R = 3.3 0.6 s (5 iteration
 
 The engine's limits: extremely pure products (impurities below about 1e-30, for example 101 stages at five times the
 minimum reflux) may not converge; they are refused as not converged.
+
+## The Column workspace and McCabe-Thiele
+
+The Column workspace (Unit models) holds one column with its feed, solved as the block above; it draws the rigorous
+column's temperature, flows and compositions by stage and, for two components, McCabe-Thiele's diagram
+(`src/ui/column-mccabe.js`). The construction is The ChemSep Book's (2nd ed., section 1.3.3, pp. 26-31, eqs. 1.8 to 1.17;
+public domain): the equilibrium curve is the column's own method (the bubble point of each liquid at the column's
+pressure), the q-line comes from the feed's enthalpy, the operating lines from the solved column's x_D, x_B and reflux
+by constant molar overflow; the stages are stepped off from the distillate, changing lines at the column's feed stage
+(a rigorous column) or at the lines' intersection (the best feed stage). The minimum reflux is where an operating line
+first touches the curve: at the q-line or, for a curve that bends to the diagonal (ethanol + water), at a tangent. Stage
+counts follow the block's: a total condenser is not an equilibrium stage.
+
+Checked in `test/column-workspace.test.js` (benzene + toluene, Peng–Robinson): R_min equals Underwood's within 1 %,
+N_min Fenske's within 5 % (the curve's volatility changes 15 % along the column), N Gilliland's within one stage, and
+four rigorous columns step off to their equilibrium stages within one stage. McCabe-Thiele assumes constant molar
+overflow; where the heats of vaporization differ (ethanol + water) it gives fewer stages than the rigorous column, and
+the diagram shows the column's own operating points so the difference is seen.
+
+In the flowsheet's Excel workbook each column has a sheet: its inputs, its results with their source, and every stage.

@@ -654,6 +654,7 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
   }
   // proposal 0013: the heater's optional sizing, the two-stream exchanger, the valve, the pump, energy streams
   if (b.type === "heater") secs.push(sizingSection({ b, spec, setS, inputsSection, uid, u, done, rateable: energyOf(fs, b.id)?.role !== "in" }));
+  if (b.type === "column" && spec.mode === "rigorous") secs.push(columnSizingSection({ b, spec, setS, inputsSection, uid, done }));
   if (b.type === "hx") secs.push(...hxSections({ b, spec, setS, inputsSection, uid, u, T, P, plain, done }));
   if (b.type === "compressor" || b.type === "expander") {
     const up = b.type === "compressor", word = up ? "rise" : "drop", eta = up ? COMPRESSOR_EFFICIENCY : EXPANDER_EFFICIENCY;
@@ -755,6 +756,25 @@ function sizingSection({ b, spec, setS, inputsSection, uid, u, done, rateable })
     ...(kind && kind !== "electric" ? [...uFields(z.U, U => putZ({ U }), uid, `${b.id}-sz`, { optional: false }),
       selectField("Arrangement", ARRS, z.arrangement ?? "counterflow", v => putZ({ arrangement: v }), `${b.id}-sz-arr`, uid)] : []),
     !rating && rateable && kind ? rateButton("heater", spec, setS, done, b.id) : null);
+}
+
+/** The rigorous column's optional sizing (proposal 0015, M2b): the diameter by Fair's method, or a given one checked. */
+function columnSizingSection({ b, spec, setS, inputsSection, uid, done }) {
+  const z = spec.sizing ?? null, mode = !z ? "" : z.diameter_m != null ? "checked" : "sized";
+  const putZ = patch => setS({ sizing: patch == null ? null : { ...(z ?? {}), ...patch } });
+  const field = (key, label, unit, placeholder, ok, scale = 1) => numberField(label, z?.[key] == null ? "" : String(+(z[key] * scale).toPrecision(6)), t => {
+    const v = num(t); if (v === undefined || (v != null && !ok(v))) return false; putZ({ [key]: v == null ? null : v / scale });
+  }, { id: `${b.id}-csz-${key}`, uid, unit, placeholder });
+  return inputsSection("Diameter and flooding (optional)",
+    selectField("Sizing", [["", "None"], ["sized", "Size the diameter"], ["checked", "Check a given diameter"]], mode,
+      v => putZ(v === "" ? null : v === "sized" ? { diameter_m: null } : { diameter_m: z?.diameter_m ?? +(done?.sizing?.dimensions?.D_m ?? 1).toPrecision(3) }), `${b.id}-csz-mode`, uid),
+    ...(mode ? [
+      mode === "checked" ? field("diameter_m", "Column diameter", "m", "", v => v > 0) : null,
+      field("tray_spacing_m", "Tray spacing", "m, 0.15 to 0.9", "0.6", v => v >= 0.15 && v <= 0.9),
+      field("design_fraction", "Design fraction of flooding", "%", "80", v => v > 0 && v <= 100, 100),
+      selectField("Trays", [["sieve", "Sieve"], ["valve", "Valve"], ["bubble-cap", "Bubble cap"]], z.tray ?? "sieve", v => putZ({ tray: v }), `${b.id}-csz-tray`, uid),
+      h("p", { class: "fa-in-hint" }, "Fair's flooding velocity on every tray (University of Trieste course slides); the diameter from the tray that needs the largest area, 10 % of it for the downcomer. Above the design fraction: a flooding warning; below 1/2 of flooding (sieve), 1/4 (valve) or 1/5 (bubble cap): a weeping warning. Holes, foaming and the downcomer share: the solve_column capability."),
+    ] : []));
 }
 
 /** The two-stream exchanger: one specification, pressure drops, and U (optional) for the area. */
@@ -1666,6 +1686,11 @@ export function resultsPanel({ state, f, sol, u, set }) {
           ["Newton iterations", `${r.state.iterations}, balances closed`],
           ...(r.state.phases === "VLL" ? [["Two liquids on stages", r.state.two_liquid_stages.length ? r.state.two_liquid_stages.join(", ") : "none"]] : []),
           ...(r.state.method ? [["Property method of the column", r.state.method.model], ...r.state.boundary.map(q => [`Temperature change, ${q.stream}`, `${q.dT_K >= 0 ? "+" : ""}${q.dT_K.toFixed(2)} K`])] : []),
+          ...(z?.basis?.governing_stage != null ? [
+            [z.basis.mode === "checked" ? "Diameter (given)" : "Diameter", `${fmtShort(z.dimensions.D_m, 3)} m, trays ${fmtShort(z.dimensions.tray_spacing_m, 3)} m apart`],
+            ["Highest fraction of flooding", `${fmtShort(100 * z.basis.max_fraction_of_flooding, 3)} % (design ${fmtShort(100 * z.basis.design_fraction, 3)} %)`],
+            z.basis.mode === "sized" ? ["Diameter set by", `stage ${z.basis.governing_stage}`] : null,
+          ] : []),
         ] : []),
         r.balance.material != null ? ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)]
           : ["Mass balance", r.balance.mass < 1e-9 ? "closed" : r.balance.mass.toExponential(1)],
@@ -1742,7 +1767,7 @@ function streamRows(fs, res, u, state) {
 const molarMassOf = c => byId().get(c)?.MW ?? NaN;
 
 /** The column's result table: the shortcut's condenser, feed stage and reboiler, or the rigorous column's every stage. */
-function columnTable({ fs, b, r, u }) {
+export function columnTable({ fs, b, r, u }) {
   const p = r.profile;
   if (r.state?.mode === "rigorous") {
     // one row per stage (a column has many stages and few components), in a box that scrolls sideways
@@ -1756,16 +1781,20 @@ function columnTable({ fs, b, r, u }) {
     const liquidCells = s => (two ? [cell(lq(s, "light") ? lq(s, "light").L_kmol_h.toFixed(3) : "–"), cell(lq(s, "heavy") ? lq(s, "heavy").L_kmol_h.toFixed(3) : "–"),
       ...fs.components.map(c => cell(lq(s, "light") ? frac(lq(s, "light").x[c]) : "–")), ...fs.components.map(c => cell(lq(s, "heavy") ? frac(lq(s, "heavy").x[c]) : "–"))] : []);
     const cond = r.state.condenser === "decanter" ? `decanter (the ${r.state.reflux_liquid} liquid is the reflux, the other the distillate)` : `${r.state.condenser} condenser`;
+    // the fraction of flooding of every tray, when the column is sized (the condenser and the reboiler are not trays)
+    const flood = r.sizing?.stages ? Object.fromEntries(r.sizing.stages.map(t => [t.stage, t.fraction_of_flooding])) : null;
     return h("div", { class: "fs-tables", "data-fk": "fs-column-table" }, h("h3", {}, `${blockName(b)}: the profile, stage by stage`),
       h("div", { class: "fug-scroll" }, h("table", { class: "fug-table" },
         h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Stage"), h("th", { scope: "col" }, `T, ${tLabel(u)}`), h("th", { scope: "col" }, "Liquid, kmol/h"),
           h("th", { scope: "col" }, "Vapour, kmol/h"), h("th", { scope: "col" }, `Duty, ${u.duty ?? "kW"}`),
+          ...(flood ? [h("th", { scope: "col" }, "Flooding, %")] : []),
           ...fs.components.map(c => h("th", { scope: "col" }, `x ${nameOf(c)}`)), ...fs.components.map(c => h("th", { scope: "col" }, `y ${nameOf(c)}`)), ...liquidHeads)),
         h("tbody", {}, ...p.map(s => h("tr", {}, h("th", { scope: "row" }, `${s.stage}${s.name === "stage" ? "" : ` ${s.name}`}`),
           cell(tToDisplay(s.T_K, u).toFixed(2)), cell(s.L_kmol_h.toFixed(3)), cell(s.V_kmol_h.toFixed(3)),
           cell(s.duty_kW === 0 ? "0" : dutyToDisplay(s.duty_kW, u).toFixed(1)),
+          ...(flood ? [cell(flood[s.stage] == null ? "–" : (100 * flood[s.stage]).toFixed(1))] : []),
           ...fs.components.map(c => cell(frac(s.x[c]))), ...fs.components.map(c => cell(s.y ? frac(s.y[c]) : "–")), ...liquidCells(s)))))),
-      h("p", { class: "fa-in-hint" }, `Liquid and vapour leaving each stage; stage 1 is the ${cond}${r.state.condenser === "total" ? " (its liquid is the reflux; the distillate leaves as liquid too, so it has no vapour)" : ""}, stage ${r.state.stages} the reboiler. Duty: heat added (the condenser's is negative).${two ? ` x is the whole liquid; where a stage holds two liquids, the light (x′) and the heavy (x″) one are given, named by density; both leave the stage together${r.state.condenser === "decanter" ? "; in the decanter they are separated: its liquid and x are the reflux's, the other liquid is the distillate" : ""}.` : ""}${r.state.boundary ? ` The column's own method: ${r.state.boundary.map(q => `${q.stream} ${q.dT_K >= 0 ? "+" : ""}${q.dT_K.toFixed(2)} K`).join(", ")} across the boundary.` : ""}`));
+      h("p", { class: "fa-in-hint" }, `Liquid and vapour leaving each stage; stage 1 is the ${cond}${r.state.condenser === "total" ? " (its liquid is the reflux; the distillate leaves as liquid too, so it has no vapour)" : ""}, stage ${r.state.stages} the reboiler. Duty: heat added (the condenser's is negative).${two ? ` x is the whole liquid; where a stage holds two liquids, the light (x′) and the heavy (x″) one are given, named by density; both leave the stage together${r.state.condenser === "decanter" ? "; in the decanter they are separated: its liquid and x are the reflux's, the other liquid is the distillate" : ""}.` : ""}${r.state.boundary ? ` The column's own method: ${r.state.boundary.map(q => `${q.stream} ${q.dT_K >= 0 ? "+" : ""}${q.dT_K.toFixed(2)} K`).join(", ")} across the boundary.` : ""}${flood ? " Flooding: the vapour's velocity over Fair's flooding velocity on each tray (the condenser and the reboiler are not trays)." : ""}`));
   }
   const row = (label, f) => h("tr", {}, h("th", { scope: "row" }, label), ...p.map(s => h("td", { class: "fug-num" }, f(s))));
   return h("div", { class: "fs-tables", "data-fk": "fs-column-table" }, h("h3", {}, `${blockName(b)}: the column`),

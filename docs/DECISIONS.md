@@ -88,12 +88,24 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     or horizontal flash drum and a decanter from the flash block's result (`sizeDrum`, `sizeDecanter`, the `size_drum`
     capability, the size under the drum's results). To check: the constants and rules against the four open sources
     (University of Trieste and Oklahoma slides, Coker 1993, the University of Baghdad notes; the list in the decision
-    file); to decide: the defaults (85 % of the permitted velocity, 2 min of liquid, 150 μm drops). Next for W4: the
-    column diameter by flooding (M2b), with W2's stage traffic.
+    file); to decide: the defaults (85 % of the permitted velocity, 2 min of liquid, 150 μm drops).
+  - **W4, M2b: the column diameter, flooding and weeping, built, to review**
+    (docs/decisions/2026-10-30-03-column-hydraulics.md): Fair's method on every tray of the rigorous column (the
+    Column block's `sizing` option, `columnDiameter`, `solve_column`, the workbench), the diameter from the largest
+    required area, FLOODING above the design fraction and WEEPING below the trays' turndown, a given diameter checked.
+    Fair's chart is read off the Trieste slides' graph (no open fitted form with its tray spacing found). To check: the
+    96 values read off slide 37 (validation/data/sizing/), the K corrections of slide 38, η of slide 44; to confirm:
+    the defaults (80 % of flooding, trays 0.6 m apart, η = 0.90, sieve trays). Next for W4: run W7's hydraulics
+    worked example when it lands; then the membrane area (M3).
   - **W10, M1 step 14: the guide and the review merged; round 1 of fixes to review**
     (docs/decisions/2026-10-29-07-ui-fixes-round-1.md): ten of the review's 17 items fixed. To check: the 1 mW
     threshold for a zero duty; which of the items left for later come next. Then W10 checks W5's and W6's new views.
-  - Waiting: W1, W3, W5 and W6.
+  - **W5 and W6, M2b: the Column workspace, built, to review** (docs/decisions/2026-10-30-04-column-workspace.md): the
+    workspace under Unit models (shortcut or rigorous, in the worker), McCabe-Thiele for binaries checked against the
+    shortcut and the rigorous column, the column's sheet in the flowsheet's Excel workbook, SVG and PNG of the column
+    charts. To check: the construction against The ChemSep Book, section 1.3.3; to decide: the check's tolerances,
+    and whether SVG and PNG go on every chart next. Then W10 checks the screenshots.
+  - Waiting: W1, W3.
 - **The methods track** (docs/decisions/2026-10-30-05-methods-track.md): Wilson (M1, v0.6) starts when M2b's pull
   requests are merged; M2 (PSRK or MHV2, else Modified UNIFAC 2.0 in a gE mixing rule) after M1; CPA, PC-SAFT,
   electrolytes and ionic liquids (M3-M6, v0.9) in that order, each with the open parameters found and My data for the
