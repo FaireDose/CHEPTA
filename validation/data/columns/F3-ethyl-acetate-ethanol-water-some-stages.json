@@ -1,0 +1,81 @@
+{
+  "chepta_column_case": 1,
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "ethyl-acetate",
+    "ethanol",
+    "water"
+  ],
+  "pressure_kPa": 101.325,
+  "id": "F3-ethyl-acetate-ethanol-water-some-stages",
+  "title": "Ethyl acetate + ethanol + water, NRTL, 10 stages: a second liquid on stages 5 to 10 only",
+  "purpose": "Two liquids on some stages only, in a ternary (milestone M2b): stages 1 to 4 hold one liquid (near the ternary azeotrope, rich in ethyl acetate), stages 5 to 10 a second, water-rich liquid whose share falls from 25 % at the reboiler to under 2 % on stage 9 and rises again on the feed stage. Unlike a binary, the two-liquid stages are not invariant: their temperatures and liquid compositions change from stage to stage.",
+  "method_choice": "docs/METHOD_SELECTION.md rules 3 and 7: polar, below 10 bar, two liquids possible: NRTL, the default sets of the three pairs (each fitted to measured data: ethanol + water, Kamihama et al. 2012; water + ethyl acetate, Grande et al. 2005 and others; ethanol + ethyl acetate, Calvar et al. 2005; src/data/binaries.json), ideal-gas vapour. The benchmark process \"ethyl acetate with a decanter\" (docs/BENCHMARKS.md) uses this system.",
+  "phases": "VLL",
+  "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 5,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.4,
+        0.2,
+        0.4
+      ],
+      "q": 1
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 1.0
+    },
+    {
+      "kind": "distillate_flow_mol_s",
+      "value": 50.0
+    }
+  ],
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "two liquids on stages 5 to 10 and one liquid on stages 1 to 4 (fixture rigorous, each stage's `liquids`)",
+      "with phases \"VL\" the column is refused with PHASE_SPLIT naming stages where a second liquid forms"
+    ],
+    "branch": "The reference's solution from its stated start. One solution expected; the engine's stages with two liquids must be the same."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    },
+    "stability": {
+      "tpd_stable_above": -1e-09,
+      "why": "one-liquid stages: no trial liquid on a grid has a tangent-plane distance below -1e-9"
+    },
+    "agreement_with_data": {
+      "note": "The three NRTL sets are fitted to vapour-liquid data; their liquid-liquid split is W1's work (joint fits, M2b) and not a test of the column."
+    }
+  }
+}

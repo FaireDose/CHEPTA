@@ -1,0 +1,33 @@
+{
+  "chepta_hydraulics_case": 1,
+  "id": "H2-largest-area-not-slowest-stage",
+  "title": "The diameter is set by the largest required area, not by the stage with the lowest flooding velocity",
+  "purpose": "Proposal 0015, Part I, section 2: each stage's required vapour-flow area is A_j = Vdot_j / (f u_fl,j), and the diameter is set by the largest A_j. Here the top stage has the lowest flooding velocity (the densest vapour) but carries less vapour than the bottom stage (the vapour flow below a subcooled feed is larger, slide 35 of Fermeglia 2021), so the bottom stage sets the diameter. A rule \"the stage with the lowest flooding velocity sets the diameter\" (slide 35, which holds when every stage carries the same vapour flow) would give a column too narrow for its bottom section.",
+  "source": {
+    "citation": "M. Fermeglia, Staged column design, University of Trieste (2021), slides 35-38 and 44 (the method); the stage values are this case's own, chosen so that the ranking holds for any fitted form of Fair's chart",
+    "open_copy": "https://moodle2.units.it/pluginfile.php/395399/mod_resource/content/1/09_StagedColumnDesign.pdf"
+  },
+  "units": "SI: m3/s, kg/m3, mN/m (= dyn/cm), mass-flow ratio",
+  "design": {
+    "fraction_of_flooding": 0.8,
+    "tray_spacing_m": 0.6096,
+    "K2_K3_K4": 1.0,
+    "why_the_ranking_does_not_depend_on_the_chart": "the three stages have the same flow parameter F_lv = (W_L/W_V)(rho_V/rho_L)^0.5 = 0.1 and the same surface tension, so C_sb(F_lv, spacing) is the same on every stage and cancels from the ratios of the flooding velocities and of the required areas, whatever fitted form of Fair's chart is used"
+  },
+  "stages": [
+    { "stage": 2, "where": "top", "Vdot_m3_s": 1.0, "rho_V_kg_m3": 3.0, "rho_L_kg_m3": 800.0, "sigma_mN_m": 20.0, "F_lv": 0.1 },
+    { "stage": 8, "where": "feed", "Vdot_m3_s": 1.3, "rho_V_kg_m3": 2.5, "rho_L_kg_m3": 800.0, "sigma_mN_m": 20.0, "F_lv": 0.1 },
+    { "stage": 15, "where": "bottom", "Vdot_m3_s": 1.8, "rho_V_kg_m3": 2.0, "rho_L_kg_m3": 800.0, "sigma_mN_m": 20.0, "F_lv": 0.1 }
+  ],
+  "expected": {
+    "behaviour": [
+      "the lowest flooding velocity is on stage 2 (fixture: u_fl over C_sb per stage)",
+      "the largest required area, and so the diameter, is on stage 15; the diameter is that of A_15, larger than stage 2's by the ratio in the fixture (sqrt(A_15 / A_2) = 1.212)",
+      "the result names stage 15 as the stage that sets the diameter and reports every stage's fraction of flooding at that diameter"
+    ]
+  },
+  "tolerances": {
+    "ratios_relative": 1e-12,
+    "why": "the ratios are exact (C_sb cancels); only rounding remains"
+  }
+}

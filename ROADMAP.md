@@ -30,6 +30,8 @@ it, and follow [CONTRIBUTING.md](CONTRIBUTING.md). The tracks and the release pl
   and links to other tools and simulators.
 - **Assistant compatibility track (C):** CHEPTA working in every AI chat.
 - **Data track (D):** more components and better parameters from open sources.
+- **Methods track (M):** the thermodynamic methods the method guide names but CHEPTA does not have yet (Wilson,
+  PSRK, CPA, PC-SAFT, electrolytes, ionic liquids).
 - **Cost engineering track (E):** equipment sizing, capital and operating cost, cost of
   product.
 - **Agentic design track (G):** agents that turn literature into flowsheets and compare
@@ -103,6 +105,37 @@ one-line setup, document what works, and fix or report what doesn't.
 | **D6** | Liquid-liquid data for partly miscible pairs (water with benzene, toluene, chloroform, ethyl acetate) | **On-going**: water + ethyl acetate and water + cyclohexane; the extraction pairs in [proposal 0015](proposals/0015-separation-units.md) |
 | **D7** | Ternary VLE data to check ternary predictions, starting with the systems whose ternary azeotropes are tested (methanol + acetone + chloroform, ethanol + water + ethyl acetate) | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **D8** | Reaction data from open sources: heats of formation, equilibrium constants, kinetics for common reactions (esterification, hydrogenation, reforming), needed by reactors and route comparison | **On-going**: enthalpies and Gibbs energies of formation for 125 components; kinetics from open articles in the worked examples |
+
+## Methods track
+
+The thermodynamic methods that [docs/METHOD_SELECTION.md](docs/METHOD_SELECTION.md) recommends for mixtures CHEPTA
+cannot describe yet (its table "not available"). Each method needs a proposal first (AGENTS.md: new models), with its
+parameters from open sources only, a tier on every parameter set, and a test against an independent implementation
+and open data. Added 2026-10-30 at the maintainer's request ("upgrade the methods as well to include Wilson, PC-SAFT,
+ionic methods").
+
+**Order and how parameters come** (the maintainer, 2026-10-30: "decide yourself. for the others we find data where we
+have and we implement the add data yourself method"):
+
+- **M1 Wilson starts when the four pull requests of proposal 0015's M2b are merged** (the limit of four open pull
+  requests), as one session and one pull request: the proposal, the model, ChemSep's Wilson set, and Wilson pairs in
+  My data. It ships with v0.6.
+- **M2 starts when M1 is merged.** Its first step is a source check: PSRK's own group tables are used only if they are
+  open; otherwise the method is built on Modified UNIFAC 2.0 (CC BY 4.0, already in CHEPTA) inside the cubic equation
+  of state, through the gE mixing rule the proposal chooses. It ships with the first release after it is done.
+- **M3 to M6, in that order** (PC-SAFT reuses CPA's association term): each ships with **the open parameters a search
+  finds** (recorded as in docs/DATA_RULES.md) **and My data for the rest** (proposal 0012): the user adds the method's
+  pure-component or pair parameters with their source and the tier "user", as for NRTL, UNIQUAC and k_ij today. A method
+  without open parameters for a component works once the user gives them, and says so until then.
+
+| Item | What | For | Open parameters known | Status |
+|---|---|---|---|---|
+| **M1** | **Wilson** activity model | polar mixtures with one liquid; the method guide's choice for many alcohol and hydrocarbon systems (it cannot predict two liquids) | ChemSep's Wilson set (`wilson.json`, Artistic License 2.0, as its NRTL and UNIQUAC sets); fits to ThermoML data by the same scripts | **Open**; starts after M2b; small: a proposal, the model, the ChemSep import, Wilson pairs in My data, tests against `thermo` |
+| **M2** | **PSRK** and **MHV2** (UNIFAC inside a cubic equation of state) | polar mixtures above 10 bar, gases dissolved in polar solvents (the "PSRK or MHV2" rows of the method guide) | PSRK's group parameters as published openly (to be checked table by table); else Modified UNIFAC 2.0 in a gE mixing rule | **Open**; starts after M1 |
+| **M3** | **CPA** (cubic plus association) | water + hydrocarbons with two liquids, glycols and methanol in gas processing; the real fix of the P-H flash with two liquids (DECISIONS.md, Engineering, item 7) | open articles with CPA parameters for water, alcohols, glycols (to be searched) | **Open** |
+| **M4** | **PC-SAFT** (and Flory–Huggins for polymer solutions) | polymers, associating and high-pressure systems, ionic liquids with association | open articles and open libraries' parameter tables, where those tables are themselves open (DATA_RULES.md, source 4) | **Open** |
+| **M5** | **Electrolytes**: electrolyte NRTL, Pitzer (Debye–Hückel long-range term) | salts and ionized acids and bases in water (amine gas treating, brines, crystallization of salts) | open articles for the ion pairs; species and reactions of dissociation from the reactions layer (A13) | **Open** |
+| **M6** | **Ionic liquids** | ionic liquids as solvents (extraction, absorption of CO2) | NRTL or UNIQUAC pairs fitted to ThermoML data (the archive holds many ionic-liquid sets); PC-SAFT (M4) where open parameters exist | **Open** |
 
 ## Cost engineering track
 
@@ -231,6 +264,7 @@ Needs A13 and D8.
       streams (proposal 0013, steps 1-4); rating of a designed exchanger, its area and U kept (step 8; in 0.4.0)
 - [x] Compressors and expanders (proposal 0013, step 6; in 0.4.0)
 - [ ] Further units towards models of all the common unit operations ([proposal 0015](proposals/0015-separation-units.md))
+- [ ] The Wilson activity model (M1)
 - [x] Reactive systems in flowsheets, with heat of reaction in the energy balance (proposal 0010, steps 3-8)
 
 ### v0.7 – Cost engineering
@@ -239,6 +273,7 @@ Needs E1–E4, E6.
 
 - [ ] Equipment sizing and cost for the units of v0.4 to v0.6
 - [ ] Operating cost and cost of production of a flowsheet; cost view
+- [ ] A cubic equation of state with UNIFAC in its mixing rule, PSRK or MHV2 (M2), if done by then
 
 ### v0.8 – Agentic process design
 
@@ -247,11 +282,20 @@ Needs G1–G4, E5.
 - [ ] An assistant turns a short literature list into two or three flowsheets and compares them
 - [ ] First benchmark case studies (G5)
 
+### v0.9 – Advanced thermodynamics
+
+Needs a proposal for each method (track M). Each method ships with the open parameters found and My data for the rest.
+
+- [ ] CPA for water + hydrocarbons and glycols, with two liquids (M3)
+- [ ] PC-SAFT, and Flory–Huggins for polymer solutions (M4)
+- [ ] Electrolytes: electrolyte NRTL and Pitzer (M5)
+- [ ] Ionic liquids as solvents (M6)
+
 ### Later
 
 - Reactive distillation, batch reactors and catalyst deactivation
 - Sensitivity studies and optimization: the agent varies the design and finds the best
   operating point, with the engineer setting the limits
-- Electrolytes, solids and polymers; dynamic simulation
+- Solids handling beyond crystallization (proposal 0015); dynamic simulation
 - Life-cycle assessment linked to the cost model
 - 1.0 after A12

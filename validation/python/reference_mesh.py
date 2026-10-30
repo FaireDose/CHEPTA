@@ -41,6 +41,21 @@ The thermodynamics:
     k_ij), with ln phi and the residual enthalpy in closed form; K = phi_L(x) / phi_V(y), y = K x by successive
     substitution; h = the ideal-gas enthalpy plus the residual enthalpy of the phase.
 
+Milestone M2b:
+  - two liquids on the stages (a case's "phases": "VLL"; ActivityVLL): each stage's liquid is its stable liquid state,
+    one liquid or two in liquid-liquid equilibrium (the tangent-plane test, then the split), and the stage's K-values
+    and liquid enthalpy are those of the overall liquid, K_i = y_i / x_i with y in equilibrium with both liquids, h_L =
+    the two liquids' enthalpy. This is the averaging that The ChemSep Book documents for three-phase distillation
+    (H. A. Kooijman and R. Taylor, 2nd edition, 2006, public domain, http://www.chemsep.org/downloads/docs/book2.pdf,
+    section 13.7.2, eqs. 13.45-13.52, read 2026-10-30), written here with the split solved at each stage;
+  - a decanter on the condenser (condenser "decanter", spec decanter_reflux): the condensate, at its bubble point,
+    splits into two liquids; all of the one richer in a named component is the reflux, all of the other the distillate;
+  - the column's own method (the G cases, boundary_case): the feed, given in the flowsheet's method, crosses into the
+    column's method with its component flows, pressure and enthalpy flow (a P-H flash there), the column is solved in
+    its own method, and each product crosses back the same way; with a recycle, the loop is converged by direct
+    substitution; the overall energy balance in the flowsheet's method, and a refusal where the column's method has no
+    P-H solution within its records' range (G3).
+
 Besides the profiles, it writes checks with exact or independent answers: McCabe-Thiele's construction for the binary
 (A1, and A4 with two feeds); the phase stability of every stage's liquid by the tangent-plane distance (the cases with
 real mixtures; F1 must split); the published ChemSep Book profile against the reference (B2); the model's azeotropes
@@ -49,7 +64,7 @@ real mixtures; F1 must split); the published ChemSep Book profile against the re
 dry-stage ratios (D1); the boil-up arithmetic (E2); and the shortcut results of reference_fug.py.
 
 Writes validation/fixtures/columns.json, which test/benchmark-columns.test.js reads.
-Regenerate: python validation/python/reference_mesh.py      (about two minutes; numpy, scipy, thermo, iapws)
+Regenerate: python validation/python/reference_mesh.py      (about ten minutes; numpy, scipy, thermo, iapws)
 """
 import json
 import math
@@ -147,6 +162,114 @@ class Activity:
 
 
 Nrtl = Activity
+
+
+class ActivityVLL(Activity):
+    """Two liquids on the stages (phases "VLL", proposal 0015, Part I, section 3; milestone M2b): a stage's liquid, of
+    overall composition x at T, is the stable liquid state of x: one liquid where the tangent-plane test finds x
+    stable, else two liquids x_I and x_II in liquid-liquid equilibrium (equal activities x_i gamma_i, the overall
+    balance x = (1 - beta) x_I + beta x_II). The vapour is in equilibrium with both liquids, y_i = x_I,i gamma_i(x_I)
+    p_sat,i / P, so the stage's K is written on the overall liquid, K_i = y_i / x_i, and the MESH equations of
+    Column are unchanged; the liquid's enthalpy is (1 - beta) h_L(x_I) + beta h_L(x_II). This is the equilibrium
+    stage with two liquids written from first principles (the Gibbs energy is lowest when the liquid splits where the
+    tangent-plane distance of a trial liquid is negative); the phase split shares no code with the engine's three-phase
+    flash."""
+
+    def lng(self, x, T):
+        return np.log(self.s.gamma(x, T))
+
+    def split(self, x, T):
+        """(x_I, x_II, beta) of the stable liquid state of overall liquid x at T, or None for one liquid. Liquid I is
+        the one richer in the first component."""
+        x = np.clip(np.asarray(x, float), 1e-300, None); x = x / x.sum()
+        key = ("split", T, *x)
+        if key in self.memo:
+            return self.memo[key]
+        out = None
+        w = self.unstable_trial(x, T)
+        if w is not None:
+            out = self.ll_flash(x, T, w)
+        self.memo[key] = out
+        return out
+
+    def unstable_trial(self, x, T):
+        """Michelsen's tangent-plane test by successive substitution, ln W_i = ln x_i + ln gamma_i(x) - ln gamma_i(w),
+        from a start near each pure component: the trial liquid with the most negative tangent-plane distance
+        tm = 1 + sum W_i (ln W_i + ln gamma_i(w) - d_i - 1), or None where none is below -1e-10 (stable)."""
+        n = len(x)
+        d = np.log(x) + self.lng(x, T)
+        best, bw = -1e-10, None
+        for i in range(n):
+            W = np.full(n, 0.02 / max(n - 1, 1)); W[i] = 0.98
+            for _ in range(2000):
+                Wn = np.exp(d - self.lng(W / W.sum(), T))
+                done = np.max(np.abs(np.log(Wn) - np.log(W))) < 1e-13
+                W = Wn
+                if done:
+                    break
+            w = W / W.sum()
+            if np.max(np.abs(w - x)) < 1e-6:
+                continue                       # the trivial solution
+            tm = 1 + float(np.sum(W * (np.log(W) + self.lng(w, T) - d - 1)))
+            if tm < best:
+                best, bw = tm, w
+        return bw
+
+    def ll_flash(self, x, T, w):
+        """The two liquids of x at T, from the unstable trial w: successive substitution on K_i = gamma_i(x_I) /
+        gamma_i(x_II) with the Rachford-Rice equation for beta, then Newton's method (scipy root) on the equal
+        activities, to 1e-14. None when the split collapses to one liquid or beta leaves (0, 1)."""
+        xa, xb = x.copy(), w.copy()
+        beta = 0.5
+        for _ in range(5000):
+            K = np.exp(self.lng(xa, T) - self.lng(xb, T))          # x_II / x_I
+            g = lambda b: float(np.sum(x * (K - 1) / (1 + b * (K - 1))))
+            lo, hi = 1 / (1 - K.max()) + 1e-12, 1 / (1 - K.min()) - 1e-12
+            if not (g(max(lo, -50)) > 0 > g(min(hi, 50))):
+                return None
+            beta = brentq(g, max(lo, -50), min(hi, 50), xtol=1e-15)
+            xan = x / (1 + beta * (K - 1)); xbn = K * xan
+            step = max(np.max(np.abs(xan - xa)), np.max(np.abs(xbn - xb)))
+            xa, xb = xan / xan.sum(), xbn / xbn.sum()
+            if step < 1e-12:
+                break
+        if not 0 < beta < 1 or np.max(np.abs(xa - xb)) < 1e-6:
+            return None
+
+        def F(u):
+            a = np.exp(u[:-1]); a = a / a.sum(); b = u[-1]
+            bb = (x - (1 - b) * a) / b
+            if np.any(bb <= 0):
+                return np.full(len(u), 1e3)
+            return np.r_[np.log(a) + self.lng(a, T) - np.log(bb) - self.lng(bb, T), np.sum(np.exp(u[:-1])) - 1]
+        sol = root(F, np.r_[np.log(xa), beta], method="hybr", options={"xtol": 1e-15})
+        a = np.exp(sol.x[:-1]); a = a / a.sum(); beta = sol.x[-1]
+        b = (x - (1 - beta) * a) / beta
+        if np.max(np.abs(F(sol.x))) > 1e-11 or not 0 < beta < 1:
+            raise RuntimeError(f"the liquid-liquid split did not converge at T = {T} K, x = {x}")
+        if a[0] < b[0]:
+            a, b, beta = b, a, 1 - beta
+        return a, b, beta
+
+    def bubble_T(self, x):
+        """The bubble temperature, bracketed from 273.15 K (the liquid-liquid split is not sought far below the
+        records' ranges)."""
+        return brentq(lambda T: float(np.sum(self.K(x, T) * x)) - 1, 273.15, 700.0, xtol=1e-12)
+
+    def K(self, x, T):
+        x = np.clip(np.asarray(x, float), 1e-300, None); x = x / x.sum()
+        sp = self.split(x, T)
+        if sp is None:
+            return Activity.K(self, x, T)
+        xa = sp[0]
+        return Activity.K(self, xa, T) * xa / x
+
+    def hL(self, x, T):
+        sp = self.split(np.clip(np.asarray(x, float), 1e-300, None) / np.sum(np.clip(x, 1e-300, None)), T)
+        if sp is None or self.lam is not None:
+            return Activity.hL(self, x, T)
+        xa, xb, beta = sp
+        return (1 - beta) * Activity.hL(self, xa, T) + beta * Activity.hL(self, xb, T)
 
 
 class Eos:
@@ -257,6 +380,8 @@ def thermo_of(case):
         assert th["sets"] == "default"
         return Eos(case["components"], P, th["model"], th.get("cmo_latent_heat_J_mol"))
     assert th["model"] in ("NRTL", "UNIQUAC") and th["vapour"] == "ideal" and th["sets"] == "default"
+    if case.get("phases", "VL") == "VLL":
+        return ActivityVLL(case["components"], P, th["model"], th.get("cmo_latent_heat_J_mol"))
     return Activity(case["components"], P, th["model"], th.get("cmo_latent_heat_J_mol"))
 
 
@@ -277,7 +402,8 @@ class Column:
         self.F = sum(F for _, F, _, _, _ in self.feeds)
         self.z = sum(F * z for _, F, z, _, _ in self.feeds) / self.F
         self.f = self.feeds[0][0]
-        self.total = condenser == "total"
+        self.total = condenser in ("total", "decanter")
+        self.decanter = condenser == "decanter"
         self.specs = specs
         self.w = nc + 3
 
@@ -301,14 +427,20 @@ class Column:
         mat, summ, en = np.zeros((N, nc)), np.zeros((N, 2)), np.zeros(N)
         for j in range(N):
             m = np.zeros(nc); e = 0.0
-            if j > 0:
+            if j == 1 and self.decanter:       # the reflux is the decanter's refluxed liquid, not the condensate
+                xr = self.decanted(x[0], T[0])[0]
+                m += L[0] * xr; e += L[0] * th.hL(xr, T[0])
+            elif j > 0:
                 m += L[j - 1] * x[j - 1]; e += L[j - 1] * hL[j - 1]
             if j < N - 1:
                 m += V[j + 1] * y[j + 1]; e += V[j + 1] * hV[j + 1]
             for fj, Ff, zf, hf, _ in self.feeds:
                 if j == fj:
                     m += Ff * zf; e += Ff * hf
-            if j == 0 and self.total:          # reflux L_1 and liquid distillate D = V slot, both x_1
+            if j == 0 and self.decanter:       # the condensate x_1 splits: reflux L_1 of one liquid, distillate D of the other
+                xr, xd, _ = self.decanted(x[0], T[0])
+                m -= L[0] * xr + V[0] * xd; e -= L[0] * th.hL(xr, T[0]) + V[0] * th.hL(xd, T[0]) + Qc
+            elif j == 0 and self.total:          # reflux L_1 and liquid distillate D = V slot, both x_1
                 m -= (L[0] + V[0]) * x[0]; e -= (L[0] + V[0]) * hL[0] + Qc
             else:
                 m -= L[j] * x[j] + V[j] * y[j]; e -= L[j] * hL[j] + V[j] * hV[j]
@@ -327,9 +459,23 @@ class Column:
                 sp.append(D - s["value"])
             elif s["kind"] == "bottoms_flow_mol_s":
                 sp.append(B - s["value"])
+            elif s["kind"] == "decanter_reflux":
+                sp.append(L[0] - self.decanted(x[0], T[0])[2] * (L[0] + D))
             else:
                 raise ValueError(f"specification {s['kind']} is not in this reference")
         return mat, summ, en, np.array(sp), y
+
+    def decanted(self, x, T):
+        """The decanter (condenser "decanter", spec decanter_reflux): the condensate x at its bubble point T splits into
+        two liquids; all of the liquid richer in the spec's component is the reflux, all of the other the distillate.
+        Returns (reflux composition, distillate composition, the reflux's share of the condensate). With one liquid
+        (no split) the whole condensate would be refluxed: share 1, and both compositions x."""
+        k = next(s["rich_in"] for s in self.specs if s["kind"] == "decanter_reflux")
+        sp = self.th.split(x, T)
+        if sp is None:
+            return x, x, 1.0
+        a, b, beta = sp
+        return (a, b, 1 - beta) if a[k] > b[k] else (b, a, beta)
 
     def residual(self, u):
         mat, summ, en, sp, _ = self.groups(u)
@@ -337,7 +483,9 @@ class Column:
 
     def start(self):
         th, N, nc, F, z = self.th, self.N, self.nc, self.F, self.z
-        R = next(s["value"] for s in self.specs if s["kind"] == "reflux_ratio")
+        R = next((s["value"] for s in self.specs if s["kind"] == "reflux_ratio"), None)
+        if R is None:
+            R = next(s["start_reflux_ratio"] for s in self.specs if s["kind"] == "decanter_reflux")
         D = next((s["value"] for s in self.specs if s["kind"] == "distillate_flow_mol_s"), None)
         if D is None:
             D = F - next(s["value"] for s in self.specs if s["kind"] == "bottoms_flow_mol_s")
@@ -366,12 +514,13 @@ class Column:
         Qr = -en[-1]
         return self.pack(x_, T_, L_, V_, Qc, Qr)
 
-    def bubble_point_start(self, x, T, L, V, sweeps=300):
+    def bubble_point_start(self, x, T, L, V, sweeps=None):
         """The compositions and temperatures for the start's flows, by the bubble-point method (the component balances
         as one tridiagonal system per component at fixed K, then each stage's bubble temperature, repeated): only a
         first guess for the simultaneous solution, which closes every equation."""
         from scipy.linalg import solve_banded
         N, nc, F = self.N, self.nc, self.F
+        sweeps = sweeps or (40 if hasattr(self.th, "split") else 300)   # two liquids: each sweep costs phase splits
         feed = np.zeros((N, nc))
         for fj, Ff, zf, _, _ in self.feeds:
             feed[fj] += Ff * zf
@@ -421,12 +570,20 @@ class Column:
             J[:, k] = (self.residual(uu) - r) / h
         return J
 
+    def safe_residual(self, u):
+        """The residuals, or large ones where a trial point leaves the records' ranges (for scipy's root)."""
+        try:
+            return self.residual(u)
+        except (OverflowError, ValueError, FloatingPointError, NotImplementedError, RuntimeError, AssertionError):
+            return np.full(len(u), 1e6)
+
     def norm(self, u):
-        """The 2-norm of the scaled residuals, or infinity where a trial step leaves the physical domain (T <= 0)."""
+        """The 2-norm of the scaled residuals, or infinity where a trial step leaves the physical domain (T <= 0,
+        or outside a record's range)."""
         try:
             return float(np.linalg.norm(self.residual(u)))
-        except (OverflowError, ValueError, FloatingPointError):
-            return math.inf
+        except (OverflowError, ValueError, FloatingPointError, NotImplementedError, RuntimeError, AssertionError):
+            return math.inf     # outside a record's range (iapws), or a liquid split that fails there
 
     def newton(self, u, steps):
         """Newton's method with a finite-difference Jacobian, halving the step until the residual falls."""
@@ -450,10 +607,10 @@ class Column:
         u, steps = self.newton(u0, 60)
         how = "Newton"
         if not np.max(np.abs(self.residual(u))) < SOLVE_TOL:
-            sol = root(self.residual, u0, method="hybr", options={"xtol": 1e-14, "maxfev": 200000})
+            sol = root(self.safe_residual, u0, method="hybr", options={"xtol": 1e-14, "maxfev": 200000})
             u, how = sol.x, "hybr"
-            if np.max(np.abs(self.residual(u))) > 1e-8:
-                sol = root(self.residual, u, method="lm", options={"xtol": 1e-15, "ftol": 1e-15, "maxiter": 20000})
+            if np.max(np.abs(self.safe_residual(u))) > 1e-8:
+                sol = root(self.safe_residual, u, method="lm", options={"xtol": 1e-15, "ftol": 1e-15, "maxiter": 20000})
                 u, how = sol.x, "hybr, then lm"
             u, steps = self.newton(u, 10)
             how += ", then Newton"
@@ -476,6 +633,14 @@ class Column:
                                          "equilibrium": 0.0 if liquid_only else float(eq[j]), "energy_W": float(abs(en[j]))}})
         D, B = V[0], L[-1]
         xD = x[0] if self.total else y[0]
+        if hasattr(self.th, "split"):           # two liquids on the stages: each stage's liquids
+            for j, st in enumerate(stages):
+                ll = self.th.split(x[j], T[j])
+                st["liquids"] = None if ll is None else {"x_I": ll[0].tolist(), "x_II": ll[1].tolist(), "beta_II": float(ll[2])}
+        if self.decanter:
+            xr, xd, share = self.decanted(x[0], T[0])
+            xD = xd
+            stages[0]["decanter"] = {"reflux_x": xr.tolist(), "distillate_x": xd.tolist(), "reflux_share_of_condensate": share}
         return {"stages": stages, "D_mol_s": D, "B_mol_s": B, "x_D": xD.tolist(), "x_B": x[-1].tolist(),
                 "Q_condenser_W": Qc, "Q_reboiler_W": Qr, "feed_enthalpy_J_mol": [h for _, _, _, h, _ in self.feeds],
                 "residuals": {"material_mol_s": float(np.abs(mat).max()), "summation": float(np.abs(summ).max()),
@@ -496,7 +661,9 @@ def column_of(case, th=None, specs=None, stages=None, feed_stage=None):
     nc = len(case["components"])
     feeds = [((feed_stage if feed_stage and k == 0 else f["stage"]), f["flow_mol_s"], f["z"], th.feed_h(f), f.get("q", 1.0))
              for k, f in enumerate(feeds_of(case))]
-    return Column(th, nc, stages or col["stages"], feeds, col["condenser"], specs or case["specs"])
+    specs = [dict(s, rich_in=case["components"].index(s["rich_in"])) if s["kind"] == "decanter_reflux" else s
+             for s in (specs or case["specs"])]       # the decanter's component by its index
+    return Column(th, nc, stages or col["stages"], feeds, col["condenser"], specs)
 
 
 def solve_case(case, u0=None, **kw):
@@ -555,6 +722,195 @@ def stability_by_stage(th, prof):
     return [{"stage": s["stage"], "tpd_min": t, "trial_x": w} for s in prof["stages"] for t, w in [stability(th, s["x"], s["T_K"])]]
 
 
+# ---- The boundary between two property methods (proposal 0015, Part I, section 3; milestone M2b) ----
+
+def K_xy(th, x, y, T):
+    """K at liquid x and vapour y: gamma p_sat / P (activity model, ideal-gas vapour), or phi_L(x) / phi_V(y)."""
+    if isinstance(th, Eos):
+        n = lambda v: np.clip(np.asarray(v, float), 1e-300, None) / np.sum(np.clip(v, 1e-300, None))
+        return np.exp(th.lnphi(n(x), T, "liquid") - th.lnphi(n(y), T, "vapour"))
+    return Activity.K(th, x, T)
+
+
+def dew_T(th, z):
+    """The dew temperature of vapour z: sum z_i / K_i(x, z, T) = 1, with x = (z / K) / sum by successive substitution."""
+    z = np.asarray(z, float)
+
+    def f(T):
+        x = z / K_xy(th, z, z, T); x = x / x.sum()
+        for _ in range(500):
+            xn = z / K_xy(th, x, z, T)
+            s = xn.sum(); xn = xn / s
+            if np.max(np.abs(xn - x)) < 1e-15:
+                break
+            x = xn
+        return s - 1
+    Tb = bubble_T(th, z)
+    T = Tb + 1.0
+    while f(T) > 0:
+        T += 1.0
+    return brentq(f, T - 1.0, T, xtol=1e-12)
+
+
+def tp_flash(th, z, T):
+    """The vapour-liquid state of z at T and the column's pressure: (vapour fraction, x, y). Between the bubble and
+    the dew temperature, successive substitution on K(x, y, T) with the Rachford-Rice equation, to 1e-14."""
+    z = np.asarray(z, float)
+    Tb, Td = bubble_T(th, z), dew_T(th, z)
+    if T <= Tb:
+        return 0.0, z, None
+    if T >= Td:
+        return 1.0, None, z
+    v = (T - Tb) / (Td - Tb)
+    x, y = z.copy(), z.copy()
+    K = K_xy(th, x, y, T)
+    for _ in range(5000):
+        g = lambda b: float(np.sum(z * (K - 1) / (1 + b * (K - 1))))
+        v = brentq(g, 0.0, 1.0, xtol=1e-15)
+        xn = z / (1 + v * (K - 1)); yn = K * xn
+        step = max(np.max(np.abs(xn - x)), np.max(np.abs(yn - y)))
+        x, y = xn, yn
+        K = K_xy(th, x, y, T)
+        if step < 1e-14:
+            break
+    return v, x, y
+
+
+def h_state(th, z, T):
+    v, x, y = tp_flash(th, z, T)
+    return (1 - v) * (th.hL(x, T) if v < 1 else 0.0) + v * (th.hV(y, T) if v > 0 else 0.0), v, x, y
+
+
+def ph_flash(th, z, h, lo, hi):
+    """The P-H flash in a method: the temperature where the molar enthalpy of z (its equilibrium state at the column's
+    pressure) equals h, by brentq between lo and hi K, to 1e-10 K. Raises ValueError where h lies outside [h(lo),
+    h(hi)]: the method cannot represent that state there."""
+    f = lambda T: h_state(th, z, T)[0] - h
+    if f(lo) > 0 or f(hi) < 0:
+        raise ValueError(f"no temperature between {lo} and {hi} K gives the enthalpy {h} J/mol")
+    T = brentq(f, lo, hi, xtol=1e-10, rtol=1e-15)
+    hh, v, x, y = h_state(th, z, T)
+    return {"T_K": T, "vapour_fraction": v, "x": None if x is None else list(x), "y": None if y is None else list(y),
+            "h_J_mol": hh}
+
+
+def flowsheet_thermo(case):
+    ft = case["flowsheet_thermo"]
+    if ft["model"] in ("PR", "SRK"):
+        return Eos(case["components"], case["pressure_kPa"], ft["model"])
+    return Activity(case["components"], case["pressure_kPa"], ft["model"])
+
+
+def boundary_case(case, recycle=None):
+    """G cases: the feed, given in the flowsheet's method, crosses into the column's method with its component flows,
+    pressure and enthalpy flow (P-H flash in the column's method); the column is solved in its own method; each
+    product crosses back the same way. With recycle (a share of the bottoms mixed with the fresh feed in the
+    flowsheet's method), the loop is converged by direct substitution on the recycled stream's flows and enthalpy."""
+    fs, col_th = flowsheet_thermo(case), thermo_of(case)
+    f = case["column"]["feed"]
+    lo, hi = case["boundary"]["T_search_K"]
+    z, F = np.asarray(f["z"], float), f["flow_mol_s"]
+    h_fresh = fs.hL(z, f["T_K"])
+    assert np.sum(K_xy(fs, z, z, f["T_K"]) * z) < 1, "the fresh feed is a liquid in the flowsheet's method"
+    rec = {"fresh_feed": {"T_K": f["T_K"], "h_flowsheet_J_mol": h_fresh,
+                          "h_column_method_at_same_T_J_mol": col_th.hL(z, f["T_K"])}}
+    n_r, h_r, u, it = np.zeros(len(z)), 0.0, None, 0
+    while True:
+        it += 1
+        n = F * z + n_r
+        Ft = n.sum(); zt = n / Ft
+        H = F * h_fresh + h_r                              # the enthalpy flow (W) of the column's feed
+        into = ph_flash(col_th, zt, H / Ft, lo, hi)
+        assert into["vapour_fraction"] == 0.0, "the column's feed is a liquid in the column's method"
+        c = json.loads(json.dumps(case))
+        c["column"]["feed"] = {"stage": f["stage"], "flow_mol_s": Ft, "z": list(zt), "T_K": into["T_K"]}
+        if recycle:
+            c["specs"] = [case["specs"][0], {"kind": "bottoms_flow_mol_s", "value": case["specs"][1]["value"] + recycle_flow(n_r)}]
+        cc, u, prof = solve_case(c, u0=u)
+        B, xB = prof["B_mol_s"], np.asarray(prof["x_B"])
+        hB = cc.th.hL(xB, prof["stages"][-1]["T_K"])
+        if not recycle:
+            break
+        n_new = recycle * B * xB
+        h_new = recycle * B * hB
+        done = np.max(np.abs(n_new - n_r)) < 1e-11 * F and abs(h_new - h_r) < 1e-11 * F * H_SCALE
+        n_r, h_r = n_new, h_new
+        if done:
+            break
+        if it > 200:
+            raise RuntimeError("the recycle did not converge")
+    D, xD = prof["D_mol_s"], np.asarray(prof["x_D"])
+    hD = cc.th.hL(xD, prof["stages"][0]["T_K"])
+    share = 1 - (recycle or 0.0)
+    out = {"distillate": (D, xD, hD, prof["stages"][0]["T_K"]), "bottoms": (share * B, xB, hB, prof["stages"][-1]["T_K"])}
+    rec["column_feed"] = {"flow_mol_s": Ft, "z": list(zt), "H_W": H, "column_method": into}
+    rec["recycle"] = None if not recycle else {"share_of_bottoms": recycle, "flow_mol_s": float(n_r.sum()),
+                                               "z": list(n_r / n_r.sum()), "H_W": h_r, "iterations": it}
+    rec["products"] = {}
+    for name, (Fp, xp, hp, Tp) in out.items():
+        back = ph_flash(fs, xp, hp, lo, hi)
+        rec["products"][name] = {"flow_mol_s": Fp, "z": list(xp), "column_method": {"T_K": Tp, "h_J_mol": hp},
+                                 "flowsheet_method": back, "dT_K": back["T_K"] - Tp,
+                                 "h_flowsheet_at_column_T_J_mol": h_state(fs, xp, Tp)[0]}
+    Qc, Qr = prof["Q_condenser_W"], prof["Q_reboiler_W"]
+    H_out = sum(p["flow_mol_s"] * p["flowsheet_method"]["h_J_mol"] for p in rec["products"].values())
+    rec["energy"] = {"in_W": F * h_fresh + Qr - Qc, "out_W": H_out, "imbalance_W": F * h_fresh + Qr - Qc - H_out,
+                     "Q_condenser_W": Qc, "Q_reboiler_W": Qr,
+                     "imbalance_if_recalculated_at_same_T_W": F * (h_fresh - col_th.hL(z, f["T_K"])) * (0 if recycle else 1)
+                     + sum(p["flow_mol_s"] * (p["h_flowsheet_at_column_T_J_mol"] - p["column_method"]["h_J_mol"]) for p in rec["products"].values()),
+                     "why": "the boundary keeps the enthalpy flow, so the flowsheet's balance closes to the P-H flashes' "
+                            "tolerance; recalculating each stream at the same T in the other method would create or lose the "
+                            "energy shown (for information)"}
+    return cc, prof, rec
+
+
+def boundary_record(case):
+    """A G case's boundary record: the crossings, the column (in the column's method) and the overall energy balance in
+    the flowsheet's method; or, where the column's method cannot represent the feed, the refusal's numbers."""
+    fs, col_th = flowsheet_thermo(case), thermo_of(case)
+    f = case["column"]["feed"]
+    lo, hi = case["boundary"]["T_search_K"]
+    z = np.asarray(f["z"], float)
+    h = fs.hL(z, f["T_K"])
+    try:
+        ph_flash(col_th, z, h, lo, hi)
+    except ValueError as e:
+        return {"refusal": {"feed_T_K": f["T_K"], "h_flowsheet_J_mol": h, "column_method_lowest_T_K": lo,
+                            "h_column_method_at_lowest_T_J_mol": h_state(col_th, z, lo)[0], "reason": str(e)}}
+    rs = case.get("recycle", {}).get("share_of_bottoms")
+    _, prof, rec = boundary_case(case, recycle=rs)
+    rec["round_trip"] = round_trip(fs, col_th, z, f["T_K"], lo, hi)
+    rec["rigorous"] = prof
+    return rec
+
+
+def round_trip(a, b, z, T, lo, hi):
+    """A stream at T in method a crosses to b and back: the temperature it returns at."""
+    h = h_state(a, z, T)[0]
+    tb = ph_flash(b, z, h, lo, hi)
+    back = ph_flash(a, z, tb["h_J_mol"], lo, hi)
+    return {"T_K": T, "T_in_other_method_K": tb["T_K"], "T_back_K": back["T_K"], "difference_K": back["T_K"] - T}
+
+
+def split_record(th, z, T):
+    sp = th.split(np.asarray(z, float), T)
+    return None if sp is None else {"x_I": sp[0].tolist(), "x_II": sp[1].tolist(), "beta_II": float(sp[2])}
+
+
+def liquid_stability(th, prof):
+    """With two liquids on the stages: the tangent-plane test of each liquid that the reference keeps (a stage's one
+    liquid, or each of its two), which must all be stable."""
+    out = []
+    for s in prof["stages"]:
+        liq = [s["x"]] if s["liquids"] is None else [s["liquids"]["x_I"], s["liquids"]["x_II"]]
+        out.append({"stage": s["stage"], "tpd_min": [stability(th, x, s["T_K"])[0] for x in liq]})
+    return out
+
+
+def recycle_flow(n_r):
+    return float(np.sum(n_r))
+
+
 def separation(prof, i, k):
     return (prof["x_D"][i] / prof["x_D"][k]) * (prof["x_B"][k] / prof["x_B"][i])
 
@@ -575,6 +931,15 @@ def main():
             if case["thermo"]["kind"] == "chepta":
                 checks["stability"] = stability_by_stage(c.th, prof)
                 checks["feed_T_K"] = [c.th.feed_T(f) if "q" in f else f["T_K"] for f in feeds_of(case)]
+            if cid == "F1-butanol-water-two-liquids":      # milestone M2b: the same column with two liquids on the stages
+                vll = dict(case, phases="VLL")
+                c2, _, rec["rigorous_VLL"] = solve_case(vll)
+                checks["stability_VLL"] = liquid_stability(c2.th, rec["rigorous_VLL"])
+                checks["feed_T_K_VLL"] = [c2.th.feed_T(f) for f in feeds_of(vll)]
+            if case.get("phases") == "VLL":
+                checks["stability"] = liquid_stability(c.th, prof)
+                checks["feed_liquids"] = [split_record(c.th, f["z"], T) for f, T in zip(feeds_of(case), checks["feed_T_K"])]
+                checks["liquid_liquid_split_by_stage"] = [s["liquids"] is not None for s in prof["stages"]]
             if cid == "A4-binary-two-feeds":
                 checks["mccabe_thiele"] = mccabe_thiele(case, prof)
             if cid == "B2-chemsep-benzene-toluene":
@@ -633,6 +998,11 @@ def main():
             rec["checks"] = {"rmin_against_rigorous": {"stages": N, "feed_stage": fstage, "reflux_ratio_rigorous": Rr, "R_min_underwood": r["R_min"],
                              "ratio": Rr / r["R_min"], "expected": "close to 1: Underwood is exact for constant alpha and constant molar overflow at infinitely many stages; 100 stages need a little more, and the rigorous column puts less of the heavy non-key C in the distillate than Fenske's estimate in the shortcut's x_D, which lowers it a little",
                              "tolerance": [1.0 - 1e-3, 1.0 + 1e-2]}}
+        if cid in BOUNDARY:
+            rec["boundary"] = boundary_record(case)
+            if "rigorous" in rec["boundary"]:
+                rec["rigorous"] = rec["boundary"].pop("rigorous")
+                rec["checks"] = {"feed_T_K": [rec["boundary"]["column_feed"]["column_method"]["T_K"]]}
         if cid == "E1-shortcut-below-minimum-reflux":
             rec["shortcut"] = reference_fug.run_case(case)
         if cid == "E2-negative-boilup":
@@ -659,7 +1029,8 @@ def main():
 
 RIGOROUS = ("A1-binary-alpha", "A3-ternary-partial-condenser", "A4-binary-two-feeds", "B1-ethanol-water-nrtl",
             "B2-chemsep-benzene-toluene", "B3-acetone-methanol-azeotrope", "D1-dry-stage", "F1-butanol-water-two-liquids",
-            "P1-performance-alcohols-water")
+            "F2-butanol-water-decanter", "F3-ethyl-acetate-ethanol-water-some-stages", "P1-performance-alcohols-water")
+BOUNDARY = {"G1-own-method-boundary": None, "G2-own-method-recycle": "recycle", "G3-own-method-cannot-represent": None}
 
 
 def model_azeotrope(th, lo, hi):
