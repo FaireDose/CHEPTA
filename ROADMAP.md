@@ -114,10 +114,24 @@ parameters from open sources only, a tier on every parameter set, and a test aga
 and open data. Added 2026-10-30 at the maintainer's request ("upgrade the methods as well to include Wilson, PC-SAFT,
 ionic methods").
 
+**Order and how parameters come** (the maintainer, 2026-10-30: "decide yourself. for the others we find data where we
+have and we implement the add data yourself method"):
+
+- **M1 Wilson starts when the four pull requests of proposal 0015's M2b are merged** (the limit of four open pull
+  requests), as one session and one pull request: the proposal, the model, ChemSep's Wilson set, and Wilson pairs in
+  My data. It ships with v0.6.
+- **M2 starts when M1 is merged.** Its first step is a source check: PSRK's own group tables are used only if they are
+  open; otherwise the method is built on Modified UNIFAC 2.0 (CC BY 4.0, already in CHEPTA) inside the cubic equation
+  of state, through the gE mixing rule the proposal chooses. It ships with the first release after it is done.
+- **M3 to M6, in that order** (PC-SAFT reuses CPA's association term): each ships with **the open parameters a search
+  finds** (recorded as in docs/DATA_RULES.md) **and My data for the rest** (proposal 0012): the user adds the method's
+  pure-component or pair parameters with their source and the tier "user", as for NRTL, UNIQUAC and k_ij today. A method
+  without open parameters for a component works once the user gives them, and says so until then.
+
 | Item | What | For | Open parameters known | Status |
 |---|---|---|---|---|
-| **M1** | **Wilson** activity model | polar mixtures with one liquid; the method guide's choice for many alcohol and hydrocarbon systems (it cannot predict two liquids) | ChemSep's Wilson set (`wilson.json`, Artistic License 2.0, as its NRTL and UNIQUAC sets); fits to ThermoML data by the same scripts | **Open**; small: a proposal, the model, the ChemSep import, tests against `thermo` |
-| **M2** | **PSRK** and **MHV2** (UNIFAC inside a cubic equation of state) | polar mixtures above 10 bar, gases dissolved in polar solvents (the "PSRK or MHV2" rows of the method guide) | PSRK's group parameters as published openly (to be checked table by table; the `thermo` library ships them with sources) | **Open** |
+| **M1** | **Wilson** activity model | polar mixtures with one liquid; the method guide's choice for many alcohol and hydrocarbon systems (it cannot predict two liquids) | ChemSep's Wilson set (`wilson.json`, Artistic License 2.0, as its NRTL and UNIQUAC sets); fits to ThermoML data by the same scripts | **Open**; starts after M2b; small: a proposal, the model, the ChemSep import, Wilson pairs in My data, tests against `thermo` |
+| **M2** | **PSRK** and **MHV2** (UNIFAC inside a cubic equation of state) | polar mixtures above 10 bar, gases dissolved in polar solvents (the "PSRK or MHV2" rows of the method guide) | PSRK's group parameters as published openly (to be checked table by table); else Modified UNIFAC 2.0 in a gE mixing rule | **Open**; starts after M1 |
 | **M3** | **CPA** (cubic plus association) | water + hydrocarbons with two liquids, glycols and methanol in gas processing; the real fix of the P-H flash with two liquids (DECISIONS.md, Engineering, item 7) | open articles with CPA parameters for water, alcohols, glycols (to be searched) | **Open** |
 | **M4** | **PC-SAFT** (and Flory–Huggins for polymer solutions) | polymers, associating and high-pressure systems, ionic liquids with association | open articles and open libraries' parameter tables, where those tables are themselves open (DATA_RULES.md, source 4) | **Open** |
 | **M5** | **Electrolytes**: electrolyte NRTL, Pitzer (Debye–Hückel long-range term) | salts and ionized acids and bases in water (amine gas treating, brines, crystallization of salts) | open articles for the ion pairs; species and reactions of dissociation from the reactions layer (A13) | **Open** |
@@ -259,6 +273,7 @@ Needs E1–E4, E6.
 
 - [ ] Equipment sizing and cost for the units of v0.4 to v0.6
 - [ ] Operating cost and cost of production of a flowsheet; cost view
+- [ ] A cubic equation of state with UNIFAC in its mixing rule, PSRK or MHV2 (M2), if done by then
 
 ### v0.8 – Agentic process design
 
@@ -269,9 +284,8 @@ Needs G1–G4, E5.
 
 ### v0.9 – Advanced thermodynamics
 
-Needs a proposal for each method (track M).
+Needs a proposal for each method (track M). Each method ships with the open parameters found and My data for the rest.
 
-- [ ] PSRK and MHV2 for polar mixtures at high pressure and gases in polar solvents (M2)
 - [ ] CPA for water + hydrocarbons and glycols, with two liquids (M3)
 - [ ] PC-SAFT, and Flory–Huggins for polymer solutions (M4)
 - [ ] Electrolytes: electrolyte NRTL and Pitzer (M5)
