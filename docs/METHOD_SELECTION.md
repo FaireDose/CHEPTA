@@ -34,7 +34,7 @@ Read on 2026-10-09:
      an activity model is more accurate; PSRK, which puts UNIFAC with gas groups inside an equation of state, would do
      both and is not in CHEPTA yet (step 4).
 3. **Polar, no electrolytes, below 10 bar, with interaction parameters:**
-   - an activity model: NRTL or UNIQUAC (Wilson when there is only one liquid);
+   - an activity model: NRTL or UNIQUAC (Wilson when there is only one liquid; not in CHEPTA yet, roadmap M1);
    - for the vapour, the ideal gas at low pressure, or an equation of state.
 4. **Polar, above 10 bar:** PSRK, or a cubic equation with Wong–Sandler or MHV2 mixing rules.
    **CHEPTA does not have these yet**; such mixtures are outside what it can calculate well.
@@ -66,10 +66,10 @@ Read on 2026-10-09:
 |---|---|---|
 | Hydrocarbons and light gases, any pressure and reduced temperature | Peng–Robinson or SRK with the databank's k_ij (0 where it has none, with a warning) | covered |
 | Polar liquids below 10 bar | NRTL or UNIQUAC with fitted or databank pairs; ideal-gas or PR/SRK vapour | covered where the pairs exist (docs/DATA_WANTED.md) |
-| Polar mixtures above 10 bar | (PSRK, MHV2, Wong–Sandler, CPA) | **not available** |
-| Water + hydrocarbons (two liquids) | (CPA, or a free-water approach) | **not available**; the engine refuses a second liquid with an equation of state |
-| Electrolytes | (eNRTL, Pitzer) | **not available**, shown as "not available yet" |
-| Polymers | (Flory–Huggins, PC-SAFT) | **not available** |
+| Polar mixtures above 10 bar | (PSRK, MHV2, Wong–Sandler, CPA) | **not available**; planned: roadmap M2, M3 |
+| Water + hydrocarbons (two liquids) | (CPA, or a free-water approach) | **not available**; the engine refuses a second liquid with an equation of state; planned: roadmap M3 |
+| Electrolytes | (eNRTL, Pitzer) | **not available**, shown as "not available yet"; planned: roadmap M5 (ionic liquids: M6) |
+| Polymers | (Flory–Huggins, PC-SAFT) | **not available**; planned: roadmap M4 |
 
 ## Where the rules are applied
 

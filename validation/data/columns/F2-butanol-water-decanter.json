@@ -1,0 +1,89 @@
+{
+  "chepta_column_case": 1,
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "1-butanol",
+    "water"
+  ],
+  "pressure_kPa": 101.325,
+  "id": "F2-butanol-water-decanter",
+  "title": "1-Butanol + water, NRTL, 10 stages with a decanter on the condenser: the butanol-rich liquid is refluxed, the water-rich liquid is the distillate",
+  "purpose": "A heterogeneous azeotropic column (milestone M2b): a water-rich feed (0.3 butanol, itself two liquids at its bubble point) enters stage 2; the vapour leaving the top stage is condensed and decanted; all of the butanol-rich liquid returns as reflux, all of the water-rich liquid leaves as the distillate, and 0.994 butanol leaves at the bottom. The decanter's two liquids are in liquid-liquid equilibrium at the condensate's bubble point. Two liquids also form on the stages above the stripping section.",
+  "method_choice": "docs/METHOD_SELECTION.md rules 3 and 7: polar, below 10 bar, two liquids possible: NRTL (it describes two liquids), the default set of the pair (ChemSep databank, tier databank; its record states that it predicts two liquid phases), ideal-gas vapour.",
+  "phases": "VLL",
+  "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "decanter",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 2,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.3,
+        0.7
+      ],
+      "q": 1
+    }
+  },
+  "specs": [
+    {
+      "kind": "decanter_reflux",
+      "rich_in": "1-butanol",
+      "start_reflux_ratio": 1.4,
+      "note": "all of the liquid richer in 1-butanol is refluxed and all of the other liquid is the distillate; start_reflux_ratio is only the reference's first guess, not a specification"
+    },
+    {
+      "kind": "bottoms_flow_mol_s",
+      "value": 28.9
+    }
+  ],
+  "search": {
+    "date": "2026-10-30",
+    "what": "an open worked example of a heterogeneous azeotropic or decanter column with stage results",
+    "searched": [
+      "The ChemSep Book, 2nd edition (2006, public domain), chapter 9 and section 13.7 (three-phase distillation): the method (an overall liquid with averaged K-values and enthalpy, section 13.7.2, eqs. 13.45-13.52), no example with numbers",
+      "a web search (n-butanol + water, decanter, column, stage results): an open batch heteroazeotropic study (OATAO / CORE, core.ac.uk/download/12042666.pdf; batch, not a continuous column) and an Aspen study of butanol recovery (Processes 10 (2022) 364, open access; its own property parameters, no stage table to compare)",
+      "the open sources of the earlier cases (DWSIM tutorials, NeqSim documentation): none with two liquids on the stages"
+    ],
+    "result": "none found with stage results; the independent reference is the reference"
+  },
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "the decanter's two liquids are the binary's liquid-liquid equilibrium at the heteroazeotropic temperature: the distillate is the water-rich liquid, the reflux the butanol-rich one (fixture stage 1 `decanter`)",
+      "the upper stages hold two liquids (the feed's stage among them), the stripping stages below one liquid; the bottoms are 0.99 or more 1-butanol (fixture)",
+      "the reflux is not a specification: it is the whole butanol-rich liquid, which follows from the vapour reaching the condenser",
+      "with phases \"VL\" the column is refused (PHASE_SPLIT or a decanter that needs two liquids), never solved with one liquid in the decanter"
+    ],
+    "branch": "The reference's solution from its stated start (below the decanter, the stages start on the butanol-rich side, between the reflux liquid and the bottoms). Another solution exists that closes every balance with two liquids on every stage, so the start matters: an engine that finds it reports it for review."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    },
+    "agreement_with_data": {
+      "note": "The NRTL set (ChemSep, tier databank) sets the liquid-liquid split; its agreement with measured mutual solubilities is W1's work and not a test of the column."
+    }
+  }
+}

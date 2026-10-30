@@ -14,7 +14,7 @@ column cases are described here.
 | `validation/python/reference_fug.py` | the shortcut: Fenske, Underwood, Gilliland in Eduljee's form, the feed stage |
 | `test/benchmark-columns.test.js` | the cases are well formed; every stage's balances of the reference close, recomputed in JavaScript (with CHEPTA's own NRTL, vapour pressures and enthalpies for ethanol + water); the shortcut's equations hold at the fixture's numbers |
 
-Regenerate the fixture: `python validation/python/reference_mesh.py` (about two minutes).
+Regenerate the fixtures: `python validation/python/reference_mesh.py` (about fifteen minutes: the two-liquid cases split every stage's liquid at every evaluation) and `python validation/python/reference_hydraulics.py`.
 
 ## The cases
 
@@ -95,6 +95,58 @@ y/x = 1.0491, K = 1.07974); x and y are consistent with the flows, so they are c
   tolerances and the phase check stay as in every case.
 - **Several feeds (A4) and the partial condenser (A3)** are in the reference; A4's McCabe-Thiele construction with
   three operating lines equals its profile to 1e-14.
+
+## Milestone M2b: two liquids, the column's own method, hydraulics
+
+Written ahead of W2's and W4's M2b tasks (decision file docs/decisions/2026-10-30-01-m2b-cases.md); the tests check the
+cases and the references, the engine's comparison is W2's and W4's.
+
+| Case | What it checks | Expected |
+|---|---|---|
+| F1 with phases "VLL" | the F1 column with two liquids on the stages: stages 1 and 2 hold two liquids (0.412 and 0.018 butanol) at the heteroazeotropic 366.10 K, stages 3 to 6 one liquid | ok (still PHASE_SPLIT with "VL") |
+| F2 decanter (1-butanol + water) | 10 stages, a water-rich feed (0.3 butanol) on stage 2, a decanter refluxing all of the butanol-rich liquid and drawing the water-rich one, bottoms 28.9 mol/s: 0.994 butanol at the bottom; two liquids on stages 1 to 6 | ok |
+| F3 ethyl acetate + ethanol + water | 10 stages, NRTL with the three fitted sets: one liquid on stages 1 to 4, two liquids on stages 5 to 10, whose temperatures and compositions change from stage to stage | ok |
+| G1 the column's own method | benzene + toluene, the column in NRTL inside a Peng–Robinson flowsheet (the B2 column, its feed a PR liquid at 350 K): the feed enters NRTL at 352.55 K, the distillate leaves NRTL at 357.91 K and is 354.98 K in PR; the balance closes to 1e-8 W where recalculating at the same T would create 43.9 kW | ok |
+| G2 in a recycle | G1 with half of the bottoms mixed back into the feed in PR: converged by direct substitution, balance closed to 1e-6 W | ok |
+| G3 cannot represent | a PR liquid at 265 K: below the enthalpy of the same liquid in CHEPTA's NRTL at 278.68 K, where benzene's liquid heat-capacity record starts | invalid_input, OUT_OF_RANGE |
+| H1 Fair's method, published | the n-hexane + n-heptane example of Fermeglia (2021), slides 45-47: u_flood = 4.836 ft/s, D = 11.03 ft at the top | reproduced within 0.1 % |
+| H2 the largest area | three stages with the same flow parameter: stage 2 has the lowest flooding velocity, stage 15 the largest required area (1.21 times the diameter) | stage 15 sets the diameter |
+
+**Two liquids on a stage** (`ActivityVLL` in `reference_mesh.py`): the stage's liquid of overall composition x is its
+stable state at T, one liquid, or two in liquid-liquid equilibrium found by Michelsen's tangent-plane test and a split
+(successive substitution with the Rachford-Rice equation, then Newton's method on the equal activities, to 1e-14). The
+vapour is in equilibrium with both liquids; the stage's K is written on the overall liquid, K_i = y_i/x_i, and its
+liquid enthalpy is the two liquids' — the averaging of The ChemSep Book, section 13.7.2 (public domain), so the MESH
+equations are unchanged. In a binary at fixed pressure a stage with vapour and two liquids has no degree of freedom
+left, so all of F1's and F2's two-liquid stages share T and the two liquid compositions; F3, a ternary, does not.
+The tests check, with CHEPTA's own NRTL, that the two liquids have equal activities, that the overall liquid lies
+between them and is unstable, and that every one-liquid stage is stable on a grid of trial liquids.
+
+**The decanter:** the condensate at its bubble point splits; all of the liquid richer in the named component is the
+reflux (so the reflux is not a specification), all of the other the distillate. F2 has a second solution with two
+liquids on every stage and the bottoms at 0.46 butanol, which also closes every balance: the reference's start puts the
+stages below the decanter on the butanol-rich side, and the case names that branch.
+
+**The boundary between two methods** (proposal 0015, Part I, section 3): a stream keeps its component flows, pressure
+and enthalpy flow; its temperature (and vapour fraction) in the receiving method is found by a P-H flash, solved here by
+brentq on T over a vapour-liquid flash to 1e-10 K. The enthalpies of the two methods at the same T differ (PR's
+departure enthalpy against NRTL's liquid heat capacities): 411 J/mol for the feed at 350 K, and the PR distillate at
+the NRTL column's 357.9 K would be partly vapour. The fixture's `energy.imbalance_if_recalculated_at_same_T_W` shows
+what a same-T recalculation would create. No open worked example of a column with its own method was found; the
+checks are the balance and the round trip (a stream into the other method and back returns at its temperature within
+1e-11 K).
+
+**Hydraulics** (`validation/data/columns/hydraulics/`, `reference_hydraulics.py`): H1 is the open worked example of
+M. Fermeglia, "Staged column design", University of Trieste (2021), slides 44-47 (free to read): pure n-hexane at 69 °C,
+ρV = 0.1917 and ρL = 41.12 lb/ft³, σ = 13.2 dyn/cm, L/V = 0.8, 24 in spacing, C_sb = 0.36 ft/s **read off Fair's chart
+by the author**, 75 % of flooding, η = 0.90, V = 2500 lbmol/h; printed: F_lv = 0.0546, K = 0.331, u_flood = 4.836 ft/s,
+D = 11.03 ft. Every printed number is reproduced from the inputs within 0.09 %. H2 is made so that the result does not
+depend on the fitted form of Fair's chart W4 chooses: its stages share F_lv, spacing and σ, so C_sb cancels from the
+ratios. Open fitted forms of the chart seen: the University of Oklahoma's ChE 4253 slides (2018, "Flash and column
+design exercises", free to read) print two, log10 C_SB = −1.1977 − 0.53143 log10 F_LV − 0.1876 (log10 F_LV)² (PDF page 10)
+and −0.94506 − 0.70234 log10 F_LV − 0.22618 (log10 F_LV)² (PDF page 12, its example), without the tray spacing they
+belong to; their worked example also has slips (F_LV printed as 0.027 where its data give 0.27; 0.30103 m per ft; A =
+A_N/1.2 on PDF page 11 and A_N/0.8 on page 13). They are listed for W4, not used in the cases.
 
 ## The thermodynamics of the model systems
 
