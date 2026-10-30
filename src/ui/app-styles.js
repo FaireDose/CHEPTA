@@ -176,6 +176,8 @@ export const APP_CSS = `
 .fa-notes:empty{display:none}
 .fa-plot{width:100%; max-width:780px; margin:0 auto; transition:opacity .15s}
 .fa-plot[data-view="ternary"]{max-width:620px}
+/* a button inside the canvas (.fug-plot sizes its charts to the width): its icon keeps its own size */
+.fa-plot button svg{width:auto; display:inline-block}
 .fa-plot[data-view="azeotropes"],.fa-plot[data-view="properties"]{max-width:none}
 .fa-busy .fa-plot{opacity:.5}
 .fa-nobg .fug-bg-layer{display:none !important}

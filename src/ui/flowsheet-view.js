@@ -1724,7 +1724,7 @@ function streamRows(fs, res, u, state) {
 const molarMassOf = c => byId().get(c)?.MW ?? NaN;
 
 /** The column's result table: the shortcut's condenser, feed stage and reboiler, or the rigorous column's every stage. */
-function columnTable({ fs, b, r, u }) {
+export function columnTable({ fs, b, r, u }) {
   const p = r.profile;
   if (r.state?.mode === "rigorous") {
     // one row per stage (a column has many stages and few components), in a box that scrolls sideways

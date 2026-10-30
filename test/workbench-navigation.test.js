@@ -12,18 +12,19 @@ import {
 const MAC = ["methanol", "acetone", "chloroform"];
 const go = (s, ...patches) => patches.reduce(applyPatch, s);
 
-test("one navigation: eight task workspaces holding every view; four supporting panels", () => {
+test("one navigation: nine task workspaces holding every view; four supporting panels", () => {
   // the Heat exchanger joins the Unit models (proposal 0013, step 2, 2026-10-20); Steam becomes Charts, with the
   // charts of any fluid beside water's (proposal 0013, step 7; its id stays "steam", so saved projects open)
   // the Reactor joins the Unit models (proposal 0010, steps 5 and 6; the maintainer, 2026-10-28), in place of the locked "Reaction"
-  assert.deepEqual(WORKSPACES.map(w => w.id), ["equilibrium", "steam", "solubility", "properties", "flash", "hx", "reactor", "flowsheet"]);
-  assert.deepEqual(WORKSPACES.map(w => w.label), ["Phase equilibrium", "Charts", "Solubility", "Properties", "Flash", "Heat exchanger", "Reactor", "Flowsheet"]);
+  // the Column joins them (proposal 0015, step 4, M2b; 2026-10-30), in place of the locked "Distillation"
+  assert.deepEqual(WORKSPACES.map(w => w.id), ["equilibrium", "steam", "solubility", "properties", "flash", "hx", "reactor", "column", "flowsheet"]);
+  assert.deepEqual(WORKSPACES.map(w => w.label), ["Phase equilibrium", "Charts", "Solubility", "Properties", "Flash", "Heat exchanger", "Reactor", "Column", "Flowsheet"]);
   assert.deepEqual(WORKSPACES.find(w => w.id === "steam").views, ["steam", "charts"]);
   // the top navigation: File, then three sections holding every workspace once, in order
   assert.deepEqual(SECTIONS.map(x => x.label), ["Properties & Equilibria", "Unit models", "Flowsheet"]);
   assert.deepEqual(SECTIONS.flatMap(x => x.workspaces), WORKSPACES.map(w => w.id));
   assert.equal(sectionOf("steam"), "thermo"); assert.equal(sectionOf("flash"), "units"); assert.equal(sectionOf("flowsheet"), "flowsheet");
-  assert.deepEqual(SECTIONS.find(x => x.id === "units").locked.map(l => l.label), ["Distillation"]);
+  assert.equal(SECTIONS.find(x => x.id === "units").locked, undefined, "nothing locked in Unit models since the Column workspace");
   // My data (proposal 0012, step 3) joins the supporting panels, next to the Library
   // "aichat" since 2026-10-20: a new chat with an AI assistant (Claude, ChatGPT, Gemini, Ollama) that loads the workbench
   assert.deepEqual(UTILITIES.map(u => u.id), ["project", "library", "mydata", "sources", "settings", "aichat", "feedback"]);
@@ -36,7 +37,7 @@ test("one navigation: eight task workspaces holding every view; four supporting 
     assert.ok(INPUTS[v], v);
   }
   assert.deepEqual(WORKSPACES.find(w => w.id === "equilibrium").views, ["txy", "ternary", "azeotropes", "pxy", "envelope"]);
-  assert.throws(() => workspaceOf("column"), /Unknown view/);
+  assert.throws(() => workspaceOf("mccabe"), /Unknown view/);
 });
 
 test("solids: the Solubility workspace holds gases, a solid in a solvent and the solid-liquid diagram", () => {
@@ -199,7 +200,7 @@ test("the configuration keys of earlier versions still work; old start names map
   assert.equal(applyPatch(s, { tab: "components" }).panels.left, true);
   assert.equal(applyPatch(s, { tab: "library" }).utility, "library");
   // new keys are checked
-  assert.throws(() => applyPatch(s, { workspace: "column" }), /Unknown workspace/);
+  assert.throws(() => applyPatch(s, { workspace: "absorber" }), /Unknown workspace/);
   assert.throws(() => applyPatch(s, { utility: "help" }), /Unknown panel/);
   assert.throws(() => applyPatch(s, { inputs: { steam: ["water"] } }), /unknown view "steam"/);
   assert.throws(() => applyPatch(s, { view: "sankey" }), /Unknown view/);

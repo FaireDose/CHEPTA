@@ -42,8 +42,8 @@ test("settings: merged, checked; two streams, electric heating, a wall, U from f
 
 test("the workspace sits in Unit models; it is saved (format 4) only once it was used, with its components", () => {
   assert.ok(WORKSPACES.some(w => w.id === "hx"));
-  // the Reactor workspace follows it since 2026-10-28
-  assert.deepEqual(SECTIONS.find(s => s.id === "units").workspaces, ["flash", "hx", "reactor"]);
+  // the Reactor workspace follows it since 2026-10-28, the Column workspace since 2026-10-30 (proposal 0015, M2b)
+  assert.deepEqual(SECTIONS.find(s => s.id === "units").workspaces, ["flash", "hx", "reactor", "column"]);
   const s0 = initialState({ components: ["ethanol", "water"], start: "hx" });
   assert.equal(s0.workspace, "hx");
   assert.equal(s0.hx, null);

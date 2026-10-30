@@ -82,7 +82,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - **W10, M1 step 14: the guide and the review merged; round 1 of fixes to review**
     (docs/decisions/2026-10-29-07-ui-fixes-round-1.md): ten of the review's 17 items fixed. To check: the 1 mW
     threshold for a zero duty; which of the items left for later come next. Then W10 checks W5's and W6's new views.
-  - Waiting: W1, W3, W5 and W6.
+  - **W5 and W6, M2b: the Column workspace, built, to review** (docs/decisions/2026-10-30-04-column-workspace.md): the
+    workspace under Unit models (shortcut or rigorous, in the worker), McCabe-Thiele for binaries checked against the
+    shortcut and the rigorous column, the column's sheet in the flowsheet's Excel workbook, SVG and PNG of the column
+    charts. To check: the construction against The ChemSep Book, section 1.3.3; to decide: the check's tolerances,
+    and whether SVG and PNG go on every chart next. Then W10 checks the screenshots.
+  - Waiting: W1, W3.
 - **Version 0.5.0 and publishing** (docs/decisions/2026-10-29-12-release-0.5.0-and-publishing.md): the version now comes
   from the release's tag. To publish 0.5.0: merge, then Actions, "Publish to npm", "Run workflow", and approve on npmjs.com.
 - **Benzene + toluene k_ij** (docs/decisions/2026-10-29-11-benzene-toluene-kij.md): PR and SRK k_ij fitted to the

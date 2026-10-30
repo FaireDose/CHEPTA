@@ -45,6 +45,7 @@ import { pure } from "../thermo/pure.js";
 import { unitType } from "../units/units.js";
 import { findComponent, componentRecord } from "../thermo/components.js";
 import { flowsheetSystem } from "../flowsheet/document.js";
+import { columnSheet } from "./column-excel.js";
 
 const portOf = end => { const i = end.lastIndexOf("."); return { block: end.slice(0, i), port: end.slice(i + 1) }; };
 const val = v => ({ v, s: "value" });
@@ -70,7 +71,8 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
   const mwRow0 = I.length;
   comps.forEach(c => I.push([nameOf(c), c, val(pure(c, own).MW)]));
   const mwRange = `Inputs!$C$${mwRow0 + 1}:$C$${mwRow0 + n}`;
-  I.push([], [{ v: "Method", s: "bold" }, `${fs.thermo.model}${["PR", "SRK"].includes(fs.thermo.model) ? "" : `, ${fs.thermo.vapour ?? "ideal"} vapour`}`], []);
+  const methodText = `${fs.thermo.model}${["PR", "SRK"].includes(fs.thermo.model) ? "" : `, ${fs.thermo.vapour ?? "ideal"} vapour`}`;
+  I.push([], [{ v: "Method", s: "bold" }, methodText], []);
   const feedCell = {}, fracCell = {}, sepCell = {}, convCell = {};
   const reactionsById = new Map((fs.reactions ?? []).map(r => [r.id, r]));
   for (const b of fs.blocks) {
@@ -134,6 +136,9 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
       for (const [id, xi] of Object.entries(q.extents_kmol_h)) I.push([`${reactionsById.get(id)?.name || id}: extent, kmol/h`, null, val(xi)]);
       if (q.kinetic.V_m3 != null) I.push(["Reactor volume, m3", null, val(q.kinetic.V_m3)]);
       I.push([]);
+    } else if (b.type === "column" && res.blocks[b.id]?.state) {
+      // a column is solved in CHEPTA: its outlets are values; its inputs, results and profile are on its own sheet
+      I.push([{ v: `Column ${b.label || b.id}`, s: "bold" }, "(solved in CHEPTA: its outlet flows are values; its inputs, results and profile are on its own sheet)"], []);
     } else if (["flash", "heater", "mixer"].includes(b.type) && Object.keys(spec).length) {
       I.push([{ v: `${unitType(b.type).label} ${b.label || b.id}`, s: "bold" }, concept && b.type === "flash"
         ? "(as specified in CHEPTA; in this workbook change T and P on the Flash models sheet)" : "(used by CHEPTA; change it there)"]);
@@ -256,7 +261,7 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
     ] : [
       [inp("Blue"), "Inputs you can change: feed flows, split fractions, separator fractions."],
       ["Black", "Formulas: feed, mixer, heater, splitter and separator flows; totals; mass flows; mole fractions; duties; the material balance."],
-      [val("Grey italics"), "Calculated by CHEPTA with the thermodynamic model: flash drum outlets, temperatures, pressures, vapour fractions and enthalpy flows."],
+      [val("Grey italics"), "Calculated by CHEPTA with the thermodynamic model: flash drum and column outlets, temperatures, pressures, vapour fractions and enthalpy flows; each column's profile on its own sheet."],
       [],
       [{ v: "What updates in Excel", s: "bold" }],
       ["Change a blue input and the formulas update. A recycle through mixers, splitters, separators and heaters is a circular reference: iterative calculation is switched on in this workbook, so Excel solves it."],
@@ -274,6 +279,8 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
       ...(flash?.rows.length ? [{ name: "Flash models", rows: flash.rows, cols: [26, 13, 11, 13, 13, 13, 13, 9, 11, 11, 12, 11, 11, 13, 13] }] : []),
       ...(passes ? [{ name: "Recycle passes", rows: passes.rows, cols: [26, 10, ...Array(40).fill(13)] }] : []),
       { name: "Energy and balances", rows: E, cols: [26, 10, 20, 30] },
+      // each column's inputs, results and profile (proposal 0015, M2b)
+      ...fs.blocks.filter(b => b.type === "column" && res.blocks[b.id]?.state).map(b => columnSheet(b, res.blocks[b.id], { comps, nameOf, model: methodText })),
       { name: "About", rows: A, cols: [16, 110] },
     ],
   };
