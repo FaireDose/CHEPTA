@@ -1,0 +1,489 @@
+{
+ "generated_by": "validation/python/reference_hydraulics.py",
+ "chart": "validation/data/sizing/fair_chart_fermeglia2021.json",
+ "cases": {
+  "trieste-example": {
+   "trays": [
+    {
+     "stage": 2,
+     "WL_kg_s": 21.714474734944446,
+     "WV_kg_s": 27.143093418680557,
+     "rhoL": 658.6792139372409,
+     "rhoV": 3.0707394287881584,
+     "sigma_N_m": 0.0132
+    }
+   ],
+   "options": {
+    "design_fraction": 0.75,
+    "net_area_fraction": 0.9,
+    "tray_spacing_m": 0.6096
+   },
+   "result": {
+    "D_m": 3.500971632454737,
+    "governing_stage": 2,
+    "lowest_flooding_velocity_stage": 2,
+    "flooding_stages": [],
+    "weeping_stages": [],
+    "stages": [
+     {
+      "stage": 2,
+      "F": 0.0546228668924347,
+      "u_flood_m_s": 1.3603339539532562,
+      "area_required_m2": 9.626470071507427,
+      "fraction_of_flooding": 0.7499999999999999
+     }
+    ]
+   }
+  },
+  "slowest-does-not-set": {
+   "trays": [
+    {
+     "stage": 2,
+     "WL_kg_s": 4.0,
+     "WV_kg_s": 5.0,
+     "rhoL": 700.0,
+     "rhoV": 4.0,
+     "sigma_N_m": 0.018
+    },
+    {
+     "stage": 3,
+     "WL_kg_s": 9.0,
+     "WV_kg_s": 7.0,
+     "rhoL": 760.0,
+     "rhoV": 2.0,
+     "sigma_N_m": 0.022
+    }
+   ],
+   "options": {},
+   "result": {
+    "D_m": 1.7799387648324563,
+    "governing_stage": 3,
+    "lowest_flooding_velocity_stage": 2,
+    "flooding_stages": [],
+    "weeping_stages": [
+     2
+    ],
+    "stages": [
+     {
+      "stage": 2,
+      "F": 0.060474315681476355,
+      "u_flood_m_s": 1.2802446660465203,
+      "area_required_m2": 1.356077597630097,
+      "fraction_of_flooding": 0.4359879879276262
+     },
+     {
+      "stage": 3,
+      "F": 0.0659557512054742,
+      "u_flood_m_s": 1.953599536016443,
+      "area_required_m2": 2.4882843292557966,
+      "fraction_of_flooding": 0.8000000000000002
+     }
+    ]
+   }
+  },
+  "span-defaults": {
+   "trays": [
+    {
+     "stage": 2,
+     "WL_kg_s": 0.34,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.02
+    },
+    {
+     "stage": 3,
+     "WL_kg_s": 1.2,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.022
+    },
+    {
+     "stage": 4,
+     "WL_kg_s": 4.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.024
+    },
+    {
+     "stage": 5,
+     "WL_kg_s": 12.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.026000000000000002
+    },
+    {
+     "stage": 6,
+     "WL_kg_s": 30.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.028
+    },
+    {
+     "stage": 7,
+     "WL_kg_s": 52.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.03
+    }
+   ],
+   "options": {},
+   "result": {
+    "D_m": 1.7093040308427796,
+    "governing_stage": 7,
+    "lowest_flooding_velocity_stage": 7,
+    "flooding_stages": [],
+    "weeping_stages": [
+     2,
+     3,
+     4,
+     5
+    ],
+    "stages": [
+     {
+      "stage": 2,
+      "F": 0.010410331406828507,
+      "u_flood_m_s": 1.8236528734749644,
+      "area_required_m2": 0.5077314544854016,
+      "fraction_of_flooding": 0.17700907855596043
+     },
+     {
+      "stage": 3,
+      "F": 0.03674234614174767,
+      "u_flood_m_s": 1.710911791861098,
+      "area_required_m2": 0.5411885816268299,
+      "fraction_of_flooding": 0.18867314859557646
+     },
+     {
+      "stage": 4,
+      "F": 0.1224744871391589,
+      "u_flood_m_s": 1.5022270454984796,
+      "area_required_m2": 0.6163688296656105,
+      "fraction_of_flooding": 0.21488304028810645
+     },
+     {
+      "stage": 5,
+      "F": 0.3674234614174767,
+      "u_flood_m_s": 1.0330360039408701,
+      "area_required_m2": 0.8963152517372712,
+      "fraction_of_flooding": 0.3124800234534806
+     },
+     {
+      "stage": 6,
+      "F": 0.9185586535436917,
+      "u_flood_m_s": 0.6443651195618217,
+      "area_required_m2": 1.436958484896839,
+      "fraction_of_flooding": 0.5009630486504981
+     },
+     {
+      "stage": 7,
+      "F": 1.5921683328090657,
+      "u_flood_m_s": 0.4035038934246662,
+      "area_required_m2": 2.2947137339055077,
+      "fraction_of_flooding": 0.7999999999999999
+     }
+    ]
+   }
+  },
+  "span-between-spacings": {
+   "trays": [
+    {
+     "stage": 2,
+     "WL_kg_s": 0.34,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.02
+    },
+    {
+     "stage": 3,
+     "WL_kg_s": 1.2,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.022
+    },
+    {
+     "stage": 4,
+     "WL_kg_s": 4.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.024
+    },
+    {
+     "stage": 5,
+     "WL_kg_s": 12.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.026000000000000002
+    },
+    {
+     "stage": 6,
+     "WL_kg_s": 30.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.028
+    },
+    {
+     "stage": 7,
+     "WL_kg_s": 52.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.03
+    }
+   ],
+   "options": {
+    "tray_spacing_m": 0.5,
+    "hole_area_ratio": 0.07,
+    "hole_diameter_mm": 8,
+    "foaming_factor": 0.85
+   },
+   "result": {
+    "D_m": 2.207788012105677,
+    "governing_stage": 7,
+    "lowest_flooding_velocity_stage": 7,
+    "flooding_stages": [],
+    "weeping_stages": [
+     2,
+     3,
+     4,
+     5
+    ],
+    "stages": [
+     {
+      "stage": 2,
+      "F": 0.010410331406828507,
+      "u_flood_m_s": 1.0390051145879038,
+      "area_required_m2": 0.8911658979591952,
+      "fraction_of_flooding": 0.18622754709822803
+     },
+     {
+      "stage": 3,
+      "F": 0.03674234614174767,
+      "u_flood_m_s": 0.9758784839333019,
+      "area_required_m2": 0.9488127273735547,
+      "fraction_of_flooding": 0.19827404446130115
+     },
+     {
+      "stage": 4,
+      "F": 0.1224744871391589,
+      "u_flood_m_s": 0.863695806511076,
+      "area_required_m2": 1.0720509685768072,
+      "fraction_of_flooding": 0.22402722399895933
+     },
+     {
+      "stage": 5,
+      "F": 0.3674234614174767,
+      "u_flood_m_s": 0.5981847525160552,
+      "area_required_m2": 1.5478928910028913,
+      "fraction_of_flooding": 0.32346423592103407
+     },
+     {
+      "stage": 6,
+      "F": 0.9185586535436917,
+      "u_flood_m_s": 0.3781003137338626,
+      "area_required_m2": 2.4488895996464763,
+      "fraction_of_flooding": 0.5117461342505351
+     },
+     {
+      "stage": 7,
+      "F": 1.5921683328090657,
+      "u_flood_m_s": 0.24186421739027328,
+      "area_required_m2": 3.8282881854815556,
+      "fraction_of_flooding": 0.8000000000000002
+     }
+    ]
+   }
+  },
+  "checked-flooding": {
+   "trays": [
+    {
+     "stage": 2,
+     "WL_kg_s": 4.0,
+     "WV_kg_s": 5.0,
+     "rhoL": 700.0,
+     "rhoV": 4.0,
+     "sigma_N_m": 0.018
+    },
+    {
+     "stage": 3,
+     "WL_kg_s": 9.0,
+     "WV_kg_s": 7.0,
+     "rhoL": 760.0,
+     "rhoV": 2.0,
+     "sigma_N_m": 0.022
+    }
+   ],
+   "options": {
+    "diameter_m": 1.5,
+    "tray_spacing_m": 0.45
+   },
+   "result": {
+    "D_m": 1.5,
+    "governing_stage": 3,
+    "lowest_flooding_velocity_stage": 2,
+    "flooding_stages": [
+     3
+    ],
+    "weeping_stages": [],
+    "stages": [
+     {
+      "stage": 2,
+      "F": 0.060474315681476355,
+      "u_flood_m_s": 1.0377716688942429,
+      "area_required_m2": 1.6729220532306077,
+      "fraction_of_flooding": 0.7573441825538675
+     },
+     {
+      "stage": 3,
+      "F": 0.0659557512054742,
+      "u_flood_m_s": 1.5866775924909684,
+      "area_required_m2": 3.063704393454955,
+      "fraction_of_flooding": 1.3869616309780284
+     }
+    ]
+   }
+  },
+  "checked-weeping-valve": {
+   "trays": [
+    {
+     "stage": 2,
+     "WL_kg_s": 0.34,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.02
+    },
+    {
+     "stage": 3,
+     "WL_kg_s": 1.2,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.022
+    },
+    {
+     "stage": 4,
+     "WL_kg_s": 4.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.024
+    },
+    {
+     "stage": 5,
+     "WL_kg_s": 12.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.026000000000000002
+    },
+    {
+     "stage": 6,
+     "WL_kg_s": 30.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.028
+    },
+    {
+     "stage": 7,
+     "WL_kg_s": 52.0,
+     "WV_kg_s": 2.0,
+     "rhoL": 800.0,
+     "rhoV": 3.0,
+     "sigma_N_m": 0.03
+    }
+   ],
+   "options": {
+    "diameter_m": 6.0,
+    "tray": "valve",
+    "tray_spacing_m": 0.3
+   },
+   "result": {
+    "D_m": 6.0,
+    "governing_stage": 7,
+    "lowest_flooding_velocity_stage": 7,
+    "flooding_stages": [],
+    "weeping_stages": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "stages": [
+     {
+      "stage": 2,
+      "F": 0.010410331406828507,
+      "u_flood_m_s": 1.1058473146385817,
+      "area_required_m2": 0.8372999723099581,
+      "fraction_of_flooding": 0.023690743012237673
+     },
+     {
+      "stage": 3,
+      "F": 0.03674234614174767,
+      "u_flood_m_s": 1.0533598216005877,
+      "area_required_m2": 0.8790214957306562,
+      "fraction_of_flooding": 0.024871220645256053
+     },
+     {
+      "stage": 4,
+      "F": 0.1224744871391589,
+      "u_flood_m_s": 0.9452979654494722,
+      "area_required_m2": 0.9795069488863912,
+      "fraction_of_flooding": 0.027714377370334158
+     },
+     {
+      "stage": 5,
+      "F": 0.3674234614174767,
+      "u_flood_m_s": 0.6749830567552599,
+      "area_required_m2": 1.3717765455876538,
+      "fraction_of_flooding": 0.03881333654183108
+     },
+     {
+      "stage": 6,
+      "F": 0.9185586535436917,
+      "u_flood_m_s": 0.4468071787600929,
+      "area_required_m2": 2.072316582950627,
+      "fraction_of_flooding": 0.05863456494718188
+     },
+     {
+      "stage": 7,
+      "F": 1.5921683328090657,
+      "u_flood_m_s": 0.3023846134930209,
+      "area_required_m2": 3.062080160858767,
+      "fraction_of_flooding": 0.08663914555454202
+     }
+    ]
+   }
+  }
+ },
+ "surface_tension": {
+  "input": {
+   "xs": [
+    0.1606,
+    0.8394
+   ],
+   "sigmas": [
+    0.01547,
+    0.02877
+   ],
+   "rhoms": [
+    8610.0,
+    15530.0
+   ]
+  },
+  "sigma_N_m": 0.02496738845043982
+ }
+}

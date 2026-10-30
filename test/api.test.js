@@ -141,9 +141,10 @@ test("contracts not built yet refuse: the column engine's later configurations a
   const thermo = { n: 2, names: ["A", "B"], P_kPa: 100, lnK: () => [0.5, -0.5], hL: () => 0, hV: () => 3e4, bubbleT: () => 350 };
   const feeds = [{ stage: 2, flows: [1, 1], H_W: 0 }], specs = [{ kind: "reflux_ratio", value: 2 }, { kind: "distillate_rate", value: 1 }];
   for (const phases of ["LL", "VLL"]) assert.throws(() => solveCascade({ thermo, stages: 4, feeds, specs, phases }), e => e.code === "NOT_AVAILABLE" && /M2b/.test(e.message));
-  // the drum and decanter sizes landed at M1 (test/sizing.test.js): an empty result is now a wrong input
-  for (const f of [columnDiameter, membraneArea]) assert.throws(() => f({}), e => e.code === "NOT_AVAILABLE");
-  for (const f of [sizeDrum, sizeDecanter]) assert.throws(() => f({}), e => e.code === "BAD_INPUT");
+  // the drum and decanter sizes landed at M1 (test/sizing.test.js), the column diameter at M2b
+  // (test/column-hydraulics.test.js): an empty result is now a wrong input
+  assert.throws(() => membraneArea({}), e => e.code === "NOT_AVAILABLE");
+  for (const f of [sizeDrum, sizeDecanter, columnDiameter]) assert.throws(() => f({}), e => e.code === "BAD_INPUT");
 });
 
 test("unit v2: a block's profile, warnings and method pass through runUnit; an unknown warning code is a bug", () => {
