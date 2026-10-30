@@ -1013,15 +1013,17 @@
       ]
     },
     "fermeglia-staged-2021": {
-      "title": "Staged column design (Separation Processes course slides, 19 April 2021), slide 54: Table 6.2, Comparison of types of trays",
+      "title": "Staged column design (Separation Processes course slides, 19 April 2021): slides 35-47 (flooding, Fair's method, the diameter and its worked example) and slide 54 (Table 6.2, Comparison of types of trays)",
       "authors": "M. Fermeglia, Department of Engineering and Architecture, University of Trieste",
       "year": 2021,
       "kind": "course notes",
       "url": "https://moodle2.units.it/pluginfile.php/395399/mod_resource/content/1/09_StagedColumnDesign.pdf",
       "access": "Free to read on the University of Trieste's course site; its constants are taken, cited by slide, not its text or figures",
-      "note": "Typical turndown ratios (largest vapour flow, at flooding, over the smallest, at excessive weeping): sieve trays 2, valve trays 4, bubble-cap trays 5; the table on the slide is reproduced from a textbook the slide does not name. Read 2026-10-29.",
+      "note": "Typical turndown ratios (largest vapour flow, at flooding, over the smallest, at excessive weeping): sieve trays 2, valve trays 4, bubble-cap trays 5; the table on the slide is reproduced from a textbook the slide does not name. Read 2026-10-29. Slides 35-38 and 44-47: Fair's flooding velocity, the simplified diameter and its worked example (n-hexane + n-heptane; C_sb = 0.36 read off Fair's chart by the author), the hydraulics cases of validation/data/columns/hydraulics/; the numbers are printed in images of equations, read 2026-10-30.",
       "files": [
-        "src/units/columns/engine.js"
+        "src/units/columns/engine.js",
+        "validation/data/columns/hydraulics/H1-fermeglia-hexane-heptane.json",
+        "validation/data/columns/hydraulics/H2-largest-area-not-slowest-stage.json"
       ]
     },
     "fernandez2010-ethyl-acetate-n-decane": {

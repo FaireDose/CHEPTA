@@ -73,6 +73,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     METHOD_SELECTION.md rule 6 sends nonpolar hydrocarbons to an equation of state at any reduced temperature (the
     maintainer, 2026-10-29). To confirm: the agreement tolerances (1.0 K, 0.02), k_ij = 0 for the pair. Next for W7: the cases of
     W2's M2b tasks, then the benchmark separations' pairs.
+  - **W7, M2b cases: built, to review** (docs/decisions/2026-10-30-01-m2b-cases.md): two liquids on the stages (F1 with
+    phases "VLL", F2 a decanter column, F3 a ternary with two liquids on some stages), the column's own method across
+    the P-H boundary (G1, G2 in a recycle, G3 a refusal), and Fair's flooding and the diameter for W4 (H1 the Trieste
+    worked example, H2 the largest required area); the reference gained two-liquid stages, the decanter and the
+    boundary. To check: H1's numbers against the slides. To decide: F2's branch, G3's outcome. Next for W7: the
+    benchmark separations' pairs, and the engine comparisons when W2's and W4's M2b tasks land.
   - **W4, M1: the drum and decanter sizes, built, to review** (docs/decisions/2026-10-29-06-drum-sizing.md): a vertical
     or horizontal flash drum and a decanter from the flash block's result (`sizeDrum`, `sizeDecanter`, the `size_drum`
     capability, the size under the drum's results). To check: the constants and rules against the four open sources
