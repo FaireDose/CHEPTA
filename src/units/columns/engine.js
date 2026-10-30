@@ -128,9 +128,9 @@ const fmt = v => +Number(v).toPrecision(4);
  */
 export function cascadeThermo(sys, P) {
   if (Array.isArray(sys.solid) && sys.solid.some(Boolean)) throw fail("NOT_AVAILABLE", "Column: a flowsheet with inert solids cannot be distilled by the rigorous column yet.");
-  if (sys.nonvolatile?.some(Boolean)) {
-    throw fail("NOT_AVAILABLE", `Column: ${sys.names.filter((_, i) => sys.nonvolatile[i]).join(", ")} is nonvolatile; columns with nonvolatile components come with step 7 of proposal 0015 (milestone M3).`);
-  }
+  // nonvolatile components (proposal 0009, step 5; milestone M3): the activity models give them a vapour pressure of
+  // 1e-20 kPa, so they stay in the liquid (their K about 1e-20 / P); their trace in the vapour, about 1e-20 of their
+  // liquid's, has no vapour enthalpy of its own (docs/DATA_RULES.md section 10)
   const eos = sys.kind === "eos";
   if (!eos && !sys.lnKValues) throw fail("NOT_AVAILABLE", "Column: the rigorous column does not handle the chemical theory of dimerizing acids in the vapour yet; build the system with association: false, or use the shortcut column.");
   const lnK = eos
@@ -213,31 +213,45 @@ function checkInput({ stages, feeds, draws, specs, ends, phases }, n) {
     throw fail("BAD_INPUT", `Column: phases must be one of ${CASCADE_PHASES.join(", ")} (got ${JSON.stringify(phases)}).`);
   }
   if (draws?.length) throw fail("NOT_AVAILABLE", "Column: side draws come with milestone M4 of proposal 0015.");
-  const N = Number(stages);
-  if (!(Number.isInteger(N) && N >= 3)) throw fail("BAD_INPUT", `Column: the number of stages must be a whole number of 3 or more, the condenser and the reboiler included (got ${JSON.stringify(stages)}).`);
-  const condenser = ends?.condenser ?? "total";
-  if (!["total", "partial", "decanter"].includes(condenser)) throw fail("BAD_INPUT", `Column: condenser must be "total", "partial" or "decanter" (got ${JSON.stringify(condenser)}).`);
+  // the ends (milestone M3): an absorber has neither a condenser nor a reboiler, a stripper no condenser and a reboiler
+  // or none; stage 1 is then the top equilibrium stage and stage N the bottom one, both adiabatic
+  const condenser = ends?.condenser ?? "total", reboiler = ends?.reboiler ?? "partial";
+  if (!["total", "partial", "decanter", "none"].includes(condenser)) throw fail("BAD_INPUT", `Column: condenser must be "total", "partial", "decanter" or "none" (got ${JSON.stringify(condenser)}).`);
+  if (!["partial", "none"].includes(reboiler)) throw fail("BAD_INPUT", `Column: reboiler must be "partial" or "none" (got ${JSON.stringify(reboiler)}).`);
+  const N = Number(stages), Nmin = condenser === "none" && reboiler === "none" ? 2 : 3;
+  if (!(Number.isInteger(N) && N >= Nmin)) throw fail("BAD_INPUT", `Column: the number of stages must be a whole number of ${Nmin} or more${condenser === "none" ? "" : ", the condenser"}${reboiler === "none" ? "" : `${condenser === "none" ? ", the reboiler" : " and the reboiler"}`}${condenser === "none" && reboiler === "none" ? "" : " included"} (got ${JSON.stringify(stages)}).`);
   const decanter = condenser === "decanter";
   if (decanter && phases !== "VLL") throw fail("BAD_INPUT", "Column: a decanter on the condenser separates two liquids; turn on \"look for two liquids on the stages\" (phases \"VLL\", activity models).");
   const refluxLiquid = ends?.reflux_liquid ?? "light";
   if (decanter && !["light", "heavy"].includes(refluxLiquid)) throw fail("BAD_INPUT", `Column: reflux_liquid must be "light" or "heavy", the liquid of the decanter that returns to the column (got ${JSON.stringify(refluxLiquid)}).`);
-  if ((ends?.reboiler ?? "partial") !== "partial") throw fail("NOT_AVAILABLE", "Column: only a partial reboiler is built (milestone M2a); a stripper without a reboiler comes with milestone M3.");
   if (!Array.isArray(feeds) || !feeds.length) throw fail("BAD_INPUT", "Column: give at least one feed.");
+  const lo = condenser === "none" ? 1 : 2, hi = reboiler === "none" ? N : N - 1;
   const fs = feeds.map((f, k) => {
     const s = Number(f.stage);
-    if (!(Number.isInteger(s) && s >= 2 && s <= N - 1)) throw fail("BAD_INPUT", `Column: feed ${k + 1} enters stage ${JSON.stringify(f.stage)}; a feed enters a stage between the condenser (1) and the reboiler (${N}), so 2 to ${N - 1}.`);
+    if (!(Number.isInteger(s) && s >= lo && s <= hi)) {
+      throw fail("BAD_INPUT", `Column: feed ${k + 1} enters stage ${JSON.stringify(f.stage)}; ${condenser === "none" && reboiler === "none" ? `a feed enters one of the stages, 1 (the top) to ${N} (the bottom)` : `a feed enters a stage ${condenser === "none" ? "from the top (1)" : "below the condenser (1)"} ${reboiler === "none" ? `to the bottom (${N})` : `above the reboiler (${N})`}, so ${lo} to ${hi}`}.`);
+    }
     if (!Array.isArray(f.flows) || f.flows.length !== n || f.flows.some(v => !(v >= 0))) throw fail("BAD_INPUT", `Column: feed ${k + 1} needs ${n} component flows, none negative.`);
     if (!Number.isFinite(f.H_W)) throw fail("BAD_INPUT", `Column: feed ${k + 1} needs its enthalpy flow H_W.`);
-    return { stage: s - 1, flows: f.flows.map(Number), H_W: f.H_W, q: f.q };
+    return { stage: s - 1, flows: f.flows.map(Number), H_W: f.H_W, q: f.q, T_K: f.T_K };
   });
   const F = sum(fs.map(f => sum(f.flows)));
   if (!(F > 0)) throw fail("BAD_INPUT", "Column: the feeds have no flow.");
-  // a decanter returns one liquid entirely: that fixes the reflux, and one specification is left
-  const need = decanter ? 1 : 2;
+  // a decanter returns one liquid entirely: that fixes the reflux, and one specification is left; an end without a
+  // condenser or a reboiler has no specification (its stage is adiabatic)
+  const need = (condenser === "none" || decanter ? 0 : 1) + (reboiler === "none" ? 0 : 1);
+  const allowed = CASCADE_SPECS.filter(k => !(condenser === "none" || decanter ? ["reflux_ratio", "condenser_duty"] : []).includes(k) && !(reboiler === "none" ? ["boilup_ratio", "reboiler_duty"] : []).includes(k));
   if (!Array.isArray(specs) || specs.length !== need) {
+    const n0 = Array.isArray(specs) ? specs.length : 0;
     throw fail("BAD_INPUT", decanter
-      ? `Column: with a decanter the reflux is the whole ${refluxLiquid} liquid, so the column takes one specification, from boilup_ratio, reboiler_duty, distillate_rate, bottoms_rate; got ${Array.isArray(specs) ? specs.length : 0}.`
-      : `Column: give two specifications (the column's degrees of freedom), from ${CASCADE_SPECS.join(", ")}; got ${Array.isArray(specs) ? specs.length : 0}.`);
+      ? `Column: with a decanter the reflux is the whole ${refluxLiquid} liquid, so the column takes one specification, from boilup_ratio, reboiler_duty, distillate_rate, bottoms_rate; got ${n0}.`
+      : need === 0 ? `Column: without a condenser and a reboiler (an absorber, or a stripper without a reboiler) the column takes no specification: the feeds, the stages and the pressure fix it; got ${n0} (${specs.map(x => x?.kind).join(", ")}).`
+      : need === 1 ? `Column: ${condenser === "none" ? "without a condenser" : "without a reboiler"} the column takes one specification, from ${allowed.join(", ")}; got ${n0}.`
+      : `Column: give two specifications (the column's degrees of freedom), from ${CASCADE_SPECS.join(", ")}; got ${n0}.`);
+  }
+  if (!decanter && specs.some(x => CASCADE_SPECS.includes(x?.kind) && !allowed.includes(x.kind))) {
+    const x = specs.find(q => CASCADE_SPECS.includes(q?.kind) && !allowed.includes(q.kind));
+    throw fail("BAD_INPUT", `Column: ${x.kind} belongs to ${["reflux_ratio", "condenser_duty"].includes(x.kind) ? "a condenser" : "a reboiler"}, which this column does not have; give ${allowed.join(", ")}.`);
   }
   if (decanter && ["reflux_ratio", "condenser_duty"].includes(specs[0]?.kind)) throw fail("BAD_INPUT", `Column: with a decanter the reflux is the whole ${refluxLiquid} liquid, so ${specs[0].kind} cannot be given; give boilup_ratio, reboiler_duty, distillate_rate or bottoms_rate.`);
   const later = specs.filter(s => LATER_SPECS.includes(s?.kind));
@@ -263,8 +277,9 @@ function checkInput({ stages, feeds, draws, specs, ends, phases }, n) {
     throw fail("BAD_INPUT", `Column: ${a.kind} and ${b.kind} both fix the ${top.length > 1 ? "top" : "bottom"} of the column; give one of them with a product flow or a specification of the other end.`);
   }
   const flow = out.filter(s => !TOP.includes(s.kind) && !BOTTOM.includes(s.kind));
-  const slot = decanter ? [{ kind: "decanter" }, bottom[0] ?? flow.shift()] : [top[0] ?? flow.shift(), bottom[0] ?? flow.shift()];
-  return { N, condenser, decanter, refluxLiquid, feeds: fs, F, specs: out, slot };
+  const slot = [condenser === "none" ? { kind: "adiabatic" } : decanter ? { kind: "decanter" } : top[0] ?? flow.shift(),
+    reboiler === "none" ? { kind: "adiabatic" } : bottom[0] ?? flow.shift()];
+  return { N, condenser, reboiler, decanter, refluxLiquid, feeds: fs, F, specs: out, slot };
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -285,7 +300,7 @@ export function solveCascade(opts = {}) {
   const { N, F, feeds, slot } = inp;
   // a decanter is a total condenser (no vapour leaves) whose liquid splits: stage 1's l holds the reflux liquid, its v
   // the distillate liquid, both at the reflux's bubble point and of equal activities
-  const total = inp.condenser !== "partial", decanter = inp.decanter;
+  const total = inp.condenser === "total" || inp.condenser === "decanter", decanter = inp.decanter;
   const m = 2 * n + 1, nv = N * m;
   const fJ = Array.from({ length: N }, () => new Array(n).fill(0)), HF = new Array(N).fill(0);
   for (const f of feeds) { f.flows.forEach((v, i) => { fJ[f.stage][i] += v; }); HF[f.stage] += f.H_W; }
@@ -365,7 +380,8 @@ export function solveCascade(opts = {}) {
     if (end === null) h = energyIn(j, pa, p, pb) / scaleE;
     else {
       const s = slot[end];
-      if (s.kind === "condenser_duty") h = (energyIn(j, pa, p, pb) - s.value) / scaleE;
+      if (s.kind === "adiabatic") h = energyIn(j, pa, p, pb) / scaleE;   // no condenser or no reboiler here
+      else if (s.kind === "condenser_duty") h = (energyIn(j, pa, p, pb) - s.value) / scaleE;
       else if (s.kind === "reboiler_duty") h = (energyIn(j, pa, p, pb) + s.value) / scaleE;
       else h = specResidual(s, p, end);
     }
@@ -426,8 +442,8 @@ export function solveCascade(opts = {}) {
       }
       const end = j === 0 ? 0 : j === N - 1 ? 1 : null;
       const s = end === null ? null : slot[end];
-      const en = end === null || s.kind.endsWith("_duty") ? Math.abs(tmp[2 * n]) * scaleE : 0;
-      if (s && !s.kind.endsWith("_duty") && s.kind !== "decanter") g.specifications = Math.max(g.specifications, Math.abs(tmp[2 * n]) * F / Math.max(Math.abs(s.value) * (s.kind.endsWith("_ratio") ? (end === 0 ? p.V : p.L) : 1), 1e-300));
+      const en = end === null || s.kind.endsWith("_duty") || s.kind === "adiabatic" ? Math.abs(tmp[2 * n]) * scaleE : 0;
+      if (s && !s.kind.endsWith("_duty") && s.kind !== "decanter" && s.kind !== "adiabatic") g.specifications = Math.max(g.specifications, Math.abs(tmp[2 * n]) * F / Math.max(Math.abs(s.value) * (s.kind.endsWith("_ratio") ? (end === 0 ? p.V : p.L) : 1), 1e-300));
       if (s?.kind.endsWith("_duty")) g.specifications = Math.max(g.specifications, Math.abs(tmp[2 * n]) * scaleE / s.value);
       g.material = Math.max(g.material, mat); g.equilibrium = Math.max(g.equilibrium, eq);
       g.summation = Math.max(g.summation, su); g.energy = Math.max(g.energy, en);
@@ -503,12 +519,12 @@ export function solveCascade(opts = {}) {
     const R0s = decanter ? (opts.startReflux ? [opts.startReflux] : DECANTER_START_REFLUX) : [null];
     for (const R0 of R0s) {
       const a = { dTmax: 20, maxIt: 50, patient: true };
-      const c = bubblePointStart(th, inp, fJ, HF, { R0 });
+      const c = inp.condenser === "none" ? sumRatesStart(th, inp, fJ, HF) : bubblePointStart(th, inp, fJ, HF, { R0 });
       cold = { ...c, last: cold?.last };
       if (c.noSplit) { tried.push(`the bubble-point start with a start reflux ratio of ${R0}: its condensate holds one liquid, so it was not used (${took()})`); continue; }
       const r = newton(c.u, { ...a, maxIt: Math.min(a.maxIt, cap) });
-      tried.push(`Newton from the bubble-point start${R0 != null ? ` (a start reflux ratio of ${R0})` : ""}, steps of at most ${a.dTmax} K (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
-      if (r.converged) { result = { ...r, start: `bubble-point method (Wang-Henke)${R0 != null ? ` with a start reflux ratio of ${R0}` : ""}` }; break; }
+      tried.push(`Newton from the ${inp.condenser === "none" ? "sum-rates" : "bubble-point"} start${R0 != null ? ` (a start reflux ratio of ${R0})` : ""}, steps of at most ${a.dTmax} K (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
+      if (r.converged) { result = { ...r, start: inp.condenser === "none" ? "sum-rates method (Burningham-Otto)" : `bubble-point method (Wang-Henke)${R0 != null ? ` with a start reflux ratio of ${R0}` : ""}` }; break; }
       cold.last = r;
     }
   }
@@ -549,8 +565,8 @@ export function solveCascade(opts = {}) {
   // ---- the solution
   const P = result.P;
   const { g, stageRes } = groups(P);
-  const Qc = energyIn(0, null, P[0], P[1]);           // heat removed by the condenser, W
-  const Qr = -energyIn(N - 1, P[N - 2], P[N - 1], null); // heat added by the reboiler, W
+  const Qc = inp.condenser === "none" ? 0 : energyIn(0, null, P[0], P[1]);           // heat removed by the condenser, W
+  const Qr = inp.reboiler === "none" ? 0 : -energyIn(N - 1, P[N - 2], P[N - 1], null); // heat added by the reboiler, W
   let decanterLiquids = null;
   if (decanter && opts.homotopy !== "step") {
     const p = P[0], gap = Math.max(...p.x.map((v, i) => Math.abs(v - p.xd[i])));
@@ -604,7 +620,7 @@ export function solveCascade(opts = {}) {
   }
   const notes = [...new Set(P.flatMap(p => (th.warnings ? th.warnings(p.T) : [])))];
   const stages = P.map((p, j) => ({
-    stage: j + 1, name: j === 0 ? "condenser" : j === N - 1 ? "reboiler" : feeds.some(f => f.stage === j) ? "feed" : "stage",
+    stage: j + 1, name: j === 0 ? (inp.condenser === "none" ? "top" : "condenser") : j === N - 1 ? (inp.reboiler === "none" ? "bottom" : "reboiler") : feeds.some(f => f.stage === j) ? "feed" : "stage",
     T_K: p.T, P_kPa: th.P_kPa, L_mol_s: p.L, V_mol_s: j === 0 && total ? 0 : p.V, x: p.x, y: j === 0 && total ? null : p.y,
     K: j === 0 && total ? null : p.K, duty_W: j === 0 ? -Qc : j === N - 1 ? Qr : 0, l: p.l, v: p.v, residuals: stageRes[j],
     ...(th.liquids ? { liquids: j === 0 && decanter ? decanterLiquids : th.liquids(p.x, p.T, p.L, j) } : {}),
@@ -626,7 +642,7 @@ export function solveCascade(opts = {}) {
  * variables u, and a note when constant molar overflow gives no boil-up.
  */
 function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = null } = {}) {
-  const { N, F, feeds, specs } = inp, n = th.n, total = inp.condenser !== "partial";
+  const { N, F, feeds, specs } = inp, n = th.n, total = inp.condenser === "total" || inp.condenser === "decanter";
   const z = fJ.reduce((a, f) => a.map((v, i) => v + f[i]), new Array(n).fill(0)).map(v => v / F);
   // the feeds' liquid fractions and a latent heat, at the bubble and dew points of the whole feed
   const Tb = th.bubbleT(z);
@@ -758,4 +774,100 @@ function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = nu
     }
   }
   return { u, boilupWarning };
+}
+
+/**
+ * The start of a column without a condenser (an absorber, a stripper; milestone M3): the sum-rates method of Burningham
+ * and Otto as DWSIM's open source code documents it (DWSIM.UnitOperations/UnitOperations/RigorousColumnSolvers/
+ * SumRates.vb, GPL-3.0, read 2026-10-30; written anew, not translated): at fixed K-values and flows, the component
+ * balances as one tridiagonal system per component in the liquid's component flows (the stripping factors
+ * S_ij = K_ij V_j / L_j); the new flows are the sums of the component flows ("sum rates"); each stage's temperature from
+ * its energy balance at those flows; repeated. Only a first guess: Newton's method then closes every equation.
+ * The flows start from the feeds: each feed's liquid goes down, its vapour up (q, the feed's liquid fraction, from the
+ * block; else from its enthalpy), with the reboiler's vapour by the bottom specification; the temperatures start between
+ * the feeds' (T_K from the block, else the feed's bubble point).
+ */
+function sumRatesStart(th, inp, fJ, HF, { sweeps = 40 } = {}) {
+  const { N, F, feeds, specs } = inp, n = th.n, reboiled = inp.reboiler === "partial";
+  const z = fJ.reduce((a, f) => a.map((v, i) => v + f[i]), new Array(n).fill(0)).map(v => v / F);
+  const Tz = (() => { try { return th.bubbleT(z); } catch { return 350; } })();
+  const fq = feeds.map(f => {
+    if (Number.isFinite(f.q)) return Math.min(1, Math.max(0, f.q));
+    const Ff = sum(f.flows), zf = f.flows.map(v => v / Ff);
+    try {
+      const Tb = th.bubbleT(zf), hl = th.hL(zf, Tb), hv = th.hV(zf, Tb);
+      return Math.min(1, Math.max(0, (hv - f.H_W / Ff) / (hv - hl)));
+    } catch { return 1; }
+  });
+  const fT = feeds.map(f => (Number.isFinite(f.T_K) ? f.T_K : Tz));
+  // flows: liquid down from the feeds above, vapour up from the feeds below and the reboiler
+  const get = k => specs.find(x => x.kind === k)?.value;
+  const liquidIn = feeds.reduce((a, f, k) => a + fq[k] * sum(f.flows), 0);
+  let Vr = 0;
+  if (reboiled) {
+    const B0 = get("bottoms_rate") ?? (get("distillate_rate") != null ? F - get("distillate_rate") : 0.8 * liquidIn);
+    Vr = get("boilup_ratio") != null ? get("boilup_ratio") * B0 : get("reboiler_duty") != null ? get("reboiler_duty") / 3e4 : 0.3 * liquidIn;
+  }
+  const L = new Array(N).fill(0), V = new Array(N).fill(0);
+  for (let j = 0; j < N; j++) {
+    feeds.forEach((f, k) => { if (f.stage <= j) L[j] += fq[k] * sum(f.flows); if (f.stage >= j) V[j] += (1 - fq[k]) * sum(f.flows); });
+    V[j] += Vr;
+    L[j] = Math.max(L[j], 0.01 * F); V[j] = Math.max(V[j], 0.01 * F);
+  }
+  // temperatures: from the top feed's to the bottom feed's
+  const top = feeds.reduce((a, f, k) => (f.stage < feeds[a].stage ? k : a), 0), bot = feeds.reduce((a, f, k) => (f.stage > feeds[a].stage ? k : a), 0);
+  let T = Array.from({ length: N }, (_, j) => fT[top] + (fT[bot] - fT[top]) * j / Math.max(N - 1, 1));
+  const Tlo = Math.min(...fT, Tz) - 60, Thi = Math.max(...fT, Tz) + 60;
+  let x = Array.from({ length: N }, () => z.slice()), y = x.map(r => r.slice());
+  for (let s = 0; s < sweeps; s++) {
+    const K = x.map((xj, j) => th.lnK(xj, y[j], T[j], j).map(Math.exp));
+    const l = Array.from({ length: N }, () => new Array(n));
+    for (let i = 0; i < n; i++) {
+      const a = [], b = [], c = [], d = [];
+      for (let j = 0; j < N; j++) {
+        a.push(j > 0 ? 1 : 0);
+        b.push(-(1 + K[j][i] * V[j] / L[j]));
+        c.push(j < N - 1 ? K[j + 1][i] * V[j + 1] / L[j + 1] : 0);
+        d.push(-fJ[j][i]);
+      }
+      tridiagonal(a, b, c, d).forEach((v, j) => { l[j][i] = Number.isFinite(v) ? Math.max(v, 1e-30 * F) : x[j][i] * L[j]; });
+    }
+    const v = l.map((lj, j) => lj.map((a, i) => a * K[j][i] * V[j] / L[j]));
+    // the sum rates: the new flows are the sums of the component flows
+    const Ln = l.map(sum), Vn = v.map(vj => Math.max(sum(vj), 1e-3 * F));
+    x = l.map((lj, j) => lj.map(a => a / Ln[j]));
+    y = v.map(vj => { const t = sum(vj); return vj.map(a => a / t); });
+    for (let j = 0; j < N; j++) { L[j] = Math.max(Ln[j], 1e-3 * F); V[j] = Vn[j]; }
+    // each stage's temperature from its energy balance at these flows (bisection inside a window)
+    let dTmax = 0;
+    for (let j = 0; j < N; j++) {
+      const isReboiler = reboiled && j === N - 1;
+      const e = Tj => {
+        let q = HF[j] - L[j] * th.hL(x[j], Tj, j) - V[j] * th.hV(y[j], Tj);
+        if (j > 0) q += L[j - 1] * th.hL(x[j - 1], T[j - 1], j - 1);
+        if (j < N - 1) q += V[j + 1] * th.hV(y[j + 1], T[j + 1]);
+        return q;
+      };
+      let Tn = T[j];
+      try {
+        if (isReboiler) Tn = th.bubbleT(x[j]);
+        else {
+          let a = Math.max(Tlo, T[j] - 40), b = Math.min(Thi, T[j] + 40), fa = e(a), fb = e(b);
+          if (fa * fb < 0) { for (let k = 0; k < 40; k++) { const m = 0.5 * (a + b), fm = e(m); if (fa * fm <= 0) { b = m; fb = fm; } else { a = m; fa = fm; } } Tn = 0.5 * (a + b); }
+        }
+      } catch { Tn = T[j]; }
+      dTmax = Math.max(dTmax, Math.abs(Tn - T[j])); T[j] = Tn;
+    }
+    if (dTmax < 1e-3 && s > 3) break;
+  }
+  const K = x.map((xj, j) => th.lnK(xj, y[j], T[j], j).map(Math.exp));
+  const u = new Float64Array(N * (2 * n + 1));
+  for (let j = 0; j < N; j++) {
+    const o = j * (2 * n + 1);
+    // the vapour from the equilibrium with the liquid (y = K x normalized), at the stage's vapour flow
+    const w = x[j].map((a, i) => a * K[j][i]), sw = sum(w);
+    for (let i = 0; i < n; i++) { u[o + i] = Math.max(L[j] * x[j][i], 1e-30 * F); u[o + n + i] = Math.max(V[j] * w[i] / sw, 1e-30 * F); }
+    u[o + 2 * n] = T[j];
+  }
+  return { u, boilupWarning: null };
 }
