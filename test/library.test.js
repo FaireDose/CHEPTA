@@ -172,10 +172,11 @@ test("library.sources, source, usedBy, sets", () => {
   assert.deepEqual(ac.map(s => [s.set, s.default, s.tier]), [["fitted-gao2018", true, "fitted"], ["chemsep", false, "databank"]]);
   assert.deepEqual(ac[1].params, { a_ij: 0, a_ji: 0, b_ij: -788.0452616738485, b_ji: 393.31019778237334 });
   assert.equal(ac[1].sources[0].id, "chemsep-ipd");
-  assert.deepEqual(library.sets("acetone", "chloroform").map(s => s.model), ["NRTL", "NRTL", "UNIQUAC", "UNIQUAC"]);
+  assert.deepEqual(library.sets("acetone", "chloroform").map(s => s.model), ["NRTL", "NRTL", "UNIQUAC", "UNIQUAC", "WILSON"]);   // WILSON: ChemSep's set (proposal 0016)
   assert.deepEqual(library.sets("hydrogen", "toluene", "pr").map(s => [s.set, s.params.kij]), [["fitted-tsuji2005", 0.3989], ["chemsep", -0.51]]);
   assert.deepEqual(library.sets("acetone", "ethyl acetate", "NRTL"), []);
-  assert.throws(() => library.sets("acetone", "chloroform", "Wilson"), /Unknown model "Wilson"/);
+  // an unknown model: PC-SAFT (not built yet); this was Wilson until Wilson came (proposal 0016)
+  assert.throws(() => library.sets("acetone", "chloroform", "PC-SAFT"), /Unknown model "PC-SAFT"/);
   // the data is not changed by reading it
   library.sets("acetone", "chloroform", "UNIQUAC")[0].params.b_ij = 0;
   assert.equal(library.sets("acetone", "chloroform", "UNIQUAC")[0].params.b_ij, 104.66495584649239);
@@ -187,7 +188,7 @@ test("library.add: a set for this page only (tier user), with clear errors", () 
   assert.throws(() => system({ components: ["acetone", "ethyl acetate"] }), /No NRTL parameters for: Acetone \+ Ethyl acetate/);
   const bad = [
     [null, /needs an object/],
-    [{ ...base, model: "Wilson" }, /Unknown model/],
+    [{ ...base, model: "PC-SAFT" }, /Unknown model/],   // Wilson until proposal 0016
     [{ ...base, j: "acetone" }, /two different components/],
     [{ ...base, set: "" }, /give the set a name/],
     [{ ...base, set: "t", params: undefined }, /params is required/],

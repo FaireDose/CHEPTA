@@ -26,7 +26,7 @@ import { checkUserData } from "../thermo/user-data.js";
 import { solveFlowsheet, flowsheetStatus } from "./flowsheet.js";
 import { checkReactions } from "../reactions/reaction.js";
 
-const MODELS = ["NRTL", "UNIQUAC", "MOD-UNIFAC-2", "ideal", "PR", "SRK"];
+const MODELS = ["NRTL", "UNIQUAC", "WILSON", "MOD-UNIFAC-2", "ideal", "PR", "SRK"];
 const BLOCK_KEYS = ["id", "type", "x", "y", "spec", "energy", "label"];
 // a flowsheet's property method: an unknown key is refused (proposal 0015, W8, the authoring contract)
 const THERMO_KEYS = ["model", "vapour", "sets", "prefer"];

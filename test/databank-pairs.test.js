@@ -16,7 +16,7 @@ const imported = binaries.filter(p => p.tier === "databank" && p.data_wanted?.st
 test("the imported databank sets are ChemSep sets with a source and a data-wanted note", () => {
   assert.ok(imported.length >= 100, `${imported.length} sets`);
   for (const p of imported) {
-    assert.match(p.source, /^ChemSep (NRTL|UNIQUAC) databank \(via the open-source thermo library\)\./);
+    assert.match(p.source, /^ChemSep (NRTL|UNIQUAC|Wilson) databank \(via the open-source thermo library\)\./);
     assert.deepEqual(p.source_ids, ["chemsep-ipd"]);
   }
 });
