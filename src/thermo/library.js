@@ -3,7 +3,7 @@
  * between parameter sets when a pair has more than one.
  *
  * Data (layer 0): src/data/sources.json lists every source once, with an id; the records in
- * binaries.json (NRTL, UNIQUAC), kij.json (Peng-Robinson, SRK), henry.json and
+ * binaries.json (NRTL, UNIQUAC, Wilson), kij.json (Peng-Robinson, SRK), henry.json and
  * components.json refer to it in `source_ids`. A pair can have several parameter sets for the
  * same model, each with a `set` name; exactly one is the `default`. In kij.json the databank
  * value a fit replaced is kept under `replaced`; here it is an ordinary non-default set.
@@ -36,9 +36,9 @@ export const TIERS = ["fitted", "standard", "databank", "predicted", "user"];
 /** A set is used without a warning up to this far (K) outside its temperature range. */
 export const RANGE_MARGIN_K = 10;
 
-const ACTIVITY_MODELS = ["NRTL", "UNIQUAC"];
+const ACTIVITY_MODELS = ["NRTL", "UNIQUAC", "WILSON"];
 const EOS_MODELS = ["PR", "SRK"];
-const PARAM_KEYS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij"], SRK: ["kij"] };
+const PARAM_KEYS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], WILSON: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij"], SRK: ["kij"] };
 
 const userSources = new Map();
 const userSets = [];
@@ -323,11 +323,12 @@ function range(v, what) {
  * reviewer has checked it.
  *
  * @param {object} spec
- * @param {"NRTL"|"UNIQUAC"|"PR"|"SRK"} spec.model
+ * @param {"NRTL"|"UNIQUAC"|"WILSON"|"PR"|"SRK"} spec.model
  * @param {string} spec.i, spec.j    the two components (the parameters are for i, j in this order)
  * @param {string} spec.set          a name, unique for the pair and model
  * @param {object} spec.params       NRTL: b_ij, b_ji (K), optional a_ij, a_ji (default 0), alpha (default 0.3);
- *                                   UNIQUAC: b_ij, b_ji (K), optional a_ij, a_ji; PR, SRK: kij
+ *                                   UNIQUAC: b_ij, b_ji (K), optional a_ij, a_ji; WILSON: b_ij, b_ji (K), optional
+ *                                   a_ij, a_ji (Lambda_ij = exp(a_ij + b_ij / T)); PR, SRK: kij
  * @param {object} [spec.source]     { title, url or doi, authors, year, access }, or
  * @param {string[]} [spec.source_ids]  ids of sources already in the library
  * @param {{T_K?:number[], P_kPa?:number[]}} [spec.valid]  range of the data; outside it results warn

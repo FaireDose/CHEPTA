@@ -3,6 +3,7 @@ import { vapourPressure } from "./psat.js";
 import { noVapourPressureMessage } from "./components.js";
 import { nrtl } from "./activity/nrtl.js";
 import { uniquac } from "./activity/uniquac.js";
+import { wilson } from "./activity/wilson.js";
 import { modUnifac } from "./activity/mod-unifac.js";
 import modUnifacTables from "../data/mod-unifac-2.json" with { type: "json" };
 import { dimerK, monomerPressure } from "./vapour.js";
@@ -14,9 +15,11 @@ import { createCubicVapour } from "./gamma-phi-vapour.js";
 import { activityPhaseMethods } from "./enthalpy.js";
 import { fail, failRange } from "../util/errors.js";
 
-export const MODELS = ["NRTL", "UNIQUAC", "MOD-UNIFAC-2", "ideal"];
+export const MODELS = ["NRTL", "UNIQUAC", "WILSON", "MOD-UNIFAC-2", "ideal"];
 /** Display names of the model keys that are not names themselves. */
-const MODEL_NAMES = { "MOD-UNIFAC-2": "Mod. UNIFAC 2.0" };
+const MODEL_NAMES = { "MOD-UNIFAC-2": "Mod. UNIFAC 2.0", WILSON: "Wilson" };
+/** The activity models that can describe two liquids (Wilson cannot: proposal 0016). */
+export const TWO_LIQUID_MODELS = ["NRTL", "UNIQUAC", "MOD-UNIFAC-2"];
 /** A model key as people read it: "Mod. UNIFAC 2.0" for "MOD-UNIFAC-2"; other keys unchanged. */
 export const modelName = m => MODEL_NAMES[m] ?? m;
 /** Modified UNIFAC 2.0 (predicted from groups): the source every one of its pairs cites. */
@@ -28,8 +31,9 @@ export { EOS_MODELS, listComponents, findComponent };
  *
  * @param {object} cfg
  * @param {string[]} cfg.components  names, ids, aliases or CAS numbers
- * @param {"NRTL"|"UNIQUAC"|"MOD-UNIFAC-2"|"ideal"} [cfg.model="NRTL"]  "MOD-UNIFAC-2": Modified UNIFAC 2.0,
- *        every pair predicted from the groups of the components (tier "predicted")
+ * @param {"NRTL"|"UNIQUAC"|"WILSON"|"MOD-UNIFAC-2"|"ideal"} [cfg.model="NRTL"]  "MOD-UNIFAC-2": Modified UNIFAC 2.0,
+ *        every pair predicted from the groups of the components (tier "predicted"); "WILSON": the Wilson equation
+ *        (proposal 0016), one liquid only
  * @param {boolean} [cfg.allowMissingPairs=false]  treat pairs without parameters as ideal
  * @param {boolean} [cfg.association=true]         use the chemical theory for dimerizing acids
  * @param {number[]|((T:number)=>number[])} [cfg.psat]  override pure vapour pressures (kPa),
@@ -113,13 +117,15 @@ export function createSystem(cfg) {
     const list = missing.map(m => m.join(" + ")).join("; ");
     const key = ids => `"${ids.join("+")}"`;
     const keys = missingIds.map(key).join(", ");
-    throw fail("MISSING_DATA", `No ${model} parameters for: ${list}. Add ${missing.length > 1 ? "their" : "the pair's"} ${model} parameters as your own data, with their source (My data; in a project or a request: user_data.pairs[${keys}] = { ${model}: { b_ij, b_ji${model === "NRTL" ? ", alpha" : ""} }, source: { name } }), or choose another method (Modified UNIFAC 2.0 predicts every pair whose groups it has). A program calling system() itself may pass allowMissingPairs: true to treat ${missing.length > 1 ? "these pairs" : "the pair"} as ideal.${gasHint}`,
+    throw fail("MISSING_DATA", `No ${modelName(model)} parameters for: ${list}. Add ${missing.length > 1 ? "their" : "the pair's"} ${modelName(model)} parameters as your own data, with their source (My data; in a project or a request: user_data.pairs[${keys}] = { ${model}: { ${model === "WILSON" ? "a_ij, a_ji, " : ""}b_ij, b_ji${model === "NRTL" ? ", alpha" : ""} }, source: { name } }), or choose another method (Modified UNIFAC 2.0 predicts every pair whose groups it has). A program calling system() itself may pass allowMissingPairs: true to treat ${missing.length > 1 ? "these pairs" : "the pair"} as ideal.${gasHint}`,
       { missing_pairs: missingIds.map(ids => ids.join("+")) });
   }
-  // missing pairs: NRTL with zero tau is ideal; UNIQUAC with tau = 1 keeps only the combinatorial term
+  // missing pairs: NRTL with zero tau is ideal; UNIQUAC with tau = 1 keeps only the combinatorial term; Wilson with
+  // Lambda = 1 is ideal
   let gammas;
   if (model === "NRTL") { for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j && !alpha[i][j]) alpha[i][j] = 0.3; gammas = nrtl({ a, b, alpha }); }
   else if (model === "MOD-UNIFAC-2") gammas = modUnifac({ groups: comps.map(c => c.modUnifac.groups), tables: modUnifacTables });
+  else if (model === "WILSON") gammas = wilson({ a, b });
   else if (model === "UNIQUAC") gammas = uniquac({ a, b, r: comps.map(c => c.uniquac.r), q: comps.map(c => c.uniquac.q), qp: comps.map(c => c.uniquac.qp ?? c.uniquac.q) });
   else gammas = () => new Array(n).fill(1);
 
@@ -193,9 +199,21 @@ export function createSystem(cfg) {
    * fits), pressures outside a set's pressure range, and notes on the choice of sets.
    */
   function warnings(T, P) {
-    const w = pairWarnings(pairs, T, P, p => `${model} parameters of ${p.pair.join(" + ")}${p.default ? "" : ` (set "${p.set}")`} come`);
+    const w = pairWarnings(pairs, T, P, p => `${modelName(model)} parameters of ${p.pair.join(" + ")}${p.default ? "" : ` (set "${p.set}")`} come`);
     if (P != null && n > 1) w.push(...pressureAdvice({ model, eos: false }, P));
+    if (model === "WILSON" && Number.isFinite(T)) w.push(...wilsonSplitWarnings(T));
     return cubicVapour ? [...w, ...cubicVapour.warnings(T)] : w;
+  }
+
+  /**
+   * Wilson cannot predict two liquids (proposal 0016): at T, the pairs whose default NRTL or UNIQUAC set does predict
+   * them (a binary whose mixing Gibbs energy is not convex), so the one liquid Wilson gives is not to be trusted there.
+   */
+  const splitMemo = new Map();
+  function wilsonSplitWarnings(T) {
+    const key = Math.round(T);
+    if (!splitMemo.has(key)) splitMemo.set(key, wilsonSplits(ids, comps, sel, ud, key));
+    return splitMemo.get(key).map(s => `Wilson cannot predict two liquids, but the ${s.model} set "${s.set}" of ${s.pair.join(" + ")} predicts them at ${key} K (from x(${s.pair[0]}) about ${s.from} to ${s.to}): check this mixture with NRTL or UNIQUAC, and do not use Wilson where it splits.`);
   }
 
   // (enthalpies use the dimers of a dimerizing acid whether or not the chemical theory is switched on for the phase
@@ -226,4 +244,35 @@ export function createSystem(cfg) {
     ? { Tm_K: c.fusion.Tm_K, Hfus_J_mol: c.fusion.Hfus_J_mol, tier: c.fusion.tier, source: c.fusion.source } : null));
   return { ids, names: comps.map(c => c.name), n, model, vapour: vapourModel, gammas, psat, equilibrium, lnKValues, info, warnings, fusion,
     nonvolatile, MW: comps.map(c => c.MW), userData: ud, ...phaseMethods };
+}
+
+/**
+ * For each pair of a Wilson system: does its default NRTL set (else UNIQUAC) predict two liquids at T? A binary
+ * splits where g_mix / RT = sum x ln(x gamma) is not convex in x; returned with the range of x where it is concave
+ * (the spinodal region, inside the two-liquid region).
+ */
+function wilsonSplits(ids, comps, sel, ud, T) {
+  const out = [];
+  for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) {
+    for (const m of ["NRTL", "UNIQUAC"]) {
+      if (m === "UNIQUAC" && !(comps[i].uniquac && comps[j].uniquac)) continue;
+      const choice = choosePair(m, ids[i], ids[j], { sets: new Map(), prefer: null }, ud?.pairs ?? []);
+      if (!choice) continue;
+      const p = choice.chosen.params;
+      const [aij, aji, bij, bji] = choice.flipped ? [p.a_ji, p.a_ij, p.b_ji, p.b_ij] : [p.a_ij, p.a_ji, p.b_ij, p.b_ji];
+      const A = [[0, aij], [aji, 0]], B = [[0, bij], [bji, 0]];
+      const g = m === "NRTL" ? nrtl({ a: A, b: B, alpha: [[0, p.alpha ?? 0.3], [p.alpha ?? 0.3, 0]] })
+        : uniquac({ a: A, b: B, r: [comps[i].uniquac.r, comps[j].uniquac.r], q: [comps[i].uniquac.q, comps[j].uniquac.q],
+          qp: [comps[i].uniquac.qp ?? comps[i].uniquac.q, comps[j].uniquac.qp ?? comps[j].uniquac.q] });
+      const gm = x => { const gg = g([x, 1 - x], T); return x * Math.log(x * gg[0]) + (1 - x) * Math.log((1 - x) * gg[1]); };
+      const h = 0.005, bad = [];
+      for (let k = 1; k < 200; k++) {
+        const x = k / 200;
+        if (gm(x + h) - 2 * gm(x) + gm(x - h) < 0) bad.push(x);
+      }
+      if (bad.length) out.push({ model: m, set: choice.chosen.set, pair: [comps[i].name, comps[j].name], from: bad[0].toFixed(2), to: bad[bad.length - 1].toFixed(2) });
+      break;   // the NRTL set decides when there is one
+    }
+  }
+  return out;
 }
