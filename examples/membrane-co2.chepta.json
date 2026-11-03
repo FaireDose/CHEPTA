@@ -1,0 +1,184 @@
+{
+ "fugacity_project": 6,
+ "saved_with": "chepta 0.5.0",
+ "saved_at": "2026-11-03T12:00:00.000Z",
+ "title": "CO2 from a CO2-O2-N2 gas by a membrane (Aziaba et al. 2022, test case 2)",
+ "workbench": {
+  "view": "flowsheet",
+  "diagram": "txy",
+  "model": "NRTL",
+  "eos": "PR",
+  "vapour": "ideal",
+  "P_kPa": 101.325,
+  "T_K": null,
+  "units": {
+   "T": "C",
+   "P": "kPa",
+   "basis": "mass",
+   "viscosity": "mPa s",
+   "flow": "kmol/h",
+   "massFlow": "kg/h",
+   "duty": "kW"
+  },
+  "basis": "mole",
+  "inputs": {
+   "txy": [
+    null,
+    null
+   ],
+   "ternary": [
+    null,
+    null,
+    null
+   ],
+   "azeotropes": [],
+   "pxy": [
+    null,
+    null
+   ],
+   "envelope": [],
+   "flash": [],
+   "henry": {
+    "gas": "oxygen",
+    "solvent": "water"
+   },
+   "solid": [
+    "benzoic-acid",
+    "ethanol"
+   ],
+   "sle": [
+    "benzene",
+    "naphthalene"
+   ],
+   "properties": [
+    "water"
+   ],
+   "flowsheet": [],
+   "reactor": [],
+   "column": []
+  },
+  "z": {
+   "pxy": null,
+   "envelope": null
+  },
+  "flash": {
+   "spec": "PVF",
+   "T_K": 350,
+   "P_kPa": 101.325,
+   "VF": 0.5,
+   "Q_J_mol": 0,
+   "feedT_K": 298.15,
+   "feedP_kPa": 101.325,
+   "duty": false,
+   "z": null,
+   "flow": 100,
+   "flowUnit": "kmol/h"
+  },
+  "sets": {},
+  "prefer": null,
+  "henryT_K": 298.15,
+  "henryP_kPa": 101.325,
+  "compareGases": false,
+  "sleT_K": 298.15,
+  "solidUnit": "mole",
+  "property": "density",
+  "steamP_kPa": [
+   10,
+   100,
+   1000,
+   10000
+  ],
+  "background": true,
+  "residueCurves": true,
+  "isotherms": true,
+  "grid": 40,
+  "panels": {
+   "left": true,
+   "right": true
+  },
+  "ribbon": true
+ },
+ "flowsheet": {
+  "components": [
+   "carbon-dioxide",
+   "oxygen",
+   "nitrogen"
+  ],
+  "thermo": {
+   "model": "PR",
+   "vapour": "ideal"
+  },
+  "blocks": [
+   {
+    "id": "F1",
+    "type": "feed",
+    "x": 60,
+    "y": 160,
+    "label": "Feed gas",
+    "spec": {
+     "flow_kmol_h": {
+      "carbon-dioxide": 0.005,
+      "oxygen": 0.00105,
+      "nitrogen": 0.00395
+     },
+     "T_K": 303.15,
+     "P_kPa": 1570
+    }
+   },
+   {
+    "id": "MB1",
+    "type": "membrane",
+    "x": 220,
+    "y": 160,
+    "label": "CTA hollow fibres",
+    "spec": {
+     "permeances": {
+      "carbon-dioxide": 2.042e-8,
+      "oxygen": 6.02e-9,
+      "nitrogen": 1.31e-9
+     },
+     "permeance_unit": "mol/(m2 s Pa)",
+     "permeate_P_kPa": 101.325,
+     "flow": "counter-current",
+     "cells": 20,
+     "A_m2": 0.0667981,
+     "fibre": {
+      "inner_diameter_m": 0.000125,
+      "length_m": 0.63
+     }
+    }
+   },
+   {
+    "id": "P1",
+    "type": "product",
+    "x": 380,
+    "y": 120
+   },
+   {
+    "id": "P2",
+    "type": "product",
+    "x": 260,
+    "y": 280
+   }
+  ],
+  "streams": [
+   {
+    "id": "S1",
+    "from": "F1.out",
+    "to": "MB1.in"
+   },
+   {
+    "id": "S2",
+    "from": "MB1.retentate",
+    "to": "P1.in",
+    "label": "Retentate"
+   },
+   {
+    "id": "S3",
+    "from": "MB1.permeate",
+    "to": "P2.in",
+    "label": "Permeate"
+   }
+  ]
+ }
+}
