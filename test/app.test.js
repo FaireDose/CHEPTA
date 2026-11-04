@@ -47,7 +47,8 @@ test("initial state: defaults, normalization and errors for typos", () => {
   assert.equal(t.basis, "mass");
 
   assert.throws(() => initialState({ components: ["unobtainium"] }), /Unknown component/);
-  assert.throws(() => initialState({ model: "Wilson" }), /Unknown model "WILSON"/);
+  // an unknown model: PC-SAFT (not built yet); this was Wilson until Wilson came (proposal 0016)
+  assert.throws(() => initialState({ model: "PC-SAFT" }), /Unknown model "PC-SAFT"/);
   // °F and °R are units since 2026-10-28 (Settings, more units); a typo is still refused
   assert.throws(() => initialState({ units: { T: "Q" } }), /Unknown T unit/);
   assert.equal(initialState({ units: { T: "F", P: "psi", duty: "Btu/h" } }).units.P, "psia");

@@ -8,7 +8,7 @@
 import { h } from "./dom.js";
 import { FUTURE_MODELS } from "./future-models.js";
 
-export const ACTIVITY_CHOICES = [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0 (predicted)"], ["ideal", "Ideal solution"]];
+export const ACTIVITY_CHOICES = [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["WILSON", "Wilson (one liquid)"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0 (predicted)"], ["ideal", "Ideal solution"]];
 export const EOS_CHOICES = [["PR", "Peng–Robinson"], ["SRK", "SRK"]];
 export const VAPOUR_CHOICES = [["ideal", "Ideal gas"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]];
 const isEos = m => EOS_CHOICES.some(([v]) => v === m);

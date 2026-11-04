@@ -52,8 +52,9 @@
  *                                                         // intercooler); adiabatic otherwise
  *     P_kPa, method, sizing, max_iterations as the rigorous column }
  *
- *   The outlets are the same ports: "distillate" carries the gas leaving the top, "bottoms" the liquid leaving the
- *   bottom. A gas dissolving in a liquid needs a method that describes its solubility (docs/METHOD_SELECTION.md,
+ *   The outlets keep the port ids "distillate" (the gas leaving the top) and "bottoms" (the liquid leaving the
+ *   bottom), so project files keep working; the workbench names them "gas out" and "liquid out" (the maintainer,
+ *   2026-11-04). A gas dissolving in a liquid needs a method that describes its solubility (docs/METHOD_SELECTION.md,
  *   step 2): an absorber or stripper refuses an activity model (or the ideal solution) with a component above its
  *   critical temperature, and an equation of state with a light gas and a polar component (Henry's law or PSRK would
  *   be needed; CHEPTA's methods do not have them).
@@ -301,7 +302,7 @@ function checkMethod(m) {
   if (!m || typeof m !== "object" || Array.isArray(m)) throw fail("BAD_INPUT", `Column: method must be an object such as { model: "NRTL", vapour: "ideal" } (got ${JSON.stringify(m)}).`);
   const bad = Object.keys(m).filter(k => !METHOD_KEYS.includes(k));
   if (bad.length) throw fail("BAD_INPUT", `Column: method: unknown key${bad.length > 1 ? "s" : ""} ${bad.join(", ")}. Known: ${METHOD_KEYS.join(", ")}.`);
-  if (typeof m.model !== "string" || !m.model) throw fail("BAD_INPUT", "Column: method needs a model (NRTL, UNIQUAC, MOD-UNIFAC-2, ideal, PR or SRK).");
+  if (typeof m.model !== "string" || !m.model) throw fail("BAD_INPUT", "Column: method needs a model (NRTL, UNIQUAC, WILSON, MOD-UNIFAC-2, ideal, PR or SRK).");
   return { ...m };
 }
 
@@ -514,7 +515,7 @@ function solveRigorous(sys, feeds, s) {
   const condenserWord = s.condenser === "decanter" ? `decanter (the ${s.refluxLiquid} liquid refluxed, the other the distillate)` : `${s.condenser} condenser`;
   const twoLiquidStages = r.stages.filter(st => st.liquids).map(st => st.stage);
   const notes = [
-    separator ? `Rigorous ${s.configuration}: ${N} equilibrium stages numbered from the top, ${s.reboiler === "partial" ? `${N} the reboiler, ` : ""}no condenser; feed${s.feedStages.length > 1 ? "s" : ""} on stage${s.feedStages.length > 1 ? "s" : ""} ${s.feedStages.join(", ")}, at ${fmt(P)} kPa without pressure drop; ${(s.duties ?? []).length ? `heat added on stage${s.duties.length > 1 ? "s" : ""} ${s.duties.map(d => `${d.stage} (${fmt(d.Q_W / 1000)} kW)`).join(", ")}, the other stages adiabatic` : s.reboiler === "partial" ? "the stages above the reboiler adiabatic" : "every stage adiabatic"}. The gas leaving the top leaves by the "distillate" outlet, the liquid leaving the bottom by the "bottoms" outlet. The MESH equations of every stage were solved together by Newton's method (Naphtali-Sandholm), started by the ${r.solver.start}, in ${r.iterations} iterations; every group of residuals is within its tolerance (state.residuals). Converged is not validated against data: the result is as good as the method and its parameters.` :
+    separator ? `Rigorous ${s.configuration}: ${N} equilibrium stages numbered from the top, ${s.reboiler === "partial" ? `${N} the reboiler, ` : ""}no condenser; feed${s.feedStages.length > 1 ? "s" : ""} on stage${s.feedStages.length > 1 ? "s" : ""} ${s.feedStages.join(", ")}, at ${fmt(P)} kPa without pressure drop; ${(s.duties ?? []).length ? `heat added on stage${s.duties.length > 1 ? "s" : ""} ${s.duties.map(d => `${d.stage} (${fmt(d.Q_W / 1000)} kW)`).join(", ")}, the other stages adiabatic` : s.reboiler === "partial" ? "the stages above the reboiler adiabatic" : "every stage adiabatic"}. The gas leaving the top leaves by the outlet "gas out" (port id "distillate"), the liquid leaving the bottom by "liquid out" (port id "bottoms"). The MESH equations of every stage were solved together by Newton's method (Naphtali-Sandholm), started by the ${r.solver.start}, in ${r.iterations} iterations; every group of residuals is within its tolerance (state.residuals). Converged is not validated against data: the result is as good as the method and its parameters.` :
     `Rigorous column: ${N} stages (1 the ${condenserWord}, ${N} the reboiler), feed${s.feedStages.length > 1 ? "s" : ""} on stage${s.feedStages.length > 1 ? "s" : ""} ${s.feedStages.join(", ")}, at ${fmt(P)} kPa without pressure drop. The MESH equations of every stage were solved together by Newton's method (Naphtali-Sandholm), started by the ${r.solver.start}, in ${r.iterations} iterations; every group of residuals is within its tolerance (state.residuals). Converged is not validated against data: the result is as good as the method and its parameters.`,
     ...(s.phases === "VLL" ? [twoLiquidStages.length
       ? `Two liquids on stage${twoLiquidStages.length > 1 ? "s" : ""} ${twoLiquidStages.join(", ")} (looked for on every stage: the tangent-plane test of each stage's liquid, then the liquid-liquid split at its temperature); both liquids of a stage leave it together${s.condenser === "decanter" ? ", except in the decanter, where they are separated" : ""}. They are named light and heavy by density.`

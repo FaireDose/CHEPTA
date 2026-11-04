@@ -260,8 +260,9 @@ stripped by a gas". The block's `configuration` is `"absorber"` or `"stripper"`;
 | `P_kPa`, `method`, `sizing`, `max_iterations` | as the rigorous column |
 
 Without a reboiler nothing else is specified: what leaves follows from the feeds, the stages and the stage duties. The
-outlets are the same ports: `distillate` carries the gas leaving stage 1, `bottoms` the liquid leaving stage N (labelled
-"gas" and "liquid" on the drawing). The block's duty is the reboiler's plus the stage duties, so the flowsheet's energy
+outlets are named **"gas out"** (the gas leaving stage 1) and **"liquid out"** (the liquid leaving stage N) wherever the
+workbench shows them (the maintainer, 2026-11-04); their port ids stay `distillate` and `bottoms`, so project files and
+requests keep working. The block's duty is the reboiler's plus the stage duties, so the flowsheet's energy
 balance closes. Through the request path: `solve_column` with `gas_feed` (the second inlet), or the block in
 `solve_flowsheet`; saved in project format 6; in the workbench, the block's panel (Distillation / Absorber / Stripper)
 and the profile table.

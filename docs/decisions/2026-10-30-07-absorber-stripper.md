@@ -21,7 +21,7 @@ decision of the maintainer's is recorded yet: this file lists what was built, wh
 - **The Column block** (`src/units/columns/column.js`): `configuration` "distillation" (default), "absorber" or
   "stripper"; for the last two `stages`, `feed_stage` (default 1 and N), `reboiler` ("none" or, for a stripper,
   "partial" with one specification), `stage_duties_kW`, `P_kPa`, `method`, `sizing`. The outlets keep their ports:
-  `distillate` is the top gas, `bottoms` the bottom liquid (labelled "gas" and "liquid" on the drawing). The block's
+  `distillate` is the top gas, `bottoms` the bottom liquid; the workbench names them "gas out" and "liquid out" (below). The block's
   duty adds the stage duties, so the flowsheet's energy balance closes.
 - **Methods for absorption** (docs/METHOD_SELECTION.md, step 2): an absorber or stripper refuses (NOT_AVAILABLE) an
   activity model or the ideal solution with a component above its critical temperature (a vapour pressure
@@ -64,11 +64,19 @@ profile table show, switching it to a stripper with a reboiler works; at 390 px 
 - The numbers of The ChemSep Book's Table 1.4 in `cases.json` (H2): gas 80 mol/s, ammonia 0.416, air 0.584, 20 degC,
   1 atm; alpha, beta, A, B, a, b for ammonia, water and air, as printed in J/kmol (divided by 1000 in the code).
 
-## For the maintainer to decide
+## For the maintainer to decide (still open)
 
-1. The outlets: keep the ports `distillate` and `bottoms` for the top gas and the bottom liquid (one block, one set of
-   ports; as built), or give the absorber its own port names.
-2. The method refusals: refuse an equation of state with a light gas and a polar liquid (as built), or allow it with a
-   warning. Water with CO2 or ammonia is refused today, until Henry's law, PSRK or Wong-Sandler is in a method.
-3. The wide-boiling factor of 1000 that orders the two starts (this project's choice; only the speed depends on it).
-4. A condenser without a reboiler (a refluxed absorber) and two liquids on an absorber's stages: not built; when?
+- The method refusals: refuse an equation of state with a light gas and a polar liquid (as built), or allow it with a
+  warning. Water with CO2 or ammonia is refused today, until Henry's law, PSRK or Wong-Sandler is in a method. **Not
+  decided** (2026-11-04): the maintainer wants a working absorber and is clarifying; the code is left as built.
+
+## The maintainer's answers (2026-11-04)
+
+Relayed by the coordinating session; #194 is the pull request kept.
+
+1. **The outlets get their own names:** "gas out" (the top) and "liquid out" (the bottom), in what the person sees (the
+   drawing's labels and tooltips, the stream table's "From", the block's hint, the notes). The stored port ids stay
+   `distillate` and `bottoms`, since renaming them would break project files and requests.
+2. (Open, above.)
+3. **The wide-boiling factor of 1000** that orders the two starts is accepted.
+4. **A refluxed absorber and two liquids on an absorber's stages** are postponed until needed.

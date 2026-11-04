@@ -267,3 +267,14 @@ test("an absorber in a project: written, reopened, solved again with the same nu
   assert.equal(a.blocks.C1.duty_kW, -20);
   assert.deepEqual(b.blocks.C1.profile, a.blocks.C1.profile);
 });
+
+test("the absorber's and stripper's outlets are named \"gas out\" and \"liquid out\"; the stored port ids stay (the maintainer, 2026-11-04)", async () => {
+  const { outletName } = await import("../src/ui/flowsheet-view.js");
+  for (const configuration of ["absorber", "stripper"]) {
+    const b = { type: "column", spec: { configuration } };
+    assert.equal(outletName(b, "distillate"), "gas out");
+    assert.equal(outletName(b, "bottoms"), "liquid out");
+  }
+  assert.equal(outletName({ type: "column", spec: {} }, "distillate"), null);
+  assert.equal(outletName({ type: "flash", spec: {} }, "vapour"), null);
+});

@@ -59,7 +59,7 @@ SEEDS = {
     # src/data/LICENSES.md (ChemSep row); src/data/binaries.json ("ChemSep NRTL databank (via the
     # open-source thermo library)", "DECHEMA-based"); AGENTS.md (link to the thermo library)
     "chemsep-ipd": {
-        "title": "ChemSep interaction parameter files for NRTL and UNIQUAC",
+        "title": "ChemSep interaction parameter files for NRTL, UNIQUAC and Wilson",
         "authors": "Harry Kooijman, Ross Taylor",
         "kind": "databank",
         "url": "https://github.com/CalebBell/thermo",
@@ -282,7 +282,7 @@ SEEDS = {
                 "Section 1.6.7, 'Absorber Design', Table 1.4 (pp. 42-43; read 2026-10-30): the ammonia absorber's gas and its "
                 "K-value and enthalpy polynomials, transcribed into the absorber cases H2 and H3 (the book prints no solution).",
         "files": ["src/ui/column-mccabe.js", "validation/data/columns/B2-chemsep-benzene-toluene.json",
-                  "validation/data/columns/absorber-stripper/cases.json"],
+                  "validation/data/columns/absorber-stripper/cases.json", "src/thermo/activity/wilson.js"],
     },
     # predicted liquid heat capacities (validation/python/predict_cp.py, proposal 0009 step 5)
     "ruzicka-domalski-1993": {
@@ -527,7 +527,7 @@ def text_rules(val):
     """(regex, id) pairs: the ChemSep / CoolProp / ... wording, and for every validation source
     its first author's surname followed by its year in parentheses, and its file name."""
     rules = [
-        (r"ChemSep (?:NRTL|UNIQUAC) databank|ChemSep UNIQUAC T-x-y", "chemsep-ipd"),
+        (r"ChemSep (?:NRTL|UNIQUAC|Wilson) databank|ChemSep UNIQUAC T-x-y", "chemsep-ipd"),
         (r"ChemSep (?:pr|srk)\.ipd", "chemsep-eos-ipd"),
         (r"ChemSep (?:pure-component database )?v8\.3(?!1)", "chemsep-8.3"),
         (r"ChemSep (?:pure-component database )?v8\.31|ChemSep v8\.31 pure component data 2", "chemsep-8.31-2"),

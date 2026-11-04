@@ -45,7 +45,7 @@ const enter = state => { drawing = userOverlay(state); };
 const byId = () => new Map(listComponents({ userData: drawing }).map(c => [c.id, c]));
 const nameOf = id => byId().get(id)?.name ?? id;
 // the models with parameters per pair (Modified UNIFAC 2.0 and the ideal solution have none)
-const PAIR_MODELS = ["NRTL", "UNIQUAC", "PR", "SRK"];
+const PAIR_MODELS = ["NRTL", "UNIQUAC", "WILSON", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
   hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", column: "Column", product: "Product",
   "conversion-reactor": "Conversion reactor", "equilibrium-reactor": "Equilibrium reactor", "gibbs-reactor": "Gibbs reactor", "yield-reactor": "Yield reactor", cstr: "CSTR", pfr: "Plug-flow reactor" };
@@ -447,7 +447,7 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       P("P_kPa", "Column pressure"),
       selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]],
         spec.method?.model ?? "", v => setS({ method: v ? { model: v, ...(["PR", "SRK"].includes(v) ? {} : { vapour: spec.method?.vapour ?? "ideal" }) } : null }), `fs-cmethod-${b.id}`, uid),
-      h("p", { class: "fa-in-hint" }, `Every stage is an equilibrium stage, counted from the top${reb ? "; the last is the reboiler" : ""}. The first inlet enters the top stage (the liquid), the second the bottom stage (the ${stripper ? "stripping gas, such as live steam" : "gas"}); the gas leaves by the top outlet, the liquid by the bottom one. ${reb ? "The reboiler takes one specification. " : "Nothing else is specified: what leaves follows from the feeds and the stages. "}Heat added to stages: for example “4: -100” removes 100 ${u.duty ?? "kW"} from stage 4; the other stages are adiabatic. Empty pressure: the first feed's; no pressure drop. A gas dissolving in a polar liquid (water, alcohols) needs Henry's law, which CHEPTA's methods do not have, so such an absorber is refused with the reason.`)));
+      h("p", { class: "fa-in-hint" }, `Every stage is an equilibrium stage, counted from the top${reb ? "; the last is the reboiler" : ""}. The first inlet enters the top stage (the liquid), the second the bottom stage (the ${stripper ? "stripping gas, such as live steam" : "gas"}); the gas leaves by “gas out” at the top, the liquid by “liquid out” at the bottom. ${reb ? "The reboiler takes one specification. " : "Nothing else is specified: what leaves follows from the feeds and the stages. "}Heat added to stages: for example “4: -100” removes 100 ${u.duty ?? "kW"} from stage 4; the other stages are adiabatic. Empty pressure: the first feed's; no pressure drop. A gas dissolving in a polar liquid (water, alcohols) needs Henry's law, which CHEPTA's methods do not have, so such an absorber is refused with the reason.`)));
   } else if (b.type === "column" && spec.mode === "rigorous") {
     // the rigorous column (proposal 0015, M2a): stages, the feed stage, two specifications from six
     const RSPEC = [["reflux_ratio", "Reflux ratio", "L / D"], ["boilup_ratio", "Boil-up ratio", "V / B"], ["distillate_kmol_h", "Distillate flow", "kmol/h"],
@@ -493,7 +493,7 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       }, `fs-cond-${b.id}`),
       ...(decanter ? [segRow("Refluxed liquid", [["light", "Light refluxed"], ["heavy", "Heavy refluxed"]], spec.reflux_liquid ?? "light", v => setS({ reflux_liquid: v === "light" ? null : v }), `fs-reflux-${b.id}`)] : []),
       P("P_kPa", "Column pressure"),
-      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]],
+      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["WILSON", "Wilson"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]],
         spec.method?.model ?? "", v => setS({ method: v ? { model: v, ...(["PR", "SRK"].includes(v) ? {} : { vapour: spec.method?.vapour ?? "ideal" }) } : null }), `fs-cmethod-${b.id}`, uid),
       h("p", { class: "fa-in-hint" }, `Stages are counted from the top: 1 is the condenser, the last the reboiler. Empty pressure: the feed's; no pressure drop. Every stage's balances are solved together, and a stage that runs dry is warned. ${vll ? "Two liquids are looked for on every stage (activity models only); a decanter refluxes one liquid and sends the other out as the distillate." : "A stage where a second liquid would form is refused; choose \u201cLook for two liquids\u201d to allow two liquids (activity models)."} ${spec.method?.model ? "With its own method, each stream that enters or leaves the column keeps its flows, pressure and enthalpy, and its temperature is found again in the receiving method (the change is in the results)." : ""}`)));
   } else if (b.type === "column") {
@@ -793,6 +793,14 @@ function sizingSection({ b, spec, setS, inputsSection, uid, u, done, rateable })
     ...(kind && kind !== "electric" ? [...uFields(z.U, U => putZ({ U }), uid, `${b.id}-sz`, { optional: false }),
       selectField("Arrangement", ARRS, z.arrangement ?? "counterflow", v => putZ({ arrangement: v }), `${b.id}-sz-arr`, uid)] : []),
     !rating && rateable && kind ? rateButton("heater", spec, setS, done, b.id) : null);
+}
+
+/** The name a person sees for an outlet where it differs from its port id: an absorber's or stripper's "distillate"
+ *  and "bottoms" are "gas out" (the top) and "liquid out" (the bottom), the maintainer's names (2026-11-04); the ids stay,
+ *  so that project files and requests keep working. */
+export function outletName(block, port) {
+  if (block?.type !== "column" || !["absorber", "stripper"].includes(block.spec?.configuration)) return null;
+  return { distillate: "gas out", bottoms: "liquid out" }[port] ?? null;
 }
 
 /** The column's configuration (proposal 0015, M3): distillation, absorber or stripper. Switching keeps the stages, the
@@ -1461,11 +1469,9 @@ export function flowsheetView(ctx) {
       const a = P.get(`${st.id}@${fb}`);
       if (!a || !src || src.type === "product" || src.type === "feed") continue;
       const dot = svgEl("circle", { cx: a.x, cy: a.y, r: 4.5, class: "fs-port-out", "data-handle": st.id });
-      const tt = svgEl("title", {}); tt.textContent = `${src.id} ${OUT_LABEL[port] ?? "outlet"} (stream ${st.id}): drag onto an inlet to connect it`; dot.append(tt);
+      const tt = svgEl("title", {}); tt.textContent = `${src.id} ${outletName(src, port) ?? OUT_LABEL[port] ?? "outlet"} (stream ${st.id}): drag onto an inlet to connect it`; dot.append(tt);
       layer.append(dot);
-      // an absorber's or stripper's outlets carry the gas leaving the top and the liquid leaving the bottom
-      const sep = src.type === "column" && ["absorber", "stripper"].includes(src.spec?.configuration);
-      const label = sep ? { distillate: "gas", bottoms: "liquid" }[port] : OUT_LABEL[port];
+      const label = outletName(src, port) ?? OUT_LABEL[port];
       if (label) {
         const lb = svgEl("text", { x: a.x + (a.dir[0] ? 4 : 7), y: a.y + (a.dir[1] < 0 ? -6 : a.dir[1] > 0 ? 13 : -6), class: "fs-port-label" });
         lb.textContent = label; layer.append(lb);
@@ -1817,7 +1823,7 @@ function streamRows(fs, res, u, state) {
   const mass = state.basis === "mass";
   const nameOfBlock = bid => blockName(fs.blocks.find(b => b.id === bid)) ?? bid;
   const rows = [
-    ["From", "", ids.map(id => { const [bid, port] = fs.streams.find(s => s.id === id).from.split("."); return feedOf(fs, id) ? "feed" : `${nameOfBlock(bid)} ${port}`; }), "text"],
+    ["From", "", ids.map(id => { const [bid, port] = fs.streams.find(s => s.id === id).from.split("."); return feedOf(fs, id) ? "feed" : `${nameOfBlock(bid)} ${outletName(fs.blocks.find(x => x.id === bid), port) ?? port}`; }), "text"],
     ["To", "", ids.map(id => { const e = endOf(fs, id); return e.kind === "product" ? "product" : `${nameOfBlock(e.block)} ${e.port}`; }), "text"],
     ["Temperature", tLabel(u), S.map(s => (s.T_K == null ? null : tToDisplay(s.T_K, u)))],
     ["Pressure", u.P, S.map(s => (s.P_kPa == null ? null : pToDisplay(s.P_kPa, u)))],
