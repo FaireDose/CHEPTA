@@ -35,12 +35,13 @@ import { registerUnit, runUnit, unitTypes, unitType, specStatus } from "./units/
 import "./units/reactors.js";   // registers the conversion and yield reactors (proposal 0010, step 3)
 import "./units/kinetic-reactors.js";   // the CSTR and the plug-flow reactor (proposal 0010, step 5)
 import "./units/columns/column.js";   // the Column block (proposal 0015, milestone M1: the shortcut mode)
+import "./units/membrane.js";   // the Membrane block (proposal 0015, milestone M3, step 9)
 import { exchangerArea, exchangerApproach, exchangerRating, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER } from "./units/heat-exchange.js";
 import { solveFlowsheet, checkFlowsheet, inspectFlowsheet, flowsheetStatus } from "./flowsheet/flowsheet.js";
 import { runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus } from "./flowsheet/document.js";
 import { checkProject, readProject, PROJECT_FORMAT } from "./ui/project.js";
 import { run, capabilities, OUTCOMES, RESULT_FORMAT } from "./api/dispatcher.js";
-import { sizeDrum, sizeDecanter, flashBlockResult, columnDiameter } from "./sizing/sizing.js";   // the drum, decanter and column sizes (proposal 0015, M1, M2b)
+import { sizeDrum, sizeDecanter, flashBlockResult, columnDiameter, membraneArea } from "./sizing/sizing.js";   // the drum, decanter, column and membrane sizes (proposal 0015, M1, M2b, M3)
 import { startRun, runAsync, workerStatus } from "./runtime/browser-worker.js";   // the Web Worker (contract 7, M1)
 import { userDataDoc, readUserDataFile, mergeUserData, userDataPackage, userDataKeys, USER_DATA_FORMAT } from "./ui/user-data-file.js";
 import pkg from "../package.json" with { type: "json" };
@@ -74,7 +75,7 @@ export {
   runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus,
   checkProject, readProject, PROJECT_FORMAT,
   run, capabilities, OUTCOMES, RESULT_FORMAT, startRun, runAsync, workerStatus,
-  sizeDrum, sizeDecanter, flashBlockResult, columnDiameter,
+  sizeDrum, sizeDecanter, flashBlockResult, columnDiameter, membraneArea,
   userDataDoc, readUserDataFile, mergeUserData, userDataPackage, userDataKeys, USER_DATA_FORMAT,
   checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties, formationReference, reactionHeat, reactionRate, rateSpecies, RATE_FORMS, RATE_BASES,
   CheptaError, ERROR_CODES, isCheptaError,

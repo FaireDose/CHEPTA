@@ -34,7 +34,8 @@ Read on 2026-10-09:
      an activity model is more accurate; PSRK, which puts UNIFAC with gas groups inside an equation of state, would do
      both and is not in CHEPTA yet (step 4).
 3. **Polar, no electrolytes, below 10 bar, with interaction parameters:**
-   - an activity model: NRTL or UNIQUAC (Wilson when there is only one liquid; not in CHEPTA yet, roadmap M1);
+   - an activity model: NRTL or UNIQUAC, or Wilson when there is only one liquid (`WILSON`, proposal 0016; ChemSep's
+     Wilson set, tier databank, 165 pairs, and Wilson pairs of one's own in My data);
    - for the vapour, the ideal gas at low pressure, or an equation of state.
 4. **Polar, above 10 bar:** PSRK, or a cubic equation with Wong–Sandler or MHV2 mixing rules.
    **CHEPTA does not have these yet**; such mixtures are outside what it can calculate well.
@@ -53,12 +54,39 @@ Read on 2026-10-09:
 
    Activity models can be stretched, with growing error, to about 0.9.
 7. **Two liquids:**
-   - NRTL and UNIQUAC describe them; Wilson can't.
+   - NRTL and UNIQUAC describe them; Wilson can't (it gives one liquid whatever the parameters). In CHEPTA a Wilson
+     system warns at every result where a pair's NRTL (else UNIQUAC) set predicts two liquids at that temperature, and
+     the column refuses to look for two liquids (phases "VLL") with Wilson (proposal 0016).
    - A cubic equation of state with the classical mixing rule is not used where a second liquid
      forms. Water + hydrocarbons need special treatment, which CHEPTA doesn't have.
 8. **Physical sense:** no temperature below the melting point of a component that is present
    (it would freeze), and parameters used only within the temperature range they were fitted
    to.
+
+## When in doubt: what other simulators do
+
+The maintainer, 2026-11-04: "check again what the other simulators are doing where you have a doubt, put this as a
+method in fact". Where the rules above leave a case open, or a choice would refuse a calculation engineers routinely
+make (a method, a refusal, a default), check how other simulators handle it before deciding:
+
+1. **Which simulators:** those whose documentation anyone can read for free: DWSIM (its Property Packages Guide and
+   tutorials), ChemSep and COCO (The ChemSep Book, the COLAN forum where its authors answer), and open method guides
+   (the Northwestern open textbook above). Commercial manuals behind a login are not cited (AGENTS.md rule 1).
+2. **What to record:** the page, the date it was read, and the sentences that decide the case, quoted, in the
+   decision file and in this page when it changes a rule.
+3. **What it decides:** whether a calculation is offered, refused or offered with a warning. Another simulator's
+   practice never replaces the sources of the numbers: parameters still come from open data or databanks, and every
+   method is still tested against an independent calculation and open data.
+4. **Where they differ from CHEPTA's rules,** say so and give the reason (CHEPTA refuses where its parameters cannot
+   support the result; another simulator may leave that judgement to the user).
+
+Checked so far:
+
+| Case | Other simulators (read 2026-11-04) | CHEPTA |
+|---|---|---|
+| Gases dissolved in water (absorbers) | DWSIM's base property package carries Henry's law constants (`UseHenryConstants`, DWSIM class library, https://dwsim.org/api_help/html/P_DWSIM_Thermodynamics_PropertyPackages_PropertyPackage_UseHenryConstants.htm) | an activity model with Henry's law for the gases with an open constant (IAPWS G7-04, Sander 2023), proposal 0017 |
+| A light gas with a polar liquid in Peng–Robinson or SRK | DWSIM Property Packages Guide (https://dwsim.org/tutorials/en/reference/property-packages-guide.html): "Sour gas (with H2S, CO2): PR with kij ... Set binary interaction parameters"; "For PR/SRK with strongly polar or quadrupolar compounds (CO2, H2S), the kij values matter"; "Peng-Robinson is excellent for hydrocarbons and gases, but performs poorly for water/alcohol mixtures" | offered, with a warning, where the pair has a k_ij; refused without one |
+| Sour water (NH3, H2S, CO2 in water), amines | the same guide: "Sour water (NH3, H2S, CO2): Sour Water ... Specialized for gas treating"; "Aqueous electrolytes: Electrolyte NRTL" | refused until the electrolyte methods (roadmap M5) |
 
 ## What this means for CHEPTA today
 
@@ -66,6 +94,7 @@ Read on 2026-10-09:
 |---|---|---|
 | Hydrocarbons and light gases, any pressure and reduced temperature | Peng–Robinson or SRK with the databank's k_ij (0 where it has none, with a warning) | covered |
 | Polar liquids below 10 bar | NRTL or UNIQUAC with fitted or databank pairs; ideal-gas or PR/SRK vapour | covered where the pairs exist (docs/DATA_WANTED.md) |
+| Polar liquids below 10 bar, one liquid | Wilson with ChemSep's databank pairs (no fits yet); ideal-gas or PR/SRK vapour | covered where the pairs exist (roadmap M1, proposal 0016); refused or warned where two liquids form |
 | Polar mixtures above 10 bar | (PSRK, MHV2, Wong–Sandler, CPA) | **not available**; planned: roadmap M2, M3 |
 | Water + hydrocarbons (two liquids) | (CPA, or a free-water approach) | **not available**; the engine refuses a second liquid with an equation of state; planned: roadmap M3 |
 | Electrolytes | (eNRTL, Pitzer) | **not available**, shown as "not available yet"; planned: roadmap M5 (ionic liquids: M6) |

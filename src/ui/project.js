@@ -8,7 +8,7 @@
  * carry `results`, the stream table of the flash as it was at save time, so the mass balance
  * can be read without CHEPTA (it is a record and is never read back into a calculation).
  *
- * Format 6 (the "fugacity_project" key is the format version): format 5 with the flowsheet's Column block (proposal
+ * Format 6 (the "fugacity_project" key is the format version): format 5 with the flowsheet's Column and Membrane blocks (proposal
  * 0015, milestone M1; written only when the flowsheet has a column), and the Column workspace's own document ("column",
  * a flowsheet with one column; M2b). Format 5: format 4 with the Charts workspace's fluid charts
  * (`workbench.chart`: the chart, isobars, isotherms, compression, components and feed; proposal 0013, step 7). Format 4
@@ -59,7 +59,7 @@ export const PROJECT_FORMAT = 6;
 /** The flowsheet block types that need format 4 (proposal 0013). */
 const FORMAT_4_BLOCKS = ["hx", "valve", "pump", "compressor", "expander"];
 /** The flowsheet block types that need format 6 (proposal 0015). */
-const FORMAT_6_BLOCKS = ["column"];
+const FORMAT_6_BLOCKS = ["column", "membrane"];
 const hasBlock = (fs, types) => !!fs?.blocks?.some(b => types.includes(b?.type));
 
 /** The keys of `workbench`, in the order they are written. */
@@ -152,7 +152,7 @@ export function readProject(input) {
   if (doc.results != null && (typeof doc.results !== "object" || Array.isArray(doc.results))) throw new Error("results must be an object.");
   if (w.hx != null && f < 4) throw new Error(`workbench.hx needs format 4 (this file says format ${f}).`);
   if (w.chart != null && f < 5) throw new Error(`workbench.chart needs format 5 (this file says format ${f}).`);
-  if ((hasBlock(doc.flowsheet, FORMAT_6_BLOCKS) || hasBlock(doc.reactor, FORMAT_6_BLOCKS)) && f < 6) throw new Error(`The flowsheet's column block needs format 6 (this file says format ${f}).`);
+  if ((hasBlock(doc.flowsheet, FORMAT_6_BLOCKS) || hasBlock(doc.reactor, FORMAT_6_BLOCKS)) && f < 6) throw new Error(`The flowsheet's column and membrane blocks need format 6 (this file says format ${f}).`);
   if (doc.column != null && f < 6) throw new Error(`The Column workspace needs format 6 (this file says format ${f}).`);
   if (doc.flowsheet?.energyStreams != null && f < 4) throw new Error(`flowsheet.energyStreams needs format 4 (this file says format ${f}).`);
   if (doc.user_data != null) {

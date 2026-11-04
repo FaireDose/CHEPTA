@@ -5,9 +5,8 @@
  * year; each needs its own proposal before it is built (AGENTS.md, "Rules for code").
  */
 export const FUTURE_MODELS = {
-  // liquid activity coefficients, next to NRTL and UNIQUAC
+  // liquid activity coefficients, next to NRTL, UNIQUAC and Wilson
   activity: [
-    { id: "wilson", label: "Wilson", note: "Wilson (1964): two parameters per pair, often the best fit of vapour-liquid data of miscible mixtures; it cannot describe two liquids. Not available yet." },
     { id: "unifac", label: "UNIFAC", note: "Original UNIFAC (Fredenslund, Jones and Prausnitz, 1975): waiting for the parameter licence (proposal 0008, Part A). Modified UNIFAC 2.0, which predicts pairs without data from the same kind of groups, is available in the activity models. Not available yet." },
   ],
   // equations of state, next to Peng-Robinson and SRK

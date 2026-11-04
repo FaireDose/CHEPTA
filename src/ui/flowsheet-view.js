@@ -26,7 +26,7 @@ import {
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
   energyOf, energyTargets, addEnergyFeed, connectEnergy, removeEnergy, setEnergyDuty, ENERGY_TARGETS, ENERGY_SOURCES,
   placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy, ratingPatch, designPatch,
-  REACTORS, REACTION_USERS, KINETIC, saveShared, hasShared, addReaction, setReaction, removeReaction, reactionsFile, importReactions, usedReactions,
+  REACTORS, SEPARATORS, REACTION_USERS, KINETIC, saveShared, hasShared, addReaction, setReaction, removeReaction, reactionsFile, importReactions, usedReactions,
 } from "./flowsheet-logic.js";
 import { checkReaction, reactionProperties } from "../reactions/reaction.js";
 import { HEAT_TRANSFER } from "../units/heat-exchange.js";
@@ -45,10 +45,13 @@ const enter = state => { drawing = userOverlay(state); };
 const byId = () => new Map(listComponents({ userData: drawing }).map(c => [c.id, c]));
 const nameOf = id => byId().get(id)?.name ?? id;
 // the models with parameters per pair (Modified UNIFAC 2.0 and the ideal solution have none)
-const PAIR_MODELS = ["NRTL", "UNIQUAC", "PR", "SRK"];
+const PAIR_MODELS = ["NRTL", "UNIQUAC", "WILSON", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
-  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", column: "Column", product: "Product",
+  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", column: "Column", membrane: "Membrane", product: "Product",
   "conversion-reactor": "Conversion reactor", "equilibrium-reactor": "Equilibrium reactor", "gibbs-reactor": "Gibbs reactor", "yield-reactor": "Yield reactor", cstr: "CSTR", pfr: "Plug-flow reactor" };
+/** One line per separator in the Separator menu of the toolbar. */
+const SEPARATOR_LINE = { flash: "vapour and liquid (and a second liquid) at equilibrium", separator: "given fractions of each component to each outlet",
+  membrane: "gas permeation: the permeate and retentate, or the area for a stage cut or a recovery" };
 /** One line per reactor type in the Reactor menu of the toolbar. */
 const REACTOR_LINE = { "conversion-reactor": "a given conversion of a key reactant", "yield-reactor": "products per kg of a key reactant",
   "equilibrium-reactor": "the listed reactions at equilibrium", "gibbs-reactor": "every reaction among the species, at equilibrium (minimum Gibbs energy)", cstr: "stirred tank, with kinetics", pfr: "tube, with kinetics; profiles along it" };
@@ -70,6 +73,7 @@ const HINT = {
   cstr: "A stirred tank at steady state: the reactions of the Reactions page with their kinetics, the volume (or catalyst mass), and the temperature or the duty.",
   pfr: "A tube (or a bundle of tubes) in plug flow: the reactions with their kinetics, the length and diameter; isothermal, a duty or a coolant; a pressure drop. Its profiles show under the drawing (double-click it).",
   column: "Distillation. Shortcut (Fenske, Underwood, Gilliland): a light and a heavy key, the recovery of each, and the reflux ratio (or a multiple of the minimum); it gives the minimum and the number of stages, the feed stage and the duties, assuming a constant relative volatility. Rigorous: the stages, the feed stage and two specifications (reflux, boil-up, a product flow or a duty); every stage's balances are solved, and the profile shows under the drawing. Options: look for two liquids on the stages (activity models), a decanter on the condenser, and the column's own property method.",
+  membrane: "Gas permeation (solution-diffusion): each component passes in proportion to its permeance times its partial-pressure difference, over well-mixed cells in counter- or co-current flow. Give the permeances (your values, with their source), the permeate pressure, and the area or a target: the stage cut or the recovery of one component; with a target it finds the area. Isothermal; a gas feed only.",
   "yield-reactor": "Turns a given fraction of a key reactant into the products you give per kg (or mol) of it, for a reaction known by its products (a fermentation, a pyrolysis). The mass must close; the elements are reported.",
 };
 /** Blocks on the roadmap, shown in the toolbar but not available yet. */
@@ -77,7 +81,7 @@ const COMING = [
   { id: "extraction", label: "Extraction", icon: "extract", note: "after liquid-liquid equilibria in the flash" },
 ];
 // a feed is drawn as the start of its stream (a tab), not as a block; its size is that point
-const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40], column: [36, 96],
+const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40], column: [36, 96], membrane: [64, 40],
   "conversion-reactor": [44, 58], "equilibrium-reactor": [44, 58], "yield-reactor": [44, 58], "gibbs-reactor": [44, 58], cstr: [44, 58], pfr: [76, 30], product: [0, 0] };
 // the inlet and outlet ports of a two-stream exchanger: hot above, cold below
 const PORT_DY = { hot: -11, cold: 11 };
@@ -249,7 +253,7 @@ export function flowsheetRibbon({ state, set, ui, group, smallButton }) {
     q.disabled = !ready;
     return q;
   })();
-  const blocks = PALETTE.filter(type => !REACTORS.includes(type));
+  const blocks = PALETTE.filter(type => !REACTORS.includes(type) && !SEPARATORS.includes(type));
   feedSel(f, fs);
   const selName = !f.sel ? "" : f.sel.kind === "block" ? blockName(fs.blocks.find(x => x.id === f.sel.id)) ?? f.sel.id
     : f.sel.kind === "energy" ? f.sel.id : streamName(fs.streams.find(x => x.id === f.sel.id)) ?? f.sel.id;
@@ -275,13 +279,24 @@ export function flowsheetRibbon({ state, set, ui, group, smallButton }) {
       setupBtn("flask", `Components${ready ? ` (${fs.components.length})` : ""}`, "components", "fs-setup", "1. Choose the components of the simulation (and see the status of the flowsheet)"),
       setupBtn("cubic", `Method: ${method}`, "method", "fs-method", "2. The property method of the whole flowsheet, and the recycle solver"),
       setupBtn("spark", `Reactions${fs.reactions?.length ? ` (${fs.reactions.length})` : ""}`, "reactions", "fs-reactions", "3. The reactions of the process, written once for every reactor: stoichiometry, balance check, heat of reaction and K"))),
-    group("Blocks", rows2(blockBtn("feed"), energyBtn, ...blocks.filter(t => t !== "feed").map(blockBtn))),
+    group("Blocks", rows2(blockBtn("feed"), energyBtn, ...blocks.filter(t => t !== "feed").map(blockBtn), (() => {
+      // one button for the separators (proposal 0015, Part I, section 4: "In one Separator button, so the palette stays
+      // short"), as the Reactor button
+      const open = !!f.separatorMenu;
+      const b = smallButton({ ico: "separator", label: "Separator", fk: "fs-add-separators", pressed: open,
+        title: ready ? "Place a separator: flash drum, component separator or membrane" : "Choose the components first", onClick: () => { f.separatorMenu = !open; f.reactorMenu = false; set({}); } });
+      b.disabled = !ready;
+      b.setAttribute("aria-haspopup", "menu");
+      return h("div", { class: "fa-menu-wrap" }, b, open && ready ? h("div", { class: "fa-menu", role: "menu" }, ...SEPARATORS.map(t =>
+        h("button", { type: "button", role: "menuitem", class: "fa-menu-item", "data-fk": `fs-add-${t}`, title: HINT[t],
+          on: { click: () => { f.separatorMenu = false; place(t)(); } } }, h("b", {}, t === "separator" ? "Component separator" : LABEL[t]), h("span", {}, SEPARATOR_LINE[t])))) : null);
+    })())),
     // the blocks still to come: one locked button, with what they are in its tooltip
     group("Reactors", rows2((() => {
       // one button; its menu lists the reactor types (the maintainer, 2026-10-28: "the blocks ... seems crowded")
       const open = !!f.reactorMenu;
       const b = smallButton({ ico: "reactor", label: "Reactor", fk: "fs-add-reactor", pressed: open,
-        title: ready ? "Place a reactor: choose its type" : "Choose the components first", onClick: () => { f.reactorMenu = !open; set({}); } });
+        title: ready ? "Place a reactor: choose its type" : "Choose the components first", onClick: () => { f.reactorMenu = !open; f.separatorMenu = false; set({}); } });
       b.disabled = !ready;
       b.setAttribute("aria-haspopup", "menu");
       return h("div", { class: "fa-menu-wrap" }, b, open && ready ? h("div", { class: "fa-menu", role: "menu" }, ...REACTORS.map(t =>
@@ -457,7 +472,7 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       }, `fs-cond-${b.id}`),
       ...(decanter ? [segRow("Refluxed liquid", [["light", "Light refluxed"], ["heavy", "Heavy refluxed"]], spec.reflux_liquid ?? "light", v => setS({ reflux_liquid: v === "light" ? null : v }), `fs-reflux-${b.id}`)] : []),
       P("P_kPa", "Column pressure"),
-      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]],
+      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["WILSON", "Wilson"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]],
         spec.method?.model ?? "", v => setS({ method: v ? { model: v, ...(["PR", "SRK"].includes(v) ? {} : { vapour: spec.method?.vapour ?? "ideal" }) } : null }), `fs-cmethod-${b.id}`, uid),
       h("p", { class: "fa-in-hint" }, `Stages are counted from the top: 1 is the condenser, the last the reboiler. Empty pressure: the feed's; no pressure drop. Every stage's balances are solved together, and a stage that runs dry is warned. ${vll ? "Two liquids are looked for on every stage (activity models only); a decanter refluxes one liquid and sends the other out as the distillate." : "A stage where a second liquid would form is refused; choose \u201cLook for two liquids\u201d to allow two liquids (activity models)."} ${spec.method?.model ? "With its own method, each stream that enters or leaves the column keeps its flows, pressure and enthalpy, and its temperature is found again in the receiving method (the change is in the results)." : ""}`)));
   } else if (b.type === "column") {
@@ -476,6 +491,39 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       segRow("Condenser", [["total", "Total"], ["partial", "Partial"]], spec.condenser ?? "total", v => setS({ condenser: v }), `fs-cond-${b.id}`),
       P("P_kPa", "Column pressure"),
       h("p", { class: "fa-in-hint" }, "Empty pressure: the feed's. The relative volatilities are taken at the feed's bubble point and held constant; the column refuses keys that form an azeotrope and a reflux below the minimum, and warns when the volatility changes along the column. The rigorous method solves every stage; switching to it takes the shortcut's stages, feed stage, reflux and distillate as a start.")));
+  } else if (b.type === "membrane") {
+    // proposal 0015, M3: the permeances are the person's own values, with their source (no databank)
+    const pm = spec.permeances ?? {}, unit = spec.permeance_unit ?? "mol/(m2 s Pa)";
+    const target = spec.A_m2 != null ? "A_m2" : spec.recovery != null ? "recovery" : "stage_cut";
+    const [rc, rv] = Object.entries(spec.recovery ?? {})[0] ?? [fs.components[0], 0.9];
+    const fibre = spec.fibre ?? {};
+    const fibreField = (key, label, unit) => numberField(label, fibre[key] == null ? "" : String(fibre[key]), t => {
+      const v = num(t); if (v === undefined || (v != null && !(v > 0))) return false;
+      const next = { ...fibre }; if (v == null) delete next[key]; else next[key] = v;
+      setS({ fibre: Object.keys(next).length ? next : null });
+    }, { id: `${b.id}-fibre-${key}`, uid, unit });
+    secs.push(inputsSection("Permeances",
+      segRow("Unit", [["GPU", "GPU"], ["mol/(m2 s Pa)", "mol/(m² s Pa)"], ["mol/(m2 s bar)", "mol/(m² s bar)"]], unit, v => setS({ permeance_unit: v }), `fs-punit-${b.id}`),
+      ...fs.components.map(c => numberField(nameOf(c), pm[c] == null ? "" : String(pm[c]), t => {
+        const v = num(t); if (v === undefined || (v != null && v < 0)) return false;
+        const next = { ...pm }; if (v == null) delete next[c]; else next[c] = v;
+        setS({ permeances: next });
+      }, { id: `${b.id}-q-${c}`, uid, unit: unit === "GPU" ? "GPU" : unit.replace("m2", "m²"), placeholder: "0" })),
+      h("p", { class: "fa-in-hint" }, "Your membrane's permeances, with their source (a measurement or an article): CHEPTA has no databank of them. 0 for a component that does not pass. 1 GPU = 10⁻⁶ cm³(STP)/(cm² s cmHg) = 3.346 × 10⁻¹⁰ mol/(m² s Pa).")),
+    inputsSection("Module",
+      P("permeate_P_kPa", "Permeate pressure"),
+      segRow("Flow", [["counter-current", "Counter-current"], ["co-current", "Co-current"]], spec.flow ?? "counter-current", v => setS({ flow: v }), `fs-mflow-${b.id}`),
+      plain("cells", "Well-mixed cells", "", "20"),
+      h("p", { class: "fa-in-hint" }, "The feed side stays at the feed's pressure. One cell is complete mixing; with more cells the module approaches plug flow (the results change little above about 20).")),
+    inputsSection("Area or target",
+      segRow("Give", [["A_m2", "Area"], ["stage_cut", "Stage cut"], ["recovery", "Recovery"]], target, v => setS({ A_m2: v === "A_m2" ? spec.A_m2 ?? +(done?.state?.A_m2 ?? 1).toPrecision(4) : null,
+        stage_cut: v === "stage_cut" ? spec.stage_cut ?? 0.2 : null, recovery: v === "recovery" ? { [rc]: rv } : null }), `fs-mtarget-${b.id}`),
+      target === "A_m2" ? plain("A_m2", "Membrane area", "m²") : target === "stage_cut" ? plain("stage_cut", "Stage cut (permeate / feed)", "mol/mol", "0.2")
+        : h("div", {}, selectField("Component", fs.components.map(c => [c, nameOf(c)]), rc, v => setS({ recovery: { [v]: rv } }), `fs-mrc-${b.id}`, uid),
+          numberField("Fraction of it into the permeate", String(rv), t => { const v = num(t); if (!(v > 0 && v < 1)) return false; setS({ recovery: { [rc]: v } }); }, { id: `${b.id}-recovery`, uid, unit: "mol/mol" })),
+      h("p", { class: "fa-in-hint" }, "With a stage cut or a recovery, the membrane finds the area it needs (the sizing).")),
+    inputsSection("Hollow fibres (optional)", fibreField("inner_diameter_m", "Fibre inner diameter", "m"), fibreField("length_m", "Fibre length", "m"),
+      h("p", { class: "fa-in-hint" }, "With both: the number of fibres of the area, A = n d π l.")));
   } else if (b.type === "mixer") {
     secs.push(inputsSection("Outlet", P("P_kPa", "Outlet pressure"), h("p", { class: "fa-in-hint" }, "Empty: the lowest inlet pressure.")));
   } else if (b.type === "splitter" || b.type === "separator") {
@@ -1134,6 +1182,11 @@ function ports(fs, b) {
     // the distillate leaves at the top (from the condenser), the bottoms at the bottom (from the reboiler)
     for (const sid of st.distillate ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
     for (const sid of st.bottoms ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
+  } else if (b.type === "membrane") {
+    // the retentate leaves the feed side at the right, the permeate the permeate side at the bottom
+    for (const sid of st.retentate ?? []) at[sid] = { x: x + w / 2, y: y - hh / 4, dir: [1, 0] };
+    for (const sid of st.permeate ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
+    for (const sid of st.in ?? []) at[sid] = { x: x - w / 2, y: y - hh / 4, dir: [-1, 0] };
   } else if (b.type === "flash") {
     for (const sid of st.vapour ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
     for (const sid of st.liquid ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
@@ -1161,6 +1214,9 @@ function shape(type, w, hh) {
     // a tall shell with its trays
     case "column": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: w / 2, class: "fs-shape" }),
       svgEl("path", { d: [-24, -8, 8, 24].map(t => `M${-w / 2 + 6} ${t} H${w / 2 - 6}`).join(" "), class: "fs-detail" })); return g; }
+    // a module split by its membrane (dashed): the feed side above, the permeate side below
+    case "membrane": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 4, class: "fs-shape" }),
+      svgEl("path", { d: `M${-w / 2} 2 H${w / 2}`, class: "fs-detail", "stroke-dasharray": "4 3" })); return g; }
     case "heater": { const g = svgEl("g", {}); g.append(svgEl("circle", { r: w / 2, class: "fs-shape" }), svgEl("path", { d: "M-12 4 L-6 -6 L0 6 L6 -6 L12 4", class: "fs-detail" })); return g; }
     // a shell with two tube lines; a bow tie; a circle with its discharge
     case "hx": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: hh / 2, class: "fs-shape" }), svgEl("path", { d: `M${-w / 2 + 8} -11 H${w / 2 - 8} M${-w / 2 + 8} 11 H${w / 2 - 8}`, class: "fs-detail" })); return g; }
@@ -1328,7 +1384,9 @@ export function flowsheetView(ctx) {
         g.append(ring);
       }
       // the drum's liquid leaves at the bottom: its name goes on the right
+      // a membrane's permeate leaves at its bottom: its name goes above it
       const t = b.type === "flash" || b.type === "column" ? svgEl("text", { x: w / 2 + 6, y: 4, class: "fs-name", "text-anchor": "start" })
+        : b.type === "membrane" ? svgEl("text", { y: -hh / 2 - 7, class: "fs-name", "text-anchor": "middle" })
         : svgEl("text", { y: hh / 2 + 15, class: "fs-name", "text-anchor": "middle" });
       t.textContent = blockName(b); g.append(t);
       if (sol.status?.blocks?.[b.id] && !sol.status.blocks[b.id].ok) {
@@ -1691,6 +1749,14 @@ export function resultsPanel({ state, f, sol, u, set }) {
             ["Highest fraction of flooding", `${fmtShort(100 * z.basis.max_fraction_of_flooding, 3)} % (design ${fmtShort(100 * z.basis.design_fraction, 3)} %)`],
             z.basis.mode === "sized" ? ["Diameter set by", `stage ${z.basis.governing_stage}`] : null,
           ] : []),
+        ] : []),
+        ...(b.type === "membrane" && r.state ? [
+          [r.state.target ? "Area (for the target)" : "Area (given)", `${fmtShort(r.state.A_m2, 5)} m²`],
+          ...(z?.dimensions?.fibres != null ? [["Hollow fibres", `${fmtShort(z.dimensions.fibres, 4)} of ${fmtShort(z.dimensions.fibre.inner_diameter_m * 1e6, 4)} µm × ${fmtShort(z.dimensions.fibre.length_m, 4)} m`]] : []),
+          ["Stage cut (permeate / feed)", fmtShort(r.state.stage_cut, 5)],
+          ...Object.entries(r.state.recoveries).filter(([, v]) => v != null).map(([c, v]) => [`${nameOf(c)} into the permeate`, `${fmtShort(100 * v, 4)} %`]),
+          ["Feed side, permeate side", `${fmtP(r.state.P_feed_kPa, u)}, ${fmtP(r.state.permeate_P_kPa, u)}`],
+          ["Flow, cells", `${r.state.flow}, ${r.state.cells}`],
         ] : []),
         r.balance.material != null ? ["Material balance", r.balance.material < 1e-9 ? "closed" : r.balance.material.toExponential(1)]
           : ["Mass balance", r.balance.mass < 1e-9 ? "closed" : r.balance.mass.toExponential(1)],

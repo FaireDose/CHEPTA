@@ -17428,6 +17428,2811 @@
       ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-butanol",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.8151680076000564,
+      "a_ji": 0.8151680076000563,
+      "b_ij": -49.8256782459401,
+      "b_ji": -99.98740649635067,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-butanol",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.6273532275549796,
+      "a_ji": 1.6273532275549796,
+      "b_ij": -910.7624906348981,
+      "b_ji": -787.6052968357103,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-hexanol",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.9357233739119442,
+      "a_ji": 1.9357233739119442,
+      "b_ij": -4670.39286960257,
+      "b_ji": -1024.5209525630225,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "2-butanone",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.18528001859851914,
+      "a_ji": -0.18528001859851906,
+      "b_ij": -150.650341402126,
+      "b_ji": -36.33250064056424,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "2-propanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.025811819192502083,
+      "a_ji": -0.02581181919250202,
+      "b_ij": -91.56929853021657,
+      "b_ji": 91.44178270042798,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "acetic-acid",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.2634962204994898,
+      "a_ji": 0.26349622049948973,
+      "b_ij": -3556.2269300054295,
+      "b_ji": 330.3801293426385,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "benzene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.1765540802312892,
+      "a_ji": -0.17655408023128918,
+      "b_ij": -501.34519170234296,
+      "b_ji": -157.08576440627496,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "cyclohexane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.37338420049011634,
+      "a_ji": -0.3733842004901164,
+      "b_ij": -1132.210838526919,
+      "b_ji": 88.98466236226021,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "dichloroethane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.058353778244984396,
+      "a_ji": -0.05835377824498445,
+      "b_ij": -342.76250014976915,
+      "b_ji": -207.66773128911038,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "ethylbenzene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.4935772148646603,
+      "a_ji": -0.4935772148646602,
+      "b_ij": -461.2976225337707,
+      "b_ji": -108.38317151519743,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "isobutanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.2089072541293114,
+      "a_ji": -0.20890725412931138,
+      "b_ij": -280.78019537942595,
+      "b_ji": 239.26156454857676,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.6103840232013876,
+      "a_ji": 0.6103840232013877,
+      "b_ij": 17.050033912051834,
+      "b_ji": -75.58644228285557,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "n-decane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.9604459206247592,
+      "a_ji": -0.9604459206247592,
+      "b_ij": -705.3220593230066,
+      "b_ji": -141.33615041269067,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "n-heptane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.6738493678231774,
+      "a_ji": -0.6738493678231774,
+      "b_ij": -892.3547704214666,
+      "b_ji": -288.8880685031581,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "n-hexane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.5608520246261225,
+      "a_ji": -0.5608520246261226,
+      "b_ij": -803.6757636038535,
+      "b_ji": -175.4065282843179,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "n-octane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.7798592705810214,
+      "a_ji": -0.7798592705810214,
+      "b_ij": -562.4356404934664,
+      "b_ji": -259.90529043715674,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "propionic-acid",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0001734586865786784,
+      "a_ji": -0.00017345868657876696,
+      "b_ij": 21.55616354671988,
+      "b_ji": 87.89650044302246,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "pyridine",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.07572045368459532,
+      "a_ji": -0.07572045368459518,
+      "b_ij": 168.5295804614771,
+      "b_ji": -168.7118968984637,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "tetrahydrofuran",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.08932956627554056,
+      "a_ji": -0.08932956627554062,
+      "b_ij": -246.20488702788606,
+      "b_ji": 120.41308736106558,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.354747529249219,
+      "a_ji": -0.35474752924921904,
+      "b_ij": -421.31315709469925,
+      "b_ji": -151.34302308998707,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "1-propanol",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.4225692431563108,
+      "a_ji": 1.4225692431563108,
+      "b_ij": -390.23784124254996,
+      "b_ji": -680.301430575961,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "2-butanol",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.4545490078879598,
+      "a_ji": 0.4545490078879597,
+      "b_ij": 333.45228459464846,
+      "b_ji": -433.99705704630236,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "2-butanol",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.8192912773306991,
+      "a_ji": 0.8192912773306992,
+      "b_ij": -301.7989707863225,
+      "b_ji": 45.517313887937064,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "2-butanone",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.43092177235716744,
+      "a_ji": 0.43092177235716744,
+      "b_ij": 75.38117903514141,
+      "b_ji": -349.2758718596571,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "2-butanone",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.7956640417999068,
+      "a_ji": 0.7956640417999069,
+      "b_ij": 109.49654473306346,
+      "b_ji": -386.22250161890327,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "2-butanone",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.6078492617548301,
+      "a_ji": 1.60784926175483,
+      "b_ij": -3427.6009979259443,
+      "b_ji": -950.5066687467239,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "2-propanol",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.2714535729511504,
+      "a_ji": 0.2714535729511503,
+      "b_ij": -240.1095901064289,
+      "b_ji": 130.31825937064187,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "2-propanol",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.448381062348813,
+      "a_ji": 1.448381062348813,
+      "b_ij": -220.3995377403026,
+      "b_ji": -623.4872910585569,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetaldehyde",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.1400694799713251,
+      "a_ji": 1.140069479971325,
+      "b_ij": 114.24819517812554,
+      "b_ji": -963.7197543597543,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetic-acid",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.017854466740841263,
+      "a_ji": -0.017854466740841325,
+      "b_ij": 19.316031471396776,
+      "b_ji": 92.36851179331931,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetic-acid",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.346887802701898,
+      "a_ji": 0.34688780270189795,
+      "b_ij": 33.97124362352798,
+      "b_ji": 47.110506930994156,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetic-acid",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.1590730226568213,
+      "a_ji": 1.1590730226568213,
+      "b_ij": -3.570594199940493,
+      "b_ji": -403.0945467819566,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetone",
+      "j": "benzene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.19135090264569746,
+      "a_ji": -0.19135090264569754,
+      "b_ij": -273.71881759755786,
+      "b_ji": 91.84913891279523,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetone",
+      "j": "chloroform",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.0864351798745425,
+      "a_ji": -0.08643517987454254,
+      "b_ij": -14.533936244558005,
+      "b_ji": 243.75229566551977,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetone",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.23084493134423997,
+      "a_ji": 0.23084493134423992,
+      "b_ij": -101.46334938810254,
+      "b_ji": -126.58759103709542,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetone",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.5955872007869794,
+      "a_ji": 0.5955872007869794,
+      "b_ij": 81.46183226817377,
+      "b_ji": -293.43002736861126,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetone",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.4077724207419025,
+      "a_ji": 1.4077724207419027,
+      "b_ij": -221.2354357073974,
+      "b_ji": -707.2700221371804,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetonitrile",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.10685397439576583,
+      "a_ji": -0.1068539743957658,
+      "b_ij": -305.8610091826779,
+      "b_ji": -170.169774208963,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetonitrile",
+      "j": "ethylbenzene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.8460729430190745,
+      "a_ji": -0.8460729430190744,
+      "b_ij": -423.3663431133275,
+      "b_ji": -163.94474729176986,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetonitrile",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.2578882950469735,
+      "a_ji": 0.2578882950469736,
+      "b_ij": -99.00909740127571,
+      "b_ji": -253.77985066564298,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetonitrile",
+      "j": "p-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.8554615414369314,
+      "a_ji": -0.8554615414369313,
+      "b_ij": -345.63246179321936,
+      "b_ji": -274.1221983756105,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetonitrile",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.7072432574036333,
+      "a_ji": -0.7072432574036333,
+      "b_ij": -541.88420506733,
+      "b_ji": 0.43795196000397585,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acetonitrile",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.0700735150018967,
+      "a_ji": 1.0700735150018967,
+      "b_ij": -324.0502817966176,
+      "b_ji": -698.4992076000169,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acrylic-acid",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.3389387641767627,
+      "a_ji": 1.338938764176763,
+      "b_ij": 119.44937163246207,
+      "b_ji": -649.2779463357623,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acrylonitrile",
+      "j": "ethylbenzene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.617020977385173,
+      "a_ji": -0.6170209773851731,
+      "b_ij": -134.27965386029751,
+      "b_ji": -334.2332309886852,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acrylonitrile",
+      "j": "styrene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.5574806831235526,
+      "a_ji": -0.5574806831235527,
+      "b_ij": -141.0537939324445,
+      "b_ji": -101.8909853476698,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "acrylonitrile",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.2991254806357981,
+      "a_ji": 1.2991254806357981,
+      "b_ij": -630.71608997922,
+      "b_ji": -886.4479795372581,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "aniline",
+      "j": "benzene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.024235856147935615,
+      "a_ji": 0.024235856147935688,
+      "b_ij": -304.2620291149856,
+      "b_ji": 4.1975050947732555,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "aniline",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.44643169013787315,
+      "a_ji": 0.4464316901378732,
+      "b_ij": -5687.951327022057,
+      "b_ji": 7.919769662110276,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "aniline",
+      "j": "ethylbenzene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.29278727848543545,
+      "a_ji": -0.2927872784854355,
+      "b_ij": -249.5227140561501,
+      "b_ji": -82.67781194892017,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "aniline",
+      "j": "m-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.29788978636691166,
+      "a_ji": -0.2978897863669117,
+      "b_ij": -114.48918701271809,
+      "b_ji": -263.02988116455725,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "aniline",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.8111739595806124,
+      "a_ji": 0.8111739595806124,
+      "b_ij": 50.372728200806606,
+      "b_ji": -327.6120193327685,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "aniline",
+      "j": "p-cymene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.5418935752913269,
+      "a_ji": -0.5418935752913269,
+      "b_ij": -268.98065343599353,
+      "b_ji": -121.1975562918368,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "aniline",
+      "j": "p-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.3021758769032924,
+      "a_ji": -0.3021758769032924,
+      "b_ij": -339.02986926004206,
+      "b_ji": -45.65610183527602,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "aniline",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.1539575928699942,
+      "a_ji": -0.15395759286999422,
+      "b_ij": -43.72887166588245,
+      "b_ji": -508.96770958601553,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "aniline",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.6233591795355358,
+      "a_ji": 1.6233591795355358,
+      "b_ij": -4666.148162515554,
+      "b_ji": -860.7664222549154,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "bdo",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.7806697565803106,
+      "a_ji": 0.7806697565803107,
+      "b_ij": 125.13212918035694,
+      "b_ji": -115.68508823407792,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "bdo",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.5928549765352336,
+      "a_ji": 1.5928549765352336,
+      "b_ij": -108.59361792410661,
+      "b_ji": -785.9248455255447,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "biphenyl",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.5536446833314865,
+      "a_ji": -0.5536446833314864,
+      "b_ij": 232.74758897524865,
+      "b_ji": -4681.508334912164,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "chloroform",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.10491572277115496,
+      "a_ji": 0.10491572277115506,
+      "b_ij": -24.960192081072282,
+      "b_ji": 81.42419144706804,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "cumene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.44736648856536093,
+      "a_ji": -0.4473664885653608,
+      "b_ij": 151.0543260436188,
+      "b_ji": -664.5815065348532,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "dichloroethane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.11820030198630464,
+      "a_ji": 0.11820030198630468,
+      "b_ij": -98.27474913604097,
+      "b_ji": 65.81985693280483,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "dmf",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.1445778486331473,
+      "a_ji": 0.1445778486331472,
+      "b_ij": 105.52664583329168,
+      "b_ji": -345.64448874006996,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "dmso",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.22665883801246597,
+      "a_ji": 0.22665883801246597,
+      "b_ij": -56.07425583730097,
+      "b_ji": -486.1365890292231,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.4221958339899375,
+      "a_ji": 0.42219583398993754,
+      "b_ij": -104.33919870009464,
+      "b_ji": -704.4710647699068,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "ethylbenzene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.317023134633371,
+      "a_ji": -0.31702313463337106,
+      "b_ij": 216.7435975074807,
+      "b_ji": -535.072373852124,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "m-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.3221256425148473,
+      "a_ji": -0.3221256425148474,
+      "b_ij": -404.36577996748116,
+      "b_ji": 287.00074364277094,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.7869381034326769,
+      "a_ji": 0.7869381034326768,
+      "b_ij": -92.10844793840714,
+      "b_ji": -872.7930671738158,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "p-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.326411733051228,
+      "a_ji": -0.32641173305122795,
+      "b_ij": 0.020078459386600755,
+      "b_ji": -2.5738169479861375,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "pyridine",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.10083362654669394,
+      "a_ji": 0.10083362654669394,
+      "b_ij": 114.40379065788336,
+      "b_ji": -213.0033680027978,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "styrene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.25748284037175073,
+      "a_ji": -0.2574828403717507,
+      "b_ij": 145.46697891927533,
+      "b_ji": -286.67953861453867,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "sulfolane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.06345829076758133,
+      "a_ji": -0.06345829076758125,
+      "b_ij": -287.33870588146874,
+      "b_ji": -259.4109275674475,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "benzene",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.17819344901792988,
+      "a_ji": -0.1781934490179299,
+      "b_ij": -190.2049063937295,
+      "b_ji": 178.63583899663954,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "chloroform",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.3172801112187825,
+      "a_ji": 0.31728011121878247,
+      "b_ij": 135.2501127306499,
+      "b_ji": -639.284912195637,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "chloroform",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.6820223806615219,
+      "a_ji": 0.6820223806615219,
+      "b_ij": 176.72888857444593,
+      "b_ji": -886.0055992453592,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "chloroform",
+      "j": "methyl-acetate",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.007662366325822217,
+      "a_ji": 0.00766236632582226,
+      "b_ij": 250.58994204279432,
+      "b_ji": -92.42064533698978,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "chloroform",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.28310917178908485,
+      "a_ji": -0.28310917178908485,
+      "b_ij": 184.09335548134032,
+      "b_ji": -277.85060222125617,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "cumene",
+      "j": "ethylbenzene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.13034335393198973,
+      "a_ji": 0.1303433539319897,
+      "b_ij": -182.20894929424753,
+      "b_ji": 129.48875229162252,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "cumene",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -2.0464898119529606,
+      "a_ji": 2.0464898119529606,
+      "b_ij": -847.8301073853091,
+      "b_ji": -1498.6465971227906,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "cyclohexane",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.6190259542487647,
+      "a_ji": 0.6190259542487647,
+      "b_ij": -236.2707295731802,
+      "b_ji": -1064.7774584819035,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "cyclohexane",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.9837682236915041,
+      "a_ji": 0.9837682236915041,
+      "b_ij": -374.04725597176065,
+      "b_ji": -1187.1483717599995,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "cyclohexanone",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.7518861711435998,
+      "a_ji": 1.7518861711435998,
+      "b_ij": -2094.9045785798226,
+      "b_ji": -734.186178223009,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dichloroethane",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.30399553200363283,
+      "a_ji": 0.3039955320036328,
+      "b_ij": -156.78010886162784,
+      "b_ji": -567.3037862605333,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dichloroethane",
+      "j": "ethylbenzene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.4352234366196757,
+      "a_ji": -0.43522343661967583,
+      "b_ij": -245.1617129349431,
+      "b_ji": 309.3550133696199,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dichloroethane",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.6687378014463722,
+      "a_ji": 0.6687378014463723,
+      "b_ij": -46.138940977668085,
+      "b_ji": -778.3098759348745,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dichloroethane",
+      "j": "o-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.4219559444984702,
+      "a_ji": -0.4219559444984701,
+      "b_ij": 35.68057973491659,
+      "b_ji": -154.49529089173,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dichloroethane",
+      "j": "p-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.44461203503753266,
+      "a_ji": -0.4446120350375326,
+      "b_ij": 48.382545267772336,
+      "b_ji": -191.32779046077866,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dichloroethane",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.2963937510042346,
+      "a_ji": -0.2963937510042345,
+      "b_ij": 130.6906921473843,
+      "b_ji": -272.7106675841464,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "diethyl-ether",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.5799860074128914,
+      "a_ji": 0.5799860074128913,
+      "b_ij": 67.16350340919988,
+      "b_ji": -516.8094802204336,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "diethyl-ether",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.9447282768556307,
+      "a_ji": 0.9447282768556308,
+      "b_ij": 127.31595098988154,
+      "b_ji": -626.2469973022176,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "diethyl-ether",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.756913496810554,
+      "a_ji": 1.7569134968105538,
+      "b_ij": -680.3282018551432,
+      "b_ji": -1865.010546291232,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "diethylene-glycol",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.6625858128412025,
+      "a_ji": 1.6625858128412025,
+      "b_ij": 55.97728543319575,
+      "b_ji": -624.355294431889,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dioxane",
+      "j": "ethanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.3793901318060544,
+      "a_ji": 0.3793901318060544,
+      "b_ij": -99.63691409126878,
+      "b_ji": -225.01048800379843,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dioxane",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.7441324012487939,
+      "a_ji": 0.7441324012487938,
+      "b_ij": -34.91956083440641,
+      "b_ji": -327.1429180836409,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dioxane",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.5563176212037169,
+      "a_ji": 1.556317621203717,
+      "b_ij": 110.40118248843417,
+      "b_ji": -853.9550439372894,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dmf",
+      "j": "m-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.4667034911479947,
+      "a_ji": -0.4667034911479946,
+      "b_ij": -386.2100720964258,
+      "b_ji": -70.58715750535872,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dmf",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.6423602547995296,
+      "a_ji": 0.6423602547995296,
+      "b_ij": 402.2332865503734,
+      "b_ji": -274.9120014334368,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dmf",
+      "j": "o-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.44833349114531273,
+      "a_ji": -0.44833349114531273,
+      "b_ij": -462.4387231479325,
+      "b_ji": -13.437269915204144,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dmf",
+      "j": "p-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.47098958168437527,
+      "a_ji": -0.4709895816843753,
+      "b_ij": -326.865342188963,
+      "b_ji": -134.67508376972083,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dmf",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.32277129765107715,
+      "a_ji": -0.32277129765107715,
+      "b_ij": -13.671568930001168,
+      "b_ji": -495.0578662069027,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dmf",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.4545454747544526,
+      "a_ji": 1.4545454747544528,
+      "b_ij": 468.0832863332348,
+      "b_ji": -580.4674557153742,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dmso",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.560279265420211,
+      "a_ji": 0.5602792654202109,
+      "b_ij": 289.4125742229238,
+      "b_ji": 38.21313268115583,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dmso",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.4048522870303959,
+      "a_ji": -0.4048522870303959,
+      "b_ij": -669.9270566733505,
+      "b_ji": -62.61218466042363,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "dmso",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.3724644853751342,
+      "a_ji": 1.372464485375134,
+      "b_ij": -5422.293130234035,
+      "b_ji": 241.42369759620757,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "ethyl-acetate",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.5199726948117521,
+      "a_ji": -0.519972694811752,
+      "b_ij": -337.9415563749443,
+      "b_ji": -1.004627476676936,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "ethylbenzene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.7392189686233086,
+      "a_ji": -0.7392189686233086,
+      "b_ij": -781.465666273352,
+      "b_ji": -119.71109611183479,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "ethylene-glycol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.04731311838911813,
+      "a_ji": 0.047313118389118156,
+      "b_ij": 65.01812757203457,
+      "b_ji": -774.6632955853757,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "isobutanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.4545490078879597,
+      "a_ji": -0.4545490078879598,
+      "b_ij": -159.76007429510082,
+      "b_ji": 91.11775964280812,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "isooctane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 1.0376444237814522,
+      "a_ji": -1.0376444237814522,
+      "b_ij": -1135.3275287076435,
+      "b_ji": -174.56519554626132,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "isopentane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.6919744922812278,
+      "a_ji": -0.6919744922812278,
+      "b_ij": -1013.4593317435128,
+      "b_ji": -165.72931472341654,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "isoprene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.5418536102459403,
+      "a_ji": -0.5418536102459403,
+      "b_ij": -947.0699309426941,
+      "b_ji": -83.0925151664765,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.36474226944273935,
+      "a_ji": 0.36474226944273935,
+      "b_ij": -72.29543685572698,
+      "b_ji": 33.062630433842614,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "methyl-acetate",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.30961774489296023,
+      "a_ji": -0.30961774489296034,
+      "b_ij": -198.12432380216632,
+      "b_ji": 17.439626474886577,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "n-butyl-acetate",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.8156214155192554,
+      "a_ji": -0.8156214155192554,
+      "b_ij": -316.1065588847128,
+      "b_ji": -100.25028838065043,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "n-heptane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.9194911215818257,
+      "a_ji": -0.9194911215818257,
+      "b_ij": -1038.5526253911955,
+      "b_ji": -231.395085835064,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "n-hexadecane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 1.612760731965829,
+      "a_ji": -1.612760731965829,
+      "b_ij": -1244.5033213100548,
+      "b_ji": -284.98680874775556,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "n-hexane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.8064937783847709,
+      "a_ji": -0.8064937783847709,
+      "b_ij": -973.3349712741287,
+      "b_ji": -217.59781266559486,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "n-octane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 1.0255010243396698,
+      "a_ji": -1.0255010243396698,
+      "b_ij": -1039.7219062992333,
+      "b_ji": -219.97260628808223,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "n-pentane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.6836391097497537,
+      "a_ji": -0.6836391097497536,
+      "b_ij": -939.7006834502314,
+      "b_ji": -134.73199789895955,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "p-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.7486075670411656,
+      "a_ji": -0.7486075670411655,
+      "b_ij": -748.7295749947967,
+      "b_ji": -159.9122982039842,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "pyridine",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.32136220744324356,
+      "a_ji": -0.3213622074432436,
+      "b_ij": -20.83998150664444,
+      "b_ji": 20.958942604363546,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "sulfolane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.4856541247575187,
+      "a_ji": -0.4856541247575187,
+      "b_ij": -380.4479065061448,
+      "b_ji": -452.77217784114134,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "tetrahydrofuran",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.33497132003418895,
+      "a_ji": -0.33497132003418895,
+      "b_ij": -374.2609229856842,
+      "b_ji": 146.2739920851473,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.6003892830078674,
+      "a_ji": -0.6003892830078674,
+      "b_ij": -783.2347345433669,
+      "b_ji": -105.93873230927382,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "vinyl-acetate",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.46100995343551715,
+      "a_ji": -0.4610099534355172,
+      "b_ij": -398.5677348244617,
+      "b_ji": -51.24666956463391,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethanol",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.1769274893976625,
+      "a_ji": 1.1769274893976625,
+      "b_ij": -192.38082765657816,
+      "b_ji": -480.8011032813958,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethyl-acetate",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.8847149642544915,
+      "a_ji": 0.8847149642544915,
+      "b_ij": 93.52657090576002,
+      "b_ji": -508.7067902578964,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethyl-acetate",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.6969001842094147,
+      "a_ji": 1.6969001842094147,
+      "b_ij": -876.5707865337442,
+      "b_ji": -1196.6341102884046,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethylbenzene",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.103961238066048,
+      "a_ji": 1.103961238066048,
+      "b_ij": -210.9715688143432,
+      "b_ji": -946.5573515258723,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethylbenzene",
+      "j": "styrene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.0595402942616204,
+      "a_ji": 0.05954029426162045,
+      "b_ij": -358.6023414057098,
+      "b_ji": 204.59914889578826,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethylbenzene",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.13882968561544115,
+      "a_ji": 0.13882968561544132,
+      "b_ij": -213.92093850017943,
+      "b_ji": 129.8711991370816,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "ethylene-oxide",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.011988274791968,
+      "a_ji": 1.0119882747919677,
+      "b_ij": 50.66852064259718,
+      "b_ji": -4398.766640113113,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "furfural",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.5274986503983772,
+      "a_ji": 1.5274986503983772,
+      "b_ij": -847.1754187722273,
+      "b_ji": -840.5373995838918,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "isobutanol",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.6314764972856224,
+      "a_ji": 1.6314764972856222,
+      "b_ij": -5945.4809683635185,
+      "b_ji": -827.1179939621268,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "isooctane",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.4023866932241915,
+      "a_ji": 1.4023866932241915,
+      "b_ij": -349.54267885631816,
+      "b_ji": -1232.7142463329192,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "isoprene",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.9065958796886796,
+      "a_ji": 0.9065958796886796,
+      "b_ij": 27.24994160239837,
+      "b_ji": -1320.1613717325272,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "m-xylene",
+      "j": "methanol",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.1090637459475243,
+      "a_ji": 1.109063745947524,
+      "b_ij": -252.44662083359134,
+      "b_ji": -904.7732723911024,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "m-xylene",
+      "j": "p-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.004286090536380636,
+      "a_ji": -0.004286090536380715,
+      "b_ij": -116.48641501922135,
+      "b_ji": 102.483727636178,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "m-xylene",
+      "j": "pyridine",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.4229592690615413,
+      "a_ji": 0.4229592690615413,
+      "b_ij": 167.29598809705823,
+      "b_ji": -303.12742003280584,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "methyl-acetate",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.6743600143356997,
+      "a_ji": -0.6743600143356997,
+      "b_ij": -409.2102240945204,
+      "b_ji": 15.696574654753553,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "methylcyclohexane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 1.1483885630078194,
+      "a_ji": -1.1483885630078194,
+      "b_ij": -1409.9250179326436,
+      "b_ji": -323.810447366952,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "mtbe",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 1.0802552031542405,
+      "a_ji": -1.0802552031542405,
+      "b_ij": -752.2996659752037,
+      "b_ji": 223.70332494358203,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "n-butane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.8638007581576497,
+      "a_ji": -0.8638007581576497,
+      "b_ij": -1149.2893043426134,
+      "b_ji": -192.40241577456524,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "n-butyl-acetate",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 1.1803636849619947,
+      "a_ji": -1.1803636849619947,
+      "b_ij": -591.2043992918707,
+      "b_ji": 164.47685162649145,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "n-heptane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 1.2842333910245651,
+      "a_ji": -1.2842333910245651,
+      "b_ij": -1299.450717645992,
+      "b_ji": -420.48324744005305,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "n-hexane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 1.1712360478275103,
+      "a_ji": -1.1712360478275103,
+      "b_ij": -1280.4705852132056,
+      "b_ji": -583.3021919914795,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "n-octane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 1.3902432937824092,
+      "a_ji": -1.3902432937824092,
+      "b_ij": -1273.0517202747399,
+      "b_ji": -510.90450092654555,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "p-xylene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 1.113349836483905,
+      "a_ji": -1.113349836483905,
+      "b_ij": -926.1792249070729,
+      "b_ji": -235.23782115872064,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "propionic-acid",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.6105574818879664,
+      "a_ji": -0.6105574818879665,
+      "b_ij": 0.15735674812506406,
+      "b_ji": -33.011000109705634,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "propylene-oxide",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.5500003173671909,
+      "a_ji": -0.550000317367191,
+      "b_ij": -556.3304301471993,
+      "b_ji": 148.01075366111158,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "pyridine",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.686104476885983,
+      "a_ji": -0.686104476885983,
+      "b_ij": -265.7019768874357,
+      "b_ji": 246.62482372859077,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "sulfolane",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.8503963942002581,
+      "a_ji": -0.8503963942002581,
+      "b_ij": -453.74978242886937,
+      "b_ji": -152.55301445828485,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "tetrahydrofuran",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.6997135894769283,
+      "a_ji": -0.6997135894769283,
+      "b_ij": -403.13591142761015,
+      "b_ji": 112.29857173949128,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.9651315524506067,
+      "a_ji": -0.9651315524506068,
+      "b_ij": -903.1049989936473,
+      "b_ji": -140.99989912040678,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.8121852199549232,
+      "a_ji": 0.8121852199549232,
+      "b_ij": -103.31097022729662,
+      "b_ji": -242.6323302717649,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "methyl-acetate",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.486545234290623,
+      "a_ji": 1.486545234290623,
+      "b_ij": -324.9401752196568,
+      "b_ji": -965.2918121824044,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "n-butyl-acetate",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.992548904916918,
+      "a_ji": 1.992548904916918,
+      "b_ij": -1618.0223477375018,
+      "b_ji": -1155.6872374915167,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "p-xylene",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -0.14821828403329815,
+      "a_ji": 0.14821828403329806,
+      "b_ij": -59.728585767615655,
+      "b_ji": 60.71076965309855,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "phenol",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.5264167244648648,
+      "a_ji": 1.5264167244648648,
+      "b_ij": -1065.1106904569865,
+      "b_ji": -548.1904012952765,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "propionic-acid",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.4227427018428898,
+      "a_ji": 1.4227427018428895,
+      "b_ij": -381.6570424012357,
+      "b_ji": -510.9515519529277,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "pyridine",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.27902707556462375,
+      "a_ji": -0.27902707556462375,
+      "b_ij": -205.69395331286816,
+      "b_ji": 103.96611173795866,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "pyridine",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.498289696840906,
+      "a_ji": 1.498289696840906,
+      "b_ij": -611.334438680655,
+      "b_ji": -486.33133498868716,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "sulfolane",
+      "j": "toluene",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": 0.11473515825034866,
+      "a_ji": -0.11473515825034859,
+      "b_ij": -7413.064880444451,
+      "b_ji": 274.9955358759976,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "sulfolane",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.6625816141551812,
+      "a_ji": 1.6625816141551812,
+      "b_ij": -129.5296137177426,
+      "b_ji": -655.8664990439548,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "WILSON",
+      "i": "tetrahydrofuran",
+      "j": "water",
+      "set": "chemsep",
+      "default": true,
+      "a_ij": -1.5118988094318515,
+      "a_ji": 1.5118988094318515,
+      "b_ij": -574.0315294916918,
+      "b_ji": -915.559279872115,
+      "source": "ChemSep Wilson databank (via the open-source thermo library). Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.",
+      "source_ids": [
+        "chemsep-ipd"
+      ],
+      "tier": "databank",
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     }
   ]
 }

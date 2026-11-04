@@ -3,7 +3,7 @@ Independent Python implementation of the CHEPTA VLE model, used to check the
 JavaScript engine. It reads the same data files (src/data/*.json) but shares no
 code with it. Requires numpy and scipy.
 
-Liquid: NRTL or UNIQUAC. Vapour: ideal gas, plus chemical theory (dimerization)
+Liquid: NRTL, UNIQUAC or Wilson (Lambda_ij = exp(a_ij + b_ij / T)). Vapour: ideal gas, plus chemical theory (dimerization)
 for components with an "association" record.
 """
 import json
@@ -56,6 +56,10 @@ class System:
             S = x @ G; C = x @ (tau * G)
             ln = C / S + (G * (tau - C / S)) @ (x / S)
             return np.exp(ln)
+        if self.model == "WILSON":
+            L = np.exp(self.a + self.b / T); np.fill_diagonal(L, 1.0)
+            S = L @ x                              # S_i = sum_j x_j Lambda_ij
+            return np.exp(1 - np.log(S) - L.T @ (x / S))
         tau = np.exp(self.a + self.b / T)
         r, q, z = self.r, self.q, 10.0
         phi = r * x / (r @ x); th = q * x / (q @ x)

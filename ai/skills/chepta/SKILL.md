@@ -35,7 +35,7 @@ conditions, pass them:
 CHEPTA.app("#app", {
   start: "ternary",   // "txy", "ternary", "azeotropes", "pxy", "envelope", "flash", "henry", "solid", "sle", "properties", "steam"
   components: ["methanol", "acetone", "chloroform"],
-  model: "NRTL",      // "NRTL", "UNIQUAC", "ideal", "PR", "SRK"
+  model: "NRTL",      // "NRTL", "UNIQUAC", "WILSON", "MOD-UNIFAC-2", "ideal", "PR", "SRK"
   P_kPa: 101.325
 });
 ```
@@ -48,7 +48,7 @@ For one diagram without the ribbon, call `CHEPTA.mount`:
 <script>
   CHEPTA.mount("#app", {
     components: ["water", "acetic acid", "ethylene glycol"],
-    model: "NRTL",        // "NRTL", "UNIQUAC" or "ideal"
+    model: "NRTL",        // "NRTL", "UNIQUAC", "WILSON" or "ideal"
     P_kPa: 101.325
   });
 </script>

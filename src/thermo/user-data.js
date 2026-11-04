@@ -12,6 +12,7 @@
  *                                      aliases?, vapourPressure?: record, properties?: { ... }, fusion?, groups?,
  *                                      source } },
  *     "pairs":      { "<component>+<component>": { NRTL?: { a_ij?, a_ji?, b_ij, b_ji, alpha? }, UNIQUAC?: { ... },
+ *                                                   WILSON?: { a_ij?, a_ji?, b_ij, b_ji } (Lambda_ij = exp(a_ij + b_ij / T)),
  *                                                   PR?: { kij }, SRK?: { kij }, valid?: { T_K, P_kPa }, source } },
  *     "groups":     { "<component>": { subgroups: { "<subgroup id>": count }, source } }
  *   }
@@ -46,7 +47,7 @@ export const RECORD_UNITS = {
   // an inert solid of the user's own (class "solid"); the databank has no solids in its streams yet
   solidHeatCapacity: "J/mol/K",
 };
-const PAIR_PARAMS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij"], SRK: ["kij"] };
+const PAIR_PARAMS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], WILSON: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij"], SRK: ["kij"] };
 const CHECKED = Symbol("checked user data");
 
 const isObj = v => v != null && typeof v === "object" && !Array.isArray(v);

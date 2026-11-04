@@ -461,7 +461,7 @@ The steps of Part I, each a pull request with its tests, placed in the workstrea
 | 6. Sizing and hydraulics: drums, decanters, column diameter, flooding and weeping | W4 | M1 (drums), M2b (columns) |
 | 7. Absorber and stripper; columns with nonvolatile components (proposal 0009, step 5) | W2 | M3 |
 | 8. Extraction and its view | W2, W5 | M3 |
-| 9. Membrane, with the area for a target | W3, W4 | M3 |
+| 9. Membrane, with the area for a target (built 2026-10-30, to review: gas permeation in co- or counter-current cells, the area for a stage cut or a recovery; pervaporation later) | W3, W4 | M3 |
 | 10. Crystallizer; evaporator; solid-liquid separator and dryer if kept | W3 | M3 |
 | 11. Purity and recovery specifications, side draws; the benchmark flowsheets | W2, W7 | M3, M4 |
 | 12. Cost correlations (E2) and utilities (E3) | W4 | M4 |

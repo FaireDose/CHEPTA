@@ -38,7 +38,7 @@ name components, a diagram or conditions, pass them:
 CHEPTA.app("#app", {
   start: "ternary",          // "txy", "ternary", "azeotropes", "pxy", "envelope", "flash", "henry", "solid", "sle", "properties", "steam", "charts"
   components: ["methanol", "acetone", "chloroform"],
-  model: "NRTL",             // "NRTL", "UNIQUAC", "ideal", "PR" or "SRK"
+  model: "NRTL",             // "NRTL", "UNIQUAC", "WILSON" (one liquid only), "ideal", "PR" or "SRK"
   P_kPa: 101.325
 });
 ```

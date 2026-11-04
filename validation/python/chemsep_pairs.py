@@ -1,4 +1,4 @@
-"""Add NRTL and UNIQUAC parameters from the ChemSep databank (Artistic License 2.0, as shipped
+"""Add NRTL, UNIQUAC and Wilson parameters from the ChemSep databank (Artistic License 2.0, as shipped
 with the open-source thermo library) for pairs that have no open experimental data to fit
 (proposal 0004, step 3). Pairs that already have a set of that model are left alone.
 
@@ -6,6 +6,12 @@ with the open-source thermo library) for pairs that have no open experimental da
     python validation/python/chemsep_pairs.py --write    # add to src/data/binaries.json
     python validation/python/chemsep_pairs.py --all [--write]   # every ChemSep pair among
                                                          # the components that has no set yet
+    python validation/python/chemsep_pairs.py --all --models WILSON [--write]   # one model only
+
+Wilson (proposal 0016): ChemSep's form is Lambda_ij = (V_j / V_i) exp(-A_ij / RT), A_ij in cal/mol; the thermo
+library ships it converted to Lambda_ij = exp(a_ij + b_ij / T), a_ij = ln(V_j / V_i), b_ij = -A_ij / R in K
+(R = 1.98720 cal/mol/K; thermo.wilson.Wilson, "In ChemSep, the form of the Wilson lambda equation is ..."). That is
+CHEPTA's form (src/thermo/activity/wilson.js), so a_ij and b_ij are taken as they are, a_ij included.
 
 Then run make_sources.py (it names the sets "chemsep" and adds their source_ids).
 
@@ -34,17 +40,30 @@ def cas(cid):
     return COMPONENTS[cid]["cas"]
 
 
+TABLES = {"NRTL": "ChemSep NRTL", "UNIQUAC": "ChemSep UNIQUAC", "WILSON": "ChemSep Wilson"}
+NAMES = {"NRTL": "NRTL", "UNIQUAC": "UNIQUAC", "WILSON": "Wilson"}
+
+
 def record(model, i, j, wanted):
-    table = "ChemSep NRTL" if model == "NRTL" else "ChemSep UNIQUAC"
+    table = TABLES[model]
     ci, cj = cas(i), cas(j)
+    if not (IPDB.has_ip_specific(table, [ci, cj], "bij") or IPDB.has_ip_specific(table, [cj, ci], "bij")):
+        raise SystemExit(f"{model} {i} + {j}: not in the ChemSep databank")
     b_ij = IPDB.get_ip_specific(table, [ci, cj], "bij")
     b_ji = IPDB.get_ip_specific(table, [cj, ci], "bij")
     if b_ij == 0 and b_ji == 0:
         raise SystemExit(f"{model} {i} + {j}: not in the ChemSep databank")
-    rec = {"model": model, "i": i, "j": j, "a_ij": 0.0, "a_ji": 0.0, "b_ij": float(b_ij), "b_ji": float(b_ji)}
+    a_ij = a_ji = 0.0
+    if model == "WILSON":   # ln(V_j / V_i) of ChemSep's liquid volumes
+        a_ij = float(IPDB.get_ip_specific(table, [ci, cj], "aij"))
+        a_ji = float(IPDB.get_ip_specific(table, [cj, ci], "aij"))
+    rec = {"model": model, "i": i, "j": j, "a_ij": a_ij, "a_ji": a_ji, "b_ij": float(b_ij), "b_ji": float(b_ji)}
     if model == "NRTL":
         rec["alpha"] = float(IPDB.get_ip_specific(table, [ci, cj], "alphaij"))
-    rec["source"] = f"ChemSep {model} databank (via the open-source thermo library)."
+    rec["source"] = f"ChemSep {NAMES[model]} databank (via the open-source thermo library)."
+    if model == "WILSON":
+        rec["source"] += (" Lambda_ij = exp(a_ij + b_ij / T): a_ij = ln(V_j / V_i) of ChemSep's liquid molar volumes and"
+                          " b_ij = -A_ij / R from its A_ij in cal/mol, as converted by thermo.")
     rec["tier"] = "databank"
     rec["data_wanted"] = wanted
     return rec
@@ -69,7 +88,7 @@ def splits_note(rec):
     return ("The set predicts two liquid phases (" + "; ".join(found) + "), not checked against data in this import.") if found else ""
 
 
-def all_pairs(doc):
+def all_pairs(doc, models):
     """Every pair among the components that ChemSep has and CHEPTA lacks a set of one of the two models
     for, as PAIRS entries (main() then imports only the model the pair lacks: a pair with a fitted NRTL
     set can still take its UNIQUAC set from ChemSep)."""
@@ -80,18 +99,19 @@ def all_pairs(doc):
     out = []
     for n, a in enumerate(ids):
         for b in ids[n + 1:]:
-            if not {"NRTL", "UNIQUAC"} <= have.get(frozenset((a, b)), set()):
+            if not set(models) <= have.get(frozenset((a, b)), set()):
                 out.append(dict(pair=(a, b), wanted=ALL_WANTED))
     return out
 
 
 def main(write):
     doc = json.loads(BIN_FILE.read_text())
-    pairs = all_pairs(doc) if "--all" in sys.argv else PAIRS
+    models = sys.argv[sys.argv.index("--models") + 1].upper().split(",") if "--models" in sys.argv else ["NRTL", "UNIQUAC"]
+    pairs = all_pairs(doc, models) if "--all" in sys.argv else PAIRS
     added = 0
     for p in pairs:
         i, j = p["pair"]
-        for model in ("NRTL", "UNIQUAC"):
+        for model in models:
             if any(r["model"] == model and {r["i"], r["j"]} == {i, j} for r in doc["pairs"]):
                 print(f"{model} {i} + {j}: already has a set, left alone")
                 continue
@@ -103,7 +123,7 @@ def main(write):
                 if "--all" in sys.argv:
                     continue   # not in the databank for this model
                 raise
-            if "--all" in sys.argv:
+            if "--all" in sys.argv and model != "WILSON":   # Wilson never predicts two liquids
                 note = splits_note(rec)
                 if note:
                     rec["source"] += " " + note
