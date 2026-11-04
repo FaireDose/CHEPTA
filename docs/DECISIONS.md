@@ -105,7 +105,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     shortcut and the rigorous column, the column's sheet in the flowsheet's Excel workbook, SVG and PNG of the column
     charts. To check: the construction against The ChemSep Book, section 1.3.3; to decide: the check's tolerances,
     and whether SVG and PNG go on every chart next. Then W10 checks the screenshots.
-  - Waiting: W1, W3.
+  - **W3 and W4, M3 step 9: the Membrane block, built, to review** (docs/decisions/2026-10-30-09-membrane.md): gas
+    permeation by the solution-diffusion model over well-mixed co- or counter-current cells, the area for a stage cut
+    or a recovery (`membraneArea`), under the Separator button; `solve_membrane`. The maintainer answered on
+    2026-11-04 (the Separator button, 20 cells, isothermal, counter-current and GPU; an adiabatic module and
+    pervaporation postponed). Still open: the choice of Aziaba et al. 2022 as the model's source. To check: the worked
+    example of Binous 2006 and the example's permeances against Aziaba et al.'s Table 1.
+  - Waiting: W1; W3's evaporator and crystallizer.
 - **The methods track** (docs/decisions/2026-10-30-05-methods-track.md): Wilson (M1, v0.6) starts when M2b's pull
   requests are merged; M2 (PSRK or MHV2, else Modified UNIFAC 2.0 in a gE mixing rule) after M1; CPA, PC-SAFT,
   electrolytes and ionic liquids (M3-M6, v0.9) in that order, each with the open parameters found and My data for the

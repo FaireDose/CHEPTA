@@ -9,8 +9,8 @@
  * A_j = V̇_j / (f · u_fl,j) (Part I, section 2), not by the stage with the lowest flooding velocity.
  *
  * Built in workstream W4: the drum and decanter sizes at milestone M1 (here), the column diameter at M2b (columnDiameter,
- * whose tray hydraulics stay with the column, src/units/columns/hydraulics.js), the membrane area at M3, which still
- * refuses. (The heater's area, proposal 0013, stays with the heater: src/units/heat-exchange.js.)
+ * whose tray hydraulics stay with the column, src/units/columns/hydraulics.js), the membrane area at M3 (membraneArea, from
+ * the Membrane block, src/units/membrane.js). (The heater's area, proposal 0013, stays with the heater: src/units/heat-exchange.js.)
  *
  *   CHEPTA.sizeDrum(flashResult, { sys, orientation: "vertical", fraction: 0.85, residence_min: 2 })
  *   CHEPTA.sizeDecanter(flashResult, { sys, orientation: "horizontal", droplet_um: 150, ratio: 4 })
@@ -66,6 +66,7 @@
 import { fail, failRange } from "../util/errors.js";
 import { pure, R } from "../thermo/pure.js";
 import { columnHydraulics } from "../units/columns/hydraulics.js";
+import { fibreCount } from "../units/membrane.js";
 
 const IN = 0.0254, FT = 0.3048, LB_FT3 = 0.45359237 / FT ** 3, G = 9.80665;
 /** Fermeglia (2021), slide 83; Bagajewicz (2013, 2018): K (ft/s) against ln F. */
@@ -331,8 +332,6 @@ export function sizeDecanter(unitResult, options = {}) {
   return out;
 }
 
-const notYet = (what, when) => () => { throw fail("NOT_AVAILABLE", `${what} is not built yet: it comes with milestone ${when} of proposal 0015.`); };
-
 /**
  * The diameter of a rigorous column from its result (runUnit("column", ...) or a flowsheet's column block, with its
  * profile), or the check of a given diameter: options { sys (required), tray_spacing_m (0.6), design_fraction (0.8),
@@ -350,4 +349,27 @@ export function columnDiameter(unitResult, options = {}) {
   if (!sys || typeof sys.phase !== "function") throw fail("BAD_INPUT", "Column sizing: options.sys, the property package of the column, is needed for the densities and the surface tension.");
   return columnHydraulics(sys, unitResult.profile, o);
 }
-export const membraneArea = notYet("The membrane area", "M3");
+/**
+ * The membrane area of a Membrane block's result (runUnit("membrane", ...) or a flowsheet's membrane block): the area
+ * the block was given, or the one it found for its target (stage cut or recovery; src/units/membrane.js), and, with
+ * options { inner_diameter_m, length_m } of a hollow fibre (or the block's own fibre), the number of fibres by
+ * A = ε d π l (Aziaba et al., Membranes 12 (2022) 1186, Equation (2); CC BY 4.0). → { dimensions, basis, source }.
+ */
+export function membraneArea(unitResult, options = {}) {
+  if (options == null || typeof options !== "object" || Array.isArray(options)) throw fail("BAD_INPUT", "Membrane sizing: the options must be an object.");
+  if (!unitResult || typeof unitResult !== "object" || !(unitResult.state?.A_m2 > 0)) throw fail("BAD_INPUT", "Membrane sizing: give a Membrane block's result (runUnit(\"membrane\", ...) or a flowsheet's membrane block).");
+  if (unitResult.type != null && unitResult.type !== "membrane") throw fail("BAD_INPUT", `Membrane sizing: the block is a ${unitResult.type}, not a membrane.`);
+  const bad = Object.keys(options).filter(k => !["inner_diameter_m", "length_m"].includes(k));
+  if (bad.length) throw fail("BAD_INPUT", `Membrane sizing: unknown option${bad.length > 1 ? "s" : ""} ${bad.join(", ")}. Known: inner_diameter_m, length_m.`);
+  const fibre = options.inner_diameter_m != null || options.length_m != null ? options : unitResult.sizing?.dimensions?.fibre ?? null;
+  const A = unitResult.state.A_m2;
+  const dimensions = { A_m2: A };
+  if (fibre) {
+    for (const k of ["inner_diameter_m", "length_m"]) if (!(Number(fibre[k]) > 0)) throw fail("BAD_INPUT", `Membrane sizing: ${k} must be a positive number (got ${JSON.stringify(fibre[k])}).`);
+    dimensions.fibres = fibreCount(A, { inner_diameter_m: Number(fibre.inner_diameter_m), length_m: Number(fibre.length_m) });
+    dimensions.fibre = { inner_diameter_m: Number(fibre.inner_diameter_m), length_m: Number(fibre.length_m) };
+  }
+  const t = unitResult.state.target;
+  return { dimensions, basis: t ? { target: t, flow: unitResult.state.flow, cells: unitResult.state.cells } : { given: "A_m2" },
+    source: ["K. Aziaba, C. Jordan, B. Haddadi, M. Harasek, Membranes 12 (2022) 1186, doi:10.3390/membranes12121186, Equations (1)-(3)"] };
+}
