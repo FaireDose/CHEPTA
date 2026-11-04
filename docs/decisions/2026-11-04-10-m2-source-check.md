@@ -23,7 +23,7 @@ state, through the gE mixing rule the proposal chooses." M1 (Wilson) is merged, 
   read 2026-11-04); it uses PR or SRK with k_ij, or an activity model with Henry's constants. No open ChemSep or COCO
   page states its practice.
 
-## What is proposed (proposal 0018, status Proposed)
+## What was proposed (proposal 0018, now Postponed)
 
 The PSRK form of the MHV1 rule for SRK and PR, with any CHEPTA activity model as gE: Modified UNIFAC 2.0 (predicted)
 for condensable polar mixtures; NRTL pairs fitted inside the rule to ThermoML high-pressure data for gases in polar
@@ -40,3 +40,14 @@ thermo's PSRK class run with CHEPTA's own gE, and against ThermoML data.
    constants fitted to CHEPTA's own vapour-pressure records.
 4. Gases in polar liquids without a fitted pair: refused with the reason (proposed), or offered with the plain PR/SRK
    k_ij and a warning.
+
+## The maintainer's answer (2026-11-04, on #203)
+
+"if the PSRK and MHV2 are not open then we do not use them, PR and SRK should be ok for now".
+
+- Proposal 0018 is **Postponed**, with its findings kept. It is reopened only if the measured errors of PR or SRK with
+  fitted k_ij are too large for a case.
+- Next: PR and SRK k_ij fitted to the open high-pressure ThermoML VLE (CO2 + methanol, CO2 + water, and H2, CO, CH4 +
+  methanol where open data exist, for the CO2-to-methanol high-pressure separator), each pair's deviations reported
+  (T and P range, mean and maximum error in P or y, the liquid's gas solubility). A separate pull request.
+- Questions 2 to 4 above are not needed while 0018 is postponed.

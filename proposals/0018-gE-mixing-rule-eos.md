@@ -1,6 +1,8 @@
 # 0018: An activity model inside the cubic equation of state (gE mixing rule)
 
-- **Status:** Proposed
+- **Status:** Postponed (the maintainer, 2026-11-04, on #203: "if the PSRK and MHV2 are not open then we do not use
+  them, PR and SRK should be ok for now"). Reopened only if the measured errors of PR or SRK with fitted k_ij are too
+  large for a case. The findings below stay on record.
 - **Author(s):** a coding agent working for the maintainer
 - **Discussion:** the pull request that adds this file
 - **Roadmap item:** Methods track, **M2** ([ROADMAP.md](../ROADMAP.md#methods-track)), step 1: the source check and
@@ -186,6 +188,9 @@ supply its parameters from open sources only:
 
 ## Steps
 
+0. **Postponed** (2026-11-04). Instead: PR and SRK k_ij fitted to the open high-pressure ThermoML data (CO2 +
+   methanol, CO2 + water, then H2, CO and CH4 + methanol), with their deviations reported; those numbers decide whether
+   the steps below are ever needed.
 1. This proposal and the source check (this pull request). No code.
 2. The MHV1 rule for SRK and PR with any gE model, Mathias–Copeman from ChemSep, tests against thermo's PSRK class
    with CHEPTA's gE; case 1 against ThermoML data with Modified UNIFAC 2.0; the interface entries.
