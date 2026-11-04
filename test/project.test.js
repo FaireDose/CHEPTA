@@ -80,7 +80,7 @@ test("a wrong file is refused with the reason", () => {
     [JSON.stringify({ ...ok, fugacity_project: "1" }), /format number/],
     [JSON.stringify({ fugacity_project: 1 }), /no "workbench"/],
     [JSON.stringify({ ...ok, workbench: { ...ok.workbench, modle: "NRTL" } }), /unknown key "modle"/],
-    [JSON.stringify({ ...ok, workbench: { ...ok.workbench, model: "Wilson" } }), /Unknown model/],
+    [JSON.stringify({ ...ok, workbench: { ...ok.workbench, model: "PC-SAFT" } }), /Unknown model/],   // Wilson until proposal 0016
     [JSON.stringify({ ...ok, workbench: { ...ok.workbench, view: "mccabe" } }), /unknown view "mccabe"/],
     [JSON.stringify({ ...ok, workbench: { ...ok.workbench, P_kPa: -1 } }), /positive/],
     [JSON.stringify({ ...ok, workbench: { ...ok.workbench, flash: { ...ok.workbench.flash, VF: 2 } } }), /VF must be between 0 and 1/],

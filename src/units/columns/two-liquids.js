@@ -89,7 +89,7 @@ export function newtonLL(sys, z, T, K0) {
 
 /** The models that can hold two liquids on a stage. */
 export function canHoldTwoLiquids(sys) {
-  return sys.kind !== "eos" && typeof sys.gammas === "function" && typeof sys.lnKValues === "function";
+  return sys.kind !== "eos" && sys.model !== "WILSON" && typeof sys.gammas === "function" && typeof sys.lnKValues === "function";
 }
 
 /**
@@ -97,6 +97,9 @@ export function canHoldTwoLiquids(sys) {
  * functions take an optional stage index j, used only to start each stage's liquid-liquid split from its last one.
  */
 export function twoLiquidThermo(th, sys) {
+  if (sys.model === "WILSON") {
+    throw fail("NOT_AVAILABLE", 'Column: two liquids on the stages (phases "VLL") cannot be looked for with Wilson: the Wilson equation cannot predict two liquids (proposal 0016). Choose NRTL, UNIQUAC or Modified UNIFAC 2.0 for the column (its own property method), or phases "VL".');
+  }
   if (!canHoldTwoLiquids(sys)) {
     throw fail("NOT_AVAILABLE", `Column: two liquids on the stages (phases "VLL") need an activity model (NRTL, UNIQUAC, Modified UNIFAC 2.0) without the dimerizing acids' chemical theory, as the flash drum does; ${sys.kind === "eos" ? `${sys.model} is an equation of state` : "this system has none"}. Choose such a method for the column (its own property method), or phases "VL".`);
   }

@@ -45,7 +45,7 @@ const enter = state => { drawing = userOverlay(state); };
 const byId = () => new Map(listComponents({ userData: drawing }).map(c => [c.id, c]));
 const nameOf = id => byId().get(id)?.name ?? id;
 // the models with parameters per pair (Modified UNIFAC 2.0 and the ideal solution have none)
-const PAIR_MODELS = ["NRTL", "UNIQUAC", "PR", "SRK"];
+const PAIR_MODELS = ["NRTL", "UNIQUAC", "WILSON", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
   hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", column: "Column", membrane: "Membrane", product: "Product",
   "conversion-reactor": "Conversion reactor", "equilibrium-reactor": "Equilibrium reactor", "gibbs-reactor": "Gibbs reactor", "yield-reactor": "Yield reactor", cstr: "CSTR", pfr: "Plug-flow reactor" };
@@ -472,7 +472,7 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       }, `fs-cond-${b.id}`),
       ...(decanter ? [segRow("Refluxed liquid", [["light", "Light refluxed"], ["heavy", "Heavy refluxed"]], spec.reflux_liquid ?? "light", v => setS({ reflux_liquid: v === "light" ? null : v }), `fs-reflux-${b.id}`)] : []),
       P("P_kPa", "Column pressure"),
-      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]],
+      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["WILSON", "Wilson"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]],
         spec.method?.model ?? "", v => setS({ method: v ? { model: v, ...(["PR", "SRK"].includes(v) ? {} : { vapour: spec.method?.vapour ?? "ideal" }) } : null }), `fs-cmethod-${b.id}`, uid),
       h("p", { class: "fa-in-hint" }, `Stages are counted from the top: 1 is the condenser, the last the reboiler. Empty pressure: the feed's; no pressure drop. Every stage's balances are solved together, and a stage that runs dry is warned. ${vll ? "Two liquids are looked for on every stage (activity models only); a decanter refluxes one liquid and sends the other out as the distillate." : "A stage where a second liquid would form is refused; choose \u201cLook for two liquids\u201d to allow two liquids (activity models)."} ${spec.method?.model ? "With its own method, each stream that enters or leaves the column keeps its flows, pressure and enthalpy, and its temperature is found again in the receiving method (the change is in the results)." : ""}`)));
   } else if (b.type === "column") {

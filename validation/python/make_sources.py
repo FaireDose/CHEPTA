@@ -59,7 +59,7 @@ SEEDS = {
     # src/data/LICENSES.md (ChemSep row); src/data/binaries.json ("ChemSep NRTL databank (via the
     # open-source thermo library)", "DECHEMA-based"); AGENTS.md (link to the thermo library)
     "chemsep-ipd": {
-        "title": "ChemSep interaction parameter files for NRTL and UNIQUAC",
+        "title": "ChemSep interaction parameter files for NRTL, UNIQUAC and Wilson",
         "authors": "Harry Kooijman, Ross Taylor",
         "kind": "databank",
         "url": "https://github.com/CalebBell/thermo",
@@ -278,7 +278,8 @@ SEEDS = {
         "license": "Public domain",
         "note": "Section 1.2, the benzene + toluene column, and its results in section 1.3 (Figures 1.18 to 1.21, pp. 19-20): "
                 "the setup and the published stage temperatures, flows and compositions, transcribed into the benchmark case.",
-        "files": ["validation/data/columns/B2-chemsep-benzene-toluene.json"],
+        "files": ["validation/data/columns/B2-chemsep-benzene-toluene.json", "src/ui/column-mccabe.js",
+                  "src/thermo/activity/wilson.js"],
     },
     # predicted liquid heat capacities (validation/python/predict_cp.py, proposal 0009 step 5)
     "ruzicka-domalski-1993": {
@@ -548,7 +549,7 @@ def text_rules(val):
     """(regex, id) pairs: the ChemSep / CoolProp / ... wording, and for every validation source
     its first author's surname followed by its year in parentheses, and its file name."""
     rules = [
-        (r"ChemSep (?:NRTL|UNIQUAC) databank|ChemSep UNIQUAC T-x-y", "chemsep-ipd"),
+        (r"ChemSep (?:NRTL|UNIQUAC|Wilson) databank|ChemSep UNIQUAC T-x-y", "chemsep-ipd"),
         (r"ChemSep (?:pr|srk)\.ipd", "chemsep-eos-ipd"),
         (r"ChemSep (?:pure-component database )?v8\.3(?!1)", "chemsep-8.3"),
         (r"ChemSep (?:pure-component database )?v8\.31|ChemSep v8\.31 pure component data 2", "chemsep-8.31-2"),
