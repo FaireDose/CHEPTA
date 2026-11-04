@@ -42,15 +42,19 @@ components, or an activity model above 1000 kPa
   ln γ_i = 1 − ln Σ_j x_j Λ_ij − Σ_k x_k Λ_ki / Σ_j x_j Λ_kj (The ChemSep Book, 2nd ed., eqs. 10.13-10.15; thermo's
   `Wilson`). In ChemSep's volume form Λ_ij = (V_j / V_i) exp(−A_ij / RT): a_ij = ln(V_j / V_i), b_ij = −A_ij / R.
   - Parameters: ChemSep's Wilson set (165 pairs, tier "databank", set "chemsep"), imported by
-    [validation/python/chemsep_pairs.py](../../validation/python/chemsep_pairs.py) `--all --models WILSON`; no fits to
-    measured data yet (a follow-up). Pairs of one's own in My data (`user_data.pairs[...].WILSON`) and `library.add`.
+    [validation/python/chemsep_pairs.py](../../validation/python/chemsep_pairs.py) `--all --models WILSON`; and Wilson
+    fits to the ThermoML data of the NRTL and UNIQUAC fits (proposal 0016, step 2): 333 sets of 332 pairs, the pair's
+    default where they pass the same gates (`fit_parameters.py --models WILSON`; b_ij and b_ji fitted, a_ij =
+    ln(V_j / V_i) from the liquid densities at 298.15 K; 56 within the wider limits, with a fit-quality note); ChemSep's
+    set stays as an alternative. No Wilson fit to liquid-liquid data, to a heterogeneous azeotrope, or where the
+    pair's default NRTL (else UNIQUAC) set predicts two liquids in the data range. Pairs of one's own in My data (`user_data.pairs[...].WILSON`) and `library.add`.
   - It cannot predict two liquids: the result's warnings name each pair whose NRTL (else UNIQUAC) set predicts a split
     at that temperature, and the column's phases "VLL" are refused.
   - Checks ([test/wilson.test.js](../../test/wilson.test.js), fixture by
     [validation/python/reference_wilson.py](../../validation/python/reference_wilson.py)): γ equal to thermo's Wilson
-    with ChemSep's set read from thermo, to 1e-10; bubble points equal to the Python reference; against five open
-    isobaric sets at 101.3 kPa, mean deviations 0.08-0.47 K and 0.002-0.008 in y; ethanol + ethylene glycol 5.3 K
-    (ChemSep's NRTL set: 6.2 K).
+    with ChemSep's set read from thermo, to 1e-10; bubble points equal to the Python reference; against six open
+    isobaric sets at 101.3 kPa, the fitted defaults 0.07-0.17 K and 0.001-0.008 in y; ChemSep's set 0.08-0.47 K on five
+    of them and 5.3 K on ethanol + ethylene glycol (ChemSep's NRTL set: 6.2 K; a known-issue note says so).
 - **Modified UNIFAC 2.0** (`MOD-UNIFAC-2`): the modified UNIFAC (Dortmund) equations (Weidlich and Gmehling 1987;
   Gmehling, Li and Schiller 1993) with the parameters of Hayer, Hasse and Jirasek, Ind. Eng. Chem. Res. 64 (2025)
   10304 (arXiv:2412.12962, CC BY 4.0): R and Q of 125 subgroups and complete a and b tables of 63 main groups,

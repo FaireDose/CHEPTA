@@ -17,13 +17,15 @@ test("activity coefficients match the thermo library's Wilson with ChemSep's set
   const cache = new Map();
   for (const c of ref.gamma) {
     const key = c.components.join("+");
-    if (!cache.has(key)) cache.set(key, createSystem({ components: c.components, model: "WILSON" }));
+    // ChemSep's set of every pair (the fits of step 2 are the defaults now)
+    const sets = Object.fromEntries(c.components.flatMap((a, i) => c.components.slice(i + 1).map(b => [`${a}+${b}`, "chemsep"])));
+    if (!cache.has(key)) cache.set(key, createSystem({ components: c.components, model: "WILSON", sets }));
     const g = cache.get(key).gammas(c.x, c.T_K);
     g.forEach((v, i) => assert.ok(Math.abs(v / c.gamma[i] - 1) < 1e-10, `${key} x=${c.x} T=${c.T_K}: ${v} vs ${c.gamma[i]}`));
   }
   // the example printed in thermo's documentation of its Wilson class (ethanol + water, 70 degC, ChemSep set)
   const e = ref.thermo_doc_example;
-  const g = createSystem({ components: e.components, model: "Wilson" }).gammas(e.x, e.T_K);
+  const g = createSystem({ components: e.components, model: "Wilson", sets: { "ethanol+water": "chemsep" } }).gammas(e.x, e.T_K);
   g.forEach((v, i) => assert.ok(Math.abs(v - e.gamma_printed[i]) < 1e-7, `printed example: ${v} vs ${e.gamma_printed[i]}`));
 });
 
@@ -89,16 +91,16 @@ test("a rigorous column with Wilson through the request path (CHEPTA.run)", () =
 
 test("Wilson pairs of one's own: user data and library.add", () => {
   // a pair without a databank Wilson set refuses and says how to add one
-  assert.throws(() => createSystem({ components: ["water", "gvl"], model: "WILSON" }), /No Wilson parameters for: Water \+ .*WILSON: \{ a_ij, a_ji, b_ij, b_ji \}/s);
-  const userData = { pairs: { "water+gvl": { WILSON: { a_ij: -1.2, a_ji: 1.2, b_ij: -300, b_ji: -200 }, source: { name: "test values, not data" } } } };
-  const s = createSystem({ components: ["water", "gvl"], model: "WILSON", userData });
+  assert.throws(() => createSystem({ components: ["dichloromethane", "methanol"], model: "WILSON" }), /No Wilson parameters for: Dichloromethane \+ .*WILSON: \{ a_ij, a_ji, b_ij, b_ji \}/s);
+  const userData = { pairs: { "dichloromethane+methanol": { WILSON: { a_ij: -1.2, a_ji: 1.2, b_ij: -300, b_ji: -200 }, source: { name: "test values, not data" } } } };
+  const s = createSystem({ components: ["dichloromethane", "methanol"], model: "WILSON", userData });
   assert.equal(s.info.pairs[0].tier, "user");
   const L12 = Math.exp(-1.2 - 300 / 320), L21 = Math.exp(1.2 - 200 / 320);
   const x = [0.4, 0.6], S1 = x[0] + x[1] * L12, S2 = x[0] * L21 + x[1];
   const g1 = Math.exp(1 - Math.log(S1) - x[0] / S1 - x[1] * L21 / S2);
   assert.ok(Math.abs(s.gammas(x, 320)[0] / g1 - 1) < 1e-12);
-  assert.throws(() => createSystem({ components: ["water", "gvl"], model: "WILSON",
-    userData: { pairs: { "water+gvl": { WILSON: { b_ij: 1, b_ji: 1, alpha: 0.3 }, source: { name: "x" } } } } }), /unknown parameter "alpha"/);
+  assert.throws(() => createSystem({ components: ["dichloromethane", "methanol"], model: "WILSON",
+    userData: { pairs: { "dichloromethane+methanol": { WILSON: { b_ij: 1, b_ji: 1, alpha: 0.3 }, source: { name: "x" } } } } }), /unknown parameter "alpha"/);
   const set = library.add({ model: "WILSON", i: "ethanol", j: "water", set: "wilson-test", params: { a_ij: 0, a_ji: 0, b_ij: -100, b_ji: -300 },
     source: { title: "Test set", url: "https://example.org" } });
   assert.equal(set.tier, "user");
@@ -108,9 +110,9 @@ test("Wilson pairs of one's own: user data and library.add", () => {
 test("a project with Wilson and a Wilson pair of one's own is saved and reopened", async () => {
   const { initialState } = await import("../src/ui/app-logic.js");
   const { projectOf, stateFromProject } = await import("../src/ui/project.js");
-  const userData = { pairs: { "water+gvl": { WILSON: { b_ij: -300, b_ji: -200 }, source: { name: "test values, not data" } } } };
-  const st = { ...initialState({ components: ["water", "gvl"], model: "Wilson" }), userData };
+  const userData = { pairs: { "dichloromethane+methanol": { WILSON: { b_ij: -300, b_ji: -200 }, source: { name: "test values, not data" } } } };
+  const st = { ...initialState({ components: ["dichloromethane", "methanol"], model: "Wilson" }), userData };
   const back = stateFromProject(JSON.stringify(projectOf(st)));
   assert.equal(back.model, "WILSON");
-  assert.deepEqual(back.userData.pairs["water+gvl"].WILSON, { b_ij: -300, b_ji: -200 });
+  assert.deepEqual(back.userData.pairs["dichloromethane+methanol"].WILSON, { b_ij: -300, b_ji: -200 });
 });

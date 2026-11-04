@@ -192,8 +192,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   The file formats keep their keys (`fugacity_project`, `fugacity_package`), so files and
   contribution packages made under the old name stay valid.
 - **The two free component places** of proposal 0008: use them now, or keep them.
-- **Wilson (M1, proposal 0016; docs/decisions/2026-10-30-06-wilson.md):** accepted and merged (#192); the fits to
-  ThermoML data (step 2) wait until needed, after M3 (the maintainer, 2026-11-04).
+- **Wilson fits (M1, proposal 0016 step 2; docs/decisions/2026-11-04-06-wilson-fits.md):** review the pull request;
+  decide on the five pairs whose Wilson fit passes the gates while the NRTL and UNIQUAC fits to the same data were
+  refused for a predicted second liquid (2-propanol + glycerol, diethyl carbonate + water, ethanol + n-decane,
+  o-xylene + sulfolane, gamma-valerolactone + water): keep them, or refuse them until open miscibility data decide.
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order

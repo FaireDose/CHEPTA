@@ -751,7 +751,25 @@ def phase_splits(s, T):
 
 def check_phase_splits(spec, model, params):
     """Raise if the fitted set predicts another number of liquid phases than its data, at
-    eleven temperatures across the data range."""
+    eleven temperatures across the data range. Wilson, which cannot give two liquids, is refused instead where the
+    pair's default NRTL set (else UNIQUAC) predicts two liquids in the data range: a one-liquid fit to a mixture that
+    splits would hide the split (proposal 0016, step 2). An NRTL fit to the same data that predicts two liquids is not
+    used as evidence: such splits are often spurious (the generated NRTL fits refuse them for that reason)."""
+    if model == "WILSON":
+        if spec["data"] != "txy-file":
+            return   # Schmid et al.'s P-x and excess enthalpies of a miscible pair
+        sets = file_sets(spec)
+        lo, hi = data_T_range(sets)
+        for other in ("NRTL", "UNIQUAC"):
+            recs = [p for p in ALL_BINARIES if p["model"] == other and {p["i"], p["j"]} == set(spec["pair"]) and p.get("default", True)]
+            if not recs or (other == "UNIQUAC" and not all(COMPONENTS[c].get("uniquac") for c in spec["pair"])):
+                continue
+            s = System(list(spec["pair"]), other, params=recs)
+            bad = [round(float(T), 1) for T in np.linspace(lo, hi, 11) if phase_splits(s, T)]
+            if bad:
+                raise SystemExit(f"WILSON {spec['pair']}: the pair's default {other} set ({recs[0].get('set', 'default')}) predicts two liquids at T = {bad} K, inside the range of the data; Wilson cannot describe them, so no Wilson fit is written.")
+            break
+        return
     sets = file_sets(spec)
     want = 1 if any(kind in ("lle", "haz") for kind, _, _ in sets) else 0
     lo, hi = data_T_range(sets)
