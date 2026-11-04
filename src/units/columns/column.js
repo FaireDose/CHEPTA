@@ -8,7 +8,8 @@
  *                its own (milestone M2b), and optionally two liquids on the stages and a decanter.
  *
  * The configurations (proposal 0015, Part I, section 1): "distillation" (the default), and "absorber" and "stripper"
- * (milestone M3, step 7): no condenser; no reboiler, or a stripper's reboiler. Extraction comes later. The specification:
+ * (milestone M3, step 7): no condenser; no reboiler, or a stripper's reboiler. Extraction is the Extraction block
+ * (src/units/extraction.js), on the same engine (solveCascade, phases "LL"). The specification:
  *
  *   { mode: "shortcut",                                   // default
  *     light_key: "benzene", heavy_key: "toluene",         // component ids or names
@@ -566,7 +567,7 @@ registerUnit({
   solve({ sys, inlets, spec }) {
     if (spec.purity) throw fail("NOT_AVAILABLE", `Column: purity specifications come with milestone M4 of proposal 0015; give ${spec.mode === "rigorous" ? "flows, ratios or duties" : "the recoveries of the keys"} instead.`);
     if (spec.twoLiquids) throw fail("NOT_AVAILABLE", `Column: ${spec.configuration === "absorber" ? "an absorber" : "a stripper"} holds a vapour and one liquid (phases "VL"); two liquids on its stages (phases "${spec.twoLiquids}") are not built yet.`);
-    if (spec.extraction) throw fail("NOT_AVAILABLE", "Column: phases \"LL\" (two liquids without a vapour: extraction) comes with milestone M3 of proposal 0015; the column solves \"VL\" and \"VLL\".");
+    if (spec.extraction) throw fail("BAD_INPUT", "Column: two liquids without a vapour (phases \"LL\") are an extraction: use the Extraction block (type \"extraction\", under the Separator button; capability solve_extraction). The Column block solves \"VL\" and \"VLL\".");
     if (spec.mode === "rigorous") return solveRigorous(sys, inlets.in, spec);
     if (inlets.in.length > 1) throw fail("BAD_INPUT", "Column: the shortcut column takes one feed; mix the feeds first, or use the rigorous mode, which takes several.");
     const r = solveShortcut(sys, inlets.in[0], spec);
