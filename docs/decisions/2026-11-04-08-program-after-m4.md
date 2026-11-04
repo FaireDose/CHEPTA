@@ -35,3 +35,23 @@ also with the three proposals for CHEPTA-Lab"; and earlier: "i am ok to have rea
 - Ethanol to ethylene: downstream purification (flash, columns, absorber).
 
 These are to be filed as capability requests by CHEPTA-Lab.
+
+## The Astra 6 review (2026-11-04), accepted by the maintainer
+
+The maintainer uploaded a review of this PR by Astra 6 (OpenAI), the agent that built CHEPTA-Lab, and wrote: "i agree with
+your proposals. i also added the recommendation from Astra 6 High". Taken into ROADMAP.md:
+
+1. G5 benchmarks start with G1 and G2 on small reviewed cases (ethanol reactor, benzene + toluene column), not after G4;
+   development cases kept apart from held-out evaluation cases.
+2. P6's "done when": declared product and operating constraints met, balances closed, warnings and sources kept,
+   reproducible from saved inputs, substitutions recorded; costs shown with coverage, never holding back the demonstration.
+3. Cost results say complete within scope, partial or unavailable; missing never zero; partial estimates do not rank
+   routes; comparisons on a common basis; accuracy ranges need a basis, else "unquantified"; the source search is
+   time-bounded and recorded, and reopened when new evidence justifies it (instead of "searched once").
+4. A small shared study record (Lab writes it, G6 shows it) and release coordination (Lab's compatibility suite before
+   it moves its pin; the consumed interfaces versioned with a change policy, in 0.x).
+5. D9: every miscibility classification names its sources and the conditions they cover; measured and predicted splits
+   are told apart in results and carried into Lab's records.
+
+Also decided (2026-11-04): PSRK and MHV2 are not used, their parameters not being open; PR and SRK with k_ij fitted to the
+open high-pressure data instead (proposal 0018 postponed; decision file 2026-11-04-13-kij-high-pressure.md).
