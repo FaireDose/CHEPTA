@@ -213,6 +213,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   The file formats keep their keys (`fugacity_project`, `fugacity_package`), so files and
   contribution packages made under the old name stay valid.
 - **The two free component places** of proposal 0008: use them now, or keep them.
+- **M2: the source check and proposal 0018, to review** (docs/decisions/2026-11-04-10-m2-source-check.md): PSRK's
+  and MHV2's group tables are not open (DDBST's page is free to read but its Terms of Use forbid reuse; thermo's
+  tables name no source); Modified UNIFAC 2.0 has no gas groups. Proposed: the MHV1 rule for SRK and PR with any
+  CHEPTA gE, NRTL pairs fitted inside it to ThermoML data for gases in polar liquids. To decide: accept, ask DDBST for
+  permission, the Mathias–Copeman source, and gases without a fitted pair.
 - **Wilson (M1, proposal 0016; docs/decisions/2026-10-30-06-wilson.md):** accepted and merged (#192); the fits to
   ThermoML data (step 2) wait until needed, after M3 (the maintainer, 2026-11-04).
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
