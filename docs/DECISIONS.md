@@ -112,6 +112,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     pervaporation postponed). Still open: the choice of Aziaba et al. 2022 as the model's source. To check: the worked
     example of Binous 2006 and the example's permeances against Aziaba et al.'s Table 1.
   - Waiting: W1; W3's evaporator and crystallizer.
+- **When in doubt, check other simulators** (docs/decisions/2026-11-04-05-check-other-simulators.md): a method rule in
+  METHOD_SELECTION.md; first cases: Henry's law for gases in water (proposal 0017), PR/SRK with a light gas and a polar
+  liquid offered with a warning where a k_ij exists, sour water and amines refused until M5.
 - **The methods track** (docs/decisions/2026-10-30-05-methods-track.md): Wilson (M1, v0.6) starts when M2b's pull
   requests are merged; M2 (PSRK or MHV2, else Modified UNIFAC 2.0 in a gE mixing rule) after M1; CPA, PC-SAFT,
   electrolytes and ionic liquids (M3-M6, v0.9) in that order, each with the open parameters found and My data for the
