@@ -18,7 +18,7 @@ const TIER = { fitted: "fitted to experimental data", databank: "databank", pred
  * @param {string|HTMLElement} target  element or CSS selector
  * @param {object} cfg
  * @param {string[]} cfg.components      2 components -> T-x-y diagram, 3 -> ternary diagram
- * @param {"NRTL"|"UNIQUAC"|"ideal"} [cfg.model="NRTL"]
+ * @param {"NRTL"|"UNIQUAC"|"WILSON"|"ideal"} [cfg.model="NRTL"]
  * @param {number} [cfg.P_kPa=101.325]
  * @param {string} [cfg.title]
  * @param {boolean} [cfg.picker=true]         let the viewer choose components
@@ -87,7 +87,7 @@ export function mount(target, cfg = {}) {
   }
 
   function render() {
-    const models = [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0"], ["ideal", "Ideal"]];
+    const models = [["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["WILSON", "Wilson"], ["MOD-UNIFAC-2", "Mod. UNIFAC 2.0"], ["ideal", "Ideal"]];
     const seg = h("div", { class: "fug-seg", role: "group", "aria-label": "Activity model" },
       ...models.map(([m, label]) => h("button", {
         type: "button", "aria-pressed": String(state.model === m),

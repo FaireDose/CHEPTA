@@ -18,12 +18,13 @@ model. Every layer above uses only this object.
 |---|---|---|---|
 | `NRTL` | NRTL activity coefficients | ideal gas, or PR / SRK | [activity/nrtl.js](../../src/thermo/activity/nrtl.js) |
 | `UNIQUAC` | UNIQUAC activity coefficients | ideal gas, or PR / SRK | [activity/uniquac.js](../../src/thermo/activity/uniquac.js) |
+| `WILSON` | Wilson activity coefficients (one liquid only) | ideal gas, or PR / SRK | [activity/wilson.js](../../src/thermo/activity/wilson.js) |
 | `MOD-UNIFAC-2` | Modified UNIFAC 2.0, predicted from groups | ideal gas, or PR / SRK | [activity/mod-unifac.js](../../src/thermo/activity/mod-unifac.js) |
 | `ideal` | ideal solution (γ = 1) | ideal gas, or PR / SRK | system.js |
 | `PR` | Peng–Robinson (1976) | the same equation | [eos/cubic.js](../../src/thermo/eos/cubic.js), [eos/system.js](../../src/thermo/eos/system.js) |
 | `SRK` | Soave–Redlich–Kwong (1972) | the same equation | same |
 
-Locked in the interface as "not available yet": Wilson, UNIFAC, PC-SAFT, CPA, eNRTL, Pitzer,
+Locked in the interface as "not available yet": UNIFAC, PC-SAFT, CPA, eNRTL, Pitzer,
 Flory–Huggins and PC-SAFT for polymers ([src/ui/future-models.js](../../src/ui/future-models.js)). The original UNIFAC
 is on hold until its parameter licence is settled (proposal 0008); Modified UNIFAC 2.0 is available (below).
 
@@ -37,6 +38,19 @@ components, or an activity model above 1000 kPa
 - **NRTL**: τ_ij = a_ij + b_ij / T, G_ij = exp(−α_ij τ_ij).
 - **UNIQUAC**: τ_ij = exp(a_ij + b_ij / T), coordination number z = 10. An optional q′
   replaces q in the residual term (Anderson–Prausnitz modification).
+- **Wilson** (`WILSON`, proposal 0016): Λ_ij = exp(a_ij + b_ij / T), Λ_ii = 1,
+  ln γ_i = 1 − ln Σ_j x_j Λ_ij − Σ_k x_k Λ_ki / Σ_j x_j Λ_kj (The ChemSep Book, 2nd ed., eqs. 10.13-10.15; thermo's
+  `Wilson`). In ChemSep's volume form Λ_ij = (V_j / V_i) exp(−A_ij / RT): a_ij = ln(V_j / V_i), b_ij = −A_ij / R.
+  - Parameters: ChemSep's Wilson set (165 pairs, tier "databank", set "chemsep"), imported by
+    [validation/python/chemsep_pairs.py](../../validation/python/chemsep_pairs.py) `--all --models WILSON`; no fits to
+    measured data yet (a follow-up). Pairs of one's own in My data (`user_data.pairs[...].WILSON`) and `library.add`.
+  - It cannot predict two liquids: the result's warnings name each pair whose NRTL (else UNIQUAC) set predicts a split
+    at that temperature, and the column's phases "VLL" are refused.
+  - Checks ([test/wilson.test.js](../../test/wilson.test.js), fixture by
+    [validation/python/reference_wilson.py](../../validation/python/reference_wilson.py)): γ equal to thermo's Wilson
+    with ChemSep's set read from thermo, to 1e-10; bubble points equal to the Python reference; against five open
+    isobaric sets at 101.3 kPa, mean deviations 0.08-0.47 K and 0.002-0.008 in y; ethanol + ethylene glycol 5.3 K
+    (ChemSep's NRTL set: 6.2 K).
 - **Modified UNIFAC 2.0** (`MOD-UNIFAC-2`): the modified UNIFAC (Dortmund) equations (Weidlich and Gmehling 1987;
   Gmehling, Li and Schiller 1993) with the parameters of Hayer, Hasse and Jirasek, Ind. Eng. Chem. Res. 64 (2025)
   10304 (arXiv:2412.12962, CC BY 4.0): R and Q of 125 subgroups and complete a and b tables of 63 main groups,

@@ -6,7 +6,8 @@
  * DOM-free: what the My data panel shows (src/ui/my-data-panel.js). The parameters are those of the library
  * (src/thermo/library.js, data/binaries.json) and of Modified UNIFAC 2.0 (src/data/mod-unifac-2.json), shown as they are
  * used: NRTL tau_ij = a_ij + b_ij / T and G_ij = exp(-alpha tau_ij) (src/thermo/activity/nrtl.js); UNIQUAC
- * tau_ij = exp(a_ij + b_ij / T) (src/thermo/activity/uniquac.js); k_ij of Peng-Robinson and SRK; Modified UNIFAC 2.0
+ * tau_ij = exp(a_ij + b_ij / T) (src/thermo/activity/uniquac.js); Wilson Lambda_ij = exp(a_ij + b_ij / T)
+ * (src/thermo/activity/wilson.js); k_ij of Peng-Robinson and SRK; Modified UNIFAC 2.0
  * Psi_nm = exp(-(a_nm + b_nm T) / T) between main groups n and m (src/thermo/activity/mod-unifac.js).
  */
 import { library } from "../thermo/library.js";
@@ -22,6 +23,8 @@ export const PAIR_MODELS = {
     equation: "τij = aij + bij/T, Gij = exp(−α τij)" },
   UNIQUAC: { label: "UNIQUAC", params: [["a_ij", "-"], ["a_ji", "-"], ["b_ij", "K"], ["b_ji", "K"]],
     equation: "τij = exp(aij + bij/T)" },
+  WILSON: { label: "Wilson", params: [["a_ij", "-"], ["a_ji", "-"], ["b_ij", "K"], ["b_ji", "K"]],
+    equation: "Λij = exp(aij + bij/T); aij = ln(Vj/Vi) in the volume form" },
   PR: { label: "Peng–Robinson k_ij", params: [["kij", "-"]], equation: "binary interaction parameter of the mixing rule" },
   SRK: { label: "SRK k_ij", params: [["kij", "-"]], equation: "binary interaction parameter of the mixing rule" },
 };
@@ -34,7 +37,7 @@ const oriented = (params, flip) => (flip
 /**
  * The databank's sets of a pair and the user's own, as columns of one table.
  * @param {string} a, b       component ids (the order of the table: i = a, j = b)
- * @param {string} model      NRTL, UNIQUAC, PR or SRK
+ * @param {string} model      NRTL, UNIQUAC, WILSON, PR or SRK
  * @param {object|null} userData  as entered
  * @returns {{params: [string, string][], databank: {set, tier, default, source, valid, values}[], mine: {values, source, valid, use}|null,
  *            mineKey: string|null}}

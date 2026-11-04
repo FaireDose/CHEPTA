@@ -59,7 +59,8 @@ test("residue curves run from water to ethylene glycol with rising temperature",
 test("clear errors for unknown components and missing parameters", () => {
   assert.throws(() => system({ components: ["water", "unobtainium"] }), /Unknown component "unobtainium"/);
   assert.throws(() => system({ components: ["water", "water"] }), /appears twice/);
-  assert.throws(() => system({ components: ["water", "acetic acid"], model: "Wilson" }), /Unknown model/);
+  // an unknown model: PC-SAFT (not built yet); this was Wilson until Wilson came (proposal 0016)
+  assert.throws(() => system({ components: ["water", "acetic acid"], model: "PC-SAFT" }), /Unknown model/);
 });
 
 test("components can be named by id, alias or CAS number", () => {

@@ -184,7 +184,7 @@ function checkMethod(m) {
   if (!m || typeof m !== "object" || Array.isArray(m)) throw fail("BAD_INPUT", `Column: method must be an object such as { model: "NRTL", vapour: "ideal" } (got ${JSON.stringify(m)}).`);
   const bad = Object.keys(m).filter(k => !METHOD_KEYS.includes(k));
   if (bad.length) throw fail("BAD_INPUT", `Column: method: unknown key${bad.length > 1 ? "s" : ""} ${bad.join(", ")}. Known: ${METHOD_KEYS.join(", ")}.`);
-  if (typeof m.model !== "string" || !m.model) throw fail("BAD_INPUT", "Column: method needs a model (NRTL, UNIQUAC, MOD-UNIFAC-2, ideal, PR or SRK).");
+  if (typeof m.model !== "string" || !m.model) throw fail("BAD_INPUT", "Column: method needs a model (NRTL, UNIQUAC, WILSON, MOD-UNIFAC-2, ideal, PR or SRK).");
   return { ...m };
 }
 

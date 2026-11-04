@@ -203,7 +203,7 @@ export function checkInputs(view, value, model = "NRTL", ud = null) {
     else seen.set(id, i);
   });
   if (spec.activityOnly && isEosModel(model)) {
-    problems.push({ slot: null, message: `${spec.what[0].toUpperCase()}${spec.what.slice(1)} needs an activity model for the liquid: choose NRTL, UNIQUAC or Ideal in the Model group.` });
+    problems.push({ slot: null, message: `${spec.what[0].toUpperCase()}${spec.what.slice(1)} needs an activity model for the liquid: choose NRTL, UNIQUAC, Wilson or Ideal in the Model group.` });
   }
   if (spec.eosOnly && !isEosModel(model)) {
     problems.push({ slot: null, message: `${spec.what[0].toUpperCase()}${spec.what.slice(1)} needs an equation of state, which describes the gas and the liquid up to the critical point: choose Peng–Robinson or SRK.` });

@@ -192,6 +192,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   The file formats keep their keys (`fugacity_project`, `fugacity_package`), so files and
   contribution packages made under the old name stay valid.
 - **The two free component places** of proposal 0008: use them now, or keep them.
+- **Wilson (M1, proposal 0016; docs/decisions/2026-10-30-06-wilson.md):** accept the proposal by merging; decide
+  whether ChemSep's Wilson set of ethanol + ethylene glycol (5.3 K off the open 1-atm data, like ChemSep's NRTL set)
+  gets a known-issue note now or waits for the Wilson fits (step 2), and whether the fits are the next item.
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order
