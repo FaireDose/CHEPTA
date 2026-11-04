@@ -164,11 +164,51 @@ sources, assumptions) that anyone can re-run and check.
 | Item | What | Depends on | Status |
 |---|---|---|---|
 | **G1** | Tool interface for agents: every calculation callable as JSON in, JSON out, deterministic, with error messages that tell the agent what to fix | A9, A10 | **On-going**: the request dispatcher `CHEPTA.run` with structured results, for the existing blocks (M0); the command line `chepta` and the local MCP server `chepta-mcp` with read-only tools, each run in a worker thread with a time limit, and the first assistant test in Claude Code (M1; [docs/models/tools.md](docs/models/tools.md)); each new block as it lands; planned in [proposal 0015](proposals/0015-separation-units.md), Part II (moved from proposal 0011, step 1) |
-| **G2** | Literature to route: an agent reads open papers and expired patents and extracts process routes (reactions, conditions, conversions, yields, separations) into a route file, every value cited | D8 | **Open** |
-| **G3** | Route to flowsheet: an agent builds a flowsheet for each route, simulates it with CHEPTA, and closes material and energy balances | G1, G2, A8 | **Open** |
-| **G4** | Route comparison: yield, energy use, equipment, cost of production (E4), CO₂ and safety flags side by side, with a recommendation that states its assumptions and uncertainty | G3, E4, E5 | **Open** |
-| **G5** | Benchmarks: published open case studies with known answers (for example textbook processes and open techno-economic reports), used to measure how well agents do before anyone trusts them | G4 | **Open** |
+| **G2** | Literature to route: an agent reads open papers and expired patents and extracts process routes (reactions, conditions, conversions, yields, separations) into a route file, every value cited | D8 | **In CHEPTA-Lab** (2026-11-04; section "CHEPTA and CHEPTA-Lab"): **Open** |
+| **G3** | Route to flowsheet: an agent builds a flowsheet for each route, simulates it with CHEPTA, and closes material and energy balances | G1, G2, A8 | **In CHEPTA-Lab** (2026-11-04; section "CHEPTA and CHEPTA-Lab"): **Open** |
+| **G4** | Route comparison: yield, energy use, equipment, cost of production (E4), CO₂ and safety flags side by side, with a recommendation that states its assumptions and uncertainty | G3, E4, E5 | **In CHEPTA-Lab** (2026-11-04; section "CHEPTA and CHEPTA-Lab"): **Open** |
+| **G5** | Benchmarks: published open case studies with known answers (for example textbook processes and open techno-economic reports), used to measure how well agents do before anyone trusts them | G4 | **In CHEPTA-Lab** (2026-11-04; section "CHEPTA and CHEPTA-Lab"): **Open** |
 | **G6** | Design-study view: routes, flowsheets, costs and sources in one page an engineer can review, change and sign off | G4, A11, E6 | **Open** |
+
+## The program after M4 (v0.7 to 1.0)
+
+Proposal 0015 ends at M4 (specifications, side draws, the first costs). What follows, agreed with the maintainer on
+2026-11-04 (docs/decisions/2026-11-04-08-program-after-m4.md). Each phase runs two or three workstreams side by side,
+with at most four agent sessions open at a time, so no single track holds the others back.
+
+| Phase | Release | What | Done when |
+|---|---|---|---|
+| **P5 Cost, bounded** | v0.7 | E2 purchased and installed cost of every sized unit, E3 utilities, E4 capital, operating cost and cost of production, E6 the cost view | every unit sized in E1 has a cost or a stated "no open data"; a flowsheet shows its cost of production with the accuracy range |
+| **P6 Agentic design with CHEPTA-Lab** | v0.8 | G1 frozen as a versioned tool contract; G6 the design-study view; E5 CO2 and safety indicators; Lab's capability requests (below) | one of CHEPTA-Lab's reviewed reaction-separation cases runs end to end in a released CHEPTA, with balances closed and costs shown |
+| **P7 Advanced thermodynamics** | v0.9 | the methods track M2 to M6 (PSRK or MHV2, CPA, PC-SAFT, electrolytes, ionic liquids); M2 runs alongside P5 | each method has its proposal, open parameters, My data for the rest, and tests against an independent implementation |
+| **P8 Stability and bridges** | 1.0 | A12 frozen interfaces and deprecation rules; A2 data packs; A3 the tier on every result; A9 speed and size budgets; B3 ThermoML import; B5 notebooks and spreadsheets; B6 other simulators; C2 to C6 | the public interface is frozen and documented; old project files open |
+| **After 1.0** | – | reactive distillation; sensitivity and optimization; batch and dynamic simulation; solids beyond crystallization; life-cycle assessment | – |
+
+**Cost work must not stall the program** (the maintainer, 2026-11-04: "the agents shouldn't get stuck in the cost
+estimations but it is good to start working on this as well"):
+
+- one workstream (W4), in parallel with the others; a unit or a simulation never waits for its cost;
+- one open source per equipment family, searched once and recorded; none open: "no open data", and the user gives a
+  cost of their own in My data (a cost curve or a quote, with its source and year), as for parameters;
+- every estimate states its cost index year and its accuracy range, and is never presented as a quote;
+- a missing cost is a warning on the result, never a refusal of the calculation.
+
+## CHEPTA and CHEPTA-Lab
+
+[CHEPTA-Lab](https://github.com/FaireDose/CHEPTA-Lab) prepares evidence-backed process cases, training data and
+evaluations for AI assistants that use CHEPTA. CHEPTA owns the simulator; CHEPTA-Lab owns the literature screening,
+the cases, the training examples and the evaluations (the maintainer, 2026-11-04):
+
+1. **Lab uses released versions.** CHEPTA-Lab pins a released `chepta@x.y.z` from npm (tested, never overwritten), and
+   names a commit only between releases, saying so.
+2. **Lab's blockers are capability requests.** What a Lab case needs and CHEPTA refuses is filed with the
+   [Capability request form](https://github.com/FaireDose/CHEPTA/issues/new?template=capability-request.yml): the case,
+   the request, CHEPTA's outcome (its code and message) and the evidence. CHEPTA places it in a milestone and links the
+   release that delivers it.
+3. **The agentic items G2 to G5 are done in CHEPTA-Lab.** CHEPTA keeps G1 (the tool interface) and G6 (the design-study
+   view), and takes Lab's reviewed cases as benchmark validation data under docs/DATA_RULES.md.
+4. **No training data flows back into the databank.** Numbers in CHEPTA still come only from open sources under
+   AGENTS.md rule 1; a model's output is never a source.
 
 ## Releases
 
@@ -292,6 +332,8 @@ Needs a proposal for each method (track M). Each method ships with the open para
 - [ ] Ionic liquids as solvents (M6)
 
 ### Later
+
+After 1.0 (the program above, phase "After 1.0"; the maintainer, 2026-11-04: reactive distillation later).
 
 - Reactive distillation, batch reactors and catalyst deactivation
 - Sensitivity studies and optimization: the agent varies the design and finds the best
