@@ -1200,6 +1200,20 @@
       "source_ids": [
         "sun2017-bdo-tetrahydrofuran"
       ]
+    },
+    {
+      "components": [
+        "ethanol",
+        "ethylene-glycol"
+      ],
+      "model": "WILSON",
+      "kind": "databank-deviation",
+      "message": "ChemSep's Wilson set (the only Wilson set of this pair) puts the bubble temperatures at 101.3 kPa on average 5.3 K away from the measured ones of Kamihama et al. (2012), with vapour fractions within 0.003 on average (15 points; validation/fixtures/wilson.json). ChemSep's NRTL set misses them by 6.2 K; the NRTL and UNIQUAC sets fitted to these data follow them within 0.07 K. Use NRTL or UNIQUAC for this pair, or a Wilson set of your own (My data).",
+      "reference": "N. Kamihama, H. Matsuda, K. Kurihara, K. Tochigi, S. Oba, J. Chem. Eng. Data 57 (2012) 339-344, doi:10.1021/je2008704, via the NIST TRC ThermoML Archive (validation/data/ethanol_ethylene-glycol_101kPa.json)",
+      "source_ids": [
+        "kamihama2012-ethanol-water",
+        "nist-thermoml-archive"
+      ]
     }
   ]
 }
