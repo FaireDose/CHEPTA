@@ -14,6 +14,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
+- **Liquid-liquid tie lines and joint fits for extraction** (proposal 0015, step 5; docs/decisions/2026-10-30-08-extraction.md):
+  water + acetic acid + ethyl acetate, a further set `fitted-lle-roque2018` of each pair. Compare the transcribed tie
+  lines with the ThermoML records. Check Roque 2018's second isotherm (313.2 K in the record, 303.2 K in the title).
+  Decide whether Toikka 2014 stays a check only, and whether the Extraction block uses these sets by default.
 - **Formation data** (proposal 0010, step 1; docs/decisions/2026-10-22-03-formation-data.md): xylitol is held (two
   crystal energies of combustion disagree by about 100 kJ/mol); five records are uncertain (the values disagree by more
   than 10 kJ/mol: 2-methoxyethanol, 1,3-propanediol, limonene, gamma-butyrolactone, levoglucosan); 22 components have no
