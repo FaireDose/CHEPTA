@@ -3,7 +3,8 @@
 One block for distillation ([proposal 0015](../../proposals/0015-separation-units.md), Part I, section 1). Its
 modes: **shortcut** (milestone M1) and **rigorous** (MESH on equilibrium stages, milestone M2a: vapour and one
 liquid; milestone M2b: two liquids on the stages, a decanter on the condenser, and the column's own property method).
-Absorber, stripper and extraction come later as configurations of the same block. Code:
+Milestone M3: the **absorber** and the **stripper**, configurations of the same block (below), and columns with
+nonvolatile components; extraction comes later. Code:
 `src/units/columns/shortcut.js` (the shortcut's equations), `src/units/columns/engine.js` (the column engine, the
 rigorous solver), `src/units/columns/two-liquids.js` (two liquids on the stages), `src/units/columns/column.js` (the
 block, and the P-H boundary of its own method). Tests: `test/columns-shortcut.test.js`,
@@ -112,7 +113,7 @@ the Newton iterations; a column that reaches it is not converged (E4).
 | a stage's vapour below 1/5 of the column's largest vapour flow (stages 2 to N) | warns `DRY_STAGE` (vapour): outside the turndown of bubble-cap trays, 5 (sieve 2, valve 4; Fermeglia, "Staged column design", University of Trieste, 2021, slide 54), so with one diameter the trays would weep; the maintainer's choice, 2026-10-29. The checks with the trays' geometry (flooding, weeping) come with M2b |
 | a pair without parameters | missing data, the pair named (C1) |
 | purity or recovery specifications, side draws, phases "LL" (extraction), no reboiler | not built yet: unsupported |
-| nonvolatile components, inert solids, the dimerizing acids' chemical theory | not built yet: unsupported (columns with nonvolatile components are step 7) |
+| inert solids, the dimerizing acids' chemical theory | not built yet: unsupported |
 
 **The result:** the distillate and the bottoms (saturated at the column's pressure), the block's duty (the reboiler's
 minus the condenser's) and the two apart, the reflux and boil-up ratios, and the profile of every stage: T, P, the
@@ -220,6 +221,53 @@ cold start 1.9 s (6 Newton iterations), warm start at R = 3.3 0.6 s (5 iteration
 
 The engine's limits: extremely pure products (impurities below about 1e-30, for example 101 stages at five times the
 minimum reflux) may not converge; they are refused as not converged.
+
+## The absorber and the stripper (milestone M3)
+
+**The configurations** (`configuration`, proposal 0015, Part I, section 1), rigorous only:
+
+| Configuration | Condenser | Reboiler | Specifications | Feeds |
+|---|---|---|---|---|
+| `distillation` (the default) | total, partial or decanter | partial | two (one with a decanter) | stages 2 to N − 1 |
+| `absorber` | none | none | none: the feeds, the stages and the pressure fix it | stages 1 (the top) to N (the bottom): usually the liquid on 1, the gas on N |
+| `stripper` | none | `reboiler: "none"` (the default: live steam or a stripping gas on stage N) or `"partial"` | none, or one with a reboiler (boil-up ratio, reboiler duty, a product flow) | stages 1 to N (to N − 1 with a reboiler) |
+
+Without a condenser stage 1 is an equilibrium stage like the others: its vapour is the top product (the block's
+`distillate` port), and its energy balance has no duty. Without a reboiler stage N is the same: its liquid is the
+bottoms. The reflux and boil-up ratios do not exist there (`null`). Several feeds through `solve_column`: `feed` is then
+a list, one per feed stage, in order.
+
+**The start** without a condenser: the sum-rates method of Burningham and Otto, as DWSIM's open source code documents it
+(`SumRates.vb`, GPL-3.0, read 2026-10-30; written anew): the component balances at fixed K-values and flows as one
+tridiagonal system per component, the new flows as the sums of the component flows, each stage's temperature from its
+energy balance at those flows, repeated; the flows start from the feeds (each feed's liquid goes down and its vapour up,
+by its vapour fraction from the block) and the temperatures between the feeds'. Then Newton's method, as for
+distillation. The bubble-point start (Wang and Henke) does not suit an absorber: its stage temperatures are the liquid's
+bubble points, far from an absorber's (W2's reference started that way found 140 K on a 305 K lean-oil absorber).
+
+**Nonvolatile components** (proposal 0009, step 5): allowed in every column with an activity model. They have a vapour
+pressure of 1e-20 kPa (docs/DATA_RULES.md section 10), so their K is about 1e-20 / P, they stay in the liquid, and their
+vapour trace (about 1e-20 of their liquid's) has no vapour enthalpy. A vapour product's trace goes to the bottoms, so
+that its dew point can be found. Fixed with it: the dew point of a vapour whose nonvolatile mole fraction is 0 searched
+over a range that the nonvolatile component's boiling point (not a number) made NaN (`src/equilibrium/dew.js`); and
+where the flash at the products' saturation does not converge (seen at the bubble point of water with glucose and a
+trace of ethanol, Modified UNIFAC 2.0), the product takes the column's own enthalpy flow by a P-H flash, said in a note.
+
+**Checked** (`test/columns-open.test.js`) against W2's independent reference `validation/python/reference_mesh_open.py`
+(fixture `validation/fixtures/columns-open.json`; W7's MESH equations of `reference_mesh.py` with the condenser's duty,
+and the reboiler's where there is none, held at zero; written by W2 because W7's M3 cases were not on main on
+2026-10-30), within W7's numerical tolerances: a lean-oil absorber (methane, ethane, propane, n-butane washed by
+n-decane, Peng-Robinson, 6 stages, 2758 kPa) within 3e-11 K; a live-steam stripper (ethanol from water, NRTL, 8 stages)
+and a reboiled stripper (boil-up ratio 0.15) within 1.5e-9 K. Exact: the Kremser equation, for a dilute solute with
+constant K-values and no heat of absorption, within 1e-5 in the fraction absorbed. A stripper with glucose (Modified
+UNIFAC 2.0, predicted tier): glucose only in the bottoms, every balance closed; no independent reference (the Python
+reference has no Modified UNIFAC 2.0). Times on the development container (2026-11-03, Node 22): the absorber 0.8 s, the
+steam stripper 0.8 s, the reboiled stripper 1.7 s, the glucose stripper 0.9 s.
+
+The reference found a trap worth knowing: in W7's `Eos` class, the vapour of a stage starts at y = x K(x, x), which is
+the trivial solution K = 1 where the cubic has one root at the liquid's composition (a decane-rich liquid); W2's
+reference starts that vapour from Wilson's K-values instead (`EosStart`). The engine's adapter takes the liquid and the
+vapour roots separately and is not affected.
 
 ## The Column workspace and McCabe-Thiele
 

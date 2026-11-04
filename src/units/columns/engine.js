@@ -622,7 +622,7 @@ export function solveCascade(opts = {}) {
   const stages = P.map((p, j) => ({
     stage: j + 1, name: j === 0 ? (inp.condenser === "none" ? "top" : "condenser") : j === N - 1 ? (inp.reboiler === "none" ? "bottom" : "reboiler") : feeds.some(f => f.stage === j) ? "feed" : "stage",
     T_K: p.T, P_kPa: th.P_kPa, L_mol_s: p.L, V_mol_s: j === 0 && total ? 0 : p.V, x: p.x, y: j === 0 && total ? null : p.y,
-    K: j === 0 && total ? null : p.K, duty_W: j === 0 ? -Qc : j === N - 1 ? Qr : 0, l: p.l, v: p.v, residuals: stageRes[j],
+    K: j === 0 && total ? null : p.K, duty_W: j === 0 ? (Qc === 0 ? 0 : -Qc) : j === N - 1 ? Qr : 0, l: p.l, v: p.v, residuals: stageRes[j],
     ...(th.liquids ? { liquids: j === 0 && decanter ? decanterLiquids : th.liquids(p.x, p.T, p.L, j) } : {}),
     ...(j === 0 && decanter ? { x_distillate: p.xd } : {}),
   }));
@@ -818,7 +818,12 @@ function sumRatesStart(th, inp, fJ, HF, { sweeps = 40 } = {}) {
   const top = feeds.reduce((a, f, k) => (f.stage < feeds[a].stage ? k : a), 0), bot = feeds.reduce((a, f, k) => (f.stage > feeds[a].stage ? k : a), 0);
   let T = Array.from({ length: N }, (_, j) => fT[top] + (fT[bot] - fT[top]) * j / Math.max(N - 1, 1));
   const Tlo = Math.min(...fT, Tz) - 60, Thi = Math.max(...fT, Tz) + 60;
-  let x = Array.from({ length: N }, () => z.slice()), y = x.map(r => r.slice());
+  // the liquid starts from the liquid feeds and the vapour from the vapour feeds (each with 5 % of the other): from the
+  // overall feed, mostly gas in an absorber, an equation of state finds one root and K = 1 for every component (the
+  // trivial solution)
+  const part = liq => { const w = new Array(n).fill(0); feeds.forEach((f, k) => f.flows.forEach((v, i) => { w[i] += v * (liq ? fq[k] + 0.05 * (1 - fq[k]) : 1 - fq[k] + 0.05 * fq[k]); })); const t = sum(w); return w.map(v => (liq ? Math.max(v / t, 1e-12) : v / t)); };
+  const xs = part(true), ys = part(false);
+  let x = Array.from({ length: N }, () => xs.slice()), y = Array.from({ length: N }, () => ys.slice());
   for (let s = 0; s < sweeps; s++) {
     const K = x.map((xj, j) => th.lnK(xj, y[j], T[j], j).map(Math.exp));
     const l = Array.from({ length: N }, () => new Array(n));
@@ -858,7 +863,7 @@ function sumRatesStart(th, inp, fJ, HF, { sweeps = 40 } = {}) {
       } catch { Tn = T[j]; }
       dTmax = Math.max(dTmax, Math.abs(Tn - T[j])); T[j] = Tn;
     }
-    if (dTmax < 1e-3 && s > 3) break;
+    if (dTmax < 1e-3) break;
   }
   const K = x.map((xj, j) => th.lnK(xj, y[j], T[j], j).map(Math.exp));
   const u = new Float64Array(N * (2 * n + 1));

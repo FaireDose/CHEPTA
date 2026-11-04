@@ -165,7 +165,9 @@ export function dewT(sys, y, P) {
   P = checkPressure(P);
   const what = `${sys.model} dew temperature at P = ${P} kPa`;
   noNonvolatile(sys, y, what);
-  const tb = pureBoilingPoints(sys, P);
+  // the boiling points of the components in the vapour: a nonvolatile component (its boiling point NaN) is at zero
+  // there (noNonvolatile), and would make the range NaN
+  const tb = pureBoilingPoints(sys, P).filter((t, i) => y[i] > 0 && Number.isFinite(t));
   const lo = Math.min(...tb) - 80, hi = Math.max(...tb) + 20;
 
   let warm = null, lastUnstable = null, lastRange = null;

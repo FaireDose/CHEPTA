@@ -268,23 +268,27 @@ registerCapability({
 // The column (proposal 0015, milestone M1: the shortcut mode; milestone M2a: the rigorous mode): a feed, the Column block
 // and its two products, solved as a flowsheet (src/units/columns/column.js), so the numbers are the flowsheet's.
 registerCapability({
-  name: "solve_column", summary: "Solve a distillation column: the shortcut (Fenske, Underwood, Gilliland) for a light and a heavy key, or the rigorous column (MESH on every stage, Newton's method)", status: "available",
+  name: "solve_column", summary: "Solve a column: a distillation column by the shortcut (Fenske, Underwood, Gilliland) for a light and a heavy key, or rigorously (MESH on every stage, Newton's method); an absorber or a stripper rigorously", status: "available",
   input: { type: "object", additionalProperties: false, required: ["components", "feed", "column"],
     properties: {
       components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
       thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default NRTL with an ideal-gas vapour" },
-      feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF" },
-      column: { type: "object", description: "the Column block's specification. mode \"shortcut\" (default): light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa. mode \"rigorous\": stages (the condenser and the reboiler counted, 1 the condenser), feed_stage, condenser (\"total\", \"partial\" or \"decanter\"), P_kPa, and two of reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW (one, not the reflux or the condenser duty, with a decanter); phases \"VL\" (default) or \"VLL\" (look for two liquids on the stages; activity models); reflux_liquid \"light\" or \"heavy\" (the decanter's refluxed liquid); method { model, vapour, sets, prefer }: the column's own property method, with the P-H boundary at its streams; optional sizing (rigorous mode): { tray_spacing_m (0.6), design_fraction (0.8 of flooding), diameter_m (a given column checked instead of sized), net_area_fraction (0.9), hole_area_ratio (0.1), hole_diameter_mm (5), foaming_factor (1), tray (\"sieve\", \"valve\", \"bubble-cap\"), K_chart_m_s (your own reading of Fair's chart, in place of CHEPTA's) }: the diameter by Fair's method, the fraction of flooding of every tray, FLOODING and WEEPING; see docs/models/sizing.md" },
+      feed: { type: ["object", "array"], description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; or a list of feeds, one per feed_stage (an absorber: the liquid at the top, the gas at the bottom)" },
+      column: { type: "object", description: "the Column block's specification. mode \"shortcut\" (default): light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa. mode \"rigorous\": stages (the condenser and the reboiler counted, 1 the condenser), feed_stage, condenser (\"total\", \"partial\" or \"decanter\"), P_kPa, and two of reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW (one, not the reflux or the condenser duty, with a decanter); phases \"VL\" (default) or \"VLL\" (look for two liquids on the stages; activity models); reflux_liquid \"light\" or \"heavy\" (the decanter's refluxed liquid); method { model, vapour, sets, prefer }: the column's own property method, with the P-H boundary at its streams; configuration \"distillation\" (default), \"absorber\" (no condenser, no reboiler, no specification) or \"stripper\" (no condenser; reboiler \"none\" (default) or \"partial\" with one specification), with feed_stage from 1 (the top) and feed a list, one per feed stage; optional sizing (rigorous mode): { tray_spacing_m (0.6), design_fraction (0.8 of flooding), diameter_m (a given column checked instead of sized), net_area_fraction (0.9), hole_area_ratio (0.1), hole_diameter_mm (5), foaming_factor (1), tray (\"sieve\", \"valve\", \"bubble-cap\"), K_chart_m_s (your own reading of Fair's chart, in place of CHEPTA's) }: the diameter by Fair's method, the fraction of flooding of every tray, FLOODING and WEEPING; see docs/models/sizing.md" },
       user_data: USER_DATA,
     } },
   run: input => {
+    // one feed, or several (one per feed stage, in order)
+    const many = Array.isArray(input.feed), feeds = many ? input.feed : [input.feed];
+    if (!feeds.length) throw fail("BAD_INPUT", "solve_column: give at least one feed.", { where: [{ field: "input.feed" }] });
+    const fid = k => (many ? `F${k + 1}` : "F1"), sid = k => (many ? `FEED${k + 1}` : "FEED");
     const flowsheet = { components: input.components, thermo: input.thermo ?? { model: "NRTL", vapour: "ideal" },
-      blocks: [{ id: "F1", type: "feed", spec: input.feed }, { id: "C1", type: "column", spec: input.column },
+      blocks: [...feeds.map((f, k) => ({ id: fid(k), type: "feed", spec: f })), { id: "C1", type: "column", spec: input.column },
         { id: "P1", type: "product" }, { id: "P2", type: "product" }],
-      streams: [{ id: "FEED", from: "F1.out", to: "C1.in" }, { id: "DISTILLATE", from: "C1.distillate", to: "P1.in" }, { id: "BOTTOMS", from: "C1.bottoms", to: "P2.in" }] };
+      streams: [...feeds.map((_, k) => ({ id: sid(k), from: `${fid(k)}.out`, to: "C1.in" })), { id: "DISTILLATE", from: "C1.distillate", to: "P1.in" }, { id: "BOTTOMS", from: "C1.bottoms", to: "P2.in" }] };
     const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
     const c = r.value.blocks.C1;
-    return { ...r, value: { feed: r.value.streams.FEED, distillate: r.value.streams.DISTILLATE, bottoms: r.value.streams.BOTTOMS,
+    return { ...r, value: { feed: many ? feeds.map((_, k) => r.value.streams[sid(k)]) : r.value.streams.FEED, distillate: r.value.streams.DISTILLATE, bottoms: r.value.streams.BOTTOMS,
       column: { ...c.state, duty_kW: c.duty_kW, notes: c.notes, warnings: c.warnings ?? [], profile: c.profile, ...(c.sizing ? { sizing: c.sizing } : {}) } } };
   },
 });

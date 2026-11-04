@@ -245,7 +245,8 @@ test("rigorous: the input is checked, and what comes later is refused as not bui
   code({ feeds: [{ stage: 12, flows: [50, 50], H_W: 0 }] }, "BAD_INPUT", /2 to 11/);
   code({ phases: "LL" }, "NOT_AVAILABLE", /M3/);   // "VLL" landed with M2b (test/columns-vll.test.js); extraction is M3
   code({ draws: [{ stage: 3 }] }, "NOT_AVAILABLE", /side draws/);
-  code({ ends: { condenser: "total", reboiler: "none" } }, "NOT_AVAILABLE", /partial reboiler/);
+  // a column without a reboiler landed with M3 (test/columns-open.test.js): it takes one specification, not A1's two
+  code({ ends: { condenser: "total", reboiler: "none" } }, "BAD_INPUT", /without a reboiler the column takes one specification/);
   // the block: two specifications, a whole number of stages, the feed stage between the condenser and the reboiler
   const { input } = B1();
   for (const [column, re] of [[{ ...input.column, distillate_kmol_h: 90 }, /give two/], [{ ...input.column, stages: 2.5 }, /whole number/],

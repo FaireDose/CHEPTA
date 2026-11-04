@@ -76,7 +76,10 @@ export const COLUMN_MODES = Object.freeze([
 const SPEC_KEYS = ["mode", "light_key", "heavy_key", "recovery_light_key_in_distillate", "recovery_heavy_key_in_bottoms", "reflux_ratio",
   "reflux_over_minimum", "condenser", "P_kPa", "distillate_purity", "bottoms_purity",
   "stages", "feed_stage", "max_iterations", "boilup_ratio", "distillate_kmol_h", "bottoms_kmol_h", "condenser_duty_kW", "reboiler_duty_kW", "sizing",
-  "phases", "reflux_liquid", "method"];
+  "phases", "reflux_liquid", "method", "configuration", "reboiler"];
+/** The configurations of the rigorous column (proposal 0015, Part I, section 1): distillation (M2a), absorber and
+ *  stripper (M3); extraction comes later. */
+export const COLUMN_CONFIGURATIONS = Object.freeze(["distillation", "absorber", "stripper"]);
 /** The keys of a column's own property method (milestone M2b), as a flowsheet's thermo: model, vapour, sets, prefer. */
 const METHOD_KEYS = ["model", "vapour", "sets", "prefer"];
 /** The rigorous mode's specifications (two of them), and the engine's names for them. */
@@ -104,9 +107,14 @@ function fraction(v, what) {
 
 function checkSpec(spec, { sys }) {
   // an unknown key is refused by runUnit and specStatus (specKeys)
-  const mode = spec.mode ?? "shortcut";
+  const configuration = spec.configuration ?? "distillation";
+  if (configuration === "extraction") return { mode: "rigorous", extraction: true };
+  if (!COLUMN_CONFIGURATIONS.includes(configuration)) throw fail("BAD_INPUT", `Column: configuration must be one of ${COLUMN_CONFIGURATIONS.join(", ")} (got ${JSON.stringify(spec.configuration)}).`);
+  // an absorber or a stripper is solved stage by stage: the rigorous mode, the default for them
+  const mode = spec.mode ?? (configuration === "distillation" ? "shortcut" : "rigorous");
   if (!COLUMN_MODES.some(m => m.mode === mode)) throw fail("BAD_INPUT", `Column: mode "${mode}" is not one of ${COLUMN_MODES.map(m => m.mode).join(", ")}.`);
-  if (mode === "rigorous") return checkRigorous(spec);
+  if (mode !== "rigorous" && configuration !== "distillation") throw fail("BAD_INPUT", `Column: the ${configuration} is solved stage by stage (mode "rigorous"); the shortcut is for distillation.`);
+  if (mode === "rigorous") return checkRigorous(spec, configuration);
   // refused when solved (NOT_AVAILABLE, the outcome "unsupported"), not here: the specification is not wrong, the
   // calculation is not built yet
   if (PURITY.some(k => has(spec, k))) return { mode, purity: true };
@@ -132,19 +140,37 @@ function checkSpec(spec, { sys }) {
   return out;
 }
 
-function checkRigorous(spec) {
+/** The ends of a configuration: an absorber has no condenser and no reboiler; a stripper no condenser, and a reboiler
+ *  or none (`reboiler`, default "none": live steam or a stripping gas fed at the bottom). */
+function endsOf(spec, configuration) {
+  if (configuration === "distillation") {
+    if (has(spec, "reboiler") && spec.reboiler !== "partial") throw fail("BAD_INPUT", `Column: a distillation column has a partial reboiler; without one it is a stripper's or an absorber's arrangement (configuration "stripper" or "absorber") (got reboiler ${JSON.stringify(spec.reboiler)}).`);
+    return { condenser: spec.condenser ?? "total", reboiler: "partial" };
+  }
+  const reboiler = configuration === "absorber" ? "none" : spec.reboiler ?? "none";
+  if (configuration === "absorber" && has(spec, "reboiler") && spec.reboiler !== "none") throw fail("BAD_INPUT", "Column: an absorber has no reboiler; a column with a reboiler and no condenser is a stripper (configuration \"stripper\").");
+  if (!["partial", "none"].includes(reboiler)) throw fail("BAD_INPUT", `Column: reboiler must be "partial" or "none" (got ${JSON.stringify(spec.reboiler)}).`);
+  return { condenser: "none", reboiler };
+}
+
+function checkRigorous(spec, configuration = "distillation") {
   // a purity reaches the solver, which refuses it as not built yet (M4)
   if (PURITY.some(k => has(spec, k))) return { mode: "rigorous", purity: true };
-  const N = Number(spec.stages);
-  if (!(Number.isInteger(N) && N >= 3)) throw fail("BAD_INPUT", `Column: stages must be a whole number of 3 or more, the condenser and the reboiler counted (got ${JSON.stringify(spec.stages)}).`);
+  const ends = endsOf(spec, configuration);
+  const open = ends.condenser === "none", reboiled = ends.reboiler === "partial";
+  const N = Number(spec.stages), Nmin = open && !reboiled ? 2 : 3;
+  if (!(Number.isInteger(N) && N >= Nmin)) throw fail("BAD_INPUT", `Column: stages must be a whole number of ${Nmin} or more${open ? (reboiled ? ", the reboiler counted" : "") : ", the condenser and the reboiler counted"} (got ${JSON.stringify(spec.stages)}).`);
+  const lo = open ? 1 : 2, hi = reboiled ? N - 1 : N;
   const fsList = Array.isArray(spec.feed_stage) ? spec.feed_stage : [spec.feed_stage];
   const feedStages = fsList.map(v => {
     const k = Number(v);
-    if (!(Number.isInteger(k) && k >= 2 && k <= N - 1)) throw fail("BAD_INPUT", `Column: feed_stage must be a whole number from 2 to ${N - 1}, between the condenser (1) and the reboiler (${N}) (got ${JSON.stringify(v)}).`);
+    if (!(Number.isInteger(k) && k >= lo && k <= hi)) {
+      throw fail("BAD_INPUT", `Column: feed_stage must be a whole number from ${lo} to ${hi}, ${open ? "1 the top stage" : "between the condenser (1)"}${reboiled ? ` and the reboiler (${N})` : `, ${N} the bottom stage`} (got ${JSON.stringify(v)}).`);
+    }
     return k;
   });
-  const condenser = spec.condenser ?? "total";
-  if (!["total", "partial", "decanter"].includes(condenser)) throw fail("BAD_INPUT", `Column: condenser must be "total", "partial" or "decanter" (got ${JSON.stringify(condenser)}).`);
+  const condenser = ends.condenser;
+  if (!["total", "partial", "decanter", "none"].includes(condenser)) throw fail("BAD_INPUT", `Column: condenser must be "total", "partial" or "decanter" (got ${JSON.stringify(condenser)}).`);
   const phases = spec.phases ?? "VL";
   // "LL" is refused when solved (not built yet, the outcome "unsupported"), as a purity is
   if (phases === "LL") return { mode: "rigorous", extraction: true };
@@ -155,10 +181,14 @@ function checkRigorous(spec) {
   if (!["light", "heavy"].includes(refluxLiquid)) throw fail("BAD_INPUT", `Column: reflux_liquid must be "light" or "heavy" (got ${JSON.stringify(spec.reflux_liquid)}).`);
   if (has(spec, "reflux_liquid") && !decanter) throw fail("BAD_INPUT", "Column: reflux_liquid is the decanter's: give it with condenser: \"decanter\".");
   const given = Object.keys(RIGOROUS_SPECS).filter(k => has(spec, k));
-  const need = decanter ? 1 : 2;
+  const need = specCount(ends, decanter), allowed = allowedSpecs(ends, decanter);
+  const wrong = given.filter(k => !allowed.includes(k));
+  if (wrong.length) throw fail("BAD_INPUT", `Column: ${wrong.join(", ")} belong${wrong.length > 1 ? "" : "s"} to ${["reflux_ratio", "condenser_duty_kW"].includes(wrong[0]) ? (decanter ? "the reflux, which the decanter fixes" : "a condenser, which this column does not have") : "a reboiler, which this column does not have"}; ${need ? `give ${allowed.join(", ")}` : "remove it"}.`);
   if (given.length !== need) {
     throw fail("BAD_INPUT", decanter
       ? `Column: with a decanter the reflux is the whole ${refluxLiquid} liquid, so the column needs one specification, from boilup_ratio, distillate_kmol_h, bottoms_kmol_h, reboiler_duty_kW; ${given.length ? `got ${given.join(", ")}` : "none given"}.`
+      : need === 0 ? `Column: the ${configuration} has no condenser and no reboiler, so it takes no specification (its feeds, stages and pressure fix it); got ${given.join(", ")}.`
+      : need === 1 ? `Column: the ${configuration} with a reboiler takes one specification, from ${allowed.join(", ")}; ${given.length ? `got ${given.join(", ")}` : "none given"}.`
       : `Column: the rigorous column needs two specifications, from ${Object.keys(RIGOROUS_SPECS).join(", ")}; ${given.length ? `got ${given.join(", ")}` : "none given"}.`);
   }
   const specs = given.map(k => {
@@ -166,7 +196,7 @@ function checkRigorous(spec) {
     if (!(Number.isFinite(v) && v > 0)) throw fail("BAD_INPUT", `Column: ${k} must be a positive number (got ${JSON.stringify(spec[k])}).`);
     return { key: k, kind: RIGOROUS_SPECS[k], value: k.endsWith("_kmol_h") ? v * KMOL_H : k.endsWith("_kW") ? v * 1000 : v };
   });
-  const out = { mode: "rigorous", N, feedStages, condenser, phases, refluxLiquid, specs, method: has(spec, "method") ? checkMethod(spec.method) : null };
+  const out = { mode: "rigorous", configuration, N, feedStages, condenser, reboiler: ends.reboiler, phases, refluxLiquid, specs, method: has(spec, "method") ? checkMethod(spec.method) : null };
   if (has(spec, "sizing")) out.sizing = hydraulicsOptions(spec.sizing);
   if (has(spec, "max_iterations")) {
     out.maxIterations = Number(spec.max_iterations);
@@ -177,6 +207,16 @@ function checkRigorous(spec) {
     if (!(Number.isFinite(out.P) && out.P > 0)) throw fail("BAD_INPUT", `Column: P_kPa must be a positive number (got ${JSON.stringify(spec.P_kPa)}).`);
   }
   return out;
+}
+
+/** How many specifications a column takes: one per end with a condenser (not a decanter, which fixes the reflux) or a
+ *  reboiler; and which. */
+function specCount(ends, decanter) {
+  return (ends.condenser === "none" || decanter ? 0 : 1) + (ends.reboiler === "none" ? 0 : 1);
+}
+function allowedSpecs(ends, decanter) {
+  return Object.keys(RIGOROUS_SPECS).filter(k => !((ends.condenser === "none" || decanter) && ["reflux_ratio", "condenser_duty_kW"].includes(k))
+    && !(ends.reboiler === "none" && ["boilup_ratio", "reboiler_duty_kW"].includes(k)));
 }
 
 /** A column's own property method: { model, vapour?, sets?, prefer? }, as a flowsheet's thermo. */
@@ -192,21 +232,27 @@ function checkMethod(m) {
  *  pressure have defaults). A purity counts in place of its recovery, so that it reaches the solver and is refused
  *  there as not built yet; so does the rigorous mode. */
 function dof(spec) {
-  if (spec.mode === "rigorous") {
+  const configuration = spec.configuration ?? "distillation";
+  if (!COLUMN_CONFIGURATIONS.includes(configuration)) return { needed: 0, given: 0, missing: [], extra: [] };   // refused by checkSpec
+  if (spec.mode === "rigorous" || (spec.mode == null && configuration !== "distillation")) {
     const out = { needed: 4, given: 0, missing: [], extra: [] };
     for (const [k, what] of [["stages", "the number of stages"], ["feed_stage", "the feed stage"]]) {
       if (has(spec, k)) out.given += 1; else out.missing.push(what);
     }
-    // a decanter returns one liquid entirely: one specification fewer
-    const k = spec.condenser === "decanter" ? 1 : 2;
+    // a decanter returns one liquid entirely: one specification fewer; an end without a condenser or a reboiler none
+    let ends;
+    // ends that do not fit the configuration: nothing to count; checkSpec refuses them with the reason
+    try { ends = endsOf(spec, COLUMN_CONFIGURATIONS.includes(configuration) ? configuration : "distillation"); } catch { return { needed: 0, given: 0, missing: [], extra: [] }; }
+    const k = specCount(ends, spec.condenser === "decanter" && configuration === "distillation");
     out.needed = 2 + k;
     const g = [...Object.keys(RIGOROUS_SPECS), ...PURITY].filter(key => has(spec, key));
     out.given += Math.min(g.length, k);
     if (g.length < k) out.missing.push(`${k - g.length === 2 ? "two specifications" : k === 1 ? "one specification" : "one more specification"} (${k === 1 ? "boil-up ratio, distillate or bottoms flow, reboiler duty" : "reflux ratio, boil-up ratio, distillate or bottoms flow, condenser or reboiler duty"})`);
-    if (g.length > k) out.extra.push(`${g.join(", ")}: give ${k === 1 ? "one (the decanter fixes the reflux)" : "two"}`);
+    if (g.length > k) out.extra.push(`${g.join(", ")}: ${k === 0 ? `the ${configuration} takes no specification (no condenser, no reboiler)` : `give ${k === 1 ? (ends.condenser === "none" ? "one (no condenser)" : "one (the decanter fixes the reflux)") : "two"}`}`);
     return out;
   }
-  if ((spec.mode ?? "shortcut") !== "shortcut") return { needed: 0, given: 0, missing: [], extra: [] };
+  // the shortcut of an absorber or a stripper: nothing to count; checkSpec refuses it with the reason
+  if ((spec.mode ?? "shortcut") !== "shortcut" || configuration !== "distillation") return { needed: 0, given: 0, missing: [], extra: [] };
   const rows = [
     [["light_key"], "the light key"], [["heavy_key"], "the heavy key"],
     [["recovery_light_key_in_distillate", "distillate_purity"], "the light key's recovery in the distillate"],
@@ -334,21 +380,30 @@ function solveRigorous(sys, feeds, s) {
   // the column's own method, with the P-H boundary at every stream that enters and leaves it
   const own = s.method ? methodSystem(sys, s.method) : null;
   const csys = own ?? sys;
-  const boundary = [];
+  const boundary = [], inColumn = feeds.map(f => f);
   if (own) {
     feeds.forEach((f, k) => {
       const name = feeds.length > 1 ? `feed ${k + 1}` : "the feed";
       const c = crossBoundary(own, f.flows, f.P_kPa, f.H_kW, name, `the column's method (${methodName(s.method)})`);
+      inColumn[k] = c;
       boundary.push({ stream: name, into: "column", P_kPa: f.P_kPa, H_kW: f.H_kW, T_before_K: f.T_K, T_after_K: c.T_K, dT_K: c.T_K - f.T_K, VF_before: f.VF, VF_after: c.VF });
     });
   }
-  const r = solveCascade({ sys: csys, P_kPa: P, stages: s.N, ends: { condenser: s.condenser, reflux_liquid: s.refluxLiquid }, phases: s.phases,
-    feeds: feeds.map((f, k) => ({ stage: s.feedStages[k], flows: f.flows.map(v => v * KMOL_H), H_W: f.H_kW * 1000 })),
+  // without a condenser (an absorber, a stripper) the sum-rates start takes each feed's liquid fraction and temperature,
+  // in the column's method
+  const open = s.condenser === "none";
+  const r = solveCascade({ sys: csys, P_kPa: P, stages: s.N, ends: { condenser: s.condenser, reboiler: s.reboiler, reflux_liquid: s.refluxLiquid }, phases: s.phases,
+    feeds: feeds.map((f, k) => ({ stage: s.feedStages[k], flows: f.flows.map(v => v * KMOL_H), H_W: f.H_kW * 1000,
+      ...(open ? { T_K: inColumn[k].T_K, ...(inColumn[k].VF != null ? { q: 1 - inColumn[k].VF } : {}) } : {}) })),
     specs: s.specs.map(({ kind, value }) => ({ kind, value })), maxIterations: s.maxIterations });
-  const total = s.condenser !== "partial", N = s.N;
+  const total = s.condenser === "total" || s.condenser === "decanter", N = s.N;
   const kmol = v => v / KMOL_H;
   const d = r.products.distillate.flows.map(kmol), b = r.products.bottoms.flows.map(kmol);
+  // a nonvolatile component's trace in a vapour product (about 1e-20 of its liquid's) goes with the bottoms: a vapour
+  // stream cannot carry a nonvolatile component (src/equilibrium/flash.js refuses its dew point)
+  if (!total && sys.nonvolatile?.some(Boolean)) sys.nonvolatile.forEach((nv, i) => { if (nv) { b[i] += d[i]; d[i] = 0; } });
   let distillate, bottoms;
+  const fallback = [];
   if (own) {
     // the products leave with the column's enthalpies; in the flowsheet's method their temperatures follow by P-H
     const flowsheetName = `the flowsheet's method (${sys.model})`;
@@ -358,8 +413,17 @@ function solveRigorous(sys, feeds, s) {
       boundary.push({ stream: name, into: "flowsheet", P_kPa: P, H_kW: st.H_kW, T_before_K: T, T_after_K: st.T_K, dT_K: st.T_K - T, VF_after: st.VF });
     }
   } else {
-    distillate = stream(sys, { flow_kmol_h: d, P_kPa: P, VF: total ? 0 : 1 });
-    bottoms = stream(sys, { flow_kmol_h: b, P_kPa: P, VF: 0 });
+    // saturated at P; where the flash at a vapour fraction does not converge (seen at the bubble point of water with
+    // glucose and a trace of ethanol, Modified UNIFAC 2.0), the product's enthalpy flow from the column, by P-H
+    const saturated = (flows, VF, H_W, name) => {
+      try { return stream(sys, { flow_kmol_h: flows, P_kPa: P, VF }); } catch (e) {
+        if (e?.code !== "NO_CONVERGENCE") throw e;
+        fallback.push(name);
+        return stream(sys, { flow_kmol_h: flows, P_kPa: P, H_kW: H_W / 1000 });
+      }
+    };
+    distillate = saturated(d, total ? 0 : 1, r.products.distillate.H_W, "the distillate");
+    bottoms = saturated(b, 0, r.products.bottoms.H_W, "the bottoms");
   }
   const Qc = r.duties.condenser_W / 1000, Qr = r.duties.reboiler_W / 1000;
   const byId = arr => Object.fromEntries(sys.ids.map((id, i) => [id, arr[i]]));
@@ -368,22 +432,25 @@ function solveRigorous(sys, feeds, s) {
   const profile = r.stages.map(st => ({ stage: st.stage, name: st.name, T_K: st.T_K, P_kPa: st.P_kPa, L_kmol_h: kmol(st.L_mol_s),
     V_kmol_h: kmol(st.V_mol_s), duty_kW: st.duty_W / 1000, x: byId(st.x), y: st.y ? byId(st.y) : null,
     ...(s.phases === "VLL" ? { liquids: st.liquids ? { light: liquid(st.liquids.light), heavy: liquid(st.liquids.heavy), named_by: st.liquids.named, ...(st.liquids.reflux ? { reflux: st.liquids.reflux } : {}) } : null } : {}) }));
-  const R = r.stages[0].L_mol_s / sum(r.products.distillate.flows), boil = r.stages[N - 1].V_mol_s / sum(r.products.bottoms.flows);
+  // the reflux and boil-up ratios exist only where there is a condenser and a reboiler
+  const R = s.condenser === "none" ? null : r.stages[0].L_mol_s / sum(r.products.distillate.flows);
+  const boil = s.reboiler === "none" ? null : r.stages[N - 1].V_mol_s / sum(r.products.bottoms.flows);
   const condenserWord = s.condenser === "decanter" ? `decanter (the ${s.refluxLiquid} liquid refluxed, the other the distillate)` : `${s.condenser} condenser`;
   const twoLiquidStages = r.stages.filter(st => st.liquids).map(st => st.stage);
   const notes = [
-    `Rigorous column: ${N} stages (1 the ${condenserWord}, ${N} the reboiler), feed${s.feedStages.length > 1 ? "s" : ""} on stage${s.feedStages.length > 1 ? "s" : ""} ${s.feedStages.join(", ")}, at ${fmt(P)} kPa without pressure drop. The MESH equations of every stage were solved together by Newton's method (Naphtali-Sandholm), started by the ${r.solver.start}, in ${r.iterations} iterations; every group of residuals is within its tolerance (state.residuals). Converged is not validated against data: the result is as good as the method and its parameters.`,
+    `Rigorous ${s.configuration === "distillation" ? "column" : s.configuration}: ${N} stages (1 the ${s.condenser === "none" ? "top stage, without a condenser" : condenserWord}, ${N} the ${s.reboiler === "none" ? "bottom stage, without a reboiler" : "reboiler"}), feed${s.feedStages.length > 1 ? "s" : ""} on stage${s.feedStages.length > 1 ? "s" : ""} ${s.feedStages.join(", ")}, at ${fmt(P)} kPa without pressure drop. The MESH equations of every stage were solved together by Newton's method (Naphtali-Sandholm), started by the ${r.solver.start}, in ${r.iterations} iterations; every group of residuals is within its tolerance (state.residuals). Converged is not validated against data: the result is as good as the method and its parameters.`,
     ...(s.phases === "VLL" ? [twoLiquidStages.length
       ? `Two liquids on stage${twoLiquidStages.length > 1 ? "s" : ""} ${twoLiquidStages.join(", ")} (looked for on every stage: the tangent-plane test of each stage's liquid, then the liquid-liquid split at its temperature); both liquids of a stage leave it together${s.condenser === "decanter" ? ", except in the decanter, where they are separated" : ""}. They are named light and heavy by density.`
       : "Two liquids were looked for on every stage (phases VLL); every stage holds one liquid."] : []),
     ...(own ? [`The column uses its own property method, ${methodName(s.method)}, while the flowsheet uses ${sys.model}. At each stream that enters or leaves the column the component flows, the pressure and the enthalpy flow are kept and the temperature is found by a P-H flash in the receiving method (state.boundary): ${boundary.map(q => `${q.stream} ${q.dT_K >= 0 ? "+" : ""}${fmt(q.dT_K)} K`).join(", ")}.`] : []),
+    ...(fallback.length ? [`The flash at the products' saturation did not converge for ${fallback.join(" and ")}; ${fallback.length > 1 ? "they take" : "it takes"} the column's enthalpy flow instead, by a P-H flash.`] : []),
     ...r.notes,
   ];
   if (!own && (Math.abs(distillate.T_K - r.stages[0].T_K) > 0.01 || Math.abs(bottoms.T_K - r.stages[N - 1].T_K) > 0.01)) {
     notes.push(`The products' temperatures from the flash (${fmt(distillate.T_K)} and ${fmt(bottoms.T_K)} K) differ from the stages' (${fmt(r.stages[0].T_K)} and ${fmt(r.stages[N - 1].T_K)} K).`);
   }
   const state = {
-    mode: "rigorous", P_kPa: P, condenser: s.condenser, phases: s.phases, ...(s.condenser === "decanter" ? { reflux_liquid: s.refluxLiquid } : {}),
+    mode: "rigorous", configuration: s.configuration, P_kPa: P, condenser: s.condenser, reboiler: s.reboiler, phases: s.phases, ...(s.condenser === "decanter" ? { reflux_liquid: s.refluxLiquid } : {}),
     stages: N, feed_stages: s.feedStages,
     specifications: Object.fromEntries(s.specs.map(x => [x.key, x.key.endsWith("_kmol_h") ? kmol(x.value) : x.key.endsWith("_kW") ? x.value / 1000 : x.value])),
     reflux_ratio: R, boilup_ratio: boil, D_kmol_h: D, B_kmol_h: B, condenser_kW: Qc, reboiler_kW: Qr,
