@@ -55,9 +55,10 @@
  *   The outlets keep the port ids "distillate" (the gas leaving the top) and "bottoms" (the liquid leaving the
  *   bottom), so project files keep working; the workbench names them "gas out" and "liquid out" (the maintainer,
  *   2026-11-04). A gas dissolving in a liquid needs a method that describes its solubility (docs/METHOD_SELECTION.md,
- *   step 2): an absorber or stripper refuses an activity model (or the ideal solution) with a component above its
- *   critical temperature, and an equation of state with a light gas and a polar component (Henry's law or PSRK would
- *   be needed; CHEPTA's methods do not have them).
+ *   step 2; proposal 0017): in an activity model with water the gases with a Henry's law constant dissolve by
+ *   Henry's law; any other component above its critical temperature is refused; an equation of state with a light gas
+ *   and a polar component needs a k_ij for each such pair (a warning about its range), and sour water and amines are
+ *   refused until electrolytes (gasSolubilityCheck).
  *
  * The column's own method (proposal 0015, Part I, section 3): the P-H boundary at every stream that enters or leaves
  * the column keeps the component flows, the pressure and the enthalpy flow, and finds the temperature by a P-H flash in
@@ -82,6 +83,7 @@ import { stream } from "../../stream/stream.js";
 import { system } from "../../system.js";
 import { findComponent, componentRecord } from "../../thermo/components.js";
 import { EOS_GASES, isPolar } from "../../thermo/method-advice.js";
+import { HENRY_GASES } from "../../thermo/henry.js";
 import { anyBubbleT } from "../../equilibrium/bubble-any.js";
 import { registerUnit } from "../units.js";
 import { solveCascade } from "./engine.js";
@@ -273,28 +275,61 @@ function checkSeparator(spec, configuration) {
   return out;
 }
 
+/** Amines that absorb acid gases by reaction (gas treating): an electrolyte model's work (milestone M5). */
+const AMINES = new Set(["mea", "dea", "mdea"]);
+
 /**
  * Can the method describe a gas dissolving in the liquid of an absorber or a stripper (docs/METHOD_SELECTION.md,
- * step 2)? An activity model (or the ideal solution) takes a component's vapour pressure, which has no meaning above its
- * critical temperature; an equation of state with the classical mixing rule does not describe a light gas in a polar
- * liquid (Henry's law, PSRK or Wong-Sandler would be needed, not in CHEPTA's methods). T_K: the highest temperature
- * in the column (its feeds before solving, its stages after). Throws NOT_AVAILABLE with the reason.
+ * step 2; proposal 0017; the maintainer, 2026-11-04)? Returns the warnings to give, or throws NOT_AVAILABLE with the
+ * reason. T_K: the highest temperature in the column (its feeds before solving, its stages after).
+ *  - An activity model (or the ideal solution): a gas with a Henry's law constant in water is a Henry component of the
+ *    system (f = H x); any other component above its critical temperature would take its solubility from a vapour
+ *    pressure extrapolated beyond the critical point: refused.
+ *  - Peng-Robinson or SRK with a light gas and a polar component: allowed where every such gas-polar pair has a k_ij
+ *    (fitted or databank), with a warning about its range, as the DWSIM Property Packages Guide advises ("Sour gas
+ *    (with H2S, CO2): PR with kij ... Set binary interaction parameters"; "Peng-Robinson ... performs poorly for
+ *    water/alcohol mixtures"; https://dwsim.org/tutorials/en/reference/property-packages-guide.html, read 2026-11-04);
+ *    refused without one. Sour water (ammonia with hydrogen sulfide or carbon dioxide in water) and amines are refused
+ *    in every case: they react in the liquid ("Sour Water ... Specialized for gas treating", the same guide), which
+ *    needs an electrolyte model (milestone M5).
  */
 function gasSolubilityCheck(csys, T_K, what) {
   const eos = csys.kind === "eos";
   const comps = csys.ids.map(id => componentRecord(id, csys.userData));
   const nonvol = i => csys.nonvolatile?.[i];
-  const above = csys.ids.map((id, i) => (!nonvol(i) && Number.isFinite(comps[i]?.Tc_K) && comps[i].Tc_K < T_K ? i : -1)).filter(i => i >= 0);
-  if (!eos && above.length) {
-    throw fail("NOT_AVAILABLE", `Column: ${what}: ${above.map(i => `${csys.names[i]} (critical temperature ${fmt(comps[i].Tc_K)} K)`).join(", ")} ${above.length > 1 ? "are" : "is"} above ${above.length > 1 ? "their" : "its"} critical temperature at ${fmt(T_K)} K, so ${csys.model === "ideal" ? "the ideal solution (Raoult's law)" : csys.model} would take ${above.length > 1 ? "their" : "its"} solubility from a vapour pressure extrapolated beyond the critical point. A gas dissolved in a liquid needs Henry's law, which CHEPTA's methods do not have (docs/METHOD_SELECTION.md, step 2). For hydrocarbons and light gases without polar components, use Peng-Robinson or SRK.`);
+  const above = csys.ids.map((id, i) => (!nonvol(i) && !csys.henry?.[i] && Number.isFinite(comps[i]?.Tc_K) && comps[i].Tc_K < T_K ? i : -1)).filter(i => i >= 0);
+  const names = list => list.map(i => csys.names[i]).join(", ");
+  const has = id => csys.ids.includes(id);
+  const reacting = csys.ids.filter(id => AMINES.has(id));
+  if (has("water") && has("ammonia") && (has("hydrogen-sulfide") || has("carbon-dioxide"))) reacting.push("sour water");
+  if (reacting.length) {
+    throw fail("NOT_AVAILABLE", `Column: ${what}: ${reacting.includes("sour water") ? "ammonia with hydrogen sulfide or carbon dioxide in water (sour water)" : csys.names.filter((_, i) => AMINES.has(csys.ids[i])).join(", ")} absorbs acid gases by reaction in the liquid (ions), which needs an electrolyte model ("Sour Water ... Specialized for gas treating", DWSIM Property Packages Guide). CHEPTA's electrolyte models come with milestone M5 of the methods track; until then such a column is refused.`);
   }
+  // a gas with a Henry's law constant in water, with water and another liquid: not a Henry component (proposal 0017)
+  const mixed = !eos && has("water") && csys.ids.map((id, i) => i).filter(i => HENRY_GASES.includes(csys.ids[i]) && !csys.henry?.[i]);
+  if (mixed?.length) {
+    const others = csys.ids.map((id, i) => i).filter(i => csys.ids[i] !== "water" && !HENRY_GASES.includes(csys.ids[i]));
+    throw fail("NOT_AVAILABLE", `Column: ${what}: ${names(mixed)} dissolve${mixed.length > 1 ? "" : "s"} by Henry's law in water alone (proposal 0017); with ${names(others)} in the liquid the solvent is not water alone, and CHEPTA has no Henry's law constants for a mixed or other solvent. Use water alone as the solvent, or Peng-Robinson or SRK where the gas and the liquid's components have their k_ij.`);
+  }
+  if (!eos && above.length) {
+    throw fail("NOT_AVAILABLE", `Column: ${what}: ${above.map(i => `${csys.names[i]} (critical temperature ${fmt(comps[i].Tc_K)} K)`).join(", ")} ${above.length > 1 ? "are" : "is"} above ${above.length > 1 ? "their" : "its"} critical temperature at ${fmt(T_K)} K, so ${csys.model === "ideal" ? "the ideal solution (Raoult's law)" : csys.model} would take ${above.length > 1 ? "their" : "its"} solubility from a vapour pressure extrapolated beyond the critical point. CHEPTA has Henry's law constants only for ${HENRY_GASES.length} gases in water (proposal 0017), and ${above.length > 1 ? "these are" : "this is"} not one of them in this mixture. For hydrocarbons and light gases without polar components, use Peng-Robinson or SRK.`);
+  }
+  const warnings = [];
   if (eos) {
     const gas = csys.ids.map((id, i) => (EOS_GASES.has(id) || above.includes(i) ? i : -1)).filter(i => i >= 0);
     const polar = csys.ids.map((id, i) => (isPolar(id, comps[i]?.formula) ? i : -1)).filter(i => i >= 0);
-    if (gas.length && polar.length) {
-      throw fail("NOT_AVAILABLE", `Column: ${what}: ${csys.model} with ${gas.map(i => csys.names[i]).join(", ")} (${gas.length > 1 ? "light gases" : "a light gas"}) and ${polar.map(i => csys.names[i]).join(", ")} (polar): an equation of state with the classical mixing rule does not describe a gas dissolving in a polar liquid. That needs Henry's law, PSRK or a cubic equation with Wong-Sandler or MHV2 mixing rules, which CHEPTA's methods do not have yet (docs/METHOD_SELECTION.md, steps 2 and 4). For hydrocarbons and light gases without polar components, Peng-Robinson or SRK is the method.`);
+    const pairOf = (i, j) => (csys.info?.pairs ?? []).find(p => p.pair?.includes(csys.names[i]) && p.pair?.includes(csys.names[j]) && Number.isFinite(p.kij) && p.tier !== "none");   // "none": no k_ij in the databank, 0 used
+    const missing = [], found = [];
+    for (const i of gas) for (const j of polar) { const p = pairOf(i, j); if (p) found.push({ i, j, p }); else missing.push([i, j]); }
+    if (missing.length) {
+      throw fail("NOT_AVAILABLE", `Column: ${what}: ${csys.model} with ${missing.map(([i, j]) => `${csys.names[i]} + ${csys.names[j]}`).join(", ")}, a light gas and a polar liquid without a k_ij: the classical mixing rule then gives the gas's solubility without any fit to data. Add the pair's k_ij as your own data (My data), or, for a gas in water, use an activity model, where ${HENRY_GASES.length} gases dissolve by Henry's law (proposal 0017).`);
+    }
+    if (found.length) {
+      warnings.push({ code: "METHOD_RANGE", message: `${csys.model} with ${names([...new Set(gas)])} dissolving in ${names([...new Set(polar)])}: the gas's solubility rests on the k_ij of ${found.map(({ i, j, p }) => `${csys.names[i]} + ${csys.names[j]} (${p.kij}${p.T_range_K ? `, fitted at ${p.T_range_K[0]}-${p.T_range_K[1]} K` : ""})`).join(", ")}, and an equation of state with the classical mixing rule describes a polar liquid poorly (DWSIM Property Packages Guide: "performs poorly for water/alcohol mixtures"). Check the result against measured solubilities; for a gas in water an activity model with Henry's law is the alternative (proposal 0017).`,
+        remedy: "Compare with the activity model, where the gas dissolves by Henry's law in water." });
     }
   }
+  return warnings;
 }
 
 /** A column's own property method: { model, vapour?, sets?, prefer? }, as a flowsheet's thermo. */
@@ -479,14 +514,14 @@ function solveRigorous(sys, feeds, s) {
     });
   }
   const what = s.configuration === "absorber" ? "the absorber" : "the stripper";
-  if (separator) gasSolubilityCheck(csys, Math.max(...feeds.map(f => f.T_K)), `${what}'s feeds`);
+  const methodWarnings = separator ? gasSolubilityCheck(csys, Math.max(...feeds.map(f => f.T_K)), `${what}'s feeds`) : [];
   const r = solveCascade({ sys: csys, P_kPa: P, stages: s.N, ends: { condenser: s.condenser, reflux_liquid: s.refluxLiquid, ...(separator ? { reboiler: s.reboiler } : {}) }, phases: s.phases,
     feeds: feeds.map((f, k) => ({ stage: s.feedStages[k], flows: f.flows.map(v => v * KMOL_H), H_W: f.H_kW * 1000,
       // an absorber's start takes each feed's liquid fraction and temperature
       ...(separator ? { q: 1 - (Number.isFinite(f.VF) ? f.VF : 0), T_K: f.T_K } : {}) })),
     ...(separator ? { duties: s.duties } : {}),
     specs: s.specs.map(({ kind, value }) => ({ kind, value })), maxIterations: s.maxIterations });
-  if (separator) gasSolubilityCheck(csys, Math.max(...r.stages.map(st => st.T_K)), `${what}'s stages`);
+  if (separator) gasSolubilityCheck(csys, Math.max(...r.stages.map(st => st.T_K)), `${what}'s stages`);   // warnings given once, above
   const total = s.condenser === "total" || s.condenser === "decanter", N = s.N;
   const kmol = v => v / KMOL_H;
   const d = r.products.distillate.flows.map(kmol), b = r.products.bottoms.flows.map(kmol);
@@ -500,8 +535,15 @@ function solveRigorous(sys, feeds, s) {
       boundary.push({ stream: name, into: "flowsheet", P_kPa: P, H_kW: st.H_kW, T_before_K: T, T_after_K: st.T_K, dT_K: st.T_K - T, VF_after: st.VF });
     }
   } else {
-    distillate = stream(sys, { flow_kmol_h: d, P_kPa: P, VF: total ? 0 : 1 });   // without a condenser: the top gas
-    bottoms = stream(sys, { flow_kmol_h: b, P_kPa: P, VF: 0 });
+    if (separator) {
+      // an absorber's or stripper's products by their enthalpy flows (a P-H flash lands on the stage's temperature):
+      // the top gas may have no bubble point at all (a gas of nitrogen and carbon dioxide), so not by VF
+      distillate = stream(sys, { flow_kmol_h: d, P_kPa: P, H_kW: r.products.distillate.H_W / 1000 });
+      bottoms = stream(sys, { flow_kmol_h: b, P_kPa: P, H_kW: r.products.bottoms.H_W / 1000 });
+    } else {
+      distillate = stream(sys, { flow_kmol_h: d, P_kPa: P, VF: total ? 0 : 1 });
+      bottoms = stream(sys, { flow_kmol_h: b, P_kPa: P, VF: 0 });
+    }
   }
   const Qc = r.duties.condenser_W / 1000, Qr = r.duties.reboiler_W / 1000;
   const byId = arr => Object.fromEntries(sys.ids.map((id, i) => [id, arr[i]]));
@@ -544,7 +586,7 @@ function solveRigorous(sys, feeds, s) {
     ...(own ? { method: { ...s.method }, boundary } : {}),
     converged: r.converged, iterations: r.iterations, residuals: r.residuals, tolerances: r.tolerances, solver: r.solver,
   };
-  const warnings = [...r.warnings];
+  const warnings = [...methodWarnings, ...r.warnings];
   let sizing;
   if (s.sizing) {
     sizing = columnHydraulics(csys, profile, s.sizing);   // the column's densities, in its own method when it has one
