@@ -94,8 +94,9 @@ test("exactly one default parameter set per pair and model; set names unique", (
 
 test("the replaced ChemSep sets of the refitted pairs are ordinary non-default sets", () => {
   const refitted = [["methanol", "acetone"], ["methanol", "chloroform"], ["acetone", "chloroform"], ["water", "ethanol"], ["ethanol", "ethyl-acetate"], ["water", "ethyl-acetate"], ["ethanol", "ethylene-glycol"]];
-  // further fitted sets of a pair (water + ethanol: the vapour-liquid + excess-enthalpy fit) are non-default
-  const further = { "water,ethanol": 1 };
+  // further fitted sets of a pair (water + ethanol: the vapour-liquid + excess-enthalpy fit; water + ethyl acetate:
+  // the joint fit to the ternary tie lines with acetic acid, fit_ternary_lle.py) are non-default
+  const further = { "water,ethanol": 1, "water,ethyl-acetate": 1 };
   for (const model of ["NRTL", "UNIQUAC"]) {
     for (const [a, b] of refitted) {
       const sets = binaries.filter(p => p.model === model && [p.i, p.j].sort().join() === [a, b].sort().join());

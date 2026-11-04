@@ -100,6 +100,21 @@ Checked so far:
 | Electrolytes | (eNRTL, Pitzer) | **not available**, shown as "not available yet"; planned: roadmap M5 (ionic liquids: M6) |
 | Polymers | (Flory–Huggins, PC-SAFT) | **not available**; planned: roadmap M4 |
 
+## Two liquids: extraction and decanting (proposal 0015, Part I, section 6)
+
+- **Method:** NRTL or UNIQUAC. Only the liquid's activity coefficients set the two liquids, so the vapour model does
+  not matter for a liquid-liquid calculation. (With the acid chemical theory, the vapour-liquid-liquid flash itself still
+  refuses a second liquid.)
+- **Parameters:** a binary fit reproduces its own pair, not a ternary. Where the pairs were fitted to binary data only,
+  check the ternary's tie lines first. Water + acetic acid + ethyl acetate: the default sets miss the measured tie lines
+  by up to 0.16 in mole fraction in the ester-rich liquid. For extraction, choose the jointly fitted sets
+  `fitted-lle-roque2018` of all three pairs together (`sets`; validation/python/fit_ternary_lle.py). They follow the
+  tie lines and still follow each pair's binary data.
+- **Fit targets** (the maintainer, 2026-10-29): each record's stated uncertainty, per system, with the solute in view;
+  0.01 in mole fraction is not a target for every system.
+- **No measured tie lines:** Modified UNIFAC 2.0 gives a prediction (tier "predicted"), to be compared with what data
+  there are.
+
 ## Where the rules are applied
 
 - **The flowsheet test suite** (docs/FLOWSHEET_TESTS.md): every generated case is checked

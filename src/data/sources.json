@@ -3623,6 +3623,20 @@
         "validation/data/vle/cyclohexane_dioxane_10-1016-j-fluid-2005-09-010_101.3kPa_tx.json"
       ]
     },
+    "roque2018-water-acetic-acid-ethyl-acetate": {
+      "title": "Liquid-liquid equilibrium data for ternary systems of water + acetic acid + acetate esters at 293.2 K and 303.2 K and ~ 95 kPa",
+      "authors": "L. R. Roque, R. R. Pinto, L. H. de Oliveira, S. C. Rabelo",
+      "year": 2018,
+      "published": "Fluid Phase Equilib. 463 (2018) 34-47",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2018.02.003",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2018.02.003.html",
+      "access": "Journal article is subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/lle/water_acetic-acid_ethyl-acetate_lle_roque2018.json"
+      ]
+    },
     "rosen2005-nitrogen-carbon-dioxide-hydrogen-sulfide-methane-ethane-propane-isobutane-n-butane-isopentane-n-pentane-n-hexane-n-heptane-n-octane-n-nonane-n-decane-n-undecane": {
       "title": "VMGSim: Revisiting the Cavett Problem",
       "authors": "E. M. Rosen",
@@ -4013,6 +4027,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/furan_toluene_10-1021-acs-jced-6b00424_tpx.json"
+      ]
+    },
+    "toikka2014-water-acetic-acid-ethyl-acetate": {
+      "title": "Solubility, liquid-liquid equilibrium and critical states for the quaternary system acetic acid-ethanol-ethyl acetate-water at 303.15 K and 313.15 K",
+      "authors": "M. Toikka, A. A. Samarov, M. Trofimova, A. Golikova, N. Tsvetov",
+      "year": 2014,
+      "published": "Fluid Phase Equilib. 373 (2014) 72-79",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2014.04.013",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2014.04.013.html",
+      "access": "Journal article is subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/lle/water_acetic-acid_ethyl-acetate_lle_toikka2014.json"
       ]
     },
     "tojo2004-dimethyl-carbonate-n-nonane": {
