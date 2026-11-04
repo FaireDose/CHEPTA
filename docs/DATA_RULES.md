@@ -246,7 +246,17 @@ new refit of a ChemSep record is made (section 1).
   isotherm, at the mean temperature.
 - A fit is written when it follows its data within 0.5 K and 0.012 in y (1.5 % in P). Between that and 2.5 K, 0.02,
   3 % it is written with a quality warning and a "fit-quality" known issue. A fit that predicts a liquid split inside
-  its data range is never written.
+  its data range is never written, unless the data show the two liquids (below).
+- **Two liquids measured with the VLE data** (the maintainer, 2026-11-04: "the procedure should be fixed on how the
+  liquid data is extracted"). A ThermoML record often stores the two liquids of a three-phase point as their own sets
+  (phases "Liquid mixture 1" and "Liquid mixture 2"), while the P-x or T-x set lists the same two compositions as
+  ordinary rows. `vle_batch.py` reads these sets into the data file (`two_liquids`); `fit_parameters.py` fits them as
+  liquid-liquid equilibrium (equal activities of both components), leaves out the rows strictly between the two liquids
+  at the same temperature (points of the three-phase plateau, not one liquid's bubble point), and then requires a split
+  at those temperatures and no measured one-liquid row inside a predicted split. Before 2026-11-04 these sets were
+  skipped, so a fit that rightly predicted the split was refused.
+- Wilson (proposal 0016) cannot give two liquids: it is not fitted to liquid-liquid data, a heterogeneous azeotrope or
+  data with two liquids, nor where the pair's default NRTL (else UNIQUAC) set predicts two liquids in the data range.
 - The property method of a test or example follows [METHOD_SELECTION.md](METHOD_SELECTION.md).
 
 ## 6. Components without measured critical constants (proposal 0009)

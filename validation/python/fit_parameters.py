@@ -220,20 +220,42 @@ def he_file(name, pair):
     return out
 
 
+def two_liquids_file(name, pair):
+    """The "two_liquids" block of a data file (vle_batch.py: the record's sets with phases Liquid mixture 1 and 2) as
+    [(T_K, x1 in liquid I, x1 in liquid II)] with x1 of pair[0]; [] when the file has none."""
+    d = load(name)
+    tl = d.get("two_liquids")
+    if not tl:
+        return []
+    flip = _orient(d, name, pair)
+    col = {c: k for k, c in enumerate(tl["columns"])}
+    f = (lambda v: 1 - v) if flip else (lambda v: v)
+    return [(r[col["T_K"]], f(r[col["x_1_I"]]), f(r[col["x_1_II"]])) for r in tl["rows"]]
+
+
+def inside_split(x1, T, ll, dT=0.5):
+    """True when x1 at T lies strictly between the two measured liquids of a two-liquid point within dT: such a row is
+    a point of the three-phase plateau, not the bubble point of one liquid."""
+    return any(abs(T - Tl) <= dT and min(a, b) + 1e-6 < x1 < max(a, b) - 1e-6 for Tl, a, b in ll)
+
+
 def file_sets(spec, key="files"):
-    """Data sets of a "txy-file" fit: list of (kind, name, content)."""
+    """Data sets of a "txy-file" fit: list of (kind, name, content). A file with a "two_liquids" block adds an "lle"
+    set of those points (from the same record), and its rows strictly between the two liquids are left out."""
     names = spec.get(key, [spec["file"]] if key == "files" and "file" in spec else [])
     out = []
     for name in names:
         d = load(name)
         kind = d.get("kind")
+        ll = two_liquids_file(name, spec["pair"]) if kind in ("isobaric-txy", "isobaric-tx", "isothermal-px", "tpx") else []
         if kind is None and name == "water_ethylene_glycol_760mmHg.json":   # the older compilation format
             P, pts = water_eg_txy()
             if spec["pair"] != ("water", "ethylene-glycol"):
                 raise ValueError(f"{name}: pair {spec['pair']}")
             out.append(("txy", name, (P, pts)))
         elif kind in ("isobaric-txy", "isobaric-tx"):
-            out.append(("txy", name, txy_file(name, spec["pair"])))
+            P, pts = txy_file(name, spec["pair"])
+            out.append(("txy", name, (P, [p for p in pts if not inside_split(p[0], p[1], ll)])))
         elif kind == "lle":
             out.append(("lle", name, lle_file(name, spec["pair"])))
         elif kind == "gamma-infinite-dilution":
@@ -243,11 +265,13 @@ def file_sets(spec, key="files"):
         elif kind == "excess-enthalpy":
             out.append(("he", name, he_file(name, spec["pair"])))
         elif kind == "isothermal-px":
-            out.append(("px", name, px_file(name, spec["pair"])))
+            out.append(("px", name, [p for p in px_file(name, spec["pair"]) if not inside_split(p[1], p[0], ll)]))
         elif kind == "tpx":
-            out.append(("tpx", name, tpx_file(name, spec["pair"])))
+            out.append(("tpx", name, [p for p in tpx_file(name, spec["pair"]) if not inside_split(p[1], p[0], ll)]))
         else:
             raise ValueError(f"{name}: unknown kind {kind!r}")
+        if ll:
+            out.append(("lle", name + " (two liquids)", ll))
     return out
 
 
@@ -771,6 +795,32 @@ def check_phase_splits(spec, model, params):
             break
         return
     sets = file_sets(spec)
+    if any(name.endswith(" (two liquids)") for _, name, _ in sets):
+        # two liquids measured with the VLE data (vle_batch.py, "two_liquids"): a split at every temperature of those
+        # points, and no measured one-liquid row predicted inside a split at its own temperature
+        s = System(list(spec["pair"]), model, params=[params])
+        ll = [p for _, name, c in sets if name.endswith(" (two liquids)") for p in c]
+        missing = sorted({round(float(T), 1) for T, _, _ in ll if not phase_splits(s, T)})
+        rows = []
+        for kind, _, c in sets:
+            if kind == "txy":
+                rows += [(x1, T) for x1, T, _ in c[1]]
+            elif kind in ("px", "tpx"):
+                rows += [(p[1], p[0]) for p in c]
+        cache, wrong = {}, []
+        for x1, T in rows:
+            # a row at a measured liquid's composition is on the edge of the split (its bubble point is the three-phase
+            # point): not judged here
+            if any(abs(T - Tl) <= 0.5 and min(abs(x1 - a), abs(x1 - b)) <= 0.02 for Tl, a, b in ll):
+                continue
+            sp = cache.setdefault(round(T, 2), phase_splits(s, T))
+            if any(a + 1e-3 < x1 < b - 1e-3 for a, b in sp):
+                wrong.append((round(x1, 3), round(float(T), 1)))
+        if missing or wrong:
+            raise SystemExit(f"{model} {spec['pair']}: " + "; ".join(
+                ([f"no liquid-liquid split at the measured two-liquid temperatures {missing} K"] if missing else [])
+                + ([f"measured one-liquid rows (x1, T) {wrong[:6]} fall inside a predicted split"] if wrong else [])) + "; not written.")
+        return
     want = 1 if any(kind in ("lle", "haz") for kind, _, _ in sets) else 0
     lo, hi = data_T_range(sets)
     s = System(list(spec["pair"]), model, params=[params])
