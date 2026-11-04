@@ -27,35 +27,40 @@ test("activity coefficients match the thermo library's Wilson with ChemSep's set
   g.forEach((v, i) => assert.ok(Math.abs(v - e.gamma_printed[i]) < 1e-7, `printed example: ${v} vs ${e.gamma_printed[i]}`));
 });
 
-test("bubble points at 101.3 kPa match the independent Python model", () => {
+test("bubble points at 101.3 kPa match the independent Python model (ChemSep's set and the default set)", () => {
   for (const set of ref.vle) {
-    const sys = createSystem({ components: set.components, model: "WILSON" });
+    const sys = createSystem({ components: set.components, model: "WILSON", sets: { [set.components.join("+")]: set.set } });
     for (const r of set.rows) {
       const b = bubbleT(sys, [r.x_1, 1 - r.x_1], set.P_kPa);
-      assert.ok(Math.abs(b.T - r.T_K) < 1e-4, `${set.file} x=${r.x_1}: T ${b.T} vs ${r.T_K}`);
-      assert.ok(Math.abs(b.y[0] - r.y_1) < 1e-6, `${set.file} x=${r.x_1}: y ${b.y[0]} vs ${r.y_1}`);
+      assert.ok(Math.abs(b.T - r.T_K) < 1e-4, `${set.file} (${set.set}) x=${r.x_1}: T ${b.T} vs ${r.T_K}`);
+      assert.ok(Math.abs(b.y[0] - r.y_1) < 1e-6, `${set.file} (${set.set}) x=${r.x_1}: y ${b.y[0]} vs ${r.y_1}`);
     }
   }
 });
 
-test("ChemSep's Wilson set against open isobaric data (ThermoML Archive)", () => {
-  // the limits are those a fitted set must meet in CHEPTA (docs/DATA_RULES.md section 5: 0.5 K and 0.012 in y), applied
-  // here to databank sets that were not fitted to these data
-  const within = ["ethanol_water_101kPa.json", "acetone_methanol_101kPa.json", "acetone_chloroform_101kPa.json",
-    "chloroform_methanol_101kPa.json", "ethyl-acetate_ethanol_101kPa.json"];
-  for (const f of within) {
-    const s = ref.vle.find(v => v.file === f);
-    assert.ok(s.mean_abs_dT_K < 0.5 && s.mean_abs_dy < 0.012, `${f}: ${s.mean_abs_dT_K} K, ${s.mean_abs_dy}`);
+test("ChemSep's Wilson set and the fitted default against open isobaric data (ThermoML Archive)", () => {
+  // the limits are those a fitted set must meet in CHEPTA (docs/DATA_RULES.md section 5: 0.5 K and 0.012 in y)
+  const files = ["ethanol_water_101kPa.json", "acetone_methanol_101kPa.json", "acetone_chloroform_101kPa.json",
+    "chloroform_methanol_101kPa.json", "ethyl-acetate_ethanol_101kPa.json", "ethanol_ethylene-glycol_101kPa.json"];
+  const pick = (f, chosen) => ref.vle.find(v => v.file === f && v.chosen === chosen);
+  // the default sets are the fits of proposal 0016, step 2, to these data: within the limits
+  for (const f of files) {
+    const s = pick(f, "default");
+    assert.match(s.set, /^fitted-/, `${f}: default set ${s.set}`);
+    assert.ok(s.mean_abs_dT_K < 0.5 && s.mean_abs_dy < 0.012, `${f} (${s.set}): ${s.mean_abs_dT_K} K, ${s.mean_abs_dy}`);
   }
-  // ethanol + ethylene glycol: ChemSep's Wilson set misses the measured boiling temperatures (Kamihama et al. 2012) by
-  // about 5 K on average, as ChemSep's NRTL set does (about 6 K); the fitted NRTL and UNIQUAC sets follow them. Kept
-  // here so that the deviation is seen, not hidden (proposal 0016; the fits are postponed until after M3)
-  const eg = ref.vle.find(v => v.file === "ethanol_ethylene-glycol_101kPa.json");
-  assert.ok(eg.mean_abs_dT_K > 2.5, `ethanol + ethylene glycol: ${eg.mean_abs_dT_K} K`);
-  // and the workbench says so (src/data/known-issues.json; the maintainer, 2026-11-04)
+  // ChemSep's set, not fitted to these data, stays selectable: within the same limits for the first five pairs
+  for (const f of files.slice(0, 5)) {
+    const s = pick(f, "chemsep");
+    assert.ok(s.mean_abs_dT_K < 0.5 && s.mean_abs_dy < 0.012, `${f} (chemsep): ${s.mean_abs_dT_K} K, ${s.mean_abs_dy}`);
+  }
+  // ethanol + ethylene glycol: ChemSep's set misses the measured boiling temperatures (Kamihama et al. 2012) by about 5 K
+  // on average, as ChemSep's NRTL set does (about 6 K); kept here so that the deviation is seen, not hidden, and the
+  // workbench says so (src/data/known-issues.json; the maintainer, 2026-11-04)
+  assert.ok(pick(files[5], "chemsep").mean_abs_dT_K > 2.5, `ethanol + ethylene glycol (chemsep): ${pick(files[5], "chemsep").mean_abs_dT_K} K`);
   const note = JSON.parse(readFileSync(new URL("../src/data/known-issues.json", import.meta.url))).issues
     .find(k => k.model === "WILSON" && k.kind === "databank-deviation" && k.components.join("+") === "ethanol+ethylene-glycol");
-  assert.match(note.message, /5\.3 K/);
+  assert.match(note.message, /set "chemsep"[\s\S]*5\.3 K[\s\S]*default/);
 });
 
 test("Wilson cannot predict two liquids: the liquid stays stable, the system warns, the column refuses VLL", () => {

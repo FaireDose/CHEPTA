@@ -1,11 +1,16 @@
 """
-Fit binary NRTL / UNIQUAC parameters to experimental data and write them to
+Fit binary NRTL / UNIQUAC / Wilson parameters to experimental data and write them to
 src/data/binaries.json. Each fit is defined in FITS below: which pair, which data
 file, and which parameters are free.
 
     python validation/python/fit_parameters.py            # fit and print, no changes
     python validation/python/fit_parameters.py --write    # fit and update binaries.json
     python validation/python/fit_parameters.py --only 1-propanol+water ... [--write]   # those pairs only
+    python validation/python/fit_parameters.py --models WILSON [--write]   # one model only (the others untouched)
+
+Wilson (proposal 0016, step 2): b_ij and b_ji are fitted, a_ij = ln(V_j / V_i) is held at the liquid volumes at
+298.15 K (wilson_a), the constant-volume form of ChemSep's set; it is not fitted to liquid-liquid data or a
+heterogeneous azeotrope (wilson_ok). A fitted Wilson set becomes the pair's default, ChemSep's stays as an alternative.
 
 Besides FITS below, the fit definitions written by vle_batch.py (validation/data/vle/fits.json:
 one isobaric T-x-y or isothermal P-x set from the NIST TRC ThermoML Archive per pair, with check
@@ -419,8 +424,48 @@ def score(spec, model, params):
     return float(out)
 
 
+def liquid_volume_298(cid):
+    """Liquid molar volume (m3/mol) at 298.15 K from the component's density record (DIPPR100 or DIPPR105), the
+    temperature held to the record's range as the engine does (for a component solid at 298.15 K: the record's lowest
+    temperature)."""
+    c = COMPONENTS[cid]
+    rec = c["properties"]["liquidDensity"]
+    T = min(max(298.15, rec["Tmin_K"]), rec["Tmax_K"])
+    k = rec["coefficients"]
+    if rec["equation"] == "DIPPR105":
+        rho = k["A"] / k["B"] ** (1 + (1 - T / k["C"]) ** k["D"])
+    elif rec["equation"] == "DIPPR100":
+        rho = sum(k.get(n, 0.0) * T ** e for e, n in enumerate("ABCDE"))
+    else:
+        raise ValueError(f"{cid}: liquid density equation {rec['equation']}")
+    return c["MW"] / 1000 / rho
+
+
+def wilson_a(i, j):
+    """Wilson's a_ij = ln(V_j / V_i), a_ji = -a_ij, with the liquid volumes at 298.15 K (proposal 0016, step 2: the
+    constant-volume form of ChemSep's set, confirmed by the maintainer on 2026-11-04); only b_ij and b_ji are fitted."""
+    a = float(np.log(liquid_volume_298(j) / liquid_volume_298(i)))
+    return a, -a
+
+
+def wilson_ok(spec):
+    """Can Wilson be fitted to this spec's data? Not to liquid-liquid data or a heterogeneous azeotrope: the Wilson
+    equation cannot give two liquids (proposal 0016)."""
+    if spec["data"] == "schmid":
+        return True
+    if spec["data"] != "txy-file":
+        return False
+    return not any(kind in ("lle", "haz") for kind, _, _ in file_sets(spec))
+
+
+def spec_models(spec):
+    """The models fitted for a spec: its "models", else NRTL and UNIQUAC, and Wilson where wilson_ok."""
+    base = list(spec.get("models", ["NRTL", "UNIQUAC"]))
+    return base + (["WILSON"] if "WILSON" not in base and wilson_ok(spec) else [])
+
+
 def make_params(model, i, j, p, alpha=0.3):
-    a_ij, a_ji = (p[2], p[3]) if len(p) > 2 else (0.0, 0.0)
+    a_ij, a_ji = (p[2], p[3]) if len(p) > 2 else (wilson_a(i, j) if model == "WILSON" else (0.0, 0.0))
     e = dict(model=model, i=i, j=j, a_ij=float(a_ij), a_ji=float(a_ji), b_ij=float(p[0]), b_ji=float(p[1]))
     if model == "NRTL":
         e["alpha"] = alpha
@@ -782,7 +827,7 @@ def point_test(spec, nterms=4):
     return float(np.mean(dy))
 
 
-def main(write, only=None):
+def main(write, only=None, models_only=None):
     binaries = json.loads(BIN_FILE.read_text())
     rejected, warned, done = [], [], []
     for spec in FITS + GENERATED:
@@ -796,7 +841,9 @@ def main(write, only=None):
                 test = f" Data consistency point test (Redlich-Kister fit to T-x): mean |dy| {dy_test:.3f}{' (passes, < 0.01)' if dy_test < 0.01 else ' (fails, >= 0.01)'}."
         if spec.get("generated"):
             done.append(tuple(sorted(spec["pair"])))
-        for model in spec.get("models", ["NRTL", "UNIQUAC"]):
+        for model in spec_models(spec):
+            if models_only is not None and model not in models_only:
+                continue
             if not spec.get("generated"):
                 params, _ = fit(spec, model)
                 if spec["data"] == "txy-file":
@@ -902,7 +949,8 @@ def main(write, only=None):
         print(f"updated {BIN_FILE}")
         # the "fit-quality" entries of the pairs fitted in this run are replaced by the new ones
         K = json.loads(KNOWN_FILE.read_text())
-        K["issues"] = [k for k in K["issues"] if not (k.get("kind") == "fit-quality" and tuple(sorted(k["components"])) in done)]
+        K["issues"] = [k for k in K["issues"] if not (k.get("kind") == "fit-quality" and tuple(sorted(k["components"])) in done
+                                                      and (models_only is None or k.get("model") in models_only))]
         for spec, model, why in warned:
             K["issues"].append({"components": list(spec["pair"]), "model": model, "kind": "fit-quality",
                                 "message": "These %s parameters are fitted to open data but follow them less closely than the "
@@ -920,4 +968,7 @@ if __name__ == "__main__":
     if "--only" in args:
         k = args.index("--only")
         only = {"+".join(sorted(p.split("+"))) for p in args[k + 1:] if not p.startswith("--")}
-    main("--write" in args, only)
+    models_only = None
+    if "--models" in args:
+        models_only = set(args[args.index("--models") + 1].upper().split(","))
+    main("--write" in args, only, models_only)

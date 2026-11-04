@@ -130,7 +130,7 @@ have and we implement the add data yourself method"):
 
 | Item | What | For | Open parameters known | Status |
 |---|---|---|---|---|
-| **M1** | **Wilson** activity model | polar mixtures with one liquid; the method guide's choice for many alcohol and hydrocarbon systems (it cannot predict two liquids) | ChemSep's Wilson set (`wilson.json`, Artistic License 2.0, as its NRTL and UNIQUAC sets); fits to ThermoML data by the same scripts | **Closed**: [proposal 0016](proposals/0016-wilson.md) (accepted, #192): the model, ChemSep's set (165 pairs), Wilson pairs in My data, the interface, two liquids refused or warned, tests against `thermo` and open data; fits to ThermoML data postponed until needed, after M3 (the maintainer, 2026-11-04) |
+| **M1** | **Wilson** activity model | polar mixtures with one liquid; the method guide's choice for many alcohol and hydrocarbon systems (it cannot predict two liquids) | ChemSep's Wilson set (`wilson.json`, Artistic License 2.0, as its NRTL and UNIQUAC sets); fits to ThermoML data by the same scripts | **Closed**: [proposal 0016](proposals/0016-wilson.md) (accepted, #192): the model, ChemSep's set (165 pairs), Wilson pairs in My data, the interface, two liquids refused or warned, tests against `thermo` and open data; Wilson fits to the ThermoML data of the NRTL/UNIQUAC fits, the default where they pass the same gates (docs/decisions/2026-11-04-06-wilson-fits.md) |
 | **M2** | **PSRK** and **MHV2** (UNIFAC inside a cubic equation of state) | polar mixtures above 10 bar, gases dissolved in polar solvents (the "PSRK or MHV2" rows of the method guide) | PSRK's group parameters as published openly (to be checked table by table); else Modified UNIFAC 2.0 in a gE mixing rule | **Open**; starts after M1 |
 | **M3** | **CPA** (cubic plus association) | water + hydrocarbons with two liquids, glycols and methanol in gas processing; the real fix of the P-H flash with two liquids (DECISIONS.md, Engineering, item 7) | open articles with CPA parameters for water, alcohols, glycols (to be searched) | **Open** |
 | **M4** | **PC-SAFT** (and Flory–Huggins for polymer solutions) | polymers, associating and high-pressure systems, ionic liquids with association | open articles and open libraries' parameter tables, where those tables are themselves open (DATA_RULES.md, source 4) | **Open** |
@@ -264,7 +264,7 @@ Needs A13 and D8.
       streams (proposal 0013, steps 1-4); rating of a designed exchanger, its area and U kept (step 8; in 0.4.0)
 - [x] Compressors and expanders (proposal 0013, step 6; in 0.4.0)
 - [ ] Further units towards models of all the common unit operations ([proposal 0015](proposals/0015-separation-units.md))
-- [x] The Wilson activity model (M1; [proposal 0016](proposals/0016-wilson.md); fits to ThermoML data postponed until needed, after M3)
+- [x] The Wilson activity model (M1; [proposal 0016](proposals/0016-wilson.md), with fits to ThermoML data)
 - [x] Reactive systems in flowsheets, with heat of reaction in the energy balance (proposal 0010, steps 3-8)
 
 ### v0.7 – Cost engineering
