@@ -3,11 +3,13 @@
 One block for distillation ([proposal 0015](../../proposals/0015-separation-units.md), Part I, section 1). Its
 modes: **shortcut** (milestone M1) and **rigorous** (MESH on equilibrium stages, milestone M2a: vapour and one
 liquid; milestone M2b: two liquids on the stages, a decanter on the condenser, and the column's own property method).
-Absorber, stripper and extraction come later as configurations of the same block. Code:
+Its configurations: **distillation**, and the **absorber** and the **stripper** (milestone M3, below); extraction comes
+later. Code:
 `src/units/columns/shortcut.js` (the shortcut's equations), `src/units/columns/engine.js` (the column engine, the
 rigorous solver), `src/units/columns/two-liquids.js` (two liquids on the stages), `src/units/columns/column.js` (the
 block, and the P-H boundary of its own method). Tests: `test/columns-shortcut.test.js`,
-`test/columns-rigorous.test.js`, `test/columns-vll.test.js` (M2b), against W7's cases ([columns-benchmarks.md](columns-benchmarks.md)).
+`test/columns-rigorous.test.js`, `test/columns-vll.test.js` (M2b), `test/columns-absorber.test.js` (M3), against W7's
+cases ([columns-benchmarks.md](columns-benchmarks.md)) and the absorber cases (below).
 
 ## The shortcut mode
 
@@ -111,8 +113,9 @@ the Newton iterations; a column that reaches it is not converged (E4).
 | a stage's liquid below 1 % of the column's largest vapour flow (stages 2 to N − 1) | warns `DRY_STAGE`, with the stages, the cause and the remedy (W7's D1: stages 2 to 5); the 1 % is this project's choice: no open source gives a threshold for equilibrium stages without the trays' geometry (searched 2026-10-29) |
 | a stage's vapour below 1/5 of the column's largest vapour flow (stages 2 to N) | warns `DRY_STAGE` (vapour): outside the turndown of bubble-cap trays, 5 (sieve 2, valve 4; Fermeglia, "Staged column design", University of Trieste, 2021, slide 54), so with one diameter the trays would weep; the maintainer's choice, 2026-10-29. The checks with the trays' geometry (flooding, weeping) come with M2b |
 | a pair without parameters | missing data, the pair named (C1) |
-| purity or recovery specifications, side draws, phases "LL" (extraction), no reboiler | not built yet: unsupported |
-| nonvolatile components, inert solids, the dimerizing acids' chemical theory | not built yet: unsupported (columns with nonvolatile components are step 7) |
+| purity or recovery specifications, side draws, phases "LL" (extraction), a condenser without a reboiler | not built yet: unsupported |
+| inert solids, the dimerizing acids' chemical theory | not built yet: unsupported |
+| nonvolatile components (milestone M3) | solved: they stay in the liquid (below) |
 
 **The result:** the distillate and the bottoms (saturated at the column's pressure), the block's duty (the reboiler's
 minus the condenser's) and the two apart, the reflux and boil-up ratios, and the profile of every stage: T, P, the
@@ -240,3 +243,76 @@ overflow; where the heats of vaporization differ (ethanol + water) it gives fewe
 the diagram shows the column's own operating points so the difference is seen.
 
 In the flowsheet's Excel workbook each column has a sheet: its inputs, its results with their source, and every stage.
+
+## Absorber and stripper (milestone M3, step 7)
+
+Proposal 0015, Part I, section 1: "the same without condenser or reboiler: a gas washed by a liquid, or a liquid
+stripped by a gas". The block's `configuration` is `"absorber"` or `"stripper"`; both are solved by the rigorous engine
+(the shortcut is for distillation and refuses them).
+
+| Key | Meaning |
+|---|---|
+| `stages` | the equilibrium stages, numbered from the top; every one is an equilibrium stage (no condenser) |
+| `feed_stage` | one per inlet; default: one feed on stage 1, two on stages 1 (the liquid) and N (the gas; N − 1 with a reboiler) |
+| `reboiler` | a stripper's: `"none"` (default; a stripping gas such as live steam is fed below) or `"partial"` (a reboiled stripper) |
+| with a reboiler, one of | `boilup_ratio`, `bottoms_kmol_h`, `reboiler_duty_kW`, `distillate_kmol_h` (the gas leaving the top) |
+| `stage_duties_kW` | `[{ stage, duty_kW }]`: heat added to a stage (negative: removed, an intercooler); the other stages adiabatic |
+| `P_kPa`, `method`, `sizing`, `max_iterations` | as the rigorous column |
+
+Without a reboiler nothing else is specified: what leaves follows from the feeds, the stages and the stage duties. The
+outlets are the same ports: `distillate` carries the gas leaving stage 1, `bottoms` the liquid leaving stage N (labelled
+"gas" and "liquid" on the drawing). The block's duty is the reboiler's plus the stage duties, so the flowsheet's energy
+balance closes. Through the request path: `solve_column` with `gas_feed` (the second inlet), or the block in
+`solve_flowsheet`; saved in project format 6; in the workbench, the block's panel (Distillation / Absorber / Stripper)
+and the profile table.
+
+**The equations** are the rigorous column's, with stage 1 and stage N ordinary equilibrium stages: their energy
+balances hold (with the stage duty), and a reboiler, when there is one, takes the one specification in place of its
+energy balance. **The start** is the sum-rates method of Burningham and Otto as DWSIM's source documents it
+(`SumRates.vb`, read 2026-10-30), written anew and simplified (each stage's temperature from its own energy balance,
+its neighbours held), or, as a second start, with each stage at its liquid's bubble point. Which is tried first follows
+the usual rule: sum-rates' energy temperatures for wide-boiling mixtures (the volatile components' K-values at the
+feeds' mean temperature spanning more than a factor of 1000: an absorber's light gas and its solvent), the bubble
+points for narrow-boiling ones (a steam stripper). Newton's method on all MESH equations then closes the column, as
+for distillation.
+
+**Methods for absorption** ([METHOD_SELECTION.md](../METHOD_SELECTION.md), step 2). A gas dissolving in a liquid needs
+a method that describes its solubility. The absorber and the stripper refuse (`NOT_AVAILABLE`, outcome
+"unsupported"), with the reason:
+
+- an activity model or the ideal solution with a component above its critical temperature (at the feeds, and again at
+  the solved stages): its solubility would come from a vapour pressure extrapolated beyond the critical point; Henry's
+  law would be needed, and CHEPTA has it only as a function for six gases in water (`src/thermo/henry.js`), not in its
+  methods;
+- an equation of state with a light gas (N₂, CO₂, H₂S, CO, O₂, Ar, H₂, N₂O, SO₂, NH₃, or a component above its critical
+  temperature) and a polar component: the classical mixing rule does not describe a gas dissolving in a polar liquid
+  (Henry's law, PSRK or Wong-Sandler would be needed; step 4).
+
+Hydrocarbons with light gases (a lean-oil absorber) take Peng-Robinson or SRK; a polar liquid stripped by its own
+vapour or by steam (methanol from water) takes an activity model.
+
+**Nonvolatile components** (proposal 0009, step 5) in any configuration, distillation included: they keep their
+vapour pressure of 1e-20 kPa (docs/DATA_RULES.md, section 10), so they stay in the liquid and leave with the bottoms. A
+bottoms flow at or below their feed (a distillate that would take every volatile component) is refused (`BAD_INPUT`):
+the bottom stage would boil dry. A stage whose liquid is almost only nonvolatile, its volatile part below 1 % of the
+column's largest vapour flow (the dry-stage threshold above), is warned `DRY_STAGE` (phase "volatile liquid"), the
+reboiler included: the solvent is nearly all boiled off, and the liquid may crystallize or become too viscous, which
+the column does not represent.
+
+**Checks** (`test/columns-absorber.test.js`; cases `validation/data/columns/absorber-stripper/cases.json`, independent
+reference `validation/python/reference_mesh_absorber.py`, fixture `validation/fixtures/columns_absorber.json`; flows
+within 1e-6 relative, temperatures within 1e-5 K, mole fractions within 1e-8):
+
+| Case | What | Check |
+|---|---|---|
+| H1 | a model absorber, a solute of constant K in constant flows | the Kremser equation, exactly (1e-9 relative); the reference |
+| H2 | ammonia from air into water, 8 stages, adiabatic: The ChemSep Book, 2nd ed., section 1.6.7, Table 1.4 (public domain): the gas, the K-value and enthalpy polynomials as printed; the water flow (400 mol/s) and the stages are the case's choice (the book prints no solution) | the reference; the temperature bulge inside the column |
+| H3 | H2 with 100 kW removed from stage 6 | the reference; the overall energy balance with the duty |
+| H4 | methanol stripped from water by live steam, NRTL | the reference |
+| H5 | a reboiled stripper, boil-up ratio 0.25, NRTL | the reference, its reboiler duty |
+| H6 | a lean-oil absorber, light hydrocarbons in n-decane at 2000 kPa, Peng-Robinson | the reference; through `solve_column`, the command line and a project |
+| H7 | methanol from water and lactic acid (nonvolatile), total condenser, ideal solution (no NRTL or UNIQUAC pair exists with lactic acid); also Modified UNIFAC 2.0 without a reference | the reference; lactic acid only in the bottoms |
+| H8 | water and lactic acid boiled nearly dry in a reboiled stripper | the reference; `DRY_STAGE` on the reboiler; a bottoms at or below the lactic acid refused |
+
+The reference first reached the trivial solution (vapour equal to liquid on every stage) on H6; it now refuses such a
+solution and starts the equation of state's K-values from Wilson's estimate. The engine had found the physical one.

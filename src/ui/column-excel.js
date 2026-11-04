@@ -9,6 +9,7 @@ const bold = v => ({ v, s: "bold" });
 
 /** The column's inputs: label, value, unit. */
 const SPEC_ROWS = [
+  ["configuration", "Configuration", ""], ["reboiler", "Reboiler", ""],
   ["mode", "Method", ""], ["light_key", "Light key", ""], ["heavy_key", "Heavy key", ""],
   ["recovery_light_key_in_distillate", "Light key recovered in the distillate", "fraction"],
   ["recovery_heavy_key_in_bottoms", "Heavy key recovered in the bottoms", "fraction"],
@@ -38,6 +39,16 @@ const RESULT_ROWS = {
     ["T_distillate_K", "Distillate temperature", "K", "its bubble (or dew) point at P"],
     ["T_bottoms_K", "Bottoms temperature", "K", "its bubble point at P"],
   ],
+  // an absorber or a stripper (M3): no condenser
+  separator: [
+    ["top_gas_kmol_h", "Top gas flow", "kmol/h", "the solved column"],
+    ["bottom_liquid_kmol_h", "Bottom liquid flow", "kmol/h", "the solved column"],
+    ["boilup_ratio", "Boil-up ratio", "V/B", "the solved column"],
+    ["reboiler_kW", "Reboiler duty", "kW", "the reboiler's energy balance"],
+    ["T_top_K", "Top stage temperature", "K", "the solved column"],
+    ["T_bottom_K", "Bottom stage temperature", "K", "the solved column"],
+    ["iterations", "Newton iterations", "", "the solver"],
+  ],
   rigorous: [
     ["reflux_ratio", "Reflux ratio", "L/D", "the solved column"],
     ["boilup_ratio", "Boil-up ratio", "V/B", "the solved column"],
@@ -58,7 +69,7 @@ const RESULT_ROWS = {
 export function columnSheet(b, r, { comps, nameOf, model }) {
   const st = r.state ?? {}, mode = st.mode ?? b.spec?.mode ?? "shortcut", spec = b.spec ?? {};
   const rows = [
-    [{ v: `Column ${b.label || b.id}: ${mode === "rigorous" ? "the rigorous column, stage by stage" : "the shortcut column"}`, s: "head" }],
+    [{ v: `Column ${b.label || b.id}: ${st.configuration ? `the ${st.configuration}, stage by stage` : mode === "rigorous" ? "the rigorous column, stage by stage" : "the shortcut column"}`, s: "head" }],
     ["Grey italics: calculated by CHEPTA. A column cannot be an Excel formula (every stage needs phase equilibrium): change its inputs in CHEPTA and export again."],
     [],
     [bold("Inputs (as given in CHEPTA)"), bold("Value"), bold("Unit")],
@@ -66,12 +77,14 @@ export function columnSheet(b, r, { comps, nameOf, model }) {
   for (const [k, label, unit] of SPEC_ROWS) {
     if (spec[k] == null) continue;
     const v = Array.isArray(spec[k]) ? spec[k].join(", ") : spec[k];
+    if (k === "stages" && spec.configuration) { rows.push(["Stages (1 the top)", v, ""]); continue; }
     rows.push([label, k === "light_key" || k === "heavy_key" ? nameOf(v) : v, unit]);
   }
+  for (const d of spec.stage_duties_kW ?? []) rows.push([`Heat added to stage ${d.stage}`, d.duty_kW, "kW"]);
   if (spec.P_kPa == null) rows.push(["Pressure", val(st.P_kPa), "kPa (the feed's)"]);
   rows.push([`Method: ${model}`], []);
   rows.push([bold("Results"), bold("Value"), bold("Unit"), bold("Source")]);
-  for (const [k, label, unit, src] of RESULT_ROWS[mode] ?? []) if (st[k] != null) rows.push([label, val(st[k]), unit, src]);
+  for (const [k, label, unit, src] of RESULT_ROWS[st.configuration ? "separator" : mode] ?? []) if (st[k] != null) rows.push([label, val(st[k]), unit, src]);
   if (mode === "shortcut") {
     for (const [where, a] of Object.entries(st.alpha_keys ?? {})) rows.push([`Relative volatility of the keys, ${where}`, val(a), "", "K-values of CHEPTA's method at the bubble point there"]);
   } else if (st.residuals) {

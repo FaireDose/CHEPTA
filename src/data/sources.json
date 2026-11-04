@@ -1730,7 +1730,8 @@
       "note": "Section 1.2, the benzene + toluene column, and its results in section 1.3 (Figures 1.18 to 1.21, pp. 19-20): the setup and the published stage temperatures, flows and compositions, transcribed into the benchmark case. Section 1.3.3, pp. 26-31 (eqs. 1.8 to 1.17): the McCabe-Thiele construction of the Column workspace.",
       "files": [
         "src/ui/column-mccabe.js",
-        "validation/data/columns/B2-chemsep-benzene-toluene.json"
+        "validation/data/columns/B2-chemsep-benzene-toluene.json",
+        "validation/data/columns/absorber-stripper/cases.json"
       ]
     },
     "ku2005-acetone-ethanol": {

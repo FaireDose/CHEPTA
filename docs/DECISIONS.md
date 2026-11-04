@@ -105,6 +105,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     shortcut and the rigorous column, the column's sheet in the flowsheet's Excel workbook, SVG and PNG of the column
     charts. To check: the construction against The ChemSep Book, section 1.3.3; to decide: the check's tolerances,
     and whether SVG and PNG go on every chart next. Then W10 checks the screenshots.
+  - **W2, M3 step 7: the absorber, the stripper and columns with nonvolatile components, built, to review**
+    (docs/decisions/2026-10-30-07-absorber-stripper.md): `configuration` "absorber" or "stripper" on the Column block
+    (no condenser; a stripper's reboiler optional), stage duties, the sum-rates start, the method refusals for gases
+    dissolving in polar liquids, nonvolatile components in every column with DRY_STAGE when a stage boils dry; eight
+    cases against an independent reference (Kremser exactly; The ChemSep Book's ammonia absorber). To check: Table
+    1.4's numbers against the book; to decide: the ports' names, the method refusals, the wide-boiling factor of 1000.
   - Waiting: W1, W3.
 - **The methods track** (docs/decisions/2026-10-30-05-methods-track.md): Wilson (M1, v0.6) starts when M2b's pull
   requests are merged; M2 (PSRK or MHV2, else Modified UNIFAC 2.0 in a gE mixing rule) after M1; CPA, PC-SAFT,

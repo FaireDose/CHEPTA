@@ -277,8 +277,12 @@ SEEDS = {
         "access": "Public domain ('This publication is public domain', p. 2 of the PDF); read 2026-10-29",
         "license": "Public domain",
         "note": "Section 1.2, the benzene + toluene column, and its results in section 1.3 (Figures 1.18 to 1.21, pp. 19-20): "
-                "the setup and the published stage temperatures, flows and compositions, transcribed into the benchmark case.",
-        "files": ["validation/data/columns/B2-chemsep-benzene-toluene.json"],
+                "the setup and the published stage temperatures, flows and compositions, transcribed into the benchmark case. "
+                "Section 1.3.3, pp. 26-31 (eqs. 1.8 to 1.17): the McCabe-Thiele construction of the Column workspace. "
+                "Section 1.6.7, 'Absorber Design', Table 1.4 (pp. 42-43; read 2026-10-30): the ammonia absorber's gas and its "
+                "K-value and enthalpy polynomials, transcribed into the absorber cases H2 and H3 (the book prints no solution).",
+        "files": ["src/ui/column-mccabe.js", "validation/data/columns/B2-chemsep-benzene-toluene.json",
+                  "validation/data/columns/absorber-stripper/cases.json"],
     },
     # predicted liquid heat capacities (validation/python/predict_cp.py, proposal 0009 step 5)
     "ruzicka-domalski-1993": {
