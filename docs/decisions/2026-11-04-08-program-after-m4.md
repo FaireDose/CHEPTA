@@ -29,7 +29,7 @@ also with the three proposals for CHEPTA-Lab"; and earlier: "i am ok to have rea
 ## Known Lab blockers (CHEPTA-Lab, docs/CAPABILITY_AUDIT_2026-10-30.md, read 2026-11-04)
 
 - Ethyl acetate: multistage liquid-liquid extraction (being built, M3); acetic acid's association in columns and in the
-  three-phase flash (a known issue); reactive distillation (after 1.0); purity specifications (M4).
+  three-phase flash (a known issue); reactive distillation (later); purity specifications (M4).
 - CO2 to methanol: gases with methanol and water at high pressure (PR/SRK with k_ij and a warning, 2026-11-04-05; PSRK
   in M2); the paper's kinetics are Lab's to extract.
 - Ethanol to ethylene: downstream purification (flash, columns, absorber).
