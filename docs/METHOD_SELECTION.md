@@ -27,12 +27,21 @@ Read on 2026-10-09:
      synthesis tutorial, Peng–Robinson; https://dwsim.org/tutorials/en/advanced/07-methanol-synthesis.html, read on
      2026-10-23). An activity model cannot hold the gases: Modified UNIFAC 2.0 has no groups for H₂ or CO, NRTL and
      UNIQUAC no pairs, and an activity model with a cubic vapour (γ-φ) needs every liquid component below its critical
-     temperature, as H₂ (33 K) and CO (133 K) are not (dissolved gases need Henry's law, which CHEPTA has for six gases
-     in water only). CHEPTA refuses them with that remedy; the "ideal" model (Raoult's law) too, where the gas's
+     temperature, as H₂ (33 K) and CO (133 K) are not (dissolved gases need Henry's law, which CHEPTA has for ten gases
+     in water: below). CHEPTA refuses them with that remedy; the "ideal" model (Raoult's law) too, where the gas's
      vapour-pressure curve, extrapolated far above its critical temperature, has no finite value (hydrogen above about
      150 K). The polar liquid alone (the methanol–water column) is where
      an activity model is more accurate; PSRK, which puts UNIFAC with gas groups inside an equation of state, would do
      both and is not in CHEPTA yet (step 4).
+   - **Gases dissolved in water** (an absorber, a stripper; proposal 0017, the maintainer, 2026-11-04): an activity
+     model with water as the only solvent treats the gases that have a Henry's law constant in water (H₂, N₂, O₂, CH₄,
+     C₂H₆, Ar, CO, CO₂, H₂S: IAPWS G7-04; ethylene: Sander 2023) as Henry components, f = H x, with water by Raoult's
+     law; a mixed solvent is refused. Peng–Robinson or SRK with a light gas and a polar liquid runs only where each such
+     pair has a k_ij, with a warning, as the DWSIM Property Packages Guide advises ("Sour gas (with H2S, CO2): PR with
+     kij ... Set binary interaction parameters"; Peng–Robinson "performs poorly for water/alcohol mixtures";
+     https://dwsim.org/tutorials/en/reference/property-packages-guide.html, read 2026-11-04). Sour water (NH₃ with H₂S
+     or CO₂) and amines need an electrolyte model ("Sour water (NH3, H2S, CO2): Sour Water ... Specialized for gas
+     treating", the same guide): not in CHEPTA yet (methods track M5), so refused.
 3. **Polar, no electrolytes, below 10 bar, with interaction parameters:**
    - an activity model: NRTL or UNIQUAC, or Wilson when there is only one liquid (`WILSON`, proposal 0016; ChemSep's
      Wilson set, tier databank, 165 pairs, and Wilson pairs of one's own in My data);

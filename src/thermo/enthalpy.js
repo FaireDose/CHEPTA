@@ -154,6 +154,8 @@ export function activityPhaseMethods(ctx) {
   // dimerizing acids (src/thermo/vapour.js): their association record, for the vapour's enthalpy and fugacity
   const dimers = comps.map(c => (c.association?.type === "dimer" ? c.association : null));
   const nonvolatile = ctx.nonvolatile ?? ids.map(() => false);
+  // Henry components (proposal 0017): H_i(T) in kPa, or null
+  const henryH = ctx.henry ?? ids.map(() => null);
   const pures = ids.map(id => pure(id, { userData: ctx.userData }));
   const hIG = (i, T) => named(comps[i].name, "ideal-gas enthalpy", () => pures[i].hIdealGas(T));
   const dHvap = (i, T) => named(comps[i].name, "heat of vaporization", () => pures[i].property("heatOfVaporization", T));
@@ -182,6 +184,7 @@ export function activityPhaseMethods(ctx) {
     if (!anchor) {
       anchor = ids.map((_, i) => {
         const rec = cpRec[i];
+        if (henryH[i]) return 0;   // not used: a Henry component's liquid enthalpy is its own (hLiquidPure)
         if (!rec) throw fail("MISSING_DATA", `${comps[i].name}: no liquid heat capacity in the databank, so its liquid enthalpy cannot be calculated.`);
         if (nonvolatile[i]) return 0;   // reference: the liquid at T0
         const Ta = anchorT[i];
@@ -224,6 +227,13 @@ export function activityPhaseMethods(ctx) {
   const atT = (T, end, side) => (Math.abs(T - end) < 0.05 ? side : `at ${T.toFixed(1)} K`);
   /** Liquid enthalpy of pure i at T (J/mol), and a warning text when the cp_L record has ended. */
   function hLiquidPure(i, T) {
+    // a Henry component: its partial molar enthalpy at infinite dilution, h_IG,i - R T^2 d ln H_i / dT. Derived here:
+    // with f_i = H_i x_i, ln f_i / P0 is (mu_i - g_IG,i) / RT, and d(mu/T)/dT = -h/T^2 gives h_i = h_IG,i - R T^2
+    // d ln H_i / dT at constant pressure (the van 't Hoff relation; proposal 0017)
+    if (henryH[i]) {
+      const d = 0.01, lnH = t => Math.log(henryH[i](t));
+      return { h: hIG(i, T) - R * T * T * (lnH(T + d) - lnH(T - d)) / (2 * d), note: null };
+    }
     const h0 = anchors()[i];
     const Tend = cpRec[i].Tmax_K;
     if (T < cpRec[i].Tmin_K - EDGE_K) {
