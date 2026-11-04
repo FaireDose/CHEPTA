@@ -459,7 +459,7 @@ The steps of Part I, each a pull request with its tests, placed in the workstrea
 | 4. The column's own method (P-H boundary), two liquids on the stages; the Column workspace with McCabe-Thiele (W2's part, the method, two liquids and a decanter, built 2026-10-30, to review) | W2, W5 | M2b |
 | 5. Liquid-liquid data, joint fits, views, the method guide's section | W1, W5 | M2b |
 | 6. Sizing and hydraulics: drums, decanters, column diameter, flooding and weeping | W4 | M1 (drums), M2b (columns) |
-| 7. Absorber and stripper; columns with nonvolatile components (proposal 0009, step 5) | W2 | M3 |
+| 7. Absorber and stripper; columns with nonvolatile components (proposal 0009, step 5) (W2's absorber, stripper and nonvolatile components built 2026-10-30, to review) | W2 | M3 |
 | 8. Extraction and its view | W2, W5 | M3 |
 | 9. Membrane, with the area for a target (built 2026-10-30, to review: gas permeation in co- or counter-current cells, the area for a stage cut or a recovery; pervaporation later) | W3, W4 | M3 |
 | 10. Crystallizer; evaporator; solid-liquid separator and dryer if kept | W3 | M3 |

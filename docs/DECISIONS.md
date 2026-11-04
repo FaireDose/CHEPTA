@@ -105,6 +105,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     shortcut and the rigorous column, the column's sheet in the flowsheet's Excel workbook, SVG and PNG of the column
     charts. To check: the construction against The ChemSep Book, section 1.3.3; to decide: the check's tolerances,
     and whether SVG and PNG go on every chart next. Then W10 checks the screenshots.
+  - **W2, M3 step 7: the absorber, the stripper and columns with nonvolatile components, built, to review**
+    (docs/decisions/2026-10-30-07-absorber-stripper.md): `configuration` "absorber" or "stripper" on the Column block
+    (no condenser; a stripper's reboiler optional), stage duties, the sum-rates start, the method refusals for gases
+    dissolving in polar liquids, nonvolatile components in every column with DRY_STAGE when a stage boils dry; eight
+    cases against an independent reference (Kremser exactly; The ChemSep Book's ammonia absorber). To check: Table
+    1.4's numbers against the book. Answered 2026-11-04: outlets "gas out" and "liquid out"; the factor of 1000
+    accepted; the refluxed absorber and two liquids postponed. Still open: refuse or only warn an equation of state
+    with a light gas and a polar liquid (the maintainer is clarifying).
   - **W3 and W4, M3 step 9: the Membrane block, built, to review** (docs/decisions/2026-10-30-09-membrane.md): gas
     permeation by the solution-diffusion model over well-mixed co- or counter-current cells, the area for a stage cut
     or a recovery (`membraneArea`), under the Separator button; `solve_membrane`. The maintainer answered on

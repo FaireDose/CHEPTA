@@ -72,7 +72,7 @@ const HINT = {
   "gibbs-reactor": "The species you tick reach the minimum of the Gibbs energy with the elements balanced: every reaction among them, written by CHEPTA (reformers, gasifiers, combustion). One phase, or vapour and liquid together; then the outlet temperature or the duty.",
   cstr: "A stirred tank at steady state: the reactions of the Reactions page with their kinetics, the volume (or catalyst mass), and the temperature or the duty.",
   pfr: "A tube (or a bundle of tubes) in plug flow: the reactions with their kinetics, the length and diameter; isothermal, a duty or a coolant; a pressure drop. Its profiles show under the drawing (double-click it).",
-  column: "Distillation. Shortcut (Fenske, Underwood, Gilliland): a light and a heavy key, the recovery of each, and the reflux ratio (or a multiple of the minimum); it gives the minimum and the number of stages, the feed stage and the duties, assuming a constant relative volatility. Rigorous: the stages, the feed stage and two specifications (reflux, boil-up, a product flow or a duty); every stage's balances are solved, and the profile shows under the drawing. Options: look for two liquids on the stages (activity models), a decanter on the condenser, and the column's own property method.",
+  column: "Distillation. Shortcut (Fenske, Underwood, Gilliland): a light and a heavy key, the recovery of each, and the reflux ratio (or a multiple of the minimum); it gives the minimum and the number of stages, the feed stage and the duties, assuming a constant relative volatility. Rigorous: the stages, the feed stage and two specifications (reflux, boil-up, a product flow or a duty); every stage's balances are solved, and the profile shows under the drawing. Options: look for two liquids on the stages (activity models), a decanter on the condenser, and the column's own property method. Absorber and stripper: no condenser; a liquid fed to the top stage meets a gas fed to the bottom one (a stripper may have a reboiler instead of the gas), with heat added to chosen stages if needed; every stage is solved.",
   membrane: "Gas permeation (solution-diffusion): each component passes in proportion to its permeance times its partial-pressure difference, over well-mixed cells in counter- or co-current flow. Give the permeances (your values, with their source), the permeate pressure, and the area or a target: the stage cut or the recovery of one component; with a target it finds the area. Isothermal; a gas feed only.",
   "yield-reactor": "Turns a given fraction of a key reactant into the products you give per kg (or mol) of it, for a reaction known by its products (a fermentation, a pyrolysis). The mass must close; the elements are reported.",
 };
@@ -428,6 +428,41 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
           spec.P_kPa != null ? "Give a pressure drop instead" : "Give the outlet pressure instead"),
         h("p", { class: "fa-in-hint" }, "Empty pressure drop: none.")));
     }
+  } else if (b.type === "column" && ["absorber", "stripper"].includes(spec.configuration)) {
+    // the absorber and the stripper (proposal 0015, M3, step 7): the rigorous engine without a condenser; a stripper may
+    // have a reboiler, with one specification; heat added to chosen stages (intercoolers)
+    const stripper = spec.configuration === "stripper", reb = stripper && spec.reboiler === "partial";
+    const SSPEC = [["boilup_ratio", "Boil-up ratio", "V / B"], ["bottoms_kmol_h", "Bottom liquid flow", "kmol/h"], ["distillate_kmol_h", "Top gas flow", "kmol/h"], ["reboiler_duty_kW", "Reboiler duty", u.duty ?? "kW"]];
+    const key = SSPEC.map(r => r[0]).find(k => spec[k] != null) ?? "boilup_ratio", row = SSPEC.find(r => r[0] === key), duty = key.endsWith("_kW");
+    const nIn = (streamsOf(fs, b.id).in ?? []).length;
+    const fsVal = Array.isArray(spec.feed_stage) ? spec.feed_stage.join(", ") : spec.feed_stage == null ? "" : String(spec.feed_stage);
+    const dutiesVal = (spec.stage_duties_kW ?? []).map(d => `${d.stage}: ${+dutyToDisplay(d.duty_kW, u).toPrecision(8)}`).join(", ");
+    secs.push(inputsSection(stripper ? "Stripper (stage by stage)" : "Absorber (stage by stage)",
+      columnConfigurationRow(b, spec, setS, done),
+      numberField("Stages", spec.stages == null ? "" : String(spec.stages), t => { const v = num(t); if (v === undefined || (v != null && !(Number.isInteger(v) && v >= 2))) return false; setS({ stages: v }); },
+        { id: `${b.id}-stages`, uid, unit: "1 the top", placeholder: "8" }),
+      numberField(nIn > 1 ? "Feed stages" : "Feed stage", fsVal, t => {
+        if (t === "") return setS({ feed_stage: null });
+        const v = t.split(/[,;\s]+/).filter(Boolean).map(Number);
+        if (!v.every(k => Number.isInteger(k) && k >= 1)) return false;
+        setS({ feed_stage: v.length === 1 ? v[0] : v });
+      }, { id: `${b.id}-feed_stage`, uid, unit: nIn > 1 ? "one per feed, in order" : "from the top", placeholder: nIn > 1 ? `1, ${spec.stages ?? "N"}` : "1" }),
+      ...(stripper ? [segRow("Reboiler", [["none", "None (stripping gas)"], ["partial", "Reboiler"]], reb ? "partial" : "none",
+        v => setS(v === "partial" ? { reboiler: "partial", boilup_ratio: spec.boilup_ratio ?? 0.25 } : { reboiler: null, ...Object.fromEntries(SSPEC.map(r => [r[0], null])) }), `fs-reboiler-${b.id}`)] : []),
+      ...(reb ? [selectField("Specification", SSPEC.map(r => [r[0], r[1]]), key, v => setS({ [key]: null, [v]: spec[key] ?? null }), `fs-sspec-${b.id}`, uid),
+        numberField(row[1], spec[key] == null ? "" : duty ? String(+dutyToDisplay(spec[key], u).toPrecision(8)) : String(spec[key]),
+          t => { const v = num(t); if (v === undefined || (v != null && !(v > 0))) return false; setS({ [key]: v == null ? null : duty ? dutyFromDisplay(v, u) : v }); },
+          { id: `${b.id}-${key}`, uid, unit: row[2] })] : []),
+      numberField("Heat added to stages", dutiesVal, t => {
+        if (t.trim() === "") return setS({ stage_duties_kW: null });
+        const list = t.split(/[,;]+/).map(x => x.trim()).filter(Boolean).map(x => x.split(/[:=\s]+/).map(Number));
+        if (!list.every(p => p.length === 2 && Number.isInteger(p[0]) && p[0] >= 1 && Number.isFinite(p[1]))) return false;
+        setS({ stage_duties_kW: list.map(([st, q]) => ({ stage: st, duty_kW: dutyFromDisplay(q, u) })) });
+      }, { id: `${b.id}-stage_duties`, uid, unit: `stage: ${u.duty ?? "kW"}, …`, placeholder: "4: -100" }),
+      P("P_kPa", "Column pressure"),
+      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]],
+        spec.method?.model ?? "", v => setS({ method: v ? { model: v, ...(["PR", "SRK"].includes(v) ? {} : { vapour: spec.method?.vapour ?? "ideal" }) } : null }), `fs-cmethod-${b.id}`, uid),
+      h("p", { class: "fa-in-hint" }, `Every stage is an equilibrium stage, counted from the top${reb ? "; the last is the reboiler" : ""}. The first inlet enters the top stage (the liquid), the second the bottom stage (the ${stripper ? "stripping gas, such as live steam" : "gas"}); the gas leaves by “gas out” at the top, the liquid by “liquid out” at the bottom. ${reb ? "The reboiler takes one specification. " : "Nothing else is specified: what leaves follows from the feeds and the stages. "}Heat added to stages: for example “4: -100” removes 100 ${u.duty ?? "kW"} from stage 4; the other stages are adiabatic. Empty pressure: the first feed's; no pressure drop. A gas dissolving in a polar liquid (water, alcohols) needs Henry's law, which CHEPTA's methods do not have, so such an absorber is refused with the reason.`)));
   } else if (b.type === "column" && spec.mode === "rigorous") {
     // the rigorous column (proposal 0015, M2a): stages, the feed stage, two specifications from six
     const RSPEC = [["reflux_ratio", "Reflux ratio", "L / D"], ["boilup_ratio", "Boil-up ratio", "V / B"], ["distillate_kmol_h", "Distillate flow", "kmol/h"],
@@ -450,6 +485,7 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
     const nIn = (streamsOf(fs, b.id).in ?? []).length;
     const fsVal = Array.isArray(spec.feed_stage) ? spec.feed_stage.join(", ") : spec.feed_stage == null ? "" : String(spec.feed_stage);
     secs.push(inputsSection("Rigorous column (stage by stage)",
+      columnConfigurationRow(b, spec, setS, done),
       segRow("Method", [["shortcut", "Shortcut"], ["rigorous", "Rigorous"]], "rigorous", m => setS({ mode: m }), `fs-cmode-${b.id}`),
       numberField("Stages", spec.stages == null ? "" : String(spec.stages), t => { const v = num(t); if (v === undefined || (v != null && !(Number.isInteger(v) && v >= 3))) return false; setS({ stages: v }); },
         { id: `${b.id}-stages`, uid, unit: "1 the condenser", placeholder: "20" }),
@@ -479,6 +515,7 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
     const comps = fs.components.map(c => [c, nameOf(c)]);
     const R = spec.reflux_over_minimum != null ? "m" : "R";
     secs.push(inputsSection("Shortcut (Fenske, Underwood, Gilliland)",
+      columnConfigurationRow(b, spec, setS, done),
       segRow("Method", [["shortcut", "Shortcut"], ["rigorous", "Rigorous"]], "shortcut", m => setS(m === "rigorous" ? { mode: m, stages: spec.stages ?? done?.state?.stages ?? 20,
         feed_stage: spec.feed_stage ?? done?.state?.feed_stage ?? 10, ...(spec.reflux_ratio == null ? { reflux_ratio: +(done?.state?.R ?? 2).toPrecision(3) } : {}),
         ...(spec.distillate_kmol_h == null && spec.bottoms_kmol_h == null ? { distillate_kmol_h: done?.state?.D_kmol_h != null ? +done.state.D_kmol_h.toPrecision(4) : null } : {}) } : { mode: m }), `fs-cmode-${b.id}`),
@@ -702,7 +739,7 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
   }
   // proposal 0013: the heater's optional sizing, the two-stream exchanger, the valve, the pump, energy streams
   if (b.type === "heater") secs.push(sizingSection({ b, spec, setS, inputsSection, uid, u, done, rateable: energyOf(fs, b.id)?.role !== "in" }));
-  if (b.type === "column" && spec.mode === "rigorous") secs.push(columnSizingSection({ b, spec, setS, inputsSection, uid, done }));
+  if (b.type === "column" && (spec.mode === "rigorous" || ["absorber", "stripper"].includes(spec.configuration))) secs.push(columnSizingSection({ b, spec, setS, inputsSection, uid, done }));
   if (b.type === "hx") secs.push(...hxSections({ b, spec, setS, inputsSection, uid, u, T, P, plain, done }));
   if (b.type === "compressor" || b.type === "expander") {
     const up = b.type === "compressor", word = up ? "rise" : "drop", eta = up ? COMPRESSOR_EFFICIENCY : EXPANDER_EFFICIENCY;
@@ -804,6 +841,32 @@ function sizingSection({ b, spec, setS, inputsSection, uid, u, done, rateable })
     ...(kind && kind !== "electric" ? [...uFields(z.U, U => putZ({ U }), uid, `${b.id}-sz`, { optional: false }),
       selectField("Arrangement", ARRS, z.arrangement ?? "counterflow", v => putZ({ arrangement: v }), `${b.id}-sz-arr`, uid)] : []),
     !rating && rateable && kind ? rateButton("heater", spec, setS, done, b.id) : null);
+}
+
+/** The name a person sees for an outlet where it differs from its port id: an absorber's or stripper's "distillate"
+ *  and "bottoms" are "gas out" (the top) and "liquid out" (the bottom), the maintainer's names (2026-11-04); the ids stay,
+ *  so that project files and requests keep working. */
+export function outletName(block, port) {
+  if (block?.type !== "column" || !["absorber", "stripper"].includes(block.spec?.configuration)) return null;
+  return { distillate: "gas out", bottoms: "liquid out" }[port] ?? null;
+}
+
+/** The column's configuration (proposal 0015, M3): distillation, absorber or stripper. Switching keeps the stages, the
+ *  pressure and the method, and clears what the other configuration does not take. */
+function columnConfigurationRow(b, spec, setS, done) {
+  const now = spec.configuration ?? "distillation";
+  const DISTILLATION_KEYS = ["mode", "light_key", "heavy_key", "recovery_light_key_in_distillate", "recovery_heavy_key_in_bottoms", "reflux_ratio", "reflux_over_minimum",
+    "condenser", "condenser_duty_kW", "phases", "reflux_liquid", "distillate_purity", "bottoms_purity"];
+  return segRow("Column", [["distillation", "Distillation"], ["absorber", "Absorber"], ["stripper", "Stripper"]], now, v => {
+    if (v === now) return;
+    if (v === "distillation") {
+      return setS({ configuration: null, reboiler: null, stage_duties_kW: null, boilup_ratio: null, bottoms_kmol_h: null, reboiler_duty_kW: null,
+        mode: "rigorous", feed_stage: Math.max(2, Math.round((spec.stages ?? 20) / 2)), stages: Math.max(3, spec.stages ?? 20), reflux_ratio: 2,
+        distillate_kmol_h: done?.state?.top_gas_kmol_h != null ? +done.state.top_gas_kmol_h.toPrecision(4) : null });
+    }
+    setS({ configuration: v, ...Object.fromEntries(DISTILLATION_KEYS.map(k => [k, null])), feed_stage: null, stages: spec.stages ?? 8,
+      ...(v === "absorber" || spec.reboiler !== "partial" ? { reboiler: null, boilup_ratio: null, bottoms_kmol_h: null, distillate_kmol_h: null, reboiler_duty_kW: null } : {}) });
+  }, `fs-cconf-${b.id}`);
 }
 
 /** The rigorous column's optional sizing (proposal 0015, M2b): the diameter by Fair's method, or a given one checked. */
@@ -1464,11 +1527,12 @@ export function flowsheetView(ctx) {
       const a = P.get(`${st.id}@${fb}`);
       if (!a || !src || src.type === "product" || src.type === "feed") continue;
       const dot = svgEl("circle", { cx: a.x, cy: a.y, r: 4.5, class: "fs-port-out", "data-handle": st.id });
-      const tt = svgEl("title", {}); tt.textContent = `${src.id} ${OUT_LABEL[port] ?? "outlet"} (stream ${st.id}): drag onto an inlet to connect it`; dot.append(tt);
+      const tt = svgEl("title", {}); tt.textContent = `${src.id} ${outletName(src, port) ?? OUT_LABEL[port] ?? "outlet"} (stream ${st.id}): drag onto an inlet to connect it`; dot.append(tt);
       layer.append(dot);
-      if (OUT_LABEL[port]) {
+      const label = outletName(src, port) ?? OUT_LABEL[port];
+      if (label) {
         const lb = svgEl("text", { x: a.x + (a.dir[0] ? 4 : 7), y: a.y + (a.dir[1] < 0 ? -6 : a.dir[1] > 0 ? 13 : -6), class: "fs-port-label" });
-        lb.textContent = OUT_LABEL[port]; layer.append(lb);
+        lb.textContent = label; layer.append(lb);
       }
     }
   };
@@ -1731,7 +1795,16 @@ export function resultsPanel({ state, f, sol, u, set }) {
           ["Distillate, bottoms", `${fmtTemp(r.state.T_distillate_K, u, 2)}, ${fmtTemp(r.state.T_bottoms_K, u, 2)}`],
           ["Relative volatility of the keys", `${fmtShort(r.state.alpha_keys.top, 3)} top, ${fmtShort(r.state.alpha_keys.feed, 3)} feed, ${fmtShort(r.state.alpha_keys.bottom, 3)} bottom`],
         ] : []),
-        ...(b.type === "column" && r.state?.mode === "rigorous" ? [
+        ...(b.type === "column" && r.state?.configuration ? [
+          ["Stages, feeds", `${r.state.stages}, on ${r.state.feed_stages.join(", ")}`],
+          ["Top gas", `${fmtShort(r.state.top_gas_kmol_h, 5)} kmol/h, ${fmtTemp(r.state.T_top_K, u, 2)}`],
+          ["Bottom liquid", `${fmtShort(r.state.bottom_liquid_kmol_h, 5)} kmol/h, ${fmtTemp(r.state.T_bottom_K, u, 2)}`],
+          ...(r.state.reboiler === "partial" ? [["Boil-up ratio", fmtShort(r.state.boilup_ratio, 4)], ["Reboiler duty", kWText(r.state.reboiler_kW, u, 5)]] : []),
+          ...r.state.stage_duties_kW.map(d => [`Heat added, stage ${d.stage}`, kWText(d.duty_kW, u, 5)]),
+          ["Newton iterations", `${r.state.iterations}, balances closed`],
+          ...(r.state.method ? [["Property method of the column", r.state.method.model]] : []),
+        ] : []),
+        ...(b.type === "column" && r.state?.mode === "rigorous" && !r.state.configuration ? [
           ["Stages, feed", `${r.state.stages}, on ${r.state.feed_stages.join(", ")}`],
           ["Reflux ratio", fmtShort(r.state.reflux_ratio, 4)],
           ["Boil-up ratio", fmtShort(r.state.boilup_ratio, 4)],
@@ -1816,7 +1889,7 @@ function streamRows(fs, res, u, state) {
   const mass = state.basis === "mass";
   const nameOfBlock = bid => blockName(fs.blocks.find(b => b.id === bid)) ?? bid;
   const rows = [
-    ["From", "", ids.map(id => { const [bid, port] = fs.streams.find(s => s.id === id).from.split("."); return feedOf(fs, id) ? "feed" : `${nameOfBlock(bid)} ${port}`; }), "text"],
+    ["From", "", ids.map(id => { const [bid, port] = fs.streams.find(s => s.id === id).from.split("."); return feedOf(fs, id) ? "feed" : `${nameOfBlock(bid)} ${outletName(fs.blocks.find(x => x.id === bid), port) ?? port}`; }), "text"],
     ["To", "", ids.map(id => { const e = endOf(fs, id); return e.kind === "product" ? "product" : `${nameOfBlock(e.block)} ${e.port}`; }), "text"],
     ["Temperature", tLabel(u), S.map(s => (s.T_K == null ? null : tToDisplay(s.T_K, u)))],
     ["Pressure", u.P, S.map(s => (s.P_kPa == null ? null : pToDisplay(s.P_kPa, u)))],
@@ -1860,7 +1933,7 @@ export function columnTable({ fs, b, r, u }) {
           cell(s.duty_kW === 0 ? "0" : dutyToDisplay(s.duty_kW, u).toFixed(1)),
           ...(flood ? [cell(flood[s.stage] == null ? "–" : (100 * flood[s.stage]).toFixed(1))] : []),
           ...fs.components.map(c => cell(frac(s.x[c]))), ...fs.components.map(c => cell(s.y ? frac(s.y[c]) : "–")), ...liquidCells(s)))))),
-      h("p", { class: "fa-in-hint" }, `Liquid and vapour leaving each stage; stage 1 is the ${cond}${r.state.condenser === "total" ? " (its liquid is the reflux; the distillate leaves as liquid too, so it has no vapour)" : ""}, stage ${r.state.stages} the reboiler. Duty: heat added (the condenser's is negative).${two ? ` x is the whole liquid; where a stage holds two liquids, the light (x′) and the heavy (x″) one are given, named by density; both leave the stage together${r.state.condenser === "decanter" ? "; in the decanter they are separated: its liquid and x are the reflux's, the other liquid is the distillate" : ""}.` : ""}${r.state.boundary ? ` The column's own method: ${r.state.boundary.map(q => `${q.stream} ${q.dT_K >= 0 ? "+" : ""}${q.dT_K.toFixed(2)} K`).join(", ")} across the boundary.` : ""}${flood ? " Flooding: the vapour's velocity over Fair's flooding velocity on each tray (the condenser and the reboiler are not trays)." : ""}`));
+      h("p", { class: "fa-in-hint" }, r.state.configuration ? `Liquid and vapour leaving each stage, counted from the top; every stage is an equilibrium stage${r.state.reboiler === "partial" ? `, stage ${r.state.stages} the reboiler` : ""}. The vapour of stage 1 is the top gas, the liquid of stage ${r.state.stages} the bottom liquid. Duty: heat added (negative: removed).${flood ? " Flooding: the vapour's velocity over Fair's flooding velocity on each tray." : ""}` : `Liquid and vapour leaving each stage; stage 1 is the ${cond}${r.state.condenser === "total" ? " (its liquid is the reflux; the distillate leaves as liquid too, so it has no vapour)" : ""}, stage ${r.state.stages} the reboiler. Duty: heat added (the condenser's is negative).${two ? ` x is the whole liquid; where a stage holds two liquids, the light (x′) and the heavy (x″) one are given, named by density; both leave the stage together${r.state.condenser === "decanter" ? "; in the decanter they are separated: its liquid and x are the reflux's, the other liquid is the distillate" : ""}.` : ""}${r.state.boundary ? ` The column's own method: ${r.state.boundary.map(q => `${q.stream} ${q.dT_K >= 0 ? "+" : ""}${q.dT_K.toFixed(2)} K`).join(", ")} across the boundary.` : ""}${flood ? " Flooding: the vapour's velocity over Fair's flooding velocity on each tray (the condenser and the reboiler are not trays)." : ""}`));
   }
   const row = (label, f) => h("tr", {}, h("th", { scope: "row" }, label), ...p.map(s => h("td", { class: "fug-num" }, f(s))));
   return h("div", { class: "fs-tables", "data-fk": "fs-column-table" }, h("h3", {}, `${blockName(b)}: the column`),

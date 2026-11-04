@@ -1764,7 +1764,8 @@
       "files": [
         "src/thermo/activity/wilson.js",
         "src/ui/column-mccabe.js",
-        "validation/data/columns/B2-chemsep-benzene-toluene.json"
+        "validation/data/columns/B2-chemsep-benzene-toluene.json",
+        "validation/data/columns/absorber-stripper/cases.json"
       ]
     },
     "ku2005-acetone-ethanol": {
