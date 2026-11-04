@@ -196,6 +196,25 @@
         "validation/data/vle/1-propanol_mibk_10-1021-acs-jced-7b00026_338.15K.json"
       ]
     },
+    "aziaba-2022-membrane": {
+      "title": "Design of a gas permeation and pervaporation membrane model for an open source process simulation tool",
+      "authors": "K. Aziaba, C. Jordan, B. Haddadi, M. Harasek",
+      "year": 2022,
+      "kind": "open-access article",
+      "citation": "Membranes 12 (2022) 1186",
+      "doi": "10.3390/membranes12121186",
+      "url": "https://europepmc.org/article/PMC/PMC9784710",
+      "access": "Open access, CC BY 4.0; read in its full text at Europe PMC (PMC9784710)",
+      "license": "CC BY 4.0",
+      "note": "Equations (1)-(3) (the local flux, the area of a hollow-fibre module, the stage cut), the assumptions of section 1.3 and the cells of section 4.1.3; Table 1, the inputs of test cases 2 (Sada et al. 1992, CO2, O2, N2) and 3 (Chowdhury et al. 2005, H2, N2, CH4, Ar), used as printed. Its comparisons are figures only, not used as numbers. Read 2026-11-03.",
+      "files": [
+        "examples/membrane-co2.chepta.json",
+        "src/sizing/sizing.js",
+        "src/units/membrane.js",
+        "test/membrane.test.js",
+        "validation/python/reference_membrane.py"
+      ]
+    },
     "badajoz2013-1-propanol-ethyl-acetate": {
       "title": "Experimental Determination of Vapor Liquid Equilibria. Binary Systems of Methyl Acetate, Ethyl Acetate, and Propyl Acetate with 1-Propanol at 0.6 MPa",
       "authors": "P. Susial  Badajoz, D. Garcia-Vera, R. Susial, V. D. Castillo, E. J. Estupinan, J. C. Apolinario, J. J. Rodriguez-Henriquez",
@@ -368,6 +387,20 @@
         "validation/data/vle/isobutanol_isooctane_10-1016-j-fluid-2011-05-011_333.15K.json",
         "validation/data/vle/isobutanol_mibk_10-1016-j-fluid-2011-05-011_333.15K.json",
         "validation/data/vle/isooctane_mibk_10-1016-j-fluid-2011-05-011_333.15K.json"
+      ]
+    },
+    "binous-2006-gas-permeation": {
+      "title": "Gas permeation computations with Mathematica",
+      "authors": "H. Binous",
+      "year": 2006,
+      "kind": "open-access article",
+      "citation": "Chemical Engineering Education 40 (2006) 140-144",
+      "url": "https://journals.flvc.org/cee/article/view/122538",
+      "access": "Free to read on the journal's archive (Florida Virtual Campus)",
+      "note": "Worked examples: the ternary mixture by complete mixing (p. 140-141) and oxygen from air by complete mixing, cross flow, counter-current and co-current flow (p. 141-144), with the areas and compositions it prints (from Geankoplis's examples 13.4-2 and 13.5-1, whose book is not open and not used). Read 2026-11-03.",
+      "files": [
+        "test/membrane.test.js",
+        "validation/python/reference_membrane.py"
       ]
     },
     "bo2025-article-ethyl-levulinate": {

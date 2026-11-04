@@ -291,3 +291,27 @@ registerCapability({
       column: { ...c.state, duty_kW: c.duty_kW, notes: c.notes, warnings: c.warnings ?? [], profile: c.profile, ...(c.sizing ? { sizing: c.sizing } : {}) } } };
   },
 });
+
+// The membrane (proposal 0015, milestone M3, step 9): a feed, the Membrane block and its two products, solved as a
+// flowsheet (src/units/membrane.js), so the numbers are the flowsheet's; with a target, the area found is in the value.
+registerCapability({
+  name: "solve_membrane", summary: "Solve a gas-permeation membrane (solution-diffusion, co- or counter-current cells): the permeate and the retentate for an area, or the area for a stage cut or a recovery", status: "available",
+  input: { type: "object", additionalProperties: false, required: ["components", "feed", "membrane"],
+    properties: {
+      components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
+      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default Peng-Robinson (a gas)" },
+      feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; it must be all gas" },
+      membrane: { type: "object", description: "the Membrane block's specification: permeances { component: value } for every component (0 for one that does not pass; your values, with their source: CHEPTA has no databank of permeances), permeance_unit (\"mol/(m2 s Pa)\" default, \"mol/(m2 s bar)\" or \"GPU\"), permeate_P_kPa, flow (\"counter-current\" default or \"co-current\"), cells (1 to 200, default 20), and one of A_m2, stage_cut (permeate over feed) or recovery { component: fraction into the permeate }; fibre { inner_diameter_m, length_m } (optional): the number of hollow fibres" },
+      user_data: USER_DATA,
+    } },
+  run: input => {
+    const flowsheet = { components: input.components, thermo: input.thermo ?? { model: "PR" },
+      blocks: [{ id: "F1", type: "feed", spec: input.feed }, { id: "MB1", type: "membrane", spec: input.membrane },
+        { id: "P1", type: "product" }, { id: "P2", type: "product" }],
+      streams: [{ id: "FEED", from: "F1.out", to: "MB1.in" }, { id: "PERMEATE", from: "MB1.permeate", to: "P1.in" }, { id: "RETENTATE", from: "MB1.retentate", to: "P2.in" }] };
+    const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
+    const m = r.value.blocks.MB1;
+    return { ...r, value: { feed: r.value.streams.FEED, permeate: r.value.streams.PERMEATE, retentate: r.value.streams.RETENTATE,
+      membrane: { ...m.state, duty_kW: m.duty_kW, notes: m.notes, warnings: m.warnings ?? [], profile: m.profile, sizing: m.sizing } } };
+  },
+});

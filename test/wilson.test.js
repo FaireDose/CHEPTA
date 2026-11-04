@@ -49,9 +49,13 @@ test("ChemSep's Wilson set against open isobaric data (ThermoML Archive)", () =>
   }
   // ethanol + ethylene glycol: ChemSep's Wilson set misses the measured boiling temperatures (Kamihama et al. 2012) by
   // about 5 K on average, as ChemSep's NRTL set does (about 6 K); the fitted NRTL and UNIQUAC sets follow them. Kept
-  // here so that the deviation is seen, not hidden (proposal 0016, the follow-up fits)
+  // here so that the deviation is seen, not hidden (proposal 0016; the fits are postponed until after M3)
   const eg = ref.vle.find(v => v.file === "ethanol_ethylene-glycol_101kPa.json");
   assert.ok(eg.mean_abs_dT_K > 2.5, `ethanol + ethylene glycol: ${eg.mean_abs_dT_K} K`);
+  // and the workbench says so (src/data/known-issues.json; the maintainer, 2026-11-04)
+  const note = JSON.parse(readFileSync(new URL("../src/data/known-issues.json", import.meta.url))).issues
+    .find(k => k.model === "WILSON" && k.kind === "databank-deviation" && k.components.join("+") === "ethanol+ethylene-glycol");
+  assert.match(note.message, /5\.3 K/);
 });
 
 test("Wilson cannot predict two liquids: the liquid stays stable, the system warns, the column refuses VLL", () => {
