@@ -40,6 +40,12 @@ feed end). One cell is the **complete-mixing** model; with many cells the cells 
 counter-current models. All N·c equations are solved together by Newton's method with the analytic Jacobian, the steps
 kept inside positive flows; when the direct start fails, a continuation in the area from 0.1 % of it.
 
+**How far 20 cells are from plug flow** (the default; Binous 2006's oxygen from air, θ = 0.2, against his printed
+plug-flow results): counter-current 2.8819 × 10⁸ cm², 0.80 % above the printed 2.859 × 10⁸ (permeate oxygen 0.5722
+against 0.5763, reject 0.1182 against 0.1171); co-current 2.9715 × 10⁸ cm², 0.56 % above 2.955 × 10⁸ (0.5554 against
+0.5584, 0.1224 against 0.1216). With 200 cells the areas are within 0.15 % (below). More cells come closer to plug flow
+and take longer; a module that really is well mixed on its permeate side is closer to fewer cells.
+
 **Target.** With a stage cut (`stage_cut`) or the recovery of one component into the permeate (`recovery: { id:
 fraction }`), the area is found by Brent's method on ln A, and returned in the block's state and its `sizing`. Without
 a target, the area is given (`A_m2`).
@@ -52,7 +58,7 @@ a target, the area is given (`A_m2`).
 | `permeance_unit` | `"mol/(m2 s Pa)"` (default, the article's), `"mol/(m2 s bar)"` (its Table 2) or `"GPU"` (1 GPU = 10⁻⁶ cm³(STP)/(cm² s cmHg) = 3.3463 × 10⁻¹⁰ mol/(m² s Pa), with cm³(STP) at 273.15 K and 101.325 kPa and 1 cmHg = 101.325/76 kPa) |
 | `permeate_P_kPa` | the permeate side's pressure, below the feed's |
 | `flow` | `"counter-current"` (default) or `"co-current"` |
-| `cells` | 1 to 200 (default 20); at most 1200 cells × components |
+| `cells` | 1 to 200 (default 20, the maintainer's choice of 2026-11-04); at most 1200 cells × components |
 | `A_m2`, `stage_cut` or `recovery` | one of them |
 | `fibre` | optional `{ inner_diameter_m, length_m }`: the number of hollow fibres of the area |
 
