@@ -11,8 +11,9 @@
  *      ln(H / p1*) = A / Tr + B tau^0.355 / Tr + C Tr^-0.41 exp(tau),
  *      Tr = T / Tc1, tau = 1 - Tr, Tc1 = 647.096 K,
  *      ln(p1* / pc1) = (Tc1 / T) sum_i a_i tau^b_i, pc1 = 22.064 MPa  (water vapour pressure)
- *    used for hydrogen, nitrogen, oxygen, methane and ethane (form checked against the
- *    guideline's table 6 check values in test/henry.test.js).
+ *    used for hydrogen, nitrogen, oxygen, methane, ethane, argon, carbon monoxide, carbon dioxide and hydrogen sulfide
+ *    (src/data/henry.json; form checked against the guideline's table 6 check values in test/henry.test.js). In an
+ *    activity-model system with water these gases are Henry components (proposal 0017, src/thermo/system.js).
  *  - Ethylene (not in IAPWS G7-04): R. Sander, Compilation of Henry's law constants
  *    (version 5.0.0), Atmos. Chem. Phys. 23 (2023) 10901, CC BY 4.0, three-parameter fit
  *      Hcp = exp(A + B / T + C ln T)   [mol/(m3 Pa)]

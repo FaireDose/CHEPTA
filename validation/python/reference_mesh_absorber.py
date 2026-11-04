@@ -149,6 +149,59 @@ class EosAbsorber(Eos):
         raise RuntimeError("the vapour composition of a stage did not converge")
 
 
+HENRY = json.loads((ROOT / "src" / "data" / "henry.json").read_text())
+R_J = 8.314462618
+
+
+class HenryWater:
+    """Gases dissolved in water by Henry's law (proposal 0017): f_i = H_i x_i for each gas (the unsymmetric
+    convention, activity coefficient 1 at infinite dilution), Raoult's law for water (its vapour-pressure record),
+    an ideal-gas vapour. H_i from IAPWS G7-04, eqs. 3 and 4 (http://www.iapws.org/relguide/HenGuide.html), written
+    here from the guideline with the coefficients of src/data/henry.json:
+      ln(H / p1*) = A / Tr + B tau^0.355 / Tr + C Tr^-0.41 exp(tau),  Tr = T / Tc1, tau = 1 - Tr,
+      ln(p1* / pc1) = (Tc1 / T) sum a_i tau^b_i.
+    The liquid enthalpy: water's of reference_enthalpy.py; a dissolved gas's, its partial molar enthalpy at infinite
+    dilution, h_IG - R T^2 d ln H / dT (the van 't Hoff relation for f = H x)."""
+
+    def __init__(self, ids, P):
+        self.ids, self.P = ids, P
+        self.c = [COMPONENTS[i] for i in ids]
+        self.w = ids.index("water")
+        self.rec = [next((q for q in HENRY["pairs"] if q["gas"] == cid and q["solvent"] == "water"), None) if cid != "water" else None for cid in ids]
+        assert all(r is None or r["equation"] == "IAPWS-G7-04" for r in self.rec)
+
+    def H(self, i, T):
+        r, v = self.rec[i], HENRY["solvents"]["water"]["vapourPressure"]
+        assert r["Tmin_K"] <= T <= r["Tmax_K"], (self.ids[i], T)
+        Tr = T / v["Tc_K"]; tau = 1 - Tr
+        p1 = v["pc_MPa"] * 1000 * math.exp(v["Tc_K"] / T * sum(a * tau ** b for a, b in zip(v["a"], v["b"])))
+        return p1 * math.exp(r["A"] / Tr + r["B"] * tau ** 0.355 / Tr + r["C"] * Tr ** -0.41 * math.exp(tau))
+
+    def K(self, x, T):
+        return np.array([psat_kpa(self.c[i], T) / self.P if i == self.w else self.H(i, T) / self.P for i in range(len(self.ids))])
+
+    def hL(self, x, T):
+        x = np.clip(np.asarray(x, float), 0, None); x = x / x.sum()
+        h = 0.0
+        for i, cid in enumerate(self.ids):
+            if x[i] <= 0:
+                continue
+            if i == self.w:
+                h += x[i] * h_liquid_pure(cid, T, None, i, len(self.ids), self.c[i])
+            else:
+                d = 0.01
+                dlnH = (math.log(self.H(i, T + d)) - math.log(self.H(i, T - d))) / (2 * d)
+                h += x[i] * (h_ig(cid, T) - R_J * T * T * dlnH)
+        return h
+
+    def hV(self, y, T):
+        y = np.clip(np.asarray(y, float), 0, None); y = y / y.sum()
+        return float(sum(y[i] * h_ig(cid, T) for i, cid in enumerate(self.ids) if y[i] > 0))
+
+    def bubble_T(self, x):
+        return brentq(lambda T: float(np.sum(self.K(x, T) * x)) - 1, 280.0, 600.0, xtol=1e-12)
+
+
 def thermo_of(case, cases):
     th, P = case["thermo"], case["pressure_kPa"]
     if th == "as H2":
@@ -159,6 +212,8 @@ def thermo_of(case, cases):
         return Polynomial(th, P)
     if th["model"] == "PR":
         return EosAbsorber(case["components"], P, "PR")
+    if th.get("henry"):
+        return HenryWater(case["components"], P)
     if th["model"] == "NRTL":
         return Activity(case["components"], P, "NRTL")
     assert th["model"] == "ideal"

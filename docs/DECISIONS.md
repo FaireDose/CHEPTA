@@ -115,8 +115,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     dissolving in polar liquids, nonvolatile components in every column with DRY_STAGE when a stage boils dry; eight
     cases against an independent reference (Kremser exactly; The ChemSep Book's ammonia absorber). To check: Table
     1.4's numbers against the book. Answered 2026-11-04: outlets "gas out" and "liquid out"; the factor of 1000
-    accepted; the refluxed absorber and two liquids postponed. Still open: refuse or only warn an equation of state
-    with a light gas and a polar liquid (the maintainer is clarifying).
+    accepted; the refluxed absorber and two liquids postponed. The equation of state with a light gas and a polar liquid:
+    **decided** 2026-11-04 (docs/decisions/2026-11-04-07-henry-absorber.md): the activity model with Henry's law, and
+    PR or SRK where the pairs have a k_ij.
+  - **W2, M3: Henry components and the equation of state in an absorber, built, to review**
+    (docs/decisions/2026-11-04-07-henry-absorber.md, proposal 0017; after #194): ten gases dissolve in water by
+    Henry's law in the activity models; PR/SRK with a light gas and a polar liquid needs a k_ij; sour water and amines
+    refused until M5. To check: Carroll et al. (1991) Table 3 as transcribed; to decide: water as the only solvent,
+    the 3.5 % tolerance, the ammonia + water fit.
   - **W3 and W4, M3 step 9: the Membrane block, built, to review** (docs/decisions/2026-10-30-09-membrane.md): gas
     permeation by the solution-diffusion model over well-mixed co- or counter-current cells, the area for a stage cut
     or a recovery (`membraneArea`), under the Separator button; `solve_membrane`. The maintainer answered on
