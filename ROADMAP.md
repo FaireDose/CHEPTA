@@ -61,7 +61,7 @@ an implementation, and tests. A step can start when the steps it depends on are 
 | **A9** Artifact contract | What a page may rely on: one pinned script, the `mount` configuration, no network access, theming, size and speed budgets (ternary map under 0.5 s, 50-stage column under 5 s), background workers. | A1 | **On-going**: works in Claude artifacts; background workers built (M1: a Web Worker made from the page's own script, with the page's thread as the stated fallback; [docs/models/tools.md](docs/models/tools.md)); budgets not written down yet; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **A10** AI authoring contract | How an assistant writes configurations and flowsheet files: the skill, a schema it can check against, and error messages that tell it what to fix. | A7, A9 | **On-going**: assistants write, check and edit flowsheet files (proposal 0006, steps 4 and 7); the schema follows A7; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **A11** Views | Flowsheet drawing, stream tables, column profiles, results export; views only call the layers below. | A7, A9 | **On-going**: flowsheet drawing, stream tables, reactor profiles, Excel export; column profiles, the Column workspace with McCabe-Thiele (2026-10-30); planned in [proposal 0015](proposals/0015-separation-units.md), Part II, with an interface guide and a visual check of every new view (W10) |
-| **A12** Stability policy for 1.0 | Which interfaces are frozen, deprecation rules, long-term support of old versions. | A1–A11 | **Open** |
+| **A12** Stability policy (for an official release) | Which interfaces are frozen, deprecation rules, long-term support of old versions. | A1–A11 | **Open** |
 | **A13** Reactions | How reactions are described: stoichiometry, heats of reaction from the property package, equilibrium constants from Gibbs energies, rate laws and their parameters with sources, so that reactor models (conversion, equilibrium, CSTR, plug flow, batch) share one description. | A1, A6 | **Closed**: [proposal 0010](proposals/0010-reactions-and-reactors.md), steps 1-9: the description, formation data, conversion, yield, equilibrium, Gibbs, CSTR and plug-flow reactors, your own kinetics, worked examples ([docs/models/reactions.md](docs/models/reactions.md)). Three examples wait for open data; two liquids in reactors wait for the liquid-liquid work of proposal 0015 |
 
 ## Bridges track
@@ -104,6 +104,7 @@ one-line setup, document what works, and fix or report what doesn't.
 | **D5** | Grow to about 50 components: common solvents, alcohols, acids, esters, hydrocarbons, with pairs, chosen by benchmark processes ([proposal 0004](proposals/0004-first-50-components.md)) | **Closed**: 177 components, beyond the 50 of [proposal 0004](proposals/0004-first-50-components.md) (with proposals 0008 and 0009); the gaps in the latest `docs/missing-properties/MISSING_PROPERTIES_<date>.md` |
 | **D6** | Liquid-liquid data for partly miscible pairs (water with benzene, toluene, chloroform, ethyl acetate) | **On-going**: water + ethyl acetate and water + cyclohexane; the extraction pairs in [proposal 0015](proposals/0015-separation-units.md) |
 | **D7** | Ternary VLE data to check ternary predictions, starting with the systems whose ternary azeotropes are tested (methanol + acetone + chloroform, ethanol + water + ethyl acetate) | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **D9** | **Pairs with two liquids: how they are fitted and used** (the maintainer, 2026-11-04; proposal 0019 to write). Today a fit that predicts a liquid split inside its data range is never written, so mixtures that really split (and the Wilson fits beside them) are refused although they could be calculated. Instead: (1) classify each pair from open evidence before fitting: *miscible* (liquid-liquid data or a measured single liquid over the range), *partly miscible* (mutual solubilities or tie lines in the ThermoML Archive, or a heterogeneous azeotrope in the VLE data), or *not known*; (2) fit by class: miscible pairs with no split allowed (as now), partly miscible pairs jointly to VLE and liquid-liquid data with the split required to match the measured solubilities (as for the ethyl acetate ternary, 2026-11-04), not-known pairs to VLE alone, with a predicted split kept and labelled "not checked against liquid-liquid data" instead of refused; (3) the engine calculates the split wherever a set predicts it, and the result says which kind of evidence stands behind it; (4) Wilson is refused only for a pair classed partly miscible, inside the split, with NRTL or UNIQUAC as the remedy; (5) check what other simulators with open documentation do, and refit the pairs refused so far for a predicted split (NRTL, UNIQUAC, and the five Wilson pairs of 2026-11-04) | **Open** |
 | **D8** | Reaction data from open sources: heats of formation, equilibrium constants, kinetics for common reactions (esterification, hydrogenation, reforming), needed by reactors and route comparison | **On-going**: enthalpies and Gibbs energies of formation for 125 components; kinetics from open articles in the worked examples |
 
 ## Methods track
@@ -170,10 +171,11 @@ sources, assumptions) that anyone can re-run and check.
 | **G5** | Benchmarks: published open case studies with known answers (for example textbook processes and open techno-economic reports), used to measure how well agents do before anyone trusts them | G4 | **In CHEPTA-Lab** (2026-11-04; section "CHEPTA and CHEPTA-Lab"): **Open** |
 | **G6** | Design-study view: routes, flowsheets, costs and sources in one page an engineer can review, change and sign off | G4, A11, E6 | **Open** |
 
-## The program after M4 (v0.7 to 1.0)
+## The program after M4 (v0.7 onward)
 
 Proposal 0015 ends at M4 (specifications, side draws, the first costs). What follows, agreed with the maintainer on
-2026-11-04 (docs/decisions/2026-11-04-08-program-after-m4.md). Each phase runs two or three workstreams side by side,
+2026-11-04 (docs/decisions/2026-11-04-08-program-after-m4.md). Versions stay 0.x: there is no 1.0 until the maintainer
+chooses to release CHEPTA officially (the maintainer, 2026-11-04: "i do not need to have 1.0. i can continue with 0.xxx"). Each phase runs two or three workstreams side by side,
 with at most four agent sessions open at a time, so no single track holds the others back.
 
 | Phase | Release | What | Done when |
@@ -181,8 +183,8 @@ with at most four agent sessions open at a time, so no single track holds the ot
 | **P5 Cost, bounded** | v0.7 | E2 purchased and installed cost of every sized unit, E3 utilities, E4 capital, operating cost and cost of production, E6 the cost view | every unit sized in E1 has a cost or a stated "no open data"; a flowsheet shows its cost of production with the accuracy range |
 | **P6 Agentic design with CHEPTA-Lab** | v0.8 | G1 frozen as a versioned tool contract; G6 the design-study view; E5 CO2 and safety indicators; Lab's capability requests (below) | one of CHEPTA-Lab's reviewed reaction-separation cases runs end to end in a released CHEPTA, with balances closed and costs shown |
 | **P7 Advanced thermodynamics** | v0.9 | the methods track M2 to M6 (PSRK or MHV2, CPA, PC-SAFT, electrolytes, ionic liquids); M2 runs alongside P5 | each method has its proposal, open parameters, My data for the rest, and tests against an independent implementation |
-| **P8 Stability and bridges** | 1.0 | A12 frozen interfaces and deprecation rules; A2 data packs; A3 the tier on every result; A9 speed and size budgets; B3 ThermoML import; B5 notebooks and spreadsheets; B6 other simulators; C2 to C6 | the public interface is frozen and documented; old project files open |
-| **After 1.0** | – | reactive distillation; sensitivity and optimization; batch and dynamic simulation; solids beyond crystallization; life-cycle assessment | – |
+| **P8 Stability and bridges** | v0.10 and later | A12 frozen interfaces and deprecation rules; A2 data packs; A3 the tier on every result; A9 speed and size budgets; B3 ThermoML import; B5 notebooks and spreadsheets; B6 other simulators; C2 to C6 | the public interface is frozen and documented; old project files open; then the maintainer decides on an official release |
+| **Later** | – | reactive distillation; sensitivity and optimization; batch and dynamic simulation; solids beyond crystallization; life-cycle assessment | – |
 
 **Cost work must not stall the program** (the maintainer, 2026-11-04: "the agents shouldn't get stuck in the cost
 estimations but it is good to start working on this as well"):
@@ -333,11 +335,11 @@ Needs a proposal for each method (track M). Each method ships with the open para
 
 ### Later
 
-After 1.0 (the program above, phase "After 1.0"; the maintainer, 2026-11-04: reactive distillation later).
+The program above, phase "Later" (the maintainer, 2026-11-04: reactive distillation later).
 
 - Reactive distillation, batch reactors and catalyst deactivation
 - Sensitivity studies and optimization: the agent varies the design and finds the best
   operating point, with the engineer setting the limits
 - Solids handling beyond crystallization (proposal 0015); dynamic simulation
 - Life-cycle assessment linked to the cost model
-- 1.0 after A12
+- An official release after A12, when the maintainer decides (versions stay 0.x until then)

@@ -7,7 +7,7 @@ also with the three proposals for CHEPTA-Lab"; and earlier: "i am ok to have rea
 ## What changed
 
 - ROADMAP.md, "The program after M4 (v0.7 to 1.0)": phases P5 cost (bounded, v0.7), P6 agentic design with CHEPTA-Lab
-  (v0.8), P7 advanced thermodynamics (v0.9; M2 alongside P5), P8 stability and bridges (1.0), and after 1.0 (reactive
+  (v0.8), P7 advanced thermodynamics (v0.9; M2 alongside P5), P8 stability and bridges (v0.10 and later), and later (reactive
   distillation, optimization, dynamics, batch, solids, LCA). At most four agent sessions at a time.
 - The rules that keep cost work from stalling: one workstream in parallel; one open source per equipment family,
   searched once; otherwise "no open data" and the user's own cost in My data; index year and accuracy range stated;
@@ -15,7 +15,16 @@ also with the three proposals for CHEPTA-Lab"; and earlier: "i am ok to have rea
 - ROADMAP.md, "CHEPTA and CHEPTA-Lab": Lab pins released versions; Lab's blockers are capability requests (a new issue
   form, .github/ISSUE_TEMPLATE/capability-request.yml); G2 to G5 are done in CHEPTA-Lab, CHEPTA keeps G1 and G6 and takes
   Lab's reviewed cases as benchmarks; no training data flows back into the databank.
-- Reactive distillation: after 1.0.
+- Reactive distillation: later.
+- No 1.0 (the maintainer, 2026-11-04: "i do not need to have 1.0. i can continue with 0.xxx because i am not releasing it
+  officially until i am happy"): versions stay 0.x; A12 is the stability policy for an official release, whenever the
+  maintainer decides on one.
+- Data track D9, pairs with two liquids (the maintainer: "we need to think about the whole structure of nrtl fitting
+  when we have two liquids ... it refuses to calculate but in fact it could"): classify each pair from open evidence
+  (miscible, partly miscible, not known), fit by class (no split allowed; joint VLE and liquid-liquid fit; VLE alone with
+  a predicted split kept and labelled), the engine calculates the split wherever a set predicts it and says what evidence
+  stands behind it, Wilson refused only inside a known split. Needs proposal 0019, which changes DATA_RULES.md section 5;
+  the five Wilson pairs of PR #200 wait for it.
 
 ## Known Lab blockers (CHEPTA-Lab, docs/CAPABILITY_AUDIT_2026-10-30.md, read 2026-11-04)
 
