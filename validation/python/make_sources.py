@@ -427,6 +427,18 @@ SEEDS = {
         "note": "Worked examples: the ternary mixture by complete mixing (p. 140-141) and oxygen from air by complete mixing, cross flow, counter-current and co-current flow (p. 141-144), with the areas and compositions it prints (from Geankoplis's examples 13.4-2 and 13.5-1, whose book is not open and not used). Read 2026-11-03.",
         "files": ["validation/python/reference_membrane.py", "test/membrane.test.js"],
     },
+    # src/units/evaporator.js (the Evaporator block): the model and the worked example
+    "subramanian-2019-evaporation": {
+        "title": "Heat Transfer: Evaporation (lecture notes)",
+        "authors": "M. Subramanian (Department of Chemical Engineering, SSN College of Engineering)",
+        "year": 2019,
+        "kind": "course notes",
+        "citation": "lecture slides, September 25, 2019, 35 slides",
+        "url": "https://msubbu.in/ln/ht/HT-Lecture-17-Evaporation.pdf",
+        "access": "Free to read on the author's site (msubbu.in); no licence stated, so the slides are cited, not copied",
+        "note": "Slide 10: multiple-effect evaporation, the vapour of one effect heating the next; slides 16-20, Example 1: 30000 kg/h of a 10 % solution to 50 % solids, steam at 0.2 MPa (393 K), boiling at 323 K, U = 2.9 kW/(m2 K), c_p 3.98 kJ/(kg K), latent heats 2202 and 2383 kJ/kg; printed: steam 27708.4 kg/h, economy 0.87, area 83.5 m2 (feed at 293 K) and 26786.1 kg/h, 0.896, 80.7 m2 (feed at 308 K). Used as a check within the example's simplifications (no boiling-point rise, constant c_p and latent heats). Read 2026-11-04.",
+        "files": ["src/units/evaporator.js", "validation/python/reference_evaporator.py", "test/evaporator.test.js", "docs/models/evaporator.md"],
+    },
     # src/units/columns/hydraulics.js (the liquid's surface tension on a tray)
     "chemicals-surface-tension-mixture": {
         "title": "chemicals.interface.Winterfeld_Scriven_Davis, the first-ranked rule of thermo's SurfaceTensionMixture (chemicals 1.5.2, thermo 0.6.1)",

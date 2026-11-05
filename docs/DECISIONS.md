@@ -131,7 +131,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     2026-11-04 (the Separator button, 20 cells, isothermal, counter-current and GPU; an adiabatic module and
     pervaporation postponed). Still open: the choice of Aziaba et al. 2022 as the model's source. To check: the worked
     example of Binous 2006 and the example's permeances against Aziaba et al.'s Table 1.
-  - Waiting: W1; W3's evaporator and crystallizer.
+  - **W3, M3 step 10: the Evaporator block, built, to review** (docs/decisions/2026-11-04-09-evaporator-crystallizer.md):
+    one effect or several in forward feed, each a heater and a flash heated by the vapour of the one before; the
+    steam for a product concentration or a steam flow, the steam economy, each effect's boiling-point rise and, with U,
+    its area; under the Separator button; `solve_evaporator`. To check: Example 1 of Subramanian 2019 (slides 16-20).
+    Answered 2026-11-05: keep the block, one condensate outlet, other feed arrangements and equal areas later; sugar
+    solutions on the ideal solution with a note. Still open: a data task, NRTL pairs of water + glucose and water +
+    sucrose fitted to open data (sucrose to be proposed for addition).
+  - Waiting: W1; W3's crystallizer (a second pull request, docs/decisions/2026-11-04-11-crystallizer.md).
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
   (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive
   distillation and the rest after 1.0. Lab pins releases, files capability requests, and does G2 to G5.
