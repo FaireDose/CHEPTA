@@ -8062,6 +8062,64 @@
      379.14
     ]
    }
+  },
+  {
+   "model": "PR",
+   "i": "carbon-monoxide",
+   "j": "methanol",
+   "set": "fitted-wu2019",
+   "default": true,
+   "kij": -0.1802,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs to the 27 bubble pressures of 1 article of the NIST TRC ThermoML Archive (each article the same total weight), 298.15-372.9 K, 241.5-3232.2 kPa: AAD 4.9 % in P (max 15.7 %), gas solubility at the measured T and P AAD 5 % (max 18.5 %)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-monoxide_methanol_10-1021-acs-jced-9b00676.json"
+    ],
+    "conditions": "T = 298.15-372.9 K, P = 241.5-3232.2 kPa",
+    "T_range_K": [
+     298.15,
+     372.9
+    ]
+   },
+   "source_ids": [
+    "wu2019-carbon-dioxide-methanol"
+   ],
+   "valid": {
+    "T_K": [
+     298.15,
+     372.9
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "carbon-monoxide",
+   "j": "methanol",
+   "set": "fitted-wu2019",
+   "default": true,
+   "kij": -0.2585,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs to the 27 bubble pressures of 1 article of the NIST TRC ThermoML Archive (each article the same total weight), 298.15-372.9 K, 241.5-3232.2 kPa: AAD 4.6 % in P (max 15 %), gas solubility at the measured T and P AAD 4.7 % (max 17.6 %)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-monoxide_methanol_10-1021-acs-jced-9b00676.json"
+    ],
+    "conditions": "T = 298.15-372.9 K, P = 241.5-3232.2 kPa",
+    "T_range_K": [
+     298.15,
+     372.9
+    ]
+   },
+   "source_ids": [
+    "wu2019-carbon-dioxide-methanol"
+   ],
+   "valid": {
+    "T_K": [
+     298.15,
+     372.9
+    ]
+   }
   }
  ]
 }

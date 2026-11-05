@@ -1,0 +1,100 @@
+{
+ "_about": "Carbon dioxide (1) + Water (2): equilibrium states (T, P, x, y), 373.15-423.15 K, as stored in the ThermoML Archive record, compositions of the other component converted with x_1 = 1 - x_2.",
+ "components": [
+  "carbon-dioxide",
+  "water"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "H. Messabeb, F. Contamine, P. Cezac, J. P. Serin, C. Pouget, E. C. Gaucher, Experimental Measurement of CO2 Solubility in Aqueous CaCl2 Solution at Temperature from 323.15 to 423.15 K and Pressure up to 20 MPa Using the Conductometric Titration, J. Chem. Eng. Data 62 (2017) 4228-4234",
+  "doi": "10.1021/acs.jced.7b00591",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00591.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 2. The table number in the article was not checked.",
+  "transcription": "Read from the ThermoML XML by validation/python/hp_gas_solubility.py; values as stored. The person checking compares each row with the record."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "p_1_kPa",
+  "x_1",
+  "y_1",
+  "U_P_kPa",
+  "U_x_1"
+ ],
+ "rows": [
+  [
+   373.15,
+   5050.0,
+   null,
+   0.00848465,
+   null,
+   null,
+   null
+  ],
+  [
+   373.15,
+   10070.0,
+   null,
+   0.01427749,
+   null,
+   null,
+   null
+  ],
+  [
+   373.15,
+   14960.0,
+   null,
+   0.01802664,
+   null,
+   null,
+   null
+  ],
+  [
+   373.15,
+   19900.0,
+   null,
+   0.02034894,
+   null,
+   null,
+   null
+  ],
+  [
+   423.15,
+   5050.0,
+   null,
+   0.00690588,
+   null,
+   null,
+   null
+  ],
+  [
+   423.15,
+   10120.0,
+   null,
+   0.0129629,
+   null,
+   null,
+   null
+  ],
+  [
+   423.15,
+   15100.0,
+   null,
+   0.01774862,
+   null,
+   null,
+   null
+  ],
+  [
+   423.15,
+   19950.0,
+   null,
+   0.02071188,
+   null,
+   null,
+   null
+  ]
+ ],
+ "notes": "Read with validation/python/hp_gas_solubility.py. The record gives the molality m of carbon dioxide (mol per kg of water); x_1 = m / (m + 1000/M_2), M_2 = 18.01528 g/mol. To be checked by a person against the record (AGENTS.md rule 4)."
+}

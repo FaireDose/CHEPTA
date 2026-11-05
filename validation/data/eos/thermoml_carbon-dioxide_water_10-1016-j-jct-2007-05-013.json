@@ -1,0 +1,154 @@
+{
+ "_about": "Carbon dioxide (1) + Water (2): equilibrium states (T, P, x, y), 290.27-302.93 K, as stored in the ThermoML Archive record, compositions of the other component converted with x_1 = 1 - x_2.",
+ "components": [
+  "carbon-dioxide",
+  "water"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "I. M. A. Fonseca, J. P. B. Almeida, H. C. Fachada, Automated apparatus for gas solubility measurements, J. Chem. Thermodyn. 39 (2007) 1407-1411",
+  "doi": "10.1016/j.jct.2007.05.013",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2007.05.013.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1. The table number in the article was not checked.",
+  "transcription": "Read from the ThermoML XML by validation/python/hp_gas_solubility.py; values as stored. The person checking compares each row with the record."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "p_1_kPa",
+  "x_1",
+  "y_1",
+  "U_P_kPa",
+  "U_x_1"
+ ],
+ "rows": [
+  [
+   290.27,
+   101.325,
+   null,
+   0.00077,
+   null,
+   null,
+   1.5e-05
+  ],
+  [
+   291.49,
+   101.325,
+   null,
+   0.000736,
+   null,
+   null,
+   1.5e-05
+  ],
+  [
+   292.11,
+   101.325,
+   null,
+   0.000722,
+   null,
+   null,
+   1.4e-05
+  ],
+  [
+   293.39,
+   101.325,
+   null,
+   0.00069,
+   null,
+   null,
+   1.4e-05
+  ],
+  [
+   294.58,
+   101.325,
+   null,
+   0.000665,
+   null,
+   null,
+   1.3e-05
+  ],
+  [
+   295.15,
+   101.325,
+   null,
+   0.000666,
+   null,
+   null,
+   1.3e-05
+  ],
+  [
+   296.19,
+   101.325,
+   null,
+   0.000636,
+   null,
+   null,
+   1.3e-05
+  ],
+  [
+   297.19,
+   101.325,
+   null,
+   0.000619,
+   null,
+   null,
+   1.2e-05
+  ],
+  [
+   298.39,
+   101.325,
+   null,
+   0.000598,
+   null,
+   null,
+   1.2e-05
+  ],
+  [
+   299.37,
+   101.325,
+   null,
+   0.000589,
+   null,
+   null,
+   1.2e-05
+  ],
+  [
+   300.15,
+   101.325,
+   null,
+   0.00058,
+   null,
+   null,
+   1.2e-05
+  ],
+  [
+   301.1,
+   101.325,
+   null,
+   0.000561,
+   null,
+   null,
+   1.1e-05
+  ],
+  [
+   302.13,
+   101.325,
+   null,
+   0.000543,
+   null,
+   null,
+   1.1e-05
+  ],
+  [
+   302.93,
+   101.325,
+   null,
+   0.000535,
+   null,
+   null,
+   1.1e-05
+  ]
+ ],
+ "notes": "Read with validation/python/hp_gas_solubility.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}
