@@ -40,6 +40,9 @@ crystallizing in every block; (3) a worked TPA example. Model page: [docs/models
   crystallized in letdown drums at 4, 2 and 0.8 MPa, then a crystallizer at 373.15 K: yield 0.99917, both balances
   closed; each drum's liquid at the measured solubility within 6 %.
 - **Independent reference** `validation/python/reference_solid_flash.py`: the chain agrees within 1e-7.
+- **The two routes agree** (the coordinating session's addition): a cooler, or a flash drum at the same T and vapour
+  fraction, followed by taking the solid apart gives exactly the Crystallizer's crystals, mother liquor, enthalpy and
+  duty (within 1e-8), for TPA (the curve) and succinic acid (the equation), cooling and evaporative (test/solids.test.js).
 - **Fixed on the way:** `fit_sle.py` did not run after #207 (a local variable shadowed its `pairs()` function) and would
   have failed on a solid without melting data; both fixed, and a rerun reproduces binaries.json byte for byte. The
   workbench's mass-fraction rows and molar masses were empty (the component list carries no molar masses). A flash
@@ -48,8 +51,11 @@ crystallizing in every block; (3) a worked TPA example. Model page: [docs/models
 
 ## Found on the way
 
-- The fluid flash of Modified UNIFAC 2.0 fails for water with a trace (about 1e-6) of a nonvolatile solute near water's
-  boiling point ("dew pressure ... nonvolatile"); the solid flash avoids such states. The flash itself is not changed.
+- The flash of water with a little of a nonvolatile solute at a given T and vapour fraction failed for some compositions
+  with the dew point's error (a nonvolatile component has none): fixed in `src/equilibrium/flash.js` (no dew bracket
+  with a nonvolatile component; below the bubble pressure, a split that converges to no vapour is the liquid, and a split
+  that does not converge starts again from K = γ p_sat / P). The P-H flash of water with a trace of about 1e-6 of it
+  near water's boiling point still fails in Modified UNIFAC 2.0; the solid flash avoids such states.
 - TPA has no open liquid density, so a pump cannot take it: the example's feed is given at 8 MPa.
 
 ## For the maintainer to check

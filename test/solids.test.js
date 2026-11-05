@@ -162,3 +162,40 @@ test("the Crystallizer takes its solute's solubility from the set fitted to solu
   assert.ok(rel(r.state.solubility_x, fitted.solidSolubility("succinic-acid", 298.15).xSolute) < 1e-12, `${r.state.solubility_x}`);
   assert.ok(Math.abs(r.state.solubility_x - own.solidSolubility("succinic-acid", 298.15).xSolute) > 1e-4, "not the flowsheet's own set");
 });
+
+test("a cooler or a flash drum, then the solid taken apart, gives exactly the Crystallizer's crystals, mother liquor and duty", () => {
+  // the two routes must never drift apart (the coordinating session, 2026-11-05): the same feed and conditions through
+  // the solid flash of every block, and through the Crystallizer's own balance. TPA (the measured curve) and succinic
+  // acid (the melting-point equation with its fitted NRTL set) for cooling; TPA for the evaporative case, as a flash
+  // drum at the Crystallizer's temperature and vapour fraction.
+  const solidPart = s => s.phases.filter(p => p.type === "solid").reduce((a, p) => a + p.fraction * s.F_kmol_h, 0);
+  const liquidPart = s => s.phases.filter(p => p.type === "liquid").map(p => p.composition.map(x => x * p.fraction * s.F_kmol_h))
+    .reduce((a, v) => a.map((y, k) => y + v[k]), new Array(s.flows.length).fill(0));
+  const cases = [
+    { components: ["water", "terephthalic-acid"], model: "MOD-UNIFAC-2", solute: "terephthalic-acid", feed: { flow_kg_h: { water: 800, "terephthalic-acid": 20 }, T_K: 540, P_kPa: 8000 }, T_K: 400, P_kPa: 8000 },
+    { components: ["water", "succinic-acid"], model: "NRTL", solute: "succinic-acid", feed: { flow_kg_h: { water: 800, "succinic-acid": 200 }, T_K: 343.15, P_kPa: 101.325 }, T_K: 288.15, P_kPa: 101.325 },
+  ];
+  for (const c of cases) {
+    const sys = system({ components: c.components, model: c.model, solids: [c.solute] });
+    const feed = stream(sys, c.feed);
+    const cr = runUnit("crystallizer", { sys, inlets: { in: feed }, spec: { solute: c.solute, T_K: c.T_K, P_kPa: c.P_kPa }, outletCount: 2 });
+    const cool = runUnit("heater", { sys, inlets: { in: feed }, spec: { T_K: c.T_K, P_kPa: c.P_kPa } }).outlets.out;
+    const i = sys.ids.indexOf(c.solute);
+    assert.ok(rel(solidPart(cool), cr.state.crystals_kmol_h) < 1e-8, `${c.solute}: crystals ${solidPart(cool)} vs ${cr.state.crystals_kmol_h}`);
+    const ml = liquidPart(cool);
+    cr.outlets.liquor.flows.forEach((v, k) => assert.ok(Math.abs(ml[k] - v) < 1e-9 * Math.max(1, v), `${c.solute}: mother liquor ${k}: ${ml[k]} vs ${v}`));
+    assert.ok(Math.abs(cool.H_kW - (cr.outlets.crystals.H_kW + cr.outlets.liquor.H_kW)) < 1e-6, `${c.solute}: enthalpy ${cool.H_kW} vs ${cr.outlets.crystals.H_kW + cr.outlets.liquor.H_kW}`);
+    assert.ok(Math.abs(cool.T_K - cr.state.T_K) < 1e-12 && i >= 0);
+  }
+  // evaporative: TPA at 450 K with 300 kg/h of steam taken off, against a flash drum at that T and vapour fraction
+  // (this T-VF flash of water with a little of the nonvolatile acid needed the fix of 2026-11-05 in flash.js: no dew point)
+  const sys = system({ components: ["water", "terephthalic-acid"], model: "MOD-UNIFAC-2", solids: ["terephthalic-acid"] });
+  const feed = stream(sys, { flow_kg_h: { water: 800, "terephthalic-acid": 20 }, T_K: 540, P_kPa: 8000 });
+  const cr = runUnit("crystallizer", { sys, inlets: { in: feed }, spec: { solute: "terephthalic-acid", T_K: 450, evaporated_kg_h: 300 }, outletCount: 3 });
+  const VF = cr.outlets.vapour.F_kmol_h / feed.F_kmol_h;
+  const d = runUnit("flash", { sys, inlets: { in: feed }, spec: { T_K: 450, VF } });
+  assert.ok(rel(d.outlets.vapour.mass_kg_h, 300) < 1e-8, `vapour ${d.outlets.vapour.mass_kg_h} kg/h`);
+  assert.ok(rel(d.state.P_kPa, cr.state.P_kPa) < 1e-8, `pressure ${d.state.P_kPa} vs ${cr.state.P_kPa}`);
+  assert.ok(rel(solidPart(d.outlets.liquid), cr.state.crystals_kmol_h) < 1e-8, `crystals ${solidPart(d.outlets.liquid)} vs ${cr.state.crystals_kmol_h}`);
+  assert.ok(Math.abs(d.duty_kW - cr.duty_kW) < 1e-6 * Math.max(1, Math.abs(cr.duty_kW)), `duty ${d.duty_kW} vs ${cr.duty_kW}`);
+});
