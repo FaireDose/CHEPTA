@@ -588,7 +588,7 @@ def wilson_ok(spec):
     cls = pair_class(spec["pair"])
     if cls == "partly miscible":
         return not overlaps_measured_split(spec)
-    return not any(kind in ("lle", "haz") for kind, _, name in file_sets(spec) if not name.endswith(" (two liquids)"))
+    return not any(kind in ("lle", "haz") for kind, name, _ in file_sets(spec) if not name.endswith(" (two liquids)"))
 
 
 def spec_models(spec):
@@ -1054,7 +1054,7 @@ def main(write, only=None, models_only=None):
             if "WILSON" not in spec_models(spec) and (models_only is None or "WILSON" in models_only):
                 old = [r for r in binaries["pairs"] if r["model"] == "WILSON" and {r["i"], r["j"]} == set(spec["pair"])
                        and r.get("tier") == "fitted" and r.get("source", "").startswith(spec["describe"][:80])
-                       and "+".join(sorted(spec["pair"])) not in WILSON_KEPT]
+                       ]
                 if old:
                     binaries["pairs"] = [r for r in binaries["pairs"] if not any(r is o for o in old)]
                     rest = [r for r in binaries["pairs"] if r["model"] == "WILSON" and {r["i"], r["j"]} == set(spec["pair"])]
