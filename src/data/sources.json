@@ -15,6 +15,20 @@
         "validation/data/vle/1-butanol_n-nonane_10-1021-je030222n_tpx.json"
       ]
     },
+    "ahmadi2018-carbon-dioxide-water": {
+      "title": "CO2 solubility in formation water under sequestration conditions",
+      "authors": "P. Ahmadi, A. Chapoy",
+      "year": 2018,
+      "published": "Fluid Phase Equilib. 463 (2018) 80-90",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2018.02.002",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2018.02.002.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json"
+      ]
+    },
     "albayati-decanters": {
       "title": "Liquid-liquid separators (lecture notes)",
       "authors": "S. D. Al-Bayati, Biochemical Engineering Department, Al-Khwarizmi College of Engineering, University of Baghdad",
@@ -373,6 +387,20 @@
         "validation/data/vle/2-butanol_toluene_10-1021-je201284y_313.15K.json"
       ]
     },
+    "bermejo2005-carbon-dioxide-water": {
+      "title": "The influence of Na2SO4 on the CO2 solubility in water at high pressure",
+      "authors": "M. D. Bermejo, A. Martin, L. J. Florusse, C. J. Peters, M. J. Cocero",
+      "year": 2005,
+      "published": "Fluid Phase Equilib. 238 (2005) 220-228",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2005.10.006",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2005.10.006.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json"
+      ]
+    },
     "bernatova2011-isobutanol-isooctane": {
       "title": "Isothermal vapour-liquid equilibria in the binary and ternary systems composed of 2,2,4-trimethylpentane, 2-methyl-1-propanol, and 4-methyl-2-pentanone",
       "authors": "S. Bernatova, J. Pavlicek, I. Wichterle",
@@ -428,6 +456,20 @@
       "files": [
         "validation/data/pure/measured/article_ethyl-lactate_bogatishcheva2026.json",
         "validation/data/pure/measured/article_methyl-lactate_bogatishcheva2026.json"
+      ]
+    },
+    "braga2017-carbon-dioxide-methanol": {
+      "title": "Phase Behavior Data of (CO2 + Toluene + Phenanthrene) and (CO2 + (Methanol + Phenanthrene) Systems at High Pressure",
+      "authors": "A. J. O. Braga, R. P. do Carmo, P. M. Ndiaye, F. W. Tavares",
+      "year": 2017,
+      "published": "J. Chem. Eng. Data 62 (2017) 2812-2818",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.7b00126",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00126.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json"
       ]
     },
     "brandt2014-acetic-acid-ethanol": {
@@ -503,6 +545,20 @@
         "validation/data/vle/methanol_vinyl-acetate_10-1021-je300835h_101.3kPa_tx.json"
       ]
     },
+    "campos2009-carbon-dioxide-water": {
+      "title": "Solubility of Carbon Dioxide in Water and Hexadecane: Experimental Measurement and Thermodynamic Modeling",
+      "authors": "C. E. P. S. Campos, H. G. D. A. Villardi, F. L. P. Pessoa, A. M. C. Uller",
+      "year": 2009,
+      "published": "J. Chem. Eng. Data 54 (2009) 2881-2886",
+      "kind": "thermoml",
+      "doi": "10.1021/je800966f",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je800966f.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+      ]
+    },
     "cao2014-ethanol-tetrahydrofuran": {
       "title": "Vapor-liquid equilibria for tetrahydrofuran + ethanol system containing three different ionic liquids at 101.3 kPa",
       "authors": "L. Cao, P. Liu, B. Wang, Q. Li",
@@ -530,6 +586,20 @@
       "note": "Table 3, p. 1208: the solubility of CO2 in water at total pressures of 101.325 and 500 kPa, 10 to 80 degC, calculated by the authors from their Henry's-law correlation of about 100 measured investigations; transcribed as printed. A check of CHEPTA's Henry components (IAPWS G7-04), not a parameter source.",
       "files": [
         "validation/data/henry/co2_water_carroll1991.json"
+      ]
+    },
+    "carvalho2015-carbon-dioxide-water": {
+      "title": "Carbon dioxide solubility in aqueous solutions of NaCl: Measurements and modeling with electrolyte equations of state",
+      "authors": "P. J. Carvalho, L. M. C. Pereira, N. P. F. Goncalves, A. J. Queimada, J. A. P. Coutinho",
+      "year": 2015,
+      "published": "Fluid Phase Equilib. 388 (2015) 100-106",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2014.12.043",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2014.12.043.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json"
       ]
     },
     "casimiro2015-1-propanol-isopropyl-acetate": {
@@ -779,6 +849,20 @@
         "src/sizing/sizing.js"
       ]
     },
+    "comak2016-carbon-dioxide-water": {
+      "title": "A synthetic-dynamic method for water solubility measurements in high pressure CO2 using ATR FTIR spectroscopy",
+      "authors": "G. Comak, S. Foltran, J. Ke, E. Perez, Y. Sanchez-Vicente, M. W. George, M. Poliakoff",
+      "year": 2016,
+      "published": "J. Chem. Thermodyn. 93 (2016) 386-391",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2015.09.024",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.09.024.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-09-024.json"
+      ]
+    },
     "coolprop": {
       "title": "CoolProp 8.0.0",
       "authors": "Bell, Wronski, Quoilin, Lemort",
@@ -850,6 +934,34 @@
         "validation/data/vle/1-propanol_water_10-1016-j-jct-2017-06-014_101.3kPa.json"
       ]
     },
+    "dai2015-carbon-dioxide-methanol": {
+      "title": "Absorption of CO2 with methanol and ionic liquid mixture at low temperatures",
+      "authors": "C. Dai, W. Wei, Z. Lei",
+      "year": 2015,
+      "published": "Fluid Phase Equilib. 391 (2015) 9-17",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2015.02.002",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2015.02.002.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json"
+      ]
+    },
+    "dalmolin2006-carbon-dioxide-water": {
+      "title": "Solubility of carbon dioxide in binary and ternary mixtures with ethanol and water",
+      "authors": "I. Dalmolin, E. Skovroinski, A. Biasi, M. L. Corazza, C. Dariva, J. V. Oliveira",
+      "year": 2006,
+      "published": "Fluid Phase Equilib. 245 (2006) 193-200",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2006.04.017",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2006.04.017.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json"
+      ]
+    },
     "danon2018-water-cyclohexane": {
       "title": "Mutual Solubilities of Cyclohexane and Water in Aqueous Methyldiethanolamine/Cyclohexane Liquid-Liquid Equilibria",
       "authors": "R. Danon, M. C. Kroon, F. Banat",
@@ -862,6 +974,48 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/water_cyclohexane_lle_danon2018.json"
+      ]
+    },
+    "decultot2019-carbon-dioxide-methanol": {
+      "title": "Solubility of CO2 in methanol, ethanol, 1,2-propanediol and glycerol from 283.15 K to 373.15 K and up to 6.0 MPa",
+      "authors": "M. Decultot, A. Ledoux, M.-C. Fournier-Salaun, L. Estel",
+      "year": 2019,
+      "published": "J. Chem. Thermodyn. 138 (2019) 67-77",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2019.05.003",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2019.05.003.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json"
+      ]
+    },
+    "dellera2010-carbon-dioxide-water": {
+      "title": "Solubility of carbon dioxide in aqueous solutions of diisopropanolamine and methyldiethanolamine",
+      "authors": "C. Dell'Era, P. Uusi-Kyyny, J. P. Pokki, M. Pakkanen, V. Alopaeus",
+      "year": 2010,
+      "published": "Fluid Phase Equilib. 293 (2010) 101-109",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2010.02.035",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2010.02.035.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json"
+      ]
+    },
+    "descamps2005-hydrogen-methanol": {
+      "title": "Solubility of hydrogen in methanol at temperatures from 248.41 to 308.20K",
+      "authors": "C. Descamps, C. Coquelet, C. Bouallou, D. Richon",
+      "year": 2005,
+      "published": "Thermochim. Acta 430 (2005) 1-7",
+      "kind": "thermoml",
+      "doi": "10.1016/j.tca.2004.12.001",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.tca.2004.12.001.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_hydrogen_methanol_10-1016-j-tca-2004-12-001.json"
       ]
     },
     "dias2014-2-propanol-isoamyl-alcohol": {
@@ -1125,6 +1279,48 @@
         "validation/data/vle/1-pentanol_n-nonane_10-1021-acs-jced-8b00680_40.0kPa_tx.json"
       ]
     },
+    "fonseca2007-carbon-dioxide-water": {
+      "title": "Automated apparatus for gas solubility measurements",
+      "authors": "I. M. A. Fonseca, J. P. B. Almeida, H. C. Fachada",
+      "year": 2007,
+      "published": "J. Chem. Thermodyn. 39 (2007) 1407-1411",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2007.05.013",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2007.05.013.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json"
+      ]
+    },
+    "frost2014-methane-methanol": {
+      "title": "Vapor Liquid Equilibrium of Methane with Water and Methanol. Measurements and Modeling",
+      "authors": "M. Frost, E. Karakatsani, N. V. Solms, D. Richon, G. M. Kontogeorgis",
+      "year": 2014,
+      "published": "J. Chem. Eng. Data 59 (2014) 961-967",
+      "kind": "thermoml",
+      "doi": "10.1021/je400684k",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je400684k.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json"
+      ]
+    },
+    "frost2015-methane-methanol": {
+      "title": "Measurement of vapor-liquid-liquid phase equilibrium - Equipment and results",
+      "authors": "M. Frost, N. V. Solms, D. Richon, G. M. Kontogeorgis",
+      "year": 2015,
+      "published": "Fluid Phase Equilib. 405 (2015) 88-95",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2015.07.009",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2015.07.009.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json"
+      ]
+    },
     "fukano2006-ethanol-methanol": {
       "title": "Ebulliometric Determination of Vapor-Liquid Equilibria for Methanol + Ethanol + Dimethyl Carbonate",
       "authors": "M. Fukano, H. Matsuda, K. Kurihara, K. Ochi",
@@ -1273,6 +1469,34 @@
         "validation/data/vle/aniline_n-octane_10-1021-je0505366_383.15K.json"
       ]
     },
+    "gui2011-carbon-dioxide-methanol": {
+      "title": "Solubility of CO2 in Alcohols, Glycols, Ethers, and Ketones at High Pressures from (288.15 to 318.15) K",
+      "authors": "X. Gui, Z. Tang, W. Fei",
+      "year": 2011,
+      "published": "J. Chem. Eng. Data 56 (2011) 2420-2429",
+      "kind": "thermoml",
+      "doi": "10.1021/je101344v",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je101344v.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json"
+      ]
+    },
+    "guo2014-carbon-dioxide-water": {
+      "title": "Quantitative Raman spectroscopic investigation of geo-fluids highpressure phase equilibria: Part I. Accurate calibration and determination of CO2 solubility in water from 273.15 to 573.15 K and from 10 to 120 MPa",
+      "authors": "H. Guo, Y. Chen, Q. Hu, W. Lu, W. Ou, L. Geng",
+      "year": 2014,
+      "published": "Fluid Phase Equilib. 382 (2014) 70-79",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2014.08.032",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2014.08.032.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json"
+      ]
+    },
     "gupta2012-cyclohexane-n-nonane": {
       "title": "Isobaric vapor-liquid equilibrium for the binary mixtures of nonane with cyclohexane, toluene, m-xylene, or p-xylene at 101.3 kPa",
       "authors": "B. S. Gupta, M. J. Lee",
@@ -1319,6 +1543,48 @@
       "files": [
         "validation/data/vle/1-propanol_water_10-1016-j-jct-2016-10-001_101.3kPa.json",
         "validation/data/vle/2-propanol_water_10-1016-j-jct-2016-10-001_101.3kPa.json"
+      ]
+    },
+    "haghtalab2015-carbon-dioxide-water": {
+      "title": "Absorption and solubility measurement of CO2 in water-based ZnO and SiO2 nanofluids",
+      "authors": "A. Haghtalab, M. Mohammadi, Z. Fakhroueian",
+      "year": 2015,
+      "published": "Fluid Phase Equilib. 392 (2015) 33-42",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2015.02.012",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2015.02.012.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json"
+      ]
+    },
+    "hamada2012-carbon-dioxide-methanol": {
+      "title": "Phase behavior for carbon dioxide/tetraalkoxysilane systems",
+      "authors": "T. Hamada, D. Kobayashi, T. Takahashi, A. Shono, K. Otake, T. Tsuji, S. Yoda, T. Furuya",
+      "year": 2012,
+      "published": "Fluid Phase Equilib. 322-323 (2012) 135-141",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2012.02.018",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.02.018.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json"
+      ]
+    },
+    "han2011-carbon-dioxide-water": {
+      "title": "Measurement and Correlation of Solubility Data for CO2 in NaHCO3 Aqueous Solution",
+      "authors": "X. Han, Z. Yu, J. Qu, T. Qi, W. Guo, G. Zhang",
+      "year": 2011,
+      "published": "J. Chem. Eng. Data 56 (2011) 1213-1219",
+      "kind": "thermoml",
+      "doi": "10.1021/je1011168",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je1011168.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json"
       ]
     },
     "hao2012-2-propanol-methanol": {
@@ -1433,6 +1699,20 @@
         "validation/data/pure/measured/article_xylitol_hohlein2017.json"
       ]
     },
+    "hohler2018-carbon-dioxide-methanol": {
+      "title": "Gas solubilities of carbon dioxide in methanol, acetone, mixtures of methanol and water, and mixtures of methanol and acetone",
+      "authors": "F. Hohler, R. Deschermeier, S. Rehfeldt, H. Klein",
+      "year": 2018,
+      "published": "Fluid Phase Equilib. 459 (2018) 186-195",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2017.12.004",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2017.12.004.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json"
+      ]
+    },
     "horstmann2004-methanol-nmp": {
       "title": "Isothermal Vapor-Liquid Equilibrium and Excess Enthalpy Data for the Binary Systems Water + Sulfolane and Methanol + N-Methyl-2-pyrrolidone (NMP)",
       "authors": "S. Horstmann, K. Fischer, J. Gmehling",
@@ -1460,6 +1740,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/methyl-palmitate_methyl-stearate_10-1021-je3003699_10.0kPa_tx.json"
+      ]
+    },
+    "howlader2017-carbon-dioxide-water": {
+      "title": "Measurement and correlation of solubility of carbon dioxide in triglycerides",
+      "authors": "M. S. Howlader, W. T. French, H. Toghiani, B. Hartenbower, L. Pearson, J. DuBien, N. Rai",
+      "year": 2017,
+      "published": "J. Chem. Thermodyn. 104 (2017) 252-260",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2016.09.035",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2016.09.035.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json"
       ]
     },
     "hu2015-diethyl-carbonate-propylene-carbonate": {
@@ -1588,6 +1882,20 @@
         "validation/data/eos/inomata1986_carbon-dioxide_n-decane.json"
       ]
     },
+    "jalili2015-carbon-dioxide-methanol": {
+      "title": "Measuring the solubility of CO2 and H2S in sulfolane and the density and viscosity of saturated liquid binary mixtures of (sulfolane + CO2) and (sulfolane + H2S)",
+      "authors": "A. H. Jalili, M. Shokouhi, F. Samani, M. Hosseini-Jenab",
+      "year": 2015,
+      "published": "J. Chem. Thermodyn. 85 (2015) 13-25",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2015.01.001",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.01.001.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json"
+      ]
+    },
     "janisch2007-nitrogen-methane": {
       "title": "Vapor-Liquid Equilibria and Saturated Liquid Densities in Binary Mixtures of Nitrogen, Methane, and Ethane",
       "authors": "J. Janisch, G. Raabe, J. Koehler",
@@ -1627,6 +1935,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/1-propanol_acetonitrile_10-1021-acs-jced-9b00015_101.3kPa.json"
+      ]
+    },
+    "jia2019-carbon-dioxide-water": {
+      "title": "Solubilities of carbon dioxide, oxygen, and nitrogen ethylene glycol solution under low pressures",
+      "authors": "T. Jia, S. Bi, J. Wu",
+      "year": 2019,
+      "published": "Fluid Phase Equilib. 485 (2019) 16-22",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2018.11.035",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2018.11.035.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json"
       ]
     },
     "jiang2019-methyl-acetate-p-xylene": {
@@ -1674,6 +1996,20 @@
         "validation/data/water_ethylene-glycol_101kPa_kamihama2012.json"
       ]
     },
+    "kapateh2016-methane-methanol": {
+      "title": "Experimental Measurement and Modeling of the Solubility of Methane in Methanol and Ethanol",
+      "authors": "M. H. Kapateh, A. Chapoy, R. Burgass, B. Tohidi",
+      "year": 2016,
+      "published": "J. Chem. Eng. Data 61 (2016) 666-673",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.5b00793",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.5b00793.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json"
+      ]
+    },
     "kapoor2005-p-xylene-vinyl-acetate": {
       "title": "Vapor-Liquid Equilibria and Excess Properties of the Binary System Vinyl Acetate + p-Xylene",
       "authors": "S. Kapoor, V. K. Rattan",
@@ -1688,6 +2024,20 @@
         "validation/data/vle/p-xylene_vinyl-acetate_10-1021-je050162g_97.3kPa_tx.json"
       ]
     },
+    "kariznovi2013-carbon-dioxide-methanol": {
+      "title": "Experimental measurements and predictions of density, viscosity, and carbon dioxide solubility in methanol, ethanol, and 1-propanol",
+      "authors": "M. Kariznovi, H. Nourozieh, J. Abedi",
+      "year": 2013,
+      "published": "J. Chem. Thermodyn. 57 (2013) 408-415",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2012.10.002",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2012.10.002.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json"
+      ]
+    },
     "karkevandi2019-n-hexane-toluene": {
       "title": "Isothermal vapor-liquid equilibrium of binary and ternary systems of anisole, hexane, and toluene and ternary system of methyl tert-butyl ether, hexane, and toluene",
       "authors": "F. S. Karkevandi, A. Bakhtyari, M. R. Rahimpour, P. Keshavarz",
@@ -1698,6 +2048,20 @@
       "url": "https://trc.nist.gov/ThermoML/10.1016/j.tca.2019.178413.html",
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive"
+    },
+    "kastanidis2018-carbon-dioxide-water": {
+      "title": "Solubility of Methane and Carbon Dioxide in the Aqueous Phase of the Ternary (Methane + Carbon Dioxide + Water) Mixture: Experimental Measurements and Molecular Dynamics Simulations",
+      "authors": "P. Kastanidis, V. K. Michalis, G. E. Romanos, A. K. Stubos, I. G. Economou, I. N. Tsimpanogiannis",
+      "year": 2018,
+      "published": "J. Chem. Eng. Data 63 (2018) 1027-1035",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.7b00777",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00777.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json"
+      ]
     },
     "khoshooei2018-cyclohexane-toluene": {
       "title": "A new analysis method for improving collection of vapor-liquid equilibrium (VLE) data of binary mixtures using differential scanning calorimetry (DSC)",
@@ -1781,6 +2145,20 @@
         "src/ui/column-mccabe.js",
         "validation/data/columns/B2-chemsep-benzene-toluene.json",
         "validation/data/columns/absorber-stripper/cases.json"
+      ]
+    },
+    "koschel2006-carbon-dioxide-water": {
+      "title": "Enthalpy and solubility data of CO2 in water and NaCl(aq) at conditions of interest for geological sequestration",
+      "authors": "D. Koschel, J. Y. Coxam, L. Rodier, V. Majer",
+      "year": 2006,
+      "published": "Fluid Phase Equilib. 247 (2006) 107-120",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2006.06.006",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2006.06.006.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json"
       ]
     },
     "ku2005-acetone-ethanol": {
@@ -2005,6 +2383,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/acetone_methanol_101kPa.json"
+      ]
+    },
+    "li2018-carbon-dioxide-water": {
+      "title": "Below the room temperature measurements of CO2 solubilities in six physical absorbents",
+      "authors": "Y. Li, X. Chen, W. Huang, J. Yang",
+      "year": 2018,
+      "published": "J. Chem. Thermodyn. 122 (2018) 133-141",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2018.03.009",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2018.03.009.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json"
       ]
     },
     "li2018-ethanol-isopropyl-acetate": {
@@ -2296,6 +2688,20 @@
         "validation/data/pure/measured/article_levulinic-acid_lomba2011.json"
       ]
     },
+    "lucile2012-carbon-dioxide-water": {
+      "title": "Solubility of Carbon Dioxide in Water and Aqueous Solution Containing Sodium Hydroxide at Temperatures from (293.15 to 393.15) K and Pressure up to 5 MPa: Experimental Measurements",
+      "authors": "F. Lucile, P. Cezac, F. Contamine, J. P. Serin, D. Houssin, P. Arpentinier",
+      "year": 2012,
+      "published": "J. Chem. Eng. Data 57 (2012) 784-789",
+      "kind": "thermoml",
+      "doi": "10.1021/je200991x",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je200991x.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json"
+      ]
+    },
     "luis2012-acetonitrile-toluene": {
       "title": "The potential of head-space gas chromatography for VLE measurements",
       "authors": "P. Luis, C. Wouters, N. Sweygers, C. Creemers, B. Van der Bruggen",
@@ -2308,6 +2714,34 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/acetonitrile_toluene_10-1016-j-jct-2012-01-020_tpx.json"
+      ]
+    },
+    "luo2017-carbon-dioxide-water": {
+      "title": "Density, Viscosity and N2O solubility of Aqueous 2- (methylamino)ethanol Solution",
+      "authors": "X. Luo, L. Su, H. Gao, X. Wu, R. Idem, P. Tontiwachwuthikul, Z. Liang",
+      "year": 2017,
+      "published": "J. Chem. Eng. Data 62 (2017) 129-140",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.6b00504",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00504.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json"
+      ]
+    },
+    "lyu2018-carbon-dioxide-methanol": {
+      "title": "Solubility of carbon dioxide in methanol from 213.15 K to 273.15 K: Measurement and modeling",
+      "authors": "Z. Lyu, H. Ma, H. Zhang, W. Ying",
+      "year": 2018,
+      "published": "Fluid Phase Equilib. 471 (2018) 40-54",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2018.04.014",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2018.04.014.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json"
       ]
     },
     "ma2018-acetone-furfural": {
@@ -2465,6 +2899,20 @@
         "validation/data/vle/mibk_n-hexane_10-1021-acs-jced-6b00905_100.0kPa.json"
       ]
     },
+    "martin2009-carbon-dioxide-water": {
+      "title": "PHASE EQUILIBRIA OF CARBON DIOXIDE + POLY ETHYLENE GLYCOL + WATER MIXTURES AT HIGH PRESSURE: MEASUREMENTS AND MODELLING",
+      "authors": "A. Martin, H. M. Pham, A. Kilzer, E. Weidner, S. Kareth",
+      "year": 2009,
+      "published": "Fluid Phase Equilib. 286 (2009) 162-169",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2009.08.010",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2009.08.010.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json"
+      ]
+    },
     "martins2014-ethylbenzene-isooctane": {
       "title": "Isobaric Vapor Liquid Equilibrium for Binary Systems of 2,2,4-Trimethylpentane with o-Xylene, m-Xylene, p-Xylene, and Ethylbenzene at 250 kPa",
       "authors": "V. D. Martins, M. A. Granato, A. E. Rodrigues",
@@ -2615,6 +3063,48 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/cpme_ethanol_10-1021-acs-jced-8b01000_94.0kPa_tx.json"
+      ]
+    },
+    "messabeb2016-carbon-dioxide-water": {
+      "title": "Experimental Measurement of CO2 Solubility in Aqueous NaCl Solution at Temperature from 323.15 to 423.15 K and Pressure of up to 20 MPa",
+      "authors": "H. Messabeb, F. Contamine, P. Cezac, J. P. Serin, E. C. Gaucher",
+      "year": 2016,
+      "published": "J. Chem. Eng. Data 61 (2016) 3573-3584",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.6b00505",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00505.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json"
+      ]
+    },
+    "messabeb2017-carbon-dioxide-water": {
+      "title": "Experimental Measurement of CO2 Solubility in Aqueous CaCl2 Solution at Temperature from 323.15 to 423.15 K and Pressure up to 20 MPa Using the Conductometric Titration",
+      "authors": "H. Messabeb, F. Contamine, P. Cezac, J. P. Serin, C. Pouget, E. C. Gaucher",
+      "year": 2017,
+      "published": "J. Chem. Eng. Data 62 (2017) 4228-4234",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.7b00591",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00591.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json"
+      ]
+    },
+    "mohammadian2015-carbon-dioxide-water": {
+      "title": "Measurement of CO2 Solubility in NaCl Brine Solutions at Different Temperatures and Pressures Using the Potentiometric Titration Method",
+      "authors": "E. Mohammadian, H. Hamidi, M. Assadullah, A. Azdarpour, S. Motamedi, R. Junin",
+      "year": 2015,
+      "published": "J. Chem. Eng. Data 60 (2015) 2042-2049",
+      "kind": "thermoml",
+      "doi": "10.1021/je501172d",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je501172d.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json"
       ]
     },
     "mohsennia2010-1-butanol-1-propanol": {
@@ -2770,6 +3260,20 @@
         "validation/data/vle/dmf_isobutanol_10-1016-j-fluid-2005-03-014_101.3kPa.json"
       ]
     },
+    "muromachi2015-carbon-dioxide-water": {
+      "title": "Experimental measurements of carbon dioxide solubility in aqueous tetra-n-butylammonium bromide solutions",
+      "authors": "S. Muromachi, A. Shijima, H. Miyamoto, R. Ohmura",
+      "year": 2015,
+      "published": "J. Chem. Thermodyn. 85 (2015) 94-100",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2015.01.008",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.01.008.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json"
+      ]
+    },
     "nagamachi2006-ethanol-water": {
       "title": "Measurement and correlation of excess molar enthalpy for (1,2-propanediol, or 1,3-propanediol, or 1,4-butanediol + water) at the temperatures (298.15, 323.15, and 343.15) K",
       "authors": "M. Y. Nagamachi, A. Z. Francesconi",
@@ -2782,6 +3286,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/ethanol_water_HE_nagamachi2006.json"
+      ]
+    },
+    "naidoo2008-carbon-dioxide-methanol": {
+      "title": "A new high-pressure vapour liquid equilibrium apparatus",
+      "authors": "P. Naidoo, D. Ramjugernath, J. D. Raal",
+      "year": 2008,
+      "published": "Fluid Phase Equilib. 269 (2008) 104-112",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2008.05.002",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2008.05.002.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json"
       ]
     },
     "nala2013-furan-n-hexane": {
@@ -2954,6 +3472,20 @@
         "validation/data/eos/noda1975_ammonia_benzene.json"
       ]
     },
+    "nourozieh2012-methane-methanol": {
+      "title": "Phase equilibrium measurements and thermodynamic modeling of methane alcohol systems at ambient temperature",
+      "authors": "H. Nourozieh, M. Kariznovi, J. Abedi",
+      "year": 2012,
+      "published": "J. Chem. Thermodyn. 54 (2012) 165-170",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2012.03.028",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2012.03.028.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json"
+      ]
+    },
     "oh2004-2-propanol-n-heptane": {
       "title": "Isothermal Vapor-Liquid Equilibria for the 2-Propanol + n-Heptane System near the Critical Region",
       "authors": "B. C. Oh, S. Lee, J. Seo, H. Kim",
@@ -2966,6 +3498,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/2-propanol_n-heptane_10-1021-je034066w_483.15K.json"
+      ]
+    },
+    "oliveira2016-methane-methanol": {
+      "title": "High pressure vapor-liquid equilibria for binary methane and protic ionic liquid based on propionate anions",
+      "authors": "L. M. C. Oliveira, F. R. G. Ribeiro, M. L. Alcantara, G. O. Pisoni, V. F. Cabral, L. Cardozo-Filho, S. Mattedi",
+      "year": 2016,
+      "published": "Fluid Phase Equilib. 426 (2016) 65-74",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2016.03.021",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2016.03.021.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json"
       ]
     },
     "orchilles2007-methanol-methyl-acetate": {
@@ -3208,6 +3754,7 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
         "validation/data/vle/furfural_gvl_10-1021-acs-jced-8b00451_30.0kPa.json"
       ]
     },
@@ -3309,6 +3856,20 @@
         "validation/data/vle/acetonitrile_ethylene-glycol_10-1016-j-jct-2013-08-011_101.3kPa.json"
       ]
     },
+    "qin2008-carbon-dioxide-water": {
+      "title": "Experimental Measurements of Vapor Liquid Equilibria of the H2O + CO2 + CH4 Ternary System",
+      "authors": "J. Qin, R. J. Rosenbauer, Z. Duan",
+      "year": 2008,
+      "published": "J. Chem. Eng. Data 53 (2008) 1246-1249",
+      "kind": "thermoml",
+      "doi": "10.1021/je700473e",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je700473e.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json"
+      ]
+    },
     "qunsheng2014-dimethyl-carbonate-methanol": {
       "title": "Isobaric Vapor Liquid Equilibrium for Methanol + Dimethyl Carbonate + Trifluoromethanesulfonate-based Ionic Liquids at 101.3 kPa",
       "authors": "L. Qun-Sheng, S. Zhang, B. Ding, L. Cao, P. Liu, Z. Jiang, B. Wang",
@@ -3321,6 +3882,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/dimethyl-carbonate_methanol_10-1021-je500443v_101.3kPa.json"
+      ]
+    },
+    "qureshi2017-carbon-dioxide-methanol": {
+      "title": "Solubility of carbon monoxide in bio-oil compounds",
+      "authors": "M. S. Qureshi, T. L. Nedelec, H. Guerrero-Amaya, P. Uusi-Kyyny, D. Richon, V. Alopaeus",
+      "year": 2017,
+      "published": "J. Chem. Thermodyn. 105 (2017) 296-311",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2016.10.030",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2016.10.030.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json"
       ]
     },
     "raal2011-2-butanol-n-hexane": {
@@ -3729,6 +4304,20 @@
         "validation/data/vle/methyl-lactate_water_10-1021-je049824c_tpx.json"
       ]
     },
+    "sato2010-carbon-dioxide-methanol": {
+      "title": "Compact apparatus for rapid measurement of high-pressure phase equilibria of carbon dioxide expanded liquids",
+      "authors": "Y. Sato, N. Hosaka, K. Yamamoto, H. Inomata",
+      "year": 2010,
+      "published": "Fluid Phase Equilib. 296 (2010) 25-29",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2009.12.030",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2009.12.030.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json"
+      ]
+    },
     "schmid2007-acetic-acid-ethylene-glycol": {
       "title": "Measurement of the thermodynamic properties for the reactive system ethylene glycol–acetic acid",
       "authors": "B. Schmid, M. Döker, J. Gmehling",
@@ -3741,6 +4330,21 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/schmid2007_acetic_acid_ethylene_glycol.json"
+      ]
+    },
+    "schuler2012-carbon-dioxide-methanol": {
+      "title": "On the Solubility of Carbon Dioxide in Binary Water Methanol Mixtures",
+      "authors": "N. Schuler, K. T. Hecht, M. Kraut, R. Dittmeyer",
+      "year": 2012,
+      "published": "J. Chem. Eng. Data 57 (2012) 2304-2308",
+      "kind": "thermoml",
+      "doi": "10.1021/je300332b",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je300332b.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json",
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json"
       ]
     },
     "sebastian1980-hydrogen-n-decane": {
@@ -3768,6 +4372,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/2-propanol_n-hexane_10-1021-je025604s_483.15K.json"
+      ]
+    },
+    "serpa2013-carbon-dioxide-water": {
+      "title": "Solubility of Carbon Dioxide in Ethane-1,2-diol Water Mixtures",
+      "authors": "F. S. Serpa, R. S. Vidal, J. H. B. A. Filho, J. F. D. Nascimento, J. R. P. Ciambelli, C. M. S. Figueiredo, G. R. Salazar-Banda, A. F. Santos, M. Fortuny, E. Franceschi, C. Dariva",
+      "year": 2013,
+      "published": "J. Chem. Eng. Data 58 (2013) 3464-3469",
+      "kind": "thermoml",
+      "doi": "10.1021/je400736w",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je400736w.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json"
       ]
     },
     "shang2018-methanol-methyl-acetate": {
@@ -4072,6 +4690,20 @@
         "validation/data/vle/dimethyl-carbonate_n-nonane_10-1021-je0301794_101.3kPa.json"
       ]
     },
+    "tong2013-carbon-dioxide-water": {
+      "title": "Solubility of CO2 in Aqueous Solutions of CaCl2 or MgCl2 and in a Synthetic Formation Brine at Temperatures up to 423 K and Pressures up to 40 MPa",
+      "authors": "D. Tong, J. P. Martin Trusler, D. Vega-Maza",
+      "year": 2013,
+      "published": "J. Chem. Eng. Data 58 (2013) 2116-2124",
+      "kind": "thermoml",
+      "doi": "10.1021/je400396s",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je400396s.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json"
+      ]
+    },
     "tsuji2005-hydrogen-toluene": {
       "title": "Hydrogen solubility in a chemical hydrogen storage medium, aromatic hydrocarbon, cyclic hydrocarbon, and their mixture for fuel cell systems",
       "authors": "T. Tsuji, Y. Shinya, T. Hiaki, N. Itoh",
@@ -4301,6 +4933,34 @@
         "validation/data/vle/benzene_ethanol_10-1016-j-fluid-2015-09-030_101.33kPa_tx.json"
       ]
     },
+    "wang2018-carbon-dioxide-water": {
+      "title": "Determination of water solubility in supercritical CO2 from 313.15 to 473.15 K and from 10 to 50 MPa by in-situ quantitative Raman spectroscopy",
+      "authors": "Z. Wang, Q. Zhou, H. Guo, P. Yang, W. Lu",
+      "year": 2018,
+      "published": "Fluid Phase Equilib. 476 (2018) 170-178",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2018.08.006",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2018.08.006.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-08-006.json"
+      ]
+    },
+    "wang2019-carbon-dioxide-water": {
+      "title": "Determination of CO2 Solubility in Water and NaCl Solutions under Geological Sequestration Conditions Using a Fused Silica Capillary Cell with in Situ Raman Spectroscopy",
+      "authors": "J. Wang, B. He, L. Xie, K. Bei, G. Li, Z. Chen, I. M. Chou, C. Lin, Z. Pan",
+      "year": 2019,
+      "published": "J. Chem. Eng. Data 64 (2019) 2484-2496",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.9b00013",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.9b00013.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json"
+      ]
+    },
     "wang2019-dmso-ethyl-acetate": {
       "title": "Isobaric vapor-liquid equilibrium of a ternary system of ethyl acetate + propyl acetate + dimethyl sulfoxide and binary systems of ethyl acetate + dimethyl sulfoxide and propyl acetate + dimethyl sulfoxide at 101.3 kPa",
       "authors": "Y. Wang, H. Zhang, X. Pan, J. Yang, P. Cui, F. Zhang, J. Gao",
@@ -4356,6 +5016,50 @@
         "validation/data/water_ethylene_glycol_760mmHg.json"
       ]
     },
+    "wu2019-carbon-dioxide-methanol": {
+      "title": "Solubility of Carbon Monoxide and Hydrogen in Methanol and Methyl Formate: 298-373 K and 0.3-3.3 MPa",
+      "authors": "F. Wu, Q. Zhao, L. Tao, D. Danaci, P. Xiao, F. A. Hasan, P. A. Webley",
+      "year": 2019,
+      "published": "J. Chem. Eng. Data 64 (2019) 5609-5621",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.9b00676",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.9b00676.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+        "validation/data/eos/thermoml_carbon-monoxide_methanol_10-1021-acs-jced-9b00676.json",
+        "validation/data/eos/thermoml_hydrogen_methanol_10-1021-acs-jced-9b00676.json"
+      ]
+    },
+    "xia2004-carbon-dioxide-methanol": {
+      "title": "Solubility of CO2 in (CH3OH+H2O)",
+      "authors": "J. Xia, M. Jodecke, A. Perez-Salado Kamps, G. Maurer",
+      "year": 2004,
+      "published": "J. Chem. Eng. Data 49 (2004) 1756-1759",
+      "kind": "thermoml",
+      "doi": "10.1021/je049803i",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je049803i.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json"
+      ]
+    },
+    "xia2004-methane-methanol": {
+      "title": "Determination and Study on the Solubility of Methane in Heptane + Cyclohexane and Heptane + Ethanol at High Pressures",
+      "authors": "S. Xia, M. Peisheng, G. Yugao, H. Chao",
+      "year": 2004,
+      "published": "J. Chem. Eng. Data 49 (2004) 479-482",
+      "kind": "thermoml",
+      "doi": "10.1021/je034138j",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je034138j.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json"
+      ]
+    },
     "xiao2013-isopropyl-acetate-methyl-acetate": {
       "title": "Isobaric vapor-liquid equilibrium data for the binary system methyl acetate + isopropyl acetate and the quaternary system methyl acetate + methanol + isopropanol + isopropyl acetate at 101.3 kPa",
       "authors": "L. Xiao, Q. L. Wang, H. X. Wang, T. Qiu",
@@ -4368,6 +5072,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/isopropyl-acetate_methyl-acetate_10-1016-j-fluid-2013-01-024_101.3kPa_tx.json"
+      ]
+    },
+    "xie2005-carbon-dioxide-methanol": {
+      "title": "Bubble and Dew Point Measurements of the Ternary System Carbon Dioxide + Methanol + Hydrogen at 313.2 K",
+      "authors": "X. Xie, J. S. Brown, D. Bush, C. A. Eckert",
+      "year": 2005,
+      "published": "J. Chem. Eng. Data 50 (2005) 780-783",
+      "kind": "thermoml",
+      "doi": "10.1021/je0498614",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je0498614.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json"
       ]
     },
     "xie2009-2-butanone-isopropyl-acetate": {
@@ -4576,6 +5294,20 @@
       "access": "Open access: IUPAC (the copyright holder) publishes the volume at iupac.github.io",
       "files": [
         "validation/data/eos/sokolov1977_hydrogen_n-decane.json"
+      ]
+    },
+    "yuan2017-carbon-dioxide-water": {
+      "title": "Experimental study of CO2 absorption in aqueous cholinium-based ionic liquids",
+      "authors": "S. Yuan, Y. Chen, X. Ji, Z. Yang, X. Lu",
+      "year": 2017,
+      "published": "Fluid Phase Equilib. 445 (2017) 14-24",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2017.04.001",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2017.04.001.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json"
       ]
     },
     "yue2018-2-propanol-chloroform": {

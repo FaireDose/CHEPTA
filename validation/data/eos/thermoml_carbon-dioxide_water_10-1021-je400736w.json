@@ -1,0 +1,109 @@
+{
+ "_about": "Carbon dioxide (1) + Water (2): equilibrium states (T, P, x, y), 288-303 K, as stored in the ThermoML Archive record, compositions of the other component converted with x_1 = 1 - x_2.",
+ "components": [
+  "carbon-dioxide",
+  "water"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "F. S. Serpa, R. S. Vidal, J. H. B. A. Filho, J. F. D. Nascimento, J. R. P. Ciambelli, C. M. S. Figueiredo, G. R. Salazar-Banda, A. F. Santos, M. Fortuny, E. Franceschi, C. Dariva, Solubility of Carbon Dioxide in Ethane-1,2-diol Water Mixtures, J. Chem. Eng. Data 58 (2013) 3464-3469",
+  "doi": "10.1021/je400736w",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je400736w.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 3. The table number in the article was not checked.",
+  "transcription": "Read from the ThermoML XML by validation/python/hp_gas_solubility.py; values as stored. The person checking compares each row with the record."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "p_1_kPa",
+  "x_1",
+  "y_1",
+  "U_P_kPa",
+  "U_x_1"
+ ],
+ "rows": [
+  [
+   288.0,
+   153.5,
+   null,
+   0.0009,
+   null,
+   52.0,
+   null
+  ],
+  [
+   288.0,
+   252.9,
+   null,
+   0.0015,
+   null,
+   52.8,
+   null
+  ],
+  [
+   288.0,
+   325.9,
+   null,
+   0.0019,
+   null,
+   50.9,
+   null
+  ],
+  [
+   288.0,
+   378.3,
+   null,
+   0.0023,
+   null,
+   47.9,
+   null
+  ],
+  [
+   303.0,
+   125.0,
+   null,
+   0.0004,
+   null,
+   98.9,
+   null
+  ],
+  [
+   303.0,
+   215.4,
+   null,
+   0.0006,
+   null,
+   75.6,
+   null
+  ],
+  [
+   303.0,
+   288.7,
+   null,
+   0.0009,
+   null,
+   59.8,
+   null
+  ],
+  [
+   303.0,
+   348.6,
+   null,
+   0.0011,
+   null,
+   76.2,
+   null
+  ],
+  [
+   303.0,
+   408.3,
+   null,
+   0.0014,
+   null,
+   56.5,
+   null
+  ]
+ ],
+ "notes": "Read with validation/python/hp_gas_solubility.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

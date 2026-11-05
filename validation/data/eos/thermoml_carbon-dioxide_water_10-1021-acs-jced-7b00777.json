@@ -1,0 +1,37 @@
+{
+ "_about": "Carbon dioxide (1) + Water (2): equilibrium states (T, P, x, y), 322.94-322.94 K, as stored in the ThermoML Archive record, compositions of the other component converted with x_1 = 1 - x_2.",
+ "components": [
+  "carbon-dioxide",
+  "water"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "P. Kastanidis, V. K. Michalis, G. E. Romanos, A. K. Stubos, I. G. Economou, I. N. Tsimpanogiannis, Solubility of Methane and Carbon Dioxide in the Aqueous Phase of the Ternary (Methane + Carbon Dioxide + Water) Mixture: Experimental Measurements and Molecular Dynamics Simulations, J. Chem. Eng. Data 63 (2018) 1027-1035",
+  "doi": "10.1021/acs.jced.7b00777",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00777.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 2. The table number in the article was not checked.",
+  "transcription": "Read from the ThermoML XML by validation/python/hp_gas_solubility.py; values as stored. The person checking compares each row with the record."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "p_1_kPa",
+  "x_1",
+  "y_1",
+  "U_P_kPa",
+  "U_x_1"
+ ],
+ "rows": [
+  [
+   322.94,
+   10015.0,
+   null,
+   0.02086,
+   null,
+   null,
+   null
+  ]
+ ],
+ "notes": "Read with validation/python/hp_gas_solubility.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

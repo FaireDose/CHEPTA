@@ -1,0 +1,163 @@
+{
+ "_about": "Carbon dioxide (1) + Water (2): equilibrium states (T, P, x, y), 347.15-390.95 K, as stored in the ThermoML Archive record, compositions of the other component converted with x_1 = 1 - x_2.",
+ "components": [
+  "carbon-dioxide",
+  "water"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "G. Comak, S. Foltran, J. Ke, E. Perez, Y. Sanchez-Vicente, M. W. George, M. Poliakoff, A synthetic-dynamic method for water solubility measurements in high pressure CO2 using ATR FTIR spectroscopy, J. Chem. Thermodyn. 93 (2016) 386-391",
+  "doi": "10.1016/j.jct.2015.09.024",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.09.024.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 2. The table number in the article was not checked.",
+  "transcription": "Read from the ThermoML XML by validation/python/hp_gas_solubility.py; values as stored. The person checking compares each row with the record."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "p_1_kPa",
+  "x_1",
+  "y_1",
+  "U_P_kPa",
+  "U_x_1"
+ ],
+ "rows": [
+  [
+   379.75,
+   4050.0,
+   null,
+   null,
+   0.9645,
+   null,
+   null
+  ],
+  [
+   373.45,
+   4050.0,
+   null,
+   null,
+   0.97,
+   null,
+   null
+  ],
+  [
+   365.45,
+   4050.0,
+   null,
+   null,
+   0.975,
+   null,
+   null
+  ],
+  [
+   361.05,
+   4050.0,
+   null,
+   null,
+   0.9799,
+   null,
+   null
+  ],
+  [
+   354.55,
+   4050.0,
+   null,
+   null,
+   0.985,
+   null,
+   null
+  ],
+  [
+   347.15,
+   4050.0,
+   null,
+   null,
+   0.9899,
+   null,
+   null
+  ],
+  [
+   385.85,
+   5050.0,
+   null,
+   null,
+   0.9649,
+   null,
+   null
+  ],
+  [
+   378.55,
+   5050.0,
+   null,
+   null,
+   0.9699,
+   null,
+   null
+  ],
+  [
+   373.85,
+   5050.0,
+   null,
+   null,
+   0.9749,
+   null,
+   null
+  ],
+  [
+   366.45,
+   5050.0,
+   null,
+   null,
+   0.98,
+   null,
+   null
+  ],
+  [
+   358.85,
+   5050.0,
+   null,
+   null,
+   0.9849,
+   null,
+   null
+  ],
+  [
+   351.65,
+   5050.0,
+   null,
+   null,
+   0.9897,
+   null,
+   null
+  ],
+  [
+   379.35,
+   6030.0,
+   null,
+   null,
+   0.9751,
+   null,
+   null
+  ],
+  [
+   390.95,
+   6030.0,
+   null,
+   null,
+   0.9652,
+   null,
+   null
+  ],
+  [
+   355.05,
+   6030.0,
+   null,
+   null,
+   0.9901,
+   null,
+   null
+  ]
+ ],
+ "notes": "Read with validation/python/hp_gas_solubility.py. Rows with x_1 null are vapour compositions (dew states): not fitted. To be checked by a person against the record (AGENTS.md rule 4)."
+}

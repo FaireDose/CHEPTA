@@ -31,7 +31,8 @@ at the measured P and liquid x; the vapour composition is compared, not fitted.
   et al., Braz. J. Chem. Eng. 22 (2005) 453 (validation/data/eos/rodrigues2005_*.json, in
   TXY_FITS), written only when the fit meets LIT_GATE. The isothermal P-x(-y) tables of the open
   literature are fitted by validation/fit_kij_literature.mjs (the same objective, with the engine's
-  bubble pressures: this implementation is too slow for their 560 points).
+  bubble pressures: this implementation is too slow for their 560 points), and the gas + polar liquid
+  data of the ThermoML Archive at high pressure by validation/fit_kij_high_pressure.mjs; both are merged here.
 
 Usage: python validation/python/eos_fit_kij.py [--literature-only] [--write]
 """
@@ -263,8 +264,11 @@ def fit_txy(doc):
 
 def merge_literature(doc):
     """The k_ij that validation/fit_kij_literature.mjs fitted to the P-x tables of the open literature
-    and kept within its gate (validation/data/eos/literature_fits.json), added or replaced in doc."""
-    for entry in json.load(open(os.path.join(DATA, "literature_fits.json")))["entries"]:
+    and kept within its gate (validation/data/eos/literature_fits.json), and those that
+    validation/fit_kij_high_pressure.mjs fitted to the gas + polar liquid data of the ThermoML Archive within the same
+    gate (validation/data/eos/high_pressure_fits.json), added or replaced in doc."""
+    entries = [e for f in ("literature_fits.json", "high_pressure_fits.json") for e in json.load(open(os.path.join(DATA, f)))["entries"]]
+    for entry in entries:
         model, i, j = entry["model"], entry["i"], entry["j"]
         print(f"{model} {i}-{j}: k_ij = {entry['kij']:.4f} from literature_fits.json")
         idx = [n for n, p in enumerate(doc["pairs"]) if p["model"] == model and {p["i"], p["j"]} == {i, j}]

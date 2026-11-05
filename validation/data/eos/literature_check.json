@@ -624,6 +624,102 @@
    "x_1": 0.931,
    "P_exp_kPa": 5497.8945,
    "P_reference_kPa": 5302.403
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-monoxide",
+    "methanol"
+   ],
+   "kij": -0.1802,
+   "T_K": 298.15,
+   "x_1": 0.00085,
+   "P_exp_kPa": null,
+   "P_reference_kPa": 265.541
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-monoxide",
+    "methanol"
+   ],
+   "kij": -0.1802,
+   "T_K": 347.76,
+   "x_1": 0.0046,
+   "P_exp_kPa": null,
+   "P_reference_kPa": 1197.893
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-monoxide",
+    "methanol"
+   ],
+   "kij": -0.1802,
+   "T_K": 347.76,
+   "x_1": 0.0098,
+   "P_exp_kPa": null,
+   "P_reference_kPa": 2399.33
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-monoxide",
+    "methanol"
+   ],
+   "kij": -0.1802,
+   "T_K": 347.76,
+   "x_1": 0.01499,
+   "P_exp_kPa": null,
+   "P_reference_kPa": 3615.328
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-monoxide",
+    "methanol"
+   ],
+   "kij": -0.2585,
+   "T_K": 298.15,
+   "x_1": 0.00085,
+   "P_exp_kPa": null,
+   "P_reference_kPa": 262.69
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-monoxide",
+    "methanol"
+   ],
+   "kij": -0.2585,
+   "T_K": 347.76,
+   "x_1": 0.0046,
+   "P_exp_kPa": null,
+   "P_reference_kPa": 1199.895
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-monoxide",
+    "methanol"
+   ],
+   "kij": -0.2585,
+   "T_K": 347.76,
+   "x_1": 0.0098,
+   "P_exp_kPa": null,
+   "P_reference_kPa": 2404.737
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-monoxide",
+    "methanol"
+   ],
+   "kij": -0.2585,
+   "T_K": 347.76,
+   "x_1": 0.01499,
+   "P_exp_kPa": null,
+   "P_reference_kPa": 3621.069
   }
  ]
 }
