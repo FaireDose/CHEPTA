@@ -20,10 +20,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
-- **Liquid-liquid tie lines and joint fits for extraction** (proposal 0015, step 5; docs/decisions/2026-10-30-08-extraction.md):
-  water + acetic acid + ethyl acetate, a further set `fitted-lle-roque2018` of each pair. Compare the transcribed tie
-  lines with the ThermoML records. Check Roque 2018's second isotherm (313.2 K in the record, 303.2 K in the title).
-  Decide whether Toikka 2014 stays a check only, and whether the Extraction block uses these sets by default.
+- **The Extraction block and its view** (proposal 0015, step 8; docs/decisions/2026-10-30-10-extraction-view.md):
+  check the comparison with Glatz and Parker 2004 (Runs 1 and 3); decide whether an adiabatic cascade is wanted, whether
+  the ternary view should offer mass fractions, and whether the flowsheet should take the joint sets by itself when it
+  holds an Extraction block of that ternary.
+  Still open from #196 (docs/decisions/2026-10-30-08-extraction.md): compare the transcribed tie lines with the ThermoML
+  records, and check Roque 2018's second isotherm (313.2 K in the record, 303.2 K in the title).
 - **Formation data** (proposal 0010, step 1; docs/decisions/2026-10-22-03-formation-data.md): xylitol is held (two
   crystal energies of combustion disagree by about 100 kJ/mol); five records are uncertain (the values disagree by more
   than 10 kJ/mol: 2-methoxyethanol, 1,3-propanediol, limonene, gamma-butyrolactone, levoglucosan); 22 components have no
@@ -135,7 +137,23 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     2026-11-04 (the Separator button, 20 cells, isothermal, counter-current and GPU; an adiabatic module and
     pervaporation postponed). Still open: the choice of Aziaba et al. 2022 as the model's source. To check: the worked
     example of Binous 2006 and the example's permeances against Aziaba et al.'s Table 1.
-  - Waiting: W1; W3's evaporator and crystallizer.
+  - **W3, M3 step 10: the Evaporator block, built, to review** (docs/decisions/2026-11-04-09-evaporator-crystallizer.md):
+    one effect or several in forward feed, each a heater and a flash heated by the vapour of the one before; the
+    steam for a product concentration or a steam flow, the steam economy, each effect's boiling-point rise and, with U,
+    its area; under the Separator button; `solve_evaporator`. To check: Example 1 of Subramanian 2019 (slides 16-20).
+    Answered 2026-11-05: keep the block, one condensate outlet, other feed arrangements and equal areas later; sugar
+    solutions on the ideal solution with a note. Still open: a data task, NRTL pairs of water + glucose and water +
+    sucrose fitted to open data (sucrose to be proposed for addition).
+  - **W3, M3 step 10: the Crystallizer block, built, to review** (docs/decisions/2026-11-04-11-crystallizer.md): a pure
+    solid in equilibrium with its mother liquor (the solubility of sle.js), cooling (T) or evaporative (the solvent
+    evaporated, with T or P); the yield, the crystals as a solid in equilibrium (stream v2, h = h_L − ΔH_fus), the duty;
+    `solve_crystallizer`. NRTL sets fitted to the measured solubilities of succinic acid in ten solvents (fit_sle.py,
+    whose rewrite dropped the earlier sets: fixed). To check: the six articles' solubilities of succinic acid in water;
+    to decide: crystals only into a Product until a flash holds a solid, and hydrates (not modelled).
+  - Waiting: W1.
+- **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
+  (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive
+  distillation and the rest after 1.0. Lab pins releases, files capability requests, and does G2 to G5.
 - **When in doubt, check other simulators** (docs/decisions/2026-11-04-05-check-other-simulators.md): a method rule in
   METHOD_SELECTION.md; first cases: Henry's law for gases in water (proposal 0017), PR/SRK with a light gas and a polar
   liquid offered with a warning where a k_ij exists, sour water and amines refused until M5.
@@ -225,8 +243,18 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   The file formats keep their keys (`fugacity_project`, `fugacity_package`), so files and
   contribution packages made under the old name stay valid.
 - **The two free component places** of proposal 0008: use them now, or keep them.
-- **Wilson (M1, proposal 0016; docs/decisions/2026-10-30-06-wilson.md):** accepted and merged (#192); the fits to
-  ThermoML data (step 2) wait until needed, after M3 (the maintainer, 2026-11-04).
+- **M2: postponed** (docs/decisions/2026-11-04-10-m2-source-check.md): PSRK's and MHV2's tables are not open; the
+  maintainer (2026-11-04): "PR and SRK should be ok for now". Proposal 0018 is postponed with its findings. Open: PR and
+  SRK k_ij fitted to the open high-pressure data (CO2, H2, CO, CH4 + methanol; CO2 + water), whose deviations decide
+  whether 0018 is reopened.
+- **Wilson fits (M1, proposal 0016 step 2; docs/decisions/2026-11-04-06-wilson-fits.md):** review the pull request;
+  the five pairs are decided by proposal 0019, answer 4. The three "miscibility-unchecked" Wilson fits wait for roadmap
+  D9 (proposal 0019, step 2).
+- **Pairs with two liquids (D9, proposal 0019; docs/decisions/2026-11-04-12-two-liquid-pairs.md):** step 1, the
+  proposal and the evidence survey (57 pairs: 22 partly miscible, 17 miscible, 18 not known); accepted with the
+  maintainer's answers of 2026-11-05 (gates as a start, "miscible below the measured temperature, not known above it",
+  Wilson: refuse diethyl carbonate + water, keep the other four; contradicted ChemSep sets not the default where another
+  set exists). Pending: a person checks the classes against the ThermoML records; step 2 (classes, labels, refit).
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order

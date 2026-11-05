@@ -1,7 +1,8 @@
 # 0016: The Wilson activity model
 
-- **Status:** Accepted (merged in #192; the maintainer's answers of 2026-11-04 in
-  docs/decisions/2026-10-30-06-wilson.md). Step 1 implemented; step 2 (the fits) postponed until needed, after M3.
+- **Status:** Implemented (accepted with #192; the maintainer's answers of 2026-11-04 in
+  docs/decisions/2026-10-30-06-wilson.md; step 2, the fits, brought forward by the maintainer the same day: "next do
+  also the ThermoML fitting so we are done with this", docs/decisions/2026-11-04-06-wilson-fits.md).
 - **Author(s):** a coding agent working for the maintainer
 - **Discussion:** the pull request that adds this file
 - **Roadmap item:** Methods track, **M1** ([ROADMAP.md](../ROADMAP.md#methods-track))
@@ -107,6 +108,6 @@ could not use them, and the interface showed Wilson as "not available yet".
 
 1. This pull request: the model, ChemSep's set, My data and the library, the interface, the two-liquid refusal and
    warning, the tests, the method guide.
-2. Postponed until needed, after M3 (the maintainer, 2026-11-04): Wilson in `fit_parameters.py` for the ThermoML pairs (`vle_batch.py`'s fits), with the same gates as
+2. Done (docs/decisions/2026-11-04-06-wilson-fits.md): Wilson in `fit_parameters.py` for the ThermoML pairs (`vle_batch.py`'s fits), with the same gates as
    NRTL and UNIQUAC; a fitted Wilson set becomes the pair's default, ChemSep's stays as an alternative (DATA_RULES.md
    section 5).

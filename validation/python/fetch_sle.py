@@ -33,6 +33,8 @@ SOLIDS = {  # id: names searched in the archive
     "naphthalene": ["naphthalene"],
     "benzoic-acid": ["benzoic acid"],
     "salicylic-acid": ["2-hydroxybenzoic acid", "salicylic acid"],
+    # the Crystallizer block's check (proposal 0015, M3, step 10): the cooling crystallization of succinic acid from water
+    "succinic-acid": ["succinic acid", "butanedioic acid"],
 }
 P_MAX_KPA = 110.0
 

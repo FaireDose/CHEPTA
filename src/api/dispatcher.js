@@ -315,3 +315,81 @@ registerCapability({
       membrane: { ...m.state, duty_kW: m.duty_kW, notes: m.notes, warnings: m.warnings ?? [], profile: m.profile, sizing: m.sizing } } };
   },
 });
+
+// The extraction (proposal 0015, milestone M3, step 8): a feed, a solvent, the Extraction block and its two products,
+// solved as a flowsheet (src/units/extraction.js), so the numbers are the flowsheet's.
+registerCapability({
+  name: "solve_extraction", summary: "Solve a countercurrent liquid-liquid extraction of equilibrium stages: the extract and the raffinate, with every stage's two liquids", status: "available",
+  input: { type: "object", additionalProperties: false, required: ["components", "feed", "solvent", "extraction"],
+    properties: {
+      components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
+      thermo: { type: "object", description: "the flowsheet's property method, { model, vapour, sets }; default NRTL. The block's liquid method defaults to its model, with the sets fitted jointly to a ternary's tie lines where they exist" },
+      feed: { type: "object", description: "the feed (it enters stage 1), as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; it must be liquid" },
+      solvent: { type: "object", description: "the solvent (it enters the last stage), as a Feed block's specification; it must be liquid" },
+      extraction: { type: "object", description: "the Extraction block's specification: stages (1 to 100), T_K (the stages' temperature; default the feed's), P_kPa (the outlets'; default the feed's), method { model, sets, prefer } (optional: the block's own liquid method)" },
+      user_data: USER_DATA,
+    } },
+  run: input => {
+    const flowsheet = { components: input.components, thermo: input.thermo ?? { model: "NRTL" },
+      blocks: [{ id: "F1", type: "feed", spec: input.feed }, { id: "F2", type: "feed", spec: input.solvent },
+        { id: "EX1", type: "extraction", spec: input.extraction }, { id: "P1", type: "product" }, { id: "P2", type: "product" }],
+      streams: [{ id: "FEED", from: "F1.out", to: "EX1.feed" }, { id: "SOLVENT", from: "F2.out", to: "EX1.solvent" },
+        { id: "EXTRACT", from: "EX1.extract", to: "P1.in" }, { id: "RAFFINATE", from: "EX1.raffinate", to: "P2.in" }] };
+    const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
+    const x = r.value.blocks.EX1;
+    return { ...r, value: { feed: r.value.streams.FEED, solvent: r.value.streams.SOLVENT, extract: r.value.streams.EXTRACT, raffinate: r.value.streams.RAFFINATE,
+      extraction: { ...x.state, duty_kW: x.duty_kW, notes: x.notes, warnings: x.warnings ?? [], profile: x.profile } } };
+  },
+});
+
+// The evaporator (proposal 0015, milestone M3, step 10): a feed, the Evaporator block and its three products, solved as
+// a flowsheet (src/units/evaporator.js), so the numbers are the flowsheet's; with a product concentration, the steam
+// found is in the value.
+registerCapability({
+  name: "solve_evaporator", summary: "Solve a single- or multiple-effect evaporator (forward feed, each effect a heater and a flash heated by the vapour of the one before): the steam, the steam economy, each effect's duty, temperature and boiling-point rise, for the steam or a product concentration", status: "available",
+  input: { type: "object", additionalProperties: false, required: ["components", "feed", "evaporator"],
+    properties: {
+      components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
+      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default Modified UNIFAC 2.0 (an aqueous solution of a nonvolatile solute; docs/METHOD_SELECTION.md)" },
+      feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF" },
+      evaporator: { type: "object", description: "the Evaporator block's specification: P_kPa (one pressure per effect, falling), the saturated heating steam steam_P_kPa or steam_T_K, and one of steam_kg_h or product_mass_fraction { component: mass fraction in the product }; U_W_m2K (optional, one value or one per effect): each effect's area" },
+      user_data: USER_DATA,
+    } },
+  run: input => {
+    const flowsheet = { components: input.components, thermo: input.thermo ?? { model: "MOD-UNIFAC-2" },
+      blocks: [{ id: "F1", type: "feed", spec: input.feed }, { id: "EV1", type: "evaporator", spec: input.evaporator },
+        { id: "P1", type: "product" }, { id: "P2", type: "product" }, { id: "P3", type: "product" }],
+      streams: [{ id: "FEED", from: "F1.out", to: "EV1.in" }, { id: "PRODUCT", from: "EV1.product", to: "P1.in" }, { id: "VAPOUR", from: "EV1.vapour", to: "P2.in" },
+        { id: "CONDENSATE", from: "EV1.condensate", to: "P3.in" }] };
+    const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
+    const e = r.value.blocks.EV1;
+    return { ...r, value: { feed: r.value.streams.FEED, product: r.value.streams.PRODUCT, vapour: r.value.streams.VAPOUR, condensate: r.value.streams.CONDENSATE,
+      evaporator: { ...e.state, duty_kW: e.duty_kW, notes: e.notes, warnings: e.warnings ?? [], profile: e.profile, sizing: e.sizing } } };
+  },
+});
+
+// The crystallizer (proposal 0015, milestone M3, step 10): a feed, the Crystallizer block and its products, solved as a
+// flowsheet (src/units/crystallizer.js), so the numbers are the flowsheet's.
+registerCapability({
+  name: "solve_crystallizer", summary: "Solve a cooling or evaporative crystallizer: a pure solid in equilibrium with its mother liquor (the solid-liquid solubility), the yield, the crystals, the mother liquor, the vapour and the duty", status: "available",
+  input: { type: "object", additionalProperties: false, required: ["components", "feed", "crystallizer"],
+    properties: {
+      components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
+      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default NRTL (with the sets fitted to measured solubilities where they exist); an activity model is needed" },
+      feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; a liquid solution" },
+      crystallizer: { type: "object", description: "the Crystallizer block's specification: solute (the component that crystallizes; it needs melting data), and T_K (cooling; P_kPa optional, default the feed's) or evaporated_kg_h (the vapour's mass flow) with one of T_K or P_kPa (evaporative)" },
+      user_data: USER_DATA,
+    } },
+  run: input => {
+    const evap = Number(input.crystallizer?.evaporated_kg_h) > 0;
+    const flowsheet = { components: input.components, thermo: input.thermo ?? { model: "NRTL" },
+      blocks: [{ id: "F1", type: "feed", spec: input.feed }, { id: "CR1", type: "crystallizer", spec: input.crystallizer },
+        { id: "P1", type: "product" }, { id: "P2", type: "product" }, ...(evap ? [{ id: "P3", type: "product" }] : [])],
+      streams: [{ id: "FEED", from: "F1.out", to: "CR1.in" }, { id: "CRYSTALS", from: "CR1.crystals", to: "P1.in" }, { id: "MOTHER_LIQUOR", from: "CR1.liquor", to: "P2.in" },
+        ...(evap ? [{ id: "VAPOUR", from: "CR1.vapour", to: "P3.in" }] : [])] };
+    const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
+    const c = r.value.blocks.CR1;
+    return { ...r, value: { feed: r.value.streams.FEED, crystals: r.value.streams.CRYSTALS, mother_liquor: r.value.streams.MOTHER_LIQUOR, ...(evap ? { vapour: r.value.streams.VAPOUR } : {}),
+      crystallizer: { ...c.state, duty_kW: c.duty_kW, notes: c.notes, warnings: c.warnings ?? [] } } };
+  },
+});

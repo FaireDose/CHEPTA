@@ -115,8 +115,10 @@ test("refusals: two liquids with an equation of state; LL; a decanter without tw
     feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { mode: "rigorous", stages: 10, feed_stage: 5, phases: "VLL", reflux_ratio: 2, distillate_kmol_h: 50 } } });
   assert.equal(pr.outcome, "unsupported");
   assert.match(pr.error.message, /need an activity model[\s\S]*PR is an equation of state/);
+  // extraction is the Extraction block since M3 (test/extraction.test.js): the Column block points to it
   const ll = run({ capability: "solve_column", input: f1Input({ phases: "LL" }) });
-  assert.equal(ll.outcome, "unsupported");
+  assert.equal(ll.outcome, "invalid_input");
+  assert.match(ll.error.message, /Extraction block/);
   const noVll = run({ capability: "solve_column", input: f1Input({ phases: "VL", condenser: "decanter", reflux_ratio: undefined }) });
   assert.equal(noVll.outcome, "invalid_input");
   assert.match(noVll.error.message, /decanter[\s\S]*two liquids/);

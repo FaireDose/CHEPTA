@@ -14,6 +14,7 @@ import { FUTURE_MODELS } from "./future-models.js";
 import { modelPicker } from "./model-picker.js";
 import { listComponents, modelName } from "../thermo/system.js";
 import { methodAdvice } from "../thermo/method-advice.js";
+import { componentRecord } from "../thermo/components.js";
 import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
 import { flowsheetDocStatus, flowsheetSystem } from "../flowsheet/document.js";
@@ -35,6 +36,7 @@ import { tLabel, tToDisplay, pToDisplay, fmtShort, flowToDisplay, massFlowToDisp
 import { flowsheetXlsx } from "./flowsheet-excel.js";
 import { kineticsEditor, FORM_LABEL } from "./kinetics-editor.js";
 import { profilePanel } from "./reactor-charts.js";
+import { extractionTernary, extractionTable } from "./extraction-view.js";
 import pkg from "../../package.json" with { type: "json" };
 import { parseP, parseT, fmtTemp, fmtP, userOverlay, calculatedFlowsheet, setsLabel } from "./app-logic.js";
 
@@ -47,11 +49,14 @@ const nameOf = id => byId().get(id)?.name ?? id;
 // the models with parameters per pair (Modified UNIFAC 2.0 and the ideal solution have none)
 const PAIR_MODELS = ["NRTL", "UNIQUAC", "WILSON", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
-  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", column: "Column", membrane: "Membrane", product: "Product",
+  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", column: "Column", membrane: "Membrane", extraction: "Extraction", evaporator: "Evaporator", crystallizer: "Crystallizer", product: "Product",
   "conversion-reactor": "Conversion reactor", "equilibrium-reactor": "Equilibrium reactor", "gibbs-reactor": "Gibbs reactor", "yield-reactor": "Yield reactor", cstr: "CSTR", pfr: "Plug-flow reactor" };
 /** One line per separator in the Separator menu of the toolbar. */
 const SEPARATOR_LINE = { flash: "vapour and liquid (and a second liquid) at equilibrium", separator: "given fractions of each component to each outlet",
-  membrane: "gas permeation: the permeate and retentate, or the area for a stage cut or a recovery" };
+  membrane: "gas permeation: the permeate and retentate, or the area for a stage cut or a recovery",
+  extraction: "liquid-liquid extraction: countercurrent equilibrium stages, the extract and the raffinate",
+  evaporator: "one effect or several in series: the steam, its economy and each effect's boiling-point rise",
+  crystallizer: "a pure solid from its solution by cooling or evaporation: the yield, the crystals and the mother liquor" };
 /** One line per reactor type in the Reactor menu of the toolbar. */
 const REACTOR_LINE = { "conversion-reactor": "a given conversion of a key reactant", "yield-reactor": "products per kg of a key reactant",
   "equilibrium-reactor": "the listed reactions at equilibrium", "gibbs-reactor": "every reaction among the species, at equilibrium (minimum Gibbs energy)", cstr: "stirred tank, with kinetics", pfr: "tube, with kinetics; profiles along it" };
@@ -73,6 +78,9 @@ const HINT = {
   cstr: "A stirred tank at steady state: the reactions of the Reactions page with their kinetics, the volume (or catalyst mass), and the temperature or the duty.",
   pfr: "A tube (or a bundle of tubes) in plug flow: the reactions with their kinetics, the length and diameter; isothermal, a duty or a coolant; a pressure drop. Its profiles show under the drawing (double-click it).",
   column: "Distillation. Shortcut (Fenske, Underwood, Gilliland): a light and a heavy key, the recovery of each, and the reflux ratio (or a multiple of the minimum); it gives the minimum and the number of stages, the feed stage and the duties, assuming a constant relative volatility. Rigorous: the stages, the feed stage and two specifications (reflux, boil-up, a product flow or a duty); every stage's balances are solved, and the profile shows under the drawing. Options: look for two liquids on the stages (activity models), a decanter on the condenser, and the column's own property method. Absorber and stripper: no condenser; a liquid fed to the top stage meets a gas fed to the bottom one (a stripper may have a reboiler instead of the gas), with heat added to chosen stages if needed; every stage is solved.",
+  extraction: "Countercurrent liquid-liquid extraction: equilibrium stages at one temperature, the feed entering the first stage and the solvent the last. Give the number of stages; the temperature and the outlets' pressure default to the feed's. The equilibrium uses the activity model's liquid only (the vapour model does not enter); for a ternary with sets fitted jointly to its tie lines (water + acetic acid + ethyl acetate) those are the default.",
+  crystallizer: "A pure solid formed from its solution, in equilibrium with its mother liquor (the solubility of the solid-liquid model: melting data and the activity model). Cooling: give the temperature. Evaporative: give the solvent evaporated and the temperature or the pressure. It gives the yield, the crystals, the mother liquor, the vapour and the duty. The crystals' enthalpy is the liquid's minus the enthalpy of fusion; they go to a Product (no other block holds a solid in equilibrium yet).",
+  evaporator: "A solution concentrated by boiling off its solvent, in one effect or several in series (forward feed): each effect is a heater and a flash at its pressure, and each after the first is heated by the vapour of the one before. Give the effects' pressures (falling), the heating steam, and the steam flow or the product's concentration; it gives the steam, the steam economy, each effect's duty and boiling-point rise, and with U each effect's area. Outlets: the product, the last effect's vapour, and the condensate of the vapours that heated the effects.",
   membrane: "Gas permeation (solution-diffusion): each component passes in proportion to its permeance times its partial-pressure difference, over well-mixed cells in counter- or co-current flow. Give the permeances (your values, with their source), the permeate pressure, and the area or a target: the stage cut or the recovery of one component; with a target it finds the area. Isothermal; a gas feed only.",
   "yield-reactor": "Turns a given fraction of a key reactant into the products you give per kg (or mol) of it, for a reaction known by its products (a fermentation, a pyrolysis). The mass must close; the elements are reported.",
 };
@@ -81,10 +89,12 @@ const COMING = [
   { id: "extraction", label: "Extraction", icon: "extract", note: "after liquid-liquid equilibria in the flash" },
 ];
 // a feed is drawn as the start of its stream (a tab), not as a block; its size is that point
-const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40], column: [36, 96], membrane: [64, 40],
+const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40], column: [36, 96], membrane: [64, 40], evaporator: [44, 80], crystallizer: [44, 70], extraction: [40, 96],
   "conversion-reactor": [44, 58], "equilibrium-reactor": [44, 58], "yield-reactor": [44, 58], "gibbs-reactor": [44, 58], cstr: [44, 58], pfr: [76, 30], product: [0, 0] };
 // the inlet and outlet ports of a two-stream exchanger: hot above, cold below
 const PORT_DY = { hot: -11, cold: 11 };
+/** An extraction's ports: the feed and the extract at the top (stage 1), the solvent and the raffinate at the bottom. */
+const EX_DY = { feed: -36, extract: -36, solvent: 36, raffinate: 36 };
 
 // setup: which setup page the Inputs panel shows while nothing is selected ("components", "method" or "reactions")
 export const ensureUi = ui => (ui.fs ??= { sel: null, setup: "components", auto: true, solveKey: null, cache: null, note: "" });
@@ -284,7 +294,7 @@ export function flowsheetRibbon({ state, set, ui, group, smallButton }) {
       // short"), as the Reactor button
       const open = !!f.separatorMenu;
       const b = smallButton({ ico: "separator", label: "Separator", fk: "fs-add-separators", pressed: open,
-        title: ready ? "Place a separator: flash drum, component separator or membrane" : "Choose the components first", onClick: () => { f.separatorMenu = !open; f.reactorMenu = false; set({}); } });
+        title: ready ? "Place a separator: flash drum, component separator, membrane, extraction, evaporator or crystallizer" : "Choose the components first", onClick: () => { f.separatorMenu = !open; f.reactorMenu = false; set({}); } });
       b.disabled = !ready;
       b.setAttribute("aria-haspopup", "menu");
       return h("div", { class: "fa-menu-wrap" }, b, open && ready ? h("div", { class: "fa-menu", role: "menu" }, ...SEPARATORS.map(t =>
@@ -528,6 +538,61 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       segRow("Condenser", [["total", "Total"], ["partial", "Partial"]], spec.condenser ?? "total", v => setS({ condenser: v }), `fs-cond-${b.id}`),
       P("P_kPa", "Column pressure"),
       h("p", { class: "fa-in-hint" }, "Empty pressure: the feed's. The relative volatilities are taken at the feed's bubble point and held constant; the column refuses keys that form an azeotrope and a reflux below the minimum, and warns when the volatility changes along the column. The rigorous method solves every stage; switching to it takes the shortcut's stages, feed stage, reflux and distillate as a start.")));
+  } else if (b.type === "extraction") {
+    // proposal 0015, M3, step 8: countercurrent equilibrium stages at one temperature
+    secs.push(inputsSection("Extraction (countercurrent stages)",
+      numberField("Equilibrium stages", spec.stages == null ? "" : String(spec.stages), t => { const v = num(t); if (v === undefined || (v != null && !(Number.isInteger(v) && v >= 1 && v <= 100))) return false; setS({ stages: v }); },
+        { id: `${b.id}-stages`, uid, unit: "1 to 100", placeholder: "5" }),
+      T("T_K", "Stage temperature"), P("P_kPa", "Outlet pressure"),
+      h("p", { class: "fa-in-hint" }, "The feed enters stage 1 and the solvent the last stage; the extract leaves stage 1 and the raffinate the last. Temperature and pressure empty: the feed's."),
+      h("p", { class: "fa-in-hint" }, done?.state?.sets
+        ? `Liquid method: ${done.state.model} with the sets ${[...new Set(Object.values(done.state.sets))].join(", ")}.`
+        : "Liquid method: the flowsheet's activity model; for a ternary with sets fitted jointly to its tie lines, those sets.")));
+  } else if (b.type === "crystallizer") {
+    // proposal 0015, M3, step 10: the solute, cooling (T) or evaporative (the solvent evaporated and T or P)
+    const evap = Number(spec.evaporated_kg_h) > 0;
+    const by = spec.P_kPa != null && evap && spec.T_K == null ? "P" : "T";
+    const withFusion = fs.components.filter(c => { try { return !!componentRecord(c, userOverlay(state))?.fusion?.Tm_K; } catch { return false; } });
+    secs.push(inputsSection("Crystallizer",
+      selectField("Solute (crystallizes)", [["", "Choose"], ...(withFusion.length ? withFusion : fs.components).map(c => [c, nameOf(c)])], spec.solute ?? "", v => setS({ solute: v || null }), `fs-crsol-${b.id}`, uid),
+      segRow("Mode", [["cooling", "Cooling"], ["evaporative", "Evaporative"]], evap ? "evaporative" : "cooling", v => setS(v === "cooling" ? { evaporated_kg_h: null, T_K: spec.T_K ?? 298.15 }
+        : { evaporated_kg_h: spec.evaporated_kg_h ?? 100 }), `fs-crmode-${b.id}`),
+      ...(evap ? [plain("evaporated_kg_h", "Solvent evaporated", "kg/h", "100"),
+        segRow("Give", [["T", "Temperature"], ["P", "Pressure"]], by, v => setS(v === "T" ? { P_kPa: null, T_K: spec.T_K ?? done?.state?.T_K ?? 330 } : { T_K: null, P_kPa: spec.P_kPa ?? done?.state?.P_kPa ?? 20 }), `fs-crtp-${b.id}`),
+        by === "T" ? T("T_K", "Temperature") : P("P_kPa", "Pressure")]
+        : [T("T_K", "Temperature"), P("P_kPa", "Outlet pressure")]),
+      h("p", { class: "fa-in-hint" }, evap ? "The vapour is the mother liquor's equilibrium vapour at its bubble point; connect the vapour outlet." : "Pressure empty: the feed's."),
+      h("p", { class: "fa-in-hint" }, "The solubility needs the solute's melting data and an activity model (the flowsheet's). The crystals' enthalpy is the liquid's minus the enthalpy of fusion; they go to a Product.")));
+  } else if (b.type === "evaporator") {
+    // proposal 0015, M3, step 10: the effects' pressures, the steam, and the steam flow or the product's concentration
+    const Ps = Array.isArray(spec.P_kPa) ? spec.P_kPa : spec.P_kPa == null ? [] : [spec.P_kPa];
+    const give = spec.product_mass_fraction != null ? "product" : "steam";
+    const [wc, wv] = Object.entries(spec.product_mass_fraction ?? {})[0] ?? [fs.components[fs.components.length - 1], 0.5];
+    const setN = n => {
+      const next = Ps.slice(0, n);
+      while (next.length < n) next.push(+((next[next.length - 1] ?? 50) / 2).toPrecision(3));
+      setS({ P_kPa: next });
+    };
+    const U = Array.isArray(spec.U_W_m2K) ? spec.U_W_m2K[0] : spec.U_W_m2K;
+    secs.push(inputsSection("Effects",
+      numberField("Number of effects", String(Ps.length || 1), t => { const v = num(t); if (!(Number.isInteger(v) && v >= 1 && v <= 10)) return false; setN(v); }, { id: `${b.id}-effects`, uid, placeholder: "1" }),
+      ...Ps.map((p, k) => numberField(`Pressure, effect ${k + 1}`, fmtShort(pToDisplay(p, u), 6), t => {
+        const v = parseP(t, u); if (v == null || !(v > 0)) return false;
+        const next = Ps.slice(); next[k] = v; setS({ P_kPa: next });
+      }, { id: `${b.id}-P-${k}`, uid, unit: u.P })),
+      h("p", { class: "fa-in-hint" }, "Forward feed: the liquid goes from effect 1 to the last; each effect works below the pressure of the one before, so that the vapour of one can boil the next.")),
+    inputsSection("Steam and specification",
+      P("steam_P_kPa", "Heating steam (saturated)"),
+      segRow("Give", [["steam", "Steam flow"], ["product", "Product concentration"]], give, v => setS(v === "steam"
+        ? { product_mass_fraction: null, steam_kg_h: spec.steam_kg_h ?? +(done?.state?.steam_kg_h ?? 1000).toPrecision(4) }
+        : { steam_kg_h: null, product_mass_fraction: { [wc]: wv } }), `fs-evgive-${b.id}`),
+      give === "steam" ? plain("steam_kg_h", "Steam flow", "kg/h", "1000")
+        : h("div", {}, selectField("Component", fs.components.map(c => [c, nameOf(c)]), wc, v => setS({ product_mass_fraction: { [v]: wv } }), `fs-evc-${b.id}`, uid),
+          numberField("Its mass fraction in the product", String(wv), t => { const v = num(t); if (!(v > 0 && v < 1)) return false; setS({ product_mass_fraction: { [wc]: v } }); }, { id: `${b.id}-w`, uid, unit: "kg/kg" })),
+      h("p", { class: "fa-in-hint" }, "With a product concentration, the evaporator finds the steam flow. The steam condenses to saturated liquid (IAPWS-IF97).")),
+    inputsSection("Areas (optional)",
+      numberField("Overall heat-transfer coefficient U", U == null ? "" : String(U), t => { const v = num(t); if (v === undefined || (v != null && !(v > 0))) return false; setS({ U_W_m2K: v }); }, { id: `${b.id}-U`, uid, unit: "W/(m² K)" }),
+      h("p", { class: "fa-in-hint" }, "With U (the same for every effect here; a list per effect through the project file or CHEPTA.run): each effect's area, A = Q / (U ΔT).")));
   } else if (b.type === "membrane") {
     // proposal 0015, M3: the permeances are the person's own values, with their source (no databank)
     const pm = spec.permeances ?? {}, unit = spec.permeance_unit ?? "mol/(m2 s Pa)";
@@ -1231,12 +1296,13 @@ function ports(fs, b) {
   const spread = (list, side) => list.forEach((sid, k) => { at[sid] = { x: x + side * w / 2, y: y + (k - (list.length - 1) / 2) * 16, dir: [side, 0] }; });
   const st = streamsOf(fs, b.id);
   if (b.type === "product") { for (const sid of st.in ?? []) at[sid] = { x, y, dir: [1, 0] }; return at; }
-  if (b.type === "hx") {
-    // inlet and outlet ports share their names (hot, cold): placed by direction
+  if (b.type === "hx" || b.type === "extraction") {
+    // inlet and outlet ports share their names (hot, cold): placed by direction; an extraction's by its stage ends
+    const DY = b.type === "hx" ? PORT_DY : EX_DY;
     for (const s of fs.streams) {
       const t = s.to.split("."), f = s.from.split(".");
-      if (t[0] === b.id) at[s.id] = { x: x - w / 2, y: y + (PORT_DY[t[1]] ?? 0), dir: [-1, 0] };
-      if (f[0] === b.id) at[s.id] = { x: x + w / 2, y: y + (PORT_DY[f[1]] ?? 0), dir: [1, 0] };
+      if (t[0] === b.id) at[s.id] = { x: x - w / 2, y: y + (DY[t[1]] ?? 0), dir: [-1, 0] };
+      if (f[0] === b.id) at[s.id] = { x: x + w / 2, y: y + (DY[f[1]] ?? 0), dir: [1, 0] };
     }
     return at;
   }
@@ -1250,6 +1316,16 @@ function ports(fs, b) {
     for (const sid of st.retentate ?? []) at[sid] = { x: x + w / 2, y: y - hh / 4, dir: [1, 0] };
     for (const sid of st.permeate ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
     for (const sid of st.in ?? []) at[sid] = { x: x - w / 2, y: y - hh / 4, dir: [-1, 0] };
+  } else if (b.type === "crystallizer") {
+    // the vapour leaves at the top, the crystals at the bottom, the mother liquor at the right
+    for (const sid of st.vapour ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
+    for (const sid of st.crystals ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
+    for (const sid of st.liquor ?? []) at[sid] = { x: x + w / 2, y: y + hh / 4, dir: [1, 0] };
+  } else if (b.type === "evaporator") {
+    // the vapour leaves at the top, the product at the bottom, the condensate at the right
+    for (const sid of st.vapour ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
+    for (const sid of st.product ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
+    for (const sid of st.condensate ?? []) at[sid] = { x: x + w / 2, y: y + hh / 4, dir: [1, 0] };
   } else if (b.type === "flash") {
     for (const sid of st.vapour ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
     for (const sid of st.liquid ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
@@ -1280,6 +1356,15 @@ function shape(type, w, hh) {
     // a module split by its membrane (dashed): the feed side above, the permeate side below
     case "membrane": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 4, class: "fs-shape" }),
       svgEl("path", { d: `M${-w / 2} 2 H${w / 2}`, class: "fs-detail", "stroke-dasharray": "4 3" })); return g; }
+    // a tall vessel with its stages (dashed): two liquids in countercurrent
+    case "extraction": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 6, class: "fs-shape" }),
+      svgEl("path", { d: [-24, -8, 8, 24].map(t => `M${-w / 2 + 5} ${t} H${w / 2 - 5}`).join(" "), class: "fs-detail", "stroke-dasharray": "4 3" })); return g; }
+    // a vessel with a cone at the bottom and crystals (dots) in it
+    case "crystallizer": { const g = svgEl("g", {}); g.append(svgEl("path", { d: `M${-w / 2} ${-hh / 2 + 8} Q${-w / 2} ${-hh / 2} ${-w / 2 + 8} ${-hh / 2} H${w / 2 - 8} Q${w / 2} ${-hh / 2} ${w / 2} ${-hh / 2 + 8} V${hh / 4} L${6} ${hh / 2} H${-6} L${-w / 2} ${hh / 4} Z`, class: "fs-shape" }),
+      svgEl("path", { d: "M-8 6 h2 M2 10 h2 M-3 16 h2 M6 4 h2 M-12 12 h2", class: "fs-detail" })); return g; }
+    // a vessel with its heating chest (a band of tubes) in the lower part
+    case "evaporator": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 10, class: "fs-shape" }),
+      svgEl("path", { d: `M${-w / 2} 6 H${w / 2} M${-w / 2} ${hh / 2 - 12} H${w / 2} M-10 6 V${hh / 2 - 12} M0 6 V${hh / 2 - 12} M10 6 V${hh / 2 - 12}`, class: "fs-detail" })); return g; }
     case "heater": { const g = svgEl("g", {}); g.append(svgEl("circle", { r: w / 2, class: "fs-shape" }), svgEl("path", { d: "M-12 4 L-6 -6 L0 6 L6 -6 L12 4", class: "fs-detail" })); return g; }
     // a shell with two tube lines; a bow tie; a circle with its discharge
     case "hx": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: hh / 2, class: "fs-shape" }), svgEl("path", { d: `M${-w / 2 + 8} -11 H${w / 2 - 8} M${-w / 2 + 8} 11 H${w / 2 - 8}`, class: "fs-detail" })); return g; }
@@ -1442,13 +1527,13 @@ export function flowsheetView(ctx) {
         const key = `${b.id}.${ip.port}`, n = doc.streams.filter(x => x.to === key).length;
         if (n >= ip.max) continue;   // full: nothing more to drop here
         // empty: at the middle (an exchanger: its hot or cold port); with streams in (a mixer, a drum): just below the last one
-        const ring = svgEl("circle", { cx: -w / 2, cy: b.type === "hx" ? PORT_DY[ip.port] : n ? ((n - 1) / 2) * 16 + 16 : 0, r: 5, class: "fs-port-in is-open", "data-inlet": key });
-        const tt = svgEl("title", {}); tt.textContent = `${b.type === "hx" ? `${ip.label} inlet` : "Inlet"} of ${b.id}${n ? ` (${n} stream${n > 1 ? "s" : ""} in)` : ""}${n < ip.max ? ": drop a stream here" : ": full"}`; ring.append(tt);
+        const ring = svgEl("circle", { cx: -w / 2, cy: b.type === "hx" ? PORT_DY[ip.port] : b.type === "extraction" ? EX_DY[ip.port] : n ? ((n - 1) / 2) * 16 + 16 : 0, r: 5, class: "fs-port-in is-open", "data-inlet": key });
+        const tt = svgEl("title", {}); tt.textContent = `${b.type === "hx" || b.type === "extraction" ? `${ip.label} inlet` : "Inlet"} of ${b.id}${n ? ` (${n} stream${n > 1 ? "s" : ""} in)` : ""}${n < ip.max ? ": drop a stream here" : ": full"}`; ring.append(tt);
         g.append(ring);
       }
       // the drum's liquid leaves at the bottom: its name goes on the right
       // a membrane's permeate leaves at its bottom: its name goes above it
-      const t = b.type === "flash" || b.type === "column" ? svgEl("text", { x: w / 2 + 6, y: 4, class: "fs-name", "text-anchor": "start" })
+      const t = b.type === "flash" || b.type === "column" || b.type === "extraction" || b.type === "evaporator" || b.type === "crystallizer" ? svgEl("text", { x: w / 2 + 6, y: 4, class: "fs-name", "text-anchor": "start" })
         : b.type === "membrane" ? svgEl("text", { y: -hh / 2 - 7, class: "fs-name", "text-anchor": "middle" })
         : svgEl("text", { y: hh / 2 + 15, class: "fs-name", "text-anchor": "middle" });
       t.textContent = blockName(b); g.append(t);
@@ -1681,7 +1766,10 @@ export function flowsheetView(ctx) {
   } else if (res) {
     // a selected column: its result table above the stream table (proposal 0015, M1: the minimal profile)
     const col = f.sel?.kind === "block" && res.blocks?.[f.sel.id]?.type === "column" ? res.blocks[f.sel.id] : null;
+    // a selected extraction: its ternary diagram and its stages (proposal 0015, M3, step 8)
+    const ext = f.sel?.kind === "block" && res.blocks?.[f.sel.id]?.type === "extraction" ? res.blocks[f.sel.id] : null;
     below.replaceChildren(...(col?.profile ? [columnTable({ fs, b: fs.blocks.find(x => x.id === f.sel.id), r: col, u })] : []),
+      ...(ext?.profile ? [extractionPanel({ fs, b: fs.blocks.find(x => x.id === f.sel.id), r: ext, res })] : []),
       streamTable({ fs, res, u, state }), ...(kin?.profile ? [toggle("Show the profiles")] : []), ...csvTools(ctx, fs, res, u));
   }
   const it = res?.loops?.reduce((a, l) => a + l.iterations, 0);
@@ -1822,6 +1910,28 @@ export function resultsPanel({ state, f, sol, u, set }) {
             ["Highest fraction of flooding", `${fmtShort(100 * z.basis.max_fraction_of_flooding, 3)} % (design ${fmtShort(100 * z.basis.design_fraction, 3)} %)`],
             z.basis.mode === "sized" ? ["Diameter set by", `stage ${z.basis.governing_stage}`] : null,
           ] : []),
+        ] : []),
+        ...(b.type === "extraction" && r.state ? [
+          ["Equilibrium stages", String(r.state.stages)],
+          ["Temperature, outlet pressure", `${fmtTemp(r.state.T_K, u, 2)}, ${fmtP(r.state.P_kPa, u)}`],
+          ["Solvent / feed", `${fmtShort(r.state.solvent_to_feed, 4)} mol/mol${r.state.solvent_to_feed_mass != null ? `, ${fmtShort(r.state.solvent_to_feed_mass, 4)} kg/kg` : ""}`],
+          ...Object.entries(r.state.recoveries).filter(([, v]) => v != null).map(([c, v]) => [`${nameOf(c)} into the extract`, `${fmtShort(100 * v, 4)} %`]),
+          ["Liquid method", `${r.state.model}${r.state.sets ? `, sets ${[...new Set(Object.values(r.state.sets))].join(", ")}` : ""}`],
+          ["Newton iterations", `${r.state.iterations}, balances closed`],
+        ] : []),
+        ...(b.type === "crystallizer" && r.state ? [
+          ["Yield", `${fmtShort(100 * r.state.yield, 4)} % of the ${nameOf(r.state.solute)} fed`],
+          ["Crystals", `${fmtShort(r.state.crystals_kg_h, 5)} kg/h (${fmtShort(r.state.crystals_kmol_h, 5)} kmol/h)`],
+          ["Solubility (mole fraction)", `${fmtShort(r.state.solubility_x, 5)}, γ ${fmtShort(r.state.gamma, 4)}`],
+          ...(r.state.mode === "evaporative" ? [["Solvent evaporated", `${fmtShort(r.state.evaporated_kg_h, 5)} kg/h`]] : []),
+        ] : []),
+        ...(b.type === "evaporator" && r.state ? [
+          [r.state.target ? "Steam (for the concentration)" : "Steam", `${fmtShort(r.state.steam_kg_h, 5)} kg/h at ${fmtP(r.state.steam_P_kPa, u)} (${fmtTemp(r.state.steam_T_K, u, 2)})`],
+          ["Water evaporated", `${fmtShort(r.state.evaporated_kg_h, 5)} kg/h`],
+          ["Steam economy", `${fmtShort(r.state.steam_economy, 4)} kg evaporated per kg of steam`],
+          ...(r.profile ?? []).flatMap(p => [[`Effect ${p.effect}`, `${fmtTemp(p.T_K, u, 2)}, ${fmtP(p.P_kPa, u)}`],
+            [`Effect ${p.effect}: heat, ΔT`, `${kWText(p.duty_kW, u, 5)}, ${fmtShort(p.dT_K, 4)} K`],
+            [`Effect ${p.effect}: BPR${p.A_m2 != null ? ", area" : ""}`, `${p.BPR_K == null ? "–" : `${fmtShort(p.BPR_K, 3)} K`}${p.A_m2 != null ? `, ${fmtShort(p.A_m2, 4)} m²` : ""}`]]),
         ] : []),
         ...(b.type === "membrane" && r.state ? [
           [r.state.target ? "Area (for the target)" : "Area (given)", `${fmtShort(r.state.A_m2, 5)} m²`],
@@ -2014,4 +2124,15 @@ function csvTools(ctx, fs, res, u) {
       on: { click: excel(true) } }, icon("table", 15), "Excel concept model"),
     h("button", { type: "button", class: "fa-mini", "data-fk": "fs-csv", on: { click: () => ctx.saveText(csv, "chepta-flowsheet-streams.csv", "text/csv;charset=utf-8", status) } }, icon("download", 15), "Download CSV"),
     h("button", { type: "button", class: "fa-mini", "data-fk": "fs-csv-copy", on: { click: () => ctx.copyText(csv, status, box) } }, icon("copy", 15), "Copy CSV")), status, box];
+}
+
+/** A selected extraction under the drawing: the ternary diagram (three components) and the profile, stage by stage. */
+function extractionPanel({ fs, b, r, res }) {
+  const names = fs.components.map(nameOf);
+  const inlet = port => { const st = fs.streams.find(x => x.to === `${b.id}.${port}`); return st ? res.streams?.[st.id]?.z ?? null : null; };
+  return h("div", { class: "fs-tables", "data-fk": "fs-extraction-panel" }, h("h3", {}, `${blockName(b)}: the stages`),
+    fs.components.length === 3 ? extractionTernary({ ids: fs.components, names, r, feed: inlet("feed"), solvent: inlet("solvent") })
+      : h("p", { class: "fa-in-hint" }, `The ternary diagram needs three components (this flowsheet has ${fs.components.length}); the table has every stage.`),
+    extractionTable({ ids: fs.components, names, r, title: `${blockName(b)}: the profile, stage by stage` }),
+    h("p", { class: "fa-in-hint" }, "Stage 1 is where the feed enters and the extract leaves; the last stage is where the solvent enters and the raffinate leaves. x: the raffinate leaving each stage, y: the extract; K = y/x, the distribution coefficient."));
 }

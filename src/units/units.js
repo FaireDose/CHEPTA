@@ -69,7 +69,7 @@
  * Units: K, kPa, kmol/h, kW.
  */
 import { fail } from "../util/errors.js";
-import { stream, componentFlows, scaleStream, phaseStream, phasesStream } from "../stream/stream.js";
+import { stream, componentFlows, scaleStream, phaseStream, phasesStream, hasCrystals } from "../stream/stream.js";
 import { findComponent, componentRecord } from "../thermo/components.js";
 import { parseFormula } from "../thermo/formula.js";
 import { pure } from "../thermo/pure.js";
@@ -337,7 +337,7 @@ registerUnit({
 });
 
 registerUnit({
-  type: "product", label: "Product", inlets: [{ port: "in" }], outlets: [],
+  type: "product", label: "Product", crystals: true, inlets: [{ port: "in" }], outlets: [],
   specKeys: [],
   checkSpec() { return {}; },
   solve() { return { outlets: {}, duty_kW: 0 }; },
@@ -716,6 +716,11 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
     }
     ins[p.port] = list;
   }
+  // crystals in equilibrium (stream v2, the crystallizer's solid outlet): the property package has no solid phase, so a
+  // block that recalculates its inlets would melt them; only a block registered with crystals: true takes them
+  if (!u.crystals && Object.values(ins).flat().some(hasCrystals)) {
+    throw fail("NOT_AVAILABLE", `${u.label}: an inlet carries crystals from a crystallizer; this block would recalculate the stream as a fluid and melt them (the property methods have no solid phase yet). Send the crystals to a Product; to separate them from liquid, use the crystallizer's own outlets.`);
+  }
   const s = u.checkSpec ? u.checkSpec(spec, { sys, outletCount: n, reactions }) : spec;
   const r = u.solve({ sys, inlets: ins, spec: s, outletCount: n, reactions });
   const outs = Object.values(r.outlets).flatMap(asList);
@@ -743,7 +748,7 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
 }
 
 /** The warning codes a block may return (proposal 0015, section 9, contract 2); a block adds its own code here. */
-export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "METHOD_RANGE"];
+export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "SECOND_SOLID", "METHOD_RANGE", "METHOD_SPLIT"];
 
 /** A block's warnings: each { code, message, stage?, remedy? }, its code one of WARNING_CODES (a bug otherwise). */
 function checkWarnings(u, list) {
