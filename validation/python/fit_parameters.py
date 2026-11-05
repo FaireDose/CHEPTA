@@ -448,9 +448,19 @@ def wilson_a(i, j):
     return a, -a
 
 
+# Pairs classed partly miscible by the evidence survey of proposal 0019 whose fitted data overlap the measured split:
+# no Wilson fit (proposal 0019, section 4 and answer 4 of the maintainer, 2026-11-05)
+WILSON_REFUSED = {
+    "diethyl-carbonate+water": "partly miscible: 14 two-liquid sets of 7 articles in the ThermoML Archive, 293-363 K "
+                               "(proposal 0019, evidence survey), overlapping the fitted P-x data at 353 K",
+}
+
+
 def wilson_ok(spec):
     """Can Wilson be fitted to this spec's data? Not to liquid-liquid data or a heterogeneous azeotrope: the Wilson
-    equation cannot give two liquids (proposal 0016)."""
+    equation cannot give two liquids (proposal 0016); nor for a pair of WILSON_REFUSED (proposal 0019)."""
+    if "+".join(sorted(spec["pair"])) in WILSON_REFUSED:
+        return False
     if spec["data"] == "schmid":
         return True
     if spec["data"] != "txy-file":

@@ -1477,19 +1477,6 @@
     },
     {
       "components": [
-        "diethyl-carbonate",
-        "water"
-      ],
-      "model": "WILSON",
-      "kind": "fit-quality",
-      "message": "These WILSON parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.35 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/diethyl-carbonate_water_10-1016-j-fluid-2012-11-026_353.15K.json (Arango et al., Fluid Phase Equilib. 339)",
-      "source_ids": [
-        "arango2013-diethyl-carbonate-water"
-      ]
-    },
-    {
-      "components": [
         "dimethyl-carbonate",
         "ethylene-carbonate"
       ],
@@ -1941,6 +1928,48 @@
       "reference": "validation/data/vle/2-propanol_isoamyl-alcohol_10-1021-je400581e_101.3kPa_tx.json (Dias et al., J. Chem. Eng. Data 59)",
       "source_ids": [
         "dias2014-2-propanol-isoamyl-alcohol"
+      ]
+    },
+    {
+      "components": [
+        "2-propanol",
+        "glycerol"
+      ],
+      "model": "WILSON",
+      "kind": "miscibility-unchecked",
+      "message": "Miscible below the measured temperature, not known above it (proposal 0019, answer 3): measured as one liquid over the whole composition range only below the fit's temperature (densities at 298-333 K (Li et al. 2007) against the fit at 353 K). The NRTL and UNIQUAC fits to the same data predict two liquids there, which the Wilson set (\"fitted-soujanya2016\") cannot show; not yet checked against liquid-liquid data (roadmap D9).",
+      "reference": "J. Soujanya, C. A. Reddy, B. Satyavathi, T. Sankarshana, Experimental vapour - liquid equilibrium data of the quaternary system Methanol (1) + Isopropyl Alcohol (2) + Water (3) + Glycerol (4) along with Isopropyl Alcohol (2) + Glycerol (4) and Isopropyl Alcohol (2) + Water (3) binary data at atmospheric and sub-atmospheric pressures., Fluid Phase Equilib. 409 (2016) 327-333, doi:10.1016/j.fluid.2015.09.052, via the NIST TRC ThermoML Archive (validation/data/vle/2-propanol_glycerol_10-1016-j-fluid-2015-09-052_94.93kPa_tx.json); the evidence survey of proposal 0019 (PR #205)",
+      "source_ids": [
+        "soujanya2016-2-propanol-glycerol",
+        "nist-thermoml-archive"
+      ]
+    },
+    {
+      "components": [
+        "gvl",
+        "water"
+      ],
+      "model": "WILSON",
+      "kind": "miscibility-unchecked",
+      "message": "Miscible below the measured temperature, not known above it (proposal 0019, answer 3): measured as one liquid over the whole composition range only below the fit's temperature (excess enthalpies at 303-323 K, x from 0.002 to 0.903 (Zaitseva et al. 2016) and refractive indices at 293-298 K (Havasi et al. 2016) against the fit at 350 K). The NRTL fit to the same data predicts two liquids there, which the Wilson set (\"fitted-zaitseva2016\") cannot show; not yet checked against liquid-liquid data (roadmap D9). Gamma-valerolactone has no UNIQUAC r and q.",
+      "reference": "A. Zaitseva, J. P. Pokki, H. Q. Le, V. Alopaeus, H. Sixta, Vapor - Liquid Equilibria, Excess Enthalpy and Density of Aqueous Gamma-valerolactone Solutions, J. Chem. Eng. Data 61 (2016) 881-890, doi:10.1021/acs.jced.5b00724, via the NIST TRC ThermoML Archive (validation/data/vle/gvl_water_10-1021-acs-jced-5b00724_350.2K.json); the evidence survey of proposal 0019 (PR #205)",
+      "source_ids": [
+        "zaitseva2016-gvl-water",
+        "nist-thermoml-archive"
+      ]
+    },
+    {
+      "components": [
+        "o-xylene",
+        "sulfolane"
+      ],
+      "model": "WILSON",
+      "kind": "miscibility-unchecked",
+      "message": "Miscible below the measured temperature, not known above it (proposal 0019, answer 3): measured as one liquid over the whole composition range only below the fit's temperature (densities and viscosities at 303-323 K (Yang et al. 2004) against the fit at 333 K). The NRTL and UNIQUAC fits to the same data predict two liquids there, which the Wilson set (\"fitted-chen2010\") cannot show; not yet checked against liquid-liquid data (roadmap D9).",
+      "reference": "W. K. Chen, K. J. Lee, J. W. Ko, C. M. J. Chang, L.  Lee, Vapor liquid equilibria and density measurement for binary mixtures of toluene, benzene, o-xylene, m-xylene, sulfolane and nonane at 333.15K and 353.15K, Fluid Phase Equilib. 287 (2010) 126-133, doi:10.1016/j.fluid.2009.09.024, via the NIST TRC ThermoML Archive (validation/data/vle/o-xylene_sulfolane_10-1016-j-fluid-2009-09-024_333.15K.json); the evidence survey of proposal 0019 (PR #205)",
+      "source_ids": [
+        "chen2010-m-xylene-sulfolane",
+        "nist-thermoml-archive"
       ]
     }
   ]
