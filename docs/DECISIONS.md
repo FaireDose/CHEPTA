@@ -138,7 +138,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     Answered 2026-11-05: keep the block, one condensate outlet, other feed arrangements and equal areas later; sugar
     solutions on the ideal solution with a note. Still open: a data task, NRTL pairs of water + glucose and water +
     sucrose fitted to open data (sucrose to be proposed for addition).
-  - Waiting: W1; W3's crystallizer (a second pull request, docs/decisions/2026-11-04-11-crystallizer.md).
+  - **W3, M3 step 10: the Crystallizer block, built, to review** (docs/decisions/2026-11-04-11-crystallizer.md): a pure
+    solid in equilibrium with its mother liquor (the solubility of sle.js), cooling (T) or evaporative (the solvent
+    evaporated, with T or P); the yield, the crystals as a solid in equilibrium (stream v2, h = h_L − ΔH_fus), the duty;
+    `solve_crystallizer`. NRTL sets fitted to the measured solubilities of succinic acid in ten solvents (fit_sle.py,
+    whose rewrite dropped the earlier sets: fixed). To check: the six articles' solubilities of succinic acid in water;
+    to decide: crystals only into a Product until a flash holds a solid, and hydrates (not modelled).
+  - Waiting: W1.
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
   (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive
   distillation and the rest after 1.0. Lab pins releases, files capability requests, and does G2 to G5.

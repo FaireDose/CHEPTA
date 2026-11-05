@@ -462,7 +462,7 @@ The steps of Part I, each a pull request with its tests, placed in the workstrea
 | 7. Absorber and stripper; columns with nonvolatile components (proposal 0009, step 5) (W2's absorber, stripper and nonvolatile components built 2026-10-30, to review) | W2 | M3 |
 | 8. Extraction and its view (the Extraction block on the liquid-liquid cascade of the column engine, its ternary view, solve_extraction; built 2026-11-04, to review) | W2, W5 | M3 |
 | 9. Membrane, with the area for a target (built 2026-10-30, to review: gas permeation in co- or counter-current cells, the area for a stage cut or a recovery; pervaporation later) | W3, W4 | M3 |
-| 10. Crystallizer; evaporator; solid-liquid separator and dryer if kept (the evaporator built 2026-11-04, to review: one effect or several in forward feed, the steam economy and the boiling-point rise; the crystallizer next, in its own pull request; the solid-liquid separator and the dryer postponed, answer 4) | W3 | M3 |
+| 10. Crystallizer; evaporator; solid-liquid separator and dryer if kept (the evaporator built 2026-11-04, to review: one effect or several in forward feed, the steam economy and the boiling-point rise; the crystallizer built 2026-11-05, to review, in its own pull request: cooling or evaporative, the solid in equilibrium with its mother liquor; the solid-liquid separator and the dryer postponed, answer 4) | W3 | M3 |
 | 11. Purity and recovery specifications, side draws; the benchmark flowsheets | W2, W7 | M3, M4 |
 | 12. Cost correlations (E2) and utilities (E3) | W4 | M4 |
 | 13. Exports, share by link, format 6; other assistants | W6, W8 | M1 to M4 |

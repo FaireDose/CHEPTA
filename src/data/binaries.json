@@ -20233,6 +20233,276 @@
       ],
       "tier": "databank",
       "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
+    },
+    {
+      "model": "NRTL",
+      "i": "succinic-acid",
+      "j": "1-butanol",
+      "set": "fitted-sle-thermoml",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -665.1981,
+      "b_ji": 1153.4672,
+      "alpha": 0.3,
+      "source": "Fitted to 15 measured solubilities of solid succinic acid in 1-butanol, 304.9-357.1 K, from 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json): Li, J. Chem. Eng. Data 59 (2014), doi:10.1021/je500682v. Pure-solid equilibrium with the melting data of the databank and dCp of fusion 0 (validation/python/fit_sle.py, docs/SLE_FITS.md). Solubility deviation: median of the articles 3.1 %, largest 7.5 % (ideal solution: 35.6 %). From solid-liquid data only: not checked against vapour-liquid data; outside 304.9-357.1 K the parameters are extrapolated.",
+      "source_ids": [
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        304.95,
+        357.15
+      ],
+      "valid": {
+        "T_K": [
+          304.95,
+          357.15
+        ]
+      }
+    },
+    {
+      "model": "NRTL",
+      "i": "succinic-acid",
+      "j": "1-propanol",
+      "set": "fitted-sle-thermoml",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 222.44,
+      "b_ji": -498.9063,
+      "alpha": 0.3,
+      "source": "Fitted to 11 measured solubilities of solid succinic acid in 1-propanol, 283.6-333.8 K, from 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json): Yu, J. Chem. Eng. Data 54 (2009), doi:10.1021/je900021g. Pure-solid equilibrium with the melting data of the databank and dCp of fusion 0 (validation/python/fit_sle.py, docs/SLE_FITS.md). Solubility deviation: median of the articles 8.6 %, largest 26.3 % (ideal solution: 63.1 %). From solid-liquid data only: not checked against vapour-liquid data; outside 283.6-333.8 K the parameters are extrapolated.",
+      "source_ids": [
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        283.55,
+        333.75
+      ],
+      "valid": {
+        "T_K": [
+          283.55,
+          333.75
+        ]
+      }
+    },
+    {
+      "model": "NRTL",
+      "i": "succinic-acid",
+      "j": "2-propanol",
+      "set": "fitted-sle-thermoml",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -440.1184,
+      "b_ji": 307.4329,
+      "alpha": 0.3,
+      "source": "Fitted to 10 measured solubilities of solid succinic acid in 2-propanol, 282.8-334.2 K, from 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json): Yu, J. Chem. Eng. Data 54 (2009), doi:10.1021/je900021g. Pure-solid equilibrium with the melting data of the databank and dCp of fusion 0 (validation/python/fit_sle.py, docs/SLE_FITS.md). Solubility deviation: median of the articles 1.5 %, largest 4.8 % (ideal solution: 65.8 %). From solid-liquid data only: not checked against vapour-liquid data; outside 282.8-334.2 K the parameters are extrapolated.",
+      "source_ids": [
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        282.75,
+        334.25
+      ],
+      "valid": {
+        "T_K": [
+          282.75,
+          334.25
+        ]
+      }
+    },
+    {
+      "model": "NRTL",
+      "i": "succinic-acid",
+      "j": "acetone",
+      "set": "fitted-sle-thermoml",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -692.1761,
+      "b_ji": 1293.739,
+      "alpha": 0.3,
+      "source": "Fitted to 41 measured solubilities of solid succinic acid in acetone, 277.9-327.6 K, from 4 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json): Zhang, J. Chem. Thermodyn. 77 (2014), doi:10.1016/j.jct.2014.05.009; Wang, J. Chem. Eng. Data 61 (2016), doi:10.1021/acs.jced.6b00145; Li, J. Chem. Eng. Data 59 (2014), doi:10.1021/je500682v; Yu, J. Chem. Eng. Data 54 (2009), doi:10.1021/je900021g. Pure-solid equilibrium with the melting data of the databank and dCp of fusion 0 (validation/python/fit_sle.py, docs/SLE_FITS.md). Solubility deviation: median of the articles 11.9 %, largest 31.9 %; refitted without each article in turn, the left-out articles deviate by 12.3 % (median) (ideal solution: 36.6 %). From solid-liquid data only: not checked against vapour-liquid data; outside 277.9-327.6 K the parameters are extrapolated.",
+      "source_ids": [
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        277.85,
+        327.65
+      ],
+      "valid": {
+        "T_K": [
+          277.85,
+          327.65
+        ]
+      }
+    },
+    {
+      "model": "NRTL",
+      "i": "succinic-acid",
+      "j": "cyclohexanone",
+      "set": "fitted-sle-thermoml",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 1303.282,
+      "b_ji": -398.0653,
+      "alpha": 0.3,
+      "source": "Fitted to 50 measured solubilities of solid succinic acid in cyclohexanone, 298.6-351.2 K, from 5 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json): Luo, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.6b00800; Luo, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.7b00255; Liao, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.7b00468; Luo, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b00660; Sheng, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b00956. Pure-solid equilibrium with the melting data of the databank and dCp of fusion 0 (validation/python/fit_sle.py, docs/SLE_FITS.md). Solubility deviation: median of the articles 1.8 %, largest 17.1 %; refitted without each article in turn, the left-out articles deviate by 2.1 % (median) (ideal solution: 7.1 %). From solid-liquid data only: not checked against vapour-liquid data; outside 298.6-351.2 K the parameters are extrapolated.",
+      "source_ids": [
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        298.55,
+        351.25
+      ],
+      "valid": {
+        "T_K": [
+          298.55,
+          351.25
+        ]
+      }
+    },
+    {
+      "model": "NRTL",
+      "i": "succinic-acid",
+      "j": "diethylene-glycol",
+      "set": "fitted-sle-thermoml",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -787.5016,
+      "b_ji": 1005.7943,
+      "alpha": 0.3,
+      "source": "Fitted to 8 measured solubilities of solid succinic acid in diethylene glycol, 298.1-333.1 K, from 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json): Li, J. Chem. Thermodyn. 108 (2017), doi:10.1016/j.jct.2017.01.010. Pure-solid equilibrium with the melting data of the databank and dCp of fusion 0 (validation/python/fit_sle.py, docs/SLE_FITS.md). Solubility deviation: median of the articles 4.8 %, largest 7.6 % (ideal solution: 78.5 %). From solid-liquid data only: not checked against vapour-liquid data; outside 298.1-333.1 K the parameters are extrapolated.",
+      "source_ids": [
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        298.15,
+        333.15
+      ],
+      "valid": {
+        "T_K": [
+          298.15,
+          333.15
+        ]
+      }
+    },
+    {
+      "model": "NRTL",
+      "i": "succinic-acid",
+      "j": "ethanol",
+      "set": "fitted-sle-thermoml",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 963.2225,
+      "b_ji": -794.3594,
+      "alpha": 0.3,
+      "source": "Fitted to 22 measured solubilities of solid succinic acid in ethanol, 283.1-331.9 K, from 3 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json): Zhang, J. Chem. Thermodyn. 77 (2014), doi:10.1016/j.jct.2014.05.009; Li, J. Chem. Eng. Data 61 (2016), doi:10.1021/acs.jced.6b00031; Yu, J. Chem. Eng. Data 54 (2009), doi:10.1021/je900021g. Pure-solid equilibrium with the melting data of the databank and dCp of fusion 0 (validation/python/fit_sle.py, docs/SLE_FITS.md). Solubility deviation: median of the articles 3.3 %, largest 18.3 %; refitted without each article in turn, the left-out articles deviate by 4.9 % (median) (ideal solution: 72.6 %). From solid-liquid data only: not checked against vapour-liquid data; outside 283.1-331.9 K the parameters are extrapolated.",
+      "source_ids": [
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        283.15,
+        331.95
+      ],
+      "valid": {
+        "T_K": [
+          283.15,
+          331.95
+        ]
+      }
+    },
+    {
+      "model": "NRTL",
+      "i": "succinic-acid",
+      "j": "methanol",
+      "set": "fitted-sle-thermoml",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -616.1167,
+      "b_ji": 558.9204,
+      "alpha": 0.3,
+      "source": "Fitted to 9 measured solubilities of solid succinic acid in methanol, 285.8-324.4 K, from 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json): Luo, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.7b00255. Pure-solid equilibrium with the melting data of the databank and dCp of fusion 0 (validation/python/fit_sle.py, docs/SLE_FITS.md). Solubility deviation: median of the articles 1.1 %, largest 2.5 % (ideal solution: 78.7 %). From solid-liquid data only: not checked against vapour-liquid data; outside 285.8-324.4 K the parameters are extrapolated.",
+      "source_ids": [
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        285.75,
+        324.45
+      ],
+      "valid": {
+        "T_K": [
+          285.75,
+          324.45
+        ]
+      }
+    },
+    {
+      "model": "NRTL",
+      "i": "succinic-acid",
+      "j": "propionic-acid",
+      "set": "fitted-sle-thermoml",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 602.6127,
+      "b_ji": -394.4305,
+      "alpha": 0.3,
+      "source": "Fitted to 10 measured solubilities of solid succinic acid in propionic acid, 288.1-329.1 K, from 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json): Luo, J. Chem. Thermodyn. 138 (2019), doi:10.1016/j.jct.2019.06.033. Pure-solid equilibrium with the melting data of the databank and dCp of fusion 0 (validation/python/fit_sle.py, docs/SLE_FITS.md). Solubility deviation: median of the articles 3.2 %, largest 7.7 % (ideal solution: 16.2 %). From solid-liquid data only: not checked against vapour-liquid data; outside 288.1-329.1 K the parameters are extrapolated.",
+      "source_ids": [
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        288.15,
+        329.15
+      ],
+      "valid": {
+        "T_K": [
+          288.15,
+          329.15
+        ]
+      }
+    },
+    {
+      "model": "NRTL",
+      "i": "succinic-acid",
+      "j": "water",
+      "set": "fitted-sle-thermoml",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -641.7115,
+      "b_ji": 1205.7289,
+      "alpha": 0.3,
+      "source": "Fitted to 51 measured solubilities of solid succinic acid in water, 283.1-447.4 K, from 6 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json): Lin, Fluid Phase Equilib. 253 (2007), doi:10.1016/j.fluid.2007.02.011; Luo, J. Chem. Thermodyn. 138 (2019), doi:10.1016/j.jct.2019.06.033; Ma, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.7b00585; Lei, J. Chem. Eng. Data 59 (2014), doi:10.1021/je500231c; Deng, J. Chem. Eng. Data 59 (2014), doi:10.1021/je5003785; Yu, J. Chem. Eng. Data 54 (2009), doi:10.1021/je900021g. Pure-solid equilibrium with the melting data of the databank and dCp of fusion 0 (validation/python/fit_sle.py, docs/SLE_FITS.md). Solubility deviation: median of the articles 8.6 %, largest 34.5 %; refitted without each article in turn, the left-out articles deviate by 10.5 % (median) (ideal solution: 20.6 %). From solid-liquid data only: not checked against vapour-liquid data; outside 283.1-447.4 K the parameters are extrapolated.",
+      "source_ids": [
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        283.15,
+        447.4
+      ],
+      "valid": {
+        "T_K": [
+          283.15,
+          447.4
+        ]
+      }
     }
   ]
 }
