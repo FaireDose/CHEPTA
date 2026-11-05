@@ -172,7 +172,7 @@ test("library.sources, source, usedBy, sets", () => {
   assert.deepEqual(ac.map(s => [s.set, s.default, s.tier]), [["fitted-gao2018", true, "fitted"], ["chemsep", false, "databank"]]);
   assert.deepEqual(ac[1].params, { a_ij: 0, a_ji: 0, b_ij: -788.0452616738485, b_ji: 393.31019778237334 });
   assert.equal(ac[1].sources[0].id, "chemsep-ipd");
-  assert.deepEqual(library.sets("acetone", "chloroform").map(s => s.model), ["NRTL", "NRTL", "UNIQUAC", "UNIQUAC", "WILSON"]);   // WILSON: ChemSep's set (proposal 0016)
+  assert.deepEqual(library.sets("acetone", "chloroform").map(s => s.model), ["NRTL", "NRTL", "UNIQUAC", "UNIQUAC", "WILSON", "WILSON"]);   // WILSON: fitted and ChemSep's set (proposal 0016)
   assert.deepEqual(library.sets("hydrogen", "toluene", "pr").map(s => [s.set, s.params.kij]), [["fitted-tsuji2005", 0.3989], ["chemsep", -0.51]]);
   assert.deepEqual(library.sets("acetone", "ethyl acetate", "NRTL"), []);
   // an unknown model: PC-SAFT (not built yet); this was Wilson until Wilson came (proposal 0016)

@@ -35,7 +35,7 @@ interface or file format, the steps of the core track in the
 | 0013 | [Heat exchangers, energy streams, pumps, valves and compressors](0013-heat-exchangers-and-energy-streams.md) | Accepted |
 | 0014 | [Lessons from the scientific agent skills of K-Dense: finding, reading and checking data](0014-lessons-from-scientific-agent-skills.md) | Accepted (steps 1 and 2) |
 | 0015 | [Separation units, and the program that builds them across the roadmap's tracks](0015-separation-units.md) | Accepted |
-| 0016 | [The Wilson activity model](0016-wilson.md) | Accepted (step 1 implemented; the fits postponed) |
+| 0016 | [The Wilson activity model](0016-wilson.md) | Implemented |
 | 0017 | [Henry components: gases dissolved in water in the activity models](0017-henry-components.md) | Proposed |
 | 0018 | [An activity model inside the cubic equation of state (gE mixing rule)](0018-gE-mixing-rule-eos.md) | Postponed (PR and SRK with fitted k_ij for now) |
 | 0019 | [Pairs with two liquids: how they are fitted and used](0019-two-liquid-pairs.md) | Accepted on merge (answers of 2026-11-05) |
