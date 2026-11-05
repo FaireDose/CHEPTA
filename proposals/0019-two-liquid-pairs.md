@@ -1,6 +1,7 @@
 # 0019: Pairs with two liquids: how they are fitted and used
 
-- **Status:** Proposed; accepted by the maintainer on 2026-11-05 ("i go with your recommendations", answers below). It
+- **Status:** Accepted (PR #205); steps 2-5 in the pull request of docs/decisions/2026-11-05-01-two-liquid-refit.md.
+  Proposed; accepted by the maintainer on 2026-11-05 ("i go with your recommendations", answers below). It
   becomes Accepted when this pull request is merged.
 - **Author(s):** a coding agent working for the maintainer
 - **Discussion:** the pull request that adds this file

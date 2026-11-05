@@ -16,12 +16,12 @@ const load = p => JSON.parse(readFileSync(new URL(p, import.meta.url)));
 const ref = load("../validation/fixtures/two_liquids.json");
 const classes = load("../validation/data/two_liquids/classes.json").pairs;
 
-/** The two liquids the engine gives for a pair at T: a flash of the middle of the reference split, well above its
- *  bubble pressure (an activity-model liquid does not depend on pressure). */
+/** The two liquids the engine gives for a pair at T: a flash of the middle of the reference split at 101.325 kPa, as a
+ *  decanter (the tie lines were measured near 1 atm), or 5 % above its bubble pressure where that is higher. */
 function engineSplit(c) {
   const s = system({ components: c.pair, model: c.model, sets: { [c.pair.join("+")]: c.set } });
   const z = 0.5 * (c.x_I + c.x_II);
-  const P = 20 * s.bubbleP([z, 1 - z], c.T_K).P;
+  const P = Math.max(101.325, 1.05 * s.bubbleP([z, 1 - z], c.T_K).P);
   const r = s.flash({ z: [z, 1 - z], T: c.T_K, P });
   const liq = r.phases.filter(p => p.type === "liquid").map(p => p.composition[0]);
   return { liq, r };
@@ -111,7 +111,7 @@ test("Wilson is refused inside a measured split, and only there", () => {
   assert.equal(pairClass("1-butanol", "water").class, "partly miscible");
   const sp = measuredSplitAt("1-butanol", "water", 323.15);
   assert.ok(sp && sp[1] - sp[0] > 0.2, `measured split at 323 K: ${sp}`);
-  const sys = createSystem({ components: ["1-butanol", "water"], model: "WILSON" });
+  const sys = system({ components: ["1-butanol", "water"], model: "WILSON" });
   const mid = 0.5 * (sp[0] + sp[1]);   // x of 1-butanol, the first component of the key
   assert.throws(() => sys.flash({ z: [mid, 1 - mid], T: 323.15, P: 101.325 }), /Wilson cannot show two liquids[\s\S]*inside the measured split/);
   // a water-rich liquid outside the split is calculated

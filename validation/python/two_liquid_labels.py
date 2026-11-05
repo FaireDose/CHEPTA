@@ -151,7 +151,7 @@ def main(write):
             issues.append({"components": comps, "model": r["model"], "kind": "phase-split", "message": msg,
                            "reference": "validation/data/two_liquids/classes.json (proposal 0019): the evidence of the pair, "
                                         "from the NIST TRC ThermoML Archive",
-                           "origin": ORIGIN})
+                           "source_ids": list(r.get("source_ids", [])), "origin": ORIGIN})
         # what the engine reads
         if cls != "not known" or any("two_liquids" in r for r in recs):
             entry = {"class": cls, "evidence": [{k: e[k] for k in ("kind", "doi", "T_K", "P_kPa", "x")} for e in c["evidence"]]}

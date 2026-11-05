@@ -242,7 +242,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   proposal and the evidence survey (57 pairs: 22 partly miscible, 17 miscible, 18 not known); accepted with the
   maintainer's answers of 2026-11-05 (gates as a start, "miscible below the measured temperature, not known above it",
   Wilson: refuse diethyl carbonate + water, keep the other four; contradicted ChemSep sets not the default where another
-  set exists). Pending: a person checks the classes against the ThermoML records; step 2 (classes, labels, refit).
+  set exists). Steps 2-5 (docs/decisions/2026-11-05-01-two-liquid-refit.md): classes of 379 pairs, joint fits, labels,
+  the engine's statements and the Wilson refusal. Pending: a person checks the classes and tie lines against the ThermoML
+  records; decide on the joint fits that miss the gates (1-butanol + water, aniline + n-octane, ...) and on the fitted
+  sets of 1-propanol + water and acetonitrile + water now labelled "predicted-contradicted".
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order

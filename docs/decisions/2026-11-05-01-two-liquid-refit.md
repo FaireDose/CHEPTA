@@ -67,11 +67,12 @@ extracted".
 - **Labels** (`two_liquid_labels.py`):
   - Every NRTL, UNIQUAC and Wilson set of a classed pair that splits (at 273-373 K and at the measured two-liquid
     temperatures) carries `two_liquids: { class, evidence, splits, sources, fitted }`. The evidence is "measured",
-    "predicted-unvalidated" or "predicted-contradicted".
-  - Each labelled set has a "phase-split" known issue naming its evidence.
+    "predicted-unvalidated" or "predicted-contradicted": 44, 54 and 34 sets.
+  - Each labelled set has a "phase-split" known issue naming its evidence (213 notes).
   - Answer 5 demotes a contradicted ChemSep set from the default where the pair has a non-contradicted set of the same
     model. A set can only give way to another set of its own model. Where the contradicted ChemSep set is the pair's
-    only set of that model, it stays the default, labelled, and its known issue names the other model.
+    only set of that model, it stays the default, labelled, and its known issue names the other model. No ChemSep
+    default was demoted in this run: no contradicted ChemSep set has an uncontradicted set of its own model beside it.
 - **The engine** (`src/thermo/two-liquids.js`, `src/data/two-liquids.json`):
   - A flash with two liquids lists, per pair, `two_liquids` "measured", "predicted-unvalidated" or
     "predicted-contradicted", with the evidence and conditions, and says so in its warnings.
@@ -88,6 +89,8 @@ extracted".
   - the classes name their sources;
   - the labels agree with the classes;
   - the statements by class, the Wilson refusal, and the qualifications of `CHEPTA.run`.
+  - `test/wilson.test.js`: the column with Wilson and two liquids may now be refused first by the Wilson refusal of
+    0019, because its feed liquid lies inside the measured split; the test accepts either refusal and says why.
 
 ## For the maintainer
 
