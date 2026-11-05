@@ -38,20 +38,19 @@ Results, the structured tool results included (the qualifications of `CHEPTA.run
 or predicted without liquid-liquid validation at those conditions, so CHEPTA-Lab's records can carry it. Written into
 the proposal, sections 1 and 3.
 
-## For the maintainer to decide
+## The maintainer's answers (2026-11-05, relayed by the coordinating session: "i go with your recommendations")
 
-1. **Accept the proposal**, or change it: the three classes, the fit per class, the labels, Wilson refused only
-   inside a measured split.
-2. **The solubility gates** of the joint fit: 0.02 in mole fraction (25 % relative for a minor component below 0.05);
-   0.04 (50 %) with a quality warning. No open simulator documentation gives numbers; these are a proposal.
-3. **One liquid measured below the fit's temperature:** may one-liquid data over the whole composition range at a
-   lower temperature class a pair miscible, when no open data show a lower critical solution temperature? Yes would
-   make 2-propanol + glycerol, GVL + water and o-xylene + sulfolane miscible (their one-liquid data are 20-50 K below
-   the refused fits); no keeps them not known, and their VLE fits are then written with the split labelled.
-4. **The five Wilson pairs of PR #200:** by the survey, refuse diethyl carbonate + water (partly miscible, 7 articles
-   of liquid-liquid data, 293-363 K) and keep ethanol + n-decane (miscible); 2-propanol + glycerol, GVL + water and
-   o-xylene + sulfolane follow answer 3 (kept either way: not known or miscible).
-5. **ChemSep sets contradicted by data** (17 pairs): keep them as they are with a label (the proposal), or also stop
-   making them the default where the pair has no fitted set.
-6. **The classes**: a person compares them with the ThermoML records named in survey.json (AGENTS.md rule 4) before
-   step 2 writes `classes.json`.
+1. Proposal 0019 is accepted; it becomes Accepted when this pull request is merged.
+2. The solubility gates are accepted as a start: 0.02 in mole fraction or 25 % (minor component below 0.05); 0.04 or
+   50 % with a quality warning. To be tightened after the refit.
+3. One-liquid data measured 20-50 K below the fit's temperature do not by themselves class a pair miscible: such a
+   pair is "miscible below the measured temperature, not known above it", because some mixtures split only on
+   heating. Its fit is kept with a label, not refused (2-propanol + glycerol, GVL + water, o-xylene + sulfolane).
+4. The Wilson pairs of PR #200: refuse diethyl carbonate + water; keep ethanol + n-decane; keep the other three with
+   the label of answer 3.
+5. The 17 ChemSep sets contradicted by open data are no longer the default where another set exists (a fitted set, or
+   the other model's set), and are labelled where none exists.
+
+Still to do: a person compares the classes with the ThermoML records named in survey.json (AGENTS.md rule 4) before
+step 2 writes `classes.json`. Step 2 (classes, labels, the refit) goes to the session that has the two-liquid code of
+PR #200 in progress.

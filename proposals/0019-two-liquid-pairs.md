@@ -1,6 +1,7 @@
 # 0019: Pairs with two liquids: how they are fitted and used
 
-- **Status:** Proposed
+- **Status:** Proposed; accepted by the maintainer on 2026-11-05 ("i go with your recommendations", answers below). It
+  becomes Accepted when this pull request is merged.
 - **Author(s):** a coding agent working for the maintainer
 - **Discussion:** the pull request that adds this file
 - **Roadmap item:** Data track, **D9** ([ROADMAP.md](../ROADMAP.md#data-track)); decision file
@@ -39,6 +40,7 @@ data?**
 |---|---|
 | **partly miscible** | liquid-liquid data of the pair: tie lines, mutual solubilities, cloud points, vapour-liquid-liquid points (ThermoML sets with phases "Liquid mixture 1" and "Liquid mixture 2"), or a heterogeneous azeotrope in an open article. The class holds at the temperatures measured; above a measured upper critical solution temperature the pair is miscible. |
 | **miscible** | no liquid-liquid data, and the pair measured as one liquid (density, excess enthalpy, viscosity, speed of sound, surface tension: ThermoML sets of one liquid phase) at compositions and temperatures where a set predicts two. The class holds where it was measured. |
+| **miscible below the measured temperature, not known above it** | one-liquid data over the composition range only at temperatures below those where a set predicts the split (answer 3): some mixtures split only on heating, so the data do not decide above them. Treated as not known where the split is predicted. |
 | **not known** | neither. |
 
 Vapour-liquid sets are not one-liquid evidence: a ThermoML vapour-liquid set may list the two liquids of a
@@ -61,7 +63,8 @@ ranges; the pressure and composition ranges are added in step 2.
 
 - **Miscible** pairs: as now. A fit that predicts a split where the pair was measured as one liquid, or anywhere in
   its data range, is not written. A ChemSep set that predicts a split there stays selectable but is no longer the
-  default where a fitted set exists, and its known issue says where it was measured as one liquid.
+  default where another set exists (a fitted set, or the pair's set of the other model; answer 5), and its known
+  issue says where it was measured as one liquid. Where no other set exists it stays the default, labelled.
 - **Partly miscible** pairs: a **joint fit** to the vapour-liquid data and the liquid-liquid data, as for the ethyl
   acetate ternary (`fit_ternary_lle.py`, 2026-11-04) and the two-liquid rows of PR #200: the liquid-liquid points by
   isoactivity, the vapour-liquid points as now. The split is **required** where the liquid-liquid data are, and is not
@@ -105,7 +108,8 @@ Wilson cannot predict two liquids (proposal 0016). Today it is not fitted where 
 predicts two liquids, and it warns where another model predicts them. With the classes:
 
 - **Fitting:** a Wilson fit is refused only for a pair classed **partly miscible** whose data range overlaps the
-  measured split. Miscible and not-known pairs get their Wilson fit (this decides the five pairs of PR #200, below).
+  measured split. Miscible and not-known pairs get their Wilson fit, the latter with the label of the predicted split (answer 4
+  decides the five pairs of PR #200).
 - **Calculating:** Wilson is **refused** (`NOT_AVAILABLE`, naming NRTL and UNIQUAC as the remedy) only where a pair of
   the mixture is classed partly miscible and the state lies inside the measured split at that temperature. Elsewhere
   the present warning stays, and it says the class: "predicted by the NRTL set, not checked against data".
@@ -129,9 +133,31 @@ of PR #200 with:
 >     quality warning and a "fit-quality" known issue;
 >   - not known: fitted to the vapour-liquid data as above; a predicted split is kept, and the set says "two liquids
 >     predicted, not checked against liquid-liquid data" with where it splits.
->   - ChemSep sets are not refitted; their predicted split is labelled by the class of the pair.
+>   - one-liquid data only below the temperatures of a predicted split class the pair miscible below them and not
+>     known above them: the fit is kept with the label, not refused;
+>   - ChemSep sets are not refitted; their predicted split is labelled by the class of the pair. A ChemSep set whose
+>     split is contradicted by open data is not the default where another set exists (a fitted set, or the other
+>     model's).
 > - Wilson cannot give two liquids: it is not fitted to liquid-liquid data, a heterogeneous azeotrope or data with two
 >   liquids, nor to a pair classed partly miscible whose data range overlaps the measured split.
+
+## Answers of the maintainer (2026-11-05)
+
+Relayed by the coordinating session: "i go with your recommendations", with these points.
+
+1. **Proposal 0019 is accepted.** It becomes Accepted when this pull request is merged.
+2. **The solubility gates** are accepted as a start: 0.02 in mole fraction or 25 % (minor component below 0.05);
+   0.04 or 50 % with a quality warning. They are to be tightened after the refit.
+3. **One-liquid data measured 20-50 K below the fit's temperature do not by themselves class a pair miscible.** Such a
+   pair is "miscible below the measured temperature, not known above it", because some mixtures split only on
+   heating. Its fit is kept with a label, not refused. This covers 2-propanol + glycerol, GVL + water and o-xylene +
+   sulfolane.
+4. **The Wilson pairs of PR #200:** refuse diethyl carbonate + water (partly miscible); keep ethanol + n-decane
+   (miscible); keep 2-propanol + glycerol, GVL + water and o-xylene + sulfolane with the label of answer 3.
+5. **The 17 ChemSep sets contradicted by open data** are no longer the default where another set exists (a fitted set,
+   or the other model's set), and are labelled where none exists.
+
+Step 2 (classes, labels and the refit) goes to the session that has the two-liquid code of PR #200 in progress.
 
 ## Engineering basis
 
@@ -231,12 +257,12 @@ What the survey shows (57 pairs: 22 partly miscible, 17 miscible, 18 not known):
   enthalpies at 303-323 K, x from 0.002 to 0.903 (Zaitseva et al. 2016) and refractive indices at 293-298 K (Havasi et
   al. 2016) against the fit at 350 K; o-xylene + sulfolane, densities and viscosities at 303-323 K (Yang et al. 2004)
   against the fit at 333 K. A liquid that is one phase at a lower temperature stays one phase on heating unless the
-  pair has a lower critical solution temperature, and no open data show one for these pairs. Whether such data may
-  class a pair miscible is a choice for the maintainer (below). The batch-3 decision of 2026-10-14 already called GVL
+  pair has a lower critical solution temperature, and no open data show one for these pairs. By answer 3 they are
+  "miscible below the measured temperature, not known above it", and their fits are kept with a label. The batch-3 decision of 2026-10-14 already called GVL
   + water "fully miscible", without naming a source.
 - **The five Wilson pairs of PR #200:** diethyl carbonate + water is partly miscible (14 two-liquid sets of 7 articles,
   293-363 K): its Wilson fit should be refused by section 4. Ethanol + n-decane is miscible: keep it. 2-propanol +
-  glycerol, GVL + water and o-xylene + sulfolane are not known, or miscible if the choice above is accepted: keep them.
+  glycerol, GVL + water and o-xylene + sulfolane: keep them with a label (answer 4).
 - **ChemSep sets predict splits that measurements contradict in 17 pairs.** Examples: 1-propanol + water (UNIQUAC; 264
   one-liquid points of 8 articles inside its split, 282-362 K), acetonitrile + water (UNIQUAC), tetrahydrofuran + water
   (NRTL and UNIQUAC), ethanol + n-hexane, n-heptane, n-octane and isooctane (UNIQUAC, NRTL), 1,4-butanediol + water
