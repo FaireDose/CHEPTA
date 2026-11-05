@@ -63,7 +63,7 @@
  * is H_in + duty = H_out + heat_kW. The reactions of the flowsheet reach the blocks in `reactions`.
  * Unit v2 (proposal 0015, section 9, contract 2): besides its outlets, a block's solve may return `profile` (a list of
  * stages or points, the shape of the plug-flow reactor's), `warnings` (each { code, message, stage?, remedy }, the
- * code one of WARNING_CODES: DRY_STAGE, FLOODING, WEEPING), `sizing` (the dimensions it computed and their basis) and
+ * code one of WARNING_CODES: DRY_STAGE, FLOODING, WEEPING, VOLATILITY_VARIES, METHOD_RANGE), `sizing` (the dimensions it computed and their basis) and
  * `method` (its own property method, when it has one); runUnit passes them on. A block that returns none of them is
  * unchanged.
  * Units: K, kPa, kmol/h, kW.
@@ -743,7 +743,7 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
 }
 
 /** The warning codes a block may return (proposal 0015, section 9, contract 2); a block adds its own code here. */
-export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "METHOD_SPLIT"];
+export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "METHOD_RANGE", "METHOD_SPLIT"];
 
 /** A block's warnings: each { code, message, stage?, remedy? }, its code one of WARNING_CODES (a bug otherwise). */
 function checkWarnings(u, list) {

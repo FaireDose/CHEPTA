@@ -1,0 +1,24 @@
+{
+  "about": "The solubility of carbon dioxide in water at a total pressure of 101.325 kPa and of 500 kPa, 10 to 80 degC: Table 3 of Carroll, Slupsky and Mather (1991), as printed (mole fraction x 1000). The authors calculated these values from their Henry's-law correlation of the low-pressure data of about 100 experimental investigations, graded against each other (Figures 2 to 5 compare it with the measurements); they write that the tables 'should not be considered as a substitute for experimental data'. So this is an evaluated correlation of measured data, independent of IAPWS G7-04, not a measurement. The 0 degC row is left out: CHEPTA's Henry's law constant of CO2 (IAPWS G7-04) starts at 274.19 K. Used by test/henry-components.test.js (proposal 0017).",
+  "source_ids": ["carroll1991-co2-water"],
+  "reference": {
+    "citation": "J. J. Carroll, J. D. Slupsky, A. E. Mather, The Solubility of Carbon Dioxide in Water at Low Pressure, J. Phys. Chem. Ref. Data 20 (1991) 1201-1209",
+    "doi": "10.1063/1.555900",
+    "open_copy": "https://srd.nist.gov/JPCRD/jpcrd427.pdf",
+    "access": "Free to read: reprint hosted by NIST (Standard Reference Data); read 2026-11-04",
+    "tables": "Table 3, p. 1208, columns 101.325 and 500 kPa, rows 10 to 80 degC (the table's header says 'CO' for carbon dioxide, a misprint: the article is about CO2)"
+  },
+  "units": { "T": "degC", "P": "kPa (total pressure)", "x": "mole fraction of CO2 in the liquid x 1000" },
+  "columns": ["T_C", "x1000_at_101.325_kPa", "x1000_at_500_kPa"],
+  "rows": [
+    [10, 0.962, 4.68],
+    [20, 0.704, 3.47],
+    [25, 0.609, 3.02],
+    [30, 0.531, 2.66],
+    [40, 0.409, 2.11],
+    [50, 0.319, 1.72],
+    [60, 0.247, 1.435],
+    [70, 0.185, 1.220],
+    [80, 0.127, 1.050]
+  ]
+}

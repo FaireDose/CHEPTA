@@ -14,6 +14,7 @@ import { selection, choosePair, describePair, pairWarnings, sourceEntry } from "
 import { createCubicVapour } from "./gamma-phi-vapour.js";
 import { activityPhaseMethods } from "./enthalpy.js";
 import { fail, failRange } from "../util/errors.js";
+import { henry, henryInfo, HENRY_GASES } from "./henry.js";
 
 export const MODELS = ["NRTL", "UNIQUAC", "WILSON", "MOD-UNIFAC-2", "ideal"];
 /** Display names of the model keys that are not names themselves. */
@@ -48,6 +49,14 @@ export { EOS_MODELS, listComponents, findComponent };
  * @param {object} [cfg.userData]  the user's own data (proposal 0012, user-data.js): property records, components,
  *        pair sets and groups put over the databank for this system only; info.userData lists what it uses
  */
+/** The temperatures where every Henry component's equation holds: [the highest Tmin, the lowest Tmax], K. */
+function henryRange(gases) {
+  const r = gases.map(g => henryInfo(g, "water"));
+  return [Math.max(...r.map(x => x.Tmin_K)), Math.min(...r.map(x => x.Tmax_K))];
+}
+
+/** The activity models in which a gas with a Henry's law constant in water is a Henry component (proposal 0017). */
+export const HENRY_MODELS = ["NRTL", "UNIQUAC", "WILSON", "ideal"];
 /** The vapour pressure (kPa) a nonvolatile component is given in an activity-model system: effectively zero. */
 export const NV_PSAT_KPA = 1e-20;
 
@@ -75,11 +84,24 @@ export function createSystem(cfg) {
   const comps = ids.map(id => componentRecord(id, ud));
   // nonvolatile components (proposal 0009, step 5): no vapour pressure; they stay in the liquid (NV_PSAT_KPA below)
   const nonvolatile = comps.map(c => c.class === "nonvolatile");
+  // Henry components (proposal 0017; the maintainer, 2026-11-04): in an activity model with water, a gas that has a
+  // Henry's law constant in water (src/data/henry.json) dissolves by f_i = H_i x_i (the unsymmetric convention, its
+  // activity coefficient at infinite dilution taken as 1); water keeps Raoult's law. cfg.henry: false turns it off
+  // Water must be the only other component (CHEPTA's constants are for pure water); with another liquid the gases are
+  // treated as before (their vapour pressure), and an absorber refuses them with the reason (src/units/columns/column.js)
+  const henryCandidate = ids.map(id => cfg.henry !== false && HENRY_MODELS.includes(model) && ids.includes("water") && id !== "water" && HENRY_GASES.includes(id));
+  const henryGas = ids.every((id, i) => id === "water" || henryCandidate[i]) ? henryCandidate : ids.map(() => false);
+  const henryOn = henryGas.some(Boolean);
+  if (henryOn) {
+    const gasNames = comps.filter((_, i) => henryGas[i]).map(c => c.name).join(", ");
+    if (vapourModel !== "ideal") throw fail("NOT_AVAILABLE", `${gasNames}: Henry's law components (proposal 0017) are built with an ideal-gas vapour; use vapour: "ideal".`);
+  }
   // the light gases (they boil below 25 °C and have no UNIQUAC data: hydrogen, carbon monoxide, ...): an activity model
   // describes liquids, so its errors about them say which method to use (docs/METHOD_SELECTION.md, step 1)
-  const gases = comps.filter(c => c.Tb_K != null && c.Tb_K < 298.15 && !c.uniquac && c.class !== "nonvolatile");
+  const gases = comps.filter((c, i) => c.Tb_K != null && c.Tb_K < 298.15 && !c.uniquac && c.class !== "nonvolatile" && !henryGas[i]);
   const gasHint = gases.length ? ` ${gases.map(c => c.name).join(", ")} ${gases.length === 1 ? "is a gas" : "are gases"} at room temperature: an activity model (NRTL, UNIQUAC, Modified UNIFAC 2.0) describes liquids, so use Peng–Robinson or SRK, as gas-phase reactors and synthesis loops are simulated.` : "";
-  for (const c of comps) {
+  for (const [k, c] of comps.entries()) {
+    if (henryGas[k]) continue;   // a Henry component needs no vapour pressure, pairs or groups
     // a liquid without an open vapour pressure (vapourPressure_missing, 2026-10-20) is accepted: activity coefficients,
     // liquid-liquid and solid-liquid equilibria do not need it; psat() below refuses it with the reason
     if (!c.vapourPressure && !cfg.psat && c.class !== "nonvolatile" && !c.vapourPressure_missing) {
@@ -98,7 +120,7 @@ export function createSystem(cfg) {
   const a = zeros(), b = zeros(), alpha = zeros();
   const pairs = [], missing = [], missingIds = [];
   for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
-    if (model === "ideal") continue;
+    if (model === "ideal" || henryGas[i] || henryGas[j]) continue;
     if (model === "MOD-UNIFAC-2") {
       pairs.push({ pair: [comps[i].name, comps[j].name], source: MOD_UNIFAC_SOURCE, tier: "predicted", T_range_K: null,
         set: "mod-unifac-2.0", default: true, chosenBy: "model", source_ids: ["hayer2025-mod-unifac-2"],
@@ -128,6 +150,9 @@ export function createSystem(cfg) {
   else if (model === "WILSON") gammas = wilson({ a, b });
   else if (model === "UNIQUAC") gammas = uniquac({ a, b, r: comps.map(c => c.uniquac.r), q: comps.map(c => c.uniquac.q), qp: comps.map(c => c.uniquac.qp ?? c.uniquac.q) });
   else gammas = () => new Array(n).fill(1);
+  // with Henry components water is the only solvent: its activity coefficient is 1 (Raoult's law, the solvent's
+  // convention), and each gas's is 1 at infinite dilution (the dilute solution of Henry's law)
+  if (henryOn) gammas = () => new Array(n).fill(1);
 
   const assoc = comps.map(c => (useAssoc && c.association && c.association.type === "dimer") ? c.association : null);
   if (vapourModel !== "ideal" && assoc.some(Boolean)) {
@@ -144,6 +169,9 @@ export function createSystem(cfg) {
     ? (typeof cfg.psat === "function" ? cfg.psat : () => cfg.psat.slice())
     : T => comps.map((c, i) => {
       if (nonvolatile[i]) return NV_PSAT_KPA;
+      // a Henry component: H_i(T) in water takes the place of the vapour pressure (f_i = H_i x_i); outside the range of
+      // its equation henry() refuses
+      if (henryGas[i]) return henry(ids[i], "water", T);
       if (!c.vapourPressure) throw fail("MISSING_DATA", noVapourPressureMessage(c));
       const p = vapourPressure(c.vapourPressure, T) / 1000;
       // the curve extrapolated far above the critical temperature (hydrogen above about 150 K) overflows: Raoult's law
@@ -180,6 +208,7 @@ export function createSystem(cfg) {
     return { P: Ptrue, y: app.map(v => v / s), gamma: g };
   }
 
+  const HENRY_NOTE = henryOn ? `${comps.filter((_, i) => henryGas[i]).map(c => c.name).join(", ")} dissolve${henryGas.filter(Boolean).length > 1 ? "" : "s"} in water by Henry's law, f = H x (IAPWS G7-04${ids.some((id, i) => henryGas[i] && id === "ethylene") ? "; ethylene: Sander 2023" : ""}), with the activity coefficient taken as 1 at infinite dilution and water by Raoult's law: a dilute solution at low to moderate pressure (proposal 0017). The ${modelName(model)} parameters are not used for these gases.` : null;
   const info = {
     components: comps.map((c, i) => ({ id: ids[i], name: c.name, formula: c.formula, Tb_K: c.Tb_K })),
     model, pairs, missingPairs: missing,
@@ -191,6 +220,7 @@ export function createSystem(cfg) {
     advice: methodAdvice({ ids, names: comps.map(c => c.name), formulas: comps.map(c => c.formula), model, eos: false }),
     // the user's own data this system uses (proposal 0012): [{ component or pair, what, source }]
     userData: userDataUsed(ids, ud, pairs),
+    ...(henryOn ? { henry: { components: ids.filter((_, i) => henryGas[i]), solvent: "water", convention: "unsymmetric: f = H x, activity coefficient 1 at infinite dilution", note: HENRY_NOTE } } : {}),
   };
 
   /**
@@ -202,6 +232,7 @@ export function createSystem(cfg) {
     const w = pairWarnings(pairs, T, P, p => `${modelName(model)} parameters of ${p.pair.join(" + ")}${p.default ? "" : ` (set "${p.set}")`} come`);
     if (P != null && n > 1) w.push(...pressureAdvice({ model, eos: false }, P));
     if (model === "WILSON" && Number.isFinite(T)) w.push(...wilsonSplitWarnings(T));
+    if (henryOn) w.push(HENRY_NOTE);
     return cubicVapour ? [...w, ...cubicVapour.warnings(T)] : w;
   }
 
@@ -238,12 +269,13 @@ export function createSystem(cfg) {
     });
   };
 
-  const phaseMethods = activityPhaseMethods({ ids, comps, n, model, gammas, psat, cubicVapour, warnings, nonvolatile, userData: ud });
+  const phaseMethods = activityPhaseMethods({ ids, comps, n, model, gammas, psat, cubicVapour, warnings, nonvolatile, userData: ud,
+    henry: henryGas.map((h, i) => (h ? T => henry(ids[i], "water", T) : null)) });
   // melting temperature and enthalpy of fusion (solid-liquid equilibrium, src/equilibrium/sle.js); null: no open data
   const fusion = comps.map(c => (c.fusion && c.fusion.available !== false
     ? { Tm_K: c.fusion.Tm_K, Hfus_J_mol: c.fusion.Hfus_J_mol, tier: c.fusion.tier, source: c.fusion.source } : null));
   return { ids, names: comps.map(c => c.name), n, model, vapour: vapourModel, gammas, psat, equilibrium, lnKValues, info, warnings, fusion,
-    nonvolatile, MW: comps.map(c => c.MW), userData: ud, ...phaseMethods };
+    nonvolatile, henry: henryGas, ...(henryOn ? { henryRange_K: henryRange(ids.filter((_, i) => henryGas[i])) } : {}), MW: comps.map(c => c.MW), userData: ud, ...phaseMethods };
 }
 
 /**
