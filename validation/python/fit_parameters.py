@@ -862,6 +862,11 @@ def quality(spec, model, params):
     if spec["data"] == "txy-file":
         mi = spec.get("single_liquid", False)
         q = describe_fit(file_sets(spec), model, i, j, [params], mi) + "."
+        for name in spec.get("files", [spec["file"]] if "file" in spec else []):
+            tl = load(name).get("two_liquids")
+            if tl:
+                q += (" Two liquids measured (validation/data/%s, two_liquids): %s." % (name, "; ".join(
+                    "%s, doi:%s, %s" % (r["citation"], r["doi"], r["sets"]) for r in tl["records"])))
         for kind, name, c in file_sets(spec, "check"):
             q += f" Check against {name}: {describe_fit([(kind, name, c)], model, i, j, [params], mi)}."
         return q
@@ -1058,8 +1063,11 @@ def main(write, only=None, models_only=None):
         print(f"updated {BIN_FILE}")
         # the "fit-quality" entries of the pairs fitted in this run are replaced by the new ones
         K = json.loads(KNOWN_FILE.read_text())
+        # the default set of a pair and model that stays as it was (a refit that did not replace it) keeps its note
+        stays = {(tuple(sorted(r["pair"])), m) for r_pair, m, why in rejected for r in [{"pair": r_pair}] if why.endswith("stays")}
         K["issues"] = [k for k in K["issues"] if not (k.get("kind") == "fit-quality" and tuple(sorted(k["components"])) in done
-                                                      and (models_only is None or k.get("model") in models_only))]
+                                                      and (models_only is None or k.get("model") in models_only)
+                                                      and (tuple(sorted(k["components"])), k.get("model")) not in stays)]
         for spec, model, why in warned:
             K["issues"].append({"components": list(spec["pair"]), "model": model, "kind": "fit-quality",
                                 "message": "These %s parameters are fitted to open data but follow them less closely than the "

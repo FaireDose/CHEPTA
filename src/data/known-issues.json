@@ -1360,19 +1360,6 @@
     },
     {
       "components": [
-        "acetonitrile",
-        "n-hexane"
-      ],
-      "model": "WILSON",
-      "kind": "fit-quality",
-      "message": "These WILSON parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.54 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json (Narasigadu et al., Fluid Phase Equilib. 338)",
-      "source_ids": [
-        "narasigadu2013-acetonitrile-n-hexane"
-      ]
-    },
-    {
-      "components": [
         "bdo",
         "tetrahydrofuran"
       ],
@@ -1473,19 +1460,6 @@
       "reference": "validation/data/vle/diethyl-carbonate_vinyl-acetate_10-1021-je049544x_101.3kPa.json (Resa et al., J. Chem. Eng. Data 50)",
       "source_ids": [
         "resa2005-diethyl-carbonate-vinyl-acetate"
-      ]
-    },
-    {
-      "components": [
-        "diethyl-carbonate",
-        "water"
-      ],
-      "model": "WILSON",
-      "kind": "fit-quality",
-      "message": "These WILSON parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.35 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/diethyl-carbonate_water_10-1016-j-fluid-2012-11-026_353.15K.json (Arango et al., Fluid Phase Equilib. 339)",
-      "source_ids": [
-        "arango2013-diethyl-carbonate-water"
       ]
     },
     {
@@ -1941,6 +1915,76 @@
       "reference": "validation/data/vle/2-propanol_isoamyl-alcohol_10-1021-je400581e_101.3kPa_tx.json (Dias et al., J. Chem. Eng. Data 59)",
       "source_ids": [
         "dias2014-2-propanol-isoamyl-alcohol"
+      ]
+    },
+    {
+      "components": [
+        "2-propanol",
+        "glycerol"
+      ],
+      "model": "WILSON",
+      "kind": "miscibility-unchecked",
+      "message": "NRTL and UNIQUAC fits to the same data predict two liquids; miscibility not yet checked against liquid-liquid data (roadmap D9). The default Wilson set (\"fitted-soujanya2016\") is fitted to these data and cannot show two liquids, so check this mixture against liquid-liquid data before trusting one liquid; no NRTL or UNIQUAC set was written for these data (the fits that predict two liquids are refused).",
+      "reference": "J. Soujanya, C. A. Reddy, B. Satyavathi, T. Sankarshana, Experimental vapour - liquid equilibrium data of the quaternary system Methanol (1) + Isopropyl Alcohol (2) + Water (3) + Glycerol (4) along with Isopropyl Alcohol (2) + Glycerol (4) and Isopropyl Alcohol (2) + Water (3) binary data at atmospheric and sub-atmospheric pressures., Fluid Phase Equilib. 409 (2016) 327-333, doi:10.1016/j.fluid.2015.09.052, via the NIST TRC ThermoML Archive (validation/data/vle/2-propanol_glycerol_10-1016-j-fluid-2015-09-052_94.93kPa_tx.json)",
+      "source_ids": [
+        "soujanya2016-2-propanol-glycerol",
+        "nist-thermoml-archive"
+      ]
+    },
+    {
+      "components": [
+        "ethanol",
+        "n-decane"
+      ],
+      "model": "WILSON",
+      "kind": "miscibility-unchecked",
+      "message": "NRTL and UNIQUAC fits to the same data predict two liquids; miscibility not yet checked against liquid-liquid data (roadmap D9). The default Wilson set (\"fitted-narasigadu2018\") is fitted to these data and cannot show two liquids, so check this mixture against liquid-liquid data before trusting one liquid; no NRTL or UNIQUAC set was written for these data (the fits that predict two liquids are refused).",
+      "reference": "C. Narasigadu, K. Moodley, J. D. Raal, Vapor-Liquid Equilibrium Measurements of Ethanol and n-Nonane or n-Decane Binary Mixtures with Large Relative Volatility, J. Chem. Eng. Data 63 (2018) 1240-1248, doi:10.1021/acs.jced.7b00875, via the NIST TRC ThermoML Archive (validation/data/vle/ethanol_n-decane_10-1021-acs-jced-7b00875_328.17K.json)",
+      "source_ids": [
+        "narasigadu2018-ethanol-n-decane",
+        "nist-thermoml-archive"
+      ]
+    },
+    {
+      "components": [
+        "o-xylene",
+        "sulfolane"
+      ],
+      "model": "WILSON",
+      "kind": "miscibility-unchecked",
+      "message": "NRTL and UNIQUAC fits to the same data predict two liquids; miscibility not yet checked against liquid-liquid data (roadmap D9). The default Wilson set (\"fitted-chen2010\") is fitted to these data and cannot show two liquids, so check this mixture against liquid-liquid data before trusting one liquid; no NRTL or UNIQUAC set was written for these data (the fits that predict two liquids are refused).",
+      "reference": "W. K. Chen, K. J. Lee, J. W. Ko, C. M. J. Chang, L.  Lee, Vapor liquid equilibria and density measurement for binary mixtures of toluene, benzene, o-xylene, m-xylene, sulfolane and nonane at 333.15K and 353.15K, Fluid Phase Equilib. 287 (2010) 126-133, doi:10.1016/j.fluid.2009.09.024, via the NIST TRC ThermoML Archive (validation/data/vle/o-xylene_sulfolane_10-1016-j-fluid-2009-09-024_333.15K.json)",
+      "source_ids": [
+        "chen2010-m-xylene-sulfolane",
+        "nist-thermoml-archive"
+      ]
+    },
+    {
+      "components": [
+        "gvl",
+        "water"
+      ],
+      "model": "WILSON",
+      "kind": "miscibility-unchecked",
+      "message": "An NRTL fit (gamma-valerolactone has no UNIQUAC r and q) to the same data predicts two liquids; miscibility not yet checked against liquid-liquid data (roadmap D9). The default Wilson set (\"fitted-zaitseva2016\") is fitted to these data and cannot show two liquids, so check this mixture against liquid-liquid data before trusting one liquid; no NRTL or UNIQUAC set was written for these data (the fits that predict two liquids are refused).",
+      "reference": "A. Zaitseva, J. P. Pokki, H. Q. Le, V. Alopaeus, H. Sixta, Vapor - Liquid Equilibria, Excess Enthalpy and Density of Aqueous Gamma-valerolactone Solutions, J. Chem. Eng. Data 61 (2016) 881-890, doi:10.1021/acs.jced.5b00724, via the NIST TRC ThermoML Archive (validation/data/vle/gvl_water_10-1021-acs-jced-5b00724_350.2K.json)",
+      "source_ids": [
+        "zaitseva2016-gvl-water",
+        "nist-thermoml-archive"
+      ]
+    },
+    {
+      "components": [
+        "acetonitrile",
+        "n-hexane"
+      ],
+      "model": "NRTL",
+      "kind": "two-liquids-missed",
+      "message": "The default NRTL set (\"fitted-narasigadu2013\") was fitted to the total pressures of this record alone and predicts one liquid at every temperature where the same record measured two (313.13-348.22 K; at 313.13 K the liquids hold 0.938 and 0.081 mole fraction acetonitrile; validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json, two_liquids). Do not use it where the two liquids form; the pair is refitted with its two-liquid data in roadmap item D9.",
+      "reference": "C. Narasigadu, P. Naidoo, C. Coquelet, D. Richon, D. Ramjugernath, A novel static analytical apparatus for phase equilibrium measurements, Fluid Phase Equilib. 338 (2013) 188-196, doi:10.1016/j.fluid.2012.11.008, via the NIST TRC ThermoML Archive (validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json)",
+      "source_ids": [
+        "narasigadu2013-acetonitrile-n-hexane",
+        "nist-thermoml-archive"
       ]
     }
   ]

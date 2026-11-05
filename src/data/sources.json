@@ -1180,6 +1180,20 @@
         "validation/data/vle/1-propanol_dichloroethane_10-1016-j-jct-2004-07-012_313.15K.json"
       ]
     },
+    "gomis2014-1-butanol-water": {
+      "title": "Isothermal (liquid + liquid) equilibrium data at T = 313.15 K and isobaric (vapor + liquid + liquid) equilibrium data at 101.3 kPa for the ternary system (water + 1-butanol + p-xylene)",
+      "authors": "V. Gomis, A. Font, M. D. Saquete, J. Garcia-Cano",
+      "year": 2014,
+      "published": "J. Chem. Thermodyn. 79 (2014) 242-247",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2014.07.021",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2014.07.021.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/1-butanol_water_10-1021-je700411p_101.3kPa_tx.json"
+      ]
+    },
     "goni2024-ethane-n-decane": {
       "title": "Solubility of Light Ends in Heavy Condensates, PhD thesis",
       "authors": "M. U. Goni",

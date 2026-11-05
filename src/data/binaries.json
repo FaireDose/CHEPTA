@@ -23297,24 +23297,6 @@
     },
     {
       "model": "WILSON",
-      "i": "acetonitrile",
-      "j": "n-hexane",
-      "set": "fitted-narasigadu2013",
-      "default": true,
-      "a_ij": 0.9116021490793959,
-      "a_ji": -0.9116021490793959,
-      "b_ij": -1085.5180446811066,
-      "b_ji": -397.2288077689806,
-      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.54 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
-      "source": "Fitted to 12 total pressures at 348.2 K with the measured pure-component pressures from Narasigadu et al., Fluid Phase Equilib. 338 (2013) 188-196 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json). P-x at 348.2 K (with the measured pure-component pressures): AAD 1.54 % (max 5.21 %).",
-      "source_ids": [
-        "narasigadu2013-acetonitrile-n-hexane",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "WILSON",
       "i": "acrylic-acid",
       "j": "cyclohexane",
       "set": "fitted-huang2011",
@@ -23361,23 +23343,6 @@
       "source_ids": [
         "mali2017-aniline-dmf",
         "mali2017-dimethyl-carbonate-ethyl-acetate",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "WILSON",
-      "i": "aniline",
-      "j": "n-octane",
-      "set": "fitted-grenner2006",
-      "default": true,
-      "a_ij": 0.5746587486726134,
-      "a_ji": -0.5746587486726134,
-      "b_ij": -629.0958300745355,
-      "b_ji": -547.703069410754,
-      "source": "Fitted to 19 total pressures at 383.15 K with the measured pure-component pressures from Grenner et al., J. Chem. Eng. Data 51 (2006) 1009-1014 (data public in the NIST TRC ThermoML Archive; validation/data/vle/aniline_n-octane_10-1021-je0505366_383.15K.json). P-x at 383.15 K (with the measured pure-component pressures): AAD 0.87 % (max 1.77 %).",
-      "source_ids": [
-        "grenner2006-aniline-n-octane",
         "nist-thermoml-archive"
       ],
       "tier": "fitted"
@@ -24095,24 +24060,6 @@
       "source": "Fitted to 19 T-x-y points at 101.3 kPa from Resa et al., J. Chem. Eng. Data 50 (2005) 1212-1217 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_vinyl-acetate_10-1021-je049544x_101.3kPa.json). AAD 0.51 K in T, 0.0048 in y (max 1.01 K, 0.0143). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.005 (passes, < 0.01).",
       "source_ids": [
         "resa2005-diethyl-carbonate-vinyl-acetate",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "WILSON",
-      "i": "diethyl-carbonate",
-      "j": "water",
-      "set": "fitted-arango2013",
-      "default": true,
-      "a_ij": -1.908754209204982,
-      "a_ji": 1.908754209204982,
-      "b_ij": -490.8079496208348,
-      "b_ji": -1352.1710707207042,
-      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 2.35 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
-      "source": "Fitted to 12 total pressures at 353.15 K with the measured pure-component pressures from Arango et al., Fluid Phase Equilib. 339 (2013) 31-39 (data public in the NIST TRC ThermoML Archive; validation/data/vle/diethyl-carbonate_water_10-1016-j-fluid-2012-11-026_353.15K.json). P-x at 353.15 K (with the measured pure-component pressures): AAD 2.35 % (max 4.80 %).",
-      "source_ids": [
-        "arango2013-diethyl-carbonate-water",
         "nist-thermoml-archive"
       ],
       "tier": "fitted"

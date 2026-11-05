@@ -254,7 +254,9 @@ new refit of a ChemSep record is made (section 1).
   liquid-liquid equilibrium (equal activities of both components), leaves out the rows strictly between the two liquids
   at the same temperature (points of the three-phase plateau, not one liquid's bubble point), and then requires a split
   at those temperatures and no measured one-liquid row inside a predicted split. Before 2026-11-04 these sets were
-  skipped, so a fit that rightly predicted the split was refused.
+  skipped, so a fit that rightly predicted the split was refused. The NRTL and UNIQUAC refits of the pairs concerned
+  wait for roadmap item D9, which classifies the pairs from evidence and fits them by class (the maintainer,
+  2026-11-04); until then a set that misses its record's two liquids has a "two-liquids-missed" known issue.
 - Wilson (proposal 0016) cannot give two liquids: it is not fitted to liquid-liquid data, a heterogeneous azeotrope or
   data with two liquids, nor where the pair's default NRTL (else UNIQUAC) set predicts two liquids in the data range.
 - The property method of a test or example follows [METHOD_SELECTION.md](METHOD_SELECTION.md).
