@@ -1119,17 +1119,9 @@ def main(write, only=None, models_only=None):
                 if why:
                     rejected.append((spec["pair"], model, why))
                     print(f"REJECTED {model} {spec['pair']}: {why}")
-                    # a set an earlier run fitted to the same data and that the data no longer support (two liquids
-                    # read since, 2026-11-04) is taken out; the pair's remaining default goes back to its other set
-                    old = [r for r in binaries["pairs"] if r["model"] == model and {r["i"], r["j"]} == set(spec["pair"])
-                           and r.get("tier") == "fitted" and r.get("source", "").startswith(spec["describe"][:80])]
-                    if old and not why.endswith("stays"):   # not when the earlier set itself is the one that stays
-                        binaries["pairs"] = [r for r in binaries["pairs"] if not any(r is o for o in old)]
-                        rest = [r for r in binaries["pairs"] if r["model"] == model and {r["i"], r["j"]} == set(spec["pair"])]
-                        if rest and not any(r.get("default", True) for r in rest):
-                            (next((r for r in rest if r.get("set") == "chemsep"), rest[0]))["default"] = True
-                        removed.append((spec["pair"], model, [o.get("set") for o in old]))
-                        print(f"  removed the earlier {model} set {[o.get('set') for o in old]} of {spec['pair']}")
+                    # the pair keeps what it had (proposal 0019, section 2: "not written; the pair keeps what it had";
+                    # "existing sets are not changed by this step"): a set of before stays, labelled by its class
+                    # (two_liquid_labels.py)
                     continue
             q = quality(spec, model, params) + test
             params["source"] = f"{spec['describe']} {q}"
