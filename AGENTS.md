@@ -126,7 +126,8 @@ Something broken in the interface: the [Bug form](https://github.com/FaireDose/C
 - Choose the property method of a test or example first, by
   [docs/METHOD_SELECTION.md](docs/METHOD_SELECTION.md) (which model for which mixture and
   conditions, from open sources); a test that uses another method on purpose (an error message,
-  a code path) says so in a comment.
+  a code path) says so in a comment. Where the method guide leaves a case open, check what other simulators with open
+  documentation do and record it ([METHOD_SELECTION.md](docs/METHOD_SELECTION.md#when-in-doubt-what-other-simulators-do)).
 - SI units inside the engine (K, kPa, mol, J); convert only at the interface.
 - Fail loudly: a solver that does not converge throws an error that says why; never return
   a silently wrong answer.

@@ -27,12 +27,21 @@ Read on 2026-10-09:
      synthesis tutorial, Peng–Robinson; https://dwsim.org/tutorials/en/advanced/07-methanol-synthesis.html, read on
      2026-10-23). An activity model cannot hold the gases: Modified UNIFAC 2.0 has no groups for H₂ or CO, NRTL and
      UNIQUAC no pairs, and an activity model with a cubic vapour (γ-φ) needs every liquid component below its critical
-     temperature, as H₂ (33 K) and CO (133 K) are not (dissolved gases need Henry's law, which CHEPTA has for six gases
-     in water only). CHEPTA refuses them with that remedy; the "ideal" model (Raoult's law) too, where the gas's
+     temperature, as H₂ (33 K) and CO (133 K) are not (dissolved gases need Henry's law, which CHEPTA has for ten gases
+     in water: below). CHEPTA refuses them with that remedy; the "ideal" model (Raoult's law) too, where the gas's
      vapour-pressure curve, extrapolated far above its critical temperature, has no finite value (hydrogen above about
      150 K). The polar liquid alone (the methanol–water column) is where
      an activity model is more accurate; PSRK, which puts UNIFAC with gas groups inside an equation of state, would do
      both and is not in CHEPTA yet (step 4).
+   - **Gases dissolved in water** (an absorber, a stripper; proposal 0017, the maintainer, 2026-11-04): an activity
+     model with water as the only solvent treats the gases that have a Henry's law constant in water (H₂, N₂, O₂, CH₄,
+     C₂H₆, Ar, CO, CO₂, H₂S: IAPWS G7-04; ethylene: Sander 2023) as Henry components, f = H x, with water by Raoult's
+     law; a mixed solvent is refused. Peng–Robinson or SRK with a light gas and a polar liquid runs only where each such
+     pair has a k_ij, with a warning, as the DWSIM Property Packages Guide advises ("Sour gas (with H2S, CO2): PR with
+     kij ... Set binary interaction parameters"; Peng–Robinson "performs poorly for water/alcohol mixtures";
+     https://dwsim.org/tutorials/en/reference/property-packages-guide.html, read 2026-11-04). Sour water (NH₃ with H₂S
+     or CO₂) and amines need an electrolyte model ("Sour water (NH3, H2S, CO2): Sour Water ... Specialized for gas
+     treating", the same guide): not in CHEPTA yet (methods track M5), so refused.
 3. **Polar, no electrolytes, below 10 bar, with interaction parameters:**
    - an activity model: NRTL or UNIQUAC, or Wilson when there is only one liquid (`WILSON`, proposal 0016; ChemSep's
      Wilson set, tier databank, 165 pairs, and Wilson pairs of one's own in My data);
@@ -63,6 +72,31 @@ Read on 2026-10-09:
    (it would freeze), and parameters used only within the temperature range they were fitted
    to.
 
+## When in doubt: what other simulators do
+
+The maintainer, 2026-11-04: "check again what the other simulators are doing where you have a doubt, put this as a
+method in fact". Where the rules above leave a case open, or a choice would refuse a calculation engineers routinely
+make (a method, a refusal, a default), check how other simulators handle it before deciding:
+
+1. **Which simulators:** those whose documentation anyone can read for free: DWSIM (its Property Packages Guide and
+   tutorials), ChemSep and COCO (The ChemSep Book, the COLAN forum where its authors answer), and open method guides
+   (the Northwestern open textbook above). Commercial manuals behind a login are not cited (AGENTS.md rule 1).
+2. **What to record:** the page, the date it was read, and the sentences that decide the case, quoted, in the
+   decision file and in this page when it changes a rule.
+3. **What it decides:** whether a calculation is offered, refused or offered with a warning. Another simulator's
+   practice never replaces the sources of the numbers: parameters still come from open data or databanks, and every
+   method is still tested against an independent calculation and open data.
+4. **Where they differ from CHEPTA's rules,** say so and give the reason (CHEPTA refuses where its parameters cannot
+   support the result; another simulator may leave that judgement to the user).
+
+Checked so far:
+
+| Case | Other simulators (read 2026-11-04) | CHEPTA |
+|---|---|---|
+| Gases dissolved in water (absorbers) | DWSIM's base property package carries Henry's law constants (`UseHenryConstants`, DWSIM class library, https://dwsim.org/api_help/html/P_DWSIM_Thermodynamics_PropertyPackages_PropertyPackage_UseHenryConstants.htm) | an activity model with Henry's law for the gases with an open constant (IAPWS G7-04, Sander 2023), proposal 0017 |
+| A light gas with a polar liquid in Peng–Robinson or SRK | DWSIM Property Packages Guide (https://dwsim.org/tutorials/en/reference/property-packages-guide.html): "Sour gas (with H2S, CO2): PR with kij ... Set binary interaction parameters"; "For PR/SRK with strongly polar or quadrupolar compounds (CO2, H2S), the kij values matter"; "Peng-Robinson is excellent for hydrocarbons and gases, but performs poorly for water/alcohol mixtures" | offered, with a warning, where the pair has a k_ij; refused without one |
+| Sour water (NH3, H2S, CO2 in water), amines | the same guide: "Sour water (NH3, H2S, CO2): Sour Water ... Specialized for gas treating"; "Aqueous electrolytes: Electrolyte NRTL" | refused until the electrolyte methods (roadmap M5) |
+
 ## What this means for CHEPTA today
 
 | Mixture | Method in CHEPTA | Status |
@@ -74,6 +108,21 @@ Read on 2026-10-09:
 | Water + hydrocarbons (two liquids) | (CPA, or a free-water approach) | **not available**; the engine refuses a second liquid with an equation of state; planned: roadmap M3 |
 | Electrolytes | (eNRTL, Pitzer) | **not available**, shown as "not available yet"; planned: roadmap M5 (ionic liquids: M6) |
 | Polymers | (Flory–Huggins, PC-SAFT) | **not available**; planned: roadmap M4 |
+
+## Two liquids: extraction and decanting (proposal 0015, Part I, section 6)
+
+- **Method:** NRTL or UNIQUAC. Only the liquid's activity coefficients set the two liquids, so the vapour model does
+  not matter for a liquid-liquid calculation. (With the acid chemical theory, the vapour-liquid-liquid flash itself still
+  refuses a second liquid.)
+- **Parameters:** a binary fit reproduces its own pair, not a ternary. Where the pairs were fitted to binary data only,
+  check the ternary's tie lines first. Water + acetic acid + ethyl acetate: the default sets miss the measured tie lines
+  by up to 0.16 in mole fraction in the ester-rich liquid. For extraction, choose the jointly fitted sets
+  `fitted-lle-roque2018` of all three pairs together (`sets`; validation/python/fit_ternary_lle.py). They follow the
+  tie lines and still follow each pair's binary data.
+- **Fit targets** (the maintainer, 2026-10-29): each record's stated uncertainty, per system, with the solute in view;
+  0.01 in mole fraction is not a target for every system.
+- **No measured tie lines:** Modified UNIFAC 2.0 gives a prediction (tier "predicted"), to be compared with what data
+  there are.
 
 ## Where the rules are applied
 

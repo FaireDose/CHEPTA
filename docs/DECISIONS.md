@@ -14,6 +14,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
+- **The Extraction block and its view** (proposal 0015, step 8; docs/decisions/2026-10-30-10-extraction-view.md):
+  check the comparison with Glatz and Parker 2004 (Runs 1 and 3); decide whether an adiabatic cascade is wanted, whether
+  the ternary view should offer mass fractions, and whether the flowsheet should take the joint sets by itself when it
+  holds an Extraction block of that ternary.
+  Still open from #196 (docs/decisions/2026-10-30-08-extraction.md): compare the transcribed tie lines with the ThermoML
+  records, and check Roque 2018's second isotherm (313.2 K in the record, 303.2 K in the title).
 - **Formation data** (proposal 0010, step 1; docs/decisions/2026-10-22-03-formation-data.md): xylitol is held (two
   crystal energies of combustion disagree by about 100 kJ/mol); five records are uncertain (the values disagree by more
   than 10 kJ/mol: 2-methoxyethanol, 1,3-propanediol, limonene, gamma-butyrolactone, levoglucosan); 22 components have no
@@ -105,7 +111,33 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     shortcut and the rigorous column, the column's sheet in the flowsheet's Excel workbook, SVG and PNG of the column
     charts. To check: the construction against The ChemSep Book, section 1.3.3; to decide: the check's tolerances,
     and whether SVG and PNG go on every chart next. Then W10 checks the screenshots.
-  - Waiting: W1, W3.
+  - **W2, M3 step 7: the absorber, the stripper and columns with nonvolatile components, built, to review**
+    (docs/decisions/2026-10-30-07-absorber-stripper.md): `configuration` "absorber" or "stripper" on the Column block
+    (no condenser; a stripper's reboiler optional), stage duties, the sum-rates start, the method refusals for gases
+    dissolving in polar liquids, nonvolatile components in every column with DRY_STAGE when a stage boils dry; eight
+    cases against an independent reference (Kremser exactly; The ChemSep Book's ammonia absorber). To check: Table
+    1.4's numbers against the book. Answered 2026-11-04: outlets "gas out" and "liquid out"; the factor of 1000
+    accepted; the refluxed absorber and two liquids postponed. The equation of state with a light gas and a polar liquid:
+    **decided** 2026-11-04 (docs/decisions/2026-11-04-07-henry-absorber.md): the activity model with Henry's law, and
+    PR or SRK where the pairs have a k_ij.
+  - **W2, M3: Henry components and the equation of state in an absorber, built, to review**
+    (docs/decisions/2026-11-04-07-henry-absorber.md, proposal 0017; after #194): ten gases dissolve in water by
+    Henry's law in the activity models; PR/SRK with a light gas and a polar liquid needs a k_ij; sour water and amines
+    refused until M5. To check: Carroll et al. (1991) Table 3 as transcribed; to decide: water as the only solvent,
+    the 3.5 % tolerance, the ammonia + water fit.
+  - **W3 and W4, M3 step 9: the Membrane block, built, to review** (docs/decisions/2026-10-30-09-membrane.md): gas
+    permeation by the solution-diffusion model over well-mixed co- or counter-current cells, the area for a stage cut
+    or a recovery (`membraneArea`), under the Separator button; `solve_membrane`. The maintainer answered on
+    2026-11-04 (the Separator button, 20 cells, isothermal, counter-current and GPU; an adiabatic module and
+    pervaporation postponed). Still open: the choice of Aziaba et al. 2022 as the model's source. To check: the worked
+    example of Binous 2006 and the example's permeances against Aziaba et al.'s Table 1.
+  - Waiting: W1; W3's evaporator and crystallizer.
+- **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
+  (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive
+  distillation and the rest after 1.0. Lab pins releases, files capability requests, and does G2 to G5.
+- **When in doubt, check other simulators** (docs/decisions/2026-11-04-05-check-other-simulators.md): a method rule in
+  METHOD_SELECTION.md; first cases: Henry's law for gases in water (proposal 0017), PR/SRK with a light gas and a polar
+  liquid offered with a warning where a k_ij exists, sour water and amines refused until M5.
 - **The methods track** (docs/decisions/2026-10-30-05-methods-track.md): Wilson (M1, v0.6) starts when M2b's pull
   requests are merged; M2 (PSRK or MHV2, else Modified UNIFAC 2.0 in a gE mixing rule) after M1; CPA, PC-SAFT,
   electrolytes and ionic liquids (M3-M6, v0.9) in that order, each with the open parameters found and My data for the
@@ -192,6 +224,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   The file formats keep their keys (`fugacity_project`, `fugacity_package`), so files and
   contribution packages made under the old name stay valid.
 - **The two free component places** of proposal 0008: use them now, or keep them.
+- **M2: postponed** (docs/decisions/2026-11-04-10-m2-source-check.md): PSRK's and MHV2's tables are not open; the
+  maintainer (2026-11-04): "PR and SRK should be ok for now". Proposal 0018 is postponed with its findings. Open: PR and
+  SRK k_ij fitted to the open high-pressure data (CO2, H2, CO, CH4 + methanol; CO2 + water), whose deviations decide
+  whether 0018 is reopened.
 - **Wilson fits (M1, proposal 0016 step 2; docs/decisions/2026-11-04-06-wilson-fits.md):** review the pull request;
   the five pairs are decided by proposal 0019, answer 4. The three "miscibility-unchecked" Wilson fits wait for roadmap
   D9 (proposal 0019, step 2).

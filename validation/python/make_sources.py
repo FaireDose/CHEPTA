@@ -277,11 +277,31 @@ SEEDS = {
         "access": "Public domain ('This publication is public domain', p. 2 of the PDF); read 2026-10-29",
         "license": "Public domain",
         "note": "Section 1.2, the benzene + toluene column, and its results in section 1.3 (Figures 1.18 to 1.21, pp. 19-20): "
-                "the setup and the published stage temperatures, flows and compositions, transcribed into the benchmark case.",
-        "files": ["validation/data/columns/B2-chemsep-benzene-toluene.json", "src/ui/column-mccabe.js",
-                  "src/thermo/activity/wilson.js"],
+                "the setup and the published stage temperatures, flows and compositions, transcribed into the benchmark case. "
+                "Section 1.3.3, pp. 26-31 (eqs. 1.8 to 1.17): the McCabe-Thiele construction of the Column workspace. "
+                "Section 1.6.7, 'Absorber Design', Table 1.4 (pp. 42-43; read 2026-10-30): the ammonia absorber's gas and its "
+                "K-value and enthalpy polynomials, transcribed into the absorber cases H2 and H3 (the book prints no solution).",
+        "files": ["src/ui/column-mccabe.js", "validation/data/columns/B2-chemsep-benzene-toluene.json",
+                  "validation/data/columns/absorber-stripper/cases.json", "src/thermo/activity/wilson.js"],
     },
     # predicted liquid heat capacities (validation/python/predict_cp.py, proposal 0009 step 5)
+    # the solubility of CO2 in water against the Henry components (validation/data/henry/co2_water_carroll1991.json,
+    # proposal 0017)
+    "carroll1991-co2-water": {
+        "title": "The Solubility of Carbon Dioxide in Water at Low Pressure",
+        "authors": "J. J. Carroll, J. D. Slupsky, A. E. Mather",
+        "year": 1991,
+        "published": "J. Phys. Chem. Ref. Data 20 (1991) 1201-1209",
+        "doi": "10.1063/1.555900",
+        "kind": "open-access article",
+        "url": "https://srd.nist.gov/JPCRD/jpcrd427.pdf",
+        "access": "Free to read: reprint hosted by NIST (Standard Reference Data); read 2026-11-04",
+        "license": "Copyright the U.S. Secretary of Commerce, assigned to AIP and ACS; free to read",
+        "note": "Table 3, p. 1208: the solubility of CO2 in water at total pressures of 101.325 and 500 kPa, 10 to 80 degC, "
+                "calculated by the authors from their Henry's-law correlation of about 100 measured investigations; "
+                "transcribed as printed. A check of CHEPTA's Henry components (IAPWS G7-04), not a parameter source.",
+        "files": ["validation/data/henry/co2_water_carroll1991.json"],
+    },
     "ruzicka-domalski-1993": {
         "title": "Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group "
                  "Additivity. I. Hydrocarbon Compounds; II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur",
@@ -381,6 +401,31 @@ SEEDS = {
         "access": "Free to read on the University of Trieste's course site; its equations and constants are taken, cited by slide, and values read off its chart, not its text or figures",
         "note": "Slide 37: Fair's chart of K_n,fl (m/s) against the flow parameter for tray spacings 0.15-0.9 m, READ OFF THE GRAPH by pixel position (validation/data/sizing/fair_chart_fermeglia2021.json); slide 38: u_n,fl = K_n,fl K1 K2 K3 K4 sqrt((rho_l - rho_v)/rho_v), K1 = (sigma/20)^0.2, K2 = (10 Ah/Aa)^0.44 below Ah/Aa = 0.1, K3 = 0.9 above 6 mm holes; slide 39: K5 = 0.8 to start; slide 44: A_net = eta pi D^2/4, eta 0.85-0.95; slides 45-47: the worked example (n-hexane, 24 in trays, D = 11.03 ft); slide 50: the operating fraction of flooding typically 0.65 to 0.90; slide 54 (Table 6.2, reproduced from a textbook the slide does not name): turndown ratios, sieve trays 2, valve trays 4, bubble-cap trays 5. Read 2026-10-29 and 2026-10-30.",
         "files": ["src/units/columns/engine.js", "src/units/columns/hydraulics.js", "validation/python/reference_column_diameter.py", "test/column-hydraulics.test.js"],
+    },
+    # src/units/membrane.js (the Membrane block) and src/sizing/sizing.js (membraneArea)
+    "aziaba-2022-membrane": {
+        "title": "Design of a gas permeation and pervaporation membrane model for an open source process simulation tool",
+        "authors": "K. Aziaba, C. Jordan, B. Haddadi, M. Harasek",
+        "year": 2022,
+        "kind": "open-access article",
+        "citation": "Membranes 12 (2022) 1186",
+        "doi": "10.3390/membranes12121186",
+        "url": "https://europepmc.org/article/PMC/PMC9784710",
+        "access": "Open access, CC BY 4.0; read in its full text at Europe PMC (PMC9784710)",
+        "license": "CC BY 4.0",
+        "note": "Equations (1)-(3) (the local flux, the area of a hollow-fibre module, the stage cut), the assumptions of section 1.3 and the cells of section 4.1.3; Table 1, the inputs of test cases 2 (Sada et al. 1992, CO2, O2, N2) and 3 (Chowdhury et al. 2005, H2, N2, CH4, Ar), used as printed. Its comparisons are figures only, not used as numbers. Read 2026-11-03.",
+        "files": ["src/units/membrane.js", "src/sizing/sizing.js", "validation/python/reference_membrane.py", "test/membrane.test.js", "examples/membrane-co2.chepta.json"],
+    },
+    "binous-2006-gas-permeation": {
+        "title": "Gas permeation computations with Mathematica",
+        "authors": "H. Binous",
+        "year": 2006,
+        "kind": "open-access article",
+        "citation": "Chemical Engineering Education 40 (2006) 140-144",
+        "url": "https://journals.flvc.org/cee/article/view/122538",
+        "access": "Free to read on the journal's archive (Florida Virtual Campus)",
+        "note": "Worked examples: the ternary mixture by complete mixing (p. 140-141) and oxygen from air by complete mixing, cross flow, counter-current and co-current flow (p. 141-144), with the areas and compositions it prints (from Geankoplis's examples 13.4-2 and 13.5-1, whose book is not open and not used). Read 2026-11-03.",
+        "files": ["validation/python/reference_membrane.py", "test/membrane.test.js"],
     },
     # src/units/columns/hydraulics.js (the liquid's surface tension on a tray)
     "chemicals-surface-tension-mixture": {
