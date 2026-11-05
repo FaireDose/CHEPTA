@@ -477,7 +477,7 @@ a.fa-mini{text-decoration:none}
 .fa-menu-item span{color:var(--fug-muted); font-size:12px}
 .fa-menu-item:hover,.fa-menu-item:focus-visible{background:color-mix(in srgb, var(--fug-accent) 10%, transparent)}
 .fa-rx-kin{display:grid; gap:6px}
-.fa-rx-const{display:grid; grid-template-columns:1fr 1fr; gap:6px}
+.fa-rx-const{display:grid; grid-template-columns:minmax(0,1fr); gap:0}
 .fa-rx-ads{display:grid; gap:4px; border-top:1px dashed var(--fug-rule); padding-top:4px}
 .fa-rx-kin textarea{width:100%; font-family:ui-monospace,monospace; font-size:12px; box-sizing:border-box}
 .fa-rx-profile{display:grid; gap:8px}
