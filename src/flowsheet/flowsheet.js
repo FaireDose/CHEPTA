@@ -60,6 +60,7 @@ import "../units/reactors.js";   // registers the conversion and yield reactors
 import "../units/kinetic-reactors.js";
 import "../units/columns/column.js";
 import "../units/membrane.js";   // the Membrane block (proposal 0015, M3)   // the Column block (proposal 0015, M1: shortcut mode)
+import "../units/evaporator.js";   // the Evaporator block (proposal 0015, M3, step 10)
 import { checkReactions } from "../reactions/reaction.js";
 
 /** Solver settings: `method` "broyden" (quasi-Newton on all tear flows together; the default since the

@@ -123,7 +123,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     2026-11-04 (the Separator button, 20 cells, isothermal, counter-current and GPU; an adiabatic module and
     pervaporation postponed). Still open: the choice of Aziaba et al. 2022 as the model's source. To check: the worked
     example of Binous 2006 and the example's permeances against Aziaba et al.'s Table 1.
-  - Waiting: W1; W3's evaporator and crystallizer.
+  - **W3, M3 step 10: the Evaporator block, built, to review** (docs/decisions/2026-11-04-09-evaporator-crystallizer.md):
+    one effect or several in forward feed, each a heater and a flash heated by the vapour of the one before; the
+    steam for a product concentration or a steam flow, the steam economy, each effect's boiling-point rise and, with U,
+    its area; under the Separator button; `solve_evaporator`. To check: Example 1 of Subramanian 2019 (slides 16-20); to
+    decide: a block against the "template" of answer 4 of proposal 0015, the condensate mixed at the first effect's
+    pressure, and which property method for sugar solutions (Modified UNIFAC 2.0 splits water + glucose).
+  - Waiting: W1; W3's crystallizer (a second pull request, docs/decisions/2026-11-04-11-crystallizer.md).
 - **When in doubt, check other simulators** (docs/decisions/2026-11-04-05-check-other-simulators.md): a method rule in
   METHOD_SELECTION.md; first cases: Henry's law for gases in water (proposal 0017), PR/SRK with a light gas and a polar
   liquid offered with a warning where a k_ij exists, sour water and amines refused until M5.

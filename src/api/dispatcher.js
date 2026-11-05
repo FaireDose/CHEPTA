@@ -315,3 +315,29 @@ registerCapability({
       membrane: { ...m.state, duty_kW: m.duty_kW, notes: m.notes, warnings: m.warnings ?? [], profile: m.profile, sizing: m.sizing } } };
   },
 });
+
+// The evaporator (proposal 0015, milestone M3, step 10): a feed, the Evaporator block and its three products, solved as
+// a flowsheet (src/units/evaporator.js), so the numbers are the flowsheet's; with a product concentration, the steam
+// found is in the value.
+registerCapability({
+  name: "solve_evaporator", summary: "Solve a single- or multiple-effect evaporator (forward feed, each effect a heater and a flash heated by the vapour of the one before): the steam, the steam economy, each effect's duty, temperature and boiling-point rise, for the steam or a product concentration", status: "available",
+  input: { type: "object", additionalProperties: false, required: ["components", "feed", "evaporator"],
+    properties: {
+      components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
+      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default Modified UNIFAC 2.0 (an aqueous solution of a nonvolatile solute; docs/METHOD_SELECTION.md)" },
+      feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF" },
+      evaporator: { type: "object", description: "the Evaporator block's specification: P_kPa (one pressure per effect, falling), the saturated heating steam steam_P_kPa or steam_T_K, and one of steam_kg_h or product_mass_fraction { component: mass fraction in the product }; U_W_m2K (optional, one value or one per effect): each effect's area" },
+      user_data: USER_DATA,
+    } },
+  run: input => {
+    const flowsheet = { components: input.components, thermo: input.thermo ?? { model: "MOD-UNIFAC-2" },
+      blocks: [{ id: "F1", type: "feed", spec: input.feed }, { id: "EV1", type: "evaporator", spec: input.evaporator },
+        { id: "P1", type: "product" }, { id: "P2", type: "product" }, { id: "P3", type: "product" }],
+      streams: [{ id: "FEED", from: "F1.out", to: "EV1.in" }, { id: "PRODUCT", from: "EV1.product", to: "P1.in" }, { id: "VAPOUR", from: "EV1.vapour", to: "P2.in" },
+        { id: "CONDENSATE", from: "EV1.condensate", to: "P3.in" }] };
+    const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
+    const e = r.value.blocks.EV1;
+    return { ...r, value: { feed: r.value.streams.FEED, product: r.value.streams.PRODUCT, vapour: r.value.streams.VAPOUR, condensate: r.value.streams.CONDENSATE,
+      evaporator: { ...e.state, duty_kW: e.duty_kW, notes: e.notes, warnings: e.warnings ?? [], profile: e.profile, sizing: e.sizing } } };
+  },
+});
