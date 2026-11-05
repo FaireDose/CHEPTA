@@ -331,19 +331,6 @@
     },
     {
       "components": [
-        "acetonitrile",
-        "n-hexane"
-      ],
-      "model": "NRTL",
-      "kind": "fit-quality",
-      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.75 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json (Narasigadu et al., Fluid Phase Equilib. 338)",
-      "source_ids": [
-        "narasigadu2013-acetonitrile-n-hexane"
-      ]
-    },
-    {
-      "components": [
         "bdo",
         "tetrahydrofuran"
       ],
@@ -533,19 +520,6 @@
       "kind": "fit-quality",
       "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 0.58 K, 0.0040 in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
       "reference": "validation/data/vle/dimethyl-carbonate_ethylene-carbonate_10-1021-je049859c_101.3kPa.json (Fang et al., J. Chem. Eng. Data 50)",
-      "source_ids": [
-        "fang2005-dimethyl-carbonate-ethylene-carbonate"
-      ]
-    },
-    {
-      "components": [
-        "dimethyl-carbonate",
-        "ethylene-glycol"
-      ],
-      "model": "NRTL",
-      "kind": "fit-quality",
-      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.06 K, 0.0049 in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/dimethyl-carbonate_ethylene-glycol_10-1021-je049859c_35.33kPa.json (Fang et al., J. Chem. Eng. Data 50)",
       "source_ids": [
         "fang2005-dimethyl-carbonate-ethylene-carbonate"
       ]
@@ -1059,32 +1033,6 @@
     },
     {
       "components": [
-        "sulfolane",
-        "toluene"
-      ],
-      "model": "NRTL",
-      "kind": "fit-quality",
-      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.05 K, 0.0012 in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/sulfolane_toluene_10-1016-j-jct-2011-06-015_101.33kPa.json (Wang et al., J. Chem. Thermodyn. 43)",
-      "source_ids": [
-        "wang2011-cumene-sulfolane"
-      ]
-    },
-    {
-      "components": [
-        "sulfolane",
-        "toluene"
-      ],
-      "model": "UNIQUAC",
-      "kind": "fit-quality",
-      "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.02 K, 0.0012 in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/sulfolane_toluene_10-1016-j-jct-2011-06-015_101.33kPa.json (Wang et al., J. Chem. Thermodyn. 43)",
-      "source_ids": [
-        "wang2011-cumene-sulfolane"
-      ]
-    },
-    {
-      "components": [
         "methyl-palmitate",
         "methyl-stearate"
       ],
@@ -1310,19 +1258,6 @@
     },
     {
       "components": [
-        "2-butanol",
-        "water"
-      ],
-      "model": "WILSON",
-      "kind": "fit-quality",
-      "message": "These WILSON parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.57 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/2-butanol_water_10-1021-je0501336_tpx.json (Shimoyama et al., J. Chem. Eng. Data 51)",
-      "source_ids": [
-        "shimoyama2006-2-butanol-water"
-      ]
-    },
-    {
-      "components": [
         "2-methoxyethanol",
         "cyclohexane"
       ],
@@ -1384,19 +1319,6 @@
       "reference": "validation/data/vle/acetone_furfural_10-1016-j-jct-2018-03-019_101.3kPa.json (Ma et al., J. Chem. Thermodyn. 122)",
       "source_ids": [
         "ma2018-acetone-furfural"
-      ]
-    },
-    {
-      "components": [
-        "acetonitrile",
-        "n-hexane"
-      ],
-      "model": "WILSON",
-      "kind": "fit-quality",
-      "message": "These WILSON parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.54 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json (Narasigadu et al., Fluid Phase Equilib. 338)",
-      "source_ids": [
-        "narasigadu2013-acetonitrile-n-hexane"
       ]
     },
     {
@@ -1998,6 +1920,175 @@
       "source_ids": [
         "chen2010-m-xylene-sulfolane",
         "nist-thermoml-archive"
+      ]
+    },
+    {
+      "components": [
+        "1-butanol",
+        "n-dodecane"
+      ],
+      "model": "UNIQUAC",
+      "kind": "fit-quality",
+      "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.84 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/1-butanol_n-dodecane_10-1021-je200840e_313.15K.json (Belabbaci et al., J. Chem. Eng. Data 57)",
+      "source_ids": [
+        "belabbaci2012-1-butanol-cyclohexane"
+      ]
+    },
+    {
+      "components": [
+        "1-propanol",
+        "n-dodecane"
+      ],
+      "model": "UNIQUAC",
+      "kind": "fit-quality",
+      "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.34 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/1-propanol_n-dodecane_10-1021-je201032t_323.0K.json (Narasigadu et al., J. Chem. Eng. Data 57)",
+      "source_ids": [
+        "narasigadu2012-1-propanol-n-dodecane"
+      ]
+    },
+    {
+      "components": [
+        "2-butanol",
+        "water"
+      ],
+      "model": "UNIQUAC",
+      "kind": "fit-quality",
+      "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: mutual solubilities: AAD 0.025 in mole fraction (limit 0.02) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/2-butanol_water_10-1021-je0501336_tpx.json (Shimoyama et al., J. Chem. Eng. Data 51)",
+      "source_ids": [
+        "shimoyama2006-2-butanol-water"
+      ]
+    },
+    {
+      "components": [
+        "2-propanol",
+        "glycerol"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.86 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/2-propanol_glycerol_10-1016-j-fluid-2015-09-052_94.93kPa_tx.json (Soujanya et al., Fluid Phase Equilib. 409)",
+      "source_ids": [
+        "soujanya2016-2-propanol-glycerol"
+      ]
+    },
+    {
+      "components": [
+        "2-propanol",
+        "glycerol"
+      ],
+      "model": "UNIQUAC",
+      "kind": "fit-quality",
+      "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.25 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/2-propanol_glycerol_10-1016-j-fluid-2015-09-052_94.93kPa_tx.json (Soujanya et al., Fluid Phase Equilib. 409)",
+      "source_ids": [
+        "soujanya2016-2-propanol-glycerol"
+      ]
+    },
+    {
+      "components": [
+        "dimethyl-carbonate",
+        "ethylene-glycol"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.47 K, 0.0046 in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/dimethyl-carbonate_ethylene-glycol_10-1021-je049859c_35.33kPa.json (Fang et al., J. Chem. Eng. Data 50)",
+      "source_ids": [
+        "fang2005-dimethyl-carbonate-ethylene-carbonate"
+      ]
+    },
+    {
+      "components": [
+        "dimethyl-carbonate",
+        "ethylene-glycol"
+      ],
+      "model": "UNIQUAC",
+      "kind": "fit-quality",
+      "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.62 K, 0.0046 in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/dimethyl-carbonate_ethylene-glycol_10-1021-je049859c_35.33kPa.json (Fang et al., J. Chem. Eng. Data 50)",
+      "source_ids": [
+        "fang2005-dimethyl-carbonate-ethylene-carbonate"
+      ]
+    },
+    {
+      "components": [
+        "ethanol",
+        "n-nonane"
+      ],
+      "model": "UNIQUAC",
+      "kind": "fit-quality",
+      "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.92 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/ethanol_n-nonane_10-1021-acs-jced-7b00875_333.21K.json (Narasigadu et al., J. Chem. Eng. Data 63)",
+      "source_ids": [
+        "narasigadu2018-ethanol-n-decane"
+      ]
+    },
+    {
+      "components": [
+        "furfural",
+        "water"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.04 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/furfural_water_10-1021-je020053r_94.6kPa_tx.json (Sunder et al., J. Chem. Eng. Data 48)",
+      "source_ids": [
+        "sunder2003-furfural-water"
+      ]
+    },
+    {
+      "components": [
+        "furfural",
+        "water"
+      ],
+      "model": "UNIQUAC",
+      "kind": "fit-quality",
+      "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.10 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/furfural_water_10-1021-je020053r_94.6kPa_tx.json (Sunder et al., J. Chem. Eng. Data 48)",
+      "source_ids": [
+        "sunder2003-furfural-water"
+      ]
+    },
+    {
+      "components": [
+        "methanol",
+        "n-heptane"
+      ],
+      "model": "WILSON",
+      "kind": "fit-quality",
+      "message": "These WILSON parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 0.65 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/methanol_n-heptane_10-1021-acs-jced-7b00766_85.0kPa_tx.json (Alinejhad et al., J. Chem. Eng. Data 63)",
+      "source_ids": [
+        "alinejhad2018-methanol-n-heptane"
+      ]
+    },
+    {
+      "components": [
+        "o-xylene",
+        "sulfolane"
+      ],
+      "model": "UNIQUAC",
+      "kind": "fit-quality",
+      "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.61 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/o-xylene_sulfolane_10-1016-j-fluid-2009-09-024_333.15K.json (Chen et al., Fluid Phase Equilib. 287)",
+      "source_ids": [
+        "chen2010-m-xylene-sulfolane"
+      ]
+    },
+    {
+      "components": [
+        "methyl-lactate",
+        "water"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.89 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/methyl-lactate_water_10-1021-je049824c_tpx.json (Sanz et al., J. Chem. Eng. Data 50)",
+      "source_ids": [
+        "sanz2005-methyl-lactate-water"
       ]
     }
   ]

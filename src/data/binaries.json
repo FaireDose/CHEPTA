@@ -2581,27 +2581,8 @@
       "model": "UNIQUAC",
       "i": "1-propanol",
       "j": "water",
-      "set": "fitted-cumplido2017-etal",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": -98.16845571278192,
-      "b_ji": -138.70335964142726,
-      "source": "Fitted to 19 T-x-y points at 101.3 kPa from Cumplido et al., J. Chem. Thermodyn. 113 (2017) 219-228 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-propanol_water_10-1016-j-jct-2017-06-014_101.3kPa.json); checked against Gupta et al., J. Chem. Thermodyn. 105 (2017) 76-85 at 101.3 kPa, Orchilles et al., J. Chem. Eng. Data 53 (2008) 2426-2431 at 100.0 kPa. AAD 0.20 K in T, 0.0063 in y (max 0.62 K, 0.0276). Check against vle/1-propanol_water_10-1016-j-jct-2016-10-001_101.3kPa.json: AAD 0.38 K in T, 0.0130 in y (max 1.16 K, 0.0432). Check against vle/1-propanol_water_10-1021-je800436u_100.0kPa.json: AAD 0.38 K in T, 0.0126 in y (max 1.65 K, 0.0539). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
-      "source_ids": [
-        "cumplido2017-1-propanol-water",
-        "nist-thermoml-archive",
-        "gupta2017-1-propanol-water",
-        "orchilles2008-1-propanol-water"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "UNIQUAC",
-      "i": "1-propanol",
-      "j": "water",
       "set": "chemsep",
-      "default": false,
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": -95.91097602133722,
@@ -3367,27 +3348,8 @@
       "model": "UNIQUAC",
       "i": "acetonitrile",
       "j": "water",
-      "set": "fitted-zhang2013-etal",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": -136.13047277432065,
-      "b_ji": -165.96652778496502,
-      "source": "Fitted to 19 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Zhang et al., J. Chem. Eng. Data 58 (2013) 3364-3369 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetonitrile_water_10-1021-je400531a_101.3kPa_tx.json). AAD 0.43 K in T (max 1.05 K; no vapour compositions).",
-      "source_ids": [
-        "zhang2013-acetonitrile-water",
-        "zhang2013-cyclohexane-propylene-glycol",
-        "zhang2013-ethylene-glycol-propylene-glycol",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "UNIQUAC",
-      "i": "acetonitrile",
-      "j": "water",
       "set": "chemsep",
-      "default": false,
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": -134.01284686363647,
@@ -3887,9 +3849,7 @@
       "source": "Fitted to 21 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 90.0 kPa from Li et al., J. Chem. Eng. Data 58 (2013) 2044-2050 (data public in the NIST TRC ThermoML Archive; validation/data/vle/ethanol_n-octane_10-1021-je400238j_90.0kPa_tx.json). AAD 0.15 K in T (max 0.53 K; no vapour compositions).",
       "source_ids": [
         "li2013-acetonitrile-ethyl-acetate",
-        "li2013-acetonitrile-methanol",
         "li2013-ethanol-n-octane",
-        "li2013-methanol-tetrahydrofuran",
         "nist-thermoml-archive"
       ],
       "tier": "fitted"
@@ -7163,8 +7123,37 @@
       "model": "NRTL",
       "i": "furfural",
       "j": "water",
-      "set": "chemsep",
+      "set": "fitted-sunder2003",
       "default": true,
+      "a_ij": -3.073286351680513,
+      "a_ji": 3.069426056589626,
+      "b_ij": 1213.780156164695,
+      "b_ji": 146.1099320328119,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.04 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 94.6 kPa from Sunder et al., J. Chem. Eng. Data 48 (2003) 221-223 (data public in the NIST TRC ThermoML Archive; validation/data/vle/furfural_water_10-1021-je020053r_94.6kPa_tx.json). AAD 1.04 K in T (max 4.50 K; no vapour compositions); liquid-liquid: AAD 0.0108 in x of furfural in the furfural-rich liquid, 0.0090 in the water-rich liquid. Temperature range of the data: 288.2-410.05 K; outside it the parameters are extrapolated.",
+      "source_ids": [
+        "sunder2003-furfural-water",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        288.2,
+        410.05
+      ],
+      "valid": {
+        "T_K": [
+          288.2,
+          410.05
+        ]
+      }
+    },
+    {
+      "model": "NRTL",
+      "i": "furfural",
+      "j": "water",
+      "set": "chemsep",
+      "default": false,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": 219.8911350456088,
@@ -7181,8 +7170,36 @@
       "model": "UNIQUAC",
       "i": "furfural",
       "j": "water",
-      "set": "chemsep",
+      "set": "fitted-sunder2003",
       "default": true,
+      "a_ij": 2.0640810157221314,
+      "a_ji": -0.8218480339276392,
+      "b_ij": -818.2795240994648,
+      "b_ji": 151.3299459010759,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.10 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 94.6 kPa from Sunder et al., J. Chem. Eng. Data 48 (2003) 221-223 (data public in the NIST TRC ThermoML Archive; validation/data/vle/furfural_water_10-1021-je020053r_94.6kPa_tx.json). AAD 1.10 K in T (max 4.74 K; no vapour compositions); liquid-liquid: AAD 0.0123 in x of furfural in the furfural-rich liquid, 0.0091 in the water-rich liquid. Temperature range of the data: 288.2-410.05 K; outside it the parameters are extrapolated.",
+      "source_ids": [
+        "sunder2003-furfural-water",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        288.2,
+        410.05
+      ],
+      "valid": {
+        "T_K": [
+          288.2,
+          410.05
+        ]
+      }
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "furfural",
+      "j": "water",
+      "set": "chemsep",
+      "default": false,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": 18.227114722858794,
@@ -7584,27 +7601,8 @@
       "model": "NRTL",
       "i": "sulfolane",
       "j": "toluene",
-      "set": "fitted-wang2011",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": 53.60440439196713,
-      "b_ji": 858.1370577698015,
-      "alpha": 0.3,
-      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.05 K, 0.0012 in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
-      "source": "Fitted to 9 T-x-y points at 101.33 kPa from Wang et al., J. Chem. Thermodyn. 43 (2011) 1865-1869 (data public in the NIST TRC ThermoML Archive; validation/data/vle/sulfolane_toluene_10-1016-j-jct-2011-06-015_101.33kPa.json). AAD 1.05 K in T, 0.0012 in y (max 2.09 K, 0.0024). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.001 (passes, < 0.01).",
-      "source_ids": [
-        "wang2011-cumene-sulfolane",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "NRTL",
-      "i": "sulfolane",
-      "j": "toluene",
       "set": "chemsep",
-      "default": false,
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": 113.16748090798359,
@@ -8647,26 +8645,6 @@
       "source_ids": [
         "badajoz2018-1-butanol-n-butyl-acetate",
         "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "NRTL",
-      "i": "1-propanol",
-      "j": "water",
-      "set": "fitted-cumplido2017-etal",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": 193.4704533281175,
-      "b_ji": 900.7125883668505,
-      "alpha": 0.47,
-      "source": "Fitted to 19 T-x-y points at 101.3 kPa from Cumplido et al., J. Chem. Thermodyn. 113 (2017) 219-228 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-propanol_water_10-1016-j-jct-2017-06-014_101.3kPa.json); checked against Gupta et al., J. Chem. Thermodyn. 105 (2017) 76-85 at 101.3 kPa, Orchilles et al., J. Chem. Eng. Data 53 (2008) 2426-2431 at 100.0 kPa. AAD 0.11 K in T, 0.0054 in y (max 0.34 K, 0.0171). Check against vle/1-propanol_water_10-1016-j-jct-2016-10-001_101.3kPa.json: AAD 0.15 K in T, 0.0083 in y (max 0.57 K, 0.0248). Check against vle/1-propanol_water_10-1021-je800436u_100.0kPa.json: AAD 0.23 K in T, 0.0063 in y (max 0.97 K, 0.0334). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.006 (passes, < 0.01).",
-      "source_ids": [
-        "cumplido2017-1-propanol-water",
-        "nist-thermoml-archive",
-        "gupta2017-1-propanol-water",
-        "orchilles2008-1-propanol-water"
       ],
       "tier": "fitted"
     },
@@ -9979,10 +9957,10 @@
       "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
-      "b_ij": 191.88031283160612,
-      "b_ji": 673.1855628976944,
-      "alpha": 0.3,
-      "source": "Fitted to 19 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Zhang et al., J. Chem. Eng. Data 58 (2013) 3364-3369 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetonitrile_water_10-1021-je400531a_101.3kPa_tx.json). AAD 0.45 K in T (max 1.10 K; no vapour compositions).",
+      "b_ij": 354.8510251187873,
+      "b_ji": 646.4881151455869,
+      "alpha": 0.47,
+      "source": "Fitted to 19 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Zhang et al., J. Chem. Eng. Data 58 (2013) 3364-3369 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetonitrile_water_10-1021-je400531a_101.3kPa_tx.json). AAD 0.23 K in T (max 0.66 K; no vapour compositions).",
       "source_ids": [
         "zhang2013-acetonitrile-water",
         "zhang2013-cyclohexane-propylene-glycol",
@@ -10094,41 +10072,6 @@
       "source_ids": [
         "mali2017-aniline-dmf",
         "mali2017-dimethyl-carbonate-ethyl-acetate",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "NRTL",
-      "i": "aniline",
-      "j": "n-octane",
-      "set": "fitted-grenner2006",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": 657.448067441952,
-      "b_ji": 287.5370311546302,
-      "alpha": 0.3,
-      "source": "Fitted to 19 total pressures at 383.15 K with the measured pure-component pressures from Grenner et al., J. Chem. Eng. Data 51 (2006) 1009-1014 (data public in the NIST TRC ThermoML Archive; validation/data/vle/aniline_n-octane_10-1021-je0505366_383.15K.json). P-x at 383.15 K (with the measured pure-component pressures): AAD 0.47 % (max 1.32 %).",
-      "source_ids": [
-        "grenner2006-aniline-n-octane",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "UNIQUAC",
-      "i": "aniline",
-      "j": "n-octane",
-      "set": "fitted-grenner2006",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": 2.276114476881349,
-      "b_ji": -238.98799293817999,
-      "source": "Fitted to 19 total pressures at 383.15 K with the measured pure-component pressures from Grenner et al., J. Chem. Eng. Data 51 (2006) 1009-1014 (data public in the NIST TRC ThermoML Archive; validation/data/vle/aniline_n-octane_10-1021-je0505366_383.15K.json). P-x at 383.15 K (with the measured pure-component pressures): AAD 0.64 % (max 2.00 %).",
-      "source_ids": [
-        "grenner2006-aniline-n-octane",
         "nist-thermoml-archive"
       ],
       "tier": "fitted"
@@ -11761,39 +11704,32 @@
       "tier": "fitted"
     },
     {
-      "model": "NRTL",
-      "i": "2-butanol",
-      "j": "water",
-      "set": "fitted-shimoyama2006",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": -185.67847491715284,
-      "b_ji": 1439.9353161739623,
-      "alpha": 0.3,
-      "source": "Fitted to 18 total pressures at 523-573 K (T-P-x, with the component vapour pressures) from Shimoyama et al., J. Chem. Eng. Data 51 (2006) 51-55 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-butanol_water_10-1021-je0501336_tpx.json). total pressures at 523-573 K (with the vapour pressures of the component records): AAD 1.05 % (max 2.95 %).",
-      "source_ids": [
-        "shimoyama2006-2-butanol-water",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
       "model": "UNIQUAC",
       "i": "2-butanol",
       "j": "water",
       "set": "fitted-shimoyama2006",
       "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": -273.05186924600054,
-      "b_ji": 28.08610395877235,
-      "source": "Fitted to 18 total pressures at 523-573 K (T-P-x, with the component vapour pressures) from Shimoyama et al., J. Chem. Eng. Data 51 (2006) 51-55 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-butanol_water_10-1021-je0501336_tpx.json). total pressures at 523-573 K (with the vapour pressures of the component records): AAD 1.37 % (max 2.92 %).",
+      "a_ij": -1.461209773924849,
+      "a_ji": 1.3467082231883416,
+      "b_ij": 538.4734430335743,
+      "b_ji": -718.264231986198,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): mutual solubilities: AAD 0.025 in mole fraction (limit 0.02). Use with care; a better data set would replace it.",
+      "source": "Fitted to 18 total pressures at 523-573 K (T-P-x, with the component vapour pressures) from Shimoyama et al., J. Chem. Eng. Data 51 (2006) 51-55 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-butanol_water_10-1021-je0501336_tpx.json). liquid-liquid: AAD 0.0226 in x of 2-butanol in the 2-butanol-rich liquid, 0.0213 in the water-rich liquid; total pressures at 523-573 K (with the vapour pressures of the component records): AAD 1.26 % (max 2.81 %). Temperature range of the data: 288.2-573.0 K; outside it the parameters are extrapolated.",
       "source_ids": [
         "shimoyama2006-2-butanol-water",
         "nist-thermoml-archive"
       ],
-      "tier": "fitted"
+      "tier": "fitted",
+      "T_range_K": [
+        288.2,
+        573.0
+      ],
+      "valid": {
+        "T_K": [
+          288.2,
+          573.0
+        ]
+      }
     },
     {
       "model": "NRTL",
@@ -12592,24 +12528,6 @@
       "source": "Fitted to 14 total pressures at 333.15 K with the measured pure-component pressures from Bernatova et al., Fluid Phase Equilib. 307 (2011) 66-71 (data public in the NIST TRC ThermoML Archive; validation/data/vle/isobutanol_mibk_10-1016-j-fluid-2011-05-011_333.15K.json). P-x at 333.15 K (with the measured pure-component pressures): AAD 0.16 % (max 0.44 %).",
       "source_ids": [
         "bernatova2011-isobutanol-isooctane",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "NRTL",
-      "i": "isobutanol",
-      "j": "n-hexane",
-      "set": "fitted-moodley2019",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": 254.73090748013632,
-      "b_ji": 790.5441126848483,
-      "alpha": 0.47,
-      "source": "Fitted to 18 total pressures at 323.15 K with the measured pure-component pressures from Moodley et al., J. Chem. Eng. Data 64 (2019) 2657-2670 (data public in the NIST TRC ThermoML Archive; validation/data/vle/isobutanol_n-hexane_10-1021-acs-jced-9b00102_323.15K.json). P-x at 323.15 K (with the measured pure-component pressures): AAD 1.50 % (max 4.55 %).",
-      "source_ids": [
-        "moodley2019-isobutanol-n-hexane",
         "nist-thermoml-archive"
       ],
       "tier": "fitted"
@@ -15110,41 +15028,6 @@
     {
       "model": "NRTL",
       "i": "dimethyl-carbonate",
-      "j": "n-nonane",
-      "set": "fitted-tojo2004",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": 721.2813348504425,
-      "b_ji": -37.686354127940284,
-      "alpha": 0.3,
-      "source": "Fitted to 37 T-x-y points at 101.3 kPa from Tojo et al., J. Chem. Eng. Data 49 (2004) 86-93 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_n-nonane_10-1021-je0301794_101.3kPa.json). AAD 0.42 K in T, 0.0080 in y (max 1.94 K, 0.0282). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.008 (passes, < 0.01).",
-      "source_ids": [
-        "tojo2004-dimethyl-carbonate-n-nonane",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "UNIQUAC",
-      "i": "dimethyl-carbonate",
-      "j": "n-nonane",
-      "set": "fitted-tojo2004",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": -58.86851659343552,
-      "b_ji": -84.37485029892339,
-      "source": "Fitted to 37 T-x-y points at 101.3 kPa from Tojo et al., J. Chem. Eng. Data 49 (2004) 86-93 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_n-nonane_10-1021-je0301794_101.3kPa.json). AAD 0.44 K in T, 0.0083 in y (max 2.04 K, 0.0306). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.008 (passes, < 0.01).",
-      "source_ids": [
-        "tojo2004-dimethyl-carbonate-n-nonane",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "NRTL",
-      "i": "dimethyl-carbonate",
       "j": "o-xylene",
       "set": "fitted-liu2019-etal",
       "default": true,
@@ -15626,25 +15509,6 @@
     },
     {
       "model": "NRTL",
-      "i": "acetonitrile",
-      "j": "n-hexane",
-      "set": "fitted-narasigadu2013",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": 727.0759387526481,
-      "b_ji": 761.1897460510411,
-      "alpha": 0.47,
-      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.75 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
-      "source": "Fitted to 12 total pressures at 348.2 K with the measured pure-component pressures from Narasigadu et al., Fluid Phase Equilib. 338 (2013) 188-196 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json). P-x at 348.2 K (with the measured pure-component pressures): AAD 1.75 % (max 5.34 %).",
-      "source_ids": [
-        "narasigadu2013-acetonitrile-n-hexane",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "NRTL",
       "i": "bdo",
       "j": "tetrahydrofuran",
       "set": "fitted-sun2017-etal",
@@ -15934,11 +15798,11 @@
       "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
-      "b_ij": 833.1652737878195,
-      "b_ji": 650.9472219892042,
-      "alpha": 0.47,
-      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 2.06 K, 0.0049 in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
-      "source": "Fitted to 11 T-x-y points at 35.33 kPa from Fang et al., J. Chem. Eng. Data 50 (2005) 340-343 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_ethylene-glycol_10-1021-je049859c_35.33kPa.json). AAD 2.06 K in T, 0.0049 in y (max 5.75 K, 0.0489). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "b_ij": 485.63833188273605,
+      "b_ji": 579.345165132775,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.47 K, 0.0046 in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 11 T-x-y points at 35.33 kPa from Fang et al., J. Chem. Eng. Data 50 (2005) 340-343 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_ethylene-glycol_10-1021-je049859c_35.33kPa.json). AAD 1.47 K in T, 0.0046 in y (max 2.72 K, 0.0343). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
       "source_ids": [
         "fang2005-dimethyl-carbonate-ethylene-carbonate",
         "nist-thermoml-archive"
@@ -16566,24 +16430,6 @@
         "zhang2013-acetonitrile-water",
         "zhang2013-cyclohexane-propylene-glycol",
         "zhang2013-ethylene-glycol-propylene-glycol",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "UNIQUAC",
-      "i": "sulfolane",
-      "j": "toluene",
-      "set": "fitted-wang2011",
-      "default": true,
-      "a_ij": 0.0,
-      "a_ji": 0.0,
-      "b_ij": 64.72150943706053,
-      "b_ji": -350.91633256818085,
-      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.02 K, 0.0012 in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
-      "source": "Fitted to 9 T-x-y points at 101.33 kPa from Wang et al., J. Chem. Thermodyn. 43 (2011) 1865-1869 (data public in the NIST TRC ThermoML Archive; validation/data/vle/sulfolane_toluene_10-1016-j-jct-2011-06-015_101.33kPa.json). AAD 1.02 K in T, 0.0012 in y (max 2.21 K, 0.0024). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.001 (passes, < 0.01).",
-      "source_ids": [
-        "wang2011-cumene-sulfolane",
         "nist-thermoml-archive"
       ],
       "tier": "fitted"
@@ -19998,9 +19844,7 @@
       "source": "Fitted to 21 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 90.0 kPa from Li et al., J. Chem. Eng. Data 58 (2013) 2044-2050 (data public in the NIST TRC ThermoML Archive; validation/data/vle/ethanol_n-octane_10-1021-je400238j_90.0kPa_tx.json). AAD 0.14 K in T (max 0.50 K; no vapour compositions).",
       "source_ids": [
         "li2013-acetonitrile-ethyl-acetate",
-        "li2013-acetonitrile-methanol",
         "li2013-ethanol-n-octane",
-        "li2013-methanol-tetrahydrofuran",
         "nist-thermoml-archive"
       ],
       "tier": "fitted"
@@ -20607,8 +20451,36 @@
       "model": "WILSON",
       "i": "methanol",
       "j": "n-heptane",
-      "set": "chemsep",
+      "set": "fitted-alinejhad2018",
       "default": true,
+      "a_ij": -1.572158430191378,
+      "a_ji": -36.612129813648586,
+      "b_ij": 224.37410264632047,
+      "b_ji": -3156.69213822885,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 0.65 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 20 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 85.0 kPa from Alinejhad et al., J. Chem. Eng. Data 63 (2018) 965-971 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methanol_n-heptane_10-1021-acs-jced-7b00766_85.0kPa_tx.json). AAD 0.65 K in T (max 0.98 K; no vapour compositions); liquid-liquid: (8 points without a predicted split). Temperature range of the data: 268.15-331.55 K; outside it the parameters are extrapolated.",
+      "source_ids": [
+        "alinejhad2018-methanol-n-heptane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        268.15,
+        331.55
+      ],
+      "valid": {
+        "T_K": [
+          268.15,
+          331.55
+        ]
+      }
+    },
+    {
+      "model": "WILSON",
+      "i": "methanol",
+      "j": "n-heptane",
+      "set": "chemsep",
+      "default": false,
       "a_ij": 1.2842333910245651,
       "a_ji": -1.2842333910245651,
       "b_ij": -1299.450717645992,
@@ -22513,17 +22385,26 @@
       "j": "water",
       "set": "fitted-shimoyama2006",
       "default": true,
-      "a_ij": -1.6276115211110134,
-      "a_ji": 1.6276115211110134,
-      "b_ij": -438.0326782612388,
-      "b_ji": -932.7620920012256,
-      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.57 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
-      "source": "Fitted to 18 total pressures at 523-573 K (T-P-x, with the component vapour pressures) from Shimoyama et al., J. Chem. Eng. Data 51 (2006) 51-55 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-butanol_water_10-1021-je0501336_tpx.json). total pressures at 523-573 K (with the vapour pressures of the component records): AAD 1.57 % (max 3.81 %).",
+      "a_ij": 8.098077741144742,
+      "a_ji": -4.19760269196558,
+      "b_ij": -5614.218247602334,
+      "b_ji": 2161.987385162417,
+      "source": "Fitted to 18 total pressures at 523-573 K (T-P-x, with the component vapour pressures) from Shimoyama et al., J. Chem. Eng. Data 51 (2006) 51-55 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-butanol_water_10-1021-je0501336_tpx.json). liquid-liquid: (4 points without a predicted split); total pressures at 523-573 K (with the vapour pressures of the component records): AAD 0.94 % (max 1.89 %). Temperature range of the data: 288.2-573.0 K; outside it the parameters are extrapolated.",
       "source_ids": [
         "shimoyama2006-2-butanol-water",
         "nist-thermoml-archive"
       ],
-      "tier": "fitted"
+      "tier": "fitted",
+      "T_range_K": [
+        288.2,
+        573.0
+      ],
+      "valid": {
+        "T_K": [
+          288.2,
+          573.0
+        ]
+      }
     },
     {
       "model": "WILSON",
@@ -23488,24 +23369,6 @@
     },
     {
       "model": "WILSON",
-      "i": "acetonitrile",
-      "j": "n-hexane",
-      "set": "fitted-narasigadu2013",
-      "default": true,
-      "a_ij": 0.9116021490793959,
-      "a_ji": -0.9116021490793959,
-      "b_ij": -1085.5180446811066,
-      "b_ji": -397.2288077689806,
-      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.54 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
-      "source": "Fitted to 12 total pressures at 348.2 K with the measured pure-component pressures from Narasigadu et al., Fluid Phase Equilib. 338 (2013) 188-196 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json). P-x at 348.2 K (with the measured pure-component pressures): AAD 1.54 % (max 5.21 %).",
-      "source_ids": [
-        "narasigadu2013-acetonitrile-n-hexane",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "WILSON",
       "i": "acrylic-acid",
       "j": "cyclohexane",
       "set": "fitted-huang2011",
@@ -23562,16 +23425,26 @@
       "j": "n-octane",
       "set": "fitted-grenner2006",
       "default": true,
-      "a_ij": 0.5746587486726134,
-      "a_ji": -0.5746587486726134,
-      "b_ij": -629.0958300745355,
-      "b_ji": -547.703069410754,
-      "source": "Fitted to 19 total pressures at 383.15 K with the measured pure-component pressures from Grenner et al., J. Chem. Eng. Data 51 (2006) 1009-1014 (data public in the NIST TRC ThermoML Archive; validation/data/vle/aniline_n-octane_10-1021-je0505366_383.15K.json). P-x at 383.15 K (with the measured pure-component pressures): AAD 0.87 % (max 1.77 %).",
+      "a_ij": 1.2203933321824023,
+      "a_ji": -5.714492121677042,
+      "b_ij": -876.5090528672604,
+      "b_ji": 1421.6241242794274,
+      "source": "Fitted to 19 total pressures at 383.15 K with the measured pure-component pressures from Grenner et al., J. Chem. Eng. Data 51 (2006) 1009-1014 (data public in the NIST TRC ThermoML Archive; validation/data/vle/aniline_n-octane_10-1021-je0505366_383.15K.json). liquid-liquid: (2 points without a predicted split); P-x at 383.15 K (with the measured pure-component pressures): AAD 0.87 % (max 1.77 %). Temperature range of the data: 298.15-383.15 K; outside it the parameters are extrapolated.",
       "source_ids": [
         "grenner2006-aniline-n-octane",
         "nist-thermoml-archive"
       ],
-      "tier": "fitted"
+      "tier": "fitted",
+      "T_range_K": [
+        298.15,
+        383.15
+      ],
+      "valid": {
+        "T_K": [
+          298.15,
+          383.15
+        ]
+      }
     },
     {
       "model": "WILSON",
@@ -24500,23 +24373,6 @@
       "source_ids": [
         "mali2017-aniline-dmf",
         "mali2017-dimethyl-carbonate-ethyl-acetate",
-        "nist-thermoml-archive"
-      ],
-      "tier": "fitted"
-    },
-    {
-      "model": "WILSON",
-      "i": "dimethyl-carbonate",
-      "j": "n-nonane",
-      "set": "fitted-tojo2004",
-      "default": true,
-      "a_ij": 0.7503571339509437,
-      "a_ji": -0.7503571339509437,
-      "b_ij": -357.2820297515704,
-      "b_ji": -412.78083402169705,
-      "source": "Fitted to 37 T-x-y points at 101.3 kPa from Tojo et al., J. Chem. Eng. Data 49 (2004) 86-93 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_n-nonane_10-1021-je0301794_101.3kPa.json). AAD 0.45 K in T, 0.0075 in y (max 1.98 K, 0.0292). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.008 (passes, < 0.01).",
-      "source_ids": [
-        "tojo2004-dimethyl-carbonate-n-nonane",
         "nist-thermoml-archive"
       ],
       "tier": "fitted"
@@ -26131,6 +25987,189 @@
         "resa2006-ethyl-acetate-isobutanol",
         "nist-thermoml-archive",
         "dias2014-2-propanol-isoamyl-alcohol"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-butanol",
+      "j": "n-dodecane",
+      "set": "fitted-belabbaci2012-etal",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 114.11872510102901,
+      "b_ji": -379.63430677326653,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 2.84 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
+      "source": "Fitted to 24 total pressures at 313.15 K with the measured pure-component pressures from Belabbaci et al., J. Chem. Eng. Data 57 (2012) 114-119 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-butanol_n-dodecane_10-1021-je200840e_313.15K.json). P-x at 313.15 K (with the measured pure-component pressures): AAD 2.84 % (max 9.57 %).",
+      "source_ids": [
+        "belabbaci2012-1-butanol-cyclohexane",
+        "belabbaci2012-2-butanol-isooctane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-propanol",
+      "j": "n-dodecane",
+      "set": "fitted-narasigadu2012",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 99.17870158519891,
+      "b_ji": -433.8802618962865,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 2.34 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
+      "source": "Fitted to 10 total pressures at 323.0 K with the measured pure-component pressures from Narasigadu et al., J. Chem. Eng. Data 57 (2012) 862-868 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-propanol_n-dodecane_10-1021-je201032t_323.0K.json). P-x at 323 K (with the measured pure-component pressures): AAD 2.34 % (max 3.35 %).",
+      "source_ids": [
+        "narasigadu2012-1-propanol-n-dodecane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "2-propanol",
+      "j": "glycerol",
+      "set": "fitted-soujanya2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 737.7181765573811,
+      "b_ji": 621.5780102382561,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.86 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 16 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 94.93 kPa from Soujanya et al., Fluid Phase Equilib. 409 (2016) 327-333 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-propanol_glycerol_10-1016-j-fluid-2015-09-052_94.93kPa_tx.json). AAD 1.86 K in T (max 3.47 K; no vapour compositions).",
+      "source_ids": [
+        "soujanya2016-2-propanol-glycerol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "2-propanol",
+      "j": "glycerol",
+      "set": "fitted-soujanya2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -142.9496195171005,
+      "b_ji": -276.9387678723227,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 2.25 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 16 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 94.93 kPa from Soujanya et al., Fluid Phase Equilib. 409 (2016) 327-333 (data public in the NIST TRC ThermoML Archive; validation/data/vle/2-propanol_glycerol_10-1016-j-fluid-2015-09-052_94.93kPa_tx.json). AAD 2.25 K in T (max 4.06 K; no vapour compositions).",
+      "source_ids": [
+        "soujanya2016-2-propanol-glycerol",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "dimethyl-carbonate",
+      "j": "ethylene-glycol",
+      "set": "fitted-fang2005",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -257.737331740078,
+      "b_ji": -114.66129654136445,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.62 K, 0.0046 in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 11 T-x-y points at 35.33 kPa from Fang et al., J. Chem. Eng. Data 50 (2005) 340-343 (data public in the NIST TRC ThermoML Archive; validation/data/vle/dimethyl-carbonate_ethylene-glycol_10-1021-je049859c_35.33kPa.json). AAD 1.62 K in T, 0.0046 in y (max 2.70 K, 0.0335). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.004 (passes, < 0.01).",
+      "source_ids": [
+        "fang2005-dimethyl-carbonate-ethylene-carbonate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "ethanol",
+      "j": "n-nonane",
+      "set": "fitted-narasigadu2018",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 97.33005924474193,
+      "b_ji": -607.7912667902235,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 2.92 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
+      "source": "Fitted to 14 total pressures at 333.21 K with the measured pure-component pressures from Narasigadu et al., J. Chem. Eng. Data 63 (2018) 1240-1248 (data public in the NIST TRC ThermoML Archive; validation/data/vle/ethanol_n-nonane_10-1021-acs-jced-7b00875_333.21K.json). P-x at 333.21 K (with the measured pure-component pressures): AAD 2.92 % (max 6.97 %).",
+      "source_ids": [
+        "narasigadu2018-ethanol-n-decane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "o-xylene",
+      "j": "sulfolane",
+      "set": "fitted-chen2010",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 924.5578119339632,
+      "b_ji": 101.88758684238942,
+      "alpha": 0.3,
+      "source": "Fitted to 13 total pressures at 333.15 K with the measured pure-component pressures from Chen et al., Fluid Phase Equilib. 287 (2010) 126-133 (data public in the NIST TRC ThermoML Archive; validation/data/vle/o-xylene_sulfolane_10-1016-j-fluid-2009-09-024_333.15K.json). P-x at 333.15 K (with the measured pure-component pressures): AAD 1.49 % (max 3.44 %).",
+      "source_ids": [
+        "chen2010-m-xylene-sulfolane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "o-xylene",
+      "j": "sulfolane",
+      "set": "fitted-chen2010",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -428.70219546742595,
+      "b_ji": 99.79449439167948,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.61 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
+      "source": "Fitted to 13 total pressures at 333.15 K with the measured pure-component pressures from Chen et al., Fluid Phase Equilib. 287 (2010) 126-133 (data public in the NIST TRC ThermoML Archive; validation/data/vle/o-xylene_sulfolane_10-1016-j-fluid-2009-09-024_333.15K.json). P-x at 333.15 K (with the measured pure-component pressures): AAD 1.61 % (max 3.78 %).",
+      "source_ids": [
+        "chen2010-m-xylene-sulfolane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "gvl",
+      "j": "water",
+      "set": "fitted-zaitseva2016",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 257.3190997848948,
+      "b_ji": 939.5649760849717,
+      "alpha": 0.47,
+      "source": "Fitted to 14 total pressures at 350.2 K with the measured pure-component pressures from Zaitseva et al., J. Chem. Eng. Data 61 (2016) 881-890 (data public in the NIST TRC ThermoML Archive; validation/data/vle/gvl_water_10-1021-acs-jced-5b00724_350.2K.json). P-x at 350.2 K (with the measured pure-component pressures): AAD 0.51 % (max 1.18 %).",
+      "source_ids": [
+        "zaitseva2016-gvl-water",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "methyl-lactate",
+      "j": "water",
+      "set": "fitted-sanz2005",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -106.63452539086673,
+      "b_ji": 590.9304017924353,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 2.89 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
+      "source": "Fitted to 45 total pressures at 283.15-303.15 K (T-P-x, with the component vapour pressures) from Sanz et al., J. Chem. Eng. Data 50 (2005) 85-88 (data public in the NIST TRC ThermoML Archive; validation/data/vle/methyl-lactate_water_10-1021-je049824c_tpx.json). total pressures at 283.15-303.15 K (with the vapour pressures of the component records): AAD 2.89 % (max 7.66 %).",
+      "source_ids": [
+        "sanz2005-methyl-lactate-water",
+        "nist-thermoml-archive"
       ],
       "tier": "fitted"
     }
