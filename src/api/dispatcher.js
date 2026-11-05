@@ -315,3 +315,29 @@ registerCapability({
       membrane: { ...m.state, duty_kW: m.duty_kW, notes: m.notes, warnings: m.warnings ?? [], profile: m.profile, sizing: m.sizing } } };
   },
 });
+
+// The extraction (proposal 0015, milestone M3, step 8): a feed, a solvent, the Extraction block and its two products,
+// solved as a flowsheet (src/units/extraction.js), so the numbers are the flowsheet's.
+registerCapability({
+  name: "solve_extraction", summary: "Solve a countercurrent liquid-liquid extraction of equilibrium stages: the extract and the raffinate, with every stage's two liquids", status: "available",
+  input: { type: "object", additionalProperties: false, required: ["components", "feed", "solvent", "extraction"],
+    properties: {
+      components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
+      thermo: { type: "object", description: "the flowsheet's property method, { model, vapour, sets }; default NRTL. The block's liquid method defaults to its model, with the sets fitted jointly to a ternary's tie lines where they exist" },
+      feed: { type: "object", description: "the feed (it enters stage 1), as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; it must be liquid" },
+      solvent: { type: "object", description: "the solvent (it enters the last stage), as a Feed block's specification; it must be liquid" },
+      extraction: { type: "object", description: "the Extraction block's specification: stages (1 to 100), T_K (the stages' temperature; default the feed's), P_kPa (the outlets'; default the feed's), method { model, sets, prefer } (optional: the block's own liquid method)" },
+      user_data: USER_DATA,
+    } },
+  run: input => {
+    const flowsheet = { components: input.components, thermo: input.thermo ?? { model: "NRTL" },
+      blocks: [{ id: "F1", type: "feed", spec: input.feed }, { id: "F2", type: "feed", spec: input.solvent },
+        { id: "EX1", type: "extraction", spec: input.extraction }, { id: "P1", type: "product" }, { id: "P2", type: "product" }],
+      streams: [{ id: "FEED", from: "F1.out", to: "EX1.feed" }, { id: "SOLVENT", from: "F2.out", to: "EX1.solvent" },
+        { id: "EXTRACT", from: "EX1.extract", to: "P1.in" }, { id: "RAFFINATE", from: "EX1.raffinate", to: "P2.in" }] };
+    const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
+    const x = r.value.blocks.EX1;
+    return { ...r, value: { feed: r.value.streams.FEED, solvent: r.value.streams.SOLVENT, extract: r.value.streams.EXTRACT, raffinate: r.value.streams.RAFFINATE,
+      extraction: { ...x.state, duty_kW: x.duty_kW, notes: x.notes, warnings: x.warnings ?? [], profile: x.profile } } };
+  },
+});

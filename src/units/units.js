@@ -743,7 +743,7 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
 }
 
 /** The warning codes a block may return (proposal 0015, section 9, contract 2); a block adds its own code here. */
-export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "METHOD_RANGE"];
+export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "METHOD_RANGE", "METHOD_SPLIT"];
 
 /** A block's warnings: each { code, message, stage?, remedy? }, its code one of WARNING_CODES (a bug otherwise). */
 function checkWarnings(u, list) {

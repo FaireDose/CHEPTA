@@ -36,6 +36,7 @@ import "./units/reactors.js";   // registers the conversion and yield reactors (
 import "./units/kinetic-reactors.js";   // the CSTR and the plug-flow reactor (proposal 0010, step 5)
 import "./units/columns/column.js";   // the Column block (proposal 0015, milestone M1: the shortcut mode)
 import "./units/membrane.js";   // the Membrane block (proposal 0015, milestone M3, step 9)
+import "./units/extraction.js";   // the Extraction block (proposal 0015, milestone M3, step 8)
 import { exchangerArea, exchangerApproach, exchangerRating, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER } from "./units/heat-exchange.js";
 import { solveFlowsheet, checkFlowsheet, inspectFlowsheet, flowsheetStatus } from "./flowsheet/flowsheet.js";
 import { runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus } from "./flowsheet/document.js";

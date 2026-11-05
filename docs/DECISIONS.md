@@ -14,10 +14,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
-- **Liquid-liquid tie lines and joint fits for extraction** (proposal 0015, step 5; docs/decisions/2026-10-30-08-extraction.md):
-  water + acetic acid + ethyl acetate, a further set `fitted-lle-roque2018` of each pair. Compare the transcribed tie
-  lines with the ThermoML records. Check Roque 2018's second isotherm (313.2 K in the record, 303.2 K in the title).
-  Decide whether Toikka 2014 stays a check only, and whether the Extraction block uses these sets by default.
+- **The Extraction block and its view** (proposal 0015, step 8; docs/decisions/2026-10-30-10-extraction-view.md):
+  check the comparison with Glatz and Parker 2004 (Runs 1 and 3); decide whether an adiabatic cascade is wanted, whether
+  the ternary view should offer mass fractions, and whether the flowsheet should take the joint sets by itself when it
+  holds an Extraction block of that ternary.
+  Still open from #196 (docs/decisions/2026-10-30-08-extraction.md): compare the transcribed tie lines with the ThermoML
+  records, and check Roque 2018's second isotherm (313.2 K in the record, 303.2 K in the title).
 - **Formation data** (proposal 0010, step 1; docs/decisions/2026-10-22-03-formation-data.md): xylitol is held (two
   crystal energies of combustion disagree by about 100 kJ/mol); five records are uncertain (the values disagree by more
   than 10 kJ/mol: 2-methoxyethanol, 1,3-propanediol, limonene, gamma-butyrolactone, levoglucosan); 22 components have no
