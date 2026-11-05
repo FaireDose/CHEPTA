@@ -21,25 +21,32 @@
    0
   ],
   [
+   298.2,
+   101.0,
+   0.3148150536574872,
+   0.016965336147176942,
+   1
+  ],
+  [
    283.15,
    100.0,
    0.0156,
    0.3699,
-   1
+   2
   ],
   [
    298.15,
    100.0,
    0.0174,
    0.32689999999999997,
-   1
+   2
   ],
   [
    313.15,
    100.0,
    0.0214,
    0.27559999999999996,
-   1
+   2
   ]
  ],
  "records": [
@@ -49,6 +56,13 @@
    "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2014.07.004.html",
    "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
    "sets": "PureOrMixtureData 18, 19 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.jct.2012.10.028",
+   "citation": "H. G. Gilani, A. G. Gilani, M. Sangashekan, Tie-line data for the aqueous solutions of phenol with organic solvents at T = 298.2 K, J. Chem. Thermodyn. 58 (2013) 142-148",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2012.10.028.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 20 (phases Liquid mixture 1 and 2)"
   },
   {
    "doi": "10.1016/j.jct.2016.12.018",

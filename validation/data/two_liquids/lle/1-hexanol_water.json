@@ -14,111 +14,153 @@
  ],
  "rows": [
   [
+   293.15,
+   101.325,
+   0.001384175137295854,
+   0.8485905455678894,
+   0
+  ],
+  [
+   298.15,
+   100.0,
+   0.6718206894692733,
+   0.0009741634749221872,
+   1
+  ],
+  [
    283.15,
    101.3,
    0.7204999999999999,
    0.0012999999999999678,
-   0
+   2
   ],
   [
    308.15,
    101.3,
    0.6948,
    0.0010999999999999899,
-   0
+   2
   ],
   [
    323.15,
    101.3,
    0.6825,
    0.0009000000000000119,
-   0
+   2
+  ],
+  [
+   298.15,
+   101.3,
+   0.001527154636663959,
+   0.8306490876077306,
+   3
   ],
   [
    288.15,
    101.3,
    0.672,
    0.0026,
-   1
+   4
   ],
   [
    298.15,
    101.3,
    0.6763,
    0.0012,
-   1
+   4
   ],
   [
    308.15,
    101.3,
    0.6039,
    0.0023,
-   1
+   4
   ],
   [
    283.38,
    101.325,
    0.0013,
    0.7059,
-   2
+   5
   ],
   [
    293.35,
    101.325,
    0.0011,
    0.6984,
-   2
+   5
   ],
   [
    298.36,
    101.325,
    0.0011,
    0.6960999999999999,
-   2
+   5
   ],
   [
    313.26,
    101.325,
    0.001,
    0.6792,
-   2
+   5
   ],
   [
    333.02,
    101.325,
    0.0011,
    0.6576,
-   2
+   5
   ],
   [
    353.15,
    101.325,
    0.0012,
    0.6231,
-   2
+   5
   ],
   [
    283.15,
    101.325,
    0.7191000000000001,
    0.0010000000000000009,
-   3
+   6
   ],
   [
    323.15,
    101.325,
    0.6732,
    0.0007000000000000339,
-   3
+   6
   ]
  ],
  "records": [
+  {
+   "doi": "10.1016/j.jct.2004.07.016",
+   "citation": "A. Senol, Phase equilibria for ternary liquid systems of (water + carboxylic acid or alcohol + 1-hexanol) at T = 293.15 K: modelling considerations, J. Chem. Thermodyn. 36 (2004) 1007-1014",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2004.07.016.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 1, 2 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.jct.2019.06.010",
+   "citation": "K. V. M. Cavalcanti, L. M. Follegatti-Romero, I. Dalmolin, L. A. Follegatti-Romero, Liquid-liquid equilibrium for (water + 5-hydroxymethylfurfural + 1-pentanol/1-hexanol/1-heptanol) systems at 298.15 K, J. Chem. Thermodyn. 138 (2019) 59-66",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2019.06.010.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 16 (phases Liquid mixture 1 and 2)"
+  },
   {
    "doi": "10.1021/je020133v",
    "citation": "H. Lin, G. B. Hong, C. E. Yeh, M. J. Lee, Liquid-Liquid Equilibria for Ternary Mixtures of Water + Ethanol with 1-Hexanol, Butyl Propionate, or Ethyl Caproate, J. Chem. Eng. Data 48 (2003) 587-590",
    "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je020133v.html",
    "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
    "sets": "PureOrMixtureData 1, 2 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/je049747l",
+   "citation": "A. Senol, Liquid-Liquid Equilibria for the Ternary Systems of (Water + Tetrahydrofuran + Polar Solvent) at 298.15 K, J. Chem. Eng. Data 49 (2004) 1827-1832",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je049747l.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 3, 4 (phases Liquid mixture 1 and 2)"
   },
   {
    "doi": "10.1021/je049799a",

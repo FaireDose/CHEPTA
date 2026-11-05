@@ -28,32 +28,60 @@
    0
   ],
   [
+   288.2,
+   100.41,
+   0.65342141244462,
+   0.005276906781548728,
+   1
+  ],
+  [
+   298.2,
+   100.41,
+   0.6526520916444036,
+   0.004555181781093404,
+   1
+  ],
+  [
+   308.2,
+   100.41,
+   0.6360500193069146,
+   0.004195807465762706,
+   1
+  ],
+  [
+   318.2,
+   100.41,
+   0.6078302920245074,
+   0.003816368840079617,
+   1
+  ],
+  [
    303.15,
    101.3,
    0.7010000000000001,
    0.0050000000000000044,
-   1
+   2
   ],
   [
    313.15,
    101.3,
    0.692,
    0.0050000000000000044,
-   1
+   2
   ],
   [
    368.06,
    101.3,
    0.554,
    0.0050000000000000044,
-   1
+   2
   ],
   [
    293.15,
    101.0,
    0.662,
    0.006,
-   2
+   3
   ]
  ],
  "records": [
@@ -63,6 +91,13 @@
    "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2018.10.021.html",
    "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
    "sets": "PureOrMixtureData 92 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.jct.2018.01.013",
+   "citation": "H. Li, J. Zhang, Y. Dou, L. Xu, G. Liu, Measurement and thermodynamic modelling of ternary liquid-liquid equilibrium for extraction of (1R,2R)-(-)-1,2-Diaminocyclohexane from aqueous solution with C4-C5 alcohols at different temperatures, J. Chem. Thermodyn. 120 (2018) 184-190",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2018.01.013.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 3, 4 (phases Liquid mixture 1 and 2)"
   },
   {
    "doi": "10.1021/acs.jced.8b00308",

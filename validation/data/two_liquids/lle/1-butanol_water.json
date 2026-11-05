@@ -21,158 +21,249 @@
    0
   ],
   [
+   298.15,
+   101.0,
+   0.4882926398783664,
+   0.020697376907035735,
+   1
+  ],
+  [
+   308.15,
+   101.0,
+   0.4761235452493216,
+   0.017829999176175185,
+   1
+  ],
+  [
+   318.15,
+   101.0,
+   0.4568251760476369,
+   0.017424296487191248,
+   1
+  ],
+  [
    298.2,
    101.0,
    0.0189,
    0.48950000000000005,
-   1
+   2
+  ],
+  [
+   298.15,
+   101.0,
+   0.5503110208172713,
+   0.015918216767873312,
+   3
   ],
   [
    303.15,
    101.0,
    0.488,
    0.019,
-   2
+   4
   ],
   [
    293.2,
    95.0,
    0.49360000000000004,
    0.020199999999999996,
-   3
+   5
   ],
   [
    313.2,
    95.0,
    0.4696,
    0.017100000000000004,
-   3
+   5
   ],
   [
    318.15,
    101.3,
    0.469,
    0.021,
-   4
+   6
   ],
   [
    308.15,
    101.0,
    0.018000000000000016,
    0.522,
-   5
+   7
   ],
   [
    313.15,
    101.3,
    0.484,
    0.019,
-   6
+   8
   ],
   [
    365.85,
    101.3,
    0.362,
    0.021,
-   6
+   8
+  ],
+  [
+   298.15,
+   101.3,
+   0.019873187278395807,
+   0.48675122477165156,
+   9
   ],
   [
    298.15,
    100.0,
    0.019,
    0.486,
-   7
+   10
+  ],
+  [
+   365.72,
+   101.3,
+   0.02102816949993785,
+   0.3622157893797879,
+   11
   ],
   [
    298.15,
    100.0,
    0.0187,
    0.4873,
-   8
+   12
+  ],
+  [
+   298.2,
+   100.0,
+   0.4839914220336415,
+   0.01891664244690045,
+   13
   ],
   [
    303.15,
    101.3,
    0.496,
    0.017000000000000015,
-   9
+   14
   ],
   [
    328.15,
    101.0,
    0.02,
    0.434,
-   10
+   15
   ],
   [
    366.23,
    null,
    0.3666,
    0.0198,
-   11
+   16
+  ],
+  [
+   293.15,
+   100.0,
+   0.5160872264900401,
+   0.017667601462725866,
+   17
+  ],
+  [
+   308.15,
+   100.0,
+   0.47447885215241714,
+   0.01589144426854795,
+   17
+  ],
+  [
+   323.15,
+   100.0,
+   0.44849829214344056,
+   0.01575764555181486,
+   17
+  ],
+  [
+   288.2,
+   100.0,
+   0.48782959806521886,
+   0.02006514245906607,
+   18
+  ],
+  [
+   303.2,
+   100.0,
+   0.4826185797618141,
+   0.0181281330698812,
+   18
+  ],
+  [
+   318.2,
+   100.0,
+   0.46548004864578285,
+   0.017046515980218807,
+   18
   ],
   [
    313.15,
    101.0,
    0.484,
    0.019000000000000017,
-   12
+   19
   ],
   [
    303.2,
    101.0,
    0.489,
    0.02200000000000002,
-   13
+   20
   ],
   [
    323.2,
    101.0,
    0.45699999999999996,
    0.018000000000000016,
-   13
+   20
   ],
   [
    343.2,
    101.0,
    0.41900000000000004,
    0.016000000000000014,
-   13
+   20
   ],
   [
    323.15,
    101.0,
    0.4574,
    0.0167,
-   14
+   21
   ],
   [
    333.15,
    101.0,
    0.4387,
    0.0162,
-   14
+   21
   ],
   [
    343.15,
    101.0,
    0.4189,
    0.0172,
-   14
+   21
   ],
   [
    353.15,
    101.0,
    0.3965,
    0.0181,
-   14
+   21
   ],
   [
    362.45,
    101.0,
    0.3673,
    0.0187,
-   14
+   21
   ]
  ],
  "records": [
@@ -184,11 +275,25 @@
    "sets": "PureOrMixtureData 10, 11 (phases Liquid mixture 1 and 2)"
   },
   {
+   "doi": "10.1016/j.fluid.2007.12.003",
+   "citation": "Y. Y. Wu, J. W. Zhu, K. Chen, B. Wu, J. Fang, Y. L. Shen, Liquid liquid equilibria of water + 2,3-butanediol + 1-butanol at T = 298.15 K, T = 308.15K and T = 318.15K, Fluid Phase Equilib. 265 (2008) 1-6",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2007.12.003.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 9 (phases Liquid mixture 1 and 2)"
+  },
+  {
    "doi": "10.1016/j.fluid.2012.07.032",
    "citation": "B. Almeida, T. M. Waldrigui, T. C. Alves, L. de Oliveira, M. Aznar, Experimental and calculated liquid-liquid equilibrium data for water + furfural + solvents, Fluid Phase Equilib. 334 (2012) 97-105",
    "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.07.032.html",
    "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
    "sets": "PureOrMixtureData 15, 16 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.fluid.2014.07.011",
+   "citation": "T. Wongsawa, M. Hronec, U. Pancharoen, S. Phatanasri, Solubility and tie-line data for ternary aqueous mixtures of cyclopentanol with organic solvents at T = 298.2 K: Experiments and NRTL model, Fluid Phase Equilib. 379 (2014) 10-18",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2014.07.011.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 18 (phases Liquid mixture 1 and 2)"
   },
   {
    "doi": "10.1016/j.fluid.2017.12.023",
@@ -226,6 +331,13 @@
    "sets": "PureOrMixtureData 4, 5 (phases Liquid mixture 1 and 2)"
   },
   {
+   "doi": "10.1016/j.jct.2015.10.003",
+   "citation": "S. Zheng, H. Cheng, L. Chen, Z. Qi, Feasibility of bio-based lactate esters as extractant for biobutanol recovery: (Liquid + liquid) equilibria, J. Chem. Thermodyn. 93 (2016) 127-131",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.10.003.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 5, 6 (phases Liquid mixture 1 and 2)"
+  },
+  {
    "doi": "10.1016/j.jct.2015.11.002",
    "citation": "A. Marciniak, M. Wlazlo, J. Gawkowska, Ternary (liquid + liquid) equilibria of {bis(trifluoromethylsulfonyl)-amide based ionic liquids + butan-1-ol + water}, J. Chem. Thermodyn. 94 (2016) 96-100",
    "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.11.002.html",
@@ -233,11 +345,25 @@
    "sets": "PureOrMixtureData 4, 5 (phases Liquid mixture 1 and 2)"
   },
   {
+   "doi": "10.1016/j.jct.2016.04.013",
+   "citation": "J. Garcia-Cano, V. Gomis, J. C. Asensi, M. D. Saquete, A. Font, Isobaric vapor-liquid-liquid-solid equilibrium of the water + NaCl + 1-butanol system at 101.3 kPa, J. Chem. Thermodyn. 100 (2016) 53-59",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2016.04.013.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 5, 6 (phases Liquid mixture 1 and 2)"
+  },
+  {
    "doi": "10.1016/j.jct.2016.06.010",
    "citation": "H. Li, Z. Feng, L. Wan, C. Huang, T. Zhang, Y. Fang, (Liquid + liquid) equilibria of four alcohol-water systems containing 1,8-cineole at T = 298.15 K, J. Chem. Thermodyn. 101 (2016) 387-394",
    "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2016.06.010.html",
    "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
    "sets": "PureOrMixtureData 19, 20 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.jct.2017.03.019",
+   "citation": "I. Dalmolin, R. R. Pinto, L. H. de Oliveira, L. A. Follegatti-Romero, A. C. Costa, M. Aznar, Liquid-liquid equilibrium in systems used for the production of 5-hydroxymethylfurfural from biomass using alcohols as solvents, J. Chem. Thermodyn. 111 (2017) 80-87",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2017.03.019.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 21 (phases Liquid mixture 1 and 2)"
   },
   {
    "doi": "10.1016/j.jct.2018.03.024",
@@ -259,6 +385,20 @@
    "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00725.html",
    "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
    "sets": "PureOrMixtureData 5, 7 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/acs.jced.6b00941",
+   "citation": "C. Yu, S. Wu, Y. Zhao, Z. X. Zeng, W. L. Xue, Liquid Liquid Equilibrium Data of Water + Butyric Acid + {Butanal or n-Butanol} Ternary Systems at 293.15, 308.15, and 323.15 K, J. Chem. Eng. Data 62 (2017) 2244-2252",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00941.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 13, 14 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/acs.jced.7b00302",
+   "citation": "T. Ye, H. Qu, X. Gong, Measurement and Correlation of Liquid Liquid Equilibria for the Ternary Systems of Water + d-Fructose + 1-Butanol, Water + d-Glucose + 1-Butanol, and Water + d-Galactose + 1-Butanol at (288.2, 303.2 and 318.2) K, J. Chem. Eng. Data 62 (2017) 2392-2399",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00302.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 4, 5 (phases Liquid mixture 1 and 2)"
   },
   {
    "doi": "10.1021/je400501z",

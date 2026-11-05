@@ -14,49 +14,84 @@
  ],
  "rows": [
   [
+   288.2,
+   100.41,
+   0.5630244929366762,
+   0.021497889913151654,
+   0
+  ],
+  [
+   298.2,
+   100.41,
+   0.5388287333124084,
+   0.02031225978940935,
+   0
+  ],
+  [
+   308.2,
+   100.41,
+   0.5269663804785746,
+   0.017721716739011375,
+   0
+  ],
+  [
+   318.2,
+   100.41,
+   0.5142736940147525,
+   0.017505359303658485,
+   0
+  ],
+  [
    303.15,
    100.0,
    0.541,
    0.0211,
-   0
+   1
   ],
   [
    313.15,
    100.0,
    0.528,
    0.0242,
-   0
+   1
   ],
   [
    303.2,
    101.0,
    0.55,
    0.02400000000000002,
-   1
+   2
   ],
   [
    323.2,
    101.0,
    0.512,
    0.02400000000000002,
-   1
+   2
   ],
   [
    343.2,
    101.0,
    0.45799999999999996,
    0.019000000000000017,
-   1
+   2
   ],
   [
    293.15,
    101.0,
    0.517,
    0.022,
-   2
+   3
   ]
  ],
  "records": [
+  {
+   "doi": "10.1016/j.jct.2018.01.013",
+   "citation": "H. Li, J. Zhang, Y. Dou, L. Xu, G. Liu, Measurement and thermodynamic modelling of ternary liquid-liquid equilibrium for extraction of (1R,2R)-(-)-1,2-Diaminocyclohexane from aqueous solution with C4-C5 alcohols at different temperatures, J. Chem. Thermodyn. 120 (2018) 184-190",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2018.01.013.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 1, 2 (phases Liquid mixture 1 and 2)"
+  },
   {
    "doi": "10.1021/acs.jced.6b00763",
    "citation": "R. R. Ginting, A. Mustain, G. Wibawa, Determination of Ternary Liquid Liquid Equilibria for Dimethyl Carbonate + 2-Methyl-1-propanol or 2-Methyl-2-propanol + Water Systems at T = 303.15 and 313.15 K, J. Chem. Eng. Data 62 (2017) 463-468",

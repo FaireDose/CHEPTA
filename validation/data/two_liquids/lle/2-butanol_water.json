@@ -14,28 +14,42 @@
  ],
  "rows": [
   [
+   298.2,
+   100.0,
+   0.05291173780221425,
+   0.3088412469641544,
+   0
+  ],
+  [
    298.15,
    100.0,
    0.0591,
    0.3036,
-   0
+   1
   ],
   [
    288.2,
    101.3,
    0.29400000000000004,
    0.05900000000000005,
-   1
+   2
   ],
   [
    318.2,
    101.3,
    0.32499999999999996,
    0.04200000000000004,
-   1
+   2
   ]
  ],
  "records": [
+  {
+   "doi": "10.1016/j.jct.2017.03.019",
+   "citation": "I. Dalmolin, R. R. Pinto, L. H. de Oliveira, L. A. Follegatti-Romero, A. C. Costa, M. Aznar, Liquid-liquid equilibrium in systems used for the production of 5-hydroxymethylfurfural from biomass using alcohols as solvents, J. Chem. Thermodyn. 111 (2017) 80-87",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2017.03.019.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 24 (phases Liquid mixture 1 and 2)"
+  },
   {
    "doi": "10.1021/acs.jced.9b00283",
    "citation": "T. Turnaoglu, S. G. Ritchie, M. B. Shiflett, Liquid-Liquid Equilibria in Binary Mixtures of Dihydroxy Alcohols and Imidazolium-Based Ionic Liquids, J. Chem. Eng. Data 64 (2019) 3179-3186",

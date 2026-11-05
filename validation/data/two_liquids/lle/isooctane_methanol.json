@@ -26,6 +26,13 @@
    0.7717,
    0.1142,
    0
+  ],
+  [
+   293.2,
+   101.3,
+   0.8229873054355942,
+   0.07442792042625362,
+   1
   ]
  ],
  "records": [
@@ -35,6 +42,13 @@
    "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2013.10.048.html",
    "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
    "sets": "PureOrMixtureData 5, 6 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/je100916h",
+   "citation": "R. Rastegar, K. Jessen, Measurement and Modeling of Liquid-Liquid Equilibrium for Ternary and Quaternary Mixtures of Water, Methanol, 2-Propanol, and 2,2,4-Trimethylpentane at 293.2 K  , J. Chem. Eng. Data 56 (2011) 278-281",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je100916h.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 1, 2 (phases Liquid mixture 1 and 2)"
   }
  ],
  "notes": "To be checked by a person against the records (AGENTS.md rule 4)."

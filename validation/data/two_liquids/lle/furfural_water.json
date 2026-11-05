@@ -42,25 +42,144 @@
    0
   ],
   [
+   298.15,
+   101.0,
+   0.8150877481497523,
+   0.020874957485312602,
+   1
+  ],
+  [
    303.2,
    100.5,
    0.7696000000000001,
    0.016599999999999948,
-   1
+   2
   ],
   [
    323.2,
    100.5,
    0.7102999999999999,
    0.019299999999999984,
-   1
+   2
+  ],
+  [
+   298.2,
+   101.0,
+   0.7880750088074109,
+   0.01690323196808786,
+   3
+  ],
+  [
+   298.3,
+   101.0,
+   0.7917430338044774,
+   0.01625701574471439,
+   3
+  ],
+  [
+   302.8,
+   101.0,
+   0.7808173461231925,
+   0.017119389383625,
+   3
+  ],
+  [
+   302.9,
+   101.0,
+   0.7666078623388164,
+   0.01798780543002838,
+   3
+  ],
+  [
+   303.1,
+   101.0,
+   0.7808173461231925,
+   0.017552838143696004,
+   3
+  ],
+  [
+   303.2,
+   101.0,
+   0.7772271520273765,
+   0.017552838143696004,
+   3
+  ],
+  [
+   321.4,
+   101.0,
+   0.704223354601656,
+   0.019964165642364584,
+   3
+  ],
+  [
+   322.6,
+   101.0,
+   0.7295135845706643,
+   0.020629949821166695,
+   3
+  ],
+  [
+   342.2,
+   101.0,
+   0.6227399100389633,
+   0.024930098556980033,
+   3
+  ],
+  [
+   350.2,
+   101.0,
+   0.6253125448502348,
+   0.029857347207710327,
+   3
+  ],
+  [
+   298.2,
+   101.0,
+   0.7808173461231925,
+   0.01582807515470311,
+   4
+  ],
+  [
+   298.3,
+   101.0,
+   0.7844332063113822,
+   0.01540062166765569,
+   4
+  ],
+  [
+   322.5,
+   101.0,
+   0.7262777377269173,
+   0.01908191979676529,
+   4
+  ],
+  [
+   342.2,
+   101.0,
+   0.6574392569295953,
+   0.022648688020233846,
+   4
+  ],
+  [
+   298.15,
+   101.3,
+   0.017400958752817015,
+   0.7768695337355392,
+   5
+  ],
+  [
+   333.15,
+   101.3,
+   0.018840389623541617,
+   0.6744241418255089,
+   5
   ],
   [
    369.25,
    null,
    0.5625,
    0.08509999999999995,
-   2
+   6
   ]
  ],
  "records": [
@@ -72,11 +191,39 @@
    "sets": "PureOrMixtureData 17, 18 (phases Liquid mixture 1 and 2)"
   },
   {
+   "doi": "10.1016/j.fluid.2014.07.011",
+   "citation": "T. Wongsawa, M. Hronec, U. Pancharoen, S. Phatanasri, Solubility and tie-line data for ternary aqueous mixtures of cyclopentanol with organic solvents at T = 298.2 K: Experiments and NRTL model, Fluid Phase Equilib. 379 (2014) 10-18",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2014.07.011.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 17 (phases Liquid mixture 1 and 2)"
+  },
+  {
    "doi": "10.1016/j.jct.2018.01.027",
    "citation": "P. Cui, H. Liu, K. Xin, H. Yan, Q. Xia, Y. Huang, Q. Li, Liquid-liquid equilibria for the ternary system of water + furfural + solvents at 303.15 and 323.15 K under atmospheric pressure, J. Chem. Thermodyn. 127 (2018) 134-144",
    "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2018.01.027.html",
    "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
    "sets": "PureOrMixtureData 10, 11 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/acs.jced.5b00738",
+   "citation": "M. Mannisto, J. P. Pokki, A. Creati, A. Voisin, A. Zaitseva, V. Alopaeus, Ternary and Binary LLE Measurements for Solvent (4- Methyl-2-pentanone and 2-Methyl-2-butanol) + Furfural + Water between 298 and 401 K, J. Chem. Eng. Data 61 (2016) 903-911",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.5b00738.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 8, 9 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/acs.jced.6b00150",
+   "citation": "M. Mannisto, J. P. Pokki, H. Haapaniemi, V. Alopaeus, Quaternary, Ternary and Binary LLE Measurements for 2-Methoxy-2-methylbutane + Furfural + Acetic Acid + Water at Temperatures between 298 and 341 K, J. Chem. Eng. Data 61 (2016) 3730-3739",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00150.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 7, 8 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/acs.jced.9b00095",
+   "citation": "N. Galeotti, J. Burger, H. Hasse, Measurement and Modeling of Phase Equilibria in Systems Containing Water, Xylose, Furfural, and Acetic Acid, J. Chem. Eng. Data 64 (2019) 2634-2640",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.9b00095.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 5, 6 (phases Liquid mixture 1 and 2)"
   },
   {
    "doi": "10.1021/je020053r",
