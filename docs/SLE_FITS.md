@@ -47,5 +47,17 @@ Rules: a pair is fitted with at least 6 points over at least 10 K; a set is writ
 | Salicylic acid | Ethyl acetate | 26 (4) | 283.1-348.0 | 2150, -656 | 4.7 % | 6.9 % | 5.8 % | 60.6 % | not written (splits the liquid of a miscible pair) |
 | Salicylic acid | Methanol | 15 (3) | 283.1-323.1 | -684, 1083 | 3.0 % | 7.9 % | 4.4 % | 61.0 % | written |
 | Salicylic acid | Water | 26 (4) | 283.1-348.0 | -897, 3857 | 7.5 % | 25.0 % | 10.2 % | 16715.3 % | written (two liquids at some compositions, as with water), valid to 336.9 K (model monotectic) |
+| Succinic acid | 1-Butanol | 15 (1) | 304.9-357.1 | -665, 1153 | 3.1 % | 7.5 % | – | 35.6 % | written |
+| Succinic acid | 1-Propanol | 11 (1) | 283.6-333.8 | 222, -499 | 8.6 % | 26.3 % | – | 63.1 % | written |
+| Succinic acid | 2-Propanol | 10 (1) | 282.8-334.2 | -440, 307 | 1.5 % | 4.8 % | – | 65.8 % | written |
+| Succinic acid | Acetic acid | 49 (6) | 290.8-345.1 | 1594, -397 | 3.1 % | 9.5 % | 3.5 % | 7.8 % | not written (splits the liquid of a miscible pair) |
+| Succinic acid | Acetone | 41 (4) | 277.9-327.6 | -692, 1294 | 11.9 % | 31.9 % | 12.3 % | 36.6 % | written |
+| Succinic acid | Cyclohexanone | 50 (5) | 298.6-351.2 | 1303, -398 | 1.8 % | 17.1 % | 2.1 % | 7.1 % | written |
+| Succinic acid | Diethylene glycol | 8 (1) | 298.1-333.1 | -788, 1006 | 4.8 % | 7.6 % | – | 78.5 % | written |
+| Succinic acid | Ethanol | 22 (3) | 283.1-331.9 | 963, -794 | 3.3 % | 18.3 % | 4.9 % | 72.6 % | written |
+| Succinic acid | Ethyl acetate | 21 (2) | 288.1-340.4 | 1154, -27 | 10.0 % | 57.6 % | – | 205.7 % | not written (splits the liquid of a miscible pair) |
+| Succinic acid | Methanol | 9 (1) | 285.8-324.4 | -616, 559 | 1.1 % | 2.5 % | – | 78.7 % | written |
+| Succinic acid | Propionic acid | 10 (1) | 288.1-329.1 | 603, -394 | 3.2 % | 7.7 % | – | 16.2 % | written |
+| Succinic acid | Water | 51 (6) | 283.1-447.4 | -642, 1206 | 8.6 % | 34.5 % | 10.5 % | 20.6 % | written |
 
-26 sets written.
+36 sets written.

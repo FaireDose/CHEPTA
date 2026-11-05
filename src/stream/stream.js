@@ -188,3 +188,32 @@ export function phaseStream(st, type, k = 0) {
   const flows = st.components.map(id => p.flow_kmol_h[id]);
   return build(st, { flows, phases: [{ type: p.type, fraction: 1, composition: p.composition, h_J_mol: p.h_J_mol }], VF: type === "vapour" ? 1 : 0, h_J_mol: p.h_J_mol });
 }
+
+/**
+ * A stream of crystals in equilibrium (proposal 0015, Part I, section 5; contract 1, stream v2): one "solid" phase of
+ * the given composition at T and P, with `equilibrium: true`, carrying the enthalpy it is given. The crystallizer
+ * (src/units/crystallizer.js) makes it with the solid's enthalpy rule, h_solid(T) = h_liquid(T) − ΔH_fus, the labelled
+ * approximation of the maintainer's answer 3 (2026-10-29), consistent with the solid-liquid model (ΔCp of fusion 0).
+ * No flash is done: the property package knows no solid in equilibrium, so a block that would recalculate the stream
+ * refuses it (runUnit; only a Product takes it).
+ * @param {object} sys
+ * @param {{flow_kmol_h:number[], T_K:number, P_kPa:number, h_J_mol:number, id?:string}} spec
+ */
+export function crystalStream(sys, { flow_kmol_h, T_K, P_kPa, h_J_mol, id = null }) {
+  const flows = componentFlows(sys, flow_kmol_h);
+  const F = flows.reduce((a, v) => a + v, 0);
+  if (!(F > 0)) return stream(sys, { flow_kmol_h: flows, T_K, P_kPa, id });
+  const MW = molarMasses(sys), z = flows.map(v => v / F);
+  return remember(Object.freeze({
+    id, name: null, spec: "solid", components: sys.ids.slice(),
+    flow_kmol_h: Object.fromEntries(sys.ids.map((c, i) => [c, flows[i]])), flows, F_kmol_h: F,
+    mass_kg_h: flows.reduce((a, v, i) => a + v * MW[i], 0), z, T_K, P_kPa, VF: 0,
+    phases: [Object.freeze({ type: "solid", equilibrium: true, fraction: 1, composition: z.slice(), h_J_mol, F_kmol_h: F,
+      flow_kmol_h: Object.fromEntries(sys.ids.map((c, i) => [c, flows[i]])) })],
+    h_J_mol, H_kW: h_J_mol * F * KW_PER, MW: z.reduce((a, v, i) => a + v * MW[i], 0),
+    warnings: ["Crystals in equilibrium: the solid's enthalpy is the liquid's minus the enthalpy of fusion (a labelled approximation)."], sources: [],
+  }), MW);
+}
+
+/** Does the stream carry crystals in equilibrium (crystalStream)? */
+export const hasCrystals = st => !!st?.phases?.some(p => p.type === "solid" && p.equilibrium);

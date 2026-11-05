@@ -59,7 +59,7 @@ export const PROJECT_FORMAT = 6;
 /** The flowsheet block types that need format 4 (proposal 0013). */
 const FORMAT_4_BLOCKS = ["hx", "valve", "pump", "compressor", "expander"];
 /** The flowsheet block types that need format 6 (proposal 0015). */
-const FORMAT_6_BLOCKS = ["column", "membrane", "extraction", "evaporator"];
+const FORMAT_6_BLOCKS = ["column", "membrane", "extraction", "evaporator", "crystallizer"];
 const hasBlock = (fs, types) => !!fs?.blocks?.some(b => types.includes(b?.type));
 
 /** The keys of `workbench`, in the order they are written. */
@@ -152,7 +152,7 @@ export function readProject(input) {
   if (doc.results != null && (typeof doc.results !== "object" || Array.isArray(doc.results))) throw new Error("results must be an object.");
   if (w.hx != null && f < 4) throw new Error(`workbench.hx needs format 4 (this file says format ${f}).`);
   if (w.chart != null && f < 5) throw new Error(`workbench.chart needs format 5 (this file says format ${f}).`);
-  if ((hasBlock(doc.flowsheet, FORMAT_6_BLOCKS) || hasBlock(doc.reactor, FORMAT_6_BLOCKS)) && f < 6) throw new Error(`The flowsheet's column, evaporator, extraction and membrane blocks need format 6 (this file says format ${f}).`);
+  if ((hasBlock(doc.flowsheet, FORMAT_6_BLOCKS) || hasBlock(doc.reactor, FORMAT_6_BLOCKS)) && f < 6) throw new Error(`The flowsheet's column, crystallizer, evaporator, extraction and membrane blocks need format 6 (this file says format ${f}).`);
   if (doc.column != null && f < 6) throw new Error(`The Column workspace needs format 6 (this file says format ${f}).`);
   if (doc.flowsheet?.energyStreams != null && f < 4) throw new Error(`flowsheet.energyStreams needs format 4 (this file says format ${f}).`);
   if (doc.user_data != null) {

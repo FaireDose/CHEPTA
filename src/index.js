@@ -38,6 +38,7 @@ import "./units/columns/column.js";   // the Column block (proposal 0015, milest
 import "./units/membrane.js";   // the Membrane block (proposal 0015, milestone M3, step 9)
 import "./units/extraction.js";   // the Extraction block (proposal 0015, milestone M3, step 8)
 import "./units/evaporator.js";   // the Evaporator block (proposal 0015, milestone M3, step 10)
+import "./units/crystallizer.js";   // the Crystallizer block (proposal 0015, milestone M3, step 10)
 import { exchangerArea, exchangerApproach, exchangerRating, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER } from "./units/heat-exchange.js";
 import { solveFlowsheet, checkFlowsheet, inspectFlowsheet, flowsheetStatus } from "./flowsheet/flowsheet.js";
 import { runFlowsheet, normalizeFlowsheet, flowsheetSystem, flowsheetDocStatus } from "./flowsheet/document.js";
