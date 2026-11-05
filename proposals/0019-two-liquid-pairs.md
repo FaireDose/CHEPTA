@@ -49,6 +49,14 @@ behind it, written by `validation/python/two_liquid_survey.py` (added in this pu
 against the records (AGENTS.md rule 4). A person may add an open article the archive does not have; the file then
 names it.
 
+**Every class names its sources and the conditions they cover** (the maintainer, 2026-11-04, accepted from a review of
+this proposal): the articles and ThermoML sets behind it, and the temperature, pressure and composition range of
+their points. A class holds only where it was measured. One liquid seen at sampled conditions is not a claim of
+miscibility everywhere, and a split predicted by a set is never recorded as a measured fact. `classes.json` (step 2)
+stores per pair a list of evidence entries `{ "kind": "two-liquid" | "one-liquid", "source_ids", "T_K": [lo, hi],
+"P_kPa": [lo, hi] or null, "x": [lo, hi] }`. The survey of this pull request gives the sets, articles and temperature
+ranges; the pressure and composition ranges are added in step 2.
+
 ### 2. Fit by class
 
 - **Miscible** pairs: as now. A fit that predicts a split where the pair was measured as one liquid, or anywhere in
@@ -83,6 +91,12 @@ the pair in the same way, with no refit.
   - "two liquids predicted by the set where the pair was measured as one liquid (<articles>): the split is probably
     wrong; choose another set or another model".
   These are warnings in `sys.warnings(T, P)`, the channel the Wilson warnings already use, with a new code.
+- The split is called **measured** only where the state lies inside the conditions (T, P, composition) of the pair's
+  two-liquid evidence. Anywhere else, even for a partly miscible pair, it is "predicted, without liquid-liquid
+  validation at these conditions".
+- The structured results say the same: `CHEPTA.run`'s `qualifications` (src/api/dispatcher.js) carry, for each pair
+  with two liquids in the result, `{ pair, set, two_liquids: "measured" | "predicted-unvalidated" |
+  "predicted-contradicted", evidence: [source ids], conditions }`, so that CHEPTA-Lab's records can keep it.
 - Diagrams that assume one liquid keep their present "phase-split" notes.
 
 ### 4. Wilson
@@ -105,7 +119,8 @@ of PR #200 with:
 >   data (`validation/data/two_liquids/classes.json`, `two_liquid_survey.py`): *partly miscible* where liquid-liquid
 >   data, mutual solubilities, vapour-liquid-liquid points or a heterogeneous azeotrope are open; *miscible* where it
 >   was measured as one liquid where a set predicts two; *not known* otherwise. A vapour-liquid set is not evidence of
->   one liquid. Then:
+>   one liquid. Each class names its sources and the temperature, pressure and composition range they cover, and holds
+>   only there; a predicted split is never recorded as measured. Then:
 >   - miscible: a fit that predicts a liquid split in its data range, or where the pair was measured as one liquid, is
 >     never written;
 >   - partly miscible: the fit is joint, to the vapour-liquid and the liquid-liquid data; it must predict the split

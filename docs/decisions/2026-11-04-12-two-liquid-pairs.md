@@ -30,6 +30,14 @@ understand now there is a discrepancy and it refuses to calculate but in fact it
   DDBST's Regression Mix fits VLE and LLE data simultaneously (LLE by isoactivity or by the compositions). None refuses
   a set because it predicts a split.
 
+## Accepted by the maintainer (2026-11-04, from a review, relayed by the coordinating session)
+
+Every miscibility class names its sources and the temperature, pressure and composition range they cover. One liquid
+seen at sampled conditions is not a claim of miscibility everywhere, and a predicted split is not a measured fact.
+Results, the structured tool results included (the qualifications of `CHEPTA.run`), say whether a split is measured
+or predicted without liquid-liquid validation at those conditions, so CHEPTA-Lab's records can carry it. Written into
+the proposal, sections 1 and 3.
+
 ## For the maintainer to decide
 
 1. **Accept the proposal**, or change it: the three classes, the fit per class, the labels, Wilson refused only
