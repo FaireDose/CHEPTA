@@ -192,7 +192,7 @@ def curves(rec, a, b):
     return out, used
 
 
-def two_liquid_points(rec, a, b):
+def two_liquid_points(rec, a, b, num=None):
     """The pair's two-liquid points in a record: [[T_K, P_kPa or None, x_a in liquid 1, x_a in liquid 2]] and the set
     numbers. ThermoML stores each liquid's composition as a property of a set whose phases are "Liquid mixture 1" and
     "Liquid mixture 2": often one set per liquid with the same T and P (Arango and Villa 2013, doi:10.1016/j.fluid.2012.11.026, sets 10 and 11), merged
@@ -200,8 +200,9 @@ def two_liquid_points(rec, a, b):
     set 14), taken as the two liquids when exactly two such values share a T and P; or the compositions as variables
     with the three-phase temperature as the property "Triple point temperature" (furfural + water,
     doi:10.1021/je020053r, set 10). A set of three-phase pressures without the liquids' compositions gives no point."""
-    ia, ib = inchi_of(a), inchi_of(b)
-    num = {n: ("a" if norm_inchi(c["inchi"]) == ia else "b" if norm_inchi(c["inchi"]) == ib else None) for n, c in rec["compounds"].items()}
+    if num is None:   # compound number -> "a" or "b" (the bulk survey passes its own, from its InChI index)
+        ia, ib = inchi_of(a), inchi_of(b)
+        num = {n: ("a" if norm_inchi(c["inchi"]) == ia else "b" if norm_inchi(c["inchi"]) == ib else None) for n, c in rec["compounds"].items()}
     pts, used = {}, set()
     for s in rec["sets"]:
         if len(s["components"]) != 2 or {num.get(n) for n in s["components"]} != {"a", "b"}:

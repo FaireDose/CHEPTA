@@ -1,0 +1,97 @@
+{
+ "_about": "methanol (1) + methylcyclohexane (2): the two liquids in equilibrium measured in the NIST TRC ThermoML Archive's records (bulk file ThermoML.v2020-09-30.tgz), by validation/python/two_liquid_survey.py --classes (proposal 0019, step 2). Rows: T in K, P in kPa (null where the record gives none), mole fraction of component 1 in liquid I and in liquid II, index of the record in records.",
+ "components": [
+  "methanol",
+  "methylcyclohexane"
+ ],
+ "kind": "lle",
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "x_1_I",
+  "x_1_II",
+  "record"
+ ],
+ "rows": [
+  [
+   298.15,
+   101.325,
+   0.18700000000000006,
+   0.848,
+   0
+  ],
+  [
+   303.15,
+   101.325,
+   0.21399999999999997,
+   0.825,
+   0
+  ],
+  [
+   288.15,
+   101.325,
+   0.874,
+   0.139,
+   1
+  ],
+  [
+   295.15,
+   101.325,
+   0.855,
+   0.17200000000000004,
+   1
+  ],
+  [
+   301.15,
+   101.325,
+   0.833,
+   0.20699999999999996,
+   1
+  ],
+  [
+   305.15,
+   101.325,
+   0.8160000000000001,
+   0.23299999999999998,
+   1
+  ],
+  [
+   307.15,
+   101.325,
+   0.804,
+   0.242,
+   1
+  ],
+  [
+   308.15,
+   101.325,
+   0.798,
+   0.25,
+   1
+  ],
+  [
+   313.15,
+   101.325,
+   0.749,
+   0.31999999999999995,
+   1
+  ]
+ ],
+ "records": [
+  {
+   "doi": "10.1016/j.fluid.2005.09.025",
+   "citation": "M. Bendova, K. Rehak, J. Matous, J. P. Novak, Liquid liquid equilibrium in ternary systems N,N-dimethylformamide + 2-methylpentane + methanol and N,N-dimethylformamide + methylcyclohexane + methanol, Fluid Phase Equilib. 239 (2006) 16-25",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2005.09.025.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 11, 12 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/je020135f",
+   "citation": "M. Bendova, K. Rehak, J. Matous, J. P. Novak, Liquid-Liquid Equilibrium and Excess Enthalpies in Binary Systems Methylcyclohexane + Methanol and Methylcyclohexane + N,N-Dimethylformamide, J. Chem. Eng. Data 48 (2003) 152-157",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je020135f.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 7, 8, 9, 10, 12 (phases Liquid mixture 1 and 2)"
+  }
+ ],
+ "notes": "To be checked by a person against the records (AGENTS.md rule 4)."
+}

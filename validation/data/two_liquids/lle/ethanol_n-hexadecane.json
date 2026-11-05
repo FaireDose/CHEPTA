@@ -1,0 +1,62 @@
+{
+ "_about": "ethanol (1) + n-hexadecane (2): the two liquids in equilibrium measured in the NIST TRC ThermoML Archive's records (bulk file ThermoML.v2020-09-30.tgz), by validation/python/two_liquid_survey.py --classes (proposal 0019, step 2). Rows: T in K, P in kPa (null where the record gives none), mole fraction of component 1 in liquid I and in liquid II, index of the record in records.",
+ "components": [
+  "ethanol",
+  "n-hexadecane"
+ ],
+ "kind": "lle",
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "x_1_I",
+  "x_1_II",
+  "record"
+ ],
+ "rows": [
+  [
+   294.4,
+   101.0,
+   0.9621,
+   0.2551,
+   0
+  ],
+  [
+   298.15,
+   101.0,
+   0.9597,
+   0.2918,
+   0
+  ],
+  [
+   308.15,
+   101.0,
+   0.951,
+   0.3836,
+   0
+  ],
+  [
+   318.15,
+   101.0,
+   0.9359,
+   0.4907,
+   0
+  ],
+  [
+   323.15,
+   101.0,
+   0.9054,
+   0.5544,
+   0
+  ]
+ ],
+ "records": [
+  {
+   "doi": "10.1021/je700233p",
+   "citation": "I. C. Hwang, K. L. Kim, S. J. Park, K. J. Han, Liquid-Liquid Equilibria for Binary System of Ethanol + Hexadecane at Elevated Temperature and the Ternary Systems of Ethanol + Heterocyclic Nitrogen Compounds + Hexadecane at 298.15 K, J. Chem. Eng. Data 52 (2007) 1919-1924",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je700233p.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 9, 10 (phases Liquid mixture 1 and 2)"
+  }
+ ],
+ "notes": "To be checked by a person against the records (AGENTS.md rule 4)."
+}

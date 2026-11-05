@@ -1,0 +1,286 @@
+{
+ "_about": "1-butanol (1) + water (2): the two liquids in equilibrium measured in the NIST TRC ThermoML Archive's records (bulk file ThermoML.v2020-09-30.tgz), by validation/python/two_liquid_survey.py --classes (proposal 0019, step 2). Rows: T in K, P in kPa (null where the record gives none), mole fraction of component 1 in liquid I and in liquid II, index of the record in records.",
+ "components": [
+  "1-butanol",
+  "water"
+ ],
+ "kind": "lle",
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "x_1_I",
+  "x_1_II",
+  "record"
+ ],
+ "rows": [
+  [
+   303.15,
+   101.325,
+   0.0181,
+   0.4802,
+   0
+  ],
+  [
+   298.2,
+   101.0,
+   0.0189,
+   0.48950000000000005,
+   1
+  ],
+  [
+   303.15,
+   101.0,
+   0.488,
+   0.019,
+   2
+  ],
+  [
+   293.2,
+   95.0,
+   0.49360000000000004,
+   0.020199999999999996,
+   3
+  ],
+  [
+   313.2,
+   95.0,
+   0.4696,
+   0.017100000000000004,
+   3
+  ],
+  [
+   318.15,
+   101.3,
+   0.469,
+   0.021,
+   4
+  ],
+  [
+   308.15,
+   101.0,
+   0.018000000000000016,
+   0.522,
+   5
+  ],
+  [
+   313.15,
+   101.3,
+   0.484,
+   0.019,
+   6
+  ],
+  [
+   365.85,
+   101.3,
+   0.362,
+   0.021,
+   6
+  ],
+  [
+   298.15,
+   100.0,
+   0.019,
+   0.486,
+   7
+  ],
+  [
+   298.15,
+   100.0,
+   0.0187,
+   0.4873,
+   8
+  ],
+  [
+   303.15,
+   101.3,
+   0.496,
+   0.017000000000000015,
+   9
+  ],
+  [
+   328.15,
+   101.0,
+   0.02,
+   0.434,
+   10
+  ],
+  [
+   366.23,
+   null,
+   0.3666,
+   0.0198,
+   11
+  ],
+  [
+   313.15,
+   101.0,
+   0.484,
+   0.019000000000000017,
+   12
+  ],
+  [
+   303.2,
+   101.0,
+   0.489,
+   0.02200000000000002,
+   13
+  ],
+  [
+   323.2,
+   101.0,
+   0.45699999999999996,
+   0.018000000000000016,
+   13
+  ],
+  [
+   343.2,
+   101.0,
+   0.41900000000000004,
+   0.016000000000000014,
+   13
+  ],
+  [
+   323.15,
+   101.0,
+   0.4574,
+   0.0167,
+   14
+  ],
+  [
+   333.15,
+   101.0,
+   0.4387,
+   0.0162,
+   14
+  ],
+  [
+   343.15,
+   101.0,
+   0.4189,
+   0.0172,
+   14
+  ],
+  [
+   353.15,
+   101.0,
+   0.3965,
+   0.0181,
+   14
+  ],
+  [
+   362.45,
+   101.0,
+   0.3673,
+   0.0187,
+   14
+  ]
+ ],
+ "records": [
+  {
+   "doi": "10.1016/j.fluid.2004.12.004",
+   "citation": "K. Rehak, P. Vonka, J. Dreiseitlova, Revision of the volumetric method for measurements of liquid liquid equilibria in binary systems, Fluid Phase Equilib. 230 (2005) 109-120",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2004.12.004.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 10, 11 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.fluid.2012.07.032",
+   "citation": "B. Almeida, T. M. Waldrigui, T. C. Alves, L. de Oliveira, M. Aznar, Experimental and calculated liquid-liquid equilibrium data for water + furfural + solvents, Fluid Phase Equilib. 334 (2012) 97-105",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.07.032.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 15, 16 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.fluid.2017.12.023",
+   "citation": "M. Toikka, D. Trofimova, A. Samarov, Liquid-liquid equilibrium and critical states for the quaternary system propionic acid-n-butanol-n-butyl propionate-water at 303.15 K, Fluid Phase Equilib. 460 (2018) 17-22",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2017.12.023.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 1, 2 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.fluid.2018.10.021",
+   "citation": "L. H. D. Oliveira, G. P. Morgado, R. Boni, L. R. Roque, R. R. Pinto, S. C. Rabelo, Liquid-liquid equilibrium data and thermophysical properties for ternary systems composed of water, acetic acid and different solvents, Fluid Phase Equilib. 482 (2019) 48-63",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2018.10.021.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 91 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.fluid.2019.04.020",
+   "citation": "A. Smirnov, A. Sadaeva, K. Podryadova, M. Toikka, Quaternary liquid-liquid equilibrium, solubility and critical states: Acetic acid - n-butanol - n-butyl acetate - water at 318.15 K and atmospheric pressure, Fluid Phase Equilib. 493 (2019) 102-108",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2019.04.020.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 9, 10 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.jct.2012.04.017",
+   "citation": "U. Domanska, M. Krolikowski, Extraction of butan-1-ol from water with ionic liquids at T = 308.15 K, J. Chem. Thermodyn. 53 (2012) 108-113",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2012.04.017.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 6, 7 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.jct.2014.07.021",
+   "citation": "V. Gomis, A. Font, M. D. Saquete, J. Garcia-Cano, Isothermal (liquid + liquid) equilibrium data at T = 313.15 K and isobaric (vapor + liquid + liquid) equilibrium data at 101.3 kPa for the ternary system (water + 1-butanol + p-xylene), J. Chem. Thermodyn. 79 (2014) 242-247",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2014.07.021.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 4, 5 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.jct.2015.11.002",
+   "citation": "A. Marciniak, M. Wlazlo, J. Gawkowska, Ternary (liquid + liquid) equilibria of {bis(trifluoromethylsulfonyl)-amide based ionic liquids + butan-1-ol + water}, J. Chem. Thermodyn. 94 (2016) 96-100",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.11.002.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 4, 5 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.jct.2016.06.010",
+   "citation": "H. Li, Z. Feng, L. Wan, C. Huang, T. Zhang, Y. Fang, (Liquid + liquid) equilibria of four alcohol-water systems containing 1,8-cineole at T = 298.15 K, J. Chem. Thermodyn. 101 (2016) 387-394",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2016.06.010.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 19, 20 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.jct.2018.03.024",
+   "citation": "V. Gomis, M. D. Saquete, A. Font, J. Garcia-Cano, I. Martinez-Castellanos, Phase equilibria of the water + 1-butanol + 2-pentanol ternary system at 101.3 kPa, J. Chem. Thermodyn. 123 (2018) 38-45",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2018.03.024.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 4, 5 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.jct.2019.03.001",
+   "citation": "U. Domanska, M. Wlazlo, M. Karpinska, Separation of water/butan-1-ol with ionic liquids in ternary liquid-liquid phase equilibrium, J. Chem. Thermodyn. 134 (2019) 76-83",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2019.03.001.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 5, 6 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/acs.jced.6b00725",
+   "citation": "L. Brits, A. C. Kouakou, A. J. Burger, C. E. Schwarz, Isobaric Vapor Liquid Liquid Phase Equilibria Measurements of Three Ternary Water + 2-Butanone + Aliphatic Alcohol (Ethanol, 1-Propanol, 2-Propanol) Systems at 101.3 kPa, J. Chem. Eng. Data 62 (2017) 1767-1775",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00725.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 5, 7 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/je400501z",
+   "citation": "V. Gomis, A. Font, M. D. Saquete, J. Garcia-Cano, Liquid Liquid, Vapor Liquid, and Vapor Liquid Liquid Equilibrium Data for the Water n-Butanol Cyclohexane System at Atmospheric Pressure: Experimental Determination and Correlation, J. Chem. Eng. Data 58 (2013) 3320-3326",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je400501z.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 4, 5 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/je5007218",
+   "citation": "C. Narasigadu, M. Naidoo, D. Ramjugernath, Ternary Liquid Liquid Equilibrium Data for the Water + Acetonitrile + {Butan-1-ol or 2-Methylpropan-1-ol} Systems at (303.2, 323.2, 343.2) K and 1 atm, J. Chem. Eng. Data 59 (2014) 3820-3824",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je5007218.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 7, 8 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/je700411p",
+   "citation": "E. Lladosa, J. B. Monton, M. C. Burguet, R. Munoz, Phase Equilibrium for the Esterification Reaction of Acetic Acid + Butan-1-ol at 101.3 kPa, J. Chem. Eng. Data 53 (2008) 108-115",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je700411p.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 14, 15 (phases Liquid mixture 1 and 2)"
+  }
+ ],
+ "notes": "To be checked by a person against the records (AGENTS.md rule 4)."
+}
