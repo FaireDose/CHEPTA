@@ -22,7 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from thermo.wilson import Wilson  # noqa: E402
 from thermo.interaction_parameters import IPDB  # noqa: E402
 import thermo  # noqa: E402
-from reference_model import System, COMPONENTS  # noqa: E402
+from reference_model import System, COMPONENTS, ALL_BINARIES  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "validation" / "fixtures" / "wilson.json"
@@ -54,8 +54,13 @@ def main():
                 gamma.append({"components": ids, "x": x, "T_K": T, "gamma": [float(g) for g in thermo_gammas(ids, x, T)]})
     vle = []
     for f in VLE_FILES:
+      for set_name in ("chemsep", "default"):
         d = json.loads((ROOT / "validation" / "data" / f).read_text())
-        s = System(d["components"], "WILSON")
+        pair = set(d["components"])
+        recs = [p for p in ALL_BINARIES if p["model"] == "WILSON" and {p["i"], p["j"]} == pair
+                and (p.get("set") == "chemsep" if set_name == "chemsep" else p.get("default", True))]
+        s = System(d["components"], "WILSON", params=recs)
+        used = recs[0].get("set")
         rows = []
         for r in d["rows"]:
             row = dict(zip(d["columns"], r))
@@ -66,15 +71,16 @@ def main():
             rows.append({"x_1": x1, "T_K_data": row["T_K"], "y_1_data": row["y_1"], "T_K": float(T), "y_1": float(y[0])})
         dT = float(np.mean([abs(r["T_K"] - r["T_K_data"]) for r in rows]))
         dy = float(np.mean([abs(r["y_1"] - r["y_1_data"]) for r in rows]))
-        vle.append({"file": f, "components": d["components"], "P_kPa": d["P_kPa"], "rows": rows,
-                    "mean_abs_dT_K": dT, "mean_abs_dy": dy})
-        print(f"{f}: Wilson (ChemSep set) mean |dT| {dT:.3f} K, mean |dy| {dy:.4f}, {len(rows)} points")
+        vle.append({"file": f, "components": d["components"], "P_kPa": d["P_kPa"], "set": used,
+                    "chosen": set_name, "rows": rows, "mean_abs_dT_K": dT, "mean_abs_dy": dy})
+        print(f"{f}: Wilson set {used} ({set_name}) mean |dT| {dT:.3f} K, mean |dy| {dy:.4f}, {len(rows)} points")
     doc = {
         "_about": "Reference values for the Wilson model (proposal 0016), from validation/python/reference_wilson.py. "
                   "gamma: thermo.wilson.Wilson with ChemSep's Wilson set read from thermo's IPDB (thermo " + thermo.__version__ + "). "
                   "thermo_doc_example: the example of thermo's Wilson documentation (ethanol + water, 343.15 K, ChemSep set). "
-                  "vle: bubble temperatures and vapour fractions of reference_model.System (model WILSON, binaries.json) at the "
-                  "liquid compositions of open isobaric data sets, with the measured values.",
+                  "vle: bubble temperatures and vapour fractions of reference_model.System (model WILSON, binaries.json; ChemSep's set "
+                  "and the default set, fitted to these data where proposal 0016 step 2 wrote a fit) at the liquid compositions "
+                  "of open isobaric data sets, with the measured values.",
         "thermo_doc_example": {"components": ["ethanol", "water"], "x": [0.252, 0.748], "T_K": 343.15,
                                "gamma_printed": [1.95733110, 1.1600677]},
         "gamma": gamma,

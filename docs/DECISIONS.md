@@ -241,8 +241,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   maintainer (2026-11-04): "PR and SRK should be ok for now". Proposal 0018 is postponed with its findings. Open: PR and
   SRK k_ij fitted to the open high-pressure data (CO2, H2, CO, CH4 + methanol; CO2 + water), whose deviations decide
   whether 0018 is reopened.
-- **Wilson (M1, proposal 0016; docs/decisions/2026-10-30-06-wilson.md):** accepted and merged (#192); the fits to
-  ThermoML data (step 2) wait until needed, after M3 (the maintainer, 2026-11-04).
+- **Wilson fits (M1, proposal 0016 step 2; docs/decisions/2026-11-04-06-wilson-fits.md):** review the pull request;
+  the five pairs are decided by proposal 0019, answer 4. The three "miscibility-unchecked" Wilson fits wait for roadmap
+  D9 (proposal 0019, step 2).
+- **Pairs with two liquids (D9, proposal 0019; docs/decisions/2026-11-04-12-two-liquid-pairs.md):** step 1, the
+  proposal and the evidence survey (57 pairs: 22 partly miscible, 17 miscible, 18 not known); accepted with the
+  maintainer's answers of 2026-11-05 (gates as a start, "miscible below the measured temperature, not known above it",
+  Wilson: refuse diethyl carbonate + water, keep the other four; contradicted ChemSep sets not the default where another
+  set exists). Pending: a person checks the classes against the ThermoML records; step 2 (classes, labels, refit).
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order
