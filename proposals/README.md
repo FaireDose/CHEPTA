@@ -37,3 +37,4 @@ interface or file format, the steps of the core track in the
 | 0015 | [Separation units, and the program that builds them across the roadmap's tracks](0015-separation-units.md) | Accepted |
 | 0016 | [The Wilson activity model](0016-wilson.md) | Accepted (step 1 implemented; the fits postponed) |
 | 0017 | [Henry components: gases dissolved in water in the activity models](0017-henry-components.md) | Proposed |
+| 0019 | [Pairs with two liquids: how they are fitted and used](0019-two-liquid-pairs.md) | Proposed |

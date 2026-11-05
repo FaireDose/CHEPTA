@@ -1,0 +1,1377 @@
+{
+ "_about": "Open evidence on the miscibility of the pairs whose NRTL or UNIQUAC sets predict two liquids, from the NIST TRC ThermoML Archive (bulk file ThermoML.v2020-09-30.tgz, doi 10.18434/mds2-2422, NIST open license), by validation/python/two_liquid_survey.py (proposal 0019, step 1). Mole fractions are of the first component of the pair key. A person checks the classes against the records before they are used (AGENTS.md rule 4).",
+ "pairs": [
+  {
+   "pair": "1-butanol+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC",
+    "refused fit NRTL",
+    "refused fit UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 51,
+    "articles": [
+     "Almeida, B. 2012, doi 10.1016/j.fluid.2012.07.032",
+     "Benbouzid, H.[Hosna] 2012, doi 10.1016/j.jct.2011.11.020",
+     "Brits, L.[Leanne] 2017, doi 10.1021/acs.jced.6b00725",
+     "Cardenas, H.[Harry] 2015, doi 10.1016/j.fluid.2015.03.040",
+     "Chen, J. -T.[Jui-Tang] 2007, doi 10.1016/j.fluid.2007.07.011",
+     "Dalmolin, I.[Irede] 2017, doi 10.1016/j.jct.2017.03.019",
+     "Domanska, U. 2019, doi 10.1016/j.jct.2019.03.001",
+     "Domanska, U.[Urszula] 2012, doi 10.1016/j.jct.2012.04.017",
+     "Garcia-Cano, J.[Jorge] 2016, doi 10.1016/j.jct.2016.04.013",
+     "Ghanadzadeh, H. 2008, doi 10.1016/j.jct.2008.07.001",
+     "Gomis, V.[Vicente] 2013, doi 10.1021/je400501z",
+     "Gomis, V.[Vicente] 2014, doi 10.1016/j.jct.2014.07.021",
+     "Gomis, Vicente 2018, doi 10.1016/j.jct.2018.03.024",
+     "Li, H.[Hengde] 2016, doi 10.1016/j.jct.2016.06.010",
+     "Lladosa, E.[Estela] 2008, doi 10.1021/je700411p",
+     "Marciniak, A.[Andrzej] 2016, doi 10.1016/j.jct.2015.11.002",
+     "Narasigadu, C.[Caleb] 2014, doi 10.1021/je5007218",
+     "Oliveira, Leonardo Hadlich de 2019, doi 10.1016/j.fluid.2018.10.021",
+     "Rehak, K.[Karel] 2005, doi 10.1016/j.fluid.2004.12.004",
+     "Smirnov, Alexander 2019, doi 10.1016/j.fluid.2019.04.020",
+     "Toikka, M.[Maria] 2018, doi 10.1016/j.fluid.2017.12.023",
+     "Wongsawa, T.[Thidarat] 2014, doi 10.1016/j.fluid.2014.07.011",
+     "Wu, Y.-Y.[Yan-Yang] 2008, doi 10.1016/j.fluid.2007.12.003",
+     "Xu, S.[Shuai] 2019, doi 10.1021/acs.jced.9b00305",
+     "Ye, T.[Tiantian] 2017, doi 10.1021/acs.jced.7b00302",
+     "Yu, C.[Chao] 2017, doi 10.1021/acs.jced.6b00941",
+     "Zheng, S.[Shaohua] 2016, doi 10.1016/j.jct.2015.10.003"
+    ],
+    "T_K": [
+     278.15,
+     366.23
+    ]
+   },
+   "one_liquid_inside_predicted_split": {
+    "ChemSep NRTL": {
+     "points": 55,
+     "T_K": [
+      283.15,
+      315.15
+     ],
+     "articles": [
+      "Cristino, Ana F. 2019, doi 10.1016/j.jct.2019.03.006",
+      "Fenclova, D.[Dana] 2004, doi 10.1021/je049738c",
+      "Khosroshahi, E. F.[Elmira Fanaei] 2016, doi 10.1016/j.fluid.2016.04.007"
+     ]
+    },
+    "ChemSep UNIQUAC": {
+     "points": 71,
+     "T_K": [
+      283.15,
+      315.15
+     ],
+     "articles": [
+      "Cristino, Ana F. 2019, doi 10.1016/j.jct.2019.03.006",
+      "Khosroshahi, E. F.[Elmira Fanaei] 2016, doi 10.1016/j.fluid.2016.04.007"
+     ]
+    }
+   },
+   "one_liquid_sets": 16,
+   "class": "partly miscible",
+   "refused_fit": true,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "1-hexanol+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 19,
+    "articles": [
+     "Ashour, I.[Ibrahim] 2005, doi 10.1021/je049799a",
+     "Cardenas, H.[Harry] 2015, doi 10.1016/j.fluid.2015.03.040",
+     "Cavalcanti, Kyriale V.M. 2019, doi 10.1016/j.jct.2019.06.010",
+     "Chen, J. -T.[Jui-Tang] 2008, doi 10.1021/je700561p",
+     "Lin, H.[Ho-mu] 2003, doi 10.1021/je020133v",
+     "Schmitt, M. 2005, doi 10.1021/je050141m",
+     "Senol, A.[Aynur] 2004, doi 10.1016/j.jct.2004.07.016",
+     "Senol, A.[Aynur] 2004, doi 10.1021/je049747l",
+     "Tian, Y.[Yiling] 2014, doi 10.1021/je500450w"
+    ],
+    "T_K": [
+     278.15,
+     353.15
+    ]
+   },
+   "one_liquid_sets": 1,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "1-propanol+cyclohexane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep NRTL": {
+     "points": 3,
+     "T_K": [
+      293.15,
+      293.15
+     ],
+     "articles": [
+      "Gonzalez, B.[Begona] 2007, doi 10.1016/j.jct.2006.06.008"
+     ]
+    },
+    "ChemSep UNIQUAC": {
+     "points": 1,
+     "T_K": [
+      298.15,
+      298.15
+     ],
+     "articles": [
+      "Alaoui, F. E. M.[Fatima E.M.] 2017, doi 10.1016/j.jct.2016.10.005"
+     ]
+    }
+   },
+   "one_liquid_sets": 7,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "1-propanol+n-decane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 2,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "1-propanol+n-heptane",
+   "predictions": [
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep UNIQUAC": {
+     "points": 258,
+     "T_K": [
+      293.1,
+      323.15
+     ],
+     "articles": [
+      "Alaoui, F. E. M.[Fatima E.M.] 2014, doi 10.1021/je5004912",
+      "Dzida, M.[Marzena] 2003, doi 10.1021/je030136n",
+      "Lien, P.-J.[Pei-Jung] 2003, doi 10.1021/je020149l",
+      "Mato, M. M.  2013, doi 10.1016/j.jct.2013.06.018"
+     ]
+    }
+   },
+   "one_liquid_sets": 5,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "1-propanol+n-hexane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep NRTL": {
+     "points": 2,
+     "T_K": [
+      298.15,
+      298.15
+     ],
+     "articles": [
+      "Bosse, D.[Dennis] 2005, doi 10.1021/je0497303"
+     ]
+    },
+    "ChemSep UNIQUAC": {
+     "points": 2,
+     "T_K": [
+      298.15,
+      298.15
+     ],
+     "articles": [
+      "Bosse, D.[Dennis] 2005, doi 10.1021/je0497303"
+     ]
+    }
+   },
+   "one_liquid_sets": 1,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "1-propanol+n-octane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 7,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "1-propanol+water",
+   "predictions": [
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep UNIQUAC": {
+     "points": 264,
+     "T_K": [
+      282.15,
+      362.15
+     ],
+     "articles": [
+      "Costa, H.[Henrique] 2009, doi 10.1021/je900337a",
+      "Gonzalez, B.[Begona] 2008, doi 10.1021/je700700f",
+      "Jozwiak, M.[Malgorzata] 2017, doi 10.1016/j.jct.2017.07.003",
+      "Kitajima, H.[Hiroshi] 2003, doi 10.1021/je034101z",
+      "Ono, T.[Takumi] 2016, doi 10.1016/j.fluid.2015.07.012",
+      "Rehfeldt, S.[Sebastian] 2010, doi 10.1016/j.fluid.2009.12.009",
+      "Romero, C. M.[Carmen M.] 2008, doi 10.1016/j.jct.2008.07.005",
+      "Zarei, H. A.[Hossein A.] 2008, doi 10.1021/je800158z"
+     ]
+    }
+   },
+   "one_liquid_sets": 52,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "2-3-butanediol+water",
+   "predictions": [
+    "ChemSep NRTL"
+   ],
+   "one_liquid_sets": 10,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "2-butanone+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 9,
+    "articles": [
+     "Benbouzid, H.[Hosna] 2012, doi 10.1016/j.jct.2011.11.020",
+     "Brits, L.[Leanne] 2017, doi 10.1021/acs.jced.6b00725",
+     "Shahid, Z. 2017, doi 10.1021/acs.jced.6b00703",
+     "Wang, C.[Cui] 2016, doi 10.1016/j.jct.2016.06.033"
+    ],
+    "T_K": [
+     283.15,
+     346.73
+    ]
+   },
+   "one_liquid_sets": 3,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "2-propanol+glycerol",
+   "predictions": [
+    "refused fit NRTL",
+    "refused fit UNIQUAC"
+   ],
+   "one_liquid_sets": 2,
+   "class": "not known",
+   "refused_fit": true,
+   "wilson_pr200": true
+  },
+  {
+   "pair": "acetonitrile+water",
+   "predictions": [
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep UNIQUAC": {
+     "points": 104,
+     "T_K": [
+      279.15,
+      328.15
+     ],
+     "articles": [
+      "Dhondge, S. S.[Sudhakar S.] 2007, doi 10.1016/j.jct.2006.08.007",
+      "Gagliardi, L. G.[Leonardo G.] 2007, doi 10.1021/je700055p",
+      "Grande, M. d. C.[Maria del C.] 2006, doi 10.1016/j.jct.2005.08.009",
+      "Kolker, A. M.[Arkady M.] 2010, doi 10.1016/j.jct.2010.04.019",
+      "Morrone, S. R. 2012, doi 10.1016/j.fluid.2011.09.016",
+      "Rafati, A. A.[Amir Abbas] 2010, doi 10.1021/je1001329",
+      "Zarei, H. A.[Hossein A.] 2008, doi 10.1021/je700645p"
+     ]
+    }
+   },
+   "one_liquid_sets": 15,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "acrylonitrile+water",
+   "predictions": [
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 2,
+    "articles": [
+     "Zhang, X.[Xuemei] 2012, doi 10.1021/je2009208"
+    ],
+    "T_K": [
+     288.15,
+     313.15
+    ]
+   },
+   "one_liquid_sets": 0,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "aniline+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 3,
+    "articles": [
+     "Grenner, A.[Andreas] 2006, doi 10.1021/je0505366",
+     "Grozdanic, N.[Nikola] 2015, doi 10.1021/je500448j",
+     "Klauck, M.[Mandy] 2014, doi 10.1016/j.fluid.2014.02.023"
+    ],
+    "T_K": [
+     298.15,
+     333.15
+    ]
+   },
+   "one_liquid_sets": 3,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "bdo+water",
+   "predictions": [
+    "ChemSep NRTL"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep NRTL": {
+     "points": 59,
+     "T_K": [
+      283.15,
+      323.15
+     ],
+     "articles": [
+      "Checoni, R. F.[Ricardo Figueiredo] 2010, doi 10.1016/j.jct.2009.11.018",
+      "George, J.[John] 2003, doi 10.1021/je0340755",
+      "Moosavi, M.[Mehrdad] 2017, doi 10.1021/acs.jced.6b00526",
+      "Nagamachi, M. Y. 2006, doi 10.1016/j.jct.2005.06.018",
+      "Yang, C.[Changsheng] 2004, doi 10.1021/je0341918",
+      "Zemankova, K.[Katerina] 2013, doi 10.1016/j.fluid.2013.06.041"
+     ]
+    }
+   },
+   "one_liquid_sets": 22,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "cumene+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 4,
+    "articles": [
+     "Asrami, M. R.[Mahdieh Razi] 2019, doi 10.1021/acs.jced.8b01202",
+     "Gilani, A. G.[A. Ghanadzadeh] 2015, doi 10.1016/j.jct.2015.07.020",
+     "Saien, Javad 2017, doi 10.1021/acs.jced.7b00393"
+    ],
+    "T_K": [
+     293.2,
+     318.15
+    ]
+   },
+   "one_liquid_sets": 2,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "cyclohexane+ethanol",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep NRTL": {
+     "points": 55,
+     "T_K": [
+      283.15,
+      313.15
+     ],
+     "articles": [
+      "Bosse, D.[Dennis] 2005, doi 10.1021/je0497303",
+      "Ghanadzadeh, A. 2005, doi 10.1016/j.jct.2004.09.017",
+      "Gonzalez, B.[Begona] 2007, doi 10.1016/j.jct.2006.06.008",
+      "Vega-Maza, D.[David] 2013, doi 10.1016/j.jct.2012.07.018"
+     ]
+    },
+    "ChemSep UNIQUAC": {
+     "points": 139,
+     "T_K": [
+      283.15,
+      333.15
+     ],
+     "articles": [
+      "Bosse, D.[Dennis] 2005, doi 10.1021/je0497303",
+      "Ghanadzadeh, A. 2005, doi 10.1016/j.jct.2004.09.017",
+      "Gonzalez, B.[Begona] 2007, doi 10.1016/j.jct.2006.06.008",
+      "Lien, P.-J.[Pei-Jung] 2003, doi 10.1021/je020149l",
+      "Vega-Maza, D.[David] 2013, doi 10.1016/j.jct.2012.07.018"
+     ]
+    }
+   },
+   "one_liquid_sets": 9,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "cyclohexane+methanol",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 4,
+    "articles": [
+     "Atik, Z.[Zadjia] 2008, doi 10.1021/je8001688",
+     "Hammami, N. E. 2014, doi 10.1016/j.fluid.2014.10.013",
+     "Trejo, A.[Arturo] 2006, doi 10.1021/je0505321"
+    ],
+    "T_K": [
+     278.15,
+     316.15
+    ]
+   },
+   "one_liquid_inside_predicted_split": {
+    "ChemSep UNIQUAC": {
+     "points": 86,
+     "T_K": [
+      321.15,
+      325.15
+     ],
+     "articles": [
+      "Hammami, N. E. 2014, doi 10.1016/j.fluid.2014.10.013"
+     ]
+    },
+    "ChemSep NRTL": {
+     "points": 40,
+     "T_K": [
+      321.15,
+      325.15
+     ],
+     "articles": [
+      "Hammami, N. E. 2014, doi 10.1016/j.fluid.2014.10.013"
+     ]
+    }
+   },
+   "one_liquid_sets": 3,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "cyclohexanone+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 8,
+    "articles": [
+     "Bermudez-Salguero, C.[Carolina] 2011, doi 10.1021/je200468r",
+     "Gilani, H. G. 2013, doi 10.1016/j.jct.2012.10.028",
+     "Senol, A.[Aynur] 2005, doi 10.1016/j.jct.2005.01.014",
+     "Shahid, Z. 2017, doi 10.1021/acs.jced.6b00703",
+     "Shevelyova, M. P.[Marina P.] 2007, doi 10.1021/je7000683"
+    ],
+    "T_K": [
+     283.15,
+     323.15
+    ]
+   },
+   "one_liquid_sets": 7,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "diethyl-carbonate+water",
+   "predictions": [
+    "refused fit NRTL",
+    "refused fit UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 14,
+    "articles": [
+     "Arango, I. C.[Isabel C.] 2013, doi 10.1016/j.fluid.2012.11.026",
+     "Chen, Y.[Yao] 2014, doi 10.1021/je500530q",
+     "Ginting, R. R.[Rizqy Romadhona] 2017, doi 10.1021/acs.jced.6b00763",
+     "Montoya, I. C. A.[Isabel C. Arango] 2012, doi 10.1021/je300094j",
+     "Rachmawati, Diana 2019, doi 10.1021/acs.jced.8b00937",
+     "Wang, C.[Cui] 2016, doi 10.1016/j.jct.2016.06.033",
+     "Zeng, J.[Jun] 2013, doi 10.1016/j.jct.2013.04.002"
+    ],
+    "T_K": [
+     293.15,
+     363.15
+    ]
+   },
+   "one_liquid_sets": 2,
+   "class": "partly miscible",
+   "refused_fit": true,
+   "wilson_pr200": true
+  },
+  {
+   "pair": "diethyl-ether+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 1,
+    "articles": [
+     "Shahid, Z. 2017, doi 10.1021/acs.jced.6b00703"
+    ],
+    "T_K": [
+     293.15,
+     293.15
+    ]
+   },
+   "one_liquid_sets": 2,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "dimethyl-carbonate+glycerol",
+   "predictions": [
+    "refused fit NRTL"
+   ],
+   "two_liquid_sets": {
+    "sets": 2,
+    "articles": [
+     "Wang, H.[Huajun] 2012, doi 10.1021/je201036h"
+    ],
+    "T_K": [
+     303.15,
+     333.15
+    ]
+   },
+   "one_liquid_sets": 0,
+   "class": "partly miscible",
+   "refused_fit": true,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "dioxane+water",
+   "predictions": [
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 16,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "ethanol+ethylbenzene",
+   "predictions": [
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 3,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "ethanol+isooctane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep NRTL": {
+     "points": 46,
+     "T_K": [
+      288.15,
+      298.15
+     ],
+     "articles": [
+      "Chen, H.-W.[Hui-Wen] 2005, doi 10.1021/je050010l",
+      "Chen, H.-W.[Hui-Wen] 2006, doi 10.1021/je050367p",
+      "Hwang, I.-C.[In-Chan] 2007, doi 10.1021/je700094y",
+      "Hwang, I.-C.[In-Chan] 2007, doi 10.1021/je7003512",
+      "Ku, H. -C.[Hsu-Chen] 2005, doi 10.1021/je049655w",
+      "Moravkova, L. 2011, doi 10.1016/j.jct.2011.06.021",
+      "Wang, C.-C.[Chen-Chieh] 2005, doi 10.1021/je0501639"
+     ]
+    },
+    "ChemSep UNIQUAC": {
+     "points": 523,
+     "T_K": [
+      288.15,
+      328.15
+     ],
+     "articles": [
+      "Chen, H.-W.[Hui-Wen] 2005, doi 10.1021/je050010l",
+      "Chen, H.-W.[Hui-Wen] 2006, doi 10.1021/je050367p",
+      "Hwang, I.-C.[In-Chan] 2007, doi 10.1021/je700094y",
+      "Hwang, I.-C.[In-Chan] 2007, doi 10.1021/je7003512",
+      "Hwang, I.-C.[In-Chan] 2008, doi 10.1021/je7005743",
+      "Kim, H.-D.[Hyeon-Deok] 2009, doi 10.1021/je9001416",
+      "Ku, H. -C.[Hsu-Chen] 2005, doi 10.1021/je049655w",
+      "Moravkova, L. 2011, doi 10.1016/j.jct.2011.06.021",
+      "Wang, C.-C.[Chen-Chieh] 2005, doi 10.1021/je0501639"
+     ]
+    }
+   },
+   "one_liquid_sets": 18,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "ethanol+isopentane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 0,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "ethanol+isoprene",
+   "predictions": [
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 0,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "ethanol+n-decane",
+   "predictions": [
+    "refused fit NRTL",
+    "refused fit UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "refused fit NRTL": {
+     "points": 133,
+     "T_K": [
+      323.2,
+      332.97
+     ],
+     "articles": [
+      "Nourozieh, H.[Hossein] 2013, doi 10.1016/j.jct.2012.11.017",
+      "Zamora-Lopez, H. S.[Hector S.] 2012, doi 10.1016/j.jct.2012.06.012"
+     ]
+    },
+    "refused fit UNIQUAC": {
+     "points": 133,
+     "T_K": [
+      323.2,
+      332.97
+     ],
+     "articles": [
+      "Nourozieh, H.[Hossein] 2013, doi 10.1016/j.jct.2012.11.017",
+      "Zamora-Lopez, H. S.[Hector S.] 2012, doi 10.1016/j.jct.2012.06.012"
+     ]
+    }
+   },
+   "one_liquid_sets": 7,
+   "class": "miscible",
+   "refused_fit": true,
+   "wilson_pr200": true
+  },
+  {
+   "pair": "ethanol+n-heptane",
+   "predictions": [
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep UNIQUAC": {
+     "points": 1204,
+     "T_K": [
+      293.05,
+      373.15
+     ],
+     "articles": [
+      "Abdussalam, A. A.[Ali A.] 2016, doi 10.1016/j.jct.2016.04.014",
+      "Dzida, M.[Marzena] 2005, doi 10.1016/j.jct.2004.10.001",
+      "Dzida, M.[Marzena] 2005, doi 10.1016/j.jct.2004.12.002",
+      "Pereiro, A. B. 2007, doi 10.1016/j.jct.2007.02.008",
+      "Vega-Maza, D.[David] 2011, doi 10.1016/j.jct.2011.06.019",
+      "Watson, G.[Guillaume] 2006, doi 10.1021/je050261u",
+      "Zeberg-Mikkelsen, C. K.[Claus K.] 2006, doi 10.1016/j.fluid.2006.01.030"
+     ]
+    }
+   },
+   "one_liquid_sets": 14,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "ethanol+n-hexadecane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 2,
+    "articles": [
+     "Hwang, I.-C.[In-Chan] 2007, doi 10.1021/je700233p"
+    ],
+    "T_K": [
+     294.4,
+     323.15
+    ]
+   },
+   "one_liquid_sets": 0,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "ethanol+n-hexane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep NRTL": {
+     "points": 257,
+     "T_K": [
+      273.15,
+      313.15
+     ],
+     "articles": [
+      "Bosse, D.[Dennis] 2005, doi 10.1021/je0497303",
+      "Feitosa, F. X. 2009, doi 10.1021/je800925v",
+      "Giner, B.[Beatriz] 2007, doi 10.1021/je700215z",
+      "Kwaterski, M.[Matthias] 2005, doi 10.1016/j.fluid.2005.08.001",
+      "Pereiro, A. B. 2007, doi 10.1016/j.jct.2007.02.008"
+     ]
+    },
+    "ChemSep UNIQUAC": {
+     "points": 251,
+     "T_K": [
+      273.15,
+      313.15
+     ],
+     "articles": [
+      "Bosse, D.[Dennis] 2005, doi 10.1021/je0497303",
+      "Feitosa, F. X. 2009, doi 10.1021/je800925v",
+      "Giner, B.[Beatriz] 2007, doi 10.1021/je700215z",
+      "Kwaterski, M.[Matthias] 2005, doi 10.1016/j.fluid.2005.08.001",
+      "Pereiro, A. B. 2007, doi 10.1016/j.jct.2007.02.008"
+     ]
+    }
+   },
+   "one_liquid_sets": 9,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "ethanol+n-octane",
+   "predictions": [
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep UNIQUAC": {
+     "points": 452,
+     "T_K": [
+      273.15,
+      373.15
+     ],
+     "articles": [
+      "Abdussalam, A. A.[Ali A.] 2016, doi 10.1016/j.jct.2016.04.014",
+      "Estrada-Baltazar, A.[Alejandro] 2013, doi 10.1021/je4004806",
+      "Feitosa, F. X. 2009, doi 10.1021/je800925v",
+      "Lien, P.-J.[Pei-Jung] 2003, doi 10.1021/je020149l",
+      "Segade, Luisa 2003, doi 10.1021/je034053i"
+     ]
+    }
+   },
+   "one_liquid_sets": 9,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "ethanol+n-pentane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 0,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "ethanol+p-xylene",
+   "predictions": [
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 1,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "ethylbenzene+methanol",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 1,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "furfural+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC",
+    "refused fit NRTL",
+    "refused fit UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 16,
+    "articles": [
+     "Almeida, B. 2012, doi 10.1016/j.fluid.2012.07.032",
+     "Cui, Peng 2018, doi 10.1016/j.jct.2018.01.027",
+     "Dietz, Carin H. J. T. 2017, doi 10.1021/acs.jced.7b00184",
+     "Galeotti, N.[Nadia] 2019, doi 10.1021/acs.jced.9b00095",
+     "Hertel, M. O.[Marcus O.] 2007, doi 10.1021/je700122y",
+     "Lomba, L.[Laura] 2013, doi 10.1016/j.jct.2013.06.020",
+     "Mannisto, M.[Mikael] 2016, doi 10.1021/acs.jced.5b00738",
+     "Mannisto, M.[Mikael] 2016, doi 10.1021/acs.jced.6b00150",
+     "Rose, Harrison B. 2018, doi 10.1021/acs.jced.7b01039",
+     "Sunder, M. S. 2003, doi 10.1021/je020053r",
+     "Wongsawa, T.[Thidarat] 2014, doi 10.1016/j.fluid.2014.07.011"
+    ],
+    "T_K": [
+     288.2,
+     373.1
+    ]
+   },
+   "one_liquid_sets": 3,
+   "class": "partly miscible",
+   "refused_fit": true,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "gvl+water",
+   "predictions": [
+    "refused fit NRTL"
+   ],
+   "one_liquid_sets": 5,
+   "class": "not known",
+   "refused_fit": true,
+   "wilson_pr200": true
+  },
+  {
+   "pair": "isoamyl-alcohol+water",
+   "predictions": [
+    "ChemSep NRTL"
+   ],
+   "two_liquid_sets": {
+    "sets": 7,
+    "articles": [
+     "Kadir, S.[Samir] 2008, doi 10.1021/je700558x",
+     "Li, Huanxin 2018, doi 10.1016/j.jct.2018.01.013",
+     "Oliveira, Leonardo Hadlich de 2019, doi 10.1016/j.fluid.2018.10.021",
+     "Saquete, Maria Dolores 2018, doi 10.1021/acs.jced.8b00308"
+    ],
+    "T_K": [
+     288.2,
+     368.06
+    ]
+   },
+   "one_liquid_sets": 4,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "isobutanol+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 11,
+    "articles": [
+     "Bermudez-Salguero, C.[Carolina] 2011, doi 10.1021/je200468r",
+     "Ginting, R. R.[Rizqy Romadhona] 2017, doi 10.1021/acs.jced.6b00763",
+     "Kadir, S.[Samir] 2008, doi 10.1021/je700558x",
+     "Li, Huanxin 2018, doi 10.1016/j.jct.2018.01.013",
+     "Narasigadu, C.[Caleb] 2014, doi 10.1021/je5007218",
+     "Xu, S.[Shuai] 2019, doi 10.1021/acs.jced.9b00305"
+    ],
+    "T_K": [
+     288.2,
+     343.2
+    ]
+   },
+   "one_liquid_sets": 7,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "isooctane+methanol",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 4,
+    "articles": [
+     "Dechambre, D. 2014, doi 10.1016/j.fluid.2013.10.048",
+     "Rastegar, R.[Reza] 2011, doi 10.1021/je100916h"
+    ],
+    "T_K": [
+     283.15,
+     298.15
+    ]
+   },
+   "one_liquid_sets": 0,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "isoprene+methanol",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 0,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "m-xylene+methanol",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep NRTL": {
+     "points": 27,
+     "T_K": [
+      303.15,
+      323.15
+     ],
+     "articles": [
+      "Hyder, M. K. Mohammad Ziaul 2018, doi 10.1021/acs.jced.7b00971"
+     ]
+    },
+    "ChemSep UNIQUAC": {
+     "points": 23,
+     "T_K": [
+      303.15,
+      323.15
+     ],
+     "articles": [
+      "Hyder, M. K. Mohammad Ziaul 2018, doi 10.1021/acs.jced.7b00971"
+     ]
+    }
+   },
+   "one_liquid_sets": 1,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "methanol+methylcyclohexane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 8,
+    "articles": [
+     "Bendova, M.[Magdalena] 2003, doi 10.1021/je020135f",
+     "Bendova, M.[Magdalena] 2006, doi 10.1016/j.fluid.2005.09.025"
+    ],
+    "T_K": [
+     288.15,
+     313.15
+    ]
+   },
+   "one_liquid_inside_predicted_split": {
+    "ChemSep UNIQUAC": {
+     "points": 12,
+     "T_K": [
+      298.15,
+      313.15
+     ],
+     "articles": [
+      "Bendova, M.[Magdalena] 2003, doi 10.1021/je020135f"
+     ]
+    },
+    "ChemSep NRTL": {
+     "points": 6,
+     "T_K": [
+      298.15,
+      313.15
+     ],
+     "articles": [
+      "Bendova, M.[Magdalena] 2003, doi 10.1021/je020135f"
+     ]
+    }
+   },
+   "one_liquid_sets": 1,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "methanol+n-butane",
+   "predictions": [
+    "ChemSep NRTL"
+   ],
+   "one_liquid_sets": 0,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "methanol+n-heptane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC",
+    "refused fit NRTL",
+    "refused fit UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 8,
+    "articles": [
+     "Bezold, Franziska 2018, doi 10.1016/j.fluid.2018.08.020",
+     "Casas, L. M.[Lidia M.] 2008, doi 10.1021/je700397g",
+     "Marciniak, A.[Andrzej] 2012, doi 10.1016/j.fluid.2012.01.018",
+     "Narasigadu, C. 2013, doi 10.1016/j.fluid.2012.11.008"
+    ],
+    "T_K": [
+     268.15,
+     317.98
+    ]
+   },
+   "one_liquid_sets": 1,
+   "class": "partly miscible",
+   "refused_fit": true,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "methanol+n-hexane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 9,
+    "articles": [
+     "Casas, L. M.[Lidia M.] 2008, doi 10.1021/je700397g",
+     "Gramajo de Doz, M. B.[Monica B.] 2011, doi 10.1016/j.fluid.2011.02.022",
+     "Perez, E. 2006, doi 10.1016/j.fluid.2005.12.029",
+     "Trejo, A.[Arturo] 2006, doi 10.1021/je0505321",
+     "Zhu, Zhaoyou 2019, doi 10.1016/j.jct.2019.06.024"
+    ],
+    "T_K": [
+     268.15,
+     308.15
+    ]
+   },
+   "one_liquid_sets": 0,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "methanol+n-octane",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 0,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "methanol+p-xylene",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep NRTL": {
+     "points": 27,
+     "T_K": [
+      303.15,
+      323.15
+     ],
+     "articles": [
+      "Hyder, M. K. Mohammad Ziaul 2018, doi 10.1021/acs.jced.7b00971"
+     ]
+    },
+    "ChemSep UNIQUAC": {
+     "points": 23,
+     "T_K": [
+      303.15,
+      323.15
+     ],
+     "articles": [
+      "Hyder, M. K. Mohammad Ziaul 2018, doi 10.1021/acs.jced.7b00971"
+     ]
+    }
+   },
+   "one_liquid_sets": 2,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "methyl-acetate+water",
+   "predictions": [
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 9,
+    "articles": [
+     "Cehreli, S.[Suheyla] 2006, doi 10.1016/j.fluid.2005.11.024",
+     "Hsieh, C.-T.[Cheng-Ting] 2008, doi 10.1016/j.fluid.2008.07.004",
+     "del Pozo, Irene 2018, doi 10.1016/j.jct.2018.02.010"
+    ],
+    "T_K": [
+     278.15,
+     343.15
+    ]
+   },
+   "one_liquid_sets": 2,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "methylcyclohexane+phenol",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_sets": 0,
+   "class": "not known",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "n-butyl-acetate+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 16,
+    "articles": [
+     "Costa, H.[Henrique] 2009, doi 10.1021/je900337a",
+     "Ghanadzadeh, H. 2008, doi 10.1016/j.jct.2008.07.001",
+     "Grande, M. d. C.[Maria del C.] 2005, doi 10.1021/je050051h",
+     "Grob, S. 2005, doi 10.1021/je0498199",
+     "Roque, Laerti Reis 2018, doi 10.1016/j.fluid.2018.02.003",
+     "Shahid, Z. 2017, doi 10.1021/acs.jced.6b00703",
+     "Smirnov, Alexander 2019, doi 10.1016/j.fluid.2019.04.020",
+     "Wang, L.[Lijun] 2007, doi 10.1021/je6005746"
+    ],
+    "T_K": [
+     283.15,
+     398.15
+    ]
+   },
+   "one_liquid_sets": 7,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "n-pentane+water",
+   "predictions": [
+    "refused fit NRTL",
+    "refused fit UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 3,
+    "articles": [
+     "Chapoy, A.[Antonin] 2008, doi 10.1016/j.jct.2008.01.019",
+     "Malagoni, R. A.[Ricardo A.] 2007, doi 10.1016/j.fluid.2007.03.032",
+     "Rasulov, S. M.[Suleiman M.] 2010, doi 10.1021/je100073y"
+    ],
+    "T_K": [
+     285.1,
+     463.85
+    ]
+   },
+   "one_liquid_sets": 0,
+   "class": "partly miscible",
+   "refused_fit": true,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "o-xylene+sulfolane",
+   "predictions": [
+    "refused fit NRTL",
+    "refused fit UNIQUAC"
+   ],
+   "one_liquid_sets": 3,
+   "class": "not known",
+   "refused_fit": true,
+   "wilson_pr200": true
+  },
+  {
+   "pair": "phenol+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "two_liquid_sets": {
+    "sets": 9,
+    "articles": [
+     "Cesari, L.[Laetitia] 2017, doi 10.1016/j.fluid.2017.04.022",
+     "Cesari, Laetitia 2017, doi 10.1016/j.fluid.2017.09.008",
+     "Gilani, H. G. 2013, doi 10.1016/j.jct.2012.10.028",
+     "Jeong, I.-Y.[In-Yong] 2014, doi 10.1016/j.fluid.2014.07.004",
+     "Li, H.[Hengde] 2017, doi 10.1016/j.jct.2016.12.018",
+     "Martin, A.[Antje] 2011, doi 10.1021/je100069q"
+    ],
+    "T_K": [
+     283.15,
+     333.15
+    ]
+   },
+   "one_liquid_sets": 3,
+   "class": "partly miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "pyridine+water",
+   "predictions": [
+    "ChemSep NRTL"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep NRTL": {
+     "points": 1,
+     "T_K": [
+      297.15,
+      297.15
+     ],
+     "articles": [
+      "Kul, I.[Ismail] 2010, doi 10.1016/j.fluid.2009.10.018"
+     ]
+    }
+   },
+   "one_liquid_sets": 5,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "sulfolane+toluene",
+   "predictions": [
+    "ChemSep NRTL"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep NRTL": {
+     "points": 4,
+     "T_K": [
+      303.15,
+      323.15
+     ],
+     "articles": [
+      "Yang, C.[Changsheng] 2004, doi 10.1021/je0341920"
+     ]
+    }
+   },
+   "one_liquid_sets": 3,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  },
+  {
+   "pair": "tetrahydrofuran+water",
+   "predictions": [
+    "ChemSep NRTL",
+    "ChemSep UNIQUAC"
+   ],
+   "one_liquid_inside_predicted_split": {
+    "ChemSep UNIQUAC": {
+     "points": 185,
+     "T_K": [
+      279.15,
+      333.15
+     ],
+     "articles": [
+      "Belandria, V.[Veronica] 2009, doi 10.1016/j.jct.2009.06.014",
+      "Belandria, V.[Veronica] 2013, doi 10.1016/j.jct.2012.08.033",
+      "Dhondge, S. S.[Sudhakar S.] 2007, doi 10.1016/j.jct.2006.08.007",
+      "Nayak, J.N.[Jyoti] 2004, doi 10.1021/je030196t",
+      "Sun, Q.[Qiang] 2014, doi 10.1016/j.fluid.2013.11.002"
+     ]
+    },
+    "ChemSep NRTL": {
+     "points": 100,
+     "T_K": [
+      279.15,
+      333.15
+     ],
+     "articles": [
+      "Belandria, V.[Veronica] 2009, doi 10.1016/j.jct.2009.06.014",
+      "Belandria, V.[Veronica] 2013, doi 10.1016/j.jct.2012.08.033",
+      "Dhondge, S. S.[Sudhakar S.] 2007, doi 10.1016/j.jct.2006.08.007",
+      "Nayak, J.N.[Jyoti] 2004, doi 10.1021/je030196t"
+     ]
+    }
+   },
+   "one_liquid_sets": 18,
+   "class": "miscible",
+   "refused_fit": false,
+   "wilson_pr200": false
+  }
+ ]
+}
