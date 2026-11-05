@@ -130,6 +130,21 @@
       "specs": [ { "kind": "bottoms_flow_mol_s", "value": 1.05 } ],
       "expected": { "outcome": "ok", "warnings": [ { "code": "DRY_STAGE", "phase": "volatile liquid" } ] },
       "tolerances": { "engine_against_reference": { "T_K_absolute": 1e-5, "flows_relative": 1e-6, "mole_fractions_absolute": 1e-8, "duties_relative": 1e-6 } }
+    },
+    {
+      "id": "H9-henry-co2-absorber",
+      "title": "Carbon dioxide and nitrogen washed with water at 1000 kPa, 8 stages: CO2 and N2 dissolve by Henry's law (IAPWS G7-04)",
+      "purpose": "An absorber with Henry components (proposal 0017; the maintainer, 2026-11-04): in an activity model with water the gases dissolve by f = H x (unsymmetric convention, activity coefficient 1 at infinite dilution), water by Raoult's law; the liquid enthalpy of a dissolved gas is its ideal-gas enthalpy minus R T^2 d ln H / dT.",
+      "method_choice": "docs/METHOD_SELECTION.md step 2 and proposal 0017: an activity model with Henry's law for gases dissolving in water (NRTL is named; with water the only solvent its parameters are not used)",
+      "thermo": { "kind": "chepta", "model": "NRTL", "vapour": "ideal", "henry": true },
+      "components": ["carbon-dioxide", "nitrogen", "water"],
+      "pressure_kPa": 1000.0,
+      "column": { "configuration": "absorber", "stages": 8, "condenser": "none", "reboiler": "none",
+        "feeds": [ { "stage": 1, "flow_mol_s": 500.0, "z": [0.0, 0.0, 1.0], "T_K": 298.15, "phase": "liquid" },
+                   { "stage": 8, "flow_mol_s": 100.0, "z": [0.15, 0.85, 0.0], "T_K": 298.15, "phase": "vapour" } ] },
+      "specs": [],
+      "expected": { "outcome": "ok", "warnings": [] },
+      "tolerances": { "engine_against_reference": { "T_K_absolute": 1e-5, "flows_relative": 1e-6, "mole_fractions_absolute": 1e-8 } }
     }
   ]
 }

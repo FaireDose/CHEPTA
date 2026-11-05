@@ -69,6 +69,8 @@ profile table show, switching it to a stripper with a reboiler works; at 390 px 
 - The method refusals: refuse an equation of state with a light gas and a polar liquid (as built), or allow it with a
   warning. Water with CO2 or ammonia is refused today, until Henry's law, PSRK or Wong-Sandler is in a method. **Not
   decided** (2026-11-04): the maintainer wants a working absorber and is clarifying; the code is left as built.
+  **Decided later the same day** (docs/decisions/2026-11-04-07-henry-absorber.md, proposal 0017): the activity model
+  with Henry's law for gases in water, and PR or SRK where the gas-polar pairs have a k_ij.
 
 ## The maintainer's answers (2026-11-04)
 

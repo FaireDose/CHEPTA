@@ -108,7 +108,9 @@ test("errors carry codes and keep their class", () => {
   });
   code(() => system({ components: ["water", "unobtainium"] }), "BAD_INPUT");
   code(() => system({ components: ["benzene", "ethylene glycol"], model: "NRTL" }), "MISSING_DATA");
-  code(() => system({ components: ["water", "methane"], model: "NRTL" }), "MISSING_DATA");
+  // (water + methane was the example of a missing pair until 2026-11-04; methane now dissolves in water by Henry's law,
+  // proposal 0017, so helium, which has no Henry's law constant, takes its place)
+  code(() => system({ components: ["water", "helium"], model: "NRTL" }), "MISSING_DATA");
   code(() => pure("water").property("liquidDensity", 2000), "OUT_OF_RANGE", RangeError);
   code(() => steam(5000, 100), "OUT_OF_RANGE", RangeError);
   code(() => steam({ T_K: 5000 }), "BAD_INPUT", RangeError);
