@@ -2,8 +2,9 @@
  * The column engine (proposal 0015, Part I, section 1, and section 9, contract 3): one engine for every column
  * configuration (distillation, absorber, stripper, extraction). Milestone M2a builds the vapour-liquid cascade with a
  * condenser (total or partial) and a partial reboiler; milestone M2b adds two liquids on the stages (phases "VLL",
- * src/units/columns/two-liquids.js) and a decanter on the condenser; the other configurations ("LL", side draws) refuse
- * with NOT_AVAILABLE until their milestone.
+ * src/units/columns/two-liquids.js) and a decanter on the condenser; milestone M3 the liquid-liquid cascade of an
+ * extraction (phases "LL", src/units/columns/extraction.js, its own equations and solver: no vapour, given stage
+ * temperatures); side draws refuse with NOT_AVAILABLE until their milestone.
  *
  *   solveCascade({ sys | thermo, stages, feeds, draws, specs, ends: { condenser, reflux_liquid }, phases: "VL" | "VLL",
  *                  P_kPa, start })
@@ -89,6 +90,7 @@ import { anyBubbleT } from "../../equilibrium/bubble-any.js";
 import { liquidTangentPlane } from "../../equilibrium/stability.js";
 import { tpdStability } from "../../equilibrium/eos-stability.js";
 import { twoLiquidThermo } from "./two-liquids.js";
+import { solveLiquidCascade } from "./extraction.js";
 
 export const CASCADE_PHASES = Object.freeze(["VL", "LL", "VLL"]);
 /** The column's top: a total or partial condenser, a decanter, or none (absorber, stripper). */
@@ -208,7 +210,6 @@ function tridiagonal(a, b, c, d) {
 
 function checkInput({ stages, feeds, draws, specs, ends, phases, duties }, n) {
   if (phases !== "VL" && phases !== "VLL") {
-    if (CASCADE_PHASES.includes(phases)) throw fail("NOT_AVAILABLE", `Column: phases "${phases}" (two liquids without a vapour: extraction) come with milestone M3 of proposal 0015; the column solves vapour and one liquid ("VL") or vapour and up to two liquids ("VLL").`);
     throw fail("BAD_INPUT", `Column: phases must be one of ${CASCADE_PHASES.join(", ")} (got ${JSON.stringify(phases)}).`);
   }
   if (draws?.length) throw fail("NOT_AVAILABLE", "Column: side draws come with milestone M4 of proposal 0015.");
@@ -299,6 +300,9 @@ function checkInput({ stages, feeds, draws, specs, ends, phases, duties }, n) {
 
 /** Solve a vapour-liquid cascade; see the file header. */
 export function solveCascade(opts = {}) {
+  // two liquids without a vapour (an extraction): the liquid-liquid cascade, which takes { sys | gammas, n, stages,
+  // feeds: [{ stage, flows }], T_K } (stages numbered 1 to N, no condenser or reboiler, no specifications)
+  if (opts.phases === "LL") return solveLiquidCascade(opts);
   if (!opts.thermo && !opts.sys) throw fail("BAD_INPUT", "Column: give the property system (sys) and the pressure (P_kPa), or a thermodynamic adapter (thermo).");
   if (!opts.thermo && !(opts.P_kPa > 0)) throw fail("BAD_INPUT", `Column: P_kPa must be a positive number (got ${JSON.stringify(opts.P_kPa)}).`);
   let th = opts.thermo ?? cascadeThermo(opts.sys, opts.P_kPa);

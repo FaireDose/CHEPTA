@@ -14,10 +14,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
-- **Liquid-liquid tie lines and joint fits for extraction** (proposal 0015, step 5; docs/decisions/2026-10-30-08-extraction.md):
-  water + acetic acid + ethyl acetate, a further set `fitted-lle-roque2018` of each pair. Compare the transcribed tie
-  lines with the ThermoML records. Check Roque 2018's second isotherm (313.2 K in the record, 303.2 K in the title).
-  Decide whether Toikka 2014 stays a check only, and whether the Extraction block uses these sets by default.
+- **The Extraction block and its view** (proposal 0015, step 8; docs/decisions/2026-10-30-10-extraction-view.md):
+  check the comparison with Glatz and Parker 2004 (Runs 1 and 3); decide whether an adiabatic cascade is wanted, whether
+  the ternary view should offer mass fractions, and whether the flowsheet should take the joint sets by itself when it
+  holds an Extraction block of that ternary.
+  Still open from #196 (docs/decisions/2026-10-30-08-extraction.md): compare the transcribed tie lines with the ThermoML
+  records, and check Roque 2018's second isotherm (313.2 K in the record, 303.2 K in the title).
 - **Formation data** (proposal 0010, step 1; docs/decisions/2026-10-22-03-formation-data.md): xylitol is held (two
   crystal energies of combustion disagree by about 100 kJ/mol); five records are uncertain (the values disagree by more
   than 10 kJ/mol: 2-methoxyethanol, 1,3-propanediol, limonene, gamma-butyrolactone, levoglucosan); 22 components have no
@@ -115,8 +117,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     dissolving in polar liquids, nonvolatile components in every column with DRY_STAGE when a stage boils dry; eight
     cases against an independent reference (Kremser exactly; The ChemSep Book's ammonia absorber). To check: Table
     1.4's numbers against the book. Answered 2026-11-04: outlets "gas out" and "liquid out"; the factor of 1000
-    accepted; the refluxed absorber and two liquids postponed. Still open: refuse or only warn an equation of state
-    with a light gas and a polar liquid (the maintainer is clarifying).
+    accepted; the refluxed absorber and two liquids postponed. The equation of state with a light gas and a polar liquid:
+    **decided** 2026-11-04 (docs/decisions/2026-11-04-07-henry-absorber.md): the activity model with Henry's law, and
+    PR or SRK where the pairs have a k_ij.
+  - **W2, M3: Henry components and the equation of state in an absorber, built, to review**
+    (docs/decisions/2026-11-04-07-henry-absorber.md, proposal 0017; after #194): ten gases dissolve in water by
+    Henry's law in the activity models; PR/SRK with a light gas and a polar liquid needs a k_ij; sour water and amines
+    refused until M5. To check: Carroll et al. (1991) Table 3 as transcribed; to decide: water as the only solvent,
+    the 3.5 % tolerance, the ammonia + water fit.
   - **W3 and W4, M3 step 9: the Membrane block, built, to review** (docs/decisions/2026-10-30-09-membrane.md): gas
     permeation by the solution-diffusion model over well-mixed co- or counter-current cells, the area for a stage cut
     or a recovery (`membraneArea`), under the Separator button; `solve_membrane`. The maintainer answered on
@@ -126,10 +134,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - **W3, M3 step 10: the Evaporator block, built, to review** (docs/decisions/2026-11-04-09-evaporator-crystallizer.md):
     one effect or several in forward feed, each a heater and a flash heated by the vapour of the one before; the
     steam for a product concentration or a steam flow, the steam economy, each effect's boiling-point rise and, with U,
-    its area; under the Separator button; `solve_evaporator`. To check: Example 1 of Subramanian 2019 (slides 16-20); to
-    decide: a block against the "template" of answer 4 of proposal 0015, the condensate mixed at the first effect's
-    pressure, and which property method for sugar solutions (Modified UNIFAC 2.0 splits water + glucose).
+    its area; under the Separator button; `solve_evaporator`. To check: Example 1 of Subramanian 2019 (slides 16-20).
+    Answered 2026-11-05: keep the block, one condensate outlet, other feed arrangements and equal areas later; sugar
+    solutions on the ideal solution with a note. Still open: a data task, NRTL pairs of water + glucose and water +
+    sucrose fitted to open data (sucrose to be proposed for addition).
   - Waiting: W1; W3's crystallizer (a second pull request, docs/decisions/2026-11-04-11-crystallizer.md).
+- **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
+  (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive
+  distillation and the rest after 1.0. Lab pins releases, files capability requests, and does G2 to G5.
 - **When in doubt, check other simulators** (docs/decisions/2026-11-04-05-check-other-simulators.md): a method rule in
   METHOD_SELECTION.md; first cases: Henry's law for gases in water (proposal 0017), PR/SRK with a light gas and a polar
   liquid offered with a warning where a k_ij exists, sour water and amines refused until M5.
@@ -219,6 +231,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   The file formats keep their keys (`fugacity_project`, `fugacity_package`), so files and
   contribution packages made under the old name stay valid.
 - **The two free component places** of proposal 0008: use them now, or keep them.
+- **M2: postponed** (docs/decisions/2026-11-04-10-m2-source-check.md): PSRK's and MHV2's tables are not open; the
+  maintainer (2026-11-04): "PR and SRK should be ok for now". Proposal 0018 is postponed with its findings. Open: PR and
+  SRK k_ij fitted to the open high-pressure data (CO2, H2, CO, CH4 + methanol; CO2 + water), whose deviations decide
+  whether 0018 is reopened.
 - **Wilson (M1, proposal 0016; docs/decisions/2026-10-30-06-wilson.md):** accepted and merged (#192); the fits to
   ThermoML data (step 2) wait until needed, after M3 (the maintainer, 2026-11-04).
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.

@@ -95,7 +95,7 @@ test("H1: a model absorber meets the Kremser equation exactly, and the reference
   assert.match(r.solver.start, /sum-rates/);
 });
 
-for (const id of ["H2-chemsep-ammonia-absorber", "H3-chemsep-ammonia-absorber-cooled", "H4-steam-stripper-methanol-water",
+for (const id of ["H2-chemsep-ammonia-absorber", "H3-chemsep-ammonia-absorber-cooled", "H4-steam-stripper-methanol-water", "H9-henry-co2-absorber",
   "H5-reboiled-stripper-methanol-water", "H6-lean-oil-absorber-pr", "H7-nonvolatile-distillation"]) {
   test(`${id}: the reference's profile within the case's tolerances; balances closed`, () => {
     const c = caseOf(id), r = engineOf(c), ref = FIX[id].profile;
@@ -211,14 +211,35 @@ test("a reboiled stripper (H5) through solve_column: one specification, the refe
   assert.equal(r.value.column.profile.at(-1).name, "reboiler");
 });
 
-test("an absorber refuses a method that cannot describe a gas dissolving in its liquid (docs/METHOD_SELECTION.md, step 2)", () => {
-  // these methods are used on purpose: they are the ones to refuse
-  const pr = run({ capability: "solve_column", input: { components: ["carbon-dioxide", "water"], thermo: { model: "PR" },
-    feed: { flow_kmol_h: { water: 360 }, T_K: 300, P_kPa: 2000 }, gas_feed: { flow_kmol_h: { "carbon-dioxide": 72 }, T_K: 300, P_kPa: 2000 },
-    column: { configuration: "absorber", stages: 5 } } });
-  assert.equal(pr.outcome, "unsupported");
-  assert.match(pr.error.message, /polar liquid/);
-  assert.match(pr.error.message, /Henry's law/);
+test("methods for a gas dissolving in an absorber's liquid (docs/METHOD_SELECTION.md, step 2; proposal 0017; the maintainer, 2026-11-04)", () => {
+  // the methods are chosen on purpose here: each shows what is allowed, warned or refused
+  const absorber = (components, thermo, liquid, gas, P = 2000) => run({ capability: "solve_column", input: { components, thermo,
+    feed: { flow_kmol_h: liquid, T_K: 300, P_kPa: P }, gas_feed: { flow_kmol_h: gas, T_K: 300, P_kPa: P }, column: { configuration: "absorber", stages: 5 } } });
+  // Peng-Robinson with CO2 in water: the pair has a k_ij (ChemSep, databank), so it runs, with the range warning
+  const pr = absorber(["carbon-dioxide", "water"], { model: "PR" }, { water: 360 }, { "carbon-dioxide": 72 });
+  assert.equal(pr.outcome, "ok", pr.error?.message);
+  const w = pr.value.column.warnings.find(x => x.code === "METHOD_RANGE");
+  assert.match(w.message, /k_ij of Carbon dioxide \+ Water/);
+  assert.match(w.message, /performs poorly for water\/alcohol mixtures/);
+  // ... nitrogen + water has no k_ij: refused, with the activity model and Henry's law as the alternative
+  const n2 = absorber(["nitrogen", "water"], { model: "PR" }, { water: 360 }, { nitrogen: 72 });
+  assert.equal(n2.outcome, "unsupported");
+  assert.match(n2.error.message, /without a k_ij/);
+  assert.match(n2.error.message, /Henry's law/);
+  // sour water and amines: an electrolyte model's work (milestone M5), refused whatever the k_ij
+  const sour = absorber(["ammonia", "hydrogen-sulfide", "water"], { model: "PR" }, { water: 360 }, { "hydrogen-sulfide": 10, ammonia: 10 });
+  assert.equal(sour.outcome, "unsupported");
+  assert.match(sour.error.message, /sour water/);
+  assert.match(sour.error.message, /electrolyte/);
+  // an activity model: CO2 in water by Henry's law (H9 has the numbers); CO2 in methanol has no Henry's law constant
+  // and is above its critical temperature: refused
+  const henry = absorber(["carbon-dioxide", "nitrogen", "water"], { model: "NRTL" }, { water: 3600 }, { "carbon-dioxide": 36, nitrogen: 324 }, 101.325);
+  assert.equal(henry.outcome, "ok", henry.error?.message);
+  assert.match(henry.value.column.notes.join(" "), /dissolve in water by Henry's law/);
+  // CO2 with water and methanol: a mixed solvent, refused with the reason
+  const mixed = absorber(["carbon-dioxide", "methanol", "water"], { model: "ideal" }, { water: 300, methanol: 60 }, { "carbon-dioxide": 36 }, 101.325);
+  assert.equal(mixed.outcome, "unsupported");
+  assert.match(mixed.error.message, /not water alone/);
   const ideal = run({ capability: "solve_column", input: { components: ["carbon-dioxide", "methanol"], thermo: { model: "ideal" },
     feed: { flow_kmol_h: { methanol: 100 }, T_K: 250, P_kPa: 2000 }, gas_feed: { flow_kmol_h: { "carbon-dioxide": 20 }, T_K: 310, P_kPa: 2000 },
     column: { configuration: "absorber", stages: 4 } } });

@@ -98,6 +98,15 @@ test("the evaporator is the same chain of flash drums and condensers placed as b
   assert.ok(ev.state.steam_economy > 1 && ev.state.steam_economy < 2, `economy ${ev.state.steam_economy}`);
 });
 
+test("a sugar solution: the ideal solution, with a note on its boiling-point rise (the maintainer, 2026-11-05)", () => {
+  // the ideal solution on purpose: Modified UNIFAC 2.0 splits water + glucose (docs/models/evaporator.md)
+  const sys = system({ components: ["water", "glucose"], model: "ideal" });
+  const feed = stream(sys, { flow_kg_h: { water: 900, glucose: 100 }, T_K: 300, P_kPa: 101.325 });
+  const r = runUnit("evaporator", { sys, inlets: { in: feed }, spec: { P_kPa: [20], steam_P_kPa: 200, product_mass_fraction: { glucose: 0.5 } } });
+  assert.ok(r.notes.some(n => /D-Glucose: the ideal solution .* no fitted pairs/.test(n)), JSON.stringify(r.notes));
+  assert.ok(r.profile[0].BPR_K > 0);
+});
+
 test("the evaporator refuses what it cannot do, and says why", () => {
   const sys = system({ components: ["water", "citric-acid"], model: "ideal" });
   const feed = stream(sys, { flow_kg_h: { water: 900, "citric-acid": 100 }, T_K: 300, P_kPa: 101.325 });
@@ -155,5 +164,5 @@ test("the workbench: Evaporator under the Separator button, placed with its prod
   assert.equal(doc.fugacity_project, 6);
   const back = stateFromProject(readProject(JSON.stringify(doc)));
   assert.deepEqual(back.flowsheet.blocks.find(b => b.id === "EV1").spec, fs.blocks.find(b => b.id === "EV1").spec);
-  assert.throws(() => readProject(JSON.stringify({ ...doc, fugacity_project: 5 })), /evaporator and membrane blocks need format 6/);
+  assert.throws(() => readProject(JSON.stringify({ ...doc, fugacity_project: 5 })), /evaporator, extraction and membrane blocks need format 6/);
 });

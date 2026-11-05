@@ -85,3 +85,8 @@ gives water an activity coefficient above 1 in glucose, fructose, xylose, sorbit
 glucose near 55 % (the P-H flash then fails); a concentrated sugar solution does not split. For the acids (citric,
 malic, succinic, lactic, glycolic) its water activity coefficient stays near 1 and its boiling-point rises are larger
 than the ideal solution's.
+
+Until NRTL pairs of water with the sugars are fitted to open data (a data task, the maintainer, 2026-11-05), a sugar
+solution takes the ideal solution, and the evaporator adds a note for glucose, fructose, xylose, sorbitol, xylitol,
+erythritol or sucrose (`SUGARS`): with the ideal solution, that its boiling-point rise has no activity coefficients;
+with Modified UNIFAC 2.0, that the method does not describe sugar solutions.

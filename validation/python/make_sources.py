@@ -285,6 +285,23 @@ SEEDS = {
                   "validation/data/columns/absorber-stripper/cases.json", "src/thermo/activity/wilson.js"],
     },
     # predicted liquid heat capacities (validation/python/predict_cp.py, proposal 0009 step 5)
+    # the solubility of CO2 in water against the Henry components (validation/data/henry/co2_water_carroll1991.json,
+    # proposal 0017)
+    "carroll1991-co2-water": {
+        "title": "The Solubility of Carbon Dioxide in Water at Low Pressure",
+        "authors": "J. J. Carroll, J. D. Slupsky, A. E. Mather",
+        "year": 1991,
+        "published": "J. Phys. Chem. Ref. Data 20 (1991) 1201-1209",
+        "doi": "10.1063/1.555900",
+        "kind": "open-access article",
+        "url": "https://srd.nist.gov/JPCRD/jpcrd427.pdf",
+        "access": "Free to read: reprint hosted by NIST (Standard Reference Data); read 2026-11-04",
+        "license": "Copyright the U.S. Secretary of Commerce, assigned to AIP and ACS; free to read",
+        "note": "Table 3, p. 1208: the solubility of CO2 in water at total pressures of 101.325 and 500 kPa, 10 to 80 degC, "
+                "calculated by the authors from their Henry's-law correlation of about 100 measured investigations; "
+                "transcribed as printed. A check of CHEPTA's Henry components (IAPWS G7-04), not a parameter source.",
+        "files": ["validation/data/henry/co2_water_carroll1991.json"],
+    },
     "ruzicka-domalski-1993": {
         "title": "Estimation of the Heat Capacities of Organic Liquids as a Function of Temperature using Group "
                  "Additivity. I. Hydrocarbon Compounds; II. Compounds of Carbon, Hydrogen, Halogens, Nitrogen, Oxygen, and Sulfur",

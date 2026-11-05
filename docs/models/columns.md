@@ -277,17 +277,19 @@ feeds' mean temperature spanning more than a factor of 1000: an absorber's light
 points for narrow-boiling ones (a steam stripper). Newton's method on all MESH equations then closes the column, as
 for distillation.
 
-**Methods for absorption** ([METHOD_SELECTION.md](../METHOD_SELECTION.md), step 2). A gas dissolving in a liquid needs
-a method that describes its solubility. The absorber and the stripper refuse (`NOT_AVAILABLE`, outcome
-"unsupported"), with the reason:
+**Methods for absorption** ([METHOD_SELECTION.md](../METHOD_SELECTION.md), step 2; [proposal
+0017](../../proposals/0017-henry-components.md); the maintainer, 2026-11-04). A gas dissolving in a liquid needs a method
+that describes its solubility:
 
-- an activity model or the ideal solution with a component above its critical temperature (at the feeds, and again at
-  the solved stages): its solubility would come from a vapour pressure extrapolated beyond the critical point; Henry's
-  law would be needed, and CHEPTA has it only as a function for six gases in water (`src/thermo/henry.js`), not in its
-  methods;
-- an equation of state with a light gas (N₂, CO₂, H₂S, CO, O₂, Ar, H₂, N₂O, SO₂, NH₃, or a component above its critical
-  temperature) and a polar component: the classical mixing rule does not describe a gas dissolving in a polar liquid
-  (Henry's law, PSRK or Wong-Sandler would be needed; step 4).
+- **an activity model with water** (NRTL, UNIQUAC, Wilson, the ideal solution): the gases with a Henry's law constant
+  in water (H₂, N₂, O₂, CH₄, C₂H₆, Ar, CO, CO₂, H₂S, ethylene) are Henry components, f = H x, water by Raoult's law;
+  water must be the only solvent. Case H9 (CO₂ and N₂ washed with water at 1000 kPa) checks it against the reference;
+- **Peng-Robinson or SRK** with a light gas (N₂, CO₂, H₂S, CO, O₂, Ar, H₂, N₂O, SO₂, NH₃, or a component above its
+  critical temperature) and a polar component: runs where each such pair has a k_ij (fitted or databank), with the
+  warning `METHOD_RANGE` (its range, and the classical mixing rule's weakness with polar liquids); refused without one;
+- refused in every method (`NOT_AVAILABLE`, outcome "unsupported"): sour water (ammonia with H₂S or CO₂ in water) and
+  amines (MEA, DEA, MDEA), which react in the liquid and need an electrolyte model (methods track M5); and, with an
+  activity model, any other component above its critical temperature.
 
 Hydrocarbons with light gases (a lean-oil absorber) take Peng-Robinson or SRK; a polar liquid stripped by its own
 vapour or by steam (methanol from water) takes an activity model.
@@ -314,6 +316,7 @@ within 1e-6 relative, temperatures within 1e-5 K, mole fractions within 1e-8):
 | H6 | a lean-oil absorber, light hydrocarbons in n-decane at 2000 kPa, Peng-Robinson | the reference; through `solve_column`, the command line and a project |
 | H7 | methanol from water and lactic acid (nonvolatile), total condenser, ideal solution (no NRTL or UNIQUAC pair exists with lactic acid); also Modified UNIFAC 2.0 without a reference | the reference; lactic acid only in the bottoms |
 | H8 | water and lactic acid boiled nearly dry in a reboiled stripper | the reference; `DRY_STAGE` on the reboiler; a bottoms at or below the lactic acid refused |
+| H9 | CO₂ and N₂ washed with water at 1000 kPa, Henry components (proposal 0017) | the reference, IAPWS G7-04 coded there independently |
 
 The reference first reached the trivial solution (vapour equal to liquid on every stage) on H6; it now refuses such a
 solution and starts the equation of state's K-values from Wilson's estimate. The engine had found the physical one.

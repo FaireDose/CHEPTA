@@ -74,3 +74,19 @@ separator does that separation until a real model comes). Written against contra
 4. **Sugar solutions**: look for open water-activity or boiling-point data of glucose and sucrose solutions to fit
    NRTL pairs (sucrose is not a CHEPTA component yet: it would be proposed for addition, rule 8), or leave the sugars on
    the ideal solution with a note?
+
+## The maintainer's answers (2026-11-05)
+
+Relayed by the coordinating session:
+
+1. **Keep the block.**
+2. **One condensate outlet** for now.
+3. **Backward or mixed feed and equal areas:** later, when needed.
+4. **Sugars:** a data task: NRTL pairs for water + glucose and water + sucrose, fitted to open data (sucrose to be
+   proposed for addition first, AGENTS.md rule 8). Until then the ideal solution, with a warning: the evaporator adds a
+   note for a solution of glucose, fructose, xylose, sorbitol, xylitol, erythritol or sucrose (`SUGARS` in
+   `src/units/evaporator.js`), saying that the ideal solution gives the boiling-point rise without activity
+   coefficients, or, with Modified UNIFAC 2.0, that it does not describe sugar solutions and the ideal solution should
+   be used (test/evaporator.test.js).
+
+**Still open:** the sugar data task (not started).

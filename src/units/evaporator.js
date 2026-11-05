@@ -48,6 +48,12 @@ import { steamSat } from "../thermo/iapws/steam.js";
 import { registerUnit } from "./units.js";
 
 export const MAX_EFFECTS = 10;
+/**
+ * The sugars and sugar alcohols whose water solutions Modified UNIFAC 2.0 does not describe (water's activity
+ * coefficient above 1, and a liquid split of water + glucose near 55 % by mass; docs/models/evaporator.md). Until NRTL
+ * pairs fitted to open data exist, their solutions take the ideal solution, with a note (the maintainer, 2026-11-05).
+ */
+export const SUGARS = Object.freeze(["glucose", "fructose", "xylose", "sorbitol", "xylitol", "erythritol", "sucrose"]);
 const SPEC_KEYS = ["P_kPa", "steam_P_kPa", "steam_T_K", "steam_kg_h", "product_mass_fraction", "U_W_m2K"];
 const has = (spec, k) => spec?.[k] !== undefined && spec?.[k] !== null && spec?.[k] !== "";
 const fmt = v => +Number(v).toPrecision(4);
@@ -214,6 +220,13 @@ function solve({ sys, inlets, spec }) {
     `${N} effect${N > 1 ? "s" : ""} in forward feed; each a heater and a flash at its pressure, ${N > 1 ? "each after the first heated by the vapour of the one before, condensed totally at that effect's pressure; " : ""}no heat losses. The steam is saturated at ${fmt(steam.P_kPa)} kPa (${fmt(steam.T_K)} K) and leaves as saturated condensate (latent heat ${fmt(steam.hfg_kJ_kg)} kJ/kg, IAPWS-IF97).`,
     "The boiling-point rise of an effect: its boiling temperature minus the bubble temperature of its vapour condensed at its pressure (for a vapour of one solvent, the solvent's boiling point there).",
   );
+  const sugars = sys.ids.filter(id => SUGARS.includes(id)).map(id => sys.names[sys.ids.indexOf(id)]);
+  if (sugars.length) {
+    const model = String(sys.model ?? "").toUpperCase();
+    notes.push(model === "IDEAL"
+      ? `${sugars.join(", ")}: the ideal solution (Raoult's law) gives the boiling-point rise without activity coefficients; real sugar solutions boil higher. CHEPTA has no fitted pairs of water with ${sugars.length > 1 ? "these sugars" : "this sugar"} yet.`
+      : `${sugars.join(", ")} with ${sys.model}: Modified UNIFAC 2.0 does not describe sugar solutions (it gives water an activity coefficient above 1 and splits water + glucose into two liquids near 55 % by mass); use the ideal solution until fitted pairs exist.`);
+  }
   if (N > 1) notes.push(`The condensates of effects 1 to ${N - 1} leave together, mixed at ${fmt(Pc)} kPa (the first effect's pressure, where they stay liquid; in a plant they are often flashed from chest to chest instead).`);
   if (spec.target) notes.push(`The steam for a product mass fraction of ${spec.target[1]} of ${sys.names[spec.target[0]]}: ${fmt(steam_kg_h)} kg/h.`);
   const economy = evaporated / steam_kg_h;
