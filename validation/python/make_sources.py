@@ -427,18 +427,6 @@ SEEDS = {
         "note": "Worked examples: the ternary mixture by complete mixing (p. 140-141) and oxygen from air by complete mixing, cross flow, counter-current and co-current flow (p. 141-144), with the areas and compositions it prints (from Geankoplis's examples 13.4-2 and 13.5-1, whose book is not open and not used). Read 2026-11-03.",
         "files": ["validation/python/reference_membrane.py", "test/membrane.test.js"],
     },
-    # src/units/evaporator.js (the Evaporator block): the model and the worked example
-    "subramanian-2019-evaporation": {
-        "title": "Heat Transfer: Evaporation (lecture notes)",
-        "authors": "M. Subramanian (Department of Chemical Engineering, SSN College of Engineering)",
-        "year": 2019,
-        "kind": "course notes",
-        "citation": "lecture slides, September 25, 2019, 35 slides",
-        "url": "https://msubbu.in/ln/ht/HT-Lecture-17-Evaporation.pdf",
-        "access": "Free to read on the author's site (msubbu.in); no licence stated, so the slides are cited, not copied",
-        "note": "Slide 10: multiple-effect evaporation, the vapour of one effect heating the next; slides 16-20, Example 1: 30000 kg/h of a 10 % solution to 50 % solids, steam at 0.2 MPa (393 K), boiling at 323 K, U = 2.9 kW/(m2 K), c_p 3.98 kJ/(kg K), latent heats 2202 and 2383 kJ/kg; printed: steam 27708.4 kg/h, economy 0.87, area 83.5 m2 (feed at 293 K) and 26786.1 kg/h, 0.896, 80.7 m2 (feed at 308 K). Used as a check within the example's simplifications (no boiling-point rise, constant c_p and latent heats). Read 2026-11-04.",
-        "files": ["src/units/evaporator.js", "validation/python/reference_evaporator.py", "test/evaporator.test.js", "docs/models/evaporator.md"],
-    },
     # src/units/columns/hydraulics.js (the liquid's surface tension on a tray)
     "chemicals-surface-tension-mixture": {
         "title": "chemicals.interface.Winterfeld_Scriven_Davis, the first-ranked rule of thermo's SurfaceTensionMixture (chemicals 1.5.2, thermo 0.6.1)",
@@ -519,49 +507,59 @@ def validation_sources():
             continue   # search records and sets held for the maintainer: no record cites them yet
         d = json.loads(f.read_text())
         src = d.get("source") if isinstance(d, dict) else None
+        if not isinstance(src, dict) and isinstance(d, dict) and isinstance(d.get("records"), list) and d["records"]:
+            # a file of several records (validation/data/two_liquids/lle/*.json, proposal 0019): the first is taken as
+            # its "source" and the others as its two_liquids records, so that every record is cited
+            src = d["records"][0]
+            d = dict(d, two_liquids={"records": d["records"][1:], "access": src.get("access", "")})
         if not isinstance(src, dict):
             continue
-        url = (src.get("open_copy") or src.get("url") or "").split(" (")[0].strip()
-        if rel in SEED_BY_FILE:
-            out.append((SEED_BY_FILE[rel], None, rel))
-            continue
-        if url in SEED_BY_URL:
-            out.append((SEED_BY_URL[url], None, rel))
-            continue
-        authors, title, published, year = parse_citation(src["citation"])
-        surname = re.sub(r"[^a-z]", "", ascii_fold(authors[0].split()[-1]).lower())
-        comps = d.get("components")
-        if comps:
-            slug = "-".join(comps)
-        else:  # from the file name, without the author-year and pressure tokens
-            slug = "-".join(w for w in f.stem.lower().split("_") if not re.match(r"^[a-z]+\d{4}$|^\d+(kpa|mmhg)$", w)).replace("_", "-")
-        sid = f"{surname}{year}-{slug}"
-        thermoml = "trc.nist.gov/ThermoML" in url
-        entry = {
-            "title": title,
-            "authors": ", ".join(authors),
-            "year": year,
-            "published": published,
-            # "free supplement": a paywalled article whose supplementary information, which holds the numbers, is free
-            # to read (Lomba et al. 2011, Green Chem.)
-            "kind": "thermoml" if thermoml else ("open-access article" if re.search(r"open access", src.get("access", ""), re.I)
-                                                 else "free supplement" if re.search(r"supplementary information[^.;]*free to read", src.get("access", ""), re.I)
-                                                 # "free copy": a preprint or the authors' manuscript, free to read (proposal
-                                                 # 0014, step 1; Bogatishcheva et al. 2026 and Nikitin et al. 2023 on SSRN)
-                                                 else "free copy" if re.search(r"(preprint|manuscript)[^.;]*free to read", src.get("access", ""), re.I)
-                                                 # "open thesis": a thesis free to read in its university's repository
-                                                 # (Buchholz 2018, the lactide melt; 2026-10-27)
-                                                 else "open thesis" if re.search(r"open thesis", src.get("access", ""), re.I)
-                                                 else None),
-            "doi": src.get("doi") or None,
-            "url": url,
-            "access": src["access"].rstrip("."),
-        }
-        if thermoml:
-            entry["via"] = "the NIST TRC ThermoML Archive"
-        if entry["kind"] is None:
-            raise ValueError(f"{rel}: cannot tell the kind of source from its access text")
-        out.append((sid, {k: v for k, v in entry.items() if v is not None}, rel))
+        # the file's own source, and the records of its two liquids (vle_batch.py, "two_liquids"; 2026-11-04)
+        tl = d.get("two_liquids") if isinstance(d.get("two_liquids"), dict) else {}
+        extra = [dict(r, access=tl.get("access", src.get("access", ""))) for r in tl.get("records", [])
+                 if r.get("doi") != src.get("doi")]
+        for own, src in [(True, src)] + [(False, r) for r in extra]:
+            url = (src.get("open_copy") or src.get("url") or "").split(" (")[0].strip()
+            if rel in SEED_BY_FILE and own:
+                out.append((SEED_BY_FILE[rel], None, rel))
+                continue
+            if url in SEED_BY_URL:
+                out.append((SEED_BY_URL[url], None, rel))
+                continue
+            authors, title, published, year = parse_citation(src["citation"])
+            surname = re.sub(r"[^a-z]", "", ascii_fold(authors[0].split()[-1]).lower())
+            comps = d.get("components")
+            if comps:
+                slug = "-".join(comps)
+            else:  # from the file name, without the author-year and pressure tokens
+                slug = "-".join(w for w in f.stem.lower().split("_") if not re.match(r"^[a-z]+\d{4}$|^\d+(kpa|mmhg)$", w)).replace("_", "-")
+            sid = f"{surname}{year}-{slug}"
+            thermoml = "trc.nist.gov/ThermoML" in url
+            entry = {
+                "title": title,
+                "authors": ", ".join(authors),
+                "year": year,
+                "published": published,
+                # "free supplement": a paywalled article whose supplementary information, which holds the numbers, is free
+                # to read (Lomba et al. 2011, Green Chem.)
+                "kind": "thermoml" if thermoml else ("open-access article" if re.search(r"open access", src.get("access", ""), re.I)
+                                                     else "free supplement" if re.search(r"supplementary information[^.;]*free to read", src.get("access", ""), re.I)
+                                                     # "free copy": a preprint or the authors' manuscript, free to read (proposal
+                                                     # 0014, step 1; Bogatishcheva et al. 2026 and Nikitin et al. 2023 on SSRN)
+                                                     else "free copy" if re.search(r"(preprint|manuscript)[^.;]*free to read", src.get("access", ""), re.I)
+                                                     # "open thesis": a thesis free to read in its university's repository
+                                                     # (Buchholz 2018, the lactide melt; 2026-10-27)
+                                                     else "open thesis" if re.search(r"open thesis", src.get("access", ""), re.I)
+                                                     else None),
+                "doi": src.get("doi") or None,
+                "url": url,
+                "access": src["access"].rstrip("."),
+            }
+            if thermoml:
+                entry["via"] = "the NIST TRC ThermoML Archive"
+            if entry["kind"] is None:
+                raise ValueError(f"{rel}: cannot tell the kind of source from its access text")
+            out.append((sid, {k: v for k, v in entry.items() if v is not None}, rel))
     # one article, several data files (e.g. the binary sets of one paper): one source. Its id
     # is the one already in sources.json, else the first file's.
     known = json.loads(SOURCES_FILE.read_text())["sources"] if SOURCES_FILE.exists() else {}
@@ -696,12 +694,31 @@ def annotate_pair(rec, rules, unmapped, where, default):
     return rec
 
 
+def two_liquid_ids(rec):
+    """Source ids of the records whose two liquids a fitted set used (the "two_liquids" block of the data file its source
+    names; vle_batch.py, 2026-11-04), by DOI."""
+    text = src_text(rec.get("source", ""))
+    known = json.loads(SOURCES_FILE.read_text())["sources"] if SOURCES_FILE.exists() else {}
+    by_doi = {e.get("doi"): k for k, e in known.items() if e.get("doi")}
+    ids = []
+    for name in re.findall(r"validation/data/(vle/[^\s;),]+\.json)", text):
+        p = VAL / name
+        if p.exists():
+            tl = json.loads(p.read_text()).get("two_liquids") or {}
+            ids += [by_doi[r["doi"]] for r in tl.get("records", []) if r.get("doi") in by_doi]
+    return ids
+
+
 def annotate_binaries(doc, rules, unmapped):
     out = []
     for p in doc["pairs"]:
         old = p.get("replaced")
         cur = {k: v for k, v in p.items() if k != "replaced"}
         cur = annotate_pair(cur, rules, unmapped, f"binaries {p['model']} {p['i']}-{p['j']}", True)
+        extra = [k for k in two_liquid_ids(cur) if k not in cur.get("source_ids", [])]
+        if extra and "source_ids" in cur:
+            ids = cur["source_ids"]
+            cur["source_ids"] = ids[:-1] + extra + ids[-1:] if ids and ids[-1] == "nist-thermoml-archive" else ids + extra
         out.append(cur)
         if old:
             alt = {"model": p["model"], "i": old.get("i", p["i"]), "j": old.get("j", p["j"])}

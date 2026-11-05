@@ -238,8 +238,6 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **Wilson fits (M1, proposal 0016 step 2; docs/decisions/2026-11-04-06-wilson-fits.md):** review the pull request;
   the five pairs are decided by proposal 0019, answer 4. The three "miscibility-unchecked" Wilson fits wait for roadmap
   D9 (proposal 0019, step 2).
-- **Wilson fits (M1, proposal 0016 step 2; docs/decisions/2026-11-04-06-wilson-fits.md):** PR #200; the five pairs
-  decided by proposal 0019, answer 4.
 - **Pairs with two liquids (D9, proposal 0019; docs/decisions/2026-11-04-12-two-liquid-pairs.md):** step 1, the
   proposal and the evidence survey (57 pairs: 22 partly miscible, 17 miscible, 18 not known); accepted with the
   maintainer's answers of 2026-11-05 (gates as a start, "miscible below the measured temperature, not known above it",
