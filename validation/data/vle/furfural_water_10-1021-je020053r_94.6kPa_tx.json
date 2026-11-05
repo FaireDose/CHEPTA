@@ -71,5 +71,33 @@
    432.05
   ]
  ],
- "notes": "Read with validation/python/vle_batch.py. Fitted to the bubble temperatures alone (Barker's method): no set of this pair with vapour compositions passes the consistency point test, or none was measured. Pure-component boiling points of the set within 0.06 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4)."
+ "notes": "Read with validation/python/vle_batch.py. Fitted to the bubble temperatures alone (Barker's method): no set of this pair with vapour compositions passes the consistency point test, or none was measured. Pure-component boiling points of the set within 0.06 K of the vapour-pressure records. To be checked by a person against the record (AGENTS.md rule 4).",
+ "two_liquids": {
+  "columns": [
+   "T_K",
+   "P_kPa",
+   "x_1_I",
+   "x_1_II",
+   "record"
+  ],
+  "rows": [
+   [
+    369.25,
+    null,
+    0.5625,
+    0.08509999999999995,
+    0
+   ]
+  ],
+  "records": [
+   {
+    "doi": "10.1021/je020053r",
+    "citation": "M. S. Sunder, D. H. L. Prasad, Phase Equilibria of Water + Furfural and Dichloromethane + n-Hexane, J. Chem. Eng. Data 48 (2003) 221-223",
+    "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je020053r.html",
+    "sets": "PureOrMixtureData 10 (phases Liquid mixture 1 and 2)"
+   }
+  ],
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "notes": "The two liquids in equilibrium, as stored in the records (mole fraction of component 1 in each; record: the index in records). P is the three-phase or the stated pressure where the record gives one. Fitted as liquid-liquid equilibrium (fit_parameters.py); rows of the curve strictly between the two liquids at the same temperature are not fitted as one liquid. To be checked by a person against the records (AGENTS.md rule 4)."
+ }
 }
