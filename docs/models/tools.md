@@ -83,7 +83,7 @@ error.
 
 **Tools.** One per capability that is available; the ones listed as unsupported (`solve_column` until milestone M1's
 shortcut) are not offered (the `capabilities` tool lists them, with where they are planned). Today:
-`capabilities`, `find_component`, `component_info`, `check_project`, `flowsheet_status`, `solve_flowsheet`, `size_drum` (a flash drum's size, docs/models/sizing.md), `solve_column`, `solve_membrane` (the Membrane block, docs/models/membrane.md), `solve_extraction` (the Extraction block, docs/models/extraction.md). A tool's
+`capabilities`, `find_component`, `component_info`, `check_project`, `flowsheet_status`, `solve_flowsheet`, `size_drum` (a flash drum's size, docs/models/sizing.md), `solve_column`, `solve_membrane` (the Membrane block, docs/models/membrane.md), `solve_extraction` (the Extraction block, docs/models/extraction.md), `solve_evaporator` (the Evaporator block, docs/models/evaporator.md). A tool's
 input schema is the capability's (a subset of JSON Schema 2020-12); its arguments are the request's `input`. Each
 tool is marked read-only.
 

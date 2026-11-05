@@ -131,7 +131,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     2026-11-04 (the Separator button, 20 cells, isothermal, counter-current and GPU; an adiabatic module and
     pervaporation postponed). Still open: the choice of Aziaba et al. 2022 as the model's source. To check: the worked
     example of Binous 2006 and the example's permeances against Aziaba et al.'s Table 1.
-  - Waiting: W1; W3's evaporator and crystallizer.
+  - **W3, M3 step 10: the Evaporator block, built, to review** (docs/decisions/2026-11-04-09-evaporator-crystallizer.md):
+    one effect or several in forward feed, each a heater and a flash heated by the vapour of the one before; the
+    steam for a product concentration or a steam flow, the steam economy, each effect's boiling-point rise and, with U,
+    its area; under the Separator button; `solve_evaporator`. To check: Example 1 of Subramanian 2019 (slides 16-20).
+    Answered 2026-11-05: keep the block, one condensate outlet, other feed arrangements and equal areas later; sugar
+    solutions on the ideal solution with a note. Still open: a data task, NRTL pairs of water + glucose and water +
+    sucrose fitted to open data (sucrose to be proposed for addition).
+  - Waiting: W1; W3's crystallizer (a second pull request, docs/decisions/2026-11-04-11-crystallizer.md).
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
   (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive
   distillation and the rest after 1.0. Lab pins releases, files capability requests, and does G2 to G5.
@@ -228,6 +235,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   maintainer (2026-11-04): "PR and SRK should be ok for now". Proposal 0018 is postponed with its findings. Open: PR and
   SRK k_ij fitted to the open high-pressure data (CO2, H2, CO, CH4 + methanol; CO2 + water), whose deviations decide
   whether 0018 is reopened.
+- **Wilson fits (M1, proposal 0016 step 2; docs/decisions/2026-11-04-06-wilson-fits.md):** review the pull request;
+  the five pairs are decided by proposal 0019, answer 4. The three "miscibility-unchecked" Wilson fits wait for roadmap
+  D9 (proposal 0019, step 2).
 - **Wilson fits (M1, proposal 0016 step 2; docs/decisions/2026-11-04-06-wilson-fits.md):** PR #200; the five pairs
   decided by proposal 0019, answer 4.
 - **Pairs with two liquids (D9, proposal 0019; docs/decisions/2026-11-04-12-two-liquid-pairs.md):** step 1, the

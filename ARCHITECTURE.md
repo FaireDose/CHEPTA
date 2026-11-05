@@ -250,7 +250,7 @@ CHEPTA.capabilities()   // name, summary, status ("available" or "unsupported"),
 
 - **Capabilities at M0:** `capabilities`, `find_component`, `component_info`, `check_project`, `flowsheet_status`,
   `solve_flowsheet`; `solve_column` is listed as unsupported, with where it is planned. **M1:** `solve_column` (the shortcut column, W2) and `size_drum` (a flash
-  block's drum and decanter sizes, W4). **M3:** `solve_membrane` (the Membrane block, W3 and W4); `solve_extraction` (the Extraction block, W2).
+  block's drum and decanter sizes, W4). **M3:** `solve_membrane` (the Membrane block, W3 and W4); `solve_extraction` (the Extraction block, W2); `solve_evaporator` (the Evaporator block, W3).
 - **outcome:** `ok`, `invalid_input` (BAD_INPUT, OUT_OF_RANGE), `missing_data`, `unsupported` (NOT_AVAILABLE,
   PHASE_SPLIT), `not_converged`, `cancelled`, `out_of_time` (from the worker, M1), `error` (a bug in CHEPTA). An error
   carries `code`, `message` and `where` (the fields or blocks it concerns).

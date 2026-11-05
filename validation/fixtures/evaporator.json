@@ -1,0 +1,185 @@
+{
+ "_about": "validation/python/reference_evaporator.py: forward-feed evaporators, water and a nonvolatile solute, Raoult's law (ideal), solved equation-oriented with scipy; test/evaporator.test.js",
+ "cases": [
+  {
+   "name": "Subramanian Example 1, feed at 293 K",
+   "components": [
+    "water",
+    "citric-acid"
+   ],
+   "feed_kg_h": {
+    "water": 27000.0,
+    "citric-acid": 3000.0
+   },
+   "feed_T_K": 293.0,
+   "P_kPa": [
+    12.259625230758443
+   ],
+   "steam_P_kPa": 200.0,
+   "product_mass_fraction": 0.5,
+   "U_W_m2K": [
+    2900.0
+   ],
+   "result": {
+    "steam_kg_h": 27674.191827645438,
+    "steam_economy": 0.8672339972734068,
+    "evaporated_kg_h": 24000.0,
+    "product_kg_h": 5999.999999999998,
+    "steam_hfg_kJ_kg": 2201.5574958449984,
+    "steam_T_K": 393.3615459364888,
+    "effects": [
+     {
+      "T_K": 324.8165804004244,
+      "vapour_kg_h": 24000.0,
+      "duty_kW": 16923.979016557,
+      "BPR_K": 1.8161262734210482,
+      "dT_K": 68.54496553606441,
+      "A_m2": 85.13907312747902
+     }
+    ],
+    "residual": 4.440892098500626e-15
+   }
+  },
+  {
+   "name": "Subramanian Example 1, feed at 308 K",
+   "components": [
+    "water",
+    "citric-acid"
+   ],
+   "feed_kg_h": {
+    "water": 27000.0,
+    "citric-acid": 3000.0
+   },
+   "feed_T_K": 308.0,
+   "P_kPa": [
+    12.259625230758443
+   ],
+   "steam_P_kPa": 200.0,
+   "product_mass_fraction": 0.5,
+   "U_W_m2K": [
+    2900.0
+   ],
+   "result": {
+    "steam_kg_h": 26860.3535313403,
+    "steam_economy": 0.8935102053663263,
+    "evaporated_kg_h": 24000.0,
+    "product_kg_h": 5999.999999999998,
+    "steam_hfg_kJ_kg": 2201.5574958449984,
+    "steam_T_K": 393.3615459364888,
+    "effects": [
+     {
+      "T_K": 324.8165804004246,
+      "vapour_kg_h": 24000.0,
+      "duty_kW": 16426.281293880253,
+      "BPR_K": 1.8161262734212187,
+      "dT_K": 68.54496553606424,
+      "A_m2": 82.63531660752014
+     }
+    ],
+    "residual": 2.6645352591003757e-15
+   }
+  },
+  {
+   "name": "triple effect, product concentration",
+   "components": [
+    "water",
+    "citric-acid"
+   ],
+   "feed_kg_h": {
+    "water": 27000.0,
+    "citric-acid": 3000.0
+   },
+   "feed_T_K": 293.0,
+   "P_kPa": [
+    70.0,
+    35.0,
+    12.35
+   ],
+   "steam_P_kPa": 200.0,
+   "product_mass_fraction": 0.5,
+   "U_W_m2K": [
+    3000.0,
+    2000.0,
+    1200.0
+   ],
+   "result": {
+    "steam_kg_h": 11683.393979784418,
+    "steam_economy": 2.0541976108592075,
+    "evaporated_kg_h": 23999.999999999996,
+    "product_kg_h": 6000.000000000005,
+    "steam_hfg_kJ_kg": 2201.5574958449984,
+    "steam_T_K": 393.3615459364888,
+    "effects": [
+     {
+      "T_K": 363.4626920964855,
+      "vapour_kg_h": 7534.063007695779,
+      "duty_kW": 7144.906553640198,
+      "BPR_K": 0.3780369556928349,
+      "dT_K": 29.898853840003312,
+      "A_m2": 79.65641528015851
+     },
+     {
+      "T_K": 346.4088155060085,
+      "vapour_kg_h": 8065.209044128945,
+      "duty_kW": 4797.347683501744,
+      "BPR_K": 0.5748619250242086,
+      "dT_K": 16.675839634784154,
+      "A_m2": 143.84126342564934
+     },
+     {
+      "T_K": 324.9664383186176,
+      "vapour_kg_h": 8400.727948175274,
+      "duty_kW": 5225.8425466566205,
+      "BPR_K": 1.8180347872749394,
+      "dT_K": 20.867515262366737,
+      "A_m2": 208.69129525613678
+     }
+    ],
+    "residual": 7.105427357601002e-15
+   }
+  },
+  {
+   "name": "double effect, steam given",
+   "components": [
+    "water",
+    "lactic-acid"
+   ],
+   "feed_kg_h": {
+    "water": 9000.0,
+    "lactic-acid": 1000.0
+   },
+   "feed_T_K": 330.0,
+   "P_kPa": [
+    60.0,
+    15.0
+   ],
+   "steam_P_kPa": 300.0,
+   "steam_kg_h": 4000.0,
+   "result": {
+    "steam_kg_h": 4000.0,
+    "steam_economy": 1.6830948232548915,
+    "evaporated_kg_h": 6732.379293019566,
+    "product_kg_h": 3267.6207069804345,
+    "steam_hfg_kJ_kg": 2163.436256299543,
+    "steam_T_K": 406.67535794654543,
+    "effects": [
+     {
+      "T_K": 359.9567007248204,
+      "vapour_kg_h": 3235.754802671036,
+      "duty_kW": 2403.8180625550476,
+      "BPR_K": 0.8775216858766157,
+      "dT_K": 46.71865722172504
+     },
+     {
+      "T_K": 328.8838600003809,
+      "vapour_kg_h": 3496.6244903485294,
+      "duty_kW": 2069.5725620627486,
+      "BPR_K": 1.7625162110051633,
+      "dT_K": 30.1953190385629
+     }
+    ],
+    "residual": 2.7755575615628914e-15
+   }
+  }
+ ]
+}

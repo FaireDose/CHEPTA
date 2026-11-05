@@ -103,7 +103,7 @@ Checked so far:
 |---|---|---|
 | Hydrocarbons and light gases, any pressure and reduced temperature | Peng–Robinson or SRK with the databank's k_ij (0 where it has none, with a warning) | covered |
 | Polar liquids below 10 bar | NRTL or UNIQUAC with fitted or databank pairs; ideal-gas or PR/SRK vapour | covered where the pairs exist (docs/DATA_WANTED.md) |
-| Polar liquids below 10 bar, one liquid | Wilson with pairs fitted to ThermoML data (330 sets) or ChemSep's databank pairs; ideal-gas or PR/SRK vapour | covered where the pairs exist (roadmap M1, proposal 0016); refused or warned where two liquids form |
+| Polar liquids below 10 bar, one liquid | Wilson with pairs fitted to ThermoML data (332 sets) or ChemSep's databank pairs; ideal-gas or PR/SRK vapour | covered where the pairs exist (roadmap M1, proposal 0016); refused or warned where two liquids form |
 | Polar mixtures above 10 bar | (PSRK, MHV2, Wong–Sandler, CPA) | **not available**; planned: roadmap M2, M3 |
 | Water + hydrocarbons (two liquids) | (CPA, or a free-water approach) | **not available**; the engine refuses a second liquid with an equation of state; planned: roadmap M3 |
 | Electrolytes | (eNRTL, Pitzer) | **not available**, shown as "not available yet"; planned: roadmap M5 (ionic liquids: M6) |

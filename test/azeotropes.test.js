@@ -47,10 +47,9 @@ test("known-issues.json names real components and models", () => {
     // predicted-deviation: a predictive model (Modified UNIFAC 2.0) against measured data (test/mod-unifac.test.js);
     // databank-deviation: a databank set, not fitted to the pair's open data, against them (test/wilson.test.js; the
     // maintainer, 2026-11-04, proposal 0016: ethanol + ethylene glycol with ChemSep's Wilson set);
-    // miscibility-unchecked: a one-liquid (Wilson) set where NRTL or UNIQUAC fits to the same data predict two liquids,
-    // until roadmap item D9 classifies the pair (the maintainer, 2026-11-04); two-liquids-missed: a set that predicts one
-    // liquid where its own record measured two (vle_batch.py's two_liquids), until D9 refits the pair
-    assert.ok(["ternary-azeotrope", "phase-split", "fit-quality", "predicted-deviation", "databank-deviation", "miscibility-unchecked", "two-liquids-missed"].includes(k.kind), k.kind);
+    // miscibility-unchecked: a Wilson set where NRTL or UNIQUAC fits to the same data predict two liquids, measured as
+    // one liquid only below the fit's temperature (proposal 0019, answers 3 and 4, 2026-11-05)
+    assert.ok(["ternary-azeotrope", "phase-split", "fit-quality", "predicted-deviation", "databank-deviation", "miscibility-unchecked"].includes(k.kind), k.kind);
     assert.ok(k.message && k.reference);
   }
 });
