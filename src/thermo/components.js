@@ -34,10 +34,12 @@ export function componentRecord(id, userData = null) {
   if (!props && !groups) return c;
   const out = { ...c };
   if (props) {
-    const { vapourPressure, fusion, ...rest } = props;
+    const { vapourPressure, fusion, solubility, ...rest } = props;
     out.properties = { ...(c.properties || {}), ...rest };
     if (vapourPressure) out.vapourPressure = vapourPressure;
     if (fusion) out.fusion = fusion;
+    // the user's own solubility curves replace the databank's for the same solvent (proposal 0015, section 5)
+    if (solubility) out.solubility = [...(c.solubility ?? []).filter(r => !solubility.some(u => u.solvent === r.solvent)), ...solubility];
   }
   if (groups) out.modUnifac = groups;
   out.userRecords = [...Object.keys(props || {}), ...(groups ? ["modUnifac"] : [])];
@@ -64,6 +66,8 @@ const describe = (id, c) => ({
   uniquac: Boolean(c.uniquac), modUnifac: Boolean(c.modUnifac?.groups),
   // melting temperature and enthalpy of fusion (solid-liquid equilibrium)
   fusion: Boolean(c.fusion && c.fusion.available !== false),
+  // measured solubility curves in named solvents (proposal 0015, section 5)
+  solubility: (c.solubility ?? []).map(r => r.solvent),
   // enthalpy (and Gibbs energy) of formation at 298.15 K (reactions, proposal 0010)
   formation: Boolean(c.formation && c.formation.available !== false),
   ...(c.tier === "user" ? { user: true } : {}),

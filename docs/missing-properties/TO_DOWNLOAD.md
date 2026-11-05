@@ -18,6 +18,7 @@ The assistant then reads it, takes the values it holds under DATA_RULES.md, and 
 | 3 | Z. Naturforsch. B 28 (1973): electrical conductivity of o-, m- and p-terphenyl | https://doi.org/10.1515/znb-1973-5-621 | the density of the molten terphenyls | p-terphenyl's liquid density |
 | 4 | J. Sci. Instrum. 35 (1958) 307: a viscometer for organic liquids at high temperature | https://doi.org/10.1088/0950-7671/35/8/307 | viscosities of the terphenyls | p-terphenyl's liquid viscosity |
 | 5 | Turk. J. Eng. Environ. Sci. 25 (2001): esterification of acetic acid with ethanol on Amberlyst-15 | https://aj.tubitak.gov.tr/engineering/issues/muh-01-25-6/muh-25-6-2-0001-12.pdf | the rate equation and its constants (k, activation energy, K) | the esterification kinetics example (proposal 0010, step 8) |
+| 6 | Su, Zheng, Suga, Watanabe, J. Supercrit. Fluids 218 (2024) 106497: solubility of terephthalic acid in water under hydrothermal conditions (open access, CC BY-NC-ND, on the publisher's site) | https://doi.org/10.1016/j.supflu.2024.106497 | the table of measured solubilities, 423.15-623.15 K at 10 and 20 MPa, and its comparison with earlier data | which of the two archive sets of TPA in water is right (Takebayashi 2012, used now, or Sunsandee 2013, 50 times lower; docs/decisions/2026-11-05-02-solids-everywhere.md), and TPA's curve up to 623 K |
 
 ## For your decision, not a download
 

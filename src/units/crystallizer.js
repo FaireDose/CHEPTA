@@ -21,7 +21,8 @@
  *
  * Energy: the duty is H_out − H_in. The crystals' enthalpy is the pure liquid solute's at T minus the enthalpy of
  * fusion, h_solid(T) = h_L(T) − ΔH_fus: a labelled approximation (the maintainer, 2026-10-29, answer 3 of proposal
- * 0015), consistent with the solid-liquid model (ΔCp of fusion 0 means c_p,solid = c_p,liquid), valid where the
+ * 0015), consistent with the solid-liquid model (ΔCp of fusion 0 means c_p,solid = c_p,liquid), or, where a measured solubility curve gives the solubility, the
+ * liquid minus the curve's apparent enthalpy of solution (src/thermo/solubility-curve.js); valid where the
  * solute's liquid records reach T. The crystals leave as a stream with a solid phase in equilibrium
  * (src/stream/stream.js, crystalStream; contract 1, stream v2), which only a Product takes: no other block holds a
  * solid in equilibrium yet.
@@ -42,6 +43,35 @@ import { brent } from "../util/solve.js";
 import { stream, crystalStream, molarMasses } from "../stream/stream.js";
 import { findComponent } from "../thermo/components.js";
 import { registerUnit } from "./units.js";
+import { solidHeat } from "../equilibrium/sle.js";
+import { system as makeSystem } from "../system.js";
+
+/** The NRTL sets fitted to measured solubilities (validation/python/fit_sle.py). */
+export const SLE_SET = "fitted-sle-thermoml";
+const auxCache = new WeakMap();
+/**
+ * The system the crystallizer takes the solubility from (the maintainer, 2026-11-05: the sets fitted to measured
+ * solubilities are the default in the Crystallizer, and elsewhere only where the pair has no other set): the
+ * flowsheet's own, unless a pair of the solute with another component has a solubility set that the flowsheet did not
+ * choose; then the same method with those sets.
+ */
+function solubilitySystem(sys, i) {
+  const byI = auxCache.get(sys) ?? new Map();
+  if (byI.has(i)) return byI.get(i);
+  const idOf = nm => sys.ids[sys.names.indexOf(nm)];
+  const sets = {};
+  let changed = false;
+  for (const p of sys.info?.pairs ?? []) {
+    if (!p?.set || !Array.isArray(p.pair)) continue;
+    const [a, b] = p.pair.map(idOf);
+    if (!a || !b) continue;
+    sets[`${a}+${b}`] = p.set;
+    if ((a === sys.ids[i] || b === sys.ids[i]) && p.set !== SLE_SET && p.alternatives?.some(x => x.set === SLE_SET)) { sets[`${a}+${b}`] = SLE_SET; changed = true; }
+  }
+  const aux = changed ? makeSystem({ components: sys.ids, model: sys.model, vapour: sys.vapour, sets, userData: sys.userData }) : sys;
+  byI.set(i, aux); auxCache.set(sys, byI);
+  return aux;
+}
 
 const SPEC_KEYS = ["solute", "T_K", "P_kPa", "evaporated_kg_h"];
 const has = (spec, k) => spec?.[k] !== undefined && spec?.[k] !== null && spec?.[k] !== "";
@@ -62,7 +92,7 @@ function checkSpec(spec, { sys }) {
   if (sys.n < 2) throw fail("BAD_INPUT", "Crystallizer: a solution needs a solvent as well as the solute.");
   if (typeof sys.solidSolubility !== "function" || !sys.gammas) throw fail("BAD_INPUT", `Crystallizer: the solubility needs an activity model (NRTL, UNIQUAC, Wilson, Modified UNIFAC 2.0 or the ideal solution); the flowsheet uses ${sys.model}.`);
   const f = sys.fusion?.[i];
-  if (!(f?.Tm_K > 0) || !(f?.Hfus_J_mol > 0)) throw fail("MISSING_DATA", `Crystallizer: ${sys.names[i]} has no melting temperature and enthalpy of fusion (no open data in the open sources); add them as your own data (My data, Melting data).`);
+  if (!sys.solubility?.[i] && (!(f?.Tm_K > 0) || !(f?.Hfus_J_mol > 0))) throw fail("MISSING_DATA", `Crystallizer: ${sys.names[i]} has no melting temperature and enthalpy of fusion and no measured solubility curve (no open data in the open sources); add them as your own data (My data, Melting data or Solubility).`);
   const out = { i };
   if (has(spec, "T_K")) out.T_K = positive(spec.T_K, "T_K");
   if (has(spec, "P_kPa")) out.P_kPa = positive(spec.P_kPa, "P_kPa");
@@ -72,7 +102,7 @@ function checkSpec(spec, { sys }) {
     if (out.evaporated_kg_h > 0 && (out.T_K != null) === (out.P_kPa != null)) throw fail("BAD_INPUT", "Crystallizer: an evaporative crystallizer takes the solvent evaporated, evaporated_kg_h, and one of T_K or P_kPa (the other is the mother liquor's bubble point).");
   }
   if (!(out.evaporated_kg_h > 0) && out.T_K == null) throw fail("BAD_INPUT", "Crystallizer: give the temperature T_K (cooling), or the solvent evaporated evaporated_kg_h with T_K or P_kPa (evaporative).");
-  if (out.T_K != null && !(out.T_K < f.Tm_K)) throw fail("OUT_OF_RANGE", `Crystallizer: ${sys.names[i]} melts at ${fmt(f.Tm_K)} K: at ${fmt(out.T_K)} K there is no solid.`);
+  if (out.T_K != null && f?.Tm_K > 0 && !(out.T_K < f.Tm_K)) throw fail("OUT_OF_RANGE", `Crystallizer: ${sys.names[i]} melts at ${fmt(f.Tm_K)} K: at ${fmt(out.T_K)} K there is no solid.`);
   return out;
 }
 
@@ -94,11 +124,11 @@ function dof(spec) {
 export function crystallize(sys, L, i, T) {
   const others = L.filter((_, k) => k !== i), so = others.reduce((a, v) => a + v, 0);
   if (!(so > 0)) throw fail("BAD_INPUT", `Crystallizer: the liquid holds no solvent: only ${sys.names[i]}.`);
-  const r = sys.solidSolubility(i, T, sys.n > 2 ? { solvent: others.map(v => v / so) } : {});
+  const r = solubilitySystem(sys, i).solidSolubility(i, T, sys.n > 2 ? { solvent: others.map(v => v / so) } : {});
   const sat = r.xSolute * so / (1 - r.xSolute);
   const C = Math.max(0, L[i] - sat);
   const ml = L.slice(); ml[i] = L[i] - C;
-  return { C, ml, x: r.xSolute, gamma: r.gamma, splits: r.splits, undersaturated: !(L[i] > sat) };
+  return { C, ml, x: r.xSolute, gamma: r.gamma, splits: r.splits, route: r.route, undersaturated: !(L[i] > sat) };
 }
 
 /** Evaporate E kg/h of the mother liquor's equilibrium vapour at T, then crystallize: successive substitution on y. */
@@ -133,7 +163,7 @@ function solve({ sys, inlets, spec, outletCount }) {
   const F = flows.reduce((a, v) => a + v, 0);
   if (!(F > 0)) throw fail("BAD_INPUT", "Crystallizer: the feed has no flow.");
   const i = spec.i, name = sys.names[i], MW = molarMasses(sys);
-  const { Tm_K, Hfus_J_mol } = sys.fusion[i];
+  const { Tm_K = null, Hfus_J_mol = null } = sys.fusion?.[i] ?? {};
   const notes = [], warnings = [];
   const feedP = Math.min(...ins.filter(s => s.F_kmol_h > 0).map(s => s.P_kPa));
   let T, P, r, vapour = null;
@@ -145,7 +175,7 @@ function solve({ sys, inlets, spec, outletCount }) {
       P = spec.P_kPa;
       // the bubble temperature of the mother liquor at P: Brent's method on T, below the solute's melting temperature
       const g = t => evaporativeAt(sys, flows, i, t, E, MW).P - P;
-      const hi = Tm_K - 0.01;
+      const hi = Tm_K ? Tm_K - 0.01 : Math.max(...sys.solubility[i].map(c => c.Tmax_K ?? c.points.at(-1)[0]));
       let lo = Math.max(150, hi - 300), a = null;
       const grid = 60;
       let prev = null;
@@ -172,9 +202,14 @@ function solve({ sys, inlets, spec, outletCount }) {
   if (!(E > 0) && mother.VF > 1e-9) throw fail("BAD_INPUT", `Crystallizer: at ${fmt(T)} K and ${fmt(P)} kPa the mother liquor would boil (vapour fraction ${fmt(mother.VF)}); raise the pressure, or give the solvent evaporated (an evaporative crystallizer).`);
   const Cflows = sys.ids.map((_, k) => (k === i ? r.C : 0));
   let crystals;
+  const others = ml.filter((_, k) => k !== i), so = others.reduce((a, v) => a + v, 0);
+  const heat = solidHeat(sys, i, T, sys.n > 2 ? { solvent: others.map(v => v / so) } : {});
   if (r.C > 0) {
-    const hL = stream(sys, { flow_kmol_h: Cflows, T_K: T, P_kPa: P }).h_J_mol;
-    crystals = crystalStream(sys, { flow_kmol_h: Cflows, T_K: T, P_kPa: P, h_J_mol: hL - Hfus_J_mol });
+    const unit = sys.ids.map((_, k) => (k === i ? 1 : 0));
+    const hS = sys.enthalpy("liquid", T, P, unit) - heat.dH_J_mol;
+    // a flowsheet that holds the solid everywhere (thermo.solids) makes the crystals by its own flash, the same rule
+    crystals = sys.solids?.includes(sys.ids[i]) ? stream(sys, { flow_kmol_h: Cflows, T_K: T, P_kPa: P })
+      : crystalStream(sys, { flow_kmol_h: Cflows, T_K: T, P_kPa: P, h_J_mol: hS });
   } else {
     crystals = stream(sys, { flow_kmol_h: Cflows, T_K: T, P_kPa: P });
     notes.push(`The liquid is not saturated in ${name} at ${fmt(T)} K (solubility x = ${fmt(r.x)}): nothing crystallizes.`);
@@ -187,7 +222,7 @@ function solve({ sys, inlets, spec, outletCount }) {
     try { Tl = sys.liquidusT(k, normalize(ml)); } catch { Tl = null; }
     if (Tl != null && Tl > T) warnings.push({ code: "SECOND_SOLID", message: `The mother liquor is also saturated in ${sys.names[k]} (its crystals would appear below ${fmt(Tl)} K, above the crystallizer's ${fmt(T)} K): past a eutectic, a second solid forms, which this block does not model.`, remedy: "Raise the temperature, or evaporate less." });
   }
-  notes.push(`The crystals are pure ${name}, in equilibrium with the mother liquor (solubility x = ${fmt(r.x)}, γ = ${fmt(r.gamma)}; ΔCp of fusion 0). Their enthalpy is the liquid ${name}'s at ${fmt(T)} K minus its enthalpy of fusion (${fmt(Hfus_J_mol / 1000)} kJ/mol): a labelled approximation. Crystals go to a Product: no other block holds a solid in equilibrium yet.`);
+  notes.push(`The crystals are pure ${name}, in equilibrium with the mother liquor (solubility x = ${fmt(r.x)}, γ = ${fmt(r.gamma)}; ${r.route === "curve" ? "the measured solubility curve" : "ΔCp of fusion 0"}). Their enthalpy is the liquid ${name}'s at ${fmt(T)} K minus ${heat.source}, ${fmt(heat.dH_J_mol / 1000)} kJ/mol: a labelled approximation.${sys.solids?.includes(sys.ids[i]) ? "" : " Crystals go to a Product, unless the flowsheet names them in its solids (then every block keeps them)."}`);
   const outlets = { crystals, liquor: mother, vapour: vapour ?? stream(sys, { flow_kmol_h: new Array(sys.n).fill(0), T_K: T, P_kPa: P }) };
   const Hout = Object.values(outlets).reduce((a, s) => a + (s.H_kW ?? 0), 0);
   const fed = flows[i];
@@ -195,12 +230,12 @@ function solve({ sys, inlets, spec, outletCount }) {
     outlets, duty_kW: Hout - Hin, notes, warnings,
     state: { solute: sys.ids[i], mode: E > 0 ? "evaporative" : "cooling", T_K: T, P_kPa: P, yield: fed > 0 ? r.C / fed : 0,
       crystals_kmol_h: r.C, crystals_kg_h: r.C * MW[i], solubility_x: r.x, gamma: r.gamma, evaporated_kg_h: E,
-      Tm_K, Hfus_J_mol, h_solid_rule: "h_liquid(T) - Hfus" },
+      Tm_K, Hfus_J_mol, route: r.route ?? "equation", h_solid_rule: heat.kind === "fusion" ? "h_liquid(T) - Hfus" : "h_liquid(T) - dH_solution(T)", dH_solid_J_mol: heat.dH_J_mol },
   };
 }
 
 registerUnit({
-  type: "crystallizer", label: "Crystallizer", duty: true,
+  type: "crystallizer", label: "Crystallizer", duty: true, crystals: true,
   inlets: [{ port: "in", min: 1, max: Infinity, label: "feed" }],
   outlets: [{ port: "crystals" }, { port: "liquor", label: "mother liquor" }, { port: "vapour", optional: true }],
   specKeys: SPEC_KEYS,

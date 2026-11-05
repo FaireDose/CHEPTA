@@ -249,6 +249,19 @@ new refit of a ChemSep record is made (section 1).
   its data range is never written.
 - The property method of a test or example follows [METHOD_SELECTION.md](METHOD_SELECTION.md).
 
+- **Sets fitted to measured solubilities** (`fit_sle.py`, set `fitted-sle-thermoml`; the maintainer, 2026-11-05): the
+  default in the Crystallizer, and elsewhere only where the pair has no other set of the model. The script fits a pair
+  only where it has no other NRTL set, so its sets are the default; the Crystallizer takes its solute's solubility from
+  such a set even where the flowsheet chose another (`src/units/crystallizer.js`).
+- **Measured solubility curves** (proposal 0015, section 5; `solubility_curves.py`): x_sat(T) of a solid in one named
+  solvent, the Apelblat form ln x = A + B/T + C ln T fitted to one measured set of the ThermoML Archive or an open
+  article, stored as the component's `solubility` record with its range, deviations and the sets left out with the
+  reason. Where sets disagree, the rule of section 3 holds: a set is chosen only with a stated reason, else the choice
+  is the maintainer's (terephthalic acid in water, 2026-11-05: held, provisionally Takebayashi 2012). The engine uses a
+  curve in place of the melting-point equation, only inside its measured temperatures, never extrapolated; its van't
+  Hoff slope gives the apparent enthalpy of solution for the solid's energy balance. A solid with neither melting data
+  nor a curve has no solubility (no open data).
+
 ## 6. Components without measured critical constants (proposal 0009)
 
 Such a component has `Tc_K`, `Pc_Pa` and `omega` null and a `critical` note with the sources searched.

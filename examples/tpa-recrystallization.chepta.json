@@ -1,0 +1,261 @@
+{
+ "fugacity_project": 6,
+ "saved_with": "chepta 0.5.0",
+ "saved_at": "2026-11-05T12:00:00.000Z",
+ "workbench": {
+  "view": "flowsheet",
+  "diagram": "txy",
+  "model": "NRTL",
+  "eos": "PR",
+  "vapour": "ideal",
+  "P_kPa": 101.325,
+  "T_K": null,
+  "units": {
+   "T": "C",
+   "P": "kPa",
+   "basis": "mass",
+   "viscosity": "mPa s",
+   "flow": "kmol/h",
+   "massFlow": "kg/h",
+   "duty": "kW"
+  },
+  "basis": "mole",
+  "inputs": {
+   "txy": [
+    null,
+    null
+   ],
+   "ternary": [
+    null,
+    null,
+    null
+   ],
+   "azeotropes": [],
+   "pxy": [
+    null,
+    null
+   ],
+   "envelope": [],
+   "flash": [],
+   "henry": {
+    "gas": "oxygen",
+    "solvent": "water"
+   },
+   "solid": [
+    "benzoic-acid",
+    "ethanol"
+   ],
+   "sle": [
+    "benzene",
+    "naphthalene"
+   ],
+   "properties": [
+    "water"
+   ],
+   "flowsheet": [],
+   "reactor": [],
+   "column": []
+  },
+  "z": {
+   "pxy": null,
+   "envelope": null
+  },
+  "flash": {
+   "spec": "PVF",
+   "T_K": 350,
+   "P_kPa": 101.325,
+   "VF": 0.5,
+   "Q_J_mol": 0,
+   "feedT_K": 298.15,
+   "feedP_kPa": 101.325,
+   "duty": false,
+   "z": null,
+   "flow": 100,
+   "flowUnit": "kmol/h"
+  },
+  "sets": {},
+  "prefer": null,
+  "henryT_K": 298.15,
+  "henryP_kPa": 101.325,
+  "compareGases": false,
+  "sleT_K": 298.15,
+  "solidUnit": "mole",
+  "property": "density",
+  "steamP_kPa": [
+   10,
+   100,
+   1000,
+   10000
+  ],
+  "background": true,
+  "residueCurves": true,
+  "isotherms": true,
+  "grid": 40,
+  "panels": {
+   "left": true,
+   "right": true
+  },
+  "ribbon": true
+ },
+ "flowsheet": {
+  "components": [
+   "water",
+   "terephthalic-acid"
+  ],
+  "thermo": {
+   "model": "MOD-UNIFAC-2",
+   "vapour": "ideal",
+   "solids": [
+    "terephthalic-acid"
+   ]
+  },
+  "blocks": [
+   {
+    "id": "F1",
+    "type": "feed",
+    "spec": {
+     "flow_kg_h": {
+      "water": 800,
+      "terephthalic-acid": 200
+     },
+     "T_K": 360,
+     "P_kPa": 8000
+    },
+    "x": 40,
+    "y": 200
+   },
+   {
+    "id": "E1",
+    "type": "heater",
+    "spec": {
+     "T_K": 547
+    },
+    "x": 140,
+    "y": 200
+   },
+   {
+    "id": "D1",
+    "type": "flash",
+    "spec": {
+     "P_kPa": 4000,
+     "duty_kW": 0
+    },
+    "x": 250,
+    "y": 200
+   },
+   {
+    "id": "D2",
+    "type": "flash",
+    "spec": {
+     "P_kPa": 2000,
+     "duty_kW": 0
+    },
+    "x": 360,
+    "y": 240
+   },
+   {
+    "id": "D3",
+    "type": "flash",
+    "spec": {
+     "P_kPa": 800,
+     "duty_kW": 0
+    },
+    "x": 470,
+    "y": 280
+   },
+   {
+    "id": "CR1",
+    "type": "crystallizer",
+    "spec": {
+     "solute": "terephthalic-acid",
+     "T_K": 373.15
+    },
+    "x": 580,
+    "y": 320
+   },
+   {
+    "id": "P1",
+    "type": "product",
+    "x": 250,
+    "y": 60
+   },
+   {
+    "id": "P2",
+    "type": "product",
+    "x": 360,
+    "y": 100
+   },
+   {
+    "id": "P3",
+    "type": "product",
+    "x": 470,
+    "y": 140
+   },
+   {
+    "id": "P4",
+    "type": "product",
+    "x": 700,
+    "y": 440
+   },
+   {
+    "id": "P5",
+    "type": "product",
+    "x": 700,
+    "y": 340
+   }
+  ],
+  "streams": [
+   {
+    "id": "S1",
+    "from": "F1.out",
+    "to": "E1.in"
+   },
+   {
+    "id": "S2",
+    "from": "E1.out",
+    "to": "D1.in"
+   },
+   {
+    "id": "V1",
+    "from": "D1.vapour",
+    "to": "P1.in"
+   },
+   {
+    "id": "L1",
+    "from": "D1.liquid",
+    "to": "D2.in"
+   },
+   {
+    "id": "V2",
+    "from": "D2.vapour",
+    "to": "P2.in"
+   },
+   {
+    "id": "L2",
+    "from": "D2.liquid",
+    "to": "D3.in"
+   },
+   {
+    "id": "V3",
+    "from": "D3.vapour",
+    "to": "P3.in"
+   },
+   {
+    "id": "L3",
+    "from": "D3.liquid",
+    "to": "CR1.in"
+   },
+   {
+    "id": "CRYSTALS",
+    "from": "CR1.crystals",
+    "to": "P4.in"
+   },
+   {
+    "id": "LIQUOR",
+    "from": "CR1.liquor",
+    "to": "P5.in"
+   }
+  ]
+ },
+ "title": "Terephthalic acid recrystallized from hot water: dissolved at 274 °C under 80 bar, crystallized in three letdown drums"
+}

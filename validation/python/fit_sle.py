@@ -89,6 +89,8 @@ def pairs():
     for f in sorted(SLE_DIR.glob("*.json")):
         d = json.loads(f.read_text())
         solid = d["solid"]
+        if COMPONENTS[solid].get("fusion", {}).get("Tm_K") is None:
+            continue   # no open melting data: the solid's measured curve is its route (solubility_curves.py), no NRTL fit
         Tm = COMPONENTS[solid]["fusion"]["Tm_K"]
         for st in d["sets"]:
             for r in st["rows"]:
@@ -259,14 +261,21 @@ def main():
         # in place: a refitted set keeps its position and its source_ids (the data come from the ThermoML Archive; a
         # guess from the cited names by make_sources.py picks unrelated articles of the same first author, 2026-11-05)
         new = {(p["i"], p["j"]): p for p in written}
-        pairs = []
+        def with_ids(p, ids):   # source_ids right after source, where make_sources.py puts them
+            out = {}
+            for k, v in p.items():
+                out[k] = v
+                if k == "source":
+                    out["source_ids"] = ids
+            return out
+        kept = []   # (not "pairs": that name is the function that reads the data)
         for p in existing["pairs"]:
             if p.get("set") != SET:
-                pairs.append(p)
+                kept.append(p)
             elif (p["i"], p["j"]) in new:
-                pairs.append({**new.pop((p["i"], p["j"])), "source_ids": p.get("source_ids", ["nist-thermoml-archive"])})
-        pairs += [{**p, "source_ids": ["nist-thermoml-archive"]} for p in written if (p["i"], p["j"]) in new]
-        existing["pairs"] = pairs
+                kept.append(with_ids(new.pop((p["i"], p["j"])), p.get("source_ids", ["nist-thermoml-archive"])))
+        kept += [with_ids(p, ["nist-thermoml-archive"]) for p in written if (p["i"], p["j"]) in new]
+        existing["pairs"] = kept
         BIN_FILE.write_text(json.dumps(existing, indent=2) + "\n")
         DOC.write_text("\n".join(lines))
         print("written %d sets to %s and %s" % (len(written), BIN_FILE.relative_to(ROOT), DOC.relative_to(ROOT)))

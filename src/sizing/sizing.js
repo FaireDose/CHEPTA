@@ -241,7 +241,7 @@ function liquidProps(sys, x, T, who, viscosity) {
 function liquidPhases(r, who) {
   const outs = [r.outlets?.liquid, r.outlets?.liquid2].filter(s => s && s.F_kmol_h > 0);
   const ph = outs.flatMap(s => s.phases);
-  if (ph.some(p => p.type === "solid")) throw fail("NOT_AVAILABLE", `${who}: the liquid carries an inert solid; a slurry is not sized.`);
+  if (ph.some(p => p.type === "solid")) throw fail("NOT_AVAILABLE", `${who}: the liquid carries a solid (${ph.some(p => p.type === "solid" && p.equilibrium) ? "crystals in equilibrium" : "an inert solid"}); a slurry is not sized.`);
   return ph.filter(p => p.type === "liquid" && p.F_kmol_h > 0).map(p => ({ F_kmol_h: p.F_kmol_h, x: p.composition }));
 }
 
