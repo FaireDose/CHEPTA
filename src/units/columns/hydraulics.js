@@ -196,14 +196,14 @@ function liquidOf(sys, x, T, stage) {
 /**
  * The trays of a rigorous column's profile (the Column block's `profile`: T_K, P_kPa, L_kmol_h, V_kmol_h, x, y by
  * component id), with their mass flows and properties, for trayHydraulics. The condenser (1) and the reboiler (N) are
- * not trays.
+ * not trays; every stage of an absorber or a stripper without them is one.
  */
 export function profileTrays(sys, profile) {
   if (!Array.isArray(profile) || profile.length < 3 || profile.some(s => s.V_kmol_h == null || s.x == null)) {
     throw fail("BAD_INPUT", "Column sizing: the diameter needs every stage's flows and compositions, the rigorous column's profile (the shortcut gives only its ends and its feed).");
   }
   const vec = obj => sys.ids.map(id => Number(obj?.[id] ?? 0));
-  return profile.slice(1, -1).map(s => {
+  return profile.filter(s => s.name !== "condenser" && s.name !== "reboiler").map(s => {
     const T = s.T_K, P = s.P_kPa, x = vec(s.x), y = vec(s.y);
     const Mx = x.reduce((a, v, i) => a + v * sys.MW[i], 0), My = y.reduce((a, v, i) => a + v * sys.MW[i], 0);
     const Z = sys.phase("vapour", T, P, y).Z ?? 1;

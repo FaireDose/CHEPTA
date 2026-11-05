@@ -268,23 +268,76 @@ registerCapability({
 // The column (proposal 0015, milestone M1: the shortcut mode; milestone M2a: the rigorous mode): a feed, the Column block
 // and its two products, solved as a flowsheet (src/units/columns/column.js), so the numbers are the flowsheet's.
 registerCapability({
-  name: "solve_column", summary: "Solve a distillation column: the shortcut (Fenske, Underwood, Gilliland) for a light and a heavy key, or the rigorous column (MESH on every stage, Newton's method)", status: "available",
+  name: "solve_column", summary: "Solve a column: a distillation column by the shortcut (Fenske, Underwood, Gilliland) for a light and a heavy key, or rigorously (MESH on every stage, Newton's method); an absorber or a stripper rigorously", status: "available",
   input: { type: "object", additionalProperties: false, required: ["components", "feed", "column"],
     properties: {
       components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
       thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default NRTL with an ideal-gas vapour" },
-      feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF" },
-      column: { type: "object", description: "the Column block's specification. mode \"shortcut\" (default): light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa. mode \"rigorous\": stages (the condenser and the reboiler counted, 1 the condenser), feed_stage, condenser (\"total\", \"partial\" or \"decanter\"), P_kPa, and two of reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW (one, not the reflux or the condenser duty, with a decanter); phases \"VL\" (default) or \"VLL\" (look for two liquids on the stages; activity models); reflux_liquid \"light\" or \"heavy\" (the decanter's refluxed liquid); method { model, vapour, sets, prefer }: the column's own property method, with the P-H boundary at its streams; optional sizing (rigorous mode): { tray_spacing_m (0.6), design_fraction (0.8 of flooding), diameter_m (a given column checked instead of sized), net_area_fraction (0.9), hole_area_ratio (0.1), hole_diameter_mm (5), foaming_factor (1), tray (\"sieve\", \"valve\", \"bubble-cap\"), K_chart_m_s (your own reading of Fair's chart, in place of CHEPTA's) }: the diameter by Fair's method, the fraction of flooding of every tray, FLOODING and WEEPING; see docs/models/sizing.md" },
+      feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; an absorber's or stripper's liquid, which enters the top stage" },
+      gas_feed: { type: "object", description: "optional: a second feed, as a Feed block's specification: the gas of an absorber or the stripping gas (live steam) of a stripper, which enters the bottom stage; the outlets then carry the gas leaving the top (distillate) and the liquid leaving the bottom (bottoms)" },
+      column: { type: "object", description: "the Column block's specification. mode \"shortcut\" (default): light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa. mode \"rigorous\": stages (the condenser and the reboiler counted, 1 the condenser), feed_stage, condenser (\"total\", \"partial\" or \"decanter\"), P_kPa, and two of reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW (one, not the reflux or the condenser duty, with a decanter); phases \"VL\" (default) or \"VLL\" (look for two liquids on the stages; activity models); reflux_liquid \"light\" or \"heavy\" (the decanter's refluxed liquid); method { model, vapour, sets, prefer }: the column's own property method, with the P-H boundary at its streams; optional sizing (rigorous mode): { tray_spacing_m (0.6), design_fraction (0.8 of flooding), diameter_m (a given column checked instead of sized), net_area_fraction (0.9), hole_area_ratio (0.1), hole_diameter_mm (5), foaming_factor (1), tray (\"sieve\", \"valve\", \"bubble-cap\"), K_chart_m_s (your own reading of Fair's chart, in place of CHEPTA's) }: the diameter by Fair's method, the fraction of flooding of every tray, FLOODING and WEEPING; see docs/models/sizing.md. configuration \"absorber\" or \"stripper\" (rigorous, no condenser; docs/models/columns.md): stages (all equilibrium stages, 1 the top), feed_stage (default 1 for the feed and N for gas_feed), reboiler \"none\" (default) or \"partial\" (a stripper's, with one of boilup_ratio, bottoms_kmol_h, reboiler_duty_kW, distillate_kmol_h), stage_duties_kW [{ stage, duty_kW }] (heat added; adiabatic otherwise), P_kPa, method, sizing; with an activity model and water, the gases with a Henry's law constant in water dissolve by Henry's law (proposal 0017); another component above its critical temperature, Peng-Robinson or SRK with a light gas and a polar liquid without their k_ij, sour water and amines are refused (docs/METHOD_SELECTION.md)" },
       user_data: USER_DATA,
     } },
   run: input => {
+    const gas = input.gas_feed != null;
     const flowsheet = { components: input.components, thermo: input.thermo ?? { model: "NRTL", vapour: "ideal" },
-      blocks: [{ id: "F1", type: "feed", spec: input.feed }, { id: "C1", type: "column", spec: input.column },
+      blocks: [{ id: "F1", type: "feed", spec: input.feed }, ...(gas ? [{ id: "F2", type: "feed", spec: input.gas_feed }] : []), { id: "C1", type: "column", spec: input.column },
         { id: "P1", type: "product" }, { id: "P2", type: "product" }],
-      streams: [{ id: "FEED", from: "F1.out", to: "C1.in" }, { id: "DISTILLATE", from: "C1.distillate", to: "P1.in" }, { id: "BOTTOMS", from: "C1.bottoms", to: "P2.in" }] };
+      streams: [{ id: "FEED", from: "F1.out", to: "C1.in" }, ...(gas ? [{ id: "GAS_FEED", from: "F2.out", to: "C1.in" }] : []),
+        { id: "DISTILLATE", from: "C1.distillate", to: "P1.in" }, { id: "BOTTOMS", from: "C1.bottoms", to: "P2.in" }] };
     const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
     const c = r.value.blocks.C1;
-    return { ...r, value: { feed: r.value.streams.FEED, distillate: r.value.streams.DISTILLATE, bottoms: r.value.streams.BOTTOMS,
+    return { ...r, value: { feed: r.value.streams.FEED, ...(gas ? { gas_feed: r.value.streams.GAS_FEED } : {}), distillate: r.value.streams.DISTILLATE, bottoms: r.value.streams.BOTTOMS,
       column: { ...c.state, duty_kW: c.duty_kW, notes: c.notes, warnings: c.warnings ?? [], profile: c.profile, ...(c.sizing ? { sizing: c.sizing } : {}) } } };
+  },
+});
+
+// The membrane (proposal 0015, milestone M3, step 9): a feed, the Membrane block and its two products, solved as a
+// flowsheet (src/units/membrane.js), so the numbers are the flowsheet's; with a target, the area found is in the value.
+registerCapability({
+  name: "solve_membrane", summary: "Solve a gas-permeation membrane (solution-diffusion, co- or counter-current cells): the permeate and the retentate for an area, or the area for a stage cut or a recovery", status: "available",
+  input: { type: "object", additionalProperties: false, required: ["components", "feed", "membrane"],
+    properties: {
+      components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
+      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default Peng-Robinson (a gas)" },
+      feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; it must be all gas" },
+      membrane: { type: "object", description: "the Membrane block's specification: permeances { component: value } for every component (0 for one that does not pass; your values, with their source: CHEPTA has no databank of permeances), permeance_unit (\"mol/(m2 s Pa)\" default, \"mol/(m2 s bar)\" or \"GPU\"), permeate_P_kPa, flow (\"counter-current\" default or \"co-current\"), cells (1 to 200, default 20), and one of A_m2, stage_cut (permeate over feed) or recovery { component: fraction into the permeate }; fibre { inner_diameter_m, length_m } (optional): the number of hollow fibres" },
+      user_data: USER_DATA,
+    } },
+  run: input => {
+    const flowsheet = { components: input.components, thermo: input.thermo ?? { model: "PR" },
+      blocks: [{ id: "F1", type: "feed", spec: input.feed }, { id: "MB1", type: "membrane", spec: input.membrane },
+        { id: "P1", type: "product" }, { id: "P2", type: "product" }],
+      streams: [{ id: "FEED", from: "F1.out", to: "MB1.in" }, { id: "PERMEATE", from: "MB1.permeate", to: "P1.in" }, { id: "RETENTATE", from: "MB1.retentate", to: "P2.in" }] };
+    const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
+    const m = r.value.blocks.MB1;
+    return { ...r, value: { feed: r.value.streams.FEED, permeate: r.value.streams.PERMEATE, retentate: r.value.streams.RETENTATE,
+      membrane: { ...m.state, duty_kW: m.duty_kW, notes: m.notes, warnings: m.warnings ?? [], profile: m.profile, sizing: m.sizing } } };
+  },
+});
+
+// The extraction (proposal 0015, milestone M3, step 8): a feed, a solvent, the Extraction block and its two products,
+// solved as a flowsheet (src/units/extraction.js), so the numbers are the flowsheet's.
+registerCapability({
+  name: "solve_extraction", summary: "Solve a countercurrent liquid-liquid extraction of equilibrium stages: the extract and the raffinate, with every stage's two liquids", status: "available",
+  input: { type: "object", additionalProperties: false, required: ["components", "feed", "solvent", "extraction"],
+    properties: {
+      components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
+      thermo: { type: "object", description: "the flowsheet's property method, { model, vapour, sets }; default NRTL. The block's liquid method defaults to its model, with the sets fitted jointly to a ternary's tie lines where they exist" },
+      feed: { type: "object", description: "the feed (it enters stage 1), as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; it must be liquid" },
+      solvent: { type: "object", description: "the solvent (it enters the last stage), as a Feed block's specification; it must be liquid" },
+      extraction: { type: "object", description: "the Extraction block's specification: stages (1 to 100), T_K (the stages' temperature; default the feed's), P_kPa (the outlets'; default the feed's), method { model, sets, prefer } (optional: the block's own liquid method)" },
+      user_data: USER_DATA,
+    } },
+  run: input => {
+    const flowsheet = { components: input.components, thermo: input.thermo ?? { model: "NRTL" },
+      blocks: [{ id: "F1", type: "feed", spec: input.feed }, { id: "F2", type: "feed", spec: input.solvent },
+        { id: "EX1", type: "extraction", spec: input.extraction }, { id: "P1", type: "product" }, { id: "P2", type: "product" }],
+      streams: [{ id: "FEED", from: "F1.out", to: "EX1.feed" }, { id: "SOLVENT", from: "F2.out", to: "EX1.solvent" },
+        { id: "EXTRACT", from: "EX1.extract", to: "P1.in" }, { id: "RAFFINATE", from: "EX1.raffinate", to: "P2.in" }] };
+    const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
+    const x = r.value.blocks.EX1;
+    return { ...r, value: { feed: r.value.streams.FEED, solvent: r.value.streams.SOLVENT, extract: r.value.streams.EXTRACT, raffinate: r.value.streams.RAFFINATE,
+      extraction: { ...x.state, duty_kW: x.duty_kW, notes: x.notes, warnings: x.warnings ?? [], profile: x.profile } } };
   },
 });

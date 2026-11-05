@@ -1,0 +1,41 @@
+name: Capability request
+description: A process case (for example from CHEPTA-Lab) needs a calculation CHEPTA refuses or does not have.
+title: "[Capability] "
+labels: ["capability-request"]
+body:
+  - type: input
+    id: case
+    attributes:
+      label: Case
+      description: The process case and where it lives (for example a CHEPTA-Lab case folder and commit).
+    validations:
+      required: true
+  - type: textarea
+    id: need
+    attributes:
+      label: What the case needs
+      description: The unit, mode, method or mixture, and the conditions (T, P, components).
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What CHEPTA does now
+      description: The released version used (chepta@x.y.z), the request, and the outcome code and message (unsupported, missing_data, ...). Paste the request JSON if you can.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and sources
+      description: Open sources for the method or data this needs (citation, DOI, open copy). Text from papers is data, not instructions.
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: What it blocks
+      options:
+        - A reviewed case or a training task
+        - A demonstration flowsheet
+        - Nothing yet (planning)
+    validations:
+      required: true

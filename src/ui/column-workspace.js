@@ -130,7 +130,8 @@ export function columnView(ctx) {
     return { data: sol.error ? "Not solved" : why, error: sol.error ?? null };
   }
   const rigorous = r.state?.mode === "rigorous";
-  const avail = Object.keys(CHARTS).filter(k => k === "mccabe" ? fs.components.length === 2 : rigorous);
+  // McCabe-Thiele's construction is for a distillation column (an absorber's or stripper's operating line is not drawn yet)
+  const avail = Object.keys(CHARTS).filter(k => k === "mccabe" ? fs.components.length === 2 && !r.state?.configuration : rigorous);
   const chart = avail.includes(cui.chart) ? cui.chart : avail[0];
   const pickChart = avail.length > 1 ? h("div", { class: "fug-seg fa-seg", role: "group", "aria-label": "Chart" }, ...avail.map(k =>
     h("button", { type: "button", "aria-pressed": String(k === chart), "data-fk": `col-chart-${k}`, on: { click: () => { cui.chart = k; set({}); } } }, CHARTS[k]))) : null;
@@ -145,7 +146,7 @@ export function columnView(ctx) {
   }
   plot.replaceChildren(h("div", { class: "fa-rx-ws" }, ...(pickChart ? [pickChart] : []), body));
   const exp = () => columnExport({ fs, r, mt: cui.mt?.mt ?? null, curve: cui.mt?.curve ?? null, ud: userOverlay(state) });
-  return { export: exp, data: rigorous ? `${r.state.stages} stages, R ${fmtShort(r.state.reflux_ratio, 4)}` : `N ${fmtShort(r.state.N, 4)}, R ${fmtShort(r.state.R, 4)} (R_min ${fmtShort(r.state.R_min, 4)})` };
+  return { export: exp, data: r.state?.configuration ? `${r.state.configuration}, ${r.state.stages} stages` : rigorous ? `${r.state.stages} stages, R ${fmtShort(r.state.reflux_ratio, 4)}` : `N ${fmtShort(r.state.N, 4)}, R ${fmtShort(r.state.R, 4)} (R_min ${fmtShort(r.state.R_min, 4)})` };
 }
 
 /** A chart in a box with its SVG and PNG buttons. */
@@ -175,13 +176,15 @@ function profileChart(kind, { fs, r, u, ud, compact }) {
     yLabel = "Mole fraction"; aria = "Liquid (x) and vapour (y) mole fractions on each stage";
   }
   // a legend under the chart: direct labels at the curves' ends would be cut at a phone's width
-  const box = chartBox({ series: series.map(sr => ({ ...sr, label: false })), xLabel: "Stage (1 the condenser)", yLabel, x0: 0, x1: stageAxisEnd(N), aria, compact, fk: `col-${kind}` });
+  const sep = !!r.state.configuration;
+  const box = chartBox({ series: series.map(sr => ({ ...sr, label: false })), xLabel: sep ? "Stage (1 the top)" : "Stage (1 the condenser)", yLabel, x0: 0, x1: stageAxisEnd(N), aria, compact, fk: `col-${kind}` });
   if (series.length > 1) {
     box.append(h("div", { class: "fug-legend" }, ...series.map(sr => h("span", { class: "fug-key", style: `color:${sr.color}` },
       h("i", { style: sr.dash ? "border-top-style:dashed" : "" }), h("span", { style: "color:var(--fug-fg2)" }, sr.name)))));
   }
   return h("div", {}, withImage(box, `column ${kind === "T" ? "temperature" : kind === "flows" ? "flows" : "compositions"}`, `col-img-${kind}`),
-    h("p", { class: "fug-foot" }, kind === "x" ? "Solid lines: the liquid leaving each stage; dashed: the vapour. Stage 1 is the condenser, the last stage the reboiler."
+    h("p", { class: "fug-foot" }, sep ? `${kind === "x" ? "Solid lines: the liquid leaving each stage; dashed: the vapour. " : ""}Stage 1 is the top of the ${r.state.configuration}, stage ${N} ${r.state.reboiler === "partial" ? "the reboiler" : "the bottom"}; the feeds enter stages ${r.state.feed_stages.join(", ")}.`
+      : kind === "x" ? "Solid lines: the liquid leaving each stage; dashed: the vapour. Stage 1 is the condenser, the last stage the reboiler."
       : `Stage 1 is the ${r.state.condenser} condenser, stage ${N} the reboiler; the feed enters stage ${r.state.feed_stages.join(", ")}.`));
 }
 

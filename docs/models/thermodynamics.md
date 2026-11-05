@@ -179,9 +179,18 @@ each component as an ideal gas at 298.15 K and 101.325 kPa, s = 0 (a nonvolatile
 
 ## Gases in water: Henry's law
 
-[`henry.js`](../../src/thermo/henry.js) uses IAPWS G7-04 for hydrogen, nitrogen, oxygen, methane and
-ethane, and the Sander compilation (CC BY 4.0) for ethylene. Outside an entry's temperature range
-it throws.
+[`henry.js`](../../src/thermo/henry.js) uses IAPWS G7-04 for hydrogen, nitrogen, oxygen, methane, ethane, argon,
+carbon monoxide, carbon dioxide and hydrogen sulfide, and the Sander compilation (CC BY 4.0) for ethylene. Outside an
+entry's temperature range it throws.
+
+**Henry components** ([proposal 0017](../../proposals/0017-henry-components.md); the maintainer, 2026-11-04). In a
+system with an activity model (NRTL, UNIQUAC, Wilson, ideal) and water, these gases are Henry components
+(`system.henry`, `info.henry`): f_i = H_i x_i (the unsymmetric convention, the activity coefficient taken as 1 at
+infinite dilution), water by Raoult's law, an ideal-gas vapour; so K_i = H_i / P. Their liquid enthalpy is the partial
+molar enthalpy at infinite dilution, h_IG - R T² d ln H / dT (the heat of absorption, about -20 kJ/mol for CO₂ near
+25 °C). Water must be the only solvent (CHEPTA's constants are for pure water); a cubic vapour is refused; `henry: false`
+turns it off. Checked against the IAPWS G7-04 check values and against Carroll, Slupsky and Mather (1991), the
+solubility of CO₂ in water at 101.325 and 500 kPa, 10-80 °C, within 3.5 % (`test/henry-components.test.js`).
 
 ## The Library: where every parameter comes from
 

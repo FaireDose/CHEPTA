@@ -37,6 +37,37 @@
       "tier": "databank"
     },
     {
+      "model": "NRTL",
+      "i": "water",
+      "j": "acetic-acid",
+      "set": "fitted-lle-roque2018",
+      "default": false,
+      "a_ij": -6.161008332441854,
+      "a_ji": 2.6878895515910672,
+      "b_ij": 2942.867247997325,
+      "b_ji": -1237.837729795803,
+      "alpha": 0.3,
+      "source": "Fitted jointly, with the other two pairs of water + acetic acid + ethyl acetate, to the 12 liquid-liquid tie lines at 293.2 and 313.2 K of Roque, Pinto, de Oliveira, Rabelo, Fluid Phase Equilib. 463 (2018) 34 (data public in the NIST TRC ThermoML Archive; validation/data/lle/water_acetic-acid_ethyl-acetate_lle_roque2018.json), each liquid's mole fractions weighted by their stated uncertainty, and to this pair's binary data of its default fit (the same files and weights). Choose the three pairs' sets together (set name fitted-lle-roque2018) for liquid-liquid extraction with this ternary; the default sets follow the binary data alone and miss the ternary tie lines by up to 0.16 in mole fraction (NRTL). Ternary tie lines: water_acetic-acid_ethyl-acetate_lle_roque2018.json: AAD in the water-rich liquid water 0.0151 (max 0.0285), acetic-acid 0.0060 (max 0.0133), ethyl-acetate 0.0094 (max 0.0200); in the other liquid water 0.0208 (max 0.0587), acetic-acid 0.0074 (max 0.0166), ethyl-acetate 0.0137 (max 0.0421). Check against water_acetic-acid_ethyl-acetate_lle_toikka2014.json: AAD in the water-rich liquid water 0.0148 (max 0.0644), acetic-acid 0.0062 (max 0.0186), ethyl-acetate 0.0089 (max 0.0459); in the other liquid water 0.0626 (max 0.1877), acetic-acid 0.0089 (max 0.0500), ethyl-acetate 0.0575 (max 0.1377). This pair's binary data (validation/data/water_acetic-acid_101kPa_chang2005.json): AAD 0.28 K in T, 0.0088 in y (max 0.85 K, 0.0216). Temperature range of the data: 293.2-388.49 K; outside it the parameters are extrapolated.",
+      "source_ids": [
+        "roque2018-water-acetic-acid-ethyl-acetate",
+        "nist-thermoml-archive",
+        "toikka2014-water-acetic-acid-ethyl-acetate",
+        "chang2005-water-acetic-acid",
+        "calvar2005-ethyl-acetate-ethanol"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        293.2,
+        388.49
+      ],
+      "valid": {
+        "T_K": [
+          293.2,
+          388.49
+        ]
+      }
+    },
+    {
       "model": "UNIQUAC",
       "i": "water",
       "j": "acetic-acid",
@@ -68,6 +99,36 @@
         "chemsep-ipd"
       ],
       "tier": "databank"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "water",
+      "j": "acetic-acid",
+      "set": "fitted-lle-roque2018",
+      "default": false,
+      "a_ij": -4.796768696336746,
+      "a_ji": 18.07591468161649,
+      "b_ij": 2115.7377653072117,
+      "b_ji": -7352.605717935871,
+      "source": "Fitted jointly, with the other two pairs of water + acetic acid + ethyl acetate, to the 12 liquid-liquid tie lines at 293.2 and 313.2 K of Roque, Pinto, de Oliveira, Rabelo, Fluid Phase Equilib. 463 (2018) 34 (data public in the NIST TRC ThermoML Archive; validation/data/lle/water_acetic-acid_ethyl-acetate_lle_roque2018.json), each liquid's mole fractions weighted by their stated uncertainty, and to this pair's binary data of its default fit (the same files and weights). Choose the three pairs' sets together (set name fitted-lle-roque2018) for liquid-liquid extraction with this ternary; the default sets follow the binary data alone and miss the ternary tie lines by up to 0.16 in mole fraction (NRTL). Ternary tie lines: water_acetic-acid_ethyl-acetate_lle_roque2018.json: AAD in the water-rich liquid water 0.0144 (max 0.0214), acetic-acid 0.0102 (max 0.0154), ethyl-acetate 0.0060 (max 0.0098); in the other liquid water 0.0393 (max 0.1058), acetic-acid 0.0080 (max 0.0138), ethyl-acetate 0.0380 (max 0.1017). Check against water_acetic-acid_ethyl-acetate_lle_toikka2014.json: AAD in the water-rich liquid water 0.0161 (max 0.0401), acetic-acid 0.0079 (max 0.0164), ethyl-acetate 0.0082 (max 0.0381); in the other liquid water 0.0766 (max 0.2467), acetic-acid 0.0057 (max 0.0317), ethyl-acetate 0.0770 (max 0.2150). This pair's binary data (validation/data/water_acetic-acid_101kPa_chang2005.json): AAD 0.19 K in T, 0.0073 in y (max 0.50 K, 0.0195). Temperature range of the data: 293.2-388.49 K; outside it the parameters are extrapolated.",
+      "source_ids": [
+        "roque2018-water-acetic-acid-ethyl-acetate",
+        "nist-thermoml-archive",
+        "toikka2014-water-acetic-acid-ethyl-acetate",
+        "chang2005-water-acetic-acid",
+        "calvar2005-ethyl-acetate-ethanol"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        293.2,
+        388.49
+      ],
+      "valid": {
+        "T_K": [
+          293.2,
+          388.49
+        ]
+      }
     },
     {
       "model": "NRTL",
@@ -305,6 +366,41 @@
         "chemsep-ipd"
       ],
       "tier": "databank"
+    },
+    {
+      "model": "NRTL",
+      "i": "water",
+      "j": "ethyl-acetate",
+      "set": "fitted-lle-roque2018",
+      "default": false,
+      "a_ij": 7.275559543938559,
+      "a_ji": -0.9278686142056773,
+      "b_ij": -1153.1615914203,
+      "b_ji": 628.0186655041439,
+      "alpha": 0.3,
+      "source": "Fitted jointly, with the other two pairs of water + acetic acid + ethyl acetate, to the 12 liquid-liquid tie lines at 293.2 and 313.2 K of Roque, Pinto, de Oliveira, Rabelo, Fluid Phase Equilib. 463 (2018) 34 (data public in the NIST TRC ThermoML Archive; validation/data/lle/water_acetic-acid_ethyl-acetate_lle_roque2018.json), each liquid's mole fractions weighted by their stated uncertainty, and to this pair's binary data of its default fit (the same files and weights). Choose the three pairs' sets together (set name fitted-lle-roque2018) for liquid-liquid extraction with this ternary; the default sets follow the binary data alone and miss the ternary tie lines by up to 0.16 in mole fraction (NRTL). Ternary tie lines: water_acetic-acid_ethyl-acetate_lle_roque2018.json: AAD in the water-rich liquid water 0.0151 (max 0.0285), acetic-acid 0.0060 (max 0.0133), ethyl-acetate 0.0094 (max 0.0200); in the other liquid water 0.0208 (max 0.0587), acetic-acid 0.0074 (max 0.0166), ethyl-acetate 0.0137 (max 0.0421). Check against water_acetic-acid_ethyl-acetate_lle_toikka2014.json: AAD in the water-rich liquid water 0.0148 (max 0.0644), acetic-acid 0.0062 (max 0.0186), ethyl-acetate 0.0089 (max 0.0459); in the other liquid water 0.0626 (max 0.1877), acetic-acid 0.0089 (max 0.0500), ethyl-acetate 0.0575 (max 0.1377). This pair's binary data (validation/data/water_ethyl-acetate_lle_grande2005.json, validation/data/water_ethyl-acetate_lle_cehreli2006.json, validation/data/water_ethyl-acetate_gamma_inf_fenclova2014.json, validation/data/water_ethyl-acetate_gamma_inf_atik2004.json, validation/data/water_ethyl-acetate_azeotrope_101kPa.json): liquid-liquid: AAD 0.0008 in x of water in the water-rich liquid, 0.0257 in the ethyl-acetate-rich liquid; gamma at infinite dilution: AARD 4.6 % (max 18.5 %); heterogeneous azeotrope at 101.325 kPa: 70.90 degC, vapour x of water 0.317, liquids 0.989 / 0.221 (target 70.40 degC, 0.301). Temperature range of the data: 273.35-343.55 K; outside it the parameters are extrapolated.",
+      "source_ids": [
+        "roque2018-water-acetic-acid-ethyl-acetate",
+        "nist-thermoml-archive",
+        "toikka2014-water-acetic-acid-ethyl-acetate",
+        "grande2005-water-ethyl-acetate",
+        "cehreli2006-water-ethyl-acetate",
+        "fenclova2014-water-ethyl-acetate",
+        "atik2004-water-ethyl-acetate",
+        "wikipedia-azeotrope-tables",
+        "xu2017-water-ethyl-acetate"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        273.35,
+        343.55
+      ],
+      "valid": {
+        "T_K": [
+          273.35,
+          343.55
+        ]
+      }
     },
     {
       "model": "NRTL",
@@ -1059,6 +1155,40 @@
     },
     {
       "model": "UNIQUAC",
+      "i": "water",
+      "j": "ethyl-acetate",
+      "set": "fitted-lle-roque2018",
+      "default": false,
+      "a_ij": -2.0164889783828386,
+      "a_ji": 1.5076647674545758,
+      "b_ij": 512.6113989330385,
+      "b_ji": -795.3633101920778,
+      "source": "Fitted jointly, with the other two pairs of water + acetic acid + ethyl acetate, to the 12 liquid-liquid tie lines at 293.2 and 313.2 K of Roque, Pinto, de Oliveira, Rabelo, Fluid Phase Equilib. 463 (2018) 34 (data public in the NIST TRC ThermoML Archive; validation/data/lle/water_acetic-acid_ethyl-acetate_lle_roque2018.json), each liquid's mole fractions weighted by their stated uncertainty, and to this pair's binary data of its default fit (the same files and weights). Choose the three pairs' sets together (set name fitted-lle-roque2018) for liquid-liquid extraction with this ternary; the default sets follow the binary data alone and miss the ternary tie lines by up to 0.16 in mole fraction (NRTL). Ternary tie lines: water_acetic-acid_ethyl-acetate_lle_roque2018.json: AAD in the water-rich liquid water 0.0144 (max 0.0214), acetic-acid 0.0102 (max 0.0154), ethyl-acetate 0.0060 (max 0.0098); in the other liquid water 0.0393 (max 0.1058), acetic-acid 0.0080 (max 0.0138), ethyl-acetate 0.0380 (max 0.1017). Check against water_acetic-acid_ethyl-acetate_lle_toikka2014.json: AAD in the water-rich liquid water 0.0161 (max 0.0401), acetic-acid 0.0079 (max 0.0164), ethyl-acetate 0.0082 (max 0.0381); in the other liquid water 0.0766 (max 0.2467), acetic-acid 0.0057 (max 0.0317), ethyl-acetate 0.0770 (max 0.2150). This pair's binary data (validation/data/water_ethyl-acetate_lle_grande2005.json, validation/data/water_ethyl-acetate_lle_cehreli2006.json, validation/data/water_ethyl-acetate_gamma_inf_fenclova2014.json, validation/data/water_ethyl-acetate_gamma_inf_atik2004.json, validation/data/water_ethyl-acetate_azeotrope_101kPa.json): liquid-liquid: AAD 0.0005 in x of water in the water-rich liquid, 0.0205 in the ethyl-acetate-rich liquid; gamma at infinite dilution: AARD 5.2 % (max 18.5 %); heterogeneous azeotrope at 101.325 kPa: 71.29 degC, vapour x of water 0.322, liquids 0.989 / 0.225 (target 70.40 degC, 0.301). Temperature range of the data: 273.35-343.55 K; outside it the parameters are extrapolated.",
+      "source_ids": [
+        "roque2018-water-acetic-acid-ethyl-acetate",
+        "nist-thermoml-archive",
+        "toikka2014-water-acetic-acid-ethyl-acetate",
+        "grande2005-water-ethyl-acetate",
+        "cehreli2006-water-ethyl-acetate",
+        "fenclova2014-water-ethyl-acetate",
+        "atik2004-water-ethyl-acetate",
+        "wikipedia-azeotrope-tables",
+        "xu2017-water-ethyl-acetate"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        273.35,
+        343.55
+      ],
+      "valid": {
+        "T_K": [
+          273.35,
+          343.55
+        ]
+      }
+    },
+    {
+      "model": "UNIQUAC",
       "i": "acetic-acid",
       "j": "methanol",
       "set": "fitted-gao2010",
@@ -1802,6 +1932,37 @@
       "tier": "fitted"
     },
     {
+      "model": "NRTL",
+      "i": "ethyl-acetate",
+      "j": "acetic-acid",
+      "set": "fitted-lle-roque2018",
+      "default": false,
+      "a_ij": -1.2759479285986661,
+      "a_ji": -3.4491996270400604,
+      "b_ij": 895.2584129839988,
+      "b_ji": 874.6331820008097,
+      "alpha": 0.3,
+      "source": "Fitted jointly, with the other two pairs of water + acetic acid + ethyl acetate, to the 12 liquid-liquid tie lines at 293.2 and 313.2 K of Roque, Pinto, de Oliveira, Rabelo, Fluid Phase Equilib. 463 (2018) 34 (data public in the NIST TRC ThermoML Archive; validation/data/lle/water_acetic-acid_ethyl-acetate_lle_roque2018.json), each liquid's mole fractions weighted by their stated uncertainty, and to this pair's binary data of its default fit (the same files and weights). Choose the three pairs' sets together (set name fitted-lle-roque2018) for liquid-liquid extraction with this ternary; the default sets follow the binary data alone and miss the ternary tie lines by up to 0.16 in mole fraction (NRTL). Ternary tie lines: water_acetic-acid_ethyl-acetate_lle_roque2018.json: AAD in the water-rich liquid water 0.0151 (max 0.0285), acetic-acid 0.0060 (max 0.0133), ethyl-acetate 0.0094 (max 0.0200); in the other liquid water 0.0208 (max 0.0587), acetic-acid 0.0074 (max 0.0166), ethyl-acetate 0.0137 (max 0.0421). Check against water_acetic-acid_ethyl-acetate_lle_toikka2014.json: AAD in the water-rich liquid water 0.0148 (max 0.0644), acetic-acid 0.0062 (max 0.0186), ethyl-acetate 0.0089 (max 0.0459); in the other liquid water 0.0626 (max 0.1877), acetic-acid 0.0089 (max 0.0500), ethyl-acetate 0.0575 (max 0.1377). This pair's binary data (validation/data/ethyl-acetate_acetic-acid_px_brandt2014.json): P-x at 323.15 K (with the measured pure-component pressures): AAD 0.13 % (max 0.39 %). Temperature range of the data: 293.2-323.15 K; outside it the parameters are extrapolated.",
+      "source_ids": [
+        "roque2018-water-acetic-acid-ethyl-acetate",
+        "nist-thermoml-archive",
+        "toikka2014-water-acetic-acid-ethyl-acetate",
+        "brandt2014-acetic-acid-ethanol",
+        "calvar2005-ethyl-acetate-ethanol"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        293.2,
+        323.15
+      ],
+      "valid": {
+        "T_K": [
+          293.2,
+          323.15
+        ]
+      }
+    },
+    {
       "model": "UNIQUAC",
       "i": "ethyl-acetate",
       "j": "acetic-acid",
@@ -1817,6 +1978,36 @@
         "calvar2005-ethyl-acetate-ethanol"
       ],
       "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "ethyl-acetate",
+      "j": "acetic-acid",
+      "set": "fitted-lle-roque2018",
+      "default": false,
+      "a_ij": -0.8086985494758288,
+      "a_ji": -1.7754226458699516,
+      "b_ij": -87.88847037691247,
+      "b_ji": 756.8467736389208,
+      "source": "Fitted jointly, with the other two pairs of water + acetic acid + ethyl acetate, to the 12 liquid-liquid tie lines at 293.2 and 313.2 K of Roque, Pinto, de Oliveira, Rabelo, Fluid Phase Equilib. 463 (2018) 34 (data public in the NIST TRC ThermoML Archive; validation/data/lle/water_acetic-acid_ethyl-acetate_lle_roque2018.json), each liquid's mole fractions weighted by their stated uncertainty, and to this pair's binary data of its default fit (the same files and weights). Choose the three pairs' sets together (set name fitted-lle-roque2018) for liquid-liquid extraction with this ternary; the default sets follow the binary data alone and miss the ternary tie lines by up to 0.16 in mole fraction (NRTL). Ternary tie lines: water_acetic-acid_ethyl-acetate_lle_roque2018.json: AAD in the water-rich liquid water 0.0144 (max 0.0214), acetic-acid 0.0102 (max 0.0154), ethyl-acetate 0.0060 (max 0.0098); in the other liquid water 0.0393 (max 0.1058), acetic-acid 0.0080 (max 0.0138), ethyl-acetate 0.0380 (max 0.1017). Check against water_acetic-acid_ethyl-acetate_lle_toikka2014.json: AAD in the water-rich liquid water 0.0161 (max 0.0401), acetic-acid 0.0079 (max 0.0164), ethyl-acetate 0.0082 (max 0.0381); in the other liquid water 0.0766 (max 0.2467), acetic-acid 0.0057 (max 0.0317), ethyl-acetate 0.0770 (max 0.2150). This pair's binary data (validation/data/ethyl-acetate_acetic-acid_px_brandt2014.json): P-x at 323.15 K (with the measured pure-component pressures): AAD 0.32 % (max 0.78 %). Temperature range of the data: 293.2-323.15 K; outside it the parameters are extrapolated.",
+      "source_ids": [
+        "roque2018-water-acetic-acid-ethyl-acetate",
+        "nist-thermoml-archive",
+        "toikka2014-water-acetic-acid-ethyl-acetate",
+        "brandt2014-acetic-acid-ethanol",
+        "calvar2005-ethyl-acetate-ethanol"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        293.2,
+        323.15
+      ],
+      "valid": {
+        "T_K": [
+          293.2,
+          323.15
+        ]
+      }
     },
     {
       "model": "NRTL",
