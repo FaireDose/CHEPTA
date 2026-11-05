@@ -38,3 +38,4 @@ interface or file format, the steps of the core track in the
 | 0016 | [The Wilson activity model](0016-wilson.md) | Accepted (step 1 implemented; the fits postponed) |
 | 0017 | [Henry components: gases dissolved in water in the activity models](0017-henry-components.md) | Proposed |
 | 0018 | [An activity model inside the cubic equation of state (gE mixing rule)](0018-gE-mixing-rule-eos.md) | Postponed (PR and SRK with fitted k_ij for now) |
+| 0019 | [Pairs with two liquids: how they are fitted and used](0019-two-liquid-pairs.md) | Accepted on merge (answers of 2026-11-05) |
