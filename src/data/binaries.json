@@ -1857,8 +1857,22 @@
       "model": "NRTL",
       "i": "1-butanol",
       "j": "water",
-      "set": "chemsep",
       "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 22.034152001602934,
+      "b_ji": 1330.6332043546117,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 0.61 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 15 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Lladosa et al., J. Chem. Eng. Data 53 (2008) 108-115 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-butanol_water_10-1021-je700411p_101.3kPa_tx.json). AAD 0.61 K in T (max 2.00 K; no vapour compositions); liquid-liquid: AAD 0.1209 in x of 1-butanol in the 1-butanol-rich liquid, 0.0037 in the water-rich liquid (2 points without a predicted split).",
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "1-butanol",
+      "j": "water",
+      "set": "chemsep",
+      "default": false,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": 253.64181754760426,
@@ -1875,8 +1889,20 @@
       "model": "UNIQUAC",
       "i": "1-butanol",
       "j": "water",
-      "set": "chemsep",
       "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": -103.00716996513131,
+      "b_ji": -209.5854687257358,
+      "source": "Fitted to 15 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Lladosa et al., J. Chem. Eng. Data 53 (2008) 108-115 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-butanol_water_10-1021-je700411p_101.3kPa_tx.json). AAD 0.42 K in T (max 1.64 K; no vapour compositions); liquid-liquid: AAD 0.1616 in x of 1-butanol in the 1-butanol-rich liquid, 0.0030 in the water-rich liquid (2 points without a predicted split).",
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "1-butanol",
+      "j": "water",
+      "set": "chemsep",
+      "default": false,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": -44.8088814286775,
@@ -6972,8 +6998,22 @@
       "model": "NRTL",
       "i": "furfural",
       "j": "water",
-      "set": "chemsep",
       "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 34.37552724029488,
+      "b_ji": 1317.6965621058177,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.55 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 11 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 94.6 kPa from Sunder et al., J. Chem. Eng. Data 48 (2003) 221-223 (data public in the NIST TRC ThermoML Archive; validation/data/vle/furfural_water_10-1021-je020053r_94.6kPa_tx.json). AAD 1.55 K in T (max 7.27 K; no vapour compositions); liquid-liquid: (1 points without a predicted split).",
+      "tier": "fitted"
+    },
+    {
+      "model": "NRTL",
+      "i": "furfural",
+      "j": "water",
+      "set": "chemsep",
+      "default": false,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": 219.8911350456088,
@@ -9915,14 +9955,10 @@
       "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
-      "b_ij": 657.448067441952,
-      "b_ji": 287.5370311546302,
+      "b_ij": 658.6917544739961,
+      "b_ji": 290.5496283604369,
       "alpha": 0.3,
-      "source": "Fitted to 19 total pressures at 383.15 K with the measured pure-component pressures from Grenner et al., J. Chem. Eng. Data 51 (2006) 1009-1014 (data public in the NIST TRC ThermoML Archive; validation/data/vle/aniline_n-octane_10-1021-je0505366_383.15K.json). P-x at 383.15 K (with the measured pure-component pressures): AAD 0.47 % (max 1.32 %).",
-      "source_ids": [
-        "grenner2006-aniline-n-octane",
-        "nist-thermoml-archive"
-      ],
+      "source": "Fitted to 19 total pressures at 383.15 K with the measured pure-component pressures from Grenner et al., J. Chem. Eng. Data 51 (2006) 1009-1014 (data public in the NIST TRC ThermoML Archive; validation/data/vle/aniline_n-octane_10-1021-je0505366_383.15K.json). liquid-liquid: AAD 0.1434 in x of aniline in the aniline-rich liquid, 0.0466 in the n-octane-rich liquid; P-x at 383.15 K (with the measured pure-component pressures): AAD 0.48 % (max 1.64 %).",
       "tier": "fitted"
     },
     {
@@ -9933,13 +9969,9 @@
       "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
-      "b_ij": 2.276114476881349,
-      "b_ji": -238.98799293817999,
-      "source": "Fitted to 19 total pressures at 383.15 K with the measured pure-component pressures from Grenner et al., J. Chem. Eng. Data 51 (2006) 1009-1014 (data public in the NIST TRC ThermoML Archive; validation/data/vle/aniline_n-octane_10-1021-je0505366_383.15K.json). P-x at 383.15 K (with the measured pure-component pressures): AAD 0.64 % (max 2.00 %).",
-      "source_ids": [
-        "grenner2006-aniline-n-octane",
-        "nist-thermoml-archive"
-      ],
+      "b_ij": -1.8553876623540526,
+      "b_ji": -234.45411005027006,
+      "source": "Fitted to 19 total pressures at 383.15 K with the measured pure-component pressures from Grenner et al., J. Chem. Eng. Data 51 (2006) 1009-1014 (data public in the NIST TRC ThermoML Archive; validation/data/vle/aniline_n-octane_10-1021-je0505366_383.15K.json). liquid-liquid: AAD 0.0754 in x of aniline in the aniline-rich liquid, 0.0527 in the n-octane-rich liquid; P-x at 383.15 K (with the measured pure-component pressures): AAD 0.71 % (max 2.12 %).",
       "tier": "fitted"
     },
     {
@@ -15441,15 +15473,11 @@
       "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
-      "b_ij": 727.0759387526481,
-      "b_ji": 761.1897460510411,
-      "alpha": 0.47,
-      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.75 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
-      "source": "Fitted to 12 total pressures at 348.2 K with the measured pure-component pressures from Narasigadu et al., Fluid Phase Equilib. 338 (2013) 188-196 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json). P-x at 348.2 K (with the measured pure-component pressures): AAD 1.75 % (max 5.34 %).",
-      "source_ids": [
-        "narasigadu2013-acetonitrile-n-hexane",
-        "nist-thermoml-archive"
-      ],
+      "b_ij": 553.0886106792676,
+      "b_ji": 567.2407742233281,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.68 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
+      "source": "Fitted to 12 total pressures at 348.2 K with the measured pure-component pressures from Narasigadu et al., Fluid Phase Equilib. 338 (2013) 188-196 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json). liquid-liquid: AAD 0.0606 in x of acetonitrile in the acetonitrile-rich liquid, 0.0470 in the n-hexane-rich liquid (1 points without a predicted split); P-x at 348.2 K (with the measured pure-component pressures): AAD 1.68 % (max 4.61 %).",
       "tier": "fitted"
     },
     {
@@ -25959,6 +25987,19 @@
         "nist-thermoml-archive",
         "dias2014-2-propanol-isoamyl-alcohol"
       ],
+      "tier": "fitted"
+    },
+    {
+      "model": "UNIQUAC",
+      "i": "acetonitrile",
+      "j": "n-hexane",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 8.27997896006429,
+      "b_ji": -590.7963508608673,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.72 % in P (limit 1.5 %). Use with care; a better data set would replace it.",
+      "source": "Fitted to 12 total pressures at 348.2 K with the measured pure-component pressures from Narasigadu et al., Fluid Phase Equilib. 338 (2013) 188-196 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json). liquid-liquid: AAD 0.0641 in x of acetonitrile in the acetonitrile-rich liquid, 0.0456 in the n-hexane-rich liquid (1 points without a predicted split); P-x at 348.2 K (with the measured pure-component pressures): AAD 1.72 % (max 4.88 %).",
       "tier": "fitted"
     }
   ]
