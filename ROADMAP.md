@@ -61,7 +61,7 @@ an implementation, and tests. A step can start when the steps it depends on are 
 | **A9** Artifact contract | What a page may rely on: one pinned script, the `mount` configuration, no network access, theming, size and speed budgets (ternary map under 0.5 s, 50-stage column under 5 s), background workers. | A1 | **On-going**: works in Claude artifacts; background workers built (M1: a Web Worker made from the page's own script, with the page's thread as the stated fallback; [docs/models/tools.md](docs/models/tools.md)); budgets not written down yet; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **A10** AI authoring contract | How an assistant writes configurations and flowsheet files: the skill, a schema it can check against, and error messages that tell it what to fix. | A7, A9 | **On-going**: assistants write, check and edit flowsheet files (proposal 0006, steps 4 and 7); the schema follows A7; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
 | **A11** Views | Flowsheet drawing, stream tables, column profiles, results export; views only call the layers below. | A7, A9 | **On-going**: flowsheet drawing, stream tables, reactor profiles, Excel export; column profiles, the Column workspace with McCabe-Thiele (2026-10-30); planned in [proposal 0015](proposals/0015-separation-units.md), Part II, with an interface guide and a visual check of every new view (W10) |
-| **A12** Stability policy for 1.0 | Which interfaces are frozen, deprecation rules, long-term support of old versions. | A1–A11 | **Open** |
+| **A12** Stability policy (for an official release) | Which interfaces are frozen, deprecation rules, long-term support of old versions. | A1–A11 | **Open** |
 | **A13** Reactions | How reactions are described: stoichiometry, heats of reaction from the property package, equilibrium constants from Gibbs energies, rate laws and their parameters with sources, so that reactor models (conversion, equilibrium, CSTR, plug flow, batch) share one description. | A1, A6 | **Closed**: [proposal 0010](proposals/0010-reactions-and-reactors.md), steps 1-9: the description, formation data, conversion, yield, equilibrium, Gibbs, CSTR and plug-flow reactors, your own kinetics, worked examples ([docs/models/reactions.md](docs/models/reactions.md)). Three examples wait for open data; two liquids in reactors wait for the liquid-liquid work of proposal 0015 |
 
 ## Bridges track
@@ -104,6 +104,7 @@ one-line setup, document what works, and fix or report what doesn't.
 | **D5** | Grow to about 50 components: common solvents, alcohols, acids, esters, hydrocarbons, with pairs, chosen by benchmark processes ([proposal 0004](proposals/0004-first-50-components.md)) | **Closed**: 177 components, beyond the 50 of [proposal 0004](proposals/0004-first-50-components.md) (with proposals 0008 and 0009); the gaps in the latest `docs/missing-properties/MISSING_PROPERTIES_<date>.md` |
 | **D6** | Liquid-liquid data for partly miscible pairs (water with benzene, toluene, chloroform, ethyl acetate) | **On-going**: water + ethyl acetate and water + cyclohexane; the extraction pairs in [proposal 0015](proposals/0015-separation-units.md) |
 | **D7** | Ternary VLE data to check ternary predictions, starting with the systems whose ternary azeotropes are tested (methanol + acetone + chloroform, ethanol + water + ethyl acetate) | **Open**; planned in [proposal 0015](proposals/0015-separation-units.md), Part II |
+| **D9** | **Pairs with two liquids: how they are fitted and used** (the maintainer, 2026-11-04; proposal 0019 to write). Today a fit that predicts a liquid split inside its data range is never written, so mixtures that really split (and the Wilson fits beside them) are refused although they could be calculated. Instead: (1) classify each pair from open evidence before fitting: *miscible* (liquid-liquid data or a measured single liquid over the range), *partly miscible* (mutual solubilities or tie lines in the ThermoML Archive, or a heterogeneous azeotrope in the VLE data), or *not known*; (2) fit by class: miscible pairs with no split allowed (as now), partly miscible pairs jointly to VLE and liquid-liquid data with the split required to match the measured solubilities (as for the ethyl acetate ternary, 2026-11-04), not-known pairs to VLE alone, with a predicted split kept and labelled "not checked against liquid-liquid data" instead of refused; (3) the engine calculates the split wherever a set predicts it, and the result says which kind of evidence stands behind it; (4) Wilson is refused only for a pair classed partly miscible, inside the split, with NRTL or UNIQUAC as the remedy; (5) check what other simulators with open documentation do, and refit the pairs refused so far for a predicted split (NRTL, UNIQUAC, and the five Wilson pairs of 2026-11-04). Every classification names its sources and the temperature, pressure and composition range they cover: a single liquid seen at sampled conditions is not a claim of miscibility everywhere, and a predicted split is not a measured fact; results, the structured tool results included, say which kind of split they show, and Lab's records carry it (Astra 6 review, 2026-11-04) | **Open** |
 | **D8** | Reaction data from open sources: heats of formation, equilibrium constants, kinetics for common reactions (esterification, hydrogenation, reforming), needed by reactors and route comparison | **On-going**: enthalpies and Gibbs energies of formation for 125 components; kinetics from open articles in the worked examples |
 
 ## Methods track
@@ -164,11 +165,70 @@ sources, assumptions) that anyone can re-run and check.
 | Item | What | Depends on | Status |
 |---|---|---|---|
 | **G1** | Tool interface for agents: every calculation callable as JSON in, JSON out, deterministic, with error messages that tell the agent what to fix | A9, A10 | **On-going**: the request dispatcher `CHEPTA.run` with structured results, for the existing blocks (M0); the command line `chepta` and the local MCP server `chepta-mcp` with read-only tools, each run in a worker thread with a time limit, and the first assistant test in Claude Code (M1; [docs/models/tools.md](docs/models/tools.md)); each new block as it lands; planned in [proposal 0015](proposals/0015-separation-units.md), Part II (moved from proposal 0011, step 1) |
-| **G2** | Literature to route: an agent reads open papers and expired patents and extracts process routes (reactions, conditions, conversions, yields, separations) into a route file, every value cited | D8 | **Open** |
-| **G3** | Route to flowsheet: an agent builds a flowsheet for each route, simulates it with CHEPTA, and closes material and energy balances | G1, G2, A8 | **Open** |
-| **G4** | Route comparison: yield, energy use, equipment, cost of production (E4), CO₂ and safety flags side by side, with a recommendation that states its assumptions and uncertainty | G3, E4, E5 | **Open** |
-| **G5** | Benchmarks: published open case studies with known answers (for example textbook processes and open techno-economic reports), used to measure how well agents do before anyone trusts them | G4 | **Open** |
+| **G2** | Literature to route: an agent reads open papers and expired patents and extracts process routes (reactions, conditions, conversions, yields, separations) into a route file, every value cited | D8 | **In CHEPTA-Lab** (2026-11-04; section "CHEPTA and CHEPTA-Lab"): **Open** |
+| **G3** | Route to flowsheet: an agent builds a flowsheet for each route, simulates it with CHEPTA, and closes material and energy balances | G1, G2, A8 | **In CHEPTA-Lab** (2026-11-04; section "CHEPTA and CHEPTA-Lab"): **Open** |
+| **G4** | Route comparison: yield, energy use, equipment, cost of production (E4), CO₂ and safety flags side by side, with a recommendation that states its assumptions and uncertainty | G3, E4, E5 | **In CHEPTA-Lab** (2026-11-04; section "CHEPTA and CHEPTA-Lab"): **Open** |
+| **G5** | Benchmarks: published open case studies with known answers (for example textbook processes and open techno-economic reports), used to measure how well agents do before anyone trusts them. Starts with G1 and G2 on small reviewed cases (the ethanol reactor, the benzene + toluene column), checking valid tool calls, numerical reproduction, missing information, unsupported capabilities and the reading of warnings; route-comparison benchmarks are added once G4 exists. Development and regression cases are kept apart from held-out evaluation cases, with related papers and process variants in the same group (Astra 6 review, 2026-11-04) | G1, G2 | **In CHEPTA-Lab** (2026-11-04; section "CHEPTA and CHEPTA-Lab"): **Open** |
 | **G6** | Design-study view: routes, flowsheets, costs and sources in one page an engineer can review, change and sign off | G4, A11, E6 | **Open** |
+
+## The program after M4 (v0.7 onward)
+
+Proposal 0015 ends at M4 (specifications, side draws, the first costs). What follows, agreed with the maintainer on
+2026-11-04 (docs/decisions/2026-11-04-08-program-after-m4.md). Versions stay 0.x: there is no 1.0 until the maintainer
+chooses to release CHEPTA officially (the maintainer, 2026-11-04: "i do not need to have 1.0. i can continue with 0.xxx"). Each phase runs two or three workstreams side by side,
+with at most four agent sessions open at a time, so no single track holds the others back.
+
+| Phase | Release | What | Done when |
+|---|---|---|---|
+| **P5 Cost, bounded** | v0.7 | E2 purchased and installed cost of every sized unit, E3 utilities, E4 capital, operating cost and cost of production, E6 the cost view | every unit sized in E1 has a cost or a stated "no open data"; a flowsheet shows its cost of production with the accuracy range |
+| **P6 Agentic design with CHEPTA-Lab** | v0.8 | G1 frozen as a versioned tool contract; G6 the design-study view; E5 CO2 and safety indicators; Lab's capability requests (below) | one reviewed reaction-separation case of CHEPTA-Lab runs through the supported interface in a released CHEPTA, meets the product and operating constraints declared before the run (purity, impurities, recovery, limits), closes its material and energy balances, keeps its warnings and sources, and can be reproduced from its saved inputs; any substituted unit, opened recycle or relaxed target is recorded. Costs are shown with their coverage and missing items; a missing cost does not hold back the engineering demonstration |
+| **P7 Advanced thermodynamics** | v0.9 | the methods track M2 to M6 (PSRK or MHV2, CPA, PC-SAFT, electrolytes, ionic liquids); M2 runs alongside P5 | each method has its proposal, open parameters, My data for the rest, and tests against an independent implementation |
+| **P8 Stability and bridges** | v0.10 and later | A12 frozen interfaces and deprecation rules; A2 data packs; A3 the tier on every result; A9 speed and size budgets; B3 ThermoML import; B5 notebooks and spreadsheets; B6 other simulators; C2 to C6 | the public interface is frozen and documented; old project files open; then the maintainer decides on an official release |
+| **Later** | – | reactive distillation; sensitivity and optimization; batch and dynamic simulation; solids beyond crystallization; life-cycle assessment | – |
+
+**Cost work must not stall the program** (the maintainer, 2026-11-04: "the agents shouldn't get stuck in the cost
+estimations but it is good to start working on this as well"):
+
+- one workstream (W4), in parallel with the others; a unit or a simulation never waits for its cost;
+- a recorded, time-bounded search for an open source per equipment family; an applicable source is used, otherwise the
+  gap is marked and the user gives a cost of their own in My data (a cost curve or a quote, with its source and year), as
+  for parameters; the search is reopened when new evidence or a specific case justifies it;
+- every estimate states its currency, cost index year and the basis of its accuracy range; with no defensible range the
+  uncertainty is stated as unquantified; an estimate is never presented as a quote;
+- a cost result says whether it is **complete within its declared scope**, **partial** or **unavailable**; a missing cost
+  stays missing, never zero; a partial estimate lists what it excludes and does not show which route is cheapest;
+- routes are compared only on a common capacity, product specification, currency and year, location and boundary;
+- a missing cost is a warning on the result, never a refusal of the calculation.
+
+## CHEPTA and CHEPTA-Lab
+
+[CHEPTA-Lab](https://github.com/FaireDose/CHEPTA-Lab) prepares evidence-backed process cases, training data and
+evaluations for AI assistants that use CHEPTA. CHEPTA owns the simulator; CHEPTA-Lab owns the literature screening,
+the cases, the training examples and the evaluations (the maintainer, 2026-11-04):
+
+1. **Lab uses released versions.** CHEPTA-Lab pins a released `chepta@x.y.z` from npm (tested, never overwritten), and
+   names a commit only between releases, saying so.
+2. **Lab's blockers are capability requests.** What a Lab case needs and CHEPTA refuses is filed with the
+   [Capability request form](https://github.com/FaireDose/CHEPTA/issues/new?template=capability-request.yml): the case,
+   the request, CHEPTA's outcome (its code and message) and the evidence. CHEPTA places it in a milestone and links the
+   release that delivers it.
+3. **The agentic items G2 to G5 are done in CHEPTA-Lab.** CHEPTA keeps G1 (the tool interface) and G6 (the design-study
+   view), and takes Lab's reviewed cases as benchmark validation data under docs/DATA_RULES.md.
+4. **No training data flows back into the databank.** Numbers in CHEPTA still come only from open sources under
+   AGENTS.md rule 1; a model's output is never a source.
+5. **A small shared study record.** Lab hands over a study as one record built from what exists: the case id and its
+   sources, the CHEPTA version, the contract version and the exact inputs, the outputs, checks and warnings, the
+   assumptions and unresolved inputs, the review status, and the cost coverage when costed. Lab writes it; CHEPTA's G6
+   view shows it; no interface state goes into it. Lab reuses CHEPTA's contracts, command line and MCP server.
+6. **Release coordination.** Before Lab adopts a new CHEPTA release it runs its small compatibility suite against it,
+   reviews the changes in outcomes, numbers and warnings, and only then moves its pin; old runs keep their engine version.
+   CHEPTA stays 0.x, but the interfaces Lab consumes (the request path, the result format, the project file format) carry
+   versions and a documented change policy: a limited early compatibility agreement, not the whole of A12.
+
+**Next, in this order** (the Astra 6 review, accepted by the maintainer, 2026-11-04): agree the study record and the
+release Lab pins; run the ethanol and benzene + toluene cases through the same supported interface, keeping actual
+results and failures; prepare the first reviewed reaction-separation demonstration; grow costing and the advanced
+methods alongside, driven by what the cases need.
 
 ## Releases
 
@@ -293,9 +353,11 @@ Needs a proposal for each method (track M). Each method ships with the open para
 
 ### Later
 
+The program above, phase "Later" (the maintainer, 2026-11-04: reactive distillation later).
+
 - Reactive distillation, batch reactors and catalyst deactivation
 - Sensitivity studies and optimization: the agent varies the design and finds the best
   operating point, with the engineer setting the limits
 - Solids handling beyond crystallization (proposal 0015); dynamic simulation
 - Life-cycle assessment linked to the cost model
-- 1.0 after A12
+- An official release after A12, when the maintainer decides (versions stay 0.x until then)

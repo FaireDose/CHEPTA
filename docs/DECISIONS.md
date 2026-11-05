@@ -130,6 +130,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     pervaporation postponed). Still open: the choice of Aziaba et al. 2022 as the model's source. To check: the worked
     example of Binous 2006 and the example's permeances against Aziaba et al.'s Table 1.
   - Waiting: W1; W3's evaporator and crystallizer.
+- **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
+  (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive
+  distillation and the rest after 1.0. Lab pins releases, files capability requests, and does G2 to G5.
 - **When in doubt, check other simulators** (docs/decisions/2026-11-04-05-check-other-simulators.md): a method rule in
   METHOD_SELECTION.md; first cases: Henry's law for gases in water (proposal 0017), PR/SRK with a light gas and a polar
   liquid offered with a warning where a k_ij exists, sour water and amines refused until M5.
