@@ -13,13 +13,14 @@ import { unitType } from "../units/units.js";
 import "../units/reactors.js";   // the reactor blocks, registered
 import "../units/columns/column.js";   // the Column block, registered
 import "../units/membrane.js";   // the Membrane block, registered
+import "../units/extraction.js";   // the Extraction block, registered
 
 /** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, C1 (column), P1; reactors R1 (conversion), RE1 (equilibrium),
  * RG1 (Gibbs), RY1 (yield), CS1 (CSTR), PF1 (plug flow). */
-export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", compressor: "K", expander: "EX", column: "C", membrane: "MB",
+export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", compressor: "K", expander: "EX", column: "C", membrane: "MB", extraction: "EXT",
   "conversion-reactor": "R", "equilibrium-reactor": "RE", "gibbs-reactor": "RG", "yield-reactor": "RY", cstr: "CS", pfr: "PF", product: "P" };
 /** The separators behind one Separator button of the toolbar (proposal 0015, Part I, section 4). */
-export const SEPARATORS = ["flash", "separator", "membrane"];
+export const SEPARATORS = ["flash", "separator", "membrane", "extraction"];
 /** The reactor blocks (proposal 0010, steps 3 to 6), behind one Reactor button of the toolbar. */
 export const REACTORS = ["conversion-reactor", "yield-reactor", "equilibrium-reactor", "gibbs-reactor", "cstr", "pfr"];
 /** The reactors that use the reactions of the Reactions page; their spec.reactions lists ids or { reaction, ... }. */
@@ -28,7 +29,7 @@ export const REACTION_USERS = ["conversion-reactor", "equilibrium-reactor", "cst
 export const KINETIC = ["cstr", "pfr"];
 const reactionIdOf = e => (typeof e === "string" ? e : e?.reaction);
 /** The block types of the palette, in order (products are automatic). */
-export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater", "hx", "valve", "pump", "compressor", "expander", "column", "membrane", ...REACTORS];
+export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater", "hx", "valve", "pump", "compressor", "expander", "column", "membrane", "extraction", ...REACTORS];
 
 const clone = fs => JSON.parse(JSON.stringify(fs));
 const nextId = (taken, prefix) => { let i = 1; while (taken.has(prefix + i)) i++; return prefix + i; };
@@ -98,6 +99,8 @@ function defaultSpec(type, fs) {
   }
   // a membrane starts counter-current in 20 cells, its permeate at 1 atm and a stage cut of 0.2: starting values; the
   // permeances are the person's, with their source (no databank)
+  // an extraction starts with 5 equilibrium stages, at the feed's temperature: a starting value
+  if (type === "extraction") return { stages: 5 };
   if (type === "membrane") return { permeances: {}, permeance_unit: "GPU", permeate_P_kPa: 101.325, flow: "counter-current", cells: 20, stage_cut: 0.2 };
   // a CSTR or plug-flow reactor starts with the first reaction that has kinetics (else none), one phase
   if (KINETIC.includes(type)) {
