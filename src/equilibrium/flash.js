@@ -61,6 +61,7 @@
  *
  * Units: T in K, P in kPa, enthalpy in J/mol, mole fractions.
  */
+import { twoLiquidStatements, refuseWilsonInsideMeasuredSplit } from "../thermo/two-liquids.js";
 import { brent } from "../util/solve.js";
 import { fail, failRange } from "../util/errors.js";
 import { checkComposition, checkPressure, checkTemperature } from "../util/inputs.js";
@@ -754,10 +755,14 @@ function result(sys, spec, z, T, P, core, extra = {}, entropy = false) {
     const err = z.reduce((m, zi, i) => Math.max(m, Math.abs(e.phases.reduce((a, ph) => a + ph.fraction * ph.composition[i], 0) - zi)), 0);
     if (err > 1e-10) throw fail("NO_CONVERGENCE", `${sys.model} flash: the mass balance does not close (${err.toExponential(2)}).`, { z, T, P });
   }
-  const warnings = [...new Set([...(sys.warnings ? sys.warnings(T, P) : []), ...e.notes])];
+  // the evidence behind two liquids (proposal 0019, section 3), and Wilson refused inside a measured split (section 4)
+  const liq = e.phases.filter(ph => ph.type === "liquid");
+  const two = liq.length === 2 && sys.ids ? twoLiquidStatements(sys, liq[0].composition, liq[1].composition, T, P) : [];
+  if (sys.model === "WILSON") for (const ph of liq) refuseWilsonInsideMeasuredSplit(sys, ph.composition, T);
+  const warnings = [...new Set([...(sys.warnings ? sys.warnings(T, P) : []), ...e.notes, ...two.map(t => t.message)])];
   return {
     spec, T, P, VF: V, H_J_mol: e.H, ...(e.S !== null ? { S_J_molK: e.S } : {}), phases: e.phases,
-    iterations: core.iterations, warnings, sources: sourcesOf(sys), ...extra,
+    iterations: core.iterations, warnings, sources: sourcesOf(sys), ...(two.length ? { two_liquids: two } : {}), ...extra,
   };
 }
 

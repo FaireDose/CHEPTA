@@ -199,10 +199,19 @@ def two_liquid_points(rec, a, b, num=None):
     here by T and P; or one set with two rows per temperature, both labelled "Liquid mixture 1" (doi:10.1021/je0505366,
     set 14), taken as the two liquids when exactly two such values share a T and P; or the compositions as variables
     with the three-phase temperature as the property "Triple point temperature" (furfural + water,
-    doi:10.1021/je020053r, set 10). A set of three-phase pressures without the liquids' compositions gives no point."""
+    doi:10.1021/je020053r, set 10). Mass fractions are converted to mole fractions with the molar masses of the
+    component records. A set of three-phase pressures, cloud points (one liquid per temperature), interfacial tensions
+    or mass ratios gives no point."""
     if num is None:   # compound number -> "a" or "b" (the bulk survey passes its own, from its InChI index)
         ia, ib = inchi_of(a), inchi_of(b)
         num = {n: ("a" if norm_inchi(c["inchi"]) == ia else "b" if norm_inchi(c["inchi"]) == ib else None) for n, c in rec["compounds"].items()}
+    Ma, Mb = COMPS[a]["MW"], COMPS[b]["MW"]
+
+    def mole(v, compound, mass):
+        """Mole fraction of a from a stored mole or mass fraction of `compound` (mass fractions converted with the
+        molar masses of the component records)."""
+        w = v if num.get(compound) == "a" else 1 - v
+        return (w / Ma) / (w / Ma + (1 - w) / Mb) if mass else w
     pts, used = {}, set()
     for s in rec["sets"]:
         if len(s["components"]) != 2 or {num.get(n) for n in s["components"]} != {"a", "b"}:
@@ -219,8 +228,8 @@ def two_liquid_points(rec, a, b, num=None):
                     T = r.get("v" + vn)
                 elif t == "Pressure":
                     P = r.get("v" + vn)
-                elif t == "Mole fraction" and (v["phase"] or "").startswith("Liquid mixture") and r.get("v" + vn) is not None:
-                    xs.append((v["phase"], r["v" + vn] if num.get(v["compound"]) == "a" else 1 - r["v" + vn]))
+                elif t in ("Mole fraction", "Mass fraction") and (v["phase"] or "").startswith("Liquid mixture") and r.get("v" + vn) is not None:
+                    xs.append((v["phase"], mole(r["v" + vn], v["compound"], t == "Mass fraction")))
             for pn, p in s["properties"].items():
                 if (p["name"] or "").startswith("Triple point temperature") and r.get("p" + pn) is not None:
                     T = r["p" + pn]
@@ -231,12 +240,12 @@ def two_liquid_points(rec, a, b, num=None):
                 pts.setdefault(key, []).append((ph, x))
                 used.add(s["number"])
             for pn, p in s["properties"].items():
-                if (p["name"] or "") != "Mole fraction" or r.get("p" + pn) is None:
+                if (p["name"] or "") not in ("Mole fraction", "Mass fraction") or r.get("p" + pn) is None:
                     continue
                 ph = (p["phase"] or [""])[0]
                 if not ph.startswith("Liquid mixture"):
                     continue
-                x = r["p" + pn] if num.get(p["compound"]) == "a" else 1 - r["p" + pn]
+                x = mole(r["p" + pn], p["compound"], p["name"] == "Mass fraction")
                 pts.setdefault(key, []).append((ph, x))
                 used.add(s["number"])
     rows = []

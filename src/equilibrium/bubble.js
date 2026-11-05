@@ -1,3 +1,4 @@
+import { refuseWilsonInsideMeasuredSplit } from "../thermo/two-liquids.js";
 import { brent, scanBracket, scanBracketInRange } from "../util/solve.js";
 import { checkComposition, checkPressure, checkTemperature } from "../util/inputs.js";
 import { fail } from "../util/errors.js";
@@ -57,7 +58,9 @@ function boilingRange(sys, P) {
  * @returns {{T:number, y:number[], gamma:number[], warnings:string[]}}  T in K; warnings: temperatures outside the data range of a temperature-dependent pair
  */
 export function bubbleT(sys, x, P) {
-  return bubbleTCore(sys, checkComposition(x, sys.n, "Liquid composition"), checkPressure(P));
+  const r = bubbleTCore(sys, checkComposition(x, sys.n, "Liquid composition"), checkPressure(P));
+  refuseWilsonInsideMeasuredSplit(sys, x, r.T);   // proposal 0019, section 4
+  return r;
 }
 
 /**
@@ -82,6 +85,7 @@ export function bubbleTCore(sys, x, P) {
  * @returns {{P:number, y:number[], gamma:number[], warnings:string[]}}  P in kPa
  */
 export function bubbleP(sys, x, T) {
+  refuseWilsonInsideMeasuredSplit(sys, checkComposition(x, sys.n, "Liquid composition"), checkTemperature(T));   // proposal 0019, section 4
   return bubblePCore(sys, checkComposition(x, sys.n, "Liquid composition"), checkTemperature(T));
 }
 

@@ -552,6 +552,22 @@ def wilson_a(i, j):
 
 # Wilson sets kept although the data now show two liquids, until roadmap item D9 classifies the pairs (the
 # maintainer's decision, see docs/decisions/2026-11-04-06-wilson-fits.md); empty unless the maintainer names a pair
+def by_class(spec):
+    """A generated fit of a partly miscible pair is fitted jointly to its vapour-liquid data and the measured two liquids
+    (file_sets), temperature-dependent (a + b / T) where the two-liquid points lie more than 5 K outside the
+    temperatures of the vapour-liquid data (proposal 0019, section 2)."""
+    if not spec.get("generated") or pair_class(spec["pair"]) != "partly miscible":
+        return spec
+    sets = file_sets(spec)
+    ll = [p for _, name, c in sets if name.endswith(" (two liquids)") for p in c]
+    if not ll:
+        return spec
+    lo, hi = data_T_range([s for s in sets if not s[1].endswith(" (two liquids)")])
+    if any(T < lo - 5 or T > hi + 5 for T, _, _ in ll):
+        return dict(spec, temperature_dependent=True)
+    return spec
+
+
 def overlaps_measured_split(spec):
     """True when the temperatures of a fit's vapour-liquid data reach those of the pair's two-liquid evidence (within
     5 K): the data then include states inside the measured split (proposal 0019, section 4)."""
@@ -650,6 +666,8 @@ def fit(spec, model):
     alpha = spec.get("alpha", 0.3)
     if spec["data"] == "txy-file":
         all_sets = file_sets(spec)
+        if model == "WILSON":   # Wilson is fitted to the vapour-liquid data only (it cannot give two liquids)
+            all_sets = [st for st in all_sets if not st[1].endswith(" (two liquids)")]
         sets = [st for st in all_sets if st[0] != "haz"]   # first stage: without azeotrope targets
 
         def residuals(p):
@@ -1022,6 +1040,7 @@ def main(write, only=None, models_only=None):
     for spec in FITS + GENERATED:
         if only is not None and "+".join(sorted(spec["pair"])) not in only:
             continue
+        spec = by_class(spec)
         test = ""
         if spec["data"] == "txy-file":
             dy_test = point_test(spec)
