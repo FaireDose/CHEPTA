@@ -472,11 +472,6 @@ def wilson_a(i, j):
     return a, -a
 
 
-# Wilson sets kept although the data now show two liquids, until roadmap item D9 classifies the pairs (the
-# maintainer's decision, see docs/decisions/2026-11-04-06-wilson-fits.md); empty unless the maintainer names a pair
-WILSON_KEPT = {}
-
-
 def wilson_ok(spec):
     """Can Wilson be fitted to this spec's data? Not to liquid-liquid data or a heterogeneous azeotrope: the Wilson
     equation cannot give two liquids (proposal 0016)."""
@@ -627,15 +622,7 @@ def lle_from_data(s, T, a, b):
     liquid was measured, the other is searched from several starting values and the widest
     split is kept."""
     if a is not None and b is not None:
-        z = s.lle_binary(T, (a, b))
-        if z is None:
-            # started from the measured liquids the solver may not converge where the model's split is far from them:
-            # start from the split of the convex-hull test (phase_splits), in the order of the measured liquids
-            for lo, hi in phase_splits(s, T):
-                z = s.lle_binary(T, (lo, hi) if a < b else (hi, lo))
-                if z is not None:
-                    break
-        return z
+        return s.lle_binary(T, (a, b))
     if a is None and b is None:
         a = 0.985   # no data: start the first liquid rich in the first component of the pair
     best = None
@@ -790,9 +777,8 @@ def check_phase_splits(spec, model, params):
     """Raise if the fitted set predicts another number of liquid phases than its data, at
     eleven temperatures across the data range. Wilson, which cannot give two liquids, is refused instead where the
     pair's default NRTL set (else UNIQUAC) predicts two liquids in the data range: a one-liquid fit to a mixture that
-    splits would hide the split (proposal 0016, step 2). Where only an NRTL fit to the same data predicts two liquids
-    and no measured liquid compositions decide, the Wilson fit is written with a known-issue note: the pairs are
-    classified from evidence and fitted by class in roadmap item D9 (the maintainer, 2026-11-04)."""
+    splits would hide the split (proposal 0016, step 2). An NRTL fit to the same data that predicts two liquids is not
+    used as evidence: such splits are often spurious (the generated NRTL fits refuse them for that reason)."""
     if model == "WILSON":
         if spec["data"] != "txy-file":
             return   # Schmid et al.'s P-x and excess enthalpies of a miscible pair
@@ -911,7 +897,7 @@ def point_test(spec, nterms=4):
 
 def main(write, only=None, models_only=None):
     binaries = json.loads(BIN_FILE.read_text())
-    rejected, warned, done, removed = [], [], [], []
+    rejected, warned, done = [], [], []
     for spec in FITS + GENERATED:
         if only is not None and "+".join(sorted(spec["pair"])) not in only:
             continue
@@ -923,19 +909,6 @@ def main(write, only=None, models_only=None):
                 test = f" Data consistency point test (Redlich-Kister fit to T-x): mean |dy| {dy_test:.3f}{' (passes, < 0.01)' if dy_test < 0.01 else ' (fails, >= 0.01)'}."
         if spec.get("generated"):
             done.append(tuple(sorted(spec["pair"])))
-            # Wilson not fitted to these data any more (two liquids measured with them, read since 2026-11-04): a
-            # Wilson set an earlier run fitted to the same data is taken out, the pair's other set becomes its default
-            if "WILSON" not in spec_models(spec) and (models_only is None or "WILSON" in models_only):
-                old = [r for r in binaries["pairs"] if r["model"] == "WILSON" and {r["i"], r["j"]} == set(spec["pair"])
-                       and r.get("tier") == "fitted" and r.get("source", "").startswith(spec["describe"][:80])
-                       and "+".join(sorted(spec["pair"])) not in WILSON_KEPT]
-                if old:
-                    binaries["pairs"] = [r for r in binaries["pairs"] if not any(r is o for o in old)]
-                    rest = [r for r in binaries["pairs"] if r["model"] == "WILSON" and {r["i"], r["j"]} == set(spec["pair"])]
-                    if rest and not any(r.get("default", True) for r in rest):
-                        (next((r for r in rest if r.get("set") == "chemsep"), rest[0]))["default"] = True
-                    removed.append((spec["pair"], "WILSON", [o.get("set") for o in old]))
-                    print(f"  removed the earlier WILSON set {[o.get('set') for o in old]} of {spec['pair']}: two liquids measured with its data")
         for model in spec_models(spec):
             if models_only is not None and model not in models_only:
                 continue
@@ -990,17 +963,6 @@ def main(write, only=None, models_only=None):
                 if why:
                     rejected.append((spec["pair"], model, why))
                     print(f"REJECTED {model} {spec['pair']}: {why}")
-                    # a set an earlier run fitted to the same data and that the data no longer support (two liquids
-                    # read since, 2026-11-04) is taken out; the pair's remaining default goes back to its other set
-                    old = [r for r in binaries["pairs"] if r["model"] == model and {r["i"], r["j"]} == set(spec["pair"])
-                           and r.get("tier") == "fitted" and r.get("source", "").startswith(spec["describe"][:80])]
-                    if old:
-                        binaries["pairs"] = [r for r in binaries["pairs"] if not any(r is o for o in old)]
-                        rest = [r for r in binaries["pairs"] if r["model"] == model and {r["i"], r["j"]} == set(spec["pair"])]
-                        if rest and not any(r.get("default", True) for r in rest):
-                            (next((r for r in rest if r.get("set") == "chemsep"), rest[0]))["default"] = True
-                        removed.append((spec["pair"], model, [o.get("set") for o in old]))
-                        print(f"  removed the earlier {model} set {[o.get('set') for o in old]} of {spec['pair']}")
                     continue
             q = quality(spec, model, params) + test
             params["source"] = f"{spec['describe']} {q}"

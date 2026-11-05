@@ -195,11 +195,8 @@ def curves(rec, a, b):
 def two_liquid_points(rec, a, b):
     """The pair's two-liquid points in a record: [[T_K, P_kPa or None, x_a in liquid 1, x_a in liquid 2]] and the set
     numbers. ThermoML stores each liquid's composition as a property of a set whose phases are "Liquid mixture 1" and
-    "Liquid mixture 2": often one set per liquid with the same T and P (Arango and Villa 2013, sets 10 and 11), merged
-    here by T and P; or one set with two rows per temperature, both labelled "Liquid mixture 1" (Grenner et al. 2006,
-    set 14), taken as the two liquids when exactly two such values share a T and P; or the compositions as variables
-    with the three-phase temperature as the property "Triple point temperature" (Mohsen-Nia et al. 2003, furfural +
-    water, set 10). A set of three-phase pressures without the liquids' compositions gives no point."""
+    "Liquid mixture 2", often one set per liquid with the same T and P (Arango and Villa 2013, sets 10 and 11): the rows
+    are merged by T and P."""
     ia, ib = inchi_of(a), inchi_of(b)
     num = {n: ("a" if norm_inchi(c["inchi"]) == ia else "b" if norm_inchi(c["inchi"]) == ib else None) for n, c in rec["compounds"].items()}
     pts, used = {}, set()
@@ -211,24 +208,15 @@ def two_liquid_points(rec, a, b):
         cons = {c["type"].split(",")[0]: c["value"] for c in s["constraints"] if c["type"]}
         for r in s["rows"]:
             T, P = cons.get("Temperature"), cons.get("Pressure")
-            xs = []
             for vn, v in s["variables"].items():
                 t = (v["type"] or "").split(",")[0]
                 if t == "Temperature":
                     T = r.get("v" + vn)
                 elif t == "Pressure":
                     P = r.get("v" + vn)
-                elif t == "Mole fraction" and (v["phase"] or "").startswith("Liquid mixture") and r.get("v" + vn) is not None:
-                    xs.append((v["phase"], r["v" + vn] if num.get(v["compound"]) == "a" else 1 - r["v" + vn]))
-            for pn, p in s["properties"].items():
-                if (p["name"] or "").startswith("Triple point temperature") and r.get("p" + pn) is not None:
-                    T = r["p" + pn]
             if T is None:
                 continue
             key = (round(T, 3), None if P is None else round(P, 4))
-            for ph, x in xs:
-                pts.setdefault(key, []).append((ph, x))
-                used.add(s["number"])
             for pn, p in s["properties"].items():
                 if (p["name"] or "") != "Mole fraction" or r.get("p" + pn) is None:
                     continue
@@ -236,40 +224,24 @@ def two_liquid_points(rec, a, b):
                 if not ph.startswith("Liquid mixture"):
                     continue
                 x = r["p" + pn] if num.get(p["compound"]) == "a" else 1 - r["p" + pn]
-                pts.setdefault(key, []).append((ph, x))
+                pts.setdefault(key, {})[ph] = x
                 used.add(s["number"])
-    rows = []
-    for (T, P), vals in sorted(pts.items(), key=lambda kv: kv[0][0]):
-        by = {ph: x for ph, x in vals}
-        if "Liquid mixture 1" in by and "Liquid mixture 2" in by and len(vals) == 2:
-            rows.append([T, P, by["Liquid mixture 1"], by["Liquid mixture 2"]])
-        elif len(vals) == 2 and len(by) == 1 and abs(vals[0][1] - vals[1][1]) > 1e-6:
-            rows.append([T, P, vals[0][1], vals[1][1]])
+    rows = [[T, P, v["Liquid mixture 1"], v["Liquid mixture 2"]] for (T, P), v in sorted(pts.items(), key=lambda kv: kv[0][0])
+            if "Liquid mixture 1" in v and "Liquid mixture 2" in v]
     return rows, sorted(used)
 
 
-def two_liquids_block(cache, pair, own_doi):
-    """The "two_liquids" block of a pair's fitted data file (component 1 = pair[0]): the two-liquid points of every
-    record the index lists for the pair, the data file's own record included, each row with the record it comes from;
-    or None when no record has any."""
-    dois = [own_doi] + [r["doi"] for r in INDEX.get(pair_key(*pair), []) if r["doi"] != own_doi]
-    rows, records = [], []
-    for doi in dois:
-        rec = record(cache, doi)
-        pts, sets = two_liquid_points(rec, *pair)
-        if not pts:
-            continue
-        records.append(dict(doi=doi, citation=citation(rec), open_copy=f"https://trc.nist.gov/ThermoML/{doi}.html",
-                            sets=f"PureOrMixtureData {', '.join(map(str, sets))} (phases Liquid mixture 1 and 2)"))
-        rows += [p + [len(records) - 1] for p in pts]
+def two_liquids_block(rec, pair):
+    """The "two_liquids" block of a data file (component 1 = pair[0]), or None."""
+    rows, sets = two_liquid_points(rec, *pair)
     if not rows:
         return None
-    return dict(columns=["T_K", "P_kPa", "x_1_I", "x_1_II", "record"], rows=rows, records=records, access=ACCESS,
-                notes="The two liquids in equilibrium, as stored in the records (mole fraction of component 1 in each; record: "
-                      "the index in records). P is the three-phase or the stated pressure where the record gives one. Fitted "
-                      "as liquid-liquid equilibrium (fit_parameters.py); rows of the curve strictly between the two liquids "
-                      "at the same temperature are not fitted as one liquid. To be checked by a person against the records "
-                      "(AGENTS.md rule 4).")
+    return dict(columns=["T_K", "P_kPa", "x_1_I", "x_1_II"], rows=rows,
+                source=f"ThermoML record, PureOrMixtureData {', '.join(map(str, sets))} (phases Liquid mixture 1 and 2)",
+                notes="The two liquids in equilibrium, as stored in the record (mole fraction of component 1 in each). "
+                      "P is the three-phase pressure where the record gives one. Fitted as liquid-liquid equilibrium "
+                      "(fit_parameters.py); rows of the curve strictly between the two liquids at the same temperature "
+                      "are not fitted as one liquid.")
 
 
 def point_test(P, pts, pair):
@@ -437,35 +409,31 @@ def write_file(pair, c):
                         "in the ThermoML Archive record. Rows with x_1 = 0 and 1 are the pure-component pressures measured with the same set.",
                  **common, kind="isothermal-px", columns=["T_K", "x_1", "P_kPa"], rows=[[c["T"], r[0], r[1]] for r in c["rows"]],
                  notes="Read with validation/python/vle_batch.py. To be checked by a person against the record (AGENTS.md rule 4).")
+    tl = two_liquids_block(c["rec"], pair)
+    if tl:
+        d["two_liquids"] = tl
     (ROOT / "validation" / "data" / name).write_text(json.dumps(d, indent=1, ensure_ascii=False) + "\n")
     return name
 
 
-def attach_two_liquids(name, cache, fitted=True):
-    """Put the pair's two-liquid points (two_liquids_block) on a data file, or take them off a check file. True when the
-    file changed."""
-    path = ROOT / "validation" / "data" / name
-    d = json.loads(path.read_text())
-    tl = two_liquids_block(cache, tuple(d["components"]), d["source"]["doi"]) if fitted else None
-    if tl == d.get("two_liquids"):
-        return False
-    if tl:
-        d["two_liquids"] = tl
-    else:
-        d.pop("two_liquids", None)
-    path.write_text(json.dumps(d, indent=1, ensure_ascii=False) + "\n")
-    return True
-
-
 def add_two_liquids(cache):
-    """Add (or refresh) the "two_liquids" block of the fitted data file of every pair of fits.json, without choosing the
-    data sets again. Returns the files changed."""
+    """Add (or refresh) the "two_liquids" block of every data file of fits.json, from its own record, without choosing
+    the data sets again. Returns the files changed."""
     fits = json.loads(FITS_FILE.read_text())["fits"]
     changed = []
     for f in fits:
         for name in [f["file"]] + f["check"]:
-            if attach_two_liquids(name, cache, fitted=(name == f["file"])):
-                changed.append(name)
+            path = ROOT / "validation" / "data" / name
+            d = json.loads(path.read_text())
+            tl = two_liquids_block(record(cache, d["source"]["doi"]), tuple(d["components"]))
+            if tl == d.get("two_liquids"):
+                continue
+            if tl:
+                d["two_liquids"] = tl
+            else:
+                d.pop("two_liquids", None)
+            path.write_text(json.dumps(d, indent=1, ensure_ascii=False) + "\n")
+            changed.append(name)
     return changed
 
 
