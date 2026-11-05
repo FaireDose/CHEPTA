@@ -46,8 +46,10 @@ test("known-issues.json names real components and models", () => {
     // fit-quality: a pair set written within the wider limits of validation/python/fit_parameters.py (WIDE_GATE);
     // predicted-deviation: a predictive model (Modified UNIFAC 2.0) against measured data (test/mod-unifac.test.js);
     // databank-deviation: a databank set, not fitted to the pair's open data, against them (test/wilson.test.js; the
-    // maintainer, 2026-11-04, proposal 0016: ethanol + ethylene glycol with ChemSep's Wilson set)
-    assert.ok(["ternary-azeotrope", "phase-split", "fit-quality", "predicted-deviation", "databank-deviation"].includes(k.kind), k.kind);
+    // maintainer, 2026-11-04, proposal 0016: ethanol + ethylene glycol with ChemSep's Wilson set);
+    // miscibility-unchecked: a one-liquid (Wilson) set where NRTL or UNIQUAC fits to the same data predict two liquids,
+    // until roadmap item D9 classifies the pair (the maintainer, 2026-11-04)
+    assert.ok(["ternary-azeotrope", "phase-split", "fit-quality", "predicted-deviation", "databank-deviation", "miscibility-unchecked"].includes(k.kind), k.kind);
     assert.ok(k.message && k.reference);
   }
 });

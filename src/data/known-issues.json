@@ -331,6 +331,19 @@
     },
     {
       "components": [
+        "acetonitrile",
+        "n-hexane"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.75 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json (Narasigadu et al., Fluid Phase Equilib. 338)",
+      "source_ids": [
+        "narasigadu2013-acetonitrile-n-hexane"
+      ]
+    },
+    {
+      "components": [
         "bdo",
         "tetrahydrofuran"
       ],
@@ -1347,6 +1360,19 @@
     },
     {
       "components": [
+        "acetonitrile",
+        "n-hexane"
+      ],
+      "model": "WILSON",
+      "kind": "fit-quality",
+      "message": "These WILSON parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.54 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json (Narasigadu et al., Fluid Phase Equilib. 338)",
+      "source_ids": [
+        "narasigadu2013-acetonitrile-n-hexane"
+      ]
+    },
+    {
+      "components": [
         "bdo",
         "tetrahydrofuran"
       ],
@@ -1447,6 +1473,19 @@
       "reference": "validation/data/vle/diethyl-carbonate_vinyl-acetate_10-1021-je049544x_101.3kPa.json (Resa et al., J. Chem. Eng. Data 50)",
       "source_ids": [
         "resa2005-diethyl-carbonate-vinyl-acetate"
+      ]
+    },
+    {
+      "components": [
+        "diethyl-carbonate",
+        "water"
+      ],
+      "model": "WILSON",
+      "kind": "fit-quality",
+      "message": "These WILSON parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 2.35 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/diethyl-carbonate_water_10-1016-j-fluid-2012-11-026_353.15K.json (Arango et al., Fluid Phase Equilib. 339)",
+      "source_ids": [
+        "arango2013-diethyl-carbonate-water"
       ]
     },
     {
@@ -1903,46 +1942,6 @@
       "source_ids": [
         "dias2014-2-propanol-isoamyl-alcohol"
       ]
-    },
-    {
-      "components": [
-        "1-butanol",
-        "water"
-      ],
-      "model": "NRTL",
-      "kind": "fit-quality",
-      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 0.61 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/1-butanol_water_10-1021-je700411p_101.3kPa_tx.json (Lladosa et al., J. Chem. Eng. Data 53)"
-    },
-    {
-      "components": [
-        "acetonitrile",
-        "n-hexane"
-      ],
-      "model": "NRTL",
-      "kind": "fit-quality",
-      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.68 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json (Narasigadu et al., Fluid Phase Equilib. 338)"
-    },
-    {
-      "components": [
-        "acetonitrile",
-        "n-hexane"
-      ],
-      "model": "UNIQUAC",
-      "kind": "fit-quality",
-      "message": "These UNIQUAC parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.72 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json (Narasigadu et al., Fluid Phase Equilib. 338)"
-    },
-    {
-      "components": [
-        "furfural",
-        "water"
-      ],
-      "model": "NRTL",
-      "kind": "fit-quality",
-      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.55 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/furfural_water_10-1021-je020053r_94.6kPa_tx.json (Sunder et al., J. Chem. Eng. Data 48)"
     }
   ]
 }

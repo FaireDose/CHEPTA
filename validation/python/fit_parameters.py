@@ -970,8 +970,11 @@ def main(write, only=None, models_only=None):
                         wide = None
                     elif cur is not None:
                         try:
+                            # the existing set must meet the liquid-liquid checks of these data too (two liquids
+                            # measured with them, read since 2026-11-04): a set that misses them never stays
+                            check_phase_splits(spec, model, {k: v for k, v in cur.items() if k in ("model", "i", "j", "a_ij", "a_ji", "b_ij", "b_ji", "alpha")} | {"model": model})
                             s_cur = score(spec, model, dict(cur, model=model))
-                        except Exception:
+                        except (SystemExit, Exception):
                             s_cur = float("inf")
                         if s_cur <= score(spec, model, wide[0]):
                             why = ("%s; the existing %s set (%s) follows the same data as closely or better, and stays" % (
@@ -994,7 +997,7 @@ def main(write, only=None, models_only=None):
                     # read since, 2026-11-04) is taken out; the pair's remaining default goes back to its other set
                     old = [r for r in binaries["pairs"] if r["model"] == model and {r["i"], r["j"]} == set(spec["pair"])
                            and r.get("tier") == "fitted" and r.get("source", "").startswith(spec["describe"][:80])]
-                    if old:
+                    if old and not why.endswith("stays"):   # not when the earlier set itself is the one that stays
                         binaries["pairs"] = [r for r in binaries["pairs"] if not any(r is o for o in old)]
                         rest = [r for r in binaries["pairs"] if r["model"] == model and {r["i"], r["j"]} == set(spec["pair"])]
                         if rest and not any(r.get("default", True) for r in rest):
