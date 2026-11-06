@@ -2289,6 +2289,10 @@
      383.0,
      623.0
     ]
+   },
+   "not_usable": {
+    "decided": "the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
+    "reason": "On the 573 measured states of 29 ThermoML articles at 273.15-393.15 K and up to 20 MPa (validation/data/eos/high_pressure_fits.json), this k_ij (0.0952) dissolves about a tenth of the measured CO2 (solubility -91 %) and finds no bubble pressure at 457 of them; a fitted constant k_ij (-0.1148) is still 58.5 % off in P and 48 % in solubility"
    }
   },
   {
@@ -5276,6 +5280,10 @@
      383.0,
      623.0
     ]
+   },
+   "not_usable": {
+    "decided": "the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
+    "reason": "On the 573 measured states of 29 ThermoML articles at 273.15-393.15 K and up to 20 MPa (validation/data/eos/high_pressure_fits.json), this k_ij (0.1) dissolves about a tenth of the measured CO2 (solubility -93 %) and finds no bubble pressure at 478 of them; a fitted constant k_ij (-0.1335) is still 65.7 % off in P and 45.3 % in solubility"
    }
   },
   {
@@ -8118,6 +8126,86 @@
     "T_K": [
      298.15,
      372.9
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "methane",
+   "j": "methanol",
+   "set": "fitted-frost2015-etal",
+   "default": true,
+   "kij": -0.0503,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs to the 42 bubble pressures of 6 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-323 K, 1050-19930 kPa: AAD 9.2 % in P (max 35.6 %), gas solubility at the measured T and P AAD 7.8 % (max 19.5 %)",
+    "data": [
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json"
+    ],
+    "conditions": "T = 273.15-323 K, P = 1050-19930 kPa",
+    "T_range_K": [
+     273.15,
+     323
+    ]
+   },
+   "source_ids": [
+    "frost2015-methane-methanol",
+    "oliveira2016-methane-methanol",
+    "nourozieh2012-methane-methanol",
+    "kapateh2016-methane-methanol",
+    "xia2004-methane-methanol",
+    "frost2014-methane-methanol"
+   ],
+   "quality_warning": "AAD 9.2 % in P (limit 5 %), 7.8 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
+   "valid": {
+    "T_K": [
+     273.15,
+     323
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "methane",
+   "j": "methanol",
+   "set": "fitted-frost2015-etal",
+   "default": true,
+   "kij": -0.08,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs to the 42 bubble pressures of 6 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-323 K, 1050-19930 kPa: AAD 8.9 % in P (max 32 %), gas solubility at the measured T and P AAD 7.7 % (max 17.7 %)",
+    "data": [
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json"
+    ],
+    "conditions": "T = 273.15-323 K, P = 1050-19930 kPa",
+    "T_range_K": [
+     273.15,
+     323
+    ]
+   },
+   "source_ids": [
+    "frost2015-methane-methanol",
+    "oliveira2016-methane-methanol",
+    "nourozieh2012-methane-methanol",
+    "kapateh2016-methane-methanol",
+    "xia2004-methane-methanol",
+    "frost2014-methane-methanol"
+   ],
+   "quality_warning": "AAD 8.9 % in P (limit 5 %), 7.7 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
+   "valid": {
+    "T_K": [
+     273.15,
+     323
     ]
    }
   }

@@ -62,6 +62,26 @@ export function kijMatrix(ids, model, kij, sel = selection({}), userData = null)
 }
 
 /**
+ * Refuse a liquid that holds both components of a pair whose chosen k_ij is marked not usable in src/data/kij.json
+ * (`not_usable`: carbon dioxide + water, the maintainer, 2026-11-05). Vapour-only work (fugacities of a gas, a
+ * flash whose result is all vapour) is not refused: the mark is about the gas's solubility in the liquid. The user's
+ * own k_ij (cfg.kij, or My data) carries no mark.
+ * @param {object} sys   an equation-of-state system
+ * @param {number[]} x   a liquid composition
+ * @param {string} what  the calculation, for the message
+ */
+export function refuseNotUsableLiquid(sys, x, what) {
+  for (const p of sys.info?.pairs ?? []) {
+    if (!p.not_usable) continue;
+    const [i, j] = p.pair.map(name => sys.names.indexOf(name));
+    if (i < 0 || j < 0 || !(x[i] > 0 && x[j] > 0)) continue;
+    throw fail("NOT_AVAILABLE", `${what}: ${sys.model} with ${p.pair.join(" + ")} in the liquid is refused: ${p.not_usable.reason} (${p.not_usable.decided}). `
+      + `For a gas in water use an activity model (NRTL, UNIQUAC, Wilson or ideal), where ${p.pair[0].toLowerCase()} dissolves by Henry's law (proposal 0017), `
+      + `or give a k_ij of your own fitted to data (My data).`);
+  }
+}
+
+/**
  * @param {string[]} ids        component ids (already resolved)
  * @param {object} cfg
  * @param {"PR"|"SRK"} cfg.model

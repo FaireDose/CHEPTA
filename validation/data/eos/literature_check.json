@@ -720,6 +720,102 @@
    "x_1": 0.01499,
    "P_exp_kPa": null,
    "P_reference_kPa": 3621.069
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "methane",
+    "methanol"
+   ],
+   "kij": -0.0503,
+   "T_K": 294.5,
+   "x_1": 0.011,
+   "P_exp_kPa": 1050.0,
+   "P_reference_kPa": 1138.021
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "methane",
+    "methanol"
+   ],
+   "kij": -0.0503,
+   "T_K": 298.87,
+   "x_1": 0.04747,
+   "P_exp_kPa": 6140.0,
+   "P_reference_kPa": 5136.945
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "methane",
+    "methanol"
+   ],
+   "kij": -0.0503,
+   "T_K": 298.0,
+   "x_1": 0.10857,
+   "P_exp_kPa": 13790.0,
+   "P_reference_kPa": 13469.62
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "methane",
+    "methanol"
+   ],
+   "kij": -0.0503,
+   "T_K": 273.15,
+   "x_1": 0.2578,
+   "P_exp_kPa": 46990.0,
+   "P_reference_kPa": 80285.041
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "methane",
+    "methanol"
+   ],
+   "kij": -0.08,
+   "T_K": 294.5,
+   "x_1": 0.011,
+   "P_exp_kPa": 1050.0,
+   "P_reference_kPa": 1162.279
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "methane",
+    "methanol"
+   ],
+   "kij": -0.08,
+   "T_K": 298.87,
+   "x_1": 0.04747,
+   "P_exp_kPa": 6140.0,
+   "P_reference_kPa": 5201.459
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "methane",
+    "methanol"
+   ],
+   "kij": -0.08,
+   "T_K": 298.0,
+   "x_1": 0.10857,
+   "P_exp_kPa": 13790.0,
+   "P_reference_kPa": 13380.597
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "methane",
+    "methanol"
+   ],
+   "kij": -0.08,
+   "T_K": 273.15,
+   "x_1": 0.2578,
+   "P_exp_kPa": 46990.0,
+   "P_reference_kPa": 73600.578
   }
  ]
 }

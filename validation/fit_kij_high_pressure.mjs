@@ -27,6 +27,9 @@
  * (AAD in P, every point with a bubble pressure) is an entry there, which validation/python/eos_fit_kij.py merges
  * into src/data/kij.json; a k_ij outside it is listed under "rejected" with its errors and is not used.
  *
+ * A pair in WARNED (the maintainer's decision) is written outside GATE with a quality_warning and a "fit-quality" known
+ * issue. The pairs of TEMPERATURE_STUDY are also fitted with k_ij = a + b / T, recorded under "temperature_study".
+ *
  * Usage: node validation/fit_kij_high_pressure.mjs [--write] [--only gas+solvent]
  */
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
@@ -42,6 +45,15 @@ const read = p => JSON.parse(readFileSync(new URL(p, ROOT), "utf8"));
  *  geological CO2 + water data to 120 MPa and 573 K, which a single constant k_ij would be fitted to at the cost of
  *  the range CHEPTA-Lab needs. */
 export const WINDOW = { T_K: 400, P_kPa: 20000 };
+
+/** Pairs outside GATE that the maintainer decided to write all the same, with a "fit-quality" known issue
+ *  (src/data/known-issues.json) and a quality_warning in the record. */
+export const WARNED = { "methane+methanol": "the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)" };
+
+/** Pairs whose temperature-dependent k_ij = a + b / T is tried as well (the maintainer, 2026-11-05). It is a study:
+ *  the engine has constant k_ij, and a + b / T would be added to it only if it met GATE. The bubble pressure at a
+ *  given T needs only k at that T, so the study runs on the engine as it is. */
+export const TEMPERATURE_STUDY = [["carbon-dioxide", "methanol"], ["carbon-dioxide", "water"]];
 
 export const PAIRS = [
   ["carbon-dioxide", "methanol"], ["carbon-dioxide", "water"], ["hydrogen", "methanol"], ["carbon-monoxide", "methanol"], ["methane", "methanol"],
@@ -65,7 +77,15 @@ export function articles(gas, solv) {
 const inWindow = r => r.T <= WINDOW.T_K && (r.P ?? r.p1) <= WINDOW.P_kPa;
 const fitted = r => r.x != null && r.x > 0 && r.x < 1 && inWindow(r);
 
-const sys = (pair, model, k) => system({ components: pair, model, kij: [[0, k], [k, 0]] });
+const SYS = new Map();
+/** The system of the pair at a constant k_ij (cached: the temperature study asks for many k). */
+const sys = (pair, model, k) => {
+  const key = `${pair}|${model}|${k.toFixed(6)}`;
+  if (!SYS.has(key)) { if (SYS.size > 4000) SYS.clear(); SYS.set(key, system({ components: pair, model, kij: [[0, k], [k, 0]] })); }
+  return SYS.get(key);
+};
+/** k_ij at T: a number, or a function of T (the temperature study). */
+const kAt = (k, T) => (typeof k === "function" ? k(T) : k);
 
 /** ln of calculated over measured pressure (total, or partial of the gas) of the bubble point at T and x; null if none. */
 function lnP(s, r) {
@@ -120,11 +140,11 @@ const r4 = v => v == null ? null : Math.round(v * 1e4) / 1e4;
 
 /** Errors of the pair's articles at k: per article and pooled, in the fit window. */
 function errors(pair, model, k, arts) {
-  const s = sys(pair, model, k);
   const per = arts.map(a => {
     const dP = [], dx = [], dy = [];
     let noBubble = 0, noState = 0;
     for (const r of a.rows.filter(inWindow)) {
+      const s = sys(pair, model, kAt(k, r.T));
       if (r.x != null && r.x > 0 && r.x < 1) {
         const v = lnP(s, r);
         if (v == null) noBubble++; else dP.push(100 * (Math.exp(v) - 1));
@@ -167,13 +187,14 @@ export function fitPair(pair) {
     const db = kij.pairs.find(p => p.model === model && new Set([p.i, p.j]).has(pair[0]) && new Set([p.i, p.j]).has(pair[1]));
     const dbk = db ? (db.tier === "databank" ? db.kij : db.replaced?.kij) : null;
     const ok = e.pooled.no_bubble_pressure === 0 && e.pooled.P_pct.aad <= GATE.P_pct;
-    out.push({ model, pair, kij: k, ok, range, points: pts.length, articles: arts.filter(a => a.rows.some(fitted)).length, outside_window: outside.length,
+    const warned = !ok && e.pooled.no_bubble_pressure === 0 && WARNED[pair.join("+")] ? WARNED[pair.join("+")] : null;
+    out.push({ model, pair, kij: k, ok, ...(warned ? { warned } : {}), range, points: pts.length, articles: arts.filter(a => a.rows.some(fitted)).length, outside_window: outside.length,
       vapour_only_rows: yOnly.length, errors: e, own_kij: own,
       databank: dbk == null ? null : { kij: dbk, errors: errors(pair, model, dbk, arts).pooled } });
     const q = e.pooled;
     console.log(`${model} ${pair.join("-")}: k_ij = ${k.toFixed(4)}, ${pts.length} points of ${out.at(-1).articles} articles, T ${range.T_K.join("-")} K, P ${range.P_kPa.join("-")} kPa; `
       + `P AAD ${q.P_pct.aad} % (max ${q.P_pct.max}), x AAD ${q.x_pct.aad} % (max ${q.x_pct.max})${q.y ? `, y AAD ${q.y.aad} (max ${q.y.max}, ${q.y.points})` : ""}`
-      + `${q.no_bubble_pressure ? `, ${q.no_bubble_pressure} without a bubble pressure` : ""}${ok ? "" : "  NOT WRITTEN (outside GATE)"}`
+      + `${q.no_bubble_pressure ? `, ${q.no_bubble_pressure} without a bubble pressure` : ""}${ok ? "" : warned ? "  outside GATE, written with a fit-quality warning" : "  NOT WRITTEN (outside GATE)"}`
       + (dbk != null ? `\n   databank k_ij = ${dbk}: P AAD ${out.at(-1).databank.errors.P_pct.aad} %, x AAD ${out.at(-1).databank.errors.x_pct.aad} %` : ""));
     for (const o of own) console.log(`   own k_ij ${o.kij.toFixed(3)}  T ${o.T_K.join("-")} K  ${o.file}`);
   }
@@ -194,22 +215,70 @@ function entry(r) {
       conditions: `T = ${r.range.T_K[0]}-${r.range.T_K[1]} K, P = ${r.range.P_kPa[0]}-${r.range.P_kPa[1]} kPa`,
       T_range_K: r.range.T_K,
     },
+    ...(r.warned ? { quality_warning: `${warnText(r)}; written outside the gate of ${GATE.P_pct} % by the decision of ${r.warned}` } : {}),
   };
+}
+
+const warnText = r => `AAD ${r.errors.pooled.P_pct.aad} % in P (limit ${GATE.P_pct} %), ${r.errors.pooled.x_pct.aad} % in the gas solubility`;
+
+/** k_ij = a + b / T fitted to the same points and weights (Nelder-Mead on a and b), with its errors. */
+function temperatureStudy(pair) {
+  const arts = articles(...pair);
+  const pts = arts.flatMap(a => a.rows.filter(fitted).map(r => ({ ...r, w: 1 / a.rows.filter(fitted).length })));
+  return ["PR", "SRK"].map(model => {
+    const obj = ([a, b]) => pts.reduce((acc, p) => { const v = lnP(sys(pair, model, a + b / p.T), p); return acc + p.w * (v == null ? 1 : v * v); }, 0);
+    let S = [[0, 0], [0.1, 0], [0, 10]], F = S.map(obj);
+    for (let it = 0; it < 150; it++) {
+      const o = [0, 1, 2].sort((i, j) => F[i] - F[j]); S = o.map(i => S[i]); F = o.map(i => F[i]);
+      if (Math.abs(F[2] - F[0]) < 1e-10) break;
+      const c = [(S[0][0] + S[1][0]) / 2, (S[0][1] + S[1][1]) / 2];
+      const at = t => [c[0] + t * (S[2][0] - c[0]), c[1] + t * (S[2][1] - c[1])];
+      const r = at(-1), fr = obj(r);
+      if (fr < F[0]) { const e = at(-2), fe = obj(e); [S[2], F[2]] = fe < fr ? [e, fe] : [r, fr]; }
+      else if (fr < F[1]) { S[2] = r; F[2] = fr; }
+      else {
+        const k = at(0.5), fk = obj(k);
+        if (fk < F[2]) { S[2] = k; F[2] = fk; }
+        else for (const i of [1, 2]) { S[i] = [(S[0][0] + S[i][0]) / 2, (S[0][1] + S[i][1]) / 2]; F[i] = obj(S[i]); }
+      }
+    }
+    const [a, b] = [Math.round(S[0][0] * 1e4) / 1e4, Math.round(S[0][1] * 100) / 100];
+    const e = errors(pair, model, T => a + b / T, arts).pooled;
+    const ok = e.no_bubble_pressure === 0 && e.P_pct.aad <= GATE.P_pct;
+    console.log(`${model} ${pair.join("-")}: k_ij = ${a} + ${b} K / T (${[250, 300, 350, 400].map(T => `${T} K: ${(a + b / T).toFixed(3)}`).join(", ")}); `
+      + `P AAD ${e.P_pct.aad} % (max ${e.P_pct.max}), x AAD ${e.x_pct.aad} % (max ${e.x_pct.max})${e.y ? `, y AAD ${e.y.aad}` : ""}`
+      + `${e.no_bubble_pressure ? `, ${e.no_bubble_pressure} without a bubble pressure` : ""}${ok ? "  within GATE" : "  outside GATE"}`);
+    return { model, pair, a, b_K: b, points: pts.length, ok, errors: e };
+  });
 }
 
 function main() {
   const only = process.argv.includes("--only") ? process.argv[process.argv.indexOf("--only") + 1] : null;
   const res = PAIRS.filter(p => !only || p.join("+") === only).flatMap(fitPair);
+  const study = TEMPERATURE_STUDY.filter(p => !only || p.join("+") === only).flatMap(temperatureStudy);
   if (!process.argv.includes("--write")) return;
+  // the "fit-quality" known issues of the pairs written outside the gate (WARNED), replaced on every run
+  const KI = new URL("src/data/known-issues.json", ROOT);
+  const known = JSON.parse(readFileSync(KI, "utf8"));
+  const mine = k => k.kind === "fit-quality" && ["PR", "SRK"].includes(k.model) && PAIRS.some(p => p.join() === k.components.join());
+  known.issues = known.issues.filter(k => !mine(k)).concat(res.filter(r => r.warned).map(r => ({
+    components: r.pair, model: r.model, kind: "fit-quality",
+    message: `This ${r.model} k_ij is fitted to open data but follows them less closely than the other fitted sets: ${warnText(r)}, max ${r.errors.pooled.P_pct.max} % in P, `
+      + `on ${r.points} points of ${r.articles} ThermoML articles at ${r.range.T_K[0]}-${r.range.T_K[1]} K and ${r.range.P_kPa[0]}-${r.range.P_kPa[1]} kPa. Use with care.`,
+    // the data files, which make_sources.py maps to their sources; the errors are in high_pressure_fits.json
+    reference: r.errors.articles.filter(a => a.points).map(a => `validation/data/eos/${a.file}`).join(", "),
+  })));
+  writeFileSync(KI, JSON.stringify(known, null, 2) + "\n");
   writeFileSync(new URL("high_pressure_fits.json", DIR), JSON.stringify({
     _about: "Written by validation/fit_kij_high_pressure.mjs --write: the k_ij within its GATE (merged into src/data/kij.json by validation/python/eos_fit_kij.py) "
       + "and the fits outside it, with their errors at the fitted and the databank k_ij. P_pct: bubble pressure at the measured T and x, (calc / exp - 1) in %; "
       + "x_pct: liquid mole fraction of the gas at the measured T and P, (calc / exp - 1) in %; y: vapour mole fraction of the gas at the measured T and P, calc - exp.",
     gate: GATE, window: WINDOW,
-    entries: res.filter(r => r.ok).map(entry),
+    entries: res.filter(r => r.ok || r.warned).map(entry),
     results: res,
+    temperature_study: study,
   }, null, 1) + "\n");
-  console.log(`wrote validation/data/eos/high_pressure_fits.json: ${res.filter(r => r.ok).length} entries, ${res.filter(r => !r.ok).length} not kept`);
+  console.log(`wrote validation/data/eos/high_pressure_fits.json: ${res.filter(r => r.ok || r.warned).length} entries (${res.filter(r => r.warned).length} with a warning), ${res.filter(r => !r.ok && !r.warned).length} not kept`);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) main();

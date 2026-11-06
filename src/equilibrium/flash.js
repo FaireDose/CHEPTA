@@ -242,9 +242,13 @@ function newtonEos(sys, z, T, P, K0) {
   const eos = sys.eos, n = z.length;
   const evalF = lnK => {
     const K = lnK.map(Math.exp);
+    // a trial step can push a K to overflow (or to 0): its phase compositions are then not mole fractions (NaN or
+    // negative), and the trial is rejected like any other bad step, instead of reaching the equation of state
+    if (!K.every(k => Number.isFinite(k) && k > 0)) return null;
     const V = rachfordRice(z, K);
     if (!Number.isFinite(V)) return null;
     const { x, y } = phaseCompositions(z, K, Math.min(Math.max(V, -1e3), 1e3));
+    if (![...x, ...y].every(v => Number.isFinite(v) && v >= 0)) return null;
     const L = eos.state(T, P, x, "liquid").lnPhi, G = eos.state(T, P, y, "vapour").lnPhi;
     const F = lnK.map((v, i) => v - L[i] + G[i]);
     if (!F.every(Number.isFinite)) return null;

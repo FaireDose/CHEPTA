@@ -2002,6 +2002,42 @@
     },
     {
       "components": [
+        "methane",
+        "methanol"
+      ],
+      "model": "PR",
+      "kind": "fit-quality",
+      "message": "This PR k_ij is fitted to open data but follows them less closely than the other fitted sets: AAD 9.2 % in P (limit 5 %), 7.8 % in the gas solubility, max 35.6 % in P, on 42 points of 6 ThermoML articles at 273.15-323 K and 1050-19930 kPa. Use with care.",
+      "reference": "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json, validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json, validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json, validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json, validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json, validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json",
+      "source_ids": [
+        "frost2015-methane-methanol",
+        "oliveira2016-methane-methanol",
+        "nourozieh2012-methane-methanol",
+        "kapateh2016-methane-methanol",
+        "xia2004-methane-methanol",
+        "frost2014-methane-methanol"
+      ]
+    },
+    {
+      "components": [
+        "methane",
+        "methanol"
+      ],
+      "model": "SRK",
+      "kind": "fit-quality",
+      "message": "This SRK k_ij is fitted to open data but follows them less closely than the other fitted sets: AAD 8.9 % in P (limit 5 %), 7.7 % in the gas solubility, max 32 % in P, on 42 points of 6 ThermoML articles at 273.15-323 K and 1050-19930 kPa. Use with care.",
+      "reference": "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json, validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json, validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json, validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json, validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json, validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json",
+      "source_ids": [
+        "frost2015-methane-methanol",
+        "oliveira2016-methane-methanol",
+        "nourozieh2012-methane-methanol",
+        "kapateh2016-methane-methanol",
+        "xia2004-methane-methanol",
+        "frost2014-methane-methanol"
+      ]
+    },
+    {
+      "components": [
         "water",
         "terephthalic-acid"
       ],

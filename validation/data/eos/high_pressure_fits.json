@@ -43,6 +43,54 @@
      372.9
     ]
    }
+  },
+  {
+   "model": "PR",
+   "i": "methane",
+   "j": "methanol",
+   "kij": -0.0503,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs to the 42 bubble pressures of 6 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-323 K, 1050-19930 kPa: AAD 9.2 % in P (max 35.6 %), gas solubility at the measured T and P AAD 7.8 % (max 19.5 %)",
+    "data": [
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json"
+    ],
+    "conditions": "T = 273.15-323 K, P = 1050-19930 kPa",
+    "T_range_K": [
+     273.15,
+     323
+    ]
+   },
+   "quality_warning": "AAD 9.2 % in P (limit 5 %), 7.8 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)"
+  },
+  {
+   "model": "SRK",
+   "i": "methane",
+   "j": "methanol",
+   "kij": -0.08,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs to the 42 bubble pressures of 6 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-323 K, 1050-19930 kPa: AAD 8.9 % in P (max 32 %), gas solubility at the measured T and P AAD 7.7 % (max 17.7 %)",
+    "data": [
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json"
+    ],
+    "conditions": "T = 273.15-323 K, P = 1050-19930 kPa",
+    "T_range_K": [
+     273.15,
+     323
+    ]
+   },
+   "quality_warning": "AAD 8.9 % in P (limit 5 %), 7.7 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)"
   }
  ],
  "results": [
@@ -3106,6 +3154,7 @@
    ],
    "kij": -0.0503,
    "ok": false,
+   "warned": "the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
    "range": {
     "T_K": [
      273.15,
@@ -3307,6 +3356,7 @@
    ],
    "kij": -0.08,
    "ok": false,
+   "warned": "the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
    "range": {
     "T_K": [
      273.15,
@@ -3499,6 +3549,128 @@
     }
    ],
    "databank": null
+  }
+ ],
+ "temperature_study": [
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-dioxide",
+    "methanol"
+   ],
+   "a": 0.1883,
+   "b_K": -40.62,
+   "points": 424,
+   "ok": false,
+   "errors": {
+    "P_pct": {
+     "aad": 7.1,
+     "bias": -1.1,
+     "max": 29.6
+    },
+    "x_pct": {
+     "aad": 13.1,
+     "bias": 7,
+     "max": 354.8
+    },
+    "y": {
+     "aad": 0.0269,
+     "max": 0.0812,
+     "points": 4
+    },
+    "no_bubble_pressure": 0,
+    "no_two_phase_state": 7
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-dioxide",
+    "methanol"
+   ],
+   "a": 0.1857,
+   "b_K": -42.12,
+   "points": 424,
+   "ok": false,
+   "errors": {
+    "P_pct": {
+     "aad": 7.3,
+     "bias": -1.1,
+     "max": 32.2
+    },
+    "x_pct": {
+     "aad": 13.2,
+     "bias": 6.8,
+     "max": 384.7
+    },
+    "y": {
+     "aad": 0.029,
+     "max": 0.0854,
+     "points": 4
+    },
+    "no_bubble_pressure": 0,
+    "no_two_phase_state": 7
+   }
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "a": 0.2484,
+   "b_K": -109.44,
+   "points": 573,
+   "ok": false,
+   "errors": {
+    "P_pct": {
+     "aad": 13.8,
+     "bias": 9.3,
+     "max": 74.3
+    },
+    "x_pct": {
+     "aad": 10.2,
+     "bias": -7.8,
+     "max": 55.8
+    },
+    "y": {
+     "aad": 0.008,
+     "max": 0.0329,
+     "points": 25
+    },
+    "no_bubble_pressure": 4,
+    "no_two_phase_state": 10
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "a": 0.2352,
+   "b_K": -111.6,
+   "points": 573,
+   "ok": false,
+   "errors": {
+    "P_pct": {
+     "aad": 15.3,
+     "bias": 10.3,
+     "max": 77.9
+    },
+    "x_pct": {
+     "aad": 11.1,
+     "bias": -8.7,
+     "max": 52.3
+    },
+    "y": {
+     "aad": 0.0074,
+     "max": 0.0327,
+     "points": 25
+    },
+    "no_bubble_pressure": 4,
+    "no_two_phase_state": 10
+   }
   }
  ]
 }
