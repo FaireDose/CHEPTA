@@ -2002,6 +2002,19 @@
     },
     {
       "components": [
+        "water",
+        "terephthalic-acid"
+      ],
+      "model": "any",
+      "kind": "disputed-data",
+      "message": "The solubility of terephthalic acid in water is disputed: the curve CHEPTA uses is fitted to Takebayashi et al. 2012 (348.8-547.4 K at 10 MPa); Sunsandee et al. 2013, the other set in the NIST TRC ThermoML Archive, is about 50 times lower (median over its 13 points in that range). Kept by the maintainer's decision (2026-11-05); Su et al. 2024 (open access, CC BY-NC-ND, to be downloaded by a person) will be used as an independent check. The curve was measured at 10 MPa and is used at every pressure.",
+      "reference": "Takebayashi et al., J. Chem. Eng. Data 57 (2012) 1810-1816, doi:10.1021/je300263z; Sunsandee et al., Fluid Phase Equilib. 338 (2013), doi:10.1016/j.fluid.2012.11.023 (both via the NIST TRC ThermoML Archive)",
+      "source_ids": [
+        "nist-thermoml-archive"
+      ]
+    },
+    {
+      "components": [
         "methane",
         "methanol"
       ],
@@ -2038,15 +2051,140 @@
     },
     {
       "components": [
-        "water",
-        "terephthalic-acid"
+        "carbon-dioxide",
+        "methanol"
       ],
-      "model": "any",
-      "kind": "disputed-data",
-      "message": "The solubility of terephthalic acid in water is disputed: the curve CHEPTA uses is fitted to Takebayashi et al. 2012 (348.8-547.4 K at 10 MPa); Sunsandee et al. 2013, the other set in the NIST TRC ThermoML Archive, is about 50 times lower (median over its 13 points in that range). Kept by the maintainer's decision (2026-11-05); Su et al. 2024 (open access, CC BY-NC-ND, to be downloaded by a person) will be used as an independent check. The curve was measured at 10 MPa and is used at every pressure.",
-      "reference": "Takebayashi et al., J. Chem. Eng. Data 57 (2012) 1810-1816, doi:10.1021/je300263z; Sunsandee et al., Fluid Phase Equilib. 338 (2013), doi:10.1016/j.fluid.2012.11.023 (both via the NIST TRC ThermoML Archive)",
+      "model": "PR",
+      "kind": "fit-quality",
+      "message": "This PR k_ij is fitted to open data but follows them less closely than the other fitted sets: k_ij = a + b / T: AAD 7.1 % in P (limit 5 %), 13.1 % in the gas solubility, max 29.6 % in P, on 424 points of 16 ThermoML articles at 213.15-395 K and 79-12068 kPa. Use with care.",
+      "reference": "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json",
       "source_ids": [
-        "nist-thermoml-archive"
+        "naidoo2008-carbon-dioxide-methanol",
+        "sato2010-carbon-dioxide-methanol",
+        "hamada2012-carbon-dioxide-methanol",
+        "dai2015-carbon-dioxide-methanol",
+        "hohler2018-carbon-dioxide-methanol",
+        "lyu2018-carbon-dioxide-methanol",
+        "kariznovi2013-carbon-dioxide-methanol",
+        "jalili2015-carbon-dioxide-methanol",
+        "qureshi2017-carbon-dioxide-methanol",
+        "decultot2019-carbon-dioxide-methanol",
+        "braga2017-carbon-dioxide-methanol",
+        "wu2019-carbon-dioxide-methanol",
+        "xia2004-carbon-dioxide-methanol",
+        "xie2005-carbon-dioxide-methanol",
+        "gui2011-carbon-dioxide-methanol",
+        "schuler2012-carbon-dioxide-methanol"
+      ]
+    },
+    {
+      "components": [
+        "carbon-dioxide",
+        "methanol"
+      ],
+      "model": "SRK",
+      "kind": "fit-quality",
+      "message": "This SRK k_ij is fitted to open data but follows them less closely than the other fitted sets: k_ij = a + b / T: AAD 7.3 % in P (limit 5 %), 13.2 % in the gas solubility, max 32.2 % in P, on 424 points of 16 ThermoML articles at 213.15-395 K and 79-12068 kPa. Use with care.",
+      "reference": "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json",
+      "source_ids": [
+        "naidoo2008-carbon-dioxide-methanol",
+        "sato2010-carbon-dioxide-methanol",
+        "hamada2012-carbon-dioxide-methanol",
+        "dai2015-carbon-dioxide-methanol",
+        "hohler2018-carbon-dioxide-methanol",
+        "lyu2018-carbon-dioxide-methanol",
+        "kariznovi2013-carbon-dioxide-methanol",
+        "jalili2015-carbon-dioxide-methanol",
+        "qureshi2017-carbon-dioxide-methanol",
+        "decultot2019-carbon-dioxide-methanol",
+        "braga2017-carbon-dioxide-methanol",
+        "wu2019-carbon-dioxide-methanol",
+        "xia2004-carbon-dioxide-methanol",
+        "xie2005-carbon-dioxide-methanol",
+        "gui2011-carbon-dioxide-methanol",
+        "schuler2012-carbon-dioxide-methanol"
+      ]
+    },
+    {
+      "components": [
+        "carbon-dioxide",
+        "water"
+      ],
+      "model": "PR",
+      "kind": "fit-quality",
+      "message": "This PR k_ij is fitted to open data but follows them less closely than the other fitted sets: k_ij = a + b / T: AAD 13.8 % in P (limit 5 %), 10.2 % in the gas solubility, 4 of 573 points without a bubble pressure, max 74.3 % in P, on 573 points of 29 ThermoML articles at 273.15-393.15 K and 13.89-20000 kPa. Use with care.",
+      "reference": "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json",
+      "source_ids": [
+        "bermejo2005-carbon-dioxide-water",
+        "dalmolin2006-carbon-dioxide-water",
+        "koschel2006-carbon-dioxide-water",
+        "martin2009-carbon-dioxide-water",
+        "dellera2010-carbon-dioxide-water",
+        "guo2014-carbon-dioxide-water",
+        "carvalho2015-carbon-dioxide-water",
+        "haghtalab2015-carbon-dioxide-water",
+        "yuan2017-carbon-dioxide-water",
+        "ahmadi2018-carbon-dioxide-water",
+        "jia2019-carbon-dioxide-water",
+        "fonseca2007-carbon-dioxide-water",
+        "muromachi2015-carbon-dioxide-water",
+        "howlader2017-carbon-dioxide-water",
+        "li2018-carbon-dioxide-water",
+        "luo2017-carbon-dioxide-water",
+        "messabeb2016-carbon-dioxide-water",
+        "messabeb2017-carbon-dioxide-water",
+        "kastanidis2018-carbon-dioxide-water",
+        "pokki2018-furfural-gvl",
+        "wang2019-carbon-dioxide-water",
+        "han2011-carbon-dioxide-water",
+        "lucile2012-carbon-dioxide-water",
+        "schuler2012-carbon-dioxide-methanol",
+        "tong2013-carbon-dioxide-water",
+        "serpa2013-carbon-dioxide-water",
+        "mohammadian2015-carbon-dioxide-water",
+        "qin2008-carbon-dioxide-water",
+        "campos2009-carbon-dioxide-water"
+      ]
+    },
+    {
+      "components": [
+        "carbon-dioxide",
+        "water"
+      ],
+      "model": "SRK",
+      "kind": "fit-quality",
+      "message": "This SRK k_ij is fitted to open data but follows them less closely than the other fitted sets: k_ij = a + b / T: AAD 15.3 % in P (limit 5 %), 11.1 % in the gas solubility, 4 of 573 points without a bubble pressure, max 77.9 % in P, on 573 points of 29 ThermoML articles at 273.15-393.15 K and 13.89-20000 kPa. Use with care.",
+      "reference": "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json",
+      "source_ids": [
+        "bermejo2005-carbon-dioxide-water",
+        "dalmolin2006-carbon-dioxide-water",
+        "koschel2006-carbon-dioxide-water",
+        "martin2009-carbon-dioxide-water",
+        "dellera2010-carbon-dioxide-water",
+        "guo2014-carbon-dioxide-water",
+        "carvalho2015-carbon-dioxide-water",
+        "haghtalab2015-carbon-dioxide-water",
+        "yuan2017-carbon-dioxide-water",
+        "ahmadi2018-carbon-dioxide-water",
+        "jia2019-carbon-dioxide-water",
+        "fonseca2007-carbon-dioxide-water",
+        "muromachi2015-carbon-dioxide-water",
+        "howlader2017-carbon-dioxide-water",
+        "li2018-carbon-dioxide-water",
+        "luo2017-carbon-dioxide-water",
+        "messabeb2016-carbon-dioxide-water",
+        "messabeb2017-carbon-dioxide-water",
+        "kastanidis2018-carbon-dioxide-water",
+        "pokki2018-furfural-gvl",
+        "wang2019-carbon-dioxide-water",
+        "han2011-carbon-dioxide-water",
+        "lucile2012-carbon-dioxide-water",
+        "schuler2012-carbon-dioxide-methanol",
+        "tong2013-carbon-dioxide-water",
+        "serpa2013-carbon-dioxide-water",
+        "mohammadian2015-carbon-dioxide-water",
+        "qin2008-carbon-dioxide-water",
+        "campos2009-carbon-dioxide-water"
       ]
     }
   ]

@@ -10,14 +10,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
-- **PR and SRK k_ij of gases in methanol and water at high pressure** (proposal 0018 postponed;
-  docs/decisions/2026-11-04-13-kij-high-pressure.md, docs/decisions/2026-11-05-03-kij-followup.md): decided
-  2026-11-05. CO2 + water is refused in a liquid with PR and SRK (Henry's law is the remedy); CH4 + methanol is written
-  with a fit-quality known issue; CO + methanol within the gate. A k_ij = a + b/T does not meet the gate (CO2 +
-  methanol 7.1-7.3 % in P; CO2 + water 13.8-15.3 % in P, 10-11 % in solubility), so the engine keeps constant k_ij.
-  Open: whether CO2 + water at high pressure (and CO2 with methanol + water, the separator's liquid, which has no
-  method now) is the case for proposal 0018 or CPA (M3); H2 + methanol and CO2 + methanol stay left out (CO2 + methanol
-  keeps its ChemSep k_ij).
+- **PR and SRK k_ij of gases in methanol and water at high pressure** (docs/decisions/2026-11-04-13-kij-high-pressure.md,
+  2026-11-05-03-kij-followup.md, 2026-11-06-01-kij-temperature.md): k_ij = a + b/T in the engine; CO2 + methanol
+  (7 % in P, 13 % in solubility) and CO2 + water (14-15 % in P, 10-11 % in solubility) written with fit-quality known
+  issues; ChemSep's CO2 + water set stays not usable. CH4 + methanol and CO + methanol are constant k_ij. Next:
+  proposal 0018 reopened, MHV1 built and compared with these numbers (docs/decisions/2026-11-06-02-mhv1.md). Still to
+  read: Privat and Jaubert 2023 (TO_DOWNLOAD.md no. 8).
 - **Review and merge:**
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.

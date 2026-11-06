@@ -75,7 +75,9 @@ for (const set of sets) {
 test("the engine's bubble pressures agree with the independent Python equation of state at the fitted k_ij", () => {
   assert.ok(check.points.length >= 4 * fits.entries.length);
   for (const p of check.points) {
-    const s = system({ components: p.pair, model: p.model, kij: [[0, p.kij], [p.kij, 0]] });
+    // a temperature-dependent set (test/eos-high-pressure.test.js) at its k_ij(T) = a + b / T: the same bubble point
+    const k = p.kij + (p.kij_b_K ?? 0) / p.T_K;
+    const s = system({ components: p.pair, model: p.model, kij: [[0, k], [k, 0]] });
     const P = s.bubbleP([p.x_1, 1 - p.x_1], p.T_K).P;
     assert.ok(Math.abs(P / p.P_reference_kPa - 1) < 0.005, `${p.model} ${p.pair.join("-")} T = ${p.T_K} x = ${p.x_1}: ${P.toFixed(2)} vs ${p.P_reference_kPa} kPa`);
   }

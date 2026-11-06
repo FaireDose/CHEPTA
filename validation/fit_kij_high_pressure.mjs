@@ -55,6 +55,13 @@ export const WARNED = { "methane+methanol": "the maintainer, 2026-11-05 (docs/de
  *  given T needs only k at that T, so the study runs on the engine as it is. */
 export const TEMPERATURE_STUDY = [["carbon-dioxide", "methanol"], ["carbon-dioxide", "water"]];
 
+/** Pairs whose a + b / T k_ij is written (kij plus kij_b_K in src/data/kij.json) although outside GATE, with a
+ *  "fit-quality" known issue: the maintainer, 2026-11-06 (the engine takes a + b / T since then). */
+export const WARNED_T = {
+  "carbon-dioxide+methanol": "the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
+  "carbon-dioxide+water": "the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
+};
+
 export const PAIRS = [
   ["carbon-dioxide", "methanol"], ["carbon-dioxide", "water"], ["hydrogen", "methanol"], ["carbon-monoxide", "methanol"], ["methane", "methanol"],
 ];
@@ -219,6 +226,27 @@ function entry(r) {
   };
 }
 
+/** The record of an a + b / T k_ij (kij = a, kij_b_K = b). */
+function entryT(t) {
+  const [i, j] = t.pair, q = t.errors;
+  return {
+    model: t.model, i, j, kij: t.a, kij_b_K: t.b_K, tier: "fitted",
+    source: {
+      fit: `Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = ${t.a}, b = ${t.b_K} K) to the ${t.points} bubble pressures of ${t.articles} articles of the NIST TRC ThermoML Archive (each article the same total weight), `
+        + `${t.range.T_K[0]}-${t.range.T_K[1]} K, ${t.range.P_kPa[0]}-${t.range.P_kPa[1]} kPa: AAD ${q.P_pct.aad} % in P (max ${q.P_pct.max} %), `
+        + `gas solubility at the measured T and P AAD ${q.x_pct.aad} % (max ${q.x_pct.max} %)${q.y ? `, ${q.y.aad} in y (max ${q.y.max}, ${q.y.points} points)` : ""}`
+        + `${q.no_bubble_pressure ? `; ${q.no_bubble_pressure} points without a bubble pressure` : ""}`,
+      data: t.files.map(f => `validation/data/eos/${f}`),
+      conditions: `T = ${t.range.T_K[0]}-${t.range.T_K[1]} K, P = ${t.range.P_kPa[0]}-${t.range.P_kPa[1]} kPa`,
+      T_range_K: t.range.T_K,
+    },
+    ...(t.warned ? { quality_warning: `${warnTextT(t)}; written outside the gate of ${GATE.P_pct} % by the decision of ${t.warned}` } : {}),
+  };
+}
+
+const warnTextT = t => `k_ij = a + b / T: AAD ${t.errors.P_pct.aad} % in P (limit ${GATE.P_pct} %), ${t.errors.x_pct.aad} % in the gas solubility`
+  + `${t.errors.no_bubble_pressure ? `, ${t.errors.no_bubble_pressure} of ${t.points} points without a bubble pressure` : ""}`;
+
 const warnText = r => `AAD ${r.errors.pooled.P_pct.aad} % in P (limit ${GATE.P_pct} %), ${r.errors.pooled.x_pct.aad} % in the gas solubility`;
 
 /** k_ij = a + b / T fitted to the same points and weights (Nelder-Mead on a and b), with its errors. */
@@ -248,7 +276,11 @@ function temperatureStudy(pair) {
     console.log(`${model} ${pair.join("-")}: k_ij = ${a} + ${b} K / T (${[250, 300, 350, 400].map(T => `${T} K: ${(a + b / T).toFixed(3)}`).join(", ")}); `
       + `P AAD ${e.P_pct.aad} % (max ${e.P_pct.max}), x AAD ${e.x_pct.aad} % (max ${e.x_pct.max})${e.y ? `, y AAD ${e.y.aad}` : ""}`
       + `${e.no_bubble_pressure ? `, ${e.no_bubble_pressure} without a bubble pressure` : ""}${ok ? "  within GATE" : "  outside GATE"}`);
-    return { model, pair, a, b_K: b, points: pts.length, ok, errors: e };
+    const warned = !ok && WARNED_T[pair.join("+")] ? WARNED_T[pair.join("+")] : null;
+    const all = pts.map(p => ({ T: p.T, P: p.P ?? p.p1 }));
+    const range = { T_K: [Math.min(...all.map(p => p.T)), Math.max(...all.map(p => p.T))], P_kPa: [Math.min(...all.map(p => p.P)), Math.max(...all.map(p => p.P))] };
+    return { model, pair, a, b_K: b, points: pts.length, articles: arts.filter(x => x.rows.some(fitted)).length, range, ok, ...(warned ? { warned } : {}), errors: e,
+      files: arts.filter(x => x.rows.some(fitted)).map(x => x.file) };
   });
 }
 
@@ -267,6 +299,11 @@ function main() {
       + `on ${r.points} points of ${r.articles} ThermoML articles at ${r.range.T_K[0]}-${r.range.T_K[1]} K and ${r.range.P_kPa[0]}-${r.range.P_kPa[1]} kPa. Use with care.`,
     // the data files, which make_sources.py maps to their sources; the errors are in high_pressure_fits.json
     reference: r.errors.articles.filter(a => a.points).map(a => `validation/data/eos/${a.file}`).join(", "),
+  })), study.filter(t => t.warned).map(t => ({
+    components: t.pair, model: t.model, kind: "fit-quality",
+    message: `This ${t.model} k_ij is fitted to open data but follows them less closely than the other fitted sets: ${warnTextT(t)}, max ${t.errors.P_pct.max} % in P, `
+      + `on ${t.points} points of ${t.articles} ThermoML articles at ${t.range.T_K[0]}-${t.range.T_K[1]} K and ${t.range.P_kPa[0]}-${t.range.P_kPa[1]} kPa. Use with care.`,
+    reference: t.files.map(f => `validation/data/eos/${f}`).join(", "),
   })));
   writeFileSync(KI, JSON.stringify(known, null, 2) + "\n");
   writeFileSync(new URL("high_pressure_fits.json", DIR), JSON.stringify({
@@ -274,7 +311,7 @@ function main() {
       + "and the fits outside it, with their errors at the fitted and the databank k_ij. P_pct: bubble pressure at the measured T and x, (calc / exp - 1) in %; "
       + "x_pct: liquid mole fraction of the gas at the measured T and P, (calc / exp - 1) in %; y: vapour mole fraction of the gas at the measured T and P, calc - exp.",
     gate: GATE, window: WINDOW,
-    entries: res.filter(r => r.ok || r.warned).map(entry),
+    entries: [...res.filter(r => r.ok || r.warned).map(entry), ...study.filter(t => t.ok || t.warned).map(entryT)],
     results: res,
     temperature_study: study,
   }, null, 1) + "\n");

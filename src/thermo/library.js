@@ -38,7 +38,7 @@ export const RANGE_MARGIN_K = 10;
 
 const ACTIVITY_MODELS = ["NRTL", "UNIQUAC", "WILSON"];
 const EOS_MODELS = ["PR", "SRK"];
-const PARAM_KEYS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], WILSON: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij"], SRK: ["kij"] };
+const PARAM_KEYS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], WILSON: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij", "kij_b_K"], SRK: ["kij", "kij_b_K"] };
 
 const userSources = new Map();
 const userSets = [];
@@ -77,7 +77,7 @@ function fromKij(p, i, j, model, isReplaced) {
   return {
     model, i, j, set: p.set ?? (isReplaced ? "replaced" : "default"), default: isReplaced ? false : p.default !== false,
     tier: p.tier || "databank", source_ids: p.source_ids ?? [], source: kijText(p), valid: range ? { T_K: range } : null,
-    T_range_K: p.source?.T_range_K ?? null, params: { kij: p.kij }, origin: "kij.json", reason: p.reason,
+    T_range_K: p.source?.T_range_K ?? null, params: { kij: p.kij, ...(p.kij_b_K ? { kij_b_K: p.kij_b_K } : {}) }, origin: "kij.json", reason: p.reason,
     ...(p.not_usable ? { not_usable: p.not_usable } : {}),
   };
 }
@@ -360,6 +360,7 @@ function add(spec) {
     const k = finite(given.kij, "params.kij");
     if (Math.abs(k) >= 1) throw fail("BAD_INPUT", `library.add: k_ij = ${k} is outside -1 < k_ij < 1.`);
     params = { kij: k };
+    if (given.kij_b_K != null) params.kij_b_K = finite(given.kij_b_K, "params.kij_b_K");   // k_ij = kij + kij_b_K / T
   } else {
     if (given.b_ij == null || given.b_ji == null) throw fail("BAD_INPUT", "library.add: params needs b_ij and b_ji (K); a_ij and a_ji are optional (default 0).");
     params = { a_ij: finite(given.a_ij ?? 0, "params.a_ij"), a_ji: finite(given.a_ji ?? 0, "params.a_ji"), b_ij: finite(given.b_ij, "params.b_ij"), b_ji: finite(given.b_ji, "params.b_ji") };

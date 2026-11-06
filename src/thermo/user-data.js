@@ -14,7 +14,7 @@
  *                                      source } },
  *     "pairs":      { "<component>+<component>": { NRTL?: { a_ij?, a_ji?, b_ij, b_ji, alpha? }, UNIQUAC?: { ... },
  *                                                   WILSON?: { a_ij?, a_ji?, b_ij, b_ji } (Lambda_ij = exp(a_ij + b_ij / T)),
- *                                                   PR?: { kij }, SRK?: { kij }, valid?: { T_K, P_kPa }, source } },
+ *                                                   PR?: { kij, kij_b_K? }, SRK?: { kij, kij_b_K? } (k_ij = kij + kij_b_K / T), valid?: { T_K, P_kPa }, source } },
  *     "groups":     { "<component>": { subgroups: { "<subgroup id>": count }, source } }
  *   }
  *
@@ -49,7 +49,7 @@ export const RECORD_UNITS = {
   // an inert solid of the user's own (class "solid"); the databank has no solids in its streams yet
   solidHeatCapacity: "J/mol/K",
 };
-const PAIR_PARAMS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], WILSON: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij"], SRK: ["kij"] };
+const PAIR_PARAMS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], WILSON: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij", "kij_b_K"], SRK: ["kij", "kij_b_K"] };
 const CHECKED = Symbol("checked user data");
 
 const isObj = v => v != null && typeof v === "object" && !Array.isArray(v);
@@ -274,6 +274,8 @@ function pairSets(key, p, ud) {
       const k = num(given.kij, `${what}.${model}.kij`);
       if (Math.abs(k) >= 1) throw bad(`${what}.${model}: k_ij = ${k} is outside -1 < k_ij < 1.`);
       params = { kij: k };
+      // a temperature-dependent k_ij = kij + kij_b_K / T (kij_b_K in K)
+      if (given.kij_b_K != null) params.kij_b_K = num(given.kij_b_K, `${what}.${model}.kij_b_K`);
     } else {
       if (given.b_ij == null || given.b_ji == null) throw bad(`${what}.${model} needs b_ij and b_ji (K); a_ij and a_ji are optional (0).`);
       params = { a_ij: num(given.a_ij ?? 0, `${what}.${model}.a_ij`), a_ji: num(given.a_ji ?? 0, `${what}.${model}.a_ji`),

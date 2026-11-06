@@ -160,7 +160,7 @@ function aboutRows(state, sys, conditions = []) {
     ["Components", sys.names.join(", ")], ["Model", model], ...conditions,
     ["Units", `T in ${tU(u)}, P in ${u.P}; compositions in mole fractions${state.basis === "mass" ? " and wt %" : ""}`],
     ["Parameters", pairData(sys)],
-    ...sys.info.pairs.map(p => [`Pair ${p.pair.join(" + ")}`, [p.tier, p.set ? `set ${p.set}` : null, sys.kind === "eos" ? `k_ij = ${p.kij}` : null, p.source].filter(Boolean).join("; ")]),
+    ...sys.info.pairs.map(p => [`Pair ${p.pair.join(" + ")}`, [p.tier, p.set ? `set ${p.set}` : null, sys.kind === "eos" ? `k_ij = ${p.kij_b_K ? `${p.kij} ${p.kij_b_K < 0 ? "-" : "+"} ${Math.abs(p.kij_b_K)} K / T` : p.kij}` : null, p.source].filter(Boolean).join("; ")]),
   ];
 }
 

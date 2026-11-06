@@ -91,6 +91,172 @@
     ]
    },
    "quality_warning": "AAD 8.9 % in P (limit 5 %), 7.7 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)"
+  },
+  {
+   "model": "PR",
+   "i": "carbon-dioxide",
+   "j": "methanol",
+   "kij": 0.1883,
+   "kij_b_K": -40.62,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.1883, b = -40.62 K) to the 424 bubble pressures of 16 articles of the NIST TRC ThermoML Archive (each article the same total weight), 213.15-395 K, 79-12068 kPa: AAD 7.1 % in P (max 29.6 %), gas solubility at the measured T and P AAD 13.1 % (max 354.8 %), 0.0269 in y (max 0.0812, 4 points)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+    ],
+    "conditions": "T = 213.15-395 K, P = 79-12068 kPa",
+    "T_range_K": [
+     213.15,
+     395
+    ]
+   },
+   "quality_warning": "k_ij = a + b / T: AAD 7.1 % in P (limit 5 %), 13.1 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)"
+  },
+  {
+   "model": "SRK",
+   "i": "carbon-dioxide",
+   "j": "methanol",
+   "kij": 0.1857,
+   "kij_b_K": -42.12,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.1857, b = -42.12 K) to the 424 bubble pressures of 16 articles of the NIST TRC ThermoML Archive (each article the same total weight), 213.15-395 K, 79-12068 kPa: AAD 7.3 % in P (max 32.2 %), gas solubility at the measured T and P AAD 13.2 % (max 384.7 %), 0.029 in y (max 0.0854, 4 points)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+    ],
+    "conditions": "T = 213.15-395 K, P = 79-12068 kPa",
+    "T_range_K": [
+     213.15,
+     395
+    ]
+   },
+   "quality_warning": "k_ij = a + b / T: AAD 7.3 % in P (limit 5 %), 13.2 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)"
+  },
+  {
+   "model": "PR",
+   "i": "carbon-dioxide",
+   "j": "water",
+   "kij": 0.2484,
+   "kij_b_K": -109.44,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.2484, b = -109.44 K) to the 573 bubble pressures of 29 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-393.15 K, 13.89-20000 kPa: AAD 13.8 % in P (max 74.3 %), gas solubility at the measured T and P AAD 10.2 % (max 55.8 %), 0.008 in y (max 0.0329, 25 points); 4 points without a bubble pressure",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+    ],
+    "conditions": "T = 273.15-393.15 K, P = 13.89-20000 kPa",
+    "T_range_K": [
+     273.15,
+     393.15
+    ]
+   },
+   "quality_warning": "k_ij = a + b / T: AAD 13.8 % in P (limit 5 %), 10.2 % in the gas solubility, 4 of 573 points without a bubble pressure; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)"
+  },
+  {
+   "model": "SRK",
+   "i": "carbon-dioxide",
+   "j": "water",
+   "kij": 0.2352,
+   "kij_b_K": -111.6,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.2352, b = -111.6 K) to the 573 bubble pressures of 29 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-393.15 K, 13.89-20000 kPa: AAD 15.3 % in P (max 77.9 %), gas solubility at the measured T and P AAD 11.1 % (max 52.3 %), 0.0074 in y (max 0.0327, 25 points); 4 points without a bubble pressure",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+    ],
+    "conditions": "T = 273.15-393.15 K, P = 13.89-20000 kPa",
+    "T_range_K": [
+     273.15,
+     393.15
+    ]
+   },
+   "quality_warning": "k_ij = a + b / T: AAD 15.3 % in P (limit 5 %), 11.1 % in the gas solubility, 4 of 573 points without a bubble pressure; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)"
   }
  ],
  "results": [
@@ -3561,7 +3727,19 @@
    "a": 0.1883,
    "b_K": -40.62,
    "points": 424,
+   "articles": 16,
+   "range": {
+    "T_K": [
+     213.15,
+     395
+    ],
+    "P_kPa": [
+     79,
+     12068
+    ]
+   },
    "ok": false,
+   "warned": "the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
    "errors": {
     "P_pct": {
      "aad": 7.1,
@@ -3580,7 +3758,25 @@
     },
     "no_bubble_pressure": 0,
     "no_two_phase_state": 7
-   }
+   },
+   "files": [
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+   ]
   },
   {
    "model": "SRK",
@@ -3591,7 +3787,19 @@
    "a": 0.1857,
    "b_K": -42.12,
    "points": 424,
+   "articles": 16,
+   "range": {
+    "T_K": [
+     213.15,
+     395
+    ],
+    "P_kPa": [
+     79,
+     12068
+    ]
+   },
    "ok": false,
+   "warned": "the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
    "errors": {
     "P_pct": {
      "aad": 7.3,
@@ -3610,7 +3818,25 @@
     },
     "no_bubble_pressure": 0,
     "no_two_phase_state": 7
-   }
+   },
+   "files": [
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+   ]
   },
   {
    "model": "PR",
@@ -3621,7 +3847,19 @@
    "a": 0.2484,
    "b_K": -109.44,
    "points": 573,
+   "articles": 29,
+   "range": {
+    "T_K": [
+     273.15,
+     393.15
+    ],
+    "P_kPa": [
+     13.89,
+     20000
+    ]
+   },
    "ok": false,
+   "warned": "the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
    "errors": {
     "P_pct": {
      "aad": 13.8,
@@ -3640,7 +3878,38 @@
     },
     "no_bubble_pressure": 4,
     "no_two_phase_state": 10
-   }
+   },
+   "files": [
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+    "thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+    "thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+    "thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+    "thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+    "thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+    "thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+    "thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+    "thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+   ]
   },
   {
    "model": "SRK",
@@ -3651,7 +3920,19 @@
    "a": 0.2352,
    "b_K": -111.6,
    "points": 573,
+   "articles": 29,
+   "range": {
+    "T_K": [
+     273.15,
+     393.15
+    ],
+    "P_kPa": [
+     13.89,
+     20000
+    ]
+   },
    "ok": false,
+   "warned": "the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
    "errors": {
     "P_pct": {
      "aad": 15.3,
@@ -3670,7 +3951,38 @@
     },
     "no_bubble_pressure": 4,
     "no_two_phase_state": 10
-   }
+   },
+   "files": [
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+    "thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+    "thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+    "thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+    "thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+    "thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+    "thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+    "thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+    "thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+   ]
   }
  ]
 }
