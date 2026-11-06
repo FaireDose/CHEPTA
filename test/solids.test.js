@@ -23,15 +23,16 @@ const rel = (a, b) => Math.abs(a - b) / Math.max(Math.abs(b), 1e-300);
 const solidOf = s => s.phases.filter(p => p.type === "solid").reduce((a, p) => a + p.fraction * s.F_kmol_h, 0);
 const vapourOf = s => s.phases.filter(p => p.type === "vapour").reduce((a, p) => a + p.fraction * s.F_kmol_h, 0);
 
-/** The example: a 20 % TPA slurry heated under pressure until it dissolves, three letdown drums, a crystallizer. */
+/** The example: a 20 % TPA slurry pumped to 8 MPa, heated until it dissolves, three letdown drums, a crystallizer. */
 export const tpaFlowsheet = model => ({ components: ["water", "terephthalic-acid"], thermo: { model, solids: ["terephthalic-acid"] },
-  blocks: [{ id: "F1", type: "feed", spec: { flow_kg_h: { water: 800, "terephthalic-acid": 200 }, T_K: 360, P_kPa: 8000 } },
+  blocks: [{ id: "F1", type: "feed", spec: { flow_kg_h: { water: 800, "terephthalic-acid": 200 }, T_K: 360, P_kPa: 101.325 } },
+    { id: "PU1", type: "pump", spec: { P_kPa: 8000 } },
     { id: "E1", type: "heater", spec: { T_K: 547 } },
     { id: "D1", type: "flash", spec: { P_kPa: 4000, duty_kW: 0 } }, { id: "D2", type: "flash", spec: { P_kPa: 2000, duty_kW: 0 } },
     { id: "D3", type: "flash", spec: { P_kPa: 800, duty_kW: 0 } },
     { id: "CR1", type: "crystallizer", spec: { solute: "terephthalic-acid", T_K: 373.15 } },
     ...["P1", "P2", "P3", "P4", "P5"].map(id => ({ id, type: "product" }))],
-  streams: [{ id: "S1", from: "F1.out", to: "E1.in" }, { id: "S2", from: "E1.out", to: "D1.in" }, { id: "V1", from: "D1.vapour", to: "P1.in" },
+  streams: [{ id: "S0", from: "F1.out", to: "PU1.in" }, { id: "S1", from: "PU1.out", to: "E1.in" }, { id: "S2", from: "E1.out", to: "D1.in" }, { id: "V1", from: "D1.vapour", to: "P1.in" },
     { id: "L1", from: "D1.liquid", to: "D2.in" }, { id: "V2", from: "D2.vapour", to: "P2.in" }, { id: "L2", from: "D2.liquid", to: "D3.in" },
     { id: "V3", from: "D3.vapour", to: "P3.in" }, { id: "L3", from: "D3.liquid", to: "CR1.in" },
     { id: "CRYSTALS", from: "CR1.crystals", to: "P4.in" }, { id: "LIQUOR", from: "CR1.liquor", to: "P5.in" }] });
@@ -53,14 +54,15 @@ test("the solubility curve of terephthalic acid in water follows the measured va
   assert.equal(r.route, "curve");
   assert.ok(rel(r.xSolute, curveSolubility(CURVE, 500)) < 1e-12);
   const eth = system({ components: ["ethanol", "terephthalic-acid"], model: "MOD-UNIFAC-2" });
-  assert.throws(() => eth.solidSolubility("terephthalic-acid", 400), e => e.code === "MISSING_DATA" && /water only/.test(e.message));
+  // (since 2026-11-05 TPA also has curves in acetic acid, cyclohexanone and THF: the message lists them all)
+  assert.throws(() => eth.solidSolubility("terephthalic-acid", 400), e => e.code === "MISSING_DATA" && /known in water, .* only/i.test(e.message));
 });
 
 test("the TPA recrystallization chain agrees with the independent reference: every state's T, vapour, solid, the duties, the yield", () => {
   const r = runFlowsheet(tpaFlowsheet("ideal"));
   const S = r.streams;
   const st = Object.fromEntries(ref.states.map(s => [s.name, s]));
-  const pairs = [["S1", "feed"], ["S2", "heated"], ["L1", "drum at 4 MPa"], ["L2", "drum at 2 MPa"], ["L3", "drum at 0.8 MPa"]];
+  const pairs = [["S0", "feed"], ["S1", "pumped"], ["S2", "heated"], ["L1", "drum at 4 MPa"], ["L2", "drum at 2 MPa"], ["L3", "drum at 0.8 MPa"]];
   for (const [sid, name] of pairs) {
     const s = S[sid], e = st[name];
     assert.ok(Math.abs(s.T_K - e.T_K) < 1e-5, `${name}: T ${s.T_K} vs ${e.T_K}`);
@@ -70,6 +72,12 @@ test("the TPA recrystallization chain agrees with the independent reference: eve
     assert.ok(rel(S[vid].F_kmol_h, st[name].vapour_kmol_h) < 1e-7, `${name}: vapour ${S[vid].F_kmol_h} vs ${st[name].vapour_kmol_h}`);
   }
   assert.ok(rel(r.blocks.E1.duty_kW, st.heated.duty_kW) < 1e-7, `heater ${r.blocks.E1.duty_kW} vs ${st.heated.duty_kW}`);
+  // the pump takes the slurry: its power from the liquid's volume only (the solid rides along, as in DWSIM's pump; the
+  // dilute dissolved TPA, without a liquid density, left out), with both warnings (the maintainer, 2026-11-06)
+  assert.ok(rel(r.blocks.PU1.duty_kW, st.pumped.power_kW) < 1e-9, `pump ${r.blocks.PU1.duty_kW} vs ${st.pumped.power_kW}`);
+  assert.ok(rel(r.blocks.PU1.state.volume_m3_h, st.pumped.volume_m3_h) < 1e-9);
+  assert.deepEqual(r.blocks.PU1.warnings.map(w => w.code), ["SLURRY", "DENSITY_MISSING"]);
+  assert.match(r.blocks.PU1.warnings[0].message, /liquid's density .* ignores the slurry's rheology/);
   const cr = st["crystallizer at 373.15 K"];
   assert.ok(rel(r.blocks.CR1.duty_kW, cr.duty_kW) < 1e-6, `crystallizer ${r.blocks.CR1.duty_kW} vs ${cr.duty_kW}`);
   assert.ok(Math.abs(r.blocks.CR1.state.yield - ref.yield) < 1e-8);
@@ -81,7 +89,7 @@ test("the example (Modified UNIFAC 2.0): each drum's liquid is saturated at the 
   const r = runFlowsheet(tpaFlowsheet("MOD-UNIFAC-2"));
   const S = r.streams;
   assert.equal(solidOf(S.S2), 0, "all dissolved at 547 K under 8 MPa");
-  assert.ok(solidOf(S.S1) > 0.99 * S.S1.flow_kmol_h["terephthalic-acid"], "the cold slurry: nearly all solid");
+  assert.ok(solidOf(S.S0) > 0.99 * S.S0.flow_kmol_h["terephthalic-acid"] && solidOf(S.S1) > 0.99 * S.S1.flow_kmol_h["terephthalic-acid"], "the cold slurry, pumped: nearly all solid");
   // the measured solubility near each drum's temperature: interpolated in ln x against 1/T between Takebayashi's points
   const pts = TAKE.map(p => [p.T_K, p.x_solute]).sort((a, b) => a[0] - b[0]);
   const meas = T => { const k = pts.findIndex((p, j) => j + 1 < pts.length && p[0] <= T && pts[j + 1][0] >= T); const [a, b] = [pts[k], pts[k + 1]];
@@ -144,7 +152,10 @@ test("the flowsheet's solids: normalized, refused where they cannot work, saved 
   assert.deepEqual(normalizeFlowsheet(fs).thermo.solids, ["terephthalic-acid"]);
   assert.throws(() => normalizeFlowsheet({ ...fs, thermo: { model: "NRTL", solids: "terephthalic-acid" } }), /must be a list/);
   assert.throws(() => system({ components: ["water", "terephthalic-acid"], model: "PR", solids: ["terephthalic-acid"] }), e => e.code === "NOT_AVAILABLE" || e.code === "BAD_INPUT");
-  assert.throws(() => system({ components: ["water", "fumaric-acid"], model: "MOD-UNIFAC-2", solids: ["fumaric-acid"] }), e => e.code === "MISSING_DATA");
+  // a solid with neither a curve nor melting data is refused (fumaric acid served here until it had curves, 2026-11-05);
+  // itaconic acid has curves in seven solvents but none in water, so its solubility in water is not known
+  assert.throws(() => system({ components: ["water", "glucaric-acid"], model: "MOD-UNIFAC-2", solids: ["glucaric-acid"] }), e => e.code === "MISSING_DATA");
+  assert.throws(() => system({ components: ["water", "itaconic-acid"], model: "MOD-UNIFAC-2", solids: ["itaconic-acid"] }).solidSolubility("itaconic-acid", 300), e => e.code === "MISSING_DATA");
   const doc = projectOf({ ...initialState({ components: [] }), flowsheet: fs }, { version: "9.9.9", now: new Date("2026-11-05T12:00:00Z") });
   assert.equal(doc.fugacity_project, 6);
   const back = stateFromProject(readProject(JSON.stringify(doc)));
@@ -198,4 +209,38 @@ test("a cooler or a flash drum, then the solid taken apart, gives exactly the Cr
   assert.ok(rel(d.state.P_kPa, cr.state.P_kPa) < 1e-8, `pressure ${d.state.P_kPa} vs ${cr.state.P_kPa}`);
   assert.ok(rel(solidPart(d.outlets.liquid), cr.state.crystals_kmol_h) < 1e-8, `crystals ${solidPart(d.outlets.liquid)} vs ${cr.state.crystals_kmol_h}`);
   assert.ok(Math.abs(d.duty_kW - cr.duty_kW) < 1e-6 * Math.max(1, Math.abs(cr.duty_kW)), `duty ${d.duty_kW} vs ${cr.duty_kW}`);
+});
+
+test("every automatic solubility curve follows the measured values it was fitted to, as its record states, and only in its range", () => {
+  // validation/python/solubility_curves.py, docs/SOLUBILITY_CURVES.md: each record states its largest deviation over the
+  // articles it was fitted to; the engine's curve must give the same number from the data files
+  let n = 0;
+  for (const [id, c] of Object.entries(components)) {
+    for (const rec of c.solubility ?? []) {
+      if (id === "terephthalic-acid" && rec.solvent === "water") continue;   // chosen by hand (the first test)
+      const data = JSON.parse(readFileSync(new URL(`../validation/data/sle/${id}.json`, import.meta.url)));
+      const dois = [...rec.source.matchAll(/doi:(10\.[^\s;,)]+)/g)].map(m => m[1].replace(/\.$/, ""));
+      assert.ok(dois.length >= 1, `${id} in ${rec.solvent}: the articles are named`);
+      let worst = 0;
+      for (const s of data.sets.filter(s => s.solvent === rec.solvent && dois.includes(s.doi))) {
+        for (const r of s.rows) worst = Math.max(worst, Math.abs(curveSolubility(rec, r.T_K) / r.x_solute - 1));
+      }
+      const stated = Number(rec.source.match(/Largest deviation ([\d.]+) %/)[1]) / 100;
+      assert.ok(Math.abs(worst - stated) < 6e-4, `${id} in ${rec.solvent}: largest deviation ${worst} vs the record's ${stated}`);
+      assert.throws(() => curveSolubility(rec, rec.Tmax_K + 1), e => e.code === "OUT_OF_RANGE");
+      n++;
+    }
+  }
+  assert.ok(n >= 20, `${n} automatic curves`);
+});
+
+test("the pump: a dissolved component without a liquid density is left out only while dilute (1 % in the liquid)", () => {
+  // the maintainer, 2026-11-06: the power from the liquid only, a dilute component without a density left out, stated
+  const sys = system({ components: ["water", "terephthalic-acid"], model: "MOD-UNIFAC-2", solids: ["terephthalic-acid"] });
+  const hot = stream(sys, { flow_kg_h: { water: 800, "terephthalic-acid": 200 }, T_K: 547, P_kPa: 8000 });   // all dissolved, x 0.026
+  assert.ok(!hot.phases.some(p => p.type === "solid"));
+  assert.throws(() => runUnit("pump", { sys, inlets: { in: hot }, spec: { P_kPa: 9000 } }), e => /liquid density of Terephthalic acid/.test(e.message));
+  const water = stream(sys, { flow_kg_h: { water: 800 }, T_K: 360, P_kPa: 101.325 });
+  const r = runUnit("pump", { sys, inlets: { in: water }, spec: { P_kPa: 8000 } });
+  assert.equal(r.warnings, undefined, "no warning without a solid or a missing density");
 });

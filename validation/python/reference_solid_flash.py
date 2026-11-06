@@ -9,7 +9,9 @@ src/data/components.json (Apelblat form, validation/python/solubility_curves.py)
 solid's enthalpy h_s = h_L,TPA(T) - dH_sol(T), dH_sol = R (C T - B) (the curve's van't Hoff slope). Liquid enthalpies of
 reference_enthalpy.py (water's records; TPA's liquid heat capacity integrated from 298.15 K), water's ideal-gas vapour.
 
-The chain: a 20 % slurry at 360 K and 8 MPa; heated at 8 MPa to 547 K (all dissolves); three adiabatic flash drums at
+The chain: a 20 % slurry at 360 K and 101.325 kPa, pumped to 8 MPa (power = V dP / 0.75, V the liquid's volume flow
+from water's saturated liquid density, IAPWS-IF97 by the iapws package; the solid and the dissolved TPA, which has no liquid density,
+left out: the maintainer, 2026-11-06); heated at 8 MPa to 547 K (all dissolves); three adiabatic flash drums at
 4, 2 and 0.8 MPa (each takes the liquid and the solid of the one before; its vapour leaves); then a cooling
 crystallizer at 373.15 K and 0.8 MPa, whose crystals and mother liquor leave. Each state: unknowns T, the vapour V and
 the solid c (kmol/h), solved with scipy.optimize.root from
@@ -61,11 +63,18 @@ def H_state(n, T, V, c):
     return (V * h_ig("water", T) + L.sum() * hl + c * h_solid(T)) / 3600
 
 
+def rho_w(T):
+    """kg/m3: water's saturated liquid density at T, IAPWS-IF97 (the engine's standard for water), from the independent
+    open-source iapws package (J. J. Gómez-Romera, GPL-3.0, https://github.com/jjgomera/iapws)."""
+    import iapws
+    return iapws.IAPWS97(T=T, x=0).rho
+
+
 def p_w(T):
     return psat_kpa(COMPONENTS["water"], T)
 
 
-def state(n, P, H=None, T=None):
+def state(n, P, H=None, T=None, T0=None):
     """The equilibrium state of flows n (kmol/h) at P, with the enthalpy flow H (kW) or the temperature T."""
     n = np.asarray(n, float)
     best = None
@@ -94,7 +103,7 @@ def state(n, P, H=None, T=None):
                 continue
             # start: T at water's boiling point at P (inside the curve's range), the solid from saturation there
             Tb = brentq(lambda t: p_w(t) - P, 300.0, 640.0)
-            t0 = T if T is not None else min(max(Tb, CURVE["Tmin_K"] + 1), CURVE["Tmax_K"] - 1)
+            t0 = T if T is not None else T0 if T0 is not None else min(max(Tb, CURVE["Tmin_K"] + 1), CURVE["Tmax_K"] - 1)
             c0 = min(0.999999, max(1e-6, 1 - x_sat(t0) * n[0] / n[1]))
             u0 = ([t0 / 100] if T is None else []) + ([0.05] if vap else []) + ([c0] if sol else [])
             try:
@@ -113,7 +122,7 @@ def state(n, P, H=None, T=None):
                 continue
             if not vap and x[0] * p_w(t) > P * (1 + 1e-9):
                 continue
-            if not sol and x[1] > x_sat(t) * (1 + 1e-9):
+            if not (CURVE["Tmin_K"] <= t <= CURVE["Tmax_K"]) or (not sol and x[1] > x_sat(t) * (1 + 1e-9)):
                 continue
             best = {"T_K": t, "P_kPa": P, "vapour_kmol_h": V, "solid_kmol_h": c, "liquid_kmol_h": L.tolist(), "x_TPA": x[1]}
             break
@@ -128,9 +137,13 @@ def main():
     F = np.array([800.0, 200.0]) / MW
     out = {"_about": "validation/python/reference_solid_flash.py: TPA recrystallized from water, ideal solution, the measured solubility "
                      "curve; test/solids.test.js", "feed_kg_h": {"water": 800.0, "terephthalic-acid": 200.0}, "states": []}
-    feed = state(F, 8000.0, T=360.0)
+    feed = state(F, 101.325, T=360.0)
+    Vdot = feed["liquid_kmol_h"][0] * MW[0] / rho_w(360.0) / 3600          # m3/s, the liquid water only
+    W = Vdot * (8000.0 - 101.325) / 0.75                                     # kW
+    pumped = state(F, 8000.0, H=feed["H_kW"] + W, T0=360.0)
     heated = state(F, 8000.0, T=547.0)
-    out["states"] += [{"name": "feed", **feed}, {"name": "heated", **heated, "duty_kW": heated["H_kW"] - feed["H_kW"]}]
+    out["states"] += [{"name": "feed", **feed}, {"name": "pumped", **pumped, "power_kW": W, "volume_m3_h": Vdot * 3600},
+                      {"name": "heated", **heated, "duty_kW": heated["H_kW"] - pumped["H_kW"]}]
     n, H = F.copy(), heated["H_kW"]
     for P in (4000.0, 2000.0, 800.0):
         s = state(n, P, H=H)

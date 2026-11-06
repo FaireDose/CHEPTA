@@ -694,6 +694,16 @@
       "license": "Artistic License 2.0",
       "via": "DWSIM (DWSIM.Thermodynamics/Assets/Databases)"
     },
+    "chemsep-8.32": {
+      "title": "ChemSep pure-component database of ChemSep Lite 8.32 (chemsep1.xml, created 2022-08-30)",
+      "authors": "Harry Kooijman, Ross Taylor",
+      "year": 2022,
+      "kind": "databank",
+      "url": "https://github.com/CalebBell/chemicals/blob/master/chemicals/Misc/ChemSep8.32.xml",
+      "access": "Open: Artistic License 2.0",
+      "license": "Artistic License 2.0",
+      "via": "the chemicals library (chemicals/Misc/ChemSep8.32.xml, chemicals 1.5.2)"
+    },
     "chemsep-eos-ipd": {
       "title": "ChemSep interaction parameter files pr.ipd and srk.ipd (DECHEMA Peng-Robinson / Soave-Redlich-Kwong EOS data)",
       "authors": "library created by A. L. Dill (1996) and J. A. Clark (2014), updated by H. Kooijman",

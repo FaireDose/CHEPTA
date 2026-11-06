@@ -33,8 +33,10 @@
  *  - "hx", a heat exchanger between two process streams (inlets and outlets hot and cold), adiabatic overall: one
  *    specification, an outlet temperature or vapour fraction of either side, the duty, or the minimum approach dTmin_K;
  *  - "valve": an adiabatic pressure drop (a P-H flash at the inlet enthalpy);
- *  - "pump": a liquid to a higher pressure, power = V dP / efficiency, V the inlet's volume flow from the liquid-density
- *    records of its components (ideal mixing: the molar volumes add up); the outlet from the energy balance,
+ *  - "pump": a liquid to a higher pressure, power = V dP / efficiency, V the inlet's liquid volume flow from the
+ *    liquid-density records of its components (ideal mixing: the molar volumes add up); a solid rides along and does
+ *    not enter the power (as DWSIM's pump), with the warning SLURRY; a component without a liquid density at a mole
+ *    fraction of at most PUMP_DILUTE in the liquid is left out of the volume, with the warning DENSITY_MISSING; the outlet from the energy balance,
  *    H_out = H_in + power. The efficiency defaults to 0.75, the low end of the "target pump efficiencies ... in the
  *    range from 75 to 85 percent" of R. Evans, R. E. Sneed and J. H. Hunt, Pumping plant performance, N.C. Cooperative
  *    Extension AG-452-6 (1996, revised 2024), https://content.ces.ncsu.edu/pumping-plant-performance (free to read);
@@ -465,6 +467,10 @@ registerUnit({
   },
 });
 
+/** A component without a liquid density is left out of the pump's volume up to this mole fraction in the liquid (the
+ * maintainer, 2026-11-06: "a stated approximation with a warning"; this project's choice of limit). */
+export const PUMP_DILUTE = 0.01;
+
 /** The pump's typical efficiency (see the file header): the low end of the NC State Extension's target range. */
 export const PUMP_EFFICIENCY = 0.75;
 
@@ -485,21 +491,38 @@ registerUnit({
     if (s.VF == null || s.VF > 1e-6 || s.phases.some(p => p.type === "vapour" && p.fraction > 1e-6)) {
       throw fail("BAD_INPUT", `Pump: a pump needs a liquid; its inlet has a vapour fraction of ${+(s.VF ?? 1).toFixed(4)}. Cool or condense it first, or use a compressor for a gas.`);
     }
-    // volume flow of the liquid, m³/s: the molar volumes of the components add up (their liquid-density records)
+    // volume flow of the liquid, m³/s: the molar volumes of the components add up (their liquid-density records). Only
+    // the liquid phase counts: solids ride along and do not enter the power, as in DWSIM's pump (the maintainer,
+    // 2026-11-06; Pump.vb, branch "windows", lines 686-687, the overall liquid phase's density and volume flow)
     const T = s.T_K;
+    const liquids = s.phases.filter(p => p.type === "liquid" && p.fraction > 0);
+    const nL = s.components.map((_, i) => liquids.reduce((a, p) => a + s.F_kmol_h * p.fraction * p.composition[i], 0));
+    const FL = nL.reduce((a, v) => a + v, 0);
+    const solid = s.phases.some(p => p.type === "solid" && p.fraction > 1e-12);
+    if (!(FL > 0)) throw fail("BAD_INPUT", "Pump: the inlet has no liquid (only solid); a pump needs a liquid to carry it.");
     let V = 0;
+    const left = [];
     s.components.forEach((id, i) => {
-      const n = s.flows[i];
+      const n = nL[i];
       if (!(n > 0)) return;
       const c = pure(id, { userData: sys.userData });
       let rho;
-      try { rho = c.property("liquidDensity", T); } catch (e) { e.message = `Pump: the volume flow needs the liquid density of ${c.name}: ${e.message}`; throw e; }
+      try { rho = c.property("liquidDensity", T); } catch (e) {
+        // a dilute component without a liquid density (dissolved terephthalic acid in water): left out of the volume,
+        // a stated approximation (the maintainer, 2026-11-06); its volume share is about its mole fraction
+        if (n / FL <= PUMP_DILUTE) { left.push({ name: c.name, x: n / FL, why: e.message.split(" (searched")[0].replace(/\.$/, "") }); return; }
+        e.message = `Pump: the volume flow needs the liquid density of ${c.name}: ${e.message}`; throw e;
+      }
       V += n * c.MW / rho / 3600;   // kmol/h × kg/kmol / (kg/m³) / (s/h)
     });
     const W = V * (P - s.P_kPa) / spec.efficiency;   // m³/s × kPa = kW
     const out = stream(sys, { flow_kmol_h: s.flows, P_kPa: P, H_kW: s.H_kW + W });
-    const notes = [spec.typical ? `Efficiency ${spec.efficiency * 100} % (a typical value; give the pump's own). Volume flow ${+(V * 3600).toPrecision(5)} m³/h from the liquid densities.` : `Volume flow ${+(V * 3600).toPrecision(5)} m³/h from the liquid densities.`];
-    return { outlets: { out }, duty_kW: W, notes, state: { power_kW: W, efficiency: spec.efficiency, volume_m3_h: V * 3600, dP_kPa: P - s.P_kPa } };
+    const vol = `Volume flow ${+(V * 3600).toPrecision(5)} m³/h from the liquid densities${solid ? " (the liquid only; the solid rides along)" : ""}.`;
+    const notes = [spec.typical ? `Efficiency ${spec.efficiency * 100} % (a typical value; give the pump's own). ${vol}` : vol];
+    const warnings = [];
+    if (solid) warnings.push({ code: "SLURRY", message: "The inlet carries a solid: the power uses the liquid's density and volume flow only, and ignores the slurry's rheology (its viscosity and settling), which can raise the power of a real slurry pump.", remedy: "Check the power with the pump supplier's slurry data." });
+    for (const l of left) warnings.push({ code: "DENSITY_MISSING", message: `${l.name} (mole fraction ${+l.x.toPrecision(3)} in the liquid) has no liquid density here (${l.why}); it is left out of the liquid volume, an approximation of about its mole fraction in the power.`, remedy: `Give a liquid density of ${l.name} in My data.` });
+    return { outlets: { out }, duty_kW: W, notes, ...(warnings.length ? { warnings } : {}), state: { power_kW: W, efficiency: spec.efficiency, volume_m3_h: V * 3600, dP_kPa: P - s.P_kPa } };
   },
 });
 
@@ -751,7 +774,7 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
 }
 
 /** The warning codes a block may return (proposal 0015, section 9, contract 2); a block adds its own code here. */
-export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "SECOND_SOLID", "METHOD_RANGE", "METHOD_SPLIT"];
+export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "SECOND_SOLID", "SLURRY", "DENSITY_MISSING", "METHOD_RANGE", "METHOD_SPLIT"];
 
 /** A block's warnings: each { code, message, stage?, remedy? }, its code one of WARNING_CODES (a bug otherwise). */
 function checkWarnings(u, list) {

@@ -119,9 +119,18 @@
       "terephthalic-acid": 200
      },
      "T_K": 360,
-     "P_kPa": 8000
+     "P_kPa": 101.325
     },
     "x": 40,
+    "y": 200
+   },
+   {
+    "id": "PU1",
+    "type": "pump",
+    "spec": {
+     "P_kPa": 8000
+    },
+    "x": 130,
     "y": 200
    },
    {
@@ -130,7 +139,7 @@
     "spec": {
      "T_K": 547
     },
-    "x": 140,
+    "x": 230,
     "y": 200
    },
    {
@@ -140,7 +149,7 @@
      "P_kPa": 4000,
      "duty_kW": 0
     },
-    "x": 250,
+    "x": 340,
     "y": 200
    },
    {
@@ -150,7 +159,7 @@
      "P_kPa": 2000,
      "duty_kW": 0
     },
-    "x": 360,
+    "x": 450,
     "y": 240
    },
    {
@@ -160,7 +169,7 @@
      "P_kPa": 800,
      "duty_kW": 0
     },
-    "x": 470,
+    "x": 560,
     "y": 280
    },
    {
@@ -170,44 +179,49 @@
      "solute": "terephthalic-acid",
      "T_K": 373.15
     },
-    "x": 580,
+    "x": 670,
     "y": 320
    },
    {
     "id": "P1",
     "type": "product",
-    "x": 250,
+    "x": 340,
     "y": 60
    },
    {
     "id": "P2",
     "type": "product",
-    "x": 360,
+    "x": 450,
     "y": 100
    },
    {
     "id": "P3",
     "type": "product",
-    "x": 470,
+    "x": 560,
     "y": 140
    },
    {
     "id": "P4",
     "type": "product",
-    "x": 700,
+    "x": 790,
     "y": 440
    },
    {
     "id": "P5",
     "type": "product",
-    "x": 700,
+    "x": 790,
     "y": 340
    }
   ],
   "streams": [
    {
-    "id": "S1",
+    "id": "S0",
     "from": "F1.out",
+    "to": "PU1.in"
+   },
+   {
+    "id": "S1",
+    "from": "PU1.out",
     "to": "E1.in"
    },
    {
@@ -257,5 +271,5 @@
    }
   ]
  },
- "title": "Terephthalic acid recrystallized from hot water: dissolved at 274 °C under 80 bar, crystallized in three letdown drums"
+ "title": "Terephthalic acid recrystallized from hot water: pumped to 80 bar, dissolved at 274 °C, crystallized in three letdown drums"
 }

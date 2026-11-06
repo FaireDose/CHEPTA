@@ -1,0 +1,245 @@
+{
+ "solid": "glucose",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-11-06",
+ "searched": "ThermoML-API full-text search for \"D-glucose\", \"glucose\", \"dextrose\"; 121 records opened",
+ "about": "Solubility of the solid as the mole fraction of the solid in the saturated liquid (x_solute), converted from the stored quantity where needed (validation/python/fetch_sle.py); binary sets with a CHEPTA component as the solvent, at 110 kPa or less.",
+ "articles": {
+  "10.1016/j.jct.2012.06.016": {
+   "authors": [
+    "Saldana, M. D. A.[Marleny D.A.]",
+    "Alvarez, V. H.[Victor H.]",
+    "Haldar, A.[Anupam]"
+   ],
+   "title": "Solubility and physical properties of sugars in pressurized water",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "55",
+   "year": "2012",
+   "pages": "115-123"
+  },
+  "10.1021/je4011097": {
+   "authors": [
+    "Zhang, Y.[Yongzhao]",
+    "Guo, X.[Xia]",
+    "Ji, J.[Jianbing]"
+   ],
+   "title": "Solubility Determination and Correlation of (2R,3S,4S,5S)-6-(Hydroxymethyl)-tetrahydro-2H-pyran-2,3,4, 5-tetraol in Fatty Alcohol",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "59",
+   "year": "2014",
+   "pages": "2040-2044"
+  },
+  "10.1021/je700177n": {
+   "authors": [
+    "Alves, L. A.[Lourdes A.]",
+    "Silva, J. B. A. e.[Joao B. Almeida e]",
+    "Giulietti, M.[Marco]"
+   ],
+   "title": "Solubility of D-Glucose in Water and Ethanol/Water Mixtures",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "52",
+   "year": "2007",
+   "pages": "2166-2170"
+  }
+ },
+ "sets": [
+  {
+   "solvent": "water",
+   "doi": "10.1016/j.jct.2012.06.016",
+   "set": 3,
+   "P_kPa": null,
+   "rows": [
+    {
+     "T_K": 303.0,
+     "x_solute": 0.04834332710948383,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.244094
+    },
+    {
+     "T_K": 303.0,
+     "x_solute": 0.03947682326196239,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.136253
+    },
+    {
+     "T_K": 303.0,
+     "x_solute": 0.04067469309818328,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.113208
+    },
+    {
+     "T_K": 323.0,
+     "x_solute": 0.061824689130837815,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.078907
+    },
+    {
+     "T_K": 323.0,
+     "x_solute": 0.049428849284598946,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.046154
+    },
+    {
+     "T_K": 323.0,
+     "x_solute": 0.048886397928183487,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.077821
+    },
+    {
+     "T_K": 343.0,
+     "x_solute": 0.07132129711235821,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.088542
+    },
+    {
+     "T_K": 343.0,
+     "x_solute": 0.059442228311727095,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.21519
+    },
+    {
+     "T_K": 343.0,
+     "x_solute": 0.05970754355955397,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.100787
+    },
+    {
+     "T_K": 373.0,
+     "x_solute": 0.1260250230815757,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.554785
+    },
+    {
+     "T_K": 373.0,
+     "x_solute": 0.10722092222450177,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.193172
+    },
+    {
+     "T_K": 373.0,
+     "x_solute": 0.10434232379532252,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.034335
+    },
+    {
+     "T_K": 393.0,
+     "x_solute": 0.16415678306026324,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.393075
+    },
+    {
+     "T_K": 393.0,
+     "x_solute": 0.1388940066868383,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.106634
+    },
+    {
+     "T_K": 393.0,
+     "x_solute": 0.13449687175837777,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.09009
+    },
+    {
+     "T_K": 413.0,
+     "x_solute": 0.23582144434923405,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.524951
+    },
+    {
+     "T_K": 413.0,
+     "x_solute": 0.18784761438365763,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.148725
+    },
+    {
+     "T_K": 413.0,
+     "x_solute": 0.1781021905860911,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.190125
+    },
+    {
+     "T_K": 433.0,
+     "x_solute": 0.2976998927557405,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.325548
+    },
+    {
+     "T_K": 433.0,
+     "x_solute": 0.2237802912946768,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.20881
+    },
+    {
+     "T_K": 433.0,
+     "x_solute": 0.20672413356395802,
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.038373
+    }
+   ]
+  },
+  {
+   "solvent": "1-octanol",
+   "doi": "10.1021/je4011097",
+   "set": 3,
+   "P_kPa": 101.0,
+   "rows": [
+    {
+     "T_K": 345.15,
+     "x_solute": 0.0098,
+     "quantity": "Mole fraction",
+     "u_rel": 0.131633
+    },
+    {
+     "T_K": 355.15,
+     "x_solute": 0.01529,
+     "quantity": "Mole fraction",
+     "u_rel": 0.128842
+    },
+    {
+     "T_K": 364.15,
+     "x_solute": 0.0192,
+     "quantity": "Mole fraction",
+     "u_rel": 0.128125
+    },
+    {
+     "T_K": 369.15,
+     "x_solute": 0.02279,
+     "quantity": "Mole fraction",
+     "u_rel": 0.128126
+    },
+    {
+     "T_K": 374.15,
+     "x_solute": 0.02407,
+     "quantity": "Mole fraction",
+     "u_rel": 0.128376
+    },
+    {
+     "T_K": 379.15,
+     "x_solute": 0.02895,
+     "quantity": "Mole fraction",
+     "u_rel": 0.129188
+    },
+    {
+     "T_K": 383.15,
+     "x_solute": 0.03408,
+     "quantity": "Mole fraction",
+     "u_rel": 0.129401
+    }
+   ]
+  },
+  {
+   "solvent": "water",
+   "doi": "10.1021/je700177n",
+   "set": 6,
+   "P_kPa": null,
+   "rows": [
+    {
+     "T_K": 333.15,
+     "x_solute": 0.22245274265622741,
+     "quantity": "Mass fraction",
+     "u_rel": 0.040486
+    }
+   ]
+  }
+ ]
+}

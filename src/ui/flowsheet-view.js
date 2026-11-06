@@ -562,7 +562,16 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
         by === "T" ? T("T_K", "Temperature") : P("P_kPa", "Pressure")]
         : [T("T_K", "Temperature"), P("P_kPa", "Outlet pressure")]),
       h("p", { class: "fa-in-hint" }, evap ? "The vapour is the mother liquor's equilibrium vapour at its bubble point; connect the vapour outlet." : "Pressure empty: the feed's."),
-      h("p", { class: "fa-in-hint" }, "The solubility needs the solute's melting data and an activity model (the flowsheet's). The crystals' enthalpy is the liquid's minus the enthalpy of fusion; they go to a Product.")));
+      h("p", { class: "fa-in-hint" }, "The solubility needs the solute's melting data or a measured solubility curve, and an activity model (the flowsheet's). The crystals' enthalpy is the liquid's minus the enthalpy of fusion (or of solution, with a curve)."),
+      // the slurry outlet: how much mother liquor leaves with the crystals
+      (() => {
+        const mode = spec.slurry_solids_fraction != null ? "w" : spec.slurry_liquid_kg_per_kg != null ? "r" : "dry";
+        return h("div", {}, segRow("Crystals leave", [["dry", "Dry"], ["r", "With liquid per kg"], ["w", "As a slurry of"]], mode, v => setS({
+          slurry_liquid_kg_per_kg: v === "r" ? spec.slurry_liquid_kg_per_kg ?? 0.5 : null, slurry_solids_fraction: v === "w" ? spec.slurry_solids_fraction ?? 0.5 : null }), `fs-crslurry-${b.id}`),
+          mode === "r" ? plain("slurry_liquid_kg_per_kg", "Mother liquor with the crystals", "kg per kg of crystals", "0.5")
+            : mode === "w" ? plain("slurry_solids_fraction", "Crystals' mass fraction of the slurry", "kg/kg", "0.5") : null,
+          h("p", { class: "fa-in-hint" }, "The crystals outlet carries this share of the mother liquor (a slurry); the rest leaves clear by the liquor outlet. A component separator can then act as the filter."));
+      })()));
   } else if (b.type === "evaporator") {
     // proposal 0015, M3, step 10: the effects' pressures, the steam, and the steam flow or the product's concentration
     const Ps = Array.isArray(spec.P_kPa) ? spec.P_kPa : spec.P_kPa == null ? [] : [spec.P_kPa];
@@ -1934,6 +1943,7 @@ export function resultsPanel({ state, f, sol, u, set }) {
           ["Crystals", `${fmtShort(r.state.crystals_kg_h, 5)} kg/h (${fmtShort(r.state.crystals_kmol_h, 5)} kmol/h)`],
           ["Solubility (mole fraction)", `${fmtShort(r.state.solubility_x, 5)}, γ ${fmtShort(r.state.gamma, 4)}`],
           ...(r.state.mode === "evaporative" ? [["Solvent evaporated", `${fmtShort(r.state.evaporated_kg_h, 5)} kg/h`]] : []),
+          ...(r.state.slurry_liquid_kg_h > 0 ? [["Mother liquor with the crystals", `${fmtShort(r.state.slurry_liquid_kg_h, 5)} kg/h`]] : []),
         ] : []),
         ...(b.type === "evaporator" && r.state ? [
           [r.state.target ? "Steam (for the concentration)" : "Steam", `${fmtShort(r.state.steam_kg_h, 5)} kg/h at ${fmtP(r.state.steam_P_kPa, u)} (${fmtTemp(r.state.steam_T_K, u, 2)})`],

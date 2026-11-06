@@ -36,6 +36,11 @@ not saturated).
 - **The crystals** leave as a stream with one `solid` phase, `equilibrium: true` (stream v2). The property methods
   have no solid phase, so any block that would recalculate the stream would melt the crystals: `runUnit` refuses
   them into every block but a Product.
+- **The slurry outlet** (2026-11-05): `slurry_liquid_kg_per_kg` (kg of mother liquor per kg of crystals) or
+  `slurry_solids_fraction` (the crystals' mass fraction of the slurry): the crystals outlet carries that share of the
+  mother liquor, at its state and composition; the rest leaves clear by the liquor outlet. The balances and the duty
+  are those of dry crystals. A component separator can then act as the filter (no solid-liquid separator block: the
+  maintainer, 2026-11-05).
 - **Results:** the yield (crystals over the solute fed), the crystals (kmol/h, kg/h), the solubility x_s and γ_s,
   T and P, the solvent evaporated, the duty. A mother liquor also saturated in another component with melting data
   (past a eutectic) is warned of, `SECOND_SOLID`.

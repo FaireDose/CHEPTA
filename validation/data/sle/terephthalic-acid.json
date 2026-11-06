@@ -1,7 +1,7 @@
 {
  "solid": "terephthalic-acid",
  "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
- "retrieved": "2026-11-05",
+ "retrieved": "2026-11-06",
  "searched": "ThermoML-API full-text search for \"terephthalic acid\", \"1,4-benzenedicarboxylic acid\", \"benzene-1,4-dicarboxylic acid\"; 26 records opened",
  "about": "Solubility of the solid as the mole fraction of the solid in the saturated liquid (x_solute), converted from the stored quantity where needed (validation/python/fetch_sle.py); binary sets with a CHEPTA component as the solvent, at 110 kPa or less.",
  "articles": {
@@ -94,92 +94,110 @@
     {
      "T_K": 473.15,
      "x_solute": 1.63e-05,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.398773
     },
     {
      "T_K": 463.15,
      "x_solute": 1.28e-05,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.398438
     },
     {
      "T_K": 453.15,
      "x_solute": 9.4e-06,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.404255
     },
     {
      "T_K": 443.15,
      "x_solute": 7.9e-06,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.405063
     },
     {
      "T_K": 433.15,
      "x_solute": 6.9e-06,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.405797
     },
     {
      "T_K": 423.15,
      "x_solute": 3.9e-06,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.410256
     },
     {
      "T_K": 413.15,
      "x_solute": 3.2e-06,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.40625
     },
     {
      "T_K": 403.15,
      "x_solute": 2.6e-06,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.384615
     },
     {
      "T_K": 393.15,
      "x_solute": 1.9e-06,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.421053
     },
     {
      "T_K": 383.15,
      "x_solute": 1.3e-06,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.384615
     },
     {
      "T_K": 373.15,
      "x_solute": 8e-07,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.375
     },
     {
      "T_K": 363.15,
      "x_solute": 7e-07,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.428571
     },
     {
      "T_K": 353.15,
      "x_solute": 6e-07,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.333333
     },
     {
      "T_K": 343.15,
      "x_solute": 5e-07,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.4
     },
     {
      "T_K": 333.15,
      "x_solute": 4e-07,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.5
     },
     {
      "T_K": 323.15,
      "x_solute": 3e-07,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.333333
     },
     {
      "T_K": 313.15,
      "x_solute": 2e-07,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.5
     },
     {
      "T_K": 303.15,
      "x_solute": 2e-07,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.5
     }
    ]
   },
@@ -192,32 +210,38 @@
     {
      "T_K": 315.15,
      "x_solute": 5.532e-05,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.200108
     },
     {
      "T_K": 325.15,
      "x_solute": 7.998e-05,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.20005
     },
     {
      "T_K": 334.15,
      "x_solute": 0.00011023,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.200036
     },
     {
      "T_K": 343.15,
      "x_solute": 0.0001421,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.20007
     },
     {
      "T_K": 354.15,
      "x_solute": 0.00020895,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.200048
     },
     {
      "T_K": 363.15,
      "x_solute": 0.0002801,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.200036
     }
    ]
   },
@@ -231,156 +255,182 @@
      "T_K": 343.2,
      "x_solute": 0.06106888598084704,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.036697,
      "P_kPa": 1600.0
     },
     {
      "T_K": 348.2,
      "x_solute": 0.06889387867250996,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.040323,
      "P_kPa": 1600.0
     },
     {
      "T_K": 353.2,
      "x_solute": 0.07352658129921558,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.037594,
      "P_kPa": 1600.0
     },
     {
      "T_K": 358.2,
      "x_solute": 0.08215263424875732,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.04,
      "P_kPa": 1600.0
     },
     {
      "T_K": 363.2,
      "x_solute": 0.08665465779919505,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.037736,
      "P_kPa": 1600.0
     },
     {
      "T_K": 368.2,
      "x_solute": 0.09258910163924872,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.040936,
      "P_kPa": 1600.0
     },
     {
      "T_K": 373.2,
      "x_solute": 0.09601538155750036,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.039326,
      "P_kPa": 1600.0
     },
     {
      "T_K": 378.2,
      "x_solute": 0.10422960357330922,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.041026,
      "P_kPa": 1600.0
     },
     {
      "T_K": 383.2,
      "x_solute": 0.11323532399491767,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.042056,
      "P_kPa": 1600.0
     },
     {
      "T_K": 388.2,
      "x_solute": 0.12114095070648072,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.038961,
      "P_kPa": 1600.0
     },
     {
      "T_K": 393.2,
      "x_solute": 0.13430656476354647,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.038462,
      "P_kPa": 1600.0
     },
     {
      "T_K": 398.2,
      "x_solute": 0.1396397354523366,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.040441,
      "P_kPa": 1600.0
     },
     {
      "T_K": 403.2,
      "x_solute": 0.1526895378907483,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.039735,
      "P_kPa": 1600.0
     },
     {
      "T_K": 408.2,
      "x_solute": 0.16742266601478145,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.041543,
      "P_kPa": 1600.0
     },
     {
      "T_K": 413.2,
      "x_solute": 0.17398850796871496,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.03966,
      "P_kPa": 1600.0
     },
     {
      "T_K": 418.2,
      "x_solute": 0.1907411234603913,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.040506,
      "P_kPa": 1600.0
     },
     {
      "T_K": 423.2,
      "x_solute": 0.20305585931692322,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.039813,
      "P_kPa": 1600.0
     },
     {
      "T_K": 428.2,
      "x_solute": 0.2182968559204923,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.040598,
      "P_kPa": 1600.0
     },
     {
      "T_K": 433.2,
      "x_solute": 0.22766344709886943,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.040486,
      "P_kPa": 1600.0
     },
     {
      "T_K": 438.2,
      "x_solute": 0.24911849340171832,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.039568,
      "P_kPa": 1600.0
     },
     {
      "T_K": 443.2,
      "x_solute": 0.26813753570387255,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.040717,
      "P_kPa": 1600.0
     },
     {
      "T_K": 448.2,
      "x_solute": 0.2825500152821769,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.040909,
      "P_kPa": 1600.0
     },
     {
      "T_K": 453.2,
      "x_solute": 0.303713998679576,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.039672,
      "P_kPa": 1600.0
     },
     {
      "T_K": 458.2,
      "x_solute": 0.3301530941863364,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.039952,
      "P_kPa": 1600.0
     },
     {
      "T_K": 463.2,
      "x_solute": 0.3549061850209105,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.04013,
      "P_kPa": 1600.0
     },
     {
      "T_K": 468.2,
      "x_solute": 0.382024264024722,
      "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.040541,
      "P_kPa": 1600.0
     }
    ]
@@ -395,72 +445,84 @@
      "T_K": 348.8,
      "x_solute": 1.25e-05,
      "quantity": "Mole fraction",
+     "u_rel": 0.032,
      "P_kPa": 10000.0
     },
     {
      "T_K": 373.4,
      "x_solute": 3.09e-05,
      "quantity": "Mole fraction",
+     "u_rel": 0.02589,
      "P_kPa": 10000.0
     },
     {
      "T_K": 398.8,
      "x_solute": 8.97e-05,
      "quantity": "Mole fraction",
+     "u_rel": 0.0301,
      "P_kPa": 10000.0
     },
     {
      "T_K": 422.8,
      "x_solute": 0.000238,
      "quantity": "Mole fraction",
+     "u_rel": 0.029412,
      "P_kPa": 10000.0
     },
     {
      "T_K": 423.8,
      "x_solute": 0.000252,
      "quantity": "Mole fraction",
+     "u_rel": 0.02381,
      "P_kPa": 10000.0
     },
     {
      "T_K": 447.1,
      "x_solute": 0.00061,
      "quantity": "Mole fraction",
+     "u_rel": 0.022951,
      "P_kPa": 10000.0
     },
     {
      "T_K": 472.9,
      "x_solute": 0.00172,
      "quantity": "Mole fraction",
+     "u_rel": 0.02907,
      "P_kPa": 10000.0
     },
     {
      "T_K": 473.2,
      "x_solute": 0.00177,
      "quantity": "Mole fraction",
+     "u_rel": 0.028249,
      "P_kPa": 10000.0
     },
     {
      "T_K": 497.9,
      "x_solute": 0.0047,
      "quantity": "Mole fraction",
+     "u_rel": 0.023404,
      "P_kPa": 10000.0
     },
     {
      "T_K": 523.2,
      "x_solute": 0.012,
      "quantity": "Mole fraction",
+     "u_rel": 0.033333,
      "P_kPa": 10000.0
     },
     {
      "T_K": 523.7,
      "x_solute": 0.0125,
      "quantity": "Mole fraction",
+     "u_rel": 0.032,
      "P_kPa": 10000.0
     },
     {
      "T_K": 547.4,
      "x_solute": 0.0299,
      "quantity": "Mole fraction",
+     "u_rel": 0.023411,
      "P_kPa": 10000.0
     }
    ]
@@ -474,37 +536,44 @@
     {
      "T_K": 303.2,
      "x_solute": 0.01334,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.10045
     },
     {
      "T_K": 313.2,
      "x_solute": 0.01552,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.099871
     },
     {
      "T_K": 323.2,
      "x_solute": 0.01885,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.100265
     },
     {
      "T_K": 333.2,
      "x_solute": 0.02165,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.100231
     },
     {
      "T_K": 343.2,
      "x_solute": 0.02559,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.100039
     },
     {
      "T_K": 353.2,
      "x_solute": 0.02869,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.100035
     },
     {
      "T_K": 363.2,
      "x_solute": 0.03276,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.100122
     }
    ]
   },
@@ -517,27 +586,32 @@
     {
      "T_K": 293.15,
      "x_solute": 0.0008816,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.01123
     },
     {
      "T_K": 303.15,
      "x_solute": 0.0009952,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.011254
     },
     {
      "T_K": 313.45,
      "x_solute": 0.001154,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.011265
     },
     {
      "T_K": 323.35,
      "x_solute": 0.001398,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.011445
     },
     {
      "T_K": 329.35,
      "x_solute": 0.00164,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.011585
     }
    ]
   },
@@ -550,32 +624,38 @@
     {
      "T_K": 293.15,
      "x_solute": 0.0001671,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.010772
     },
     {
      "T_K": 303.15,
      "x_solute": 0.0001834,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.010905
     },
     {
      "T_K": 313.15,
      "x_solute": 0.0002311,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.010818
     },
     {
      "T_K": 323.3,
      "x_solute": 0.0003019,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.010931
     },
     {
      "T_K": 333.4,
      "x_solute": 0.0003855,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.010895
     },
     {
      "T_K": 343.85,
      "x_solute": 0.0005302,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.010939
     }
    ]
   }

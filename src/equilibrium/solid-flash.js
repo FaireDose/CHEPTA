@@ -61,7 +61,34 @@ export function solidFlash(sys, i, fluidFlash) {
   };
   const fluidZ = (z, c) => z.map((v, k) => (k === i ? v - c : v) / (1 - c));
 
-  return function flash(spec = {}, opts) {
+  const flash = function flash(spec = {}, opts) {
+    if (spec.H === undefined || spec.H === null || spec.T != null) return direct(spec, opts);
+    try { return direct(spec, opts); } catch (e) {
+      if (e.code !== "OUT_OF_RANGE") throw e;
+      // P-H whose trial with nothing crystallized is the coldest state and falls below a curve's measured range (a cold
+      // slurry, where the answer is inside it): the temperature whose T-P solid flash has the given enthalpy. Searched
+      // upwards from the out-of-range trial; where even the first state inside the range has more enthalpy than given,
+      // the answer is outside the range and the original error stands
+      let lo = null, T = lastTried;
+      for (let k = 0; k < 400 && lo == null; k++) {
+        T += k < 100 ? 0.5 : 5;
+        try { const r = direct({ z: spec.z, T, P: spec.P }, opts); if (r.H_J_mol > spec.H) throw e; lo = [T, r]; } catch (e2) { if (e2 === e || e2.code !== "OUT_OF_RANGE") throw e2; }
+      }
+      if (!lo) throw e;
+      let hi = lo[0], step = 5;
+      for (let k = 0; k < 200; k++) {
+        hi += step; step *= 1.5;
+        if (direct({ z: spec.z, T: hi, P: spec.P }, opts).H_J_mol > spec.H) break;
+      }
+      const Tsol = brent(t => direct({ z: spec.z, T: t, P: spec.P }, opts).H_J_mol - spec.H, lo[0], hi, { xtol: 1e-11, ftol: 1e-9 });
+      const r = direct({ z: spec.z, T: Tsol, P: spec.P }, opts);
+      return { ...r, spec: "PH", notes: [...(r.notes ?? []), "Solved as a T-P flash at the given enthalpy (the trial with nothing crystallized lay below the curve's measured range)."] };
+    }
+  };
+  let lastTried = 350;
+  return flash;
+
+  function direct(spec = {}, opts) {
     const z = spec.z;
     if (!Array.isArray(z) || !(z[i] > 0)) return fluidFlash(spec, opts);
     const has = k => spec[k] !== undefined && spec[k] !== null;
@@ -97,6 +124,7 @@ export function solidFlash(sys, i, fluidFlash) {
         for (let it = 0; it < 60; it++) {
           const hs = c > 0 ? hSolid(T, spec.P, null).h : 0;
           fl = fluidFlash({ z: zf, P: spec.P, H: (spec.H - c * hs) / (1 - c) }, opts);
+          lastTried = fl.T;
           if (Math.abs(fl.T - T) < 1e-10) break;
           T = fl.T;
         }

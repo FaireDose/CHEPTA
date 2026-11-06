@@ -7,7 +7,7 @@ curves), `src/equilibrium/sle.js` (the route and the solid's enthalpy), `src/sys
 
 ```js
 const sys = CHEPTA.system({ components: ["water", "terephthalic-acid"], model: "MOD-UNIFAC-2", solids: ["terephthalic-acid"] });
-CHEPTA.stream(sys, { flow_kg_h: { water: 800, "terephthalic-acid": 200 }, T_K: 360, P_kPa: 8000 })   // a slurry: liquid + solid
+CHEPTA.stream(sys, { flow_kg_h: { water: 800, "terephthalic-acid": 200 }, T_K: 360, P_kPa: 101.325 })   // a slurry: liquid + solid
 // in a flowsheet: thermo: { model: "MOD-UNIFAC-2", solids: ["terephthalic-acid"] }; on the workbench: Method, Solid in equilibrium
 ```
 
@@ -29,7 +29,9 @@ pressure letdown crystallizes it. Flowsheets that name no solid are calculated a
   ΔH_sol = −R d ln x_sat / d(1/T) (its van't Hoff slope; an ideal-solution reading of the curve, the measured route
   where no enthalpy of fusion is known). The result's notes name which.
 - **The crystals** leave a flash drum with the liquid, as a slurry; the **Crystallizer** separates them from the mother
-  liquor. Products take solids. The streams table shows each stream's solid (kg/h).
+  liquor. Products take solids. **A pump** takes a slurry: its power from the liquid phase only (the solid rides along,
+  as in DWSIM), with the warning SLURRY; a dilute dissolved component without a liquid density (TPA) is left out of the
+  volume, with the warning DENSITY_MISSING (docs/models/heat-exchangers.md). The streams table shows each stream's solid (kg/h).
 - **Refused, with the reason:** a P-S flash with a solid (compressors and expanders take fluids only); an equation of
   state; two solid-forming components; a solid without a curve or melting data; a temperature outside a curve's
   measured range.
@@ -47,6 +49,18 @@ its only route.
   (`validation/data/sle/<solid>.json`, `fetch_sle.py`), with its deviations and the sets left out with the reason.
 - **Your own (My data):** Solubility in a solvent: a table of temperatures and mole or mass fractions, with its source,
   tier "user" (`properties: { "<component>": { solubility: [{ solvent, points, source }] } }`).
+
+### All curves
+
+`solubility_curves.py` writes a curve for every solid + solvent pair of `validation/data/sle/` with at least 5 points
+over 10 K, except the pairs with an NRTL set fitted to the same solubilities (`fit_sle.py`, 88 sets since 2026-11-06):
+49 curves for 15 solids, listed with their deviations and the pairs held in [SOLUBILITY_CURVES.md](../SOLUBILITY_CURVES.md),
+with a table of every component's solid data (melting data, solid density, curves). Several articles are pooled by
+DATA_RULES.md, section 3: point weight 1 / (u √n), and each article's mean deviation within its stated uncertainty u
+(10 % where none is stated, this project's choice); otherwise the pair is held.
+
+**Solid densities:** ChemSep Lite 8.32's, taken as they are (`chemsep_solids.py`, record `solidDensity`, 100
+components; shown under Properties). No calculation uses them yet.
 
 ### Terephthalic acid in water
 
@@ -66,26 +80,27 @@ g/kg at 623.15 K (20 MPa), outside the curve's range. The curve ignores pressure
 ## The example: TPA recrystallized from hot water
 
 `examples/tpa-recrystallization.chepta.json`, Modified UNIFAC 2.0 (predicted; no fitted pairs of water with TPA; the
-solubility is the curve's either way): 1000 kg/h of a 20 % slurry at 360 K and 8 MPa, heated at 8 MPa to 547 K (it all
-dissolves), three adiabatic letdown drums at 4, 2 and 0.8 MPa (each boils off steam, cools and crystallizes), then a
+solubility is the curve's either way): 1000 kg/h of a 20 % slurry at 360 K and 1 atm, pumped to 8 MPa (2.42 kW; the
+liquid warms 2.5 K), heated at 8 MPa to 547 K (it all dissolves), three adiabatic letdown drums at 4, 2 and 0.8 MPa (each boils off steam, cools and crystallizes), then a
 cooling crystallizer at 373.15 K.
 
 | Stream | T, K | Solid, kg/h | Liquid's x_TPA (measured near T) |
 |---|---|---|---|
 | feed | 360.00 | 199.86 | |
+| pumped to 8 MPa | 362.54 | 199.85 | |
 | heated | 547.00 | 0 | |
 | drum at 4 MPa | 524.10 | 116.69 | the curve (0.0125 measured at 523.7 K) |
 | drum at 2 MPa | 485.68 | 183.56 | the curve |
 | drum at 0.8 MPa | 443.58 | 197.20 | the curve |
 | crystals out (373.15 K) | 373.15 | 199.83 | yield 0.99917 |
 
-The heater takes 228.0 kW and the crystallizer gives up 49.3 kW; both balances close.
+The pump takes 2.42 kW, the heater 225.6 kW and the crystallizer gives up 49.3 kW; both balances close.
 
 ## Checks (test/solids.test.js)
 
 - The curve against the 12 points it was fitted to (within 5 %), and its range refused outside 348.8-547.4 K.
 - **Independent reference** `validation/python/reference_solid_flash.py` (the ideal solution with the records'
-  enthalpies, the curve, scipy; no shared code), fixture `validation/fixtures/solid_flash.json`: the whole chain, every
+  enthalpies, the curve, scipy; no shared code), fixture `validation/fixtures/solid_flash.json`: the whole chain, the slurry pump (water's density from IAPWS-IF97 by the iapws package) within 1e-9, every
   state's T within 1e-5 K, solid and vapour within 1e-7, the duties within 1e-6, the yield within 1e-8.
 - The example: each drum's liquid at the measured solubility (Takebayashi's points interpolated) within 6 %, more
   crystals at each lower pressure, both balances closed.

@@ -1,0 +1,665 @@
+{
+ "solid": "stearic-acid",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-11-06",
+ "searched": "ThermoML-API full-text search for \"stearic acid\", \"octadecanoic acid\"; 68 records opened",
+ "about": "Solubility of the solid as the mole fraction of the solid in the saturated liquid (x_solute), converted from the stored quantity where needed (validation/python/fetch_sle.py); binary sets with a CHEPTA component as the solvent, at 110 kPa or less.",
+ "articles": {
+  "10.1016/j.tca.2016.02.008": {
+   "authors": [
+    "Eckert, K.-A.[Karl-Andreas]",
+    "Dasgupta, S.[Sunanda]",
+    "Selge, B.[Benjamin]",
+    "Ay, P.[Peter]"
+   ],
+   "title": "Solid liquid phase diagrams of binary fatty acid mixtures - Palmitic/stearic with oleic/linoleic/linolenic acid mixture",
+   "journal": "Thermochim. Acta",
+   "volume": "630",
+   "year": "2016",
+   "pages": "50-63"
+  },
+  "10.1021/acs.jced.6b00355": {
+   "authors": [
+    "Yui, K.[Kazuko]",
+    "Itsukaichi, Y.[Yasuhiro]",
+    "Kobayashi, T.[Takuro]",
+    "Tomoya, T.[Tsuji]",
+    "Fukui, K.[Keisuke]",
+    "Maeda, K.[Kouji]",
+    "Kuramochi, H.[Hidetoshi]"
+   ],
+   "title": "Solid Liquid Equilibria in the Binary Systems of Saturated Fatty Acids or Triglycerides (C12 to C18) + Hexadecane",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "62",
+   "year": "2017",
+   "pages": "35-43"
+  },
+  "10.1021/acs.jced.8b01044": {
+   "authors": [
+    "Bonassoli, Andrea Briones Goncalves",
+    "Oliveira, Grazielle",
+    "Sosa, Filipe Hobi Bordon",
+    "Rolemberg, Marlus Pinheiro",
+    "Mota, Marilsa Aparecida",
+    "Basso, Rodrigo Correa",
+    "Igarashi-Mafra, Luciana",
+    "Mafra, Marcos R."
+   ],
+   "title": "Solubility Measurement of Lauric, Palmitic, and Stearic Acids in Ethanol, n-Propanol, and 2-Propanol Using Differential Scanning Calorimetry",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "64",
+   "year": "2019",
+   "pages": "2084-2092"
+  },
+  "10.1021/je7006567": {
+   "authors": [
+    "Calvo, B.[Beatriz]",
+    "Cepeda, E. A.[Emilio A.]"
+   ],
+   "title": "Solubilities of Stearic Acid in Organic Solvents and in Azeotropic Solvent Mixtures",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "53",
+   "year": "2008",
+   "pages": "628-633"
+  }
+ },
+ "sets": [
+  {
+   "solvent": "oleic-acid",
+   "doi": "10.1016/j.tca.2016.02.008",
+   "set": 14,
+   "P_kPa": 101.7,
+   "rows": [
+    {
+     "T_K": 309.55,
+     "x_solute": 0.099,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 318.25,
+     "x_solute": 0.194,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 324.25,
+     "x_solute": 0.297,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 328.55,
+     "x_solute": 0.403,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 331.65,
+     "x_solute": 0.5,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 335.05,
+     "x_solute": 0.602,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 337.35,
+     "x_solute": 0.698,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 339.85,
+     "x_solute": 0.807,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 342.15,
+     "x_solute": 0.917,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "n-hexadecane",
+   "doi": "10.1021/acs.jced.6b00355",
+   "set": 18,
+   "P_kPa": 100.0,
+   "rows": [
+    {
+     "T_K": 343.3,
+     "x_solute": 0.88,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 340.7,
+     "x_solute": 0.76,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 338.3,
+     "x_solute": 0.65,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 336.0,
+     "x_solute": 0.54,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 333.8,
+     "x_solute": 0.44,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 331.3,
+     "x_solute": 0.35,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 330.0,
+     "x_solute": 0.3,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 328.6,
+     "x_solute": 0.26,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 326.9,
+     "x_solute": 0.21,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 325.4,
+     "x_solute": 0.17,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 322.9,
+     "x_solute": 0.12,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 319.6,
+     "x_solute": 0.08,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 314.0,
+     "x_solute": 0.04,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "2-propanol",
+   "doi": "10.1021/acs.jced.8b01044",
+   "set": 13,
+   "P_kPa": 100.0,
+   "rows": [
+    {
+     "T_K": 315.69,
+     "x_solute": 0.1,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 322.81,
+     "x_solute": 0.2001,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 327.67,
+     "x_solute": 0.3017,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 331.9,
+     "x_solute": 0.4001,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 334.82,
+     "x_solute": 0.5,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 337.0,
+     "x_solute": 0.6,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 339.14,
+     "x_solute": 0.7001,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 340.75,
+     "x_solute": 0.8,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 342.82,
+     "x_solute": 0.9001,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "ethanol",
+   "doi": "10.1021/acs.jced.8b01044",
+   "set": 14,
+   "P_kPa": 100.0,
+   "rows": [
+    {
+     "T_K": 320.28,
+     "x_solute": 0.1,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 326.15,
+     "x_solute": 0.2,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 330.09,
+     "x_solute": 0.3,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 332.33,
+     "x_solute": 0.4001,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 335.58,
+     "x_solute": 0.5006,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 337.51,
+     "x_solute": 0.5999,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 339.08,
+     "x_solute": 0.7,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 340.69,
+     "x_solute": 0.8,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 342.27,
+     "x_solute": 0.9,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "acetone",
+   "doi": "10.1021/je7006567",
+   "set": 1,
+   "P_kPa": 101.0,
+   "rows": [
+    {
+     "T_K": 291.95,
+     "x_solute": 0.0042,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 294.75,
+     "x_solute": 0.0055,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 298.05,
+     "x_solute": 0.0077,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 301.15,
+     "x_solute": 0.0103,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 304.85,
+     "x_solute": 0.0152,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 307.65,
+     "x_solute": 0.0204,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 311.05,
+     "x_solute": 0.0313,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 313.95,
+     "x_solute": 0.0456,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 316.45,
+     "x_solute": 0.0638,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 319.05,
+     "x_solute": 0.0845,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 320.35,
+     "x_solute": 0.1059,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 321.55,
+     "x_solute": 0.126,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 322.55,
+     "x_solute": 0.1475,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "ethanol",
+   "doi": "10.1021/je7006567",
+   "set": 2,
+   "P_kPa": 101.0,
+   "rows": [
+    {
+     "T_K": 291.45,
+     "x_solute": 0.0025,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 294.95,
+     "x_solute": 0.0031,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 299.85,
+     "x_solute": 0.0057,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 304.85,
+     "x_solute": 0.0103,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 309.45,
+     "x_solute": 0.018,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 312.35,
+     "x_solute": 0.028,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 314.75,
+     "x_solute": 0.0406,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 316.25,
+     "x_solute": 0.0498,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 316.85,
+     "x_solute": 0.056,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 318.55,
+     "x_solute": 0.0731,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 319.95,
+     "x_solute": 0.0926,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 321.95,
+     "x_solute": 0.1241,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 323.65,
+     "x_solute": 0.1546,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "n-heptane",
+   "doi": "10.1021/je7006567",
+   "set": 3,
+   "P_kPa": 101.0,
+   "rows": [
+    {
+     "T_K": 293.45,
+     "x_solute": 0.0023,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 297.35,
+     "x_solute": 0.0053,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 300.65,
+     "x_solute": 0.0089,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 304.65,
+     "x_solute": 0.0163,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 307.35,
+     "x_solute": 0.0227,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 309.85,
+     "x_solute": 0.0366,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 313.45,
+     "x_solute": 0.0562,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 314.55,
+     "x_solute": 0.0661,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 315.85,
+     "x_solute": 0.0779,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 317.55,
+     "x_solute": 0.1005,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 319.35,
+     "x_solute": 0.1279,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 322.05,
+     "x_solute": 0.1786,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 324.85,
+     "x_solute": 0.2401,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "n-hexane",
+   "doi": "10.1021/je7006567",
+   "set": 4,
+   "P_kPa": 101.0,
+   "rows": [
+    {
+     "T_K": 293.75,
+     "x_solute": 0.0034,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 294.95,
+     "x_solute": 0.0045,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 298.45,
+     "x_solute": 0.0073,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 300.65,
+     "x_solute": 0.0103,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 303.55,
+     "x_solute": 0.0161,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 307.25,
+     "x_solute": 0.0295,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 310.05,
+     "x_solute": 0.046,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 313.45,
+     "x_solute": 0.071,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 315.05,
+     "x_solute": 0.0856,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 316.75,
+     "x_solute": 0.1076,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 319.05,
+     "x_solute": 0.1423,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 321.55,
+     "x_solute": 0.1873,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 323.55,
+     "x_solute": 0.2397,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "2-propanol",
+   "doi": "10.1021/je7006567",
+   "set": 5,
+   "P_kPa": 101.0,
+   "rows": [
+    {
+     "T_K": 292.35,
+     "x_solute": 0.0099,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 295.75,
+     "x_solute": 0.0124,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 299.65,
+     "x_solute": 0.0172,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 302.15,
+     "x_solute": 0.0231,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 303.75,
+     "x_solute": 0.0282,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 308.35,
+     "x_solute": 0.0452,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 311.25,
+     "x_solute": 0.0625,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 313.35,
+     "x_solute": 0.0814,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 315.45,
+     "x_solute": 0.1027,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 317.15,
+     "x_solute": 0.1223,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 318.75,
+     "x_solute": 0.1435,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 321.05,
+     "x_solute": 0.1789,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 321.95,
+     "x_solute": 0.2101,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    }
+   ]
+  }
+ ]
+}

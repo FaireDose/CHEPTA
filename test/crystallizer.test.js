@@ -132,3 +132,24 @@ test("the workbench: Crystallizer under the Separator button, placed with its pr
   assert.deepEqual(back.flowsheet.blocks.find(b => b.id === "CR1").spec, fs.blocks.find(b => b.id === "CR1").spec);
   assert.throws(() => readProject(JSON.stringify({ ...doc, fugacity_project: 5 })), /crystallizer, evaporator, extraction and membrane blocks need format 6/);
 });
+
+test("a slurry outlet: the crystals carry a share of the mother liquor; the balances and the duty are those of dry crystals", () => {
+  const feed = feedOf({ feed_kg_h: { water: 800, "succinic-acid": 200 }, feed_T_K: 343.15 });
+  const dry = crystallizer({ solute: "succinic-acid", T_K: 288.15 }, feed);
+  for (const spec of [{ slurry_liquid_kg_per_kg: 0.5 }, { slurry_solids_fraction: 2 / 3 }]) {
+    const r = crystallizer({ solute: "succinic-acid", T_K: 288.15, ...spec }, feed);
+    const sl = r.outlets.crystals, cr = dry.outlets.crystals.mass_kg_h;
+    // the slurry: the dry crystals plus half their mass of mother liquor, as a solid and a liquid phase
+    assert.ok(Math.abs(sl.mass_kg_h - 1.5 * cr) < 1e-9 * cr, `${JSON.stringify(spec)}: slurry ${sl.mass_kg_h} vs ${1.5 * cr}`);
+    assert.deepEqual(sl.phases.map(p => p.type).sort(), ["liquid", "solid"]);
+    assert.ok(Math.abs(r.state.slurry_liquid_kg_h - 0.5 * cr) < 1e-9 * cr);
+    // the clear liquor is the rest, of the same composition
+    assert.ok(Math.abs(r.outlets.liquor.mass_kg_h + sl.mass_kg_h - dry.outlets.liquor.mass_kg_h - cr) < 1e-9);
+    r.outlets.liquor.z.forEach((v, k) => assert.ok(Math.abs(v - dry.outlets.liquor.z[k]) < 1e-12));
+    assert.ok(Math.abs(r.duty_kW - dry.duty_kW) < 1e-9 && r.balance.material < 1e-12 && Math.abs(r.balance.energy_kW) < 1e-9);
+    assert.equal(r.state.crystals_kmol_h, dry.state.crystals_kmol_h);
+  }
+  assert.throws(() => crystallizer({ solute: "succinic-acid", T_K: 288.15, slurry_liquid_kg_per_kg: 100 }, feed), /more than there is/);
+  assert.throws(() => crystallizer({ solute: "succinic-acid", T_K: 288.15, slurry_liquid_kg_per_kg: 1, slurry_solids_fraction: 0.5 }, feed), /not both/);
+  assert.throws(() => crystallizer({ solute: "succinic-acid", T_K: 288.15, slurry_solids_fraction: 0 }, feed), /above 0 and at most 1/);
+});

@@ -1,0 +1,80 @@
+{
+ "solid": "phenol",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-11-06",
+ "searched": "ThermoML-API full-text search for \"phenol\"; 195 records opened",
+ "about": "Solubility of the solid as the mole fraction of the solid in the saturated liquid (x_solute), converted from the stored quantity where needed (validation/python/fetch_sle.py); binary sets with a CHEPTA component as the solvent, at 110 kPa or less.",
+ "articles": {
+  "10.1016/j.fluid.2005.03.027": {
+   "authors": [
+    "Domanska, U.[Urszula]",
+    "Lachwa, J.[Joanna]"
+   ],
+   "title": "(Solid + liquid) phase equilibria and solid-compound formation in (N-methyl-2-pyrrolidinone + phenol, or 3,5-dimethylphenol)",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "232",
+   "year": "2005",
+   "pages": "214-218"
+  },
+  "10.1016/j.fluid.2017.04.022": {
+   "authors": [
+    "Cesari, L.[Laetitia]",
+    "Canabady-Rochelle, L.[Laetitia]",
+    "Mutelet, F.[Fabrice]"
+   ],
+   "title": "Extraction of phenolic compounds from aqueous solution using choline bis(trifluoromethylsulfonyl)imide",
+   "journal": "Fluid Phase Equilib.",
+   "volume": "446",
+   "year": "2017",
+   "pages": "28-35"
+  }
+ },
+ "sets": [
+  {
+   "solvent": "nmp",
+   "doi": "10.1016/j.fluid.2005.03.027",
+   "set": 4,
+   "P_kPa": 101.325,
+   "rows": [
+    {
+     "T_K": 304.52,
+     "x_solute": 0.9143,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 299.07,
+     "x_solute": 0.8898,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 294.8,
+     "x_solute": 0.8709,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 290.82,
+     "x_solute": 0.8577,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    },
+    {
+     "T_K": 286.18,
+     "x_solute": 0.8427,
+     "quantity": "Solid-liquid equilibrium temperature against mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "water",
+   "doi": "10.1016/j.fluid.2017.04.022",
+   "set": 11,
+   "P_kPa": null,
+   "rows": [
+    {
+     "T_K": 298.15,
+     "x_solute": 0.803,
+     "quantity": "Mole fraction"
+    }
+   ]
+  }
+ ]
+}
