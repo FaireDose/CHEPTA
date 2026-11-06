@@ -211,6 +211,28 @@ test("a reboiled stripper (H5) through solve_column: one specification, the refe
   assert.equal(r.value.column.profile.at(-1).name, "reboiler");
 });
 
+test("PR absorber of CO2 in methanol: solves (until 2026-11-06 a Newton step of the flash sent a K-value to overflow and the column failed with 'Mole fractions must be non-negative')", () => {
+  // the method on purpose: Peng-Robinson with the pair's databank k_ij, the case that failed
+  const r = run({ capability: "solve_column", input: { components: ["carbon-dioxide", "methanol"], thermo: { model: "PR" },
+    feed: { flow_kmol_h: { methanol: 360 }, T_K: 300, P_kPa: 2000 }, gas_feed: { flow_kmol_h: { "carbon-dioxide": 72 }, T_K: 300, P_kPa: 2000 },
+    column: { configuration: "absorber", stages: 5 } } });
+  assert.equal(r.outcome, "ok", r.error?.message);
+  const v = r.value, top = v.distillate.flow_kmol_h, bot = v.bottoms.flow_kmol_h;
+  for (const id of ["carbon-dioxide", "methanol"]) {
+    const fed = (v.feed.flow_kmol_h[id] ?? 0) + (v.gas_feed.flow_kmol_h[id] ?? 0);
+    assert.ok(Math.abs(top[id] + bot[id] - fed) < 1e-6 * fed, `${id} balance`);
+  }
+  // CO2 is absorbed, but the bottoms hold no more than a liquid saturated by CO2 at the bottom stage's T and P (the
+  // composition whose PR bubble pressure is the column pressure)
+  const x = bot["carbon-dioxide"] / (bot["carbon-dioxide"] + bot.methanol);
+  assert.ok(x > 0.01, `x_CO2 = ${x}`);
+  const T = v.column.profile.at(-1).T_K;
+  const s = system({ components: ["carbon-dioxide", "methanol"], model: "PR" });
+  let lo = 1e-4, hi = 0.5;
+  for (let k = 0; k < 50; k++) { const m = (lo + hi) / 2; if (s.bubbleP([m, 1 - m], T).P < 2000) lo = m; else hi = m; }
+  assert.ok(x <= lo * 1.001, `x_CO2 = ${x.toFixed(4)} above saturation ${lo.toFixed(4)} at ${T.toFixed(2)} K`);
+});
+
 test("methods for a gas dissolving in an absorber's liquid (docs/METHOD_SELECTION.md, step 2; proposal 0017; the maintainer, 2026-11-04)", () => {
   // the methods are chosen on purpose here: each shows what is allowed, warned or refused
   const absorber = (components, thermo, liquid, gas, P = 2000) => run({ capability: "solve_column", input: { components, thermo,

@@ -60,8 +60,13 @@ On the choices of docs/decisions/2026-11-04-13-kij-high-pressure.md:
   - (c) reopen proposal 0018 for the separator's liquid (a polar liquid of methanol and water with dissolved gases).
 - **CO2 + methanol**: a + b/T at 7.1-7.3 % is close to the gate but outside it; the ChemSep constant k_ij stays the
   default, unchanged.
-- **A finding beside the task**: an absorber of CO2 in methanol with PR (5 stages, 2 MPa, 300 K) fails with "Mole
-  fractions must be non-negative with a positive sum" (on main as well; ChemSep's k_ij). Not fixed here.
+- **A finding beside the task, fixed** (the maintainer, 2026-11-06): an absorber of CO2 in methanol with PR (5 stages,
+  2 MPa, 300 K) failed with "Mole fractions must be non-negative with a positive sum" (on main as well). A trial step
+  of the equation-of-state flash's Newton method (`newtonEos`, `src/equilibrium/flash.js`) sent a K-value to overflow,
+  and the phase compositions it gave (NaN) reached the equation of state; such a trial is now rejected like any other
+  bad step. `test/columns-absorber.test.js` reproduces the case: the column solves, its balances close, and the
+  bottoms hold no more CO2 than a liquid saturated at the bottom stage's T and P. The a + b/T option (b) is on hold
+  (the maintainer, 2026-11-06: 14-15 % in pressure is too high; weighed against reopening proposal 0018).
 
 ## To check against the source
 
