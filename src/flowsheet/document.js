@@ -29,7 +29,7 @@ import { checkReactions } from "../reactions/reaction.js";
 const MODELS = ["NRTL", "UNIQUAC", "WILSON", "MOD-UNIFAC-2", "ideal", "PR", "SRK"];
 const BLOCK_KEYS = ["id", "type", "x", "y", "spec", "energy", "label"];
 // a flowsheet's property method: an unknown key is refused (proposal 0015, W8, the authoring contract)
-const THERMO_KEYS = ["model", "vapour", "sets", "prefer"];
+const THERMO_KEYS = ["model", "vapour", "sets", "prefer", "solids"];
 const STREAM_KEYS = ["id", "from", "to", "tear", "guess", "label"];
 const ENERGY_KEYS = ["id", "from", "to", "duty_kW", "tear", "guess", "label", "x", "y"];
 
@@ -63,7 +63,8 @@ export function normalizeFlowsheet(doc, userData = null) {
   if (!model) throw fail("BAD_INPUT", `flowsheet.thermo.model "${t.model}" is not one of ${MODELS.join(", ")}.`);
   const vapour = t.vapour == null ? "ideal" : ["ideal", "PR", "SRK"].find(v => v.toLowerCase() === String(t.vapour).toLowerCase());
   if (!vapour) throw fail("BAD_INPUT", `flowsheet.thermo.vapour "${t.vapour}" is not one of ideal, PR, SRK.`);
-  const thermo = { model, vapour, ...(t.sets ? { sets: { ...t.sets } } : {}), ...(t.prefer ? { prefer: t.prefer } : {}) };
+  if (t.solids != null && !(Array.isArray(t.solids) && t.solids.every(s => typeof s === "string"))) throw fail("BAD_INPUT", "flowsheet.thermo.solids must be a list of components that may form a solid, e.g. [\"terephthalic-acid\"].");
+  const thermo = { model, vapour, ...(t.sets ? { sets: { ...t.sets } } : {}), ...(t.prefer ? { prefer: t.prefer } : {}), ...(t.solids?.length ? { solids: t.solids.slice() } : {}) };
   const objList = (list, keys, what) => {
     if (list == null) return [];
     if (!Array.isArray(list)) throw fail("BAD_INPUT", `flowsheet.${what} must be a list.`);
@@ -95,7 +96,7 @@ export function flowsheetSystem(doc, userData = null) {
   const t = d.thermo;
   const eos = t.model === "PR" || t.model === "SRK";
   return system({ components: d.components, model: t.model, ...(eos ? {} : { vapour: t.vapour }), ...(t.sets ? { sets: t.sets } : {}), ...(t.prefer ? { prefer: t.prefer } : {}),
-    ...(userData ? { userData } : {}) });
+    ...(t.solids ? { solids: t.solids } : {}), ...(userData ? { userData } : {}) });
 }
 
 /** Status of a flowsheet document: setup, structure and degrees of freedom (no calculation). */

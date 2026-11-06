@@ -562,7 +562,16 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
         by === "T" ? T("T_K", "Temperature") : P("P_kPa", "Pressure")]
         : [T("T_K", "Temperature"), P("P_kPa", "Outlet pressure")]),
       h("p", { class: "fa-in-hint" }, evap ? "The vapour is the mother liquor's equilibrium vapour at its bubble point; connect the vapour outlet." : "Pressure empty: the feed's."),
-      h("p", { class: "fa-in-hint" }, "The solubility needs the solute's melting data and an activity model (the flowsheet's). The crystals' enthalpy is the liquid's minus the enthalpy of fusion; they go to a Product.")));
+      h("p", { class: "fa-in-hint" }, "The solubility needs the solute's melting data or a measured solubility curve, and an activity model (the flowsheet's). The crystals' enthalpy is the liquid's minus the enthalpy of fusion (or of solution, with a curve)."),
+      // the slurry outlet: how much mother liquor leaves with the crystals
+      (() => {
+        const mode = spec.slurry_solids_fraction != null ? "w" : spec.slurry_liquid_kg_per_kg != null ? "r" : "dry";
+        return h("div", {}, segRow("Crystals leave", [["dry", "Dry"], ["r", "With liquid per kg"], ["w", "As a slurry of"]], mode, v => setS({
+          slurry_liquid_kg_per_kg: v === "r" ? spec.slurry_liquid_kg_per_kg ?? 0.5 : null, slurry_solids_fraction: v === "w" ? spec.slurry_solids_fraction ?? 0.5 : null }), `fs-crslurry-${b.id}`),
+          mode === "r" ? plain("slurry_liquid_kg_per_kg", "Mother liquor with the crystals", "kg per kg of crystals", "0.5")
+            : mode === "w" ? plain("slurry_solids_fraction", "Crystals' mass fraction of the slurry", "kg/kg", "0.5") : null,
+          h("p", { class: "fa-in-hint" }, "The crystals outlet carries this share of the mother liquor (a slurry); the rest leaves clear by the liquor outlet. A component separator can then act as the filter."));
+      })()));
   } else if (b.type === "evaporator") {
     // proposal 0015, M3, step 10: the effects' pressures, the steam, and the steam flow or the product's concentration
     const Ps = Array.isArray(spec.P_kPa) ? spec.P_kPa : spec.P_kPa == null ? [] : [spec.P_kPa];
@@ -1232,6 +1241,16 @@ function methodSection({ state, set, fs, eos, setThermo, inputsSection, uid, pro
     // the pair parameter sets: the same choice as the diagrams and the flash
     PAIR_MODELS.includes(fs.thermo.model) ? h("p", { class: "fa-in-hint", "data-fk": "fs-sets" },
       `Pair parameter sets: ${setsLabel(state)}. The rule for every pair is in the Library; a pair's own set is chosen in the Inputs panel of the phase-equilibrium diagrams. The flowsheet uses the same choice.`) : null,
+    // a component that may form a solid in equilibrium in every stream (proposal 0015, section 5): one for now
+    !eos ? (() => {
+      const can = fs.components.filter(c => { try { const r = componentRecord(c, userOverlay(state)); return !!(r?.solubility?.length || (r?.fusion && r.fusion.available !== false)); } catch { return false; } });
+      if (!can.length) return null;
+      const cur = fs.thermo.solids?.[0] ?? "";
+      return h("div", {}, selectField("Solid in equilibrium", [["", "None"], ...can.map(c => [c, nameOf(c)])], cur, v => setThermo({ solids: v ? [v] : undefined }), `fs-solids-${uid}`, uid),
+        h("p", { class: "fa-in-hint", "data-fk": "fs-solids-hint" }, cur
+          ? `${nameOf(cur)} crystallizes where the liquid is saturated in it and dissolves where the liquid can take it, in every stream: heating or adding solvent dissolves it, cooling or a pressure letdown crystallizes it. Its solubility: the measured curve in its solvent where there is one, else its melting data. The crystals leave with the liquid (a slurry); the Crystallizer separates them.`
+          : "None: no component forms a solid in the streams (the Crystallizer still makes crystals)."));
+    })() : null,
     // on the roadmap, for other kinds of mixture: locked, with what each is for (other models: in the lists above)
     h("div", { class: "fa-fs-later", role: "note" },
       h("div", { class: "fa-in-hint" }, "Not available yet:"),
@@ -1924,6 +1943,7 @@ export function resultsPanel({ state, f, sol, u, set }) {
           ["Crystals", `${fmtShort(r.state.crystals_kg_h, 5)} kg/h (${fmtShort(r.state.crystals_kmol_h, 5)} kmol/h)`],
           ["Solubility (mole fraction)", `${fmtShort(r.state.solubility_x, 5)}, γ ${fmtShort(r.state.gamma, 4)}`],
           ...(r.state.mode === "evaporative" ? [["Solvent evaporated", `${fmtShort(r.state.evaporated_kg_h, 5)} kg/h`]] : []),
+          ...(r.state.slurry_liquid_kg_h > 0 ? [["Mother liquor with the crystals", `${fmtShort(r.state.slurry_liquid_kg_h, 5)} kg/h`]] : []),
         ] : []),
         ...(b.type === "evaporator" && r.state ? [
           [r.state.target ? "Steam (for the concentration)" : "Steam", `${fmtShort(r.state.steam_kg_h, 5)} kg/h at ${fmtP(r.state.steam_P_kPa, u)} (${fmtTemp(r.state.steam_T_K, u, 2)})`],
@@ -1964,7 +1984,9 @@ export function resultsPanel({ state, f, sol, u, set }) {
     if (s) {
       out.push(kvList([
         ["Temperature", s.T_K == null ? "–" : fmtTemp(s.T_K, u, 2)], ["Pressure", s.P_kPa == null ? "–" : fmtP(s.P_kPa, u)],
-        ["Vapour fraction", s.VF == null ? "–" : fmtShort(s.VF, 4)], ["Molar flow", `${fmtShort(flowToDisplay(s.F_kmol_h, u), 5)} ${u.flow ?? "kmol/h"}`],
+        ["Vapour fraction", s.VF == null ? "–" : fmtShort(s.VF, 4)],
+        ...(s.phases?.some(p => p.type === "solid") ? [["Solid", `${fmtShort(massFlowToDisplay(solidMass(fs, s), u), 5)} ${u.massFlow ?? "kg/h"}${s.phases.some(p => p.type === "solid" && p.equilibrium) ? " (crystals in equilibrium)" : " (inert)"}`]] : []),
+        ["Molar flow", `${fmtShort(flowToDisplay(s.F_kmol_h, u), 5)} ${u.flow ?? "kmol/h"}`],
         ["Mass flow", `${fmtShort(massFlowToDisplay(s.mass_kg_h, u), 5)} ${u.massFlow ?? "kg/h"}`], ["Enthalpy flow", kWText(s.H_kW, u, 5)],
         ...fs.components.map(c => [nameOf(c), `${fmtShort(flowToDisplay(s.flow_kmol_h[c], u), 5)} ${u.flow ?? "kmol/h"}`]),
       ]));
@@ -2004,6 +2026,8 @@ function streamRows(fs, res, u, state) {
     ["Temperature", tLabel(u), S.map(s => (s.T_K == null ? null : tToDisplay(s.T_K, u)))],
     ["Pressure", u.P, S.map(s => (s.P_kPa == null ? null : pToDisplay(s.P_kPa, u)))],
     ["Vapour fraction", "mol/mol", S.map(s => s.VF)],
+    // crystals in equilibrium (proposal 0015, section 5) or an inert solid: their mass flow, where a stream has any
+    ...(S.some(s => s.phases?.some(p => p.type === "solid")) ? [["Solid", u.massFlow ?? "kg/h", S.map(s => massFlowToDisplay(solidMass(fs, s), u))]] : []),
     ["Molar flow", u.flow ?? "kmol/h", S.map(s => flowToDisplay(s.F_kmol_h, u))],
     ["Mass flow", u.massFlow ?? "kg/h", S.map(s => massFlowToDisplay(s.mass_kg_h, u))],
     ["Enthalpy flow", u.duty ?? "kW", S.map(s => (s.H_kW == null ? null : dutyToDisplay(s.H_kW, u)))],
@@ -2013,7 +2037,12 @@ function streamRows(fs, res, u, state) {
   ];
   return { ids, rows };
 }
-const molarMassOf = c => byId().get(c)?.MW ?? NaN;
+// the component list carries no molar masses: the component's record does (found 2026-11-05: the mass-fraction rows were
+// empty on the mass basis)
+const molarMassOf = c => { try { return byId().get(c)?.MW ?? componentRecord(c, drawing)?.MW ?? NaN; } catch { return NaN; } };
+/** The mass flow (kg/h) of a stream's solid phases: crystals in equilibrium or an inert solid. */
+const solidMass = (fs, s) => (s.phases ?? []).filter(p => p.type === "solid")
+  .reduce((a, p) => a + p.fraction * s.F_kmol_h * p.composition.reduce((b, x, i) => b + x * molarMassOf(fs.components[i]), 0), 0);
 
 /** The column's result table: the shortcut's condenser, feed stage and reboiler, or the rigorous column's every stage. */
 export function columnTable({ fs, b, r, u }) {

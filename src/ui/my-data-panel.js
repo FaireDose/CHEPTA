@@ -30,7 +30,8 @@ import { pairSection, groupsSection } from "./my-data-pairs-groups.js";
 
 /** Property labels, the vapour pressure included. */
 export const PROPERTY_LABEL = { ...Object.fromEntries(Object.entries(PROPERTIES).map(([k, p]) => [k, p.label])), vapourPressure: "Vapour pressure",
-  solidHeatCapacity: "Solid heat capacity", fusion: "Melting data (melting temperature and enthalpy of fusion)" };
+  solidHeatCapacity: "Solid heat capacity", fusion: "Melting data (melting temperature and enthalpy of fusion)",
+  solubility: "Solubility in a solvent (a measured curve)" };
 // melting data: two numbers, no fit (the solid-liquid equilibrium of src/equilibrium/sle.js)
 const FUSION_T_UNITS = { "°C": t => t + 273.15, K: t => t, "°F": t => (t - 32) * 5 / 9 + 273.15 };
 const FUSION_H_UNITS = { "kJ/mol": (h) => 1000 * h, "J/mol": (h) => h, "kJ/kg": (h, MW) => h * MW, "J/g": (h, MW) => h * MW, "cal/mol": (h) => 4.184 * h };
@@ -178,9 +179,9 @@ function propertyForm(env, m, draw) {
   const isUser = p.comp?.startsWith(USER_PREFIX);
   const nonvolatile = p.comp ? pure(p.comp, { userData: ud }).nonvolatile : false;
   // an inert solid of one's own takes only its solid heat capacity; the others take the fluid properties
-  const props = record?.solid ? ["solidHeatCapacity"] : [...PROPERTY_ORDER.filter(k => !(k === "vapourPressure" && nonvolatile)), "fusion"];
+  const props = record?.solid ? ["solidHeatCapacity"] : [...PROPERTY_ORDER.filter(k => !(k === "vapourPressure" && nonvolatile)), "fusion", "solubility"];
   if (!props.includes(p.property)) p.property = props[0];
-  const units = p.property === "fusion" ? [] : Object.keys(INPUT_UNITS[p.property]);
+  const units = p.property === "fusion" || p.property === "solubility" ? [] : Object.keys(INPUT_UNITS[p.property]);
   if (!units.includes(p.unit)) p.unit = units[0];
   const reset = () => { p.fit = null; p.error = ""; };
   const picker = componentPicker({
@@ -198,10 +199,11 @@ function propertyForm(env, m, draw) {
     h("p", { class: "fa-in-hint" }, "Any component of the databank, or one of your own; not water, which is calculated from IAPWS-IF97, the international standard."),
     h("div", { class: "fa-in-row" },
       select("prop", "Property", p.property, props.map(k => [k, PROPERTY_LABEL[k]]), v => { p.property = v; reset(); }),
-      p.property === "fusion" ? null
+      p.property === "fusion" || p.property === "solubility" ? null
         : select("mode", "Enter", p.mode, [["table", "a table of measured points"], ["coef", "the coefficients of an equation"]], v => { p.mode = v; reset(); })),
   ];
   if (p.property === "fusion") return [...out, ...fusionFields(env, m, p, record, isUser, draw)];
+  if (p.property === "solubility") return [...out, ...solubilityFields(env, m, p, record, isUser, comps, draw)];
   if (p.mode === "table") {
     const ta = h("textarea", { class: "fa-csv-text", rows: 6, id: `fa-md-text-${env.uid}`, "data-fk": "mydata-table",
       placeholder: "T\tvalue\n20\t1.2091\n40\t1.1935\n60\t1.1772", on: { input: ev => { p.text = ev.target.value; p.fit = null; } } });
@@ -305,6 +307,59 @@ function fusionFields(env, m, p, record, isUser, draw) {
     databank && databank.Tm_K ? h("p", { class: "fa-in-hint" }, `The databank has ${fmtShort(databank.Tm_K, 5)} K and ${fmtShort(databank.Hfus_J_mol / 1000, 4)} kJ/mol; yours replaces them in this project.`) : null,
     h("div", { class: "fa-in-row fa-wrap" }, num("T", "Melting temperature"), unit("Tunit", "in", Object.keys(FUSION_T_UNITS))),
     h("div", { class: "fa-in-row fa-wrap" }, num("H", "Enthalpy of fusion"), unit("Hunit", "in", Object.keys(FUSION_H_UNITS))),
+    h("label", { class: "fa-field fa-field-wide", for: src.id }, h("span", {}, "Source (where these numbers come from)"), src),
+    pubFields(env, p, "p"),
+    h("div", { class: "fa-in-actions" },
+      h("button", { type: "button", class: "fa-mini", "data-fk": "mydata-save", disabled: !p.comp, on: { click: save } }, icon("check", 15), "Add to this project")),
+  ];
+  if (p.error) out.push(warning(p.error, { attrs: { role: "alert", "data-fk": "mydata-error" } }));
+  return out;
+}
+
+/**
+ * A measured solubility curve (proposal 0015, section 5): the solute's mole fraction in its saturated solution in one
+ * solvent against temperature; used in place of the melting-point equation, only inside its temperatures
+ * (src/thermo/solubility-curve.js, "points": ln x linear in 1/T between the points).
+ */
+function solubilityFields(env, m, p, record, isUser, comps, draw) {
+  const f = p.sol ??= { solvent: "water", Tunit: "°C", basis: "mole", text: "" };
+  const solvents = [["water", "Water"], ...comps.filter(c => c.id !== p.comp).map(c => [c.id, c.name])];
+  const sel = (k, label, options) => {
+    const id = `fa-md-s${k}-${env.uid}`;
+    return h("label", { class: "fa-field", for: id }, h("span", {}, label),
+      h("select", { id, "data-fk": `mydata-sol-${k}`, on: { change: ev => { f[k] = ev.target.value; } } },
+        ...options.map(([v, t]) => h("option", { value: v, selected: v === f[k] }, t))));
+  };
+  const ta = h("textarea", { class: "fa-csv-text", rows: 6, id: `fa-md-stext-${env.uid}`, "data-fk": "mydata-sol-table",
+    placeholder: "T\tx\n100\t0.0000309\n150\t0.000238\n200\t0.00172", on: { input: ev => { f.text = ev.target.value; } } });
+  ta.value = f.text;
+  const src = h("input", { type: "text", id: `fa-md-src-${env.uid}`, value: p.source, style: "width:100%", "data-fk": "mydata-source",
+    placeholder: "own measurement, 2026", on: { input: ev => { p.source = ev.target.value; } } });
+  const save = () => {
+    p.error = "";
+    try {
+      const rows = f.text.split(/\r?\n/).map(l => l.trim()).filter(Boolean).map(l => l.split(/[\t;, ]+/).map(v => Number(v.replace(",", "."))))
+        .filter(r => r.length >= 2 && r.every(Number.isFinite));
+      if (rows.length < 2) throw new Error("Give at least two points: a temperature and the solubility on each line.");
+      if (!p.source.trim()) { p.error = "Write where these numbers come from in Source, then save."; draw(); env.focus?.("mydata-source"); return; }
+      const ud0 = userOverlay(env.get());
+      const Ms = pure(p.comp, { userData: ud0 }).MW, Mv = pure(f.solvent, { userData: ud0 }).MW;
+      const points = rows.map(([t, v]) => [FUSION_T_UNITS[f.Tunit](t), f.basis === "mass" ? (v / Ms) / (v / Ms + (1 - v) / Mv) : v]);
+      const rec = { solvent: f.solvent, equation: "points", points, source: sourceOf(p) };
+      const ud = env.get().userData;
+      const keep = (isUser ? ud.components[p.comp]?.properties?.solubility : ud?.properties?.[p.comp]?.solubility) ?? [];
+      const list = [...keep.filter(c => c.solvent !== f.solvent), rec];
+      env.set({ userData: putUserData(ud, isUser ? componentPiece(ud, p.comp, "solubility", list) : { properties: { [p.comp]: { solubility: list } } }) });
+      m.note = `Added to this project: ${record?.name ?? p.comp}, its solubility in ${solvents.find(s => s[0] === f.solvent)?.[1] ?? f.solvent} (${points.length} points, ${fmtShort(points[0][0], 5)}-${fmtShort(points.at(-1)[0], 5)} K). The solubility and the crystallizer use it inside those temperatures; it is saved with the project (File, Save).`;
+      m.prop = { ...blankProperty(), comp: p.comp, property: "solubility" };
+    } catch (err) { p.error = `Not saved: ${err.message}`; }
+    draw();
+  };
+  const out = [
+    h("p", { class: "fa-in-hint" }, "The measured solubility of this solid in one solvent: the composition of the saturated solution against temperature. It is used in place of the melting-point equation, only inside its temperatures (it is not extrapolated); between the points ln x is linear in 1/T. Its slope gives the enthalpy of solution, which the energy balance of the solid uses."),
+    h("div", { class: "fa-in-row fa-wrap" }, sel("solvent", "Solvent", solvents), sel("Tunit", "Temperature in", Object.keys(FUSION_T_UNITS).map(u => [u, u])),
+      sel("basis", "Solubility as", [["mole", "mole fraction"], ["mass", "mass fraction"]])),
+    h("label", { class: "fa-field fa-field-wide", for: ta.id }, h("span", {}, "Points: temperature and solubility on each line"), ta),
     h("label", { class: "fa-field fa-field-wide", for: src.id }, h("span", {}, "Source (where these numbers come from)"), src),
     pubFields(env, p, "p"),
     h("div", { class: "fa-in-actions" },

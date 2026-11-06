@@ -1,0 +1,62 @@
+{
+ "solid": "fructose",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-11-06",
+ "searched": "ThermoML-API full-text search for \"D-fructose\", \"fructose\"; 52 records opened",
+ "about": "Solubility of the solid as the mole fraction of the solid in the saturated liquid (x_solute), converted from the stored quantity where needed (validation/python/fetch_sle.py); binary sets with a CHEPTA component as the solvent, at 110 kPa or less.",
+ "articles": {
+  "10.1021/je400471m": {
+   "authors": [
+    "Crestani, C.[Carlos]",
+    "Bernardo, A.[Andre]",
+    "Costa, C.[Caliane]",
+    "Giulietti, M.[Marco]"
+   ],
+   "title": "Fructose solubility in mixed (ethanol + water) solvent:  experimental data and comparison among different  thermodynamic models.",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "58",
+   "year": "2013",
+   "pages": "3039-3045"
+  }
+ },
+ "sets": [
+  {
+   "solvent": "water",
+   "doi": "10.1021/je400471m",
+   "set": 5,
+   "P_kPa": 98.0,
+   "rows": [
+    {
+     "T_K": 298.15,
+     "x_solute": 0.28443935991771174,
+     "quantity": "Mass fraction",
+     "u_rel": 0.025031
+    },
+    {
+     "T_K": 303.15,
+     "x_solute": 0.30722525324945094,
+     "quantity": "Mass fraction",
+     "u_rel": 0.02451
+    },
+    {
+     "T_K": 313.15,
+     "x_solute": 0.34764267063588866,
+     "quantity": "Mass fraction",
+     "u_rel": 0.023753
+    },
+    {
+     "T_K": 323.15,
+     "x_solute": 0.39256162657931154,
+     "quantity": "Mass fraction",
+     "u_rel": 0.023095
+    },
+    {
+     "T_K": 333.15,
+     "x_solute": 0.4628056392910908,
+     "quantity": "Mass fraction",
+     "u_rel": 0.022321
+    }
+   ]
+  }
+ ]
+}

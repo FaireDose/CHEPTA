@@ -16,6 +16,7 @@ import { refuseNotUsableLiquid } from "./thermo/eos/system.js";
 import { solidSolubility, solubilityCurve, liquidusT, sleBinary } from "./equilibrium/sle.js";
 import { fail } from "./util/errors.js";
 import { withInertSolids } from "./equilibrium/inert-solids.js";
+import { solidFlash } from "./equilibrium/solid-flash.js";
 import { findComponent, componentRecord } from "./thermo/components.js";
 import { checkUserData } from "./thermo/user-data.js";
 
@@ -27,6 +28,27 @@ import { checkUserData } from "./thermo/user-data.js";
  * s.bubbleT([0.5, 0.5], 101.325)   // { T: 377.2, y: [...], gamma: [...] }
  */
 export function system(cfg) {
+  // components that may form a solid in equilibrium in every stream (proposal 0015, section 5;
+  // src/equilibrium/solid-flash.js): the system's flash becomes a solid-liquid-vapour flash for them
+  if (cfg?.solids != null) {
+    const { solids, ...rest } = cfg;
+    const list = Array.isArray(solids) ? solids : [solids];
+    const sys = system(rest);
+    if (!list.length) return sys;
+    if (sys.kind === "eos") throw fail("NOT_AVAILABLE", `A solid in equilibrium needs an activity model for the liquid (its solubility); ${sys.model} is an equation of state.`);
+    if (list.length > 1) throw fail("NOT_AVAILABLE", `One component that forms a solid at a time for now (got ${list.join(", ")}).`);
+    let id;
+    try { id = findComponent(list[0], sys.userData); } catch (e) { throw fail("BAD_INPUT", `solids: ${e.message}`); }
+    const i = sys.ids.indexOf(id);
+    if (i < 0) throw fail("BAD_INPUT", `solids: ${list[0]} is not a component of this system (${sys.ids.join(", ")}).`);
+    if (!sys.solubility?.[i] && !(sys.fusion?.[i]?.Tm_K > 0)) throw fail("MISSING_DATA", `solids: ${sys.names[i]} has no measured solubility curve and no melting data, so its solubility is not known (no open data); add a curve or melting data in My data.`);
+    const fluidFlash = sys.flash;
+    sys.fluidFlash = fluidFlash;
+    sys.flash = solidFlash(sys, i, fluidFlash);
+    sys.solids = [id];
+    sys.info = { ...sys.info, solids: [sys.names[i]] };
+    return sys;
+  }
   // inert solids (class "solid", the user's own components for now): the fluid part is a system of its own, and the
   // solids pass through as a phase of their own (src/equilibrium/inert-solids.js)
   if (Array.isArray(cfg?.components) && cfg.components.length) {

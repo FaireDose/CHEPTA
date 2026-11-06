@@ -152,6 +152,18 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     `solve_crystallizer`. NRTL sets fitted to the measured solubilities of succinic acid in ten solvents (fit_sle.py,
     whose rewrite dropped the earlier sets: fixed). To check: the six articles' solubilities of succinic acid in water;
     to decide: crystals only into a Product until a flash holds a solid, and hydrates (not modelled).
+  - **W3, proposal 0015 section 5: solids in equilibrium in every stream, built, to review**
+    (docs/decisions/2026-11-05-02-solids-everywhere.md): measured solubility curves (a new record kind, from open data
+    and in My data), the flowsheet's `thermo.solids` making every block dissolve or crystallize the solid, the TPA
+    recrystallization example. The answers on #207 recorded there. To decide: which set of TPA in water (Takebayashi
+    2012, used provisionally, or Sunsandee 2013; Su 2024 to download, TO_DOWNLOAD.md item 6), the enthalpy of solution
+    from the curve's slope, one solid at a time.
+  - **W3: the Crystallizer's slurry outlet, solubility curves (49 for 15 solids) and 52 NRTL sets fitted to the new
+    solubilities, a pump that takes a slurry, ChemSep 8.32 solid densities, built, to review**
+    (docs/decisions/2026-11-05-04-slurry-and-curves.md; the maintainer's answers of 2026-11-06 recorded there). The
+    pump's power from the liquid only, with a SLURRY warning (no solids limit; the Hydraulic Institute FAQ is
+    TO_DOWNLOAD.md item 7); pooling by DATA_RULES.md section 3, 10 % where no uncertainty is stated (this project's
+    choice). To check: the solid densities against ChemSep 8.32. Later: the slurry's own viscosity and density as input.
   - Waiting: W1.
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
   (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive

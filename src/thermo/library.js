@@ -213,7 +213,7 @@ export function sourceEntry(id) {
 
 function labelProperty(key) {
   return { vapourPressure: "vapour pressure", uniquac: "UNIQUAC r and q", modUnifac: "Mod. UNIFAC 2.0 groups", association: "vapour association",
-    fusion: "melting temperature and enthalpy of fusion",
+    fusion: "melting temperature and enthalpy of fusion", solidDensity: "solid density",
     constants_source: "critical constants and normal boiling point", omega_source: "acentric factor" }[key]
     ?? key.replace(/[A-Z]/g, m => " " + m.toLowerCase());
 }
@@ -228,8 +228,9 @@ export function componentSources(id) {
   const rec = (key, ids) => { if (ids?.length) out.push({ key, label: labelProperty(key), source_ids: ids.slice() }); };
   rec("constants_source", c.constants_source_ids);
   rec("omega_source", c.omega_source_ids);
-  for (const key of ["vapourPressure", "uniquac", "modUnifac", "association", "fusion"]) if (c[key]) rec(key, c[key].source_ids);
+  for (const key of ["vapourPressure", "uniquac", "modUnifac", "association", "fusion", "solidDensity"]) if (c[key]) rec(key, c[key].source_ids);
   for (const [key, r] of Object.entries(c.properties ?? {})) rec(key, r.source_ids);
+  for (const cv of c.solubility ?? []) if (cv.source_ids?.length) out.push({ key: `solubility:${cv.solvent}`, label: `solubility in ${nameOf(cv.solvent)}`, source_ids: cv.source_ids.slice() });
   return out;
 }
 
@@ -248,8 +249,9 @@ function computeUsedBy() {
   for (const id of henryData.solvents.water.vapourPressure.source_ids ?? []) add(id, { type: "henry", gas: null, label: "Water vapour pressure in the Henry's law equations" });
   for (const [cid, c] of Object.entries(componentData.components)) {
     const rec = (key, ids) => { for (const id of ids ?? []) add(id, { type: "component", component: cid, property: key, label: `${c.name}: ${labelProperty(key)}` }); };
-    for (const key of ["vapourPressure", "uniquac", "modUnifac", "association", "fusion"]) if (c[key]) rec(key, c[key].source_ids);
+    for (const key of ["vapourPressure", "uniquac", "modUnifac", "association", "fusion", "solidDensity"]) if (c[key]) rec(key, c[key].source_ids);
     for (const [key, r] of Object.entries(c.properties ?? {})) rec(key, r.source_ids);
+    for (const cv of c.solubility ?? []) for (const id of cv.source_ids ?? []) add(id, { type: "component", component: cid, property: `solubility:${cv.solvent}`, label: `${c.name}: solubility in ${nameOf(cv.solvent)}` });
     rec("constants_source", c.constants_source_ids);
     rec("omega_source", c.omega_source_ids);
   }

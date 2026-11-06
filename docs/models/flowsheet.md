@@ -46,7 +46,7 @@ with the same shape, `registerUnit({ type, inlets, outlets, checkSpec, solve })`
 | `heater` | Heater or cooler: outlet T, VF or duty; with an optional `sizing` (a utility and U), also the area and the utility's flow |
 | `hx` | Heat exchanger between two process streams (ports `hot` and `cold`): one outlet T or VF, the duty, or the minimum approach; with U, the area (proposal 0013) |
 | `valve` | Adiabatic pressure drop: the outlet pressure or the drop |
-| `pump` | A liquid to a higher pressure: power = V ΔP / efficiency (0.75 if not given), V from the liquid densities |
+| `pump` | A liquid to a higher pressure: power = V ΔP / efficiency (0.75 if not given), V from the liquid densities of the liquid phase (a solid rides along, with the warning SLURRY) |
 | `compressor`, `expander` | A gas to a higher or lower pressure (P_kPa, dP_kPa or the ratio): the isentropic outlet (P-S flash), then the isentropic efficiency (0.75 and 0.80 if not given); power out of an expander is negative |
 | `product` | End of a stream |
 

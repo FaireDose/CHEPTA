@@ -274,7 +274,9 @@ export function createSystem(cfg) {
   // melting temperature and enthalpy of fusion (solid-liquid equilibrium, src/equilibrium/sle.js); null: no open data
   const fusion = comps.map(c => (c.fusion && c.fusion.available !== false
     ? { Tm_K: c.fusion.Tm_K, Hfus_J_mol: c.fusion.Hfus_J_mol, tier: c.fusion.tier, source: c.fusion.source } : null));
-  return { ids, names: comps.map(c => c.name), n, model, vapour: vapourModel, gammas, psat, equilibrium, lnKValues, info, warnings, fusion,
+  // measured solubility curves of each component in named solvents (src/thermo/solubility-curve.js); null: none
+  const solubility = comps.map(c => (c.solubility?.length ? c.solubility : null));
+  return { ids, names: comps.map(c => c.name), n, model, vapour: vapourModel, gammas, psat, equilibrium, lnKValues, info, warnings, fusion, solubility,
     nonvolatile, henry: henryGas, ...(henryOn ? { henryRange_K: henryRange(ids.filter((_, i) => henryGas[i])) } : {}), MW: comps.map(c => c.MW), userData: ud, ...phaseMethods };
 }
 
