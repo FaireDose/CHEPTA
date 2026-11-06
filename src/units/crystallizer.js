@@ -40,7 +40,7 @@
  */
 import { fail } from "../util/errors.js";
 import { brent } from "../util/solve.js";
-import { stream, crystalStream, molarMasses } from "../stream/stream.js";
+import { stream, crystalStream, molarMasses, scaleStream, joinStreams } from "../stream/stream.js";
 import { findComponent } from "../thermo/components.js";
 import { registerUnit } from "./units.js";
 import { solidHeat } from "../equilibrium/sle.js";
@@ -73,7 +73,7 @@ function solubilitySystem(sys, i) {
   return aux;
 }
 
-const SPEC_KEYS = ["solute", "T_K", "P_kPa", "evaporated_kg_h"];
+const SPEC_KEYS = ["solute", "T_K", "P_kPa", "evaporated_kg_h", "slurry_liquid_kg_per_kg", "slurry_solids_fraction"];
 const has = (spec, k) => spec?.[k] !== undefined && spec?.[k] !== null && spec?.[k] !== "";
 const fmt = v => +Number(v).toPrecision(4);
 
@@ -103,6 +103,19 @@ function checkSpec(spec, { sys }) {
   }
   if (!(out.evaporated_kg_h > 0) && out.T_K == null) throw fail("BAD_INPUT", "Crystallizer: give the temperature T_K (cooling), or the solvent evaporated evaporated_kg_h with T_K or P_kPa (evaporative).");
   if (out.T_K != null && f?.Tm_K > 0 && !(out.T_K < f.Tm_K)) throw fail("OUT_OF_RANGE", `Crystallizer: ${sys.names[i]} melts at ${fmt(f.Tm_K)} K: at ${fmt(out.T_K)} K there is no solid.`);
+  // the mother liquor that leaves with the crystals (a slurry): kg of liquid per kg of solid, or the solids' mass
+  // fraction of the slurry; none given: the crystals leave dry
+  if (has(spec, "slurry_liquid_kg_per_kg") && has(spec, "slurry_solids_fraction")) throw fail("BAD_INPUT", "Crystallizer: give the liquid that leaves with the crystals as slurry_liquid_kg_per_kg or as slurry_solids_fraction, not both.");
+  if (has(spec, "slurry_liquid_kg_per_kg")) {
+    const r = Number(spec.slurry_liquid_kg_per_kg);
+    if (!(Number.isFinite(r) && r >= 0)) throw fail("BAD_INPUT", `Crystallizer: slurry_liquid_kg_per_kg (kg of mother liquor per kg of crystals) must be a number of at least 0 (got ${JSON.stringify(spec.slurry_liquid_kg_per_kg)}).`);
+    out.carry = r;
+  }
+  if (has(spec, "slurry_solids_fraction")) {
+    const w = Number(spec.slurry_solids_fraction);
+    if (!(w > 0 && w <= 1)) throw fail("BAD_INPUT", `Crystallizer: slurry_solids_fraction (the crystals' mass fraction of the slurry) must be above 0 and at most 1 (got ${JSON.stringify(spec.slurry_solids_fraction)}).`);
+    out.carry = (1 - w) / w;
+  }
   return out;
 }
 
@@ -223,13 +236,23 @@ function solve({ sys, inlets, spec, outletCount }) {
     if (Tl != null && Tl > T) warnings.push({ code: "SECOND_SOLID", message: `The mother liquor is also saturated in ${sys.names[k]} (its crystals would appear below ${fmt(Tl)} K, above the crystallizer's ${fmt(T)} K): past a eutectic, a second solid forms, which this block does not model.`, remedy: "Raise the temperature, or evaporate less." });
   }
   notes.push(`The crystals are pure ${name}, in equilibrium with the mother liquor (solubility x = ${fmt(r.x)}, γ = ${fmt(r.gamma)}; ${r.route === "curve" ? "the measured solubility curve" : "ΔCp of fusion 0"}). Their enthalpy is the liquid ${name}'s at ${fmt(T)} K minus ${heat.source}, ${fmt(heat.dH_J_mol / 1000)} kJ/mol: a labelled approximation.${sys.solids?.includes(sys.ids[i]) ? "" : " Crystals go to a Product, unless the flowsheet names them in its solids (then every block keeps them)."}`);
-  const outlets = { crystals, liquor: mother, vapour: vapour ?? stream(sys, { flow_kmol_h: new Array(sys.n).fill(0), T_K: T, P_kPa: P }) };
+  // a slurry: the crystals with a share of the mother liquor (the same composition and state), the rest clear
+  let liquor = mother, carried = 0;
+  if (spec.carry > 0 && r.C > 0) {
+    carried = spec.carry * crystals.mass_kg_h;   // kg/h of mother liquor with the crystals
+    if (carried > mother.mass_kg_h * (1 + 1e-12)) throw fail("BAD_INPUT", `Crystallizer: the slurry would carry ${fmt(carried)} kg/h of mother liquor, more than there is (${fmt(mother.mass_kg_h)} kg/h). Give less liquid per kg of crystals, or a higher solids fraction.`);
+    const share = Math.min(1, carried / mother.mass_kg_h);
+    crystals = joinStreams(crystals, scaleStream(mother, share));
+    liquor = scaleStream(mother, 1 - share);
+    notes.push(`The crystals leave as a slurry with ${fmt(carried)} kg/h of mother liquor (${fmt(spec.carry)} kg per kg of crystals; solids ${fmt(100 / (1 + spec.carry))} % by mass); the rest of the mother liquor leaves clear.`);
+  }
+  const outlets = { crystals, liquor, vapour: vapour ?? stream(sys, { flow_kmol_h: new Array(sys.n).fill(0), T_K: T, P_kPa: P }) };
   const Hout = Object.values(outlets).reduce((a, s) => a + (s.H_kW ?? 0), 0);
   const fed = flows[i];
   return {
     outlets, duty_kW: Hout - Hin, notes, warnings,
     state: { solute: sys.ids[i], mode: E > 0 ? "evaporative" : "cooling", T_K: T, P_kPa: P, yield: fed > 0 ? r.C / fed : 0,
-      crystals_kmol_h: r.C, crystals_kg_h: r.C * MW[i], solubility_x: r.x, gamma: r.gamma, evaporated_kg_h: E,
+      crystals_kmol_h: r.C, crystals_kg_h: r.C * MW[i], slurry_liquid_kg_h: carried, solubility_x: r.x, gamma: r.gamma, evaporated_kg_h: E,
       Tm_K, Hfus_J_mol, route: r.route ?? "equation", h_solid_rule: heat.kind === "fusion" ? "h_liquid(T) - Hfus" : "h_liquid(T) - dH_solution(T)", dH_solid_J_mol: heat.dH_J_mol },
   };
 }

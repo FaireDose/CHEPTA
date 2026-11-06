@@ -217,3 +217,18 @@ export function crystalStream(sys, { flow_kmol_h, T_K, P_kPa, h_J_mol, id = null
 
 /** Does the stream carry crystals in equilibrium (crystalStream)? */
 export const hasCrystals = st => !!st?.phases?.some(p => p.type === "solid" && p.equilibrium);
+
+/**
+ * Two streams at the same T and P as one, keeping their phases (no flash): a crystallizer's crystals with the mother
+ * liquor they carry, a slurry. The flows, the enthalpy flows and the phases add up.
+ */
+export function joinStreams(a, b) {
+  if (!(b.F_kmol_h > 0)) return a;
+  if (!(a.F_kmol_h > 0)) return b;
+  const F = a.F_kmol_h + b.F_kmol_h;
+  const flows = a.flows.map((v, i) => v + b.flows[i]);
+  const phases = [...a.phases.map(p => ({ ...p, fraction: p.fraction * a.F_kmol_h / F })), ...b.phases.map(p => ({ ...p, fraction: p.fraction * b.F_kmol_h / F }))]
+    .map(({ F_kmol_h: _F, flow_kmol_h: _f, ...p }) => p);
+  const VF = phases.filter(p => p.type === "vapour").reduce((s, p) => s + p.fraction, 0);
+  return build(a, { flows, phases, VF, h_J_mol: ((a.H_kW ?? 0) + (b.H_kW ?? 0)) / (F * KW_PER) });
+}
