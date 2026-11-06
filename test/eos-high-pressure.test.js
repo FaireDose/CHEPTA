@@ -11,6 +11,7 @@ import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { system } from "../src/index.js";
 import kij from "../src/data/kij.json" with { type: "json" };
+import known from "../src/data/known-issues.json" with { type: "json" };
 
 const load = p => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url)));
 const hp = load("validation/data/eos/high_pressure_fits.json");
@@ -54,20 +55,69 @@ function aadP(pair, model, k, pts) {
 
 test("the kept k_ij are in kij.json, and the fits outside the gate are not", () => {
   for (const e of hp.entries) assert.ok(kij.pairs.some(p => p.model === e.model && p.i === e.i && p.j === e.j && p.kij === e.kij && p.tier === "fitted"), `${e.model} ${e.i}-${e.j}`);
-  for (const r of hp.results.filter(r => !r.ok)) {
+  for (const r of hp.results.filter(r => !r.ok && !r.warned)) {
     assert.ok(!kij.pairs.some(p => p.model === r.model && p.tier === "fitted" && new Set([p.i, p.j]).has(r.pair[0]) && new Set([p.i, p.j]).has(r.pair[1])),
       `${r.model} ${r.pair.join("-")} was not kept and has no fitted k_ij`);
   }
 });
 
 for (const e of hp.entries) {
-  test(`${e.model} ${e.i} + ${e.j}, k_ij = ${e.kij}: within the gate on ${e.source.data.length} ThermoML article(s)`, () => {
+  const r = hp.results.find(q => q.model === e.model && q.pair.join() === [e.i, e.j].join());
+  test(`${e.model} ${e.i} + ${e.j}, k_ij = ${e.kij}: ${r.warned ? "outside the gate, with its fit-quality warning" : "within the gate"} on ${e.source.data.length} ThermoML article(s)`, () => {
     const set = kij.pairs.find(p => p.model === e.model && p.i === e.i && p.j === e.j);
     const { aad, missing } = aadP([e.i, e.j], e.model, set.kij, points(set.source.data));
     assert.equal(missing, 0);
-    assert.ok(aad <= hp.gate.P_pct * SLACK, `AAD ${aad.toFixed(2)} % in P`);
+    if (!r.warned) return assert.ok(aad <= hp.gate.P_pct * SLACK, `AAD ${aad.toFixed(2)} % in P`);
+    // written outside the gate by the maintainer's decision (WARNED): the record and the workbench say so
+    assert.match(set.quality_warning, /outside the gate/);
+    assert.ok(known.issues.some(k => k.kind === "fit-quality" && k.model === e.model && k.components.join() === [e.i, e.j].join()), "fit-quality known issue");
+    assert.ok(Math.abs(aad - r.errors.pooled.P_pct.aad) < 0.1);
   });
 }
+
+test("k_ij = a + b / T (the temperature study): its recorded errors are the engine's, and none meets the gate yet", () => {
+  assert.ok(hp.temperature_study.length >= 4);
+  for (const t of hp.temperature_study) {
+    const r = hp.results.find(q => q.model === t.model && q.pair.join() === t.pair.join());
+    const files = r.errors.articles.filter(a => a.points).map(a => `validation/data/eos/${a.file}`);
+    const pts = points(files);
+    let dev = [], missing = 0;
+    for (const p of pts) {
+      const k = t.a + t.b_K / p.T;
+      try {
+        const b = system({ components: t.pair, model: t.model, kij: [[0, k], [k, 0]] }).bubbleP([p.x, 1 - p.x], p.T);
+        dev.push(Math.abs((p.P != null ? b.P / p.P : b.y[0] * b.P / p.p1) - 1) * 100);
+      } catch { missing++; }
+    }
+    const aad = dev.reduce((a, v) => a + v, 0) / dev.length;
+    assert.equal(missing, t.errors.no_bubble_pressure, `${t.model} ${t.pair}`);
+    assert.ok(Math.abs(aad - t.errors.P_pct.aad) < 0.1, `${t.model} ${t.pair}: AAD ${aad.toFixed(2)} % against ${t.errors.P_pct.aad} %`);
+    // a form that met the gate would be added to the engine (the maintainer, 2026-11-05): this fails to say so
+    assert.equal(t.ok, false, `${t.model} ${t.pair.join(" + ")}: a + b / T meets the gate; add it to the engine`);
+  }
+});
+
+test("carbon dioxide + water: the databank k_ij is not usable in a liquid (the maintainer, 2026-11-05); a gas still works", () => {
+  for (const model of ["PR", "SRK"]) {
+    const s = system({ components: ["carbon-dioxide", "water"], model });
+    const refused = e => e.code === "NOT_AVAILABLE" && /Carbon dioxide \+ Water in the liquid is refused/.test(e.message) && /Henry's law/.test(e.message);
+    assert.throws(() => s.bubbleP([0.01, 0.99], 320), refused, model);
+    assert.throws(() => s.dewT([0.9, 0.1], 5000), refused, model);
+    assert.throws(() => s.flash({ z: [0.5, 0.5], T: 300, P: 5000 }), refused, model);
+    // all vapour (a reactor's gas): the k_ij's mark is about the solubility in the liquid
+    const v = s.flash({ z: [0.5, 0.5], T: 600, P: 500 });
+    assert.equal(v.phases.length, 1);
+    assert.equal(v.phases[0].type, "vapour");
+    assert.ok(Number.isFinite(s.lnPhi(320, 5000, [0.9, 0.1], "vapour")[0]));
+    // the user's own k_ij carries no mark
+    const u = system({ components: ["carbon-dioxide", "water"], model, kij: [[0, -0.11], [-0.11, 0]] });
+    assert.ok(u.bubbleP([0.01, 0.99], 320).P > 0);
+    // the mark and its numbers are in the data
+    const e = kij.pairs.find(p => p.model === model && new Set([p.i, p.j]).has("carbon-dioxide") && new Set([p.i, p.j]).has("water"));
+    assert.match(e.not_usable.reason, /dissolves about a tenth of the measured CO2/);
+    assert.match(e.not_usable.decided, /2026-11-05/);
+  }
+});
 
 for (const r of hp.results) {
   test(`${r.model} ${r.pair.join(" + ")}: the recorded error in P at k_ij = ${r.kij} (${r.errors.pooled.P_pct.aad} %, ${r.ok ? "kept" : "not kept"}) is the engine's`, () => {

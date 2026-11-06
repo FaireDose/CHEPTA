@@ -12,6 +12,7 @@ import { binaryAzeotropes, findAzeotrope } from "./equilibrium/azeotrope.js";
 import { isLiquidStable } from "./equilibrium/stability.js";
 import { eosMethods } from "./equilibrium/phi-phi.js";
 import { flash } from "./equilibrium/flash.js";
+import { refuseNotUsableLiquid } from "./thermo/eos/system.js";
 import { solidSolubility, solubilityCurve, liquidusT, sleBinary } from "./equilibrium/sle.js";
 import { fail } from "./util/errors.js";
 import { withInertSolids } from "./equilibrium/inert-solids.js";
@@ -60,7 +61,19 @@ export function system(cfg) {
   if (sys.kind === "eos") {
     // model "PR" or "SRK"; solid-liquid equilibrium needs an activity model (or "ideal") for the liquid
     const noSle = () => { throw fail("NOT_AVAILABLE", `Solid solubility uses an activity model for the liquid: use model "NRTL", "UNIQUAC", "WILSON", "MOD-UNIFAC-2" or "ideal", not ${sys.model}.`); };
-    return Object.assign(sys, eosMethods(sys), diagrams, { solidSolubility: noSle, solubilityCurve: noSle, liquidusT: noSle, sleDiagram: noSle });
+    // a pair whose k_ij is marked not usable (src/data/kij.json; CO2 + water) is refused wherever a liquid holding it is
+    // computed: every bubble and dew point (their liquid, or incipient liquid, holds the feed's components), and a flash
+    // whose result has such a liquid; a flash that ends all vapour is not refused
+    const plain = eosMethods(sys);
+    const guard = (name, label) => (z, given, opts) => { refuseNotUsableLiquid(sys, z, `${sys.model} ${label}`); return plain[name](z, given, opts); };
+    const m = Object.assign({}, plain, { bubbleT: guard("bubbleT", "bubble temperature"), bubbleP: guard("bubbleP", "bubble pressure"),
+      dewT: guard("dewT", "dew temperature"), dewP: guard("dewP", "dew pressure") });
+    sys.flash = (spec, opts) => {
+      const r = flash(sys, spec, opts);
+      for (const ph of r.phases ?? []) if (ph.type !== "vapour" && ph.fraction > 0) refuseNotUsableLiquid(sys, ph.composition, `${sys.model} flash`);
+      return r;
+    };
+    return Object.assign(sys, m, diagrams, { solidSolubility: noSle, solubilityCurve: noSle, liquidusT: noSle, sleDiagram: noSle });
   }
   return Object.assign(sys, diagrams, {
     bubbleT: (x, P) => bubbleT(sys, x, P),

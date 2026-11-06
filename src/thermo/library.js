@@ -78,6 +78,7 @@ function fromKij(p, i, j, model, isReplaced) {
     model, i, j, set: p.set ?? (isReplaced ? "replaced" : "default"), default: isReplaced ? false : p.default !== false,
     tier: p.tier || "databank", source_ids: p.source_ids ?? [], source: kijText(p), valid: range ? { T_K: range } : null,
     T_range_K: p.source?.T_range_K ?? null, params: { kij: p.kij }, origin: "kij.json", reason: p.reason,
+    ...(p.not_usable ? { not_usable: p.not_usable } : {}),
   };
 }
 
@@ -176,6 +177,7 @@ export function describePair(choice, names) {
     alternatives: choice.alternatives.map(brief),
   };
   if (choice.note) out.note = choice.note;
+  if (c.not_usable) out.not_usable = JSON.parse(JSON.stringify(c.not_usable));
   return out;
 }
 

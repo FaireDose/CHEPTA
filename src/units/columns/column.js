@@ -86,6 +86,7 @@ import { findComponent, componentRecord } from "../../thermo/components.js";
 import { EOS_GASES, isPolar } from "../../thermo/method-advice.js";
 import { HENRY_GASES } from "../../thermo/henry.js";
 import { anyBubbleT } from "../../equilibrium/bubble-any.js";
+import { refuseNotUsableLiquid } from "../../thermo/eos/system.js";
 import { registerUnit } from "../units.js";
 import { solveCascade } from "./engine.js";
 import { fug, boilup, wholeStages, VOLATILITY_TOLERANCE } from "./shortcut.js";
@@ -316,6 +317,8 @@ function gasSolubilityCheck(csys, T_K, what) {
     throw fail("NOT_AVAILABLE", `Column: ${what}: ${above.map(i => `${csys.names[i]} (critical temperature ${fmt(comps[i].Tc_K)} K)`).join(", ")} ${above.length > 1 ? "are" : "is"} above ${above.length > 1 ? "their" : "its"} critical temperature at ${fmt(T_K)} K, so ${csys.model === "ideal" ? "the ideal solution (Raoult's law)" : csys.model} would take ${above.length > 1 ? "their" : "its"} solubility from a vapour pressure extrapolated beyond the critical point. CHEPTA has Henry's law constants only for ${HENRY_GASES.length} gases in water (proposal 0017), and ${above.length > 1 ? "these are" : "this is"} not one of them in this mixture. For hydrocarbons and light gases without polar components, use Peng-Robinson or SRK.`);
   }
   const warnings = [];
+  // a pair whose k_ij is marked not usable (CO2 + water, src/data/kij.json): every column has a liquid holding it
+  if (eos) refuseNotUsableLiquid(csys, csys.ids.map(() => 1), `Column: ${what}`);
   if (eos) {
     const gas = csys.ids.map((id, i) => (EOS_GASES.has(id) || above.includes(i) ? i : -1)).filter(i => i >= 0);
     const polar = csys.ids.map((id, i) => (isPolar(id, comps[i]?.formula) ? i : -1)).filter(i => i >= 0);

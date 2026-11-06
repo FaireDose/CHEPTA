@@ -215,12 +215,19 @@ test("methods for a gas dissolving in an absorber's liquid (docs/METHOD_SELECTIO
   // the methods are chosen on purpose here: each shows what is allowed, warned or refused
   const absorber = (components, thermo, liquid, gas, P = 2000) => run({ capability: "solve_column", input: { components, thermo,
     feed: { flow_kmol_h: liquid, T_K: 300, P_kPa: P }, gas_feed: { flow_kmol_h: gas, T_K: 300, P_kPa: P }, column: { configuration: "absorber", stages: 5 } } });
-  // Peng-Robinson with CO2 in water: the pair has a k_ij (ChemSep, databank), so it runs, with the range warning
-  const pr = absorber(["carbon-dioxide", "water"], { model: "PR" }, { water: 360 }, { "carbon-dioxide": 72 });
+  // Peng-Robinson with H2S in water: the pair has a k_ij (ChemSep, databank), so it runs, with the range warning
+  // (until 2026-11-05 this case was CO2 in water; see below)
+  const pr = absorber(["hydrogen-sulfide", "water"], { model: "PR" }, { water: 360 }, { "hydrogen-sulfide": 72 });
   assert.equal(pr.outcome, "ok", pr.error?.message);
   const w = pr.value.column.warnings.find(x => x.code === "METHOD_RANGE");
-  assert.match(w.message, /k_ij of Carbon dioxide \+ Water/);
+  assert.match(w.message, /k_ij of Hydrogen sulfide \+ Water/);
   assert.match(w.message, /performs poorly for water\/alcohol mixtures/);
+  // ... CO2 in water: its k_ij is marked not usable (the maintainer, 2026-11-05; until then this case ran with
+  // ChemSep's k_ij, which dissolves about a tenth of the measured CO2): refused, with Henry's law as the remedy
+  const prw = absorber(["carbon-dioxide", "water"], { model: "PR" }, { water: 360 }, { "carbon-dioxide": 72 });
+  assert.equal(prw.outcome, "unsupported");
+  assert.match(prw.error.message, /Carbon dioxide \+ Water in the liquid is refused/);
+  assert.match(prw.error.message, /Henry's law/);
   // ... nitrogen + water has no k_ij: refused, with the activity model and Henry's law as the alternative
   const n2 = absorber(["nitrogen", "water"], { model: "PR" }, { water: 360 }, { nitrogen: 72 });
   assert.equal(n2.outcome, "unsupported");

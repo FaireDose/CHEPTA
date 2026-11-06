@@ -11,11 +11,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 ### Waiting for the maintainer
 
 - **PR and SRK k_ij of gases in methanol and water at high pressure** (proposal 0018 postponed;
-  docs/decisions/2026-11-04-13-kij-high-pressure.md): fitted to 56 ThermoML articles. Only CO + methanol is within the
-  gate (PR -0.1802, SRK -0.2585; 4.9 % and 4.6 % in P), and written. Left out: CO2 + methanol (13 % in P, 21 % in
-  solubility), CO2 + water (58-66 % in P, 45-48 % in solubility), H2 + methanol (17-21 %), CH4 + methanol (9 %). The
-  ChemSep k_ij of CO2 + water dissolves about a tenth of the measured CO2. Decide: the CO2 + water default, a wider gate
-  with a known issue, a temperature-dependent k_ij, the fit window.
+  docs/decisions/2026-11-04-13-kij-high-pressure.md, docs/decisions/2026-11-05-03-kij-followup.md): decided
+  2026-11-05. CO2 + water is refused in a liquid with PR and SRK (Henry's law is the remedy); CH4 + methanol is written
+  with a fit-quality known issue; CO + methanol within the gate. A k_ij = a + b/T does not meet the gate (CO2 +
+  methanol 7.1-7.3 % in P; CO2 + water 13.8-15.3 % in P, 10-11 % in solubility), so the engine keeps constant k_ij.
+  Open: whether CO2 + water at high pressure (and CO2 with methanol + water, the separator's liquid, which has no
+  method now) is the case for proposal 0018 or CPA (M3); H2 + methanol and CO2 + methanol stay left out (CO2 + methanol
+  keeps its ChemSep k_ij).
 - **Review and merge:**
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
