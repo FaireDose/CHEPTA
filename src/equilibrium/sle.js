@@ -130,7 +130,8 @@ export function solidSolubility(sys, solute, T, opts = {}) {
       return { T_K: T, x, xSolute: xi, gamma: sys.gammas(x, T)[i], xIdeal: null, Tm_K: sys.fusion?.[i]?.Tm_K ?? null,
         Hfus_J_mol: sys.fusion?.[i]?.Hfus_J_mol ?? null, dCp_J_molK: null, splits: false, route: "curve",
         curve: { solvent: route.rec.solvent, Tmin_K: route.rec.Tmin_K ?? route.rec.points?.[0][0], Tmax_K: route.rec.Tmax_K ?? route.rec.points?.at(-1)[0], tier: route.rec.tier, source: route.rec.source },
-        notes: [`The measured solubility curve in ${sys.names[sys.ids.indexOf(route.rec.solvent)]} (${route.rec.tier}), not the melting-point equation.`] };
+        notes: [`The measured solubility curve in ${sys.names[sys.ids.indexOf(route.rec.solvent)]} (${route.rec.tier}), not the melting-point equation.`,
+          ...(route.rec.disputed ? [route.rec.disputed] : []), ...(route.rec.pressure_note ? [`The curve was ${route.rec.pressure_note}.`] : [])] };
     }
   }
   const { Tm, Hfus, dCp } = fusionOf(sys, i, opts);

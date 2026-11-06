@@ -737,7 +737,7 @@ export function normalizeComposition(z, n) {
 
 /** Known deviations of the model for exactly these components (src/data/known-issues.json). */
 export function knownIssuesFor(ids, model) {
-  return knownIssues.issues.filter(k => k.model === model && k.components.length === ids.length && k.components.every(c => ids.includes(c)));
+  return knownIssues.issues.filter(k => (k.model === model || k.model === "any") && k.components.length === ids.length && k.components.every(c => ids.includes(c)));
 }
 
 /**

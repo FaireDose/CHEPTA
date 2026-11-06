@@ -38,6 +38,9 @@ CURVES = [
                                           "(doi:10.1016/j.supflu.2024.106497, open access CC BY-NC-ND, 423-623 K) would "
                                           "decide: its table could not be fetched by script (docs/missing-properties/TO_DOWNLOAD.md)",
         },
+        "disputed": "Disputed: Sunsandee et al. 2013 is about 50 times lower; Takebayashi 2012 kept by the maintainer's "
+                    "decision (2026-11-05), Su et al. 2024 (CC BY-NC-ND) to be used as an independent check when a person has "
+                    "downloaded it (src/data/known-issues.json, disputed-data).",
         "why": "The only set measured where the liquid is kept liquid above 373 K (10 MPa) over the range of hot-water "
                "purification; chosen provisionally until Su et al. 2024 is read",
     },
@@ -86,8 +89,12 @@ def main():
                        f"{T.min():.1f}-{T.max():.1f} K" + (f" at {Ps[0] / 1000:g} MPa" if len(Ps) == 1 else "") +
                        f"; largest deviation {100 * np.max(np.abs(dev)):.1f} %, mean {100 * np.mean(np.abs(dev)):.1f} % "
                        "(validation/python/solubility_curves.py). " + c["why"] + ". Used only inside the measured "
-                       "temperatures; the pressure is not modelled."),
+                       "temperatures; the pressure is not modelled" + (f": measured at {Ps[0] / 1000:g} MPa, used at every pressure." if len(Ps) == 1 else ".")),
             "left_out": left,
+            **({"disputed": c["disputed"]} if c.get("disputed") else {}),
+            "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy "
+                                 "(the maintainer, 2026-11-05)",
+            "pressure_note": (f"measured at {Ps[0] / 1000:g} MPa and used at every pressure (the maintainer, 2026-11-05)" if len(Ps) == 1 else None),
             "source_ids": ["nist-thermoml-archive"],
         }
         print(json.dumps(rec, indent=1))

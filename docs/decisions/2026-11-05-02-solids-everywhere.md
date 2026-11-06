@@ -73,3 +73,18 @@ crystallizing in every block; (3) a worked TPA example. Model page: [docs/models
    solids are unchanged: or every component with a curve or melting data, always?
 4. **Pressure:** the curve was measured at 10 MPa and is used at every pressure. Keep, or refuse far from the measured
    pressure?
+
+## The maintainer's answers (2026-11-05)
+
+Relayed by the coordinating session:
+
+1. **Takebayashi 2012 stays**, with a "disputed data" known issue against Sunsandee 2013 (`src/data/known-issues.json`,
+   kind `disputed-data`, model `any`; the curve record's `disputed`, shown in the solubility's notes). Su et al. 2024
+   (TO_DOWNLOAD.md, item 6, downloaded by a person) decides later, used only as an independent check, because its
+   licence is CC BY-NC-ND.
+2. **The enthalpy of solution from the curve's slope: yes**, stated in the record (`solution_enthalpy`).
+3. **One solid named by the flowsheet**, for now.
+4. **The 10 MPa curve at every pressure**, with a note (`pressure_note`, also in the solubility's notes); the
+   coordinating session's recommendation, to which the maintainer did not object.
+
+No solid-liquid separator block: the component separator is used for that.

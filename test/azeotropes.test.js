@@ -41,7 +41,8 @@ for (const t of lit.ternary) for (const model of ["NRTL", "UNIQUAC"]) {
 
 test("known-issues.json names real components and models", () => {
   for (const k of known) {
-    assert.ok(["NRTL", "UNIQUAC", "WILSON", "MOD-UNIFAC-2", "ideal", "PR", "SRK"].includes(k.model), k.model);
+    // "any": a disputed pure-component record, whatever the model (2026-11-05, terephthalic acid in water)
+    assert.ok(["NRTL", "UNIQUAC", "WILSON", "MOD-UNIFAC-2", "ideal", "PR", "SRK", "any"].includes(k.model), k.model);
     for (const c of k.components) assert.ok(pure(c), c);
     // fit-quality: a pair set written within the wider limits of validation/python/fit_parameters.py (WIDE_GATE);
     // predicted-deviation: a predictive model (Modified UNIFAC 2.0) against measured data (test/mod-unifac.test.js);
@@ -49,7 +50,8 @@ test("known-issues.json names real components and models", () => {
     // maintainer, 2026-11-04, proposal 0016: ethanol + ethylene glycol with ChemSep's Wilson set);
     // miscibility-unchecked: a Wilson set where NRTL or UNIQUAC fits to the same data predict two liquids, measured as
     // one liquid only below the fit's temperature (proposal 0019, answers 3 and 4, 2026-11-05)
-    assert.ok(["ternary-azeotrope", "phase-split", "fit-quality", "predicted-deviation", "databank-deviation", "miscibility-unchecked"].includes(k.kind), k.kind);
+    // disputed-data: open measured sets of a pure-component record that disagree, one kept by the maintainer's decision
+    assert.ok(["ternary-azeotrope", "phase-split", "fit-quality", "predicted-deviation", "databank-deviation", "miscibility-unchecked", "disputed-data"].includes(k.kind), k.kind);
     assert.ok(k.message && k.reference);
   }
 });
