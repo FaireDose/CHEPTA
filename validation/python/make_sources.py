@@ -102,6 +102,18 @@ SEEDS = {
         "license": "Artistic License 2.0",
         "via": "DWSIM (DWSIM.Thermodynamics/Assets/Databases)",
     },
+    # validation/python/chemsep_solids.py: the solid densities (the maintainer, 2026-11-06: "import the ChemSep 8.32 solid
+    # densities as they are, with the version stated per record")
+    "chemsep-8.32": {
+        "title": "ChemSep pure-component database of ChemSep Lite 8.32 (chemsep1.xml, created 2022-08-30)",
+        "authors": "Harry Kooijman, Ross Taylor",
+        "year": 2022,
+        "kind": "databank",
+        "url": "https://github.com/CalebBell/chemicals/blob/master/chemicals/Misc/ChemSep8.32.xml",
+        "access": "Open: Artistic License 2.0",
+        "license": "Artistic License 2.0",
+        "via": "the chemicals library (chemicals/Misc/ChemSep8.32.xml, chemicals 1.5.2)",
+    },
     # validation/data/iapws/coolprop_grid.json "source"; src/data/LICENSES.md (CoolProp rows)
     "coolprop": {
         "title": "CoolProp 8.0.0",

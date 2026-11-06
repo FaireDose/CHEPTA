@@ -68,6 +68,7 @@ const describe = (id, c) => ({
   fusion: Boolean(c.fusion && c.fusion.available !== false),
   // measured solubility curves in named solvents (proposal 0015, section 5)
   solubility: (c.solubility ?? []).map(r => r.solvent),
+  solidDensity: !!c.solidDensity,
   // enthalpy (and Gibbs energy) of formation at 298.15 K (reactions, proposal 0010)
   formation: Boolean(c.formation && c.formation.available !== false),
   ...(c.tier === "user" ? { user: true } : {}),

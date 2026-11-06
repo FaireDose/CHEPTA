@@ -28,7 +28,8 @@
     {
      "T_K": 310.0,
      "x_solute": 0.24047921453950108,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.002625
     }
    ]
   },
@@ -41,7 +42,8 @@
     {
      "T_K": 310.0,
      "x_solute": 0.002547881462881737,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.01
     }
    ]
   }

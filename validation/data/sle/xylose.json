@@ -43,37 +43,44 @@
     {
      "T_K": 293.15,
      "x_solute": 0.1199070858018004,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.08802
     },
     {
      "T_K": 298.15,
      "x_solute": 0.12994885212111645,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.080433
     },
     {
      "T_K": 303.15,
      "x_solute": 0.14080967853349327,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.073272
     },
     {
      "T_K": 308.15,
      "x_solute": 0.1542196285334711,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.065827
     },
     {
      "T_K": 313.15,
      "x_solute": 0.1732641583552249,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.057242
     },
     {
      "T_K": 318.15,
      "x_solute": 0.1866233948992878,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.052391
     },
     {
      "T_K": 323.15,
      "x_solute": 0.19690419046371718,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.049002
     }
    ]
   },
@@ -86,37 +93,44 @@
     {
      "T_K": 293.15,
      "x_solute": 0.03652771254464725,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.1
     },
     {
      "T_K": 298.15,
      "x_solute": 0.04984404695161399,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.100355
     },
     {
      "T_K": 303.15,
      "x_solute": 0.061833382764991354,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.100364
     },
     {
      "T_K": 308.15,
      "x_solute": 0.07451297724494925,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.1
     },
     {
      "T_K": 313.15,
      "x_solute": 0.08688806396228321,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.099947
     },
     {
      "T_K": 318.15,
      "x_solute": 0.09939328617198111,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.100142
     },
     {
      "T_K": 323.15,
      "x_solute": 0.11536753738782039,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.100083
     }
    ]
   },
@@ -129,37 +143,44 @@
     {
      "T_K": 293.15,
      "x_solute": 0.01736975389215683,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.10089
     },
     {
      "T_K": 298.15,
      "x_solute": 0.024228200875912535,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.100642
     },
     {
      "T_K": 303.15,
      "x_solute": 0.028654333024091237,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.1
     },
     {
      "T_K": 308.15,
      "x_solute": 0.03457799972743053,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.1
     },
     {
      "T_K": 313.15,
      "x_solute": 0.04358911021416789,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.100606
     },
     {
      "T_K": 318.15,
      "x_solute": 0.05062972871271819,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.09979
     },
     {
      "T_K": 323.15,
      "x_solute": 0.06150820019782288,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.100437
     }
    ]
   },
@@ -172,17 +193,20 @@
     {
      "T_K": 278.2,
      "x_solute": 0.11142438665827958,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.027397
     },
     {
      "T_K": 288.2,
      "x_solute": 0.11868387129778084,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.075076
     },
     {
      "T_K": 298.2,
      "x_solute": 0.1362743792270141,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.033451
     }
    ]
   },
@@ -195,17 +219,20 @@
     {
      "T_K": 278.2,
      "x_solute": 0.0015705235396797548,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.039216
     },
     {
      "T_K": 288.2,
      "x_solute": 0.001972636890045883,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.03125
     },
     {
      "T_K": 298.2,
      "x_solute": 0.00234446505506078,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.026316
     }
    ]
   }

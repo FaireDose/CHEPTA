@@ -52,107 +52,128 @@
     {
      "T_K": 303.0,
      "x_solute": 0.04834332710948383,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.244094
     },
     {
      "T_K": 303.0,
      "x_solute": 0.03947682326196239,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.136253
     },
     {
      "T_K": 303.0,
      "x_solute": 0.04067469309818328,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.113208
     },
     {
      "T_K": 323.0,
      "x_solute": 0.061824689130837815,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.078907
     },
     {
      "T_K": 323.0,
      "x_solute": 0.049428849284598946,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.046154
     },
     {
      "T_K": 323.0,
      "x_solute": 0.048886397928183487,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.077821
     },
     {
      "T_K": 343.0,
      "x_solute": 0.07132129711235821,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.088542
     },
     {
      "T_K": 343.0,
      "x_solute": 0.059442228311727095,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.21519
     },
     {
      "T_K": 343.0,
      "x_solute": 0.05970754355955397,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.100787
     },
     {
      "T_K": 373.0,
      "x_solute": 0.1260250230815757,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.554785
     },
     {
      "T_K": 373.0,
      "x_solute": 0.10722092222450177,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.193172
     },
     {
      "T_K": 373.0,
      "x_solute": 0.10434232379532252,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.034335
     },
     {
      "T_K": 393.0,
      "x_solute": 0.16415678306026324,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.393075
     },
     {
      "T_K": 393.0,
      "x_solute": 0.1388940066868383,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.106634
     },
     {
      "T_K": 393.0,
      "x_solute": 0.13449687175837777,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.09009
     },
     {
      "T_K": 413.0,
      "x_solute": 0.23582144434923405,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.524951
     },
     {
      "T_K": 413.0,
      "x_solute": 0.18784761438365763,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.148725
     },
     {
      "T_K": 413.0,
      "x_solute": 0.1781021905860911,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.190125
     },
     {
      "T_K": 433.0,
      "x_solute": 0.2976998927557405,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.325548
     },
     {
      "T_K": 433.0,
      "x_solute": 0.2237802912946768,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.20881
     },
     {
      "T_K": 433.0,
      "x_solute": 0.20672413356395802,
-     "quantity": "Mass ratio of solute to solvent"
+     "quantity": "Mass ratio of solute to solvent",
+     "u_rel": 0.038373
     }
    ]
   },
@@ -165,37 +186,44 @@
     {
      "T_K": 345.15,
      "x_solute": 0.0098,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.131633
     },
     {
      "T_K": 355.15,
      "x_solute": 0.01529,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.128842
     },
     {
      "T_K": 364.15,
      "x_solute": 0.0192,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.128125
     },
     {
      "T_K": 369.15,
      "x_solute": 0.02279,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.128126
     },
     {
      "T_K": 374.15,
      "x_solute": 0.02407,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.128376
     },
     {
      "T_K": 379.15,
      "x_solute": 0.02895,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.129188
     },
     {
      "T_K": 383.15,
      "x_solute": 0.03408,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.129401
     }
    ]
   },
@@ -208,7 +236,8 @@
     {
      "T_K": 333.15,
      "x_solute": 0.22245274265622741,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.040486
     }
    ]
   }

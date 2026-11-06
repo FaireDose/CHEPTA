@@ -6,6 +6,18 @@ Rules: a pair is fitted with at least 6 points over at least 10 K; a set is writ
 
 | Solid | Solvent | Points (articles) | T range, K | b_12, b_21 (K) | Median deviation | Largest | Left-out articles, median | Ideal solution, median | Result |
 |---|---|---|---|---|---|---|---|---|---|
+| Adipic acid | 1-Butanol | 20 (1) | 304.9-353.6 | -605, 1031 | 3.3 % | 8.4 % | – | 26.0 % | written |
+| Adipic acid | Acetic acid | 61 (7) | 301.8-383.0 | 621, -417 | 3.0 % | 9.9 % | 3.3 % | 17.0 % | written |
+| Adipic acid | Acetone | 51 (4) | 280.1-327.9 | 1890, -333 | 8.9 % | 28.4 % | 15.4 % | 10.9 % | not written (splits the liquid of a miscible pair) |
+| Adipic acid | Chloroform | 12 (1) | 298.1-323.1 | -827, 2697 | 22.5 % | 6309.2 % | – | 795.8 % | not written (median above 15 %) |
+| Adipic acid | Cyclohexanone | 75 (6) | 300.2-393.0 | 724, -325 | 5.3 % | 46.1 % | 6.5 % | 13.6 % | written |
+| Adipic acid | Diethylene glycol | 11 (1) | 298.1-333.1 | -676, 927 | 13.2 % | 25.7 % | – | 63.5 % | written |
+| Adipic acid | Ethanol | 18 (4) | 283.1-323.1 | 1253, -664 | 1.1 % | 13.5 % | 2.0 % | 58.6 % | written |
+| Adipic acid | Ethyl acetate | 21 (2) | 288.1-343.0 | 1278, 2 | 5.1 % | 19.5 % | – | 228.0 % | not written (splits the liquid of a miscible pair) |
+| Adipic acid | Methanol | 10 (1) | 284.9-318.6 | -544, 545 | 0.7 % | 2.0 % | – | 66.0 % | written |
+| Adipic acid | Propionic acid | 10 (1) | 289.6-329.8 | 191, -391 | 2.8 % | 10.4 % | – | 50.4 % | written |
+| Adipic acid | Toluene | 14 (1) | 298.1-333.1 | -105, 1657 | 30.6 % | 91.8 % | – | 13460.0 % | not written (median above 15 %) |
+| Adipic acid | Water | 57 (7) | 289.0-416.3 | -416, 1112 | 14.2 % | 624.6 % | 14.1 % | 329.2 % | written |
 | Benzoic acid | 1-Butanol | 9 (1) | 276.9-327.3 | 717, -380 | 0.3 % | 1.0 % | – | 5.6 % | written |
 | Benzoic acid | 1-Propanol | 10 (1) | 279.1-326.2 | 764, -378 | 0.3 % | 0.9 % | – | 5.3 % | written |
 | Benzoic acid | 2-Butanone | 9 (1) | 278.6-325.2 | 733, -411 | 0.2 % | 0.9 % | – | 6.7 % | written |
@@ -26,6 +38,48 @@ Rules: a pair is fitted with at least 6 points over at least 10 K; a set is writ
 | Benzoic acid | n-Pentane | 4 (1) | 278.1-303.1 | | | | | | 2369.4 % | too few data (4 points, 25.0 K): not fitted |
 | Benzoic acid | Toluene | 95 (13) | 273.1-354.1 | -300, 821 | 6.5 % | 67.5 % | 6.8 % | 133.1 % | written |
 | Benzoic acid | Water | 114 (12) | 278.4-368.1 | -555, 2789 | 9.5 % | 50.1 % | 11.1 % | 30319.5 % | written (two liquids at some compositions, as with water), valid to 355.1 K (model monotectic) |
+| Citric acid | 1-Butanol | 19 (1) | 288.1-333.1 | 1024, -1504 | 3.6 % | 9.1 % | – | 96.6 % | written |
+| Citric acid | 1-Propanol | 3 (1) | 293.7-313.4 | | | | | | 98.9 % | too few data (3 points, 19.7 K): not fitted |
+| Citric acid | 2-Propanol | 13 (2) | 278.1-333.1 | -958, 2713 | 93.1 % | 119.3 % | – | 92.6 % | not written (median above 15 %) |
+| Citric acid | Acetone | 19 (1) | 288.1-333.1 | 575, -1458 | 4.2 % | 11.3 % | – | 96.7 % | written |
+| Citric acid | Acetonitrile | 7 (1) | 303.1-333.1 | -864, 1125 | 11.9 % | 24.2 % | – | 87.9 % | written |
+| Citric acid | 1,4-Dioxane | 7 (1) | 303.1-333.1 | 2015, -1250 | 7.8 % | 14.6 % | – | 94.0 % | written |
+| Citric acid | Ethanol | 35 (4) | 278.1-333.1 | 894, -1678 | 32.5 % | 279.6 % | 41.6 % | 98.7 % | not written (median above 15 %) |
+| Citric acid | Methanol | 6 (1) | 278.1-303.1 | -1452, 1555 | 1.3 % | 2.9 % | – | 99.2 % | written |
+| Citric acid | Tetrahydrofuran | 7 (1) | 303.1-333.1 | -599, -491 | 3.9 % | 7.9 % | – | 95.0 % | written |
+| Citric acid | Toluene | 19 (1) | 288.1-333.1 | -941, 1001 | 1.6 % | 5.6 % | – | 94.7 % | written |
+| Citric acid | Water | 12 (3) | 303.1-333.1 | 808, -1388 | 20.2 % | 42.6 % | 27.8 % | 94.7 % | not written (median above 15 %) |
+| Dimethyl terephthalate | 1-Butanol | 9 (1) | 283.1-323.0 | -188, 915 | 5.1 % | 10.0 % | – | 826.8 % | written |
+| Dimethyl terephthalate | 1-Propanol | 9 (1) | 283.1-323.1 | -81, 915 | 2.3 % | 6.3 % | – | 1378.0 % | not written (splits the liquid of a miscible pair) |
+| Dimethyl terephthalate | 2-Butanone | 9 (1) | 283.1-323.1 | 1054, -262 | 0.8 % | 1.4 % | – | 46.1 % | written |
+| Dimethyl terephthalate | 2-Propanol | 9 (1) | 283.3-323.2 | -183, 976 | 6.9 % | 11.8 % | – | 1064.1 % | written |
+| Dimethyl terephthalate | Acetone | 9 (1) | 283.2-323.2 | 1092, -205 | 0.5 % | 2.1 % | – | 74.6 % | not written (splits the liquid of a miscible pair) |
+| Dimethyl terephthalate | Acetonitrile | 9 (1) | 283.2-323.2 | 684, -15 | 0.5 % | 1.4 % | – | 197.5 % | written |
+| Dimethyl terephthalate | Chloroform | 9 (1) | 283.0-323.1 | -655, 815 | 8.9 % | 16.1 % | – | 65.6 % | written |
+| Dimethyl terephthalate | Cyclohexanone | 9 (1) | 283.2-323.2 | 593, -272 | 0.4 % | 1.2 % | – | 22.7 % | written |
+| Dimethyl terephthalate | Ethanol | 9 (1) | 283.4-323.2 | 161, 621 | 1.3 % | 2.4 % | – | 1113.1 % | not written (splits the liquid of a miscible pair) |
+| Dimethyl terephthalate | Ethyl acetate | 9 (1) | 283.1-323.0 | 1333, -282 | 1.2 % | 2.8 % | – | 30.3 % | not written (splits the liquid of a miscible pair) |
+| Dimethyl terephthalate | Isobutanol | 9 (1) | 283.3-323.1 | -206, 975 | 7.6 % | 21.6 % | – | 907.2 % | written |
+| Dimethyl terephthalate | Isopropyl acetate | 9 (1) | 283.2-323.3 | 1556, -210 | 2.3 % | 5.4 % | – | 54.8 % | not written (splits the liquid of a miscible pair) |
+| Dimethyl terephthalate | Methanol | 9 (1) | 283.1-323.0 | 527, 520 | 2.0 % | 4.0 % | – | 1456.0 % | not written (splits the liquid of a miscible pair) |
+| Dimethyl terephthalate | n-Butyl acetate | 9 (1) | 283.3-323.0 | 1172, -283 | 0.9 % | 2.7 % | – | 35.9 % | not written (splits the liquid of a miscible pair) |
+| 2,5-Furandicarboxylic acid | 1-Butanol | 11 (1) | 313.1-363.1 | -1044, 1427 | 2.4 % | 4.7 % | – | 97.2 % | written |
+| 2,5-Furandicarboxylic acid | Acetic acid | 17 (2) | 303.6-363.1 | -1073, 2296 | 13.6 % | 26.8 % | – | 79.4 % | written |
+| 2,5-Furandicarboxylic acid | Acetonitrile | 11 (1) | 313.1-363.1 | -977, 2235 | 4.4 % | 15.3 % | – | 30.1 % | written |
+| 2,5-Furandicarboxylic acid | Ethanol | 13 (2) | 298.1-346.4 | -975, 933 | 3.2 % | 8.4 % | – | 99.1 % | written |
+| 2,5-Furandicarboxylic acid | Ethyl acetate | 11 (1) | 313.1-363.1 | -809, 1399 | 13.7 % | 30.8 % | – | 60.2 % | written |
+| 2,5-Furandicarboxylic acid | Isobutanol | 11 (1) | 313.1-363.1 | -1008, 1383 | 1.7 % | 6.1 % | – | 96.0 % | written |
+| 2,5-Furandicarboxylic acid | Methanol | 14 (2) | 297.4-343.1 | -1040, 1188 | 7.9 % | 16.8 % | – | 99.1 % | written |
+| 2,5-Furandicarboxylic acid | Methyl isobutyl ketone | 11 (1) | 313.1-363.1 | -1003, 2113 | 9.1 % | 16.2 % | – | 65.5 % | written |
+| 2,5-Furandicarboxylic acid | Water | 23 (3) | 291.1-363.1 | -934, 1738 | 12.3 % | 35.4 % | 17.4 % | 78.8 % | written |
+| D-Fructose | Water | 5 (1) | 298.1-333.1 | | | | | | 90.6 % | too few data (5 points, 35.0 K): not fitted |
+| D-Glucose | 1-Octanol | 7 (1) | 345.1-383.1 | 1940, 165 | 7.8 % | 12.5 % | – | 342.7 % | not written (splits the liquid of a miscible pair) |
+| D-Glucose | Water | 22 (2) | 303.0-433.0 | -823, 2494 | 97.0 % | 98.3 % | – | 78.6 % | not written (median above 15 %) |
+| Glycolic acid | 1-Butanol | 9 (1) | 273.1-313.1 | 508, -204 | 0.7 % | 3.0 % | – | 34.2 % | written |
+| Glycolic acid | 2-Propanol | 9 (1) | 273.1-313.1 | 640, -340 | 1.3 % | 2.5 % | – | 5.5 % | written |
+| Glycolic acid | Acetonitrile | 9 (1) | 273.1-313.1 | -98, 673 | 1.9 % | 10.9 % | – | 372.3 % | written |
+| Glycolic acid | Ethanol | 9 (1) | 273.1-313.1 | -259, 266 | 1.6 % | 4.0 % | – | 8.5 % | written |
+| Glycolic acid | Ethyl acetate | 9 (1) | 273.1-313.1 | 637, 194 | 2.9 % | 7.2 % | – | 454.3 % | not written (splits the liquid of a miscible pair) |
 | Naphthalene | 1-Butanol | 17 (1) | 313.8-342.8 | 335, 299 | 2.9 % | 9.6 % | – | 123.4 % | written |
 | Naphthalene | Acetone | 28 (2) | 278.1-323.1 | 286, -94 | 1.7 % | 4.2 % | – | 29.4 % | written |
 | Naphthalene | Cyclohexane | 5 (1) | 283.4-337.3 | | | | | | 52.6 % | too few data (5 points, 53.9 K): not fitted |
@@ -37,6 +91,18 @@ Rules: a pair is fitted with at least 6 points over at least 10 K; a set is writ
 | Naphthalene | Tetrahydrofuran | 12 (1) | 278.6-333.2 | 814, -497 | 0.6 % | 5.5 % | – | 10.4 % | written |
 | Naphthalene | Toluene | 12 (1) | 291.4-334.6 | 286, -196 | 0.5 % | 2.7 % | – | 4.3 % | written |
 | Naphthalene | Water | 8 (1) | 313.2-348.2 | 288, 3249 | 2.0 % | 5.0 % | – | 3593546.5 % | written (two liquids at some compositions, as with water) |
+| Palmitic acid | 1-Propanol | 9 (1) | 306.5-334.9 | 234, 12 | 5.2 % | 12.9 % | – | 22.0 % | written |
+| Palmitic acid | 2-Propanol | 20 (2) | 291.8-334.5 | -169, 410 | 4.6 % | 19.7 % | – | 32.3 % | written |
+| Palmitic acid | Acetone | 11 (1) | 292.9-322.9 | -258, 806 | 8.6 % | 16.0 % | – | 143.3 % | written |
+| Palmitic acid | Ethanol | 23 (2) | 292.1-335.0 | -206, 677 | 10.4 % | 23.8 % | – | 82.9 % | written |
+| Palmitic acid | n-Heptane | 11 (1) | 294.6-322.2 | -348, 961 | 11.2 % | 20.4 % | – | 59.8 % | written |
+| Palmitic acid | n-Hexadecane | 11 (1) | 311.9-333.6 | 25, 337 | 5.7 % | 15.0 % | – | 50.1 % | written |
+| Palmitic acid | n-Hexane | 11 (1) | 293.8-322.8 | -379, 993 | 9.9 % | 19.6 % | – | 55.4 % | written |
+| Palmitic acid | n-Octadecane | 12 (1) | 306.4-333.1 | -233, 527 | 2.1 % | 4.9 % | – | 12.3 % | written |
+| Palmitic acid | Oleic acid | 14 (2) | 298.0-335.1 | 628, -402 | 2.6 % | 8.9 % | – | 5.1 % | written |
+| Palmitic acid | Triolein | 6 (1) | 290.7-335.0 | 719, -288 | 10.4 % | 23.8 % | – | 13.4 % | written |
+| Phenol | N-Methyl-2-pyrrolidone | 5 (1) | 286.2-304.5 | | | | | | 13.9 % | too few data (5 points, 18.3 K): not fitted |
+| Phenol | Water | 1 (1) | 298.1-298.1 | | | | | | already has NRTL parameters (not replaced) |
 | Salicylic acid | 1-Butanol | 9 (1) | 278.1-318.1 | -551, 337 | 0.2 % | 0.4 % | – | 68.9 % | written |
 | Salicylic acid | 1-Propanol | 19 (3) | 278.1-338.2 | 2199, -617 | 9.6 % | 24.9 % | 12.8 % | 47.0 % | not written (splits the liquid of a miscible pair) |
 | Salicylic acid | 2-Propanol | 5 (1) | 298.2-338.2 | | | | | | 50.1 % | too few data (5 points, 40.0 K): not fitted |
@@ -47,6 +113,15 @@ Rules: a pair is fitted with at least 6 points over at least 10 K; a set is writ
 | Salicylic acid | Ethyl acetate | 26 (4) | 283.1-348.0 | 2150, -656 | 4.7 % | 6.9 % | 5.8 % | 60.6 % | not written (splits the liquid of a miscible pair) |
 | Salicylic acid | Methanol | 15 (3) | 283.1-323.1 | -684, 1083 | 3.0 % | 7.9 % | 4.4 % | 61.0 % | written |
 | Salicylic acid | Water | 26 (4) | 283.1-348.0 | -897, 3857 | 7.5 % | 25.0 % | 10.2 % | 16715.3 % | written (two liquids at some compositions, as with water), valid to 336.9 K (model monotectic) |
+| D-Sorbitol | Ethanol | 1 (1) | 310.0-310.0 | | | | | | 6264.9 % | too few data (1 points, 0.0 K): not fitted |
+| D-Sorbitol | Water | 1 (1) | 310.0-310.0 | | | | | | 32.6 % | too few data (1 points, 0.0 K): not fitted |
+| Stearic acid | 2-Propanol | 21 (2) | 292.4-340.8 | -286, 665 | 12.3 % | 20.3 % | – | 54.2 % | written |
+| Stearic acid | Acetone | 13 (1) | 291.9-322.6 | -347, 1014 | 3.4 % | 13.2 % | – | 263.2 % | written |
+| Stearic acid | Ethanol | 22 (2) | 291.4-342.3 | -321, 1062 | 25.4 % | 42.5 % | – | 149.1 % | not written (median above 15 %) |
+| Stearic acid | n-Heptane | 13 (1) | 293.4-324.9 | -444, 1294 | 28.7 % | 73.3 % | – | 142.5 % | not written (median above 15 %) |
+| Stearic acid | n-Hexadecane | 12 (1) | 314.0-340.7 | -122, 573 | 9.3 % | 17.0 % | – | 51.3 % | written |
+| Stearic acid | n-Hexane | 13 (1) | 293.8-323.6 | -457, 1283 | 31.4 % | 41.6 % | – | 129.0 % | not written (median above 15 %) |
+| Stearic acid | Oleic acid | 9 (1) | 309.6-342.1 | 17, -11 | 1.4 % | 6.7 % | – | 2.4 % | written |
 | Succinic acid | 1-Butanol | 15 (1) | 304.9-357.1 | -665, 1153 | 3.1 % | 7.5 % | – | 35.6 % | written |
 | Succinic acid | 1-Propanol | 11 (1) | 283.6-333.8 | 222, -499 | 8.6 % | 26.3 % | – | 63.1 % | written |
 | Succinic acid | 2-Propanol | 10 (1) | 282.8-334.2 | -440, 307 | 1.5 % | 4.8 % | – | 65.8 % | written |
@@ -59,5 +134,9 @@ Rules: a pair is fitted with at least 6 points over at least 10 K; a set is writ
 | Succinic acid | Methanol | 9 (1) | 285.8-324.4 | -616, 559 | 1.1 % | 2.5 % | – | 78.7 % | written |
 | Succinic acid | Propionic acid | 10 (1) | 288.1-329.1 | 603, -394 | 3.2 % | 7.7 % | – | 16.2 % | written |
 | Succinic acid | Water | 51 (6) | 283.1-447.4 | -642, 1206 | 8.6 % | 34.5 % | 10.5 % | 20.6 % | written |
+| D-Xylose | Ethanol | 3 (1) | 278.2-298.2 | | | | | | 767.0 % | too few data (3 points, 20.0 K): not fitted |
+| D-Xylose | Ethylene glycol | 7 (1) | 293.1-323.1 | -653, 1182 | 4.7 % | 7.6 % | – | 43.5 % | written |
+| D-Xylose | Propylene glycol | 7 (1) | 293.1-323.1 | 105, -47 | 2.2 % | 5.8 % | – | 16.3 % | written |
+| D-Xylose | Water | 10 (2) | 278.2-323.1 | -813, 1105 | 3.7 % | 9.9 % | – | 79.7 % | written |
 
-36 sets written.
+88 sets written.

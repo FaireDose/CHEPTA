@@ -46,37 +46,44 @@
     {
      "T_K": 303.15,
      "x_solute": 0.0819,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.10989
     },
     {
      "T_K": 308.15,
      "x_solute": 0.0912,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.108553
     },
     {
      "T_K": 313.15,
      "x_solute": 0.1005,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.110448
     },
     {
      "T_K": 318.15,
      "x_solute": 0.1153,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.105811
     },
     {
      "T_K": 323.15,
      "x_solute": 0.1205,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.102075
     },
     {
      "T_K": 328.15,
      "x_solute": 0.1285,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.101946
     },
     {
      "T_K": 333.15,
      "x_solute": 0.1343,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.101266
     }
    ]
   },
@@ -89,37 +96,44 @@
     {
      "T_K": 303.15,
      "x_solute": 0.1402,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.10699
     },
     {
      "T_K": 308.15,
      "x_solute": 0.1534,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.102999
     },
     {
      "T_K": 313.15,
      "x_solute": 0.16,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.101875
     },
     {
      "T_K": 318.15,
      "x_solute": 0.1684,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.102138
     },
     {
      "T_K": 323.15,
      "x_solute": 0.1766,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.103624
     },
     {
      "T_K": 328.15,
      "x_solute": 0.192,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.10625
     },
     {
      "T_K": 333.15,
      "x_solute": 0.2104,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.105989
     }
    ]
   },
@@ -132,37 +146,44 @@
     {
      "T_K": 303.15,
      "x_solute": 0.0661,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.146747
     },
     {
      "T_K": 308.15,
      "x_solute": 0.0838,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.138425
     },
     {
      "T_K": 313.15,
      "x_solute": 0.106,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.134906
     },
     {
      "T_K": 318.15,
      "x_solute": 0.132,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.123485
     },
     {
      "T_K": 323.15,
      "x_solute": 0.1539,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.111761
     },
     {
      "T_K": 328.15,
      "x_solute": 0.1699,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.105945
     },
     {
      "T_K": 333.15,
      "x_solute": 0.1839,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.104405
     }
    ]
   },
@@ -175,37 +196,44 @@
     {
      "T_K": 303.15,
      "x_solute": 0.0065,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.184615
     },
     {
      "T_K": 308.15,
      "x_solute": 0.0089,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.146067
     },
     {
      "T_K": 313.15,
      "x_solute": 0.0109,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.119266
     },
     {
      "T_K": 318.15,
      "x_solute": 0.0122,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.122951
     },
     {
      "T_K": 323.15,
      "x_solute": 0.015,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.12
     },
     {
      "T_K": 328.15,
      "x_solute": 0.0173,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.121387
     },
     {
      "T_K": 333.15,
      "x_solute": 0.0205,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.117073
     }
    ]
   },
@@ -218,37 +246,44 @@
     {
      "T_K": 303.15,
      "x_solute": 0.0364,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.134615
     },
     {
      "T_K": 308.15,
      "x_solute": 0.0447,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.129754
     },
     {
      "T_K": 313.15,
      "x_solute": 0.0546,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.139194
     },
     {
      "T_K": 318.15,
      "x_solute": 0.0713,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.15007
     },
     {
      "T_K": 323.15,
      "x_solute": 0.0942,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.140127
     },
     {
      "T_K": 328.15,
      "x_solute": 0.1178,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.121392
     },
     {
      "T_K": 333.15,
      "x_solute": 0.1343,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.11169
     }
    ]
   },
@@ -261,37 +296,44 @@
     {
      "T_K": 303.15,
      "x_solute": 0.1447,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.105045
     },
     {
      "T_K": 308.15,
      "x_solute": 0.156,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.116667
     },
     {
      "T_K": 313.15,
      "x_solute": 0.1914,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.109718
     },
     {
      "T_K": 318.15,
      "x_solute": 0.1993,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.103864
     },
     {
      "T_K": 323.15,
      "x_solute": 0.2187,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.105167
     },
     {
      "T_K": 328.15,
      "x_solute": 0.2348,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.104344
     },
     {
      "T_K": 333.15,
      "x_solute": 0.2531,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.104307
     }
    ]
   },
@@ -304,42 +346,50 @@
     {
      "T_K": 298.15,
      "x_solute": 0.15,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.013333
     },
     {
      "T_K": 303.15,
      "x_solute": 0.161,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.012422
     },
     {
      "T_K": 308.15,
      "x_solute": 0.178,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.011236
     },
     {
      "T_K": 313.15,
      "x_solute": 0.196,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.010204
     },
     {
      "T_K": 318.15,
      "x_solute": 0.213,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.00939
     },
     {
      "T_K": 323.15,
      "x_solute": 0.229,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.008734
     },
     {
      "T_K": 328.15,
      "x_solute": 0.249,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.008032
     },
     {
      "T_K": 333.15,
      "x_solute": 0.271,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.00738
     }
    ]
   },
@@ -352,42 +402,50 @@
     {
      "T_K": 298.15,
      "x_solute": 0.109,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.018349
     },
     {
      "T_K": 303.15,
      "x_solute": 0.12,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.016667
     },
     {
      "T_K": 308.15,
      "x_solute": 0.136,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.014706
     },
     {
      "T_K": 313.15,
      "x_solute": 0.148,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.013514
     },
     {
      "T_K": 318.15,
      "x_solute": 0.165,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.012121
     },
     {
      "T_K": 323.15,
      "x_solute": 0.184,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.01087
     },
     {
      "T_K": 328.15,
      "x_solute": 0.207,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.009662
     },
     {
      "T_K": 333.15,
      "x_solute": 0.227,
-     "quantity": "Mole fraction"
+     "quantity": "Mole fraction",
+     "u_rel": 0.008811
     }
    ]
   }

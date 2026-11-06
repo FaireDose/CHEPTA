@@ -58,18 +58,27 @@ def fit(rows):
 # the automatic curves (2026-11-05, the maintainer: "at least 10-15-20 more"): every solid + solvent pair of
 # validation/data/sle/ with at least MIN_POINTS points over MIN_SPAN_K, except the pairs of CURVES (chosen by hand) and the
 # pairs that have an NRTL set fitted to the same solubilities (fit_sle.py: both would describe the same data). Several
-# articles are pooled only when they agree: each article's median deviation from the pooled curve within AGREE (this
-# project's choice, for the maintainer to confirm); otherwise the pair is held, with the articles' deviations listed.
-MIN_POINTS, MIN_SPAN_K, AGREE = 5, 10.0, 0.10
+# articles are pooled by the rule of docs/DATA_RULES.md, section 3 (the maintainer, 2026-11-06): each article with the same
+# total weight, point weight 1 / (u sqrt(n)), u the article's mean stated relative uncertainty of x with a floor of
+# U_FLOOR; they agree when each article's mean deviation from the pooled curve lies within its u. Where an article states
+# no uncertainty, u is U_NONE (10 %: this project's choice for solubilities, the maintainer, 2026-11-06; DATA_RULES says
+# 1 % for vapour pressures). Otherwise the pair is held, with the articles' deviations listed.
+MIN_POINTS, MIN_SPAN_K, U_FLOOR, U_NONE = 5, 10.0, 0.005, 0.10
+
+
+def article_u(v):
+    """An article's u: the mean of its stated relative uncertainties (floor U_FLOOR), or U_NONE where none is stated."""
+    us = [u for _, _, u in v if u is not None]
+    return (max(U_FLOOR, float(np.mean(us))), True) if us else (U_NONE, False)
 
 
 def fit_weighted(arts):
-    """The Apelblat form fitted to several articles, each with the same total weight (1/sqrt(n) per point)."""
-    T = np.array([t for v in arts.values() for t, _ in v]); x = np.array([y for v in arts.values() for _, y in v])
-    w = np.array([1 / np.sqrt(len(v)) for v in arts.values() for _ in v])
+    """The Apelblat form fitted to several articles, each with the same total weight: 1 / (u sqrt(n)) per point."""
+    T = np.array([t for v in arts.values() for t, _, _ in v]); x = np.array([y for v in arts.values() for _, y, _ in v])
+    w = np.array([1 / (article_u(v)[0] * np.sqrt(len(v))) for v in arts.values() for _ in v])
     M = np.column_stack([np.ones_like(T), 1 / T, np.log(T)])
     (A, B, C), *_ = np.linalg.lstsq(M * w[:, None], np.log(x) * w, rcond=None)
-    per = {doi: [float(np.exp(A + B / t + C * np.log(t)) / y - 1) for t, y in v] for doi, v in arts.items()}
+    per = {doi: [float(np.exp(A + B / t + C * np.log(t)) / y - 1) for t, y, _ in v] for doi, v in arts.items()}
     return float(A), float(B), float(C), per, T
 
 
@@ -84,9 +93,9 @@ def auto_curves(doc, report):
         by = {}
         for st in data["sets"]:
             for r in st["rows"]:
-                by.setdefault(st["solvent"], {}).setdefault(st["doi"], []).append((r["T_K"], r["x_solute"]))
+                by.setdefault(st["solvent"], {}).setdefault(st["doi"], []).append((r["T_K"], r["x_solute"], r.get("u_rel")))
         for solvent, arts in sorted(by.items()):
-            n = sum(len(v) for v in arts.values()); Ts = [t for v in arts.values() for t, _ in v]
+            n = sum(len(v) for v in arts.values()); Ts = [t for v in arts.values() for t, _, _ in v]
             key = (solid, solvent)
             if key in manual:
                 continue
@@ -99,12 +108,13 @@ def auto_curves(doc, report):
             # articles with one point and others with series: the single points are kept as checks, not fitted
             series = {d: v for d, v in arts.items() if len(v) >= 3} or arts
             A, B, C, per, T = fit_weighted(series)
-            med = {d: float(np.median(np.abs(v))) for d, v in per.items()}
-            if len(series) > 1 and max(med.values()) > AGREE:
-                report.append(f"| {solid} | {solvent} | {n} ({len(arts)}) | {min(Ts):.1f}-{max(Ts):.1f} | {', '.join(f'{d}: {100 * m:.0f} %' for d, m in med.items())} | held: the articles disagree (a median deviation above {100 * AGREE:.0f} % from the pooled curve) |")
+            mean = {d: float(np.mean(np.abs(v))) for d, v in per.items()}
+            us = {d: article_u(v) for d, v in series.items()}
+            if len(series) > 1 and any(mean[d] > us[d][0] for d in series):
+                report.append(f"| {solid} | {solvent} | {n} ({len(arts)}) | {min(Ts):.1f}-{max(Ts):.1f} | {', '.join(f'{d}: {100 * mean[d]:.1f} % (u {100 * us[d][0]:.1f} %{'' if us[d][1] else ', none stated'})' for d in series)} | held: the articles disagree (a mean deviation from the pooled curve above the article's u) |")
                 continue
             allv = [abs(v) for d in per.values() for v in d]
-            checks = {d: [float(np.exp(A + B / t + C * np.log(t)) / y - 1) for t, y in v if T.min() <= t <= T.max()] for d, v in arts.items() if d not in series}
+            checks = {d: [float(np.exp(A + B / t + C * np.log(t)) / y - 1) for t, y, _ in v if T.min() <= t <= T.max()] for d, v in arts.items() if d not in series}
             refs = []
             for d in series:
                 c = data["articles"].get(d, {})
@@ -113,9 +123,10 @@ def auto_curves(doc, report):
                    "Tmin_K": float(T.min()), "Tmax_K": float(T.max()), "tier": "fitted",
                    "source": (f"Apelblat form ln x = A + B/T + C ln T fitted to {sum(len(v) for v in series.values())} measured solubilities of "
                               f"{len(series)} article{'s' if len(series) > 1 else ''} (data public in the NIST TRC ThermoML Archive; "
-                              f"validation/data/sle/{solid}.json), {T.min():.1f}-{T.max():.1f} K, each article with the same weight: "
+                              f"validation/data/sle/{solid}.json), {T.min():.1f}-{T.max():.1f} K, each article with the same total weight (docs/DATA_RULES.md, section 3): "
                               + "; ".join(refs) + f". Largest deviation {100 * max(allv):.1f} %, median {100 * float(np.median(allv)):.1f} %"
-                              + ("; the articles agree (each within %d %% of the pooled curve)" % round(100 * AGREE) if len(series) > 1 else "; one article only")
+                              + ("; the articles agree (each article's mean deviation within its stated uncertainty, %s)" % ", ".join(
+                                  "%.1f %%%s" % (100 * us[d][0], "" if us[d][1] else " (none stated: the project's 10 %)") for d in series) if len(series) > 1 else "; one article only")
                               + " (validation/python/solubility_curves.py). Used only inside the measured temperatures."),
                    **({"checks": {d: (float(np.median(v)) if v else None) for d, v in checks.items()}} if checks else {}),
                    "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
@@ -123,6 +134,29 @@ def auto_curves(doc, report):
             out.setdefault(solid, []).append(rec)
             report.append(f"| {solid} | {solvent} | {n} ({len(arts)}) | {T.min():.1f}-{T.max():.1f} | largest {100 * max(allv):.1f} %, median {100 * float(np.median(allv)):.1f} % | written |")
     return out
+
+
+def solid_table(doc):
+    """The solid data of every component that has any: melting data, the solid density (ChemSep 8.32,
+    chemsep_solids.py) and the measured solubility curves."""
+    out = ["## Solid data by component", "",
+           "Melting data (`fusion_data.py`), the solid density (ChemSep Lite 8.32, taken as it is, `chemsep_solids.py`; the "
+           "maintainer, 2026-11-06) and the measured solubility curves above, for every component that has one of them. "
+           "The workbench shows the same under Properties.", "",
+           "| Component | Melting point, K | ΔH_fus, kJ/mol | Solid density, kg/m³ (range, K) | Solubility curves (solvent: range, K) |",
+           "|---|---|---|---|---|"]
+    for cid, c in doc["components"].items():
+        f = c.get("fusion") if (c.get("fusion") or {}).get("available", True) is not False else None
+        d, cv = c.get("solidDensity"), c.get("solubility") or []
+        if not (f or d or cv):
+            continue
+        rho = (lambda T: sum(v * T ** i for i, v in enumerate(d["coefficients"].values()))) if d else None
+        dens = f"{rho(d['Tmin_K']):.0f}-{rho(d['Tmax_K']):.0f} ({d['Tmin_K']:g}-{d['Tmax_K']:g})" if d else ""
+        dens = dens.replace(f"{rho(d['Tmin_K']):.0f}-{rho(d['Tmin_K']):.0f} ", f"{rho(d['Tmin_K']):.0f} ") if d else ""
+        curves = "; ".join(f"{doc['components'][r['solvent']]['name'].lower()}: {r.get('Tmin_K', 0):.1f}-{r.get('Tmax_K', 0):.1f}" for r in cv)
+        out.append(f"| {c['name']} | {f['Tm_K']:.2f} | {f['Hfus_J_mol'] / 1000:.2f} | {dens} | {curves} |" if f else
+                   f"| {c['name']} | no open data | no open data | {dens} | {curves} |")
+    return out + [""]
 
 
 def main():
@@ -191,6 +225,7 @@ def main():
                 comp["solubility"] = [r for r in comp["solubility"] if (solid, r["solvent"]) in {(c["solid"], c["solvent"]) for c in CURVES}]
                 if not comp["solubility"]:
                     del comp["solubility"]
+        report += solid_table(doc)
         (ROOT / "docs" / "SOLUBILITY_CURVES.md").write_text("\n".join(report))
         COMP_FILE.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
         print("wrote", COMP_FILE.relative_to(ROOT))

@@ -121,8 +121,16 @@ def fetch(solid, comps, by_inchi, cache):
                             T, x = val, var if v["compound"] == s_key else 1 - var
                         if T is None or not (0 < x < 1):
                             continue
+                        # the stated uncertainty of the solute's amount, relative (2026-11-06: pooling by DATA_RULES
+                        # section 3 needs it); for a measured temperature against x, none in x
+                        u = r.get("p" + pn + "_unc")
+                        u_rel = None
+                        if u is not None and "temperature" not in p["name"]:
+                            q = val if p["compound"] == s_key or p["name"] == "Mass ratio of solute to solvent" else 1 - val
+                            u_rel = u / q if q > 0 else None
                         rows.append({"T_K": T, "x_solute": x, "quantity": p["name"] if "temperature" not in p["name"]
                                      else "Solid-liquid equilibrium temperature against mole fraction",
+                                     **({"u_rel": round(u_rel, 6)} if u_rel is not None else {}),
                                      **({"P_kPa": P} if P is not None and P > P_MAX_KPA else {})})
             if not rows:
                 continue

@@ -29,27 +29,32 @@
     {
      "T_K": 298.15,
      "x_solute": 0.28443935991771174,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.025031
     },
     {
      "T_K": 303.15,
      "x_solute": 0.30722525324945094,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.02451
     },
     {
      "T_K": 313.15,
      "x_solute": 0.34764267063588866,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.023753
     },
     {
      "T_K": 323.15,
      "x_solute": 0.39256162657931154,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.023095
     },
     {
      "T_K": 333.15,
      "x_solute": 0.4628056392910908,
-     "quantity": "Mass fraction"
+     "quantity": "Mass fraction",
+     "u_rel": 0.022321
     }
    ]
   }
