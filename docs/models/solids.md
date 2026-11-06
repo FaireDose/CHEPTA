@@ -48,6 +48,14 @@ its only route.
 - **Your own (My data):** Solubility in a solvent: a table of temperatures and mole or mass fractions, with its source,
   tier "user" (`properties: { "<component>": { solubility: [{ solvent, points, source }] } }`).
 
+### All curves
+
+`solubility_curves.py` writes a curve for every solid + solvent pair of `validation/data/sle/` with at least 5 points
+over 10 K, except the pairs with an NRTL set fitted to the same solubilities (`fit_sle.py`): 97 curves for 19 solids on
+2026-11-05, listed with their deviations and the pairs held in [SOLUBILITY_CURVES.md](../SOLUBILITY_CURVES.md). Several
+articles are pooled, each with the same weight, only when each is within 10 % of the pooled curve (median); otherwise
+the pair is held.
+
 ### Terephthalic acid in water
 
 TPA has no open melting data. Two sets of its solubility in water are in the NIST TRC ThermoML Archive

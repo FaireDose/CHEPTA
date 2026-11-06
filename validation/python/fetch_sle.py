@@ -37,6 +37,27 @@ SOLIDS = {  # id: names searched in the archive
     "succinic-acid": ["succinic acid", "butanedioic acid"],
     # solubility curves (proposal 0015, section 5): terephthalic acid, which has no open melting data
     "terephthalic-acid": ["terephthalic acid", "1,4-benzenedicarboxylic acid", "benzene-1,4-dicarboxylic acid"],
+    # more solubility curves (the maintainer, 2026-11-05: "at least 10-15-20 more"): industrially relevant solids CHEPTA has
+    "adipic-acid": ["adipic acid", "hexanedioic acid"],
+    "citric-acid": ["citric acid"],
+    "fumaric-acid": ["fumaric acid"],
+    "itaconic-acid": ["itaconic acid"],
+    "malic-acid": ["malic acid"],
+    "glycolic-acid": ["glycolic acid"],
+    "glucose": ["D-glucose", "glucose", "dextrose"],
+    "fructose": ["D-fructose", "fructose"],
+    "xylose": ["D-xylose", "xylose"],
+    "sorbitol": ["sorbitol", "D-glucitol"],
+    "xylitol": ["xylitol"],
+    "erythritol": ["erythritol"],
+    "fdca": ["2,5-furandicarboxylic acid", "furan-2,5-dicarboxylic acid"],
+    "biphenyl": ["biphenyl"],
+    "palmitic-acid": ["palmitic acid", "hexadecanoic acid"],
+    "stearic-acid": ["stearic acid", "octadecanoic acid"],
+    "phenol": ["phenol"],
+    "hmf": ["5-hydroxymethylfurfural", "5-(hydroxymethyl)furfural"],
+    "levoglucosan": ["levoglucosan"],
+    "dmt": ["dimethyl terephthalate"],
 }
 P_MAX_KPA = 110.0
 # solids measured in compressed hot water (kept liquid above its boiling point): their sets are kept at any pressure,

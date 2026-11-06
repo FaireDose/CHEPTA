@@ -1,0 +1,49 @@
+{
+ "solid": "sorbitol",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-11-06",
+ "searched": "ThermoML-API full-text search for \"sorbitol\", \"D-glucitol\"; 36 records opened",
+ "about": "Solubility of the solid as the mole fraction of the solid in the saturated liquid (x_solute), converted from the stored quantity where needed (validation/python/fetch_sle.py); binary sets with a CHEPTA component as the solvent, at 110 kPa or less.",
+ "articles": {
+  "10.1021/je700190m": {
+   "authors": [
+    "Bouchard, A.[Andreanne]",
+    "Hofland, G. W.[Gerard W.]",
+    "Witkamp, G. J.-J.[Geert-Jan]"
+   ],
+   "title": "Properties of Sugar, Polyol, and Polysaccharide Water-Ethanol Solutions",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "52",
+   "year": "2007",
+   "pages": "1838-1842"
+  }
+ },
+ "sets": [
+  {
+   "solvent": "water",
+   "doi": "10.1021/je700190m",
+   "set": 23,
+   "P_kPa": null,
+   "rows": [
+    {
+     "T_K": 310.0,
+     "x_solute": 0.24047921453950108,
+     "quantity": "Mass fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "ethanol",
+   "doi": "10.1021/je700190m",
+   "set": 50,
+   "P_kPa": null,
+   "rows": [
+    {
+     "T_K": 310.0,
+     "x_solute": 0.002547881462881737,
+     "quantity": "Mass fraction"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,213 @@
+{
+ "solid": "xylose",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-11-06",
+ "searched": "ThermoML-API full-text search for \"D-xylose\", \"xylose\"; 39 records opened",
+ "about": "Solubility of the solid as the mole fraction of the solid in the saturated liquid (x_solute), converted from the stored quantity where needed (validation/python/fetch_sle.py); binary sets with a CHEPTA component as the solvent, at 110 kPa or less.",
+ "articles": {
+  "10.1021/acs.jced.8b01128": {
+   "authors": [
+    "Machado, Patricia G.",
+    "Galvao, Alessandro C.",
+    "Robazza, Weber S.",
+    "Arce, Pedro F.",
+    "Barbosa, Layze V."
+   ],
+   "title": "Phase Equilibrium Involving Xylose, Water, and Ethylene Glycol or 1,2-Propylene Glycol at Different Temperatures",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "64",
+   "year": "2019",
+   "pages": "2163-2169"
+  },
+  "10.1021/je300885g": {
+   "authors": [
+    "Gong, X.[Xingchu]",
+    "Wang, C.[Chuan]",
+    "Zhang, L.[Lei]",
+    "Qu, H.[Haibin]"
+   ],
+   "title": "Solubility of Xylose, Mannose, Maltose Monohydrate, and Trehalose Dihydrate in Ethanol Water Solutions",
+   "journal": "J. Chem. Eng. Data",
+   "volume": "57",
+   "year": "2012",
+   "pages": "3264-3269"
+  }
+ },
+ "sets": [
+  {
+   "solvent": "water",
+   "doi": "10.1021/acs.jced.8b01128",
+   "set": 9,
+   "P_kPa": 100.0,
+   "rows": [
+    {
+     "T_K": 293.15,
+     "x_solute": 0.1199070858018004,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 298.15,
+     "x_solute": 0.12994885212111645,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 303.15,
+     "x_solute": 0.14080967853349327,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 308.15,
+     "x_solute": 0.1542196285334711,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 313.15,
+     "x_solute": 0.1732641583552249,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 318.15,
+     "x_solute": 0.1866233948992878,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 323.15,
+     "x_solute": 0.19690419046371718,
+     "quantity": "Mass fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "ethylene-glycol",
+   "doi": "10.1021/acs.jced.8b01128",
+   "set": 10,
+   "P_kPa": 100.0,
+   "rows": [
+    {
+     "T_K": 293.15,
+     "x_solute": 0.03652771254464725,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 298.15,
+     "x_solute": 0.04984404695161399,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 303.15,
+     "x_solute": 0.061833382764991354,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 308.15,
+     "x_solute": 0.07451297724494925,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 313.15,
+     "x_solute": 0.08688806396228321,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 318.15,
+     "x_solute": 0.09939328617198111,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 323.15,
+     "x_solute": 0.11536753738782039,
+     "quantity": "Mass fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "propylene-glycol",
+   "doi": "10.1021/acs.jced.8b01128",
+   "set": 11,
+   "P_kPa": 100.0,
+   "rows": [
+    {
+     "T_K": 293.15,
+     "x_solute": 0.01736975389215683,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 298.15,
+     "x_solute": 0.024228200875912535,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 303.15,
+     "x_solute": 0.028654333024091237,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 308.15,
+     "x_solute": 0.03457799972743053,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 313.15,
+     "x_solute": 0.04358911021416789,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 318.15,
+     "x_solute": 0.05062972871271819,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 323.15,
+     "x_solute": 0.06150820019782288,
+     "quantity": "Mass fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "water",
+   "doi": "10.1021/je300885g",
+   "set": 1,
+   "P_kPa": 101.0,
+   "rows": [
+    {
+     "T_K": 278.2,
+     "x_solute": 0.11142438665827958,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 288.2,
+     "x_solute": 0.11868387129778084,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 298.2,
+     "x_solute": 0.1362743792270141,
+     "quantity": "Mass fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "ethanol",
+   "doi": "10.1021/je300885g",
+   "set": 2,
+   "P_kPa": 101.0,
+   "rows": [
+    {
+     "T_K": 278.2,
+     "x_solute": 0.0015705235396797548,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 288.2,
+     "x_solute": 0.001972636890045883,
+     "quantity": "Mass fraction"
+    },
+    {
+     "T_K": 298.2,
+     "x_solute": 0.00234446505506078,
+     "quantity": "Mass fraction"
+    }
+   ]
+  }
+ ]
+}

@@ -156,6 +156,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     recrystallization example. The answers on #207 recorded there. To decide: which set of TPA in water (Takebayashi
     2012, used provisionally, or Sunsandee 2013; Su 2024 to download, TO_DOWNLOAD.md item 6), the enthalpy of solution
     from the curve's slope, one solid at a time.
+  - **W3: the Crystallizer's slurry outlet and 97 more solubility curves, built, to review; the pump with solids
+    blocked** (docs/decisions/2026-11-05-04-slurry-and-curves.md). To decide: the 10 % pooling rule, ChemSep 8.32 for
+    solid densities, the pump's solids limit, NRTL fits on the new solubility data.
   - Waiting: W1.
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
   (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive

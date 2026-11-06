@@ -53,7 +53,8 @@ test("the solubility curve of terephthalic acid in water follows the measured va
   assert.equal(r.route, "curve");
   assert.ok(rel(r.xSolute, curveSolubility(CURVE, 500)) < 1e-12);
   const eth = system({ components: ["ethanol", "terephthalic-acid"], model: "MOD-UNIFAC-2" });
-  assert.throws(() => eth.solidSolubility("terephthalic-acid", 400), e => e.code === "MISSING_DATA" && /water only/.test(e.message));
+  // (since 2026-11-05 TPA also has curves in acetic acid, cyclohexanone and THF: the message lists them all)
+  assert.throws(() => eth.solidSolubility("terephthalic-acid", 400), e => e.code === "MISSING_DATA" && /known in water, .* only/i.test(e.message));
 });
 
 test("the TPA recrystallization chain agrees with the independent reference: every state's T, vapour, solid, the duties, the yield", () => {
@@ -144,7 +145,10 @@ test("the flowsheet's solids: normalized, refused where they cannot work, saved 
   assert.deepEqual(normalizeFlowsheet(fs).thermo.solids, ["terephthalic-acid"]);
   assert.throws(() => normalizeFlowsheet({ ...fs, thermo: { model: "NRTL", solids: "terephthalic-acid" } }), /must be a list/);
   assert.throws(() => system({ components: ["water", "terephthalic-acid"], model: "PR", solids: ["terephthalic-acid"] }), e => e.code === "NOT_AVAILABLE" || e.code === "BAD_INPUT");
-  assert.throws(() => system({ components: ["water", "fumaric-acid"], model: "MOD-UNIFAC-2", solids: ["fumaric-acid"] }), e => e.code === "MISSING_DATA");
+  // a solid with neither a curve nor melting data is refused (fumaric acid served here until it had curves, 2026-11-05);
+  // itaconic acid has curves in seven solvents but none in water, so its solubility in water is not known
+  assert.throws(() => system({ components: ["water", "glucaric-acid"], model: "MOD-UNIFAC-2", solids: ["glucaric-acid"] }), e => e.code === "MISSING_DATA");
+  assert.throws(() => system({ components: ["water", "itaconic-acid"], model: "MOD-UNIFAC-2", solids: ["itaconic-acid"] }).solidSolubility("itaconic-acid", 300), e => e.code === "MISSING_DATA");
   const doc = projectOf({ ...initialState({ components: [] }), flowsheet: fs }, { version: "9.9.9", now: new Date("2026-11-05T12:00:00Z") });
   assert.equal(doc.fugacity_project, 6);
   const back = stateFromProject(readProject(JSON.stringify(doc)));
@@ -198,4 +202,27 @@ test("a cooler or a flash drum, then the solid taken apart, gives exactly the Cr
   assert.ok(rel(d.state.P_kPa, cr.state.P_kPa) < 1e-8, `pressure ${d.state.P_kPa} vs ${cr.state.P_kPa}`);
   assert.ok(rel(solidPart(d.outlets.liquid), cr.state.crystals_kmol_h) < 1e-8, `crystals ${solidPart(d.outlets.liquid)} vs ${cr.state.crystals_kmol_h}`);
   assert.ok(Math.abs(d.duty_kW - cr.duty_kW) < 1e-6 * Math.max(1, Math.abs(cr.duty_kW)), `duty ${d.duty_kW} vs ${cr.duty_kW}`);
+});
+
+test("every automatic solubility curve follows the measured values it was fitted to, as its record states, and only in its range", () => {
+  // validation/python/solubility_curves.py, docs/SOLUBILITY_CURVES.md: each record states its largest deviation over the
+  // articles it was fitted to; the engine's curve must give the same number from the data files
+  let n = 0;
+  for (const [id, c] of Object.entries(components)) {
+    for (const rec of c.solubility ?? []) {
+      if (id === "terephthalic-acid" && rec.solvent === "water") continue;   // chosen by hand (the first test)
+      const data = JSON.parse(readFileSync(new URL(`../validation/data/sle/${id}.json`, import.meta.url)));
+      const dois = [...rec.source.matchAll(/doi:(10\.[^\s;,)]+)/g)].map(m => m[1].replace(/\.$/, ""));
+      assert.ok(dois.length >= 1, `${id} in ${rec.solvent}: the articles are named`);
+      let worst = 0;
+      for (const s of data.sets.filter(s => s.solvent === rec.solvent && dois.includes(s.doi))) {
+        for (const r of s.rows) worst = Math.max(worst, Math.abs(curveSolubility(rec, r.T_K) / r.x_solute - 1));
+      }
+      const stated = Number(rec.source.match(/Largest deviation ([\d.]+) %/)[1]) / 100;
+      assert.ok(Math.abs(worst - stated) < 6e-4, `${id} in ${rec.solvent}: largest deviation ${worst} vs the record's ${stated}`);
+      assert.throws(() => curveSolubility(rec, rec.Tmax_K + 1), e => e.code === "OUT_OF_RANGE");
+      n++;
+    }
+  }
+  assert.ok(n >= 20, `${n} automatic curves`);
 });

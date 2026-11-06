@@ -1,0 +1,294 @@
+{
+ "solid": "glycolic-acid",
+ "archive": "NIST TRC ThermoML Archive, https://trc.nist.gov/ThermoML/",
+ "retrieved": "2026-11-06",
+ "searched": "ThermoML-API full-text search for \"glycolic acid\"; 14 records opened",
+ "about": "Solubility of the solid as the mole fraction of the solid in the saturated liquid (x_solute), converted from the stored quantity where needed (validation/python/fetch_sle.py); binary sets with a CHEPTA component as the solvent, at 110 kPa or less.",
+ "articles": {
+  "10.1016/j.jct.2017.01.004": {
+   "authors": [
+    "Huang, Q.[Qiaoyin]",
+    "Xie, C.[Chuang]",
+    "Li, Y.[Yang]",
+    "Su, N.[Nannan]",
+    "Lou, Y.[Yajing]",
+    "Hu, X.[Xiaoxue]",
+    "Wang, Y.[Yongli]",
+    "Bao, Y.[Ying]",
+    "Hou, B.[Baohong]"
+   ],
+   "title": "Thermodynamic equilibrium of hydroxyacetic acid in pure and binary solvent systems",
+   "journal": "J. Chem. Thermodyn.",
+   "volume": "108",
+   "year": "2017",
+   "pages": "76-83"
+  }
+ },
+ "sets": [
+  {
+   "solvent": "ethyl-acetate",
+   "doi": "10.1016/j.jct.2017.01.004",
+   "set": 3,
+   "P_kPa": 100.0,
+   "rows": [
+    {
+     "T_K": 273.15,
+     "x_solute": 0.0256,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 278.15,
+     "x_solute": 0.0289,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 283.15,
+     "x_solute": 0.0343,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 288.15,
+     "x_solute": 0.0395,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 293.15,
+     "x_solute": 0.0472,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 298.15,
+     "x_solute": 0.058,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 303.15,
+     "x_solute": 0.0718,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 308.15,
+     "x_solute": 0.0877,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 313.15,
+     "x_solute": 0.106,
+     "quantity": "Mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "ethanol",
+   "doi": "10.1016/j.jct.2017.01.004",
+   "set": 4,
+   "P_kPa": 100.0,
+   "rows": [
+    {
+     "T_K": 273.15,
+     "x_solute": 0.179,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 278.15,
+     "x_solute": 0.197,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 283.15,
+     "x_solute": 0.224,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 288.15,
+     "x_solute": 0.254,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 293.15,
+     "x_solute": 0.286,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 298.15,
+     "x_solute": 0.319,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 303.15,
+     "x_solute": 0.363,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 308.15,
+     "x_solute": 0.413,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 313.15,
+     "x_solute": 0.474,
+     "quantity": "Mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "1-butanol",
+   "doi": "10.1016/j.jct.2017.01.004",
+   "set": 5,
+   "P_kPa": 100.0,
+   "rows": [
+    {
+     "T_K": 273.15,
+     "x_solute": 0.108,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 278.15,
+     "x_solute": 0.12,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 283.15,
+     "x_solute": 0.145,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 288.15,
+     "x_solute": 0.168,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 293.15,
+     "x_solute": 0.195,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 298.15,
+     "x_solute": 0.224,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 303.15,
+     "x_solute": 0.254,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 308.15,
+     "x_solute": 0.296,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 313.15,
+     "x_solute": 0.344,
+     "quantity": "Mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "2-propanol",
+   "doi": "10.1016/j.jct.2017.01.004",
+   "set": 6,
+   "P_kPa": 100.0,
+   "rows": [
+    {
+     "T_K": 273.15,
+     "x_solute": 0.142,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 278.15,
+     "x_solute": 0.168,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 283.15,
+     "x_solute": 0.193,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 288.15,
+     "x_solute": 0.22,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 293.15,
+     "x_solute": 0.248,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 298.15,
+     "x_solute": 0.28,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 303.15,
+     "x_solute": 0.313,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 308.15,
+     "x_solute": 0.348,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 313.15,
+     "x_solute": 0.391,
+     "quantity": "Mole fraction"
+    }
+   ]
+  },
+  {
+   "solvent": "acetonitrile",
+   "doi": "10.1016/j.jct.2017.01.004",
+   "set": 7,
+   "P_kPa": 100.0,
+   "rows": [
+    {
+     "T_K": 273.15,
+     "x_solute": 0.0226,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 278.15,
+     "x_solute": 0.0282,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 283.15,
+     "x_solute": 0.0351,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 288.15,
+     "x_solute": 0.0457,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 293.15,
+     "x_solute": 0.0554,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 298.15,
+     "x_solute": 0.0781,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 303.15,
+     "x_solute": 0.113,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 308.15,
+     "x_solute": 0.147,
+     "quantity": "Mole fraction"
+    },
+    {
+     "T_K": 313.15,
+     "x_solute": 0.189,
+     "quantity": "Mole fraction"
+    }
+   ]
+  }
+ ]
+}

@@ -16962,7 +16962,24 @@
         "source_ids": [
           "chemsep-8.3"
         ]
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "nmp",
+          "equation": "apelblat",
+          "A": -80.08001,
+          "B": 3198.4302,
+          "C": 12.15083,
+          "Tmin_K": 286.18,
+          "Tmax_K": 304.52,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 5 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/phenol.json), 286.2-304.5 K, each article with the same weight: Domanska, Fluid Phase Equilib. 232 (2005), doi:10.1016/j.fluid.2005.03.027. Largest deviation 0.1 %, median 0.0 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "dichloromethane": {
       "name": "Dichloromethane",
@@ -32620,7 +32637,39 @@
         "source_ids": [
           "chemsep-8.3"
         ]
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "cyclohexane",
+          "equation": "apelblat",
+          "A": -0.325272,
+          "B": -3199.386,
+          "C": 1.623619,
+          "Tmin_K": 283.43,
+          "Tmax_K": 337.34,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 5 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/naphthalene.json), 283.4-337.3 K, each article with the same weight: Yokoi, Fluid Phase Equilib. 420 (2016), doi:10.1016/j.fluid.2015.11.035. Largest deviation 1.9 %, median 0.7 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethanol",
+          "equation": "apelblat",
+          "A": -1815.416646,
+          "B": 81206.9723,
+          "C": 270.295681,
+          "Tmin_K": 304.26,
+          "Tmax_K": 339.76,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 19 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/naphthalene.json), 304.3-339.8 K, each article with the same weight: Cui, J. Chem. Eng. Data 54 (2009), doi:10.1021/je800628a. Largest deviation 8.8 %, median 2.7 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "benzoic-acid": {
       "name": "Benzoic acid",
@@ -32933,7 +32982,84 @@
         "source_ids": [
           "chemsep-8.3"
         ]
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "cyclohexane",
+          "equation": "apelblat",
+          "A": -58.803771,
+          "B": -1949.7495,
+          "C": 10.681086,
+          "Tmin_K": 283.15,
+          "Tmax_K": 342.8,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 18 measured solubilities of 2 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/benzoic-acid.json), 283.1-342.8 K, each article with the same weight: Long, Fluid Phase Equilib. 297 (2010), doi:10.1016/j.fluid.2010.06.021; Thati, J. Chem. Eng. Data 55 (2010), doi:10.1021/je100675r. Largest deviation 44.3 %, median 5.5 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "isooctane",
+          "equation": "apelblat",
+          "A": 392.703225,
+          "B": -23208.0377,
+          "C": -56.136594,
+          "Tmin_K": 283.15,
+          "Tmax_K": 328.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/benzoic-acid.json), 283.1-328.1 K, each article with the same weight: Sandeepa, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.8b00025. Largest deviation 5.9 %, median 2.6 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "isopropyl-acetate",
+          "equation": "apelblat",
+          "A": -2.762512,
+          "B": -1755.1751,
+          "C": 1.184256,
+          "Tmin_K": 276.27,
+          "Tmax_K": 298.34,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 5 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/benzoic-acid.json), 276.3-298.3 K, each article with the same weight: Tully, J. Chem. Eng. Data 61 (2016), doi:10.1021/acs.jced.5b00746. Largest deviation 0.3 %, median 0.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "n-heptane",
+          "equation": "apelblat",
+          "A": 8.273858,
+          "B": -3775.0804,
+          "C": -0.002639,
+          "Tmin_K": 278.15,
+          "Tmax_K": 323.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 6 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/benzoic-acid.json), 278.1-323.1 K, each article with the same weight: Thati, J. Chem. Eng. Data 55 (2010), doi:10.1021/je100675r. Largest deviation 1.3 %, median 0.6 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "n-hexane",
+          "equation": "apelblat",
+          "A": 312.680771,
+          "B": -18426.9899,
+          "C": -44.849344,
+          "Tmin_K": 288.15,
+          "Tmax_K": 328.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/benzoic-acid.json), 288.1-328.1 K, each article with the same weight: Sandeepa, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.8b00025. Largest deviation 6.7 %, median 2.7 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "salicylic-acid": {
       "name": "Salicylic acid",
@@ -33247,7 +33373,87 @@
         "source_ids": [
           "chemsep-8.3"
         ]
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "1-propanol",
+          "equation": "apelblat",
+          "A": 107.88637,
+          "B": -5876.8718,
+          "C": -15.823845,
+          "Tmin_K": 278.15,
+          "Tmax_K": 338.2,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 19 measured solubilities of 3 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/salicylic-acid.json), 278.1-338.2 K, each article with the same weight: Lim, J. Chem. Thermodyn. 57 (2013), doi:10.1016/j.jct.2012.09.006; Wang, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.6b00957; Fakhree, J. Chem. Eng. Data 57 (2012), doi:10.1021/je300980k. Largest deviation 13.2 %, median 3.3 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "2-propanol",
+          "equation": "apelblat",
+          "A": -50.488105,
+          "B": 1442.9675,
+          "C": 7.672275,
+          "Tmin_K": 298.2,
+          "Tmax_K": 338.2,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 5 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/salicylic-acid.json), 298.2-338.2 K, each article with the same weight: Fakhree, J. Chem. Eng. Data 57 (2012), doi:10.1021/je300980k. Largest deviation 1.4 %, median 0.6 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetic-acid",
+          "equation": "apelblat",
+          "A": 114.514075,
+          "B": -7468.8591,
+          "C": -16.216749,
+          "Tmin_K": 298.15,
+          "Tmax_K": 318.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 5 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/salicylic-acid.json), 298.1-318.1 K, each article with the same weight: Li, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b00665. Largest deviation 1.6 %, median 0.6 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetonitrile",
+          "equation": "apelblat",
+          "A": -87.930272,
+          "B": 1597.9489,
+          "C": 13.874274,
+          "Tmin_K": 283.1,
+          "Tmax_K": 323.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/salicylic-acid.json), 283.1-323.1 K, each article with the same weight: Nordstrom, J. Chem. Eng. Data 51 (2006), doi:10.1021/je060134d. Largest deviation 0.9 %, median 0.6 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethyl-acetate",
+          "equation": "apelblat",
+          "A": -44.039394,
+          "B": 726.061,
+          "C": 6.950292,
+          "Tmin_K": 283.1,
+          "Tmax_K": 348.0,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 25 measured solubilities of 3 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/salicylic-acid.json), 283.1-348.0 K, each article with the same weight: Li, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b00665; Nordstrom, J. Chem. Eng. Data 51 (2006), doi:10.1021/je060134d; Shalmashi, J. Chem. Eng. Data 53 (2008), doi:10.1021/je7004962. Largest deviation 5.0 %, median 1.8 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "checks": {
+            "10.1021/acs.jced.7b00238": -0.0769427226842393
+          },
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "isopentane": {
       "name": "Isopentane",
@@ -38428,7 +38634,144 @@
         "source_ids": [
           "chemsep-8.3"
         ]
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "1-butanol",
+          "equation": "apelblat",
+          "A": -277.171674,
+          "B": 9810.0589,
+          "C": 42.227692,
+          "Tmin_K": 304.95,
+          "Tmax_K": 353.65,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 20 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/adipic-acid.json), 304.9-353.6 K, each article with the same weight: Li, J. Chem. Eng. Data 59 (2014), doi:10.1021/je500682v. Largest deviation 1.8 %, median 0.9 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetic-acid",
+          "equation": "apelblat",
+          "A": 0.380432,
+          "B": -3407.2526,
+          "C": 1.252919,
+          "Tmin_K": 301.75,
+          "Tmax_K": 383.0,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 61 measured solubilities of 7 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/adipic-acid.json), 301.8-383.0 K, each article with the same weight: Suren, Fluid Phase Equilib. 360 (2013), doi:10.1016/j.fluid.2013.10.003; Luo, J. Chem. Thermodyn. 138 (2019), doi:10.1016/j.jct.2019.06.033; Luo, J. Chem. Eng. Data 61 (2016), doi:10.1021/acs.jced.6b00177; Luo, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.6b00800; Liao, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.7b00468; Huang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.8b01127; Shen, J. Chem. Eng. Data 58 (2013), doi:10.1021/je301202v. Largest deviation 10.4 %, median 3.2 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "chloroform",
+          "equation": "apelblat",
+          "A": 152.68695,
+          "B": -9246.0147,
+          "C": -22.439172,
+          "Tmin_K": 298.15,
+          "Tmax_K": 323.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 12 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/adipic-acid.json), 298.1-323.1 K, each article with the same weight: Wei, J. Chem. Eng. Data 54 (2009), doi:10.1021/je8006887. Largest deviation 0.9 %, median 0.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "diethylene-glycol",
+          "equation": "apelblat",
+          "A": -94.403488,
+          "B": 2997.2737,
+          "C": 14.325494,
+          "Tmin_K": 298.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 11 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/adipic-acid.json), 298.1-333.1 K, each article with the same weight: Han, Fluid Phase Equilib. 412 (2016), doi:10.1016/j.fluid.2015.12.026. Largest deviation 1.2 %, median 0.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethanol",
+          "equation": "apelblat",
+          "A": -124.895708,
+          "B": 2746.9337,
+          "C": 19.735859,
+          "Tmin_K": 283.15,
+          "Tmax_K": 323.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 18 measured solubilities of 4 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/adipic-acid.json), 283.1-323.1 K, each article with the same weight: Meng, Fluid Phase Equilib. 409 (2016), doi:10.1016/j.fluid.2015.09.036; Zhang, J. Chem. Thermodyn. 77 (2014), doi:10.1016/j.jct.2014.05.009; Galvao, J. Chem. Thermodyn. 121 (2018), doi:10.1016/j.jct.2018.02.005; Li, J. Chem. Eng. Data 61 (2016), doi:10.1021/acs.jced.6b00031. Largest deviation 11.1 %, median 2.3 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethyl-acetate",
+          "equation": "apelblat",
+          "A": 44.327976,
+          "B": -5775.0174,
+          "C": -5.323526,
+          "Tmin_K": 288.15,
+          "Tmax_K": 343.02,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 21 measured solubilities of 2 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/adipic-acid.json), 288.1-343.0 K, each article with the same weight: Zhang, J. Chem. Thermodyn. 77 (2014), doi:10.1016/j.jct.2014.05.009; Huang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.8b01127. Largest deviation 20.5 %, median 5.4 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "methanol",
+          "equation": "apelblat",
+          "A": 0.5971,
+          "B": -2603.491,
+          "C": 0.889736,
+          "Tmin_K": 284.85,
+          "Tmax_K": 318.65,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/adipic-acid.json), 284.9-318.6 K, each article with the same weight: Luo, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.7b00255. Largest deviation 1.6 %, median 0.5 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "propionic-acid",
+          "equation": "apelblat",
+          "A": -295.968037,
+          "B": 10116.8359,
+          "C": 45.383842,
+          "Tmin_K": 289.65,
+          "Tmax_K": 329.75,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/adipic-acid.json), 289.6-329.8 K, each article with the same weight: Luo, J. Chem. Thermodyn. 138 (2019), doi:10.1016/j.jct.2019.06.033. Largest deviation 2.4 %, median 1.0 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "toluene",
+          "equation": "apelblat",
+          "A": 492.016309,
+          "B": -31703.5607,
+          "C": -69.44859,
+          "Tmin_K": 298.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 14 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/adipic-acid.json), 298.1-333.1 K, each article with the same weight: Wei, J. Chem. Eng. Data 54 (2009), doi:10.1021/je8006887. Largest deviation 2.3 %, median 1.6 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "maleic-anhydride": {
       "name": "Maleic anhydride",
@@ -38920,6 +39263,51 @@
           "source_ids": [
             "nist-thermoml-archive"
           ]
+        },
+        {
+          "solvent": "acetic-acid",
+          "equation": "apelblat",
+          "A": -83.51195,
+          "B": 419.2928,
+          "C": 12.582379,
+          "Tmin_K": 315.15,
+          "Tmax_K": 363.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 6 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/terephthalic-acid.json), 315.1-363.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b00927. Largest deviation 2.7 %, median 0.8 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "cyclohexanone",
+          "equation": "apelblat",
+          "A": -370.096574,
+          "B": 14979.8142,
+          "C": 54.620587,
+          "Tmin_K": 293.15,
+          "Tmax_K": 343.85,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 6 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/terephthalic-acid.json), 293.1-343.9 K, each article with the same weight: Che, J. Chem. Eng. Data 54 (2009), doi:10.1021/je9001976. Largest deviation 3.6 %, median 1.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "tetrahydrofuran",
+          "equation": "apelblat",
+          "A": -370.589945,
+          "B": 15384.7342,
+          "C": 54.761015,
+          "Tmin_K": 293.15,
+          "Tmax_K": 329.35,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 5 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/terephthalic-acid.json), 293.1-329.4 K, each article with the same weight: Che, J. Chem. Eng. Data 54 (2009), doi:10.1021/je9001976. Largest deviation 1.1 %, median 0.8 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
         }
       ]
     },
@@ -39229,7 +39617,219 @@
         "source_ids": [
           "chemsep-8.3"
         ]
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "1-butanol",
+          "equation": "apelblat",
+          "A": -111.65563,
+          "B": 407.7622,
+          "C": 18.320057,
+          "Tmin_K": 283.14,
+          "Tmax_K": 322.98,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.1-323.0 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 1.3 %, median 0.3 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "1-propanol",
+          "equation": "apelblat",
+          "A": 12.362468,
+          "B": -5139.5801,
+          "C": -0.262098,
+          "Tmin_K": 283.14,
+          "Tmax_K": 323.08,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.1-323.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 2.1 %, median 0.6 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "2-butanone",
+          "equation": "apelblat",
+          "A": -38.526802,
+          "B": -1417.4517,
+          "C": 6.899514,
+          "Tmin_K": 283.15,
+          "Tmax_K": 323.14,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.1-323.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 0.5 %, median 0.3 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "2-propanol",
+          "equation": "apelblat",
+          "A": -140.095978,
+          "B": 1547.7323,
+          "C": 22.599584,
+          "Tmin_K": 283.32,
+          "Tmax_K": 323.17,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.3-323.2 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 1.4 %, median 1.0 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetone",
+          "equation": "apelblat",
+          "A": -34.676646,
+          "B": -1644.7248,
+          "C": 6.325424,
+          "Tmin_K": 283.2,
+          "Tmax_K": 323.23,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.2-323.2 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 0.5 %, median 0.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetonitrile",
+          "equation": "apelblat",
+          "A": -55.900696,
+          "B": -1070.5366,
+          "C": 9.614658,
+          "Tmin_K": 283.18,
+          "Tmax_K": 323.23,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.2-323.2 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 0.0 %, median 0.0 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "chloroform",
+          "equation": "apelblat",
+          "A": -41.545589,
+          "B": 405.1963,
+          "C": 6.628236,
+          "Tmin_K": 283.04,
+          "Tmax_K": 323.07,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.0-323.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 0.0 %, median 0.0 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "cyclohexanone",
+          "equation": "apelblat",
+          "A": -31.45719,
+          "B": -1887.905,
+          "C": 5.965081,
+          "Tmin_K": 283.2,
+          "Tmax_K": 323.23,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.2-323.2 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 0.8 %, median 0.3 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethanol",
+          "equation": "apelblat",
+          "A": -140.684202,
+          "B": 2067.0552,
+          "C": 22.395496,
+          "Tmin_K": 283.36,
+          "Tmax_K": 323.22,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.4-323.2 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 1.0 %, median 0.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethyl-acetate",
+          "equation": "apelblat",
+          "A": 37.085468,
+          "B": -4660.682,
+          "C": -4.440493,
+          "Tmin_K": 283.08,
+          "Tmax_K": 322.97,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.1-323.0 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 1.5 %, median 0.3 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "isobutanol",
+          "equation": "apelblat",
+          "A": 31.869427,
+          "B": -6343.1615,
+          "C": -2.914821,
+          "Tmin_K": 283.3,
+          "Tmax_K": 323.1,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.3-323.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 2.9 %, median 1.6 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "isopropyl-acetate",
+          "equation": "apelblat",
+          "A": -81.437282,
+          "B": 734.969,
+          "C": 13.156152,
+          "Tmin_K": 283.22,
+          "Tmax_K": 323.34,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.2-323.3 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 0.3 %, median 0.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "methanol",
+          "equation": "apelblat",
+          "A": -192.825658,
+          "B": 4510.4857,
+          "C": 30.06377,
+          "Tmin_K": 283.15,
+          "Tmax_K": 323.01,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.1-323.0 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 1.7 %, median 0.5 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "n-butyl-acetate",
+          "equation": "apelblat",
+          "A": -69.021198,
+          "B": 39.9681,
+          "C": 11.407429,
+          "Tmin_K": 283.26,
+          "Tmax_K": 323.03,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/dmt.json), 283.3-323.0 K, each article with the same weight: Zhang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.9b00658. Largest deviation 1.0 %, median 0.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "methyl-laurate": {
       "name": "Methyl laurate",
@@ -42242,7 +42842,159 @@
         "source_ids": [
           "chemsep-8.31-2"
         ]
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "1-propanol",
+          "equation": "apelblat",
+          "A": 413.219868,
+          "B": -26655.6451,
+          "C": -57.408427,
+          "Tmin_K": 306.51,
+          "Tmax_K": 334.95,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/palmitic-acid.json), 306.5-334.9 K, each article with the same weight: Bonassoli, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.8b01044. Largest deviation 1.9 %, median 0.4 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "2-propanol",
+          "equation": "apelblat",
+          "A": 326.82679,
+          "B": -22004.9591,
+          "C": -44.933292,
+          "Tmin_K": 291.75,
+          "Tmax_K": 334.48,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 20 measured solubilities of 2 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/palmitic-acid.json), 291.8-334.5 K, each article with the same weight: Bonassoli, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.8b01044; Calvo, J. Chem. Eng. Data 54 (2009), doi:10.1021/je8005979. Largest deviation 10.8 %, median 2.8 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetone",
+          "equation": "apelblat",
+          "A": -501.447822,
+          "B": 13480.0477,
+          "C": 79.404205,
+          "Tmin_K": 292.85,
+          "Tmax_K": 322.95,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 11 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/palmitic-acid.json), 292.9-322.9 K, each article with the same weight: Calvo, J. Chem. Eng. Data 54 (2009), doi:10.1021/je8005979. Largest deviation 2.7 %, median 1.3 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethanol",
+          "equation": "apelblat",
+          "A": 544.18875,
+          "B": -33806.8025,
+          "C": -76.263784,
+          "Tmin_K": 292.15,
+          "Tmax_K": 335.59,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 24 measured solubilities of 2 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/palmitic-acid.json), 292.1-335.6 K, each article with the same weight: Bonassoli, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.8b01044; Calvo, J. Chem. Eng. Data 54 (2009), doi:10.1021/je8005979. Largest deviation 13.1 %, median 2.7 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "n-heptane",
+          "equation": "apelblat",
+          "A": 1055.905058,
+          "B": -58390.8772,
+          "C": -151.604044,
+          "Tmin_K": 294.55,
+          "Tmax_K": 322.25,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 11 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/palmitic-acid.json), 294.6-322.2 K, each article with the same weight: Calvo, J. Chem. Eng. Data 54 (2009), doi:10.1021/je8005979. Largest deviation 6.1 %, median 1.6 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "n-hexadecane",
+          "equation": "apelblat",
+          "A": 1847.165576,
+          "B": -96911.9116,
+          "C": -267.974148,
+          "Tmin_K": 311.9,
+          "Tmax_K": 336.1,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 12 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/palmitic-acid.json), 311.9-336.1 K, each article with the same weight: Yui, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.6b00355. Largest deviation 3.4 %, median 1.9 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "n-hexane",
+          "equation": "apelblat",
+          "A": 1458.228944,
+          "B": -76270.6134,
+          "C": -211.655401,
+          "Tmin_K": 293.75,
+          "Tmax_K": 322.75,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 11 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/palmitic-acid.json), 293.8-322.8 K, each article with the same weight: Calvo, J. Chem. Eng. Data 54 (2009), doi:10.1021/je8005979. Largest deviation 3.7 %, median 2.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "n-octadecane",
+          "equation": "apelblat",
+          "A": 482.092398,
+          "B": -30136.6705,
+          "C": -67.436361,
+          "Tmin_K": 306.45,
+          "Tmax_K": 333.05,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 12 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/palmitic-acid.json), 306.4-333.1 K, each article with the same weight: Wei, J. Chem. Thermodyn. 101 (2016), doi:10.1016/j.jct.2016.05.008. Largest deviation 5.4 %, median 2.0 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "oleic-acid",
+          "equation": "apelblat",
+          "A": 27.929188,
+          "B": -6350.4296,
+          "C": -1.558467,
+          "Tmin_K": 298.0,
+          "Tmax_K": 335.05,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 14 measured solubilities of 2 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/palmitic-acid.json), 298.0-335.1 K, each article with the same weight: Eckert, Thermochim. Acta 630 (2016), doi:10.1016/j.tca.2016.02.008; Nishimura, J. Chem. Eng. Data 56 (2011), doi:10.1021/je101092j. Largest deviation 8.5 %, median 2.2 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "triolein",
+          "equation": "apelblat",
+          "A": -526.247623,
+          "B": 18655.5043,
+          "C": 80.915951,
+          "Tmin_K": 290.7,
+          "Tmax_K": 335.0,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 6 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/palmitic-acid.json), 290.7-335.0 K, each article with the same weight: Nishimura, J. Chem. Eng. Data 56 (2011), doi:10.1021/je101092j. Largest deviation 17.3 %, median 3.7 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "stearic-acid": {
       "name": "Stearic acid",
@@ -42561,7 +43313,99 @@
         "source_ids": [
           "chemsep-8.31-2"
         ]
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "2-propanol",
+          "equation": "apelblat",
+          "A": 347.355534,
+          "B": -24350.6927,
+          "C": -47.352774,
+          "Tmin_K": 292.35,
+          "Tmax_K": 342.82,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 22 measured solubilities of 2 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/stearic-acid.json), 292.4-342.8 K, each article with the same weight: Bonassoli, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.8b01044; Calvo, J. Chem. Eng. Data 53 (2008), doi:10.1021/je7006567. Largest deviation 17.2 %, median 3.1 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetone",
+          "equation": "apelblat",
+          "A": -1631.498593,
+          "B": 65015.8767,
+          "C": 247.21773,
+          "Tmin_K": 291.95,
+          "Tmax_K": 322.55,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 13 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/stearic-acid.json), 291.9-322.6 K, each article with the same weight: Calvo, J. Chem. Eng. Data 53 (2008), doi:10.1021/je7006567. Largest deviation 4.9 %, median 0.9 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "n-heptane",
+          "equation": "apelblat",
+          "A": 816.656708,
+          "B": -49455.4516,
+          "C": -115.129794,
+          "Tmin_K": 293.45,
+          "Tmax_K": 324.85,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 13 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/stearic-acid.json), 293.4-324.9 K, each article with the same weight: Calvo, J. Chem. Eng. Data 53 (2008), doi:10.1021/je7006567. Largest deviation 7.5 %, median 2.8 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "n-hexadecane",
+          "equation": "apelblat",
+          "A": 1683.458236,
+          "B": -91460.7333,
+          "C": -242.715306,
+          "Tmin_K": 314.0,
+          "Tmax_K": 343.3,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 13 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/stearic-acid.json), 314.0-343.3 K, each article with the same weight: Yui, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.6b00355. Largest deviation 8.5 %, median 3.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "n-hexane",
+          "equation": "apelblat",
+          "A": 710.968086,
+          "B": -44275.3566,
+          "C": -99.586216,
+          "Tmin_K": 293.75,
+          "Tmax_K": 323.55,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 13 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/stearic-acid.json), 293.8-323.6 K, each article with the same weight: Calvo, J. Chem. Eng. Data 53 (2008), doi:10.1021/je7006567. Largest deviation 6.5 %, median 2.3 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "oleic-acid",
+          "equation": "apelblat",
+          "A": 294.659584,
+          "B": -20367.1834,
+          "C": -40.309483,
+          "Tmin_K": 309.55,
+          "Tmax_K": 342.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/stearic-acid.json), 309.6-342.1 K, each article with the same weight: Eckert, Thermochim. Acta 630 (2016), doi:10.1016/j.tca.2016.02.008. Largest deviation 1.8 %, median 0.4 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "n-hexadecane": {
       "name": "n-Hexadecane",
@@ -49376,7 +50220,42 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 4 CH, 1 OH (P), 1 CHO, 4 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O6"
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "1-octanol",
+          "equation": "apelblat",
+          "A": 182.334813,
+          "B": -13312.0976,
+          "C": -25.387562,
+          "Tmin_K": 345.15,
+          "Tmax_K": 383.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 7 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/glucose.json), 345.1-383.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 59 (2014), doi:10.1021/je4011097. Largest deviation 7.2 %, median 2.7 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "water",
+          "equation": "apelblat",
+          "A": -82.935232,
+          "B": 2646.7525,
+          "C": 12.428709,
+          "Tmin_K": 303.0,
+          "Tmax_K": 433.0,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 21 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/glucose.json), 303.0-433.0 K, each article with the same weight: Saldana, J. Chem. Thermodyn. 55 (2012), doi:10.1016/j.jct.2012.06.016. Largest deviation 22.8 %, median 9.0 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "checks": {
+            "10.1021/je700177n": -0.7258979373774956
+          },
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "fructose": {
       "name": "D-Fructose",
@@ -49545,7 +50424,24 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 3 CH, 2 OH (P), 1 CH2CO, 3 OH (S)): assigned from the structure and checked (the open-chain ketone form (as for glucose, which DDBST assigns open-chain): the C(=O) with C1 as CH2CO, C6 as CH2, three CH; two primary OH (P) and three secondary OH (S)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H12O6"
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "water",
+          "equation": "apelblat",
+          "A": -119.512949,
+          "B": 4380.8891,
+          "C": 18.177772,
+          "Tmin_K": 298.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 5 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/fructose.json), 298.1-333.1 K, each article with the same weight: Crestani, J. Chem. Eng. Data 58 (2013), doi:10.1021/je400471m. Largest deviation 1.2 %, median 0.7 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "sorbitol": {
       "name": "D-Sorbitol",
@@ -50040,7 +50936,39 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O4"
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "acetic-acid",
+          "equation": "apelblat",
+          "A": -156.485945,
+          "B": 4443.5681,
+          "C": 24.090306,
+          "Tmin_K": 290.75,
+          "Tmax_K": 345.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 49 measured solubilities of 6 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json), 290.8-345.1 K, each article with the same weight: Luo, J. Chem. Thermodyn. 138 (2019), doi:10.1016/j.jct.2019.06.033; Luo, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.6b00800; Liao, J. Chem. Eng. Data 62 (2017), doi:10.1021/acs.jced.7b00468; Huang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.8b01127; Lei, J. Chem. Eng. Data 59 (2014), doi:10.1021/je500231c; Yu, J. Chem. Eng. Data 54 (2009), doi:10.1021/je900021g. Largest deviation 9.4 %, median 1.6 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethyl-acetate",
+          "equation": "apelblat",
+          "A": 559.694579,
+          "B": -29478.8409,
+          "C": -81.885823,
+          "Tmin_K": 288.15,
+          "Tmax_K": 340.36,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 21 measured solubilities of 2 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/succinic-acid.json), 288.1-340.4 K, each article with the same weight: Zhang, J. Chem. Thermodyn. 77 (2014), doi:10.1016/j.jct.2014.05.009; Huang, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.8b01127. Largest deviation 29.9 %, median 6.0 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "itaconic-acid": {
       "name": "Itaconic acid",
@@ -50195,7 +51123,114 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH2=C, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H6O4"
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "1-propanol",
+          "equation": "apelblat",
+          "A": -65.802978,
+          "B": 2045.3583,
+          "C": 9.889947,
+          "Tmin_K": 283.15,
+          "Tmax_K": 328.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/itaconic-acid.json), 283.1-328.1 K, each article with the same weight: Yang, Fluid Phase Equilib. 314 (2012), doi:10.1016/j.fluid.2011.09.027. Largest deviation 0.7 %, median 0.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "2-propanol",
+          "equation": "apelblat",
+          "A": -89.909476,
+          "B": 3329.3999,
+          "C": 13.392429,
+          "Tmin_K": 283.15,
+          "Tmax_K": 328.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/itaconic-acid.json), 283.1-328.1 K, each article with the same weight: Yang, Fluid Phase Equilib. 314 (2012), doi:10.1016/j.fluid.2011.09.027. Largest deviation 0.6 %, median 0.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetone",
+          "equation": "apelblat",
+          "A": -93.902144,
+          "B": 2924.7933,
+          "C": 14.238165,
+          "Tmin_K": 283.15,
+          "Tmax_K": 328.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/itaconic-acid.json), 283.1-328.1 K, each article with the same weight: Yang, Fluid Phase Equilib. 314 (2012), doi:10.1016/j.fluid.2011.09.027. Largest deviation 0.7 %, median 0.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetonitrile",
+          "equation": "apelblat",
+          "A": -5.31131,
+          "B": -2734.5795,
+          "C": 1.629172,
+          "Tmin_K": 283.15,
+          "Tmax_K": 328.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/itaconic-acid.json), 283.1-328.1 K, each article with the same weight: Yang, Fluid Phase Equilib. 314 (2012), doi:10.1016/j.fluid.2011.09.027. Largest deviation 3.1 %, median 0.5 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethanol",
+          "equation": "apelblat",
+          "A": -80.445312,
+          "B": 2786.2621,
+          "C": 12.032728,
+          "Tmin_K": 283.15,
+          "Tmax_K": 328.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/itaconic-acid.json), 283.1-328.1 K, each article with the same weight: Yang, Fluid Phase Equilib. 314 (2012), doi:10.1016/j.fluid.2011.09.027. Largest deviation 0.6 %, median 0.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethyl-acetate",
+          "equation": "apelblat",
+          "A": -52.437,
+          "B": 164.9038,
+          "C": 8.313706,
+          "Tmin_K": 283.15,
+          "Tmax_K": 328.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/itaconic-acid.json), 283.1-328.1 K, each article with the same weight: Yang, Fluid Phase Equilib. 314 (2012), doi:10.1016/j.fluid.2011.09.027. Largest deviation 1.4 %, median 0.5 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "methanol",
+          "equation": "apelblat",
+          "A": -65.043478,
+          "B": 2389.1273,
+          "C": 9.621334,
+          "Tmin_K": 283.15,
+          "Tmax_K": 328.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/itaconic-acid.json), 283.1-328.1 K, each article with the same weight: Yang, Fluid Phase Equilib. 314 (2012), doi:10.1016/j.fluid.2011.09.027. Largest deviation 0.4 %, median 0.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "fumaric-acid": {
       "name": "Fumaric acid",
@@ -50350,7 +51385,69 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH=CH, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H4O4"
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "1-propanol",
+          "equation": "apelblat",
+          "A": -19.578746,
+          "B": -1190.6663,
+          "C": 3.392461,
+          "Tmin_K": 279.0,
+          "Tmax_K": 351.8,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 13 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/fumaric-acid.json), 279.0-351.8 K, each article with the same weight: Dang, J. Chem. Eng. Data 54 (2009), doi:10.1021/je9001637. Largest deviation 4.8 %, median 1.7 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "2-propanol",
+          "equation": "apelblat",
+          "A": 56.349908,
+          "B": -4758.6487,
+          "C": -7.773402,
+          "Tmin_K": 279.0,
+          "Tmax_K": 351.0,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 12 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/fumaric-acid.json), 279.0-351.0 K, each article with the same weight: Dang, J. Chem. Eng. Data 54 (2009), doi:10.1021/je9001637. Largest deviation 4.7 %, median 2.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetone",
+          "equation": "apelblat",
+          "A": 105.218091,
+          "B": -6804.245,
+          "C": -15.360109,
+          "Tmin_K": 279.0,
+          "Tmax_K": 333.0,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/fumaric-acid.json), 279.0-333.0 K, each article with the same weight: Dang, J. Chem. Eng. Data 54 (2009), doi:10.1021/je9001637. Largest deviation 0.7 %, median 0.4 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethanol",
+          "equation": "apelblat",
+          "A": -31.840902,
+          "B": -372.1269,
+          "C": 5.109261,
+          "Tmin_K": 279.0,
+          "Tmax_K": 343.0,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 11 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/fumaric-acid.json), 279.0-343.0 K, each article with the same weight: Dang, J. Chem. Eng. Data 54 (2009), doi:10.1021/je9001637. Largest deviation 3.8 %, median 2.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "malic-acid": {
       "name": "Malic acid",
@@ -50500,7 +51597,69 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 CH, 2 COOH, 1 OH (S)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C4H6O5"
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "2-propanol",
+          "equation": "apelblat",
+          "A": -51.523978,
+          "B": -1638.8071,
+          "C": 9.378705,
+          "Tmin_K": 303.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 7 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/malic-acid.json), 303.1-333.1 K, each article with the same weight: Daneshfar, Fluid Phase Equilib. 313 (2012), doi:10.1016/j.fluid.2011.09.033. Largest deviation 4.8 %, median 4.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetonitrile",
+          "equation": "apelblat",
+          "A": 407.435256,
+          "B": -22488.1212,
+          "C": -59.195324,
+          "Tmin_K": 303.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 7 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/malic-acid.json), 303.1-333.1 K, each article with the same weight: Daneshfar, Fluid Phase Equilib. 313 (2012), doi:10.1016/j.fluid.2011.09.033. Largest deviation 4.4 %, median 3.4 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "dioxane",
+          "equation": "apelblat",
+          "A": -180.299495,
+          "B": 7304.4392,
+          "C": 26.995141,
+          "Tmin_K": 303.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 7 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/malic-acid.json), 303.1-333.1 K, each article with the same weight: Daneshfar, Fluid Phase Equilib. 313 (2012), doi:10.1016/j.fluid.2011.09.033. Largest deviation 2.2 %, median 1.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "tetrahydrofuran",
+          "equation": "apelblat",
+          "A": 291.1067,
+          "B": -15374.0632,
+          "C": -42.409402,
+          "Tmin_K": 303.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 7 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/malic-acid.json), 303.1-333.1 K, each article with the same weight: Daneshfar, Fluid Phase Equilib. 313 (2012), doi:10.1016/j.fluid.2011.09.033. Largest deviation 4.7 %, median 1.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "citric-acid": {
       "name": "Citric acid",
@@ -50664,7 +51823,114 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (2 CH2, 1 C, 3 COOH, 1 OH (T)): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C6H8O7"
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "1-butanol",
+          "equation": "apelblat",
+          "A": -70.81092,
+          "B": 124.5667,
+          "C": 11.926567,
+          "Tmin_K": 288.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 19 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/citric-acid.json), 288.1-333.1 K, each article with the same weight: Yang, J. Chem. Eng. Data 56 (2011), doi:10.1021/je101167z. Largest deviation 0.3 %, median 0.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetone",
+          "equation": "apelblat",
+          "A": -71.588922,
+          "B": -159.0257,
+          "C": 12.227453,
+          "Tmin_K": 288.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 19 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/citric-acid.json), 288.1-333.1 K, each article with the same weight: Yang, J. Chem. Eng. Data 56 (2011), doi:10.1021/je101167z. Largest deviation 0.1 %, median 0.0 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetonitrile",
+          "equation": "apelblat",
+          "A": 321.751504,
+          "B": -16695.3109,
+          "C": -47.200581,
+          "Tmin_K": 303.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 7 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/citric-acid.json), 303.1-333.1 K, each article with the same weight: Daneshfar, Fluid Phase Equilib. 313 (2012), doi:10.1016/j.fluid.2011.09.033. Largest deviation 2.7 %, median 1.5 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "dioxane",
+          "equation": "apelblat",
+          "A": 1495.332851,
+          "B": -73158.8129,
+          "C": -219.943902,
+          "Tmin_K": 303.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 7 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/citric-acid.json), 303.1-333.1 K, each article with the same weight: Daneshfar, Fluid Phase Equilib. 313 (2012), doi:10.1016/j.fluid.2011.09.033. Largest deviation 5.2 %, median 2.2 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "methanol",
+          "equation": "apelblat",
+          "A": -3.05424,
+          "B": -331.1308,
+          "C": 0.423751,
+          "Tmin_K": 278.15,
+          "Tmax_K": 303.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 6 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/citric-acid.json), 278.1-303.1 K, each article with the same weight: Qin, J. Chem. Eng. Data 59 (2014), doi:10.1021/je400838e. Largest deviation 0.3 %, median 0.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "tetrahydrofuran",
+          "equation": "apelblat",
+          "A": -634.578896,
+          "B": 28105.9426,
+          "C": 94.469503,
+          "Tmin_K": 303.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 7 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/citric-acid.json), 303.1-333.1 K, each article with the same weight: Daneshfar, Fluid Phase Equilib. 313 (2012), doi:10.1016/j.fluid.2011.09.033. Largest deviation 4.6 %, median 1.6 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "toluene",
+          "equation": "apelblat",
+          "A": -34.727187,
+          "B": 25.3438,
+          "C": 5.60949,
+          "Tmin_K": 288.15,
+          "Tmax_K": 333.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 19 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/citric-acid.json), 288.1-333.1 K, each article with the same weight: Yang, J. Chem. Eng. Data 56 (2011), doi:10.1021/je101167z. Largest deviation 0.1 %, median 0.0 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "glycolic-acid": {
       "name": "Glycolic acid",
@@ -50820,7 +52086,84 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 1 OH (P), 1 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C2H4O3"
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "1-butanol",
+          "equation": "apelblat",
+          "A": -72.822784,
+          "B": 992.1382,
+          "C": 11.934086,
+          "Tmin_K": 273.15,
+          "Tmax_K": 313.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/glycolic-acid.json), 273.1-313.1 K, each article with the same weight: Huang, J. Chem. Thermodyn. 108 (2017), doi:10.1016/j.jct.2017.01.004. Largest deviation 3.2 %, median 0.8 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "2-propanol",
+          "equation": "apelblat",
+          "A": 64.837378,
+          "B": -4708.104,
+          "C": -8.831235,
+          "Tmin_K": 273.15,
+          "Tmax_K": 313.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/glycolic-acid.json), 273.1-313.1 K, each article with the same weight: Huang, J. Chem. Thermodyn. 108 (2017), doi:10.1016/j.jct.2017.01.004. Largest deviation 1.0 %, median 0.6 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetonitrile",
+          "equation": "apelblat",
+          "A": -540.059722,
+          "B": 19564.3163,
+          "C": 82.823517,
+          "Tmin_K": 273.15,
+          "Tmax_K": 313.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/glycolic-acid.json), 273.1-313.1 K, each article with the same weight: Huang, J. Chem. Thermodyn. 108 (2017), doi:10.1016/j.jct.2017.01.004. Largest deviation 6.8 %, median 1.0 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethanol",
+          "equation": "apelblat",
+          "A": -148.060296,
+          "B": 4654.2437,
+          "C": 23.047421,
+          "Tmin_K": 273.15,
+          "Tmax_K": 313.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/glycolic-acid.json), 273.1-313.1 K, each article with the same weight: Huang, J. Chem. Thermodyn. 108 (2017), doi:10.1016/j.jct.2017.01.004. Largest deviation 1.2 %, median 0.5 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethyl-acetate",
+          "equation": "apelblat",
+          "A": -392.403179,
+          "B": 14411.2261,
+          "C": 59.887662,
+          "Tmin_K": 273.15,
+          "Tmax_K": 313.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 9 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/glycolic-acid.json), 273.1-313.1 K, each article with the same weight: Huang, J. Chem. Thermodyn. 108 (2017), doi:10.1016/j.jct.2017.01.004. Largest deviation 1.9 %, median 1.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "glucaric-acid": {
       "name": "D-Glucaric acid",
@@ -51261,7 +52604,114 @@
       "modUnifac": {
         "available": false,
         "note": "no Modified UNIFAC 2.0 groups: its structure cannot be split into the modified UNIFAC subgroups (Did not match all atoms present)"
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "1-butanol",
+          "equation": "apelblat",
+          "A": 35.205846,
+          "B": -4409.4581,
+          "C": -4.70917,
+          "Tmin_K": 313.15,
+          "Tmax_K": 363.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 11 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/fdca.json), 313.1-363.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b00927. Largest deviation 2.8 %, median 0.9 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "acetonitrile",
+          "equation": "apelblat",
+          "A": 217.509215,
+          "B": -14984.4159,
+          "C": -31.198589,
+          "Tmin_K": 313.15,
+          "Tmax_K": 363.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 11 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/fdca.json), 313.1-363.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b00927. Largest deviation 7.6 %, median 2.8 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethanol",
+          "equation": "apelblat",
+          "A": -164.512166,
+          "B": 5210.7204,
+          "C": 24.766853,
+          "Tmin_K": 298.15,
+          "Tmax_K": 346.35,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 13 measured solubilities of 2 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/fdca.json), 298.1-346.4 K, each article with the same weight: Rose, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b01039; Ban, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b01112. Largest deviation 7.6 %, median 3.7 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "ethyl-acetate",
+          "equation": "apelblat",
+          "A": 984.262828,
+          "B": -53358.4316,
+          "C": -143.273123,
+          "Tmin_K": 313.15,
+          "Tmax_K": 363.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 11 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/fdca.json), 313.1-363.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b00927. Largest deviation 5.0 %, median 1.3 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "isobutanol",
+          "equation": "apelblat",
+          "A": 75.35287,
+          "B": -6740.836,
+          "C": -10.479588,
+          "Tmin_K": 313.15,
+          "Tmax_K": 363.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 11 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/fdca.json), 313.1-363.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b00927. Largest deviation 1.9 %, median 1.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "methanol",
+          "equation": "apelblat",
+          "A": -140.963201,
+          "B": 4508.4988,
+          "C": 21.102181,
+          "Tmin_K": 297.35,
+          "Tmax_K": 343.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 14 measured solubilities of 2 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/fdca.json), 297.4-343.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b00927; Ban, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b01112. Largest deviation 16.8 %, median 8.3 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "mibk",
+          "equation": "apelblat",
+          "A": 461.733444,
+          "B": -26671.8015,
+          "C": -67.071568,
+          "Tmin_K": 313.15,
+          "Tmax_K": 363.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 11 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/fdca.json), 313.1-363.1 K, each article with the same weight: Zhang, J. Chem. Eng. Data 63 (2018), doi:10.1021/acs.jced.7b00927. Largest deviation 7.7 %, median 3.1 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "bhet": {
       "name": "Bis(2-hydroxyethyl) terephthalate",
@@ -51912,7 +53362,54 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (1 CH2, 3 CH, 1 OH (P), 1 CHO, 3 OH (S)): assigned from the structure and checked (the open-chain aldehyde form (as for glucose, which DDBST assigns open-chain; structure from PubChem, aldehydo-D-xylose): the aldehyde CHO, three CH, one CH2; one primary OH (P) and three secondary OH (S)); DDBST lists no assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C5H10O5"
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "ethylene-glycol",
+          "equation": "apelblat",
+          "A": 642.267252,
+          "B": -32474.2054,
+          "C": -94.140174,
+          "Tmin_K": 293.15,
+          "Tmax_K": 323.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 7 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/xylose.json), 293.1-323.1 K, each article with the same weight: Machado, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.8b01128. Largest deviation 2.5 %, median 1.9 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "propylene-glycol",
+          "equation": "apelblat",
+          "A": 270.658279,
+          "B": -15809.9449,
+          "C": -38.85978,
+          "Tmin_K": 293.15,
+          "Tmax_K": 323.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 7 measured solubilities of 1 article (data public in the NIST TRC ThermoML Archive; validation/data/sle/xylose.json), 293.1-323.1 K, each article with the same weight: Machado, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.8b01128. Largest deviation 5.4 %, median 1.8 %; one article only (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        },
+        {
+          "solvent": "water",
+          "equation": "apelblat",
+          "A": -255.570646,
+          "B": 10303.5795,
+          "C": 38.436462,
+          "Tmin_K": 278.2,
+          "Tmax_K": 323.15,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to 10 measured solubilities of 2 articles (data public in the NIST TRC ThermoML Archive; validation/data/sle/xylose.json), 278.2-323.1 K, each article with the same weight: Machado, J. Chem. Eng. Data 64 (2019), doi:10.1021/acs.jced.8b01128; Gong, J. Chem. Eng. Data 57 (2012), doi:10.1021/je300885g. Largest deviation 4.5 %, median 1.9 %; the articles agree (each within 10 % of the pooled curve) (validation/python/solubility_curves.py). Used only inside the measured temperatures.",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "muconic-acid": {
       "name": "cis,cis-Muconic acid",
