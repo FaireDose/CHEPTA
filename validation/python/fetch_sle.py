@@ -35,8 +35,13 @@ SOLIDS = {  # id: names searched in the archive
     "salicylic-acid": ["2-hydroxybenzoic acid", "salicylic acid"],
     # the Crystallizer block's check (proposal 0015, M3, step 10): the cooling crystallization of succinic acid from water
     "succinic-acid": ["succinic acid", "butanedioic acid"],
+    # solubility curves (proposal 0015, section 5): terephthalic acid, which has no open melting data
+    "terephthalic-acid": ["terephthalic acid", "1,4-benzenedicarboxylic acid", "benzene-1,4-dicarboxylic acid"],
 }
 P_MAX_KPA = 110.0
+# solids measured in compressed hot water (kept liquid above its boiling point): their sets are kept at any pressure,
+# with the pressure in each row; the curve made from them does not model the pressure (proposal 0015, section 5)
+P_ANY = {"terephthalic-acid"}
 
 
 def inchi_index(comps):
@@ -73,7 +78,7 @@ def fetch(solid, comps, by_inchi, cache):
             if solvent is None:
                 continue
             P = next((c["value"] for c in s["constraints"] if c["type"] and c["type"].startswith("Pressure")), None)
-            if P is not None and P > P_MAX_KPA:
+            if P is not None and P > P_MAX_KPA and solid not in P_ANY:
                 continue
             Ms, Mv = comps[solid]["MW"], comps[solvent]["MW"]
             rows = []
@@ -96,7 +101,8 @@ def fetch(solid, comps, by_inchi, cache):
                         if T is None or not (0 < x < 1):
                             continue
                         rows.append({"T_K": T, "x_solute": x, "quantity": p["name"] if "temperature" not in p["name"]
-                                     else "Solid-liquid equilibrium temperature against mole fraction"})
+                                     else "Solid-liquid equilibrium temperature against mole fraction",
+                                     **({"P_kPa": P} if P is not None and P > P_MAX_KPA else {})})
             if not rows:
                 continue
             Tm_solvent = (comps[solvent].get("fusion") or {}).get("Tm_K")

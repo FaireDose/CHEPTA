@@ -287,7 +287,7 @@ registerUnit({
         outlets.liquid = phasesStream(all, [["liquid", 0], ...solid]);
         if (outletCount >= 3) outlets.liquid2 = phaseStream(all, "liquid", 1);
       }
-      if (liquids > 0 || all.phases.some(p => p.type === "vapour")) notes.push("The inert solid leaves with the liquid outlet.");
+      if (liquids > 0 || all.phases.some(p => p.type === "vapour")) notes.push(all.phases.some(p => p.type === "solid" && p.equilibrium) ? "The crystals leave with the liquid outlet, as a slurry (a Crystallizer separates them)." : "The inert solid leaves with the liquid outlet.");
     } else if (liquids > 1 && outletCount < 3) {
       const l1 = phaseStream(all, "liquid", 0), l2 = phaseStream(all, "liquid", 1);
       outlets.liquid = stream(sys, { flow_kmol_h: l1.flows.map((v, i) => v + l2.flows[i]), T_K: all.T_K, P_kPa: all.P_kPa });
@@ -717,9 +717,12 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
     ins[p.port] = list;
   }
   // crystals in equilibrium (stream v2, the crystallizer's solid outlet): the property package has no solid phase, so a
-  // block that recalculates its inlets would melt them; only a block registered with crystals: true takes them
-  if (!u.crystals && Object.values(ins).flat().some(hasCrystals)) {
-    throw fail("NOT_AVAILABLE", `${u.label}: an inlet carries crystals from a crystallizer; this block would recalculate the stream as a fluid and melt them (the property methods have no solid phase yet). Send the crystals to a Product; to separate them from liquid, use the crystallizer's own outlets.`);
+  // block that recalculates its inlets would melt them; only a block registered with crystals: true takes them, unless the
+  // flowsheet names the solid in thermo.solids
+  // a system whose flash holds that solid (thermo.solids; src/equilibrium/solid-flash.js) takes them everywhere
+  const held = s => s.phases.filter(p => p.type === "solid" && p.equilibrium).every(p => p.composition.every((v, k) => !(v > 0) || sys.solids?.includes(sys.ids[k])));
+  if (!u.crystals && Object.values(ins).flat().some(s => hasCrystals(s) && !held(s))) {
+    throw fail("NOT_AVAILABLE", `${u.label}: an inlet carries crystals from a crystallizer; this block would recalculate the stream as a fluid and melt them (the property methods have no solid phase yet). Send the crystals to a Product, or name the component in the flowsheet's solids (Method: solids in equilibrium), so that every block keeps it as a solid.`);
   }
   const s = u.checkSpec ? u.checkSpec(spec, { sys, outletCount: n, reactions }) : spec;
   const r = u.solve({ sys, inlets: ins, spec: s, outletCount: n, reactions });

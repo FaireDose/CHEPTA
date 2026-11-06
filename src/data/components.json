@@ -38888,7 +38888,40 @@
           "thermo-library"
         ],
         "source": "Modified UNIFAC 2.0 subgroups (4 ACH, 2 AC, 2 COOH): assigned from the structure; the same as DDBST's published assignment. Subgroup patterns: thermo library (MIT), RDKit; atom balance checked against C8H6O4"
-      }
+      },
+      "solubility": [
+        {
+          "solvent": "water",
+          "equation": "apelblat",
+          "A": -218.725657,
+          "B": 6462.562,
+          "C": 32.262615,
+          "Tmin_K": 348.8,
+          "Tmax_K": 547.4,
+          "x_range": [
+            1.25e-05,
+            0.0299
+          ],
+          "P_kPa": 10000.0,
+          "tier": "fitted",
+          "source": "Apelblat form ln x = A + B/T + C ln T fitted to the 12 measured solubilities of Takebayashi et al., J. Chem. Eng. Data 57 (2012), doi:10.1021/je300263z (data public in the NIST TRC ThermoML Archive; validation/data/sle/terephthalic-acid.json), 348.8-547.4 K at 10 MPa; largest deviation 4.8 %, mean 1.7 % (validation/python/solubility_curves.py). The only set measured where the liquid is kept liquid above 373 K (10 MPa) over the range of hot-water purification; chosen provisionally until Su et al. 2024 is read. Used only inside the measured temperatures; the pressure is not modelled: measured at 10 MPa, used at every pressure.",
+          "left_out": [
+            {
+              "doi": "10.1016/j.fluid.2012.11.023",
+              "points": 18,
+              "points_in_range": 13,
+              "median_ratio_fit_over_measured": 50.03664346744311,
+              "reason": "far below the chosen set at every temperature both measured: the fit to the chosen set is 50 times above it (median of its 13 points in range; 1.63e-5 against 1.77e-3 measured at 473 K); held for the maintainer's decision. Su, Zheng, Suga, Watanabe, J. Supercrit. Fluids 218 (2024) 106497 (doi:10.1016/j.supflu.2024.106497, open access CC BY-NC-ND, 423-623 K) would decide: its table could not be fetched by script (docs/missing-properties/TO_DOWNLOAD.md)"
+            }
+          ],
+          "disputed": "Disputed: Sunsandee et al. 2013 is about 50 times lower; Takebayashi 2012 kept by the maintainer's decision (2026-11-05), Su et al. 2024 (CC BY-NC-ND) to be used as an independent check when a person has downloaded it (src/data/known-issues.json, disputed-data).",
+          "solution_enthalpy": "the apparent enthalpy of solution from the curve's slope, R (C T - B), for the solid's enthalpy (the maintainer, 2026-11-05)",
+          "pressure_note": "measured at 10 MPa and used at every pressure (the maintainer, 2026-11-05)",
+          "source_ids": [
+            "nist-thermoml-archive"
+          ]
+        }
+      ]
     },
     "dmt": {
       "name": "Dimethyl terephthalate",

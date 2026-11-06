@@ -1232,6 +1232,16 @@ function methodSection({ state, set, fs, eos, setThermo, inputsSection, uid, pro
     // the pair parameter sets: the same choice as the diagrams and the flash
     PAIR_MODELS.includes(fs.thermo.model) ? h("p", { class: "fa-in-hint", "data-fk": "fs-sets" },
       `Pair parameter sets: ${setsLabel(state)}. The rule for every pair is in the Library; a pair's own set is chosen in the Inputs panel of the phase-equilibrium diagrams. The flowsheet uses the same choice.`) : null,
+    // a component that may form a solid in equilibrium in every stream (proposal 0015, section 5): one for now
+    !eos ? (() => {
+      const can = fs.components.filter(c => { try { const r = componentRecord(c, userOverlay(state)); return !!(r?.solubility?.length || (r?.fusion && r.fusion.available !== false)); } catch { return false; } });
+      if (!can.length) return null;
+      const cur = fs.thermo.solids?.[0] ?? "";
+      return h("div", {}, selectField("Solid in equilibrium", [["", "None"], ...can.map(c => [c, nameOf(c)])], cur, v => setThermo({ solids: v ? [v] : undefined }), `fs-solids-${uid}`, uid),
+        h("p", { class: "fa-in-hint", "data-fk": "fs-solids-hint" }, cur
+          ? `${nameOf(cur)} crystallizes where the liquid is saturated in it and dissolves where the liquid can take it, in every stream: heating or adding solvent dissolves it, cooling or a pressure letdown crystallizes it. Its solubility: the measured curve in its solvent where there is one, else its melting data. The crystals leave with the liquid (a slurry); the Crystallizer separates them.`
+          : "None: no component forms a solid in the streams (the Crystallizer still makes crystals)."));
+    })() : null,
     // on the roadmap, for other kinds of mixture: locked, with what each is for (other models: in the lists above)
     h("div", { class: "fa-fs-later", role: "note" },
       h("div", { class: "fa-in-hint" }, "Not available yet:"),
@@ -1964,7 +1974,9 @@ export function resultsPanel({ state, f, sol, u, set }) {
     if (s) {
       out.push(kvList([
         ["Temperature", s.T_K == null ? "–" : fmtTemp(s.T_K, u, 2)], ["Pressure", s.P_kPa == null ? "–" : fmtP(s.P_kPa, u)],
-        ["Vapour fraction", s.VF == null ? "–" : fmtShort(s.VF, 4)], ["Molar flow", `${fmtShort(flowToDisplay(s.F_kmol_h, u), 5)} ${u.flow ?? "kmol/h"}`],
+        ["Vapour fraction", s.VF == null ? "–" : fmtShort(s.VF, 4)],
+        ...(s.phases?.some(p => p.type === "solid") ? [["Solid", `${fmtShort(massFlowToDisplay(solidMass(fs, s), u), 5)} ${u.massFlow ?? "kg/h"}${s.phases.some(p => p.type === "solid" && p.equilibrium) ? " (crystals in equilibrium)" : " (inert)"}`]] : []),
+        ["Molar flow", `${fmtShort(flowToDisplay(s.F_kmol_h, u), 5)} ${u.flow ?? "kmol/h"}`],
         ["Mass flow", `${fmtShort(massFlowToDisplay(s.mass_kg_h, u), 5)} ${u.massFlow ?? "kg/h"}`], ["Enthalpy flow", kWText(s.H_kW, u, 5)],
         ...fs.components.map(c => [nameOf(c), `${fmtShort(flowToDisplay(s.flow_kmol_h[c], u), 5)} ${u.flow ?? "kmol/h"}`]),
       ]));
@@ -2004,6 +2016,8 @@ function streamRows(fs, res, u, state) {
     ["Temperature", tLabel(u), S.map(s => (s.T_K == null ? null : tToDisplay(s.T_K, u)))],
     ["Pressure", u.P, S.map(s => (s.P_kPa == null ? null : pToDisplay(s.P_kPa, u)))],
     ["Vapour fraction", "mol/mol", S.map(s => s.VF)],
+    // crystals in equilibrium (proposal 0015, section 5) or an inert solid: their mass flow, where a stream has any
+    ...(S.some(s => s.phases?.some(p => p.type === "solid")) ? [["Solid", u.massFlow ?? "kg/h", S.map(s => massFlowToDisplay(solidMass(fs, s), u))]] : []),
     ["Molar flow", u.flow ?? "kmol/h", S.map(s => flowToDisplay(s.F_kmol_h, u))],
     ["Mass flow", u.massFlow ?? "kg/h", S.map(s => massFlowToDisplay(s.mass_kg_h, u))],
     ["Enthalpy flow", u.duty ?? "kW", S.map(s => (s.H_kW == null ? null : dutyToDisplay(s.H_kW, u)))],
@@ -2013,7 +2027,12 @@ function streamRows(fs, res, u, state) {
   ];
   return { ids, rows };
 }
-const molarMassOf = c => byId().get(c)?.MW ?? NaN;
+// the component list carries no molar masses: the component's record does (found 2026-11-05: the mass-fraction rows were
+// empty on the mass basis)
+const molarMassOf = c => { try { return byId().get(c)?.MW ?? componentRecord(c, drawing)?.MW ?? NaN; } catch { return NaN; } };
+/** The mass flow (kg/h) of a stream's solid phases: crystals in equilibrium or an inert solid. */
+const solidMass = (fs, s) => (s.phases ?? []).filter(p => p.type === "solid")
+  .reduce((a, p) => a + p.fraction * s.F_kmol_h * p.composition.reduce((b, x, i) => b + x * molarMassOf(fs.components[i]), 0), 0);
 
 /** The column's result table: the shortcut's condenser, feed stage and reboiler, or the rigorous column's every stage. */
 export function columnTable({ fs, b, r, u }) {

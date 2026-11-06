@@ -675,6 +675,19 @@ function tpCore(sys, z, T, P, ctx = {}) {
     try { r = splitActivity(sys, z, T, P, z.map((zi, i) => Math.max(zi, 1e-300) / Math.max(v.unstable.trial[i], 1e-300))); } catch (e) { if (!(e && e.code === "NO_CONVERGENCE")) throw e; r = null; }
     if (r && r.V >= 1) r = null;
   }
+  if ((!r || !(r.V > 0)) && hasNonvolatile(sys, z)) {
+    // below the bubble pressure with a nonvolatile component (proposal 0009), which has no dew point: start the split
+    // from the activity model's K-values at the feed, K = γ p_sat / P (found 2026-11-05: water with a trace of
+    // terephthalic acid, Modified UNIFAC 2.0)
+    // a split that converged to no vapour is a liquid at its bubble point (P a hair below it)
+    if (r && !(r.V > 0)) return { V: 0, x: z, y: bub.y, single: "liquid", iterations: r.iterations };
+    const g = sys.gammas(z, T), ps = sys.psat(T);
+    let r2 = null;
+    try { r2 = splitActivity(sys, z, T, P, z.map((_, i) => Math.max(g[i] * ps[i] / P, 1e-300))); } catch (e) { if (!(e && e.code === "NO_CONVERGENCE")) throw e; }
+    if (r2 && !(r2.V > 0)) return { V: 0, x: z, y: bub.y, single: "liquid", iterations: r2.iterations };
+    if (!r2) throw fail("NO_CONVERGENCE", `${sys.model} flash at ${T.toFixed(2)} K and ${P.toPrecision(6)} kPa: below the bubble pressure, but the vapour-liquid split did not converge (a nonvolatile component is present: no dew point to start from).`);
+    r = r2;
+  }
   if (!r || !(r.V > 0)) {
     const dew = dewP(sys, z, T);
     if (P <= dew.P) return { V: 1, x: dew.x, y: z, single: "vapour", iterations: 0 };
@@ -765,15 +778,18 @@ function result(sys, spec, z, T, P, core, extra = {}, entropy = false) {
 
 // bubble and dew points of the feed; null (before the dew point, which costs more) when
 // `splits` says that the feed at its bubble point splits into two liquids
+// a nonvolatile component in the feed (proposal 0009): no dew point, so no bracket; the vapour-fraction search is used
+// (found 2026-11-05: water with a trace of terephthalic acid at a given T and VF refused with the dew point's error)
+const hasNonvolatile = (sys, z) => Boolean(sys.nonvolatile?.some((v, i) => v && z[i] > 0));
 function pressureBubbleDew(sys, z, T, splits = () => false) {
   const b = isEos(sys) ? eosBubbleP(sys, z, T) : { ...sys.equilibrium(z, T) };
-  if (splits(T)) return null;
+  if (splits(T) || hasNonvolatile(sys, z)) return null;
   const d = isEos(sys) ? eosDewP(sys, z, T) : dewP(sys, z, T);
   return { Pb: b.P, Pd: d.P, yb: b.y, xd: d.x };
 }
 function temperatureBubbleDew(sys, z, P, splits = () => false) {
   const b = isEos(sys) ? eosBubbleT(sys, z, P) : bubbleTCore(sys, z, P);
-  if (splits(b.T)) return null;
+  if (splits(b.T) || hasNonvolatile(sys, z)) return null;
   const d = isEos(sys) ? eosDewT(sys, z, P) : dewT(sys, z, P);
   return { Tb: b.T, Td: d.T, yb: b.y, xd: d.x };
 }

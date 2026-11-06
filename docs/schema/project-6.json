@@ -81,7 +81,15 @@
                 "type": "string"
               }
             },
-            "prefer": {}
+            "prefer": {},
+            "solids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "description": "format 6 (proposal 0015, section 5): the component that may form a solid in equilibrium in every stream; its solubility is its measured curve in the liquid's solvent, else its melting data"
+            }
           },
           "additionalProperties": false
         },

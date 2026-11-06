@@ -1,5 +1,5 @@
 {
-  "_about": "Known deviations of the models from reference data, shown to users in the interface. Each entry names the components (any order), the model, the kind of deviation, a message and its reference. Entries of kind 'ternary-azeotrope' make the matching ternary azeotrope test run as 'todo', so the test run reports when the entry can be removed. Remove an entry as soon as a fix resolves it.",
+  "_about": "Known deviations of the models from reference data, shown to users in the interface. Each entry names the components (any order), the model, the kind of deviation, a message and its reference. Entries of kind 'ternary-azeotrope' make the matching ternary azeotrope test run as 'todo', so the test run reports when the entry can be removed. Remove an entry as soon as a fix resolves it. Kind 'disputed-data' with model 'any': a pure-component record whose open sources disagree, whatever the model.",
   "issues": [
     {
       "components": [
@@ -1997,6 +1997,19 @@
       "reference": "W. K. Chen, K. J. Lee, J. W. Ko, C. M. J. Chang, L.  Lee, Vapor liquid equilibria and density measurement for binary mixtures of toluene, benzene, o-xylene, m-xylene, sulfolane and nonane at 333.15K and 353.15K, Fluid Phase Equilib. 287 (2010) 126-133, doi:10.1016/j.fluid.2009.09.024, via the NIST TRC ThermoML Archive (validation/data/vle/o-xylene_sulfolane_10-1016-j-fluid-2009-09-024_333.15K.json); the evidence survey of proposal 0019 (PR #205)",
       "source_ids": [
         "chen2010-m-xylene-sulfolane",
+        "nist-thermoml-archive"
+      ]
+    },
+    {
+      "components": [
+        "water",
+        "terephthalic-acid"
+      ],
+      "model": "any",
+      "kind": "disputed-data",
+      "message": "The solubility of terephthalic acid in water is disputed: the curve CHEPTA uses is fitted to Takebayashi et al. 2012 (348.8-547.4 K at 10 MPa); Sunsandee et al. 2013, the other set in the NIST TRC ThermoML Archive, is about 50 times lower (median over its 13 points in that range). Kept by the maintainer's decision (2026-11-05); Su et al. 2024 (open access, CC BY-NC-ND, to be downloaded by a person) will be used as an independent check. The curve was measured at 10 MPa and is used at every pressure.",
+      "reference": "Takebayashi et al., J. Chem. Eng. Data 57 (2012) 1810-1816, doi:10.1021/je300263z; Sunsandee et al., Fluid Phase Equilib. 338 (2013), doi:10.1016/j.fluid.2012.11.023 (both via the NIST TRC ThermoML Archive)",
+      "source_ids": [
         "nist-thermoml-archive"
       ]
     }

@@ -18,9 +18,16 @@
  * temperature x_i is found by bracketing ln x_i + ln γ_i(x) - RHS on a grid in ln x_i, then Brent's method. Where the
  * activity model splits the liquid into two phases, ln x γ is not monotonic and there can be several roots: the
  * solvent-rich one is returned and the result says that the liquid can split there.
+ *
+ * Measured solubility curves (proposal 0015, Part I, section 5; src/thermo/solubility-curve.js): where the solute has a
+ * curve in the liquid's solvent (the liquid holds only that solvent besides the solute), x_sat is the curve's, in place
+ * of the equation, and only inside its measured temperatures (outside: OUT_OF_RANGE, never extrapolated). A solid
+ * without open melting data (terephthalic acid) has the curve as its only route. The solid's enthalpy then uses the
+ * curve's apparent enthalpy of solution instead of the enthalpy of fusion (solidHeat).
  */
 import { brent } from "../util/solve.js";
 import { fail, failRange } from "../util/errors.js";
+import { curveSolubility, curveSolutionEnthalpy } from "../thermo/solubility-curve.js";
 
 const R = 8.314462618;
 
@@ -77,9 +84,56 @@ function liquid(sys, i, w, xi) {
  * @returns {{T_K:number, x:number[], xSolute:number, gamma:number, xIdeal:number, Tm_K:number, Hfus_J_mol:number,
  *            dCp_J_molK:number, splits:boolean, notes:string[]}}
  */
+/**
+ * Which route gives the solubility of solid i in a liquid whose other components have mole fractions w (normalized,
+ * without i): a measured curve in its one solvent, or the melting-point equation.
+ * @returns {{ kind: "curve", rec: object } | { kind: "equation" }}
+ */
+export function solubilityRoute(sys, i, w = null) {
+  const curves = sys.solubility?.[i];
+  if (!curves) return { kind: "equation" };
+  const others = sys.ids.filter((_, k) => k !== i);
+  const present = w ? others.filter((_, k) => w[k] > 1e-12) : others;
+  const rec = present.length === 1 ? curves.find(c => c.solvent === present[0]) : null;
+  if (rec) return { kind: "curve", rec };
+  const f = sys.fusion?.[i];
+  if (f?.Tm_K > 0 && f?.Hfus_J_mol > 0) return { kind: "equation" };
+  throw fail("MISSING_DATA", `${sys.names[i]}: its measured solubility is known in ${curves.map(c => sys.names[sys.ids.indexOf(c.solvent)] ?? c.solvent).join(", ")} only, and it has no melting data for the equation; this liquid's solvent is ${present.map(id => sys.names[sys.ids.indexOf(id)]).join(" + ") || "none"}. Add a curve for it, or melting data, in My data.`);
+}
+
+/**
+ * The heat that separates the solid from the liquid solute (J/mol), for the solid's enthalpy h_solid = h_liquid − dH:
+ * the enthalpy of fusion (the equation's route, ΔCp of fusion 0) or the curve's apparent enthalpy of solution.
+ * @returns {{ dH_J_mol:number, kind:"fusion"|"solution", source:string }}
+ */
+export function solidHeat(sys, solute, T, opts = {}) {
+  const i = index(sys, solute);
+  const w = sys.n > 1 ? (opts.solvent ?? (sys.n === 2 ? [1] : null)) : null;
+  const r = solubilityRoute(sys, i, w);
+  if (r.kind === "curve") {
+    return { dH_J_mol: curveSolutionEnthalpy(r.rec, T, sys.names[i]), kind: "solution",
+      source: `the apparent enthalpy of solution from the van't Hoff slope of the measured solubility curve in ${sys.names[sys.ids.indexOf(r.rec.solvent)]} (${typeof r.rec.source === "string" ? r.rec.source.split(";")[0] : r.rec.source?.name ?? "your own data"})` };
+  }
+  const { Hfus } = fusionOf(sys, i, opts);
+  return { dH_J_mol: Hfus, kind: "fusion", source: `the enthalpy of fusion (${sys.fusion?.[i]?.source?.name ?? "your own data"})` };
+}
+
 export function solidSolubility(sys, solute, T, opts = {}) {
   const i = index(sys, solute);
   if (!(T > 0)) throw fail("BAD_INPUT", `Temperature must be a positive number of kelvin (got ${T}).`);
+  if (sys.solubility?.[i] && opts.Tm_K == null && opts.Hfus_J_mol == null) {
+    const w = solventOf(sys, i, opts.solvent);
+    const route = solubilityRoute(sys, i, w);
+    if (route.kind === "curve") {
+      const xi = curveSolubility(route.rec, T, sys.names[i]);
+      const x = liquid(sys, i, w, xi);
+      return { T_K: T, x, xSolute: xi, gamma: sys.gammas(x, T)[i], xIdeal: null, Tm_K: sys.fusion?.[i]?.Tm_K ?? null,
+        Hfus_J_mol: sys.fusion?.[i]?.Hfus_J_mol ?? null, dCp_J_molK: null, splits: false, route: "curve",
+        curve: { solvent: route.rec.solvent, Tmin_K: route.rec.Tmin_K ?? route.rec.points?.[0][0], Tmax_K: route.rec.Tmax_K ?? route.rec.points?.at(-1)[0], tier: route.rec.tier, source: route.rec.source },
+        notes: [`The measured solubility curve in ${sys.names[sys.ids.indexOf(route.rec.solvent)]} (${route.rec.tier}), not the melting-point equation.`,
+          ...(route.rec.disputed ? [route.rec.disputed] : []), ...(route.rec.pressure_note ? [`The curve was ${route.rec.pressure_note}.`] : [])] };
+    }
+  }
   const { Tm, Hfus, dCp } = fusionOf(sys, i, opts);
   if (T >= Tm) {
     throw failRange("OUT_OF_RANGE", `${sys.names[i]} melts at ${Tm.toFixed(2)} K: at ${T.toFixed(2)} K there is no solid, ` +
@@ -114,7 +168,7 @@ export function solidSolubility(sys, solute, T, opts = {}) {
       `solubility is given; a liquid-liquid check is needed.`);
   }
   if (dCp === 0) notes.push("ΔCp of fusion taken as 0.");
-  return { T_K: T, x, xSolute: xi, gamma, xIdeal: Math.exp(rhs), Tm_K: Tm, Hfus_J_mol: Hfus, dCp_J_molK: dCp, splits, notes };
+  return { T_K: T, x, xSolute: xi, gamma, xIdeal: Math.exp(rhs), Tm_K: Tm, Hfus_J_mol: Hfus, dCp_J_molK: dCp, splits, route: "equation", notes };
 }
 
 /**
