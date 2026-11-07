@@ -244,9 +244,13 @@ test("methods for a gas dissolving in an absorber's liquid (docs/METHOD_SELECTIO
   const w = pr.value.column.warnings.find(x => x.code === "METHOD_RANGE");
   assert.match(w.message, /k_ij of Hydrogen sulfide \+ Water/);
   assert.match(w.message, /performs poorly for water\/alcohol mixtures/);
-  // ... CO2 in water: its k_ij is marked not usable (the maintainer, 2026-11-05; until then this case ran with
-  // ChemSep's k_ij, which dissolves about a tenth of the measured CO2): refused, with Henry's law as the remedy
-  const prw = absorber(["carbon-dioxide", "water"], { model: "PR" }, { water: 360 }, { "carbon-dioxide": 72 });
+  // ... CO2 in water: the default is the a + b / T k_ij fitted to ThermoML data (the maintainer, 2026-11-06), so it runs
+  // with the range warning; ChemSep's k_ij, which dissolves about a tenth of the measured CO2, is marked not usable
+  // (2026-11-05): chosen by name, it is refused, with Henry's law as the remedy
+  const prt = absorber(["carbon-dioxide", "water"], { model: "PR" }, { water: 360 }, { "carbon-dioxide": 72 });
+  assert.equal(prt.outcome, "ok", prt.error?.message);
+  assert.match(prt.value.column.warnings.find(x => x.code === "METHOD_RANGE").message, /k_ij of Carbon dioxide \+ Water \(0\.2484 - 109\.44 K \/ T/);
+  const prw = absorber(["carbon-dioxide", "water"], { model: "PR", sets: { "carbon-dioxide+water": "chemsep" } }, { water: 360 }, { "carbon-dioxide": 72 });
   assert.equal(prw.outcome, "unsupported");
   assert.match(prw.error.message, /Carbon dioxide \+ Water in the liquid is refused/);
   assert.match(prw.error.message, /Henry's law/);

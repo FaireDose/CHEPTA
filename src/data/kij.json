@@ -2157,30 +2157,89 @@
    "model": "PR",
    "i": "carbon-dioxide",
    "j": "methanol",
-   "set": "chemsep",
+   "set": "fitted-naidoo2008-etal",
    "default": true,
-   "kij": 0.0583,
-   "tier": "databank",
+   "kij": 0.1883,
+   "kij_b_K": -40.62,
+   "tier": "fitted",
    "source": {
-    "file": "ChemSep pr.ipd",
-    "printed": ".583e-1",
-    "conditions": "Carbon Dioxide/Methanol T=298-313K p623",
-    "entries_in_file": 2,
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.1883, b = -40.62 K) to the 424 bubble pressures of 16 articles of the NIST TRC ThermoML Archive (each article the same total weight), 213.15-395 K, 79-12068 kPa: AAD 7.1 % in P (max 29.6 %), gas solubility at the measured T and P AAD 13.1 % (max 354.8 %), 0.0269 in y (max 0.0812, 4 points)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+    ],
+    "conditions": "T = 213.15-395 K, P = 79-12068 kPa",
     "T_range_K": [
-     298.0,
-     313.0
+     213.15,
+     395
     ]
    },
    "source_ids": [
-    "chemsep-eos-ipd"
+    "naidoo2008-carbon-dioxide-methanol",
+    "sato2010-carbon-dioxide-methanol",
+    "hamada2012-carbon-dioxide-methanol",
+    "dai2015-carbon-dioxide-methanol",
+    "hohler2018-carbon-dioxide-methanol",
+    "lyu2018-carbon-dioxide-methanol",
+    "kariznovi2013-carbon-dioxide-methanol",
+    "jalili2015-carbon-dioxide-methanol",
+    "qureshi2017-carbon-dioxide-methanol",
+    "decultot2019-carbon-dioxide-methanol",
+    "braga2017-carbon-dioxide-methanol",
+    "wu2019-carbon-dioxide-methanol",
+    "xia2004-carbon-dioxide-methanol",
+    "xie2005-carbon-dioxide-methanol",
+    "gui2011-carbon-dioxide-methanol",
+    "schuler2012-carbon-dioxide-methanol"
    ],
-   "alternatives": [
-    ".220e-1 (Carbon Dioxide/Methanol T=213-247K p621)"
-   ],
+   "quality_warning": "k_ij = a + b / T: AAD 7.1 % in P (limit 5 %), 13.1 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
+   "replaced": {
+    "set": "chemsep",
+    "default": false,
+    "kij": 0.0583,
+    "tier": "databank",
+    "source": {
+     "file": "ChemSep pr.ipd",
+     "printed": ".583e-1",
+     "conditions": "Carbon Dioxide/Methanol T=298-313K p623",
+     "entries_in_file": 2,
+     "T_range_K": [
+      298.0,
+      313.0
+     ]
+    },
+    "source_ids": [
+     "chemsep-eos-ipd"
+    ],
+    "alternatives": [
+     ".220e-1 (Carbon Dioxide/Methanol T=213-247K p621)"
+    ],
+    "valid": {
+     "T_K": [
+      298.0,
+      313.0
+     ]
+    },
+    "reason": "A set fitted to measured mixture data is the default (docs/DATA_RULES.md section 5): the temperature-dependent k_ij of validation/fit_kij_high_pressure.mjs (7.1-7.3 % in P on 424 ThermoML points) against 14.5-14.6 % for this ChemSep value, which also finds no bubble pressure at 16-17 of the points (validation/data/eos/high_pressure_fits.json)."
+   },
    "valid": {
     "T_K": [
-     298.0,
-     313.0
+     213.15,
+     395
     ]
    }
   },
@@ -2264,35 +2323,120 @@
    "model": "PR",
    "i": "carbon-dioxide",
    "j": "water",
-   "set": "chemsep",
+   "set": "fitted-bermejo2005-etal",
    "default": true,
-   "kij": 0.0952,
-   "tier": "databank",
+   "kij": 0.2484,
+   "kij_b_K": -109.44,
+   "tier": "fitted",
    "source": {
-    "file": "ChemSep pr.ipd",
-    "printed": ".952e-1",
-    "conditions": "Carbon Dioxide/Water T=383-623K p635",
-    "entries_in_file": 2,
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.2484, b = -109.44 K) to the 573 bubble pressures of 29 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-393.15 K, 13.89-20000 kPa: AAD 13.8 % in P (max 74.3 %), gas solubility at the measured T and P AAD 10.2 % (max 55.8 %), 0.008 in y (max 0.0329, 25 points); 4 points without a bubble pressure",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+    ],
+    "conditions": "T = 273.15-393.15 K, P = 13.89-20000 kPa",
     "T_range_K": [
-     383.0,
-     623.0
+     273.15,
+     393.15
     ]
    },
    "source_ids": [
-    "chemsep-eos-ipd"
+    "bermejo2005-carbon-dioxide-water",
+    "dalmolin2006-carbon-dioxide-water",
+    "koschel2006-carbon-dioxide-water",
+    "martin2009-carbon-dioxide-water",
+    "dellera2010-carbon-dioxide-water",
+    "guo2014-carbon-dioxide-water",
+    "carvalho2015-carbon-dioxide-water",
+    "haghtalab2015-carbon-dioxide-water",
+    "yuan2017-carbon-dioxide-water",
+    "ahmadi2018-carbon-dioxide-water",
+    "jia2019-carbon-dioxide-water",
+    "fonseca2007-carbon-dioxide-water",
+    "muromachi2015-carbon-dioxide-water",
+    "howlader2017-carbon-dioxide-water",
+    "li2018-carbon-dioxide-water",
+    "luo2017-carbon-dioxide-water",
+    "messabeb2016-carbon-dioxide-water",
+    "messabeb2017-carbon-dioxide-water",
+    "kastanidis2018-carbon-dioxide-water",
+    "pokki2018-furfural-gvl",
+    "wang2019-carbon-dioxide-water",
+    "han2011-carbon-dioxide-water",
+    "lucile2012-carbon-dioxide-water",
+    "schuler2012-carbon-dioxide-methanol",
+    "tong2013-carbon-dioxide-water",
+    "serpa2013-carbon-dioxide-water",
+    "mohammadian2015-carbon-dioxide-water",
+    "qin2008-carbon-dioxide-water",
+    "campos2009-carbon-dioxide-water"
    ],
-   "alternatives": [
-    ".63e-2 (Carbon Dioxide/Water T=523-623K p633)"
-   ],
+   "quality_warning": "k_ij = a + b / T: AAD 13.8 % in P (limit 5 %), 10.2 % in the gas solubility, 4 of 573 points without a bubble pressure; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
+   "replaced": {
+    "set": "chemsep",
+    "default": false,
+    "kij": 0.0952,
+    "tier": "databank",
+    "source": {
+     "file": "ChemSep pr.ipd",
+     "printed": ".952e-1",
+     "conditions": "Carbon Dioxide/Water T=383-623K p635",
+     "entries_in_file": 2,
+     "T_range_K": [
+      383.0,
+      623.0
+     ]
+    },
+    "source_ids": [
+     "chemsep-eos-ipd"
+    ],
+    "alternatives": [
+     ".63e-2 (Carbon Dioxide/Water T=523-623K p633)"
+    ],
+    "valid": {
+     "T_K": [
+      383.0,
+      623.0
+     ]
+    },
+    "not_usable": {
+     "decided": "the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
+     "reason": "On the 573 measured states of 29 ThermoML articles at 273.15-393.15 K and up to 20 MPa (validation/data/eos/high_pressure_fits.json), this k_ij (0.0952) dissolves about a tenth of the measured CO2 (solubility -91 %) and finds no bubble pressure at 457 of them; a fitted constant k_ij (-0.1148) is still 58.5 % off in P and 48 % in solubility"
+    },
+    "reason": "Not usable (the maintainer, 2026-11-05): this ChemSep value dissolves about a tenth of the measured CO2; the temperature-dependent k_ij of validation/fit_kij_high_pressure.mjs is the default (the maintainer, 2026-11-06)."
+   },
    "valid": {
     "T_K": [
-     383.0,
-     623.0
+     273.15,
+     393.15
     ]
-   },
-   "not_usable": {
-    "decided": "the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
-    "reason": "On the 573 measured states of 29 ThermoML articles at 273.15-393.15 K and up to 20 MPa (validation/data/eos/high_pressure_fits.json), this k_ij (0.0952) dissolves about a tenth of the measured CO2 (solubility -91 %) and finds no bubble pressure at 457 of them; a fitted constant k_ij (-0.1148) is still 58.5 % off in P and 48 % in solubility"
    }
   },
   {
@@ -5148,30 +5292,89 @@
    "model": "SRK",
    "i": "carbon-dioxide",
    "j": "methanol",
-   "set": "chemsep",
+   "set": "fitted-naidoo2008-etal",
    "default": true,
-   "kij": 0.0496,
-   "tier": "databank",
+   "kij": 0.1857,
+   "kij_b_K": -42.12,
+   "tier": "fitted",
    "source": {
-    "file": "ChemSep srk.ipd",
-    "printed": ".496e-1",
-    "conditions": "Carbon Dioxide/Methanol T=298-313K p623",
-    "entries_in_file": 2,
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.1857, b = -42.12 K) to the 424 bubble pressures of 16 articles of the NIST TRC ThermoML Archive (each article the same total weight), 213.15-395 K, 79-12068 kPa: AAD 7.3 % in P (max 32.2 %), gas solubility at the measured T and P AAD 13.2 % (max 384.7 %), 0.029 in y (max 0.0854, 4 points)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+    ],
+    "conditions": "T = 213.15-395 K, P = 79-12068 kPa",
     "T_range_K": [
-     298.0,
-     313.0
+     213.15,
+     395
     ]
    },
    "source_ids": [
-    "chemsep-eos-ipd"
+    "naidoo2008-carbon-dioxide-methanol",
+    "sato2010-carbon-dioxide-methanol",
+    "hamada2012-carbon-dioxide-methanol",
+    "dai2015-carbon-dioxide-methanol",
+    "hohler2018-carbon-dioxide-methanol",
+    "lyu2018-carbon-dioxide-methanol",
+    "kariznovi2013-carbon-dioxide-methanol",
+    "jalili2015-carbon-dioxide-methanol",
+    "qureshi2017-carbon-dioxide-methanol",
+    "decultot2019-carbon-dioxide-methanol",
+    "braga2017-carbon-dioxide-methanol",
+    "wu2019-carbon-dioxide-methanol",
+    "xia2004-carbon-dioxide-methanol",
+    "xie2005-carbon-dioxide-methanol",
+    "gui2011-carbon-dioxide-methanol",
+    "schuler2012-carbon-dioxide-methanol"
    ],
-   "alternatives": [
-    ".141e-1 (Carbon Dioxide/Methanol T=213-247K p621)"
-   ],
+   "quality_warning": "k_ij = a + b / T: AAD 7.3 % in P (limit 5 %), 13.2 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
+   "replaced": {
+    "set": "chemsep",
+    "default": false,
+    "kij": 0.0496,
+    "tier": "databank",
+    "source": {
+     "file": "ChemSep srk.ipd",
+     "printed": ".496e-1",
+     "conditions": "Carbon Dioxide/Methanol T=298-313K p623",
+     "entries_in_file": 2,
+     "T_range_K": [
+      298.0,
+      313.0
+     ]
+    },
+    "source_ids": [
+     "chemsep-eos-ipd"
+    ],
+    "alternatives": [
+     ".141e-1 (Carbon Dioxide/Methanol T=213-247K p621)"
+    ],
+    "valid": {
+     "T_K": [
+      298.0,
+      313.0
+     ]
+    },
+    "reason": "A set fitted to measured mixture data is the default (docs/DATA_RULES.md section 5): the temperature-dependent k_ij of validation/fit_kij_high_pressure.mjs (7.1-7.3 % in P on 424 ThermoML points) against 14.5-14.6 % for this ChemSep value, which also finds no bubble pressure at 16-17 of the points (validation/data/eos/high_pressure_fits.json)."
+   },
    "valid": {
     "T_K": [
-     298.0,
-     313.0
+     213.15,
+     395
     ]
    }
   },
@@ -5255,35 +5458,120 @@
    "model": "SRK",
    "i": "carbon-dioxide",
    "j": "water",
-   "set": "chemsep",
+   "set": "fitted-bermejo2005-etal",
    "default": true,
-   "kij": 0.1,
-   "tier": "databank",
+   "kij": 0.2352,
+   "kij_b_K": -111.6,
+   "tier": "fitted",
    "source": {
-    "file": "ChemSep srk.ipd",
-    "printed": ".1000",
-    "conditions": "Carbon Dioxide/Water T=383-623K p635",
-    "entries_in_file": 2,
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.2352, b = -111.6 K) to the 573 bubble pressures of 29 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-393.15 K, 13.89-20000 kPa: AAD 15.3 % in P (max 77.9 %), gas solubility at the measured T and P AAD 11.1 % (max 52.3 %), 0.0074 in y (max 0.0327, 25 points); 4 points without a bubble pressure",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+    ],
+    "conditions": "T = 273.15-393.15 K, P = 13.89-20000 kPa",
     "T_range_K": [
-     383.0,
-     623.0
+     273.15,
+     393.15
     ]
    },
    "source_ids": [
-    "chemsep-eos-ipd"
+    "bermejo2005-carbon-dioxide-water",
+    "dalmolin2006-carbon-dioxide-water",
+    "koschel2006-carbon-dioxide-water",
+    "martin2009-carbon-dioxide-water",
+    "dellera2010-carbon-dioxide-water",
+    "guo2014-carbon-dioxide-water",
+    "carvalho2015-carbon-dioxide-water",
+    "haghtalab2015-carbon-dioxide-water",
+    "yuan2017-carbon-dioxide-water",
+    "ahmadi2018-carbon-dioxide-water",
+    "jia2019-carbon-dioxide-water",
+    "fonseca2007-carbon-dioxide-water",
+    "muromachi2015-carbon-dioxide-water",
+    "howlader2017-carbon-dioxide-water",
+    "li2018-carbon-dioxide-water",
+    "luo2017-carbon-dioxide-water",
+    "messabeb2016-carbon-dioxide-water",
+    "messabeb2017-carbon-dioxide-water",
+    "kastanidis2018-carbon-dioxide-water",
+    "pokki2018-furfural-gvl",
+    "wang2019-carbon-dioxide-water",
+    "han2011-carbon-dioxide-water",
+    "lucile2012-carbon-dioxide-water",
+    "schuler2012-carbon-dioxide-methanol",
+    "tong2013-carbon-dioxide-water",
+    "serpa2013-carbon-dioxide-water",
+    "mohammadian2015-carbon-dioxide-water",
+    "qin2008-carbon-dioxide-water",
+    "campos2009-carbon-dioxide-water"
    ],
-   "alternatives": [
-    ".578e-1 (Carbon Dioxide/Water T=523-623K p633)"
-   ],
+   "quality_warning": "k_ij = a + b / T: AAD 15.3 % in P (limit 5 %), 11.1 % in the gas solubility, 4 of 573 points without a bubble pressure; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
+   "replaced": {
+    "set": "chemsep",
+    "default": false,
+    "kij": 0.1,
+    "tier": "databank",
+    "source": {
+     "file": "ChemSep srk.ipd",
+     "printed": ".1000",
+     "conditions": "Carbon Dioxide/Water T=383-623K p635",
+     "entries_in_file": 2,
+     "T_range_K": [
+      383.0,
+      623.0
+     ]
+    },
+    "source_ids": [
+     "chemsep-eos-ipd"
+    ],
+    "alternatives": [
+     ".578e-1 (Carbon Dioxide/Water T=523-623K p633)"
+    ],
+    "valid": {
+     "T_K": [
+      383.0,
+      623.0
+     ]
+    },
+    "not_usable": {
+     "decided": "the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
+     "reason": "On the 573 measured states of 29 ThermoML articles at 273.15-393.15 K and up to 20 MPa (validation/data/eos/high_pressure_fits.json), this k_ij (0.1) dissolves about a tenth of the measured CO2 (solubility -93 %) and finds no bubble pressure at 478 of them; a fitted constant k_ij (-0.1335) is still 65.7 % off in P and 45.3 % in solubility"
+    },
+    "reason": "Not usable (the maintainer, 2026-11-05): this ChemSep value dissolves about a tenth of the measured CO2; the temperature-dependent k_ij of validation/fit_kij_high_pressure.mjs is the default (the maintainer, 2026-11-06)."
+   },
    "valid": {
     "T_K": [
-     383.0,
-     623.0
+     273.15,
+     393.15
     ]
-   },
-   "not_usable": {
-    "decided": "the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
-    "reason": "On the 573 measured states of 29 ThermoML articles at 273.15-393.15 K and up to 20 MPa (validation/data/eos/high_pressure_fits.json), this k_ij (0.1) dissolves about a tenth of the measured CO2 (solubility -93 %) and finds no bubble pressure at 478 of them; a fitted constant k_ij (-0.1335) is still 65.7 % off in P and 45.3 % in solubility"
    }
   },
   {

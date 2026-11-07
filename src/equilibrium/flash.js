@@ -1109,15 +1109,29 @@ function phFast(sys, z, P, H, key = "H") {
     const st = tpdStability(sys.eos, Tb, P, z, "liquid");
     if (!st.stable && st.trialRoot && st.trialRoot.startsWith("liquid")) Tb = null;
   }
-  if (Tb === null) {
-    // without a vapour-liquid bubble point: T-P flashes stepped out from 300 K
+  if (Tb === null) return fromRoomTemperature();
+  try {
+    return phFromBubble(Tb);
+  } catch (e) {
+    // the bubble point lies where a component's enthalpy records do not reach (a gas-rich feed whose bubble point is
+    // below 273.15 K, where water's IF97 ideal-gas enthalpy stops): the search without a bubble point, stepped out
+    // from 300 K, finds the state if it lies within the records
+    if (!(e && e.code === "OUT_OF_RANGE" && hOutOfRange(Tb))) throw e;
+    return fromRoomTemperature();
+  }
+
+  function hOutOfRange(Tq) {
+    try { hOf("liquid", Tq); return false; } catch (e) { return !!(e && e.code === "OUT_OF_RANGE"); }
+  }
+
+  function fromRoomTemperature() {
+    // without a (usable) vapour-liquid bubble point: T-P flashes stepped out from 300 K
     const f = memo(Tq => enthalpyAt(sys, z, Tq, P, ctx, E)[key] - H);
     const f300 = f(300);
     const br = stepBracket(f, 300, f300 < 0 ? +1 : -1, f300 < 0 ? T_CEIL : T_FLOOR);
     if (!br) throw failRange("OUT_OF_RANGE", `${what}: no temperature between ${T_FLOOR} K and ${T_CEIL} K gives the ${w.prop} ${w.val}.`, { z, P, H });
     return finish(brent(f, br[0], br[1], { xtol: 1e-9 }));
   }
-  return phFromBubble(Tb);
 
   function phFromBubble(Tb) {
     const hb = hOf("liquid", Tb);

@@ -59,7 +59,7 @@ export function pairColumns(a, b, model, userData = null) {
     entryKey = key; entryFirst = x;   // the person's entry of this pair, whatever models it holds
     if (!p?.[model]) continue;
     const given = p[model];
-    const values = model === "PR" || model === "SRK" ? { kij: given.kij } : oriented({ a_ij: given.a_ij ?? 0, a_ji: given.a_ji ?? 0, b_ij: given.b_ij, b_ji: given.b_ji, ...(model === "NRTL" ? { alpha: given.alpha ?? 0.3 } : {}) }, x !== a);
+    const values = model === "PR" || model === "SRK" ? { kij: given.kij, ...(given.kij_b_K != null ? { kij_b_K: given.kij_b_K } : {}) } : oriented({ a_ij: given.a_ij ?? 0, a_ji: given.a_ji ?? 0, b_ij: given.b_ij, b_ji: given.b_ji, ...(model === "NRTL" ? { alpha: given.alpha ?? 0.3 } : {}) }, x !== a);
     mine = { values, source: typeof p.source === "string" ? p.source : p.source?.name ?? "", valid: p.valid ?? null, use: p.use !== false };
     mineKey = key;
   }

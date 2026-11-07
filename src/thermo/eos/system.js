@@ -25,12 +25,14 @@ export { RANGE_MARGIN_K };
  * The binary k_ij matrix of a cubic equation of state for components `ids`: the user's
  * matrix if given, else the databank sets chosen by `sel` (library.js), else 0.
  * Also used for the vapour of activity-coefficient systems with vapour "PR" or "SRK".
- * @returns {{K:number[][], pairs:object[], missing:string[][]}}
+ * K holds k_ij, or the constant part a of k_ij = a + b / T, and KB the b (K) of the sets that have one (null when none).
+ * @returns {{K:number[][], KB:number[][]|null, pairs:object[], missing:string[][]}}
  */
 export function kijMatrix(ids, model, kij, sel = selection({}), userData = null) {
   const comps = ids.map(id => componentRecord(id, userData));
   const n = ids.length;
   const K = Array.from({ length: n }, () => new Array(n).fill(0));
+  const KB = Array.from({ length: n }, () => new Array(n).fill(0));
   const pairs = [], missing = [];
   if (kij !== undefined) {
     const u = kij;
@@ -50,16 +52,20 @@ export function kijMatrix(ids, model, kij, sel = selection({}), userData = null)
     }
     const choice = choosePair(model, ids[i], ids[j], sel, userData?.pairs ?? []);
     if (choice) {
-      const k = choice.chosen.params.kij;
+      const k = choice.chosen.params.kij, b = choice.chosen.params.kij_b_K ?? 0;
       K[i][j] = K[j][i] = k;
-      pairs.push({ kij: k, ...describePair(choice, pair) });
+      KB[i][j] = KB[j][i] = b;
+      pairs.push({ kij: k, ...(b ? { kij_b_K: b } : {}), ...describePair(choice, pair) });
     } else {
       missing.push(pair);
       pairs.push({ pair, kij: 0, tier: "none", source: `no ${model} k_ij in the databank; k_ij = 0 used` });
     }
   }
-  return { K, pairs, missing };
+  return { K, KB: KB.some(r => r.some(v => v)) ? KB : null, pairs, missing };
 }
+
+/** A pair's k_ij as text: "0.05", or "0.1883 - 40.62 K / T" for a temperature-dependent set. */
+export const kijText = p => (p.kij_b_K ? `${p.kij} ${p.kij_b_K < 0 ? "-" : "+"} ${Math.abs(p.kij_b_K)} K / T` : `${p.kij}`);
 
 /**
  * Refuse a liquid that holds both components of a pair whose chosen k_ij is marked not usable in src/data/kij.json
@@ -95,8 +101,8 @@ export function createEosSystem(ids, cfg, sel = selection(cfg)) {
   const comps = ids.map(id => componentRecord(id, cfg.userData));
   requireCritical(comps, `the ${model === "SRK" ? "SRK" : "Peng-Robinson"} equation of state`);
   const n = ids.length;
-  const { K, pairs, missing } = kijMatrix(ids, model, cfg.kij, sel, cfg.userData);
-  const eos = cubicEos(model, comps.map(c => ({ name: c.name, Tc_K: c.Tc_K, Pc_Pa: c.Pc_Pa, omega: c.omega })), K);
+  const { K, KB, pairs, missing } = kijMatrix(ids, model, cfg.kij, sel, cfg.userData);
+  const eos = cubicEos(model, comps.map(c => ({ name: c.name, Tc_K: c.Tc_K, Pc_Pa: c.Pc_Pa, omega: c.omega })), K, KB);
   const MW = comps.map(c => c.MW);
 
   const gammaPhiOnly = what => () => {
@@ -135,7 +141,7 @@ export function createEosSystem(ids, cfg, sel = selection(cfg)) {
     const w = [];
     for (const p of pairs) {
       if (p.tier === "none") w.push(`No ${model} k_ij for ${p.pair.join(" + ")}: k_ij = 0 used; results for this pair are a prediction without binary data.`);
-      else w.push(...pairWarnings([p], T, P, q => `k_ij of ${q.pair.join(" + ")} (${q.kij}) comes`));
+      else w.push(...pairWarnings([p], T, P, q => `k_ij of ${q.pair.join(" + ")} (${kijText(q)}) comes`));
     }
     return [...w, ...info.advice];
   }

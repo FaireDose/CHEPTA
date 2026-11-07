@@ -90,7 +90,11 @@ test("k_ij data: 168 pairs for PR and 167 for SRK (ChemSep for the 49 components
     }
   }
   const fitted = kij.pairs.filter(p => p.tier === "fitted").map(p => `${p.model} ${p.i}-${p.j}`);
-  assert.deepEqual(fitted, ["PR hydrogen-toluene", "PR ethanol-water", "SRK ethanol-water", "PR ethanol-ethylene-glycol", "SRK ethanol-ethylene-glycol", "PR water-ethylene-glycol", "SRK water-ethylene-glycol", "PR ethyl-acetate-ethanol", "SRK ethyl-acetate-ethanol", "PR dimethyl-ether-methanol", "SRK dimethyl-ether-methanol",
+  assert.deepEqual(fitted, ["PR hydrogen-toluene",
+    // 2026-11-06: k_ij = a + b / T fitted to ThermoML gas-solubility data, replacing ChemSep's sets in place
+    // (test/eos-high-pressure.test.js)
+    "PR carbon-dioxide-methanol", "PR carbon-dioxide-water", "SRK carbon-dioxide-methanol", "SRK carbon-dioxide-water",
+    "PR ethanol-water", "SRK ethanol-water", "PR ethanol-ethylene-glycol", "SRK ethanol-ethylene-glycol", "PR water-ethylene-glycol", "SRK water-ethylene-glycol", "PR ethyl-acetate-ethanol", "SRK ethyl-acetate-ethanol", "PR dimethyl-ether-methanol", "SRK dimethyl-ether-methanol",
     // open literature beyond the ThermoML Archive (SRK propane + n-decane was outside the gate)
     "PR cyclohexane-n-heptane", "SRK cyclohexane-n-heptane", "PR p-xylene-m-xylene", "SRK p-xylene-m-xylene", "PR p-xylene-o-xylene", "SRK p-xylene-o-xylene",
     "PR m-xylene-o-xylene", "SRK m-xylene-o-xylene", "PR ethane-n-decane", "SRK ethane-n-decane", "PR ethane-n-undecane", "SRK ethane-n-undecane",
