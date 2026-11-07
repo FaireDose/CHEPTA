@@ -1020,6 +1020,630 @@
     -5.986731
    ],
    "hR_liquid_J_mol": -32819.554
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "hydrogen",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 4.9182,
+    "b_ij": 0,
+    "b_ji": -524.94,
+    "alpha": 0.3
+   },
+   "T_K": 278.15,
+   "P_sat_reference_kPa": 0.593142,
+   "H_reference_kPa": 6613009.102
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "hydrogen",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 4.9182,
+    "b_ij": 0,
+    "b_ji": -524.94,
+    "alpha": 0.3
+   },
+   "T_K": 338.15,
+   "P_sat_reference_kPa": 21.228887,
+   "H_reference_kPa": 7425352.708
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "hydrogen",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 4.9182,
+    "b_ij": 0,
+    "b_ji": -524.94,
+    "alpha": 0.3
+   },
+   "T_K": 398.15,
+   "P_sat_reference_kPa": 220.499555,
+   "H_reference_kPa": 6954466.164
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "hydrogen",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 4.7344,
+    "b_ij": 0,
+    "b_ji": -487.14,
+    "alpha": 0.3
+   },
+   "T_K": 278.15,
+   "P_sat_reference_kPa": 0.70158,
+   "H_reference_kPa": 6623576.807
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "hydrogen",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 4.7344,
+    "b_ij": 0,
+    "b_ji": -487.14,
+    "alpha": 0.3
+   },
+   "T_K": 338.15,
+   "P_sat_reference_kPa": 22.800339,
+   "H_reference_kPa": 7418946.264
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "hydrogen",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 4.7344,
+    "b_ij": 0,
+    "b_ji": -487.14,
+    "alpha": 0.3
+   },
+   "T_K": 398.15,
+   "P_sat_reference_kPa": 225.300942,
+   "H_reference_kPa": 6965669.774
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-monoxide",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.3315,
+    "b_ij": 0,
+    "b_ji": -732.11,
+    "alpha": 0.3
+   },
+   "T_K": 278.15,
+   "P_sat_reference_kPa": 0.593142,
+   "H_reference_kPa": 4579869.958
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-monoxide",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.3315,
+    "b_ij": 0,
+    "b_ji": -732.11,
+    "alpha": 0.3
+   },
+   "T_K": 338.15,
+   "P_sat_reference_kPa": 21.228887,
+   "H_reference_kPa": 7359527.0
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-monoxide",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.3315,
+    "b_ij": 0,
+    "b_ji": -732.11,
+    "alpha": 0.3
+   },
+   "T_K": 398.15,
+   "P_sat_reference_kPa": 220.499555,
+   "H_reference_kPa": 8457100.877
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-monoxide",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.1135,
+    "b_ij": 0,
+    "b_ji": -677.33,
+    "alpha": 0.3
+   },
+   "T_K": 278.15,
+   "P_sat_reference_kPa": 0.70158,
+   "H_reference_kPa": 4592117.075
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-monoxide",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.1135,
+    "b_ij": 0,
+    "b_ji": -677.33,
+    "alpha": 0.3
+   },
+   "T_K": 338.15,
+   "P_sat_reference_kPa": 22.800339,
+   "H_reference_kPa": 7347374.293
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-monoxide",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.1135,
+    "b_ij": 0,
+    "b_ji": -677.33,
+    "alpha": 0.3
+   },
+   "T_K": 398.15,
+   "P_sat_reference_kPa": 225.300942,
+   "H_reference_kPa": 8479021.703
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "methane",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 3.2326,
+    "a_ji": 4.5758,
+    "b_ij": 18.96,
+    "b_ji": -380.37,
+    "alpha": 0.3
+   },
+   "T_K": 303.2,
+   "x_1": 1.83e-05,
+   "P_reference_kPa": 86.668,
+   "lnphi_liquid": [
+    10.8688089,
+    -3.2888062
+   ],
+   "hR_liquid_J_mol": -46754.954,
+   "thermo_psrk": {
+    "a_alpha": 0.9710124965024541,
+    "da_alpha_dT": -0.0016678119790486021,
+    "d2a_alpha_dT2": 4.182559313823757e-06,
+    "Z_l": 0.0008225350234311166,
+    "H_dep_l": -46754.954083780816
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "methane",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 3.2326,
+    "a_ji": 4.5758,
+    "b_ij": 18.96,
+    "b_ji": -380.37,
+    "alpha": 0.3
+   },
+   "T_K": 283.14,
+   "x_1": 0.0010366,
+   "P_reference_kPa": 4510.458,
+   "lnphi_liquid": [
+    6.7799551,
+    -8.5258923
+   ],
+   "hR_liquid_J_mol": -47697.236,
+   "thermo_psrk": {
+    "a_alpha": 1.0045174571971829,
+    "da_alpha_dT": -0.0017570111203984414,
+    "d2a_alpha_dT2": 4.6330181154923795e-06,
+    "Z_l": 0.045213547410672066,
+    "H_dep_l": -47697.23576774057
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "methane",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 3.2326,
+    "a_ji": 4.5758,
+    "b_ij": 18.96,
+    "b_ji": -380.37,
+    "alpha": 0.3
+   },
+   "T_K": 298.3,
+   "x_1": 0.001544,
+   "P_reference_kPa": 8510.53,
+   "lnphi_liquid": [
+    6.3383696,
+    -8.1003406
+   ],
+   "hR_liquid_J_mol": -46794.128,
+   "thermo_psrk": {
+    "a_alpha": 0.9779835887636943,
+    "da_alpha_dT": -0.001689928159799081,
+    "d2a_alpha_dT2": 4.283525191754796e-06,
+    "Z_l": 0.08178286624635232,
+    "H_dep_l": -46794.12836367254
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "methane",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 3.2326,
+    "a_ji": 4.5758,
+    "b_ij": 18.96,
+    "b_ji": -380.37,
+    "alpha": 0.3
+   },
+   "T_K": 324.15,
+   "x_1": 0.002298,
+   "P_reference_kPa": 17477.671,
+   "lnphi_liquid": [
+    5.9130546,
+    -7.2540101
+   ],
+   "hR_liquid_J_mol": -45235.127,
+   "thermo_psrk": {
+    "a_alpha": 0.9350353656489419,
+    "da_alpha_dT": -0.0015866122045219157,
+    "d2a_alpha_dT2": 3.7803885455340595e-06,
+    "Z_l": 0.15730921809645412,
+    "H_dep_l": -45235.12691615383
+   }
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "methane",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 3.2067,
+    "a_ji": 4.4315,
+    "b_ij": 19.82,
+    "b_ji": -343.87,
+    "alpha": 0.3
+   },
+   "T_K": 303.2,
+   "x_1": 1.83e-05,
+   "P_reference_kPa": 85.243,
+   "lnphi_liquid": [
+    10.8626769,
+    -3.1526041
+   ],
+   "hR_liquid_J_mol": -45479.641
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "methane",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 3.2067,
+    "a_ji": 4.4315,
+    "b_ij": 19.82,
+    "b_ji": -343.87,
+    "alpha": 0.3
+   },
+   "T_K": 283.14,
+   "x_1": 0.0010366,
+   "P_reference_kPa": 4480.308,
+   "lnphi_liquid": [
+    6.7573703,
+    -8.3671875
+   ],
+   "hR_liquid_J_mol": -46318.836
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "methane",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 3.2067,
+    "a_ji": 4.4315,
+    "b_ij": 19.82,
+    "b_ji": -343.87,
+    "alpha": 0.3
+   },
+   "T_K": 298.3,
+   "x_1": 0.001544,
+   "P_reference_kPa": 8533.712,
+   "lnphi_liquid": [
+    6.2991172,
+    -7.9836843
+   ],
+   "hR_liquid_J_mol": -45508.077
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "methane",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 3.2067,
+    "a_ji": 4.4315,
+    "b_ij": 19.82,
+    "b_ji": -343.87,
+    "alpha": 0.3
+   },
+   "T_K": 324.15,
+   "x_1": 0.002298,
+   "P_reference_kPa": 17819.43,
+   "lnphi_liquid": [
+    5.8465504,
+    -7.1995356
+   ],
+   "hR_liquid_J_mol": -44100.899
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 1.2337,
+    "a_ji": 3.4549,
+    "b_ij": 385,
+    "b_ji": -569.87,
+    "alpha": 0.1982
+   },
+   "T_K": 273.3,
+   "x_1": 0.0001301,
+   "P_reference_kPa": 13.684,
+   "lnphi_liquid": [
+    8.9158715,
+    -3.5085681
+   ],
+   "hR_liquid_J_mol": -48349.847,
+   "thermo_psrk": {
+    "a_alpha": 1.0227918305626127,
+    "da_alpha_dT": -0.0018030647271737414,
+    "d2a_alpha_dT2": 4.887411812033944e-06,
+    "Z_l": 0.00014121973807495287,
+    "H_dep_l": -48349.846784743284
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 1.2337,
+    "a_ji": 3.4549,
+    "b_ij": 385,
+    "b_ji": -569.87,
+    "alpha": 0.1982
+   },
+   "T_K": 313.0,
+   "x_1": 0.00493156,
+   "P_reference_kPa": 1325.677,
+   "lnphi_liquid": [
+    5.2503715,
+    -5.4273312
+   ],
+   "hR_liquid_J_mol": -46060.668,
+   "thermo_psrk": {
+    "a_alpha": 0.9520017239745125,
+    "da_alpha_dT": -0.001632614672889107,
+    "d2a_alpha_dT2": 3.987333973405062e-06,
+    "Z_l": 0.012306177277821509,
+    "H_dep_l": -46060.66773772735
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 1.2337,
+    "a_ji": 3.4549,
+    "b_ij": 385,
+    "b_ji": -569.87,
+    "alpha": 0.1982
+   },
+   "T_K": 313.15,
+   "x_1": 0.01774862,
+   "P_reference_kPa": 5660.883,
+   "lnphi_liquid": [
+    3.7699327,
+    -6.8293001
+   ],
+   "hR_liquid_J_mol": -45574.244,
+   "thermo_psrk": {
+    "a_alpha": 0.944246204073383,
+    "da_alpha_dT": -0.001644222635443877,
+    "d2a_alpha_dT2": 3.983713950147981e-06,
+    "Z_l": 0.05286785016375286,
+    "H_dep_l": -45574.24436724585
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 1.2337,
+    "a_ji": 3.4549,
+    "b_ij": 385,
+    "b_ji": -569.87,
+    "alpha": 0.1982
+   },
+   "T_K": 353.15,
+   "x_1": 0.02029707,
+   "P_reference_kPa": 17641.246,
+   "lnphi_liquid": [
+    3.374515,
+    -5.9016783
+   ],
+   "hR_liquid_J_mol": -43167.822,
+   "thermo_psrk": {
+    "a_alpha": 0.8798831190330048,
+    "da_alpha_dT": -0.0015010571811948131,
+    "d2a_alpha_dT2": 3.3257418233442918e-06,
+    "Z_l": 0.15079435924533333,
+    "H_dep_l": -43167.82172179927
+   }
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 13.92,
+    "a_ji": 3.5134,
+    "b_ij": -2769.95,
+    "b_ji": -604.55,
+    "alpha": 0.2349
+   },
+   "T_K": 273.3,
+   "x_1": 0.0001301,
+   "P_reference_kPa": 12.519,
+   "lnphi_liquid": [
+    8.9062953,
+    -3.2407506
+   ],
+   "hR_liquid_J_mol": -46905.073
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 13.92,
+    "a_ji": 3.5134,
+    "b_ij": -2769.95,
+    "b_ji": -604.55,
+    "alpha": 0.2349
+   },
+   "T_K": 313.0,
+   "x_1": 0.00493156,
+   "P_reference_kPa": 1282.083,
+   "lnphi_liquid": [
+    5.2454406,
+    -5.291398
+   ],
+   "hR_liquid_J_mol": -44848.795
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 13.92,
+    "a_ji": 3.5134,
+    "b_ij": -2769.95,
+    "b_ji": -604.55,
+    "alpha": 0.2349
+   },
+   "T_K": 313.15,
+   "x_1": 0.01774862,
+   "P_reference_kPa": 5586.564,
+   "lnphi_liquid": [
+    3.7475262,
+    -6.7185967
+   ],
+   "hR_liquid_J_mol": -44388.531
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "NRTL": {
+    "a_ij": 13.92,
+    "a_ji": 3.5134,
+    "b_ij": -2769.95,
+    "b_ji": -604.55,
+    "alpha": 0.2349
+   },
+   "T_K": 353.15,
+   "x_1": 0.02029707,
+   "P_reference_kPa": 16695.732,
+   "lnphi_liquid": [
+    3.3542873,
+    -5.8151349
+   ],
+   "hR_liquid_J_mol": -42209.94
   }
  ]
 }

@@ -38,7 +38,7 @@ INDEX = json.loads((ROOT / "validation" / "data" / "vle" / "archive_index.json")
 
 # gas first, as in src/data/kij.json
 PAIRS = [("carbon-dioxide", "methanol"), ("carbon-dioxide", "water"), ("hydrogen", "methanol"),
-         ("carbon-monoxide", "methanol"), ("methane", "methanol")]
+         ("carbon-monoxide", "methanol"), ("methane", "methanol"), ("methane", "water")]
 
 
 def kind(t):

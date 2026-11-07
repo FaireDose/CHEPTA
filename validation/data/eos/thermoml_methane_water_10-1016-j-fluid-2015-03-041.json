@@ -1,0 +1,154 @@
+{
+ "_about": "Methane (1) + Water (2): equilibrium states (T, P, x, y), 283.14-298.15 K, as stored in the ThermoML Archive record, compositions of the other component converted with x_1 = 1 - x_2.",
+ "components": [
+  "methane",
+  "water"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "A. Bottger, A. P. S. Kamps, G. Maurer, An experimental investigation of the phase equilibrium of the binary system (methane + water) at low temperatures: Solubility of methane in water and three-phase (vapour + liquid + hydrate) equilibrium, Fluid Phase Equilib. 407 (2016) 209-216",
+  "doi": "10.1016/j.fluid.2015.03.041",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2015.03.041.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1. The table number in the article was not checked.",
+  "transcription": "Read from the ThermoML XML by validation/python/hp_gas_solubility.py; values as stored. The person checking compares each row with the record."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "p_1_kPa",
+  "x_1",
+  "y_1",
+  "U_P_kPa",
+  "U_x_1"
+ ],
+ "rows": [
+  [
+   283.14,
+   1151.0,
+   null,
+   0.00038538,
+   null,
+   null,
+   null
+  ],
+  [
+   283.14,
+   1967.0,
+   null,
+   0.00063374,
+   null,
+   null,
+   null
+  ],
+  [
+   283.14,
+   2456.0,
+   null,
+   0.00080464,
+   null,
+   null,
+   null
+  ],
+  [
+   283.14,
+   3342.0,
+   null,
+   0.0010366,
+   null,
+   null,
+   null
+  ],
+  [
+   283.14,
+   3349.0,
+   null,
+   0.0010366,
+   null,
+   null,
+   null
+  ],
+  [
+   283.14,
+   3876.0,
+   null,
+   0.00120377,
+   null,
+   null,
+   null
+  ],
+  [
+   283.14,
+   4673.0,
+   null,
+   0.00141041,
+   null,
+   null,
+   null
+  ],
+  [
+   283.14,
+   5701.0,
+   null,
+   0.00165466,
+   null,
+   null,
+   null
+  ],
+  [
+   298.15,
+   3200.0,
+   null,
+   0.00076326,
+   null,
+   null,
+   null
+  ],
+  [
+   298.15,
+   4111.0,
+   null,
+   0.0009485,
+   null,
+   null,
+   null
+  ],
+  [
+   298.15,
+   4989.0,
+   null,
+   0.00114806,
+   null,
+   null,
+   null
+  ],
+  [
+   298.15,
+   6539.0,
+   null,
+   0.0014607,
+   null,
+   null,
+   null
+  ],
+  [
+   298.15,
+   8675.0,
+   null,
+   0.00178572,
+   null,
+   null,
+   null
+  ],
+  [
+   298.15,
+   10360.0,
+   null,
+   0.00205133,
+   null,
+   null,
+   null
+  ]
+ ],
+ "notes": "Read with validation/python/hp_gas_solubility.py. The record gives the molality m of methane (mol per kg of water); x_1 = m / (m + 1000/M_2), M_2 = 18.01528 g/mol. To be checked by a person against the record (AGENTS.md rule 4)."
+}

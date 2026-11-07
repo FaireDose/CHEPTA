@@ -3,6 +3,182 @@
  "pairs": [
   {
    "model": "SRK",
+   "i": "carbon-dioxide",
+   "j": "methanol",
+   "NRTL": {
+    "a_ij": -0.3473,
+    "a_ji": 0.6262,
+    "b_ij": 579.44,
+    "b_ji": -266.58,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "braga2017-carbon-dioxide-methanol",
+    "dai2015-carbon-dioxide-methanol",
+    "decultot2019-carbon-dioxide-methanol",
+    "gui2011-carbon-dioxide-methanol",
+    "hamada2012-carbon-dioxide-methanol",
+    "hohler2018-carbon-dioxide-methanol",
+    "jalili2015-carbon-dioxide-methanol",
+    "kariznovi2013-carbon-dioxide-methanol",
+    "lyu2018-carbon-dioxide-methanol",
+    "naidoo2008-carbon-dioxide-methanol",
+    "qureshi2017-carbon-dioxide-methanol",
+    "sato2010-carbon-dioxide-methanol",
+    "schuler2012-carbon-dioxide-methanol",
+    "wu2019-carbon-dioxide-methanol",
+    "xia2004-carbon-dioxide-methanol",
+    "xie2005-carbon-dioxide-methanol"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of SRK to the 424 bubble pressures of 16 articles of the NIST TRC ThermoML Archive (each article the same total weight), 213.15-395 K, 79-12068 kPa: AAD 5.6 % in P (max 32.4 %), gas solubility at the measured T and P AAD 10.2 % (max 392.6 %), 0.0292 in y (max 0.0855, 4 points)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+    ],
+    "conditions": "T = 213.15-395 K, P = 79-12068 kPa",
+    "T_range_K": [
+     213.15,
+     395
+    ]
+   },
+   "quality_warning": "AAD 5.6 % in P (max 32.4 %), 10.2 % in the gas solubility, 1 of 424 points without a bubble pressure, 0.6 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
+  },
+  {
+   "model": "PR",
+   "i": "carbon-dioxide",
+   "j": "methanol",
+   "NRTL": {
+    "a_ij": -0.7502,
+    "a_ji": 0.7491,
+    "b_ij": 705.67,
+    "b_ji": -296.64,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "braga2017-carbon-dioxide-methanol",
+    "dai2015-carbon-dioxide-methanol",
+    "decultot2019-carbon-dioxide-methanol",
+    "gui2011-carbon-dioxide-methanol",
+    "hamada2012-carbon-dioxide-methanol",
+    "hohler2018-carbon-dioxide-methanol",
+    "jalili2015-carbon-dioxide-methanol",
+    "kariznovi2013-carbon-dioxide-methanol",
+    "lyu2018-carbon-dioxide-methanol",
+    "naidoo2008-carbon-dioxide-methanol",
+    "qureshi2017-carbon-dioxide-methanol",
+    "sato2010-carbon-dioxide-methanol",
+    "schuler2012-carbon-dioxide-methanol",
+    "wu2019-carbon-dioxide-methanol",
+    "xia2004-carbon-dioxide-methanol",
+    "xie2005-carbon-dioxide-methanol"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the 424 bubble pressures of 16 articles of the NIST TRC ThermoML Archive (each article the same total weight), 213.15-395 K, 79-12068 kPa: AAD 5.6 % in P (max 29.7 %), gas solubility at the measured T and P AAD 10.2 % (max 360.6 %), 0.0271 in y (max 0.0813, 4 points)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+    ],
+    "conditions": "T = 213.15-395 K, P = 79-12068 kPa",
+    "T_range_K": [
+     213.15,
+     395
+    ]
+   },
+   "quality_warning": "AAD 5.6 % in P (max 29.7 %), 10.2 % in the gas solubility, 0.6 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
+  },
+  {
+   "model": "SRK",
+   "i": "hydrogen",
+   "j": "methanol",
+   "NRTL": {
+    "a_ij": -0.5874,
+    "a_ji": 1.0542,
+    "b_ij": 22.3,
+    "b_ji": 179.5,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "descamps2005-hydrogen-methanol",
+    "wu2019-carbon-dioxide-methanol"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of SRK to the 49 bubble pressures of 2 articles of the NIST TRC ThermoML Archive (each article the same total weight), 248.41-374.85 K, 236.8-3427 kPa: AAD 5.7 % in P (max 13.7 %), gas solubility at the measured T and P AAD 5.7 % (max 12.3 %)",
+    "data": [
+     "validation/data/eos/thermoml_hydrogen_methanol_10-1016-j-tca-2004-12-001.json",
+     "validation/data/eos/thermoml_hydrogen_methanol_10-1021-acs-jced-9b00676.json"
+    ],
+    "conditions": "T = 248.41-374.85 K, P = 236.8-3427 kPa",
+    "T_range_K": [
+     248.41,
+     374.85
+    ]
+   },
+   "quality_warning": "AAD 5.7 % in P (max 13.7 %), 5.7 % in the gas solubility, 0.7 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
+  },
+  {
+   "model": "PR",
+   "i": "hydrogen",
+   "j": "methanol",
+   "NRTL": {
+    "a_ij": -0.3925,
+    "a_ji": 0.6299,
+    "b_ij": -11.07,
+    "b_ji": 257.69,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "descamps2005-hydrogen-methanol",
+    "wu2019-carbon-dioxide-methanol"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the 49 bubble pressures of 2 articles of the NIST TRC ThermoML Archive (each article the same total weight), 248.41-374.85 K, 236.8-3427 kPa: AAD 5.7 % in P (max 13.6 %), gas solubility at the measured T and P AAD 5.6 % (max 12.3 %)",
+    "data": [
+     "validation/data/eos/thermoml_hydrogen_methanol_10-1016-j-tca-2004-12-001.json",
+     "validation/data/eos/thermoml_hydrogen_methanol_10-1021-acs-jced-9b00676.json"
+    ],
+    "conditions": "T = 248.41-374.85 K, P = 236.8-3427 kPa",
+    "T_range_K": [
+     248.41,
+     374.85
+    ]
+   },
+   "quality_warning": "AAD 5.7 % in P (max 13.6 %), 5.6 % in the gas solubility, 0.7 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
+  },
+  {
+   "model": "SRK",
    "i": "carbon-monoxide",
    "j": "methanol",
    "NRTL": {
@@ -54,6 +230,276 @@
      372.9
     ]
    }
+  },
+  {
+   "model": "SRK",
+   "i": "methane",
+   "j": "methanol",
+   "NRTL": {
+    "a_ij": -3.3092,
+    "a_ji": 2.8972,
+    "b_ij": 1128.12,
+    "b_ji": -655.28,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "frost2014-methane-methanol",
+    "frost2015-methane-methanol",
+    "kapateh2016-methane-methanol",
+    "nourozieh2012-methane-methanol",
+    "oliveira2016-methane-methanol",
+    "xia2004-methane-methanol"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of SRK to the 42 bubble pressures of 6 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-323 K, 1050-19930 kPa: AAD 6.3 % in P (max 19.9 %), gas solubility at the measured T and P AAD 5.8 % (max 16.7 %)",
+    "data": [
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json"
+    ],
+    "conditions": "T = 273.15-323 K, P = 1050-19930 kPa",
+    "T_range_K": [
+     273.15,
+     323
+    ]
+   },
+   "quality_warning": "AAD 6.3 % in P (max 19.9 %), 5.8 % in the gas solubility, 1.3 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
+  },
+  {
+   "model": "PR",
+   "i": "methane",
+   "j": "methanol",
+   "NRTL": {
+    "a_ij": -3.2499,
+    "a_ji": 3.2138,
+    "b_ij": 1046.3,
+    "b_ji": -694.08,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "frost2014-methane-methanol",
+    "frost2015-methane-methanol",
+    "kapateh2016-methane-methanol",
+    "nourozieh2012-methane-methanol",
+    "oliveira2016-methane-methanol",
+    "xia2004-methane-methanol"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the 42 bubble pressures of 6 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-323 K, 1050-19930 kPa: AAD 6.3 % in P (max 19.8 %), gas solubility at the measured T and P AAD 5.8 % (max 16.6 %)",
+    "data": [
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json"
+    ],
+    "conditions": "T = 273.15-323 K, P = 1050-19930 kPa",
+    "T_range_K": [
+     273.15,
+     323
+    ]
+   },
+   "quality_warning": "AAD 6.3 % in P (max 19.8 %), 5.8 % in the gas solubility, 1.3 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
+  },
+  {
+   "model": "SRK",
+   "i": "hydrogen",
+   "j": "water",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 4.9182,
+    "b_ij": 0,
+    "b_ji": -524.94,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "iapws-g7-04"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of SRK to the Henry's law constants of IAPWS G7-04 (src/data/henry.json; no ThermoML liquid + gas set exists for this pair) at 13 temperatures, 278.15-398.15 K: AAD 4.4 % in H (max 9.9 %); tau_12 = 0",
+    "data": [
+     "src/data/henry.json"
+    ],
+    "conditions": "T = 278.15-398.15 K, at infinite dilution",
+    "T_range_K": [
+     278.15,
+     398.15
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "hydrogen",
+   "j": "water",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 4.7344,
+    "b_ij": 0,
+    "b_ji": -487.14,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "iapws-g7-04"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the Henry's law constants of IAPWS G7-04 (src/data/henry.json; no ThermoML liquid + gas set exists for this pair) at 13 temperatures, 278.15-398.15 K: AAD 4.4 % in H (max 10 %); tau_12 = 0",
+    "data": [
+     "src/data/henry.json"
+    ],
+    "conditions": "T = 278.15-398.15 K, at infinite dilution",
+    "T_range_K": [
+     278.15,
+     398.15
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "carbon-monoxide",
+   "j": "water",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.3315,
+    "b_ij": 0,
+    "b_ji": -732.11,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "iapws-g7-04"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of SRK to the Henry's law constants of IAPWS G7-04 (src/data/henry.json; no ThermoML liquid + gas set exists for this pair) at 13 temperatures, 278.15-398.15 K: AAD 7 % in H (max 16.1 %); tau_12 = 0",
+    "data": [
+     "src/data/henry.json"
+    ],
+    "conditions": "T = 278.15-398.15 K, at infinite dilution",
+    "T_range_K": [
+     278.15,
+     398.15
+    ]
+   },
+   "quality_warning": "AAD 7 % in the Henry's law constant against IAPWS G7-04 (max 16.1 %), 2 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
+  },
+  {
+   "model": "PR",
+   "i": "carbon-monoxide",
+   "j": "water",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.1135,
+    "b_ij": 0,
+    "b_ji": -677.33,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "iapws-g7-04"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the Henry's law constants of IAPWS G7-04 (src/data/henry.json; no ThermoML liquid + gas set exists for this pair) at 13 temperatures, 278.15-398.15 K: AAD 7.1 % in H (max 16.4 %); tau_12 = 0",
+    "data": [
+     "src/data/henry.json"
+    ],
+    "conditions": "T = 278.15-398.15 K, at infinite dilution",
+    "T_range_K": [
+     278.15,
+     398.15
+    ]
+   },
+   "quality_warning": "AAD 7.1 % in the Henry's law constant against IAPWS G7-04 (max 16.4 %), 2.1 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
+  },
+  {
+   "model": "PR",
+   "i": "carbon-dioxide",
+   "j": "water",
+   "NRTL": {
+    "a_ij": 13.92,
+    "a_ji": 3.5134,
+    "b_ij": -2769.95,
+    "b_ji": -604.55,
+    "alpha": 0.2349
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "ahmadi2018-carbon-dioxide-water",
+    "bermejo2005-carbon-dioxide-water",
+    "campos2009-carbon-dioxide-water",
+    "carvalho2015-carbon-dioxide-water",
+    "dalmolin2006-carbon-dioxide-water",
+    "dellera2010-carbon-dioxide-water",
+    "fonseca2007-carbon-dioxide-water",
+    "guo2014-carbon-dioxide-water",
+    "haghtalab2015-carbon-dioxide-water",
+    "han2011-carbon-dioxide-water",
+    "howlader2017-carbon-dioxide-water",
+    "jia2019-carbon-dioxide-water",
+    "kastanidis2018-carbon-dioxide-water",
+    "koschel2006-carbon-dioxide-water",
+    "li2018-carbon-dioxide-water",
+    "lucile2012-carbon-dioxide-water",
+    "luo2017-carbon-dioxide-water",
+    "martin2009-carbon-dioxide-water",
+    "messabeb2016-carbon-dioxide-water",
+    "messabeb2017-carbon-dioxide-water",
+    "mohammadian2015-carbon-dioxide-water",
+    "muromachi2015-carbon-dioxide-water",
+    "pokki2018-furfural-gvl",
+    "qin2008-carbon-dioxide-water",
+    "schuler2012-carbon-dioxide-methanol",
+    "serpa2013-carbon-dioxide-water",
+    "tong2013-carbon-dioxide-water",
+    "wang2019-carbon-dioxide-water",
+    "yuan2017-carbon-dioxide-water"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the 573 bubble pressures of 29 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-393.15 K, 13.89-20000 kPa: AAD 11.4 % in P (max 60.6 %), gas solubility at the measured T and P AAD 7.9 % (max 73.5 %), 0.0085 in y (max 0.0365, 25 points)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+    ],
+    "conditions": "T = 273.15-393.15 K, P = 13.89-20000 kPa",
+    "T_range_K": [
+     273.15,
+     393.15
+    ]
+   },
+   "quality_warning": "AAD 11.4 % in P (max 60.6 %), 7.9 % in the gas solubility, 4 of 573 points without a bubble pressure, 6.4 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07: alpha fitted, better than k_ij = a + b / T ({\"P_pct\":13.8,\"x_pct\":10.2,\"no_bubble_pressure\":4})"
   }
  ]
 }

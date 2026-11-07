@@ -58,6 +58,28 @@ class MHV1Cubic(Cubic):
         return b * R * T * alpha, b
 
 
+def psat_water(e, T):
+    """Saturation pressure (kPa) of pure water (component 2) in this cubic: equal liquid and vapour fugacities,
+    brentq on P between the pressures where both roots exist."""
+    from scipy.optimize import brentq
+    x = [0.0, 1.0]
+
+    def f(P_kPa):
+        P = P_kPa * 1000
+        zl, n = e.Z(T, P, x, "liquid")
+        zv, _ = e.Z(T, P, x, "vapour")
+        if n < 2 or abs(zl - zv) < 1e-9:
+            return None
+        return e.lnphi(T, P, x, "liquid")[1] - e.lnphi(T, P, x, "vapour")[1]
+
+    Ps = np.geomspace(0.01, 2000, 200)
+    vals = [f(P) for P in Ps]
+    for a, b, fa, fb in zip(Ps, Ps[1:], vals, vals[1:]):
+        if fa is not None and fb is not None and fa * fb < 0:
+            return brentq(f, a, b, xtol=1e-10)
+    raise ValueError(f"no saturation pressure of water at {T} K")
+
+
 def thermo_psrk(e, T, P_Pa, x):
     from thermo.eos_mix import PSRK
     from thermo.nrtl import NRTL
@@ -75,6 +97,22 @@ def main():
     for r in fits["results"]:
         model, (i, j) = r["model"], r["pair"]
         e = MHV1Cubic(model, [i, j], r["NRTL"])
+        if r.get("variant") == "henry":
+            # the Henry's law constant of the rule: water's saturation pressure (bubble pressure of nearly pure water)
+            # and ln phi of the gas at infinite dilution there
+            for T in (278.15, 338.15, 398.15):
+                P_sat = round(psat_water(e, T), 6)
+                # ln phi_gas at infinite dilution: d(n a_res)/dn_gas by a forward difference with a step of 1e-8 mol
+                # (Cubic.lnphi's 1e-5 is coarse beside x = 1e-9), minus ln Z
+                x0 = np.array([1e-9, 1 - 1e-9])
+                Z, _ = e.Z(T, P_sat * 1000, x0, "liquid")
+                V = Z * R * T / (P_sat * 1000)
+                ln0 = (e.a_res(T, V, x0 + np.array([1e-8, 0.0])) - e.a_res(T, V, x0)) / 1e-8 - math.log(Z)
+                row = {"model": model, "pair": [i, j], "variant": "henry", "NRTL": r["NRTL"], "T_K": T, "P_sat_reference_kPa": P_sat,
+                       "H_reference_kPa": round(math.exp(ln0) * P_sat, 3)}
+                print(f"{model} + gE (MHV1) {i}-{j}: T = {T} K, water P_sat = {P_sat:.4f} kPa, H = {row['H_reference_kPa']:.1f} kPa")
+                out.append(row)
+            continue
         pts = sorted((p for f in r["files"] for p in points(f) if p[0] <= window["T_K"] and (p[3] or p[2] / 2) <= window["P_kPa"]), key=lambda p: p[2])
         for q in (0, len(pts) // 3, 2 * len(pts) // 3, len(pts) - 1):
             for k in list(range(q, len(pts))) + list(range(q - 1, -1, -1)):

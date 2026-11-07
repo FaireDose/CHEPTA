@@ -10,6 +10,9 @@ import { readFileSync } from "node:fs";
 import { system } from "../src/index.js";
 import { mhv1A } from "../src/thermo/eos/mhv1.js";
 import data from "../src/data/mhv1.json" with { type: "json" };
+import known from "../src/data/known-issues.json" with { type: "json" };
+import { henry } from "../src/thermo/henry.js";
+import { henryOf, written, WARNED } from "../validation/fit_mhv1_high_pressure.mjs";
 
 const load = p => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url)));
 const fits = load("validation/data/eos/mhv1_fits.json");
@@ -38,8 +41,14 @@ test("a pure component is the plain cubic: the rule adds nothing without a secon
 });
 
 test("the engine against the independent references (Python MHV1 cubic; thermo's PSRK for SRK)", () => {
-  assert.ok(check.points.length >= 4 * fits.results.length);
-  for (const p of check.points) {
+  assert.ok(check.points.length >= 3 * fits.results.length);
+  for (const p of check.points.filter(q => q.variant === "henry")) {
+    // the rule's Henry's law constant: water's saturation pressure and ln phi of the gas at infinite dilution
+    const s = sysOf(p.pair, p.model, p.NRTL), what = `${p.model} ${p.pair.join("-")} T = ${p.T_K} K`;
+    assert.ok(rel(s.eos.psat(1, p.T_K), p.P_sat_reference_kPa) < 1e-6, `${what}: P_sat`);
+    assert.ok(rel(henryOf(s, p.T_K), p.H_reference_kPa) < 1e-4, `${what}: H ${henryOf(s, p.T_K)} vs ${p.H_reference_kPa} kPa`);
+  }
+  for (const p of check.points.filter(q => q.variant !== "henry")) {
     const s = sysOf(p.pair, p.model, p.NRTL), x = [p.x_1, 1 - p.x_1], what = `${p.model} ${p.pair.join("-")} T = ${p.T_K} K, x = ${p.x_1}`;
     const P = s.bubbleP(x, p.T_K).P;
     assert.ok(rel(P, p.P_reference_kPa) < 1e-4, `${what}: P ${P} vs ${p.P_reference_kPa} kPa`);
@@ -59,8 +68,35 @@ const points = files => files.flatMap(f => load(`validation/data/eos/${f}`).rows
   .filter(r => r[3] != null && r[3] > 0 && r[3] < 1 && r[0] <= fits.window.T_K && (r[1] ?? r[2]) <= fits.window.P_kPa)
   .map(r => ({ T: r[0], P: r[1], p1: r[2], x: r[3] })));
 
-for (const r of fits.results) {
-  test(`${r.model} + gE (MHV1) ${r.pair.join(" + ")}: the recorded error in P (${r.errors.pooled.P_pct.aad} %, ${r.ok ? "within" : "outside"} the gate) is the engine's`, () => {
+/** The set of a result in src/data/mhv1.json, if it was written there. */
+const entryOf = r => data.pairs.find(q => q.model === r.model && q.i === r.pair[0] && q.j === r.pair[1] && q.NRTL.alpha === r.NRTL.alpha && q.NRTL.b_ji === r.NRTL.b_ji);
+
+function checkWritten(r) {
+  // written exactly when within the gate, or by the maintainer's decision (WARNED; alpha fitted and better than
+  // k_ij = a + b / T), then with a quality warning and a fit-quality known issue; the default system then uses it
+  const e = entryOf(r);
+  assert.equal(Boolean(e), written(r), `${r.model} ${r.pair} ${r.variant ?? ""}`);
+  if (!e) return;
+  assert.deepEqual(e.NRTL, r.NRTL);
+  assert.equal(Boolean(e.quality_warning), !r.ok);
+  if (!r.ok) assert.ok(known.issues.some(k => k.kind === "fit-quality" && k.model === r.model && k.mixing === "MHV1" && k.components.join() === r.pair.join()));
+  const d = system({ components: r.pair, model: r.model, mixing: "MHV1" });
+  assert.equal(d.info.pairs[0].set, "mhv1-fitted");
+  assert.equal(d.info.method, `${r.model} + gE (MHV1)`);
+}
+
+for (const r of fits.results.filter(q => q.variant === "henry")) {
+  test(`${r.model} + gE (MHV1) ${r.pair.join(" + ")}: the recorded error in H against IAPWS G7-04 (${r.errors.henry_pct.aad} %) is the engine's`, () => {
+    const s = sysOf(r.pair, r.model, r.NRTL);
+    const d = r.errors.henry_pct.deviations.map((v, k) => [v, 100 * (henryOf(s, 278.15 + 10 * k) / henry(r.pair[0], "water", 278.15 + 10 * k) - 1)]);
+    for (const [rec, now] of d) assert.ok(Math.abs(rec - now) < 0.01, `${rec} vs ${now}`);
+    assert.equal(r.ok, r.errors.henry_pct.aad <= GATE.P_pct);
+    checkWritten(r);
+  });
+}
+
+for (const r of fits.results.filter(q => q.variant !== "henry")) {
+  test(`${r.model} + gE (MHV1) ${r.pair.join(" + ")}${r.variant === "alpha" ? " (alpha fitted)" : ""}: the recorded error in P (${r.errors.pooled.P_pct.aad} %, ${r.ok ? "within" : "outside"} the gate) is the engine's`, () => {
     const s = sysOf(r.pair, r.model, r.NRTL), pts = points(r.files);
     assert.equal(pts.length, r.points);
     const dev = []; let missing = 0;
@@ -71,17 +107,36 @@ for (const r of fits.results) {
     assert.equal(missing, r.errors.pooled.no_bubble_pressure);
     assert.ok(Math.abs(aad - r.errors.pooled.P_pct.aad) < 0.1, `AAD ${aad.toFixed(2)} % against ${r.errors.pooled.P_pct.aad} %`);
     assert.equal(r.ok, missing === 0 && r.errors.pooled.P_pct.aad <= GATE.P_pct);
-    // written to src/data/mhv1.json exactly when within the gate, and the default system then uses it
-    const e = data.pairs.find(q => q.model === r.model && q.i === r.pair[0] && q.j === r.pair[1]);
-    assert.equal(Boolean(e), r.ok);
-    if (e) {
-      assert.deepEqual(e.NRTL, r.NRTL);
-      const d = system({ components: r.pair, model: r.model, mixing: "MHV1" });
-      assert.equal(d.info.pairs[0].set, "mhv1-fitted");
-      assert.equal(d.info.method, `${r.model} + gE (MHV1)`);
-    }
+    checkWritten(r);
   });
 }
+
+test("the maintainer's answers of 2026-11-07: H2, CO2 and CH4 + methanol written with warnings; CO2 + water's alpha tried; CH4 + water held", () => {
+  for (const pair of ["hydrogen+methanol", "carbon-dioxide+methanol", "methane+methanol"]) assert.ok(WARNED[pair], pair);
+  const alpha = fits.results.filter(r => r.variant === "alpha");
+  assert.equal(alpha.length, 2);
+  for (const r of alpha) {
+    // written only if it beats k_ij = a + b / T in P and in solubility, with no more points without a bubble pressure
+    const t = r.beats_kij_T.against, q = r.errors.pooled;
+    assert.equal(r.beats_kij_T.beats, q.P_pct.aad < t.P_pct && q.x_pct.aad <= t.x_pct && q.no_bubble_pressure <= t.no_bubble_pressure);
+  }
+  assert.ok(!data.pairs.some(p => p.i === "methane" && p.j === "water"), "CH4 + water is held");
+});
+
+test("CHEPTA-Lab's separator (CO2, H2, CO, methanol, water at 313 K and 5 MPa) under PR + gE (MHV1)", () => {
+  // the method on purpose: the comparison of docs/decisions/2026-11-06-02-mhv1.md
+  const c = ["carbon-dioxide", "hydrogen", "carbon-monoxide", "methanol", "water"], z = [0.2, 0.5, 0.05, 0.15, 0.1];
+  const s = system({ components: c, model: "PR", mixing: "MHV1" });
+  // every pair has NRTL parameters except the three gas + gas pairs (g^E = 0, with a warning)
+  const none = s.info.pairs.filter(p => p.tier === "none").map(p => p.pair.join("+")).sort();
+  assert.deepEqual(none, ["Carbon dioxide+Carbon monoxide", "Carbon dioxide+Hydrogen", "Hydrogen+Carbon monoxide"]);
+  const r = s.flash({ z, T: 313, P: 5000 });
+  const L = r.phases.find(p => p.type !== "vapour"), V = r.phases.find(p => p.type === "vapour");
+  assert.ok(L.fraction > 0.2 && L.fraction < 0.3, `liquid fraction ${L.fraction}`);
+  // the balance closes, and the gases are dilute in the liquid
+  c.forEach((_, i) => assert.ok(Math.abs(L.fraction * L.composition[i] + V.fraction * V.composition[i] - z[i]) < 1e-8));
+  assert.ok(L.composition[0] < 0.05 && L.composition[1] < 0.01 && L.composition[2] < 0.002, `x ${L.composition}`);
+});
 
 test("a pair without NRTL parameters is g^E = 0, said in the pairs and the warnings; an unknown rule is refused", () => {
   const s = system({ components: ["hydrogen", "carbon-dioxide"], model: "SRK", mixing: "MHV1" });
