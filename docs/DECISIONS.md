@@ -10,12 +10,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
-- **PR and SRK k_ij of gases in methanol and water at high pressure** (docs/decisions/2026-11-04-13-kij-high-pressure.md,
-  2026-11-05-03-kij-followup.md, 2026-11-06-01-kij-temperature.md): k_ij = a + b/T in the engine; CO2 + methanol
-  (7 % in P, 13 % in solubility) and CO2 + water (14-15 % in P, 10-11 % in solubility) written with fit-quality known
-  issues; ChemSep's CO2 + water set stays not usable. CH4 + methanol and CO + methanol are constant k_ij. Next:
-  proposal 0018 reopened, MHV1 built and compared with these numbers (docs/decisions/2026-11-06-02-mhv1.md). Still to
-  read: Privat and Jaubert 2023 (TO_DOWNLOAD.md no. 8).
+- **High-pressure gases in methanol and water** (docs/decisions/2026-11-04-13-kij-high-pressure.md, 2026-11-05-03,
+  2026-11-06-01, 2026-11-06-02-mhv1.md): k_ij = a + b/T in the engine; SRK/PR + gE (MHV1) built, its methanol pairs
+  written with fit-quality warnings (2026-11-07), CO2 + water's PR set with alpha fitted (11.4 % in P against 13.8 % for
+  a + b/T), H2 and CO + water fitted to IAPWS G7-04 (no ThermoML data): CHEPTA-Lab's separator runs under PR + gE
+  (MHV1). Open: confirm IAPWS G7-04 for H2 and CO + water; CH4 + water held (Campos 2010 and Kim 2008 disagree with the
+  other seven articles); SRK's CO2 + water alpha fit (better in P and solubility, 2 more points without a bubble
+  pressure) not written; CPA (M3) for water's association.
 - **Review and merge:**
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.

@@ -1,6 +1,20 @@
 {
   "_about": "The CHEPTA Library (proposal 0003): every source once, with an id. Records in the other data files refer to it in `source_ids`. kind: standard, open-source library, databank, thermoml, open-access article, free supplement, free copy, open thesis, free book, course notes, handbook via open compilation. url: where anyone can read the numbers (the open copy); doi: the original publication; access: why it is open; via: the open copy the numbers were taken from, when it is not the source itself; files: repository files (code, validation data) that use the source besides the data records. Made by validation/python/make_sources.py; entries can be corrected by hand (the script keeps them).",
   "sources": {
+    "abdi2007-methane-water": {
+      "title": "Experimental Study of Solubility of Natural Gas Components in Aqueous Solutions of Ethylene Glycol at Low-Temperature and High-Pressure Conditions",
+      "authors": "M. A. Abdi, A. Hussain, K. Hawboldt, E. Beronich",
+      "year": 2007,
+      "published": "J. Chem. Eng. Data 52 (2007) 1741-1746",
+      "kind": "thermoml",
+      "doi": "10.1021/je700134r",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je700134r.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_water_10-1021-je700134r.json"
+      ]
+    },
     "ahmad2004-1-butanol-n-nonane": {
       "title": "Vapor-Liquid Equilibrium Studies for Systems Containing n-Butylisocyanate at Temperatures between 323.15 K and 371.15 K",
       "authors": "S. Ahmad, R. Giesen, K. Lucas",
@@ -208,6 +222,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/1-propanol_mibk_10-1021-acs-jced-7b00026_338.15K.json"
+      ]
+    },
+    "awan2010-methane-water": {
+      "title": "Vapor-Liquid Equilibrium Measurements and Modeling of the Propyl Mercaptan + Methane + Water System",
+      "authors": "J. A. Awan, K. Thomsen, C. Coquelet, P. L. Fosbol, D. Richon",
+      "year": 2010,
+      "published": "J. Chem. Eng. Data 55 (2010) 842-846",
+      "kind": "thermoml",
+      "doi": "10.1021/je900441f",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je900441f.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_water_10-1021-je900441f.json"
       ]
     },
     "aziaba-2022-membrane": {
@@ -458,6 +486,20 @@
         "validation/data/pure/measured/article_methyl-lactate_bogatishcheva2026.json"
       ]
     },
+    "bottger2016-methane-water": {
+      "title": "An experimental investigation of the phase equilibrium of the binary system (methane + water) at low temperatures: Solubility of methane in water and three-phase (vapour + liquid + hydrate) equilibrium",
+      "authors": "A. Bottger, A. P. S. Kamps, G. Maurer",
+      "year": 2016,
+      "published": "Fluid Phase Equilib. 407 (2016) 209-216",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2015.03.041",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2015.03.041.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_water_10-1016-j-fluid-2015-03-041.json"
+      ]
+    },
     "braga2017-carbon-dioxide-methanol": {
       "title": "Phase Behavior Data of (CO2 + Toluene + Phenanthrene) and (CO2 + (Methanol + Phenanthrene) Systems at High Pressure",
       "authors": "A. J. O. Braga, R. P. do Carmo, P. M. Ndiaye, F. W. Tavares",
@@ -557,6 +599,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+      ]
+    },
+    "campos2010-methane-water": {
+      "title": "Experimental Measurement and Thermodynamic Modeling for the Solubility of Methane in Water and Hexadecane",
+      "authors": "C. E. P. S. Campos, J. R. Penello, F. L. P. Pessoa, A. M. C. Uller",
+      "year": 2010,
+      "published": "J. Chem. Eng. Data 55 (2010) 2576-2580",
+      "kind": "thermoml",
+      "doi": "10.1021/je9007958",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je9007958.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_water_10-1021-je9007958.json"
       ]
     },
     "cao2014-ethanol-tetrahydrofuran": {
@@ -1303,6 +1359,20 @@
         "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json"
       ]
     },
+    "fonseca2012-methane-water": {
+      "title": "N. von Solms, Development and testing of a new apparatus for the measurement of  high-pressure low-temperature phase equilibria",
+      "authors": "J. M. S. Fonseca",
+      "year": 2012,
+      "published": "Fluid Phase Equilib. 329 (2012) 55-62",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2012.05.024",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.05.024.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_water_10-1016-j-fluid-2012-05-024.json"
+      ]
+    },
     "frost2014-methane-methanol": {
       "title": "Vapor Liquid Equilibrium of Methane with Water and Methanol. Measurements and Modeling",
       "authors": "M. Frost, E. Karakatsani, N. V. Solms, D. Richon, G. M. Kontogeorgis",
@@ -1314,7 +1384,8 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
-        "validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json"
+        "validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json",
+        "validation/data/eos/thermoml_methane_water_10-1021-je400684k.json"
       ]
     },
     "frost2015-methane-methanol": {
@@ -2070,7 +2141,8 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
-        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json"
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+        "validation/data/eos/thermoml_methane_water_10-1021-acs-jced-7b00777.json"
       ]
     },
     "khoshooei2018-cyclohexane-toluene": {
@@ -2124,6 +2196,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/mdea_water_10-1021-je800290k_tpx.json"
+      ]
+    },
+    "kim2008-methane-water": {
+      "title": "Solubilities of Carbon Dioxide, Methane, and Ethane in Sodium Chloride Solution Containing Gas Hydrate",
+      "authors": "Y. S. Kim, B. D. Lim, J. E. Lee, C. S. Lee",
+      "year": 2008,
+      "published": "J. Chem. Eng. Data 53 (2008) 1351-4",
+      "kind": "thermoml",
+      "doi": "10.1021/je800074z",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je800074z.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/eos/thermoml_methane_water_10-1021-je800074z.json"
       ]
     },
     "kim2015-1-propanol-propylene-oxide": {
@@ -3877,7 +3963,8 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
-        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json"
+        "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+        "validation/data/eos/thermoml_methane_water_10-1021-je700473e.json"
       ]
     },
     "qunsheng2014-dimethyl-carbonate-methanol": {
