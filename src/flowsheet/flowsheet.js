@@ -61,6 +61,7 @@ import "../units/kinetic-reactors.js";
 import "../units/columns/column.js";
 import "../units/membrane.js";   // the Membrane block (proposal 0015, M3)   // the Column block (proposal 0015, M1: shortcut mode)
 import "../units/extraction.js";   // the Extraction block (proposal 0015, M3, step 8)
+import "../units/pipe.js";   // the Pipe block (proposal 0020)
 import "../units/evaporator.js";   // the Evaporator block (proposal 0015, M3, step 10)
 import "../units/crystallizer.js";   // the Crystallizer block (proposal 0015, M3, step 10)
 import { checkReactions } from "../reactions/reaction.js";
