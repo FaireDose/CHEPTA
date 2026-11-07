@@ -104,7 +104,7 @@ Checked so far:
 | Hydrocarbons and light gases, any pressure and reduced temperature | Peng–Robinson or SRK with the databank's k_ij (0 where it has none, with a warning) | covered |
 | Polar liquids below 10 bar | NRTL or UNIQUAC with fitted or databank pairs; ideal-gas or PR/SRK vapour | covered where the pairs exist (docs/DATA_WANTED.md) |
 | Polar liquids below 10 bar, one liquid | Wilson with pairs fitted to ThermoML data (332 sets) or ChemSep's databank pairs; ideal-gas or PR/SRK vapour | covered where the pairs exist (roadmap M1, proposal 0016); refused or warned where two liquids form |
-| Polar mixtures above 10 bar | (PSRK, MHV2, Wong–Sandler, CPA) | **not available**; planned: roadmap M2, M3 |
+| Polar mixtures above 10 bar | (PSRK, MHV2, Wong–Sandler, CPA) | **SRK/PR + gE (MHV1)** with NRTL (proposal 0018, the maintainer, 2026-11-06; `mixing: "MHV1"`): pairs fitted inside the rule (CO + methanol within the 5 % gate) or the databank's NRTL sets; a light gas with a polar liquid without a fitted set is refused. Against the k_ij fits on the same ThermoML data: better for H2, CO, CH4 and CO2 + methanol, not better for CO2 + water (docs/decisions/2026-11-06-02-mhv1.md). PSRK's and MHV2's group tables are not open; CPA: roadmap M3 |
 | Water + hydrocarbons (two liquids) | (CPA, or a free-water approach) | **not available**; the engine refuses a second liquid with an equation of state; planned: roadmap M3 |
 | Electrolytes | (eNRTL, Pitzer) | **not available**, shown as "not available yet"; planned: roadmap M5 (ionic liquids: M6) |
 | Polymers | (Flory–Huggins, PC-SAFT) | **not available**; planned: roadmap M4 |

@@ -10,12 +10,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
-- **PR and SRK k_ij of gases in methanol and water at high pressure** (docs/decisions/2026-11-04-13-kij-high-pressure.md,
-  2026-11-05-03-kij-followup.md, 2026-11-06-01-kij-temperature.md): k_ij = a + b/T in the engine; CO2 + methanol
-  (7 % in P, 13 % in solubility) and CO2 + water (14-15 % in P, 10-11 % in solubility) written with fit-quality known
-  issues; ChemSep's CO2 + water set stays not usable. CH4 + methanol and CO + methanol are constant k_ij. Next:
-  proposal 0018 reopened, MHV1 built and compared with these numbers (docs/decisions/2026-11-06-02-mhv1.md). Still to
-  read: Privat and Jaubert 2023 (TO_DOWNLOAD.md no. 8).
+- **High-pressure gases in methanol and water** (docs/decisions/2026-11-04-13-kij-high-pressure.md, 2026-11-05-03,
+  2026-11-06-01, 2026-11-06-02-mhv1.md): k_ij = a + b/T in the engine; proposal 0018 reopened and SRK/PR + gE (MHV1)
+  built. MHV1 is better than the k_ij for the gases in methanol (H2 + methanol 5.7 % in P against 17-21 %) but not
+  for CO2 + water (13-16 % in P either way). Decide: write H2, CO2 and CH4 + methanol in MHV1 with a fit-quality known
+  issue (outside the 5 % gate by 0.6-1.3 points), and what next for CO2 + water (a fitted NRTL alpha, or CPA, M3).
 - **Review and merge:**
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.

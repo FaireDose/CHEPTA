@@ -72,3 +72,18 @@ own pull request.
   313 K and 5 MPa gives 25 % liquid with x_CO2 = 0.033. Four of its pairs have no k_ij: H2 + methanol (a constant
   k_ij was 17-21 % off and was left out), H2 + water, CO + water and CO2 + CO. For these PR uses k_ij = 0 and says so
   in the flash's warnings.
+
+## Addendum (2026-11-07): Privat and Jaubert read
+
+The maintainer downloaded the review (TO_DOWNLOAD.md no. 8, now under Done): R. Privat, J.-N. Jaubert, "The state of
+the art of cubic equations of state with temperature-dependent binary interaction coefficients: From correlation to
+prediction", Fluid Phase Equilib. 567 (2023) 113697, doi 10.1016/j.fluid.2022.113697, open access, CC BY 4.0 (stated
+on p. 1). Pages 1-3 and 6-8 were read by the maintainer and the coordinating session:
+
+- Eq. (15), p. 6: a_ij(T) = sqrt(a_i a_j) [1 - k_ij(T)], with temperature-dependent BIPs as the family the review
+  covers. This supports the a + b/T of this record.
+- Section 3.4, p. 8: "k_ij(T) coefficients cannot accurately model the most complex mixtures involving polar and
+  associating compounds"; composition-dependent k_ij(T, z) are "especially useful in accounting for water traces that
+  cannot be estimated accurately using a k_ij(T) coefficient".
+- Eqs. (25)-(27), p. 8: EoS/gE mixing rules (Huron-Vidal; "the use of, e.g., MHV1 MRs do not change anything") are
+  equivalent to a k_ij(T, z). That is the case for proposal 0018 (docs/decisions/2026-11-06-02-mhv1.md).

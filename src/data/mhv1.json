@@ -1,0 +1,59 @@
+{
+ "_about": "NRTL parameters fitted inside the MHV1 mixing rule (PSRK form) of SRK and Peng-Robinson to the open high-pressure data of the NIST TRC ThermoML Archive, by validation/fit_mhv1_high_pressure.mjs (proposal 0018; the maintainer, 2026-11-06). tau_ij = a_ij + b_ij / T (b in K), G_ij = exp(-alpha tau_ij); i, j in the order given. Used only by SRK/PR + gE (MHV1), not by the activity models.",
+ "pairs": [
+  {
+   "model": "SRK",
+   "i": "carbon-monoxide",
+   "j": "methanol",
+   "NRTL": {
+    "a_ij": -1.5713,
+    "a_ji": 2.668,
+    "b_ij": 24.41,
+    "b_ji": 262.76,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "wu2019-carbon-dioxide-methanol"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of SRK to the 27 bubble pressures of 1 article of the NIST TRC ThermoML Archive (each article the same total weight), 298.15-372.9 K, 241.5-3232.2 kPa: AAD 2.7 % in P (max 7.7 %), gas solubility at the measured T and P AAD 2.8 % (max 8.4 %)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-monoxide_methanol_10-1021-acs-jced-9b00676.json"
+    ],
+    "conditions": "T = 298.15-372.9 K, P = 241.5-3232.2 kPa",
+    "T_range_K": [
+     298.15,
+     372.9
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "carbon-monoxide",
+   "j": "methanol",
+   "NRTL": {
+    "a_ij": -2.2005,
+    "a_ji": 3.9925,
+    "b_ij": 223.23,
+    "b_ji": -166.63,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "wu2019-carbon-dioxide-methanol"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the 27 bubble pressures of 1 article of the NIST TRC ThermoML Archive (each article the same total weight), 298.15-372.9 K, 241.5-3232.2 kPa: AAD 2.6 % in P (max 7.5 %), gas solubility at the measured T and P AAD 2.8 % (max 8.1 %)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-monoxide_methanol_10-1021-acs-jced-9b00676.json"
+    ],
+    "conditions": "T = 298.15-372.9 K, P = 241.5-3232.2 kPa",
+    "T_range_K": [
+     298.15,
+     372.9
+    ]
+   }
+  }
+ ]
+}

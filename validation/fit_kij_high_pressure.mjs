@@ -81,8 +81,8 @@ export function articles(gas, solv) {
   });
 }
 
-const inWindow = r => r.T <= WINDOW.T_K && (r.P ?? r.p1) <= WINDOW.P_kPa;
-const fitted = r => r.x != null && r.x > 0 && r.x < 1 && inWindow(r);
+export const inWindow = r => r.T <= WINDOW.T_K && (r.P ?? r.p1) <= WINDOW.P_kPa;
+export const fitted = r => r.x != null && r.x > 0 && r.x < 1 && inWindow(r);
 
 const SYS = new Map();
 /** The system of the pair at a constant k_ij (cached: the temperature study asks for many k). */
@@ -95,7 +95,7 @@ const sys = (pair, model, k) => {
 const kAt = (k, T) => (typeof k === "function" ? k(T) : k);
 
 /** ln of calculated over measured pressure (total, or partial of the gas) of the bubble point at T and x; null if none. */
-function lnP(s, r) {
+export function lnP(s, r) {
   try {
     const b = s.bubbleP([r.x, 1 - r.x], r.T);
     return r.P != null ? Math.log(b.P / r.P) : Math.log(b.y[0] * b.P / r.p1);
@@ -146,12 +146,13 @@ const r1 = v => v == null ? null : Math.round(v * 10) / 10;
 const r4 = v => v == null ? null : Math.round(v * 1e4) / 1e4;
 
 /** Errors of the pair's articles at k: per article and pooled, in the fit window. */
-function errors(pair, model, k, arts) {
+/** k: a constant k_ij, a function of T (a + b / T), or { system } (another method, e.g. MHV1: fit_mhv1_high_pressure.mjs). */
+export function errors(pair, model, k, arts) {
   const per = arts.map(a => {
     const dP = [], dx = [], dy = [];
     let noBubble = 0, noState = 0;
     for (const r of a.rows.filter(inWindow)) {
-      const s = sys(pair, model, kAt(k, r.T));
+      const s = k && k.system ? k.system : sys(pair, model, kAt(k, r.T));
       if (r.x != null && r.x > 0 && r.x < 1) {
         const v = lnP(s, r);
         if (v == null) noBubble++; else dP.push(100 * (Math.exp(v) - 1));

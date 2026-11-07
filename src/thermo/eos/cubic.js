@@ -23,8 +23,9 @@
  *   a = sum_i sum_j x_i x_j (1 - k_ij) sqrt(a_i a_j),   b = sum_i x_i b_i
  * with k_ij constant or k_ij(T) = a_ij + b_ij / T (b_ij in K; the maintainer, 2026-11-06). A temperature-dependent
  * k_ij is established practice for cubic equations of state: R. Privat, J.-N. Jaubert, The state of the art of cubic
- * equations of state with temperature-dependent binary interaction coefficients, Fluid Phase Equilib. 567 (2023)
- * 113697, doi 10.1016/j.fluid.2022.113697 (accepted manuscript on HAL, hal-03970737, CC BY-NC-ND 4.0; abstract read);
+ * equations of state with temperature-dependent binary interaction coefficients: From correlation to prediction, Fluid
+ * Phase Equilib. 567 (2023) 113697, doi 10.1016/j.fluid.2022.113697 (open access, CC BY 4.0), eq. (15), p. 6:
+ * a_ij(T) = sqrt(a_i a_j) [1 - k_ij(T)] (read by the maintainer and the coordinating session, 2026-11-07);
  * PPR78, "classical Van der Waals mixing rules involving a temperature-dependent binary interaction parameter kij(T)"
  * (R. Privat, J.-N. Jaubert, J. Eng. Energ. Proc. (JEEP) 2011, 00011, doi 10.1051/jeep/201100011, open access;
  * abstract). See docs/decisions/2026-11-06-01-kij-temperature.md. Its derivatives enter da/dT and d2a/dT2:
@@ -139,8 +140,10 @@ const normPhase = phase => {
  * @param {{name:string, Tc_K:number, Pc_Pa:number, omega:number}[]} comps
  * @param {number[][]} [kij]  symmetric binary parameters (default 0); with kijB, the constant part a_ij
  * @param {number[][]} [kijB] symmetric temperature coefficients b_ij (K) of k_ij = a_ij + b_ij / T (default 0)
+ * @param {object} [opts]  opts.mixing: a mixing rule in place of van der Waals' (MHV1, mhv1.js): a function of
+ *   { n, d1, d2, bi, sqrtA } returning (T, x) -> { a, da, d2a, b, sumA }; k_ij are then not used
  */
-export function cubicEos(model, comps, kij, kijB) {
+export function cubicEos(model, comps, kij, kijB, opts = {}) {
   const eq = CUBICS[String(model).toUpperCase()];
   if (!eq) throw fail("BAD_INPUT", `Unknown equation of state "${model}". Use PR or SRK.`);
   const n = comps.length;
@@ -169,8 +172,8 @@ export function cubicEos(model, comps, kij, kijB) {
     return { s, s1, s2 };
   }
 
-  /** Mixture parameters at T for composition x: a, da/dT, d2a/dT2, b, and sum_j x_j a_ij. */
-  function mix(T, x) {
+  /** Mixture parameters at T for composition x: a, da/dT, d2a/dT2, b, and sum_j x_j a_ij (van der Waals). */
+  function vdwMix(T, x) {
     const { s, s1, s2 } = sqrtA(T);
     let a = 0, da = 0, d2a = 0, b = 0;
     const sumA = new Array(n).fill(0);
@@ -189,6 +192,8 @@ export function cubicEos(model, comps, kij, kijB) {
     }
     return { a, da, d2a, b, sumA };
   }
+
+  const mix = opts.mixing ? opts.mixing({ n, d1, d2, bi, sqrtA }) : vdwMix;
 
   const check = (T, P, x) => {
     if (!(T > 0)) throw failRange("BAD_INPUT", `Temperature must be positive (got ${T} K).`);
@@ -270,7 +275,7 @@ export function cubicEos(model, comps, kij, kijB) {
   }
 
   return {
-    model: String(model).toUpperCase(), name: eq.name, n, comps, kij: K, kijB: KB,
+    model: String(model).toUpperCase(), name: eq.name, n, comps, kij: K, kijB: KB, mixing: opts.mixing ? "MHV1" : "vdW",
     a_c: ac, b: bi, m: mi,
     state, psat, mix,
     /** Compressibility factor. */
