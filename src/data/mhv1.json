@@ -308,6 +308,90 @@
    "quality_warning": "AAD 6.3 % in P (max 19.8 %), 5.8 % in the gas solubility, 1.3 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
   },
   {
+   "model": "PR",
+   "i": "carbon-dioxide",
+   "j": "water",
+   "NRTL": {
+    "a_ij": 13.92,
+    "a_ji": 3.5134,
+    "b_ij": -2769.95,
+    "b_ji": -604.55,
+    "alpha": 0.2349
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "ahmadi2018-carbon-dioxide-water",
+    "bermejo2005-carbon-dioxide-water",
+    "campos2009-carbon-dioxide-water",
+    "carvalho2015-carbon-dioxide-water",
+    "dalmolin2006-carbon-dioxide-water",
+    "dellera2010-carbon-dioxide-water",
+    "fonseca2007-carbon-dioxide-water",
+    "guo2014-carbon-dioxide-water",
+    "haghtalab2015-carbon-dioxide-water",
+    "han2011-carbon-dioxide-water",
+    "howlader2017-carbon-dioxide-water",
+    "jia2019-carbon-dioxide-water",
+    "kastanidis2018-carbon-dioxide-water",
+    "koschel2006-carbon-dioxide-water",
+    "li2018-carbon-dioxide-water",
+    "lucile2012-carbon-dioxide-water",
+    "luo2017-carbon-dioxide-water",
+    "martin2009-carbon-dioxide-water",
+    "messabeb2016-carbon-dioxide-water",
+    "messabeb2017-carbon-dioxide-water",
+    "mohammadian2015-carbon-dioxide-water",
+    "muromachi2015-carbon-dioxide-water",
+    "pokki2018-furfural-gvl",
+    "qin2008-carbon-dioxide-water",
+    "schuler2012-carbon-dioxide-methanol",
+    "serpa2013-carbon-dioxide-water",
+    "tong2013-carbon-dioxide-water",
+    "wang2019-carbon-dioxide-water",
+    "yuan2017-carbon-dioxide-water"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the 573 bubble pressures of 29 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-393.15 K, 13.89-20000 kPa: AAD 11.4 % in P (max 60.6 %), gas solubility at the measured T and P AAD 7.9 % (max 73.5 %), 0.0085 in y (max 0.0365, 25 points)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+    ],
+    "conditions": "T = 273.15-393.15 K, P = 13.89-20000 kPa",
+    "T_range_K": [
+     273.15,
+     393.15
+    ]
+   },
+   "quality_warning": "AAD 11.4 % in P (max 60.6 %), 7.9 % in the gas solubility, 4 of 573 points without a bubble pressure, 6.4 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07: alpha fitted, better than k_ij = a + b / T ({\"P_pct\":13.8,\"x_pct\":10.2,\"no_bubble_pressure\":4})"
+  },
+  {
    "model": "SRK",
    "i": "hydrogen",
    "j": "water",
@@ -418,88 +502,60 @@
    "quality_warning": "AAD 7.1 % in the Henry's law constant against IAPWS G7-04 (max 16.4 %), 2.1 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
   },
   {
-   "model": "PR",
-   "i": "carbon-dioxide",
+   "model": "SRK",
+   "i": "methane",
    "j": "water",
    "NRTL": {
-    "a_ij": 13.92,
-    "a_ji": 3.5134,
-    "b_ij": -2769.95,
-    "b_ji": -604.55,
-    "alpha": 0.2349
+    "a_ij": 0,
+    "a_ji": 6.4324,
+    "b_ij": 0,
+    "b_ji": -602.24,
+    "alpha": 0.3
    },
    "tier": "fitted",
    "source_ids": [
-    "ahmadi2018-carbon-dioxide-water",
-    "bermejo2005-carbon-dioxide-water",
-    "campos2009-carbon-dioxide-water",
-    "carvalho2015-carbon-dioxide-water",
-    "dalmolin2006-carbon-dioxide-water",
-    "dellera2010-carbon-dioxide-water",
-    "fonseca2007-carbon-dioxide-water",
-    "guo2014-carbon-dioxide-water",
-    "haghtalab2015-carbon-dioxide-water",
-    "han2011-carbon-dioxide-water",
-    "howlader2017-carbon-dioxide-water",
-    "jia2019-carbon-dioxide-water",
-    "kastanidis2018-carbon-dioxide-water",
-    "koschel2006-carbon-dioxide-water",
-    "li2018-carbon-dioxide-water",
-    "lucile2012-carbon-dioxide-water",
-    "luo2017-carbon-dioxide-water",
-    "martin2009-carbon-dioxide-water",
-    "messabeb2016-carbon-dioxide-water",
-    "messabeb2017-carbon-dioxide-water",
-    "mohammadian2015-carbon-dioxide-water",
-    "muromachi2015-carbon-dioxide-water",
-    "pokki2018-furfural-gvl",
-    "qin2008-carbon-dioxide-water",
-    "schuler2012-carbon-dioxide-methanol",
-    "serpa2013-carbon-dioxide-water",
-    "tong2013-carbon-dioxide-water",
-    "wang2019-carbon-dioxide-water",
-    "yuan2017-carbon-dioxide-water"
+    "iapws-g7-04"
    ],
    "source": {
-    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the 573 bubble pressures of 29 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-393.15 K, 13.89-20000 kPa: AAD 11.4 % in P (max 60.6 %), gas solubility at the measured T and P AAD 7.9 % (max 73.5 %), 0.0085 in y (max 0.0365, 25 points)",
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of SRK to the Henry's law constants of IAPWS G7-04 (src/data/henry.json; no ThermoML liquid + gas set exists for this pair) at 13 temperatures, 278.15-398.15 K: AAD 6.9 % in H (max 15.9 %); tau_12 = 0",
     "data": [
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json",
-     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+     "src/data/henry.json"
     ],
-    "conditions": "T = 273.15-393.15 K, P = 13.89-20000 kPa",
+    "conditions": "T = 278.15-398.15 K, at infinite dilution",
     "T_range_K": [
-     273.15,
-     393.15
+     278.15,
+     398.15
     ]
    },
-   "quality_warning": "AAD 11.4 % in P (max 60.6 %), 7.9 % in the gas solubility, 4 of 573 points without a bubble pressure, 6.4 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07: alpha fitted, better than k_ij = a + b / T ({\"P_pct\":13.8,\"x_pct\":10.2,\"no_bubble_pressure\":4})"
+   "quality_warning": "AAD 6.9 % in the Henry's law constant against IAPWS G7-04 (max 15.9 %), 1.9 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
+  },
+  {
+   "model": "PR",
+   "i": "methane",
+   "j": "water",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.2958,
+    "b_ij": 0,
+    "b_ji": -561.18,
+    "alpha": 0.3
+   },
+   "tier": "fitted",
+   "source_ids": [
+    "iapws-g7-04"
+   ],
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_mhv1_high_pressure.mjs inside the MHV1 rule of PR to the Henry's law constants of IAPWS G7-04 (src/data/henry.json; no ThermoML liquid + gas set exists for this pair) at 13 temperatures, 278.15-398.15 K: AAD 7 % in H (max 16.3 %); tau_12 = 0",
+    "data": [
+     "src/data/henry.json"
+    ],
+    "conditions": "T = 278.15-398.15 K, at infinite dilution",
+    "T_range_K": [
+     278.15,
+     398.15
+    ]
+   },
+   "quality_warning": "AAD 7 % in the Henry's law constant against IAPWS G7-04 (max 16.3 %), 2 points over the gate of 5 %; written by the decision of the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)"
   }
  ]
 }

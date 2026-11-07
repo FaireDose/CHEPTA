@@ -120,7 +120,15 @@ test("the maintainer's answers of 2026-11-07: H2, CO2 and CH4 + methanol written
     const t = r.beats_kij_T.against, q = r.errors.pooled;
     assert.equal(r.beats_kij_T.beats, q.P_pct.aad < t.P_pct && q.x_pct.aad <= t.x_pct && q.no_bubble_pressure <= t.no_bubble_pressure);
   }
-  assert.ok(!data.pairs.some(p => p.i === "methane" && p.j === "water"), "CH4 + water is held");
+  // CH4 + water (2026-11-07): fitted to IAPWS G7-04, not to its disputed ThermoML articles, which are kept as a check;
+  // Campos et al. (2010) and Kim et al. (2008) are the outliers
+  const ch4 = fits.results.filter(r => r.pair.join() === "methane,water");
+  assert.ok(ch4.filter(r => !r.variant).every(r => !written(r)), "the ThermoML fit of CH4 + water is not written");
+  for (const r of ch4.filter(q => q.variant === "henry")) {
+    assert.ok(written(r) && r.check_thermoml.articles.length === 9, r.model);
+    const worst = [...r.check_thermoml.articles].sort((u, v) => v.P_pct.aad - u.P_pct.aad).slice(0, 2).map(a => a.cite.split(" ")[0]).sort();
+    assert.deepEqual(worst, ["Campos", "Kim"]);
+  }
 });
 
 test("CHEPTA-Lab's separator (CO2, H2, CO, methanol, water at 313 K and 5 MPa) under PR + gE (MHV1)", () => {

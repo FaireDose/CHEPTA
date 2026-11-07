@@ -2315,34 +2315,6 @@
     },
     {
       "components": [
-        "carbon-monoxide",
-        "water"
-      ],
-      "model": "SRK",
-      "mixing": "MHV1",
-      "kind": "fit-quality",
-      "message": "These NRTL parameters inside the MHV1 rule of SRK are fitted to open data but follow them less closely than the gate: AAD 7 % in the Henry's law constant against IAPWS G7-04 (max 16.1 %), 2 points over the gate of 5 %. Use with care.",
-      "reference": "src/data/henry.json",
-      "source_ids": [
-        "iapws-g7-04"
-      ]
-    },
-    {
-      "components": [
-        "carbon-monoxide",
-        "water"
-      ],
-      "model": "PR",
-      "mixing": "MHV1",
-      "kind": "fit-quality",
-      "message": "These NRTL parameters inside the MHV1 rule of PR are fitted to open data but follow them less closely than the gate: AAD 7.1 % in the Henry's law constant against IAPWS G7-04 (max 16.4 %), 2.1 points over the gate of 5 %. Use with care.",
-      "reference": "src/data/henry.json",
-      "source_ids": [
-        "iapws-g7-04"
-      ]
-    },
-    {
-      "components": [
         "carbon-dioxide",
         "water"
       ],
@@ -2381,6 +2353,62 @@
         "tong2013-carbon-dioxide-water",
         "wang2019-carbon-dioxide-water",
         "yuan2017-carbon-dioxide-water"
+      ]
+    },
+    {
+      "components": [
+        "carbon-monoxide",
+        "water"
+      ],
+      "model": "SRK",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of SRK are fitted to open data but follow them less closely than the gate: AAD 7 % in the Henry's law constant against IAPWS G7-04 (max 16.1 %), 2 points over the gate of 5 %. Use with care.",
+      "reference": "src/data/henry.json",
+      "source_ids": [
+        "iapws-g7-04"
+      ]
+    },
+    {
+      "components": [
+        "carbon-monoxide",
+        "water"
+      ],
+      "model": "PR",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of PR are fitted to open data but follow them less closely than the gate: AAD 7.1 % in the Henry's law constant against IAPWS G7-04 (max 16.4 %), 2.1 points over the gate of 5 %. Use with care.",
+      "reference": "src/data/henry.json",
+      "source_ids": [
+        "iapws-g7-04"
+      ]
+    },
+    {
+      "components": [
+        "methane",
+        "water"
+      ],
+      "model": "SRK",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of SRK are fitted to open data but follow them less closely than the gate: AAD 6.9 % in the Henry's law constant against IAPWS G7-04 (max 15.9 %), 1.9 points over the gate of 5 %. Use with care.",
+      "reference": "src/data/henry.json",
+      "source_ids": [
+        "iapws-g7-04"
+      ]
+    },
+    {
+      "components": [
+        "methane",
+        "water"
+      ],
+      "model": "PR",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of PR are fitted to open data but follow them less closely than the gate: AAD 7 % in the Henry's law constant against IAPWS G7-04 (max 16.3 %), 2 points over the gate of 5 %. Use with care.",
+      "reference": "src/data/henry.json",
+      "source_ids": [
+        "iapws-g7-04"
       ]
     }
   ]

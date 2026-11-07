@@ -41,13 +41,16 @@ export const ALPHA = 0.3;
 /** The pairs fitted to ThermoML P-x data: those of the k_ij fits, and CH4 + water for the separator (2026-11-07). */
 export const PAIRS = [...KIJ_PAIRS, ["methane", "water"]];
 /** Fitted to the IAPWS G7-04 Henry's law constants (no ThermoML liquid + gas set). */
-export const HENRY_PAIRS = [["hydrogen", "water"], ["carbon-monoxide", "water"]];
+export const HENRY_PAIRS = [["hydrogen", "water"], ["carbon-monoxide", "water"], ["methane", "water"]];
 const D07 = "the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)";
 /** Written outside GATE with a fit-quality known issue. */
 // CH4 + water is held, not written: its nine ThermoML articles disagree (Campos et al. 2010 +33 % and Kim et al. 2008
 // -43 % in P against NRTL parameters fitted to IAPWS G7-04, the other seven within about 15 %), so the pooling rule of
 // docs/DATA_RULES.md section 3 holds the pair for the maintainer's choice; CH4 is not in the separator's mixture.
-export const WARNED = { "hydrogen+methanol": D07, "carbon-dioxide+methanol": D07, "methane+methanol": D07, "hydrogen+water": D07, "carbon-monoxide+water": D07 };
+export const WARNED = { "hydrogen+methanol": D07, "carbon-dioxide+methanol": D07, "methane+methanol": D07 };
+/** The Henry's-constant fits written outside GATE (the maintainer, 2026-11-07: IAPWS G7-04 confirmed as source rule 1;
+ *  CH4 + water to G7-04, its nine ThermoML articles kept as a check). */
+export const WARNED_HENRY = { "hydrogen+water": D07, "carbon-monoxide+water": D07, "methane+water": D07 };
 /** The pair tried once more with alpha fitted, written only if it beats k_ij = a + b / T. */
 export const ALPHA_TRY = ["carbon-dioxide", "water"];
 
@@ -127,10 +130,15 @@ export function fitHenry(pair, model) {
   const d = dev(mhv1(pair, model, [0, params.a_ji, 0, params.b_ji])).map(v => 100 * (Math.exp(v) - 1));
   const aad = round(d.reduce((a, v) => a + Math.abs(v), 0) / d.length, 1), max = round(Math.max(...d.map(Math.abs)), 1);
   const ok = aad <= GATE.P_pct;
-  const warned = !ok && WARNED[pair.join("+")] ? WARNED[pair.join("+")] : null;
+  const warned = !ok && WARNED_HENRY[pair.join("+")] ? WARNED_HENRY[pair.join("+")] : null;
+  // where the ThermoML Archive has articles of the pair (CH4 + water), the set is checked against them, not fitted
+  const arts = articles(...pair).filter(a => a.rows.some(fitted));
+  const check = arts.length ? errors(pair, model, { system: mhv1(pair, model, [0, params.a_ji, 0, params.b_ji]) }, arts) : null;
+  if (check) console.log(`   check against ${arts.length} ThermoML articles: P AAD ${check.pooled.P_pct.aad} %, x AAD ${check.pooled.x_pct.aad} %; ` + check.articles.map(a => `${a.cite} ${a.P_pct.aad} %`).join(", "));
   console.log(`${model} + gE (MHV1) ${pair.join("-")} (IAPWS G7-04 Henry's constants): NRTL a_21 = ${params.a_ji}, b_21 = ${params.b_ji} K; H AAD ${aad} % (max ${max}) at ${ref.length} temperatures${ok ? "  within GATE" : "  outside GATE"}`);
   return { model, pair, variant: "henry", NRTL: params, points: ref.length, range: { T_K: [HENRY_T[0], HENRY_T.at(-1)] }, ok, ...(warned ? { warned } : {}),
-    errors: { henry_pct: { aad, max, deviations: d.map(v => round(v, 2)) } }, files: [] };
+    errors: { henry_pct: { aad, max, deviations: d.map(v => round(v, 2)) } }, files: [],
+    ...(check ? { check_thermoml: { files: arts.map(a => a.file), pooled: check.pooled, articles: check.articles } } : {}) };
 }
 
 /** Does an alpha-fitted CO2 + water fit beat the k_ij = a + b / T of high_pressure_fits.json (P and solubility, not more points without a bubble pressure)? */
@@ -213,7 +221,11 @@ function main() {
   const key = r => `${r.model}|${r.pair.join("+")}|${r.variant ?? ""}`;
   const merged = [...prev.results.filter(r => !res.some(n => key(n) === key(r))), ...res];
   // the maintainer's decisions apply to results recorded before them too
-  for (const r of merged) if (!r.ok && r.variant !== "alpha") { if (WARNED[r.pair.join("+")]) r.warned = WARNED[r.pair.join("+")]; else delete r.warned; }
+  for (const r of merged) {
+    if (r.ok || r.variant === "alpha") continue;
+    const w = (r.variant === "henry" ? WARNED_HENRY : WARNED)[r.pair.join("+")];
+    if (w) r.warned = w; else delete r.warned;
+  }
   writeFileSync(out, JSON.stringify({
     _about: "Written by validation/fit_mhv1_high_pressure.mjs --write: NRTL parameters fitted inside the MHV1 rule of SRK and PR, with their errors (the measures of high_pressure_fits.json). Within GATE they are written to src/data/mhv1.json.",
     gate: GATE, window: WINDOW, alpha: ALPHA, results: merged,

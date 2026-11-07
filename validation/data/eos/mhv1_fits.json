@@ -2662,188 +2662,6 @@
   {
    "model": "SRK",
    "pair": [
-    "hydrogen",
-    "water"
-   ],
-   "variant": "henry",
-   "NRTL": {
-    "a_ij": 0,
-    "a_ji": 4.9182,
-    "b_ij": 0,
-    "b_ji": -524.94,
-    "alpha": 0.3
-   },
-   "points": 13,
-   "range": {
-    "T_K": [
-     278.15,
-     398.15
-    ]
-   },
-   "ok": true,
-   "errors": {
-    "henry_pct": {
-     "aad": 4.4,
-     "max": 9.9,
-     "deviations": [
-      9.86,
-      3.52,
-      -0.8,
-      -3.55,
-      -5.06,
-      -5.57,
-      -5.25,
-      -4.23,
-      -2.6,
-      -0.44,
-      2.18,
-      5.21,
-      8.59
-     ]
-    }
-   },
-   "files": []
-  },
-  {
-   "model": "PR",
-   "pair": [
-    "hydrogen",
-    "water"
-   ],
-   "variant": "henry",
-   "NRTL": {
-    "a_ij": 0,
-    "a_ji": 4.7344,
-    "b_ij": 0,
-    "b_ji": -487.14,
-    "alpha": 0.3
-   },
-   "points": 13,
-   "range": {
-    "T_K": [
-     278.15,
-     398.15
-    ]
-   },
-   "ok": true,
-   "errors": {
-    "henry_pct": {
-     "aad": 4.4,
-     "max": 10,
-     "deviations": [
-      10.04,
-      3.59,
-      -0.79,
-      -3.59,
-      -5.13,
-      -5.66,
-      -5.34,
-      -4.3,
-      -2.64,
-      -0.45,
-      2.22,
-      5.31,
-      8.76
-     ]
-    }
-   },
-   "files": []
-  },
-  {
-   "model": "SRK",
-   "pair": [
-    "carbon-monoxide",
-    "water"
-   ],
-   "variant": "henry",
-   "NRTL": {
-    "a_ij": 0,
-    "a_ji": 6.3315,
-    "b_ij": 0,
-    "b_ji": -732.11,
-    "alpha": 0.3
-   },
-   "points": 13,
-   "range": {
-    "T_K": [
-     278.15,
-     398.15
-    ]
-   },
-   "ok": false,
-   "warned": "the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)",
-   "errors": {
-    "henry_pct": {
-     "aad": 7,
-     "max": 16.1,
-     "deviations": [
-      16.11,
-      5.66,
-      -1.23,
-      -5.54,
-      -7.9,
-      -8.69,
-      -8.21,
-      -6.64,
-      -4.11,
-      -0.71,
-      3.48,
-      8.42,
-      14.05
-     ]
-    }
-   },
-   "files": []
-  },
-  {
-   "model": "PR",
-   "pair": [
-    "carbon-monoxide",
-    "water"
-   ],
-   "variant": "henry",
-   "NRTL": {
-    "a_ij": 0,
-    "a_ji": 6.1135,
-    "b_ij": 0,
-    "b_ji": -677.33,
-    "alpha": 0.3
-   },
-   "points": 13,
-   "range": {
-    "T_K": [
-     278.15,
-     398.15
-    ]
-   },
-   "ok": false,
-   "warned": "the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)",
-   "errors": {
-    "henry_pct": {
-     "aad": 7.1,
-     "max": 16.4,
-     "deviations": [
-      16.42,
-      5.78,
-      -1.24,
-      -5.64,
-      -8.03,
-      -8.85,
-      -8.36,
-      -6.77,
-      -4.2,
-      -0.74,
-      3.54,
-      8.58,
-      14.35
-     ]
-    }
-   },
-   "files": []
-  },
-  {
-   "model": "SRK",
-   "pair": [
     "methane",
     "water"
    ],
@@ -4605,6 +4423,664 @@
      "x_pct": 10.2,
      "no_bubble_pressure": 4
     }
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "hydrogen",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 4.9182,
+    "b_ij": 0,
+    "b_ji": -524.94,
+    "alpha": 0.3
+   },
+   "points": 13,
+   "range": {
+    "T_K": [
+     278.15,
+     398.15
+    ]
+   },
+   "ok": true,
+   "errors": {
+    "henry_pct": {
+     "aad": 4.4,
+     "max": 9.9,
+     "deviations": [
+      9.86,
+      3.52,
+      -0.8,
+      -3.55,
+      -5.06,
+      -5.57,
+      -5.25,
+      -4.23,
+      -2.6,
+      -0.44,
+      2.18,
+      5.21,
+      8.59
+     ]
+    }
+   },
+   "files": []
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "hydrogen",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 4.7344,
+    "b_ij": 0,
+    "b_ji": -487.14,
+    "alpha": 0.3
+   },
+   "points": 13,
+   "range": {
+    "T_K": [
+     278.15,
+     398.15
+    ]
+   },
+   "ok": true,
+   "errors": {
+    "henry_pct": {
+     "aad": 4.4,
+     "max": 10,
+     "deviations": [
+      10.04,
+      3.59,
+      -0.79,
+      -3.59,
+      -5.13,
+      -5.66,
+      -5.34,
+      -4.3,
+      -2.64,
+      -0.45,
+      2.22,
+      5.31,
+      8.76
+     ]
+    }
+   },
+   "files": []
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-monoxide",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.3315,
+    "b_ij": 0,
+    "b_ji": -732.11,
+    "alpha": 0.3
+   },
+   "points": 13,
+   "range": {
+    "T_K": [
+     278.15,
+     398.15
+    ]
+   },
+   "ok": false,
+   "warned": "the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)",
+   "errors": {
+    "henry_pct": {
+     "aad": 7,
+     "max": 16.1,
+     "deviations": [
+      16.11,
+      5.66,
+      -1.23,
+      -5.54,
+      -7.9,
+      -8.69,
+      -8.21,
+      -6.64,
+      -4.11,
+      -0.71,
+      3.48,
+      8.42,
+      14.05
+     ]
+    }
+   },
+   "files": []
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-monoxide",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.1135,
+    "b_ij": 0,
+    "b_ji": -677.33,
+    "alpha": 0.3
+   },
+   "points": 13,
+   "range": {
+    "T_K": [
+     278.15,
+     398.15
+    ]
+   },
+   "ok": false,
+   "warned": "the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)",
+   "errors": {
+    "henry_pct": {
+     "aad": 7.1,
+     "max": 16.4,
+     "deviations": [
+      16.42,
+      5.78,
+      -1.24,
+      -5.64,
+      -8.03,
+      -8.85,
+      -8.36,
+      -6.77,
+      -4.2,
+      -0.74,
+      3.54,
+      8.58,
+      14.35
+     ]
+    }
+   },
+   "files": []
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "methane",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.4324,
+    "b_ij": 0,
+    "b_ji": -602.24,
+    "alpha": 0.3
+   },
+   "points": 13,
+   "range": {
+    "T_K": [
+     278.15,
+     398.15
+    ]
+   },
+   "ok": false,
+   "warned": "the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)",
+   "errors": {
+    "henry_pct": {
+     "aad": 6.9,
+     "max": 15.9,
+     "deviations": [
+      15.93,
+      5.58,
+      -1.25,
+      -5.51,
+      -7.83,
+      -8.61,
+      -8.12,
+      -6.56,
+      -4.05,
+      -0.69,
+      3.45,
+      8.31,
+      13.83
+     ]
+    }
+   },
+   "files": [],
+   "check_thermoml": {
+    "files": [
+     "thermoml_methane_water_10-1016-j-fluid-2012-05-024.json",
+     "thermoml_methane_water_10-1016-j-fluid-2015-03-041.json",
+     "thermoml_methane_water_10-1021-acs-jced-7b00777.json",
+     "thermoml_methane_water_10-1021-je400684k.json",
+     "thermoml_methane_water_10-1021-je700134r.json",
+     "thermoml_methane_water_10-1021-je700473e.json",
+     "thermoml_methane_water_10-1021-je800074z.json",
+     "thermoml_methane_water_10-1021-je900441f.json",
+     "thermoml_methane_water_10-1021-je9007958.json"
+    ],
+    "pooled": {
+     "P_pct": {
+      "aad": 20.6,
+      "bias": 0,
+      "max": 72.3
+     },
+     "x_pct": {
+      "aad": 19.3,
+      "bias": 5.5,
+      "max": 124.3
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 6
+    },
+    "articles": [
+     {
+      "file": "thermoml_methane_water_10-1016-j-fluid-2012-05-024.json",
+      "cite": "Fonseca et al. (2012)",
+      "points": 10,
+      "P_pct": {
+       "aad": 10.4,
+       "bias": -10.4,
+       "max": 16.4
+      },
+      "x_pct": {
+       "aad": 9.6,
+       "bias": 9.6,
+       "max": 17.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 6
+     },
+     {
+      "file": "thermoml_methane_water_10-1016-j-fluid-2015-03-041.json",
+      "cite": "Bottger et al. (2016)",
+      "points": 14,
+      "P_pct": {
+       "aad": 7.6,
+       "bias": 7.1,
+       "max": 14.7
+      },
+      "x_pct": {
+       "aad": 6.2,
+       "bias": -5.8,
+       "max": 11.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-acs-jced-7b00777.json",
+      "cite": "Kastanidis et al. (2018)",
+      "points": 1,
+      "P_pct": {
+       "aad": 12.4,
+       "bias": -12.4,
+       "max": 12.4
+      },
+      "x_pct": {
+       "aad": 11.5,
+       "bias": 11.5,
+       "max": 11.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je400684k.json",
+      "cite": "Frost et al. (2014)",
+      "points": 22,
+      "P_pct": {
+       "aad": 15.5,
+       "bias": -14.3,
+       "max": 40.3
+      },
+      "x_pct": {
+       "aad": 17.2,
+       "bias": 16.3,
+       "max": 59.8
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je700134r.json",
+      "cite": "Abdi et al. (2007)",
+      "points": 2,
+      "P_pct": {
+       "aad": 18.9,
+       "bias": -18.9,
+       "max": 22.9
+      },
+      "x_pct": {
+       "aad": 17.1,
+       "bias": 17.1,
+       "max": 20
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je700473e.json",
+      "cite": "Qin et al. (2008)",
+      "points": 1,
+      "P_pct": {
+       "aad": 0.5,
+       "bias": 0.5,
+       "max": 0.5
+      },
+      "x_pct": {
+       "aad": 0.4,
+       "bias": -0.4,
+       "max": 0.4
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je800074z.json",
+      "cite": "Kim et al. (2008)",
+      "points": 3,
+      "P_pct": {
+       "aad": 44.5,
+       "bias": -44.5,
+       "max": 52.8
+      },
+      "x_pct": {
+       "aad": 56.3,
+       "bias": 56.3,
+       "max": 72.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je900441f.json",
+      "cite": "Awan et al. (2010)",
+      "points": 8,
+      "P_pct": {
+       "aad": 11,
+       "bias": -11,
+       "max": 17.7
+      },
+      "x_pct": {
+       "aad": 11.2,
+       "bias": 11.2,
+       "max": 20.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je9007958.json",
+      "cite": "Campos et al. (2010)",
+      "points": 18,
+      "P_pct": {
+       "aad": 44.6,
+       "bias": 32.7,
+       "max": 72.3
+      },
+      "x_pct": {
+       "aad": 36.7,
+       "bias": -13.6,
+       "max": 124.3
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "methane",
+    "water"
+   ],
+   "variant": "henry",
+   "NRTL": {
+    "a_ij": 0,
+    "a_ji": 6.2958,
+    "b_ij": 0,
+    "b_ji": -561.18,
+    "alpha": 0.3
+   },
+   "points": 13,
+   "range": {
+    "T_K": [
+     278.15,
+     398.15
+    ]
+   },
+   "ok": false,
+   "warned": "the maintainer, 2026-11-07 (docs/decisions/2026-11-06-02-mhv1.md)",
+   "errors": {
+    "henry_pct": {
+     "aad": 7,
+     "max": 16.3,
+     "deviations": [
+      16.28,
+      5.71,
+      -1.26,
+      -5.61,
+      -7.97,
+      -8.77,
+      -8.28,
+      -6.69,
+      -4.13,
+      -0.71,
+      3.52,
+      8.49,
+      14.16
+     ]
+    }
+   },
+   "files": [],
+   "check_thermoml": {
+    "files": [
+     "thermoml_methane_water_10-1016-j-fluid-2012-05-024.json",
+     "thermoml_methane_water_10-1016-j-fluid-2015-03-041.json",
+     "thermoml_methane_water_10-1021-acs-jced-7b00777.json",
+     "thermoml_methane_water_10-1021-je400684k.json",
+     "thermoml_methane_water_10-1021-je700134r.json",
+     "thermoml_methane_water_10-1021-je700473e.json",
+     "thermoml_methane_water_10-1021-je800074z.json",
+     "thermoml_methane_water_10-1021-je900441f.json",
+     "thermoml_methane_water_10-1021-je9007958.json"
+    ],
+    "pooled": {
+     "P_pct": {
+      "aad": 20.2,
+      "bias": 1.8,
+      "max": 72.9
+     },
+     "x_pct": {
+      "aad": 18.3,
+      "bias": 3.5,
+      "max": 122.4
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 6
+    },
+    "articles": [
+     {
+      "file": "thermoml_methane_water_10-1016-j-fluid-2012-05-024.json",
+      "cite": "Fonseca et al. (2012)",
+      "points": 10,
+      "P_pct": {
+       "aad": 8,
+       "bias": -8,
+       "max": 15.1
+      },
+      "x_pct": {
+       "aad": 7.1,
+       "bias": 7.1,
+       "max": 15.4
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 6
+     },
+     {
+      "file": "thermoml_methane_water_10-1016-j-fluid-2015-03-041.json",
+      "cite": "Bottger et al. (2016)",
+      "points": 14,
+      "P_pct": {
+       "aad": 9.3,
+       "bias": 9.3,
+       "max": 16.2
+      },
+      "x_pct": {
+       "aad": 7.3,
+       "bias": -7.3,
+       "max": 12.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-acs-jced-7b00777.json",
+      "cite": "Kastanidis et al. (2018)",
+      "points": 1,
+      "P_pct": {
+       "aad": 10.1,
+       "bias": -10.1,
+       "max": 10.1
+      },
+      "x_pct": {
+       "aad": 8.9,
+       "bias": 8.9,
+       "max": 8.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je400684k.json",
+      "cite": "Frost et al. (2014)",
+      "points": 22,
+      "P_pct": {
+       "aad": 14.9,
+       "bias": -11.8,
+       "max": 39.7
+      },
+      "x_pct": {
+       "aad": 15.8,
+       "bias": 13.4,
+       "max": 57.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je700134r.json",
+      "cite": "Abdi et al. (2007)",
+      "points": 2,
+      "P_pct": {
+       "aad": 16,
+       "bias": -16,
+       "max": 19.2
+      },
+      "x_pct": {
+       "aad": 13.5,
+       "bias": 13.5,
+       "max": 15.4
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je700473e.json",
+      "cite": "Qin et al. (2008)",
+      "points": 1,
+      "P_pct": {
+       "aad": 3.1,
+       "bias": 3.1,
+       "max": 3.1
+      },
+      "x_pct": {
+       "aad": 2.5,
+       "bias": -2.5,
+       "max": 2.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je800074z.json",
+      "cite": "Kim et al. (2008)",
+      "points": 3,
+      "P_pct": {
+       "aad": 42.7,
+       "bias": -42.7,
+       "max": 51.2
+      },
+      "x_pct": {
+       "aad": 50.2,
+       "bias": 50.2,
+       "max": 64.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je900441f.json",
+      "cite": "Awan et al. (2010)",
+      "points": 8,
+      "P_pct": {
+       "aad": 9.7,
+       "bias": -9.7,
+       "max": 17.2
+      },
+      "x_pct": {
+       "aad": 9.7,
+       "bias": 9.7,
+       "max": 19.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_water_10-1021-je9007958.json",
+      "cite": "Campos et al. (2010)",
+      "points": 18,
+      "P_pct": {
+       "aad": 44.8,
+       "bias": 33.1,
+       "max": 72.9
+      },
+      "x_pct": {
+       "aad": 36.6,
+       "bias": -14,
+       "max": 122.4
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
    }
   }
  ]
