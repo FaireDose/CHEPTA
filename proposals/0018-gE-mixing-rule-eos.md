@@ -1,8 +1,10 @@
 # 0018: An activity model inside the cubic equation of state (gE mixing rule)
 
-- **Status:** Postponed (the maintainer, 2026-11-04, on #203: "if the PSRK and MHV2 are not open then we do not use
-  them, PR and SRK should be ok for now"). Reopened only if the measured errors of PR or SRK with fitted k_ij are too
-  large for a case. The findings below stay on record.
+- **Status:** Proposed again (the maintainer, 2026-11-06: "yes reopen 0018"), after the k_ij fits of
+  docs/decisions/2026-11-04-13, 2026-11-05-03 and 2026-11-06-01 left CO2 + water at 14-15 % in pressure with
+  k_ij = a + b/T. Steps 2 and 3 are built in the pull request of docs/decisions/2026-11-06-02-mhv1.md, with the
+  differences it lists. Earlier: postponed (the maintainer, 2026-11-04, on #203: "if the PSRK and MHV2 are not open
+  then we do not use them, PR and SRK should be ok for now").
 - **Author(s):** a coding agent working for the maintainer
 - **Discussion:** the pull request that adds this file
 - **Roadmap item:** Methods track, **M2** ([ROADMAP.md](../ROADMAP.md#methods-track)), step 1: the source check and
@@ -110,6 +112,22 @@ case 2** (gases in polar liquids).
   taken from them.
 
 Both open simulators therefore stop where CHEPTA stops today: neither ships PSRK's tables.
+
+## Why a gE rule where k_ij(T) falls short (Privat and Jaubert 2023)
+
+R. Privat, J.-N. Jaubert, "The state of the art of cubic equations of state with temperature-dependent binary
+interaction coefficients: From correlation to prediction", Fluid Phase Equilib. 567 (2023) 113697,
+doi 10.1016/j.fluid.2022.113697 (open access, CC BY 4.0, stated on p. 1; downloaded by the maintainer, pp. 1-3 and 6-8
+read by the maintainer and the coordinating session, 2026-11-07):
+
+- Eq. (15), p. 6: a_ij(T) = sqrt(a_i a_j) [1 - k_ij(T)], the family of temperature-dependent binary interaction
+  parameters the review covers; the support for the k_ij = a + b/T of docs/decisions/2026-11-06-01.
+- Section 3.4, p. 8: "k_ij(T) coefficients cannot accurately model the most complex mixtures involving polar and
+  associating compounds", so composition-dependent k_ij(T, z) are used, "especially useful in accounting for water
+  traces that cannot be estimated accurately using a k_ij(T) coefficient".
+- Eqs. (25)-(27), p. 8: EoS/gE mixing rules (Huron-Vidal; "the use of, e.g., MHV1 MRs do not change anything") are
+  equivalent to a k_ij(T, z). This is the case for this proposal: MHV1 can capture what k_ij(T) cannot, as for CO2 +
+  water.
 
 ## Proposal
 
