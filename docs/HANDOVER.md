@@ -76,6 +76,15 @@ used).
    2026-11-10, second coordinator: started session_01FPbeWV9iSu48kT5ogbUByo (item 2, Pipe, Opus, branch
    `claude/pipe-block`) and session_01FPbeWY9j2N2BLmp9R117hg (item 3, MHV1 interface, Sonnet, branch
    `claude/mhv1-interface`).
+Maintainer's answers, 2026-11-10 (record them in the follow-up workers' decision files):
+   - #216 (MHV1 interface): all four recommendations accepted: project format 7; the method advisor recommends MHV1
+     above 10 bar for a gas with a polar liquid (next); MHV1 in the heat exchanger and the Charts equation list (after
+     the advisor); MHV1 sets in the Library.
+   - #217 (Pipe): merge it now, one phase only; the liquid-gas flow comes later in its own PR (Lockhart-Martinelli,
+     then Beggs-Brill, once open sources are found). Proposal 0020 accepted for steps 1-2; the Pipe workspace saved in
+     the project file (after #216) and the Pipe in the flowsheet palette as next small PRs; default roughness 0.05 mm.
+   - Merge order #216, then #217. After both: start (a) MHV1 follow-ups (advisor first) and (b) Pipe palette and
+     project save; then the two-phase pipe (Opus).
 2. Finish the Pipe block with its Unit models workspace (0020). Opus.
 3. MHV1 in the interface: "PR + gE (MHV1)" and "SRK + gE (MHV1)" in the Model selector, the flowsheet's Method page,
    the column's method, project files and `CHEPTA.run` (thermo `mixing`), the command line and MCP. No low-pressure
