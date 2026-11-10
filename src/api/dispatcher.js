@@ -138,7 +138,7 @@ function systemReproduction(sys, userData) {
   const info = sys.info ?? {};
   const fluid = sys.fluid ?? sys;
   return {
-    method: { model: fluid.model ?? info.model ?? null, vapour: fluid.vapour ?? null },
+    method: { model: fluid.model ?? info.model ?? null, vapour: fluid.vapour ?? null, ...(info.mixing ? { mixing: info.mixing, name: info.method } : {}) },
     parameter_sets: (info.pairs ?? []).map(p => ({ pair: p.pair, set: p.set ?? null, tier: p.tier ?? null })),
     databank_hash: hash64({ components: sys.ids.map(id => componentRecord(id, userData)), pairs: info.pairs ?? [] }),
     user_data_hash: userData ? hash64(userData) : null,
@@ -229,7 +229,7 @@ function solvedFlowsheet(flowsheet, userData) {
     },
     reproduction: { ...systemReproduction(sys, userData),
       ...(Object.values(result.blocks).some(b => b.method) ? { block_methods: Object.fromEntries(Object.entries(result.blocks).filter(([, b]) => b.method)
-        .map(([id, b]) => [id, { model: b.method.model, vapour: b.method.vapour ?? null, sets: b.method.sets ?? null, prefer: b.method.prefer ?? null }])) } : {}) },
+        .map(([id, b]) => [id, { model: b.method.model, vapour: b.method.vapour ?? null, ...(b.method.mixing ? { mixing: b.method.mixing } : {}), sets: b.method.sets ?? null, prefer: b.method.prefer ?? null }])) } : {}) },
   };
 }
 
@@ -275,10 +275,10 @@ registerCapability({
   input: { type: "object", additionalProperties: false, required: ["components", "feed", "column"],
     properties: {
       components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
-      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default NRTL with an ideal-gas vapour" },
+      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets, mixing }; default NRTL with an ideal-gas vapour" },
       feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; an absorber's or stripper's liquid, which enters the top stage" },
       gas_feed: { type: "object", description: "optional: a second feed, as a Feed block's specification: the gas of an absorber or the stripping gas (live steam) of a stripper, which enters the bottom stage; the outlets then carry the gas leaving the top (distillate) and the liquid leaving the bottom (bottoms)" },
-      column: { type: "object", description: "the Column block's specification. mode \"shortcut\" (default): light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa. mode \"rigorous\": stages (the condenser and the reboiler counted, 1 the condenser), feed_stage, condenser (\"total\", \"partial\" or \"decanter\"), P_kPa, and two of reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW (one, not the reflux or the condenser duty, with a decanter); phases \"VL\" (default) or \"VLL\" (look for two liquids on the stages; activity models); reflux_liquid \"light\" or \"heavy\" (the decanter's refluxed liquid); method { model, vapour, sets, prefer }: the column's own property method, with the P-H boundary at its streams; optional sizing (rigorous mode): { tray_spacing_m (0.6), design_fraction (0.8 of flooding), diameter_m (a given column checked instead of sized), net_area_fraction (0.9), hole_area_ratio (0.1), hole_diameter_mm (5), foaming_factor (1), tray (\"sieve\", \"valve\", \"bubble-cap\"), K_chart_m_s (your own reading of Fair's chart, in place of CHEPTA's) }: the diameter by Fair's method, the fraction of flooding of every tray, FLOODING and WEEPING; see docs/models/sizing.md. configuration \"absorber\" or \"stripper\" (rigorous, no condenser; docs/models/columns.md): stages (all equilibrium stages, 1 the top), feed_stage (default 1 for the feed and N for gas_feed), reboiler \"none\" (default) or \"partial\" (a stripper's, with one of boilup_ratio, bottoms_kmol_h, reboiler_duty_kW, distillate_kmol_h), stage_duties_kW [{ stage, duty_kW }] (heat added; adiabatic otherwise), P_kPa, method, sizing; with an activity model and water, the gases with a Henry's law constant in water dissolve by Henry's law (proposal 0017); another component above its critical temperature, Peng-Robinson or SRK with a light gas and a polar liquid without their k_ij, sour water and amines are refused (docs/METHOD_SELECTION.md)" },
+      column: { type: "object", description: "the Column block's specification. mode \"shortcut\" (default): light_key, heavy_key, recovery_light_key_in_distillate, recovery_heavy_key_in_bottoms, reflux_ratio or reflux_over_minimum, condenser (\"total\" or \"partial\"), P_kPa. mode \"rigorous\": stages (the condenser and the reboiler counted, 1 the condenser), feed_stage, condenser (\"total\", \"partial\" or \"decanter\"), P_kPa, and two of reflux_ratio, boilup_ratio, distillate_kmol_h, bottoms_kmol_h, condenser_duty_kW, reboiler_duty_kW (one, not the reflux or the condenser duty, with a decanter); phases \"VL\" (default) or \"VLL\" (look for two liquids on the stages; activity models); reflux_liquid \"light\" or \"heavy\" (the decanter's refluxed liquid); method { model, vapour, sets, prefer, mixing }: the column's own property method, with the P-H boundary at its streams; optional sizing (rigorous mode): { tray_spacing_m (0.6), design_fraction (0.8 of flooding), diameter_m (a given column checked instead of sized), net_area_fraction (0.9), hole_area_ratio (0.1), hole_diameter_mm (5), foaming_factor (1), tray (\"sieve\", \"valve\", \"bubble-cap\"), K_chart_m_s (your own reading of Fair's chart, in place of CHEPTA's) }: the diameter by Fair's method, the fraction of flooding of every tray, FLOODING and WEEPING; see docs/models/sizing.md. configuration \"absorber\" or \"stripper\" (rigorous, no condenser; docs/models/columns.md): stages (all equilibrium stages, 1 the top), feed_stage (default 1 for the feed and N for gas_feed), reboiler \"none\" (default) or \"partial\" (a stripper's, with one of boilup_ratio, bottoms_kmol_h, reboiler_duty_kW, distillate_kmol_h), stage_duties_kW [{ stage, duty_kW }] (heat added; adiabatic otherwise), P_kPa, method, sizing; with an activity model and water, the gases with a Henry's law constant in water dissolve by Henry's law (proposal 0017); another component above its critical temperature, Peng-Robinson or SRK with a light gas and a polar liquid without their k_ij, sour water and amines are refused (docs/METHOD_SELECTION.md)" },
       user_data: USER_DATA,
     } },
   run: input => {
@@ -302,7 +302,7 @@ registerCapability({
   input: { type: "object", additionalProperties: false, required: ["components", "feed", "membrane"],
     properties: {
       components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
-      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default Peng-Robinson (a gas)" },
+      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets, mixing }; default Peng-Robinson (a gas); mixing \"MHV1\" with model PR or SRK is PR / SRK + gE (MHV1), for a gas with a polar liquid" },
       feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; it must be all gas" },
       membrane: { type: "object", description: "the Membrane block's specification: permeances { component: value } for every component (0 for one that does not pass; your values, with their source: CHEPTA has no databank of permeances), permeance_unit (\"mol/(m2 s Pa)\" default, \"mol/(m2 s bar)\" or \"GPU\"), permeate_P_kPa, flow (\"counter-current\" default or \"co-current\"), cells (1 to 200, default 20), and one of A_m2, stage_cut (permeate over feed) or recovery { component: fraction into the permeate }; fibre { inner_diameter_m, length_m } (optional): the number of hollow fibres" },
       user_data: USER_DATA,
@@ -326,7 +326,7 @@ registerCapability({
   input: { type: "object", additionalProperties: false, required: ["components", "feed", "solvent", "extraction"],
     properties: {
       components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
-      thermo: { type: "object", description: "the flowsheet's property method, { model, vapour, sets }; default NRTL. The block's liquid method defaults to its model, with the sets fitted jointly to a ternary's tie lines where they exist" },
+      thermo: { type: "object", description: "the flowsheet's property method, { model, vapour, sets, mixing }; default NRTL. The block's liquid method defaults to its model, with the sets fitted jointly to a ternary's tie lines where they exist" },
       feed: { type: "object", description: "the feed (it enters stage 1), as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; it must be liquid" },
       solvent: { type: "object", description: "the solvent (it enters the last stage), as a Feed block's specification; it must be liquid" },
       extraction: { type: "object", description: "the Extraction block's specification: stages (1 to 100), T_K (the stages' temperature; default the feed's), P_kPa (the outlets'; default the feed's), method { model, sets, prefer } (optional: the block's own liquid method)" },
@@ -353,7 +353,7 @@ registerCapability({
   input: { type: "object", additionalProperties: false, required: ["components", "feed", "evaporator"],
     properties: {
       components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
-      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default Modified UNIFAC 2.0 (an aqueous solution of a nonvolatile solute; docs/METHOD_SELECTION.md)" },
+      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets, mixing }; default Modified UNIFAC 2.0 (an aqueous solution of a nonvolatile solute; docs/METHOD_SELECTION.md)" },
       feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF" },
       evaporator: { type: "object", description: "the Evaporator block's specification: P_kPa (one pressure per effect, falling), the saturated heating steam steam_P_kPa or steam_T_K, and one of steam_kg_h or product_mass_fraction { component: mass fraction in the product }; U_W_m2K (optional, one value or one per effect): each effect's area" },
       user_data: USER_DATA,
@@ -378,7 +378,7 @@ registerCapability({
   input: { type: "object", additionalProperties: false, required: ["components", "feed", "crystallizer"],
     properties: {
       components: { type: "array", items: { type: "string", minLength: 1 }, description: "component ids or names" },
-      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets }; default NRTL (with the sets fitted to measured solubilities where they exist); an activity model is needed" },
+      thermo: { type: "object", description: "the property method, as a flowsheet's thermo: { model, vapour, sets, mixing }; default NRTL (with the sets fitted to measured solubilities where they exist); an activity model is needed" },
       feed: { type: "object", description: "the feed, as a Feed block's specification: flow_kmol_h (or flow_kg_h) and two of T_K, P_kPa, VF; a liquid solution" },
       crystallizer: { type: "object", description: "the Crystallizer block's specification: solute (the component that crystallizes; it needs melting data), and T_K (cooling; P_kPa optional, default the feed's) or evaporated_kg_h (the vapour's mass flow) with one of T_K or P_kPa (evaporative)" },
       user_data: USER_DATA,

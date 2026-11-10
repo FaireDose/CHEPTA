@@ -37,6 +37,8 @@ const P = {
   solve: '<path d="M7 5v14l11-7z" class="a"/>',
   // a shell-and-tube heat exchanger: the shell, two tubes, the nozzles
   hx: '<rect x="3" y="7" width="18" height="10" rx="5"/><path d="M6.5 10.5h11M6.5 13.5h11" class="a"/><path d="M8 4.5V7M16 17v2.5"/>',
+  // a pipe run with two flanges and an elbow
+  pipe: '<path d="M2 9.5h11a4 4 0 0 1 4 4V22M2 14.5h9.5a1 1 0 0 1 1 1V22"/><path d="M6 7.5v9M14.5 19h4" class="a"/>',
   lock: '<rect x="5.5" y="10.5" width="13" height="9.5" rx="1.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" class="a"/>',
   reactor: '<rect x="6" y="4.5" width="12" height="16" rx="3"/><path d="M12 1.5v12M8.5 11.5l7 3.5M8.5 15l7-3.5" class="a"/><path d="M3 9h3M18 16h3"/>',
   column: '<rect x="8.5" y="2.5" width="7" height="19" rx="3.5"/><path d="M8.5 7.5h7M8.5 11h7M8.5 14.5h7" class="a"/><path d="M15.5 4.5h3M15.5 19.5h3M5 12h3.5"/>',

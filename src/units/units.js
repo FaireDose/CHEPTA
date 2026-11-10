@@ -783,7 +783,7 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
 }
 
 /** The warning codes a block may return (proposal 0015, section 9, contract 2); a block adds its own code here. */
-export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "SECOND_SOLID", "SLURRY", "DENSITY_MISSING", "METHOD_RANGE", "METHOD_SPLIT",
+export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "SECOND_SOLID", "SLURRY", "DENSITY_MISSING", "METHOD_RANGE", "METHOD_SPLIT", "FLOW_TRANSITION", "FITTINGS_LAMINAR",
   // two liquids predicted only, or contradicted by one-liquid measurements (proposal 0019, section 3)
   "TWO_LIQUIDS"];
 

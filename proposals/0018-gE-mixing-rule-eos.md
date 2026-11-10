@@ -1,10 +1,14 @@
 # 0018: An activity model inside the cubic equation of state (gE mixing rule)
 
-- **Status:** Proposed again (the maintainer, 2026-11-06: "yes reopen 0018"), after the k_ij fits of
+- **Status:** Built: the engine (2026-11-06) and the interface (2026-11-10, below), in review; open items in
+  docs/decisions/2026-11-10-03-mhv1-interface.md. Reopened (history): proposed again (the maintainer, 2026-11-06: "yes reopen 0018"), after the k_ij fits of
   docs/decisions/2026-11-04-13, 2026-11-05-03 and 2026-11-06-01 left CO2 + water at 14-15 % in pressure with
   k_ij = a + b/T. Steps 2 and 3 are built in the pull request of docs/decisions/2026-11-06-02-mhv1.md, with the
   differences it lists. Earlier: postponed (the maintainer, 2026-11-04, on #203: "if the PSRK and MHV2 are not open
   then we do not use them, PR and SRK should be ok for now").
+- **Interface (2026-11-10):** "PR + gE (MHV1)" and "SRK + gE (MHV1)" are chosen in the Model selector, the flowsheet's
+  Method page, a column's own method, project files (format 7), `CHEPTA.run`, the command line and the MCP tools
+  (`thermo.mixing`); docs/decisions/2026-11-10-03-mhv1-interface.md.
 - **Author(s):** a coding agent working for the maintainer
 - **Discussion:** the pull request that adds this file
 - **Roadmap item:** Methods track, **M2** ([ROADMAP.md](../ROADMAP.md#methods-track)), step 1: the source check and

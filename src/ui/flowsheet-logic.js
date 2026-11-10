@@ -14,6 +14,7 @@ import "../units/reactors.js";   // the reactor blocks, registered
 import "../units/columns/column.js";   // the Column block, registered
 import "../units/membrane.js";   // the Membrane block, registered
 import "../units/extraction.js";   // the Extraction block, registered
+import "../units/pipe.js";   // the Pipe block, registered
 import "../units/evaporator.js";   // the Evaporator block, registered
 import "../units/crystallizer.js";   // the Crystallizer block, registered
 

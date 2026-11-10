@@ -80,6 +80,13 @@ components, the method (`thermo`), the blocks with positions, the streams and th
   format 2).
 - **Writing and solving it:** an AI assistant can write the document, check it with
   `CHEPTA.checkProject` and solve it with `CHEPTA.runFlowsheet`.
+- **Mixing rule of an equation of state:** `thermo.mixing: "MHV1"` with `model` `"PR"` or `"SRK"` is "PR + gE (MHV1)" or
+  "SRK + gE (MHV1)" (proposal 0018; `system({ model, mixing: "MHV1" })`); left out, the classical rule with k_ij. Each
+  pair's NRTL parameters come from a set fitted inside the rule, else the databank's NRTL set, else g^E = 0 with a
+  warning; a light gas with a polar liquid without a set is refused with the engine's reason. A project that uses it is
+  written as format 7 ([schema/project-7.json](../schema/project-7.json)), and the Method page names the rule and lists
+  each pair's source, or the refusal. The heat exchanger's own stream methods and the Charts workspace's equation list
+  do not offer it yet.
 - **Parameter sets:** `thermo.sets` and `thermo.prefer` choose a pair's set as in `system()`. In the workbench the
   flowsheet uses the Library's choice, as the diagrams and the flash do: the rule for every pair (each pair's default,
   fitted to data first, databank only) and a pair's own set chosen in a diagram's Inputs panel, where that set exists

@@ -33,7 +33,7 @@ import {
   viewCheck, hxSetups,
 } from "./app-logic.js";
 import { diagramXlsx, exportFileName } from "./diagram-export.js";
-import { modelPicker, liquidPicker } from "./model-picker.js";
+import { modelPicker, liquidPicker, workbenchPatch } from "./model-picker.js";
 import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, examplesFor, rotateInputs, solventsFor, needsFor, isEosModel } from "./workspaces.js";
 import { tLabel, UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
@@ -42,6 +42,7 @@ import { myDataPanel, PROPERTY_LABEL } from "./my-data-panel.js";
 import { canOpenWindow, openDataWindow } from "./my-data-window.js";
 import { userDataList, setEntryUse } from "./user-data-file.js";
 import { hxInputs } from "./hx-view.js";
+import { pipeInputs } from "./pipe-view.js";
 import { HX_DEFAULTS, HX_MODES, HX_TASKS, HX_STREAM_MAX } from "./hx-logic.js";
 import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey, recordFlowsheet, stepFlowsheet } from "./flowsheet-view.js";
 import { reactorRibbon, reactorInputs, reactorKey } from "./reactor-workspace.js";
@@ -57,18 +58,18 @@ const PROPERTY_GLYPHS = [
   ["density", () => "ρ", "Density"], ["enthalpy", () => "h", "Enthalpy"], ["cp", () => ["c", h("sub", {}, "p")], "Heat capacity"],
   ["viscosity", () => "μ", "Viscosity"], ["conductivity", () => "k", "Conductivity"], ["vapourPressure", () => ["P", h("sup", {}, "sat")], "Vapour pressure"],
 ];
-const VIEW_ICON = { flash: "drum", hx: "hx", reactor: "reactor", column: "column", txy: "txy", ternary: "ternary", azeotropes: "azeo", pxy: "pxy", envelope: "envelope", henry: "henry", solid: "flask", sle: "azeo", properties: "curves", steam: "dome", charts: "envelope" };
+const VIEW_ICON = { flash: "drum", hx: "hx", pipe: "pipe", reactor: "reactor", column: "column", txy: "txy", ternary: "ternary", azeotropes: "azeo", pxy: "pxy", envelope: "envelope", henry: "henry", solid: "flask", sle: "azeo", properties: "curves", steam: "dome", charts: "envelope" };
 /** A label inside a sentence: "Ternary map" → "ternary map", but "T-x-y diagram" stays. */
 const lower = s => (/^[A-Z]-/.test(s) ? s : s[0].toLowerCase() + s.slice(1));
 const NEEDS_ACTIVITY = {
   txy: "Two liquids", ternary: "Three liquids", azeotropes: "Two to four liquids", pxy: "Two liquids",
-  envelope: "Two to 24 liquids", flash: "Two to six liquids", hx: "One to six liquids", henry: "A gas and a solvent", properties: "One component", steam: "Water",
+  envelope: "Two to 24 liquids", flash: "Two to six liquids", hx: "One to six liquids", pipe: "One to six liquids", henry: "A gas and a solvent", properties: "One component", steam: "Water",
   charts: "One to six components (an equation of state)",
   solid: "A solid and a solvent", sle: "Two components with melting data",
 };
 const NEEDS_EOS = {
   ...NEEDS_ACTIVITY, txy: "Two components", ternary: "Three components", azeotropes: "Two to four components", pxy: "Two components",
-  envelope: "One to 24 components", flash: "One to six components", hx: "One to six components", charts: "One to six components",
+  envelope: "One to 24 components", flash: "One to six components", hx: "One to six components", pipe: "One to six components", charts: "One to six components",
 };
 /** What a view needs with the model in use (an equation of state takes gases too). */
 const needsOf = (view, model) => (isEosModel(model) ? NEEDS_EOS : NEEDS_ACTIVITY)[view];
@@ -368,8 +369,8 @@ export function app(target, cfg = {}) {
    * gas unless chosen otherwise), or an equation of state for both phases.
    */
   function modelGroup() {
-    return group("Model", modelPicker({ model: state.model, vapour: state.vapour, id: `fa-model-${uid}`,
-      onChange: p => set(p.model === state.model ? { vapour: p.vapour } : { model: p.model, vapour: p.vapour }) }));
+    return group("Model", modelPicker({ model: state.model, vapour: state.vapour, mixing: state.mixing ?? null, id: `fa-model-${uid}`,
+      onChange: p => set(workbenchPatch(p, state)) }));
   }
   function ribbonGroups() {
     const u = state.units, v = state.view;
@@ -414,6 +415,13 @@ export function app(target, cfg = {}) {
           ...(hx.mode === "two" ? [] : [modelGroup()]),
         ];
       }
+      // the Pipe (proposal 0020): the method of its fluid; everything else is in Inputs
+      case "pipe": return [
+        group("Calculation", h("div", { class: "fa-stack fa-about" },
+          h("div", { class: "fa-theme" }, icon("pipe", 18), "Single-phase pipe flow"),
+          h("div", { class: "fa-hint" }, "Pressure drop: friction, fittings, elevation, acceleration"))),
+        modelGroup(),
+      ];
       case "solubility": {
         const views = group("Views", diagramButton("henry", "Gas"), diagramButton("solid", "Solid"), diagramButton("sle", "Solid-liquid"));
         if (v === "henry") return [views,
@@ -619,6 +627,9 @@ export function app(target, cfg = {}) {
         // each stream's pairs with its own method (the two streams never mix: no pair across them)
         for (const [k, name] of [["hot", "Hot stream: "], ["cold", "Cold stream: "]]) { const pairs = pairRows(setups[k].ids, { model: setups[k].model, title: name }); if (pairs) secs.push(pairs); }
       } else if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
+    } else if (state.workspace === "pipe") {
+      secs.push(...pipeInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf }));
+      if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
     } else if (state.workspace === "solubility" && (v === "solid" || v === "sle")) {
       secs.push(inputsSection(v === "solid" ? "Solid and solvent" : "Components",
         h("p", { class: "fa-in-hint" }, v === "solid"
@@ -1265,6 +1276,7 @@ export function app(target, cfg = {}) {
       state.userData,   // the user's own data (proposal 0012): a change or a switch recalculates every view
       v === "flash" ? state.flash : null,
       v === "hx" ? state.hx : null,
+      v === "pipe" ? state.pipe : null,
       v === "flowsheet" ? [state.flowsheet, state.userData, ensureUi(ui).sel, ui.fs.auto, ui.fs.solveKey, ui.fs.zoom] : null,
       v === "reactor" ? reactorKey(state, ui) : null,
       v === "column" ? columnKey(state, ui) : null]);

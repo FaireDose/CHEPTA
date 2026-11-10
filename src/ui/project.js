@@ -8,6 +8,9 @@
  * carry `results`, the stream table of the flash as it was at save time, so the mass balance
  * can be read without CHEPTA (it is a record and is never read back into a calculation).
  *
+ * Format 7 is the lowest format that holds the MHV1 mixing rule of an equation of state ("PR + gE (MHV1)", "SRK + gE
+ * (MHV1)"; proposal 0018): `workbench.mixing` ("MHV1"), a flowsheet's, reactor's or column workspace's `thermo.mixing`,
+ * or a column block's `method.mixing`; it is written only then, and an older version refuses it, naming the format.
  * Format 6 (the "fugacity_project" key is the format version): format 5 with the flowsheet's Column, Membrane and Extraction blocks (proposal
  * 0015, milestone M1; written only when the flowsheet has a column), and the Column workspace's own document ("column",
  * a flowsheet with one column; M2b). Format 5: format 4 with the Charts workspace's fluid charts
@@ -55,15 +58,18 @@ import { checkUserData } from "../thermo/user-data.js";
 /** The newest format this library writes; it reads this one and every older one. Format 3 adds the user's own data
  *  (proposal 0012) and is written only when there is some; format 2 adds the flowsheet (proposal 0006, step 4); a
  *  format 1 file is a format 2 file without it. */
-export const PROJECT_FORMAT = 6;
+export const PROJECT_FORMAT = 7;
 /** The flowsheet block types that need format 4 (proposal 0013). */
 const FORMAT_4_BLOCKS = ["hx", "valve", "pump", "compressor", "expander"];
 /** The flowsheet block types that need format 6 (proposal 0015). */
 const FORMAT_6_BLOCKS = ["column", "membrane", "extraction", "evaporator", "crystallizer"];
+/** Does a flowsheet document choose the MHV1 mixing rule (PR / SRK + gE (MHV1), proposal 0018): in its thermo, or in a
+ *  block's own method (a column)? Such a project needs format 7. */
+const usesMhv1 = fs => !!fs && (fs.thermo?.mixing != null || !!fs.blocks?.some(b => b?.spec?.method?.mixing != null));
 const hasBlock = (fs, types) => !!fs?.blocks?.some(b => types.includes(b?.type));
 
 /** The keys of `workbench`, in the order they are written. */
-const KEYS = ["view", "diagram", "model", "eos", "vapour", "P_kPa", "T_K", "units", "basis", "inputs", "z", "flash", "sets", "prefer",
+const KEYS = ["view", "diagram", "model", "eos", "mixing", "vapour", "P_kPa", "T_K", "units", "basis", "inputs", "z", "flash", "sets", "prefer",
   "henryT_K", "henryP_kPa", "compareGases", "sleT_K", "solidUnit", "property", "steamP_kPa", "background", "residueCurves", "isotherms", "grid", "panels", "ribbon", "hx", "chart"];
 
 const copy = v => (v == null ? v : JSON.parse(JSON.stringify(v)));
@@ -79,10 +85,13 @@ const copy = v => (v == null ? v : JSON.parse(JSON.stringify(v)));
 export function projectOf(state, { version = "", results, now = new Date() } = {}) {
   const w = {};
   for (const k of KEYS) w[k] = copy(state[k]);
+  // the mixing rule of an equation of state (format 7): written only when one is chosen, so older projects are unchanged
+  if (w.mixing == null) delete w.mixing;
   // the Heat exchanger workspace: kept only when it was used (format 4), with its components (so the inputs of
   // format 3 stay as they were)
   if (w.hx == null) delete w.hx; else w.hx = { ...w.hx, components: copy(state.inputs.hx ?? []) };
-  const { steam, hx, charts, ...inputs } = w.inputs;   // steam takes no inputs (always water); the exchanger keeps its own
+  // steam takes no inputs (always water); the exchanger keeps its own; the Pipe workspace is not saved yet (proposal 0020)
+  const { steam, hx, charts, pipe, ...inputs } = w.inputs;
   w.inputs = inputs;
   // the fluid charts (format 5): kept only when they were used, with their components and feed (so the inputs and the
   // compositions of format 4 stay as they were)
@@ -96,7 +105,8 @@ export function projectOf(state, { version = "", results, now = new Date() } = {
   const needs4 = w.hx != null || !!flowsheet?.energyStreams || !!flowsheet?.blocks.some(b => FORMAT_4_BLOCKS.includes(b.type));
   const needs6 = hasBlock(flowsheet, FORMAT_6_BLOCKS) || hasBlock(state.reactor, FORMAT_6_BLOCKS)
     || !!state.column?.components?.length;
-  const doc = { fugacity_project: needs6 ? 6 : w.chart ? 5 : needs4 ? 4 : state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
+  const needs7 = w.mixing != null || usesMhv1(flowsheet) || usesMhv1(state.reactor) || usesMhv1(state.column);
+  const doc = { fugacity_project: needs7 ? 7 : needs6 ? 6 : w.chart ? 5 : needs4 ? 4 : state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
   if (state.title) doc.title = String(state.title);
   doc.workbench = w;
   if (flowsheet) doc.flowsheet = flowsheet;
@@ -151,6 +161,7 @@ export function readProject(input) {
   if (unknown.length) throw new Error(`workbench: unknown key${unknown.length > 1 ? "s" : ""} ${unknown.map(k => `"${k}"`).join(", ")}. Known: ${KEYS.join(", ")}.`);
   if (doc.results != null && (typeof doc.results !== "object" || Array.isArray(doc.results))) throw new Error("results must be an object.");
   if (w.hx != null && f < 4) throw new Error(`workbench.hx needs format 4 (this file says format ${f}).`);
+  if ((w.mixing != null || usesMhv1(doc.flowsheet) || usesMhv1(doc.reactor) || usesMhv1(doc.column)) && f < 7) throw new Error(`The MHV1 mixing rule (PR / SRK + gE (MHV1)) needs format 7 (this file says format ${f}).`);
   if (w.chart != null && f < 5) throw new Error(`workbench.chart needs format 5 (this file says format ${f}).`);
   if ((hasBlock(doc.flowsheet, FORMAT_6_BLOCKS) || hasBlock(doc.reactor, FORMAT_6_BLOCKS)) && f < 6) throw new Error(`The flowsheet's column, crystallizer, evaporator, extraction and membrane blocks need format 6 (this file says format ${f}).`);
   if (doc.column != null && f < 6) throw new Error(`The Column workspace needs format 6 (this file says format ${f}).`);
@@ -171,7 +182,7 @@ export function stateFromProject(input) {
   const doc = readProject(input);
   const w = doc.workbench;
   const cfg = { components: [] };
-  for (const k of ["model", "eos", "vapour", "P_kPa", "T_K", "units", "basis", "background", "panels", "ribbon", "residueCurves",
+  for (const k of ["model", "eos", "mixing", "vapour", "P_kPa", "T_K", "units", "basis", "background", "panels", "ribbon", "residueCurves",
     "isotherms", "grid", "property", "henryP_kPa", "henryT_K", "compareGases", "sleT_K", "solidUnit", "steamP_kPa", "sets", "prefer"]) {
     if (w[k] !== undefined && w[k] !== null) cfg[k] = w[k];
   }
@@ -206,6 +217,8 @@ export function stateFromProject(input) {
   // the Heat exchanger's components: saved with the workspace (format 4); else seeded as a new workbench seeds them,
   // like the flash's
   s = applyPatch(s, { inputs: { hx: Array.isArray(w.hx?.components) ? w.hx.components : s.inputs.flash } });
+  // the Pipe's components (proposal 0020): not saved yet, seeded as a new workbench seeds them, like the flash's
+  s = applyPatch(s, { inputs: { pipe: s.inputs.flash } });
   // compositions after the inputs (new inputs reset them)
   if (w.flash?.z != null) s = applyPatch(s, { flash: { z: w.flash.z } });
   // the fluid charts' components: saved with the charts (format 5); else seeded as a new workbench seeds them, from the

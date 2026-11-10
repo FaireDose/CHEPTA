@@ -129,3 +129,9 @@ solubility, slurry and MHV1 sets among them) was merged into this branch with a 
     changed: it is left for the maintainer.
 - **Tests:** the affected tests (two-liquids, wilson, sources, known-issues, library) and the full `npm test`: 1513
   tests, 1512 pass, 0 fail, 1 todo.
+
+A second merge of main (#216 MHV1 interface, #217 Pipe) conflicted only in `src/units/units.js`, the warning codes:
+main's list with `FLOW_TRANSITION` and `FITTINGS_LAMINAR`, and `TWO_LIQUIDS`. Full `npm test` after it: 1534 tests,
+1533 pass, 0 fail, 1 todo. The coordinating session recommends applying answer 5 to benzene + methanol (the ChemSep
+NRTL set the default, the contradicted fitted set selectable, with an exception in `test/library.test.js` naming the
+pair); not done until the maintainer answers.

@@ -17,10 +17,18 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (MHV1). Open: confirm IAPWS G7-04 for H2 and CO + water; CH4 + water held (Campos 2010 and Kim 2008 disagree with the
   other seven articles); SRK's CO2 + water alpha fit (better in P and solubility, 2 more points without a bubble
   pressure) not written; CPA (M3) for water's association.
+- **MHV1 in the interface** (docs/decisions/2026-11-10-03-mhv1-interface.md): "PR + gE (MHV1)" and "SRK + gE (MHV1)" in
+  the Model selector, the flowsheet's Method page, a column's own method, project format 7, `CHEPTA.run`, the command line
+  and MCP (`thermo.mixing`); built, in review. Open: the method advisor does not mention the rule; the heat exchanger and
+  the Charts equation list do not offer it; the Library does not list its sets.
 - **Review and merge:**
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
+- **The Pipe block and its workspace** (proposal 0020, Proposed; docs/decisions/2026-11-10-02-pipe-block.md): check the
+  Pipe workspace under Unit models, the DOE Leq/D table and the three worked examples; decide whether to accept 0020,
+  save the workspace in project files (format 7), offer the pipe in the flowsheet drawing's palette, and which
+  two-phase method comes first.
 - **The Extraction block and its view** (proposal 0015, step 8; docs/decisions/2026-10-30-10-extraction-view.md):
   check the comparison with Glatz and Parker 2004 (Runs 1 and 3); decide whether an adiabatic cascade is wanted, whether
   the ternary view should offer mass fractions, and whether the flowsheet should take the joint sets by itself when it

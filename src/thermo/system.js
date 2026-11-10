@@ -64,6 +64,7 @@ export function createSystem(cfg) {
   const model = (cfg.model || "NRTL").toUpperCase() === "IDEAL" ? "ideal" : (cfg.model || "NRTL").toUpperCase();
   const isEos = EOS_MODELS.includes(model);
   if (!MODELS.includes(model) && !isEos) throw fail("BAD_INPUT", `Unknown model "${cfg.model}". Use one of: ${MODELS.join(", ")}, or an equation of state: ${EOS_MODELS.join(", ")}.`);
+  if (cfg.mixing != null && !isEos) throw fail("BAD_INPUT", `mixing: "${typeof cfg.mixing === "string" ? cfg.mixing : cfg.mixing?.rule}" is a mixing rule of an equation of state (SRK or PR + gE (MHV1)); ${modelName(model)} is an activity model and has none. Use model "PR" or "SRK" with it.`);
   const vapourModel = cfg.vapour == null ? (isEos ? model : "ideal") : String(cfg.vapour).toUpperCase() === "IDEAL" ? "ideal" : String(cfg.vapour).toUpperCase();
   if (vapourModel !== "ideal" && !EOS_MODELS.includes(vapourModel)) {
     throw fail("BAD_INPUT", `Unknown vapour model "${cfg.vapour}". Use "ideal", ${EOS_MODELS.map(m => `"${m}"`).join(" or ")}.`);
