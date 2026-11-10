@@ -281,8 +281,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   the engine's statements and the Wilson refusal. Pending: a person checks the classes and tie lines against the ThermoML
   records; decide on the joint fits that miss the gates (1-butanol + water, aniline + n-octane, ...) and on the fitted
   sets of 1-propanol + water and acetonitrile + water now labelled "predicted-contradicted" (no uncontradicted set of
-  the same model exists for them); decide whether benzene + methanol's contradicted fitted NRTL default gives way to
-  its ChemSep NRTL set, which does not split. Main merged into the branch on 2026-11-10, labels unchanged.
+  the same model exists for them); benzene + methanol's contradicted fitted NRTL default gave way to its ChemSep NRTL
+  set on 2026-11-10 (docs/decisions/2026-11-10-07-benzene-methanol-default.md; no other pair has that case); a person
+  checks that default. Main merged into the branch on 2026-11-10, labels unchanged.
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order
