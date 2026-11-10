@@ -220,6 +220,9 @@ function solvedFlowsheet(flowsheet, userData) {
       pairs: (info.pairs ?? []).map(p => ({ pair: p.pair, set: p.set ?? null, tier: p.tier ?? null })),
       missing_pairs: info.missingPairs ?? [],
       notes, warnings,
+      // per block and pair with two liquids: measured, predicted-unvalidated or predicted-contradicted (proposal 0019)
+      ...(Object.values(result.blocks).some(b => b.state?.two_liquids) ? { two_liquids: Object.entries(result.blocks)
+        .flatMap(([id, b]) => (b.state?.two_liquids ?? []).map(t => ({ block: id, ...t }))) } : {}),
       // blocks with their own property method (a column, milestone M2b), and the P-H boundary's temperature changes
       ...(Object.values(result.blocks).some(b => b.method) ? { block_methods: Object.fromEntries(Object.entries(result.blocks).filter(([, b]) => b.method)
         .map(([id, b]) => [id, { ...b.method, ...(b.state?.boundary ? { boundary_streams: b.state.boundary } : {}) }])) } : {}),

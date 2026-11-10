@@ -1,0 +1,111 @@
+{
+ "_about": "methanol (1) + n-hexane (2): the two liquids in equilibrium measured in the NIST TRC ThermoML Archive's records (bulk file ThermoML.v2020-09-30.tgz), by validation/python/two_liquid_survey.py --classes (proposal 0019, step 2). Rows: T in K, P in kPa (null where the record gives none), mole fraction of component 1 in liquid I and in liquid II, index of the record in records.",
+ "components": [
+  "methanol",
+  "n-hexane"
+ ],
+ "kind": "lle",
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "x_1_I",
+  "x_1_II",
+  "record"
+ ],
+ "rows": [
+  [
+   308.15,
+   12400.0,
+   0.249,
+   0.803,
+   0
+  ],
+  [
+   278.15,
+   101.0,
+   0.8839232503350803,
+   0.13308909643507355,
+   1
+  ],
+  [
+   283.15,
+   101.0,
+   0.8625507200868916,
+   0.15313681192859002,
+   1
+  ],
+  [
+   293.15,
+   101.0,
+   0.8398476355828279,
+   0.19783857443344974,
+   1
+  ],
+  [
+   298.15,
+   101.325,
+   0.255190900912081,
+   0.8040025991336777,
+   2
+  ],
+  [
+   268.15,
+   101.32,
+   0.104,
+   0.909,
+   3
+  ],
+  [
+   278.15,
+   101.32,
+   0.137,
+   0.873,
+   3
+  ],
+  [
+   288.15,
+   101.32,
+   0.186,
+   0.835,
+   3
+  ],
+  [
+   298.15,
+   101.32,
+   0.267,
+   0.801,
+   3
+  ]
+ ],
+ "records": [
+  {
+   "doi": "10.1016/j.fluid.2005.12.029",
+   "citation": "E. Perez, Y. Sanchez-Vicente, A. Cabanas, M. I. Redondo, C. Pando, J. A. R. Renuncio, Excess molar enthalpies for mixtures of carbon dioxide + a modifier (5 mol% methanol or 1-octanol) and hexane at 308.15K and 12.40MPa, Fluid Phase Equilib. 241 (2006) 283-289",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2005.12.029.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 2, 3 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.fluid.2011.02.022",
+   "citation": "M. B. Gramajo de Doz, C. M. Bonatti, M. C. Lucena, D. Gonzalez, M. E. Mancilla, Influence of temperature on the (liquid + liquid) equilibria of  {methanol + benzene + hexane} ternary system, Fluid Phase Equilib. 305 (2011) 34-38",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2011.02.022.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 1, 2 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1016/j.jct.2019.06.024",
+   "citation": "Z. Zhu, W. Bai, Y. Xu, H. Gong, Y. Wang, D. Xu, J. Gao, Liquid-liquid extraction of methanol from its mixtures with hexane using three imidazolium-based ionic liquids, J. Chem. Thermodyn. 138 (2019) 189-195",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2019.06.024.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 10, 11 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/je700397g",
+   "citation": "L. M. Casas, B. Orge, O. Ferreira, Liquid Liquid Equilibria of Mixtures Containing Methyl Acetate + Methanol + Hexane or Heptane, J. Chem. Eng. Data 53 (2008) 89-93",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je700397g.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 1, 2 (phases Liquid mixture 1 and 2)"
+  }
+ ],
+ "notes": "To be checked by a person against the records (AGENTS.md rule 4)."
+}

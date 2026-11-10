@@ -1,0 +1,55 @@
+{
+ "_about": "isooctane (1) + methanol (2): the two liquids in equilibrium measured in the NIST TRC ThermoML Archive's records (bulk file ThermoML.v2020-09-30.tgz), by validation/python/two_liquid_survey.py --classes (proposal 0019, step 2). Rows: T in K, P in kPa (null where the record gives none), mole fraction of component 1 in liquid I and in liquid II, index of the record in records.",
+ "components": [
+  "isooctane",
+  "methanol"
+ ],
+ "kind": "lle",
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "x_1_I",
+  "x_1_II",
+  "record"
+ ],
+ "rows": [
+  [
+   283.15,
+   101.3,
+   0.8407,
+   0.0891,
+   0
+  ],
+  [
+   298.15,
+   101.3,
+   0.7717,
+   0.1142,
+   0
+  ],
+  [
+   293.2,
+   101.3,
+   0.8229873054355942,
+   0.07442792042625362,
+   1
+  ]
+ ],
+ "records": [
+  {
+   "doi": "10.1016/j.fluid.2013.10.048",
+   "citation": "D. Dechambre, C. Pauls, L. Greiner, K. Leonhard, A. Bardow, Towards automated characterisation of liquid-liquid equilibria, Fluid Phase Equilib. 362 (2014) 328-334",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2013.10.048.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 5, 6 (phases Liquid mixture 1 and 2)"
+  },
+  {
+   "doi": "10.1021/je100916h",
+   "citation": "R. Rastegar, K. Jessen, Measurement and Modeling of Liquid-Liquid Equilibrium for Ternary and Quaternary Mixtures of Water, Methanol, 2-Propanol, and 2,2,4-Trimethylpentane at 293.2 K  , J. Chem. Eng. Data 56 (2011) 278-281",
+   "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je100916h.html",
+   "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+   "sets": "PureOrMixtureData 1, 2 (phases Liquid mixture 1 and 2)"
+  }
+ ],
+ "notes": "To be checked by a person against the records (AGENTS.md rule 4)."
+}

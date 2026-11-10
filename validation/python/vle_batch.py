@@ -25,7 +25,17 @@ Up to two further isobaric T-x-y sets of other articles that pass the point test
 (compared with the fit, not fitted). Each chosen set is written to validation/data/vle/<i>_<j>_<doi>.json
 with a source block (citation, DOI, open copy in the archive, access, the record's set numbers) and the
 pair's fit definition to validation/data/vle/fits.json, which fit_parameters.py reads with its own FITS.
-A pair with no set meeting these rules is reported with the reason and left out. Only pairs for which the
+A pair with no set meeting these rules is reported with the reason and left out.
+
+Two liquids (proposal 0016, step 2; the maintainer, 2026-11-04: "the procedure should be fixed on how the liquid data is
+extracted"): the record's sets of the same pair whose phases are two liquids ("Liquid mixture 1" and "Liquid mixture
+2", for example the vapour-liquid-liquid points of a P-x set) are read too, and every data file of the record gets them
+as a "two_liquids" block: T, P (where given) and the mole fraction of component 1 in each liquid. Before, these sets
+were skipped and the P-x or T-x rows at the two liquids' compositions were taken as one liquid's bubble points, so a
+fit that rightly predicted the split was refused (fit_parameters.check_phase_splits). fit_parameters.py fits them as
+liquid-liquid equilibrium (equal activities) and expects the split there.
+
+    python validation/python/vle_batch.py --cache DIR --two-liquids     # add the block to the existing data files Only pairs for which the
 method rules choose an activity model are taken (scan_pairs.needed_method: both condensable, at least one polar).
 
     python validation/python/vle_batch.py --cache DIR --pairs 1-propanol+water ethanol+1-propanol ...
@@ -180,6 +190,96 @@ def curves(rec, a, b):
                 pt["y"] = y
             used[key].add(s["number"])
     return out, used
+
+
+def two_liquid_points(rec, a, b, num=None):
+    """The pair's two-liquid points in a record: [[T_K, P_kPa or None, x_a in liquid 1, x_a in liquid 2]] and the set
+    numbers. ThermoML stores each liquid's composition as a property of a set whose phases are "Liquid mixture 1" and
+    "Liquid mixture 2": often one set per liquid with the same T and P (Arango and Villa 2013, doi:10.1016/j.fluid.2012.11.026, sets 10 and 11), merged
+    here by T and P; or one set with two rows per temperature, both labelled "Liquid mixture 1" (doi:10.1021/je0505366,
+    set 14), taken as the two liquids when exactly two such values share a T and P; or the compositions as variables
+    with the three-phase temperature as the property "Triple point temperature" (furfural + water,
+    doi:10.1021/je020053r, set 10). Mass fractions are converted to mole fractions with the molar masses of the
+    component records. A set of three-phase pressures, cloud points (one liquid per temperature), interfacial tensions
+    or mass ratios gives no point."""
+    if num is None:   # compound number -> "a" or "b" (the bulk survey passes its own, from its InChI index)
+        ia, ib = inchi_of(a), inchi_of(b)
+        num = {n: ("a" if norm_inchi(c["inchi"]) == ia else "b" if norm_inchi(c["inchi"]) == ib else None) for n, c in rec["compounds"].items()}
+    Ma, Mb = COMPS[a]["MW"], COMPS[b]["MW"]
+
+    def mole(v, compound, mass):
+        """Mole fraction of a from a stored mole or mass fraction of `compound` (mass fractions converted with the
+        molar masses of the component records)."""
+        w = v if num.get(compound) == "a" else 1 - v
+        return (w / Ma) / (w / Ma + (1 - w) / Mb) if mass else w
+    pts, used = {}, set()
+    for s in rec["sets"]:
+        if len(s["components"]) != 2 or {num.get(n) for n in s["components"]} != {"a", "b"}:
+            continue
+        if sum(ph.startswith("Liquid mixture") for ph in s["phases"]) < 2:
+            continue
+        cons = {c["type"].split(",")[0]: c["value"] for c in s["constraints"] if c["type"]}
+        for r in s["rows"]:
+            T, P = cons.get("Temperature"), cons.get("Pressure")
+            xs = []
+            for vn, v in s["variables"].items():
+                t = (v["type"] or "").split(",")[0]
+                if t == "Temperature":
+                    T = r.get("v" + vn)
+                elif t == "Pressure":
+                    P = r.get("v" + vn)
+                elif t in ("Mole fraction", "Mass fraction") and (v["phase"] or "").startswith("Liquid mixture") and r.get("v" + vn) is not None:
+                    xs.append((v["phase"], mole(r["v" + vn], v["compound"], t == "Mass fraction")))
+            for pn, p in s["properties"].items():
+                if (p["name"] or "").startswith("Triple point temperature") and r.get("p" + pn) is not None:
+                    T = r["p" + pn]
+            if T is None:
+                continue
+            key = (round(T, 3), None if P is None else round(P, 4))
+            for ph, x in xs:
+                pts.setdefault(key, []).append((ph, x))
+                used.add(s["number"])
+            for pn, p in s["properties"].items():
+                if (p["name"] or "") not in ("Mole fraction", "Mass fraction") or r.get("p" + pn) is None:
+                    continue
+                ph = (p["phase"] or [""])[0]
+                if not ph.startswith("Liquid mixture"):
+                    continue
+                x = mole(r["p" + pn], p["compound"], p["name"] == "Mass fraction")
+                pts.setdefault(key, []).append((ph, x))
+                used.add(s["number"])
+    rows = []
+    for (T, P), vals in sorted(pts.items(), key=lambda kv: kv[0][0]):
+        by = {ph: x for ph, x in vals}
+        if "Liquid mixture 1" in by and "Liquid mixture 2" in by and len(vals) == 2:
+            rows.append([T, P, by["Liquid mixture 1"], by["Liquid mixture 2"]])
+        elif len(vals) == 2 and len(by) == 1 and abs(vals[0][1] - vals[1][1]) > 1e-6:
+            rows.append([T, P, vals[0][1], vals[1][1]])
+    return rows, sorted(used)
+
+
+def two_liquids_block(cache, pair, own_doi):
+    """The "two_liquids" block of a pair's fitted data file (component 1 = pair[0]): the two-liquid points of every
+    record the index lists for the pair, the data file's own record included, each row with the record it comes from;
+    or None when no record has any."""
+    dois = [own_doi] + [r["doi"] for r in INDEX.get(pair_key(*pair), []) if r["doi"] != own_doi]
+    rows, records = [], []
+    for doi in dois:
+        rec = record(cache, doi)
+        pts, sets = two_liquid_points(rec, *pair)
+        if not pts:
+            continue
+        records.append(dict(doi=doi, citation=citation(rec), open_copy=f"https://trc.nist.gov/ThermoML/{doi}.html",
+                            sets=f"PureOrMixtureData {', '.join(map(str, sets))} (phases Liquid mixture 1 and 2)"))
+        rows += [p + [len(records) - 1] for p in pts]
+    if not rows:
+        return None
+    return dict(columns=["T_K", "P_kPa", "x_1_I", "x_1_II", "record"], rows=rows, records=records, access=ACCESS,
+                notes="The two liquids in equilibrium, as stored in the records (mole fraction of component 1 in each; record: "
+                      "the index in records). P is the three-phase or the stated pressure where the record gives one. Fitted "
+                      "as liquid-liquid equilibrium (fit_parameters.py); rows of the curve strictly between the two liquids "
+                      "at the same temperature are not fitted as one liquid. To be checked by a person against the records "
+                      "(AGENTS.md rule 4).")
 
 
 def point_test(P, pts, pair):
@@ -351,13 +451,49 @@ def write_file(pair, c):
     return name
 
 
+def attach_two_liquids(name, cache, fitted=True):
+    """Put the pair's two-liquid points (two_liquids_block) on a data file, or take them off a check file. True when the
+    file changed."""
+    path = ROOT / "validation" / "data" / name
+    d = json.loads(path.read_text())
+    tl = two_liquids_block(cache, tuple(d["components"]), d["source"]["doi"]) if fitted else None
+    if tl == d.get("two_liquids"):
+        return False
+    if tl:
+        d["two_liquids"] = tl
+    else:
+        d.pop("two_liquids", None)
+    path.write_text(json.dumps(d, indent=1, ensure_ascii=False) + "\n")
+    return True
+
+
+def add_two_liquids(cache):
+    """Add (or refresh) the "two_liquids" block of the fitted data file of every pair of fits.json, without choosing the
+    data sets again. Returns the files changed."""
+    fits = json.loads(FITS_FILE.read_text())["fits"]
+    changed = []
+    for f in fits:
+        for name in [f["file"]] + f["check"]:
+            if attach_two_liquids(name, cache, fitted=(name == f["file"])):
+                changed.append(name)
+    return changed
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", required=True, type=Path)
     ap.add_argument("--pairs", nargs="*", default=[])
     ap.add_argument("--batch", choices=sorted(BATCHES))
     ap.add_argument("--all", action="store_true", help="every pair of validation/data/vle/index.json")
+    ap.add_argument("--two-liquids", action="store_true", help="add the two-liquid points to the existing data files")
     a = ap.parse_args()
+    if a.two_liquids:
+        a.cache.mkdir(parents=True, exist_ok=True)
+        changed = add_two_liquids(a.cache)
+        for name in changed:
+            print(f"two liquids: {name}")
+        print(f"{len(changed)} data files with two-liquid points")
+        return
     pairs = [tuple(p.split("+")) for p in a.pairs] + (BATCHES[a.batch] if a.batch else [])
     if a.all:
         pairs += [tuple(k.split("+")) for k in sorted(INDEX)]

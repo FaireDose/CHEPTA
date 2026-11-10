@@ -220,20 +220,76 @@ def he_file(name, pair):
     return out
 
 
+def two_liquids_file(name, pair):
+    """The "two_liquids" block of a data file (vle_batch.py: the record's sets with phases Liquid mixture 1 and 2) as
+    [(T_K, x1 in liquid I, x1 in liquid II)] with x1 of pair[0]; [] when the file has none."""
+    d = load(name)
+    tl = d.get("two_liquids")
+    if not tl:
+        return []
+    flip = _orient(d, name, pair)
+    col = {c: k for k, c in enumerate(tl["columns"])}
+    f = (lambda v: 1 - v) if flip else (lambda v: v)
+    return [(r[col["T_K"]], f(r[col["x_1_I"]]), f(r[col["x_1_II"]])) for r in tl["rows"]]
+
+
+# The class of each pair from open evidence (proposal 0019; validation/data/two_liquids/classes.json, written by
+# two_liquid_survey.py --classes): "partly miscible", "miscible", "not known", or "miscible below the measured
+# temperature, not known above it". A pair it does not list keeps the rules of before (the hand-made FITS).
+CLASSES_FILE = VAL / "two_liquids" / "classes.json"
+CLASSES = json.loads(CLASSES_FILE.read_text())["pairs"] if CLASSES_FILE.exists() else {}
+NOT_KNOWN = ("not known", "miscible below the measured temperature, not known above it")
+
+
+def pair_class(pair):
+    return CLASSES.get("+".join(sorted(pair)), {}).get("class")
+
+
+def class_lle(pair):
+    """The measured two liquids of a partly miscible pair (two_liquids/lle/<pair>.json) as [(T_K, x1 in liquid I,
+    x1 in liquid II)] with x1 of pair[0], and the file's name; ([], None) without one."""
+    c = CLASSES.get("+".join(sorted(pair)), {})
+    name = c.get("lle_file")
+    if c.get("class") != "partly miscible" or not name:
+        return [], None
+    d = load(name)
+    flip = _orient(d, name, pair)
+    col = {k: n for n, k in enumerate(d["columns"])}
+    f = (lambda v: 1 - v) if flip else (lambda v: v)
+    return [(r[col["T_K"]], f(r[col["x_1_I"]]), f(r[col["x_1_II"]])) for r in d["rows"]
+            if r[col["x_1_I"]] is not None and r[col["x_1_II"]] is not None], name
+
+
+def evidence_of(pair, kind):
+    return [e for e in CLASSES.get("+".join(sorted(pair)), {}).get("evidence", []) if e["kind"] == kind]
+
+
+def inside_split(x1, T, ll, dT=0.5):
+    """True when x1 at T lies strictly between the two measured liquids of a two-liquid point within dT: such a row is
+    a point of the three-phase plateau, not the bubble point of one liquid."""
+    return any(abs(T - Tl) <= dT and min(a, b) + 1e-6 < x1 < max(a, b) - 1e-6 for Tl, a, b in ll)
+
+
 def file_sets(spec, key="files"):
-    """Data sets of a "txy-file" fit: list of (kind, name, content)."""
+    """Data sets of a "txy-file" fit: list of (kind, name, content). A file with a "two_liquids" block adds an "lle"
+    set of those points (from the same record), and its rows strictly between the two liquids are left out."""
     names = spec.get(key, [spec["file"]] if key == "files" and "file" in spec else [])
     out = []
+    # a generated fit of a partly miscible pair: the measured two liquids of every record (proposal 0019), in place of
+    # the data file's own two_liquids block
+    cll, cname = class_lle(spec["pair"]) if (spec.get("generated") and key == "files") else ([], None)
     for name in names:
         d = load(name)
         kind = d.get("kind")
+        ll = (cll or two_liquids_file(name, spec["pair"])) if kind in ("isobaric-txy", "isobaric-tx", "isothermal-px", "tpx") else []
         if kind is None and name == "water_ethylene_glycol_760mmHg.json":   # the older compilation format
             P, pts = water_eg_txy()
             if spec["pair"] != ("water", "ethylene-glycol"):
                 raise ValueError(f"{name}: pair {spec['pair']}")
             out.append(("txy", name, (P, pts)))
         elif kind in ("isobaric-txy", "isobaric-tx"):
-            out.append(("txy", name, txy_file(name, spec["pair"])))
+            P, pts = txy_file(name, spec["pair"])
+            out.append(("txy", name, (P, [p for p in pts if not inside_split(p[0], p[1], ll)])))
         elif kind == "lle":
             out.append(("lle", name, lle_file(name, spec["pair"])))
         elif kind == "gamma-infinite-dilution":
@@ -243,11 +299,14 @@ def file_sets(spec, key="files"):
         elif kind == "excess-enthalpy":
             out.append(("he", name, he_file(name, spec["pair"])))
         elif kind == "isothermal-px":
-            out.append(("px", name, px_file(name, spec["pair"])))
+            out.append(("px", name, [p for p in px_file(name, spec["pair"]) if not inside_split(p[1], p[0], ll)]))
         elif kind == "tpx":
-            out.append(("tpx", name, tpx_file(name, spec["pair"])))
+            out.append(("tpx", name, [p for p in tpx_file(name, spec["pair"]) if not inside_split(p[1], p[0], ll)]))
         else:
             raise ValueError(f"{name}: unknown kind {kind!r}")
+        if ll:
+            out.append(("lle", (cname or name) + " (two liquids)", ll))
+            cll, cname = [], None   # once per spec
     return out
 
 
@@ -364,11 +423,14 @@ GENERATED = [dict(pair=tuple(f["pair"]), data="txy-file", file=f["file"], check=
                   models=["NRTL", "UNIQUAC"] if all(COMPONENTS[c].get("uniquac") for c in f["pair"]) else ["NRTL"])
              for f in (json.loads(GENERATED_FILE.read_text())["fits"] if GENERATED_FILE.exists() else [])]
 # A generated fit must follow the data it is fitted to: AAD in T and y for T-x-y, in P for P-x.
-GATE = {"T_K": 0.5, "y": 0.012, "P_pct": 1.5}
+GATE = {"T_K": 0.5, "y": 0.012, "P_pct": 1.5,
+        # proposal 0019 (answer 2, 2026-11-05: "as a start"): mutual solubilities of a partly miscible pair within 0.02 in
+        # mole fraction, or 25 % for a minor component below 0.05 in its liquid
+        "x": 0.02, "x_rel": 0.25}
 # a fit outside GATE but within WIDE_GATE is written too, with a quality_warning in the record and a "fit-quality"
 # entry in src/data/known-issues.json that the workbench shows (decision of the maintainer, 2026-10-11: a set a little
 # outside the gate is better than none); a fit that predicts a liquid split in the data range is never written
-WIDE_GATE = {"T_K": 2.5, "y": 0.02, "P_pct": 3.0}
+WIDE_GATE = {"T_K": 2.5, "y": 0.02, "P_pct": 3.0, "x": 0.04, "x_rel": 0.5}
 KNOWN_FILE = ROOT / "src" / "data" / "known-issues.json"
 
 
@@ -396,6 +458,46 @@ def gate(spec, model, params, GATE=GATE):
         dev = [abs(s.equilibrium([x1, 1 - x1], T)[0] / P - 1) * 100 for T, x1, P in tpx]
         if np.mean(dev) > GATE["P_pct"]:
             return f"AAD {np.mean(dev):.2f} % in P (limit {GATE['P_pct']} %)"
+    if model != "WILSON":
+        why = solubility_gate(spec, model, params, GATE)
+        if why:
+            return why
+    return None
+
+
+def solubility_deviations(spec, model, params):
+    """The mutual solubilities of the measured two liquids of a partly miscible pair (proposal 0019): per liquid, the
+    model's mole fraction of the minor component against the measured one, at each measured temperature. Returns
+    (absolute deviations of liquids whose minor component is 0.05 or more, relative deviations of the others, the
+    temperatures where the model has no split)."""
+    ll = [p for _, name, c in file_sets(spec) if name.endswith(" (two liquids)") for p in c]
+    s = System(list(spec["pair"]), model, params=[params])
+    absd, reld, none = [], [], []
+    for T, a, b in ll:
+        z = lle_from_data(s, T, a, b)
+        if z is None:
+            none.append(round(float(T), 1))
+            continue
+        for zm, xd in ((z[0], a), (z[1], b)):
+            m, d = (zm, xd) if xd < 0.5 else (1 - zm, 1 - xd)   # the minor component's mole fraction in this liquid
+            if d < 0.05:
+                reld.append(abs(m / max(d, 1e-12) - 1))
+            else:
+                absd.append(abs(m - d))
+    return absd, reld, none
+
+
+def solubility_gate(spec, model, params, GATE=GATE):
+    """None, or why a partly miscible pair's fit misses its measured mutual solubilities (mean deviations)."""
+    if not any(name.endswith(" (two liquids)") for _, name, _ in file_sets(spec)):
+        return None
+    absd, reld, none = solubility_deviations(spec, model, params)
+    if none:
+        return f"no liquid-liquid split at the measured two-liquid temperatures {sorted(set(none))[:8]} K"
+    if absd and np.mean(absd) > GATE["x"]:
+        return f"mutual solubilities: AAD {np.mean(absd):.3f} in mole fraction (limit {GATE['x']})"
+    if reld and np.mean(reld) > GATE["x_rel"]:
+        return f"mutual solubilities: mean relative deviation {np.mean(reld) * 100:.0f} % of the minor components below 0.05 (limit {GATE['x_rel'] * 100:.0f} %)"
     return None
 
 
@@ -448,24 +550,45 @@ def wilson_a(i, j):
     return a, -a
 
 
-# Pairs classed partly miscible by the evidence survey of proposal 0019 whose fitted data overlap the measured split:
-# no Wilson fit (proposal 0019, section 4 and answer 4 of the maintainer, 2026-11-05)
-WILSON_REFUSED = {
-    "diethyl-carbonate+water": "partly miscible: 14 two-liquid sets of 7 articles in the ThermoML Archive, 293-363 K "
-                               "(proposal 0019, evidence survey), overlapping the fitted P-x data at 353 K",
-}
+# Wilson sets kept although the data now show two liquids, until roadmap item D9 classifies the pairs (the
+# maintainer's decision, see docs/decisions/2026-11-04-06-wilson-fits.md); empty unless the maintainer names a pair
+def by_class(spec):
+    """A generated fit of a partly miscible pair is fitted jointly to its vapour-liquid data and the measured two liquids
+    (file_sets), temperature-dependent (a + b / T) where the two-liquid points lie more than 5 K outside the
+    temperatures of the vapour-liquid data (proposal 0019, section 2)."""
+    if not spec.get("generated") or pair_class(spec["pair"]) != "partly miscible":
+        return spec
+    sets = file_sets(spec)
+    ll = [p for _, name, c in sets if name.endswith(" (two liquids)") for p in c]
+    if not ll:
+        return spec
+    lo, hi = data_T_range([s for s in sets if not s[1].endswith(" (two liquids)")])
+    if any(T < lo - 5 or T > hi + 5 for T, _, _ in ll):
+        return dict(spec, temperature_dependent=True)
+    return spec
+
+
+def overlaps_measured_split(spec):
+    """True when the temperatures of a fit's vapour-liquid data reach those of the pair's two-liquid evidence (within
+    5 K): the data then include states inside the measured split (proposal 0019, section 4)."""
+    vle = [s for s in file_sets(spec) if not s[1].endswith(" (two liquids)")]
+    lo, hi = data_T_range(vle)
+    ev = [e["T_K"] for e in evidence_of(spec["pair"], "two-liquid") if e.get("T_K")]
+    return any(a - 5 <= hi and lo <= b + 5 for a, b in ev)
 
 
 def wilson_ok(spec):
     """Can Wilson be fitted to this spec's data? Not to liquid-liquid data or a heterogeneous azeotrope: the Wilson
-    equation cannot give two liquids (proposal 0016); nor for a pair of WILSON_REFUSED (proposal 0019)."""
-    if "+".join(sorted(spec["pair"])) in WILSON_REFUSED:
-        return False
+    equation cannot give two liquids (proposal 0016). By class (proposal 0019, section 4): refused only for a pair
+    classed partly miscible whose data range overlaps the measured split; miscible and not-known pairs get their fit."""
     if spec["data"] == "schmid":
         return True
     if spec["data"] != "txy-file":
         return False
-    return not any(kind in ("lle", "haz") for kind, _, _ in file_sets(spec))
+    cls = pair_class(spec["pair"])
+    if cls == "partly miscible":
+        return not overlaps_measured_split(spec)
+    return not any(kind in ("lle", "haz") for kind, name, _ in file_sets(spec) if not name.endswith(" (two liquids)"))
 
 
 def spec_models(spec):
@@ -543,6 +666,8 @@ def fit(spec, model):
     alpha = spec.get("alpha", 0.3)
     if spec["data"] == "txy-file":
         all_sets = file_sets(spec)
+        if model == "WILSON":   # Wilson is fitted to the vapour-liquid data only (it cannot give two liquids)
+            all_sets = [st for st in all_sets if not st[1].endswith(" (two liquids)")]
         sets = [st for st in all_sets if st[0] != "haz"]   # first stage: without azeotrope targets
 
         def residuals(p):
@@ -608,7 +733,15 @@ def lle_from_data(s, T, a, b):
     liquid was measured, the other is searched from several starting values and the widest
     split is kept."""
     if a is not None and b is not None:
-        return s.lle_binary(T, (a, b))
+        z = s.lle_binary(T, (a, b))
+        if z is None:
+            # started from the measured liquids the solver may not converge where the model's split is far from them:
+            # start from the split of the convex-hull test (phase_splits), in the order of the measured liquids
+            for lo, hi in phase_splits(s, T):
+                z = s.lle_binary(T, (lo, hi) if a < b else (hi, lo))
+                if z is not None:
+                    break
+        return z
     if a is None and b is None:
         a = 0.985   # no data: start the first liquid rich in the first component of the pair
     best = None
@@ -763,8 +896,14 @@ def check_phase_splits(spec, model, params):
     """Raise if the fitted set predicts another number of liquid phases than its data, at
     eleven temperatures across the data range. Wilson, which cannot give two liquids, is refused instead where the
     pair's default NRTL set (else UNIQUAC) predicts two liquids in the data range: a one-liquid fit to a mixture that
-    splits would hide the split (proposal 0016, step 2). An NRTL fit to the same data that predicts two liquids is not
-    used as evidence: such splits are often spurious (the generated NRTL fits refuse them for that reason)."""
+    splits would hide the split (proposal 0016, step 2). Where only an NRTL fit to the same data predicts two liquids
+    and no measured liquid compositions decide, the Wilson fit is written with a known-issue note: the pairs are
+    classified from evidence and fitted by class in roadmap item D9 (the maintainer, 2026-11-04)."""
+    cls = pair_class(spec["pair"]) if spec.get("generated") else None
+    if model == "WILSON" and cls is not None:
+        return   # by class (proposal 0019, section 4): wilson_ok decides; miscible and not-known pairs get their fit
+    if model != "WILSON" and cls in NOT_KNOWN:
+        return   # a predicted split is kept and labelled (two_liquids_label), not refused (proposal 0019, section 2)
     if model == "WILSON":
         if spec["data"] != "txy-file":
             return   # Schmid et al.'s P-x and excess enthalpies of a miscible pair
@@ -781,12 +920,47 @@ def check_phase_splits(spec, model, params):
             break
         return
     sets = file_sets(spec)
+    if any(name.endswith(" (two liquids)") for _, name, _ in sets):
+        # two liquids measured with the VLE data (vle_batch.py, "two_liquids"): a split at every temperature of those
+        # points, and no measured one-liquid row predicted inside a split at its own temperature
+        s = System(list(spec["pair"]), model, params=[params])
+        ll = [p for _, name, c in sets if name.endswith(" (two liquids)") for p in c]
+        missing = sorted({round(float(T), 1) for T, _, _ in ll if not phase_splits(s, T)})
+        rows = []
+        for kind, _, c in sets:
+            if kind == "txy":
+                rows += [(x1, T) for x1, T, _ in c[1]]
+            elif kind in ("px", "tpx"):
+                rows += [(p[1], p[0]) for p in c]
+        cache, wrong = {}, []
+        for x1, T in rows:
+            # a row at a measured liquid's composition is on the edge of the split (its bubble point is the three-phase
+            # point): not judged here
+            if any(abs(T - Tl) <= 0.5 and min(abs(x1 - a), abs(x1 - b)) <= 0.02 for Tl, a, b in ll):
+                continue
+            sp = cache.setdefault(round(T, 2), phase_splits(s, T))
+            if any(a + 1e-3 < x1 < b - 1e-3 for a, b in sp):
+                wrong.append((round(x1, 3), round(float(T), 1)))
+        if missing or wrong:
+            raise SystemExit(f"{model} {spec['pair']}: " + "; ".join(
+                ([f"no liquid-liquid split at the measured two-liquid temperatures {missing} K"] if missing else [])
+                + ([f"measured one-liquid rows (x1, T) {wrong[:6]} fall inside a predicted split"] if wrong else [])) + "; not written.")
+        return
     want = 1 if any(kind in ("lle", "haz") for kind, _, _ in sets) else 0
     lo, hi = data_T_range(sets)
     s = System(list(spec["pair"]), model, params=[params])
     bad = [round(T, 1) for T in np.linspace(lo, hi, 11) if len(phase_splits(s, T)) != want]
     if bad:
         raise SystemExit(f"{model} {spec['pair']}: the fitted set predicts {'no or more than one' if want else 'a'} liquid-liquid split at T = {bad} K, inside the range of its data; not written.")
+    if cls == "miscible":
+        # nor where the pair was measured as one liquid (the one-liquid evidence of classes.json: its T and x range)
+        for e in evidence_of(spec["pair"], "one-liquid"):
+            if not (e.get("T_K") and e.get("x")):
+                continue
+            x0, x1 = e["x"] if spec["pair"][0] == sorted(spec["pair"])[0] else (1 - e["x"][1], 1 - e["x"][0])
+            for T in np.linspace(e["T_K"][0], e["T_K"][1], 5):
+                if any(a < x1 - 0.01 and b > x0 + 0.01 for a, b in phase_splits(s, T)):
+                    raise SystemExit(f"{model} {spec['pair']}: the fitted set predicts a split at {T:.1f} K where the pair was measured as one liquid ({e['citation'][:60]}, doi {e['doi']}); not written.")
 
 
 def data_T_range(sets):
@@ -808,6 +982,11 @@ def quality(spec, model, params):
     if spec["data"] == "txy-file":
         mi = spec.get("single_liquid", False)
         q = describe_fit(file_sets(spec), model, i, j, [params], mi) + "."
+        for name in spec.get("files", [spec["file"]] if "file" in spec else []):
+            tl = load(name).get("two_liquids")
+            if tl:
+                q += (" Two liquids measured (validation/data/%s, two_liquids): %s." % (name, "; ".join(
+                    "%s, doi:%s, %s" % (r["citation"], r["doi"], r["sets"]) for r in tl["records"])))
         for kind, name, c in file_sets(spec, "check"):
             q += f" Check against {name}: {describe_fit([(kind, name, c)], model, i, j, [params], mi)}."
         return q
@@ -857,10 +1036,11 @@ def point_test(spec, nterms=4):
 
 def main(write, only=None, models_only=None):
     binaries = json.loads(BIN_FILE.read_text())
-    rejected, warned, done = [], [], []
+    rejected, warned, done, removed = [], [], [], []
     for spec in FITS + GENERATED:
         if only is not None and "+".join(sorted(spec["pair"])) not in only:
             continue
+        spec = by_class(spec)
         test = ""
         if spec["data"] == "txy-file":
             dy_test = point_test(spec)
@@ -869,6 +1049,19 @@ def main(write, only=None, models_only=None):
                 test = f" Data consistency point test (Redlich-Kister fit to T-x): mean |dy| {dy_test:.3f}{' (passes, < 0.01)' if dy_test < 0.01 else ' (fails, >= 0.01)'}."
         if spec.get("generated"):
             done.append(tuple(sorted(spec["pair"])))
+            # Wilson not fitted to these data any more (two liquids measured with them, read since 2026-11-04): a
+            # Wilson set an earlier run fitted to the same data is taken out, the pair's other set becomes its default
+            if "WILSON" not in spec_models(spec) and (models_only is None or "WILSON" in models_only):
+                old = [r for r in binaries["pairs"] if r["model"] == "WILSON" and {r["i"], r["j"]} == set(spec["pair"])
+                       and r.get("tier") == "fitted" and r.get("source", "").startswith(spec["describe"][:80])
+                       ]
+                if old:
+                    binaries["pairs"] = [r for r in binaries["pairs"] if not any(r is o for o in old)]
+                    rest = [r for r in binaries["pairs"] if r["model"] == "WILSON" and {r["i"], r["j"]} == set(spec["pair"])]
+                    if rest and not any(r.get("default", True) for r in rest):
+                        (next((r for r in rest if r.get("set") == "chemsep"), rest[0]))["default"] = True
+                    removed.append((spec["pair"], "WILSON", [o.get("set") for o in old]))
+                    print(f"  removed the earlier WILSON set {[o.get('set') for o in old]} of {spec['pair']}: two liquids measured with its data")
         for model in spec_models(spec):
             if models_only is not None and model not in models_only:
                 continue
@@ -903,8 +1096,11 @@ def main(write, only=None, models_only=None):
                         wide = None
                     elif cur is not None:
                         try:
+                            # the existing set must meet the liquid-liquid checks of these data too (two liquids
+                            # measured with them, read since 2026-11-04): a set that misses them never stays
+                            check_phase_splits(spec, model, {k: v for k, v in cur.items() if k in ("model", "i", "j", "a_ij", "a_ji", "b_ij", "b_ji", "alpha")} | {"model": model})
                             s_cur = score(spec, model, dict(cur, model=model))
-                        except Exception:
+                        except (SystemExit, Exception):
                             s_cur = float("inf")
                         if s_cur <= score(spec, model, wide[0]):
                             why = ("%s; the existing %s set (%s) follows the same data as closely or better, and stays" % (
@@ -923,6 +1119,9 @@ def main(write, only=None, models_only=None):
                 if why:
                     rejected.append((spec["pair"], model, why))
                     print(f"REJECTED {model} {spec['pair']}: {why}")
+                    # the pair keeps what it had (proposal 0019, section 2: "not written; the pair keeps what it had";
+                    # "existing sets are not changed by this step"): a set of before stays, labelled by its class
+                    # (two_liquid_labels.py)
                     continue
             q = quality(spec, model, params) + test
             params["source"] = f"{spec['describe']} {q}"
@@ -977,8 +1176,11 @@ def main(write, only=None, models_only=None):
         print(f"updated {BIN_FILE}")
         # the "fit-quality" entries of the pairs fitted in this run are replaced by the new ones
         K = json.loads(KNOWN_FILE.read_text())
+        # the default set of a pair and model that stays as it was (a refit that did not replace it) keeps its note
+        stays = {(tuple(sorted(r["pair"])), m) for r_pair, m, why in rejected for r in [{"pair": r_pair}] if why.endswith("stays")}
         K["issues"] = [k for k in K["issues"] if not (k.get("kind") == "fit-quality" and tuple(sorted(k["components"])) in done
-                                                      and (models_only is None or k.get("model") in models_only))]
+                                                      and (models_only is None or k.get("model") in models_only)
+                                                      and (tuple(sorted(k["components"])), k.get("model")) not in stays)]
         for spec, model, why in warned:
             K["issues"].append({"components": list(spec["pair"]), "model": model, "kind": "fit-quality",
                                 "message": "These %s parameters are fitted to open data but follow them less closely than the "
