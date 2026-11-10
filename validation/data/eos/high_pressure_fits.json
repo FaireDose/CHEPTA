@@ -1,0 +1,3988 @@
+{
+ "_about": "Written by validation/fit_kij_high_pressure.mjs --write: the k_ij within its GATE (merged into src/data/kij.json by validation/python/eos_fit_kij.py) and the fits outside it, with their errors at the fitted and the databank k_ij. P_pct: bubble pressure at the measured T and x, (calc / exp - 1) in %; x_pct: liquid mole fraction of the gas at the measured T and P, (calc / exp - 1) in %; y: vapour mole fraction of the gas at the measured T and P, calc - exp.",
+ "gate": {
+  "P_pct": 5
+ },
+ "window": {
+  "T_K": 400,
+  "P_kPa": 20000
+ },
+ "entries": [
+  {
+   "model": "PR",
+   "i": "carbon-monoxide",
+   "j": "methanol",
+   "kij": -0.1802,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs to the 27 bubble pressures of 1 article of the NIST TRC ThermoML Archive (each article the same total weight), 298.15-372.9 K, 241.5-3232.2 kPa: AAD 4.9 % in P (max 15.7 %), gas solubility at the measured T and P AAD 5 % (max 18.5 %)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-monoxide_methanol_10-1021-acs-jced-9b00676.json"
+    ],
+    "conditions": "T = 298.15-372.9 K, P = 241.5-3232.2 kPa",
+    "T_range_K": [
+     298.15,
+     372.9
+    ]
+   }
+  },
+  {
+   "model": "SRK",
+   "i": "carbon-monoxide",
+   "j": "methanol",
+   "kij": -0.2585,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs to the 27 bubble pressures of 1 article of the NIST TRC ThermoML Archive (each article the same total weight), 298.15-372.9 K, 241.5-3232.2 kPa: AAD 4.6 % in P (max 15 %), gas solubility at the measured T and P AAD 4.7 % (max 17.6 %)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-monoxide_methanol_10-1021-acs-jced-9b00676.json"
+    ],
+    "conditions": "T = 298.15-372.9 K, P = 241.5-3232.2 kPa",
+    "T_range_K": [
+     298.15,
+     372.9
+    ]
+   }
+  },
+  {
+   "model": "PR",
+   "i": "methane",
+   "j": "methanol",
+   "kij": -0.0503,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs to the 42 bubble pressures of 6 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-323 K, 1050-19930 kPa: AAD 9.2 % in P (max 35.6 %), gas solubility at the measured T and P AAD 7.8 % (max 19.5 %)",
+    "data": [
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json"
+    ],
+    "conditions": "T = 273.15-323 K, P = 1050-19930 kPa",
+    "T_range_K": [
+     273.15,
+     323
+    ]
+   },
+   "quality_warning": "AAD 9.2 % in P (limit 5 %), 7.8 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)"
+  },
+  {
+   "model": "SRK",
+   "i": "methane",
+   "j": "methanol",
+   "kij": -0.08,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs to the 42 bubble pressures of 6 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-323 K, 1050-19930 kPa: AAD 8.9 % in P (max 32 %), gas solubility at the measured T and P AAD 7.7 % (max 17.7 %)",
+    "data": [
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json",
+     "validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json"
+    ],
+    "conditions": "T = 273.15-323 K, P = 1050-19930 kPa",
+    "T_range_K": [
+     273.15,
+     323
+    ]
+   },
+   "quality_warning": "AAD 8.9 % in P (limit 5 %), 7.7 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)"
+  },
+  {
+   "model": "PR",
+   "i": "carbon-dioxide",
+   "j": "methanol",
+   "kij": 0.1883,
+   "kij_b_K": -40.62,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.1883, b = -40.62 K) to the 424 bubble pressures of 16 articles of the NIST TRC ThermoML Archive (each article the same total weight), 213.15-395 K, 79-12068 kPa: AAD 7.1 % in P (max 29.6 %), gas solubility at the measured T and P AAD 13.1 % (max 354.8 %), 0.0269 in y (max 0.0812, 4 points)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+    ],
+    "conditions": "T = 213.15-395 K, P = 79-12068 kPa",
+    "T_range_K": [
+     213.15,
+     395
+    ]
+   },
+   "quality_warning": "k_ij = a + b / T: AAD 7.1 % in P (limit 5 %), 13.1 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)"
+  },
+  {
+   "model": "SRK",
+   "i": "carbon-dioxide",
+   "j": "methanol",
+   "kij": 0.1857,
+   "kij_b_K": -42.12,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.1857, b = -42.12 K) to the 424 bubble pressures of 16 articles of the NIST TRC ThermoML Archive (each article the same total weight), 213.15-395 K, 79-12068 kPa: AAD 7.3 % in P (max 32.2 %), gas solubility at the measured T and P AAD 13.2 % (max 384.7 %), 0.029 in y (max 0.0854, 4 points)",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+     "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+    ],
+    "conditions": "T = 213.15-395 K, P = 79-12068 kPa",
+    "T_range_K": [
+     213.15,
+     395
+    ]
+   },
+   "quality_warning": "k_ij = a + b / T: AAD 7.3 % in P (limit 5 %), 13.2 % in the gas solubility; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)"
+  },
+  {
+   "model": "PR",
+   "i": "carbon-dioxide",
+   "j": "water",
+   "kij": 0.2484,
+   "kij_b_K": -109.44,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.2484, b = -109.44 K) to the 573 bubble pressures of 29 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-393.15 K, 13.89-20000 kPa: AAD 13.8 % in P (max 74.3 %), gas solubility at the measured T and P AAD 10.2 % (max 55.8 %), 0.008 in y (max 0.0329, 25 points); 4 points without a bubble pressure",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+    ],
+    "conditions": "T = 273.15-393.15 K, P = 13.89-20000 kPa",
+    "T_range_K": [
+     273.15,
+     393.15
+    ]
+   },
+   "quality_warning": "k_ij = a + b / T: AAD 13.8 % in P (limit 5 %), 10.2 % in the gas solubility, 4 of 573 points without a bubble pressure; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)"
+  },
+  {
+   "model": "SRK",
+   "i": "carbon-dioxide",
+   "j": "water",
+   "kij": 0.2352,
+   "kij_b_K": -111.6,
+   "tier": "fitted",
+   "source": {
+    "fit": "Fitted for CHEPTA with validation/fit_kij_high_pressure.mjs (k_ij = a + b / T, a = 0.2352, b = -111.6 K) to the 573 bubble pressures of 29 articles of the NIST TRC ThermoML Archive (each article the same total weight), 273.15-393.15 K, 13.89-20000 kPa: AAD 15.3 % in P (max 77.9 %), gas solubility at the measured T and P AAD 11.1 % (max 52.3 %), 0.0074 in y (max 0.0327, 25 points); 4 points without a bubble pressure",
+    "data": [
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+     "validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+    ],
+    "conditions": "T = 273.15-393.15 K, P = 13.89-20000 kPa",
+    "T_range_K": [
+     273.15,
+     393.15
+    ]
+   },
+   "quality_warning": "k_ij = a + b / T: AAD 15.3 % in P (limit 5 %), 11.1 % in the gas solubility, 4 of 573 points without a bubble pressure; written outside the gate of 5 % by the decision of the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)"
+  }
+ ],
+ "results": [
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-dioxide",
+    "methanol"
+   ],
+   "kij": 0.0421,
+   "ok": false,
+   "range": {
+    "T_K": [
+     213.15,
+     395
+    ],
+    "P_kPa": [
+     79,
+     12068
+    ]
+   },
+   "points": 424,
+   "articles": 16,
+   "outside_window": 0,
+   "vapour_only_rows": 4,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 13.1,
+      "bias": -6.2,
+      "max": 68.8
+     },
+     "x_pct": {
+      "aad": 21.6,
+      "bias": 14.4,
+      "max": 436
+     },
+     "y": {
+      "aad": 0.0275,
+      "max": 0.0814,
+      "points": 4
+     },
+     "no_bubble_pressure": 3,
+     "no_two_phase_state": 10
+    },
+    "articles": [
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+      "cite": "Naidoo et al. (2008)",
+      "points": 33,
+      "P_pct": {
+       "aad": 14.6,
+       "bias": -11.8,
+       "max": 27.2
+      },
+      "x_pct": {
+       "aad": 23.7,
+       "bias": 20.8,
+       "max": 45.8
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+      "cite": "Sato et al. (2010)",
+      "points": 17,
+      "P_pct": {
+       "aad": 20.8,
+       "bias": -20.8,
+       "max": 28.3
+      },
+      "x_pct": {
+       "aad": 55.6,
+       "bias": 55.6,
+       "max": 76.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 2
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+      "cite": "Hamada et al. (2012)",
+      "points": 14,
+      "P_pct": {
+       "aad": 16.8,
+       "bias": -16.8,
+       "max": 35
+      },
+      "x_pct": {
+       "aad": 31.8,
+       "bias": 31.8,
+       "max": 60
+      },
+      "y": {
+       "aad": 0.0275,
+       "max": 0.0814,
+       "points": 4
+      },
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 3
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+      "cite": "Dai et al. (2015)",
+      "points": 22,
+      "P_pct": {
+       "aad": 19.6,
+       "bias": 18,
+       "max": 45.4
+      },
+      "x_pct": {
+       "aad": 28.9,
+       "bias": -12.1,
+       "max": 65.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+      "cite": "Hohler et al. (2018)",
+      "points": 57,
+      "P_pct": {
+       "aad": 8.1,
+       "bias": -1.6,
+       "max": 24.9
+      },
+      "x_pct": {
+       "aad": 14.1,
+       "bias": 6.9,
+       "max": 46.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+      "cite": "Lyu et al. (2018)",
+      "points": 37,
+      "P_pct": {
+       "aad": 19.8,
+       "bias": 15.9,
+       "max": 68.8
+      },
+      "x_pct": {
+       "aad": 26.5,
+       "bias": -10.7,
+       "max": 61.8
+      },
+      "y": null,
+      "no_bubble_pressure": 3,
+      "no_two_phase_state": 5
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+      "cite": "Kariznovi et al. (2013)",
+      "points": 11,
+      "P_pct": {
+       "aad": 3.3,
+       "bias": -1.1,
+       "max": 5.5
+      },
+      "x_pct": {
+       "aad": 4.2,
+       "bias": 1.9,
+       "max": 7.6
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+      "cite": "Jalili et al. (2015)",
+      "points": 26,
+      "P_pct": {
+       "aad": 5.1,
+       "bias": 1.9,
+       "max": 15.7
+      },
+      "x_pct": {
+       "aad": 5.5,
+       "bias": -1.7,
+       "max": 14.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+      "cite": "Qureshi et al. (2017)",
+      "points": 7,
+      "P_pct": {
+       "aad": 8.2,
+       "bias": -8.2,
+       "max": 11.7
+      },
+      "x_pct": {
+       "aad": 31.6,
+       "bias": 31.6,
+       "max": 60
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+      "cite": "Decultot et al. (2019)",
+      "points": 58,
+      "P_pct": {
+       "aad": 15.4,
+       "bias": -14.8,
+       "max": 28
+      },
+      "x_pct": {
+       "aad": 20.1,
+       "bias": 19.6,
+       "max": 41
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+      "cite": "Braga et al. (2017)",
+      "points": 6,
+      "P_pct": {
+       "aad": 11.6,
+       "bias": -11.6,
+       "max": 14.5
+      },
+      "x_pct": {
+       "aad": 21.6,
+       "bias": 21.6,
+       "max": 27.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+      "cite": "Wu et al. (2019)",
+      "points": 27,
+      "P_pct": {
+       "aad": 15.9,
+       "bias": -15.9,
+       "max": 30.8
+      },
+      "x_pct": {
+       "aad": 20.8,
+       "bias": 20.8,
+       "max": 45.3
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+      "cite": "Xia et al. (2004)",
+      "points": 29,
+      "P_pct": {
+       "aad": 16.2,
+       "bias": -16.2,
+       "max": 23.6
+      },
+      "x_pct": {
+       "aad": 29.6,
+       "bias": 29.6,
+       "max": 53.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+      "cite": "Xie et al. (2005)",
+      "points": 7,
+      "P_pct": {
+       "aad": 9.7,
+       "bias": -9.7,
+       "max": 12.5
+      },
+      "x_pct": {
+       "aad": 24.3,
+       "bias": 24.3,
+       "max": 48.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+      "cite": "Gui et al. (2011)",
+      "points": 67,
+      "P_pct": {
+       "aad": 9.5,
+       "bias": -8.2,
+       "max": 21.1
+      },
+      "x_pct": {
+       "aad": 13.4,
+       "bias": 12.1,
+       "max": 36.6
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-je300332b.json",
+      "cite": "Schuler et al. (2012)",
+      "points": 6,
+      "P_pct": {
+       "aad": 11.7,
+       "bias": -5.8,
+       "max": 30.9
+      },
+      "x_pct": {
+       "aad": 84.5,
+       "bias": 76.8,
+       "max": 436
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "own_kij": [
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+     "kij": 0.0514,
+     "T_K": [
+      263.15,
+      373.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+     "kij": 0.068,
+     "T_K": [
+      313.11,
+      330.03
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+     "kij": 0.07,
+     "T_K": [
+      323.15,
+      323.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+     "kij": 0.0206,
+     "T_K": [
+      228.2,
+      273.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+     "kij": 0.0429,
+     "T_K": [
+      258.2,
+      298.3
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+     "kij": 0.0226,
+     "T_K": [
+      213.15,
+      273.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+     "kij": 0.0434,
+     "T_K": [
+      303.2,
+      323.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+     "kij": 0.0396,
+     "T_K": [
+      298.15,
+      313.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+     "kij": 0.0556,
+     "T_K": [
+      298.15,
+      298.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+     "kij": 0.062,
+     "T_K": [
+      283.15,
+      373.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+     "kij": 0.0649,
+     "T_K": [
+      303.1,
+      353.1
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+     "kij": 0.0653,
+     "T_K": [
+      300.78,
+      376.36
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+     "kij": 0.0687,
+     "T_K": [
+      313.75,
+      395
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+     "kij": 0.0582,
+     "T_K": [
+      313.2,
+      313.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+     "kij": 0.0524,
+     "T_K": [
+      288.15,
+      318.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-je300332b.json",
+     "kij": 0.0445,
+     "T_K": [
+      299,
+      327
+     ]
+    }
+   ],
+   "databank": {
+    "kij": 0.0583,
+    "errors": {
+     "P_pct": {
+      "aad": 14.6,
+      "bias": 5.5,
+      "max": 112.1
+     },
+     "x_pct": {
+      "aad": 18.5,
+      "bias": -0.6,
+      "max": 374.9
+     },
+     "y": {
+      "aad": 0.027,
+      "max": 0.0812,
+      "points": 4
+     },
+     "no_bubble_pressure": 17,
+     "no_two_phase_state": 23
+    }
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-dioxide",
+    "methanol"
+   ],
+   "kij": 0.0356,
+   "ok": false,
+   "range": {
+    "T_K": [
+     213.15,
+     395
+    ],
+    "P_kPa": [
+     79,
+     12068
+    ]
+   },
+   "points": 424,
+   "articles": 16,
+   "outside_window": 0,
+   "vapour_only_rows": 4,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 12.8,
+      "bias": -5,
+      "max": 70.5
+     },
+     "x_pct": {
+      "aad": 20.9,
+      "bias": 12.7,
+      "max": 464.1
+     },
+     "y": {
+      "aad": 0.0295,
+      "max": 0.0856,
+      "points": 4
+     },
+     "no_bubble_pressure": 3,
+     "no_two_phase_state": 9
+    },
+    "articles": [
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+      "cite": "Naidoo et al. (2008)",
+      "points": 33,
+      "P_pct": {
+       "aad": 14.5,
+       "bias": -11.2,
+       "max": 27.2
+      },
+      "x_pct": {
+       "aad": 23.4,
+       "bias": 19.9,
+       "max": 44.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+      "cite": "Sato et al. (2010)",
+      "points": 17,
+      "P_pct": {
+       "aad": 20.1,
+       "bias": -20.1,
+       "max": 27.3
+      },
+      "x_pct": {
+       "aad": 54,
+       "bias": 54,
+       "max": 75.4
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 2
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+      "cite": "Hamada et al. (2012)",
+      "points": 14,
+      "P_pct": {
+       "aad": 16.2,
+       "bias": -16.2,
+       "max": 34.4
+      },
+      "x_pct": {
+       "aad": 30.5,
+       "bias": 30.5,
+       "max": 58
+      },
+      "y": {
+       "aad": 0.0295,
+       "max": 0.0856,
+       "points": 4
+      },
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 3
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+      "cite": "Dai et al. (2015)",
+      "points": 22,
+      "P_pct": {
+       "aad": 21.1,
+       "bias": 20,
+       "max": 46.9
+      },
+      "x_pct": {
+       "aad": 29.7,
+       "bias": -15.1,
+       "max": 58.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+      "cite": "Hohler et al. (2018)",
+      "points": 57,
+      "P_pct": {
+       "aad": 8,
+       "bias": 0.2,
+       "max": 23.6
+      },
+      "x_pct": {
+       "aad": 13.1,
+       "bias": 4,
+       "max": 34.4
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+      "cite": "Lyu et al. (2018)",
+      "points": 37,
+      "P_pct": {
+       "aad": 20.5,
+       "bias": 17.5,
+       "max": 70.5
+      },
+      "x_pct": {
+       "aad": 25.3,
+       "bias": -13.1,
+       "max": 58
+      },
+      "y": null,
+      "no_bubble_pressure": 3,
+      "no_two_phase_state": 4
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+      "cite": "Kariznovi et al. (2013)",
+      "points": 11,
+      "P_pct": {
+       "aad": 3.2,
+       "bias": 0.1,
+       "max": 7.2
+      },
+      "x_pct": {
+       "aad": 3.8,
+       "bias": 0.4,
+       "max": 7.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+      "cite": "Jalili et al. (2015)",
+      "points": 26,
+      "P_pct": {
+       "aad": 5.6,
+       "bias": 3.4,
+       "max": 17.6
+      },
+      "x_pct": {
+       "aad": 6,
+       "bias": -3.3,
+       "max": 15.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+      "cite": "Qureshi et al. (2017)",
+      "points": 7,
+      "P_pct": {
+       "aad": 7.2,
+       "bias": -6.9,
+       "max": 10.5
+      },
+      "x_pct": {
+       "aad": 28.4,
+       "bias": 27.9,
+       "max": 56.8
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+      "cite": "Decultot et al. (2019)",
+      "points": 58,
+      "P_pct": {
+       "aad": 14.6,
+       "bias": -13.7,
+       "max": 27.9
+      },
+      "x_pct": {
+       "aad": 19.1,
+       "bias": 18.1,
+       "max": 41.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+      "cite": "Braga et al. (2017)",
+      "points": 6,
+      "P_pct": {
+       "aad": 11.2,
+       "bias": -11.2,
+       "max": 14.7
+      },
+      "x_pct": {
+       "aad": 20.9,
+       "bias": 20.9,
+       "max": 26.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+      "cite": "Wu et al. (2019)",
+      "points": 27,
+      "P_pct": {
+       "aad": 14.8,
+       "bias": -14.8,
+       "max": 30.6
+      },
+      "x_pct": {
+       "aad": 19.4,
+       "bias": 19.4,
+       "max": 45
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+      "cite": "Xia et al. (2004)",
+      "points": 29,
+      "P_pct": {
+       "aad": 15.9,
+       "bias": -15.9,
+       "max": 24.1
+      },
+      "x_pct": {
+       "aad": 29.2,
+       "bias": 29.2,
+       "max": 52
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+      "cite": "Xie et al. (2005)",
+      "points": 7,
+      "P_pct": {
+       "aad": 8.8,
+       "bias": -8.8,
+       "max": 11.6
+      },
+      "x_pct": {
+       "aad": 23.2,
+       "bias": 23.2,
+       "max": 48.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+      "cite": "Gui et al. (2011)",
+      "points": 67,
+      "P_pct": {
+       "aad": 8.8,
+       "bias": -6.7,
+       "max": 20.2
+      },
+      "x_pct": {
+       "aad": 12.1,
+       "bias": 10,
+       "max": 34.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_methanol_10-1021-je300332b.json",
+      "cite": "Schuler et al. (2012)",
+      "points": 6,
+      "P_pct": {
+       "aad": 12.1,
+       "bias": -6.7,
+       "max": 33.4
+      },
+      "x_pct": {
+       "aad": 89.3,
+       "bias": 82.5,
+       "max": 464.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "own_kij": [
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+     "kij": 0.0444,
+     "T_K": [
+      263.15,
+      373.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+     "kij": 0.0618,
+     "T_K": [
+      313.11,
+      330.03
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+     "kij": 0.0639,
+     "T_K": [
+      323.15,
+      323.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+     "kij": 0.0117,
+     "T_K": [
+      228.2,
+      273.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+     "kij": 0.0343,
+     "T_K": [
+      258.2,
+      298.3
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+     "kij": 0.0143,
+     "T_K": [
+      213.15,
+      273.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+     "kij": 0.035,
+     "T_K": [
+      303.2,
+      323.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+     "kij": 0.031,
+     "T_K": [
+      298.15,
+      313.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+     "kij": 0.047,
+     "T_K": [
+      298.15,
+      298.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+     "kij": 0.0543,
+     "T_K": [
+      283.15,
+      373.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+     "kij": 0.0591,
+     "T_K": [
+      303.1,
+      353.1
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+     "kij": 0.058,
+     "T_K": [
+      300.78,
+      376.36
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+     "kij": 0.0627,
+     "T_K": [
+      313.75,
+      395
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+     "kij": 0.0506,
+     "T_K": [
+      313.2,
+      313.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+     "kij": 0.0442,
+     "T_K": [
+      288.15,
+      318.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_methanol_10-1021-je300332b.json",
+     "kij": 0.039,
+     "T_K": [
+      299,
+      327
+     ]
+    }
+   ],
+   "databank": {
+    "kij": 0.0496,
+    "errors": {
+     "P_pct": {
+      "aad": 14.5,
+      "bias": 4.7,
+      "max": 106.5
+     },
+     "x_pct": {
+      "aad": 18.6,
+      "bias": 0.3,
+      "max": 410.5
+     },
+     "y": {
+      "aad": 0.0291,
+      "max": 0.0855,
+      "points": 4
+     },
+     "no_bubble_pressure": 16,
+     "no_two_phase_state": 21
+    }
+   }
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "kij": -0.1148,
+   "ok": false,
+   "range": {
+    "T_K": [
+     273.15,
+     393.15
+    ],
+    "P_kPa": [
+     13.89,
+     20000
+    ]
+   },
+   "points": 573,
+   "articles": 29,
+   "outside_window": 166,
+   "vapour_only_rows": 60,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 58.5,
+      "bias": 9.1,
+      "max": 3402.5
+     },
+     "x_pct": {
+      "aad": 48,
+      "bias": 27.2,
+      "max": 188.5
+     },
+     "y": {
+      "aad": 0.0107,
+      "max": 0.0387,
+      "points": 25
+     },
+     "no_bubble_pressure": 8,
+     "no_two_phase_state": 15
+    },
+    "articles": [
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+      "cite": "Bermejo et al. (2005)",
+      "points": 26,
+      "P_pct": {
+       "aad": 35.9,
+       "bias": -33.1,
+       "max": 58.5
+      },
+      "x_pct": {
+       "aad": 62.6,
+       "bias": 60.3,
+       "max": 137.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+      "cite": "Dalmolin et al. (2006)",
+      "points": 49,
+      "P_pct": {
+       "aad": 35.6,
+       "bias": 31.1,
+       "max": 71.3
+      },
+      "x_pct": {
+       "aad": 25.1,
+       "bias": -19.5,
+       "max": 41.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+      "cite": "Koschel et al. (2006)",
+      "points": 7,
+      "P_pct": {
+       "aad": 49.9,
+       "bias": -49.9,
+       "max": 70.9
+      },
+      "x_pct": {
+       "aad": 86.3,
+       "bias": 86.3,
+       "max": 161.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+      "cite": "Martin et al. (2009)",
+      "points": 3,
+      "P_pct": {
+       "aad": 61.4,
+       "bias": -61.4,
+       "max": 69.4
+      },
+      "x_pct": {
+       "aad": 119.2,
+       "bias": 119.2,
+       "max": 156.4
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+      "cite": "Dell'Era et al. (2010)",
+      "points": 7,
+      "P_pct": {
+       "aad": 34.6,
+       "bias": 34.6,
+       "max": 40.7
+      },
+      "x_pct": {
+       "aad": 25.5,
+       "bias": -25.5,
+       "max": 29
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+      "cite": "Guo et al. (2014)",
+      "points": 20,
+      "P_pct": {
+       "aad": 463.3,
+       "bias": 397.9,
+       "max": 3402.5
+      },
+      "x_pct": {
+       "aad": 81.4,
+       "bias": 73.4,
+       "max": 188.5
+      },
+      "y": null,
+      "no_bubble_pressure": 3,
+      "no_two_phase_state": 8
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+      "cite": "Carvalho et al. (2015)",
+      "points": 66,
+      "P_pct": {
+       "aad": 38.3,
+       "bias": -14.2,
+       "max": 105.4
+      },
+      "x_pct": {
+       "aad": 49.1,
+       "bias": 35.4,
+       "max": 115.3
+      },
+      "y": null,
+      "no_bubble_pressure": 1,
+      "no_two_phase_state": 1
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+      "cite": "Haghtalab et al. (2015)",
+      "points": 33,
+      "P_pct": {
+       "aad": 123.4,
+       "bias": 123.4,
+       "max": 1648.4
+      },
+      "x_pct": {
+       "aad": 34,
+       "bias": -34,
+       "max": 65.6
+      },
+      "y": null,
+      "no_bubble_pressure": 4,
+      "no_two_phase_state": 4
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+      "cite": "Yuan et al. (2017)",
+      "points": 5,
+      "P_pct": {
+       "aad": 7,
+       "bias": 5.3,
+       "max": 10.5
+      },
+      "x_pct": {
+       "aad": 6.5,
+       "bias": -4.7,
+       "max": 9.4
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+      "cite": "Ahmadi et al. (2018)",
+      "points": 20,
+      "P_pct": {
+       "aad": 24.8,
+       "bias": -18.8,
+       "max": 69.1
+      },
+      "x_pct": {
+       "aad": 30.3,
+       "bias": 26,
+       "max": 148
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 1
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-08-006.json",
+      "cite": "Wang et al. (2018)",
+      "points": 0,
+      "P_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "x_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "y": {
+       "aad": 0.0178,
+       "max": 0.0387,
+       "points": 10
+      },
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+      "cite": "Jia et al. (2019)",
+      "points": 20,
+      "P_pct": {
+       "aad": 80.5,
+       "bias": 80.5,
+       "max": 156.9
+      },
+      "x_pct": {
+       "aad": 42.3,
+       "bias": -42.3,
+       "max": 61
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+      "cite": "Fonseca et al. (2007)",
+      "points": 14,
+      "P_pct": {
+       "aad": 35.9,
+       "bias": 35.9,
+       "max": 57.9
+      },
+      "x_pct": {
+       "aad": 26.3,
+       "bias": -26.3,
+       "max": 37
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+      "cite": "Muromachi et al. (2015)",
+      "points": 17,
+      "P_pct": {
+       "aad": 73.6,
+       "bias": 73.4,
+       "max": 354.7
+      },
+      "x_pct": {
+       "aad": 25.1,
+       "bias": -24.8,
+       "max": 40.6
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2015-09-024.json",
+      "cite": "Comak et al. (2016)",
+      "points": 0,
+      "P_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "x_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "y": {
+       "aad": 0.0059,
+       "max": 0.014,
+       "points": 15
+      },
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+      "cite": "Howlader et al. (2017)",
+      "points": 16,
+      "P_pct": {
+       "aad": 52.7,
+       "bias": 52.7,
+       "max": 67.5
+      },
+      "x_pct": {
+       "aad": 33.5,
+       "bias": -33.5,
+       "max": 39.8
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+      "cite": "Li et al. (2018)",
+      "points": 3,
+      "P_pct": {
+       "aad": 149.6,
+       "bias": 149.6,
+       "max": 155.9
+      },
+      "x_pct": {
+       "aad": 58.3,
+       "bias": -58.3,
+       "max": 59.3
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+      "cite": "Luo et al. (2017)",
+      "points": 5,
+      "P_pct": {
+       "aad": 23.4,
+       "bias": 0.3,
+       "max": 40
+      },
+      "x_pct": {
+       "aad": 26.7,
+       "bias": 8.5,
+       "max": 66.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+      "cite": "Messabeb et al. (2016)",
+      "points": 4,
+      "P_pct": {
+       "aad": 50.1,
+       "bias": -50.1,
+       "max": 67.7
+      },
+      "x_pct": {
+       "aad": 45.5,
+       "bias": 45.5,
+       "max": 51.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+      "cite": "Messabeb et al. (2017)",
+      "points": 4,
+      "P_pct": {
+       "aad": 62.9,
+       "bias": -62.9,
+       "max": 71.2
+      },
+      "x_pct": {
+       "aad": 139.6,
+       "bias": 139.6,
+       "max": 160.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+      "cite": "Kastanidis et al. (2018)",
+      "points": 1,
+      "P_pct": {
+       "aad": 43.2,
+       "bias": -43.2,
+       "max": 43.2
+      },
+      "x_pct": {
+       "aad": 43,
+       "bias": 43,
+       "max": 43
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+      "cite": "Pokki et al. (2018)",
+      "points": 5,
+      "P_pct": {
+       "aad": 29.4,
+       "bias": 29.4,
+       "max": 38.4
+      },
+      "x_pct": {
+       "aad": 19.8,
+       "bias": -19.8,
+       "max": 27.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+      "cite": "Wang et al. (2019)",
+      "points": 144,
+      "P_pct": {
+       "aad": 45.1,
+       "bias": -44.9,
+       "max": 71.6
+      },
+      "x_pct": {
+       "aad": 59.6,
+       "bias": 59.5,
+       "max": 128
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 1
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+      "cite": "Han et al. (2011)",
+      "points": 17,
+      "P_pct": {
+       "aad": 15,
+       "bias": -12.6,
+       "max": 27.6
+      },
+      "x_pct": {
+       "aad": 18.9,
+       "bias": 16.7,
+       "max": 37.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+      "cite": "Lucile et al. (2012)",
+      "points": 30,
+      "P_pct": {
+       "aad": 36.2,
+       "bias": -28.2,
+       "max": 56.6
+      },
+      "x_pct": {
+       "aad": 64.5,
+       "bias": 58.7,
+       "max": 138.6
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+      "cite": "Schuler et al. (2012)",
+      "points": 7,
+      "P_pct": {
+       "aad": 20.9,
+       "bias": 17.7,
+       "max": 55.6
+      },
+      "x_pct": {
+       "aad": 16.8,
+       "bias": -12.5,
+       "max": 36.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+      "cite": "Tong et al. (2013)",
+      "points": 3,
+      "P_pct": {
+       "aad": 65.3,
+       "bias": -65.3,
+       "max": 71.4
+      },
+      "x_pct": {
+       "aad": 152.7,
+       "bias": 152.7,
+       "max": 171.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+      "cite": "Serpa et al. (2013)",
+      "points": 9,
+      "P_pct": {
+       "aad": 25.9,
+       "bias": -6.9,
+       "max": 37.2
+      },
+      "x_pct": {
+       "aad": 31.8,
+       "bias": 16.2,
+       "max": 60.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+      "cite": "Mohammadian et al. (2015)",
+      "points": 19,
+      "P_pct": {
+       "aad": 52.5,
+       "bias": -52.5,
+       "max": 70.9
+      },
+      "x_pct": {
+       "aad": 85.6,
+       "bias": 85.6,
+       "max": 127
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+      "cite": "Qin et al. (2008)",
+      "points": 1,
+      "P_pct": {
+       "aad": 59.8,
+       "bias": -59.8,
+       "max": 59.8
+      },
+      "x_pct": {
+       "aad": 129.5,
+       "bias": 129.5,
+       "max": 129.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je800966f.json",
+      "cite": "Campos et al. (2009)",
+      "points": 18,
+      "P_pct": {
+       "aad": 13.8,
+       "bias": 6.2,
+       "max": 34.3
+      },
+      "x_pct": {
+       "aad": 13.2,
+       "bias": -3.3,
+       "max": 34.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "own_kij": [
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+     "kij": -0.089,
+     "T_K": [
+      296.73,
+      369.65
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+     "kij": -0.1324,
+     "T_K": [
+      288,
+      323
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+     "kij": -0.0867,
+     "T_K": [
+      323.1,
+      373.1
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+     "kij": -0.0598,
+     "T_K": [
+      353,
+      393
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+     "kij": -0.1337,
+     "T_K": [
+      298.48,
+      298.63
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+     "kij": -0.0812,
+     "T_K": [
+      273.15,
+      393.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+     "kij": -0.1129,
+     "T_K": [
+      283.24,
+      363.42
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+     "kij": -0.1421,
+     "T_K": [
+      275.15,
+      313.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+     "kij": -0.1182,
+     "T_K": [
+      308.2,
+      308.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+     "kij": -0.1111,
+     "T_K": [
+      300.95,
+      373.39
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+     "kij": -0.1499,
+     "T_K": [
+      273.2,
+      293.21
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+     "kij": -0.135,
+     "T_K": [
+      290.27,
+      302.93
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+     "kij": -0.1323,
+     "T_K": [
+      286.15,
+      298.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+     "kij": -0.1402,
+     "T_K": [
+      288.2,
+      298.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+     "kij": -0.1622,
+     "T_K": [
+      273.15,
+      273.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+     "kij": -0.1143,
+     "T_K": [
+      294.57,
+      345.57
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+     "kij": -0.0895,
+     "T_K": [
+      323.15,
+      323.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+     "kij": -0.0398,
+     "T_K": [
+      373.15,
+      373.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+     "kij": -0.0923,
+     "T_K": [
+      322.94,
+      322.94
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+     "kij": -0.1275,
+     "T_K": [
+      298.7,
+      299.3
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+     "kij": -0.0998,
+     "T_K": [
+      303.15,
+      353.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+     "kij": -0.1049,
+     "T_K": [
+      313,
+      333
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+     "kij": -0.1121,
+     "T_K": [
+      298.15,
+      393.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+     "kij": -0.1282,
+     "T_K": [
+      303,
+      333
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+     "kij": -0.0355,
+     "T_K": [
+      374.18,
+      374.91
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+     "kij": -0.1088,
+     "T_K": [
+      288,
+      303
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+     "kij": -0.0749,
+     "T_K": [
+      333.15,
+      353.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+     "kij": -0.0431,
+     "T_K": [
+      375.2,
+      375.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je800966f.json",
+     "kij": -0.1193,
+     "T_K": [
+      303.2,
+      323.2
+     ]
+    }
+   ],
+   "databank": {
+    "kij": 0.0952,
+    "errors": {
+     "P_pct": {
+      "aad": 13264.1,
+      "bias": 13264.1,
+      "max": 216549.6
+     },
+     "x_pct": {
+      "aad": 91.1,
+      "bias": -91.1,
+      "max": 98.8
+     },
+     "y": {
+      "aad": 0.0068,
+      "max": 0.0144,
+      "points": 7
+     },
+     "no_bubble_pressure": 457,
+     "no_two_phase_state": 475
+    }
+   }
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "kij": -0.1335,
+   "ok": false,
+   "range": {
+    "T_K": [
+     273.15,
+     393.15
+    ],
+    "P_kPa": [
+     13.89,
+     20000
+    ]
+   },
+   "points": 573,
+   "articles": 29,
+   "outside_window": 166,
+   "vapour_only_rows": 60,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 65.7,
+      "bias": 20,
+      "max": 4162
+     },
+     "x_pct": {
+      "aad": 45.3,
+      "bias": 22,
+      "max": 179.9
+     },
+     "y": {
+      "aad": 0.0098,
+      "max": 0.0377,
+      "points": 25
+     },
+     "no_bubble_pressure": 7,
+     "no_two_phase_state": 16
+    },
+    "articles": [
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+      "cite": "Bermejo et al. (2005)",
+      "points": 26,
+      "P_pct": {
+       "aad": 33.6,
+       "bias": -29.7,
+       "max": 56.3
+      },
+      "x_pct": {
+       "aad": 56,
+       "bias": 52.9,
+       "max": 126.4
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+      "cite": "Dalmolin et al. (2006)",
+      "points": 49,
+      "P_pct": {
+       "aad": 40.2,
+       "bias": 37,
+       "max": 78.6
+      },
+      "x_pct": {
+       "aad": 26.8,
+       "bias": -23.1,
+       "max": 44
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+      "cite": "Koschel et al. (2006)",
+      "points": 7,
+      "P_pct": {
+       "aad": 47.3,
+       "bias": -47.3,
+       "max": 69.4
+      },
+      "x_pct": {
+       "aad": 79.1,
+       "bias": 79.1,
+       "max": 152.8
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+      "cite": "Martin et al. (2009)",
+      "points": 3,
+      "P_pct": {
+       "aad": 59.4,
+       "bias": -59.4,
+       "max": 67.8
+      },
+      "x_pct": {
+       "aad": 111.1,
+       "bias": 111.1,
+       "max": 146.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+      "cite": "Dell'Era et al. (2010)",
+      "points": 7,
+      "P_pct": {
+       "aad": 41,
+       "bias": 41,
+       "max": 47.3
+      },
+      "x_pct": {
+       "aad": 28.8,
+       "bias": -28.8,
+       "max": 32.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+      "cite": "Guo et al. (2014)",
+      "points": 20,
+      "P_pct": {
+       "aad": 628.7,
+       "bias": 569,
+       "max": 4162
+      },
+      "x_pct": {
+       "aad": 76.7,
+       "bias": 68.1,
+       "max": 179.9
+      },
+      "y": null,
+      "no_bubble_pressure": 2,
+      "no_two_phase_state": 8
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+      "cite": "Carvalho et al. (2015)",
+      "points": 66,
+      "P_pct": {
+       "aad": 37.9,
+       "bias": -9.9,
+       "max": 114.4
+      },
+      "x_pct": {
+       "aad": 45,
+       "bias": 29.3,
+       "max": 105
+      },
+      "y": null,
+      "no_bubble_pressure": 1,
+      "no_two_phase_state": 1
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+      "cite": "Haghtalab et al. (2015)",
+      "points": 33,
+      "P_pct": {
+       "aad": 133.8,
+       "bias": 133.8,
+       "max": 1565.2
+      },
+      "x_pct": {
+       "aad": 36.4,
+       "bias": -36.4,
+       "max": 66.8
+      },
+      "y": null,
+      "no_bubble_pressure": 3,
+      "no_two_phase_state": 3
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+      "cite": "Yuan et al. (2017)",
+      "points": 5,
+      "P_pct": {
+       "aad": 10.7,
+       "bias": 10.7,
+       "max": 16.1
+      },
+      "x_pct": {
+       "aad": 9.2,
+       "bias": -9.2,
+       "max": 13.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+      "cite": "Ahmadi et al. (2018)",
+      "points": 20,
+      "P_pct": {
+       "aad": 23.9,
+       "bias": -13,
+       "max": 67.6
+      },
+      "x_pct": {
+       "aad": 28.1,
+       "bias": 21.1,
+       "max": 140.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 1
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-08-006.json",
+      "cite": "Wang et al. (2018)",
+      "points": 0,
+      "P_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "x_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "y": {
+       "aad": 0.0175,
+       "max": 0.0377,
+       "points": 10
+      },
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+      "cite": "Jia et al. (2019)",
+      "points": 20,
+      "P_pct": {
+       "aad": 87,
+       "bias": 87,
+       "max": 165.6
+      },
+      "x_pct": {
+       "aad": 44.3,
+       "bias": -44.3,
+       "max": 62.3
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+      "cite": "Fonseca et al. (2007)",
+      "points": 14,
+      "P_pct": {
+       "aad": 41.9,
+       "bias": 41.9,
+       "max": 64.6
+      },
+      "x_pct": {
+       "aad": 29.4,
+       "bias": -29.4,
+       "max": 39.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+      "cite": "Muromachi et al. (2015)",
+      "points": 17,
+      "P_pct": {
+       "aad": 85.1,
+       "bias": 85.1,
+       "max": 406.5
+      },
+      "x_pct": {
+       "aad": 27.9,
+       "bias": -27.9,
+       "max": 42.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2015-09-024.json",
+      "cite": "Comak et al. (2016)",
+      "points": 0,
+      "P_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "x_pct": {
+       "aad": null,
+       "bias": null,
+       "max": null
+      },
+      "y": {
+       "aad": 0.0047,
+       "max": 0.0124,
+       "points": 15
+      },
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+      "cite": "Howlader et al. (2017)",
+      "points": 16,
+      "P_pct": {
+       "aad": 59.5,
+       "bias": 59.5,
+       "max": 74.6
+      },
+      "x_pct": {
+       "aad": 36.3,
+       "bias": -36.3,
+       "max": 42.3
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+      "cite": "Li et al. (2018)",
+      "points": 3,
+      "P_pct": {
+       "aad": 157.6,
+       "bias": 157.6,
+       "max": 164.1
+      },
+      "x_pct": {
+       "aad": 59.6,
+       "bias": -59.6,
+       "max": 60.6
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+      "cite": "Luo et al. (2017)",
+      "points": 5,
+      "P_pct": {
+       "aad": 25.2,
+       "bias": 5.5,
+       "max": 39.9
+      },
+      "x_pct": {
+       "aad": 25.9,
+       "bias": 2.9,
+       "max": 57.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+      "cite": "Messabeb et al. (2016)",
+      "points": 4,
+      "P_pct": {
+       "aad": 47.3,
+       "bias": -47.3,
+       "max": 65.8
+      },
+      "x_pct": {
+       "aad": 40.7,
+       "bias": 40.7,
+       "max": 47.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+      "cite": "Messabeb et al. (2017)",
+      "points": 4,
+      "P_pct": {
+       "aad": 60.9,
+       "bias": -60.9,
+       "max": 69.7
+      },
+      "x_pct": {
+       "aad": 130.5,
+       "bias": 130.5,
+       "max": 152.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+      "cite": "Kastanidis et al. (2018)",
+      "points": 1,
+      "P_pct": {
+       "aad": 40,
+       "bias": -40,
+       "max": 40
+      },
+      "x_pct": {
+       "aad": 38.1,
+       "bias": 38.1,
+       "max": 38.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+      "cite": "Pokki et al. (2018)",
+      "points": 5,
+      "P_pct": {
+       "aad": 36,
+       "bias": 36,
+       "max": 45
+      },
+      "x_pct": {
+       "aad": 23,
+       "bias": -23,
+       "max": 30.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+      "cite": "Wang et al. (2019)",
+      "points": 144,
+      "P_pct": {
+       "aad": 42.4,
+       "bias": -41.9,
+       "max": 70.1
+      },
+      "x_pct": {
+       "aad": 54.2,
+       "bias": 53.7,
+       "max": 120.8
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 2
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+      "cite": "Han et al. (2011)",
+      "points": 17,
+      "P_pct": {
+       "aad": 12.6,
+       "bias": -8.1,
+       "max": 23.6
+      },
+      "x_pct": {
+       "aad": 14.9,
+       "bias": 10.9,
+       "max": 30.3
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+      "cite": "Lucile et al. (2012)",
+      "points": 30,
+      "P_pct": {
+       "aad": 35.1,
+       "bias": -26.6,
+       "max": 54.6
+      },
+      "x_pct": {
+       "aad": 59.8,
+       "bias": 53.5,
+       "max": 127.9
+      },
+      "y": null,
+      "no_bubble_pressure": 1,
+      "no_two_phase_state": 1
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+      "cite": "Schuler et al. (2012)",
+      "points": 7,
+      "P_pct": {
+       "aad": 24.1,
+       "bias": 22.7,
+       "max": 62.8
+      },
+      "x_pct": {
+       "aad": 18,
+       "bias": -16.3,
+       "max": 39.3
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+      "cite": "Tong et al. (2013)",
+      "points": 3,
+      "P_pct": {
+       "aad": 63.5,
+       "bias": -63.5,
+       "max": 69.9
+      },
+      "x_pct": {
+       "aad": 143.5,
+       "bias": 143.5,
+       "max": 162.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+      "cite": "Serpa et al. (2013)",
+      "points": 9,
+      "P_pct": {
+       "aad": 26.3,
+       "bias": -2.8,
+       "max": 34.3
+      },
+      "x_pct": {
+       "aad": 29.6,
+       "bias": 11.1,
+       "max": 53.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+      "cite": "Mohammadian et al. (2015)",
+      "points": 19,
+      "P_pct": {
+       "aad": 50.3,
+       "bias": -50.3,
+       "max": 69.3
+      },
+      "x_pct": {
+       "aad": 78.7,
+       "bias": 78.7,
+       "max": 119.8
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+      "cite": "Qin et al. (2008)",
+      "points": 1,
+      "P_pct": {
+       "aad": 57.7,
+       "bias": -57.7,
+       "max": 57.7
+      },
+      "x_pct": {
+       "aad": 120.4,
+       "bias": 120.4,
+       "max": 120.4
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_carbon-dioxide_water_10-1021-je800966f.json",
+      "cite": "Campos et al. (2009)",
+      "points": 18,
+      "P_pct": {
+       "aad": 15.8,
+       "bias": 11.2,
+       "max": 40.9
+      },
+      "x_pct": {
+       "aad": 13.7,
+       "bias": -7.7,
+       "max": 28.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "own_kij": [
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+     "kij": -0.1099,
+     "T_K": [
+      296.73,
+      369.65
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+     "kij": -0.1547,
+     "T_K": [
+      288,
+      323
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+     "kij": -0.1062,
+     "T_K": [
+      323.1,
+      373.1
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+     "kij": -0.0782,
+     "T_K": [
+      353,
+      393
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+     "kij": -0.1562,
+     "T_K": [
+      298.48,
+      298.63
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+     "kij": 0.12,
+     "T_K": [
+      273.15,
+      393.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+     "kij": -0.1327,
+     "T_K": [
+      283.24,
+      363.42
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+     "kij": -0.1641,
+     "T_K": [
+      275.15,
+      313.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+     "kij": -0.1404,
+     "T_K": [
+      308.2,
+      308.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+     "kij": -0.1311,
+     "T_K": [
+      300.95,
+      373.39
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+     "kij": -0.1717,
+     "T_K": [
+      273.2,
+      293.21
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+     "kij": -0.1573,
+     "T_K": [
+      290.27,
+      302.93
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+     "kij": -0.1542,
+     "T_K": [
+      286.15,
+      298.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+     "kij": -0.1625,
+     "T_K": [
+      288.2,
+      298.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+     "kij": -0.1841,
+     "T_K": [
+      273.15,
+      273.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+     "kij": -0.1369,
+     "T_K": [
+      294.57,
+      345.57
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+     "kij": -0.1091,
+     "T_K": [
+      323.15,
+      323.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+     "kij": -0.0573,
+     "T_K": [
+      373.15,
+      373.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+     "kij": -0.1123,
+     "T_K": [
+      322.94,
+      322.94
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+     "kij": -0.1492,
+     "T_K": [
+      298.7,
+      299.3
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+     "kij": -0.1195,
+     "T_K": [
+      303.15,
+      353.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+     "kij": -0.127,
+     "T_K": [
+      313,
+      333
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+     "kij": -0.1324,
+     "T_K": [
+      298.15,
+      393.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+     "kij": -0.1507,
+     "T_K": [
+      303,
+      333
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+     "kij": -0.0527,
+     "T_K": [
+      374.18,
+      374.91
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+     "kij": -0.1302,
+     "T_K": [
+      288,
+      303
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+     "kij": -0.0939,
+     "T_K": [
+      333.15,
+      353.15
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+     "kij": -0.0612,
+     "T_K": [
+      375.2,
+      375.2
+     ]
+    },
+    {
+     "file": "thermoml_carbon-dioxide_water_10-1021-je800966f.json",
+     "kij": -0.1416,
+     "T_K": [
+      303.2,
+      323.2
+     ]
+    }
+   ],
+   "databank": {
+    "kij": 0.1,
+    "errors": {
+     "P_pct": {
+      "aad": 19845.9,
+      "bias": 19845.9,
+      "max": 197716
+     },
+     "x_pct": {
+      "aad": 93.3,
+      "bias": -93.3,
+      "max": 99.2
+     },
+     "y": {
+      "aad": 0.0089,
+      "max": 0.0162,
+      "points": 4
+     },
+     "no_bubble_pressure": 478,
+     "no_two_phase_state": 500
+    }
+   }
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "hydrogen",
+    "methanol"
+   ],
+   "kij": -0.2882,
+   "ok": false,
+   "range": {
+    "T_K": [
+     248.41,
+     374.85
+    ],
+    "P_kPa": [
+     236.8,
+     3427
+    ]
+   },
+   "points": 49,
+   "articles": 2,
+   "outside_window": 0,
+   "vapour_only_rows": 0,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 16.8,
+      "bias": -2.1,
+      "max": 42.6
+     },
+     "x_pct": {
+      "aad": 19.4,
+      "bias": 7.3,
+      "max": 57.3
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 0
+    },
+    "articles": [
+     {
+      "file": "thermoml_hydrogen_methanol_10-1016-j-tca-2004-12-001.json",
+      "cite": "Descamps et al. (2005)",
+      "points": 24,
+      "P_pct": {
+       "aad": 13.3,
+       "bias": 13.1,
+       "max": 42.6
+      },
+      "x_pct": {
+       "aad": 10.9,
+       "bias": -10.7,
+       "max": 29.6
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_hydrogen_methanol_10-1021-acs-jced-9b00676.json",
+      "cite": "Wu et al. (2019)",
+      "points": 25,
+      "P_pct": {
+       "aad": 20.1,
+       "bias": -16.8,
+       "max": 36.7
+      },
+      "x_pct": {
+       "aad": 27.6,
+       "bias": 24.5,
+       "max": 57.3
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "own_kij": [
+    {
+     "file": "thermoml_hydrogen_methanol_10-1016-j-tca-2004-12-001.json",
+     "kij": -0.3389,
+     "T_K": [
+      248.41,
+      308.2
+     ]
+    },
+    {
+     "file": "thermoml_hydrogen_methanol_10-1021-acs-jced-9b00676.json",
+     "kij": -0.1987,
+     "T_K": [
+      296.87,
+      374.85
+     ]
+    }
+   ],
+   "databank": null
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "hydrogen",
+    "methanol"
+   ],
+   "kij": -0.52,
+   "ok": false,
+   "range": {
+    "T_K": [
+     248.41,
+     374.85
+    ],
+    "P_kPa": [
+     236.8,
+     3427
+    ]
+   },
+   "points": 49,
+   "articles": 2,
+   "outside_window": 0,
+   "vapour_only_rows": 0,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 21.2,
+      "bias": 7.1,
+      "max": 56.4
+     },
+     "x_pct": {
+      "aad": 20.6,
+      "bias": -1.6,
+      "max": 46.5
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 0
+    },
+    "articles": [
+     {
+      "file": "thermoml_hydrogen_methanol_10-1016-j-tca-2004-12-001.json",
+      "cite": "Descamps et al. (2005)",
+      "points": 24,
+      "P_pct": {
+       "aad": 24.2,
+       "bias": 24.2,
+       "max": 56.4
+      },
+      "x_pct": {
+       "aad": 18.6,
+       "bias": -18.6,
+       "max": 35.8
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_hydrogen_methanol_10-1021-acs-jced-9b00676.json",
+      "cite": "Wu et al. (2019)",
+      "points": 25,
+      "P_pct": {
+       "aad": 18.4,
+       "bias": -9.2,
+       "max": 32
+      },
+      "x_pct": {
+       "aad": 22.5,
+       "bias": 14.6,
+       "max": 46.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "own_kij": [
+    {
+     "file": "thermoml_hydrogen_methanol_10-1016-j-tca-2004-12-001.json",
+     "kij": -0.52,
+     "T_K": [
+      248.41,
+      308.2
+     ]
+    },
+    {
+     "file": "thermoml_hydrogen_methanol_10-1021-acs-jced-9b00676.json",
+     "kij": -0.4632,
+     "T_K": [
+      296.87,
+      374.85
+     ]
+    }
+   ],
+   "databank": null
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-monoxide",
+    "methanol"
+   ],
+   "kij": -0.1802,
+   "ok": true,
+   "range": {
+    "T_K": [
+     298.15,
+     372.9
+    ],
+    "P_kPa": [
+     241.5,
+     3232.2
+    ]
+   },
+   "points": 27,
+   "articles": 1,
+   "outside_window": 0,
+   "vapour_only_rows": 0,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 4.9,
+      "bias": -0.5,
+      "max": 15.7
+     },
+     "x_pct": {
+      "aad": 5,
+      "bias": 0.9,
+      "max": 18.5
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 0
+    },
+    "articles": [
+     {
+      "file": "thermoml_carbon-monoxide_methanol_10-1021-acs-jced-9b00676.json",
+      "cite": "Wu et al. (2019)",
+      "points": 27,
+      "P_pct": {
+       "aad": 4.9,
+       "bias": -0.5,
+       "max": 15.7
+      },
+      "x_pct": {
+       "aad": 5,
+       "bias": 0.9,
+       "max": 18.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "own_kij": [
+    {
+     "file": "thermoml_carbon-monoxide_methanol_10-1021-acs-jced-9b00676.json",
+     "kij": -0.1802,
+     "T_K": [
+      298.15,
+      372.9
+     ]
+    }
+   ],
+   "databank": null
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-monoxide",
+    "methanol"
+   ],
+   "kij": -0.2585,
+   "ok": true,
+   "range": {
+    "T_K": [
+     298.15,
+     372.9
+    ],
+    "P_kPa": [
+     241.5,
+     3232.2
+    ]
+   },
+   "points": 27,
+   "articles": 1,
+   "outside_window": 0,
+   "vapour_only_rows": 0,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 4.6,
+      "bias": -0.4,
+      "max": 15
+     },
+     "x_pct": {
+      "aad": 4.7,
+      "bias": 0.8,
+      "max": 17.6
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 0
+    },
+    "articles": [
+     {
+      "file": "thermoml_carbon-monoxide_methanol_10-1021-acs-jced-9b00676.json",
+      "cite": "Wu et al. (2019)",
+      "points": 27,
+      "P_pct": {
+       "aad": 4.6,
+       "bias": -0.4,
+       "max": 15
+      },
+      "x_pct": {
+       "aad": 4.7,
+       "bias": 0.8,
+       "max": 17.6
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "own_kij": [
+    {
+     "file": "thermoml_carbon-monoxide_methanol_10-1021-acs-jced-9b00676.json",
+     "kij": -0.2585,
+     "T_K": [
+      298.15,
+      372.9
+     ]
+    }
+   ],
+   "databank": null
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "methane",
+    "methanol"
+   ],
+   "kij": -0.0503,
+   "ok": false,
+   "warned": "the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
+   "range": {
+    "T_K": [
+     273.15,
+     323
+    ],
+    "P_kPa": [
+     1050,
+     19930
+    ]
+   },
+   "points": 42,
+   "articles": 6,
+   "outside_window": 4,
+   "vapour_only_rows": 0,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 9.2,
+      "bias": 0,
+      "max": 35.6
+     },
+     "x_pct": {
+      "aad": 7.8,
+      "bias": 1.7,
+      "max": 19.5
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 0
+    },
+    "articles": [
+     {
+      "file": "thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+      "cite": "Frost et al. (2015)",
+      "points": 5,
+      "P_pct": {
+       "aad": 9.2,
+       "bias": -8.7,
+       "max": 17.1
+      },
+      "x_pct": {
+       "aad": 9.6,
+       "bias": 9.2,
+       "max": 19.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+      "cite": "Oliveira et al. (2016)",
+      "points": 11,
+      "P_pct": {
+       "aad": 7.4,
+       "bias": -1.5,
+       "max": 15.9
+      },
+      "x_pct": {
+       "aad": 6.8,
+       "bias": 2.5,
+       "max": 18.1
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+      "cite": "Nourozieh et al. (2012)",
+      "points": 8,
+      "P_pct": {
+       "aad": 5.7,
+       "bias": 5.5,
+       "max": 9
+      },
+      "x_pct": {
+       "aad": 4.9,
+       "bias": -4.7,
+       "max": 7.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+      "cite": "Kapateh et al. (2016)",
+      "points": 7,
+      "P_pct": {
+       "aad": 16.6,
+       "bias": 15.4,
+       "max": 35.6
+      },
+      "x_pct": {
+       "aad": 9.6,
+       "bias": -8.5,
+       "max": 17.3
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_methanol_10-1021-je034138j.json",
+      "cite": "Xia et al. (2004)",
+      "points": 2,
+      "P_pct": {
+       "aad": 11.2,
+       "bias": -11.2,
+       "max": 12.6
+      },
+      "x_pct": {
+       "aad": 11,
+       "bias": 11,
+       "max": 13.2
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_methanol_10-1021-je400684k.json",
+      "cite": "Frost et al. (2014)",
+      "points": 9,
+      "P_pct": {
+       "aad": 8.2,
+       "bias": -8,
+       "max": 16.3
+      },
+      "x_pct": {
+       "aad": 8.5,
+       "bias": 8.3,
+       "max": 17.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "own_kij": [
+    {
+     "file": "thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+     "kij": -0.0407,
+     "T_K": [
+      298,
+      298
+     ]
+    },
+    {
+     "file": "thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+     "kij": -0.0497,
+     "T_K": [
+      303,
+      323
+     ]
+    },
+    {
+     "file": "thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+     "kij": -0.0576,
+     "T_K": [
+      294.2,
+      294.8
+     ]
+    },
+    {
+     "file": "thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+     "kij": -0.0639,
+     "T_K": [
+      273.15,
+      273.15
+     ]
+    },
+    {
+     "file": "thermoml_methane_methanol_10-1021-je034138j.json",
+     "kij": -0.0359,
+     "T_K": [
+      298.15,
+      298.15
+     ]
+    },
+    {
+     "file": "thermoml_methane_methanol_10-1021-je400684k.json",
+     "kij": -0.0416,
+     "T_K": [
+      298.87,
+      298.87
+     ]
+    }
+   ],
+   "databank": null
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "methane",
+    "methanol"
+   ],
+   "kij": -0.08,
+   "ok": false,
+   "warned": "the maintainer, 2026-11-05 (docs/decisions/2026-11-05-03-kij-followup.md)",
+   "range": {
+    "T_K": [
+     273.15,
+     323
+    ],
+    "P_kPa": [
+     1050,
+     19930
+    ]
+   },
+   "points": 42,
+   "articles": 6,
+   "outside_window": 4,
+   "vapour_only_rows": 0,
+   "errors": {
+    "pooled": {
+     "P_pct": {
+      "aad": 8.9,
+      "bias": 0.1,
+      "max": 32
+     },
+     "x_pct": {
+      "aad": 7.7,
+      "bias": 1.4,
+      "max": 17.7
+     },
+     "y": null,
+     "no_bubble_pressure": 0,
+     "no_two_phase_state": 0
+    },
+    "articles": [
+     {
+      "file": "thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+      "cite": "Frost et al. (2015)",
+      "points": 5,
+      "P_pct": {
+       "aad": 8.5,
+       "bias": -8.4,
+       "max": 15.7
+      },
+      "x_pct": {
+       "aad": 8.9,
+       "bias": 8.9,
+       "max": 17.7
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+      "cite": "Oliveira et al. (2016)",
+      "points": 11,
+      "P_pct": {
+       "aad": 6.6,
+       "bias": -1.7,
+       "max": 14.9
+      },
+      "x_pct": {
+       "aad": 6.2,
+       "bias": 2.5,
+       "max": 16.9
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+      "cite": "Nourozieh et al. (2012)",
+      "points": 8,
+      "P_pct": {
+       "aad": 6.9,
+       "bias": 6.9,
+       "max": 10.7
+      },
+      "x_pct": {
+       "aad": 6,
+       "bias": -6,
+       "max": 9.6
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+      "cite": "Kapateh et al. (2016)",
+      "points": 7,
+      "P_pct": {
+       "aad": 15.6,
+       "bias": 14.6,
+       "max": 32
+      },
+      "x_pct": {
+       "aad": 9.6,
+       "bias": -8.7,
+       "max": 16.5
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_methanol_10-1021-je034138j.json",
+      "cite": "Xia et al. (2004)",
+      "points": 2,
+      "P_pct": {
+       "aad": 10.6,
+       "bias": -10.6,
+       "max": 11.4
+      },
+      "x_pct": {
+       "aad": 10.5,
+       "bias": 10.5,
+       "max": 12
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     },
+     {
+      "file": "thermoml_methane_methanol_10-1021-je400684k.json",
+      "cite": "Frost et al. (2014)",
+      "points": 9,
+      "P_pct": {
+       "aad": 8,
+       "bias": -8,
+       "max": 15.3
+      },
+      "x_pct": {
+       "aad": 8.2,
+       "bias": 8.2,
+       "max": 16.6
+      },
+      "y": null,
+      "no_bubble_pressure": 0,
+      "no_two_phase_state": 0
+     }
+    ]
+   },
+   "own_kij": [
+    {
+     "file": "thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json",
+     "kij": -0.0696,
+     "T_K": [
+      298,
+      298
+     ]
+    },
+    {
+     "file": "thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json",
+     "kij": -0.0788,
+     "T_K": [
+      303,
+      323
+     ]
+    },
+    {
+     "file": "thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json",
+     "kij": -0.0898,
+     "T_K": [
+      294.2,
+      294.8
+     ]
+    },
+    {
+     "file": "thermoml_methane_methanol_10-1021-acs-jced-5b00793.json",
+     "kij": -0.094,
+     "T_K": [
+      273.15,
+      273.15
+     ]
+    },
+    {
+     "file": "thermoml_methane_methanol_10-1021-je034138j.json",
+     "kij": -0.065,
+     "T_K": [
+      298.15,
+      298.15
+     ]
+    },
+    {
+     "file": "thermoml_methane_methanol_10-1021-je400684k.json",
+     "kij": -0.0703,
+     "T_K": [
+      298.87,
+      298.87
+     ]
+    }
+   ],
+   "databank": null
+  }
+ ],
+ "temperature_study": [
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-dioxide",
+    "methanol"
+   ],
+   "a": 0.1883,
+   "b_K": -40.62,
+   "points": 424,
+   "articles": 16,
+   "range": {
+    "T_K": [
+     213.15,
+     395
+    ],
+    "P_kPa": [
+     79,
+     12068
+    ]
+   },
+   "ok": false,
+   "warned": "the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
+   "errors": {
+    "P_pct": {
+     "aad": 7.1,
+     "bias": -1.1,
+     "max": 29.6
+    },
+    "x_pct": {
+     "aad": 13.1,
+     "bias": 7,
+     "max": 354.8
+    },
+    "y": {
+     "aad": 0.0269,
+     "max": 0.0812,
+     "points": 4
+    },
+    "no_bubble_pressure": 0,
+    "no_two_phase_state": 7
+   },
+   "files": [
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+   ]
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-dioxide",
+    "methanol"
+   ],
+   "a": 0.1857,
+   "b_K": -42.12,
+   "points": 424,
+   "articles": 16,
+   "range": {
+    "T_K": [
+     213.15,
+     395
+    ],
+    "P_kPa": [
+     79,
+     12068
+    ]
+   },
+   "ok": false,
+   "warned": "the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
+   "errors": {
+    "P_pct": {
+     "aad": 7.3,
+     "bias": -1.1,
+     "max": 32.2
+    },
+    "x_pct": {
+     "aad": 13.2,
+     "bias": 6.8,
+     "max": 384.7
+    },
+    "y": {
+     "aad": 0.029,
+     "max": 0.0854,
+     "points": 4
+    },
+    "no_bubble_pressure": 0,
+    "no_two_phase_state": 7
+   },
+   "files": [
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json",
+    "thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je049803i.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je0498614.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je101344v.json",
+    "thermoml_carbon-dioxide_methanol_10-1021-je300332b.json"
+   ]
+  },
+  {
+   "model": "PR",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "a": 0.2484,
+   "b_K": -109.44,
+   "points": 573,
+   "articles": 29,
+   "range": {
+    "T_K": [
+     273.15,
+     393.15
+    ],
+    "P_kPa": [
+     13.89,
+     20000
+    ]
+   },
+   "ok": false,
+   "warned": "the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
+   "errors": {
+    "P_pct": {
+     "aad": 13.8,
+     "bias": 9.3,
+     "max": 74.3
+    },
+    "x_pct": {
+     "aad": 10.2,
+     "bias": -7.8,
+     "max": 55.8
+    },
+    "y": {
+     "aad": 0.008,
+     "max": 0.0329,
+     "points": 25
+    },
+    "no_bubble_pressure": 4,
+    "no_two_phase_state": 10
+   },
+   "files": [
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+    "thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+    "thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+    "thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+    "thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+    "thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+    "thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+    "thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+    "thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+   ]
+  },
+  {
+   "model": "SRK",
+   "pair": [
+    "carbon-dioxide",
+    "water"
+   ],
+   "a": 0.2352,
+   "b_K": -111.6,
+   "points": 573,
+   "articles": 29,
+   "range": {
+    "T_K": [
+     273.15,
+     393.15
+    ],
+    "P_kPa": [
+     13.89,
+     20000
+    ]
+   },
+   "ok": false,
+   "warned": "the maintainer, 2026-11-06 (docs/decisions/2026-11-06-01-kij-temperature.md)",
+   "errors": {
+    "P_pct": {
+     "aad": 15.3,
+     "bias": 10.3,
+     "max": 77.9
+    },
+    "x_pct": {
+     "aad": 11.1,
+     "bias": -8.7,
+     "max": 52.3
+    },
+    "y": {
+     "aad": 0.0074,
+     "max": 0.0327,
+     "points": 25
+    },
+    "no_bubble_pressure": 4,
+    "no_two_phase_state": 10
+   },
+   "files": [
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json",
+    "thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json",
+    "thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json",
+    "thermoml_carbon-dioxide_water_10-1021-je1011168.json",
+    "thermoml_carbon-dioxide_water_10-1021-je200991x.json",
+    "thermoml_carbon-dioxide_water_10-1021-je300332b.json",
+    "thermoml_carbon-dioxide_water_10-1021-je400396s.json",
+    "thermoml_carbon-dioxide_water_10-1021-je400736w.json",
+    "thermoml_carbon-dioxide_water_10-1021-je501172d.json",
+    "thermoml_carbon-dioxide_water_10-1021-je700473e.json",
+    "thermoml_carbon-dioxide_water_10-1021-je800966f.json"
+   ]
+  }
+ ]
+}

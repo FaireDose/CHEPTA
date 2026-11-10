@@ -21,6 +21,15 @@
  *
  * Mixing rules (van der Waals one-fluid):
  *   a = sum_i sum_j x_i x_j (1 - k_ij) sqrt(a_i a_j),   b = sum_i x_i b_i
+ * with k_ij constant or k_ij(T) = a_ij + b_ij / T (b_ij in K; the maintainer, 2026-11-06). A temperature-dependent
+ * k_ij is established practice for cubic equations of state: R. Privat, J.-N. Jaubert, The state of the art of cubic
+ * equations of state with temperature-dependent binary interaction coefficients: From correlation to prediction, Fluid
+ * Phase Equilib. 567 (2023) 113697, doi 10.1016/j.fluid.2022.113697 (open access, CC BY 4.0), eq. (15), p. 6:
+ * a_ij(T) = sqrt(a_i a_j) [1 - k_ij(T)] (read by the maintainer and the coordinating session, 2026-11-07);
+ * PPR78, "classical Van der Waals mixing rules involving a temperature-dependent binary interaction parameter kij(T)"
+ * (R. Privat, J.-N. Jaubert, J. Eng. Energ. Proc. (JEEP) 2011, 00011, doi 10.1051/jeep/201100011, open access;
+ * abstract). See docs/decisions/2026-11-06-01-kij-temperature.md. Its derivatives enter da/dT and d2a/dT2:
+ *   f_ij = 1 - k_ij(T),  df_ij/dT = b_ij / T^2,  d2f_ij/dT2 = -2 b_ij / T^3.
  *
  * With A = a P / (R T)^2 and B = b P / (R T), Z solves
  *   Z^3 + ((d1 + d2 - 1) B - 1) Z^2 + (A + d1 d2 B^2 - (d1 + d2) B (B + 1)) Z
@@ -129,9 +138,12 @@ const normPhase = phase => {
  *
  * @param {"PR"|"SRK"} model
  * @param {{name:string, Tc_K:number, Pc_Pa:number, omega:number}[]} comps
- * @param {number[][]} [kij]  symmetric binary parameters (default 0)
+ * @param {number[][]} [kij]  symmetric binary parameters (default 0); with kijB, the constant part a_ij
+ * @param {number[][]} [kijB] symmetric temperature coefficients b_ij (K) of k_ij = a_ij + b_ij / T (default 0)
+ * @param {object} [opts]  opts.mixing: a mixing rule in place of van der Waals' (MHV1, mhv1.js): a function of
+ *   { n, d1, d2, bi, sqrtA } returning (T, x) -> { a, da, d2a, b, sumA }; k_ij are then not used
  */
-export function cubicEos(model, comps, kij) {
+export function cubicEos(model, comps, kij, kijB, opts = {}) {
   const eq = CUBICS[String(model).toUpperCase()];
   if (!eq) throw fail("BAD_INPUT", `Unknown equation of state "${model}". Use PR or SRK.`);
   const n = comps.length;
@@ -141,6 +153,8 @@ export function cubicEos(model, comps, kij) {
     }
   }
   const K = kij || Array.from({ length: n }, () => new Array(n).fill(0));
+  const KB = kijB || null;
+  if (KB && (KB.length !== n || KB.some(r => r.length !== n || r.some(v => !Number.isFinite(v))))) throw fail("BAD_INPUT", `kijB must be an ${n} x ${n} matrix of numbers.`);
   const { d1, d2, OmegaA, OmegaB } = eq;
   const ac = comps.map(c => OmegaA * R * R * c.Tc_K * c.Tc_K / c.Pc_Pa);
   const bi = comps.map(c => OmegaB * R * c.Tc_K / c.Pc_Pa);
@@ -158,24 +172,28 @@ export function cubicEos(model, comps, kij) {
     return { s, s1, s2 };
   }
 
-  /** Mixture parameters at T for composition x: a, da/dT, d2a/dT2, b, and sum_j x_j a_ij. */
-  function mix(T, x) {
+  /** Mixture parameters at T for composition x: a, da/dT, d2a/dT2, b, and sum_j x_j a_ij (van der Waals). */
+  function vdwMix(T, x) {
     const { s, s1, s2 } = sqrtA(T);
     let a = 0, da = 0, d2a = 0, b = 0;
     const sumA = new Array(n).fill(0);
     for (let i = 0; i < n; i++) {
       b += x[i] * bi[i];
       for (let j = 0; j < n; j++) {
-        const f = 1 - K[i][j];
-        const aij = f * s[i] * s[j];
+        const bT = KB ? KB[i][j] : 0;
+        const f = 1 - K[i][j] - bT / T, f1 = bT / (T * T), f2 = -2 * bT / (T * T * T);
+        const ss = s[i] * s[j], ss1 = s1[i] * s[j] + s[i] * s1[j];
+        const aij = f * ss;
         sumA[i] += x[j] * aij;
         a += x[i] * x[j] * aij;
-        da += x[i] * x[j] * f * (s1[i] * s[j] + s[i] * s1[j]);
-        d2a += x[i] * x[j] * f * (s2[i] * s[j] + 2 * s1[i] * s1[j] + s[i] * s2[j]);
+        da += x[i] * x[j] * (f * ss1 + f1 * ss);
+        d2a += x[i] * x[j] * (f * (s2[i] * s[j] + 2 * s1[i] * s1[j] + s[i] * s2[j]) + 2 * f1 * ss1 + f2 * ss);
       }
     }
     return { a, da, d2a, b, sumA };
   }
+
+  const mix = opts.mixing ? opts.mixing({ n, d1, d2, bi, sqrtA }) : vdwMix;
 
   const check = (T, P, x) => {
     if (!(T > 0)) throw failRange("BAD_INPUT", `Temperature must be positive (got ${T} K).`);
@@ -257,7 +275,7 @@ export function cubicEos(model, comps, kij) {
   }
 
   return {
-    model: String(model).toUpperCase(), name: eq.name, n, comps, kij: K,
+    model: String(model).toUpperCase(), name: eq.name, n, comps, kij: K, kijB: KB, mixing: opts.mixing ? "MHV1" : "vdW",
     a_c: ac, b: bi, m: mi,
     state, psat, mix,
     /** Compressibility factor. */

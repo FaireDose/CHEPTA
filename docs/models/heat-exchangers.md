@@ -86,7 +86,11 @@ flow (`flow_kg_h`) instead of the outlet temperature; steam and a fluid at one t
   to 10 bar, 300.00 to 280.21 K; liquid propane and n-butane flashing, within 0.005 K and 0.0015 in vapour fraction.
   CoolProp's reference equations of state give 282.45 K for the methane: the 2.2 K is Peng-Robinson's own.
 - `pump`: power = V ΔP / η, with V the inlet's volume flow from the liquid-density records (molar volumes added); the
-  outlet from H_out = H_in + power. A vapour at the inlet is refused. η defaults to 0.75, the low end of the "target
+  outlet from H_out = H_in + power. A vapour at the inlet is refused. **A slurry** (the maintainer, 2026-11-06): only
+  the liquid phase's volume counts, as in DWSIM's pump (its open source, `Pump.vb`, branch "windows", lines 686-687);
+  the solid rides along, with the warning `SLURRY` (the power ignores the slurry's rheology; no solids limit). A
+  component without a liquid density at a mole fraction of at most 1 % in the liquid is left out of the volume, with
+  the warning `DENSITY_MISSING`; above that the pump refuses. η defaults to 0.75, the low end of the "target
   pump efficiencies ... 75 to 85 percent" of NC State Extension AG-452-6; the U.S. DOE's Improving Pumping System
   Performance (2006) gives "from 35% to more than 90%".
 - `compressor` and `expander` (proposal 0013, step 6): the isentropic outlet is the P-S flash at the inlet's entropy

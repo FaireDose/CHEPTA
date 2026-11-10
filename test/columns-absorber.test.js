@@ -211,16 +211,49 @@ test("a reboiled stripper (H5) through solve_column: one specification, the refe
   assert.equal(r.value.column.profile.at(-1).name, "reboiler");
 });
 
+test("PR absorber of CO2 in methanol: solves (until 2026-11-06 a Newton step of the flash sent a K-value to overflow and the column failed with 'Mole fractions must be non-negative')", () => {
+  // the method on purpose: Peng-Robinson with the pair's databank k_ij, the case that failed
+  const r = run({ capability: "solve_column", input: { components: ["carbon-dioxide", "methanol"], thermo: { model: "PR" },
+    feed: { flow_kmol_h: { methanol: 360 }, T_K: 300, P_kPa: 2000 }, gas_feed: { flow_kmol_h: { "carbon-dioxide": 72 }, T_K: 300, P_kPa: 2000 },
+    column: { configuration: "absorber", stages: 5 } } });
+  assert.equal(r.outcome, "ok", r.error?.message);
+  const v = r.value, top = v.distillate.flow_kmol_h, bot = v.bottoms.flow_kmol_h;
+  for (const id of ["carbon-dioxide", "methanol"]) {
+    const fed = (v.feed.flow_kmol_h[id] ?? 0) + (v.gas_feed.flow_kmol_h[id] ?? 0);
+    assert.ok(Math.abs(top[id] + bot[id] - fed) < 1e-6 * fed, `${id} balance`);
+  }
+  // CO2 is absorbed, but the bottoms hold no more than a liquid saturated by CO2 at the bottom stage's T and P (the
+  // composition whose PR bubble pressure is the column pressure)
+  const x = bot["carbon-dioxide"] / (bot["carbon-dioxide"] + bot.methanol);
+  assert.ok(x > 0.01, `x_CO2 = ${x}`);
+  const T = v.column.profile.at(-1).T_K;
+  const s = system({ components: ["carbon-dioxide", "methanol"], model: "PR" });
+  let lo = 1e-4, hi = 0.5;
+  for (let k = 0; k < 50; k++) { const m = (lo + hi) / 2; if (s.bubbleP([m, 1 - m], T).P < 2000) lo = m; else hi = m; }
+  assert.ok(x <= lo * 1.001, `x_CO2 = ${x.toFixed(4)} above saturation ${lo.toFixed(4)} at ${T.toFixed(2)} K`);
+});
+
 test("methods for a gas dissolving in an absorber's liquid (docs/METHOD_SELECTION.md, step 2; proposal 0017; the maintainer, 2026-11-04)", () => {
   // the methods are chosen on purpose here: each shows what is allowed, warned or refused
   const absorber = (components, thermo, liquid, gas, P = 2000) => run({ capability: "solve_column", input: { components, thermo,
     feed: { flow_kmol_h: liquid, T_K: 300, P_kPa: P }, gas_feed: { flow_kmol_h: gas, T_K: 300, P_kPa: P }, column: { configuration: "absorber", stages: 5 } } });
-  // Peng-Robinson with CO2 in water: the pair has a k_ij (ChemSep, databank), so it runs, with the range warning
-  const pr = absorber(["carbon-dioxide", "water"], { model: "PR" }, { water: 360 }, { "carbon-dioxide": 72 });
+  // Peng-Robinson with H2S in water: the pair has a k_ij (ChemSep, databank), so it runs, with the range warning
+  // (until 2026-11-05 this case was CO2 in water; see below)
+  const pr = absorber(["hydrogen-sulfide", "water"], { model: "PR" }, { water: 360 }, { "hydrogen-sulfide": 72 });
   assert.equal(pr.outcome, "ok", pr.error?.message);
   const w = pr.value.column.warnings.find(x => x.code === "METHOD_RANGE");
-  assert.match(w.message, /k_ij of Carbon dioxide \+ Water/);
+  assert.match(w.message, /k_ij of Hydrogen sulfide \+ Water/);
   assert.match(w.message, /performs poorly for water\/alcohol mixtures/);
+  // ... CO2 in water: the default is the a + b / T k_ij fitted to ThermoML data (the maintainer, 2026-11-06), so it runs
+  // with the range warning; ChemSep's k_ij, which dissolves about a tenth of the measured CO2, is marked not usable
+  // (2026-11-05): chosen by name, it is refused, with Henry's law as the remedy
+  const prt = absorber(["carbon-dioxide", "water"], { model: "PR" }, { water: 360 }, { "carbon-dioxide": 72 });
+  assert.equal(prt.outcome, "ok", prt.error?.message);
+  assert.match(prt.value.column.warnings.find(x => x.code === "METHOD_RANGE").message, /k_ij of Carbon dioxide \+ Water \(0\.2484 - 109\.44 K \/ T/);
+  const prw = absorber(["carbon-dioxide", "water"], { model: "PR", sets: { "carbon-dioxide+water": "chemsep" } }, { water: 360 }, { "carbon-dioxide": 72 });
+  assert.equal(prw.outcome, "unsupported");
+  assert.match(prw.error.message, /Carbon dioxide \+ Water in the liquid is refused/);
+  assert.match(prw.error.message, /Henry's law/);
   // ... nitrogen + water has no k_ij: refused, with the activity model and Henry's law as the alternative
   const n2 = absorber(["nitrogen", "water"], { model: "PR" }, { water: 360 }, { nitrogen: 72 });
   assert.equal(n2.outcome, "unsupported");

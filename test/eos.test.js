@@ -69,11 +69,11 @@ test("thermodynamic consistency: G_R/RT = sum x ln phi, cp_R = dH_R/dT", () => {
   }
 });
 
-test("k_ij data: 165 pairs for PR and 164 for SRK (ChemSep for the 49 components, for isopentane and for 1-pentanol, and since 2026-10-13 for the other proposal 0008 components except where a literature fit was rejected; one PR pair refitted, five fitted for the proposal 0004 benchmarks, eleven fitted to open literature, test/eos-literature.test.js; helium + carbon monoxide and n-hexane + isoamyl alcohol since 2026-10-21; benzene + toluene fitted to ThermoML data since 2026-10-29), each with a source", () => {
+test("k_ij data: 168 pairs for PR and 167 for SRK (ChemSep for the 49 components, for isopentane and for 1-pentanol, and since 2026-10-13 for the other proposal 0008 components except where a literature fit was rejected; one PR pair refitted, five fitted for the proposal 0004 benchmarks, eleven fitted to open literature, test/eos-literature.test.js; helium + carbon monoxide and n-hexane + isoamyl alcohol since 2026-10-21; benzene + toluene fitted to ThermoML data since 2026-10-29; carbon monoxide + methanol and (2026-11-05) methane + methanol fitted to ThermoML gas-solubility data since 2026-11-04, test/eos-high-pressure.test.js), each with a source", () => {
   const ids = new Set(listComponents().map(c => c.id));
   for (const model of ["PR", "SRK"]) {
     const pairs = kij.pairs.filter(p => p.model === model);
-    assert.equal(pairs.length, { PR: 166, SRK: 165 }[model], model);
+    assert.equal(pairs.length, { PR: 168, SRK: 167 }[model], model);
     for (const p of pairs) {
       assert.ok(ids.has(p.i) && ids.has(p.j), `${p.i} ${p.j}`);
       // helium, a quantum gas, needs large k_ij: ChemSep's helium + carbon monoxide is 0.5463 (PR) and 0.6507 (SRK)
@@ -90,14 +90,20 @@ test("k_ij data: 165 pairs for PR and 164 for SRK (ChemSep for the 49 components
     }
   }
   const fitted = kij.pairs.filter(p => p.tier === "fitted").map(p => `${p.model} ${p.i}-${p.j}`);
-  assert.deepEqual(fitted, ["PR hydrogen-toluene", "PR ethanol-water", "SRK ethanol-water", "PR ethanol-ethylene-glycol", "SRK ethanol-ethylene-glycol", "PR water-ethylene-glycol", "SRK water-ethylene-glycol", "PR ethyl-acetate-ethanol", "SRK ethyl-acetate-ethanol", "PR dimethyl-ether-methanol", "SRK dimethyl-ether-methanol",
+  assert.deepEqual(fitted, ["PR hydrogen-toluene",
+    // 2026-11-06: k_ij = a + b / T fitted to ThermoML gas-solubility data, replacing ChemSep's sets in place
+    // (test/eos-high-pressure.test.js)
+    "PR carbon-dioxide-methanol", "PR carbon-dioxide-water", "SRK carbon-dioxide-methanol", "SRK carbon-dioxide-water",
+    "PR ethanol-water", "SRK ethanol-water", "PR ethanol-ethylene-glycol", "SRK ethanol-ethylene-glycol", "PR water-ethylene-glycol", "SRK water-ethylene-glycol", "PR ethyl-acetate-ethanol", "SRK ethyl-acetate-ethanol", "PR dimethyl-ether-methanol", "SRK dimethyl-ether-methanol",
     // open literature beyond the ThermoML Archive (SRK propane + n-decane was outside the gate)
     "PR cyclohexane-n-heptane", "SRK cyclohexane-n-heptane", "PR p-xylene-m-xylene", "SRK p-xylene-m-xylene", "PR p-xylene-o-xylene", "SRK p-xylene-o-xylene",
     "PR m-xylene-o-xylene", "SRK m-xylene-o-xylene", "PR ethane-n-decane", "SRK ethane-n-decane", "PR ethane-n-undecane", "SRK ethane-n-undecane",
     "PR ethane-n-dodecane", "SRK ethane-n-dodecane", "PR propane-n-decane", "PR propane-n-undecane", "SRK propane-n-undecane", "PR propane-n-dodecane",
     "SRK propane-n-dodecane", "PR ethylene-1-butene", "SRK ethylene-1-butene",
     // ThermoML Archive, isobaric T-x-y of Li et al. (2014) (2026-10-29)
-    "PR benzene-toluene", "SRK benzene-toluene"]);
+    "PR benzene-toluene", "SRK benzene-toluene",
+    // 2026-11-04: fitted to the gas-solubility data of the ThermoML Archive (validation/fit_kij_high_pressure.mjs)
+    "PR carbon-monoxide-methanol", "SRK carbon-monoxide-methanol", "PR methane-methanol", "SRK methane-methanol"]);
   assert.equal(kij.pairs.find(p => p.tier === "fitted" && p.j === "toluene").replaced.kij, -0.51);
   const sys = system({ components: ["methane", "nitrogen", "water"], model: "PR" });
   const byPair = Object.fromEntries(sys.info.pairs.map(p => [p.pair.join("+"), p]));

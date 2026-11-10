@@ -38,7 +38,7 @@ export const RANGE_MARGIN_K = 10;
 
 const ACTIVITY_MODELS = ["NRTL", "UNIQUAC", "WILSON"];
 const EOS_MODELS = ["PR", "SRK"];
-const PARAM_KEYS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], WILSON: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij"], SRK: ["kij"] };
+const PARAM_KEYS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], WILSON: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij", "kij_b_K"], SRK: ["kij", "kij_b_K"] };
 
 const userSources = new Map();
 const userSets = [];
@@ -79,7 +79,8 @@ function fromKij(p, i, j, model, isReplaced) {
   return {
     model, i, j, set: p.set ?? (isReplaced ? "replaced" : "default"), default: isReplaced ? false : p.default !== false,
     tier: p.tier || "databank", source_ids: p.source_ids ?? [], source: kijText(p), valid: range ? { T_K: range } : null,
-    T_range_K: p.source?.T_range_K ?? null, params: { kij: p.kij }, origin: "kij.json", reason: p.reason,
+    T_range_K: p.source?.T_range_K ?? null, params: { kij: p.kij, ...(p.kij_b_K ? { kij_b_K: p.kij_b_K } : {}) }, origin: "kij.json", reason: p.reason,
+    ...(p.not_usable ? { not_usable: p.not_usable } : {}),
   };
 }
 
@@ -179,6 +180,7 @@ export function describePair(choice, names) {
   };
   if (choice.note) out.note = choice.note;
   if (c.two_liquids) out.two_liquids = JSON.parse(JSON.stringify(c.two_liquids));
+  if (c.not_usable) out.not_usable = JSON.parse(JSON.stringify(c.not_usable));
   return out;
 }
 
@@ -214,7 +216,7 @@ export function sourceEntry(id) {
 
 function labelProperty(key) {
   return { vapourPressure: "vapour pressure", uniquac: "UNIQUAC r and q", modUnifac: "Mod. UNIFAC 2.0 groups", association: "vapour association",
-    fusion: "melting temperature and enthalpy of fusion",
+    fusion: "melting temperature and enthalpy of fusion", solidDensity: "solid density",
     constants_source: "critical constants and normal boiling point", omega_source: "acentric factor" }[key]
     ?? key.replace(/[A-Z]/g, m => " " + m.toLowerCase());
 }
@@ -229,8 +231,9 @@ export function componentSources(id) {
   const rec = (key, ids) => { if (ids?.length) out.push({ key, label: labelProperty(key), source_ids: ids.slice() }); };
   rec("constants_source", c.constants_source_ids);
   rec("omega_source", c.omega_source_ids);
-  for (const key of ["vapourPressure", "uniquac", "modUnifac", "association", "fusion"]) if (c[key]) rec(key, c[key].source_ids);
+  for (const key of ["vapourPressure", "uniquac", "modUnifac", "association", "fusion", "solidDensity"]) if (c[key]) rec(key, c[key].source_ids);
   for (const [key, r] of Object.entries(c.properties ?? {})) rec(key, r.source_ids);
+  for (const cv of c.solubility ?? []) if (cv.source_ids?.length) out.push({ key: `solubility:${cv.solvent}`, label: `solubility in ${nameOf(cv.solvent)}`, source_ids: cv.source_ids.slice() });
   return out;
 }
 
@@ -249,8 +252,9 @@ function computeUsedBy() {
   for (const id of henryData.solvents.water.vapourPressure.source_ids ?? []) add(id, { type: "henry", gas: null, label: "Water vapour pressure in the Henry's law equations" });
   for (const [cid, c] of Object.entries(componentData.components)) {
     const rec = (key, ids) => { for (const id of ids ?? []) add(id, { type: "component", component: cid, property: key, label: `${c.name}: ${labelProperty(key)}` }); };
-    for (const key of ["vapourPressure", "uniquac", "modUnifac", "association", "fusion"]) if (c[key]) rec(key, c[key].source_ids);
+    for (const key of ["vapourPressure", "uniquac", "modUnifac", "association", "fusion", "solidDensity"]) if (c[key]) rec(key, c[key].source_ids);
     for (const [key, r] of Object.entries(c.properties ?? {})) rec(key, r.source_ids);
+    for (const cv of c.solubility ?? []) for (const id of cv.source_ids ?? []) add(id, { type: "component", component: cid, property: `solubility:${cv.solvent}`, label: `${c.name}: solubility in ${nameOf(cv.solvent)}` });
     rec("constants_source", c.constants_source_ids);
     rec("omega_source", c.omega_source_ids);
   }
@@ -359,6 +363,7 @@ function add(spec) {
     const k = finite(given.kij, "params.kij");
     if (Math.abs(k) >= 1) throw fail("BAD_INPUT", `library.add: k_ij = ${k} is outside -1 < k_ij < 1.`);
     params = { kij: k };
+    if (given.kij_b_K != null) params.kij_b_K = finite(given.kij_b_K, "params.kij_b_K");   // k_ij = kij + kij_b_K / T
   } else {
     if (given.b_ij == null || given.b_ji == null) throw fail("BAD_INPUT", "library.add: params needs b_ij and b_ji (K); a_ij and a_ji are optional (default 0).");
     params = { a_ij: finite(given.a_ij ?? 0, "params.a_ij"), a_ji: finite(given.a_ji ?? 0, "params.a_ji"), b_ij: finite(given.b_ij, "params.b_ij"), b_ji: finite(given.b_ji, "params.b_ji") };

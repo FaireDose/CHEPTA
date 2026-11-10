@@ -1,4 +1,4 @@
-"""Independent check of the k_ij fitted by validation/fit_kij_literature.mjs.
+"""Independent check of the k_ij fitted by validation/fit_kij_literature.mjs and validation/fit_kij_high_pressure.mjs.
 
 That script fits with the engine's bubble pressures. Here the separate Python implementation of
 the equations of state (reference_eos.py, through eos_fit_kij.bubble_p_fresh) recomputes, at the
@@ -55,12 +55,19 @@ def points(name):
     d = json.load(open(os.path.join(DATA, name)))
     c = {k: n for n, k in enumerate(d["columns"])}
     skip = {e["row"] for e in d.get("excluded", [])}
-    return [(r[c["T_K"]], r[c["x_1"]], r[c["P_kPa"]]) for n, r in enumerate(d["rows"])
+    # a ThermoML gas-solubility file may give the partial pressure of the gas (p_1_kPa) instead of the total pressure:
+    # twice it is the starting guess of the bubble pressure (the check compares the engine with this implementation,
+    # not with the data)
+    P = lambda r: r[c["P_kPa"]] if r[c["P_kPa"]] is not None else 2 * r[c["p_1_kPa"]]
+    return [(r[c["T_K"]], r[c["x_1"]], P(r), r[c["P_kPa"]]) for n, r in enumerate(d["rows"])
             if n not in skip and r[c["x_1"]] is not None and 0 < r[c["x_1"]] < 1]
 
 
+WINDOW = json.load(open(os.path.join(DATA, "high_pressure_fits.json")))["window"]
+
+
 def main():
-    kept = json.load(open(os.path.join(DATA, "literature_fits.json")))["entries"]
+    kept = [e for f in ("literature_fits.json", "high_pressure_fits.json") for e in json.load(open(os.path.join(DATA, f)))["entries"]]
     kij = {(p["model"], p["i"], p["j"]): p["kij"] for p in json.load(open(os.path.join(ROOT, "src", "data", "kij.json")))["pairs"]}
     out = []
     for entry in kept:
@@ -68,14 +75,30 @@ def main():
         k = kij[(model, i, j)]
         if k != entry["kij"]:
             raise SystemExit(f"{model} {i}-{j}: kij.json has {k}, literature_fits.json {entry['kij']}: run eos_fit_kij.py --literature-only --write")
-        pts = sorted((p for f in entry["source"]["data"] for p in points(os.path.basename(f))), key=lambda p: p[2])
-        sample = [pts[0], pts[len(pts) // 3], pts[2 * len(pts) // 3], pts[-1]]
+        pts = sorted((p for f in entry["source"]["data"] for p in points(os.path.basename(f))
+                      if not os.path.basename(f).startswith("thermoml_") or (p[0] <= WINDOW["T_K"] and (p[3] or p[2] / 2) <= WINDOW["P_kPa"])), key=lambda p: p[2])
         e = Cubic(model, [i, j])
         e.k[0, 1] = e.k[1, 0] = k
-        for T, x, P in sample:
-            P_ref = bubble_p(e, T, x, P)
-            print(f"{model} {i}-{j} k_ij = {k}: T = {T} K, x1 = {x}, P_exp = {P:g} kPa, reference {P_ref:.2f} kPa ({100 * (P_ref / P - 1):+.1f} %)")
-            out.append({"model": model, "pair": [i, j], "kij": k, "T_K": T, "x_1": x, "P_exp_kPa": P, "P_reference_kPa": round(P_ref, 3)})
+        kb = entry.get("kij_b_K", 0.0)
+        e.kb[0, 1] = e.kb[1, 0] = kb   # k_ij(T) = k + kb / T
+        # four points from the lowest to the highest pressure; a point where the equation of state has no bubble
+        # pressure (a fit outside the gate may have some) is replaced by the next one
+        for q in (0, len(pts) // 3, 2 * len(pts) // 3, len(pts) - 1):
+            order = list(range(q, len(pts))) + list(range(q - 1, -1, -1))
+            for n in order:
+                T, x, P, P_exp = pts[n]
+                try:
+                    P_ref = bubble_p(e, T, x, P)
+                    break
+                except ValueError:
+                    continue
+            row = {"model": model, "pair": [i, j], "kij": k, **({"kij_b_K": kb} if kb else {}), "T_K": T, "x_1": x, "P_exp_kPa": P_exp, "P_reference_kPa": round(P_ref, 3)}
+            if kb:
+                # with k_ij(T) the residual enthalpy has a dk_ij/dT term; this implementation takes it by a numerical
+                # temperature derivative of the residual Helmholtz energy, the engine analytically
+                row["hR_liquid_reference_J_mol"] = round(e.h_res(T, P_ref * 1000, [x, 1 - x], "liquid"), 3)
+            print(f"{model} {i}-{j} k_ij = {k}{f' + {kb} K / T' if kb else ''}: T = {T} K, x1 = {x}, P_exp = {P_exp} kPa, reference {P_ref:.2f} kPa")
+            out.append(row)
     if "--write" in sys.argv:
         with open(os.path.join(DATA, "literature_check.json"), "w") as f:
             json.dump({"_about": "Bubble pressures of the independent Python equation of state (validation/python/eos_check_literature.py) at the k_ij fitted to the open literature; test/eos-literature.test.js compares the engine with them.",

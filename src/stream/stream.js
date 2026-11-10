@@ -114,7 +114,7 @@ export function stream(sys, spec = {}) {
   if (has("H_kW")) fspec.H = finite(spec.H_kW, "H_kW") / (F * KW_PER);
   const r = sys.flash(fspec);
   const phases = r.phases.map(p => Object.freeze({
-    type: p.type, fraction: p.fraction, composition: p.composition.slice(), h_J_mol: p.h_J_mol,
+    type: p.type, ...(p.equilibrium ? { equilibrium: true } : {}), fraction: p.fraction, composition: p.composition.slice(), h_J_mol: p.h_J_mol,
     F_kmol_h: F * p.fraction,
     flow_kmol_h: Object.fromEntries(sys.ids.map((id, i) => [id, F * p.fraction * p.composition[i]])),
   }));
@@ -171,7 +171,7 @@ export function phasesStream(st, picks) {
   if (!ps.length) return build(st, { flows: st.components.map(() => 0), phases: [], VF: null, h_J_mol: null });
   const flows = st.components.map(id => ps.reduce((a, p) => a + p.flow_kmol_h[id], 0));
   const sum = ps.reduce((a, p) => a + p.fraction, 0);
-  const phases = ps.map(p => ({ type: p.type, fraction: p.fraction / sum, composition: p.composition, h_J_mol: p.h_J_mol }));
+  const phases = ps.map(p => ({ type: p.type, ...(p.equilibrium ? { equilibrium: true } : {}), fraction: p.fraction / sum, composition: p.composition, h_J_mol: p.h_J_mol }));
   return build(st, { flows, phases, VF: phases.filter(p => p.type === "vapour").reduce((a, p) => a + p.fraction, 0),
     h_J_mol: phases.reduce((a, p) => a + p.fraction * p.h_J_mol, 0) });
 }
@@ -186,5 +186,49 @@ export function phaseStream(st, type, k = 0) {
   const p = st.phases.filter(q => q.type === type)[k];
   if (!p || !(p.fraction > 0)) return build(st, { flows: st.components.map(() => 0), phases: [], VF: null, h_J_mol: null });
   const flows = st.components.map(id => p.flow_kmol_h[id]);
-  return build(st, { flows, phases: [{ type: p.type, fraction: 1, composition: p.composition, h_J_mol: p.h_J_mol }], VF: type === "vapour" ? 1 : 0, h_J_mol: p.h_J_mol });
+  return build(st, { flows, phases: [{ type: p.type, ...(p.equilibrium ? { equilibrium: true } : {}), fraction: 1, composition: p.composition, h_J_mol: p.h_J_mol }], VF: type === "vapour" ? 1 : 0, h_J_mol: p.h_J_mol });
+}
+
+/**
+ * A stream of crystals in equilibrium (proposal 0015, Part I, section 5; contract 1, stream v2): one "solid" phase of
+ * the given composition at T and P, with `equilibrium: true`, carrying the enthalpy it is given. The crystallizer
+ * (src/units/crystallizer.js) makes it with the solid's enthalpy rule, h_solid(T) = h_liquid(T) − ΔH_fus, the labelled
+ * approximation of the maintainer's answer 3 (2026-10-29), consistent with the solid-liquid model (ΔCp of fusion 0).
+ * No flash is done: the property package knows no solid in equilibrium, so a block that would recalculate the stream
+ * refuses it (runUnit; only a Product takes it).
+ * @param {object} sys
+ * @param {{flow_kmol_h:number[], T_K:number, P_kPa:number, h_J_mol:number, id?:string}} spec
+ */
+export function crystalStream(sys, { flow_kmol_h, T_K, P_kPa, h_J_mol, id = null }) {
+  const flows = componentFlows(sys, flow_kmol_h);
+  const F = flows.reduce((a, v) => a + v, 0);
+  if (!(F > 0)) return stream(sys, { flow_kmol_h: flows, T_K, P_kPa, id });
+  const MW = molarMasses(sys), z = flows.map(v => v / F);
+  return remember(Object.freeze({
+    id, name: null, spec: "solid", components: sys.ids.slice(),
+    flow_kmol_h: Object.fromEntries(sys.ids.map((c, i) => [c, flows[i]])), flows, F_kmol_h: F,
+    mass_kg_h: flows.reduce((a, v, i) => a + v * MW[i], 0), z, T_K, P_kPa, VF: 0,
+    phases: [Object.freeze({ type: "solid", equilibrium: true, fraction: 1, composition: z.slice(), h_J_mol, F_kmol_h: F,
+      flow_kmol_h: Object.fromEntries(sys.ids.map((c, i) => [c, flows[i]])) })],
+    h_J_mol, H_kW: h_J_mol * F * KW_PER, MW: z.reduce((a, v, i) => a + v * MW[i], 0),
+    warnings: ["Crystals in equilibrium: the solid's enthalpy is the liquid's minus the enthalpy of fusion (a labelled approximation)."], sources: [],
+  }), MW);
+}
+
+/** Does the stream carry crystals in equilibrium (crystalStream)? */
+export const hasCrystals = st => !!st?.phases?.some(p => p.type === "solid" && p.equilibrium);
+
+/**
+ * Two streams at the same T and P as one, keeping their phases (no flash): a crystallizer's crystals with the mother
+ * liquor they carry, a slurry. The flows, the enthalpy flows and the phases add up.
+ */
+export function joinStreams(a, b) {
+  if (!(b.F_kmol_h > 0)) return a;
+  if (!(a.F_kmol_h > 0)) return b;
+  const F = a.F_kmol_h + b.F_kmol_h;
+  const flows = a.flows.map((v, i) => v + b.flows[i]);
+  const phases = [...a.phases.map(p => ({ ...p, fraction: p.fraction * a.F_kmol_h / F })), ...b.phases.map(p => ({ ...p, fraction: p.fraction * b.F_kmol_h / F }))]
+    .map(({ F_kmol_h: _F, flow_kmol_h: _f, ...p }) => p);
+  const VF = phases.filter(p => p.type === "vapour").reduce((s, p) => s + p.fraction, 0);
+  return build(a, { flows, phases, VF, h_J_mol: ((a.H_kW ?? 0) + (b.H_kW ?? 0)) / (F * KW_PER) });
 }

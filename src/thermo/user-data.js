@@ -7,13 +7,14 @@
  * Format (the `user_data` of a project file, format 3):
  *
  *   {
- *     "properties": { "<component>": { "<property>": record, "vapourPressure": record, "fusion": { Tm_K, Hfus_J_mol } } },
+ *     "properties": { "<component>": { "<property>": record, "vapourPressure": record, "fusion": { Tm_K, Hfus_J_mol },
+ *                                       "solubility": [{ solvent, equation: "points", points: [[T_K, x], ...], source }] } },
  *     "components": { "user:<name>": { name, MW, formula?, cas?, class?: "nonvolatile" | "solid", why?, Tc_K?, Pc_Pa?, omega?,
  *                                      aliases?, vapourPressure?: record, properties?: { ... }, fusion?, groups?,
  *                                      source } },
  *     "pairs":      { "<component>+<component>": { NRTL?: { a_ij?, a_ji?, b_ij, b_ji, alpha? }, UNIQUAC?: { ... },
  *                                                   WILSON?: { a_ij?, a_ji?, b_ij, b_ji } (Lambda_ij = exp(a_ij + b_ij / T)),
- *                                                   PR?: { kij }, SRK?: { kij }, valid?: { T_K, P_kPa }, source } },
+ *                                                   PR?: { kij, kij_b_K? }, SRK?: { kij, kij_b_K? } (k_ij = kij + kij_b_K / T), valid?: { T_K, P_kPa }, source } },
  *     "groups":     { "<component>": { subgroups: { "<subgroup id>": count }, source } }
  *   }
  *
@@ -38,6 +39,7 @@ import { findComponent, USER_PREFIX } from "./components.js";
 import { brent } from "../util/solve.js";
 import { atomBalance } from "./formula.js";
 import { fail } from "../util/errors.js";
+import { checkCurve } from "./solubility-curve.js";
 
 /** The units a record of each property is stored in (the same as PROPERTIES[name].recordUnits in pure.js). */
 export const RECORD_UNITS = {
@@ -47,7 +49,7 @@ export const RECORD_UNITS = {
   // an inert solid of the user's own (class "solid"); the databank has no solids in its streams yet
   solidHeatCapacity: "J/mol/K",
 };
-const PAIR_PARAMS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], WILSON: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij"], SRK: ["kij"] };
+const PAIR_PARAMS = { NRTL: ["a_ij", "a_ji", "b_ij", "b_ji", "alpha"], UNIQUAC: ["a_ij", "a_ji", "b_ij", "b_ji"], WILSON: ["a_ij", "a_ji", "b_ij", "b_ji"], PR: ["kij", "kij_b_K"], SRK: ["kij", "kij_b_K"] };
 const CHECKED = Symbol("checked user data");
 
 const isObj = v => v != null && typeof v === "object" && !Array.isArray(v);
@@ -156,6 +158,16 @@ function propertiesOf(props, what, comp) {
       if (comp?.class === "solid") throw bad(`${w}: ${comp.name} is an inert solid, so it has no vapour pressure.`);
       out.vapourPressure = vapourPressureRecord(r, w);
     } else if (name === "fusion") out.fusion = fusionRecord(r, w);
+    else if (name === "solubility") {
+      // measured solubility curves in named solvents (proposal 0015, section 5): a list, one per solvent
+      const list = Array.isArray(r) ? r : [r];
+      out.solubility = list.map((c, k) => {
+        const rec = checkCurve(c, sourceOf, `${w}[${k}]`);
+        try { rec.solvent = findComponent(rec.solvent); } catch (e) { throw bad(`${w}[${k}]: solvent: ${e.message}`); }
+        return rec;
+      });
+      if (new Set(out.solubility.map(c => c.solvent)).size !== out.solubility.length) throw bad(`${w}: one curve per solvent.`);
+    }
     else if (name === "solidHeatCapacity" && comp?.class !== "solid") {
       throw bad(`${w}: a solid heat capacity is for an inert solid of your own (class "solid"); ${comp?.name ?? "this component"} is not one.`);
     } else if (comp?.class === "solid" && name !== "solidHeatCapacity") {
@@ -220,9 +232,10 @@ function userComponent(id, c) {
     out.Tb_K = boilingPoint(vp);
     if (out.Tb_K == null) out.Tb_note = `the vapour-pressure record (${vp.Tmin_K}-${vp.Tmax_K} K) does not reach 101.325 kPa`;
   }
-  const { vapourPressure: _vp, fusion, ...rest } = props;
+  const { vapourPressure: _vp, fusion, solubility, ...rest } = props;
   out.properties = rest;
   if (fusion) out.fusion = fusion;
+  if (solubility) out.solubility = solubility;
   if (c.fusion != null) out.fusion = fusionRecord(c.fusion, `${what}.fusion`);
   if (c.groups != null) out.modUnifac = groupsRecord(c.groups, `${what}.groups`, out.formula);
   else out.modUnifac = { note: "no Modified UNIFAC 2.0 groups: give them in your own data (groups)" };
@@ -261,6 +274,8 @@ function pairSets(key, p, ud) {
       const k = num(given.kij, `${what}.${model}.kij`);
       if (Math.abs(k) >= 1) throw bad(`${what}.${model}: k_ij = ${k} is outside -1 < k_ij < 1.`);
       params = { kij: k };
+      // a temperature-dependent k_ij = kij + kij_b_K / T (kij_b_K in K)
+      if (given.kij_b_K != null) params.kij_b_K = num(given.kij_b_K, `${what}.${model}.kij_b_K`);
     } else {
       if (given.b_ij == null || given.b_ji == null) throw bad(`${what}.${model} needs b_ij and b_ji (K); a_ij and a_ji are optional (0).`);
       params = { a_ij: num(given.a_ij ?? 0, `${what}.${model}.a_ij`), a_ji: num(given.a_ji ?? 0, `${what}.${model}.a_ji`),
@@ -359,7 +374,10 @@ export function userDataUsed(ids, ud, pairs = []) {
   const out = [];
   for (const id of ids) {
     if (ud.components[id]) { out.push({ component: id, what: "component", source: ud.components[id].source.name }); continue; }
-    for (const [name, r] of Object.entries(ud.properties[id] ?? {})) out.push({ component: id, what: name, source: r.source.name });
+    for (const [name, r] of Object.entries(ud.properties[id] ?? {})) {
+      // solubility curves are a list, one per solvent
+      for (const one of Array.isArray(r) ? r : [r]) out.push({ component: id, what: Array.isArray(r) ? `${name} in ${one.solvent}` : name, source: one.source.name });
+    }
     if (ud.groups[id]) out.push({ component: id, what: "Modified UNIFAC 2.0 groups", source: ud.groups[id].userSource.name });
   }
   for (const p of pairs) if (p.tier === "user") out.push({ pair: p.pair, what: "pair parameters", source: p.source.replace(/^Your own data: /, "") });

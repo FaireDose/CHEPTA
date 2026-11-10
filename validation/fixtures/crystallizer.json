@@ -1,0 +1,107 @@
+{
+ "_about": "validation/python/reference_crystallizer.py: succinic acid crystallized from water, NRTL (fitted-sle-thermoml), chemicals.solubility_eutectic; test/crystallizer.test.js",
+ "cases": [
+  {
+   "name": "cooling to 288.15 K",
+   "feed_kg_h": {
+    "water": 800.0,
+    "succinic-acid": 200.0
+   },
+   "feed_T_K": 343.15,
+   "T_K": 288.15,
+   "result": {
+    "T_K": 288.15,
+    "P_kPa": 101.325,
+    "solubility_x": 0.008140626645796978,
+    "crystals_kmol_h": 1.3291864556803308,
+    "yield": 0.7848048508918944,
+    "duty_kW": -67.56084814270065,
+    "mother_liquor_kmol_h": [
+     44.40674804943359,
+     0.36446573590560516
+    ],
+    "vapour_kmol_h": [
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "name": "cooling to 298.15 K",
+   "feed_kg_h": {
+    "water": 800.0,
+    "succinic-acid": 200.0
+   },
+   "feed_T_K": 343.15,
+   "T_K": 298.15,
+   "result": {
+    "T_K": 298.15,
+    "P_kPa": 101.325,
+    "solubility_x": 0.012054057801055711,
+    "crystals_kmol_h": 1.151839644076125,
+    "yield": 0.6800921994483072,
+    "duty_kW": -55.88609771329237,
+    "mother_liquor_kmol_h": [
+     44.40674804943359,
+     0.541812547509811
+    ],
+    "vapour_kmol_h": [
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "name": "evaporative at 333.15 K",
+   "feed_kg_h": {
+    "water": 800.0,
+    "succinic-acid": 200.0
+   },
+   "feed_T_K": 343.15,
+   "T_K": 333.15,
+   "evaporated_kg_h": 300.0,
+   "result": {
+    "T_K": 333.15,
+    "P_kPa": 19.16225869207044,
+    "solubility_x": 0.04589114555859842,
+    "crystals_kmol_h": 0.358717681077652,
+    "yield": 0.21180126761548884,
+    "duty_kW": 183.33738781141068,
+    "mother_liquor_kmol_h": [
+     27.754217530895993,
+     1.334934510508284
+    ],
+    "vapour_kmol_h": [
+     16.652530518537596,
+     0.0
+    ]
+   }
+  },
+  {
+   "name": "evaporative at 20 kPa",
+   "feed_kg_h": {
+    "water": 800.0,
+    "succinic-acid": 200.0
+   },
+   "feed_T_K": 343.15,
+   "P_kPa": 20.0,
+   "evaporated_kg_h": 300.0,
+   "result": {
+    "T_K": 334.10725290624424,
+    "P_kPa": 20.00000000000008,
+    "solubility_x": 0.04757558004475013,
+    "crystals_kmol_h": 0.30727131972358857,
+    "yield": 0.18142527801759564,
+    "duty_kW": 184.54536073675303,
+    "mother_liquor_kmol_h": [
+     27.754217530895993,
+     1.3863808718623474
+    ],
+    "vapour_kmol_h": [
+     16.652530518537596,
+     0.0
+    ]
+   }
+  }
+ ]
+}

@@ -18,6 +18,8 @@ The assistant then reads it, takes the values it holds under DATA_RULES.md, and 
 | 3 | Z. Naturforsch. B 28 (1973): electrical conductivity of o-, m- and p-terphenyl | https://doi.org/10.1515/znb-1973-5-621 | the density of the molten terphenyls | p-terphenyl's liquid density |
 | 4 | J. Sci. Instrum. 35 (1958) 307: a viscometer for organic liquids at high temperature | https://doi.org/10.1088/0950-7671/35/8/307 | viscosities of the terphenyls | p-terphenyl's liquid viscosity |
 | 5 | Turk. J. Eng. Environ. Sci. 25 (2001): esterification of acetic acid with ethanol on Amberlyst-15 | https://aj.tubitak.gov.tr/engineering/issues/muh-01-25-6/muh-25-6-2-0001-12.pdf | the rate equation and its constants (k, activation energy, K) | the esterification kinetics example (proposal 0010, step 8) |
+| 6 | Su, Zheng, Suga, Watanabe, J. Supercrit. Fluids 218 (2024) 106497: solubility of terephthalic acid in water under hydrothermal conditions (open access, CC BY-NC-ND, on the publisher's site) | https://doi.org/10.1016/j.supflu.2024.106497 | the table of measured solubilities, 423.15-623.15 K at 10 and 20 MPa, and its comparison with earlier data | which of the two archive sets of TPA in water is right (Takebayashi 2012, used now, or Sunsandee 2013, 50 times lower; docs/decisions/2026-11-05-02-solids-everywhere.md), and TPA's curve up to 623 K |
+| 7 | Hydraulic Institute, "What types of pumps are used in the mining industry?" (Pumps & Systems, the Hydraulic Institute's FAQ; free to read) | https://www.pumpsandsystems.com/what-types-pumps-are-used-mining-industry | any solids limit for centrifugal slurry pumps (a solids fraction by weight or volume), and what it is based on | a pumped slurry's warning: today the pump warns on every slurry without a number (the maintainer, 2026-11-06; docs/decisions/2026-11-05-04-slurry-and-curves.md). The server refused scripts (403) |
 
 ## For your decision, not a download
 
@@ -39,4 +41,6 @@ Listed so they are not searched again. Do not download them for use: a paywalled
 
 ## Done
 
-(none yet)
+| # | Document | Read | What it gave |
+|---|---|---|---|
+| 8 | Privat and Jaubert, "The state of the art of cubic equations of state with temperature-dependent binary interaction coefficients: From correlation to prediction", Fluid Phase Equilib. 567 (2023) 113697, doi 10.1016/j.fluid.2022.113697 (open access, CC BY 4.0, stated on p. 1) | read by the maintainer and the coordinating session, 2026-11-07 (pp. 1-3 and 6-8) | Eq. (15), p. 6: the k_ij(T) family behind k_ij = a + b/T (docs/decisions/2026-11-06-01); section 3.4 and eqs. (25)-(27), p. 8: k_ij(T) falls short for polar and associating mixtures and water traces, and EoS/gE rules such as MHV1 are equivalent to a k_ij(T, z): the case for proposal 0018 |

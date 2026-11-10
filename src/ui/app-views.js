@@ -20,6 +20,8 @@ import { drawPlot } from "./plot.js";
 import { system } from "../system.js";
 import { listComponents, modelName } from "../thermo/system.js";
 import { pure, PROPERTIES, PROPERTY_NAMES } from "../thermo/pure.js";
+import { componentRecord } from "../thermo/components.js";
+import { checkUserData } from "../thermo/user-data.js";
 import { SOLID_UNITS, solidIn } from "./solubility-units.js";
 import { steam, steamSat } from "../thermo/iapws/steam.js";
 import { henry, henryInfo, gasSolubility } from "../thermo/henry.js";
@@ -158,7 +160,7 @@ function aboutRows(state, sys, conditions = []) {
     ["Components", sys.names.join(", ")], ["Model", model], ...conditions,
     ["Units", `T in ${tU(u)}, P in ${u.P}; compositions in mole fractions${state.basis === "mass" ? " and wt %" : ""}`],
     ["Parameters", pairData(sys)],
-    ...sys.info.pairs.map(p => [`Pair ${p.pair.join(" + ")}`, [p.tier, p.set ? `set ${p.set}` : null, sys.kind === "eos" ? `k_ij = ${p.kij}` : null, p.source].filter(Boolean).join("; ")]),
+    ...sys.info.pairs.map(p => [`Pair ${p.pair.join(" + ")}`, [p.tier, p.set ? `set ${p.set}` : null, sys.kind === "eos" ? `k_ij = ${p.kij_b_K ? `${p.kij} ${p.kij_b_K < 0 ? "-" : "+"} ${Math.abs(p.kij_b_K)} K / T` : p.kij}` : null, p.source].filter(Boolean).join("; ")]),
   ];
 }
 
@@ -1084,8 +1086,19 @@ function propertiesView(ctx) {
     return r ? { label, tier: r.tier ?? "databank", text: `${formatSource(r.source)}${Number.isFinite(r.Tmin_K) ? `; valid ${fmtTemp(r.Tmin_K, u, 1)} to ${fmtTemp(r.Tmax_K, u, 1)}` : ""}` }
       : { label, tier: "none", text: "No open data in the databank yet." };
   });
+  // the solid's records (proposal 0015, section 5): its density (ChemSep 8.32) and its measured solubility curves
+  const raw = (() => { try { return componentRecord(p.id, checkUserData(own(state).userData ?? null)); } catch { return {}; } })();
+  if (raw.solidDensity) {
+    const d = raw.solidDensity, src = d.source;
+    rows.push({ label: "Solid density", tier: d.tier ?? "databank", text: `${typeof src === "string" ? src : `${src.name}; ${src.fit}`}; valid ${fmtTemp(d.Tmin_K, u, 1)} to ${fmtTemp(d.Tmax_K, u, 1)}` });
+  }
+  for (const cv of raw.solubility ?? []) {
+    const lo = cv.Tmin_K ?? cv.points?.[0]?.[0], hi = cv.Tmax_K ?? cv.points?.at(-1)?.[0];
+    rows.push({ label: `Solubility in ${nameOf(state, cv.solvent).toLowerCase()}`, tier: cv.tier ?? "fitted",
+      text: `${typeof cv.source === "string" ? cv.source : formatSource(cv.source)}${Number.isFinite(lo) ? `; valid ${fmtTemp(lo, u, 1)} to ${fmtTemp(hi, u, 1)}` : ""}${cv.disputed ? `. ${cv.disputed}` : ""}` });
+  }
   extra.append(section(`Correlations for ${p.name}`, sourceList(ctx, rows)));
-  return { data: `${have} of ${names.length} correlations with open data`, export: () => {
+  return { data: `${have} of ${names.length} correlations with open data${raw.solubility?.length ? `; ${raw.solubility.length} solubility curve${raw.solubility.length === 1 ? "" : "s"}` : ""}`, export: () => {
     const plotted = explorer.plotted();
     if (!plotted) throw new Error(`No curve is drawn for ${p.name}: the property has no data in this range.`);
     return {

@@ -10,6 +10,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **High-pressure gases in methanol and water** (docs/decisions/2026-11-04-13-kij-high-pressure.md, 2026-11-05-03,
+  2026-11-06-01, 2026-11-06-02-mhv1.md): k_ij = a + b/T in the engine; SRK/PR + gE (MHV1) built, its methanol pairs
+  written with fit-quality warnings (2026-11-07), CO2 + water's PR set with alpha fitted (11.4 % in P against 13.8 % for
+  a + b/T), H2 and CO + water fitted to IAPWS G7-04 (no ThermoML data): CHEPTA-Lab's separator runs under PR + gE
+  (MHV1). Open: confirm IAPWS G7-04 for H2 and CO + water; CH4 + water held (Campos 2010 and Kim 2008 disagree with the
+  other seven articles); SRK's CO2 + water alpha fit (better in P and solubility, 2 more points without a bubble
+  pressure) not written; CPA (M3) for water's association.
 - **Review and merge:**
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
@@ -138,7 +145,27 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     Answered 2026-11-05: keep the block, one condensate outlet, other feed arrangements and equal areas later; sugar
     solutions on the ideal solution with a note. Still open: a data task, NRTL pairs of water + glucose and water +
     sucrose fitted to open data (sucrose to be proposed for addition).
-  - Waiting: W1; W3's crystallizer (a second pull request, docs/decisions/2026-11-04-11-crystallizer.md).
+  - **W3, M3 step 10: the Crystallizer block, built, to review** (docs/decisions/2026-11-04-11-crystallizer.md): a pure
+    solid in equilibrium with its mother liquor (the solubility of sle.js), cooling (T) or evaporative (the solvent
+    evaporated, with T or P); the yield, the crystals as a solid in equilibrium (stream v2, h = h_L − ΔH_fus), the duty;
+    `solve_crystallizer`. NRTL sets fitted to the measured solubilities of succinic acid in ten solvents (fit_sle.py,
+    whose rewrite dropped the earlier sets: fixed). To check: the six articles' solubilities of succinic acid in water;
+    to decide: crystals only into a Product until a flash holds a solid, and hydrates (not modelled).
+  - **W3, proposal 0015 section 5: solids in equilibrium in every stream, built, to review**
+    (docs/decisions/2026-11-05-02-solids-everywhere.md): measured solubility curves (a new record kind, from open data
+    and in My data), the flowsheet's `thermo.solids` making every block dissolve or crystallize the solid, the TPA
+    recrystallization example. The answers on #207 recorded there. To decide: which set of TPA in water (Takebayashi
+    2012, used provisionally, or Sunsandee 2013; Su 2024 to download, TO_DOWNLOAD.md item 6), the enthalpy of solution
+    from the curve's slope, one solid at a time.
+  - **W3: the Crystallizer's slurry outlet, solubility curves (49 for 15 solids) and 52 NRTL sets fitted to the new
+    solubilities, a pump that takes a slurry, ChemSep 8.32 solid densities, built, to review**
+    (docs/decisions/2026-11-05-04-slurry-and-curves.md; the maintainer's answers of 2026-11-06 recorded there). The
+    pump's power from the liquid only, with a SLURRY warning (no solids limit; the Hydraulic Institute FAQ is
+    TO_DOWNLOAD.md item 7); pooling by DATA_RULES.md section 3, 10 % where no uncertainty is stated (this project's
+    choice). To check: the solid densities against ChemSep 8.32. Later: the slurry's own viscosity and density as input.
+  - Waiting: W1.
+- **How the agents work** (docs/decisions/2026-11-10-01-working-method.md): a new coordinator starts from
+  [HANDOVER.md](HANDOVER.md); one task per session; at most two workers; Sonnet for routine work, Opus for engineering.
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
   (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive
   distillation and the rest after 1.0. Lab pins releases, files capability requests, and does G2 to G5.
@@ -245,7 +272,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   set exists). Steps 2-5 (docs/decisions/2026-11-05-01-two-liquid-refit.md): classes of 379 pairs, joint fits, labels,
   the engine's statements and the Wilson refusal. Pending: a person checks the classes and tie lines against the ThermoML
   records; decide on the joint fits that miss the gates (1-butanol + water, aniline + n-octane, ...) and on the fitted
-  sets of 1-propanol + water and acetonitrile + water now labelled "predicted-contradicted".
+  sets of 1-propanol + water and acetonitrile + water now labelled "predicted-contradicted" (no uncontradicted set of
+  the same model exists for them); decide whether benzene + methanol's contradicted fitted NRTL default gives way to
+  its ChemSep NRTL set, which does not split. Main merged into the branch on 2026-11-10, labels unchanged.
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order

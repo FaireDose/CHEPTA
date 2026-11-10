@@ -1,0 +1,100 @@
+{
+ "_about": "Methane (1) + Methanol (2): equilibrium states (T, P, x, y), 294.2-294.8 K, as stored in the ThermoML Archive record, compositions of the other component converted with x_1 = 1 - x_2.",
+ "components": [
+  "methane",
+  "methanol"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "H. Nourozieh, M. Kariznovi, J. Abedi, Phase equilibrium measurements and thermodynamic modeling of methane alcohol systems at ambient temperature, J. Chem. Thermodyn. 54 (2012) 165-170",
+  "doi": "10.1016/j.jct.2012.03.028",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2012.03.028.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1. The table number in the article was not checked.",
+  "transcription": "Read from the ThermoML XML by validation/python/hp_gas_solubility.py; values as stored. The person checking compares each row with the record."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "p_1_kPa",
+  "x_1",
+  "y_1",
+  "U_P_kPa",
+  "U_x_1"
+ ],
+ "rows": [
+  [
+   294.2,
+   2980.0,
+   null,
+   0.028,
+   null,
+   null,
+   0.004
+  ],
+  [
+   294.5,
+   1050.0,
+   null,
+   0.011,
+   null,
+   null,
+   0.004
+  ],
+  [
+   294.5,
+   3960.0,
+   null,
+   0.038,
+   null,
+   null,
+   0.004
+  ],
+  [
+   294.6,
+   2000.0,
+   null,
+   0.02,
+   null,
+   null,
+   0.004
+  ],
+  [
+   294.6,
+   4980.0,
+   null,
+   0.048,
+   null,
+   null,
+   0.004
+  ],
+  [
+   294.6,
+   5980.0,
+   null,
+   0.057,
+   null,
+   null,
+   0.004
+  ],
+  [
+   294.8,
+   6990.0,
+   null,
+   0.066,
+   null,
+   null,
+   0.004
+  ],
+  [
+   294.8,
+   7990.0,
+   null,
+   0.075,
+   null,
+   null,
+   0.004
+  ]
+ ],
+ "notes": "Read with validation/python/hp_gas_solubility.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

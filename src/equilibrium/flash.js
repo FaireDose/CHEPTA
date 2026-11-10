@@ -243,9 +243,13 @@ function newtonEos(sys, z, T, P, K0) {
   const eos = sys.eos, n = z.length;
   const evalF = lnK => {
     const K = lnK.map(Math.exp);
+    // a trial step can push a K to overflow (or to 0): its phase compositions are then not mole fractions (NaN or
+    // negative), and the trial is rejected like any other bad step, instead of reaching the equation of state
+    if (!K.every(k => Number.isFinite(k) && k > 0)) return null;
     const V = rachfordRice(z, K);
     if (!Number.isFinite(V)) return null;
     const { x, y } = phaseCompositions(z, K, Math.min(Math.max(V, -1e3), 1e3));
+    if (![...x, ...y].every(v => Number.isFinite(v) && v >= 0)) return null;
     const L = eos.state(T, P, x, "liquid").lnPhi, G = eos.state(T, P, y, "vapour").lnPhi;
     const F = lnK.map((v, i) => v - L[i] + G[i]);
     if (!F.every(Number.isFinite)) return null;
@@ -676,6 +680,19 @@ function tpCore(sys, z, T, P, ctx = {}) {
     try { r = splitActivity(sys, z, T, P, z.map((zi, i) => Math.max(zi, 1e-300) / Math.max(v.unstable.trial[i], 1e-300))); } catch (e) { if (!(e && e.code === "NO_CONVERGENCE")) throw e; r = null; }
     if (r && r.V >= 1) r = null;
   }
+  if ((!r || !(r.V > 0)) && hasNonvolatile(sys, z)) {
+    // below the bubble pressure with a nonvolatile component (proposal 0009), which has no dew point: start the split
+    // from the activity model's K-values at the feed, K = γ p_sat / P (found 2026-11-05: water with a trace of
+    // terephthalic acid, Modified UNIFAC 2.0)
+    // a split that converged to no vapour is a liquid at its bubble point (P a hair below it)
+    if (r && !(r.V > 0)) return { V: 0, x: z, y: bub.y, single: "liquid", iterations: r.iterations };
+    const g = sys.gammas(z, T), ps = sys.psat(T);
+    let r2 = null;
+    try { r2 = splitActivity(sys, z, T, P, z.map((_, i) => Math.max(g[i] * ps[i] / P, 1e-300))); } catch (e) { if (!(e && e.code === "NO_CONVERGENCE")) throw e; }
+    if (r2 && !(r2.V > 0)) return { V: 0, x: z, y: bub.y, single: "liquid", iterations: r2.iterations };
+    if (!r2) throw fail("NO_CONVERGENCE", `${sys.model} flash at ${T.toFixed(2)} K and ${P.toPrecision(6)} kPa: below the bubble pressure, but the vapour-liquid split did not converge (a nonvolatile component is present: no dew point to start from).`);
+    r = r2;
+  }
   if (!r || !(r.V > 0)) {
     const dew = dewP(sys, z, T);
     if (P <= dew.P) return { V: 1, x: dew.x, y: z, single: "vapour", iterations: 0 };
@@ -770,15 +787,18 @@ function result(sys, spec, z, T, P, core, extra = {}, entropy = false) {
 
 // bubble and dew points of the feed; null (before the dew point, which costs more) when
 // `splits` says that the feed at its bubble point splits into two liquids
+// a nonvolatile component in the feed (proposal 0009): no dew point, so no bracket; the vapour-fraction search is used
+// (found 2026-11-05: water with a trace of terephthalic acid at a given T and VF refused with the dew point's error)
+const hasNonvolatile = (sys, z) => Boolean(sys.nonvolatile?.some((v, i) => v && z[i] > 0));
 function pressureBubbleDew(sys, z, T, splits = () => false) {
   const b = isEos(sys) ? eosBubbleP(sys, z, T) : { ...sys.equilibrium(z, T) };
-  if (splits(T)) return null;
+  if (splits(T) || hasNonvolatile(sys, z)) return null;
   const d = isEos(sys) ? eosDewP(sys, z, T) : dewP(sys, z, T);
   return { Pb: b.P, Pd: d.P, yb: b.y, xd: d.x };
 }
 function temperatureBubbleDew(sys, z, P, splits = () => false) {
   const b = isEos(sys) ? eosBubbleT(sys, z, P) : bubbleTCore(sys, z, P);
-  if (splits(b.T)) return null;
+  if (splits(b.T) || hasNonvolatile(sys, z)) return null;
   const d = isEos(sys) ? eosDewT(sys, z, P) : dewT(sys, z, P);
   return { Tb: b.T, Td: d.T, yb: b.y, xd: d.x };
 }
@@ -1094,15 +1114,29 @@ function phFast(sys, z, P, H, key = "H") {
     const st = tpdStability(sys.eos, Tb, P, z, "liquid");
     if (!st.stable && st.trialRoot && st.trialRoot.startsWith("liquid")) Tb = null;
   }
-  if (Tb === null) {
-    // without a vapour-liquid bubble point: T-P flashes stepped out from 300 K
+  if (Tb === null) return fromRoomTemperature();
+  try {
+    return phFromBubble(Tb);
+  } catch (e) {
+    // the bubble point lies where a component's enthalpy records do not reach (a gas-rich feed whose bubble point is
+    // below 273.15 K, where water's IF97 ideal-gas enthalpy stops): the search without a bubble point, stepped out
+    // from 300 K, finds the state if it lies within the records
+    if (!(e && e.code === "OUT_OF_RANGE" && hOutOfRange(Tb))) throw e;
+    return fromRoomTemperature();
+  }
+
+  function hOutOfRange(Tq) {
+    try { hOf("liquid", Tq); return false; } catch (e) { return !!(e && e.code === "OUT_OF_RANGE"); }
+  }
+
+  function fromRoomTemperature() {
+    // without a (usable) vapour-liquid bubble point: T-P flashes stepped out from 300 K
     const f = memo(Tq => enthalpyAt(sys, z, Tq, P, ctx, E)[key] - H);
     const f300 = f(300);
     const br = stepBracket(f, 300, f300 < 0 ? +1 : -1, f300 < 0 ? T_CEIL : T_FLOOR);
     if (!br) throw failRange("OUT_OF_RANGE", `${what}: no temperature between ${T_FLOOR} K and ${T_CEIL} K gives the ${w.prop} ${w.val}.`, { z, P, H });
     return finish(brent(f, br[0], br[1], { xtol: 1e-9 }));
   }
-  return phFromBubble(Tb);
 
   function phFromBubble(Tb) {
     const hb = hOf("liquid", Tb);

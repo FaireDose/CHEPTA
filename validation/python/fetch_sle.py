@@ -33,8 +33,36 @@ SOLIDS = {  # id: names searched in the archive
     "naphthalene": ["naphthalene"],
     "benzoic-acid": ["benzoic acid"],
     "salicylic-acid": ["2-hydroxybenzoic acid", "salicylic acid"],
+    # the Crystallizer block's check (proposal 0015, M3, step 10): the cooling crystallization of succinic acid from water
+    "succinic-acid": ["succinic acid", "butanedioic acid"],
+    # solubility curves (proposal 0015, section 5): terephthalic acid, which has no open melting data
+    "terephthalic-acid": ["terephthalic acid", "1,4-benzenedicarboxylic acid", "benzene-1,4-dicarboxylic acid"],
+    # more solubility curves (the maintainer, 2026-11-05: "at least 10-15-20 more"): industrially relevant solids CHEPTA has
+    "adipic-acid": ["adipic acid", "hexanedioic acid"],
+    "citric-acid": ["citric acid"],
+    "fumaric-acid": ["fumaric acid"],
+    "itaconic-acid": ["itaconic acid"],
+    "malic-acid": ["malic acid"],
+    "glycolic-acid": ["glycolic acid"],
+    "glucose": ["D-glucose", "glucose", "dextrose"],
+    "fructose": ["D-fructose", "fructose"],
+    "xylose": ["D-xylose", "xylose"],
+    "sorbitol": ["sorbitol", "D-glucitol"],
+    "xylitol": ["xylitol"],
+    "erythritol": ["erythritol"],
+    "fdca": ["2,5-furandicarboxylic acid", "furan-2,5-dicarboxylic acid"],
+    "biphenyl": ["biphenyl"],
+    "palmitic-acid": ["palmitic acid", "hexadecanoic acid"],
+    "stearic-acid": ["stearic acid", "octadecanoic acid"],
+    "phenol": ["phenol"],
+    "hmf": ["5-hydroxymethylfurfural", "5-(hydroxymethyl)furfural"],
+    "levoglucosan": ["levoglucosan"],
+    "dmt": ["dimethyl terephthalate"],
 }
 P_MAX_KPA = 110.0
+# solids measured in compressed hot water (kept liquid above its boiling point): their sets are kept at any pressure,
+# with the pressure in each row; the curve made from them does not model the pressure (proposal 0015, section 5)
+P_ANY = {"terephthalic-acid"}
 
 
 def inchi_index(comps):
@@ -71,7 +99,7 @@ def fetch(solid, comps, by_inchi, cache):
             if solvent is None:
                 continue
             P = next((c["value"] for c in s["constraints"] if c["type"] and c["type"].startswith("Pressure")), None)
-            if P is not None and P > P_MAX_KPA:
+            if P is not None and P > P_MAX_KPA and solid not in P_ANY:
                 continue
             Ms, Mv = comps[solid]["MW"], comps[solvent]["MW"]
             rows = []
@@ -93,8 +121,17 @@ def fetch(solid, comps, by_inchi, cache):
                             T, x = val, var if v["compound"] == s_key else 1 - var
                         if T is None or not (0 < x < 1):
                             continue
+                        # the stated uncertainty of the solute's amount, relative (2026-11-06: pooling by DATA_RULES
+                        # section 3 needs it); for a measured temperature against x, none in x
+                        u = r.get("p" + pn + "_unc")
+                        u_rel = None
+                        if u is not None and "temperature" not in p["name"]:
+                            q = val if p["compound"] == s_key or p["name"] == "Mass ratio of solute to solvent" else 1 - val
+                            u_rel = u / q if q > 0 else None
                         rows.append({"T_K": T, "x_solute": x, "quantity": p["name"] if "temperature" not in p["name"]
-                                     else "Solid-liquid equilibrium temperature against mole fraction"})
+                                     else "Solid-liquid equilibrium temperature against mole fraction",
+                                     **({"u_rel": round(u_rel, 6)} if u_rel is not None else {}),
+                                     **({"P_kPa": P} if P is not None and P > P_MAX_KPA else {})})
             if not rows:
                 continue
             Tm_solvent = (comps[solvent].get("fusion") or {}).get("Tm_K")

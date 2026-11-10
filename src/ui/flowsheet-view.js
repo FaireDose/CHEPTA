@@ -14,6 +14,7 @@ import { FUTURE_MODELS } from "./future-models.js";
 import { modelPicker } from "./model-picker.js";
 import { listComponents, modelName } from "../thermo/system.js";
 import { methodAdvice } from "../thermo/method-advice.js";
+import { componentRecord } from "../thermo/components.js";
 import { componentPicker } from "./component-picker.js";
 import { unitType } from "../units/units.js";
 import { flowsheetDocStatus, flowsheetSystem } from "../flowsheet/document.js";
@@ -48,13 +49,14 @@ const nameOf = id => byId().get(id)?.name ?? id;
 // the models with parameters per pair (Modified UNIFAC 2.0 and the ideal solution have none)
 const PAIR_MODELS = ["NRTL", "UNIQUAC", "WILSON", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
-  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", column: "Column", membrane: "Membrane", extraction: "Extraction", evaporator: "Evaporator", product: "Product",
+  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", column: "Column", membrane: "Membrane", extraction: "Extraction", evaporator: "Evaporator", crystallizer: "Crystallizer", product: "Product",
   "conversion-reactor": "Conversion reactor", "equilibrium-reactor": "Equilibrium reactor", "gibbs-reactor": "Gibbs reactor", "yield-reactor": "Yield reactor", cstr: "CSTR", pfr: "Plug-flow reactor" };
 /** One line per separator in the Separator menu of the toolbar. */
 const SEPARATOR_LINE = { flash: "vapour and liquid (and a second liquid) at equilibrium", separator: "given fractions of each component to each outlet",
   membrane: "gas permeation: the permeate and retentate, or the area for a stage cut or a recovery",
   extraction: "liquid-liquid extraction: countercurrent equilibrium stages, the extract and the raffinate",
-  evaporator: "one effect or several in series: the steam, its economy and each effect's boiling-point rise" };
+  evaporator: "one effect or several in series: the steam, its economy and each effect's boiling-point rise",
+  crystallizer: "a pure solid from its solution by cooling or evaporation: the yield, the crystals and the mother liquor" };
 /** One line per reactor type in the Reactor menu of the toolbar. */
 const REACTOR_LINE = { "conversion-reactor": "a given conversion of a key reactant", "yield-reactor": "products per kg of a key reactant",
   "equilibrium-reactor": "the listed reactions at equilibrium", "gibbs-reactor": "every reaction among the species, at equilibrium (minimum Gibbs energy)", cstr: "stirred tank, with kinetics", pfr: "tube, with kinetics; profiles along it" };
@@ -77,6 +79,7 @@ const HINT = {
   pfr: "A tube (or a bundle of tubes) in plug flow: the reactions with their kinetics, the length and diameter; isothermal, a duty or a coolant; a pressure drop. Its profiles show under the drawing (double-click it).",
   column: "Distillation. Shortcut (Fenske, Underwood, Gilliland): a light and a heavy key, the recovery of each, and the reflux ratio (or a multiple of the minimum); it gives the minimum and the number of stages, the feed stage and the duties, assuming a constant relative volatility. Rigorous: the stages, the feed stage and two specifications (reflux, boil-up, a product flow or a duty); every stage's balances are solved, and the profile shows under the drawing. Options: look for two liquids on the stages (activity models), a decanter on the condenser, and the column's own property method. Absorber and stripper: no condenser; a liquid fed to the top stage meets a gas fed to the bottom one (a stripper may have a reboiler instead of the gas), with heat added to chosen stages if needed; every stage is solved.",
   extraction: "Countercurrent liquid-liquid extraction: equilibrium stages at one temperature, the feed entering the first stage and the solvent the last. Give the number of stages; the temperature and the outlets' pressure default to the feed's. The equilibrium uses the activity model's liquid only (the vapour model does not enter); for a ternary with sets fitted jointly to its tie lines (water + acetic acid + ethyl acetate) those are the default.",
+  crystallizer: "A pure solid formed from its solution, in equilibrium with its mother liquor (the solubility of the solid-liquid model: melting data and the activity model). Cooling: give the temperature. Evaporative: give the solvent evaporated and the temperature or the pressure. It gives the yield, the crystals, the mother liquor, the vapour and the duty. The crystals' enthalpy is the liquid's minus the enthalpy of fusion; they go to a Product (no other block holds a solid in equilibrium yet).",
   evaporator: "A solution concentrated by boiling off its solvent, in one effect or several in series (forward feed): each effect is a heater and a flash at its pressure, and each after the first is heated by the vapour of the one before. Give the effects' pressures (falling), the heating steam, and the steam flow or the product's concentration; it gives the steam, the steam economy, each effect's duty and boiling-point rise, and with U each effect's area. Outlets: the product, the last effect's vapour, and the condensate of the vapours that heated the effects.",
   membrane: "Gas permeation (solution-diffusion): each component passes in proportion to its permeance times its partial-pressure difference, over well-mixed cells in counter- or co-current flow. Give the permeances (your values, with their source), the permeate pressure, and the area or a target: the stage cut or the recovery of one component; with a target it finds the area. Isothermal; a gas feed only.",
   "yield-reactor": "Turns a given fraction of a key reactant into the products you give per kg (or mol) of it, for a reaction known by its products (a fermentation, a pyrolysis). The mass must close; the elements are reported.",
@@ -86,7 +89,7 @@ const COMING = [
   { id: "extraction", label: "Extraction", icon: "extract", note: "after liquid-liquid equilibria in the flash" },
 ];
 // a feed is drawn as the start of its stream (a tab), not as a block; its size is that point
-const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40], column: [36, 96], membrane: [64, 40], evaporator: [44, 80], extraction: [40, 96],
+const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40], column: [36, 96], membrane: [64, 40], evaporator: [44, 80], crystallizer: [44, 70], extraction: [40, 96],
   "conversion-reactor": [44, 58], "equilibrium-reactor": [44, 58], "yield-reactor": [44, 58], "gibbs-reactor": [44, 58], cstr: [44, 58], pfr: [76, 30], product: [0, 0] };
 // the inlet and outlet ports of a two-stream exchanger: hot above, cold below
 const PORT_DY = { hot: -11, cold: 11 };
@@ -291,7 +294,7 @@ export function flowsheetRibbon({ state, set, ui, group, smallButton }) {
       // short"), as the Reactor button
       const open = !!f.separatorMenu;
       const b = smallButton({ ico: "separator", label: "Separator", fk: "fs-add-separators", pressed: open,
-        title: ready ? "Place a separator: flash drum, component separator, membrane, extraction or evaporator" : "Choose the components first", onClick: () => { f.separatorMenu = !open; f.reactorMenu = false; set({}); } });
+        title: ready ? "Place a separator: flash drum, component separator, membrane, extraction, evaporator or crystallizer" : "Choose the components first", onClick: () => { f.separatorMenu = !open; f.reactorMenu = false; set({}); } });
       b.disabled = !ready;
       b.setAttribute("aria-haspopup", "menu");
       return h("div", { class: "fa-menu-wrap" }, b, open && ready ? h("div", { class: "fa-menu", role: "menu" }, ...SEPARATORS.map(t =>
@@ -545,6 +548,30 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       h("p", { class: "fa-in-hint" }, done?.state?.sets
         ? `Liquid method: ${done.state.model} with the sets ${[...new Set(Object.values(done.state.sets))].join(", ")}.`
         : "Liquid method: the flowsheet's activity model; for a ternary with sets fitted jointly to its tie lines, those sets.")));
+  } else if (b.type === "crystallizer") {
+    // proposal 0015, M3, step 10: the solute, cooling (T) or evaporative (the solvent evaporated and T or P)
+    const evap = Number(spec.evaporated_kg_h) > 0;
+    const by = spec.P_kPa != null && evap && spec.T_K == null ? "P" : "T";
+    const withFusion = fs.components.filter(c => { try { return !!componentRecord(c, userOverlay(state))?.fusion?.Tm_K; } catch { return false; } });
+    secs.push(inputsSection("Crystallizer",
+      selectField("Solute (crystallizes)", [["", "Choose"], ...(withFusion.length ? withFusion : fs.components).map(c => [c, nameOf(c)])], spec.solute ?? "", v => setS({ solute: v || null }), `fs-crsol-${b.id}`, uid),
+      segRow("Mode", [["cooling", "Cooling"], ["evaporative", "Evaporative"]], evap ? "evaporative" : "cooling", v => setS(v === "cooling" ? { evaporated_kg_h: null, T_K: spec.T_K ?? 298.15 }
+        : { evaporated_kg_h: spec.evaporated_kg_h ?? 100 }), `fs-crmode-${b.id}`),
+      ...(evap ? [plain("evaporated_kg_h", "Solvent evaporated", "kg/h", "100"),
+        segRow("Give", [["T", "Temperature"], ["P", "Pressure"]], by, v => setS(v === "T" ? { P_kPa: null, T_K: spec.T_K ?? done?.state?.T_K ?? 330 } : { T_K: null, P_kPa: spec.P_kPa ?? done?.state?.P_kPa ?? 20 }), `fs-crtp-${b.id}`),
+        by === "T" ? T("T_K", "Temperature") : P("P_kPa", "Pressure")]
+        : [T("T_K", "Temperature"), P("P_kPa", "Outlet pressure")]),
+      h("p", { class: "fa-in-hint" }, evap ? "The vapour is the mother liquor's equilibrium vapour at its bubble point; connect the vapour outlet." : "Pressure empty: the feed's."),
+      h("p", { class: "fa-in-hint" }, "The solubility needs the solute's melting data or a measured solubility curve, and an activity model (the flowsheet's). The crystals' enthalpy is the liquid's minus the enthalpy of fusion (or of solution, with a curve)."),
+      // the slurry outlet: how much mother liquor leaves with the crystals
+      (() => {
+        const mode = spec.slurry_solids_fraction != null ? "w" : spec.slurry_liquid_kg_per_kg != null ? "r" : "dry";
+        return h("div", {}, segRow("Crystals leave", [["dry", "Dry"], ["r", "With liquid per kg"], ["w", "As a slurry of"]], mode, v => setS({
+          slurry_liquid_kg_per_kg: v === "r" ? spec.slurry_liquid_kg_per_kg ?? 0.5 : null, slurry_solids_fraction: v === "w" ? spec.slurry_solids_fraction ?? 0.5 : null }), `fs-crslurry-${b.id}`),
+          mode === "r" ? plain("slurry_liquid_kg_per_kg", "Mother liquor with the crystals", "kg per kg of crystals", "0.5")
+            : mode === "w" ? plain("slurry_solids_fraction", "Crystals' mass fraction of the slurry", "kg/kg", "0.5") : null,
+          h("p", { class: "fa-in-hint" }, "The crystals outlet carries this share of the mother liquor (a slurry); the rest leaves clear by the liquor outlet. A component separator can then act as the filter."));
+      })()));
   } else if (b.type === "evaporator") {
     // proposal 0015, M3, step 10: the effects' pressures, the steam, and the steam flow or the product's concentration
     const Ps = Array.isArray(spec.P_kPa) ? spec.P_kPa : spec.P_kPa == null ? [] : [spec.P_kPa];
@@ -1214,6 +1241,16 @@ function methodSection({ state, set, fs, eos, setThermo, inputsSection, uid, pro
     // the pair parameter sets: the same choice as the diagrams and the flash
     PAIR_MODELS.includes(fs.thermo.model) ? h("p", { class: "fa-in-hint", "data-fk": "fs-sets" },
       `Pair parameter sets: ${setsLabel(state)}. The rule for every pair is in the Library; a pair's own set is chosen in the Inputs panel of the phase-equilibrium diagrams. The flowsheet uses the same choice.`) : null,
+    // a component that may form a solid in equilibrium in every stream (proposal 0015, section 5): one for now
+    !eos ? (() => {
+      const can = fs.components.filter(c => { try { const r = componentRecord(c, userOverlay(state)); return !!(r?.solubility?.length || (r?.fusion && r.fusion.available !== false)); } catch { return false; } });
+      if (!can.length) return null;
+      const cur = fs.thermo.solids?.[0] ?? "";
+      return h("div", {}, selectField("Solid in equilibrium", [["", "None"], ...can.map(c => [c, nameOf(c)])], cur, v => setThermo({ solids: v ? [v] : undefined }), `fs-solids-${uid}`, uid),
+        h("p", { class: "fa-in-hint", "data-fk": "fs-solids-hint" }, cur
+          ? `${nameOf(cur)} crystallizes where the liquid is saturated in it and dissolves where the liquid can take it, in every stream: heating or adding solvent dissolves it, cooling or a pressure letdown crystallizes it. Its solubility: the measured curve in its solvent where there is one, else its melting data. The crystals leave with the liquid (a slurry); the Crystallizer separates them.`
+          : "None: no component forms a solid in the streams (the Crystallizer still makes crystals)."));
+    })() : null,
     // on the roadmap, for other kinds of mixture: locked, with what each is for (other models: in the lists above)
     h("div", { class: "fa-fs-later", role: "note" },
       h("div", { class: "fa-in-hint" }, "Not available yet:"),
@@ -1298,6 +1335,11 @@ function ports(fs, b) {
     for (const sid of st.retentate ?? []) at[sid] = { x: x + w / 2, y: y - hh / 4, dir: [1, 0] };
     for (const sid of st.permeate ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
     for (const sid of st.in ?? []) at[sid] = { x: x - w / 2, y: y - hh / 4, dir: [-1, 0] };
+  } else if (b.type === "crystallizer") {
+    // the vapour leaves at the top, the crystals at the bottom, the mother liquor at the right
+    for (const sid of st.vapour ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
+    for (const sid of st.crystals ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
+    for (const sid of st.liquor ?? []) at[sid] = { x: x + w / 2, y: y + hh / 4, dir: [1, 0] };
   } else if (b.type === "evaporator") {
     // the vapour leaves at the top, the product at the bottom, the condensate at the right
     for (const sid of st.vapour ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
@@ -1336,6 +1378,9 @@ function shape(type, w, hh) {
     // a tall vessel with its stages (dashed): two liquids in countercurrent
     case "extraction": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 6, class: "fs-shape" }),
       svgEl("path", { d: [-24, -8, 8, 24].map(t => `M${-w / 2 + 5} ${t} H${w / 2 - 5}`).join(" "), class: "fs-detail", "stroke-dasharray": "4 3" })); return g; }
+    // a vessel with a cone at the bottom and crystals (dots) in it
+    case "crystallizer": { const g = svgEl("g", {}); g.append(svgEl("path", { d: `M${-w / 2} ${-hh / 2 + 8} Q${-w / 2} ${-hh / 2} ${-w / 2 + 8} ${-hh / 2} H${w / 2 - 8} Q${w / 2} ${-hh / 2} ${w / 2} ${-hh / 2 + 8} V${hh / 4} L${6} ${hh / 2} H${-6} L${-w / 2} ${hh / 4} Z`, class: "fs-shape" }),
+      svgEl("path", { d: "M-8 6 h2 M2 10 h2 M-3 16 h2 M6 4 h2 M-12 12 h2", class: "fs-detail" })); return g; }
     // a vessel with its heating chest (a band of tubes) in the lower part
     case "evaporator": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 10, class: "fs-shape" }),
       svgEl("path", { d: `M${-w / 2} 6 H${w / 2} M${-w / 2} ${hh / 2 - 12} H${w / 2} M-10 6 V${hh / 2 - 12} M0 6 V${hh / 2 - 12} M10 6 V${hh / 2 - 12}`, class: "fs-detail" })); return g; }
@@ -1507,7 +1552,7 @@ export function flowsheetView(ctx) {
       }
       // the drum's liquid leaves at the bottom: its name goes on the right
       // a membrane's permeate leaves at its bottom: its name goes above it
-      const t = b.type === "flash" || b.type === "column" || b.type === "extraction" || b.type === "evaporator" ? svgEl("text", { x: w / 2 + 6, y: 4, class: "fs-name", "text-anchor": "start" })
+      const t = b.type === "flash" || b.type === "column" || b.type === "extraction" || b.type === "evaporator" || b.type === "crystallizer" ? svgEl("text", { x: w / 2 + 6, y: 4, class: "fs-name", "text-anchor": "start" })
         : b.type === "membrane" ? svgEl("text", { y: -hh / 2 - 7, class: "fs-name", "text-anchor": "middle" })
         : svgEl("text", { y: hh / 2 + 15, class: "fs-name", "text-anchor": "middle" });
       t.textContent = blockName(b); g.append(t);
@@ -1893,6 +1938,13 @@ export function resultsPanel({ state, f, sol, u, set }) {
           ["Liquid method", `${r.state.model}${r.state.sets ? `, sets ${[...new Set(Object.values(r.state.sets))].join(", ")}` : ""}`],
           ["Newton iterations", `${r.state.iterations}, balances closed`],
         ] : []),
+        ...(b.type === "crystallizer" && r.state ? [
+          ["Yield", `${fmtShort(100 * r.state.yield, 4)} % of the ${nameOf(r.state.solute)} fed`],
+          ["Crystals", `${fmtShort(r.state.crystals_kg_h, 5)} kg/h (${fmtShort(r.state.crystals_kmol_h, 5)} kmol/h)`],
+          ["Solubility (mole fraction)", `${fmtShort(r.state.solubility_x, 5)}, γ ${fmtShort(r.state.gamma, 4)}`],
+          ...(r.state.mode === "evaporative" ? [["Solvent evaporated", `${fmtShort(r.state.evaporated_kg_h, 5)} kg/h`]] : []),
+          ...(r.state.slurry_liquid_kg_h > 0 ? [["Mother liquor with the crystals", `${fmtShort(r.state.slurry_liquid_kg_h, 5)} kg/h`]] : []),
+        ] : []),
         ...(b.type === "evaporator" && r.state ? [
           [r.state.target ? "Steam (for the concentration)" : "Steam", `${fmtShort(r.state.steam_kg_h, 5)} kg/h at ${fmtP(r.state.steam_P_kPa, u)} (${fmtTemp(r.state.steam_T_K, u, 2)})`],
           ["Water evaporated", `${fmtShort(r.state.evaporated_kg_h, 5)} kg/h`],
@@ -1932,7 +1984,9 @@ export function resultsPanel({ state, f, sol, u, set }) {
     if (s) {
       out.push(kvList([
         ["Temperature", s.T_K == null ? "–" : fmtTemp(s.T_K, u, 2)], ["Pressure", s.P_kPa == null ? "–" : fmtP(s.P_kPa, u)],
-        ["Vapour fraction", s.VF == null ? "–" : fmtShort(s.VF, 4)], ["Molar flow", `${fmtShort(flowToDisplay(s.F_kmol_h, u), 5)} ${u.flow ?? "kmol/h"}`],
+        ["Vapour fraction", s.VF == null ? "–" : fmtShort(s.VF, 4)],
+        ...(s.phases?.some(p => p.type === "solid") ? [["Solid", `${fmtShort(massFlowToDisplay(solidMass(fs, s), u), 5)} ${u.massFlow ?? "kg/h"}${s.phases.some(p => p.type === "solid" && p.equilibrium) ? " (crystals in equilibrium)" : " (inert)"}`]] : []),
+        ["Molar flow", `${fmtShort(flowToDisplay(s.F_kmol_h, u), 5)} ${u.flow ?? "kmol/h"}`],
         ["Mass flow", `${fmtShort(massFlowToDisplay(s.mass_kg_h, u), 5)} ${u.massFlow ?? "kg/h"}`], ["Enthalpy flow", kWText(s.H_kW, u, 5)],
         ...fs.components.map(c => [nameOf(c), `${fmtShort(flowToDisplay(s.flow_kmol_h[c], u), 5)} ${u.flow ?? "kmol/h"}`]),
       ]));
@@ -1972,6 +2026,8 @@ function streamRows(fs, res, u, state) {
     ["Temperature", tLabel(u), S.map(s => (s.T_K == null ? null : tToDisplay(s.T_K, u)))],
     ["Pressure", u.P, S.map(s => (s.P_kPa == null ? null : pToDisplay(s.P_kPa, u)))],
     ["Vapour fraction", "mol/mol", S.map(s => s.VF)],
+    // crystals in equilibrium (proposal 0015, section 5) or an inert solid: their mass flow, where a stream has any
+    ...(S.some(s => s.phases?.some(p => p.type === "solid")) ? [["Solid", u.massFlow ?? "kg/h", S.map(s => massFlowToDisplay(solidMass(fs, s), u))]] : []),
     ["Molar flow", u.flow ?? "kmol/h", S.map(s => flowToDisplay(s.F_kmol_h, u))],
     ["Mass flow", u.massFlow ?? "kg/h", S.map(s => massFlowToDisplay(s.mass_kg_h, u))],
     ["Enthalpy flow", u.duty ?? "kW", S.map(s => (s.H_kW == null ? null : dutyToDisplay(s.H_kW, u)))],
@@ -1981,7 +2037,12 @@ function streamRows(fs, res, u, state) {
   ];
   return { ids, rows };
 }
-const molarMassOf = c => byId().get(c)?.MW ?? NaN;
+// the component list carries no molar masses: the component's record does (found 2026-11-05: the mass-fraction rows were
+// empty on the mass basis)
+const molarMassOf = c => { try { return byId().get(c)?.MW ?? componentRecord(c, drawing)?.MW ?? NaN; } catch { return NaN; } };
+/** The mass flow (kg/h) of a stream's solid phases: crystals in equilibrium or an inert solid. */
+const solidMass = (fs, s) => (s.phases ?? []).filter(p => p.type === "solid")
+  .reduce((a, p) => a + p.fraction * s.F_kmol_h * p.composition.reduce((b, x, i) => b + x * molarMassOf(fs.components[i]), 0), 0);
 
 /** The column's result table: the shortcut's condenser, feed stage and reboiler, or the rigorous column's every stage. */
 export function columnTable({ fs, b, r, u }) {

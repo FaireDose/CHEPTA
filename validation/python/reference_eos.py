@@ -43,16 +43,19 @@ def omegas(model):
     return 1 / (9 * c), c / 3, 1.0, 0.0
 
 
-def kmatrix(model, ids):
+def kmatrix(model, ids, with_b=False):
+    """k_ij of src/data/kij.json; with_b: also the b (K) of the temperature-dependent sets, k_ij = a + b / T."""
     n = len(ids)
     k = np.zeros((n, n))
+    kb = np.zeros((n, n))
     for p in KIJ:
         if p["model"] != model:
             continue
         if p["i"] in ids and p["j"] in ids:
             i, j = ids.index(p["i"]), ids.index(p["j"])
             k[i, j] = k[j, i] = p["kij"]
-    return k
+            kb[i, j] = kb[j, i] = p.get("kij_b_K", 0.0)
+    return (k, kb) if with_b else k
 
 
 class Cubic:
@@ -67,14 +70,14 @@ class Cubic:
         else:
             self.m = 0.480 + 1.574 * self.w - 0.176 * self.w ** 2
         self.b_i = self.Ob * R * self.Tc / self.Pc
-        self.k = kmatrix(model, ids)
+        self.k, self.kb = kmatrix(model, ids, with_b=True)   # k_ij(T) = k + kb / T
 
     def ab(self, T, n):
         """a and b for mole amounts n (a is a mole-fraction average, b linear)."""
         n = np.asarray(n, dtype=float)
         x = n / n.sum()
         ai = self.Oa * R ** 2 * self.Tc ** 2 / self.Pc * (1 + self.m * (1 - np.sqrt(T / self.Tc))) ** 2
-        aij = (1 - self.k) * np.sqrt(np.outer(ai, ai))
+        aij = (1 - self.k - self.kb / T) * np.sqrt(np.outer(ai, ai))
         return x @ aij @ x, x @ self.b_i
 
     def a_res(self, T, V, n):

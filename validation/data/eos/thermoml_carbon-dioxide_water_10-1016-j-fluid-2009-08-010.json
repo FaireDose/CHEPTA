@@ -1,0 +1,73 @@
+{
+ "_about": "Carbon dioxide (1) + Water (2): equilibrium states (T, P, x, y), 353-393 K, as stored in the ThermoML Archive record, compositions of the other component converted with x_1 = 1 - x_2.",
+ "components": [
+  "carbon-dioxide",
+  "water"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "A. Martin, H. M. Pham, A. Kilzer, E. Weidner, S. Kareth, PHASE EQUILIBRIA OF CARBON DIOXIDE + POLY ETHYLENE GLYCOL + WATER MIXTURES AT HIGH PRESSURE: MEASUREMENTS AND MODELLING, Fluid Phase Equilib. 286 (2009) 162-169",
+  "doi": "10.1016/j.fluid.2009.08.010",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2009.08.010.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1. The table number in the article was not checked.",
+  "transcription": "Read from the ThermoML XML by validation/python/hp_gas_solubility.py; values as stored. The person checking compares each row with the record."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "p_1_kPa",
+  "x_1",
+  "y_1",
+  "U_P_kPa",
+  "U_x_1"
+ ],
+ "rows": [
+  [
+   393.0,
+   10000.0,
+   null,
+   0.01335146,
+   null,
+   8000.0,
+   null
+  ],
+  [
+   353.0,
+   10000.0,
+   null,
+   0.01719975,
+   null,
+   2000.0,
+   null
+  ],
+  [
+   353.0,
+   20000.0,
+   null,
+   0.02169921,
+   null,
+   3000.0,
+   null
+  ],
+  [
+   353.0,
+   30000.0,
+   null,
+   0.02327003,
+   null,
+   24000.0,
+   null
+  ],
+  [
+   393.0,
+   30000.0,
+   null,
+   0.02458433,
+   null,
+   23000.0,
+   null
+  ]
+ ],
+ "notes": "Read with validation/python/hp_gas_solubility.py. The record gives mass fractions; x_1 = (w_1/M_1) / (w_1/M_1 + w_2/M_2) with M_1 = 44.0098, M_2 = 18.01528 g/mol. To be checked by a person against the record (AGENTS.md rule 4)."
+}

@@ -86,6 +86,7 @@ import { findComponent, componentRecord } from "../../thermo/components.js";
 import { EOS_GASES, isPolar } from "../../thermo/method-advice.js";
 import { HENRY_GASES } from "../../thermo/henry.js";
 import { anyBubbleT } from "../../equilibrium/bubble-any.js";
+import { refuseNotUsableLiquid, kijText } from "../../thermo/eos/system.js";
 import { registerUnit } from "../units.js";
 import { solveCascade } from "./engine.js";
 import { fug, boilup, wholeStages, VOLATILITY_TOLERANCE } from "./shortcut.js";
@@ -316,6 +317,8 @@ function gasSolubilityCheck(csys, T_K, what) {
     throw fail("NOT_AVAILABLE", `Column: ${what}: ${above.map(i => `${csys.names[i]} (critical temperature ${fmt(comps[i].Tc_K)} K)`).join(", ")} ${above.length > 1 ? "are" : "is"} above ${above.length > 1 ? "their" : "its"} critical temperature at ${fmt(T_K)} K, so ${csys.model === "ideal" ? "the ideal solution (Raoult's law)" : csys.model} would take ${above.length > 1 ? "their" : "its"} solubility from a vapour pressure extrapolated beyond the critical point. CHEPTA has Henry's law constants only for ${HENRY_GASES.length} gases in water (proposal 0017), and ${above.length > 1 ? "these are" : "this is"} not one of them in this mixture. For hydrocarbons and light gases without polar components, use Peng-Robinson or SRK.`);
   }
   const warnings = [];
+  // a pair whose k_ij is marked not usable (CO2 + water, src/data/kij.json): every column has a liquid holding it
+  if (eos) refuseNotUsableLiquid(csys, csys.ids.map(() => 1), `Column: ${what}`);
   if (eos) {
     const gas = csys.ids.map((id, i) => (EOS_GASES.has(id) || above.includes(i) ? i : -1)).filter(i => i >= 0);
     const polar = csys.ids.map((id, i) => (isPolar(id, comps[i]?.formula) ? i : -1)).filter(i => i >= 0);
@@ -326,7 +329,7 @@ function gasSolubilityCheck(csys, T_K, what) {
       throw fail("NOT_AVAILABLE", `Column: ${what}: ${csys.model} with ${missing.map(([i, j]) => `${csys.names[i]} + ${csys.names[j]}`).join(", ")}, a light gas and a polar liquid without a k_ij: the classical mixing rule then gives the gas's solubility without any fit to data. Add the pair's k_ij as your own data (My data), or, for a gas in water, use an activity model, where ${HENRY_GASES.length} gases dissolve by Henry's law (proposal 0017).`);
     }
     if (found.length) {
-      warnings.push({ code: "METHOD_RANGE", message: `${csys.model} with ${names([...new Set(gas)])} dissolving in ${names([...new Set(polar)])}: the gas's solubility rests on the k_ij of ${found.map(({ i, j, p }) => `${csys.names[i]} + ${csys.names[j]} (${p.kij}${p.T_range_K ? `, fitted at ${p.T_range_K[0]}-${p.T_range_K[1]} K` : ""})`).join(", ")}, and an equation of state with the classical mixing rule describes a polar liquid poorly (DWSIM Property Packages Guide: "performs poorly for water/alcohol mixtures"). Check the result against measured solubilities; for a gas in water an activity model with Henry's law is the alternative (proposal 0017).`,
+      warnings.push({ code: "METHOD_RANGE", message: `${csys.model} with ${names([...new Set(gas)])} dissolving in ${names([...new Set(polar)])}: the gas's solubility rests on the k_ij of ${found.map(({ i, j, p }) => `${csys.names[i]} + ${csys.names[j]} (${kijText(p)}${p.T_range_K ? `, fitted at ${p.T_range_K[0]}-${p.T_range_K[1]} K` : ""})`).join(", ")}, and an equation of state with the classical mixing rule describes a polar liquid poorly (DWSIM Property Packages Guide: "performs poorly for water/alcohol mixtures"). Check the result against measured solubilities; for a gas in water an activity model with Henry's law is the alternative (proposal 0017).`,
         remedy: "Compare with the activity model, where the gas dissolves by Henry's law in water." });
     }
   }

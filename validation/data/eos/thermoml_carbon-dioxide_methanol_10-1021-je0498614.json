@@ -1,0 +1,91 @@
+{
+ "_about": "Carbon dioxide (1) + Methanol (2): equilibrium states (T, P, x, y), 313.2-313.2 K, as stored in the ThermoML Archive record, compositions of the other component converted with x_1 = 1 - x_2.",
+ "components": [
+  "carbon-dioxide",
+  "methanol"
+ ],
+ "kind": "isothermal-pxy",
+ "source": {
+  "citation": "X. Xie, J. S. Brown, D. Bush, C. A. Eckert, Bubble and Dew Point Measurements of the Ternary System Carbon Dioxide + Methanol + Hydrogen at 313.2 K, J. Chem. Eng. Data 50 (2005) 780-783",
+  "doi": "10.1021/je0498614",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je0498614.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1. The table number in the article was not checked.",
+  "transcription": "Read from the ThermoML XML by validation/python/hp_gas_solubility.py; values as stored. The person checking compares each row with the record."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "p_1_kPa",
+  "x_1",
+  "y_1",
+  "U_P_kPa",
+  "U_x_1"
+ ],
+ "rows": [
+  [
+   313.2,
+   930.0,
+   null,
+   0.051,
+   null,
+   40.0,
+   null
+  ],
+  [
+   313.2,
+   3570.0,
+   null,
+   0.205,
+   null,
+   80.0,
+   null
+  ],
+  [
+   313.2,
+   4850.0,
+   null,
+   0.291,
+   null,
+   100.0,
+   null
+  ],
+  [
+   313.2,
+   6310.0,
+   null,
+   0.411,
+   null,
+   130.0,
+   null
+  ],
+  [
+   313.2,
+   7490.0,
+   null,
+   0.591,
+   null,
+   150.0,
+   null
+  ],
+  [
+   313.2,
+   7680.0,
+   null,
+   0.653,
+   null,
+   160.0,
+   null
+  ],
+  [
+   313.2,
+   7930.0,
+   null,
+   0.786,
+   null,
+   160.0,
+   null
+  ]
+ ],
+ "notes": "Read with validation/python/hp_gas_solubility.py. To be checked by a person against the record (AGENTS.md rule 4)."
+}

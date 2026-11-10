@@ -31,9 +31,10 @@ at the measured P and liquid x; the vapour composition is compared, not fitted.
   et al., Braz. J. Chem. Eng. 22 (2005) 453 (validation/data/eos/rodrigues2005_*.json, in
   TXY_FITS), written only when the fit meets LIT_GATE. The isothermal P-x(-y) tables of the open
   literature are fitted by validation/fit_kij_literature.mjs (the same objective, with the engine's
-  bubble pressures: this implementation is too slow for their 560 points).
+  bubble pressures: this implementation is too slow for their 560 points), and the gas + polar liquid
+  data of the ThermoML Archive at high pressure by validation/fit_kij_high_pressure.mjs; both are merged here.
 
-Usage: python validation/python/eos_fit_kij.py [--literature-only] [--write]
+Usage: python validation/python/eos_fit_kij.py [--literature-only | --merge-only] [--write]
 """
 import json
 import math
@@ -263,30 +264,56 @@ def fit_txy(doc):
 
 def merge_literature(doc):
     """The k_ij that validation/fit_kij_literature.mjs fitted to the P-x tables of the open literature
-    and kept within its gate (validation/data/eos/literature_fits.json), added or replaced in doc."""
-    for entry in json.load(open(os.path.join(DATA, "literature_fits.json")))["entries"]:
+    and kept within its gate (validation/data/eos/literature_fits.json), and those that
+    validation/fit_kij_high_pressure.mjs fitted to the gas + polar liquid data of the ThermoML Archive within the same
+    gate (validation/data/eos/high_pressure_fits.json), added or replaced in doc."""
+    entries = [e for f in ("literature_fits.json", "high_pressure_fits.json") for e in json.load(open(os.path.join(DATA, f)))["entries"]]
+    for entry in entries:
         model, i, j = entry["model"], entry["i"], entry["j"]
         print(f"{model} {i}-{j}: k_ij = {entry['kij']:.4f} from literature_fits.json")
         idx = [n for n, p in enumerate(doc["pairs"]) if p["model"] == model and {p["i"], p["j"]} == {i, j}]
         if idx:
-            if doc["pairs"][idx[0]].get("tier") != "fitted":
-                raise SystemExit(f"{model} {i}-{j}: a databank value exists; keep it under 'replaced' as for hydrogen + toluene")
-            doc["pairs"][idx[0]] = entry
+            old = doc["pairs"][idx[0]]
+            if old.get("tier") == "fitted":
+                # a refit: the databank set it replaced (if any) stays under "replaced"
+                doc["pairs"][idx[0]] = {**entry, **({"replaced": old["replaced"]} if old.get("replaced") else {})}
+            elif (i, j) in REPLACE_DATABANK or (j, i) in REPLACE_DATABANK:
+                # the fitted set becomes the default, the databank set an alternative (docs/DATA_RULES.md section 5), with
+                # its mark of not usable where it has one (CO2 + water, the maintainer, 2026-11-05)
+                kept = {k: v for k, v in old.items() if k not in ("model", "i", "j", "set", "default")}
+                doc["pairs"][idx[0]] = {**entry, "replaced": {**kept, "reason": REPLACE_DATABANK.get((i, j)) or REPLACE_DATABANK[(j, i)]}}
+            else:
+                raise SystemExit(f"{model} {i}-{j}: a databank value exists; add the pair to REPLACE_DATABANK with the reason, as for hydrogen + toluene")
         else:
             doc["pairs"].append(entry)
+
+
+# Pairs whose databank (ChemSep) k_ij a merged fit replaces as the default; the databank set is kept as an alternative.
+REPLACE_DATABANK = {
+    ("carbon-dioxide", "methanol"): "A set fitted to measured mixture data is the default (docs/DATA_RULES.md section 5): the temperature-dependent "
+        "k_ij of validation/fit_kij_high_pressure.mjs (7.1-7.3 % in P on 424 ThermoML points) against 14.5-14.6 % for this ChemSep value, "
+        "which also finds no bubble pressure at 16-17 of the points (validation/data/eos/high_pressure_fits.json).",
+    ("carbon-dioxide", "water"): "Not usable (the maintainer, 2026-11-05): this ChemSep value dissolves about a tenth of the measured CO2; "
+        "the temperature-dependent k_ij of validation/fit_kij_high_pressure.mjs is the default (the maintainer, 2026-11-06).",
+}
 
 
 def main():
     path = os.path.join(ROOT, "src", "data", "kij.json")
     doc = json.load(open(path))
-    if "--literature-only" in sys.argv:
+    if "--merge-only" in sys.argv:
+        # only the merge of literature_fits.json and high_pressure_fits.json (no fit is run)
+        TXY_FITS.clear()
+        FITS.clear()
+    elif "--literature-only" in sys.argv:
         # the T-x-y fits of the open literature and the merge of the P-x fits, without the slower
         # fits above (their entries are kept as they are in kij.json)
         TXY_FITS[:] = [f for f in TXY_FITS if f.get("gate")]
         FITS.clear()
     else:
         fit_px(doc)
-    fit_txy(doc)
+    if TXY_FITS:
+        fit_txy(doc)
     merge_literature(doc)
     for fit in FITS:
         i, j = fit["pair"]
