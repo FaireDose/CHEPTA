@@ -59,13 +59,21 @@ used).
     (CoolProp), worked examples and refusals". Still to add: the Pipe workspace under Unit models (the maintainer,
     2026-11-07: "put it in the model tab so I can check a pipe without doing a flowsheet").
   - `claude/d9-two-liquid-refit`: proposal 0019 steps 2-5 (labels of 132 sets, reference splits), last commit
-    2026-11-05; its session was running the full test before opening the PR.
+    2026-11-05; its session was running the full test before opening the PR. **On 2026-11-10 the branch is no longer
+    on GitHub** (its session, session_01FPbeWXXrm9fWLCgAcqxCCc, reported "pushed" at 2026-11-05 15:31 UTC; no pull
+    request was opened, so GitHub offers no restore button). Its first four commits survive in main's history
+    (f059d9f, b8c3a85, 3889db1, 87a1702, reverted by eb660af, 2f15f61, 8df393e, 42a9ee1); the last commit,
+    "Proposal 0019 steps 2-5: labels of 132 sets ...", does not. Asked the maintainer whether they deleted it.
   - Finish each in a fresh session that reads its branch and its decision file, not in the old sessions (they hold
     300,000 to 740,000 tokens of context).
 
 ## Queue, in order
 
-1. Finish the two-liquid refit (0019 steps 2-5) and open its PR. Opus.
+1. Finish the two-liquid refit (0019 steps 2-5) and open its PR. Opus. Blocked on 2026-11-10: the branch is gone
+   (above); restore it, or redo steps 2-5 from the four commits in main's history.
+2026-11-10, second coordinator: started session_01FPbeWV9iSu48kT5ogbUByo (item 2, Pipe, Opus, branch
+`claude/pipe-block`) and session_01FPbeWY9j2N2BLmp9R117hg (item 3, MHV1 interface, Sonnet, branch
+`claude/mhv1-interface`).
 2. Finish the Pipe block with its Unit models workspace (0020). Opus.
 3. MHV1 in the interface: "PR + gE (MHV1)" and "SRK + gE (MHV1)" in the Model selector, the flowsheet's Method page,
    the column's method, project files and `CHEPTA.run` (thermo `mixing`), the command line and MCP. No low-pressure
