@@ -2186,6 +2186,230 @@
         "qin2008-carbon-dioxide-water",
         "campos2009-carbon-dioxide-water"
       ]
+    },
+    {
+      "components": [
+        "carbon-dioxide",
+        "methanol"
+      ],
+      "model": "SRK",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of SRK are fitted to open data but follow them less closely than the gate: AAD 5.6 % in P (max 32.4 %), 10.2 % in the gas solubility, 1 of 424 points without a bubble pressure, 0.6 points over the gate of 5 %. Use with care.",
+      "reference": "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json",
+      "source_ids": [
+        "braga2017-carbon-dioxide-methanol",
+        "dai2015-carbon-dioxide-methanol",
+        "decultot2019-carbon-dioxide-methanol",
+        "gui2011-carbon-dioxide-methanol",
+        "hamada2012-carbon-dioxide-methanol",
+        "hohler2018-carbon-dioxide-methanol",
+        "jalili2015-carbon-dioxide-methanol",
+        "kariznovi2013-carbon-dioxide-methanol",
+        "lyu2018-carbon-dioxide-methanol",
+        "naidoo2008-carbon-dioxide-methanol",
+        "qureshi2017-carbon-dioxide-methanol",
+        "sato2010-carbon-dioxide-methanol",
+        "schuler2012-carbon-dioxide-methanol",
+        "wu2019-carbon-dioxide-methanol",
+        "xia2004-carbon-dioxide-methanol",
+        "xie2005-carbon-dioxide-methanol"
+      ]
+    },
+    {
+      "components": [
+        "carbon-dioxide",
+        "methanol"
+      ],
+      "model": "PR",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of PR are fitted to open data but follow them less closely than the gate: AAD 5.6 % in P (max 29.7 %), 10.2 % in the gas solubility, 0.6 points over the gate of 5 %. Use with care.",
+      "reference": "validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2008-05-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2009-12-030.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2012-02-018.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2015-02-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2017-12-004.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-fluid-2018-04-014.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2012-10-002.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2015-01-001.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2016-10-030.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1016-j-jct-2019-05-003.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-7b00126.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-acs-jced-9b00676.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je049803i.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je0498614.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je101344v.json, validation/data/eos/thermoml_carbon-dioxide_methanol_10-1021-je300332b.json",
+      "source_ids": [
+        "braga2017-carbon-dioxide-methanol",
+        "dai2015-carbon-dioxide-methanol",
+        "decultot2019-carbon-dioxide-methanol",
+        "gui2011-carbon-dioxide-methanol",
+        "hamada2012-carbon-dioxide-methanol",
+        "hohler2018-carbon-dioxide-methanol",
+        "jalili2015-carbon-dioxide-methanol",
+        "kariznovi2013-carbon-dioxide-methanol",
+        "lyu2018-carbon-dioxide-methanol",
+        "naidoo2008-carbon-dioxide-methanol",
+        "qureshi2017-carbon-dioxide-methanol",
+        "sato2010-carbon-dioxide-methanol",
+        "schuler2012-carbon-dioxide-methanol",
+        "wu2019-carbon-dioxide-methanol",
+        "xia2004-carbon-dioxide-methanol",
+        "xie2005-carbon-dioxide-methanol"
+      ]
+    },
+    {
+      "components": [
+        "hydrogen",
+        "methanol"
+      ],
+      "model": "SRK",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of SRK are fitted to open data but follow them less closely than the gate: AAD 5.7 % in P (max 13.7 %), 5.7 % in the gas solubility, 0.7 points over the gate of 5 %. Use with care.",
+      "reference": "validation/data/eos/thermoml_hydrogen_methanol_10-1016-j-tca-2004-12-001.json, validation/data/eos/thermoml_hydrogen_methanol_10-1021-acs-jced-9b00676.json",
+      "source_ids": [
+        "descamps2005-hydrogen-methanol",
+        "wu2019-carbon-dioxide-methanol"
+      ]
+    },
+    {
+      "components": [
+        "hydrogen",
+        "methanol"
+      ],
+      "model": "PR",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of PR are fitted to open data but follow them less closely than the gate: AAD 5.7 % in P (max 13.6 %), 5.6 % in the gas solubility, 0.7 points over the gate of 5 %. Use with care.",
+      "reference": "validation/data/eos/thermoml_hydrogen_methanol_10-1016-j-tca-2004-12-001.json, validation/data/eos/thermoml_hydrogen_methanol_10-1021-acs-jced-9b00676.json",
+      "source_ids": [
+        "descamps2005-hydrogen-methanol",
+        "wu2019-carbon-dioxide-methanol"
+      ]
+    },
+    {
+      "components": [
+        "methane",
+        "methanol"
+      ],
+      "model": "SRK",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of SRK are fitted to open data but follow them less closely than the gate: AAD 6.3 % in P (max 19.9 %), 5.8 % in the gas solubility, 1.3 points over the gate of 5 %. Use with care.",
+      "reference": "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json, validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json, validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json, validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json, validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json, validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json",
+      "source_ids": [
+        "frost2014-methane-methanol",
+        "frost2015-methane-methanol",
+        "kapateh2016-methane-methanol",
+        "nourozieh2012-methane-methanol",
+        "oliveira2016-methane-methanol",
+        "xia2004-methane-methanol"
+      ]
+    },
+    {
+      "components": [
+        "methane",
+        "methanol"
+      ],
+      "model": "PR",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of PR are fitted to open data but follow them less closely than the gate: AAD 6.3 % in P (max 19.8 %), 5.8 % in the gas solubility, 1.3 points over the gate of 5 %. Use with care.",
+      "reference": "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2015-07-009.json, validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json, validation/data/eos/thermoml_methane_methanol_10-1016-j-jct-2012-03-028.json, validation/data/eos/thermoml_methane_methanol_10-1021-acs-jced-5b00793.json, validation/data/eos/thermoml_methane_methanol_10-1021-je034138j.json, validation/data/eos/thermoml_methane_methanol_10-1021-je400684k.json",
+      "source_ids": [
+        "frost2014-methane-methanol",
+        "frost2015-methane-methanol",
+        "kapateh2016-methane-methanol",
+        "nourozieh2012-methane-methanol",
+        "oliveira2016-methane-methanol",
+        "xia2004-methane-methanol"
+      ]
+    },
+    {
+      "components": [
+        "carbon-dioxide",
+        "water"
+      ],
+      "model": "PR",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of PR are fitted to open data but follow them less closely than the gate: AAD 11.4 % in P (max 60.6 %), 7.9 % in the gas solubility, 4 of 573 points without a bubble pressure, 6.4 points over the gate of 5 %. Use with care.",
+      "reference": "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2005-10-006.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-06-006.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2009-08-010.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2010-02-035.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-08-032.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2015-02-012.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2017-04-001.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-02-002.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2018-11-035.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2007-05-013.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2015-01-008.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2018-03-009.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00504.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-6b00505.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00591.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-7b00777.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-8b00451.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-acs-jced-9b00013.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je1011168.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je200991x.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je300332b.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400396s.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je400736w.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je501172d.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je700473e.json, validation/data/eos/thermoml_carbon-dioxide_water_10-1021-je800966f.json",
+      "source_ids": [
+        "ahmadi2018-carbon-dioxide-water",
+        "bermejo2005-carbon-dioxide-water",
+        "campos2009-carbon-dioxide-water",
+        "carvalho2015-carbon-dioxide-water",
+        "dalmolin2006-carbon-dioxide-water",
+        "dellera2010-carbon-dioxide-water",
+        "fonseca2007-carbon-dioxide-water",
+        "guo2014-carbon-dioxide-water",
+        "haghtalab2015-carbon-dioxide-water",
+        "han2011-carbon-dioxide-water",
+        "howlader2017-carbon-dioxide-water",
+        "jia2019-carbon-dioxide-water",
+        "kastanidis2018-carbon-dioxide-water",
+        "koschel2006-carbon-dioxide-water",
+        "li2018-carbon-dioxide-water",
+        "lucile2012-carbon-dioxide-water",
+        "luo2017-carbon-dioxide-water",
+        "martin2009-carbon-dioxide-water",
+        "messabeb2016-carbon-dioxide-water",
+        "messabeb2017-carbon-dioxide-water",
+        "mohammadian2015-carbon-dioxide-water",
+        "muromachi2015-carbon-dioxide-water",
+        "pokki2018-furfural-gvl",
+        "qin2008-carbon-dioxide-water",
+        "schuler2012-carbon-dioxide-methanol",
+        "serpa2013-carbon-dioxide-water",
+        "tong2013-carbon-dioxide-water",
+        "wang2019-carbon-dioxide-water",
+        "yuan2017-carbon-dioxide-water"
+      ]
+    },
+    {
+      "components": [
+        "carbon-monoxide",
+        "water"
+      ],
+      "model": "SRK",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of SRK are fitted to open data but follow them less closely than the gate: AAD 7 % in the Henry's law constant against IAPWS G7-04 (max 16.1 %), 2 points over the gate of 5 %. Use with care.",
+      "reference": "src/data/henry.json",
+      "source_ids": [
+        "iapws-g7-04"
+      ]
+    },
+    {
+      "components": [
+        "carbon-monoxide",
+        "water"
+      ],
+      "model": "PR",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of PR are fitted to open data but follow them less closely than the gate: AAD 7.1 % in the Henry's law constant against IAPWS G7-04 (max 16.4 %), 2.1 points over the gate of 5 %. Use with care.",
+      "reference": "src/data/henry.json",
+      "source_ids": [
+        "iapws-g7-04"
+      ]
+    },
+    {
+      "components": [
+        "methane",
+        "water"
+      ],
+      "model": "SRK",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of SRK are fitted to open data but follow them less closely than the gate: AAD 6.9 % in the Henry's law constant against IAPWS G7-04 (max 15.9 %), 1.9 points over the gate of 5 %. Use with care.",
+      "reference": "src/data/henry.json",
+      "source_ids": [
+        "iapws-g7-04"
+      ]
+    },
+    {
+      "components": [
+        "methane",
+        "water"
+      ],
+      "model": "PR",
+      "mixing": "MHV1",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters inside the MHV1 rule of PR are fitted to open data but follow them less closely than the gate: AAD 7 % in the Henry's law constant against IAPWS G7-04 (max 16.3 %), 2 points over the gate of 5 %. Use with care.",
+      "reference": "src/data/henry.json",
+      "source_ids": [
+        "iapws-g7-04"
+      ]
     }
   ]
 }
