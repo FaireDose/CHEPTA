@@ -126,6 +126,14 @@ Checked so far:
 
 ## Where the rules are applied
 
+- **MHV1 as a choice** (proposal 0018; docs/decisions/2026-11-10-03-mhv1-interface.md): "PR + gE (MHV1)" and "SRK +
+  gE (MHV1)" are chosen where a method is chosen: the Model selector of the workbench and the flowsheet's Method page
+  (the equation list), a column's own method, `thermo.mixing` of a project, of `CHEPTA.run` and of the command line and
+  MCP tools (`thermo: { model: "PR", mixing: "MHV1" }`), and `system({ model, mixing: "MHV1" })`. Each pair takes the
+  first of a set fitted inside the rule, the databank's NRTL set, else g^E = 0 with a warning; a light gas with a polar
+  liquid without a set is refused, and the interface shows the engine's reason. The method advisor does not
+  recommend or warn about the rule yet.
+
 - **The flowsheet test suite** (docs/FLOWSHEET_TESTS.md): every generated case is checked
   against rules 2–8 before it is accepted (`method_check` in
   `validation/python/reference_flowsheet_suite.py`). Draws that fail are rejected and listed

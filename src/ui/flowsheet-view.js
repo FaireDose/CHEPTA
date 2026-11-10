@@ -11,8 +11,9 @@ import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { h, s as svgEl } from "./dom.js";
 import { icon } from "./icons.js";
 import { FUTURE_MODELS } from "./future-models.js";
-import { modelPicker } from "./model-picker.js";
+import { modelPicker, thermoPatch, columnMethod, MHV1_CHOICES, equationValue } from "./model-picker.js";
 import { listComponents, modelName } from "../thermo/system.js";
+import { mhv1Status } from "./mhv1-status.js";
 import { methodAdvice } from "../thermo/method-advice.js";
 import { componentRecord } from "../thermo/components.js";
 import { componentPicker } from "./component-picker.js";
@@ -245,7 +246,7 @@ export function flowsheetRibbon({ state, set, ui, group, smallButton }) {
     b.disabled = !!disabled;
     return b;
   };
-  const method = fs.thermo.model + (["PR", "SRK"].includes(fs.thermo.model) || fs.thermo.vapour === "ideal" ? "" : ` + ${fs.thermo.vapour}`);
+  const method = fs.thermo.model + (fs.thermo.mixing ? " + gE (MHV1)" : "") + (["PR", "SRK"].includes(fs.thermo.model) || fs.thermo.vapour === "ideal" ? "" : ` + ${fs.thermo.vapour}`);
   const setupBtn = (ico, label, page, fk, title) => {
     const b = smallButton({ ico, label, fk, title, pressed: !f.sel && (f.setup ?? "components") === page, onClick: () => { f.sel = null; f.setup = page; set({}); } });
     return b;
@@ -470,8 +471,8 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
         setS({ stage_duties_kW: list.map(([st, q]) => ({ stage: st, duty_kW: dutyFromDisplay(q, u) })) });
       }, { id: `${b.id}-stage_duties`, uid, unit: `stage: ${u.duty ?? "kW"}, …`, placeholder: "4: -100" }),
       P("P_kPa", "Column pressure"),
-      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]],
-        spec.method?.model ?? "", v => setS({ method: v ? { model: v, ...(["PR", "SRK"].includes(v) ? {} : { vapour: spec.method?.vapour ?? "ideal" }) } : null }), `fs-cmethod-${b.id}`, uid),
+      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"], ...MHV1_CHOICES],
+        equationValue(spec.method?.model ?? "", spec.method?.mixing) , v => setS({ method: columnMethod(v, spec.method) }), `fs-cmethod-${b.id}`, uid),
       h("p", { class: "fa-in-hint" }, `Every stage is an equilibrium stage, counted from the top${reb ? "; the last is the reboiler" : ""}. The first inlet enters the top stage (the liquid), the second the bottom stage (the ${stripper ? "stripping gas, such as live steam" : "gas"}); the gas leaves by “gas out” at the top, the liquid by “liquid out” at the bottom. ${reb ? "The reboiler takes one specification. " : "Nothing else is specified: what leaves follows from the feeds and the stages. "}Heat added to stages: for example “4: -100” removes 100 ${u.duty ?? "kW"} from stage 4; the other stages are adiabatic. Empty pressure: the first feed's; no pressure drop. Gases in water: with an activity model, H₂, N₂, O₂, CH₄, C₂H₆, Ar, CO, CO₂, H₂S and ethylene dissolve by Henry's law (water the only solvent); Peng–Robinson or SRK needs a k_ij for each gas with a polar liquid; sour water and amines are refused until electrolyte models.`)));
   } else if (b.type === "column" && spec.mode === "rigorous") {
     // the rigorous column (proposal 0015, M2a): stages, the feed stage, two specifications from six
@@ -518,8 +519,8 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       }, `fs-cond-${b.id}`),
       ...(decanter ? [segRow("Refluxed liquid", [["light", "Light refluxed"], ["heavy", "Heavy refluxed"]], spec.reflux_liquid ?? "light", v => setS({ reflux_liquid: v === "light" ? null : v }), `fs-reflux-${b.id}`)] : []),
       P("P_kPa", "Column pressure"),
-      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["WILSON", "Wilson"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"]],
-        spec.method?.model ?? "", v => setS({ method: v ? { model: v, ...(["PR", "SRK"].includes(v) ? {} : { vapour: spec.method?.vapour ?? "ideal" }) } : null }), `fs-cmethod-${b.id}`, uid),
+      selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["WILSON", "Wilson"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"], ...MHV1_CHOICES],
+        equationValue(spec.method?.model ?? "", spec.method?.mixing) , v => setS({ method: columnMethod(v, spec.method) }), `fs-cmethod-${b.id}`, uid),
       h("p", { class: "fa-in-hint" }, `Stages are counted from the top: 1 is the condenser, the last the reboiler. Empty pressure: the feed's; no pressure drop. Every stage's balances are solved together, and a stage that runs dry is warned. ${vll ? "Two liquids are looked for on every stage (activity models only); a decanter refluxes one liquid and sends the other out as the distillate." : "A stage where a second liquid would form is refused; choose \u201cLook for two liquids\u201d to allow two liquids (activity models)."} ${spec.method?.model ? "With its own method, each stream that enters or leaves the column keeps its flows, pressure and enthalpy, and its temperature is found again in the receiving method (the change is in the results)." : ""}`)));
   } else if (b.type === "column") {
     const comps = fs.components.map(c => [c, nameOf(c)]);
@@ -1056,6 +1057,15 @@ function usePR(state, set) {
     on: { click: () => set({ flowsheet: { ...state.flowsheet, thermo: { ...state.flowsheet.thermo, model: "PR", vapour: "ideal" } } }) } }, icon("cubic", 15), "Use Peng–Robinson");
 }
 
+/** The MHV1 rule's answer for the flowsheet's components: the engine's refusal as it is, else each pair's source. */
+function mhv1Note(fs, userData) {
+  const st = mhv1Status(fs.components, fs.thermo.model, userData);
+  if (!st.ok) return warning(st.message, { title: `${st.method}: not available for these components`, attrs: { role: "alert", "data-fk": "fs-mhv1-refused" }, open: true });
+  return h("div", { class: "fa-in-hint", "data-fk": "fs-mhv1-pairs" },
+    h("p", {}, `${st.method}: the NRTL parameters of each pair, taken from the first of: a set fitted inside the rule to high-pressure data, the pair's NRTL set of the databank, else g^E = 0 (a light gas with a polar liquid is refused).`),
+    h("ul", {}, ...st.pairs.map(p => h("li", {}, `${p.pair}: ${p.source}`))),
+    ...st.warnings.map(w => warning(w, { attrs: { role: "note", "data-fk": "fs-mhv1-warning" } })));
+}
 function methodProblem(ids, thermo) {
   const eos = ["PR", "SRK"].includes(thermo.model);
   const list = xs => `${xs.map(nameOf).join(", ")} ha${xs.length === 1 ? "s" : "ve"}`;
@@ -1235,9 +1245,11 @@ function methodSection({ state, set, fs, eos, setThermo, inputsSection, uid, pro
     h("p", { class: "fa-in-hint" }, "One property method for every block and stream."),
     ...advice.map(a => warning(a, { attrs: { role: "note", "data-fk": "fs-method-advice" } })),
     // the same drop-down lists as the workbench's Model group (model-picker.js)
-    modelPicker({ model: fs.thermo.model, vapour: fs.thermo.vapour ?? "ideal", id: `fs-model-${uid}`, fk: "fs-model",
-      onChange: p => setThermo(p.model === fs.thermo.model ? { vapour: p.vapour } : { model: p.model, vapour: p.vapour }) }),
+    modelPicker({ model: fs.thermo.model, vapour: fs.thermo.vapour ?? "ideal", mixing: fs.thermo.mixing ?? null, id: `fs-model-${uid}`, fk: "fs-model",
+      onChange: p => setThermo(thermoPatch(p, fs.thermo)) }),
     problem ? warning(problem, { attrs: { role: "alert", "data-fk": "fs-method-problem" }, details: [usePR(state, set)] }) : null,
+    // the MHV1 mixing rule: what the engine does for these components, its refusal included (proposal 0018)
+    eos && fs.thermo.mixing === "MHV1" && fs.components.length > 1 ? mhv1Note(fs, userOverlay(state)) : null,
     // the pair parameter sets: the same choice as the diagrams and the flash
     PAIR_MODELS.includes(fs.thermo.model) ? h("p", { class: "fa-in-hint", "data-fk": "fs-sets" },
       `Pair parameter sets: ${setsLabel(state)}. The rule for every pair is in the Library; a pair's own set is chosen in the Inputs panel of the phase-equilibrium diagrams. The flowsheet uses the same choice.`) : null,
@@ -1909,7 +1921,7 @@ export function resultsPanel({ state, f, sol, u, set }) {
           ...(r.state.reboiler === "partial" ? [["Boil-up ratio", fmtShort(r.state.boilup_ratio, 4)], ["Reboiler duty", kWText(r.state.reboiler_kW, u, 5)]] : []),
           ...r.state.stage_duties_kW.map(d => [`Heat added, stage ${d.stage}`, kWText(d.duty_kW, u, 5)]),
           ["Newton iterations", `${r.state.iterations}, balances closed`],
-          ...(r.state.method ? [["Property method of the column", r.state.method.model]] : []),
+          ...(r.state.method ? [["Property method of the column", r.state.method.mixing ? `${r.state.method.model} + gE (MHV1)` : r.state.method.model]] : []),
         ] : []),
         ...(b.type === "column" && r.state?.mode === "rigorous" && !r.state.configuration ? [
           ["Stages, feed", `${r.state.stages}, on ${r.state.feed_stages.join(", ")}`],
@@ -1923,7 +1935,7 @@ export function resultsPanel({ state, f, sol, u, set }) {
           ["Bottom", fmtTemp(r.state.T_bottoms_K, u, 2)],
           ["Newton iterations", `${r.state.iterations}, balances closed`],
           ...(r.state.phases === "VLL" ? [["Two liquids on stages", r.state.two_liquid_stages.length ? r.state.two_liquid_stages.join(", ") : "none"]] : []),
-          ...(r.state.method ? [["Property method of the column", r.state.method.model], ...r.state.boundary.map(q => [`Temperature change, ${q.stream}`, `${q.dT_K >= 0 ? "+" : ""}${q.dT_K.toFixed(2)} K`])] : []),
+          ...(r.state.method ? [["Property method of the column", r.state.method.mixing ? `${r.state.method.model} + gE (MHV1)` : r.state.method.model], ...r.state.boundary.map(q => [`Temperature change, ${q.stream}`, `${q.dT_K >= 0 ? "+" : ""}${q.dT_K.toFixed(2)} K`])] : []),
           ...(z?.basis?.governing_stage != null ? [
             [z.basis.mode === "checked" ? "Diameter (given)" : "Diameter", `${fmtShort(z.dimensions.D_m, 3)} m, trays ${fmtShort(z.dimensions.tray_spacing_m, 3)} m apart`],
             ["Highest fraction of flooding", `${fmtShort(100 * z.basis.max_fraction_of_flooding, 3)} % (design ${fmtShort(100 * z.basis.design_fraction, 3)} %)`],
@@ -2009,7 +2021,7 @@ export function resultsPanel({ state, f, sol, u, set }) {
         res.balance.reaction_kW != null ? ["Heat of the reactions", kWText(res.balance.reaction_kW, u, 5)] : null,
         ["Material balance", Object.values(res.balance.material_kmol_h).every(v => Math.abs(v) < 1e-6) ? "closed" : "check"],
         ["Energy balance", kWText(res.balance.energy_kW, u, 3)],
-      ]), h("div", { class: "fug-foot" }, `Model: ${fs.thermo.model}${["PR", "SRK"].includes(fs.thermo.model) ? "" : `, ${fs.thermo.vapour} vapour`}${PAIR_MODELS.includes(fs.thermo.model) ? `; parameter sets (Library): ${setsLabel(state)}` : ""}. Model predictions, not measurements; the parameter sources are in Sources.`));
+      ]), h("div", { class: "fug-foot" }, `Model: ${fs.thermo.model}${fs.thermo.mixing ? " + gE (MHV1)" : ""}${["PR", "SRK"].includes(fs.thermo.model) ? "" : `, ${fs.thermo.vapour} vapour`}${PAIR_MODELS.includes(fs.thermo.model) ? `; parameter sets (Library): ${setsLabel(state)}` : ""}. Model predictions, not measurements; the parameter sources are in Sources.`));
     }
   }
   return out;

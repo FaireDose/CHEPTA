@@ -119,6 +119,11 @@ Nothing smaller than 11 px on screen, chart labels included (at 375 px wide too)
 
 ## 5. Warnings, refusals and errors
 
+The Model selector (`src/ui/model-picker.js`) lists "PR + gE (MHV1)" and "SRK + gE (MHV1)" with the equations of state,
+in the views that support the rule (the workbench's Model group, the flowsheet's Method page, a column's own method);
+never under the name PSRK. Where the rule has no set for a pair, the Method page shows the engine's refusal as a warning
+(amber, pressed to open), worded by the engine, with what to do (its own text); it never fills in parameters.
+
 | Kind | Looks | Worded |
 |---|---|---|
 | **Warning**: the result stands, with a caveat | amber, one line with the warning sign; pressed, it opens the whole message (`warning.js`) | what is wrong, then its effect: "The pair has no fitted set; the databank set is used." |

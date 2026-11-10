@@ -30,7 +30,8 @@ test("a project keeps the settings of every workspace and opens to the same work
   // Heat exchanger workspace; it is written only for those (test/energy-streams.test.js); format 5 (proposal 0013,
   // step 7) adds the fluid charts, written only when they are used (test/charts.test.js)
   // format 6 (proposal 0015, milestone M1) adds the Column block, written only with one (test/columns-shortcut.test.js)
-  assert.equal(PROJECT_FORMAT, 6);
+  // format 7 (proposal 0018, 2026-11-10) adds the MHV1 mixing rule, written only when it is chosen (test/mhv1-interface.test.js)
+  assert.equal(PROJECT_FORMAT, 7);
   assert.equal(doc.fugacity_project, 2);
   assert.equal(doc.saved_with, "chepta 9.9.9");
   assert.equal(doc.saved_at, "2026-10-06T12:00:00.000Z");
@@ -76,7 +77,7 @@ test("a wrong file is refused with the reason", () => {
     ["[]", /expected a JSON object/],
     [JSON.stringify({ workbench: {} }), /"fugacity_project" key is missing/],
     [JSON.stringify({ fugacity_package: 1, type: "pair-data" }), /contribution package/],
-    [JSON.stringify({ ...ok, fugacity_project: 7 }), /format 7.*reads formats 1 to 6/],   // the newest format is 6 since the Column block (proposal 0015, M1)
+    [JSON.stringify({ ...ok, fugacity_project: 8 }), /format 8.*reads formats 1 to 7/],   // the newest format is 7 since the MHV1 mixing rule (proposal 0018)
     [JSON.stringify({ ...ok, fugacity_project: "1" }), /format number/],
     [JSON.stringify({ fugacity_project: 1 }), /no "workbench"/],
     [JSON.stringify({ ...ok, workbench: { ...ok.workbench, modle: "NRTL" } }), /unknown key "modle"/],

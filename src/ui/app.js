@@ -33,7 +33,7 @@ import {
   viewCheck, hxSetups,
 } from "./app-logic.js";
 import { diagramXlsx, exportFileName } from "./diagram-export.js";
-import { modelPicker, liquidPicker } from "./model-picker.js";
+import { modelPicker, liquidPicker, workbenchPatch } from "./model-picker.js";
 import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, examplesFor, rotateInputs, solventsFor, needsFor, isEosModel } from "./workspaces.js";
 import { tLabel, UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
@@ -368,8 +368,8 @@ export function app(target, cfg = {}) {
    * gas unless chosen otherwise), or an equation of state for both phases.
    */
   function modelGroup() {
-    return group("Model", modelPicker({ model: state.model, vapour: state.vapour, id: `fa-model-${uid}`,
-      onChange: p => set(p.model === state.model ? { vapour: p.vapour } : { model: p.model, vapour: p.vapour }) }));
+    return group("Model", modelPicker({ model: state.model, vapour: state.vapour, mixing: state.mixing ?? null, id: `fa-model-${uid}`,
+      onChange: p => set(workbenchPatch(p, state)) }));
   }
   function ribbonGroups() {
     const u = state.units, v = state.view;

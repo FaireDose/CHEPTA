@@ -111,7 +111,7 @@ const SPEC_KEYS = ["mode", "light_key", "heavy_key", "recovery_light_key_in_dist
 /** The specifications of a reboiled stripper (one of them). */
 const STRIPPER_SPECS = ["boilup_ratio", "bottoms_kmol_h", "reboiler_duty_kW", "distillate_kmol_h"];
 /** The keys of a column's own property method (milestone M2b), as a flowsheet's thermo: model, vapour, sets, prefer. */
-const METHOD_KEYS = ["model", "vapour", "sets", "prefer"];
+const METHOD_KEYS = ["model", "vapour", "sets", "prefer", "mixing"];
 /** The rigorous mode's specifications (two of them), and the engine's names for them. */
 const RIGOROUS_SPECS = { reflux_ratio: "reflux_ratio", boilup_ratio: "boilup_ratio", distillate_kmol_h: "distillate_rate",
   bottoms_kmol_h: "bottoms_rate", condenser_duty_kW: "condenser_duty", reboiler_duty_kW: "reboiler_duty" };
@@ -342,6 +342,11 @@ function checkMethod(m) {
   const bad = Object.keys(m).filter(k => !METHOD_KEYS.includes(k));
   if (bad.length) throw fail("BAD_INPUT", `Column: method: unknown key${bad.length > 1 ? "s" : ""} ${bad.join(", ")}. Known: ${METHOD_KEYS.join(", ")}.`);
   if (typeof m.model !== "string" || !m.model) throw fail("BAD_INPUT", "Column: method needs a model (NRTL, UNIQUAC, WILSON, MOD-UNIFAC-2, ideal, PR or SRK).");
+  if (m.mixing != null) {
+    if (String(m.mixing).toUpperCase() !== "MHV1") throw fail("BAD_INPUT", `Column: method.mixing "${m.mixing}" is not a mixing rule of CHEPTA. Use "MHV1" (PR or SRK + gE (MHV1)), or leave it out.`);
+    if (!["PR", "SRK"].includes(String(m.model).toUpperCase())) throw fail("BAD_INPUT", `Column: method.mixing "MHV1" goes with model "PR" or "SRK"; model "${m.model}" has none.`);
+    return { ...m, mixing: "MHV1" };
+  }
   return { ...m };
 }
 
@@ -468,13 +473,13 @@ function solveShortcut(sys, feed, s) {
 function methodSystem(sys, m) {
   const eos = ["PR", "SRK"].includes(String(m.model).toUpperCase());
   try {
-    return system({ components: sys.ids, model: m.model, ...(eos || m.vapour == null ? {} : { vapour: m.vapour }), ...(m.sets ? { sets: m.sets } : {}),
+    return system({ components: sys.ids, model: m.model, ...(eos || m.vapour == null ? {} : { vapour: m.vapour }), ...(m.mixing ? { mixing: m.mixing } : {}), ...(m.sets ? { sets: m.sets } : {}),
       ...(m.prefer ? { prefer: m.prefer } : {}), ...(sys.userData ? { userData: sys.userData } : {}) });
   } catch (e) {
     throw fail(e.code ?? "BAD_INPUT", `Column: its own property method (${m.model}): ${e.message}`);
   }
 }
-const methodName = m => `${m.model}${m.vapour && !["PR", "SRK"].includes(String(m.model).toUpperCase()) ? ` with ${m.vapour === "ideal" ? "an ideal-gas" : `a ${m.vapour}`} vapour` : ""}`;
+const methodName = m => `${m.model}${m.mixing ? " + gE (MHV1)" : ""}${m.vapour && !["PR", "SRK"].includes(String(m.model).toUpperCase()) ? ` with ${m.vapour === "ideal" ? "an ideal-gas" : `a ${m.vapour}`} vapour` : ""}`;
 
 /**
  * The P-H boundary between two property methods (proposal 0015, Part I, section 3): the stream keeps its component
@@ -566,7 +571,7 @@ function solveRigorous(sys, feeds, s) {
     ...(s.phases === "VLL" ? [twoLiquidStages.length
       ? `Two liquids on stage${twoLiquidStages.length > 1 ? "s" : ""} ${twoLiquidStages.join(", ")} (looked for on every stage: the tangent-plane test of each stage's liquid, then the liquid-liquid split at its temperature); both liquids of a stage leave it together${s.condenser === "decanter" ? ", except in the decanter, where they are separated" : ""}. They are named light and heavy by density.`
       : "Two liquids were looked for on every stage (phases VLL); every stage holds one liquid."] : []),
-    ...(own ? [`The column uses its own property method, ${methodName(s.method)}, while the flowsheet uses ${sys.model}. At each stream that enters or leaves the column the component flows, the pressure and the enthalpy flow are kept and the temperature is found by a P-H flash in the receiving method (state.boundary): ${boundary.map(q => `${q.stream} ${q.dT_K >= 0 ? "+" : ""}${fmt(q.dT_K)} K`).join(", ")}.`] : []),
+    ...(own ? [`The column uses its own property method, ${methodName(s.method)}, while the flowsheet uses ${sys.info?.method ?? sys.model}. At each stream that enters or leaves the column the component flows, the pressure and the enthalpy flow are kept and the temperature is found by a P-H flash in the receiving method (state.boundary): ${boundary.map(q => `${q.stream} ${q.dT_K >= 0 ? "+" : ""}${fmt(q.dT_K)} K`).join(", ")}.`] : []),
     ...r.notes,
   ];
   if (!own && (Math.abs(distillate.T_K - r.stages[0].T_K) > 0.01 || Math.abs(bottoms.T_K - r.stages[N - 1].T_K) > 0.01)) {
@@ -597,7 +602,7 @@ function solveRigorous(sys, feeds, s) {
     warnings.push(...sizing.warnings);   // its notes stay in sizing.notes
   }
   return { outlets: { distillate, bottoms }, duty_kW: Qr - Qc + Qstages, notes, warnings, profile, state, ...(sizing ? { sizing } : {}),
-    ...(own ? { method: { ...s.method, flowsheet_model: sys.model, boundary: "P-H: component flows, pressure and enthalpy flow kept; the temperature found by a P-H flash in the receiving method" } } : {}) };
+    ...(own ? { method: { ...s.method, flowsheet_model: sys.info?.method ?? sys.model, boundary: "P-H: component flows, pressure and enthalpy flow kept; the temperature found by a P-H flash in the receiving method" } } : {}) };
 }
 const sum = v => v.reduce((a, c) => a + c, 0);
 

@@ -238,6 +238,10 @@ a pull request that gives it a new version and says so here.
 | 6 | **The request path**: `CHEPTA.run(request) → result` | `src/api/`, `bin/` | built for the existing blocks (below); the command line `chepta` and the local MCP server `chepta-mcp` (M1; [docs/models/tools.md](docs/models/tools.md)) |
 | 7 | **The execution envelope**: run id, input hash, limits, status, cancellation, late results discarded | `src/runtime/` | built: `CHEPTA.run` on the caller's thread as before; the worker (M1): a Node worker thread for the command line and the MCP server, a Web Worker for the workbench's flowsheet and `CHEPTA.runAsync` / `startRun`, falling back to the page's thread where a page allows no worker, and saying so |
 
+Project format 7 (proposal 0018; `docs/schema/project-7.json`) is format 6 with the MHV1 mixing rule of an equation of
+state (`mixing`: the workbench, a flowsheet's thermo, a column's method); it is written only when the rule is chosen, so
+older files open as before and an older reading refuses it, naming the format.
+
 **The request path** (`src/api/dispatcher.js`). One dispatcher over the existing functions, for the workbench (the
 Flowsheet workspace solves through it), chat pages, and, from milestone M1, the command line and the local MCP server
 (`chepta-mcp`):

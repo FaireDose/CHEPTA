@@ -18,8 +18,9 @@ const withFlowsheet = f => ({ ...project, flowsheet: f(JSON.parse(JSON.stringify
 
 test("an unknown key of thermo is refused, naming it and the known keys", () => {
   const f = { ...project.flowsheet, thermo: { model: "NRTL", method: "PR" } };
+  // "mixing" joined them on 2026-11-10 (proposal 0018: the MHV1 mixing rule of PR and SRK; test/mhv1-interface.test.js)
   // "solids" joined the known keys on 2026-11-05 (proposal 0015, section 5: the component that forms a solid everywhere)
-  assert.throws(() => normalizeFlowsheet(f), e => e.code === "BAD_INPUT" && /thermo: unknown key "method"\. Known: model, vapour, sets, prefer, solids\./.test(e.message)
+  assert.throws(() => normalizeFlowsheet(f), e => e.code === "BAD_INPUT" && /thermo: unknown key "method"\. Known: model, vapour, sets, prefer, solids, mixing\./.test(e.message)
     && /The property method is "model"/.test(e.message));
   const r = run({ capability: "solve_flowsheet", input: { project: withFlowsheet(fs => ({ ...fs, thermo: { ...fs.thermo, method: "PR" } })) } });
   assert.equal(r.outcome, "invalid_input");
