@@ -164,6 +164,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     TO_DOWNLOAD.md item 7); pooling by DATA_RULES.md section 3, 10 % where no uncertainty is stated (this project's
     choice). To check: the solid densities against ChemSep 8.32. Later: the slurry's own viscosity and density as input.
   - Waiting: W1.
+- **How the agents work** (docs/decisions/2026-11-10-01-working-method.md): a new coordinator starts from
+  [HANDOVER.md](HANDOVER.md); one task per session; at most two workers; Sonnet for routine work, Opus for engineering.
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
   (bounded), P6 agentic design with CHEPTA-Lab, P7 advanced thermodynamics, P8 stability and bridges, then reactive
   distillation and the rest after 1.0. Lab pins releases, files capability requests, and does G2 to G5.
