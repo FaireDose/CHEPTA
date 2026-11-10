@@ -89,7 +89,7 @@ test("refusals come back as refusals, with the engine's reason; settings are che
   assert.equal(merged.length_m, 50);
 });
 
-test("the workspace sits in Unit models; its settings live in the state; the project file does not carry it yet", () => {
+test("the workspace sits in Unit models; its settings live in the state", () => {
   assert.ok(SECTIONS.find(s => s.id === "units").workspaces.includes("pipe"));
   assert.equal(sectionOf("pipe"), "units");
   const s0 = initialState({ components: ["water"], start: "pipe" });
@@ -101,8 +101,4 @@ test("the workspace sits in Unit models; its settings live in the state; the pro
   assert.equal(s1.pipe.diameter_m, PIPE_DEFAULTS.diameter_m);
   const empty = applyPatch(s0, { inputs: { pipe: [] } });
   assert.equal(viewCheck(empty, "pipe").ok, false);
-  // not saved: the project format stays as it was (a decision for the maintainer, docs/decisions/2026-11-10-02-pipe-block.md)
-  const doc = projectOf(s1);
-  assert.equal(doc.workbench.pipe, undefined);
-  assert.equal(doc.workbench.inputs.pipe, undefined);
 });

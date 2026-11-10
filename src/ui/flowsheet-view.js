@@ -32,6 +32,7 @@ import {
 } from "./flowsheet-logic.js";
 import { checkReaction, reactionProperties } from "../reactions/reaction.js";
 import { HEAT_TRANSFER } from "../units/heat-exchange.js";
+import { pipeBlockSections, pipeBlockRows } from "./pipe-view.js";
 import { PUMP_EFFICIENCY, COMPRESSOR_EFFICIENCY, EXPANDER_EFFICIENCY } from "../units/units.js";
 import { tLabel, tToDisplay, pToDisplay, fmtShort, flowToDisplay, massFlowToDisplay, dutyToDisplay, dutyFromDisplay } from "./properties-logic.js";
 import { flowsheetXlsx } from "./flowsheet-excel.js";
@@ -50,7 +51,7 @@ const nameOf = id => byId().get(id)?.name ?? id;
 // the models with parameters per pair (Modified UNIFAC 2.0 and the ideal solution have none)
 const PAIR_MODELS = ["NRTL", "UNIQUAC", "WILSON", "PR", "SRK"];
 const LABEL = { feed: "Feed", mixer: "Mixer", splitter: "Splitter", separator: "Separator", flash: "Flash drum", heater: "Heater/Cooler",
-  hx: "Heat exchanger", valve: "Valve", pump: "Pump", compressor: "Compressor", expander: "Expander", column: "Column", membrane: "Membrane", extraction: "Extraction", evaporator: "Evaporator", crystallizer: "Crystallizer", product: "Product",
+  hx: "Heat exchanger", valve: "Valve", pump: "Pump", pipe: "Pipe", compressor: "Compressor", expander: "Expander", column: "Column", membrane: "Membrane", extraction: "Extraction", evaporator: "Evaporator", crystallizer: "Crystallizer", product: "Product",
   "conversion-reactor": "Conversion reactor", "equilibrium-reactor": "Equilibrium reactor", "gibbs-reactor": "Gibbs reactor", "yield-reactor": "Yield reactor", cstr: "CSTR", pfr: "Plug-flow reactor" };
 /** One line per separator in the Separator menu of the toolbar. */
 const SEPARATOR_LINE = { flash: "vapour and liquid (and a second liquid) at equilibrium", separator: "given fractions of each component to each outlet",
@@ -71,6 +72,7 @@ const HINT = {
   hx: "Two process streams exchange heat: one outlet temperature, a vapour fraction, the duty or the minimum approach; the other outlet from the energy balance. With U, the area.",
   valve: "Lowers the pressure, adiabatically (the outlet has the inlet's enthalpy): the outlet pressure or the pressure drop.",
   pump: "Raises a liquid's pressure: the outlet pressure or the rise, and the efficiency (75 % if not given). Its power is a work stream.",
+  pipe: "A straight pipe with one fluid phase, or gas and liquid (Lockhart-Martinelli, for horizontal pipes): the length, inner diameter and roughness, the elevation change, fittings and heat. It gives the pressure drop (friction, fittings, elevation, acceleration), the velocity, the Reynolds number and the outlet temperature. Two liquid phases, choked flow and fittings in gas-liquid flow are refused.",
   compressor: "Raises a gas's pressure along the isentropic path: the outlet pressure, the rise or the ratio, and the isentropic efficiency (75 % if not given). Its power is a work stream.",
   expander: "Lowers a gas's pressure and gives power: the outlet pressure, the drop or the ratio, and the isentropic efficiency (80 % if not given). Its power is a work stream (negative: out).",
   "conversion-reactor": "Converts a given fraction of a key reactant by each reaction of the Reactions page; then the outlet temperature, duty or vapour fraction. Its duty carries the heat of the reactions.",
@@ -90,7 +92,7 @@ const COMING = [
   { id: "extraction", label: "Extraction", icon: "extract", note: "after liquid-liquid equilibria in the flash" },
 ];
 // a feed is drawn as the start of its stream (a tab), not as a block; its size is that point
-const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], compressor: [44, 40], expander: [44, 40], column: [36, 96], membrane: [64, 40], evaporator: [44, 80], crystallizer: [44, 70], extraction: [40, 96],
+const SIZE = { feed: [0, 0], mixer: [40, 44], splitter: [40, 44], separator: [46, 62], flash: [34, 72], heater: [40, 40], hx: [56, 44], valve: [34, 26], pump: [40, 40], pipe: [64, 24], compressor: [44, 40], expander: [44, 40], column: [36, 96], membrane: [64, 40], evaporator: [44, 80], crystallizer: [44, 70], extraction: [40, 96],
   "conversion-reactor": [44, 58], "equilibrium-reactor": [44, 58], "yield-reactor": [44, 58], "gibbs-reactor": [44, 58], cstr: [44, 58], pfr: [76, 30], product: [0, 0] };
 // the inlet and outlet ports of a two-stream exchanger: hot above, cold below
 const PORT_DY = { hot: -11, cold: 11 };
@@ -836,6 +838,7 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       b.type === "pump" ? plain("efficiency", "Efficiency", "0 to 1", `${PUMP_EFFICIENCY} (typical)`) : null,
       b.type === "pump" ? h("p", { class: "fa-in-hint" }, `Empty: ${PUMP_EFFICIENCY * 100} %, the low end of the target pump efficiencies of 75 to 85 % (N.C. Cooperative Extension AG-452-6); the U.S. DOE sourcebook gives 35 % to more than 90 %. Give your pump's own.`) : null));
   }
+  if (b.type === "pipe") secs.push(...pipeBlockSections({ b, spec, setS, inputsSection, uid, u, T, plain, numberField, segRow, selectField }));
   if (ENERGY_TARGETS.includes(b.type) || ENERGY_SOURCES.includes(b.type)) secs.push(energySection({ fs, b, put, inputsSection, uid, f, set }));
   // inlets: add a feed to an inlet that takes one more stream
   const ins = unitType(b.type).inlets;
@@ -1400,6 +1403,9 @@ function shape(type, w, hh) {
     // a shell with two tube lines; a bow tie; a circle with its discharge
     case "hx": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: hh / 2, class: "fs-shape" }), svgEl("path", { d: `M${-w / 2 + 8} -11 H${w / 2 - 8} M${-w / 2 + 8} 11 H${w / 2 - 8}`, class: "fs-detail" })); return g; }
     case "valve": return svgEl("path", { d: `M${-w / 2} ${-hh / 2} L${w / 2} ${hh / 2} L${w / 2} ${-hh / 2} L${-w / 2} ${hh / 2} Z`, class: "fs-shape" });
+    // a pipe run: two walls with a flange at each end
+    case "pipe": { const g = svgEl("g", {}); g.append(svgEl("rect", { x: -w / 2, y: -hh / 2, width: w, height: hh, rx: 3, class: "fs-shape" }),
+      svgEl("path", { d: `M${-w / 2 + 6} ${-hh / 2} V${hh / 2} M${w / 2 - 6} ${-hh / 2} V${hh / 2}`, class: "fs-detail" })); return g; }
     case "pump": { const g = svgEl("g", {}); g.append(svgEl("circle", { r: w / 2, class: "fs-shape" }), svgEl("path", { d: "M-8 8 L12 0 L-8 -8", class: "fs-detail" })); return g; }
     // a compressor narrows towards its discharge, an expander widens
     case "compressor": return svgEl("path", { d: `M${-w / 2} ${-hh / 2} L${w / 2} ${-hh / 5} L${w / 2} ${hh / 5} L${-w / 2} ${hh / 2} Z`, class: "fs-shape" });
@@ -1885,6 +1891,7 @@ export function resultsPanel({ state, f, sol, u, set }) {
         r.state?.T_K != null ? ["Temperature", fmtTemp(r.state.T_K, u, 2)] : null,
         r.state?.P_kPa != null ? ["Pressure", fmtP(r.state.P_kPa, u)] : null,
         r.state?.VF != null ? ["Vapour fraction", fmtShort(r.state.VF, 4)] : null,
+        ...(b.type === "pipe" ? pipeBlockRows(r.state, { u, fmtP, fmtTemp }) : []),
         r.state?.efficiency != null ? ["Efficiency", `${fmtShort(100 * r.state.efficiency, 4)} %`] : null,
         r.state?.volume_m3_h != null ? ["Volume flow", `${fmtShort(r.state.volume_m3_h, 5)} m³/h`] : null,
         b.type === "hx" && r.state?.duty_kW != null ? ["Heat exchanged", kWText(r.state.duty_kW, u, 5)] : null,

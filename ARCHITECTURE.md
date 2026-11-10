@@ -242,6 +242,11 @@ Project format 7 (proposal 0018; `docs/schema/project-7.json`) is format 6 with 
 state (`mixing`: the workbench, a flowsheet's thermo, a column's method); it is written only when the rule is chosen, so
 older files open as before and an older reading refuses it, naming the format.
 
+Project format 8 (proposal 0020; `docs/schema/project-8.json`) is format 7 with the Pipe: the Pipe workspace's settings
+(`workbench.pipe`, with its components) and the flowsheet's pipe block. It is a new format, not an optional section of
+format 7, because a format-7 reader refuses an unknown key of `workbench` and an unknown block type, and would drop a
+key outside `workbench` without a word and lose it at the next save; it is written only when a pipe is used.
+
 **The request path** (`src/api/dispatcher.js`). One dispatcher over the existing functions, for the workbench (the
 Flowsheet workspace solves through it), chat pages, and, from milestone M1, the command line and the local MCP server
 (`chepta-mcp`):

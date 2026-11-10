@@ -69,6 +69,21 @@
         "validation/data/vle/methanol_n-heptane_10-1021-acs-jced-7b00766_85.0kPa_tx.json"
       ]
     },
+    "almeida2012-1-butanol-water": {
+      "title": "L. de Oliveira, M. Aznar, Experimental and calculated liquid-liquid equilibrium data for water + furfural + solvents",
+      "authors": "B. Almeida, T. M. Waldrigui, T. C. Alves",
+      "year": 2012,
+      "published": "Fluid Phase Equilib. 334 (2012) 97-105",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2012.07.032",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.07.032.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json",
+        "validation/data/two_liquids/lle/furfural_water.json"
+      ]
+    },
     "altman2011-1-propanol-propionic-acid": {
       "title": "Phase Equilibria for Reactive Distillation of Propyl Propanoate. Pure Component Property Data, Vapor-Liquid Equilibria, and Liquid-Liquid Equilibria",
       "authors": "E. Altman, G. D. Stefanidis, T. V. Gerven, A. I. Stankiewicz",
@@ -165,7 +180,22 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
+        "validation/data/two_liquids/lle/diethyl-carbonate_water.json",
         "validation/data/vle/diethyl-carbonate_water_10-1016-j-fluid-2012-11-026_353.15K.json"
+      ]
+    },
+    "ashour2005-1-hexanol-water": {
+      "title": "Liquid-Liquid Equilibrium of MTBE + Ethanol + Water and MTBE + 1-Hexanol + Water over the Temperature Range of 288.15 to 308.15 K",
+      "authors": "I. Ashour",
+      "year": 2005,
+      "published": "J. Chem. Eng. Data 50 (2005) 113-118",
+      "kind": "thermoml",
+      "doi": "10.1021/je049799a",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je049799a.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-hexanol_water.json"
       ]
     },
     "aslam2016-hydrogen-toluene": {
@@ -194,6 +224,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/water_ethyl-acetate_gamma_inf_atik2004.json"
+      ]
+    },
+    "atik2008-cyclohexane-methanol": {
+      "title": "Liquid-Liquid Equilibrium of (Cyclohexane + 2,2,2-Trifluoroethanol) and (Cyclohexane + Methanol) from (278.15 to 318.15) K",
+      "authors": "Z. Atik, W. Kerboub",
+      "year": 2008,
+      "published": "J. Chem. Eng. Data 53 (2008) 1669-1671",
+      "kind": "thermoml",
+      "doi": "10.1021/je8001688",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je8001688.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/cyclohexane_methanol.json"
       ]
     },
     "auger2016-ethanol-furan": {
@@ -415,6 +459,34 @@
         "validation/data/vle/2-butanol_toluene_10-1021-je201284y_313.15K.json"
       ]
     },
+    "bendova2003-methanol-methylcyclohexane": {
+      "title": "Liquid-Liquid Equilibrium and Excess Enthalpies in Binary Systems Methylcyclohexane + Methanol and Methylcyclohexane + N,N-Dimethylformamide",
+      "authors": "M. Bendova, K. Rehak, J. Matous, J. P. Novak",
+      "year": 2003,
+      "published": "J. Chem. Eng. Data 48 (2003) 152-157",
+      "kind": "thermoml",
+      "doi": "10.1021/je020135f",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je020135f.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/methanol_methylcyclohexane.json"
+      ]
+    },
+    "bendova2006-methanol-methylcyclohexane": {
+      "title": "Liquid liquid equilibrium in ternary systems N,N-dimethylformamide + 2-methylpentane + methanol and N,N-dimethylformamide + methylcyclohexane + methanol",
+      "authors": "M. Bendova, K. Rehak, J. Matous, J. P. Novak",
+      "year": 2006,
+      "published": "Fluid Phase Equilib. 239 (2006) 16-25",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2005.09.025",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2005.09.025.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/methanol_methylcyclohexane.json"
+      ]
+    },
     "bermejo2005-carbon-dioxide-water": {
       "title": "The influence of Na2SO4 on the CO2 solubility in water at high pressure",
       "authors": "M. D. Bermejo, A. Martin, L. J. Florusse, C. J. Peters, M. J. Cocero",
@@ -529,6 +601,21 @@
         "validation/data/ethanol_acetic-acid_px_brandt2014.json",
         "validation/data/ethyl-acetate_acetic-acid_HE_brandt2014.json",
         "validation/data/ethyl-acetate_acetic-acid_px_brandt2014.json"
+      ]
+    },
+    "brits2017-1-butanol-water": {
+      "title": "Isobaric Vapor Liquid Liquid Phase Equilibria Measurements of Three Ternary Water + 2-Butanone + Aliphatic Alcohol (Ethanol, 1-Propanol, 2-Propanol) Systems at 101.3 kPa",
+      "authors": "L. Brits, A. C. Kouakou, A. J. Burger, C. E. Schwarz",
+      "year": 2017,
+      "published": "J. Chem. Eng. Data 62 (2017) 1767-1775",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.6b00725",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00725.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json",
+        "validation/data/two_liquids/lle/2-butanone_water.json"
       ]
     },
     "buchholz2018-article-lactide": {
@@ -658,6 +745,21 @@
         "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2014-12-043.json"
       ]
     },
+    "casas2008-methanol-n-heptane": {
+      "title": "Liquid Liquid Equilibria of Mixtures Containing Methyl Acetate + Methanol + Hexane or Heptane",
+      "authors": "L. M. Casas, B. Orge, O. Ferreira",
+      "year": 2008,
+      "published": "J. Chem. Eng. Data 53 (2008) 89-93",
+      "kind": "thermoml",
+      "doi": "10.1021/je700397g",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je700397g.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/methanol_n-heptane.json",
+        "validation/data/two_liquids/lle/methanol_n-hexane.json"
+      ]
+    },
     "casimiro2015-1-propanol-isopropyl-acetate": {
       "title": "Vapor-Liquid Equilibrium of Binary Mixtures Containing Isopropyl Acetate and Alkanols at 101.32 kPa",
       "authors": "F. M. Casimiro, D. S. M. Constantino, C. S. M. Pereira, O. Ferreira, A. E. Rodrigues, S. P. Pinho",
@@ -674,6 +776,20 @@
         "validation/data/vle/2-propanol_isopropyl-acetate_10-1021-acs-jced-5b00360_101.32kPa.json"
       ]
     },
+    "cavalcanti2019-1-hexanol-water": {
+      "title": "Liquid-liquid equilibrium for (water + 5-hydroxymethylfurfural + 1-pentanol/1-hexanol/1-heptanol) systems at 298.15 K",
+      "authors": "K. V. M. Cavalcanti, L. M. Follegatti-Romero, I. Dalmolin, L. A. Follegatti-Romero",
+      "year": 2019,
+      "published": "J. Chem. Thermodyn. 138 (2019) 59-66",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2019.06.010",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2019.06.010.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-hexanol_water.json"
+      ]
+    },
     "cehreli2006-water-ethyl-acetate": {
       "title": "(Liquid + liquid) equilibria of (water + 1-propanol + solvent) at T = 298.2 K",
       "authors": "S. Cehreli, D. Ozmen, U. Dramur",
@@ -685,6 +801,7 @@
       "access": "Journal article is subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
+        "validation/data/two_liquids/lle/methyl-acetate_water.json",
         "validation/data/water_ethyl-acetate_lle_cehreli2006.json"
       ]
     },
@@ -779,6 +896,34 @@
       "via": "the open-source thermo library",
       "note": "DECHEMA-based (as stated in binaries.json for water + acetic acid)."
     },
+    "chen2007-2-butanol-water": {
+      "title": "Liquid-Liquid Equilibria of Water + 2-Butanol + (Methyl Methacrylate or Butyl Methacrylate or Isobutyl Methacrylate) at (288.2 and 318.2) K",
+      "authors": "J. T. Chen, H. Y. Chang",
+      "year": 2007,
+      "published": "J. Chem. Eng. Data 52 (2007) 1950-1954",
+      "kind": "thermoml",
+      "doi": "10.1021/je7002572",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je7002572.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/2-butanol_water.json"
+      ]
+    },
+    "chen2008-1-hexanol-water": {
+      "title": "Liquid Liquid Equilibria for the Quaternary Systems of Water + N-Methyl-2-pyrrolidone + 1-Hexanol + NaCl, + KCl, or + KAc",
+      "authors": "J. T. Chen, M. C. Chen",
+      "year": 2008,
+      "published": "J. Chem. Eng. Data 53 (2008) 217-222",
+      "kind": "thermoml",
+      "doi": "10.1021/je700561p",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je700561p.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-hexanol_water.json"
+      ]
+    },
     "chen2010-m-xylene-sulfolane": {
       "title": "L.  Lee, Vapor liquid equilibria and density measurement for binary mixtures of toluene, benzene, o-xylene, m-xylene, sulfolane and nonane at 333.15K and 353.15K",
       "authors": "W. K. Chen, K. J. Lee, J. W. Ko, C. M. J. Chang",
@@ -807,6 +952,20 @@
       "files": [
         "validation/data/vle/2-propanol_toluene_10-1021-je200921u_101.3kPa_tx.json",
         "validation/data/vle/ethanol_toluene_10-1021-je200921u_101.3kPa_tx.json"
+      ]
+    },
+    "chen2014-diethyl-carbonate-water": {
+      "title": "Liquid Liquid Equilibria for Quaternary Systems of Water + Ethanol + Diethyl Carbonate + Methylbenzene or Heptane",
+      "authors": "Y. Chen, X. Zhou, C. Wen, C. Wang, J. Guo",
+      "year": 2014,
+      "published": "J. Chem. Eng. Data 59 (2014) 3635-3642",
+      "kind": "thermoml",
+      "doi": "10.1021/je500530q",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je500530q.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/diethyl-carbonate_water.json"
       ]
     },
     "chen2014-methyl-myristate-methyl-palmitate": {
@@ -986,6 +1145,20 @@
         "validation/data/vle/n-butyl-acetate_n-octane_10-1021-acs-jced-5b01058_60.0kPa_tx.json"
       ]
     },
+    "cui2018-furfural-water": {
+      "title": "Liquid-liquid equilibria for the ternary system of water + furfural + solvents at 303.15 and 323.15 K under atmospheric pressure",
+      "authors": "P. Cui, H. Liu, K. Xin, H. Yan, Q. Xia, Y. Huang, Q. Li",
+      "year": 2018,
+      "published": "J. Chem. Thermodyn. 127 (2018) 134-144",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2018.01.027",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2018.01.027.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/furfural_water.json"
+      ]
+    },
     "cumplido2017-1-propanol-water": {
       "title": "Isobaric vapor-liquid equilibria for extractive distillation of 1-propanol + water mixture using thiocyanate-based ionic liquids",
       "authors": "M. Cumplido, E. Lladosa, S. Loras, J. Pla-Franco",
@@ -1028,6 +1201,21 @@
         "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-fluid-2006-04-017.json"
       ]
     },
+    "dalmolin2017-1-butanol-water": {
+      "title": "Liquid-liquid equilibrium in systems used for the production of 5-hydroxymethylfurfural from biomass using alcohols as solvents",
+      "authors": "I. Dalmolin, R. R. Pinto, L. H. de Oliveira, L. A. Follegatti-Romero, A. C. Costa, M. Aznar",
+      "year": 2017,
+      "published": "J. Chem. Thermodyn. 111 (2017) 80-87",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2017.03.019",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2017.03.019.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json",
+        "validation/data/two_liquids/lle/2-butanol_water.json"
+      ]
+    },
     "danon2018-water-cyclohexane": {
       "title": "Mutual Solubilities of Cyclohexane and Water in Aqueous Methyldiethanolamine/Cyclohexane Liquid-Liquid Equilibria",
       "authors": "R. Danon, M. C. Kroon, F. Banat",
@@ -1040,6 +1228,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/water_cyclohexane_lle_danon2018.json"
+      ]
+    },
+    "dechambre2014-isooctane-methanol": {
+      "title": "Towards automated characterisation of liquid-liquid equilibria",
+      "authors": "D. Dechambre, C. Pauls, L. Greiner, K. Leonhard, A. Bardow",
+      "year": 2014,
+      "published": "Fluid Phase Equilib. 362 (2014) 328-334",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2013.10.048",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2013.10.048.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/isooctane_methanol.json"
       ]
     },
     "decultot2019-carbon-dioxide-methanol": {
@@ -1155,6 +1357,34 @@
         "validation/data/vle/mtbe_nmp_10-1016-j-fluid-2005-06-017_333.15K.json"
       ]
     },
+    "domanska2012-1-butanol-water": {
+      "title": "Extraction of butan-1-ol from water with ionic liquids at T = 308.15 K",
+      "authors": "U. Domanska, M. Krolikowski",
+      "year": 2012,
+      "published": "J. Chem. Thermodyn. 53 (2012) 108-113",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2012.04.017",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2012.04.017.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
+      ]
+    },
+    "domanska2019-1-butanol-water": {
+      "title": "Separation of water/butan-1-ol with ionic liquids in ternary liquid-liquid phase equilibrium",
+      "authors": "U. Domanska, M. Wlazlo, M. Karpinska",
+      "year": 2019,
+      "published": "J. Chem. Thermodyn. 134 (2019) 76-83",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2019.03.001",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2019.03.001.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
+      ]
+    },
     "dong2011-benzene-cyclohexane": {
       "title": "Isothermal Vapor-Liquid Equilibrium for Methanol and 2,3-Dimethyl-1-butene at 343.06 K, 353.27 K, 363.19 K, and 372.90 K",
       "authors": "J. Dong, C. Feng, Y. Li",
@@ -1165,6 +1395,20 @@
       "url": "https://trc.nist.gov/ThermoML/10.1021/je101304x.html",
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive"
+    },
+    "doz2011-methanol-n-hexane": {
+      "title": "Influence of temperature on the (liquid + liquid) equilibria of  {methanol + benzene + hexane} ternary system",
+      "authors": "M. B. Gramajo de Doz, C. M. Bonatti, M. C. Lucena, D. Gonzalez, M. E. Mancilla",
+      "year": 2011,
+      "published": "Fluid Phase Equilib. 305 (2011) 34-38",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2011.02.022",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2011.02.022.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/methanol_n-hexane.json"
+      ]
     },
     "dragoescu2008-chloroform-cyclohexanone": {
       "title": "Vapour pressure and excess Gibbs energy of binary 1,2-dichloroethane + cyclohexanone, chloroform + cyclopentanone and chloroform + cyclohexanone mixtures at temperatures from 298.15 to 318.15 K",
@@ -1416,6 +1660,20 @@
         "validation/data/vle/ethanol_methanol_10-1021-je0601309_93.32kPa_tx.json"
       ]
     },
+    "galeotti2019-furfural-water": {
+      "title": "Measurement and Modeling of Phase Equilibria in Systems Containing Water, Xylose, Furfural, and Acetic Acid",
+      "authors": "N. Galeotti, J. Burger, H. Hasse",
+      "year": 2019,
+      "published": "J. Chem. Eng. Data 64 (2019) 2634-2640",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.9b00095",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.9b00095.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/furfural_water.json"
+      ]
+    },
     "gao2010-acetic-acid-methanol": {
       "title": "Isobaric Vapor-Liquid Equilibria for Binary and Ternary Mixtures of Methanol, Ethanoic Acid, and Propanoic Acid",
       "authors": "D. Gao, D. Zhu, H. Sun, L. Zhang, H. Chen, J. Si",
@@ -1461,6 +1719,20 @@
         "validation/data/acetone_chloroform_101kPa.json"
       ]
     },
+    "garciacano2016-1-butanol-water": {
+      "title": "Isobaric vapor-liquid-liquid-solid equilibrium of the water + NaCl + 1-butanol system at 101.3 kPa",
+      "authors": "J. Garcia-Cano, V. Gomis, J. C. Asensi, M. D. Saquete, A. Font",
+      "year": 2016,
+      "published": "J. Chem. Thermodyn. 100 (2016) 53-59",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2016.04.013",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2016.04.013.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
+      ]
+    },
     "gierycz2009-2-butanol-cyclohexane": {
       "title": "Vapor-Liquid Equilibria in Binary Systems Formed by Cyclohexane with Alcohols",
       "authors": "P. Gierycz, A. Kosowski, R. Swietlik",
@@ -1474,6 +1746,35 @@
       "files": [
         "validation/data/vle/1-hexanol_cyclohexane_10-1021-je900050z_333.15K.json",
         "validation/data/vle/2-butanol_cyclohexane_10-1021-je900050z_333.15K.json"
+      ]
+    },
+    "gilani2013-cyclohexanone-water": {
+      "title": "Tie-line data for the aqueous solutions of phenol with organic solvents at T = 298.2 K",
+      "authors": "H. G. Gilani, A. G. Gilani, M. Sangashekan",
+      "year": 2013,
+      "published": "J. Chem. Thermodyn. 58 (2013) 142-148",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2012.10.028",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2012.10.028.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/cyclohexanone_water.json",
+        "validation/data/two_liquids/lle/phenol_water.json"
+      ]
+    },
+    "gilani2015-cumene-water": {
+      "title": "Experimental and correlational study of phase equilibria in aqueous mixtures of phosphoric acid with aromatic hydrocarbons at various temperatures",
+      "authors": "A. G. Gilani, H. G. Gilani, S. Ahmadifar",
+      "year": 2015,
+      "published": "J. Chem. Thermodyn. 91 (2015) 121-126",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2015.07.020",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.07.020.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/cumene_water.json"
       ]
     },
     "giles2006-acetonitrile-isopropyl-acetate": {
@@ -1505,6 +1806,63 @@
         "validation/data/vle/1-propanol_dichloroethane_10-1016-j-jct-2004-07-012_313.15K.json"
       ]
     },
+    "ginting2017-diethyl-carbonate-water": {
+      "title": "Determination of Ternary Liquid Liquid Equilibria for Dimethyl Carbonate + 2-Methyl-1-propanol or 2-Methyl-2-propanol + Water Systems at T = 303.15 and 313.15 K",
+      "authors": "R. R. Ginting, A. Mustain, G. Wibawa",
+      "year": 2017,
+      "published": "J. Chem. Eng. Data 62 (2017) 463-468",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.6b00763",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00763.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/diethyl-carbonate_water.json",
+        "validation/data/two_liquids/lle/isobutanol_water.json"
+      ]
+    },
+    "gomis2013-1-butanol-water": {
+      "title": "Liquid Liquid, Vapor Liquid, and Vapor Liquid Liquid Equilibrium Data for the Water n-Butanol Cyclohexane System at Atmospheric Pressure: Experimental Determination and Correlation",
+      "authors": "V. Gomis, A. Font, M. D. Saquete, J. Garcia-Cano",
+      "year": 2013,
+      "published": "J. Chem. Eng. Data 58 (2013) 3320-3326",
+      "kind": "thermoml",
+      "doi": "10.1021/je400501z",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je400501z.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
+      ]
+    },
+    "gomis2014-1-butanol-water": {
+      "title": "Isothermal (liquid + liquid) equilibrium data at T = 313.15 K and isobaric (vapor + liquid + liquid) equilibrium data at 101.3 kPa for the ternary system (water + 1-butanol + p-xylene)",
+      "authors": "V. Gomis, A. Font, M. D. Saquete, J. Garcia-Cano",
+      "year": 2014,
+      "published": "J. Chem. Thermodyn. 79 (2014) 242-247",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2014.07.021",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2014.07.021.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
+      ]
+    },
+    "gomis2018-1-butanol-water": {
+      "title": "Phase equilibria of the water + 1-butanol + 2-pentanol ternary system at 101.3 kPa",
+      "authors": "V. Gomis, M. D. Saquete, A. Font, J. Garcia-Cano, I. Martinez-Castellanos",
+      "year": 2018,
+      "published": "J. Chem. Thermodyn. 123 (2018) 38-45",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2018.03.024",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2018.03.024.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
+      ]
+    },
     "goni2024-ethane-n-decane": {
       "title": "Solubility of Light Ends in Heavy Condensates, PhD thesis",
       "authors": "M. U. Goni",
@@ -1533,6 +1891,7 @@
       "access": "Journal article is subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
+        "validation/data/two_liquids/lle/n-butyl-acetate_water.json",
         "validation/data/water_ethyl-acetate_lle_grande2005.json"
       ]
     },
@@ -1547,7 +1906,22 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
+        "validation/data/two_liquids/lle/aniline_n-octane.json",
         "validation/data/vle/aniline_n-octane_10-1021-je0505366_383.15K.json"
+      ]
+    },
+    "grob2005-n-butyl-acetate-water": {
+      "title": "Thermodynamics of Phase and Chemical Equilibrium in a Strongly Nonideal Esterification System.",
+      "authors": "S. Grob, H. Hasse",
+      "year": 2005,
+      "published": "J. Chem. Eng. Data 50 (2005) 92-101",
+      "kind": "thermoml",
+      "doi": "10.1021/je0498199",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je0498199.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/n-butyl-acetate_water.json"
       ]
     },
     "gui2011-carbon-dioxide-methanol": {
@@ -1837,6 +2211,20 @@
         "validation/data/eos/thermoml_carbon-dioxide_water_10-1016-j-jct-2016-09-035.json"
       ]
     },
+    "hsieh2008-methyl-acetate-water": {
+      "title": "Multiphase equilibria for mixtures containing water, acetic acid, propionic acid, methyl acetate and methyl propionate",
+      "authors": "C. T. Hsieh, W. Y. Ji, H. M. Lin, M. J. Lee",
+      "year": 2008,
+      "published": "Fluid Phase Equilib. 271 (2008) 69-75",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2008.07.004",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2008.07.004.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/methyl-acetate_water.json"
+      ]
+    },
     "hu2015-diethyl-carbonate-propylene-carbonate": {
       "title": "Isobaric Vapor Liquid Equilibria for Binary Systems of Diethyl Carbonate + Propylene Carbonate, Diethyl Carbonate + Propylene Glycol, and Ethanol + Propylene Carbonate at 101.3 kPa",
       "authors": "C. C. Hu, P. H. Chiu, S. J. Wang, S. H. Cheng",
@@ -1883,6 +2271,20 @@
         "validation/data/vle/acrylic-acid_toluene_10-1021-je200655s_20.0kPa_tx.json"
       ]
     },
+    "huang2011-dimethyl-carbonate-n-nonane": {
+      "title": "Critical Behavior of Binary Mixtures of Dimethyl Carbonate + Nonane and Dimethyl Carbonate + Dodecane: Measurements of the Coexistence Curves",
+      "authors": "M. Huang, Z. Chen, T. Yin, X. An, W. Shen",
+      "year": 2011,
+      "published": "J. Chem. Eng. Data 56 (2011) 2349-2355",
+      "kind": "thermoml",
+      "doi": "10.1021/je101317k",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je101317k.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/dimethyl-carbonate_n-nonane.json"
+      ]
+    },
     "huo2009-1-propanol-cyclohexane": {
       "title": "Measurement and correlation of vapor pressure of benzene and thiophene with BMIM][PF6] and [BMIM][BF4] ionic liquids",
       "authors": "Y. Huo, S. Xia, S. Yi, P. Ma",
@@ -1895,6 +2297,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/1-propanol_cyclohexane_10-1016-j-fluid-2008-09-018_tpx.json"
+      ]
+    },
+    "hwang2007-ethanol-n-hexadecane": {
+      "title": "Liquid-Liquid Equilibria for Binary System of Ethanol + Hexadecane at Elevated Temperature and the Ternary Systems of Ethanol + Heterocyclic Nitrogen Compounds + Hexadecane at 298.15 K",
+      "authors": "I. C. Hwang, K. L. Kim, S. J. Park, K. J. Han",
+      "year": 2007,
+      "published": "J. Chem. Eng. Data 52 (2007) 1919-1924",
+      "kind": "thermoml",
+      "doi": "10.1021/je700233p",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je700233p.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/ethanol_n-hexadecane.json"
       ]
     },
     "iapws-g7-04": {
@@ -1991,6 +2407,20 @@
         "validation/data/eos/janisch2007_nitrogen_methane.json"
       ]
     },
+    "jeong2014-phenol-water": {
+      "title": "Ternary liquid-liquid equilibria and binary excess and deviation properties at constant temperature for mixtures of dimethyl carbonate, anisole, methanol, phenol and water",
+      "authors": "I. Y. Jeong, S. H. You, S. J. Park",
+      "year": 2014,
+      "published": "Fluid Phase Equilib. 378 (2014) 93-101",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2014.07.004",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2014.07.004.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/phenol_water.json"
+      ]
+    },
     "jerabek2023-article-cyrene": {
       "title": "Thermodynamic Properties and Phase Equilibria of Dihydrolevoglucosenone and Its Mixtures with Hydrocarbons",
       "authors": "V. Jerabek, V. Stejfa, M. Klajmon, K. Rehak",
@@ -2059,6 +2489,21 @@
       "files": [
         "validation/data/vle/1-propanol_n-pentane_10-1021-je050442w_468.15K.json",
         "validation/data/vle/isobutanol_n-pentane_10-1021-je050442w_468.15K.json"
+      ]
+    },
+    "kadir2008-isoamyl-alcohol-water": {
+      "title": "Liquid Liquid Equilibria of the Ternary Systems 3-Methyl-1-butanol + Ethanol + Water and 2-Methyl-1-propanol + Ethanol + Water at 293.15 K",
+      "authors": "S. Kadir, M. Decloux, P. Giampaoli, X. Joulia",
+      "year": 2008,
+      "published": "J. Chem. Eng. Data 53 (2008) 910-912",
+      "kind": "thermoml",
+      "doi": "10.1021/je700558x",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je700558x.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/isoamyl-alcohol_water.json",
+        "validation/data/two_liquids/lle/isobutanol_water.json"
       ]
     },
     "kamihama2012-ethanol-water": {
@@ -2410,6 +2855,20 @@
         "validation/data/chloroform_methanol_101kPa.json"
       ]
     },
+    "li2016-1-butanol-water": {
+      "title": "(Liquid + liquid) equilibria of four alcohol-water systems containing 1,8-cineole at T = 298.15 K",
+      "authors": "H. Li, Z. Feng, L. Wan, C. Huang, T. Zhang, Y. Fang",
+      "year": 2016,
+      "published": "J. Chem. Thermodyn. 101 (2016) 387-394",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2016.06.010",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2016.06.010.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
+      ]
+    },
     "li2016-2-butanone-methanol": {
       "title": "Isobaric vapor-liquid equilibrium for methanol + methyl ethyl ketone + bis(trifluoromethylsulfonyl)imide-based ionic liquids at 101.3 kPa",
       "authors": "Z. Li, Q. Li, R. Qiao, K. Zhang, X. Song, C. Li, H. Tang, Y. Liu",
@@ -2450,6 +2909,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/methyl-myristate_n-hexadecane_10-1016-j-fluid-2015-08-015_5.0kPa.json"
+      ]
+    },
+    "li2017-phenol-water": {
+      "title": "(Liquid + liquid) extraction of phenols from aqueous solutions with cineole",
+      "authors": "H. Li, L. Wan, G. Chu, W. Tan, B. Liu, Y. Qin, Y. Feng, D. Sun, Y. Fang",
+      "year": 2017,
+      "published": "J. Chem. Thermodyn. 107 (2017) 95-103",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2016.12.018",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2016.12.018.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/phenol_water.json"
       ]
     },
     "li2018-2-butanone-ethanol": {
@@ -2507,6 +2980,21 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/ethanol_isopropyl-acetate_10-1021-acs-jced-8b00005_101.3kPa_tx.json"
+      ]
+    },
+    "li2018-isoamyl-alcohol-water": {
+      "title": "Measurement and thermodynamic modelling of ternary liquid-liquid equilibrium for extraction of (1R,2R)-(-)-1,2-Diaminocyclohexane from aqueous solution with C4-C5 alcohols at different temperatures",
+      "authors": "H. Li, J. Zhang, Y. Dou, L. Xu, G. Liu",
+      "year": 2018,
+      "published": "J. Chem. Thermodyn. 120 (2018) 184-190",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2018.01.013",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2018.01.013.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/isoamyl-alcohol_water.json",
+        "validation/data/two_liquids/lle/isobutanol_water.json"
       ]
     },
     "li2019-acetic-acid-isopropyl-acetate": {
@@ -2607,6 +3095,20 @@
       "files": [
         "src/data/heat-transfer.json",
         "src/units/heat-exchange.js"
+      ]
+    },
+    "lin2003-1-hexanol-water": {
+      "title": "Liquid-Liquid Equilibria for Ternary Mixtures of Water + Ethanol with 1-Hexanol, Butyl Propionate, or Ethyl Caproate",
+      "authors": "H. Lin, G. B. Hong, C. E. Yeh, M. J. Lee",
+      "year": 2003,
+      "published": "J. Chem. Eng. Data 48 (2003) 587-590",
+      "kind": "thermoml",
+      "doi": "10.1021/je020133v",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je020133v.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-hexanol_water.json"
       ]
     },
     "lin2012-2-propanol-isooctane": {
@@ -2749,6 +3251,7 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json",
         "validation/data/vle/1-butanol_n-butyl-acetate_10-1021-je700411p_101.3kPa.json",
         "validation/data/vle/1-butanol_water_10-1021-je700411p_101.3kPa_tx.json",
         "validation/data/vle/acetic-acid_n-butyl-acetate_10-1021-je700411p_101.3kPa.json"
@@ -2896,6 +3399,20 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive"
     },
+    "mannisto2016-furfural-water": {
+      "title": "Ternary and Binary LLE Measurements for Solvent (4- Methyl-2-pentanone and 2-Methyl-2-butanol) + Furfural + Water between 298 and 401 K",
+      "authors": "M. Mannisto, J. P. Pokki, A. Creati, A. Voisin, A. Zaitseva, V. Alopaeus",
+      "year": 2016,
+      "published": "J. Chem. Eng. Data 61 (2016) 903-911",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.5b00738",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.5b00738.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/furfural_water.json"
+      ]
+    },
     "marche2003-water-cyclohexane": {
       "title": "An apparatus for the on-line GC determination of hydrocarbon solubility in water: benzene and cyclohexane from 70 C to 150 C",
       "authors": "C. Marche, H. Delepine, C. Ferronato, J. Jose",
@@ -2922,6 +3439,34 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/water_cyclohexane_lle_marche2006.json"
+      ]
+    },
+    "marciniak2012-methanol-n-heptane": {
+      "title": "Ternary liquid-liquid equilibria of bis(trifluoromethylsulfonyl)-amide based ionic liquids + methanol + heptane",
+      "authors": "A. Marciniak, M. Krolikowski",
+      "year": 2012,
+      "published": "Fluid Phase Equilib. 318 (2012) 56-60",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2012.01.018",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2012.01.018.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/methanol_n-heptane.json"
+      ]
+    },
+    "marciniak2016-1-butanol-water": {
+      "title": "Ternary (liquid + liquid) equilibria of {bis(trifluoromethylsulfonyl)-amide based ionic liquids + butan-1-ol + water}",
+      "authors": "A. Marciniak, M. Wlazlo, J. Gawkowska",
+      "year": 2016,
+      "published": "J. Chem. Thermodyn. 94 (2016) 96-100",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2015.11.002",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.11.002.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
       ]
     },
     "marigliano2010-1-propanol-mtbe": {
@@ -3245,6 +3790,20 @@
         "validation/data/vle/1-3-propanediol_glycerol_10-1021-je200766t_tpx.json"
       ]
     },
+    "montoya2012-diethyl-carbonate-water": {
+      "title": "Liquid Liquid Equilibrium for the Water + Diethyl Carbonate + Ethanol System at Different Temperatures",
+      "authors": "I. C. A. Montoya, J. M. Gonzalez, A. L. Villa",
+      "year": 2012,
+      "published": "J. Chem. Eng. Data 57 (2012) 1708-1712",
+      "kind": "thermoml",
+      "doi": "10.1021/je300094j",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je300094j.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/diethyl-carbonate_water.json"
+      ]
+    },
     "moodley2018-2-butanone-isobutanol": {
       "title": "Isothermal Vapor-Liquid Equilibrium Measurements of Butan-2-one + 2-Methyl-propan-1-ol/Pentan-1-ol",
       "authors": "K. Moodley, C.-L. Dorsamy",
@@ -3437,8 +3996,25 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
+        "validation/data/two_liquids/lle/acetonitrile_n-hexane.json",
+        "validation/data/two_liquids/lle/methanol_n-heptane.json",
         "validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json",
         "validation/data/vle/ethyl-acetate_mtbe_10-1016-j-fluid-2012-11-008_373.17K.json"
+      ]
+    },
+    "narasigadu2014-1-butanol-water": {
+      "title": "Ternary Liquid Liquid Equilibrium Data for the Water + Acetonitrile + {Butan-1-ol or 2-Methylpropan-1-ol} Systems at (303.2, 323.2, 343.2) K and 1 atm",
+      "authors": "C. Narasigadu, M. Naidoo, D. Ramjugernath",
+      "year": 2014,
+      "published": "J. Chem. Eng. Data 59 (2014) 3820-3824",
+      "kind": "thermoml",
+      "doi": "10.1021/je5007218",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je5007218.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json",
+        "validation/data/two_liquids/lle/isobutanol_water.json"
       ]
     },
     "narasigadu2018-ethanol-n-decane": {
@@ -3610,6 +4186,21 @@
         "validation/data/eos/thermoml_methane_methanol_10-1016-j-fluid-2016-03-021.json"
       ]
     },
+    "oliveira2019-1-butanol-water": {
+      "title": "Liquid-liquid equilibrium data and thermophysical properties for ternary systems composed of water, acetic acid and different solvents",
+      "authors": "L. H. D. Oliveira, G. P. Morgado, R. Boni, L. R. Roque, R. R. Pinto, S. C. Rabelo",
+      "year": 2019,
+      "published": "Fluid Phase Equilib. 482 (2019) 48-63",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2018.10.021",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2018.10.021.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json",
+        "validation/data/two_liquids/lle/isoamyl-alcohol_water.json"
+      ]
+    },
     "orchilles2007-methanol-methyl-acetate": {
       "title": "Isobaric Vapor-Liquid Equilibria for Methyl Acetate + Methanol + 1-Ethyl-3-methylimidazolium Trifluoromethanesulfonate at 100 kPa",
       "authors": "A. V. Orchilles, P. J. Miguel, E. Vercher, A. Martinez-Andreu",
@@ -3766,6 +4357,20 @@
       "files": [
         "validation/data/vle/2-butanone_dimethyl-carbonate_10-1021-je0497000_101.3kPa.json",
         "validation/data/vle/acetone_dimethyl-carbonate_10-1021-je0497000_101.3kPa.json"
+      ]
+    },
+    "perez2006-methanol-n-hexane": {
+      "title": "Excess molar enthalpies for mixtures of carbon dioxide + a modifier (5 mol% methanol or 1-octanol) and hexane at 308.15K and 12.40MPa",
+      "authors": "E. Perez, Y. Sanchez-Vicente, A. Cabanas, M. I. Redondo, C. Pando, J. A. R. Renuncio",
+      "year": 2006,
+      "published": "Fluid Phase Equilib. 241 (2006) 283-289",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2005.12.029",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2005.12.029.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/methanol_n-hexane.json"
       ]
     },
     "perez2017-argon-hydrogen-sulfide": {
@@ -4010,6 +4615,20 @@
         "validation/data/vle/2-butanol_n-hexane_10-1016-j-fluid-2011-08-009_329.22K.json"
       ]
     },
+    "rachmawati2019-diethyl-carbonate-water": {
+      "title": "Atmospheric Ternary Liquid-Liquid Equilibrium for the Diethyl Carbonate + 1-Propanol + Water System at Temperature of 303.15, 313.15, 323.15, and 333.15 K",
+      "authors": "D. Rachmawati, I. Khoiroh, R. Tetrisyanda, G. Wibawa",
+      "year": 2019,
+      "published": "J. Chem. Eng. Data 64 (2019) 1029-1034",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.8b00937",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.8b00937.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/diethyl-carbonate_water.json"
+      ]
+    },
     "raeissi2013-ethylbenzene-propylene-oxide": {
       "title": "Vapor-liquid equilibria of binary mixtures of propylene oxide witheither ethyl benzene, 2-methylpentane, or 2-methyl-1-pentene",
       "authors": "S. Raeissi, L. J. Florusse, C. J. Peters",
@@ -4036,6 +4655,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/1-3-propanediol_propylene-glycol_10-1016-j-jct-2016-01-019_6.67kPa_tx.json"
+      ]
+    },
+    "rastegar2011-isooctane-methanol": {
+      "title": "Measurement and Modeling of Liquid-Liquid Equilibrium for Ternary and Quaternary Mixtures of Water, Methanol, 2-Propanol, and 2,2,4-Trimethylpentane at 293.2 K",
+      "authors": "R. Rastegar, K. Jessen",
+      "year": 2011,
+      "published": "J. Chem. Eng. Data 56 (2011) 278-281",
+      "kind": "thermoml",
+      "doi": "10.1021/je100916h",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je100916h.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/isooctane_methanol.json"
       ]
     },
     "rasulov2010-n-pentane-water": {
@@ -4149,6 +4782,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/cyclohexane_ethanol_10-1016-j-fluid-2013-07-044_97.72kPa_tx.json"
+      ]
+    },
+    "rehak2005-1-butanol-water": {
+      "title": "Revision of the volumetric method for measurements of liquid liquid equilibria in binary systems",
+      "authors": "K. Rehak, P. Vonka, J. Dreiseitlova",
+      "year": 2005,
+      "published": "Fluid Phase Equilib. 230 (2005) 109-120",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2004.12.004",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2004.12.004.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
       ]
     },
     "resa2004-ethanol-isobutanol": {
@@ -4321,7 +4968,8 @@
       "access": "Journal article is subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
-        "validation/data/lle/water_acetic-acid_ethyl-acetate_lle_roque2018.json"
+        "validation/data/lle/water_acetic-acid_ethyl-acetate_lle_roque2018.json",
+        "validation/data/two_liquids/lle/n-butyl-acetate_water.json"
       ]
     },
     "rosen2005-nitrogen-carbon-dioxide-hydrogen-sulfide-methane-ethane-propane-isobutane-n-butane-isopentane-n-pentane-n-hexane-n-heptane-n-octane-n-nonane-n-decane-n-undecane": {
@@ -4362,6 +5010,20 @@
       "license": "Copyright AIP for NIST; free to read",
       "note": "Group parameters transcribed from the page images into validation/data/gc/ruzicka_domalski_1993.json; tier predicted."
     },
+    "saien2017-cumene-water": {
+      "title": "Liquid-Liquid Equilibrium of the Ternary System of Water + Phenol + (Propan-2-yl) Benzene at Several Temperatures",
+      "authors": "J. Saien, M. R. Asrami",
+      "year": 2017,
+      "published": "J. Chem. Eng. Data 62 (2017) 3663-3670",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.7b00393",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00393.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/cumene_water.json"
+      ]
+    },
     "sanchezrussinyol2004-ethanol-p-xylene": {
       "title": "Isobaric Vapor-Liquid Equilibria for Binary and Ternary Mixtures of Ethanol, Methylcyclohexane and p-Xylene",
       "authors": "M. D. C. Sanchez-Russinyol, A. Aucejo, S. Loras",
@@ -4401,6 +5063,20 @@
         "validation/data/vle/methyl-lactate_water_10-1021-je049824c_tpx.json"
       ]
     },
+    "saquete2018-isoamyl-alcohol-water": {
+      "title": "Study of the LLE, VLE, and VLLE of the Ternary System Water + 1-Butanol + Isoamyl Alcohol at 101.3 kPa",
+      "authors": "M. D. Saquete, A. Font, J. Garcia-Cano, I. Blasco",
+      "year": 2018,
+      "published": "J. Chem. Eng. Data 63 (2018) 3733-3743",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.8b00308",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.8b00308.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/isoamyl-alcohol_water.json"
+      ]
+    },
     "sato2010-carbon-dioxide-methanol": {
       "title": "Compact apparatus for rapid measurement of high-pressure phase equilibria of carbon dioxide expanded liquids",
       "authors": "Y. Sato, N. Hosaka, K. Yamamoto, H. Inomata",
@@ -4429,6 +5105,20 @@
         "validation/data/schmid2007_acetic_acid_ethylene_glycol.json"
       ]
     },
+    "schmitt2005-1-hexanol-water": {
+      "title": "Phase Equlibria for Hexyl Acetate Reactive Distillation",
+      "authors": "M. Schmitt, H. Hasse",
+      "year": 2005,
+      "published": "J. Chem. Eng. Data 50 (2005) 1677-1683",
+      "kind": "thermoml",
+      "doi": "10.1021/je050141m",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je050141m.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-hexanol_water.json"
+      ]
+    },
     "schuler2012-carbon-dioxide-methanol": {
       "title": "On the Solubility of Carbon Dioxide in Binary Water Methanol Mixtures",
       "authors": "N. Schuler, K. T. Hecht, M. Kraut, R. Dittmeyer",
@@ -4455,6 +5145,34 @@
       "access": "The original article is not open; its values are compiled in IUPAC Solubility Data Series Vol. 5/6, Hydrogen and Deuterium (C. L. Young, Pergamon, 1981; copyright IUPAC), which IUPAC publishes as open access at iupac.github.io",
       "files": [
         "validation/data/eos/sebastian1980_hydrogen_n-decane.json"
+      ]
+    },
+    "senol2004-1-hexanol-water": {
+      "title": "Phase equilibria for ternary liquid systems of (water + carboxylic acid or alcohol + 1-hexanol) at T = 293.15 K: modelling considerations",
+      "authors": "A. Senol",
+      "year": 2004,
+      "published": "J. Chem. Thermodyn. 36 (2004) 1007-1014",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2004.07.016",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2004.07.016.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-hexanol_water.json"
+      ]
+    },
+    "senol2005-cyclohexanone-water": {
+      "title": "Phase equilibria for ternary liquid systems of (water + levulinic acid + cyclic solvent) at T = 298.2 K: Thermodynamic modeling",
+      "authors": "A. Senol",
+      "year": 2005,
+      "published": "J. Chem. Thermodyn. 37 (2005) 1104-1110",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2005.01.014",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2005.01.014.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/cyclohexanone_water.json"
       ]
     },
     "seo2003-2-propanol-n-hexane": {
@@ -4569,6 +5287,21 @@
         "validation/data/pure/measured/article_furfuryl-alcohol_simic2021.json"
       ]
     },
+    "smirnov2019-1-butanol-water": {
+      "title": "Quaternary liquid-liquid equilibrium, solubility and critical states: Acetic acid - n-butanol - n-butyl acetate - water at 318.15 K and atmospheric pressure",
+      "authors": "A. Smirnov, A. Sadaeva, K. Podryadova, M. Toikka",
+      "year": 2019,
+      "published": "Fluid Phase Equilib. 493 (2019) 102-108",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2019.04.020",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2019.04.020.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json",
+        "validation/data/two_liquids/lle/n-butyl-acetate_water.json"
+      ]
+    },
     "soujanya2016-2-propanol-glycerol": {
       "title": "Experimental vapour - liquid equilibrium data of the quaternary system Methanol (1) + Isopropyl Alcohol (2) + Water (3) + Glycerol (4) along with Isopropyl Alcohol (2) + Glycerol (4) and Isopropyl Alcohol (2) + Water (3) binary data at atmospheric and sub-atmospheric pressures.",
       "authors": "J. Soujanya, C. A. Reddy, B. Satyavathi, T. Sankarshana",
@@ -4605,13 +5338,7 @@
       "citation": "lecture slides, September 25, 2019, 35 slides",
       "url": "https://msubbu.in/ln/ht/HT-Lecture-17-Evaporation.pdf",
       "access": "Free to read on the author's site (msubbu.in); no licence stated, so the slides are cited, not copied",
-      "note": "Slide 10: multiple-effect evaporation, the vapour of one effect heating the next; slides 16-20, Example 1: 30000 kg/h of a 10 % solution to 50 % solids, steam at 0.2 MPa (393 K), boiling at 323 K, U = 2.9 kW/(m2 K), c_p 3.98 kJ/(kg K), latent heats 2202 and 2383 kJ/kg; printed: steam 27708.4 kg/h, economy 0.87, area 83.5 m2 (feed at 293 K) and 26786.1 kg/h, 0.896, 80.7 m2 (feed at 308 K). Used as a check within the example's simplifications (no boiling-point rise, constant c_p and latent heats). Read 2026-11-04.",
-      "files": [
-        "docs/models/evaporator.md",
-        "src/units/evaporator.js",
-        "test/evaporator.test.js",
-        "validation/python/reference_evaporator.py"
-      ]
+      "note": "Slide 10: multiple-effect evaporation, the vapour of one effect heating the next; slides 16-20, Example 1: 30000 kg/h of a 10 % solution to 50 % solids, steam at 0.2 MPa (393 K), boiling at 323 K, U = 2.9 kW/(m2 K), c_p 3.98 kJ/(kg K), latent heats 2202 and 2383 kJ/kg; printed: steam 27708.4 kg/h, economy 0.87, area 83.5 m2 (feed at 293 K) and 26786.1 kg/h, 0.896, 80.7 m2 (feed at 308 K). Used as a check within the example's simplifications (no boiling-point rise, constant c_p and latent heats). Read 2026-11-04."
     },
     "sun2017-1-butanol-acetaldehyde": {
       "title": "Isobaric Vapor Liquid Equilibrium for Three Binary Systems of Acetaldehyde + Ethanol, Ethyl Acetate, 1-Butanol at 101.3 kPa",
@@ -4655,6 +5382,7 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
+        "validation/data/two_liquids/lle/furfural_water.json",
         "validation/data/vle/furfural_water_10-1021-je020053r_94.6kPa_tx.json"
       ]
     },
@@ -4789,6 +5517,20 @@
         "validation/data/lle/water_acetic-acid_ethyl-acetate_lle_toikka2014.json"
       ]
     },
+    "toikka2018-1-butanol-water": {
+      "title": "Liquid-liquid equilibrium and critical states for the quaternary system propionic acid-n-butanol-n-butyl propionate-water at 303.15 K",
+      "authors": "M. Toikka, D. Trofimova, A. Samarov",
+      "year": 2018,
+      "published": "Fluid Phase Equilib. 460 (2018) 17-22",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2017.12.023",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2017.12.023.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
+      ]
+    },
     "tojo2004-dimethyl-carbonate-n-nonane": {
       "title": "Densities and Excess Molar Properties of Dimethyl Carbonate with Alkanes (C6 to C10) and VLE of Dimethyl Carbonate with Alkanes (C9 to C10) at 101.3 kPa",
       "authors": "J. Tojo, J. Canosa, A. Rodriguez, J. Ortega, R. Dieppa",
@@ -4842,6 +5584,20 @@
       "access": "Open access, CC BY 4.0 (ACS Omega; full text in PubMed Central)",
       "files": [
         "validation/data/pure/measured/article_solketal_acsomega2026.json"
+      ]
+    },
+    "turnaoglu2019-2-butanol-water": {
+      "title": "Liquid-Liquid Equilibria in Binary Mixtures of Dihydroxy Alcohols and Imidazolium-Based Ionic Liquids",
+      "authors": "T. Turnaoglu, S. G. Ritchie, M. B. Shiflett",
+      "year": 2019,
+      "published": "J. Chem. Eng. Data 64 (2019) 3179-3186",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.9b00283",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.9b00283.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/2-butanol_water.json"
       ]
     },
     "villamanan2006-1-butanol-benzene": {
@@ -4957,6 +5713,20 @@
         "validation/data/vle/mtbe_toluene_10-1021-je049867t_323.15K.json"
       ]
     },
+    "wang2007-n-butyl-acetate-water": {
+      "title": "Liquid-Liquid Equilibria for the Ternary Systems Acetic Acid + Water + Butyl Acetate and Acetic Acid + Water + 2-Methyl Propyl Acetate at 304.15 K, 332.15 K, and 366.15 K",
+      "authors": "L. Wang, Y. Cheng, X. Xiao, X. Li",
+      "year": 2007,
+      "published": "J. Chem. Eng. Data 52 (2007) 1255-1257",
+      "kind": "thermoml",
+      "doi": "10.1021/je6005746",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je6005746.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/n-butyl-acetate_water.json"
+      ]
+    },
     "wang2010-1-propanol-dmso": {
       "title": "Vapor-Liquid Equilibria for the Ternary System Acetonitrile + 1-Propanol + Dimethyl Sulfoxide and the Corresponding Binary Systems at 101.3 kPa",
       "authors": "Q. Y. Wang, H. Zeng, H. Song, Q. S. Liu, S. Yao",
@@ -4999,6 +5769,7 @@
       "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
       "via": "the NIST TRC ThermoML Archive",
       "files": [
+        "validation/data/two_liquids/lle/dimethyl-carbonate_glycerol.json",
         "validation/data/vle/dimethyl-carbonate_glycerol_10-1021-je201036h_101.3kPa.json"
       ]
     },
@@ -5030,6 +5801,21 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/2-butanol_methanol_10-1016-j-jct-2013-12-021_101.33kPa.json"
+      ]
+    },
+    "wang2016-2-butanone-water": {
+      "title": "Phase equilibria of the ternary systems of (water + diethyl carbonate) with acetone, or 2-butanone at four temperatures",
+      "authors": "C. Wang, Y. Chen, K. Cheng, C. Wen",
+      "year": 2016,
+      "published": "J. Chem. Thermodyn. 102 (2016) 147-154",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2016.06.033",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2016.06.033.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/2-butanone_water.json",
+        "validation/data/two_liquids/lle/diethyl-carbonate_water.json"
       ]
     },
     "wang2016-benzene-ethanol": {
@@ -5127,6 +5913,35 @@
       "note": "Secondary compilation with visible scatter. To be replaced by an open primary source.",
       "files": [
         "validation/data/water_ethylene_glycol_760mmHg.json"
+      ]
+    },
+    "wongsawa2014-1-butanol-water": {
+      "title": "Solubility and tie-line data for ternary aqueous mixtures of cyclopentanol with organic solvents at T = 298.2 K: Experiments and NRTL model",
+      "authors": "T. Wongsawa, M. Hronec, U. Pancharoen, S. Phatanasri",
+      "year": 2014,
+      "published": "Fluid Phase Equilib. 379 (2014) 10-18",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2014.07.011",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2014.07.011.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json",
+        "validation/data/two_liquids/lle/furfural_water.json"
+      ]
+    },
+    "wu2008-1-butanol-water": {
+      "title": "Liquid liquid equilibria of water + 2,3-butanediol + 1-butanol at T = 298.15 K, T = 308.15K and T = 318.15K",
+      "authors": "Y. Y. Wu, J. W. Zhu, K. Chen, B. Wu, J. Fang, Y. L. Shen",
+      "year": 2008,
+      "published": "Fluid Phase Equilib. 265 (2008) 1-6",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2007.12.003",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2007.12.003.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
       ]
     },
     "wu2019-carbon-dioxide-methanol": {
@@ -5383,6 +6198,20 @@
         "validation/data/vle/methanol_water_10-1021-acs-jced-9b00306_101.3kPa.json"
       ]
     },
+    "ye2017-1-butanol-water": {
+      "title": "Measurement and Correlation of Liquid Liquid Equilibria for the Ternary Systems of Water + d-Fructose + 1-Butanol, Water + d-Glucose + 1-Butanol, and Water + d-Galactose + 1-Butanol at (288.2, 303.2 and 318.2) K",
+      "authors": "T. Ye, H. Qu, X. Gong",
+      "year": 2017,
+      "published": "J. Chem. Eng. Data 62 (2017) 2392-2399",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.7b00302",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.7b00302.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
+      ]
+    },
     "yin2019-diethyl-carbonate-isopropyl-acetate": {
       "title": "Isobaric Vapor-Liquid Equilibria of Binary Mixtures of Diethyl Carbonate with Isopropyl Acetate, sec-Butyl Acetate, or Isoamyl Acetate at 101.3 kPa",
       "authors": "X. Yin, C. Du, J. Li, W. Jiang, Y. Ding, H. Du, Z. Du, Z. Yan",
@@ -5407,6 +6236,20 @@
       "access": "Open access: IUPAC (the copyright holder) publishes the volume at iupac.github.io",
       "files": [
         "validation/data/eos/sokolov1977_hydrogen_n-decane.json"
+      ]
+    },
+    "yu2017-1-butanol-water": {
+      "title": "Liquid Liquid Equilibrium Data of Water + Butyric Acid + {Butanal or n-Butanol} Ternary Systems at 293.15, 308.15, and 323.15 K",
+      "authors": "C. Yu, S. Wu, Y. Zhao, Z. X. Zeng, W. L. Xue",
+      "year": 2017,
+      "published": "J. Chem. Eng. Data 62 (2017) 2244-2252",
+      "kind": "thermoml",
+      "doi": "10.1021/acs.jced.6b00941",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/acs.jced.6b00941.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
       ]
     },
     "yuan2017-carbon-dioxide-water": {
@@ -5508,6 +6351,20 @@
         "validation/data/vle/1-3-propanediol_methanol_10-1016-j-tca-2016-09-005_tpx.json"
       ]
     },
+    "zeng2013-diethyl-carbonate-water": {
+      "title": "Ternary (liquid + liquid) equilibria for (water + 1-propanol + dimethyl carbonate, or diethyl carbonate) systems at several temperatures",
+      "authors": "J. Zeng, Y. Chen, X. Zhou, C. Wen",
+      "year": 2013,
+      "published": "J. Chem. Thermodyn. 63 (2013) 116-122",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2013.04.002",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2013.04.002.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/diethyl-carbonate_water.json"
+      ]
+    },
     "zhang2007-2-propanol-methanol": {
       "title": "Vapor-Liquid Equilibria Data for Methanol + 2-Propanol+ 2-Methyl-2-butanol and Constituent Binary Systems at 101.3 kPa",
       "authors": "G. Zhang, B. L. Weeks, J. Wei",
@@ -5520,6 +6377,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/2-propanol_methanol_10-1021-je060476j_101.3kPa.json"
+      ]
+    },
+    "zhang2012-acrylonitrile-water": {
+      "title": "Liquid liquid equilibrium for the ternary systems of water + methanol  + acrylonitrile",
+      "authors": "X. Zhang, C. Jian",
+      "year": 2012,
+      "published": "J. Chem. Eng. Data 57 (2012) 142-147",
+      "kind": "thermoml",
+      "doi": "10.1021/je2009208",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je2009208.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/acrylonitrile_water.json"
       ]
     },
     "zhang2013-acetonitrile-water": {
@@ -5764,6 +6635,20 @@
         "validation/data/vle/2-methoxyethanol_toluene_10-1016-j-fluid-2014-04-025_101.3kPa.json"
       ]
     },
+    "zheng2016-1-butanol-water": {
+      "title": "Feasibility of bio-based lactate esters as extractant for biobutanol recovery: (Liquid + liquid) equilibria",
+      "authors": "S. Zheng, H. Cheng, L. Chen, Z. Qi",
+      "year": 2016,
+      "published": "J. Chem. Thermodyn. 93 (2016) 127-131",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2015.10.003",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2015.10.003.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/1-butanol_water.json"
+      ]
+    },
     "zhi2016-bdo-isoamyl-alcohol": {
       "title": "Isobaric Vapor Liquid Equilibrium for Two Binary Systems, (3-Methyl-1-butanol + 1,4-Butanediol) and (Hexylene Glycol + 1,4-Butanediol), at p = 40.0, 60.0, and 80.0 kPa",
       "authors": "J. Zhi, F. Jin, Q. Yang, X. Feng, C. Yang",
@@ -5833,6 +6718,20 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/vle/methanol_tetrahydrofuran_10-1016-j-fluid-2016-04-012_101.3kPa.json"
+      ]
+    },
+    "zhu2019-methanol-n-hexane": {
+      "title": "Liquid-liquid extraction of methanol from its mixtures with hexane using three imidazolium-based ionic liquids",
+      "authors": "Z. Zhu, W. Bai, Y. Xu, H. Gong, Y. Wang, D. Xu, J. Gao",
+      "year": 2019,
+      "published": "J. Chem. Thermodyn. 138 (2019) 189-195",
+      "kind": "thermoml",
+      "doi": "10.1016/j.jct.2019.06.024",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.jct.2019.06.024.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/two_liquids/lle/methanol_n-hexane.json"
       ]
     }
   }

@@ -72,6 +72,7 @@
  */
 import { fail } from "../util/errors.js";
 import { stream, componentFlows, scaleStream, phaseStream, phasesStream, hasCrystals } from "../stream/stream.js";
+import { twoLiquidStatements } from "../thermo/two-liquids.js";
 import { findComponent, componentRecord } from "../thermo/components.js";
 import { parseFormula } from "../thermo/formula.js";
 import { pure } from "../thermo/pure.js";
@@ -298,7 +299,15 @@ registerUnit({
       if (outletCount >= 3) outlets.liquid2 = phaseStream(all, "liquid", 1);
     }
     const out = Object.values(outlets);
-    return { outlets, duty_kW: sumH(out) - sumH(ins), notes, state: { T_K: all.T_K, P_kPa: all.P_kPa, VF: all.VF } };
+    // what stands behind the two liquids (proposal 0019, section 3): measured, predicted only, or contradicted
+    const liq = all.phases.filter(p => p.type === "liquid");
+    const arr = p => (Array.isArray(p.composition) ? p.composition : sys.ids.map(id => p.composition?.[id] ?? 0));
+    const two = liq.length === 2 && sys.kind !== "eos" && sys.ids ? twoLiquidStatements(sys, arr(liq[0]), arr(liq[1]), all.T_K, all.P_kPa) : [];
+    const warnings = two.filter(t => t.two_liquids !== "measured").map(t => ({ code: "TWO_LIQUIDS", message: t.message,
+      ...(t.two_liquids === "predicted-contradicted" ? { remedy: "Choose another parameter set (Library) or another model for this pair." } : {}) }));
+    notes.push(...two.filter(t => t.two_liquids === "measured").map(t => t.message));
+    return { outlets, duty_kW: sumH(out) - sumH(ins), notes, ...(warnings.length ? { warnings } : {}),
+      state: { T_K: all.T_K, P_kPa: all.P_kPa, VF: all.VF, ...(two.length ? { two_liquids: two.map(({ message, ...q }) => q) } : {}) } };
   },
 });
 
@@ -775,7 +784,9 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
 
 /** The warning codes a block may return (proposal 0015, section 9, contract 2); a block adds its own code here. */
 export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "SECOND_SOLID", "SLURRY", "DENSITY_MISSING", "METHOD_RANGE", "METHOD_SPLIT", "FLOW_TRANSITION", "FITTINGS_LAMINAR",
-  "TWO_PHASE_VISCOUS", "TWO_PHASE_ELEVATION"];
+  "TWO_PHASE_VISCOUS", "TWO_PHASE_ELEVATION",
+  // two liquids predicted only, or contradicted by one-liquid measurements (proposal 0019, section 3)
+  "TWO_LIQUIDS"];
 
 /** A block's warnings: each { code, message, stage?, remedy? }, its code one of WARNING_CODES (a bug otherwise). */
 function checkWarnings(u, list) {

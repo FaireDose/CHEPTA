@@ -5,7 +5,7 @@
  */
 import { h } from "./dom.js";
 import { icon } from "./icons.js";
-import { PIPE_DEFAULTS, PIPE_HEAT, FITTING_CHOICES, ROUGHNESS_NOTE, pipeZ } from "./pipe-logic.js";
+import { PIPE_DEFAULTS, PIPE_HEAT, FITTING_CHOICES, ROUGHNESS_NOTE, pipeZ, pressureSplit, regimeText } from "./pipe-logic.js";
 import { FITTINGS_SOURCE } from "../units/pipe.js";
 import { tLabel, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { parseT, parseP } from "./app-logic.js";
@@ -94,4 +94,72 @@ export function pipeInputs({ state, set, uid, inputsSection, field, seg, listInp
       { min: 0, above: true, empty: true, title: "Leave empty: from the components' records" }),
     h("p", { class: "fa-in-hint" }, "Leave the friction factor and the viscosity empty to take them from the Reynolds number, the roughness and the components' records.")));
   return secs;
+}
+
+/**
+ * The Pipe as a block of the flowsheet drawing (proposal 0020): the sections of its Inputs panel. The settings are the
+ * block's spec (the keys of src/units/pipe.js, SI units: m, K), the same ones the Pipe workspace sends; the values a new
+ * block starts with are the workspace's (flowsheet-logic.js defaultSpec). env: the helpers of flowsheet-view.js.
+ */
+export function pipeBlockSections({ b, spec, setS, inputsSection, uid, u, T, plain, numberField, segRow, selectField }) {
+  const heat = spec.heat ?? "adiabatic";
+  const mm = (key, label, { empty = false } = {}) => numberField(label, spec[key] == null ? "" : String(+(spec[key] * 1000).toPrecision(8)),
+    t => { const v = num(t); if (v == null) { if (empty) { setS({ [key]: null }); return; } return false; } if (v < 0 || (key !== "roughness_m" && v === 0)) return false; setS({ [key]: v / 1000 }); },
+    { id: `${b.id}-${key}`, uid, unit: "mm" });
+  const secs = [];
+  secs.push(inputsSection("Pipe",
+    plain("length_m", "Length", "m", "required"),
+    mm("diameter_m", "Inner diameter"),
+    mm("roughness_m", "Wall roughness"),
+    h("p", { class: "fa-in-hint" }, ROUGHNESS_NOTE),
+    plain("elevation_m", "Elevation change", "m", "0"),
+    h("p", { class: "fa-in-hint" }, "Outlet height minus inlet height (negative downhill); at most the length. The inlet is the stream that enters the block: one fluid phase, or gas and liquid (Lockhart-Martinelli: horizontal pipes, about a factor of 3 in the friction; no fittings in gas-liquid flow). Two liquid phases and choked flow are refused with the reason.")));
+  const fits = spec.fittings ?? [];
+  const kindOf = f => (f.fitting ?? (f.K != null ? "K" : "L_D"));
+  const setRow = (i, row) => setS({ fittings: fits.map((f, j) => (j === i ? row : f)) });
+  const rows = fits.map((f, i) => {
+    const kind = kindOf(f);
+    return h("div", { class: "fa-pipe-fit" },
+      selectField(`Fitting ${i + 1}`, FITTING_CHOICES, kind, k => { const count = f.count ?? 1; setRow(i, k === "K" ? { K: 0.5, count } : k === "L_D" ? { L_D: 30, count } : { fitting: k, count }); }, `${b.id}-fit-${i}`, uid),
+      h("div", { class: "fa-row-fields" },
+        kind === "K" ? numberField("K", String(f.K), t => { const v = num(t); if (v == null || v < 0) return false; setRow(i, { ...f, K: v }); }, { id: `${b.id}-fit-k-${i}`, uid })
+          : kind === "L_D" ? numberField("Leq/D", String(f.L_D), t => { const v = num(t); if (v == null || v < 0) return false; setRow(i, { ...f, L_D: v }); }, { id: `${b.id}-fit-ld-${i}`, uid }) : null,
+        numberField("Count", String(f.count ?? 1), t => { const v = num(t); if (!Number.isInteger(v) || v < 1) return false; setRow(i, { ...f, count: v }); }, { id: `${b.id}-fit-n-${i}`, uid }),
+        h("button", { type: "button", class: "fa-mini", "aria-label": `Remove fitting ${i + 1}`, "data-fk": `fs-pipe-fit-rm-${b.id}-${i}`,
+          on: { click: () => setS({ fittings: fits.filter((_, j) => j !== i) }) } }, icon("close", 14), "Remove")));
+  });
+  secs.push(inputsSection("Fittings", ...rows,
+    h("div", { class: "fa-in-actions" }, h("button", { type: "button", class: "fa-mini", "data-fk": `fs-pipe-fit-add-${b.id}`,
+      on: { click: () => setS({ fittings: [...fits, { fitting: "elbow-90", count: 1 }] }) } }, "Add a fitting")),
+    h("p", { class: "fa-in-hint" }, `Each fitting adds K + f Leq/D velocity heads. Leq/D: ${FITTINGS_SOURCE}. These values are for turbulent flow.`)));
+  secs.push(inputsSection("Heat",
+    segRow("Heat", PIPE_HEAT, heat, m => setS(m === "U" ? { heat: "U", U_W_m2K: spec.U_W_m2K ?? PIPE_DEFAULTS.U_W_m2K, T_ambient_K: spec.T_ambient_K ?? PIPE_DEFAULTS.T_ambient_K }
+      : { heat: m, U_W_m2K: null, T_ambient_K: null }), `fs-pipe-heat-${b.id}`),
+    heat === "U" ? plain("U_W_m2K", "U", "W/(m² K)") : null,
+    heat === "U" ? T("T_ambient_K", "Surroundings") : null,
+    h("p", { class: "fa-in-hint" }, heat === "adiabatic" ? "No heat to or from the surroundings: the enthalpy stays constant, so a gas cools as its pressure falls."
+      : heat === "isothermal" ? "The fluid stays at its inlet temperature; the heat this takes is the block's duty."
+        : "Q = U A ΔT (log mean) over each segment, A the inner surface. U is yours: no open table of U for pipes was found.")));
+  secs.push(inputsSection("Options",
+    plain("segments", "Segments", "", "20"),
+    plain("friction_factor", "Your friction factor (Darcy)", "", "from Re and roughness"),
+    numberField("Your viscosity", spec.viscosity_Pa_s == null ? "" : String(+(spec.viscosity_Pa_s * 1000).toPrecision(8)),
+      t => { const v = num(t); if (v == null) { setS({ viscosity_Pa_s: null }); return; } if (!(v > 0)) return false; setS({ viscosity_Pa_s: v / 1000 }); }, { id: `${b.id}-viscosity_Pa_s`, uid, unit: "mPa s", placeholder: "from the records" })));
+  return secs;
+}
+
+/** The results of a Pipe block for the flowsheet's Results panel: rows [label, text] from the engine's `state`. */
+export function pipeBlockRows(s, { u, fmtP, fmtTemp }) {
+  if (s?.dP_kPa == null) return [];
+  const split = pressureSplit(s);
+  return [
+    ["Outlet temperature", fmtTemp(s.T_out_K, u, 2)],
+    ["Outlet pressure", fmtP(s.P_out_kPa, u)],
+    ["Pressure drop", `${fmtShort(pToDisplay(s.dP_kPa, u), 5)} ${u.P}`],
+    ...split.slice(0, 4).map(([k, v]) => [`  ${k}`, `${fmtShort(pToDisplay(v, u), 4)} ${u.P}`]),
+    ["Velocity, inlet to outlet", `${fmtShort(s.velocity_in_m_s, 4)} to ${fmtShort(s.velocity_out_m_s, 4)} m/s`],
+    ["Reynolds number, inlet", fmtShort(s.Re_in, 4)],
+    ["Flow regime", regimeText(s.regime)],
+    ["Friction factor (Darcy), inlet", fmtShort(s.friction_factor_in, 4)],
+  ];
 }

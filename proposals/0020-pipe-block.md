@@ -1,7 +1,11 @@
 # 0020: The Pipe block: pressure drop and heat in a pipe
 
-- **Status:** Proposed (no acceptance by the maintainer found in docs/ on 2026-11-10; the maintainer asked for the
-  workspace on 2026-11-07: "put it in the model tab so I can check a pipe without doing a flowsheet")
+- **Status:** Accepted for steps 1-2 (the maintainer, 2026-11-10; the engine, the Pipe workspace under Unit models, and
+  with them the flowsheet palette and the project file, docs/decisions/2026-11-10-05-pipe-palette-save.md). Steps 3-6
+  are the plan: the two-phase flow comes in its own pull request, Lockhart-Martinelli first, then Beggs-Brill, once
+  open sources for them are found; Lockhart-Martinelli is built (step 4, to review,
+  docs/decisions/2026-11-10-06-pipe-two-phase.md). The maintainer asked for the workspace on 2026-11-07: "put it in the model tab so
+  I can check a pipe without doing a flowsheet"
 - **Author(s):** a coding agent for the maintainer (Claude Code sessions of 2026-11-07 and 2026-11-10)
 - **Discussion:** the pull request that adds this file; docs/decisions/2026-11-10-02-pipe-block.md
 - **Roadmap item:** A6 (unit operations) and v0.6 "Further units towards models of all the common unit operations"
@@ -85,7 +89,7 @@ Validation (`test/pipe.test.js`, `test/pipe-workspace.test.js`):
 ## Effect on existing work
 
 A new block and a new workspace; nothing else changes. Flowsheet files gain a block type (`pipe`; the flowsheet
-drawing's palette does not offer it yet, step 3), so a flowsheet with a
+drawing's palette offers it since step 3), so a flowsheet with a
 pipe does not open in an older version (as for every new block). The Pipe workspace's settings are not saved in the
 project file yet (decision below), so the project format is unchanged. Two tests that list the workspaces were updated
 to include it.
@@ -105,8 +109,8 @@ to include it.
 2. The Pipe workspace under Unit models, with its tests (2026-11-10, same branch). **This pull request holds steps 1
    and 2.**
 3. The Pipe in the flowsheet drawing: the palette, its icon on the canvas and its block panel (fittings and heat as in
-   the workspace). Today a pipe works in flowsheet files, `solveFlowsheet` and `CHEPTA.run`, but the drawing's palette
-   does not offer it.
+   the workspace). **Built** with the project file (format 8) in #219, merged on 2026-11-10
+   (docs/decisions/2026-11-10-05-pipe-palette-save.md).
 4. Two-phase flow: a liquid that flashes, a gas that condenses, a gas-liquid inlet. DWSIM offers Beggs and Brill and
    Lockhart-Martinelli (its files BeggsBrill.vb and LockhartMartinelli.vb, read on 2026-11-10); both need open
    sources for their correlations before they are built. The maintainer (2026-11-10): in its own pull request,

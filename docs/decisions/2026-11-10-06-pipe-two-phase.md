@@ -91,7 +91,25 @@ checks are therefore the independent Python reference and the `fluids` library.
 3. The choked-flow refusal on the three formerly refused test streams, and whether the explanation in each test is
    right.
 
-## What the maintainer must decide
+## What the maintainer decided (2026-11-10, relayed by the coordinating session after review)
+
+1. **The Reynolds limit for C:** keep 1500, as Filip et al. print it.
+2. **An elevation change in gas-liquid flow:** warns (`TWO_PHASE_ELEVATION`), as built; not refused.
+3. **Fittings in gas-liquid flow:** stay refused until an open source is found.
+4. **A worked example:** not needed before merging; ocw.snu.ac.kr is not opened.
+
+## Merged with main (2026-11-10)
+
+PR #219 (the Pipe in the flowsheet palette, project format 8) and #218 were merged first. The merge keeps both sides of
+`WARNING_CODES` (main's `TWO_LIQUIDS`, these two), joins the ROADMAP row and the proposal's status (step 3 built in
+#219; step 4 here), and updates what #219 said about two-phase flow:
+- the palette's description and the pipe block's inlet hint now say one fluid phase or gas and liquid, and what is
+  refused;
+- `test/pipe-project.test.js`: its two-phase refusal test now expects the choked-flow refusal (half steam at 1 atm,
+  255 kg/(m² s) in the 5 cm default pipe), and says why.
+
+## What was put to the maintainer (answered above)
+
 
 1. **The Reynolds limit for C:** 1500, as Filip et al. print it, while the block's own laminar limit is 2000 (DOE).
    ANL/CP-74646 leaves the limit to single-phase tests, and fluids defaults to 2000. *Recommendation:* keep 1500, the
