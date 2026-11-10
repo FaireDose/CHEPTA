@@ -80,7 +80,7 @@ export function columnRibbon({ state, set, ui, group, smallButton }) {
   return [
     group("Setup", h("div", { class: "fa-rows2" },
       page("flask", `Components${ready ? ` (${fs.components.length})` : ""}`, "components", "col-setup"),
-      page("cubic", `Method: ${fs.thermo.model}`, "method", "col-method"))),
+      page("cubic", `Method: ${fs.thermo.model}${fs.thermo.mixing ? " + gE (MHV1)" : ""}`, "method", "col-method"))),
     group("Column", h("div", { class: "fug-seg fa-seg", role: "group", "aria-label": "Column method" }, ...[["shortcut", "Shortcut"], ["rigorous", "Rigorous"]].map(([m, l]) =>
       h("button", { type: "button", "aria-pressed": String(mode === m), "data-fk": `col-mode-${m}`, disabled: !ready,
         on: { click: () => { if (mode !== m) { f.sel = { kind: "block", id: CID }; a.set({ flowsheet: { ...fs, blocks: fs.blocks.map(x => (x.id === CID ? { ...x, spec: switchMode(x.spec ?? {}, m, done) } : x)) } }); } } } }, l)))),

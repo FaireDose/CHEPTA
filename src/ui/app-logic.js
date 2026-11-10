@@ -137,7 +137,7 @@ export const ALL_MODELS = [...MODELS, ...EOS_MODELS];
 /** The model as a short phrase: "NRTL with a PR vapour", "Peng–Robinson", "Ideal solution". */
 export function modelLabel(state) {
   const m = state.model;
-  if (isEosModel(m)) return m === "PR" ? "Peng–Robinson" : "SRK";
+  if (isEosModel(m)) return state.mixing === "MHV1" ? `${m} + gE (MHV1)` : m === "PR" ? "Peng–Robinson" : "SRK";
   const liquid = m === "ideal" ? "Ideal solution" : m === "MOD-UNIFAC-2" ? "Mod. UNIFAC 2.0 (predicted)" : m === "WILSON" ? "Wilson" : m;
   return state.vapour && state.vapour !== "ideal" ? `${liquid} with a ${state.vapour} vapour` : liquid;
 }
@@ -368,6 +368,8 @@ export function initialState(cfg = {}) {
     components: [],
     model,
     eos,
+    // the mixing rule of an equation of state (proposal 0018): null (classical, k_ij) or "MHV1" (PR / SRK + gE (MHV1))
+    mixing: checkMixing(cfg.mixing),
     vapour: checkVapour(cfg.vapour ?? DEFAULTS.vapour),
     P_kPa: positive(cfg.P_kPa ?? DEFAULTS.P_kPa, "P_kPa"),
     T_K: cfg.T_K == null ? null : positive(cfg.T_K, "T_K"),
@@ -470,6 +472,12 @@ function derive(state, view) {
 function checkModel(m) {
   if (!ALL_MODELS.includes(m)) throw new Error(`Unknown model "${m}". Use an activity model (${MODELS.join(", ")}) or an equation of state (${EOS_MODELS.join(", ")}).`);
   return m;
+}
+/** The mixing rule of an equation of state: null (the classical rule with k_ij) or "MHV1". */
+function checkMixing(m) {
+  if (m == null || m === "" || String(m).toLowerCase() === "classical") return null;
+  if (String(m).toUpperCase() !== "MHV1") throw new Error(`Unknown mixing rule "${m}". Use "MHV1" (PR or SRK + gE (MHV1)), or null for the classical rule with k_ij.`);
+  return "MHV1";
 }
 /** Vapour model of the activity-coefficient views: "ideal", "PR" or "SRK". */
 function checkVapour(v) {
@@ -580,6 +588,7 @@ export function applyPatch(state, patch = {}) {
 
   // settings
   if (patch.vapour != null) next.vapour = checkVapour(patch.vapour);
+  if ("mixing" in patch) next.mixing = checkMixing(patch.mixing);
   if (patch.P_kPa != null) next.P_kPa = positive(patch.P_kPa, "P_kPa");
   if ("T_K" in patch) next.T_K = patch.T_K == null ? null : positive(patch.T_K, "T_K");
   if (patch.units != null) next.units = normalizeUnits(patch.units, state.units);
@@ -882,7 +891,9 @@ export function setsFor(state, model) {
   // the user's own data goes with every system of the workbench (proposal 0012)
   const own = ud ? { userData: ud } : {};
   // activity-coefficient models also take the vapour model; equations of state describe both phases
-  return MODELS.includes(model) ? { sets, prefer: state.prefer ?? null, vapour: state.vapour ?? "ideal", ...own } : { sets, prefer: state.prefer ?? null, ...own };
+  // the mixing rule of an equation of state (MHV1: its pairs come from the rule's own sets, not from the k_ij sets)
+  return MODELS.includes(model) ? { sets, prefer: state.prefer ?? null, vapour: state.vapour ?? "ideal", ...own }
+    : { sets, prefer: state.prefer ?? null, ...(state.mixing ? { mixing: state.mixing } : {}), ...own };
 }
 
 /**

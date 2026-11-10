@@ -67,7 +67,7 @@ used).
 
 1. Finish the two-liquid refit (0019 steps 2-5) and open its PR. Opus.
 2. Finish the Pipe block with its Unit models workspace (0020). Opus.
-3. MHV1 in the interface: "PR + gE (MHV1)" and "SRK + gE (MHV1)" in the Model selector, the flowsheet's Method page,
+3. (Built, in review: docs/decisions/2026-11-10-03-mhv1-interface.md.) MHV1 in the interface: "PR + gE (MHV1)" and "SRK + gE (MHV1)" in the Model selector, the flowsheet's Method page,
    the column's method, project files and `CHEPTA.run` (thermo `mixing`), the command line and MCP. No low-pressure
    comparison study (the maintainer, 2026-11-10: not needed). Sonnet or Opus.
 4. Release 0.6.0: the maintainer creates the GitHub release with tag `v0.6.0`; `.github/workflows/publish.yml` sets

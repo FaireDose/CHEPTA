@@ -224,7 +224,7 @@ don't fill it in.
 - Missing binary parameters raise an error that names the pair and the remedies: the user's own
   parameters, with their source (`userData.pairs`, My data), or another method. Do not switch on
   `allowMissingPairs` without telling the user that those pairs will be treated as ideal.
-- A flowsheet's `thermo` takes `model`, `vapour`, `sets` and `prefer`, and each block's `spec`
+- A flowsheet's `thermo` takes `model`, `vapour`, `sets`, `prefer`, `solids` and `mixing` (`"MHV1"` with model `PR` or `SRK`: "PR + gE (MHV1)", "SRK + gE (MHV1)", a gE mixing rule for a gas with a polar liquid at pressure; the engine refuses a light gas with a polar liquid that has no fitted NRTL set, with its reason), and each block's `spec`
   only its own keys: any other key is refused with an error naming it and the known keys. Correct
   it; do not drop it silently.
 - Results are model predictions. Say so, and point to the parameter sources the widget

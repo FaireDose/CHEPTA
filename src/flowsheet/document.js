@@ -29,7 +29,9 @@ import { checkReactions } from "../reactions/reaction.js";
 const MODELS = ["NRTL", "UNIQUAC", "WILSON", "MOD-UNIFAC-2", "ideal", "PR", "SRK"];
 const BLOCK_KEYS = ["id", "type", "x", "y", "spec", "energy", "label"];
 // a flowsheet's property method: an unknown key is refused (proposal 0015, W8, the authoring contract)
-const THERMO_KEYS = ["model", "vapour", "sets", "prefer", "solids"];
+const THERMO_KEYS = ["model", "vapour", "sets", "prefer", "solids", "mixing"];
+/** The mixing rules of an equation of state besides the classical one with k_ij (proposal 0018): "PR + gE (MHV1)", "SRK + gE (MHV1)". */
+export const MIXING_RULES = ["MHV1"];
 const STREAM_KEYS = ["id", "from", "to", "tear", "guess", "label"];
 const ENERGY_KEYS = ["id", "from", "to", "duty_kW", "tear", "guess", "label", "x", "y"];
 
@@ -64,7 +66,13 @@ export function normalizeFlowsheet(doc, userData = null) {
   const vapour = t.vapour == null ? "ideal" : ["ideal", "PR", "SRK"].find(v => v.toLowerCase() === String(t.vapour).toLowerCase());
   if (!vapour) throw fail("BAD_INPUT", `flowsheet.thermo.vapour "${t.vapour}" is not one of ideal, PR, SRK.`);
   if (t.solids != null && !(Array.isArray(t.solids) && t.solids.every(s => typeof s === "string"))) throw fail("BAD_INPUT", "flowsheet.thermo.solids must be a list of components that may form a solid, e.g. [\"terephthalic-acid\"].");
-  const thermo = { model, vapour, ...(t.sets ? { sets: { ...t.sets } } : {}), ...(t.prefer ? { prefer: t.prefer } : {}), ...(t.solids?.length ? { solids: t.solids.slice() } : {}) };
+  let mixing;
+  if (t.mixing != null) {
+    mixing = MIXING_RULES.find(r => r.toLowerCase() === String(t.mixing).toLowerCase());
+    if (!mixing) throw fail("BAD_INPUT", `flowsheet.thermo.mixing "${t.mixing}" is not a mixing rule of CHEPTA. Use "MHV1" (PR or SRK + gE (MHV1)), or leave it out for the classical rule with k_ij.`, { where: [{ field: "flowsheet.thermo.mixing" }] });
+    if (model !== "PR" && model !== "SRK") throw fail("BAD_INPUT", `flowsheet.thermo.mixing "${mixing}" goes with model "PR" or "SRK" (PR + gE (MHV1), SRK + gE (MHV1)); model "${model}" has none.`, { where: [{ field: "flowsheet.thermo.mixing" }] });
+  }
+  const thermo = { model, vapour, ...(mixing ? { mixing } : {}), ...(t.sets ? { sets: { ...t.sets } } : {}), ...(t.prefer ? { prefer: t.prefer } : {}), ...(t.solids?.length ? { solids: t.solids.slice() } : {}) };
   const objList = (list, keys, what) => {
     if (list == null) return [];
     if (!Array.isArray(list)) throw fail("BAD_INPUT", `flowsheet.${what} must be a list.`);
@@ -95,7 +103,7 @@ export function flowsheetSystem(doc, userData = null) {
   if (!d.components.length) throw fail("BAD_INPUT", "The flowsheet has no components: choose them first (Setup, step 1).");
   const t = d.thermo;
   const eos = t.model === "PR" || t.model === "SRK";
-  return system({ components: d.components, model: t.model, ...(eos ? {} : { vapour: t.vapour }), ...(t.sets ? { sets: t.sets } : {}), ...(t.prefer ? { prefer: t.prefer } : {}),
+  return system({ components: d.components, model: t.model, ...(eos ? {} : { vapour: t.vapour }), ...(t.mixing ? { mixing: t.mixing } : {}), ...(t.sets ? { sets: t.sets } : {}), ...(t.prefer ? { prefer: t.prefer } : {}),
     ...(t.solids ? { solids: t.solids } : {}), ...(userData ? { userData } : {}) });
 }
 
