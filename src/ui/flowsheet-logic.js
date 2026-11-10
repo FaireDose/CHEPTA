@@ -15,12 +15,13 @@ import "../units/columns/column.js";   // the Column block, registered
 import "../units/membrane.js";   // the Membrane block, registered
 import "../units/extraction.js";   // the Extraction block, registered
 import "../units/pipe.js";   // the Pipe block, registered
+import { PIPE_DEFAULTS } from "./pipe-logic.js";
 import "../units/evaporator.js";   // the Evaporator block, registered
 import "../units/crystallizer.js";   // the Crystallizer block, registered
 
 /** Id prefix of each block type: F1, M1, SP1, X1, V1, E1, HX1, VLV1, PU1, C1 (column), P1; reactors R1 (conversion), RE1 (equilibrium),
  * RG1 (Gibbs), RY1 (yield), CS1 (CSTR), PF1 (plug flow). */
-export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", compressor: "K", expander: "EX", column: "C", membrane: "MB", extraction: "EXT", evaporator: "EV", crystallizer: "CR",
+export const PREFIX = { feed: "F", mixer: "M", splitter: "SP", separator: "X", flash: "V", heater: "E", hx: "HX", valve: "VLV", pump: "PU", pipe: "PI", compressor: "K", expander: "EX", column: "C", membrane: "MB", extraction: "EXT", evaporator: "EV", crystallizer: "CR",
   "conversion-reactor": "R", "equilibrium-reactor": "RE", "gibbs-reactor": "RG", "yield-reactor": "RY", cstr: "CS", pfr: "PF", product: "P" };
 /** The separators behind one Separator button of the toolbar (proposal 0015, Part I, section 4). */
 export const SEPARATORS = ["flash", "separator", "membrane", "extraction", "evaporator", "crystallizer"];
@@ -32,7 +33,7 @@ export const REACTION_USERS = ["conversion-reactor", "equilibrium-reactor", "cst
 export const KINETIC = ["cstr", "pfr"];
 const reactionIdOf = e => (typeof e === "string" ? e : e?.reaction);
 /** The block types of the palette, in order (products are automatic). */
-export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater", "hx", "valve", "pump", "compressor", "expander", "column", "membrane", "extraction", "evaporator", "crystallizer", ...REACTORS];
+export const PALETTE = ["feed", "mixer", "splitter", "separator", "flash", "heater", "hx", "valve", "pump", "pipe", "compressor", "expander", "column", "membrane", "extraction", "evaporator", "crystallizer", ...REACTORS];
 
 const clone = fs => JSON.parse(JSON.stringify(fs));
 const nextId = (taken, prefix) => { let i = 1; while (taken.has(prefix + i)) i++; return prefix + i; };
@@ -104,6 +105,9 @@ function defaultSpec(type, fs) {
   // permeances are the person's, with their source (no databank)
   // an extraction starts with 5 equilibrium stages, at the feed's temperature: a starting value
   if (type === "extraction") return { stages: 5 };
+  // a pipe starts with the geometry of the Pipe workspace (the worked example the engine is tested on: 100 m of a 5 cm
+  // pipe, roughness 0.05 mm, adiabatic; proposal 0020): starting values for the person to change
+  if (type === "pipe") return { length_m: PIPE_DEFAULTS.length_m, diameter_m: PIPE_DEFAULTS.diameter_m, roughness_m: PIPE_DEFAULTS.roughness_m, heat: "adiabatic" };
   // an evaporator starts with one effect at 20 kPa, steam at 200 kPa and a steam flow to be changed: starting values
   // a crystallizer starts cooling to 25 °C; the solute is the person's choice
   if (type === "crystallizer") return { T_K: 298.15 };
