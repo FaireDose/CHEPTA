@@ -23,6 +23,7 @@ import { WORKSPACES, UTILITIES, INPUTS, checkInputs, normalizeInputs, seedInputs
 import { tLabel, normalizeUnits, tToDisplay, tFromDisplay, pToDisplay, pFromDisplay, fmtShort } from "./properties-logic.js";
 import { normalizeFlash, FLASH_DEFAULTS } from "./flash-logic.js";
 import { normalizeHx, hxStreamSetup } from "./hx-logic.js";
+import { normalizePipe } from "./pipe-logic.js";
 import { solidUnitIds } from "./solubility-units.js";
 import ENVELOPE_EXAMPLES from "../data/envelope-examples.json" with { type: "json" };
 
@@ -39,6 +40,7 @@ export const VIEWS = {
   envelope: { workspace: "equilibrium", diagram: true, label: "Phase envelope" },
   flash: { workspace: "flash", label: "Flash" },
   hx: { workspace: "hx", label: "Heat exchanger" },
+  pipe: { workspace: "pipe", label: "Pipe" },
   flowsheet: { workspace: "flowsheet", label: "Flowsheet" },
   reactor: { workspace: "reactor", label: "Reactor" },
   column: { workspace: "column", label: "Column" },
@@ -229,9 +231,9 @@ export function viewAvailability(view, ids, model = "NRTL", ud = null) {
       if (liq.length < min) return { enabled: false, use: [], reason: min === 1 ? "Select at least one component." : `With an activity model the phase envelope needs two liquids; ${word(liq.length)} selected.` };
       return { enabled: true, use: liq.slice(0, 24) };
     }
-    case "flash": case "hx": {
+    case "flash": case "hx": case "pipe": {
       // one component is a pure substance heated, cooled or boiled, with any model
-      if (liq.length < 1) return { enabled: false, use: [], reason: `A ${view === "hx" ? "heat exchanger" : "flash"} needs a component; ${word(liq.length)} selected.` };
+      if (liq.length < 1) return { enabled: false, use: [], reason: `A ${view === "hx" ? "heat exchanger" : view === "pipe" ? "pipe" : "flash"} needs a component; ${word(liq.length)} selected.` };
       return { enabled: true, use: liq.slice(0, 6) };
     }
     case "henry": {
@@ -392,6 +394,8 @@ export function initialState(cfg = {}) {
     flash: normalizeFlash(cfg.flash ?? {}, FLASH_DEFAULTS),
     // the Heat exchanger workspace (proposal 0013): null until a setting is changed (hx-logic.js HX_DEFAULTS)
     hx: cfg.hx == null ? null : normalizeHx(cfg.hx),
+    // the Pipe workspace (proposal 0020): null until a setting is changed (pipe-logic.js PIPE_DEFAULTS)
+    pipe: cfg.pipe == null ? null : normalizePipe(cfg.pipe),
     title: cfg.title,
     sets: normalizeSets(cfg.sets, {}, ud),
     // the user's own data (proposal 0012), as entered (it is saved as written); userOverlay() gives it checked
@@ -603,6 +607,7 @@ export function applyPatch(state, patch = {}) {
   if ("sharedReactions" in patch) next.sharedReactions = sharedList(patch.sharedReactions);
   if (patch.flash != null) next.flash = normalizeFlash(patch.flash, next.flash);
   if ("hx" in patch) next.hx = patch.hx == null ? null : normalizeHx(patch.hx, next.hx ?? undefined);
+  if ("pipe" in patch) next.pipe = patch.pipe == null ? null : normalizePipe(patch.pipe, next.pipe ?? undefined);
 
   // navigation
   let utility = "utility" in patch ? patch.utility : undefined;

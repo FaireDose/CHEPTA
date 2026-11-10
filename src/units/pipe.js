@@ -269,7 +269,10 @@ function onePhase(s, where) {
   const fl = s.phases.filter(p => p.fraction > 1e-12);
   if (fl.length !== 1) {
     const kind = fl.every(p => p.type !== "vapour") ? "two liquids" : `vapour and liquid (vapour fraction ${+(s.VF ?? 0).toPrecision(4)})`;
-    throw fail("NOT_AVAILABLE", `Pipe: the ${where} is two-phase (${kind}); the Pipe block is single-phase only. Two-phase pressure-drop methods (Lockhart-Martinelli, Beggs-Brill and others) are a later step of proposal 0020. Separate the phases first (a flash drum), or move the pipe to where the stream is one phase.`);
+    const inside = where !== "inlet";
+    throw fail("NOT_AVAILABLE", `Pipe: the ${inside ? `stream ${where}` : where} is two-phase (${kind}); the Pipe block is single-phase only. Two-phase pressure-drop methods (Lockhart-Martinelli, Beggs-Brill and others) are a later step of proposal 0020. ${inside
+      ? "The fluid boils or condenses inside the pipe (a phase change): raise the inlet pressure, or move the inlet temperature away from the boiling or dew point."
+      : "Separate the phases first (a flash drum), or move the pipe to where the stream is one phase."}`);
   }
   return fl[0].type;
 }
