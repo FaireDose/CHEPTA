@@ -1,7 +1,10 @@
 # 0020: The Pipe block: pressure drop and heat in a pipe
 
-- **Status:** Proposed (no acceptance by the maintainer found in docs/ on 2026-11-10; the maintainer asked for the
-  workspace on 2026-11-07: "put it in the model tab so I can check a pipe without doing a flowsheet")
+- **Status:** Accepted for steps 1-2 (the maintainer, 2026-11-10; the engine, the Pipe workspace under Unit models, and
+  with them the flowsheet palette and the project file, docs/decisions/2026-11-10-05-pipe-palette-save.md). Steps 3-6
+  are the plan: the two-phase flow comes in its own pull request, Lockhart-Martinelli first, then Beggs-Brill, once
+  open sources for them are found. The maintainer asked for the workspace on 2026-11-07: "put it in the model tab so
+  I can check a pipe without doing a flowsheet"
 - **Author(s):** a coding agent for the maintainer (Claude Code sessions of 2026-11-07 and 2026-11-10)
 - **Discussion:** the pull request that adds this file; docs/decisions/2026-11-10-02-pipe-block.md
 - **Roadmap item:** A6 (unit operations) and v0.6 "Further units towards models of all the common unit operations"
