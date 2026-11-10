@@ -90,7 +90,8 @@ export function projectOf(state, { version = "", results, now = new Date() } = {
   // the Heat exchanger workspace: kept only when it was used (format 4), with its components (so the inputs of
   // format 3 stay as they were)
   if (w.hx == null) delete w.hx; else w.hx = { ...w.hx, components: copy(state.inputs.hx ?? []) };
-  const { steam, hx, charts, ...inputs } = w.inputs;   // steam takes no inputs (always water); the exchanger keeps its own
+  // steam takes no inputs (always water); the exchanger keeps its own; the Pipe workspace is not saved yet (proposal 0020)
+  const { steam, hx, charts, pipe, ...inputs } = w.inputs;
   w.inputs = inputs;
   // the fluid charts (format 5): kept only when they were used, with their components and feed (so the inputs and the
   // compositions of format 4 stay as they were)
@@ -216,6 +217,8 @@ export function stateFromProject(input) {
   // the Heat exchanger's components: saved with the workspace (format 4); else seeded as a new workbench seeds them,
   // like the flash's
   s = applyPatch(s, { inputs: { hx: Array.isArray(w.hx?.components) ? w.hx.components : s.inputs.flash } });
+  // the Pipe's components (proposal 0020): not saved yet, seeded as a new workbench seeds them, like the flash's
+  s = applyPatch(s, { inputs: { pipe: s.inputs.flash } });
   // compositions after the inputs (new inputs reset them)
   if (w.flash?.z != null) s = applyPatch(s, { flash: { z: w.flash.z } });
   // the fluid charts' components: saved with the charts (format 5); else seeded as a new workbench seeds them, from the
