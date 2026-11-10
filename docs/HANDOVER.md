@@ -72,7 +72,7 @@ used).
    comparison study (the maintainer, 2026-11-10: not needed). Sonnet or Opus.
 4. Release 0.6.0: the maintainer creates the GitHub release with tag `v0.6.0`; `.github/workflows/publish.yml` sets
    the version from the tag, publishes to npm (the maintainer approves the staged version on npmjs.com) and pushes the
-   version back to `main`. Then CHEPTA-Lab runs its cases against `chepta@0.6.0` and files capability requests.
+   version back to `main`. Then CHEPTA-Lab runs its cases against the published 0.6.0 package and files capability requests.
 5. Later, by the roadmap: proposal 0015 M3 leftovers (benchmark flowsheets, share by link) and M4 (purity and recovery
    specifications, side draws, equipment cost E2 and utilities E3); the gas-hydrate check; an NH3 + water NRTL fit;
    NRTL pairs for water + glucose and sucrose; CPA for CO2 + water (methods M3); the user's own slurry viscosity and
