@@ -7,7 +7,7 @@
  *
  * Equations: see cubic.js. Units: T in K, P in kPa, mole fractions.
  */
-import { methodAdvice, EOS_GASES, isPolar } from "../method-advice.js";
+import { methodAdvice, mhv1Advice, gasPolarPairs, RULE_GASES, isPolar } from "../method-advice.js";
 import { componentRecord } from "../components.js";
 import { userDataUsed } from "../user-data.js";
 import { cubicEos, CUBICS } from "./cubic.js";
@@ -99,9 +99,6 @@ export function refuseNotUsableLiquid(sys, x, what) {
  * needs a set fitted inside the rule); else none: g^E = 0 for the pair (an ideal solution in the rule), reported in
  * pairs with tier "none" and in the warnings.
  */
-/** The light gases of the method guide, and methane (fitted in methanol for the rule). */
-const RULE_GASES = new Set([...EOS_GASES, "methane"]);
-
 export function gEMatrices(ids, comps, model, mixing, sel, userData) {
   const rule = typeof mixing === "string" ? mixing : mixing?.rule;
   if (String(rule).toUpperCase() !== "MHV1") throw fail("BAD_INPUT", `mixing: "${rule}" is not a mixing rule of CHEPTA. Use "MHV1" (SRK/PR + gE (MHV1)), or leave it out for the classical (van der Waals) rule with k_ij.`);
@@ -149,6 +146,26 @@ export function gEMatrices(ids, comps, model, mixing, sel, userData) {
 }
 
 /**
+ * Would "PR + gE (MHV1)" and "SRK + gE (MHV1)" run for these components? For the method advisor (mhv1Advice), so that
+ * it never recommends a rule the engine refuses: per model { ok: true, pairs } (each pair's NRTL set, as gEMatrices
+ * gives it) or { ok: false, reason } (the engine's refusal: no critical constants, or a light gas with a polar liquid
+ * without a set).
+ */
+export function mhv1Availability(ids, comps, sel = selection({}), userData = null) {
+  const out = {};
+  for (const m of EOS_MODELS) {
+    try {
+      requireCritical(comps, `the ${m === "SRK" ? "SRK" : "Peng-Robinson"} equation of state`);
+      out[m] = { ok: true, pairs: gEMatrices(ids, comps, m, "MHV1", sel, userData).pairs };
+    } catch (e) {
+      if (e?.code !== "NOT_AVAILABLE") throw e;
+      out[m] = { ok: false, reason: e.message };
+    }
+  }
+  return out;
+}
+
+/**
  * @param {string[]} ids        component ids (already resolved)
  * @param {object} cfg
  * @param {"PR"|"SRK"} cfg.model
@@ -167,6 +184,9 @@ export function createEosSystem(ids, cfg, sel = selection(cfg)) {
   const eos = cubicEos(model, comps.map(c => ({ name: c.name, Tc_K: c.Tc_K, Pc_Pa: c.Pc_Pa, omega: c.omega })), K, KB,
     mhv1 ? { mixing: ctx => mhv1Mix(ctx, nrtl(mhv1.params)) } : {});
   const MW = comps.map(c => c.MW);
+  const gasPolar = gasPolarPairs(ids, comps.map(c => c.name), comps.map(c => c.formula));
+  let avail = null;
+  const availability = () => (avail ??= mhv1Availability(ids, comps, sel, cfg.userData));
 
   const gammaPhiOnly = what => () => {
     throw fail("NOT_AVAILABLE", `${what} belongs to activity-coefficient (gamma-phi) systems; this is a ${model} equation-of-state system. Use bubbleT, bubbleP, dewT, dewP, flash, the diagrams (txy, pxy, ternaryGrid, residueCurve, azeotropes), Z, lnPhi or density.`);
@@ -186,7 +206,7 @@ export function createEosSystem(ids, cfg, sel = selection(cfg)) {
     model, equation: eos.name, ...(mhv1 ? { mixing: "MHV1", method: `${model} + gE (MHV1)` } : {}), pairs, missingPairs: missing,
     vapour: eos.name, liquid: eos.name,
     // is this the recommended method for these components? (method-advice.js, docs/METHOD_SELECTION.md)
-    advice: methodAdvice({ ids, names: comps.map(c => c.name), formulas: comps.map(c => c.formula), model, eos: true }),
+    advice: methodAdvice({ ids, names: comps.map(c => c.name), formulas: comps.map(c => c.formula), model, eos: true, mixing: mhv1 ? "MHV1" : null }),
     // the user's own data this system uses (proposal 0012)
     userData: userDataUsed(ids, cfg.userData ?? null, pairs),
     notes: [
@@ -207,6 +227,8 @@ export function createEosSystem(ids, cfg, sel = selection(cfg)) {
         : `No ${model} k_ij for ${p.pair.join(" + ")}: k_ij = 0 used; results for this pair are a prediction without binary data.`);
       else w.push(...pairWarnings([p], T, P, q => `k_ij of ${q.pair.join(" + ")} (${kijText(q)}) comes`));
     }
+    // above about 10 bar, a light gas with a polar liquid: the gE rule, where the engine would run it (method-advice.js)
+    w.push(...mhv1Advice({ model, eos: true, mixing: mhv1 ? "MHV1" : null, gasPolar, avail: availability }, P));
     return [...w, ...info.advice];
   }
 

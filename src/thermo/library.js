@@ -16,6 +16,11 @@
  *      default set is used and info.pairs[].note (and the warnings) say so.
  *   3. otherwise the default set: every result is the same as before sets existed.
  *
+ * The NRTL sets fitted inside the MHV1 mixing rule ("PR + gE (MHV1)", "SRK + gE (MHV1)"; src/data/mhv1.json, proposal
+ * 0018) are listed by `sets(a, b, "PR" | "SRK", { mixing: "MHV1" })`, with their source, tier and fit quality; they are
+ * not k_ij sets, so `sets(a, b, "PR")` does not list them. Where a pair has none, the rule takes the pair's NRTL set of
+ * the databank (`sets(a, b, "NRTL")`), as eos/system.js gEMatrices does.
+ *
  * `add()` puts a set given in the page (tier "user") into this page's library only. It is
  * used when chosen with `sets` or `prefer: ["user", ...]`, or when the pair has no other set.
  *
@@ -27,6 +32,7 @@ import kijData from "../data/kij.json" with { type: "json" };
 import henryData from "../data/henry.json" with { type: "json" };
 import componentData from "../data/components.json" with { type: "json" };
 import knownIssues from "../data/known-issues.json" with { type: "json" };
+import mhv1Data from "../data/mhv1.json" with { type: "json" };
 import { findComponent } from "./components.js";
 import { isPolar } from "./method-advice.js";
 import { fail } from "../util/errors.js";
@@ -234,6 +240,14 @@ export function componentSources(id) {
   return out;
 }
 
+/** The NRTL sets fitted inside the MHV1 rule, normalized as the other sets (set "mhv1-fitted", the name info.pairs gives). */
+const MHV1_SETS = mhv1Data.pairs.map(p => ({
+  model: p.model, mixing: "MHV1", gE: "NRTL", i: p.i, j: p.j, set: "mhv1-fitted", default: true, tier: p.tier,
+  source_ids: (p.source_ids ?? []).slice(), source: p.source.fit, valid: p.source.T_range_K ? { T_K: p.source.T_range_K.slice() } : null,
+  T_range_K: p.source.T_range_K ?? null, params: { ...p.NRTL }, quality_warning: p.quality_warning ?? null,
+}));
+const mhv1Label = s => `${s.model} + gE (MHV1), NRTL in the rule, ${nameOf(s.i)} + ${nameOf(s.j)}, set "${s.set}"${s.quality_warning ? " (fit-quality warning)" : ""}`;
+
 function computeUsedBy() {
   const u = new Map();
   const add = (id, what) => { if (!u.has(id)) u.set(id, []); u.get(id).push(what); };
@@ -245,6 +259,7 @@ function computeUsedBy() {
         label: `${s.model} ${type === "kij" ? "k_ij " : ""}${pair.join(" + ")}, set "${s.set}"${s.default ? " (default)" : ""}${eosPolar(s) ? `; ${NOT_RECOMMENDED}` : ""}` });
     }
   }
+  for (const s of MHV1_SETS) for (const id of s.source_ids) add(id, { type: "mhv1", model: s.model, mixing: "MHV1", pair: [nameOf(s.i), nameOf(s.j)], set: s.set, default: true, tier: s.tier, label: mhv1Label(s) });
   for (const p of henryData.pairs) for (const id of p.source_ids ?? []) add(id, { type: "henry", gas: p.gas, label: `Henry's law constant of ${nameOf(p.gas)} in water` });
   for (const id of henryData.solvents.water.vapourPressure.source_ids ?? []) add(id, { type: "henry", gas: null, label: "Water vapour pressure in the Henry's law equations" });
   for (const [cid, c] of Object.entries(componentData.components)) {
@@ -291,13 +306,29 @@ function publicSet(c) {
   };
 }
 
+/** An MHV1 set as sets() lists it: the NRTL parameters in the rule, with the fit quality (quality_warning, null when the
+ *  fit met the 5 % gate) and the fit's description with its deviations (source). */
+const publicMhv1 = c => ({
+  model: c.model, mixing: "MHV1", method: `${c.model} + gE (MHV1)`, gE: "NRTL", i: c.i, j: c.j, pair: [nameOf(c.i), nameOf(c.j)], set: c.set,
+  default: c.default, tier: c.tier, source_ids: c.source_ids.slice(), sources: c.source_ids.map(sourceEntry).filter(Boolean), source: c.source,
+  valid: c.valid ? JSON.parse(JSON.stringify(c.valid)) : null, T_range_K: c.T_range_K ? c.T_range_K.slice() : null, params: { ...c.params },
+  quality_warning: c.quality_warning,
+});
+
 /**
  * The parameter sets of a pair, default first. Parameters are given for the pair as stored
- * (i, j of each set). Without a model: the sets of every model.
+ * (i, j of each set). Without a model: the sets of every model. With { mixing: "MHV1" } and
+ * model "PR" or "SRK" (or none: both): the NRTL sets fitted inside the MHV1 rule instead.
  */
-function sets(a, b, model) {
+function sets(a, b, model, opts = {}) {
   const i = findComponent(a), j = findComponent(b);
   if (i === j) throw fail("BAD_INPUT", "Give two different components.");
+  if (opts?.mixing != null) {
+    if (String(opts.mixing).toUpperCase() !== "MHV1") throw fail("BAD_INPUT", `library.sets: mixing "${opts.mixing}" is not a mixing rule of CHEPTA. Use "MHV1", or leave it out for the sets of the classical rule (k_ij).`);
+    const m = model == null ? null : String(model).toUpperCase();
+    if (m != null && !EOS_MODELS.includes(m)) throw fail("BAD_INPUT", `library.sets: the MHV1 rule goes with an equation of state (${EOS_MODELS.join(", ")}), not ${model}.`);
+    return MHV1_SETS.filter(s => (m == null || s.model === m) && ((s.i === i && s.j === j) || (s.i === j && s.j === i))).map(publicMhv1);
+  }
   const models = model == null ? [...ACTIVITY_MODELS, ...EOS_MODELS] : [checkModel(model)];
   return models.flatMap(m => candidates(m, i, j).map(publicSet));
 }

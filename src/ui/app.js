@@ -29,11 +29,11 @@ import { HENRY_GASES } from "../thermo/henry.js";
 import { system } from "../system.js";
 import {
   VIEWS, PRESETS, initialState, applyPatch, TIER_SHORT, fmtP, parseP, parseT, fmtTemp, pxyTemperature,
-  RULES, ruleOf, setsFor, setChoices, pairKeyOf, modelLabel, feedbackLinks, aiChatMessage, AI_CHATS, userOverlay,
+  RULES, ruleOf, setsFor, setChoices, pairRowNotes, pairKeyOf, modelLabel, feedbackLinks, aiChatMessage, AI_CHATS, userOverlay,
   viewCheck, hxSetups,
 } from "./app-logic.js";
 import { diagramXlsx, exportFileName } from "./diagram-export.js";
-import { modelPicker, liquidPicker, workbenchPatch } from "./model-picker.js";
+import { modelPicker, liquidPicker, workbenchPatch, equationChoices, equationValue, chartEquationPatch } from "./model-picker.js";
 import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, examplesFor, rotateInputs, solventsFor, needsFor, isEosModel } from "./workspaces.js";
 import { tLabel, UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
@@ -464,7 +464,8 @@ export function app(target, cfg = {}) {
         group("Fluid", diagramButton("steam", "Water and steam"), diagramButton("charts", "Any fluid")),
         group("Chart", seg("Chart", CHART_KINDS, state.chart.kind, k => set({ chart: { kind: k } }), { title: "Temperature-entropy, pressure-enthalpy or enthalpy-entropy (Mollier) chart" })),
         v === "charts"
-          ? group("Equation", seg("Equation of state", [["PR", "Peng–Robinson"], ["SRK", "SRK"]], isEosModel(state.model) ? state.model : null, m => set({ model: m }),
+          // the equations of state, with the MHV1 mixing rule too (proposal 0018; model-picker.js)
+          ? group("Equation", seg("Equation of state", equationChoices(true), isEosModel(state.model) ? equationValue(state.model, state.mixing) : null, v => set(chartEquationPatch(v, state)),
             { title: "The fluid charts use an equation of state for the gas and the liquid" }))
           : group("Standard", h("div", { class: "fa-stack fa-about" },
             h("div", { class: "fa-theme" }, icon("dome", 18), "IAPWS-IF97 water and steam"),
@@ -625,7 +626,7 @@ export function app(target, cfg = {}) {
       secs.push(...hxInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf, streamList, setups }));
       if (check.ok && state.hx?.mode === "two") {
         // each stream's pairs with its own method (the two streams never mix: no pair across them)
-        for (const [k, name] of [["hot", "Hot stream: "], ["cold", "Cold stream: "]]) { const pairs = pairRows(setups[k].ids, { model: setups[k].model, title: name }); if (pairs) secs.push(pairs); }
+        for (const [k, name] of [["hot", "Hot stream: "], ["cold", "Cold stream: "]]) { const pairs = pairRows(setups[k].ids, { model: setups[k].model, mixing: setups[k].mixing, title: name }); if (pairs) secs.push(pairs); }
       } else if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
     } else if (state.workspace === "pipe") {
       secs.push(...pipeInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf }));
@@ -782,13 +783,14 @@ export function app(target, cfg = {}) {
   }
 
   // binary pairs of the inputs with the tier of their parameters, for the model in use
-  function pairRows(ids, { model = state.model, title = "" } = {}) {
-    const eosView = isEosModel(model);
+  // with the MHV1 rule (proposal 0018): each pair's NRTL set in the rule, with its source, tier and fit quality (pairRowNote)
+  function pairRows(ids, { model = state.model, mixing = state.mixing, title = "" } = {}) {
+    const eosView = isEosModel(model), mhv1 = eosView && mixing === "MHV1";
     if (ids.length < 2) return null;
-    const head = h("h3", {}, `${title}${eosView ? `Pairs, ${model} k_ij` : `Parameter sets, ${modelName(model)}`}`);
+    const head = h("h3", {}, `${title}${mhv1 ? `Pairs, ${model} + gE (MHV1): NRTL in the rule` : eosView ? `Pairs, ${model} k_ij` : `Parameter sets, ${modelName(model)}`}`);
     if (model === "ideal") return h("section", { class: "fa-in-sec fa-pairs" }, head, h("p", { class: "fa-in-hint" }, "Ideal solution: no pair parameters."));
     let info;
-    try { info = system({ components: ids, model, allowMissingPairs: true, ...setsFor(state, model) }).info; } catch (e) {
+    try { info = system({ components: ids, model, allowMissingPairs: true, ...setsFor({ ...state, mixing: eosView ? mixing ?? null : null }, model) }).info; } catch (e) {
       return h("section", { class: "fa-in-sec fa-pairs" }, head, h("div", { class: "fa-empty" }, e.message));
     }
     const nameToId = new Map(all().map(c => [c.name, c.id]));
@@ -802,9 +804,10 @@ export function app(target, cfg = {}) {
           set({ sets: { [key]: pick?.default && !state.prefer ? null : val } });
         } } },
       ...choices.map(c => h("option", { value: c.set, selected: c.current }, `${c.label} · ${TIER_SHORT[c.tier] ?? c.tier}`))) : null;
-      return h("li", { title: p.source, class: sel ? "has-sets" : undefined },
+      const notes = pairRowNotes(p, mhv1);
+      return h("li", { title: p.source, class: sel || notes.length ? "has-sets" : undefined },
         h("span", { class: "fa-pair-name" }, p.pair.join(" + ")), badge(p.tier),
-        sel, p.note ? h("div", { class: "fa-pair-note" }, p.note) : null);
+        sel, ...notes.map(t => h("div", { class: "fa-pair-note" }, t)));
     });
     for (const mp of info.missingPairs) rows.push(h("li", { title: eosView ? "No k_ij in the databank: k_ij = 0 is used" : "No parameters: these pairs cannot be calculated" }, h("span", {}, mp.join(" + ")), badge("none")));
     // progressive disclosure: open on wide screens, folded on phones; the reader's choice is kept

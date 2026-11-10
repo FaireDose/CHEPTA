@@ -1,4 +1,4 @@
-import { methodAdvice, pressureAdvice } from "./method-advice.js";
+import { methodAdvice, pressureAdvice, mhv1Advice, gasPolarPairs } from "./method-advice.js";
 import { vapourPressure } from "./psat.js";
 import { noVapourPressureMessage } from "./components.js";
 import { nrtl } from "./activity/nrtl.js";
@@ -7,7 +7,7 @@ import { wilson } from "./activity/wilson.js";
 import { modUnifac } from "./activity/mod-unifac.js";
 import modUnifacTables from "../data/mod-unifac-2.json" with { type: "json" };
 import { dimerK, monomerPressure } from "./vapour.js";
-import { createEosSystem, EOS_MODELS } from "./eos/system.js";
+import { createEosSystem, EOS_MODELS, mhv1Availability } from "./eos/system.js";
 import { listComponents, findComponent, componentRecord } from "./components.js";
 import { checkUserData, userDataUsed } from "./user-data.js";
 import { selection, choosePair, describePair, pairWarnings, sourceEntry } from "./library.js";
@@ -83,6 +83,10 @@ export function createSystem(cfg) {
   const sel = selection(cfg, ud); // checked for every model, so that a typo never passes silently
   if (isEos) return createEosSystem(ids, { ...cfg, model, userData: ud }, sel); // Peng-Robinson / SRK: see eos/system.js
   const comps = ids.map(id => componentRecord(id, ud));
+  // above about 10 bar with a light gas and a polar liquid: the gE rule (MHV1), named only where it would run
+  const gasPolar = gasPolarPairs(ids, comps.map(c => c.name), comps.map(c => c.formula));
+  let mhv1Avail = null;
+  const mhv1Availability_ = () => (mhv1Avail ??= mhv1Availability(ids, comps, sel, ud));
   // nonvolatile components (proposal 0009, step 5): no vapour pressure; they stay in the liquid (NV_PSAT_KPA below)
   const nonvolatile = comps.map(c => c.class === "nonvolatile");
   // Henry components (proposal 0017; the maintainer, 2026-11-04): in an activity model with water, a gas that has a
@@ -231,7 +235,10 @@ export function createSystem(cfg) {
    */
   function warnings(T, P) {
     const w = pairWarnings(pairs, T, P, p => `${modelName(model)} parameters of ${p.pair.join(" + ")}${p.default ? "" : ` (set "${p.set}")`} come`);
-    if (P != null && n > 1) w.push(...pressureAdvice({ model, eos: false }, P));
+    if (P != null && n > 1) {
+      w.push(...pressureAdvice({ model, eos: false, gasPolar }, P));
+      if (model !== "ideal") w.push(...mhv1Advice({ model, eos: false, gasPolar, avail: mhv1Availability_ }, P));
+    }
     if (model === "WILSON" && Number.isFinite(T)) w.push(...wilsonSplitWarnings(T));
     if (henryOn) w.push(HENRY_NOTE);
     return cubicVapour ? [...w, ...cubicVapour.warnings(T)] : w;

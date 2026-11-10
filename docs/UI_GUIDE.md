@@ -120,8 +120,10 @@ Nothing smaller than 11 px on screen, chart labels included (at 375 px wide too)
 ## 5. Warnings, refusals and errors
 
 The Model selector (`src/ui/model-picker.js`) lists "PR + gE (MHV1)" and "SRK + gE (MHV1)" with the equations of state,
-in the views that support the rule (the workbench's Model group, the flowsheet's Method page, a column's own method);
-never under the name PSRK. Where the rule has no set for a pair, the Method page shows the engine's refusal as a warning
+in the views that support the rule (the workbench's Model group, the flowsheet's Method page, a column's own method, a
+heat exchanger stream's own method, the Charts workspace's Equation list); never under the name PSRK. With the rule,
+the Inputs panel's list of pairs is headed "Pairs, PR + gE (MHV1): NRTL in the rule" and shows under each pair the
+set's source with its deviations, and its fit-quality warning where it has one. Where the rule has no set for a pair, the Method page shows the engine's refusal as a warning
 (amber, pressed to open), worded by the engine, with what to do (its own text); it never fills in parameters.
 
 | Kind | Looks | Worded |

@@ -445,7 +445,7 @@ export const userOverlay = state => overlayOf(state.userData);
 /** The two streams of a process exchanger (two-stream mode): each one's components, method and vapour; until chosen,
  *  the workspace's. */
 export function hxSetups(state) {
-  const base = { ids: state.inputs.hx ?? [], model: state.model, vapour: state.vapour ?? "ideal" };
+  const base = { ids: state.inputs.hx ?? [], model: state.model, vapour: state.vapour ?? "ideal", mixing: state.mixing ?? null };
   return { hot: hxStreamSetup(state.hx, "hot", base), cold: hxStreamSetup(state.hx, "cold", base) };
 }
 
@@ -940,6 +940,20 @@ export function setChoices(info) {
   const all = [{ set: info.set, tier: info.tier, default: info.default, current: true }, ...info.alternatives.map(a => ({ ...a, current: false }))];
   all.sort((a, b) => b.default - a.default); // default first, then the others in the library's order
   return all.map(s => ({ ...s, label: `${s.set}${s.default ? " (default)" : ""}` }));
+}
+
+/**
+ * The notes under a pair of the Inputs panel's list (info.pairs[] of a system): its note, and with the MHV1 rule
+ * (mhv1: true) the set's source with its fit and deviations, and its fit-quality warning (proposal 0018).
+ */
+export function pairRowNotes(p, mhv1 = false) {
+  const out = [];
+  if (p.note) out.push(p.note);
+  if (mhv1 && p.set === "mhv1-fitted") {
+    out.push(p.source);
+    if (p.quality_warning) out.push(`Fit quality: ${p.quality_warning}`);
+  }
+  return out;
 }
 
 /** Search the sources (from library.sources()) by any text field and by kind. */

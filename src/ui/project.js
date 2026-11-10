@@ -10,7 +10,7 @@
  *
  * Format 7 is the lowest format that holds the MHV1 mixing rule of an equation of state ("PR + gE (MHV1)", "SRK + gE
  * (MHV1)"; proposal 0018): `workbench.mixing` ("MHV1"), a flowsheet's, reactor's or column workspace's `thermo.mixing`,
- * or a column block's `method.mixing`; it is written only then, and an older version refuses it, naming the format.
+ * a column block's `method.mixing`, or a heat exchanger stream's own `workbench.hx.hot.mixing` / `cold.mixing`; it is written only then, and an older version refuses it, naming the format.
  * Format 6 (the "fugacity_project" key is the format version): format 5 with the flowsheet's Column, Membrane and Extraction blocks (proposal
  * 0015, milestone M1; written only when the flowsheet has a column), and the Column workspace's own document ("column",
  * a flowsheet with one column; M2b). Format 5: format 4 with the Charts workspace's fluid charts
@@ -66,6 +66,8 @@ const FORMAT_6_BLOCKS = ["column", "membrane", "extraction", "evaporator", "crys
 /** Does a flowsheet document choose the MHV1 mixing rule (PR / SRK + gE (MHV1), proposal 0018): in its thermo, or in a
  *  block's own method (a column)? Such a project needs format 7. */
 const usesMhv1 = fs => !!fs && (fs.thermo?.mixing != null || !!fs.blocks?.some(b => b?.spec?.method?.mixing != null));
+/** Does the Heat exchanger workspace give a stream its own MHV1 method (hx.hot.mixing, hx.cold.mixing)? */
+const hxUsesMhv1 = hx => hx?.hot?.mixing != null || hx?.cold?.mixing != null;
 const hasBlock = (fs, types) => !!fs?.blocks?.some(b => types.includes(b?.type));
 
 /** The keys of `workbench`, in the order they are written. */
@@ -105,7 +107,7 @@ export function projectOf(state, { version = "", results, now = new Date() } = {
   const needs4 = w.hx != null || !!flowsheet?.energyStreams || !!flowsheet?.blocks.some(b => FORMAT_4_BLOCKS.includes(b.type));
   const needs6 = hasBlock(flowsheet, FORMAT_6_BLOCKS) || hasBlock(state.reactor, FORMAT_6_BLOCKS)
     || !!state.column?.components?.length;
-  const needs7 = w.mixing != null || usesMhv1(flowsheet) || usesMhv1(state.reactor) || usesMhv1(state.column);
+  const needs7 = w.mixing != null || hxUsesMhv1(w.hx) || usesMhv1(flowsheet) || usesMhv1(state.reactor) || usesMhv1(state.column);
   const doc = { fugacity_project: needs7 ? 7 : needs6 ? 6 : w.chart ? 5 : needs4 ? 4 : state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
   if (state.title) doc.title = String(state.title);
   doc.workbench = w;
@@ -161,7 +163,7 @@ export function readProject(input) {
   if (unknown.length) throw new Error(`workbench: unknown key${unknown.length > 1 ? "s" : ""} ${unknown.map(k => `"${k}"`).join(", ")}. Known: ${KEYS.join(", ")}.`);
   if (doc.results != null && (typeof doc.results !== "object" || Array.isArray(doc.results))) throw new Error("results must be an object.");
   if (w.hx != null && f < 4) throw new Error(`workbench.hx needs format 4 (this file says format ${f}).`);
-  if ((w.mixing != null || usesMhv1(doc.flowsheet) || usesMhv1(doc.reactor) || usesMhv1(doc.column)) && f < 7) throw new Error(`The MHV1 mixing rule (PR / SRK + gE (MHV1)) needs format 7 (this file says format ${f}).`);
+  if ((w.mixing != null || hxUsesMhv1(w.hx) || usesMhv1(doc.flowsheet) || usesMhv1(doc.reactor) || usesMhv1(doc.column)) && f < 7) throw new Error(`The MHV1 mixing rule (PR / SRK + gE (MHV1)) needs format 7 (this file says format ${f}).`);
   if (w.chart != null && f < 5) throw new Error(`workbench.chart needs format 5 (this file says format ${f}).`);
   if ((hasBlock(doc.flowsheet, FORMAT_6_BLOCKS) || hasBlock(doc.reactor, FORMAT_6_BLOCKS)) && f < 6) throw new Error(`The flowsheet's column, crystallizer, evaporator, extraction and membrane blocks need format 6 (this file says format ${f}).`);
   if (doc.column != null && f < 6) throw new Error(`The Column workspace needs format 6 (this file says format ${f}).`);
