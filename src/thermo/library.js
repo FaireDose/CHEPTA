@@ -75,6 +75,8 @@ function fromBinary(p) {
     model: p.model, i: p.i, j: p.j, set: p.set ?? "default", default: p.default !== false, tier: p.tier || "databank",
     source_ids: p.source_ids ?? [], source: p.source, valid: p.valid ?? (p.T_range_K ? { T_K: p.T_range_K } : null),
     T_range_K: p.T_range_K ?? null, params, origin: "binaries.json", data_wanted: p.data_wanted,
+    // what stands behind the set's predicted liquid split (proposal 0019; two_liquid_labels.py)
+    ...(p.two_liquids ? { two_liquids: p.two_liquids } : {}),
   };
 }
 
@@ -183,6 +185,7 @@ export function describePair(choice, names) {
     alternatives: choice.alternatives.map(brief),
   };
   if (choice.note) out.note = choice.note;
+  if (c.two_liquids) out.two_liquids = JSON.parse(JSON.stringify(c.two_liquids));
   if (c.not_usable) out.not_usable = JSON.parse(JSON.stringify(c.not_usable));
   return out;
 }

@@ -252,7 +252,11 @@ export function createSystem(cfg) {
   function wilsonSplitWarnings(T) {
     const key = Math.round(T);
     if (!splitMemo.has(key)) splitMemo.set(key, wilsonSplits(ids, comps, sel, ud, key));
-    return splitMemo.get(key).map(s => `Wilson cannot predict two liquids, but the ${s.model} set "${s.set}" of ${s.pair.join(" + ")} predicts them at ${key} K (from x(${s.pair[0]}) about ${s.from} to ${s.to}): check this mixture with NRTL or UNIQUAC, and do not use Wilson where it splits.`);
+    // the class of the prediction (proposal 0019, section 4): measured, predicted by the set only, or contradicted
+    const CLASS_TEXT = { measured: " Two liquids are measured for this pair (partly miscible).",
+      "predicted-unvalidated": ` The split is predicted by the ${"{m}"} set, not checked against liquid-liquid data.`,
+      "predicted-contradicted": " The pair was measured as one liquid where the set splits: that split is probably wrong." };
+    return splitMemo.get(key).map(s => `Wilson cannot predict two liquids, but the ${s.model} set "${s.set}" of ${s.pair.join(" + ")} predicts them at ${key} K (from x(${s.pair[0]}) about ${s.from} to ${s.to}): check this mixture with NRTL or UNIQUAC, and do not use Wilson where it splits.${s.evidence ? CLASS_TEXT[s.evidence].replace("{m}", s.model) : ""}`);
   }
 
   // (enthalpies use the dimers of a dimerizing acid whether or not the chemical theory is switched on for the phase
@@ -312,7 +316,8 @@ function wilsonSplits(ids, comps, sel, ud, T) {
         const x = k / 200;
         if (gm(x + h) - 2 * gm(x) + gm(x - h) < 0) bad.push(x);
       }
-      if (bad.length) out.push({ model: m, set: choice.chosen.set, pair: [comps[i].name, comps[j].name], from: bad[0].toFixed(2), to: bad[bad.length - 1].toFixed(2) });
+      if (bad.length) out.push({ model: m, set: choice.chosen.set, pair: [comps[i].name, comps[j].name], from: bad[0].toFixed(2), to: bad[bad.length - 1].toFixed(2),
+        evidence: choice.chosen.two_liquids?.evidence ?? null });
       break;   // the NRTL set decides when there is one
     }
   }

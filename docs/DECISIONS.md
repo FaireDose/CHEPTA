@@ -22,16 +22,16 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   and MCP (`thermo.mixing`); merged (#216). The maintainer's four answers (2026-11-10) are built in
   docs/decisions/2026-11-10-04-mhv1-followups.md (in review): the advisor recommends the rule above 10 bar for a gas with
   a polar liquid where the engine runs it, the heat exchanger's stream methods and the Charts Equation list offer it, and
-  the Library lists its sets (`library.sets(a, b, "PR", { mixing: "MHV1" })`). Open: the advisor's wording and its
-  10 bar; the flowsheet Method page's pair notes (align with the Inputs panel's).
+  the Library lists its sets (`library.sets(a, b, "PR", { mixing: "MHV1" })`). The advisor's wording and its 10 bar
+  accepted (2026-11-10). Later: align the flowsheet Method page's pair notes with the Inputs panel's (a small change).
 - **Review and merge:**
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
-- **The Pipe block and its workspace** (proposal 0020, Proposed; docs/decisions/2026-11-10-02-pipe-block.md): check the
-  Pipe workspace under Unit models, the DOE Leq/D table and the three worked examples; decide whether to accept 0020,
-  save the workspace in project files (format 7), offer the pipe in the flowsheet drawing's palette, and which
-  two-phase method comes first.
+- **The Pipe block, its workspace, palette and project file** (proposal 0020, accepted for steps 1-2 on 2026-11-10;
+  docs/decisions/2026-11-10-02-pipe-block.md and 2026-11-10-05-pipe-palette-save.md): check the Pipe workspace under
+  Unit models, the Pipe in the flowsheet's palette, the DOE Leq/D table and the three worked examples. Open: the two-phase
+  flow (its own pull request: Lockhart-Martinelli, then Beggs-Brill, once open sources are found).
 - **The Extraction block and its view** (proposal 0015, step 8; docs/decisions/2026-10-30-10-extraction-view.md):
   check the comparison with Glatz and Parker 2004 (Runs 1 and 3); decide whether an adiabatic cascade is wanted, whether
   the ternary view should offer mass fractions, and whether the flowsheet should take the joint sets by itself when it
@@ -280,7 +280,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   proposal and the evidence survey (57 pairs: 22 partly miscible, 17 miscible, 18 not known); accepted with the
   maintainer's answers of 2026-11-05 (gates as a start, "miscible below the measured temperature, not known above it",
   Wilson: refuse diethyl carbonate + water, keep the other four; contradicted ChemSep sets not the default where another
-  set exists). Pending: a person checks the classes against the ThermoML records; step 2 (classes, labels, refit).
+  set exists). Steps 2-5 (docs/decisions/2026-11-05-01-two-liquid-refit.md): classes of 379 pairs, joint fits, labels,
+  the engine's statements and the Wilson refusal. Pending: a person checks the classes and tie lines against the ThermoML
+  records; decide on the joint fits that miss the gates (1-butanol + water, aniline + n-octane, ...) and on the fitted
+  sets of 1-propanol + water and acetonitrile + water now labelled "predicted-contradicted" (no uncontradicted set of
+  the same model exists for them); decide whether benzene + methanol's contradicted fitted NRTL default gives way to
+  its ChemSep NRTL set, which does not split. Main merged into the branch on 2026-11-10, labels unchanged.
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order

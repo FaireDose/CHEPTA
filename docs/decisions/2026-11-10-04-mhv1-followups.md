@@ -71,16 +71,19 @@ Items 2, 3 and 4 are built here, in that order, in one pull request.
 - Screenshots: docs/ui-review/2026-11-10-mhv1-followups/ (375 and 1280 px, light and dark): the advice note (SRK, CO2 +
   water, 5000 kPa), the heat exchanger with a PR + gE (MHV1) cold stream, Charts, and the pair list under the rule.
 
-## What the maintainer must check
+## Project formats after the merge with #219
 
-- The wording of the advisor's note (Results panel of a flash of CO2 + water with SRK at 5000 kPa) and that the 10 bar of
-  rule 4 is the right threshold for a gas with a polar liquid.
-- The heat exchanger and Charts lists in the browser (the screenshots were taken from the built bundle, headless).
+#219 made format 8 for the Pipe. A project is written in the lowest format that holds what it uses: 7 for the MHV1 rule
+alone (a heat exchanger stream's included), 8 when a pipe is used (with or without the rule); the reader accepts both.
 
-## Open (recommendation each)
+## The maintainer's answers on #220 (2026-11-10, relayed by the coordinating session)
 
-1. **The flowsheet's Method page pair list** shows each pair's source through `mhv1-status.js`, but not the fit-quality
-   warning in the same form as the Inputs panel. Recommended: align it in a small later change.
-2. **The advisor for a polar liquid alone above 10 bar** (no light gas, e.g. methanol + water at 20 bar) says "PR + gE
-   (MHV1) or SRK + gE (MHV1)" in general words, since the rule then takes the databank's low-pressure NRTL sets.
-   Recommended: keep it a general note until there are high-pressure sets of such pairs.
+1. **The advisor's wording and the 10 bar threshold: accepted.**
+2. **The flowsheet Method page's pair notes** (`mhv1-status.js` shows each pair's source, not the fit-quality warning in
+   the Inputs panel's form): align them with the Inputs panel's **as a small later change**, not in this pull request.
+3. **A polar liquid alone above 10 bar** (no light gas, e.g. methanol + water at 20 bar): the note stays general ("PR +
+   gE (MHV1) or SRK + gE (MHV1)"), since the rule then takes the databank's low-pressure NRTL sets, **until high-pressure
+   sets of such pairs exist**.
+
+Still to check in a browser: the heat exchanger and Charts lists (the screenshots were taken from the built bundle,
+headless).

@@ -79,7 +79,9 @@ test("Wilson cannot predict two liquids: the liquid stays stable, the system war
     feed: { flow_kmol_h: { "1-butanol": 20, water: 80 }, P_kPa: 101.325, VF: 0 },
     column: { mode: "rigorous", stages: 6, feed_stage: 3, phases: "VLL", reflux_ratio: 2, distillate_kmol_h: 20 } } });
   assert.equal(col.outcome, "unsupported");
-  assert.match(col.error.message, /cannot be looked for with Wilson/);
+  // refused either by the column (two liquids looked for with Wilson) or, first, by proposal 0019: the feed's liquid lies
+  // inside the measured split of 1-butanol + water, where Wilson is refused (src/thermo/two-liquids.js)
+  assert.match(col.error.message, /cannot be looked for with Wilson|Wilson cannot show two liquids[\s\S]*inside the measured split/);
 });
 
 test("a rigorous column with Wilson through the request path (CHEPTA.run)", () => {

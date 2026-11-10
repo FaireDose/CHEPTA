@@ -1,0 +1,245 @@
+{
+ "_about": "Two liquids of the jointly fitted sets (proposal 0019, step 2) at measured temperatures, by validation/python/reference_two_liquids.py (fit_parameters.lle_from_data, reference_model.System). x: mole fraction of the pair's first component; measured: the measured liquids at that temperature (validation/data/two_liquids/lle/).",
+ "cases": [
+  {
+   "pair": [
+    "2-butanol",
+    "water"
+   ],
+   "model": "UNIQUAC",
+   "set": "fitted-shimoyama2006",
+   "T_K": 288.2,
+   "x_I": 0.2452198049287708,
+   "x_II": 0.04519177926136669,
+   "measured": [
+    0.29400000000000004,
+    0.05900000000000005
+   ]
+  },
+  {
+   "pair": [
+    "2-butanol",
+    "water"
+   ],
+   "model": "UNIQUAC",
+   "set": "fitted-shimoyama2006",
+   "T_K": 298.15,
+   "x_I": 0.043821195269414095,
+   "x_II": 0.2718936892267311,
+   "measured": [
+    0.0591,
+    0.3036
+   ]
+  },
+  {
+   "pair": [
+    "2-butanol",
+    "water"
+   ],
+   "model": "UNIQUAC",
+   "set": "fitted-shimoyama2006",
+   "T_K": 298.2,
+   "x_I": 0.04381848947571227,
+   "x_II": 0.2720106759058756,
+   "measured": [
+    0.05291173780221425,
+    0.3088412469641544
+   ]
+  },
+  {
+   "pair": [
+    "2-butanol",
+    "water"
+   ],
+   "model": "UNIQUAC",
+   "set": "fitted-shimoyama2006",
+   "T_K": 318.2,
+   "x_I": 0.30775213119069605,
+   "x_II": 0.04501139843806156,
+   "measured": [
+    0.32499999999999996,
+    0.04200000000000004
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "NRTL",
+   "set": "fitted-sunder2003",
+   "T_K": 288.2,
+   "x_I": 0.014965750684419011,
+   "x_II": 0.8281371629001791,
+   "measured": [
+    0.0138,
+    0.8029
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "NRTL",
+   "set": "fitted-sunder2003",
+   "T_K": 298.3,
+   "x_I": 0.7994825856726434,
+   "x_II": 0.01635286929951834,
+   "measured": [
+    0.7917430338044774,
+    0.01625701574471439
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "NRTL",
+   "set": "fitted-sunder2003",
+   "T_K": 303.1,
+   "x_I": 0.7854001658244034,
+   "x_II": 0.017064918643400404,
+   "measured": [
+    0.7808173461231925,
+    0.017552838143696004
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "NRTL",
+   "set": "fitted-sunder2003",
+   "T_K": 322.5,
+   "x_I": 0.7264517196864486,
+   "x_II": 0.020329732778253007,
+   "measured": [
+    0.7262777377269173,
+    0.01908191979676529
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "NRTL",
+   "set": "fitted-sunder2003",
+   "T_K": 333.15,
+   "x_I": 0.022419403821130317,
+   "x_II": 0.6932940521230253,
+   "measured": [
+    0.018840389623541617,
+    0.6744241418255089
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "NRTL",
+   "set": "fitted-sunder2003",
+   "T_K": 369.25,
+   "x_I": 0.5804733823720607,
+   "x_II": 0.03153710498567384,
+   "measured": [
+    0.5625,
+    0.08509999999999995
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "UNIQUAC",
+   "set": "fitted-sunder2003",
+   "T_K": 288.2,
+   "x_I": 0.015381223524952869,
+   "x_II": 0.8199027667167663,
+   "measured": [
+    0.0138,
+    0.8029
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "UNIQUAC",
+   "set": "fitted-sunder2003",
+   "T_K": 298.3,
+   "x_I": 0.7959733444874612,
+   "x_II": 0.016519449257908828,
+   "measured": [
+    0.7917430338044774,
+    0.01625701574471439
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "UNIQUAC",
+   "set": "fitted-sunder2003",
+   "T_K": 303.1,
+   "x_I": 0.7840821205708224,
+   "x_II": 0.01713481710035005,
+   "measured": [
+    0.7808173461231925,
+    0.017552838143696004
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "UNIQUAC",
+   "set": "fitted-sunder2003",
+   "T_K": 322.5,
+   "x_I": 0.7326710467125221,
+   "x_II": 0.020193096119619863,
+   "measured": [
+    0.7262777377269173,
+    0.01908191979676529
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "UNIQUAC",
+   "set": "fitted-sunder2003",
+   "T_K": 333.15,
+   "x_I": 0.022337702589632736,
+   "x_II": 0.7021825588214784,
+   "measured": [
+    0.018840389623541617,
+    0.6744241418255089
+   ]
+  },
+  {
+   "pair": [
+    "furfural",
+    "water"
+   ],
+   "model": "UNIQUAC",
+   "set": "fitted-sunder2003",
+   "T_K": 369.25,
+   "x_I": 0.5865154253236582,
+   "x_II": 0.03331786852002884,
+   "measured": [
+    0.5625,
+    0.08509999999999995
+   ]
+  }
+ ]
+}

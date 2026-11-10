@@ -39,4 +39,4 @@ interface or file format, the steps of the core track in the
 | 0017 | [Henry components: gases dissolved in water in the activity models](0017-henry-components.md) | Proposed |
 | 0018 | [An activity model inside the cubic equation of state (gE mixing rule)](0018-gE-mixing-rule-eos.md) | Proposed again (the maintainer, 2026-11-06: "yes reopen 0018"); steps 2-3 built, see docs/decisions/2026-11-06-02-mhv1.md |
 | 0019 | [Pairs with two liquids: how they are fitted and used](0019-two-liquid-pairs.md) | Accepted on merge (answers of 2026-11-05) |
-| 0020 | [The Pipe block: pressure drop and heat in a pipe](0020-pipe-block.md) | Proposed; steps 1-2 built (engine, Pipe workspace under Unit models), see docs/decisions/2026-11-10-02-pipe-block.md |
+| 0020 | [The Pipe block: pressure drop and heat in a pipe](0020-pipe-block.md) | Accepted for steps 1-2 (2026-11-10); built: engine, Pipe workspace under Unit models, flowsheet palette, project format 8; see docs/decisions/2026-11-10-02-pipe-block.md and 2026-11-10-05-pipe-palette-save.md |
