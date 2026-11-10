@@ -76,14 +76,16 @@ used).
    2026-11-10, second coordinator: started session_01FPbeWV9iSu48kT5ogbUByo (item 2, Pipe, Opus, branch
    `claude/pipe-block`) and session_01FPbeWY9j2N2BLmp9R117hg (item 3, MHV1 interface, Sonnet, branch
    `claude/mhv1-interface`).
-State at 2026-11-10 evening: #218 and #219 merged. The maintainer accepted every recommendation on #218-#221.
-   - #220 (MHV1 follow-ups) and #221 (Pipe gas-liquid) conflicted with main; sent back to their workers
-     (session_01FPbeWX44RzqME2Gx6ifHWP, session_01FPbeWWQjrnUR93rBNK8VPB) with the maintainer's answers.
-   - Still to do from #218, answer (c): benzene + methanol, ChemSep's NRTL set becomes the default (proposal 0019
-     answer 5; the contradicted fitted set stays selectable; a named exception in test/library.test.js). #218 merged
-     without it: a small fresh Sonnet worker when a slot frees. Also from #218 (a): the pairs not refitted, a follow-up
-     data task (table in #218's description).
+State at 2026-11-10 23:15 UTC: #218 and #219 merged; #220, #221 and #222 open, each clean against main and against
+   each other (checked by trial merges), no worker running. The maintainer accepted every recommendation on #218-#221.
+   - #222 benzene + methanol (session_01FPbeWXkVXDkXeiaEwNjZjS): ChemSep NRTL the default by answer 5; also regenerated
+     validation/fixtures/flowsheet-suite.json (case G14 contains the pair). Open: the worker saw numerical drift when
+     re-running two_liquid_labels.py --write (about 2100 lines of labels and known issues), so the committed labels may
+     not be reproducible. Recommended follow-up (Opus): make the labels script reproducible (find the source of drift:
+     solver tolerances, library versions) before any further rerun.
+   - Follow-up data task from #218 (a): the pairs not refitted (table in #218's description).
    - Later small change (from #220): align the flowsheet Method page's pair notes with the Inputs panel's.
+   - Then: release 0.6.0 (the maintainer creates the GitHub release, tag v0.6.0).
 2. Finish the Pipe block with its Unit models workspace (0020). Opus.
 3. MHV1 in the interface: "PR + gE (MHV1)" and "SRK + gE (MHV1)" in the Model selector, the flowsheet's Method page,
    the column's method, project files and `CHEPTA.run` (thermo `mixing`), the command line and MCP. No low-pressure
