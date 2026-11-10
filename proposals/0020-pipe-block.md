@@ -64,6 +64,8 @@ All in the header of `src/units/pipe.js`, every source free to read:
   Churchill (1977), as DWSIM writes it (FlowPackageBaseClass.vb, `FrictionFactor`, read on 2026-11-10: the same
   formula between Re 2100 and 4000), with a FLOW_TRANSITION warning.
 - Heat: Q = U A ΔT_lm over each segment, A the inner surface (DWSIM's Pipe.vb does the same with the outer one).
+- Gas-liquid flow (step 4): Lockhart-Martinelli in Chisholm's form, with the homogeneous density for elevation and
+  acceleration; sources and scope in step 4 below and in the header of `src/units/pipe.js`.
 - Fluid properties: a gas's density from the system's own vapour model and Wilke's rule on the pure vapours'
   low-pressure viscosities; a liquid's from the pure liquids' density records (volumes add up) and the logarithmic
   mole-fraction rule for its viscosity.
@@ -107,7 +109,30 @@ to include it.
    does not offer it.
 4. Two-phase flow: a liquid that flashes, a gas that condenses, a gas-liquid inlet. DWSIM offers Beggs and Brill and
    Lockhart-Martinelli (its files BeggsBrill.vb and LockhartMartinelli.vb, read on 2026-11-10); both need open
-   sources for their correlations before they are built. Until then the block refuses with the reason.
+   sources for their correlations before they are built. The maintainer (2026-11-10): in its own pull request,
+   Lockhart-Martinelli first, then Beggs-Brill.
+   - **Lockhart-Martinelli: built** (2026-11-10, branch `claude/pipe-two-phase`; to review,
+     docs/decisions/2026-11-10-06-pipe-two-phase.md). The phases at each node from the system's flash; the frictional
+     gradient of Lockhart and Martinelli in Chisholm's form, C = 5, 10, 12, 20 by the regimes of the phases flowing
+     alone ("viscous" below Re 1500), from Filip, Băltăreţu and Damian, *Math. Model. Civ. Eng.* 10(4) (2014)
+     19-27, eqs. (10)-(17), pp. 21-22 (open access, CC BY-NC-ND 3.0, doi:10.2478/mmce-2014-0019), the same C in
+     Wambsganss, Jendrzejczyk and France, ANL/CP-74646 (1992), eq. (4) p. 13 and Table 1 p. 20 (U.S. government
+     report, OSTI 10119434); each phase alone with the block's own friction factor and the wall's roughness, as
+     DWSIM. Elevation and acceleration with the homogeneous (no-slip) density (Filip et al., eqs. (5)-(6); DWSIM's
+     Lockhart-Martinelli takes the no-slip holdup too). Scope and accuracy stated in the block's note from C. E.
+     Brennen, *Fundamentals of Multiphase Flow* (2005), section 8.3.1, pp. 210-211 (the author's free copy on
+     CaltechAUTHORS): horizontal, two-component, isothermal data; scatter about a factor of 3 in φ; often an
+     overestimate; best when both phases alone are turbulent. A phase change along the pipe uses the correlation at
+     each node's quality. Warnings: an elevation change (the no-slip holdup underestimates the liquid uphill), a
+     viscous phase (C other than 20). Refused, with the reason: fittings in gas-liquid flow (no open two-phase loss
+     coefficients found), your own friction factor or viscosity in gas-liquid flow, two liquid phases, and critical
+     (choked) gas-liquid flow (no outlet pressure balances a segment's momentum). Checked against the independent
+     reference `validation/python/reference_pipe.py` (`validation/fixtures/pipe-two-phase.json`: five
+     two-component cases within 0.2 %, all four regimes; steam and water against CoolProp's IAPWS-95 within 2.6 %, the
+     vapour's ideal gas against IAPWS-95 accounting for the rest) and the open `fluids` library's Lockhart_Martinelli
+     (to 4e-16 with its friction factor); `test/pipe-two-phase.test.js`. No open worked example with numbers was found.
+   - **Beggs and Brill** (inclined pipes, flow patterns, holdup with slip): a later pull request, once open sources
+     for its correlations are found.
 5. Choked flow of a gas (today refused at ρu² = P, the isothermal limit), and the pressure effect on a liquid's
    density.
 6. Sizing (roadmap E1): the diameter for an allowed pressure drop or velocity.

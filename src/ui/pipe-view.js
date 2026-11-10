@@ -44,7 +44,7 @@ export function pipeInputs({ state, set, uid, inputsSection, field, seg, listInp
       put({ feed: { z: next } });
     }, `pipe-z${k}`, { min: 0, width: "6em" }))) : null,
     ids.length > 1 ? h("p", { class: "fa-in-hint" }, "Mole fractions, normalized to 1.") : null,
-    h("p", { class: "fa-in-hint" }, "One fluid phase only: a two-phase inlet, or one that boils or condenses in the pipe, is refused.")));
+    h("p", { class: "fa-in-hint" }, "One fluid phase, or gas and liquid (Lockhart-Martinelli: horizontal pipes, about a factor of 3 in the friction; no fittings in gas-liquid flow). Two liquid phases and choked flow are refused.")));
 
   secs.push(inputsSection("Pipe",
     nField("Length, m", p.length_m, v => put({ length_m: v }), "pipe-l", { min: 0, above: true }),

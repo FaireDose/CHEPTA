@@ -1,0 +1,296 @@
+{
+ "_about": "Pipe block, gas-liquid flow (Lockhart-Martinelli, Chisholm's C): 2000 segments, brentq on each segment's outlet pressure; steam and water from CoolProp 8.0.0 (HEOS::Water, IAPWS-95). Lockhart-Martinelli (Chisholm's C, all four regimes) agrees with fluids 1.3.1 to 4.4e-16. Written by validation/python/reference_pipe.py.",
+ "two_component": [
+  {
+   "name": "air and water, horizontal, both turbulent",
+   "T_K": 293.15,
+   "P_kPa": 400.0,
+   "mass_kg_s": 2.0,
+   "x": 0.01,
+   "rhoL": 998.2,
+   "muL": 0.001002,
+   "M_gas": 28.9647,
+   "muG": 1.81e-05,
+   "length_m": 50.0,
+   "diameter_m": 0.05,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 0.0,
+   "result": {
+    "P_out_kPa": 348.98761736291976,
+    "dP_kPa": 51.012382637080236,
+    "dP_friction_kPa": 50.693331086472156,
+    "dP_elevation_kPa": 0.0,
+    "dP_acceleration_kPa": 0.3190515506078844,
+    "inlet": {
+     "X": 6.521675441749626,
+     "C": 20.0,
+     "regimes": "tt",
+     "phi_L2": 4.090208185112168,
+     "Re_L": 50319.646678156125,
+     "Re_G": 28137.890491384813,
+     "holdup_L": 0.32039169444300625
+    }
+   }
+  },
+  {
+   "name": "air and water, uphill",
+   "T_K": 293.15,
+   "P_kPa": 400.0,
+   "mass_kg_s": 2.0,
+   "x": 0.01,
+   "rhoL": 998.2,
+   "muL": 0.001002,
+   "M_gas": 28.9647,
+   "muG": 1.81e-05,
+   "length_m": 50.0,
+   "diameter_m": 0.05,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 20.0,
+   "result": {
+    "P_out_kPa": 289.69717583965155,
+    "dP_kPa": 110.30282416034845,
+    "dP_friction_kPa": 52.482211550902214,
+    "dP_elevation_kPa": 56.98954254419228,
+    "dP_acceleration_kPa": 0.8310700652538655,
+    "inlet": {
+     "X": 6.521675441749626,
+     "C": 20.0,
+     "regimes": "tt",
+     "phi_L2": 4.090208185112168,
+     "Re_L": 50319.646678156125,
+     "Re_G": 28137.890491384813,
+     "holdup_L": 0.32039169444300625
+    }
+   }
+  },
+  {
+   "name": "air and a viscous oil (vt)",
+   "T_K": 293.15,
+   "P_kPa": 300.0,
+   "mass_kg_s": 1.0,
+   "x": 0.02,
+   "rhoL": 870.0,
+   "muL": 0.2,
+   "M_gas": 28.9647,
+   "muG": 1.81e-05,
+   "length_m": 50.0,
+   "diameter_m": 0.05,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 0.0,
+   "result": {
+    "P_out_kPa": 150.95421491092998,
+    "dP_kPa": 149.04578508907002,
+    "dP_friction_kPa": 147.60904415642372,
+    "dP_elevation_kPa": 0.0,
+    "dP_acceleration_kPa": 1.4367409326377565,
+    "inlet": {
+     "X": 13.92339931171733,
+     "C": 12.0,
+     "regimes": "vt",
+     "phi_L2": 1.867016830526008,
+     "Re_L": 124.77747538404594,
+     "Re_G": 28137.890491384813,
+     "holdup_L": 0.16721522258480875
+    }
+   }
+  },
+  {
+   "name": "water with little air (tv)",
+   "T_K": 293.15,
+   "P_kPa": 300.0,
+   "mass_kg_s": 3.0,
+   "x": 0.0002,
+   "rhoL": 998.2,
+   "muL": 0.001002,
+   "M_gas": 28.9647,
+   "muG": 1.81e-05,
+   "length_m": 50.0,
+   "diameter_m": 0.05,
+   "roughness_m": 4.5e-05,
+   "elevation_m": -5.0,
+   "result": {
+    "P_out_kPa": 318.5670059820184,
+    "dP_kPa": -18.567005982018372,
+    "dP_friction_kPa": 27.87198427296567,
+    "dP_elevation_kPa": -46.43135738952955,
+    "dP_acceleration_kPa": -0.0076328653768836085,
+    "inlet": {
+     "X": 162.68771924463877,
+     "C": 10.0,
+     "regimes": "tv",
+     "phi_L2": 1.061505237100383,
+     "Re_L": 76226.64052851591,
+     "Re_G": 844.1367147415443,
+     "holdup_L": 0.9469604230326967
+    }
+   }
+  },
+  {
+   "name": "oil with little air (vv)",
+   "T_K": 293.15,
+   "P_kPa": 300.0,
+   "mass_kg_s": 0.5,
+   "x": 0.001,
+   "rhoL": 870.0,
+   "muL": 0.2,
+   "M_gas": 28.9647,
+   "muG": 1.81e-05,
+   "length_m": 50.0,
+   "diameter_m": 0.05,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 0.0,
+   "result": {
+    "P_out_kPa": 261.65851349333343,
+    "dP_kPa": 38.34148650666657,
+    "dP_friction_kPa": 38.33882119439098,
+    "dP_elevation_kPa": 0.0,
+    "dP_acceleration_kPa": 0.002665312275576399,
+    "inlet": {
+     "X": 212.68258544571486,
+     "C": 5.0,
+     "regimes": "vv",
+     "phi_L2": 1.02353131936929,
+     "Re_L": 63.598315259521385,
+     "Re_G": 703.4472622846204,
+     "holdup_L": 0.8036777569863839
+    }
+   }
+  }
+ ],
+ "steam": [
+  {
+   "name": "wet steam, 5 % vapour, 500 kPa",
+   "inlet": {
+    "P_kPa": 500.0,
+    "VF": 0.05
+   },
+   "mass_kg_s": 1.0,
+   "length_m": 50.0,
+   "diameter_m": 0.08,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 0.0,
+   "coolprop": "HEOS::Water",
+   "result": {
+    "P_out_kPa": 494.2546058799839,
+    "dP_kPa": 5.745394120016101,
+    "dP_friction_kPa": 5.724459188886259,
+    "dP_elevation_kPa": 0.0,
+    "dP_acceleration_kPa": 0.020934931132142124,
+    "quality_out": 0.05085819282893879,
+    "inlet_node": {
+     "P_kPa": 500.0,
+     "x": 0.05,
+     "rhoL": 915.290027478015,
+     "rhoG": 2.6680480129857966,
+     "muL": 0.00018025261984225215,
+     "muG": 1.4024026781626506e-05,
+     "X": 0.9968400274322092,
+     "C": 20.0,
+     "regimes": "tt",
+     "phi_L2": 22.069749821092987,
+     "Re_L": 83880.72032995726,
+     "Re_G": 56743.66769621805
+    },
+    "outlet_node": {
+     "P_kPa": 494.2546058799839,
+     "x": 0.05085819282893879,
+     "rhoL": 915.6992842942799,
+     "rhoG": 2.639154402104151,
+     "muL": 0.00018080720680388563,
+     "muG": 1.4009121799423379e-05,
+     "X": 0.9752486689619736,
+     "C": 20.0,
+     "regimes": "tt",
+     "phi_L2": 22.558993287334438,
+     "Re_L": 83547.89224209319,
+     "Re_G": 57779.016424709494
+    }
+   }
+  },
+  {
+   "name": "wet steam, 5 % vapour, 500 kPa, uphill",
+   "inlet": {
+    "P_kPa": 500.0,
+    "VF": 0.05
+   },
+   "mass_kg_s": 1.0,
+   "length_m": 50.0,
+   "diameter_m": 0.08,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 10.0,
+   "coolprop": "HEOS::Water",
+   "result": {
+    "P_out_kPa": 489.34731972287676,
+    "dP_kPa": 10.652680277123238,
+    "dP_friction_kPa": 5.774508310031253,
+    "dP_elevation_kPa": 4.838904985065452,
+    "dP_acceleration_kPa": 0.03926698202553873,
+    "quality_out": 0.05159649999236551,
+    "inlet_node": {
+     "P_kPa": 500.0,
+     "x": 0.05,
+     "rhoL": 915.290027478015,
+     "rhoG": 2.6680480129857966,
+     "muL": 0.00018025261984225215,
+     "muG": 1.4024026781626506e-05,
+     "X": 0.9968400274322092,
+     "C": 20.0,
+     "regimes": "tt",
+     "phi_L2": 22.069749821092987,
+     "Re_L": 83880.72032995726,
+     "Re_G": 56743.66769621805
+    },
+    "outlet_node": {
+     "P_kPa": 489.34731972287676,
+     "x": 0.05159649999236551,
+     "rhoL": 916.0512123573184,
+     "rhoG": 2.6144634218572156,
+     "muL": 0.00018128771518179858,
+     "muG": 1.39962788381238e-05,
+     "X": 0.9572278383829942,
+     "C": 20.0,
+     "regimes": "tt",
+     "phi_L2": 22.985030649869895,
+     "Re_L": 83261.62912942059,
+     "Re_G": 58671.58060368214
+    }
+   }
+  },
+  {
+   "name": "hot water at 400 K flashing in the pipe",
+   "inlet": {
+    "P_kPa": 250.0,
+    "T_K": 400.0
+   },
+   "mass_kg_s": 1.0,
+   "length_m": 150.0,
+   "diameter_m": 0.05,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 0.0,
+   "coolprop": "HEOS::Water",
+   "result": {
+    "P_out_kPa": 237.97717419990545,
+    "dP_kPa": 12.022825800094552,
+    "dP_friction_kPa": 11.622064525333114,
+    "dP_elevation_kPa": 0.0,
+    "dP_acceleration_kPa": 0.40076127494380187,
+    "quality_out": 0.0020571491137530676,
+    "inlet_node": null,
+    "outlet_node": {
+     "P_kPa": 237.97717419990545,
+     "x": 0.0020571491137530676,
+     "rhoL": 938.364722522336,
+     "rhoG": 1.3286937346939975,
+     "muL": 0.00022059316269457439,
+     "muG": 1.3127226121940426e-05,
+     "X": 13.256435971607981,
+     "C": 20.0,
+     "regimes": "tt",
+     "phi_L2": 2.5143915830589867,
+     "Re_L": 115200.33400975098,
+     "Re_G": 3990.551509841945
+    }
+   }
+  }
+ ]
+}

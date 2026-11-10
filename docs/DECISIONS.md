@@ -17,6 +17,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (MHV1). Open: confirm IAPWS G7-04 for H2 and CO + water; CH4 + water held (Campos 2010 and Kim 2008 disagree with the
   other seven articles); SRK's CO2 + water alpha fit (better in P and solubility, 2 more points without a bubble
   pressure) not written; CPA (M3) for water's association.
+- **Gas-liquid flow in the Pipe block** (proposal 0020, step 4; docs/decisions/2026-11-10-06-pipe-two-phase.md):
+  Lockhart-Martinelli in Chisholm's form (Filip et al. 2014; ANL/CP-74646), no-slip holdup for elevation and
+  acceleration; built, in review. Check the C table and the Brennen quotes. Decide the Re limit of C (1500), whether
+  an elevation change warns or refuses, fittings in gas-liquid flow (refused), and whether to allow ocw.snu.ac.kr for
+  a worked example. Next: Beggs-Brill, once open sources are found.
 - **MHV1 in the interface** (docs/decisions/2026-11-10-03-mhv1-interface.md): "PR + gE (MHV1)" and "SRK + gE (MHV1)" in
   the Model selector, the flowsheet's Method page, a column's own method, project format 7, `CHEPTA.run`, the command line
   and MCP (`thermo.mixing`); built, in review. Open: the method advisor does not mention the rule; the heat exchanger and

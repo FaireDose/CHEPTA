@@ -41,9 +41,45 @@
  * inlet and outlet conditions"), and the outlet pressure of the segment is iterated until the balance closes.
  * Kinetic and potential energy are left out of the energy balance (100 m of elevation is 0.98 kJ/kg), so the enthalpy
  * flows close the balance with the heat alone.
- * Only one fluid phase: a two-phase or solid-bearing inlet, or a phase change inside the pipe, is refused with the
- * reason (NOT_AVAILABLE); two-phase methods are a later step of proposal 0020. A gas that reaches the isothermal choking
- * limit (rho u^2 = P, where eq. 9.9 is singular) is refused too.
+ *
+ * Gas-liquid flow (proposal 0020, the two-phase step): where a node of the pipe is vapour and liquid (a two-phase inlet,
+ * a liquid that flashes, a gas that condenses), the phases and their compositions are the system's flash at that node
+ * (the P-H flash of the energy balance), each phase's density and viscosity as above, and
+ *  - the frictional gradient is Lockhart and Martinelli's (1949), in Chisholm's (1967) form, as written in A. Filip,
+ *    F. Baltaretu, R.-M. Damian, "Comparison of two-phase pressure drop models for condensing flows in horizontal
+ *    tubes", Mathematical Modelling in Civil Engineering 10(4) (2014) 19-27, doi:10.2478/mmce-2014-0019 (open access,
+ *    CC BY-NC-ND 3.0), eqs. (10)-(17), pp. 21-22:
+ *      (dp/dz) = phi_L^2 (dp/dz)_L,  phi_L^2 = 1 + C/X + 1/X^2,  X^2 = (dp/dz)_L / (dp/dz)_G,
+ *      Re_L = G (1 - x) D / mu_L,  Re_G = G x D / mu_G   (x the vapour's mass fraction, the quality),
+ *      C = 5 (Re_L < 1500, Re_G < 1500), 10 (Re_L > 1500, Re_G < 1500), 12 (Re_L < 1500, Re_G > 1500), 20 (both > 1500);
+ *    the same C, "viscous" or "turbulent" for the liquid and the gas flowing alone, in Table 1 (p. 20) of M. W.
+ *    Wambsganss, J. A. Jendrzejczyk, D. M. France, "Two-phase flow and pressure drop in flow passages of compact heat
+ *    exchangers", Argonne National Laboratory, ANL/CP-74646 (1992), with eq. (4), p. 13 (a report of the U.S. government,
+ *    OSTI 10119434, https://www.osti.gov/servlets/purl/10119434): they "provide approximations of the two-component,
+ *    two-phase, circular-tube data of Lockhart and Martinelli". (dp/dz)_L and (dp/dz)_G, each phase flowing alone in the pipe,
+ *    are the Darcy gradients f G_k^2 / (2 rho_k D) with this block's own friction factor (64/Re, Churchill, Colebrook
+ *    with the wall's roughness; Filip et al. take a smooth tube), as DWSIM does (LockhartMartinelli.vb, read on
+ *    2026-11-10). It is computed as (dp/dz)_L + C sqrt((dp/dz)_L (dp/dz)_G) + (dp/dz)_G, the same number, which
+ *    tends to the single-phase gradient as x goes to 0 or 1; over a segment, the mean of its two ends' gradients;
+ *  - the elevation and acceleration terms of eq. (9.9) take the homogeneous (no-slip) mixture, whose density is
+ *    rho_H = 1 / (x/rho_G + (1 - x)/rho_L) (Filip et al., eqs. (5)-(6), p. 21; DWSIM's Lockhart-Martinelli takes the
+ *    no-slip holdup for the elevation as well): the liquid holdup is then 1 - alpha with
+ *    alpha = (x/rho_G) / (x/rho_G + (1 - x)/rho_L);
+ *  - what it is good for: Lockhart and Martinelli correlated "isothermal two-phase, two-component flow" in horizontal
+ *    pipes (the title of their paper, as cited by Filip et al., ref. 3). C. E. Brennen, Fundamentals of Multiphase
+ *    Flow, Cambridge University Press (2005), section 8.3.1, p. 210 (the author's free copy on CaltechAUTHORS,
+ *    https://authors.library.caltech.edu/records/n710r-5mn62): "the scatter in the data is significant (about a factor
+ *    of 3 in phi_G) and ... the Lockhart-Martinelli prediction often yields an overestimate of the friction"; "the
+ *    Lockhart-Martinelli correlations work best under conditions that do not imply large velocity differences", the
+ *    turbulent-turbulent case (p. 211). A phase change along the pipe is treated by the same correlation at each node's
+ *    quality (Martinelli and Nelson's extension for it, Brennen section 8.3.2, is not used), with a note. With an
+ *    elevation change the no-slip holdup underestimates the liquid in the pipe (in Lockhart and Martinelli's picture
+ *    the gas moves faster than the liquid, Brennen fig. 8.11), so the static head of uphill flow is low: a warning
+ *    (TWO_PHASE_ELEVATION); Beggs and Brill, for inclined pipes, is a later step.
+ * Refused, with the reason (NOT_AVAILABLE): a solid-bearing stream; two liquid phases, or vapour with two liquids; in
+ * gas-liquid flow, fittings (no open two-phase loss coefficients found), the person's own friction factor or viscosity
+ * (one value cannot stand for both phases). A gas that reaches the isothermal choking limit (rho u^2 = P, where eq. 9.9
+ * is singular) is refused too; two-phase critical flow is not modelled (a segment that does not converge is refused).
  * Units: m, kPa, K, kW.
  */
 import { fail } from "../util/errors.js";
@@ -107,6 +143,39 @@ export function frictionFactor(Re, relRough) {
   return { f: churchill(Re, relRough), regime: "transition" };
 }
 
+/** Chisholm's C by the regimes of the liquid and the gas flowing alone ("v" viscous, "t" turbulent; liquid first):
+ * Filip et al. (2014), eq. (17), p. 22; Wambsganss et al., ANL/CP-74646 (1992), Table 1, p. 20 (see the header). */
+export const CHISHOLM_C = Object.freeze({ vv: 5, tv: 10, vt: 12, tt: 20 });
+/** The Reynolds number that divides "viscous" from "turbulent" for Chisholm's C: Filip et al. (2014), eq. (17). */
+export const RE_CHISHOLM = 1500;
+export const TWO_PHASE_METHOD = "Lockhart-Martinelli (1949), Chisholm's (1967) C";
+
+/**
+ * The frictional pressure gradient of gas-liquid flow by Lockhart and Martinelli in Chisholm's form (see the header):
+ * G the total mass flux (kg/(m² s)), D (m), relRough = eps/D, x the quality (the vapour's mass fraction, 0 < x < 1), the
+ * phases' densities (kg/m³) and viscosities (Pa s). → { gradient_Pa_m, X, C, regimes ("tt", "vt", ...), phi_L2,
+ * Re_L, Re_G, f_L, f_G, dpdz_L, dpdz_G (Pa/m, each phase alone), transition (a phase alone in 2000-3500) }
+ */
+export function lockhartMartinelli({ G, D, relRough = 0, x, rhoL, rhoG, muL, muG }) {
+  if (!(x > 0 && x < 1)) throw fail("BAD_INPUT", `Pipe: the quality of a gas-liquid flow must lie between 0 and 1 (got ${x}).`);
+  const GL = G * (1 - x), GG = G * x;
+  const Re_L = GL * D / muL, Re_G = GG * D / muG;
+  const fl = frictionFactor(Re_L, relRough), fg = frictionFactor(Re_G, relRough);
+  const dpdz_L = fl.f * GL * GL / (2 * rhoL * D), dpdz_G = fg.f * GG * GG / (2 * rhoG * D);
+  const regimes = (Re_L > RE_CHISHOLM ? "t" : "v") + (Re_G > RE_CHISHOLM ? "t" : "v");
+  const C = CHISHOLM_C[regimes];
+  const gradient_Pa_m = dpdz_L + C * Math.sqrt(dpdz_L * dpdz_G) + dpdz_G;   // = phi_L^2 (dp/dz)_L
+  return { gradient_Pa_m, X: Math.sqrt(dpdz_L / dpdz_G), C, regimes, phi_L2: gradient_Pa_m / dpdz_L, Re_L, Re_G, f_L: fl.f, f_G: fg.f,
+    dpdz_L, dpdz_G, transition: fl.regime === "transition" || fg.regime === "transition" };
+}
+
+/** The homogeneous (no-slip) density of a gas-liquid mixture of quality x, and its liquid holdup: Filip et al. (2014),
+ * eqs. (5)-(6) (see the header). */
+export function homogeneous(x, rhoL, rhoG) {
+  const vG = x / rhoG, vL = (1 - x) / rhoL;
+  return { rho: 1 / (vG + vL), holdup_L: vL / (vG + vL) };
+}
+
 /**
  * The pressure profile of one fluid phase along a pipe, in `segments` segments (the core of the block, also used by the
  * tests with a fluid of their own):
@@ -122,12 +191,36 @@ export function pipeProfile({ geometry, mass_kg_s, start, end, segments = SEGMEN
   const node = (s, x, Re, f, regime) => ({ x_m: x, z_m: dz * x / L, P_kPa: s.P_kPa, T_K: s.T_K, rho_kg_m3: s.rho, velocity_m_s: G / s.rho, Re, friction_factor: f, regime });
   const nodes = [];
   const regimes = new Set();
+  const tpSeen = { regimes: new Set(), transition: false };
+  // a node's frictional gradient (Pa/m) and what the profile shows of it: gas-liquid by Lockhart-Martinelli, else one phase
+  const gradientAt = s => {
+    if (s.tp) {
+      const lm = lockhartMartinelli({ G, D, relRough: roughness / D, ...s.tp });
+      return { g: lm.gradient_Pa_m, Re: null, f: null, regime: `two-phase (${lm.regimes})`,
+        tp: { quality: s.tp.x, holdup_L: s.tp.holdup_L, X: lm.X, C: lm.C, phi_L2: lm.phi_L2, Re_L: lm.Re_L, Re_G: lm.Re_G, f_L: lm.f_L, f_G: lm.f_G }, lm };
+    }
+    const Re = G * D / s.mu, fr = frictionFactor(Re, roughness / D);
+    return { g: fr.f * G * G / (2 * s.rho * D), Re, f: fr.f, regime: fr.regime };
+  };
+  // a segment with a gas-liquid end: the mean of its ends' frictional gradients; elevation and acceleration with the
+  // homogeneous density (see the header)
+  const twoPhaseDrops = (a, b, i) => {
+    if (K > 0 || LD > 0) throw fail("NOT_AVAILABLE", `${who}: the flow is gas-liquid ${i === 0 && a.tp ? "at the inlet" : `in segment ${i + 1} of ${segments}`}, and the pipe has fittings: no open source of two-phase loss coefficients for fittings was found, so they are not modelled in gas-liquid flow. Remove the fittings (or give their length as pipe), or keep the fluid one phase.`);
+    if (friction_factor != null) throw fail("NOT_AVAILABLE", `${who}: your own friction factor stands for one fluid; in gas-liquid flow (${i === 0 && a.tp ? "at the inlet" : `segment ${i + 1} of ${segments}`}) each phase flowing alone has its own (Lockhart-Martinelli). Leave friction_factor empty and give the wall roughness.`);
+    const ga = gradientAt(a), gb = gradientAt(b);
+    const rho = (a.rho + b.rho) / 2;
+    const parts = { friction: dx * (ga.g + gb.g) / 2, fittings: 0, elevation: rho * G_STANDARD * dz / segments, acceleration: G * G * (1 / b.rho - 1 / a.rho) };
+    const dP = (parts.friction + parts.elevation + parts.acceleration) / 1000;
+    return { P: a.P_kPa - dP, b, parts, ga, gb, twoPhase: true };
+  };
+  const tpNode = (s, x, g) => ({ ...node(s, x, g.Re, g.f, g.regime), ...(g.tp ? { two_phase: g.tp } : {}) });
   let a = start;
   for (let i = 0; i < segments; i++) {
     // the segment's drops at the outlet guess P (kPa): → { P (the balance's outlet pressure), b, parts }
     const drops = P => {
       if (!(P > 0)) throw fail("BAD_INPUT", `${who}: the pressure falls to zero within the pipe (segment ${i + 1} of ${segments}, at ${+(i * dx).toPrecision(4)} m): the pressure drop exceeds the inlet pressure; widen or shorten the pipe, or lower the flow.`);
       const b = end(P, a, dx, i);
+      if (a.tp || b.tp) return twoPhaseDrops(a, b, i);
       const rho = (a.rho + b.rho) / 2, mu = (a.mu + b.mu) / 2;
       const Re = G * D / mu;
       const fr = friction_factor != null ? { f: friction_factor, regime: Re < RE_LAMINAR ? "laminar" : Re > RE_TURBULENT ? "turbulent" : "transition" } : frictionFactor(Re, roughness / D);
@@ -147,21 +240,48 @@ export function pipeProfile({ geometry, mass_kg_s, start, end, segments = SEGMEN
       P1 = P2 > 0 ? P2 : P1 / 2;
       r1 = drops(P1); res1 = r1.P - P1;
     }
+    if (Math.abs(res1) > 1e-10 * a.P_kPa + 1e-12 && (a.tp || r1.b?.tp)) {
+      // gas-liquid: the properties change steeply (a phase boundary inside the segment, flashing near critical flow).
+      // Look for the root by its sign: r(P) < 0 just below the inlet pressure; the first P below it where r >= 0
+      // brackets it. None: no outlet pressure balances the segment, the momentum balance's singularity (critical flow).
+      const res = P => { try { return drops(P).P - P; } catch (e) { if (e.code === "BAD_INPUT" || e.code === "NOT_AVAILABLE") throw e; return NaN; } };
+      let hi = a.P_kPa, lo = null, firstTp = a.tp ? a.P_kPa : null;
+      for (let k = 1; k < 200 && lo == null; k++) {
+        const P = a.P_kPa * (1 - k / 200);
+        const rk = res(P);
+        if (firstTp == null) { try { if (end(P, a, dx, i).tp) firstTp = P; } catch { /* the residual says why */ } }
+        if (rk >= 0) lo = P; else if (rk < 0) hi = P;
+      }
+      if (lo == null) {
+        // G^2 (-dv/dP) along the pipe's own path, where the segment is first gas-liquid: 1 is the singularity of eq. (9.9)
+        const Pc = firstTp ?? a.P_kPa;
+        const b1 = end(Pc * (1 - 1e-4), a, dx, i), b2 = end(Pc * (1 - 2e-4), a, dx, i);
+        const crit = G * G * (1 / b2.rho - 1 / b1.rho) / (Pc * 1e-4 * 1000);
+        throw fail("NOT_AVAILABLE", `${who}: the gas-liquid flow reaches its critical (choked) flow in segment ${i + 1} of ${segments} (from ${+(i * dx).toPrecision(4)} m, at ${+a.P_kPa.toPrecision(5)} kPa${a.tp ? "" : ", where the fluid starts to boil or condense"}): no outlet pressure balances the segment's momentum (the mass flux squared times the fall of the mixture's specific volume with pressure is ${+crit.toPrecision(3)} at ${+Pc.toPrecision(5)} kPa; at 1 the momentum balance is singular). Choked flow is not modelled. Widen or shorten the pipe, lower the flow, or raise the inlet pressure.`);
+      }
+      P1 = brent(res, lo, hi, { xtol: 1e-12 * a.P_kPa });
+      r1 = drops(P1); res1 = r1.P - P1;
+    }
     if (Math.abs(res1) > 1e-10 * a.P_kPa + 1e-12) {
-      throw fail("NO_CONVERGENCE", `${who}: the pressure of segment ${i + 1} of ${segments} did not converge (the balance misses by ${Math.abs(res1).toPrecision(3)} kPa)${a.phase === "vapour" ? "; the gas may be near choking: widen or shorten the pipe, or lower the flow" : "; try more segments"}.`);
+      throw fail("NO_CONVERGENCE", `${who}: the pressure of segment ${i + 1} of ${segments} did not converge (the balance misses by ${Math.abs(res1).toPrecision(3)} kPa)${a.phase === "vapour" ? "; the gas may be near choking: widen or shorten the pipe, or lower the flow" : a.tp || r1.b?.tp ? "; the gas-liquid flow may be near its critical (choked) flow, which is not modelled: widen or shorten the pipe, lower the flow, or raise the inlet pressure" : "; try more segments"}.`);
     }
     const b = r1.b;
-    if (i === 0) nodes.push(node(a, 0, r1.Re, r1.fr.f, r1.fr.regime));
+    if (r1.twoPhase) {
+      for (const g of [r1.ga, r1.gb]) if (g.lm) { tpSeen.regimes.add(g.lm.regimes); tpSeen.transition ||= g.lm.transition; } else regimes.add(g.regime);
+    }
+    if (i === 0) nodes.push(r1.twoPhase ? tpNode(a, 0, r1.ga) : node(a, 0, r1.Re, r1.fr.f, r1.fr.regime));
     // the isothermal choking limit of eq. (9.9): -dP (1 - rho u^2 / P) = ..., singular at rho u^2 = P
     if (G * G / b.rho >= b.P_kPa * 1000) {
       throw fail("NOT_AVAILABLE", `${who}: the gas reaches the choking limit at ${+((i + 1) * dx).toPrecision(4)} m (rho u² = P, ${+(G / b.rho).toPrecision(4)} m/s): choked flow is not modelled. Widen or shorten the pipe, or lower the flow.`);
     }
     for (const k of Object.keys(split)) split[k] += r1.parts[k] / 1000;
-    regimes.add(r1.fr.regime);
-    nodes.push(node(b, (i + 1) * dx, r1.Re, r1.fr.f, r1.fr.regime));
+    if (r1.twoPhase) nodes.push(tpNode(b, (i + 1) * dx, r1.gb));
+    else { regimes.add(r1.fr.regime); nodes.push(node(b, (i + 1) * dx, r1.Re, r1.fr.f, r1.fr.regime)); }
     a = b;
   }
-  return { nodes, split, last: a, regimes: [...regimes], G_kg_m2s: G, A_m2: A };
+  if (tpSeen.regimes.size) regimes.add("two-phase");
+  return { nodes, split, last: a, regimes: [...regimes], G_kg_m2s: G, A_m2: A,
+    twoPhase: tpSeen.regimes.size ? { regimes: [...tpSeen.regimes], transition: tpSeen.transition } : null };
 }
 
 const has = (spec, k) => spec[k] !== undefined && spec[k] !== null && spec[k] !== "";
@@ -240,13 +360,12 @@ function checkSpec(spec) {
   return c;
 }
 
-/** The density (kg/m³) and viscosity (Pa s) of a single-phase stream (see the header). */
-function fluidProps(sys, s, viscosity) {
-  const p = s.phases[0], x = p.composition, T = s.T_K;
-  if (p.type === "vapour") {
-    const Z = sys.phase("vapour", T, s.P_kPa, x).Z ?? 1;
+/** The density (kg/m³) and viscosity (Pa s) of one fluid phase of composition x at T, P (see the header). */
+function phaseProps(sys, type, x, T, P_kPa, viscosity) {
+  if (type === "vapour") {
+    const Z = sys.phase("vapour", T, P_kPa, x).Z ?? 1;
     const M = x.reduce((a, xi, i) => a + xi * sys.MW[i], 0);
-    return { rho: M / 1000 * s.P_kPa * 1000 / (Z * R * T), mu: viscosity ?? gasViscosity(sys, x, T, "Pipe"), Z };
+    return { rho: M / 1000 * P_kPa * 1000 / (Z * R * T), mu: viscosity ?? gasViscosity(sys, x, T, "Pipe"), Z };
   }
   let v = 0, mass = 0, lnMu = 0, sx = 0;
   x.forEach((xi, i) => {
@@ -261,20 +380,37 @@ function fluidProps(sys, s, viscosity) {
   return { rho: mass / v, mu: viscosity ?? Math.exp(lnMu / sx) };
 }
 
-/** The phase of a stream, or a refusal: one fluid phase only. */
-function onePhase(s, where) {
+/** The fluid phases of a stream (fraction above 1e-12). */
+const fluidPhases = s => s.phases.filter(p => p.fraction > 1e-12);
+
+/** What flows: "vapour", "liquid" or "vapour-liquid" (one vapour and one liquid phase), or a refusal (see the header). */
+function flowKind(s, where) {
+  const at = where === "inlet" ? "the inlet" : `the stream ${where}`;
   if (s.phases.some(p => p.type === "solid")) {
-    throw fail("NOT_AVAILABLE", `Pipe: the ${where} carries a solid; slurry flow is not modelled (single-phase flow only).`);
+    throw fail("NOT_AVAILABLE", `Pipe: ${at} carries a solid; slurry flow is not modelled (one fluid phase, or gas and liquid, only).`);
   }
-  const fl = s.phases.filter(p => p.fraction > 1e-12);
-  if (fl.length !== 1) {
-    const kind = fl.every(p => p.type !== "vapour") ? "two liquids" : `vapour and liquid (vapour fraction ${+(s.VF ?? 0).toPrecision(4)})`;
-    const inside = where !== "inlet";
-    throw fail("NOT_AVAILABLE", `Pipe: the ${inside ? `stream ${where}` : where} is two-phase (${kind}); the Pipe block is single-phase only. Two-phase pressure-drop methods (Lockhart-Martinelli, Beggs-Brill and others) are a later step of proposal 0020. ${inside
-      ? "The fluid boils or condenses inside the pipe (a phase change): raise the inlet pressure, or move the inlet temperature away from the boiling or dew point."
-      : "Separate the phases first (a flash drum), or move the pipe to where the stream is one phase."}`);
-  }
-  return fl[0].type;
+  const fl = fluidPhases(s);
+  if (fl.length === 1) return fl[0].type;
+  const nV = fl.filter(p => p.type === "vapour").length, nL = fl.filter(p => p.type === "liquid").length;
+  if (nV === 1 && nL === 1) return "vapour-liquid";
+  const kind = nV === 0 ? "two liquids" : `vapour and ${nL} liquids`;
+  throw fail("NOT_AVAILABLE", `Pipe: ${at} is ${kind}; the Pipe block models one fluid phase, or gas and liquid (Lockhart-Martinelli), not two liquid phases. ${where === "inlet"
+    ? "Separate the liquids first (a decanter), or move the pipe to where the stream is one liquid."
+    : "The liquid splits into two inside the pipe: change the inlet temperature or pressure so that it stays one liquid."}`);
+}
+
+/** A node's fluid: density and viscosity of one phase, or the gas-liquid properties (quality, both phases, no-slip density). */
+function nodeProps(sys, s, kind, viscosity) {
+  const T = s.T_K, P = s.P_kPa;
+  if (kind !== "vapour-liquid") return phaseProps(sys, kind, fluidPhases(s)[0].composition, T, P, viscosity);
+  if (viscosity != null) throw fail("NOT_AVAILABLE", `Pipe: the flow is gas-liquid at ${+P.toPrecision(6)} kPa, ${+T.toPrecision(6)} K: your own viscosity stands for one fluid, and Lockhart-Martinelli needs each phase's own. Leave viscosity_Pa_s empty.`);
+  const V = s.phases.find(p => p.type === "vapour"), L = s.phases.find(p => p.type === "liquid");
+  const M = comp => comp.reduce((a, xi, i) => a + xi * sys.MW[i], 0);
+  const mV = V.fraction * M(V.composition), mL = L.fraction * M(L.composition);
+  const x = mV / (mV + mL);
+  const gas = phaseProps(sys, "vapour", V.composition, T, P, null), liq = phaseProps(sys, "liquid", L.composition, T, P, null);
+  const hm = homogeneous(x, liq.rho, gas.rho);
+  return { rho: hm.rho, mu: null, tp: { x, rhoL: liq.rho, rhoG: gas.rho, muL: liq.mu, muG: gas.mu, holdup_L: hm.holdup_L } };
 }
 
 function solve({ sys, inlets, spec: c }) {
@@ -283,13 +419,14 @@ function solve({ sys, inlets, spec: c }) {
     const out = stream(sys, { flow_kmol_h: s.flows, T_K: s.T_K ?? 298.15, P_kPa: s.P_kPa ?? 101.325 });
     return { outlets: { out }, duty_kW: 0, notes: ["The pipe has no flow: nothing is calculated."], state: { dP_kPa: 0 } };
   }
-  const type = onePhase(s, "inlet");
-  const mass_kg_s = s.mass_kg_h / 3600, F = s.F_kmol_h;
-  const flows = s.flows, z = s.z;
+  const type = flowKind(s, "inlet");
+  const kinds = new Set([type]);
+  const mass_kg_s = s.mass_kg_h / 3600;
+  const flows = s.flows;
   const T0 = s.T_K, H0 = s.H_kW;
-  const st = (x, where) => { onePhase(x, where); if (x.phases.find(p => p.fraction > 1e-12).type !== type) throw fail("NOT_AVAILABLE", `Pipe: the ${type} becomes ${x.phases[0].type} ${where}; a phase change inside the pipe is not modelled (single-phase flow only).`); return x; };
-  const state = (x, Q_kW = 0) => ({ stream: x, P_kPa: x.P_kPa, T_K: x.T_K, H_kW: x.H_kW, Q_kW, phase: type, ...fluidProps(sys, x, c.viscosity) });
-  const hAt = (T, P) => sys.phase(type, T, P, z).h_J_mol * F / 3600;   // kW
+  const st = (x, where) => { kinds.add(flowKind(x, where)); return x; };
+  // the state of a node; its stream was checked, with the place, by st() or at the inlet
+  const state = (x, Q_kW = 0) => { const kind = flowKind(x, "in the pipe"); return { stream: x, P_kPa: x.P_kPa, T_K: x.T_K, H_kW: x.H_kW, Q_kW, phase: kind, ...nodeProps(sys, x, kind, c.viscosity) }; };
   const where = (i, dx) => `at ${+((i + 1) * dx).toPrecision(4)} m along the pipe`;
   const end = (P, a, dx, i) => {
     if (c.heat === "isothermal") {
@@ -300,13 +437,14 @@ function solve({ sys, inlets, spec: c }) {
     // heat to the surroundings: Q (kW, lost) = U pi D dx dT_lm, with the segment's outlet temperature between its inlet's and the surroundings'
     const UA = c.U * Math.PI * c.D * dx / 1000, d1 = a.T_K - c.Ta;
     const lost = T => { const d2 = T - c.Ta; return UA * (Math.abs(d1 - d2) < 1e-9 * Math.abs(d1) || d1 * d2 <= 0 ? (d1 + d2) / 2 : (d1 - d2) / Math.log(d1 / d2)); };
-    const g = T => hAt(T, P) - (a.H_kW - lost(T));
-    const lo = Math.min(a.T_K, c.Ta), hi = Math.max(a.T_K, c.Ta);
-    let T;
-    const glo = g(lo + 1e-9 * lo), ghi = g(hi - 1e-9 * hi);
-    if (glo * ghi < 0) T = brent(g, lo + 1e-9 * lo, hi - 1e-9 * hi, { xtol: 1e-10 });
-    else T = brent(g, lo - 50, hi + 50, { xtol: 1e-10 });   // the pressure's own effect on h outweighs the heat over this segment
-    const Q = lost(T);
+    // the heat lost over the segment, Q: the outlet is the P-H flash at H_a - Q, and Q = lost(T of that flash); solved
+    // for Q (monotonic, also across a boiling or condensing point, where T stays at the saturation temperature)
+    const Tph = Q => stream(sys, { flow_kmol_h: flows, P_kPa: P, H_kW: a.H_kW - Q }).T_K;
+    const q = Q => Q - lost(Tph(Q));
+    let Qb = UA * d1, qb = q(Qb);
+    const q0 = q(0);
+    for (let k = 0; k < 6 && q0 * qb > 0; k++) { Qb *= 2; qb = q(Qb); }   // the pressure's own effect on T outweighs the heat over this segment
+    const Q = q0 === 0 ? 0 : brent(q, 0, Qb, { xtol: 1e-12 * Math.abs(Qb) + 1e-15 });
     const x = st(stream(sys, { flow_kmol_h: flows, P_kPa: P, H_kW: a.H_kW - Q }), where(i, dx));
     return state(x, a.Q_kW - Q);
   };
@@ -317,18 +455,30 @@ function solve({ sys, inlets, spec: c }) {
   const out = st(stream(sys, { flow_kmol_h: flows, P_kPa: p.last.P_kPa, H_kW: H0 + duty }), "at the outlet");
   const first = p.nodes[0], last = p.nodes.at(-1);
   const warnings = [], notes = [];
+  const tp = p.twoPhase;
+  const single = [...kinds].filter(k => k !== "vapour-liquid");
   if (p.regimes.includes("transition")) warnings.push({ code: "FLOW_TRANSITION", message: `The Reynolds number lies between ${RE_LAMINAR} and ${RE_TURBULENT} in part of the pipe (transition between laminar and turbulent flow): the friction factor there (Churchill 1977) is uncertain.` });
   if ((c.fittings.K > 0 || c.fittings.LD > 0) && p.regimes.includes("laminar")) warnings.push({ code: "FITTINGS_LAMINAR", message: "The flow is laminar in part of the pipe: the fittings' K and Leq/D values are for turbulent flow, so their loss there is approximate." });
   if (c.friction_factor != null) notes.push(`The friction factor is your own (Darcy f = ${c.friction_factor}), not from the Reynolds number and the roughness.`);
   if (c.viscosity != null) notes.push(`The viscosity is your own (${c.viscosity} Pa s), not from the components' records.`);
-  else if (type === "vapour") notes.push("The gas viscosity is the low-pressure value (Wilke's rule on the pure vapours' records); at high pressure a gas is more viscous, which changes the friction factor little in turbulent flow.");
-  if (type === "liquid") notes.push("The liquid's density is from the pure liquids' records (their volumes add up), without the effect of pressure.");
+  else if (single.includes("vapour")) notes.push("The gas viscosity is the low-pressure value (Wilke's rule on the pure vapours' records); at high pressure a gas is more viscous, which changes the friction factor little in turbulent flow.");
+  if (single.includes("liquid") || tp) notes.push("The liquid's density is from the pure liquids' records (their volumes add up), without the effect of pressure.");
+  if (tp) {
+    const where = type === "vapour-liquid" ? (kinds.size > 1 ? "from the inlet, then one phase" : "along the whole pipe")
+      : `from ${+(p.nodes.find(n => n.two_phase)?.x_m ?? 0).toPrecision(4)} m (the ${type} ${type === "liquid" ? "boils" : "condenses"} in the pipe)`;
+    notes.push(`Gas-liquid flow ${where}: the friction by ${TWO_PHASE_METHOD}, C = ${tp.regimes.map(r => `${CHISHOLM_C[r]} (${r})`).join(", ")}, with the wall's roughness for each phase alone; the elevation and acceleration with the homogeneous (no-slip) mixture density. The method was correlated for isothermal two-component flow in horizontal pipes; its data scatter by about a factor of 3 in the two-phase multiplier and it often overestimates the friction, working best when both phases alone are turbulent (Brennen 2005, section 8.3.1, pp. 210-211). The gas viscosity is the low-pressure value.`);
+    if (tp.regimes.some(r => r !== "tt")) warnings.push({ code: "TWO_PHASE_VISCOUS", message: `In part of the pipe the liquid or the gas flowing alone is viscous (Re below ${RE_CHISHOLM}: C = ${tp.regimes.filter(r => r !== "tt").map(r => `${CHISHOLM_C[r]}, ${r}`).join("; ")}): Lockhart-Martinelli is least reliable there (large velocity differences between the phases; Brennen 2005, p. 211).` });
+    if (tp.transition) warnings.push({ code: "FLOW_TRANSITION", message: `The liquid or the gas flowing alone has a Reynolds number between ${RE_LAMINAR} and ${RE_TURBULENT} in part of the gas-liquid flow: its friction factor there (Churchill 1977) is uncertain.` });
+    if (c.dz !== 0) warnings.push({ code: "TWO_PHASE_ELEVATION", message: `The pipe ${c.dz > 0 ? "rises" : "falls"} ${Math.abs(c.dz)} m in gas-liquid flow: the static head uses the no-slip liquid holdup, which underestimates the liquid in the pipe (the gas moves faster), so the elevation term of uphill flow is low, possibly by much. Lockhart-Martinelli is a horizontal-pipe method; a method for inclined pipes (Beggs-Brill) is a later step of proposal 0020.` });
+    if (kinds.size > 1) notes.push("The quality changes along the pipe (the fluid boils or condenses): the correlation is used at each node's quality; Martinelli and Nelson's treatment of a phase change (Brennen 2005, section 8.3.2) is not used.");
+  }
   const dP = s.P_kPa - out.P_kPa;
+  const phaseOf = [...kinds].length === 1 ? type : [...kinds].join(" and ");
   return {
     outlets: { out }, duty_kW: duty, notes, warnings,
     profile: p.nodes,
     state: {
-      phase: type, heat: c.heat, P_in_kPa: s.P_kPa, P_out_kPa: out.P_kPa, T_in_K: T0, T_out_K: out.T_K,
+      phase: phaseOf, heat: c.heat, P_in_kPa: s.P_kPa, P_out_kPa: out.P_kPa, T_in_K: T0, T_out_K: out.T_K,
       dP_kPa: dP, dP_friction_kPa: p.split.friction, dP_fittings_kPa: p.split.fittings, dP_elevation_kPa: p.split.elevation,
       dP_acceleration_kPa: p.split.acceleration,
       velocity_in_m_s: first.velocity_m_s, velocity_out_m_s: last.velocity_m_s,
@@ -337,6 +487,10 @@ function solve({ sys, inlets, spec: c }) {
       rho_in_kg_m3: first.rho_kg_m3, rho_out_kg_m3: last.rho_kg_m3, mass_flux_kg_m2s: p.G_kg_m2s,
       heat_kW: duty, length_m: c.L, diameter_m: c.D, roughness_m: c.roughness, elevation_m: c.dz, segments: c.segments,
       fittings: { K: c.fittings.K, L_D: c.fittings.LD, list: c.fittings.list },
+      ...(tp ? { two_phase: { method: TWO_PHASE_METHOD, chisholm: tp.regimes.map(r => ({ regimes: r, C: CHISHOLM_C[r] })),
+        quality_in: first.two_phase?.quality ?? (type === "vapour" ? 1 : 0), quality_out: last.two_phase?.quality ?? (out.VF > 0.5 ? 1 : 0),
+        holdup_L_in: first.two_phase?.holdup_L ?? null, holdup_L_out: last.two_phase?.holdup_L ?? null,
+        X_in: first.two_phase?.X ?? null, X_out: last.two_phase?.X ?? null, phi_L2_in: first.two_phase?.phi_L2 ?? null, phi_L2_out: last.two_phase?.phi_L2 ?? null } } : {}),
     },
   };
 }

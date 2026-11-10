@@ -118,11 +118,15 @@ test("friction factors: laminar 64/Re, Colebrook, Churchill in the transition", 
 test("the pipe refuses what it does not model, with the reason", () => {
   const sys = system({ components: ["water"], model: "ideal" });
   const spec = { length_m: 100, diameter_m: 0.05, roughness_m: 4.5e-5 };
+  // Gas-liquid flow is computed since the two-phase step of proposal 0020 (Lockhart-Martinelli; test/pipe-two-phase.test.js,
+  // which also holds its refusals). These two streams were refused as two-phase before; at these flows they now reach
+  // critical (choked) flow, which is refused: wet steam at 1 atm, 30 % vapour, at 141 kg/(m² s) chokes after some 20 m,
+  // and a saturated liquid at 120 kPa flashing at 2830 kg/(m² s) chokes at once (by hand, the no-slip critical mass
+  // flux of saturated water near 1 bar is about 1100 kg/(m² s)).
   const two = stream(sys, { flow_kg_h: { water: 1000 }, P_kPa: 101.325, VF: 0.3 });
-  assert.throws(() => runUnit("pipe", { sys, inlets: { in: two }, spec }), e => e.code === "NOT_AVAILABLE" && /two-phase/.test(e.message) && /later step/.test(e.message));
-  // a saturated liquid flashes as its pressure falls
+  assert.throws(() => runUnit("pipe", { sys, inlets: { in: two }, spec }), e => e.code === "NOT_AVAILABLE" && /choked/.test(e.message));
   const sat = stream(sys, { flow_kg_h: { water: 20000 }, P_kPa: 120, VF: 0 });
-  assert.throws(() => runUnit("pipe", { sys, inlets: { in: sat }, spec }), e => e.code === "NOT_AVAILABLE" && /two-phase|phase change/.test(e.message));
+  assert.throws(() => runUnit("pipe", { sys, inlets: { in: sat }, spec }), e => e.code === "NOT_AVAILABLE" && /choked/.test(e.message) && /starts to boil/.test(e.message));
   const cold = stream(sys, { flow_kg_h: { water: 36000 }, T_K: 293.15, P_kPa: 200 });
   assert.throws(() => runUnit("pipe", { sys, inlets: { in: cold }, spec: { ...spec, length_m: 1000 } }), e => e.code === "BAD_INPUT" && /pressure falls to zero/.test(e.message));
   assert.throws(() => runUnit("pipe", { sys, inlets: { in: cold }, spec: { ...spec, fittings: [{ fitting: "butterfly" }] } }), e => e.code === "BAD_INPUT" && /elbow-90/.test(e.message));
