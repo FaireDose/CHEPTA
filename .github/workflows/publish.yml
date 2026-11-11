@@ -96,7 +96,7 @@ jobs:
         run: npm stage publish --provenance --access public --loglevel verbose
 
   # The version written back to main, so the repository says what npm has: pushed to main, or, where main does not
-  # accept a push from the workflow, a pull request "Version x.y.z" for the maintainer to merge.
+  # accept a push from the workflow, a branch version-x.y.z and a link (in the run's summary) to open its pull request.
   sync:
     needs: npm
     runs-on: ubuntu-latest
@@ -122,8 +122,16 @@ jobs:
           git commit -am "Version $V (written by the publish workflow after staging chepta@$V)"
           if git push origin HEAD:main; then exit 0; fi
           git push origin "HEAD:refs/heads/version-$V"
-          gh pr create --base main --head "version-$V" --title "Version $V" \
-            --body "The publish workflow staged chepta@$V on npm. This writes the version into package.json, the lock file, the README and the CDN links (scripts/set-version.mjs). Merge it so main says what npm has."
+          # main takes changes only through a pull request with the "test" check, and this repository does not let
+          # GitHub Actions open pull requests (a pull request opened by the workflow's token would not run "test"
+          # either). So the job ends with the link for the maintainer, not with an error (release 0.6.0, 2026-11-11).
+          URL="https://github.com/${GITHUB_REPOSITORY}/compare/main...version-$V?expand=1"
+          echo "::notice title=Version $V::Open the pull request that writes the version to main, and merge it after approving chepta@$V on npmjs.com: $URL"
+          {
+            echo "### Version $V"
+            echo "Staged on npm. Approve it on npmjs.com (chepta, Staged Packages), then open and merge the pull request"
+            echo "\"Version $V\" from the branch version-$V: $URL"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   skills:
     needs: verify

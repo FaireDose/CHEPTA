@@ -10,12 +10,19 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
-- **A reorganization of the workbench** (proposal 0021; docs/decisions/2026-11-11-04-interface-reorganization.md;
-  the review is docs/ui-review/2026-11-11-reorganization.md): a prototype beside the workbench
-  (`CHEPTA.app(el, { layout: "next" })`, `examples/app-next.html`): the Flowsheet with its own button, the other
-  workspaces in a rail or a menu, one Method, Data and Units row, Inputs and Results as panes on a phone. To decide:
-  the proposal itself, the flowsheet's place, the method in one place, the panes, which of the proposed graphs and
-  data tabs first, and when the new layout becomes the default.
+- **A reorganization of the workbench** (proposal 0021, accepted 2026-11-11; docs/decisions/2026-11-11-04-interface-reorganization.md;
+  the review is docs/ui-review/2026-11-11-reorganization.md): the prototype is merged behind
+  `CHEPTA.app(el, { layout: "next" })`. Next, by the proposal's steps: 1. the shell's contract (method, data, units and
+  sources as functions; the Method button everywhere); 2. canvas tabs; 3. numbered steps for Flash, Heat exchanger and
+  Pipe; then the first additions (measured VLE points on T-x-y, the x-y, gamma and alpha diagrams, the flowsheet's tabs
+  and examples). The new layout becomes the default only after steps 1-3 and a check by users; "classic" is kept for
+  two released versions.
+- **CHEPTA-Lab on Claude** (docs/decisions/2026-11-11-05-chepta-lab-on-claude.md): its own coordinator session starts
+  when two worker slots are free; held-out evaluation cases reviewed by the maintainer or another model family
+  (ROADMAP.md, "CHEPTA and CHEPTA-Lab", rule 7). Open: attach the CHEPTA-Lab repository to that session.
+- **Release procedure** (docs/decisions/2026-11-11-03-release-0.6.0.md): 0.6.0 live on npm; from now on release,
+  approve on npmjs.com (wait until the staged version has finished validating), then open and merge the version pull
+  request from the link in the workflow's summary.
 - **High-pressure gases in methanol and water** (docs/decisions/2026-11-04-13-kij-high-pressure.md, 2026-11-05-03,
   2026-11-06-01, 2026-11-06-02-mhv1.md): k_ij = a + b/T in the engine; SRK/PR + gE (MHV1) built, its methanol pairs
   written with fit-quality warnings (2026-11-07), CO2 + water's PR set with alpha fitted (11.4 % in P against 13.8 % for
@@ -297,7 +304,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   sets of 1-propanol + water and acetonitrile + water now labelled "predicted-contradicted" (no uncontradicted set of
   the same model exists for them); benzene + methanol's contradicted fitted NRTL default gave way to its ChemSep NRTL
   set on 2026-11-10 (docs/decisions/2026-11-10-07-benzene-methanol-default.md; no other pair has that case); a person
-  checks that default. Main merged into the branch on 2026-11-10, labels unchanged.
+  checks that default. Main merged into the branch on 2026-11-10, labels unchanged. The labels are reproducible
+  (docs/decisions/2026-11-11-02-two-liquid-labels-reproducible.md): the 2026-11-10 "drift" was the file order and the
+  known issues' sources; the re-run took off the stale labels of the benzene + methanol Wilson sets. To decide: the
+  sources of a "phase-split" known issue, the set's own and the ThermoML Archive (recommended) or every set's of the pair.
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order

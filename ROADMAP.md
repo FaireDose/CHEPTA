@@ -224,6 +224,13 @@ the cases, the training examples and the evaluations (the maintainer, 2026-11-04
    reviews the changes in outcomes, numbers and warnings, and only then moves its pin; old runs keep their engine version.
    CHEPTA stays 0.x, but the interfaces Lab consumes (the request path, the result format, the project file format) carry
    versions and a documented change policy: a limited early compatibility agreement, not the whole of A12.
+7. **An independent check of the evaluations** (the maintainer, 2026-11-11, when Lab moved from Astra 6 to Claude).
+   Lab's work is now done by Claude sessions, like CHEPTA's. So that Claude does not grade the use of a simulator it
+   builds with tests it wrote itself, Lab's held-out evaluation cases (and their expected answers) are reviewed by the
+   maintainer or by an AI model of another family (for example Astra 6) before they are used, and every score is
+   reported with who reviewed its cases. No Claude session that writes CHEPTA code sees the held-out cases; development
+   and regression cases may be shared. A review by another model is recorded with the model's name and date, and
+   counts as a second opinion, never as the person's check of numbers (AGENTS.md rule 4).
 
 **Next, in this order** (the Astra 6 review, accepted by the maintainer, 2026-11-04): agree the study record and the
 release Lab pins; run the ethanol and benzene + toluene cases through the same supported interface, keeping actual

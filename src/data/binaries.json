@@ -26502,39 +26502,7 @@
         "li2019-ethyl-acetate-methanol",
         "nist-thermoml-archive"
       ],
-      "tier": "fitted",
-      "two_liquids": {
-        "class": "miscible",
-        "evidence": "predicted-contradicted",
-        "splits": [
-          [
-            273.15,
-            0.3935,
-            0.8477
-          ],
-          [
-            283.15,
-            0.4362,
-            0.8151
-          ],
-          [
-            293.15,
-            0.4917,
-            0.7703
-          ],
-          [
-            303.15,
-            0.5899,
-            0.6828
-          ]
-        ],
-        "sources": [
-          "10.1016/j.fluid.2005.10.022"
-        ],
-        "fitted": false,
-        "wilson": true,
-        "predicted_by": "NRTL set \"fitted-li2019-etal\""
-      }
+      "tier": "fitted"
     },
     {
       "model": "WILSON",
@@ -26551,39 +26519,7 @@
         "chemsep-ipd"
       ],
       "tier": "databank",
-      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then).",
-      "two_liquids": {
-        "class": "miscible",
-        "evidence": "predicted-contradicted",
-        "splits": [
-          [
-            273.15,
-            0.3935,
-            0.8477
-          ],
-          [
-            283.15,
-            0.4362,
-            0.8151
-          ],
-          [
-            293.15,
-            0.4917,
-            0.7703
-          ],
-          [
-            303.15,
-            0.5899,
-            0.6828
-          ]
-        ],
-        "sources": [
-          "10.1016/j.fluid.2005.10.022"
-        ],
-        "fitted": false,
-        "wilson": true,
-        "predicted_by": "NRTL set \"fitted-li2019-etal\""
-      }
+      "data_wanted": "open experimental data to fit (proposal 0004 step 3; the databank set is used until then)."
     },
     {
       "model": "WILSON",

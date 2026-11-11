@@ -1,6 +1,6 @@
 # 0021: A reorganization of the workbench: the flowsheet in front, one place for the method and the data, panes on a phone
 
-- **Status:** Proposed (2026-11-11); a working prototype is in this pull request, beside the workbench, not in its place
+- **Status:** Accepted (the maintainer, 2026-11-11: all nine answers of docs/decisions/2026-11-11-04-interface-reorganization.md); the prototype is merged behind `CHEPTA.app(el, { layout: "next" })`, beside the workbench, not in its place
 - **Author(s):** a coding agent (Claude), for the maintainer
 - **Discussion:** the pull request of this file
 - **Roadmap item:** track C (views); it changes how every view is reached, and no model

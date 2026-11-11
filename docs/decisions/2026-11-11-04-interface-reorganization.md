@@ -12,6 +12,24 @@
 Both are in the proposal: the Flowsheet has its own button, first in the top bar, and a calculation can take its
 components and method ("From the flowsheet"); the additions are the table of the proposal's section 4.
 
+## What the maintainer decided (2026-11-11, answers to #226, relayed by the coordinating session)
+
+All nine recommendations below are accepted:
+
+1. **Proposal 0021 is accepted.**
+2. The Flowsheet has its own button, with a rail (wide) or a menu (narrow) of the calculations; it is not the only
+   frame.
+3. The property method is chosen in one place, the Method button of the top bar, in every workspace.
+4. On a phone, one pane at a time (Inputs, Results), Results first once the inputs are complete.
+5. mol frac / wt % moves from the toolbar into Units.
+6. Four supporting tools: Project, Data, Settings, Help.
+7. The additions first: the measured VLE points on the T-x-y and P-x-y, the x-y, activity-coefficient and
+   relative-volatility diagrams, the flowsheet's tabs and its examples to start from; then "Open in ..." between the
+   flowsheet and the calculations. The case study needs a proposal of its own.
+8. The new layout becomes the default only after steps 1-3 and a check by users; `layout: "classic"` keeps the old one
+   for two released versions.
+9. The prototype is merged into `main` behind the option.
+
 ## What is in the pull request
 
 | What | Where |
@@ -37,7 +55,7 @@ would need).
 
 No number, parameter or source changed, so there is nothing to compare with a source.
 
-## What the maintainer must decide
+## What the maintainer was asked to decide (answered above)
 
 | # | Decision | Recommendation |
 |---|---|---|
