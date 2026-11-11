@@ -103,7 +103,20 @@ No validation data and no benchmark was changed; `test/benchmark-columns.test.js
 5. The refusals' units: the stage solver's messages give flows in mol/s (its own unit), also where the block was
    given kmol/h ("the distillate is 58.33 mol/s" for 210 kmol/h). To change if the maintainer wants kmol/h there.
 
-## What the maintainer must decide (a recommendation each)
+## Decided by the maintainer (2026-11-11)
+
+"i go with your recommendations": all seven recommendations below are taken.
+
+1. The outer loop is kept (the specifications of one end's product among the equations stay a possible fast path).
+2. The tolerance of a specification stays a scaled 1e-6.
+3. The agreement limit with The ChemSep Book's reflux ratio in case S4 stays 25 %.
+4. The search limits stay: ratios 0.001 to 1000; "near total reflux" is a reflux ratio of 100.
+5. No new project format.
+6. Slow refusals next to a pinch are accepted for now.
+7. Next for specifications: inequalities first ("at least 0.99", "at most 10 ppm"), as a check on a solved column;
+   then a side draw of one of two liquids, pumparounds, side draws on absorbers.
+
+## What the maintainer was asked to decide (a recommendation each)
 
 1. **The outer loop, or the specifications among the equations.** Recommendation: keep the outer loop, for the three
    reasons above. If speed matters later, the specifications of one end's product could also be written among the
