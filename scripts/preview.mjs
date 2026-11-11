@@ -39,10 +39,18 @@ const html = `<!doctype html>
 </head>
 <body>
 <div class="banner"><b>Preview, not a release.</b> ${esc(label)}${commit ? `, commit ${esc(commit)}` : ""}, version ${esc(version)}${url ? ` (<a href="${esc(url)}">open on GitHub</a>)` : ""}.
-Everything runs in this page; nothing is sent anywhere. Report what looks wrong in the pull request.</div>
+Everything runs in this page; nothing is sent anywhere. Report what looks wrong in the pull request.
+<span id="layout-link"></span></div>
 <div id="app"></div>
 <script>${js}</script>
-<script>${global}.app("#app", { components: [] });</script>
+<script>
+  // ?layout=next shows the prototype of the reorganized layout (proposal 0021); without it, the workbench as it is
+  const next = new URLSearchParams(location.search).get("layout") === "next";
+  document.getElementById("layout-link").innerHTML = next
+    ? 'This is the <b>reorganized layout</b> (prototype, proposal 0021). <a href="?">Show the workbench as it is</a>.'
+    : '<a href="?layout=next">Try the reorganized layout</a> (prototype, proposal 0021).';
+  ${global}.app("#app", next ? { components: [], layout: "next" } : { components: [] });
+</script>
 </body>
 </html>
 `;
