@@ -38,6 +38,9 @@ BIN_FILE = ROOT / "src" / "data" / "binaries.json"
 KNOWN_FILE = ROOT / "src" / "data" / "known-issues.json"
 ENGINE_FILE = ROOT / "src" / "data" / "two-liquids.json"
 ORIGIN = "two_liquid_labels.py"
+# Pairs whose contradicted FITTED default gives way to an uncontradicted set of the same model (answer 5 applied to a
+# fitted set; the maintainer, 2026-11-10, #218 decision (c)). Only these pairs are changed; the others are listed.
+FITTED_DEMOTED = {"benzene+methanol"}
 TS = list(np.linspace(273.15, 373.15, 11))
 
 
@@ -77,6 +80,7 @@ def main(write):
     engine = {}
     counts = {}
     demoted = []
+    listed = []
     for key, c in sorted(F.CLASSES.items()):
         first, second = key.split("+")
         cls = c["class"]
@@ -114,6 +118,19 @@ def main(write):
                         r["default"] = False
                         other[0]["default"] = True
                         demoted.append((key, model, r.get("set"), other[0].get("set")))
+        # the same for a contradicted fitted default, for the pairs named in FITTED_DEMOTED only; the others are listed
+        for model in ("NRTL", "UNIQUAC"):
+            ms = [r for r in recs if r["model"] == model]
+            for r in ms:
+                if (r.get("tier") == "fitted" and r.get("default", True)
+                        and r.get("two_liquids", {}).get("evidence") == "predicted-contradicted"):
+                    other = [o for o in ms if o is not r and o.get("two_liquids", {}).get("evidence") != "predicted-contradicted"]
+                    if other and key in FITTED_DEMOTED:
+                        r["default"] = False
+                        other[0]["default"] = True
+                        demoted.append((key, model, r.get("set"), other[0].get("set")))
+                    elif other:
+                        listed.append((key, model, r.get("set"), other[0].get("set")))
         # Wilson: the label of the prediction of the pair's default NRTL (else UNIQUAC) set
         pred = next((r for m in ("NRTL", "UNIQUAC") for r in recs if r["model"] == m and r.get("default", True) and "two_liquids" in r), None)
         for r in recs:
@@ -164,6 +181,8 @@ def main(write):
     print("labels:", counts, "| demoted ChemSep defaults:", len(demoted))
     for d in demoted:
         print("  demoted", d)
+    for d in listed:
+        print("  contradicted fitted default, uncontradicted set exists (not changed)", d)
     if write:
         BIN_FILE.write_text(json.dumps(doc, indent=2) + "\n")
         K["issues"] = issues

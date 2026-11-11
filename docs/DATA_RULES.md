@@ -238,6 +238,9 @@ new refit of a ChemSep record is made (section 1).
 - Where a pair has a set fitted to measured mixture data (ThermoML Archive, open articles), that set is the default;
   the ChemSep set of the same pair stays as an alternative the user can choose (`sets`, `prefer`). The ChemSep set is
   the default only where no measured mixture data were fitted (the maintainer, 2026-10-14; `test/library.test.js`).
+  One exception (the maintainer, 2026-11-10; proposal 0019, answer 5): a fitted set is the default unless it is
+  labelled "predicted-contradicted" and another set of the same model is not; so far only benzene + methanol, whose
+  ChemSep NRTL set is the default (`FITTED_DEMOTED` in `two_liquid_labels.py`).
 - Open databank sets (ChemSep) are imported as tier "databank".
 - Fits to measured vapour-liquid data from the ThermoML Archive (`vle_batch.py`, then `fit_parameters.py`): isobaric
   T-x-y near 101.3 kPa first, that passes the point test of thermodynamic consistency; then other pressures; then
