@@ -10,6 +10,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **A reorganization of the workbench** (proposal 0021, accepted 2026-11-11; docs/decisions/2026-11-11-04-interface-reorganization.md;
+  the review is docs/ui-review/2026-11-11-reorganization.md): the prototype is merged behind
+  `CHEPTA.app(el, { layout: "next" })`. Next, by the proposal's steps: 1. the shell's contract (method, data, units and
+  sources as functions; the Method button everywhere); 2. canvas tabs; 3. numbered steps for Flash, Heat exchanger and
+  Pipe; then the first additions (measured VLE points on T-x-y, the x-y, gamma and alpha diagrams, the flowsheet's tabs
+  and examples). The new layout becomes the default only after steps 1-3 and a check by users; "classic" is kept for
+  two released versions.
 - **CHEPTA-Lab on Claude** (docs/decisions/2026-11-11-05-chepta-lab-on-claude.md): its own coordinator session starts
   when two worker slots are free; held-out evaluation cases reviewed by the maintainer or another model family
   (ROADMAP.md, "CHEPTA and CHEPTA-Lab", rule 7). Open: attach the CHEPTA-Lab repository to that session.
