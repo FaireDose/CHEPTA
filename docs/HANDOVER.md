@@ -23,7 +23,8 @@ current: replace its "State" and "Queue" sections at each handover, never append
 1. **Short sessions.** One task, one session, one pull request. Never give a finished worker a second task; start a
    fresh session from `main` instead. A coordinator that passes about 150,000 tokens of context writes a new handover
    and stops.
-2. **At most two worker sessions at a time** (the maintainer, 2026-11-05).
+2. **At most two worker sessions at a time** (the maintainer, 2026-11-05), counted across CHEPTA and CHEPTA-Lab together
+   (2026-11-11). While Fable 5.2 is free to use (from 2026-11-11, for a few days), Fable sessions are not counted.
 3. **A lighter model for routine work.** `create_session` takes `model`. Use `claude-sonnet-5-5` for data fits with the
    existing scripts, merge conflicts, documentation, small fixes, and re-running a check; use `claude-opus-5-5` for new
    models, new solvers, proposals and engineering judgement. The coordinator itself can run on Sonnet: it plans,
@@ -101,6 +102,16 @@ State at 2026-11-10 23:15 UTC: #218 and #219 merged; #220, #221 and #222 open, e
    specifications, side draws, equipment cost E2 and utilities E3); the gas-hydrate check; an NH3 + water NRTL fit;
    NRTL pairs for water + glucose and sucrose; CPA for CO2 + water (methods M3); the user's own slurry viscosity and
    density for the pump.
+
+## CHEPTA-Lab moves to Claude (the maintainer, 2026-11-11)
+
+- When two worker slots are free (Fable sessions not counted), start a separate CHEPTA-Lab coordinator session on
+  https://github.com/FaireDose/CHEPTA-Lab (not this session): its own handover file in that repository, the same usage
+  rules, `chepta@0.6.0` pinned, then the roadmap's order (ROADMAP.md, "CHEPTA and CHEPTA-Lab", "Next, in this order").
+- The two coordinators exchange capability requests and release notices by short messages.
+- ROADMAP.md, "CHEPTA and CHEPTA-Lab", rule 7: Lab's held-out evaluation cases are reviewed by the maintainer or by an
+  AI model of another family before use; no Claude session that writes CHEPTA code sees them.
+- Decision: docs/decisions/2026-11-11-05-chepta-lab-on-claude.md.
 
 ## Open questions for the maintainer
 

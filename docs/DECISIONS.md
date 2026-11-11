@@ -10,6 +10,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **CHEPTA-Lab on Claude** (docs/decisions/2026-11-11-05-chepta-lab-on-claude.md): its own coordinator session starts
+  when two worker slots are free; held-out evaluation cases reviewed by the maintainer or another model family
+  (ROADMAP.md, "CHEPTA and CHEPTA-Lab", rule 7). Open: attach the CHEPTA-Lab repository to that session.
+- **Release procedure** (docs/decisions/2026-11-11-03-release-0.6.0.md): 0.6.0 live on npm; from now on release,
+  approve on npmjs.com (wait until the staged version has finished validating), then open and merge the version pull
+  request from the link in the workflow's summary.
 - **High-pressure gases in methanol and water** (docs/decisions/2026-11-04-13-kij-high-pressure.md, 2026-11-05-03,
   2026-11-06-01, 2026-11-06-02-mhv1.md): k_ij = a + b/T in the engine; SRK/PR + gE (MHV1) built, its methanol pairs
   written with fit-quality warnings (2026-11-07), CO2 + water's PR set with alpha fitted (11.4 % in P against 13.8 % for
