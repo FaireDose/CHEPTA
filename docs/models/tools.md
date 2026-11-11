@@ -19,7 +19,7 @@ them. Only the outcome `ok` carries numbers. `missing_data` means a property or 
 **The authoring contract** (proposal 0015, W8). A flowsheet is checked before anything is calculated, and a key CHEPTA
 does not read is refused rather than ignored:
 
-- an unknown key of the flowsheet's `thermo` (it takes `model`, `vapour`, `sets` and `prefer`; an assistant's
+- an unknown key of the flowsheet's `thermo` (it takes `model`, `vapour`, `sets`, `prefer`, `solids` and `mixing`; an assistant's
   `thermo.method` is one) gives `invalid_input` (BAD_INPUT) with the key, the known keys and `where`
   `[{ field: "flowsheet.thermo.method" }]`;
 - an unknown key of a block's `spec` gives `invalid_input` with the block's known keys and `where`

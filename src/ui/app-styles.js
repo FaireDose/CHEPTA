@@ -243,7 +243,7 @@ export const APP_CSS = `
 .fa-pairs li.has-sets{display:grid; grid-template-columns:minmax(0,1fr) auto; row-gap:3px}
 .fa-pair-name{overflow:hidden; text-overflow:ellipsis}
 .fug-app select.fa-set-sel{grid-column:1/-1; width:100%; font-size:11.5px; padding:2px 5px}
-.fa-pair-note{grid-column:1/-1; font-size:11px; color:var(--fug-muted); line-height:1.35}
+.fa-pair-note{grid-column:1/-1; font-size:11px; color:var(--fug-muted); line-height:1.35; overflow-wrap:anywhere}
 .fa-src-set{font-size:11px; color:var(--fug-muted); margin-top:1px}
 .fa-src-note{font-size:11px; color:var(--fug-fg2); margin-top:2px}
 .fa-kij{font-weight:400; color:var(--fug-muted)}
@@ -258,6 +258,9 @@ export const APP_CSS = `
 .fug-app .fa-src-tools svg.fug-ico{width:16px; height:16px; flex:none; display:inline-block; touch-action:auto}
 .fa-check-label{display:flex; align-items:center; gap:6px; font-size:12px; color:var(--fug-fg2)}
 .fa-feed{display:flex; flex-direction:column; gap:6px}
+.fa-row-fields{display:flex; flex-wrap:wrap; align-items:flex-end; gap:6px}
+.fa-pipe-fit{display:flex; flex-direction:column; gap:6px; padding:8px 0; border-bottom:1px solid var(--fug-rule)}
+.fa-pipe-fit select{max-width:100%}
 .fa-flow{display:flex; flex-direction:column; gap:4px; margin-bottom:8px}
 .fa-flow .fa-seg{align-self:flex-end}
 .fa-plot[data-view="flash"]{max-width:none}

@@ -12,13 +12,15 @@ import {
 const MAC = ["methanol", "acetone", "chloroform"];
 const go = (s, ...patches) => patches.reduce(applyPatch, s);
 
-test("one navigation: nine task workspaces holding every view; four supporting panels", () => {
+test("one navigation: ten task workspaces holding every view; four supporting panels", () => {
   // the Heat exchanger joins the Unit models (proposal 0013, step 2, 2026-10-20); Steam becomes Charts, with the
   // charts of any fluid beside water's (proposal 0013, step 7; its id stays "steam", so saved projects open)
   // the Reactor joins the Unit models (proposal 0010, steps 5 and 6; the maintainer, 2026-10-28), in place of the locked "Reaction"
   // the Column joins them (proposal 0015, step 4, M2b; 2026-10-30), in place of the locked "Distillation"
-  assert.deepEqual(WORKSPACES.map(w => w.id), ["equilibrium", "steam", "solubility", "properties", "flash", "hx", "reactor", "column", "flowsheet"]);
-  assert.deepEqual(WORKSPACES.map(w => w.label), ["Phase equilibrium", "Charts", "Solubility", "Properties", "Flash", "Heat exchanger", "Reactor", "Column", "Flowsheet"]);
+  // the Pipe joins them (proposal 0020; the maintainer, 2026-11-07: "put it in the model tab so I can check a pipe
+  // without doing a flowsheet"): this list counts the workspaces, so a new one changes it
+  assert.deepEqual(WORKSPACES.map(w => w.id), ["equilibrium", "steam", "solubility", "properties", "flash", "hx", "pipe", "reactor", "column", "flowsheet"]);
+  assert.deepEqual(WORKSPACES.map(w => w.label), ["Phase equilibrium", "Charts", "Solubility", "Properties", "Flash", "Heat exchanger", "Pipe", "Reactor", "Column", "Flowsheet"]);
   assert.deepEqual(WORKSPACES.find(w => w.id === "steam").views, ["steam", "charts"]);
   // the top navigation: File, then three sections holding every workspace once, in order
   assert.deepEqual(SECTIONS.map(x => x.label), ["Properties & Equilibria", "Unit models", "Flowsheet"]);

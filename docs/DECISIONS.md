@@ -17,10 +17,26 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (MHV1). Open: confirm IAPWS G7-04 for H2 and CO + water; CH4 + water held (Campos 2010 and Kim 2008 disagree with the
   other seven articles); SRK's CO2 + water alpha fit (better in P and solubility, 2 more points without a bubble
   pressure) not written; CPA (M3) for water's association.
+- **Gas-liquid flow in the Pipe block** (proposal 0020, step 4; docs/decisions/2026-11-10-06-pipe-two-phase.md):
+  Lockhart-Martinelli in Chisholm's form (Filip et al. 2014; ANL/CP-74646), no-slip holdup for elevation and
+  acceleration; built, in review. Check the C table and the Brennen quotes. Decided (2026-11-10): Re 1500 for C, an
+  elevation change warns, fittings in gas-liquid flow stay refused, no worked example needed before merging. Next:
+  Beggs-Brill, once open sources are found.
+- **MHV1 in the interface** (docs/decisions/2026-11-10-03-mhv1-interface.md): "PR + gE (MHV1)" and "SRK + gE (MHV1)" in
+  the Model selector, the flowsheet's Method page, a column's own method, project format 7, `CHEPTA.run`, the command line
+  and MCP (`thermo.mixing`); merged (#216). The maintainer's four answers (2026-11-10) are built in
+  docs/decisions/2026-11-10-04-mhv1-followups.md (in review): the advisor recommends the rule above 10 bar for a gas with
+  a polar liquid where the engine runs it, the heat exchanger's stream methods and the Charts Equation list offer it, and
+  the Library lists its sets (`library.sets(a, b, "PR", { mixing: "MHV1" })`). The advisor's wording and its 10 bar
+  accepted (2026-11-10). Later: align the flowsheet Method page's pair notes with the Inputs panel's (a small change).
 - **Review and merge:**
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.
   - The pull request that adds this page.
+- **The Pipe block, its workspace, palette and project file** (proposal 0020, accepted for steps 1-2 on 2026-11-10;
+  docs/decisions/2026-11-10-02-pipe-block.md and 2026-11-10-05-pipe-palette-save.md): check the Pipe workspace under
+  Unit models, the Pipe in the flowsheet's palette, the DOE Leq/D table and the three worked examples. Two-phase
+  flow: Lockhart-Martinelli in the item above; Beggs-Brill next, once open sources are found.
 - **The Extraction block and its view** (proposal 0015, step 8; docs/decisions/2026-10-30-10-extraction-view.md):
   check the comparison with Glatz and Parker 2004 (Runs 1 and 3); decide whether an adiabatic cascade is wanted, whether
   the ternary view should offer mass fractions, and whether the flowsheet should take the joint sets by itself when it
@@ -269,7 +285,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   proposal and the evidence survey (57 pairs: 22 partly miscible, 17 miscible, 18 not known); accepted with the
   maintainer's answers of 2026-11-05 (gates as a start, "miscible below the measured temperature, not known above it",
   Wilson: refuse diethyl carbonate + water, keep the other four; contradicted ChemSep sets not the default where another
-  set exists). Pending: a person checks the classes against the ThermoML records; step 2 (classes, labels, refit).
+  set exists). Steps 2-5 (docs/decisions/2026-11-05-01-two-liquid-refit.md): classes of 379 pairs, joint fits, labels,
+  the engine's statements and the Wilson refusal. Pending: a person checks the classes and tie lines against the ThermoML
+  records; decide on the joint fits that miss the gates (1-butanol + water, aniline + n-octane, ...) and on the fitted
+  sets of 1-propanol + water and acetonitrile + water now labelled "predicted-contradicted" (no uncontradicted set of
+  the same model exists for them); benzene + methanol's contradicted fitted NRTL default gave way to its ChemSep NRTL
+  set on 2026-11-10 (docs/decisions/2026-11-10-07-benzene-methanol-default.md; no other pair has that case); a person
+  checks that default. Main merged into the branch on 2026-11-10, labels unchanged.
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order

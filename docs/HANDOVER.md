@@ -87,7 +87,7 @@ State at 2026-11-10 23:15 UTC: #218 and #219 merged; #220, #221 and #222 open, e
    - Later small change (from #220): align the flowsheet Method page's pair notes with the Inputs panel's.
    - Then: release 0.6.0 (the maintainer creates the GitHub release, tag v0.6.0).
 2. Finish the Pipe block with its Unit models workspace (0020). Opus.
-3. MHV1 in the interface: "PR + gE (MHV1)" and "SRK + gE (MHV1)" in the Model selector, the flowsheet's Method page,
+3. (Built, in review: docs/decisions/2026-11-10-03-mhv1-interface.md.) MHV1 in the interface: "PR + gE (MHV1)" and "SRK + gE (MHV1)" in the Model selector, the flowsheet's Method page,
    the column's method, project files and `CHEPTA.run` (thermo `mixing`), the command line and MCP. No low-pressure
    comparison study (the maintainer, 2026-11-10: not needed). Sonnet or Opus.
 4. Release 0.6.0: the maintainer creates the GitHub release with tag `v0.6.0`; `.github/workflows/publish.yml` sets

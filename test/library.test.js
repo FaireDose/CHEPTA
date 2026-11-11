@@ -46,8 +46,20 @@ test("a set fitted to measured mixture data is the default over the ChemSep set 
       byPair.get(key).push(p);
     }
     let both = 0;
+    // Named exception: benzene + methanol NRTL. The fitted set "fitted-li2019-etal" is labelled "predicted-contradicted" (it
+    // predicts two liquids where one liquid was measured) and the ChemSep set does not split, so by proposal 0019,
+    // answer 5 (the maintainer, 2026-11-10) the ChemSep set is the default; the fitted set stays selectable.
+    const CONTRADICTED_FITTED = new Set(["NRTL benzene+methanol"]);
     for (const [key, sets] of byPair) {
       if (!sets.some(p => p.tier === "fitted")) continue;
+      if (CONTRADICTED_FITTED.has(key)) {
+        const d = sets.filter(p => p.default !== false);
+        assert.equal(d.length, 1, `${key}: one default set`);
+        assert.equal(d[0].tier, "databank", `${key}: the uncontradicted ChemSep set is the default`);
+        assert.ok(sets.some(p => p.tier === "fitted" && p.default === false && p.two_liquids?.evidence === "predicted-contradicted"),
+          `${key}: the contradicted fitted set stays as an alternative`);
+        continue;
+      }
       const def = sets.filter(p => p.default !== false);
       assert.equal(def.length, 1, `${key}: one default set`);
       assert.equal(def[0].tier, "fitted", `${key}: the default is ${def[0].set}, not the fitted set`);

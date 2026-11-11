@@ -238,6 +238,9 @@ new refit of a ChemSep record is made (section 1).
 - Where a pair has a set fitted to measured mixture data (ThermoML Archive, open articles), that set is the default;
   the ChemSep set of the same pair stays as an alternative the user can choose (`sets`, `prefer`). The ChemSep set is
   the default only where no measured mixture data were fitted (the maintainer, 2026-10-14; `test/library.test.js`).
+  One exception (the maintainer, 2026-11-10; proposal 0019, answer 5): a fitted set is the default unless it is
+  labelled "predicted-contradicted" and another set of the same model is not; so far only benzene + methanol, whose
+  ChemSep NRTL set is the default (`FITTED_DEMOTED` in `two_liquid_labels.py`).
 - Open databank sets (ChemSep) are imported as tier "databank".
 - Fits to measured vapour-liquid data from the ThermoML Archive (`vle_batch.py`, then `fit_parameters.py`): isobaric
   T-x-y near 101.3 kPa first, that passes the point test of thermodynamic consistency; then other pressures; then
@@ -245,8 +248,28 @@ new refit of a ChemSep record is made (section 1).
   the vapour-pressure records. A set held at one temperature whose recorded temperature drifts by 0.5 K or less is one
   isotherm, at the mean temperature.
 - A fit is written when it follows its data within 0.5 K and 0.012 in y (1.5 % in P). Between that and 2.5 K, 0.02,
-  3 % it is written with a quality warning and a "fit-quality" known issue. A fit that predicts a liquid split inside
-  its data range is never written.
+  3 % it is written with a quality warning and a "fit-quality" known issue.
+- **Two liquids** (proposal 0019; the maintainer, 2026-11-04). Before a pair is fitted, it is classed from open
+  data (`validation/data/two_liquids/classes.json`, `two_liquid_survey.py`): *partly miscible* where liquid-liquid
+  data, mutual solubilities, vapour-liquid-liquid points or a heterogeneous azeotrope are open; *miscible* where it
+  was measured as one liquid where a set predicts two; *not known* otherwise. A vapour-liquid set is not evidence of
+  one liquid. Each class names its sources and the temperature, pressure and composition range they cover, and holds
+  only there; a predicted split is never recorded as measured. Then:
+  - miscible: a fit that predicts a liquid split in its data range, or where the pair was measured as one liquid, is
+    never written;
+  - partly miscible: the fit is joint, to the vapour-liquid and the liquid-liquid data; it must predict the split
+    where the liquid-liquid data are and not where a one-liquid point is, and meet the mutual solubilities within
+    0.02 in mole fraction (25 % for a minor component below 0.05); between that and 0.04 (50 %) it is written with a
+    quality warning and a "fit-quality" known issue;
+  - not known: fitted to the vapour-liquid data as above; a predicted split is kept, and the set says "two liquids
+    predicted, not checked against liquid-liquid data" with where it splits.
+  - one-liquid data only below the temperatures of a predicted split class the pair miscible below them and not
+    known above them: the fit is kept with the label, not refused;
+  - ChemSep sets are not refitted; their predicted split is labelled by the class of the pair. A ChemSep set whose
+    split is contradicted by open data is not the default where another set exists (a fitted set, or the other
+    model's).
+- Wilson cannot give two liquids: it is not fitted to liquid-liquid data, a heterogeneous azeotrope or data with two
+  liquids, nor to a pair classed partly miscible whose data range overlaps the measured split.
 - The property method of a test or example follows [METHOD_SELECTION.md](METHOD_SELECTION.md).
 
 - **Sets fitted to measured solubilities** (`fit_sle.py`, set `fitted-sle-thermoml`; the maintainer, 2026-11-05): the

@@ -23,6 +23,7 @@ import { WORKSPACES, UTILITIES, INPUTS, checkInputs, normalizeInputs, seedInputs
 import { tLabel, normalizeUnits, tToDisplay, tFromDisplay, pToDisplay, pFromDisplay, fmtShort } from "./properties-logic.js";
 import { normalizeFlash, FLASH_DEFAULTS } from "./flash-logic.js";
 import { normalizeHx, hxStreamSetup } from "./hx-logic.js";
+import { normalizePipe } from "./pipe-logic.js";
 import { solidUnitIds } from "./solubility-units.js";
 import ENVELOPE_EXAMPLES from "../data/envelope-examples.json" with { type: "json" };
 
@@ -39,6 +40,7 @@ export const VIEWS = {
   envelope: { workspace: "equilibrium", diagram: true, label: "Phase envelope" },
   flash: { workspace: "flash", label: "Flash" },
   hx: { workspace: "hx", label: "Heat exchanger" },
+  pipe: { workspace: "pipe", label: "Pipe" },
   flowsheet: { workspace: "flowsheet", label: "Flowsheet" },
   reactor: { workspace: "reactor", label: "Reactor" },
   column: { workspace: "column", label: "Column" },
@@ -137,7 +139,7 @@ export const ALL_MODELS = [...MODELS, ...EOS_MODELS];
 /** The model as a short phrase: "NRTL with a PR vapour", "Peng–Robinson", "Ideal solution". */
 export function modelLabel(state) {
   const m = state.model;
-  if (isEosModel(m)) return m === "PR" ? "Peng–Robinson" : "SRK";
+  if (isEosModel(m)) return state.mixing === "MHV1" ? `${m} + gE (MHV1)` : m === "PR" ? "Peng–Robinson" : "SRK";
   const liquid = m === "ideal" ? "Ideal solution" : m === "MOD-UNIFAC-2" ? "Mod. UNIFAC 2.0 (predicted)" : m === "WILSON" ? "Wilson" : m;
   return state.vapour && state.vapour !== "ideal" ? `${liquid} with a ${state.vapour} vapour` : liquid;
 }
@@ -229,9 +231,9 @@ export function viewAvailability(view, ids, model = "NRTL", ud = null) {
       if (liq.length < min) return { enabled: false, use: [], reason: min === 1 ? "Select at least one component." : `With an activity model the phase envelope needs two liquids; ${word(liq.length)} selected.` };
       return { enabled: true, use: liq.slice(0, 24) };
     }
-    case "flash": case "hx": {
+    case "flash": case "hx": case "pipe": {
       // one component is a pure substance heated, cooled or boiled, with any model
-      if (liq.length < 1) return { enabled: false, use: [], reason: `A ${view === "hx" ? "heat exchanger" : "flash"} needs a component; ${word(liq.length)} selected.` };
+      if (liq.length < 1) return { enabled: false, use: [], reason: `A ${view === "hx" ? "heat exchanger" : view === "pipe" ? "pipe" : "flash"} needs a component; ${word(liq.length)} selected.` };
       return { enabled: true, use: liq.slice(0, 6) };
     }
     case "henry": {
@@ -368,6 +370,8 @@ export function initialState(cfg = {}) {
     components: [],
     model,
     eos,
+    // the mixing rule of an equation of state (proposal 0018): null (classical, k_ij) or "MHV1" (PR / SRK + gE (MHV1))
+    mixing: checkMixing(cfg.mixing),
     vapour: checkVapour(cfg.vapour ?? DEFAULTS.vapour),
     P_kPa: positive(cfg.P_kPa ?? DEFAULTS.P_kPa, "P_kPa"),
     T_K: cfg.T_K == null ? null : positive(cfg.T_K, "T_K"),
@@ -392,6 +396,8 @@ export function initialState(cfg = {}) {
     flash: normalizeFlash(cfg.flash ?? {}, FLASH_DEFAULTS),
     // the Heat exchanger workspace (proposal 0013): null until a setting is changed (hx-logic.js HX_DEFAULTS)
     hx: cfg.hx == null ? null : normalizeHx(cfg.hx),
+    // the Pipe workspace (proposal 0020): null until a setting is changed (pipe-logic.js PIPE_DEFAULTS)
+    pipe: cfg.pipe == null ? null : normalizePipe(cfg.pipe),
     title: cfg.title,
     sets: normalizeSets(cfg.sets, {}, ud),
     // the user's own data (proposal 0012), as entered (it is saved as written); userOverlay() gives it checked
@@ -439,7 +445,7 @@ export const userOverlay = state => overlayOf(state.userData);
 /** The two streams of a process exchanger (two-stream mode): each one's components, method and vapour; until chosen,
  *  the workspace's. */
 export function hxSetups(state) {
-  const base = { ids: state.inputs.hx ?? [], model: state.model, vapour: state.vapour ?? "ideal" };
+  const base = { ids: state.inputs.hx ?? [], model: state.model, vapour: state.vapour ?? "ideal", mixing: state.mixing ?? null };
   return { hot: hxStreamSetup(state.hx, "hot", base), cold: hxStreamSetup(state.hx, "cold", base) };
 }
 
@@ -470,6 +476,12 @@ function derive(state, view) {
 function checkModel(m) {
   if (!ALL_MODELS.includes(m)) throw new Error(`Unknown model "${m}". Use an activity model (${MODELS.join(", ")}) or an equation of state (${EOS_MODELS.join(", ")}).`);
   return m;
+}
+/** The mixing rule of an equation of state: null (the classical rule with k_ij) or "MHV1". */
+function checkMixing(m) {
+  if (m == null || m === "" || String(m).toLowerCase() === "classical") return null;
+  if (String(m).toUpperCase() !== "MHV1") throw new Error(`Unknown mixing rule "${m}". Use "MHV1" (PR or SRK + gE (MHV1)), or null for the classical rule with k_ij.`);
+  return "MHV1";
 }
 /** Vapour model of the activity-coefficient views: "ideal", "PR" or "SRK". */
 function checkVapour(v) {
@@ -580,6 +592,7 @@ export function applyPatch(state, patch = {}) {
 
   // settings
   if (patch.vapour != null) next.vapour = checkVapour(patch.vapour);
+  if ("mixing" in patch) next.mixing = checkMixing(patch.mixing);
   if (patch.P_kPa != null) next.P_kPa = positive(patch.P_kPa, "P_kPa");
   if ("T_K" in patch) next.T_K = patch.T_K == null ? null : positive(patch.T_K, "T_K");
   if (patch.units != null) next.units = normalizeUnits(patch.units, state.units);
@@ -603,6 +616,7 @@ export function applyPatch(state, patch = {}) {
   if ("sharedReactions" in patch) next.sharedReactions = sharedList(patch.sharedReactions);
   if (patch.flash != null) next.flash = normalizeFlash(patch.flash, next.flash);
   if ("hx" in patch) next.hx = patch.hx == null ? null : normalizeHx(patch.hx, next.hx ?? undefined);
+  if ("pipe" in patch) next.pipe = patch.pipe == null ? null : normalizePipe(patch.pipe, next.pipe ?? undefined);
 
   // navigation
   let utility = "utility" in patch ? patch.utility : undefined;
@@ -882,7 +896,9 @@ export function setsFor(state, model) {
   // the user's own data goes with every system of the workbench (proposal 0012)
   const own = ud ? { userData: ud } : {};
   // activity-coefficient models also take the vapour model; equations of state describe both phases
-  return MODELS.includes(model) ? { sets, prefer: state.prefer ?? null, vapour: state.vapour ?? "ideal", ...own } : { sets, prefer: state.prefer ?? null, ...own };
+  // the mixing rule of an equation of state (MHV1: its pairs come from the rule's own sets, not from the k_ij sets)
+  return MODELS.includes(model) ? { sets, prefer: state.prefer ?? null, vapour: state.vapour ?? "ideal", ...own }
+    : { sets, prefer: state.prefer ?? null, ...(state.mixing ? { mixing: state.mixing } : {}), ...own };
 }
 
 /**
@@ -924,6 +940,20 @@ export function setChoices(info) {
   const all = [{ set: info.set, tier: info.tier, default: info.default, current: true }, ...info.alternatives.map(a => ({ ...a, current: false }))];
   all.sort((a, b) => b.default - a.default); // default first, then the others in the library's order
   return all.map(s => ({ ...s, label: `${s.set}${s.default ? " (default)" : ""}` }));
+}
+
+/**
+ * The notes under a pair of the Inputs panel's list (info.pairs[] of a system): its note, and with the MHV1 rule
+ * (mhv1: true) the set's source with its fit and deviations, and its fit-quality warning (proposal 0018).
+ */
+export function pairRowNotes(p, mhv1 = false) {
+  const out = [];
+  if (p.note) out.push(p.note);
+  if (mhv1 && p.set === "mhv1-fitted") {
+    out.push(p.source);
+    if (p.quality_warning) out.push(`Fit quality: ${p.quality_warning}`);
+  }
+  return out;
 }
 
 /** Search the sources (from library.sources()) by any text field and by kind. */

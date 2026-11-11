@@ -37,6 +37,7 @@ import { reactorView } from "./reactor-workspace.js";
 import { columnView } from "./column-workspace.js";
 import { runFlash, flashTable, flashCsv, phaseName, FLASH_SPECS, dutyKW, molarFlow } from "./flash-logic.js";
 import { HX_DEFAULTS, hxCalc, hxTables } from "./hx-logic.js";
+import { PIPE_DEFAULTS, pipeCalc, pipeTables, pressureSplit, regimeText } from "./pipe-logic.js";
 import { phaseEnvelope } from "../equilibrium/envelope.js";
 import { waterChart, fluidChart, drawChart, chartTables, CHART_TITLE, fluidPoint, waterPoint, statePoints, pointsSection, linesSection, MAX_POINTS } from "./charts-view.js";
 import ENVELOPE_EXAMPLES from "../data/envelope-examples.json" with { type: "json" };
@@ -68,6 +69,7 @@ export function renderView(view, ctx) {
     case "envelope": return envelopeView(ctx);
     case "flash": return flashView(ctx);
     case "hx": return hxView(ctx);
+    case "pipe": return pipeView(ctx);
     case "henry": return henryView(ctx);
     case "solid": return solidView(ctx);
     case "sle": return sleView(ctx);
@@ -740,7 +742,7 @@ function hxView(ctx) {
   const u = state.units, hx = state.hx ?? HX_DEFAULTS, two = hx.mode === "two";
   // a utility exchanger: the workspace's components and model; a process exchanger: each stream its own system
   const setups = two ? hxSetups(state) : null;
-  const streamSys = st => { const sub = { ...state, vapour: st.vapour }; return system({ components: st.ids, model: st.model, ...setsFor(sub, st.model) }); };
+  const streamSys = st => { const sub = { ...state, vapour: st.vapour, mixing: st.mixing }; return system({ components: st.ids, model: st.model, ...setsFor(sub, st.model) }); };
   let sys, systems = {};
   try {
     if (two) { systems = { hot: streamSys(setups.hot), cold: streamSys(setups.cold) }; sys = systems.hot; }
@@ -828,6 +830,96 @@ function hxView(ctx) {
     about: [...about, ...(r.rating ? [["Calculation", `Rating: ${fmtShort(r.rating.area_m2, 6)} m² given; effectiveness ${fmtShort(r.rating.effectiveness, 5)}`]] : []), ["Arrangement", `${ARR[r.arrangement]}${r.shells ? `, ${r.shells} shell(s)` : ""}`], ["Duty", `${fmtShort(r.duty_kW, 6)} kW`],
       ["Area", r.area_m2 == null ? "no U given" : `${fmtShort(r.area_m2, 6)} m²`], ["U", r.U_how ?? "–"], ...(util ? [["Utility", util.describe]] : []),
       ...(wall ? [["Minimum wall thickness", `${fmtShort(wall.t_mm, 5)} mm (${wall.method})`]] : [])],
+    tables,
+  }) };
+}
+
+// ---------------------------------------------------------------------------------------
+// Pipe (proposal 0020): single-phase flow in a pipe of its own (src/units/pipe.js); the inputs: pipe-view.js
+
+function pipeView(ctx) {
+  const { state, plot, side, below, extra, compact } = ctx;
+  const u = state.units, p = state.pipe ?? PIPE_DEFAULTS;
+  let sys;
+  try { sys = modelSystem(state, state.components); } catch (e) { throw new Error(friendly(e)); }
+  const calc = pipeCalc(sys, p);
+  const P = kPa => pToDisplay(kPa, u);
+  if (!calc.ok) {
+    // a refusal (UI_GUIDE section 5): amber, why and what to change, as the engine says it
+    plot.replaceChildren(h("div", { class: "fa-need is-compact", role: "status" },
+      warning(calc.refused.message, { title: `The pipe is refused: ${calc.refused.message.replace(/^Pipe: /, "")}` })));
+    side.replaceChildren(h("div", { class: "fa-empty" }, "No results: the pipe was refused for the reason shown on the canvas. Change the inputs it names."));
+    extra.append(...sourcesOf(ctx, sys));
+    return { data: "Refused" };
+  }
+  const r = calc.result, st = r.state, prof = r.profile;
+  // the pressure along the pipe
+  const pts = prof.map(n => ({ x: n.x_m, y: P(n.P_kPa) }));
+  const series = [{ name: "Pressure", color: st.phase === "vapour" ? "var(--fug-vap)" : "var(--fug-liq)", segments: [{ points: pts }] }];
+  const read = h("div", { class: "fa-read" });
+  const at = x => {
+    for (let i = 1; i < prof.length; i++) if (x <= prof[i].x_m + 1e-12) {
+      const a = prof[i - 1], b = prof[i], t = b.x_m === a.x_m ? 0 : (x - a.x_m) / (b.x_m - a.x_m);
+      return { P: a.P_kPa + (b.P_kPa - a.P_kPa) * t, T: a.T_K + (b.T_K - a.T_K) * t, v: a.velocity_m_s + (b.velocity_m_s - a.velocity_m_s) * t };
+    }
+    const l = prof.at(-1); return { P: l.P_kPa, T: l.T_K, v: l.velocity_m_s };
+  };
+  const show = x => {
+    const q = at(x);
+    read.replaceChildren(h("div", { class: "fug-eyebrow" }, `${fmtShort(x, 4)} m along the pipe`),
+      h("div", { class: "fa-row" }, h("span", {}, "Pressure"), h("b", {}, `${fmtShort(P(q.P), 6)} ${u.P}`)),
+      h("div", { class: "fa-row" }, h("span", {}, "Temperature"), h("b", {}, fmtTemp(q.T, u, 2))),
+      h("div", { class: "fa-row" }, h("span", {}, "Velocity"), h("b", {}, `${fmtShort(q.v, 4)} m/s`)));
+    return [P(q.P)];
+  };
+  const move = drawPlot(plot, { compact, series, x0: 0, x1: st.length_m, xLabel: "Distance along the pipe, m", yLabel: `P, ${u.P}`, show,
+    aria: "Pressure along the pipe" });
+  plot.append(h("div", { class: "fug-legend" },
+    h("span", { class: "fug-key", style: `color:${series[0].color}` }, h("i"), h("span", { style: "color:var(--fug-fg2)" }, `Pressure (${st.phase === "vapour" ? "gas" : "liquid"})`)),
+    h("span", {}, `${st.segments} segments; ${regimeText(st.regime)} flow`)));
+  const pct = x => (x == null ? null : `${(100 * x).toFixed(1)} %`);
+  const split = pressureSplit(st);
+  side.replaceChildren(...[
+    h("div", {}, h("div", { class: "fug-eyebrow" }, "Pressure drop"), h("div", { class: "fug-big" }, `${fmtShort(pToDisplay(st.dP_kPa, u), 5)} ${u.P}`)),
+    h("table", { class: "fa-kv" }, h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Part"), h("th", { scope: "col", class: "fug-num" }, u.P), h("th", { scope: "col", class: "fug-num" }, "Share"))),
+      h("tbody", {}, ...split.map(([k, v, sh]) => h("tr", {}, h("th", { scope: "row" }, k), h("td", { class: "fug-num" }, fmtShort(pToDisplay(Math.abs(v) < 1e-9 * Math.max(1, Math.abs(st.dP_kPa)) ? 0 : v, u), 5)),
+        h("td", { class: "fug-num" }, pct(sh) ?? "–"))))),
+    kv([
+      ["Outlet pressure", fmtShort(P(st.P_out_kPa), 6), u.P],
+      ["Outlet temperature", fmtTemp(st.T_out_K, u, 2)],
+      ["Velocity, inlet → outlet", `${fmtShort(st.velocity_in_m_s, 4)} → ${fmtShort(st.velocity_out_m_s, 4)}`, "m/s"],
+      ["Reynolds number, inlet → outlet", `${fmtShort(st.Re_in, 4)} → ${fmtShort(st.Re_out, 4)}`],
+      ["Friction factor (Darcy), inlet → outlet", `${fmtShort(st.friction_factor_in, 4)} → ${fmtShort(st.friction_factor_out, 4)}`],
+      ["Regime", regimeText(st.regime)],
+      ["Density, inlet → outlet", `${fmtShort(st.rho_in_kg_m3, 5)} → ${fmtShort(st.rho_out_kg_m3, 5)}`, "kg/m³"],
+      ["Mass flux", fmtShort(st.mass_flux_kg_m2s, 5), "kg/(m² s)"],
+      st.heat !== "adiabatic" ? ["Heat in (negative: lost)", fmtShort(st.heat_kW, 5), "kW"] : null,
+      st.fittings.list.length ? ["Fittings: K, Leq/D", `${fmtShort(st.fittings.K, 4)}, ${fmtShort(st.fittings.L_D, 4)}`] : null,
+    ]),
+    ...(r.warnings ?? []).map(w => warning(w.message)),
+    ...(r.notes ?? []).map(n => h("div", { class: "fug-foot" }, n)),
+    h("div", { class: "fug-foot" }, "Model predictions, not measurements. The pressure drop is split as -dP = f (dx/D) G²/(2ρ) + (K + f Leq/D) G²/(2ρ) + ρ g dz + G² d(1/ρ) (Bar-Meir, eq. 9.9; DOE-HDBK-1012/3-92, HT-03)."),
+    read].filter(Boolean));
+  move(st.length_m / 2);
+  const tables = pipeTables(r, { tFmt: K => +tToDisplay(K, u).toFixed(3), tUnit: tU(u), pFmt: kPa => P(kPa), pUnit: u.P });
+  const tb = tables[0];
+  // the same decimals down a column (UI_GUIDE, Tables): five significant figures of the column's largest value
+  const colFmt = tb.columns.map((_, j) => {
+    const big = Math.max(...tb.rows.map(row => Math.abs(row[j] ?? 0)));
+    const d = big > 0 ? Math.min(8, Math.max(0, 4 - Math.floor(Math.log10(big)))) : 0;
+    return v => { const t = v.toFixed(d); return Number(t) === 0 ? (0).toFixed(d) : t; };
+  });
+  below.replaceChildren(h("div", { class: "fs-tables" }, h("h3", {}, tb.title),
+    h("div", { class: "fug-scroll" }, h("table", { class: "fa-table" },
+      h("thead", {}, h("tr", {}, ...tb.columns.map(c => h("th", { scope: "col", class: "fug-num fa-th2" }, c.label, c.unit ? h("span", { class: "fa-th-unit" }, c.unit) : null)))),
+      h("tbody", {}, ...tb.rows.map(row => h("tr", {}, ...row.map((v, j) => h("td", { class: "fug-num" }, v == null ? "–" : colFmt[j](v)))))))),
+    h("p", { class: "fug-foot" }, "Friction: 64/Re below Re 2000, Colebrook above 3500, Churchill (1977) between (DOE-HDBK-1012/3-92 p. 19; Cimbala, ME 320 Lecture 21). The properties of each segment are the mean of its two ends; the outlet is a P-H flash at the inlet enthalpy plus the heat.")));
+  extra.append(...sourcesOf(ctx, sys));
+  return { data: `ΔP ${fmtShort(st.dP_kPa, 4)} kPa`, export: () => ({
+    title: `Pipe: ${listNames(sys.names)}`, file: `pipe ${state.components.join(" ")}`,
+    about: [...aboutRows(state, sys), ["Pipe", `${fmtShort(st.length_m, 6)} m long, ${fmtShort(st.diameter_m * 1000, 6)} mm inner diameter, roughness ${fmtShort(st.roughness_m * 1000, 4)} mm, elevation ${fmtShort(st.elevation_m, 5)} m`],
+      ["Heat", st.heat], ["Pressure drop", `${fmtShort(st.dP_kPa, 6)} kPa (friction ${fmtShort(st.dP_friction_kPa, 5)}, fittings ${fmtShort(st.dP_fittings_kPa, 5)}, elevation ${fmtShort(st.dP_elevation_kPa, 5)}, acceleration ${fmtShort(st.dP_acceleration_kPa, 5)})`],
+      ["Regime", regimeText(st.regime)]],
     tables,
   }) };
 }
@@ -1332,9 +1424,11 @@ function sourceCard(s) {
   const groups = new Map();
   for (const u of records) {
     const g = u.type === "component" ? `Pure-component data: ${u.label.split(": ")[1]}` : u.type === "kij" ? "Equation-of-state k_ij"
-      : u.type === "pair-set" ? `${u.model} parameter sets` : u.type === "henry" ? "Henry's law" : "Known-deviation notes";
+      : u.type === "pair-set" ? `${u.model} parameter sets` : u.type === "mhv1" ? `${u.model} + gE (MHV1): NRTL sets in the rule`
+      : u.type === "henry" ? "Henry's law" : "Known-deviation notes";
     if (!groups.has(g)) groups.set(g, []);
-    groups.get(g).push(u.type === "component" ? nameOf(null, u.component) : u.type === "pair-set" || u.type === "kij" ? `${u.pair.join(" + ")}${u.default ? "" : ` (${u.set}, alternative)`}` : u.label);
+    groups.get(g).push(u.type === "component" ? nameOf(null, u.component) : u.type === "pair-set" || u.type === "kij" ? `${u.pair.join(" + ")}${u.default ? "" : ` (${u.set}, alternative)`}`
+      : u.type === "mhv1" ? `${u.pair.join(" + ")}${/fit-quality/.test(u.label) ? " (fit-quality warning)" : ""}` : u.label);
   }
   const usedRows = [...groups].map(([g, items]) => h("li", {}, h("b", {}, `${g}: `), [...new Set(items)].join("; ")));
   if (files.length) usedRows.push(h("li", {}, h("b", {}, "Files: "), files.map(f => f.file).join(", ")));

@@ -6,7 +6,7 @@
 import { problemsWarning } from "./warning.js";
 import { h } from "./dom.js";
 import { HX_DEFAULTS, HX_STREAM_MAX, UTILITY_KINDS, TWO_SPECS, streamZ } from "./hx-logic.js";
-import { modelPicker } from "./model-picker.js";
+import { modelPicker, hxMethodPatch } from "./model-picker.js";
 import { HEAT_TRANSFER, ARRANGEMENTS } from "../units/heat-exchange.js";
 import { tLabel, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { parseT, parseP } from "./app-logic.js";
@@ -56,7 +56,8 @@ export function hxInputs({ state, set, uid, inputsSection, field, seg, listInput
       ...(two ? [
         h("p", { class: "fa-in-hint" }, `Up to ${HX_STREAM_MAX} components and the stream's own method: the two streams never mix.`),
         streamList({ key, ids: own.ids, model: own.model, onChange: next => put({ [key]: { components: next, z: null } }) }),
-        modelPicker({ model: own.model, vapour: own.vapour, id: `fa-hx-${key}-m-${uid}`, fk: `hx-${key}-m`, onChange: m => put({ [key]: { model: m.model, vapour: m.vapour } }) }),
+        // the stream's own method; the equations with the MHV1 rule too (proposal 0018)
+        modelPicker({ model: own.model, vapour: own.vapour, mixing: own.mixing ?? null, id: `fa-hx-${key}-m-${uid}`, fk: `hx-${key}-m`, onChange: m => put({ [key]: hxMethodPatch(m) }) }),
         mine.length ? h("div", { class: "fa-problems", "aria-live": "polite" }, problemsWarning(mine.map(p => p.message), { what: "problems with this stream" })) : null,
       ] : []),
       nField("Flow, kmol/h", s.flow, v => put({ [key]: { flow: v } }), `hx-${key}-flow`, { min: 1e-12 }),

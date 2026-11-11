@@ -177,7 +177,7 @@ Times on the development container (2026-10-30, Node 22): F1 0.3 s, the ternary
 
 ## The column's own property method (milestone M2b)
 
-**The option** `method: { model, vapour, sets, prefer }` (as a flowsheet's thermo): the column is solved with that
+**The option** `method: { model, vapour, sets, prefer, mixing }` (as a flowsheet's thermo; `mixing: "MHV1"` with PR or SRK is "PR + gE (MHV1)" / "SRK + gE (MHV1)", proposal 0018): the column is solved with that
 method (for example NRTL with liquid-liquid parameters) while the flowsheet uses another. **The P-H boundary**
 (proposal 0015, Part I, section 3): a shared enthalpy reference (each ideal gas at 298.15 K) does not make two methods
 agree at the same T and P (their departure and excess enthalpies differ), so every stream that enters or leaves the

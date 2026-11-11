@@ -29,11 +29,11 @@ import { HENRY_GASES } from "../thermo/henry.js";
 import { system } from "../system.js";
 import {
   VIEWS, PRESETS, initialState, applyPatch, TIER_SHORT, fmtP, parseP, parseT, fmtTemp, pxyTemperature,
-  RULES, ruleOf, setsFor, setChoices, pairKeyOf, modelLabel, feedbackLinks, aiChatMessage, AI_CHATS, userOverlay,
+  RULES, ruleOf, setsFor, setChoices, pairRowNotes, pairKeyOf, modelLabel, feedbackLinks, aiChatMessage, AI_CHATS, userOverlay,
   viewCheck, hxSetups,
 } from "./app-logic.js";
 import { diagramXlsx, exportFileName } from "./diagram-export.js";
-import { modelPicker, liquidPicker } from "./model-picker.js";
+import { modelPicker, liquidPicker, workbenchPatch, equationChoices, equationValue, chartEquationPatch } from "./model-picker.js";
 import { WORKSPACES, SECTIONS, sectionOf, UTILITIES, INPUTS, examplesFor, rotateInputs, solventsFor, needsFor, isEosModel } from "./workspaces.js";
 import { tLabel, UNIT_CHOICES, explorerProperties, tToDisplay, pToDisplay, fmtShort } from "./properties-logic.js";
 import { renderView, sourcesPanel, saveText, copyText } from "./app-views.js";
@@ -42,6 +42,7 @@ import { myDataPanel, PROPERTY_LABEL } from "./my-data-panel.js";
 import { canOpenWindow, openDataWindow } from "./my-data-window.js";
 import { userDataList, setEntryUse } from "./user-data-file.js";
 import { hxInputs } from "./hx-view.js";
+import { pipeInputs } from "./pipe-view.js";
 import { HX_DEFAULTS, HX_MODES, HX_TASKS, HX_STREAM_MAX } from "./hx-logic.js";
 import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey, recordFlowsheet, stepFlowsheet } from "./flowsheet-view.js";
 import { reactorRibbon, reactorInputs, reactorKey } from "./reactor-workspace.js";
@@ -57,18 +58,18 @@ const PROPERTY_GLYPHS = [
   ["density", () => "ρ", "Density"], ["enthalpy", () => "h", "Enthalpy"], ["cp", () => ["c", h("sub", {}, "p")], "Heat capacity"],
   ["viscosity", () => "μ", "Viscosity"], ["conductivity", () => "k", "Conductivity"], ["vapourPressure", () => ["P", h("sup", {}, "sat")], "Vapour pressure"],
 ];
-const VIEW_ICON = { flash: "drum", hx: "hx", reactor: "reactor", column: "column", txy: "txy", ternary: "ternary", azeotropes: "azeo", pxy: "pxy", envelope: "envelope", henry: "henry", solid: "flask", sle: "azeo", properties: "curves", steam: "dome", charts: "envelope" };
+const VIEW_ICON = { flash: "drum", hx: "hx", pipe: "pipe", reactor: "reactor", column: "column", txy: "txy", ternary: "ternary", azeotropes: "azeo", pxy: "pxy", envelope: "envelope", henry: "henry", solid: "flask", sle: "azeo", properties: "curves", steam: "dome", charts: "envelope" };
 /** A label inside a sentence: "Ternary map" → "ternary map", but "T-x-y diagram" stays. */
 const lower = s => (/^[A-Z]-/.test(s) ? s : s[0].toLowerCase() + s.slice(1));
 const NEEDS_ACTIVITY = {
   txy: "Two liquids", ternary: "Three liquids", azeotropes: "Two to four liquids", pxy: "Two liquids",
-  envelope: "Two to 24 liquids", flash: "Two to six liquids", hx: "One to six liquids", henry: "A gas and a solvent", properties: "One component", steam: "Water",
+  envelope: "Two to 24 liquids", flash: "Two to six liquids", hx: "One to six liquids", pipe: "One to six liquids", henry: "A gas and a solvent", properties: "One component", steam: "Water",
   charts: "One to six components (an equation of state)",
   solid: "A solid and a solvent", sle: "Two components with melting data",
 };
 const NEEDS_EOS = {
   ...NEEDS_ACTIVITY, txy: "Two components", ternary: "Three components", azeotropes: "Two to four components", pxy: "Two components",
-  envelope: "One to 24 components", flash: "One to six components", hx: "One to six components", charts: "One to six components",
+  envelope: "One to 24 components", flash: "One to six components", hx: "One to six components", pipe: "One to six components", charts: "One to six components",
 };
 /** What a view needs with the model in use (an equation of state takes gases too). */
 const needsOf = (view, model) => (isEosModel(model) ? NEEDS_EOS : NEEDS_ACTIVITY)[view];
@@ -368,8 +369,8 @@ export function app(target, cfg = {}) {
    * gas unless chosen otherwise), or an equation of state for both phases.
    */
   function modelGroup() {
-    return group("Model", modelPicker({ model: state.model, vapour: state.vapour, id: `fa-model-${uid}`,
-      onChange: p => set(p.model === state.model ? { vapour: p.vapour } : { model: p.model, vapour: p.vapour }) }));
+    return group("Model", modelPicker({ model: state.model, vapour: state.vapour, mixing: state.mixing ?? null, id: `fa-model-${uid}`,
+      onChange: p => set(workbenchPatch(p, state)) }));
   }
   function ribbonGroups() {
     const u = state.units, v = state.view;
@@ -414,6 +415,13 @@ export function app(target, cfg = {}) {
           ...(hx.mode === "two" ? [] : [modelGroup()]),
         ];
       }
+      // the Pipe (proposal 0020): the method of its fluid; everything else is in Inputs
+      case "pipe": return [
+        group("Calculation", h("div", { class: "fa-stack fa-about" },
+          h("div", { class: "fa-theme" }, icon("pipe", 18), "Single-phase pipe flow"),
+          h("div", { class: "fa-hint" }, "Pressure drop: friction, fittings, elevation, acceleration"))),
+        modelGroup(),
+      ];
       case "solubility": {
         const views = group("Views", diagramButton("henry", "Gas"), diagramButton("solid", "Solid"), diagramButton("sle", "Solid-liquid"));
         if (v === "henry") return [views,
@@ -456,7 +464,8 @@ export function app(target, cfg = {}) {
         group("Fluid", diagramButton("steam", "Water and steam"), diagramButton("charts", "Any fluid")),
         group("Chart", seg("Chart", CHART_KINDS, state.chart.kind, k => set({ chart: { kind: k } }), { title: "Temperature-entropy, pressure-enthalpy or enthalpy-entropy (Mollier) chart" })),
         v === "charts"
-          ? group("Equation", seg("Equation of state", [["PR", "Peng–Robinson"], ["SRK", "SRK"]], isEosModel(state.model) ? state.model : null, m => set({ model: m }),
+          // the equations of state, with the MHV1 mixing rule too (proposal 0018; model-picker.js)
+          ? group("Equation", seg("Equation of state", equationChoices(true), isEosModel(state.model) ? equationValue(state.model, state.mixing) : null, v => set(chartEquationPatch(v, state)),
             { title: "The fluid charts use an equation of state for the gas and the liquid" }))
           : group("Standard", h("div", { class: "fa-stack fa-about" },
             h("div", { class: "fa-theme" }, icon("dome", 18), "IAPWS-IF97 water and steam"),
@@ -617,8 +626,11 @@ export function app(target, cfg = {}) {
       secs.push(...hxInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf, streamList, setups }));
       if (check.ok && state.hx?.mode === "two") {
         // each stream's pairs with its own method (the two streams never mix: no pair across them)
-        for (const [k, name] of [["hot", "Hot stream: "], ["cold", "Cold stream: "]]) { const pairs = pairRows(setups[k].ids, { model: setups[k].model, title: name }); if (pairs) secs.push(pairs); }
+        for (const [k, name] of [["hot", "Hot stream: "], ["cold", "Cold stream: "]]) { const pairs = pairRows(setups[k].ids, { model: setups[k].model, mixing: setups[k].mixing, title: name }); if (pairs) secs.push(pairs); }
       } else if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
+    } else if (state.workspace === "pipe") {
+      secs.push(...pipeInputs({ state, set, uid, inputsSection, field, seg, listInput, problemsBox, check, nameOf }));
+      if (check.ok) { const pairs = pairRows(check.use); if (pairs) secs.push(pairs); }
     } else if (state.workspace === "solubility" && (v === "solid" || v === "sle")) {
       secs.push(inputsSection(v === "solid" ? "Solid and solvent" : "Components",
         h("p", { class: "fa-in-hint" }, v === "solid"
@@ -771,13 +783,14 @@ export function app(target, cfg = {}) {
   }
 
   // binary pairs of the inputs with the tier of their parameters, for the model in use
-  function pairRows(ids, { model = state.model, title = "" } = {}) {
-    const eosView = isEosModel(model);
+  // with the MHV1 rule (proposal 0018): each pair's NRTL set in the rule, with its source, tier and fit quality (pairRowNote)
+  function pairRows(ids, { model = state.model, mixing = state.mixing, title = "" } = {}) {
+    const eosView = isEosModel(model), mhv1 = eosView && mixing === "MHV1";
     if (ids.length < 2) return null;
-    const head = h("h3", {}, `${title}${eosView ? `Pairs, ${model} k_ij` : `Parameter sets, ${modelName(model)}`}`);
+    const head = h("h3", {}, `${title}${mhv1 ? `Pairs, ${model} + gE (MHV1): NRTL in the rule` : eosView ? `Pairs, ${model} k_ij` : `Parameter sets, ${modelName(model)}`}`);
     if (model === "ideal") return h("section", { class: "fa-in-sec fa-pairs" }, head, h("p", { class: "fa-in-hint" }, "Ideal solution: no pair parameters."));
     let info;
-    try { info = system({ components: ids, model, allowMissingPairs: true, ...setsFor(state, model) }).info; } catch (e) {
+    try { info = system({ components: ids, model, allowMissingPairs: true, ...setsFor({ ...state, mixing: eosView ? mixing ?? null : null }, model) }).info; } catch (e) {
       return h("section", { class: "fa-in-sec fa-pairs" }, head, h("div", { class: "fa-empty" }, e.message));
     }
     const nameToId = new Map(all().map(c => [c.name, c.id]));
@@ -791,9 +804,10 @@ export function app(target, cfg = {}) {
           set({ sets: { [key]: pick?.default && !state.prefer ? null : val } });
         } } },
       ...choices.map(c => h("option", { value: c.set, selected: c.current }, `${c.label} · ${TIER_SHORT[c.tier] ?? c.tier}`))) : null;
-      return h("li", { title: p.source, class: sel ? "has-sets" : undefined },
+      const notes = pairRowNotes(p, mhv1);
+      return h("li", { title: p.source, class: sel || notes.length ? "has-sets" : undefined },
         h("span", { class: "fa-pair-name" }, p.pair.join(" + ")), badge(p.tier),
-        sel, p.note ? h("div", { class: "fa-pair-note" }, p.note) : null);
+        sel, ...notes.map(t => h("div", { class: "fa-pair-note" }, t)));
     });
     for (const mp of info.missingPairs) rows.push(h("li", { title: eosView ? "No k_ij in the databank: k_ij = 0 is used" : "No parameters: these pairs cannot be calculated" }, h("span", {}, mp.join(" + ")), badge("none")));
     // progressive disclosure: open on wide screens, folded on phones; the reader's choice is kept
@@ -1265,6 +1279,7 @@ export function app(target, cfg = {}) {
       state.userData,   // the user's own data (proposal 0012): a change or a switch recalculates every view
       v === "flash" ? state.flash : null,
       v === "hx" ? state.hx : null,
+      v === "pipe" ? state.pipe : null,
       v === "flowsheet" ? [state.flowsheet, state.userData, ensureUi(ui).sel, ui.fs.auto, ui.fs.solveKey, ui.fs.zoom] : null,
       v === "reactor" ? reactorKey(state, ui) : null,
       v === "column" ? columnKey(state, ui) : null]);

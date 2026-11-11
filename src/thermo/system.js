@@ -1,4 +1,4 @@
-import { methodAdvice, pressureAdvice } from "./method-advice.js";
+import { methodAdvice, pressureAdvice, mhv1Advice, gasPolarPairs } from "./method-advice.js";
 import { vapourPressure } from "./psat.js";
 import { noVapourPressureMessage } from "./components.js";
 import { nrtl } from "./activity/nrtl.js";
@@ -7,7 +7,7 @@ import { wilson } from "./activity/wilson.js";
 import { modUnifac } from "./activity/mod-unifac.js";
 import modUnifacTables from "../data/mod-unifac-2.json" with { type: "json" };
 import { dimerK, monomerPressure } from "./vapour.js";
-import { createEosSystem, EOS_MODELS } from "./eos/system.js";
+import { createEosSystem, EOS_MODELS, mhv1Availability } from "./eos/system.js";
 import { listComponents, findComponent, componentRecord } from "./components.js";
 import { checkUserData, userDataUsed } from "./user-data.js";
 import { selection, choosePair, describePair, pairWarnings, sourceEntry } from "./library.js";
@@ -64,6 +64,7 @@ export function createSystem(cfg) {
   const model = (cfg.model || "NRTL").toUpperCase() === "IDEAL" ? "ideal" : (cfg.model || "NRTL").toUpperCase();
   const isEos = EOS_MODELS.includes(model);
   if (!MODELS.includes(model) && !isEos) throw fail("BAD_INPUT", `Unknown model "${cfg.model}". Use one of: ${MODELS.join(", ")}, or an equation of state: ${EOS_MODELS.join(", ")}.`);
+  if (cfg.mixing != null && !isEos) throw fail("BAD_INPUT", `mixing: "${typeof cfg.mixing === "string" ? cfg.mixing : cfg.mixing?.rule}" is a mixing rule of an equation of state (SRK or PR + gE (MHV1)); ${modelName(model)} is an activity model and has none. Use model "PR" or "SRK" with it.`);
   const vapourModel = cfg.vapour == null ? (isEos ? model : "ideal") : String(cfg.vapour).toUpperCase() === "IDEAL" ? "ideal" : String(cfg.vapour).toUpperCase();
   if (vapourModel !== "ideal" && !EOS_MODELS.includes(vapourModel)) {
     throw fail("BAD_INPUT", `Unknown vapour model "${cfg.vapour}". Use "ideal", ${EOS_MODELS.map(m => `"${m}"`).join(" or ")}.`);
@@ -82,6 +83,10 @@ export function createSystem(cfg) {
   const sel = selection(cfg, ud); // checked for every model, so that a typo never passes silently
   if (isEos) return createEosSystem(ids, { ...cfg, model, userData: ud }, sel); // Peng-Robinson / SRK: see eos/system.js
   const comps = ids.map(id => componentRecord(id, ud));
+  // above about 10 bar with a light gas and a polar liquid: the gE rule (MHV1), named only where it would run
+  const gasPolar = gasPolarPairs(ids, comps.map(c => c.name), comps.map(c => c.formula));
+  let mhv1Avail = null;
+  const mhv1Availability_ = () => (mhv1Avail ??= mhv1Availability(ids, comps, sel, ud));
   // nonvolatile components (proposal 0009, step 5): no vapour pressure; they stay in the liquid (NV_PSAT_KPA below)
   const nonvolatile = comps.map(c => c.class === "nonvolatile");
   // Henry components (proposal 0017; the maintainer, 2026-11-04): in an activity model with water, a gas that has a
@@ -230,7 +235,10 @@ export function createSystem(cfg) {
    */
   function warnings(T, P) {
     const w = pairWarnings(pairs, T, P, p => `${modelName(model)} parameters of ${p.pair.join(" + ")}${p.default ? "" : ` (set "${p.set}")`} come`);
-    if (P != null && n > 1) w.push(...pressureAdvice({ model, eos: false }, P));
+    if (P != null && n > 1) {
+      w.push(...pressureAdvice({ model, eos: false, gasPolar }, P));
+      if (model !== "ideal") w.push(...mhv1Advice({ model, eos: false, gasPolar, avail: mhv1Availability_ }, P));
+    }
     if (model === "WILSON" && Number.isFinite(T)) w.push(...wilsonSplitWarnings(T));
     if (henryOn) w.push(HENRY_NOTE);
     return cubicVapour ? [...w, ...cubicVapour.warnings(T)] : w;
@@ -244,7 +252,11 @@ export function createSystem(cfg) {
   function wilsonSplitWarnings(T) {
     const key = Math.round(T);
     if (!splitMemo.has(key)) splitMemo.set(key, wilsonSplits(ids, comps, sel, ud, key));
-    return splitMemo.get(key).map(s => `Wilson cannot predict two liquids, but the ${s.model} set "${s.set}" of ${s.pair.join(" + ")} predicts them at ${key} K (from x(${s.pair[0]}) about ${s.from} to ${s.to}): check this mixture with NRTL or UNIQUAC, and do not use Wilson where it splits.`);
+    // the class of the prediction (proposal 0019, section 4): measured, predicted by the set only, or contradicted
+    const CLASS_TEXT = { measured: " Two liquids are measured for this pair (partly miscible).",
+      "predicted-unvalidated": ` The split is predicted by the ${"{m}"} set, not checked against liquid-liquid data.`,
+      "predicted-contradicted": " The pair was measured as one liquid where the set splits: that split is probably wrong." };
+    return splitMemo.get(key).map(s => `Wilson cannot predict two liquids, but the ${s.model} set "${s.set}" of ${s.pair.join(" + ")} predicts them at ${key} K (from x(${s.pair[0]}) about ${s.from} to ${s.to}): check this mixture with NRTL or UNIQUAC, and do not use Wilson where it splits.${s.evidence ? CLASS_TEXT[s.evidence].replace("{m}", s.model) : ""}`);
   }
 
   // (enthalpies use the dimers of a dimerizing acid whether or not the chemical theory is switched on for the phase
@@ -304,7 +316,8 @@ function wilsonSplits(ids, comps, sel, ud, T) {
         const x = k / 200;
         if (gm(x + h) - 2 * gm(x) + gm(x - h) < 0) bad.push(x);
       }
-      if (bad.length) out.push({ model: m, set: choice.chosen.set, pair: [comps[i].name, comps[j].name], from: bad[0].toFixed(2), to: bad[bad.length - 1].toFixed(2) });
+      if (bad.length) out.push({ model: m, set: choice.chosen.set, pair: [comps[i].name, comps[j].name], from: bad[0].toFixed(2), to: bad[bad.length - 1].toFixed(2),
+        evidence: choice.chosen.two_liquids?.evidence ?? null });
       break;   // the NRTL set decides when there is one
     }
   }

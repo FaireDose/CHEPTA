@@ -1,0 +1,191 @@
+{
+ "_about": "Pipe block reference: 2000 segments, CoolProp 8.0.0 states (HEOS::Water, PR::Methane), viscosity given. Colebrook and Churchill (1977) agree with fluids 1.3.1 to 4.0e-15. Written by validation/python/reference_pipe.py.",
+ "cases": [
+  {
+   "name": "water, rough pipe, uphill, fittings",
+   "component": "water",
+   "T_K": 293.15,
+   "P_kPa": 800.0,
+   "mass_kg_s": 8.0,
+   "length_m": 150.0,
+   "diameter_m": 0.06,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 12.0,
+   "fittings": [
+    {
+     "fitting": "elbow-90",
+     "count": 3
+    },
+    {
+     "K": 0.5
+    }
+   ],
+   "heat": "adiabatic",
+   "viscosity_Pa_s": 0.001,
+   "coolprop": "HEOS::Water",
+   "result": {
+    "P_out_kPa": 470.207868874,
+    "T_out_K": 293.224160169,
+    "dP_kPa": 329.792131126,
+    "dP_friction_kPa": 202.982238876,
+    "dP_fittings_kPa": 9.311886073,
+    "dP_elevation_kPa": 117.496670811,
+    "dP_acceleration_kPa": 0.001335366,
+    "Re_in": 169765.272631355,
+    "velocity_out_m_s": 2.834067139,
+    "heat_lost_kW": 0.0,
+    "friction_factor_in": 0.020252398
+   }
+  },
+  {
+   "name": "viscous liquid, laminar",
+   "component": "water",
+   "T_K": 293.15,
+   "P_kPa": 500.0,
+   "mass_kg_s": 0.3,
+   "length_m": 50.0,
+   "diameter_m": 0.04,
+   "roughness_m": 4.5e-05,
+   "elevation_m": -5.0,
+   "fittings": [],
+   "heat": "adiabatic",
+   "viscosity_Pa_s": 0.05,
+   "coolprop": "HEOS::Water",
+   "result": {
+    "P_out_kPa": 536.998988813,
+    "T_out_K": 293.141678809,
+    "dP_kPa": -36.998988813,
+    "dP_friction_kPa": 11.955761537,
+    "dP_fittings_kPa": 0.0,
+    "dP_elevation_kPa": -48.954749283,
+    "dP_acceleration_kPa": -1.067e-06,
+    "Re_in": 190.98593171,
+    "velocity_out_m_s": 0.239112997,
+    "heat_lost_kW": 0.0,
+    "friction_factor_in": 0.335103216
+   }
+  },
+  {
+   "name": "water, transition",
+   "component": "water",
+   "T_K": 293.15,
+   "P_kPa": 300.0,
+   "mass_kg_s": 0.05,
+   "length_m": 30.0,
+   "diameter_m": 0.02,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 0.0,
+   "fittings": [],
+   "heat": "adiabatic",
+   "viscosity_Pa_s": 0.0011,
+   "coolprop": "HEOS::Water",
+   "result": {
+    "P_out_kPa": 299.172321626,
+    "T_out_K": 293.150186151,
+    "dP_kPa": 0.827678374,
+    "dP_friction_kPa": 0.827678364,
+    "dP_fittings_kPa": 0.0,
+    "dP_elevation_kPa": 0.0,
+    "dP_acceleration_kPa": 1.1e-08,
+    "Re_in": 2893.726238034,
+    "velocity_out_m_s": 0.159426331,
+    "heat_lost_kW": 0.0,
+    "friction_factor_in": 0.043493088
+   }
+  },
+  {
+   "name": "methane, isothermal, Peng-Robinson",
+   "component": "methane",
+   "T_K": 300.0,
+   "P_kPa": 3000.0,
+   "mass_kg_s": 1.0,
+   "length_m": 2000.0,
+   "diameter_m": 0.1,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 30.0,
+   "fittings": [
+    {
+     "fitting": "gate-valve",
+     "count": 2
+    },
+    {
+     "fitting": "tee-branch"
+    }
+   ],
+   "heat": "isothermal",
+   "viscosity_Pa_s": 1.12e-05,
+   "coolprop": "PR::Methane",
+   "result": {
+    "P_out_kPa": 2857.699551905,
+    "T_out_K": 300.0,
+    "dP_kPa": 142.300448095,
+    "dP_friction_kPa": 135.816070382,
+    "dP_fittings_kPa": 0.543264282,
+    "dP_elevation_kPa": 5.899433065,
+    "dP_acceleration_kPa": 0.041680366,
+    "Re_in": 1136821.022084967,
+    "velocity_out_m_s": 6.51856695,
+    "heat_lost_kW": 0.0,
+    "friction_factor_in": 0.016795898
+   }
+  },
+  {
+   "name": "methane, adiabatic, Peng-Robinson",
+   "component": "methane",
+   "T_K": 300.0,
+   "P_kPa": 3000.0,
+   "mass_kg_s": 1.2,
+   "length_m": 3000.0,
+   "diameter_m": 0.1,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 0.0,
+   "fittings": [],
+   "heat": "adiabatic",
+   "viscosity_Pa_s": 1.12e-05,
+   "coolprop": "PR::Methane",
+   "result": {
+    "P_out_kPa": 2700.15520549,
+    "T_out_K": 298.594416841,
+    "dP_kPa": 299.84479451,
+    "dP_friction_kPa": 299.718101058,
+    "dP_fittings_kPa": 0.0,
+    "dP_elevation_kPa": 0.0,
+    "dP_acceleration_kPa": 0.126693452,
+    "Re_in": 1364185.22650196,
+    "velocity_out_m_s": 8.25865885,
+    "heat_lost_kW": 0.0,
+    "friction_factor_in": 0.016718836
+   }
+  },
+  {
+   "name": "methane, heat lost to cold surroundings",
+   "component": "methane",
+   "T_K": 330.0,
+   "P_kPa": 3000.0,
+   "mass_kg_s": 1.0,
+   "length_m": 2000.0,
+   "diameter_m": 0.1,
+   "roughness_m": 4.5e-05,
+   "elevation_m": 0.0,
+   "fittings": [],
+   "heat": "U",
+   "U_W_m2K": 10.0,
+   "T_ambient_K": 280.0,
+   "viscosity_Pa_s": 1.2e-05,
+   "coolprop": "PR::Methane",
+   "result": {
+    "P_out_kPa": 2865.510483712,
+    "T_out_K": 283.517625564,
+    "dP_kPa": 134.489516288,
+    "dP_friction_kPa": 134.601882229,
+    "dP_fittings_kPa": 0.0,
+    "dP_elevation_kPa": 0.0,
+    "dP_acceleration_kPa": -0.112365941,
+    "Re_in": 1061032.953945969,
+    "velocity_out_m_s": 6.059179674,
+    "heat_lost_kW": 111.589889615,
+    "friction_factor_in": 0.016828509
+   }
+  }
+ ]
+}
