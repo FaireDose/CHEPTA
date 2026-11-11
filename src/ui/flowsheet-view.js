@@ -24,7 +24,7 @@ import { run } from "../api/dispatcher.js";
 import { startRun, workerStatus } from "../runtime/browser-worker.js";
 import { resultGate } from "../runtime/envelope.js";
 import {
-  PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, setSpec, moveBlock, setTear,
+  PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, addSideDraw, removeSideDraw, setSpec, moveBlock, setTear,
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
   energyOf, energyTargets, addEnergyFeed, connectEnergy, removeEnergy, setEnergyDuty, ENERGY_TARGETS, ENERGY_SOURCES,
   placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy, ratingPatch, designPatch,
@@ -485,21 +485,76 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
     const vll = spec.phases === "VLL", decanter = vll && spec.condenser === "decanter";
     const allowed = decanter ? RSPEC.filter(r => !["reflux_ratio", "condenser_duty_kW"].includes(r[0])) : RSPEC;
     const given = allowed.map(r => r[0]).filter(k => spec[k] != null);
-    const pick = decanter ? [given[0] ?? "distillate_kmol_h"] : [given[0] ?? "reflux_ratio", given[1] ?? (given[0] === "distillate_kmol_h" ? "reflux_ratio" : "distillate_kmol_h")];
-    const specField = (slot) => {
-      const key = pick[slot], other = pick[1 - slot], row = RSPEC.find(r => r[0] === key);
+    // milestone M4: a design specification (a purity, a recovery, a component's flow, a stage temperature) takes the
+    // place of a ratio, a flow or a duty; a side draw without a flow adds one specification
+    const sideDraws = Array.isArray(spec.side_draws) ? spec.side_draws : [];
+    const design = Array.isArray(spec.specifications) ? spec.specifications : [];
+    const DESIGN = [["purity", "Purity of a product"], ["recovery", "Recovery of a component"], ["component_flow", "Flow of a component in a product"], ["stage_temperature", "Temperature of a stage"]];
+    const slots = (decanter ? 1 : 2) + sideDraws.filter(d => d.flow_kmol_h == null).length;
+    const nClassic = Math.max(0, slots - design.length);
+    const defaults = (decanter ? ["distillate_kmol_h", "boilup_ratio"] : ["reflux_ratio", "distillate_kmol_h", "boilup_ratio"]).filter(k => !given.includes(k) && !(k === "distillate_kmol_h" && given.includes("bottoms_kmol_h")));
+    const pick = [...given, ...defaults].slice(0, nClassic);
+    const slotName = k => (slots === 1 ? "Specification" : `Specification ${k + 1}`);
+    const kindOptions = except => [...allowed.filter(r => !pick.includes(r[0]) || r[0] === except).map(r => [r[0], r[1]]), ...DESIGN];
+    const first = fs.components[0];
+    const newDesign = kind => (kind === "stage_temperature" ? { kind, stage: Math.max(2, (spec.stages ?? 20) - 1) } : kind === "component_flow" ? { kind, product: "distillate", component: first } : { kind, product: "distillate", component: first, value: kind === "purity" ? 0.95 : 0.99 });
+    const setDesign = list => ({ specifications: list.length ? list : null });
+    const specField = slot => {
+      const key = pick[slot], row = RSPEC.find(r => r[0] === key);
       const duty = key.endsWith("_kW");
-      return [selectField(decanter ? "Specification" : `Specification ${slot + 1}`, allowed.filter(r => r[0] !== other).map(r => [r[0], r[1]]), key,
-        v => setS({ [key]: null, [v]: spec[key] ?? null }), `fs-rspec${slot}-${b.id}`, uid),
+      return [selectField(slotName(slot), kindOptions(key), key,
+        v => setS(DESIGN.some(d => d[0] === v) ? { [key]: null, ...setDesign([...design, newDesign(v)]) } : { [key]: null, [v]: spec[key] ?? null }), `fs-rspec${slot}-${b.id}`, uid),
       numberField(row[1], spec[key] == null ? "" : duty ? String(+dutyToDisplay(spec[key], u).toPrecision(8)) : String(spec[key]),
         t => { const v = num(t); if (v === undefined || (v != null && !(v > 0))) return false; setS({ [key]: v == null ? null : duty ? dutyFromDisplay(v, u) : v }); },
         { id: `${b.id}-${key}`, uid, unit: row[2] })];
     };
+    const comps = fs.components.map(c => [c, nameOf(c)]);
+    const products = [["distillate", "Distillate"], ["bottoms", "Bottoms"], ...sideDraws.map((_, k) => [`side_draw:${k + 1}`, `Side draw ${k + 1}`])];
+    const designField = k => {
+      const d = design[k], slot = nClassic + k, id = `${b.id}-dspec${k}`;
+      const put1 = patch => { const next = { ...d, ...patch }; for (const key of Object.keys(next)) if (next[key] == null) delete next[key]; setS(setDesign(design.map((q, e) => (e === k ? next : q)))); };
+      const number = (label, key, unit, ok, ph) => numberField(label, d[key] == null ? "" : String(d[key]), t => { const v = num(t); if (v === undefined || (v != null && !ok(v))) return false; put1({ [key]: v }); }, { id: `${id}-${key}`, uid, unit, placeholder: ph });
+      const kind = selectField(slotName(slot), [...kindOptions(null), ...(DESIGN.some(q => q[0] === d.kind) ? [] : [[d.kind, d.kind]])], d.kind, v => {
+        const rest = design.filter((_, e) => e !== k);
+        if (DESIGN.some(q => q[0] === v)) return setS(setDesign(design.map((q, e) => (e === k ? newDesign(v) : q))));
+        // back to a ratio, a flow or a duty, with a starting value to change
+        setS({ ...setDesign(rest), [v]: v === "reflux_ratio" ? +(done?.state?.reflux_ratio ?? 2).toPrecision(4) : v === "boilup_ratio" ? +(done?.state?.boilup_ratio ?? 2).toPrecision(4)
+          : v === "distillate_kmol_h" ? (done?.state?.D_kmol_h != null ? +done.state.D_kmol_h.toPrecision(4) : null) : v === "bottoms_kmol_h" ? (done?.state?.B_kmol_h != null ? +done.state.B_kmol_h.toPrecision(4) : null)
+            : v === "condenser_duty_kW" ? (done?.state?.condenser_kW != null ? +done.state.condenser_kW.toPrecision(4) : null) : (done?.state?.reboiler_kW != null ? +done.state.reboiler_kW.toPrecision(4) : null) });
+      }, `fs-dspec${k}-${b.id}`, uid);
+      if (d.kind === "stage_temperature") {
+        return [kind, number("Stage", "stage", "from the top", v => Number.isInteger(v) && v >= 1, "12"),
+          numberField("Temperature", d.T_K == null ? "" : String(+tToDisplay(d.T_K, u).toFixed(3)), t => { if (t === "") return put1({ T_K: null }); const v = parseT(t, u); if (v == null) return false; put1({ T_K: v }); }, { id: `${id}-T`, uid, unit: tLabel(u) })];
+      }
+      const where = selectField("In", products, d.product === "side_draw" ? `side_draw:${d.draw ?? 1}` : d.product ?? "distillate",
+        v => put1(v.startsWith("side_draw:") ? { product: "side_draw", draw: Number(v.split(":")[1]) } : { product: v, draw: null }), `fs-dspec${k}-in-${b.id}`, uid);
+      const comp = selectField("Component", comps, d.component ?? first, v => put1({ component: v }), `fs-dspec${k}-comp-${b.id}`, uid);
+      if (d.kind === "component_flow") {
+        // (the unit chosen for an empty field is kept in the view's state: the specification holds one flow key)
+        const mk = `${id}-mass`, mass = d.flow_kg_h != null || (d.flow_kmol_h == null && !!f.mode?.[mk]);
+        return [kind, comp, where, selectField("Flow in", [["mole", "kmol/h"], ["mass", "kg/h"]], mass ? "mass" : "mole", v => {
+          f.mode = { ...(f.mode ?? {}), [mk]: v === "mass" };
+          put1(v === "mass" ? { flow_kg_h: d.flow_kmol_h ?? null, flow_kmol_h: null } : { flow_kmol_h: d.flow_kg_h ?? null, flow_kg_h: null });
+        }, `fs-dspec${k}-unit-${b.id}`, uid),
+        number("Flow of the component", mass ? "flow_kg_h" : "flow_kmol_h", mass ? "kg/h" : "kmol/h", v => v > 0)];
+      }
+      return [kind, comp, where,
+        ...(d.kind === "purity" ? [selectField("Fraction by", [["mole", "Mole"], ["mass", "Mass"]], d.basis ?? "mole", v => put1({ basis: v === "mole" ? null : v }), `fs-dspec${k}-basis-${b.id}`, uid)] : []),
+        number(d.kind === "purity" ? `${(d.basis ?? "mole") === "mass" ? "Mass" : "Mole"} fraction` : "Recovery", "value", d.kind === "purity" ? "0 to 1" : "share of its feed, 0 to 1", v => v > 0 && v < 1, d.kind === "purity" ? "0.95" : "0.99")];
+    };
+    const sideDrawRows = sideDraws.flatMap((d, k) => {
+      const putD = patch => { const next = { ...d, ...patch }; for (const key of Object.keys(next)) if (next[key] == null) delete next[key]; setS({ side_draws: sideDraws.map((q, e) => (e === k ? next : q)) }); };
+      return [h("div", { class: "fa-in-actions" }, h("strong", {}, `Side draw ${k + 1}`),
+        h("button", { type: "button", class: "fa-mini", "data-fk": `fs-rmside${k}-${b.id}`, "aria-label": `Remove side draw ${k + 1}`, on: { click: () => { try { put(removeSideDraw(fs, b.id, k)); } catch (e) { f.note = e.message; set({}); } } } }, icon("trash", 14), "Remove")),
+      numberField("From stage", d.stage == null ? "" : String(d.stage), t => { const v = num(t); if (v == null || !(Number.isInteger(v) && v >= 2)) return false; putD({ stage: v }); }, { id: `${b.id}-side${k}-stage`, uid, unit: "between the condenser and the reboiler" }),
+      segRow(`Side draw ${k + 1}`, [["liquid", "Liquid"], ["vapour", "Vapour"]], d.phase ?? "liquid", v => putD({ phase: v }), `fs-side${k}-phase-${b.id}`),
+      numberField("Flow", d.flow_kmol_h == null ? "" : String(d.flow_kmol_h), t => { const v = num(t); if (v === undefined || (v != null && !(v > 0))) return false; putD({ flow_kmol_h: v }); }, { id: `${b.id}-side${k}-flow`, uid, unit: "kmol/h; empty: found", placeholder: "found" })];
+    });
     const nIn = (streamsOf(fs, b.id).in ?? []).length;
     const fsVal = Array.isArray(spec.feed_stage) ? spec.feed_stage.join(", ") : spec.feed_stage == null ? "" : String(spec.feed_stage);
     secs.push(inputsSection("Rigorous column (stage by stage)",
       columnConfigurationRow(b, spec, setS, done),
-      segRow("Method", [["shortcut", "Shortcut"], ["rigorous", "Rigorous"]], "rigorous", m => setS({ mode: m }), `fs-cmode-${b.id}`),
+      segRow("Method", [["shortcut", "Shortcut"], ["rigorous", "Rigorous"]], "rigorous", m => setS({ mode: m, ...(m === "shortcut" ? { specifications: null, distillate_purity: null, bottoms_purity: null } : {}) }), `fs-cmode-${b.id}`),
       numberField("Stages", spec.stages == null ? "" : String(spec.stages), t => { const v = num(t); if (v === undefined || (v != null && !(Number.isInteger(v) && v >= 3))) return false; setS({ stages: v }); },
         { id: `${b.id}-stages`, uid, unit: "1 the condenser", placeholder: "20" }),
       numberField(nIn > 1 ? "Feed stages" : "Feed stage", fsVal, t => {
@@ -508,7 +563,10 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
         if (!v.every(k => Number.isInteger(k) && k >= 2)) return false;
         setS({ feed_stage: v.length === 1 ? v[0] : v });
       }, { id: `${b.id}-feed_stage`, uid, unit: nIn > 1 ? "one per feed, in order" : "from the top", placeholder: "10" }),
-      ...specField(0), ...(decanter ? [] : specField(1)),
+      ...pick.flatMap((_, k) => specField(k)), ...design.flatMap((_, k) => designField(k)),
+      h("p", { class: "fa-in-hint" }, `The column takes ${slots === 1 ? "one specification" : `${slots} specifications`}. In place of a ratio, a flow or a duty you can ask for a result: a purity, a recovery, a component's flow in a product, or a stage's temperature; the column then finds the reflux ratio, the distillate flow or the boil-up ratio you left open, and says how closely each is met. A specification no column can meet (beyond an azeotrope, too few stages, too little reflux) is refused with what the column reaches.`),
+      ...sideDrawRows,
+      h("div", { class: "fa-in-actions" }, h("button", { type: "button", class: "fa-mini", "data-fk": `fs-addside-${b.id}`, on: { click: () => put(addSideDraw(fs, b.id)) } }, icon("plus", 14), "Side draw")),
       segRow("Liquids on the stages", [["VL", "One liquid"], ["VLL", "Look for two liquids"]], vll ? "VLL" : "VL",
         v => setS(v === "VLL" ? { phases: "VLL" } : { phases: null, ...(spec.condenser === "decanter" ? { condenser: null, reflux_liquid: null, reflux_ratio: spec.reflux_ratio ?? 2 } : {}) }), `fs-phases-${b.id}`),
       segRow("Condenser", [["total", "Total"], ["partial", "Partial"], ...(vll ? [["decanter", "Decanter"]] : [])], spec.condenser ?? "total", v => {
@@ -1345,6 +1403,8 @@ function ports(fs, b) {
     // the distillate leaves at the top (from the condenser), the bottoms at the bottom (from the reboiler)
     for (const sid of st.distillate ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
     for (const sid of st.bottoms ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
+    // the side draws leave at the right, in their order
+    (st.side ?? []).forEach((sid, k, all) => { at[sid] = { x: x + w / 2, y: y + (k - (all.length - 1) / 2) * 16, dir: [1, 0] }; });
   } else if (b.type === "membrane") {
     // the retentate leaves the feed side at the right, the permeate the permeate side at the bottom
     for (const sid of st.retentate ?? []) at[sid] = { x: x + w / 2, y: y - hh / 4, dir: [1, 0] };
@@ -1642,7 +1702,7 @@ export function flowsheetView(ctx) {
       layer.append(g);
     }
     // outlet ports (drawn last, on top of the blocks): a dot where each stream leaves a unit; drag it onto an inlet to connect
-    const OUT_LABEL = { vapour: "vapour", liquid: "liquid", liquid2: "liquid 2", hot: "hot", cold: "cold", distillate: "distillate", bottoms: "bottoms" };
+    const OUT_LABEL = { vapour: "vapour", liquid: "liquid", liquid2: "liquid 2", hot: "hot", cold: "cold", distillate: "distillate", bottoms: "bottoms", side: "side draw" };
     for (const st of doc.streams) {
       const [fb, port] = st.from.split(".");
       const src = doc.blocks.find(b => b.id === fb);
@@ -1932,9 +1992,12 @@ export function resultsPanel({ state, f, sol, u, set }) {
         ] : []),
         ...(b.type === "column" && r.state?.mode === "rigorous" && !r.state.configuration ? [
           ["Stages, feed", `${r.state.stages}, on ${r.state.feed_stages.join(", ")}`],
+          ...(r.state.design_specifications ?? []).map(q => [`Asked: ${q.label}`, `${fmtShort(q.asked, 6)}; reached ${fmtShort(q.achieved, 6)} ${q.unit} (difference ${q.error.toExponential(1)})`]),
+          ...(r.state.adjusted ? [["Found for the specifications", Object.entries(r.state.adjusted).map(([k, v]) => `${{ reflux_ratio: "reflux ratio", boilup_ratio: "boil-up ratio", distillate_kmol_h: "distillate, kmol/h" }[k] ?? k.replace(/^side_draw_(\d+)_kmol_h$/, "side draw $1, kmol/h")} ${fmtShort(v, 5)}`).join("; ")]] : []),
           ["Reflux ratio", fmtShort(r.state.reflux_ratio, 4)],
           ["Boil-up ratio", fmtShort(r.state.boilup_ratio, 4)],
           ["Distillate", `${fmtShort(r.state.D_kmol_h, 5)} kmol/h`],
+          ...(r.state.side_draws ?? []).map((d, k) => [`Side draw ${k + 1}`, `${fmtShort(d.flow_kmol_h, 5)} kmol/h, ${d.phase} of stage ${d.stage}, ${fmtTemp(d.T_K, u, 2)}`]),
           ["Bottoms", `${fmtShort(r.state.B_kmol_h, 5)} kmol/h`],
           ["Condenser duty", kWText(-r.state.condenser_kW, u, 5)],
           ["Reboiler duty", kWText(r.state.reboiler_kW, u, 5)],
