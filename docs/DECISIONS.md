@@ -297,7 +297,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   sets of 1-propanol + water and acetonitrile + water now labelled "predicted-contradicted" (no uncontradicted set of
   the same model exists for them); benzene + methanol's contradicted fitted NRTL default gave way to its ChemSep NRTL
   set on 2026-11-10 (docs/decisions/2026-11-10-07-benzene-methanol-default.md; no other pair has that case); a person
-  checks that default. Main merged into the branch on 2026-11-10, labels unchanged.
+  checks that default. Main merged into the branch on 2026-11-10, labels unchanged. The labels are reproducible
+  (docs/decisions/2026-11-11-02-two-liquid-labels-reproducible.md): the 2026-11-10 "drift" was the file order and the
+  known issues' sources; the re-run took off the stale labels of the benzene + methanol Wilson sets. To decide: the
+  sources of a "phase-split" known issue, the set's own and the ThermoML Archive (recommended) or every set's of the pair.
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order

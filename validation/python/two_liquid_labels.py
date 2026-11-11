@@ -22,6 +22,24 @@ set of src/data/binaries.json of a classed pair:
 
 src/data/two-liquids.json is what the engine reads (src/thermo/two-liquids.js): per pair its class, the evidence
 entries (source DOIs, T, P and x ranges) and the measured tie lines of the partly miscible pairs.
+
+Reproducible output (decision 2026-11-11-02). Two runs on different machines write the same three files:
+  - nothing is random and nothing is solved iteratively: the splits come from a fixed composition grid (fit_parameters.
+    phase_splits: 300 log-spaced points from 1e-9 to 0.1, 1500 from 0.1 to 0.9, 300 from 0.9 to 1 - 1e-9) and a
+    fixed temperature list (273.15-373.15 K every 10 K, and the temperatures of the pair's two-liquid evidence);
+  - the stored numbers are grid values: x rounded to 4 decimals (the grid step between 0.1 and 0.9 is 0.8/1499 =
+    5.3e-4, so a split's ends are known to about one step, and 4 decimals hold the grid point without adding digits
+    that a step does not resolve) and T to 0.01 K. A rounding difference in the activity coefficients (another numpy,
+    another processor) changes a stored value only where it moves a hull point, which needs a change many orders above
+    the rounding: test/two-liquid-labels.test.js recomputes every stored split with the engine's JavaScript activity
+    coefficients and gets the same values, and g_mix perturbed by a relative 1e-12 left all of them unchanged;
+  - the pairs are taken in sorted order, the sets in their order in binaries.json, and the known issues are written
+    back where the earlier ones stood in known-issues.json (not appended), so a re-run without changes is no diff;
+  - each known issue's source_ids are the set's own and "nist-thermoml-archive" (the evidence of classes.json), sorted;
+  - what it depends on besides its inputs: the "default" flags of binaries.json, which this script itself changes
+    (answer 5 and FITTED_DEMOTED), so a Wilson label follows the default the last run left. Run it after any change
+    of binaries.json's NRTL, UNIQUAC or Wilson sets or of classes.json (DATA_RULES section 5).
+Tested with numpy 2.5.3 and scipy 1.18.1 (validation/python/requirements.txt).
 """
 import json
 import sys
@@ -75,8 +93,12 @@ def contradicted_by(splits, entry, flip):
 def main(write):
     doc = json.loads(BIN_FILE.read_text())
     K = json.loads(KNOWN_FILE.read_text())
-    issues = [k for k in K["issues"] if k.get("origin") != ORIGIN]
-    have_unchecked = {(tuple(sorted(k["components"])), k["model"]) for k in issues if k.get("kind") == "miscibility-unchecked"}
+    # the script's issues are written back where the earlier ones stood (the first of them), else at the end
+    others = [k for k in K["issues"] if k.get("origin") != ORIGIN]
+    at = next((n for n, k in enumerate(K["issues"]) if k.get("origin") == ORIGIN), len(K["issues"]))
+    n_before = sum(1 for k in K["issues"][:at] if k.get("origin") != ORIGIN)
+    issues, rest = others[:n_before], others[n_before:]
+    have_unchecked = {(tuple(sorted(k["components"])), k["model"]) for k in others if k.get("kind") == "miscibility-unchecked"}
     engine = {}
     counts = {}
     demoted = []
@@ -168,7 +190,7 @@ def main(write):
             issues.append({"components": comps, "model": r["model"], "kind": "phase-split", "message": msg,
                            "reference": "validation/data/two_liquids/classes.json (proposal 0019): the evidence of the pair, "
                                         "from the NIST TRC ThermoML Archive",
-                           "source_ids": list(r.get("source_ids", [])), "origin": ORIGIN})
+                           "source_ids": sorted(set(r.get("source_ids", [])) | {"nist-thermoml-archive"}), "origin": ORIGIN})
         # what the engine reads
         if cls != "not known" or any("two_liquids" in r for r in recs):
             entry = {"class": cls, "evidence": [{k: e[k] for k in ("kind", "doi", "T_K", "P_kPa", "x")} for e in c["evidence"]]}
@@ -185,7 +207,7 @@ def main(write):
         print("  contradicted fitted default, uncontradicted set exists (not changed)", d)
     if write:
         BIN_FILE.write_text(json.dumps(doc, indent=2) + "\n")
-        K["issues"] = issues
+        K["issues"] = issues + rest
         KNOWN_FILE.write_text(json.dumps(K, indent=2, ensure_ascii=False) + "\n")
         ENGINE_FILE.write_text(json.dumps({
             "_about": "The class of each pair from open evidence (proposal 0019), for the engine (src/thermo/two-liquids.js): "

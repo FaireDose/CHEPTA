@@ -178,7 +178,7 @@ in a page) checks its structure; a reviewer still checks the numbers. Full examp
 
 ## Working in the repository (coding agents)
 
-You need [Node.js](https://nodejs.org) 22 or newer; the Python tools need numpy and scipy.
+You need [Node.js](https://nodejs.org) 22 or newer; the Python tools need numpy and scipy (the versions last used: `validation/python/requirements.txt`).
 
 ```
 npm install
