@@ -1,0 +1,546 @@
+{
+  "chepta_column_specification_cases": 1,
+  "about": "Cases for the design specifications and the side draws of the rigorous column (proposal 0015, step 11, milestone M4). Read by validation/python/reference_mesh_specifications.py (fixture validation/fixtures/column_specifications.json) and by test/columns-specifications.test.js. Conventions as validation/data/columns/README.md (mol/s, K, kPa; stages from the top, 1 the condenser, N the reboiler). A specification: reflux_ratio, distillate_flow_mol_s, bottoms_flow_mol_s as there, or a design specification { kind: purity | recovery | component_flow | stage_temperature, product: distillate | bottoms | side_draw, draw, component, value, basis: mole (default) | mass }. draws: { stage, phase, rate_mol_s } (without rate_mol_s: found, for one more specification). start: the reference's first column (a reflux ratio and a distillate flow), only a start.",
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 2e-05,
+        "mole_fractions_absolute": 2e-06,
+        "T_K_absolute": 0.0001,
+        "adjusted_relative": 2e-05,
+        "why": "The engine meets a design specification to a scaled residual of 1e-6 (src/units/columns/specifications.js, SPEC_TOLERANCE: for a purity x about 1e-6 x (1 - x), for a flow a relative 1e-6), the reference to 1e-12, so the two columns differ by the engine's tolerance on the specification times the column's sensitivity to it; these limits are about ten times the largest difference seen when the cases were written (2026-11-11)."
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "S1-binary-two-purities",
+      "title": "Model binary, 12 stages: the purity of both products",
+      "purpose": "Two design specifications, one on each product: the reflux ratio and the distillate flow are found. The answer must also satisfy the component balance exactly: D = F (z - (1 - x_B2)) / (x_D1 - (1 - x_B2)).",
+      "thermo": {
+        "kind": "constant-alpha",
+        "alpha": [
+          2.5,
+          1.0
+        ],
+        "reference_vapour_pressure": {
+          "form": "ln(p/kPa) = A - B/T",
+          "A": 16.0,
+          "B_K": 4000.0
+        },
+        "latent_heat_J_mol": 30000.0,
+        "note": "The model system of the cases A1 to A4 (validation/data/columns/README.md): K_i = alpha_i p(T) / P, liquid enthalpy 0, vapour enthalpy the latent heat, so constant molar overflow holds exactly. Not a real mixture: docs/METHOD_SELECTION.md does not apply."
+      },
+      "components": [
+        "A",
+        "B"
+      ],
+      "pressure_kPa": 101.325,
+      "column": {
+        "configuration": "distillation",
+        "stages": 12,
+        "condenser": "total",
+        "reboiler": "partial",
+        "feed": {
+          "stage": 6,
+          "flow_mol_s": 100.0,
+          "z": [
+            0.5,
+            0.5
+          ],
+          "q": 1.0
+        }
+      },
+      "specs": [
+        {
+          "kind": "purity",
+          "product": "distillate",
+          "component": "A",
+          "value": 0.98
+        },
+        {
+          "kind": "purity",
+          "product": "bottoms",
+          "component": "B",
+          "value": 0.97
+        }
+      ],
+      "start": {
+        "reflux_ratio": 3.0,
+        "distillate_flow_mol_s": 50.0
+      },
+      "expected": {
+        "outcome": "ok",
+        "adjusted": [
+          "reflux_ratio",
+          "distillate_rate"
+        ]
+      }
+    },
+    {
+      "id": "S2-ternary-recovery-with-reflux",
+      "title": "Model ternary, 15 stages: the recovery of the middle component in the distillate at a given reflux ratio",
+      "purpose": "One design specification with one of the engine's own: the distillate flow is found.",
+      "thermo": {
+        "kind": "constant-alpha",
+        "alpha": [
+          4.0,
+          2.0,
+          1.0
+        ],
+        "reference_vapour_pressure": {
+          "form": "ln(p/kPa) = A - B/T",
+          "A": 16.0,
+          "B_K": 4000.0
+        },
+        "latent_heat_J_mol": 30000.0,
+        "note": "The model system of the cases A1 to A4 (validation/data/columns/README.md): K_i = alpha_i p(T) / P, liquid enthalpy 0, vapour enthalpy the latent heat, so constant molar overflow holds exactly. Not a real mixture: docs/METHOD_SELECTION.md does not apply."
+      },
+      "components": [
+        "A",
+        "B",
+        "C"
+      ],
+      "pressure_kPa": 101.325,
+      "column": {
+        "configuration": "distillation",
+        "stages": 15,
+        "condenser": "total",
+        "reboiler": "partial",
+        "feed": {
+          "stage": 8,
+          "flow_mol_s": 100.0,
+          "z": [
+            0.3,
+            0.3,
+            0.4
+          ],
+          "q": 1.0
+        }
+      },
+      "specs": [
+        {
+          "kind": "reflux_ratio",
+          "value": 3.0
+        },
+        {
+          "kind": "recovery",
+          "product": "distillate",
+          "component": "B",
+          "value": 0.9
+        }
+      ],
+      "start": {
+        "reflux_ratio": 3.0,
+        "distillate_flow_mol_s": 55.0
+      },
+      "expected": {
+        "outcome": "ok",
+        "adjusted": [
+          "distillate_rate"
+        ]
+      }
+    },
+    {
+      "id": "S3-ternary-stage-temperature-component-flow",
+      "title": "Model ternary: a stage temperature inside the column and a component's flow in the bottoms",
+      "purpose": "Two specifications that the Newton system of a block-tridiagonal solver cannot hold on the ends: the temperature of stage 12 and the flow of the lightest component in the bottoms.",
+      "thermo": {
+        "kind": "constant-alpha",
+        "alpha": [
+          4.0,
+          2.0,
+          1.0
+        ],
+        "reference_vapour_pressure": {
+          "form": "ln(p/kPa) = A - B/T",
+          "A": 16.0,
+          "B_K": 4000.0
+        },
+        "latent_heat_J_mol": 30000.0,
+        "note": "The model system of the cases A1 to A4 (validation/data/columns/README.md): K_i = alpha_i p(T) / P, liquid enthalpy 0, vapour enthalpy the latent heat, so constant molar overflow holds exactly. Not a real mixture: docs/METHOD_SELECTION.md does not apply."
+      },
+      "components": [
+        "A",
+        "B",
+        "C"
+      ],
+      "pressure_kPa": 101.325,
+      "column": {
+        "configuration": "distillation",
+        "stages": 15,
+        "condenser": "total",
+        "reboiler": "partial",
+        "feed": {
+          "stage": 8,
+          "flow_mol_s": 100.0,
+          "z": [
+            0.3,
+            0.3,
+            0.4
+          ],
+          "q": 1.0
+        }
+      },
+      "specs": [
+        {
+          "kind": "stage_temperature",
+          "stage": 12,
+          "value": 335.0
+        },
+        {
+          "kind": "component_flow",
+          "product": "bottoms",
+          "component": "A",
+          "value": 0.5,
+          "unit": "mol/s"
+        }
+      ],
+      "start": {
+        "reflux_ratio": 3.0,
+        "distillate_flow_mol_s": 33.0
+      },
+      "expected": {
+        "outcome": "ok",
+        "adjusted": [
+          "reflux_ratio",
+          "distillate_rate"
+        ]
+      }
+    },
+    {
+      "id": "S4-chemsep-benzene-toluene-purity",
+      "title": "Benzene + toluene, the column of The ChemSep Book (case B2), asked for its published distillate purity",
+      "purpose": "The published column the other way round: The ChemSep Book gives the reflux ratio (2) and the bottoms flow and prints the distillate's benzene mole fraction (0.925473, Figure 1.21). Here the bottoms flow and that mole fraction are given, and the reflux ratio is found. Against the reference: numerical. Against the published reflux ratio of 2: an agreement between two property methods (the book: UNIFAC, Antoine, constant molar overflow; CHEPTA: Peng-Robinson), not a test of the solver.",
+      "source": {
+        "citation": "H.A. Kooijman, R. Taylor, The ChemSep Book, 2nd edition, 2006, section 1.2 (pp. 9-17) and section 1.3 (pp. 18-20)",
+        "open_copy": "http://www.chemsep.org/downloads/docs/book2.pdf",
+        "access": "Public domain ('This publication is public domain', p. 2 of the PDF)",
+        "tables": "Figure 1.21 (x_D), Figure 1.19 (reflux ratio, bottoms flow); the numbers as transcribed in validation/data/columns/B2-chemsep-benzene-toluene.json (published.x_D, published.reflux_ratio)",
+        "source_id": "kooijman-taylor-2006-chemsep-book"
+      },
+      "method_choice": "As case B2 (docs/METHOD_SELECTION.md rules 2 and 6): Peng-Robinson for both phases.",
+      "thermo": {
+        "kind": "chepta",
+        "model": "PR",
+        "sets": "default"
+      },
+      "components": [
+        "benzene",
+        "toluene"
+      ],
+      "pressure_kPa": 111.4575,
+      "column": {
+        "configuration": "distillation",
+        "stages": 10,
+        "condenser": "total",
+        "reboiler": "partial",
+        "feed": {
+          "stage": 5,
+          "flow_mol_s": 11.7471,
+          "z": [
+            0.5,
+            0.5
+          ],
+          "q": 1
+        }
+      },
+      "specs": [
+        {
+          "kind": "purity",
+          "product": "distillate",
+          "component": "benzene",
+          "value": 0.925473
+        },
+        {
+          "kind": "bottoms_flow_mol_s",
+          "value": 5.874
+        }
+      ],
+      "start": {
+        "reflux_ratio": 2.0,
+        "distillate_flow_mol_s": 5.8731
+      },
+      "published": {
+        "reflux_ratio": 2,
+        "where": "case B2, published.reflux_ratio (Figure 1.19, 'RR=2')"
+      },
+      "expected": {
+        "outcome": "ok",
+        "adjusted": [
+          "reflux_ratio"
+        ]
+      },
+      "agreement_with_published_example": {
+        "reflux_ratio_relative": 0.15,
+        "why": "CHEPTA's Peng-Robinson column gives 0.915 benzene at the published reflux ratio of 2 (case B2), against the book's 0.925 with UNIFAC and constant molar overflow; reaching 0.925 takes more reflux in CHEPTA's method (2.27 when the case was written, 13 % above). The limit states agreement between two property methods; the maintainer confirms or changes it."
+      }
+    },
+    {
+      "id": "S5-benzene-toluene-mass-purities",
+      "title": "Benzene + toluene, the same column: mass fractions of both products",
+      "purpose": "The mass basis: 95 % by mass of benzene in the distillate and of toluene in the bottoms.",
+      "method_choice": "As case B2: Peng-Robinson for both phases.",
+      "thermo": {
+        "kind": "chepta",
+        "model": "PR",
+        "sets": "default"
+      },
+      "components": [
+        "benzene",
+        "toluene"
+      ],
+      "pressure_kPa": 111.4575,
+      "column": {
+        "configuration": "distillation",
+        "stages": 10,
+        "condenser": "total",
+        "reboiler": "partial",
+        "feed": {
+          "stage": 5,
+          "flow_mol_s": 11.7471,
+          "z": [
+            0.5,
+            0.5
+          ],
+          "q": 1
+        }
+      },
+      "specs": [
+        {
+          "kind": "purity",
+          "product": "distillate",
+          "component": "benzene",
+          "value": 0.95,
+          "basis": "mass"
+        },
+        {
+          "kind": "purity",
+          "product": "bottoms",
+          "component": "toluene",
+          "value": 0.95,
+          "basis": "mass"
+        }
+      ],
+      "start": {
+        "reflux_ratio": 3.5,
+        "distillate_flow_mol_s": 5.9
+      },
+      "expected": {
+        "outcome": "ok",
+        "adjusted": [
+          "reflux_ratio",
+          "distillate_rate"
+        ]
+      }
+    },
+    {
+      "id": "S6-ethanol-water-purity-recovery",
+      "title": "Ethanol + water, NRTL (the column of case B1): a purity below the azeotrope with a recovery",
+      "purpose": "A real nonideal mixture: 0.80 mole fraction of ethanol in the distillate (the model's azeotrope is at 0.88) with 95 % of the ethanol recovered there.",
+      "method_choice": "As case B1 (docs/METHOD_SELECTION.md rule 3): NRTL (default set), ideal-gas vapour.",
+      "thermo": {
+        "kind": "chepta",
+        "model": "NRTL",
+        "vapour": "ideal",
+        "sets": "default"
+      },
+      "components": [
+        "ethanol",
+        "water"
+      ],
+      "pressure_kPa": 101.325,
+      "column": {
+        "configuration": "distillation",
+        "stages": 20,
+        "condenser": "total",
+        "reboiler": "partial",
+        "feed": {
+          "stage": 10,
+          "flow_mol_s": 100.0,
+          "z": [
+            0.5,
+            0.5
+          ],
+          "T_K": 350.0
+        }
+      },
+      "specs": [
+        {
+          "kind": "purity",
+          "product": "distillate",
+          "component": "ethanol",
+          "value": 0.8
+        },
+        {
+          "kind": "recovery",
+          "product": "distillate",
+          "component": "ethanol",
+          "value": 0.95
+        }
+      ],
+      "start": {
+        "reflux_ratio": 2.0,
+        "distillate_flow_mol_s": 59.375
+      },
+      "expected": {
+        "outcome": "ok",
+        "adjusted": [
+          "reflux_ratio",
+          "distillate_rate"
+        ]
+      }
+    },
+    {
+      "id": "S7-ternary-side-draws",
+      "title": "Model ternary: a liquid and a vapour side draw of given rates",
+      "purpose": "Side draws in the stage solver itself: 20 mol/s of the liquid of stage 5 and 10 mol/s of the vapour of stage 12, with a reflux ratio and a distillate flow. The bottoms are the feed less the distillate and the draws.",
+      "thermo": {
+        "kind": "constant-alpha",
+        "alpha": [
+          4.0,
+          2.0,
+          1.0
+        ],
+        "reference_vapour_pressure": {
+          "form": "ln(p/kPa) = A - B/T",
+          "A": 16.0,
+          "B_K": 4000.0
+        },
+        "latent_heat_J_mol": 30000.0,
+        "note": "The model system of the cases A1 to A4 (validation/data/columns/README.md): K_i = alpha_i p(T) / P, liquid enthalpy 0, vapour enthalpy the latent heat, so constant molar overflow holds exactly. Not a real mixture: docs/METHOD_SELECTION.md does not apply."
+      },
+      "components": [
+        "A",
+        "B",
+        "C"
+      ],
+      "pressure_kPa": 101.325,
+      "column": {
+        "configuration": "distillation",
+        "stages": 15,
+        "condenser": "total",
+        "reboiler": "partial",
+        "feed": {
+          "stage": 8,
+          "flow_mol_s": 100.0,
+          "z": [
+            0.3,
+            0.3,
+            0.4
+          ],
+          "q": 1.0
+        }
+      },
+      "draws": [
+        {
+          "stage": 5,
+          "phase": "liquid",
+          "rate_mol_s": 20.0
+        },
+        {
+          "stage": 12,
+          "phase": "vapour",
+          "rate_mol_s": 10.0
+        }
+      ],
+      "specs": [
+        {
+          "kind": "reflux_ratio",
+          "value": 4.0
+        },
+        {
+          "kind": "distillate_flow_mol_s",
+          "value": 28.0
+        }
+      ],
+      "start": {
+        "reflux_ratio": 4.0,
+        "distillate_flow_mol_s": 28.0
+      },
+      "expected": {
+        "outcome": "ok",
+        "adjusted": []
+      }
+    },
+    {
+      "id": "S8-ternary-side-draw-recovery",
+      "title": "Model ternary: the rate of a liquid side draw found for a recovery in it",
+      "purpose": "A side draw given without a rate: half of the middle component's feed is to leave in the liquid drawn from stage 7, at a given reflux ratio and distillate flow. The reference finds the rate by a bracketing root search (Brent) around columns of given rate: another method than the engine's.",
+      "thermo": {
+        "kind": "constant-alpha",
+        "alpha": [
+          4.0,
+          2.0,
+          1.0
+        ],
+        "reference_vapour_pressure": {
+          "form": "ln(p/kPa) = A - B/T",
+          "A": 16.0,
+          "B_K": 4000.0
+        },
+        "latent_heat_J_mol": 30000.0,
+        "note": "The model system of the cases A1 to A4 (validation/data/columns/README.md): K_i = alpha_i p(T) / P, liquid enthalpy 0, vapour enthalpy the latent heat, so constant molar overflow holds exactly. Not a real mixture: docs/METHOD_SELECTION.md does not apply."
+      },
+      "components": [
+        "A",
+        "B",
+        "C"
+      ],
+      "pressure_kPa": 101.325,
+      "column": {
+        "configuration": "distillation",
+        "stages": 15,
+        "condenser": "total",
+        "reboiler": "partial",
+        "feed": {
+          "stage": 8,
+          "flow_mol_s": 100.0,
+          "z": [
+            0.3,
+            0.3,
+            0.4
+          ],
+          "q": 1.0
+        }
+      },
+      "draws": [
+        {
+          "stage": 7,
+          "phase": "liquid"
+        }
+      ],
+      "specs": [
+        {
+          "kind": "reflux_ratio",
+          "value": 5.0
+        },
+        {
+          "kind": "distillate_flow_mol_s",
+          "value": 29.0
+        },
+        {
+          "kind": "recovery",
+          "product": "side_draw",
+          "draw": 1,
+          "component": "B",
+          "value": 0.5
+        }
+      ],
+      "start": {
+        "reflux_ratio": 5.0,
+        "distillate_flow_mol_s": 29.0,
+        "draw_rate_bracket_mol_s": [
+          5.0,
+          45.0
+        ]
+      },
+      "expected": {
+        "outcome": "ok",
+        "adjusted": [
+          "draw_rate"
+        ]
+      }
+    }
+  ]
+}
