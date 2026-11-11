@@ -742,7 +742,7 @@ function hxView(ctx) {
   const u = state.units, hx = state.hx ?? HX_DEFAULTS, two = hx.mode === "two";
   // a utility exchanger: the workspace's components and model; a process exchanger: each stream its own system
   const setups = two ? hxSetups(state) : null;
-  const streamSys = st => { const sub = { ...state, vapour: st.vapour }; return system({ components: st.ids, model: st.model, ...setsFor(sub, st.model) }); };
+  const streamSys = st => { const sub = { ...state, vapour: st.vapour, mixing: st.mixing }; return system({ components: st.ids, model: st.model, ...setsFor(sub, st.model) }); };
   let sys, systems = {};
   try {
     if (two) { systems = { hot: streamSys(setups.hot), cold: streamSys(setups.cold) }; sys = systems.hot; }
@@ -1424,9 +1424,11 @@ function sourceCard(s) {
   const groups = new Map();
   for (const u of records) {
     const g = u.type === "component" ? `Pure-component data: ${u.label.split(": ")[1]}` : u.type === "kij" ? "Equation-of-state k_ij"
-      : u.type === "pair-set" ? `${u.model} parameter sets` : u.type === "henry" ? "Henry's law" : "Known-deviation notes";
+      : u.type === "pair-set" ? `${u.model} parameter sets` : u.type === "mhv1" ? `${u.model} + gE (MHV1): NRTL sets in the rule`
+      : u.type === "henry" ? "Henry's law" : "Known-deviation notes";
     if (!groups.has(g)) groups.set(g, []);
-    groups.get(g).push(u.type === "component" ? nameOf(null, u.component) : u.type === "pair-set" || u.type === "kij" ? `${u.pair.join(" + ")}${u.default ? "" : ` (${u.set}, alternative)`}` : u.label);
+    groups.get(g).push(u.type === "component" ? nameOf(null, u.component) : u.type === "pair-set" || u.type === "kij" ? `${u.pair.join(" + ")}${u.default ? "" : ` (${u.set}, alternative)`}`
+      : u.type === "mhv1" ? `${u.pair.join(" + ")}${/fit-quality/.test(u.label) ? " (fit-quality warning)" : ""}` : u.label);
   }
   const usedRows = [...groups].map(([g, items]) => h("li", {}, h("b", {}, `${g}: `), [...new Set(items)].join("; ")));
   if (files.length) usedRows.push(h("li", {}, h("b", {}, "Files: "), files.map(f => f.file).join(", ")));

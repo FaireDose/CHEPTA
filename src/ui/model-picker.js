@@ -35,6 +35,11 @@ export const workbenchPatch = (p, state) => ({ ...(p.model === state.model ? {} 
 /** The patch of a flowsheet's thermo for a pick; no mixing rule is left out of the document. */
 export const thermoPatch = (p, thermo) => ({ ...(p.model === thermo.model ? {} : { model: p.model }), vapour: p.vapour, mixing: p.mixing ?? undefined });
 
+/** The patch of a heat exchanger stream's own method (hx.hot or hx.cold) for a pick: model, vapour and mixing rule. */
+export const hxMethodPatch = p => ({ model: p.model, vapour: p.vapour, mixing: isEos(p.model) ? p.mixing ?? null : null });
+/** The Charts workspace's equation list (an equation of state only), with the MHV1 rule: the workbench patch for a value. */
+export const chartEquationPatch = (value, state) => { const { model, mixing } = parseEquation(value); return workbenchPatch({ model, vapour: state.vapour ?? "ideal", mixing }, state); };
+
 /** The column's own method for a pick of its list ("", "NRTL", ..., "PR", "PR|MHV1"): { model, vapour?, mixing? } or null. */
 export function columnMethod(v, was) {
   if (!v) return null;

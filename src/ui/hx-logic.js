@@ -14,7 +14,8 @@ import { stream } from "../stream/stream.js";
 import { exchangerArea, exchangerApproach, exchangerRating, wallThickness, HEAT_TRANSFER, ARRANGEMENTS } from "../units/heat-exchange.js";
 
 // components and model null: the workspace's (two-stream mode sets them per stream)
-const side = (T_K, P_kPa) => ({ flow: 100, z: null, T_K, P_kPa, dP_kPa: 0, components: null, model: null, vapour: null });
+// mixing: an equation of state's mixing rule, null (k_ij) or "MHV1" (PR / SRK + gE (MHV1), proposal 0018), with the stream's own model
+const side = (T_K, P_kPa) => ({ flow: 100, z: null, T_K, P_kPa, dP_kPa: 0, components: null, model: null, vapour: null, mixing: null });
 /** The most components of one stream in two-stream mode. */
 export const HX_STREAM_MAX = 3;
 
@@ -49,10 +50,12 @@ export const HX_TASKS = [["design", "Design", "Pre-sizing: the area for an outle
 export const HX_MODES = [["utility", "Utility exchanger", "A process stream heated or cooled by a utility"],
   ["two", "Process exchanger", "Heat recovery between two process streams"]];
 
-/** A stream's components, method and vapour in two-stream mode: its own, else the workspace's (ids, model, vapour). */
-export function hxStreamSetup(hx, key, { ids = [], model = "NRTL", vapour = "ideal" } = {}) {
+/** A stream's components, method, vapour and mixing rule in two-stream mode: its own, else the workspace's. The mixing
+ *  rule goes with the model it was chosen with (a stream's own model takes its own rule), and only with PR or SRK. */
+export function hxStreamSetup(hx, key, { ids = [], model = "NRTL", vapour = "ideal", mixing = null } = {}) {
   const s = (hx ?? HX_DEFAULTS)[key] ?? {};
-  return { ids: (s.components ?? ids).slice(0, HX_STREAM_MAX), model: s.model ?? model, vapour: s.vapour ?? vapour };
+  const m = s.model ?? model, mix = s.model != null ? s.mixing ?? null : mixing ?? null;
+  return { ids: (s.components ?? ids).slice(0, HX_STREAM_MAX), model: m, vapour: s.vapour ?? vapour, mixing: ["PR", "SRK"].includes(m) ? mix : null };
 }
 
 const isObj = v => v && typeof v === "object" && !Array.isArray(v);
@@ -80,6 +83,9 @@ export function normalizeHx(patch, prev = HX_DEFAULTS) {
   for (const k of ["hot", "cold"]) {
     const c = s[k].components;
     if (c != null && !(Array.isArray(c) && c.length <= HX_STREAM_MAX)) throw new Error(`hx.${k}.components must be a list of at most ${HX_STREAM_MAX} components.`);
+    const mx = s[k].mixing;
+    if (mx != null && mx !== "MHV1") throw new Error(`hx.${k}.mixing must be "MHV1" (PR or SRK + gE (MHV1)) or null for the classical rule with k_ij (got ${JSON.stringify(mx)}).`);
+    if (mx != null && !["PR", "SRK"].includes(s[k].model)) throw new Error(`hx.${k}.mixing "MHV1" goes with the stream's own model "PR" or "SRK" (got ${JSON.stringify(s[k].model)}).`);
   }
   return s;
 }

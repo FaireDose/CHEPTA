@@ -47,7 +47,11 @@ Read on 2026-10-09:
      Wilson set, tier databank, 165 pairs, and Wilson pairs of one's own in My data);
    - for the vapour, the ideal gas at low pressure, or an equation of state.
 4. **Polar, above 10 bar:** PSRK, or a cubic equation with Wong–Sandler or MHV2 mixing rules.
-   **CHEPTA does not have these yet**; such mixtures are outside what it can calculate well.
+   CHEPTA's rule of this kind is MHV1 in the PSRK form, "PR + gE (MHV1)" and "SRK + gE (MHV1)" (proposal 0018): an
+   EoS/gE mixing rule, which Privat and Jaubert (Fluid Phase Equilib. 567 (2023) 113697, open access, CC BY 4.0,
+   eqs. 25-27, p. 8) show to be a k_ij(T, z), the form that "k_ij(T) coefficients cannot accurately model" for "the most
+   complex mixtures involving polar and associating compounds" (section 3.4, p. 8; as quoted in docs/decisions/2026-11-06-02-mhv1.md). It is only as good as its pairs' NRTL
+   sets (the table below lists them). PSRK itself, Wong–Sandler and MHV2 are not in CHEPTA.
 5. **Electrolytes** (salts, ionized acids and bases): electrolyte NRTL or Pitzer. **Not in
    CHEPTA yet.**
 6. **Reduced temperature** by Kay's rule, Tr = T / Σ zᵢ Tc,ᵢ:
@@ -95,6 +99,7 @@ Checked so far:
 |---|---|---|
 | Gases dissolved in water (absorbers) | DWSIM's base property package carries Henry's law constants (`UseHenryConstants`, DWSIM class library, https://dwsim.org/api_help/html/P_DWSIM_Thermodynamics_PropertyPackages_PropertyPackage_UseHenryConstants.htm) | an activity model with Henry's law for the gases with an open constant (IAPWS G7-04, Sander 2023), proposal 0017 |
 | A light gas with a polar liquid in Peng–Robinson or SRK | DWSIM Property Packages Guide (https://dwsim.org/tutorials/en/reference/property-packages-guide.html): "Sour gas (with H2S, CO2): PR with kij ... Set binary interaction parameters"; "For PR/SRK with strongly polar or quadrupolar compounds (CO2, H2S), the kij values matter"; "Peng-Robinson is excellent for hydrocarbons and gases, but performs poorly for water/alcohol mixtures" | offered, with a warning, where the pair has a k_ij; refused without one; **carbon dioxide + water and carbon dioxide + methanol** with the temperature-dependent k_ij = a + b/T fitted to ThermoML data, with a fit-quality known issue (CO2 + water: 14-15 % in P, 10-11 % in solubility; CO2 + methanol: 7 % in P, 13 % in solubility; the maintainer, 2026-11-06; docs/decisions/2026-11-06-01-kij-temperature.md). A temperature-dependent k_ij is established practice (Privat and Jaubert, Fluid Phase Equilib. 567 (2023) 113697; PPR78's k_ij(T)); DWSIM's Peng-Robinson package takes a constant k_ij (PengRobinson.vb, commit 1abf72d). ChemSep's constant k_ij of CO2 + water stays refused in a liquid (not usable, 2026-11-05) |
+| A light gas with a polar liquid above 10 bar: a cubic equation with a gE mixing rule (rule 4) | DWSIM (read 2026-11-10): its class library lists no EoS/gE property package (no PSRK, MHV or Wong–Sandler; https://dwsim.org/api_help/html/N_DWSIM_Thermodynamics_PropertyPackages.htm, which lists PengRobinsonPropertyPackage, PRSV2PropertyPackage, PRSV2VLPropertyPackage, SRKPropertyPackage among others), and its Property Packages Guide (the page above) gives "PR or PRSV2" for hydrocarbons at "High pressure (> 100 bar)" ("PRSV2 has better accuracy for polar species") and "PR with kij" for sour gas, with no pressure condition. The open thermo library (Caleb Bell) has a PSRK class, against which CHEPTA's rule is tested (docs/decisions/2026-11-06-02-mhv1.md) | the advisor recommends "PR + gE (MHV1)" or "SRK + gE (MHV1)" above 10 bar where every gas + polar pair of the mixture has an NRTL set the rule can use (one fitted inside the rule, else the databank's), and gives the engine's refusal where one has none; PR or SRK with k_ij stays what runs unless the user switches. CHEPTA follows the method guide's rule 4 and its 10 bar where DWSIM offers no gE rule at all (docs/decisions/2026-11-10-04-mhv1-followups.md) |
 | Sour water (NH3, H2S, CO2 in water), amines | the same guide: "Sour water (NH3, H2S, CO2): Sour Water ... Specialized for gas treating"; "Aqueous electrolytes: Electrolyte NRTL" | refused until the electrolyte methods (roadmap M5) |
 
 ## What this means for CHEPTA today
@@ -104,7 +109,7 @@ Checked so far:
 | Hydrocarbons and light gases, any pressure and reduced temperature | Peng–Robinson or SRK with the databank's k_ij (0 where it has none, with a warning) | covered |
 | Polar liquids below 10 bar | NRTL or UNIQUAC with fitted or databank pairs; ideal-gas or PR/SRK vapour | covered where the pairs exist (docs/DATA_WANTED.md) |
 | Polar liquids below 10 bar, one liquid | Wilson with pairs fitted to ThermoML data (332 sets) or ChemSep's databank pairs; ideal-gas or PR/SRK vapour | covered where the pairs exist (roadmap M1, proposal 0016); refused or warned where two liquids form |
-| Polar mixtures above 10 bar | (PSRK, MHV2, Wong–Sandler, CPA) | **SRK/PR + gE (MHV1)** with NRTL (proposal 0018, the maintainer, 2026-11-06; `mixing: "MHV1"`): pairs fitted inside the rule (CO + methanol and H2 + water within the 5 % gate; H2, CO2 and CH4 + methanol, CO + water, and with PR CO2 + water, with fit-quality known issues) or the databank's NRTL sets; a light gas with a polar liquid without a fitted set is refused (CO2 + water with SRK, CH4 + water). Against the k_ij fits on the same ThermoML data: better for every gas in methanol, and with PR for CO2 + water (11.4 % in P against 13.8 %); CHEPTA-Lab's separator runs under PR + gE (MHV1) (docs/decisions/2026-11-06-02-mhv1.md). Water's association: CPA, roadmap M3 (Privat and Jaubert 2023, section 3.4). PSRK's and MHV2's group tables are not open; CPA: roadmap M3 |
+| Polar mixtures above 10 bar | (PSRK, MHV2, Wong–Sandler, CPA) | **SRK/PR + gE (MHV1)** with NRTL (proposal 0018, the maintainer, 2026-11-06; `mixing: "MHV1"`): pairs fitted inside the rule (CO + methanol and H2 + water within the 5 % gate; H2, CO2 and CH4 + methanol, CO and CH4 + water, and with PR CO2 + water, with fit-quality known issues; the water pairs but CO2 + water fitted to IAPWS G7-04) or the databank's NRTL sets; a light gas with a polar liquid without a set is refused (CO2 + water with SRK, nitrogen + ethanol). Against the k_ij fits on the same ThermoML data: better for every gas in methanol, and with PR for CO2 + water (11.4 % in P against 13.8 %); CHEPTA-Lab's separator runs under PR + gE (MHV1) (docs/decisions/2026-11-06-02-mhv1.md). Water's association: CPA, roadmap M3 (Privat and Jaubert 2023, section 3.4). PSRK's and MHV2's group tables are not open; CPA: roadmap M3 |
 | Water + hydrocarbons (two liquids) | (CPA, or a free-water approach) | **not available**; the engine refuses a second liquid with an equation of state; planned: roadmap M3 |
 | Electrolytes | (eNRTL, Pitzer) | **not available**, shown as "not available yet"; planned: roadmap M5 (ionic liquids: M6) |
 | Polymers | (Flory–Huggins, PC-SAFT) | **not available**; planned: roadmap M4 |
@@ -131,8 +136,10 @@ Checked so far:
   (the equation list), a column's own method, `thermo.mixing` of a project, of `CHEPTA.run` and of the command line and
   MCP tools (`thermo: { model: "PR", mixing: "MHV1" }`), and `system({ model, mixing: "MHV1" })`. Each pair takes the
   first of a set fitted inside the rule, the databank's NRTL set, else g^E = 0 with a warning; a light gas with a polar
-  liquid without a set is refused, and the interface shows the engine's reason. The method advisor does not
-  recommend or warn about the rule yet.
+  liquid without a set is refused, and the interface shows the engine's reason. Also in a heat exchanger stream's own
+  method and the Charts workspace's Equation list (docs/decisions/2026-11-10-04-mhv1-followups.md). The Library lists
+  each set fitted inside the rule (`library.sets(a, b, "PR", { mixing: "MHV1" })`) with its source, tier and fit quality,
+  and the Sources browser names what uses each source.
 
 - **The flowsheet test suite** (docs/FLOWSHEET_TESTS.md): every generated case is checked
   against rules 2–8 before it is accepted (`method_check` in
@@ -147,6 +154,16 @@ Checked so far:
   components, for example Peng–Robinson with water + ethanol. Calculation results carry the note
   in their `warnings`.
 - An activity model above about 10 bar gets a note at that pressure.
+- **Above about 10 bar, a light gas (the gases of rule 1, and methane) with a polar component** (rule 4; the maintainer,
+  2026-11-10): Peng–Robinson or SRK with k_ij, or an activity model, gets a note that recommends "PR + gE (MHV1)" or
+  "SRK + gE (MHV1)", naming where each gas + polar pair's NRTL set comes from (fitted inside the rule, with its
+  fit-quality warning, or the databank's set fitted at low pressure). It asks the engine first (`mhv1Availability` in
+  `src/thermo/eos/system.js`): the note never recommends a rule the engine would refuse. Where the chosen equation's
+  rule is refused but the other's runs (SRK with CO2 + water), it names the one that runs and gives the refusal; where
+  both are refused (nitrogen + ethanol: no set in the rule or the databank), it says so with the engine's reason and
+  recommends nothing. The pairs with a set fitted inside the rule (`src/data/mhv1.json`): with both PR and SRK, CO2,
+  H2, CO and CH4 + methanol, and H2, CO and CH4 + water; with PR only, CO2 + water. With the rule itself chosen there is
+  no such note.
 - The workbench shows the note above the parameter sets in the Inputs panel, and on the
   flowsheet's Method page.
 - `library.sets(...)` marks equation-of-state k_ij of pairs with a polar component

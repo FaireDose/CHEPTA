@@ -19,8 +19,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   pressure) not written; CPA (M3) for water's association.
 - **MHV1 in the interface** (docs/decisions/2026-11-10-03-mhv1-interface.md): "PR + gE (MHV1)" and "SRK + gE (MHV1)" in
   the Model selector, the flowsheet's Method page, a column's own method, project format 7, `CHEPTA.run`, the command line
-  and MCP (`thermo.mixing`); built, in review. Open: the method advisor does not mention the rule; the heat exchanger and
-  the Charts equation list do not offer it; the Library does not list its sets.
+  and MCP (`thermo.mixing`); merged (#216). The maintainer's four answers (2026-11-10) are built in
+  docs/decisions/2026-11-10-04-mhv1-followups.md (in review): the advisor recommends the rule above 10 bar for a gas with
+  a polar liquid where the engine runs it, the heat exchanger's stream methods and the Charts Equation list offer it, and
+  the Library lists its sets (`library.sets(a, b, "PR", { mixing: "MHV1" })`). The advisor's wording and its 10 bar
+  accepted (2026-11-10). Later: align the flowsheet Method page's pair notes with the Inputs panel's (a small change).
 - **Review and merge:**
   - [#85](https://github.com/FaireDose/Fugacity/pull/85): method advisor; older tests reviewed against the method rules.
   - [#86](https://github.com/FaireDose/Fugacity/pull/86): Newton flash; P-H search without workarounds.

@@ -243,7 +243,7 @@ export const APP_CSS = `
 .fa-pairs li.has-sets{display:grid; grid-template-columns:minmax(0,1fr) auto; row-gap:3px}
 .fa-pair-name{overflow:hidden; text-overflow:ellipsis}
 .fug-app select.fa-set-sel{grid-column:1/-1; width:100%; font-size:11.5px; padding:2px 5px}
-.fa-pair-note{grid-column:1/-1; font-size:11px; color:var(--fug-muted); line-height:1.35}
+.fa-pair-note{grid-column:1/-1; font-size:11px; color:var(--fug-muted); line-height:1.35; overflow-wrap:anywhere}
 .fa-src-set{font-size:11px; color:var(--fug-muted); margin-top:1px}
 .fa-src-note{font-size:11px; color:var(--fug-fg2); margin-top:2px}
 .fa-kij{font-weight:400; color:var(--fug-muted)}
