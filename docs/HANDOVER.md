@@ -85,7 +85,11 @@ State at 2026-11-10 23:15 UTC: #218 and #219 merged; #220, #221 and #222 open, e
      solver tolerances, library versions) before any further rerun.
    - Follow-up data task from #218 (a): the pairs not refitted (table in #218's description).
    - Later small change (from #220): align the flowsheet Method page's pair notes with the Inputs panel's.
-   - Then: release 0.6.0 (the maintainer creates the GitHub release, tag v0.6.0).
+   - 2026-11-11: #220-#222 merged; release v0.6.0 made, staged on npm (the maintainer approves it); the version PR
+     FaireDose/CHEPTA#223 opened by the coordinator (Actions may not open PRs); the sync job fixed on
+     `claude/trusting-euler-2prvu8` (docs/decisions/2026-11-11-03-release-0.6.0.md). Running: Fable 5.2 on column
+     specifications and side draws (session_01FPbeWVRtHfgQpQsNCeF1x6, branch claude/m4-column-specs); Opus on the
+     reproducible two-liquid labels (session_01FPbeWXtto9EJo2KEAdKB5T). Then CHEPTA-Lab pins 0.6.0.
 2. Finish the Pipe block with its Unit models workspace (0020). Opus.
 3. (Built, in review: docs/decisions/2026-11-10-03-mhv1-interface.md.) MHV1 in the interface: "PR + gE (MHV1)" and "SRK + gE (MHV1)" in the Model selector, the flowsheet's Method page,
    the column's method, project files and `CHEPTA.run` (thermo `mixing`), the command line and MCP. No low-pressure
