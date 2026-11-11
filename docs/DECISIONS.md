@@ -10,6 +10,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **A reorganization of the workbench** (proposal 0021; docs/decisions/2026-11-11-04-interface-reorganization.md;
+  the review is docs/ui-review/2026-11-11-reorganization.md): a prototype beside the workbench
+  (`CHEPTA.app(el, { layout: "next" })`, `examples/app-next.html`): the Flowsheet with its own button, the other
+  workspaces in a rail or a menu, one Method, Data and Units row, Inputs and Results as panes on a phone. To decide:
+  the proposal itself, the flowsheet's place, the method in one place, the panes, which of the proposed graphs and
+  data tabs first, and when the new layout becomes the default.
 - **High-pressure gases in methanol and water** (docs/decisions/2026-11-04-13-kij-high-pressure.md, 2026-11-05-03,
   2026-11-06-01, 2026-11-06-02-mhv1.md): k_ij = a + b/T in the engine; SRK/PR + gE (MHV1) built, its methanol pairs
   written with fit-quality warnings (2026-11-07), CO2 + water's PR set with alpha fitted (11.4 % in P against 13.8 % for
