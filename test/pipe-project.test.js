@@ -1,7 +1,7 @@
 // The Pipe in the flowsheet drawing's palette and in the project file (proposal 0020, steps 1-2; the maintainer,
 // 2026-11-10: "add the Pipe to the flowsheet drawing's palette", "save the Pipe workspace in the project file").
 // Method (docs/METHOD_SELECTION.md): water alone, a liquid, is the ideal solution of one component (no mixture, so the
-// activity model plays no part); methane, a gas at 3 MPa, Peng-Robinson; the two-phase refusal uses water at its
+// activity model plays no part); methane, a gas at 3 MPa, Peng-Robinson; the choked two-phase refusal uses water at its
 // boiling point, also ideal.
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -58,15 +58,18 @@ test("the palette block gives the same result as runUnit('pipe') called directly
     "Velocity, inlet to outlet", "Reynolds number, inlet", "Flow regime", "Friction factor (Darcy), inlet"]);
 });
 
-test("a refusal reaches the block with the engine's reason: a two-phase inlet", () => {
-  // water at its normal boiling point with a vapour fraction of 0.5: two phases
+test("a refusal reaches the block with the engine's reason: a two-phase inlet that chokes", () => {
+  // water at its normal boiling point with a vapour fraction of 0.5: two phases. Refused as two-phase when this test was
+  // written; since the two-phase step of proposal 0020 (Lockhart-Martinelli, docs/decisions/2026-11-10-06-pipe-two-phase.md)
+  // gas-liquid flow is computed, but this one (half steam at 1 atm, 255 kg/(m² s) in the 5 cm default pipe) reaches
+  // critical (choked) flow within the pipe, which is refused with the reason
   const { fs, id } = drawn({ flow_kmol_h: { water: 100 }, P_kPa: 101.325, VF: 0.5 });
   const direct = (() => { try { runUnit("pipe", { sys: water, inlets: { in: stream(water, { flow_kmol_h: [100], P_kPa: 101.325, VF: 0.5 }) }, spec: fs.blocks.find(b => b.id === id).spec }); } catch (e) { return e; } })();
   assert.equal(direct?.code, "NOT_AVAILABLE");
   let msg = "";
   try { const r = runFlowsheet(fs); msg = JSON.stringify(r.blocks?.[id]?.error ?? r.message ?? r); } catch (e) { msg = e.message; }
-  assert.ok(msg.includes("two-phase"), msg);
-  assert.ok(msg.includes("single-phase only"), msg);
+  assert.ok(msg.includes("gas-liquid"), msg);
+  assert.ok(msg.includes("choked"), msg);
 });
 
 // ---- the project file: format 8 --------------------------------------------------------------------------------------

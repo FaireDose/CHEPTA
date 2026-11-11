@@ -17,6 +17,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (MHV1). Open: confirm IAPWS G7-04 for H2 and CO + water; CH4 + water held (Campos 2010 and Kim 2008 disagree with the
   other seven articles); SRK's CO2 + water alpha fit (better in P and solubility, 2 more points without a bubble
   pressure) not written; CPA (M3) for water's association.
+- **Gas-liquid flow in the Pipe block** (proposal 0020, step 4; docs/decisions/2026-11-10-06-pipe-two-phase.md):
+  Lockhart-Martinelli in Chisholm's form (Filip et al. 2014; ANL/CP-74646), no-slip holdup for elevation and
+  acceleration; built, in review. Check the C table and the Brennen quotes. Decided (2026-11-10): Re 1500 for C, an
+  elevation change warns, fittings in gas-liquid flow stay refused, no worked example needed before merging. Next:
+  Beggs-Brill, once open sources are found.
 - **MHV1 in the interface** (docs/decisions/2026-11-10-03-mhv1-interface.md): "PR + gE (MHV1)" and "SRK + gE (MHV1)" in
   the Model selector, the flowsheet's Method page, a column's own method, project format 7, `CHEPTA.run`, the command line
   and MCP (`thermo.mixing`); merged (#216). The maintainer's four answers (2026-11-10) are built in
@@ -30,8 +35,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   - The pull request that adds this page.
 - **The Pipe block, its workspace, palette and project file** (proposal 0020, accepted for steps 1-2 on 2026-11-10;
   docs/decisions/2026-11-10-02-pipe-block.md and 2026-11-10-05-pipe-palette-save.md): check the Pipe workspace under
-  Unit models, the Pipe in the flowsheet's palette, the DOE Leq/D table and the three worked examples. Open: the two-phase
-  flow (its own pull request: Lockhart-Martinelli, then Beggs-Brill, once open sources are found).
+  Unit models, the Pipe in the flowsheet's palette, the DOE Leq/D table and the three worked examples. Two-phase
+  flow: Lockhart-Martinelli in the item above; Beggs-Brill next, once open sources are found.
 - **The Extraction block and its view** (proposal 0015, step 8; docs/decisions/2026-10-30-10-extraction-view.md):
   check the comparison with Glatz and Parker 2004 (Runs 1 and 3); decide whether an adiabatic cascade is wanted, whether
   the ternary view should offer mass fractions, and whether the flowsheet should take the joint sets by itself when it

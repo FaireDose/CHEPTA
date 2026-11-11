@@ -44,7 +44,7 @@ export function pipeInputs({ state, set, uid, inputsSection, field, seg, listInp
       put({ feed: { z: next } });
     }, `pipe-z${k}`, { min: 0, width: "6em" }))) : null,
     ids.length > 1 ? h("p", { class: "fa-in-hint" }, "Mole fractions, normalized to 1.") : null,
-    h("p", { class: "fa-in-hint" }, "One fluid phase only: a two-phase inlet, or one that boils or condenses in the pipe, is refused.")));
+    h("p", { class: "fa-in-hint" }, "One fluid phase, or gas and liquid (Lockhart-Martinelli: horizontal pipes, about a factor of 3 in the friction; no fittings in gas-liquid flow). Two liquid phases and choked flow are refused.")));
 
   secs.push(inputsSection("Pipe",
     nField("Length, m", p.length_m, v => put({ length_m: v }), "pipe-l", { min: 0, above: true }),
@@ -113,7 +113,7 @@ export function pipeBlockSections({ b, spec, setS, inputsSection, uid, u, T, pla
     mm("roughness_m", "Wall roughness"),
     h("p", { class: "fa-in-hint" }, ROUGHNESS_NOTE),
     plain("elevation_m", "Elevation change", "m", "0"),
-    h("p", { class: "fa-in-hint" }, "Outlet height minus inlet height (negative downhill); at most the length. The inlet is the stream that enters the block: one fluid phase only, a two-phase stream is refused with the reason.")));
+    h("p", { class: "fa-in-hint" }, "Outlet height minus inlet height (negative downhill); at most the length. The inlet is the stream that enters the block: one fluid phase, or gas and liquid (Lockhart-Martinelli: horizontal pipes, about a factor of 3 in the friction; no fittings in gas-liquid flow). Two liquid phases and choked flow are refused with the reason.")));
   const fits = spec.fittings ?? [];
   const kindOf = f => (f.fitting ?? (f.K != null ? "K" : "L_D"));
   const setRow = (i, row) => setS({ fittings: fits.map((f, j) => (j === i ? row : f)) });

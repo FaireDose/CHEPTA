@@ -3,7 +3,8 @@
 - **Status:** Accepted for steps 1-2 (the maintainer, 2026-11-10; the engine, the Pipe workspace under Unit models, and
   with them the flowsheet palette and the project file, docs/decisions/2026-11-10-05-pipe-palette-save.md). Steps 3-6
   are the plan: the two-phase flow comes in its own pull request, Lockhart-Martinelli first, then Beggs-Brill, once
-  open sources for them are found. The maintainer asked for the workspace on 2026-11-07: "put it in the model tab so
+  open sources for them are found; Lockhart-Martinelli is built (step 4, to review,
+  docs/decisions/2026-11-10-06-pipe-two-phase.md). The maintainer asked for the workspace on 2026-11-07: "put it in the model tab so
   I can check a pipe without doing a flowsheet"
 - **Author(s):** a coding agent for the maintainer (Claude Code sessions of 2026-11-07 and 2026-11-10)
 - **Discussion:** the pull request that adds this file; docs/decisions/2026-11-10-02-pipe-block.md
@@ -67,6 +68,8 @@ All in the header of `src/units/pipe.js`, every source free to read:
   Churchill (1977), as DWSIM writes it (FlowPackageBaseClass.vb, `FrictionFactor`, read on 2026-11-10: the same
   formula between Re 2100 and 4000), with a FLOW_TRANSITION warning.
 - Heat: Q = U A ΔT_lm over each segment, A the inner surface (DWSIM's Pipe.vb does the same with the outer one).
+- Gas-liquid flow (step 4): Lockhart-Martinelli in Chisholm's form, with the homogeneous density for elevation and
+  acceleration; sources and scope in step 4 below and in the header of `src/units/pipe.js`.
 - Fluid properties: a gas's density from the system's own vapour model and Wilke's rule on the pure vapours'
   low-pressure viscosities; a liquid's from the pure liquids' density records (volumes add up) and the logarithmic
   mole-fraction rule for its viscosity.
@@ -86,7 +89,7 @@ Validation (`test/pipe.test.js`, `test/pipe-workspace.test.js`):
 ## Effect on existing work
 
 A new block and a new workspace; nothing else changes. Flowsheet files gain a block type (`pipe`; the flowsheet
-drawing's palette does not offer it yet, step 3), so a flowsheet with a
+drawing's palette offers it since step 3), so a flowsheet with a
 pipe does not open in an older version (as for every new block). The Pipe workspace's settings are not saved in the
 project file yet (decision below), so the project format is unchanged. Two tests that list the workspaces were updated
 to include it.
@@ -106,11 +109,34 @@ to include it.
 2. The Pipe workspace under Unit models, with its tests (2026-11-10, same branch). **This pull request holds steps 1
    and 2.**
 3. The Pipe in the flowsheet drawing: the palette, its icon on the canvas and its block panel (fittings and heat as in
-   the workspace). Today a pipe works in flowsheet files, `solveFlowsheet` and `CHEPTA.run`, but the drawing's palette
-   does not offer it.
+   the workspace). **Built** with the project file (format 8) in #219, merged on 2026-11-10
+   (docs/decisions/2026-11-10-05-pipe-palette-save.md).
 4. Two-phase flow: a liquid that flashes, a gas that condenses, a gas-liquid inlet. DWSIM offers Beggs and Brill and
    Lockhart-Martinelli (its files BeggsBrill.vb and LockhartMartinelli.vb, read on 2026-11-10); both need open
-   sources for their correlations before they are built. Until then the block refuses with the reason.
+   sources for their correlations before they are built. The maintainer (2026-11-10): in its own pull request,
+   Lockhart-Martinelli first, then Beggs-Brill.
+   - **Lockhart-Martinelli: built** (2026-11-10, branch `claude/pipe-two-phase`; to review,
+     docs/decisions/2026-11-10-06-pipe-two-phase.md). The phases at each node from the system's flash; the frictional
+     gradient of Lockhart and Martinelli in Chisholm's form, C = 5, 10, 12, 20 by the regimes of the phases flowing
+     alone ("viscous" below Re 1500), from Filip, Băltăreţu and Damian, *Math. Model. Civ. Eng.* 10(4) (2014)
+     19-27, eqs. (10)-(17), pp. 21-22 (open access, CC BY-NC-ND 3.0, doi:10.2478/mmce-2014-0019), the same C in
+     Wambsganss, Jendrzejczyk and France, ANL/CP-74646 (1992), eq. (4) p. 13 and Table 1 p. 20 (U.S. government
+     report, OSTI 10119434); each phase alone with the block's own friction factor and the wall's roughness, as
+     DWSIM. Elevation and acceleration with the homogeneous (no-slip) density (Filip et al., eqs. (5)-(6); DWSIM's
+     Lockhart-Martinelli takes the no-slip holdup too). Scope and accuracy stated in the block's note from C. E.
+     Brennen, *Fundamentals of Multiphase Flow* (2005), section 8.3.1, pp. 210-211 (the author's free copy on
+     CaltechAUTHORS): horizontal, two-component, isothermal data; scatter about a factor of 3 in φ; often an
+     overestimate; best when both phases alone are turbulent. A phase change along the pipe uses the correlation at
+     each node's quality. Warnings: an elevation change (the no-slip holdup underestimates the liquid uphill), a
+     viscous phase (C other than 20). Refused, with the reason: fittings in gas-liquid flow (no open two-phase loss
+     coefficients found), your own friction factor or viscosity in gas-liquid flow, two liquid phases, and critical
+     (choked) gas-liquid flow (no outlet pressure balances a segment's momentum). Checked against the independent
+     reference `validation/python/reference_pipe.py` (`validation/fixtures/pipe-two-phase.json`: five
+     two-component cases within 0.2 %, all four regimes; steam and water against CoolProp's IAPWS-95 within 2.6 %, the
+     vapour's ideal gas against IAPWS-95 accounting for the rest) and the open `fluids` library's Lockhart_Martinelli
+     (to 4e-16 with its friction factor); `test/pipe-two-phase.test.js`. No open worked example with numbers was found.
+   - **Beggs and Brill** (inclined pipes, flow patterns, holdup with slip): a later pull request, once open sources
+     for its correlations are found.
 5. Choked flow of a gas (today refused at ρu² = P, the isothermal limit), and the pressure effect on a liquid's
    density.
 6. Sizing (roadmap E1): the diameter for an allowed pressure drop or velocity.

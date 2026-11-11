@@ -325,8 +325,9 @@ Needs A13 and D8.
 - [x] Compressors and expanders (proposal 0013, step 6; in 0.4.0)
 - [x] Pipe: single-phase pressure drop (friction, fittings, elevation, acceleration) and heat, in flowsheet files and a
       Pipe workspace under Unit models, the flowsheet drawing's palette and the project file (format 8)
-      ([proposal 0020](proposals/0020-pipe-block.md), steps 1-2; accepted by the maintainer, 2026-11-10);
-      two-phase flow next, in its own pull request (Lockhart-Martinelli first, then Beggs-Brill, once open sources are found)
+      ([proposal 0020](proposals/0020-pipe-block.md), steps 1-3; steps 1-2 accepted by the maintainer, 2026-11-10); gas-liquid
+      flow by Lockhart-Martinelli (Chisholm's C, no-slip holdup; step 4, to review); Beggs-Brill next, once open
+      sources are found
 - [ ] Further units towards models of all the common unit operations ([proposal 0015](proposals/0015-separation-units.md))
 - [x] The Wilson activity model (M1; [proposal 0016](proposals/0016-wilson.md), with fits to ThermoML data)
 - [x] Reactive systems in flowsheets, with heat of reaction in the energy balance (proposal 0010, steps 3-8)

@@ -73,11 +73,13 @@ test("refusals come back as refusals, with the engine's reason; settings are che
   assert.equal(zero.ok, false);
   assert.equal(zero.refused.code, "BAD_INPUT");
   assert.match(zero.refused.message, /pressure falls to zero/);
-  // water just below its boiling point at 101.325 kPa flashes as its pressure falls: a phase change in the pipe
+  // water just below its boiling point at 101.325 kPa flashes as its pressure falls. Refused as a phase change before
+  // the two-phase step of proposal 0020; now computed by Lockhart-Martinelli, but at this flow (2546 kg/(m² s)) the
+  // flashing water chokes at once, which is refused
   const flashing = pipeCalc(water, normalizePipe({ feed: { flow: 1000, T_K: 372.9, P_kPa: 101.325 } }));
   assert.equal(flashing.ok, false);
   assert.equal(flashing.refused.code, "NOT_AVAILABLE");
-  assert.match(flashing.refused.message, /phase change|two-phase/);
+  assert.match(flashing.refused.message, /choked/);
   // the settings
   assert.throws(() => normalizePipe({ heat: "radiant" }), /pipe.heat/);
   assert.throws(() => normalizePipe({ fittings: [{ fitting: "butterfly" }] }), /butterfly/);
