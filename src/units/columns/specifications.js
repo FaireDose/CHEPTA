@@ -301,11 +301,16 @@ export function solveSpecified(opts, solve, th) {
     return d.basis === "mass" ? f[d.i] * MW[d.i] / sum(f.map((v, k) => v * MW[k])) : f[d.i] / sum(f);
   };
   const scaled = (d, a) => (d.kind === "stage_temperature" ? (a - d.value) / 10 : d.kind === "component_flow" ? Math.log(Math.max(a, 1e-300) / d.value) : logit(a) - logit(d.value));
+  // (a point is solved once: a second call with the same variables returns the first answer, a failure included)
+  const seen = new Map();
   const point = p => {
+    const key = p.join(",");
+    if (seen.has(key)) return seen.get(key);
     const values = vars.map((v, k) => v.to(p[k])), r = columnAt(values);
-    if (!r) return null;
-    const a = design.map(d => achieved(r, d)), g = design.map((d, k) => scaled(d, a[k]));
-    return { p: p.slice(), values, r, a, g, norm: Math.hypot(...g) };
+    let q = null;
+    if (r) { const a = design.map(d => achieved(r, d)), g = design.map((d, k) => scaled(d, a[k])); q = { p: p.slice(), values, r, a, g, norm: Math.hypot(...g) }; }
+    seen.set(key, q);
+    return q;
   };
   const met = q => q.g.every(v => Math.abs(v) <= SPEC_TOLERANCE);
   const clamp = p => p.map((v, k) => Math.min(vars[k].hi, Math.max(vars[k].lo, v)));
@@ -417,7 +422,7 @@ export function solveSpecified(opts, solve, th) {
     for (const p of order) {
       const nb = solved.slice().sort((a, b) => Math.abs(a.p[0] - p) - Math.abs(b.p[0] - p))[0];
       const t = reach(p, nb);
-      if (t) { solved.push(t); pts.push(t); }
+      if (t && !pts.includes(t)) { solved.push(t); pts.push(t); }
     }
     pts.sort((a, b) => a.p[0] - b.p[0]);
     const brackets = [];
@@ -426,13 +431,13 @@ export function solveSpecified(opts, solve, th) {
       // no sign change on the grid: the specification may still pass its value between two grid points, at an
       // extremum. Close in on the point nearest to the value asked, by halving the intervals next to it
       let k = pts.reduce((a, q, e) => (Math.abs(q.g[0]) < Math.abs(pts[a].g[0]) ? e : a), 0);
-      for (let round = 0; round < 8 && !brackets.length; round++) {
+      for (let round = 0; round < 4 && !brackets.length; round++) {
         const c = pts[k];
         for (const nb of [pts[k - 1], pts[k + 1]]) {
           if (!nb) continue;
           warm = c.r;
           const t = keep(point([(c.p[0] + nb.p[0]) / 2]));
-          if (t) pts.push(t);
+          if (t && !pts.includes(t)) pts.push(t);
         }
         pts.sort((a, b) => a.p[0] - b.p[0]);
         for (let e = 0; e + 1 < pts.length; e++) if (pts[e].g[0] * pts[e + 1].g[0] <= 0) brackets.push([pts[e], pts[e + 1]]);

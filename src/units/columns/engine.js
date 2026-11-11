@@ -520,7 +520,7 @@ export function solveCascade(opts = {}) {
   const meets = g => Object.keys(limits).every(k => g[k] <= limits[k]);
 
   // ---- Newton's method with a guarded step
-  function newton(u0, { dTmax, maxIt, patient = false }) {
+  function newton(u0, { dTmax, maxIt, patient = false, early = false }) {
     let u = Float64Array.from(u0), P;
     // a start outside the property records (or with a property not finite) is a failed attempt, not an error
     try { P = allProps(u); } catch (e) { if (!e?.code) throw e; return { u, P: null, iterations: 0, converged: false, why: `the start left the property records (${e.message})` }; }
@@ -531,6 +531,8 @@ export function solveCascade(opts = {}) {
       if (meets(groups(P).g)) return { u, P, iterations: it, converged: true };
       if (it === maxIt) break;
       // Newton converges fast near a solution: no thousandfold fall in PATIENCE iterations means it is far from one
+      // (early: a trial column started from its neighbour either converges at once or is started afresh)
+      if (early && it === 4 && nr > 0.1 * n0) return { u, P, iterations: it, converged: false, why: `the residual fell only from ${fmt(n0)} to ${fmt(nr)} in 4 iterations` };
       if (patient && it === PATIENCE && nr > 1e-3 * n0) return { u, P, iterations: it, converged: false, why: `the residual fell only from ${fmt(n0)} to ${fmt(nr)} in ${PATIENCE} iterations` };
       const J = jacobian(u, P);
       // the step in the logarithms of the component flows (and in T): a trace flow can fall by orders of magnitude
@@ -574,7 +576,7 @@ export function solveCascade(opts = {}) {
   const startU = opts.start && Array.isArray(opts.start.stages) && opts.start.stages.length === N && opts.start.stages.every(s => s.l?.length === n && s.v?.length === n)
     ? Float64Array.from(opts.start.stages.flatMap(s => [...s.l.map(a => a * 1), ...s.v, s.T_K])) : null;
   if (startU) {
-    const r = newton(startU, { dTmax: 20, maxIt: Math.min(opts.quick ? 20 : 40, cap), patient: !!opts.quick });
+    const r = newton(startU, { dTmax: 20, maxIt: Math.min(opts.quick ? 20 : 40, cap), patient: !!opts.quick, early: !!opts.quick });
     tried.push(`Newton from the previous solution (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
     if (r.converged) result = { ...r, start: "previous solution" };
   }

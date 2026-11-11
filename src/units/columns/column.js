@@ -302,7 +302,8 @@ function checkRigorous(spec, sys) {
 function checkSeparator(spec, configuration, sys) {
   const what = configuration === "absorber" ? "An absorber" : "A stripper";
   if ((spec.mode ?? "rigorous") !== "rigorous") throw fail("BAD_INPUT", `Column: ${what.toLowerCase()} is solved stage by stage (mode "rigorous"); the shortcut (Fenske, Underwood, Gilliland) is for distillation with a light and a heavy key.`);
-  if (has(spec, "side_draws")) throw fail("NOT_AVAILABLE", `Column: side draws are built for distillation (a condenser and a reboiler); ${what.toLowerCase()} with a side draw is not built.`);
+  // refused when solved (not built, the outcome "unsupported"), as two liquids on an absorber's stages are
+  if (has(spec, "side_draws")) return { mode: "rigorous", configuration, sideDraws: true };
   const N = Number(spec.stages);
   if (!(Number.isInteger(N) && N >= 2)) throw fail("BAD_INPUT", `Column: stages must be a whole number of 2 or more, the equilibrium stages of the ${configuration} (got ${JSON.stringify(spec.stages)}).`);
   if (has(spec, "condenser") && spec.condenser !== "none") throw fail("BAD_INPUT", `Column: ${what.toLowerCase()} has no condenser (got condenser ${JSON.stringify(spec.condenser)}); for a condenser choose the configuration "distillation".`);
@@ -477,6 +478,9 @@ function dof(spec) {
     [["reflux_ratio", "reflux_over_minimum"], "the reflux ratio or the reflux over the minimum"],
   ];
   const out = { needed: rows.length, given: 0, missing: [], extra: [] };
+  // purities, design specifications and side draws are the rigorous column's: said first, whatever else is missing
+  const m4 = M4.filter(k => has(spec, k));
+  if (m4.length) return { needed: rows.length, given: rows.length + m4.length, missing: [], extra: [`${m4.join(", ")}: the shortcut takes the recoveries of its two keys; purities, the other design specifications and side draws are the rigorous column's (mode "rigorous")`] };
   for (const [keys, what] of rows) {
     const g = keys.filter(k => has(spec, k));
     out.given += g.length;
@@ -731,6 +735,7 @@ registerUnit({
   checkSpec,
   dof,
   solve({ sys, inlets, spec, outletCount }) {
+    if (spec.sideDraws) throw fail("NOT_AVAILABLE", `Column: side draws are built for distillation (a condenser and a reboiler); ${spec.configuration === "absorber" ? "an absorber" : "a stripper"} with a side draw is not built.`);
     if (spec.twoLiquids) throw fail("NOT_AVAILABLE", `Column: ${spec.configuration === "absorber" ? "an absorber" : "a stripper"} holds a vapour and one liquid (phases "VL"); two liquids on its stages (phases "${spec.twoLiquids}") are not built yet.`);
     if (spec.extraction) throw fail("BAD_INPUT", "Column: two liquids without a vapour (phases \"LL\") are an extraction: use the Extraction block (type \"extraction\", under the Separator button; capability solve_extraction). The Column block solves \"VL\" and \"VLL\".");
     if (spec.mode === "rigorous") return solveRigorous(sys, inlets.in, spec, outletCount ?? 0);
