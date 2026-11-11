@@ -112,6 +112,12 @@ State at 2026-11-10 23:15 UTC: #218 and #219 merged; #220, #221 and #222 open, e
 - ROADMAP.md, "CHEPTA and CHEPTA-Lab", rule 7: Lab's held-out evaluation cases are reviewed by the maintainer or by an
   AI model of another family before use; no Claude session that writes CHEPTA code sees them.
 - Decision: docs/decisions/2026-11-11-05-chepta-lab-on-claude.md.
+- Started 2026-11-11 at the maintainer's request: the Lab coordinator, session_01FPbeWUJu4MrkqCuGX3UKYB (Fable 5.2,
+  repository FaireDose/CHEPTA-Lab, branch claude/lab-next-steps). First job: docs/WHERE_WE_ARE_HEADING.md in Lab (the
+  plain picture of where CHEPTA and Lab are going, Lab's next steps, and whether to take up ChemE-as-Code,
+  cheme-as-code.org, TU Delft: plant files in git with checks, DWSIM/IDAES backends, AGPL code and CC BY 4.0 data, an
+  unreviewed AI-generated Process Atlas; and plant ontologies for operations, out of scope for now). It starts no
+  workers before the maintainer chooses the next steps.
 
 ## Open questions for the maintainer
 
