@@ -46,7 +46,7 @@
  *    would take the continuation away. The ChemSep Book says the same of its own continuation in the stage
  *    efficiency: "it cannot, without modification, handle problems in which a product stream purity is specified"
  *    (H. A. Kooijman and R. Taylor, 2nd edition, 2006, public domain, http://www.chemsep.org/downloads/docs/book2.pdf,
- *    chapter 13, "Continuation methods", read 2026-11-11).
+ *    section 13.5, "Continuation Methods for Difficult Problems", p. 224, read 2026-11-11).
  *  - A specification that no column can meet makes Newton's method on the whole system fail without saying why. The
  *    outer loop sees how each specification answers to the reflux and to the product flow, so it can say what the
  *    column reaches at most and what limits it.

@@ -1992,7 +1992,7 @@ export function resultsPanel({ state, f, sol, u, set }) {
         ] : []),
         ...(b.type === "column" && r.state?.mode === "rigorous" && !r.state.configuration ? [
           ["Stages, feed", `${r.state.stages}, on ${r.state.feed_stages.join(", ")}`],
-          ...(r.state.design_specifications ?? []).map(q => [`Asked: ${q.label}`, `${fmtShort(q.asked, 6)}; reached ${fmtShort(q.achieved, 6)} ${q.unit} (difference ${q.error.toExponential(1)})`]),
+          ...(r.state.design_specifications ?? []).map((q, k) => [`Specification ${k + 1}`, `${q.label}: asked ${fmtShort(q.asked, 6)}, reached ${fmtShort(q.achieved, 6)} (${q.unit}; difference ${q.error.toExponential(1)})`]),
           ...(r.state.adjusted ? [["Found for the specifications", Object.entries(r.state.adjusted).map(([k, v]) => `${{ reflux_ratio: "reflux ratio", boilup_ratio: "boil-up ratio", distillate_kmol_h: "distillate, kmol/h" }[k] ?? k.replace(/^side_draw_(\d+)_kmol_h$/, "side draw $1, kmol/h")} ${fmtShort(v, 5)}`).join("; ")]] : []),
           ["Reflux ratio", fmtShort(r.state.reflux_ratio, 4)],
           ["Boil-up ratio", fmtShort(r.state.boilup_ratio, 4)],

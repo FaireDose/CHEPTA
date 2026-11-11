@@ -12,8 +12,8 @@ composition and enthalpy:
   H  L_{j-1} h_L,{j-1} + V_{j+1} h_V,{j+1} + F_j h_F - (L_j + U_j) h_L,j - (V_j + W_j) h_V,j = 0
 
 (The ChemSep Book, H. A. Kooijman and R. Taylor, 2nd edition, 2006, public domain,
-http://www.chemsep.org/downloads/docs/book2.pdf, chapter 13, eqs. 13.1 to 13.3, with r_L = U / L and r_V = W / V; read
-2026-11-11). L_j and V_j are the flows that go on to the next stage.
+http://www.chemsep.org/downloads/docs/book2.pdf, section 13.2.1, eqs. 13.1 to 13.3, p. 192, with r_L = U / L and
+r_V = W / V; read 2026-11-11). L_j and V_j are the flows that go on to the next stage.
 
 Design specifications. Here they are two of the equations of the Newton system itself, in place of the reflux ratio
 and the product flow (the way DWSIM's Naphtali-Sandholm solver writes its specifications, in place of the condenser's

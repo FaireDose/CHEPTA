@@ -180,6 +180,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     TO_DOWNLOAD.md item 7); pooling by DATA_RULES.md section 3, 10 % where no uncertainty is stated (this project's
     choice). To check: the solid densities against ChemSep 8.32. Later: the slurry's own viscosity and density as input.
   - Waiting: W1.
+- **Column specifications and side draws, built, to review** (proposal 0015, step 11, M4;
+  docs/decisions/2026-11-11-01-column-specifications.md): purity, recovery, component flow and stage temperature as an
+  outer loop around the stage solver; side draws in the stage solver. To decide: the outer loop (kept, or the
+  specifications among the equations), the tolerance of a specification (1e-6, scaled), the agreement limit with The
+  ChemSep Book's reflux ratio (25 %), the project format (stays 8), and what comes next (inequalities, pumparounds,
+  a draw of one of two liquids).
 - **How the agents work** (docs/decisions/2026-11-10-01-working-method.md): a new coordinator starts from
   [HANDOVER.md](HANDOVER.md); one task per session; at most two workers; Sonnet for routine work, Opus for engineering.
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost

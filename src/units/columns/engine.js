@@ -30,8 +30,8 @@
  * between the condenser and the reboiler with the composition and the enthalpy of that stage's liquid or vapour; l_ij
  * and v_ij stay the flows that go on to the next stage, so that the balances read, with r_L = U_j / L_j and
  * r_V = W_j / V_j (the ratios of side stream to interstage flow of The ChemSep Book, H. A. Kooijman and R. Taylor, 2nd
- * edition, 2006, public domain, http://www.chemsep.org/downloads/docs/book2.pdf, chapter 13, eqs. 13.1 to 13.3, read
- * 2026-11-11):
+ * edition, 2006, public domain, http://www.chemsep.org/downloads/docs/book2.pdf, section 13.2.1, eqs. 13.1 to 13.3,
+ * p. 192, read 2026-11-11):
  *
  *   M_ij = (1 + r_L) l_ij + (1 + r_V) v_ij - l_i,j-1 - v_i,j+1 - f_ij = 0
  *   H_j  = L_j-1 h_L,j-1 + V_j+1 h_V,j+1 + H_F,j - (L_j + U_j) h_L,j - (V_j + W_j) h_V,j = 0
