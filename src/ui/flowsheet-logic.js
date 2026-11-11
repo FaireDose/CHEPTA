@@ -313,6 +313,44 @@ export function removeOutlet(fs, id) {
   return out;
 }
 
+/** Add a side draw to a rigorous column (proposal 0015, M4): its entry in side_draws and a product stream on the
+ *  outlet "side" (the k-th stream there is the k-th side draw). It starts as a liquid from the middle stage, 10 kmol/h. */
+export function addSideDraw(fs, id) {
+  const out = clone(fs);
+  const b = out.blocks.find(x => x.id === id);
+  if (!b || b.type !== "column") return out;
+  const k = out.streams.filter(s => s.from === `${id}.side`).length;
+  addProductStream(out, `${id}.side`, k);
+  b.spec ??= {};
+  const N = Number(b.spec.stages) || 20;
+  b.spec.side_draws = [...(Array.isArray(b.spec.side_draws) ? b.spec.side_draws : []), { stage: Math.min(N - 1, Math.max(2, Math.round(N / 2))), phase: "liquid", flow_kmol_h: 10 }];
+  return out;
+}
+
+/** Remove side draw k (from 0) of a column: its entry, its stream (which must lead to a Product) and the design
+ *  specifications written on it; those on later side draws follow their draw. */
+export function removeSideDraw(fs, id, k) {
+  const out = clone(fs);
+  const b = out.blocks.find(x => x.id === id);
+  if (!b) return out;
+  const st = out.streams.filter(s => s.from === `${id}.side`)[k];
+  if (st) {
+    if (!isProduct(out, portOf(st.to).block)) throw new Error(`Side draw ${k + 1} of ${id} (${st.id}) goes to a unit; send it out of the flowsheet first.`);
+    out.streams = out.streams.filter(s => s.id !== st.id);
+    out.blocks = out.blocks.filter(x => x.id !== portOf(st.to).block);
+  }
+  const spec = { ...(b.spec ?? {}) };
+  spec.side_draws = (spec.side_draws ?? []).filter((_, e) => e !== k);
+  if (!spec.side_draws.length) delete spec.side_draws;
+  if (Array.isArray(spec.specifications)) {
+    spec.specifications = spec.specifications.filter(d => !(d.product === "side_draw" && (d.draw ?? 1) === k + 1))
+      .map(d => (d.product === "side_draw" && (d.draw ?? 1) > k + 1 ? { ...d, draw: (d.draw ?? 1) - 1 } : d));
+    if (!spec.specifications.length) delete spec.specifications;
+  }
+  b.spec = spec;
+  return out;
+}
+
 /** Change a block's specification (merged; a key set to null or "" is removed). */
 export function setSpec(fs, id, patch) {
   const out = clone(fs);

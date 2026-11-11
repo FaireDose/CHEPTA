@@ -466,7 +466,7 @@ The steps of Part I, each a pull request with its tests, placed in the workstrea
 | 8. Extraction and its view (the Extraction block on the liquid-liquid cascade of the column engine, its ternary view, solve_extraction; built 2026-11-04, to review) | W2, W5 | M3 |
 | 9. Membrane, with the area for a target (built 2026-10-30, to review: gas permeation in co- or counter-current cells, the area for a stage cut or a recovery; pervaporation later) | W3, W4 | M3 |
 | 10. Crystallizer; evaporator; solid-liquid separator and dryer if kept (the evaporator built 2026-11-04, to review: one effect or several in forward feed, the steam economy and the boiling-point rise; the crystallizer built 2026-11-05: cooling or evaporative, the solid in equilibrium with its mother liquor; the solid in every stream (section 5) built 2026-11-05, to review; the slurry outlet, the slurry pump (power from the liquid only) and more solubility curves built 2026-11-06, to review; the solid-liquid separator and the dryer postponed, answer 4) | W3 | M3 |
-| 11. Purity and recovery specifications, side draws; the benchmark flowsheets | W2, W7 | M3, M4 |
+| 11. Purity and recovery specifications, side draws; the benchmark flowsheets (the specifications, purity, recovery, component flow and stage temperature, and the side draws built 2026-11-11, to review: docs/decisions/2026-11-11-01-column-specifications.md) | W2, W7 | M3, M4 |
 | 12. Cost correlations (E2) and utilities (E3) | W4 | M4 |
 | 13. Exports, share by link, format 6; other assistants | W6, W8 | M1 to M4 |
 | 14. The interface guide and the review of the workbench (both written 2026-10-29: docs/UI_GUIDE.md, docs/ui-review/2026-10-29.md); then a visual check of each new view | W10 | M1, then each milestone |

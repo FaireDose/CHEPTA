@@ -16,7 +16,8 @@ cases ([columns-benchmarks.md](columns-benchmarks.md)) and the absorber cases (b
 **Specification:** the light and the heavy key; the fraction of the light key's feed recovered in the distillate and
 of the heavy key's feed recovered in the bottoms; the reflux ratio or the reflux as a multiple of the minimum; the
 condenser, total (liquid distillate, the default) or partial (vapour distillate); the pressure (default the feed's;
-no pressure drop). Purity specifications come with milestone M4.
+no pressure drop). The shortcut takes recoveries; purities, the other design specifications and side draws are the
+rigorous column's (below, "Design specifications and side draws").
 
 **The equations** (as the open source code of DWSIM documents them, `ShortcutColumn.vb`, GPL-3.0, read 2026-10-29;
 the original articles are paywalled and not used), with α the relative volatilities to the heavy key and q the feed's
@@ -45,7 +46,7 @@ point (DWSIM takes them at the feed's conditions), held constant through the col
 | the keys' relative volatility changes by more than 20 % between the top, the feed and the bottom | warns (`VOLATILITY_VARIES`) with the three values (B1's mixture); the 20 % is this project's choice |
 | a non-key between the keys in volatility | refuses as not built (Underwood's several roots): choose adjacent keys |
 | a pair without parameters | missing data, the pair named (case C1) |
-| a purity specification | not built yet: unsupported (case E3 before M4) |
+| a purity, another design specification or a side draw | refuses (invalid input): they are the rigorous column's (case E3 names the azeotrope there) |
 
 Gilliland's correlation is a fit to columns: its N is an estimate, never a check.
 
@@ -65,8 +66,9 @@ several feeds, each entering its stage as one stream); the condenser, total (liq
 distillate); the pressure (default the first feed's; no pressure drop); and **two** of: the reflux ratio L₁/D, the
 boil-up ratio V_N/B, the distillate or the bottoms flow, the condenser duty (heat removed) or the reboiler duty. Not
 both product flows (they add up to the feed), not both duties, and not two specifications of the same end (the reflux
-ratio with the condenser duty, the boil-up ratio with the reboiler duty). Purity and recovery specifications come with
-M4; side draws with M4. Two liquids on the stages, the decanter and the column's own property method (M2b) are below.
+ratio with the condenser duty, the boil-up ratio with the reboiler duty). In place of any of them a design
+specification (a purity, a recovery, a component's flow, a stage temperature), and side draws: milestone M4, below
+("Design specifications and side draws"). Two liquids on the stages, the decanter and the column's own property method (M2b) are below.
 
 **The equations** (the engine's file header has them in full): for every stage the component balances, the
 equilibrium y = K x with the flowsheet's method (activity models with their vapour model, or an equation of state), and
@@ -113,7 +115,8 @@ the Newton iterations; a column that reaches it is not converged (E4).
 | a stage's liquid below 1 % of the column's largest vapour flow (stages 2 to N − 1) | warns `DRY_STAGE`, with the stages, the cause and the remedy (W7's D1: stages 2 to 5); the 1 % is this project's choice: no open source gives a threshold for equilibrium stages without the trays' geometry (searched 2026-10-29) |
 | a stage's vapour below 1/5 of the column's largest vapour flow (stages 2 to N) | warns `DRY_STAGE` (vapour): outside the turndown of bubble-cap trays, 5 (sieve 2, valve 4; Fermeglia, "Staged column design", University of Trieste, 2021, slide 54), so with one diameter the trays would weep; the maintainer's choice, 2026-10-29. The checks with the trays' geometry (flooding, weeping) come with M2b |
 | a pair without parameters | missing data, the pair named (C1) |
-| purity or recovery specifications, side draws, phases "LL" (extraction), a condenser without a reboiler | not built yet: unsupported |
+| a design specification no column can meet | refuses (invalid input, `OUT_OF_RANGE`) with what the column reaches and what would make it feasible (below) |
+| a side draw on an absorber or a stripper, two liquids on their stages, a condenser without a reboiler | not built yet: unsupported |
 | inert solids, the dimerizing acids' chemical theory | not built yet: unsupported |
 | nonvolatile components (milestone M3) | solved: they stay in the liquid (below) |
 
@@ -320,3 +323,82 @@ within 1e-6 relative, temperatures within 1e-5 K, mole fractions within 1e-8):
 
 The reference first reached the trivial solution (vapour equal to liquid on every stage) on H6; it now refuses such a
 solution and starts the equation of state's K-values from Wilson's estimate. The engine had found the physical one.
+
+## Design specifications and side draws (milestone M4)
+
+Code: `src/units/columns/specifications.js` (the specifications), `src/units/columns/engine.js` (the side draws).
+Reference: `validation/python/reference_mesh_specifications.py`; cases:
+`validation/data/columns/specifications/cases.json`; tests: `test/columns-specifications.test.js`. The decision file
+has the argument and what is left to decide: [decisions/2026-11-11-01-column-specifications.md](../decisions/2026-11-11-01-column-specifications.md).
+
+**What can be asked.** In the rigorous column, each of these takes the place of a reflux ratio, a boil-up ratio, a
+product flow or a duty (the column still takes two specifications; one with a decanter or for a reboiled stripper):
+
+| Specification | In the block (`specifications: [...]`) | Meaning |
+|---|---|---|
+| purity | `{ kind: "purity", product, component, value, basis }` | the mole (default) or mass fraction of a component in the distillate, the bottoms or a side draw (`product: "side_draw"`, `draw: 2` for the second) |
+| recovery | `{ kind: "recovery", product, component, value }` | the share of the component's total feed that leaves in that product |
+| component flow | `{ kind: "component_flow", product, component, flow_kmol_h }` or `flow_kg_h` | the flow of a component in that product |
+| stage temperature | `{ kind: "stage_temperature", stage, T_K }` | the temperature of any stage |
+
+`distillate_purity: { component, value, basis }` and `bottoms_purity` are short forms of a purity.
+
+**How it is solved.** An outer loop around the stage solver. The variables are the engine's own specifications that
+were left open, in this order: the reflux ratio, the distillate flow, the boil-up ratio (and the flow of a side draw
+given without one). Newton's method on the specifications, in the logarithm of a ratio and the logit of the
+distillate's share of the feed, so that every trial point is a column; a purity or a recovery is compared as its logit,
+so that 0.999 and an impurity of 0.001 are met to the same relative accuracy. The Jacobian comes from the converged
+column itself: the stage solver's Jacobian gives how every stage answers to a ratio or a flow (the implicit function
+theorem), so each outer step costs one column and one Jacobian. Every column starts from the last one solved. With
+one variable, a scan of its whole range and a bracketing secant search take over where Newton's method fails.
+
+Why not write the specifications among the MESH equations, as DWSIM's Naphtali-Sandholm solver does (one in place of
+each end's energy balance; `NewtonRaphson.vb`, read 2026-11-11)? Three reasons: that keeps the block-tridiagonal
+Jacobian only for one specification per end, on that end's product (not a purity with a recovery of the same product,
+a stage temperature inside the column, or a side draw); this engine reaches long, pure columns by a continuation that
+starts from a column without separation, where no purity can be met (The ChemSep Book says the same of its
+continuation in the efficiency: "it cannot, without modification, handle problems in which a product stream purity is
+specified", section 13.5, p. 224); and a specification that no column can meet would only make Newton's method fail,
+where the outer loop can say what the column reaches. The price is several column solutions for one answer.
+The independent reference does write the specifications among its equations, so the two reach the same column by
+different routes.
+
+**What is reported.** `state.design_specifications` (and `checks.columns` through the request path): each
+specification with the value asked, the value reached, their difference and the scaled residual;
+`state.adjusted`: the reflux ratio, distillate flow, boil-up ratio or side-draw flow that was found. A column is
+returned only when every specification is met within a scaled residual of 1e-6 (for a purity x about 1e-6 x (1 − x);
+for a flow a relative 1e-6; for a temperature 1e-5 K).
+
+**What is refused, and how.**
+
+| Situation | What the column does |
+|---|---|
+| a purity or a recovery outside 0 to 1 (1 included), a component that is not fed, a component flow above its feed, purities of one product adding up to more than 1, a purity that a given product flow cannot hold | refuses before solving (`BAD_INPUT`), with the limit |
+| a purity beyond a binary azeotrope, seen from the feed (two components, no decanter) | refuses (`OUT_OF_RANGE`) before solving, naming the azeotrope's composition and temperature by the column's own method, and what would do: a fraction on the feed's side, another pressure, an entrainer with a decanter (case E3) |
+| one free variable, and no value of it gives the specification (a reflux ratio fixed below the minimum for a purity; a side-draw flow) | refuses (`OUT_OF_RANGE`): the largest and smallest value the specification reaches over the whole range, and where; names an azeotrope found near the product |
+| two specifications that the stages cannot give even at a reflux ratio of 100 | refuses (`OUT_OF_RANGE`): what each reaches there; more stages, another feed stage, or less strict values |
+| anything else that fails | `NO_CONVERGENCE`, with the closest point reached; not a statement that the specifications cannot be met |
+
+Limits to know: the azeotrope test before solving is for two components; with three or more an azeotrope is named
+only when the search finds one near the product the column reached. The scan uses a grid (15 distillate flows, 14
+ratios, refined next to the best point), so an extremum narrower than the grid can be missed. A refusal next to a
+pinch can take tens of seconds (ethanol + water at a fixed reflux ratio of 2 and 0.85 asked: about 27 s), because
+the columns near the pinch are slow to solve; a solved case took 0.1 to 4 s in the tests. A purity that has two
+solutions (a side draw's purity can pass through a maximum as its flow grows) returns the one nearest the start.
+
+**Side draws.** `side_draws: [{ stage, phase: "liquid" | "vapour", flow_kmol_h }]`: a liquid or a vapour of a given
+flow leaves a stage between the condenser and the reboiler, with that stage's composition and temperature (a liquid at
+its bubble point, a vapour at its dew point). In the balances the draw is added to what leaves the stage (The ChemSep
+Book, section 13.2.1, eqs. 13.1 to 13.3, p. 192); the profile's liquid and vapour flows are those that go on to the
+next stage. Each side draw needs one stream on the block's outlet `side`, in the same order. Without `flow_kmol_h`
+the flow is found, for one more specification (for example a recovery in the side draw). With two liquids on a
+stage a liquid draw takes both in their proportion. Not built: a side draw on an absorber or a stripper, a draw of
+one of two liquids, pumparounds, a liquid distillate beside the vapour of a partial condenser.
+
+**Validation.** Eight cases against the independent reference (flows within 2e-5 relative, mole fractions within
+2e-6, temperatures within 1e-4 K): two purities; a recovery at a given reflux; a stage temperature with a component
+flow; The ChemSep Book's benzene + toluene column (case B2) asked for its published distillate purity, 0.925473
+(Figure 1.21), where CHEPTA's Peng-Robinson column needs a reflux ratio of 2.343 against the book's 2 with UNIFAC and
+constant molar overflow (an agreement between two property methods, limit 25 %, for the maintainer to confirm); mass
+fractions; ethanol + water with a purity below the azeotrope and a recovery; two side draws of given flows; a
+side-draw flow found for a recovery (the reference by Brent's method). Converged is not validated against plant data.

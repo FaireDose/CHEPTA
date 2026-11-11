@@ -240,13 +240,15 @@ test("rigorous: the input is checked, and what comes later is refused as not bui
   code({ specs: [{ kind: "reflux_ratio", value: 2 }, { kind: "condenser_duty", value: 1e6 }] }, "BAD_INPUT", /both fix the top/);
   code({ specs: [{ kind: "boilup_ratio", value: 2 }, { kind: "reboiler_duty", value: 1e6 }] }, "BAD_INPUT", /both fix the bottom/);
   code({ specs: [{ kind: "reflux_ratio", value: 2 }] }, "BAD_INPUT", /two specifications/);
-  code({ specs: [{ kind: "reflux_ratio", value: 2 }, { kind: "distillate_purity", value: 0.99 }] }, "NOT_AVAILABLE", /M4/);
+  // purity specifications and side draws landed with milestone M4 (test/columns-specifications.test.js); these two
+  // lines asked for them to be refused as not built, and now ask for what is wrong in them: no component, no rate
+  code({ specs: [{ kind: "reflux_ratio", value: 2 }, { kind: "distillate_purity", value: 0.99 }] }, "BAD_INPUT", /give its component/);
   code({ stages: 2 }, "BAD_INPUT", /3 or more/);
   code({ feeds: [{ stage: 12, flows: [50, 50], H_W: 0 }] }, "BAD_INPUT", /2 to 11/);
   // "VLL" landed with M2b (test/columns-vll.test.js), "LL" (extraction) with M3 (test/extraction.test.js): this adapter
   // has no activity coefficients
   code({ phases: "LL" }, "BAD_INPUT", /activity model/);
-  code({ draws: [{ stage: 3 }] }, "NOT_AVAILABLE", /side draws/);
+  code({ draws: [{ stage: 3 }] }, "BAD_INPUT", /side draw given without a rate/);
   code({ ends: { condenser: "total", reboiler: "none" } }, "NOT_AVAILABLE", /partial reboiler/);
   // the block: two specifications, a whole number of stages, the feed stage between the condenser and the reboiler
   const { input } = B1();
