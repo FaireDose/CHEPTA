@@ -55,12 +55,13 @@ step 11 are not in this pull request.
   `side_draws` (flowsheets, project files, `solve_flowsheet`); `solve_column` (CHEPTA.run, the command line and the
   MCP server go through the dispatcher), which returns the side draws as streams; the block's panel in the Flowsheet
   and in the Column workspace (each specification slot offers the four kinds; side draws are added and removed with
-  their product stream; the results show each specification as asked and as reached). The project format stays 8:
-  the new keys are optional keys of the column's specification (`docs/schema/project-8.json` describes them).
+  their product stream; the results show each specification as asked and as reached). No new project format (the newest stays 8;
+  a file is written with the lowest format its content needs, 6 for a column): the new keys are optional keys of
+  the column's specification (`docs/schema/project-8.json` describes them).
 - **Validation:** the independent reference `validation/python/reference_mesh_specifications.py` (it extends
   `reference_mesh.py`; the specifications are among its Newton equations, and a side-draw flow is found by Brent's
   method: other routes than the engine's), eight cases in `validation/data/columns/specifications/cases.json`, the
-  fixture `validation/fixtures/column_specifications.json`, and `test/columns-specifications.test.js` (17 tests). One
+  fixture `validation/fixtures/column_specifications.json`, and `test/columns-specifications.test.js` (18 tests). One
   case is the worked example of The ChemSep Book (case B2) asked the other way round: its published distillate
   purity given, its reflux ratio found.
 - **Documents:** `docs/models/columns.md` (a new section), ARCHITECTURE.md, ROADMAP.md, proposal 0015 (step 11).
@@ -99,6 +100,8 @@ No validation data and no benchmark was changed; `test/benchmark-columns.test.js
    1.21, p. 20) and the reflux ratio 2 (Figure 1.19, p. 19). Both were already transcribed in case B2.
 3. The wording of the refusals in the workbench (an azeotrope; a reflux below the minimum; too few stages).
 4. The panel: the specification slots and the side draws (the Flowsheet's column, and the Column workspace).
+5. The refusals' units: the stage solver's messages give flows in mol/s (its own unit), also where the block was
+   given kmol/h ("the distillate is 58.33 mol/s" for 210 kmol/h). To change if the maintainer wants kmol/h there.
 
 ## What the maintainer must decide (a recommendation each)
 
@@ -111,8 +114,8 @@ No validation data and no benchmark was changed; `test/benchmark-columns.test.js
    two property methods. Recommendation: keep, or drop the comparison and keep only the numerical one.
 4. **The limits of the search:** reflux and boil-up ratios from 0.001 to 1000; "near total reflux" taken as a reflux
    ratio of 100 when a failure is explained. This project's choices. Recommendation: keep.
-5. **The project format stays 8** (the new keys are optional). A build before this change refuses a file that holds
-   them, naming the unknown key. Recommendation: keep 8; a format 9 only if the maintainer wants older builds to say
+5. **No new project format** (the newest stays 8; the new keys are optional). A build before this change refuses a file that holds
+   them, naming the unknown key. Recommendation: no new format; a format 9 only if the maintainer wants older builds to say
    "needs a newer CHEPTA" instead.
 6. **Refusals that are slow next to a pinch** (about 27 s in the worst case found). Recommendation: accept for now
    (the worker has its Stop button and time limit); a coarser scan would be faster and say less.

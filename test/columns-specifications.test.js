@@ -373,3 +373,52 @@ test("flowsheet: a side draw needs its stream on the outlet \"side\", and a stre
   // a column without side draws is as before: two outlets
   assert.ok(runFlowsheet(base({}, false)).streams.S2.F_kmol_h > 0);
 });
+
+// ---------------------------------------------------------------------------------------------------------------
+// The workbench's logic and project files (no new format: the new keys are optional keys of the column's specification)
+
+test("workbench: a side draw is added with its product stream and removed with the specifications written on it; a project keeps them", async () => {
+  const { addSideDraw, removeSideDraw, setSpec } = await import("../src/ui/flowsheet-logic.js");
+  const { readProject, projectOf, stateFromProject } = await import("../src/ui/project.js");
+  const { initialState } = await import("../src/ui/app-logic.js");
+  let fs = { components: ["benzene", "toluene"], thermo: { model: "PR" },
+    blocks: [{ id: "F1", type: "feed", x: 0, y: 0, spec: { flow_kmol_h: { benzene: 180, toluene: 180 }, P_kPa: 111.4575, VF: 0 } },
+      { id: "C1", type: "column", x: 150, y: 0, spec: { mode: "rigorous", stages: 10, feed_stage: 5, bottoms_kmol_h: 150, specifications: [{ kind: "purity", product: "distillate", component: "benzene", value: 0.95 }] } },
+      { id: "P1", type: "product", x: 300, y: -60 }, { id: "P2", type: "product", x: 300, y: 60 }],
+    streams: [{ id: "S1", from: "F1.out", to: "C1.in" }, { id: "S2", from: "C1.distillate", to: "P1.in" }, { id: "S3", from: "C1.bottoms", to: "P2.in" }] };
+  fs = addSideDraw(addSideDraw(fs, "C1"), "C1");
+  const col = () => fs.blocks.find(b => b.id === "C1").spec;
+  assert.deepEqual(col().side_draws, [{ stage: 5, phase: "liquid", flow_kmol_h: 10 }, { stage: 5, phase: "liquid", flow_kmol_h: 10 }]);
+  assert.equal(fs.streams.filter(s => s.from === "C1.side").length, 2);
+  // the second draw from stage 7, as a vapour, and a specification on each draw's... the second only
+  fs = setSpec(fs, "C1", { side_draws: [col().side_draws[0], { stage: 7, phase: "vapour" }],
+    specifications: [...col().specifications, { kind: "recovery", product: "side_draw", draw: 2, component: "toluene", value: 0.1 }] });
+  const solved = runFlowsheet(fs);
+  const sides = fs.streams.filter(s => s.from === "C1.side").map(s => solved.streams[s.id]);
+  assert.ok(Math.abs(sides[0].F_kmol_h - 10) < 1e-9 && Math.abs(sides[1].flows[1] / 180 - 0.1) < 1e-6);
+  assert.equal(solved.blocks.C1.state.design_specifications.length, 2);
+  // saved and reopened: the same specification, the same streams
+  const text = JSON.stringify(projectOf(initialState({ components: [], flowsheet: fs }), { version: "test" }));
+  // no new format: a file is written with the lowest format its content needs (6 for a column), 8 the newest
+  assert.equal(JSON.parse(text).fugacity_project, 6);
+  const back = stateFromProject(readProject(JSON.parse(text))).flowsheet;
+  assert.deepEqual(back.blocks.find(b => b.id === "C1").spec, col());
+  assert.equal(back.streams.filter(s => s.from === "C1.side").length, 2);
+  // removing the first draw: its stream and product go, and the recovery follows its draw (now draw 1)
+  fs = removeSideDraw(fs, "C1", 0);
+  assert.equal(fs.streams.filter(s => s.from === "C1.side").length, 1);
+  assert.deepEqual(col().side_draws, [{ stage: 7, phase: "vapour" }]);
+  assert.deepEqual(col().specifications[1], { kind: "recovery", product: "side_draw", draw: 1, component: "toluene", value: 0.1 });
+  // (without the first draw's 10 kmol/h this column cannot give 0.95 benzene with the recovery in the vapour draw:
+  // it is refused with what it reaches, not solved to something else)
+  assert.throws(() => runFlowsheet(fs), e => e.code === "OUT_OF_RANGE" && /cannot be met together on 10 stages/.test(e.message) && /What would make it feasible/.test(e.message));
+  // removing the last one drops the specification written on it: the column is then one specification short
+  fs = removeSideDraw(fs, "C1", 0);
+  assert.equal(col().side_draws, undefined);
+  assert.equal(col().specifications.length, 1);
+  // (with 150 kmol/h of bottoms the distillate, 210 kmol/h, cannot hold 0.95 benzene of the 180 fed: refused with
+  // the limit; with 175 it can)
+  assert.throws(() => runFlowsheet(fs), e => e.code === "BAD_INPUT" && /the fraction is 0\.8571 at most/.test(e.message));
+  fs = setSpec(fs, "C1", { bottoms_kmol_h: 175 });
+  assert.ok(runFlowsheet(fs).blocks.C1.state.design_specifications[0].met);
+});
