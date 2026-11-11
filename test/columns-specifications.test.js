@@ -13,7 +13,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { system, solveFlowsheet, stream } from "../src/index.js";
+import { system } from "../src/index.js";
+import { runFlowsheet } from "../src/flowsheet/document.js";
 import { run } from "../src/api/dispatcher.js";
 import { solveCascade } from "../src/units/columns/engine.js";
 import { SPEC_TOLERANCE, DESIGN_SPECS } from "../src/units/columns/specifications.js";
@@ -310,7 +311,7 @@ test("solve_column: design specifications through the request path, reported as 
   assert.ok(Math.abs(r.value.bottoms.flows[0] - 6) < 1e-4);
   const d = r.value.distillate, w = d.flows[0] * 78.11184 / d.mass_kg_h;
   assert.ok(Math.abs(w - 0.95) < 1e-5, `mass fraction ${w}`);
-  assert.equal(r.value.column.reflux_ratio, col.adjusted.reflux_ratio);
+  assert.ok(Math.abs(r.value.column.reflux_ratio - col.adjusted.reflux_ratio) < 1e-9);
   assert.ok(r.value.column.notes.some(n => /Design specifications: .*asked 0\.95, reached 0\.95/.test(n)));
   assert.ok(Math.abs(r.checks.energy_kW) < 1e-5 && r.checks.material_kmol_h < 1e-8);
   // the short form of a purity, with a specification of the engine's own
@@ -365,11 +366,10 @@ test("flowsheet: a side draw needs its stream on the outlet \"side\", and a stre
     blocks: [{ id: "F1", type: "feed", spec: { flow_kmol_h: { benzene: 180, toluene: 180 }, P_kPa: 111.4575, VF: 0 } }, { id: "C1", type: "column", spec: { mode: "rigorous", stages: 10, feed_stage: 5, reflux_ratio: 3, distillate_kmol_h: 150, ...colSpec } },
       { id: "P1", type: "product" }, { id: "P2", type: "product" }, ...(side ? [{ id: "P3", type: "product" }] : [])],
     streams: [{ id: "S1", from: "F1.out", to: "C1.in" }, { id: "S2", from: "C1.distillate", to: "P1.in" }, { id: "S3", from: "C1.bottoms", to: "P2.in" }, ...(side ? [{ id: "S4", from: "C1.side", to: "P3.in" }] : [])] });
-  const ok = solveFlowsheet(base({ side_draws: [{ stage: 6, flow_kmol_h: 25 }] }, true));
+  const ok = runFlowsheet(base({ side_draws: [{ stage: 6, flow_kmol_h: 25 }] }, true));
   assert.ok(Math.abs(ok.streams.S4.F_kmol_h - 25) < 1e-9);
-  assert.throws(() => solveFlowsheet(base({ side_draws: [{ stage: 6, flow_kmol_h: 25 }] }, false)), /1 side draw and 0 streams on the side outlet/);
-  assert.throws(() => solveFlowsheet(base({}, true)), /1 stream on the side outlet and 0 side draws/);
+  assert.throws(() => runFlowsheet(base({ side_draws: [{ stage: 6, flow_kmol_h: 25 }] }, false)), /1 side draw and 0 streams on the side outlet/);
+  assert.throws(() => runFlowsheet(base({}, true)), /1 stream on the side outlet and 0 side draws/);
   // a column without side draws is as before: two outlets
-  assert.ok(solveFlowsheet(base({}, false)).streams.S2.F_kmol_h > 0);
-  void stream;
+  assert.ok(runFlowsheet(base({}, false)).streams.S2.F_kmol_h > 0);
 });

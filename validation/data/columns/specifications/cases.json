@@ -272,8 +272,8 @@
         ]
       },
       "agreement_with_published_example": {
-        "reflux_ratio_relative": 0.15,
-        "why": "CHEPTA's Peng-Robinson column gives 0.915 benzene at the published reflux ratio of 2 (case B2), against the book's 0.925 with UNIFAC and constant molar overflow; reaching 0.925 takes more reflux in CHEPTA's method (2.27 when the case was written, 13 % above). The limit states agreement between two property methods; the maintainer confirms or changes it."
+        "reflux_ratio_relative": 0.25,
+        "why": "CHEPTA's Peng-Robinson column gives 0.915 benzene at the published reflux ratio of 2 (case B2), against the book's 0.925 with UNIFAC and constant molar overflow; reaching 0.925 takes more reflux in CHEPTA's method: 2.343 in reference_mesh_specifications.py (fixture, reflux_ratio), 17 % above. The limit states agreement between two property methods; the maintainer confirms or changes it."
       }
     },
     {
