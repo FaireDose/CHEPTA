@@ -68,6 +68,11 @@ export function warningCount({ warnings = 0, error = null, missing = null } = {}
   return warnings + (error ? 1 : 0) + problems;
 }
 
+/** The line above the list of the Warnings tab: "1 warning", "3 warnings". */
+export const warningsHeading = n => `${n} warning${n === 1 ? "" : "s"}`;
+/** The label of the button that opens or closes every warning of the list, by whether all are open now. */
+export const allLabel = allOpen => (allOpen ? "Collapse all" : "Expand all");
+
 /** The rows of a table shown on the Table tab: at most `max`, the rest in the Excel file. */
 export const TABLE_ROWS = 300;
 export function tablePreview(table, max = TABLE_ROWS) {
@@ -104,6 +109,52 @@ export function exportTables(desc) {
         h("tbody", {}, ...p.rows.map(r => h("tr", {}, ...r.map(v => h("td", { class: "fug-num" }, cellText(v)))))))),
       p.cut ? h("p", { class: "fug-foot" }, `The first ${p.rows.length} of ${p.total} rows; every row is in the Excel file.`) : null);
   }));
+}
+
+let seq = 0;
+/**
+ * A warning in two steps (the maintainer, 2026-11-12: "so the person is not overloaded"): one line, its title or first
+ * sentence, then the whole text when the person presses it. A <details class="fa-warn"> of warning.js becomes a button
+ * with aria-expanded and the region it opens; its body's nodes are moved, so their buttons keep working. A warning
+ * that is whole in one line (no more to say), or any other node, is returned as it is.
+ * @param {Element} node
+ * @param {{open?:boolean, onToggle?:()=>void}} [o]  open: shown whole from the start (an error that stopped the calculation)
+ */
+export function twoStepWarning(node, { open = false, onToggle } = {}) {
+  if (!node?.matches?.("details.fa-warn")) return node;
+  const head = node.querySelector(":scope > summary .fa-warn-head")?.textContent ?? "";
+  const body = node.querySelector(":scope > .fa-warn-body");
+  const id = `fa-w2-${++seq}`;
+  const region = h("div", { class: "fa-warn-body", id, role: "region", "aria-label": head }, ...(body ? [...body.childNodes] : []));
+  if (!region.childNodes.length) region.append(h("p", {}, head));
+  const more = h("span", { class: "fa-warn-more" });
+  const btn = h("button", { type: "button", class: "fa-warn-line", "aria-controls": id, "data-fk": "warn-toggle" },
+    h("span", { class: "fa-warn-sign", "aria-hidden": "true" }, icon("warn", 14)), h("span", { class: "fa-warn-head" }, head), more);
+  const set = on => { btn.setAttribute("aria-expanded", String(on)); region.hidden = !on; more.textContent = on ? "Less" : "Details"; out.classList.toggle("is-open", on); };
+  const attrs = {};
+  for (const a of ["role", "data-fk"]) if (node.getAttribute(a)) attrs[a] = node.getAttribute(a);
+  const out = h("div", { class: "fa-warn fa-warn2", ...attrs }, btn, region);
+  out.setOpen = set;
+  btn.addEventListener("click", () => { set(btn.getAttribute("aria-expanded") !== "true"); onToggle?.(); });
+  set(open);
+  return out;
+}
+
+/**
+ * The list of the Warnings tab: "3 warnings" and an Expand all button (aria-expanded: all open), then each warning
+ * in two steps (twoStepWarning). `open`: the nodes shown whole from the start.
+ * @param {Node[]} items
+ * @param {{open?:Set<Node>}} [o]
+ */
+export function warningList(items, { open = new Set() } = {}) {
+  const all = h("button", { type: "button", class: "fa-mini", "data-fk": "warn-all" });
+  const rows = items.map(n => twoStepWarning(n, { open: open.has(n), onToggle: () => sync() }));
+  const toggles = () => rows.filter(r => typeof r.setOpen === "function");
+  const allOpen = () => toggles().every(r => r.querySelector(".fa-warn-line").getAttribute("aria-expanded") === "true");
+  function sync() { const on = allOpen(); all.setAttribute("aria-expanded", String(on)); all.textContent = allLabel(on); }
+  all.addEventListener("click", () => { const on = !allOpen(); for (const r of toggles()) r.setOpen(on); sync(); });
+  sync();
+  return [h("div", { class: "fa-warn-bar" }, h("span", { class: "fa-warn-count" }, warningsHeading(items.length)), toggles().length ? all : null), ...rows];
 }
 
 const KIND = {
@@ -158,4 +209,10 @@ export const CANVAS_TABS_CSS = `
 .fa-tab-data .fa-meas{margin-top:0; padding-top:0; border-top:0}
 .fa-tab-line{margin:2px 0 0; font-size:12.5px}
 .fa-tab-none{color:var(--fug-fg2); font-size:12.5px}
+.fa-warn-bar{display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:12.5px; color:var(--fug-fg2)}
+.fa-warn2{padding:0; contain:inline-size}
+.fa-warn-line{display:flex; align-items:center; gap:6px; width:100%; border:0; background:transparent; color:inherit; font:inherit; text-align:left; padding:4px 8px; cursor:pointer; border-radius:6px}
+.fa-warn-line:focus-visible{outline:2px solid currentColor; outline-offset:-2px}
+.fa-warn2:not(.is-open) .fa-warn-line .fa-warn-head{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.fa-warn2 .fa-warn-body[hidden]{display:none}
 `;

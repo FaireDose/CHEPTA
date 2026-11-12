@@ -55,7 +55,7 @@ import { SOLID_UNITS } from "./solubility-units.js";
 import pkg from "../../package.json" with { type: "json" };
 import { appNext } from "./app-next.js";
 import { shellContext, sourcesOf, statusOf, setsRuleOf, unitsOf, isBlank, OWN_METHOD, dataOf, missingOf } from "./shell-contract.js";
-import { CANVAS_TABS, tabLabel, tabOf, tabMove, staysOnCanvas, warningCount, exportTables, dataPane } from "./canvas-tabs.js";
+import { CANVAS_TABS, tabLabel, tabOf, tabMove, staysOnCanvas, warningCount, exportTables, dataPane, warningList, twoStepWarning } from "./canvas-tabs.js";
 
 const PROPERTY_GLYPHS = [
   ["density", () => "ρ", "Density"], ["enthalpy", () => "h", "Enthalpy"], ["cp", () => ["c", h("sub", {}, "p")], "Heat capacity"],
@@ -1355,14 +1355,17 @@ export function app(target, cfg = {}) {
     for (const n of [...notes.children]) {
       if (n.classList.contains("fa-userdata-note")) dataOwn.append(n);
       else if (staysOnCanvas({ role: n.getAttribute("role") })) { if (n.matches(".fa-warn, .fug-warn")) items.push(n.cloneNode(true)); }
-      else items.push(n);
+      else { n.remove(); items.push(n); }
     }
-    for (const w of side.querySelectorAll(".fa-warn")) items.push(w.cloneNode(true));
+    // the Results panel's warnings: listed in the tab too, and in two steps there as well (one line, then the text)
+    for (const w of side.querySelectorAll(".fa-warn")) { items.push(w.cloneNode(true)); w.replaceWith(twoStepWarning(w)); }
     const missing = check.ok ? null : missingOf(state);
     const problems = missing && !missing.blank ? missing.problems.map(p => warning(p.message, { attrs: { role: "note" } })) : [];
     const err = error ? [warning(error, { title: `Not calculated: ${summaryOf(error)}`, attrs: { role: "note" } })] : [];
     const count = warningCount({ warnings: items.length, error, missing });
-    warnBox.replaceChildren(...err, ...problems, ...items);
+    // in two steps (the maintainer, 2026-11-12): one line each and the count, the whole text when pressed; the error
+    // that stopped the calculation is shown whole
+    warnBox.replaceChildren(...(count ? warningList([...err, ...problems, ...items], { open: new Set(err) }) : []));
     if (!count) warnBox.append(h("p", { class: "fa-tab-none" }, check.ok || missing?.blank ? "No warning: nothing in this calculation needs a remark." : "No warning."));
     ui.warnCount = count;
     renderTabs();

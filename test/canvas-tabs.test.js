@@ -2,7 +2,7 @@
 // tabs themselves are checked on screenshots (docs/ui-review/2026-11-12-0021-canvas-tabs/).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { CANVAS_TABS, tabLabel, tabOf, tabMove, staysOnCanvas, warningCount, tablePreview, cellText } from "../src/ui/canvas-tabs.js";
+import { CANVAS_TABS, tabLabel, tabOf, tabMove, staysOnCanvas, warningCount, tablePreview, cellText, warningsHeading, allLabel } from "../src/ui/canvas-tabs.js";
 
 test("four tabs, in the proposal's order; the flowsheet's Plot is its Drawing", () => {
   assert.deepEqual(CANVAS_TABS.map(t => t.id), ["plot", "table", "data", "warnings"]);
@@ -57,4 +57,11 @@ test("the Table tab shows at most 300 rows, the rest in the Excel file; cells wi
   assert.equal(cellText(null), "–");
   assert.equal(cellText(NaN), "–");
   assert.equal(cellText("one liquid"), "one liquid");
+});
+
+test("the Warnings tab in two steps: the count above the one-line list, and one button for all", () => {
+  assert.equal(warningsHeading(1), "1 warning");
+  assert.equal(warningsHeading(3), "3 warnings");
+  assert.equal(allLabel(false), "Expand all");
+  assert.equal(allLabel(true), "Collapse all");
 });
