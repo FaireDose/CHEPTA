@@ -73,7 +73,7 @@ current: replace its "State" and "Queue" sections at each handover, never append
    follow-up proposal; (4) the same ChemSep lower ends for other components only on request. The worker builds 1-2 in #236.
    Lab asked (2026-11-12, for the maintainer) for visual proof from CHEPTA of each Lab case; answered: possible today via
    a project file and Playwright; missing (a) open a project at start, (b) PNG/SVG of the flowsheet drawing, (c) stream
-   values on the drawing, (d) a per-block balance table; b and c in CHEPTA's next phase, d with the row chooser. Next free slot after step 3: Lab's 7 (splitter by flow; the design specification through a
+   values on the drawing, (d) a per-block balance table; the maintainer agreed (2026-11-12): CHEPTA builds them; queue order: step 3, Lab's 7, row chooser + (d), then (a)-(c) in one PR. Lab told. Next free slot after step 3: Lab's 7 (splitter by flow; the design specification through a
    proposal). Small, seen in #235: "Sources used here" (sourceUsedFor) lists excess-enthalpy articles of other mixtures
    (ethanol + water shows benzene + cyclohexane): a pull request of its own.
 3. **A lighter model for routine work.** `create_session` takes `model`. Use `claude-sonnet-5-5` for data fits with the
