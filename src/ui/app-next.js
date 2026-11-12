@@ -16,8 +16,9 @@
  *    Help (AI chat, Feedback);
  *  - when narrow (a phone, a chat panel): one pane at a time, Inputs or Results, instead of one long page, and the
  *    toolbar as one row that scrolls sideways.
- * What the shell shows about the calculation (method, data, units) it reads from the status bar of app.js, so the
- * two can never disagree. Nothing here calculates.
+ * What the shell shows about the calculation (method, data, units, what is missing) comes from the workbench's
+ * contract (shell-contract.js, through app()'s `shell`): the same functions fill the status bar of the classic layout,
+ * so the two can never disagree, and the shell reads nothing off the workbench's page. Nothing here calculates.
  *
  * A view (layer 6). The public interface is the one of app(): { state, update, save, load }.
  */
@@ -26,12 +27,32 @@ import { icon } from "./icons.js";
 import { brandLogo } from "./brand.js";
 import { app } from "./app.js";
 import { WORKSPACES, SECTIONS, UTILITIES } from "./workspaces.js";
-import { modelPicker, liquidPicker, workbenchPatch } from "./model-picker.js";
+import { modelPicker, liquidPicker, equationPicker, workbenchPatch } from "./model-picker.js";
+import { OWN_METHOD } from "./shell-contract.js";
 
-/** The workspaces whose method is the workbench's own (state.model): the shell's Method button opens the picker. */
+/** The workspaces whose method is the workbench's own (state.model), for "From the flowsheet". */
 export const PICKER_WORKSPACES = ["equilibrium", "flash", "hx", "pipe"];
 /** The workspaces with a Method page of their own in the Inputs panel, and the button of app.js that opens it. */
-export const METHOD_PAGE = { flowsheet: "fs-method", column: "col-method", reactor: "rx-method" };
+export const METHOD_PAGE = OWN_METHOD;
+/** What the Method button does for each kind of method choice (shell-contract.js methodOf().choice). */
+export const METHOD_ACTION = { workbench: "picker", liquid: "picker", equation: "picker", own: "page", streams: "inputs", fixed: "none" };
+
+/**
+ * Move the focus inside a menu with the arrow keys (WAI-ARIA menu pattern, without wrapping the menu in a role):
+ * Down and Up to the next and the previous item (round), Home and End to the first and the last. DOM-free.
+ * @param {string} key  the key pressed
+ * @param {number} at   the index of the item that has the focus (-1: none, e.g. the menu's button)
+ * @param {number} n    how many items
+ * @returns {number|null}  the index to focus, or null when the key does not move
+ */
+export function menuMove(key, at, n) {
+  if (!n) return null;
+  if (key === "ArrowDown") return at < 0 ? 0 : (at + 1) % n;
+  if (key === "ArrowUp") return at < 0 ? n - 1 : (at - 1 + n) % n;
+  if (key === "Home") return 0;
+  if (key === "End") return n - 1;
+  return null;
+}
 /** The supporting tools, grouped: what each button of the top bar opens. */
 export const TOOLS = [
   { id: "project", label: "Project", icon: "file", items: ["project"] },
@@ -96,7 +117,7 @@ const NEXT_CSS = `
 
 /* what the shell replaces in the workbench of app.js */
 .fn-shell .fn-host .fa-titlebar,.fn-shell .fn-host .fa-subnav{display:none}
-.fn-shell[data-picker] .fn-host .fa-ribbon .fa-group[aria-label="Model"]{display:none}
+.fn-shell[data-picker] .fn-host .fa-ribbon .fa-group:is([aria-label="Model"],[aria-label="Liquid model"],[aria-label="Equation"]){display:none}
 .fn-shell .fn-host .fa-ribbon .fa-group[aria-label="Composition"]{display:none}
 .fn-shell .fn-host [data-fk="fs-method"],.fn-shell .fn-host [data-fk="col-method"],.fn-shell .fn-host [data-fk="rx-method"]{display:none}
 .fn-shell .fn-host .fa-status .fa-cell:not(.fa-state):not(:last-child){display:none}
@@ -171,8 +192,6 @@ export function appNext(target, cfg = {}) {
   const { layout: _layout, ...inner } = cfg;
   const api = app(host, inner);   // injects the workbench's styles; the shell's come after them
   injectNextStyles(doc);
-  const box = host.querySelector(".fug-app");
-  const statusBar = host.querySelector(".fa-status");
 
   const ui = { pane: "results", menu: null, lastWs: null, auto: true, popup: null };
   const st = () => api.state;
@@ -185,9 +204,21 @@ export function appNext(target, cfg = {}) {
     button.setAttribute("aria-haspopup", "true");
     button.dataset.fn = id;
     // the bar is redrawn, so the focus is put back on the button that was pressed
-    button.addEventListener("click", () => { ui.menu = open ? null : id; render(); shell.querySelector(`[data-fn="${id}"]`)?.focus(); });
+    // the bar is redrawn, so the focus is put back on the button that was pressed; opened from the keyboard (a click
+    // with no pointer, or the Down key), the focus goes into the menu, on its current item
+    const toggle = intoMenu => { ui.menu = open ? null : id; render(); if (ui.menu && intoMenu) focusItem(null); else shell.querySelector(`[data-fn="${id}"]`)?.focus(); };
+    button.addEventListener("click", ev => toggle(ev.detail === 0));
+    button.addEventListener("keydown", ev => { if (!open && (ev.key === "ArrowDown" || ev.key === "ArrowUp")) { ev.preventDefault(); toggle(true); } });
     if (open) ui.popup = { button, side, node: h("div", { class: "fn-menu", role: "group", "aria-label": button.getAttribute("aria-label") ?? "" }, ...build()) };
     return h("div", { class: "fn-menu-wrap" + (id === "ws" ? " fn-ws-wrap" : "") }, button);
+  }
+  /** The items of the open menu that the arrow keys move between (a menu of lists, the method, keeps its own keys). */
+  const menuItems = () => [...(shell.querySelector(":scope > .fn-menu")?.querySelectorAll(".fn-item") ?? [])];
+  /** Focus an item of the open menu: by index, or (null) the current one, else the first. */
+  function focusItem(i) {
+    const items = menuItems();
+    if (!items.length) { shell.querySelector(":scope > .fn-menu select, :scope > .fn-menu button")?.focus(); return; }
+    (items[i ?? Math.max(0, items.findIndex(b => b.getAttribute("aria-current") === "page"))] ?? items[0]).focus();
   }
   /** Put the open menu under its button, inside the shell (not inside a row that scrolls, which would cut it). */
   function placePopup() {
@@ -195,6 +226,12 @@ export function appNext(target, cfg = {}) {
     const p = ui.popup;
     if (!p || !ui.menu) return;
     shell.append(p.node);
+    p.node.addEventListener("keydown", ev => {
+      const items = menuItems(), to = menuMove(ev.key, items.indexOf(doc.activeElement), items.length);
+      if (to != null && items.includes(doc.activeElement)) { ev.preventDefault(); items[to].focus(); }
+      // Tab leaves the menu: it closes, and the focus goes on from its button
+      if (ev.key === "Tab") { const id = ui.menu; ui.menu = null; render(); shell.querySelector(`[data-fn="${id}"]`)?.focus(); }
+    });
     const b = p.button.getBoundingClientRect(), s0 = shell.getBoundingClientRect(), w = p.node.offsetWidth;
     const left = p.side === "is-left" ? b.left - s0.left : b.right - s0.left - w;
     p.node.style.top = `${b.bottom - s0.top + 4}px`;
@@ -210,34 +247,33 @@ export function appNext(target, cfg = {}) {
     icon(w.icon, cls === "fn-item" ? 17 : 20), h("span", {}, cls === "fn-item" ? w.label : w.short));
   const wsGroups = cls => calculations().flatMap(g => [h("h3", {}, g.label), ...g.workspaces.map(w => wsItem(w, cls))]);
 
-  // ---- the context row: method, data, units, read from the status bar of app.js
-  const statusText = sel => statusBar?.querySelector(sel)?.textContent?.trim() ?? "";
-  function methodChip() {
-    const ws = st().workspace, view = st().view;
-    const label = statusText(".fa-cell:nth-child(2)").replace(/^(Flowsheet|Reactor|Column): /, "");
-    const chip = (attrs, ...more) => h("button", { type: "button", class: "fn-chip", ...attrs }, h("small", {}, "Method"), label, ...more);
-    if (METHOD_PAGE[ws]) {
-      return chip({ title: "The property method of this workspace: opens its Method page in the Inputs panel",
-        on: { click: () => { ui.pane = "inputs"; host.querySelector(`[data-fk="${METHOD_PAGE[ws]}"]`)?.click(); render(); } } });
+  // ---- the context row: method, data, units, from the workbench's contract (shell-contract.js)
+  const ctx = () => api.shell.context();
+  function methodChip(c) {
+    const m = c.method, action = METHOD_ACTION[m.choice];
+    const chip = (attrs, ...more) => h("button", { type: "button", class: "fn-chip", "data-fk": "fn-method", ...attrs }, h("small", {}, "Method"), m.label, ...more);
+    if (action === "none") return chip({ disabled: true, title: m.note });
+    if (action === "page") {
+      return chip({ title: `${m.note} The button opens it in the Inputs panel.`,
+        on: { click: () => { ui.pane = "inputs"; ui.auto = false; api.shell.openMethod(); render(); } } });
     }
-    const liquidOnly = view === "solid" || view === "sle";
-    if (!PICKER_WORKSPACES.includes(ws) && !liquidOnly) {
-      return chip({ disabled: true, title: "Nothing to choose here: this view has one method" });
-    }
-    const b = chip({ "aria-label": `Property method: ${label}` }, icon("chevronDown", 14));
-    return menuButton("method", b, () => [h("div", { class: "fn-method-pop" },
-      liquidOnly
-        ? liquidPicker({ model: st().model, id: `fn-liq-${uid}`, onChange: m => api.update({ model: m }) })
-        : modelPicker({ model: st().model, vapour: st().vapour, mixing: st().mixing ?? null, id: `fn-model-${uid}`, fk: "fn-model",
-          onChange: p => api.update(workbenchPatch(p, st())) }),
-      h("p", {}, "The method of every diagram and unit model of Properties and Unit models. The flowsheet, the column and the reactor keep their own."))], "is-left");
+    if (action === "inputs") return chip({ title: m.note, on: { click: () => { ui.pane = "inputs"; ui.auto = false; api.update({ panels: { left: true } }); render(); } } });
+    const b = chip({ "aria-label": `Property method: ${m.label}` }, icon("chevronDown", 14));
+    const s = st();
+    const picker = m.choice === "liquid"
+      ? liquidPicker({ model: s.model, id: `fn-liq-${uid}`, fk: "fn-liquid", onChange: model => api.update({ model }) })
+      : m.choice === "equation"
+        ? equationPicker({ model: s.model, vapour: s.vapour ?? "ideal", mixing: s.mixing ?? null, id: `fn-eq-${uid}`, fk: "fn-equation",
+          onChange: p => api.update(workbenchPatch(p, s)) })
+        : modelPicker({ model: s.model, vapour: s.vapour, mixing: s.mixing ?? null, id: `fn-model-${uid}`, fk: "fn-model",
+          onChange: p => api.update(workbenchPatch(p, st())) });
+    return menuButton("method", b, () => [h("div", { class: "fn-method-pop" }, picker, h("p", {}, m.note))], "is-left");
   }
-  function dataChip() {
-    const data = statusText(".fa-cell.fa-grow"), sets = statusText(".fa-sets-cell");
-    const here = host.querySelector('[data-fk="src-here"]');
-    return h("button", { type: "button", class: "fn-chip", title: "The sources of the data behind this result",
-      on: { click: () => (here ? here.click() : api.update({ utility: "sources" })) } },
-      h("small", {}, "Data"), [/\bpairs?\b/.test(data) ? data : "", sets].filter(Boolean).join("; ") || "Sources used here");
+  function dataChip(c) {
+    const text = [c.data.pairs, c.data.sets].filter(Boolean).join("; ");
+    return h("button", { type: "button", class: "fn-chip", "data-fk": "fn-data", title: "The sources of the data behind this result",
+      on: { click: () => { ui.menu = null; api.shell.showSources(); } } },
+      h("small", {}, "Data"), text || "Sources used here");
   }
   /** In a calculation: take the flowsheet's components and method (one press), when it has some and they differ. */
   function fromFlowsheetChip() {
@@ -250,8 +286,8 @@ export function appNext(target, cfg = {}) {
       on: { click: () => api.update({ components: ids, model: fs.thermo.model, vapour: fs.thermo.vapour ?? "ideal", mixing: fs.thermo.mixing ?? null }) } },
       icon("flowsheet", 14), "From the flowsheet");
   }
-  const unitsChip = () => h("button", { type: "button", class: "fn-chip", title: "Units and composition basis, for every workspace (Settings)",
-    on: { click: () => go({ utility: "settings" }) } }, h("small", {}, "Units"), statusText(".fa-hide-narrow"));
+  const unitsChip = c => h("button", { type: "button", class: "fn-chip", "data-fk": "fn-units", title: "Units and composition basis, for every workspace (Settings)",
+    on: { click: () => go({ utility: "settings" }) } }, h("small", {}, "Units"), c.units.text);
 
   function toolButton(t) {
     const b = h("button", { type: "button", class: "fn-tool", "aria-label": t.label, title: t.items.map(i => utility(i).label).join(", ") },
@@ -268,14 +304,15 @@ export function appNext(target, cfg = {}) {
 
   function render() {
     ui.popup = null;
-    const s = st(), ws = WORKSPACES.find(w => w.id === s.workspace);
-    const nsize = box.dataset.size, narrow = nsize === "narrow";
+    const s = st(), ws = WORKSPACES.find(w => w.id === s.workspace), c = ctx();
+    const nsize = c.size, narrow = nsize === "narrow";
     shell.dataset.nsize = nsize;
     shell.dataset.ws = s.workspace;
     shell.dataset.pane = ui.pane;
     // the toolbar as one row that scrolls sideways: when narrow, and for the flowsheet's long palette at mid width
     if (narrow || (nsize === "mid" && s.workspace === "flowsheet")) shell.dataset.strip = ""; else delete shell.dataset.strip;
-    if (PICKER_WORKSPACES.includes(s.workspace)) shell.dataset.picker = ""; else delete shell.dataset.picker;
+    // the Method button holds the method choice: the ribbon's own lists are hidden
+    if (METHOD_ACTION[c.method.choice] === "picker") shell.dataset.picker = ""; else delete shell.dataset.picker;
     const sec = SECTIONS.find(x => x.workspaces.includes(s.workspace));
     const onFlow = s.workspace === "flowsheet";
     const flowButton = h("button", { type: "button", class: "fn-flow", "aria-current": onFlow ? "page" : undefined, "aria-label": "Flowsheet",
@@ -283,7 +320,7 @@ export function appNext(target, cfg = {}) {
     const wsButton = h("button", { type: "button", class: "fn-ws", "aria-label": onFlow ? "Calculations: choose one" : `Calculation: ${ws.label}. Choose another` },
       icon(onFlow ? "calc" : ws.icon, 17), h("span", {}, onFlow ? "Calculations" : ws.label), narrow || onFlow ? null : h("small", {}, sec.label), icon("chevronDown", 14));
     // the context row: in the top bar beside the rail, on a row of its own otherwise
-    const context = h("div", { class: "fn-context", role: "group", "aria-label": "Method, data and units of this calculation" }, methodChip(), dataChip(), unitsChip(), fromFlowsheetChip());
+    const context = h("div", { class: "fn-context", role: "group", "aria-label": "Method, data and units of this calculation" }, methodChip(c), dataChip(c), unitsChip(c), fromFlowsheetChip());
     const railed = "rail" in shell.dataset;
     ctxRow.replaceChildren(...(railed ? [] : [context]));
     top.replaceChildren(
@@ -293,7 +330,7 @@ export function appNext(target, cfg = {}) {
       ...(railed ? [context] : []),
       h("div", { class: "fn-tools", role: "group", "aria-label": "Supporting tools" }, ...TOOLS.map(toolButton)));
     rail.replaceChildren(...wsGroups("fn-rail-btn"));
-    const need = !!host.querySelector(".fa-need");
+    const need = !c.missing.complete;
     const pane = (id, label, ico) => h("button", { type: "button", class: "fn-pane-btn", "aria-pressed": String(ui.pane === id),
       on: { click: () => { ui.pane = id; ui.auto = false; render(); } } }, icon(ico, 16), label,
       id === "inputs" && need && ui.pane !== "inputs" ? h("span", { class: "fn-dot", title: "Inputs are missing" }) : null);
@@ -301,31 +338,28 @@ export function appNext(target, cfg = {}) {
     panes.replaceChildren(pane("inputs", "Inputs", "panelL"), pane("results", s.workspace === "flowsheet" ? "Drawing and results" : "Results", "panelR"));
   }
 
-  // ---- follow the workbench: its status bar is rewritten at every change, its size class when the width changes
+  // ---- follow the workbench: it tells the shell after every change it shows (its state, its size, a calculation)
   let queued = false;
   const refresh = () => {
     if (queued) return;
     queued = true;
     Promise.resolve().then(() => {
       queued = false;
-      // a workspace opened without its inputs starts on the Inputs pane, a complete one on its results
-      // (the canvas is drawn a moment after the chrome, so the choice waits for it: `auto`, until the person chooses)
+      // a workspace opened without its inputs starts on the Inputs pane, a complete one on its results, until the
+      // person chooses a pane
       if (st().workspace !== ui.lastWs) { ui.lastWs = st().workspace; ui.auto = true; ui.pane = "results"; }
-      if (ui.auto && host.querySelector(".fa-need")) { ui.pane = "inputs"; ui.auto = false; }
+      if (ui.auto && !ctx().missing.complete) { ui.pane = "inputs"; ui.auto = false; }
       // a menu holds live controls (the method lists): it is not rebuilt under the person's hands
       if (ui.menu !== "method" || !shell.querySelector(".fn-method-pop")?.contains(doc.activeElement)) render();
     });
   };
-  if (typeof MutationObserver !== "undefined") {
-    if (statusBar) new MutationObserver(refresh).observe(statusBar, { childList: true });
-    new MutationObserver(refresh).observe(box, { attributes: true, attributeFilter: ["data-size"] });
-  }
+  api.shell.subscribe(refresh);
   // the rail needs room beside a wide workbench (1080 px, the workbench's own limit, and the rail's 76 px)
   const fit = () => { const was = "rail" in shell.dataset; if ((shell.clientWidth || 1280) >= 1156) shell.dataset.rail = ""; else delete shell.dataset.rail; if (was !== ("rail" in shell.dataset)) refresh(); };
   fit();
   if (typeof ResizeObserver !== "undefined") new ResizeObserver(fit).observe(shell);
   ui.lastWs = st().workspace;
-  ui.pane = host.querySelector(".fa-need") ? "inputs" : "results";
+  ui.pane = ctx().missing.complete ? "results" : "inputs";
   render();
 
   return {
