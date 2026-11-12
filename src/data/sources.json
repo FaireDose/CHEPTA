@@ -4428,6 +4428,20 @@
         "validation/data/vle/acetone_propionic-acid_10-1016-j-fluid-2016-10-024_333.15K.json"
       ]
     },
+    "pirola-2013-acetic-acid-distillation": {
+      "title": "Heterogeneous distillation of the system water-acetic acid-p-xylene: study of its fluid phase equilibria, micro-pilot column experimental results and computer simulation, Chemical Engineering Transactions 32, 1897-1902",
+      "authors": "C. Pirola, F. Galli, C. L. Bianchi, G. Carvoli",
+      "year": 2013,
+      "kind": "open-access article",
+      "doi": "10.3303/CET1332317",
+      "url": "https://www.aidic.it/cet/13/32/317.pdf",
+      "access": "Free to read on the publisher's site (Chemical Engineering Transactions, an open-access journal of AIDIC; copyright 2013 AIDIC Servizi S.r.l.); read 2026-11-11",
+      "note": "Section 4 and Table 3, p. 1901: the direct distillation column T1 of water + acetic acid without entrainer, simulated by the authors with PRO/II (Lyngby modified UNIFAC, Hayden-O'Connell): 8 ideal stages, 26.62 kmol/h of an equimolar feed, reflux ratio 5.7, distillate 17.7 kmol/h with x(acetic acid) 0.26, residue 8.9 kmol/h with x(water) 0.02. A simulation's results, compared as an agreement between two property methods; not measured data, and nothing is fitted to them.",
+      "files": [
+        "test/columns-acid.test.js",
+        "validation/data/columns/acid/cases.json"
+      ]
+    },
     "plafranco2013-1-propanol-2-methoxyethanol": {
       "title": "Evaluation of the 2-Methoxyethanol as Entrainer in Ethanol Water and 1-Propanol Water Mixtures",
       "authors": "J. Pla-Franco, E. Lladosa, J. B. Monton, S. Loras",

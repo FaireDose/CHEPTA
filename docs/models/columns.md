@@ -108,7 +108,7 @@ the Newton iterations; a column that reaches it is not converged (E4).
 |---|---|
 | a second liquid on a stage with phases "VL" (Michelsen's tangent-plane test of each stage's liquid, after convergence) | refuses (`PHASE_SPLIT`, outcome "unsupported"), naming the stages and the liquid that splits off, and the remedy: "look for two liquids on the stages" (phases "VLL") |
 | a third liquid on a stage with phases "VLL" (each of a stage's two liquids tested) | refuses (`PHASE_SPLIT`), as the flash does |
-| phases "VLL" with an equation of state, or the dimerizing acids' chemical theory | refuses (`NOT_AVAILABLE`): two liquids need an activity model, as in the flash drum |
+| phases "VLL" with an equation of state, or the dimerizing acids' chemical theory | refuses (`NOT_AVAILABLE`): two liquids need an activity model without the chemical theory, as in the flash drum (the three-phase flash with it is not built) |
 | a decanter whose two liquids come out the same (the condensate holds one liquid) | `NO_CONVERGENCE`, saying so; use a total condenser |
 | a stream the column's own method (or, leaving, the flowsheet's) cannot represent: no P-H solution, a phase it cannot have (two liquids in Peng-Robinson) | refuses with that method's reason (for example `PHASE_SPLIT`), naming the stream |
 | the solver does not converge | `NO_CONVERGENCE` (outcome "not_converged"), with what it tried, the last residuals by group, a hint where constant molar overflow gives no boil-up (W7's E2) or where the last iterate holds two liquids; never a statement that the column has no solution |
@@ -117,7 +117,8 @@ the Newton iterations; a column that reaches it is not converged (E4).
 | a pair without parameters | missing data, the pair named (C1) |
 | a design specification no column can meet | refuses (invalid input, `OUT_OF_RANGE`) with what the column reaches and what would make it feasible (below) |
 | a side draw on an absorber or a stripper, two liquids on their stages, a condenser without a reboiler | not built yet: unsupported |
-| inert solids, the dimerizing acids' chemical theory | not built yet: unsupported |
+| inert solids | not built yet: unsupported |
+| a dimerizing acid in the vapour (acetic acid, formic acid; the chemical theory) | solved: monomers and dimers in equilibrium on every stage, in apparent mole fractions; the vapour's enthalpy holds the enthalpy of dimerization; a note says so. Cases K1 to K5 (`validation/data/columns/acid/cases.json`, `test/columns-acid.test.js`), with purity and recovery specifications; decision 2026-11-11-08. Two liquids on the stages with it stay refused (above) |
 | nonvolatile components (milestone M3) | solved: they stay in the liquid (below) |
 
 **The result:** the distillate and the bottoms (saturated at the column's pressure), the block's duty (the reboiler's

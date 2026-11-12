@@ -200,6 +200,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   search limits, no new project format, slow refusals next to a pinch accepted. Still to check: the sources, the
   refusals' wording and units, the panel. Next: inequalities ("at least", "at most"), then a draw of one of two
   liquids, pumparounds, side draws on absorbers.
+- **Columns with a dimerizing acid (acetic acid), built, to review**
+  (docs/decisions/2026-11-11-08-acetic-acid-columns.md): the rigorous column now solves with the chemical theory on
+  every stage (it refused before; the shortcut already worked), with the purity and recovery specifications; an
+  independent reference, the ThermoML sets of water + acetic acid, and the direct column of Pirola et al. (2013).
+  To check: the article's numbers (p. 1901), the quotations from The ChemSep Book and DWSIM's guide. To decide: the
+  agreement limits with the article (0.05 in mole fraction, 25 % on the reflux ratio), the reading of its "8 stages",
+  and what comes next: two liquids on the stages and the three-phase flash with the chemical theory (the entrainer
+  columns; the rest of CHEPTA-Lab's blocker).
 - **How the agents work** (docs/decisions/2026-11-10-01-working-method.md): a new coordinator starts from
   [HANDOVER.md](HANDOVER.md); one task per session; at most two workers; Sonnet for routine work, Opus for engineering.
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost

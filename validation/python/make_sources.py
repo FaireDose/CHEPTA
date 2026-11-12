@@ -414,6 +414,21 @@ SEEDS = {
         "note": "Slide 37: Fair's chart of K_n,fl (m/s) against the flow parameter for tray spacings 0.15-0.9 m, READ OFF THE GRAPH by pixel position (validation/data/sizing/fair_chart_fermeglia2021.json); slide 38: u_n,fl = K_n,fl K1 K2 K3 K4 sqrt((rho_l - rho_v)/rho_v), K1 = (sigma/20)^0.2, K2 = (10 Ah/Aa)^0.44 below Ah/Aa = 0.1, K3 = 0.9 above 6 mm holes; slide 39: K5 = 0.8 to start; slide 44: A_net = eta pi D^2/4, eta 0.85-0.95; slides 45-47: the worked example (n-hexane, 24 in trays, D = 11.03 ft); slide 50: the operating fraction of flooding typically 0.65 to 0.90; slide 54 (Table 6.2, reproduced from a textbook the slide does not name): turndown ratios, sieve trays 2, valve trays 4, bubble-cap trays 5. Read 2026-10-29 and 2026-10-30.",
         "files": ["src/units/columns/engine.js", "src/units/columns/hydraulics.js", "validation/python/reference_column_diameter.py", "test/column-hydraulics.test.js"],
     },
+    # the open worked example of acetic acid dehydration (validation/data/columns/acid/cases.json, cases K2 and K4)
+    "pirola-2013-acetic-acid-distillation": {
+        "title": "Heterogeneous distillation of the system water-acetic acid-p-xylene: study of its fluid phase equilibria, micro-pilot column experimental results and computer simulation, Chemical Engineering Transactions 32, 1897-1902",
+        "authors": "C. Pirola, F. Galli, C. L. Bianchi, G. Carvoli",
+        "year": 2013,
+        "kind": "open-access article",
+        "doi": "10.3303/CET1332317",
+        "url": "https://www.aidic.it/cet/13/32/317.pdf",
+        "access": "Free to read on the publisher's site (Chemical Engineering Transactions, an open-access journal of AIDIC; copyright 2013 AIDIC Servizi S.r.l.); read 2026-11-11",
+        "note": "Section 4 and Table 3, p. 1901: the direct distillation column T1 of water + acetic acid without entrainer, simulated by the authors "
+                "with PRO/II (Lyngby modified UNIFAC, Hayden-O'Connell): 8 ideal stages, 26.62 kmol/h of an equimolar feed, reflux ratio 5.7, "
+                "distillate 17.7 kmol/h with x(acetic acid) 0.26, residue 8.9 kmol/h with x(water) 0.02. A simulation's results, compared as an "
+                "agreement between two property methods; not measured data, and nothing is fitted to them.",
+        "files": ["validation/data/columns/acid/cases.json", "test/columns-acid.test.js"],
+    },
     # src/units/membrane.js (the Membrane block) and src/sizing/sizing.js (membraneArea)
     "aziaba-2022-membrane": {
         "title": "Design of a gas permeation and pervaporation membrane model for an open source process simulation tool",

@@ -101,7 +101,7 @@ export function twoLiquidThermo(th, sys) {
     throw fail("NOT_AVAILABLE", 'Column: two liquids on the stages (phases "VLL") cannot be looked for with Wilson: the Wilson equation cannot predict two liquids (proposal 0016). Choose NRTL, UNIQUAC or Modified UNIFAC 2.0 for the column (its own property method), or phases "VL".');
   }
   if (!canHoldTwoLiquids(sys)) {
-    throw fail("NOT_AVAILABLE", `Column: two liquids on the stages (phases "VLL") need an activity model (NRTL, UNIQUAC, Modified UNIFAC 2.0) without the dimerizing acids' chemical theory, as the flash drum does; ${sys.kind === "eos" ? `${sys.model} is an equation of state` : "this system has none"}. Choose such a method for the column (its own property method), or phases "VL".`);
+    throw fail("NOT_AVAILABLE", `Column: two liquids on the stages (phases "VLL") need an activity model (NRTL, UNIQUAC, Modified UNIFAC 2.0) without the dimerizing acids' chemical theory, as the flash drum does; ${sys.kind === "eos" ? `${sys.model} is an equation of state` : typeof sys.lnKAssociation === "function" ? `this system's vapour follows the ${sys.info.vapour} (the three-phase flash with it is not built)` : "this system has none"}. Choose such a method for the column (its own property method), or phases "VL".`);
   }
   const lastK = new Map();     // stage -> the K-values of its last split
   const memo = new Map();      // stage -> { x, T, s }: lnK and hL ask for the same split one after the other

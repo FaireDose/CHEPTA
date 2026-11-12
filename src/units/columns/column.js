@@ -490,6 +490,13 @@ function dof(spec) {
   return out;
 }
 
+/** The note of a column whose vapour holds the dimers of an acid (the chemical theory, src/thermo/vapour.js), or none. */
+function dimerNote(csys, where) {
+  if (typeof csys.lnKAssociation !== "function") return [];
+  const m = /for (.+)$/.exec(csys.info?.vapour ?? "");
+  return [`Vapour by the chemical theory${m ? ` for ${m[1]}` : ""}: monomers and dimers in equilibrium ${where}; the vapour's enthalpy holds the enthalpy of dimerization. Cross-dimers between two acids are not modelled.`];
+}
+
 /** K-values at the bubble point of x at P: { T, K } (K_i = y_i / x_i; a component absent from x has none). */
 function bubbleK(sys, x, P) {
   const r = anyBubbleT(sys, x, P);
@@ -541,6 +548,7 @@ function solveShortcut(sys, feed, s) {
   const notes = [
     `Shortcut column (Fenske, Underwood, Gilliland in Eduljee's form): constant relative volatility (taken at the feed's bubble point, ${fmt(atFeed.T)} K) and constant molar overflow are assumed, and there must be no azeotrope between the keys. Gilliland's correlation is a fit to columns: its number of stages is an estimate.`,
     `${fmt(r.N)} equilibrium stages (the reboiler included${total ? ", the total condenser not" : ", the partial condenser included"}) at a reflux ratio of ${fmt(r.R)} (${fmt(r.R / r.R_min)} times the minimum, ${fmt(r.R_min)}); at total reflux ${fmt(r.N_min)}. Whole stages: ${st.stages} numbered from the top (1 the condenser), the feed on stage ${st.feed_stage}.`,
+    ...dimerNote(sys, "at the bubble points where the relative volatilities are taken"),
   ];
   if (Qr < 0) notes.push(`The reboiler's duty is negative (${fmt(Qr)} kW): the feed brings more heat than the column needs; cool the feed.`);
   const x = arr => Object.fromEntries(sys.ids.map((id, i) => [id, arr[i]]));
@@ -687,6 +695,7 @@ function solveRigorous(sys, feeds, s, sideOutlets = 0) {
       : "Two liquids were looked for on every stage (phases VLL); every stage holds one liquid."] : []),
     ...(nDraws ? [`Side draw${nDraws > 1 ? "s" : ""}: ${r.products.draws.map((q, k) => `${k + 1}: ${fmt(kmol(q.rate))} kmol/h of the ${q.phase} of stage ${q.stage} (${fmt(q.T_K)} K)`).join("; ")}. A side draw has the composition of its stage's ${nDraws > 1 ? "liquid or vapour" : r.products.draws[0].phase}${s.phases === "VLL" ? " (both liquids of a stage with two, in their proportion)" : ""}; the liquid and vapour flows of the profile are those that go on to the next stage.`] : []),
     ...(r.specifications ? [`Design specifications: ${designRows.map(q => `${q.label}: asked ${fmt6(q.asked)}, reached ${fmt6(q.achieved)} ${q.unit}`).join("; ")}. Found for them: ${Object.entries(adjusted).map(([k, v]) => `${k} ${fmt6(v)}`).join(", ")}, by an outer loop around the stage solver (${r.solver.specifications.column_solves} columns solved); each specification is met within a scaled tolerance of ${r.solver.specifications.tolerance} (state.design_specifications).`] : []),
+    ...dimerNote(csys, "on every stage (the stage's apparent mole fractions count a dimer as two molecules)"),
     ...(own ? [`The column uses its own property method, ${methodName(s.method)}, while the flowsheet uses ${sys.info?.method ?? sys.model}. At each stream that enters or leaves the column the component flows, the pressure and the enthalpy flow are kept and the temperature is found by a P-H flash in the receiving method (state.boundary): ${boundary.map(q => `${q.stream} ${q.dT_K >= 0 ? "+" : ""}${fmt(q.dT_K)} K`).join(", ")}.`] : []),
     ...r.notes,
   ];
