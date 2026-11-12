@@ -3181,6 +3181,20 @@
         "validation/data/ethylene-glycol_cyclohexane_lle_lindemann2014.json"
       ]
     },
+    "liu2013-cyclohexane-acetic-acid-water": {
+      "title": "Isobaric vapor-liquid-liquid equilibrium for water + cyclohexane + acetic acid at 101.3 kPa",
+      "authors": "L. Liu, C. Cheng, X. Mu, H. Li, W. Tan",
+      "year": 2013,
+      "published": "Fluid Phase Equilib. 350 (2013) 32-36",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2013.04.011",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2013.04.011.html",
+      "access": "Journal article is subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/lle/cyclohexane_acetic-acid_water_vlle_liu2013.json"
+      ]
+    },
     "liu2018-ethyl-acetate-propylene-carbonate": {
       "title": "Isobaric Vapor-liquid Equilibrium for Three Binary Systems of Ethyl Acetate + Propyl Acetate, Ethyl Acetate + Propylene Carbonate, and Propyl Acetate + Propylene Carbonate at 101.3 kPa",
       "authors": "X. Liu, Y. Zhang, M. Li, X. Li, G. Li, Y. Wang, J. Gao",

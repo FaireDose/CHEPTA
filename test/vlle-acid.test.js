@@ -151,3 +151,43 @@ test("refusals that stay: two liquids with Wilson, and two liquids without a vap
   assert.throws(() => runUnit("column", { sys: s2, inlets: { in: streams(s2, a) }, spec: { mode: "rigorous", configuration: "absorber", stages: 6, phases: "LL" } }),
     e => e.code === "NOT_AVAILABLE" && /Extraction block/.test(e.message));
 });
+
+test("heater: through vapour + two liquids with the dimers; the duty closes the energy balance, the outlet is the flash's", () => {
+  const sys = system({ components: ["water", "acetic-acid", "ethyl-acetate"], model: "NRTL" });
+  const feed = stream(sys, { flow_kmol_h: [50, 10, 40], P_kPa: 101.325, T_K: 300 });
+  const r = runUnit("heater", { sys, inlets: { in: [feed] }, spec: { duty_kW: 300 } });
+  const out = Object.values(r.outlets)[0];
+  assert.ok(Math.abs(out.H_kW - feed.H_kW - 300) < 1e-6 * 300, `H ${out.H_kW} - ${feed.H_kW}`);
+  const a = arrange(out.phases);
+  assert.ok(a.vapour && a.vapour.fraction > 0 && a.liquids.length === 2, "vapour and two liquids");
+  const z = [50, 10, 40].map(v => v / 100), b = arrange(sys.flash({ z, T: out.T_K, P: 101.325 }).phases);
+  assert.ok(Math.abs(a.vapour.fraction - b.vapour.fraction) < 1e-6);
+  a.liquids.forEach((l, k) => assert.ok(maxDiff(l.x, b.liquids[k].x) < 1e-6));
+});
+
+test("measured VLLE of cyclohexane + acetic acid + water at 101.3 kPa (Liu et al. 2013, ThermoML Archive): Modified UNIFAC 2.0 with the dimers, predicted", () => {
+  // CHEPTA has no fitted acetic acid + cyclohexane pair, so the method is Modified UNIFAC 2.0 (predicted tier,
+  // docs/DATA_RULES.md section 7) with the chemical theory. For each measured point with acid, the feed at the mid-point
+  // of the two measured liquids, its bubble point at 101.3 kPa (VF = 0): the flash must find vapour + two liquids there,
+  // and the deviations are the prediction's, recorded in the decision file (2026-11-12-02): the three-phase temperature
+  // 1.0 to 7.6 K above the measured (mean 4.28 K; 3.27 K without the dimers), the incipient vapour within 0.040 in mole
+  // fraction (0.041 without). These figures are checked here so that a change of the flash or of the model shows.
+  const d = read("../validation/data/lle/cyclohexane_acetic-acid_water_vlle_liu2013.json");
+  const stats = {};
+  for (const association of [true, false]) {
+    const sys = system({ components: d.components, model: "MOD-UNIFAC-2", association });
+    const dT = [], dy = [];
+    for (const [T, w2, c2, c1, w1, wy, cy] of d.rows.slice(1)) {
+      const aq = [c2, 1 - w2 - c2, w2], org = [c1, 1 - c1 - w1, w1], y = [cy, 1 - wy - cy, wy];
+      const r = sys.flash({ z: aq.map((v, i) => 0.5 * (v + org[i])), P: d.P_kPa, VF: 0 });
+      assert.equal(r.phases.filter(p => p.type === "liquid").length, 2, `${T} K: two liquids at the bubble point`);
+      dT.push(r.T - T);
+      dy.push(maxDiff(r.incipient.composition, y));
+    }
+    stats[association] = { meanT: sum(dT.map(Math.abs)) / dT.length, minT: Math.min(...dT), maxT: Math.max(...dT), maxY: Math.max(...dy) };
+  }
+  const on = stats.true, off = stats.false;
+  assert.ok(Math.abs(on.meanT - 4.28) < 0.01 && Math.abs(on.minT - 1.0) < 0.05 && Math.abs(on.maxT - 7.6) < 0.05, JSON.stringify(on));
+  assert.ok(Math.abs(on.maxY - 0.040) < 0.001, JSON.stringify(on));
+  assert.ok(Math.abs(off.meanT - 3.27) < 0.01 && Math.abs(off.maxY - 0.041) < 0.001, JSON.stringify(off));
+});
