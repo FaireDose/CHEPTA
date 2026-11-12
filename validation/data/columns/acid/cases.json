@@ -1,0 +1,238 @@
+{
+ "chepta_column_acid_cases": 1,
+ "about": "Columns with a dimerizing acid in the vapour (the chemical theory of src/thermo/vapour.js on the stages of the rigorous column; docs/decisions/2026-11-11-08-acetic-acid-columns.md). Conventions as validation/data/columns/README.md: stages numbered from the top, 1 the condenser, N the partial reboiler; mole fractions in the order of `components`. Reference: validation/python/reference_mesh_acid.py; fixture: validation/fixtures/columns_acid.json; test: test/columns-acid.test.js.",
+ "cases": [
+  {
+   "id": "K1-water-acetic-acid",
+   "title": "Water + acetic acid, NRTL with the dimerizing vapour, 20 stages, saturated-liquid feed",
+   "purpose": "The stage equilibrium and the energy balances with the chemical-theory vapour, against the independent reference; the same column without the dimers in the phase equilibrium (association off) for what ignoring them changes.",
+   "method_choice": "docs/METHOD_SELECTION.md rule 3: polar, no electrolytes, below 10 bar, with fitted pairs: NRTL (the default sets) with an ideal-gas vapour; acetic acid's vapour by the chemical theory (monomers and dimers), CHEPTA's default for a dimerizing acid.",
+   "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "association": "chemical theory",
+    "sets": "default"
+   },
+   "components": [
+    "water",
+    "acetic-acid"
+   ],
+   "pressure_kPa": 101.325,
+   "column": {
+    "configuration": "distillation",
+    "stages": 20,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 10,
+     "flow_mol_s": 100.0,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 3.0
+    },
+    {
+     "kind": "distillate_flow_mol_s",
+     "value": 50.0
+    }
+   ],
+   "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": []
+   },
+   "tolerances": {
+    "numerical": {
+     "engine_against_reference": {
+      "flows_relative": 1e-06,
+      "mole_fractions_absolute": 1e-07,
+      "T_K_absolute": 1e-05,
+      "duties_relative": 1e-06,
+      "why": "As the cases of validation/data/columns/ (proposal 0015, Engineering basis): both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+     },
+     "balances_on_every_stage": {
+      "material_relative_to_feed": 1e-08,
+      "summation": 1e-10,
+      "equilibrium": 1e-10,
+      "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+      "why": "Proposal 0015: every stage's balances closed to 1e-8."
+     }
+    }
+   }
+  },
+  {
+   "id": "K2-pirola2013-direct-column",
+   "title": "The direct distillation column of Pirola et al. (2013): water + acetic acid, 8 ideal stages, reflux ratio 5.7",
+   "purpose": "An open worked example of acetic acid dehydration: the first column (T1, without entrainer) of the two-column plant simulated by Pirola et al. with PRO/II (Lyngby modified UNIFAC, Hayden-O'Connell for the acid's association). Solved here with CHEPTA's method at the published reflux ratio and distillate flow, against the independent reference (numerical) and against the published product compositions (agreement between two property methods, kept apart).",
+   "method_choice": "docs/METHOD_SELECTION.md rule 3: polar, no electrolytes, below 10 bar, with fitted pairs: NRTL (the default sets) with an ideal-gas vapour; acetic acid's vapour by the chemical theory (monomers and dimers), CHEPTA's default for a dimerizing acid.",
+   "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "association": "chemical theory",
+    "sets": "default"
+   },
+   "components": [
+    "water",
+    "acetic-acid"
+   ],
+   "pressure_kPa": 101.325,
+   "column": {
+    "configuration": "distillation",
+    "stages": 8,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 4,
+     "flow_mol_s": 7.394444444444445,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 5.7
+    },
+    {
+     "kind": "distillate_flow_mol_s",
+     "value": 4.916666666666667
+    }
+   ],
+   "published": {
+    "source": {
+     "citation": "C. Pirola, F. Galli, C. L. Bianchi, G. Carvoli, Heterogeneous distillation of the system water-acetic acid-p-xylene: study of its fluid phase equilibria, micro-pilot column experimental results and computer simulation, Chemical Engineering Transactions 32 (2013) 1897-1902",
+     "doi": "10.3303/CET1332317",
+     "open_copy": "https://www.aidic.it/cet/13/32/317.pdf",
+     "access": "Free to read on the publisher's site (Chemical Engineering Transactions is an open-access journal; copyright 2013 AIDIC Servizi S.r.l.)",
+     "tables": "Section 4, p. 1901 (8 stages, feed 26.62 kmol/h, the mixtures fed at the boiling point, water 0.74 in the distillate and 0.02 in the residue, reflux ratio 5.7) and Table 3, p. 1901 (column T1: distillate 17.7 kmol/h with x_AcAc 0.26, residue 8.9 kmol/h with x_W 0.02)",
+     "read": "2026-11-11"
+    },
+    "feed_kmol_h": 26.62,
+    "feed_x_water": 0.5,
+    "stages": 8,
+    "reflux_ratio": 5.7,
+    "distillate_kmol_h": 17.7,
+    "residue_kmol_h": 8.9,
+    "distillate_x_acetic_acid": 0.26,
+    "distillate_x_water": 0.74,
+    "residue_x_water": 0.02,
+    "method": "PRO/II (SimSci), Lyngby modified UNIFAC with the Hayden-O'Connell correlation",
+    "not_stated": [
+     "the feed stage (here every stage from 2 to 7 is solved; the case's column takes stage 4)",
+     "the pressure (taken as 101.325 kPa: the article speaks of atmospheric pressure)",
+     "whether the 8 stages count the condenser and the reboiler (here: counted, as CHEPTA's stages; the fixture also gives 10 stages, 8 between a condenser and a reboiler)",
+     "the condenser (taken as total)",
+     "the feed's state for Table 3: its caption gives 65 degC, the text of section 4 the boiling point (here: the bubble point, q = 1)"
+    ],
+    "conversions": "kmol/h to mol/s by 1/3.6: 26.62 kmol/h = 7.3944 mol/s, 17.7 kmol/h = 4.9167 mol/s."
+   },
+   "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": []
+   },
+   "tolerances": {
+    "numerical": {
+     "engine_against_reference": {
+      "flows_relative": 1e-06,
+      "mole_fractions_absolute": 1e-07,
+      "T_K_absolute": 1e-05,
+      "duties_relative": 1e-06,
+      "why": "As the cases of validation/data/columns/ (proposal 0015, Engineering basis): both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+     },
+     "balances_on_every_stage": {
+      "material_relative_to_feed": 1e-08,
+      "summation": 1e-10,
+      "equilibrium": 1e-10,
+      "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+      "why": "Proposal 0015: every stage's balances closed to 1e-8."
+     }
+    },
+    "agreement_with_published": {
+     "x_water_absolute": 0.05,
+     "why": "Two property methods (CHEPTA: NRTL fitted to Chang et al. 2005 with the chemical theory; the article: a predictive UNIFAC with Hayden-O'Connell) and a feed stage the article does not state: 0.05 in mole fraction, on the best feed stage, is this project's choice for 'the same separation', not a published rule. Kept apart from the numerical tolerances."
+    }
+   }
+  },
+  {
+   "id": "K3-ethanol-water-acetic-acid",
+   "title": "Ethanol + water + acetic acid, NRTL with the dimerizing vapour, 15 stages, partial condenser",
+   "purpose": "A ternary with one dimerizing acid among components that do not dimerize, and a vapour distillate (the partial condenser is an equilibrium stage with the chemical-theory vapour).",
+   "method_choice": "docs/METHOD_SELECTION.md rule 3: polar, no electrolytes, below 10 bar, with fitted pairs: NRTL (the default sets) with an ideal-gas vapour; acetic acid's vapour by the chemical theory (monomers and dimers), CHEPTA's default for a dimerizing acid.",
+   "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "association": "chemical theory",
+    "sets": "default"
+   },
+   "components": [
+    "ethanol",
+    "water",
+    "acetic-acid"
+   ],
+   "pressure_kPa": 101.325,
+   "column": {
+    "configuration": "distillation",
+    "stages": 15,
+    "condenser": "partial",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 8,
+     "flow_mol_s": 100.0,
+     "z": [
+      0.3,
+      0.4,
+      0.3
+     ],
+     "q": 1
+    }
+   },
+   "specs": [
+    {
+     "kind": "reflux_ratio",
+     "value": 2.0
+    },
+    {
+     "kind": "distillate_flow_mol_s",
+     "value": 40.0
+    }
+   ],
+   "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": []
+   },
+   "tolerances": {
+    "numerical": {
+     "engine_against_reference": {
+      "flows_relative": 1e-06,
+      "mole_fractions_absolute": 1e-07,
+      "T_K_absolute": 1e-05,
+      "duties_relative": 1e-06,
+      "why": "As the cases of validation/data/columns/ (proposal 0015, Engineering basis): both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+     },
+     "balances_on_every_stage": {
+      "material_relative_to_feed": 1e-08,
+      "summation": 1e-10,
+      "equilibrium": 1e-10,
+      "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+      "why": "Proposal 0015: every stage's balances closed to 1e-8."
+     }
+    }
+   }
+  }
+ ]
+}
