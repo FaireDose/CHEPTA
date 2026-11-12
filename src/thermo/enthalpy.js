@@ -225,6 +225,10 @@ export function activityPhaseMethods(ctx) {
   const oldBasis = (i, T) => hIG(i, T) + satResidual(i, T) - dHvap(i, T);
   // the temperature asked, unless it is so close to the range's end that it would print as the end itself
   const atT = (T, end, side) => (Math.abs(T - end) < 0.05 ? side : `at ${T.toFixed(1)} K`);
+  // a record that could not be extended below its range names what was searched there (below_range_searched)
+  const belowRangeNote = r => (r.below_range_searched?.length
+    ? ` Open measured values below it were searched for and not found (${r.below_range_searched.join("; ")}). A liquid at ${r.Tmin_K} K (${(r.Tmin_K - 273.15).toFixed(1)} \u00b0C) or above works.`
+    : "");
   /** Liquid enthalpy of pure i at T (J/mol), and a warning text when the cp_L record has ended. */
   function hLiquidPure(i, T) {
     // a Henry component: its partial molar enthalpy at infinite dilution, h_IG,i - R T^2 d ln H_i / dT. Derived here:
@@ -237,7 +241,7 @@ export function activityPhaseMethods(ctx) {
     const h0 = anchors()[i];
     const Tend = cpRec[i].Tmax_K;
     if (T < cpRec[i].Tmin_K - EDGE_K) {
-      throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record starts at ${cpRec[i].Tmin_K} K, so its liquid enthalpy ${atT(T, cpRec[i].Tmin_K, "below it")} cannot be calculated.`);
+      throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record starts at ${cpRec[i].Tmin_K} K, so its liquid enthalpy ${atT(T, cpRec[i].Tmin_K, "below it")} cannot be calculated.${belowRangeNote(cpRec[i])}`);
     }
     if (T <= Tend || (nonvolatile[i] && T <= Tend + EDGE_K)) return { h: h0 + cpIntegral(i, T), note: null };
     if (nonvolatile[i]) {
