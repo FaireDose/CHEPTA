@@ -133,10 +133,13 @@ const fmt = v => +Number(v).toPrecision(4);
 export function cascadeThermo(sys, P) {
   if (Array.isArray(sys.solid) && sys.solid.some(Boolean)) throw fail("NOT_AVAILABLE", "Column: a flowsheet with inert solids cannot be distilled by the rigorous column yet.");
   const eos = sys.kind === "eos";
-  if (!eos && !sys.lnKValues) throw fail("NOT_AVAILABLE", "Column: the rigorous column does not handle the chemical theory of dimerizing acids in the vapour yet; build the system with association: false, or use the shortcut column.");
+  // a dimerizing acid (the chemical theory, src/thermo/vapour.js): the K-values with the vapour's true species
+  // (sys.lnKAssociation), which depend on the vapour's apparent composition as an equation of state's do
+  const kOf = sys.lnKValues ?? sys.lnKAssociation;
+  if (!eos && !kOf) throw fail("NOT_AVAILABLE", "Column: this system gives no K-values for the rigorous column.");
   const lnK = eos
     ? (x, y, T) => { const a = sys.lnPhi(T, P, x, "liquid"), b = sys.lnPhi(T, P, y, "vapour"); return a.map((v, i) => v - b[i]); }
-    : (x, y, T) => sys.lnKValues(x, y, T, P);
+    : (x, y, T) => kOf(x, y, T, P);
   return {
     n: sys.n, names: sys.names, P_kPa: P, lnK, ...(sys.nonvolatile?.some(Boolean) ? { nonvolatile: sys.nonvolatile.slice() } : {}),
     hL: (x, T) => sys.enthalpy("liquid", T, P, x),
