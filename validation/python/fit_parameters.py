@@ -167,9 +167,12 @@ def het_azeotrope_file(name, pair):
     out = []
     for r in d["rows"]:
         T = r[col["T_K"]] if "T_K" in col else r[col["T_C"]] + 273.15
-        w1 = r[col["wt_pct_1"]] if "wt_pct_1" in col else 100 - r[col["wt_pct_2"]]
-        n1, n2 = w1 / M[0], (100 - w1) / M[1]
-        y1 = n1 / (n1 + n2)
+        if "y_1" in col:   # mole fraction of the first listed component (the vapour, equal to the liquid at an azeotrope)
+            y1 = r[col["y_1"]]
+        else:
+            w1 = r[col["wt_pct_1"]] if "wt_pct_1" in col else 100 - r[col["wt_pct_2"]]
+            n1, n2 = w1 / M[0], (100 - w1) / M[1]
+            y1 = n1 / (n1 + n2)
         out.append((T, d["P_kPa"], 1 - y1 if flip else y1))
     return out
 
@@ -418,11 +421,22 @@ FITS = [
 # Generated fits written as a further set, not the default (2026-11-11, docs/decisions/2026-11-11-06-two-liquid-refit-followup.md):
 # 1-butanol + water. The column cases F1, F2 and W2 are built on its ChemSep NRTL set (two liquids on stages 1 and 2);
 # with the fitted set as the default they put them on stages 3 and 4, so the maintainer decides which is the default.
+# Measured vapour-liquid-liquid points of open articles added to a generated fit (2026-11-11, same decision file): the binary
+# water + 1-butanol point of Garcia-Cano and Saquete 2020 (its two liquids and its azeotrope) and the azeotrope of Gomis et
+# al. 2013, from the accepted manuscripts the maintainer supplied
+EXTRA_FILES = {"1-butanol+water": ["1-butanol_water_azeotrope_garcia-cano2020_101.3kPa.json",
+                                   "1-butanol_water_lle_garcia-cano2020_365.73K.json",
+                                   "1-butanol_water_azeotrope_gomis2013_101.3kPa.json"]}
+EXTRA_DESCRIBE = {
+    "1-butanol_water_azeotrope_garcia-cano2020_101.3kPa.json": " Also fitted to the binary vapor-liquid-liquid point of J. Garcia-Cano and M. D. Saquete, Fluid Phase Equilib. (2020) 112617, DOI 10.1016/j.fluid.2020.112617 (accepted manuscript; validation/data/1-butanol_water_azeotrope_garcia-cano2020_101.3kPa.json and validation/data/1-butanol_water_lle_garcia-cano2020_365.73K.json)",
+    "1-butanol_water_azeotrope_gomis2013_101.3kPa.json": " and to the azeotrope of V. Gomis et al., J. Chem. Eng. Data (2013), DOI 10.1021/je400501z (accepted manuscript; validation/data/1-butanol_water_azeotrope_gomis2013_101.3kPa.json)."}
 NOT_DEFAULT = {"1-butanol+water"}
 # Generated fits (vle_batch.py): validation/data/vle/fits.json
 GENERATED_FILE = VAL / "vle" / "fits.json"
 GENERATED = [dict(pair=tuple(f["pair"]), data="txy-file", file=f["file"], check=f.get("check", []), temperature_dependent=False,
-                  describe=f["describe"], generated=True,
+                  describe=f["describe"] + ("".join(EXTRA_DESCRIBE.get(n, "") for n in EXTRA_FILES.get("+".join(sorted(f["pair"])), []))),
+                  generated=True,
+                  **({"files": [f["file"]] + EXTRA_FILES["+".join(sorted(f["pair"]))]} if "+".join(sorted(f["pair"])) in EXTRA_FILES else {}),
                   default="+".join(sorted(f["pair"])) not in NOT_DEFAULT,
                   # UNIQUAC needs r and q of both components
                   models=["NRTL", "UNIQUAC"] if all(COMPONENTS[c].get("uniquac") for c in f["pair"]) else ["NRTL"])

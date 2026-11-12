@@ -1733,6 +1733,20 @@
         "validation/data/two_liquids/lle/1-butanol_water.json"
       ]
     },
+    "garciacano2020-water-1-butanol": {
+      "title": "Liquid-liquid, vapor-liquid and vapor-liquid-liquid experimental equilibrium of the system water + 1-butanol + 2-butanol at 101.3 kPa and data correlation",
+      "authors": "J. Garcia-Cano, M. D. Saquete",
+      "year": 2020,
+      "published": "Fluid Phase Equilib. (2020), article 112617 (journal pre-proof / accepted manuscript)",
+      "kind": "free copy",
+      "doi": "10.1016/j.fluid.2020.112617",
+      "url": "http://rua.ua.es/dspace/bitstream/10045/107600/2/Garcia-Cano_Saquete_2020_FluidPhaseEquilibria_accepted.pdf",
+      "access": "Accepted manuscript in the University of Alicante repository, free to read (the publisher's article is subscription-only). Supplied to the project by the maintainer on 2026-11-12",
+      "files": [
+        "validation/data/1-butanol_water_azeotrope_garcia-cano2020_101.3kPa.json",
+        "validation/data/1-butanol_water_lle_garcia-cano2020_365.73K.json"
+      ]
+    },
     "gierycz2009-2-butanol-cyclohexane": {
       "title": "Vapor-Liquid Equilibria in Binary Systems Formed by Cyclohexane with Alcohols",
       "authors": "P. Gierycz, A. Kosowski, R. Swietlik",
@@ -1833,6 +1847,19 @@
       "via": "the NIST TRC ThermoML Archive",
       "files": [
         "validation/data/two_liquids/lle/1-butanol_water.json"
+      ]
+    },
+    "gomis2013-water-1-butanol": {
+      "title": "Liquid-liquid, vapor-liquid and vapor-liquid-liquid equilibrium data for the water-n-butanol-cyclohexane system at atmospheric pressure: experimental determination and correlation",
+      "authors": "V. Gomis, A. Font, M. D. Saquete, J. Garcia-Cano",
+      "year": 2013,
+      "published": "J. Chem. Eng. Data (2013), accepted manuscript",
+      "kind": "free copy",
+      "doi": "10.1021/je400501z",
+      "url": "http://rua.ua.es/dspace/bitstream/10045/38775/3/2013_Gomis_etal_JCED.pdf",
+      "access": "Accepted manuscript in the University of Alicante repository, free to read (the publisher's article is subscription-only). Supplied to the project by the maintainer on 2026-11-12",
+      "files": [
+        "validation/data/1-butanol_water_azeotrope_gomis2013_101.3kPa.json"
       ]
     },
     "gomis2014-1-butanol-water": {

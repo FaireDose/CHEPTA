@@ -1,0 +1,28 @@
+{
+ "_about": "Water (1) + 1-butanol (2): the binary vapor-liquid-liquid point at 101.3 kPa, which is the heterogeneous azeotrope (the vapour lies between the two liquids). Columns: temperature in K and the mole fraction of water in the vapour (the same row as the two liquids of the companion LLE file).",
+ "source": {
+  "citation": "J. Garcia-Cano, M. D. Saquete, Liquid-liquid, vapor-liquid and vapor-liquid-liquid experimental equilibrium of the system water + 1-butanol + 2-butanol at 101.3 kPa and data correlation, Fluid Phase Equilib. (2020), article 112617 (journal pre-proof / accepted manuscript)",
+  "doi": "10.1016/j.fluid.2020.112617",
+  "open_copy": "http://rua.ua.es/dspace/bitstream/10045/107600/2/Garcia-Cano_Saquete_2020_FluidPhaseEquilibria_accepted.pdf",
+  "access": "Accepted manuscript in the University of Alicante repository, free to read (the publisher's article is subscription-only). Supplied to the project by the maintainer on 2026-11-12.",
+  "tables": "Table 4 (vapor-liquid-liquid data at 101.3 kPa), first column of the last row: the binary water + 1-butanol point (x3 = 0.000 in every phase); u(T) = 0.06 K, u(P) = 0.1 kPa, relative u(x) = 2 % (5 % for the alcohol in the aqueous phase)"
+ },
+ "components": [
+  "water",
+  "1-butanol"
+ ],
+ "kind": "azeotrope",
+ "heterogeneous": true,
+ "P_kPa": 101.3,
+ "columns": [
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   365.73,
+   0.754
+  ]
+ ],
+ "notes": "Transcribed from the accepted manuscript as printed. To be checked by a person against the PDF (AGENTS.md rule 4)."
+}
