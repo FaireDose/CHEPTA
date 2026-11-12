@@ -295,6 +295,19 @@ export const APP_CSS = `
 .fa-sets-cell{color:var(--fug-accent)}
 .fa-plot[data-view="sources"]{max-width:none}
 .fug-app[data-size="narrow"] .fa-srcs{grid-template-columns:minmax(0,1fr)}
+.fa-plot-switch{display:flex; margin:0 0 8px}
+.fa-meas{margin-top:12px; padding-top:10px; border-top:1px solid var(--fug-rule); font-size:12px; color:var(--fug-fg2); display:grid; gap:6px; max-width:640px}
+.fa-meas-head{font-size:12px; font-weight:600; color:var(--fug-fg)}
+.fa-meas-none{color:var(--fug-fg2)}
+.fa-meas ul{list-style:none; margin:0; padding:0; display:grid; gap:8px}
+.fa-meas-list li{display:grid; grid-template-columns:12px minmax(0,1fr); gap:8px; align-items:start}
+.fa-meas-mark{flex:none; margin-top:3px; overflow:visible}
+.fug-key .fa-meas-mark{margin-top:0}
+.fa-meas-src{color:var(--fug-fg); overflow-wrap:anywhere}
+.fa-meas-src a{color:var(--fug-accent)}
+.fa-meas-what{font-size:11.5px; line-height:1.45; overflow-wrap:anywhere}
+.fa-meas-else li{display:flex; flex-wrap:wrap; gap:4px 8px; align-items:baseline}
+.fa-meas-cond{font-variant-numeric:tabular-nums}
 .fa-read{display:grid; gap:5px}
 .fa-row{display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-size:12.5px; font-family:inherit}
 .fa-row b{font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap}

@@ -232,4 +232,8 @@ Each is one pull request with its screenshots (UI_GUIDE.md section 7) and its te
    the empty drawing (section 3, steps 2 and 3); the flowsheet's tabs under the drawing.
 6. **The additions of section 4**, in the order the maintainer chooses, the A ones first; each C one through its
    own proposal or roadmap item.
+   - Built first, by the maintainer's answer 7 (2026-11-11): the measured points on the T-x-y and the P-x-y, and the
+     x-y, activity-coefficient and relative-volatility plots (docs/decisions/2026-11-11-07-ui-0021-step1.md; in
+     review). Until the canvas tabs of step 2 exist, the list of measured sets is under the plot. Next: the
+     flowsheet's tabs and examples.
 7. The old layout is removed, two released versions after step 4.

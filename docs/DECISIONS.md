@@ -20,6 +20,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   Pipe; then the first additions (measured VLE points on T-x-y, the x-y, gamma and alpha diagrams, the flowsheet's tabs
   and examples). The new layout becomes the default only after steps 1-3 and a check by users; "classic" is kept for
   two released versions.
+- **Measured points and the x-y, γ and α plots** (proposal 0021, answer 7, (a) and (b);
+  docs/decisions/2026-11-11-07-ui-0021-step1.md): the open vapour-liquid sets of `validation/data/` are drawn on the
+  T-x-y and the P-x-y with their source and what the parameter set did with them; a switch above the diagram shows
+  x-y, activity coefficients and relative volatility; built, in review (#230). Decided (2026-11-12): the data stay
+  inside the package (+0.36 MB), a set is drawn within 0.5 % in P or 0.5 K, the switch stays. Follow-ups accepted:
+  `fit_parameters.py` writes a reason per data set it did not fit; the methanol + water check-file deviations that no
+  longer match the engine are looked into with the next data task.
+  Next of answer 7: (c) the flowsheet's tabs and examples.
 - **CHEPTA-Lab on Claude** (docs/decisions/2026-11-11-05-chepta-lab-on-claude.md): its own coordinator session starts
   when two worker slots are free; held-out evaluation cases reviewed by the maintainer or another model family
   (ROADMAP.md, "CHEPTA and CHEPTA-Lab", rule 7). Open: attach the CHEPTA-Lab repository to that session.

@@ -22,6 +22,7 @@ import knownIssues from "../data/known-issues.json" with { type: "json" };
 import { WORKSPACES, UTILITIES, INPUTS, checkInputs, normalizeInputs, seedInputs, isEosModel } from "./workspaces.js";
 import { tLabel, normalizeUnits, tToDisplay, tFromDisplay, pToDisplay, pFromDisplay, fmtShort } from "./properties-logic.js";
 import { normalizeFlash, FLASH_DEFAULTS } from "./flash-logic.js";
+import { checkBinaryPlot } from "./binary-logic.js";
 import { normalizeHx, hxStreamSetup } from "./hx-logic.js";
 import { normalizePipe } from "./pipe-logic.js";
 import { solidUnitIds } from "./solubility-units.js";
@@ -378,6 +379,8 @@ export function initialState(cfg = {}) {
     units: normalizeUnits(cfg.units ?? {}, { T: "C", P: "kPa", basis: "mass", viscosity: "mPa s" }),
     basis: cfg.basis === "mass" ? "mass" : "mole",
     background: cfg.background !== false,
+    // the binary diagrams (T-x-y, P-x-y): the plot shown ("phase", "xy", "gamma", "alpha") and the measured points
+    binaryPlot: checkBinaryPlot(cfg.binaryPlot), measured: cfg.measured !== false,
     panels: { left: cfg.panels?.left !== false, right: cfg.panels?.right !== false },
     ribbon: cfg.ribbon !== false,
     residueCurves: cfg.residueCurves !== false,
@@ -526,6 +529,8 @@ function cleanList(list) {
  *    views, and moves the phase-equilibrium workspace to a diagram that can run with them);
  *  - `model`: the model of every diagram (ALL_MODELS); `eos`: selects that equation of state
  *    as the model (the key of earlier versions, when the equation of state had its own diagrams);
+ *  - `binaryPlot`: what the T-x-y and the P-x-y views draw: "phase" (the diagram itself), "xy", "gamma" (activity
+ *    coefficients) or "alpha" (relative volatility); `measured`: draw the measured points of the pair (default true);
  *  - `z`: feed composition of the P-x-y or phase-envelope view on the canvas;
  *  - `flash`: settings of the Flash workspace, merged ({ spec: "TP", T_K: 350 }); a new list
  *    of flash components resets its feed composition to equimolar.
@@ -597,7 +602,8 @@ export function applyPatch(state, patch = {}) {
   if ("T_K" in patch) next.T_K = patch.T_K == null ? null : positive(patch.T_K, "T_K");
   if (patch.units != null) next.units = normalizeUnits(patch.units, state.units);
   if (patch.basis != null) next.basis = patch.basis === "mass" ? "mass" : "mole";
-  for (const k of ["background", "residueCurves", "isotherms", "ribbon", "compareGases"]) if (k in patch) next[k] = !!patch[k];
+  for (const k of ["background", "residueCurves", "isotherms", "ribbon", "compareGases", "measured"]) if (k in patch) next[k] = !!patch[k];
+  if (patch.binaryPlot != null) next.binaryPlot = checkBinaryPlot(patch.binaryPlot);
   if (patch.panels) Object.assign(next.panels, Object.fromEntries(Object.entries(patch.panels).map(([k, v]) => [k, !!v])));
   if (patch.grid != null && [24, 40, 60].includes(+patch.grid)) next.grid = +patch.grid;
   if (patch.property != null) next.property = String(patch.property);

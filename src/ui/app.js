@@ -393,7 +393,9 @@ export function app(target, cfg = {}) {
             h("label", { class: "fa-field", for: `fa-grid-${uid}` }, h("span", {}, "Map resolution"),
               h("select", { id: `fa-grid-${uid}`, "data-fk": "grid", on: { change: ev => set({ grid: +ev.target.value }) } },
                 ...[[24, "Coarse"], [40, "Normal"], [60, "Fine"]].map(([g, t]) => h("option", { value: g, selected: state.grid === g }, t)))),
-          ] : []), bg)),
+          ] : []),
+          ...(v === "txy" || v === "pxy" ? [smallButton({ ico: "search", label: "Measured data", pressed: state.measured, fk: "measured",
+            title: "Draw the measured points of the pair on the diagram, from CHEPTA's data files", onClick: () => set({ measured: !state.measured }) })] : []), bg)),
         group("Composition", seg("Composition basis", [["mole", "mol frac"], ["mass", "wt %"]], state.basis, b => set({ basis: b }))),
       ];
       case "flash": return [
@@ -1278,7 +1280,7 @@ export function app(target, cfg = {}) {
   const canvasKey = () => {
     const v = state.view, check = viewCheck(state, v);
     return JSON.stringify([v, check.ok ? check.use : ["invalid", state.inputs[v]], state.model, state.eos, state.vapour, state.P_kPa, state.T_K,
-      state.units, state.basis, state.residueCurves, state.isotherms, state.grid, state.property, state.z[v] ?? null,
+      state.units, state.basis, v === "txy" || v === "pxy" ? [state.binaryPlot, state.measured] : null, state.residueCurves, state.isotherms, state.grid, state.property, state.z[v] ?? null,
       v === "henry" ? [state.inputs.henry, state.henryT_K, state.henryP_kPa, state.compareGases] : null,
       v === "solid" || v === "sle" ? [state.sleT_K, state.solidUnit] : null, state.steamP_kPa, state.chart, state.sets, state.prefer,
       state.userData,   // the user's own data (proposal 0012): a change or a switch recalculates every view
