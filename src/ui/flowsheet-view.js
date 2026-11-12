@@ -604,8 +604,9 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
     secs.push(inputsSection("Extraction (countercurrent stages)",
       numberField("Equilibrium stages", spec.stages == null ? "" : String(spec.stages), t => { const v = num(t); if (v === undefined || (v != null && !(Number.isInteger(v) && v >= 1 && v <= 100))) return false; setS({ stages: v }); },
         { id: `${b.id}-stages`, uid, unit: "1 to 100", placeholder: "5" }),
-      T("T_K", "Stage temperature"), P("P_kPa", "Outlet pressure"),
-      h("p", { class: "fa-in-hint" }, "The feed enters stage 1 and the solvent the last stage; the extract leaves stage 1 and the raffinate the last. Temperature and pressure empty: the feed's."),
+      segRow("Temperature", [["given", "Given"], ["adiabatic", "Adiabatic"]], spec.adiabatic ? "adiabatic" : "given", v => setS(v === "adiabatic" ? { adiabatic: true, T_K: null } : { adiabatic: null }), `fs-exad-${b.id}`),
+      ...(spec.adiabatic ? [] : [T("T_K", "Stage temperature")]), P("P_kPa", "Outlet pressure"),
+      h("p", { class: "fa-in-hint" }, "The feed enters stage 1 and the solvent the last stage; the extract leaves stage 1 and the raffinate the last. Given: every stage at that temperature (empty: the feed's), the duty keeps them there. Adiabatic: one temperature for all stages, found so that the outlets carry the inlets' enthalpy (duty zero). Pressure empty: the feed's. The block refuses a temperature at which its liquids boil at that pressure, and condenses a little vapour in a feed (with a warning)."),
       h("p", { class: "fa-in-hint" }, done?.state?.sets
         ? `Liquid method: ${done.state.model} with the sets ${[...new Set(Object.values(done.state.sets))].join(", ")}.`
         : "Liquid method: the flowsheet's activity model; for a ternary with sets fitted jointly to its tie lines, those sets.")));
@@ -2014,7 +2015,7 @@ export function resultsPanel({ state, f, sol, u, set }) {
         ] : []),
         ...(b.type === "extraction" && r.state ? [
           ["Equilibrium stages", String(r.state.stages)],
-          ["Temperature, outlet pressure", `${fmtTemp(r.state.T_K, u, 2)}, ${fmtP(r.state.P_kPa, u)}`],
+          [r.state.adiabatic ? "Temperature (adiabatic), outlet pressure" : "Temperature, outlet pressure", `${fmtTemp(r.state.T_K, u, 2)}, ${fmtP(r.state.P_kPa, u)}`],
           ["Solvent / feed", `${fmtShort(r.state.solvent_to_feed, 4)} mol/mol${r.state.solvent_to_feed_mass != null ? `, ${fmtShort(r.state.solvent_to_feed_mass, 4)} kg/kg` : ""}`],
           ...Object.entries(r.state.recoveries).filter(([, v]) => v != null).map(([c, v]) => [`${nameOf(c)} into the extract`, `${fmtShort(100 * v, 4)} %`]),
           ["Liquid method", `${r.state.model}${r.state.sets ? `, sets ${[...new Set(Object.values(r.state.sets))].join(", ")}` : ""}`],

@@ -96,3 +96,7 @@ for the example's extract: the default sets of this ternary miss its tie lines b
 - Stage efficiencies.
 - The column's hydraulics (flooding of an extraction column).
 - An equation of state with two liquids (CPA; DECISIONS.md, "Engineering", item 7).
+
+## Adiabatic, boiling liquids and a feed with vapour (2026-11-12)
+
+`adiabatic: true` (without `T_K`) finds one temperature for all stages so that the outlets carry the inlets' enthalpy; the duty is zero. It is not a stage-by-stage energy balance. A liquid of any stage at or above its bubble point at the block's pressure is refused (`OUT_OF_RANGE`, with its bubble temperature): raise `P_kPa`. A feed or solvent with a vapour fraction up to 0.1 is condensed into the stages with a `FEED_VAPOUR` warning; more is refused. See docs/decisions/2026-11-12-03-extraction-lab-requests.md.

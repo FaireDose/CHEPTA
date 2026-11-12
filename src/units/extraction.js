@@ -35,7 +35,9 @@ import { solveCascade } from "./columns/engine.js";
 import { MAX_LL_STAGES } from "./columns/extraction.js";
 import { registerUnit } from "./units.js";
 
-const SPEC_KEYS = ["stages", "T_K", "P_kPa", "method"];
+const SPEC_KEYS = ["stages", "T_K", "adiabatic", "P_kPa", "method"];
+/** The largest vapour fraction of an inlet the block takes in (condensed into the stages, with a warning); this project's choice. */
+export const MAX_INLET_VF = 0.1;
 const METHOD_KEYS = ["model", "sets", "prefer"];
 const ACTIVITY = ["NRTL", "UNIQUAC", "MOD-UNIFAC-2"];
 /** The prefix of the sets fitted jointly to a ternary's tie lines (validation/python/fit_ternary_lle.py). */
@@ -54,6 +56,11 @@ function checkSpec(spec) {
     const T = Number(spec.T_K);
     if (!(T > 0)) throw fail("BAD_INPUT", `Extraction: T_K must be a positive temperature in K (got ${JSON.stringify(spec.T_K)}).`);
     out.T = T;
+  }
+  if (has(spec, "adiabatic")) {
+    if (typeof spec.adiabatic !== "boolean") throw fail("BAD_INPUT", `Extraction: adiabatic must be true or false (got ${JSON.stringify(spec.adiabatic)}).`);
+    if (spec.adiabatic && has(spec, "T_K")) throw fail("BAD_INPUT", "Extraction: adiabatic: true finds the stage temperature from the energy balance; leave out T_K (or leave out adiabatic for an isothermal block).");
+    out.adiabatic = spec.adiabatic;
   }
   if (has(spec, "P_kPa")) {
     const P = Number(spec.P_kPa);
@@ -108,17 +115,49 @@ function liquidSystem(sys, s) {
   }
 }
 
+/**
+ * The one temperature at which the outlets' enthalpy equals the inlets' (secant method from the mixed inlets' mean
+ * temperature); g(T) = { rr, f } with f the enthalpy imbalance in kW.
+ */
+function solveAdiabatic(g, T0, Hin) {
+  const tol = 1e-6 * Math.max(Math.abs(Hin), 1);
+  let a = { T: T0, ...g(T0) }, b = { T: T0 + 1, ...g(T0 + 1) }, it = 0;
+  while (Math.abs(b.f) > tol && it < 40) {
+    if (b.f === a.f) throw fail("NO_CONVERGENCE", `Extraction: the adiabatic temperature did not converge (the enthalpy balance does not change with temperature near ${fmt(b.T)} K).`);
+    let Tn = b.T - b.f * (b.T - a.T) / (b.f - a.f);
+    Tn = Math.min(Math.max(Tn, b.T - 50), b.T + 50);
+    if (!(Tn > 150)) throw fail("NO_CONVERGENCE", `Extraction: the adiabatic temperature left the range of the model (${fmt(Tn)} K).`);
+    a = b; b = { T: Tn, ...g(Tn) }; it++;
+  }
+  if (Math.abs(b.f) > tol) throw fail("NO_CONVERGENCE", `Extraction: the adiabatic temperature did not converge in 40 secant steps (last ${fmt(b.T)} K, imbalance ${fmt(b.f)} kW).`);
+  return { T: b.T, rr: b.rr, iterations: it, residual_kW: b.f };
+}
+
 function solve({ sys, inlets, spec }) {
   const feed = inlets.feed[0], solvent = inlets.solvent[0];
   if (!(feed.F_kmol_h > 0)) throw fail("BAD_INPUT", "Extraction: the feed has no flow.");
   if (!(solvent.F_kmol_h > 0)) throw fail("BAD_INPUT", "Extraction: the solvent has no flow.");
+  const warnings = [];
   for (const [s, name] of [[feed, "feed"], [solvent, "solvent"]]) {
-    if (s.VF != null && s.VF > 1e-9) throw fail("BAD_INPUT", `Extraction: the ${name} is partly vapour (vapour fraction ${fmt(s.VF)} at ${fmt(s.T_K)} K and ${fmt(s.P_kPa)} kPa); the stages hold two liquids and no vapour. Cool it or raise its pressure.`);
+    if (s.VF != null && s.VF > 1e-9) {
+      if (s.VF > MAX_INLET_VF) throw fail("BAD_INPUT", `Extraction: the ${name} is partly vapour (${fmt(100 * s.VF)} % vapour; vapour fraction ${fmt(s.VF)} at ${fmt(s.T_K)} K and ${fmt(s.P_kPa)} kPa); the stages hold two liquids and no vapour, and the block takes at most ${MAX_INLET_VF} (a little vapour, condensed). Cool it, raise its pressure, or flash it first.`);
+      warnings.push({ code: "FEED_VAPOUR", message: `The ${name} carries vapour (vapour fraction ${fmt(s.VF)} at ${fmt(s.T_K)} K and ${fmt(s.P_kPa)} kPa). The block mixes all of it into its first liquid stage as liquid: the vapour condenses, nothing leaves as vapour, and its enthalpy (the heat of condensation) is in the energy balance (${spec.adiabatic ? "the stage temperature" : "the duty"}).`,
+        remedy: "Flash the stream first and send only its liquid to the block if the vapour should leave separately." });
+    }
   }
-  const T = spec.T ?? feed.T_K, P = spec.P ?? feed.P_kPa, N = spec.N;
+  const P = spec.P ?? feed.P_kPa, N = spec.N;
   const { own, model, sets, joint } = liquidSystem(sys, spec);
-  const r = solveCascade({ sys: own, phases: "LL", stages: N, T_K: T, names: sys.names,
+  const run = Tc => solveCascade({ sys: own, phases: "LL", stages: N, T_K: Tc, names: sys.names,
     feeds: [{ stage: 1, flows: feed.flows.map(v => v * KMOL_H) }, { stage: N, flows: solvent.flows.map(v => v * KMOL_H) }] });
+  const outH = (Tc, r) => { const f = fl => stream(own, { flow_kmol_h: fl.map(v => v / KMOL_H), T_K: Tc, P_kPa: P }).H_kW ?? 0; return f(r.products.down) + f(r.products.up); };
+  let T, r, adia = null;
+  if (spec.adiabatic) {
+    // the inlets' enthalpy in the block's own method, at their own T and P (so that method differences do not leak in)
+    const Hin = [feed, solvent].reduce((a, s) => a + (stream(own, { flow_kmol_h: s.flows, T_K: s.T_K, P_kPa: s.P_kPa }).H_kW ?? 0), 0);
+    const g = Tc => { const rr = run(Tc); return { rr, f: outH(Tc, rr) - Hin }; };
+    adia = solveAdiabatic(g, (feed.F_kmol_h * feed.T_K + solvent.F_kmol_h * solvent.T_K) / (feed.F_kmol_h + solvent.F_kmol_h), Hin);
+    T = adia.T; r = adia.rr;
+  } else { T = spec.T ?? feed.T_K; r = run(T); }
   const toKmol = fl => fl.map(v => v / KMOL_H);
   const rafFlows = toKmol(r.products.down), extFlows = toKmol(r.products.up);
   let raffinate, extract;
@@ -128,13 +167,23 @@ function solve({ sys, inlets, spec }) {
   } catch (e) {
     throw fail(e.code ?? "BAD_INPUT", `Extraction: an outlet at ${fmt(T)} K and ${fmt(P)} kPa: ${e.message}`);
   }
-  const warnings = [];
   if (sys.gammas) {
     for (const [o, name] of [[raffinate, "raffinate"], [extract, "extract"]]) {
       const st = liquidTangentPlane(sys, o.z, T);
       if (!st.stable) warnings.push({ code: "METHOD_SPLIT", message: `With the flowsheet's own parameter sets the ${name} would split into two liquids at ${fmt(T)} K; the block's liquid method (${sets ? "the sets " + [...new Set(Object.values(sets))].join(", ") : model}) keeps it one liquid. A block after it that uses the flowsheet's method may refuse it.`,
         remedy: `Choose the same sets in the flowsheet's thermo (sets: ${JSON.stringify(sets ?? {})}), or give this block the flowsheet's sets as its method.` });
     }
+  }
+  // an outlet or stage liquid above its bubble point at the block's pressure is boiling: a liquid-liquid extractor cannot
+  // be calculated there (fail loudly: the stages hold no vapour)
+  const boiling = [];
+  const bub = (x, label) => { let Tb = null; try { Tb = own.bubbleT(x, P).T; } catch { /* the outlet's own flash decides below */ } if (Tb != null && !(T < Tb - 1e-6)) boiling.push({ label, Tb }); };
+  r.stages.forEach(st => { bub(st.down.x, st.stage === N ? "the raffinate (stage " + N + ")" : `the raffinate liquid of stage ${st.stage}`); bub(st.up.x, st.stage === 1 ? "the extract (stage 1)" : `the extract liquid of stage ${st.stage}`); });
+  for (const [o, name] of [[raffinate, "raffinate"], [extract, "extract"]]) if (o.VF != null && o.VF > 1e-9 && !boiling.some(b => b.label.includes(name))) boiling.push({ label: `the ${name}`, Tb: null });
+  if (boiling.length) {
+    const b = boiling[0];
+    throw fail("OUT_OF_RANGE", `Extraction: at ${fmt(T)} K and ${fmt(P)} kPa ${b.label} is at or above its bubble point${b.Tb != null ? ` (${fmt(b.Tb)} K)` : ""}: the liquid boils, and the stages hold two liquids and no vapour${boiling.length > 1 ? ` (${boiling.length} liquids in all)` : ""}. Raise the pressure P_kPa${spec.adiabatic ? "" : " or lower the temperature T_K"}, or use a solvent that boils higher.`,
+      { T_K: T, P_kPa: P, boiling: boiling.map(x => ({ liquid: x.label, bubble_T_K: x.Tb })) });
   }
   const profile = r.stages.map(st => ({
     stage: st.stage, T_K: st.T_K,
@@ -149,13 +198,15 @@ function solve({ sys, inlets, spec }) {
   const notes = [
     `Countercurrent liquid-liquid extraction: ${N} equilibrium stage${N > 1 ? "s" : ""} at ${fmt(T)} K; the feed enters stage 1 and the solvent stage ${N}; the raffinate leaves stage ${N} and the extract stage 1. MESH without a vapour (equal activities in the two liquids on every stage), solved by Newton's method from a sum-rates start.`,
     `Liquid method: ${model}${sets ? ` with the sets ${[...new Set(Object.values(sets))].join(", ")}${joint && !spec.method?.sets ? " (fitted jointly to this ternary's liquid-liquid tie lines: the block's default for it)" : ""}` : " with the default sets"}. The vapour model does not enter.`,
-    "Isothermal: every stage and both outlets at the block's temperature; the duty is the heat that keeps them there.",
+    spec.adiabatic
+      ? `Adiabatic overall, one temperature for all stages: ${fmt(T)} K, found so that the outlets' enthalpy equals the inlets' (${adia.iterations} secant steps, residual ${fmt(adia.residual_kW)} kW). It is not a stage-by-stage energy balance: every stage is held at this one temperature; the duty is zero.`
+      : "Isothermal: every stage and both outlets at the block's temperature; the duty is the heat that keeps them there.",
   ];
   return {
     outlets: { extract, raffinate },
-    duty_kW: (extract.H_kW ?? 0) + (raffinate.H_kW ?? 0) - (feed.H_kW ?? 0) - (solvent.H_kW ?? 0),
+    duty_kW: spec.adiabatic ? 0 : (extract.H_kW ?? 0) + (raffinate.H_kW ?? 0) - (feed.H_kW ?? 0) - (solvent.H_kW ?? 0),
     notes, warnings, profile,
-    state: { stages: N, T_K: T, P_kPa: P, solvent_to_feed: solvent.F_kmol_h / feed.F_kmol_h,
+    state: { stages: N, T_K: T, adiabatic: !!spec.adiabatic, P_kPa: P, solvent_to_feed: solvent.F_kmol_h / feed.F_kmol_h,
       solvent_to_feed_mass: solvent.mass_kg_h != null && feed.mass_kg_h ? solvent.mass_kg_h / feed.mass_kg_h : null,
       recoveries, model, sets: sets ?? null, iterations: r.iterations, residuals: r.residuals },
   };

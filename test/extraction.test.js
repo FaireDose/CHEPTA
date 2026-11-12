@@ -159,3 +159,53 @@ test("the workbench: Extraction under the Separator button, placed with a feed a
   assert.deepEqual(back.flowsheet.blocks.find(b => b.id === "EXT1").spec, { stages: 5 });
   assert.throws(() => readProject(JSON.stringify({ ...doc, fugacity_project: 5 })), /extraction and membrane blocks need format 6/);
 });
+
+// Lab requests, 2026-11-12 (docs/decisions/2026-11-12-03-extraction-lab-requests.md): the adiabatic option, a feed with a
+// little vapour, and the refusal of an extractor whose liquids boil at its pressure.
+import { runUnit } from "../src/units/units.js";
+import { stream } from "../src/stream/stream.js";
+const LAB_SYS = () => system({ components: IDS, model: "NRTL", sets: SETS });
+const lab = (sys, f, Tf, v, Tv, P = 101.325) => ({
+  feed: [stream(sys, { flow_kmol_h: { water: f[0], "acetic-acid": f[1], "ethyl-acetate": f[2] }, T_K: Tf, P_kPa: P })],
+  solvent: [stream(sys, { flow_kmol_h: { water: v[0], "acetic-acid": v[1], "ethyl-acetate": v[2] }, T_K: Tv, P_kPa: P })] });
+
+test("adiabatic extraction: the one temperature equals the independent enthalpy balance (reference_extraction.py)", () => {
+  const fx = load("../validation/fixtures/extraction.json");
+  assert.ok(fx.adiabatic.length >= 3);
+  for (const c of fx.adiabatic) {
+    const sys = system({ components: c.components, model: c.model, sets: SETS });
+    const r = runUnit("extraction", { sys, inlets: lab(sys, c.feed_mol_s, c.feed_T_K, c.solvent_mol_s, c.solvent_T_K), spec: { stages: c.stages, adiabatic: true } });
+    assert.ok(Math.abs(r.state.T_K - c.T_K) < 0.01, `${c.model} N=${c.stages}: ${r.state.T_K} vs ${c.T_K}`);
+    assert.equal(r.duty_kW, 0);
+    assert.equal(r.state.adiabatic, true);
+    // the outlets are the reference's liquids (the inlets are given in kmol/h with the fixture numbers, so the flows are equal)
+    c.raffinate_mol_s.forEach((v, i) => assert.ok(Math.abs(r.outlets.raffinate.flows[i] - v) < 1e-5));
+    assert.ok(r.notes.some(n => /one temperature for all stages/.test(n)));
+  }
+});
+
+test("adiabatic extraction refuses T_K together with it, and a non-boolean", () => {
+  const sys = LAB_SYS(), inlets = lab(sys, [90, 10, 0], 298.15, [0, 0, 100], 318.15);
+  assert.throws(() => runUnit("extraction", { sys, inlets, spec: { stages: 3, adiabatic: true, T_K: 300 } }), e => e.code === "BAD_INPUT" && /leave out T_K/.test(e.message));
+  assert.throws(() => runUnit("extraction", { sys, inlets, spec: { stages: 3, adiabatic: "yes" } }), e => e.code === "BAD_INPUT");
+});
+
+test("an extractor whose liquids are above their bubble point at its pressure is refused, with the bubble temperature", () => {
+  const sys = LAB_SYS(), inlets = lab(sys, [90, 10, 0], 298.15, [0, 0, 100], 318.15);
+  assert.throws(() => runUnit("extraction", { sys, inlets, spec: { stages: 3, T_K: 350.15 } }),
+    e => e.code === "OUT_OF_RANGE" && /bubble point \(\d+ K\)/.test(e.message) && Array.isArray(e.details.boiling));
+  // the same temperature at a pressure that keeps the liquids liquid is accepted
+  const r = runUnit("extraction", { sys, inlets: lab(sys, [90, 10, 0], 298.15, [0, 0, 100], 318.15, 200), spec: { stages: 3, T_K: 350.15, P_kPa: 200 } });
+  assert.ok(r.outlets.extract.VF === 0 || r.outlets.extract.VF == null || r.outlets.extract.VF < 1e-9);
+});
+
+test("a feed with a little vapour is condensed into the stages with a FEED_VAPOUR warning; much vapour is refused", () => {
+  const sys = LAB_SYS();
+  const inlets = lab(sys, [90, 10, 0], 298.15, [0, 0, 100], 318.15);
+  const fake = { ...inlets.feed[0], VF: 0.05 };
+  const r = runUnit("extraction", { sys, inlets: { ...inlets, feed: [fake] }, spec: { stages: 3, T_K: 298.15 } });
+  assert.ok(r.warnings.some(w => w.code === "FEED_VAPOUR" && /condenses/.test(w.message)));
+  const total = r.outlets.extract.F_kmol_h + r.outlets.raffinate.F_kmol_h;
+  assert.ok(Math.abs(total - 200) < 1e-6);   // nothing leaves as vapour
+  assert.throws(() => runUnit("extraction", { sys, inlets: { ...inlets, feed: [{ ...inlets.feed[0], VF: 0.5 }] }, spec: { stages: 3, T_K: 298.15 } }), e => e.code === "BAD_INPUT" && /at most 0.1/.test(e.message));
+});
