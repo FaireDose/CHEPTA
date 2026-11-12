@@ -211,50 +211,6 @@
         ]
       },
       "specs": []
-    },
-    {
-      "id": "C3-decanter-VLL",
-      "title": "Water + acetic acid + ethyl acetate, 10 stages with a decanter: the heavy (water-rich) liquid refluxed, the light one the distillate",
-      "components": [
-        "water",
-        "acetic-acid",
-        "ethyl-acetate"
-      ],
-      "pressure_kPa": 101.325,
-      "thermo": {
-        "kind": "chepta",
-        "model": "NRTL",
-        "vapour": "ideal",
-        "association": "chemical theory",
-        "sets": "default"
-      },
-      "column": {
-        "configuration": "distillation",
-        "stages": 10,
-        "condenser": "decanter",
-        "reflux_liquid": "heavy",
-        "reboiler": "partial",
-        "feed": {
-          "stage": 4,
-          "flow_mol_s": 27.77777777777778,
-          "z": [
-            0.5,
-            0.3,
-            0.2
-          ],
-          "q": 1
-        }
-      },
-      "specs": [
-        {
-          "kind": "distillate_flow_mol_s",
-          "value": 5.555555555555555
-        }
-      ],
-      "reference_start": {
-        "why": "the decanter column of reference_mesh_vll.DecanterColumn starts from the same column with a total condenser",
-        "reflux_ratio": 2.0
-      }
     }
   ]
 }

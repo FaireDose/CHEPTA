@@ -213,7 +213,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   liquids, pumparounds, side draws on absorbers.
 - **Vapour + two liquids with acetic acid's chemical theory, built, to review**
   (docs/decisions/2026-11-12-02-acid-chemical-theory-vlle.md; the next step decided in 2026-11-11-08, item 4): the
-  three-phase flash, the heater, and two liquids on the stages of distillation columns (decanter included), absorbers
+  three-phase flash, the heater, and two liquids on the stages of distillation columns (a decanter too, without a reference case), absorbers
   and strippers, with the dimers; absorbers and strippers with two liquids for every activity model. An independent
   reference (flash, three columns), the measured tie lines of water + acetic acid + ethyl acetate, and the measured
   VLLE of cyclohexane + acetic acid + water (Liu et al. 2013, Modified UNIFAC 2.0, predicted). To check: the 14 rows

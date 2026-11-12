@@ -106,8 +106,11 @@ function runCase(c, association = true) {
   const col = c.column;
   const spec = col.configuration === "absorber"
     ? { mode: "rigorous", configuration: "absorber", stages: col.stages, phases: "VLL" }
-    : { mode: "rigorous", stages: col.stages, feed_stage: col.feed.stage, reflux_ratio: c.specs[0].value,
-      distillate_kmol_h: c.specs[1].value * KMOL_H, phases: "VLL" };
+    : col.condenser === "decanter"
+      ? { mode: "rigorous", stages: col.stages, feed_stage: col.feed.stage, condenser: "decanter", reflux_liquid: col.reflux_liquid,
+        distillate_kmol_h: c.specs[0].value * KMOL_H, phases: "VLL" }
+      : { mode: "rigorous", stages: col.stages, feed_stage: col.feed.stage, reflux_ratio: c.specs[0].value,
+        distillate_kmol_h: c.specs[1].value * KMOL_H, phases: "VLL" };
   return { sys, r: runUnit("column", { sys, inlets: { in: streams(sys, c) }, spec }) };
 }
 
@@ -136,7 +139,8 @@ for (const c of doc.columns) {
     assert.ok(r.notes.some(n => /Vapour by the chemical theory for Acetic acid/.test(n)));
     assert.ok(r.notes.some(n => /^Two liquids on stage/.test(n)));
   });
-  test(`column ${c.id}: without the dimers (association: false on purpose), the reference's other profile`, () => {
+  // (the reference records the column without the dimers where it solved it)
+  if (FIX.columns[c.id]?.without_dimers_in_the_equilibrium) test(`column ${c.id}: without the dimers (association: false on purpose), the reference's other profile`, () => {
     const { r } = runCase(c, false);
     againstReference(c, r, FIX.columns[c.id].without_dimers_in_the_equilibrium);
   });

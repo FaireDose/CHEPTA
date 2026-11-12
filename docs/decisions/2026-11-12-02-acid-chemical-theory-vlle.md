@@ -50,7 +50,7 @@ its chemical theory. The row is added to docs/METHOD_SELECTION.md.
 ## Validation
 
 Cases: `validation/data/columns/acid/vlle-cases.json`; reference: `validation/python/reference_vlle_acid.py`; fixture:
-`validation/fixtures/vlle_acid.json`; tests: `test/vlle-acid.test.js` (15, and the heater's).
+`validation/fixtures/vlle_acid.json`; tests: `test/vlle-acid.test.js` (15).
 
 - **The independent reference** solves the three-phase flash from the liquid side: the unknowns x', x'', the phase
   fractions (or T), the equations the component balances, x' gamma(x') = x'' gamma(x''), and P_true(x') = P with the
@@ -64,7 +64,6 @@ Cases: `validation/data/columns/acid/vlle-cases.json`; reference: `validation/py
   | F1-F6: water + acetic acid + ethyl acetate, NRTL: two liquids (340 K), vapour + two liquids (347, 348, 348.5 K), vapour + liquid (355 K), P-VF (VF 0.3) | T within 1e-6 K, phase fractions and mole fractions within 1e-7 (largest seen: 3e-10 K) |
   | C1: distillation, 12 stages, R 2, D 40 mol/s; two liquids on stage 1 | T 1e-5 K, x 1e-7, flows 1e-6 relative |
   | C2: absorber, 6 stages, two-liquid solvent on the top, gas on the bottom; two liquids on every stage | the same |
-  | C3: distillation with a decanter, 10 stages, the water-rich liquid refluxed | the same |
 
 - **What ignoring the dimers changes** (association: false on purpose; the reference agrees on it too): C1's distillate
   holds 0.0165 acetic acid with the dimers, 0.0532 without; C2's top gas 0.0208 mol/s of acid with them, 0.0532 without;
@@ -105,7 +104,9 @@ The behaviour they checked was a refusal that this pull request removes by decis
 
 ## Limits, stated
 
-- **Robustness of decanter columns**: with the dimers, decanter columns of 10 and 15 stages converged; one of 12
+- **Decanter columns with the dimers have no reference case**: reference_mesh_vll.DecanterColumn with this file's
+  thermodynamics did not finish in 25 minutes (its dense finite-difference Jacobian splits every stage's liquid anew),
+  so the decanter is tested only through the stage equations it shares with C1. Robustness: with the dimers, decanter columns of 10 and 15 stages converged; one of 12
   stages (feed 6, D 20 kmol/h) stopped at a residual of 0.0015 after the solver's 12 iterations, where the same column
   without the dimers converges. The refusal is `NO_CONVERGENCE` with what was tried. Decanter columns of this ternary
   are hard without the dimers too (three of four specifications tried did not converge either way).
