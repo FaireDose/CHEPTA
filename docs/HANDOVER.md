@@ -50,8 +50,12 @@ current: replace its "State" and "Queue" sections at each handover, never append
    6. (a reactor-evaporator: boiling reacting liquid, vapour outlet only): not built (the maintainer, 2026-11-12). The
    coordinator checked other simulators: DWSIM's reactors give liquid and vapour outlets of the reacted stream at the
    outlet conditions, and its tutorials and Aspen Plus course notes split the vapour with a separator after the
-   reactor; no simulator found has a reactor-evaporator unit. Lab builds it from two units: a conversion reactor, then
-   a heater to vaporization (or a flash drum).
+   reactor; no simulator found has a reactor-evaporator unit. CHEPTA does not need one: its conversion and yield
+   reactors flash their outlet, so `VF: 1` (in place of T_K or duty_kW) gives an all-vapour outlet with the duty
+   computed (the maintainer, 2026-11-12; Lab told to use it).
+   Running in this phase also: Extraction, Lab's requests 5 and 4 (Sonnet, session_01FPbeWVw5Cnd3sC7XwBYRGc, branch
+   claude/extraction-lab-requests, decision file 2026-11-12-03). 0021 step 1 is PR #233 (waiting); step 2 starts after
+   it is merged.
 3. **A lighter model for routine work.** `create_session` takes `model`. Use `claude-sonnet-5-5` for data fits with the
    existing scripts, merge conflicts, documentation, small fixes, and re-running a check; use `claude-opus-5-5` for new
    models, new solvers, proposals and engineering judgement. The coordinator itself can run on Sonnet: it plans,
