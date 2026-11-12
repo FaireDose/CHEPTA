@@ -99,6 +99,8 @@ used).
 4. M4 remainder (proposal 0015 steps 11-12): the benchmark flowsheets; cost correlations E2 and utilities E3 (P5,
    v0.7), by the bounded-cost rules in ROADMAP.md.
 5. Small: align the flowsheet Method page's pair notes with the Inputs panel's (from #220).
+   From #230 (accepted 2026-11-12): fit_parameters.py writes a reason per set not fitted; methanol + water NRTL check-file
+   deviations recorded 0.81 / 0.68 K against 0.67 / 0.61 K from the engine today, look into it with the next data task.
 6. Later: NH3 + water NRTL; water + glucose/sucrose NRTL; CPA for CO2 + water (M3); gas-hydrate check; the user's own
    slurry viscosity and density for the pump; Beggs-Brill for the Pipe; ChemE-as-Code bridge (B6: CHEPTA's command
    line as a simulation backend through their files only; their code is AGPL, never copied).
