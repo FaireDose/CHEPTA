@@ -54,8 +54,10 @@ current: replace its "State" and "Queue" sections at each handover, never append
    reactors flash their outlet, so `VF: 1` (in place of T_K or duty_kW) gives an all-vapour outlet with the duty
    computed (the maintainer, 2026-11-12; Lab told to use it).
    Running in this phase also: Extraction, Lab's requests 5 and 4 (Sonnet, session_01FPbeWVw5Cnd3sC7XwBYRGc, branch
-   claude/extraction-lab-requests, decision file 2026-11-12-03). 0021 step 1 is PR #233 (waiting); step 2 starts after
-   it is merged.
+   claude/extraction-lab-requests, decision file 2026-11-12-03). 0021 step 1, PR #233, merged 2026-11-12; the maintainer
+   agreed to its three recommendations (api.shell hidden until step 4; Flowsheet, Column and Reactor: the Method button
+   opens their own Method page; an empty flowsheet on a phone opens on Inputs). Step 2's worker writes these answers
+   into docs/decisions/2026-11-12-01-ui-0021-shell-contract.md. Step 2 (Opus) starts in the first free slot.
 3. **A lighter model for routine work.** `create_session` takes `model`. Use `claude-sonnet-5-5` for data fits with the
    existing scripts, merge conflicts, documentation, small fixes, and re-running a check; use `claude-opus-5-5` for new
    models, new solvers, proposals and engineering judgement. The coordinator itself can run on Sonnet: it plans,
