@@ -98,7 +98,12 @@
  * or written directly for a model system (test/columns-rigorous.test.js): { n, names, lnK(x, y, T, j?), hL(x, T, j?),
  * hV(y, T), bubbleT(x), stable?(x, T), warnings?(T) }, at the column's pressure (j, the stage, is only a hint for the
  * two-liquid adapter's starts). The column's own property method (milestone M2b) is the block's: it passes that
- * method's system, and the P-H boundary at its streams (src/units/columns/column.js).
+ * method's system, and the P-H boundary at its streams (src/units/columns/column.js). *
+ * A dimerizing acid in the vapour (acetic acid; the chemical theory of src/thermo/vapour.js; decision 2026-11-11-08):
+ * the stage's x, y and flows are apparent (a dimer counts as two molecules), and its K-values are sys.lnKAssociation,
+ * ln K_i = ln(gamma_i f_i^0 / (phi_i P)) with the fugacity of each component the partial pressure of its monomer at the
+ * stage's y, T and P; the vapour's enthalpy (sys.enthalpy) holds the dimers' enthalpy of dimerization. The same
+ * fugacities as the bubble point and the flash. Two liquids on the stages with it are refused (two-liquids.js).
  */
 import { fail } from "../../util/errors.js";
 import { anyBubbleT } from "../../equilibrium/bubble-any.js";
@@ -142,7 +147,8 @@ const fmt = v => +Number(v).toPrecision(4);
 
 /**
  * The thermodynamic adapter of a flowsheet's system at pressure P (kPa): K-values from sys.lnKValues (activity models,
- * with their vapour model) or from the fugacity coefficients of an equation of state; enthalpies from sys.enthalpy;
+ * with their vapour model), from sys.lnKAssociation (an activity model with the chemical theory of a dimerizing acid)
+ * or from the fugacity coefficients of an equation of state; enthalpies from sys.enthalpy;
  * bubble temperatures from the bubble-point solvers; the liquid's stability against a second liquid.
  */
 export function cascadeThermo(sys, P) {
