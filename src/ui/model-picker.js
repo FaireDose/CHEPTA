@@ -84,3 +84,12 @@ export function liquidPicker({ model, onChange, id, fk = "liquid" }) {
     choices: [...(isEos(model) ? [["", "Choose an activity model"]] : []), ...ACTIVITY_CHOICES], later: FUTURE_MODELS.activity,
     onPick: m => m && onChange(m) }));
 }
+
+/** The equation of state alone, for views that need one for both phases (the fluid charts), with the MHV1 rule: one
+ *  drop-down list; `onChange` gets the workbench patch's pick { model, vapour, mixing }. */
+export function equationPicker({ model, vapour = "ideal", mixing = null, onChange, id, fk = "equation" }) {
+  const eos = isEos(model);
+  return h("div", { class: "fa-model-picker" }, dropdown({ id, label: "Equation", fk, value: eos ? equationValue(model, mixing) : "",
+    choices: [...(eos ? [] : [["", "Choose an equation of state"]]), ...equationChoices(true)], later: FUTURE_MODELS.eos,
+    onPick: v => { if (!v) return; const p = parseEquation(v); onChange({ model: p.model, vapour, mixing: p.mixing }); } }));
+}

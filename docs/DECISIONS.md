@@ -15,8 +15,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   that measured several systems should get one source id per system.
 - **A reorganization of the workbench** (proposal 0021, accepted 2026-11-11; docs/decisions/2026-11-11-04-interface-reorganization.md;
   the review is docs/ui-review/2026-11-11-reorganization.md): the prototype is merged behind
-  `CHEPTA.app(el, { layout: "next" })`. Next, by the proposal's steps: 1. the shell's contract (method, data, units and
-  sources as functions; the Method button everywhere); 2. canvas tabs; 3. numbered steps for Flash, Heat exchanger and
+  `CHEPTA.app(el, { layout: "next" })`. Step 1, the shell's contract (method, data, units, missing inputs and sources
+  as functions; the Method button everywhere, Charts included; arrow keys in the menus), is built and in review
+  (docs/decisions/2026-11-12-01-ui-0021-shell-contract.md; three questions: `api.shell` hidden until step 4, the
+  Method page for Flowsheet/Column/Reactor, an empty flowsheet opening on Inputs on a phone). Next: 2. canvas tabs; 3. numbered steps for Flash, Heat exchanger and
   Pipe; then the first additions (measured VLE points on T-x-y, the x-y, gamma and alpha diagrams, the flowsheet's tabs
   and examples). The new layout becomes the default only after steps 1-3 and a check by users; "classic" is kept for
   two released versions.

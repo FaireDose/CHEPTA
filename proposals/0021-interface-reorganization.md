@@ -222,6 +222,8 @@ Each is one pull request with its screenshots (UI_GUIDE.md section 7) and its te
    the sources of the current calculation as functions (tested without a DOM); `app-next.js` uses them instead of
    reading the status bar. The Method button becomes the one choice in every workspace, Charts included; arrow keys
    in the menus.
+   - Built (docs/decisions/2026-11-12-01-ui-0021-shell-contract.md; in review): `src/ui/shell-contract.js`, read by
+     the classic status bar and by the new layout through `app()`'s hidden `shell` property.
 2. **Canvas tabs** (Plot, Table, Data, Warnings) in the phase diagrams and the Flash, then the other workspaces; the
    downloads move to the Table tab.
 3. **Numbered steps** for the Flash, the Heat exchanger and the Pipe; the heat exchanger's empty band (finding 9)

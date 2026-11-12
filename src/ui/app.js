@@ -54,6 +54,7 @@ import { pure } from "../thermo/pure.js";
 import { SOLID_UNITS } from "./solubility-units.js";
 import pkg from "../../package.json" with { type: "json" };
 import { appNext } from "./app-next.js";
+import { shellContext, sourcesOf, statusOf, setsRuleOf, unitsOf, isBlank, OWN_METHOD } from "./shell-contract.js";
 
 const PROPERTY_GLYPHS = [
   ["density", () => "ρ", "Density"], ["enthalpy", () => "h", "Enthalpy"], ["cp", () => ["c", h("sub", {}, "p")], "Heat capacity"],
@@ -195,6 +196,7 @@ export function app(target, cfg = {}) {
   const provenance = h("div", { class: "fa-provenance" });
   const right = h("aside", { class: "fa-right", "aria-label": "Results" },
     h("div", { class: "fa-panel-head" }, h("h2", {}, "Results"), provenance), side, inspectorExtra);
+  const listeners = new Set(); // the shell's subscribers (api.shell.subscribe)
   const statusBar = h("div", { class: "fa-status", role: "status" });
   const body = h("div", { class: "fa-body" }, left, canvas, right);
   const drawer = h("section", { class: "fa-drawer", role: "dialog", id: `fa-drawer-${uid}`, tabindex: "-1",
@@ -486,11 +488,7 @@ export function app(target, cfg = {}) {
   // ---- Inputs panel: what the current view needs, each with its role
   /** True while no component is chosen for a view that takes them (the workbench opened empty):
    *  the inputs then show a neutral start hint instead of problems. */
-  function blank(view) {
-    if (view === "hx" && state.hx?.mode === "two") { const st = hxSetups(state); return !st.hot.ids.length && !st.cold.ids.length; }
-    const value = state.inputs[view];
-    return Array.isArray(value) && view !== "steam" && !value.some(Boolean);
-  }
+  const blank = view => isBlank(state, view);
 
   /** How a component appears in the pickers of a view: a note on what the chosen model or view cannot do with it. */
   function pickStatus(view, slot, { model = state.model, value = state.inputs[view] } = {}) {
@@ -843,17 +841,16 @@ export function app(target, cfg = {}) {
       : v === "solid" || v === "sle" ? `T ${fmtTemp(state.sleT_K, u)}`
       : VIEWS[v].diagram && v !== "envelope" ? `P ${fmtP(state.P_kPa, u)}` : v === "envelope" ? "Feed under Results" : null;
     const cell = (cls, ...c) => h("span", { class: `fa-cell ${cls}` }, ...c);
-    const rule = ruleOf(state.prefer), hand = Object.keys(state.sets).length;
-    const setsCell = rule !== "best" || hand
-      ? [cell("fa-sets-cell", `Sets: ${rule === "best" ? "defaults" : RULES.find(r => r.id === rule)?.label ?? state.prefer.join(", ")}${hand ? `, ${hand} by hand` : ""}`)] : [];
+    // what the cells say comes from the shell's contract (shell-contract.js), as in the reorganized layout
+    const sets = setsRuleOf(state), now = statusOf(st);
     statusBar.replaceChildren(
-      cell("fa-state" + (st.waiting ? " is-wait" : st.error ? " is-err" : st.busy ? " is-busy" : ""), h("i", { "aria-hidden": "true" }),
-        st.waiting ? "Inputs needed" : st.busy ? "Calculating" : st.error ? "Error" : st.ms != null ? `Ready, ${st.ms < 1000 ? `${Math.max(1, Math.round(st.ms))} ms` : `${(st.ms / 1000).toFixed(1)} s`}` : "Ready"),
-      cell("", model), ...setsCell,
+      cell("fa-state" + ({ waiting: " is-wait", error: " is-err", busy: " is-busy" }[now.kind] ?? ""), h("i", { "aria-hidden": "true" }), now.text),
+      cell("", model), ...(sets ? [cell("fa-sets-cell", sets)] : []),
       ...(cond ? [cell("", cond)] : []),
       st.info?.data ? cell("fa-grow", st.info.data) : h("span", { class: "fa-grow" }),
-      cell("fa-hide-narrow", `${tLabel(u)}, ${u.P}, ${state.basis === "mass" ? "wt %" : "mol frac"}`),
+      cell("fa-hide-narrow", unitsOf(state).text),
       cell("", `CHEPTA ${pkg.version}`));
+    for (const fn of listeners) fn();
   }
 
   /** The name of the calculation on the canvas, e.g. "Methanol, acetone and chloroform". */
@@ -1386,6 +1383,27 @@ export function app(target, cfg = {}) {
     /** Open a project (a document or its JSON text); throws, naming the problem, when it cannot be read. */
     load(project) { loadProject(project); },
   };
+  // the shell's contract (proposal 0021, step 1): for a layout around the workbench (app-next.js). Not enumerable, so
+  // the public interface stays { state, update, save, load }; not part of it until the new layout is the default.
+  Object.defineProperty(api, "shell", { enumerable: false, value: Object.freeze({
+    /** The method, the data, the units, what is missing and the state of the calculation (shellContext). */
+    context: () => ({ ...shellContext(state, ui.status), size: ui.size }),
+    /** The sources the calculation uses (sourcesOf). */
+    sources: () => sourcesOf(state),
+    /** Open the Sources panel on the sources used here (the Results panel's "Sources used here"). */
+    showSources() { ui.sources.mine = true; ui.sources.query = ""; ui.sources.kind = "all"; set({ utility: "sources" }, { canvas: false }); },
+    /** Open the Method page of a workspace with a method of its own (the flowsheet, the column, the reactor), in an
+     *  Inputs panel that is shown; elsewhere nothing. */
+    openMethod() {
+      const ws = state.workspace;
+      if (!(ws in OWN_METHOD)) return;
+      const f = ensureUi(ws === "flowsheet" ? ui : ws === "column" ? (ui.col ??= {}) : (ui.rx ??= {}));
+      f.sel = null; f.setup = "method";
+      set({ panels: { left: true } });
+    },
+    /** Be told after every change the workbench shows (state, size, calculation); returns a function that stops it. */
+    subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); },
+  }) });
   renderChrome();
   renderCanvas(true);
   measure();
