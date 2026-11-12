@@ -2093,6 +2093,19 @@
     },
     {
       "components": [
+        "acetonitrile",
+        "n-hexane"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.75 % in P (limit 1.5 %) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/acetonitrile_n-hexane_10-1016-j-fluid-2012-11-008_348.2K.json (Narasigadu et al., Fluid Phase Equilib. 338)",
+      "source_ids": [
+        "narasigadu2013-acetonitrile-n-hexane"
+      ]
+    },
+    {
+      "components": [
         "sulfolane",
         "toluene"
       ],
@@ -2312,6 +2325,21 @@
       "reference": "validation/data/two_liquids/classes.json (proposal 0019): the evidence of the pair, from the NIST TRC ThermoML Archive",
       "source_ids": [
         "chemsep-ipd",
+        "nist-thermoml-archive"
+      ],
+      "origin": "two_liquid_labels.py"
+    },
+    {
+      "components": [
+        "1-butanol",
+        "water"
+      ],
+      "model": "NRTL",
+      "kind": "phase-split",
+      "message": "The NRTL set \"fitted-lladosa2008\" predicts two liquids (273.15-373.15 K); two liquids are measured for this pair (27 articles of the ThermoML Archive, validation/data/two_liquids/classes.json). The set is fitted to them.",
+      "reference": "validation/data/two_liquids/classes.json (proposal 0019): the evidence of the pair, from the NIST TRC ThermoML Archive",
+      "source_ids": [
+        "lladosa2008-1-butanol-n-butyl-acetate",
         "nist-thermoml-archive"
       ],
       "origin": "two_liquid_labels.py"
@@ -5726,8 +5754,11 @@
       ],
       "model": "NRTL",
       "kind": "fit-quality",
-      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.20 K, nan in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
-      "reference": "validation/data/vle/1-butanol_water_10-1021-je700411p_101.3kPa_tx.json (Lladosa et al., J. Chem. Eng. Data 53)"
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.20 K in T, no vapour compositions (limit 0.5 K) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/1-butanol_water_10-1021-je700411p_101.3kPa_tx.json (Lladosa et al., J. Chem. Eng. Data 53)",
+      "source_ids": [
+        "lladosa2008-1-butanol-n-butyl-acetate"
+      ]
     }
   ]
 }

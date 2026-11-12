@@ -415,10 +415,15 @@ FITS = [
 ]
 
 
+# Generated fits written as a further set, not the default (2026-11-11, docs/decisions/2026-11-11-06-two-liquid-refit-followup.md):
+# 1-butanol + water. The column cases F1, F2 and W2 are built on its ChemSep NRTL set (two liquids on stages 1 and 2);
+# with the fitted set as the default they put them on stages 3 and 4, so the maintainer decides which is the default.
+NOT_DEFAULT = {"1-butanol+water"}
 # Generated fits (vle_batch.py): validation/data/vle/fits.json
 GENERATED_FILE = VAL / "vle" / "fits.json"
 GENERATED = [dict(pair=tuple(f["pair"]), data="txy-file", file=f["file"], check=f.get("check", []), temperature_dependent=False,
                   describe=f["describe"], generated=True,
+                  default="+".join(sorted(f["pair"])) not in NOT_DEFAULT,
                   # UNIQUAC needs r and q of both components
                   models=["NRTL", "UNIQUAC"] if all(COMPONENTS[c].get("uniquac") for c in f["pair"]) else ["NRTL"])
              for f in (json.loads(GENERATED_FILE.read_text())["fits"] if GENERATED_FILE.exists() else [])]
@@ -442,7 +447,8 @@ def gate(spec, model, params, GATE=GATE):
     if txy:
         dT, dy = txy_deviations(txy, model, i, j, [params])
         if np.mean(dT) > GATE["T_K"] or (len(dy) and np.mean(dy) > GATE["y"]):
-            return f"AAD {np.mean(dT):.2f} K, {np.mean(dy) if len(dy) else float('nan'):.4f} in y (limits {GATE['T_K']} K, {GATE['y']})"
+            return (f"AAD {np.mean(dT):.2f} K, {np.mean(dy):.4f} in y (limits {GATE['T_K']} K, {GATE['y']})" if len(dy) else
+                    f"AAD {np.mean(dT):.2f} K in T, no vapour compositions (limit {GATE['T_K']} K)")
     px = [p for kind, _, c in sets if kind == "px" for p in c]
     if px:
         s = System([i, j], model, params=[params])
@@ -1200,7 +1206,8 @@ def main(write, only=None, models_only=None):
         # the "fit-quality" entries of the pairs fitted in this run are replaced by the new ones
         K = json.loads(KNOWN_FILE.read_text())
         # the default set of a pair and model that stays as it was (a refit that did not replace it) keeps its note
-        stays = {(tuple(sorted(r["pair"])), m) for r_pair, m, why in rejected for r in [{"pair": r_pair}] if why.endswith("stays")}
+        # (a rejected fit leaves the pair's earlier sets and their notes, whatever the reason: proposal 0019, section 2)
+        stays = {(tuple(sorted(r["pair"])), m) for r_pair, m, why in rejected for r in [{"pair": r_pair}]}
         K["issues"] = [k for k in K["issues"] if not (k.get("kind") == "fit-quality" and tuple(sorted(k["components"])) in done
                                                       and (models_only is None or k.get("model") in models_only)
                                                       and (tuple(sorted(k["components"])), k.get("model")) not in stays)]

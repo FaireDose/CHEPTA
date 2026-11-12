@@ -50,8 +50,20 @@ test("a set fitted to measured mixture data is the default over the ChemSep set 
     // predicts two liquids where one liquid was measured) and the ChemSep set does not split, so by proposal 0019,
     // answer 5 (the maintainer, 2026-11-10) the ChemSep set is the default; the fitted set stays selectable.
     const CONTRADICTED_FITTED = new Set(["NRTL benzene+methanol"]);
+    // Named exception 2: 1-butanol + water NRTL (docs/decisions/2026-11-11-06-two-liquid-refit-followup.md). The fitted set
+    // "fitted-lladosa2008" (joint fit with the tie lines, written within the wider gates) is a further, non-default set
+    // until the maintainer decides: as the default it moves the two liquids of the column cases F1, F2 and W2, whose
+    // expectations are those of the ChemSep set.
+    const KEPT_NON_DEFAULT = new Set(["NRTL 1-butanol+water"]);
     for (const [key, sets] of byPair) {
       if (!sets.some(p => p.tier === "fitted")) continue;
+      if (KEPT_NON_DEFAULT.has(key)) {
+        const d = sets.filter(p => p.default !== false);
+        assert.equal(d.length, 1, `${key}: one default set`);
+        assert.equal(d[0].tier, "databank", `${key}: the ChemSep set is the default`);
+        assert.ok(sets.some(p => p.tier === "fitted" && p.default === false), `${key}: the fitted set stays as an alternative`);
+        continue;
+      }
       if (CONTRADICTED_FITTED.has(key)) {
         const d = sets.filter(p => p.default !== false);
         assert.equal(d.length, 1, `${key}: one default set`);

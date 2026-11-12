@@ -2205,26 +2205,8 @@
       "model": "NRTL",
       "i": "1-butanol",
       "j": "water",
-      "default": true,
-      "a_ij": 0.44034746411506065,
-      "a_ji": 2.976911317453665,
-      "b_ij": -198.8738051086881,
-      "b_ji": 359.9671276585381,
-      "alpha": 0.3,
-      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.20 K, nan in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
-      "source": "Fitted to 15 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Lladosa et al., J. Chem. Eng. Data 53 (2008) 108-115 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-butanol_water_10-1021-je700411p_101.3kPa_tx.json). AAD 1.20 K in T (max 1.72 K; no vapour compositions); liquid-liquid: AAD 0.0322 in x of 1-butanol in the 1-butanol-rich liquid, 0.0091 in the water-rich liquid. The measured tie lines carry 7 times the unit weight of the joint fit (the weight is tried at 1, 3, 5, 7 and 10 and the first that follows the data within the limits is kept). Temperature range of the data: 288.2-389.44 K; outside it the parameters are extrapolated.",
-      "tier": "fitted",
-      "T_range_K": [
-        288.2,
-        389.44
-      ]
-    },
-    {
-      "model": "NRTL",
-      "i": "1-butanol",
-      "j": "water",
       "set": "chemsep",
-      "default": false,
+      "default": true,
       "a_ij": 0.0,
       "a_ji": 0.0,
       "b_ij": 253.64181754760426,
@@ -2421,6 +2403,221 @@
           "10.1021/je700411p"
         ],
         "fitted": false
+      }
+    },
+    {
+      "model": "NRTL",
+      "i": "1-butanol",
+      "j": "water",
+      "set": "fitted-lladosa2008",
+      "default": false,
+      "a_ij": 0.44034746411506065,
+      "a_ji": 2.976911317453665,
+      "b_ij": -198.8738051086881,
+      "b_ji": 359.9671276585381,
+      "alpha": 0.3,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 1.20 K in T, no vapour compositions (limit 0.5 K). Use with care; a better data set would replace it.",
+      "source": "Fitted to 15 bubble temperatures (T-x, Barker's method; no consistent vapour compositions) at 101.3 kPa from Lladosa et al., J. Chem. Eng. Data 53 (2008) 108-115 (data public in the NIST TRC ThermoML Archive; validation/data/vle/1-butanol_water_10-1021-je700411p_101.3kPa_tx.json). AAD 1.20 K in T (max 1.72 K; no vapour compositions); liquid-liquid: AAD 0.0322 in x of 1-butanol in the 1-butanol-rich liquid, 0.0091 in the water-rich liquid. The measured tie lines carry 7 times the unit weight of the joint fit (the weight is tried at 1, 3, 5, 7 and 10 and the first that follows the data within the limits is kept). Temperature range of the data: 288.2-389.44 K; outside it the parameters are extrapolated.",
+      "source_ids": [
+        "lladosa2008-1-butanol-n-butyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted",
+      "T_range_K": [
+        288.2,
+        389.44
+      ],
+      "valid": {
+        "T_K": [
+          288.2,
+          389.44
+        ]
+      },
+      "two_liquids": {
+        "class": "partly miscible",
+        "evidence": "measured",
+        "splits": [
+          [
+            273.15,
+            0.0168,
+            0.4666
+          ],
+          [
+            278.15,
+            0.0168,
+            0.4698
+          ],
+          [
+            283.15,
+            0.0168,
+            0.4725
+          ],
+          [
+            288.15,
+            0.0168,
+            0.4752
+          ],
+          [
+            288.2,
+            0.0168,
+            0.4752
+          ],
+          [
+            293.15,
+            0.0178,
+            0.4779
+          ],
+          [
+            293.2,
+            0.0178,
+            0.4779
+          ],
+          [
+            298.15,
+            0.0178,
+            0.48
+          ],
+          [
+            298.2,
+            0.0178,
+            0.48
+          ],
+          [
+            303.15,
+            0.0178,
+            0.4827
+          ],
+          [
+            303.2,
+            0.0178,
+            0.4827
+          ],
+          [
+            308.15,
+            0.0189,
+            0.4848
+          ],
+          [
+            308.2,
+            0.0189,
+            0.4848
+          ],
+          [
+            313.15,
+            0.0189,
+            0.4869
+          ],
+          [
+            313.2,
+            0.0189,
+            0.4869
+          ],
+          [
+            318.15,
+            0.0189,
+            0.4891
+          ],
+          [
+            318.2,
+            0.0189,
+            0.4891
+          ],
+          [
+            323.15,
+            0.0189,
+            0.4912
+          ],
+          [
+            328.15,
+            0.0189,
+            0.4933
+          ],
+          [
+            333.15,
+            0.0202,
+            0.4955
+          ],
+          [
+            343.15,
+            0.0202,
+            0.4992
+          ],
+          [
+            343.2,
+            0.0202,
+            0.4992
+          ],
+          [
+            353.15,
+            0.0214,
+            0.5029
+          ],
+          [
+            358.15,
+            0.0214,
+            0.5045
+          ],
+          [
+            362.45,
+            0.0214,
+            0.5056
+          ],
+          [
+            363.15,
+            0.0214,
+            0.5061
+          ],
+          [
+            365.72,
+            0.0214,
+            0.5067
+          ],
+          [
+            365.85,
+            0.0214,
+            0.5072
+          ],
+          [
+            366.23,
+            0.0214,
+            0.5072
+          ],
+          [
+            373.15,
+            0.0214,
+            0.5093
+          ]
+        ],
+        "sources": [
+          "10.1016/j.fluid.2004.12.004",
+          "10.1016/j.fluid.2007.07.011",
+          "10.1016/j.fluid.2007.12.003",
+          "10.1016/j.fluid.2012.07.032",
+          "10.1016/j.fluid.2014.07.011",
+          "10.1016/j.fluid.2015.03.040",
+          "10.1016/j.fluid.2017.12.023",
+          "10.1016/j.fluid.2018.10.021",
+          "10.1016/j.fluid.2019.04.020",
+          "10.1016/j.jct.2008.07.001",
+          "10.1016/j.jct.2011.11.020",
+          "10.1016/j.jct.2012.04.017",
+          "10.1016/j.jct.2014.07.021",
+          "10.1016/j.jct.2015.10.003",
+          "10.1016/j.jct.2015.11.002",
+          "10.1016/j.jct.2016.04.013",
+          "10.1016/j.jct.2016.06.010",
+          "10.1016/j.jct.2017.03.019",
+          "10.1016/j.jct.2018.03.024",
+          "10.1016/j.jct.2019.03.001",
+          "10.1021/acs.jced.6b00725",
+          "10.1021/acs.jced.6b00941",
+          "10.1021/acs.jced.7b00302",
+          "10.1021/acs.jced.9b00305",
+          "10.1021/je400501z",
+          "10.1021/je5007218",
+          "10.1021/je700411p"
+        ],
+        "fitted": true
       }
     },
     {
