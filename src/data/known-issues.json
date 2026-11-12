@@ -2334,6 +2334,24 @@
         "1-butanol",
         "water"
       ],
+      "model": "NRTL",
+      "kind": "phase-split",
+      "message": "The NRTL set \"fitted-lladosa2008\" predicts two liquids (273.15-373.15 K); two liquids are measured for this pair (27 articles of the ThermoML Archive, validation/data/two_liquids/classes.json). The set is fitted to them.",
+      "reference": "validation/data/two_liquids/classes.json (proposal 0019): the evidence of the pair, from the NIST TRC ThermoML Archive",
+      "source_ids": [
+        "garciacano2020-water-1-butanol",
+        "gomis2013-1-butanol-water",
+        "gomis2013-water-1-butanol",
+        "lladosa2008-1-butanol-n-butyl-acetate",
+        "nist-thermoml-archive"
+      ],
+      "origin": "two_liquid_labels.py"
+    },
+    {
+      "components": [
+        "1-butanol",
+        "water"
+      ],
       "model": "UNIQUAC",
       "kind": "phase-split",
       "message": "The UNIQUAC set \"chemsep\" predicts two liquids (273.15-373.15 K); two liquids are measured for this pair (27 articles of the ThermoML Archive, validation/data/two_liquids/classes.json). The set is not fitted to them, so its split may be misplaced.",
@@ -5730,6 +5748,19 @@
       "reference": "src/data/henry.json",
       "source_ids": [
         "iapws-g7-04"
+      ]
+    },
+    {
+      "components": [
+        "1-butanol",
+        "water"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 1.64 K in T, no vapour compositions (limit 0.5 K) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/1-butanol_water_10-1021-je700411p_101.3kPa_tx.json (Lladosa et al., J. Chem. Eng. Data 53)",
+      "source_ids": [
+        "lladosa2008-1-butanol-n-butyl-acetate"
       ]
     }
   ]

@@ -1,0 +1,29 @@
+{
+ "_about": "Water (1) + 1-butanol (2): the two liquids of the binary vapor-liquid-liquid point at 101.3 kPa (organic and aqueous phase), mole fraction of water.",
+ "source": {
+  "citation": "J. Garcia-Cano, M. D. Saquete, Liquid-liquid, vapor-liquid and vapor-liquid-liquid experimental equilibrium of the system water + 1-butanol + 2-butanol at 101.3 kPa and data correlation, Fluid Phase Equilib. (2020), article 112617 (journal pre-proof / accepted manuscript)",
+  "doi": "10.1016/j.fluid.2020.112617",
+  "open_copy": "http://rua.ua.es/dspace/bitstream/10045/107600/2/Garcia-Cano_Saquete_2020_FluidPhaseEquilibria_accepted.pdf",
+  "access": "Accepted manuscript in the University of Alicante repository, free to read (the publisher's article is subscription-only). Supplied to the project by the maintainer on 2026-11-12.",
+  "tables": "Table 4 (vapor-liquid-liquid data at 101.3 kPa), first column of the last row: the binary water + 1-butanol point (x3 = 0.000 in every phase); u(T) = 0.06 K, u(P) = 0.1 kPa, relative u(x) = 2 % (5 % for the alcohol in the aqueous phase)"
+ },
+ "components": [
+  "water",
+  "1-butanol"
+ ],
+ "kind": "lle",
+ "P_kPa": 101.3,
+ "columns": [
+  "T_K",
+  "x_1_I",
+  "x_1_II"
+ ],
+ "rows": [
+  [
+   365.73,
+   0.638,
+   0.979
+  ]
+ ],
+ "notes": "I: organic phase (x1 0.638, x2 0.362); II: aqueous phase (x1 0.979, x2 0.021). Transcribed as printed. To be checked by a person against the PDF (AGENTS.md rule 4)."
+}

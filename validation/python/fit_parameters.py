@@ -167,9 +167,12 @@ def het_azeotrope_file(name, pair):
     out = []
     for r in d["rows"]:
         T = r[col["T_K"]] if "T_K" in col else r[col["T_C"]] + 273.15
-        w1 = r[col["wt_pct_1"]] if "wt_pct_1" in col else 100 - r[col["wt_pct_2"]]
-        n1, n2 = w1 / M[0], (100 - w1) / M[1]
-        y1 = n1 / (n1 + n2)
+        if "y_1" in col:   # mole fraction of the first listed component (the vapour, equal to the liquid at an azeotrope)
+            y1 = r[col["y_1"]]
+        else:
+            w1 = r[col["wt_pct_1"]] if "wt_pct_1" in col else 100 - r[col["wt_pct_2"]]
+            n1, n2 = w1 / M[0], (100 - w1) / M[1]
+            y1 = n1 / (n1 + n2)
         out.append((T, d["P_kPa"], 1 - y1 if flip else y1))
     return out
 
@@ -415,10 +418,26 @@ FITS = [
 ]
 
 
+# Generated fits written as a further set, not the default (2026-11-11, docs/decisions/2026-11-11-06-two-liquid-refit-followup.md):
+# 1-butanol + water. The column cases F1, F2 and W2 are built on its ChemSep NRTL set (two liquids on stages 1 and 2);
+# with the fitted set as the default they put them on stages 3 and 4, so the maintainer decides which is the default.
+# Measured vapour-liquid-liquid points of open articles added to a generated fit (2026-11-11, same decision file): the binary
+# water + 1-butanol point of Garcia-Cano and Saquete 2020 (its two liquids and its azeotrope) and the azeotrope of Gomis et
+# al. 2013, from the accepted manuscripts the maintainer supplied
+EXTRA_FILES = {"1-butanol+water": ["1-butanol_water_azeotrope_garcia-cano2020_101.3kPa.json",
+                                   "1-butanol_water_lle_garcia-cano2020_365.73K.json",
+                                   "1-butanol_water_azeotrope_gomis2013_101.3kPa.json"]}
+EXTRA_DESCRIBE = {
+    "1-butanol_water_azeotrope_garcia-cano2020_101.3kPa.json": " Also fitted to the binary vapor-liquid-liquid point of J. Garcia-Cano and M. D. Saquete, Fluid Phase Equilib. (2020) 112617, DOI 10.1016/j.fluid.2020.112617 (accepted manuscript; validation/data/1-butanol_water_azeotrope_garcia-cano2020_101.3kPa.json and validation/data/1-butanol_water_lle_garcia-cano2020_365.73K.json)",
+    "1-butanol_water_azeotrope_gomis2013_101.3kPa.json": " and to the azeotrope of V. Gomis et al., J. Chem. Eng. Data (2013), DOI 10.1021/je400501z (accepted manuscript; validation/data/1-butanol_water_azeotrope_gomis2013_101.3kPa.json)."}
+NOT_DEFAULT = {"1-butanol+water"}
 # Generated fits (vle_batch.py): validation/data/vle/fits.json
 GENERATED_FILE = VAL / "vle" / "fits.json"
 GENERATED = [dict(pair=tuple(f["pair"]), data="txy-file", file=f["file"], check=f.get("check", []), temperature_dependent=False,
-                  describe=f["describe"], generated=True,
+                  describe=f["describe"] + ("".join(EXTRA_DESCRIBE.get(n, "") for n in EXTRA_FILES.get("+".join(sorted(f["pair"])), []))),
+                  generated=True,
+                  **({"files": [f["file"]] + EXTRA_FILES["+".join(sorted(f["pair"]))]} if "+".join(sorted(f["pair"])) in EXTRA_FILES else {}),
+                  default="+".join(sorted(f["pair"])) not in NOT_DEFAULT,
                   # UNIQUAC needs r and q of both components
                   models=["NRTL", "UNIQUAC"] if all(COMPONENTS[c].get("uniquac") for c in f["pair"]) else ["NRTL"])
              for f in (json.loads(GENERATED_FILE.read_text())["fits"] if GENERATED_FILE.exists() else [])]
@@ -442,7 +461,8 @@ def gate(spec, model, params, GATE=GATE):
     if txy:
         dT, dy = txy_deviations(txy, model, i, j, [params])
         if np.mean(dT) > GATE["T_K"] or (len(dy) and np.mean(dy) > GATE["y"]):
-            return f"AAD {np.mean(dT):.2f} K, {np.mean(dy) if len(dy) else float('nan'):.4f} in y (limits {GATE['T_K']} K, {GATE['y']})"
+            return (f"AAD {np.mean(dT):.2f} K, {np.mean(dy):.4f} in y (limits {GATE['T_K']} K, {GATE['y']})" if len(dy) else
+                    f"AAD {np.mean(dT):.2f} K in T, no vapour compositions (limit {GATE['T_K']} K)")
     px = [p for kind, _, c in sets if kind == "px" for p in c]
     if px:
         s = System([i, j], model, params=[params])
@@ -523,6 +543,16 @@ def score(spec, model, params):
     if tpx:
         s = System([i, j], model, params=[params])
         out = max(out, np.mean([abs(s.equilibrium([x1, 1 - x1], T)[0] / P - 1) * 100 for T, x1, P in tpx]) / GATE["P_pct"])
+    if model != "WILSON" and any(name.endswith(" (two liquids)") for _, name, _ in sets):
+        # the measured two liquids are part of the same data (follow-up of proposal 0019, 2026-11-11): a set that gives
+        # no split where it was measured, or misses the mutual solubilities, does not follow them
+        absd, reld, none = solubility_deviations(spec, model, params)
+        if none:
+            return float("inf")
+        if absd:
+            out = max(out, np.mean(absd) / GATE["x"])
+        if reld:
+            out = max(out, np.mean(reld) / GATE["x_rel"])
     return float(out)
 
 
@@ -615,7 +645,7 @@ def minor_ln(z, a, b):
     return out
 
 
-def file_residuals(s, sets, single=False):
+def file_residuals(s, sets, single=False, w_lle=1.0):
     """Weighted residuals of a system against the data sets of a "txy-file" fit."""
     r = []
     for kind, _, c in sets:
@@ -627,7 +657,7 @@ def file_residuals(s, sets, single=False):
         elif kind == "lle":
             for T, a, b in c:
                 if a is not None and b is not None:
-                    r += list(s.isoactivity_residual([a, 1 - a], [b, 1 - b], T) / 0.05)
+                    r += list(w_lle * s.isoactivity_residual([a, 1 - a], [b, 1 - b], T) / 0.05)
                 elif single:
                     z = lle_single(s, T, a, b)
                     r += [100.0] if z is None else [(m - d) / 0.05 for m, d in minor_ln(z, a, b)]
@@ -671,7 +701,8 @@ def fit(spec, model):
         sets = [st for st in all_sets if st[0] != "haz"]   # first stage: without azeotrope targets
 
         def residuals(p):
-            r = np.array(file_residuals(System([i, j], model, params=[make_params(model, i, j, p, alpha)]), sets, spec.get("single_liquid", False)))
+            r = np.array(file_residuals(System([i, j], model, params=[make_params(model, i, j, p, alpha)]), sets, spec.get("single_liquid", False),
+                                          spec.get("lle_weight", 1.0)))
             # activity coefficients that overflow (far from the optimum) count as a large miss
             return np.nan_to_num(r, nan=1e4, posinf=1e4, neginf=-1e4)
     elif txy_sets(spec) is not None:
@@ -1073,9 +1104,17 @@ def main(write, only=None, models_only=None):
                 # NRTL: alpha 0.3, else the other usual values 0.2 and 0.47 (a set that predicts a
                 # spurious liquid split with one alpha may not with another)
                 wide = None   # the first variant outside GATE but within WIDE_GATE, with no liquid split
-                for alpha in ((0.3, 0.2, 0.47) if model == "NRTL" else (None,)):
+                # partly miscible pairs: the tie lines may weigh more than the unit weight in the joint fit (the
+                # vapour-liquid set decides otherwise); the weights are tried in order, each result is checked by the
+                # same gates (follow-up of proposal 0019, 2026-11-11)
+                variants = [(w, a) for w in ((1.0, 3.0, 5.0, 7.0, 10.0) if pair_class(spec["pair"]) == "partly miscible" and any(
+                    n.endswith(" (two liquids)") for _, n, _ in file_sets(spec)) else (1.0,))
+                    for a in ((0.3, 0.2, 0.47) if model == "NRTL" else (None,))]
+                for lle_w, alpha in variants:
                     try:
-                        params, _ = fit(spec if alpha in (None, 0.3) else dict(spec, alpha=alpha), model)
+                        params, _ = fit(dict(spec, lle_weight=lle_w) if alpha in (None, 0.3) else dict(spec, alpha=alpha, lle_weight=lle_w), model)
+                        if lle_w != 1.0:
+                            params["_lle_weight"] = lle_w
                         check_phase_splits(spec, model, params)
                         why = gate(spec, model, params)
                         if why and wide is None and not gate(spec, model, params, WIDE_GATE):
@@ -1123,7 +1162,11 @@ def main(write, only=None, models_only=None):
                     # "existing sets are not changed by this step"): a set of before stays, labelled by its class
                     # (two_liquid_labels.py)
                     continue
+            lle_w = params.pop("_lle_weight", None)
             q = quality(spec, model, params) + test
+            if lle_w:
+                q += (" The measured tie lines carry %g times the unit weight of the joint fit (the weight is tried at 1, 3, 5, 7 and "
+                      "10 and the first that follows the data within the limits is kept)." % lle_w)
             params["source"] = f"{spec['describe']} {q}"
             params["tier"] = "databank" if spec["data"] == "uniquac-curve" else "fitted"
             if spec.get("wanted"):
@@ -1177,7 +1220,8 @@ def main(write, only=None, models_only=None):
         # the "fit-quality" entries of the pairs fitted in this run are replaced by the new ones
         K = json.loads(KNOWN_FILE.read_text())
         # the default set of a pair and model that stays as it was (a refit that did not replace it) keeps its note
-        stays = {(tuple(sorted(r["pair"])), m) for r_pair, m, why in rejected for r in [{"pair": r_pair}] if why.endswith("stays")}
+        # (a rejected fit leaves the pair's earlier sets and their notes, whatever the reason: proposal 0019, section 2)
+        stays = {(tuple(sorted(r["pair"])), m) for r_pair, m, why in rejected for r in [{"pair": r_pair}]}
         K["issues"] = [k for k in K["issues"] if not (k.get("kind") == "fit-quality" and tuple(sorted(k["components"])) in done
                                                       and (models_only is None or k.get("model") in models_only)
                                                       and (tuple(sorted(k["components"])), k.get("model")) not in stays)]

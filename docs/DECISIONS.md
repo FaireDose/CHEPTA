@@ -334,6 +334,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   (docs/decisions/2026-11-11-02-two-liquid-labels-reproducible.md): the 2026-11-10 "drift" was the file order and the
   known issues' sources; the re-run took off the stale labels of the benzene + methanol Wilson sets. To decide: the
   sources of a "phase-split" known issue, the set's own and the ThermoML Archive (recommended) or every set's of the pair.
+  Follow-up (docs/decisions/2026-11-11-06-two-liquid-refit-followup.md): no more open data for the pairs not refitted;
+  tie-line weights 1-10 in the joint fit and the tie lines in the comparison with a databank set; 1-butanol + water
+  NRTL written as a non-default set with a quality warning, the other pairs still held with their reasons. To decide:
+  decided 2026-11-12: the fitted 1-butanol + water NRTL stays non-default until F1, F2 and W2 are re-derived on purpose, in a separate pull request; the tie-line weights (1, 3, 5, 7, 10) and the tie lines in the set comparison are a rule of DATA_RULES section 5.
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order

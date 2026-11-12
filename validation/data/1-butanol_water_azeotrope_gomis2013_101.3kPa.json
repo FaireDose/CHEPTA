@@ -1,0 +1,28 @@
+{
+ "_about": "Water (1) + 1-butanol (2): heterogeneous binary azeotrope at 101.3 kPa, as listed in Table 8 of the ternary study (column EXPERIMENTAL). The vapour composition equals the azeotrope composition. Columns: temperature in K and the mole fraction of water.",
+ "source": {
+  "citation": "V. Gomis, A. Font, M. D. Saquete, J. Garcia-Cano, Liquid-liquid, vapor-liquid and vapor-liquid-liquid equilibrium data for the water-n-butanol-cyclohexane system at atmospheric pressure: experimental determination and correlation, J. Chem. Eng. Data (2013), accepted manuscript",
+  "doi": "10.1021/je400501z",
+  "open_copy": "http://rua.ua.es/dspace/bitstream/10045/38775/3/2013_Gomis_etal_JCED.pdf",
+  "access": "Accepted manuscript in the University of Alicante repository, free to read (the publisher's article is subscription-only). Supplied to the project by the maintainer on 2026-11-12.",
+  "tables": "Table 8, column EXPERIMENTAL of the heterogeneous binary azeotrope water - n-butanol (101.3 kPa): x1 = 0.750, x2 = 0.250, T = 365.65 K; u(T) = 0.1 K (Table 1 footnote)"
+ },
+ "components": [
+  "water",
+  "1-butanol"
+ ],
+ "kind": "azeotrope",
+ "heterogeneous": true,
+ "P_kPa": 101.3,
+ "columns": [
+  "T_K",
+  "y_1"
+ ],
+ "rows": [
+  [
+   365.65,
+   0.75
+  ]
+ ],
+ "notes": "The paper lists it among the data used 'to determine the reliability of the VLE' and does not say whether the point is its own measurement or from earlier work (its refs 14, 15); treated as a published experimental value. Transcribed as printed. To be checked by a person against the PDF (AGENTS.md rule 4)."
+}
