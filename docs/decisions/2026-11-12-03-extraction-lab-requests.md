@@ -63,7 +63,13 @@ taken from the task text.
 3. That the reference's adiabatic cases (feed and solvent temperatures chosen by this worker, 298-318 K, inside the
    acetic acid heat-capacity record's range) are fair: they are the worker's inputs, not published data.
 
-## To decide
+## Decided (the maintainer, 2026-11-12, relayed by the coordinating session, on PR #234)
+
+1. A boiling liquid is refused (as built).
+2. One temperature for all stages; a per-stage temperature profile later, only when a case needs it.
+3. The vapour-fraction limit of 0.1 stays.
+
+## Was to decide (answered above)
 
 - **Refuse or warn on boiling?** Recommended: refuse (done). A "pressurised" extractor then needs `P_kPa`.
 - **A temperature profile (stage-by-stage energy balance)?** Recommended: later, when a case needs it; the single
