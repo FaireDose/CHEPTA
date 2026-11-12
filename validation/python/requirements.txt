@@ -1,0 +1,8 @@
+# The versions the Python reference and data scripts were last run with (decision 2026-11-11-02):
+#   pip install -r validation/python/requirements.txt
+# numpy and scipy are what the reference model (reference_model.py) and the scripts of AGENTS.md need. The labels of
+# two_liquid_labels.py do not depend on them beyond rounding (test/two-liquid-labels.test.js recomputes them in
+# JavaScript), but a run with these versions is the one the stored files were checked against.
+# Scripts that also read CoolProp, thermo or chemicals say so in their own header.
+numpy==2.5.3
+scipy==1.18.1

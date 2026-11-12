@@ -6,7 +6,7 @@ import { uniquac } from "./activity/uniquac.js";
 import { wilson } from "./activity/wilson.js";
 import { modUnifac } from "./activity/mod-unifac.js";
 import modUnifacTables from "../data/mod-unifac-2.json" with { type: "json" };
-import { dimerK, monomerPressure } from "./vapour.js";
+import { dimerK, monomerPressure, dimerSplit } from "./vapour.js";
 import { createEosSystem, EOS_MODELS, mhv1Availability } from "./eos/system.js";
 import { listComponents, findComponent, componentRecord } from "./components.js";
 import { checkUserData, userDataUsed } from "./user-data.js";
@@ -281,6 +281,27 @@ export function createSystem(cfg) {
     });
   };
 
+  /**
+   * The same K-values with the acid chemical theory (src/thermo/vapour.js), for the stages of a column
+   * (src/units/columns/engine.js): ln K_i = ln(gamma_i f_i^0 / (phi_i P)) for liquid x and the apparent vapour y at T, P.
+   * The vapour is an ideal gas of monomers and dimers, so a component's fugacity is the partial pressure of its
+   * monomer: phi_i = (y_i - 2 xi_i) / (y_i N) for an acid with xi_i dimers per apparent mole, and 1 / N for the others
+   * (N = 1 - sum xi true moles per apparent mole; dimerSplit). The pure liquid's fugacity f_i^0 is the monomer's
+   * pressure in the acid's saturated vapour, and the vapour pressure for the others. The same fugacities as
+   * equilibrium() above (p_m = x gamma p_m,sat) and as the enthalpy's (enthalpy.js); as y_i -> 0 the acid's phi_i
+   * tends to 1 / N. Kept apart from lnKValues, so that the flash keeps its own path (the bubble pressure of the
+   * liquid). The equations are those of vapour.js, with its sources.
+   */
+  const lnKAssociation = !assoc.some(Boolean) ? null : (x, y, T, P) => {
+    const g = gammas(x, T), ps = psat(T), K = assoc.map(a => a && dimerK(a, T));
+    const { xi, N } = dimerSplit(y, K, P);
+    return g.map((gi, i) => {
+      if (!assoc[i]) return Math.log(gi * ps[i] * N / P);
+      const mono = y[i] > 0 ? (y[i] - 2 * xi[i]) / y[i] : 1;   // the acid's monomers per apparent mole; 1 at infinite dilution
+      return Math.log(gi * monomerPressure(ps[i], K[i]) * N / (P * mono));
+    });
+  };
+
   const phaseMethods = activityPhaseMethods({ ids, comps, n, model, gammas, psat, cubicVapour, warnings, nonvolatile, userData: ud,
     henry: henryGas.map((h, i) => (h ? T => henry(ids[i], "water", T) : null)) });
   // melting temperature and enthalpy of fusion (solid-liquid equilibrium, src/equilibrium/sle.js); null: no open data
@@ -288,7 +309,7 @@ export function createSystem(cfg) {
     ? { Tm_K: c.fusion.Tm_K, Hfus_J_mol: c.fusion.Hfus_J_mol, tier: c.fusion.tier, source: c.fusion.source } : null));
   // measured solubility curves of each component in named solvents (src/thermo/solubility-curve.js); null: none
   const solubility = comps.map(c => (c.solubility?.length ? c.solubility : null));
-  return { ids, names: comps.map(c => c.name), n, model, vapour: vapourModel, gammas, psat, equilibrium, lnKValues, info, warnings, fusion, solubility,
+  return { ids, names: comps.map(c => c.name), n, model, vapour: vapourModel, gammas, psat, equilibrium, lnKValues, ...(lnKAssociation ? { lnKAssociation } : {}), info, warnings, fusion, solubility,
     nonvolatile, henry: henryGas, ...(henryOn ? { henryRange_K: henryRange(ids.filter((_, i) => henryGas[i])) } : {}), MW: comps.map(c => c.MW), userData: ud, ...phaseMethods };
 }
 

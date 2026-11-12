@@ -131,7 +131,7 @@ export function gEMatrices(ids, comps, model, mixing, sel, userData) {
       const p = choice.chosen.params;
       const [aij, aji, bij, bji] = choice.flipped ? [p.a_ji, p.a_ij, p.b_ji, p.b_ij] : [p.a_ij, p.a_ji, p.b_ij, p.b_ji];
       a[i][j] = aij; a[j][i] = aji; b[i][j] = bij; b[j][i] = bji; alpha[i][j] = alpha[j][i] = p.alpha ?? 0.3;
-      pairs.push({ ...describePair(choice, names), gE: "NRTL", note: "an NRTL set of the databank (fitted at low pressure), used inside the MHV1 rule" });
+      pairs.push({ ...describePair(choice, names), gE: "NRTL", note: `${names.join(" + ")}: an NRTL set of the databank (fitted at low pressure), used inside the MHV1 rule` });
       continue;
     }
     const gasPolar = [[i, j], [j, i]].some(([g, l]) => RULE_GASES.has(ids[g]) && isPolar(ids[l], comps[l].formula));
@@ -225,7 +225,11 @@ export function createEosSystem(ids, cfg, sel = selection(cfg)) {
     for (const p of pairs) {
       if (p.tier === "none") w.push(mhv1 ? `No NRTL parameters for ${p.pair.join(" + ")} in ${model} + gE (MHV1): g^E = 0 for this pair; results for it are a prediction without binary data.`
         : `No ${model} k_ij for ${p.pair.join(" + ")}: k_ij = 0 used; results for this pair are a prediction without binary data.`);
-      else w.push(...pairWarnings([p], T, P, q => `k_ij of ${q.pair.join(" + ")} (${kijText(q)}) comes`));
+      else if (mhv1 && p.set === "mhv1-fitted") {
+        // the fit-quality warning of a set fitted inside the rule, naming its pair (the plain-PR advice mentions it too)
+        if (p.quality_warning) w.push(`Fit quality of the MHV1 set for ${p.pair.join(" + ")}: ${p.quality_warning}`);
+        w.push(...pairWarnings([p], T, P, q => `k_ij of ${q.pair.join(" + ")} (${kijText(q)}) comes`));
+      } else w.push(...pairWarnings([p], T, P, q => `k_ij of ${q.pair.join(" + ")} (${kijText(q)}) comes`));
     }
     // above about 10 bar, a light gas with a polar liquid: the gE rule, where the engine would run it (method-advice.js)
     w.push(...mhv1Advice({ model, eos: true, mixing: mhv1 ? "MHV1" : null, gasPolar, avail: availability }, P));

@@ -10,6 +10,16 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Lab requests 2-5** (docs/decisions/2026-11-11-09-lab-requests-1.md): check the MHV1 source ids against the data
+  (none was wrong; the Pokki 2018 id is named after the article's other system), and decide whether the articles
+  that measured several systems should get one source id per system.
+- **A reorganization of the workbench** (proposal 0021, accepted 2026-11-11; docs/decisions/2026-11-11-04-interface-reorganization.md;
+  the review is docs/ui-review/2026-11-11-reorganization.md): the prototype is merged behind
+  `CHEPTA.app(el, { layout: "next" })`. Next, by the proposal's steps: 1. the shell's contract (method, data, units and
+  sources as functions; the Method button everywhere); 2. canvas tabs; 3. numbered steps for Flash, Heat exchanger and
+  Pipe; then the first additions (measured VLE points on T-x-y, the x-y, gamma and alpha diagrams, the flowsheet's tabs
+  and examples). The new layout becomes the default only after steps 1-3 and a check by users; "classic" is kept for
+  two released versions.
 - **CHEPTA-Lab on Claude** (docs/decisions/2026-11-11-05-chepta-lab-on-claude.md): its own coordinator session starts
   when two worker slots are free; held-out evaluation cases reviewed by the maintainer or another model family
   (ROADMAP.md, "CHEPTA and CHEPTA-Lab", rule 7). Open: attach the CHEPTA-Lab repository to that session.
@@ -186,6 +196,21 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
     TO_DOWNLOAD.md item 7); pooling by DATA_RULES.md section 3, 10 % where no uncertainty is stated (this project's
     choice). To check: the solid densities against ChemSep 8.32. Later: the slurry's own viscosity and density as input.
   - Waiting: W1.
+- **Column specifications and side draws, built, to review** (proposal 0015, step 11, M4;
+  docs/decisions/2026-11-11-01-column-specifications.md): purity, recovery, component flow and stage temperature as an
+  outer loop around the stage solver; side draws in the stage solver. Decided 2026-11-11 (the recommendations taken):
+  the outer loop, the tolerance (1e-6, scaled), the 25 % agreement limit with The ChemSep Book's reflux ratio, the
+  search limits, no new project format, slow refusals next to a pinch accepted. Still to check: the sources, the
+  refusals' wording and units, the panel. Next: inequalities ("at least", "at most"), then a draw of one of two
+  liquids, pumparounds, side draws on absorbers.
+- **Columns with a dimerizing acid (acetic acid), built, to review**
+  (docs/decisions/2026-11-11-08-acetic-acid-columns.md): the rigorous column now solves with the chemical theory on
+  every stage (it refused before; the shortcut already worked), with the purity and recovery specifications; an
+  independent reference, the ThermoML sets of water + acetic acid, and the direct column of Pirola et al. (2013).
+  To check: the article's numbers (p. 1901), the quotations from The ChemSep Book and DWSIM's guide. To decide: the
+  agreement limits with the article (0.05 in mole fraction, 25 % on the reflux ratio), the reading of its "8 stages",
+  and what comes next: two liquids on the stages and the three-phase flash with the chemical theory (the entrainer
+  columns; the rest of CHEPTA-Lab's blocker).
 - **How the agents work** (docs/decisions/2026-11-10-01-working-method.md): a new coordinator starts from
   [HANDOVER.md](HANDOVER.md); one task per session; at most two workers; Sonnet for routine work, Opus for engineering.
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost
@@ -297,7 +322,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   sets of 1-propanol + water and acetonitrile + water now labelled "predicted-contradicted" (no uncontradicted set of
   the same model exists for them); benzene + methanol's contradicted fitted NRTL default gave way to its ChemSep NRTL
   set on 2026-11-10 (docs/decisions/2026-11-10-07-benzene-methanol-default.md; no other pair has that case); a person
-  checks that default. Main merged into the branch on 2026-11-10, labels unchanged.
+  checks that default. Main merged into the branch on 2026-11-10, labels unchanged. The labels are reproducible
+  (docs/decisions/2026-11-11-02-two-liquid-labels-reproducible.md): the 2026-11-10 "drift" was the file order and the
+  known issues' sources; the re-run took off the stale labels of the benzene + methanol Wilson sets. To decide: the
+  sources of a "phase-split" known issue, the set's own and the ThermoML Archive (recommended) or every set's of the pair.
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order

@@ -318,6 +318,12 @@ v0.5 at M2a, the column with one liquid).
 - [x] Shortcut column (Fenske–Underwood–Gilliland; 2026-10-29, the Column block in shortcut mode, [docs/models/columns.md](docs/models/columns.md))
 - [x] McCabe–Thiele view, in the Column workspace ([proposal 0015](proposals/0015-separation-units.md); 2026-10-30, to review)
 - [x] Rigorous equilibrium-stage column (MESH equations; 2026-10-29, the Column block in rigorous mode, one liquid, milestone M2a, [docs/models/columns.md](docs/models/columns.md))
+- [x] Purity, recovery, component-flow and stage-temperature specifications of the rigorous column, and side draws
+      (proposal 0015, step 11, milestone M4; 2026-11-11, to review, [docs/models/columns.md](docs/models/columns.md))
+- [x] Columns with a dimerizing acid in the vapour (acetic acid: the chemical theory on every stage, with the
+      specifications; 2026-11-12, to review, docs/decisions/2026-11-11-08-acetic-acid-columns.md)
+- [ ] Two liquids on the stages and the three-phase flash with a dimerizing acid (acetic acid dehydration with an
+      entrainer)
 - [ ] Columns with nonvolatile components (proposal 0009, step 5): they stay in the liquid and leave with the
       bottoms; the reboiler's bubble point includes the boiling-point rise they cause
 

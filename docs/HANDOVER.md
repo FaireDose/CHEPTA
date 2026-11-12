@@ -127,5 +127,7 @@ State at 2026-11-10 23:15 UTC: #218 and #219 merged; #220, #221 and #222 open, e
 [CHEPTA-Lab](https://github.com/FaireDose/CHEPTA-Lab) (built with Astra 6, OpenAI) owns literature screening, cases,
 training data and evaluation; CHEPTA owns the simulator (ROADMAP.md, "CHEPTA and CHEPTA-Lab"). Lab pins released
 versions, files capability requests, and does the agentic items G2 to G5. Its known blockers: acetic acid's
-dimerization model in columns and the three-phase flash, purity specifications, and the methanol separator (now
+dimerization model in the three-phase flash and with two liquids on a column's stages (one liquid: solved,
+docs/decisions/2026-11-11-08-acetic-acid-columns.md), purity specifications (built, PR #227), and the methanol
+separator (now
 possible with PR + MHV1 once item 3 is done).

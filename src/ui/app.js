@@ -53,6 +53,7 @@ import { FLASH_SPECS, FLOW_UNITS, feedComposition, convertBasis, flowIn } from "
 import { pure } from "../thermo/pure.js";
 import { SOLID_UNITS } from "./solubility-units.js";
 import pkg from "../../package.json" with { type: "json" };
+import { appNext } from "./app-next.js";
 
 const PROPERTY_GLYPHS = [
   ["density", () => "ρ", "Density"], ["enthalpy", () => "h", "Enthalpy"], ["cp", () => ["c", h("sub", {}, "p")], "Heat capacity"],
@@ -124,6 +125,8 @@ const needsOf = (view, model) => (isEosModel(model) ? NEEDS_EOS : NEEDS_ACTIVITY
  *   (update({ sets }) merges; a null set name, or sets: null, goes back to the default)
  * @param {"best"|"fitted"|"databank"|string[]} [cfg.prefer]  global rule (Library panel) or a list of tiers
  * @param {object|string} [cfg.project]  start from a project file (src/ui/project.js) instead of the keys above
+ * @param {"next"} [cfg.layout]  "next": the prototype of the reorganized layout (proposal 0021, app-next.js): the same
+ *   workbench inside another navigation; left out, the workbench as it is
  * @param {(project:object)=>void} [cfg.onSave]  also called with the project when the person saves it in the
  *   Project panel, so the page can keep it (browser or chat storage)
  * @returns {{state:object, update:(patch:object)=>void, save:()=>object, load:(project:object|string)=>void}}  `update` takes any configuration key and
@@ -135,6 +138,8 @@ const needsOf = (view, model) => (isEosModel(model) ? NEEDS_EOS : NEEDS_ACTIVITY
  * CHEPTA.app("#app", { start: "ternary", components: ["methanol", "acetone", "chloroform"] });
  */
 export function app(target, cfg = {}) {
+  // the prototype of the reorganized layout (proposal 0021): a shell around this same workbench (app-next.js)
+  if (cfg.layout === "next") return appNext(target, cfg);
   const root = typeof target === "string" ? document.querySelector(target) : target;
   if (!root) throw new Error(`CHEPTA.app: no element matches "${target}".`);
   const doc = root.ownerDocument;
