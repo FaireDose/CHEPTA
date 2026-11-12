@@ -116,14 +116,27 @@ function candidates(model, a, b, extra = []) {
 // selection
 
 /**
+ * The `sets` setting of a request: an object { "a+b": "set name" }, or the word "default" (or nothing) for the
+ * default set of every pair. Returns the object, or null for the default sets; any other value is refused with the
+ * key and the expected form (`where`: the path to name, e.g. "flowsheet.thermo.sets").
+ */
+export function setsInput(sets, where = "sets") {
+  if (sets == null || sets === "default") return null;
+  if (typeof sets !== "object" || Array.isArray(sets)) {
+    throw fail("BAD_INPUT", `${where} must be an object such as { "acetone+chloroform": "chemsep" }, or "default" for the default set of every pair (got ${JSON.stringify(sets)}).`, { where: [{ field: where }] });
+  }
+  return sets;
+}
+
+/**
  * Check and normalize the `sets` and `prefer` settings of a system.
  * @returns {{sets: Map<string,string>, prefer: string[]|null}}
  */
 export function selection(cfg = {}, userData = null) {
   const sets = new Map();
-  if (cfg.sets != null) {
-    if (typeof cfg.sets !== "object" || Array.isArray(cfg.sets)) throw fail("BAD_INPUT", 'sets must be an object such as { "acetone+chloroform": "chemsep" }.');
-    for (const [key, name] of Object.entries(cfg.sets)) {
+  const given = setsInput(cfg.sets);
+  if (given) {
+    for (const [key, name] of Object.entries(given)) {
       const parts = String(key).split("+").map(s => s.trim()).filter(Boolean);
       if (parts.length !== 2) throw fail("BAD_INPUT", `sets: "${key}" is not a pair; write it as "component+component", e.g. "acetone+chloroform".`);
       const [a, b] = parts.map(k => findComponent(k, userData));
