@@ -60,12 +60,20 @@ current: replace its "State" and "Queue" sections at each handover, never append
    into docs/decisions/2026-11-12-01-ui-0021-shell-contract.md. Step 2 (Opus) running: session_01FPbeWUQUvGVgVGax2pHMRY, branch claude/ui-0021-canvas-tabs, decision file 2026-11-12-04.
    Extraction (Lab's 5 and 4): #234 merged 2026-11-12 with the maintainer's answers. 0021 step 2 (canvas tabs, every
    workspace): PR #235 open; the maintainer agreed to its four recommendations and asked for warnings in two steps (a
-   short form, the full text on a press), being added to #235. Step 3 (Opus) starts after it is merged. Then, the
+   short form, the full text on a press), added (c759343); all checks green; the maintainer merges it (2026-11-12).
+   Step 3 (Opus) starts after it is merged, best in the same session (it knows the code), once #236's worker is done (two
+   slots). A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
    and so on); one Opus or Sonnet worker after step 3, its own PR, recorded as a new row of proposal 0021 section 4. Running: acetic acid below its melting point,
    Lab's 3 (Sonnet, session_01FPbeWTusiqkoJkDYZMVMki, branch claude/acetic-acid-supercooled, decision file
-   2026-11-12-05). Next free slot after step 3: Lab's 7 (splitter by flow; the design specification through a
+   2026-11-12-05): PR #236. The maintainer agreed (2026-11-12): (1) liquid cp continued linearly below its record, 10 K at
+   most, with a warning in every result; (2) a warning when the mixture path evaluates the vapour pressure outside its
+   record, same limit; (3) restate METHOD_SELECTION rule 8 (melting point as a limit only for a pure component) in a
+   follow-up proposal; (4) the same ChemSep lower ends for other components only on request. The worker builds 1-2 in #236.
+   Lab asked (2026-11-12, for the maintainer) for visual proof from CHEPTA of each Lab case; answered: possible today via
+   a project file and Playwright; missing (a) open a project at start, (b) PNG/SVG of the flowsheet drawing, (c) stream
+   values on the drawing, (d) a per-block balance table; b and c in CHEPTA's next phase, d with the row chooser. Next free slot after step 3: Lab's 7 (splitter by flow; the design specification through a
    proposal). Small, seen in #235: "Sources used here" (sourceUsedFor) lists excess-enthalpy articles of other mixtures
    (ethanol + water shows benzene + cyclohexane): a pull request of its own.
 3. **A lighter model for routine work.** `create_session` takes `model`. Use `claude-sonnet-5-5` for data fits with the
