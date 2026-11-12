@@ -523,6 +523,16 @@ def score(spec, model, params):
     if tpx:
         s = System([i, j], model, params=[params])
         out = max(out, np.mean([abs(s.equilibrium([x1, 1 - x1], T)[0] / P - 1) * 100 for T, x1, P in tpx]) / GATE["P_pct"])
+    if model != "WILSON" and any(name.endswith(" (two liquids)") for _, name, _ in sets):
+        # the measured two liquids are part of the same data (follow-up of proposal 0019, 2026-11-11): a set that gives
+        # no split where it was measured, or misses the mutual solubilities, does not follow them
+        absd, reld, none = solubility_deviations(spec, model, params)
+        if none:
+            return float("inf")
+        if absd:
+            out = max(out, np.mean(absd) / GATE["x"])
+        if reld:
+            out = max(out, np.mean(reld) / GATE["x_rel"])
     return float(out)
 
 
@@ -615,7 +625,7 @@ def minor_ln(z, a, b):
     return out
 
 
-def file_residuals(s, sets, single=False):
+def file_residuals(s, sets, single=False, w_lle=1.0):
     """Weighted residuals of a system against the data sets of a "txy-file" fit."""
     r = []
     for kind, _, c in sets:
@@ -627,7 +637,7 @@ def file_residuals(s, sets, single=False):
         elif kind == "lle":
             for T, a, b in c:
                 if a is not None and b is not None:
-                    r += list(s.isoactivity_residual([a, 1 - a], [b, 1 - b], T) / 0.05)
+                    r += list(w_lle * s.isoactivity_residual([a, 1 - a], [b, 1 - b], T) / 0.05)
                 elif single:
                     z = lle_single(s, T, a, b)
                     r += [100.0] if z is None else [(m - d) / 0.05 for m, d in minor_ln(z, a, b)]
@@ -671,7 +681,8 @@ def fit(spec, model):
         sets = [st for st in all_sets if st[0] != "haz"]   # first stage: without azeotrope targets
 
         def residuals(p):
-            r = np.array(file_residuals(System([i, j], model, params=[make_params(model, i, j, p, alpha)]), sets, spec.get("single_liquid", False)))
+            r = np.array(file_residuals(System([i, j], model, params=[make_params(model, i, j, p, alpha)]), sets, spec.get("single_liquid", False),
+                                          spec.get("lle_weight", 1.0)))
             # activity coefficients that overflow (far from the optimum) count as a large miss
             return np.nan_to_num(r, nan=1e4, posinf=1e4, neginf=-1e4)
     elif txy_sets(spec) is not None:
@@ -1073,9 +1084,17 @@ def main(write, only=None, models_only=None):
                 # NRTL: alpha 0.3, else the other usual values 0.2 and 0.47 (a set that predicts a
                 # spurious liquid split with one alpha may not with another)
                 wide = None   # the first variant outside GATE but within WIDE_GATE, with no liquid split
-                for alpha in ((0.3, 0.2, 0.47) if model == "NRTL" else (None,)):
+                # partly miscible pairs: the tie lines may weigh more than the unit weight in the joint fit (the
+                # vapour-liquid set decides otherwise); the weights are tried in order, each result is checked by the
+                # same gates (follow-up of proposal 0019, 2026-11-11)
+                variants = [(w, a) for w in ((1.0, 3.0, 5.0, 7.0, 10.0) if pair_class(spec["pair"]) == "partly miscible" and any(
+                    n.endswith(" (two liquids)") for _, n, _ in file_sets(spec)) else (1.0,))
+                    for a in ((0.3, 0.2, 0.47) if model == "NRTL" else (None,))]
+                for lle_w, alpha in variants:
                     try:
-                        params, _ = fit(spec if alpha in (None, 0.3) else dict(spec, alpha=alpha), model)
+                        params, _ = fit(dict(spec, lle_weight=lle_w) if alpha in (None, 0.3) else dict(spec, alpha=alpha, lle_weight=lle_w), model)
+                        if lle_w != 1.0:
+                            params["_lle_weight"] = lle_w
                         check_phase_splits(spec, model, params)
                         why = gate(spec, model, params)
                         if why and wide is None and not gate(spec, model, params, WIDE_GATE):
@@ -1123,7 +1142,11 @@ def main(write, only=None, models_only=None):
                     # "existing sets are not changed by this step"): a set of before stays, labelled by its class
                     # (two_liquid_labels.py)
                     continue
+            lle_w = params.pop("_lle_weight", None)
             q = quality(spec, model, params) + test
+            if lle_w:
+                q += (" The measured tie lines carry %g times the unit weight of the joint fit (the weight is tried at 1, 3, 5, 7 and "
+                      "10 and the first that follows the data within the limits is kept)." % lle_w)
             params["source"] = f"{spec['describe']} {q}"
             params["tier"] = "databank" if spec["data"] == "uniquac-curve" else "fitted"
             if spec.get("wanted"):
