@@ -29,6 +29,12 @@ current: replace its "State" and "Queue" sections at each handover, never append
    2026-11-11 hit the 5-hour limit like the others: it was not free of the usage limits.)
 3b. **CHEPTA and CHEPTA-Lab never work at the same time** (the maintainer, 2026-11-12): while a CHEPTA worker runs, no
    Lab worker runs, and the other way round. The two coordinators take turns; the Lab coordinator asks before it starts.
+   **In phases** (the maintainer, 2026-11-12: "it is confusing for me"): CHEPTA finishes a few packages with its two
+   worker slots, then CHEPTA-Lab works for a while with both slots, then back to CHEPTA. Never one CHEPTA worker and
+   one Lab worker at the same time. CHEPTA's coordinator tells the Lab coordinator when its phase ends (no CHEPTA
+   worker running) and the Lab coordinator says when Lab's ends.
+   Current phase (2026-11-12): CHEPTA, ending when interface step 1 (proposal 0021) and the two-liquid data task have
+   their pull requests open. Then Lab.
 3. **A lighter model for routine work.** `create_session` takes `model`. Use `claude-sonnet-5-5` for data fits with the
    existing scripts, merge conflicts, documentation, small fixes, and re-running a check; use `claude-opus-5-5` for new
    models, new solvers, proposals and engineering judgement. The coordinator itself can run on Sonnet: it plans,
