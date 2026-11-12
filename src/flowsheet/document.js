@@ -20,6 +20,7 @@
  * ("energy": "Q1"; default "Q-" and the block id). Units: K, kPa, kmol/h, kW.
  */
 import { fail } from "../util/errors.js";
+import { setsInput } from "../thermo/library.js";
 import { system } from "../system.js";
 import { findComponent } from "../thermo/components.js";
 import { checkUserData } from "../thermo/user-data.js";
@@ -72,7 +73,8 @@ export function normalizeFlowsheet(doc, userData = null) {
     if (!mixing) throw fail("BAD_INPUT", `flowsheet.thermo.mixing "${t.mixing}" is not a mixing rule of CHEPTA. Use "MHV1" (PR or SRK + gE (MHV1)), or leave it out for the classical rule with k_ij.`, { where: [{ field: "flowsheet.thermo.mixing" }] });
     if (model !== "PR" && model !== "SRK") throw fail("BAD_INPUT", `flowsheet.thermo.mixing "${mixing}" goes with model "PR" or "SRK" (PR + gE (MHV1), SRK + gE (MHV1)); model "${model}" has none.`, { where: [{ field: "flowsheet.thermo.mixing" }] });
   }
-  const thermo = { model, vapour, ...(mixing ? { mixing } : {}), ...(t.sets ? { sets: { ...t.sets } } : {}), ...(t.prefer ? { prefer: t.prefer } : {}), ...(t.solids?.length ? { solids: t.solids.slice() } : {}) };
+  const tsets = setsInput(t.sets, "flowsheet.thermo.sets");
+  const thermo = { model, vapour, ...(mixing ? { mixing } : {}), ...(tsets ? { sets: { ...tsets } } : {}), ...(t.prefer ? { prefer: t.prefer } : {}), ...(t.solids?.length ? { solids: t.solids.slice() } : {}) };
   const objList = (list, keys, what) => {
     if (list == null) return [];
     if (!Array.isArray(list)) throw fail("BAD_INPUT", `flowsheet.${what} must be a list.`);

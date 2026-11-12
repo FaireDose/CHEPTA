@@ -80,6 +80,7 @@
  * Units: K, kPa, kmol/h, kW.
  */
 import { fail } from "../../util/errors.js";
+import { setsInput } from "../../thermo/library.js";
 import { stream } from "../../stream/stream.js";
 import { system } from "../../system.js";
 import { findComponent, componentRecord } from "../../thermo/components.js";
@@ -337,11 +338,14 @@ function gasSolubilityCheck(csys, T_K, what) {
 }
 
 /** A column's own property method: { model, vapour?, sets?, prefer? }, as a flowsheet's thermo. */
-function checkMethod(m) {
+function checkMethod(m0) {
+  let m = m0;
   if (!m || typeof m !== "object" || Array.isArray(m)) throw fail("BAD_INPUT", `Column: method must be an object such as { model: "NRTL", vapour: "ideal" } (got ${JSON.stringify(m)}).`);
   const bad = Object.keys(m).filter(k => !METHOD_KEYS.includes(k));
   if (bad.length) throw fail("BAD_INPUT", `Column: method: unknown key${bad.length > 1 ? "s" : ""} ${bad.join(", ")}. Known: ${METHOD_KEYS.join(", ")}.`);
   if (typeof m.model !== "string" || !m.model) throw fail("BAD_INPUT", "Column: method needs a model (NRTL, UNIQUAC, WILSON, MOD-UNIFAC-2, ideal, PR or SRK).");
+  const msets = setsInput(m.sets, "Column: method.sets"), { sets: _s, ...rest } = m;
+  m = msets ? { ...rest, sets: msets } : rest;
   if (m.mixing != null) {
     if (String(m.mixing).toUpperCase() !== "MHV1") throw fail("BAD_INPUT", `Column: method.mixing "${m.mixing}" is not a mixing rule of CHEPTA. Use "MHV1" (PR or SRK + gE (MHV1)), or leave it out.`);
     if (!["PR", "SRK"].includes(String(m.model).toUpperCase())) throw fail("BAD_INPUT", `Column: method.mixing "MHV1" goes with model "PR" or "SRK"; model "${m.model}" has none.`);
