@@ -10,6 +10,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Lab requests 2-5** (docs/decisions/2026-11-11-09-lab-requests-1.md): check the MHV1 source ids against the data
+  (none was wrong; the Pokki 2018 id is named after the article's other system), and decide whether the articles
+  that measured several systems should get one source id per system.
 - **A reorganization of the workbench** (proposal 0021, accepted 2026-11-11; docs/decisions/2026-11-11-04-interface-reorganization.md;
   the review is docs/ui-review/2026-11-11-reorganization.md): the prototype is merged behind
   `CHEPTA.app(el, { layout: "next" })`. Next, by the proposal's steps: 1. the shell's contract (method, data, units and

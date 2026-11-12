@@ -219,7 +219,7 @@ function solvedFlowsheet(flowsheet, userData) {
           ...(b.state.design_specifications ? { specifications: b.state.design_specifications, adjusted: b.state.adjusted } : {}) }])) } : {}),
     },
     qualifications: {
-      pairs: (info.pairs ?? []).map(p => ({ pair: p.pair, set: p.set ?? null, tier: p.tier ?? null })),
+      pairs: (info.pairs ?? []).map(p => ({ pair: p.pair, set: p.set ?? null, tier: p.tier ?? null, ...(p.quality_warning ? { quality_warning: p.quality_warning } : {}) })),
       missing_pairs: info.missingPairs ?? [],
       notes, warnings,
       // per block and pair with two liquids: measured, predicted-unvalidated or predicted-contradicted (proposal 0019)
