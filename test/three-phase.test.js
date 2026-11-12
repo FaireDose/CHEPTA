@@ -170,13 +170,14 @@ test("speed: two liquids under 5 ms (T-P); binary P-H and P-VF under 20 ms; tern
   }
 });
 
-test("still refused: two liquids with the acid chemical theory (no K-values to split them)", async () => {
+test("still refused: two liquids for a system that gives no K-values for its vapour", async () => {
   const { flash } = await import("../src/equilibrium/flash.js");
-  // a system object whose liquid splits but that has no lnKValues (as with the chemical theory)
+  // a system object whose liquid splits but that has neither lnKValues nor lnKAssociation (before decision
+  // 2026-11-12-02 this was the acid chemical theory's case; it now has lnKAssociation: test/vlle-acid.test.js)
   const s = system({ components: ["water", "ethyl acetate"], model: "NRTL" });
   const noK = { ...s, lnKValues: null };
   assert.throws(() => flash(noK, { z: [0.5, 0.5], T: 300, P: 101.325 }),
-    e => e instanceof CheptaError && e.code === "PHASE_SPLIT" && /acid chemical theory/.test(e.message));
+    e => e instanceof CheptaError && e.code === "PHASE_SPLIT" && /no K-values for the vapour/.test(e.message));
 });
 
 test("the known-issue messages quote the flash's own three-phase results", () => {

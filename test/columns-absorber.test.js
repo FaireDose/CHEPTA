@@ -292,7 +292,13 @@ test("the absorber's and stripper's input checks", () => {
   bad({ configuration: "absorber", stages: 6, stage_duties_kW: [{ stage: 0, duty_kW: 1 }] }, /stage_duties_kW\[0\]/);
   bad({ configuration: "distillation", mode: "rigorous", stages: 6, feed_stage: 3, reflux_ratio: 1, distillate_kmol_h: 10, reboiler: "none" }, /absorber's or a stripper's/);
   bad({ configuration: "decanter", stages: 6 }, /not one of distillation, absorber, stripper/);
-  assert.equal(run(columnRequest(c, { configuration: "absorber", stages: 6, phases: "VLL" })).outcome, "unsupported");
+  // two liquids on an absorber's stages are built for activity models (decision 2026-11-12-02; before it every absorber
+  // with phases "VLL" was "unsupported" as not built, which this line checked): this one is Peng-Robinson, refused with
+  // that reason (test/vlle-acid.test.js has an NRTL absorber with two liquids); two liquids without a vapour stay refused
+  const vll = run(columnRequest(c, { configuration: "absorber", stages: 6, phases: "VLL" }));
+  assert.equal(vll.outcome, "unsupported");
+  assert.match(vll.error.message, /equation of state/);
+  assert.equal(run(columnRequest(c, { configuration: "absorber", stages: 6, phases: "LL" })).outcome, "unsupported");
 });
 
 test("chepta request: the absorber from the command line gives the library's numbers", () => {

@@ -244,6 +244,11 @@ test("refusals with the reason: no convergence in the iterations allowed; a puri
   assert.throws(() => runUnit("column", { sys, inlets: { in: feed }, spec: { mode: "rigorous", stages: 6, feed_stage: 3,
     distillate_purity: { component: "water", value: 0.9999 }, bottoms_purity: { component: "acetic-acid", value: 0.9999 } } }),
   e => e.code === "OUT_OF_RANGE" && /cannot be met together on 6 stages/.test(e.message) && /What would make it feasible/.test(e.message));
-  assert.throws(() => runUnit("column", { sys, inlets: { in: feed }, spec: { mode: "rigorous", stages: 10, feed_stage: 5, reflux_ratio: 3, distillate_kmol_h: 50, phases: "VLL" } }),
-    e => e.code === "NOT_AVAILABLE" && /dimerizing acids' chemical theory/.test(e.message) && /chemical theory \(dimerization\) for Acetic acid/.test(e.message));
+  // two liquids on the stages with the chemical theory (decision 2026-11-12-02; refused before it, which this test
+  // checked): water + acetic acid is miscible, so the column looks for two liquids and finds one on every stage, and
+  // gives the column of phases "VL" (test/vlle-acid.test.js has the cases that split)
+  const vl = runUnit("column", { sys, inlets: { in: feed }, spec: { mode: "rigorous", stages: 10, feed_stage: 5, reflux_ratio: 3, distillate_kmol_h: 50 } });
+  const vll = runUnit("column", { sys, inlets: { in: feed }, spec: { mode: "rigorous", stages: 10, feed_stage: 5, reflux_ratio: 3, distillate_kmol_h: 50, phases: "VLL" } });
+  assert.ok(vll.notes.some(n => /every stage holds one liquid/.test(n)));
+  vll.profile.forEach((s, j) => assert.ok(Math.abs(s.T_K - vl.profile[j].T_K) < 1e-6));
 });
