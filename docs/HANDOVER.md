@@ -24,7 +24,11 @@ current: replace its "State" and "Queue" sections at each handover, never append
    fresh session from `main` instead. A coordinator that passes about 150,000 tokens of context writes a new handover
    and stops.
 2. **At most two worker sessions at a time** (the maintainer, 2026-11-05), counted across CHEPTA and CHEPTA-Lab together
-   (2026-11-11). While Fable 5.2 is free to use (from 2026-11-11, for a few days), Fable sessions are not counted.
+   (2026-11-11).
+3a. **No Fable** (the maintainer, 2026-11-12): only Opus and Sonnet for coordinators and workers. (Fable sessions of
+   2026-11-11 hit the 5-hour limit like the others: it was not free of the usage limits.)
+3b. **CHEPTA and CHEPTA-Lab never work at the same time** (the maintainer, 2026-11-12): while a CHEPTA worker runs, no
+   Lab worker runs, and the other way round. The two coordinators take turns; the Lab coordinator asks before it starts.
 3. **A lighter model for routine work.** `create_session` takes `model`. Use `claude-sonnet-5-5` for data fits with the
    existing scripts, merge conflicts, documentation, small fixes, and re-running a check; use `claude-opus-5-5` for new
    models, new solvers, proposals and engineering judgement. The coordinator itself can run on Sonnet: it plans,
@@ -62,13 +66,18 @@ used).
   | Session | Model | Task | Counted |
   |---|---|---|---|
   | session_01FPbeWV6v28HcnkuHkqBeF9 | Sonnet | two-liquid pairs not refitted in #218 (decision file 2026-11-11-06) | yes |
-  | session_01FPbeWWpXpshwh1sugKxXim (Lab) | Opus | Lab step 3: B2 column and methanol separator on 0.6.0 | yes |
-  | session_01FPbeWVaRyxCA4YVjgf6jXc | Fable | proposal 0021 step 1: measured VLE points, x-y / γ / α diagrams (2026-11-11-07) | no |
-  | session_01FPbeWWQkqeGndx5sPQ3zMS | Fable | acetic acid dimerization in columns (Lab blocker; 2026-11-11-08) | no |
+  | session_01FPbeWUNd3ZWdPaYwB7BeFQ | Sonnet | Lab capability requests 2-5 (sets message, MHV1 warnings, MHV1 source ids; 2026-11-11-09) | yes |
+
+  Stopped on the 5-hour limit on 2026-11-11 with nothing pushed (their branches do not exist), Fable, not to be resumed
+  (no Fable): proposal 0021 step 1 (session_01FPbeWVaRyxCA4YVjgf6jXc) and acetic acid in columns
+  (session_01FPbeWWQkqeGndx5sPQ3zMS). Both go back in the queue for Opus.
 
 ## Queue, in order
 
-1. Relay the reports of the running workers; capability requests from Lab step 3 become CHEPTA tasks.
+1. Relay the reports of the running workers. Lab's requests from CHEPTA-Lab#5: 1 in #227; 2-5 in the requests worker;
+   6 (SRK + gE (MHV1) for CO2 + water) only if the maintainer asks.
+1a. Restart with Opus: acetic acid dimerization in columns (Lab blocker; the earlier prompt is in this session's
+   events), then proposal 0021 step 1 (measured VLE points, x-y / γ / α diagrams).
 2. Column specifications follow-ups (after #227): inequality specifications first ("at least 0.99", "at most
    10 ppm"), then the draw of one of two liquids, pumparounds, side draws on absorbers.
 3. Proposal 0021 step (c): the flowsheet's tabs and examples; then the rest of the proposal's steps. The "next" layout
