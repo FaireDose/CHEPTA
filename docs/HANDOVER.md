@@ -41,11 +41,17 @@ current: replace its "State" and "Queue" sections at each handover, never append
    decision file 2026-11-12-02). Then 0021 steps 2 and 3 (one Opus worker each, same files), then the maintainer's
    check with users, then step 4 (the new layout the default) in 0.7 (the maintainer, 2026-11-12: option A). Lab's
    next phase after this one; tell the Lab coordinator, with the release that carries the VLLE.
-   Lab's other requests (2026-11-12, from its ethyl acetate plant S2, evidence in CHEPTA-Lab PR #14), waiting for the
-   maintainer's order: 3. acetic acid liquid below 289.81 K (OUT_OF_RANGE; feeds at 15 degC); 4. Extraction: an
-   adiabatic option, and a feed with a little vapour (now BAD_INPUT); 5. Extraction at 70 degC returns ok with boiling
-   outlets and no warning; 6. a reactor-evaporator unit (boiling reacting liquid, vapour outlet only); 7. a splitter by
-   flow, or a flowsheet design specification (make-up controller).
+   Lab's other requests (2026-11-12, from its ethyl acetate plant S2, evidence in CHEPTA-Lab PR #14). The maintainer
+   agreed (2026-11-12) to all but 6, in this order, in the next free slot: 5. Extraction at 70 degC returns ok with
+   boiling outlets and no warning (warn or refuse) and 4. Extraction: an adiabatic option, and a feed with a little
+   vapour (now BAD_INPUT), one Sonnet worker; 3. acetic acid liquid below 289.81 K (OUT_OF_RANGE; feeds at 15 degC):
+   search open measured data of the supercooled liquid, else it stays refused; 7. a splitter by flow (small), and a
+   flowsheet design specification (make-up controller) through a proposal first (Opus).
+   6. (a reactor-evaporator: boiling reacting liquid, vapour outlet only): not built (the maintainer, 2026-11-12). The
+   coordinator checked other simulators: DWSIM's reactors give liquid and vapour outlets of the reacted stream at the
+   outlet conditions, and its tutorials and Aspen Plus course notes split the vapour with a separator after the
+   reactor; no simulator found has a reactor-evaporator unit. Lab builds it from two units: a conversion reactor, then
+   a heater to vaporization (or a flash drum).
 3. **A lighter model for routine work.** `create_session` takes `model`. Use `claude-sonnet-5-5` for data fits with the
    existing scripts, merge conflicts, documentation, small fixes, and re-running a check; use `claude-opus-5-5` for new
    models, new solvers, proposals and engineering judgement. The coordinator itself can run on Sonnet: it plans,
