@@ -59,8 +59,8 @@ used).
   PR from the link in the workflow summary).
 - Coordinator of 2026-11-10/11: session_01FPbeWU4uw4v3pDoUjAjH7E. CHEPTA-Lab coordinator: session_01FPbeWUJu4MrkqCuGX3UKYB
   (Fable); it asks this coordinator before starting a counted worker.
-- **Open PRs waiting for the maintainer:** #227 column purity/recovery specifications and side draws (proposal 0015
-  step 11, M4; seven decisions, recommendations in its decision file 2026-11-11-01).
+- **Open PRs waiting for the maintainer:** none. #227 (column purity/recovery specifications and side draws, proposal
+  0015 step 11) merged on 2026-11-11 at 18:34 UTC.
 - **Running workers:**
 
   | Session | Model | Task | Counted |
@@ -68,13 +68,14 @@ used).
   | session_01FPbeWV6v28HcnkuHkqBeF9 | Sonnet | two-liquid pairs not refitted in #218 (decision file 2026-11-11-06) | yes |
   | session_01FPbeWUNd3ZWdPaYwB7BeFQ | Sonnet | Lab capability requests 2-5 (sets message, MHV1 warnings, MHV1 source ids; 2026-11-11-09) | yes |
 
-  Stopped on the 5-hour limit on 2026-11-11 with nothing pushed (their branches do not exist), Fable, not to be resumed
-  (no Fable): proposal 0021 step 1 (session_01FPbeWVaRyxCA4YVjgf6jXc) and acetic acid in columns
-  (session_01FPbeWWQkqeGndx5sPQ3zMS). Both go back in the queue for Opus.
+  Both Sonnet workers stopped on the 5-hour limit on 2026-11-11; they wait for a free slot (resume them, do not restart).
+  Resumed on 2026-11-12 at the maintainer's request (the two existing Fable sessions may finish; no new Fable sessions),
+  holding both slots: acetic acid in columns (session_01FPbeWWQkqeGndx5sPQ3zMS, branch claude/acetic-acid-columns) and
+  proposal 0021 step 1 (session_01FPbeWVaRyxCA4YVjgf6jXc, branch claude/ui-0021-step1).
 
 ## Queue, in order
 
-1. Relay the reports of the running workers. Lab's requests from CHEPTA-Lab#5: 1 in #227; 2-5 in the requests worker;
+1. Relay the reports of the running workers. Lab's requests from CHEPTA-Lab#5: 1 done (#227, merged); 2-5 in the requests worker;
    6 (SRK + gE (MHV1) for CO2 + water) only if the maintainer asks.
 0. Usage rules (the maintainer, 2026-11-12, from session_01FPbeWW7BAkeYbFJnho1BYY's measurements): one Sonnet worker,
    when no other worker runs: `npm test` quiet (dot reporter on screen, the full TAP written to a file at the same time;
@@ -83,9 +84,9 @@ used).
    (`node scripts/show.mjs component ethanol`, `... pair ethanol water`); the "cheap checks" rule copied into AGENTS.md;
    `@docs/DATA_RULES.md` removed from CLAUDE.md (AGENTS.md rule 1 still sends data work to it); one script for the
    nine steps of DATA_RULES section 9. Shortening DATA_RULES.md itself: later, reviewed line by line by the maintainer.
-1a. Restart with Opus: acetic acid dimerization in columns (Lab blocker; the earlier prompt is in this session's
-   events), then proposal 0021 step 1 (measured VLE points, x-y / γ / α diagrams).
-2. Column specifications follow-ups (after #227): inequality specifications first ("at least 0.99", "at most
+1a. Acetic acid dimerization in columns (Lab blocker) and proposal 0021 step 1: running in the resumed Fable sessions
+   (above). If either stops again, restart it with Opus from its pushed branch.
+2. Column specifications follow-ups (#227 is merged): inequality specifications first ("at least 0.99", "at most
    10 ppm"), then the draw of one of two liquids, pumparounds, side draws on absorbers.
 3. Proposal 0021 step (c): the flowsheet's tabs and examples; then the rest of the proposal's steps. The "next" layout
    becomes the default only after steps 1-3 and a check by users; "classic" stays two versions.
@@ -95,7 +96,7 @@ used).
 6. Later: NH3 + water NRTL; water + glucose/sucrose NRTL; CPA for CO2 + water (M3); gas-hydrate check; the user's own
    slurry viscosity and density for the pump; Beggs-Brill for the Pipe; ChemE-as-Code bridge (B6: CHEPTA's command
    line as a simulation backend through their files only; their code is AGPL, never copied).
-7. Next release (0.6.1 or 0.7) when #227 and the acetic-acid columns are in, so Lab can try its first
+7. Next release (0.6.1 or 0.7) when the acetic-acid columns are in (#227 is), so Lab can try its first
    reaction-separation case.
 
 ## CHEPTA-Lab moves to Claude (the maintainer, 2026-11-11)
