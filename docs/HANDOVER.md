@@ -33,11 +33,19 @@ current: replace its "State" and "Queue" sections at each handover, never append
    worker slots, then CHEPTA-Lab works for a while with both slots, then back to CHEPTA. Never one CHEPTA worker and
    one Lab worker at the same time. CHEPTA's coordinator tells the Lab coordinator when its phase ends (no CHEPTA
    worker running) and the Lab coordinator says when Lab's ends.
-   Current phase (2026-11-12, from about 15:20 UTC): **Lab**. CHEPTA's phase ended with #227-#231 merged; release 0.6.1
-   with them (live on npm 2026-11-12; version PR from branch version-0.6.1). No CHEPTA worker until the Lab coordinator
-   says Lab's phase has ended. Next CHEPTA phase: proposal 0021
-   steps 1, 2, 3 in that order (one Opus worker each, same files), then the maintainer's check with users, then step 4
-   (the new layout the default) in 0.7 (the maintainer, 2026-11-12: option A).
+   Current phase (2026-11-12, from 21:24 UTC): **CHEPTA**. Lab's phase ended (the Lab coordinator, 21:23 UTC); 0.6.1
+   live on npm, its version PR #232 merged. Workers (Opus): proposal 0021 step 1, the shell's contract
+   (session_01FPbeWXbcjE3ybjeJ9yNi2A, branch claude/ui-0021-shell-contract, decision file 2026-11-12-01); VLLE with
+   acetic acid's chemical theory in flash, heater and column stages, Lab's request 1, plus request 2 (two liquids in
+   the absorber-type column) if it fits (session_01FPbeWThqvPhvb1foYiW5Ga, branch claude/acid-chemical-theory-vlle,
+   decision file 2026-11-12-02). Then 0021 steps 2 and 3 (one Opus worker each, same files), then the maintainer's
+   check with users, then step 4 (the new layout the default) in 0.7 (the maintainer, 2026-11-12: option A). Lab's
+   next phase after this one; tell the Lab coordinator, with the release that carries the VLLE.
+   Lab's other requests (2026-11-12, from its ethyl acetate plant S2, evidence in CHEPTA-Lab PR #14), waiting for the
+   maintainer's order: 3. acetic acid liquid below 289.81 K (OUT_OF_RANGE; feeds at 15 degC); 4. Extraction: an
+   adiabatic option, and a feed with a little vapour (now BAD_INPUT); 5. Extraction at 70 degC returns ok with boiling
+   outlets and no warning; 6. a reactor-evaporator unit (boiling reacting liquid, vapour outlet only); 7. a splitter by
+   flow, or a flowsheet design specification (make-up controller).
 3. **A lighter model for routine work.** `create_session` takes `model`. Use `claude-sonnet-5-5` for data fits with the
    existing scripts, merge conflicts, documentation, small fixes, and re-running a check; use `claude-opus-5-5` for new
    models, new solvers, proposals and engineering judgement. The coordinator itself can run on Sonnet: it plans,
