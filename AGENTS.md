@@ -185,6 +185,7 @@ npm install
 npm run build
 npm test                                        # must pass
 npm run wanted                                  # after changing src/data; commit docs/DATA_WANTED.md
+npm run vle-points                              # after adding or changing a VLE file of validation/data; commit src/data/vle-points.json
 npm run check-package -- file.json              # check a contribution package
 python validation/python/fit_parameters.py      # fit parameters
 python validation/python/make_fixtures.py       # after changing parameters
