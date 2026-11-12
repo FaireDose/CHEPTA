@@ -233,6 +233,176 @@
      }
     }
    }
+  },
+  {
+   "id": "K4-pirola2013-purities",
+   "title": "The direct column of Pirola et al. (2013) asked as the article asks it: water 0.74 in the distillate and 0.02 in the residue; the reflux ratio is found",
+   "purpose": "The design specifications (purity of both products; PR #227, milestone M4) with the dimerizing vapour, against the independent reference; and the reflux ratio found against the article's 5.7 (agreement between two property methods, kept apart). 10 stages: the article's 8 ideal stages between a condenser and a reboiler, the reading with which CHEPTA's method reproduces the published products at the published reflux ratio (case K2's fixture, checks.published); feed on stage 3, the best of that reading.",
+   "method_choice": "docs/METHOD_SELECTION.md rule 3: polar, no electrolytes, below 10 bar, with fitted pairs: NRTL (the default sets) with an ideal-gas vapour; acetic acid's vapour by the chemical theory (monomers and dimers), CHEPTA's default for a dimerizing acid.",
+   "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "association": "chemical theory",
+    "sets": "default"
+   },
+   "components": [
+    "water",
+    "acetic-acid"
+   ],
+   "pressure_kPa": 101.325,
+   "column": {
+    "configuration": "distillation",
+    "stages": 10,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 3,
+     "flow_mol_s": 7.394444444444445,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "specs": [
+    {
+     "kind": "purity",
+     "product": "distillate",
+     "component": "water",
+     "value": 0.74
+    },
+    {
+     "kind": "purity",
+     "product": "bottoms",
+     "component": "water",
+     "value": 0.02
+    }
+   ],
+   "published": {
+    "source": {
+     "citation": "C. Pirola, F. Galli, C. L. Bianchi, G. Carvoli, Heterogeneous distillation of the system water-acetic acid-p-xylene: study of its fluid phase equilibria, micro-pilot column experimental results and computer simulation, Chemical Engineering Transactions 32 (2013) 1897-1902",
+     "doi": "10.3303/CET1332317",
+     "open_copy": "https://www.aidic.it/cet/13/32/317.pdf",
+     "access": "Free to read on the publisher's site (Chemical Engineering Transactions is an open-access journal; copyright 2013 AIDIC Servizi S.r.l.)",
+     "tables": "Section 4, p. 1901 (8 stages, feed 26.62 kmol/h, the mixtures fed at the boiling point, water 0.74 in the distillate and 0.02 in the residue, reflux ratio 5.7) and Table 3, p. 1901 (column T1: distillate 17.7 kmol/h with x_AcAc 0.26, residue 8.9 kmol/h with x_W 0.02)",
+     "read": "2026-11-11"
+    },
+    "feed_kmol_h": 26.62,
+    "feed_x_water": 0.5,
+    "stages": 8,
+    "reflux_ratio": 5.7,
+    "distillate_kmol_h": 17.7,
+    "residue_kmol_h": 8.9,
+    "distillate_x_acetic_acid": 0.26,
+    "distillate_x_water": 0.74,
+    "residue_x_water": 0.02,
+    "method": "PRO/II (SimSci), Lyngby modified UNIFAC with the Hayden-O'Connell correlation",
+    "not_stated": [
+     "the feed stage (here every stage from 2 to 7 is solved; the case's column takes stage 4)",
+     "the pressure (taken as 101.325 kPa: the article speaks of atmospheric pressure)",
+     "whether the 8 stages count the condenser and the reboiler (here: counted, as CHEPTA's stages; the fixture also gives 10 stages, 8 between a condenser and a reboiler)",
+     "the condenser (taken as total)",
+     "the feed's state for Table 3: its caption gives 65 degC, the text of section 4 the boiling point (here: the bubble point, q = 1)"
+    ],
+    "conversions": "kmol/h to mol/s by 1/3.6: 26.62 kmol/h = 7.3944 mol/s, 17.7 kmol/h = 4.9167 mol/s."
+   },
+   "expected": {
+    "outcome": "ok",
+    "adjusted": [
+     "reflux_ratio",
+     "distillate_rate"
+    ]
+   },
+   "tolerances": {
+    "numerical": {
+     "engine_against_reference": {
+      "flows_relative": 2e-05,
+      "mole_fractions_absolute": 2e-06,
+      "T_K_absolute": 0.0001,
+      "adjusted_relative": 2e-05,
+      "why": "As validation/data/columns/specifications/cases.json: the engine meets a design specification to a scaled residual of 1e-6 (src/units/columns/specifications.js, SPEC_TOLERANCE), the reference to 1e-12."
+     }
+    },
+    "agreement_with_published": {
+     "reflux_ratio_relative": 0.25,
+     "why": "Two property methods, and a stage count and feed stage the article does not state: 25 % on the reflux ratio, the limit of case S4 of the specification cases (the maintainer, 2026-11-11), kept apart from the numerical tolerances."
+    }
+   },
+   "start": {
+    "reflux_ratio": 5.7,
+    "distillate_flow_mol_s": 4.916666666666667
+   }
+  },
+  {
+   "id": "K5-water-acetic-acid-recovery",
+   "title": "Water + acetic acid, 20 stages: 97 mol % water in the distillate and 97 % of the acetic acid recovered in the bottoms",
+   "purpose": "A purity and a recovery with the dimerizing vapour, against the independent reference.",
+   "method_choice": "docs/METHOD_SELECTION.md rule 3: polar, no electrolytes, below 10 bar, with fitted pairs: NRTL (the default sets) with an ideal-gas vapour; acetic acid's vapour by the chemical theory (monomers and dimers), CHEPTA's default for a dimerizing acid.",
+   "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "association": "chemical theory",
+    "sets": "default"
+   },
+   "components": [
+    "water",
+    "acetic-acid"
+   ],
+   "pressure_kPa": 101.325,
+   "column": {
+    "configuration": "distillation",
+    "stages": 20,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+     "stage": 10,
+     "flow_mol_s": 100.0,
+     "z": [
+      0.5,
+      0.5
+     ],
+     "q": 1
+    }
+   },
+   "specs": [
+    {
+     "kind": "purity",
+     "product": "distillate",
+     "component": "water",
+     "value": 0.97
+    },
+    {
+     "kind": "recovery",
+     "product": "bottoms",
+     "component": "acetic-acid",
+     "value": 0.97
+    }
+   ],
+   "expected": {
+    "outcome": "ok",
+    "adjusted": [
+     "reflux_ratio",
+     "distillate_rate"
+    ]
+   },
+   "tolerances": {
+    "numerical": {
+     "engine_against_reference": {
+      "flows_relative": 2e-05,
+      "mole_fractions_absolute": 2e-06,
+      "T_K_absolute": 0.0001,
+      "adjusted_relative": 2e-05,
+      "why": "As validation/data/columns/specifications/cases.json: the engine meets a design specification to a scaled residual of 1e-6 (src/units/columns/specifications.js, SPEC_TOLERANCE), the reference to 1e-12."
+     }
+    }
+   },
+   "start": {
+    "reflux_ratio": 3.0,
+    "distillate_flow_mol_s": 50.0
+   }
   }
  ]
 }

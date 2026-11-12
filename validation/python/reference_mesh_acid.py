@@ -27,6 +27,9 @@ For each case also: the same column with the dimers left out of the phase equili
 gamma p^sat / P; the enthalpies unchanged), for what ignoring them changes; and for the published example (case K2)
 the column at every feed stage the article leaves open, and with 10 stages, against the published compositions.
 
+Cases with design specifications (a purity, a recovery; "start" in the case): reference_mesh_specifications.SpecColumn,
+which writes them among the equations of its Newton system, with the thermodynamics of this file.
+
 Writes validation/fixtures/columns_acid.json, which test/columns-acid.test.js reads.
 Regenerate: python validation/python/reference_mesh_acid.py      (numpy, scipy, thermo, iapws)
 """
@@ -36,6 +39,7 @@ from pathlib import Path
 import numpy as np
 
 from reference_mesh import Activity, solve_case
+import reference_mesh_specifications as spec_ref
 from reference_model import psat_kpa, dimer_k
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -88,6 +92,16 @@ def main():
         cid = case["id"]
         print(cid, flush=True)
         th = thermo_of(case)
+        if "start" in case:
+            # design specifications (purity, recovery): reference_mesh_specifications.SpecColumn, the specifications
+            # among its Newton equations, with this file's thermodynamics
+            spec_ref.thermo_of = thermo_of
+            c, u, info = spec_ref.solve_fixed(case, [])
+            prof = spec_ref.record(case, c, u, info)
+            if "published" in case:
+                prof["published_reflux_ratio"] = case["published"]["reflux_ratio"]
+            out["cases"][cid] = {"title": case["title"], "rigorous": prof}
+            continue
         c, u, prof = solve_case(case, th=th)
         rec = {"title": case["title"], "rigorous": prof, "checks": {}}
         ck = rec["checks"]
