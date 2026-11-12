@@ -13,7 +13,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md):
   ChemSep's own lower ends are kept for density, viscosity, surface tension, thermal conductivity and heat capacity
   (down to 289.69 K); a 15 degC feed is still refused (no open liquid heat capacity below 289.69 K). Decide: keep the
-  refusal or allow a warned extrapolation; the vapour pressure evaluated outside its range in mixtures; rule 8 of
+  refusal or allow a warned extrapolation (DWSIM, ChemSep and thermo all evaluate outside the range: recommended); the vapour pressure evaluated outside its range in mixtures; rule 8 of
   METHOD_SELECTION.md for dilute components; whether a person tries to get Steele et al. 1997 and Martin and Andon 1982.
 - **Lab requests 2-5** (docs/decisions/2026-11-11-09-lab-requests-1.md): check the MHV1 source ids against the data
   (none was wrong; the Pokki 2018 id is named after the article's other system), and decide whether the articles

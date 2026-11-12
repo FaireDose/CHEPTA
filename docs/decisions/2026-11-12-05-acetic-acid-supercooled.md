@@ -68,8 +68,30 @@ reason. The vapour-pressure equation is evaluated **without a range check** in a
 - What the pure record range does in a mixture is give the **reference state** of the component's liquid enthalpy
   (the hypothetical pure supercooled liquid, with h^E from the activity model). That needs the pure liquid's heat
   capacity below its melting point, an extrapolation of a measured or databank curve into a metastable state.
-- Other simulators: **not checked in this session** (the open documentation of DWSIM and The ChemSep Book was not read
-  on this point). To do before the maintainer decides, as METHOD_SELECTION.md asks.
+- **What other simulators do** (METHOD_SELECTION.md, "When in doubt"; read 2026-11-12, at the coordinator's request):
+  - **DWSIM** (class library, `DWSIM.Thermodynamics/PropertyPackages/PropertyPackage.vb`, branch `windows`, raw file
+    https://raw.githubusercontent.com/DanWBR/dwsim/windows/DWSIM.Thermodynamics/PropertyPackages/PropertyPackage.vb):
+    `AUX_LIQ_Cpi` (line 7765) evaluates the compound's liquid heat-capacity correlation through `CalcCSTDepProp`
+    (line 9217) at any temperature below the critical temperature: neither function reads a lower or upper temperature
+    limit (no clamp, no refusal). Above Tc it substitutes the ideal-gas heat capacity ("surrogate for supercritical
+    gases solved in liquid"). With no liquid correlation it estimates one (Rowlinson-Bondi). The melting point is not
+    used as a limit. So DWSIM extrapolates silently.
+  - **ChemSep** (The ChemSep Book, 2nd ed., 2006, public domain, http://www.chemsep.org/downloads/docs/book2.pdf):
+    section 10.2.3, p. 147: "ChemSep uses a temperature correlation for all temperatures to prevent problems arising
+    from using different liquid heat capacity methods in the same column"; the mixture liquid heat capacity is "the
+    molar average of the component liquid heat capacities". p. 142 (section 10.2): the correlation needs its
+    temperature limits, and "if the temperature specified falls out of the temperature range of a correlation ...
+    normally an alternative (default) method will be used automatically" (for the other properties, e.g. viscosity,
+    p. 149: "if the temperature is within the valid range"). So for the liquid heat capacity ChemSep keeps its own
+    correlation outside the range, and its enthalpy reference for a component in a mixture is that pure-liquid curve.
+  - **thermo / chemicals** (Caleb Bell, thermo 0.6.1, `thermo.heat_capacity.HeatCapacityLiquid` and
+    `thermo.utils.TDependentProperty.T_dependent_property`, source read in this session): each method has `T_limits`;
+    outside them, if an extrapolation is set the property is extrapolated, and the heat capacity's `extrapolation` is
+    `"linear"` by default (a straight line from the edge value and slope); with none set the result is `None` (or a
+    `RuntimeError` when `RAISE_PROPERTY_CALCULATION_ERROR` is on). It does not stop at the melting point.
+  - **Where they differ from CHEPTA:** all three evaluate the liquid heat capacity outside the correlation's range and
+    none uses the pure melting point as a limit; CHEPTA refuses (AGENTS.md: "fail loudly; never return a silently wrong
+    answer"), which none of them does. The difference to keep: CHEPTA's extrapolation must be stated, never silent.
 
 ## 5. For the maintainer
 
@@ -78,14 +100,19 @@ LiquidDensity 273.15, LiquidViscosity 288.15, SurfaceTension 288.15, LiquidTherm
 LiquidHeatCapacityCp 289.69 K; and the WebBook rows named in section 2.
 
 Decide (recommendation first):
-1. **Keep the 15 degC refusal** until a measured supercooled heat capacity is open (recommended; rules); or allow
-   extrapolating the ChemSep heat-capacity curve a few kelvin below 289.69 K with a warning (a rule change; the curve is
-   a fit of ChemSep's own range, 1.5 K more is a small extrapolation, but it is not data).
+1. **15 degC feed. Recommendation changed after the check of other simulators (section 4):** DWSIM, ChemSep and
+   thermo all evaluate the liquid heat capacity outside its range, so a refusal here is stricter than any of them. I now
+   recommend a **stated extrapolation**: below 289.69 K the heat-capacity curve is continued linearly (as thermo's
+   default) for a few kelvin, 10 K at most (the maintainer's precedent for dichloromethane's heat capacity, 2026-10-18),
+   with a warning in every result that names the record's end, the distance, and that it is not data
+   (`warnings`, the way the heat-capacity record's end is already warned about above its range). Without a measured
+   value this changes no tier: the number is labelled extrapolated. The alternative, keeping the refusal, costs
+   CHEPTA-Lab its 15 degC feed until an open measurement is found. Not implemented here: it needs the maintainer.
 2. **Vapour pressure at 288.15 K:** recommended: keep the record; add a warning (or a refusal) when the activity-model
    system evaluates it outside 290-523.15 K, so the mixture path agrees with `pure().psat`; or replace the legacy
    record by ChemSep's equation (273.15 K, 2 % lower at 288 K), a data-source change for every acetic acid result.
-3. **Rule 8 of METHOD_SELECTION.md:** recommended: restate it as "no temperature at which the mixture's solid-liquid
-   equilibrium puts a solid in" (the pure melting point only for a pure component) and propose it as a follow-up
-   proposal; not changed here.
+3. **Rule 8 of METHOD_SELECTION.md:** recommended (stronger after section 4: no open simulator uses the pure melting
+   point as a limit): restate it as "no temperature at which the mixture's solid-liquid equilibrium puts a solid in"
+   (the pure melting point only for a pure component) and propose it as a follow-up proposal; not changed here.
 4. **The same extension for other components** (every ChemSep record is cut at the triple point): recommended only on
    request, component by component, when an open source covers it.
