@@ -14,6 +14,8 @@
  *    here), and the units (pressed, the Settings);
  *  - the supporting tools in four places instead of seven: Project, Data (Library, My data, Sources), Settings,
  *    Help (AI chat, Feedback);
+ *  - the canvas in tabs, Plot, Table, Data and Warnings, in every workspace (step 2; canvas-tabs.js, built by app.js
+ *    when this shell asks for them);
  *  - when narrow (a phone, a chat panel): one pane at a time, Inputs or Results, instead of one long page, and the
  *    toolbar as one row that scrolls sideways.
  * What the shell shows about the calculation (method, data, units, what is missing) comes from the workbench's
