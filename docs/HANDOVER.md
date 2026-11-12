@@ -102,7 +102,9 @@ used).
 6. Later: NH3 + water NRTL; water + glucose/sucrose NRTL; CPA for CO2 + water (M3); gas-hydrate check; the user's own
    slurry viscosity and density for the pump; Beggs-Brill for the Pipe; ChemE-as-Code bridge (B6: CHEPTA's command
    line as a simulation backend through their files only; their code is AGPL, never copied).
-7. Next release (0.6.1 or 0.7) when the acetic-acid columns are in (#227 is), so Lab can try its first
+7. Release 0.6.1 (the maintainer, 2026-11-12), after #230 and the two-liquid data task. Pre-check on main b71795c
+   with the version set to 0.6.1 (the workflow's own steps): 1597 tests, 1596 pass, 0 fail, 1 known TODO; 0.6.1 is free
+   on npm. Re-run on the final main before the release. Was: Next release (0.6.1 or 0.7) when the acetic-acid columns are in (#227 is), so Lab can try its first
    reaction-separation case.
 
 ## CHEPTA-Lab moves to Claude (the maintainer, 2026-11-11)
