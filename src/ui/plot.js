@@ -29,9 +29,10 @@ export function tickLabel(v, step) {
  * @param {object} o
  * @param {{name:string, color:string, dash?:string, segments:{points:{x:number,y:number}[]}[],
  *   transitions?:{x:number,y0:number|null,y1:number|null}[], fill?:string,
- *   markers?:{x:number,y:number,label?:string,shape?:"open"|"dot"|"cross",place?:"below"}[]}[]} o.series
+ *   markers?:{x:number,y:number,label?:string,shape?:"open"|"dot"|"cross",place?:"below",title?:string,r?:number}[], fit?:boolean}[]} o.series
  *   fill: each segment also drawn closed and filled (a region: the two-phase area of a phase envelope);
- *   markers: points drawn on the curve with a label (a critical point); show(x) may return a list of values for a
+ *   markers: points drawn on the curve with a label (a critical point), or beside it with a `title` read on hover
+ *   (measured points; `fit: true` makes the y range hold them); show(x) may return a list of values for a
  *   series (a curve with several y at one x), each drawn as a dot
  * @param {boolean} [o.compact]  smaller drawing for narrow containers
  * @param {boolean} [o.log]      logarithmic y axis
@@ -47,7 +48,8 @@ export function drawPlot(plot, { compact, series, xLabel, yLabel, log, show, x0,
   let L = 58;
   // text in drawing units: a compact drawing is shown on a phone at about 340 px, so 13 units are 11 px (docs/UI_GUIDE.md)
   const fTick = compact ? 13 : 11, fAxis = compact ? 14 : 12;
-  const all = series.flatMap(sr => sr.segments.flatMap(g => g.points.map(pt => pt.y))).filter(v => Number.isFinite(v) && (!log || v > 0));
+  // the y range: the curves, and the markers of a series that asks for it (`fit: true`: measured points beside a curve)
+  const all = series.flatMap(sr => [...sr.segments.flatMap(g => g.points.map(pt => pt.y)), ...(sr.fit ? (sr.markers || []).map(m => m.y) : [])]).filter(v => Number.isFinite(v) && (!log || v > 0));
   let y0 = yRange ? yRange[0] : Math.min(...all), y1 = yRange ? yRange[1] : Math.max(...all);
   let yt;
   if (log) {
@@ -113,11 +115,14 @@ export function drawPlot(plot, { compact, series, xLabel, yLabel, log, show, x0,
     for (const m of sr.markers || []) {
       if (!inY(m.y) || m.x < Math.min(x0, x1) || m.x > Math.max(x0, x1)) continue;
       const X = sx(m.x), Y = sy(m.y);
+      let mark;
       if (m.shape === "cross") {
-        s("path", { d: `M${X - 3.5},${Y - 3.5}L${X + 3.5},${Y + 3.5}M${X - 3.5},${Y + 3.5}L${X + 3.5},${Y - 3.5}`, stroke: sr.color, "stroke-width": 1.6 }, svg);
+        mark = s("path", { d: `M${X - 3.5},${Y - 3.5}L${X + 3.5},${Y + 3.5}M${X - 3.5},${Y + 3.5}L${X + 3.5},${Y - 3.5}`, stroke: sr.color, "stroke-width": 1.6 }, svg);
       } else {
-        s("circle", { cx: X, cy: Y, r: m.shape === "dot" ? 3.5 : 4.5, fill: m.shape === "dot" ? sr.color : "var(--fug-bg)", stroke: sr.color, "stroke-width": 2 }, svg);
+        mark = s("circle", { cx: X, cy: Y, r: m.r ?? (m.shape === "dot" ? 3.5 : 4.5), fill: m.shape === "dot" ? sr.color : "var(--fug-bg)", stroke: sr.color, "stroke-width": m.r ? 1.5 : 2 }, svg);
       }
+      // what the point is (a measured point: its values and its source), shown by the browser on hover
+      if (m.title) s("title", {}, mark).textContent = m.title;
       // a label near the right edge goes left of its point
       // above right of its point; left of it near the right edge; below it with place: "below"
       if (m.label) { const left = X > W - R - 6.6 * m.label.length; text(svg, left ? X - 7 : X + 7, m.place === "below" ? Y + 16 : Y - 7, m.label, { fill: "var(--fug-fg2)", "font-size": 11, ...(left ? { "text-anchor": "end" } : {}) }); }

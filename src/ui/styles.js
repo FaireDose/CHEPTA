@@ -59,6 +59,7 @@ export const CSS = `
 .fug-main{display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start}
 .fug-plot{flex:2 1 420px; min-width:0}
 .fug-plot svg{width:100%; height:auto; display:block; touch-action:none}
+.fug-plot svg.fa-meas-mark{width:12px; height:12px; display:inline-block; flex:none; overflow:visible}
 .fug-side{flex:1 1 240px; min-width:0; display:grid; gap:12px; background:var(--fug-panel); border-radius:8px; padding:12px}
 .fug-eyebrow{font-size:.7rem; letter-spacing:.07em; text-transform:uppercase; color:var(--fug-muted)}
 .fug-big{font-size:1.7rem; font-weight:600; font-variant-numeric:tabular-nums; line-height:1.1}

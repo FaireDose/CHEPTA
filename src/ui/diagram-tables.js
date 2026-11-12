@@ -61,6 +61,43 @@ export function txyTables({ names, MW, units, basis, points, azeotropes = [], ac
   return tables;
 }
 
+/**
+ * The x-y, activity-coefficient and relative-volatility plots of a binary diagram (binary-logic.js, binaryCurve): one
+ * row per liquid composition with the vapour, the bubble temperature (`isobaric`) or pressure, the K-values y/x, the
+ * relative volatility and, with an activity model, the activity coefficients.
+ */
+export function binaryTables({ names, MW, units, basis, points, isobaric, activity = true }) {
+  const xc = composition("x", names, { basis, only: [0] }), yc = composition("y", names, { basis, only: [0] });
+  const K = (d, i) => { if (!d) return null; const x = i ? 1 - d.x : d.x, y = i ? 1 - d.y : d.y; return x > 0 ? y / x : null; };
+  return [{
+    name: "x-y, K, alpha, gamma", title: `Vapour composition, K-values, relative volatility${activity ? " and activity coefficients" : ""} of ${names.join(" + ")}`,
+    note: `${plural(points.length, "liquid composition")}, evenly spaced in mole fraction, each at its bubble ${isobaric ? "temperature" : "pressure"}. K = y/x; α = K ${names[0]} / K ${names[1]}, at the two ends read at a mole fraction of 0.000001 from the pure component.`,
+    columns: [...xc.columns, ...yc.columns, isobaric ? tCol(units, "T bubble") : pCol(units, "P bubble"), { label: `K ${names[0]}` }, { label: `K ${names[1]}` },
+      { label: `α ${names[0]}/${names[1]}` }, ...(activity ? [{ label: `γ ${names[0]}` }, { label: `γ ${names[1]}` }] : [])],
+    rows: points.map((d, k) => {
+      const x1 = d ? d.x : k / (points.length - 1);
+      return [...xc.values([x1, 1 - x1], MW), ...yc.values(d ? [d.y, 1 - d.y] : null, MW), d ? (isobaric ? T(d.T, units) : P(d.P, units)) : null,
+        K(d, 0), K(d, 1), d?.alpha ?? null, ...(activity ? [d?.gamma?.[0] ?? null, d?.gamma?.[1] ?? null] : [])];
+    }),
+  }];
+}
+
+/**
+ * The measured points drawn on a binary diagram (measuredFor().drawn): one row per point, as in the data file
+ * (mole fractions of the first component; T and P in the units shown), with its set's source and what the parameter
+ * set in use did with the set. No table when nothing is drawn.
+ */
+export function measuredTables({ names, units, sets }) {
+  if (!sets?.length) return [];
+  const used = { fitted: "fitted", check: "compared, not fitted", unused: "not fitted" };
+  return [{
+    name: "Measured data", title: `Measured vapour-liquid points of ${names.join(" + ")} drawn on the diagram`,
+    note: "As in CHEPTA's data files (validation/data), not calculated. Empty cells: the set has no such value.",
+    columns: [{ label: `x ${names[0]}`, unit: "mol/mol" }, { label: `y ${names[0]}`, unit: "mol/mol" }, tCol(units), pCol(units), { label: "Parameters in use" }, { label: "Source" }, { label: "Table" }, { label: "Data file" }],
+    rows: sets.flatMap(s => s.points.map(p => [p.x, p.y, T(p.T, units), P(p.P, units), used[s.role] ?? s.role, s.source.citation ?? "", s.source.tables ?? "", `validation/data/${s.file}`])),
+  }];
+}
+
 /** Ternary map: the bubble-temperature grid, the residue curves and the azeotropes. */
 export function ternaryTables({ names, MW, units, basis, nodes, n, residueCurves = [], azeotropes = [] }) {
   const xc = composition("x", names, { basis }), yc = composition("y", names, { basis });

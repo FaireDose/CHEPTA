@@ -1,11 +1,15 @@
 import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { s, h, text, ticks, svgPoint, tempUnit, fmt, basisView } from "./dom.js";
+import { drawMark, pointTitle, roleKeys } from "./binary-plots.js";
 
 /**
  * T-x-y diagram for a binary system at pressure P (kPa).
  * Draws the bubble (liquid) and dew (vapour) curves, a hover tie line, and a readout.
  * view: { basis: "mole"|"mass", MW: number[], T: "C"|"K" (display unit, default °C), compact: a smaller drawing for
- * narrow containers, so its text stays readable (11 px or more on a phone) }.
+ * narrow containers, so its text stays readable (11 px or more on a phone), measured: the measured sets to draw
+ * (measuredFor().drawn of binary-logic.js: each point's liquid composition in the liquid colour and its vapour in the
+ * vapour colour, at the measured temperature; a dot where the parameters were fitted to the set, a ring where it was
+ * only compared, a cross otherwise) }.
  * The composition axis is drawn in the chosen basis (mole fraction or wt %).
  * Works with any system that has bubbleT (activity models and equations of state); points
  * where the bubble point is not found are left out, and the readout says how many.
@@ -30,7 +34,9 @@ export function renderTxy(plot, side, sys, P, view = {}) {
   const W1 = x1 => bv.conv([x1, 1 - x1])[0];   // mole fraction of component 1 -> display basis
   const W = view.compact ? 400 : 560, H = view.compact ? 320 : 380, L = 56, R = 16, T = 16, B = 44;
   const fs = view.compact ? 14 : 12;
-  const Tmin = Math.min(...ok.map(d => d.T)), Tmax = Math.max(...ok.map(d => d.T));
+  const measured = view.measured ?? [];
+  const Tm = measured.flatMap(m => m.points.map(q => q.T));
+  const Tmin = Math.min(...ok.map(d => d.T), ...Tm), Tmax = Math.max(...ok.map(d => d.T), ...Tm);
   const pad = Math.max(1, (Tmax - Tmin) * 0.06);
   const yt = ticks(C(Tmin - pad), C(Tmax + pad), 6);
   const y0 = yt.values[0] - (yt.values[0] > C(Tmin - pad) ? yt.step : 0), y1 = yt.values.at(-1) + (yt.values.at(-1) < C(Tmax + pad) ? yt.step : 0);
@@ -62,6 +68,14 @@ export function renderTxy(plot, side, sys, P, view = {}) {
   s("path", { d: path("x"), fill: "none", stroke: "var(--fug-liq)", "stroke-width": 2, "stroke-linejoin": "round" }, svg);
   s("path", { d: path("y"), fill: "none", stroke: "var(--fug-vap)", "stroke-width": 2, "stroke-dasharray": "6 4", "stroke-linejoin": "round" }, svg);
 
+  // the measured points, as measured: liquid and vapour composition at the measured temperature
+  const marks = s("g", { class: "fug-measured" }, svg);
+  for (const m of measured) for (const q of m.points) {
+    const title = pointTitle(m, q, sys.names);
+    if (q.x != null) drawMark(marks, sx(W1(q.x)), sy(C(q.T)), m.role, "var(--fug-liq)", title);
+    if (q.y != null) drawMark(marks, sx(W1(q.y)), sy(C(q.T)), m.role, "var(--fug-vap)", title);
+  }
+
   // azeotropes: interior sign changes of (y - x)
   const azeo = [];
   for (let k = 2; k < data.length - 1; k++) {
@@ -78,7 +92,7 @@ export function renderTxy(plot, side, sys, P, view = {}) {
   plot.replaceChildren(svg, h("div", { class: "fug-legend" },
     h("span", { class: "fug-key", style: "color:var(--fug-liq)" }, h("i"), h("span", { style: "color:var(--fug-fg2)" }, "Bubble curve (liquid)")),
     h("span", { class: "fug-key", style: "color:var(--fug-vap)" }, h("i", { style: "border-top-style:dashed" }), h("span", { style: "color:var(--fug-fg2)" }, "Dew curve (vapour)")),
-    azeo.length ? h("span", {}, "● azeotrope") : null));
+    azeo.length ? h("span", {}, "● azeotrope") : null, ...roleKeys(measured)));
 
   const xOut = h("div", { class: "fug-num" }), tOut = h("div", { class: "fug-big" }), tab = h("tbody", { class: "fug-num" });
   side.replaceChildren(...[

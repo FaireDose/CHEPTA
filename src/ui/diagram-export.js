@@ -86,3 +86,12 @@ export function exportFileName(desc) {
     .replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
   return `chepta-${slug || "diagram"}.xlsx`;
 }
+
+/**
+ * A table of an export as CSV text: a row of column labels with their units ("T (°C)"), then the rows; fields with a
+ * comma, a quote or a line break are quoted. Empty where the engine found no value.
+ */
+export function tableCsv(table) {
+  const q = v => { const t = v == null || (typeof v === "number" && !Number.isFinite(v)) ? "" : String(v); return /[",\n\r]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t; };
+  return [table.columns.map(c => q(c.unit ? `${c.label} (${c.unit})` : c.label)), ...table.rows.map(r => r.map(q))].map(r => r.join(",")).join("\r\n") + "\r\n";
+}

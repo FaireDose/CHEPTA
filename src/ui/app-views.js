@@ -14,6 +14,10 @@ import { warning, summaryOf, problemsWarning } from "./warning.js";
 import { h, s, text, ticks, basisView } from "./dom.js";
 import { icon } from "./icons.js";
 import { renderTxy } from "./txy.js";
+import { measuredFor } from "./binary-logic.js";
+import { plotSwitch, measuredList, renderBinaryPlot, pointTitle, roleKeys } from "./binary-plots.js";
+import { imageButtons } from "./export-image.js";
+import { tableCsv, exportFileName } from "./diagram-export.js";
 import { renderTernary } from "./ternary.js";
 import { mountProperties } from "./properties.js";
 import { drawPlot } from "./plot.js";
@@ -43,7 +47,7 @@ import { waterChart, fluidChart, drawChart, chartTables, CHART_TITLE, fluidPoint
 import ENVELOPE_EXAMPLES from "../data/envelope-examples.json" with { type: "json" };
 import pkg from "../../package.json" with { type: "json" };
 import {
-  txyTables, ternaryTables, pxyTables, envelopeTables, azeotropeTables, flashTables, henryTables, solidTables, sleTables, propertyTables, steamTables,
+  txyTables, binaryTables, measuredTables, ternaryTables, pxyTables, envelopeTables, azeotropeTables, flashTables, henryTables, solidTables, sleTables, propertyTables, steamTables,
 } from "./diagram-tables.js";
 import { tLabel,
   tToDisplay, tFromDisplay, pToDisplay, fmtNum, fmtShort, linspace, niceValues, TIER_LABEL, formatSource,
@@ -167,6 +171,48 @@ function aboutRows(state, sys, conditions = []) {
 }
 
 // ---------------------------------------------------------------------------------------
+// What the T-x-y and the P-x-y share (proposal 0021, answer 7): the measured points of the pair, and the x-y,
+// activity-coefficient and relative-volatility plots of the same curve
+
+const PLOT_TITLE = { xy: "x-y diagram", gamma: "Activity coefficients", alpha: "Relative volatility" };
+
+/**
+ * Draw a binary diagram at a pressure (`at.P_kPa`) or a temperature (`at.T_K`): the phase diagram (`renderPhase`,
+ * given the measured sets to draw) or the plot chosen with the switch above it; then the list of the measured sets
+ * and the downloads of the chart (SVG, PNG) and of its table (CSV; the Excel file is the canvas's own button).
+ * @returns {{kind, out, curve, sets}}  `out`: what renderPhase returned; `curve`: binaryCurve's result for a plot;
+ *   `sets`: the measured sets drawn; and `finish(desc)`, to call with the view's export description
+ */
+function binaryDiagram(ctx, sys, at, MW, renderPhase) {
+  const { state, set, plot, side, below, compact } = ctx;
+  const isobaric = at.P_kPa != null;
+  const pair = sys.info.pairs?.[0], fittedModel = pair?.tier === "fitted";
+  const m = measuredFor(sys.ids, at, fittedModel ? pair.source : null);
+  const sets = state.measured ? m.drawn : [];
+  const kind = state.binaryPlot ?? "phase";
+  let out = null, curve = null;
+  if (kind === "phase") out = renderPhase(sets);
+  else if (kind === "gamma" && sys.kind === "eos") {
+    // a refusal (docs/UI_GUIDE.md, section 5): why, then what to do; the switch stays, to leave the plot
+    plot.replaceChildren(warning(`Activity coefficients belong to an activity model; ${sys.info.equation ?? "an equation of state"} has none. Choose NRTL, UNIQUAC, Wilson or Modified UNIFAC 2.0 as the method, or read the x-y and the relative-volatility plot.`, { attrs: { role: "note" } }));
+    side.replaceChildren(h("div", { class: "fa-empty" }, "No readout: this plot needs an activity model."));
+  } else curve = renderBinaryPlot(plot, side, sys, at, { kind, basis: state.basis, MW, units: state.units, compact, measured: sets });
+  plot.prepend(plotSwitch(kind, isobaric ? "T-x-y" : "P-x-y", v => set({ binaryPlot: v })));
+  plot.append(measuredList(m, { sys, isobaric, fittedModel, shown: state.measured, set, units: state.units }));
+  const finish = desc => {
+    if (!desc) return undefined;
+    const status = h("span", { class: "fa-in-hint", role: "status" });
+    const name = exportFileName(desc).replace(/\.xlsx$/, "");
+    const images = imageButtons(plot, name, "diagram");
+    images.append(h("button", { type: "button", class: "fa-mini", "data-fk": "diagram-csv", title: `Download the table "${desc.tables[0].name}" as CSV (every table is in the Excel file)`,
+      on: { click: () => saveText(tableCsv(desc.tables[0]), `${name}.csv`, "text/csv;charset=utf-8", status, { copyLabel: "the Excel file" }) } }, icon("download", 14), "CSV"), status);
+    below.append(images);
+    return () => desc;
+  };
+  return { kind, out, curve, sets, finish };
+}
+
+// ---------------------------------------------------------------------------------------
 // T-x-y and ternary: the existing renderers
 
 function vleView(view, ctx) {
@@ -179,19 +225,24 @@ function vleView(view, ctx) {
     notes.append(warning(`${k.message} Reference: ${k.reference}.`, { title: `Known deviation (${modelName(k.model)}): ${summaryOf(k.message)}` }));
   }
   const look = { basis: state.basis, MW: sys.ids.map(id => pure(id, own(state)).MW), T: state.units.T, compact };
-  const drawn = view === "txy" ? renderTxy(plot, side, sys, state.P_kPa, look)
+  const bin = view === "txy" ? binaryDiagram(ctx, sys, { P_kPa: state.P_kPa }, look.MW, sets => renderTxy(plot, side, sys, state.P_kPa, { ...look, measured: sets })) : null;
+  const drawn = bin ? bin.out
     : renderTernary(plot, side, sys, state.P_kPa, {
       ...look, residueCurves: state.residueCurves, isotherms: state.isotherms, grid: state.grid,
       makePairSystem: ids => modelSystem(state, ids),
     });
-  const exp = () => ({
-    title: `${view === "txy" ? "T-x-y diagram" : "Ternary map"} of ${listNames(sys.names)} at ${fmtP(state.P_kPa, state.units)}`,
-    file: `${view} ${sys.ids.join(" ")}`,
+  const tableArgs = { names: sys.names, MW: look.MW, units: state.units, basis: state.basis };
+  const desc = () => ({
+    title: `${bin && bin.kind !== "phase" ? PLOT_TITLE[bin.kind] : view === "txy" ? "T-x-y diagram" : "Ternary map"} of ${listNames(sys.names)} at ${fmtP(state.P_kPa, state.units)}`,
+    file: `${bin && bin.kind !== "phase" ? bin.kind : view} ${sys.ids.join(" ")}`,
     about: aboutRows(state, sys, [["Pressure", fmtP(state.P_kPa, state.units)]]),
-    tables: view === "txy"
-      ? txyTables({ names: sys.names, MW: look.MW, units: state.units, basis: state.basis, ...drawn, activity: sys.kind !== "eos" })
-      : ternaryTables({ names: sys.names, MW: look.MW, units: state.units, basis: state.basis, ...drawn }),
+    tables: !bin ? ternaryTables({ ...tableArgs, ...drawn })
+      : [...(bin.kind === "phase" ? txyTables({ ...tableArgs, ...drawn, activity: sys.kind !== "eos" })
+        : binaryTables({ ...tableArgs, points: bin.curve.points, isobaric: true, activity: sys.kind !== "eos" })),
+      ...measuredTables({ names: sys.names, units: state.units, sets: bin.sets })],
   });
+  // a plot that was refused (activity coefficients with an equation of state) has nothing to export
+  const exp = bin ? (bin.out || bin.curve ? bin.finish(desc()) : undefined) : desc;
   if (sys.kind === "eos") {
     extra.append(...eosSources(ctx, sys));
     return { data: tierSummary(tierCounts(sys.info.pairs), "k_ij pair"), export: exp };
@@ -416,11 +467,30 @@ function segmentsOf(points) {
 const interpSegs = (segs, x) => { for (const g of segs) { const v = interpolate(g.points, x); if (v != null) return v; } return null; };
 
 function pxyView(ctx) {
-  const { state, plot, side, notes, extra, compact } = ctx;
+  const { state, extra } = ctx;
   const u = state.units, ids = state.components;
   let sys;
   try { sys = modelSystem(state, ids); } catch (e) { throw new Error(friendly(e)); }
   const T = pxyTemperature(state);
+  const MW = ids.map(id => pure(id, own(state)).MW);
+  const bin = binaryDiagram(ctx, sys, { T_K: T }, MW, sets => pxyPhase(ctx, sys, ids, T, sets));
+  const { raw } = bin.out ?? {};
+  if (bin.kind === "phase") extra.append(bubbleDewCalculator(ctx, sys, ids));
+  extra.append(...sourcesOf(ctx, sys));
+  const desc = bin.out || bin.curve ? {
+    title: `${bin.kind === "phase" ? "P-x-y diagram" : PLOT_TITLE[bin.kind]} of ${listNames(sys.names)} at ${fmtTemp(T, u)}`, file: `${bin.kind === "phase" ? "pxy" : `${bin.kind} at T`} ${ids.join(" ")}`,
+    about: aboutRows(state, sys, [["Temperature", fmtTemp(T, u)]]),
+    tables: [...(bin.kind === "phase" ? pxyTables({ names: sys.names, MW, units: u, basis: state.basis, points: raw })
+      : binaryTables({ names: sys.names, MW, units: u, basis: state.basis, points: bin.curve.points, isobaric: false, activity: sys.kind !== "eos" })),
+    ...measuredTables({ names: sys.names, units: u, sets: bin.sets })],
+  } : null;
+  return { data: pairData(sys), export: bin.finish(desc) };
+}
+
+/** The bubble and dew curves of the P-x-y diagram, with the measured sets given; returns the points calculated. */
+function pxyPhase(ctx, sys, ids, T, measured) {
+  const { state, plot, side, notes, compact } = ctx;
+  const u = state.units;
   // the composition axis in the display basis: mole fraction, or wt % (0 to 100)
   const bv = basisView(state.basis, ids.map(id => pure(id, own(state)).MW));
   const scale = bv.mass ? 100 : 1;
@@ -442,6 +512,9 @@ function pxyView(ctx) {
   const series = [
     { name: "Bubble", color: "var(--fug-liq)", segments: bs, label: false },
     { name: "Dew", color: "var(--fug-vap)", dash: "6 4", label: false, segments: ds.map(g => ({ points: g.points.slice().sort((a, b) => a.x - b.x) })) },
+    // the measured points, as measured: liquid and vapour composition at the measured pressure
+    ...measured.flatMap(m => [["x", "var(--fug-liq)"], ["y", "var(--fug-vap)"]].map(([k, color]) => ({ name: null, color, segments: [], fit: true,
+      markers: m.points.filter(q => q[k] != null).map(q => ({ x: X(q[k]), y: pToDisplay(q.P, u), shape: { fitted: "dot", check: "open" }[m.role] ?? "cross", r: 3.5, title: pointTitle(m, q, sys.names) })) }))),
   ];
   const read = h("div", { class: "fa-read" });
   const show = zx => {
@@ -457,16 +530,12 @@ function pxyView(ctx) {
     aria: `P-x-y diagram of ${sys.names.join(" and ")} at ${fmtTemp(T, u)}` });
   plot.append(h("div", { class: "fug-legend" },
     h("span", { class: "fug-key", style: "color:var(--fug-liq)" }, h("i"), h("span", { style: "color:var(--fug-fg2)" }, "Bubble curve (liquid)")),
-    h("span", { class: "fug-key", style: "color:var(--fug-vap)" }, h("i", { style: "border-top-style:dashed" }), h("span", { style: "color:var(--fug-fg2)" }, "Dew curve (vapour)"))),
+    h("span", { class: "fug-key", style: "color:var(--fug-vap)" }, h("i", { style: "border-top-style:dashed" }), h("span", { style: "color:var(--fug-fg2)" }, "Dew curve (vapour)")),
+    ...roleKeys(measured)),
   gapNote(reasons, "two-phase solution") ?? "");
   side.replaceChildren(read);
   move(0.5 * scale);
-  extra.append(bubbleDewCalculator(ctx, sys, ids), ...sourcesOf(ctx, sys));
-  return { data: pairData(sys), export: () => ({
-    title: `P-x-y diagram of ${listNames(sys.names)} at ${fmtTemp(T, u)}`, file: `pxy ${ids.join(" ")}`,
-    about: aboutRows(state, sys, [["Temperature", fmtTemp(T, u)]]),
-    tables: pxyTables({ names: sys.names, MW: ids.map(id => pure(id, own(state)).MW), units: u, basis: state.basis, points: raw }),
-  }) };
+  return { raw };
 }
 
 function envelopeView(ctx) {
