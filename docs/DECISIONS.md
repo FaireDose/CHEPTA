@@ -62,7 +62,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   Unit models, the Pipe in the flowsheet's palette, the DOE Leq/D table and the three worked examples. Two-phase
   flow: Lockhart-Martinelli in the item above; Beggs-Brill next, once open sources are found.
 - **The Extraction block and its view** (proposal 0015, step 8; docs/decisions/2026-10-30-10-extraction-view.md):
-  check the comparison with Glatz and Parker 2004 (Runs 1 and 3); decide whether an adiabatic cascade is wanted, whether
+  check the comparison with Glatz and Parker 2004 (Runs 1 and 3); an adiabatic option (one temperature for all stages), the
+  refusal of boiling outlets and the condensing of a little feed vapour are built (docs/decisions/2026-11-12-03-extraction-lab-requests.md:
+  decide refuse or warn, whether a stage-by-stage temperature profile is wanted, and the 0.1 vapour limit); decide whether
   the ternary view should offer mass fractions, and whether the flowsheet should take the joint sets by itself when it
   holds an Extraction block of that ternary.
   Still open from #196 (docs/decisions/2026-10-30-08-extraction.md): compare the transcribed tie lines with the ThermoML

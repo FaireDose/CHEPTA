@@ -1,5 +1,5 @@
 {
- "_about": "Written by validation/python/reference_extraction.py: countercurrent liquid-liquid cascades from an independent implementation; per stage (1..N) the component flows of the raffinate and of the extract leaving it, mol/s.",
+ "_about": "Written by validation/python/reference_extraction.py: countercurrent liquid-liquid cascades from an independent implementation; per stage (1..N) the component flows of the raffinate and of the extract leaving it, mol/s. adiabatic: the one temperature at which the outlets' enthalpy equals the inlets' (brentq, reference_enthalpy.liquid_h).",
  "cases": [
   {
    "components": [
@@ -386,6 +386,107 @@
     ]
    ],
    "residual": 5.329070518200751e-15
+  }
+ ],
+ "adiabatic": [
+  {
+   "components": [
+    "water",
+    "acetic-acid",
+    "ethyl-acetate"
+   ],
+   "model": "NRTL",
+   "set": "fitted-lle-roque2018",
+   "stages": 3,
+   "feed_mol_s": [
+    0.9,
+    0.1,
+    0.0
+   ],
+   "feed_T_K": 298.15,
+   "solvent_mol_s": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "solvent_T_K": 318.15,
+   "T_K": 303.25317999171904,
+   "raffinate_mol_s": [
+    0.4852625839642276,
+    0.0005353660809461535,
+    0.00851516635613641
+   ],
+   "extract_mol_s": [
+    0.4147374160357726,
+    0.09946463391905386,
+    0.9914848336438634
+   ]
+  },
+  {
+   "components": [
+    "water",
+    "acetic-acid",
+    "ethyl-acetate"
+   ],
+   "model": "NRTL",
+   "set": "fitted-lle-roque2018",
+   "stages": 5,
+   "feed_mol_s": [
+    0.88,
+    0.12,
+    0.0
+   ],
+   "feed_T_K": 298.15,
+   "solvent_mol_s": [
+    0.01,
+    0.0,
+    0.8
+   ],
+   "solvent_T_K": 318.15,
+   "T_K": 301.29814888909345,
+   "raffinate_mol_s": [
+    0.4524801586413773,
+    5.514704141772836e-05,
+    0.007988924753559222
+   ],
+   "extract_mol_s": [
+    0.43751984135862265,
+    0.11994485295858227,
+    0.7920110752464409
+   ]
+  },
+  {
+   "components": [
+    "water",
+    "acetic-acid",
+    "ethyl-acetate"
+   ],
+   "model": "UNIQUAC",
+   "set": "fitted-lle-roque2018",
+   "stages": 4,
+   "feed_mol_s": [
+    0.9,
+    0.1,
+    0.0
+   ],
+   "feed_T_K": 313.15,
+   "solvent_mol_s": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "solvent_T_K": 300.15,
+   "T_K": 305.77682249424896,
+   "raffinate_mol_s": [
+    0.4132530704516315,
+    0.0003182361537589891,
+    0.006736014415082418
+   ],
+   "extract_mol_s": [
+    0.4867469295483672,
+    0.09968176384624121,
+    0.993263985584918
+   ]
   }
  ]
 }

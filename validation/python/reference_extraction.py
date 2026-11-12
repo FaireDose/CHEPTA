@@ -139,6 +139,31 @@ def solve(model, set_name, N, T, feed, solv):
     return R, E, float(np.max(np.abs(sol.fun)))
 
 
+ADIABATIC = [  # model, set, N, feed (mol/s, T_K), solvent (mol/s, T_K): the outlets' enthalpy equals the inlets'
+    ("NRTL", SET, 3, ([0.9, 0.1, 0.0], 298.15), ([0.0, 0.0, 1.0], 318.15)),
+    ("NRTL", SET, 5, ([0.88, 0.12, 0.0], 298.15), ([0.01, 0.0, 0.8], 318.15)),
+    ("UNIQUAC", SET, 4, ([0.9, 0.1, 0.0], 313.15), ([0.0, 0.0, 1.0], 300.15)),
+]
+
+
+def adiabatic(model, set_name, N, feed, solv):
+    """The one temperature of an adiabatic cascade (all stages at it): brentq on the enthalpy balance, the liquid
+    enthalpies of reference_enthalpy.py (the open `thermo` excess enthalpy, DIPPR heat capacities), the cascade of
+    solve() above. A component at zero is held at 1e-14 (the `thermo` UNIQUAC class gives NaN at zero). The enthalpy of a liquid of composition x in mol/s: F * h(x, T)."""
+    from reference_enthalpy import liquid_h
+    s = system(model, set_name)
+    (f, Tf), (v, Tv) = feed, solv
+    h = lambda fl, T: (np.sum(fl) * liquid_h(s, np.clip(np.array(fl) / np.sum(fl), 1e-14, None), T, "ideal")[0]) if np.sum(fl) > 1e-300 else 0.0
+    Hin = h(f, Tf) + h(v, Tv)
+
+    def bal(T):
+        R, E, _ = solve(model, set_name, N, T, f, v)
+        return h(R[-1], T) + h(E[0], T) - Hin
+    T = brentq(bal, min(Tf, Tv) - 0.5, max(Tf, Tv) + 8, xtol=1e-10)
+    R, E, worst = solve(model, set_name, N, T, f, v)
+    return T, R, E, worst
+
+
 def main():
     cases = []
     for model, set_name, N, T, feed, solv in CASES:
@@ -147,9 +172,15 @@ def main():
         cases.append({"components": IDS, "model": model, "set": set_name, "stages": N, "T_K": T,
                       "feed_mol_s": feed, "solvent_mol_s": solv,
                       "raffinate_mol_s": [list(r) for r in R], "extract_mol_s": [list(e) for e in E], "residual": worst})
+    ad = []
+    for model, set_name, N, (f, Tf), (v, Tv) in ADIABATIC:
+        T, R, E, worst = adiabatic(model, set_name, N, (f, Tf), (v, Tv))
+        print(f"adiabatic {model} N={N}: T = {T:.5f} K")
+        ad.append({"components": IDS, "model": model, "set": set_name, "stages": N, "feed_mol_s": f, "feed_T_K": Tf,
+                   "solvent_mol_s": v, "solvent_T_K": Tv, "T_K": T, "raffinate_mol_s": list(R[-1]), "extract_mol_s": list(E[0])})
     OUT.write_text(json.dumps({"_about": "Written by validation/python/reference_extraction.py: countercurrent liquid-liquid "
                                          "cascades from an independent implementation; per stage (1..N) the component "
-                                         "flows of the raffinate and of the extract leaving it, mol/s.", "cases": cases}, indent=1) + "\n")
+                                         "flows of the raffinate and of the extract leaving it, mol/s. adiabatic: the one temperature at which the outlets' enthalpy equals the inlets' (brentq, reference_enthalpy.liquid_h).", "cases": cases, "adiabatic": ad}, indent=1) + "\n")
     print(f"wrote {OUT}")
 
 
