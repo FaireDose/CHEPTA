@@ -144,19 +144,24 @@ test("Column block (shortcut): a distillate beyond the azeotrope (E3's purity, r
   e => e.code === "BAD_INPUT" && /azeotrope/.test(e.message) && e.details.relative_volatility.top < 1);
 });
 
-test("Column E3: a purity, in either mode, refused as not built yet (unsupported), never a column", () => {
+// Until milestone M4 this test asked for the purity to be refused as not built (unsupported, the case's
+// outcome_before_M4). M4 built purity specifications, so it now asks for the case's outcome_from_M4: the rigorous
+// column refuses the value and names the azeotrope; the shortcut says that purities are the rigorous column's.
+test("Column E3: a purity above the azeotrope is refused in either mode (invalid input), naming the azeotrope; never a column", () => {
   const c = caseOf("E3-purity-above-azeotrope");
   const input = { components: c.components, thermo: { model: c.thermo.model },
     feed: { flow_kmol_h: { ethanol: 50, water: 50 }, T_K: c.column.feed.T_K, P_kPa: c.pressure_kPa },
     column: { light_key: "ethanol", heavy_key: "water", distillate_purity: c.specs[1].value, recovery_heavy_key_in_bottoms: 0.9, reflux_ratio: c.specs[0].value } };
   const r = run({ capability: "solve_column", input });
-  assert.equal(r.outcome, c.expected.outcome_before_M4);
-  assert.match(r.error.message, /purity specifications come with milestone M4/);
+  assert.equal(r.outcome, c.expected.outcome_from_M4);
+  assert.match(r.error.message, /the shortcut takes the recoveries of its two keys/);
   assert.equal(r.value, undefined);
   // the rigorous mode landed with milestone M2a (this test refused it before; test/columns-rigorous.test.js tests it)
-  const rig = run({ capability: "solve_column", input: { ...input, column: { mode: "rigorous", stages: 20, feed_stage: 10, reflux_ratio: 2, distillate_purity: c.specs[1].value } } });
-  assert.equal(rig.outcome, c.expected.outcome_before_M4);
-  assert.match(rig.error.message, /purity specifications come with milestone M4/);
+  const rig = run({ capability: "solve_column", input: { ...input, column: { mode: "rigorous", stages: 20, feed_stage: 10, reflux_ratio: c.specs[0].value, distillate_purity: { component: c.specs[1].component, value: c.specs[1].value } } } });
+  assert.equal(rig.outcome, c.expected.outcome_from_M4);
+  assert.equal(rig.error.code, "OUT_OF_RANGE");
+  for (const word of c.expected.message_names_from_M4) assert.ok(rig.error.message.includes(word), word);
+  assert.equal(rig.value, undefined);
   assert.deepEqual(COLUMN_MODES.map(m => [m.mode, m.status]), [["shortcut", "available"], ["rigorous", "available"]]);
 });
 
