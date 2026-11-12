@@ -149,3 +149,14 @@ Cases: `validation/data/columns/acid/cases.json`; reference: `validation/python/
    `lnKAssociation` in the three-phase flash and the two-liquid adapter, and a reference with it.
 5. **The column's own method cannot switch the chemical theory off** (`method: { association }` is refused as an
    unknown key). Recommended: leave it refused; with the chemical theory working there is no reason to switch it off.
+
+## Decided (the maintainer, 2026-11-12)
+
+"I agree with your recommendations": all five as recommended above.
+
+1. The agreement limits with the article stay: 0.05 in mole fraction, 25 % on the reflux ratio.
+2. Case K4 keeps reading the article's "8 stages" as 8 between condenser and reboiler, stated as a reading.
+3. No known issue or warning for an acid column with association.
+4. Next for CHEPTA-Lab's blocker: two liquids on the stages and the three-phase flash with the chemical theory (entrainer
+   columns), as its own proposal step.
+5. The column's own method still cannot switch the chemical theory off.
