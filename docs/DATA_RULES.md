@@ -268,6 +268,12 @@ new refit of a ChemSep record is made (section 1).
   - ChemSep sets are not refitted; their predicted split is labelled by the class of the pair. A ChemSep set whose
     split is contradicted by open data is not the default where another set exists (a fitted set, or the other
     model's).
+- **Weight of the tie lines** (the maintainer, 2026-11-12; this project's choice, like the 0.5 % floor of section 3): the
+  joint fit of a partly miscible pair tries the weights 1, 3, 5, 7 and 10 of the tie-line residuals, in that order, and
+  keeps the first result that passes the same gates (the wider gates, with a quality warning, only if none passes the
+  main ones). The weight used is stated in the set's `source`. A set within the wider gates replaces a databank default
+  only if it follows the same data as closely, and the comparison counts the mutual solubilities as well as the
+  vapour-liquid deviations.
 - Wilson cannot give two liquids: it is not fitted to liquid-liquid data, a heterogeneous azeotrope or data with two
   liquids, nor to a pair classed partly miscible whose data range overlaps the measured split.
 - The property method of a test or example follows [METHOD_SELECTION.md](METHOD_SELECTION.md).

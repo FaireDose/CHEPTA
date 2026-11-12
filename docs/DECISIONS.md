@@ -329,7 +329,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   Follow-up (docs/decisions/2026-11-11-06-two-liquid-refit-followup.md): no more open data for the pairs not refitted;
   tie-line weights 1-10 in the joint fit and the tie lines in the comparison with a databank set; 1-butanol + water
   NRTL written as a non-default set with a quality warning, the other pairs still held with their reasons. To decide:
-  its default status (F1, F2, W2 move), the weights as a rule of DATA_RULES section 5.
+  decided 2026-11-12: the fitted 1-butanol + water NRTL stays non-default until F1, F2 and W2 are re-derived on purpose, in a separate pull request; the tie-line weights (1, 3, 5, 7, 10) and the tie lines in the set comparison are a rule of DATA_RULES section 5.
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order

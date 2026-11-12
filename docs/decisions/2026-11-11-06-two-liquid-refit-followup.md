@@ -81,5 +81,7 @@ with `sets`. Making it the default needs the maintainer's decision and re-derive
      a fitted set? It follows the tie lines (0.03 against 0.07) and the boiling points within 1.2 K (ChemSep: 0.93 K),
      but moves the two liquids of F1, F2 and W2 to other stages. **Decided by the maintainer, 2026-11-12: it stays
      non-default until F1, F2 and W2 are re-derived on purpose, in a separate pull request.**
-  2. Tie-line weights up to 10 in the joint fit and the tie lines in the comparison with a databank set: keep as a rule of
-     DATA_RULES section 5? Recommended: yes, state it there.
+  2. Tie-line weights up to 10 in the joint fit and the tie lines in the comparison with a databank set: a rule of
+     DATA_RULES section 5? **Agreed by the maintainer, 2026-11-12, and stated there** as this project's choice (weights
+     1, 3, 5, 7, 10 in that order, first result that passes the same gates, mutual solubilities in the comparison, the
+     weight in the set's `source`).
