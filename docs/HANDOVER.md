@@ -33,8 +33,8 @@ current: replace its "State" and "Queue" sections at each handover, never append
    worker slots, then CHEPTA-Lab works for a while with both slots, then back to CHEPTA. Never one CHEPTA worker and
    one Lab worker at the same time. CHEPTA's coordinator tells the Lab coordinator when its phase ends (no CHEPTA
    worker running) and the Lab coordinator says when Lab's ends.
-   Current phase (2026-11-12): CHEPTA, ending when the two-liquid data task (the last CHEPTA worker) has its pull request
-   open; #230 (interface answer 7) is merged. Then release 0.6.1 and Lab's phase. Next CHEPTA phase: proposal 0021
+   Current phase (2026-11-12, from about 15:20 UTC): **Lab**. CHEPTA's phase ended with #227-#231 merged; release 0.6.1
+   with them. No CHEPTA worker until the Lab coordinator says Lab's phase has ended. Next CHEPTA phase: proposal 0021
    steps 1, 2, 3 in that order (one Opus worker each, same files), then the maintainer's check with users, then step 4
    (the new layout the default) in 0.7 (the maintainer, 2026-11-12: option A).
 3. **A lighter model for routine work.** `create_session` takes `model`. Use `claude-sonnet-5-5` for data fits with the
