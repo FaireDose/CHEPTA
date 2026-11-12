@@ -57,7 +57,9 @@ current: replace its "State" and "Queue" sections at each handover, never append
    claude/extraction-lab-requests, decision file 2026-11-12-03). 0021 step 1, PR #233, merged 2026-11-12; the maintainer
    agreed to its three recommendations (api.shell hidden until step 4; Flowsheet, Column and Reactor: the Method button
    opens their own Method page; an empty flowsheet on a phone opens on Inputs). Step 2's worker writes these answers
-   into docs/decisions/2026-11-12-01-ui-0021-shell-contract.md. Step 2 (Opus) starts in the first free slot.
+   into docs/decisions/2026-11-12-01-ui-0021-shell-contract.md. Step 2 (Opus) running: session_01FPbeWUQUvGVgVGax2pHMRY, branch claude/ui-0021-canvas-tabs, decision file 2026-11-12-04.
+   Extraction (Lab's 5 and 4): PR #234 open (refuse a boiling liquid on any stage; `adiabatic: true`; feed vapour up to
+   VF 0.1 condensed with a FEED_VAPOUR warning).
 3. **A lighter model for routine work.** `create_session` takes `model`. Use `claude-sonnet-5-5` for data fits with the
    existing scripts, merge conflicts, documentation, small fixes, and re-running a check; use `claude-opus-5-5` for new
    models, new solvers, proposals and engineering judgement. The coordinator itself can run on Sonnet: it plans,
