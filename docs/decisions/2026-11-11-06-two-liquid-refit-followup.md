@@ -10,12 +10,15 @@ test was changed.
   one usable vapour-liquid record per pair, the one already fitted: 1-butanol + water has Lladosa et al. 2008 (T-x, 15
   points) and two records with two points each; aniline + n-octane, acetonitrile + n-hexane, diethyl carbonate + water,
   dimethyl carbonate + glycerol and methanol + n-heptane have one each. Their liquid-liquid data are all in
-  `validation/data/two_liquids/lle/`. A search of OpenAlex for open vapour-liquid-liquid articles found Gomis et al.
-  2013 (J. Chem. Eng. Data 2013, water + n-butanol + cyclohexane, a ternary) and Garcia-Cano 2020 (Fluid Phase Equilib.
-  112617); their repository copies answered 503/403 to scripts, so they were not read. **To download by hand** if the
-  maintainer wants them: DOI 10.1021/je400501z (http://rua.ua.es/dspace/bitstream/10045/38775/3/2013_Gomis_etal_JCED.pdf)
-  and 10.1016/j.fluid.2020.112617 (http://rua.ua.es/dspace/bitstream/10045/107600/2/Garcia-Cano_Saquete_2020_FluidPhaseEquilibria_accepted.pdf).
-  No new data file was added; nothing was taken from memory.
+  `validation/data/two_liquids/lle/`. A search of OpenAlex for open vapour-liquid-liquid articles found Gomis et al. 2013
+  (J. Chem. Eng. Data, DOI 10.1021/je400501z, water + n-butanol + cyclohexane) and Garcia-Cano et al. 2020 (Fluid Phase
+  Equilib. 112617, water + 1-butanol + 2-butanol). Their repository copies refused scripts; the maintainer supplied both
+  PDFs (2026-11-12) and they were read. Neither adds a usable binary 1-butanol + water point: Gomis et al.'s binary
+  liquid-liquid row at 313.15 K (Table 1: 0.484 and 0.019 in 1-butanol) is the row already in the tie lines, and its Table 8
+  heterogeneous azeotrope (365.65 K, 0.750 water, 101.3 kPa) is one point, not stated to be the authors' own measurement and
+  in line with the existing 366 K rows; Garcia-Cano et al. take the binary water + 1-butanol data from earlier works
+  (their refs 14, 15) and measured the binary VLLE point of water + 2-butanol only (a pair already fitted). No new data
+  file was added; nothing was taken from memory.
 - **1-butanol + water: why it missed.** The 22 articles' 36 tie lines agree with each other (water-rich x1 0.016-0.022,
   butanol-rich 0.36-0.52 falling with T), so there is no disagreement to pool (DATA_RULES section 3). The joint fit gave
   every residual the same weight; the 15 bubble temperatures (0.5 K) then pulled the temperature-dependent NRTL away from
@@ -71,4 +74,3 @@ with `sets`. Making it the default needs the maintainer's decision and re-derive
      are re-derived on purpose (a separate pull request).
   2. Tie-line weights up to 10 in the joint fit and the tie lines in the comparison with a databank set: keep as a rule of
      DATA_RULES section 5? Recommended: yes, state it there.
-  3. Download the two articles above if wanted, for more 1-butanol and water vapour-liquid-liquid data.
