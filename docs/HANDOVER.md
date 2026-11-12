@@ -76,6 +76,13 @@ used).
 
 1. Relay the reports of the running workers. Lab's requests from CHEPTA-Lab#5: 1 in #227; 2-5 in the requests worker;
    6 (SRK + gE (MHV1) for CO2 + water) only if the maintainer asks.
+0. Usage rules (the maintainer, 2026-11-12, from session_01FPbeWW7BAkeYbFJnho1BYY's measurements): one Sonnet worker,
+   when no other worker runs: `npm test` quiet (dot reporter on screen, the full TAP written to a file at the same time;
+   `npm run test:verbose` keeps the old output; CI keeps the full output); never open the big data files or generated
+   lists whole and use `git diff --stat` for src/data and validation/data, with a lookup script
+   (`node scripts/show.mjs component ethanol`, `... pair ethanol water`); the "cheap checks" rule copied into AGENTS.md;
+   `@docs/DATA_RULES.md` removed from CLAUDE.md (AGENTS.md rule 1 still sends data work to it); one script for the
+   nine steps of DATA_RULES section 9. Shortening DATA_RULES.md itself: later, reviewed line by line by the maintainer.
 1a. Restart with Opus: acetic acid dimerization in columns (Lab blocker; the earlier prompt is in this session's
    events), then proposal 0021 step 1 (measured VLE points, x-y / γ / α diagrams).
 2. Column specifications follow-ups (after #227): inequality specifications first ("at least 0.99", "at most
