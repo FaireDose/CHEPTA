@@ -312,9 +312,10 @@ function checkSeparator(spec, configuration, sys) {
   if (!["none", "partial"].includes(reboiler)) throw fail("BAD_INPUT", `Column: reboiler must be "none" or "partial" (got ${JSON.stringify(spec.reboiler)}).`);
   if (configuration === "absorber" && reboiler !== "none") throw fail("BAD_INPUT", "Column: an absorber has no reboiler; a column with a reboiler and no condenser is a reboiled stripper (configuration \"stripper\").");
   const phases = spec.phases ?? "VL";
-  // two liquids on an absorber's stages: refused when solved (not built yet, the outcome "unsupported"), as "LL" is
-  if (phases === "VLL" || phases === "LL") return { mode: "rigorous", configuration, twoLiquids: phases };
-  if (phases !== "VL") throw fail("BAD_INPUT", `Column: ${what.toLowerCase()} holds a vapour and one liquid (phases "VL"); phases ${JSON.stringify(phases)} is not one of VL, VLL.`);
+  // two liquids on an absorber's or stripper's stages (phases "VLL"; decision 2026-11-12-02): the stage equations of
+  // two-liquids.js, as in distillation. Two liquids without a vapour ("LL") are refused when solved (the Extraction block)
+  if (phases === "LL") return { mode: "rigorous", configuration, twoLiquids: phases };
+  if (phases !== "VL" && phases !== "VLL") throw fail("BAD_INPUT", `Column: ${what.toLowerCase()} holds a vapour and one liquid (phases "VL") or two (phases "VLL"); phases ${JSON.stringify(phases)} is not one of VL, VLL.`);
   for (const k of ["reflux_liquid", "reflux_ratio", "condenser_duty_kW"]) if (has(spec, k)) throw fail("BAD_INPUT", `Column: ${k} needs a condenser, and ${what.toLowerCase()} has none.`);
   // the feed stages: one per inlet, 1 to N; the defaults put a liquid on the top and a gas on the bottom
   const fsList = !has(spec, "feed_stage") ? null : Array.isArray(spec.feed_stage) ? spec.feed_stage : [spec.feed_stage];
@@ -349,7 +350,7 @@ function checkSeparator(spec, configuration, sys) {
       duties.push({ stage: st, Q_W: q * 1000 });
     });
   }
-  const out = { mode: "rigorous", configuration, N, feedStages, condenser: "none", reboiler, phases: "VL", specs, duties, design, draws: [],
+  const out = { mode: "rigorous", configuration, N, feedStages, condenser: "none", reboiler, phases, specs, duties, design, draws: [],
     method: has(spec, "method") ? checkMethod(spec.method) : null };
   if (has(spec, "sizing")) out.sizing = hydraulicsOptions(spec.sizing);
   if (has(spec, "max_iterations")) {
@@ -749,7 +750,7 @@ registerUnit({
   dof,
   solve({ sys, inlets, spec, outletCount }) {
     if (spec.sideDraws) throw fail("NOT_AVAILABLE", `Column: side draws are built for distillation (a condenser and a reboiler); ${spec.configuration === "absorber" ? "an absorber" : "a stripper"} with a side draw is not built.`);
-    if (spec.twoLiquids) throw fail("NOT_AVAILABLE", `Column: ${spec.configuration === "absorber" ? "an absorber" : "a stripper"} holds a vapour and one liquid (phases "VL"); two liquids on its stages (phases "${spec.twoLiquids}") are not built yet.`);
+    if (spec.twoLiquids) throw fail("NOT_AVAILABLE", `Column: ${spec.configuration === "absorber" ? "an absorber" : "a stripper"} holds a vapour and one or two liquids (phases "VL" or "VLL"); two liquids without a vapour (phases "${spec.twoLiquids}") are an extraction: use the Extraction block (type "extraction").`);
     if (spec.extraction) throw fail("BAD_INPUT", "Column: two liquids without a vapour (phases \"LL\") are an extraction: use the Extraction block (type \"extraction\", under the Separator button; capability solve_extraction). The Column block solves \"VL\" and \"VLL\".");
     if (spec.mode === "rigorous") return solveRigorous(sys, inlets.in, spec, outletCount ?? 0);
     if (outletCount) throw fail("BAD_INPUT", "Column: a stream is connected to the side outlet, but side draws are the rigorous column's (mode: \"rigorous\", side_draws); the shortcut has a distillate and a bottoms only.");

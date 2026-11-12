@@ -19,8 +19,10 @@
  * Where a stage holds one liquid these are the one-liquid equations exactly. This is the usual way to write a
  * three-phase stage when its two liquids are not separated (both phases leave by the same downcomer): the
  * "effective K-value" of the whole liquid; written here from the phase-equilibrium conditions, not taken from a
- * source. A third liquid is refused (as by the flash). Only activity models (NRTL, UNIQUAC, Modified UNIFAC 2.0)
- * without the dimerizing acids' chemical theory can do it, as the flash drum.
+ * source. A third liquid is refused (as by the flash). Only activity models (NRTL, UNIQUAC, Modified UNIFAC 2.0) can do
+ * it, as the flash drum; with a dimerizing acid's chemical theory too (decision 2026-11-12-02): the stage's K-values
+ * K_i(x', y, T) are then sys.lnKAssociation's (the apparent vapour y of monomers and dimers; engine.js, cascadeThermo),
+ * and the liquid-liquid split does not involve the vapour.
  *
  * The two liquids are named by density (proposal 0015, section 5): "light" and "heavy", from the components' liquid
  * densities at T mixed ideally (the volumes add); without a density record, by the component each is richest in.
@@ -89,7 +91,8 @@ export function newtonLL(sys, z, T, K0) {
 
 /** The models that can hold two liquids on a stage. */
 export function canHoldTwoLiquids(sys) {
-  return sys.kind !== "eos" && sys.model !== "WILSON" && typeof sys.gammas === "function" && typeof sys.lnKValues === "function";
+  return sys.kind !== "eos" && sys.model !== "WILSON" && typeof sys.gammas === "function"
+    && (typeof sys.lnKValues === "function" || typeof sys.lnKAssociation === "function");
 }
 
 /**
@@ -101,7 +104,7 @@ export function twoLiquidThermo(th, sys) {
     throw fail("NOT_AVAILABLE", 'Column: two liquids on the stages (phases "VLL") cannot be looked for with Wilson: the Wilson equation cannot predict two liquids (proposal 0016). Choose NRTL, UNIQUAC or Modified UNIFAC 2.0 for the column (its own property method), or phases "VL".');
   }
   if (!canHoldTwoLiquids(sys)) {
-    throw fail("NOT_AVAILABLE", `Column: two liquids on the stages (phases "VLL") need an activity model (NRTL, UNIQUAC, Modified UNIFAC 2.0) without the dimerizing acids' chemical theory, as the flash drum does; ${sys.kind === "eos" ? `${sys.model} is an equation of state` : typeof sys.lnKAssociation === "function" ? `this system's vapour follows the ${sys.info.vapour} (the three-phase flash with it is not built)` : "this system has none"}. Choose such a method for the column (its own property method), or phases "VL".`);
+    throw fail("NOT_AVAILABLE", `Column: two liquids on the stages (phases "VLL") need an activity model (NRTL, UNIQUAC, Modified UNIFAC 2.0), as the flash drum does; ${sys.kind === "eos" ? `${sys.model} is an equation of state` : "this system has none"}. Choose such a method for the column (its own property method), or phases "VL".`);
   }
   const lastK = new Map();     // stage -> the K-values of its last split
   const memo = new Map();      // stage -> { x, T, s }: lnK and hL ask for the same split one after the other
@@ -153,11 +156,26 @@ export function twoLiquidThermo(th, sys) {
     const s = split(x, T, j);
     return s ? (1 - s.beta) * th.hL(s.x1, T) + s.beta * th.hL(s.x2, T) : th.hL(x, T);
   };
-  // the bubble temperature of a whole liquid that may split: sum_i K_i x_i = 1 with the whole liquid's K-values
+  // the bubble temperature of a whole liquid that may split: sum_i K_i x_i = 1 with the whole liquid's K-values. With a
+  // dimerizing acid the K-values depend on the vapour y (its dimers), so y is iterated to y = K x / sum K x at each T
+  // (successive substitution; the same incipient vapour as the flash's bubble point)
+  const assoc = typeof sys.lnKValues !== "function";
+  const sumKx = (x, T) => {
+    let y = x, s = 0;
+    for (let k = 0; k < (assoc ? 50 : 1); k++) {
+      const Kx = lnK(x, y, T, -2).map((v, i) => Math.exp(v) * x[i]);
+      s = sum(Kx);
+      const yn = Kx.map(v => v / s);
+      const d = Math.max(...yn.map((v, i) => Math.abs(v - y[i])));
+      y = yn;
+      if (d < 1e-12) break;
+    }
+    return s;
+  };
   const bubbleT = x => {
     const T0 = th.bubbleT(x);
     if (!split(x, T0, -2)) return T0;
-    const f = T => sum(lnK(x, x, T, -2).map((v, i) => Math.exp(v) * x[i])) - 1;
+    const f = T => sumKx(x, T) - 1;
     let lo = T0, flo = f(lo), hi = T0, fhi = flo;
     for (let k = 0; k < 40 && flo > 0; k++) { hi = lo; fhi = flo; lo -= 2; flo = f(lo); }
     for (let k = 0; k < 40 && fhi < 0; k++) { lo = hi; flo = fhi; hi += 2; fhi = f(hi); }
