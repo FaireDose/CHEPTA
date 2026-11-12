@@ -63,9 +63,11 @@ export function asFlowsheet(state, set, ui) {
 export function switchMode(spec, mode, done) {
   if (mode !== "rigorous") return { ...spec, mode };
   const s = done?.state;
+  // design specifications kept from an earlier rigorous column (milestone M4) already fill the column's two
+  const design = (Array.isArray(spec.specifications) ? spec.specifications.length : 0) + ["distillate_purity", "bottoms_purity"].filter(k => spec[k] != null).length;
   return { ...spec, mode, stages: spec.stages ?? s?.stages ?? 20, feed_stage: spec.feed_stage ?? s?.feed_stage ?? 10,
-    ...(spec.reflux_ratio == null ? { reflux_ratio: +(s?.R ?? 2).toPrecision(3) } : {}),
-    ...(spec.distillate_kmol_h == null && spec.bottoms_kmol_h == null && s?.D_kmol_h != null ? { distillate_kmol_h: +s.D_kmol_h.toPrecision(4) } : {}) };
+    ...(spec.reflux_ratio == null && design < 2 ? { reflux_ratio: +(s?.R ?? 2).toPrecision(3) } : {}),
+    ...(spec.distillate_kmol_h == null && spec.bottoms_kmol_h == null && s?.D_kmol_h != null && design < 1 ? { distillate_kmol_h: +s.D_kmol_h.toPrecision(4) } : {}) };
 }
 
 /** The ribbon: the setup, the column's method, and what the Inputs panel shows. */
