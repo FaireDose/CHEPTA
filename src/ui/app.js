@@ -54,7 +54,8 @@ import { pure } from "../thermo/pure.js";
 import { SOLID_UNITS } from "./solubility-units.js";
 import pkg from "../../package.json" with { type: "json" };
 import { appNext } from "./app-next.js";
-import { shellContext, sourcesOf, statusOf, setsRuleOf, unitsOf, isBlank, OWN_METHOD } from "./shell-contract.js";
+import { shellContext, sourcesOf, statusOf, setsRuleOf, unitsOf, isBlank, OWN_METHOD, dataOf, missingOf } from "./shell-contract.js";
+import { CANVAS_TABS, tabLabel, tabOf, tabMove, staysOnCanvas, warningCount, exportTables, dataPane, warningList, twoStepWarning } from "./canvas-tabs.js";
 
 const PROPERTY_GLYPHS = [
   ["density", () => "ρ", "Density"], ["enthalpy", () => "h", "Enthalpy"], ["cp", () => ["c", h("sub", {}, "p")], "Heat capacity"],
@@ -169,6 +170,7 @@ export function app(target, cfg = {}) {
   const ui = {
     size: sizeOf(root.clientWidth || 1200), status: { busy: false, ms: null, error: null, info: null },
     sources: { query: "", kind: "all", mine: false }, opener: null, drawnUtility: null,
+    canvasTab: "plot", tabsFilled: {},   // the open canvas tab (new layout only; not saved) and the tabs built since the last calculation
     lastWs: {},   // the workspace each section had open last
     records: {},   // the last result of a view that a project file keeps (the flash stream table), by view
     projectNote: "",
@@ -190,7 +192,18 @@ export function app(target, cfg = {}) {
   const notes = h("div", { class: "fa-notes" });
   const plot = h("div", { class: "fug-plot fa-plot" });
   const below = h("div", { class: "fa-below" });
-  const canvas = h("main", { class: "fa-canvas" }, canvasBar, notes, plot, below, canvasFoot);
+  // the canvas tabs of the reorganized layout (proposal 0021, step 2; canvas-tabs.js): asked for by app-next.js only
+  // (an internal key, not part of the public configuration); the classic canvas is one column, as before
+  const tabbed = cfg.canvasTabs === true;
+  const tabBar = h("div", { class: "fa-tabs", role: "tablist", "aria-label": "What the canvas shows" });
+  const tableOwn = h("div", { class: "fa-tab-own" });   // a view's own table (the flash's stream table), ctx.tabs.table; the downloads (below, canvasFoot) come first
+  const tableGen = h("div");                            // else the tables of its Excel export, built when the tab opens
+  const dataOwn = h("div", { class: "fa-tab-own" });    // the measured sets of a binary diagram, the user's data note
+  const dataBox = h("div");
+  const warnBox = h("div", { class: "fa-tab-warn" });
+  const tabPanel = (id, ...kids) => h("div", { class: "fa-tabpanel", role: "tabpanel", id: `fa-tp-${id}-${uid}`, "aria-labelledby": `fa-tab-${id}-${uid}`, "data-tab": id }, ...kids);
+  const panels = tabbed ? { plot: tabPanel("plot", plot), table: tabPanel("table", below, canvasFoot, tableOwn, tableGen), data: tabPanel("data", dataBox), warnings: tabPanel("warnings", warnBox) } : null;
+  const canvas = h("main", { class: "fa-canvas" }, canvasBar, notes, ...(tabbed ? [tabBar, ...Object.values(panels)] : [plot, below, canvasFoot]));
   const side = h("div", { class: "fug-side fa-readout", "aria-live": "polite" });
   const inspectorExtra = h("div", { class: "fa-inspector-extra" });
   const provenance = h("div", { class: "fa-provenance" });
@@ -1301,6 +1314,7 @@ export function app(target, cfg = {}) {
       const v = state.view, check = viewCheck(state, v);
       let info = null, error = null;
       notes.replaceChildren(); below.replaceChildren(); inspectorExtra.replaceChildren(); provenance.replaceChildren(); side.hidden = false;
+      if (tabbed) { tableOwn.replaceChildren(); dataOwn.replaceChildren(); ui.tabsFilled = {}; }
       canvasFoot.hidden = true; exportNote.textContent = "";
       delete plot.dataset.view;
       if (!check.ok) {
@@ -1309,7 +1323,8 @@ export function app(target, cfg = {}) {
       } else {
         try {
           const viewState = { ...state, components: check.use, z: state.z[v] ?? null };
-          info = renderView(v, { state: viewState, set, plot, side, notes, below, extra: inspectorExtra, compact: ui.size === "narrow", uid, badge, ui });
+          info = renderView(v, { state: viewState, set, plot, side, notes, below, extra: inspectorExtra, compact: ui.size === "narrow", uid, badge, ui,
+            tabs: tabbed ? { table: tableOwn, data: dataOwn } : null });
           if (info?.record?.flash) ui.records.flash = { key: flashKey(), record: info.record.flash };
           userDataNote(v === "flowsheet" ? state.flowsheet.components : check.use);
           provenance.append(h("button", { type: "button", class: "fa-mini", "data-fk": "src-here",
@@ -1325,9 +1340,71 @@ export function app(target, cfg = {}) {
       box.classList.remove("fa-busy");
       ui.status = { busy: false, ms: check.ok ? performance.now() - t0 : null, error: error ?? info?.error ?? null, info, waiting: !check.ok };
       canvasFoot.hidden = !(check.ok && !error && typeof info?.export === "function");
+      if (tabbed) sortIntoTabs(check, ui.status.error);
       renderStatus();
     };
     if (now) run(); else setTimeout(run, 16);
+  }
+
+  // ---- the canvas tabs (new layout only; canvas-tabs.js)
+  /** After a calculation: the notes of the canvas into the Warnings tab (an error or "Solving" stays above the tabs,
+   *  and is listed there too), the user's data note into the Data tab, with the Results panel's warnings, the error
+   *  and the problems of the inputs; then the tab bar with its count. */
+  function sortIntoTabs(check, error) {
+    const items = [];
+    for (const n of [...notes.children]) {
+      if (n.classList.contains("fa-userdata-note")) dataOwn.append(n);
+      else if (staysOnCanvas({ role: n.getAttribute("role") })) { if (n.matches(".fa-warn, .fug-warn")) items.push(n.cloneNode(true)); }
+      else { n.remove(); items.push(n); }
+    }
+    // the Results panel's warnings: listed in the tab too, and in two steps there as well (one line, then the text)
+    for (const w of side.querySelectorAll(".fa-warn")) { items.push(w.cloneNode(true)); w.replaceWith(twoStepWarning(w)); }
+    const missing = check.ok ? null : missingOf(state);
+    const problems = missing && !missing.blank ? missing.problems.map(p => warning(p.message, { attrs: { role: "note" } })) : [];
+    const err = error ? [warning(error, { title: `Not calculated: ${summaryOf(error)}`, attrs: { role: "note" } })] : [];
+    const count = warningCount({ warnings: items.length, error, missing });
+    // in two steps (the maintainer, 2026-11-12): one line each and the count, the whole text when pressed; the error
+    // that stopped the calculation is shown whole
+    warnBox.replaceChildren(...(count ? warningList([...err, ...problems, ...items], { open: new Set(err) }) : []));
+    if (!count) warnBox.append(h("p", { class: "fa-tab-none" }, check.ok || missing?.blank ? "No warning: nothing in this calculation needs a remark." : "No warning."));
+    ui.warnCount = count;
+    renderTabs();
+  }
+  function renderTabs() {
+    if (!tabbed) return;
+    const at = tabOf(ui.canvasTab);
+    tabBar.replaceChildren(...CANVAS_TABS.map((t, i) => {
+      const on = t.id === at, n = t.id === "warnings" ? ui.warnCount ?? 0 : 0;
+      return h("button", { type: "button", class: "fa-tab", role: "tab", id: `fa-tab-${t.id}-${uid}`, "aria-controls": `fa-tp-${t.id}-${uid}`,
+        "aria-selected": String(on), tabindex: on ? "0" : "-1", "data-fk": `tab-${t.id}`,
+        "aria-label": n ? `${tabLabel(t.id, state.view)}: ${n}` : undefined,
+        on: { click: () => showTab(t.id), keydown: ev => {
+          const to = tabMove(ev.key, i);
+          if (to == null) return;
+          ev.preventDefault(); showTab(CANVAS_TABS[to].id); tabBar.querySelector(`[data-fk="tab-${CANVAS_TABS[to].id}"]`)?.focus();
+        } } },
+      tabLabel(t.id, state.view), n ? h("span", { class: "fa-tab-count", "aria-hidden": "true" }, String(n)) : null);
+    }));
+    for (const [id, p] of Object.entries(panels)) p.hidden = id !== at;
+    fillTab(at);
+  }
+  /** Show a canvas tab; the Table and the Data are built when first opened after a calculation. */
+  function showTab(id) { ui.canvasTab = tabOf(id); renderTabs(); }
+  function fillTab(id) {
+    if (ui.tabsFilled[id] || ui.status.busy) return;
+    ui.tabsFilled[id] = true;
+    if (id === "table") {
+      const exp = ui.status.info?.export;
+      let made = null;
+      if (!tableOwn.childNodes.length && typeof exp === "function" && !ui.status.error) {
+        try { made = exportTables(exp()); } catch (e) { made = warning(`The table could not be made: ${e.message}`, { attrs: { role: "note" } }); }
+      }
+      const none = !made && !tableOwn.childNodes.length && !below.childNodes.length;
+      tableGen.replaceChildren(...(made ? [made] : []), ...(none ? [h("p", { class: "fa-tab-none" }, ui.status.waiting || !missingOf(state).complete ? "No table until the inputs are complete." : ui.status.error ? "No table: the calculation stopped (see Warnings)." : "This view has no table.")] : []));
+    } else if (id === "data") {
+      dataBox.replaceChildren(dataPane({ data: dataOf(state, ui.status.info), sources: sourcesOf(state), own: dataOwn,
+        onOpen: () => { ui.sources.mine = true; ui.sources.query = ""; ui.sources.kind = "all"; set({ utility: "sources" }, { canvas: false }); } }));
+    }
   }
 
   function needInputs(v, check) {
@@ -1401,6 +1478,8 @@ export function app(target, cfg = {}) {
       f.sel = null; f.setup = "method";
       set({ panels: { left: true } });
     },
+    /** Open a canvas tab ("plot", "table", "data", "warnings"; the new layout's canvas only) and say which is open. */
+    tab(id) { if (tabbed && id != null) showTab(id); return tabbed ? tabOf(ui.canvasTab) : null; },
     /** Be told after every change the workbench shows (state, size, calculation); returns a function that stops it. */
     subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); },
   }) });

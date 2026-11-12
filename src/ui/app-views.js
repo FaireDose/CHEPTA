@@ -198,7 +198,8 @@ function binaryDiagram(ctx, sys, at, MW, renderPhase) {
     side.replaceChildren(h("div", { class: "fa-empty" }, "No readout: this plot needs an activity model."));
   } else curve = renderBinaryPlot(plot, side, sys, at, { kind, basis: state.basis, MW, units: state.units, compact, measured: sets });
   plot.prepend(plotSwitch(kind, isobaric ? "T-x-y" : "P-x-y", v => set({ binaryPlot: v })));
-  plot.append(measuredList(m, { sys, isobaric, fittedModel, shown: state.measured, set, units: state.units }));
+  // the list of the measured sets: under the plot, or in the Data tab of the new layout (proposal 0021, step 2)
+  (ctx.tabs?.data ?? plot).append(measuredList(m, { sys, isobaric, fittedModel, shown: state.measured, set, units: state.units }));
   const finish = desc => {
     if (!desc) return undefined;
     const status = h("span", { class: "fa-in-hint", role: "status" });
@@ -772,10 +773,13 @@ function flashView(ctx) {
     h("button", { type: "button", class: "fa-mini", "data-fk": "csv-save", on: { click: () => saveText(csv, file, "text/csv;charset=utf-8", status) } }, icon("download", 15), "Download CSV"),
     h("button", { type: "button", class: "fa-mini", "data-fk": "csv-copy", on: { click: () => copyText(csv, status, csvBox) } }, icon("copy", 15), "Copy CSV"));
 
-  plot.replaceChildren(h("div", { class: "fa-flash" },
-    h("div", { class: "fug-eyebrow" }, `${r.phases.length === 1 ? `One phase: ${phaseName(r.phases[0]).toLowerCase()}` : `${r.phases.length} phases`} at ${fmtTemp(r.T, u, 2)} and ${fmtP(r.P, u)}`),
-    bar, tableEl, tools, status, csvBox,
-    h("div", { class: "fug-foot" }, `Enthalpy reference: each component as an ideal gas at 298.15 K (h = 0); the heat duty does not depend on it. Compositions in ${mass ? "wt %" : "mole fractions"}; the CSV has both, and the model, specification and sources.`)));
+  const eyebrow = h("div", { class: "fug-eyebrow" }, `${r.phases.length === 1 ? `One phase: ${phaseName(r.phases[0]).toLowerCase()}` : `${r.phases.length} phases`} at ${fmtTemp(r.T, u, 2)} and ${fmtP(r.P, u)}`);
+  const foot = h("div", { class: "fug-foot" }, `Enthalpy reference: each component as an ideal gas at 298.15 K (h = 0); the heat duty does not depend on it. Compositions in ${mass ? "wt %" : "mole fractions"}; the CSV has both, and the model, specification and sources.`);
+  // the new layout (proposal 0021, step 2): the split on the Plot tab, the stream table and its downloads on the Table tab
+  if (ctx.tabs) {
+    plot.replaceChildren(h("div", { class: "fa-flash" }, eyebrow, bar));
+    ctx.tabs.table.append(h("div", { class: "fa-flash" }, h("div", { class: "fug-eyebrow" }, "Streams"), tools, status, csvBox, tableEl, foot));
+  } else plot.replaceChildren(h("div", { class: "fa-flash" }, eyebrow, bar, tableEl, tools, status, csvBox, foot));
 
   side.replaceChildren(
     h("div", {}, h("div", { class: "fug-eyebrow" }, "Vapour fraction"), h("div", { class: "fug-big" }, fmtNum(r.VF, 4))),

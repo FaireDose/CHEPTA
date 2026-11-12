@@ -14,6 +14,8 @@
  *    here), and the units (pressed, the Settings);
  *  - the supporting tools in four places instead of seven: Project, Data (Library, My data, Sources), Settings,
  *    Help (AI chat, Feedback);
+ *  - the canvas in tabs, Plot, Table, Data and Warnings, in every workspace (step 2; canvas-tabs.js, built by app.js
+ *    when this shell asks for them);
  *  - when narrow (a phone, a chat panel): one pane at a time, Inputs or Results, instead of one long page, and the
  *    toolbar as one row that scrolls sideways.
  * What the shell shows about the calculation (method, data, units, what is missing) comes from the workbench's
@@ -29,6 +31,7 @@ import { app } from "./app.js";
 import { WORKSPACES, SECTIONS, UTILITIES } from "./workspaces.js";
 import { modelPicker, liquidPicker, equationPicker, workbenchPatch } from "./model-picker.js";
 import { OWN_METHOD } from "./shell-contract.js";
+import { CANVAS_TABS_CSS } from "./canvas-tabs.js";
 
 /** The workspaces whose method is the workbench's own (state.model), for "From the flowsheet". */
 export const PICKER_WORKSPACES = ["equilibrium", "flash", "hx", "pipe"];
@@ -164,7 +167,7 @@ function injectNextStyles(doc) {
   el.textContent = `.fn-shell{${TOKENS_LIGHT}}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .fn-shell{${TOKENS_DARK}} }
 :root[data-theme="dark"] .fn-shell{${TOKENS_DARK}}
-${NEXT_CSS}`;
+${NEXT_CSS}${CANVAS_TABS_CSS}`;
   doc.head.appendChild(el);
 }
 
@@ -190,7 +193,9 @@ export function appNext(target, cfg = {}) {
   root.replaceChildren(shell);
 
   const { layout: _layout, ...inner } = cfg;
-  const api = app(host, inner);   // injects the workbench's styles; the shell's come after them
+  // the workbench with its canvas in tabs (Plot, Table, Data, Warnings: proposal 0021, step 2); it injects its
+  // styles, the shell's come after them
+  const api = app(host, { ...inner, canvasTabs: true });
   injectNextStyles(doc);
 
   const ui = { pane: "results", menu: null, lastWs: null, auto: true, popup: null };

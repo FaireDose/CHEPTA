@@ -226,6 +226,8 @@ Each is one pull request with its screenshots (UI_GUIDE.md section 7) and its te
      the classic status bar and by the new layout through `app()`'s hidden `shell` property.
 2. **Canvas tabs** (Plot, Table, Data, Warnings) in the phase diagrams and the Flash, then the other workspaces; the
    downloads move to the Table tab.
+   - Built (docs/decisions/2026-11-12-04-ui-0021-canvas-tabs.md; in review): `src/ui/canvas-tabs.js`, in every
+     workspace of the new layout; the classic canvas is unchanged.
 3. **Numbered steps** for the Flash, the Heat exchanger and the Pipe; the heat exchanger's empty band (finding 9)
    goes with it.
 4. **The new layout becomes the default**, after the maintainer's check with users; `layout: "classic"` keeps the

@@ -54,4 +54,10 @@ No number, parameter or source changed, so there is nothing to compare with a so
 | 2 | The Flowsheet, the Column and the Reactor: the Method button opens their Method page (with the method advice, the solid in equilibrium, the recycle solver), or a pop-up list like the other workspaces? | Their page: it holds more than the lists, and the person sees the advice. |
 | 3 | An empty Flowsheet on a phone opens on Inputs (components first), not on the drawing? | Yes: nothing can be placed before the components are chosen. |
 
-The answers are recorded here when given.
+## What the maintainer decided (2026-11-12, relayed by the coordinating session)
+
+All three as recommended:
+
+1. `api.shell` stays hidden (not enumerable, not documented) until the new layout is the default (step 4).
+2. The Flowsheet, the Column and the Reactor: the Method button opens their own Method page.
+3. An empty Flowsheet on a phone opens on the Inputs pane (components first).
