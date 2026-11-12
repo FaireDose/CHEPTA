@@ -59,7 +59,11 @@ current: replace its "State" and "Queue" sections at each handover, never append
    opens their own Method page; an empty flowsheet on a phone opens on Inputs). Step 2's worker writes these answers
    into docs/decisions/2026-11-12-01-ui-0021-shell-contract.md. Step 2 (Opus) running: session_01FPbeWUQUvGVgVGax2pHMRY, branch claude/ui-0021-canvas-tabs, decision file 2026-11-12-04.
    Extraction (Lab's 5 and 4): #234 merged 2026-11-12 with the maintainer's answers. 0021 step 2 (canvas tabs, every
-   workspace): PR #235 open; step 3 (Opus) starts after it is merged. Running: acetic acid below its melting point,
+   workspace): PR #235 open; the maintainer agreed to its four recommendations and asked for warnings in two steps (a
+   short form, the full text on a press), being added to #235. Step 3 (Opus) starts after it is merged. Then, the
+   maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
+   the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
+   and so on); one Opus or Sonnet worker after step 3, its own PR, recorded as a new row of proposal 0021 section 4. Running: acetic acid below its melting point,
    Lab's 3 (Sonnet, session_01FPbeWTusiqkoJkDYZMVMki, branch claude/acetic-acid-supercooled, decision file
    2026-11-12-05). Next free slot after step 3: Lab's 7 (splitter by flow; the design specification through a
    proposal). Small, seen in #235: "Sources used here" (sourceUsedFor) lists excess-enthalpy articles of other mixtures
