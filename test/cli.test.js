@@ -67,7 +67,7 @@ test("chepta request: notes and qualifications survive; missing data stays missi
 test("chepta: exit codes per outcome, and the command line's own errors", () => {
   assert.equal(cli(["request", file("bad.json", { capability: "solve_flowsheet", input: {} })]).code, 2);
   assert.equal(cli(["request", file("col.json", { capability: "solve_column", input: { components: ["benzene", "toluene"], thermo: { model: "ideal" },
-    feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { configuration: "stripper", stages: 5, reboiler: "partial", boilup_ratio: 1, phases: "VLL" } } })]).code, 4);   // unsupported: two liquids on a stripper's stages (this line asked for a purity until milestone M4 built it)
+    feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { configuration: "stripper", stages: 5, reboiler: "partial", boilup_ratio: 1, phases: "LL" } } })]).code, 4);   // unsupported: two liquids without a vapour on a stripper's stages (this line asked for a purity until milestone M4 built it, then for phases "VLL" until decision 2026-11-12-02 built it)
   const late = cli(["run", EXAMPLE, "--time-ms", "1"]);
   assert.equal(late.code, 7);
   assert.equal(late.json.outcome, "out_of_time");

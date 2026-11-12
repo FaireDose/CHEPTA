@@ -3,39 +3,258 @@
   "about": "Vapour + two liquids with acetic acid's dimerizing vapour (the chemical theory; decision docs/decisions/2026-11-12-02-acid-chemical-theory-vlle.md): flashes of water + acetic acid + ethyl acetate and columns whose stages hold two liquids. Engineering cases built for this check (not published problems): their answers are the independent reference's, validation/python/reference_vlle_acid.py (fixture validation/fixtures/vlle_acid.json), read by test/vlle-acid.test.js. Mole fractions in the order of components; flows in mol/s; feeds of the absorber at the stated temperature.",
   "method_choice": "docs/METHOD_SELECTION.md rule 3: polar, no electrolytes, 1 atm, two liquids possible, fitted pairs: NRTL (CHEPTA's default sets: water + acetic acid Chang et al. 2005, water + ethyl acetate Grande and Marschoff 2005, ethyl acetate + acetic acid Brandt et al. 2014) with an ideal-gas vapour; acetic acid's vapour by the chemical theory (monomers and dimers), CHEPTA's default for a dimerizing acid.",
   "tolerances": {
-    "flash_against_reference": { "T_K_absolute": 1e-6, "mole_fractions_absolute": 1e-7, "fractions_absolute": 1e-7 },
-    "columns_against_reference": { "T_K_absolute": 1e-5, "flows_relative": 1e-6, "mole_fractions_absolute": 1e-7 },
+    "flash_against_reference": {
+      "T_K_absolute": 1e-06,
+      "mole_fractions_absolute": 1e-07,
+      "fractions_absolute": 1e-07
+    },
+    "columns_against_reference": {
+      "T_K_absolute": 1e-05,
+      "flows_relative": 1e-06,
+      "mole_fractions_absolute": 1e-07
+    },
     "why": "As the other column cases (validation/data/columns/): both sides solve the same equations to residuals of 1e-10 or less, by different routes (the engine with the fugacity coefficients of the apparent vapour, the reference from the liquid side), so the difference is the solvers' tolerance."
   },
   "flashes": [
-    { "id": "F1-LL", "components": ["water", "acetic-acid", "ethyl-acetate"], "model": "NRTL", "z": [0.5, 0.1, 0.4], "T_K": 340.0, "P_kPa": 101.325, "expect": "LL" },
-    { "id": "F2-VLL", "components": ["water", "acetic-acid", "ethyl-acetate"], "model": "NRTL", "z": [0.5, 0.1, 0.4], "T_K": 347.0, "P_kPa": 101.325, "expect": "VLL" },
-    { "id": "F3-VLL", "components": ["water", "acetic-acid", "ethyl-acetate"], "model": "NRTL", "z": [0.5, 0.1, 0.4], "T_K": 348.0, "P_kPa": 101.325, "expect": "VLL" },
-    { "id": "F4-VL", "components": ["water", "acetic-acid", "ethyl-acetate"], "model": "NRTL", "z": [0.5, 0.1, 0.4], "T_K": 355.0, "P_kPa": 101.325, "expect": "VL" },
-    { "id": "F5-PVF", "components": ["water", "acetic-acid", "ethyl-acetate"], "model": "NRTL", "z": [0.5, 0.1, 0.4], "VF": 0.3, "T_start_K": 347.5, "P_kPa": 101.325, "expect": "VLL" },
-    { "id": "F6-VLL-acid-rich", "components": ["water", "acetic-acid", "ethyl-acetate"], "model": "NRTL", "z": [0.55, 0.15, 0.3], "T_K": 348.5, "P_kPa": 101.325, "expect": "VLL" }
+    {
+      "id": "F1-LL",
+      "components": [
+        "water",
+        "acetic-acid",
+        "ethyl-acetate"
+      ],
+      "model": "NRTL",
+      "z": [
+        0.5,
+        0.1,
+        0.4
+      ],
+      "T_K": 340.0,
+      "P_kPa": 101.325,
+      "expect": "LL"
+    },
+    {
+      "id": "F2-VLL",
+      "components": [
+        "water",
+        "acetic-acid",
+        "ethyl-acetate"
+      ],
+      "model": "NRTL",
+      "z": [
+        0.5,
+        0.1,
+        0.4
+      ],
+      "T_K": 347.0,
+      "P_kPa": 101.325,
+      "expect": "VLL"
+    },
+    {
+      "id": "F3-VLL",
+      "components": [
+        "water",
+        "acetic-acid",
+        "ethyl-acetate"
+      ],
+      "model": "NRTL",
+      "z": [
+        0.5,
+        0.1,
+        0.4
+      ],
+      "T_K": 348.0,
+      "P_kPa": 101.325,
+      "expect": "VLL"
+    },
+    {
+      "id": "F4-VL",
+      "components": [
+        "water",
+        "acetic-acid",
+        "ethyl-acetate"
+      ],
+      "model": "NRTL",
+      "z": [
+        0.5,
+        0.1,
+        0.4
+      ],
+      "T_K": 355.0,
+      "P_kPa": 101.325,
+      "expect": "VL"
+    },
+    {
+      "id": "F5-PVF",
+      "components": [
+        "water",
+        "acetic-acid",
+        "ethyl-acetate"
+      ],
+      "model": "NRTL",
+      "z": [
+        0.5,
+        0.1,
+        0.4
+      ],
+      "VF": 0.3,
+      "T_start_K": 347.5,
+      "P_kPa": 101.325,
+      "expect": "VLL"
+    },
+    {
+      "id": "F6-VLL-acid-rich",
+      "components": [
+        "water",
+        "acetic-acid",
+        "ethyl-acetate"
+      ],
+      "model": "NRTL",
+      "z": [
+        0.55,
+        0.15,
+        0.3
+      ],
+      "T_K": 348.5,
+      "P_kPa": 101.325,
+      "expect": "VLL"
+    }
   ],
   "columns": [
     {
       "id": "C1-distillation-VLL",
       "title": "Water + acetic acid + ethyl acetate, 12 stages, total condenser, two liquids on the top stage",
-      "components": ["water", "acetic-acid", "ethyl-acetate"], "pressure_kPa": 101.325,
-      "thermo": { "kind": "chepta", "model": "NRTL", "vapour": "ideal", "association": "chemical theory", "sets": "default" },
-      "column": { "configuration": "distillation", "stages": 12, "condenser": "total", "reboiler": "partial",
-        "feed": { "stage": 6, "flow_mol_s": 100.0, "z": [0.5, 0.3, 0.2], "q": 1 } },
-      "specs": [{ "kind": "reflux_ratio", "value": 2.0 }, { "kind": "distillate_flow_mol_s", "value": 40.0 }]
+      "components": [
+        "water",
+        "acetic-acid",
+        "ethyl-acetate"
+      ],
+      "pressure_kPa": 101.325,
+      "thermo": {
+        "kind": "chepta",
+        "model": "NRTL",
+        "vapour": "ideal",
+        "association": "chemical theory",
+        "sets": "default"
+      },
+      "column": {
+        "configuration": "distillation",
+        "stages": 12,
+        "condenser": "total",
+        "reboiler": "partial",
+        "feed": {
+          "stage": 6,
+          "flow_mol_s": 100.0,
+          "z": [
+            0.5,
+            0.3,
+            0.2
+          ],
+          "q": 1
+        }
+      },
+      "specs": [
+        {
+          "kind": "reflux_ratio",
+          "value": 2.0
+        },
+        {
+          "kind": "distillate_flow_mol_s",
+          "value": 40.0
+        }
+      ]
     },
     {
       "id": "C2-absorber-VLL",
       "title": "Water + acetic acid + ethyl acetate, absorber of 6 stages, a two-liquid solvent on the top and a gas on the bottom: two liquids on every stage",
-      "components": ["water", "acetic-acid", "ethyl-acetate"], "pressure_kPa": 101.325,
-      "thermo": { "kind": "chepta", "model": "NRTL", "vapour": "ideal", "association": "chemical theory", "sets": "default" },
-      "column": { "configuration": "absorber", "stages": 6, "condenser": "none", "reboiler": "none",
+      "components": [
+        "water",
+        "acetic-acid",
+        "ethyl-acetate"
+      ],
+      "pressure_kPa": 101.325,
+      "thermo": {
+        "kind": "chepta",
+        "model": "NRTL",
+        "vapour": "ideal",
+        "association": "chemical theory",
+        "sets": "default"
+      },
+      "column": {
+        "configuration": "absorber",
+        "stages": 6,
+        "condenser": "none",
+        "reboiler": "none",
         "feeds": [
-          { "stage": 1, "flow_mol_s": 20.0, "z": [0.7142857142857143, 0.07142857142857142, 0.21428571428571427], "T_K": 320.0, "phase": "liquid" },
-          { "stage": 6, "flow_mol_s": 5.0, "z": [0.29411764705882354, 0.11764705882352941, 0.5882352941176471], "T_K": 365.0, "phase": "vapour" }
-        ] },
+          {
+            "stage": 1,
+            "flow_mol_s": 20.0,
+            "z": [
+              0.7142857142857143,
+              0.07142857142857142,
+              0.21428571428571427
+            ],
+            "T_K": 320.0,
+            "phase": "liquid"
+          },
+          {
+            "stage": 6,
+            "flow_mol_s": 5.0,
+            "z": [
+              0.29411764705882354,
+              0.11764705882352941,
+              0.5882352941176471
+            ],
+            "T_K": 365.0,
+            "phase": "vapour"
+          }
+        ]
+      },
       "specs": []
+    },
+    {
+      "id": "C3-decanter-VLL",
+      "title": "Water + acetic acid + ethyl acetate, 10 stages with a decanter: the heavy (water-rich) liquid refluxed, the light one the distillate",
+      "components": [
+        "water",
+        "acetic-acid",
+        "ethyl-acetate"
+      ],
+      "pressure_kPa": 101.325,
+      "thermo": {
+        "kind": "chepta",
+        "model": "NRTL",
+        "vapour": "ideal",
+        "association": "chemical theory",
+        "sets": "default"
+      },
+      "column": {
+        "configuration": "distillation",
+        "stages": 10,
+        "condenser": "decanter",
+        "reflux_liquid": "heavy",
+        "reboiler": "partial",
+        "feed": {
+          "stage": 4,
+          "flow_mol_s": 27.77777777777778,
+          "z": [
+            0.5,
+            0.3,
+            0.2
+          ],
+          "q": 1
+        }
+      },
+      "specs": [
+        {
+          "kind": "distillate_flow_mol_s",
+          "value": 5.555555555555555
+        }
+      ],
+      "reference_start": {
+        "why": "the decanter column of reference_mesh_vll.DecanterColumn starts from the same column with a total condenser",
+        "reflux_ratio": 2.0
+      }
     }
   ]
 }

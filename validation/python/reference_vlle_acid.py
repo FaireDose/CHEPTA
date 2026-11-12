@@ -41,7 +41,7 @@ from scipy.optimize import brentq, root
 
 from reference_mesh import column_of
 from reference_mesh_acid import ActivityDimer
-from reference_mesh_vll import TwoLiquids
+from reference_mesh_vll import TwoLiquids, DecanterColumn, profile_vll
 import reference_mesh_absorber as absorber
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -184,6 +184,18 @@ def main():
             th = (TwoLiquidsDimer if dimers else TwoLiquids)(case["components"], case["pressure_kPa"], case["thermo"]["model"])
             if case["column"]["configuration"] == "absorber":
                 prof = absorber_profile(case, th)
+            elif case["column"]["condenser"] == "decanter":
+                # from the same column with a total condenser (reference_mesh_vll.DecanterColumn.start_from)
+                total = dict(case, column=dict(case["column"], condenser="total"),
+                             specs=[{"kind": "reflux_ratio", "value": case["reference_start"]["reflux_ratio"]}] + case["specs"])
+                t = column_of(total, th=th)
+                tu, _ = t.solve(t.start())
+                c = DecanterColumn(th, len(case["components"]), case["column"]["stages"], t.feeds, case["specs"])
+                u, info = c.solve(c.start_from(tu, case["column"]["reflux_liquid"] == "light"))
+                prof = profile_vll(c, u, info, decanter=True)
+                for s in prof["stages"]:          # this file's record of a stage's liquids: (beta, x1, x2)
+                    sp = s.pop("liquids", None)
+                    s["liquids"] = None if sp is None else {"x1": sp["light"]["x"], "x2": sp["heavy"]["x"]}
             else:
                 c = column_of(case, th=th)
                 u, info = c.solve(c.start())

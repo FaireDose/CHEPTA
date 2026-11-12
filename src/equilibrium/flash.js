@@ -49,12 +49,15 @@
  *    sys.lnKAssociation, ln K_i = ln(gamma_i f_i^0 / (phi_i P)) for the apparent vapour y: phi_i from
  *    the monomer-dimer equilibrium of y (vapourLnK). The two liquids' equilibrium, gamma_i(x1) x1_i =
  *    gamma_i(x2) x2_i, does not involve the vapour; the vapour is in equilibrium with liquid 1 (and so
- *    with liquid 2) by f_i^V = p_monomer,i = x1_i gamma_i(x1) p_monomer,sat,i. This is the chemical
- *    theory's phase equilibrium as written for vapour-liquid-liquid equilibria of acetic acid systems
- *    by Marek and Standart, Collect. Czech. Chem. Commun. 19 (1954) 1074 (the theory), and by Tsuboka
- *    and Katayama, J. Chem. Eng. Japan 9 (1976) 40 (vapour + two liquids with the dimers of acetic acid,
- *    water + acetic acid + an acetate), free to read on J-STAGE (doi 10.1252/jcej.9.40). Every stage of
- *    the three-phase iteration is unchanged; only the vapour's K-values differ.
+ *    with liquid 2) by f_i^V = p_monomer,i = x1_i gamma_i(x1) p_monomer,sat,i: the conditions of
+ *    phase equilibrium (equal fugacities in the three phases) with the vapour of src/thermo/vapour.js
+ *    and its sources, written here, not taken from a source on vapour + two liquids. That acid
+ *    systems with two liquids are computed with the vapour's association: C. Pirola, F. Galli,
+ *    C. L. Bianchi, G. Carvoli, Chem. Eng. Trans. 32 (2013) 1897, doi 10.3303/CET1332317, free to
+ *    read at https://www.aidic.it/cet/13/32/317.pdf, section 2 (water + acetic acid + p-xylene,
+ *    "vapor-liquid and vapor-liquid-liquid", modified UNIFAC with "the Hayden-O'Connel correlation to
+ *    take into account the acetic acid association"). Every step of the three-phase iteration is
+ *    unchanged; only the vapour's K-values differ (decision 2026-11-12-02).
  *    Still refused (PHASE_SPLIT): two liquids with an equation of state, and a third liquid.
  *  - Enthalpy and vapour-fraction specifications: Brent's method on T (or ln P), bracketed
  *    by the bubble and dew points; for a single phase, a bracket stepped out from them; for a
