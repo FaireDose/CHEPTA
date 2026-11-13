@@ -5,6 +5,7 @@ import { nrtl } from "./activity/nrtl.js";
 import { uniquac } from "./activity/uniquac.js";
 import { wilson } from "./activity/wilson.js";
 import { modUnifac } from "./activity/mod-unifac.js";
+import { estimatePair, ESTIMATED_SET } from "./activity/estimate-pairs.js";
 import modUnifacTables from "../data/mod-unifac-2.json" with { type: "json" };
 import { dimerK, monomerPressure, dimerSplit } from "./vapour.js";
 import { createEosSystem, EOS_MODELS, mhv1Availability } from "./eos/system.js";
@@ -38,7 +39,12 @@ export { EOS_MODELS, listComponents, findComponent };
  * @param {"NRTL"|"UNIQUAC"|"WILSON"|"MOD-UNIFAC-2"|"ideal"} [cfg.model="NRTL"]  "MOD-UNIFAC-2": Modified UNIFAC 2.0,
  *        every pair predicted from the groups of the components (tier "predicted"); "WILSON": the Wilson equation
  *        (proposal 0016), one liquid only
- * @param {boolean} [cfg.allowMissingPairs=false]  treat pairs without parameters as ideal
+ * @param {"estimate"|"ideal"|"refuse"} [cfg.missingPairs="estimate"]  a pair with no stored set of the model:
+ *        "estimate" regresses the model's b_ij, b_ji to Modified UNIFAC 2.0 (tier "predicted", set
+ *        "estimated-mod-unifac-2", with a warning; ideal where Modified UNIFAC 2.0 has no groups for a component);
+ *        "ideal" treats it as ideal; "refuse" throws MISSING_DATA. The strict range mode (strictRanges, src/util/ranges.js)
+ *        makes the default "refuse", as before 2026-11-13 (decision 2026-11-13-05)
+ * @param {boolean} [cfg.allowMissingPairs=false]  treat pairs without parameters as ideal (missingPairs: "ideal")
  * @param {boolean} [cfg.association=true]         use the chemical theory for dimerizing acids
  * @param {number[]|((T:number)=>number[])} [cfg.psat]  override pure vapour pressures (kPa),
  *        e.g. with the pure-component values measured alongside an isothermal data set
@@ -62,6 +68,20 @@ function henryRange(gases) {
 export const HENRY_MODELS = ["NRTL", "UNIQUAC", "WILSON", "ideal"];
 /** The vapour pressure (kPa) a nonvolatile component is given in an activity-model system: effectively zero. */
 export const NV_PSAT_KPA = 1e-20;
+
+/**
+ * What to do with a pair that has no stored set of the model (decision 2026-11-13-05): cfg.missingPairs ("estimate",
+ * "ideal", "refuse"); allowMissingPairs: true is "ideal"; otherwise "estimate", or "refuse" in the strict range mode.
+ */
+export function missingPairsMode(cfg) {
+  const m = cfg.missingPairs;
+  if (m != null) {
+    if (!["estimate", "ideal", "refuse"].includes(m)) throw fail("BAD_INPUT", `missingPairs must be "estimate", "ideal" or "refuse" (got ${JSON.stringify(m)}).`);
+    return m;
+  }
+  if (cfg.allowMissingPairs) return "ideal";
+  return strictRanges() ? "refuse" : "estimate";
+}
 
 export function createSystem(cfg) {
   const model = (cfg.model || "NRTL").toUpperCase() === "IDEAL" ? "ideal" : (cfg.model || "NRTL").toUpperCase();
@@ -124,9 +144,12 @@ export function createSystem(cfg) {
   const useAssoc = cfg.association !== false;
 
   // ---- interaction parameters
+  // a pair with no stored set (decision 2026-11-13-05): estimated from Modified UNIFAC 2.0 by default; ideal on request;
+  // refused in the strict range mode or on request, as before 2026-11-13
+  const missingMode = missingPairsMode(cfg);
   const zeros = () => Array.from({ length: n }, () => new Array(n).fill(0));
   const a = zeros(), b = zeros(), alpha = zeros();
-  const pairs = [], missing = [], missingIds = [];
+  const pairs = [], missing = [], missingIds = [], estimated = [], idealPairs = [];
   for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
     if (model === "ideal" || henryGas[i] || henryGas[j]) continue;
     if (model === "MOD-UNIFAC-2") {
@@ -136,19 +159,60 @@ export function createSystem(cfg) {
       continue;
     }
     const choice = choosePair(model, ids[i], ids[j], sel, ud?.pairs ?? []);
-    if (!choice) { missing.push([comps[i].name, comps[j].name]); missingIds.push([ids[i], ids[j]]); continue; }
+    if (!choice) { missing.push([comps[i].name, comps[j].name]); missingIds.push([ids[i], ids[j], i, j]); continue; }
     const p = choice.chosen.params;
     const [aij, aji, bij, bji] = choice.flipped ? [p.a_ji, p.a_ij, p.b_ji, p.b_ij] : [p.a_ij, p.a_ji, p.b_ij, p.b_ji];
     a[i][j] = aij; a[j][i] = aji; b[i][j] = bij; b[j][i] = bji;
     alpha[i][j] = alpha[j][i] = p.alpha ?? 0.3;
     pairs.push(describePair(choice, [comps[i].name, comps[j].name]));
   }
-  if (missing.length && !cfg.allowMissingPairs) {
+  // a light gas without Modified UNIFAC 2.0 groups (it boils below 25 °C, or has no boiling point and a critical
+  // temperature below 400 K: carbon dioxide; and is no Henry component) with a missing pair stays refused: the activity
+  // model is the wrong method for it (docs/METHOD_SELECTION.md, step 1), and nothing open estimates the pair
+  const isGas = (c, i) => !henryGas[i] && c.class !== "nonvolatile" && !c.modUnifac?.groups
+    && (c.Tb_K != null ? c.Tb_K < 298.15 : c.Tc_K != null && c.Tc_K < 400);
+  const gasIds = new Set(ids.filter((_, i) => isGas(comps[i], i)));
+  const gasMissing = missingIds.filter(m => gasIds.has(m[0]) || gasIds.has(m[1]));
+  if (missing.length && (missingMode === "refuse" || (missingMode === "estimate" && gasMissing.length))) {
     const list = missing.map(m => m.join(" + ")).join("; ");
     const key = ids => `"${ids.join("+")}"`;
-    const keys = missingIds.map(key).join(", ");
-    throw fail("MISSING_DATA", `No ${modelName(model)} parameters for: ${list}. Add ${missing.length > 1 ? "their" : "the pair's"} ${modelName(model)} parameters as your own data, with their source (My data; in a project or a request: user_data.pairs[${keys}] = { ${model}: { ${model === "WILSON" ? "a_ij, a_ji, " : ""}b_ij, b_ji${model === "NRTL" ? ", alpha" : ""} }, source: { name } }), or choose another method (Modified UNIFAC 2.0 predicts every pair whose groups it has). A program calling system() itself may pass allowMissingPairs: true to treat ${missing.length > 1 ? "these pairs" : "the pair"} as ideal.${gasHint}`,
-      { missing_pairs: missingIds.map(ids => ids.join("+")) });
+    const keys = missingIds.map(m => key(m.slice(0, 2))).join(", ");
+    const why = strictRanges() && cfg.missingPairs == null ? " (The strict range mode, strictRanges, refuses to estimate a missing pair; without it the pair is estimated from Modified UNIFAC 2.0, with a warning.)" : "";
+    throw fail("MISSING_DATA", `No ${modelName(model)} parameters for: ${list}. Add ${missing.length > 1 ? "their" : "the pair's"} ${modelName(model)} parameters as your own data, with their source (My data; in a project or a request: user_data.pairs[${keys}] = { ${model}: { ${model === "WILSON" ? "a_ij, a_ji, " : ""}b_ij, b_ji${model === "NRTL" ? ", alpha" : ""} }, source: { name } }), or choose another method (Modified UNIFAC 2.0 predicts every pair whose groups it has). A program calling system() itself may pass allowMissingPairs: true to treat ${missing.length > 1 ? "these pairs" : "the pair"} as ideal.${why}${gasHint}`,
+      { missing_pairs: missingIds.map(m => m.slice(0, 2).join("+")) });
+  }
+  for (const [idI, idJ, i, j] of missingIds) {
+    const names = [comps[i].name, comps[j].name];
+    const noGroups = [comps[i], comps[j]].filter(c => !c.modUnifac?.groups);
+    if (missingMode === "ideal" || noGroups.length) {
+      // ideal: zero interaction (NRTL tau = 0, UNIQUAC tau = 1, Wilson Lambda = 1)
+      idealPairs.push(names);
+      if (missingMode !== "ideal") {
+        estimated.push({ pair: names, ids: [idI, idJ], ideal: true,
+          warning: `${names.join(" + ")}: no ${modelName(model)} parameters, and Modified UNIFAC 2.0 cannot estimate them (${noGroups.map(c => c.name).join(" and ")} ${noGroups.length > 1 ? "have" : "has"} no groups): the pair is taken as IDEAL (no interaction), which can be far off. Give the pair's parameters as your own data (My data), or choose another method.` });
+      }
+      continue;
+    }
+    const e = estimatePair(model, [comps[i], comps[j]], modUnifacTables);
+    b[i][j] = e.b_ij; b[j][i] = e.b_ji;
+    if (model === "NRTL") alpha[i][j] = alpha[j][i] = e.alpha;
+    const split = e.two_liquids
+      ? (model === "WILSON"
+        ? ` Modified UNIFAC 2.0 predicts two liquids for this pair at ${e.two_liquids.T_K} K (from x(${names[0]}) about ${e.two_liquids.x_from} to ${e.two_liquids.x_to}), which Wilson cannot give: use NRTL or UNIQUAC.`
+        : ` Two liquids predicted from an estimate, not checked against data (at ${e.two_liquids.T_K} K, from x(${names[0]}) about ${e.two_liquids.x_from} to ${e.two_liquids.x_to}).`)
+      : "";
+    // where the model cannot follow Modified UNIFAC 2.0 closely (strongly nonideal pairs), say how closely it does
+    const fitNote = e.rms_ln_gamma > 0.1 ? ` The estimate follows Modified UNIFAC 2.0 within ${e.rms_ln_gamma} in ln gamma (root mean square; at most ${e.max_ln_gamma}).` : "";
+    const warning = `${names.join(" + ")}: no measured ${modelName(model)} parameters; estimated from Modified UNIFAC 2.0 (predicted, not data).${split}${fitNote}`;
+    const params = { b_ij: e.b_ij, b_ji: e.b_ji, ...(model === "NRTL" ? { alpha: e.alpha } : {}) };
+    const est = { method: "Modified UNIFAC 2.0", T_K: e.T_K, x: e.x, rms_ln_gamma: e.rms_ln_gamma, max_ln_gamma: e.max_ln_gamma, params,
+      two_liquids: e.two_liquids };
+    pairs.push({ pair: names, tier: "predicted", T_range_K: null, set: ESTIMATED_SET, default: true, chosenBy: "estimate",
+      source: `Estimated when the system was built: ${modelName(model)} b_ij, b_ji regressed to the activity coefficients of ${MOD_UNIFAC_SOURCE.replace(/: predicted from.*$/, "")} at ${e.T_K.join(", ")} K and x = 0.001-0.999 (root-mean-square deviation in ln gamma ${e.rms_ln_gamma}); not stored as data`,
+      source_ids: ["hayer2025-mod-unifac-2"], sources: [sourceEntry("hayer2025-mod-unifac-2")].filter(Boolean), valid: null, alternatives: [],
+      estimated: est, warning,
+      ...(e.two_liquids && model !== "WILSON" ? { two_liquids: { evidence: "predicted-unvalidated" } } : {}) });
+    estimated.push({ pair: names, ids: [idI, idJ], ideal: false, warning, estimate: est });
   }
   // missing pairs: NRTL with zero tau is ideal; UNIQUAC with tau = 1 keeps only the combinatorial term; Wilson with
   // Lambda = 1 is ideal
@@ -230,7 +294,7 @@ export function createSystem(cfg) {
   const HENRY_NOTE = henryOn ? `${comps.filter((_, i) => henryGas[i]).map(c => c.name).join(", ")} dissolve${henryGas.filter(Boolean).length > 1 ? "" : "s"} in water by Henry's law, f = H x (IAPWS G7-04${ids.some((id, i) => henryGas[i] && id === "ethylene") ? "; ethylene: Sander 2023" : ""}), with the activity coefficient taken as 1 at infinite dilution and water by Raoult's law: a dilute solution at low to moderate pressure (proposal 0017). The ${modelName(model)} parameters are not used for these gases.` : null;
   const info = {
     components: comps.map((c, i) => ({ id: ids[i], name: c.name, formula: c.formula, Tb_K: c.Tb_K })),
-    model, pairs, missingPairs: missing,
+    model, pairs, missingPairs: idealPairs, estimatedPairs: estimated.map(e => ({ pair: e.pair, ideal: e.ideal, warning: e.warning, ...(e.estimate ? { estimate: e.estimate } : {}) })),
     vapour: cubicVapour ? cubicVapour.describe
       : assoc.some(Boolean) ? "chemical theory (dimerization) for " + comps.filter((_, i) => assoc[i]).map(c => c.name).join(", ") : "ideal gas",
     vapourModel,
@@ -255,7 +319,8 @@ export function createSystem(cfg) {
     }
     if (model === "WILSON" && Number.isFinite(T)) w.push(...wilsonSplitWarnings(T));
     if (henryOn) w.push(HENRY_NOTE);
-    if (Number.isFinite(T)) w.push(...extrapolations(T).map(e => e.message));
+    if (Number.isFinite(T)) w.push(...extrapolations(T).filter(e => e.kind !== "pairSet").map(e => e.message));
+    else w.push(...estimated.map(e => e.warning));
     return cubicVapour ? [...w, ...cubicVapour.warnings(T)] : w;
   }
 
@@ -304,6 +369,19 @@ export function createSystem(cfg) {
     const out = notes.map(n => (n.kind === "liquidHeatCapacity" && n.side === "above" && !nonvolatile[comps.findIndex(c => c.name === n.component)]
       ? { ...n, how: "the liquid enthalpy follows h_IG + h_R,sat - dHvap above it, joined at the record's end, whose sensible heat is too high for polar liquids (by about 5-30 % between 300 and 400 K)" }
       : n)).map(n => ({ ...n, message: extrapolationMessage({ ...n, lo: n.range[0], hi: n.range[1], value: n.at }) }));
+    // the pairs estimated or taken as ideal (decision 2026-11-13-05), and the pair sets used outside the temperatures of
+    // their data, with no margin (decision 2026-11-13-03, question 3)
+    out.unshift(...estimated.map(e => ({ component: e.pair.join(" + "), property: `${modelName(model)} parameters`, kind: "estimatedPair",
+      side: e.ideal ? "ideal" : "estimated", distance: 0, at: T, range: null, ideal: e.ideal, how: e.ideal ? "taken as ideal" : "estimated from Modified UNIFAC 2.0",
+      message: e.warning, short: `${e.pair.join(" + ")}: ${modelName(model)} parameters ${e.ideal ? "missing, taken as ideal" : "estimated from Modified UNIFAC 2.0"}` })));
+    for (const p of pairs) {
+      const r = p.valid?.T_K ?? p.T_range_K;
+      if (!r || !(T < r[0] - 1e-9 || T > r[1] + 1e-9)) continue;
+      const side = T < r[0] ? "below" : "above", distance = side === "below" ? r[0] - T : T - r[1];
+      const n = { component: p.pair.join(" + "), property: `${modelName(model)} set${p.default ? "" : ` "${p.set}"`}`, kind: "pairSet",
+        range: r.slice(), at: T, side, distance, how: `the set's temperature dependence is used as it is (fitted to data at ${r[0]}-${r[1]} K)` };
+      out.push({ ...n, message: extrapolationMessage({ ...n, lo: r[0], hi: r[1], value: T }) });
+    }
     if (extrapolationMemo.size > 256) extrapolationMemo.clear();
     extrapolationMemo.set(key, out);
     return out;

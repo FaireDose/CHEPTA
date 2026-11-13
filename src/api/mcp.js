@@ -64,7 +64,8 @@ export function resultSummary(r) {
     const streams = Object.values(v.streams ?? {});
     for (const st of streams.slice(0, 12)) lines.push(`Stream ${st.name ?? st.id}: ${fmt(st.F_kmol_h)} kmol/h, ${fmt(st.T_K)} K, ${fmt(st.P_kPa)} kPa, vapour fraction ${fmt(st.VF)}.`);
     for (const p of q.pairs ?? []) lines.push(`Pair ${[].concat(p.pair).join(" + ")}: set ${p.set ?? "?"}, tier ${p.tier ?? "?"}.`);
-    if (q.missing_pairs?.length) lines.push(`Pairs without parameters: ${q.missing_pairs.join(", ")}.`);
+    if (q.missing_pairs?.length) lines.push(`Pairs without parameters: ${q.missing_pairs.map(p => [].concat(p).join(" + ")).join(", ")}.`);
+    for (const e of q.estimated_pairs ?? []) lines.push(`Warning: ${e.message}`);
     for (const w of q.warnings ?? []) lines.push(`Warning (${w.block}): ${w.message}`);
     if (streams.length > 12) lines.push(`(${streams.length - 12} more streams in value.streams)`);
     if (q.notes?.length) lines.push(`${q.notes.length} note(s) from the blocks (qualifications.notes).`);

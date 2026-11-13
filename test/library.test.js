@@ -209,7 +209,9 @@ test("library.sources, source, usedBy, sets", () => {
 test("library.add: a set for this page only (tier user), with clear errors", () => {
   const base = { model: "NRTL", i: "acetone", j: "ethyl acetate", params: { b_ij: 100, b_ji: -50 }, source: { title: "Test set, not data", url: "https://example.org/test" } };
   // before: no parameters for this pair
-  assert.throws(() => system({ components: ["acetone", "ethyl acetate"] }), /No NRTL parameters for: Acetone \+ Ethyl acetate/);
+  // (refused in the strict range mode; otherwise estimated from Modified UNIFAC 2.0: decision 2026-11-13-05, this line changed)
+  assert.throws(() => system({ components: ["acetone", "ethyl acetate"], missingPairs: "refuse" }), /No NRTL parameters for: Acetone \+ Ethyl acetate/);
+  assert.equal(system({ components: ["acetone", "ethyl acetate"] }).info.pairs[0].set, "estimated-mod-unifac-2");
   const bad = [
     [null, /needs an object/],
     [{ ...base, model: "PC-SAFT" }, /Unknown model/],   // Wilson until proposal 0016

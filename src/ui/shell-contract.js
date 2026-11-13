@@ -120,8 +120,12 @@ export function dataOf(state, result = null) {
     if (basis.model === "ideal") pairs = "Ideal solution, no pair parameters";
     else {
       try {
-        const sys = system({ components: basis.ids, model: basis.model, allowMissingPairs: true,
+        // a missing pair is estimated (decision 2026-11-13-05) and counted as "predicted"; where the system refuses it (a
+        // light gas), as "no data"
+        const make = extra => system({ components: basis.ids, model: basis.model, ...extra,
           ...setsFor({ ...state, mixing: eos ? basis.mixing : null }, basis.model) });
+        let sys;
+        try { sys = make({}); } catch (e) { if (e?.code !== "MISSING_DATA") throw e; sys = make({ allowMissingPairs: true }); }
         tiers = tierCounts(sys.info.pairs, eos ? [] : sys.info.missingPairs ?? []);
         pairs = eos ? tierSummary(tiers, "k_ij pair") : tierSummary(tiers);
       } catch { pairs = null; }

@@ -20,6 +20,7 @@
  * ("energy": "Q1"; default "Q-" and the block id). Units: K, kPa, kmol/h, kW.
  */
 import { fail } from "../util/errors.js";
+import { withRangePolicy } from "../util/ranges.js";
 import { setsInput } from "../thermo/library.js";
 import { system } from "../system.js";
 import { findComponent } from "../thermo/components.js";
@@ -105,8 +106,11 @@ export function flowsheetSystem(doc, userData = null) {
   if (!d.components.length) throw fail("BAD_INPUT", "The flowsheet has no components: choose them first (Setup, step 1).");
   const t = d.thermo;
   const eos = t.model === "PR" || t.model === "SRK";
-  return system({ components: d.components, model: t.model, ...(eos ? {} : { vapour: t.vapour }), ...(t.mixing ? { mixing: t.mixing } : {}), ...(t.sets ? { sets: t.sets } : {}), ...(t.prefer ? { prefer: t.prefer } : {}),
-    ...(t.solids ? { solids: t.solids } : {}), ...(userData ? { userData } : {}) });
+  // solver.strictRanges also decides a pair with no parameters (decision 2026-11-13-05): refused in the strict mode,
+  // estimated from Modified UNIFAC 2.0 otherwise
+  const strict = d.solver?.strictRanges;
+  return withRangePolicy({ strictRanges: typeof strict === "boolean" ? strict : undefined }, () => system({ components: d.components, model: t.model, ...(eos ? {} : { vapour: t.vapour }), ...(t.mixing ? { mixing: t.mixing } : {}), ...(t.sets ? { sets: t.sets } : {}), ...(t.prefer ? { prefer: t.prefer } : {}),
+    ...(t.solids ? { solids: t.solids } : {}), ...(userData ? { userData } : {}) }));
 }
 
 /** Status of a flowsheet document: setup, structure and degrees of freedom (no calculation). */

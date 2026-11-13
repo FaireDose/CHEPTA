@@ -195,11 +195,12 @@ test("rigorous: a partial condenser with Peng-Robinson (propane + n-butane at 15
   assert.ok(r.value.distillate.z[0] > 0.9 && col.profile.every((s, j) => j === 0 || s.T_K >= col.profile[j - 1].T_K - 1e-9), "lighter at the top");
 });
 
-test("rigorous C1: the pair without NRTL parameters is missing data, named; no column", () => {
+test("rigorous C1: the pair without NRTL parameters is missing data, named, in the strict mode; no column", () => {
+  // the strict range mode's case since 2026-11-13 (decision 2026-11-13-05; this request gained options.strictRanges)
   const c = caseOf("C1-missing-pair");
   const r = run({ capability: "solve_column", input: { components: c.components, thermo: { model: c.thermo.model },
     feed: { flow_kmol_h: Object.fromEntries(c.components.map((id, i) => [id, c.column.feed.z[i] * 100])), P_kPa: c.pressure_kPa, VF: 0 },
-    column: { mode: "rigorous", stages: 10, feed_stage: 5, reflux_ratio: 2, distillate_kmol_h: 40 } } });
+    column: { mode: "rigorous", stages: 10, feed_stage: 5, reflux_ratio: 2, distillate_kmol_h: 40 } }, options: { strictRanges: true } });
   assert.equal(r.outcome, c.expected.outcome);
   assert.ok(c.expected.message_names.every(n => r.error.message.includes(n)), r.error.message);
   assert.equal(r.value, undefined);

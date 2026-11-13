@@ -31,9 +31,11 @@ const PUMP = { components: ["ethanol", "water"], thermo: { model: "NRTL", vapour
   blocks: [{ id: "F1", type: "feed", spec: { flow_kmol_h: { ethanol: 40, water: 60 }, T_K: 300, P_kPa: 101.325 } },
     { id: "M1", type: "pump", spec: { P_kPa: 300 } }, { id: "P1", type: "product" }],
   streams: [{ id: "S1", from: "F1.out", to: "M1.in" }, { id: "S2", from: "M1.out", to: "P1.in" }] };
+// benzene + glycerol has no NRTL set: refused in the strict range mode, as before 2026-11-13 (without it the pair is
+// estimated from Modified UNIFAC 2.0, with a warning: decision 2026-11-13-05; this flowsheet gained solver.strictRanges)
 const MISSING = { components: ["benzene", "glycerol"], thermo: { model: "NRTL" },
   blocks: [{ id: "F1", type: "feed", spec: { flow_kmol_h: { benzene: 50, glycerol: 50 }, T_K: 300, P_kPa: 101.325 } }, { id: "P1", type: "product" }],
-  streams: [{ id: "S1", from: "F1.out", to: "P1.in" }] };
+  streams: [{ id: "S1", from: "F1.out", to: "P1.in" }], solver: { strictRanges: true } };
 
 test("chepta run: the saved project gives the library's numbers, identical, with its reproduction block", () => {
   const r = cli(["run", EXAMPLE]);
@@ -57,6 +59,10 @@ test("chepta request: notes and qualifications survive; missing data stays missi
   assert.equal(md.json.outcome, "missing_data");
   assert.equal(md.json.value, undefined);
   assert.match(md.json.error.message, /No NRTL parameters for: Benzene \+ Glycerol/);
+  // without the strict mode: estimated from Modified UNIFAC 2.0, named in the qualifications
+  const est = cli(["request", file("estimated.json", { capability: "solve_flowsheet", input: { flowsheet: { ...MISSING, solver: {} } } })]);
+  assert.equal(est.code, 0, est.err);
+  assert.deepEqual(est.json.qualifications.estimated_pairs.map(e => e.pair), [["Benzene", "Glycerol"]]);
   // standard input, and the capabilities
   const caps = cli(["request", "-", "--compact"], JSON.stringify({ capability: "capabilities", input: {} }));
   assert.equal(caps.code, 0);

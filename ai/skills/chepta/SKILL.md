@@ -134,7 +134,8 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
 `solve_flowsheet`, `check_project` and `component_info`; see
 https://github.com/FaireDose/CHEPTA/blob/main/docs/models/tools.md), call them for numbers instead
 of computing. A project file goes in as `{ "project": ... }`. Only the outcome `ok` carries numbers:
-`missing_data` means CHEPTA does not have the data, so say so and never estimate the value;
+`missing_data` means CHEPTA does not have the data, so say so and never estimate the value yourself (a pair the
+engine estimated from Modified UNIFAC 2.0 comes as `ok` with a warning: report the warning);
 `invalid_input` names what to fix (`error.where`). Give the warnings and notes, the method and the
 parameter sets the result reports with the numbers. When changing a project for the user, show the change
 as a proposal and keep the user's file as it is until they apply it.
@@ -222,9 +223,12 @@ don't fill it in.
   `warnings` for pairs without k_ij. If the user asks for other chemicals or pairs, say
   they are not in the databank yet and point to
   https://github.com/FaireDose/CHEPTA/blob/main/CONTRIBUTING.md; do not invent parameters.
-- Missing binary parameters raise an error that names the pair and the remedies: the user's own
-  parameters, with their source (`userData.pairs`, My data), or another method. Do not switch on
-  `allowMissingPairs` without telling the user that those pairs will be treated as ideal.
+- A missing NRTL, UNIQUAC or Wilson pair is estimated by the engine from Modified UNIFAC 2.0 (tier "predicted", set
+  `estimated-mod-unifac-2`) and every result says so: pass that warning on to the user, and say the pair is a
+  prediction, not data. The strict range mode (`strictRanges`) or `missingPairs: "refuse"` refuses instead, naming the
+  pair and the remedies (the user's own parameters with their source, `userData.pairs`; or another method). Do not
+  switch on `allowMissingPairs` (`missingPairs: "ideal"`) without telling the user that those pairs will be treated
+  as ideal.
 - A flowsheet's `thermo` takes `model`, `vapour`, `sets`, `prefer`, `solids` and `mixing` (`"MHV1"` with model `PR` or `SRK`: "PR + gE (MHV1)", "SRK + gE (MHV1)", a gE mixing rule for a gas with a polar liquid at pressure; the engine refuses a light gas with a polar liquid that has no fitted NRTL set, with its reason), and each block's `spec`
   only its own keys: any other key is refused with an error naming it and the known keys. Correct
   it; do not drop it silently.

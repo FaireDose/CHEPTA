@@ -75,7 +75,9 @@ test("the missing-pair message names the user's data and another method, not onl
     blocks: [{ id: "F1", type: "feed", x: 0, y: 0, spec: { flow_kmol_h: { benzene: 50, glycerol: 50 }, T_K: 300, P_kPa: 101.325 } },
       { id: "P1", type: "product", x: 100, y: 0, spec: {} }],
     streams: [{ id: "S1", from: "F1.out", to: "P1.in" }] };
-  const r = run({ capability: "solve_flowsheet", input: { flowsheet: MISSING } });
+  // the refusal is the strict range mode's since 2026-11-13 (decision 2026-11-13-05: otherwise the pair is estimated from
+  // Modified UNIFAC 2.0); this request gained options.strictRanges
+  const r = run({ capability: "solve_flowsheet", input: { flowsheet: MISSING }, options: { strictRanges: true } });
   assert.equal(r.outcome, "missing_data");
   assert.equal(r.value, undefined);
   const m = r.error.message;
@@ -86,5 +88,8 @@ test("the missing-pair message names the user's data and another method, not onl
   assert.deepEqual(r.error.details, { missing_pairs: ["benzene+glycerol"] });
   // the remedy the message names works: the pair as the user's data
   const ud = { pairs: { "benzene+glycerol": { NRTL: { b_ij: 500, b_ji: 1500, alpha: 0.3 }, source: { name: "authoring-contract test, not data" } } } };
-  assert.equal(run({ capability: "solve_flowsheet", input: { flowsheet: MISSING, user_data: ud } }).outcome, "ok");
+  const own = run({ capability: "solve_flowsheet", input: { flowsheet: MISSING, user_data: ud }, options: { strictRanges: true } });
+  assert.equal(own.outcome, "ok");
+  assert.deepEqual(own.qualifications.pairs.map(p => p.tier), ["user"]);
+  assert.equal(own.qualifications.estimated_pairs, undefined, "the user's own pair is not estimated");
 });

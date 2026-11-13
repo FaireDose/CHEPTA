@@ -24,9 +24,11 @@ const PUMP = { components: ["ethanol", "water"], thermo: { model: "NRTL", vapour
   blocks: [{ id: "F1", type: "feed", spec: { flow_kmol_h: { ethanol: 40, water: 60 }, T_K: 300, P_kPa: 101.325 } },
     { id: "M1", type: "pump", spec: { P_kPa: 300 } }, { id: "P1", type: "product" }],
   streams: [{ id: "S1", from: "F1.out", to: "M1.in" }, { id: "S2", from: "M1.out", to: "P1.in" }] };
+// benzene + glycerol has no NRTL set: refused in the strict range mode, as before 2026-11-13 (without it the pair is
+// estimated from Modified UNIFAC 2.0, with a warning: decision 2026-11-13-05; this flowsheet gained solver.strictRanges)
 const MISSING = { components: ["benzene", "glycerol"], thermo: { model: "NRTL" },
   blocks: [{ id: "F1", type: "feed", spec: { flow_kmol_h: { benzene: 50, glycerol: 50 }, T_K: 300, P_kPa: 101.325 } }, { id: "P1", type: "product" }],
-  streams: [{ id: "S1", from: "F1.out", to: "P1.in" }] };
+  streams: [{ id: "S1", from: "F1.out", to: "P1.in" }], solver: { strictRanges: true } };
 
 /** The server as a child process, with a call(method, params) → response and notify(method, params). */
 function server(args = []) {
@@ -94,6 +96,10 @@ test("MCP (2025-11-25): initialize, tools/list, tools/call — the library's num
   assert.equal(md.structuredContent.outcome, "missing_data");
   assert.equal(md.structuredContent.value, undefined);
   assert.match(md.content[0].text, /^solve_flowsheet: missing_data \(MISSING_DATA\)\. No NRTL parameters for: Benzene \+ Glycerol/);
+  // without the strict mode: estimated, and the warning reaches the summary
+  const est = (await s.call("tools/call", { name: "solve_flowsheet", arguments: { flowsheet: { ...MISSING, solver: {} } } })).result;
+  assert.equal(est.structuredContent.outcome, "ok");
+  assert.match(est.content[0].text, /Warning: Benzene \+ Glycerol: no measured NRTL parameters; estimated from Modified UNIFAC 2\.0 \(predicted, not data\)/);
   const bad = (await s.call("tools/call", { name: "solve_flowsheet", arguments: { project, colour: "red" } })).result;
   assert.equal(bad.isError, true);
   assert.match(bad.content[0].text, /invalid_input[\s\S]*Where: input\.colour/);

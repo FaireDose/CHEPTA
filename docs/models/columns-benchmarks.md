@@ -24,7 +24,7 @@ Regenerate the fixtures: `python validation/python/reference_mesh.py` (about fif
 | A2 ternary, alpha 4 : 2 : 1 | (a) shortcut | keys A and B, 98 % recoveries, R = 1.3 R_min, a heavy non-key; Underwood's R_min against the reflux a 101-stage rigorous column needs | ok |
 | A3 ternary, partial condenser | (a) | vapour distillate in equilibrium with the reflux, a feed half vapour | ok |
 | B1 ethanol + water, NRTL | (b) non-ideal, energy balances | 20 stages, feed 350 K (subcooled), R = 2, B = 75 mol/s; the distillate below the azeotrope; α from 1.13 at the top to 2.41 at the bottom | ok |
-| C1 methanol + water + ethylene glycol | (c) missing data | no NRTL pair for methanol + ethylene glycol | missing_data, the pair named |
+| C1 methanol + water + ethylene glycol | (c) missing data | no NRTL pair for methanol + ethylene glycol | missing_data, the pair named, in the strict range mode; otherwise estimated from Modified UNIFAC 2.0 with a warning (decision 2026-11-13-05) |
 | D1 binary, R = 0.001 | (d) dry stages | the liquid above the feed is 0.1 % of the vapour traffic | ok, with DRY_STAGE on stages 2 to 5 |
 | E1 shortcut below R_min | (e) infeasible | R = 2.0 against R_min = 2.176 | invalid_input, R_min named |
 | E2 negative boil-up | (e) infeasible | saturated-vapour feed, D too small: the boil-up would be −60 mol/s | invalid_input or not_converged, never a profile |
