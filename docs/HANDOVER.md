@@ -72,7 +72,13 @@ current: replace its "State" and "Queue" sections at each handover, never append
    2026-11-13 11:15 UTC: #236 (4d08a78, the maintainer's answers recorded) and #238 (9a2c74e) green, ready to merge;
    both workers done. Lab's 7 built: PR #239 (b8597df; splitter by flow, project format 9, proposal 0022 draft;
    decisions in 2026-11-13-02: format 9, short inlet inside a recycle, key names, 0022's five questions). Next, after
-   #238 and #239 merge (same UI files): row chooser + (d). Acetic acid + cyclohexane fit (Sonnet) after #236 merges. Workers' send_message to @parent may fail ("credential for this
+   #238 and #239 merge (same UI files): row chooser + (d). Acetic acid + cyclohexane fit (Sonnet) after #236 merges.
+   2026-11-13 ~14:15 UTC: #236, #238, #239 merged (7b920f8). The maintainer's MAJOR FIX (2026-11-13): the engine is
+   too strict with data ranges; freedom given; rule agreed: strict data, lenient use (outside a record's range calculate
+   and warn, refuse only physically impossible states, missing records, non-convergence; opt-in strictRanges).
+   Running: Opus session_01FPbeWYJNRFWSghzUdYR71F, branch claude/extrapolate-with-warnings, decision 2026-11-13-03.
+   Running: Sonnet session_01FPbeWV438LB4CRTCq5C76s, branch claude/fit-acetic-acid-cyclohexane, decision 2026-11-13-04.
+   Then: row chooser + (d) (priority after the extrapolation fix), then (a)-(c). Workers' send_message to @parent may fail ("credential for this
    connector"): when a worker goes idle, read its last message with list_events. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
