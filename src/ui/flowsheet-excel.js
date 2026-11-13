@@ -5,7 +5,8 @@
  * change; what needs the thermodynamic model is written as values calculated by CHEPTA, in
  * grey italics:
  *  - formulas: feed flows (from the Inputs sheet), mixer and heater outlet flows (sums of the
- *    inlets), splitter outlets (inlet × fraction; the "rest" fraction is 1 minus the others),
+ *    inlets), splitter outlets (inlet × fraction; the "rest" fraction is 1 minus the others; a splitter given by flow
+ *    gets the fractions CHEPTA solved, as values),
  *    component separator outlets (inlet of each component × its fraction), total and mass
  *    flows, mole fractions, the duty of each energy stream (enthalpy flows out minus in) and
  *    the overall material balance. A recycle through these blocks is a circular reference; the
@@ -87,12 +88,15 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
       I.push([]);
     } else if (b.type === "splitter") {
       const outs = fs.streams.filter(s => s.from === `${b.id}.out`);
-      I.push([{ v: `Splitter ${b.label || b.id}: fraction of the flow to each outlet`, s: "bold" }]);
-      const r0 = I.length, fr = Array.isArray(spec.fractions) ? spec.fractions : [];
+      // by flow (flow_kmol_h / flow_kg_h): the fractions CHEPTA found for the asked flows, as values (run CHEPTA again
+      // after changing an input: Excel keeps the fractions, not the flows)
+      const solved = Array.isArray(spec.fractions) ? null : res.blocks[b.id]?.state?.fractions ?? null;
+      I.push([{ v: `Splitter ${b.label || b.id}: fraction of the flow to each outlet${solved ? ` (from the asked ${res.blocks[b.id].state.by}, as CHEPTA solved it)` : ""}`, s: "bold" }]);
+      const r0 = I.length, fr = solved ?? (Array.isArray(spec.fractions) ? spec.fractions : []);
       fracCell[b.id] = outs.map((s, k) => ref(r0 + k, 2));
       outs.forEach((s, k) => {
         const others = outs.map((_, j) => j).filter(j => j !== k && fr[j] !== "rest").map(j => ref(r0 + j, 2));
-        I.push([`to ${s.label || s.id}`, null, fr[k] === "rest" ? F(`1-${others.length ? `SUM(${others.join(",")})` : "0"}`) : inp(Number(fr[k] ?? 0))]);
+        I.push([`to ${s.label || s.id}`, null, solved ? val(fr[k]) : fr[k] === "rest" ? F(`1-${others.length ? `SUM(${others.join(",")})` : "0"}`) : inp(Number(fr[k] ?? 0))]);
       });
       I.push([]);
     } else if (b.type === "separator") {

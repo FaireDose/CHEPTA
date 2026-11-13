@@ -283,6 +283,9 @@ export function deleteBlock(fs, id) {
   return removeBlock(fs, id).fs;
 }
 
+/** The key of a splitter's specification: "fractions" (the default), or "flow_kmol_h" / "flow_kg_h" (by flow). */
+export const splitKey = spec => ["flow_kmol_h", "flow_kg_h"].find(k => Array.isArray(spec?.[k])) ?? "fractions";
+
 /** Add an outlet to a splitter or component separator (a new product stream and its fraction). */
 export function addOutlet(fs, id) {
   const out = clone(fs);
@@ -292,7 +295,7 @@ export function addOutlet(fs, id) {
   addProductStream(out, `${id}.out`, k);
   const grow = list => { const l = Array.isArray(list) ? list.slice() : []; l.splice(Math.max(0, l.length - 1), 0, 0); return l; };
   b.spec ??= {};
-  if (b.type === "splitter") b.spec.fractions = grow(b.spec.fractions);
+  if (b.type === "splitter") { const key = splitKey(b.spec); b.spec[key] = grow(b.spec[key]); }
   else b.spec.fractions = Object.fromEntries(Object.entries(b.spec.fractions ?? {}).map(([c, l]) => [c, grow(l)]));
   return out;
 }
@@ -308,7 +311,7 @@ export function removeOutlet(fs, id) {
   out.streams = out.streams.filter(s => s.id !== last.id);
   out.blocks = out.blocks.filter(x => x.id !== portOf(last.to).block);
   const shrink = list => { const l = list.slice(0, -1); if (list[list.length - 1] === "rest" && !l.includes("rest")) l[l.length - 1] = "rest"; return l; };
-  if (b.type === "splitter" && Array.isArray(b.spec?.fractions)) b.spec.fractions = shrink(b.spec.fractions);
+  if (b.type === "splitter" && Array.isArray(b.spec?.[splitKey(b.spec)])) b.spec[splitKey(b.spec)] = shrink(b.spec[splitKey(b.spec)]);
   if (b.type === "separator") b.spec.fractions = Object.fromEntries(Object.entries(b.spec?.fractions ?? {}).map(([c, l]) => [c, shrink(l)]));
   return out;
 }
@@ -502,7 +505,7 @@ export function deleteStream(fs, sid) {
     out.blocks = out.blocks.filter(b => b.id !== end.block);
     const b = out.blocks.find(x => x.id === src.id);
     const cut = list => { if (!Array.isArray(list)) return list; const l = list.slice(); const was = l[k]; l.splice(k, 1); if (was === "rest" && !l.includes("rest")) l[l.length - 1] = "rest"; return l; };
-    if (b.type === "splitter") b.spec = { ...b.spec, fractions: cut(b.spec?.fractions) };
+    if (b.type === "splitter") { const key = splitKey(b.spec); b.spec = { ...b.spec, [key]: cut(b.spec?.[key]) }; }
     else b.spec = { ...b.spec, fractions: Object.fromEntries(Object.entries(b.spec?.fractions ?? {}).map(([c, l]) => [c, cut(l)])) };
     return { fs: out, note: `Removed the outlet ${sid} of ${src.id}.` };
   }

@@ -75,7 +75,7 @@ test("a refusal reaches the block with the engine's reason: a two-phase inlet th
 // ---- the project file: format 8 --------------------------------------------------------------------------------------
 
 test("format 8 is the format of a project with a pipe; every other project keeps its format", () => {
-  assert.equal(PROJECT_FORMAT, 8);
+  assert.ok(PROJECT_FORMAT >= 8);   // 9 since the splitter by flow (2026-11-13; test/splitter-flow.test.js)
   const plain = initialState({ components: ["ethanol", "water"] });
   assert.equal(projectOf(plain).fugacity_project, 2);
   assert.equal(projectOf(plain).workbench.pipe, undefined);

@@ -62,7 +62,7 @@ by hand; the script is named at the top of each.
 
 | Page | Covers |
 |---|---|
-| [schema/project-8.json](schema/project-8.json) | JSON schema of project files (formats 2 to 8: format 8 adds the Pipe, `workbench.pipe` and the flowsheet's pipe block); [project-7.json](schema/project-7.json), [project-6.json](schema/project-6.json) |
+| [schema/project-9.json](schema/project-9.json) | JSON schema of project files (formats 2 to 9: format 9 adds the splitter given by flow, format 8 the Pipe, `workbench.pipe` and the flowsheet's pipe block); [project-8.json](schema/project-8.json), [project-7.json](schema/project-7.json), [project-6.json](schema/project-6.json) |
 | [schema/project-6.json](schema/project-6.json) | JSON schema of project files (formats 2 to 6: the flowsheet, user data, energy streams and the blocks of proposal 0013, the fluid charts, the Column block); [project-5.json](schema/project-5.json), [project-4.json](schema/project-4.json) for the older formats |
 | [schema/project-2.json](schema/project-2.json) | JSON schema of project files of format 2 (with the flowsheet) |
 | [../ai/README.md](../ai/README.md) | Instructions and skills for AI assistants; contribution packages |

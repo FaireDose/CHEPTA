@@ -248,6 +248,11 @@ Project format 8 (proposal 0020; `docs/schema/project-8.json`) is format 7 with 
 format 7, because a format-7 reader refuses an unknown key of `workbench` and an unknown block type, and would drop a
 key outside `workbench` without a word and lose it at the next save; it is written only when a pipe is used.
 
+Project format 9 (CHEPTA-Lab's request 7, 2026-11-13; `docs/schema/project-9.json`) is format 8 with the splitter given
+by flow: a splitter block whose spec has `flow_kmol_h` or `flow_kg_h` (one total flow per outlet, one "rest") in place of
+`fractions`. A format-8 reader would take the block and report its fractions missing without saying why, so the format
+is raised; it is written only when a splitter is given by flow.
+
 **The request path** (`src/api/dispatcher.js`). One dispatcher over the existing functions, for the workbench (the
 Flowsheet workspace solves through it), chat pages, and, from milestone M1, the command line and the local MCP server
 (`chepta-mcp`):

@@ -40,7 +40,7 @@ with the same shape, `registerUnit({ type, inlets, outlets, checkSpec, solve })`
 |---|---|
 | `feed` | A stream given by the user |
 | `mixer` | Adds streams; the outlet is flashed at the lowest inlet pressure (or a given one) |
-| `splitter` | The same composition in every outlet, split by fractions |
+| `splitter` | The same composition in every outlet, split by fractions, or by flow: `flow_kmol_h` or `flow_kg_h`, one total flow per outlet and exactly one `"rest"` (e.g. `[12, "rest"]`); negative flows and flows above the inlet are refused (BAD_INPUT). In a recycle, an inlet short of the asked flow is allowed while the loop iterates (the asked outlets share the inlet, the rest outlet is empty) and refused if the converged loop is still short |
 | `separator` | Component splitter: a split fraction per component and outlet |
 | `flash` | Flash drum: vapour and liquid outlets at the given conditions or duty; an inert solid leaves with the liquid (a slurry) |
 | `heater` | Heater or cooler: outlet T, VF or duty; with an optional `sizing` (a utility and U), also the area and the utility's flow |

@@ -10,6 +10,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Splitter by flow and design specifications** (CHEPTA-Lab's request 7; docs/decisions/2026-11-13-02-splitter-flow.md):
+  the splitter given by flow is built (project format 9; inside a recycle a short inlet allowed while the loop iterates,
+  refused once converged): check the format and the recycle rule. Proposal 0022 (design specifications, a make-up
+  controller) is a draft: decide its five open questions; no code before it is accepted.
 - **Lab requests 2-5** (docs/decisions/2026-11-11-09-lab-requests-1.md): check the MHV1 source ids against the data
   (none was wrong; the Pokki 2018 id is named after the article's other system), and decide whether the articles
   that measured several systems should get one source id per system.

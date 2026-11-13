@@ -48,6 +48,9 @@
  *     feeds + what the reactors generate = products, and its energy balance counts the heats of the reactions
  *     (H_feeds + duties = H_products + Σ heat_kW): the streams' enthalpies keep their reference states, and the
  *     reactions' heats carry the enthalpies of formation.
+ *  7. A splitter given by flow (flow_kmol_h / flow_kg_h; src/units/units.js) inside a loop: while the loop iterates its blocks
+ *     are calculated with `iterating`, so an inlet short of the asked flow (an empty tear stream at the start) is shared
+ *     instead of refused; a loop that converges with the splitter still short is refused (BAD_INPUT, naming it).
  * References: https://pyomo.readthedocs.io/en/6.9.3/_modules/pyomo/network/foqus_graph.html and
  * https://pyomo.readthedocs.io/en/6.4.0/_modules/pyomo/network/decomposition.html (open source,
  * 3-clause BSD); Tarjan, SIAM Journal on Computing 1(2), 1972 (as cited there).
@@ -335,14 +338,14 @@ export function solveFlowsheet(sys, fs) {
   for (const e of energyEdges) if (!e.from) qvals.set(e.id, e.duty_kW);
 
   /** Calculate one block from the streams known now, and store its outlet streams. */
-  const calc = id => {
+  const calc = (id, iterating = false) => {
     const b = blocks.get(id);
     const inlets = {};
     for (const [port, sids] of Object.entries(b.ins)) inlets[port] = sids.map(s => values.get(s));
     const multi = b.unit.outlets.find(p => p.max > 1);
     const outletCount = multi ? (b.outs[multi.port] ?? []).length : b.unit.outlets.filter(p => !p.optional || (b.outs[p.port] ?? []).length).length;
     let r;
-    try { r = runUnit(b.type, { sys, inlets, spec: b.qin ? withEnergy(b, qvals.get(b.qin.id)) : b.spec, outletCount, reactions }); } catch (e) {
+    try { r = runUnit(b.type, { sys, inlets, spec: b.qin ? withEnergy(b, qvals.get(b.qin.id)) : b.spec, outletCount, reactions, iterating }); } catch (e) {
       e.message = `${b.unit.label} ${b.id}: ${e.message.replace(new RegExp(`^${b.unit.label}: `), "")}`;
       throw e;
     }
@@ -424,7 +427,7 @@ export function solveFlowsheet(sys, fs) {
     };
     for (; it < opt.maxIterations; it++) {
       const before = tears.map(tearValue);
-      try { for (const id of seq) calc(id); } catch (e) {
+      try { for (const id of seq) calc(id, true); } catch (e) {
         if (it === 0) {
           // the first pass is a plain calculation: its error is the block's own, but its inlets are those of
           // the start values of the tear streams (no flow, unless guessed), not of the converged loop
@@ -484,6 +487,13 @@ export function solveFlowsheet(sys, fs) {
     }
     if (!(err < opt.tolerance)) {
       throw stop(` in ${opt.maxIterations} iterations: the tear stream${tears.length > 1 ? "s" : ""} still change${tears.length > 1 ? "" : "s"} by ${err.toExponential(2)} (relative) per iteration; the tolerance is ${opt.tolerance}`);
+    }
+    // a splitter by flow whose inlet was short of the asked flow is allowed while the loop iterates, not in its answer
+    const short = seq.filter(id => results[id]?.state?.limited);
+    if (short.length) {
+      const id = short[0], st = results[id].state, asked = st.asked.filter(v => v !== "rest").reduce((a, v) => a + v, 0);
+      throw fail("BAD_INPUT", `${blocks.get(id).unit.label} ${id}: in the converged loop through ${seq.join(", ")} its outlets asked take ${+asked.toPrecision(6)} ${st.by}, more than its inlet's ${+st.inlet.toPrecision(6)} ${st.by}; lower the asked flow or give fractions.`,
+        { block: id, asked, available: st.inlet, unit: st.by, loop: comp });
     }
     loops.push({ blocks: seq, tears: tears.map(e => e.id), iterations: it, residual: err, tolerance: opt.tolerance });
   }
