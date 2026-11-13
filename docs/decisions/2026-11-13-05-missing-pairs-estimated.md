@@ -148,6 +148,21 @@ Full suite: 1683 pass, 0 fail, 1 known TODO (before: 1672 pass).
    mode (recommended)?** Recommended: only the strict mode for now; `missingPairs` exists for programs calling
    `system()`, and a flowsheet switch can follow if users ask.
 
+## Decided (the maintainer, 2026-11-13, through the coordinator)
+
+The maintainer agreed to all four recommendations:
+
+1. **Light gases without groups keep refusing**, the message naming an equation of state or Henry's law. The refusal
+   of a gas the earlier hint did not name (carbon dioxide, which has no boiling point) now names them too: "Carbon
+   dioxide is a gas without Modified UNIFAC 2.0 groups, so the pair cannot be estimated: use Peng–Robinson or SRK, or
+   Henry's law with water as the only solvent" (`test/estimated-pairs.test.js`).
+2. **The scheme stays as built:** b_ij, b_ji only, NRTL alpha 0.3, over the boiling range.
+3. **Single-calculation warnings keep their 10 K margin** for pair sets; `result.extrapolations` has none.
+4. **The strict mode only for now;** a per-flowsheet setting (`thermo.missing_pairs`) only if users ask for it.
+
+Follow-up (open item in DECISIONS.md): a lenient twin of column case C1, a data PR that checks the estimate's warning
+beside the unchanged strict-mode case, as for G3.
+
 ## What to check
 
 No numbers from sources were transcribed: the estimates are computed from Modified UNIFAC 2.0's tables, which are

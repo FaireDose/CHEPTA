@@ -104,7 +104,8 @@ test("no Modified UNIFAC 2.0 groups: the pair is ideal, loudly; a light gas stay
   assert.match(w, /Modified UNIFAC 2\.0 cannot estimate them \(Maleic anhydride has no groups\): the pair is taken as IDEAL .* \(My data\), or choose another method\.$/);
   assert.ok(s.warnings(400, 101.325).includes(w));
   // carbon dioxide (no groups, critical temperature 304 K) with water but without Henry's law; helium with water
-  assert.throws(() => system({ components: ["carbon-dioxide", "water"], model: "NRTL", henry: false }), e => e.code === "MISSING_DATA");
+  assert.throws(() => system({ components: ["carbon-dioxide", "water"], model: "NRTL", henry: false }), e => e.code === "MISSING_DATA"
+    && /Carbon dioxide is a gas without Modified UNIFAC 2\.0 groups, .*use Peng–Robinson or SRK, or Henry's law/.test(e.message));
   assert.throws(() => system({ components: ["helium", "water"], model: "NRTL" }), e => e.code === "MISSING_DATA" && /is a gas at room temperature/.test(e.message));
 });
 

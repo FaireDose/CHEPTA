@@ -10,12 +10,6 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
-- **Missing pairs estimated from Modified UNIFAC 2.0** ([decision 2026-11-13-05](decisions/2026-11-13-05-missing-pairs-estimated.md),
-  in review): to decide, with the recommendations there: (1) a light gas without groups stays refused; (2) the
-  regression scheme (b_ij, b_ji only, alpha 0.3, the boiling range); (3) the warnings of a single calculation keep
-  their 10 K margin for pair sets while `result.extrapolations` has none; (4) a flowsheet setting
-  (`thermo.missing_pairs`) later, or the strict mode only.
-
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record
@@ -374,7 +368,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - Extrapolation policy follow-ups (decided 2026-11-13, [decision 2026-11-13-03](decisions/2026-11-13-03-extrapolation-policy.md)):
   (a) a lenient twin of column case G3, a data PR that checks the warning beside the unchanged strict-mode case;
   (b) a small PR that gathers the pair parameter sets used outside their data range into `result.extrapolations`,
-  once per pair, with no 10 K margin: built with the missing-pair estimate (decision 2026-11-13-05), in review.
+  once per pair, with no 10 K margin: built with the missing-pair estimate (decision 2026-11-13-05, #243).
+- Missing-pair follow-up (decided 2026-11-13, [decision 2026-11-13-05](decisions/2026-11-13-05-missing-pairs-estimated.md)):
+  a lenient twin of column case C1 (methanol + water + ethylene glycol), a data PR that checks the estimate's warning
+  beside the unchanged strict-mode case, as for G3; a per-flowsheet `thermo.missing_pairs` setting only if users ask.
 
 1. Equation-of-state pairs: fit PR and SRK k_ij to the archive data of the 92 nonpolar or gas pairs
    that have none (docs/PAIR_SCAN.md, "Coverage by the method each pair needs"), and import the
@@ -573,7 +570,10 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
 - **Missing pairs estimated, not refused (2026-11-13; decision 2026-11-13-05):** with NRTL, UNIQUAC or Wilson a pair
   with no stored set is estimated from Modified UNIFAC 2.0 at run time, tier "predicted", with a warning in every
   result; never stored, never "fitted". Ideal (louder warning) where a component has no groups; a light gas without
-  groups refused. `strictRanges: true` (or `missingPairs: "refuse"`) refuses as before. DATA_RULES sections 5 and 7.
+  groups refused, the message naming an equation of state or Henry's law. Scheme: b_ij, b_ji only, NRTL alpha 0.3,
+  over the boiling range; the warnings of one calculation keep their 10 K margin for pair sets.
+  `strictRanges: true` (or `missingPairs: "refuse"`) refuses as before. DATA_RULES sections 5 and 7; decided by the
+  maintainer 2026-11-13.
 - **Data:**
   - The list of missing properties is a new dated file at every update, `docs/missing-properties/MISSING_PROPERTIES_<date>.md`, made by
     `validation/python/missing_properties.py`; the earlier files stay, so the gaps can be followed over time

@@ -177,8 +177,12 @@ export function createSystem(cfg) {
     const list = missing.map(m => m.join(" + ")).join("; ");
     const key = ids => `"${ids.join("+")}"`;
     const keys = missingIds.map(m => key(m.slice(0, 2))).join(", ");
+    // a light gas the gas hint above does not name (no boiling point: carbon dioxide): name the methods for it (decided
+    // 2026-11-13, decision 2026-11-13-05)
+    const unnamed = gasMissing.length ? [...new Set(gasMissing.flatMap(m => [m[2], m[3]]).filter(k => gasIds.has(ids[k]) && !gases.includes(comps[k])))] : [];
+    const lightGas = unnamed.length ? ` ${unnamed.map(k => comps[k].name).join(", ")} ${unnamed.length > 1 ? "are gases" : "is a gas"} without Modified UNIFAC 2.0 groups, so the pair cannot be estimated: use Peng–Robinson or SRK${ids.includes("water") ? ", or Henry's law with water as the only solvent (the default for gases with a Henry's law constant)" : ""}.` : "";
     const why = strictRanges() && cfg.missingPairs == null ? " (The strict range mode, strictRanges, refuses to estimate a missing pair; without it the pair is estimated from Modified UNIFAC 2.0, with a warning.)" : "";
-    throw fail("MISSING_DATA", `No ${modelName(model)} parameters for: ${list}. Add ${missing.length > 1 ? "their" : "the pair's"} ${modelName(model)} parameters as your own data, with their source (My data; in a project or a request: user_data.pairs[${keys}] = { ${model}: { ${model === "WILSON" ? "a_ij, a_ji, " : ""}b_ij, b_ji${model === "NRTL" ? ", alpha" : ""} }, source: { name } }), or choose another method (Modified UNIFAC 2.0 predicts every pair whose groups it has). A program calling system() itself may pass allowMissingPairs: true to treat ${missing.length > 1 ? "these pairs" : "the pair"} as ideal.${why}${gasHint}`,
+    throw fail("MISSING_DATA", `No ${modelName(model)} parameters for: ${list}. Add ${missing.length > 1 ? "their" : "the pair's"} ${modelName(model)} parameters as your own data, with their source (My data; in a project or a request: user_data.pairs[${keys}] = { ${model}: { ${model === "WILSON" ? "a_ij, a_ji, " : ""}b_ij, b_ji${model === "NRTL" ? ", alpha" : ""} }, source: { name } }), or choose another method (Modified UNIFAC 2.0 predicts every pair whose groups it has). A program calling system() itself may pass allowMissingPairs: true to treat ${missing.length > 1 ? "these pairs" : "the pair"} as ideal.${why}${gasHint}${lightGas}`,
       { missing_pairs: missingIds.map(m => m.slice(0, 2).join("+")) });
   }
   for (const [idI, idJ, i, j] of missingIds) {
