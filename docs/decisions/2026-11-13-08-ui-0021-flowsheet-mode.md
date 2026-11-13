@@ -65,3 +65,13 @@ errors. `npm run build`, `npm test`.
 | 2 | The Settings without a button of their own: the Units button opens them. Its label stays "Units °C, kPa, mol frac". Or name it "Settings" and show the units in it ("Settings: °C, kPa, mol frac")? | Keep "Units": it says what most people open the Settings for; its tooltip and its name for a screen reader say it opens the Settings. |
 | 3 | The flowsheet toolbar's "Place a block" also in the classic layout? | No: the classic layout keeps "Blocks", unchanged, until it is removed (step 7); it has no rail of calculations beside the flowsheet. |
 | 4 | The classic layout's corner button "Hide background layers" (every workspace) and its Settings entry: the same fix there? | Leave the classic layout as it is until it is removed (step 7); a change there needs the grid lines of the other workspaces handled the same way, in a small pull request of its own if you want it sooner. |
+
+## Decided (the maintainer, 2026-11-13, relayed by the coordinating session: "agree with all")
+
+All four as recommended:
+
+1. From the Flowsheet, Calculations returns to the last calculation in one press; the rail or the menu then chooses
+   another.
+2. The Units button keeps its label ("Units °C, kPa, mol frac") and opens the Settings; there is no Settings button.
+3. The classic layout keeps "Blocks".
+4. The background-switch fix is not applied to the classic layout now; it stays as it is until it is removed (step 7).
