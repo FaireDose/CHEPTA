@@ -27,10 +27,8 @@ default. The website showed only the classic layout; the new one was only in `ex
 2. **Where testers send answers.** The checklist offers a reply to you, an issue with the Proposal or Bug form, or the
    Feedback button. *Recommendation:* ask testers to reply to you, and use one issue ("Layout check, proposal 0021")
    to gather the results in public; say if you prefer another way.
-   `docs/ui-review/` is added to `VERSION_EXEMPT` in `scripts/set-version.mjs` (the release workflow's version sync and
-   `test/versions.test.js`): the checklist names the first release that has the `layout` key, 0.6.2, and must not be
-   rewritten to another version at the next release. (main's `package.json` still reads 0.6.1 while 0.6.2 is on npm, so
-   without the exemption the test failed.)
+   (`docs/ui-review/` was exempted from the version sync in `scripts/set-version.mjs` while main read 0.6.1; with main at
+   0.6.2 the exemption is dropped, and the release workflow keeps the checklist's link at the current version.)
 3. **The example for Task 4** is `examples/flowsheet-recycle.chepta.json`, which the tester downloads from GitHub and
    opens with File / Project; the Flowsheet has no example on its empty drawing until step 5. *Recommendation:* accept
    this for the check.
