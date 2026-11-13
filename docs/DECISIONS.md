@@ -10,6 +10,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record
@@ -365,6 +366,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Engineering, in the suggested order
 
+- Extrapolation policy follow-ups (decided 2026-11-13, [decision 2026-11-13-03](decisions/2026-11-13-03-extrapolation-policy.md)):
+  (a) a lenient twin of column case G3, a data PR that checks the warning beside the unchanged strict-mode case;
+  (b) a small PR that gathers the pair parameter sets used outside their data range into `result.extrapolations`,
+  once per pair, with no 10 K margin.
+
 1. Equation-of-state pairs: fit PR and SRK k_ij to the archive data of the 92 nonpolar or gas pairs
    that have none (docs/PAIR_SCAN.md, "Coverage by the method each pair needs"), and import the
    ChemSep k_ij of the proposal 0008 components that the batches did not bring in (for example
@@ -553,6 +559,12 @@ These apply to every piece of work, on top of [AGENTS.md](../AGENTS.md).
   only guide which intermediates and products to add as components.
 - **No two liquids with a plain cubic equation (2026-10-09):** if nobody uses it, Fugacity
   doesn't either.
+- **Strict data, lenient use (2026-11-13):** "our software does not allow calculations because we are too strict with
+  the data ... this does not allow the simulation to flow". Records keep their sources, fits, tiers and stated ranges;
+  outside a range the engine calculates and warns ("This is an extrapolation, not data."), once per component and
+  property in a flowsheet, and refuses only physically impossible states, missing records and solvers that do not
+  converge. `strictRanges: true` restores the refusals. DATA_RULES section 3, "Ranges";
+  [decision 2026-11-13-03](decisions/2026-11-13-03-extrapolation-policy.md).
 - **Data:**
   - The list of missing properties is a new dated file at every update, `docs/missing-properties/MISSING_PROPERTIES_<date>.md`, made by
     `validation/python/missing_properties.py`; the earlier files stay, so the gaps can be followed over time

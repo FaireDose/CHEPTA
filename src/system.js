@@ -62,7 +62,7 @@ export function system(cfg) {
       const fluidKeys = ids.filter((_, i) => !solid[i]);
       const fluid = fluidKeys.length ? system({ ...cfg, components: fluidKeys, userData: ud }) : null;
       const base = fluid
-        ? { model: fluid.model, vapour: fluid.vapour, kind: fluid.kind, userData: ud, warnings: fluid.warnings,
+        ? { model: fluid.model, vapour: fluid.vapour, kind: fluid.kind, userData: ud, warnings: fluid.warnings, ...(fluid.extrapolations ? { extrapolations: fluid.extrapolations } : {}),
           info: { ...fluid.info, solids: recs.filter(r => r.class === "solid").map(r => r.name) } }
         : { model: cfg.model ?? "NRTL", userData: ud, warnings: () => [], info: { pairs: [], missingPairs: [], solids: recs.map(r => r.name) } };
       return withInertSolids({ ids, names: recs.map(r => r.name), MW: recs.map(r => r.MW), solid,

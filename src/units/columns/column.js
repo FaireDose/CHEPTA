@@ -733,7 +733,12 @@ function solveRigorous(sys, feeds, s, sideOutlets = 0) {
     sizing = columnHydraulics(csys, profile, s.sizing);   // the column's densities, in its own method when it has one
     warnings.push(...sizing.warnings);   // its notes stay in sizing.notes
   }
+  // a column with its own method: the records of that method used outside their range at its stages (the flowsheet adds
+  // those of its own method at the outlets; src/flowsheet/flowsheet.js, blockExtrapolations)
+  const ownTemps = [...profile.map(p => p.T_K), ...boundary.filter(q => q.into === "column").map(q => q.T_after_K)].filter(Number.isFinite);
+  const extrapolations = own && typeof own.extrapolations === "function" ? ownTemps.flatMap(T => own.extrapolations(T)) : null;
   return { outlets: { distillate, bottoms, ...(nDraws ? { side } : {}) }, duty_kW: Qr - Qc + Qstages, notes, warnings, profile, state, ...(sizing ? { sizing } : {}),
+    ...(extrapolations?.length ? { extrapolations } : {}),
     ...(own ? { method: { ...s.method, flowsheet_model: sys.info?.method ?? sys.model, boundary: "P-H: component flows, pressure and enthalpy flow kept; the temperature found by a P-H flash in the receiving method" } } : {}) };
 }
 const sum = v => v.reduce((a, c) => a + c, 0);

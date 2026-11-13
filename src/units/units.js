@@ -831,7 +831,9 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
   const energy_kW = type === "feed" || type === "product" ? 0 : sumH(inList) + r.duty_kW - sumH(outs) - (u.reactive ? r.reaction.heat_kW : 0);
   return { type, outlets: r.outlets, duty_kW: r.duty_kW, balance: { material, energy_kW, ...(elements ? { elements: elements.relative, mass: elements.mass } : {}) },
     notes: r.notes ?? [], ...(r.state ? { state: r.state } : {}), ...(r.sizing ? { sizing: r.sizing } : {}), ...(u.reactive ? { reaction: r.reaction } : {}),
-    ...(r.profile ? { profile: r.profile } : {}), ...(r.warnings?.length ? { warnings: checkWarnings(u, r.warnings) } : {}), ...(r.method ? { method: r.method } : {}) };
+    ...(r.profile ? { profile: r.profile } : {}), ...(r.warnings?.length ? { warnings: checkWarnings(u, r.warnings) } : {}), ...(r.method ? { method: r.method } : {}),
+    // records used outside their range in the block's own method (src/util/ranges.js; a column with its own method)
+    ...(r.extrapolations?.length ? { extrapolations: r.extrapolations } : {}) };
 }
 
 /** The warning codes a block may return (proposal 0015, section 9, contract 2); a block adds its own code here. */

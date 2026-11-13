@@ -8,7 +8,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { system, pure, solveFlowsheet, listComponents } from "../src/index.js";
+import { system, pure, solveFlowsheet, listComponents, withRangePolicy } from "../src/index.js";
 
 const load = p => JSON.parse(readFileSync(new URL(p, import.meta.url)));
 const comps = load("../src/data/components.json").components;
@@ -178,8 +178,13 @@ test("nonvolatile components alone: heated and cooled as a liquid; no boiling po
     assert.ok(Math.abs(r.blocks.H1.duty_kW - integral / 3600) < 1e-4, `${model}: heater ${r.blocks.H1.duty_kW} kW, integral ${integral / 3600} kW`);
     assert.ok(Math.abs(r.blocks.C1.duty_kW + 2) < 1e-9 && Math.abs(S.S3.H_kW - S.S2.H_kW + 2) < 1e-6, `${model}: cooler`);
     assert.ok(S.S3.T_K > 300 && S.S3.T_K < 380, `${model}: cooled to ${S.S3.T_K} K`);
-    // more cooling than the heat-capacity record covers: refused with the reason
-    assert.throws(() => sys.flash({ z: [1], P: 101.325, H: -1e5 }), /starts at 298\.15 K, so its liquid enthalpy at 288\.1 K cannot be calculated: the heat capacity is extrapolated below the record by 10 K at most/);
+    // more cooling than the heat-capacity record covers: refused in the strict range mode with its 10 K limit; without it
+    // the record is continued, and an enthalpy that no temperature down to the search's physical floor reaches is refused
+    // (the maintainer, 2026-11-13; this line changed)
+    assert.throws(() => withRangePolicy({ strictRanges: true }, () => sys.flash({ z: [1], P: 101.325, H: -1e5 })), /starts at 298\.15 K, so its liquid enthalpy at 288\.1 K cannot be calculated: the heat capacity is extrapolated below the record by 10 K at most/);
+    assert.throws(() => sys.flash({ z: [1], P: 101.325, H: -1e5 }), e => e.code === "OUT_OF_RANGE" && /no temperature gives the liquid enthalpy/.test(e.message));
+    const cold = sys.flash({ z: [1], P: 101.325, H: sys.flash({ z: [1], T: 280, P: 101.325 }).H_J_mol });
+    assert.ok(Math.abs(cold.T - 280) < 1e-6 && cold.warnings.some(w => /liquid heat capacity at 280 K is 18\.15 K below its range/.test(w)), cold.warnings.join(" | "));
   }
   const two = system({ components: ["fdca", "lactic-acid"], model: "ideal" });
   const z = [0.5, 0.5];

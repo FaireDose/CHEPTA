@@ -5,7 +5,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { system, dewT, dewP, createSystem, CheptaError, ERROR_CODES, isCheptaError, pure, steam } from "../src/index.js";
+import { system, dewT, dewP, createSystem, CheptaError, ERROR_CODES, isCheptaError, pure, steam, withRangePolicy } from "../src/index.js";
 
 const load = p => JSON.parse(readFileSync(new URL(p, import.meta.url)));
 
@@ -112,7 +112,8 @@ test("errors carry codes and keep their class", () => {
   // proposal 0017, so helium, which has no Henry's law constant, takes its place)
   code(() => system({ components: ["water", "helium"], model: "NRTL" }), "MISSING_DATA");
   code(() => pure("water").property("liquidDensity", 2000), "OUT_OF_RANGE", RangeError);
-  code(() => steam(5000, 100), "OUT_OF_RANGE", RangeError);
+  // outside IF97's range: refused in the strict range mode only (the maintainer, 2026-11-13; this line changed)
+  code(() => withRangePolicy({ strictRanges: true }, () => steam(5000, 100)), "OUT_OF_RANGE", RangeError);
   code(() => steam({ T_K: 5000 }), "BAD_INPUT", RangeError);
   code(() => system({ components: ["benzene", "water"], model: "PR" }).bubbleT([0.5, 0.5], 101.325), "PHASE_SPLIT");
   code(() => system({ components: ["methane", "ethane"], model: "PR" }).bubbleP([0.9, 0.1], 260), "NO_CONVERGENCE");

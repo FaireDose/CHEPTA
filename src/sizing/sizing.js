@@ -21,7 +21,8 @@
  * volumes adding up (as the kinetic reactors do, src/units/kinetic-reactors.js); a liquid's viscosity from the pure
  * liquids' records by the logarithmic mole-fraction rule ln μ = Σ x_i ln μ_i (the thermo library's preferred rule for
  * liquid mixtures, ViscosityLiquidMixture, MIXING_LOG_MOLAR = chemicals.utils.mixing_logarithmic; MIT). A record outside
- * its range refuses (OUT_OF_RANGE), and a property without a record refuses (MISSING_DATA).
+ * its range is continued with a warning (src/util/ranges.js; the strict range mode refuses, OUT_OF_RANGE), and a property
+ * without a record refuses (MISSING_DATA).
  *
  * Vapour-liquid drum (sizeDrum). Sources, free to read on the universities' own sites:
  *  - M. Fermeglia, "Single stage thermal separation: flash", Separation Processes, University of Trieste (22 March 2021),
@@ -64,6 +65,7 @@
  * 0.0254 m, 1 ft = 0.3048 m, 1 lb = 0.45359237 kg). g = 9.80665 m/s² (standard gravity).
  */
 import { fail, failRange } from "../util/errors.js";
+import { strictRanges, noteExtrapolation, collectExtrapolations } from "../util/ranges.js";
 import { pure, R } from "../thermo/pure.js";
 import { columnHydraulics } from "../units/columns/hydraulics.js";
 import { fibreCount } from "../units/membrane.js";
@@ -91,10 +93,19 @@ const known = (o, keys, who) => {
   if (bad.length) throw fail("BAD_INPUT", `${who}: unknown option${bad.length > 1 ? "s" : ""} ${bad.join(", ")}. Known: ${keys.join(", ")}.`);
 };
 
-/** K of a vertical drum (m/s, and ft/s as the fit gives it) at the flow parameter F; refuses outside the chart. */
+/**
+ * K of a vertical drum (m/s, and ft/s as the fit gives it) at the flow parameter F. Outside the chart (the maintainer,
+ * 2026-11-13) the chart's end value is held, with a note (src/util/ranges.js); the strict range mode refuses.
+ */
 export function kDrum(F) {
   const f = K_DRUM_FIT;
-  if (!(F >= f.Fmin && F <= f.Fmax)) throw failRange("OUT_OF_RANGE", `Drum: the flow parameter (W_L/W_V)·√(ρV/ρL) = ${Number(F).toPrecision(3)} is outside ${f.Fmin}-${f.Fmax}, the range of the chart the K fit follows (Fermeglia 2021, slide 83); give your own K_m_s.`);
+  if (!(F > 0)) throw failRange("BAD_INPUT", `Drum: the flow parameter must be positive (got ${F}).`);
+  if (!(F >= f.Fmin && F <= f.Fmax)) {
+    if (strictRanges()) throw failRange("OUT_OF_RANGE", `Drum: the flow parameter (W_L/W_V)·√(ρV/ρL) = ${Number(F).toPrecision(3)} is outside ${f.Fmin}-${f.Fmax}, the range of the chart the K fit follows (Fermeglia 2021, slide 83); give your own K_m_s.`);
+    noteExtrapolation({ component: null, property: "Drum: the K chart (Fermeglia 2021, slide 83), flow parameter", lo: f.Fmin, hi: f.Fmax, value: F, unit: "", kind: "chart",
+      how: "the chart's end value is held; give your own K_m_s for a sized drum" });
+    F = Math.min(Math.max(F, f.Fmin), f.Fmax);
+  }
   const l = Math.log(F);
   const K_ft_s = Math.exp(f.A + f.B * l + f.C * l ** 2 + f.D * l ** 3 + f.E * l ** 4);
   return { K_ft_s, K_m_s: K_ft_s * FT };
@@ -132,7 +143,11 @@ export function drumGeometry(inp, o = {}) {
   const F = WL / WV * Math.sqrt(rhoV / rhoL);
   let K, Kv = null;
   if (o.K_m_s != null) K = num(o.K_m_s, `${who}: K_m_s`, { min: 0, open: true });
-  else { Kv = kDrum(F); K = orientation === "horizontal" ? DRUM_DEFAULTS.horizontalK * Kv.K_m_s : Kv.K_m_s; }
+  else {
+    const got = collectExtrapolations(() => kDrum(F));
+    Kv = got.value; notes.push(...got.extrapolations.map(e => e.message));
+    K = orientation === "horizontal" ? DRUM_DEFAULTS.horizontalK * Kv.K_m_s : Kv.K_m_s;
+  }
   const u_perm = K * Math.sqrt((rhoL - rhoV) / rhoV), u = fraction * u_perm;
   const pool_m3 = o.holdup_m3 != null ? num(o.holdup_m3, `${who}: holdup_m3`, { min: 0 }) : QL * residence_s;
   const basis = { orientation, flowParameter: F, ...(Kv ? { K_vertical_m_s: Kv.K_m_s } : {}), K_m_s: K, K_given: o.K_m_s != null,

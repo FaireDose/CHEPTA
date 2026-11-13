@@ -16,7 +16,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { steam, steamSat, pure } from "../src/index.js";
+import { steam, steamSat, pure, withRangePolicy } from "../src/index.js";
 import { region3, stateTP, psatMPa, tsatMPa, pB23, tB23, hIdealGas } from "../src/thermo/iapws/if97.js";
 import { viscosity, thermalConductivityParts } from "../src/thermo/iapws/transport.js";
 
@@ -97,11 +97,19 @@ test("IF97 Tables 35 and 36 (saturation line) and the B23 boundary", () => {
   rel(tB23(0.165291643e2), 0.623150000e3, 1e-8, "B23 T(p)");
 });
 
-test("IF97 region limits: outside the range of validity, steam() throws", () => {
-  assert.throws(() => steam(273.0, 101.325), /273.15 K/);
-  assert.throws(() => steam(2300, 101.325), /2273.15 K/);
-  assert.throws(() => steam(500, 100001), /100 MPa/);
-  assert.throws(() => steam(1200, 50001), /50 MPa/);
+// The maintainer, 2026-11-13 (docs/decisions/2026-11-13-03-extrapolation-policy.md): outside IF97's range of validity
+// the equations are evaluated beyond it, with a note; the strict range mode throws as before. These tests changed from
+// "throws" to "a note, and throws in the strict mode"; above the critical point there is no saturation in either mode.
+const strictly = fn => withRangePolicy({ strictRanges: true }, fn);
+test("IF97 region limits: outside the range of validity, steam() calculates with a note; the strict mode throws", () => {
+  for (const [T, P, re] of [[273.0, 101.325, /273.15 K/], [2300, 101.325, /2273.15 K/], [500, 100001, /100 MPa/], [1200, 50001, /50 MPa/]]) {
+    const st = steam(T, P);
+    assert.ok(Number.isFinite(st.h_kJ_kg) && st.notes.some(n => /IAPWS-IF97 .*This is an extrapolation, not data\./.test(n)), `${T} K, ${P} kPa: ${st.notes.join(" | ")}`);
+    assert.throws(() => strictly(() => steam(T, P)), re);
+  }
+  // the supercooled liquid continues smoothly from the stable one (1 K apart: within 0.1 % of cp, 1e-4 of the density)
+  const a = steam(272.15, 101.325), b = steam(273.15, 101.325);
+  assert.ok(a.phase === "liquid" && Math.abs(a.cp_kJ_kgK / b.cp_kJ_kgK - 1) < 2e-3 && Math.abs(a.rho_kg_m3 / b.rho_kg_m3 - 1) < 1e-3);
   assert.throws(() => steam(500, 0), /positive pressure/);
   assert.throws(() => steamSat({ T_K: 650 }), /647.096/);
   assert.throws(() => steamSat({ P_kPa: 23000 }), /22064/);
@@ -214,12 +222,15 @@ test("R15-11 Tables 7, 8, 9: industrial form with IAPWS-IF97", () => {
   }
 });
 
-test("transport properties are not given above 1173.15 K (outside the releases)", () => {
+test("transport properties above 1173.15 K (outside the releases): continued with a note; the strict mode gives none", () => {
   const st = steam(1500, 1000);
-  assert.equal(st.mu_Pa_s, null);
-  assert.equal(st.k_W_mK, null);
-  assert.match(st.notes.join(" "), /1173.15 K/);
-  assert.throws(() => viscosity(1200, 1), /1173.15 K/);
+  assert.ok(st.mu_Pa_s > 0 && st.k_W_mK > 0);
+  assert.match(st.notes.join(" "), /Water: viscosity \(IAPWS\) at 1500 K is 326\.85 K above its range \(273\.16-1173\.15 K\)/);
+  const s2 = strictly(() => steam(1500, 1000));
+  assert.equal(s2.mu_Pa_s, null);
+  assert.equal(s2.k_W_mK, null);
+  assert.match(s2.notes.join(" "), /1173.15 K/);
+  assert.throws(() => strictly(() => viscosity(1200, 1)), /1173.15 K/);
 });
 
 // ---------------------------------------------------------------------------------------
@@ -381,7 +392,8 @@ test("pure('water'): psat, tsat, hIdealGas, available() and property() come from
   }
   // The same value as props() for steam at low pressure (10 Pa).
   assert.ok(Math.abs(w.props(400, 0.01).h_J_mol - w.hIdealGas(400)) < 0.1);
-  assert.throws(() => w.hIdealGas(1200), /1073.15 K/);
+  assert.ok(Number.isFinite(w.hIdealGas(1200)));   // beyond IF97's ideal-gas range: continued (2026-11-13)
+  assert.throws(() => strictly(() => w.hIdealGas(1200)), /1073.15 K/);
   // Every property IAPWS covers is listed as available, with tier "standard".
   const { have } = w.available();
   for (const n of ["vapourPressure", "liquidDensity", "idealGasHeatCapacity", "liquidHeatCapacity",
@@ -397,15 +409,18 @@ test("pure('water'): psat, tsat, hIdealGas, available() and property() come from
   assert.equal(w.property("vapourViscosity", 373.15), viscosity(373.15, 0));
   assert.ok(Math.abs(w.property("vapourViscosity", 373.15) / steam(373.15, 0.01).mu_Pa_s - 1) < 1e-6);
   assert.ok(Math.abs(w.property("vapourThermalConductivity", 373.15) / steam(373.15, 0.01).k_W_mK - 1) < 1e-5);
+  // a saturated-liquid property above the critical temperature has no continuation: refused in both modes
   assert.throws(() => w.property("liquidDensity", 700), /647.096 K/);
   assert.equal(w.record("vapourPressure").equation, "IAPWS");
 });
 
-test("transport properties start at the triple point, 273.16 K, as in the releases", () => {
-  assert.throws(() => viscosity(273.155, 999.8), /273.16 K/);
-  assert.throws(() => thermalConductivityParts(273.155, 999.8, null), /273.16 K/);
-  const st = steam(273.155, 101.325);
+test("transport properties start at the triple point, 273.16 K, as in the releases (below: continued with a note; strict: none)", () => {
+  assert.throws(() => strictly(() => viscosity(273.155, 999.8)), /273.16 K/);
+  assert.throws(() => strictly(() => thermalConductivityParts(273.155, 999.8, null)), /273.16 K/);
+  assert.ok(viscosity(273.155, 999.8) > 0);
+  const st = strictly(() => steam(273.155, 101.325));
   assert.equal(st.mu_Pa_s, null);
   assert.match(st.notes.join(" "), /273.16 K/);
+  assert.ok(steam(273.155, 101.325).mu_Pa_s > 0);
   assert.ok(steam(273.16, 101.325).mu_Pa_s > 0);
 });

@@ -5,7 +5,7 @@
  *     blocks:  [{ id: "F1", type: "feed", spec: { ... } }, { id: "M1", type: "mixer" }, ...],
  *     streams: [{ id: "S1", from: "F1.out", to: "M1.in" }, ..., { id: "S5", from: "SP1.out", to: "M1.in", tear: true }],
  *     energyStreams: [{ id: "Q1", to: "E1", duty_kW: 500 }, { id: "Q2", from: "E2", to: "E3" }],   // optional
- *     solver:  { maxIterations: 50, tolerance: 1e-8 }
+ *     solver:  { maxIterations: 50, tolerance: 1e-8, strictRanges: false }
  *   })
  *   → { streams: { S1: stream, ... }, blocks: { M1: { duty_kW, balance, notes }, ... },
  *       order, loops: [{ blocks, tears, iterations }], balance: { material_kmol_h, energy_kW } }
@@ -57,6 +57,7 @@
  * Units: K, kPa, kmol/h, kW.
  */
 import { fail } from "../util/errors.js";
+import { withRangePolicy, collectExtrapolations, mergeExtrapolations } from "../util/ranges.js";
 import { stream } from "../stream/stream.js";
 import { runUnit, unitType, specStatus } from "../units/units.js";
 import "../units/reactors.js";   // registers the conversion and yield reactors
@@ -315,6 +316,28 @@ function chooseTears(nodes, edges) {
  * @param {object} fs   { blocks, streams, solver }
  */
 export function solveFlowsheet(sys, fs) {
+  // solver.strictRanges (the maintainer, 2026-11-13; src/util/ranges.js): true refuses outside a record's range, as
+  // before; false or absent (the default) continues the record with a warning, gathered in result.extrapolations
+  const strict = fs?.solver?.strictRanges;
+  if (strict !== undefined && typeof strict !== "boolean") throw fail("BAD_INPUT", `solver.strictRanges must be true or false (got ${JSON.stringify(strict)}).`);
+  return withRangePolicy({ strictRanges: strict }, () => solveCore(sys, fs));
+}
+
+/**
+ * The records a block used outside their range: those of the phase equilibrium and enthalpies at the temperatures of
+ * its outlets and stages (the answer's states, not the searches that led to them: sys.extrapolations), and the others
+ * it used (densities, viscosities, charts, solubility curves) as they were noted while it was calculated.
+ */
+const FINAL_STATE_KINDS = new Set(["vapourPressure", "liquidHeatCapacity", "idealGasHeatCapacity", "heatOfVaporization", "henry", "iapws"]);
+function blockExtrapolations(sys, r, noted) {
+  const temps = new Set();
+  for (const got of Object.values(r.outlets ?? {})) for (const st of (Array.isArray(got) ? got : [got])) if (st && Number.isFinite(st.T_K) && st.F_kmol_h > 0) temps.add(st.T_K);
+  if (Array.isArray(r.profile)) for (const p of r.profile) if (Number.isFinite(p?.T_K)) temps.add(p.T_K);
+  const atStates = typeof sys.extrapolations === "function" ? [...temps].flatMap(T => sys.extrapolations(T)) : [];
+  return [...atStates, ...(r.extrapolations ?? []), ...noted.filter(n => !FINAL_STATE_KINDS.has(n.kind))];
+}
+
+function solveCore(sys, fs) {
   if (!sys || typeof sys.flash !== "function") throw fail("BAD_INPUT", "solveFlowsheet: the first argument must be a system, e.g. CHEPTA.system({ components, model }).");
   const opt = { ...SOLVER_DEFAULTS, ...(fs?.solver ?? {}) };
   if (!(Number.isInteger(opt.maxIterations) && opt.maxIterations >= 1)) throw fail("BAD_INPUT", `solver.maxIterations must be a positive whole number (got ${opt.maxIterations}).`);
@@ -345,7 +368,11 @@ export function solveFlowsheet(sys, fs) {
     const multi = b.unit.outlets.find(p => p.max > 1);
     const outletCount = multi ? (b.outs[multi.port] ?? []).length : b.unit.outlets.filter(p => !p.optional || (b.outs[p.port] ?? []).length).length;
     let r;
-    try { r = runUnit(b.type, { sys, inlets, spec: b.qin ? withEnergy(b, qvals.get(b.qin.id)) : b.spec, outletCount, reactions, iterating }); } catch (e) {
+    let noted = [];
+    try {
+      const got = collectExtrapolations(() => runUnit(b.type, { sys, inlets, spec: b.qin ? withEnergy(b, qvals.get(b.qin.id)) : b.spec, outletCount, reactions, iterating }));
+      r = got.value; noted = got.extrapolations;
+    } catch (e) {
       e.message = `${b.unit.label} ${b.id}: ${e.message.replace(new RegExp(`^${b.unit.label}: `), "")}`;
       throw e;
     }
@@ -359,7 +386,10 @@ export function solveFlowsheet(sys, fs) {
       ...(r.reaction ? { reaction: r.reaction } : {}),
       // Unit v2 (proposal 0015, contract 2): a block's profile, warnings and method reach the result (and the request path's qualifications)
       ...(r.profile ? { profile: r.profile } : {}), ...(r.warnings ? { warnings: r.warnings } : {}), ...(r.method ? { method: r.method } : {}) };
+    // the last calculation of a block is its answer: its extrapolations replace those of earlier iterations
+    blockNotes.set(id, blockExtrapolations(sys, r, noted));
   };
+  const blockNotes = new Map();
 
   /** Total flow of the feed streams calculated so far (kmol/h). */
   const feedTotal = () => nodes.filter(id => blocks.get(id).type === "feed")
@@ -522,8 +552,12 @@ export function solveFlowsheet(sys, fs) {
     ...[...blocks.values()].filter(b => b.unit.duty && !b.qin && !b.qout)
       .map(b => [energyName(b), { id: energyName(b), block: b.id, kind: b.unit.energy, duty_kW: results[b.id]?.duty_kW ?? 0 }]),
   ]);
+  // every record used outside its range, once per component, property and side, at the farthest distance reached,
+  // with the blocks where it was (the maintainer, 2026-11-13; src/util/ranges.js)
+  const extrapolations = mergeExtrapolations([...blockNotes].map(([where, notes]) => ({ where, notes })));
   return {
     components: sys.ids.slice(),
+    extrapolations,
     streams: Object.fromEntries(edges.map(e => [e.id, values.get(e.id)])),
     energy,
     blocks: results,

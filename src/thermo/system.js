@@ -14,6 +14,9 @@ import { selection, choosePair, describePair, pairWarnings, sourceEntry } from "
 import { createCubicVapour } from "./gamma-phi-vapour.js";
 import { activityPhaseMethods } from "./enthalpy.js";
 import { fail, failRange } from "../util/errors.js";
+import { strictRanges, withRangePolicy, quietly, collectExtrapolations, extrapolationMessage, noteExtrapolation } from "../util/ranges.js";
+import { evaluate } from "./correlations.js";
+import { pure } from "./pure.js";
 import { henry, henryInfo, HENRY_GASES } from "./henry.js";
 
 export const MODELS = ["NRTL", "UNIQUAC", "WILSON", "MOD-UNIFAC-2", "ideal"];
@@ -170,15 +173,26 @@ export function createSystem(cfg) {
    * has none: NV_PSAT_KPA, far below anything measurable, keeps its K-value finite for the flash (its mole fraction in
    * the vapour stays below 1e-20) while it stays, for every practical purpose, in the liquid.
    */
+  const vpRecs = comps.map(c => {
+    const vp = c.vapourPressure;
+    return vp && vp.equation === "DIPPR101" && Number.isFinite(vp.Tmin_K) && Number.isFinite(vp.Tmax_K)
+      ? { equation: "DIPPR101", units: "Pa", coefficients: { A: vp.A, B: vp.B, C: vp.C, D: vp.D, E: vp.E }, Tmin_K: vp.Tmin_K, Tmax_K: vp.Tmax_K } : null;
+  });
   const psat = cfg.psat
     ? (typeof cfg.psat === "function" ? cfg.psat : () => cfg.psat.slice())
     : T => comps.map((c, i) => {
       if (nonvolatile[i]) return NV_PSAT_KPA;
       // a Henry component: H_i(T) in water takes the place of the vapour pressure (f_i = H_i x_i); outside the range of
       // its equation henry() refuses
-      if (henryGas[i]) return henry(ids[i], "water", T);
+      if (henryGas[i]) return quietly(() => henry(ids[i], "water", T));
       if (!c.vapourPressure) throw fail("MISSING_DATA", noVapourPressureMessage(c));
-      const p = vapourPressure(c.vapourPressure, T) / 1000;
+      // outside its record: continued (correlations.js; the equation where it stays finite and rising, else
+      // Clausius-Clapeyron), the note given at the answer's temperature (extrapolations); the strict mode keeps the
+      // equation itself, as before 2026-11-13
+      let p;
+      try {
+        p = (strictRanges() || !vpRecs[i] ? vapourPressure(c.vapourPressure, T) : quietly(() => evaluate(vpRecs[i], T, { kind: "vapourPressure", Tc_K: c.Tc_K }))) / 1000;
+      } catch (e) { if (e?.code === "OUT_OF_RANGE") p = NaN; else throw e; }
       // the curve extrapolated far above the critical temperature (hydrogen above about 150 K) overflows: Raoult's law
       // cannot hold such a gas (docs/METHOD_SELECTION.md), so refuse it instead of iterating on infinities
       if (!Number.isFinite(p)) throw failRange("OUT_OF_RANGE", `${c.name}: its vapour-pressure curve, extrapolated to ${T.toFixed(2)} K (critical temperature ${c.Tc_K ?? "unknown"} K), has no finite value, so ${model} cannot describe it; use Peng-Robinson or SRK for a mixture with this gas.`);
@@ -241,17 +255,58 @@ export function createSystem(cfg) {
     }
     if (model === "WILSON" && Number.isFinite(T)) w.push(...wilsonSplitWarnings(T));
     if (henryOn) w.push(HENRY_NOTE);
-    if (!cfg.psat && Number.isFinite(T)) {
-      comps.forEach((c, i) => {
-        const vr = c.vapourPressure;
-        if (nonvolatile[i] || henryGas[i] || !vr || !Number.isFinite(vr.Tmin_K) || !Number.isFinite(vr.Tmax_K)) return;
-        if (T < vr.Tmin_K - 1e-9 || T > vr.Tmax_K + 1e-9) {
-          const d = T < vr.Tmin_K ? vr.Tmin_K - T : T - vr.Tmax_K;
-          w.push(`${c.name}: ${T.toFixed(2)} K is ${d.toFixed(2)} K ${T < vr.Tmin_K ? "below" : "above"} its vapour-pressure record (${vr.Tmin_K}-${vr.Tmax_K} K): the record's equation is evaluated beyond its range. This is an extrapolation, not data.`);
-        }
-      });
-    }
+    if (Number.isFinite(T)) w.push(...extrapolations(T).map(e => e.message));
     return cubicVapour ? [...w, ...cubicVapour.warnings(T)] : w;
+  }
+
+  /**
+   * The records this system's phase equilibrium and enthalpies use outside their range at T (the maintainer,
+   * 2026-11-13; src/util/ranges.js): each component's vapour pressure, liquid and ideal-gas heat capacity and heat of
+   * vaporization, and a Henry component's constant. Checked at the answer's temperature, not during the searches
+   * that lead to it. Each note: { component, property, range, at, side, distance, how, kind, message }.
+   */
+  const extrapolationMemo = new Map();
+  let pureRecs_ = null;
+  // the records each component's enthalpy and phase equilibrium use (water's are IAPWS: pure.js), made when first asked
+  const pureRecs = () => pureRecs_ ?? (pureRecs_ = comps.map((c, i) => {
+    if (henryGas[i]) return [];
+    let p = null;
+    try { p = pure(ids[i], { userData: ud }); } catch { return []; }
+    const rec = name => { try { return p.has(name) ? p.record(name) : null; } catch { return null; } };
+    if (nonvolatile[i]) return [["liquidHeatCapacity", rec("liquidHeatCapacity")]].filter(r => r[1]);
+    return [["vapourPressure", cfg.psat ? null : vpRecs[i]], ["liquidHeatCapacity", rec("liquidHeatCapacity")],
+      ["idealGasHeatCapacity", rec("idealGasHeatCapacity")], ["heatOfVaporization", rec("heatOfVaporization")]].filter(r => r[1] && !r[1].derived);
+  }));
+  const LABEL = { vapourPressure: "Vapour pressure", liquidHeatCapacity: "Liquid heat capacity", idealGasHeatCapacity: "Ideal-gas heat capacity",
+    heatOfVaporization: "Heat of vaporization" };
+  function extrapolations(T) {
+    const key = Math.round(T * 100) / 100;
+    if (extrapolationMemo.has(key)) return extrapolationMemo.get(key);
+    // the notes are gathered with the lenient policy even in the strict mode, where only the vapour pressure is used
+    // beyond its record (its equation itself, as before 2026-11-13) and the other records have refused at their use
+    const strict = strictRanges();
+    const { extrapolations: notes } = withRangePolicy({ strictRanges: false }, () => collectExtrapolations(() => comps.forEach((c, i) => {
+      if (henryGas[i]) { try { henry(ids[i], "water", T); } catch { /* refused where it is used */ } return; }
+      for (const [name, rec] of pureRecs()[i]) {
+        if (rec.equation === "IAPWS") {
+          if (T < rec.Tmin_K - 1e-9 || T > rec.Tmax_K + 1e-9) {
+            noteExtrapolation({ component: c.name, property: `${LABEL[name]} (IAPWS)`, lo: rec.Tmin_K, hi: rec.Tmax_K, value: T, kind: name,
+              how: "the IAPWS equations are evaluated beyond their range of validity (they stay finite there)" });
+          }
+          continue;
+        }
+        try { evaluate(rec, T, { component: c.name, property: LABEL[name], kind: name, Tc_K: c.Tc_K }); } catch { /* refused where it is used */ }
+      }
+    })));
+    if (strict) notes.forEach(n => { if (n.kind === "vapourPressure") n.how = "the record's own equation is evaluated beyond its range"; });
+    // above the end of a volatile liquid's heat-capacity record its enthalpy is not continued linearly but by the
+    // ideal-gas path (enthalpy.js); say so
+    const out = notes.map(n => (n.kind === "liquidHeatCapacity" && n.side === "above" && !nonvolatile[comps.findIndex(c => c.name === n.component)]
+      ? { ...n, how: "the liquid enthalpy follows h_IG + h_R,sat - dHvap above it, joined at the record's end, whose sensible heat is too high for polar liquids (by about 5-30 % between 300 and 400 K)" }
+      : n)).map(n => ({ ...n, message: extrapolationMessage({ ...n, lo: n.range[0], hi: n.range[1], value: n.at }) }));
+    if (extrapolationMemo.size > 256) extrapolationMemo.clear();
+    extrapolationMemo.set(key, out);
+    return out;
   }
 
   /**
@@ -319,7 +374,7 @@ export function createSystem(cfg) {
     ? { Tm_K: c.fusion.Tm_K, Hfus_J_mol: c.fusion.Hfus_J_mol, tier: c.fusion.tier, source: c.fusion.source } : null));
   // measured solubility curves of each component in named solvents (src/thermo/solubility-curve.js); null: none
   const solubility = comps.map(c => (c.solubility?.length ? c.solubility : null));
-  return { ids, names: comps.map(c => c.name), n, model, vapour: vapourModel, gammas, psat, equilibrium, lnKValues, ...(lnKAssociation ? { lnKAssociation } : {}), info, warnings, fusion, solubility,
+  return { ids, names: comps.map(c => c.name), n, model, vapour: vapourModel, gammas, psat, equilibrium, lnKValues, ...(lnKAssociation ? { lnKAssociation } : {}), info, warnings, extrapolations, fusion, solubility,
     nonvolatile, henry: henryGas, ...(henryOn ? { henryRange_K: henryRange(ids.filter((_, i) => henryGas[i])) } : {}), MW: comps.map(c => c.MW), userData: ud, ...phaseMethods };
 }
 

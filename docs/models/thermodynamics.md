@@ -121,7 +121,8 @@ library documentation:
   - Vapour and supercritical states use Peng–Robinson.
   - Without an open ideal-gas heat capacity, one is derived from the liquid's records (Kirchhoff):
     h_IG(T) = ∫cp_L dT + (ΔHvap − h_R,sat)(T) − (ΔHvap − h_R,sat)(298.15 K), where both records apply from
-    298.15 K; it says so in its source and refuses outside that range. Checked in
+    298.15 K; it says so in its source, and outside that range continues those records with a warning (refused in the
+    strict range mode; 2026-11-13). Checked in
     [test/derived-ideal-gas.test.js](../../test/derived-ideal-gas.test.js) (DATA_RULES section 10).
 - **Formation** (`pure(id).formation`, proposal 0010, step 1): the enthalpy and Gibbs energy of formation at
   298.15 K, of the ideal gas (ChemSep, taken as it is) or of the liquid or crystal measured (the WebBook and the ThermoML

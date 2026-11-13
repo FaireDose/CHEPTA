@@ -6,6 +6,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { pure } from "../src/index.js";
+import { withRangePolicy } from "../src/util/ranges.js";
+// the strict range mode (the maintainer, 2026-11-13; docs/decisions/2026-11-13-03-extrapolation-policy.md)
+const strictly = fn => withRangePolicy({ strictRanges: true }, fn);
 
 const components = JSON.parse(readFileSync(new URL("../src/data/components.json", import.meta.url))).components;
 const MEASURED = ["dichloromethane", "2-methoxyethanol"];
@@ -45,11 +48,13 @@ test("measured components: the vapour pressure agrees with the measured Antoine 
   }
 });
 
-test("measured components: outside the measured range the engine refuses instead of extrapolating", () => {
+test("measured components: outside the measured range the engine extrapolates with a note, and the strict mode refuses", () => {
   const p = pure("dichloromethane");
   const rho = components.dichloromethane.properties.liquidDensity;
   assert.ok(Number.isFinite(p.property("liquidDensity", 298.15)));
-  assert.throws(() => p.property("liquidDensity", rho.Tmax_K + 10), /outside the range/);
+  // (until 2026-11-13 refused; the maintainer's decision: continued with a note, refused in the strict range mode)
+  assert.ok(Number.isFinite(p.property("liquidDensity", rho.Tmax_K + 10)));
+  assert.throws(() => strictly(() => p.property("liquidDensity", rho.Tmax_K + 10)), /outside the range/);
   // no open data: an error that says so, not a number
   assert.throws(() => p.property("liquidViscosity", 298.15), /No open data/);
   assert.throws(() => pure("2-methoxyethanol").property("idealGasHeatCapacity", 400), /No open data/);

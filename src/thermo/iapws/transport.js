@@ -34,6 +34,7 @@
  * viscosity returned in Pa s, thermal conductivity in W/(m K).
  */
 import { failRange } from "../../util/errors.js";
+import { strictRanges, noteExtrapolation } from "../../util/ranges.js";
 
 const T_STAR = 647.096, RHO_STAR = 322.0, P_STAR = 22.064; // K, kg/m3, MPa
 const MU_STAR = 1e-6;      // Pa s
@@ -85,7 +86,11 @@ const A_LIMITS = [0.310559006, 0.776397516, 1.242236025, 1.863354037];
 
 function checkT(T, what) {
   if (!(T >= T_MIN_TRANSPORT && T <= T_MAX_TRANSPORT)) {
-    throw failRange("OUT_OF_RANGE", `${what} (IAPWS) is valid from 273.16 K to 1173.15 K; T = ${T} K.`);
+    // outside (the maintainer, 2026-11-13): the equations evaluated beyond their range, with a note; strict: refused
+    const msg = `${what} (IAPWS) is valid from 273.16 K to 1173.15 K; T = ${T} K.`;
+    if (!(T > 0) || strictRanges()) throw failRange(T > 0 ? "OUT_OF_RANGE" : "BAD_INPUT", msg);
+    noteExtrapolation({ component: "Water", property: `${what} (IAPWS)`, lo: T_MIN_TRANSPORT, hi: T_MAX_TRANSPORT, value: T, kind: "iapws-transport",
+      how: "the IAPWS equations are evaluated beyond their range of validity (they stay finite there)" });
   }
 }
 

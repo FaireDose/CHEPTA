@@ -10,6 +10,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { run } from "../src/api/dispatcher.js";
+import { withRangePolicy, collectExtrapolations } from "../src/util/ranges.js";
 import { system } from "../src/index.js";
 import { runUnit } from "../src/units/units.js";
 import { stream } from "../src/stream/stream.js";
@@ -30,8 +31,14 @@ test("Fair's chart in the engine is the table read off the graph (validation/dat
   // the curves fall with F and rise with H, as on the chart
   for (const row of chart.K_m_s) for (let j = 1; j < row.length; j++) assert.ok(row[j] <= row[j - 1]);
   for (let i = 1; i < chart.H_m.length; i++) chart.F.forEach((_, j) => assert.ok(chart.K_m_s[i][j] > chart.K_m_s[i - 1][j]));
-  // outside the chart: refused, never extrapolated
-  for (const [F, H] of [[0.009, 0.6], [1.9, 0.6], [0.1, 0.14], [0.1, 0.95]]) assert.throws(() => kFlood(F, H), e => e.code === "OUT_OF_RANGE");
+  // outside the chart (the maintainer, 2026-11-13; this test changed from "refused" to "the end value held, with a
+  // note"): the chart's value at its nearest edge, and the strict range mode refuses as before
+  for (const [F, H, Fe, He] of [[0.009, 0.6, 0.01, 0.6], [1.9, 0.6, chart.F.at(-1), 0.6], [0.1, 0.14, 0.1, 0.15], [0.1, 0.95, 0.1, 0.9]]) {
+    const got = collectExtrapolations(() => kFlood(F, H));
+    close(got.value, kFlood(Fe, He), 1e-12, `K(${F}, ${H}) held at the chart's edge`);
+    assert.ok(got.extrapolations.length === 1 && /Fair's flooding chart.*the chart's (end value is held|value at its nearest spacing is held)\. This is an extrapolation, not data\./.test(got.extrapolations[0].message), got.extrapolations[0]?.message);
+    assert.throws(() => withRangePolicy({ strictRanges: true }, () => kFlood(F, H)), e => e.code === "OUT_OF_RANGE");
+  }
 });
 
 test("the hydraulics agree with the independent Python reference (1e-9)", () => {
@@ -110,7 +117,9 @@ test("the options: defaults, refusals, and the corrections K2, K3, K4", () => {
     assert.throws(() => trayHydraulics(t, bad), e => e.code === "BAD_INPUT", JSON.stringify(bad));
   }
   assert.throws(() => trayHydraulics([{ ...t[0], WL_kg_s: 0 }], {}), e => e.code === "BAD_INPUT");
-  assert.throws(() => trayHydraulics(t, { tray_spacing_m: 1.2 }), e => e.code === "OUT_OF_RANGE" && /stage 2/.test(e.message));
+  // a tray spacing beyond the chart: sized with the chart's 0.9 m curve and a note; the strict mode refuses (2026-11-13)
+  assert.ok(trayHydraulics(t, { tray_spacing_m: 1.2 }).notes.some(n => /tray spacing at 1\.2 m is 0\.3 m above its range \(0\.15-0\.9 m\)/.test(n)));
+  assert.throws(() => withRangePolicy({ strictRanges: true }, () => trayHydraulics(t, { tray_spacing_m: 1.2 })), e => e.code === "OUT_OF_RANGE" && /stage 2/.test(e.message));
 });
 
 /** W7's case B1 (ethanol + water, NRTL, 20 stages) through solve_column, with the column's sizing. */

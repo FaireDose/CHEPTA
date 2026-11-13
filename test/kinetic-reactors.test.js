@@ -10,6 +10,9 @@ import { reactionEquilibrium, gibbsReactions } from "../src/equilibrium/reaction
 import { integrateStiff } from "../src/util/ode.js";
 import { parseExpression } from "../src/reactions/expression.js";
 import { pure } from "../src/thermo/pure.js";
+import { withRangePolicy } from "../src/util/ranges.js";
+// the strict range mode (the maintainer, 2026-11-13; docs/decisions/2026-11-13-03-extrapolation-policy.md)
+const strictly = fn => withRangePolicy({ strictRanges: true }, fn);
 
 const fixture = name => JSON.parse(readFileSync(new URL(`../validation/fixtures/${name}.json`, import.meta.url)));
 const kin = fixture("kinetics"), eqRef = fixture("equilibrium");
@@ -211,6 +214,7 @@ test("Ergun without a typed viscosity: the gas mixture's from the vapour viscosi
     pressureDrop: { particle_m: 0.003, voidage: 0.4, viscosity_Pa_s: mu } }, reactions: [none] }).outlets.out.P_kPa;
   const mu = gasViscosity(s, [4 / 7, 2 / 7, 1 / 7], T);
   assert.ok(Math.abs(run(null) - run(mu)) < 1e-9 && run(null) < 202.65);
-  // outside a record's range: refused with the remedy
-  assert.throws(() => gasViscosity(s, [1, 0, 0], 2000), /viscosity_Pa_s/);
+  // outside a record's range: continued with a note (2026-11-13; this line changed); the strict mode refuses with the remedy
+  assert.ok(gasViscosity(s, [1, 0, 0], 2000) > 0);
+  assert.throws(() => strictly(() => gasViscosity(s, [1, 0, 0], 2000)), /viscosity_Pa_s/);
 });

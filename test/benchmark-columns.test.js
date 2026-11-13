@@ -7,7 +7,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
-import { system, pure } from "../src/index.js";
+import { system, pure, withRangePolicy } from "../src/index.js";
 import { OUTCOMES } from "../src/api/dispatcher.js";
 
 const dir = new URL("../validation/data/columns/", import.meta.url);
@@ -476,7 +476,11 @@ test("column case G3: the column's method cannot represent the feed; CHEPTA's NR
   assert.ok(Math.abs(fs.enthalpy("liquid", c.column.feed.T_K, P, c.column.feed.z) - r.h_flowsheet_J_mol) < 0.05);
   assert.ok(Math.abs(cm.enthalpy("liquid", lo, P, c.column.feed.z) - r.h_column_method_at_lowest_T_J_mol) < 0.05);
   assert.ok(r.h_flowsheet_J_mol < r.h_column_method_at_lowest_T_J_mol, "below what the column's method reaches");
-  assert.throws(() => cm.enthalpy("liquid", lo - 11, P, c.column.feed.z), e => e.code === c.expected.code && /278\.68/.test(e.message)); // 11 K: the heat capacity is extrapolated 10 K below its record (decision 2026-11-12-05)
+  // the case's refusal holds in the strict range mode (11 K: the heat capacity is extrapolated 10 K below its record there,
+  // decision 2026-11-12-05); without it the record is continued with a warning (the maintainer, 2026-11-13; this line
+  // changed, the case file is unchanged)
+  assert.throws(() => withRangePolicy({ strictRanges: true }, () => cm.enthalpy("liquid", lo - 11, P, c.column.feed.z)), e => e.code === c.expected.code && /278\.68/.test(e.message));
+  assert.ok(Number.isFinite(cm.enthalpy("liquid", lo - 11, P, c.column.feed.z)));
 });
 
 const hdir = new URL("../validation/data/columns/hydraulics/", import.meta.url);

@@ -43,6 +43,7 @@ import { viscosity as viscosityIAPWS, thermalConductivityParts as conductivityIA
 import { cubicEos, CUBICS } from "./eos/cubic.js";
 import { dimerK, monomerPressure, pureDimerEnthalpy, dimerEnthalpy } from "./vapour.js";
 import { fail, failRange } from "../util/errors.js";
+import { strictRanges, noteExtrapolation, quietly, collectExtrapolations } from "../util/ranges.js";
 import { hasCritical, criticalT, requireCritical } from "./critical.js";
 
 // Accuracy of the Peng-Robinson residual enthalpy and cp of vapours, against CoolProp's
@@ -71,6 +72,8 @@ export const PROPERTIES = {
 export const PROPERTY_NAMES = Object.keys(PROPERTIES);
 
 const T_REF = 298.15;
+/** Properties of the liquid (or of saturation), which have no value above the critical temperature. */
+const LIQUID_PROPERTIES = new Set(["liquidDensity", "liquidHeatCapacity", "heatOfVaporization", "liquidViscosity", "liquidThermalConductivity", "surfaceTension"]);
 
 // 16-point Gauss-Legendre nodes and weights on [-1, 1] (Abramowitz & Stegun, table 25.4).
 const GL_X = [0.0950125098376374, 0.2816035507792589, 0.4580167776572274, 0.6178762444026438,
@@ -178,19 +181,25 @@ export function pure(key, opts = {}) {
     const lo = Math.max(cl.Tmin_K, dh.Tmin_K, crit ? vpRec.Tmin_K : 0);
     const hi = Math.min(cl.Tmax_K, dh.Tmax_K, crit ? vpRec.Tmax_K : Infinity);
     if (!(lo <= T_REF && T_REF < hi)) return null;
-    const g = T => evaluate(dh, T) - (crit ? hResSat(T, evaluate(vpRec, T) / 1000) : 0);
+    const ev = (rec, T, name) => evaluate(rec, T, { component: c.name, property: PROPERTIES[name]?.label ?? "Vapour pressure", kind: name });
+    const g = T => ev(dh, T, "heatOfVaporization") - (crit ? hResSat(T, ev(vpRec, T, "vapourPressure") / 1000) : 0);
+    // outside the range where both records apply: refused in the strict mode (as before 2026-11-13); else the records
+    // are continued (correlations.js) and a note names the derived heat capacity
     const inRange = T => {
-      if (!(T >= lo - 1e-9 && T <= hi + 1e-9)) {
-        throw failRange("OUT_OF_RANGE", `${c.name}: its ideal-gas heat capacity is derived from its liquid heat capacity and heat of vaporization, which both apply at ${lo}-${hi} K only; T = ${Number(T).toFixed(2)} K is outside (no open ideal-gas heat capacity: ${(own?.searched || []).join(", ")}).`);
-      }
+      if (T >= lo - 1e-9 && T <= hi + 1e-9) return;
+      const why = `${c.name}: its ideal-gas heat capacity is derived from its liquid heat capacity and heat of vaporization, which both apply at ${lo}-${hi} K only; T = ${Number(T).toFixed(2)} K is outside (no open ideal-gas heat capacity: ${(own?.searched || []).join(", ")}).`;
+      if (strictRanges()) throw failRange("OUT_OF_RANGE", why);
+      noteExtrapolation({ component: c.name, property: "Ideal-gas heat capacity (derived from the liquid's records)", lo, hi, value: T,
+        how: "the liquid heat capacity and the heat of vaporization it is derived from are continued beyond their records", kind: "idealGasHeatCapacity" });
     };
     const g0 = g(T_REF);
-    const h = T => { inRange(T); return integrate(t => evaluate(cl, t), T_REF, T) + g(T) - g0; };
+    const h = T => { inRange(T); return quietly(() => integrate(t => ev(cl, t, "liquidHeatCapacity"), T_REF, T) + g(T)) - g0; };
     const dT = 0.01;
     const cp = T => {
       inRange(T);
-      const a = Math.max(lo, T - dT), b = Math.min(hi, T + dT);
-      return evaluate(cl, T) + (g(b) - g(a)) / (b - a);
+      const inside = T >= lo && T <= hi;
+      const a = inside ? Math.max(lo, T - dT) : T - dT, b = inside ? Math.min(hi, T + dT) : T + dT;
+      return quietly(() => ev(cl, T, "liquidHeatCapacity") + (g(b) - g(a)) / (b - a));
     };
     const srcName = s => (typeof s === "string" ? s : s?.name ?? "");
     const tier = cl.tier === "predicted" || dh.tier === "predicted" ? "predicted" : "fitted";
@@ -217,23 +226,37 @@ export function pure(key, opts = {}) {
     if (name === "idealGasHeatCapacity" && derivedIG) return derivedIG.cp(T);
     const r = record(name);
     if (!r) throw fail("MISSING_DATA", missingMessage(name));
-    const v = evaluate(r, T, opts);
+    // a liquid's property continued beyond its record to or above the critical temperature: there is no liquid there,
+    // so no continuation (the maintainer, 2026-11-13: a physically impossible state still refuses)
+    if (LIQUID_PROPERTIES.has(name) && crit && T >= Tc && !(T <= r.Tmax_K + 1e-9) && !opts?.extrapolate) {
+      throw failRange("OUT_OF_RANGE", `${c.name}: no ${(PROPERTIES[name]?.label ?? name).toLowerCase()} at ${Number(T).toFixed(2)} K, at or above its critical temperature (${c.Tc_K} K): there is no liquid there (its record covers ${r.Tmin_K}-${r.Tmax_K} K).`);
+    }
+    const v = evaluate(r, T, { component: c.name, property: PROPERTIES[name]?.label ?? "Vapour pressure", kind: name, Tc_K: crit ? Tc : null, ...opts });
     return name === "vapourPressure" ? v / 1000 : v;
   }
 
   /** Vapour pressure, kPa. */
   const psat = (T, opts) => property("vapourPressure", T, opts);
 
-  /** Saturation (boiling) temperature at P (kPa), K. */
+  /**
+   * Saturation (boiling) temperature at P (kPa), K. Inside the record's pressures: the record. Outside them: the
+   * record continued (correlations.js), searched between physical limits (10 K and the critical temperature, or three
+   * times the record's upper end without one), with a note; the strict mode refuses, as before 2026-11-13.
+   */
   function tsat(P) {
     if (!vpRec) throw fail("MISSING_DATA", missingMessage("vapourPressure"));
     const lo = vpRec.Tmin_K, hi = vpRec.Tmax_K;
     const flo = psat(lo) - P, fhi = psat(hi) - P;
-    if (flo > 0 || fhi < 0) {
-      throw failRange("OUT_OF_RANGE", `${c.name}: ${P} kPa is outside the vapour-pressure range ` +
-        `(${psat(lo).toPrecision(4)}-${psat(hi).toPrecision(4)} kPa, ${lo}-${hi} K).`);
-    }
-    return brent(T => psat(T) - P, lo, hi, { xtol: 1e-9 });
+    if (flo <= 0 && fhi >= 0) return brent(T => psat(T) - P, lo, hi, { xtol: 1e-9 });
+    const outside = `${c.name}: ${P} kPa is outside the vapour-pressure range (${psat(lo).toPrecision(4)}-${psat(hi).toPrecision(4)} kPa, ${lo}-${hi} K).`;
+    if (strictRanges()) throw failRange("OUT_OF_RANGE", outside);
+    const [a, b] = flo > 0 ? [10, lo] : [hi, crit ? Tc : 3 * hi];
+    const f = T => { try { return psat(T) - P; } catch (e) { if (e?.code === "OUT_OF_RANGE") return flo > 0 ? -P : Infinity; throw e; } };
+    const fa = quietly(() => f(a)), fb = quietly(() => f(b));
+    if (!(fa <= 0 && fb >= 0)) throw failRange("OUT_OF_RANGE", `${outside} Continued beyond its record, the curve does not reach ${P} kPa between ${a} K and ${b.toFixed(2)} K${crit && flo <= 0 ? " (the critical temperature)" : ""}.`);
+    const T = quietly(() => brent(f, a, b, { xtol: 1e-9 }));
+    psat(T);   // the note, at the answer
+    return T;
   }
 
   /** Ideal-gas enthalpy relative to the ideal gas at 298.15 K, J/mol. */
@@ -241,7 +264,13 @@ export function pure(key, opts = {}) {
     if (derivedIG) return derivedIG.h(T);
     const r = record("idealGasHeatCapacity");
     if (!r) throw fail("MISSING_DATA", missingMessage("idealGasHeatCapacity"));
-    return integrate(t => evaluate(r, t, { extrapolate: true }), T_REF, T);
+    // strict mode: the equation itself beyond its range, as before 2026-11-13; else continued linearly (correlations.js),
+    // with a note only where T itself is outside the record (not for the few kelvin between 298.15 K and a record's start)
+    if (strictRanges()) return integrate(t => evaluate(r, t, { extrapolate: true }), T_REF, T);
+    const opts = { component: c.name, property: PROPERTIES.idealGasHeatCapacity.label, kind: "idealGasHeatCapacity" };
+    const v = quietly(() => integrate(t => evaluate(r, t, opts), T_REF, T));
+    if (T < r.Tmin_K || T > r.Tmax_K) evaluate(r, T, opts);
+    return v;
   }
 
   /**
@@ -251,6 +280,15 @@ export function pure(key, opts = {}) {
    * enthalpy and residual cp, added to the ideal-gas correlations.
    */
   function props(T, P) {
+    // the records used outside their range (the maintainer, 2026-11-13): each named in a note, and listed
+    const { value: out, extrapolations } = collectExtrapolations(() => propsCore(T, P));
+    if (extrapolations.length) {
+      out.notes = [...new Set([...extrapolations.map(e => e.message), ...out.notes])];
+      out.extrapolations = extrapolations;
+    }
+    return out;
+  }
+  function propsCore(T, P) {
     if (id === "water") return waterProps(c, T, P);
     const out = { component: c.name, T_K: T, P_kPa: P, phase: null, notes: [], sources: {} };
     const tryGet = (key, fn, srcName) => {
@@ -500,8 +538,17 @@ function waterMethods(c, base) {
     const e = IF97_PROPS[name];
     if (!e) return base.property(name, T, opts);
     if (!(T >= e[0] && T <= e[1])) {
-      throw failRange("OUT_OF_RANGE", `Water: ${PROPERTIES[name]?.label ?? "vapour pressure"} from IAPWS is ` +
-        `available from ${e[0]} K to ${e[1]} K; T = ${T} K.`);
+      const label = PROPERTIES[name]?.label ?? "Vapour pressure";
+      const msg = `Water: ${label} from IAPWS is available from ${e[0]} K to ${e[1]} K; T = ${T} K.`;
+      // outside (the maintainer, 2026-11-13): the IAPWS equations beyond their range where they stay finite, with a
+      // note; a saturation property above the critical temperature has no continuation; strict: refused
+      const sat = e[1] >= 647 && e[1] <= TC_IF97;
+      if (strictRanges() || (sat && T > TC_IF97) || !(T > 0)) throw failRange("OUT_OF_RANGE", sat && T > TC_IF97 ? `${msg} Above the critical temperature (${TC_IF97} K) there is no saturated liquid.` : msg);
+      const v = quietly(() => e[3](T));
+      if (!(Number.isFinite(v) && v > 0)) throw failRange("OUT_OF_RANGE", `${msg} Continued beyond that range the IAPWS equations give ${Number.isFinite(v) ? `a value of ${v.toPrecision(4)}, not physical` : "no finite value"}.`);
+      noteExtrapolation({ component: "Water", property: `${label} (IAPWS)`, lo: e[0], hi: e[1], value: T, kind: name,
+        how: "the IAPWS equations are evaluated beyond their range of validity (they stay finite there)" });
+      return v;
     }
     return e[3](T);
   }
@@ -514,7 +561,10 @@ function waterMethods(c, base) {
     /** Ideal-gas enthalpy relative to the ideal gas at 298.15 K, J/mol (IF97 ideal-gas part), 273.15-1073.15 K. */
     hIdealGas(T) {
       if (!(T >= TMIN && T <= 1073.15)) {
-        throw failRange("OUT_OF_RANGE", `Water: IF97 ideal-gas enthalpy is available from 273.15 K to 1073.15 K; T = ${T} K.`);
+        const msg = `Water: IF97 ideal-gas enthalpy is available from 273.15 K to 1073.15 K; T = ${T} K.`;
+        if (strictRanges() || !(T > 0)) throw failRange("OUT_OF_RANGE", msg);
+        noteExtrapolation({ component: "Water", property: "Ideal-gas heat capacity (IAPWS-IF97)", lo: TMIN, hi: 1073.15, value: T, kind: "idealGasHeatCapacity",
+          how: "the IAPWS-IF97 ideal-gas equation is evaluated beyond its range (it stays finite there)" });
       }
       return M * (hIdealGasIF97(T) - hIdealGasIF97(T_REF));
     },

@@ -14,6 +14,7 @@
 import { stateTP, saturationT, psatMPa, tsatMPa, TC } from "./if97.js";
 import { viscosity, thermalConductivity, T_MIN_TRANSPORT, T_MAX_TRANSPORT } from "./transport.js";
 import { fail } from "../../util/errors.js";
+import { strictRanges, collectExtrapolations } from "../../util/ranges.js";
 
 export const STANDARD = "IAPWS-IF97";
 export const VISCOSITY_STANDARD = "IAPWS R12-08 (industrial form: mu2 = 1, density from IAPWS-IF97)";
@@ -41,7 +42,9 @@ function present(st) {
     transport: TRANSPORT_STANDARD,
     notes: [],
   };
-  if (st.T >= T_MIN_TRANSPORT && st.T <= T_MAX_TRANSPORT) {
+  // outside the transport releases' range: the equations continued with a note (the maintainer, 2026-11-13), not
+  // computed in the strict range mode
+  if ((st.T >= T_MIN_TRANSPORT && st.T <= T_MAX_TRANSPORT) || !strictRanges()) {
     out.mu_Pa_s = viscosity(st.T, st.rho);
     out.k_W_mK = thermalConductivity(st.T, st.rho, st);
   } else {
@@ -53,7 +56,8 @@ function present(st) {
 
 /**
  * Water or steam at T (K) and P (kPa), IAPWS-IF97 with IAPWS transport properties.
- * Valid 273.15-1073.15 K up to 100 MPa and 1073.15-2273.15 K up to 50 MPa; throws outside.
+ * Valid 273.15-1073.15 K up to 100 MPa and 1073.15-2273.15 K up to 50 MPa; outside, the equations are evaluated
+ * beyond their range with a note in `notes` (the maintainer, 2026-11-13), and the strict range mode throws.
  * On the saturation line itself the liquid is returned; use steamSat for both phases.
  *
  * @example
@@ -66,7 +70,10 @@ function present(st) {
  *   P >= psat(T); otherwise "vapour".
  */
 export function steam(T_K, P_kPa) {
-  return present(stateTP(T_K, P_kPa));
+  // outside IF97's range of validity (the maintainer, 2026-11-13): calculated, each extrapolation named in the notes
+  const { value: out, extrapolations } = collectExtrapolations(() => present(stateTP(T_K, P_kPa)));
+  if (extrapolations.length) { out.notes = [...extrapolations.map(e => e.message), ...out.notes]; out.extrapolations = extrapolations; }
+  return out;
 }
 
 /**

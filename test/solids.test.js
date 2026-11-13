@@ -10,6 +10,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { system, stream, runUnit, runFlowsheet } from "../src/index.js";
 import { curveSolubility, curveSolutionEnthalpy } from "../src/thermo/solubility-curve.js";
+import { withRangePolicy, collectExtrapolations } from "../src/util/ranges.js";
 import { normalizeFlowsheet } from "../src/flowsheet/document.js";
 import { readProject, projectOf, stateFromProject } from "../src/ui/project.js";
 import { initialState } from "../src/ui/app-logic.js";
@@ -37,12 +38,18 @@ export const tpaFlowsheet = model => ({ components: ["water", "terephthalic-acid
     { id: "V3", from: "D3.vapour", to: "P3.in" }, { id: "L3", from: "D3.liquid", to: "CR1.in" },
     { id: "CRYSTALS", from: "CR1.crystals", to: "P4.in" }, { id: "LIQUOR", from: "CR1.liquor", to: "P5.in" }] });
 
-test("the solubility curve of terephthalic acid in water follows the measured values it was fitted to, and only inside them", () => {
+test("the solubility curve of terephthalic acid in water follows the measured values it was fitted to; outside them the equation itself, with a note (strict mode: refused)", () => {
   assert.equal(CURVE.equation, "apelblat");
   for (const r of TAKE) assert.ok(rel(curveSolubility(CURVE, r.T_K), r.x_solute) < 0.05, `${r.T_K} K: ${curveSolubility(CURVE, r.T_K)} vs ${r.x_solute}`);
   assert.match(CURVE.source, /largest deviation 4\.8 %/);
-  assert.throws(() => curveSolubility(CURVE, 340, "Terephthalic acid"), e => e.code === "OUT_OF_RANGE" && /348\.8-547\.4 K/.test(e.message));
-  assert.throws(() => curveSolubility(CURVE, 560), e => e.code === "OUT_OF_RANGE");
+  // outside the measured temperatures (the maintainer, 2026-11-13; this test changed from "refused"): the fitted
+  // equation itself, ln x = A + B/T + C ln T, computed here independently, with a note; the strict mode refuses
+  for (const T of [340, 560]) {
+    const got = collectExtrapolations(() => curveSolubility(CURVE, T, "Terephthalic acid"));
+    assert.ok(rel(got.value, Math.exp(CURVE.A + CURVE.B / T + CURVE.C * Math.log(T))) < 1e-12);
+    assert.match(got.extrapolations[0].message, /^Terephthalic acid: solubility in water \(measured curve\) at \d+ K is [\d.]+ K (below|above) its range \(348\.8-547\.4 K\): the fitted equation itself/);
+    assert.throws(() => withRangePolicy({ strictRanges: true }, () => curveSolubility(CURVE, T, "Terephthalic acid")), e => e.code === "OUT_OF_RANGE" && /348\.8-547\.4 K/.test(e.message));
+  }
   // the apparent enthalpy of solution from the slope: positive (the solubility rises with T), tens of kJ/mol
   for (const T of [360, 450, 540]) { const h = curveSolutionEnthalpy(CURVE, T); assert.ok(h > 2e4 && h < 1.5e5, `${T} K: ${h}`); }
   // the set left out, and why
@@ -132,7 +139,7 @@ test("every block dissolves or crystallizes the solid: water added, heating, a l
   assert.throws(() => runUnit("heater", { sys: plain, inlets: { in: cr.outlets.crystals }, spec: { T_K: 450 } }), e => e.code === "NOT_AVAILABLE");
 });
 
-test("a solubility curve of one's own (My data): points, tier user, inside its temperatures only", () => {
+test("a solubility curve of one's own (My data): points, tier user; beyond its temperatures continued along its end segment, with a note (strict mode: refused)", () => {
   // Takebayashi's own measured points as the person's table (the same numbers, entered as user data)
   const points = TAKE.filter((_, k) => k % 2 === 0).map(r => [r.T_K, r.x_solute]);
   const userData = { properties: { "terephthalic-acid": { solubility: [{ solvent: "water", points, source: { name: "Takebayashi et al. 2012, Table 1" } }] } } };
@@ -140,7 +147,13 @@ test("a solubility curve of one's own (My data): points, tier user, inside its t
   const r = sys.solidSolubility("terephthalic-acid", points[2][0]);
   assert.equal(r.curve.tier, "user");
   assert.ok(rel(r.xSolute, points[2][1]) < 1e-12, "a measured point is reproduced");
-  assert.throws(() => sys.solidSolubility("terephthalic-acid", points.at(-1)[0] + 1), e => e.code === "OUT_OF_RANGE" && /your own curve/.test(e.message));
+  // beyond the last point (the maintainer, 2026-11-13; this line changed from "refused"): ln x linear in 1/T along the
+  // last segment, computed here independently; the strict mode refuses as before
+  const [[T0, x0], [T1, x1]] = points.slice(-2), Tq = T1 + 1;
+  const beyond = collectExtrapolations(() => sys.solidSolubility("terephthalic-acid", Tq));
+  assert.ok(rel(beyond.value.xSolute, Math.exp(Math.log(x0) + (Math.log(x1) - Math.log(x0)) / (1 / T1 - 1 / T0) * (1 / Tq - 1 / T0))) < 1e-9);
+  assert.ok(beyond.extrapolations.some(e => /your own curve.*end segment/.test(e.message)));
+  assert.throws(() => withRangePolicy({ strictRanges: true }, () => sys.solidSolubility("terephthalic-acid", Tq)), e => e.code === "OUT_OF_RANGE" && /your own curve/.test(e.message));
   assert.throws(() => system({ components: ["water", "terephthalic-acid"], model: "ideal",
     userData: { properties: { "terephthalic-acid": { solubility: [{ solvent: "water", points: [[400, 0.001]], source: "x" }] } } } }), /at least two points/);
   assert.throws(() => system({ components: ["water", "terephthalic-acid"], model: "ideal",
@@ -211,7 +224,7 @@ test("a cooler or a flash drum, then the solid taken apart, gives exactly the Cr
   assert.ok(Math.abs(d.duty_kW - cr.duty_kW) < 1e-6 * Math.max(1, Math.abs(cr.duty_kW)), `duty ${d.duty_kW} vs ${cr.duty_kW}`);
 });
 
-test("every automatic solubility curve follows the measured values it was fitted to, as its record states, and only in its range", () => {
+test("every automatic solubility curve follows the measured values it was fitted to, as its record states; the strict mode refuses outside its range", () => {
   // validation/python/solubility_curves.py, docs/SOLUBILITY_CURVES.md: each record states its largest deviation over the
   // articles it was fitted to; the engine's curve must give the same number from the data files
   let n = 0;
@@ -227,7 +240,9 @@ test("every automatic solubility curve follows the measured values it was fitted
       }
       const stated = Number(rec.source.match(/Largest deviation ([\d.]+) %/)[1]) / 100;
       assert.ok(Math.abs(worst - stated) < 6e-4, `${id} in ${rec.solvent}: largest deviation ${worst} vs the record's ${stated}`);
-      assert.throws(() => curveSolubility(rec, rec.Tmax_K + 1), e => e.code === "OUT_OF_RANGE");
+      // outside its range (2026-11-13): refused in the strict mode only; otherwise the equation, with a note
+      assert.throws(() => withRangePolicy({ strictRanges: true }, () => curveSolubility(rec, rec.Tmax_K + 1)), e => e.code === "OUT_OF_RANGE");
+      try { assert.ok(collectExtrapolations(() => curveSolubility(rec, rec.Tmax_K + 1)).extrapolations.length === 1); } catch (e) { assert.equal(e.code, "OUT_OF_RANGE"); }
       n++;
     }
   }

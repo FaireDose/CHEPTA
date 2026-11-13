@@ -9,7 +9,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { system, henry } from "../src/index.js";
+import { system, henry, withRangePolicy } from "../src/index.js";
 
 const carroll = JSON.parse(readFileSync(new URL("../validation/data/henry/co2_water_carroll1991.json", import.meta.url)));
 
@@ -60,9 +60,12 @@ test("what Henry components refuse: another solvent, a temperature outside the e
   // another liquid beside water: the gases are not Henry components (as before, a gas-phase reactor's system keeps working);
   // an absorber refuses them with the reason (test/columns-absorber.test.js)
   assert.equal(system({ components: ["carbon-dioxide", "hydrogen", "methanol", "water"], model: "ideal" }).info.henry, undefined);
-  // outside the range of CO2's equation (274.19-642.66 K)
+  // outside the range of CO2's equation (274.19-642.66 K): continued with a warning at the answer's temperature; the strict
+  // range mode refuses (the maintainer, 2026-11-13; this line changed from "refused")
   const s = system({ components: ["carbon-dioxide", "water"], model: "NRTL" });
-  assert.throws(() => s.psat(270), e => e.code === "OUT_OF_RANGE" && /274.19/.test(e.message));
+  assert.ok(Number.isFinite(s.psat(270)[0]));
+  assert.ok(s.warnings(270, 101.325).some(w => /^Carbon dioxide: Henry's law constant in water at 270 K is 4\.19 K below its range \(274\.19-642\.66 K\)/.test(w)), s.warnings(270, 101.325).join(" | "));
+  assert.throws(() => withRangePolicy({ strictRanges: true }, () => s.psat(270)), e => e.code === "OUT_OF_RANGE" && /274.19/.test(e.message));
   // with a cubic vapour
   assert.throws(() => system({ components: ["carbon-dioxide", "water"], model: "NRTL", vapour: "PR" }), e => e.code === "NOT_AVAILABLE" && /ideal-gas vapour/.test(e.message));
   // a gas with no Henry's law constant (helium): refused for its missing pair, as before

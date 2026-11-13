@@ -1531,6 +1531,9 @@ export function flowsheetView(ctx) {
   else if (sol.error) notes.append(warning(sol.error, { title: `Not solved: ${summaryOf(sol.error)}`, attrs: { role: "alert" },
     details: [sol.loop ? h("p", { class: "fa-in-hint" }, "The blocks of that recycle are outlined in red. The solver settings are in the Inputs panel (with nothing selected): 4. Recycle solver.") : null] }));
   if (sol.stale) notes.append(warning("The results are not up to date: press Solve.", { attrs: { role: "note" } }));
+  // records used outside their range, once per component and property, with the farthest distance and the blocks
+  // (the maintainer, 2026-11-13): one line each in the Warnings tab, the whole text when opened
+  for (const e of res?.extrapolations ?? []) notes.append(warning(e.message, { title: e.short, attrs: { role: "note", "data-fk": "fs-extrapolation" } }));
 
   // ---- the drawing
   const pos = new Map(fs.blocks.map(b => [b.id, b]));

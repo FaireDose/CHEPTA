@@ -230,5 +230,10 @@ don't fill it in.
   it; do not drop it silently.
 - Results are model predictions. Say so, and point to the parameter sources the widget
   lists under the diagram.
+- Outside a record's range CHEPTA calculates and warns (2026-11-13): the record is continued and the result's
+  `warnings` (a flowsheet: `result.extrapolations`, once per component and property, with the blocks) say which
+  property, how far outside and how it was continued. Tell the user every such warning: the number is an
+  extrapolation, not data. Give `solver: { strictRanges: true }` (or `options: { strictRanges: true }` to
+  `CHEPTA.run`) when the user wants the calculation refused outside the data instead.
 - If the library fails to load, tell the user; do not replace it with hand-written
   thermodynamics.

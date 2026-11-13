@@ -1,7 +1,9 @@
 /**
  * Measured solubility curves (proposal 0015, Part I, section 5): the mole fraction x_sat(T) of a solid in its saturated
  * solution in one named solvent, from measured data, used by src/equilibrium/sle.js in place of the melting-point
- * equation, only inside the measured temperatures (refused outside them, OUT_OF_RANGE).
+ * equation. Outside the measured temperatures (the maintainer, 2026-11-13) the fitted equation itself is used (for
+ * points, ln x linear in 1/T along the end segment), with a note, and refused only where it gives a mole fraction of 1
+ * or more; the strict range mode (src/util/ranges.js) refuses outside them, as before.
  *
  * A record (components.json "solubility", or the user's own in My data, tier "user"):
  *   { solvent, equation: "apelblat", A, B, C, Tmin_K, Tmax_K, source, tier }       ln x = A + B/T + C ln T
@@ -13,6 +15,7 @@
  * the measured route where no enthalpy of fusion is known.
  */
 import { failRange, fail } from "../util/errors.js";
+import { strictRanges, noteExtrapolation } from "../util/ranges.js";
 
 const R = 8.314462618;
 export const CURVE_EQUATIONS = ["apelblat", "points"];
@@ -27,9 +30,12 @@ export function curveRange(rec) {
 
 function inRange(rec, T, name) {
   const [lo, hi] = curveRange(rec);
-  if (!(T >= lo - 1e-9 && T <= hi + 1e-9)) {
-    throw failRange("OUT_OF_RANGE", `${name}: its measured solubility in ${rec.solvent} covers ${fmt(lo)}-${fmt(hi)} K (${rec.tier === "user" ? "your own curve" : "the curve's measured temperatures"}); at ${fmt(T)} K it is not known, and a curve is not extrapolated.`);
+  if (T >= lo - 1e-9 && T <= hi + 1e-9) return;
+  if (strictRanges()) {
+    throw failRange("OUT_OF_RANGE", `${name}: its measured solubility in ${rec.solvent} covers ${fmt(lo)}-${fmt(hi)} K (${rec.tier === "user" ? "your own curve" : "the curve's measured temperatures"}); at ${fmt(T)} K it is not known, and a curve is not extrapolated in the strict range mode.`);
   }
+  noteExtrapolation({ component: name, property: `Solubility in ${rec.solvent} (${rec.tier === "user" ? "your own curve" : "measured curve"})`, lo, hi, value: T, kind: "solubility",
+    how: rec.equation === "points" ? "ln x is continued linearly in 1/T along the curve's end segment" : "the fitted equation itself is evaluated beyond the measured temperatures" });
 }
 
 function segment(rec, T) {
@@ -44,9 +50,14 @@ function segment(rec, T) {
 /** x_sat at T (K), inside the curve's range. */
 export function curveSolubility(rec, T, name = "the solid") {
   inRange(rec, T, name);
-  if (rec.equation === "apelblat") return Math.exp(rec.A + rec.B / T + rec.C * Math.log(T));
-  if (rec.equation === "points") return Math.exp(segment(rec, T).lnx);
-  throw fail("BAD_INPUT", `${name}: unknown solubility-curve equation "${rec.equation}". Known: ${CURVE_EQUATIONS.join(", ")}.`);
+  const x = rec.equation === "apelblat" ? Math.exp(rec.A + rec.B / T + rec.C * Math.log(T))
+    : rec.equation === "points" ? Math.exp(segment(rec, T).lnx) : null;
+  if (x === null) throw fail("BAD_INPUT", `${name}: unknown solubility-curve equation "${rec.equation}". Known: ${CURVE_EQUATIONS.join(", ")}.`);
+  const [lo, hi] = curveRange(rec);
+  if (!(x > 0 && x < 1) && (T < lo - 1e-9 || T > hi + 1e-9)) {
+    throw failRange("OUT_OF_RANGE", `${name}: its solubility curve in ${rec.solvent} (${fmt(lo)}-${fmt(hi)} K), continued to ${fmt(T)} K, gives a mole fraction of ${fmt(x)}, which is not physical: the curve cannot be used there.`);
+  }
+  return x;
 }
 
 /** The apparent enthalpy of solution (J/mol) at T, from the curve's van't Hoff slope. */
