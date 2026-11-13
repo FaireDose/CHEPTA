@@ -1,6 +1,7 @@
 # Publishes the project website on GitHub Pages from main: a live demo of the workbench
 # (built from this commit) and short addresses for the AI-assistant instructions:
 #   https://fairedose.github.io/CHEPTA/          live workbench
+#   https://fairedose.github.io/CHEPTA/next.html preview of the new layout (proposal 0021)
 #   https://fairedose.github.io/CHEPTA/use.md    instructions for using CHEPTA in a chat
 #   https://fairedose.github.io/CHEPTA/agents.md the rules for assistants and agents
 #   https://fairedose.github.io/CHEPTA/install   how to install the skill
@@ -36,10 +37,12 @@ jobs:
       - name: Assemble the site
         run: |
           mkdir -p _site
-          cp site/index.html site/install.html _site/
+          cp site/index.html site/next.html site/install.html _site/
           # a new chepta.js for every commit: the page asks for chepta.js?v=<commit>, so no cached older copy is used
           sed -i "s/chepta\.js?v=dev/chepta.js?v=${GITHUB_SHA}/" _site/index.html
           grep -q "chepta.js?v=${GITHUB_SHA}" _site/index.html
+          sed -i "s/chepta\.js?v=dev/chepta.js?v=${GITHUB_SHA}/" _site/next.html
+          grep -q "chepta.js?v=${GITHUB_SHA}" _site/next.html
           (cd ai/skills && zip -qr ../../_site/skill.zip chepta && zip -qr ../../_site/contributor-skill.zip chepta-contributor)
           cp dist/chepta.js _site/chepta.js
           cp ai/instructions/use-chepta.md _site/use.md

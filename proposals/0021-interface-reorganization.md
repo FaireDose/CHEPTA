@@ -234,6 +234,10 @@ Each is one pull request with its screenshots (UI_GUIDE.md section 7) and its te
      layout; the classic Inputs panel is unchanged.
 4. **The new layout becomes the default**, after the maintainer's check with users; `layout: "classic"` keeps the
    old; UI_GUIDE.md is changed as section 5 says; the example pages and the README's screenshots follow.
+   - Preview published (docs/decisions/2026-11-13-06-site-next-preview.md): the new layout is at
+     `https://fairedose.github.io/CHEPTA/next.html` after the merge, beside the current one at the root; the testers'
+     five tasks and the form to send back are in [docs/ui-review/TESTING-0021.md](../docs/ui-review/TESTING-0021.md).
+     Waiting for the user check.
 5. **The flowsheet's connections**: "Open in ..." on blocks and streams, "Use in the flowsheet", and the examples on
    the empty drawing (section 3, steps 2 and 3); the flowsheet's tabs under the drawing.
 6. **The additions of section 4**, in the order the maintainer chooses, the A ones first; each C one through its

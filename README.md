@@ -36,6 +36,8 @@ Paste one of these into your assistant (the last two need one that can open web 
 
 > Read https://fairedose.github.io/CHEPTA/use.md and open the CHEPTA workbench as an artefact in this chat.
 
+**Try the new layout** (a preview of [proposal 0021](proposals/0021-interface-reorganization.md); the current layout stays the default): <https://fairedose.github.io/CHEPTA/next.html>; to help check it, see the [testers' checklist](docs/ui-review/TESTING-0021.md).
+
 **Load it with your components:**
 
 > Read https://fairedose.github.io/CHEPTA/use.md and follow it. Load the CHEPTA workbench with methanol, acetone and chloroform at 1 atm.
