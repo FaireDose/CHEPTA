@@ -34,7 +34,7 @@
  *    (eos-stability.js). Every liquid returned is checked with the tangent-plane test against
  *    a second liquid (stability.js liquidTangentPlane for activity models, eos-stability.js
  *    for equations of state).
- *  - Two liquids (activity models without the acid chemical theory; resolveSplit): the
+ *  - Two liquids (activity models; resolveSplit; with the acid chemical theory since decision 2026-11-12-02, below): the
  *    liquid-liquid split by successive substitution on K_i = gamma_i(x1) / gamma_i(x2), then
  *    the bubble pressure P3 of those liquids decides: P >= P3 gives two liquids; below it a
  *    binary has vapour + one liquid (Gibbs' phase rule: vapour + two liquids only at P3), and
@@ -45,8 +45,20 @@
  *    flash jumps at the three-phase temperature (at given P) or pressure (at given T); the
  *    P-H, P-VF and T-VF flashes find that point directly (P3(T) = P) and split the feed over
  *    the three phases by the lever rule with the vapour fraction or the energy balance.
- *    Still refused (PHASE_SPLIT): two liquids with the acid chemical theory or with an
- *    equation of state, and a third liquid.
+ *    With the acid chemical theory (acetic acid; src/thermo/vapour.js) the vapour's K-values are
+ *    sys.lnKAssociation, ln K_i = ln(gamma_i f_i^0 / (phi_i P)) for the apparent vapour y: phi_i from
+ *    the monomer-dimer equilibrium of y (vapourLnK). The two liquids' equilibrium, gamma_i(x1) x1_i =
+ *    gamma_i(x2) x2_i, does not involve the vapour; the vapour is in equilibrium with liquid 1 (and so
+ *    with liquid 2) by f_i^V = p_monomer,i = x1_i gamma_i(x1) p_monomer,sat,i: the conditions of
+ *    phase equilibrium (equal fugacities in the three phases) with the vapour of src/thermo/vapour.js
+ *    and its sources, written here, not taken from a source on vapour + two liquids. That acid
+ *    systems with two liquids are computed with the vapour's association: C. Pirola, F. Galli,
+ *    C. L. Bianchi, G. Carvoli, Chem. Eng. Trans. 32 (2013) 1897, doi 10.3303/CET1332317, free to
+ *    read at https://www.aidic.it/cet/13/32/317.pdf, section 2 (water + acetic acid + p-xylene,
+ *    "vapor-liquid and vapor-liquid-liquid", modified UNIFAC with "the Hayden-O'Connel correlation to
+ *    take into account the acetic acid association"). Every step of the three-phase iteration is
+ *    unchanged; only the vapour's K-values differ (decision 2026-11-12-02).
+ *    Still refused (PHASE_SPLIT): two liquids with an equation of state, and a third liquid.
  *  - Enthalpy and vapour-fraction specifications: Brent's method on T (or ln P), bracketed
  *    by the bubble and dew points; for a single phase, a bracket stepped out from them; for a
  *    P-H flash without bubble and dew points at that pressure (above the highest two-phase
@@ -307,6 +319,14 @@ function solveLinear(A, b) {
 
 const isEos = sys => sys.kind === "eos";
 
+/**
+ * The vapour's K-values of an activity model, ln K_i(x, y, T, P): sys.lnKValues, or, with the acid chemical theory,
+ * sys.lnKAssociation (src/thermo/system.js: the apparent vapour y of monomers and dimers, ln K_i = ln(gamma_i f_i^0 /
+ * (phi_i P)) with the fugacity of the monomer; decision 2026-11-12-02). Both depend on y, as an equation of state's
+ * vapour does, so the three-phase iterations take them alike. Null for an equation of state.
+ */
+const vapourLnK = sys => sys.lnKValues ?? sys.lnKAssociation ?? null;
+
 /** Throw PHASE_SPLIT if liquid x at T would split into two liquids (tangent-plane test). */
 function checkLiquid(sys, x, T, lead, P = null) {
   if (sys.n < 2) return;
@@ -320,7 +340,7 @@ function checkLiquid(sys, x, T, lead, P = null) {
   const st = liquidTangentPlane(sys, x, T);
   if (!st.stable) {
     const tr = st.trial.map(v => v.toPrecision(3)).join(", ");
-    throw fail("PHASE_SPLIT", `${lead} would split into two liquids (tangent-plane distance ${st.tm.toFixed(3)}, second liquid about [${tr}]); two liquids need an activity model without the acid chemical theory.`, { x, T, trial: st.trial });
+    throw fail("PHASE_SPLIT", `${lead} would split into two liquids (tangent-plane distance ${st.tm.toFixed(3)}, second liquid about [${tr}]); two liquids need the three-phase flash, which this calculation does not run.`, { x, T, trial: st.trial });
   }
 }
 
@@ -355,7 +375,7 @@ function newtonThree(sys, z, T, P, KV, KL2, bV, b2) {
     const sum = a => a.reduce((q, v) => q + v, 0);
     const s1 = sum(x1), sy = sum(y), s2 = sum(x2);
     const n1 = x1.map(v => v / s1), ny = y.map(v => v / sy), n2 = x2.map(v => v / s2);
-    const lk = sys.lnKValues(n1, ny, T, P), g1 = sys.gammas(n1, T), g2 = sys.gammas(n2, T);
+    const lk = vapourLnK(sys)(n1, ny, T, P), g1 = sys.gammas(n1, T), g2 = sys.gammas(n2, T);
     const r = new Array(m).fill(0);
     for (let i = 0; i < n; i++) if (on[i]) { r[i] = lv[i] - lk[i]; r[n + i] = l2[i] - Math.log(g1[i] / g2[i]); }
     r[2 * n] = sy - s1; r[2 * n + 1] = s2 - s1;
@@ -416,7 +436,7 @@ function splitThree(sys, z, T, P, KV, KL2) {
   for (let it = 1; it <= MAX_IT; it++) {
     const { x } = multiphaseRR(z, [z.map(() => 1), KV, KL2]);
     const [x1, y, x2] = x;
-    const KVn = sys.lnKValues(x1, y, T, P).map(Math.exp);
+    const KVn = vapourLnK(sys)(x1, y, T, P).map(Math.exp);
     const g1 = sys.gammas(x1, T), g2 = sys.gammas(x2, T);
     const KL2n = g1.map((v, i) => v / g2[i]);
     let d = 0, triv = 0;
@@ -519,8 +539,8 @@ const llCore = (sys, ll, iterations) => ({
  */
 function resolveSplit(sys, z, T, P, lx, y, Pbub, st, lead, ctx = {}) {
   const tr = st.trial.map(v => v.toPrecision(3)).join(", ");
-  if (!sys.lnKValues) {
-    throw fail("PHASE_SPLIT", `${lead} would split into two liquids (tangent-plane distance ${st.tm.toFixed(3)}, second liquid about [${tr}]); the three-phase flash needs an activity model without the acid chemical theory.`, { x: lx, T, trial: st.trial });
+  if (!vapourLnK(sys)) {
+    throw fail("PHASE_SPLIT", `${lead} would split into two liquids (tangent-plane distance ${st.tm.toFixed(3)}, second liquid about [${tr}]); this system gives no K-values for the vapour, which the three-phase flash needs.`, { x: lx, T, trial: st.trial });
   }
   if (lx !== z) {
     // the liquid of a vapour-liquid split splits: perhaps the feed itself does
@@ -603,7 +623,7 @@ function vapourTangentPlane(sys, z, T, P, starts = []) {
   for (let w of trials) {
     let S = 0;
     for (let it = 0; it < 200; it++) {
-      const K = sys.lnKValues(w, z, T, P);
+      const K = vapourLnK(sys)(w, z, T, P);
       const W = z.map((zi, i) => (zi > 0 ? zi / Math.exp(K[i]) : 0));
       S = W.reduce((a, b) => a + b, 0);
       const wn = W.map(v => v / S);
@@ -618,7 +638,7 @@ function vapourTangentPlane(sys, z, T, P, starts = []) {
 
 /** A vapour z, after the tangent-plane test: null if a liquid would form (the caller splits). */
 function checkedVapour(sys, z, T, P, x, iterations) {
-  if (sys.lnKValues && sys.n > 1) {
+  if (vapourLnK(sys) && sys.n > 1) {
     const st = vapourTangentPlane(sys, z, T, P, [x]);
     if (!st.stable) return { unstable: st };
   }
@@ -864,8 +884,8 @@ const T_FLOOR = 30, T_CEIL = 2000; // K: limits of the temperature search of a P
 
 // ------------------------------------------------------------------ specifications across two liquids
 
-/** Activity models without the acid chemical theory can resolve two liquids (splitThree). */
-const canThree = sys => !isEos(sys) && sys.n >= 2 && !!sys.lnKValues;
+/** Activity models can resolve two liquids (splitThree), with the acid chemical theory too (vapourLnK). */
+const canThree = sys => !isEos(sys) && sys.n >= 2 && !!vapourLnK(sys);
 const isSplitError = e => e && e.code === "PHASE_SPLIT";
 
 /**

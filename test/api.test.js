@@ -73,16 +73,17 @@ test("outcomes: invalid input names the block or field; missing data stays missi
   assert.match(md.error.message, /No NRTL parameters for: Benzene \+ Glycerol/);
 });
 
-test("unsupported: two liquids on a stripper's stages are not built and refused; an internal error is an outcome of its own", () => {
-  // the shortcut column landed with milestone M1, the rigorous column with M2a and purity specifications with M4
-  // (proposal 0015, W2), so this test, which asked for the rigorous mode before M2a and for a purity before M4, now
-  // asks for two liquids on a stripper's stages, which is still refused through the same outcome
+test("unsupported: two liquids without a vapour on a stripper's stages are refused; an internal error is an outcome of its own", () => {
+  // the shortcut column landed with milestone M1, the rigorous column with M2a, purity specifications with M4 (proposal
+  // 0015, W2) and two liquids on a stripper's stages with decision 2026-11-12-02, so this test, which asked for the
+  // rigorous mode before M2a, for a purity before M4 and for phases "VLL" on a stripper before 2026-11-12, now asks for
+  // phases "LL" on a stripper (an extraction: the Extraction block), still refused through the same outcome
   const list = capabilities();
   for (const name of ["capabilities", "find_component", "component_info", "check_project", "flowsheet_status", "solve_flowsheet", "solve_column"]) {
     assert.equal(list.find(c => c.name === name)?.status, "available", name);
   }
   const r = run({ capability: "solve_column", input: { components: ["benzene", "toluene"], thermo: { model: "ideal" },
-    feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { configuration: "stripper", stages: 5, reboiler: "partial", boilup_ratio: 1, phases: "VLL" } } });
+    feed: { flow_kmol_h: { benzene: 50, toluene: 50 }, P_kPa: 101.325, VF: 0 }, column: { configuration: "stripper", stages: 5, reboiler: "partial", boilup_ratio: 1, phases: "LL" } } });
   assert.equal(r.outcome, "unsupported");
   assert.equal(r.error.code, "NOT_AVAILABLE");
   assert.ok(OUTCOMES.includes(r.outcome));

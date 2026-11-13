@@ -1,0 +1,155 @@
+{
+ "_about": "Cyclohexane (1) + acetic acid (2) + water (3): isobaric vapour-liquid-liquid equilibrium at 101.3 kPa, from Liu et al. (2013). Liquid I is the organic (cyclohexane-rich) liquid, liquid II the aqueous one. Rows as the ThermoML record stores them: T in K; in liquid II the mole fractions of water and of cyclohexane; in liquid I those of cyclohexane and of water; in the vapour those of water and of cyclohexane. Acetic acid is 1 minus the other two in each phase (not stored in the record).",
+ "source": {
+  "citation": "L. Liu, C. Cheng, X. Mu, H. Li, W. Tan, Isobaric vapor-liquid-liquid equilibrium for water + cyclohexane + acetic acid at 101.3 kPa, Fluid Phase Equilib. 350 (2013) 32-36",
+  "doi": "10.1016/j.fluid.2013.04.011",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2013.04.011.html",
+  "access": "Journal article is subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1 (acetic acid + cyclohexane + water; phases liquid mixture 2, gas, liquid mixture 1; 14 rows): v1 T; p1 water and p2 cyclohexane in liquid mixture 2; p3 cyclohexane and p4 water in liquid mixture 1; p5 water and p6 cyclohexane in the gas. The record also stores an uncertainty for most values (not transcribed). The table number in the article was not checked (article not open)."
+ },
+ "components": [
+  "cyclohexane",
+  "acetic-acid",
+  "water"
+ ],
+ "kind": "ternary-vlle",
+ "P_kPa": 101.3,
+ "columns": [
+  "T_K",
+  "x_3_II",
+  "x_1_II",
+  "x_1_I",
+  "x_3_I",
+  "y_3",
+  "y_1"
+ ],
+ "rows": [
+  [
+   342.16,
+   1.0,
+   0.0,
+   1.0,
+   0.0,
+   0.3,
+   0.7
+  ],
+  [
+   342.96,
+   0.9163,
+   0.0,
+   0.9902,
+   0.0,
+   0.3111,
+   0.6745
+  ],
+  [
+   343.08,
+   0.8345,
+   0.0,
+   0.9736,
+   0.0057,
+   0.2999,
+   0.6668
+  ],
+  [
+   343.64,
+   0.7681,
+   0.0,
+   0.9597,
+   0.0067,
+   0.299,
+   0.6527
+  ],
+  [
+   343.86,
+   0.6578,
+   0.003,
+   0.92,
+   0.0085,
+   0.277,
+   0.6485
+  ],
+  [
+   343.94,
+   0.5981,
+   0.0039,
+   0.9103,
+   0.008,
+   0.2583,
+   0.6654
+  ],
+  [
+   344.17,
+   0.558,
+   0.0056,
+   0.9075,
+   0.0088,
+   0.2473,
+   0.6538
+  ],
+  [
+   344.46,
+   0.5041,
+   0.0072,
+   0.8773,
+   0.0085,
+   0.2345,
+   0.6603
+  ],
+  [
+   345.06,
+   0.4248,
+   0.012,
+   0.8568,
+   0.0106,
+   0.2117,
+   0.6548
+  ],
+  [
+   345.47,
+   0.3431,
+   0.0303,
+   0.7806,
+   0.0195,
+   0.1898,
+   0.6598
+  ],
+  [
+   345.78,
+   0.3042,
+   0.0378,
+   0.7441,
+   0.0195,
+   0.1833,
+   0.659
+  ],
+  [
+   345.86,
+   0.2502,
+   0.0582,
+   0.6854,
+   0.0212,
+   0.1803,
+   0.6333
+  ],
+  [
+   346.37,
+   0.2041,
+   0.073,
+   0.6037,
+   0.0258,
+   0.1615,
+   0.6339
+  ],
+  [
+   346.55,
+   0.1703,
+   0.1029,
+   0.5513,
+   0.0307,
+   0.1462,
+   0.641
+  ]
+ ],
+ "notes": "Read with validation/python/thermoml_read.py 10.1016/j.fluid.2013.04.011 --set 1 on 2026-11-12, values as stored. The first row has no acetic acid: the binary heterogeneous azeotrope of water + cyclohexane (liquids recorded as pure water and pure cyclohexane). CHEPTA has no fitted acetic acid + cyclohexane pair, so the comparison (test/vlle-acid.test.js) is with Modified UNIFAC 2.0 (predicted). To be checked by a person against the record (AGENTS.md rule 4)."
+}
