@@ -111,6 +111,31 @@ export function exportTables(desc) {
   }));
 }
 
+/**
+ * What an opened warning shows, so its first sentence is read once (2026-11-13: the opened warning repeated its line as
+ * the first sentence of its text). `head`: the line shown closed (warning.js: a title, or the first sentence, cut with
+ * "…" at 64 characters); `text`: the first paragraph of the whole message.
+ *  - the text starts with the line (cut or not): open, the line shows that first sentence whole, the text the rest;
+ *  - the line is a label and the text's start ("Known deviation (NRTL): The ternary…", "Not calculated: …"): open, the
+ *    line shows the label only, the text whole;
+ *  - otherwise both as they are.
+ * @returns {{line:string, text:string}}  the line and the paragraph of the open warning ("" text: no paragraph)
+ */
+export function openHead(head, text) {
+  const h0 = String(head ?? "").trim(), t = String(text ?? "").replace(/\s+/g, " ").trim();
+  const core = h0.replace(/…$/, "").trim();
+  if (!core || !t) return { line: h0, text: t };
+  if (t.startsWith(core)) {
+    // the first sentence of the text that holds the whole line: up to the first ". ", ": " or "; " after it
+    const rest = t.slice(core.length), m = rest.match(/^(.*?[.:;])(\s|$)/);
+    const first = m ? core + m[1] : t;
+    return { line: first.replace(/[.:;]$/, ""), text: t.slice(first.length).trim() };
+  }
+  const colon = core.indexOf(": ");
+  if (colon > 0 && t.startsWith(core.slice(colon + 2))) return { line: core.slice(0, colon), text: t };
+  return { line: h0, text: t };
+}
+
 let seq = 0;
 /**
  * A warning in two steps (the maintainer, 2026-11-12: "so the person is not overloaded"): one line, its title or first
@@ -126,11 +151,20 @@ export function twoStepWarning(node, { open = false, onToggle } = {}) {
   const body = node.querySelector(":scope > .fa-warn-body");
   const id = `fa-w2-${++seq}`;
   const region = h("div", { class: "fa-warn-body", id, role: "region", "aria-label": head }, ...(body ? [...body.childNodes] : []));
-  if (!region.childNodes.length) region.append(h("p", {}, head));
+  // open, the first sentence is read once: in the line, or in the text (openHead)
+  const p0 = region.firstElementChild?.matches?.("p") ? region.firstElementChild : null;
+  const split = p0 ? openHead(head, p0.textContent) : { line: head };
+  if (p0 && p0.children.length === 0) { if (split.text) p0.textContent = split.text; else p0.remove(); }
+  else split.line = head;
+  const extra = region.childNodes.length > 0;
+  const headSpan = h("span", { class: "fa-warn-head" }, head);
   const more = h("span", { class: "fa-warn-more" });
   const btn = h("button", { type: "button", class: "fa-warn-line", "aria-controls": id, "data-fk": "warn-toggle" },
-    h("span", { class: "fa-warn-sign", "aria-hidden": "true" }, icon("warn", 14)), h("span", { class: "fa-warn-head" }, head), more);
-  const set = on => { btn.setAttribute("aria-expanded", String(on)); region.hidden = !on; more.textContent = on ? "Less" : "Details"; out.classList.toggle("is-open", on); };
+    h("span", { class: "fa-warn-sign", "aria-hidden": "true" }, icon("warn", 14)), headSpan, more);
+  const set = on => {
+    btn.setAttribute("aria-expanded", String(on)); region.hidden = !on || !extra; more.textContent = on ? "Less" : "Details";
+    headSpan.textContent = on ? split.line : head; out.classList.toggle("is-open", on);
+  };
   const attrs = {};
   for (const a of ["role", "data-fk"]) if (node.getAttribute(a)) attrs[a] = node.getAttribute(a);
   const out = h("div", { class: "fa-warn fa-warn2", ...attrs }, btn, region);

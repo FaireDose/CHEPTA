@@ -55,6 +55,7 @@ import { SOLID_UNITS } from "./solubility-units.js";
 import pkg from "../../package.json" with { type: "json" };
 import { appNext } from "./app-next.js";
 import { shellContext, sourcesOf, statusOf, setsRuleOf, unitsOf, isBlank, OWN_METHOD, dataOf, missingOf } from "./shell-contract.js";
+import { STEP_WORKSPACES, stepOpen, stepSections } from "./unit-steps.js";
 import { CANVAS_TABS, tabLabel, tabOf, tabMove, staysOnCanvas, warningCount, exportTables, dataPane, warningList, twoStepWarning } from "./canvas-tabs.js";
 
 const PROPERTY_GLYPHS = [
@@ -170,7 +171,8 @@ export function app(target, cfg = {}) {
   const ui = {
     size: sizeOf(root.clientWidth || 1200), status: { busy: false, ms: null, error: null, info: null },
     sources: { query: "", kind: "all", mine: false }, opener: null, drawnUtility: null,
-    canvasTab: "plot", tabsFilled: {},   // the open canvas tab (new layout only; not saved) and the tabs built since the last calculation
+    canvasTab: "plot", tabsFilled: {},
+    steps: {},   // per workspace, the steps the person opened or folded and the one they work in (new layout only; not saved)   // the open canvas tab (new layout only; not saved) and the tabs built since the last calculation
     lastWs: {},   // the workspace each section had open last
     records: {},   // the last result of a view that a project file keeps (the flash stream table), by view
     projectNote: "",
@@ -195,6 +197,9 @@ export function app(target, cfg = {}) {
   // the canvas tabs of the reorganized layout (proposal 0021, step 2; canvas-tabs.js): asked for by app-next.js only
   // (an internal key, not part of the public configuration); the classic canvas is one column, as before
   const tabbed = cfg.canvasTabs === true;
+  // the numbered steps of the Flash, the Heat exchanger and the Pipe (proposal 0021, step 3; unit-steps.js): asked for
+  // by app-next.js only, like the tabs; the classic Inputs panel is one column of sections, as before
+  const stepped = cfg.unitSteps === true;
   const tabBar = h("div", { class: "fa-tabs", role: "tablist", "aria-label": "What the canvas shows" });
   const tableOwn = h("div", { class: "fa-tab-own" });   // a view's own table (the flash's stream table), ctx.tabs.table; the downloads (below, canvasFoot) come first
   const tableGen = h("div");                            // else the tables of its Excel export, built when the tab opens
@@ -740,7 +745,17 @@ export function app(target, cfg = {}) {
           ? "Up to six, separated by commas; for the T-s and h-s charts. The P-h chart shows isotherms at 100 to 500 °C."
           : "Up to six, separated by commas.")));
     }
-    left.replaceChildren(h("div", { class: "fa-panel-head" }, h("h2", {}, "Inputs")), ...secs);
+    left.replaceChildren(h("div", { class: "fa-panel-head" }, h("h2", {}, "Inputs")), ...(stepped && STEP_WORKSPACES.includes(state.workspace) ? numbered(secs, check) : secs));
+  }
+
+  // ---- numbered steps of the Flash, the Heat exchanger and the Pipe (new layout only; unit-steps.js, proposal 0021
+  // step 3): the person's choice to open or fold a step holds while the step's state is the one they saw
+  function numbered(secs, check) {
+    const ws = state.workspace, mine = (ui.steps[ws] ??= { choice: {}, active: null });
+    return stepSections(secs, { state, check, nameOf, uid,
+      open: s => stepOpen(s, { choice: mine.choice[s.id]?.status === s.status ? mine.choice[s.id].open : null, active: mine.active }),
+      onToggle: (s, open) => { mine.choice[s.id] = { open, status: s.status }; },
+      onWork: id => { mine.active = id; } });
   }
 
   // ---- Flash workspace: the feed composition (in the display basis) and the specification
