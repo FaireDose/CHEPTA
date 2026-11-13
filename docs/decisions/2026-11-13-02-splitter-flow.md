@@ -3,7 +3,19 @@
 CHEPTA-Lab's request 7, approved by the maintainer. The Lab's repository is not attached to this session, so the request
 was taken from the task text.
 
-## What the maintainer must check and decide (recommendations first)
+## Decided (the maintainer, 2026-11-13)
+
+All the recommendations below were agreed, as relayed by the coordinating session:
+
+1. Project format 9 is kept for a splitter given by flow.
+2. The recycle rule is kept: a short inlet is allowed while the loop iterates, refused once the loop has converged.
+3. The keys stay `flow_kmol_h` / `flow_kg_h` (a list, one total flow per outlet, exactly one "rest").
+4. **Proposal 0022 is accepted** with its five recommended answers: an outer loop around the recycle solver; at most 8
+   bracketing and 50 Brent solves per specification, settable in `solver`; the specification's tolerance at least 100
+   times the recycle tolerance (refused otherwise); no feed-forward "set" (DWSIM's Spec) for now; bounds required. The
+   design-specification code comes in later pull requests, by the proposal's steps; none is in this one.
+
+## What the maintainer was asked to check and decide (recommendations first)
 
 1. **Project format 9** for a splitter given by flow. *Recommended: keep it.* A format-8 reader would open such a file
    and then report the splitter's fractions "missing" without saying why; raising the format makes it say "format 9",

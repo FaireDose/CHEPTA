@@ -10,10 +10,6 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
-- **Splitter by flow and design specifications** (CHEPTA-Lab's request 7; docs/decisions/2026-11-13-02-splitter-flow.md):
-  the splitter given by flow is built (project format 9; inside a recycle a short inlet allowed while the loop iterates,
-  refused once converged): check the format and the recycle rule. Proposal 0022 (design specifications, a make-up
-  controller) is a draft: decide its five open questions; no code before it is accepted.
 - **Lab requests 2-5** (docs/decisions/2026-11-11-09-lab-requests-1.md): check the MHV1 source ids against the data
   (none was wrong; the Pokki 2018 id is named after the article's other system), and decide whether the articles
   that measured several systems should get one source id per system.
@@ -385,6 +381,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
      thermodynamics it needs.
 
 ### After the proposals are accepted
+
+- **0022, design specifications in the flowsheet** (accepted 2026-11-13 with its five recommended answers;
+  docs/decisions/2026-11-13-02-splitter-flow.md; the splitter by flow of the same request is built, project format 9):
+  to build, by the proposal's steps: 1. the engine (`designSpecs` in the document, one specification by bracket + Brent
+  around the sequential solver, warm-started tears, the failures with their codes); 2. several specifications together
+  (Broyden with bounds); 3. request format, flowsheet_status, project format, assistant instructions; 4. the workbench
+  form.
 
 - **0009, green chemistry components** (accepted 2026-10-11):
   1. batch 1, 16 components from ChemSep and CoolProp (in a pull request, 2026-10-11);

@@ -1,6 +1,6 @@
 # 0022: Design specifications in the flowsheet: vary one input to meet a target
 
-- **Status:** Draft. **No design-specification code is written before this proposal is accepted.**
+- **Status:** Accepted (the maintainer, 2026-11-13, with the five recommended answers to the open questions; docs/decisions/2026-11-13-02-splitter-flow.md). Not built yet: steps 1-4 below.
 - **Author(s):** drafted by a coding agent for CHEPTA-Lab's request 7 (2026-11-13); to be reviewed by the maintainer
 - **Discussion:** the pull request that adds this file
 - **Roadmap item:** A8, flowsheet solver ("design specifications open"; [proposal 0015](0015-separation-units.md), Part II, A8:
@@ -189,7 +189,7 @@ specification.
    (ai/skills/chepta/SKILL.md).
 4. Workbench: the "Vary to meet…" form, the badges, the results.
 
-## Open questions (with recommendations)
+## Open questions (answered 2026-11-13: every recommendation accepted)
 
 1. **Outer loop or inside the recycle loop?** Recommended: the outer loop (bracketed, diagnosable); revisit if a
    flowsheet of the suite is too slow.
