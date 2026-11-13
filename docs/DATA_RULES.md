@@ -172,6 +172,12 @@ or saturation property at or above the critical temperature, a value the continu
 property with no record at all, and a solver that does not converge. The strict range mode (`strictRanges: true`, in a
 flowsheet's `solver` or a request's `options`) refuses outside every range, as before 2026-11-13. With a measured
 critical point, the vapour-pressure curve runs to the critical point and says where only the critical point holds it.
+**A pure component below its triple point** (the melting temperature where no triple point is recorded;
+`pure().props`, `pure().saturation`) carries the warning that the stable phase there is the solid and the liquid value
+a supercooled extrapolation, not data; its normal boiling point (`pure().normalBoilingPoint()`) is "none, the
+component sublimes" where the liquid curve reaches 101.325 kPa only below the triple point (carbon dioxide), with a
+sublimation temperature only where an open record has one (none is stored; never estimated). Mixtures are unchanged
+(decision [2026-11-13-07](decisions/2026-11-13-07-below-triple-point.md)).
 
 **Critical constants.** Measured values only (WebBook or ThermoML Archive), with the article named and, when several
 disagree, the reason for the choice. None measured anywhere open: the component has no Tc, Pc or acentric factor

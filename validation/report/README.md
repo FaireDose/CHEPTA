@@ -43,6 +43,8 @@ hand except the NIST WebBook spot values, which are listed with their page and t
 | Steam tables against IAPWS-95 | 0.1 % | IAPWS-IF97 agrees with IAPWS-95 within IF97's stated uncertainty, not to 1e-8; the 1e-8 check against the IF97 verification tables belongs in the steam-table tests |
 | Bubble T, y, P | 1 K, 0.02, 3 % | Chosen for this report (not in proposal 0002) |
 | Water + ethylene glycol bubble T | 3.5 K | Secondary compilation with visible scatter; same bound as `test/vle.test.js` |
+| Value continued outside its record's range, or below the triple point | the property's own tolerance, report only | An extrapolation is not data (2026-11-13): a result computed by `pure().props()` with an extrapolation note or below the triple point that is out of tolerance is marked "extrapolated outside the record's range" and counts as small, never large (carbon dioxide's liquid cp and viscosity at its curve's 101.325 kPa point, -88 °C, 216.6 K being its triple point) |
+| Normal boiling point of a component that sublimes | none | Shown as "none (sublimes)" (carbon dioxide); not a failure, not a lost result; no reference value is changed |
 | Gas density, equation of state | 5 %, report only | An equation of state is compared with a reference equation of state for information; a ⚠️ here does not block |
 | Dew T, liquid x | 1 K, 0.03 | Chosen for this report (not in proposal 0002) |
 | Flash vapour fraction and compositions; flash temperature | 0.001; 0.01 K | Same model in independent code: differences only from solver tolerances |

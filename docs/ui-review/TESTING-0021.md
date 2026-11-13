@@ -13,8 +13,10 @@ here is new.
 
 | | Address |
 |---|---|
-| **Current layout** (what everybody gets today) | <https://fairedose.github.io/CHEPTA/> |
-| **New layout** (preview) | <https://fairedose.github.io/CHEPTA/next.html> |
+| **Current layout** (what everybody gets today) | <https://cheptasim.org/> |
+| **New layout** (preview) | <https://cheptasim.org/next.html> |
+
+The website is at <https://cheptasim.org/>; the older address `fairedose.github.io/CHEPTA` redirects there.
 
 Each page has a small link to the other at the top. Both open **empty**; you choose the components yourself.
 Neither stores anything about you. Do the tasks in the **current** layout first on one setting, then in the **new**
@@ -30,11 +32,11 @@ one; if you test twice (computer and phone), swap the order the second time, so 
 
    > Read https://fairedose.github.io/CHEPTA/use.md and open the CHEPTA workbench as an artefact in this chat.
 
-   For the **new** layout in a chat, ask for this instead (the new layout is not yet in the released library, so the
-   page must load the library from the website):
+   For the **new** layout in a chat, ask for this instead. The released library (`chepta@0.6.2`, loaded from jsDelivr
+   as [ai/instructions/use-chepta.md](../../ai/instructions/use-chepta.md) does) has the `layout` key:
 
    > Show an HTML artefact with exactly this page and nothing else:
-   > `<div id="app"></div><script src="https://fairedose.github.io/CHEPTA/chepta.js"></script><script>CHEPTA.app("#app", { components: [], layout: "next" });</script>`
+   > `<div id="app"></div><script src="https://cdn.jsdelivr.net/npm/chepta@0.6.2/dist/chepta.js"></script><script>CHEPTA.app("#app", { components: [], layout: "next" });</script>`
 
    If the chat will not show the page (some block scripts from other addresses), write it down under "Stuck", and
    test the chat only in the current layout.
