@@ -5762,6 +5762,32 @@
       "source_ids": [
         "lladosa2008-1-butanol-n-butyl-acetate"
       ]
+    },
+    {
+      "components": [
+        "acetic-acid",
+        "cyclohexane"
+      ],
+      "model": "NRTL",
+      "kind": "fit-quality",
+      "message": "These NRTL parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 0.42 K, 0.0154 in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/acetic-acid_cyclohexane_10-1021-je900669t_101.3kPa.json (Yang et al., J. Chem. Eng. Data 55)",
+      "source_ids": [
+        "yang2010-acetic-acid-cyclohexane"
+      ]
+    },
+    {
+      "components": [
+        "acetic-acid",
+        "cyclohexane"
+      ],
+      "model": "WILSON",
+      "kind": "fit-quality",
+      "message": "These WILSON parameters are fitted to open data but follow them less closely than the other fitted sets: AAD 0.42 K, 0.0148 in y (limits 0.5 K, 0.012) (the main limits are 0.5 K, 0.012 in y and 1.5 % in P). Use with care.",
+      "reference": "validation/data/vle/acetic-acid_cyclohexane_10-1021-je900669t_101.3kPa.json (Yang et al., J. Chem. Eng. Data 55)",
+      "source_ids": [
+        "yang2010-acetic-acid-cyclohexane"
+      ]
     }
   ]
 }

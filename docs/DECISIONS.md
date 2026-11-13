@@ -240,7 +240,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **Vapour + two liquids with acetic acid's chemical theory, decided 2026-11-13**
   (docs/decisions/2026-11-12-02-acid-chemical-theory-vlle.md, PR #237): built and accepted with all four
   recommendations. Follow-ups, as data tasks: (a) fit an acetic acid + cyclohexane pair to open data, so that the
-  measured VLLE of Liu et al. 2013 tests a fitted model; (b) search the ThermoML Archive again for measured VLLE of
+  measured VLLE of Liu et al. 2013 tests a fitted model: **done 2026-11-13** (docs/decisions/2026-11-13-04-acetic-acid-cyclohexane.md):
+  NRTL and Wilson fitted to the one open set (Yang et al. 2010, point test 0.0118, quality warning; UNIQUAC rejected);
+  Liu 2013 vapour + two liquids at all 13 points, three-phase T 0.15-1.85 K above the measured (Modified UNIFAC 2.0: 4.28 K),
+  vapour within 0.049 (0.040). Still open: the ternary liquid-liquid data `10.1021/je400704a` for a joint fit, and a
+  better binary set (it would replace this one); (b) search the ThermoML Archive again for measured VLLE of
   water + acetic acid + ethyl acetate when its search interface answers (it returned 503 on 2026-11-12). Still to
   check against the sources: the 14 rows of Liu et al. 2013 and the quotation from Pirola et al. 2013.
 - **How the agents work** (docs/decisions/2026-11-10-01-working-method.md): a new coordinator starts from

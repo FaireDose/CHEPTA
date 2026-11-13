@@ -88,6 +88,14 @@ BATCHES = {
 }
 
 
+# Sets the maintainer accepted although they miss a rule of choose() (a decision file says which and why): pair key -> DOI
+# of the T-x-y set taken as the fit. The fit is then written only within the gates of fit_parameters.py, with the quality
+# warning where it is outside the main ones.
+#   acetic-acid+cyclohexane: the only open binary set (Yang et al. 2010); point test 0.0118 (limit 0.01), no pure-component
+#   rows to check the boiling points (the maintainer, 2026-11-13, docs/decisions/2026-11-13-04-acetic-acid-cyclohexane.md)
+WAIVED = {"acetic-acid+cyclohexane": "10.1021/je900669t"}
+
+
 def pair_key(a, b):
     return "+".join(sorted((a, b)))
 
@@ -432,7 +440,8 @@ def write_file(pair, c):
         d = dict(_about=f"{na} (1) + {nb} (2): isobaric T-x-y at {c['P']} kPa. Rows: liquid mole fraction of {na.lower()}, boiling temperature in K, "
                         f"vapour mole fraction of {na.lower()}, as stored in the ThermoML Archive record (mole fractions of the other component converted with x_1 = 1 - x_2).",
                  **common, kind="isobaric-txy", P_kPa=c["P"], columns=["x_1", "T_K", "y_1"], rows=[list(r) for r in c["rows"]],
-                 notes=f"Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| {c['dy']:.4f}."
+                 notes=f"Read with validation/python/vle_batch.py. Consistency point test (Redlich-Kister fit to T-x): mean |dy| {c['dy']:.4f}"
+                       + (" (fails, >= 0.01; taken by decision of the maintainer, see docs/decisions/2026-11-13-04-acetic-acid-cyclohexane.md)." if c["dy"] >= 0.01 else ".")
                        + (f" Pure-component boiling points of the set within {c['ends']:.2f} K of the vapour-pressure records." if c.get("ends") is not None else "")
                        + " To be checked by a person against the record (AGENTS.md rule 4).")
     elif c["kind"] == "tpx":
@@ -515,6 +524,10 @@ def main():
             continue
         cands = candidates((i, j), a.cache)
         best, checks, why = choose(cands)
+        if not best and k in WAIVED:
+            w = [c for c in cands if c["kind"] == "isobaric-txy" and c["doi"] == WAIVED[k]]
+            if w:
+                best, checks, why = w[0], [], None
         if not best:
             report.append((i, j, f"not fitted: {why} ({len(INDEX.get(k, []))} records in the index)"))
             continue

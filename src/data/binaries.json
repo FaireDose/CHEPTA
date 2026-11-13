@@ -40459,6 +40459,43 @@
           323.15
         ]
       }
+    },
+    {
+      "model": "NRTL",
+      "i": "acetic-acid",
+      "j": "cyclohexane",
+      "set": "fitted-yang2010",
+      "default": true,
+      "a_ij": 0.0,
+      "a_ji": 0.0,
+      "b_ij": 576.9870227588073,
+      "b_ji": 546.97761750037,
+      "alpha": 0.47,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 0.42 K, 0.0154 in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 14 T-x-y points at 101.3 kPa from Yang et al., J. Chem. Eng. Data 55 (2010) 1527-1531 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetic-acid_cyclohexane_10-1021-je900669t_101.3kPa.json). AAD 0.42 K in T, 0.0154 in y (max 2.02 K, 0.0286). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.012 (fails, >= 0.01).",
+      "source_ids": [
+        "yang2010-acetic-acid-cyclohexane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
+    },
+    {
+      "model": "WILSON",
+      "i": "acetic-acid",
+      "j": "cyclohexane",
+      "set": "fitted-yang2010",
+      "default": true,
+      "a_ij": 0.6360517434796984,
+      "a_ji": -0.6360517434796984,
+      "b_ij": -793.3492200057756,
+      "b_ji": -343.84269990179456,
+      "quality_warning": "Outside the main limits of the fits (0.5 K, 0.012 in y, 1.5 % in P) but within the wider ones (2.5 K, 0.02, 3 %): AAD 0.42 K, 0.0148 in y (limits 0.5 K, 0.012). Use with care; a better data set would replace it.",
+      "source": "Fitted to 14 T-x-y points at 101.3 kPa from Yang et al., J. Chem. Eng. Data 55 (2010) 1527-1531 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetic-acid_cyclohexane_10-1021-je900669t_101.3kPa.json). AAD 0.42 K in T, 0.0148 in y (max 2.05 K, 0.0332). Data consistency point test (Redlich-Kister fit to T-x): mean |dy| 0.012 (fails, >= 0.01).",
+      "source_ids": [
+        "yang2010-acetic-acid-cyclohexane",
+        "nist-thermoml-archive"
+      ],
+      "tier": "fitted"
     }
   ]
 }
