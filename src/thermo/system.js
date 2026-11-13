@@ -241,6 +241,16 @@ export function createSystem(cfg) {
     }
     if (model === "WILSON" && Number.isFinite(T)) w.push(...wilsonSplitWarnings(T));
     if (henryOn) w.push(HENRY_NOTE);
+    if (!cfg.psat && Number.isFinite(T)) {
+      comps.forEach((c, i) => {
+        const vr = c.vapourPressure;
+        if (nonvolatile[i] || henryGas[i] || !vr || !Number.isFinite(vr.Tmin_K) || !Number.isFinite(vr.Tmax_K)) return;
+        if (T < vr.Tmin_K - 1e-9 || T > vr.Tmax_K + 1e-9) {
+          const d = T < vr.Tmin_K ? vr.Tmin_K - T : T - vr.Tmax_K;
+          w.push(`${c.name}: ${T.toFixed(2)} K is ${d.toFixed(2)} K ${T < vr.Tmin_K ? "below" : "above"} its vapour-pressure record (${vr.Tmin_K}-${vr.Tmax_K} K): the record's equation is evaluated beyond its range. This is an extrapolation, not data.`);
+        }
+      });
+    }
     return cubicVapour ? [...w, ...cubicVapour.warnings(T)] : w;
   }
 

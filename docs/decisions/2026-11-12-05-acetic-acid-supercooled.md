@@ -93,7 +93,42 @@ reason. The vapour-pressure equation is evaluated **without a range check** in a
     none uses the pure melting point as a limit; CHEPTA refuses (AGENTS.md: "fail loudly; never return a silently wrong
     answer"), which none of them does. The difference to keep: CHEPTA's extrapolation must be stated, never silent.
 
-## 5. For the maintainer
+## Decided (the maintainer, 2026-11-12: "we should allow this to happen")
+
+1. **Stated extrapolation of the liquid heat capacity**, built. Below a record's lower end, at most 10 K
+   (`EXTRAP_K`, `src/thermo/enthalpy.js`), the heat capacity is the straight line through the record's value and slope at
+   its end (as thermo's default); beyond 10 K the liquid enthalpy is refused as before, with `below_range_searched`.
+   Every result that uses it carries the warning, e.g. for acetic acid at 288.15 K: "Acetic acid: 288.15 K is 1.54 K
+   below its liquid heat-capacity record (289.69-400 K): the heat capacity is extrapolated linearly from the record's
+   lower end (its value and slope there), 10 K at most. This is an extrapolation, not data." **General for every
+   liquid heat-capacity record, not only acetic acid**: it is one code path (`hLiquidPure`, `cpExt`) and the warning is
+   the same text with the component's name, so a limit to one component would only have meant a list to maintain.
+   (The anchor of the enthalpy is at or above the record's lower end for every component, so the extrapolation only
+   ever reaches below the anchor.)
+2. **Vapour pressure in the activity-model mixture path**, built as a **warning only; the refusal beyond 10 K was tried
+   and not kept**. The warning (`system.js`, `warnings(T, P)`, for every temperature outside the record, either side):
+   "Acetic acid: 288.15 K is 1.85 K below its vapour-pressure record (290-523.15 K): the record's equation is evaluated
+   beyond its range. This is an extrapolation, not data." The record is kept; a user's own `psat` is not warned about.
+   **Why no refusal:** with a refusal more than 10 K outside the record (in `psat`, then in the final result only) the
+   full test failed in 24 places, among them six of the open measured vapour-liquid sets of `validation/data/`, fitted
+   and checked at temperatures far below the vapour-pressure record (gamma-butyrolactone at 320.6 K against a record
+   starting at 377 K; 1,3-propanediol at 273.15 K against 292.5 K; diethyl ether at 255 K against 270 K), and hot
+   reactors above a record's end (methanol at 493 K against 470 K; water at 624 K against 523 K). The records are
+   narrower than the data they are used with, so a refusal would stop validated work. **The maintainer decides**
+   whether to refuse only below the record by more than 10 K where the temperature is not a measured one, or to widen
+   those records first (a data task).
+3. **METHOD_SELECTION rule 8** (restate with the mixture's solid-liquid equilibrium): a follow-up proposal, not in this
+   pull request. **4** (other components): only on request, component by component.
+- Other tests changed **because of the heat-capacity extrapolation** (they asserted a refusal 1 K or 15 K below a record):
+  `benchmark-columns` G3 (refusal now 11 K below benzene's record, 278.68 K), `columns-vll` W7 G3 (the feed at 250 K
+  instead of the case's 265 K, which is now inside the 10 K: the validation data are untouched; **note** that the case's
+  265 K feed is below benzene's triple point of 278.68 K, so the column's NRTL now accepts a 50 % benzene feed colder
+  than pure benzene freezes: the maintainer should know), `nonvolatile` (the refusal's wording).
+- The test `test/acetic-acid-supercooled.test.js` changed **because of this decision**: before, it asserted the refusal
+  at 288.15 K; now it asserts that 288.15 K works, pure and with water, with both warnings, that 275 K is refused naming
+  the 10 K limit, that the heat-capacity refusal beyond 10 K names what was searched, and that nothing warns inside the records.
+
+## 5. For the maintainer (before the decision above; kept for the record)
 
 Check against the source: ChemSep v8.3 (`chemsep1.xml`, the compound with CAS 64-19-7): the lower temperatures of
 LiquidDensity 273.15, LiquidViscosity 288.15, SurfaceTension 288.15, LiquidThermalConductivity 274.09,
