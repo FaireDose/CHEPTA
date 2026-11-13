@@ -220,15 +220,61 @@ registerUnit({
   },
 });
 
+/**
+ * A splitter's outlets by flow (CHEPTA-Lab's request 7, 2026-11-13): `flow_kmol_h` or `flow_kg_h`, one total flow per
+ * outlet, exactly one of them "rest" (it takes what the others leave). The outlets keep the inlet's composition and state,
+ * so a flow is the fraction flow / inlet flow of every component (the same scaling as the fractions). Negative flows, and
+ * flows that add up to more than the inlet, are refused (BAD_INPUT). Inside a recycle loop, before it has converged, the
+ * inlet may be short of the asked flow (the first pass starts from an empty tear stream): the flowsheet then calls the
+ * block with `iterating`, the asked outlets share the whole inlet in proportion and the "rest" outlet gets none, and the
+ * state says `limited`; the solver refuses a loop that converges so (src/flowsheet/flowsheet.js).
+ */
+function splitFlows(fl, n, what) {
+  if (!Array.isArray(fl)) throw fail("BAD_INPUT", `${what}: give one total flow per outlet as a list, one of them "rest", e.g. [12, "rest"] (not the flows per component).`);
+  if (fl.length !== n) throw fail("BAD_INPUT", `${what}: ${fl.length} flow${fl.length === 1 ? "" : "s"} for ${n} outlets.`);
+  const rest = fl.map((v, i) => (v === "rest" ? i : -1)).filter(i => i >= 0);
+  if (rest.length !== 1) throw fail("BAD_INPUT", `${what}: exactly one outlet takes "rest" (what the others leave of the inlet); got ${rest.length}.`);
+  const vals = fl.map((v, i) => (v === "rest" ? 0 : num(v, `${what}, outlet ${i + 1}`, { min: 0 })));
+  return { flows: vals, rest: rest[0] };
+}
+
+const SPLIT_SPECS = ["fractions", "flow_kmol_h", "flow_kg_h"];
+
 registerUnit({
   type: "splitter", label: "Splitter", inlets: [{ port: "in", min: 1, max: Infinity }], outlets: [{ port: "out", min: 2, max: Infinity }],
-  specKeys: ["fractions"],
+  specKeys: SPLIT_SPECS,
   checkSpec(spec, { outletCount }) {
+    const given = SPLIT_SPECS.filter(k => spec[k] != null);
+    if (given.length > 1) throw fail("BAD_INPUT", `Splitter: give one of fractions, flow_kmol_h or flow_kg_h (got ${given.join(" and ")}).`);
+    if (given[0] === "flow_kmol_h" || given[0] === "flow_kg_h") {
+      const unit = given[0] === "flow_kg_h" ? "kg/h" : "kmol/h";
+      const v = spec[given[0]];
+      return { by: unit, ...splitFlows(typeof v === "object" && !Array.isArray(v) ? v : asList(v), outletCount, `Splitter: ${given[0]}`) };
+    }
     return { fractions: splitFractions(asList(spec.fractions), outletCount, "Splitter: fractions") };
   },
-  solve({ sys, inlets, spec }) {
+  solve({ sys, inlets, spec, iterating }) {
     const s = mixed(sys, inlets.in).stream;   // several inlets: mixed first
-    return { outlets: { out: spec.fractions.map(f => scaleStream(s, f)) }, duty_kW: 0 };
+    if (!spec.by) return { outlets: { out: spec.fractions.map(f => scaleStream(s, f)) }, duty_kW: 0 };
+    const kg = spec.by === "kg/h";
+    const total = kg ? s.mass_kg_h : s.F_kmol_h;
+    const asked = spec.flows.reduce((a, v) => a + v, 0);
+    const fmt = v => +v.toPrecision(6);
+    let fractions, limited = false;
+    if (asked > total * (1 + 1e-9) + 1e-12) {
+      if (!iterating) {
+        throw fail("BAD_INPUT", `Splitter: the outlets asked take ${fmt(asked)} ${spec.by}, more than the inlet's ${fmt(total)} ${spec.by}; lower the asked flow${spec.flows.filter(v => v > 0).length > 1 ? "s" : ""} or give fractions.`,
+          { asked, available: total, unit: spec.by });
+      }
+      // a loop that has not converged yet: share the inlet in proportion, the "rest" outlet empty (refused if it converges so)
+      limited = true;
+      fractions = spec.flows.map(v => v / asked);
+    } else {
+      fractions = spec.flows.map(v => (total > 0 ? v / Math.max(total, asked) : 0));
+      fractions[spec.rest] = Math.max(0, 1 - fractions.reduce((a, v) => a + v, 0));
+    }
+    return { outlets: { out: fractions.map(f => scaleStream(s, f)) }, duty_kW: 0,
+      state: { by: spec.by, asked: spec.flows.map((v, i) => (i === spec.rest ? "rest" : v)), inlet: total, fractions, ...(limited ? { limited: true } : {}) } };
   },
 });
 
@@ -614,15 +660,15 @@ function twoOf(spec, keys, what) {
 }
 
 /** Fractions over n outlets: one value per outlet ("rest" for one of them); n - 1 are independent. */
-function fractionsDof(fr, n, what) {
+function fractionsDof(fr, n, what, noun = "split fraction") {
   const list = Array.isArray(fr) ? fr : fr == null ? [] : [fr];
   const numbers = list.filter(v => v !== "rest" && v !== "" && v != null).length;
   if (list.length < n) {
     const k = n - list.length;
     return { needed: n - 1, given: Math.min(numbers, n - 1), extra: [],
-      missing: [`${list.length ? `${k} more ` : ""}split fraction${n - (list.length ? list.length : 0) === 1 ? "" : "s"} for ${what} (one value per outlet, one may be "rest")`] };
+      missing: [`${list.length ? `${k} more ` : ""}${noun}${n - (list.length ? list.length : 0) === 1 ? "" : "s"} for ${what} (one value per outlet, one ${noun === "split fraction" ? "may be" : "must be"} "rest")`] };
   }
-  if (list.length > n) return { needed: n - 1, given: numbers, missing: [], extra: [`${what}: ${list.length} fractions for ${n} outlets`] };
+  if (list.length > n) return { needed: n - 1, given: numbers, missing: [], extra: [`${what}: ${list.length} ${noun === "split fraction" ? "fraction" : "flow"}s for ${n} outlets`] };
   // one per outlet: the sum to 1 (or "rest") fixes the last; the specification check tests the sum
   return { needed: n - 1, given: n - 1, missing: [], extra: [] };
 }
@@ -639,7 +685,11 @@ const DOF = {
     };
   },
   mixer: () => ({ needed: 0, given: 0, missing: [], extra: [] }),
-  splitter: (spec, { outletCount }) => fractionsDof(spec?.fractions, outletCount, "the outlets"),
+  splitter(spec, { outletCount }) {
+    const given = SPLIT_SPECS.filter(k => hasKey(spec, k));
+    if (given.length > 1) return { needed: outletCount - 1, given: outletCount - 1, missing: [], extra: [`give one of fractions, flow_kmol_h or flow_kg_h (now ${given.join(" and ")})`] };
+    return fractionsDof(spec?.[given[0] ?? "fractions"], outletCount, "the outlets", given[0] && given[0] !== "fractions" ? "flow" : "split fraction");
+  },
   separator(spec, { sys, outletCount }) {
     const fr = spec?.fractions && typeof spec.fractions === "object" && !Array.isArray(spec.fractions) ? spec.fractions : {};
     const out = { needed: 0, given: 0, missing: [], extra: [] };
@@ -722,10 +772,12 @@ export function specStatus(type, spec = {}, { sys, outletCount, reactions } = {}
  * @param {number} [args.outletCount]  streams on the block's multi-stream outlet port (splitter,
  *   separator: default 2), or the number of outlet ports used (flash: 2, or 3 with liquid2)
  * @param {object[]} [args.reactions]  the flowsheet's reactions (src/reactions/reaction.js), for the reactors
+ * @param {boolean} [args.iterating]  the block is calculated inside a recycle loop that has not converged yet: a splitter
+ *   by flow then shares a short inlet instead of refusing it (the flowsheet refuses a loop that converges so)
  * @returns {{type:string, outlets:object, duty_kW:number, balance:{material:number, energy_kW:number},
  *   notes:string[], state?:object, reaction?:object, sizing?:object, profile?:object[], warnings?:object[], method?:object}}
  */
-export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reactions = [] } = {}) {
+export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reactions = [], iterating = false } = {}) {
   const u = unitType(type);
   if (!sys || typeof sys.flash !== "function") throw fail("BAD_INPUT", `${u.label}: a system (property package) is needed.`);
   if (spec == null || typeof spec !== "object" || Array.isArray(spec)) throw fail("BAD_INPUT", `${u.label}: the specification must be an object.`);
@@ -757,7 +809,7 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
     throw fail("NOT_AVAILABLE", `${u.label}: an inlet carries crystals from a crystallizer; this block would recalculate the stream as a fluid and melt them (the property methods have no solid phase yet). Send the crystals to a Product, or name the component in the flowsheet's solids (Method: solids in equilibrium), so that every block keeps it as a solid.`);
   }
   const s = u.checkSpec ? u.checkSpec(spec, { sys, outletCount: n, reactions }) : spec;
-  const r = u.solve({ sys, inlets: ins, spec: s, outletCount: n, reactions });
+  const r = u.solve({ sys, inlets: ins, spec: s, outletCount: n, reactions, iterating });
   const outs = Object.values(r.outlets).flatMap(asList);
   const inList = Object.values(ins).flat();
   // material balance per component (a feed creates its flow; a product takes it out of the flowsheet); a reactor:

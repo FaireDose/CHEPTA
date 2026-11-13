@@ -24,7 +24,7 @@ import { run } from "../api/dispatcher.js";
 import { startRun, workerStatus } from "../runtime/browser-worker.js";
 import { resultGate } from "../runtime/envelope.js";
 import {
-  PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, addSideDraw, removeSideDraw, setSpec, moveBlock, setTear,
+  PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, splitKey, addSideDraw, removeSideDraw, setSpec, moveBlock, setTear,
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
   energyOf, energyTargets, addEnergyFeed, connectEnergy, removeEnergy, setEnergyDuty, ENERGY_TARGETS, ENERGY_SOURCES,
   placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy, ratingPatch, designPatch,
@@ -65,7 +65,7 @@ const REACTOR_LINE = { "conversion-reactor": "a given conversion of a key reacta
 const HINT = {
   feed: "A stream entering the flowsheet: its flows and two of T, P and vapour fraction.",
   mixer: "Joins streams; adiabatic, at the lowest inlet pressure unless you set one.",
-  splitter: "Divides a stream: the same state in every outlet, a fraction of the flow each. Several inlets are mixed first.",
+  splitter: "Divides a stream: the same state in every outlet, a fraction of the flow each, or a given flow for all outlets but one. Several inlets are mixed first.",
   separator: "Sends a fraction of each component to each outlet (a black box); each outlet flashes at its T and P. Several inlets are mixed first.",
   flash: "Vapour and liquid at equilibrium: two of T, P, vapour fraction and duty.",
   heater: "Heats or cools: outlet T, duty or vapour fraction; pressure drop optional. Several inlets are mixed first. With a utility and U, it also gives the area.",
@@ -705,20 +705,32 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       h("button", { type: "button", class: "fa-mini", "data-fk": `fs-addout-${b.id}`, on: { click: () => put(addOutlet(fs, b.id)) } }, icon("plus", 14), "Outlet"),
       h("button", { type: "button", class: "fa-mini", "data-fk": `fs-rmout-${b.id}`, disabled: outs.length <= 2,
         on: { click: () => { try { put(removeOutlet(fs, b.id)); } catch (e) { f.note = e.message; set({}); } } } }, icon("minus", 14), "Outlet"));
-    /** One row of fractions over the outlets, with a "rest" choice. */
-    const fracRow = (list, onChange, tag) => h("div", { class: "fa-frac-row" }, ...outs.map((sid, k) => {
+    /** One row of fractions (or, for a splitter by flow, total flows) over the outlets, with a "rest" choice. */
+    const fracRow = (list, onChange, tag, { max = 1, what = "Fraction" } = {}) => h("div", { class: "fa-frac-row" }, ...outs.map((sid, k) => {
       const isRest = list[k] === "rest";
       const inp = h("input", { type: "text", inputmode: "decimal", value: isRest ? "" : list[k] ?? "", placeholder: isRest ? "rest" : "0", disabled: isRest, style: "width:4.6em",
-        "aria-label": `Fraction to ${sid}`, "data-fk": `fs-fr-${b.id}-${tag}-${k}`,
-        on: { change: ev => { const v = num(ev.target.value.trim()); if (v === undefined || v == null || v < 0 || v > 1) { ev.target.value = list[k] ?? ""; return; } const l = list.slice(); l[k] = v; onChange(l); } } });
+        "aria-label": `${what} to ${sid}`, "data-fk": `fs-fr-${b.id}-${tag}-${k}`,
+        on: { change: ev => { const v = num(ev.target.value.trim()); if (v === undefined || v == null || v < 0 || v > max) { ev.target.value = list[k] ?? ""; return; } const l = list.slice(); l[k] = v; onChange(l); } } });
       const rest = h("input", { type: "radio", name: `fa-rest-${b.id}-${tag}-${uid}`, checked: isRest, title: `${sid} takes the rest`, "aria-label": `${sid} takes the rest`,
         "data-fk": `fs-rest-${b.id}-${tag}-${k}`, on: { change: () => { const l = list.map((v, i) => (i === k ? "rest" : v === "rest" ? 0 : v)); onChange(l); } } });
       return h("label", { class: "fa-frac" }, h("span", {}, sid), inp, rest);
     }));
     if (b.type === "splitter") {
-      const list = Array.isArray(spec.fractions) ? outs.map((_, k) => spec.fractions[k] ?? 0) : outs.map((_, k) => (k === outs.length - 1 ? "rest" : 0));
-      secs.push(inputsSection("Fractions of the flow", fracRow(list, l => setS({ fractions: l }), "all"),
-        h("p", { class: "fa-in-hint" }, "The dot marks the outlet that takes the rest."), outletTools));
+      // by fractions (default) or by the total flow of the outlets (flow_kmol_h or flow_kg_h, one outlet "rest")
+      const key = splitKey(spec), byFlow = key !== "fractions";
+      const list = Array.isArray(spec[key]) ? outs.map((_, k) => spec[key][k] ?? 0) : outs.map((_, k) => (k === outs.length - 1 ? "rest" : 0));
+      // switching the basis: the outlet that takes the rest keeps it, the others start at 0
+      const switchTo = k2 => {
+        if (k2 === key) return;
+        const rest = list.indexOf("rest") >= 0 ? list.indexOf("rest") : outs.length - 1;
+        setS({ fractions: null, flow_kmol_h: null, flow_kg_h: null, [k2]: outs.map((_, k) => (k === rest ? "rest" : 0)) });
+      };
+      secs.push(inputsSection(byFlow ? "Flow of each outlet" : "Fractions of the flow",
+        segRow("Give", [["fractions", "Fractions"], ["flow_kmol_h", "kmol/h"], ["flow_kg_h", "kg/h"]], key, switchTo, `fs-splitby-${b.id}`),
+        fracRow(list, l => setS({ [key]: l }), "all", byFlow ? { max: Infinity, what: `Flow (${key === "flow_kg_h" ? "kg/h" : "kmol/h"})` } : {}),
+        h("p", { class: "fa-in-hint" }, byFlow
+          ? `The total flow of each outlet, in ${key === "flow_kg_h" ? "kg/h" : "kmol/h"}; the dot marks the outlet that takes the rest (one must). Every outlet keeps the inlet's composition. Asking more than the inlet brings is refused; in a recycle, only once the loop has converged.`
+          : "The dot marks the outlet that takes the rest."), outletTools));
     } else {
       const fr = spec.fractions ?? {};
       secs.push(inputsSection("Fraction of each component to each outlet",

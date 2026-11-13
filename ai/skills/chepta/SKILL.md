@@ -99,7 +99,8 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
 
 - Blocks and their specifications (SI units: K, kPa, kmol/h or kg/h, kW):
   `feed` (flow_kmol_h or flow_kg_h, and two of T_K, P_kPa, VF), `mixer` (P_kPa optional),
-  `splitter` (fractions, one per outlet, one may be "rest"), `separator` (fractions per
+  `splitter` (fractions, one per outlet, one may be "rest"; or flow_kmol_h / flow_kg_h, one total
+  flow per outlet, exactly one "rest", e.g. `[12, "rest"]`), `separator` (fractions per
   component, e.g. `{ ethanol: [0.95, "rest"], water: [0.1, "rest"] }`), `flash` (two of T_K,
   P_kPa, VF, duty_kW), `heater` (one of T_K, duty_kW, VF, or A_m2 with its sizing to rate it; P_kPa or dP_kPa optional; optional
   `sizing: { utility: { kind: "steam", P_kPa: 500 }, U: { service: "steam-water-oil" } }` gives the
