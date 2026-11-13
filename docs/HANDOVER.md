@@ -78,7 +78,16 @@ current: replace its "State" and "Queue" sections at each handover, never append
    and warn, refuse only physically impossible states, missing records, non-convergence; opt-in strictRanges).
    Running: Opus session_01FPbeWYJNRFWSghzUdYR71F, branch claude/extrapolate-with-warnings, decision 2026-11-13-03.
    Running: Sonnet session_01FPbeWV438LB4CRTCq5C76s, branch claude/fit-acetic-acid-cyclohexane, decision 2026-11-13-04.
-   Then: row chooser + (d) (priority after the extrapolation fix), then (a)-(c). Workers' send_message to @parent may fail ("credential for this
+   Then: row chooser + (d) (priority after the extrapolation fix), then (a)-(c).
+   ~15:40 UTC: #241 merged (4b4438a). #240 (fit, Yang 2010 waived, NRTL+Wilson, Liu 2013 test) ready: tested merged
+   with #241 locally (1674 pass, 0 fail); the maintainer agreed to its recommendations. The maintainer gave the
+   coordinator freedom ("make this project great"; the interface matters less but should be fixed). Next blocker found:
+   a missing pair refuses NRTL/UNIQUAC/Wilson (system.js MISSING_DATA). Running: Opus session_01FPbeWTfAS2pMutd9hyH292,
+   branch claude/missing-pairs-estimated (estimate missing pairs from Mod. UNIFAC 2.0, predicted, warned; pair sets in
+   result.extrapolations without the 10 K margin), decision 2026-11-13-05. Running: Sonnet session_01FPbeWXkaEvseVormS8C46q,
+   branch claude/site-next-preview (site/next.html + docs/ui-review/TESTING-0021.md for the user check), decision -06.
+   Recommended to the maintainer: release 0.7.0 after #240 (ships #236-#241). Queue after: row chooser + (d) in the new
+   layout only; G3 lenient twin (data); (a)-(c); proposal 0022 step 1 (design specs). Workers' send_message to @parent may fail ("credential for this
    connector"): when a worker goes idle, read its last message with list_events. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
