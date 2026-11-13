@@ -93,7 +93,9 @@ test("a rigorous column with Wilson through the request path (CHEPTA.run)", () =
 
 test("Wilson pairs of one's own: user data and library.add", () => {
   // a pair without a databank Wilson set refuses and says how to add one
-  assert.throws(() => createSystem({ components: ["dichloromethane", "methanol"], model: "WILSON" }), /No Wilson parameters for: Dichloromethane \+ .*WILSON: \{ a_ij, a_ji, b_ij, b_ji \}/s);
+  // (in the strict range mode; otherwise it is estimated from Modified UNIFAC 2.0: decision 2026-11-13-05, this line changed)
+  assert.throws(() => createSystem({ components: ["dichloromethane", "methanol"], model: "WILSON", missingPairs: "refuse" }), /No Wilson parameters for: Dichloromethane \+ .*WILSON: \{ a_ij, a_ji, b_ij, b_ji \}/s);
+  assert.equal(createSystem({ components: ["dichloromethane", "methanol"], model: "WILSON" }).info.pairs[0].set, "estimated-mod-unifac-2");
   const userData = { pairs: { "dichloromethane+methanol": { WILSON: { a_ij: -1.2, a_ji: 1.2, b_ij: -300, b_ji: -200 }, source: { name: "test values, not data" } } } };
   const s = createSystem({ components: ["dichloromethane", "methanol"], model: "WILSON", userData });
   assert.equal(s.info.pairs[0].tier, "user");

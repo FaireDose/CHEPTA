@@ -63,14 +63,27 @@ test("outcomes: invalid input names the block or field; missing data stays missi
   assert.equal(run({ capability: "solve_flowsheet", input: {} }).outcome, "invalid_input");
   assert.equal(run({ capability: "no_such_thing" }).outcome, "invalid_input");
   assert.equal(run(null).outcome, "invalid_input");
-  // benzene + glycerol: no NRTL pair in the data; never an invented value
-  const md = run({ capability: "solve_flowsheet", input: { flowsheet: {
+  // benzene + glycerol: no NRTL pair in the data; never an invented value: refused in the strict range mode (as before
+  // 2026-11-13), and otherwise estimated from Modified UNIFAC 2.0, labelled as such (decision 2026-11-13-05; this test
+  // asserted the refusal without options until then)
+  const flowsheet = {
     components: ["benzene", "glycerol"], thermo: { model: "NRTL" },
     blocks: [{ id: "F1", type: "feed", spec: { flow_kmol_h: { benzene: 50, glycerol: 50 }, T_K: 300, P_kPa: 101.325 } }, { id: "P1", type: "product" }],
-    streams: [{ id: "S1", from: "F1.out", to: "P1.in" }] } } });
+    streams: [{ id: "S1", from: "F1.out", to: "P1.in" }] };
+  const md = run({ capability: "solve_flowsheet", input: { flowsheet }, options: { strictRanges: true } });
   assert.equal(md.outcome, "missing_data");
   assert.equal(md.value, undefined);
   assert.match(md.error.message, /No NRTL parameters for: Benzene \+ Glycerol/);
+  assert.match(md.error.message, /strict range mode/);
+  const est = run({ capability: "solve_flowsheet", input: { flowsheet } });
+  assert.equal(est.outcome, "ok");
+  const q = est.qualifications;
+  assert.deepEqual(q.pairs.map(p => [p.set, p.tier]), [["estimated-mod-unifac-2", "predicted"]]);
+  assert.deepEqual(q.estimated_pairs.map(e => [e.pair, e.ideal, e.method]), [[["Benzene", "Glycerol"], false, "Modified UNIFAC 2.0"]]);
+  assert.match(q.estimated_pairs[0].message, /estimated from Modified UNIFAC 2\.0 \(predicted, not data\)/);
+  const ex = est.value.extrapolations.find(e => e.kind === "estimatedPair");
+  assert.deepEqual(ex.where, ["F1"]);
+  assert.match(ex.message, /^Benzene \+ Glycerol: no measured NRTL parameters; .* Where: F1\.$/);
 });
 
 test("unsupported: two liquids without a vapour on a stripper's stages are refused; an internal error is an outcome of its own", () => {

@@ -87,6 +87,23 @@ components, or an activity model above 1000 kPa
 - **Parameters**: [src/data/binaries.json](../../src/data/binaries.json), each pair with a tier
   (fitted, databank, user) and its sources. Pairs that are still missing are listed in
   [../DATA_WANTED.md](../DATA_WANTED.md).
+- **Missing pairs** ([`activity/estimate-pairs.js`](../../src/thermo/activity/estimate-pairs.js); decision
+  [2026-11-13-05](../decisions/2026-11-13-05-missing-pairs-estimated.md)): a pair with no stored NRTL, UNIQUAC or Wilson
+  set gets the model's b_ij, b_ji regressed to Modified UNIFAC 2.0's activity coefficients (x_1 from 0.001 to 0.999, at
+  the two boiling points and their mean, 250-550 K; a = 0, NRTL alpha 0.3), when the system is built. It is tier
+  "predicted", set "estimated-mod-unifac-2", cites Hayer et al. 2025, is never stored, and every result warns: "X + Y:
+  no measured NRTL parameters; estimated from Modified UNIFAC 2.0 (predicted, not data)", with "two liquids predicted
+  from an estimate, not checked against data" where it splits. A component without groups makes the pair ideal, with
+  a louder warning; a light gas without groups (boils below 25 °C, or no boiling point and Tc below 400 K) stays
+  refused (an equation of state is its method). `info.estimatedPairs` lists them; a flowsheet's `result.extrapolations`
+  lists each once (kind "estimatedPair"). The strict range mode (`strictRanges`), `missingPairs: "refuse"`, refuses as
+  before; `missingPairs: "ideal"` (or `allowMissingPairs: true`) takes the pair as ideal. Checked against scipy with
+  the thermo library's models (`validation/python/reference_estimate_pairs.py`, `test/estimated-pairs.test.js`): the
+  same ln gamma to 2e-5. On three pairs that have fitted sets the estimate is 3-9 times further from the measured data
+  than the fit (ethanol + water 1.08 K against 0.12 K in T), and about as far as Modified UNIFAC 2.0 itself.
+- **Pair sets outside their data range**: a flowsheet's `result.extrapolations` lists each set (activity model or
+  k_ij) used outside the temperatures of its data, once per pair, at the farthest distance, with no margin (kind
+  "pairSet"); the warnings of a single calculation keep their 10 K margin.
 
 ## Cubic equations of state
 

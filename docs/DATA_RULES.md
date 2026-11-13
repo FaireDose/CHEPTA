@@ -254,6 +254,14 @@ new refit of a ChemSep record is made (section 1).
   labelled "predicted-contradicted" and another set of the same model is not; so far only benzene + methanol, whose
   ChemSep NRTL set is the default (`FITTED_DEMOTED` in `two_liquid_labels.py`).
 - Open databank sets (ChemSep) are imported as tier "databank".
+- **A pair with no set** (the maintainer, 2026-11-13: "we are too strict with the data ... this does not allow the
+  simulation to flow"; decision [2026-11-13-05](decisions/2026-11-13-05-missing-pairs-estimated.md)): with NRTL, UNIQUAC
+  or Wilson the engine estimates it from Modified UNIFAC 2.0 when the system is built (section 7), labelled tier
+  "predicted", set "estimated-mod-unifac-2", with a warning in every result. The estimate is never written to
+  `src/data`, never shown as "fitted", and never replaces a stored set; a fit to measured data stays the aim, so the
+  pair stays in [DATA_WANTED.md](DATA_WANTED.md). Without groups for a component the pair is ideal, with a louder
+  warning; a light gas without groups is refused (an equation of state is its method). The strict range mode refuses
+  every missing pair, as before.
 - Fits to measured vapour-liquid data from the ThermoML Archive (`vle_batch.py`, then `fit_parameters.py`): isobaric
   T-x-y near 101.3 kPa first, that passes the point test of thermodynamic consistency; then other pressures; then
   isothermal P-x(-y); then bubble temperatures alone. The set's pure-component boiling points must be within 1 K of
@@ -323,6 +331,10 @@ Such a component has `Tc_K`, `Pc_Pa` and `omega` null and a `critical` note with
   density and surface tension are polynomials in T.
 
 ## 7. Modified UNIFAC 2.0 (predicted tier)
+
+It is a model of its own ("Mod. UNIFAC 2.0"), and since 2026-11-13 it also fills the pairs that NRTL, UNIQUAC or Wilson
+lack: their b_ij, b_ji are regressed to its activity coefficients at run time (section 5, "A pair with no set";
+`src/thermo/activity/estimate-pairs.js`).
 
 The parameters are those of the paper (Hayer, Hasse and Jirasek 2025; CC BY 4.0), unchanged: no refits. It is a
 prediction tool for when there are no data, so every component whose structure the subgroups can describe gets groups,

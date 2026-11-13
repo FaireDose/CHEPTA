@@ -242,11 +242,19 @@ test("column reference B1 (ethanol + water, NRTL): below the model's azeotrope, 
   assert.ok(cases["E3-purity-above-azeotrope"].specs[1].value > checks.azeotrope.model_x_ethanol, "E3 asks for a purity above it");
 });
 
-test("column case C1: the pair without NRTL parameters is refused as missing data, not treated as ideal", () => {
+test("column case C1: the pair without NRTL parameters is refused as missing data in the strict mode, not treated as ideal", () => {
+  // the case (unchanged) runs as the strict range mode's case since 2026-11-13: without it a missing pair is estimated from
+  // Modified UNIFAC 2.0 with a warning (decision 2026-11-13-05), never treated as ideal silently
   const c = cases["C1-missing-pair"];
   assert.deepEqual(fixture.cases["C1-missing-pair"].checks.missing_pairs, [["methanol", "ethylene-glycol"]]);
-  assert.throws(() => system({ components: c.components, model: c.thermo.model }),
+  assert.throws(() => withRangePolicy({ strictRanges: true }, () => system({ components: c.components, model: c.thermo.model })),
     e => e.code === c.expected.code && c.expected.message_names.every(n => e.message.includes(n)));
+  const s = system({ components: c.components, model: c.thermo.model });
+  const est = s.info.pairs.find(p => p.set === "estimated-mod-unifac-2");
+  assert.deepEqual(est.pair, ["Methanol", "Ethylene glycol"]);
+  assert.equal(est.tier, "predicted");
+  assert.deepEqual(s.info.missingPairs, [], "not ideal");
+  assert.ok(s.warnings(350, 101.325).some(w => /^Methanol \+ Ethylene glycol: no measured NRTL parameters; estimated from Modified UNIFAC 2\.0/.test(w)));
 });
 
 test("column case D1: the dry stages are the ones the case names, for any threshold between its two ratios", () => {

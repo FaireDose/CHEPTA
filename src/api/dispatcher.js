@@ -229,6 +229,9 @@ function solvedFlowsheet(flowsheet, userData) {
     qualifications: {
       pairs: (info.pairs ?? []).map(p => ({ pair: p.pair, set: p.set ?? null, tier: p.tier ?? null, ...(p.quality_warning ? { quality_warning: p.quality_warning } : {}) })),
       missing_pairs: info.missingPairs ?? [],
+      // pairs with no stored set: estimated from Modified UNIFAC 2.0, or ideal where it has no groups (decision 2026-11-13-05)
+      ...(info.estimatedPairs?.length ? { estimated_pairs: info.estimatedPairs.map(e => ({ pair: e.pair, ideal: e.ideal, message: e.warning,
+        ...(e.estimate ? { method: e.estimate.method, params: e.estimate.params, T_K: e.estimate.T_K, rms_ln_gamma: e.estimate.rms_ln_gamma } : {}) })) } : {}),
       notes, warnings,
       // per block and pair with two liquids: measured, predicted-unvalidated or predicted-contradicted (proposal 0019)
       ...(Object.values(result.blocks).some(b => b.state?.two_liquids) ? { two_liquids: Object.entries(result.blocks)

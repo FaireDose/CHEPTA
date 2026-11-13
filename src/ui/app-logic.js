@@ -955,6 +955,8 @@ export function setChoices(info) {
 export function pairRowNotes(p, mhv1 = false) {
   const out = [];
   if (p.note) out.push(p.note);
+  // a pair estimated from Modified UNIFAC 2.0 at run time (decision 2026-11-13-05): its warning
+  if (p.warning) out.push(p.warning);
   if (mhv1 && p.set === "mhv1-fitted") {
     out.push(p.source);
     if (p.quality_warning) out.push(`Fit quality: ${p.quality_warning}`);

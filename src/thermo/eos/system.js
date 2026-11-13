@@ -13,7 +13,7 @@ import { userDataUsed } from "../user-data.js";
 import { cubicEos, CUBICS } from "./cubic.js";
 import { RANGE_MARGIN_K, selection, choosePair, describePair, pairWarnings } from "../library.js";
 import { fail } from "../../util/errors.js";
-import { withRangePolicy, collectExtrapolations, noteExtrapolation } from "../../util/ranges.js";
+import { withRangePolicy, collectExtrapolations, noteExtrapolation, extrapolationMessage } from "../../util/ranges.js";
 import { evaluate } from "../correlations.js";
 import { pure } from "../pure.js";
 import { eosPhaseMethods } from "../enthalpy.js";
@@ -236,7 +236,7 @@ export function createEosSystem(ids, cfg, sel = selection(cfg)) {
     }
     // above about 10 bar, a light gas with a polar liquid: the gE rule, where the engine would run it (method-advice.js)
     w.push(...mhv1Advice({ model, eos: true, mixing: mhv1 ? "MHV1" : null, gasPolar, avail: availability }, P));
-    if (Number.isFinite(T)) w.push(...extrapolations(T).map(e => e.message));
+    if (Number.isFinite(T)) w.push(...extrapolations(T).filter(e => e.kind !== "pairSet").map(e => e.message));
     return [...w, ...info.advice];
   }
 
@@ -258,6 +258,16 @@ export function createEosSystem(ids, cfg, sel = selection(cfg)) {
       }
       try { evaluate(rec, T, { component: comps[i].name, property: "Ideal-gas heat capacity", kind: "idealGasHeatCapacity" }); } catch { /* refused where it is used */ }
     })));
+    // the k_ij (or MHV1 NRTL) sets used outside the temperatures of their data, once per pair, with no margin (decision
+    // 2026-11-13-03, question 3)
+    for (const p of pairs) {
+      const r = p.valid?.T_K ?? p.T_range_K;
+      if (!r || !(T < r[0] - 1e-9 || T > r[1] + 1e-9)) continue;
+      const side = T < r[0] ? "below" : "above", distance = side === "below" ? r[0] - T : T - r[1];
+      const n = { component: p.pair.join(" + "), property: `${mhv1 ? `${model} + gE (MHV1) NRTL` : `${model} k_ij`} set${p.default === false ? ` "${p.set}"` : ""}`, kind: "pairSet",
+        range: r.slice(), at: T, side, distance, how: `the set's temperature dependence is used as it is (fitted to data at ${r[0]}-${r[1]} K)` };
+      notes.push({ ...n, message: extrapolationMessage({ ...n, lo: r[0], hi: r[1], value: T }) });
+    }
     if (igMemo.size > 256) igMemo.clear();
     igMemo.set(key, notes);
     return notes;

@@ -823,7 +823,10 @@ export function app(target, cfg = {}) {
     const head = h("h3", {}, `${title}${mhv1 ? `Pairs, ${model} + gE (MHV1): NRTL in the rule` : eosView ? `Pairs, ${model} k_ij` : `Parameter sets, ${modelName(model)}`}`);
     if (model === "ideal") return h("section", { class: "fa-in-sec fa-pairs" }, head, h("p", { class: "fa-in-hint" }, "Ideal solution: no pair parameters."));
     let info;
-    try { info = system({ components: ids, model, allowMissingPairs: true, ...setsFor({ ...state, mixing: eosView ? mixing ?? null : null }, model) }).info; } catch (e) {
+    // a pair with no set is estimated from Modified UNIFAC 2.0 (decision 2026-11-13-05) and listed as "predicted"; where
+    // the system refuses it (a light gas), the pairs are still listed, the missing ones as "no data"
+    const pairSys = extra => system({ components: ids, model, ...extra, ...setsFor({ ...state, mixing: eosView ? mixing ?? null : null }, model) });
+    try { try { info = pairSys({}).info; } catch (e) { if (e?.code !== "MISSING_DATA") throw e; info = pairSys({ allowMissingPairs: true }).info; } } catch (e) {
       return h("section", { class: "fa-in-sec fa-pairs" }, head, h("div", { class: "fa-empty" }, e.message));
     }
     const nameToId = new Map(all().map(c => [c.name, c.id]));
@@ -842,7 +845,7 @@ export function app(target, cfg = {}) {
         h("span", { class: "fa-pair-name" }, p.pair.join(" + ")), badge(p.tier),
         sel, ...notes.map(t => h("div", { class: "fa-pair-note" }, t)));
     });
-    for (const mp of info.missingPairs) rows.push(h("li", { title: eosView ? "No k_ij in the databank: k_ij = 0 is used" : "No parameters: these pairs cannot be calculated" }, h("span", {}, mp.join(" + ")), badge("none")));
+    for (const mp of info.missingPairs) rows.push(h("li", { title: eosView ? "No k_ij in the databank: k_ij = 0 is used" : "No parameters, and none can be estimated: treated as ideal, or refused for a light gas" }, h("span", {}, mp.join(" + ")), badge("none")));
     // progressive disclosure: open on wide screens, folded on phones; the reader's choice is kept
     const open = ui.pairsOpen ?? ui.size !== "narrow";
     const missing = info.missingPairs.length;

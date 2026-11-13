@@ -25,11 +25,15 @@ does not read is refused rather than ignored:
 - an unknown key of a block's `spec` gives `invalid_input` with the block's known keys and `where`
   `[{ block: "H1", message }]`. Each block type's keys are its `specKeys` (src/units/units.js and the reactor and
   column files); `design` on a heater or heat exchanger is the workbench's memory of a rated block's design;
-- a pair without parameters gives `missing_data` (MISSING_DATA) with `details.missing_pairs`; the message names the
-  remedies a user or an assistant has: add the pair's parameters, with their source, as the user's own data (My data;
-  `user_data.pairs` in the project or the request), or choose another method (Modified UNIFAC 2.0 predicts every pair
-  whose groups it has). Treating the pair as ideal (`allowMissingPairs`) is an option of a program that calls
-  `system()` itself; the request path never does it.
+- a pair without parameters of an activity model is estimated from Modified UNIFAC 2.0 (decision 2026-11-13-05): the
+  result is `ok`, the pair is in `qualifications.pairs` (set `estimated-mod-unifac-2`, tier predicted) and in
+  `qualifications.estimated_pairs` with its warning, and in `value.extrapolations` (kind `estimatedPair`). With
+  `options.strictRanges` (or the flowsheet's `solver.strictRanges`) it gives `missing_data` (MISSING_DATA) with
+  `details.missing_pairs`, as before 2026-11-13; the message names the remedies: add the pair's parameters, with their
+  source, as the user's own data (My data; `user_data.pairs` in the project or the request), or choose another method.
+  A light gas with a missing pair (no Modified UNIFAC 2.0 groups) gives `missing_data` in both modes. Treating the
+  pair as ideal (`allowMissingPairs`, `missingPairs: "ideal"`) is an option of a program that calls `system()` itself;
+  the request path never does it.
 
 ## The command line
 
@@ -214,7 +218,9 @@ into that session's conversation.
 - the numbers the assistant gives are those of the tool's result, and the command line gives the same for the saved
   input (identical: the same code on the same input; `test/cli.test.js` and `test/mcp.test.js` check it for the
   example);
-- the benzene + glycerol case is reported as missing data (no NRTL pair), with no composition or value invented;
+- the benzene + glycerol case is reported with its warning that the NRTL pair was estimated from Modified UNIFAC 2.0
+  (predicted, not data; two liquids predicted from an estimate), never as measured (before 2026-11-13 it was refused
+  as missing data; with `solver.strictRanges` it still is);
 - the method (NRTL, ideal-gas vapour), the parameter set (ethanol + water, `fitted-kamihama2012`, tier fitted) and any
   warnings or notes reach the answer;
 - the change is shown as a proposal, and `examples/heater-flash.chepta.json` is unchanged until you apply it.

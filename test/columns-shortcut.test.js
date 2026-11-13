@@ -165,11 +165,12 @@ test("Column E3: a purity above the azeotrope is refused in either mode (invalid
   assert.deepEqual(COLUMN_MODES.map(m => [m.mode, m.status]), [["shortcut", "available"], ["rigorous", "available"]]);
 });
 
-test("Column C1: the pair without NRTL parameters is missing data, named; no column", () => {
+test("Column C1: the pair without NRTL parameters is missing data, named, in the strict mode; no column", () => {
+  // the strict range mode's case since 2026-11-13 (decision 2026-11-13-05; this request gained options.strictRanges)
   const c = caseOf("C1-missing-pair");
   const r = run({ capability: "solve_column", input: { components: c.components, thermo: { model: c.thermo.model },
     feed: { flow_kmol_h: Object.fromEntries(c.components.map((id, i) => [id, c.column.feed.z[i] * 100])), P_kPa: c.pressure_kPa, VF: 0 },
-    column: { light_key: "methanol", heavy_key: "water", recovery_light_key_in_distillate: 0.95, recovery_heavy_key_in_bottoms: 0.95, reflux_over_minimum: 1.3 } } });
+    column: { light_key: "methanol", heavy_key: "water", recovery_light_key_in_distillate: 0.95, recovery_heavy_key_in_bottoms: 0.95, reflux_over_minimum: 1.3 } }, options: { strictRanges: true } });
   assert.equal(r.outcome, c.expected.outcome);
   assert.equal(r.error.code, c.expected.code);
   for (const n of c.expected.message_names) assert.match(r.error.message, new RegExp(n));

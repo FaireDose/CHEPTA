@@ -107,7 +107,8 @@ test("errors carry codes and keep their class", () => {
     return true;
   });
   code(() => system({ components: ["water", "unobtainium"] }), "BAD_INPUT");
-  code(() => system({ components: ["benzene", "ethylene glycol"], model: "NRTL" }), "MISSING_DATA");
+  // a missing pair: refused in the strict range mode (decision 2026-11-13-05; otherwise estimated, this line changed)
+  code(() => withRangePolicy({ strictRanges: true }, () => system({ components: ["benzene", "ethylene glycol"], model: "NRTL" })), "MISSING_DATA");
   // (water + methane was the example of a missing pair until 2026-11-04; methane now dissolves in water by Henry's law,
   // proposal 0017, so helium, which has no Henry's law constant, takes its place)
   code(() => system({ components: ["water", "helium"], model: "NRTL" }), "MISSING_DATA");

@@ -116,7 +116,8 @@ const withMessage = n => ({ ...n, message: extrapolationMessage({ ...n, lo: n.ra
  * Merge notes from several places (blocks of a flowsheet, stages of a column): one per component, property and side,
  * at the farthest distance, with the places where it happened.
  * @param {Array<{where:string, notes:object[]}>} groups
- * @returns {object[]}  { component, property, range, at, side, distance, how, where: string[], message, short }
+ * @returns {object[]}  { component, property, range, at, side, distance, how, where: string[], message, short }; a pair
+ *          estimated from Modified UNIFAC 2.0 or taken as ideal has kind "estimatedPair", range null and its own message
  */
 export function mergeExtrapolations(groups) {
   const m = new Map();
@@ -132,6 +133,8 @@ export function mergeExtrapolations(groups) {
     }
   }
   return [...m.values()].map(n => {
+    // a pair estimated or taken as ideal (decision 2026-11-13-05): no range; its own message and short form
+    if (n.kind === "estimatedPair") return { ...n, message: `${n.message.replace(/ Where: .*$/, "")}${n.where.length ? ` Where: ${n.where.join(", ")}.` : ""}` };
     const full = extrapolationMessage({ ...n, lo: n.range[0], hi: n.range[1], value: n.at });
     const places = n.where.length ? ` Where: ${n.where.join(", ")}.` : "";
     return { ...n, message: `${full}${places}`,

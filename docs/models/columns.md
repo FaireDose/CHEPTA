@@ -45,7 +45,7 @@ point (DWSIM takes them at the feed's conditions), held constant through the col
 | the keys' relative volatility at 1 or below at the top or the bottom (an azeotrope or a pinch between the keys) | refuses, naming the azeotrope |
 | the keys' relative volatility changes by more than 20 % between the top, the feed and the bottom | warns (`VOLATILITY_VARIES`) with the three values (B1's mixture); the 20 % is this project's choice |
 | a non-key between the keys in volatility | refuses as not built (Underwood's several roots): choose adjacent keys |
-| a pair without parameters | missing data, the pair named (case C1) |
+| a pair without parameters | estimated from Modified UNIFAC 2.0 with a warning; missing data, the pair named, in the strict range mode (case C1, decision 2026-11-13-05) |
 | a purity, another design specification or a side draw | refuses (invalid input): they are the rigorous column's (case E3 names the azeotrope there) |
 
 Gilliland's correlation is a fit to columns: its N is an estimate, never a check.
@@ -114,7 +114,7 @@ the Newton iterations; a column that reaches it is not converged (E4).
 | the solver does not converge | `NO_CONVERGENCE` (outcome "not_converged"), with what it tried, the last residuals by group, a hint where constant molar overflow gives no boil-up (W7's E2) or where the last iterate holds two liquids; never a statement that the column has no solution |
 | a stage's liquid below 1 % of the column's largest vapour flow (stages 2 to N − 1) | warns `DRY_STAGE`, with the stages, the cause and the remedy (W7's D1: stages 2 to 5); the 1 % is this project's choice: no open source gives a threshold for equilibrium stages without the trays' geometry (searched 2026-10-29) |
 | a stage's vapour below 1/5 of the column's largest vapour flow (stages 2 to N) | warns `DRY_STAGE` (vapour): outside the turndown of bubble-cap trays, 5 (sieve 2, valve 4; Fermeglia, "Staged column design", University of Trieste, 2021, slide 54), so with one diameter the trays would weep; the maintainer's choice, 2026-10-29. The checks with the trays' geometry (flooding, weeping) come with M2b |
-| a pair without parameters | missing data, the pair named (C1) |
+| a pair without parameters | estimated, with a warning; missing data in the strict range mode (C1) |
 | a design specification no column can meet | refuses (invalid input, `OUT_OF_RANGE`) with what the column reaches and what would make it feasible (below) |
 | a side draw on an absorber or a stripper, two liquids on their stages, a condenser without a reboiler | not built yet: unsupported |
 | inert solids | not built yet: unsupported |
