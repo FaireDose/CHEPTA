@@ -87,7 +87,11 @@ current: replace its "State" and "Queue" sections at each handover, never append
    result.extrapolations without the 10 K margin), decision 2026-11-13-05. Running: Sonnet session_01FPbeWXkaEvseVormS8C46q,
    branch claude/site-next-preview (site/next.html + docs/ui-review/TESTING-0021.md for the user check), decision -06.
    Recommended to the maintainer: release 0.7.0 after #240 (ships #236-#241). Queue after: row chooser + (d) in the new
-   layout only; G3 lenient twin (data); (a)-(c); proposal 0022 step 1 (design specs). Workers' send_message to @parent may fail ("credential for this
+   layout only; G3 lenient twin (data); (a)-(c); proposal 0022 step 1 (design specs).
+   ~16:20 UTC: #243 (missing pairs estimated) green, the maintainer agreed to its four recommendations; worker records
+   them. #240 + #243 tested together on main locally: 1685 pass, 0 fail. #242 (site preview) not reported yet.
+   RELEASE (the maintainer, 2026-11-13): next release is 0.6.2, after #240, #242 and #243 are merged; 0.7.0 only once
+   CHEPTA-Lab has solved all of its first four cases (proof that the simulator handles real cases). Workers' send_message to @parent may fail ("credential for this
    connector"): when a worker goes idle, read its last message with list_events. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
