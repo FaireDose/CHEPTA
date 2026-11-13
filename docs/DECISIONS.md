@@ -10,9 +10,6 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
-- Extrapolation policy (2026-11-13, [decision 2026-11-13-03](decisions/2026-11-13-03-extrapolation-policy.md)): three
-  questions with recommendations (column case G3's meaning; the Aly-Lee and vapour-viscosity refinements; pair sets
-  far outside their data range).
 
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
@@ -368,6 +365,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **Proposal 0005** (association models, [#48](https://github.com/FaireDose/Fugacity/pull/48)): deferred, on hold.
 
 ### Engineering, in the suggested order
+
+- Extrapolation policy follow-ups (decided 2026-11-13, [decision 2026-11-13-03](decisions/2026-11-13-03-extrapolation-policy.md)):
+  (a) a lenient twin of column case G3, a data PR that checks the warning beside the unchanged strict-mode case;
+  (b) a small PR that gathers the pair parameter sets used outside their data range into `result.extrapolations`,
+  once per pair, with no 10 K margin.
 
 1. Equation-of-state pairs: fit PR and SRK k_ij to the archive data of the 92 nonpolar or gas pairs
    that have none (docs/PAIR_SCAN.md, "Coverage by the method each pair needs"), and import the

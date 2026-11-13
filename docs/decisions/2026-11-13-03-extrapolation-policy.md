@@ -142,17 +142,19 @@ validation data were changed.
 
 Full suite: 1672 pass, 0 fail, 1 known TODO (before: 1662 pass).
 
-## What the maintainer must decide
+## Decided (the maintainer, 2026-11-13, through the coordinator)
 
-1. **Column case G3** (`validation/data/columns/G3-own-method-cannot-represent.json`) expects a refusal of a cold feed
-   below benzene's heat-capacity record. *Recommendation:* keep the case file unchanged as the strict-mode case (the
-   tests now run it so) and add a lenient twin case in a later data PR that checks the warning; changing the case file
-   itself is a validation-data change and needs your word.
-2. **The four refinements** above (Aly-Lee by its equation, vapour viscosity linear, liquid properties refused above
-   Tc, no Clausius-Clapeyron above Tc). *Recommendation:* accept all four.
-3. **Pair parameter sets** already warn only beyond 10 K outside their data and are not gathered in
-   `result.extrapolations`. *Recommendation:* in a follow-up, gather them in the same once-per-pair form with no margin,
-   so that every extrapolation of a flowsheet is in one list.
+The maintainer agreed to all three recommendations:
+
+1. **Column case G3** (`validation/data/columns/G3-own-method-cannot-represent.json`) stays unchanged and runs as the
+   strict-mode case, as the tests now do. A lenient twin case, which checks the warning, comes in a later data PR
+   (open item in DECISIONS.md).
+2. **The four refinements are accepted:** the Aly-Lee ideal-gas heat capacity is continued by its own equation; the
+   vapour viscosity linearly; a liquid property at or above the critical temperature is refused; a vapour pressure is
+   not continued by Clausius-Clapeyron above the critical temperature, so a supercritical component needs Henry's law
+   or an equation of state.
+3. **Pair parameter sets** (NRTL, UNIQUAC, Wilson, k_ij) are to be gathered into `result.extrapolations` in the same
+   once-per-pair form, in a small follow-up PR (open item in DECISIONS.md).
 
 ## What to check
 
