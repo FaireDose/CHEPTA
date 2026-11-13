@@ -4,16 +4,19 @@
  * It is a shell around the workbench of app.js, not a second workbench: the engine, the views, the Inputs and
  * Results panels, the drawers and the project files are the ones of app.js, mounted inside the shell. The shell
  * replaces only how they are reached and arranged:
- *  - the Flowsheet has a place of its own, first in the top bar at every width (the maintainer, 2026-11-11: "flowsheet
- *    is in fact encompassing all the other tabs so should deserve something on its own"); the other workspaces are the
- *    calculations beside it, every one a press away: a rail at the left when the workbench is wide, a menu in the top
- *    bar otherwise (the two rows of sections and tabs of app.js are hidden). A calculation can take the flowsheet's
- *    components and method with one press ("From the flowsheet");
+ *  - two modes, chosen by a switch first in the top bar at every width, [Flowsheet | Calculations] (the maintainer,
+ *    2026-11-11: "flowsheet is in fact encompassing all the other tabs so should deserve something on its own"; and
+ *    2026-11-13: the calculations in the rail and the blocks in the toolbar, both on the Flowsheet's screen, were "very
+ *    confusing"). In Flowsheet mode there is no rail: the toolbar's "Place a block" is the only list of unit types. In
+ *    Calculations mode the other workspaces are every one a press away: a rail at the left when the workbench is wide,
+ *    a menu in the top bar otherwise (the two rows of sections and tabs of app.js are hidden); the switch brings back
+ *    the last calculation used. A calculation can take the flowsheet's components and method with one press ("From the
+ *    flowsheet");
  *  - the context row, the same in every workspace: the property method (pressed, it opens the method choice of
  *    model-picker.js, or the workspace's own Method page), the data behind the result (pressed, the canvas's Data
  *    tab), and the units (pressed, the Settings);
- *  - the supporting tools in four places instead of seven: Project, Data (Library, My data, Sources), Settings,
- *    Help (AI chat, Feedback);
+ *  - the supporting tools in three places instead of seven: Project, Data (Library, My data, Sources), Help (AI chat,
+ *    Feedback); the Settings open from the context row's Units button, which shows the units in use;
  *  - the canvas in tabs, Plot, Table, Data and Warnings, in every workspace (step 2; canvas-tabs.js, built by app.js
  *    when this shell asks for them);
  *  - when narrow (a phone, a chat panel): one pane at a time, Inputs or Results, instead of one long page, and the
@@ -57,16 +60,63 @@ export function menuMove(key, at, n) {
   if (key === "End") return n - 1;
   return null;
 }
-/** The supporting tools, grouped: what each button of the top bar opens. */
+/** The supporting tools, grouped: what each button of the top bar opens. The Settings have no button of their own: the
+ * context row's Units button opens them, and it shows the units in use (the maintainer, 2026-11-13: two buttons that open
+ * the same Settings were "confusing, there is no difference"). */
+export const SETTINGS_BUTTON = "fn-units";
 export const TOOLS = [
   { id: "project", label: "Project", icon: "file", items: ["project"] },
   { id: "data", label: "Data", icon: "book", items: ["library", "mydata", "sources"] },
-  { id: "settings", label: "Settings", icon: "units", items: ["settings"] },
   { id: "help", label: "Help", icon: "chat", items: ["aichat", "feedback"] },
 ];
-/** The calculations beside the flowsheet, by section: [{ label, workspaces }] (every workspace but the flowsheet). */
+/** The calculations beside the flowsheet, by section: [{ label, workspaces }] (every workspace but the flowsheet). The
+ * unit models are headed "Unit calculations", so they read as calculations of their own, not as the flowsheet's blocks. */
+const SECTION_LABEL = { thermo: "Properties", units: "Unit calculations" };
 export const calculations = () => SECTIONS.filter(sec => sec.id !== "flowsheet").map(sec => ({
-  label: sec.short === "Prop. & eq." ? "Properties" : sec.short ?? sec.label, workspaces: sec.workspaces.map(id => WORKSPACES.find(w => w.id === id)) }));
+  label: SECTION_LABEL[sec.id] ?? sec.short ?? sec.label, workspaces: sec.workspaces.map(id => WORKSPACES.find(w => w.id === id)) }));
+
+/** The two modes of the top bar's switch (proposal 0021, section 1; the maintainer, 2026-11-13). */
+export const MODES = [
+  { id: "flowsheet", label: "Flowsheet", icon: "flowsheet", title: "The flowsheet: streams, blocks and recycles" },
+  { id: "calculations", label: "Calculations", icon: "calc", title: "One calculation on its own: phase equilibria, properties and the unit models" },
+];
+/** The calculation a fresh workbench, or a switch with no calculation used yet, opens. */
+export const FIRST_CALCULATION = "equilibrium";
+/** The mode of a workspace: the flowsheet is Flowsheet mode, every other workspace Calculations mode. */
+export const modeOf = workspace => workspace === "flowsheet" ? "flowsheet" : "calculations";
+/**
+ * What the navigation shows in a mode (DOM-free): the rail of calculations (Calculations mode, wide), the menu of
+ * calculations in the top bar (Calculations mode, not wide), or neither (Flowsheet mode: its toolbar places the blocks).
+ * Never both lists of unit types on one screen.
+ * @param {"flowsheet"|"calculations"} mode
+ * @param {boolean} wide  the workbench has room for the rail
+ */
+export const navigation = (mode, wide) => ({ rail: mode === "calculations" && wide, menu: mode === "calculations" && !wide });
+/**
+ * The workspace a press on a mode of the switch opens: the flowsheet, or the calculation in use, else the last one
+ * used, else the first (DOM-free).
+ * @param {"flowsheet"|"calculations"} mode
+ * @param {string} current   the workspace shown
+ * @param {string|null} last the last calculation used
+ */
+export function modeTarget(mode, current, last) {
+  if (mode === "flowsheet") return "flowsheet";
+  if (modeOf(current) === "calculations") return current;
+  return last && modeOf(last) === "calculations" && WORKSPACES.some(w => w.id === last) ? last : FIRST_CALCULATION;
+}
+/**
+ * Move the focus between the two halves of the switch: Left and Right (round), Home and End. Enter and Space press the
+ * focused half, as any button; the arrows only move, so a mode is never changed by passing over it. DOM-free.
+ * @returns {number|null}  the index to focus, or null when the key does not move
+ */
+export function switchMove(key, at, n = MODES.length) {
+  if (!n || at < 0) return null;
+  if (key === "ArrowRight") return (at + 1) % n;
+  if (key === "ArrowLeft") return (at - 1 + n) % n;
+  if (key === "Home") return 0;
+  if (key === "End") return n - 1;
+  return null;
+}
 const utility = id => UTILITIES.find(u => u.id === id);
 
 const NEXT_CSS = `
@@ -80,10 +130,11 @@ const NEXT_CSS = `
 .fn-tool{display:flex; align-items:center; gap:6px; border:1px solid transparent; background:transparent; color:var(--fa-bar-fg); font:inherit; font-size:12.5px; padding:4px 8px; border-radius:6px; cursor:pointer; white-space:nowrap}
 .fn-tool .fug-ico .a{stroke:var(--fa-bar-accent)}
 .fn-tool:hover,.fn-tool[aria-expanded="true"]{color:var(--fa-bar-strong); background:var(--fn-bar-hover)}
-.fn-flow{display:flex; align-items:center; gap:6px; border:1px solid var(--fn-bar-edge); background:transparent; color:var(--fa-bar-strong); font:inherit; font-size:13px; font-weight:600; padding:4px 10px 4px 8px; border-radius:6px; cursor:pointer; flex:none}
-.fn-flow:hover{background:var(--fn-bar-hover)}
-.fn-flow[aria-current="page"]{background:var(--fug-accent); border-color:var(--fug-accent); color:var(--fug-bg)}
-.fn-flow .fug-ico .a{stroke:currentColor}
+.fn-mode{display:flex; flex:none; border:1px solid var(--fn-bar-edge); border-radius:6px; padding:1px; gap:1px}
+.fn-mode button{display:flex; align-items:center; gap:6px; border:0; background:transparent; color:var(--fa-bar-strong); font:inherit; font-size:13px; font-weight:600; padding:3px 10px 3px 8px; border-radius:5px; cursor:pointer}
+.fn-mode button:hover{background:var(--fn-bar-hover)}
+.fn-mode button[aria-pressed="true"]{background:var(--fug-accent); color:var(--fug-bg)}
+.fn-mode .fug-ico .a{stroke:currentColor}
 .fn-ws{display:flex; align-items:center; gap:6px; border:1px solid var(--fn-bar-edge); background:var(--fn-bar-hover); color:var(--fa-bar-strong); font:inherit; font-size:13px; font-weight:600; padding:4px 8px; border-radius:6px; cursor:pointer; min-width:0}
 .fn-ws span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .fn-ws small{font-weight:400; font-size:11.5px; color:var(--fa-bar-fg)}
@@ -127,16 +178,15 @@ const NEXT_CSS = `
 .fn-shell .fn-host .fa-status .fa-cell:not(.fa-state):not(:last-child){display:none}
 .fn-shell .fn-host .fa-ribbon{min-height:0; padding-bottom:4px}
 
-/* with the rail (a wide workbench): the workspace menu is not needed */
-.fn-shell[data-rail] .fn-ws-wrap{display:none}
-.fn-shell:not([data-rail]) .fn-rail{display:none}
+/* the rail: in Calculations mode on a wide workbench only (navigation()); in Flowsheet mode the canvas takes its width */
+.fn-shell:not([data-rail]) .fn-rail,.fn-shell[data-mode="flowsheet"] .fn-rail{display:none}
 .fn-shell:not([data-rail]) .fn-tool span{display:none}
 
 /* narrow: one pane at a time, the toolbar as one row that scrolls sideways */
 .fn-shell[data-nsize="narrow"] .fn-top{padding:0 6px 0 10px; gap:0 8px}
 .fn-shell[data-nsize="narrow"] .fn-tool{padding:6px 4px}
-.fn-shell[data-nsize="narrow"] .fn-flow span{display:none}
-.fn-shell[data-nsize="narrow"] .fn-flow{padding:4px 6px}
+.fn-shell[data-nsize="narrow"] .fn-mode button span{display:none}
+.fn-shell[data-nsize="narrow"] .fn-mode button{padding:3px 6px}
 .fn-shell[data-nsize="narrow"] .fn-panes{display:flex}
 .fn-shell[data-strip] .fn-host .fa-group{margin-left:0; border-left:0}
 .fn-shell[data-strip] .fn-host .fa-ribbon{flex-direction:row; flex-wrap:nowrap; overflow-x:auto; padding:6px 8px; align-items:center; row-gap:0}
@@ -196,10 +246,10 @@ export function appNext(target, cfg = {}) {
   const { layout: _layout, ...inner } = cfg;
   // the workbench with its canvas in tabs (Plot, Table, Data, Warnings: proposal 0021, step 2); it injects its
   // styles, the shell's come after them
-  const api = app(host, { ...inner, canvasTabs: true, unitSteps: true });
+  const api = app(host, { ...inner, canvasTabs: true, unitSteps: true, flowsheetMode: true });
   injectNextStyles(doc);
 
-  const ui = { pane: "results", menu: null, lastWs: null, auto: true, popup: null };
+  const ui = { pane: "results", menu: null, lastWs: null, auto: true, popup: null, lastCalc: null };
   const st = () => api.state;
   const go = patch => { ui.menu = null; api.update(patch); };
 
@@ -216,7 +266,7 @@ export function appNext(target, cfg = {}) {
     button.addEventListener("click", ev => toggle(ev.detail === 0));
     button.addEventListener("keydown", ev => { if (!open && (ev.key === "ArrowDown" || ev.key === "ArrowUp")) { ev.preventDefault(); toggle(true); } });
     if (open) ui.popup = { button, side, node: h("div", { class: "fn-menu", role: "group", "aria-label": button.getAttribute("aria-label") ?? "" }, ...build()) };
-    return h("div", { class: "fn-menu-wrap" + (id === "ws" ? " fn-ws-wrap" : "") }, button);
+    return h("div", { class: "fn-menu-wrap" }, button);
   }
   /** The items of the open menu that the arrow keys move between (a menu of lists, the method, keeps its own keys). */
   const menuItems = () => [...(shell.querySelector(":scope > .fn-menu")?.querySelectorAll(".fn-item") ?? [])];
@@ -300,7 +350,8 @@ export function appNext(target, cfg = {}) {
       on: { click: () => api.update({ components: ids, model: fs.thermo.model, vapour: fs.thermo.vapour ?? "ideal", mixing: fs.thermo.mixing ?? null }) } },
       icon("flowsheet", 14), "From the flowsheet");
   }
-  const unitsChip = c => h("button", { type: "button", class: "fn-chip", "data-fk": "fn-units", title: "Units and composition basis, for every workspace (Settings)",
+  const unitsChip = c => h("button", { type: "button", class: "fn-chip", "data-fk": SETTINGS_BUTTON, "aria-label": `Units ${c.units.text}: the Settings`,
+    title: "Settings: units, composition basis and panels, for every workspace",
     on: { click: () => go({ utility: "settings" }) } }, h("small", {}, "Units"), c.units.text);
 
   function toolButton(t) {
@@ -318,6 +369,7 @@ export function appNext(target, cfg = {}) {
 
   function render() {
     ui.popup = null;
+    const was = top.contains(doc.activeElement) ? doc.activeElement : null, keep = was?.dataset.fn ?? was?.dataset.fk ?? null;
     const s = st(), ws = WORKSPACES.find(w => w.id === s.workspace), c = ctx();
     const nsize = c.size, narrow = nsize === "narrow";
     shell.dataset.nsize = nsize;
@@ -328,28 +380,41 @@ export function appNext(target, cfg = {}) {
     // the Method button holds the method choice: the ribbon's own lists are hidden
     if (METHOD_ACTION[c.method.choice] === "picker") shell.dataset.picker = ""; else delete shell.dataset.picker;
     const sec = SECTIONS.find(x => x.workspaces.includes(s.workspace));
-    const onFlow = s.workspace === "flowsheet";
-    const flowButton = h("button", { type: "button", class: "fn-flow", "aria-current": onFlow ? "page" : undefined, "aria-label": "Flowsheet",
-      title: "The flowsheet: streams, blocks and recycles", on: { click: () => go({ workspace: "flowsheet", utility: null }) } }, icon("flowsheet", 17), h("span", {}, "Flowsheet"));
-    const wsButton = h("button", { type: "button", class: "fn-ws", "aria-label": onFlow ? "Calculations: choose one" : `Calculation: ${ws.label}. Choose another` },
-      icon(onFlow ? "calc" : ws.icon, 17), h("span", {}, onFlow ? "Calculations" : ws.label), narrow || onFlow ? null : h("small", {}, sec.label), icon("chevronDown", 14));
+    const mode = modeOf(s.workspace), railed = "rail" in shell.dataset, nav = navigation(mode, railed);
+    shell.dataset.mode = mode;
+    // the switch [Flowsheet | Calculations]: two buttons, the pressed one is the mode shown
+    const modeSwitch = h("div", { class: "fn-mode", role: "group", "aria-label": "Mode",
+      on: { keydown: ev => {
+        const bs = [...modeSwitch.querySelectorAll("button")], to = switchMove(ev.key, bs.indexOf(doc.activeElement), bs.length);
+        if (to != null) { ev.preventDefault(); bs[to].focus(); }
+      } } },
+      ...MODES.map(m => h("button", { type: "button", "aria-pressed": String(m.id === mode), "aria-label": m.label, title: m.title, "data-fn": `mode-${m.id}`,
+        on: { click: () => {
+          if (m.id === mode && !s.utility) return;
+          go({ workspace: modeTarget(m.id, st().workspace, ui.lastCalc), utility: null });
+        } } }, icon(m.icon, 17), h("span", {}, m.label))));
+    const wsButton = h("button", { type: "button", class: "fn-ws", "aria-label": `Calculation: ${ws.label}. Choose another` },
+      narrow ? null : icon(ws.icon, 17), h("span", {}, ws.label), narrow ? null : h("small", {}, sec.label), icon("chevronDown", 14));
     // the context row: in the top bar beside the rail, on a row of its own otherwise
     const context = h("div", { class: "fn-context", role: "group", "aria-label": "Method, data and units of this calculation" }, methodChip(c), dataChip(c), unitsChip(c), fromFlowsheetChip());
-    const railed = "rail" in shell.dataset;
     ctxRow.replaceChildren(...(railed ? [] : [context]));
     top.replaceChildren(
       brandLogo({ width: narrow ? 64 : 84 }),
-      flowButton,
-      menuButton("ws", wsButton, () => wsGroups("fn-item"), "is-left"),
+      modeSwitch,
+      ...(nav.menu ? [menuButton("ws", wsButton, () => wsGroups("fn-item"), "is-left")] : []),
       ...(railed ? [context] : []),
       h("div", { class: "fn-tools", role: "group", "aria-label": "Supporting tools" }, ...TOOLS.map(toolButton)));
-    rail.replaceChildren(...wsGroups("fn-rail-btn"));
+    rail.replaceChildren(...(nav.rail ? wsGroups("fn-rail-btn") : []));
+    rail.hidden = !nav.rail;
     const need = !c.missing.complete;
     const pane = (id, label, ico) => h("button", { type: "button", class: "fn-pane-btn", "aria-pressed": String(ui.pane === id),
       on: { click: () => { ui.pane = id; ui.auto = false; render(); } } }, icon(ico, 16), label,
       id === "inputs" && need && ui.pane !== "inputs" ? h("span", { class: "fn-dot", title: "Inputs are missing" }) : null);
     placePopup();
     panes.replaceChildren(pane("inputs", "Inputs", "panelL"), pane("results", s.workspace === "flowsheet" ? "Drawing and results" : "Results", "panelR"));
+    // the bar is redrawn after every change the workbench shows: the button that had the focus (a half of the switch
+    // just pressed, a context button) keeps it
+    if (keep && !top.contains(doc.activeElement)) top.querySelector(`[data-fn="${keep}"], [data-fk="${keep}"]`)?.focus();
   }
 
   // ---- follow the workbench: it tells the shell after every change it shows (its state, its size, a calculation)
@@ -362,6 +427,7 @@ export function appNext(target, cfg = {}) {
       // a workspace opened without its inputs starts on the Inputs pane, a complete one on its results, until the
       // person chooses a pane
       if (st().workspace !== ui.lastWs) { ui.lastWs = st().workspace; ui.auto = true; ui.pane = "results"; }
+      if (modeOf(st().workspace) === "calculations") ui.lastCalc = st().workspace;
       if (ui.auto && !ctx().missing.complete) { ui.pane = "inputs"; ui.auto = false; }
       // a menu holds live controls (the method lists): it is not rebuilt under the person's hands
       if (ui.menu !== "method" || !shell.querySelector(".fn-method-pop")?.contains(doc.activeElement)) render();
@@ -373,6 +439,7 @@ export function appNext(target, cfg = {}) {
   fit();
   if (typeof ResizeObserver !== "undefined") new ResizeObserver(fit).observe(shell);
   ui.lastWs = st().workspace;
+  if (modeOf(ui.lastWs) === "calculations") ui.lastCalc = ui.lastWs;
   ui.pane = ctx().missing.complete ? "results" : "inputs";
   render();
 

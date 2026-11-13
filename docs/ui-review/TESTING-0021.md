@@ -82,7 +82,8 @@ instead**: in **File** (current) or **Project** (new) choose Open, and use
 open the file, then the download button).
 
 - *Current:* the **Flowsheet** tab of Unit models.
-- *New:* **Flowsheet** has its own button at the top left.
+- *New:* press **Flowsheet** in the switch [Flowsheet | Calculations] at the top left; **Calculations** takes you
+  back to the last calculation.
 - Note: could you find the flowsheet at once? Could you see the drawing without scrolling? Where were the balances?
 
 (Building a flowsheet block by block is not changed by the new layout yet; do not judge that part.)

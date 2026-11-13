@@ -200,6 +200,9 @@ export function app(target, cfg = {}) {
   // the numbered steps of the Flash, the Heat exchanger and the Pipe (proposal 0021, step 3; unit-steps.js): asked for
   // by app-next.js only, like the tabs; the classic Inputs panel is one column of sections, as before
   const stepped = cfg.unitSteps === true;
+  // the flowsheet's palette named for what it does, "Place a block", in the new layout's Flowsheet mode (proposal 0021;
+  // the maintainer, 2026-11-13): asked for by app-next.js only; the classic toolbar keeps "Blocks"
+  const blocksLabel = cfg.flowsheetMode === true ? "Place a block" : "Blocks";
   const tabBar = h("div", { class: "fa-tabs", role: "tablist", "aria-label": "What the canvas shows" });
   const tableOwn = h("div", { class: "fa-tab-own" });   // a view's own table (the flash's stream table), ctx.tabs.table; the downloads (below, canvasFoot) come first
   const tableGen = h("div");                            // else the tables of its Excel export, built when the tab opens
@@ -483,7 +486,7 @@ export function app(target, cfg = {}) {
           group("Energy basis", seg("Energy basis", UNIT_CHOICES.basis, u.basis, b => set({ units: { basis: b } }))),
         ];
       }
-      case "flowsheet": return flowsheetRibbon({ state, set, ui, group, bigButton, smallButton });
+      case "flowsheet": return flowsheetRibbon({ state, set, ui, group, bigButton, smallButton, blocksLabel });
       case "reactor": return reactorRibbon({ state, set, ui, group, smallButton });
       case "column": return columnRibbon({ state, set, ui, group, smallButton });
       case "steam": return [

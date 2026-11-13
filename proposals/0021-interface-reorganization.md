@@ -40,7 +40,7 @@ or on a phone; and every contributor who adds a view and must guess where its me
 ```
  wide (1156 px and more)                                   narrow (under 720 px: a phone, a chat panel)
 
- logo [Flowsheet] | Method v | Data | Units |  Project Data Settings Help      logo [F] [Calculation v]  P D S H
+ logo [Flowsheet|Calculations] Method v | Data | Units  Project Data Help    logo [F|C] [Calculation v]  P D H
  +------+----------------------------------------------+                       Method v | Data | Units  (scrolls)
  | rail | toolbar: what to draw, what to place         |                       [ Inputs ] [ Results ]
  |      +--------+----------------------+--------------+                       toolbar, one row (scrolls)
@@ -51,11 +51,16 @@ or on a phone; and every contributor who adds a view and must guess where its me
  | state                                               |
 ```
 
-- **The Flowsheet has its own button**, first in the top bar at every width. It is the frame that holds the others:
-  its blocks are the unit models, its method is the property method.
-- **The other nine workspaces are "calculations"** beside it, every one a press away: a rail at the left when the
-  workbench is wide (Phase eq., Charts, Solubility, Properties; Flash, Exchanger, Pipe, Reactor, Column), one menu in
-  the top bar otherwise. The two rows of sections and tabs go.
+- **Two modes, [Flowsheet | Calculations]**, a switch first in the top bar at every width (the maintainer,
+  2026-11-13; docs/decisions/2026-11-13-08-ui-0021-flowsheet-mode.md). The Flowsheet is the frame that holds the
+  others: its blocks are the unit models, its method is the property method.
+- **Flowsheet mode has no rail**: the canvas takes its width, and the toolbar's group "Place a block" is the only list
+  of unit types on the screen (the maintainer, 2026-11-13: the rail's Flash, Exchanger, Pipe, Reactor and Column beside
+  the toolbar's blocks of the same names were "very confusing").
+- **Calculations mode: the other nine workspaces**, every one a press away: a rail at the left when the workbench is
+  wide (Properties: Phase eq., Charts, Solubility, Properties; Unit calculations: Flash, Exchanger, Pipe, Reactor,
+  Column), one menu in the top bar otherwise. The switch brings back the last calculation used (Phase equilibrium at
+  first). The two rows of sections and tabs go.
 - **The context row**, the same three buttons in every workspace:
   - **Method**: the property method in use; pressed, it opens the method choice (the lists of
     `model-picker.js`). Where a view has one method only (the steam tables: IAPWS-IF97), the button says so and does
@@ -65,8 +70,9 @@ or on a phone; and every contributor who adds a view and must guess where its me
   - **Units**: the units and the composition basis; pressed, the Settings.
   They replace the toolbar's Model and Composition groups and the cells of the status bar that repeat them. The
   status bar keeps the state ("Ready, 9 ms", errors) and the version.
-- **Four supporting tools instead of seven**: Project (save and open), Data (Library, My data, Sources), Settings,
-  Help (AI chat, Feedback).
+- **Three supporting tools instead of seven**: Project (save and open), Data (Library, My data, Sources), Help (AI
+  chat, Feedback). The Settings open from the context row's Units button; a Settings button beside it opened the same
+  drawer and was taken out (the maintainer, 2026-11-13: "there is no difference").
 - **The toolbar** keeps only what belongs to the workspace: which diagram, which specification, which block to place.
 
 ### 2. One workspace layout

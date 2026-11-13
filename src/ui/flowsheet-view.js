@@ -229,7 +229,7 @@ export function solution(state, ui, redraw = null) {
 // Ribbon
 
 /** The toolbar groups of the Flowsheet workspace (helpers from app.js: group, bigButton, smallButton). */
-export function flowsheetRibbon({ state, set, ui, group, smallButton }) {
+export function flowsheetRibbon({ state, set, ui, group, smallButton, blocksLabel = "Blocks" }) {
   enter(state);
   const f = ensureUi(ui), fs = state.flowsheet;
   const ready = fs.components.length > 0;
@@ -292,7 +292,7 @@ export function flowsheetRibbon({ state, set, ui, group, smallButton }) {
       setupBtn("flask", `Components${ready ? ` (${fs.components.length})` : ""}`, "components", "fs-setup", "1. Choose the components of the simulation (and see the status of the flowsheet)"),
       setupBtn("cubic", `Method: ${method}`, "method", "fs-method", "2. The property method of the whole flowsheet, and the recycle solver"),
       setupBtn("spark", `Reactions${fs.reactions?.length ? ` (${fs.reactions.length})` : ""}`, "reactions", "fs-reactions", "3. The reactions of the process, written once for every reactor: stoichiometry, balance check, heat of reaction and K"))),
-    group("Blocks", rows2(blockBtn("feed"), energyBtn, ...blocks.filter(t => t !== "feed").map(blockBtn), (() => {
+    group(blocksLabel, rows2(blockBtn("feed"), energyBtn, ...blocks.filter(t => t !== "feed").map(blockBtn), (() => {
       // one button for the separators (proposal 0015, Part I, section 4: "In one Separator button, so the palette stays
       // short"), as the Reactor button
       const open = !!f.separatorMenu;

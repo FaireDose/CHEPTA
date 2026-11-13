@@ -42,7 +42,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   the four questions answered 2026-11-13 as recommended). Open: the classic layout's empty band of the heat exchanger
   (finding 9), to be fixed in a small pull request of its own. Next: the first additions (measured VLE points on T-x-y, the x-y, gamma and alpha diagrams, the flowsheet's tabs
   and examples). The new layout becomes the default only after steps 1-3 and a check by users; "classic" is kept for
-  two released versions. Step 4: preview published at /next.html (docs/decisions/2026-11-13-06-site-next-preview.md; answered 2026-11-13 as
+  two released versions. Flowsheet mode (docs/decisions/2026-11-13-08-ui-0021-flowsheet-mode.md; in review): a switch [Flowsheet |
+  Calculations], no rail in Flowsheet mode, the rail's "Units" headed "Unit calculations", the toolbar's "Blocks" named
+  "Place a block", the Settings button taken out (the Units button opens the Settings), the background switch only in
+  the toolbars of Phase eq., Charts and Solubility ("Grid and shading"); its four questions answered 2026-11-13 as
+  recommended (the classic layout unchanged until step 7). Step 4: preview published at /next.html (docs/decisions/2026-11-13-06-site-next-preview.md; answered 2026-11-13 as
   recommended: testers in a chat load `chepta@0.6.2` from jsDelivr, results go to the maintainer and to one public issue
   "Layout check, proposal 0021", Task 4 opens examples/flowsheet-recycle.chepta.json through File > Project); waiting for
   the user check (docs/ui-review/TESTING-0021.md). Open: open that issue.
