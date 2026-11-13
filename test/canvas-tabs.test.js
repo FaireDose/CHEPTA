@@ -65,3 +65,22 @@ test("the Warnings tab in two steps: the count above the one-line list, and one 
   assert.equal(allLabel(false), "Expand all");
   assert.equal(allLabel(true), "Collapse all");
 });
+
+test("an opened warning reads its first sentence once (openHead)", async () => {
+  const { openHead } = await import("../src/ui/canvas-tabs.js");
+  // the line is the first sentence, cut: open, it shows that sentence whole and the text the rest
+  const t = "The liquid is predicted to split into two liquid phases in the hatched region. Results there assume a single liquid and are not reliable.";
+  assert.deepEqual(openHead("The liquid is predicted to split into two liquid phases in the…", t),
+    { line: "The liquid is predicted to split into two liquid phases in the hatched region", text: "Results there assume a single liquid and are not reliable." });
+  // the line is the whole first sentence
+  assert.deepEqual(openHead("No bubble point", "No bubble point. Raise the pressure."), { line: "No bubble point", text: "Raise the pressure." });
+  // a one-sentence message: no paragraph left
+  assert.deepEqual(openHead("No bubble point", "No bubble point."), { line: "No bubble point", text: "" });
+  // a label before the text's start: open, the label only, the text whole
+  const k = "The ternary azeotrope comes out at 69.95 °C. Reference: Lange's Handbook.";
+  assert.deepEqual(openHead("Known deviation (NRTL): The ternary azeotrope comes out at 69.95 °C", k), { line: "Known deviation (NRTL)", text: k });
+  assert.deepEqual(openHead("Not calculated: The solver did not…", "The solver did not converge in 50 steps."),
+    { line: "Not calculated", text: "The solver did not converge in 50 steps." });
+  // nothing in common: both as they are
+  assert.deepEqual(openHead("2 problems: a", "Something else."), { line: "2 problems: a", text: "Something else." });
+});

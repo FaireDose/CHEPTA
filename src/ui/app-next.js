@@ -10,8 +10,8 @@
  *    bar otherwise (the two rows of sections and tabs of app.js are hidden). A calculation can take the flowsheet's
  *    components and method with one press ("From the flowsheet");
  *  - the context row, the same in every workspace: the property method (pressed, it opens the method choice of
- *    model-picker.js, or the workspace's own Method page), the data behind the result (pressed, the sources used
- *    here), and the units (pressed, the Settings);
+ *    model-picker.js, or the workspace's own Method page), the data behind the result (pressed, the canvas's Data
+ *    tab), and the units (pressed, the Settings);
  *  - the supporting tools in four places instead of seven: Project, Data (Library, My data, Sources), Settings,
  *    Help (AI chat, Feedback);
  *  - the canvas in tabs, Plot, Table, Data and Warnings, in every workspace (step 2; canvas-tabs.js, built by app.js
@@ -32,6 +32,7 @@ import { WORKSPACES, SECTIONS, UTILITIES } from "./workspaces.js";
 import { modelPicker, liquidPicker, equationPicker, workbenchPatch } from "./model-picker.js";
 import { OWN_METHOD } from "./shell-contract.js";
 import { CANVAS_TABS_CSS } from "./canvas-tabs.js";
+import { UNIT_STEPS_CSS } from "./unit-steps.js";
 
 /** The workspaces whose method is the workbench's own (state.model), for "From the flowsheet". */
 export const PICKER_WORKSPACES = ["equilibrium", "flash", "hx", "pipe"];
@@ -167,7 +168,7 @@ function injectNextStyles(doc) {
   el.textContent = `.fn-shell{${TOKENS_LIGHT}}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .fn-shell{${TOKENS_DARK}} }
 :root[data-theme="dark"] .fn-shell{${TOKENS_DARK}}
-${NEXT_CSS}${CANVAS_TABS_CSS}`;
+${NEXT_CSS}${CANVAS_TABS_CSS}${UNIT_STEPS_CSS}`;
   doc.head.appendChild(el);
 }
 
@@ -195,7 +196,7 @@ export function appNext(target, cfg = {}) {
   const { layout: _layout, ...inner } = cfg;
   // the workbench with its canvas in tabs (Plot, Table, Data, Warnings: proposal 0021, step 2); it injects its
   // styles, the shell's come after them
-  const api = app(host, { ...inner, canvasTabs: true });
+  const api = app(host, { ...inner, canvasTabs: true, unitSteps: true });
   injectNextStyles(doc);
 
   const ui = { pane: "results", menu: null, lastWs: null, auto: true, popup: null };
@@ -276,8 +277,16 @@ export function appNext(target, cfg = {}) {
   }
   function dataChip(c) {
     const text = [c.data.pairs, c.data.sets].filter(Boolean).join("; ");
-    return h("button", { type: "button", class: "fn-chip", "data-fk": "fn-data", title: "The sources of the data behind this result",
-      on: { click: () => { ui.menu = null; api.shell.showSources(); } } },
+    // one door to the sources (the maintainer, 2026-11-12, answer 4 of the canvas tabs): the Data tab of the canvas,
+    // which keeps a button to the Sources panel; on a phone the canvas is in the Results pane
+    return h("button", { type: "button", class: "fn-chip", "data-fk": "fn-data", title: "What this result rests on: the Data tab of the canvas",
+      on: { click: () => {
+        ui.menu = null;
+        if (st().utility) api.update({ utility: null });
+        api.shell.tab("data");
+        ui.pane = "results"; ui.auto = false; render();
+        shell.querySelector('[data-fk="tab-data"]')?.focus();
+      } } },
       h("small", {}, "Data"), text || "Sources used here");
   }
   /** In a calculation: take the flowsheet's components and method (one press), when it has some and they differ. */

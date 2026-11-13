@@ -230,6 +230,8 @@ Each is one pull request with its screenshots (UI_GUIDE.md section 7) and its te
      workspace of the new layout; the classic canvas is unchanged.
 3. **Numbered steps** for the Flash, the Heat exchanger and the Pipe; the heat exchanger's empty band (finding 9)
    goes with it.
+   - Built (docs/decisions/2026-11-13-01-ui-0021-numbered-steps.md; in review): `src/ui/unit-steps.js`, in the new
+     layout; the classic Inputs panel is unchanged.
 4. **The new layout becomes the default**, after the maintainer's check with users; `layout: "classic"` keeps the
    old; UI_GUIDE.md is changed as section 5 says; the example pages and the README's screenshots follow.
 5. **The flowsheet's connections**: "Open in ..." on blocks and streams, "Use in the flowsheet", and the examples on
