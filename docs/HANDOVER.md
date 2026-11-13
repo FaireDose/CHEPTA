@@ -109,7 +109,14 @@ current: replace its "State" and "Queue" sections at each handover, never append
    The maintainer (2026-11-13, testing next.html): in Flowsheet the rail's calculations and the toolbar's blocks both
    show (Pipe, Reactor, Column twice): confusing; freedom given. Design: two modes [Flowsheet | Calculations], no rail
    in Flowsheet mode. Running: Opus session_01FPbeWW1BmHZD9uAHap4cew, branch claude/ui-0021-flowsheet-mode, decision
-   -08. The Lab phase starts after this and the triple-point PR merge. Workers' send_message to @parent may fail ("credential for this
+   -08. The Lab phase starts after this and the triple-point PR merge.
+   Status 18:30: PR #244 (triple point) and PR #245 (Flowsheet/Calculations modes, Settings once via the Units button,
+   the background switch "Grid and shading" only in Phase eq., Charts, Solubility; classic layout unchanged) both
+   verified, checks green, 1699 pass merged together. The maintainer agreed to all seven questions (relayed to both
+   workers to record). Order: (1) the maintainer merges the 0.6.2 version PR (branch version-0.6.2, never opened;
+   main reads 0.6.1); (2) then tell #244's worker to rebase and drop "ui-review" from VERSION_EXEMPT, then merge
+   #244; (3) tell #245's worker to rebase (DECISIONS.md conflict), merge #245; (4) open the public issue "Layout
+   check, proposal 0021" (agreed) once next.html shows #245; (5) start the Lab phase. Workers' send_message to @parent may fail ("credential for this
    connector"): when a worker goes idle, read its last message with list_events. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
