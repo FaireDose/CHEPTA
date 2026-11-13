@@ -63,7 +63,7 @@ current: replace its "State" and "Queue" sections at each handover, never append
    short form, the full text on a press), added (c759343); all checks green; the maintainer merges it (2026-11-12).
    #235 merged (f39e6e9). Step 3 (Opus) running in a fresh session (rule 1): session_01FPbeWWzrSq4VtnRnVFpB4f, branch
    claude/ui-0021-numbered-steps, with the step-2 worker's handover note forwarded. VLLE (Lab's 1 and 2): PR #237, checks
-   green, waiting for the maintainer (Liu 2013 rows, Pirola quote; four decisions, all recommended yes). #236's worker hit
+   green; the maintainer agreed to all four (2026-11-13), the worker records them, then the maintainer merges. Follow-ups: fit acetic acid + cyclohexane; search water + acetic acid + ethyl acetate VLLE when the ThermoML API is back; Lab reruns its column 5 on main. #236's worker hit
    the 5-hour limit overnight; resumed 2026-11-13. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
