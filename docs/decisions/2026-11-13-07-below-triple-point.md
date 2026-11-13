@@ -29,7 +29,7 @@ acetic acid + water at 285 K without the new wording; the report classification 
 `runCases` on CO2). **No existing test was changed**: all 1695 tests pass (1693 pass, 0 fail, 1 known TODO, 1 test
 file added).
 
-## Questions for the maintainer
+## Questions for the maintainer (answered 2026-11-13: "agree with all", as recommended)
 
 1. **The sublimation temperature.** CO2 sublimes at about 194.7 K at 101.325 kPa (the maintainer's figure), but no open
    record of it is stored in CHEPTA, so none is given and none is estimated. *Recommendation:* leave it "none" until a
@@ -42,3 +42,11 @@ file added).
    solid at 25 C (phenol, glucose) now carries the "stable phase is the solid" note in `pure().props` at 25 C when its
    liquid properties are shown, which is true. *Recommendation:* accept; a user who wants the solid's properties uses
    the solid records.
+
+## Decided (the maintainer, 2026-11-13, through the coordinator)
+
+The maintainer agreed to all three recommendations:
+
+1. Carbon dioxide's sublimation temperature stays "none" until an open measured sublimation-pressure record is added.
+2. No warning for a vapour below the triple point; only liquid values are warned about.
+3. The "stable phase is the solid" note for solids at 25 C (phenol, glucose) is accepted.
