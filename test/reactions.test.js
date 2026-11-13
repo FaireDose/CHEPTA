@@ -11,6 +11,9 @@ import { readFileSync } from "node:fs";
 import {
   checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties, reactionRate, rateSpecies, RATE_FORMS, isCheptaError,
 } from "../src/index.js";
+import { withRangePolicy } from "../src/util/ranges.js";
+// the strict range mode (the maintainer, 2026-11-13; docs/decisions/2026-11-13-03-extrapolation-policy.md)
+const strictly = fn => withRangePolicy({ strictRanges: true }, fn);
 
 const ref = JSON.parse(readFileSync(new URL("../validation/fixtures/reactions.json", import.meta.url)));
 const R = 8.314462618;
@@ -235,7 +238,10 @@ test("one species alone (speciesProperties): an acid solid at 25 °C has a liqui
   assert.equal(a.record, "ideal gas");
   assert.ok(Number.isFinite(a.H_J_mol) && Number.isFinite(a.G_J_mol));
   assert.ok(a.notes.some(n => /Adipic acid: ideal gas to pure liquid/.test(n)));
-  assert.throws(() => speciesProperties("adipic acid", "liquid", 298.15), e => isCheptaError(e) && /^Adipic acid, pure liquid at 298\.15 K: /.test(e.message));
+  // below the start of its liquid records: calculated with the records continued (2026-11-13; this line changed from
+  // "refused"); the strict mode refuses
+  assert.ok(Number.isFinite(speciesProperties("adipic acid", "liquid", 298.15).H_J_mol));
+  assert.throws(() => strictly(() => speciesProperties("adipic acid", "liquid", 298.15)), e => isCheptaError(e) && /^Adipic acid, pure liquid at 298\.15 K: /.test(e.message));
   // a crystal record without open melting data cannot reach the liquid
   assert.throws(() => speciesProperties("fumaric acid", "liquid", 320), /formation record is for the crystal, and without melting data/);
 });

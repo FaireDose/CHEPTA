@@ -5,7 +5,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { system, pure, solveFlowsheet, CheptaError } from "../src/index.js";
+import { system, pure, solveFlowsheet, CheptaError, withRangePolicy } from "../src/index.js";
 
 const load = p => JSON.parse(readFileSync(new URL(p, import.meta.url)));
 const { cases } = load("../validation/fixtures/enthalpy.json");
@@ -62,8 +62,9 @@ test("above the end of a heat-capacity record the liquid enthalpy continues smoo
   const Tend = pure("chloroform").record("liquidHeatCapacity").Tmax_K;
   const h = T => s.phase("liquid", T, 500, [1, 0]);
   assert.ok(Math.abs(h(Tend + 1e-6).h_J_mol - h(Tend - 1e-6).h_J_mol) < 1e-2, "continuous");
-  assert.equal(h(Tend - 1).warnings.some(w => /heat-capacity record ends/.test(w)), false);
-  assert.ok(h(Tend + 10).warnings.some(w => /heat-capacity record ends/.test(w)));
+  // the warning's wording is the common one of records used outside their range since 2026-11-13 (src/util/ranges.js)
+  assert.equal(h(Tend - 1).warnings.some(w => /liquid heat capacity at .* above its range/.test(w)), false);
+  assert.ok(h(Tend + 10).warnings.some(w => /^Chloroform: liquid heat capacity at .* above its range .*: the liquid enthalpy follows h_IG \+ h_R,sat - dHvap above it/.test(w)));
 });
 
 test("water against the steam tables: the liquid enthalpy follows IAPWS-IF97", () => {
@@ -122,7 +123,13 @@ test("errors: phase name, above the critical temperature", () => {
   // now modelled, and the values are checked against the Python reference above and in the test below)
   const s = system({ components: ["ethanol", "water"], model: "NRTL" });
   code(() => s.phase("solid", 300, 101.325, [0.5, 0.5]), "BAD_INPUT", /Phase must be/);
-  code(() => s.enthalpy("liquid", 500, 101.325, [0.5, 0.5]), "OUT_OF_RANGE", /Ethanol, heat of vaporization/);
+  // beyond ethanol's heat-of-vaporization record (to 488.97 K) but below its critical temperature: continued with a
+  // warning (the maintainer, 2026-11-13; this line changed from "refused"), refused in the strict range mode; above the
+  // critical temperature of the record (514.71 K) the heat of vaporization has no value, in either mode
+  assert.ok(Number.isFinite(s.enthalpy("liquid", 500, 101.325, [0.5, 0.5])));
+  assert.ok(s.warnings(500, 101.325).some(w => /^Ethanol: heat of vaporization at 500 K is 11\.03 K above its range \(159\.11-488\.97 K\)/.test(w)));
+  code(() => withRangePolicy({ strictRanges: true }, () => s.enthalpy("liquid", 500, 101.325, [0.5, 0.5])), "OUT_OF_RANGE", /Ethanol, heat of vaporization/);
+  code(() => s.enthalpy("liquid", 520, 101.325, [0.5, 0.5]), "OUT_OF_RANGE", /Ethanol, heat of vaporization.*critical temperature/);
   const p = system({ components: ["ethanol", "water"], model: "NRTL", vapour: "PR" });
   code(() => p.enthalpy("liquid", 520, 5000, [0.5, 0.5]), "OUT_OF_RANGE", /above its critical temperature/);
   // a vapour above the critical temperature is fine
@@ -195,6 +202,9 @@ test("an acid that is solid at 25 °C (adipic acid) in a flowsheet: its liquid i
   const S = r.streams;
   assert.ok(Math.abs(r.blocks.E1.duty_kW - (S.S2.H_kW - S.S1.H_kW)) < 1e-6);
   assert.ok(Math.abs(r.blocks.V1.duty_kW - (S.S3.H_kW + S.S4.H_kW - S.S2.H_kW)) < 1e-6);
-  // below the start of its liquid records the liquid is refused with the reason
-  assert.throws(() => sys.enthalpy("liquid", 350, 101.325, [0, 1]), /Adipic acid/);
+  // below the start of its liquid records: continued with a warning (the maintainer, 2026-11-13; this line changed from
+  // "refused"); the strict range mode refuses with the reason
+  assert.ok(Number.isFinite(sys.enthalpy("liquid", 350, 101.325, [0, 1])));
+  assert.ok(sys.warnings(350, 101.325).some(w => /^Adipic acid: .* below its range/.test(w)));
+  assert.throws(() => withRangePolicy({ strictRanges: true }, () => sys.enthalpy("liquid", 350, 101.325, [0, 1])), /Adipic acid/);
 });

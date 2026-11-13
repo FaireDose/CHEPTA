@@ -14,7 +14,8 @@
  *    READ OFF THIS CHART by pixel position (the chart's own image, 667 × 376 pixels, one pixel about 1 % in K), at 16
  *    flow parameters; between them K is interpolated linearly in ln K against ln F, and between two tray spacings
  *    linearly in ln K against ln H (a choice of this project). Outside the chart (F below 0.01 or above 1.8, H below
- *    0.15 or above 0.9 m) it refuses (OUT_OF_RANGE);
+ *    0.15 or above 0.9 m) its end value is held, with a warning (the maintainer, 2026-11-13; src/util/ranges.js); the
+ *    strict range mode refuses (OUT_OF_RANGE);
  *  - slide 38 (and 48): u_n,fl = K_n,fl K1 K2 K3 K4 √((ρl − ρv)/ρv); K1 = (σ/20)^0.2, σ in dyn/cm (mN/m);
  *    K2 = (10 Ah/Aa)^0.44 if Ah/Aa < 0.1, else 1; K3 = 0.9 for holes above 6 mm, else 1; K4 "an empirical factor related
  *    to foam formation" (the slides give no value: 1 by default, the chart's non-foaming systems; `foaming_factor`);
@@ -46,6 +47,7 @@
  * Units: SI (m, kg/s, m³/s, N/m); the slides' dyn/cm is mN/m.
  */
 import { fail, failRange } from "../../util/errors.js";
+import { strictRanges, noteExtrapolation, collectExtrapolations, mergeExtrapolations } from "../../util/ranges.js";
 import { pure, R } from "../../thermo/pure.js";
 
 /** Fair's chart, Fermeglia (2021) slide 37: K_n,fl in m/s READ OFF THE CHART by pixel position, per tray spacing H (m). */
@@ -79,11 +81,22 @@ function lerp(xs, ys, x) {
   return ys[k] + t * (ys[k + 1] - ys[k]);
 }
 
-/** K_n,fl (m/s) of Fair's chart at the flow parameter F and the tray spacing H (m); refuses outside the chart. */
+/** K_n,fl (m/s) of Fair's chart at the flow parameter F and the tray spacing H (m); outside it the end value, with a note. */
 export function kFlood(F, H) {
   const c = FAIR_CHART, Fmax = c.F[c.F.length - 1], Hmax = c.H_m[c.H_m.length - 1];
-  if (!(F >= c.F[0] && F <= Fmax)) throw failRange("OUT_OF_RANGE", `Column hydraulics: the flow parameter (W_L/W_V)·√(ρV/ρL) = ${fmt(F)} is outside ${c.F[0]}-${Fmax}, the part of Fair's chart read (Fermeglia 2021, slide 37).`);
-  if (!(H >= c.H_m[0] && H <= Hmax)) throw failRange("OUT_OF_RANGE", `Column hydraulics: the tray spacing ${fmt(H)} m is outside ${c.H_m[0]}-${Hmax} m, the spacings of Fair's chart (Fermeglia 2021, slide 37).`);
+  // outside the chart (the maintainer, 2026-11-13): its end value held, with a note; the strict range mode refuses
+  if (!(F >= c.F[0] && F <= Fmax)) {
+    if (strictRanges()) throw failRange("OUT_OF_RANGE", `Column hydraulics: the flow parameter (W_L/W_V)·√(ρV/ρL) = ${fmt(F)} is outside ${c.F[0]}-${Fmax}, the part of Fair's chart read (Fermeglia 2021, slide 37).`);
+    noteExtrapolation({ component: null, property: "Column hydraulics: Fair's flooding chart (Fermeglia 2021, slide 37), flow parameter", lo: c.F[0], hi: Fmax, value: F, unit: "", kind: "chart",
+      how: "the chart's end value is held" });
+    F = Math.min(Math.max(F, c.F[0]), Fmax);
+  }
+  if (!(H >= c.H_m[0] && H <= Hmax)) {
+    if (strictRanges()) throw failRange("OUT_OF_RANGE", `Column hydraulics: the tray spacing ${fmt(H)} m is outside ${c.H_m[0]}-${Hmax} m, the spacings of Fair's chart (Fermeglia 2021, slide 37).`);
+    noteExtrapolation({ component: null, property: "Column hydraulics: Fair's flooding chart (Fermeglia 2021, slide 37), tray spacing", lo: c.H_m[0], hi: Hmax, value: H, unit: "m", kind: "chart",
+      how: "the chart's value at its nearest spacing is held" });
+    H = Math.min(Math.max(H, c.H_m[0]), Hmax);
+  }
   const lnF = Math.log(F), lnFs = c.F.map(Math.log);
   const lnK = c.K_m_s.map(row => lerp(lnFs, row.map(Math.log), lnF));
   return Math.exp(lerp(c.H_m.map(Math.log), lnK, Math.log(H)));
@@ -127,13 +140,14 @@ export function trayHydraulics(trays, options = {}) {
   if (!Array.isArray(trays) || !trays.length) throw fail("BAD_INPUT", "Column sizing: the column has no trays between its condenser and its reboiler.");
   const K2 = o.hole_area_ratio < 0.1 ? (10 * o.hole_area_ratio) ** 0.44 : 1, K3 = o.hole_diameter_mm > 6 ? 0.9 : 1, K4 = o.foaming_factor;
   const eta = o.net_area_fraction, f = o.design_fraction, turndown = TURNDOWN_BY_TRAY[o.tray];
+  const chartNotes = [];
   const rows = trays.map(t => {
     if (!(t.WV_kg_s > 0)) throw fail("BAD_INPUT", `Column sizing: stage ${t.stage} carries no vapour, so no vapour velocity sizes it.`);
     if (!(t.WL_kg_s > 0)) throw fail("BAD_INPUT", `Column sizing: stage ${t.stage} carries no liquid; Fair's chart starts at a flow parameter of 0.01.`);
     if (!(t.rhoL > t.rhoV && t.rhoV > 0)) throw fail("BAD_INPUT", `Column sizing: on stage ${t.stage} the liquid (${fmt(t.rhoL)} kg/m³) must be denser than the vapour (${fmt(t.rhoV)} kg/m³).`);
     const F = t.WL_kg_s / t.WV_kg_s * Math.sqrt(t.rhoV / t.rhoL);
     let Kchart = o.K_chart_m_s;
-    if (Kchart == null) try { Kchart = kFlood(F, o.tray_spacing_m); } catch (e) { e.message = e.message.replace("Column hydraulics:", `Column sizing, stage ${t.stage}:`); throw e; }
+    if (Kchart == null) try { const got = collectExtrapolations(() => kFlood(F, o.tray_spacing_m)); Kchart = got.value; chartNotes.push(...got.extrapolations); } catch (e) { e.message = e.message.replace("Column hydraulics:", `Column sizing, stage ${t.stage}:`); throw e; }
     const K1 = (t.sigma_N_m * 1000 / 20) ** 0.2;
     const u_fl = Kchart * K1 * K2 * K3 * K4 * Math.sqrt((t.rhoL - t.rhoV) / t.rhoV);
     const QV = t.WV_kg_s / t.rhoV, An = QV / (f * u_fl);
@@ -147,6 +161,8 @@ export function trayHydraulics(trays, options = {}) {
   const At = Math.PI * D * D / 4, An = eta * At;
   for (const r of rows) { r.u_net_m_s = r.QV_m3_s / An; r.fraction_of_flooding = r.u_net_m_s / r.u_flood_m_s; }
   const notes = [], warnings = [];
+  // the chart read beyond its range: once per quantity, at the farthest point (src/util/ranges.js)
+  notes.push(...mergeExtrapolations([{ where: null, notes: chartNotes }]).map(e => e.message));
   notes.push(sized
     ? `Column diameter ${fmt(D)} m, set by stage ${top.stage}, the largest required vapour-flow area at ${fmt(100 * f)} % of flooding${slowest.stage !== top.stage ? ` (stage ${slowest.stage} has the lowest flooding velocity, ${fmt(slowest.u_flood_m_s)} m/s, but carries less vapour)` : ""}; Fair's method (Fermeglia 2021, slides 37-38), K_n,fl read off its chart.`
     : `Given diameter ${fmt(D)} m checked: the fraction of flooding of every stage by Fair's method (Fermeglia 2021, slides 37-38, 48), K_n,fl read off its chart.`);

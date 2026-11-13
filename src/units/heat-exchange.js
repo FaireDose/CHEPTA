@@ -27,7 +27,8 @@
  *    limit) is an error that names where, never an area;
  *  - U: a service's typical range (Table 2.2; the low end by default, the larger area), or film coefficients
  *    (Table 1.1), fouling resistances (Table 2.3; the high end by default) and a plane wall of a metal (Table A.1,
- *    k interpolated linearly in temperature, refused outside the table), 1/U = 1/h_hot + Rf_hot + t/k + Rf_cold +
+ *    k interpolated linearly in temperature; outside the table its end value with a warning, refused in the strict
+ *    range mode), 1/U = 1/h_hot + Rf_hot + t/k + Rf_cold +
  *    1/h_cold (eqn. 2.36 for fouling), or the user's own value.
  * Rating (proposal 0013, step 8): exchangerRating(sys, { hot, cold, U, area_m2, arrangement }) finds the duty whose
  * required area (the zones above) is the given area, so the outlets of both sides follow; the effectiveness is that
@@ -43,6 +44,7 @@
  */
 import data from "../data/heat-transfer.json" with { type: "json" };
 import { fail } from "../util/errors.js";
+import { strictRanges, noteExtrapolation } from "../util/ranges.js";
 import { stream } from "../stream/stream.js";
 import { steam, steamSat } from "../thermo/iapws/steam.js";
 
@@ -97,15 +99,22 @@ export function metalConductivity(id, T_K) {
   const pts = [...r.k.map(([t, k]) => [t, k]), [20, r.k20]].sort((a, b) => a[0] - b[0]);
   const t = finite(T_K, "Wall temperature T_K", { positive: true }) - 273.15;
   const lo = pts[0][0], hi = pts[pts.length - 1][0];
+  let ext = null;
   if (t < lo - 1e-9 || t > hi + 1e-9) {
-    throw fail("OUT_OF_RANGE", `${r.label}: thermal conductivity is tabulated from ${lo} to ${hi} °C (Table A.1); the wall is at ${+t.toFixed(1)} °C. Give your own conductivity, or choose another material.`);
+    // outside the table (the maintainer, 2026-11-13): its end value held, with a note; the strict range mode refuses
+    const why = `${r.label}: thermal conductivity is tabulated from ${lo} to ${hi} °C (Table A.1); the wall is at ${+t.toFixed(1)} °C.`;
+    if (strictRanges()) throw fail("OUT_OF_RANGE", `${why} Give your own conductivity, or choose another material.`);
+    noteExtrapolation({ component: r.label, property: "Thermal conductivity of the wall (Table A.1)", lo, hi, value: t, unit: "°C", kind: "table",
+      how: "the table's end value is held; give your own conductivity for a better one" });
+    ext = `${why} The table's end value is held. This is an extrapolation, not data.`;
   }
   let k = pts[0][1];
-  for (let i = 1; i < pts.length; i++) {
+  if (t >= hi) k = pts[pts.length - 1][1];
+  else if (t > lo) for (let i = 1; i < pts.length; i++) {
     if (t <= pts[i][0]) { const [t0, k0] = pts[i - 1], [t1, k1] = pts[i]; k = k0 + (k1 - k0) * (t - t0) / (t1 - t0); break; }
   }
   const marks = r.k.filter(p => p[2]).map(p => `${p[1]}${p[2]} at ${p[0]} °C`);
-  return { k_W_mK: k, label: r.label, range_C: [lo, hi], note: [r.note, marks.length ? `Printed with a mark (a little above "+" or below "-"): ${marks.join(", ")}.` : ""].filter(Boolean).join(" "),
+  return { k_W_mK: k, label: r.label, range_C: [lo, hi], note: [ext, r.note, marks.length ? `Printed with a mark (a little above "+" or below "-"): ${marks.join(", ")}.` : ""].filter(Boolean).join(" "),
     source: `${SOURCE}, Table A.1` };
 }
 

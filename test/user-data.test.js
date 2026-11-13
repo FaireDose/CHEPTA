@@ -67,7 +67,10 @@ test("a user record replaces the databank's for that property only, and only whe
   assert.equal(p.property("liquidHeatCapacity", 300), pure("succinic-acid").property("liquidHeatCapacity", 300));
   // nothing leaked: the databank is unchanged after the calls above
   assert.throws(() => pure("succinic-acid").property("liquidDensity", 300), /No open data/);
-  assert.throws(() => p.property("liquidDensity", 400), /outside the range/);
+  // beyond the user's record: continued with a note (the maintainer, 2026-11-13; this line changed from "refused"); the
+  // strict range mode refuses
+  assert.ok(Number.isFinite(p.property("liquidDensity", 400)));
+  assert.throws(() => CHEPTA.withRangePolicy({ strictRanges: true }, () => p.property("liquidDensity", 400)), /outside the range/);
 });
 
 test("the user's own component copied from a databank component gives the same phase equilibrium and enthalpies", () => {

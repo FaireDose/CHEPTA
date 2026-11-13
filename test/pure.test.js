@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { evaluate } from "../src/thermo/correlations.js";
-import { pure, listComponents, system } from "../src/index.js";
+import { pure, listComponents, system, withRangePolicy, collectExtrapolations } from "../src/index.js";
 
 // Expected values computed independently with the open-source `chemicals` library
 // (chemicals.dippr EQ100-EQ107), with the same arbitrary coefficients, at T = 350 K.
@@ -23,10 +23,16 @@ test("DIPPR correlations match the chemicals library", () => {
   }
 });
 
-test("correlations refuse temperatures outside their range", () => {
-  const rec = { equation: "DIPPR100", coefficients: { A: 1 }, Tmin_K: 300, Tmax_K: 400 };
-  assert.throws(() => evaluate(rec, 450), /outside the range/);
-  assert.equal(evaluate(rec, 450, { extrapolate: true }), 1);
+// The maintainer, 2026-11-13: outside its range a correlation is continued with a note, and refused in the strict range
+// mode (this test changed from "correlations refuse temperatures outside their range"); test/extrapolation.test.js
+// checks each continuation form against an independent calculation.
+test("correlations outside their range: continued with a note; the strict mode refuses", () => {
+  const rec = { equation: "DIPPR100", coefficients: { A: 1, B: 0.01 }, Tmin_K: 300, Tmax_K: 400, units: "J/mol/K" };
+  const got = collectExtrapolations(() => evaluate(rec, 450, { component: "X", property: "Liquid heat capacity" }));
+  assert.ok(Math.abs(got.value - 5.5) < 1e-9);   // linear from the end: 1 + 0.01 x 450, the same line here
+  assert.match(got.extrapolations[0].message, /^X: liquid heat capacity at 450 K is 50 K above its range \(300-400 K\)/);
+  assert.throws(() => withRangePolicy({ strictRanges: true }, () => evaluate(rec, 450)), /outside the range/);
+  assert.equal(evaluate({ ...rec, coefficients: { A: 1 } }, 450, { extrapolate: true }), 1);
 });
 
 test("pure() vapour pressure and boiling point agree with the VLE data", () => {
@@ -73,8 +79,9 @@ test("every component has critical constants and an acentric factor, or says why
 test("missing data is reported, not guessed", () => {
   const p = pure("oxygen");
   // Since the v0.2 property data every property of oxygen has a record; asking for the liquid
-  // viscosity above the critical point (outside the record's range) must still throw, not extrapolate.
-  assert.throws(() => p.property("liquidViscosity", 300), /not in the databank|No open data|outside the range/);
+  // viscosity above the critical point (outside the record's range) must still throw, not extrapolate: there is no
+  // liquid there (2026-11-13: a physically impossible state refuses in both range modes)
+  assert.throws(() => p.property("liquidViscosity", 300), e => e.code === "OUT_OF_RANGE" && /critical temperature.*no liquid/.test(e.message));
   assert.throws(() => p.property("density", 80), /Unknown property/);
   const s = pure("water").props(300, 101.325);
   assert.equal(s.phase, "liquid");

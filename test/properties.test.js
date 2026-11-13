@@ -8,7 +8,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { evaluate } from "../src/thermo/correlations.js";
-import { pure, listComponents, PROPERTIES, PROPERTY_NAMES } from "../src/index.js";
+import { pure, listComponents, PROPERTIES, PROPERTY_NAMES, withRangePolicy } from "../src/index.js";
 
 const components = JSON.parse(readFileSync(new URL("../src/data/components.json", import.meta.url))).components;
 const POINTS_DIR = new URL("../validation/data/pure/", import.meta.url);
@@ -159,21 +159,25 @@ test("the gases' vapour pressures give their normal boiling points within 0.1 K"
 const ENTHALPY_NOT_CONSISTENT = new Set(["acetic-acid"]);
 // Components written with a gap between their records (the maintainer's decision of 2026-10-14): levulinic acid's
 // open liquid densities end at 343 K and its vapour-pressure record starts at 375 K, so at its typical liquid state
-// (375 K) the density is refused with an out-of-range note instead of being extrapolated. gamma-Butyrolactone the same:
+// (375 K) the density was refused with an out-of-range note until 2026-11-13; since then (the maintainer's decision,
+// docs/decisions/2026-11-13-03-extrapolation-policy.md) it is extrapolated with a note naming the record's range. gamma-Butyrolactone the same:
 // its liquid densities end at 333 K, its viscosities at 323 K, and its vapour-pressure record starts at 377 K. Isoamyl
 // alcohol too: densities to 332.7 K, viscosities to 323.15 K, vapour pressures from 335.85 K.
 // (levulinic acid: its liquid records do not overlap, docs/DATA_RULES.md section 3, "a gap"; the measured heat
 // capacity, added on 2026-10-17, ends at 374.12 K, below the 375 K where its vapour pressure starts)
 // levulinic acid's viscosity (Lomba et al. 2011, 298-338 K, added 2026-10-18) does not reach the temperature either
-const REFUSED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3", "cp_J_molK", "mu_Pa_s"], gbl: ["rho_kg_m3", "mu_Pa_s"],
+const EXTRAPOLATED_AT_TYPICAL_STATE = { "levulinic-acid": ["rho_kg_m3", "cp_J_molK", "mu_Pa_s"], gbl: ["rho_kg_m3", "mu_Pa_s"],
   "isoamyl-alcohol": ["rho_kg_m3", "mu_Pa_s"],
   // the liquid densities of xylitol and erythritol (Hohlein et al. 2017, added 2026-10-18) were measured above their
   // melting points only, so 25 °C is outside them
   xylitol: ["rho_kg_m3"], erythritol: ["rho_kg_m3"] };
 
 test("props() returns liquid and vapour properties for every component at a typical state", () => {
-  // styrene at 25 °C: below its measured vapour pressure, so the liquid enthalpy is refused with a reason
-  assert.match(pure("styrene").props(298.15, 101.325).notes.join(" "), /outside the range/);
+  // styrene at 25 °C: below its measured vapour pressure (303.07 K), so the record is continued with a note (until
+  // 2026-11-13 the liquid enthalpy was refused; the maintainer's decision changed it); the strict range mode refuses
+  const sty = pure("styrene").props(298.15, 101.325);
+  assert.ok(Number.isFinite(sty.h_J_mol) && /^Styrene: vapour pressure at 298\.15 K is 4\.92 K below its range \(303\.07-636 K\)/.test(sty.notes[0]), sty.notes.join(" | "));
+  assert.match(withRangePolicy({ strictRanges: true }, () => pure("styrene").props(298.15, 101.325)).notes.join(" "), /outside the range/);
   for (const { id, name } of listComponents()) {
     const p = pure(id);
     const isGas = GASES.includes(id);
@@ -186,8 +190,8 @@ test("props() returns liquid and vapour properties for every component at a typi
       const rec = { rho_kg_m3: "liquidDensity", cp_J_molK: "liquidHeatCapacity", mu_Pa_s: "liquidViscosity", k_W_mK: "liquidThermalConductivity" };
       for (const [k, r] of Object.entries(rec)) {
         if (none.has(r)) { assert.equal(L[k], null, `${name} liquid ${k}`); continue; }
-        if (REFUSED_AT_TYPICAL_STATE[id]?.includes(k)) {
-          assert.equal(L[k], null, `${name} liquid ${k}`); assert.match(L.notes.join(" "), /outside the range/); continue;
+        if (EXTRAPOLATED_AT_TYPICAL_STATE[id]?.includes(k)) {
+          assert.ok(Number.isFinite(L[k]), `${name} liquid ${k}`); assert.match(L.notes.join(" "), /its range .*This is an extrapolation, not data\./); continue;
         }
         assert.ok(Number.isFinite(L[k]), `${name} liquid ${k}: ${L.notes.join(" ")}`);
       }
@@ -241,8 +245,8 @@ test("props() returns liquid and vapour properties for every component at a typi
       mu_Pa_s: ["liquidViscosity"], k_W_mK: ["liquidThermalConductivity"], h_J_mol: ["idealGasHeatCapacity", "heatOfVaporization"] };
     for (const k of ["rho_kg_m3", "cp_J_molK", "dHvap_J_mol", "mu_Pa_s", "k_W_mK", ...hKeys]) {
       if (recordOf_[k].some(r => none.has(r))) { assert.equal(L[k], null, `${name} liquid ${k}`); assert.match(L.notes.join(" "), /No open data/); continue; }
-      if (REFUSED_AT_TYPICAL_STATE[id]?.includes(k)) {
-        assert.equal(L[k], null, `${name} liquid ${k}`); assert.match(L.notes.join(" "), /outside the range/); continue;
+      if (EXTRAPOLATED_AT_TYPICAL_STATE[id]?.includes(k)) {
+        assert.ok(Number.isFinite(L[k]), `${name} liquid ${k}`); assert.match(L.notes.join(" "), /its range .*This is an extrapolation, not data\./); continue;
       }
       assert.ok(Number.isFinite(L[k]), `${name} liquid ${k}: ${L.notes.join(" ")}`);
     }
@@ -258,9 +262,10 @@ test("props() returns liquid and vapour properties for every component at a typi
       h_J_mol: "idealGasHeatCapacity" };
     for (const k of ["cp_J_molK", "mu_Pa_s", "k_W_mK", ...hKeys]) {
       if (none.has(recordOfV[k])) { assert.equal(V[k], null, `${name} vapour ${k}`); continue; }
-      // a derived ideal-gas heat capacity ends with the liquid's records, below this vapour state: refused, saying why
+      // a derived ideal-gas heat capacity ends with the liquid's records, below this vapour state: continued with a note
+      // saying why (until 2026-11-13 refused; the maintainer's decision changed it)
       if (derivedIG && recordOfV[k] === "idealGasHeatCapacity" && V.T_K > p.record("idealGasHeatCapacity").Tmax_K) {
-        assert.equal(V[k], null, `${name} vapour ${k}`); assert.match(V.notes.join(" "), /derived from its liquid heat capacity/); continue;
+        assert.ok(Number.isFinite(V[k]), `${name} vapour ${k}`); assert.match(V.notes.join(" "), /derived from the liquid's records.*This is an extrapolation, not data\./); continue;
       }
       assert.ok(Number.isFinite(V[k]), `${name} vapour ${k}: ${V.notes.join(" ")}`);
     }

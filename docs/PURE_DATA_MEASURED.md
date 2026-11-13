@@ -8,8 +8,9 @@ Chemistry WebBook and the NIST TRC ThermoML Archive. The stored files
 citations; `validation/data/pure/<id>.json` holds the values each record uses, which
 `test/properties.test.js` checks.
 
-A record covers only the temperatures that were measured. Outside them the engine refuses with an
-out-of-range error instead of extrapolating. A property without open data says so ("no open data"), with
+A record covers only the temperatures that were measured. Outside them the engine continues the record with a
+warning that names the extrapolation, and refuses only in the strict range mode (2026-11-13; DATA_RULES section 3,
+"Ranges"). A property without open data says so ("no open data"), with
 the sources searched.
 
 ## Dichloromethane (CH2Cl2, CAS 75-09-2)

@@ -9,6 +9,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { pure, system } from "../src/index.js";
+import { withRangePolicy } from "../src/util/ranges.js";
+// the strict range mode (the maintainer, 2026-11-13; docs/decisions/2026-11-13-03-extrapolation-policy.md)
+const strictly = fn => withRangePolicy({ strictRanges: true }, fn);
 
 const hidden = id => pure(id, { properties: { idealGasHeatCapacity: { available: false, searched: ["hidden by the test"] } } });
 
@@ -39,8 +42,9 @@ test("components without an open ideal-gas heat capacity: derived where their li
     // mixture is given the same vapour)
     const mix = system({ components: [id], model: "ideal", vapour: p.Tc_K ? "PR" : "ideal" }).phase("liquid", T, 101.325, [1]).h_J_mol;
     assert.ok(Math.abs(p.liquidEnthalpy(T) - mix) < 1e-3, `${id}: ${p.liquidEnthalpy(T)} vs ${mix}`);
-    // outside the records it refuses with the reason
-    assert.throws(() => p.property("idealGasHeatCapacity", rec.Tmax_K + 5), /derived from its liquid heat capacity and heat of vaporization/);
+    // outside the records: continued with a note (2026-11-13; this line changed from "refused"); the strict mode refuses
+    assert.ok(Number.isFinite(p.property("idealGasHeatCapacity", rec.Tmax_K + 5)));
+    assert.throws(() => strictly(() => p.property("idealGasHeatCapacity", rec.Tmax_K + 5)), /derived from its liquid heat capacity and heat of vaporization/);
   }
   // the levulinates' measured liquid heat capacities start above 298.15 K: no derivation, the "no open data" stays
   assert.throws(() => pure("methyl-levulinate").hIdealGas(320), /No open data for ideal-gas heat capacity/);

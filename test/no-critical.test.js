@@ -7,6 +7,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { system, pure } from "../src/index.js";
 import { autoTemperature } from "../src/ui/app-logic.js";
+import { withRangePolicy } from "../src/util/ranges.js";
+// the strict range mode (the maintainer, 2026-11-13; docs/decisions/2026-11-13-03-extrapolation-policy.md)
+const strictly = fn => withRangePolicy({ strictRanges: true }, fn);
 
 test("GVL has no critical constants and says which sources were searched", () => {
   const p = pure("gvl");
@@ -18,7 +21,9 @@ test("GVL has no critical constants and says which sources were searched", () =>
   // the vapour-pressure record covers the measured temperatures only (no critical point to anchor it)
   const vp = p.record("vapourPressure");
   assert.ok(vp.Tmax_K < 500, `record ends at ${vp.Tmax_K} K`);
-  assert.throws(() => p.psat(vp.Tmax_K + 5), /outside the range/);
+  // beyond it: continued with a note (2026-11-13; this line changed from "refused"); the strict mode refuses
+  assert.ok(p.psat(vp.Tmax_K + 5) > p.psat(vp.Tmax_K));
+  assert.throws(() => strictly(() => p.psat(vp.Tmax_K + 5)), /outside the range/);
   assert.ok(Math.abs(p.Tb_K - 478.9) < 0.5, `Tb ${p.Tb_K}`);
 });
 

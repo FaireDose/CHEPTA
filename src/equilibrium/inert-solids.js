@@ -19,6 +19,7 @@
 import { brent } from "../util/solve.js";
 import { evaluate } from "../thermo/correlations.js";
 import { fail, failRange } from "../util/errors.js";
+import { strictRanges, quietly } from "../util/ranges.js";
 import { checkComposition, checkPressure, checkTemperature } from "../util/inputs.js";
 
 const T0 = 298.15;
@@ -29,11 +30,16 @@ const GW = [0.1012285362903763, 0.2223810344533745, 0.3137066458778873, 0.362683
 
 /** h(T) - h(T0) of a solid from its heat-capacity record (J/mol), composite Gauss-Legendre on <= 25 K pieces. */
 export function solidEnthalpy(rec, name, T) {
-  if (T < rec.Tmin_K - EDGE_K || T > rec.Tmax_K + EDGE_K || T0 < rec.Tmin_K - EDGE_K || T0 > rec.Tmax_K + EDGE_K) {
+  const outside = t => t < rec.Tmin_K - EDGE_K || t > rec.Tmax_K + EDGE_K;
+  if (outside(T) || outside(T0)) {
     const lo = Math.min(T, T0), hi = Math.max(T, T0);
-    throw failRange("OUT_OF_RANGE", `${name}: its solid heat-capacity record covers ${rec.Tmin_K}-${rec.Tmax_K} K, so its enthalpy cannot be calculated from 298.15 K to ${T.toFixed(1)} K (the record must cover ${lo.toFixed(1)}-${hi.toFixed(1)} K).`);
+    if (strictRanges()) throw failRange("OUT_OF_RANGE", `${name}: its solid heat-capacity record covers ${rec.Tmin_K}-${rec.Tmax_K} K, so its enthalpy cannot be calculated from 298.15 K to ${T.toFixed(1)} K (the record must cover ${lo.toFixed(1)}-${hi.toFixed(1)} K).`);
   }
-  const at = t => evaluate(rec, Math.min(Math.max(t, rec.Tmin_K), rec.Tmax_K));
+  // outside the record (the maintainer, 2026-11-13): continued linearly from its end (correlations.js), refused only
+  // where the heat capacity it gives is not positive; the note is given at T, not along the integral
+  const opts = { component: name, property: "Solid heat capacity", kind: "solidHeatCapacity" };
+  const at = t => (t >= rec.Tmin_K - EDGE_K && t <= rec.Tmax_K + EDGE_K ? evaluate(rec, Math.min(Math.max(t, rec.Tmin_K), rec.Tmax_K)) : quietly(() => evaluate(rec, t, opts)));
+  if (outside(T)) evaluate(rec, T, opts);
   const m = Math.max(1, Math.ceil(Math.abs(T - T0) / 25)), w = (T - T0) / m;
   let s = 0;
   for (let k = 0; k < m; k++) {
@@ -95,9 +101,12 @@ export function withInertSolids({ ids, names, MW, solid, cp, fluid, base }) {
     // P-H: the temperature of the total enthalpy, then the fluid's own P-H flash at the fluid's share of it
     const H = Number(spec.H);
     if (!Number.isFinite(H)) throw fail("BAD_INPUT", `flash: H must be a number of J/mol (got ${JSON.stringify(spec.H)}).`);
-    const total = T => (zf ? f * fluid.flash({ z: zf, T, P }).H_J_mol : 0) + hSolid(z, T) - H;
-    const lo = Math.max(30, ...ids.map((_, i) => (solid[i] && z[i] > 0 ? cp[i].Tmin_K : 30)));
-    const hi = Math.min(2000, ...ids.map((_, i) => (solid[i] && z[i] > 0 ? cp[i].Tmax_K : 2000)));
+    const totalAt = T => (zf ? f * fluid.flash({ z: zf, T, P }).H_J_mol : 0) + hSolid(z, T) - H;
+    // the search's bounds: the records' ranges in the strict mode, else 30-2000 K (the records are continued)
+    const strict = strictRanges();
+    const lo = Math.max(30, ...ids.map((_, i) => (strict && solid[i] && z[i] > 0 ? cp[i].Tmin_K : 30)));
+    const hi = Math.min(2000, ...ids.map((_, i) => (strict && solid[i] && z[i] > 0 ? cp[i].Tmax_K : 2000)));
+    const total = T => quietly(() => totalAt(T));
     // step out from 300 K (as flash.js does): where a record's range ends between two steps, step back towards the
     // last good point, and refuse with the record's own message only at the edge of its range
     let a = Math.min(Math.max(300, lo), hi), fa = total(a), step = 5, b = a, fb = fa;
@@ -110,7 +119,7 @@ export function withInertSolids({ ids, names, MW, solid, cp, fluid, base }) {
       }
       if (fa * fb > 0) {
         if (b === hi || b === lo) {
-          throw failRange("OUT_OF_RANGE", `flash: the enthalpy ${H.toFixed(1)} J/mol is not reached between ${lo} and ${hi} K, the range of the solid heat capacity of ${solidNames.join(", ")}.`);
+          throw failRange("OUT_OF_RANGE", `flash: the enthalpy ${H.toFixed(1)} J/mol is not reached between ${lo} and ${hi} K${strict ? `, the range of the solid heat capacity of ${solidNames.join(", ")}` : ""}.`);
         }
         a = b; fa = fb; step *= 1.5;
       }

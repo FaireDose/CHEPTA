@@ -11,6 +11,7 @@ import { bubbleT, bubbleP, pureBoilingPoints } from "./equilibrium/bubble.js";
 import { dewT, dewP } from "./equilibrium/dew.js";
 import { flash, rachfordRice } from "./equilibrium/flash.js";
 import { CheptaError, ERROR_CODES, isCheptaError } from "./util/errors.js";
+import { setStrictRanges, strictRanges, withRangePolicy, collectExtrapolations } from "./util/ranges.js";
 import { txy, pxy, ternaryGrid } from "./equilibrium/diagrams.js";
 import { residueCurve } from "./equilibrium/residue.js";
 import { binaryAzeotropes, findAzeotrope } from "./equilibrium/azeotrope.js";
@@ -83,6 +84,8 @@ export {
   userDataDoc, readUserDataFile, mergeUserData, userDataPackage, userDataKeys, USER_DATA_FORMAT,
   checkReaction, checkReactions, reactionBalance, reactionProperties, speciesProperties, formationReference, reactionHeat, reactionRate, rateSpecies, RATE_FORMS, RATE_BASES,
   CheptaError, ERROR_CODES, isCheptaError,
+  // records outside their range: continued with a warning, or refused in the strict mode (the maintainer, 2026-11-13)
+  setStrictRanges, strictRanges, withRangePolicy, collectExtrapolations,
   // the names before the rename to CHEPTA (version 0.3): the same class and function
   CheptaError as FugacityError, isCheptaError as isFugacityError,
 };

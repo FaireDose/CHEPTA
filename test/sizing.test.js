@@ -10,6 +10,7 @@ import { readFileSync } from "node:fs";
 import { system, stream } from "../src/index.js";
 import { runUnit } from "../src/units/units.js";
 import { run } from "../src/api/dispatcher.js";
+import { withRangePolicy, collectExtrapolations } from "../src/util/ranges.js";
 import { flowsheetRun } from "../src/flowsheet/document.js";
 import { R } from "../src/thermo/pure.js";
 import { sizeDrum, sizeDecanter, drumGeometry, decanterGeometry, kDrum, K_DRUM_FIT, flashBlockResult, segmentArea } from "../src/sizing/sizing.js";
@@ -40,13 +41,20 @@ test("the drum and decanter formulas agree with the independent Python reference
   }
 });
 
-test("the K fit follows the chart it was fitted to (Fermeglia 2021, slide 83), and refuses outside it", () => {
+test("the K fit follows the chart it was fitted to (Fermeglia 2021, slide 83), and holds the chart's end value outside it, with a note", () => {
   // read off the chart of slide 83 by pixel position (a 300 dpi rendering of the slide; log axes calibrated on the ticks
   // 0.4, 0.2, 0.04 and 0.01, 1.0), so within the reading's accuracy, a few per cent
   const read = [[0.01, 0.312], [0.02, 0.400], [0.05, 0.437], [0.1, 0.417], [0.2, 0.361], [0.5, 0.235], [1, 0.143], [2, 0.075], [4, 0.031], [5, 0.023]];
   for (const [F, K] of read) close(kDrum(F).K_ft_s, K, 0.08, `K at F = ${F}`);
   assert.equal(+kDrum(1).K_ft_s.toFixed(6), +Math.exp(K_DRUM_FIT.A).toFixed(6));
-  for (const F of [0.004, 6]) assert.throws(() => kDrum(F), e => e.code === "OUT_OF_RANGE" && /K_m_s/.test(e.message));
+  // outside the chart (the maintainer, 2026-11-13; this test changed from "refused"): the end value held, with a note;
+  // the strict range mode refuses as before
+  for (const [F, end] of [[0.004, K_DRUM_FIT.Fmin], [6, K_DRUM_FIT.Fmax]]) {
+    const got = collectExtrapolations(() => kDrum(F));
+    close(got.value.K_ft_s, kDrum(end).K_ft_s, 1e-12, `K held at F = ${end}`);
+    assert.ok(/K chart.*the chart's end value is held/.test(got.extrapolations[0]?.message ?? ""), got.extrapolations[0]?.message);
+    assert.throws(() => withRangePolicy({ strictRanges: true }, () => kDrum(F)), e => e.code === "OUT_OF_RANGE" && /K_m_s/.test(e.message));
+  }
 });
 
 test("Bagajewicz (2018), Oklahoma flash drum example: v_perm = 6.823 ft/s from its K; its two slips", () => {

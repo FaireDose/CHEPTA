@@ -25,6 +25,7 @@
 import henryData from "../data/henry.json" with { type: "json" };
 import componentData from "../data/components.json" with { type: "json" };
 import { findComponent } from "./system.js";
+import { strictRanges, noteExtrapolation } from "../util/ranges.js";
 import { fail, failRange } from "../util/errors.js";
 
 const W = henryData.solvents.water.vapourPressure;
@@ -59,9 +60,22 @@ function entry(gas, solvent) {
  */
 export function henry(gas, solvent, T_K) {
   const p = entry(gas, solvent);
-  if (!(T_K >= p.Tmin_K && T_K <= p.Tmax_K)) {
-    throw failRange("OUT_OF_RANGE", `Henry's law constant of ${p.gas} in ${p.solvent}: ${T_K} K is outside the range of its equation (${p.Tmin_K}-${p.Tmax_K} K).`);
-  }
+  if (!(T_K > 0)) throw failRange("BAD_INPUT", `Henry's law constant of ${p.gas} in ${p.solvent}: the temperature must be positive (got ${T_K} K).`);
+  if (T_K >= p.Tmin_K && T_K <= p.Tmax_K) return henryEquation(p, T_K);
+  // outside the equation's range (the maintainer, 2026-11-13): ln H continued linearly in 1/T from the range's end,
+  // through its value and slope there (van 't Hoff, the form of the Sander compilation), with a note; the strict mode
+  // refuses as before. Above the critical temperature of water there is no liquid solvent: refused.
+  if (strictRanges()) throw failRange("OUT_OF_RANGE", `Henry's law constant of ${p.gas} in ${p.solvent}: ${T_K} K is outside the range of its equation (${p.Tmin_K}-${p.Tmax_K} K).`);
+  if (T_K >= W.Tc_K) throw failRange("OUT_OF_RANGE", `Henry's law constant of ${p.gas} in ${p.solvent}: at ${T_K} K, at or above the critical temperature of water (${W.Tc_K} K), there is no liquid water to dissolve it.`);
+  const end = T_K < p.Tmin_K ? p.Tmin_K : p.Tmax_K, h = T_K < p.Tmin_K ? 0.01 : -0.01;
+  const l0 = Math.log(henryEquation(p, end)), s = (Math.log(henryEquation(p, end + h)) - l0) / (1 / (end + h) - 1 / end);
+  noteExtrapolation({ component: componentData.components[p.gas]?.name ?? p.gas, property: `Henry's law constant in ${p.solvent}`, lo: p.Tmin_K, hi: p.Tmax_K, value: T_K, kind: "henry",
+    how: "ln H is continued linearly in 1/T from the end of its equation's range, through its value and slope there (van 't Hoff)" });
+  return Math.exp(l0 + s * (1 / T_K - 1 / end));
+}
+
+/** The record's own equation, inside its range. */
+function henryEquation(p, T_K) {
   if (p.equation === "IAPWS-G7-04") {
     const Tr = T_K / W.Tc_K, tau = 1 - Tr;
     return waterPsatG704(T_K) * Math.exp(p.A / Tr + p.B * Math.pow(tau, 0.355) / Tr + p.C * Math.pow(Tr, -0.41) * Math.exp(tau));

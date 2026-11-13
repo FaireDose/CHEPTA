@@ -6,7 +6,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { system, propertyChart } from "../src/index.js";
+import { system, propertyChart, withRangePolicy } from "../src/index.js";
 
 const ref = JSON.parse(readFileSync(new URL("../validation/fixtures/charts.json", import.meta.url), "utf8"));
 const at = (pts, T) => {
@@ -135,8 +135,11 @@ test("state points: typed or clicked specifications give the states of the engin
   assert.ok(Math.abs(wet.VF - 0.5) < 1e-9 && Math.abs(wet.T_K - sat.T_K) < 1e-9);
   assert.equal(waterPoint({ T_K: 300, P_kPa: 100 }).VF, 0);
   // a point that cannot be calculated says why, and the others stay
-  const pts = statePoints([{ T_K: 300, P_kPa: 100 }, { T_K: 3000, P_kPa: 100 }], waterPoint)   // IF97 ends at 2273.15 K;
+  // (IF97 ends at 2273.15 K: refused there in the strict range mode only since 2026-11-13; a negative temperature in both)
+  const pts = statePoints([{ T_K: 300, P_kPa: 100 }, { T_K: -5, P_kPa: 100 }], waterPoint);
   assert.ok(pts[0].point && !pts[1].point && pts[1].error && pts[1].label === "B");
+  const hot = withRangePolicy({ strictRanges: true }, () => statePoints([{ T_K: 3000, P_kPa: 100 }], waterPoint));
+  assert.ok(!hot[0].point && /2273\.15 K/.test(hot[0].error));
   // in the workbench state and the project file
   const { initialState, applyPatch } = await import("../src/ui/app-logic.js");
   const { projectOf, stateFromProject } = await import("../src/ui/project.js");

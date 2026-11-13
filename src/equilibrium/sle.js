@@ -21,7 +21,7 @@
  *
  * Measured solubility curves (proposal 0015, Part I, section 5; src/thermo/solubility-curve.js): where the solute has a
  * curve in the liquid's solvent (the liquid holds only that solvent besides the solute), x_sat is the curve's, in place
- * of the equation, and only inside its measured temperatures (outside: OUT_OF_RANGE, never extrapolated). A solid
+ * of the equation; outside its measured temperatures the curve is continued with a warning (the strict range mode refuses; solubility-curve.js). A solid
  * without open melting data (terephthalic acid) has the curve as its only route. The solid's enthalpy then uses the
  * curve's apparent enthalpy of solution instead of the enthalpy of fusion (solidHeat).
  */

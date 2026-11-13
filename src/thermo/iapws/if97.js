@@ -44,6 +44,17 @@
  * (the engine's unit); mass-specific properties stay in steam-table units (kJ/kg).
  */
 import { fail, failRange } from "../../util/errors.js";
+import { strictRanges, noteExtrapolation } from "../../util/ranges.js";
+
+// Outside the range of validity of IF97 (the maintainer, 2026-11-13): the equations are evaluated beyond it where they
+// stay finite (the supercooled liquid below 273.15 K, pressures above 100 MPa, temperatures above 2273.15 K), with a
+// note (src/util/ranges.js); the strict range mode refuses, as before. Above the critical temperature there is no
+// saturation state: refused in both modes.
+const IF97_HOW = "the IAPWS-IF97 equations are evaluated beyond their range of validity (they stay finite there)";
+function beyond(message, note) {
+  if (strictRanges()) throw failRange("OUT_OF_RANGE", message);
+  noteExtrapolation({ component: "Water", kind: "iapws", how: IF97_HOW, ...note });
+}
 
 /** Specific gas constant of IF97, kJ/(kg K) (Eq. 1). */
 export const R = 0.461526;
@@ -158,7 +169,9 @@ export function tB23(p) {
 /** Region 4, Eq. 30: saturation pressure (MPa) at T (K), 273.15 K <= T <= 647.096 K. */
 export function psatMPa(T) {
   if (!(T >= T_MIN && T <= TC)) {
-    throw failRange("OUT_OF_RANGE", `IAPWS-IF97 saturation pressure: T = ${T} K is outside 273.15-647.096 K.`);
+    const msg = `IAPWS-IF97 saturation pressure: T = ${T} K is outside 273.15-647.096 K.`;
+    if (!(T > 0 && T < T_MIN)) throw failRange(T > TC ? "OUT_OF_RANGE" : "BAD_INPUT", T > TC ? `${msg} Above the critical temperature there is no saturation.` : msg);
+    beyond(msg, { property: "IAPWS-IF97 saturation pressure", lo: T_MIN, hi: TC, value: T });
   }
   const th = T + N4[8] / (T - N4[9]);
   const A = th * th + N4[0] * th + N4[1];
@@ -172,8 +185,9 @@ const P_SAT_MIN = psatMPa(T_MIN); // 611.213 Pa
 /** Region 4, Eq. 31: saturation temperature (K) at p (MPa), psat(273.15 K) <= p <= 22.064 MPa. */
 export function tsatMPa(p) {
   if (!(p >= P_SAT_MIN && p <= PC)) {
-    throw failRange("OUT_OF_RANGE", `IAPWS-IF97 saturation temperature: p = ${p * 1000} kPa is outside ` +
-      `${(P_SAT_MIN * 1000).toPrecision(6)}-22064 kPa.`);
+    const msg = `IAPWS-IF97 saturation temperature: p = ${p * 1000} kPa is outside ${(P_SAT_MIN * 1000).toPrecision(6)}-22064 kPa.`;
+    if (!(p > 0 && p < P_SAT_MIN)) throw failRange(p > PC ? "OUT_OF_RANGE" : "BAD_INPUT", p > PC ? `${msg} Above the critical pressure there is no saturation.` : msg);
+    beyond(msg, { property: "IAPWS-IF97 saturation temperature, pressure", lo: P_SAT_MIN * 1000, hi: PC * 1000, value: p * 1000, unit: "kPa" });
   }
   const b = Math.pow(p, 0.25);
   const E = b * b + N4[2] * b + N4[5];
@@ -186,15 +200,16 @@ export function tsatMPa(p) {
 /** Throws unless (T, p MPa) is inside the range of validity of IF97. */
 function checkRange(T, p) {
   if (!Number.isFinite(T) || !Number.isFinite(p)) throw failRange("BAD_INPUT", "IAPWS-IF97: T and P must be numbers.");
+  if (!(T > 0)) throw failRange("BAD_INPUT", `IAPWS-IF97 needs a positive temperature; T = ${T} K.`);
   if (T < T_MIN || T > T_MAX) {
-    throw failRange("OUT_OF_RANGE", `IAPWS-IF97 is valid from 273.15 K to 2273.15 K; T = ${T} K.`);
+    beyond(`IAPWS-IF97 is valid from 273.15 K to 2273.15 K; T = ${T} K.`, { property: "IAPWS-IF97 water properties", lo: T_MIN, hi: T_MAX, value: T });
   }
   if (!(p > 0)) throw failRange("BAD_INPUT", `IAPWS-IF97 needs a positive pressure; P = ${p * 1000} kPa.`);
   if (T <= T_25 && p > P_MAX) {
-    throw failRange("OUT_OF_RANGE", `IAPWS-IF97 is valid up to 100 MPa below 1073.15 K; P = ${p * 1000} kPa.`);
+    beyond(`IAPWS-IF97 is valid up to 100 MPa below 1073.15 K; P = ${p * 1000} kPa.`, { property: "IAPWS-IF97 water properties (pressure, below 1073.15 K)", lo: 0, hi: P_MAX * 1000, value: p * 1000, unit: "kPa" });
   }
   if (T > T_25 && p > P_MAX_5) {
-    throw failRange("OUT_OF_RANGE", `IAPWS-IF97 is valid up to 50 MPa above 1073.15 K (region 5); P = ${p * 1000} kPa.`);
+    beyond(`IAPWS-IF97 is valid up to 50 MPa above 1073.15 K (region 5); P = ${p * 1000} kPa.`, { property: "IAPWS-IF97 water properties (pressure, region 5)", lo: 0, hi: P_MAX_5 * 1000, value: p * 1000, unit: "kPa" });
   }
 }
 

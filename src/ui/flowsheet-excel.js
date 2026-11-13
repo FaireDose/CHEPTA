@@ -285,6 +285,11 @@ export function flowsheetSheets(fs, res, { version = "", names = {}, concept = f
       { name: "Energy and balances", rows: E, cols: [26, 10, 20, 30] },
       // each column's inputs, results and profile (proposal 0015, M2b)
       ...fs.blocks.filter(b => b.type === "column" && res.blocks[b.id]?.state).map(b => columnSheet(b, res.blocks[b.id], { comps, nameOf, model: methodText })),
+      // records used outside their range (the maintainer, 2026-11-13): one row each, the short form and the whole text
+      ...(res.extrapolations?.length ? [{ name: "Warnings", rows: [[{ v: "Records used outside their range", s: "head" }],
+        ["Each record is continued beyond the range of its data and the result carries a warning. This is an extrapolation, not data."], [],
+        [{ v: "Warning", s: "bold" }, { v: "In full", s: "bold" }],
+        ...res.extrapolations.map(e => [e.short, e.message])], cols: [60, 140] }] : []),
       { name: "About", rows: A, cols: [16, 110] },
     ],
   };

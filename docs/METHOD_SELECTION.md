@@ -73,8 +73,9 @@ Read on 2026-10-09:
    - A cubic equation of state with the classical mixing rule is not used where a second liquid
      forms. Water + hydrocarbons need special treatment, which CHEPTA doesn't have.
 8. **Physical sense:** no temperature below the melting point of a component that is present
-   (it would freeze), and parameters used only within the temperature range they were fitted
-   to.
+   (it would freeze), and parameters used within the temperature range they were fitted to where possible. Outside
+   it the engine continues a record with a warning (2026-11-13, DATA_RULES section 3, "Ranges"): a result that carries
+   such a warning is an extrapolation, not data; prefer a method whose records cover the conditions.
 
 ## When in doubt: what other simulators do
 

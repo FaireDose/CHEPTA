@@ -71,6 +71,7 @@
  */
 import { pure } from "./pure.js";
 import { fail, failRange } from "../util/errors.js";
+import { strictRanges, quietly } from "../util/ranges.js";
 import { dimerK, monomerPressure, dimerEnthalpy, dimerSplit, pureDimerEnthalpy } from "./vapour.js";
 import { checkComposition, checkPressure, checkTemperature } from "../util/inputs.js";
 
@@ -82,7 +83,12 @@ const P0 = 101.325;         // kPa, the pressure of the entropy reference state
 // the temperature of a given enthalpy can reach a state at the end of the record (a feed at 298.15 K where the record
 // starts at 298.15 K); at most cp x 1 mK, about 0.3 J/mol, far below the uncertainty of any record
 const EDGE_K = 1e-3;
-/** How far below the lower end of a liquid heat-capacity record the heat capacity is extrapolated (K), with a warning; farther: refused (the maintainer, 2026-11-12). */
+/**
+ * In the strict range mode only (src/util/ranges.js): how far below the lower end of a liquid heat-capacity record the
+ * heat capacity is extrapolated (K), with a warning; farther: refused (the maintainer, 2026-11-12). Without the strict
+ * mode there is no such limit (the maintainer, 2026-11-13): the record is continued linearly from its end
+ * (correlations.js), and refused only where the heat capacity it gives is not positive.
+ */
 const EXTRAP_K = 10;
 // 8-point Gauss-Legendre nodes and weights on [-1, 1] (Abramowitz & Stegun, table 25.4)
 const GL8_X = [-0.9602898564975363, -0.7966664774136267, -0.5255324099163290, -0.1834346424956498,
@@ -202,6 +208,9 @@ export function activityPhaseMethods(ctx) {
   const cpSlope = [];
   const cpExt = (i, t) => {
     const r = cpRec[i];
+    // lenient (the default): the record continued at its ends by correlations.js (linear, value and slope); the note
+    // is given at the answer's temperature (system.js, extrapolations)
+    if (!strictRanges()) return quietly(() => cpL(i, atEdge(r, t)));
     if (!(t < r.Tmin_K - EDGE_K) || t < r.Tmin_K - EXTRAP_K - EDGE_K) return cpL(i, atEdge(r, t));
     if (cpSlope[i] === undefined) cpSlope[i] = (cpL(i, r.Tmin_K + 0.5) - cpL(i, r.Tmin_K)) / 0.5;
     return cpL(i, r.Tmin_K) + cpSlope[i] * (t - r.Tmin_K);
@@ -238,7 +247,7 @@ export function activityPhaseMethods(ctx) {
   const atT = (T, end, side) => (Math.abs(T - end) < 0.05 ? side : `at ${T.toFixed(1)} K`);
   // a record that could not be extended below its range names what was searched there (below_range_searched)
   const belowRangeNote = r => (r.below_range_searched?.length
-    ? ` Open measured values below it were searched for and not found (${r.below_range_searched.join("; ")}). A liquid down to ${r.Tmin_K - EXTRAP_K} K works, with a warning (a stated extrapolation).`
+    ? ` Open measured values below it were searched for and not found (${r.below_range_searched.join("; ")}). A liquid down to ${r.Tmin_K - EXTRAP_K} K works in the strict mode, and any temperature without it, with a warning (a stated extrapolation).`
     : "");
   /** Liquid enthalpy of pure i at T (J/mol), and a warning text when the cp_L record has ended. */
   function hLiquidPure(i, T) {
@@ -251,21 +260,19 @@ export function activityPhaseMethods(ctx) {
     }
     const h0 = anchors()[i];
     const Tend = cpRec[i].Tmax_K;
-    let low = null;
-    if (T < cpRec[i].Tmin_K - EDGE_K) {
-      if (T < cpRec[i].Tmin_K - EXTRAP_K - EDGE_K) {
-        throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record starts at ${cpRec[i].Tmin_K} K, so its liquid enthalpy ${atT(T, cpRec[i].Tmin_K, "below it")} cannot be calculated: the heat capacity is extrapolated below the record by ${EXTRAP_K} K at most.${belowRangeNote(cpRec[i])}`);
-      }
-      low = `${comps[i].name}: ${T.toFixed(2)} K is ${(cpRec[i].Tmin_K - T).toFixed(2)} K below its liquid heat-capacity record (${cpRec[i].Tmin_K}-${cpRec[i].Tmax_K} K): the heat capacity is extrapolated linearly from the record's lower end (its value and slope there), ${EXTRAP_K} K at most. This is an extrapolation, not data.`;
+    // the strict range mode refuses as before 2026-11-13: more than EXTRAP_K below the record, or above it for a
+    // nonvolatile component; otherwise the record is continued (cpExt) and the note comes from system.js
+    // (extrapolations), at the answer's temperature
+    const strict = strictRanges();
+    if (strict && T < cpRec[i].Tmin_K - EXTRAP_K - EDGE_K) {
+      throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record starts at ${cpRec[i].Tmin_K} K, so its liquid enthalpy ${atT(T, cpRec[i].Tmin_K, "below it")} cannot be calculated: the heat capacity is extrapolated below the record by ${EXTRAP_K} K at most (strict range mode).${belowRangeNote(cpRec[i])}`);
     }
-    if (T <= Tend || (nonvolatile[i] && T <= Tend + EDGE_K)) return { h: h0 + cpIntegral(i, T), note: low };
+    if (T <= Tend || (nonvolatile[i] && T <= Tend + EDGE_K)) return { h: h0 + cpIntegral(i, T), note: null };
     if (nonvolatile[i]) {
-      throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record ends at ${Tend} K, so its liquid enthalpy ${atT(T, Tend, "above it")} cannot be calculated (a nonvolatile component has no vapour route to continue it).`);
+      if (strict) throw failRange("OUT_OF_RANGE", `${comps[i].name}: its liquid heat-capacity record ends at ${Tend} K, so its liquid enthalpy ${atT(T, Tend, "above it")} cannot be calculated (a nonvolatile component has no vapour route to continue it; strict range mode).`);
+      return { h: h0 + cpIntegral(i, T), note: null };
     }
-    return {
-      h: h0 + cpIntegral(i, Tend) + oldBasis(i, T) - oldBasis(i, Tend),
-      note: `${comps[i].name}: its liquid heat-capacity record ends at ${Tend} K; above it (T = ${T.toFixed(1)} K) the liquid enthalpy follows h_IG + h_R,sat - dHvap, joined at ${Tend} K, whose sensible heat is too high for polar liquids (by about 5-30 % between 300 and 400 K).`,
-    };
+    return { h: h0 + cpIntegral(i, Tend) + oldBasis(i, T) - oldBasis(i, Tend), note: null };
   }
 
   /** h^E (J/mol) of liquid x at T, without input checks. */

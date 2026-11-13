@@ -13,6 +13,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { system, solveFlowsheet, checkUserData, createSystem, pure } from "../src/index.js";
 import { setEntryUse, userDataList } from "../src/ui/user-data-file.js";
+import { withRangePolicy } from "../src/util/ranges.js";
+// the strict range mode (the maintainer, 2026-11-13; docs/decisions/2026-11-13-03-extrapolation-policy.md)
+const strictly = fn => withRangePolicy({ strictRanges: true }, fn);
 
 const src = { name: "test: made-up numbers" };
 const cp = (A, B = 0) => ({ equation: "DIPPR100", coefficients: { A, B }, units: "J/mol/K", Tmin_K: 250, Tmax_K: 800, source: src });
@@ -43,7 +46,10 @@ test("the fluid part flashes as it would alone; the solid adds its own phase and
   assert.throws(() => sys.flash({ z, P: 101.325, VF: 0.9 }), /counts the inert solid too.*at most 0\.8000/);
   assert.throws(() => sys.flash({ z: [0, 0, 1], P: 101.325, VF: 0 }), /all inert solid/);
   assert.throws(() => sys.bubbleT(z, 101.325), /Catalyst is an inert solid: bubbleT does not take it/);
-  assert.throws(() => sys.flash({ z: [0, 0, 1], T: 900, P: 101.325 }), /solid heat-capacity record covers 250-800 K/);
+  // beyond the solid heat-capacity record: continued linearly with a note (2026-11-13; this line changed from
+  // "refused"); the strict mode refuses
+  assert.ok(Number.isFinite(sys.flash({ z: [0, 0, 1], T: 900, P: 101.325 }).H_J_mol));
+  assert.throws(() => strictly(() => sys.flash({ z: [0, 0, 1], T: 900, P: 101.325 })), /solid heat-capacity record covers 250-800 K/);
   assert.throws(() => createSystem({ components: ["water", "Catalyst"], userData: ud }), /inert solid.*CHEPTA\.system\(\)/);
 });
 

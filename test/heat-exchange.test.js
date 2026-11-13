@@ -10,6 +10,9 @@ import { system, stream } from "../src/index.js";
 import {
   exchangerArea, effectiveness, ntuFor, overallU, serviceU, foulingRf, filmH, metalConductivity, wallThickness, HEAT_TRANSFER, ARRANGEMENTS,
 } from "../src/units/heat-exchange.js";
+import { withRangePolicy } from "../src/util/ranges.js";
+// the strict range mode (the maintainer, 2026-11-13; docs/decisions/2026-11-13-03-extrapolation-policy.md)
+const strictly = fn => withRangePolicy({ strictRanges: true }, fn);
 
 const ref = JSON.parse(readFileSync(new URL("../validation/fixtures/heat-exchange.json", import.meta.url)));
 const C = t => t + 273.15;
@@ -132,7 +135,11 @@ test("U from a service (low end), from film coefficients with a wall metal, or y
   // Table A.1: 316 at 450 °C between 19 (400 °C) and 21 (600 °C); refused outside the table
   assert.ok(Math.abs(metalConductivity("stainless-316", C(450)).k_W_mK - 19.5) < 1e-9);
   assert.equal(metalConductivity("copper-pure", C(20)).k_W_mK, 398, "the 20 °C value of the table");
-  assert.throws(() => metalConductivity("stainless-304", C(-50)), /tabulated from 20 to 600 °C .*Give your own conductivity/);
+  // outside the table: its end value held, with a note (2026-11-13; this line changed from "refused"); strict: refused
+  const cold = metalConductivity("stainless-304", C(-50));
+  assert.equal(cold.k_W_mK, metalConductivity("stainless-304", C(20)).k_W_mK);
+  assert.match(cold.note, /tabulated from 20 to 600 °C.*end value is held\. This is an extrapolation, not data\./);
+  assert.throws(() => strictly(() => metalConductivity("stainless-304", C(-50))), /tabulated from 20 to 600 °C .*Give your own conductivity/);
   assert.throws(() => serviceU("water-to-water"), /Unknown service "water-to-water"/);
   // the data file: every range is ordered and every metal's temperatures increase
   for (const r of HEAT_TRANSFER.services.rows) if (r.U[0] != null && r.U[1] != null) assert.ok(r.U[0] < r.U[1], r.id);

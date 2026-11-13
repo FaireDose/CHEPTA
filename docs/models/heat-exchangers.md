@@ -28,7 +28,8 @@ Code: [`src/units/heat-exchange.js`](../../src/units/heat-exchange.js) (the calc
   - a service of Table 2.2 (typical ranges), the low end by default (the larger, safer area);
   - film coefficients (Table 1.1), fouling resistances (Table 2.3, the high end by default) and a plane wall:
     1/U = 1/h_hot + R_f,hot + t/k + R_f,cold + 1/h_cold (eqn. 2.36), with k of a metal of Table A.1, interpolated
-    linearly in temperature at the mean of the two sides, refused outside the table;
+    linearly in temperature at the mean of the two sides; outside the table its end value with a warning (refused in
+    the strict range mode, 2026-11-13);
   - the user's own value.
 
   Film coefficients are not a more rigorous route: Table 1.1 gives single examples of each order of magnitude (water

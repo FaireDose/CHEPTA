@@ -12,7 +12,8 @@
  *
  * outcome:
  *   "ok"              the calculation or the lookup was done (value)
- *   "invalid_input"   the request is wrong, or outside a record's range (BAD_INPUT, OUT_OF_RANGE); error.where
+ *   "invalid_input"   the request is wrong, or outside what can be calculated (BAD_INPUT, OUT_OF_RANGE: a physically
+ *                     impossible state, or outside a record's range with options.strictRanges); error.where
  *                     names the fields or blocks
  *   "missing_data"    a property or parameter is not in the data (MISSING_DATA): supply it (My data), do not guess it
  *   "unsupported"     the capability, mode or state is not built yet, or the method cannot represent the state
@@ -29,6 +30,7 @@
  */
 import pkg from "../../package.json" with { type: "json" };
 import { isCheptaError, fail } from "../util/errors.js";
+import { withRangePolicy } from "../util/ranges.js";
 import { hash64 } from "./hash.js";
 import { checkSchema } from "./schema.js";
 import { newRun, endRun, checkLimits } from "../runtime/envelope.js";
@@ -74,8 +76,14 @@ export function run(request) {
   };
   try {
     if (!request || typeof request !== "object" || Array.isArray(request)) throw fail("BAD_INPUT", "A request is an object such as { \"capability\": \"solve_flowsheet\", \"input\": { ... } }.");
-    const bad = Object.keys(request).filter(k => !["capability", "input", "limits"].includes(k));
-    if (bad.length) throw fail("BAD_INPUT", `request: unknown key ${bad.map(k => `"${k}"`).join(", ")}. Known: capability, input, limits.`, { where: bad.map(k => ({ field: `request.${k}` })) });
+    const bad = Object.keys(request).filter(k => !["capability", "input", "limits", "options"].includes(k));
+    if (bad.length) throw fail("BAD_INPUT", `request: unknown key ${bad.map(k => `"${k}"`).join(", ")}. Known: capability, input, limits, options.`, { where: bad.map(k => ({ field: `request.${k}` })) });
+    // options.strictRanges (the maintainer, 2026-11-13; src/util/ranges.js): true refuses outside a record's range, as
+    // before; false or absent (the default) continues the record with a warning
+    const options = request.options ?? {};
+    const badOpt = typeof options !== "object" || Array.isArray(options) ? ["(not an object)"] : Object.keys(options).filter(k => k !== "strictRanges");
+    if (badOpt.length) throw fail("BAD_INPUT", `request.options: unknown ${badOpt.join(", ")}. Known: strictRanges (true or false).`, { where: [{ field: "request.options" }] });
+    if (options.strictRanges !== undefined && typeof options.strictRanges !== "boolean") throw fail("BAD_INPUT", "request.options.strictRanges must be true or false.", { where: [{ field: "request.options.strictRanges" }] });
     const cap = CAPS.get(capability);
     if (!cap) throw fail("BAD_INPUT", `No capability "${capability}". Known: ${[...CAPS.keys()].join(", ")}.`, { where: [{ field: "request.capability" }] });
     const input = request.input ?? {};
@@ -85,7 +93,7 @@ export function run(request) {
       return finish("failed", { outcome: "unsupported", rest: { error: { code: "NOT_AVAILABLE", message: `${cap.summary}: not available yet${cap.planned ? ` (${cap.planned})` : ""}.`, where: [] } } });
     }
     checkSchema(cap.input, input);
-    const r = cap.run(input);
+    const r = withRangePolicy({ strictRanges: options.strictRanges ?? false }, () => cap.run(input));
     return finish("done", { outcome: "ok", reproduction: r.reproduction,
       rest: { value: r.value, ...(r.checks ? { checks: r.checks } : {}), ...(r.qualifications ? { qualifications: r.qualifications } : {}) } });
   } catch (e) {

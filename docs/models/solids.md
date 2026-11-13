@@ -98,7 +98,7 @@ The pump takes 2.42 kW, the heater 225.6 kW and the crystallizer gives up 49.3 k
 
 ## Checks (test/solids.test.js)
 
-- The curve against the 12 points it was fitted to (within 5 %), and its range refused outside 348.8-547.4 K.
+- The curve against the 12 points it was fitted to (within 5 %), and outside 348.8-547.4 K its equation with a warning (refused in the strict range mode, 2026-11-13).
 - **Independent reference** `validation/python/reference_solid_flash.py` (the ideal solution with the records'
   enthalpies, the curve, scipy; no shared code), fixture `validation/fixtures/solid_flash.json`: the whole chain, the slurry pump (water's density from IAPWS-IF97 by the iapws package) within 1e-9, every
   state's T within 1e-5 K, solid and vapour within 1e-7, the duties within 1e-6, the yield within 1e-8.

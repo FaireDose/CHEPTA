@@ -17,8 +17,9 @@ The Flowsheet workspace shows both, with the defaults, under the drum's results.
 
 ## The properties
 
-At the drum's T and P, from CHEPTA's own records; a record outside its range refuses (`OUT_OF_RANGE`), a missing one
-refuses (`MISSING_DATA`):
+At the drum's T and P, from CHEPTA's own records; a record outside its range is continued with a warning (the
+strict range mode refuses, `OUT_OF_RANGE`; 2026-11-13), a missing one refuses (`MISSING_DATA`). Outside the K chart of
+the drum and Fair's flooding chart the chart's end value is held, with a note:
 
 - vapour density ρV = M P / (Z R T), Z from the system's vapour model (1 for an ideal-gas vapour);
 - a liquid's density from the pure liquids' density records, volumes adding up;

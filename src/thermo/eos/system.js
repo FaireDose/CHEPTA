@@ -13,6 +13,9 @@ import { userDataUsed } from "../user-data.js";
 import { cubicEos, CUBICS } from "./cubic.js";
 import { RANGE_MARGIN_K, selection, choosePair, describePair, pairWarnings } from "../library.js";
 import { fail } from "../../util/errors.js";
+import { withRangePolicy, collectExtrapolations, noteExtrapolation } from "../../util/ranges.js";
+import { evaluate } from "../correlations.js";
+import { pure } from "../pure.js";
 import { eosPhaseMethods } from "../enthalpy.js";
 import { requireCritical } from "../critical.js";
 import { mhv1Mix } from "./mhv1.js";
@@ -233,12 +236,36 @@ export function createEosSystem(ids, cfg, sel = selection(cfg)) {
     }
     // above about 10 bar, a light gas with a polar liquid: the gE rule, where the engine would run it (method-advice.js)
     w.push(...mhv1Advice({ model, eos: true, mixing: mhv1 ? "MHV1" : null, gasPolar, avail: availability }, P));
+    if (Number.isFinite(T)) w.push(...extrapolations(T).map(e => e.message));
     return [...w, ...info.advice];
+  }
+
+  /**
+   * The ideal-gas heat-capacity records used outside their range at T (the maintainer, 2026-11-13;
+   * src/util/ranges.js): the only temperature records an equation of state uses, through the ideal-gas enthalpy.
+   */
+  const igMemo = new Map();
+  let igRecs = null;
+  function extrapolations(T) {
+    const key = Math.round(T * 100) / 100;
+    if (igMemo.has(key)) return igMemo.get(key);
+    igRecs ??= ids.map(id => { try { const p = pure(id, { userData: cfg.userData }); return p.has("idealGasHeatCapacity") ? p.record("idealGasHeatCapacity") : null; } catch { return null; } });
+    const { extrapolations: notes } = withRangePolicy({ strictRanges: false }, () => collectExtrapolations(() => igRecs.forEach((rec, i) => {
+      if (!rec || rec.derived) return;
+      if (rec.equation === "IAPWS") {
+        if (T < rec.Tmin_K || T > rec.Tmax_K) noteExtrapolation({ component: comps[i].name, property: "Ideal-gas heat capacity (IAPWS-IF97)", lo: rec.Tmin_K, hi: rec.Tmax_K, value: T, kind: "idealGasHeatCapacity", how: "the IAPWS-IF97 ideal-gas equation is evaluated beyond its range (it stays finite there)" });
+        return;
+      }
+      try { evaluate(rec, T, { component: comps[i].name, property: "Ideal-gas heat capacity", kind: "idealGasHeatCapacity" }); } catch { /* refused where it is used */ }
+    })));
+    if (igMemo.size > 256) igMemo.clear();
+    igMemo.set(key, notes);
+    return notes;
   }
 
   return {
     ids, names: comps.map(c => c.name), n, model, kind: "eos", eos, kij: K, info,
-    state, warnings, MW, userData: cfg.userData ?? null,
+    state, warnings, extrapolations, MW, userData: cfg.userData ?? null,
     ...eosPhaseMethods({ ids, comps, n, model, eos, warnings, userData: cfg.userData }),
     /** Compressibility factor Z. Arguments (T, P, x, phase) or (x, T, P, phase); phase defaults to "vapour". */
     Z: (a, b, c, d) => state(a, b, c, d).Z,

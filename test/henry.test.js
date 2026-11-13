@@ -1,7 +1,7 @@
 // Henry's law constants of gases in water (src/thermo/henry.js, src/data/henry.json).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { henry, henryInfo, gasSolubility, HENRY_GASES } from "../src/index.js";
+import { henry, henryInfo, gasSolubility, HENRY_GASES, withRangePolicy, collectExtrapolations } from "../src/index.js";
 
 // IAPWS G7-04 (2004), table 6: check values of ln(kH / 1 GPa) for gases in H2O.
 // http://www.iapws.org/relguide/HenGuide.html. Values above the gas's Tmax are omitted
@@ -74,14 +74,24 @@ test("Henry's constants agree with independent measurements (Sander compilation)
   }
 });
 
-test("gas solubility x = p / H, with range checks and sources", () => {
+test("gas solubility x = p / H, with range checks (continued with a note; strict mode: refused) and sources", () => {
   assert.deepEqual(HENRY_GASES, ["hydrogen", "nitrogen", "oxygen", "methane", "ethane", "ethylene", "argon", "carbon-monoxide", "carbon-dioxide", "hydrogen-sulfide"]);
   const p = 21.0; // kPa
   assert.equal(gasSolubility("O2", 298.15, p), p / henry("oxygen", "water", 298.15));
   assert.ok(gasSolubility("oxygen", 298.15, p) > gasSolubility("nitrogen", 298.15, p)); // O2 more soluble than N2
-  assert.throws(() => henry("oxygen", "water", 250), /outside the range/);
-  assert.throws(() => henry("ethane", "water", 500), /outside the range/);
-  assert.throws(() => henry("ethylene", "water", 360), /outside the range/);
+  // outside an equation's range (the maintainer, 2026-11-13; these lines changed from "refused"): ln H continued linearly
+  // in 1/T from the range's end through its value and slope there (the slope computed here independently, over 0.01 K),
+  // with a note; the strict range mode refuses as before; above water's critical temperature there is no solvent
+  for (const [gas, T] of [["oxygen", 250], ["ethane", 500], ["ethylene", 360]]) {
+    const { Tmin_K, Tmax_K } = henryInfo(gas), end = T < Tmin_K ? Tmin_K : Tmax_K, d = T < Tmin_K ? 0.01 : -0.01;
+    const slope = (Math.log(henry(gas, "water", end + d)) - Math.log(henry(gas, "water", end))) / (1 / (end + d) - 1 / end);
+    const got = collectExtrapolations(() => henry(gas, "water", T));
+    const want = Math.exp(Math.log(henry(gas, "water", end)) + slope * (1 / T - 1 / end));
+    assert.ok(Math.abs(got.value / want - 1) < 2e-4, `${gas} ${T} K: ${got.value} vs ${want}`);
+    assert.match(got.extrapolations[0].message, /Henry's law constant in water at .* its range .*van 't Hoff\)\. This is an extrapolation, not data\./);
+    assert.throws(() => withRangePolicy({ strictRanges: true }, () => henry(gas, "water", T)), /outside the range/);
+  }
+  assert.throws(() => henry("oxygen", "water", 650), e => e.code === "OUT_OF_RANGE" && /no liquid water/.test(e.message));
   assert.throws(() => henry("benzene", "water", 300), /No Henry's law constant/);
   assert.throws(() => gasSolubility("oxygen", 300, -1), /non-negative/);
   for (const g of HENRY_GASES) {

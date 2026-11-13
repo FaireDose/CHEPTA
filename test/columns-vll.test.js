@@ -339,9 +339,18 @@ for (const id of ["G1-own-method-boundary", "G2-own-method-recycle"]) {
 
 test("W7's G3-own-method-cannot-represent: a cold Peng-Robinson feed the column's NRTL cannot represent is refused (OUT_OF_RANGE), the feed, the method and the record named", () => {
   const c = caseOf("G3-own-method-cannot-represent");
-  const r = run({ capability: "solve_flowsheet", input: { flowsheet: gFlowsheet(c, 250, null) } }); // 250 K, 28.7 K below benzene's record: the heat capacity is extrapolated 10 K at most (decision 2026-11-12-05); the case's own 265 K is now inside that
+  // in the strict range mode (request.options.strictRanges; the maintainer, 2026-11-13: the case's refusal is a range
+  // refusal, so it holds there; without the option the feed is calculated with a warning, test below)
+  const r = run({ capability: "solve_flowsheet", options: { strictRanges: true }, input: { flowsheet: gFlowsheet(c, 250, null) } }); // 250 K, 28.7 K below benzene's record: the heat capacity is extrapolated 10 K at most (decision 2026-11-12-05); the case's own 265 K is now inside that
   assert.equal(r.outcome, c.expected.outcome);
   assert.equal(r.error.code, c.expected.code);
   assert.equal(r.value, undefined);
   assert.match(r.error.message, /the feed cannot cross into the column's method \(NRTL[\s\S]*Benzene: its liquid heat-capacity record starts at 278\.68 K/);
+});
+
+test("W7's G3 feed without the strict range mode: the column's NRTL takes the cold feed, its heat capacity continued with a warning", () => {
+  const c = caseOf("G3-own-method-cannot-represent");
+  const r = run({ capability: "solve_flowsheet", input: { flowsheet: gFlowsheet(c, 250, null) } });
+  assert.equal(r.outcome, "ok", r.error?.message);
+  assert.ok(r.value.extrapolations?.some(e => /^Benzene: liquid heat capacity/.test(e.message) && e.where.includes("C1")), JSON.stringify(r.value.extrapolations?.map(e => e.short)));
 });

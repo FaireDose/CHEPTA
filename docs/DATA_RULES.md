@@ -158,9 +158,20 @@ listed.
 only liquid-density, heat-capacity and viscosity rows that name a gas phase are left out (2026-10-17: the old filter
 dropped every surface tension measured against the vapour).
 
-**Ranges.** A record covers the temperatures that were measured. Outside them the engine refuses with an
-out-of-range error instead of extrapolating. With a measured critical point, the vapour-pressure curve runs to the
-critical point and says where only the critical point holds it.
+**Ranges: strict data, lenient use** (the maintainer, 2026-11-13; decision
+[2026-11-13-03](decisions/2026-11-13-03-extrapolation-policy.md)). A record covers the temperatures that were measured,
+and its stated range stays exactly that: nothing in where numbers come from, how they are fitted or their tiers
+changes. Outside the range the engine **calculates and warns**: it continues the record in a physically safe form
+(`src/thermo/correlations.js`; vapour pressure: its own equation where it stays finite and rising, else Clausius-Clapeyron
+from the record's end; heat capacities and thermal conductivities: linear from the end; liquid viscosity: ln mu linear
+in 1/T; DIPPR105/106 records and Aly-Lee ideal-gas heat capacities: their own equation; Henry constants: ln H linear in
+1/T; solubility curves: their equation; charts and tables: the end value held; IAPWS: its equations where they stay
+finite), and the result carries a warning naming the component, the property, the record's range, how far outside and
+how it was continued ("This is an extrapolation, not data."). It still refuses a physically impossible state (a liquid
+or saturation property at or above the critical temperature, a value the continuation makes negative or non-finite), a
+property with no record at all, and a solver that does not converge. The strict range mode (`strictRanges: true`, in a
+flowsheet's `solver` or a request's `options`) refuses outside every range, as before 2026-11-13. With a measured
+critical point, the vapour-pressure curve runs to the critical point and says where only the critical point holds it.
 
 **Critical constants.** Measured values only (WebBook or ThermoML Archive), with the article named and, when several
 disagree, the reason for the choice. None measured anywhere open: the component has no Tc, Pc or acentric factor
@@ -208,7 +219,8 @@ vapour pressure, whichever is lower. Without them: an ideal-gas vapour, up to 10
 
 **Liquid and vapour states with no overlap ("a gap").** When no temperature has both a vapour pressure and a liquid
 density, the component may be added with the gap if its vapour-pressure sets pass the rule above (the maintainer,
-2026-10-14; levulinic acid). Each record refuses outside its own range.
+2026-10-14; levulinic acid). Each record keeps its own range; outside it the engine continues it with a warning
+("Ranges" above).
 
 **Stereoisomers.** Data for either enantiomer, or the racemate, may serve one component (mirror images have the same
 thermodynamic properties; limonene, `inchi_no_stereo`). Diastereomers (meso and chiral 2,3-butanediol) may not.
@@ -294,7 +306,8 @@ new refit of a ChemSep record is made (section 1).
   is within its u, else the pair is held. Where sets disagree, a set is chosen only with a stated reason, else the
   choice is the maintainer's (terephthalic acid in water, 2026-11-05: held, provisionally Takebayashi 2012). A pair
   with an NRTL set fitted to the same solubilities gets no curve. The engine uses a
-  curve in place of the melting-point equation, only inside its measured temperatures, never extrapolated; its van't
+  curve in place of the melting-point equation; outside its measured temperatures its equation is used with a warning
+  (refused in the strict range mode; "Ranges", section 3); its van't
   Hoff slope gives the apparent enthalpy of solution for the solid's energy balance. A solid with neither melting data
   nor a curve has no solubility (no open data).
 
