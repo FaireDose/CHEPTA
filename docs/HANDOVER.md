@@ -105,7 +105,11 @@ current: replace its "State" and "Queue" sections at each handover, never append
    claude/below-triple-point (decision -07; also records #242's answers). After it merges: tell the Lab coordinator
    (session_01FPbeWUJu4MrkqCuGX3UKYB) the Lab phase starts on chepta 0.6.2 (VLLE with acetic acid, splitter by flow,
    extrapolation with warnings, missing pairs estimated); CHEPTA works only on Lab's capability requests until the
-   four cases pass; then 0.7.0. Workers' send_message to @parent may fail ("credential for this
+   four cases pass; then 0.7.0.
+   The maintainer (2026-11-13, testing next.html): in Flowsheet the rail's calculations and the toolbar's blocks both
+   show (Pipe, Reactor, Column twice): confusing; freedom given. Design: two modes [Flowsheet | Calculations], no rail
+   in Flowsheet mode. Running: Opus session_01FPbeWW1BmHZD9uAHap4cew, branch claude/ui-0021-flowsheet-mode, decision
+   -08. The Lab phase starts after this and the triple-point PR merge. Workers' send_message to @parent may fail ("credential for this
    connector"): when a worker goes idle, read its last message with list_events. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
