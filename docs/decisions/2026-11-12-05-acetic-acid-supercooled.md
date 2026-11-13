@@ -128,6 +128,22 @@ reason. The vapour-pressure equation is evaluated **without a range check** in a
   at 288.15 K; now it asserts that 288.15 K works, pure and with water, with both warnings, that 275 K is refused naming
   the 10 K limit, that the heat-capacity refusal beyond 10 K names what was searched, and that nothing warns inside the records.
 
+## Decided (the maintainer, 2026-11-13, on #236 as built)
+
+- The vapour pressure outside its record is **warned about only, never refused, for now**.
+- **Follow-up (data): widen the vapour-pressure records.** The refusal trial (section "Decided" above, point 2) found
+  records narrower than the data and calculations that use them. Components named by the trial's failures: gamma-
+  butyrolactone (record 376.99-731 K, used at 320.6 K, set gbl + tetrahydrofuran); 1,3-propanediol (292.5-721 K, used
+  at 273.15 K, set 1,3-propanediol + methanol); diethyl ether (270-467.9 K, used at 255 K, sets dichloroethane + diethyl
+  ether); at the hot end, methanol (250-470 K, used at 493 K, the equilibrium reactor test) and water (273.16-523.15 K,
+  used at 624 K, the adipic acid flowsheet test). The sets dichloroethane + dioxane and 2-butanol + water also failed
+  in the trial, without the component being read from the message; the complete list is what the trial gives when run
+  again (refuse more than 10 K outside the record in `warnings()`, run `npm test`). Widening follows DATA_RULES (open
+  sources, ChemSep taken as it is where it has a wider range).
+- **G3 (benzene, a column feed at 265 K, below benzene's triple point 278.68 K):** the column's NRTL accepting it inside
+  the 10 K extension is accepted; the case's description (`validation/data/columns/G3-own-method-cannot-represent.json`
+  says the NRTL liquid enthalpy refuses below benzene's record) is to be corrected together with the rule-8 proposal.
+
 ## 5. For the maintainer (before the decision above; kept for the record)
 
 Check against the source: ChemSep v8.3 (`chemsep1.xml`, the compound with CAS 64-19-7): the lower temperatures of

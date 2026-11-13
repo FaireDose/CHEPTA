@@ -18,6 +18,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   follow-up proposal to restate METHOD_SELECTION rule 8 (the mixture's solid-liquid equilibrium, not the pure melting
   point); whether a person tries to get Steele et al. 1997 and Martin and Andon 1982 (a measured value would replace the
   extrapolation).
+- **Widen the vapour-pressure records** (data follow-up from #236, 2026-11-13): gamma-butyrolactone, 1,3-propanediol,
+  diethyl ether, methanol and water at the hot end, and the other components the refusal trial of
+  docs/decisions/2026-11-12-05-acetic-acid-supercooled.md found (re-run the trial for the full list). The mixture path
+  only warns until then.
+- **Rule-8 proposal** (follow-up from #236): restate METHOD_SELECTION rule 8 with the mixture's solid-liquid
+  equilibrium, and correct the description of column case G3 (benzene feed at 265 K, now accepted within the 10 K
+  extension) in the same proposal.
 - **Lab requests 2-5** (docs/decisions/2026-11-11-09-lab-requests-1.md): check the MHV1 source ids against the data
   (none was wrong; the Pokki 2018 id is named after the article's other system), and decide whether the articles
   that measured several systems should get one source id per system.
