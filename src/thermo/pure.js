@@ -274,6 +274,32 @@ export function pure(key, opts = {}) {
   }
 
   /**
+   * Below the triple point (the melting temperature where no triple point is recorded) the stable phase of a pure
+   * component is the solid; a liquid value there is a supercooled extrapolation (the maintainer, 2026-11-13;
+   * docs/decisions/2026-11-13-07-below-triple-point.md). Only for a PURE component: in a liquid mixture a component
+   * below its melting point uses the supercooled liquid as its reference state, which is normal (METHOD_SELECTION.md,
+   * rule 8), so the mixture code does not call this.
+   */
+  const fusionRec = c.fusion && c.fusion.available !== false && Number.isFinite(c.fusion.Tm_K) ? c.fusion : null;
+  const triple = fusionRec ? { T_K: fusionRec.Tm_K, label: /triple/i.test(JSON.stringify(fusionRec.source ?? "")) ? "triple point" : "melting temperature" } : null;
+  const belowTriple = T => !!triple && Number.isFinite(T) && T < triple.T_K - 1e-9;
+  const belowTripleMessage = (T, what) =>
+    `${c.name}: ${what ?? `the state at ${+Number(T).toFixed(2)} K`} is below its ${triple.label} (${+triple.T_K.toFixed(2)} K): the stable phase there is the solid, and the liquid value is a supercooled extrapolation, not data.`;
+
+  /**
+   * The normal boiling point, or none where the component sublimes at 101.325 kPa: its liquid vapour-pressure curve
+   * reaches the pressure only below the triple point (carbon dioxide, 216.58 K). Then T_K is null; a sublimation
+   * temperature is given only where an open record has one (none is stored: never estimated).
+   * @returns {{T_K:number|null, sublimes:boolean, Tsub_K:null, message:string|null}}
+   */
+  function normalBoilingPoint(P = 101.325) {
+    const T = tsat(P);
+    if (!belowTriple(T)) return { T_K: T, sublimes: false, Tsub_K: null, message: null };
+    return { T_K: null, sublimes: true, Tsub_K: null,
+      message: `${c.name}: none, the component sublimes at ${P} kPa. Its liquid vapour-pressure curve, continued below the ${triple.label} (${+triple.T_K.toFixed(2)} K), reaches ${P} kPa at ${+T.toFixed(2)} K, where the stable phase is the solid; no open record of its sublimation temperature is stored.` };
+  }
+
+  /**
    * State properties at T (K) and P (kPa). Missing properties are null, with a note.
    * Liquid properties are at saturation (pressure effect neglected). Vapour and
    * supercritical states use Peng-Robinson (eos/cubic.js) for Z, density, residual
@@ -285,6 +311,11 @@ export function pure(key, opts = {}) {
     if (extrapolations.length) {
       out.notes = [...new Set([...extrapolations.map(e => e.message), ...out.notes])];
       out.extrapolations = extrapolations;
+    }
+    // a liquid below its triple point: the solid is the stable phase (pure component only)
+    if (out.phase === "liquid" && belowTriple(T)) {
+      out.notes = [belowTripleMessage(T), ...out.notes];
+      out.belowTriplePoint = { T_K: triple.T_K, label: triple.label };
     }
     return out;
   }
@@ -438,7 +469,8 @@ export function pure(key, opts = {}) {
     const pS = vpRec ? psat(T) : eosPR().psat(0, T);
     const hV = hIdealGas(T) + hResSat(T, pS);
     const hL = liquidEnthalpy(T, pS);
-    return { T_K: T, P_kPa: pS, hV_J_mol: hV, hL_J_mol: hL, dHvap_J_mol: property("heatOfVaporization", T) };
+    return { T_K: T, P_kPa: pS, hV_J_mol: hV, hL_J_mol: hL, dHvap_J_mol: property("heatOfVaporization", T),
+      ...(belowTriple(T) ? { belowTriplePoint: { T_K: triple.T_K, label: triple.label }, warning: belowTripleMessage(T, `the saturation state at ${+Number(T).toFixed(2)} K`) } : {}) };
   }
 
   const base = {
@@ -456,7 +488,7 @@ export function pure(key, opts = {}) {
     // enthalpy and Gibbs energy of formation at 298.15 K with their source (proposal 0010, step 1;
     // validation/python/formation_data.py), or { available: false, searched } (no open data)
     formation: formationOf(c),
-    has, record, property, psat, tsat, hIdealGas, props, liquidEnthalpy, saturation,
+    has, record, property, psat, tsat, normalBoilingPoint, hIdealGas, props, liquidEnthalpy, saturation,
     /** Names of the properties with data, and those marked "no open data". */
     available() {
       const have = PROPERTY_NAMES.filter(has);

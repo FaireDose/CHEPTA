@@ -27,6 +27,10 @@ default. The website showed only the classic layout; the new one was only in `ex
 2. **Where testers send answers.** The checklist offers a reply to you, an issue with the Proposal or Bug form, or the
    Feedback button. *Recommendation:* ask testers to reply to you, and use one issue ("Layout check, proposal 0021")
    to gather the results in public; say if you prefer another way.
+   `docs/ui-review/` is added to `VERSION_EXEMPT` in `scripts/set-version.mjs` (the release workflow's version sync and
+   `test/versions.test.js`): the checklist names the first release that has the `layout` key, 0.6.2, and must not be
+   rewritten to another version at the next release. (main's `package.json` still reads 0.6.1 while 0.6.2 is on npm, so
+   without the exemption the test failed.)
 3. **The example for Task 4** is `examples/flowsheet-recycle.chepta.json`, which the tester downloads from GitHub and
    opens with File / Project; the Flowsheet has no example on its empty drawing until step 5. *Recommendation:* accept
    this for the check.
@@ -34,3 +38,16 @@ default. The website showed only the classic layout; the new one was only in `ex
 ## Still pending
 
 Step 4 itself waits for the user check (DECISIONS.md, open item "A reorganization of the workbench").
+
+## Decided (the maintainer, 2026-11-13)
+
+The maintainer agreed to all three recommendations:
+
+1. **Chat artifacts and the new layout:** testers in a chat load the new layout. With 0.6.2 released, the released
+   library has the `layout` key (checked: `chepta@0.6.2`, `dist/chepta.js` handles `layout === "next"`), so
+   `docs/ui-review/TESTING-0021.md` loads `chepta@0.6.2` from jsDelivr, as `ai/instructions/use-chepta.md` does, instead
+   of the website's `chepta.js`. The checklist also says that the website is at <https://cheptasim.org/>
+   (`fairedose.github.io/CHEPTA` redirects there) and the preview at <https://cheptasim.org/next.html>.
+2. **Where testers send answers:** testers reply to the maintainer, and one public issue, "Layout check, proposal 0021",
+   gathers the results.
+3. **The example for Task 4** is `examples/flowsheet-recycle.chepta.json`, opened through File > Project.

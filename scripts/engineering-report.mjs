@@ -90,6 +90,10 @@ const bar = P => +(P / 100).toPrecision(6);
 
 /** Thrown when a function or data does not exist in the version under test. */
 export class NotAvailable extends Error {}
+/** The quantity has no value by nature (a normal boiling point of a component that sublimes): "none", not a failure. */
+export class NoValue extends Error {
+  constructor(text, reason) { super(reason ?? text); this.text = text; }
+}
 
 const NA_PATTERNS = [
   /not in the databank/i, /no open data/i, /has no vapour-pressure record/i, /no vapour pressure/i,
@@ -101,6 +105,7 @@ const RANGE_PATTERNS = [/outside/i, /out of range/i, /range of validity/i, /beyo
 /** Classify an error thrown by a case: not available (feature/data missing, out of range) or a real error. */
 export function classify(e) {
   const msg = String(e?.message ?? e);
+  if (e instanceof NoValue) return { status: "none", text: e.text, reason: msg };
   if (e instanceof NotAvailable || NA_PATTERNS.some(p => p.test(msg))) return { status: "na", reason: msg };
   if (e instanceof RangeError || RANGE_PATTERNS.some(p => p.test(msg))) return { status: "na", reason: `outside the range of this version: ${msg}` };
   return { status: "error", reason: msg };
@@ -195,6 +200,12 @@ const other = c => (c === "water" ? "acetic-acid" : "water");
 function boilingPoint(ctx, c, P) {
   if (typeof ctx.F.pure === "function") {
     const p = ctx.pure(c);
+    // a component that sublimes at this pressure has no normal boiling point (2026-11-13): "none", not a number
+    if (typeof p.normalBoilingPoint === "function") {
+      const nb = p.normalBoilingPoint(P);
+      if (nb.sublimes) throw new NoValue("none (sublimes)", nb.message);
+      return { value: nb.T_K - 273.15, method: "pure().normalBoilingPoint" };
+    }
     if (typeof p.tsat === "function") return { value: p.tsat(P) - 273.15, method: "pure().tsat" };
   }
   const s = ctx.system([c, other(c)], "ideal");
@@ -243,7 +254,11 @@ function pureProperty(ctx, cs) {
     try { const ps = p.psat(T); if (num(ps) && P < ps * 1.001) P = ps * 1.001; } catch { /* no vapour pressure: keep P */ }
     try {
       const st = p.props(T, P);
-      if (st?.phase === "liquid" && num(st[field])) return { value: conv(st[field], M), method: `pure().props() at ${+P.toPrecision(6)} kPa` };
+      if (st?.phase === "liquid" && num(st[field])) {
+        // computed outside a record's range or below the triple point: an extrapolation, reported only (2026-11-13)
+        const extrapolated = !!(st.extrapolations?.length || st.belowTriplePoint);
+        return { value: conv(st[field], M), method: `pure().props() at ${+P.toPrecision(6)} kPa`, ...(extrapolated ? { extrapolated: true } : {}) };
+      }
       propsNote = st?.phase && st.phase !== "liquid" ? ` (pure().props() gives phase "${st.phase}")` : "";
     } catch (e) { propsNote = ` (pure().props(): ${e.message})`; }
   }
@@ -412,8 +427,8 @@ export function runCases(F, cases, { curves = true } = {}) {
       for (const q of cs.quantities) {
         let r;
         try {
-          const { value, method } = evaluateQuantity(ctx, cs, q.key);
-          r = num(value) ? { status: "ok", value, method } : { status: "error", reason: `non-numeric result (${value})`, method };
+          const { value, method, extrapolated } = evaluateQuantity(ctx, cs, q.key);
+          r = num(value) ? { status: "ok", value, method, ...(extrapolated ? { extrapolated: true } : {}) } : { status: "error", reason: `non-numeric result (${value})`, method };
         } catch (e) {
           r = classify(e);
         }
@@ -547,7 +562,7 @@ function describe(cs, key) {
  * @returns {{ groups: Array, summary: object }}
  */
 export function compare(cases, refs, base, head) {
-  const summary = { total: 0, ok: 0, out: 0, outInfo: 0, noRef: 0, na: 0, error: 0, newer: 0, changed: 0, lost: 0 };
+  const summary = { total: 0, ok: 0, out: 0, outInfo: 0, noRef: 0, na: 0, none: 0, error: 0, newer: 0, changed: 0, lost: 0 };
   const groups = [];
   for (const g of cases.groups) {
     const rows = [];
@@ -562,28 +577,31 @@ export function compare(cases, refs, base, head) {
         const baseDev = b.status === "ok" ? deviation(b.value, refValue, tol) : null;
         const inTol = withinTolerance(dev, tol);
         const scale = tol?.rel !== undefined ? tol.rel * Math.abs(refValue ?? b.value ?? h.value ?? 0) : tol?.abs ?? 0;
-        const changed = b.status === "ok" && h.status === "ok" &&
-          Math.abs(h.value - b.value) > Math.max(1e-9 * Math.abs(b.value), 0.01 * scale);
+        const changed = (b.status === "ok" && h.status === "ok" &&
+          Math.abs(h.value - b.value) > Math.max(1e-9 * Math.abs(b.value), 0.01 * scale)) ||
+          (b.status === "ok" && h.status === "none");
         const newer = b.status !== "ok" && h.status === "ok";
-        const lost = b.status === "ok" && h.status !== "ok";
+        const lost = b.status === "ok" && h.status !== "ok" && h.status !== "none";
         let status;
         if (h.status === "error") status = "error";
         else if (lost) status = "lost";
+        else if (h.status === "none") status = "none";   // no value by nature: not a failure (2026-11-13)
         else if (h.status === "na") status = "na";
         else if (inTol === true) status = "ok";
-        else if (inTol === false) status = tol?.informational ? "outInfo" : "out";
+        else if (inTol === false) status = tol?.informational || h.extrapolated ? "outInfo" : "out";   // a continuation outside a record's range: report only (2026-11-13)
         else status = "noRef";
         summary.total++;
         if (status !== "lost") summary[status]++;
         if (lost) summary.lost++;
         if (newer) summary.newer++;
         if (changed) summary.changed++;
-        const show = changed || newer || lost || status === "error" || status === "out" || status === "outInfo";
+        const show = changed || newer || lost || status === "error" || status === "out" || status === "outInfo" || status === "none";
         const asOnMain = !changed && b.status === "ok" && withinTolerance(baseDev, tol) === false;
         // a known issue (cases.json "known"): a stated reason why the result stays out of tolerance for now
         const known = (status === "out" || status === "outInfo") && cs.known ? cs.known : null;
+        const extrapolated = status === "outInfo" && !!h.extrapolated && !tol?.informational;
         rows.push({ id: cs.id, key: q.key, ...describe(cs, q.key), unit: QUANTITIES[q.key]?.unit ?? "",
-          base: b, head: h, ref, dev, baseDev, tol, inTol, status, changed, newer, lost, asOnMain, show, known });
+          base: b, head: h, ref, dev, baseDev, tol, inTol, status, changed, newer, lost, asOnMain, show, known, extrapolated });
       }
     }
     groups.push({ id: g.id, title: g.title, rows });
@@ -614,9 +632,9 @@ export function machineryChanges(baseDir, headDir) {
 
 // ------------------------------------------------------------------ Markdown
 
-const ICON = { ok: "✅", out: "⚠️", outInfo: "⚠️ (report only)", noRef: "no reference", na: "not available", error: "❌ error", lost: "❌ lost" };
+const ICON = { ok: "✅", out: "⚠️", outInfo: "⚠️ (report only)", none: "none", noRef: "no reference", na: "not available", error: "❌ error", lost: "❌ lost" };
 const esc = s => String(s ?? "").replace(/\|/g, "\\|").replace(/[\r\n]+/g, " ");
-const cell = r => r.status === "ok" ? fmtValue(r.key, r.value) : r.status === "na" ? "n/a" : "error";
+const cell = r => r.status === "ok" ? fmtValue(r.key, r.value) : r.status === "none" ? (r.text ?? "none") : r.status === "na" ? "n/a" : "error";
 
 function statusText(row) {
   let t = row.status === "out" && severity(row) === "large" ? "❌" : ICON[row.status];
@@ -624,13 +642,14 @@ function statusText(row) {
   else if (row.changed) t = `✏️ ${t}`;
   else if (row.asOnMain && (row.status === "out" || row.status === "outInfo")) t += " as on main";
   if (row.known) t += " (known issue)";
+  if (row.extrapolated) t += " (extrapolated outside the record's range)";
   return t;
 }
 
 function mdRow(r) {
   const ref = num(r.ref?.value) ? fmtValue(r.key, r.ref.value) : "–";
-  const b = r.base.status === "ok" ? fmtValue(r.key, r.base.value) : r.base.status === "na" ? "n/a" : "error";
-  const h = r.head.status === "ok" ? fmtValue(r.key, r.head.value) : r.head.status === "na" ? "n/a" : "error";
+  const b = cell({ ...r.base, key: r.key });
+  const h = cell({ ...r.head, key: r.key });
   return `| ${esc(r.property)} | ${esc(r.conditions)} | ${esc(r.unit)} | ${b} | ${h} | ${ref} | ${formatDeviation(r.dev, r.tol, r.key)} | ${statusText(r)} |`;
 }
 const MD_HEAD = "| Property | Conditions | Unit | main | this PR | Reference | Deviation | |\n|---|---|---|--:|--:|--:|--:|---|";
@@ -730,7 +749,8 @@ export function renderMarkdown(cmp, meta = {}) {
   });
   const legend = [
     `<sub>❌ large = the calculation fails, a result computed on main is lost, or the deviation is more than ${LARGE} times the tolerance; ` +
-    `⚠️ small = out of tolerance by less, a known issue, or a report-only comparison (an equation of state against a reference equation of state, or an excess enthalpy compared with data the fit used or predicted outside the fitted range); ` +
+    `⚠️ small = out of tolerance by less, a known issue, or a report-only comparison (an equation of state against a reference equation of state, an excess enthalpy compared with data the fit used or predicted outside the fitted range, or a value continued outside its record's range, which is an extrapolation and not data); ` +
+    `none = no value by nature (a normal boiling point of a component that sublimes at that pressure); ` +
     `not checked = no reference, or not available in this version. ` +
     `Deviation = this PR minus reference (relative for properties, absolute for temperatures and compositions). ` +
     `🆕 = not available on main; ✏️ = changed from main; ❌ lost = computed on main but not in this PR; "as on main" = already out of tolerance on main and unchanged. ` +
@@ -866,7 +886,7 @@ function htmlTable(rows, refs) {
     const refTitle = r.ref ? (r.ref.value === null ? r.ref.why : `${refs.sources?.[r.ref.source]?.citation ?? r.ref.source}; ${r.ref.detail ?? ""}`) : "no reference";
     const tdv = x => x.status === "ok"
       ? `<td class="n" title="${h(x.method ?? "")}">${fmtValue(r.key, x.value)}</td>`
-      : `<td class="n na" title="${h(x.reason ?? "")}">${x.status === "na" ? "n/a" : "error"}</td>`;
+      : `<td class="n na" title="${h(x.reason ?? "")}">${x.status === "none" ? h(x.text ?? "none") : x.status === "na" ? "n/a" : "error"}</td>`;
     return `<tr class="st-${r.status}"><td>${h(r.property)}</td><td>${h(r.conditions)}</td><td>${h(r.unit)}</td>${tdv(r.base)}${tdv(r.head)}` +
       `<td class="n" title="${h(refTitle)}">${ref}</td><td class="n">${formatDeviation(r.dev, r.tol, r.key)}</td><td class="n tol">${h(tolText(r.tol))}</td>` +
       `<td${r.known ? ` title="${h(r.known)}"` : ""}>${statusText(r)}</td></tr>`;

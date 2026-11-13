@@ -76,6 +76,11 @@ Read on 2026-10-09:
    (it would freeze), and parameters used within the temperature range they were fitted to where possible. Outside
    it the engine continues a record with a warning (2026-11-13, DATA_RULES section 3, "Ranges"): a result that carries
    such a warning is an extrapolation, not data; prefer a method whose records cover the conditions.
+   **A pure component** below its triple point (its melting temperature where no triple point is recorded) is a
+   different case from a mixture (the maintainer, 2026-11-13): its stable phase is the solid, so a pure-component
+   property, a pure saturation state or a normal boiling point there says so in its warning; a normal boiling point
+   below the triple point is "none, the component sublimes at this pressure" (carbon dioxide). In a liquid mixture
+   nothing changes: a component below its melting point uses the supercooled liquid as its reference state.
 
 ## When in doubt: what other simulators do
 
