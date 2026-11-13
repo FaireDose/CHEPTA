@@ -41,6 +41,15 @@ export const SECTIONS = [
   { id: "flowsheet", label: "Flowsheet", short: "Flowsheet", icon: "flowsheet", workspaces: ["flowsheet"] },
 ];
 
+/**
+ * The workspaces whose diagrams have background layers worth a switch: the colour map, the isotherms and the two-liquid
+ * shading of the phase diagrams, the steam and fluid charts and the solubility diagrams (class "fug-bg-layer" in
+ * txy.js, ternary.js, app-views.js). Their toolbar holds the switch (the "Display" group). The charts of the other
+ * workspaces carry only grid lines under the same class; the new layout always shows them, without a switch (the
+ * maintainer, 2026-11-13: "are there any background layers or is this from another software?").
+ */
+export const BACKGROUND_WORKSPACES = ["equilibrium", "steam", "solubility"];
+
 /** The section of a workspace. */
 export const sectionOf = ws => SECTIONS.find(s => s.workspaces.includes(ws))?.id ?? null;
 
