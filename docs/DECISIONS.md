@@ -45,9 +45,6 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   two released versions. Flowsheet mode (docs/decisions/2026-11-13-08-ui-0021-flowsheet-mode.md; in review): a switch [Flowsheet |
   Calculations], no rail in Flowsheet mode, the rail's "Units" headed "Unit calculations", the toolbar's "Blocks" named
   "Place a block", the Settings button taken out (the Units button opens the Settings), the background switch only in
-  two released versions. Flowsheet mode (docs/decisions/2026-11-13-08-ui-0021-flowsheet-mode.md; in review): a switch [Flowsheet |
-  Calculations], no rail in Flowsheet mode, the rail's "Units" headed "Unit calculations", the toolbar's "Blocks" named
-  "Place a block", the Settings button taken out (the Units button opens the Settings), the background switch only in
   the toolbars of Phase eq., Charts and Solubility ("Grid and shading"); its four questions answered 2026-11-13 as
   recommended (the classic layout unchanged until step 7). Step 4: preview published at /next.html (docs/decisions/2026-11-13-06-site-next-preview.md; answered 2026-11-13 as
   recommended: testers in a chat load `chepta@0.6.2` from jsDelivr, results go to the maintainer and to one public issue
