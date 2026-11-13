@@ -61,8 +61,10 @@ current: replace its "State" and "Queue" sections at each handover, never append
    Extraction (Lab's 5 and 4): #234 merged 2026-11-12 with the maintainer's answers. 0021 step 2 (canvas tabs, every
    workspace): PR #235 open; the maintainer agreed to its four recommendations and asked for warnings in two steps (a
    short form, the full text on a press), added (c759343); all checks green; the maintainer merges it (2026-11-12).
-   Step 3 (Opus) starts after it is merged, best in the same session (it knows the code), once #236's worker is done (two
-   slots). A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
+   #235 merged (f39e6e9). Step 3 (Opus) running in a fresh session (rule 1): session_01FPbeWWzrSq4VtnRnVFpB4f, branch
+   claude/ui-0021-numbered-steps, with the step-2 worker's handover note forwarded. VLLE (Lab's 1 and 2): PR #237, checks
+   green, waiting for the maintainer (Liu 2013 rows, Pirola quote; four decisions, all recommended yes). #236's worker hit
+   the 5-hour limit overnight; resumed 2026-11-13. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
    and so on); one Opus or Sonnet worker after step 3, its own PR, recorded as a new row of proposal 0021 section 4. Running: acetic acid below its melting point,
