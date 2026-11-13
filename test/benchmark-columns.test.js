@@ -476,7 +476,7 @@ test("column case G3: the column's method cannot represent the feed; CHEPTA's NR
   assert.ok(Math.abs(fs.enthalpy("liquid", c.column.feed.T_K, P, c.column.feed.z) - r.h_flowsheet_J_mol) < 0.05);
   assert.ok(Math.abs(cm.enthalpy("liquid", lo, P, c.column.feed.z) - r.h_column_method_at_lowest_T_J_mol) < 0.05);
   assert.ok(r.h_flowsheet_J_mol < r.h_column_method_at_lowest_T_J_mol, "below what the column's method reaches");
-  assert.throws(() => cm.enthalpy("liquid", lo - 1, P, c.column.feed.z), e => e.code === c.expected.code && /278\.68/.test(e.message));
+  assert.throws(() => cm.enthalpy("liquid", lo - 11, P, c.column.feed.z), e => e.code === c.expected.code && /278\.68/.test(e.message)); // 11 K: the heat capacity is extrapolated 10 K below its record (decision 2026-11-12-05)
 });
 
 const hdir = new URL("../validation/data/columns/hydraulics/", import.meta.url);

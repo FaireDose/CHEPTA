@@ -1224,7 +1224,11 @@ class Builder:
             if cid in COOLPROP:
                 Tt = max(Tt, self.coolprop(cid).Ttriple)
             Tt = math.ceil(Tt * 100) / 100
-            if Tmin < Tt:
+            if cid in SUPERCOOLED_CHEMSEP and Tmin < Tt:
+                # the liquid below its triple point: ChemSep's own range, taken as it is (decision 2026-11-12-05)
+                conv += ("Tmin kept at ChemSep's %.2f K, below the triple point %.2f K (a supercooled liquid; ChemSep's "
+                         "range taken as it is). " % (Tmin, Tt))
+            elif Tmin < Tt:
                 Tmin = Tt
                 conv += "Tmin raised to the %s %.2f K (ChemSep: %.2f K). " % (
                     "melting point" if tag == "NormalMeltingPointTemperature" else "triple point", Tt, d["Tmin"])
@@ -2010,6 +2014,26 @@ def write_doc(comps, records, builder, vp_gas, measured=()):
     DOC_FILE.write_text("\n".join(L) + "\n")
 
 
+# Components whose ChemSep liquid records keep ChemSep's own lower temperature, below the triple point, instead of
+# being cut at the triple point (the maintainer, 2026-11-12: CHEPTA-Lab feeds acetic acid at 288.15 K, below its
+# triple point of 289.81 K). Only where open data cover it; see docs/decisions/2026-11-12-05-acetic-acid-supercooled.md.
+SUPERCOOLED_CHEMSEP = {"acetic-acid"}
+
+# What was searched for open measured values below a record's range, for a record that cannot be extended (the maintainer,
+# 2026-11-12). Stored in the record as `below_range_searched`; the refusal below the range says it.
+BELOW_RANGE_SEARCHED = {
+    ("acetic-acid", "liquidHeatCapacity"): [
+        "ChemSep v8.3: its liquid heat-capacity correlation starts at 289.69 K (it is the record's lower end)",
+        "NIST WebBook, liquid heat capacity (page read 2026-11-12): Martin and Andon 1982 (13-450 K, only the 298.15 K value is printed), "
+        "Parks and Kelley 1925 (294.7 K), Pickering 1895 (one mean value for 287-335 K, 137 J/mol/K, 11 % above the others: not used), "
+        "von Reis 1881 (298 K); nothing below 287 K",
+        "NIST TRC ThermoML Archive (retrieved 2026-10-07): liquid heat capacity of pure acetic acid only at 308.15-333.15 K",
+        "free copies (Unpaywall, OpenAlex, CORE) of Martin and Andon 1982 (10.1016/0021-9614(82)90083-0), Steele et al. 1997 "
+        "(10.1021/je970099y) and Parks and Kelley 1925 (10.1021/ja01685a003): none; no supplementary file for Steele et al. 1997",
+        "OpenAlex full-text search of open articles for acetic acid with supercooled liquid / heat capacity (2026-11-12): no measured value",
+    ],
+}
+
 # Warnings carried in the records themselves (the reviewer of #12, finding 1)
 RECORD_NOTES = {
     "acetic-acid": {
@@ -2197,6 +2221,9 @@ def main():
             continue
         for p, text in notes.items():
             records[cid][p]["source"]["notes"] = text
+    for (cid, p), lst in BELOW_RANGE_SEARCHED.items():
+        if cid in records and p in records[cid]:
+            records[cid][p]["below_range_searched"] = lst
     print("\n".join(b.log))
     for line in measured:
         print("  measured: " + line)

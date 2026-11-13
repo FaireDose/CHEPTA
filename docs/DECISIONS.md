@@ -10,6 +10,21 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
+  decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
+  288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record
+  with a warning (general), refused farther; in mixtures the vapour pressure is only warned about (a refusal beyond 10 K
+  broke six validated vapour-liquid sets: the maintainer decides). Still open: a
+  follow-up proposal to restate METHOD_SELECTION rule 8 (the mixture's solid-liquid equilibrium, not the pure melting
+  point); whether a person tries to get Steele et al. 1997 and Martin and Andon 1982 (a measured value would replace the
+  extrapolation).
+- **Widen the vapour-pressure records** (data follow-up from #236, 2026-11-13): gamma-butyrolactone, 1,3-propanediol,
+  diethyl ether, methanol and water at the hot end, and the other components the refusal trial of
+  docs/decisions/2026-11-12-05-acetic-acid-supercooled.md found (re-run the trial for the full list). The mixture path
+  only warns until then.
+- **Rule-8 proposal** (follow-up from #236): restate METHOD_SELECTION rule 8 with the mixture's solid-liquid
+  equilibrium, and correct the description of column case G3 (benzene feed at 265 K, now accepted within the 10 K
+  extension) in the same proposal.
 - **Lab requests 2-5** (docs/decisions/2026-11-11-09-lab-requests-1.md): check the MHV1 source ids against the data
   (none was wrong; the Pokki 2018 id is named after the article's other system), and decide whether the articles
   that measured several systems should get one source id per system.

@@ -339,7 +339,7 @@ for (const id of ["G1-own-method-boundary", "G2-own-method-recycle"]) {
 
 test("W7's G3-own-method-cannot-represent: a cold Peng-Robinson feed the column's NRTL cannot represent is refused (OUT_OF_RANGE), the feed, the method and the record named", () => {
   const c = caseOf("G3-own-method-cannot-represent");
-  const r = run({ capability: "solve_flowsheet", input: { flowsheet: gFlowsheet(c, c.column.feed.T_K, null) } });
+  const r = run({ capability: "solve_flowsheet", input: { flowsheet: gFlowsheet(c, 250, null) } }); // 250 K, 28.7 K below benzene's record: the heat capacity is extrapolated 10 K at most (decision 2026-11-12-05); the case's own 265 K is now inside that
   assert.equal(r.outcome, c.expected.outcome);
   assert.equal(r.error.code, c.expected.code);
   assert.equal(r.value, undefined);
