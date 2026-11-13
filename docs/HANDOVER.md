@@ -69,8 +69,10 @@ current: replace its "State" and "Queue" sections at each handover, never append
    maintainer (warning-only vapour pressure; G3 benzene case now accepted by the column within the extension).
    Follow-ups: widen the narrow vapour-pressure records; restate METHOD_SELECTION rule 8 (proposal) and fix G3's description.
    #237 merged (a1bdaf4). Step 3: PR #238 (four questions, all recommended yes; 16 screenshots).
-   Lab's 7 running: session_01FPbeWY1D3s46mwL5SBQtnj (Opus), branch claude/splitter-flow-design-spec (splitter by
-   flow + the design-specification proposal). Workers' send_message to @parent may fail ("credential for this
+   2026-11-13 11:15 UTC: #236 (4d08a78, the maintainer's answers recorded) and #238 (9a2c74e) green, ready to merge;
+   both workers done. Lab's 7 built: PR #239 (b8597df; splitter by flow, project format 9, proposal 0022 draft;
+   decisions in 2026-11-13-02: format 9, short inlet inside a recycle, key names, 0022's five questions). Next, after
+   #238 and #239 merge (same UI files): row chooser + (d). Acetic acid + cyclohexane fit (Sonnet) after #236 merges. Workers' send_message to @parent may fail ("credential for this
    connector"): when a worker goes idle, read its last message with list_events. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
