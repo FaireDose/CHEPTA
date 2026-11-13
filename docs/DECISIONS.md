@@ -43,7 +43,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   the four questions answered 2026-11-13 as recommended). Open: the classic layout's empty band of the heat exchanger
   (finding 9), to be fixed in a small pull request of its own. Next: the first additions (measured VLE points on T-x-y, the x-y, gamma and alpha diagrams, the flowsheet's tabs
   and examples). The new layout becomes the default only after steps 1-3 and a check by users; "classic" is kept for
-  two released versions.
+  two released versions. Step 4: preview published at /next.html (docs/decisions/2026-11-13-06-site-next-preview.md); waiting for the user
+  check (docs/ui-review/TESTING-0021.md).
 - **Measured points and the x-y, γ and α plots** (proposal 0021, answer 7, (a) and (b);
   docs/decisions/2026-11-11-07-ui-0021-step1.md): the open vapour-liquid sets of `validation/data/` are drawn on the
   T-x-y and the P-x-y with their source and what the parameter set did with them; a switch above the diagram shows

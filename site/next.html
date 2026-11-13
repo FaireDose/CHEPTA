@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CHEPTA (new layout, preview)</title>
+<meta name="description" content="Open chemical process simulation in the browser: phase equilibria, properties, steam tables and equations of state.">
+<style>
+  :root { color-scheme: light dark; }
+  body { margin: 0; padding: 16px; background: Canvas; color: CanvasText;
+         font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  body > header { max-width: 1240px; margin: 0 auto 12px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; }
+  body > header h1 { font-size: 1.6rem; margin: 0; line-height: 1.2; }
+  body > header .chepta-logo { display: block; width: 140px; height: auto; }
+  body > header .tagline { display: block; font-size: .95rem; font-weight: normal; }
+  body > header a { color: inherit; }
+  #app { max-width: 1240px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<header>
+    <h1><span id="chepta-brand">CHEPTA</span><span class="tagline">Chemical Engineering Process Tools for Agents</span></h1>
+  <span style="margin-left: 4rem">
+  Open Source Process Simulator<br>
+  that calculates in your browser and in AI chats.
+    </span>
+  <a href="https://github.com/FaireDose/CHEPTA">Source Project</a>
+  <a href="https://github.com/FaireDose/CHEPTA/blob/main/ROADMAP.md">Roadmap</a>
+  <a href="https://github.com/FaireDose/CHEPTA-Lab">Powered by CHEPTA-Lab</a>
+  <a href="./" style="opacity:.75;font-size:.9rem">Back to the current layout</a>
+  <a href="https://github.com/FaireDose/CHEPTA/blob/main/docs/ui-review/TESTING-0021.md" style="opacity:.75;font-size:.9rem">Tester's checklist</a>
+</header>
+<div id="app"></div>
+<!-- ?v= is replaced by the commit when the site is published (.github/workflows/pages.yml), so a browser never pairs
+     this page with an older chepta.js from its cache -->
+<script src="chepta.js?v=dev"></script>
+<script>
+  // opens empty (new layout, preview): choose components in Inputs, or load one of the Examples. The workbench first: the logo must never stop it.
+  // the reorganized layout of proposal 0021, offered as a preview beside the current one (index.html)
+  CHEPTA.app("#app", { components: [], layout: "next" });
+  try { document.getElementById("chepta-brand").replaceChildren(CHEPTA.brandLogo()); } catch { /* the word CHEPTA stays */ }
+</script>
+  <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "9c08ee7b8beb4e559b8f50d047060233"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
