@@ -98,7 +98,14 @@ current: replace its "State" and "Queue" sections at each handover, never append
    examples/flowsheet-recycle.chepta.json) not yet answered. Follow-up found: since #241 CO2 gets a "normal boiling
    point" of -88 C from its liquid vapour pressure continued below the triple point (it sublimes at -78.5 C); warn
    "solid here" below a triple point and make such values report-only. Recommended next: switch to the Lab phase on
-   0.6.2 (Lab reruns its first four cases; 0.7.0 when all four pass). Workers' send_message to @parent may fail ("credential for this
+   0.6.2 (Lab reruns its first four cases; 0.7.0 when all four pass).
+   The maintainer agreed (2026-11-13) to #242's three answers, the triple-point follow-up and the Lab phase. Site is
+   https://cheptasim.org/ (github.io redirects); preview https://cheptasim.org/next.html checked live (no errors).
+   Running, the LAST CHEPTA item of this phase: Sonnet session_01FPbeWYGgyfTtC89rwSmAkS, branch
+   claude/below-triple-point (decision -07; also records #242's answers). After it merges: tell the Lab coordinator
+   (session_01FPbeWUJu4MrkqCuGX3UKYB) the Lab phase starts on chepta 0.6.2 (VLLE with acetic acid, splitter by flow,
+   extrapolation with warnings, missing pairs estimated); CHEPTA works only on Lab's capability requests until the
+   four cases pass; then 0.7.0. Workers' send_message to @parent may fail ("credential for this
    connector"): when a worker goes idle, read its last message with list_events. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
