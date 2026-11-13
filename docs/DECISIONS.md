@@ -211,16 +211,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   search limits, no new project format, slow refusals next to a pinch accepted. Still to check: the sources, the
   refusals' wording and units, the panel. Next: inequalities ("at least", "at most"), then a draw of one of two
   liquids, pumparounds, side draws on absorbers.
-- **Vapour + two liquids with acetic acid's chemical theory, built, to review**
-  (docs/decisions/2026-11-12-02-acid-chemical-theory-vlle.md; the next step decided in 2026-11-11-08, item 4): the
-  three-phase flash, the heater, and two liquids on the stages of distillation columns (a decanter too, without a reference case), absorbers
-  and strippers, with the dimers; absorbers and strippers with two liquids for every activity model. An independent
-  reference (flash, three columns), the measured tie lines of water + acetic acid + ethyl acetate, and the measured
-  VLLE of cyclohexane + acetic acid + water (Liu et al. 2013, Modified UNIFAC 2.0, predicted). To check: the 14 rows
-  of Liu et al. 2013, the quotation from Pirola et al. 2013. To decide: the test that pins the predicted deviations; a
-  fitted acetic acid + cyclohexane pair; a new search for measured VLLE of water + acetic acid + ethyl acetate when the
-  ThermoML Archive's search answers again; absorbers with two liquids for every activity model. Columns with the
-  dimers (2026-11-11-08) were decided on 2026-11-12: all five recommendations.
+- **Vapour + two liquids with acetic acid's chemical theory, decided 2026-11-13**
+  (docs/decisions/2026-11-12-02-acid-chemical-theory-vlle.md, PR #237): built and accepted with all four
+  recommendations. Follow-ups, as data tasks: (a) fit an acetic acid + cyclohexane pair to open data, so that the
+  measured VLLE of Liu et al. 2013 tests a fitted model; (b) search the ThermoML Archive again for measured VLLE of
+  water + acetic acid + ethyl acetate when its search interface answers (it returned 503 on 2026-11-12). Still to
+  check against the sources: the 14 rows of Liu et al. 2013 and the quotation from Pirola et al. 2013.
 - **How the agents work** (docs/decisions/2026-11-10-01-working-method.md): a new coordinator starts from
   [HANDOVER.md](HANDOVER.md); one task per session; at most two workers; Sonnet for routine work, Opus for engineering.
 - **The program after M4 and CHEPTA-Lab** (docs/decisions/2026-11-04-08-program-after-m4.md): phases P5 cost

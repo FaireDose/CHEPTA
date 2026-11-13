@@ -133,3 +133,13 @@ The behaviour they checked was a refusal that this pull request removes by decis
    reference stand.
 4. **Absorbers and strippers with two liquids, built here for every activity model** (not only with the dimers).
    Recommended: keep (the stage equations are milestone M2b's, the reference agrees).
+
+## Decided (the maintainer, 2026-11-13)
+
+All four as recommended (relayed by the coordinator):
+
+1. The test against Liu et al. 2013 that pins the predicted model's deviations stays.
+2. An acetic acid + cyclohexane pair fitted to open data: later, as a data task (open item in DECISIONS.md).
+3. Measured VLLE of water + acetic acid + ethyl acetate: search the ThermoML Archive again when its search interface
+   answers (open item in DECISIONS.md).
+4. Absorbers and strippers with two liquids stay built for every activity model.
