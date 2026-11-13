@@ -116,7 +116,12 @@ current: replace its "State" and "Queue" sections at each handover, never append
    workers to record). Order: (1) the maintainer merges the 0.6.2 version PR (branch version-0.6.2, never opened;
    main reads 0.6.1); (2) then tell #244's worker to rebase and drop "ui-review" from VERSION_EXEMPT, then merge
    #244; (3) tell #245's worker to rebase (DECISIONS.md conflict), merge #245; (4) open the public issue "Layout
-   check, proposal 0021" (agreed) once next.html shows #245; (5) start the Lab phase. Workers' send_message to @parent may fail ("credential for this
+   check, proposal 0021" (agreed) once next.html shows #245; (5) start the Lab phase.
+   Done 19:40: #244, #245, #246 (answers), #247 (version 0.6.2) merged; #248 (drop the ui-review exemption) open, checked,
+   waiting for the maintainer's merge. next.html live with 0.6.2 and the mode switch. Issue
+   https://github.com/FaireDose/CHEPTA/issues/249 "Layout check, proposal 0021" opened. Both CHEPTA workers finished.
+   LAB PHASE STARTED: the Lab coordinator (session_01FPbeWUJu4MrkqCuGX3UKYB) told to rerun its first four cases on
+   chepta@0.6.2 and report per case; CHEPTA works only on Lab's requests until all four pass, then 0.7.0. Workers' send_message to @parent may fail ("credential for this
    connector"): when a worker goes idle, read its last message with list_events. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
