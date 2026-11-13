@@ -2,8 +2,8 @@
 // itself is a view around CHEPTA.app and is checked on screenshots (docs/ui-review/2026-11-11-reorganization/).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { TOOLS, SETTINGS_BUTTON, PICKER_WORKSPACES, METHOD_PAGE, calculations, appNext, MODES, FIRST_CALCULATION, modeOf, navigation, modeTarget, switchMove } from "../src/ui/app-next.js";
-import { WORKSPACES, UTILITIES } from "../src/ui/workspaces.js";
+import { TOOLS, SETTINGS_BUTTON, HIDDEN_BACKGROUND_DOORS, PICKER_WORKSPACES, METHOD_PAGE, calculations, appNext, MODES, FIRST_CALCULATION, modeOf, navigation, modeTarget, switchMove } from "../src/ui/app-next.js";
+import { WORKSPACES, UTILITIES, BACKGROUND_WORKSPACES } from "../src/ui/workspaces.js";
 
 test("every workspace has one place: the flowsheet on its own, the others among the calculations", () => {
   const ids = calculations().flatMap(g => g.workspaces.map(w => w.id));
@@ -70,4 +70,15 @@ test("the switch from the keyboard: Left and Right move between its halves, Home
   assert.equal(switchMove("End", 0), 1);
   for (const key of ["Enter", " ", "ArrowDown", "Tab"]) assert.equal(switchMove(key, 0), null, key);
   assert.equal(switchMove("ArrowRight", -1), null);
+});
+
+// The background switch (the maintainer, 2026-11-13: "there is a button with hide layers, but are there any background
+// layers or is this from another software?"): only where a diagram has a colour map, isotherms or two-liquid shading
+test("the background switch is offered only in the workspaces whose diagrams have background layers, never in the flowsheet or a unit calculation", () => {
+  assert.deepEqual([...BACKGROUND_WORKSPACES].sort(), ["equilibrium", "solubility", "steam"]);
+  for (const ws of BACKGROUND_WORKSPACES) assert.equal(modeOf(ws), "calculations", ws);
+  const units = calculations().find(g => g.label === "Unit calculations").workspaces.map(w => w.id);
+  for (const ws of ["flowsheet", "properties", ...units]) assert.ok(!BACKGROUND_WORKSPACES.includes(ws), ws);
+  // the workbench's two other doors to it (the canvas corner, the Settings drawer) are hidden in the new layout
+  assert.deepEqual(HIDDEN_BACKGROUND_DOORS, ["tog-bg", "set-bg"]);
 });

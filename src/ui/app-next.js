@@ -31,7 +31,7 @@ import { h } from "./dom.js";
 import { icon } from "./icons.js";
 import { brandLogo } from "./brand.js";
 import { app } from "./app.js";
-import { WORKSPACES, SECTIONS, UTILITIES } from "./workspaces.js";
+import { WORKSPACES, SECTIONS, UTILITIES, BACKGROUND_WORKSPACES } from "./workspaces.js";
 import { modelPicker, liquidPicker, equationPicker, workbenchPatch } from "./model-picker.js";
 import { OWN_METHOD } from "./shell-contract.js";
 import { CANVAS_TABS_CSS } from "./canvas-tabs.js";
@@ -60,6 +60,12 @@ export function menuMove(key, at, n) {
   if (key === "End") return n - 1;
   return null;
 }
+/**
+ * The background switch (state.background) is in the toolbar of the workspaces with background layers only
+ * (BACKGROUND_WORKSPACES, as "Grid and shading"). The new layout hides the workbench's other two doors to it: the canvas
+ * corner's button, shown in every workspace though most have no layer to hide, and the Settings drawer's.
+ */
+export const HIDDEN_BACKGROUND_DOORS = ["tog-bg", "set-bg"];
 /** The supporting tools, grouped: what each button of the top bar opens. The Settings have no button of their own: the
  * context row's Units button opens them, and it shows the units in use (the maintainer, 2026-11-13: two buttons that open
  * the same Settings were "confusing, there is no difference"). */
@@ -177,6 +183,8 @@ const NEXT_CSS = `
 .fn-shell .fn-host [data-fk="fs-method"],.fn-shell .fn-host [data-fk="col-method"],.fn-shell .fn-host [data-fk="rx-method"]{display:none}
 .fn-shell .fn-host .fa-status .fa-cell:not(.fa-state):not(:last-child){display:none}
 .fn-shell .fn-host .fa-ribbon{min-height:0; padding-bottom:4px}
+${HIDDEN_BACKGROUND_DOORS.map(fk => `.fn-shell .fn-host [data-fk="${fk}"]`).join(",")}{display:none}
+${BACKGROUND_WORKSPACES.map(ws => `:not([data-workspace="${ws}"])`).join("").replace(/^/, ".fn-shell .fn-host .fa-nobg")} .fug-bg-layer{display:revert !important}
 
 /* the rail: in Calculations mode on a wide workbench only (navigation()); in Flowsheet mode the canvas takes its width */
 .fn-shell:not([data-rail]) .fn-rail,.fn-shell[data-mode="flowsheet"] .fn-rail{display:none}
@@ -246,7 +254,7 @@ export function appNext(target, cfg = {}) {
   const { layout: _layout, ...inner } = cfg;
   // the workbench with its canvas in tabs (Plot, Table, Data, Warnings: proposal 0021, step 2); it injects its
   // styles, the shell's come after them
-  const api = app(host, { ...inner, canvasTabs: true, unitSteps: true, flowsheetMode: true });
+  const api = app(host, { ...inner, canvasTabs: true, unitSteps: true, nextNames: true });
   injectNextStyles(doc);
 
   const ui = { pane: "results", menu: null, lastWs: null, auto: true, popup: null, lastCalc: null };

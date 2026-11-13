@@ -74,6 +74,9 @@ or on a phone; and every contributor who adds a view and must guess where its me
   chat, Feedback). The Settings open from the context row's Units button; a Settings button beside it opened the same
   drawer and was taken out (the maintainer, 2026-11-13: "there is no difference").
 - **The toolbar** keeps only what belongs to the workspace: which diagram, which specification, which block to place.
+  The background switch ("Grid and shading": colour map, isotherms, two-liquid shading) is in the toolbar of the
+  workspaces that have such layers only (Phase eq., Charts, Solubility); the canvas corner keeps the two panel buttons
+  (the maintainer, 2026-11-13).
 
 ### 2. One workspace layout
 

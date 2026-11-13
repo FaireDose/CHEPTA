@@ -200,9 +200,11 @@ export function app(target, cfg = {}) {
   // the numbered steps of the Flash, the Heat exchanger and the Pipe (proposal 0021, step 3; unit-steps.js): asked for
   // by app-next.js only, like the tabs; the classic Inputs panel is one column of sections, as before
   const stepped = cfg.unitSteps === true;
-  // the flowsheet's palette named for what it does, "Place a block", in the new layout's Flowsheet mode (proposal 0021;
-  // the maintainer, 2026-11-13): asked for by app-next.js only; the classic toolbar keeps "Blocks"
-  const blocksLabel = cfg.flowsheetMode === true ? "Place a block" : "Blocks";
+  // the new layout's names (proposal 0021; the maintainer, 2026-11-13): the flowsheet's palette "Place a block", the
+  // background switch "Grid and shading"; asked for by app-next.js only, the classic toolbar keeps "Blocks" and
+  // "Background"
+  const nextNames = cfg.nextNames === true;
+  const blocksLabel = nextNames ? "Place a block" : "Blocks";
   const tabBar = h("div", { class: "fa-tabs", role: "tablist", "aria-label": "What the canvas shows" });
   const tableOwn = h("div", { class: "fa-tab-own" });   // a view's own table (the flash's stream table), ctx.tabs.table; the downloads (below, canvasFoot) come first
   const tableGen = h("div");                            // else the tables of its Excel export, built when the tab opens
@@ -402,7 +404,7 @@ export function app(target, cfg = {}) {
   }
   function ribbonGroups() {
     const u = state.units, v = state.view;
-    const bg = smallButton({ ico: "layers", label: "Background", pressed: state.background, fk: "bg",
+    const bg = smallButton({ ico: "layers", label: nextNames ? "Grid and shading" : "Background", pressed: state.background, fk: "bg",
       title: "Show or hide the colour map, isotherms, grid lines and two-liquid shading", onClick: () => set({ background: !state.background }, { canvas: false }) });
     switch (state.workspace) {
       case "equilibrium": return [
@@ -1205,7 +1207,7 @@ export function app(target, cfg = {}) {
         smallButton({ ico: "panelL", label: "Inputs panel", pressed: state.panels.left, onClick: () => set({ panels: { left: !state.panels.left } }, { canvas: false }) }),
         smallButton({ ico: "panelR", label: "Results panel", pressed: state.panels.right, onClick: () => set({ panels: { right: !state.panels.right } }, { canvas: false }) }),
         smallButton({ ico: "status", label: "Toolbar", pressed: state.ribbon, onClick: () => set({ ribbon: !state.ribbon }, { canvas: false }) }),
-        smallButton({ ico: "layers", label: "Background layers", pressed: state.background, onClick: () => set({ background: !state.background }, { canvas: false }) }))),
+        smallButton({ ico: "layers", label: "Background layers", pressed: state.background, fk: "set-bg", onClick: () => set({ background: !state.background }, { canvas: false }) }))),
       drawerSection("Theme", h("div", { class: "fa-theme" }, icon("theme", 18), "Follows the page"),
         h("p", { class: "fa-in-hint" }, "Light or dark, as the host page or system is set.")));
   }
