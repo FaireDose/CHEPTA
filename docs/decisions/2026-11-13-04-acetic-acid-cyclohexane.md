@@ -1,4 +1,4 @@
-# 2026-11-13-04: Acetic acid + cyclohexane, a pair fitted to open data: held, no open data meet the criteria
+# 2026-11-13-04: Acetic acid + cyclohexane, a pair fitted to the one open set (decided 2026-11-13), tested against Liu et al. 2013
 
 The task (the coordinator, 2026-11-13): follow-up (a) of docs/decisions/2026-11-12-02-acid-chemical-theory-vlle.md:
 fit an acetic acid + cyclohexane pair to open mixture data, jointly to vapour-liquid and liquid-liquid data
@@ -6,8 +6,33 @@ fit an acetic acid + cyclohexane pair to open mixture data, jointly to vapour-li
 Liu et al. 2013 tests a fitted model. The instruction: if no open data meet the fit criteria, stop and report "no
 open data" with what was searched; do not fit anything weaker without the maintainer.
 
-**Result: nothing was fitted, no data file and no parameter was added.** The only open binary vapour-liquid set fails
-the rules' point test and has no pure-component rows, and no open binary liquid-liquid data were found.
+**First result (before the decision): nothing was fitted.** The only open binary vapour-liquid set fails the rules'
+point test and has no pure-component rows, and no open binary liquid-liquid data were found. The maintainer then
+decided (2026-11-13, "ok with recommendations"): question 1 as recommended, so the set was fitted; see "What was done
+after the decision" below.
+
+## What was done after the decision
+
+- `vle_batch.py` has a `WAIVED` entry for the pair (the set's DOI), so the set is taken although it fails the point test and
+  has no pure rows; the data file `validation/data/vle/acetic-acid_cyclohexane_10-1021-je900669t_101.3kPa.json` says so in
+  its notes.
+- **The class** (`two_liquid_survey.py --classes`, the archive's bulk file): "miscible below the measured temperature,
+  not known above it": one binary one-liquid density set, Meghelli et al. 2019 (`10.1016/j.jct.2017.07.035`, 88 points,
+  288.15-343.15 K, 100 kPa, whole composition range); no two-liquid set. Only this pair's entry was kept in
+  `classes.json` (the survey run also changed another pair, belabbaci2012, a drift not part of this work, left out).
+- **Fit** (`fit_parameters.py --only acetic-acid+cyclohexane --write`; the vapour by the chemical theory of acetic acid, as
+  every acetic acid pair of the engine): NRTL, alpha 0.47, b_ij 576.99 K, b_ji 546.98 K, AAD 0.42 K in T, 0.0154 in y (max
+  2.02 K, 0.0286): outside the main limits (0.5 K, 0.012), within the wider ones, so written with a quality warning and a
+  "fit-quality" known issue. **Wilson** (b_ij -793.35 K, b_ji -343.84 K, a_ij 0.636; 0.42 K, 0.0148 in y) written the same
+  way. **UNIQUAC rejected**: 0.89 K and 0.0246 in y, outside the wider limits. Set `fitted-yang2010`, tier fitted.
+- **Liu et al. 2013 as the independent test** (`test/vlle-acid.test.js`, new test; Liu is not in the fit; NRTL with the
+  default sets of the three pairs; the feeds, bubble point at 101.3 kPa, as the Modified UNIFAC 2.0 test): vapour + two
+  liquids at all 13 points with acid; the three-phase temperature 0.15 to 1.85 K above the measured (mean 0.94 K; Modified
+  UNIFAC 2.0: 4.28 K); without the dimers -0.57 to +0.94 K (mean 0.36 K); the incipient vapour within 0.049 in mole fraction
+  (Modified UNIFAC 2.0: 0.040; without the dimers 0.082). So the temperature is much closer, the vapour composition is not
+  better. Not tuned; the figures are asserted as they came out. The old Modified UNIFAC 2.0 test stays (decided).
+- Run: `make_sources.py`, `make_fixtures.py` (no fixture changed), `npm run wanted`, `npm run vle-points`, `npm run build`,
+  `npm test` (1664 pass, 0 fail). No engine file was touched.
 
 ## To decide (the maintainer), with a recommendation each
 
@@ -59,12 +84,16 @@ All in the order of DATA_RULES.md section 1, "How to search for a missing number
 
 ## To check against the sources (the maintainer)
 
-Nothing was transcribed into the repository. Two statements to check:
+1. The 14 rows of `validation/data/vle/acetic-acid_cyclohexane_10-1021-je900669t_101.3kPa.json` (columns x_1, T_K, y_1)
+   against Yang et al. 2010 in the ThermoML record sets 12 and 13 (https://trc.nist.gov/ThermoML/10.1021/je900669t.html).
+2. The 14 rows of the Liu 2013 file used by the new test were already on the list of decision 2026-11-12-02.
+3. The class entry: Meghelli et al. 2019, `10.1016/j.jct.2017.07.035`, set 8: 88 points, 288.15-343.15 K, 100 kPa.
+4. Statements of the search:
 
-1. Yang et al. 2010, ThermoML record `10.1021/je900669t`, sets 12 and 13: 14 rows, x_1 0.0258-0.9801, T 351.95-380.45 K,
+   - Yang et al. 2010, ThermoML record `10.1021/je900669t`, sets 12 and 13: 14 rows, x_1 0.0258-0.9801, T 351.95-380.45 K,
    no pure-component rows; the point-test value 0.01176 is computed by `fit_parameters.point_test` from them
    (https://trc.nist.gov/ThermoML/10.1021/je900669t.html).
-2. That the archive holds no binary liquid-liquid or vapour-liquid-liquid set of the pair: records listed above.
+   - That the archive holds no binary liquid-liquid or vapour-liquid-liquid set of the pair: records listed above.
 
 ## Limits
 
@@ -72,3 +101,8 @@ Nothing was transcribed into the repository. Two statements to check:
   and its correlations (Wilson, NRTL, UNIQUAC with Hayden-O'Connell) are the authors'; the paywalled article was not
   read, and its fitted parameters are not used (DATA_RULES section 1).
 - No engine file was touched.
+
+## Decided (the maintainer, 2026-11-13)
+
+All three as recommended: 1, fit the set with a quality warning (done above); 2, the ternary liquid-liquid fit later; 3, the
+DECISIONS.md item stays open for that and for the better data that would replace the set.

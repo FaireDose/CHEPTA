@@ -3448,6 +3448,16 @@
     "vle/isoamyl-alcohol_isobutanol_10-1021-je400581e_101.3kPa.json"
    ],
    "describe": "Fitted to 21 T-x-y points at 101.3 kPa from Resa et al., J. Chem. Eng. Data 51 (2006) 1892-1895 (data public in the NIST TRC ThermoML Archive; validation/data/vle/isoamyl-alcohol_isobutanol_10-1021-je060238o_101.3kPa.json); checked against Dias et al., J. Chem. Eng. Data 59 (2014) 659-665 at 101.3 kPa."
+  },
+  {
+   "key": "acetic-acid+cyclohexane",
+   "pair": [
+    "acetic-acid",
+    "cyclohexane"
+   ],
+   "file": "vle/acetic-acid_cyclohexane_10-1021-je900669t_101.3kPa.json",
+   "check": [],
+   "describe": "Fitted to 14 T-x-y points at 101.3 kPa from Yang et al., J. Chem. Eng. Data 55 (2010) 1527-1531 (data public in the NIST TRC ThermoML Archive; validation/data/vle/acetic-acid_cyclohexane_10-1021-je900669t_101.3kPa.json)."
   }
  ]
 }

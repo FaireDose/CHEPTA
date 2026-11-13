@@ -195,3 +195,27 @@ test("measured VLLE of cyclohexane + acetic acid + water at 101.3 kPa (Liu et al
   assert.ok(Math.abs(on.maxY - 0.040) < 0.001, JSON.stringify(on));
   assert.ok(Math.abs(off.meanT - 3.27) < 0.01 && Math.abs(off.maxY - 0.041) < 0.001, JSON.stringify(off));
 });
+
+test("measured VLLE of cyclohexane + acetic acid + water at 101.3 kPa (Liu et al. 2013): NRTL with the acetic acid + cyclohexane pair fitted to Yang et al. 2010, with the dimers", () => {
+  // The independent test the fit was made for (docs/decisions/2026-11-13-04-acetic-acid-cyclohexane.md): Liu 2013 is not
+  // in the fit. NRTL with the default sets of the three pairs: water + acetic acid (fitted, Chang 2005), water +
+  // cyclohexane, and acetic acid + cyclohexane (fitted-yang2010, one T-x-y set at 101.3 kPa, point test 0.0118, within the wider
+  // gates, quality warning). The same feeds as the Modified UNIFAC 2.0 test above: the mid-point of the two measured
+  // liquids, bubble point at 101.3 kPa. The deviations are stated, not tuned: three-phase T 0.15 to 1.85 K above the
+  // measured (mean 0.94 K; Modified UNIFAC 2.0 had 4.28 K), the incipient vapour within 0.049 in mole fraction
+  // (Modified UNIFAC 2.0: 0.040, so the vapour is not better), vapour + two liquids at every point.
+  const d = read("../validation/data/lle/cyclohexane_acetic-acid_water_vlle_liu2013.json");
+  const sys = system({ components: d.components, model: "NRTL", association: true });
+  const dT = [], dy = [];
+  for (const [T, w2, c2, c1, w1, wy, cy] of d.rows.slice(1)) {
+    const aq = [c2, 1 - w2 - c2, w2], org = [c1, 1 - c1 - w1, w1], y = [cy, 1 - wy - cy, wy];
+    const r = sys.flash({ z: aq.map((v, i) => 0.5 * (v + org[i])), P: d.P_kPa, VF: 0 });
+    assert.equal(r.phases.filter(p => p.type === "liquid").length, 2, `${T} K: two liquids at the bubble point`);
+    dT.push(r.T - T);
+    dy.push(maxDiff(r.incipient.composition, y));
+  }
+  assert.equal(dT.length, 13);
+  const meanT = sum(dT.map(Math.abs)) / dT.length;
+  assert.ok(Math.abs(meanT - 0.94) < 0.01 && Math.abs(Math.min(...dT) - 0.15) < 0.02 && Math.abs(Math.max(...dT) - 1.85) < 0.02, JSON.stringify({ meanT, dT }));
+  assert.ok(Math.abs(Math.max(...dy) - 0.049) < 0.001, String(Math.max(...dy)));
+});

@@ -6129,6 +6129,20 @@
         "validation/data/vle/dimethyl-carbonate_p-xylene_10-1021-acs-jced-7b00372_93.13kPa.json"
       ]
     },
+    "yang2010-acetic-acid-cyclohexane": {
+      "title": "Isobaric Vapor-Liquid Equilibria for (Acetic Acid + Cyclohexane) and (Cyclohexane + Acetylacetone) at a Pressure of 101.3 kPa and for (Acetic Acid + Acetylacetone) at a Pressure of 60.0 kPa",
+      "authors": "Z. Yang, J. Zhu, B. Wu, K. Chen, X. Ye",
+      "year": 2010,
+      "published": "J. Chem. Eng. Data 55 (2010) 1527-1531",
+      "kind": "thermoml",
+      "doi": "10.1021/je900669t",
+      "url": "https://trc.nist.gov/ThermoML/10.1021/je900669t.html",
+      "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/vle/acetic-acid_cyclohexane_10-1021-je900669t_101.3kPa.json"
+      ]
+    },
     "yang2011-methanol-water": {
       "title": "Organic Salt Effect of Tetramethylammonium Bicarbonate on the Vapor Liquid Equilibrium of the Methanol Water System",
       "authors": "C. Yang, S. Ma, X. Yin",

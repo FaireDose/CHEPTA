@@ -8898,6 +8898,34 @@
    ],
    "evidence": []
   },
+  "acetic-acid+cyclohexane": {
+   "class": "miscible below the measured temperature, not known above it",
+   "predictions": [],
+   "evidence": [
+    {
+     "kind": "one-liquid",
+     "doi": "10.1016/j.jct.2017.07.035",
+     "citation": "A. Meghelli, S. Karlapudi, I. Bahadur, N. Mouloudj, D. Ramjugernath, E. E. Ebenso, L. Negadi, Effect of temperature on intermolecular interactions between the organic solvents: Insights from density and excess volume, J. Chem. Thermodyn. 132 (2019) 461-469",
+     "sets": [
+      8
+     ],
+     "T_K": [
+      288.15,
+      343.15
+     ],
+     "P_kPa": [
+      100.0,
+      100.0
+     ],
+     "x": [
+      0.0,
+      1.0
+     ],
+     "points": 88
+    }
+   ],
+   "one_liquid_up_to_K": 343.15
+  },
   "acetic-acid+dmso": {
    "class": "not known",
    "predictions": [
