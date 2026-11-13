@@ -94,4 +94,13 @@ No number, parameter or source changed, so there is nothing to compare with a so
 | 3 | The classic layout's empty band of the exchanger (finding 9): fixed there too, in a small pull request of its own, or left until the classic layout is removed (step 7)? | Fixed in a small pull request of its own: the classic layout stays for two released versions after step 4. |
 | 4 | An opened warning whose line is a label ("Known deviation (NRTL)") keeps the label only, its text whole; one whose line is its first sentence shows that sentence whole in the line and the rest below. Or always the line as a title and the whole text below, the first sentence repeated? | As built: each sentence once. |
 
-The coordinating session relays the answers; they are recorded below when given.
+## Decided (the maintainer, 2026-11-13, relayed by the coordinating session)
+
+All four as recommended:
+
+1. Complete steps are folded on a wide screen too, one line each.
+2. One step for the unit (the exchanger's outlet or area, utility, U and arrangement; the pipe's pipe, fittings and
+   heat), with its sections inside; the wall thickness and the pipe's options stay an optional fourth step.
+3. The classic layout's empty band of the exchanger is fixed in a small pull request of its own (an open item in
+   DECISIONS.md).
+4. An opened warning reads each sentence once, as built.
