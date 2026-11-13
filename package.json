@@ -1,6 +1,6 @@
 {
   "name": "chepta",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Chemical process simulation built for AI chat artifacts, starting with phase equilibria.",
   "license": "MIT",
   "author": "FaireDose",

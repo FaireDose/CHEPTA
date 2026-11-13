@@ -107,7 +107,7 @@ State at 2026-11-10 23:15 UTC: #218 and #219 merged; #220, #221 and #222 open, e
 
 - When two worker slots are free (Fable sessions not counted), start a separate CHEPTA-Lab coordinator session on
   https://github.com/FaireDose/CHEPTA-Lab (not this session): its own handover file in that repository, the same usage
-  rules, `chepta@0.6.1` pinned, then the roadmap's order (ROADMAP.md, "CHEPTA and CHEPTA-Lab", "Next, in this order").
+  rules, `chepta@0.6.2` pinned, then the roadmap's order (ROADMAP.md, "CHEPTA and CHEPTA-Lab", "Next, in this order").
 - The two coordinators exchange capability requests and release notices by short messages.
 - ROADMAP.md, "CHEPTA and CHEPTA-Lab", rule 7: Lab's held-out evaluation cases are reviewed by the maintainer or by an
   AI model of another family before use; no Claude session that writes CHEPTA code sees them.
