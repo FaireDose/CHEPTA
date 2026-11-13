@@ -121,7 +121,16 @@ current: replace its "State" and "Queue" sections at each handover, never append
    waiting for the maintainer's merge. next.html live with 0.6.2 and the mode switch. Issue
    https://github.com/FaireDose/CHEPTA/issues/249 "Layout check, proposal 0021" opened. Both CHEPTA workers finished.
    LAB PHASE STARTED: the Lab coordinator (session_01FPbeWUJu4MrkqCuGX3UKYB) told to rerun its first four cases on
-   chepta@0.6.2 and report per case; CHEPTA works only on Lab's requests until all four pass, then 0.7.0. Workers' send_message to @parent may fail ("credential for this
+   chepta@0.6.2 and report per case; CHEPTA works only on Lab's requests until all four pass, then 0.7.0.
+   CHANGED 2026-11-13 ~19:50 (the maintainer, agreed): 0.7.0 comes when Lab has simulated its first 4 COMPLETE plant
+   flowsheets from papers, compared stream by stream (Lab's docs/reference/CANDIDATE_PROCESSES.md, priorities 1-4:
+   CO2 to methanol, Medrano-Garcia 2025; ethyl acetate, Piotrowski & Kubica 2021, being closed on 0.6.2; ethanol to
+   ethylene, Van der Borght 2019; cumene hydroperoxide to phenol/acetone, open process paper still missing). The
+   datasets matter: Lab's worker session_01FPbeWVyeERdKyC4UFSgSKV sends a per-plant dataset table (stream table, unit
+   specs, energy table, locators, what is missing) before any run; check it and bring it to the maintainer. Lab PR #17
+   (pin 0.6.2): ethanol reactor, B2 column, methanol flash pass with identical numbers, no estimated pairs (Lab's
+   report, not checked here). Methanol flash, H2+CO k_ij fitted 68-88 K used at 313 K: keep the warning, Lab reruns
+   once with k_ij = 0 and records the effect (agreed). The strict mode (strictRanges) has no switch in the interface. Workers' send_message to @parent may fail ("credential for this
    connector"): when a worker goes idle, read its last message with list_events. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
@@ -182,6 +191,12 @@ used).
 
 ## Queue, in order
 
+0b. NEXT CHEPTA PHASE, first (the maintainer, agreed 2026-11-13), one small PR each or together:
+   (1) a switch in the Settings drawer (the Units button): "Outside a record's range or a missing pair: continue with a
+   warning / refuse" (strictRanges in the project's solver), and each result says which mode it ran in;
+   (2) solve_column and the other single-block wrappers of src/api/dispatcher.js drop the flowsheet result's
+   `extrapolations` (they rebuild `value`); pass it through, with a test (found from Lab's B2 question).
+   Then #248 if still open, then the rest of this queue.
 1. Relay the reports of the running workers. Lab's requests from CHEPTA-Lab#5: 1 done (#227, merged); 2-5 in the requests worker;
    6 (SRK + gE (MHV1) for CO2 + water) only if the maintainer asks.
 0. Usage rules (the maintainer, 2026-11-12, from session_01FPbeWW7BAkeYbFJnho1BYY's measurements): one Sonnet worker,
