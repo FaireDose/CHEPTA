@@ -91,7 +91,14 @@ current: replace its "State" and "Queue" sections at each handover, never append
    ~16:20 UTC: #243 (missing pairs estimated) green, the maintainer agreed to its four recommendations; worker records
    them. #240 + #243 tested together on main locally: 1685 pass, 0 fail. #242 (site preview) not reported yet.
    RELEASE (the maintainer, 2026-11-13): next release is 0.6.2, after #240, #242 and #243 are merged; 0.7.0 only once
-   CHEPTA-Lab has solved all of its first four cases (proof that the simulator handles real cases). Workers' send_message to @parent may fail ("credential for this
+   CHEPTA-Lab has solved all of its first four cases (proof that the simulator handles real cases).
+   ~17:40 UTC: #240, #243, #242 merged (9fa4c02); chepta@0.6.2 live on npm (tag v0.6.2 = 9fa4c02, provenance attested).
+   Open: the version pull request (from the publish workflow's summary link); #242's three questions (chat test via the
+   website's chepta.js, now solved by 0.6.2; testers reply + one issue "Layout check, proposal 0021"; Task 4 uses
+   examples/flowsheet-recycle.chepta.json) not yet answered. Follow-up found: since #241 CO2 gets a "normal boiling
+   point" of -88 C from its liquid vapour pressure continued below the triple point (it sublimes at -78.5 C); warn
+   "solid here" below a triple point and make such values report-only. Recommended next: switch to the Lab phase on
+   0.6.2 (Lab reruns its first four cases; 0.7.0 when all four pass). Workers' send_message to @parent may fail ("credential for this
    connector"): when a worker goes idle, read its last message with list_events. A small fix for step 3: an opened warning repeats its first line as the text's first sentence. Then, the
    maintainer's request (2026-11-12): **the person chooses the rows of the stream tables** (mass and heat balance of
    the Flash and the Flowsheet): add rows the default lacks (molar mass, mass flows and mass fractions per component,
