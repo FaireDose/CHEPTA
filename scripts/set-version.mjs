@@ -20,7 +20,7 @@ export function normalizeVersion(tag) {
 /** CDN links to the package, under its name and its name before version 0.3. */
 export const VERSION_LINKS = /\b(chepta|fugacity)@(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)/g;
 /** Files and folders whose versions are history or examples, not links to use. */
-export const VERSION_EXEMPT = ["ARCHITECTURE.md", "ROADMAP.md", "proposals", "decisions", "DECISIONS.md", "ui-review", "node_modules", "dist"];
+export const VERSION_EXEMPT = ["ARCHITECTURE.md", "ROADMAP.md", "proposals", "decisions", "DECISIONS.md", "node_modules", "dist"];
 
 /** The .md and .html files whose CDN links must carry the current version, relative to root. */
 export function versionFiles(root, dir = root) {
