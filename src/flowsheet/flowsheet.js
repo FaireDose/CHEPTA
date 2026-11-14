@@ -34,6 +34,10 @@
  *     Converged when every component flow and the temperature of every tear stream change by
  *     less than `tolerance` (relative to the tear stream's total flow and to its
  *     temperature).
+ *     Safeguards (decision 2026-11-14-07; below, before the iteration): a block that fails on an accelerated guess
+ *     sends the iteration back to the last accepted pass with a shorter step; Broyden rejects a pass ten times worse
+ *     than the last accepted one, and replaces its approximation by a finite-difference Jacobian when the change
+ *     stalls. A loop that converges without them takes the same steps as before; what they did is in loops[].safeguards.
  *  4. A loop that does not converge throws NO_CONVERGENCE naming the loop, the tear streams,
  *     the remaining change and what usually helps; no numbers are returned.
  *  5. Energy streams (proposal 0013, section 6): an energy feed (no `from`, a given duty_kW) or the heat one block
@@ -86,6 +90,27 @@ const GROWTH_LIMIT = 1e6;     // a tear stream above this many times the total f
 // the whole flowsheet's component balance, relative to the total feed: at least 1e-6, and 1000 times the
 // tear tolerance (a converged recycle leaves an imbalance of about the tolerance times the recycle flow)
 const balanceTol = tolerance => Math.max(1e-6, 1e3 * tolerance);
+
+/** The inverse of a square matrix by Gauss-Jordan elimination with partial pivoting; null when it is singular or not
+ *  finite. */
+function inverse(A) {
+  const m = A.length, M = A.map((row, i) => [...row, ...Array.from({ length: m }, (_, j) => (i === j ? 1 : 0))]);
+  for (let c = 0; c < m; c++) {
+    let p = c;
+    for (let r = c + 1; r < m; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r;
+    if (!(Math.abs(M[p][c]) > 1e-14)) return null;
+    [M[c], M[p]] = [M[p], M[c]];
+    const d = M[c][c];
+    for (let j = 0; j < 2 * m; j++) M[c][j] /= d;
+    for (let r = 0; r < m; r++) {
+      if (r === c || M[r][c] === 0) continue;
+      const f = M[r][c];
+      for (let j = 0; j < 2 * m; j++) M[r][j] -= f * M[c][j];
+    }
+  }
+  const inv = M.map(row => row.slice(m));
+  return inv.every(row => row.every(Number.isFinite)) ? inv : null;
+}
 
 /** "B1.out" → { block: "B1", port: "out" } */
 function endpoint(text, what, sid) {
@@ -459,24 +484,32 @@ function solveCore(sys, fs) {
     const vec = (s, e) => (e?.energy ? [s.duty_kW] : s.flows.slice());
     let x = tears.map(e => vec(tearValue(e), e));
     let xPrev = null, gPrev = null, it = 0, err = Infinity;
-    let H = null, bPrev = null;   // Broyden: inverse Jacobian approximation of F(x) = g(x) - x, last point
     const history = [];
+    const safeguards = [];   // what the safeguards below did: { iteration, action, reason }
     const stop = (why, extra = {}) => fail("NO_CONVERGENCE",
       `The loop through ${seq.join(", ")} did not converge${why}. What usually helps: a purge or a smaller recycle fraction (a recycle with no way out keeps growing), a guess for the tear stream${tears.length > 1 ? "s" : ""} (${tears.map(e => e.id).join(", ")}) close to the answer, another tear stream, another convergence method, or more iterations.`,
-      { loop: comp, tears: tears.map(e => e.id), history, ...extra });
+      { loop: comp, tears: tears.map(e => e.id), history, ...(safeguards.length ? { safeguards } : {}), ...extra });
+    const sizes = x.map(v => v.length);   // material tears: n flows each; energy tears: one duty
+    const isFlow = tears.flatMap((e, k) => new Array(sizes[k]).fill(!e.energy));
+    const unflat = f => { let at = 0; return sizes.map(n => { const part = f.slice(at, at + n); at += n; return part; }); };
+    const total = v => v.reduce((a, b) => a + b, 0);
+    /** The size of each tear variable, as the convergence test measures it: the tear's total flow (a flow), or its
+     *  duty (at least 1e-6 kW), the larger of two points. */
+    const sizeOf = (xa, xb) => tears.flatMap((e, k) => (e.energy ? [Math.max(Math.abs(xa[k][0]), Math.abs(xb[k][0]), 1e-6)]
+      : new Array(sizes[k]).fill(Math.max(total(xa[k]), total(xb[k])) || Math.max(feedTotal(), 1e-12))));
     /**
      * Broyden's "good" method on F(x) = g(x) - x over all tear flows at once: x+ = x - H F, with the
      * inverse-Jacobian update H+ = H + (dx - H df) (dx' H) / (dx' H df), H started at -I so the first
      * step is direct substitution (as scipy.optimize.broyden1, BSD; Broyden, Math. Comp. 19 (1965) 577).
      * Unlike Wegstein's per-flow slopes it learns how the tears act on each other. The change may grow
      * for a few steps (the method is not monotone; resetting H when it does was tried and made the
-     * flowsheet suite slower, the Cavett problem divergent): H is reset only after a non-finite step.
-     * Flows are kept non-negative.
+     * flowsheet suite slower, the Cavett problem divergent): H is reset only after a non-finite step, and replaced on a
+     * stall (safeguard 4 below). Scaling the flows by each tear's total flow was tried (2026-11-14) and not kept: the
+     * Cavett problem stalled at a change of 0.27.
      */
-    const broydenStep = g => {
-      const xf = x.flat(), gf = g.flat(), m = xf.length;
-      const sizes = g.map(v => v.length);   // material tears: n flows each; energy tears: one duty
-      const F = gf.map((v, i) => v - xf[i]);
+    let H = null, bPrev = null;   // inverse Jacobian of F, the last accepted point { x, F }
+    const broydenUpdate = (xf, F) => {
+      const m = xf.length;
       if (!H) H = Array.from({ length: m }, (_, i) => Array.from({ length: m }, (_, j) => (i === j ? -1 : 0)));
       else if (bPrev) {
         const dx = xf.map((v, i) => v - bPrev.x[i]), df = F.map((v, i) => v - bPrev.F[i]);
@@ -487,14 +520,113 @@ function solveCore(sys, fs) {
           for (let i = 0; i < m; i++) { const c = (dx[i] - Hdf[i]) / den; for (let j = 0; j < m; j++) H[i][j] += c * dxH[j]; }
         }
       }
-      bPrev = { x: xf, F, err };
-      const step = H.map(row => -row.reduce((a, h, j) => a + h * F[j], 0));
-      // flows stay non-negative; a duty may have either sign
-      const isFlow = sizes.flatMap((n, k) => new Array(n).fill(!tears[k].energy));
-      const out = xf.map((v, i) => (isFlow[i] ? Math.max(0, v + step[i]) : v + step[i]));
-      if (!out.every(Number.isFinite)) { H = null; return g; }
-      let at = 0;
-      return sizes.map(n => { const part = out.slice(at, at + n); at += n; return part; });
+      return { x: xf, F };
+    };
+    /** Broyden's next point from an accepted point { x, F }; null when not finite. */
+    const broydenFrom = pt => {
+      const out = pt.x.map((v, i) => v - H[i].reduce((a, h, j) => a + h * pt.F[j], 0));
+      return out.every(Number.isFinite) ? out : null;
+    };
+    /**
+     * Safeguards (decision 2026-11-14-07; CHEPTA-Lab's closed ethyl acetate plant, request 14). An accelerated guess
+     * (Broyden, Wegstein) extrapolates beyond the point that direct substitution would give, g(x), and the blocks must
+     * solve the loop at that guess. A loop whose gain is close to one (a large recycle, or an inventory that leaves
+     * only slowly) has a nearly singular F'(x): Broyden's steps then grow large and land where a block cannot solve
+     * (Lab's plant: jumps of up to 0.62 of a tear's flow, a column handed 405 mol/s of material imbalance, a reactor
+     * fed no ethanol). The rules globalize the quasi-Newton step by shortening it, as scipy.optimize's nonlin_solve
+     * does for broyden1 with its default Armijo line search (BSD; scipy 1.14.1, scipy/optimize/_nonlin.py, which cites
+     * Kelley, Iterative Methods for Linear and Nonlinear Equations, SIAM 1995, for the method). A pass of the loop is
+     * too costly for a line search on each step, so the step is shortened only when a block fails or the change grows
+     * tenfold, and a finite-difference Jacobian replaces Broyden's approximation on a stall (Broyden's method needs a
+     * fair approximation to start from):
+     *  1. a block that fails on an accelerated guess does not stop the loop: the iteration goes back to the last
+     *     accepted pass and tries the same guess with its extrapolation beyond that pass's result shortened to a
+     *     quarter (SHRINK), down to the direct-substitution step itself after MAX_RETRIES tries; only a failure on
+     *     the direct-substitution step stops the loop, with the block's error (fail loudly);
+     *  2. Broyden: a pass whose change is more than REJECT times that of the last accepted pass is not accepted: its
+     *     secant information still updates H, and the next guess is made again from the accepted pass, its
+     *     extrapolation limited to a quarter of the rejected one's;
+     *  3. the limit on the extrapolation (relative to each tear's flow, as the convergence test measures it) starts
+     *     unlimited, so that a loop that converges without these rules takes exactly the same steps as before (the
+     *     flowsheet suite does: docs/FLOWSHEET_TESTS.md), and doubles after every accepted pass that lowers the
+     *     change;
+     *  4. Broyden: when the change has not halved in STALL accepted passes, H is replaced by the inverse of the
+     *     Jacobian of F at the current point by forward differences (one pass per tear variable, each counted as an
+     *     iteration; step FD_STEP of the tear's flow); if a pass fails or the Jacobian is singular, H restarts at -I.
+     * Every action is listed in the loop's `safeguards`. The numbers are this project's choices, set on a hard
+     * two-tear test loop (test/flowsheet-safeguards.test.js), not a published standard.
+     */
+    const REJECT = 10, STALL = 8, MAX_RETRIES = 4, SHRINK = 4, FD_STEP = 1e-5;
+    let good = null;          // the last accepted pass: { x, g, after, err, pt }
+    let limit = Infinity;     // the largest extrapolation beyond g, relative to the tears' size
+    let retries = 0;          // consecutive failed or rejected trials since the last accepted pass
+    let best = Infinity, bestAt = 0;
+    /** The extrapolation of a guess beyond the accepted pass's result, relative to the tears' size. */
+    const beyond = (xf, ok) => {
+      const gf = ok.g.flat(), sz = sizeOf(ok.x, ok.g);
+      return Math.max(0, ...xf.map((v, i) => Math.abs(v - gf[i]) / sz[i]));
+    };
+    /** A guess limited to `lim` beyond the accepted pass's result (scaled along its direction), flows non-negative. */
+    const limited = (xf, ok, lim) => {
+      const gf = ok.g.flat(), m = beyond(xf, ok);
+      const f = m > lim ? lim / m : 1;
+      return xf.map((v, i) => { const w = gf[i] + f * (v - gf[i]); return isFlow[i] ? Math.max(0, w) : w; });
+    };
+    /** Set the tear streams to the guess xs (per tear); `base` the streams whose T and P the material tears take. */
+    const setTears = (xs, base, isG) => {
+      tears.forEach((e, k) => {
+        if (e.energy) { qvals.set(e.id, xs[k][0]); return; }
+        const s = base[k];
+        const flows = xs[k].slice(0, sys.n).map(v => Math.max(0, v));
+        const F = flows.reduce((a, v) => a + v, 0);
+        let next = s;
+        if (!isG && F > 0) {
+          // the accelerated guess may sit where the phase split does not converge (a liquid-liquid split next to a
+          // plait point; CHEPTA-Lab's ethyl acetate plant, 2026-11-14): that tear then takes the computed stream, a
+          // step of direct substitution, and the guess vector follows it
+          try { next = stream(sys, { flow_kmol_h: flows, T_K: s.T_K, P_kPa: s.P_kPa }); } catch (err2) {
+            if (err2?.code !== "NO_CONVERGENCE") throw err2;
+            xs[k] = vec(s, e);
+          }
+        }
+        values.set(e.id, Object.freeze({ ...next, id: e.id }));
+      });
+      return xs;
+    };
+    /** After a failed or rejected trial `tried`: the next guess `candidate` from the accepted pass, its extrapolation
+     *  limited to a quarter of the trial's (direct substitution after MAX_RETRIES trials in a row). */
+    const retry = (tried, candidate, action, reason) => {
+      retries++;
+      const m = beyond(tried, good);
+      limit = retries >= MAX_RETRIES || !(m > 0) ? 0 : Math.min(limit, m / SHRINK);
+      safeguards.push({ iteration: it + 1, action: limit === 0 ? `${action}; direct substitution` : action, reason, limit });
+      const next = limited(candidate, good, limit);
+      x = setTears(unflat(next), good.after, limit === 0);
+    };
+    /** The Jacobian of F = g(x) - x at the accepted point x (tear streams `base`), by forward differences, one pass per
+     *  tear variable; null when a pass fails. */
+    const jacobianAt = (x0, base, F0) => {
+      const xf = x0.flat(), sz = sizeOf(x0, x0), m = xf.length;
+      const cols = [];
+      try {
+        for (let j = 0; j < m; j++) {
+          const h = FD_STEP * sz[j];
+          const xs = xf.slice(); xs[j] += h;
+          setTears(unflat(xs), base, false);
+          for (const id of seq) calc(id, true);
+          const gj = tears.map(tearValue).map((st, k) => vec(st, tears[k])).flat();
+          if (progressWanted()) {
+            reportProgress({ kind: "flowsheet", loops: [...loops.map(l => ({ ...l, converged: true })),
+              { blocks: seq.slice(), tears: tears.map(e => e.id), iterations: it + 1 + j, residual: err, tolerance: opt.tolerance, converged: false,
+                maxIterations: opt.maxIterations, method: opt.method, recent: history.slice(-5), jacobian: { pass: j + 1, of: m } }] });
+          }
+          cols.push(gj.map((v, i) => (v - xs[i] - F0[i]) / h));
+        }
+      } catch (e) {
+        if (!e?.code) throw e;
+        return null;
+      }
+      return Array.from({ length: m }, (_, i) => cols.map(c => c[i]));
     };
     for (; it < opt.maxIterations; it++) {
       const before = tears.map(tearValue);
@@ -513,7 +645,12 @@ function solveCore(sys, fs) {
           e.message = `In the loop through ${seq.join(", ")}, at iteration ${it + 1}: ${e.message}`;
           throw e;
         }
-        throw stop(`: at iteration ${it + 1}, ${e.message}`, { cause: e.message });
+        // safeguard 1: a block failed on an accelerated guess; go back to the last accepted pass, a shorter step
+        const fromGuess = good && e?.code && beyond(x.flat(), good) > 0;
+        if (!fromGuess) throw stop(`: at iteration ${it + 1}, ${e.message}`, { cause: e.message });
+        history.push(null);   // a pass that a block could not finish
+        retry(x.flat(), x.flat(), "a block failed: shorter step", e.message);
+        continue;
       }
       const after = tears.map(tearValue);
       const g = after.map((s, k) => vec(s, tears[k]));
@@ -531,7 +668,7 @@ function solveCore(sys, fs) {
       if (progressWanted()) {
         reportProgress({ kind: "flowsheet", loops: [...loops.map(l => ({ ...l, converged: true })),
           { blocks: seq.slice(), tears: tears.map(e => e.id), iterations: it + 1, residual: err, tolerance: opt.tolerance, converged: false,
-            maxIterations: opt.maxIterations, method: opt.method, recent: history.slice(-5) }] });
+            maxIterations: opt.maxIterations, method: opt.method, recent: history.slice(-5), ...(safeguards.length ? { safeguards: safeguards.slice(-3) } : {}) }] });
       }
       // a loop without a way out for some component accumulates it: its flows grow without bound, and a
       // method that extrapolates (Broyden) can reach flows so large that the relative change looks converged
@@ -539,10 +676,48 @@ function solveCore(sys, fs) {
       const big = after.find((s, k) => !tears[k].energy && !(s.F_kmol_h <= GROWTH_LIMIT * Math.max(Ffeed, 1e-12)));
       if (big) throw stop(`: the recycle grows without bound (tear stream ${tears[after.indexOf(big)].id} carries more than ${GROWTH_LIMIT.toExponential(0)} times the feed): material accumulates in the loop`);
       if (err < opt.tolerance) { it++; break; }
-      // next tear values: direct substitution for two steps, then bounded Wegstein per variable
+      const xf = x.flat(), F = g.flat().map((v, i) => v - xf[i]);
+      if (opt.method === "broyden") {
+        const pt = broydenUpdate(xf, F);
+        // safeguard 2: a pass much worse than the accepted one is not accepted (its secant information is kept)
+        if (good && err > REJECT * good.err && beyond(xf, good) > 0 && retries < MAX_RETRIES) {
+          const from = broydenFrom(good.pt);
+          retry(xf, from ?? good.g.flat(), "rejected", `the change grew from ${good.err.toExponential(2)} to ${err.toExponential(2)}`);
+          continue;
+        }
+        if (good && err < good.err) limit *= 2;
+        retries = 0;
+        good = { x, g, after, err, pt };
+        bPrev = pt;
+        // safeguard 4: on a stall, H from a finite-difference Jacobian here (or -I)
+        if (err < best / 2) { best = err; bestAt = it; }
+        else if (it - bestAt >= STALL) {
+          const why = `the change has not halved in ${STALL} iterations (best ${best.toExponential(2)})`;
+          H = null; bPrev = null; best = err; bestAt = it;
+          bPrev = broydenUpdate(xf, F);
+          good.pt = bPrev;
+          const J = it + xf.length < opt.maxIterations ? jacobianAt(x, before, F) : null;
+          let action = "restart";
+          if (J) {
+            it += xf.length; bestAt = it;
+            const Hj = inverse(J);
+            if (Hj) { H = Hj; action = `Jacobian (${xf.length} passes)`; }
+          }
+          safeguards.push({ iteration: it + 1, action, reason: why });
+        }
+        let next = broydenFrom(bPrev);
+        if (!next) { H = null; bPrev = null; next = g.flat(); }
+        const xs = limit === Infinity ? next.map((v, i) => (isFlow[i] ? Math.max(0, v) : v)) : limited(next, good, limit);
+        xPrev = x; gPrev = g;
+        x = setTears(unflat(xs), after, xs.every((v, i) => v === good.g.flat()[i]));
+        continue;
+      }
+      // direct substitution and Wegstein: next tear values; direct substitution for two steps, then bounded Wegstein
+      if (good && err < good.err) limit *= 2;
+      retries = 0;
+      good = { x, g, after, err };
       let xNew = g;
-      if (opt.method === "broyden") xNew = broydenStep(g);
-      else if (opt.method === "wegstein" && it >= 2 && xPrev) {
+      if (opt.method === "wegstein" && it >= 2 && xPrev) {
         xNew = g.map((gk, k) => gk.map((gi, i) => {
           const dx = x[k][i] - xPrev[k][i];
           const s = dx !== 0 ? (gi - gPrev[k][i]) / dx : 0;
@@ -550,25 +725,10 @@ function solveCore(sys, fs) {
           q = Math.min(opt.accelMax, Math.max(opt.accelMin, q));
           return q * x[k][i] + (1 - q) * gi;
         }));
+        if (limit !== Infinity) xNew = unflat(limited(xNew.flat(), good, limit));
       }
-      xPrev = x; gPrev = g; x = xNew;
-      tears.forEach((e, k) => {
-        if (e.energy) { qvals.set(e.id, xNew[k][0]); return; }
-        const s = after[k];
-        const flows = xNew[k].slice(0, sys.n).map(v => Math.max(0, v));
-        const F = flows.reduce((a, v) => a + v, 0);
-        let next = s;
-        if (xNew !== g && F > 0) {
-          // the accelerated guess may sit where the phase split does not converge (a liquid-liquid split next to a
-          // plait point; CHEPTA-Lab's ethyl acetate plant, 2026-11-14): that tear then takes the computed stream, a
-          // step of direct substitution, and the guess vector follows it
-          try { next = stream(sys, { flow_kmol_h: flows, T_K: s.T_K, P_kPa: s.P_kPa }); } catch (err2) {
-            if (err2?.code !== "NO_CONVERGENCE") throw err2;
-            xNew[k] = g[k].slice();
-          }
-        }
-        values.set(e.id, Object.freeze({ ...next, id: e.id }));
-      });
+      xPrev = x; gPrev = g;
+      x = setTears(xNew, after, xNew === g);
     }
     if (!(err < opt.tolerance)) {
       throw stop(` in ${opt.maxIterations} iterations: the tear stream${tears.length > 1 ? "s" : ""} still change${tears.length > 1 ? "" : "s"} by ${err.toExponential(2)} (relative) per iteration; the tolerance is ${opt.tolerance}`);
@@ -580,7 +740,7 @@ function solveCore(sys, fs) {
       throw fail("BAD_INPUT", `${blocks.get(id).unit.label} ${id}: in the converged loop through ${seq.join(", ")} its outlets asked take ${+asked.toPrecision(6)} ${st.by}, more than its inlet's ${+st.inlet.toPrecision(6)} ${st.by}; lower the asked flow or give fractions.`,
         { block: id, asked, available: st.inlet, unit: st.by, loop: comp });
     }
-    loops.push({ blocks: seq, tears: tears.map(e => e.id), iterations: it, residual: err, tolerance: opt.tolerance });
+    loops.push({ blocks: seq, tears: tears.map(e => e.id), iterations: it, residual: err, tolerance: opt.tolerance, ...(safeguards.length ? { safeguards } : {}) });
   }
 
   // overall balances: feeds in, products out

@@ -1,0 +1,440 @@
+{
+  "capability": "solve_flowsheet",
+  "input": {
+    "flowsheet": {
+      "components": [
+        "ethanol",
+        "water",
+        "ethyl acetate",
+        "acetic acid"
+      ],
+      "thermo": {
+        "model": "UNIQUAC",
+        "vapour": "ideal"
+      },
+      "blocks": [
+        {
+          "id": "F1",
+          "type": "feed",
+          "spec": {
+            "flow_kg_h": {
+              "ethanol": 6511.0
+            },
+            "P_kPa": 100.0,
+            "T_K": 288.15
+          }
+        },
+        {
+          "id": "F2",
+          "type": "feed",
+          "spec": {
+            "flow_kg_h": {
+              "acetic acid": 8472.0
+            },
+            "P_kPa": 100.0,
+            "T_K": 288.15
+          }
+        },
+        {
+          "id": "F17",
+          "type": "feed",
+          "spec": {
+            "flow_kg_h": {
+              "water": 17478.0
+            },
+            "P_kPa": 100.0,
+            "T_K": 293.15
+          }
+        },
+        {
+          "id": "MIX1",
+          "type": "mixer"
+        },
+        {
+          "id": "HTXR2",
+          "type": "heater",
+          "spec": {
+            "T_K": 343.15,
+            "P_kPa": 100.0
+          }
+        },
+        {
+          "id": "MIX3",
+          "type": "mixer"
+        },
+        {
+          "id": "KREA4",
+          "type": "conversion-reactor",
+          "spec": {
+            "reactions": [
+              {
+                "reaction": "R1",
+                "key": "acetic-acid",
+                "conversion": 0.7703
+              }
+            ],
+            "VF": 1,
+            "P_kPa": 100.0
+          }
+        },
+        {
+          "id": "SCDS5",
+          "type": "column",
+          "spec": {
+            "mode": "rigorous",
+            "configuration": "absorber",
+            "stages": 8,
+            "feed_stage": [
+              1,
+              8
+            ],
+            "P_kPa": 100.0,
+            "phases": "VLL",
+            "max_iterations": 100
+          }
+        },
+        {
+          "id": "HTXR6",
+          "type": "heater",
+          "spec": {
+            "VF": 0,
+            "P_kPa": 100.0
+          }
+        },
+        {
+          "id": "MIX7",
+          "type": "heater",
+          "spec": {
+            "VF": 0,
+            "P_kPa": 100.0
+          }
+        },
+        {
+          "id": "EXTR8",
+          "type": "extraction",
+          "spec": {
+            "stages": 2,
+            "T_K": 300.15,
+            "P_kPa": 100.0
+          }
+        },
+        {
+          "id": "SPLIT9",
+          "type": "splitter",
+          "spec": {
+            "flow_kg_h": [
+              "rest",
+              60000.0
+            ]
+          }
+        },
+        {
+          "id": "HTXR10",
+          "type": "heater",
+          "spec": {
+            "T_K": 344.15,
+            "P_kPa": 100.0
+          }
+        },
+        {
+          "id": "SCDS11",
+          "type": "column",
+          "spec": {
+            "mode": "rigorous",
+            "stages": 35,
+            "feed_stage": 15,
+            "condenser": "total",
+            "P_kPa": 100.0,
+            "reflux_ratio": 3,
+            "bottoms_kmol_h": 141.5,
+            "phases": "VLL"
+          }
+        },
+        {
+          "id": "HTXR12",
+          "type": "heater",
+          "spec": {
+            "duty_kW": 0,
+            "P_kPa": 100.0
+          }
+        },
+        {
+          "id": "MIX13",
+          "type": "mixer"
+        },
+        {
+          "id": "PUMP14",
+          "type": "pump",
+          "spec": {
+            "P_kPa": 100.0
+          }
+        },
+        {
+          "id": "SCDS15",
+          "type": "column",
+          "spec": {
+            "mode": "rigorous",
+            "stages": 18,
+            "feed_stage": 9,
+            "condenser": "total",
+            "P_kPa": 100.0,
+            "reflux_ratio": 2,
+            "distillate_kmol_h": 394.6,
+            "phases": "VLL"
+          }
+        },
+        {
+          "id": "SPLIT16",
+          "type": "splitter",
+          "spec": {
+            "flow_kg_h": [
+              95797.0,
+              "rest"
+            ]
+          }
+        },
+        {
+          "id": "HTXR17",
+          "type": "heater",
+          "spec": {
+            "T_K": 293.15,
+            "P_kPa": 100.0
+          }
+        },
+        {
+          "id": "HTXR18",
+          "type": "heater",
+          "spec": {
+            "T_K": 343.15,
+            "P_kPa": 100.0
+          }
+        },
+        {
+          "id": "HTXR19",
+          "type": "heater",
+          "spec": {
+            "T_K": 343.15,
+            "P_kPa": 100.0
+          }
+        },
+        {
+          "id": "P16",
+          "type": "product"
+        },
+        {
+          "id": "P25",
+          "type": "product"
+        }
+      ],
+      "streams": [
+        {
+          "id": "S27",
+          "from": "HTXR18.out",
+          "to": "SCDS5.in",
+          "tear": true,
+          "guess": {
+            "flow_kmol_h": {
+              "ethanol": 26.322379384728915,
+              "water": 160.66327510961926,
+              "ethyl-acetate": 663.6705948208415
+            },
+            "T_K": 343.15,
+            "P_kPa": 100
+          }
+        },
+        {
+          "id": "S6",
+          "from": "KREA4.out",
+          "to": "SCDS5.in"
+        },
+        {
+          "id": "S1",
+          "from": "F1.out",
+          "to": "MIX1.in"
+        },
+        {
+          "id": "S2",
+          "from": "F2.out",
+          "to": "MIX1.in"
+        },
+        {
+          "id": "S3",
+          "from": "MIX1.out",
+          "to": "HTXR2.in"
+        },
+        {
+          "id": "S4",
+          "from": "HTXR2.out",
+          "to": "MIX3.in"
+        },
+        {
+          "id": "S7",
+          "from": "SCDS5.bottoms",
+          "to": "MIX3.in",
+          "tear": true,
+          "guess": {
+            "flow_kmol_h": {
+              "ethanol": 28.39540366274428,
+              "water": 584.5222713187226,
+              "ethyl-acetate": 4.529520630563607,
+              "acetic-acid": 42.189445419901425
+            },
+            "T_K": 358.60076135598354,
+            "P_kPa": 100
+          }
+        },
+        {
+          "id": "S21",
+          "from": "SCDS15.distillate",
+          "to": "MIX3.in",
+          "tear": true,
+          "guess": {
+            "flow_kmol_h": {
+              "ethanol": 155.8542107229872,
+              "water": 97.13194135954788,
+              "ethyl-acetate": 141.61384791746525
+            },
+            "T_K": 343.71747154174426,
+            "P_kPa": 100
+          }
+        },
+        {
+          "id": "S5",
+          "from": "MIX3.out",
+          "to": "KREA4.in"
+        },
+        {
+          "id": "S8",
+          "from": "SCDS5.distillate",
+          "to": "HTXR6.in"
+        },
+        {
+          "id": "S9",
+          "from": "HTXR6.out",
+          "to": "MIX7.in"
+        },
+        {
+          "id": "S15",
+          "from": "HTXR12.out",
+          "to": "MIX7.in",
+          "tear": true,
+          "guess": {
+            "flow_kmol_h": {
+              "ethanol": 11.982817278512155,
+              "water": 73.13927826435878,
+              "ethyl-acetate": 160.62498435371296
+            },
+            "T_K": 343.1242644313584,
+            "P_kPa": 100
+          }
+        },
+        {
+          "id": "S10",
+          "from": "MIX7.out",
+          "to": "EXTR8.feed"
+        },
+        {
+          "id": "S19",
+          "from": "PUMP14.out",
+          "to": "EXTR8.solvent"
+        },
+        {
+          "id": "S11",
+          "from": "EXTR8.raffinate",
+          "to": "SPLIT9.in"
+        },
+        {
+          "id": "S20",
+          "from": "EXTR8.extract",
+          "to": "HTXR19.in"
+        },
+        {
+          "id": "S12",
+          "from": "SPLIT9.out",
+          "to": "HTXR10.in"
+        },
+        {
+          "id": "S26",
+          "from": "SPLIT9.out",
+          "to": "HTXR18.in"
+        },
+        {
+          "id": "S13",
+          "from": "HTXR10.out",
+          "to": "SCDS11.in"
+        },
+        {
+          "id": "S14",
+          "from": "SCDS11.distillate",
+          "to": "HTXR12.in"
+        },
+        {
+          "id": "S16",
+          "from": "SCDS11.bottoms",
+          "to": "P16.in"
+        },
+        {
+          "id": "S17",
+          "from": "F17.out",
+          "to": "MIX13.in"
+        },
+        {
+          "id": "S24",
+          "from": "HTXR17.out",
+          "to": "MIX13.in",
+          "tear": true,
+          "guess": {
+            "flow_kmol_h": {
+              "ethanol": 0.05029211474876944,
+              "water": 5161.1254307090985,
+              "ethyl-acetate": 2.0998984365004504e-14
+            },
+            "T_K": 293.15,
+            "P_kPa": 100
+          }
+        },
+        {
+          "id": "S18",
+          "from": "MIX13.out",
+          "to": "PUMP14.in"
+        },
+        {
+          "id": "S28",
+          "from": "HTXR19.out",
+          "to": "SCDS15.in"
+        },
+        {
+          "id": "S22",
+          "from": "SCDS15.bottoms",
+          "to": "SPLIT16.in"
+        },
+        {
+          "id": "S23",
+          "from": "SPLIT16.out",
+          "to": "HTXR17.in"
+        },
+        {
+          "id": "S25",
+          "from": "SPLIT16.out",
+          "to": "P25.in"
+        }
+      ],
+      "solver": {
+        "maxIterations": 200
+      },
+      "reactions": [
+        {
+          "id": "R1",
+          "name": "esterification",
+          "phase": "liquid",
+          "stoichiometry": {
+            "ethanol": -1,
+            "acetic-acid": -1,
+            "ethyl-acetate": 1,
+            "water": 1
+          }
+        }
+      ]
+    }
+  }
+}
