@@ -721,3 +721,50 @@ export function usedReactions(fs) {
   if (reactions.length) out.reactions = reactions; else delete out.reactions;
   return out;
 }
+
+// ---------------------------------------------------------------------------------------
+// The range mode (the maintainer, 2026-11-13; decision 2026-11-14-06): the switch of the Settings drawer, stored as the
+// project's solver.strictRanges in each flowsheet document (the Flowsheet, Column and Reactor workspaces)
+
+/** The question of the switch, and its two answers: "lenient" (the default) and "strict". */
+export const RANGE_MODE_QUESTION = "Outside a record's range or a missing pair";
+export const RANGE_MODES = Object.freeze([
+  Object.freeze({ id: "lenient", label: "Continue with a warning",
+    hint: "A record is continued beyond the temperatures it was measured over, a pair with no parameters is estimated from Modified UNIFAC 2.0, and each result lists them as warnings." }),
+  Object.freeze({ id: "strict", label: "Refuse",
+    hint: "A result that would use a record outside its range is refused, with the record named; a pair with no parameters stops the calculation." }),
+]);
+
+/** The range mode a flowsheet document asks for: "strict" when its solver.strictRanges is true, else "lenient". */
+export const rangeModeOf = fs => (fs?.solver?.strictRanges === true ? "strict" : "lenient");
+
+/** The document with that range mode: "strict" sets solver.strictRanges, "lenient" (the default) takes the key out. */
+export function withRangeMode(fs, mode) {
+  if (mode !== "strict" && mode !== "lenient") throw new Error(`Range mode "${mode}" is not "lenient" or "strict".`);
+  const { strictRanges: _old, ...rest } = fs?.solver ?? {};
+  const solver = mode === "strict" ? { ...rest, strictRanges: true } : rest;
+  const { solver: _s, ...doc } = fs ?? {};
+  return Object.keys(solver).length ? { ...doc, solver } : doc;
+}
+
+/**
+ * The state patch of the switch: every flowsheet document of the workbench that has components (the Flowsheet, Column
+ * and Reactor workspaces) takes the mode, so the project has one.
+ */
+export function rangeModePatch(state, mode) {
+  const patch = { flowsheet: withRangeMode(state.flowsheet, mode) };
+  for (const k of ["column", "reactor"]) if (state[k]?.components?.length) patch[k] = withRangeMode(state[k], mode);
+  return patch;
+}
+
+/**
+ * The line each result view shows: which mode the result was calculated in (result.rangeMode), or, without a result,
+ * the mode asked for.
+ */
+export function rangeModeNote(result, fs) {
+  const mode = result?.rangeMode ?? rangeModeOf(fs);
+  const solved = !!result;
+  return mode === "strict"
+    ? `${solved ? "Calculated" : "Range mode"}: strict. Outside a record's range or for a missing pair, CHEPTA refuses (Settings, from the Units button).`
+    : `${solved ? "Calculated" : "Range mode"}: continue with a warning. Outside a record's range or for a missing pair, CHEPTA calculates and lists it in the warnings (Settings, from the Units button).`;
+}

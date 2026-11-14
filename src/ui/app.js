@@ -45,6 +45,7 @@ import { hxInputs } from "./hx-view.js";
 import { pipeInputs } from "./pipe-view.js";
 import { HX_DEFAULTS, HX_MODES, HX_TASKS, HX_STREAM_MAX } from "./hx-logic.js";
 import { flowsheetRibbon, flowsheetInputs, ensureUi, flowsheetKey, recordFlowsheet, stepFlowsheet } from "./flowsheet-view.js";
+import { RANGE_MODE_QUESTION, RANGE_MODES, rangeModeOf, rangeModePatch } from "./flowsheet-logic.js";
 import { reactorRibbon, reactorInputs, reactorKey } from "./reactor-workspace.js";
 import { columnRibbon, columnInputs, columnKey } from "./column-workspace.js";
 import { projectOf, projectText, projectFileName, stateFromProject } from "./project.js";
@@ -1203,6 +1204,11 @@ export function app(target, cfg = {}) {
             h("select", { id: `fa-unit-${key}-${uid}`, "data-fk": `unit-${key}`, on: { change: ev => set({ units: { [key]: ev.target.value } }) } },
               ...UNIT_CHOICES[key].map(([v, l]) => h("option", { value: v, selected: u[key] === v }, l)))]),
         h("span", {}, "Composition"), seg("Composition basis", [["mole", "mol frac"], ["mass", "wt %"]], state.basis, b => set({ basis: b })))),
+      // the range mode (the maintainer, 2026-11-13; decision 2026-11-14-06): stored as the project's solver.strictRanges
+      drawerSection(RANGE_MODE_QUESTION,
+        seg(RANGE_MODE_QUESTION, RANGE_MODES.map(m => [m.id, m.label]), rangeModeOf(state.flowsheet), m => set(rangeModePatch(state, m))),
+        h("p", { class: "fa-in-hint", "data-fk": "range-mode-hint" }, RANGE_MODES.find(m => m.id === rangeModeOf(state.flowsheet)).hint,
+          " For the Flowsheet, Column and Reactor workspaces; it is saved with the project (solver.strictRanges).")),
       drawerSection("Show", h("div", { class: "fa-stack" },
         smallButton({ ico: "panelL", label: "Inputs panel", pressed: state.panels.left, onClick: () => set({ panels: { left: !state.panels.left } }, { canvas: false }) }),
         smallButton({ ico: "panelR", label: "Results panel", pressed: state.panels.right, onClick: () => set({ panels: { right: !state.panels.right } }, { canvas: false }) }),

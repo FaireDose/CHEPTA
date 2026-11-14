@@ -103,7 +103,11 @@ components, or an activity model above 1000 kPa
   than the fit (ethanol + water 1.08 K against 0.12 K in T), and about as far as Modified UNIFAC 2.0 itself.
 - **Pair sets outside their data range**: a flowsheet's `result.extrapolations` lists each set (activity model or
   k_ij) used outside the temperatures of its data, once per pair, at the farthest distance, with no margin (kind
-  "pairSet"); the warnings of a single calculation keep their 10 K margin.
+  "pairSet"); the warnings of a single calculation keep their 10 K margin. The list holds the records of the
+  components each block's outlets carry (a component with no flow there is not used; decision 2026-11-14-06). In the
+  strict range mode a flowsheet whose answer would carry any of them (an estimated pair asked for with
+  `thermo.missingPairs` excepted) is refused (OUT_OF_RANGE), with the list in `details.extrapolations`; before
+  2026-11-14 the strict mode kept the margins of before 2026-11-13 and refused none of them (CHEPTA-Lab EA-10).
 
 ## Cubic equations of state
 

@@ -206,6 +206,13 @@ registerCapability({
   },
 });
 
+/**
+ * What a single-block request (solve_column, solve_membrane, ...) keeps of its flowsheet's range notes: the records used
+ * outside their range, with the blocks where (src/util/ranges.js), and the range mode the answer was calculated in
+ * (decision 2026-11-14-06; CHEPTA-Lab's B2 question: solve_column dropped them).
+ */
+const rangeNotes = v => ({ rangeMode: v.rangeMode, extrapolations: v.extrapolations ?? [] });
+
 /** A solved flowsheet as a request's result: the value, the checks, the qualifications and the reproduction. */
 function solvedFlowsheet(flowsheet, userData) {
   normalizeFlowsheet(flowsheet, userData);
@@ -277,7 +284,7 @@ registerCapability({
     const { sys, result } = flowsheetRun(flowsheet, userData);
     const r = flashBlockResult(d, result, b.id);
     const two = [r.outlets?.liquid, r.outlets?.liquid2].filter(Boolean).flatMap(s => s.phases).filter(p => p.type === "liquid" && p.F_kmol_h > 0).length === 2;
-    const value = { block: b.id };
+    const value = { block: b.id, ...rangeNotes(result) };
     if (r.outlets?.vapour?.F_kmol_h > 0) value.drum = sizeDrum(r, { ...(input.drum ?? {}), sys });
     if (two) value.decanter = sizeDecanter(r, { ...(input.decanter ?? {}), sys });
     if (!value.drum && !value.decanter) throw fail("BAD_INPUT", `Block ${b.id} holds one liquid and no vapour: there is nothing to separate, so no size.`, { where: [{ block: b.id }] });
@@ -311,7 +318,7 @@ registerCapability({
         ...side.map(k => ({ id: `SIDE_${k}`, from: "C1.side", to: `P${k + 2}.in` }))] };
     const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
     const c = r.value.blocks.C1;
-    return { ...r, value: { feed: r.value.streams.FEED, ...(gas ? { gas_feed: r.value.streams.GAS_FEED } : {}), distillate: r.value.streams.DISTILLATE, bottoms: r.value.streams.BOTTOMS,
+    return { ...r, value: { ...rangeNotes(r.value), feed: r.value.streams.FEED, ...(gas ? { gas_feed: r.value.streams.GAS_FEED } : {}), distillate: r.value.streams.DISTILLATE, bottoms: r.value.streams.BOTTOMS,
       ...(side.length ? { side_draws: side.map(k => r.value.streams[`SIDE_${k}`]) } : {}),
       column: { ...c.state, duty_kW: c.duty_kW, notes: c.notes, warnings: c.warnings ?? [], profile: c.profile, ...(c.sizing ? { sizing: c.sizing } : {}) } } };
   },
@@ -336,7 +343,7 @@ registerCapability({
       streams: [{ id: "FEED", from: "F1.out", to: "MB1.in" }, { id: "PERMEATE", from: "MB1.permeate", to: "P1.in" }, { id: "RETENTATE", from: "MB1.retentate", to: "P2.in" }] };
     const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
     const m = r.value.blocks.MB1;
-    return { ...r, value: { feed: r.value.streams.FEED, permeate: r.value.streams.PERMEATE, retentate: r.value.streams.RETENTATE,
+    return { ...r, value: { ...rangeNotes(r.value), feed: r.value.streams.FEED, permeate: r.value.streams.PERMEATE, retentate: r.value.streams.RETENTATE,
       membrane: { ...m.state, duty_kW: m.duty_kW, notes: m.notes, warnings: m.warnings ?? [], profile: m.profile, sizing: m.sizing } } };
   },
 });
@@ -362,7 +369,7 @@ registerCapability({
         { id: "EXTRACT", from: "EX1.extract", to: "P1.in" }, { id: "RAFFINATE", from: "EX1.raffinate", to: "P2.in" }] };
     const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
     const x = r.value.blocks.EX1;
-    return { ...r, value: { feed: r.value.streams.FEED, solvent: r.value.streams.SOLVENT, extract: r.value.streams.EXTRACT, raffinate: r.value.streams.RAFFINATE,
+    return { ...r, value: { ...rangeNotes(r.value), feed: r.value.streams.FEED, solvent: r.value.streams.SOLVENT, extract: r.value.streams.EXTRACT, raffinate: r.value.streams.RAFFINATE,
       extraction: { ...x.state, duty_kW: x.duty_kW, notes: x.notes, warnings: x.warnings ?? [], profile: x.profile } } };
   },
 });
@@ -388,7 +395,7 @@ registerCapability({
         { id: "CONDENSATE", from: "EV1.condensate", to: "P3.in" }] };
     const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
     const e = r.value.blocks.EV1;
-    return { ...r, value: { feed: r.value.streams.FEED, product: r.value.streams.PRODUCT, vapour: r.value.streams.VAPOUR, condensate: r.value.streams.CONDENSATE,
+    return { ...r, value: { ...rangeNotes(r.value), feed: r.value.streams.FEED, product: r.value.streams.PRODUCT, vapour: r.value.streams.VAPOUR, condensate: r.value.streams.CONDENSATE,
       evaporator: { ...e.state, duty_kW: e.duty_kW, notes: e.notes, warnings: e.warnings ?? [], profile: e.profile, sizing: e.sizing } } };
   },
 });
@@ -414,7 +421,7 @@ registerCapability({
         ...(evap ? [{ id: "VAPOUR", from: "CR1.vapour", to: "P3.in" }] : [])] };
     const r = solvedFlowsheet(flowsheet, checkUserData(input.user_data ?? null));
     const c = r.value.blocks.CR1;
-    return { ...r, value: { feed: r.value.streams.FEED, crystals: r.value.streams.CRYSTALS, mother_liquor: r.value.streams.MOTHER_LIQUOR, ...(evap ? { vapour: r.value.streams.VAPOUR } : {}),
+    return { ...r, value: { ...rangeNotes(r.value), feed: r.value.streams.FEED, crystals: r.value.streams.CRYSTALS, mother_liquor: r.value.streams.MOTHER_LIQUOR, ...(evap ? { vapour: r.value.streams.VAPOUR } : {}),
       crystallizer: { ...c.state, duty_kW: c.duty_kW, notes: c.notes, warnings: c.warnings ?? [] } } };
   },
 });

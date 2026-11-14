@@ -19,7 +19,7 @@ them. Only the outcome `ok` carries numbers. `missing_data` means a property or 
 **The authoring contract** (proposal 0015, W8). A flowsheet is checked before anything is calculated, and a key CHEPTA
 does not read is refused rather than ignored:
 
-- an unknown key of the flowsheet's `thermo` (it takes `model`, `vapour`, `sets`, `prefer`, `solids` and `mixing`; an assistant's
+- an unknown key of the flowsheet's `thermo` (it takes `model`, `vapour`, `sets`, `prefer`, `solids`, `mixing` and `missingPairs`; an assistant's
   `thermo.method` is one) gives `invalid_input` (BAD_INPUT) with the key, the known keys and `where`
   `[{ field: "flowsheet.thermo.method" }]`;
 - an unknown key of a block's `spec` gives `invalid_input` with the block's known keys and `where`
@@ -31,9 +31,17 @@ does not read is refused rather than ignored:
   `options.strictRanges` (or the flowsheet's `solver.strictRanges`) it gives `missing_data` (MISSING_DATA) with
   `details.missing_pairs`, as before 2026-11-13; the message names the remedies: add the pair's parameters, with their
   source, as the user's own data (My data; `user_data.pairs` in the project or the request), or choose another method.
-  A light gas with a missing pair (no Modified UNIFAC 2.0 groups) gives `missing_data` in both modes. Treating the
-  pair as ideal (`allowMissingPairs`, `missingPairs: "ideal"`) is an option of a program that calls `system()` itself;
-  the request path never does it.
+  A light gas with a missing pair (no Modified UNIFAC 2.0 groups) gives `missing_data` in both modes. The flowsheet's
+  `thermo.missingPairs` (`"estimate"`, `"ideal"` or `"refuse"`; decision 2026-11-14-06) chooses for itself, in either
+  mode: `"ideal"` takes the pair as ideal (listed in `qualifications.missing_pairs`), `"estimate"` estimates it even
+  in the strict mode;
+- the strict range mode (`options.strictRanges` or the flowsheet's `solver.strictRanges`; decision 2026-11-14-06)
+  refuses an answer that would carry an extrapolation: `invalid_input` (OUT_OF_RANGE), the message naming every record
+  outside its range, `details.extrapolations` and `where` the blocks. The searches that lead to an answer may pass
+  outside a record's range in either mode; what counts is the answer's states. Every solved flowsheet says which mode
+  it ran in (`value.rangeMode`: `"lenient"` or `"strict"`), and the single-block requests (`solve_column`,
+  `solve_membrane`, `solve_extraction`, `solve_evaporator`, `solve_crystallizer`, `size_drum`) carry the flowsheet's
+  `extrapolations` and `rangeMode` in their value;
 
 ## The command line
 
@@ -161,6 +169,11 @@ CHEPTA.run(request);                                     // unchanged: synchrono
 A run that the worker does not finish has the outcome `out_of_time` (error code `OUT_OF_TIME`), `cancelled`
 (`CANCELLED`) or, when the worker itself failed, `error` (`WORKER_FAILED`); these codes belong to the runtime, not to
 the engine.
+An `out_of_time` result says where the flowsheet's recycle loops were when it was stopped (decision 2026-11-14-06,
+CHEPTA-Lab EA-14): `error.details.progress` is the engine's last report, `{ kind: "flowsheet", loops: [{ blocks, tears,
+iterations, residual, tolerance, converged, maxIterations, method, recent }] }` (`recent`: the last five residuals),
+and the message says the same in words. The worker sends a report after every iteration of a loop
+(src/util/progress.js).
 
 ## How it is tested
 

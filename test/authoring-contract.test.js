@@ -18,9 +18,11 @@ const withFlowsheet = f => ({ ...project, flowsheet: f(JSON.parse(JSON.stringify
 
 test("an unknown key of thermo is refused, naming it and the known keys", () => {
   const f = { ...project.flowsheet, thermo: { model: "NRTL", method: "PR" } };
+  // "missingPairs" joined them on 2026-11-14 (decision 2026-11-14-06, CHEPTA-Lab EA-11: estimate, ideal or refuse a pair
+  // with no stored set, as system() takes it)
   // "mixing" joined them on 2026-11-10 (proposal 0018: the MHV1 mixing rule of PR and SRK; test/mhv1-interface.test.js)
   // "solids" joined the known keys on 2026-11-05 (proposal 0015, section 5: the component that forms a solid everywhere)
-  assert.throws(() => normalizeFlowsheet(f), e => e.code === "BAD_INPUT" && /thermo: unknown key "method"\. Known: model, vapour, sets, prefer, solids, mixing\./.test(e.message)
+  assert.throws(() => normalizeFlowsheet(f), e => e.code === "BAD_INPUT" && /thermo: unknown key "method"\. Known: model, vapour, sets, prefer, solids, mixing, missingPairs\./.test(e.message)
     && /The property method is "model"/.test(e.message));
   const r = run({ capability: "solve_flowsheet", input: { project: withFlowsheet(fs => ({ ...fs, thermo: { ...fs.thermo, method: "PR" } })) } });
   assert.equal(r.outcome, "invalid_input");
@@ -88,7 +90,11 @@ test("the missing-pair message names the user's data and another method, not onl
   assert.deepEqual(r.error.details, { missing_pairs: ["benzene+glycerol"] });
   // the remedy the message names works: the pair as the user's data
   const ud = { pairs: { "benzene+glycerol": { NRTL: { b_ij: 500, b_ji: 1500, alpha: 0.3 }, source: { name: "authoring-contract test, not data" } } } };
-  const own = run({ capability: "solve_flowsheet", input: { flowsheet: MISSING, user_data: ud }, options: { strictRanges: true } });
+  // at 310 K: since 2026-11-14 the strict mode also refuses an answer that uses a record outside its range (decision
+  // 2026-11-14-06, CHEPTA-Lab EA-10), and glycerol's vapour-pressure record starts at 303.59 K; the remedy is checked
+  // inside it
+  const at310 = { ...MISSING, blocks: MISSING.blocks.map(b => (b.id === "F1" ? { ...b, spec: { ...b.spec, T_K: 310 } } : b)) };
+  const own = run({ capability: "solve_flowsheet", input: { flowsheet: at310, user_data: ud }, options: { strictRanges: true } });
   assert.equal(own.outcome, "ok");
   assert.deepEqual(own.qualifications.pairs.map(p => p.tier), ["user"]);
   assert.equal(own.qualifications.estimated_pairs, undefined, "the user's own pair is not estimated");

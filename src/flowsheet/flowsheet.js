@@ -60,9 +60,10 @@
  * 3-clause BSD); Tarjan, SIAM Journal on Computing 1(2), 1972 (as cited there).
  * Units: K, kPa, kmol/h, kW.
  */
-import { fail } from "../util/errors.js";
-import { withRangePolicy, collectExtrapolations, mergeExtrapolations } from "../util/ranges.js";
+import { fail, failRange } from "../util/errors.js";
+import { withRangePolicy, collectExtrapolations, mergeExtrapolations, strictRanges } from "../util/ranges.js";
 import { stream } from "../stream/stream.js";
+import { reportProgress, progressWanted } from "../util/progress.js";
 import { runUnit, unitType, specStatus } from "../units/units.js";
 import "../units/reactors.js";   // registers the conversion and yield reactors
 import "../units/kinetic-reactors.js";
@@ -365,7 +366,15 @@ function blockExtrapolations(sys, r, noted) {
   const temps = new Set();
   for (const got of Object.values(r.outlets ?? {})) for (const st of (Array.isArray(got) ? got : [got])) if (st && Number.isFinite(st.T_K) && st.F_kmol_h > 0) temps.add(st.T_K);
   if (Array.isArray(r.profile)) for (const p of r.profile) if (Number.isFinite(p?.T_K)) temps.add(p.T_K);
-  const atStates = typeof sys.extrapolations === "function" ? [...temps].flatMap(T => sys.extrapolations(T)) : [];
+  // only the components the block's outlets carry: a record of a component absent from them is not used in its
+  // answer (decision 2026-11-14-06); a pair, when both are present
+  const present = new Set();
+  for (const got of Object.values(r.outlets ?? {})) {
+    for (const st of (Array.isArray(got) ? got : [got])) (st?.flows ?? []).forEach((f, i) => { if (f > 0 && sys.names?.[i]) present.add(sys.names[i]); });
+  }
+  const used = n => !present.size || n.component == null || present.has(n.component)
+    || (n.kind === "pairSet" || n.kind === "estimatedPair" ? n.component.split(" + ").every(c => present.has(c)) : !sys.names?.includes(n.component));
+  const atStates = typeof sys.extrapolations === "function" ? [...temps].flatMap(T => sys.extrapolations(T)).filter(used) : [];
   return [...atStates, ...(r.extrapolations ?? []), ...noted.filter(n => !FINAL_STATE_KINDS.has(n.kind))];
 }
 
@@ -518,6 +527,12 @@ function solveCore(sys, fs) {
         return Math.max(dF, dT);
       }));
       history.push(err);
+      // where the loops are, for a run stopped by its time limit (src/util/progress.js; CHEPTA-Lab EA-14)
+      if (progressWanted()) {
+        reportProgress({ kind: "flowsheet", loops: [...loops.map(l => ({ ...l, converged: true })),
+          { blocks: seq.slice(), tears: tears.map(e => e.id), iterations: it + 1, residual: err, tolerance: opt.tolerance, converged: false,
+            maxIterations: opt.maxIterations, method: opt.method, recent: history.slice(-5) }] });
+      }
       // a loop without a way out for some component accumulates it: its flows grow without bound, and a
       // method that extrapolates (Broyden) can reach flows so large that the relative change looks converged
       const Ffeed = feedTotal();
@@ -595,8 +610,21 @@ function solveCore(sys, fs) {
   // every record used outside its range, once per component, property and side, at the farthest distance reached,
   // with the blocks where it was (the maintainer, 2026-11-13; src/util/ranges.js)
   const extrapolations = mergeExtrapolations([...blockNotes].map(([where, notes]) => ({ where, notes })));
+  // the strict range mode refuses an answer that would carry an extrapolation (decision 2026-11-14-06, CHEPTA-Lab EA-10).
+  // The notes are those of the answer's states: the searches that led to it may pass outside a record's range in
+  // either mode. A pair with no stored set is decided when the system is built (refused in the strict mode unless
+  // thermo.missingPairs says otherwise), so an estimated pair here was asked for and is not refused again.
+  const strict = strictRanges();
+  const outside = strict ? extrapolations.filter(e => e.kind !== "estimatedPair") : [];
+  if (outside.length) {
+    throw failRange("OUT_OF_RANGE", `The strict range mode (strictRanges) refuses this answer: it uses ${outside.length === 1 ? "a record" : `${outside.length} records`} outside ${outside.length === 1 ? "its range" : "their ranges"}. ${outside.map(e => e.message).join(" ")} Without the strict mode the flowsheet is solved and these are warnings.`,
+      { strictRanges: true, extrapolations: outside, where: [...new Set(outside.flatMap(e => e.where ?? []))].map(block => ({ block, message: outside.filter(e => e.where?.includes(block)).map(e => e.short ?? e.message).join("; ") })) });
+  }
   return {
     components: sys.ids.slice(),
+    // the range policy this answer was calculated with (decision 2026-11-14-06): "strict" refuses outside a record's
+    // range, "lenient" (the default) continues the record with a warning (extrapolations)
+    rangeMode: strict ? "strict" : "lenient",
     extrapolations,
     streams: Object.fromEntries(edges.map(e => [e.id, values.get(e.id)])),
     energy,

@@ -254,6 +254,8 @@ don't fill it in.
   `warnings` (a flowsheet: `result.extrapolations`, once per component and property, with the blocks) say which
   property, how far outside and how it was continued. Tell the user every such warning: the number is an
   extrapolation, not data. Give `solver: { strictRanges: true }` (or `options: { strictRanges: true }` to
-  `CHEPTA.run`) when the user wants the calculation refused outside the data instead.
+  `CHEPTA.run`) when the user wants the calculation refused outside the data instead: then any answer that would
+  carry an extrapolation is refused (OUT_OF_RANGE), naming the records; `value.rangeMode` says which mode a result
+  ran in. `thermo.missingPairs` ("estimate", "ideal", "refuse") chooses what a pair without parameters becomes.
 - If the library fails to load, tell the user; do not replace it with hand-written
   thermodynamics.

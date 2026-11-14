@@ -14,12 +14,15 @@ import { superviseRun } from "./worker.js";
 const MAIN = new URL("./node-worker-main.js", import.meta.url);
 let idle = null;
 
-function connect(onResult, onFailure) {
+function connect(onResult, onFailure, onProgress) {
   const w = idle ?? new Worker(MAIN);
   idle = null;
   w.ref();
   let done = false;
-  const onMessage = r => { done = true; release(); onResult(r); };
+  const onMessage = r => {
+    if (r && r.chepta_progress === 1) { if (!done) onProgress?.(r.progress); return; }
+    done = true; release(); onResult(r);
+  };
   const onError = e => { if (!done) { done = true; detach(); onFailure(e); } };
   const onExit = code => onError(new Error(`the worker stopped (exit code ${code})`));
   const detach = () => { w.off("message", onMessage); w.off("error", onError); w.off("exit", onExit); };

@@ -398,7 +398,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   once per pair, with no 10 K margin: built with the missing-pair estimate (decision 2026-11-13-05, #243).
 - Missing-pair follow-up (decided 2026-11-13, [decision 2026-11-13-05](decisions/2026-11-13-05-missing-pairs-estimated.md)):
   a lenient twin of column case C1 (methanol + water + ethylene glycol), a data PR that checks the estimate's warning
-  beside the unchanged strict-mode case, as for G3; a per-flowsheet `thermo.missing_pairs` setting only if users ask.
+  beside the unchanged strict-mode case, as for G3. The per-flowsheet setting exists since 2026-11-14 (`thermo.missingPairs`,
+  asked by CHEPTA-Lab, EA-11).
+- Strict range mode (built 2026-11-14, [decision 2026-11-14-06](decisions/2026-11-14-06-strict-mode-refuses.md)): it
+  refuses an answer that would carry an extrapolation; `thermo.missingPairs` in a flowsheet; an `out_of_time` result
+  says where the recycle loops were; the single-block requests keep `extrapolations`; the Settings switch. Answered by
+  the maintainer on 2026-11-14 (all four as recommended): the stricter strict mode stays, run by the switch's "Refuse"
+  in the Flowsheet, Column and Reactor workspaces; the calculations outside a flowsheet keep the old strict margins; no
+  project format change. Nothing left open.
 
 1. Equation-of-state pairs: fit PR and SRK k_ij to the archive data of the 92 nonpolar or gas pairs
    that have none (docs/PAIR_SCAN.md, "Coverage by the method each pair needs"), and import the
