@@ -426,11 +426,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 ### After the proposals are accepted
 
 - **0022, design specifications in the flowsheet** (accepted 2026-11-13 with its five recommended answers;
-  docs/decisions/2026-11-13-02-splitter-flow.md; the splitter by flow of the same request is built, project format 9):
-  to build, by the proposal's steps: 1. the engine (`designSpecs` in the document, one specification by bracket + Brent
-  around the sequential solver, warm-started tears, the failures with their codes); 2. several specifications together
-  (Broyden with bounds); 3. request format, flowsheet_status, project format, assistant instructions; 4. the workbench
-  form.
+  docs/decisions/2026-11-13-02-splitter-flow.md): steps 1-3 built on 2026-11-14 (docs/decisions/2026-11-14-04-design-specs.md;
+  project format 10). Still to do: 4. the workbench form; the variables of a column (reflux, distillate) that CHEPTA-Lab's
+  request 15 names, after the column work now running is merged. For the maintainer to confirm (recommendations in
+  the decision file): the tolerance rule only where the flowsheet has a recycle; a splitter outlet's `index` from 0.
+- **0023, sensitivity tables** (draft, 2026-11-14; CHEPTA-Lab's request 15): five open questions with recommendations
+  in the proposal (a failed point as a row that says so; at most 200 points, two inputs; the flowsheet's own answer
+  solved again; the snake order; design specifications held at every point).
 
 - **0009, green chemistry components** (accepted 2026-10-11):
   1. batch 1, 16 components from ChemSep and CoolProp (in a pull request, 2026-10-11);

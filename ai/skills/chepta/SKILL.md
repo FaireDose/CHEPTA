@@ -119,6 +119,21 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
   outlet), and `{ id: "Q2", from: "E2", to: "E3" }` sends one block's heat into another.
   `"energy": false` on a block leaves its own energy stream out of the drawing (its duty is still
   calculated). An energy feed without `to` is not connected: the flowsheet is then not ready.
+- Design specifications (format 10; proposal 0022): to hold a product's purity, a recycle's flow,
+  a temperature or a duty, add `designSpecs: [{ id: "DS1", vary: { block: "F2", key: "flow_kmol_h",
+  component: "ethanol", min: 0, max: 50 }, target: { stream: "S4", quantity: "mass_fraction",
+  component: "ethyl-acetate", value: 0.999 } }]` to the flowsheet instead of trying values by hand.
+  `vary`: a feed's flow_kmol_h / flow_kg_h (with `component`: one component; without: the total,
+  composition kept), T_K or P_kPa; a splitter's fractions / flow_kmol_h / flow_kg_h (`index`, the
+  outlet from 0, not the "rest"); a heater's T_K or duty_kW; a flash drum's T_K, P_kPa or duty_kW.
+  `min` and `max` are required; `guess` is optional (default: the value in the spec). `target`: a
+  stream's flow_kmol_h, flow_kg_h, component_flow_kmol_h, component_flow_kg_h, mole_fraction,
+  mass_fraction, T_K or VF, or a block's duty_kW; `ratio_of` (another quantity) makes the value a
+  ratio. `tolerance`: relative (absolute for fractions and VF), default 1e-6, at least 100 times
+  solver.tolerance. The solver varies the input with the recycles converged at every step; the
+  answer lists `designSpecs` (asked, reached, the varied value) and writes the varied value into
+  `blocks[id].spec`. A target out of reach is refused (NO_CONVERGENCE, reason "unreachable") with
+  its value at both bounds: tell me those numbers, never pick a value yourself.
 - Before giving me the page, check the project in code you can run:
   `CHEPTA.checkProject(project)` lists every problem (connections and degrees of freedom,
   e.g. "Flash drum V1: missing: one more of T_K, P_kPa, VF or duty_kW"); fix them all.

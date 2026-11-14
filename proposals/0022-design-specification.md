@@ -1,6 +1,8 @@
 # 0022: Design specifications in the flowsheet: vary one input to meet a target
 
-- **Status:** Accepted (the maintainer, 2026-11-13, with the five recommended answers to the open questions; docs/decisions/2026-11-13-02-splitter-flow.md). Not built yet: steps 1-4 below.
+- **Status:** Accepted (the maintainer, 2026-11-13, with the five recommended answers to the open questions; docs/decisions/2026-11-13-02-splitter-flow.md). Steps 1-3 built on 2026-11-14 (src/flowsheet/design-specs.js;
+  docs/decisions/2026-11-14-04-design-specs.md); step 4, the workbench form, to do. Sensitivity tables, asked with the same
+  request of CHEPTA-Lab (15), are proposal 0023.
 - **Author(s):** drafted by a coding agent for CHEPTA-Lab's request 7 (2026-11-13); to be reviewed by the maintainer
 - **Discussion:** the pull request that adds this file
 - **Roadmap item:** A8, flowsheet solver ("design specifications open"; [proposal 0015](0015-separation-units.md), Part II, A8:

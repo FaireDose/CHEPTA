@@ -253,6 +253,11 @@ by flow: a splitter block whose spec has `flow_kmol_h` or `flow_kg_h` (one total
 `fractions`. A format-8 reader would take the block and report its fractions missing without saying why, so the format
 is raised; it is written only when a splitter is given by flow.
 
+Project format 10 (proposal 0022; CHEPTA-Lab's request 15, 2026-11-14; `docs/schema/project-10.json`) is format 9 with
+the flowsheet's design specifications (`designSpecs`: vary one input of a block within bounds to meet a target, solved by
+`src/flowsheet/design-specs.js` as an outer loop around the recycles). A format-9 reader refuses the key as unknown, so
+the format is raised and the older version names it; it is written only when a flowsheet has a design specification.
+
 **The request path** (`src/api/dispatcher.js`). One dispatcher over the existing functions, for the workbench (the
 Flowsheet workspace solves through it), chat pages, and, from milestone M1, the command line and the local MCP server
 (`chepta-mcp`):
