@@ -213,6 +213,9 @@ CHEPTA PHASE STARTED 2026-11-14 ~15:57 UTC (Lab's phase ended; the maintainer ap
    u-htxr2-15C now refused in strict mode, ok with 4 extrapolations otherwise. One test changed with reason (strict
    user-pair check moved 300 -> 310 K, inside glycerol's vapour-pressure record). 4 questions to the maintainer (all
    recommended). No worker running. After the merges: release 0.6.3 (recommended; Lab pins it).
+   17:49: the maintainer answered #252's four questions directly in worker C's session (checked in its transcript; 1
+   "only if this is possible to add in the workbench": it is, the Settings switch's Refuse); recorded in ef35080.
+   Still open: #250's 3 + 0023's 5, #251's 4.
 0b. NEXT CHEPTA PHASE, first (the maintainer, agreed 2026-11-13), one small PR each or together:
    (1) a switch in the Settings drawer (the Units button): "Outside a record's range or a missing pair: continue with a
    warning / refuse" (strictRanges in the project's solver), and each result says which mode it ran in;
