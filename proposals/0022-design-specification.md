@@ -199,6 +199,8 @@ specification.
    (`designSpecIterations`).
 3. **Tolerances:** recommended the specification's tolerance at least 100 times the recycle tolerance (refused
    otherwise, with the reason), since a target cannot be met more tightly than the recycle is converged.
+   *Changed by the maintainer on 2026-11-14:* a default (1e-6, or 100 times the recycle tolerance where that is looser)
+   that the person may change; a tighter tolerance is used with a warning, not refused.
 4. **A feed-forward "set"** (DWSIM's Spec: an input computed from another quantity by a formula, no solving):
    recommended not now; a `ratio_of` target covers the feed-ratio case through the solver, and a formula language is a
    separate decision (security and checking).

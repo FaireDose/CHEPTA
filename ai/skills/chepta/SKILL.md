@@ -129,8 +129,9 @@ project with a flowsheet and open it in the workbench's Flowsheet tab:
   `min` and `max` are required; `guess` is optional (default: the value in the spec). `target`: a
   stream's flow_kmol_h, flow_kg_h, component_flow_kmol_h, component_flow_kg_h, mole_fraction,
   mass_fraction, T_K or VF, or a block's duty_kW; `ratio_of` (another quantity) makes the value a
-  ratio. `tolerance`: relative (absolute for fractions and VF), default 1e-6, at least 100 times
-  solver.tolerance. The solver varies the input with the recycles converged at every step; the
+  ratio. `tolerance`: relative (absolute for fractions and VF); default 1e-6, or 100 times
+  solver.tolerance where that is looser; a tolerance you give is used (with a warning when it is
+  tighter than 100 times solver.tolerance). The solver varies the input with the recycles converged at every step; the
   answer lists `designSpecs` (asked, reached, the varied value) and writes the varied value into
   `blocks[id].spec`. A target out of reach is refused (NO_CONVERGENCE, reason "unreachable") with
   its value at both bounds: tell me those numbers, never pick a value yourself.

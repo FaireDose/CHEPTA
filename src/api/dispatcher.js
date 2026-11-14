@@ -125,7 +125,7 @@ const FLOWSHEET_INPUT = {
   type: "object", additionalProperties: false,
   properties: {
     project: { type: "object", description: "a CHEPTA project file (fugacity_project, flowsheet, user_data)" },
-    flowsheet: { type: "object", description: "a flowsheet document (components, thermo, blocks, streams; src/flowsheet/document.js). Optional designSpecs (proposal 0022): [{ id, vary: { block, key, component (a feed's flow of one component; without it the feed's total flow, its composition kept) or index (a splitter's outlet, from 0), min, max (required), guess }, target: { stream or block, quantity, component, value, ratio_of }, tolerance }]: the solver varies the input within its bounds until the target is met, recycles converged at every step. vary: feed flow_kmol_h, flow_kg_h, T_K, P_kPa; splitter fractions, flow_kmol_h, flow_kg_h (index); heater T_K, duty_kW; flash T_K, P_kPa, duty_kW. target quantity of a stream: flow_kmol_h, flow_kg_h, component_flow_kmol_h, component_flow_kg_h, mole_fraction, mass_fraction, T_K, VF; of a block: duty_kW; ratio_of { stream or block, quantity, component } makes the value a ratio. tolerance: relative to the value (absolute for fractions and VF), default 1e-6, at least 100 times solver.tolerance. One specification: bracket and Brent's method; several: Broyden's method with bounds; limits solver.designSpecIterations (a number, or { bracket: 8, solve: 50 }). A target out of reach is refused (not_converged, reason \"unreachable\") with its value at both bounds; checks.design_specs lists each as asked and as reached, and value.designSpecs the varied values (also written into value.blocks[id].spec)." },
+    flowsheet: { type: "object", description: "a flowsheet document (components, thermo, blocks, streams; src/flowsheet/document.js). Optional designSpecs (proposal 0022): [{ id, vary: { block, key, component (a feed's flow of one component; without it the feed's total flow, its composition kept) or index (a splitter's outlet, from 0), min, max (required), guess }, target: { stream or block, quantity, component, value, ratio_of }, tolerance }]: the solver varies the input within its bounds until the target is met, recycles converged at every step. vary: feed flow_kmol_h, flow_kg_h, T_K, P_kPa; splitter fractions, flow_kmol_h, flow_kg_h (index); heater T_K, duty_kW; flash T_K, P_kPa, duty_kW. target quantity of a stream: flow_kmol_h, flow_kg_h, component_flow_kmol_h, component_flow_kg_h, mole_fraction, mass_fraction, T_K, VF; of a block: duty_kW; ratio_of { stream or block, quantity, component } makes the value a ratio. tolerance: relative to the value (absolute for fractions and VF); default 1e-6, or 100 times solver.tolerance where that is looser; a tolerance you give is used, with a warning when it is tighter than 100 times solver.tolerance. One specification: bracket and Brent's method; several: Broyden's method with bounds; limits solver.designSpecIterations (a number, or { bracket: 8, solve: 50 }). A target out of reach is refused (not_converged, reason \"unreachable\") with its value at both bounds; checks.design_specs lists each as asked and as reached, and value.designSpecs the varied values (also written into value.blocks[id].spec)." },
     user_data: USER_DATA,
   },
 };
@@ -213,7 +213,9 @@ function solvedFlowsheet(flowsheet, userData) {
   const blocks = Object.fromEntries(Object.entries(result.blocks).map(([id, b]) => [id, { material: b.balance?.material ?? null, energy_kW: b.balance?.energy_kW ?? null }]));
   const material = Object.values(result.balance.material_kmol_h).reduce((a, v) => Math.max(a, Math.abs(v)), 0);
   const notes = Object.entries(result.blocks).flatMap(([id, b]) => (b.notes ?? []).map(n => ({ block: id, note: n })));
-  const warnings = Object.entries(result.blocks).flatMap(([id, b]) => (b.warnings ?? []).map(w => ({ block: id, ...w })));
+  const warnings = [...Object.entries(result.blocks).flatMap(([id, b]) => (b.warnings ?? []).map(w => ({ block: id, ...w }))),
+    // a design specification's tolerance tighter than 100 times the recycle tolerance (the maintainer, 2026-11-14)
+    ...(result.designSpecs ?? []).flatMap(d => (d.warnings ?? []).map(message => ({ block: d.varied.block, designSpec: d.id, message })))];
   const info = sys.info ?? {};
   return {
     value: result,
@@ -222,7 +224,7 @@ function solvedFlowsheet(flowsheet, userData) {
       loops: result.loops.map(l => ({ tears: l.tears, iterations: l.iterations, residual: l.residual ?? null, tolerance: l.tolerance ?? null })),
       // the design specifications (proposal 0022): each target as asked and as reached, its tolerance, the varied value and the solves
       ...(result.designSpecs?.length ? { design_specs: result.designSpecs.map(d => ({ id: d.id, asked: d.target.asked, reached: d.target.reached, residual: d.target.residual,
-        tolerance: d.target.tolerance, absolute: d.target.absolute, met: d.met, varied: d.varied, method: d.method, solves: d.solves })) } : {}),
+        tolerance: d.target.tolerance, tolerance_default: d.target.tolerance_default, absolute: d.target.absolute, met: d.met, varied: d.varied, method: d.method, solves: d.solves })) } : {}),
       // the rigorous columns: their residuals by group, the tolerances and the iterations (contract 3)
       ...(Object.values(result.blocks).some(b => b.state?.residuals) ? { columns: Object.fromEntries(Object.entries(result.blocks).filter(([, b]) => b.state?.residuals)
         .map(([id, b]) => [id, { residuals: b.state.residuals, tolerances: b.state.tolerances, iterations: b.state.iterations, converged: b.state.converged,

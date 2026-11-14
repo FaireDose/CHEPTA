@@ -18,7 +18,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { system, solveFlowsheet, flowsheetStatus, normalizeFlowsheet } from "../src/index.js";
 import { run } from "../src/api/dispatcher.js";
-import { projectOf, readProject, PROJECT_FORMAT } from "../src/ui/project.js";
+import { projectOf, readProject, stateFromProject, PROJECT_FORMAT } from "../src/ui/project.js";
 
 const ref = JSON.parse(readFileSync(new URL("../validation/fixtures/design_specs.json", import.meta.url), "utf8"));
 const close = (a, b, tol, msg) => assert.ok(Math.abs(a - b) <= tol, `${msg}: ${a} vs ${b} (tolerance ${tol})`);
@@ -114,7 +114,7 @@ test("(3) a heater duty that brings a stream to its bubble point, against the he
   const bubble = solveFlowsheet(s3, doc({ VF: 0 }));
   const Tb = bubble.streams.S2.T_K, Q = bubble.blocks.E1.duty_kW;
   const r = solveFlowsheet(s3, { ...doc({ duty_kW: 100 }), designSpecs: [{ id: "DS1", vary: { block: "E1", key: "duty_kW", min: 0, max: 5000 },
-    target: { stream: "S2", quantity: "T_K", value: Tb }, tolerance: 1e-7 }], solver: { tolerance: 1e-9 } });
+    target: { stream: "S2", quantity: "T_K", value: Tb }, tolerance: 1e-7 }] });
   close(r.streams.S2.T_K, Tb, Tb * 1e-7, "bubble temperature");
   close(r.designSpecs[0].varied.value, Q, Math.abs(Q) * 1e-4, "duty");
   assert.ok(Math.abs(r.streams.S2.VF ?? 0) < 1e-3, `VF ${r.streams.S2.VF}`);
@@ -198,8 +198,7 @@ test("(4) malformed or conflicting specifications are refused before anything is
   bad([makeupDS({ vary: { block: "SP1", key: "fractions", index: 1, min: 0, max: 1 } })], /outlet 1 of Splitter SP1 takes the "rest"/);
   bad([makeupDS(), makeupDS({ id: "DS2" })], /Design specifications DS1 and DS2 both vary the flow of Water in F2/);
   bad([makeupDS(), makeupDS()], /Two design specifications are called DS1/);
-  bad([makeupDS({ tolerance: 1e-7 })], /tolerance 1e-7 is tighter than 100 times the recycle tolerance \(solver.tolerance 1e-8\)/);
-  bad([makeupDS({ tolerance: 1e-4 })], /tighter than 100 times the recycle tolerance \(solver.tolerance 0.0001\)/, { solver: { tolerance: 1e-4 } });
+  bad([makeupDS({ tolerance: 0.5 })], /tolerance must be between 0 and 0.1/);
   bad([makeupDS({ speed: 1 })], /unknown key "speed"/);
   bad([makeupDS()], /designSpecIterations must be a positive whole number/, { solver: { designSpecIterations: 0 } });
   // an energy stream fixes the duty: it cannot be varied too
@@ -265,4 +264,38 @@ test("project files: design specifications are written as format 10 and solve ag
   // without a design specification the format is unchanged
   const plain = projectOf({ inputs: {}, z: {}, flowsheet: { ...fs, designSpecs: undefined } }, { version: "test" });
   assert.ok(plain.fugacity_project < 10);
+});
+
+test("the tolerance: a default, which the person may change (the maintainer, 2026-11-14); tighter than 100 x the recycle: a warning", () => {
+  // default: 1e-6 with the default recycle tolerance (1e-8)
+  const a = solveFlowsheet(sys, loop([makeupDS()]));
+  assert.equal(a.designSpecs[0].target.tolerance, 1e-6); assert.equal(a.designSpecs[0].target.tolerance_default, true);
+  assert.equal(a.designSpecs[0].warnings, undefined);
+  // default with a loose recycle tolerance: 100 times it
+  const b = solveFlowsheet(sys, loop([makeupDS()], { solver: { tolerance: 1e-5 } }));
+  assert.equal(b.designSpecs[0].target.tolerance, 1e-3);
+  // a tolerance given tighter than 100 x the recycle tolerance is used, with a warning (here the loop is linear, so it is met)
+  const c = solveFlowsheet(sys, loop([makeupDS({ tolerance: 1e-7 })]));
+  const d = c.designSpecs[0];
+  assert.equal(d.target.tolerance, 1e-7); assert.equal(d.target.tolerance_default, false); assert.ok(d.met);
+  close(c.streams.S6.F_kmol_h, 300, 300 * 1e-7, "met to the tolerance given");
+  assert.match(d.warnings[0], /tolerance 1e-7 is tighter than 100 times the recycle tolerance \(solver.tolerance 1e-8\)/);
+  // the warning reaches flowsheet_status and the request's qualifications
+  assert.match(flowsheetStatus(sys, loop([makeupDS({ tolerance: 1e-7 })])).warnings[0].message, /tighter than 100 times/);
+  const doc = { components: ["methanol", "water"], thermo: { model: "NRTL" }, ...loop([makeupDS({ tolerance: 1e-7 })]) };
+  const r = run({ capability: "solve_flowsheet", input: { flowsheet: doc } });
+  assert.equal(r.outcome, "ok");
+  assert.ok(r.qualifications.warnings.some(w => w.designSpec === "DS1" && /tighter than 100 times/.test(w.message)));
+});
+
+test("examples/design-spec-ethyl-acetate.chepta.json opens in the workbench and its purity is held by the ethanol make-up", () => {
+  const doc = readProject(JSON.parse(readFileSync(new URL("../examples/design-spec-ethyl-acetate.chepta.json", import.meta.url), "utf8")));
+  assert.equal(doc.fugacity_project, 10);
+  const st = stateFromProject(doc);
+  assert.equal(st.flowsheet.designSpecs[0].id, "PURITY");
+  const r = run({ capability: "solve_flowsheet", input: { project: doc } });
+  assert.equal(r.outcome, "ok", JSON.stringify(r.error));
+  const c = r.checks.design_specs[0];
+  assert.ok(c.met); close(c.reached, 0.95, 1e-6, "95 mass % ethyl acetate");
+  assert.ok(c.varied.value > 0 && c.varied.value < 10, `ethanol make-up ${c.varied.value} kmol/h`);
 });

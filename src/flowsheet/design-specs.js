@@ -33,9 +33,10 @@
  * value where it happened. No partial answer is returned.
  *
  * Limits (proposal 0022, open question 2): solver.designSpecIterations, a number (the `solve` limit) or
- * { bracket: 8, solve: 50 }. Tolerance (open question 3): relative to the value asked (absolute for a mole or mass
- * fraction and a vapour fraction, and where the value asked is 0), default 1e-6, at least 100 times the recycle
- * tolerance (solver.tolerance), else refused.
+ * { bracket: 8, solve: 50 }. Tolerance (open question 3, changed by the maintainer on 2026-11-14): relative to the value
+ * asked (absolute for a mole or mass fraction and a vapour fraction, and where the value asked is 0); by default 1e-6, or
+ * 100 times the recycle tolerance (solver.tolerance) where that is looser; any tolerance the person gives is used, with a
+ * warning when it is tighter than 100 times the recycle tolerance.
  * Units: K, kPa, kmol/h, kg/h, kW.
  */
 import { fail } from "../util/errors.js";
@@ -256,14 +257,19 @@ export function checkDesignSpecs(sys, fs, inspected, defaultRecycleTolerance = 1
     }
     tg.label = tg.ratio_of ? `${describeQuantity(sys, tg)} over ${describeQuantity(sys, tg.ratio_of)}` : describeQuantity(sys, tg);
     tg.unit = tg.ratio_of ? "" : (UNIT[tg.quantity] ?? "");
-    // the tolerance
-    const tol = d.tolerance ?? DESIGN_SPEC_DEFAULTS.tolerance;
+    // the tolerance (the maintainer, 2026-11-14: "should have a tolerance as default but I should be able to change it"):
+    // by default 1e-6, or 100 times the recycle tolerance where that is looser; a tolerance given by the person is used as
+    // given, and one tighter than 100 times the recycle tolerance carries a warning (the target may not be met more
+    // tightly than the recycles are converged), not a refusal
+    const floor = DESIGN_SPEC_TOLERANCE_RATIO * recycleTol;
+    const tol = d.tolerance ?? Math.max(DESIGN_SPEC_DEFAULTS.tolerance, floor);
     if (!(isNum(tol) && tol > 0 && tol < 0.1)) throw fail("BAD_INPUT", `${name}: tolerance must be between 0 and 0.1 (got ${JSON.stringify(d.tolerance)}).`, { where: [{ field: `${at}.tolerance` }] });
-    if (tol < DESIGN_SPEC_TOLERANCE_RATIO * recycleTol * (1 - 1e-12)) {
-      throw fail("BAD_INPUT", `${name}: its tolerance ${tol} is tighter than ${DESIGN_SPEC_TOLERANCE_RATIO} times the recycle tolerance (solver.tolerance ${recycleTol}): a target cannot be met more tightly than the recycles are converged. Loosen the tolerance to ${+(DESIGN_SPEC_TOLERANCE_RATIO * recycleTol).toPrecision(6)} or more, or tighten solver.tolerance to ${+(tol / DESIGN_SPEC_TOLERANCE_RATIO).toPrecision(6)} or less.`, { where: [{ field: `${at}.tolerance` }] });
+    const warnings = [];
+    if (tol < floor * (1 - 1e-12)) {
+      warnings.push(`${name}: its tolerance ${tol} is tighter than ${DESIGN_SPEC_TOLERANCE_RATIO} times the recycle tolerance (solver.tolerance ${recycleTol}); the recycles' own convergence noise may then be as large as the tolerance, so the solver may stop at the limit or close the bracket on noise. If it does, loosen the tolerance to ${+floor.toPrecision(6)} or tighten solver.tolerance to ${+(tol / DESIGN_SPEC_TOLERANCE_RATIO).toPrecision(6)}.`);
     }
     const absolute = (ABSOLUTE.has(tg.quantity) && !tg.ratio_of) || t.value === 0;
-    return { id, vary: vr, target: tg, tolerance: tol, absolute, tolAbs: absolute ? tol : tol * Math.abs(t.value), MW, name };
+    return { id, vary: vr, target: tg, tolerance: tol, toleranceGiven: d.tolerance != null, warnings, absolute, tolAbs: absolute ? tol : tol * Math.abs(t.value), MW, name };
   });
 }
 
@@ -405,7 +411,8 @@ export function solveDesignSpecs(sys, fs, solveInner, inspected, defaultRecycleT
     target: { ...(d.target.stream != null ? { stream: d.target.stream } : { block: d.target.block }), quantity: d.target.quantity,
       ...(d.target.component ? { component: d.target.component } : {}),
       ...(d.target.ratio_of ? { ratio_of: { ...(d.target.ratio_of.stream != null ? { stream: d.target.ratio_of.stream } : { block: d.target.ratio_of.block }), quantity: d.target.ratio_of.quantity, ...(d.target.ratio_of.component ? { component: d.target.ratio_of.component } : {}) } } : {}),
-      asked: d.target.value, reached: out.point.reached[k], residual: out.point.r[k], tolerance: d.tolerance, absolute: d.absolute, unit: d.target.unit },
+      asked: d.target.value, reached: out.point.reached[k], residual: out.point.r[k], tolerance: d.tolerance, tolerance_default: !d.toleranceGiven, absolute: d.absolute, unit: d.target.unit },
+    ...(d.warnings.length ? { warnings: d.warnings.slice() } : {}),
     met: Math.abs(out.point.r[k]) <= d.tolAbs,
     method: out.method, solves: solvesOf(), ...(out.bracket ? { bracket: out.bracket } : {}), ...(out.iterations != null ? { iterations: out.iterations } : {}),
   }));

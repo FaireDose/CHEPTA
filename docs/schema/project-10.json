@@ -474,7 +474,7 @@
           "type": "number",
           "exclusiveMinimum": 0,
           "maximum": 0.1,
-          "description": "relative to the value (absolute for mole_fraction, mass_fraction and VF, and for a value of 0); default 1e-6; at least 100 times solver.tolerance"
+          "description": "relative to the value (absolute for mole_fraction, mass_fraction and VF, and for a value of 0); default 1e-6, or 100 times solver.tolerance where that is looser; a given tolerance is used, with a warning when it is tighter than 100 times solver.tolerance"
         }
       }
     }

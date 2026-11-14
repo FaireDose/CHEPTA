@@ -67,3 +67,24 @@ decisions (what a failed point returns, limits, order). Its open questions, each
 proposal: (1) a failed point is a row that says so, the table refused only when every point fails; (2) at most 200
 points and two varied inputs; (3) the flowsheet's own answer solved once more at the document's inputs; (4) the points
 in a snake order; (5) design specifications held at every point allowed.
+
+## The maintainer's answers (2026-11-14)
+
+1. **Tolerance:** "should have a tolerance as default but I should be able to change it". Built: the default is 1e-6,
+   or 100 times the recycle tolerance (solver.tolerance) where that is looser; a tolerance the person gives is used as
+   given, and one tighter than 100 times the recycle tolerance carries a warning (in the result's `designSpecs[].warnings`,
+   in `flowsheet_status` and in the request's `qualifications.warnings`) instead of a refusal. The result says whether the
+   tolerance was the default (`tolerance_default`). This changes answer 3 of proposal 0022 (accepted 2026-11-13). The
+   tests of this pull request that checked the old refusal were replaced by tests of the new rule (they were new in this
+   pull request, not earlier tests).
+2. **A splitter outlet's `index` from 0:** agreed.
+3. **A column's reflux and distillate as varied inputs:** agreed, in a follow-up pull request after the column work.
+4. **Proposal 0023:** accepted with all five recommended answers. The maintainer asks to see it on real examples when it
+   is built ("I need to see in reality real examples ... when it's done I will check for improvements"): its step 2 now
+   includes worked examples in `examples/`.
+
+A worked example of the design specification itself was added for the maintainer to open in the workbench:
+`examples/design-spec-ethyl-acetate.chepta.json` (ethyl acetate + water, an ethanol make-up, a flash drum whose liquid
+is recycled with a purge; the design specification finds the ethanol make-up, about 1.46 kmol/h, that holds the vapour
+product at 95 mass % ethyl acetate). The workbench solves it (through the request path) but does not yet show the
+specification itself; that is proposal 0022's step 4.

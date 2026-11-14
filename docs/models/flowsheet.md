@@ -131,7 +131,7 @@ point. It is a list in the flowsheet document, `designSpecs`, not a block:
 | Varied (`vary.key`) | feed: `flow_kmol_h`, `flow_kg_h` (with `component`: that component's flow; without: the total flow, the composition kept), `T_K`, `P_kPa`; splitter: `fractions`, `flow_kmol_h`, `flow_kg_h`, one outlet (`index`, from 0; not the "rest"); heater: `T_K`, `duty_kW`; flash drum: `T_K`, `P_kPa`, `duty_kW` |
 | Bounds | `min` and `max` are required; `guess` is the start (default: the value in the spec; a key left out of the spec is then given by the guess) |
 | Target (`target.quantity`) | a stream's `flow_kmol_h`, `flow_kg_h`, `component_flow_kmol_h`, `component_flow_kg_h`, `mole_fraction`, `mass_fraction`, `T_K`, `VF`; a block's `duty_kW`; `ratio_of` (another quantity of the same form) makes the value a ratio |
-| Tolerance | relative to the value (absolute for a mole or mass fraction and VF, and for a value of 0); default 1e-6; at least 100 times `solver.tolerance`, else refused |
+| Tolerance | relative to the value (absolute for a mole or mass fraction and VF, and for a value of 0); by default 1e-6, or 100 times `solver.tolerance` where that is looser; a tolerance you give is used as given, with a warning in the result when it is tighter than 100 times `solver.tolerance` (the maintainer, 2026-11-14) |
 | Limits | `solver.designSpecIterations`: a number (Brent's or Broyden's solves) or `{ bracket: 8, solve: 50 }` |
 
 How it is solved: an **outer loop of whole solves** around the sequential solver, each with its recycles converged and its
@@ -155,12 +155,18 @@ Failures (every one throws; no partial answer):
 | the target has no value (a fraction of a stream with no flow) | NO_CONVERGENCE, `reason: "undefined"` | where; narrow the bounds |
 | the bracket closes on a jump | NO_CONVERGENCE, `reason: "discontinuous"` | where the target jumps |
 | several: an input that moves no target, two that act alike, a target beyond the bounds | NO_CONVERGENCE, `no_effect`, `singular`, `unreachable` | which input, which bound |
-| malformed: unknown key, bounds missing or reversed, a stream or block that is not there, a guess outside the bounds, an input varied twice or fixed by an energy stream, a tolerance tighter than 100 times the recycle tolerance | BAD_INPUT | the field, before anything is solved |
+| malformed: unknown key, bounds missing or reversed, a stream or block that is not there, a guess outside the bounds, an input varied twice or fixed by an energy stream | BAD_INPUT | the field, before anything is solved |
 
 Checked in [`test/design-specs.test.js`](../../test/design-specs.test.js): the make-up of a separator loop against its
 closed form and against `scipy.optimize.brentq` and `root` ([`validation/python/reference_design_spec.py`](../../validation/python/reference_design_spec.py));
 two specifications together; a ratio; a heater duty that meets the bubble point against the heater given VF = 0; an
 ethanol feed that holds an ethyl acetate product's purity inside an NRTL recycle (CHEPTA-Lab's request 15); every failure.
+
+A worked example to open in the workbench (File > Project):
+[`examples/design-spec-ethyl-acetate.chepta.json`](../../examples/design-spec-ethyl-acetate.chepta.json): ethyl acetate
+and water with an ethanol make-up, a flash drum whose vapour is the product and whose liquid is recycled with a purge;
+the design specification PURITY finds the ethanol make-up (about 1.46 kmol/h, from a start of 10) that holds the product
+at 95 mass % ethyl acetate.
 
 ## How the solver is checked
 

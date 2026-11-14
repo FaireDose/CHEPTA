@@ -223,6 +223,7 @@ export function flowsheetStatus(sys, fs) {
       fs = withStartValues(sys, fs, specs);
       designSpecs = specs.map(d => ({ id: d.id, varied: d.vary.label, target: d.target.label, asked: d.target.value, start: d.vary.start, min: d.vary.min, max: d.vary.max, tolerance: d.tolerance }));
       for (const d of specs) {
+        for (const w of d.warnings) warnings.push({ designSpec: d.id, message: w });
         if (d.vary.given !== undefined && Number.isFinite(d.vary.given) && d.vary.given !== d.vary.start) {
           warnings.push({ designSpec: d.id, message: `${d.name}: ${d.vary.label} is given as ${+d.vary.given.toPrecision(6)} in ${d.vary.block}'s specification and guessed at ${+d.vary.start.toPrecision(6)}; the guess is the start, the value given is not used.` });
         }

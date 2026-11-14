@@ -1,6 +1,8 @@
 # 0023: Sensitivity tables: sweep inputs of a flowsheet and tabulate chosen results
 
-- **Status:** Draft (2026-11-14), for the maintainer to decide its open questions. Not built.
+- **Status:** Accepted (the maintainer, 2026-11-14, with the five recommended answers; docs/decisions/2026-11-14-04-design-specs.md).
+  Not built yet. The maintainer asks to see it on real examples when it is built (example projects that open in the
+  workbench), to check them for improvements.
 - **Author(s):** drafted by a coding agent for CHEPTA-Lab's request 15 (second half), while building proposal 0022
 - **Discussion:** the pull request that adds this file (the one that builds proposal 0022, steps 1-3)
 - **Roadmap item:** A8, flowsheet solver; track B (bridges: the table is exported as CSV)
@@ -108,10 +110,12 @@ reading a quantity, the warm start), which then moves its shared parts into a sm
 
 1. Engine and request format: `sensitivity` in the document, the snake order, the warm start, failed rows, the result
    table, the limits; `checks.sensitivity` (points, converged, failed). Tests (1)-(4).
-2. Project format, CSV export, the assistant instructions.
+2. Project format, CSV export, the assistant instructions, and worked examples in `examples/` that open in the
+   workbench (the maintainer, 2026-11-14: "I need to see in reality real examples"): at least the ethyl acetate recycle of
+   examples/design-spec-ethyl-acetate.chepta.json swept over its ethanol make-up and its drum pressure.
 3. Workbench: the table and its plot (with proposal 0022's step 4, following docs/UI_GUIDE.md).
 
-## Open questions (recommendations first)
+## Open questions (answered 2026-11-14: every recommendation accepted)
 
 1. **A failed point: a row that says so, or a refusal of the whole table?** Recommended: a row that says so (with the
    error's code and message), and a refusal only when every point fails. It is the one place where CHEPTA would return
