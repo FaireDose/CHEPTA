@@ -87,11 +87,16 @@ read 2026-10-29):
    from the energy balances); or a previous solution of the same column;
 2. Newton's method on all equations together: the Jacobian by central differences, stage by stage; the step in the
    logarithms of the component flows (a trace never turns negative), at most 20 K per stage, halved until the residual
-   falls; given up when the residual has not fallen a thousandfold in 12 iterations;
+   falls; given up when the residual has not fallen a thousandfold in 12 iterations. For the start only, a stage's
+   bubble point that is not found because of traces (ppm of CO or N2 with Peng-Robinson) is taken without the
+   components below 0.1 mol % of its liquid; Newton then solves the column with them;
 3. if that fails, continuation: the column is first solved with every component's ln K replaced by their mean (no
    separation), and the differences come back in steps, each solve started from the last. Long columns with very pure
    products need it (A2 at 101 stages and 0.99999 of the minimum reflux; four alcohols and water on 40 stages). This is
-   this project's choice of a continuation method.
+   this project's choice of a continuation method;
+4. if that fails too, Newton resumed from where each start of step 2 stopped, to 100 iterations in all, without the
+   early stop: on two-liquid columns Newton can sit on a plateau of the residual for 30-40 iterations and then converge
+   quadratically (CHEPTA-Lab's ethyl acetate column 5, 2026-11-14; docs/decisions/2026-11-14-05-column-fixes-lab-062.md).
 
 **Solved means** every group of residuals within its tolerance, given with the result (`state.residuals`,
 `state.tolerances`, and `checks.columns` through the request path): material 1e-10 of the total feed (mol/s), energy
@@ -99,8 +104,9 @@ read 2026-10-29):
 relative. Converged is not validated against data. The maintainer kept 1e-10 (2026-10-29): measured against 1e-8 on
 B1, B2, B3 and P1 it costs at most one Newton step and no measurable time (Newton's method squares the error each
 step), the flowsheet checks every block's material balance to 1e-9 of its flow (the column's overall balance is the sum
-of its stages' errors), and W7's case E4 needs it. An optional `max_iterations` (the engine's `maxIterations`) limits
-the Newton iterations; a column that reaches it is not converged (E4).
+of its stages' errors), and W7's case E4 needs it. An optional `max_iterations` (the engine's `maxIterations`) is the
+Newton iterations of each attempt (each start, each continuation step), which then runs to it without the early stop of
+step 2; a column that reaches it is not converged (E4). Until 0.6.2 it could only lower the limits, never raise them.
 
 **What the engine refuses, and what it warns:**
 

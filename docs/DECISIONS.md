@@ -10,6 +10,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Column fixes from CHEPTA-Lab's 0.6.2 requests** (docs/decisions/2026-11-14-05-column-fixes-lab-062.md): built
+  EA-12/M3 (max_iterations governs; a last long Newton attempt), EA-13/M2 (a purity inside the reached range is never
+  OUT_OF_RANGE), EA-9/M1 for CO and N2 traces, the EA-8 message, M4. Open: (a) acetic acid traces in two-liquid
+  column 11 (EA-9): the cause is the kink of the whole-liquid K-values where a stage crosses the edge of the two-liquid
+  region; a fix changes the two-liquid stage formulation and needs a proposal; (b) M5, a condenser with a vapour and a
+  liquid distillate, needs a proposal; (c) the numbers LONG_NEWTON = 100 and the start's trace level of 0.1 mol %
+  are this project's choices, for the maintainer to confirm.
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record

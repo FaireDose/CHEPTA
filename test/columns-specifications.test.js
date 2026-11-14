@@ -16,8 +16,8 @@ import { readFileSync } from "node:fs";
 import { system } from "../src/index.js";
 import { runFlowsheet } from "../src/flowsheet/document.js";
 import { run } from "../src/api/dispatcher.js";
-import { solveCascade } from "../src/units/columns/engine.js";
-import { SPEC_TOLERANCE, DESIGN_SPECS } from "../src/units/columns/specifications.js";
+import { solveCascade, cascadeThermo } from "../src/units/columns/engine.js";
+import { SPEC_TOLERANCE, DESIGN_SPECS, solveSpecified } from "../src/units/columns/specifications.js";
 import { anyBubbleT } from "../src/equilibrium/bubble-any.js";
 
 const doc = JSON.parse(readFileSync(new URL("../validation/data/columns/specifications/cases.json", import.meta.url)));
@@ -272,6 +272,34 @@ test("refused: a reflux ratio too low for the purity; the message gives what the
   // a purity inside the range the message gives is met
   const ok = solveCascade({ ...inputOf(c), specs: [{ kind: "reflux_ratio", value: 0.3 }, { kind: "distillate_purity", component: "benzene", value: 0.7 }] });
   assert.ok(Math.abs(ok.specifications[0].achieved - 0.7) < 1e-6);
+});
+
+test("EA-13: a purity inside the range the solved columns reach is never refused as out of range; where the columns that meet it fail, the refusal is NO_CONVERGENCE and names the crossing", () => {
+  // CHEPTA-Lab, plant62-R-purity-col15purity-warm (chepta 0.6.2): "cannot be 0.999 ... it stays between 0.943249 and 1"
+  // came from a scan that bracketed the value but could not solve the columns inside the bracket. Here the stage
+  // solver is made to fail on every later column whose distillate lies within 5 % of the answer's, so the scan brackets
+  // the purity and cannot reach it: this specification is feasible, so the refusal must not say otherwise.
+  const c = caseOf("S4-chemsep-benzene-toluene-purity"), inp = inputOf(c);
+  const specs = [{ kind: "reflux_ratio", value: 0.3 }, { kind: "distillate_purity", component: "benzene", value: 0.7 }];
+  const ok = solveCascade({ ...inp, specs });
+  const Dstar = sum(ok.products.distillate.flows);
+  const th = inp.thermo ?? cascadeThermo(inp.sys, inp.P_kPa);
+  let calls = 0;
+  const failing = o => {
+    const D = o.specs.find(s => s.kind === "distillate_rate")?.value;
+    // the first column (the outer loop's start, which its estimate puts on the answer itself) is solved, every later
+    // one near the answer fails, as in the plant, where Newton on the specifications stopped short (0.99848 of 0.999)
+    if (calls++ > 0 && D != null && Math.abs(D - Dstar) < 0.05 * Dstar && Math.abs(D - Dstar) > 1e-9 * Dstar) throw Object.assign(new Error("Column: (test) the stage solver did not converge here."), { code: "NO_CONVERGENCE" });
+    return solveCascade(o);
+  };
+  let err;
+  try { solveSpecified({ ...inp, specs }, failing, th); } catch (e) { err = e; }
+  assert.equal(err?.code, "NO_CONVERGENCE", err?.message);
+  assert.match(err.message, /lies inside the range the solved columns reach/);
+  assert.match(err.message, /This is not a statement that the specification cannot be met/);
+  const { lowest, highest } = err.details.range;
+  assert.ok(lowest.value < 0.7 && highest.value > 0.7, JSON.stringify(err.details.range));
+  assert.ok(err.details.crossed.length >= 1 && err.details.crossed.every(b => Math.min(b.from, b.to) < Dstar && Math.max(b.from, b.to) > Dstar));
 });
 
 test("refused: two purities that the stages cannot give even near total reflux; more stages make them feasible", () => {

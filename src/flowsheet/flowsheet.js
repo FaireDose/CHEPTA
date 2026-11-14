@@ -510,8 +510,16 @@ function solveCore(sys, fs) {
         const s = after[k];
         const flows = xNew[k].slice(0, sys.n).map(v => Math.max(0, v));
         const F = flows.reduce((a, v) => a + v, 0);
-        const next = xNew === g || !(F > 0) ? s
-          : stream(sys, { flow_kmol_h: flows, T_K: s.T_K, P_kPa: s.P_kPa });
+        let next = s;
+        if (xNew !== g && F > 0) {
+          // the accelerated guess may sit where the phase split does not converge (a liquid-liquid split next to a
+          // plait point; CHEPTA-Lab's ethyl acetate plant, 2026-11-14): that tear then takes the computed stream, a
+          // step of direct substitution, and the guess vector follows it
+          try { next = stream(sys, { flow_kmol_h: flows, T_K: s.T_K, P_kPa: s.P_kPa }); } catch (err2) {
+            if (err2?.code !== "NO_CONVERGENCE") throw err2;
+            xNew[k] = g[k].slice();
+          }
+        }
         values.set(e.id, Object.freeze({ ...next, id: e.id }));
       });
     }

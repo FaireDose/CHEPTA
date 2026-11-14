@@ -40,8 +40,9 @@
  *                                                         // condenser and the reboiler; one outlet stream each on
  *                                                         // the port "side", in this order; without flow_kmol_h
  *                                                         // the flow is found, for one more specification
- *     max_iterations: 50,                                 // optional: a limit on the Newton iterations (none: the
- *                                                         // solver's own limits, and the continuation if needed)
+ *     max_iterations: 50,                                 // optional: the Newton iterations of each attempt, run to
+ *                                                         // the end (none: the solver's own limits, an early stop of
+ *                                                         // slow attempts, then a last attempt to 100)
  *     phases: "VL" | "VLL",                               // optional (M2b): "VLL" looks for two liquids on the stages
  *                                                         // (activity models only), off by default
  *     condenser: "decanter", reflux_liquid: "light",      // (M2b, with "VLL") the condensate splits; one liquid (light
@@ -605,6 +606,24 @@ function crossBoundary(to, flows, P, H_kW, what, toName) {
 
 /** The rigorous column (milestones M2a and M2b): the column engine with the flowsheet's method or its own; see the
  *  file header. */
+
+/**
+ * An absorber's or stripper's product by its enthalpy flow (a P-H flash). Where the P-H flash's search fails on a trial
+ * temperature (a three-phase flash that does not converge there; CHEPTA-Lab's column 5 at a reflux of 70,000 kg/h,
+ * 2026-11-14), the product is flashed at its stage's temperature instead, and kept only if its enthalpy flow agrees
+ * with the column's within 1e-6 relative (else the first error stands).
+ */
+function byEnthalpy(sys, flows, P, product) {
+  const H_kW = product.H_W / 1000;
+  try { return stream(sys, { flow_kmol_h: flows, P_kPa: P, H_kW }); } catch (e) {
+    if (e?.code !== "NO_CONVERGENCE" || !(product.T_K > 0)) throw e;
+    let st;
+    try { st = stream(sys, { flow_kmol_h: flows, P_kPa: P, T_K: product.T_K }); } catch { throw e; }
+    if (!(Math.abs(st.H_kW - H_kW) <= 1e-6 * Math.max(Math.abs(H_kW), 1))) throw e;
+    return st;
+  }
+}
+
 function solveRigorous(sys, feeds, s, sideOutlets = 0) {
   const nDraws = (s.draws ?? []).length;
   if (nDraws !== sideOutlets) {
@@ -667,8 +686,8 @@ function solveRigorous(sys, feeds, s, sideOutlets = 0) {
     if (separator) {
       // an absorber's or stripper's products by their enthalpy flows (a P-H flash lands on the stage's temperature):
       // the top gas may have no bubble point at all (a gas of nitrogen and carbon dioxide), so not by VF
-      distillate = stream(sys, { flow_kmol_h: d, P_kPa: P, H_kW: r.products.distillate.H_W / 1000 });
-      bottoms = stream(sys, { flow_kmol_h: b, P_kPa: P, H_kW: r.products.bottoms.H_W / 1000 });
+      distillate = byEnthalpy(sys, d, P, r.products.distillate);
+      bottoms = byEnthalpy(sys, b, P, r.products.bottoms);
     } else {
       distillate = stream(sys, { flow_kmol_h: d, P_kPa: P, VF: total ? 0 : 1 });
       bottoms = stream(sys, { flow_kmol_h: b, P_kPa: P, VF: 0 });

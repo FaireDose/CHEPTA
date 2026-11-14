@@ -70,12 +70,16 @@
  *     pivoting inside the band; the step taken in the logarithms of the component flows (a trace flow can fall by
  *     orders of magnitude without turning negative; at most a factor e^5 per step), limited to 20 K on any stage, and
  *     halved until the scaled residual falls;
- *     Newton gives up when its residual has not fallen a thousandfold in PATIENCE iterations;
+ *     Newton gives up when its residual has not fallen a thousandfold in PATIENCE iterations (unless maxIterations is
+ *     given: each attempt then runs to it); for the start only, a stage's bubble point that does not exist because of
+ *     traces is taken without them (startBubbleT);
  *  3. if Newton fails from the start, by continuation: the column is solved
  *     with every component's ln K replaced by their mean (no separation, an easy column), and the differences are
  *     brought back in steps, each solve started from the previous one (this project's choice of a continuation method;
  *     NeqSim reaches its product specifications in steps too). Long columns with very pure products need it: their
- *     equations are nearly singular, and a small residual can hide a large distance from the solution. A solver that does not converge says so
+ *     equations are nearly singular, and a small residual can hide a large distance from the solution;
+ *  4. if all of that fails (and no maxIterations is given), Newton resumed from where each cold start stopped, to
+ *     LONG_NEWTON iterations in all, without the early stop. A solver that does not converge says so
  *     (NO_CONVERGENCE) with what it tried and its residuals by group: it is not a statement that the column has no
  *     solution.
  * The column counts as solved only when every group of residuals meets its tolerance (TOLERANCES, stated in the
@@ -135,6 +139,13 @@ export const H_SCALE = 1e4;
 const LN_STEP = 5;
 /** Newton gives up when its scaled residual has not fallen a thousandfold in this many iterations. */
 const PATIENCE = 12;
+/**
+ * The iterations of the last attempt, when every other has failed and no maxIterations is given: Newton resumed from
+ * the cold start that came nearest, without the early stop. On two-liquid columns Newton can sit on a plateau of the
+ * residual for 30 to 40 iterations and then converge quadratically (CHEPTA-Lab's column 5 of the ethyl acetate plant,
+ * 46 to 53 iterations; 2026-11-14, EA-12), which PATIENCE cuts off. This project's choice of the number.
+ */
+const LONG_NEWTON = 100;
 /**
  * The tolerances a solution must meet, by group: material in mol/s relative to the total feed, energy in W relative to
  * the total feed times H_SCALE, equilibrium and summation in mole fraction, specifications relative to their value
@@ -543,7 +554,10 @@ export function solveCascade(opts = {}) {
       // (early: a trial column started from its neighbour either converges at once or is started afresh)
       if (early && it === 4 && nr > 0.1 * n0) return { u, P, iterations: it, converged: false, why: `the residual fell only from ${fmt(n0)} to ${fmt(nr)} in 4 iterations` };
       if (patient && it === PATIENCE && nr > 1e-3 * n0) return { u, P, iterations: it, converged: false, why: `the residual fell only from ${fmt(n0)} to ${fmt(nr)} in ${PATIENCE} iterations` };
-      const J = jacobian(u, P);
+      // a property that fails between the stages' variables (a three-phase flash that does not converge) ends this
+      // attempt, not the column: the next start or the continuation may avoid it
+      let J;
+      try { J = jacobian(u, P); } catch (e) { if (!e?.code) throw e; return { u, P, iterations: it, converged: false, why: `a property failed while the Jacobian was formed (${e.message})` }; }
       // the step in the logarithms of the component flows (and in T): a trace flow can fall by orders of magnitude
       // and never turns negative; the columns of the Jacobian are scaled by the flows, d r / d ln u = u d r / d u
       for (let c = 0; c < nv; c++) {
@@ -585,11 +599,12 @@ export function solveCascade(opts = {}) {
   const startU = opts.start && Array.isArray(opts.start.stages) && opts.start.stages.length === N && opts.start.stages.every(s => s.l?.length === n && s.v?.length === n)
     ? Float64Array.from(opts.start.stages.flatMap(s => [...s.l.map(a => a * 1), ...s.v, s.T_K])) : null;
   if (startU) {
-    const r = newton(startU, { dTmax: 20, maxIt: Math.min(opts.quick ? 20 : 40, cap), patient: !!opts.quick, early: !!opts.quick });
+    const r = newton(startU, { dTmax: 20, maxIt: opts.quick ? Math.min(20, cap) : cap < Infinity ? cap : 40, patient: !!opts.quick, early: !!opts.quick });
     tried.push(`Newton from the previous solution (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
     if (r.converged) result = { ...r, start: "previous solution" };
   }
   let cold = null;
+  const slow = [];   // the cold starts' Newton attempts that stopped early, for the last attempts
   if (!result && !(opts.homotopy && startU)) {
     // a decanter fixes no reflux ratio for the start: a few start values are tried in turn (only the start: the
     // reflux is the whole refluxed liquid at the solution)
@@ -597,20 +612,22 @@ export function solveCascade(opts = {}) {
     // then with each stage at its liquid's bubble point (narrow-boiling strippers)
     const R0s = decanter ? (opts.startReflux ? [opts.startReflux] : DECANTER_START_REFLUX) : hasCondenser ? [null] : wideBoiling(th, inp, fJ) ? ["energy", "bubble"] : ["bubble", "energy"];
     for (const R0 of R0s) {
-      const a = { dTmax: 20, maxIt: 50, patient: true };
+      // a given maxIterations is the budget of each attempt: the attempt runs to it, without the early stop
+      // (PATIENCE) that hands a slow attempt on to the next start or to the continuation (EA-12, 2026-11-14)
+      const a = { dTmax: 20, maxIt: cap < Infinity ? cap : 50, patient: cap === Infinity };
       const c = hasCondenser ? bubblePointStart(th, inp, fJ, HF, { R0 }) : sumRatesStart(th, inp, fJ, HF, { temperatures: R0 });
       cold = { ...c, last: cold?.last };
       if (c.noSplit) { tried.push(`the bubble-point start with a start reflux ratio of ${R0}: its condensate holds one liquid, so it was not used (${took()})`); continue; }
-      const r = newton(c.u, { ...a, maxIt: Math.min(a.maxIt, cap) });
+      const r = newton(c.u, a);
       const startName = hasCondenser ? `bubble-point start${R0 != null ? ` (a start reflux ratio of ${R0})` : ""}` : `sum-rates start (temperatures ${R0 === "energy" ? "from the energy balances" : "at the bubble points"})`;
       tried.push(`Newton from the ${startName}, steps of at most ${a.dTmax} K (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
       if (r.converged) { result = { ...r, start: hasCondenser ? `bubble-point method (Wang-Henke)${R0 != null ? ` with a start reflux ratio of ${R0}` : ""}` : `sum-rates method (Burningham-Otto), temperatures ${R0 === "energy" ? "from the energy balances" : "at the bubble points"}` }; break; }
-      if (r.P) cold.last = r;
+      if (r.P) { cold.last = r; if (r.iterations < LONG_NEWTON) slow.push({ r, startName }); }
     }
   }
   // (quick: a trial column of the specifications' outer loop: Newton from its neighbour gives up early, then the
   // bubble-point start; no continuation)
-  if (!result && !opts.homotopy && !opts.quick && cap === Infinity) {
+  if (!result && !opts.homotopy && !opts.quick) {
     // continuation: a column whose components all have the same volatility (ln K_i replaced by its mean over the
     // components) is solved first, and the differences are brought back in steps, each solve started from the last.
     // Long columns with very pure products need it: their equations are nearly singular, and Newton from the
@@ -632,14 +649,27 @@ export function solveCascade(opts = {}) {
     }
     tried.push(`continuation in the relative volatilities (stopped at ${fmt(t * 100)} % of the way, after ${steps} steps, ${took()})`);
   }
+  // the last attempts (no maxIterations given): Newton resumed from where each cold start stopped, in their order, to
+  // LONG_NEWTON iterations in all, without the early stop (EA-12, 2026-11-14)
+  for (const { r: r0, startName } of slow) {
+    if (result || opts.homotopy || opts.quick || cap < Infinity) break;
+    const r = newton(r0.u, { dTmax: 20, maxIt: LONG_NEWTON - r0.iterations });
+    tried.push(`Newton resumed from where the ${startName} stopped, without the early stop (${r0.iterations + r.iterations} iterations in all, ${took()}${r.converged ? "" : `: ${r.why}`})`);
+    if (r.converged) result = { ...r, iterations: r0.iterations + r.iterations, start: `${startName}, Newton resumed without the early stop` };
+    else if (r.P) cold.last = r;
+  }
   if (!result) {
     const last = cold?.last;
     const { g } = last ? groups(last.P) : { g: null };
     let hint = cold?.boilupWarning ? ` ${cold.boilupWarning}` : "";
     if (anyDraw) hint += ` The column has ${inp.draws.length > 1 ? "side draws" : "a side draw"} (${inp.draws.map(d => `${fmt(d.rate)} mol/s of ${d.phase} from stage ${d.stage + 1}`).join(", ")}): a draw larger than the liquid or the vapour that reaches its stage has no solution; take a smaller draw, or a larger reflux (for a liquid draw) or boil-up (for a vapour draw).`;
-    if (last && th.stable) {
+    if (last && th.stable && phases !== "VLL") {
       const split = last.P.map((p, j) => j).filter(j => { try { return !th.stable(last.P[j].x, last.P[j].T).stable; } catch { return false; } });
       if (split.length) hint += ` On the last iterate the liquid of stage${split.length > 1 ? "s" : ""} ${split.map(j => j + 1).join(", ")} would split into two liquids: the column may hold two liquids there, which phases "VL" (one liquid) does not represent; turn on "look for two liquids on the stages" (phases "VLL", activity models).`;
+    } else if (last && phases === "VLL" && th.split) {
+      // two liquids are already allowed (EA-8, 2026-11-14: the advice to turn them on was given although they were on)
+      const two = last.P.map((p, j) => j).filter(j => { try { const q = th.split(last.P[j].x, last.P[j].T); return q && q.beta > 0; } catch { return false; } });
+      if (two.length) hint += ` Two liquids are allowed on the stages (phases "VLL"); on the last iterate stage${two.length > 1 ? "s" : ""} ${two.map(j => j + 1).join(", ")} held two liquids. Newton converges slowly where a stage's liquid sits at the edge of the two-liquid region.`;
     }
     throw fail("NO_CONVERGENCE", `Column: the rigorous column did not converge. Tried: ${tried.join("; ")}.${g ? ` Last residuals: material ${fmt(g.material)} mol/s, equilibrium ${fmt(g.equilibrium)}, energy ${fmt(g.energy)} W, specifications ${fmt(g.specifications)}.` : ""}${hint} This does not show that the column has no solution: ${cap < Infinity ? "raise the iteration limit, or " : ""}${hasCondenser ? "try other specifications (a larger reflux, another product flow), more stages, or another feed stage" : hasReboiler ? "try another specification (another boil-up or bottoms flow), more stages, or other feed stages" : "try other feeds (more liquid or less gas), more stages, other feed stages, or stage duties that remove the heat of absorption"}.`,
       { tried, residuals: g, tolerances: { ...limits, units: { material: "mol/s", energy: "W", equilibrium: "mole fraction", summation: "mole fraction", specifications: "relative" } } });
@@ -771,11 +801,30 @@ export function solveCascade(opts = {}) {
   };
 }
 
+/** Below this mole fraction a component is a trace, for the start values of a column only. */
+const TRACE = 1e-3;
+/** The bubble temperature for a column's start: without the traces where the full liquid has none (M1). */
+function startBubbleT(th) {
+  return x => {
+    try { return th.bubbleT(x); } catch (e) {
+      if (e?.code !== "NO_CONVERGENCE") throw e;
+      const kept = x.map(v => (v >= TRACE ? v : 0)), s = sum(kept);
+      if (!(s > 0) || kept.every((v, i) => v === x[i])) throw e;
+      try { return th.bubbleT(kept.map(v => v / s)); } catch { throw e; }
+    }
+  };
+}
+
 /**
  * The start (see the file header): constant molar overflow, then the bubble-point method of Wang and Henke. Returns the
  * variables u, and a note when constant molar overflow gives no boil-up.
  */
 function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = null } = {}) {
+  // a start value only: where a stage's bubble point is not found because of traces (a few ppm of CO or N2 with
+  // Peng-Robinson, whose K-value grows as the temperature falls, so that the sum of K x stays above 1; CHEPTA-Lab's
+  // methanol column, M1, 2026-11-14), it is taken without the components below TRACE of the liquid; Newton then
+  // solves the stages with them
+  th = { ...th, bubbleT: startBubbleT(th) };
   const { N, F, feeds, specs } = inp, n = th.n, total = inp.condenser !== "partial";
   const z = fJ.reduce((a, f) => a.map((v, i) => v + f[i]), new Array(n).fill(0)).map(v => v / F);
   // the feeds' liquid fractions and a latent heat, at the bubble and dew points of the whole feed

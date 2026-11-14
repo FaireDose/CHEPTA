@@ -87,6 +87,8 @@ const MAX_OUTER = 30;
 const sum = v => v.reduce((a, b) => a + b, 0);
 const fmt = v => +Number(v).toPrecision(4);
 const fmt6 = v => +Number(v).toPrecision(6);
+/** A reached value for a message: a fraction just below 1 that would print as 1 is printed as 1 - its difference. */
+const fmtReach = v => (v < 1 && fmt6(v) === 1 ? `1 - ${+(1 - v).toPrecision(2)}` : `${fmt6(v)}`);
 const logit = a => { const c = Math.min(Math.max(a, 1e-300), 1 - 1e-16); return Math.log(c / (1 - c)); };
 
 /** Does the column carry a design specification, or a side draw whose rate is to be found? */
@@ -425,7 +427,7 @@ export function solveSpecified(opts, solve, th) {
       if (t && !pts.includes(t)) { solved.push(t); pts.push(t); }
     }
     pts.sort((a, b) => a.p[0] - b.p[0]);
-    const brackets = [];
+    const brackets = [], unsolved = [];
     for (let k = 0; k + 1 < pts.length; k++) if (pts[k].g[0] * pts[k + 1].g[0] <= 0) brackets.push([pts[k], pts[k + 1]]);
     if (!brackets.length && pts.length >= 3) {
       // no sign change on the grid: the specification may still pass its value between two grid points, at an
@@ -454,9 +456,11 @@ export function solveSpecified(opts, solve, th) {
         const pa = a.p[0], pb = b.p[0];
         let pc = (pa * fb - pb * fa) / (fb - fa);
         if (!(pc > Math.min(pa, pb) && pc < Math.max(pa, pb))) pc = (pa + pb) / 2;
-        warm = Math.abs(pc - pa) < Math.abs(pc - pb) ? a.r : b.r;
-        let c = keep(point([pc]));
-        if (!c) { c = keep(point([(pa + pb) / 2])); if (!c) break; }
+        // each trial column from the nearer end, by way of the points halfway where it fails (as in the scan): a
+        // column the outer loop cannot reach inside a bracket must not end the search unseen (EA-13, 2026-11-14)
+        const nearer = Math.abs(pc - pa) < Math.abs(pc - pb) ? a : b;
+        let c = reach(pc, nearer);
+        if (!c) { c = reach((pa + pb) / 2, nearer); if (!c) { unsolved.push([a, b]); break; } }
         if (c.g[0] * b.g[0] > 0) { b = c; fb = c.g[0]; if (kept === "a") fa /= 2; kept = "a"; }
         else { a = c; fa = c.g[0]; if (kept === "b") fb /= 2; kept = "b"; }
         if (Math.abs(a.p[0] - b.p[0]) < 1e-13) break;
@@ -464,7 +468,7 @@ export function solveSpecified(opts, solve, th) {
       if (met(a)) return { q: a, pts };
       if (met(b)) return { q: b, pts };
     }
-    return { q: null, pts };
+    return { q: null, pts, unsolved };
   }
 
   let done = null, run = null, start = null;
@@ -486,7 +490,7 @@ export function solveSpecified(opts, solve, th) {
   let scanned = null;
   if (!done && m === 1) {
     scanned = scan(best.p[0]);
-    tried.push(`a scan of ${varName(vars[0])} from ${fmt(vars[0].grid[0])} to ${fmt(vars[0].grid.at(-1))} (${scanned.pts.length} columns solved)${scanned.q ? ", then a bracketing secant search" : ": no value meets the specification"}`);
+    tried.push(`a scan of ${varName(vars[0])} from ${fmt(vars[0].grid[0])} to ${fmt(vars[0].grid.at(-1))} (${scanned.pts.length} columns solved)${scanned.q ? ", then a bracketing secant search" : scanned.unsolved?.length ? `: the specification is crossed between ${scanned.unsolved.map(([a, b]) => `${fmt(a.values[0])} and ${fmt(b.values[0])}`).join(", ")}, but the columns between could not be solved` : ": no value meets the specification"}`);
     if (scanned.q) done = scanned.q;
   }
   if (!done) throw refusal();
@@ -520,6 +524,14 @@ export function solveSpecified(opts, solve, th) {
       const v = vars[0], d = design[0], pts = scanned.pts;
       if (pts.length >= 3) {
         const hi = pts.reduce((a, b) => (b.a[0] > a.a[0] ? b : a)), lo = pts.reduce((a, b) => (b.a[0] < a.a[0] ? b : a));
+        if (d.value >= lo.a[0] && d.value <= hi.a[0]) {
+          // the value lies inside the range the solved columns reach: the specification is not out of range, the
+          // columns where it is met were not solved (EA-13, 2026-11-14: "cannot be 0.999 ... stays between 0.943249
+          // and 1" was an OUT_OF_RANGE that contradicted itself)
+          const crossed = (scanned.unsolved ?? []).map(([a, b]) => `between ${varText(v, a.values[0])} (${fmtReach(a.a[0])}) and ${fmt(b.values[0])}${v.unit ? ` ${v.unit}` : ""} (${fmtReach(b.a[0])})`);
+          return fail("NO_CONVERGENCE", `Column: ${d.label} = ${fmt6(d.value)}${fixedText} lies inside the range the solved columns reach (${fmtReach(lo.a[0])} at ${fmt(lo.values[0])} to ${fmtReach(hi.a[0])} at ${fmt(hi.values[0])}${v.unit ? ` ${v.unit}` : ""}, ${pts.length} columns solved), but the stage solver did not converge on the columns where it is met${crossed.length ? ` (it is crossed ${crossed.join("; ")})` : ""}. This is not a statement that the specification cannot be met. Tried: ${tried.join("; ")}. The stage solver said: ${lastError?.message ?? "nothing"} What may help: a start nearer the answer (give ${varName(v).replace(/^the /, "")} near the crossing as a specification first and use that column's result as a start), more iterations (max_iterations), or a specification a little further inside the range.`,
+            { ...details, range: { variable: v.name, lowest: { value: lo.a[0], at: lo.values[0] }, highest: { value: hi.a[0], at: hi.values[0] } }, crossed: (scanned.unsolved ?? []).map(([a, b]) => ({ from: a.values[0], to: b.values[0], reached: [a.a[0], b.a[0]] })) });
+        }
         const short = d.value > hi.a[0] ? hi : lo;
         let why, cure;
         if (v.name === "distillate_rate" && base.some(s => s.kind === "reflux_ratio" || s.kind === "condenser_duty" || s.kind === "boilup_ratio" || s.kind === "reboiler_duty")) {
@@ -536,7 +548,7 @@ export function solveSpecified(opts, solve, th) {
           cure = "a specification within the range above, or other values of the specifications given with it";
         }
         const az = azNote(d.product);
-        return fail("OUT_OF_RANGE", `Column: ${d.label} cannot be ${fmt6(d.value)} in this column${fixedText}: over the whole range of ${varName(v)} (${fmt(pts[0].values[0])} to ${fmt(pts.at(-1).values[0])}${v.unit ? ` ${v.unit}` : ""}, ${pts.length} columns solved) it stays between ${fmt6(lo.a[0])} (at ${fmt(lo.values[0])}) and ${fmt6(hi.a[0])} (at ${fmt(hi.values[0])}). ${why}${az} What would make it feasible: ${cure}.`,
+        return fail("OUT_OF_RANGE", `Column: ${d.label} cannot be ${fmt6(d.value)} in this column${fixedText}: over the whole range of ${varName(v)} (${fmt(pts[0].values[0])} to ${fmt(pts.at(-1).values[0])}${v.unit ? ` ${v.unit}` : ""}, ${pts.length} columns solved) it stays between ${fmtReach(lo.a[0])} (at ${fmt(lo.values[0])}) and ${fmtReach(hi.a[0])} (at ${fmt(hi.values[0])}). ${why}${az} What would make it feasible: ${cure}.`,
           { ...details, range: { variable: v.name, lowest: { value: lo.a[0], at: lo.values[0] }, highest: { value: hi.a[0], at: hi.values[0] } } });
       }
     }
