@@ -191,6 +191,15 @@ used).
 
 ## Queue, in order
 
+CHEPTA PHASE STARTED 2026-11-14 ~15:57 UTC (Lab's phase ended; the maintainer approved Lab's batch of requests from
+   two closed plants on 0.6.2: ethyl acetate S2, Piotrowski; CO2 to methanol, Campos 2022, Lab PR #22). Running:
+   (A) Opus session_01FPbeWVdRopqMZBAjVHY788, branch claude/design-spec-0022: proposal 0022 steps 1-3 (EA-15; the
+   sensitivity table only drafted as a proposal); (B) Opus session_01FPbeWX2Pxvf8FbTmYGFdwi, branch
+   claude/column-fixes-lab-062: EA-12/M3 (Newton capped at 12 iterations), EA-13/M2 (spec refused inside the reported
+   range), EA-9/M1 (traces stop a column), EA-8 message, M4 if time; answers Lab's column-5 question. Next, one worker:
+   EA-10 (strictRanges refuses nothing: reproduced on main with Lab's u-htxr2-15C, ok with 6 extrapolations), EA-11
+   (thermo.missingPairs rejected in a flowsheet), EA-14 (OUT_OF_TIME without loop progress), item 0b below. Later: M5
+   condenser with vapour and liquid distillate (feature). Lab coordinator asks which release to pin when this ends.
 0b. NEXT CHEPTA PHASE, first (the maintainer, agreed 2026-11-13), one small PR each or together:
    (1) a switch in the Settings drawer (the Units button): "Outside a record's range or a missing pair: continue with a
    warning / refuse" (strictRanges in the project's solver), and each result says which mode it ran in;
