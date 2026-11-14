@@ -51,3 +51,23 @@ changed here.
   so no result of an existing test changes.
 - The numbers chosen here (`LONG_NEWTON` = 100, `TRACE` = 0.1 mol % for the start's bubble points) are this project's
   choices, stated where they are defined.
+
+## The maintainer's answers (2026-11-14)
+
+1. **Two liquids in a column** (the acetic acid case): the maintainer asked whether a column really holds two liquids,
+   or only a small immiscible amount that could not be separated upstream. If the second, a smaller change: the
+   immiscible part goes to the top or the bottom. If a large immiscible amount enters the column, a warning, and the
+   user puts a decanter first. Worker's reply: both occur. Heterogeneous columns hold two liquids on several stages by
+   design (azeotropic distillation with an entrainer; here the ethyl acetate-water split at the top of columns 5 and 11,
+   which forms inside the column from a one-liquid feed, so a decanter upstream would not remove it). A small
+   immiscible amount in the feed is the second case. The next step is a short proposal covering (a) a warning when a
+   column's feed holds two liquids, the second above a share the maintainer sets, recommending a decanter first; (b)
+   an option that sends a small second liquid out at the top (to the decanter) or the bottom, after checking what
+   simulators with open documentation do (DWSIM); (c) for splits that form inside the column, the smooth two-liquid
+   stage formulation. A first trial of column 11 with a decanter condenser did not finish in the default 60 s
+   (inconclusive).
+2. **A condenser with a vapour and a liquid distillate** (M5): accepted in principle. The condenser's pressure is set,
+   and the vapour leaves in the ratio the user gives. Built after a short proposal (degrees of freedom and products
+   change).
+3. `LONG_NEWTON` = 100 and the start's trace level of 0.1 mol %: kept.
+4. The recycle plateau near 1e-3: a flowsheet-solver task after the design-specification work merges.
