@@ -71,3 +71,15 @@ changed here.
    change).
 3. `LONG_NEWTON` = 100 and the start's trace level of 0.1 mol %: kept.
 4. The recycle plateau near 1e-3: a flowsheet-solver task after the design-specification work merges.
+
+### Follow-up answers (the maintainer, 2026-11-14)
+
+- Item 1: accepted as recommended. A second liquid above 5 % of the column's feed gets a warning that recommends a
+  decanter first (this project's choice of the number). A smaller immiscible part goes by default to where it would go
+  on its own (the more volatile liquid to the top decanter, the heavy one to the bottom), and the user can override
+  it. The proposal keeps all three parts (the warning, the small immiscible part, the smooth two-liquid stage
+  formulation for splits inside the column). Its aim is heterogeneous azeotropic distillation with an entrainer
+  (with a decanter on the condenser) as a worked, validated case.
+- Item 2: accepted as recommended. The vapour + liquid distillate condenser takes its pressure and one of: the
+  condenser temperature, the vapour distillate flow, or the vapour share of the distillate; the reflux ratio or
+  another specification as today.

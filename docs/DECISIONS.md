@@ -18,7 +18,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   a simpler treatment of a small immiscible part (out at the top or the bottom): a short proposal next; (b) M5, a
   condenser with a vapour and a liquid distillate at a given pressure and vapour ratio: accepted in principle, proposal
   then build; (c) LONG_NEWTON = 100 and the 0.1 mol % trace level: kept; (d) the recycle plateau near 1e-3: a
-  flowsheet-solver task after the design specifications.
+  flowsheet-solver task after the design specifications. Follow-up answers (2026-11-14): 5 % threshold, default
+  destination by volatility with an override, the three-part proposal aimed at heterogeneous azeotropic distillation
+  with an entrainer; the condenser takes T, the vapour flow or the vapour share.
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record
