@@ -10,6 +10,8 @@
  *     "streams": [ { "id": "S1", "from": "F1.out", "to": "M1.in" }, ... ],
  *     "energyStreams": [ { "id": "Q1", "to": "E1", "duty_kW": 500 }, { "id": "Q2", "from": "E2", "to": "E3" } ],   // optional
  *     "reactions": [ { "id": "R1", "stoichiometry": { "carbon-dioxide": -1, ... }, "phase": "vapour" } ],   // optional
+ *     "designSpecs": [ { "id": "DS1", "vary": { "block": "F2", "key": "flow_kmol_h", "component": "water", "min": 0, "max": 500 },
+ *                        "target": { "stream": "S7", "quantity": "flow_kmol_h", "value": 100 } } ],   // optional (proposal 0022)
  *     "solver": { "maxIterations": 50, "tolerance": 1e-8 }
  *   }
  *
@@ -27,6 +29,7 @@ import { findComponent } from "../thermo/components.js";
 import { checkUserData } from "../thermo/user-data.js";
 import { solveFlowsheet, flowsheetStatus } from "./flowsheet.js";
 import { checkReactions } from "../reactions/reaction.js";
+import { designSpecsShape } from "./design-specs.js";
 
 const MODELS = ["NRTL", "UNIQUAC", "WILSON", "MOD-UNIFAC-2", "ideal", "PR", "SRK"];
 const BLOCK_KEYS = ["id", "type", "x", "y", "spec", "energy", "label"];
@@ -48,7 +51,7 @@ export const emptyFlowsheet = () => ({ components: [], thermo: { model: "NRTL", 
 export function normalizeFlowsheet(doc, userData = null) {
   if (doc == null) return emptyFlowsheet();
   if (typeof doc !== "object" || Array.isArray(doc)) throw fail("BAD_INPUT", "flowsheet must be an object with components, thermo, blocks and streams.");
-  const known = ["components", "thermo", "blocks", "streams", "energyStreams", "reactions", "solver"];
+  const known = ["components", "thermo", "blocks", "streams", "energyStreams", "reactions", "designSpecs", "solver"];
   for (const k of Object.keys(doc)) if (!known.includes(k)) throw fail("BAD_INPUT", `flowsheet: unknown key "${k}". Known: ${known.join(", ")}.`);
   const components = (doc.components ?? []).map(c => {
     try { return findComponent(c, userData); } catch (e) { throw fail("BAD_INPUT", `flowsheet.components: ${e.message}`); }
@@ -94,6 +97,11 @@ export function normalizeFlowsheet(doc, userData = null) {
   if (doc.reactions != null) {
     if (!Array.isArray(doc.reactions)) throw fail("BAD_INPUT", "flowsheet.reactions must be a list of reactions.");
     if (doc.reactions.length) out.reactions = JSON.parse(JSON.stringify(doc.reactions));
+  }
+  // design specifications (proposal 0022): kept only when there are some (checked against the flowsheet when it is solved)
+  if (doc.designSpecs != null) {
+    const ds = designSpecsShape(doc.designSpecs);
+    if (ds.length) out.designSpecs = ds;
   }
   if (doc.solver != null) out.solver = { ...doc.solver };
   return out;

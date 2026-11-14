@@ -1,0 +1,151 @@
+{
+  "fugacity_project": 10,
+  "saved_with": "chepta 0.6.2",
+  "title": "Design specification: ethyl acetate purity held by the ethanol feed",
+  "workbench": {
+    "view": "flowsheet",
+    "inputs": {},
+    "z": {}
+  },
+  "flowsheet": {
+    "components": [
+      "ethyl-acetate",
+      "ethanol",
+      "water"
+    ],
+    "thermo": {
+      "model": "NRTL",
+      "vapour": "ideal"
+    },
+    "blocks": [
+      {
+        "id": "F1",
+        "type": "feed",
+        "x": 0,
+        "y": 100,
+        "label": "Ethyl acetate + water",
+        "spec": {
+          "flow_kmol_h": {
+            "ethyl-acetate": 60,
+            "water": 10
+          },
+          "T_K": 330,
+          "P_kPa": 101.325
+        }
+      },
+      {
+        "id": "F2",
+        "type": "feed",
+        "x": 0,
+        "y": 240,
+        "label": "Ethanol make-up",
+        "spec": {
+          "flow_kmol_h": {
+            "ethanol": 10
+          },
+          "T_K": 330,
+          "P_kPa": 101.325
+        }
+      },
+      {
+        "id": "M1",
+        "type": "mixer",
+        "x": 160,
+        "y": 160
+      },
+      {
+        "id": "V1",
+        "type": "flash",
+        "x": 320,
+        "y": 160,
+        "spec": {
+          "P_kPa": 101.325,
+          "VF": 0.6
+        }
+      },
+      {
+        "id": "SP1",
+        "type": "splitter",
+        "x": 480,
+        "y": 260,
+        "spec": {
+          "fractions": [
+            0.3,
+            "rest"
+          ]
+        }
+      },
+      {
+        "id": "PROD",
+        "type": "product",
+        "x": 480,
+        "y": 60,
+        "label": "Product (vapour)"
+      },
+      {
+        "id": "PURGE",
+        "type": "product",
+        "x": 640,
+        "y": 260,
+        "label": "Purge"
+      }
+    ],
+    "streams": [
+      {
+        "id": "S1",
+        "from": "F1.out",
+        "to": "M1.in"
+      },
+      {
+        "id": "S2",
+        "from": "F2.out",
+        "to": "M1.in"
+      },
+      {
+        "id": "S3",
+        "from": "M1.out",
+        "to": "V1.in"
+      },
+      {
+        "id": "S4",
+        "from": "V1.vapour",
+        "to": "PROD.in"
+      },
+      {
+        "id": "S5",
+        "from": "V1.liquid",
+        "to": "SP1.in"
+      },
+      {
+        "id": "S6",
+        "from": "SP1.out",
+        "to": "PURGE.in"
+      },
+      {
+        "id": "S7",
+        "from": "SP1.out",
+        "to": "M1.in",
+        "label": "Recycle"
+      }
+    ],
+    "designSpecs": [
+      {
+        "id": "PURITY",
+        "label": "Hold the product at 95 mass % ethyl acetate by the ethanol make-up",
+        "vary": {
+          "block": "F2",
+          "key": "flow_kmol_h",
+          "component": "ethanol",
+          "min": 0,
+          "max": 50
+        },
+        "target": {
+          "stream": "S4",
+          "quantity": "mass_fraction",
+          "component": "ethyl-acetate",
+          "value": 0.95
+        }
+      }
+    ]
+  }
+}

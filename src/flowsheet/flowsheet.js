@@ -51,6 +51,10 @@
  *  7. A splitter given by flow (flow_kmol_h / flow_kg_h; src/units/units.js) inside a loop: while the loop iterates its blocks
  *     are calculated with `iterating`, so an inlet short of the asked flow (an empty tear stream at the start) is shared
  *     instead of refused; a loop that converges with the splitter still short is refused (BAD_INPUT, naming it).
+ *  8. Design specifications (proposal 0022; src/flowsheet/design-specs.js): `designSpecs` vary one number of a block's
+ *     specification within bounds to meet a stream's or block's quantity, as an outer loop of whole solves around this
+ *     solver (bracket + Brent for one, Broyden with bounds for several), the tear streams warm-started from the previous
+ *     solve. The answer lists them (result.designSpecs) and writes the varied value into the block's result (`spec`).
  * References: https://pyomo.readthedocs.io/en/6.9.3/_modules/pyomo/network/foqus_graph.html and
  * https://pyomo.readthedocs.io/en/6.4.0/_modules/pyomo/network/decomposition.html (open source,
  * 3-clause BSD); Tarjan, SIAM Journal on Computing 1(2), 1972 (as cited there).
@@ -69,6 +73,7 @@ import "../units/pipe.js";   // the Pipe block (proposal 0020)
 import "../units/evaporator.js";   // the Evaporator block (proposal 0015, M3, step 10)
 import "../units/crystallizer.js";   // the Crystallizer block (proposal 0015, M3, step 10)
 import { checkReactions } from "../reactions/reaction.js";
+import { solveDesignSpecs, checkDesignSpecs, withStartValues } from "./design-specs.js";
 
 /** Solver settings: `method` "broyden" (quasi-Newton on all tear flows together; the default since the
  *  flowsheet suite: it converged every case, mostly fastest), "wegstein" (direct substitution for two
@@ -209,7 +214,27 @@ export function checkFlowsheet(fs) {
  * @returns {{ready:boolean, needed:number, given:number, structure:object[], blocks:Object<string,object>, message:string}}
  */
 export function flowsheetStatus(sys, fs) {
+  // design specifications (proposal 0022, section 4): each frees its varied input and fixes its target, so the degrees
+  // of freedom are counted with the varied inputs at their start values; a malformed one is a problem of the structure
+  let designSpecs = null, dsProblem = null, warnings = [];
+  if (Array.isArray(fs?.designSpecs) ? fs.designSpecs.length : fs?.designSpecs != null) {
+    try {
+      const specs = checkDesignSpecs(sys, fs, inspectFlowsheet(fs), SOLVER_DEFAULTS.tolerance);
+      fs = withStartValues(sys, fs, specs);
+      designSpecs = specs.map(d => ({ id: d.id, varied: d.vary.label, target: d.target.label, asked: d.target.value, start: d.vary.start, min: d.vary.min, max: d.vary.max, tolerance: d.tolerance }));
+      for (const d of specs) {
+        for (const w of d.warnings) warnings.push({ designSpec: d.id, message: w });
+        if (d.vary.given !== undefined && Number.isFinite(d.vary.given) && d.vary.given !== d.vary.start) {
+          warnings.push({ designSpec: d.id, message: `${d.name}: ${d.vary.label} is given as ${+d.vary.given.toPrecision(6)} in ${d.vary.block}'s specification and guessed at ${+d.vary.start.toPrecision(6)}; the guess is the start, the value given is not used.` });
+        }
+      }
+    } catch (e) {
+      if (e?.code !== "BAD_INPUT") throw e;
+      dsProblem = { where: "designSpecs", message: e.message };
+    }
+  }
   const { blocks, problems } = inspectFlowsheet(fs);
+  if (dsProblem) problems.push(dsProblem);
   const reactions = reactionsOf(sys, fs);
   const out = {};
   let needed = 0, given = 0;
@@ -235,7 +260,9 @@ export function flowsheetStatus(sys, fs) {
       missing ? `${missing} specification${missing === 1 ? "" : "s"} missing` : "",
       extra ? `${extra} too many` : "",
       bad.some(([, st]) => st.status === "invalid") ? "a value to correct" : ""].filter(Boolean).join(", ") + ".";
-  return { ready, needed, given, dof: needed - given, structure: problems, blocks: out, message: message[0].toUpperCase() + message.slice(1) };
+  const dsNote = designSpecs?.length ? ` ${designSpecs.length} design specification${designSpecs.length === 1 ? "" : "s"} (${designSpecs.map(d => d.id).join(", ")}): each varies one input and fixes one target, so the count is unchanged.` : "";
+  return { ready, needed, given, dof: needed - given, structure: problems, blocks: out, message: message[0].toUpperCase() + message.slice(1) + (ready ? dsNote : ""),
+    ...(designSpecs ? { designSpecs } : {}), ...(warnings.length ? { warnings } : {}) };
 }
 
 /** Strongly connected components of a directed graph (Tarjan), in reverse topological order. */
@@ -320,6 +347,11 @@ export function solveFlowsheet(sys, fs) {
   // before; false or absent (the default) continues the record with a warning, gathered in result.extrapolations
   const strict = fs?.solver?.strictRanges;
   if (strict !== undefined && typeof strict !== "boolean") throw fail("BAD_INPUT", `solver.strictRanges must be true or false (got ${JSON.stringify(strict)}).`);
+  // design specifications (proposal 0022): an outer loop of whole solves around the sequential solver
+  const ds = fs?.designSpecs;
+  if (ds != null && !(Array.isArray(ds) && ds.length === 0)) {
+    return withRangePolicy({ strictRanges: strict }, () => solveDesignSpecs(sys, fs, solveCore, inspectFlowsheet(fs), SOLVER_DEFAULTS.tolerance));
+  }
   return withRangePolicy({ strictRanges: strict }, () => solveCore(sys, fs));
 }
 

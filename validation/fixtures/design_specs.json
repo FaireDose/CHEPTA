@@ -1,0 +1,34 @@
+{
+  "source": "validation/python/reference_design_spec.py (scipy.optimize.brentq and root on the closed-form steady state)",
+  "feed_kmol_h": [
+    20.0,
+    80.0
+  ],
+  "top_shares": [
+    0.9,
+    0.15
+  ],
+  "one": {
+    "purge_fraction": 0.1,
+    "recycle_kmol_h": 300.0,
+    "makeup_water_kmol_h": 11.549235078646834,
+    "recycle_flows_kmol_h": [
+      1.9780219780219777,
+      298.021978021978
+    ]
+  },
+  "two": {
+    "recycle_kmol_h": 300.0,
+    "purge_kmol_h": 30.0,
+    "makeup_water_kmol_h": 7.647058823529414,
+    "purge_fraction": 0.09090909090909091,
+    "recycle_flows_kmol_h": [
+      1.9999999999999991,
+      298.0
+    ],
+    "purge_flows_kmol_h": [
+      0.19999999999999993,
+      29.799999999999997
+    ]
+  }
+}

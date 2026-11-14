@@ -34,6 +34,7 @@ const PV = "io.modelcontextprotocol/protocolVersion", CC = "io.modelcontextproto
 export const MCP_INSTRUCTIONS = [
   "CHEPTA is an open-source chemical process simulator. Use its tools for numbers instead of computing thermodynamics or balances yourself.",
   "solve_flowsheet takes a project file (.chepta.json) as input.project, or a flowsheet document as input.flowsheet; check_project and flowsheet_status check one without solving.",
+  "To hold a product's purity, a flow or a temperature, add a design specification to the flowsheet (designSpecs: vary one input within required bounds, target one quantity) instead of trying values by hand; a target out of reach is refused with its value at both bounds.",
   "Every result has an outcome. Only \"ok\" carries numbers. \"missing_data\" means the data are not in CHEPTA: say so and never estimate the value; \"invalid_input\" names the fields or blocks to fix (error.where).",
   "Report the warnings and notes (qualifications) and the method and parameter sets (reproduction) with the numbers. A converged result is not a result validated against data.",
   "When you change a project for the user, show the change as a proposal, kept apart from their file until they apply it.",
@@ -67,6 +68,7 @@ export function resultSummary(r) {
     if (q.missing_pairs?.length) lines.push(`Pairs without parameters: ${q.missing_pairs.map(p => [].concat(p).join(" + ")).join(", ")}.`);
     for (const e of q.estimated_pairs ?? []) lines.push(`Warning: ${e.message}`);
     for (const w of q.warnings ?? []) lines.push(`Warning (${w.block}): ${w.message}`);
+    for (const d of v.designSpecs ?? []) lines.push(`Design specification ${d.id}: ${d.target.quantity}${d.target.component ? ` of ${d.target.component}` : ""} of ${d.target.stream ?? d.target.block} ${fmt(d.target.reached)} (asked ${fmt(d.target.asked)}), ${d.varied.block} ${d.varied.key}${d.varied.component ? ` (${d.varied.component})` : ""}${d.varied.index != null ? ` [${d.varied.index}]` : ""} = ${fmt(d.varied.value)}; ${d.solves} solves.`);
     if (streams.length > 12) lines.push(`(${streams.length - 12} more streams in value.streams)`);
     if (q.notes?.length) lines.push(`${q.notes.length} note(s) from the blocks (qualifications.notes).`);
     return lines.join("\n");

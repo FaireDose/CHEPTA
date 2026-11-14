@@ -8,6 +8,10 @@
  * carry `results`, the stream table of the flash as it was at save time, so the mass balance
  * can be read without CHEPTA (it is a record and is never read back into a calculation).
  *
+ * Format 10 is the lowest format that holds design specifications (proposal 0022; CHEPTA-Lab's request 15, 2026-11-14): a
+ * flowsheet's `designSpecs` (vary one input of a block within bounds to meet a target). A format-9 reader refuses the key as
+ * unknown without saying why, so the format is raised and the older version says "format 10". It is written only when a
+ * flowsheet has a design specification.
  * Format 9 is the lowest format that holds a splitter given by flow (CHEPTA-Lab's request 7, 2026-11-13): a splitter block
  * whose spec has `flow_kmol_h` or `flow_kg_h` (one total flow per outlet, one "rest") in place of `fractions`. A format-8
  * reader would take the block and then report its fractions missing, without saying why, so the format is raised and the
@@ -68,7 +72,7 @@ import { checkUserData } from "../thermo/user-data.js";
 /** The newest format this library writes; it reads this one and every older one. Format 3 adds the user's own data
  *  (proposal 0012) and is written only when there is some; format 2 adds the flowsheet (proposal 0006, step 4); a
  *  format 1 file is a format 2 file without it. */
-export const PROJECT_FORMAT = 9;
+export const PROJECT_FORMAT = 10;
 /** The flowsheet block types that need format 4 (proposal 0013). */
 const FORMAT_4_BLOCKS = ["hx", "valve", "pump", "compressor", "expander"];
 /** The flowsheet block types that need format 8 (proposal 0020). */
@@ -83,6 +87,9 @@ const hxUsesMhv1 = hx => hx?.hot?.mixing != null || hx?.cold?.mixing != null;
 const hasBlock = (fs, types) => !!fs?.blocks?.some(b => types.includes(b?.type));
 /** Does a flowsheet document have a splitter given by flow (flow_kmol_h or flow_kg_h)? Such a project needs format 9. */
 const splitsByFlow = fs => !!fs?.blocks?.some(b => b?.type === "splitter" && (b.spec?.flow_kmol_h != null || b.spec?.flow_kg_h != null));
+
+/** Does a flowsheet document have design specifications (proposal 0022)? Such a project needs format 10. */
+const hasDesignSpecs = fs => Array.isArray(fs?.designSpecs) && fs.designSpecs.length > 0;
 
 /** The keys of `workbench`, in the order they are written. */
 const KEYS = ["view", "diagram", "model", "eos", "mixing", "vapour", "P_kPa", "T_K", "units", "basis", "inputs", "z", "flash", "sets", "prefer",
@@ -128,7 +135,8 @@ export function projectOf(state, { version = "", results, now = new Date() } = {
   const needs8 = w.pipe != null || hasBlock(flowsheet, FORMAT_8_BLOCKS) || hasBlock(state.reactor, FORMAT_8_BLOCKS);
   const needs7 = w.mixing != null || hxUsesMhv1(w.hx) || usesMhv1(flowsheet) || usesMhv1(state.reactor) || usesMhv1(state.column);
   const needs9 = splitsByFlow(flowsheet) || splitsByFlow(state.reactor) || splitsByFlow(state.column);
-  const doc = { fugacity_project: needs9 ? 9 : needs8 ? 8 : needs7 ? 7 : needs6 ? 6 : w.chart ? 5 : needs4 ? 4 : state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
+  const needs10 = hasDesignSpecs(flowsheet) || hasDesignSpecs(state.reactor) || hasDesignSpecs(state.column);
+  const doc = { fugacity_project: needs10 ? 10 : needs9 ? 9 : needs8 ? 8 : needs7 ? 7 : needs6 ? 6 : w.chart ? 5 : needs4 ? 4 : state.userData ? 3 : 2, saved_with: `chepta ${version}`.trim(), saved_at: now.toISOString() };
   if (state.title) doc.title = String(state.title);
   doc.workbench = w;
   if (flowsheet) doc.flowsheet = flowsheet;
@@ -186,6 +194,7 @@ export function readProject(input) {
   if ((w.mixing != null || hxUsesMhv1(w.hx) || usesMhv1(doc.flowsheet) || usesMhv1(doc.reactor) || usesMhv1(doc.column)) && f < 7) throw new Error(`The MHV1 mixing rule (PR / SRK + gE (MHV1)) needs format 7 (this file says format ${f}).`);
   if ((w.pipe != null || hasBlock(doc.flowsheet, FORMAT_8_BLOCKS) || hasBlock(doc.reactor, FORMAT_8_BLOCKS)) && f < 8) throw new Error(`The Pipe (the Pipe workspace and the flowsheet's pipe block) needs format 8 (this file says format ${f}).`);
   if ((splitsByFlow(doc.flowsheet) || splitsByFlow(doc.reactor) || splitsByFlow(doc.column)) && f < 9) throw new Error(`A splitter given by flow (flow_kmol_h or flow_kg_h) needs format 9 (this file says format ${f}).`);
+  if ((hasDesignSpecs(doc.flowsheet) || hasDesignSpecs(doc.reactor) || hasDesignSpecs(doc.column)) && f < 10) throw new Error(`Design specifications (flowsheet.designSpecs) need format 10 (this file says format ${f}).`);
   if (w.chart != null && f < 5) throw new Error(`workbench.chart needs format 5 (this file says format ${f}).`);
   if ((hasBlock(doc.flowsheet, FORMAT_6_BLOCKS) || hasBlock(doc.reactor, FORMAT_6_BLOCKS)) && f < 6) throw new Error(`The flowsheet's column, crystallizer, evaporator, extraction and membrane blocks need format 6 (this file says format ${f}).`);
   if (doc.column != null && f < 6) throw new Error(`The Column workspace needs format 6 (this file says format ${f}).`);
