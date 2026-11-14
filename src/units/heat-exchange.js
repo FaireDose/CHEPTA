@@ -475,25 +475,35 @@ export function exchangerApproach(sys, o = {}) {
   const qMax = Math.min(hot.H_kW - stream(sh, { flow_kmol_h: hot.flows, T_K: cold.T_K, P_kPa: Ph }).H_kW,
     stream(sc, { flow_kmol_h: cold.flows, T_K: hot.T_K, P_kPa: Pc }).H_kW - cold.H_kW);
   // 10 zones while searching, to a duty within 1e-5 of the largest; the result is sized with the full zones and reports
-  // its own dT_min; a duty the arrangement cannot reach counts as a temperature cross: the search stays below it
-  const dmin = q => {
-    try { return exchangerArea(sys, { ...rest, duty_kW: q, U: undefined, zones: 10 }).dT_min_K; }
+  // its own dT_min; a duty the arrangement cannot reach counts as a temperature cross: the search stays below it.
+  // Where the full zones find a tighter pinch than the 10 (a condensing hot side against a boiling cold side), the
+  // search is repeated with the full zones (CHEPTA-Lab's methanol plant, M4, 2026-11-14: refused at 1.65 K for 2 K)
+  const dminWith = zones => q => {
+    try { return exchangerArea(sys, { ...rest, duty_kW: q, U: undefined, zones }).dT_min_K; }
     catch (e) { if (e.code === "BAD_INPUT" && /Temperature cross|cannot reach these temperatures/.test(e.message)) return -1; throw e; }
   };
-  if (!(dmin(qMax * 1e-6) > dT)) throw fail("BAD_INPUT", `Heat exchanger: the inlets are ${+(hot.T_K - cold.T_K).toFixed(2)} K apart, not more than the minimum approach of ${dT} K.`);
+  if (!(dminWith(10)(qMax * 1e-6) > dT)) throw fail("BAD_INPUT", `Heat exchanger: the inlets are ${+(hot.T_K - cold.T_K).toFixed(2)} K apart, not more than the minimum approach of ${dT} K.`);
   // bisection until the upper end has no temperature cross, then the Illinois variant of regula falsi
-  let lo = qMax * 1e-6, hi = qMax, flo = dmin(lo) - dT, fhi = dmin(hi) - dT, cross = fhi <= -1 - dT + 1e-12, side = 0;
-  for (let i = 0; i < 60 && hi - lo > 1e-5 * qMax; i++) {
-    const m = cross ? (lo + hi) / 2 : (lo * fhi - hi * flo) / (fhi - flo);
-    const fm = dmin(m) - dT;
-    if (Math.abs(fm) < 1e-4 * dT) { lo = hi = m; break; }
-    if (fm > 0) { lo = m; flo = fm; if (side === 1) fhi /= 2; side = 1; }
-    else { hi = m; fhi = fm; cross = fm <= -1 - dT + 1e-12; if (side === -1) flo /= 2; side = -1; }
-  }
-  const hx = exchangerArea(sys, { ...rest, duty_kW: lo });
-  if (Math.abs(hx.dT_min_K - dT) > Math.max(0.05, 0.01 * dT)) {
-    const arr = o.arrangement === "shell-and-tube" ? `${o.shells ?? 1}-shell exchanger` : "crossflow exchanger";
-    throw fail("BAD_INPUT", `Heat exchanger: a ${arr} reaches its limit at ${+hx.duty_kW.toPrecision(4)} kW, where the smallest temperature difference is still ${+hx.dT_min_K.toFixed(2)} K: it cannot approach ${dT} K. Put more shells in series, use counterflow, or give a larger minimum approach.`);
+  const search = (dmin, lo, hi) => {
+    let flo = dmin(lo) - dT, fhi = dmin(hi) - dT, cross = fhi <= -1 - dT + 1e-12, side = 0;
+    for (let i = 0; i < 60 && hi - lo > 1e-5 * qMax; i++) {
+      const m = cross ? (lo + hi) / 2 : (lo * fhi - hi * flo) / (fhi - flo);
+      const fm = dmin(m) - dT;
+      if (Math.abs(fm) < 1e-4 * dT) { lo = hi = m; break; }
+      if (fm > 0) { lo = m; flo = fm; if (side === 1) fhi /= 2; side = 1; }
+      else { hi = m; fhi = fm; cross = fm <= -1 - dT + 1e-12; if (side === -1) flo /= 2; side = -1; }
+    }
+    return lo;
+  };
+  const near = hx => Math.abs(hx.dT_min_K - dT) <= Math.max(0.05, 0.01 * dT);
+  let hx = exchangerArea(sys, { ...rest, duty_kW: search(dminWith(10), qMax * 1e-6, qMax) });
+  const full = o.zones == null ? 20 : o.zones;
+  if (!near(hx) && full !== 10 && dminWith(full)(qMax * 1e-6) > dT) hx = exchangerArea(sys, { ...rest, duty_kW: search(dminWith(full), qMax * 1e-6, qMax) });
+  if (!near(hx)) {
+    const a = o.arrangement ?? "counterflow";
+    const arr = a === "shell-and-tube" ? `${o.shells ?? 1}-shell exchanger` : a === "crossflow-unmixed" || a.startsWith("crossflow") ? "crossflow exchanger" : `${a} exchanger`;
+    const cure = a === "counterflow" ? "Give a larger minimum approach, or more zones (zones) if the temperature-heat curves bend sharply." : a === "cocurrent" ? "Use counterflow, or give a larger minimum approach." : "Put more shells in series, use counterflow, or give a larger minimum approach.";
+    throw fail("BAD_INPUT", `Heat exchanger: a ${arr} reaches its limit at ${+hx.duty_kW.toPrecision(4)} kW, where the smallest temperature difference is still ${+hx.dT_min_K.toFixed(2)} K: it cannot approach ${dT} K. ${cure}`);
   }
   return hx;
 }
