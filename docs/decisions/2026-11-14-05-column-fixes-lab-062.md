@@ -30,7 +30,19 @@ converge now with the default settings; four of them failed on 0.6.2 (45,000 and
 20 and 53), one (70,000) the product-flash fix. With `max_iterations: 100` on 0.6.2's inputs, the 12-iteration
 stop was the whole story for the 45,000 and 55,000 cases.
 
-**In the closed plant:** PLANT_RESULT
+**In the closed plant, it was the cause of the early stop, not of the loop's non-convergence.** Three of Lab's closed
+runs, rerun with this branch (Lab's input files unchanged):
+
+| Run | 0.6.2 | This branch |
+|---|---|---|
+| plant62-R-bottoms-warm-col5iter100 (column 5 `max_iterations` 100) | column 5 stops the loop at iteration 2 | column 5 converges at every iteration up to 38; the loop's relative change stays between 1.3e-3 and 1.5e-3 with jumps up to 0.62 (Broyden); at iteration 39 column 5 fails on a tear guess far from the answer (material residual 405 mol/s) |
+| plant62-R-bottoms-warm (defaults) | column 5 stops the loop at iteration 4 | 30 iterations, the same plateau near 1.5e-3; column 11 fails at iteration 31 |
+| plant62-W-dist (defaults) | column 5 stops the loop at iteration 3 | iteration 7: the conversion reactor runs short of acid (a balance question of the loop, not a column) |
+
+So the column now carries the loop; what stops it is the recycle loop itself: Broyden plateaus near 1e-3 and its jumps
+send a column a guess it cannot solve. That is Lab's note under round 2 ("the recycle loop plateaus near 2e-4") and
+its request 14; it belongs to the flowsheet solver, where another worker is building design specifications, and is not
+changed here.
 
 ## Rules kept
 
