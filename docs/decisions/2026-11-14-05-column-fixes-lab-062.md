@@ -83,3 +83,5 @@ changed here.
 - Item 2: accepted as recommended. The vapour + liquid distillate condenser takes its pressure and one of: the
   condenser temperature, the vapour distillate flow, or the vapour share of the distillate; the reflux ratio or
   another specification as today.
+
+Replaced by 2026-11-14-07 (the maintainer, 2026-11-17): 1 mol %, the user chooses top or bottom.

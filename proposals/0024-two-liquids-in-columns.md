@@ -1,6 +1,6 @@
 # 0024: Two liquids in columns: a decanter warning, a bypass for a small second liquid, and a smooth two-liquid stage
 
-- **Status:** Draft (for the maintainer's answers below)
+- **Status:** Draft; the open questions answered by the maintainer on 2026-11-14 (section "Decided")
 - **Author(s):** a coding agent, for the maintainer
 - **Discussion:** the pull request of this file; the maintainer's question of 2026-11-14 in
   [docs/decisions/2026-11-14-05-column-fixes-lab-062.md](../docs/decisions/2026-11-14-05-column-fixes-lab-062.md)
@@ -32,24 +32,29 @@ stage model itself to cross the binodal smoothly.
 
 **(a) Warning when the feed holds two liquids.** Before solving, every column feed is flashed at its own T and P with
 the stage method's liquid-liquid test (the flash drum's three-phase flash, already used for streams). Where the second
-liquid's share of the feed exceeds a limit `S` (the maintainer sets it; recommendation below: 1 mol % of the feed),
-the result carries a warning, whatever `phases` says: "The feed to stage k holds two liquids (the second, water-rich,
-is n % of the feed). A column is normally fed one liquid: consider a decanter before the column." The column is still
-calculated. Below `S` there is no warning.
+liquid is more than **1 mol % of the column's feed** (the maintainer, 2026-11-14; this project's choice of the number,
+which the user can change per column), the result carries a warning, whatever `phases` says: "The feed to stage k
+holds two liquids (the second, water-rich, is n mol % of the feed, m % by mass). A column is normally fed one liquid:
+put a decanter before the column." The column is still calculated (a warning, not a refusal). At 1 mol % or less there
+is no warning.
 
-**(b) An option for a small second liquid in the feed:** `feed_second_liquid: "stages" | "distillate" | "bottoms"`.
+**(b) A small second liquid in the feed** (1 mol % of the feed or less): `feed_second_liquid: "stages" | "top" |
+"bottom"`.
 
-- `"stages"` (the default; today's behaviour): the whole feed enters the stage. With `phases: "VLL"` the stages
-  carry both liquids; with `"VL"` the one-liquid stage model is used, and the warning of (a) says so.
-- `"distillate"` or `"bottoms"`: the feed is split at its own T and P; its second liquid bypasses the stages and is
-  added to that product (mixed at the product's pressure, P-H flash of the mixture). The stages see only the first
-  liquid and the vapour, so the column is solved with one liquid. The result says what was bypassed and that the
-  duties do not include heating or vaporizing it.
-- Refused when the second liquid exceeds `S`: "Too much second liquid for a bypass: put a decanter before the column".
-- No automatic choice of top or bottom: the second liquid's way depends on the process (water in a hydrocarbon column
-  leaves at the top as a heterogeneous azeotrope; a heavy immiscible liquid falls to the bottom), so the user chooses.
+- `"stages"` (the default; today's behaviour): the whole feed enters the stage. With `phases: "VLL"` the stages carry
+  both liquids; with `"VL"` the one-liquid stage model is used, and the warning of (a) says so where it applies.
+- `"top"` or `"bottom"`: the user's choice, with no automatic default (the maintainer, 2026-11-14): which way the
+  liquid goes depends on the process (water in a hydrocarbon column leaves at the top as a heterogeneous azeotrope; a
+  heavy, nearly involatile liquid falls to the bottom). The feed is split at its own T and P; its second liquid
+  bypasses the stages and joins the condenser's liquid (with a decanter: the decanter's feed, so it is split there) or
+  the bottoms (mixed at the product's pressure, P-H flash of the mixture). The stages see only the first liquid and the
+  vapour. The result says what was bypassed and that the duties do not include heating or vaporizing it.
+- Refused above 1 mol %: "Too much second liquid for a bypass: put a decanter before the column, or use
+  feed_second_liquid: \"stages\"". The refusal names both directions.
 
 (a) and (b) answer the maintainer's case 1. They do not fix Lab's column 11, where the split forms inside the column.
+The validated case of all three parts is heterogeneous azeotropic distillation with an entrainer and a decanter on the
+condenser (the maintainer, 2026-11-14; "Engineering basis", the validated case).
 
 **(c) A smooth two-liquid stage** (for `phases: "VLL"`, case 2). The yes/no test of each stage is replaced by
 equations that hold on one-liquid and on two-liquid stages alike, by a complementarity, as Dabadghao et al. (below)
@@ -107,9 +112,39 @@ trial phase and its tm elsewhere.
   converge, and column 5 must give the same answer as with today's adapter. (3) An independent check:
   `reference_mesh_vll.py` extended with ChemSep's full three-phase stage (eqs. 13.35-13.44, both liquid flows as
   unknowns, the stages with two liquids taken from the converged JavaScript column and confirmed by the reference's
-  own tangent-plane test), solved by scipy, compared on column 11 and F3 with F1's tolerances. (4) For (b): the material
-  balance closes exactly; with a second liquid of 0.1 % the bypassed column agrees with the full `"VLL"` column within
-  that share; the warning and the refusal appear at `S`.
+  own tangent-plane test), solved by scipy, compared on column 11, F3 and the validated case below with F1's
+  tolerances. (4) For (b): the material balance closes exactly; with a second liquid of 0.1 % the bypassed column
+  agrees with the full `"VLL"` column within that share; the warning appears above 1 mol %, and the bypass is
+  refused there.
+- **The validated case: ethanol dehydration with cyclohexane as the entrainer, a decanter on the condenser** (CHEPTA's
+  ethanol dehydration benchmark, docs/BENCHMARKS.md). All three pairs have NRTL sets fitted to open data
+  (`src/data/binaries.json`: ethanol + water `fitted-kamihama2012`, cyclohexane + water `fitted-marche2006-etal`,
+  ethanol + cyclohexane `fitted-reddy2013`), and the water + cyclohexane heterogeneous azeotrope is already checked
+  (`test/benchmark-ethanol-dehydration.test.js`). The open data to test against: the NIST TRC ThermoML Archive file of
+  Gomis, Font, Pedraza, Saquete, Fluid Phase Equilib. 235 (2005) 7-10, doi:10.1016/j.fluid.2005.07.015
+  (https://trc.nist.gov/ThermoML/10.1016/j.fluid.2005.07.015.html, read 2026-11-14): isobaric VLE and VLLE of water +
+  ethanol + cyclohexane at 101.3 kPa; its abstract states "a ternary heterogeneous azeotrope at 335.6K with a
+  composition of 0.188, 0.292, 0.520 mole fraction of water, ethanol and cyclohexane". The tests: the column at high
+  reflux must bring its top vapour to the azeotrope that the model predicts, and the deviation of that prediction from
+  the measured azeotrope and from the VLLE tie lines is stated (the pairs were not fitted to ternary data); the
+  decanter's two liquids must lie on the model's tie line at the decanter's temperature; the column must give the same
+  profile with (c) and with today's adapter where both converge, and match the independent reference.
+- **No open measured column profile was found** (2026-11-14). Searched: OpenAlex (open-access works, "heterogeneous
+  azeotropic distillation" with "pilot", "experimental", "tray composition", "decanter", "entrainer"); `open_copy.py
+  --all --supplements` for the articles with measured columns named by De Guido et al. (below): Gomis et al., Ind. Eng.
+  Chem. Res. 46 (2007) 4572 (ethanol, isooctane), doi:10.1021/ie0616343; Font et al., Ind. Eng. Chem. Res. 42 (2003)
+  140, doi:10.1021/ie0204078; Wang et al., Ind. Eng. Chem. Res. 37 (1998) 2835 (2-propanol, cyclohexane, a laboratory
+  sieve-plate column), doi:10.1021/ie970855t; Cairns and Furzer, Ind. Eng. Chem. Res. 29 (1990), parts 1 and 3,
+  doi:10.1021/ie00103a040 and 10.1021/ie00103a042 (tray data, which The ChemSep Book, p. 231, also names): none has a
+  free copy or a supplement. Alliet-Gaubert et al., Ind. Eng. Chem. Res. (2001), doi:10.1021/ie000808s (submitted
+  manuscript, https://hal.science/hal-03483870), compares pilot and industrial data, but the components are not named
+  ("an organic acid dehydration using an immiscible entrainer"), so it cannot be rebuilt. Open simulated worked examples
+  exist, made with Aspen Plus and its own NRTL parameters, so their numbers test those parameters, not CHEPTA's: De
+  Guido, Monticelli, Spatolisano, Pellegrini, Energies 14 (2021) 5471, doi:10.3390/en14175471, CC BY (copy at
+  https://re.public.polimi.it/bitstream/11311/1184588/1/energies-14-05471.pdf): 2-propanol + water with isooctane, a
+  30-stage column with a decanter (section 2), but CHEPTA has no isooctane + water pair; Plesu Popescu et al., Chem.
+  Eng. Trans. 81 (2020) 829, doi:10.3303/CET2081139 (ethanol with several entrainers). They may be named as
+  cross-checks of the process behaviour, never as data.
 
 ## Effect on existing work
 
@@ -142,22 +177,27 @@ trial phase and its tm elsewhere.
 
 ## Steps
 
-1. (a) and (b): the feed check, the warning, `feed_second_liquid`, the refusal at `S`; tests (4). Small; no change to
-   any converged column.
-2. (c) in `src/units/columns/two-liquids.js` and `engine.js`, behind `two_liquid_stage: "smooth"`; tests (1) and (2).
+1. (a) and (b): the feed check, the warning above 1 mol %, `feed_second_liquid`, the refusal of a bypass above it;
+   tests (4). Small; no change to any converged column.
+2. (c) in `src/units/columns/two-liquids.js` and `engine.js`, behind `two_liquid_stage: "smooth"`; tests (1) and (2),
+   and the validated case (ethanol + water + cyclohexane with a decanter) as a column case in `validation/data/columns/`.
 3. The independent reference (3) in `validation/python/reference_mesh_vll.py` and its fixture.
 4. If 1-3 pass: `"smooth"` the default, today's adapter the fallback; Lab reruns column 11 and the closed plant.
 
-## Open questions, with a recommendation each
+## Decided (the maintainer, 2026-11-14, on the questions of the first draft)
 
-1. **The share `S` that triggers the warning (and the limit for the bypass), and its basis.** Recommendation: 1 mol %
-   of the column's feed (this project's choice, not a published value; the user can change it per column). Moles,
-   because the stage equations are molar; the warning also gives the mass share.
-2. **Should a large second liquid stop the column instead of a warning?** Recommendation: a warning, as the maintainer
-   said; the bypass (b) is refused above `S`.
-3. **Top or bottom for the bypass: the user's choice, or a default?** Recommendation: the user's choice, no default
-   (which way the liquid goes depends on the process, see (b)); the refusal text names both options.
-4. **Make (c) the default after step 3?** Recommendation: yes, if every existing two-liquid column gives its present
-   answer within its tolerances and Lab's column 11 converges with acid; else keep it as an option and report.
-5. **The final eps.** Recommendation: fixed in step 2 as the largest value at which every test of (1) still passes at
-   its tolerance, stated in the code and in the `solver` record; never loosened to make a column converge.
+1. **The share:** 1 mol % of the column's feed (this project's choice; the user can change it per column). Above it, a
+   warning that recommends a decanter first; the warning also gives the mass share.
+2. **A large second liquid:** a warning, not a refusal; the column is still calculated. Only the bypass of (b) is
+   refused above the share.
+3. **Top or bottom for the bypass:** the user's choice, with no default; the refusal text names both options.
+4. **(c) as the default:** yes, once every existing two-liquid column gives its present answer within its tolerances,
+   the validated case passes and Lab's column 11 converges with acid; until then it stays behind
+   `two_liquid_stage: "smooth"`.
+5. **The final eps:** the largest value at which every test of (1) still passes at its tolerance, stated in the code
+   and in the `solver` record; never loosened to make a column converge.
+
+The validated case (heterogeneous azeotropic distillation with an entrainer and a decanter on the condenser) and the
+separate proposal for the condenser with a vapour and a liquid distillate (M5) follow the maintainer's follow-up on
+PR #251 (docs/decisions/2026-11-14-05-column-fixes-lab-062.md). These answers replace that follow-up's 5 % share and
+its default by volatility (the maintainer, 2026-11-14, in this pull request's session).
