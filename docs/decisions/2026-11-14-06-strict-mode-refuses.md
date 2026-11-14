@@ -80,3 +80,13 @@ vapour-pressure record starts at 303.59 K and the strict mode now refuses that (
    strict mode. Recommended: leave them; a follow-up can refuse their results' extrapolations the same way if asked.
 4. **No project format change for `thermo.missingPairs`.** Recommended: keep (an older version refuses the key and
    names it); raise the format only if the maintainer wants the older version to name the format.
+
+## The maintainer's answers (2026-11-14)
+
+1. "Only if this is possible to add in the workbench": it is. The stricter strict mode is what the Settings switch's
+   "Refuse" runs (the Flowsheet, Column and Reactor workspaces), so it is kept.
+2. "OK if you mean switch from strict to lenient": yes, the switch chooses between the two modes, lenient (the
+   default) and strict, for the Flowsheet, Column and Reactor workspaces; the other calculations stay lenient.
+3. OK: the units and equilibrium calls outside a flowsheet (`system().flash`, `bubble`, ...) keep the strict margins
+   of before 2026-11-13.
+4. OK: no project format change for `thermo.missingPairs`.
