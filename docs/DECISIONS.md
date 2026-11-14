@@ -10,6 +10,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Two liquids in columns** (proposal 0024, draft; from docs/decisions/2026-11-14-05-column-fixes-lab-062.md, answer 1):
+  (a) a warning when a column's feed holds a second liquid above a share S, recommending a decanter; (b)
+  `feed_second_liquid: "distillate" | "bottoms"` to bypass a small one; (c) a smooth two-liquid stage (a smoothed
+  complementarity between the second liquid's fraction and the tangent-plane distance) for splits that form inside the
+  column, which Lab's column 11 with acetic acid needs. Waiting for the five answers of the proposal (S = 1 mol % of
+  the feed recommended; warning, not refusal; top or bottom chosen by the user; (c) the default once the tests pass;
+  the final smoothing parameter fixed by the tests).
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record
