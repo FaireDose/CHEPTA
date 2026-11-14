@@ -549,18 +549,21 @@ function solveCore(sys, fs) {
      *  3. the limit on the extrapolation (relative to each tear's flow, as the convergence test measures it) starts
      *     unlimited, so that a loop that converges without these rules takes exactly the same steps as before (the
      *     flowsheet suite does: docs/FLOWSHEET_TESTS.md), and doubles after every accepted pass that lowers the
-     *     change;
+     *     change; after a direct-substitution step (limit 0) the next accepted pass sets it to LIMIT_RESTART;
      *  4. Broyden: when the change has not halved in STALL accepted passes, H is replaced by the inverse of the
      *     Jacobian of F at the current point by forward differences (one pass per tear variable, each counted as an
      *     iteration; step FD_STEP of the tear's flow); if a pass fails or the Jacobian is singular, H restarts at -I.
      * Every action is listed in the loop's `safeguards`. The numbers are this project's choices, set on a hard
      * two-tear test loop (test/flowsheet-safeguards.test.js), not a published standard.
      */
-    const REJECT = 10, STALL = 8, MAX_RETRIES = 4, SHRINK = 4, FD_STEP = 1e-5;
+    const REJECT = 10, STALL = 8, MAX_RETRIES = 4, SHRINK = 4, FD_STEP = 1e-5, LIMIT_RESTART = 1e-3;
     let good = null;          // the last accepted pass: { x, g, after, err, pt }
     let limit = Infinity;     // the largest extrapolation beyond g, relative to the tears' size
     let retries = 0;          // consecutive failed or rejected trials since the last accepted pass
     let best = Infinity, bestAt = 0;
+    /** The limit after an accepted pass: doubled when the change fell; from direct substitution (0) back to LIMIT_RESTART,
+     *  so that a loop sent back to direct substitution does not stay there. */
+    const grown = (lim, fell) => (lim === 0 ? LIMIT_RESTART : fell ? 2 * lim : lim);
     /** The extrapolation of a guess beyond the accepted pass's result, relative to the tears' size. */
     const beyond = (xf, ok) => {
       const gf = ok.g.flat(), sz = sizeOf(ok.x, ok.g);
@@ -685,7 +688,7 @@ function solveCore(sys, fs) {
           retry(xf, from ?? good.g.flat(), "rejected", `the change grew from ${good.err.toExponential(2)} to ${err.toExponential(2)}`);
           continue;
         }
-        if (good && err < good.err) limit *= 2;
+        limit = grown(limit, good && err < good.err);
         retries = 0;
         good = { x, g, after, err, pt };
         bPrev = pt;
@@ -713,7 +716,7 @@ function solveCore(sys, fs) {
         continue;
       }
       // direct substitution and Wegstein: next tear values; direct substitution for two steps, then bounded Wegstein
-      if (good && err < good.err) limit *= 2;
+      limit = grown(limit, good && err < good.err);
       retries = 0;
       good = { x, g, after, err };
       let xNew = g;

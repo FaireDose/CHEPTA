@@ -10,6 +10,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Recycle solver safeguards, Lab's request 14** (docs/decisions/2026-11-14-07-recycle-safeguards.md): built: a block
+  failing on an accelerated tear guess sends the loop back to the last accepted pass with a shorter step; Broyden rejects
+  a pass ten times worse; a finite-difference Jacobian on a stall; the flowsheet suite takes the same steps as before.
+  The plateau of Lab's plant is a slow inventory mode of its specification (column 11's product fixed at 141.5 kmol/h
+  takes 0.42 kmol/h more ester than is formed; the excess ethanol has no way out). Open: the questions at the end of
+  the decision (the plant's specification, the safeguards' numbers, a slow-test lane).
 - **Column fixes from CHEPTA-Lab's 0.6.2 requests** (docs/decisions/2026-11-14-05-column-fixes-lab-062.md): built
   EA-12/M3 (max_iterations governs; a last long Newton attempt), EA-13/M2 (a purity inside the reached range is never
   OUT_OF_RANGE), EA-9/M1 for CO and N2 traces, the EA-8 message, M4. Open: (a) acetic acid traces in two-liquid
@@ -17,8 +23,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   region. The maintainer (2026-11-14) asked for a warning and a decanter first where a large second liquid enters, and
   a simpler treatment of a small immiscible part (out at the top or the bottom): a short proposal next; (b) M5, a
   condenser with a vapour and a liquid distillate at a given pressure and vapour ratio: accepted in principle, proposal
-  then build; (c) LONG_NEWTON = 100 and the 0.1 mol % trace level: kept; (d) the recycle plateau near 1e-3: a
-  flowsheet-solver task after the design specifications. Follow-up answers (2026-11-14): 5 % threshold, default
+  then build; (c) LONG_NEWTON = 100 and the 0.1 mol % trace level: kept; (d) the recycle plateau near 1e-3: taken
+  up in docs/decisions/2026-11-14-07-recycle-safeguards.md. Follow-up answers (2026-11-14): 5 % threshold, default
   destination by volatility with an override, the three-part proposal aimed at heterogeneous azeotropic distillation
   with an entrainer; the condenser takes T, the vapour flow or the vapour share.
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
