@@ -221,6 +221,10 @@ CHEPTA PHASE STARTED 2026-11-14 ~15:57 UTC (Lab's phase ended; the maintainer ap
    and liquid distillate (pressure set, vapour ratio given): accepted in principle, proposal then build (new session,
    after #251 merges); (3) kept; (4) the recycle plateau: flowsheet-solver task after #250 merges. Still open: #250's 3
    + 0023's 5. Running: (D) Opus, branch claude/proposal-two-liquid-columns (proposal 0024, docs only).
+   18:04 follow-up (recorded by worker B in #251): 5 % of the feed as a second liquid -> warning + decanter first; below
+   it the immiscible part goes where its volatility takes it, with an override; the proposal's validated case is
+   heterogeneous azeotropic distillation with an entrainer (decanter on the condenser); relayed to D. M5: the condenser
+   takes its pressure plus one of T, vapour distillate flow or vapour share; proposal + build (Opus) after #251 merges.
 0b. NEXT CHEPTA PHASE, first (the maintainer, agreed 2026-11-13), one small PR each or together:
    (1) a switch in the Settings drawer (the Units button): "Outside a record's range or a missing pair: continue with a
    warning / refuse" (strictRanges in the project's solver), and each result says which mode it ran in;
