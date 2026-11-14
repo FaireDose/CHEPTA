@@ -28,7 +28,8 @@ const SELF = (() => {
 })();
 
 // inside the worker: answer each request with the dispatcher's result
-const WORKER_MAIN = "self.onmessage=function(e){self.postMessage(CHEPTA.run(e.data));};";
+// (with the engine's progress reports, src/util/progress.js, sent first as { chepta_progress: 1, progress })
+const WORKER_MAIN = "if(CHEPTA.setProgressSink)CHEPTA.setProgressSink(function(p){self.postMessage({chepta_progress:1,progress:p});});self.onmessage=function(e){self.postMessage(CHEPTA.run(e.data));};";
 
 let source = null, unavailable = null;
 
@@ -50,9 +51,12 @@ export function workerStatus() {
   return url ? { worker: true } : { worker: false, note: `Calculated on the page's thread: ${unavailable}; a time limit or a cancel cannot stop a calculation already running.` };
 }
 
-function connect(onResult, onFailure) {
+function connect(onResult, onFailure, onProgress) {
   const w = new Worker(workerUrl());
-  w.onmessage = e => { w.terminate(); onResult(e.data); };
+  w.onmessage = e => {
+    if (e.data && e.data.chepta_progress === 1) { onProgress?.(e.data.progress); return; }
+    w.terminate(); onResult(e.data);
+  };
   // a worker that cannot load its script (a page's security rules) fails here: the caller falls back
   w.onerror = e => { e.preventDefault?.(); w.terminate(); onFailure(new Error(e.message || "the worker could not start")); };
   return { post: request => w.postMessage(request), terminate: () => w.terminate() };

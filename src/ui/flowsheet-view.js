@@ -28,7 +28,7 @@ import {
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
   energyOf, energyTargets, addEnergyFeed, connectEnergy, removeEnergy, setEnergyDuty, ENERGY_TARGETS, ENERGY_SOURCES,
   placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy, ratingPatch, designPatch,
-  REACTORS, SEPARATORS, REACTION_USERS, KINETIC, saveShared, hasShared, addReaction, setReaction, removeReaction, reactionsFile, importReactions, usedReactions,
+  REACTORS, SEPARATORS, REACTION_USERS, KINETIC, rangeModeNote, saveShared, hasShared, addReaction, setReaction, removeReaction, reactionsFile, importReactions, usedReactions,
 } from "./flowsheet-logic.js";
 import { checkReaction, reactionProperties } from "../reactions/reaction.js";
 import { HEAT_TRANSFER } from "../units/heat-exchange.js";
@@ -1954,7 +1954,8 @@ function drumSize(state, res, id) {
 
 export function resultsPanel({ state, f, sol, u, set }) {
   const res = sol.result, fs = state.flowsheet;
-  const out = [];
+  // which range mode the result was calculated in (decision 2026-11-14-06; the switch is in the Settings)
+  const out = sol.result || sol.error ? [h("p", { class: "fa-in-hint", "data-fk": "fs-range-mode" }, rangeModeNote(res, fs))] : [];
   if (f.sel?.kind === "block") {
     const b = fs.blocks.find(x => x.id === f.sel.id), r = res?.blocks?.[f.sel.id];
     out.push(h("div", { class: "fug-eyebrow" }, `${LABEL[b?.type] ?? ""} ${blockName(b) ?? f.sel.id}`));
