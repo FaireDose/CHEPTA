@@ -200,6 +200,13 @@ CHEPTA PHASE STARTED 2026-11-14 ~15:57 UTC (Lab's phase ended; the maintainer ap
    EA-10 (strictRanges refuses nothing: reproduced on main with Lab's u-htxr2-15C, ok with 6 extrapolations), EA-11
    (thermo.missingPairs rejected in a flowsheet), EA-14 (OUT_OF_TIME without loop progress), item 0b below. Later: M5
    condenser with vapour and liquid distillate (feature). Lab coordinator asks which release to pin when this ends.
+   17:05: PR #250 (design specs, 0022 steps 1-3, proposal 0023 drafted; worker A finished) and PR #251 (columns: EA-12,
+   EA-13, M1, EA-8, M4 fixed; EA-9 needs a two-liquid stage proposal; column 5 alone converges, the plant now stops on the
+   Broyden recycle plateau ~1.5e-3; worker B finished) both verified: CI green, merged together on main 1719 pass,
+   0 fail, 1 TODO; only added tests (project format 9 -> 10). Questions to the maintainer: #250's 3 + 0023's 5, #251's 4
+   (all recommended). Running: (C) Opus session_01FPbeWTq8DLsWizWuKvrS7i, branch claude/strict-mode-fixes: EA-10,
+   EA-11, EA-14, extrapolations in solve_column, the Settings switch (item 0b). Next: a recycle-solver task (the
+   plateau, Lab's 14), column reflux/distillate as design-spec inputs, proposal for a smooth two-liquid stage, then M5.
 0b. NEXT CHEPTA PHASE, first (the maintainer, agreed 2026-11-13), one small PR each or together:
    (1) a switch in the Settings drawer (the Units button): "Outside a record's range or a missing pair: continue with a
    warning / refuse" (strictRanges in the project's solver), and each result says which mode it ran in;
