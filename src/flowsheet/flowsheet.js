@@ -556,7 +556,7 @@ function solveCore(sys, fs) {
      * Every action is listed in the loop's `safeguards`. The numbers are this project's choices, set on a hard
      * two-tear test loop (test/flowsheet-safeguards.test.js), not a published standard.
      */
-    const REJECT = 10, STALL = 8, MAX_RETRIES = 4, SHRINK = 4, FD_STEP = 1e-5, LIMIT_RESTART = 1e-3;
+    const REJECT = 10, STALL = 8, MAX_RETRIES = 4, SHRINK = 4, FD_STEP = 1e-7, LIMIT_RESTART = 1e-3;
     let good = null;          // the last accepted pass: { x, g, after, err, pt }
     let limit = Infinity;     // the largest extrapolation beyond g, relative to the tears' size
     let retries = 0;          // consecutive failed or rejected trials since the last accepted pass
