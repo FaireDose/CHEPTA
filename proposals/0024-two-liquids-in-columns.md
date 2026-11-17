@@ -200,4 +200,5 @@ trial phase and its tm elsewhere.
 The validated case (heterogeneous azeotropic distillation with an entrainer and a decanter on the condenser) and the
 separate proposal for the condenser with a vapour and a liquid distillate (M5) follow the maintainer's follow-up on
 PR #251 (docs/decisions/2026-11-14-05-column-fixes-lab-062.md). These answers replace that follow-up's 5 % share and
-its default by volatility (the maintainer, 2026-11-14, in this pull request's session).
+its default by volatility (the maintainer, 2026-11-14, in this pull request's session; confirmed to the coordinator
+on 2026-11-17).
