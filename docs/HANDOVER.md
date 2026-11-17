@@ -238,6 +238,10 @@ CHEPTA PHASE STARTED 2026-11-14 ~15:57 UTC (Lab's phase ended; the maintainer ap
    point as replaced. Worker E stopped on 2026-11-14 at the weekly usage limit with 3 commits pushed (08a9c38: recycle
    safeguards, Lab plant inputs, a decision draft numbered -07, which collides with #253); resumed 2026-11-17 16:31,
    told to rename its decision file to 2026-11-14-08 and open the PR.
+   16:33: #253 (proposal 0024, docs only) checked, head 6579428: 5 % no longer current anywhere; ready for the
+   maintainer's merge. Worker D finished. Running: (E) recycle; (F) Opus session_01FPbeWY5iuoQWSbqwAKZFgG, branch
+   claude/build-0024-two-liquid-columns, started from #253's branch: builds 0024 (a), (b), (c); must report whether
+   Lab's column 11 converges with acid and whether (c) became the default (the condition for 0.6.3).
 0b. NEXT CHEPTA PHASE, first (the maintainer, agreed 2026-11-13), one small PR each or together:
    (1) a switch in the Settings drawer (the Units button): "Outside a record's range or a missing pair: continue with a
    warning / refuse" (strictRanges in the project's solver), and each result says which mode it ran in;
