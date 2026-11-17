@@ -36,6 +36,17 @@ import { pure } from "../../thermo/pure.js";
 const sum = v => v.reduce((a, b) => a + b, 0);
 /** Below this fraction (of the whole liquid) a second liquid is taken as absent at the solution. */
 const TRACE = 1e-9;
+/**
+ * The smooth stage's smoothing parameters (proposal 0024, (c)), largest first: the column is solved with the first,
+ * then with each next one from the last solution. The last is the final value, 1e-5: the largest at which every
+ * two-liquid column test gives its answer within its tolerance (1e-4 fails five tests of columns-vll.test.js; the
+ * maintainer, 2026-11-14, answer 5: never loosened to make a column converge). The first, 1e-3: from 1e-2, CHEPTA-Lab's
+ * column 11 at a product of 139 kmol/h did not converge (2026-11-17); the smoothing is then too wide near the plait
+ * points of ethyl acetate + water + ethanol, where the smoothed equations have no root.
+ */
+/** The two-liquid stage formulations: "split" (the yes/no tangent-plane test and split of each stage) and "smooth". */
+export const TWO_LIQUID_STAGES = Object.freeze(["split", "smooth"]);
+export const SMOOTH_EPS = Object.freeze([1e-3, 1e-4, 1e-5]);
 
 /**
  * The liquid-liquid split at T by Newton's method on ln K_i = ln gamma_i(x') - ln gamma_i(x'') (K_i = x''_i / x'_i,
@@ -89,6 +100,115 @@ export function newtonLL(sys, z, T, K0) {
   return { beta: r.beta, x1: r.x1, x2: r.x2, K: r.K };
 }
 
+// ---------------------------------------------------------------------------------------------------------------
+// The smooth two-liquid stage (proposal 0024, part (c); two_liquid_stage: "smooth")
+//
+// On stage j, for its whole liquid x at T, the stage-local unknowns W_i (a trial second liquid, w = W / sum W), beta
+// (the second liquid's fraction of the whole liquid) and s (the tangent-plane distance at a stationary point) solve
+//
+//   x' = (x - beta w) / (1 - beta)                                               (the first liquid)
+//   ln W_i + ln gamma_i(w, T) - ln x'_i - ln gamma_i(x', T) = 0                  (c equations)
+//   sum_i W_i + s - 1 = 0                                                        (Michelsen's tm = 1 - sum W)
+//   0 <= beta  perp  s >= 0, smoothed: beta + s - sqrt((beta - s)^2 + eps^2) = 0, i.e. 4 beta s = eps^2 (beta, s > 0)
+//
+// (Dabadghao et al., AIChE J. 2023, doi:10.1002/aic.18029, section 2.4, the smoothing of a complementarity; its
+// transfer to the second liquid with the tangent-plane distance as the slack is proposal 0024's.) The smoothed
+// complementarity is written as ln beta + ln s = ln(eps^2 / 4), its exact equivalent for beta + s > 0, which keeps a
+// small beta or s to full relative precision; the unknowns are ln W, ln beta, ln s. On a stage inside the two-liquid
+// region s ~ eps^2 / (4 beta) is small and (x', w) are the two liquids; outside it beta ~ eps^2 / (4 tm) is small and W
+// is the nontrivial stationary point of the tangent-plane test of x. The trivial solution w = x' needs s = 0, which
+// the smoothed equations exclude. These c + 2 equations are local to the stage, so they are solved for each (x, T) by
+// Newton's method here, and the engine's variables stay l, v, T (the stage-local unknowns eliminated, which keeps the
+// Jacobian block-tridiagonal); the stage's K-values and enthalpy are those of the yes/no adapter with this beta, x', w.
+
+/** The nontrivial stationary point of the tangent-plane distance of x at T with the smallest tm (Michelsen 1982; the
+ *  starts of liquidTangentPlane), or null where every start returns to x. */
+export function stationaryPoint(sys, x, T, present) {
+  const n = x.length, gz = sys.gammas(x, T);
+  const d = x.map((v, i) => (present[i] ? Math.log(v) + Math.log(gz[i]) : 0));
+  let best = null;
+  for (let k = 0; k < n; k++) if (present[k]) {
+    for (const big of [0.98, 0.999]) {
+      let W = x.map((v, i) => (!present[i] ? 0 : i === k ? big : (1 - big) * v)), ok = false;
+      for (let it = 0; it < 400; it++) {
+        const S = sum(W), w = W.map(v => v / S);
+        const g = sys.gammas(w.map(v => Math.max(v, 1e-300)), T);
+        const Wn = w.map((_, i) => (present[i] ? Math.exp(d[i] - Math.log(g[i])) : 0));
+        let ch = 0;
+        for (let i = 0; i < n; i++) if (present[i]) ch = Math.max(ch, Math.abs(Math.log(Wn[i] / Math.max(W[i], 1e-300))));
+        W = Wn;
+        if (!W.every(Number.isFinite)) break;
+        if (ch < 1e-11) { ok = true; break; }
+      }
+      if (!ok) continue;
+      const S = sum(W), w = W.map(v => v / S);
+      let dist = 0;
+      for (let i = 0; i < n; i++) if (present[i]) dist += Math.log(w[i] / x[i]) ** 2;
+      if (dist < 1e-4) continue;   // back to x: trivial
+      const tm = 1 - S;
+      if (!best || tm < best.tm) best = { W, tm };
+    }
+  }
+  return best;
+}
+
+/** Newton's method on the smooth stage equations from the start a0 = [ln W (present components), ln beta, ln s];
+ *  returns { a, beta, s, x1, x2 } or null. */
+export function smoothNewton(sys, x, T, eps, present, a0) {
+  const idx = present.map((p, i) => (p ? i : -1)).filter(i => i >= 0), c = idx.length, n = x.length;
+  const lnE = Math.log(eps * eps / 4);
+  const res = a => {
+    const W = new Array(n).fill(0);
+    idx.forEach((i, k) => { W[i] = Math.exp(a[k]); });
+    const beta = Math.exp(a[c]), s = Math.exp(a[c + 1]), S = sum(W);
+    if (!(beta < 1)) return null;
+    const w = W.map(v => v / S), xp = x.map((v, i) => (present[i] ? (v - beta * w[i]) / (1 - beta) : 0));
+    if (idx.some(i => !(xp[i] > 0))) return null;
+    const gw = sys.gammas(w, T), gx = sys.gammas(xp, T);
+    const F = idx.map((i, k) => a[k] + Math.log(gw[i]) - Math.log(xp[i]) - Math.log(gx[i]));
+    F.push(S + s - 1, a[c] + a[c + 1] - lnE);
+    return F.every(Number.isFinite) ? { F, beta, s, w, xp } : null;
+  };
+  const nrm = F => Math.max(...F.map(Math.abs));
+  let a = a0.slice(), r = res(a);
+  if (!r) return null;
+  for (let it = 0; it < 60; it++) {
+    const f0 = nrm(r.F);
+    if (f0 < 1e-13) break;
+    const m = c + 2, J = [];
+    for (let k = 0; k < m; k++) {
+      const h = 1e-7, ap = a.slice(), am = a.slice(); ap[k] += h; am[k] -= h;
+      const rp = res(ap), rm = res(am);
+      if (rp && rm) J.push(rp.F.map((v, e) => (v - rm.F[e]) / (2 * h)));
+      else if (rp) J.push(rp.F.map((v, e) => (v - r.F[e]) / h));
+      else if (rm) J.push(r.F.map((v, e) => (v - rm.F[e]) / h));
+      else return null;
+    }
+    const A = Array.from({ length: m }, (_, e) => [...J.map(col => col[e]), -r.F[e]]);
+    for (let q = 0; q < m; q++) {
+      let p = q;
+      for (let t = q + 1; t < m; t++) if (Math.abs(A[t][q]) > Math.abs(A[p][q])) p = t;
+      [A[q], A[p]] = [A[p], A[q]];
+      if (!(Math.abs(A[q][q]) > 0)) return null;
+      for (let t = q + 1; t < m; t++) { const f = A[t][q] / A[q][q]; for (let k = q; k <= m; k++) A[t][k] -= f * A[q][k]; }
+    }
+    const da = new Array(m);
+    for (let q = m - 1; q >= 0; q--) { let s = A[q][m]; for (let k = q + 1; k < m; k++) s -= A[q][k] * da[k]; da[q] = s / A[q][q]; }
+    let lam = Math.min(1, 2 / Math.max(...da.map(Math.abs))), next = null;
+    for (let h = 0; h < 40; h++, lam /= 2) {
+      const an = a.map((v, k) => v + lam * da[k]), rn = res(an);
+      if (rn && nrm(rn.F) < f0) { next = { an, rn }; break; }
+    }
+    if (!next) { if (f0 < 1e-11) break; return null; }
+    a = next.an; r = next.rn;
+  }
+  if (!(nrm(r.F) < 1e-11)) return null;
+  let dist = 0;
+  for (const i of idx) dist += Math.log(r.w[i] / r.xp[i]) ** 2;
+  if (dist < 1e-8) return null;   // the trivial solution (w = x')
+  return { a, beta: r.beta, s: r.s, x1: r.xp, x2: r.w };
+}
+
 /** The models that can hold two liquids on a stage. */
 export function canHoldTwoLiquids(sys) {
   return sys.kind !== "eos" && sys.model !== "WILSON" && typeof sys.gammas === "function"
@@ -99,7 +219,7 @@ export function canHoldTwoLiquids(sys) {
  * Wrap the engine's adapter `th` (cascadeThermo of an activity system `sys`) for two liquids on the stages. The
  * functions take an optional stage index j, used only to start each stage's liquid-liquid split from its last one.
  */
-export function twoLiquidThermo(th, sys) {
+export function twoLiquidThermo(th, sys, opts = {}) {
   if (sys.model === "WILSON") {
     throw fail("NOT_AVAILABLE", 'Column: two liquids on the stages (phases "VLL") cannot be looked for with Wilson: the Wilson equation cannot predict two liquids (proposal 0016). Choose NRTL, UNIQUAC or Modified UNIFAC 2.0 for the column (its own property method), or phases "VL".');
   }
@@ -109,12 +229,17 @@ export function twoLiquidThermo(th, sys) {
   const lastK = new Map();     // stage -> the K-values of its last split
   const memo = new Map();      // stage -> { x, T, s }: lnK and hL ask for the same split one after the other
   const same = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]);
+  // the smooth stage (proposal 0024, (c)): the smoothing parameter of the moment (the engine lowers it in steps)
+  const smooth = !!opts.smooth;
+  let eps = smooth ? (opts.eps ?? SMOOTH_EPS[0]) : null;
+  const lastS = new Map();     // stage -> { key, a }: the last solution of its smooth equations
+  const setEps = e => { eps = e; memo.clear(); };
 
   /** The liquids of a whole liquid x at T: null (one liquid) or { beta, x1, x2 } (beta: the fraction of x2). */
   function split(x, T, j = -1) {
     const m = memo.get(j);
     if (m && m.T === T && same(m.x, x)) return m.s;
-    const s = splitOf(x, T, j);
+    const s = smooth ? smoothOf(x, T, j) : splitOf(x, T, j);
     memo.set(j, { x: x.slice(), T, s });
     return s;
   }
@@ -145,6 +270,47 @@ export function twoLiquidThermo(th, sys) {
     }
     lastK.set(j, r.K);
     return { beta: r.beta, x1: r.x1, x2: r.x2 };
+  }
+
+  /** The smooth stage's beta, x', w (smoothed: beta > 0 on every stage that has a nontrivial stationary point; null
+   *  where the tangent-plane test of x has none, a stage far from any second liquid). */
+  function smoothOf(x, T, j) {
+    const present = x.map(v => v > 1e-300);
+    if (present.filter(Boolean).length < 2) return null;
+    const key = present.join();
+    const out = r => { lastS.set(j, { key, a: r.a }); return { beta: r.beta, x1: r.x1, x2: r.x2, s: r.s, eps }; };
+    // warm starts: this stage's last solution, then its neighbours'
+    for (const k of [j, j - 1, j + 1]) {
+      const w = lastS.get(k);
+      if (!w || w.key !== key) continue;
+      const r = smoothNewton(sys, x, T, eps, present, w.a);
+      if (r) return out(r);
+    }
+    const idx = present.map((p, i) => (p ? i : -1)).filter(i => i >= 0);
+    const lnE = Math.log(eps * eps / 4);
+    const st = liquidTangentPlane(sys, x, T);
+    const starts = [];
+    if (!st.stable && st.trial) {
+      // a liquid that splits: the start is its split (the yes/no adapter's), with s from the smoothing
+      const s = splitOf(x, T, j);
+      if (s) starts.push([...idx.map(i => Math.log(s.x2[i])), Math.log(s.beta), lnE - Math.log(s.beta)]);
+    }
+    const sp = stationaryPoint(sys, x, T, present);
+    if (sp) {
+      const tm = Math.max(sp.tm, eps / 2);
+      starts.push([...idx.map(i => Math.log(sp.W[i])), lnE - Math.log(tm), Math.log(tm)]);
+    }
+    for (const a0 of starts) {
+      const r = smoothNewton(sys, x, T, eps, present, a0);
+      if (r) return out(r);
+    }
+    // no root of the smoothed equations near this state (near a plait point, where the second liquid's stationary
+    // point exists only close to the binodal and the smoothing moves x' off it): the exact complementarity, the limit
+    // eps -> 0: one liquid (beta = 0) where the liquid is stable, else its split with s = 0 (the yes/no adapter's)
+    lastS.delete(j);
+    if (st.stable) return null;
+    const e = splitOf(x, T, j);
+    return e ? { beta: e.beta, x1: e.x1, x2: e.x2, s: 0, eps, exact: true } : null;
   }
 
   const lnK = (x, y, T, j) => {
@@ -200,7 +366,7 @@ export function twoLiquidThermo(th, sys) {
   /** The stage's liquids for the profile: [] for one liquid, else the light and the heavy one with their flows. */
   function liquids(x, T, L, j) {
     const s = split(x, T, j);
-    if (!s || s.beta < TRACE || s.beta > 1 - TRACE) return null;
+    if (!s || s.beta < TRACE || s.beta > 1 - TRACE || (s.eps && !(s.beta > s.s))) return null;
     const a = { x: s.x1, flow: (1 - s.beta) * L, rho: density(s.x1, T) }, b = { x: s.x2, flow: s.beta * L, rho: density(s.x2, T) };
     const byRho = a.rho != null && b.rho != null;
     const [light, heavy] = byRho ? (a.rho <= b.rho ? [a, b] : [b, a]) : [a, b];
@@ -211,7 +377,7 @@ export function twoLiquidThermo(th, sys) {
   /** A third liquid: each of a stage's two liquids tested for a split of its own. */
   function third(x, T, j) {
     const s = split(x, T, j);
-    if (!s) return null;
+    if (!s || s.beta < TRACE || s.beta > 1 - TRACE || (s.eps && !(s.beta > s.s))) return null;
     for (const v of [s.x1, s.x2]) {
       const st = liquidTangentPlane(sys, v, T);
       if (!st.stable) return { x: v, trial: st.trial };
@@ -219,5 +385,6 @@ export function twoLiquidThermo(th, sys) {
     return null;
   }
 
-  return { ...th, base: th, lnK, hL, bubbleT, split, liquids, third, density, twoLiquids: true };
+  return { ...th, base: th, lnK, hL, bubbleT, split, liquids, third, density, twoLiquids: true,
+    ...(smooth ? { smooth: true, setEps, eps: () => eps } : {}) };
 }

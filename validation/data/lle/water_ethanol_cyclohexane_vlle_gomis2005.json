@@ -1,0 +1,228 @@
+{
+ "_about": "Water (1) + ethanol (2) + cyclohexane (3): isobaric vapour-liquid-liquid equilibrium at 101.3 kPa, from Gomis et al. (2005). Liquid I is the organic (cyclohexane-rich) liquid, liquid II the aqueous one. Rows as the ThermoML record stores them: T in K; in liquid I (the record's liquid mixture 1) the mole fractions of ethanol and of water; in liquid II (liquid mixture 2) those of ethanol and of water; in the vapour those of ethanol and of water. Cyclohexane is 1 minus the other two in each phase (not stored in the record). `uncertainties` holds the record's stated uncertainty of each mole fraction, in the same order.",
+ "source": {
+  "citation": "V. Gomis, A. Font, R. Pedraza, M. D. Saquete, Isobaric vapor liquid and vapor liquid liquid equilibrium data for the system water + ethanol + cyclohexane, Fluid Phase Equilib. 235 (2005) 7-10",
+  "doi": "10.1016/j.fluid.2005.07.015",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2005.07.015.html",
+  "access": "Journal article is subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 1 (ethanol + cyclohexane + water; phases liquid mixture 1, gas, liquid mixture 2; 11 rows): v1 T; p1 ethanol and p4 water in liquid mixture 1; p2 ethanol and p5 water in liquid mixture 2; p3 ethanol and p6 water in the gas. The ternary azeotrope: the abstract on the ThermoML Archive page of the record. The table numbers in the article were not checked (article not open)."
+ },
+ "components": [
+  "water",
+  "ethanol",
+  "cyclohexane"
+ ],
+ "kind": "ternary-vlle",
+ "P_kPa": 101.3,
+ "columns": [
+  "T_K",
+  "x_2_I",
+  "x_1_I",
+  "x_2_II",
+  "x_1_II",
+  "y_2",
+  "y_1"
+ ],
+ "rows": [
+  [
+   338.2,
+   0.011,
+   0.002,
+   0.068,
+   0.931,
+   0.162,
+   0.258
+  ],
+  [
+   337.46,
+   0.018,
+   0.004,
+   0.099,
+   0.9,
+   0.193,
+   0.243
+  ],
+  [
+   336.55,
+   0.031,
+   0.004,
+   0.164,
+   0.835,
+   0.232,
+   0.225
+  ],
+  [
+   336.34,
+   0.035,
+   0.004,
+   0.193,
+   0.806,
+   0.24,
+   0.224
+  ],
+  [
+   335.97,
+   0.051,
+   0.005,
+   0.272,
+   0.724,
+   0.256,
+   0.208
+  ],
+  [
+   335.84,
+   0.076,
+   0.011,
+   0.363,
+   0.625,
+   0.272,
+   0.203
+  ],
+  [
+   335.7,
+   0.094,
+   0.013,
+   0.425,
+   0.557,
+   0.28,
+   0.193
+  ],
+  [
+   335.63,
+   0.105,
+   0.013,
+   0.463,
+   0.509,
+   0.286,
+   0.19
+  ],
+  [
+   335.55,
+   0.127,
+   0.017,
+   0.508,
+   0.45,
+   0.29,
+   0.189
+  ],
+  [
+   335.54,
+   0.151,
+   0.02,
+   0.555,
+   0.386,
+   0.298,
+   0.184
+  ],
+  [
+   335.54,
+   0.157,
+   0.02,
+   0.569,
+   0.357,
+   0.301,
+   0.181
+  ]
+ ],
+ "uncertainties": [
+  [
+   0.004,
+   0.002,
+   0.004,
+   0.01,
+   0.006,
+   0.012
+  ],
+  [
+   0.004,
+   0.004,
+   0.005,
+   0.01,
+   0.007,
+   0.012
+  ],
+  [
+   0.004,
+   0.004,
+   0.006,
+   0.011,
+   0.008,
+   0.012
+  ],
+  [
+   0.004,
+   0.004,
+   0.007,
+   0.011,
+   0.008,
+   0.012
+  ],
+  [
+   0.004,
+   0.005,
+   0.009,
+   0.013,
+   0.008,
+   0.012
+  ],
+  [
+   0.005,
+   0.01,
+   0.011,
+   0.015,
+   0.009,
+   0.012
+  ],
+  [
+   0.005,
+   0.01,
+   0.013,
+   0.016,
+   0.009,
+   0.011
+  ],
+  [
+   0.005,
+   0.01,
+   0.014,
+   0.017,
+   0.009,
+   0.011
+  ],
+  [
+   0.005,
+   0.01,
+   0.015,
+   0.016,
+   0.009,
+   0.011
+  ],
+  [
+   0.006,
+   0.01,
+   0.014,
+   0.015,
+   0.009,
+   0.011
+  ],
+  [
+   0.006,
+   0.01,
+   0.013,
+   0.014,
+   0.009,
+   0.011
+  ]
+ ],
+ "azeotrope": {
+  "kind": "ternary heterogeneous",
+  "T_K": 335.6,
+  "x": {
+   "water": 0.188,
+   "ethanol": 0.292,
+   "cyclohexane": 0.52
+  },
+  "from": "the abstract, as the ThermoML Archive page of the record prints it: \"a ternary heterogeneous azeotrope at 335.6K with a composition of 0.188, 0.292, 0.520 mole fraction of water, ethanol and cyclohexane, respectively\" (read 2026-11-17)"
+ },
+ "notes": "Read with validation/python/thermoml_read.py on the record fetched from https://trc.nist.gov/ThermoML/10.1016/j.fluid.2005.07.015.xml on 2026-11-17, values as stored. The record's set 2 (27 VLE points with one liquid) is not transcribed. Used by test/columns-heteroazeotropic.test.js, the validated case of proposal 0024 (ethanol dehydration with cyclohexane and a decanter). The NRTL pairs were not fitted to these ternary data. To be checked by a person against the record (AGENTS.md rule 4)."
+}

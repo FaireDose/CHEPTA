@@ -1835,6 +1835,20 @@
         "validation/data/two_liquids/lle/isobutanol_water.json"
       ]
     },
+    "gomis2005-water-ethanol-cyclohexane": {
+      "title": "Isobaric vapor liquid and vapor liquid liquid equilibrium data for the system water + ethanol + cyclohexane",
+      "authors": "V. Gomis, A. Font, R. Pedraza, M. D. Saquete",
+      "year": 2005,
+      "published": "Fluid Phase Equilib. 235 (2005) 7-10",
+      "kind": "thermoml",
+      "doi": "10.1016/j.fluid.2005.07.015",
+      "url": "https://trc.nist.gov/ThermoML/10.1016/j.fluid.2005.07.015.html",
+      "access": "Journal article is subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license)",
+      "via": "the NIST TRC ThermoML Archive",
+      "files": [
+        "validation/data/lle/water_ethanol_cyclohexane_vlle_gomis2005.json"
+      ]
+    },
     "gomis2013-1-butanol-water": {
       "title": "Liquid Liquid, Vapor Liquid, and Vapor Liquid Liquid Equilibrium Data for the Water n-Butanol Cyclohexane System at Atmospheric Pressure: Experimental Determination and Correlation",
       "authors": "V. Gomis, A. Font, M. D. Saquete, J. Garcia-Cano",

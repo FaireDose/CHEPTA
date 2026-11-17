@@ -1,0 +1,80 @@
+{
+  "chepta_column_case": 1,
+  "thermo": {
+    "kind": "chepta",
+    "model": "UNIQUAC",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "ethanol",
+    "water",
+    "ethyl-acetate"
+  ],
+  "pressure_kPa": 100.0,
+  "id": "F5-ethyl-acetate-product-column-lab",
+  "title": "Ethanol + water + ethyl acetate, UNIQUAC, 35 stages: CHEPTA-Lab's product column 11 without acetic acid",
+  "purpose": "Proposal 0024, test 3: CHEPTA-Lab's column 11 of the ethyl acetate plant (public repository FaireDose/CHEPTA-Lab, cases/ethyl-acetate-piotrowski-2021, input results-chepta-0.6.2/iso-scds11-acid0-bottoms141.5.request.json: the paper's feed 13 without its 0.01 mass % of acetic acid, R/D 3, product 141.5 kmol/h). Lab's input gives the feed in kg/h (ethanol 508.0404, water 1283.758, ethyl acetate 25519.4702) at 344.15 K and 100 kPa; flow_mol_s and z here are those kg/h with CHEPTA's molar masses (46.06844, 18.01528, 88.10512 g/mol). The feed is part vapour at its temperature. Two liquids on stages 1 to 30 (the ethyl acetate-water split above the feed and below it). The ethyl acetate + water + ethanol system and UNIQUAC are Lab's choice. The column with the acid (dimerizing vapour) is tested in test/columns-lab-requests.test.js; the reference has no chemical theory, so it checks this column without the acid.",
+  "method_choice": "CHEPTA-Lab's: UNIQUAC with the default sets, ideal-gas vapour (docs/METHOD_SELECTION.md rules 3 and 7: polar, below 10 bar, two liquids possible: an activity model).",
+  "phases": "VLL",
+  "column": {
+    "configuration": "distillation",
+    "stages": 35,
+    "condenser": "total",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 15,
+      "flow_mol_s": 103.31536897086302,
+      "z": [
+        0.029650178439091162,
+        0.1915908281816031,
+        0.7787589933793058
+      ],
+      "T_K": 344.15
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 3.0
+    },
+    {
+      "kind": "bottoms_flow_mol_s",
+      "value": 39.30555555555556
+    }
+  ],
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "two liquids on the stages the reference names (fixture columns-vll-three-phase.json)"
+    ],
+    "branch": "The engine's solution (continuation in the relative volatilities); the reference solves its own equations from the engine's profile, perturbed."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    },
+    "stability": {
+      "tpd_stable_above": -1e-09,
+      "why": "one-liquid stages: no trial liquid on a grid has a tangent-plane distance below -1e-9"
+    },
+    "agreement_with_data": {
+      "note": "The three NRTL sets are fitted to vapour-liquid data; their liquid-liquid split is W1's work (joint fits, M2b) and not a test of the column."
+    }
+  }
+}

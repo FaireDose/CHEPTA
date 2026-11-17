@@ -1,0 +1,75 @@
+{
+  "capability": "solve_flowsheet",
+  "input": {
+    "flowsheet": {
+      "components": [
+        "ethanol",
+        "water",
+        "ethyl acetate",
+        "acetic acid"
+      ],
+      "thermo": {
+        "model": "UNIQUAC",
+        "vapour": "ideal"
+      },
+      "blocks": [
+        {
+          "id": "SCDS11",
+          "type": "column",
+          "spec": {
+            "mode": "rigorous",
+            "stages": 35,
+            "feed_stage": 15,
+            "condenser": "total",
+            "P_kPa": 100.0,
+            "reflux_ratio": 3,
+            "bottoms_kmol_h": 141.5,
+            "phases": "VLL"
+          }
+        },
+        {
+          "id": "F13",
+          "type": "feed",
+          "spec": {
+            "flow_kg_h": {
+              "ethanol": 508.04040000000003,
+              "water": 1283.758,
+              "ethyl acetate": 25519.4702,
+              "acetic acid": 1.3657
+            },
+            "P_kPa": 100.0,
+            "T_K": 344.15
+          }
+        },
+        {
+          "id": "P14",
+          "type": "product"
+        },
+        {
+          "id": "P16",
+          "type": "product"
+        }
+      ],
+      "streams": [
+        {
+          "id": "S13",
+          "from": "F13.out",
+          "to": "SCDS11.in"
+        },
+        {
+          "id": "S14",
+          "from": "SCDS11.distillate",
+          "to": "P14.in"
+        },
+        {
+          "id": "S16",
+          "from": "SCDS11.bottoms",
+          "to": "P16.in"
+        }
+      ],
+      "solver": {
+        "maxIterations": 200
+      }
+    }
+  }
+}

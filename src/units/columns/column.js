@@ -45,6 +45,15 @@
  *                                                         // slow attempts, then a last attempt to 100)
  *     phases: "VL" | "VLL",                               // optional (M2b): "VLL" looks for two liquids on the stages
  *                                                         // (activity models only), off by default
+ *     two_liquid_stage: "split" | "smooth",               // (proposal 0024, with "VLL") the two-liquid stage: the
+ *                                                         // tangent-plane test and split of each stage (default), or
+ *                                                         // the smooth stage (./two-liquids.js)
+ *     feed_second_liquid: "stages" | "top" | "bottom",    // (proposal 0024) a feed's second liquid: onto the stages
+ *                                                         // with the feed (default), or around them into the
+ *                                                         // distillate (with a decanter: into it) or the bottoms; a
+ *                                                         // second liquid above feed_second_liquid_limit (default 0.01,
+ *                                                         // a share of the column's feed in mol) gets the warning
+ *                                                         // FEED_TWO_LIQUIDS and cannot go around
  *     condenser: "decanter", reflux_liquid: "light",      // (M2b, with "VLL") the condensate splits; one liquid (light
  *                                                         // or heavy, by density) is the reflux, the other the
  *                                                         // distillate; then one specification, not the reflux ratio
@@ -107,6 +116,7 @@ import { anyBubbleT } from "../../equilibrium/bubble-any.js";
 import { refuseNotUsableLiquid, kijText } from "../../thermo/eos/system.js";
 import { registerUnit } from "../units.js";
 import { solveCascade } from "./engine.js";
+import { TWO_LIQUID_STAGES } from "./two-liquids.js";
 import { fug, boilup, wholeStages, VOLATILITY_TOLERANCE } from "./shortcut.js";
 import { hydraulicsOptions, columnHydraulics } from "./hydraulics.js";
 
@@ -125,11 +135,18 @@ export const COLUMN_MODES = Object.freeze([
 const SPEC_KEYS = ["mode", "light_key", "heavy_key", "recovery_light_key_in_distillate", "recovery_heavy_key_in_bottoms", "reflux_ratio",
   "reflux_over_minimum", "condenser", "P_kPa", "distillate_purity", "bottoms_purity",
   "stages", "feed_stage", "max_iterations", "boilup_ratio", "distillate_kmol_h", "bottoms_kmol_h", "condenser_duty_kW", "reboiler_duty_kW", "sizing",
-  "phases", "reflux_liquid", "method", "configuration", "reboiler", "stage_duties_kW", "specifications", "side_draws"];
+  "phases", "reflux_liquid", "method", "configuration", "reboiler", "stage_duties_kW", "specifications", "side_draws",
+  "two_liquid_stage", "feed_second_liquid", "feed_second_liquid_limit"];
 /** The specifications of a reboiled stripper (one of them). */
 const STRIPPER_SPECS = ["boilup_ratio", "bottoms_kmol_h", "reboiler_duty_kW", "distillate_kmol_h"];
 /** The keys of a column's own property method (milestone M2b), as a flowsheet's thermo: model, vapour, sets, prefer. */
 const METHOD_KEYS = ["model", "vapour", "sets", "prefer", "mixing"];
+/** Where a column feed's second liquid goes (proposal 0024, (b)): onto the stages with the rest of the feed (today's
+ *  behaviour), or around them into the distillate or the bottoms (the user's choice, no default by volatility). */
+export const FEED_SECOND_LIQUID = Object.freeze(["stages", "top", "bottom"]);
+/** The share of the column's feed (mol) above which a feed's second liquid gets a warning recommending a decanter, and
+ *  cannot bypass the stages (the maintainer, 2026-11-14: 1 mol %; this project's choice, the user can change it). */
+export const FEED_SECOND_LIQUID_LIMIT = 0.01;
 /** The rigorous mode's specifications (two of them), and the engine's names for them. */
 const RIGOROUS_SPECS = { reflux_ratio: "reflux_ratio", boilup_ratio: "boilup_ratio", distillate_kmol_h: "distillate_rate",
   bottoms_kmol_h: "bottoms_rate", condenser_duty_kW: "condenser_duty", reboiler_duty_kW: "reboiler_duty" };
@@ -252,6 +269,26 @@ function checkSpec(spec, { sys }) {
   return out;
 }
 
+/**
+ * The keys of proposal 0024: two_liquid_stage ("split", the default, or "smooth": the stage formulation with
+ * phases "VLL", src/units/columns/two-liquids.js), feed_second_liquid ("stages", the default, "top" or "bottom") and
+ * feed_second_liquid_limit (the share of the column's feed, in mol, above which a feed's second liquid gets a warning
+ * and cannot bypass the stages; default FEED_SECOND_LIQUID_LIMIT).
+ */
+function twoLiquidOptions(spec, phases) {
+  const out = {};
+  if (has(spec, "two_liquid_stage")) {
+    if (!TWO_LIQUID_STAGES.includes(spec.two_liquid_stage)) throw fail("BAD_INPUT", `Column: two_liquid_stage must be ${TWO_LIQUID_STAGES.map(v => `"${v}"`).join(" or ")} (got ${JSON.stringify(spec.two_liquid_stage)}).`);
+    if (phases !== "VLL") throw fail("BAD_INPUT", "Column: two_liquid_stage is the formulation of a stage with two liquids; give it with phases \"VLL\".");
+    out.twoLiquidStage = spec.two_liquid_stage;
+  }
+  out.feedSecondLiquid = spec.feed_second_liquid ?? "stages";
+  if (!FEED_SECOND_LIQUID.includes(out.feedSecondLiquid)) throw fail("BAD_INPUT", `Column: feed_second_liquid must be ${FEED_SECOND_LIQUID.map(v => `"${v}"`).join(", ")} (got ${JSON.stringify(spec.feed_second_liquid)}).`);
+  out.feedSecondLiquidLimit = has(spec, "feed_second_liquid_limit") ? Number(spec.feed_second_liquid_limit) : FEED_SECOND_LIQUID_LIMIT;
+  if (!(out.feedSecondLiquidLimit >= 0 && out.feedSecondLiquidLimit < 1)) throw fail("BAD_INPUT", `Column: feed_second_liquid_limit is a share of the column's feed in mol, from 0 to below 1 (default ${FEED_SECOND_LIQUID_LIMIT}; got ${JSON.stringify(spec.feed_second_liquid_limit)}).`);
+  return out;
+}
+
 function checkRigorous(spec, sys) {
   const N = Number(spec.stages);
   if (!(Number.isInteger(N) && N >= 3)) throw fail("BAD_INPUT", `Column: stages must be a whole number of 3 or more, the condenser and the reboiler counted (got ${JSON.stringify(spec.stages)}).`);
@@ -287,7 +324,8 @@ function checkRigorous(spec, sys) {
     if (!(Number.isFinite(v) && v > 0)) throw fail("BAD_INPUT", `Column: ${k} must be a positive number (got ${JSON.stringify(spec[k])}).`);
     return { key: k, kind: RIGOROUS_SPECS[k], value: k.endsWith("_kmol_h") ? v * KMOL_H : k.endsWith("_kW") ? v * 1000 : v };
   });
-  const out = { mode: "rigorous", N, feedStages, condenser, phases, refluxLiquid, specs, design, draws, method: has(spec, "method") ? checkMethod(spec.method) : null };
+  const out = { mode: "rigorous", N, feedStages, condenser, phases, refluxLiquid, specs, design, draws, method: has(spec, "method") ? checkMethod(spec.method) : null,
+    ...twoLiquidOptions(spec, phases) };
   if (has(spec, "sizing")) out.sizing = hydraulicsOptions(spec.sizing);
   if (has(spec, "max_iterations")) {
     out.maxIterations = Number(spec.max_iterations);
@@ -352,7 +390,7 @@ function checkSeparator(spec, configuration, sys) {
     });
   }
   const out = { mode: "rigorous", configuration, N, feedStages, condenser: "none", reboiler, phases, specs, duties, design, draws: [],
-    method: has(spec, "method") ? checkMethod(spec.method) : null };
+    method: has(spec, "method") ? checkMethod(spec.method) : null, ...twoLiquidOptions(spec, phases) };
   if (has(spec, "sizing")) out.sizing = hydraulicsOptions(spec.sizing);
   if (has(spec, "max_iterations")) {
     out.maxIterations = Number(spec.max_iterations);
@@ -624,6 +662,59 @@ function byEnthalpy(sys, flows, P, product) {
   }
 }
 
+/**
+ * A column feed that holds two liquids (proposal 0024; the maintainer, 2026-11-14). Each feed is flashed at its own T
+ * and P in the column's method (the stream's flash: the flash drum's three-phase flash); its second liquid is its
+ * smaller liquid. (a) Where it is more than s.feedSecondLiquidLimit (1 mol %) of the column's feed: a warning that
+ * recommends a decanter before the column; the column is still calculated. (b) feed_second_liquid "top" or "bottom":
+ * the second liquids of the feeds bypass the stages and join the distillate (with a decanter: the decanter's feed) or
+ * the bottoms; refused where they are more than the limit. Returns { warnings, notes, bypass: [{ feed, flows, H_kW }],
+ * total, state }.
+ */
+function feedSecondLiquid(csys, colFeeds, s, separator) {
+  const out = { warnings: [], notes: [], bypass: [], total: null, state: null };
+  const Ftot = sum(colFeeds.map(f => f.F_kmol_h ?? sum(f.flows))), Mtot = sum(colFeeds.map(f => f.mass_kg_h ?? 0));
+  const MW = csys.MW ?? null;
+  const limit = s.feedSecondLiquidLimit ?? FEED_SECOND_LIQUID_LIMIT, pct = v => `${fmt(v * 100)} %`;
+  const found = [];
+  colFeeds.forEach((f, k) => {
+    const liq = (f.phases ?? []).filter(p => p.type === "liquid" && p.fraction > 0);
+    if (liq.length < 2) return;
+    const second = liq.reduce((a, b) => (b.fraction < a.fraction ? b : a));
+    const F2 = f.F_kmol_h * second.fraction, flows = second.composition.map(v => v * F2);
+    const mass = MW ? sum(flows.map((v, i) => v * MW[i])) : null;
+    const rich = csys.names[second.composition.indexOf(Math.max(...second.composition))];
+    found.push({ feed: k, stage: s.feedStages?.[k], flows, F_kmol_h: F2, mass_kg_h: mass, H_kW: second.h_J_mol * F2 / 3600, rich,
+      mol_share: F2 / Ftot, mass_share: mass != null && Mtot > 0 ? mass / Mtot : null });
+  });
+  if (!found.length) {
+    if (s.feedSecondLiquid && s.feedSecondLiquid !== "stages") out.notes.push(`feed_second_liquid "${s.feedSecondLiquid}": no feed holds a second liquid at its own temperature and pressure, so nothing bypasses the stages.`);
+    return out;
+  }
+  const where = q => `${colFeeds.length > 1 ? `feed ${q.feed + 1} (stage ${q.stage})` : `the feed (stage ${q.stage})`}`;
+  const shares = q => `${q.rich}-rich, ${pct(q.mol_share)} of the column's feed in mol${q.mass_share != null ? `, ${pct(q.mass_share)} by mass` : ""}`;
+  for (const q of found.filter(q => q.mol_share > limit)) {
+    out.warnings.push({ code: "FEED_TWO_LIQUIDS", feed: q.feed + 1, mol_share: q.mol_share, ...(q.mass_share != null ? { mass_share: q.mass_share } : {}),
+      message: `${where(q).replace(/^t/, "T")} holds two liquids at its own temperature and pressure (the second, ${shares(q)}). A column is normally fed one liquid: put a decanter before the column.${s.phases === "VL" ? " With phases \"VL\" the stages hold one liquid (the one-liquid stage model)." : ""}`,
+      remedy: "Separate the two liquids first (a Flash drum as a decanter, or the Decanter), and feed the column the liquid it should distil; or turn on two liquids on the stages (phases \"VLL\")." });
+  }
+  const mode = s.feedSecondLiquid ?? "stages";
+  const total = sum(found.map(q => q.mol_share));
+  out.state = { mode, limit_mol_share: limit, feeds: found.map(q => ({ feed: q.feed + 1, stage: q.stage, rich_in: q.rich, F_kmol_h: q.F_kmol_h, mol_share: q.mol_share, ...(q.mass_share != null ? { mass_share: q.mass_share } : {}) })) };
+  if (mode === "stages") return out;
+  if (total > limit) {
+    throw fail("BAD_INPUT", `Column: too much second liquid for a bypass: the feed's second liquid is ${pct(total)} of the column's feed in mol (${found.map(q => `${where(q)}: ${shares(q)}`).join("; ")}), above the ${pct(limit)} that may go around the stages to the ${mode === "top" ? "top" : "bottom"}. Put a decanter before the column, or use feed_second_liquid: "stages" (the whole feed onto its stage). feed_second_liquid "top" and "bottom" are for a small second liquid only.`);
+  }
+  if (separator) throw fail("NOT_AVAILABLE", `Column: feed_second_liquid "${mode}" is built for a distillation column (a condenser and a reboiler); an absorber or a stripper takes its feeds onto the stages ("stages").`);
+  out.bypass = found.map(q => ({ feed: q.feed, flows: q.flows, H_kW: q.H_kW }));
+  out.total = { flows: csys.names.map((_, i) => sum(found.map(q => q.flows[i]))), H_kW: sum(found.map(q => q.H_kW)) };
+  const toDec = mode === "top" && s.condenser === "decanter";
+  out.state.bypassed_kmol_h = sum(found.map(q => q.F_kmol_h));
+  out.state.into = mode === "top" ? (toDec ? "decanter" : "distillate") : "bottoms";
+  out.notes.push(`The feed's second liquid (${found.map(q => `${where(q)}: ${fmt(q.F_kmol_h)} kmol/h, ${shares(q)}`).join("; ")}) bypasses the stages (feed_second_liquid "${mode}", the user's choice): the stages see the rest of the feed, and the second liquid ${toDec ? "joins the decanter's feed, where it is split with the condensate" : `is mixed into ${mode === "top" ? "the distillate" : "the bottoms"} at the product's pressure (a P-H flash of the mixture)`}. The duties ${toDec ? "include bringing it to the decanter's temperature, not heating or vaporizing it on the stages" : "do not include heating or vaporizing it"}.`);
+  return out;
+}
+
 function solveRigorous(sys, feeds, s, sideOutlets = 0) {
   const nDraws = (s.draws ?? []).length;
   if (nDraws !== sideOutlets) {
@@ -645,22 +736,35 @@ function solveRigorous(sys, feeds, s, sideOutlets = 0) {
   // the column's own method, with the P-H boundary at every stream that enters and leaves it
   const own = s.method ? methodSystem(sys, s.method) : null;
   const csys = own ?? sys;
-  const boundary = [];
+  const boundary = [], colFeeds = feeds.slice();
   if (own) {
     feeds.forEach((f, k) => {
       const name = feeds.length > 1 ? `feed ${k + 1}` : "the feed";
       const c = crossBoundary(own, f.flows, f.P_kPa, f.H_kW, name, `the column's method (${methodName(s.method)})`);
+      colFeeds[k] = c;
       boundary.push({ stream: name, into: "column", P_kPa: f.P_kPa, H_kW: f.H_kW, T_before_K: f.T_K, T_after_K: c.T_K, dT_K: c.T_K - f.T_K, VF_before: f.VF, VF_after: c.VF });
     });
   }
   const what = s.configuration === "absorber" ? "the absorber" : "the stripper";
   const methodWarnings = separator ? gasSolubilityCheck(csys, Math.max(...feeds.map(f => f.T_K)), `${what}'s feeds`) : [];
+  // proposal 0024, (a) and (b): a feed that holds two liquids (its own flash, in the column's method), and a small second
+  // liquid sent around the stages to the top or the bottom
+  const fsl = feedSecondLiquid(csys, colFeeds, s, separator);
+  methodWarnings.push(...fsl.warnings);
+  const engineFeeds = feeds.map((f, k) => {
+    const b = fsl.bypass.find(q => q.feed === k);
+    return b ? { ...f, flows: f.flows.map((v, i) => Math.max(v - b.flows[i], 0)), H_kW: f.H_kW - b.H_kW } : f;
+  });
+  const toDecanter = fsl.bypass.length && s.feedSecondLiquid === "top" && s.condenser === "decanter";
   const r = solveCascade({ sys: csys, P_kPa: P, stages: s.N, ends: { condenser: s.condenser, reflux_liquid: s.refluxLiquid, ...(separator ? { reboiler: s.reboiler } : {}) }, phases: s.phases,
-    feeds: feeds.map((f, k) => ({ stage: s.feedStages[k], flows: f.flows.map(v => v * KMOL_H), H_W: f.H_kW * 1000,
+    feeds: engineFeeds.map((f, k) => ({ stage: s.feedStages[k], flows: f.flows.map(v => v * KMOL_H), H_W: f.H_kW * 1000,
       // an absorber's start takes each feed's liquid fraction and temperature
       ...(separator ? { q: 1 - (Number.isFinite(f.VF) ? f.VF : 0), T_K: f.T_K } : {}) })),
     ...(separator ? { duties: s.duties } : {}), ...(nDraws ? { draws: s.draws } : {}),
-    specs: [...s.specs.map(({ kind, value }) => ({ kind, value })), ...(s.design ?? []).map(d => d.engine)], maxIterations: s.maxIterations });
+    specs: [...s.specs.map(({ kind, value }) => ({ kind, value })), ...(s.design ?? []).map(d => d.engine)], maxIterations: s.maxIterations,
+    ...(s.twoLiquidStage ? { twoLiquidStage: s.twoLiquidStage } : {}),
+    // a bypassed second liquid for the top of a column with a decanter: the decanter's feed (split there)
+    ...(toDecanter ? { condenserFeed: { flows: fsl.total.flows.map(v => v * KMOL_H), H_W: fsl.total.H_kW * 1000 } } : {}) });
   if (separator) gasSolubilityCheck(csys, Math.max(...r.stages.map(st => st.T_K)), `${what}'s stages`);   // warnings given once, above
   const total = s.condenser === "total" || s.condenser === "decanter", N = s.N;
   const kmol = v => v / KMOL_H;
@@ -693,6 +797,17 @@ function solveRigorous(sys, feeds, s, sideOutlets = 0) {
       bottoms = stream(sys, { flow_kmol_h: b, P_kPa: P, VF: 0 });
     }
   }
+  // the bypassed second liquid joins its product (mixed at the product's pressure: a P-H flash of the mixture)
+  if (fsl.bypass.length && !toDecanter) {
+    const into = s.feedSecondLiquid === "top" ? distillate : bottoms, name = s.feedSecondLiquid === "top" ? "the distillate" : "the bottoms";
+    let mixed;
+    try {
+      mixed = stream(sys, { flow_kmol_h: into.flows.map((v, i) => v + fsl.total.flows[i]), P_kPa: P, H_kW: into.H_kW + fsl.total.H_kW });
+    } catch (e) {
+      throw fail(e.code ?? "NO_CONVERGENCE", `Column: the bypassed second liquid could not be mixed into ${name} (a P-H flash of the mixture at ${fmt(P)} kPa): ${e.message}`);
+    }
+    if (s.feedSecondLiquid === "top") distillate = mixed; else bottoms = mixed;
+  }
   const Qc = r.duties.condenser_W / 1000, Qr = r.duties.reboiler_W / 1000;
   const byId = arr => Object.fromEntries(sys.ids.map((id, i) => [id, arr[i]]));
   const D = kmol(sum(r.products.distillate.flows)), B = kmol(sum(r.products.bottoms.flows));
@@ -720,6 +835,8 @@ function solveRigorous(sys, feeds, s, sideOutlets = 0) {
     ...(nDraws ? [`Side draw${nDraws > 1 ? "s" : ""}: ${r.products.draws.map((q, k) => `${k + 1}: ${fmt(kmol(q.rate))} kmol/h of the ${q.phase} of stage ${q.stage} (${fmt(q.T_K)} K)`).join("; ")}. A side draw has the composition of its stage's ${nDraws > 1 ? "liquid or vapour" : r.products.draws[0].phase}${s.phases === "VLL" ? " (both liquids of a stage with two, in their proportion)" : ""}; the liquid and vapour flows of the profile are those that go on to the next stage.`] : []),
     ...(r.specifications ? [`Design specifications: ${designRows.map(q => `${q.label}: asked ${fmt6(q.asked)}, reached ${fmt6(q.achieved)} ${q.unit}`).join("; ")}. Found for them: ${Object.entries(adjusted).map(([k, v]) => `${k} ${fmt6(v)}`).join(", ")}, by an outer loop around the stage solver (${r.solver.specifications.column_solves} columns solved); each specification is met within a scaled tolerance of ${r.solver.specifications.tolerance} (state.design_specifications).`] : []),
     ...dimerNote(csys, "on every stage (the stage's apparent mole fractions count a dimer as two molecules)"),
+    ...fsl.notes,
+    ...(r.solver.two_liquid_stage ? [`The stages' two liquids by the smooth two-liquid stage (two_liquid_stage "smooth"; proposal 0024): a smoothed complementarity between the second liquid's fraction and the tangent-plane distance on every stage, solved with the smoothing parameter lowered in steps to ${r.solver.two_liquid_stage.eps} (${r.solver.two_liquid_stage.steps.map(q => `${q.eps}: ${q.iterations} iterations`).join(", ")}); checked after convergence: ${r.solver.two_liquid_stage.check?.stages_two_liquids ?? 0} stages with two liquids, ${r.solver.two_liquid_stage.check?.stages_one_liquid ?? 0} with one, each of them stable as one liquid (tangent-plane test).`] : []),
     ...(own ? [`The column uses its own property method, ${methodName(s.method)}, while the flowsheet uses ${sys.info?.method ?? sys.model}. At each stream that enters or leaves the column the component flows, the pressure and the enthalpy flow are kept and the temperature is found by a P-H flash in the receiving method (state.boundary): ${boundary.map(q => `${q.stream} ${q.dT_K >= 0 ? "+" : ""}${fmt(q.dT_K)} K`).join(", ")}.`] : []),
     ...r.notes,
   ];
@@ -733,6 +850,7 @@ function solveRigorous(sys, feeds, s, sideOutlets = 0) {
     ...m4State,
     top_gas_kmol_h: D, bottom_liquid_kmol_h: B, ...(s.reboiler === "partial" ? { boilup_ratio: boil, reboiler_kW: Qr } : {}),
     T_top_K: r.stages[0].T_K, T_bottom_K: r.stages[N - 1].T_K,
+    ...(fsl.state ? { feed_second_liquid: fsl.state } : {}),
     ...(own ? { method: { ...s.method }, boundary } : {}),
     converged: r.converged, iterations: r.iterations, residuals: r.residuals, tolerances: r.tolerances, solver: r.solver,
   } : {
@@ -743,6 +861,7 @@ function solveRigorous(sys, feeds, s, sideOutlets = 0) {
     reflux_ratio: R, boilup_ratio: boil, D_kmol_h: D, B_kmol_h: B, condenser_kW: Qc, reboiler_kW: Qr,
     T_distillate_K: r.stages[0].T_K, T_bottoms_K: r.stages[N - 1].T_K,
     ...(s.phases === "VLL" ? { two_liquid_stages: twoLiquidStages } : {}),
+    ...(fsl.state ? { feed_second_liquid: fsl.state } : {}),
     ...(own ? { method: { ...s.method }, boundary } : {}),
     converged: r.converged, iterations: r.iterations, residuals: r.residuals, tolerances: r.tolerances, solver: r.solver,
   };

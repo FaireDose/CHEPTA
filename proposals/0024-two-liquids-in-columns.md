@@ -1,6 +1,8 @@
 # 0024: Two liquids in columns: a decanter warning, a bypass for a small second liquid, and a smooth two-liquid stage
 
-- **Status:** Draft; the open questions answered by the maintainer on 2026-11-14 (section "Decided")
+- **Status:** Draft; the open questions answered by the maintainer on 2026-11-14 (section "Decided"). Steps 1-3 built
+  on 2026-11-17 (docs/decisions/2026-11-17-01-two-liquid-columns.md); step 4 not taken: the smooth stage is not the
+  default, because Lab's column 5 does not converge with it
 - **Author(s):** a coding agent, for the maintainer
 - **Discussion:** the pull request of this file; the maintainer's question of 2026-11-14 in
   [docs/decisions/2026-11-14-05-column-fixes-lab-062.md](../docs/decisions/2026-11-14-05-column-fixes-lab-062.md)
