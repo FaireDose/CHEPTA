@@ -316,3 +316,11 @@ possible with PR + MHV1 once item 3 is done).
 (column 11's bottoms fixed at 141.5 kmol/h takes 0.42 kmol/h more ester than is formed). #253 and #254 conflict in
 docs/DECISIONS.md: merge #253 first, then ask E (same task, allowed) to rebase #254 onto main. Five questions for the
 maintainer at the end of 2026-11-14-08; recommendations given to the user.
+
+17:50: Worker F finished: #255 (build of 0024; contains #253). Checked locally: 1749 tests, 1748 pass, 0 fail, 1 todo;
+#255 + #254 together (DECISIONS.md conflict resolved by hand for the check): 1759, 1755 pass, 0 fail, 3 skipped;
+no existing test or data line removed; CI green. Lab's column 11 with acid converges (all 7 inputs; liquid-weighted
+continuation as the last attempt). "smooth" stays opt-in (Lab's column 5 fails with it as default). Not done: a
+high-reflux column reaching the heteroazeotrope; the three-phase flash fails near 335.5 K. Merge order: #253, #255,
+then E rebases #254. 0.6.3: the user's rule was "after we solve completely the liquid liquid issue": asked the user.
+The maintainer must check the Gomis 2005 file against ThermoML set 1 (11 rows).
