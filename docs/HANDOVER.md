@@ -232,6 +232,12 @@ CHEPTA PHASE STARTED 2026-11-14 ~15:57 UTC (Lab's phase ended; the maintainer ap
    default / entrainer case; (E) Opus session_01FPbeWVE7raM96jEeGEL1Po, branch claude/recycle-plateau (Lab's 14).
    Queue after: build 0024; M5 condenser (proposal + build); column reflux/distillate as design-spec inputs; 0023
    build with examples; 0022 step 4 (workbench form).
+   2026-11-17: the maintainer confirmed to the coordinator "I chose A" for proposal 0024: 1 mol % of the column's feed
+   (warning, column still calculated; the bypass refused above it), top or bottom the user's choice, no default by
+   volatility; this replaces #251's follow-up (5 %, default by volatility). D told to record it in #253 and mark -05's
+   point as replaced. Worker E stopped on 2026-11-14 at the weekly usage limit with 3 commits pushed (08a9c38: recycle
+   safeguards, Lab plant inputs, a decision draft numbered -07, which collides with #253); resumed 2026-11-17 16:31,
+   told to rename its decision file to 2026-11-14-08 and open the PR.
 0b. NEXT CHEPTA PHASE, first (the maintainer, agreed 2026-11-13), one small PR each or together:
    (1) a switch in the Settings drawer (the Units button): "Outside a record's range or a missing pair: continue with a
    warning / refuse" (strictRanges in the project's solver), and each result says which mode it ran in;
