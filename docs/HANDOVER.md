@@ -310,3 +310,9 @@ dimerization model in the three-phase flash and with two liquids on a column's s
 docs/decisions/2026-11-11-08-acetic-acid-columns.md), purity specifications (built, PR #227), and the methanol
 separator (now
 possible with PR + MHV1 once item 3 is done).
+
+16:45: Worker E finished: #254 (recycle safeguards, Lab request 14), checked locally: 1741 tests, 1737 pass, 0 fail,
+3 skipped, 1 todo; no test lines removed; CI green. Lab's plant still does not converge: the cause is its specification
+(column 11's bottoms fixed at 141.5 kmol/h takes 0.42 kmol/h more ester than is formed). #253 and #254 conflict in
+docs/DECISIONS.md: merge #253 first, then ask E (same task, allowed) to rebase #254 onto main. Five questions for the
+maintainer at the end of 2026-11-14-08; recommendations given to the user.
