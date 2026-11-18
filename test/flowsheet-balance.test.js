@@ -98,3 +98,24 @@ test("a balanced loop at the same loose recycle tolerance gets no warning; solve
     assert.throws(() => solveFlowsheet(sys, plant({ product: 10.4, solver: { balanceTolerance: bad } })), /solver\.balanceTolerance must be between 0 and 0\.1/);
   }
 });
+
+test("a recycle pushed without bound says whether the loop drains or accumulates (decision 2026-11-18-02, question 4)", () => {
+  // at the default recycle tolerance Broyden extrapolates either plant to ever larger recycles; the refusal names
+  // the direction from the net change of the tear streams in that pass
+  const drain = plant({ product: 10.4, solver: { tolerance: 1e-8, maxIterations: 200 } });
+  assert.throws(() => solveFlowsheet(sys, drain), e => {
+    assert.equal(e.code, "NO_CONVERGENCE");
+    assert.match(e.message, /grows without bound/);
+    assert.match(e.message, /the loop drains: in this pass the tear streams together lost 0\.4 kmol\/h/);
+    assert.match(e.message, /check the specifications first/);
+    assert.doesNotMatch(e.message, /material accumulates/);
+    assert.ok(e.details.netChangePass_kmol_h < 0);
+    return true;
+  });
+  const fill = plant({ product: 9.6, solver: { tolerance: 1e-8, maxIterations: 200 } });
+  assert.throws(() => solveFlowsheet(sys, fill), e => {
+    assert.match(e.message, /grows without bound .*material accumulates in the loop/);
+    assert.ok(e.details.netChangePass_kmol_h > 0);
+    return true;
+  });
+});

@@ -23,8 +23,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 - **The plant's balance on its own tolerance** (docs/decisions/2026-11-18-02-flowsheet-balance-absolute.md): built
   `solver.balanceTolerance` (1e-4 of the fresh feed, per component, not loosened with the recycle tolerance, as COFE
   keeps a mass balance tolerance beside its recycle tolerance; DWSIM only reports its residual); beyond it the strict
-  mode refuses and the lenient mode warns, "check the specifications first". Open: the value, one switch or two, the
-  scale (total feed or each component's flow), the words of the "grows without bound" refusal for a draining loop.
+  mode refuses and the lenient mode warns, "check the specifications first". Decided (the maintainer, 2026-11-18):
+  1e-4 of the fresh feed; one switch (the range mode, its Settings hint says so); the total feed as the scale (per
+  component only when a case needs it); the "grows without bound" refusal says whether the loop drains or accumulates.
+  Nothing open; merge after #254.
 - **Column fixes from CHEPTA-Lab's 0.6.2 requests** (docs/decisions/2026-11-14-05-column-fixes-lab-062.md): built
   EA-12/M3 (max_iterations governs; a last long Newton attempt), EA-13/M2 (a purity inside the reached range is never
   OUT_OF_RANGE), EA-9/M1 for CO and N2 traces, the EA-8 message, M4. Open: (a) acetic acid traces in two-liquid

@@ -731,7 +731,15 @@ function solveCore(sys, fs) {
       // method that extrapolates (Broyden) can reach flows so large that the relative change looks converged
       const Ffeed = feedTotal();
       const big = after.find((s, k) => !tears[k].energy && !(s.F_kmol_h <= GROWTH_LIMIT * Math.max(Ffeed, 1e-12)));
-      if (big) throw stop(`: the recycle grows without bound (tear stream ${tears[after.indexOf(big)].id} carries more than ${GROWTH_LIMIT.toExponential(0)} times the feed): material accumulates in the loop`);
+      if (big) {
+        // which way the material goes in this pass, summed over the tear streams (decision 2026-11-18-02, question 4): a
+        // loop that drains can also be pushed to ever larger recycles by an extrapolating method
+        const net = netOf(after.map(s => s.flows), before.map(s => s.flows)).reduce((a, v) => a + v, 0);
+        const way = net < 0
+          ? `the loop drains: in this pass the tear streams together lost ${+(-net).toPrecision(3)} kmol/h, so its products take more than its feeds and reactions supply (a product or outlet given by its flow above what is fed or formed has no steady state); check the specifications first`
+          : "material accumulates in the loop";
+        throw stop(`: the recycle grows without bound (tear stream ${tears[after.indexOf(big)].id} carries more than ${GROWTH_LIMIT.toExponential(0)} times the feed): ${way}`, { netChangePass_kmol_h: net });
+      }
       if (err < opt.tolerance) { it++; break; }
       const xf = x.flat(), F = g.flat().map((v, i) => v - xf[i]);
       if (opt.method === "broyden") {

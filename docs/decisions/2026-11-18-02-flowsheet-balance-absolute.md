@@ -72,11 +72,11 @@ switch means ("refuse what is not backed"); a separate switch is the alternative
   rerun here. They do not converge at their tolerance of 1e-8 (decision 2026-11-14-08), so the new check does not reach
   them; at Lab's own 1e-5 a state like the one recorded there (0.42 kmol/h of ester) is now warned about, refused in the
   strict mode.
-- `npm test`: 1746 tests, 1742 pass, 0 fail, 3 skipped (the slow plant runs), 1 todo.
+- `npm test`: 1747 tests, 1743 pass, 0 fail, 3 skipped (the slow plant runs), 1 todo (with the test of answer 4).
 
-Seen in passing, not changed: the same small plant at the default tolerance (1e-8) is refused by Broyden with "the
-recycle grows without bound ... material accumulates in the loop", although the loop drains; the refusal is right, the
-words fit only one direction.
+Seen in passing: the same small plant at the default tolerance (1e-8) was refused by Broyden with "the recycle grows
+without bound ... material accumulates in the loop", although the loop drains; the refusal was right, the words fit
+only one direction. Changed after the maintainer's answer 4 (below).
 
 ## Questions for the maintainer
 
@@ -90,3 +90,20 @@ words fit only one direction.
    a per-component scale (its own feed plus what is formed, with a floor) as a follow-up if a case needs it.
 4. **The words of the "grows without bound" refusal** when the loop drains (above). Recommendation: a small follow-up that
    says "drains" or "accumulates" from the sign of the net change the safeguards already compute.
+
+## The maintainer's answers (2026-11-18, through the coordinator)
+
+The maintainer agreed with the four recommendations:
+
+1. **The value:** 1e-4 of the fresh feed, kept.
+2. **One switch:** the range mode decides the balance too. Its hint in Settings now says so: "The same choice holds for
+   a flowsheet that does not balance within 1e-4 of its feed (solver.balanceTolerance): refused, or solved with a
+   warning that names the components." (`src/ui/app.js`).
+3. **The scale:** the total fresh feed now; a scale per component only when a case needs it.
+4. **The words of the "grows without bound" refusal:** done in this pull request. The refusal sums the change of the
+   tear streams in the pass that crossed the growth limit (the same net change as rule 5 of decision 2026-11-14-08):
+   a loss reads "the loop drains: in this pass the tear streams together lost 0.4 kmol/h, so its products take more
+   than its feeds and reactions supply (a product or outlet given by its flow above what is fed or formed has no steady
+   state); check the specifications first"; a gain keeps "material accumulates in the loop". The net change is in the
+   refusal's `details.netChangePass_kmol_h`. Tested in `test/flowsheet-balance.test.js` on the same plant with its
+   product at 10.4 (drains) and 9.6 kmol/h (accumulates), at the default tolerance.
