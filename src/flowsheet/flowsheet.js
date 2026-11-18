@@ -5,10 +5,11 @@
  *     blocks:  [{ id: "F1", type: "feed", spec: { ... } }, { id: "M1", type: "mixer" }, ...],
  *     streams: [{ id: "S1", from: "F1.out", to: "M1.in" }, ..., { id: "S5", from: "SP1.out", to: "M1.in", tear: true }],
  *     energyStreams: [{ id: "Q1", to: "E1", duty_kW: 500 }, { id: "Q2", from: "E2", to: "E3" }],   // optional
- *     solver:  { maxIterations: 50, tolerance: 1e-8, strictRanges: false }
+ *     solver:  { maxIterations: 50, tolerance: 1e-8, strictRanges: false, balanceTolerance: 1e-4 }
  *   })
  *   → { streams: { S1: stream, ... }, blocks: { M1: { duty_kW, balance, notes }, ... },
- *       order, loops: [{ blocks, tears, iterations }], balance: { material_kmol_h, energy_kW } }
+ *       order, loops: [{ blocks, tears, iterations }],
+ *       balance: { material_kmol_h, energy_kW, balanceTolerance, limit_kmol_h, warnings? } }
  *
  * Sequential modular:
  *  1. Blocks are nodes and streams are edges. Strongly connected components (Tarjan's
@@ -90,6 +91,18 @@ const GROWTH_LIMIT = 1e6;     // a tear stream above this many times the total f
 // the whole flowsheet's component balance, relative to the total feed: at least 1e-6, and 1000 times the
 // tear tolerance (a converged recycle leaves an imbalance of about the tolerance times the recycle flow)
 const balanceTol = tolerance => Math.max(1e-6, 1e3 * tolerance);
+// The plant's balance against its fresh feeds, on its own tolerance (decision 2026-11-18-02): for each component,
+// |feeds + generated - products| must be within BALANCE_TOLERANCE times the total fresh feed, whatever the recycle
+// tolerance. COFE has the same two settings, a "Mass balance relative tolerance" ("whether mass balances, component
+// balances, mol fraction summations, etc, are accurate") beside a "Recycle relative tolerance" (COCO help, Flowsheet
+// Options, https://www.cocosimulator.org/index_help.php?page=COFE/solveoptions.htm, read 2026-11-18; its default is not
+// given there). DWSIM computes the flowsheet's residual mass balance (feeds minus products, kg/s;
+// FlowsheetBase.UpdateMassAndEnergyBalance, github.com/DanWBR/dwsim commit 1abf72d, GPL) and reports it without a limit.
+// The value 1e-4 is this project's choice: at the default recycle tolerance (1e-8) the check above is already 1e-5, so
+// this one acts only when the recycle tolerance is above 1e-7; it caught CHEPTA-Lab's plant (0.42 kmol/h of ester in a
+// feed of 1250 kmol/h, 3.4e-4) at a recycle tolerance of 1e-5. A plant beyond it is refused in the strict mode
+// (solver.strictRanges) and warned about otherwise (result.balance.warnings).
+export const BALANCE_TOLERANCE = 1e-4;
 
 /** The inverse of a square matrix by Gauss-Jordan elimination with partial pivoting; null when it is singular or not
  *  finite. */
@@ -408,6 +421,7 @@ function solveCore(sys, fs) {
   const opt = { ...SOLVER_DEFAULTS, ...(fs?.solver ?? {}) };
   if (!(Number.isInteger(opt.maxIterations) && opt.maxIterations >= 1)) throw fail("BAD_INPUT", `solver.maxIterations must be a positive whole number (got ${opt.maxIterations}).`);
   if (!(opt.tolerance > 0 && opt.tolerance < 0.1)) throw fail("BAD_INPUT", `solver.tolerance must be between 0 and 0.1 (got ${opt.tolerance}).`);
+  if (opt.balanceTolerance !== undefined && !(opt.balanceTolerance > 0 && opt.balanceTolerance < 0.1)) throw fail("BAD_INPUT", `solver.balanceTolerance must be between 0 and 0.1 (got ${opt.balanceTolerance}).`);
   if (!SOLVER_METHODS.includes(opt.method)) throw fail("BAD_INPUT", `solver.method "${opt.method}" is not one of ${SOLVER_METHODS.join(", ")}.`);
   const status = flowsheetStatus(sys, fs);
   if (!status.ready) {
@@ -717,7 +731,15 @@ function solveCore(sys, fs) {
       // method that extrapolates (Broyden) can reach flows so large that the relative change looks converged
       const Ffeed = feedTotal();
       const big = after.find((s, k) => !tears[k].energy && !(s.F_kmol_h <= GROWTH_LIMIT * Math.max(Ffeed, 1e-12)));
-      if (big) throw stop(`: the recycle grows without bound (tear stream ${tears[after.indexOf(big)].id} carries more than ${GROWTH_LIMIT.toExponential(0)} times the feed): material accumulates in the loop`);
+      if (big) {
+        // which way the material goes in this pass, summed over the tear streams (decision 2026-11-18-02, question 4): a
+        // loop that drains can also be pushed to ever larger recycles by an extrapolating method
+        const net = netOf(after.map(s => s.flows), before.map(s => s.flows)).reduce((a, v) => a + v, 0);
+        const way = net < 0
+          ? `the loop drains: in this pass the tear streams together lost ${+(-net).toPrecision(3)} kmol/h, so its products take more than its feeds and reactions supply (a product or outlet given by its flow above what is fed or formed has no steady state); check the specifications first`
+          : "material accumulates in the loop";
+        throw stop(`: the recycle grows without bound (tear stream ${tears[after.indexOf(big)].id} carries more than ${GROWTH_LIMIT.toExponential(0)} times the feed): ${way}`, { netChangePass_kmol_h: net });
+      }
       if (err < opt.tolerance) { it++; break; }
       const xf = x.flat(), F = g.flat().map((v, i) => v - xf[i]);
       if (opt.method === "broyden") {
@@ -802,6 +824,19 @@ function solveCore(sys, fs) {
   if (off.length && products.length) {
     throw fail("NO_CONVERGENCE", `The flowsheet does not balance: ${off.map(([id, d]) => `${sys.names[sys.ids.indexOf(id)]} ${d > 0 ? "in" : "out"} exceeds ${d > 0 ? "out" : "in"} by ${Math.abs(d).toPrecision(3)} kmol/h`).join(", ")}. A recycle without a way out for a component, or a loop that has not really converged; a purge or another convergence method usually helps.`, { balance: Object.fromEntries(off) });
   }
+  // the plant's balance on its own tolerance (decision 2026-11-18-02), not loosened with the recycle tolerance
+  const balTol = opt.balanceTolerance ?? BALANCE_TOLERANCE;
+  const balLimit = balTol * Fin;
+  const unbalanced = products.length ? sys.ids.map((id, i) => [id, fin[i] - fout[i]]).filter(([, d]) => !(Math.abs(d) <= balLimit)) : [];
+  const balanceWarnings = [];
+  if (unbalanced.length) {
+    const what = unbalanced.map(([id, d]) => `${sys.names[sys.ids.indexOf(id)]} ${d > 0 ? "in" : "out"} exceeds ${d > 0 ? "out" : "in"} by ${+Math.abs(d).toPrecision(3)} kmol/h`).join(", ");
+    const tol = loops.length ? ` The recycle tolerance (${opt.tolerance}) let the loop${loops.length > 1 ? "s" : ""} stop there: a loop that drains or accumulates changes little per pass when its recycle is large.` : "";
+    const message = `The flowsheet does not balance within ${balTol} of its feed (${+balLimit.toPrecision(3)} kmol/h): ${what} (feeds + reactions - products). Check the specifications first: a product or outlet given by its flow above what the feeds and reactions supply, or a feed in excess of what reacts with no way out, makes a loop that drains or accumulates and has no steady state.${tol} With the specifications right, a tighter solver.tolerance closes the balance.`;
+    const details = { balance: Object.fromEntries(unbalanced), balanceTolerance: balTol, limit_kmol_h: balLimit, feed_kmol_h: Fin };
+    if (strictRanges()) throw fail("NO_CONVERGENCE", `${message} The strict mode (strictRanges) refuses this answer; without it the flowsheet is solved and this is a warning.`, { ...details, strictRanges: true });
+    balanceWarnings.push({ code: "BALANCE", components: unbalanced.map(([id]) => id), ...details, message: `${message} This answer is not a steady state of the plant.` });
+  }
   const duties = Object.values(results).reduce((a, r) => a + (r.duty_kW ?? 0), 0);
   const H = list => list.reduce((a, s) => a + (s.H_kW ?? 0), 0);
   // energy streams: the ones given (an energy feed into a block, or a block's heat into another), then one per block with
@@ -838,6 +873,8 @@ function solveCore(sys, fs) {
     loops,
     balance: {
       material_kmol_h: Object.fromEntries(sys.ids.map((id, i) => [id, fin[i] - fout[i]])),
+      // each component's imbalance is checked against balanceTolerance times the fresh feed (decision 2026-11-18-02)
+      balanceTolerance: balTol, limit_kmol_h: balLimit, ...(balanceWarnings.length ? { warnings: balanceWarnings } : {}),
       energy_kW: H(feeds) + duties - H(products) - reactive.reduce((a, r) => a + r.reaction.heat_kW, 0),
       ...(reactive.length ? { generation_kmol_h: Object.fromEntries(sys.ids.map((id, i) => [id, gen[i]])),
         reaction_kW: reactive.reduce((a, r) => a + r.reaction.heat_kW, 0) } : {}),
