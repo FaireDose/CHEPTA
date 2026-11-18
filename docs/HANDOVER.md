@@ -428,3 +428,4 @@ session_01FPbeWW2cai2XmDCb49ASfS from main, outcome claude/build-0025-step2: bot
 continuation only if needed; dehydration case by purity. Running: K (0026 engine), L (0025 step 2).
 
 18:50: #260 merged (main 4c98081). Told K. Open PRs: none. Running: K (0026 engine), L (0025 step 2).
+- 19:00: K opened #261 (0026 steps 1-2, head a4fd104, on main 4c98081). Verified locally: 1801 tests, 1797 pass, 0 fail, 3 skipped, 1 todo; no test lines removed. Decision -06. CI test running at report time. Reported to the user with K's 3 questions (a formulation, b PR k_ij(T) fix in reference, c workbench next). L (0025 step 2) has not pushed yet; it also edits specifications.js, which #261 touches. K finished: do not give it a new task (rule 1), except the workbench if the maintainer treats it as the same task — prefer a new worker.
