@@ -331,3 +331,10 @@ stage is already RadFrac's stage model; RadFrac's outer-loop split tried, not mo
 Nothing merged (main 6aedc14). Started (G) Opus session_01FPbeWUzst4nr3xUKjs1RZv, from #255's branch, outcome
 claude/vll-columns-rigorous: (a) three-phase flash near the heteroazeotrope, (b) the entrainer column with a decanter
 (proposal instead if it needs an inside-out solver), (c) re-check "smooth" as default. One worker running.
+
+08:30: #254 revised by E after the maintainer's review (verified in E's session: 07:42 "early messages if the columns
+are not converging ... you invent things that are not done in simulators ... look at the specs", then answers "Stop at
+once, name it" and "Warn early, keep iterating"). Head f41f3c5: retry after a block failure removed; FD Jacobian on a
+stall and rejection kept (COFE does the same); a failing block stops the loop at once with its name, iteration, guess
+extrapolation and "check the specifications first"; accumulation warning after 30 passes. Checked locally: 1741 tests,
+1737 pass, 0 fail, 3 skipped, 1 todo; no test lines removed. Still conflicts with #253 in DECISIONS.md.
