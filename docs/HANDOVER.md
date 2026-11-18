@@ -380,3 +380,7 @@ drains/accumulates wording; checked locally 1747 tests, 1743 pass, 0 fail). F as
 #255 (don't merge #255 before). Started (I) Opus session_01FPbeWV9hTLSkYs9AyAYquE from claude/vll-columns-rigorous,
 outcome claude/build-0025-step1: proposal 0025 step 1. Running: F, I. Waiting to rebase: G after #255, E after
 #253+#255, H after #254. Then M5 (proposal then build).
+
+12:55: #253 and #255 merged by the maintainer (main b2f1d8a; #255 head 8462d0f with the column 11 sweep, one solution
+136-141 kmol/h). Told G to rebase #256 onto main and retarget; E to rebase #254 (one more rebase after #256).
+Running: I (0025 step 1); G and E rebasing.
