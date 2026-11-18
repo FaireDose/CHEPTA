@@ -137,7 +137,10 @@ function normalize(opts, th) {
     }
     const kind = s.kind.endsWith("_purity") ? "purity" : s.kind;
     const product = s.kind === "distillate_purity" ? "distillate" : s.kind === "bottoms_purity" ? "bottoms" : s.product;
-    if (!["distillate", "bottoms", "side_draw"].includes(product)) throw fail("BAD_INPUT", `Column: ${what}: product must be "distillate", "bottoms" or "side_draw" (got ${JSON.stringify(s.product)}).`);
+    // the vapour + liquid condenser (proposal 0026): "distillate" is its liquid distillate, "vapour_distillate" its vapour
+    const vlc = opts.ends?.condenser === "vapour_liquid";
+    if (product === "vapour_distillate" && !vlc) throw fail("BAD_INPUT", `Column: ${what}: product "vapour_distillate" is the vapour + liquid condenser's (condenser "vapour_liquid").`);
+    if (!["distillate", "bottoms", "side_draw", "vapour_distillate"].includes(product)) throw fail("BAD_INPUT", `Column: ${what}: product must be "distillate", "bottoms" or "side_draw"${vlc ? ', or "vapour_distillate"' : ""} (got ${JSON.stringify(s.product)}).`);
     let draw = null;
     if (product === "side_draw") {
       draw = Number(s.draw ?? 1);
@@ -147,7 +150,7 @@ function normalize(opts, th) {
     const basis = s.basis ?? "mole";
     if (!["mole", "mass"].includes(basis)) throw fail("BAD_INPUT", `Column: ${what}: basis must be "mole" or "mass" (got ${JSON.stringify(s.basis)}).`);
     if (basis === "mass" && kind !== "recovery") molarMass();
-    const where = product === "side_draw" ? `side draw ${draw}` : `the ${product}`;
+    const where = product === "side_draw" ? `side draw ${draw}` : product === "vapour_distillate" ? "the vapour distillate" : vlc && product === "distillate" ? "the liquid distillate" : `the ${product}`;
     if (!(feed[i] > 0)) throw fail("BAD_INPUT", `Column: ${what}: ${names[i]} is not in the feed, so nothing can be asked of it in ${where}.`);
     const d = { kind, product, draw, i, basis: kind === "recovery" ? null : basis, value };
     if (kind === "purity") {
@@ -167,7 +170,7 @@ function normalize(opts, th) {
 }
 
 /** What is refused before anything is solved: the arithmetic of the specifications. */
-function checkArithmetic({ design, base, draws, feed, F }, th) {
+function checkArithmetic({ design, base, draws, feed, F }, th, opts = {}) {
   const names = th.names;
   const same = (a, b) => a.kind === b.kind && a.product === b.product && a.draw === b.draw && a.i === b.i && a.stage === b.stage;
   for (let a = 0; a < design.length; a++) for (let b = a + 1; b < design.length; b++) {
@@ -183,7 +186,9 @@ function checkArithmetic({ design, base, draws, feed, F }, th) {
   const fixedDraws = sum(draws.filter(d => !d.free).map(d => Number(d.rate) || 0));
   const get = k => { const s = base.find(q => q?.kind === k); return s ? Number(s.value) : null; };
   const allFixed = draws.every(d => !d.free);
-  const rateOf = d => (d.product === "distillate" ? get("distillate_rate") ?? (get("bottoms_rate") != null && allFixed ? F - fixedDraws - get("bottoms_rate") : null)
+  // (the vapour + liquid condenser: neither distillate's own flow is given, only their sum)
+  const vlc = opts.ends?.condenser === "vapour_liquid";
+  const rateOf = d => (vlc && d.product !== "bottoms" && d.product !== "side_draw" ? null : d.product === "distillate" ? get("distillate_rate") ?? (get("bottoms_rate") != null && allFixed ? F - fixedDraws - get("bottoms_rate") : null)
     : d.product === "bottoms" ? get("bottoms_rate") ?? (get("distillate_rate") != null && allFixed ? F - fixedDraws - get("distillate_rate") : null)
       : draws[d.draw - 1].free ? null : Number(draws[d.draw - 1].rate));
   for (const d of design) {
@@ -208,7 +213,7 @@ function checkArithmetic({ design, base, draws, feed, F }, th) {
  */
 function checkAzeotrope({ design, feed, F, MW }, th, opts) {
   const sys = opts.sys, P = opts.P_kPa;
-  if (!sys || th.n !== 2 || !(P > 0) || (opts.ends?.condenser ?? "total") === "decanter") return;
+  if (!sys || th.n !== 2 || !(P > 0) || ["decanter", "vapour_liquid"].includes(opts.ends?.condenser ?? "total")) return;
   const wanted = design.filter(d => d.kind === "purity" && d.product !== "side_draw");
   if (!wanted.length) return;
   let az;
@@ -251,7 +256,7 @@ export function solveSpecified(opts, solve, th) {
     const dofText = decanter ? "one (the decanter returns one liquid entirely, which fixes the reflux)" : !hasC && hasR ? "one (a reboiled stripper)" : !hasC ? "none (an absorber or a stripper without a reboiler: its products follow from its feeds and stages)" : "two";
     throw fail("BAD_INPUT", `Column: ${given} specification${given === 1 ? "" : "s"} given (${[...base, ...(opts.specs ?? []).filter(s => DESIGN_SPECS.includes(s?.kind))].map(s => s?.kind).join(", ") || "none"}), and the column takes ${wanted}: its degrees of freedom are ${dofText}${freeDraws.length ? `, and ${freeDraws.length} more for the side draw${freeDraws.length > 1 ? "s" : ""} given without a rate (${freeDraws.map(k => k + 1).join(", ")}): give ${freeDraws.length > 1 ? "their rates" : "its rate"}, or one specification more for each` : ""}. A design specification (${DESIGN_SPECS.join(", ")}) takes the place of a ratio, a product flow or a duty.`);
   }
-  checkArithmetic(prob, th);
+  checkArithmetic(prob, th, opts);
   checkAzeotrope(prob, th, opts);
 
   // ---- the free variables: the engine's own specifications that were left open
@@ -294,7 +299,7 @@ export function solveSpecified(opts, solve, th) {
       return null;
     }
   };
-  const flowsOf = (r, d) => (d.product === "distillate" ? r.products.distillate.flows : d.product === "bottoms" ? r.products.bottoms.flows : r.products.draws[d.draw - 1].flows);
+  const flowsOf = (r, d) => (d.product === "distillate" ? r.products.distillate.flows : d.product === "vapour_distillate" ? r.products.vapour_distillate.flows : d.product === "bottoms" ? r.products.bottoms.flows : r.products.draws[d.draw - 1].flows);
   const achieved = (r, d) => {
     if (d.kind === "stage_temperature") return r.stages[d.stage - 1].T_K;
     const f = flowsOf(r, d);
@@ -327,12 +332,14 @@ export function solveSpecified(opts, solve, th) {
   const limits = q => vars.map((v, k) => (q.p[k] >= v.hi - 1e-9 ? "upper" : q.p[k] <= v.lo + 1e-9 ? "lower" : null));
   const limitText = q => { const at = limits(q); return at.some(Boolean) ? vars.map((v, k) => (at[k] ? `${varName(v)} reached its ${at[k]} limit (${fmt(v.to(q.p[k]))})` : null)).filter(Boolean).join(" and ") : null; };
   // the stage variables as one vector (l, v, T per stage), and the specifications' residuals from it
-  const nc = th.n, w = 2 * nc + 1;
-  const vectorOf = r => Float64Array.from(r.stages.flatMap(st => [...st.l, ...st.v, st.T_K]));
+  // (the vapour + liquid condenser: one more slot per stage, U1 / L1 on stage 1 and 1 elsewhere, as in the engine)
+  const vlc = condenser === "vapour_liquid", nc = th.n, w = 2 * nc + 1 + (vlc ? 1 : 0);
+  const vectorOf = r => Float64Array.from(r.stages.flatMap((st, j) => [...st.l, ...st.v, st.T_K, ...(vlc ? [j === 0 ? st.U_mol_s / st.L_mol_s : 1] : [])]));
   const residualsFrom = (u, values) => {
     const N = u.length / w, part = (j, o) => Array.from(u.subarray(j * w + o, j * w + o + nc));
     const rate = k => (draws[k].free ? values[vars.findIndex(v => v.draw === k + 1)] : Number(draws[k].rate));
-    const flows = d => { if (d.product === "distillate") return part(0, nc); if (d.product === "bottoms") return part(N - 1, 0);
+    const flows = d => { if (d.product === "distillate") return vlc ? part(0, 0).map(a => a * u[2 * nc + 1]) : part(0, nc);
+      if (d.product === "vapour_distillate") return part(0, nc); if (d.product === "bottoms") return part(N - 1, 0);
       const q = draws[d.draw - 1], f = part(Number(q.stage) - 1, (q.phase ?? "liquid") === "liquid" ? 0 : nc), t = sum(f); return f.map(a => a / t * rate(d.draw - 1)); };
     return design.map(d => {
       if (d.kind === "stage_temperature") return scaled(d, u[(d.stage - 1) * w + 2 * nc]);
@@ -625,9 +632,9 @@ function estimateDistillate({ design, feed, F }, th, Dmax) {
   let of = null, product = null;
   if (pur && rec && pur.i === rec.i && pur.product === rec.product) { of = rec.value * feed[pur.i] / pur.value; product = pur.product; }
   else if (pur && pur.value >= 0.5) { of = 0.97 * feed[pur.i] / pur.value; product = pur.product; }
-  else if (rec) { of = rec.value * feed[rec.i] + beyond(rec.i, rec.product === "distillate"); product = rec.product; }
-  else if (flow) { of = flow.value + beyond(flow.i, flow.product === "distillate"); product = flow.product; }
-  let D = of == null ? 0.5 * Dmax : product === "distillate" ? of : Dmax - of;
+  else if (rec) { of = rec.value * feed[rec.i] + beyond(rec.i, rec.product !== "bottoms"); product = rec.product; }
+  else if (flow) { of = flow.value + beyond(flow.i, flow.product !== "bottoms"); product = flow.product; }
+  let D = of == null ? 0.5 * Dmax : product !== "bottoms" ? of : Dmax - of;
   if (!(D > 0)) D = 0.5 * Dmax;
   return Math.min(Math.max(D, 0.03 * Dmax), 0.97 * Dmax);
 }

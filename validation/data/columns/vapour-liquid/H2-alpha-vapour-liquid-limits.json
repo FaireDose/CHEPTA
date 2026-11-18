@@ -1,0 +1,144 @@
+{
+  "chepta_column_case": 1,
+  "id": "H2-alpha-vapour-liquid-limits",
+  "title": "The vapour + liquid condenser at its limits: a vapour share of 0.001 against a total condenser, of 0.999 against a partial one; a temperature above the top vapour's dew point",
+  "purpose": "Proposal 0026, case 2. With a vapour share of 0.001 (reflux ratio L1 / U1 and the whole distillate given) the column approaches the total condenser's with the same reflux ratio and distillate; with 0.999 (boil-up ratio and distillate given) the partial condenser's. A condenser temperature above the top vapour's dew point leaves no liquid: refused (OUT_OF_RANGE).",
+  "method_choice": "constant-alpha model system (no method to choose)",
+  "thermo": {
+    "kind": "constant-alpha",
+    "alpha": [
+      40.0,
+      4.0,
+      2.0,
+      1.0
+    ],
+    "reference_vapour_pressure": {
+      "form": "ln(p/kPa) = A - B/T",
+      "A": 16.0,
+      "B_K": 4000.0
+    },
+    "latent_heat_J_mol": 30000.0,
+    "note": "A3's model system (validation/data/columns/A3-ternary-partial-condenser.json) with a fourth, light component G (relative volatility 40) that the condenser does not fully condense. A model system, not a real mixture: K_i = alpha_i p(T) / P, liquid enthalpy 0 and vapour enthalpy the latent heat for every component (constant molar overflow). docs/METHOD_SELECTION.md does not apply."
+  },
+  "components": [
+    "G",
+    "A",
+    "B",
+    "C"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 15,
+    "condenser": "vapour_liquid",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 8,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.05,
+        0.3,
+        0.3,
+        0.35
+      ],
+      "q": 0.5
+    }
+  },
+  "limits": [
+    {
+      "name": "share 0.001 against total",
+      "specs": [
+        {
+          "kind": "reflux_ratio",
+          "value": 1.5
+        },
+        {
+          "kind": "distillate_flow_mol_s",
+          "value": 40.0
+        },
+        {
+          "kind": "vapour_share",
+          "value": 0.001
+        }
+      ],
+      "against": {
+        "condenser": "total",
+        "specs": [
+          {
+            "kind": "reflux_ratio",
+            "value": 1.5
+          },
+          {
+            "kind": "distillate_flow_mol_s",
+            "value": 40.0
+          }
+        ]
+      }
+    },
+    {
+      "name": "share 0.999 against partial",
+      "specs": [
+        {
+          "kind": "boilup_ratio",
+          "value": 1.5
+        },
+        {
+          "kind": "distillate_flow_mol_s",
+          "value": 40.0
+        },
+        {
+          "kind": "vapour_share",
+          "value": 0.999
+        }
+      ],
+      "against": {
+        "condenser": "partial",
+        "specs": [
+          {
+            "kind": "boilup_ratio",
+            "value": 1.5
+          },
+          {
+            "kind": "distillate_flow_mol_s",
+            "value": 40.0
+          }
+        ]
+      }
+    }
+  ],
+  "refused": {
+    "specs": [
+      {
+        "kind": "reflux_ratio",
+        "value": 1.5
+      },
+      {
+        "kind": "distillate_flow_mol_s",
+        "value": 40.0
+      },
+      {
+        "kind": "condenser_T_K",
+        "value": 330.0
+      }
+    ],
+    "outcome": "OUT_OF_RANGE",
+    "why": "above the dew point of the top vapour (about 316 K by the reference below): no liquid in the condenser"
+  },
+  "tolerances": {
+    "limits": {
+      "T_K_absolute": 0.1,
+      "mole_fractions_absolute": 0.0005,
+      "flows_relative": 0.002,
+      "why": "this project's choice: a share of 0.001 (0.999) moves 0.1 % of the distillate between the two outlets, so the profiles differ by about that share"
+    },
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "As A3: both solve the same equations to residuals of 1e-10 or less; the difference is the solvers' convergence only."
+      }
+    }
+  }
+}

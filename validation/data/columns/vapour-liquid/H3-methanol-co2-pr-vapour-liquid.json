@@ -1,0 +1,70 @@
+{
+  "chepta_column_case": 1,
+  "id": "H3-methanol-co2-pr-vapour-liquid",
+  "title": "CHEPTA-Lab's methanol column (Campos et al. 2022) with the vapour + liquid condenser at 53 C, Peng-Robinson",
+  "purpose": "Proposal 0026, case 3: a real mixture with gases. The column of validation/data/columns/lab-requests-0.6.2/u-column-partial-pr.request.json (Lab's inputs, copied unchanged there) with condenser \"vapour_liquid\" at the paper's 326.15 K (53 C) and reflux ratio 2 (L1 / U1), and Lab's bottoms flow, solved by the engine and by this reference with the same Peng-Robinson. The paper's Aspen Plus numbers (gas distillate 289 kmol/h, liquid distillate 4542 kmol/h) are Lab's comparison, for information, not a validation: another program and other parameters.",
+  "method_choice": "Peng-Robinson for both phases: a polar liquid with light gases at 100 kPa (docs/METHOD_SELECTION.md); Lab's own choice, kept as in its request file",
+  "thermo": {
+    "kind": "chepta",
+    "model": "PR",
+    "sets": "default"
+  },
+  "components": [
+    "carbon-dioxide",
+    "hydrogen",
+    "carbon-monoxide",
+    "methanol",
+    "water",
+    "nitrogen"
+  ],
+  "pressure_kPa": 100.0,
+  "column": {
+    "configuration": "distillation",
+    "stages": 30,
+    "condenser": "vapour_liquid",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 24,
+      "flow_kmol_h": {
+        "carbon-monoxide": 0.09412,
+        "carbon-dioxide": 120.9442,
+        "methanol": 4709.85892,
+        "water": 4580.91452,
+        "nitrogen": 0.18824
+      },
+      "T_K": 356.05
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 2.0
+    },
+    {
+      "kind": "bottoms_flow_kmol_h",
+      "value": 4581.0
+    },
+    {
+      "kind": "condenser_T_K",
+      "value": 326.15
+    }
+  ],
+  "for_information": {
+    "campos_2022_aspen": {
+      "gas_distillate_kmol_h": 289,
+      "liquid_distillate_kmol_h": 4542,
+      "reflux_ratio": 2,
+      "condenser_C": 53,
+      "source": "Campos et al. 2022 (MDPI, open access), as read by CHEPTA-Lab: cases/methanol-co2-campos-2022/CAPABILITY_REQUESTS.md, request M5 (branch claude/lab-methanol-campos-run, read 2026-11-18); not a validation"
+    }
+  },
+  "tolerances": {
+    "engine_against_reference": {
+      "flows_relative": 1e-06,
+      "mole_fractions_absolute": 1e-07,
+      "T_K_absolute": 1e-05,
+      "duties_relative": 1e-06,
+      "why": "Set from the run (proposal 0026): the two Peng-Robinson implementations, with the same databank k_ij(T) = k + kb/T and the feed's enthalpy from the reference's own flash, agree to about 1e-10 K and 1e-11 in mole fraction on this column; the tolerances are those of A3 (the solvers' convergence)."
+    }
+  }
+}

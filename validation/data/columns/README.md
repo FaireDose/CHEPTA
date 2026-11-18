@@ -62,3 +62,14 @@ engine's entrainer start where every bubble-point start is refused. Their refere
 (`validation/python/reference_mesh_vll.py --entrainer`, fixture `validation/fixtures/columns-vll-entrainer.json`),
 started from the engine's profiles (`node validation/columns_vll_engine_starts.mjs --entrainer`). F8 (F4's column with
 10 mol % cyclohexane) converges from the same start tried as the very last attempt (decision 2026-11-18-04).
+
+Proposal 0026, steps 1 and 2 (the condenser with a vapour and a liquid distillate, `condenser: "vapour_liquid"`,
+2026-11-18): `vapour-liquid/` holds H1 (A3's constant-alpha model system with a fourth, light component; the column solved
+with the vapour share given, then with the condenser temperature and the vapour distillate's flow of that solution), H2
+(the limits: a share of 0.001 against the total condenser, 0.999 against the partial one; a temperature above the top
+vapour's dew point, refused) and H3 (CHEPTA-Lab's methanol column, Peng-Robinson, 53 C, reflux ratio 2 over the liquid
+distillate, Lab's bottoms flow). Their reference is `validation/python/reference_mesh_condenser.py` (the MESH equations of
+`reference_mesh.py`, whose `Column` holds the condenser), fixture `validation/fixtures/columns-vapour-liquid.json`; H3 is
+started from the engine's profile (`node validation/columns_vapour_liquid_engine_start.mjs`). In the reference, the
+reflux ratio of this condenser is L1 / U1 (the reflux over the liquid distillate) and `distillate_flow_mol_s` the whole
+distillate U1 + V1, as the maintainer decided (2026-11-18).
