@@ -64,7 +64,10 @@
  *     method of Wang and Henke as DWSIM's BubblePoint.vb documents it (same repository and date): the component
  *     balances as one tridiagonal system per component at fixed K, each stage's temperature at its bubble point, and
  *     the vapour flows from the energy balances, alpha_j V_j + beta_j V_j+1 = gamma_j, repeated a few times. Only a
- *     first guess: a previous solution of the same column (`start`) replaces it when given;
+ *     first guess: a previous solution of the same column (`start`) replaces it when given. With a decanter whose
+ *     bubble-point starts all hold one liquid in the condensate (a feed with a little entrainer), the entrainer start
+ *     (proposal 0025, step 1; entrainerStart): the top vapour at the heterogeneous azeotrope, the decanter on its tie
+ *     line, the stages between interpolated, as the open sources build the initial profile of such a column;
  *  2. Newton's method on all N (2C + 1) equations together: the Jacobian by central differences, stage by stage (a
  *     stage's K-values and enthalpies depend on its own variables only), solved by Gaussian elimination with partial
  *     pivoting inside the band; the step taken in the logarithms of the component flows (a trace flow can fall by
@@ -662,6 +665,7 @@ export function solveCascade(opts = {}) {
     // without a condenser: the sum-rates start, its temperatures from the energy balances (wide-boiling absorbers),
     // then with each stage at its liquid's bubble point (narrow-boiling strippers)
     const R0s = decanter ? (opts.startReflux ? [opts.startReflux] : DECANTER_START_REFLUX) : hasCondenser ? [null] : wideBoiling(th, inp, fJ) ? ["energy", "bubble"] : ["bubble", "energy"];
+    let ran = 0, oneLiquid = 0;   // the bubble-point starts that Newton ran from, and those refused for one liquid
     for (const R0 of R0s) {
       // a given maxIterations is the budget of each attempt: the attempt runs to it, without the early stop
       // (PATIENCE) that hands a slow attempt on to the next start or to the continuation (EA-12, 2026-11-14)
@@ -676,12 +680,30 @@ export function solveCascade(opts = {}) {
         continue;
       }
       cold = { ...c, last: cold?.last };
-      if (c.noSplit) { tried.push(`the bubble-point start with a start reflux ratio of ${R0}: its condensate holds one liquid, so it was not used (${took()})`); continue; }
+      if (c.noSplit) { oneLiquid += 1; tried.push(`the bubble-point start with a start reflux ratio of ${R0}: its condensate holds one liquid, so it was not used (${took()})`); continue; }
+      ran += 1;
       const r = newton(c.u, a);
       const startName = hasCondenser ? `bubble-point start${R0 != null ? ` (a start reflux ratio of ${R0})` : ""}` : `sum-rates start (temperatures ${R0 === "energy" ? "from the energy balances" : "at the bubble points"})`;
       tried.push(`Newton from the ${startName}, steps of at most ${a.dTmax} K (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
       if (r.converged) { result = { ...r, start: hasCondenser ? `bubble-point method (Wang-Henke)${R0 != null ? ` with a start reflux ratio of ${R0}` : ""}` : `sum-rates method (Burningham-Otto), temperatures ${R0 === "energy" ? "from the energy balances" : "at the bubble points"}` }; break; }
       if (r.P) { cold.last = r; if (r.iterations < LONG_NEWTON) slow.push({ r, startName }); }
+    }
+    // the entrainer start (proposal 0025, step 1; entrainerStart below): a decanter whose bubble-point starts all held
+    // one liquid in the condensate (a feed with a little entrainer: the start cannot see it), so that no Newton attempt
+    // was made. Only there, so that every column that converged before keeps its path and its answer. Not in a step of
+    // the continuation (its K-values are not the column's)
+    if (!result && decanter && ran === 0 && oneLiquid > 0 && !opts.homotopy && !cf) {
+      const a = { dTmax: 20, maxIt: cap < Infinity ? cap : 50, patient: cap === Infinity };
+      let c;
+      try { c = entrainerStart(th, inp, fJ, HF); } catch (e) { if (e?.code !== "NO_CONVERGENCE") throw e; c = { why: `it failed: ${e.message}` }; }
+      if (!c.u) tried.push(`the entrainer start was not built: ${c.why} (${took()})`);
+      else {
+        const startName = `entrainer start (the top vapour at the heterogeneous azeotrope ${c.azeotrope.x.map(v => fmt(v)).join(", ")} at ${fmt(c.azeotrope.T_K)} K, a start reflux ratio of ${fmt(c.R)} by the decanter's lever rule)`;
+        const r = newton(c.u, a);
+        tried.push(`Newton from the ${startName}, steps of at most ${a.dTmax} K (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
+        if (r.converged) result = { ...r, start: startName };
+        else if (r.P) { cold = { last: r }; if (r.iterations < LONG_NEWTON) slow.push({ r, startName }); }
+      }
     }
   }
   // continuation: a column whose components all have the same volatility (ln K_i replaced by its mean over the
@@ -1063,6 +1085,117 @@ function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = nu
     }
   }
   return { u, boilupWarning };
+}
+
+/** The entrainer start's search for the heterogeneous azeotrope: at most this many steps of the distillation line, and
+ *  the largest change of a mole fraction in one step at which the line has reached it (this project's choices). */
+const AZEOTROPE_STEPS = 500, AZEOTROPE_TOL = 1e-10;
+
+/**
+ * The entrainer start of a column with a decanter (proposal 0025, step 1; docs/decisions/2026-11-18-03-entrainer-start.md),
+ * tried only where every bubble-point start's condensate holds one liquid. The initial profile is built the way the
+ * open sources describe for heterogeneous azeotropic columns, from a few compositions with the stages between them
+ * interpolated linearly:
+ *  - N. Bekiaris, "Multiple steady states in distillation", PhD thesis, California Institute of Technology, 1995,
+ *    section 4.4.5, pp. 194-202 (free to read, CaltechTHESIS / CDS technical report 95-016,
+ *    https://resolver.caltech.edu/CaltechCDSTR:1995.016, read 2026-11-18): the initial profiles of a heterogeneous
+ *    azeotropic column given to Aspen Plus, built from the singular points the profile visits (the azeotrope at the
+ *    top), the distillate and the bottoms "selected so that the material balances are (approximately) satisfied", and
+ *    "linear interpolation between the two end compositions of each section", which "Aspen Plus performs ...
+ *    automatically, so we typically have to specify the composition of only three to six trays";
+ *  - The ChemSep Book (H. A. Kooijman and R. Taylor, 2nd ed., 2006, public domain, section 13.4.10, "User
+ *    Initialization", p. 217): profiles given at a few stages, linear interpolation between them, missing flows by
+ *    constant molar overflow.
+ * Here the given compositions are:
+ *  1. the top vapour: the minimum-boiling azeotrope reached from the combined feed by the distillation line at total
+ *     reflux (x -> the vapour of x at its bubble point, repeated; the model's ternary heterogeneous azeotrope for
+ *     water + ethanol + cyclohexane, as test/columns-heteroazeotropic.test.js finds it). It must be heterogeneous: its
+ *     condensate splits into two liquids at its bubble point (the three-phase flash of the two-liquid adapter);
+ *  2. the decanter: that condensate's two liquids, the reflux the chosen one and the distillate the other; the reflux
+ *     ratio is their ratio (the lever rule of the tie line through the top vapour);
+ *  3. the bottoms by the material balance with the distillate flow of the specification (a product flow; with a
+ *     boil-up ratio or a reboiler duty, from constant molar overflow as in bubblePointStart);
+ *  4. the vapours between: linear from the azeotrope (stage 2) to the feed's bubble vapour (the feed stage) and from
+ *     there to the bottoms' bubble vapour (the reboiler); each stage's liquid from its component balance at constant
+ *     molar overflow (the operating lines: l_j = v_j+1 - d + the feeds down to stage j), so that the start meets the
+ *     material balances; its temperature at its liquid's bubble point and its vapour the bubble vapour (the two-liquid
+ *     adapter: where the liquid splits, the vapour in equilibrium with both liquids).
+ * Only a start: Newton then solves the MESH equations. Heterogeneous azeotropic columns can have several steady states
+ * at one specification (Bekiaris 1995, chapters 3 and 4; The ChemSep Book, section 1.6.5: "There are no less than
+ * three solutions for this set of specifications" for ethanol + water + benzene); which one a start reaches is not
+ * chosen by it. Not built for side draws or a feed into the decanter. Returns { u, R, azeotrope } or { why }.
+ */
+function entrainerStart(th, inp, fJ, HF) {
+  if (inp.draws.length) return { why: "it is not built for side draws" };
+  th = { ...th, bubbleT: startBubbleT(th) };
+  const { N, F, feeds, specs } = inp, n = th.n, Fn = inp.Fnet;
+  const z = fJ.reduce((a, f) => a.map((v, i) => v + f[i]), new Array(n).fill(0)).map(v => v / F);
+  const bubble = (x, j) => {
+    const T = th.bubbleT(x), w = th.lnK(x, x, T, j).map((v, i) => Math.exp(v) * x[i]), s = sum(w);
+    return { T, y: w.map(v => v / s) };
+  };
+  // 1. the azeotrope at the end of the distillation line from the feed
+  let a = z.slice(), done = false;
+  for (let k = 0; k < AZEOTROPE_STEPS && !done; k++) {
+    const y = bubble(a, -5).y;
+    done = Math.max(...y.map((v, i) => Math.abs(v - a[i]))) < AZEOTROPE_TOL;
+    a = y;
+  }
+  if (!done) return { why: `the distillation line from the feed did not reach an azeotrope in ${AZEOTROPE_STEPS} steps` };
+  const Ta = th.bubbleT(a);
+  // 2. the decanter on the tie line through the top vapour
+  const liq = th.liquids(a, Ta, 1, -5);
+  if (!liq) return { why: `the azeotrope the feed's distillation line reaches (${a.map(v => fmt(v)).join(", ")}, ${fmt(Ta)} K) is homogeneous: its condensate holds one liquid` };
+  const rl = liq[inp.refluxLiquid], dl = liq[inp.refluxLiquid === "light" ? "heavy" : "light"];
+  const R = rl.flow / dl.flow;
+  // 3. the products: the distillate flow from the specification
+  const get = k => specs.find(s => s.kind === k)?.value;
+  const Tb = th.bubbleT(z), yb = bubble(z, -5).y;
+  const lambda = Math.max(th.hV(yb, Tb) - th.hL(z, Tb), 1000);
+  const q = feeds.map(f => {
+    if (Number.isFinite(f.q)) return Math.min(1, Math.max(0, f.q));
+    const Ff = sum(f.flows), zf = f.flows.map(v => v / Ff);
+    return Math.min(1, Math.max(0, 1 - (f.H_W / Ff - th.hL(zf, th.bubbleT(zf))) / lambda));
+  });
+  const vapourFed = sum(feeds.map((f, k) => (1 - q[k]) * sum(f.flows)));
+  let D = get("distillate_rate") ?? (get("bottoms_rate") != null ? Fn - get("bottoms_rate") : null);
+  if (D == null && get("boilup_ratio") != null) D = (get("boilup_ratio") * Fn + vapourFed) / (R + 1 + get("boilup_ratio"));
+  if (D == null && get("reboiler_duty") != null) D = (get("reboiler_duty") / lambda + vapourFed) / (R + 1);
+  D = Math.min(Math.max(D ?? 0.5 * Fn, 0.01 * Fn), 0.99 * Fn);
+  const B = Fn - D, d = dl.x.map(v => v * D);
+  const b = z.map((v, i) => Math.max(F * v - d[i], 1e-8 * F)), xB = b.map(v => v / sum(b));
+  // 4. the profile: flows by constant molar overflow, the vapours interpolated, the liquids by the operating lines
+  const f = feeds.reduce((p, c) => (sum(c.flows) > sum(p.flows) ? c : p)).stage;
+  const yF = bubble(z, -5).y, yB = bubble(xB, N - 1).y;
+  const lin = (p, r, t) => p.map((v, i) => v + (r[i] - v) * t);
+  const L = new Array(N), V = new Array(N), x = new Array(N), y = new Array(N), T = new Array(N);
+  let Lc = R * D, Vc = (R + 1) * D;
+  const fed = new Array(n).fill(0);
+  for (let j = 0; j < N; j++) {
+    feeds.forEach((fd, k) => { if (fd.stage === j) { Lc += q[k] * sum(fd.flows); } });
+    V[j] = j === 0 ? D : Vc;
+    feeds.forEach((fd, k) => { if (fd.stage === j) Vc -= (1 - q[k]) * sum(fd.flows); });
+    L[j] = j === 0 ? R * D : j === N - 1 ? B : Lc;
+    if (j > 0) y[j] = j <= f ? lin(a, yF, (j - 1) / Math.max(f - 1, 1)) : lin(yF, yB, (j - f) / (N - 1 - f));
+  }
+  x[0] = rl.x.slice(); T[0] = Ta;
+  for (let j = 1; j < N; j++) {
+    // the balance of stages 1 to j: what enters (the vapour from below, the feeds) less the distillate
+    fJ[j].forEach((v, i) => { fed[i] += v; });
+    const l = j === N - 1 ? b : y[j + 1].map((v, i) => Math.max(V[j + 1] * v - d[i] + fed[i], 1e-8 * F));
+    x[j] = l.map(v => v / sum(l));
+  }
+  for (let j = 1; j < N; j++) { const r = bubble(x[j], j); T[j] = r.T; y[j] = r.y; }
+  const u = new Float64Array(N * (2 * n + 1));
+  for (let j = 0; j < N; j++) {
+    const o = j * (2 * n + 1);
+    for (let i = 0; i < n; i++) {
+      u[o + i] = Math.max(L[j] * x[j][i], 1e-30 * F);
+      u[o + n + i] = Math.max(j === 0 ? d[i] : V[j] * y[j][i], 1e-30 * F);
+    }
+    u[o + 2 * n] = T[j];
+  }
+  return { u, R, azeotrope: { x: a, T_K: Ta } };
 }
 
 /** Wide-boiling: the volatile components' K-values at the feeds' mean temperature span more than WIDE_BOILING (the usual

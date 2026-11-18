@@ -2,6 +2,9 @@
 // independent three-phase reference (validation/python/reference_mesh_vll.py --three-phase), which solves its own
 // equations from them, perturbed. Only a start: the reference's answer is fixed by its equations.
 //   node validation/columns_vll_engine_starts.mjs     -> validation/fixtures/columns-vll-engine-starts.json
+// With --entrainer, the cases of proposal 0025, step 1 (the entrainer start: F6, F7), for
+// reference_mesh_vll.py --entrainer:
+//   node validation/columns_vll_engine_starts.mjs --entrainer -> validation/fixtures/columns-vll-entrainer-starts.json
 import { readFileSync, writeFileSync } from "node:fs";
 import { system } from "../src/index.js";
 import { solveCascade } from "../src/units/columns/engine.js";
@@ -19,10 +22,14 @@ export function solveCase(c, twoLiquidStage, feedEnthalpy) {
     feeds: [{ stage: f.stage, flows: f.z.map(z => z * f.flow_mol_s), H_W: f.flow_mol_s * H }],
     specs: c.specs.map(s => ({ kind: SPEC_OF[s.kind], value: s.value })) });
 }
+/** Proposal 0025, step 1: the columns that converge from the entrainer start. */
+export const ENTRAINER_CASES = ["F6-ethanol-dehydration-entrainer-20-stages", "F7-ethanol-dehydration-entrainer-30-stages"];
 const isMain = process.argv[1] && import.meta.url.endsWith(process.argv[1].split("/").pop());
 if (isMain) {
+  const entrainer = process.argv.includes("--entrainer");
   const out = { _about: "Written by validation/columns_vll_engine_starts.mjs: the engine's profiles, the start of the three-phase reference.", cases: {} };
-  for (const id of ["F4-ethanol-water-cyclohexane-decanter", "F5-ethyl-acetate-product-column-lab"]) {
+  const ids = entrainer ? ENTRAINER_CASES : ["F4-ethanol-water-cyclohexane-decanter", "F5-ethyl-acetate-product-column-lab"];
+  for (const id of ids) {
     const c = JSON.parse(readFileSync(new URL(`./data/columns/vll/${id}.json`, import.meta.url)));
     const r = solveCase(c);
     const liq = q => ({ x: q.x, flow_mol_s: q.flow });
@@ -35,5 +42,5 @@ if (isMain) {
     };
     console.log(id, r.iterations, r.solver.start);
   }
-  writeFileSync(new URL("./fixtures/columns-vll-engine-starts.json", import.meta.url), JSON.stringify(out, null, 1) + "\n");
+  writeFileSync(new URL(`./fixtures/columns-vll-${entrainer ? "entrainer" : "engine"}-starts.json`, import.meta.url), JSON.stringify(out, null, 1) + "\n");
 }
