@@ -29,6 +29,11 @@ Regenerate: python validation/python/reference_mesh_vll.py      (numpy, scipy, t
 With --three-phase (proposal 0024, test 3): the cases F3, F4 and F5 on ChemSep's full three-phase stage (class
 ThreePhaseColumn below), written to validation/fixtures/columns-vll-three-phase.json, which test/columns-vll.test.js and
 test/columns-heteroazeotropic.test.js read. First: node validation/columns_vll_engine_starts.mjs (the starts of F4, F5).
+
+With --entrainer (proposal 0025, step 1): the cases F6 and F7 (ethanol dehydration with cyclohexane, a decanter, the
+columns that converge from the engine's entrainer start) on the same three-phase stage, written to
+validation/fixtures/columns-vll-entrainer.json, which test/columns-entrainer-start.test.js reads. First:
+node validation/columns_vll_engine_starts.mjs --entrainer.
 """
 import json
 import math
@@ -683,6 +688,24 @@ def main_three_phase():
     (ROOT / "validation" / "fixtures" / "columns-vll-three-phase.json").write_text(json.dumps(out, indent=1) + "\n")
 
 
+def main_entrainer():
+    """The cases of proposal 0025, step 1 (F6, F7) on ChemSep's three-phase stage, each started from the engine's profile
+    (validation/fixtures/columns-vll-entrainer-starts.json), perturbed. Writes validation/fixtures/columns-vll-entrainer.json."""
+    data = ROOT / "validation" / "data" / "columns" / "vll"
+    starts = json.loads((ROOT / "validation" / "fixtures" / "columns-vll-entrainer-starts.json").read_text())["cases"]
+    out = {"_about": "Written by validation/python/reference_mesh_vll.py --entrainer: the columns of proposal 0025, step 1 (the "
+                     "entrainer start) on ChemSep's full three-phase stage (The ChemSep Book, 2nd ed., eqs. 13.35-13.44), the "
+                     "independent check. Converged reference profiles are not validated against data.", "H_scale_J_mol": H_SCALE, "cases": {}}
+    for cid, start in starts.items():
+        print(cid, flush=True)
+        case = json.loads((data / f"{cid}.json").read_text())
+        th = TwoLiquids(case["components"], case["pressure_kPa"], case["thermo"]["model"])
+        prof = three_phase(case, start, th)
+        print("  ", prof["solver"], prof["check"], flush=True)
+        out["cases"][cid] = {"case": f"validation/data/columns/vll/{cid}.json", "three_phase": prof}
+    (ROOT / "validation" / "fixtures" / "columns-vll-entrainer.json").write_text(json.dumps(out, indent=1) + "\n")
+
+
 def main():
     f1 = json.loads((ROOT / "validation" / "data" / "columns" / "F1-butanol-water-two-liquids.json").read_text())
     out = {"_about": "Written by validation/python/reference_mesh_vll.py (W2's independent reference for two liquids on "
@@ -711,5 +734,7 @@ if __name__ == "__main__":
     import sys
     if "--three-phase" in sys.argv:
         main_three_phase()
+    elif "--entrainer" in sys.argv:
+        main_entrainer()
     else:
         main()
