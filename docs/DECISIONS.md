@@ -35,6 +35,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   calculate VLL rigorously as RadFrac does. Checked: CHEPTA's default VLL stage is RadFrac's stage model (rigorous,
   validated against ChemSep's three-phase stage); RadFrac's outer-loop split was tried and was not more robust here.
   Open: whether to build an inside-out solver (RadFrac's algorithm) or fix the three-phase flash failures first.
+  Done 2026-11-18 (docs/decisions/2026-11-18-01-vll-columns-rigorous.md): the three-phase flash fixed (all 11 Gomis
+  tie lines, checked against a new independent reference; the bubble-point boundary); the classic entrainer column
+  still does not converge (a start without the entrainer, a reflux pinned at 1.39 by the decanter, turning points and
+  two steady states): proposal 0025 drafted instead of a new solver; "smooth" still fails Lab's column 5 at 55,000
+  kg/h, so it stays an option. Waiting for the maintainer: the four questions of that file.
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record

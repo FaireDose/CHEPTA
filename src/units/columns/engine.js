@@ -666,7 +666,15 @@ export function solveCascade(opts = {}) {
       // a given maxIterations is the budget of each attempt: the attempt runs to it, without the early stop
       // (PATIENCE) that hands a slow attempt on to the next start or to the continuation (EA-12, 2026-11-14)
       const a = { dTmax: 20, maxIt: cap < Infinity ? cap : 50, patient: cap === Infinity };
-      const c = hasCondenser ? bubblePointStart(th, inp, fJ, HF, { R0 }) : sumRatesStart(th, inp, fJ, HF, { temperatures: R0 });
+      // a start whose own bubble points fail (a stage composition with no bubble point in the records' range) is
+      // recorded and the next start tried, not the column ended (2026-11-18: water + ethanol + cyclohexane, 40 stages)
+      let c;
+      try { c = hasCondenser ? bubblePointStart(th, inp, fJ, HF, { R0 }) : sumRatesStart(th, inp, fJ, HF, { temperatures: R0 }); }
+      catch (e) {
+        if (e?.code !== "NO_CONVERGENCE") throw e;
+        tried.push(`the ${hasCondenser ? "bubble-point" : "sum-rates"} start${R0 != null ? ` (${hasCondenser ? "a start reflux ratio of " : "temperatures "}${R0})` : ""} failed: ${e.message} (${took()})`);
+        continue;
+      }
       cold = { ...c, last: cold?.last };
       if (c.noSplit) { tried.push(`the bubble-point start with a start reflux ratio of ${R0}: its condensate holds one liquid, so it was not used (${took()})`); continue; }
       const r = newton(c.u, a);

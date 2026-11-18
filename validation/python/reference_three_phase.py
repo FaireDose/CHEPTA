@@ -14,6 +14,12 @@ step 5). Activity models with the ideal-gas vapour; the liquid model of referenc
     and reported next to it, with the Gibbs energy of each answer: near the boundaries it
     misses states of lower Gibbs energy (it returns two liquids where vapour and two liquids,
     or vapour and one liquid, have a lower Gibbs energy).
+  - With --gomis (2026-11-18): water + ethanol + cyclohexane (NRTL, the default sets) at the 11 measured VLLE tie
+    lines of Gomis et al. (2005; validation/data/lle/water_ethanol_cyclohexane_vlle_gomis2005.json), where the
+    engine's three-phase flash failed near the ternary heteroazeotrope: for the mean of each line's two liquids, the
+    two liquids at T from the Gibbs minimum (gibbs_min, polished), and the bubble temperature where their bubble
+    pressure is P (brentq); and T-P flashes of the feed of the line nearest the azeotrope below that temperature.
+    Writes validation/fixtures/three_phase_gomis.json.
 Neither part shares code with the JavaScript engine. Writes validation/fixtures/three_phase.json.
 
 Gibbs energy used for the comparisons: G/RT = sum over phases of beta sum_i x_i ln f_i, with
@@ -316,6 +322,61 @@ def tp_cases():
     return out
 
 
+def gomis_cases():
+    """Bubble points of the two liquids of each Gomis et al. (2005) tie line's mean, and T-P flashes below them."""
+    data = json.loads((OUT.parents[1] / "data" / "lle" / "water_ethanol_cyclohexane_vlle_gomis2005.json").read_text())
+    ids = data["components"]
+    assert ids == ["water", "ethanol", "cyclohexane"]
+    s = System(ids, "NRTL")
+    col = {k: i for i, k in enumerate(data["columns"])}
+    P = data["P_kPa"]
+
+    def liquids(z, T):
+        ph = [p for p in gibbs_min(s, z, T, P) if p["type"] == "liquid"]
+        assert len(ph) == 2, ph
+        return ph
+
+    out = []
+    for row in data["rows"]:
+        z1 = (row[col["x_1_I"]] + row[col["x_1_II"]]) / 2
+        z2 = (row[col["x_2_I"]] + row[col["x_2_II"]]) / 2
+        z = [z1, z2, 1 - z1 - z2]
+        start = liquids(z, row[col["T_K"]] - 1.0)
+
+        def pbub(T):
+            ph = polish(s, z, T, P, start)
+            return s.equilibrium(ph[0]["x"], T)[0] - P
+        T = brentq(pbub, row[col["T_K"]] - 3.0, row[col["T_K"]] + 3.0, xtol=1e-11)
+        ph = polish(s, z, T, P, start)
+        y = s.equilibrium(ph[0]["x"], T)[1]
+        out.append({"z": z, "spec": {"P": P, "VF": 0.0}, "T_K": T, "P_kPa": P, "phases": ph, "y": list(map(float, y)),
+                    "measured_T_K": row[col["T_K"]]})
+        print("Gomis line", row[col["T_K"]], f"T={T:.6f}", [round(v, 6) for v in y])
+    tp = []
+    z = out[-1]["z"]
+    for T in (325.0, 331.17, 333.0, 335.0):
+        ph = liquids(z, T)
+        ph = polish(s, z, T, P, ph)
+        assert s.equilibrium(ph[0]["x"], T)[0] < P  # below the bubble point: no vapour
+        tp.append({"z": z, "spec": {"T": T, "P": P}, "T_K": T, "P_kPa": P, "phases": ph, "G_RT": gibbs(s, T, P, ph)})
+        print("T-P", T, [(round(p["fraction"], 6), [round(v, 6) for v in p["x"]]) for p in ph])
+    return out, tp
+
+
+def main_gomis():
+    warnings.simplefilter("ignore", RuntimeWarning)
+    b, tp = gomis_cases()
+    path = OUT.parent / "three_phase_gomis.json"
+    path.write_text(json.dumps({
+        "_about": "Written by validation/python/reference_three_phase.py --gomis: water + ethanol + cyclohexane, NRTL "
+                  "(default sets), ideal-gas vapour, at 101.3 kPa. bubble: for the mean of each measured tie line of "
+                  "Gomis et al. (2005), the two liquids from the Gibbs minimum (scipy SLSQP, polished by the "
+                  "equal-fugacity equations) and the temperature where their bubble pressure is P. tp: T-P flashes of "
+                  "the feed of the last line below its bubble point (two liquids).",
+        "bubble": b, "tp": tp}, indent=1) + "\n")
+    print(f"wrote {len(b) + len(tp)} cases to {path}")
+
+
 def main():
     warnings.simplefilter("ignore", RuntimeWarning)
     b, point = binary_cases()
@@ -331,4 +392,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    if "--gomis" in sys.argv:
+        main_gomis()
+    else:
+        main()
