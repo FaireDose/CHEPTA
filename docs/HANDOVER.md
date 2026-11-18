@@ -417,3 +417,8 @@ question on 4: the proposal wrongly said feed_second_liquid "top" is refused wit
 without a decanter bypasses stages and condenser and is mixed into the distillate. Told J to correct it (mix into the
 liquid distillate after the condenser), record the answers, mark 0026 accepted. Next: build 0026 (engine PR, then
 workbench), 0025 step 2 (bottoms purity in MESH). Then 0.6.3 decision.
+
+18:45: #257 merged (main 027fba8). J asked to bring #260 onto main. Started (K) Opus session_01FPbeWVQYfmFQqV9mKbnoqg
+from claude/proposal-partial-condenser-m5, outcome claude/build-0026-condenser-engine: build 0026 steps 1-2 (engine,
+API, validation incl. Lab's methanol column). Next when J is done: (L) 0025 step 2 (bottoms purity in MESH; dehydration
+case by purity), told to coordinate with K in engine.js.
