@@ -355,3 +355,10 @@ DECISIONS.md open items + HANDOVER queue). Started (H) Opus session_01FPbeWYNvX8
 outcome claude/flowsheet-balance-absolute: absolute per-component balance check (#254 question 3; fail loudly).
 Running: F (column 11 sweep, own PR), H. Waiting for the user: which recap items go before 0.6.3 (recommended:
 merge #253/#255/#256/#254, H's balance check, proposal 0025 step 1, M5 condenser).
+
+11:25: Worker H finished: #257 (base claude/recycle-plateau = #254; rebase after #254 merges), head aa50d71. Checked
+locally: 1746 tests, 1742 pass, 0 fail, 3 skipped, 1 todo; no test lines removed; all open PRs merged together
+(#253 #255 #256 #254 #257; DECISIONS.md conflicts resolved by hand for the check): 1781, 1777 pass, 0 fail.
+solver.balanceTolerance 1e-4 of the fresh feed, per component, independent of the recycle tolerance (as COFE);
+refused in strict mode, warned otherwise. Four questions for the maintainer. Running: F (column 11 sweep).
+Merge order: #253, #255, #256 (retarget), #254 (E rebases), #257 (H rebases).
