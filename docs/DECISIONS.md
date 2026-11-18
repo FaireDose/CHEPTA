@@ -26,7 +26,19 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   replaces the follow-up of docs/decisions/2026-11-14-05), the bypass of a smaller one to the top or the bottom chosen
   by the user (no default by volatility), refused above 1 mol %; the smooth two-liquid stage the default once its tests
   pass; validated case ethanol + water + cyclohexane with a decanter.
-  Next: step 1 (the warning and the bypass), then step 2 (the smooth stage).
+  Built 2026-11-17 (docs/decisions/2026-11-17-01-two-liquid-columns.md): the warning, the bypass, the smooth stage
+  behind `two_liquid_stage: "smooth"`, the three-phase reference, F4 against Gomis et al. 2005. Lab's column 11
+  converges with acid (all seven inputs; the cause was the continuation's plain mean of ln K, now retried with the mean
+  weighted by the liquid). The smooth stage is **not** the default: with it Lab's column 5 does not converge. Waiting
+  for the maintainer: release 0.6.3; keep "smooth" an option; the weighted mean first; F4 without the high-reflux
+  azeotrope column (four questions in the decision file). The maintainer (2026-11-18): no release now; columns must
+  calculate VLL rigorously as RadFrac does. Checked: CHEPTA's default VLL stage is RadFrac's stage model (rigorous,
+  validated against ChemSep's three-phase stage); RadFrac's outer-loop split was tried and was not more robust here.
+  The maintainer agreed with all four recommendations (2026-11-18): no release now; "smooth" stays an option; the
+  continuation order unchanged until Lab's plants are rerun with the weighted mean first; F4 accepted as built.
+  Column 11 checked for multiple steady states near the paper's flow (136-141 kmol/h, swept up and down): one solution, the jump in the
+  two-liquid stages is the binodal crossed. Open: the three-phase flash failures (PR #256); then whether an inside-out
+  solver (RadFrac's algorithm) is still wanted.
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record

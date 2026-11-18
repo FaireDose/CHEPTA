@@ -840,7 +840,9 @@ export function runUnit(type, { sys, inlets = {}, spec = {}, outletCount, reacti
 export const WARNING_CODES = ["DRY_STAGE", "FLOODING", "WEEPING", "VOLATILITY_VARIES", "CONDENSATION", "SECOND_SOLID", "SLURRY", "DENSITY_MISSING", "METHOD_RANGE", "METHOD_SPLIT", "FLOW_TRANSITION", "FITTINGS_LAMINAR",
   "TWO_PHASE_VISCOUS", "TWO_PHASE_ELEVATION", "FEED_VAPOUR",
   // two liquids predicted only, or contradicted by one-liquid measurements (proposal 0019, section 3)
-  "TWO_LIQUIDS"];
+  "TWO_LIQUIDS",
+  // a column feed that holds a second liquid above the column's limit: a decanter first (proposal 0024, (a))
+  "FEED_TWO_LIQUIDS"];
 
 /** A block's warnings: each { code, message, stage?, remedy? }, its code one of WARNING_CODES (a bug otherwise). */
 function checkWarnings(u, list) {

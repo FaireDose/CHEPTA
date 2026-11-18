@@ -164,6 +164,45 @@ specification: the boil-up ratio, the reboiler duty, or a product flow (not the 
 No outlet port is added: the decanter's distillate leaves by the distillate port; where both liquids of a condensate
 are wanted as products, the flash drum's liquid2 outlet already does it.
 
+**Two liquids in a column: proposal 0024** (the maintainer's answers of 2026-11-14; decision
+[2026-11-17-01](../decisions/2026-11-17-01-two-liquid-columns.md)):
+
+- *A feed that holds two liquids.* Every column feed is flashed at its own T and P in the column's method (the stream's
+  three-phase flash); its second liquid is its smaller one. Above `feed_second_liquid_limit` (default 0.01, a share of
+  the column's feed in mol; this project's choice, the user can change it per column) the result carries the warning
+  `FEED_TWO_LIQUIDS` ("put a decanter before the column", with the mol and mass shares); the column is still calculated.
+- *A small second liquid around the stages:* `feed_second_liquid` `"stages"` (the default: the whole feed onto its
+  stage), `"top"` or `"bottom"` (the user's choice; no default by volatility). With `"top"` the second liquid is mixed
+  into the distillate (with a decanter: it is the decanter's feed, split there with the condensate); with `"bottom"`
+  into the bottoms; mixing is a P-H flash at the product's pressure. The stages see the rest of the feed; the duties do
+  not include heating or vaporizing the bypassed liquid (with a decanter, its condenser duty includes bringing it to the
+  decanter's temperature). Refused above the limit (`BAD_INPUT`), naming a decanter, `"stages"`, top and bottom.
+  `state.feed_second_liquid` lists each feed's second liquid and what was bypassed.
+- *The smooth two-liquid stage,* `two_liquid_stage: "smooth"` (`"split"`, the default, is the stage above). On each
+  stage the second liquid's fraction β and the tangent-plane distance s of a trial liquid W are complementary,
+  0 ≤ β ⊥ s ≥ 0, smoothed as β + s − √((β − s)² + ε²) = 0 (Dabadghao et al., AIChE J. 2023, doi:10.1002/aic.18029,
+  section 2.4; free copy https://www.osti.gov/servlets/purl/1924675, the submitted manuscript), with
+  x′ = (x − β w)/(1 − β) and ln W_i + ln γ_i(w) = ln x′_i + ln γ_i(x′); these c + 2 stage-local equations are solved
+  for each stage's (x, T), so the engine keeps its 2c + 1 variables per stage. ε is lowered from 1e-3 to its final
+  value 1e-5 (the largest at which every two-liquid column test still passes; 1e-4 fails five), each column started
+  from the last. Where the smoothed equations have no root (near a plait point) the stage takes their limit ε → 0:
+  one liquid if its liquid is stable, else the split above. After convergence every stage on the one-liquid side
+  (β ≤ s) is checked stable by the tangent-plane test (`solver.two_liquid_stage.check`). It matches every
+  independent reference as `"split"` does, but is not the default: with it CHEPTA-Lab's column 5 does not converge
+  (see the decision).
+- *The continuation's mean* (2026-11-17): as the column's very last attempt (no `max_iterations`), the continuation in
+  the relative volatilities is tried again with the mean of ln K weighted by each stage's liquid. With the plain mean a
+  trace component weighs as much as the main ones: 0.001 mass % of acetic acid stopped CHEPTA-Lab's column 11 at
+  90.92 % of the way; with the weighted mean it converges.
+
+**Checked against ChemSep's full three-phase stage** (`test/columns-heteroazeotropic.test.js`): the cases F3, F4 (water +
+ethanol + cyclohexane with a decanter, proposal 0024's validated case) and F5 (CHEPTA-Lab's column 11 without acid;
+F4 and F5 in `validation/data/columns/vll/`)
+solved by `validation/python/reference_mesh_vll.py --three-phase` on The ChemSep Book's eqs. 13.35-13.44 (both liquid
+flows and compositions as unknowns; the two-liquid stages given and confirmed after the solution), fixture
+`validation/fixtures/columns-vll-three-phase.json`, with both stage formulations, within F1's tolerances. F4's model
+against the measured VLLE of Gomis et al. (2005, ThermoML Archive): the decision file states the deviations.
+
 **The result:** each stage's whole liquid (x) as before, and `liquids` (null for one liquid): the light and the heavy
 liquid, their flows and compositions and densities (for the decanter, which one is the reflux); `state.two_liquid_stages`.
 In the workbench: "Liquids on the stages: One / Look for two", the Decanter and the refluxed liquid in the panel; the

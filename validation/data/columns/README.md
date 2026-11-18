@@ -48,3 +48,11 @@ Milestone M2b (the cases F1 with `expected_VLL`, F2, F3, G1 to G3, and `hydrauli
   open worked example of Fermeglia 2021 with its published numbers; H2, the largest required area against the lowest
   flooding velocity); reference `validation/python/reference_hydraulics.py`, fixture
   `validation/fixtures/column_hydraulics.json`.
+
+Proposal 0024 (two liquids in columns, 2026-11-17): `vll/` holds F4 (water + ethanol + cyclohexane with a decanter, the
+validated case of heterogeneous azeotropic distillation) and F5 (CHEPTA-Lab's product column 11 of the ethyl acetate
+plant, without its acetic acid), in the format above with a decanter's single specification (`bottoms_flow_mol_s`) or
+a feed given by `T_K` (part vapour). Their reference is ChemSep's full three-phase stage
+(`validation/python/reference_mesh_vll.py --three-phase`, fixture `validation/fixtures/columns-vll-three-phase.json`,
+which also holds F3), started from the engine's profiles (`validation/columns_vll_engine_starts.mjs`).
+

@@ -77,7 +77,9 @@
  *     with every component's ln K replaced by their mean (no separation, an easy column), and the differences are
  *     brought back in steps, each solve started from the previous one (this project's choice of a continuation method;
  *     NeqSim reaches its product specifications in steps too). Long columns with very pure products need it: their
- *     equations are nearly singular, and a small residual can hide a large distance from the solution;
+ *     equations are nearly singular, and a small residual can hide a large distance from the solution. The mean is the
+ *     plain mean over the components; after every other attempt (step 4), the mean weighted by the stage's liquid
+ *     (CONTINUATION_MEANS; 2026-11-17: a trace component weighs as much as the main ones in the plain mean);
  *  4. if all of that fails (and no maxIterations is given), Newton resumed from where each cold start stopped, to
  *     LONG_NEWTON iterations in all, without the early stop. A solver that does not converge says so
  *     (NO_CONVERGENCE) with what it tried and its residuals by group: it is not a statement that the column has no
@@ -103,6 +105,14 @@
  * hV(y, T), bubbleT(x), stable?(x, T), warnings?(T) }, at the column's pressure (j, the stage, is only a hint for the
  * two-liquid adapter's starts). The column's own property method (milestone M2b) is the block's: it passes that
  * method's system, and the P-H boundary at its streams (src/units/columns/column.js). *
+ * Two liquids on the stages (phases "VLL") have two formulations (two_liquid_stage; proposal 0024, part (c)): "split",
+ * the default, the stage's tangent-plane test and liquid-liquid split (two-liquids.js); "smooth", a smoothed
+ * complementarity between the second liquid's fraction and the tangent-plane distance, solved with its smoothing
+ * parameter lowered in steps (SMOOTH_EPS, each step started from the last solution), the result's solver record
+ * holding the steps and the check of every stage's phases. A decanter's reflux keeps its one-liquid K-values.
+ * A second liquid of a feed that bypassed the stages into the decanter (proposal 0024, part (b)) enters as
+ * opts.condenserFeed: a feed of stage 1, split there with the condensate.
+ *
  * A dimerizing acid in the vapour (acetic acid; the chemical theory of src/thermo/vapour.js; decision 2026-11-11-08):
  * the stage's x, y and flows are apparent (a dimer counts as two molecules), and its K-values are sys.lnKAssociation,
  * ln K_i = ln(gamma_i f_i^0 / (phi_i P)) with the fugacity of each component the partial pressure of its monomer at the
@@ -113,7 +123,7 @@ import { fail } from "../../util/errors.js";
 import { anyBubbleT } from "../../equilibrium/bubble-any.js";
 import { liquidTangentPlane } from "../../equilibrium/stability.js";
 import { tpdStability } from "../../equilibrium/eos-stability.js";
-import { twoLiquidThermo } from "./two-liquids.js";
+import { twoLiquidThermo, SMOOTH_EPS, TWO_LIQUID_STAGES } from "./two-liquids.js";
 import { solveLiquidCascade } from "./extraction.js";
 import { DESIGN_SPECS, hasDesign, solveSpecified } from "./specifications.js";
 
@@ -146,6 +156,12 @@ const PATIENCE = 12;
  * 46 to 53 iterations; 2026-11-14, EA-12), which PATIENCE cuts off. This project's choice of the number.
  */
 const LONG_NEWTON = 100;
+/**
+ * The means of the continuation in the relative volatilities: "plain", the mean of ln K_i over the components (as
+ * before 2026-11-17), then, as the very last attempt, "liquid", the mean weighted by the stage's liquid. This project's
+ * choice (proposal 0024's work on CHEPTA-Lab's column 11; docs/decisions/2026-11-17-01-two-liquid-columns.md).
+ */
+const CONTINUATION_MEANS = Object.freeze(["plain", "liquid"]);
 /**
  * The tolerances a solution must meet, by group: material in mol/s relative to the total feed, energy in W relative to
  * the total feed times H_SCALE, equilibrium and summation in mole fraction, specifications relative to their value
@@ -357,9 +373,40 @@ export function solveCascade(opts = {}) {
   if (hasDesign(opts)) return solveSpecified(opts, solveCascade, th);
   const phases = opts.phases ?? "VL";
   const inp = checkInput({ ...opts, phases }, n);
+  // a second liquid that bypassed the stages into the decanter (proposal 0024, (b), feed_second_liquid "top"): the
+  // decanter's feed, split there with the condensate; it counts in the feed and in what leaves as products
+  const cf = opts.condenserFeed ?? null;
+  if (cf) {
+    if (!inp.decanter) throw fail("BAD_INPUT", "Column: a feed into the condenser is built only for a decanter (a bypassed second liquid).");
+    if (!Array.isArray(cf.flows) || cf.flows.length !== n || cf.flows.some(v => !(v >= 0)) || !Number.isFinite(cf.H_W)) throw fail("BAD_INPUT", `Column: the decanter's feed needs ${n} component flows, none negative, and its enthalpy flow H_W.`);
+    inp.F += sum(cf.flows); inp.Fnet += sum(cf.flows);
+  }
+  const stageForm = opts.twoLiquidStage ?? "split";
+  if (!TWO_LIQUID_STAGES.includes(stageForm)) throw fail("BAD_INPUT", `Column: two_liquid_stage must be ${TWO_LIQUID_STAGES.map(v => `"${v}"`).join(" or ")} (got ${JSON.stringify(opts.twoLiquidStage)}).`);
   if (phases === "VLL" && !th.twoLiquids) {
     if (!opts.sys) throw fail("BAD_INPUT", "Column: two liquids on the stages need the property system (sys), or an adapter made by twoLiquidThermo.");
-    th = twoLiquidThermo(th, opts.sys);
+    th = twoLiquidThermo(th, opts.sys, { smooth: stageForm === "smooth" });
+  }
+  if (th.smooth && !opts.epsStep) {
+    // the smooth two-liquid stage (proposal 0024, (c)): solved with the largest smoothing parameter, then with each
+    // smaller one from the last solution; the last is the final value (SMOOTH_EPS)
+    let prev = opts.start ?? null, r = null;
+    const ladder = [];
+    for (const e of SMOOTH_EPS) {
+      th.setEps(e);
+      try {
+        r = solveCascade({ ...opts, thermo: th, start: prev, epsStep: e === SMOOTH_EPS[SMOOTH_EPS.length - 1] ? "final" : "intermediate" });
+      } catch (err) {
+        if (err?.code === "NO_CONVERGENCE" && ladder.length) {
+          err.message = `${err.message} (The smooth two-liquid stage: solved with eps ${ladder.map(q => q.eps).join(", ")}; not with eps ${e}.)`;
+        }
+        throw err;
+      }
+      ladder.push({ eps: e, iterations: r.iterations, start: r.solver.start });
+      prev = r;
+    }
+    return { ...r, iterations: sum(ladder.map(q => q.iterations)), solver: { ...r.solver, two_liquid_stage: { formulation: "smooth", eps: SMOOTH_EPS[SMOOTH_EPS.length - 1], steps: ladder,
+      check: r.solver.two_liquid_check } } };
   }
   const { N, F, feeds, slot, hasCondenser, hasReboiler, Q: QJ } = inp;
   // a decanter is a total condenser (no vapour leaves) whose liquid splits: stage 1's l holds the reflux liquid, its v
@@ -385,6 +432,7 @@ export function solveCascade(opts = {}) {
   const fJ = Array.from({ length: N }, () => new Array(n).fill(0)), HF = QJ.slice();   // feeds' enthalpy and stage duties
   for (const f of feeds) { f.flows.forEach((v, i) => { fJ[f.stage][i] += v; }); HF[f.stage] += f.H_W; }
   let Ftot = inp.Fnet;   // what leaves as distillate and bottoms: the feeds less the side draws
+  if (cf) { cf.flows.forEach((v, i) => { fJ[0][i] += v; }); HF[0] += cf.H_W; }
   const scaleE = F * H_SCALE;
   const UJ = new Array(N).fill(0), WJ = new Array(N).fill(0);   // liquid and vapour side draws of each stage, mol/s
   for (const d of inp.draws) (d.phase === "liquid" ? UJ : WJ)[d.stage] += d.rate;
@@ -401,8 +449,11 @@ export function solveCascade(opts = {}) {
     if (j === 0 && total) {
       // the bubble vapour of the condenser's liquid (K may depend on y with a non-ideal vapour)
       y = x.slice();
+      // a decanter's reflux is one of its two liquids: with the smooth stage, its one-liquid K-values (the smooth
+      // equations of a liquid on the binodal would put a smoothed second liquid beside it)
+      const thK = decanter && th.smooth ? th.base : th;
       for (let k = 0; k < 50; k++) {
-        K = th.lnK(x, y, T, j).map(Math.exp);
+        K = thK.lnK(x, y, T, j).map(Math.exp);
         const w = x.map((xi, i) => K[i] * xi), s = sum(w), yn = w.map(a => a / s);
         const ch = Math.max(...yn.map((a, i) => Math.abs(a - y[i])));
         y = yn;
@@ -418,7 +469,7 @@ export function solveCascade(opts = {}) {
       y = v.map(a => Math.max(a, 0) / V);
       K = th.lnK(x, y, T, j).map(Math.exp);
     }
-    const hL = th.hL(x, T, j), hV = j === 0 && total ? null : th.hV(y, T);
+    const hL = (j === 0 && decanter && th.smooth ? th.base : th).hL(x, T, j), hV = j === 0 && total ? null : th.hV(y, T);
     if (!(Number.isFinite(hL) && (hV === null || Number.isFinite(hV)) && K.every(Number.isFinite))) throw fail("NO_CONVERGENCE", "Column: a property is not finite at a trial point.");
     if (decanter && j === 0 && !(Number.isFinite(hD) && Kd.every(Number.isFinite))) throw fail("NO_CONVERGENCE", "Column: a property is not finite at a trial point.");
     return { l, v, T, L, V, x, y, K, hL, hV, xd, Kr, Kd, hD };
@@ -625,29 +676,42 @@ export function solveCascade(opts = {}) {
       if (r.P) { cold.last = r; if (r.iterations < LONG_NEWTON) slow.push({ r, startName }); }
     }
   }
-  // (quick: a trial column of the specifications' outer loop: Newton from its neighbour gives up early, then the
-  // bubble-point start; no continuation)
-  if (!result && !opts.homotopy && !opts.quick) {
-    // continuation: a column whose components all have the same volatility (ln K_i replaced by its mean over the
-    // components) is solved first, and the differences are brought back in steps, each solve started from the last.
-    // Long columns with very pure products need it: their equations are nearly singular, and Newton from the
-    // bubble-point start does not reach the solution
+  // continuation: a column whose components all have the same volatility (ln K_i replaced by its mean over the
+  // components) is solved first, and the differences are brought back in steps, each solve started from the last.
+  // Long columns with very pure products need it: their equations are nearly singular, and Newton from the bubble-point
+  // start does not reach the solution. The mean is the plain mean over the components; as the very last attempt (no
+  // maxIterations given), the mean weighted by the stage's liquid, sum_i x_i ln K_i (CONTINUATION_MEANS): with the plain
+  // mean a trace component (0.001 mass % of acetic acid in CHEPTA-Lab's column 11, 2026-11-17) weighs as much as the
+  // main ones and changes the whole path, whatever its amount. Last, so that every column that converged before
+  // converges by the same path
+  const continuation = weight => {
+    const name = weight === "plain" ? "continuation in the relative volatilities" : "continuation in the relative volatilities, the mean weighted by the liquid";
     let t = 0, dt = 0.25, prev = null, steps = 0;
     while (t < 1 && dt >= 1 / 256 && steps < 60) {
       const tn = Math.min(1, t + (prev ? dt : 0)), steps0 = steps++;
-      const toward = f => (x, y, T, j) => { const a = f(x, y, T, j), mean = sum(a) / a.length; return a.map(v => tn * v + (1 - tn) * mean); };
+      const toward = f => (x, y, T, j) => {
+        const a = f(x, y, T, j), mean = weight === "plain" ? sum(a) / a.length : sum(a.map((v, i) => v * x[i])) / sum(x);
+        return a.map(v => tn * v + (1 - tn) * mean);
+      };
       const blend = tn === 1 ? th : { ...th, lnK: toward(th.lnK), ...(th.base ? { base: { ...th.base, lnK: toward(th.base.lnK) } } : {}) };
       try {
         const r = solveCascade({ ...opts, thermo: blend, start: prev, homotopy: tn < 1 ? "step" : "last" });
         prev = r; t = tn; dt = Math.min(0.5, dt * 1.5);
-        if (tn === 1) return { ...r, solver: { ...r.solver, start: `continuation in the relative volatilities (${steps0 + 1} steps)`, tried: [...tried, `continuation in the relative volatilities: solved in ${steps0 + 1} steps, ${took()}`] } };
+        if (tn === 1) return { ...r, solver: { ...r.solver, start: `${name} (${steps0 + 1} steps)`, tried: [...tried, `${name}: solved in ${steps0 + 1} steps, ${took()}`] } };
       } catch (e) {
         if (e?.code !== "NO_CONVERGENCE") throw e;
         if (!prev) break;
         dt /= 2;
       }
     }
-    tried.push(`continuation in the relative volatilities (stopped at ${fmt(t * 100)} % of the way, after ${steps} steps, ${took()})`);
+    tried.push(`${name} (stopped at ${fmt(t * 100)} % of the way, after ${steps} steps, ${took()})`);
+    return null;
+  };
+  // (quick: a trial column of the specifications' outer loop: Newton from its neighbour gives up early, then the
+  // bubble-point start; no continuation)
+  if (!result && !opts.homotopy && !opts.quick) {
+    const r = continuation(CONTINUATION_MEANS[0]);
+    if (r) return r;
   }
   // the last attempts (no maxIterations given): Newton resumed from where each cold start stopped, in their order, to
   // LONG_NEWTON iterations in all, without the early stop (EA-12, 2026-11-14)
@@ -657,6 +721,10 @@ export function solveCascade(opts = {}) {
     tried.push(`Newton resumed from where the ${startName} stopped, without the early stop (${r0.iterations + r.iterations} iterations in all, ${took()}${r.converged ? "" : `: ${r.why}`})`);
     if (r.converged) result = { ...r, iterations: r0.iterations + r.iterations, start: `${startName}, Newton resumed without the early stop` };
     else if (r.P) cold.last = r;
+  }
+  if (!result && !opts.homotopy && !opts.quick && cap === Infinity) {
+    const r = continuation(CONTINUATION_MEANS[1]);
+    if (r) return r;
   }
   if (!result) {
     const last = cold?.last;
@@ -678,10 +746,12 @@ export function solveCascade(opts = {}) {
   // ---- the solution
   const P = result.P;
   const { g, stageRes } = groups(P);
+  // the checks of the solution below are those of the column's answer: not of a step of a continuation
+  const checked = opts.homotopy !== "step" && opts.epsStep !== "intermediate";
   const Qc = hasCondenser ? energyIn(0, null, P[0], P[1]) : 0;              // heat removed by the condenser, W
   const Qr = hasReboiler ? -energyIn(N - 1, P[N - 2], P[N - 1], null) : 0;   // heat added by the reboiler, W
   let decanterLiquids = null;
-  if (decanter && opts.homotopy !== "step") {
+  if (decanter && checked) {
     const p = P[0], gap = Math.max(...p.x.map((v, i) => Math.abs(v - p.xd[i])));
     if (gap < 1e-6) {
       throw fail("NO_CONVERGENCE", `Column: the decanter's two liquids came out the same (${th.names.map((nm, i) => `${nm} ${fmt(p.x[i])}`).join(", ")}): the condensate holds one liquid here, so the decanter has nothing to separate. Use a total condenser, or other specifications (a condensate inside the two-liquid region).`);
@@ -694,11 +764,32 @@ export function solveCascade(opts = {}) {
     const one = (x, flow, rho) => ({ x, flow, rho });
     decanterLiquids = { [inp.refluxLiquid]: one(p.x, p.L, rr), [inp.refluxLiquid === "light" ? "heavy" : "light"]: one(p.xd, p.V, rd), named: rr != null && rd != null ? "density" : "as asked", reflux: inp.refluxLiquid };
   }
+  // the smooth stage's check (proposal 0024, (c)): a stage on the one-liquid side of its complementarity (beta <= s)
+  // must pass the tangent-plane test; one on the two-liquid side has w and x' apart (smoothNewton refuses the trivial
+  // solution). A stage that fails is reported, never returned
+  let twoLiquidCheck = null;
+  if (th.smooth && checked) {
+    const bad = [];
+    let two = 0, one = 0;
+    for (let j = 0; j < N; j++) {
+      if (j === 0 && total) continue;
+      const s = th.split(P[j].x, P[j].T, j);
+      if (s && s.beta > s.s) { two++; continue; }
+      one++;
+      const st = th.base.stable ? th.base.stable(P[j].x, P[j].T) : { stable: true };
+      if (!st.stable) bad.push(j + 1);
+    }
+    if (bad.length) {
+      throw fail("NO_CONVERGENCE", `Column: the smooth two-liquid stage converged to one liquid on stage${bad.length > 1 ? "s" : ""} ${bad.join(", ")}, whose liquid is not stable as one liquid (tangent-plane test): this answer is not returned.`, { stages: bad });
+    }
+    twoLiquidCheck = { stages_two_liquids: two, stages_one_liquid: one, passed: true };
+  }
   // the phase-stability check: a second liquid on a stage is refused, never returned as a metastable answer
-  if (th.twoLiquids && opts.homotopy !== "step") {
+  if (th.twoLiquids && checked) {
     // two liquids are represented; a third is not (as by the flash)
     const third = [];
     for (let j = 0; j < N; j++) {
+      if (j === 0 && decanter && th.smooth) continue;   // the reflux: one liquid of the decanter (its own check above)
       const s = th.third(P[j].x, P[j].T, j);
       if (s) third.push({ stage: j + 1, T_K: P[j].T, x: s.x, trial: s.trial });
     }
@@ -707,7 +798,7 @@ export function solveCascade(opts = {}) {
       throw fail("PHASE_SPLIT", `Column: a third liquid would form on stage${third.length > 1 ? "s" : ""} ${third.map(s => s.stage).join(", ")} (stage ${w.stage} at ${fmt(w.T_K)} K: its liquid ${th.names.map((nm, i) => `${nm} ${fmt(w.x[i])}`).join(", ")} splits again). The column holds a vapour and at most two liquids on each stage, as the flash drum does, so it does not return this answer.`,
         { stages: third });
     }
-  } else if (th.stable && opts.homotopy !== "step") {
+  } else if (th.stable && checked) {
     const split = [];
     for (let j = 0; j < N; j++) {
       const s = th.stable(P[j].x, P[j].T);
@@ -797,7 +888,7 @@ export function solveCascade(opts = {}) {
       draws: inp.draws.map(d => { const p = P[d.stage], liq = d.phase === "liquid";
         return { stage: d.stage + 1, phase: d.phase, rate: d.rate, flows: (liq ? p.x : p.y).map(a => a * d.rate), T_K: p.T, H_W: d.rate * (liq ? p.hL : p.hV) }; }) },
     duties: { condenser_W: Qc, reboiler_W: Qr },
-    solver: { method: "Naphtali-Sandholm (Newton on all MESH equations)", start: result.start, tried },
+    solver: { method: "Naphtali-Sandholm (Newton on all MESH equations)", start: result.start, tried, ...(twoLiquidCheck ? { two_liquid_check: twoLiquidCheck } : {}) },
   };
 }
 
