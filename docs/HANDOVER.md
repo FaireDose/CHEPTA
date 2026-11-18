@@ -410,3 +410,10 @@ cyclohexane) converges as the last attempt. Ready to merge. Running: H (rebase),
 
 18:25: Worker J finished: #260 (proposal 0026, M5 vapour + liquid distillate condenser; docs only). Seven questions.
 Asked J to renumber its decision file to 2026-11-18-05 (02 is #257's, 03/04 #258/#259). Build after #259 merges.
+
+18:40: #259 merged (main 323e8ea). #257 rebased by H (head 28a7984; note refs/pull/257/head lagged, fetch the branch):
+merged with main checked: 1791 tests, 1787 pass, 0 fail, 3 skipped. Ready. The maintainer: OK with all seven of #260,
+question on 4: the proposal wrongly said feed_second_liquid "top" is refused with "vapour_liquid"; on main "top"
+without a decanter bypasses stages and condenser and is mixed into the distillate. Told J to correct it (mix into the
+liquid distillate after the condenser), record the answers, mark 0026 accepted. Next: build 0026 (engine PR, then
+workbench), 0025 step 2 (bottoms purity in MESH). Then 0.6.3 decision.
