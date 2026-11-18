@@ -36,7 +36,7 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   validated against ChemSep's three-phase stage); RadFrac's outer-loop split was tried and was not more robust here.
   The maintainer agreed with all four recommendations (2026-11-18): no release now; "smooth" stays an option; the
   continuation order unchanged until Lab's plants are rerun with the weighted mean first; F4 accepted as built.
-  Column 11 checked for multiple steady states near the paper's flow (139-140 kmol/h): one solution, the jump in the
+  Column 11 checked for multiple steady states near the paper's flow (136-141 kmol/h, swept up and down): one solution, the jump in the
   two-liquid stages is the binodal crossed. Open: the three-phase flash failures (PR #256); then whether an inside-out
   solver (RadFrac's algorithm) is still wanted.
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;

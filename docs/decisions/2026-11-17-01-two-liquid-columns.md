@@ -121,18 +121,23 @@ previous one (scratch sweep, not a test):
 
 | B, kmol/h | stages with two liquids | water in the product, mass % | ethyl acetate, mass % | reboiler, kW |
 |---|---|---|---|---|
-| 136 to 139 (0.5 steps, upward) | 1 | 0.0000 | 99.977 | 7724 to 7616 |
+| 136 to 139 (0.5 steps) | 1 | 0.0000 | 99.977 | 7724 to 7616 |
 | 139.25 | 28 | 0.0098 | | |
 | 139.5 | 29 | 0.0211 | 99.948 | 7596 |
 | 140 | 29 | 0.0438 | 99.922 | 7576 |
+| 140.5 | 30 | 0.0664 | 99.897 | 7556 |
+| 141 | 30 | 0.0889 | 99.873 | 7536 |
 
 - 139 started from 140's solution and 140 started from 139's give the same solutions as their own starts: no second
   steady state was found there.
 - The two-liquid region grows from 1 to 28 stages between 139 and 139.25 kmol/h, but the product's water rises
   continuously from zero: at a larger product flow, water that went overhead leaves at the bottom, and the stages
   above the feed cross the binodal. The jump in the stage count is the binodal being crossed, not a solver artefact.
-- Checked at these points only, not over the whole range: a downward sweep and B above 140 are below (added when the
-  run finished) or not done.
+- The sweep run back down, from 141 to 139 kmol/h in 0.5 steps, each step started from the one above, gives the same
+  solution at every point to the digits shown, across the jump included (139: one two-liquid stage, no water): no
+  hysteresis, so no second steady state on this path.
+- Checked from 136 to 141 kmol/h only, along one parameter (B, at R = 3); multiplicity in other specifications is not
+  excluded.
 
 ## The maintainer's answer to the four questions (2026-11-18)
 
