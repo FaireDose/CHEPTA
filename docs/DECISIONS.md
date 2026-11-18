@@ -10,6 +10,23 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Recycle solver safeguards, Lab's request 14** (docs/decisions/2026-11-14-08-recycle-safeguards.md): built: Broyden
+  rejects a pass ten times worse (a step reduction, as COFE's line search), a finite-difference Jacobian on a stall
+  (COFE's "Jacobian ... when required"); a block that fails in a loop stops it at once, named (the maintainer,
+  2026-11-18; the first version's retry was removed: no simulator read documents it); an early warning when a component
+  keeps accumulating or draining (the maintainer, 2026-11-18). The flowsheet suite takes the same steps as before. The
+  plateau of Lab's plant is its specification (column 11's product fixed at 141.5 kmol/h takes 0.42 kmol/h more ester
+  than is formed; the excess ethanol has no way out). The maintainer's answers (2026-11-18): Lab specifies the ethanol
+  feed by a design specification and column 11 by its distillate or a purity; the growth limit stays 10^6; an absolute
+  per-component balance check follows in PR #257; the numbers are kept; Lab's plant tests stay opt-in. Closed once
+  merged.
+- **The plant's balance on its own tolerance** (docs/decisions/2026-11-18-02-flowsheet-balance-absolute.md): built
+  `solver.balanceTolerance` (1e-4 of the fresh feed, per component, not loosened with the recycle tolerance, as COFE
+  keeps a mass balance tolerance beside its recycle tolerance; DWSIM only reports its residual); beyond it the strict
+  mode refuses and the lenient mode warns, "check the specifications first". Decided (the maintainer, 2026-11-18):
+  1e-4 of the fresh feed; one switch (the range mode, its Settings hint says so); the total feed as the scale (per
+  component only when a case needs it); the "grows without bound" refusal says whether the loop drains or accumulates.
+  Nothing open; closed once merged.
 - **Column fixes from CHEPTA-Lab's 0.6.2 requests** (docs/decisions/2026-11-14-05-column-fixes-lab-062.md): built
   EA-12/M3 (max_iterations governs; a last long Newton attempt), EA-13/M2 (a purity inside the reached range is never
   OUT_OF_RANGE), EA-9/M1 for CO and N2 traces, the EA-8 message, M4. Open: (a) acetic acid traces in two-liquid
@@ -18,8 +35,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   a simpler treatment of a small immiscible part (out at the top or the bottom): a short proposal next; (b) M5, a
   condenser with a vapour and a liquid distillate at a given pressure and vapour ratio: accepted in principle, proposal
   then build; proposal 0026 accepted 2026-11-18 (docs/decisions/2026-11-18-05-vapour-liquid-condenser-proposal.md: the
-  seven recommended answers; feed_second_liquid "top" mixes into the liquid distillate); build after proposal 0025, step 1; (c) LONG_NEWTON = 100 and the 0.1 mol % trace level: kept; (d) the recycle plateau near 1e-3: a
-  flowsheet-solver task after the design specifications. Follow-up answers (2026-11-14): the three-part proposal
+  seven recommended answers; feed_second_liquid "top" mixes into the liquid distillate); steps 1-2 being built after
+  proposal 0025, step 1; (c) LONG_NEWTON = 100 and the 0.1 mol % trace level: kept; (d) the recycle plateau near 1e-3: taken
+  up in docs/decisions/2026-11-14-08-recycle-safeguards.md. Follow-up answers (2026-11-14): the three-part proposal
   aimed at heterogeneous azeotropic distillation with an entrainer (proposal 0024; its share and the bypass's direction
   are in the item below); the condenser takes T, the vapour flow or the vapour share.
 - **Two liquids in columns** (proposal 0024; docs/decisions/2026-11-14-07-two-liquids-in-columns.md): answered on
@@ -45,8 +63,15 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   points and two steady states): proposal 0025 drafted instead of a new solver; "smooth" still fails Lab's column 5 at
   55,000 kg/h, so it stays an option. Answered by the maintainer (2026-11-18): the flash fixes accepted; proposal 0025
   accepted, step 1 (the entrainer start) to a new worker, then step 2; the decanter option to reflux a share of the
-  other liquid waits for CHEPTA-Lab's answer on whether its flowsheets need it; "smooth" stays an option. Open: build
-  0025 step 1; ask CHEPTA-Lab about the decanter option.
+  other liquid waits for CHEPTA-Lab's answer on whether its flowsheets need it; "smooth" stays an option.
+  Built 2026-11-18 (docs/decisions/2026-11-18-03-entrainer-start.md): proposal 0025 step 1, the entrainer start, tried
+  only where every bubble-point start's condensate holds one liquid; F6 and F7 (12 % water, 3 % cyclohexane, 20 and 30
+  stages) converge and match the three-phase reference; the "dry-ethanol" specification of 2026-11-18-01 (B = 66.0 with
+  1.17 % cyclohexane) has no solution with this decanter, and near-dry columns (B = 67) still do not converge.
+  Answered by the maintainer (2026-11-18; docs/decisions/2026-11-18-04-entrainer-start-last.md): the entrainer start
+  also as the very last attempt (built: F4's column with 10 % cyclohexane converges); step 2 a bottoms purity among the
+  MESH equations first, arc-length continuation only if that is not enough; the dehydration case specified by bottoms
+  purity. Open: build proposal 0025 step 2; ask CHEPTA-Lab about the decanter option.
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record

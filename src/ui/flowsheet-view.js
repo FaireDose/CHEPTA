@@ -1534,6 +1534,8 @@ export function flowsheetView(ctx) {
   // records used outside their range, once per component and property, with the farthest distance and the blocks
   // (the maintainer, 2026-11-13): one line each in the Warnings tab, the whole text when opened
   for (const e of res?.extrapolations ?? []) notes.append(warning(e.message, { title: e.short, attrs: { role: "note", "data-fk": "fs-extrapolation" } }));
+  // the plant out of balance beyond solver.balanceTolerance of its feed (decision 2026-11-18-02): open, it is the answer's
+  for (const w of res?.balance?.warnings ?? []) notes.append(warning(w.message, { title: "The flowsheet does not balance: check the specifications", attrs: { role: "alert", "data-fk": "fs-balance" }, open: true }));
 
   // ---- the drawing
   const pos = new Map(fs.blocks.map(b => [b.id, b]));

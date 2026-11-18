@@ -222,12 +222,16 @@ function solvedFlowsheet(flowsheet, userData) {
   const notes = Object.entries(result.blocks).flatMap(([id, b]) => (b.notes ?? []).map(n => ({ block: id, note: n })));
   const warnings = [...Object.entries(result.blocks).flatMap(([id, b]) => (b.warnings ?? []).map(w => ({ block: id, ...w }))),
     // a design specification's tolerance tighter than 100 times the recycle tolerance (the maintainer, 2026-11-14)
-    ...(result.designSpecs ?? []).flatMap(d => (d.warnings ?? []).map(message => ({ block: d.varied.block, designSpec: d.id, message })))];
+    ...(result.designSpecs ?? []).flatMap(d => (d.warnings ?? []).map(message => ({ block: d.varied.block, designSpec: d.id, message }))),
+    // the plant out of balance beyond solver.balanceTolerance of its feed, in the lenient mode (decision 2026-11-18-02)
+    ...(result.balance.warnings ?? []).map(w => ({ block: null, code: w.code, components: w.components, message: w.message }))];
   const info = sys.info ?? {};
   return {
     value: result,
     checks: {
       material_kmol_h: material, energy_kW: result.balance.energy_kW, blocks,
+      // the limit each component's imbalance is held to: balance_tolerance times the fresh feed (decision 2026-11-18-02)
+      balance_tolerance: result.balance.balanceTolerance, balance_limit_kmol_h: result.balance.limit_kmol_h,
       loops: result.loops.map(l => ({ tears: l.tears, iterations: l.iterations, residual: l.residual ?? null, tolerance: l.tolerance ?? null })),
       // the design specifications (proposal 0022): each target as asked and as reached, its tolerance, the varied value and the solves
       ...(result.designSpecs?.length ? { design_specs: result.designSpecs.map(d => ({ id: d.id, asked: d.target.asked, reached: d.target.reached, residual: d.target.residual,
