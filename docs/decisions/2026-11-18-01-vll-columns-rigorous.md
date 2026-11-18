@@ -110,6 +110,17 @@ default, "smooth" an option.
 4. "smooth": keep it an option. **Recommended: yes**; it now passes column 5 at 70,000 kg/h but not at 55,000, nor
    the 1-butanol + water bypass.
 
+## The maintainer's answers (2026-11-18, through the coordinator)
+
+All four recommendations agreed:
+
+1. The flash fixes of (a) are accepted as they are.
+2. Proposal 0025 is accepted instead of an inside-out solver: step 1 (the entrainer start) first, then step 2
+   (continuation past turning points). Step 1 goes to a new worker.
+3. The decanter option to reflux a share of the other liquid: CHEPTA-Lab is asked first whether its flowsheets need it;
+   not built until then.
+4. "smooth" stays an option; "split" stays the default.
+
 ## Rules kept
 
 - No validation data changed; one test changed, because the limit it asserted is fixed (above).

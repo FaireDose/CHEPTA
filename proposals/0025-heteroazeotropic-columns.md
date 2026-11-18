@@ -1,6 +1,6 @@
 # 0025: Heterogeneous azeotropic columns: an entrainer start and continuation past turning points
 
-- **Status:** Draft
+- **Status:** Accepted (the maintainer, 2026-11-18: step 1, the entrainer start, first; then step 2)
 - **Author(s):** coding agent for the maintainer (2026-11-18)
 - **Discussion:** the pull request of branch `claude/vll-columns-rigorous`; docs/decisions/2026-11-18-01-vll-columns-rigorous.md
 - **Roadmap item:** proposal 0024 (two liquids in columns), the follow-up of its question 2
