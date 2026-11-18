@@ -422,3 +422,7 @@ workbench), 0025 step 2 (bottoms purity in MESH). Then 0.6.3 decision.
 from claude/proposal-partial-condenser-m5, outcome claude/build-0026-condenser-engine: build 0026 steps 1-2 (engine,
 API, validation incl. Lab's methanol column). Next when J is done: (L) 0025 step 2 (bottoms purity in MESH; dehydration
 case by purity), told to coordinate with K in engine.js.
+
+18:35: J brought #260 onto main (head 700832c, docs only, merges cleanly): ready to merge. Started (L) Opus
+session_01FPbeWW2cai2XmDCb49ASfS from main, outcome claude/build-0025-step2: bottoms purity in MESH first,
+continuation only if needed; dehydration case by purity. Running: K (0026 engine), L (0025 step 2).
