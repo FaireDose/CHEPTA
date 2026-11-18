@@ -407,3 +407,6 @@ proposal (docs only; how open simulators do it). Running: I (new PR replacing #2
 18:20: #254 merged by the maintainer (main 36b0d96). Asked H to bring #257 onto main. Worker I opened #259 (replaces
 #258; head 2ddeb57): checked: 1775 tests, 1774 pass, 0 fail, no test removed; merges cleanly with 36b0d96. F8 (10 %
 cyclohexane) converges as the last attempt. Ready to merge. Running: H (rebase), J (M5 proposal).
+
+18:25: Worker J finished: #260 (proposal 0026, M5 vapour + liquid distillate condenser; docs only). Seven questions.
+Asked J to renumber its decision file to 2026-11-18-05 (02 is #257's, 03/04 #258/#259). Build after #259 merges.
