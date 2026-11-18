@@ -398,3 +398,8 @@ start; step 2 = bottoms purity in MESH first, continuation only if needed; dehyd
 (50bfa24), but #258 was merged into claude/vll-columns-rigorous (dcac0a8), NOT main. Asked I to bring its branch up to
 main, record the answers, build the last-attempt start, and open a new PR to main replacing #258. Asked E for the final
 rebase of #254. Running: I, E. Next: H rebases #257 after #254; then M5 proposal; 0025 step 2 after I's new PR.
+
+18:10: #254 rebased by E onto 50bfa24 (12a6c0c); checked: 1776 tests, 1772 pass, 0 fail, 3 skipped; ready to merge.
+Note: fetch refs/pull/N/head with a leading '+' (forced updates are refused otherwise and the old head is tested).
+Started (J) Opus session_01FPbeWYErbUtLFZuyABGJGN, from main, outcome claude/proposal-partial-condenser-m5: the M5
+proposal (docs only; how open simulators do it). Running: I (new PR replacing #258), J.
