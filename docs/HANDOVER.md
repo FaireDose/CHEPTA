@@ -374,3 +374,9 @@ After the usage limit: E, G, H had stopped at the 5-hour limit before recording 
 6aedc14). F idle: column 11 sweep 139-140 kmol/h shows one solution (the two-liquid jump is physical), not yet pushed
 to #255; F also answered the maintainer about contacting Anthropic. Resumed E and G (record answers). Next: H (record
 answers), then F (push the sweep to #255), then the 0025 step 1 worker.
+
+12:40: Answers recorded: G #256 e14c17a (0025 accepted), E #254 bc7afd1 (1737 pass), H #257 088bb99 (Settings hint;
+drains/accumulates wording; checked locally 1747 tests, 1743 pass, 0 fail). F asked to push the column 11 sweep to
+#255 (don't merge #255 before). Started (I) Opus session_01FPbeWV9hTLSkYs9AyAYquE from claude/vll-columns-rigorous,
+outcome claude/build-0025-step1: proposal 0025 step 1. Running: F, I. Waiting to rebase: G after #255, E after
+#253+#255, H after #254. Then M5 (proposal then build).
