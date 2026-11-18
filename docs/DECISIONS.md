@@ -31,7 +31,10 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   converges with acid (all seven inputs; the cause was the continuation's plain mean of ln K, now retried with the mean
   weighted by the liquid). The smooth stage is **not** the default: with it Lab's column 5 does not converge. Waiting
   for the maintainer: release 0.6.3; keep "smooth" an option; the weighted mean first; F4 without the high-reflux
-  azeotrope column (four questions in the decision file).
+  azeotrope column (four questions in the decision file). The maintainer (2026-11-18): no release now; columns must
+  calculate VLL rigorously as RadFrac does. Checked: CHEPTA's default VLL stage is RadFrac's stage model (rigorous,
+  validated against ChemSep's three-phase stage); RadFrac's outer-loop split was tried and was not more robust here.
+  Open: whether to build an inside-out solver (RadFrac's algorithm) or fix the three-phase flash failures first.
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record

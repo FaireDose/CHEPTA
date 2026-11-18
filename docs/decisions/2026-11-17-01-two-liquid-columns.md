@@ -78,6 +78,41 @@ have no root, a stage takes their limit eps -> 0 (one liquid if stable, else the
 - No open measured column profile exists (the proposal's search, 2026-11-14), so F4 is a model check, not a validation
   against a column.
 
+## The maintainer's answer (2026-11-18) and the RadFrac check
+
+The maintainer (2026-11-18, verbatim): "we do not release now. i want the columns to calculate rigously LLV also . Like
+in ASpen they do with RadFrac. Check how that is done maybe the solution is simpler".
+
+- **No release** of 0.6.3 now (question 1 answered: no).
+- **What RadFrac does** (open sources only; AspenTech's documentation is not open):
+  - The ChemSep Book (2nd ed., public domain), section 13.7.1, p. 228: the "inside-out" methods "in which the property
+    evaluations are put in an outer iteration loop" (Boston and Shah 1979, the basis of RadFrac); section 13.7.2: the
+    mixed K-value model (eqs. 13.45-13.52), which is CHEPTA's "split" stage.
+  - An AspenTech training deck of about 2002 ("Customizing RadFrac Convergence", read through a search result; the
+    page itself refused the fetch): three-phase RadFrac has "Maximum liquid-liquid phase split iterations: Controls LL
+    iterations in inside loop; LLE done rigorously in outside loop; Default is 20", an option to assume two liquids on
+    all stages for the first passes (default 0), the liquid-liquid split by Gibbs energy minimization (default) or
+    equation solving, and a "key component" of the second liquid.
+  - AspenTech's own study guide for the distillation course lists the same options (valid phases "Vapor-Liquid-Liquid",
+    the liquid-liquid split methods), without the algorithm.
+- **CHEPTA's columns already calculate VLL rigorously**, with the same stage model as RadFrac (each stage's whole
+  liquid split into two liquids in equilibrium with each other and with the vapour, both leaving to the stage below):
+  `phases: "VLL"`, the default stage "split", checked against ChemSep's full three-phase stage (eqs. 13.35-13.44) on
+  F3, F4 and F5 within 1e-10 K. What RadFrac does differently is the order of the solution: the split in an outer loop.
+- **Tried on 2026-11-18: the split in an outer loop** (each stage's liquid-liquid distribution ratios held while
+  Newton solves the column, then recomputed rigorously at the solution, until they settle; Newton on the full stage for
+  the last digits). It matched every reference (F1, the W2 cases, F3, F4, F5) but it was not more robust than the
+  default: Lab's column 11 at 141.5 kmol/h with acid and both column-5 inputs failed (the default solves all of them).
+  Seeding the splits from the start's profile made F4 and F5 fail too (stages flipping between one and two liquids).
+  RadFrac's outer loop works inside an inside-out solver (simple K-value models fitted in the outer loop, solved in the
+  inner loop), which CHEPTA does not have; building one is a new solver, not a small change. Not kept.
+
+| Formulation | F1-F5 against the references | Lab col. 11, acid, 141.5 | col. 11, 139 | col. 5, 55,000 kg/h | col. 5, 70,000 kg/h |
+|---|---|---|---|---|---|
+| "split" (default) | pass | ok | ok | ok | ok |
+| "smooth" (option) | pass | ok | ok | fails | flash fails |
+| outer loop (tried, not kept) | pass | fails | ok (4 s) | fails | flash fails |
+
 ## Questions for the maintainer (recommendations)
 
 1. Release 0.6.3 now? Lab's column 11 converges with acid (all seven inputs), with the default stage. **Recommended:
