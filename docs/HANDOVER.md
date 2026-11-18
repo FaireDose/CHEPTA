@@ -392,3 +392,9 @@ claude/vll-columns-rigorous): checked with #256 merged: 1773 tests, 1772 pass, 0
 F6 (20 stages) and F7 (30) converge; F4 with 1, 2, 10 % cyclohexane and the near-dry column do not; the "dry-ethanol"
 spec of 2026-11-18-01 (B = 66, 1.17 % cyclohexane) has no solution (min B about 66.8). Step 2 needed. Three questions.
 No worker running now. Next: M5 condenser proposal; 0025 step 2 after the maintainer's answers.
+
+13:50: The maintainer: "56 and 58 done. ok with your recommendations" (#258's three questions: last-attempt entrainer
+start; step 2 = bottoms purity in MESH first, continuation only if needed; dehydration case by purity). #256 is on main
+(50bfa24), but #258 was merged into claude/vll-columns-rigorous (dcac0a8), NOT main. Asked I to bring its branch up to
+main, record the answers, build the last-attempt start, and open a new PR to main replacing #258. Asked E for the final
+rebase of #254. Running: I, E. Next: H rebases #257 after #254; then M5 proposal; 0025 step 2 after I's new PR.
