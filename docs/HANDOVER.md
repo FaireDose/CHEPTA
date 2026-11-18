@@ -384,3 +384,11 @@ outcome claude/build-0025-step1: proposal 0025 step 1. Running: F, I. Waiting to
 12:55: #253 and #255 merged by the maintainer (main b2f1d8a; #255 head 8462d0f with the column 11 sweep, one solution
 136-141 kmol/h). Told G to rebase #256 onto main and retarget; E to rebase #254 (one more rebase after #256).
 Running: I (0025 step 1); G and E rebasing.
+
+13:35: #256 ready (head ec325a0, merge of main into the branch; checked: 1766 tests, 1765 pass, 0 fail; suggest
+squash-merge). E rebased #254 onto b2f1d8a (3a12376, squashed into one commit; 1755 pass); one more rebase after #256;
+H must rebase #257 onto the new #254 history. Worker I finished: #258 (0025 step 1, entrainer start; base
+claude/vll-columns-rigorous): checked with #256 merged: 1773 tests, 1772 pass, 0 fail; no existing test changed.
+F6 (20 stages) and F7 (30) converge; F4 with 1, 2, 10 % cyclohexane and the near-dry column do not; the "dry-ethanol"
+spec of 2026-11-18-01 (B = 66, 1.17 % cyclohexane) has no solution (min B about 66.8). Step 2 needed. Three questions.
+No worker running now. Next: M5 condenser proposal; 0025 step 2 after the maintainer's answers.
