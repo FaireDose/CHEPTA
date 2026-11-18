@@ -338,3 +338,12 @@ once, name it" and "Warn early, keep iterating"). Head f41f3c5: retry after a bl
 stall and rejection kept (COFE does the same); a failing block stops the loop at once with its name, iteration, guess
 extrapolation and "check the specifications first"; accumulation warning after 30 passes. Checked locally: 1741 tests,
 1737 pass, 0 fail, 3 skipped, 1 todo; no test lines removed. Still conflicts with #253 in DECISIONS.md.
+
+09:15: Worker G finished: #256 (base #255's branch; retarget to main after #255 merges), head 4e9d54d. Checked locally:
+1766 tests, 1765 pass, 0 fail, 1 todo; with #254 also merged: 1776, 1772 pass, 0 fail, 3 skipped. One existing test
+changed (columns-heteroazeotropic: it asserted the 2 Gomis flash failures, now fixed; the 0.021 bound kept on the 9 old
+lines, the 2 new lines within 0.024): justified. (a) flash near the heteroazeotrope fixed (Gibbs minimization where
+substitution fails; all 11 Gomis lines; independent scipy reference within 1e-6 K). (b) entrainer column not done:
+proposal 0025 drafted (start, continuation past turning points; decanter reflux pinned at 1.39). (c) "smooth" stays
+opt-in (column 5 at 55,000 kg/h still fails). Merge order now: #253, #255, #256 (retarget), #254 (E rebases).
+No worker running. 0.6.3 still on hold (the maintainer: VLL columns rigorous first).
