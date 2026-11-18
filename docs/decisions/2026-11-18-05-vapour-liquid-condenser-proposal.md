@@ -1,4 +1,4 @@
-# 2026-11-18-02: Proposal 0026, the condenser with a vapour and a liquid distillate (M5)
+# 2026-11-18-05: Proposal 0026, the condenser with a vapour and a liquid distillate (M5)
 
 What was decided before, and what this pull request does.
 

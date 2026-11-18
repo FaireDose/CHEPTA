@@ -3,7 +3,7 @@
 - **Status:** Draft (for the maintainer's answers; M5 accepted in principle on 2026-11-14: "proposal then build")
 - **Author(s):** coding agent for the maintainer (2026-11-18)
 - **Discussion:** the pull request of branch `claude/proposal-partial-condenser-m5`;
-  docs/decisions/2026-11-14-05-column-fixes-lab-062.md (M5); docs/decisions/2026-11-18-02-vapour-liquid-condenser-proposal.md
+  docs/decisions/2026-11-14-05-column-fixes-lab-062.md (M5); docs/decisions/2026-11-18-05-vapour-liquid-condenser-proposal.md
 - **Roadmap item:** proposal 0015, Part II, section 1 (the column's end configurations); CHEPTA-Lab's request M5
 
 ## Problem
