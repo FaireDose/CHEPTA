@@ -1208,7 +1208,9 @@ export function app(target, cfg = {}) {
       drawerSection(RANGE_MODE_QUESTION,
         seg(RANGE_MODE_QUESTION, RANGE_MODES.map(m => [m.id, m.label]), rangeModeOf(state.flowsheet), m => set(rangeModePatch(state, m))),
         h("p", { class: "fa-in-hint", "data-fk": "range-mode-hint" }, RANGE_MODES.find(m => m.id === rangeModeOf(state.flowsheet)).hint,
-          " For the Flowsheet, Column and Reactor workspaces; it is saved with the project (solver.strictRanges).")),
+          " For the Flowsheet, Column and Reactor workspaces; it is saved with the project (solver.strictRanges).",
+          // the plant's balance (the maintainer, 2026-11-18; decision 2026-11-18-02): one switch for both
+          " The same choice holds for a flowsheet that does not balance within 1e-4 of its feed (solver.balanceTolerance): refused, or solved with a warning that names the components.")),
       drawerSection("Show", h("div", { class: "fa-stack" },
         smallButton({ ico: "panelL", label: "Inputs panel", pressed: state.panels.left, onClick: () => set({ panels: { left: !state.panels.left } }, { canvas: false }) }),
         smallButton({ ico: "panelR", label: "Results panel", pressed: state.panels.right, onClick: () => set({ panels: { right: !state.panels.right } }, { canvas: false }) }),

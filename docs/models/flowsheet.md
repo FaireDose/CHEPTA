@@ -110,7 +110,13 @@ sequential modular:
 4. **Fail loudly.** A loop that does not converge throws NO_CONVERGENCE, naming the loop, its tear
    streams and what usually helps. So does:
    - a recycle that grows without bound;
-   - a converged flowsheet whose overall component balance does not close.
+   - a converged flowsheet whose overall component balance does not close (within 1000 times the recycle tolerance).
+5. **The plant's balance on its own tolerance** (decision 2026-11-18-02), `solver.balanceTolerance` (default 1e-4):
+   each component's |feeds + generated - products| within that fraction of the total fresh feed, whatever the recycle
+   tolerance, as COFE keeps a "Mass balance relative tolerance" beside its "Recycle relative tolerance". Beyond it the
+   strict mode (`strictRanges`) refuses and the default mode warns (`balance.warnings`), naming the components and
+   amounts: check the specifications first (a product given by its flow above what is fed or formed, a feed in excess
+   with no way out).
 
 ## Design specifications (proposal 0022)
 
