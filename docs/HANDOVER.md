@@ -369,3 +369,8 @@ recommended; Settings hint line; drains/accumulates wording may go in). Each rec
 after its base merges (order #253, #255, #256, #254, #257). Agreed before 0.6.3: 0025 step 1 and M5 (proposal then
 build). Next worker (0025 step 1, from #256's branch or main once merged) starts when F has finished and the answer
 recordings are done (2-worker limit).
+
+After the usage limit: E, G, H had stopped at the 5-hour limit before recording the answers; nothing merged (main
+6aedc14). F idle: column 11 sweep 139-140 kmol/h shows one solution (the two-liquid jump is physical), not yet pushed
+to #255; F also answered the maintainer about contacting Anthropic. Resumed E and G (record answers). Next: H (record
+answers), then F (push the sweep to #255), then the 0025 step 1 worker.
