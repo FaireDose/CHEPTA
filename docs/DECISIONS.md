@@ -10,6 +10,16 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **Recycle solver safeguards, Lab's request 14** (docs/decisions/2026-11-14-08-recycle-safeguards.md): built: Broyden
+  rejects a pass ten times worse (a step reduction, as COFE's line search), a finite-difference Jacobian on a stall
+  (COFE's "Jacobian ... when required"); a block that fails in a loop stops it at once, named (the maintainer,
+  2026-11-18; the first version's retry was removed: no simulator read documents it); an early warning when a component
+  keeps accumulating or draining (the maintainer, 2026-11-18). The flowsheet suite takes the same steps as before. The
+  plateau of Lab's plant is its specification (column 11's product fixed at 141.5 kmol/h takes 0.42 kmol/h more ester
+  than is formed; the excess ethanol has no way out). The maintainer's answers (2026-11-18): Lab specifies the ethanol
+  feed by a design specification and column 11 by its distillate or a purity; the growth limit stays 10^6; an absolute
+  per-component balance check follows in PR #257; the numbers are kept; Lab's plant tests stay opt-in. Closed once
+  merged.
 - **Column fixes from CHEPTA-Lab's 0.6.2 requests** (docs/decisions/2026-11-14-05-column-fixes-lab-062.md): built
   EA-12/M3 (max_iterations governs; a last long Newton attempt), EA-13/M2 (a purity inside the reached range is never
   OUT_OF_RANGE), EA-9/M1 for CO and N2 traces, the EA-8 message, M4. Open: (a) acetic acid traces in two-liquid
@@ -17,8 +27,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   region. The maintainer (2026-11-14) asked for a warning and a decanter first where a large second liquid enters, and
   a simpler treatment of a small immiscible part (out at the top or the bottom): a short proposal next; (b) M5, a
   condenser with a vapour and a liquid distillate at a given pressure and vapour ratio: accepted in principle, proposal
-  then build; (c) LONG_NEWTON = 100 and the 0.1 mol % trace level: kept; (d) the recycle plateau near 1e-3: a
-  flowsheet-solver task after the design specifications. Follow-up answers (2026-11-14): the three-part proposal
+  then build; (c) LONG_NEWTON = 100 and the 0.1 mol % trace level: kept; (d) the recycle plateau near 1e-3: taken
+  up in docs/decisions/2026-11-14-08-recycle-safeguards.md. Follow-up answers (2026-11-14): the three-part proposal
   aimed at heterogeneous azeotropic distillation with an entrainer (proposal 0024; its share and the bypass's direction
   are in the item below); the condenser takes T, the vapour flow or the vapour share.
 - **Two liquids in columns** (proposal 0024; docs/decisions/2026-11-14-07-two-liquids-in-columns.md): answered on
