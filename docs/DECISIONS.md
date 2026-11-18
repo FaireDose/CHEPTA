@@ -37,8 +37,15 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   The maintainer agreed with all four recommendations (2026-11-18): no release now; "smooth" stays an option; the
   continuation order unchanged until Lab's plants are rerun with the weighted mean first; F4 accepted as built.
   Column 11 checked for multiple steady states near the paper's flow (136-141 kmol/h, swept up and down): one solution, the jump in the
-  two-liquid stages is the binodal crossed. Open: the three-phase flash failures (PR #256); then whether an inside-out
-  solver (RadFrac's algorithm) is still wanted.
+  two-liquid stages is the binodal crossed.
+  Done 2026-11-18 (docs/decisions/2026-11-18-01-vll-columns-rigorous.md, PR #256): the three-phase flash fixed (all 11
+  Gomis tie lines, checked against a new independent reference; the bubble-point boundary); the classic entrainer
+  column still does not converge (a start without the entrainer, a reflux pinned at 1.39 by the decanter, turning
+  points and two steady states): proposal 0025 drafted instead of a new solver; "smooth" still fails Lab's column 5 at
+  55,000 kg/h, so it stays an option. Answered by the maintainer (2026-11-18): the flash fixes accepted; proposal 0025
+  accepted, step 1 (the entrainer start) to a new worker, then step 2; the decanter option to reflux a share of the
+  other liquid waits for CHEPTA-Lab's answer on whether its flowsheets need it; "smooth" stays an option. Open: build
+  0025 step 1; ask CHEPTA-Lab about the decanter option.
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record

@@ -433,8 +433,9 @@ function newtonThree(sys, z, T, P, KV, KL2, bV, b2) {
 function splitThree(sys, z, T, P, KV, KL2) {
   const n = z.length;
   let prev = null; // the previous step in ln K, for the acceleration
+  let edge = null;  // the last step's phases and change in ln K, for the end of the iteration (below)
   for (let it = 1; it <= MAX_IT; it++) {
-    const { x } = multiphaseRR(z, [z.map(() => 1), KV, KL2]);
+    const { x, beta: b0 } = multiphaseRR(z, [z.map(() => 1), KV, KL2]);
     const [x1, y, x2] = x;
     const KVn = vapourLnK(sys)(x1, y, T, P).map(Math.exp);
     const g1 = sys.gammas(x1, T), g2 = sys.gammas(x2, T);
@@ -457,6 +458,7 @@ function splitThree(sys, z, T, P, KV, KL2) {
       }
     }
     prev = step;
+    edge = { b: b0, x, d, Ks: { KV: KVn, KL2: KL2n }, it };
     KV = KVn; KL2 = KL2n;
     if (triv < 1e-10) return null;
     // Newton from the substitution's estimate (kept if all three phases stay present): early,
@@ -481,8 +483,38 @@ function splitThree(sys, z, T, P, KV, KL2) {
       return { V: bV < tiny ? 0 : bV, x: l1, y: v, liquid2: { fraction: b2, x: l2 }, single: null, iterations: it, K: null, Ks };
     }
   }
+  // On the boundary of the three-phase region one phase's fraction is zero, and successive substitution can then
+  // jitter at round-off without meeting K_TOL (found 2026-11-18: CHEPTA-Lab's column 5, a product flashed at its
+  // bubble point, the vapour's fraction between 1e-21 and 1e-9 for 500 steps). Only here, where the iteration has
+  // failed: Newton's method on the three-phase equations from the last step; where it fails or a fraction turns
+  // negative, a phase whose fraction is below EDGE_BETA while ln K changes by less than EDGE_K is taken as absent, and
+  // the other two are solved as two phases (splitLL, or splitActivity) from the last K-values.
+  if (edge && edge.d < EDGE_K) {
+    const [b1, bV, b2] = edge.b;
+    // first Newton's method on the three-phase equations from the last step, however small a fraction is (newtonThree
+    // is otherwise tried only with every fraction above 1e-6); kept if every fraction is positive
+    const nt = newtonThree(sys, z, T, P, edge.Ks.KV, edge.Ks.KL2, bV, b2);
+    if (nt && nt.beta.every(b => b > 0)) {
+      const x1 = z.map((zi, i) => zi / (1 + nt.beta[1] * (nt.KV[i] - 1) + nt.beta[2] * (nt.KL2[i] - 1)));
+      const nz = a => { const t = a.reduce((q, v) => q + v, 0); return a.map(v => v / t); };
+      return { V: nt.beta[1], x: nz(x1), y: nz(x1.map((v, i) => v * nt.KV[i])), liquid2: { fraction: nt.beta[2], x: nz(x1.map((v, i) => v * nt.KL2[i])) }, single: null, iterations: edge.it, K: null, Ks: { KV: nt.KV, KL2: nt.KL2 } };
+    }
+    if (bV < EDGE_BETA && b1 >= EDGE_BETA && b2 >= EDGE_BETA) {
+      // two liquids, the vapour at its first bubble: the liquid-liquid split polished from the last K-values
+      const ll = splitLL(sys, z, T, edge.Ks.KL2.slice());
+      if (ll && ll.beta > 0 && ll.beta < 1) return { ...llCore(sys, ll, edge.it + ll.iterations), Ks: edge.Ks };
+    } else if ((b1 < EDGE_BETA || b2 < EDGE_BETA) && bV >= EDGE_BETA) {
+      // vapour and one liquid, the other liquid at its first drop: the vapour-liquid split polished
+      const lq = b1 < EDGE_BETA ? edge.x[2] : edge.x[0];
+      const r = splitActivity(sys, z, T, P, z.map((zi, i) => edge.x[1][i] / Math.max(lq[i], 1e-300)));
+      if (r && r.V > 0 && r.V < 1) return { ...r, single: null, iterations: edge.it + r.iterations, Ks: edge.Ks };
+    }
+  }
   throw fail("NO_CONVERGENCE", `Three-phase flash at ${T.toFixed(2)} K and ${P.toPrecision(6)} kPa: the K-values did not converge in ${MAX_IT} steps.`, { z, T, P });
 }
+// this project's choice (2026-11-18): a phase dropped this way is less than 1e-6 of the feed, the state that close to
+// the boundary of the three-phase region; the two phases returned close their balances exactly
+const EDGE_BETA = 1e-6, EDGE_K = 1e-8;
 
 /**
  * Two liquids at T (activity models: independent of P): successive substitution on
@@ -492,6 +524,105 @@ function splitThree(sys, z, T, P, KV, KL2) {
  * Returns { beta, x1, x2, K, iterations }, or null if the two liquids become one.
  */
 export function splitLL(sys, z, T, K) {
+  const K0 = K.slice();
+  let r = null, err = null;
+  try { r = splitLLSubstitution(sys, z, T, K); } catch (e) { if (!(e && e.code === "NO_CONVERGENCE")) throw e; err = e; }
+  if (r) return r;
+  // substitution fell back to one liquid, or did not converge: minimize the Gibbs energy from the second liquid
+  // the start implies (2026-11-18; below). Only then, so every split that converged before keeps its path.
+  const m = minimizeLL(sys, z, T, K0);
+  if (m) return m;
+  if (err) throw err;
+  return null;
+}
+
+/**
+ * The liquid-liquid split by minimizing the Gibbs energy (M. L. Michelsen, The isothermal flash problem. Part II.
+ * Phase-split calculation, Fluid Phase Equilib. 9 (1982) 21-40, section 4: second-order minimization of G in the
+ * mole numbers of one phase; open description: the thermo library documentation, thermo.flash, "minimize_gibbs_NP",
+ * MIT). Unknowns: v_i, the moles of liquid 2 per mole of feed (0 < v_i < z_i); l_i = z_i - v_i.
+ *     G/RT = sum_i l_i ln(x_i gamma_i(x)) + v_i ln(y_i gamma_i(y)),   dG/dv_i = ln(y_i gamma_i(y)) - ln(x_i gamma_i(x)),
+ * zero exactly where x_i gamma_i(x) = y_i gamma_i(y) (equal activities). Newton's method on the gradient, the Hessian by
+ * forward differences and shifted (Levenberg) until the step goes downhill, the step kept inside the bounds, and an
+ * Armijo line search on G. Started from v = beta w, w the second liquid the start K implies (w ~ z K, the trial phase
+ * of the tangent-plane test in resolveSplit), at the beta of 0.5, 0.3, 0.1, 0.03, 0.01 with the lowest G: where
+ * the trial lowers the Gibbs energy (tm < 0), G only decreases from there, so the iteration cannot fall back to the
+ * one-liquid (trivial) solution, which successive substitution can near a plait point (found 2026-11-18: water +
+ * ethanol + cyclohexane near the ternary heteroazeotrope, Gomis et al. 2005's tie lines at 335.54 K). Used only where
+ * substitution fails. Returns what splitLL returns, or null (no lower G found, or the two liquids became one).
+ */
+function minimizeLL(sys, z, T, K0) {
+  const n = z.length, on = z.map(v => v > 0);
+  const w0 = z.map((v, i) => (on[i] ? v * K0[i] : 0)), sw = w0.reduce((a, b) => a + b, 0);
+  if (!(sw > 0) || !w0.every(Number.isFinite)) return null;
+  const w = w0.map(v => v / sw);
+  const G = v => {
+    const l = z.map((zi, i) => zi - v[i]);
+    const L = l.reduce((a, b) => a + b, 0), V = v.reduce((a, b) => a + b, 0);
+    const x = l.map(q => q / L), y = v.map(q => q / V);
+    const gx = sys.gammas(x, T), gy = sys.gammas(y, T);
+    let g = 0;
+    const grad = new Array(n).fill(0);
+    for (let i = 0; i < n; i++) if (on[i]) {
+      const ax = Math.log(x[i] * gx[i]), ay = Math.log(y[i] * gy[i]);
+      g += l[i] * ax + v[i] * ay;
+      grad[i] = ay - ax;
+    }
+    return { g, grad, x, y, beta: V };
+  };
+  const inside = v => v.every((q, i) => !on[i] || (q > 0 && q < z[i]));
+  const gFeed = (() => { const gz = sys.gammas(z, T); return z.reduce((a, zi, i) => a + (on[i] ? zi * Math.log(zi * gz[i]) : 0), 0); })();
+  let v = null, r = null;
+  for (const beta of [0.5, 0.3, 0.1, 0.03, 0.01]) {
+    const vb = w.map((wi, i) => (on[i] ? Math.min(beta * wi, (1 - 1e-6) * z[i]) : 0));
+    if (!inside(vb)) continue;
+    const rb = G(vb);
+    if (Number.isFinite(rb.g) && (!r || rb.g < r.g)) { v = vb; r = rb; }
+  }
+  if (!r || !(r.g < gFeed - 1e-12)) return null; // the start does not lower G: nothing to minimize towards
+  const idx = [...Array(n).keys()].filter(i => on[i]);
+  const gnorm = q => idx.reduce((a, i) => Math.max(a, Math.abs(q.grad[i])), 0);
+  for (let it = 1; it <= 200; it++) {
+    if (gnorm(r) < 1e-12) break;
+    const H = idx.map(j => {
+      const h = 1e-7 * v[j], vp = v.slice();
+      vp[j] += h;
+      const gp = G(vp).grad;
+      return idx.map(i => (gp[i] - r.grad[i]) / h);
+    });
+    const m = idx.length, gr = idx.map(i => r.grad[i]);
+    let d = null;
+    for (let t = 0, mu = 0; t < 40; t++, mu = mu ? mu * 10 : 1e-8 * Math.max(...H.map((row, i) => Math.abs(row[i])))) {
+      const A = H.map((row, i) => row.map((q, j) => 0.5 * (q + H[j][i]) + (i === j ? mu : 0)));
+      const dd = solveLinear(A, gr.map(q => -q));
+      if (dd && dd.reduce((a, q, i) => a + q * gr[i], 0) < 0) { d = dd; break; }
+    }
+    if (!d) break;
+    const step = new Array(n).fill(0);
+    idx.forEach((i, k) => { step[i] = d[k]; });
+    let a = 1;
+    for (let k = 0; k < 60 && !inside(v.map((q, i) => q + a * step[i])); k++) a /= 2;
+    const slope = idx.reduce((s, i) => s + step[i] * r.grad[i], 0);
+    let next = null;
+    for (let k = 0; k < 50; k++, a /= 2) {
+      const vn = v.map((q, i) => q + a * step[i]);
+      if (!inside(vn)) continue;
+      const rn = G(vn);
+      if (rn.g <= r.g + 1e-4 * a * slope) { next = [vn, rn]; break; }
+    }
+    if (!next) break; // no further decrease at round-off: judged by the gradient below
+    [v, r] = next;
+  }
+  if (!(gnorm(r) < 1e-9)) return null;
+  const { x, y, beta } = r;
+  let triv = 0;
+  for (const i of idx) triv += Math.log(y[i] / x[i]) ** 2;
+  if (triv < 1e-10 || !(beta > 0 && beta < 1)) return null;
+  const K = z.map((_, i) => (on[i] ? y[i] / x[i] : 1));
+  return { beta, x1: x, x2: y, K, iterations: 0, method: "gibbs" };
+}
+
+function splitLLSubstitution(sys, z, T, K) {
   const n = z.length;
   let prev = null;
   for (let it = 1; it <= MAX_IT; it++) {
