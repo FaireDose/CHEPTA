@@ -133,7 +133,7 @@ previous one (scratch sweep, not a test):
 - The two-liquid region grows from 1 to 28 stages between 139 and 139.25 kmol/h, but the product's water rises
   continuously from zero: at a larger product flow, water that went overhead leaves at the bottom, and the stages
   above the feed cross the binodal. The jump in the stage count is the binodal being crossed, not a solver artefact.
-- The sweep run back down, from 141 to 139 kmol/h in 0.5 steps, each step started from the one above, gives the same
+- The sweep run back down, from 141 to 138 kmol/h in 0.5 steps, each step started from the one above, gives the same
   solution at every point to the digits shown, across the jump included (139: one two-liquid stage, no water): no
   hysteresis, so no second steady state on this path.
 - Checked from 136 to 141 kmol/h only, along one parameter (B, at R = 3); multiplicity in other specifications is not
