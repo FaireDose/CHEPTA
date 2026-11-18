@@ -347,3 +347,11 @@ substitution fails; all 11 Gomis lines; independent scipy reference within 1e-6 
 proposal 0025 drafted (start, continuation past turning points; decanter reflux pinned at 1.39). (c) "smooth" stays
 opt-in (column 5 at 55,000 kg/h still fails). Merge order now: #253, #255, #256 (retarget), #254 (E rebases).
 No worker running. 0.6.3 still on hold (the maintainer: VLL columns rigorous first).
+
+11:05: The maintainer in F's session (11:01, verified): "i agree with all recommendations" (F's: no release yet, flash
+fix, sweep column 11 for multiple steady states; F is adding that sweep to #255) and "recap all the points on hold
+from the previous decisions and fix important ones before going to next version". Recap sent to the user (from
+DECISIONS.md open items + HANDOVER queue). Started (H) Opus session_01FPbeWYNvX8NhAxgwjuRrzD from claude/recycle-plateau,
+outcome claude/flowsheet-balance-absolute: absolute per-component balance check (#254 question 3; fail loudly).
+Running: F (column 11 sweep, own PR), H. Waiting for the user: which recap items go before 0.6.3 (recommended:
+merge #253/#255/#256/#254, H's balance check, proposal 0025 step 1, M5 condenser).
