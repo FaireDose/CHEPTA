@@ -1,0 +1,79 @@
+{
+  "chepta_column_case": 1,
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "water",
+    "ethanol",
+    "cyclohexane"
+  ],
+  "pressure_kPa": 101.325,
+  "id": "F8-ethanol-water-cyclohexane-decanter-10-percent",
+  "title": "Water + ethanol + cyclohexane, NRTL, F4's column with 10 mol % cyclohexane in the feed: the entrainer start as the last attempt",
+  "purpose": "Decision 2026-11-18-04 (the maintainer, 2026-11-18): the entrainer start of proposal 0025 also as the very last attempt. F4's column (20 stages, feed on 5, B = 80 mol/s) with 10 % water and 10 % cyclohexane: the bubble-point starts hold two liquids in the condensate and run, but Newton fails from them and the continuations fail; the entrainer start, tried last, converges.",
+  "proposal": "proposals/0025-heteroazeotropic-columns.md, step 1; docs/decisions/2026-11-18-04-entrainer-start-last.md",
+  "method_choice": "docs/METHOD_SELECTION.md rules 3 and 7: polar, below 10 bar, two liquids: NRTL with the default sets, each fitted to open measured data (ethanol + water fitted-kamihama2012; water + cyclohexane fitted-marche2006-etal, mutual solubilities; ethanol + cyclohexane fitted-reddy2013; src/data/binaries.json), ideal-gas vapour. None was fitted to ternary data.",
+  "phases": "VLL",
+  "column": {
+    "configuration": "distillation",
+    "stages": 20,
+    "condenser": "decanter",
+    "reflux_liquid": "light",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 5,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.1,
+        0.8,
+        0.1
+      ],
+      "q": 1
+    }
+  },
+  "specs": [
+    {
+      "kind": "bottoms_flow_mol_s",
+      "value": 80.0
+    }
+  ],
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "the column converges from the entrainer start, tried after every other attempt failed",
+      "the reference's profile, liquids and duties within F1's tolerances"
+    ],
+    "branch": "The engine's solution from its entrainer start; the reference (validation/python/reference_mesh_vll.py --entrainer, ChemSep's three-phase stage) solves its own equations from the engine's profile, perturbed."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    },
+    "stability": {
+      "tpd_stable_above": -1e-09,
+      "why": "one-liquid stages: no trial liquid on a grid has a tangent-plane distance below -1e-9"
+    },
+    "agreement_with_data": {
+      "note": "The three NRTL sets are fitted to vapour-liquid data; their liquid-liquid split is W1's work (joint fits, M2b) and not a test of the column."
+    }
+  }
+}

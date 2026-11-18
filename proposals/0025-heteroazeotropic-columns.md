@@ -1,6 +1,7 @@
 # 0025: Heterogeneous azeotropic columns: an entrainer start and continuation past turning points
 
-- **Status:** Accepted (the maintainer, 2026-11-18: step 1, the entrainer start, first; then step 2)
+- **Status:** Accepted (the maintainer, 2026-11-18: step 1, the entrainer start, first; then step 2). Step 1 built
+  2026-11-18 (docs/decisions/2026-11-18-03-entrainer-start.md)
 - **Author(s):** coding agent for the maintainer (2026-11-18)
 - **Discussion:** the pull request of branch `claude/vll-columns-rigorous`; docs/decisions/2026-11-18-01-vll-columns-rigorous.md
 - **Roadmap item:** proposal 0024 (two liquids in columns), the follow-up of its question 2
@@ -68,6 +69,10 @@ three-phase RadFrac still asks for initial estimates and a "key component" of th
 - Stage model: unchanged (ChemSep's three-phase stage, eqs. 13.35-13.44; checked within 1e-10 K on F3, F4, F5).
 - Arc-length continuation: H. B. Keller's pseudo-arc-length method, open description to be cited from an open text in
   step 2 (for example a free book or lecture notes; none opened on 2026-11-18).
+- Step 1's sources (opened 2026-11-18; docs/decisions/2026-11-18-03-entrainer-start.md): the initial profile of a
+  heterogeneous azeotropic column for a simulator, N. Bekiaris, Multiple Steady States in Distillation, PhD thesis,
+  Caltech, 1995, section 4.4.5 (free to read, https://resolver.caltech.edu/CaltechCDSTR:1995.016), and The ChemSep Book,
+  2nd ed., section 13.4.10; multiple steady states, Bekiaris 1995, chapters 3 and 4, and The ChemSep Book, section 1.6.5.
 - Validation: validation/python/reference_mesh_vll.py --three-phase on each converged column (its own Newton from the
   engine's profile, perturbed), as for F4; both steady states of point 4 checked there; the decanter's liquids on the
   model's tie line (as F4's test does). A published worked example: the ProSim example "Heterogeneous azeotropic

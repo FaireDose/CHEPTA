@@ -1,0 +1,80 @@
+{
+  "chepta_column_case": 1,
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "water",
+    "ethanol",
+    "cyclohexane"
+  ],
+  "pressure_kPa": 101.325,
+  "id": "F6-ethanol-dehydration-entrainer-20-stages",
+  "title": "Water + ethanol + cyclohexane, NRTL, 20 stages and a decanter: ethanol with 12 mol % water and 3 mol % cyclohexane, the organic liquid refluxed",
+  "purpose": "Proposal 0025, step 1 (the maintainer, 2026-11-18): the entrainer start. With 3 mol % of cyclohexane in the feed every bubble-point start's condensate holds one liquid, so before step 1 every start was refused. The specification of the decision 2026-11-18-01, point 4 (12 % water, 3 % cyclohexane, B = 61 mol/s, 20 stages, feed on stage 5), where two steady states had been found by hand. Not dry ethanol.",
+  "proposal": "proposals/0025-heteroazeotropic-columns.md, step 1",
+  "method_choice": "docs/METHOD_SELECTION.md rules 3 and 7: polar, below 10 bar, two liquids: NRTL with the default sets, each fitted to open measured data (ethanol + water fitted-kamihama2012; water + cyclohexane fitted-marche2006-etal, mutual solubilities; ethanol + cyclohexane fitted-reddy2013; src/data/binaries.json), ideal-gas vapour. None was fitted to ternary data.",
+  "phases": "VLL",
+  "column": {
+    "configuration": "distillation",
+    "stages": 20,
+    "condenser": "decanter",
+    "reflux_liquid": "light",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 5,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.12,
+        0.85,
+        0.03
+      ],
+      "q": 1
+    }
+  },
+  "specs": [
+    {
+      "kind": "bottoms_flow_mol_s",
+      "value": 61.0
+    }
+  ],
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "the column converges from the entrainer start (every bubble-point start is refused: its condensate holds one liquid)",
+      "the reference's profile, liquids and duties within F1's tolerances",
+      "the decanter's two liquids lie on the model's tie line at the decanter's temperature"
+    ],
+    "branch": "The engine's solution from its entrainer start (proposal 0025, step 1): the only start that runs, since every bubble-point start's condensate holds one liquid. Heterogeneous azeotropic columns can have several steady states at one specification (docs/decisions/2026-11-18-03-entrainer-start.md); this is the one the start reaches. The reference (validation/python/reference_mesh_vll.py --three-phase, ChemSep's three-phase stage) solves its own equations from the engine's profile, perturbed."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    },
+    "stability": {
+      "tpd_stable_above": -1e-09,
+      "why": "one-liquid stages: no trial liquid on a grid has a tangent-plane distance below -1e-9"
+    },
+    "agreement_with_data": {
+      "note": "The three NRTL sets are fitted to vapour-liquid data; their liquid-liquid split is W1's work (joint fits, M2b) and not a test of the column."
+    }
+  }
+}

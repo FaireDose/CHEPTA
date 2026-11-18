@@ -56,3 +56,9 @@ a feed given by `T_K` (part vapour). Their reference is ChemSep's full three-pha
 (`validation/python/reference_mesh_vll.py --three-phase`, fixture `validation/fixtures/columns-vll-three-phase.json`,
 which also holds F3), started from the engine's profiles (`validation/columns_vll_engine_starts.mjs`).
 
+Proposal 0025, step 1 (the entrainer start, 2026-11-18): `vll/` also holds F6 and F7 (ethanol with 12 mol % water and
+3 mol % cyclohexane, a decanter refluxing the organic liquid; 20 and 30 stages), the columns that converge from the
+engine's entrainer start where every bubble-point start is refused. Their reference is the same three-phase stage
+(`validation/python/reference_mesh_vll.py --entrainer`, fixture `validation/fixtures/columns-vll-entrainer.json`),
+started from the engine's profiles (`node validation/columns_vll_engine_starts.mjs --entrainer`). F8 (F4's column with
+10 mol % cyclohexane) converges from the same start tried as the very last attempt (decision 2026-11-18-04).
