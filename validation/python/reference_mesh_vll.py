@@ -30,7 +30,7 @@ With --three-phase (proposal 0024, test 3): the cases F3, F4 and F5 on ChemSep's
 ThreePhaseColumn below), written to validation/fixtures/columns-vll-three-phase.json, which test/columns-vll.test.js and
 test/columns-heteroazeotropic.test.js read. First: node validation/columns_vll_engine_starts.mjs (the starts of F4, F5).
 
-With --entrainer (proposal 0025, step 1): the cases F6 and F7 (ethanol dehydration with cyclohexane, a decanter, the
+With --entrainer (proposal 0025, step 1): the cases F6, F7 and F8 (water + ethanol + cyclohexane, a decanter, the
 columns that converge from the engine's entrainer start) on the same three-phase stage, written to
 validation/fixtures/columns-vll-entrainer.json, which test/columns-entrainer-start.test.js reads. First:
 node validation/columns_vll_engine_starts.mjs --entrainer.
@@ -689,7 +689,7 @@ def main_three_phase():
 
 
 def main_entrainer():
-    """The cases of proposal 0025, step 1 (F6, F7) on ChemSep's three-phase stage, each started from the engine's profile
+    """The cases of proposal 0025, step 1 (F6, F7, F8) on ChemSep's three-phase stage, each started from the engine's profile
     (validation/fixtures/columns-vll-entrainer-starts.json), perturbed. Writes validation/fixtures/columns-vll-entrainer.json."""
     data = ROOT / "validation" / "data" / "columns" / "vll"
     starts = json.loads((ROOT / "validation" / "fixtures" / "columns-vll-entrainer-starts.json").read_text())["cases"]

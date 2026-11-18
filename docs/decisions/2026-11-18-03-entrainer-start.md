@@ -108,6 +108,10 @@ dehydration column itself still needs step 2.
    12 % water), or specify the bottoms purity instead of B? **Recommended: a bottoms purity** (water 0.1 mol %), with
    step 2; a product flow is a poor specification at the dry end.
 
+## The maintainer's answers
+
+All three as recommended (2026-11-18): docs/decisions/2026-11-18-04-entrainer-start-last.md.
+
 ## Rules kept
 
 - No validation data or existing test changed; new cases and fixtures only.

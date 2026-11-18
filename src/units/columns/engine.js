@@ -67,7 +67,9 @@
  *     first guess: a previous solution of the same column (`start`) replaces it when given. With a decanter whose
  *     bubble-point starts all hold one liquid in the condensate (a feed with a little entrainer), the entrainer start
  *     (proposal 0025, step 1; entrainerStart): the top vapour at the heterogeneous azeotrope, the decanter on its tie
- *     line, the stages between interpolated, as the open sources build the initial profile of such a column;
+ *     line, the stages between interpolated, as the open sources build the initial profile of such a column; it is
+ *     also the very last attempt of any column with a decanter where everything else failed (the maintainer,
+ *     2026-11-18; docs/decisions/2026-11-18-04-entrainer-start-last.md);
  *  2. Newton's method on all N (2C + 1) equations together: the Jacobian by central differences, stage by stage (a
  *     stage's K-values and enthalpies depend on its own variables only), solved by Gaussian elimination with partial
  *     pivoting inside the band; the step taken in the logarithms of the component flows (a trace flow can fall by
@@ -658,7 +660,23 @@ export function solveCascade(opts = {}) {
     if (r.converged) result = { ...r, start: "previous solution" };
   }
   let cold = null;
-  const slow = [];   // the cold starts' Newton attempts that stopped early, for the last attempts
+  const slow = [];
+  // the entrainer start of a decanter (proposal 0025, step 1; entrainerStart below), tried once: where every
+  // bubble-point start held one liquid in the condensate, else as the very last attempt (the maintainer, 2026-11-18)
+  let entrainerTried = false;
+  const tryEntrainer = (last = false) => {
+    if (entrainerTried || !decanter || opts.homotopy || (last && opts.quick) || cf) return;
+    entrainerTried = true;
+    const a = { dTmax: 20, maxIt: cap < Infinity ? cap : 50, patient: cap === Infinity };
+    let c;
+    try { c = entrainerStart(th, inp, fJ, HF); } catch (e) { if (e?.code !== "NO_CONVERGENCE") throw e; c = { why: `it failed: ${e.message}` }; }
+    if (!c.u) { tried.push(`the entrainer start was not built: ${c.why} (${took()})`); return; }
+    const startName = `entrainer start (the top vapour at the heterogeneous azeotrope ${c.azeotrope.x.map(v => fmt(v)).join(", ")} at ${fmt(c.azeotrope.T_K)} K, a start reflux ratio of ${fmt(c.R)} by the decanter's lever rule)`;
+    const r = newton(c.u, a);
+    tried.push(`Newton from the ${startName}, steps of at most ${a.dTmax} K (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
+    if (r.converged) result = { ...r, start: startName };
+    else if (r.P) { cold = { last: r }; if (r.iterations < LONG_NEWTON) slow.push({ r, startName }); }
+  };   // the cold starts' Newton attempts that stopped early, for the last attempts
   if (!result && !(opts.homotopy && startU)) {
     // a decanter fixes no reflux ratio for the start: a few start values are tried in turn (only the start: the
     // reflux is the whole refluxed liquid at the solution)
@@ -692,19 +710,7 @@ export function solveCascade(opts = {}) {
     // one liquid in the condensate (a feed with a little entrainer: the start cannot see it), so that no Newton attempt
     // was made. Only there, so that every column that converged before keeps its path and its answer. Not in a step of
     // the continuation (its K-values are not the column's)
-    if (!result && decanter && ran === 0 && oneLiquid > 0 && !opts.homotopy && !cf) {
-      const a = { dTmax: 20, maxIt: cap < Infinity ? cap : 50, patient: cap === Infinity };
-      let c;
-      try { c = entrainerStart(th, inp, fJ, HF); } catch (e) { if (e?.code !== "NO_CONVERGENCE") throw e; c = { why: `it failed: ${e.message}` }; }
-      if (!c.u) tried.push(`the entrainer start was not built: ${c.why} (${took()})`);
-      else {
-        const startName = `entrainer start (the top vapour at the heterogeneous azeotrope ${c.azeotrope.x.map(v => fmt(v)).join(", ")} at ${fmt(c.azeotrope.T_K)} K, a start reflux ratio of ${fmt(c.R)} by the decanter's lever rule)`;
-        const r = newton(c.u, a);
-        tried.push(`Newton from the ${startName}, steps of at most ${a.dTmax} K (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
-        if (r.converged) result = { ...r, start: startName };
-        else if (r.P) { cold = { last: r }; if (r.iterations < LONG_NEWTON) slow.push({ r, startName }); }
-      }
-    }
+    if (!result && decanter && ran === 0 && oneLiquid > 0) tryEntrainer();
   }
   // continuation: a column whose components all have the same volatility (ln K_i replaced by its mean over the
   // components) is solved first, and the differences are brought back in steps, each solve started from the last.
@@ -756,6 +762,9 @@ export function solveCascade(opts = {}) {
     const r = continuation(CONTINUATION_MEANS[1]);
     if (r) return r;
   }
+  // the very last attempt of a decanter (the maintainer, 2026-11-18, answer 1 of decision 2026-11-18-03): the entrainer
+  // start where every other attempt failed, so that no column that converged before changes its path
+  if (!result) tryEntrainer(true);
   if (!result) {
     const last = cold?.last;
     const { g } = last ? groups(last.P) : { g: null };
@@ -1093,7 +1102,8 @@ const AZEOTROPE_STEPS = 500, AZEOTROPE_TOL = 1e-10;
 
 /**
  * The entrainer start of a column with a decanter (proposal 0025, step 1; docs/decisions/2026-11-18-03-entrainer-start.md),
- * tried only where every bubble-point start's condensate holds one liquid. The initial profile is built the way the
+ * tried where every bubble-point start's condensate holds one liquid, and as the very last attempt of any decanter
+ * column where every other attempt failed (decision 2026-11-18-04). The initial profile is built the way the
  * open sources describe for heterogeneous azeotropic columns, from a few compositions with the stages between them
  * interpolated linearly:
  *  - N. Bekiaris, "Multiple steady states in distillation", PhD thesis, California Institute of Technology, 1995,

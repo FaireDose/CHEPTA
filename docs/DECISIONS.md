@@ -48,10 +48,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   Built 2026-11-18 (docs/decisions/2026-11-18-03-entrainer-start.md): proposal 0025 step 1, the entrainer start, tried
   only where every bubble-point start's condensate holds one liquid; F6 and F7 (12 % water, 3 % cyclohexane, 20 and 30
   stages) converge and match the three-phase reference; the "dry-ethanol" specification of 2026-11-18-01 (B = 66.0 with
-  1.17 % cyclohexane) has no solution with this decanter, and near-dry columns (B = 67) still do not converge. Open:
-  three questions in the decision file (the entrainer start also as the very last attempt; step 2 with a bottoms
-  purity among the MESH equations first; the dehydration case specified by purity); ask CHEPTA-Lab about the decanter
-  option.
+  1.17 % cyclohexane) has no solution with this decanter, and near-dry columns (B = 67) still do not converge.
+  Answered by the maintainer (2026-11-18; docs/decisions/2026-11-18-04-entrainer-start-last.md): the entrainer start
+  also as the very last attempt (built: F4's column with 10 % cyclohexane converges); step 2 a bottoms purity among the
+  MESH equations first, arc-length continuation only if that is not enough; the dehydration case specified by bottoms
+  purity. Open: build proposal 0025 step 2; ask CHEPTA-Lab about the decanter option.
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record

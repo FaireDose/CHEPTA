@@ -2,7 +2,7 @@
 // independent three-phase reference (validation/python/reference_mesh_vll.py --three-phase), which solves its own
 // equations from them, perturbed. Only a start: the reference's answer is fixed by its equations.
 //   node validation/columns_vll_engine_starts.mjs     -> validation/fixtures/columns-vll-engine-starts.json
-// With --entrainer, the cases of proposal 0025, step 1 (the entrainer start: F6, F7), for
+// With --entrainer, the cases of proposal 0025, step 1 (the entrainer start: F6, F7, F8), for
 // reference_mesh_vll.py --entrainer:
 //   node validation/columns_vll_engine_starts.mjs --entrainer -> validation/fixtures/columns-vll-entrainer-starts.json
 import { readFileSync, writeFileSync } from "node:fs";
@@ -23,7 +23,7 @@ export function solveCase(c, twoLiquidStage, feedEnthalpy) {
     specs: c.specs.map(s => ({ kind: SPEC_OF[s.kind], value: s.value })) });
 }
 /** Proposal 0025, step 1: the columns that converge from the entrainer start. */
-export const ENTRAINER_CASES = ["F6-ethanol-dehydration-entrainer-20-stages", "F7-ethanol-dehydration-entrainer-30-stages"];
+export const ENTRAINER_CASES = ["F6-ethanol-dehydration-entrainer-20-stages", "F7-ethanol-dehydration-entrainer-30-stages", "F8-ethanol-water-cyclohexane-decanter-10-percent"];
 const isMain = process.argv[1] && import.meta.url.endsWith(process.argv[1].split("/").pop());
 if (isMain) {
   const entrainer = process.argv.includes("--entrainer");

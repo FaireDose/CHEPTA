@@ -8,6 +8,8 @@
  *    start, and match the independent reference on ChemSep's three-phase stage
  *    (validation/python/reference_mesh_vll.py --entrainer, fixture validation/fixtures/columns-vll-entrainer.json)
  *    within F1's tolerances, as F4 does in test/columns-heteroazeotropic.test.js;
+ *  - F8 (F4's column with 10 % cyclohexane): its bubble-point starts run but fail; the entrainer start, the very last
+ *    attempt since decision 2026-11-18-04 (the maintainer, 2026-11-18), converges it, and it matches the reference;
  *  - the decanter's liquids lie on the model's tie line;
  *  - the "dry-ethanol" specification of decision 2026-11-18-01 (12 % water, 1.17 % cyclohexane, B = 66.0 mol/s) has no
  *    column with this decanter: the distillate is the aqueous liquid of a three-phase state, and on the model's curve of
@@ -32,7 +34,7 @@ function solve(id) {
   return solved.get(id);
 }
 
-for (const id of ENTRAINER_CASES) {
+for (const id of ENTRAINER_CASES.slice(0, 2)) {
   test(`${id}: converges from the entrainer start, every bubble-point start refused for one liquid in the condensate`, () => {
     const r = solve(id);
     assert.equal(r.converged, true);
@@ -42,7 +44,24 @@ for (const id of ENTRAINER_CASES) {
     bp.forEach(t => assert.match(t, /its condensate holds one liquid, so it was not used/));
     assert.match(r.solver.tried.at(-1), /^Newton from the entrainer start/);
   });
+}
 
+test("F8 (F4's column with 10 % cyclohexane): the entrainer start as the very last attempt, after the bubble-point starts, the continuations and the resumed Newton failed (decision 2026-11-18-04)", () => {
+  const r = solve(ENTRAINER_CASES[2]), t = r.solver.tried;
+  assert.equal(r.converged, true);
+  assert.match(r.solver.start, /^entrainer start \(the top vapour at the heterogeneous azeotrope 0\.1566, 0\.3235, 0\.5199 at 335\.4 K/);
+  // every earlier attempt was made and failed, so a column that converged before this decision keeps its path
+  const bp = t.filter(s => /^Newton from the bubble-point start/.test(s));
+  assert.equal(bp.length, 5);
+  bp.forEach(s => assert.doesNotMatch(s, /\(\d+ iterations, \d+ ms\)$/));
+  assert.ok(t.some(s => /^continuation in the relative volatilities \(stopped/.test(s)));
+  assert.ok(t.some(s => /^continuation in the relative volatilities, the mean weighted by the liquid \(stopped/.test(s)));
+  assert.match(t.at(-1), /^Newton from the entrainer start/);
+  assert.equal(t.filter(s => /entrainer start/.test(s)).length, 1);
+  assert.ok(r.iterations <= 12, `${r.iterations} iterations`);
+});
+
+for (const id of ENTRAINER_CASES) {
   test(`${id}: the three-phase reference's profile, liquids and duties, within F1's tolerances`, () => {
     const c = caseOf(id), q = ref[id].three_phase, tol = c.tolerances.numerical.engine_against_reference;
     const r = solve(id);
