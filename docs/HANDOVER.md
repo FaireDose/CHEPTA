@@ -426,3 +426,5 @@ case by purity), told to coordinate with K in engine.js.
 18:35: J brought #260 onto main (head 700832c, docs only, merges cleanly): ready to merge. Started (L) Opus
 session_01FPbeWW2cai2XmDCb49ASfS from main, outcome claude/build-0025-step2: bottoms purity in MESH first,
 continuation only if needed; dehydration case by purity. Running: K (0026 engine), L (0025 step 2).
+
+18:50: #260 merged (main 4c98081). Told K. Open PRs: none. Running: K (0026 engine), L (0025 step 2).
