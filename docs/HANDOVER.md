@@ -362,3 +362,10 @@ locally: 1746 tests, 1742 pass, 0 fail, 3 skipped, 1 todo; no test lines removed
 solver.balanceTolerance 1e-4 of the fresh feed, per component, independent of the recycle tolerance (as COFE);
 refused in strict mode, warned otherwise. Four questions for the maintainer. Running: F (column 11 sweep).
 Merge order: #253, #255, #256 (retarget), #254 (E rebases), #257 (H rebases).
+
+11:40: The maintainer (to me): "ok agree with all i will merge one by one". Answers sent to E (#254: 5 as
+recommended), G (#256: 4 as recommended, 0025 accepted, step 1 first; ask Lab about the decanter option), H (#257: 4 as
+recommended; Settings hint line; drains/accumulates wording may go in). Each records them in its own PR and rebases
+after its base merges (order #253, #255, #256, #254, #257). Agreed before 0.6.3: 0025 step 1 and M5 (proposal then
+build). Next worker (0025 step 1, from #256's branch or main once merged) starts when F has finished and the answer
+recordings are done (2-worker limit).
