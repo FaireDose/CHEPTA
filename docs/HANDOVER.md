@@ -324,3 +324,10 @@ continuation as the last attempt). "smooth" stays opt-in (Lab's column 5 fails w
 high-reflux column reaching the heteroazeotrope; the three-phase flash fails near 335.5 K. Merge order: #253, #255,
 then E rebases #254. 0.6.3: the user's rule was "after we solve completely the liquid liquid issue": asked the user.
 The maintainer must check the Gomis 2005 file against ThermoML set 1 (11 rows).
+
+2026-11-18 08:10: The maintainer (in F's session, 07:39, verified): "we do not release now. i want the columns to
+calculate rigously LLV also . Like in ASpen they do with RadFrac." F recorded it in #255 (1abc9fd): the default "split"
+stage is already RadFrac's stage model; RadFrac's outer-loop split tried, not more robust, not kept. No 0.6.3 yet.
+Nothing merged (main 6aedc14). Started (G) Opus session_01FPbeWUzst4nr3xUKjs1RZv, from #255's branch, outcome
+claude/vll-columns-rigorous: (a) three-phase flash near the heteroazeotrope, (b) the entrainer column with a decanter
+(proposal instead if it needs an inside-out solver), (c) re-check "smooth" as default. One worker running.
