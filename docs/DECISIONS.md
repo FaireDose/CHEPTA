@@ -20,6 +20,11 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   feed by a design specification and column 11 by its distillate or a purity; the growth limit stays 10^6; an absolute
   per-component balance check follows in PR #257; the numbers are kept; Lab's plant tests stay opt-in. Closed once
   merged.
+- **The plant's balance on its own tolerance** (docs/decisions/2026-11-18-02-flowsheet-balance-absolute.md): built
+  `solver.balanceTolerance` (1e-4 of the fresh feed, per component, not loosened with the recycle tolerance, as COFE
+  keeps a mass balance tolerance beside its recycle tolerance; DWSIM only reports its residual); beyond it the strict
+  mode refuses and the lenient mode warns, "check the specifications first". Open: the value, one switch or two, the
+  scale (total feed or each component's flow), the words of the "grows without bound" refusal for a draining loop.
 - **Column fixes from CHEPTA-Lab's 0.6.2 requests** (docs/decisions/2026-11-14-05-column-fixes-lab-062.md): built
   EA-12/M3 (max_iterations governs; a last long Newton attempt), EA-13/M2 (a purity inside the reached range is never
   OUT_OF_RANGE), EA-9/M1 for CO and N2 traces, the EA-8 message, M4. Open: (a) acetic acid traces in two-liquid
