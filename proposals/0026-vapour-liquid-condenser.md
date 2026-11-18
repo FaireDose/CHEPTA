@@ -1,6 +1,7 @@
 # 0026: A condenser with a vapour and a liquid distillate
 
-- **Status:** Draft (for the maintainer's answers; M5 accepted in principle on 2026-11-14: "proposal then build")
+- **Status:** Accepted (the maintainer, 2026-11-18: the seven recommended answers, answer 4 with the correction on
+  `feed_second_liquid: "top"` below; docs/decisions/2026-11-18-05-vapour-liquid-condenser-proposal.md). Not built yet
 - **Author(s):** coding agent for the maintainer (2026-11-18)
 - **Discussion:** the pull request of branch `claude/proposal-partial-condenser-m5`;
   docs/decisions/2026-11-14-05-column-fixes-lab-062.md (M5); docs/decisions/2026-11-18-05-vapour-liquid-condenser-proposal.md
@@ -115,7 +116,16 @@ treats one liquid phase. No open simulator found has it, so this proposal does n
   leaves, or this condenser followed by a decanter (the flash drum with two liquids) if one does;
 - with `phases: "VLL"`, the stages below may hold two liquids (proposals 0024, 0025), but the condenser stage of
   `"vapour_liquid"` must hold one: the same refusal;
-- `feed_second_liquid: "top"` (proposal 0024, (b)) needs a decanter and stays refused with this condenser.
+- **`feed_second_liquid: "top"` is allowed** (proposal 0024, (b); the maintainer chose that the user picks top or
+  bottom). As main does today for every condenser but the decanter (`src/units/columns/column.js`, `feedSecondLiquid`
+  and the bypass after the solve): the small second liquid (at most `feed_second_liquid_limit`, 1 mol % of the
+  column's feed) bypasses the stages **and the condenser**, and is mixed after the column into the **liquid
+  distillate** (port `distillate`) by a P-H flash of the mixture at the column's pressure, exactly as with a
+  `"total"` condenser. It never enters the condenser stage, so the refusal of two liquids in the condenser (above)
+  does not touch it, and the vapour distillate is not changed. The mixed product is an ordinary stream: where its
+  P-H flash finds two liquids, its `phases` list both, as for `"total"` today; the note "bypasses the stages ... is
+  mixed into the distillate at the product's pressure" and `state.feed_second_liquid.into: "distillate"` are kept.
+  Only with `"decanter"` does the bypass join the condenser's feed (`condenserFeed`), unchanged.
 
 A vented decanter (vapour + two liquids at the top) would be a later proposal, if a case asks for it and an open source
 shows how it is specified.
@@ -163,6 +173,11 @@ shows how it is specified.
      vapour-flow specification gives back the same column);
   2. limits: a share of 1e-3 and of 0.999 approach today's total and partial columns (stated tolerance); a
      temperature above the dew point refused;
+  2b. `feed_second_liquid: "top"` with this condenser: a feed holding a small second liquid (below 1 mol %); the
+     column's stages, condenser and vapour distillate equal those of the same column fed without that liquid (the
+     stages see the same feed), and the liquid distillate equals the P-H flash of the column's liquid distillate plus
+     the bypassed liquid (flows and enthalpy flow closing to 1e-9 relative), its `phases` showing two liquids where
+     the flash finds them; with `"bottom"` the bottoms instead;
   3. a real mixture with a gas: the methanol column of Lab's request (PR, the request file
      `validation/data/columns/lab-requests-0.6.2/u-column-partial-pr.request.json` with the condenser changed), against
      the reference with the same PR. A comparison with the paper's Aspen numbers (289 and 4542 kmol/h) is Lab's, not a
@@ -203,7 +218,7 @@ shows how it is specified.
    docs/models/columns.md.
 4. Case 4 (IDAES cross-check) recorded in validation/report; Lab reruns the methanol plant.
 
-## Questions for the maintainer
+## Questions for the maintainer (answered 2026-11-18: all seven as recommended)
 
 1. **Name of the option**: `condenser: "vapour_liquid"` (button "Vapour + liquid"), leaving `"partial"` as today's
    vapour-only condenser. *Recommended: yes.* Renaming `"partial"` to DWSIM's meaning would break saved flowsheets.
@@ -215,7 +230,9 @@ shows how it is specified.
    a design specification `component_flow` or a new `liquid_distillate_kmol_h` covers the liquid alone if needed
    (not proposed now).
 4. **Two liquids in the vapour + liquid condenser**: refused, with the advice to add a decanter after it; no vented
-   decanter until a case and an open source ask for it. *Recommended: yes.*
+   decanter until a case and an open source ask for it. *Recommended: yes.* (Answered yes, with a correction: the
+   first draft also refused `feed_second_liquid: "top"` with this condenser, which contradicted main and the
+   maintainer's choice of top or bottom in proposal 0024; it is allowed, as described above.)
 5. **Shortcut mode**: refused with this condenser (rigorous only). *Recommended: yes.*
 6. **Validation**: the extended `reference_mesh.py` as the independent reference, the constant-alpha and PR methanol
    cases as fixtures, IDAES's condenser test as a cross-check only. *Recommended: yes.*

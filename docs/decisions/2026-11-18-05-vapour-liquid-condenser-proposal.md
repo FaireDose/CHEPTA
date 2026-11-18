@@ -14,9 +14,23 @@ What was decided before, and what this pull request does.
 This pull request adds proposals/0026-vapour-liquid-condenser.md (Draft), its line in proposals/README.md, and the
 open item in docs/DECISIONS.md. No code, data or test changes.
 
-## Waiting for the maintainer
+## The maintainer's answers (2026-11-18, relayed by the coordinator)
 
-The seven questions at the end of the proposal, each with a recommendation: the option's name (`"vapour_liquid"`),
-the reflux ratio's definition (L/U, liquid distillate, as DWSIM and IDAES), `distillate_kmol_h` as the whole
-distillate, two liquids in this condenser refused, shortcut refused, the validation plan, and the build order (after
-proposal 0025, step 1).
+All seven as recommended; proposal 0026 is **Accepted**, not built yet.
+
+1. Name: `condenser: "vapour_liquid"` ("Vapour + liquid"); `"partial"` stays the vapour-only condenser.
+2. Reflux ratio with this condenser: L1/U1, over the liquid distillate (DWSIM's stream ratio, IDAES's
+   `reflux_ratio`); the result also gives L1/(U1 + V1).
+3. `distillate_kmol_h` is the whole distillate, liquid plus vapour.
+4. Two liquids in the condenser itself: refused, with the advice to add a decanter after it; no vented decanter.
+   **Correction:** the first draft also refused `feed_second_liquid: "top"` with this condenser. That contradicted
+   main (`src/units/columns/column.js`: with every condenser but the decanter, the small bypassed second liquid is
+   mixed into the distillate after the column by a P-H flash) and the maintainer's choice in proposal 0024 that the
+   user picks top or bottom. Now: with `"vapour_liquid"`, `"top"` mixes the bypassed liquid into the **liquid**
+   distillate after the condenser, as with `"total"`, never into the condenser stage; the mixed product reports two
+   liquids in its `phases` where its flash finds them, as for `"total"` today. A test case (2b) is added to the
+   validation plan.
+5. Shortcut mode: refused with this condenser.
+6. Validation: the extended `reference_mesh.py` as the independent reference; the constant-alpha and PR methanol
+   cases as fixtures; IDAES's condenser test as a cross-check only.
+7. Build after proposal 0025's step 1 merges; steps 1-2 in one pull request, the workbench (step 3) in a second.

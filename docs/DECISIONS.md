@@ -17,8 +17,8 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   region. The maintainer (2026-11-14) asked for a warning and a decanter first where a large second liquid enters, and
   a simpler treatment of a small immiscible part (out at the top or the bottom): a short proposal next; (b) M5, a
   condenser with a vapour and a liquid distillate at a given pressure and vapour ratio: accepted in principle, proposal
-  then build; proposal 0026 written 2026-11-18 (docs/decisions/2026-11-18-05-vapour-liquid-condenser-proposal.md), seven
-  questions to answer; (c) LONG_NEWTON = 100 and the 0.1 mol % trace level: kept; (d) the recycle plateau near 1e-3: a
+  then build; proposal 0026 accepted 2026-11-18 (docs/decisions/2026-11-18-05-vapour-liquid-condenser-proposal.md: the
+  seven recommended answers; feed_second_liquid "top" mixes into the liquid distillate); build after proposal 0025, step 1; (c) LONG_NEWTON = 100 and the 0.1 mol % trace level: kept; (d) the recycle plateau near 1e-3: a
   flowsheet-solver task after the design specifications. Follow-up answers (2026-11-14): the three-part proposal
   aimed at heterogeneous azeotropic distillation with an entrainer (proposal 0024; its share and the bypass's direction
   are in the item below); the condenser takes T, the vapour flow or the vapour share.
