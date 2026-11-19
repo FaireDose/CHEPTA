@@ -132,6 +132,17 @@ not fed at 1 %: the makeup is small, the entrainer in the column is not.
    **Recommended: ask CHEPTA-Lab first, as already decided for the decanter option.**
 5. A distillate purity with a decanter stays on the outer loop (it hardly fixes the column). **Recommended: yes.**
 
+## The maintainer's answers (2026-11-19, through the coordinator; all five as recommended)
+
+1. The bottoms purity among the MESH equations for columns with a decanter; the outer loop for every other
+   specification: **yes**.
+2. Arc-length continuation is not built: **yes**.
+3. F11 (30 stages, 12 % water, 3.3 % cyclohexane, 0.1 mol % water in the bottoms) is the dehydration validation case:
+   **yes**.
+4. An entrainer recycle or the decanter option for a small makeup: **CHEPTA-Lab is asked first** (the coordinator, at its
+   next phase); nothing built until then.
+5. A distillate purity with a decanter stays on the outer loop: **yes**.
+
 ## Rules kept
 
 - No validation data or existing test changed; four new cases, a new fixture and its starts, a new test file.
