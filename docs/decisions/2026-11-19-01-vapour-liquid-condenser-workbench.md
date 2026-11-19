@@ -23,14 +23,20 @@ proposal's "Workbench" and "API and project file" sections say. The engine's num
 - **Switching "Condenser fixed by" after a solve** starts the new input from the solved column's value (its temperature,
   vapour flow or share), which gives the same column (H1 of the engine's tests); before a solve the new input is empty.
   This is a convenience of the form, not a default number.
-- **The canvas:** the vapour distillate leaves at the right of the column, in its upper quarter; the outlets are
+- **The canvas:** the vapour distillate leaves at the top of the column and the liquid distillate at the right, in its
+  upper quarter (the maintainer, 2026-11-19: vapour above liquid; first drawn the other way round); the outlets are
   labelled "liquid distillate" and "vapour distillate" on the canvas and in the stream table (`outletName`).
 - **Results:** the results panel and the column's Excel sheet (`src/ui/column-excel.js`) give the reflux ratio over the
   liquid distillate (L/U), the reflux over the whole distillate (L/(U+V)), the liquid and vapour distillates, their sum,
   the vapour share and the condenser temperature; the inputs list the condenser's key. The Streams sheet has the vapour
   distillate as a stream from "COLUMN vapour_distillate". The profile's note names the condenser.
-- **McCabe-Thiele** (Column workspace): not drawn for this condenser, saying why (two distillates of different
-  compositions); not in the proposal, but the diagram would otherwise be drawn with the liquid distillate's line only.
+- **McCabe-Thiele** (Column workspace), drawn for this condenser (the maintainer's answer 2 below): the condenser is
+  the first equilibrium step, from the vapour distillate's y_D; the rectifying line goes through the whole distillate's
+  composition z_D with the reflux over the whole distillate, L / (U + V). Derived from the material balance around the
+  top (stage 1 has no feed, so V2 = L1 + U1 + V1 exactly); the ChemSep Book (section 1.3.3, which the construction
+  cites) could not be opened on 2026-11-19 (its server answered 503), so no textbook passage on a mixed distillate is
+  cited. Checked on benzene + toluene: the condenser step and the first operating point equal the rigorous column's
+  stage-1 liquid and stage-2 vapour within 1e-12; 14.1 steps against the column's 15.
 - **Project files:** `PROJECT_FORMAT` 11 (`src/ui/project.js`), written only when a column has this condenser (or one
   of its keys, or a stream on its outlet); a file of an older format that holds one is refused, naming format 11; all
   other projects keep the lowest format that holds them and read unchanged. Schema `docs/schema/project-11.json` (the
@@ -48,11 +54,11 @@ proposal's "Workbench" and "API and project file" sections say. The engine's num
   4532.7 kmol/h, vapour 298.29 kmol/h, share 0.06175, reflux over the whole distillate 1.877); switching to "Vapour
   share" fills 0.0617455; back to "Total" removes the vapour distillate's stream.
 
-## Open, for the maintainer
+## The maintainer's answers (2026-11-19)
 
-1. The buttons of "Condenser fixed by" read "Vapour flow" and "Vapour share" (the proposal: "Vapour distillate flow",
-   "Vapour share of the distillate"), because the longer names wrap to three lines in the Inputs panel; the input below
-   carries the full name. Recommended: keep the short buttons.
-2. McCabe-Thiele is refused for this condenser rather than drawn with the liquid distillate only. Recommended: keep the
-   refusal until a case asks for the diagram.
-3. Step 4 (the IDAES cross-check) is next, as the proposal says.
+1. The short button names "Vapour flow" and "Vapour share": agreed ("ok with 1").
+2. McCabe-Thiele: "is this already integrated in the engine of the column? if it is let's do it". The condenser is in
+   the engine (steps 1-2); the diagram is a drawing over the solved column, so it is now drawn for this condenser as
+   above, instead of refused.
+
+Still open: format 11 to confirm; step 4 (the IDAES cross-check) next, as the proposal says.

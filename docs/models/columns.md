@@ -304,13 +304,21 @@ condenser). The unknown r = U₁/L₁ adds one degree of freedom, so the column 
   one (accepted only with this condenser).
 
 **Outlets:** `distillate` (the liquid distillate, the port id unchanged) and **`vapour_distillate`**, which this
-condenser requires and the others refuse. On the canvas the vapour distillate leaves at the top right of the column;
+condenser requires and the others refuse. On the canvas the vapour distillate leaves at the top of the column and the liquid distillate at the right, below
+it;
 the outlets are labelled "liquid distillate" and "vapour distillate" there and in the stream table. Choosing the
 condenser in the form adds a Product on the vapour distillate; choosing another condenser (or the shortcut, or an
 absorber) removes that stream with the condenser's own specification and the design specifications written on the
 vapour distillate (refused, with a note, when the stream goes to a unit). The results panel and the column's Excel
 sheet give both distillates, both reflux ratios, the vapour share and the condenser temperature. McCabe-Thiele's
-diagram (Column workspace) is not drawn for this condenser: its two distillates have different compositions. Projects
+diagram (Column workspace) is drawn for it (the maintainer, 2026-11-19): the condenser is the first equilibrium step,
+from the vapour distillate's y_D to the liquid in equilibrium with it, and the rectifying line goes through the whole
+distillate's composition z_D = (U x_D + V y_D) / (U + V) with the reflux over the whole distillate, L / (U + V), as its
+ratio. This follows from the material balance around the top (stage 1 has no feed, so the vapour rising to it is
+L + U + V); with no liquid distillate it is the partial condenser's construction. On benzene + toluene (15 stages, R = 2
+over the liquid distillate, D = 50 kmol/h, share 0.3) the condenser step and the first operating point equal the
+rigorous column's stage-1 liquid and stage-2 vapour within 1e-12; the steps give 14.1 stages against the column's 15
+(constant molar overflow below the condenser). Projects
 with this condenser are written in **format 11** (`docs/schema/project-11.json`); a project without it keeps the
 lowest format that holds it, and older projects read unchanged.
 

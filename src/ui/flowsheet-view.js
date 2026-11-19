@@ -1451,9 +1451,11 @@ function ports(fs, b) {
   spread(st.in ?? [], -1);
   if (b.type === "column") {
     // the distillate leaves at the top (from the condenser), the bottoms at the bottom (from the reboiler)
-    for (const sid of st.distillate ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
-    // the vapour + liquid condenser's vapour distillate (proposal 0026): at the right, in the upper quarter
-    for (const sid of st.vapour_distillate ?? []) at[sid] = { x: x + w / 2, y: y - hh / 4, dir: [1, 0] };
+    // with the vapour + liquid condenser (proposal 0026) the vapour distillate leaves at the top and the liquid
+    // distillate at the right, in the upper quarter (vapour above liquid, as from the condenser's drum)
+    const vl = b.spec?.condenser === "vapour_liquid";
+    for (const sid of st.distillate ?? []) at[sid] = vl ? { x: x + w / 2, y: y - hh / 4, dir: [1, 0] } : { x, y: y - hh / 2, dir: [0, -1] };
+    for (const sid of st.vapour_distillate ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
     for (const sid of st.bottoms ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
     // the side draws leave at the right, in their order
     (st.side ?? []).forEach((sid, k, all) => { at[sid] = { x: x + w / 2, y: y + (k - (all.length - 1) / 2) * 16, dir: [1, 0] }; });

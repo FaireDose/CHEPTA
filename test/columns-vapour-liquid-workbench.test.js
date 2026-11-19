@@ -5,7 +5,11 @@
  *  - choosing the condenser adds the vapour distillate's Product stream, and leaving it removes the stream, the
  *    condenser's own specification and the design specifications written on the vapour distillate (setCondenser);
  *  - the outlets' names on the canvas and in the stream table; the column's Excel sheet with the two distillates and
- *    the two reflux ratios; McCabe-Thiele's diagram refused for two distillates;
+ *    the two reflux ratios;
+ *  - McCabe-Thiele's diagram with this condenser (benzene + toluene, Peng-Robinson as the Column workspace's example,
+ *    docs/METHOD_SELECTION.md rules 2 and 6): the condenser is the first equilibrium step, from the vapour distillate,
+ *    and the rectifying line goes through the whole distillate's composition with the reflux over the whole distillate
+ *    (the material balance around the top); checked against the rigorous column's stage 1 and stage 2;
  *  - project files: format 11 written only with this condenser, read back and solved; a format-10 file with the
  *    condenser refused, naming the format; older projects read unchanged.
  * The column is CHEPTA-Lab's methanol column (validation/data/columns/lab-requests-0.6.2/u-column-partial-pr.request.json,
@@ -21,7 +25,8 @@ import { setCondenser, setSpec, streamsOf, endOf, CONDENSER_SPEC_KEYS } from "..
 import { outletName } from "../src/ui/flowsheet-view.js";
 import { columnSheet } from "../src/ui/column-excel.js";
 import { flowsheetSheets } from "../src/ui/flowsheet-excel.js";
-import { columnBinary } from "../src/ui/column-mccabe.js";
+import { columnBinary, equilibriumCurve, mccabeThiele } from "../src/ui/column-mccabe.js";
+import { flowsheetSystem } from "../src/flowsheet/document.js";
 import { leaveVapourLiquid, columnExample } from "../src/ui/column-workspace.js";
 import { projectOf, readProject, stateFromProject, PROJECT_FORMAT } from "../src/ui/project.js";
 import { initialState } from "../src/ui/app-logic.js";
@@ -114,12 +119,6 @@ test("Lab's methanol column with the condenser at 53 C from the workbench: solve
   assert.ok(sh2.rows.some(q => q[0] === "Reflux ratio" && q[1]?.s === "value"));
   assert.ok(!sh2.rows.some(q => /Reflux over the whole distillate|Vapour distillate flow/.test(q[0])));
 
-  // McCabe-Thiele (the Column workspace) is not drawn for two distillates; it says why
-  const two = { ...fs, streams: fs.streams };
-  const mt = columnBinary({ ids: ["methanol", "water"] }, two, res, "COLUMN");
-  assert.equal(mt.ok, false);
-  assert.match(mt.why, /two distillates/);
-
   // the project: format 11, read back to the same column, which solves to the same products
   const doc = projectOf(initialState({ components: [], flowsheet: fs }), { version: "test", now: new Date("2026-11-19T00:00:00Z") });
   assert.equal(PROJECT_FORMAT, 11);
@@ -147,4 +146,30 @@ test("older projects read unchanged: a column without this condenser is still wr
   // the Column workspace's example (shortcut, total condenser) is format 6 too
   const ws = projectOf({ ...initialState({ components: [] }), column: columnExample() }, { version: "test" });
   assert.equal(ws.fugacity_project, 6);
+});
+
+test("McCabe-Thiele with the vapour + liquid condenser: the condenser is the first step, from y_D; the rectifying line through the whole distillate; against the rigorous column", () => {
+  const ex = columnExample();
+  let fs = { ...ex, blocks: ex.blocks.map(b => (b.type === "column" ? { ...b, spec: { mode: "rigorous", stages: 15, feed_stage: 8, reflux_ratio: 2, distillate_kmol_h: 50 } } : b)) };
+  fs = setCondenser(fs, "C1", "vapour_liquid", { vapour_share: 0.3 });
+  const res = runFlowsheet(fs), st = res.blocks.C1.state, p = res.blocks.C1.profile, sys = flowsheetSystem(fs);
+  const inp = columnBinary(sys, fs, res, "C1");
+  assert.ok(inp.ok, inp.why);
+  assert.equal(inp.vapourLiquid, true);
+  assert.equal(inp.partial, true);
+  // the whole distillate's composition and the reflux over it
+  const V = res.streams[streamsOf(fs, "C1").vapour_distillate[0]], L = res.streams[streamsOf(fs, "C1").distillate[0]];
+  assert.ok(Math.abs(inp.xD - (L.F_kmol_h * L.z[0] + V.F_kmol_h * V.z[0]) / (L.F_kmol_h + V.F_kmol_h)) < 1e-12);
+  assert.ok(Math.abs(inp.R - st.reflux_over_distillate) < 1e-12 && inp.yTop === V.z[0] && inp.xLiquid === L.z[0]);
+  const curve = equilibriumCurve(sys, inp.i, inp.P_kPa);
+  const mt = mccabeThiele({ sys, ...inp, curve, feedStage: 8 });
+  const one = mt.steps[0];
+  // step 1 is the condenser: from the vapour distillate's y_D to the liquid in equilibrium with it, which is the
+  // rigorous column's stage-1 liquid (the reflux and the liquid distillate), by the same method at the same pressure
+  assert.ok(Math.abs(one.y - V.z[0]) < 1e-12);
+  assert.ok(Math.abs(one.x - p[0].x.benzene) < 1e-6, `${one.x} vs ${p[0].x.benzene}`);
+  // the vapour rising to the condenser: stage 1 has no feed, so V2 = L1 + D exactly and the line gives the rigorous y2
+  assert.ok(Math.abs(one.y_next - p[1].y.benzene) < 1e-6, `${one.y_next} vs ${p[1].y.benzene}`);
+  // the step count is the column's within one stage (constant molar overflow below the condenser)
+  assert.ok(Math.abs(mt.stages - st.stages) <= 1, `${mt.stages} vs ${st.stages}`);
 });
