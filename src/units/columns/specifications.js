@@ -52,6 +52,23 @@
  *    column reaches at most and what limits it.
  * The price: several column solutions for one answer (each started from the last, so a few Newton iterations each).
  *
+ * Which path each specification takes (proposal 0025, step 2; the maintainer, 2026-11-18; docs/decisions/
+ * 2026-11-18-07-purity-in-mesh.md):
+ *  - a column with a decanter (one degree of freedom) and one purity of its bottoms, on the mole or the mass basis,
+ *    with no side draw and no other specification: the purity among the MESH equations, as DWSIM writes a component
+ *    fraction (the same file and block as above: its residual ln(x / value), the mass fraction on the mass basis, in
+ *    place of the reboiler's energy balance; DWSIM's own reboiler fraction reads the condenser's basis, a slip not
+ *    copied). engine.js MESH_SPECS; the Jacobian stays block-tridiagonal. A decanter's trial columns at a fixed
+ *    distillate flow are the hard ones near the dry end (the
+ *    entrainer columns of proposal 0025: decision 2026-11-18-01 found the product flow a poor parameter there), and the
+ *    outer loop refused even the easy entrainer columns at its first trial column. If the MESH equations do not
+ *    converge, the outer loop below is tried as before, its `tried` starting with that attempt;
+ *  - every other design specification (every column without a decanter, a distillate purity with a decanter, two
+ *    specifications, a recovery, a component flow, a stage temperature, side draws): the outer loop, unchanged. A
+ *    distillate purity with a decanter was tried among the MESH equations too and not kept: the decanter's distillate
+ *    is a liquid of a three-phase state and hardly moves along a column's branch, so its purity hardly fixes the
+ *    column (asked for F9's own distillate water, it converged to another column, 3.2 mol/s apart in the bottoms).
+ *
  * Fail loudly (AGENTS.md, "Rules for code"). Refused before anything is solved (BAD_INPUT): a purity or a recovery
  * outside 0 to 1, a component that is not in the feed, a component flow above its feed, purities of one product that
  * add up to more than 1, a purity that a given product flow cannot hold. Refused as outside what the column can do
@@ -254,6 +271,37 @@ export function solveSpecified(opts, solve, th) {
   checkArithmetic(prob, th);
   checkAzeotrope(prob, th, opts);
 
+  // ---- a column with a decanter and one purity of its bottoms: the purity among the MESH equations
+  // (proposal 0025, step 2; see the file header), the outer loop only if that fails
+  let meshNote = null;
+  const pd = design[0];
+  if (decanter && hasR && design.length === 1 && !base.length && !draws.length && pd.kind === "purity" && pd.product === "bottoms") {
+    const t0 = Date.now();
+    try {
+      const r = solve({ ...opts, specs: [{ kind: "bottoms_fraction", i: pd.i, value: pd.value, basis: pd.basis, ...(pd.basis === "mass" ? { MW } : {}), startD: estimateDistillate(prob, th, F) }] });
+      const f = r.products.bottoms.flows;
+      const a = pd.basis === "mass" ? f[pd.i] * MW[pd.i] / sum(f.map((v, k) => v * MW[k])) : f[pd.i] / sum(f);
+      const g = logit(a) - logit(pd.value);
+      if (Math.abs(g) <= SPEC_TOLERANCE) {
+        const D = sum(r.products.distillate.flows);
+        return {
+          ...r,
+          specifications: [{ kind: "purity", product: pd.product, component: pd.i, component_name: names[pd.i], basis: pd.basis, unit: pd.unit,
+            asked: pd.value, achieved: a, error: a - pd.value, scaled_residual: g, met: true, label: pd.label }],
+          adjusted: [{ variable: "distillate_rate", value: D, unit: "mol/s" }],
+          residuals: { ...r.residuals, design_specifications: Math.abs(g) },
+          tolerances: { ...r.tolerances, design_specifications: SPEC_TOLERANCE, units: { ...r.tolerances.units, design_specifications: "scaled (logit of a fraction, logarithm of a flow, K / 10)" } },
+          solver: { ...r.solver, specifications: { method: `among the MESH equations: ln(x / ${pd.value}) = 0 for ${pd.label}, in place of the reboiler's energy balance (DWSIM's Naphtali-Sandholm solver; proposal 0025, step 2)`,
+            column_solves: 1, column_iterations: r.iterations, tried: [`the purity among the MESH equations: converged (${r.iterations} iterations, ${Date.now() - t0} ms)`], tolerance: SPEC_TOLERANCE } },
+        };
+      }
+      meshNote = `the purity among the MESH equations: converged, but ${pd.label} was met only to ${fmt(Math.abs(g))} (${Date.now() - t0} ms)`;
+    } catch (e) {
+      if (e?.code !== "NO_CONVERGENCE") throw e;
+      meshNote = `the purity among the MESH equations: not converged (${Date.now() - t0} ms; ${e.message.replace(/^Column: /, "").slice(0, 600)})`;
+    }
+  }
+
   // ---- the free variables: the engine's own specifications that were left open
   const kinds = base.map(s => s.kind);
   const candidates = [
@@ -320,7 +368,7 @@ export function solveSpecified(opts, solve, th) {
   // ---- the start: the distillate from the specifications' own material balance, a moderate reflux
   const startValues = R0 => vars.map(v => (v.name === "distillate_rate" ? estimateDistillate(prob, th, Dmax)
     : v.name === "draw_rate" ? 0.1 * F : v.name === "reflux_ratio" ? R0 : Math.max(R0, 1)));
-  const tried = [];
+  const tried = meshNote ? [meshNote] : [];
   let best = null;
   const keep = q => { if (q && (!best || q.norm < best.norm)) best = q; return q; };
 
