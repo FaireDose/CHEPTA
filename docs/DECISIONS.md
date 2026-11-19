@@ -38,8 +38,9 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   seven recommended answers; feed_second_liquid "top" mixes into the liquid distillate); steps 1-2 (engine, API,
   validation) built in docs/decisions/2026-11-18-06-vapour-liquid-condenser-build.md; the workbench (step 3: button,
   "Condenser fixed by", outlet, results, Excel, project format 11) built in
-  docs/decisions/2026-11-19-01-vapour-liquid-condenser-workbench.md, the maintainer agreed the short button names and asked
-  for McCabe-Thiele with this condenser (drawn: the condenser the first step, the line through the whole distillate);
+  docs/decisions/2026-11-19-01-vapour-liquid-condenser-workbench.md, the maintainer agreed the short button names and format 11,
+  and asked for McCabe-Thiele with this condenser (drawn: the condenser the first step, the line through the whole
+  distillate);
   step 4 (IDAES cross-check) next; open there: a recovery specification of a product's lightest component that fails to start the outer loop (pre-existing); (c) LONG_NEWTON = 100 and the 0.1 mol % trace level: kept; (d) the recycle plateau near 1e-3: taken
   up in docs/decisions/2026-11-14-08-recycle-safeguards.md. Follow-up answers (2026-11-14): the three-part proposal
   aimed at heterogeneous azeotropic distillation with an entrainer (proposal 0024; its share and the bypass's direction

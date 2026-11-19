@@ -61,4 +61,6 @@ proposal's "Workbench" and "API and project file" sections say. The engine's num
    the engine (steps 1-2); the diagram is a drawing over the solved column, so it is now drawn for this condenser as
    above, instead of refused.
 
-Still open: format 11 to confirm; step 4 (the IDAES cross-check) next, as the proposal says.
+3. Project format 11, written only when a column uses this condenser: confirmed ("ok").
+
+Next: step 4 (the IDAES cross-check), as the proposal says.
