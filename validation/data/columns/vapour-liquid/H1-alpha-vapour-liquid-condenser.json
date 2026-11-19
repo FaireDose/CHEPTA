@@ -1,0 +1,82 @@
+{
+  "chepta_column_case": 1,
+  "id": "H1-alpha-vapour-liquid-condenser",
+  "title": "Constant relative volatilities 40 : 4 : 2 : 1, a condenser with a vapour and a liquid distillate, each of its three specifications",
+  "purpose": "Proposal 0026, case 1: the vapour + liquid condenser (stage 1 an equilibrium stage, its vapour the vapour distillate, its liquid split into the reflux and the liquid distillate). The column is solved with the vapour share given; the condenser temperature and the vapour distillate's flow of that solution, given in turn, must give back the same column.",
+  "method_choice": "constant-alpha model system (no method to choose)",
+  "thermo": {
+    "kind": "constant-alpha",
+    "alpha": [
+      40.0,
+      4.0,
+      2.0,
+      1.0
+    ],
+    "reference_vapour_pressure": {
+      "form": "ln(p/kPa) = A - B/T",
+      "A": 16.0,
+      "B_K": 4000.0
+    },
+    "latent_heat_J_mol": 30000.0,
+    "note": "A3's model system (validation/data/columns/A3-ternary-partial-condenser.json) with a fourth, light component G (relative volatility 40) that the condenser does not fully condense. A model system, not a real mixture: K_i = alpha_i p(T) / P, liquid enthalpy 0 and vapour enthalpy the latent heat for every component (constant molar overflow). docs/METHOD_SELECTION.md does not apply."
+  },
+  "components": [
+    "G",
+    "A",
+    "B",
+    "C"
+  ],
+  "pressure_kPa": 101.325,
+  "column": {
+    "configuration": "distillation",
+    "stages": 15,
+    "condenser": "vapour_liquid",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 8,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.05,
+        0.3,
+        0.3,
+        0.35
+      ],
+      "q": 0.5
+    }
+  },
+  "specs": [
+    {
+      "kind": "reflux_ratio",
+      "value": 1.5,
+      "note": "L1 / U1, the reflux over the liquid distillate"
+    },
+    {
+      "kind": "distillate_flow_mol_s",
+      "value": 40.0,
+      "note": "U1 + V1, the whole distillate"
+    },
+    {
+      "kind": "vapour_share",
+      "value": 0.2
+    }
+  ],
+  "variants": [
+    "condenser_T_K from the solution",
+    "vapour_flow_mol_s from the solution"
+  ],
+  "expected": {
+    "outcome": "ok",
+    "converged": true
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "As A3: both solve the same equations to residuals of 1e-10 or less; the difference is the solvers' convergence only."
+      }
+    }
+  }
+}

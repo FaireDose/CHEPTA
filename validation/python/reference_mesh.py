@@ -17,6 +17,13 @@ several, column.feeds), y_j = K_j(x_j, T_j) x_j:
   of composition x_1 at their bubble point (sum K_1 x_1 = 1); no vapour leaves it. Partial condenser: stage 1 is an
   equilibrium stage whose vapour V_1 is the distillate D.
   Two specifications close the system (reflux ratio L_1 / D, distillate flow D, bottoms flow L_N).
+  Vapour + liquid condenser (condenser "vapour_liquid"; proposal 0026): stage 1 is an equilibrium stage, as the
+  partial condenser, whose vapour V_1 leaves as the vapour distillate and whose liquid x_1 is split into the reflux L_1
+  and the liquid distillate U_1 (The ChemSep Book, section 13.2: stage 1 with a liquid side stream and a vapour
+  product); U_1 is one more unknown, and the condenser's own specification one more equation: its temperature
+  (condenser_T_K), the vapour distillate's flow (vapour_flow_mol_s) or the vapour's share V_1 / (U_1 + V_1)
+  (vapour_share). The reflux ratio is then L_1 / U_1, the distillate flow U_1 + V_1 (the maintainer's answers of
+  2026-11-18). A boil-up ratio V_N / L_N may close the system too (boilup_ratio).
 
 These are the MESH equations as the open documentation of the column solvers cited in the proposal states them
 (NeqSim's column documentation, https://equinor.github.io/neqsim/wiki/distillation_column, and DWSIM's source; read
@@ -276,7 +283,9 @@ class Eos:
     """Peng-Robinson or SRK for both phases (reference_eos.Cubic, the databank's k_ij, 0 where there is none):
     K_i = phi_i^L(x) / phi_i^V(y), with y = K x found by successive substitution at the stage's x and T; the
     enthalpies the ideal-gas enthalpy (reference_enthalpy.h_ig) plus the residual enthalpy of the phase, the form of
-    the engine's equation-of-state systems."""
+    the engine's equation-of-state systems. k_ij(T) = k + kb / T where the databank's set has a temperature term
+    (reference_eos.kmatrix; until 2026-11-18 this class left kb out, which changes nothing for the pairs without it:
+    every column case before proposal 0026's H3, CO2 with methanol and water)."""
 
     def __init__(self, ids, P, model, cmo_latent=None):
         self.ids, self.P, self.lam = ids, P, cmo_latent
@@ -293,7 +302,7 @@ class Eos:
             c, P = self.cub, self.P * 1000
             x = np.asarray(x, float) / np.sum(x)
             ai = c.Oa * R_GAS ** 2 * c.Tc ** 2 / c.Pc * (1 + c.m * (1 - np.sqrt(T / c.Tc))) ** 2
-            aij = (1 - c.k) * np.sqrt(np.outer(ai, ai))
+            aij = (1 - c.k - c.kb / T) * np.sqrt(np.outer(ai, ai))
             a, b = x @ aij @ x, x @ c.b_i
             Z, _ = c.Z(T, P, x, phase)
             A, B = a * P / (R_GAS * T) ** 2, b * P / (R_GAS * T)
@@ -311,8 +320,8 @@ class Eos:
         ai = ac * (1 + c.m * (1 - sq)) ** 2
         dai = -ac * c.m * (1 + c.m * (1 - sq)) / np.sqrt(T * c.Tc)
         g = np.sqrt(np.outer(ai, ai))
-        aij = (1 - c.k) * g
-        daij = (1 - c.k) * (np.outer(dai, ai) + np.outer(ai, dai)) / (2 * g)
+        aij = (1 - c.k - c.kb / T) * g
+        daij = (1 - c.k - c.kb / T) * (np.outer(dai, ai) + np.outer(ai, dai)) / (2 * g) + c.kb / T ** 2 * g
         a, da, b = z @ aij @ z, z @ daij @ z, z @ c.b_i
         Z, _ = c.Z(T, P, z, phase)
         B = b * P / (R_GAS * T)
@@ -404,21 +413,30 @@ class Column:
         self.f = self.feeds[0][0]
         self.total = condenser in ("total", "decanter")
         self.decanter = condenser == "decanter"
+        self.vl = condenser == "vapour_liquid"
         self.specs = specs
         self.w = nc + 3
+        self.extra = 3 if self.vl else 2      # the trailing unknowns: Q_c, Q_r (and U_1, the liquid distillate)
 
     def unpack(self, u):
-        S = u[:-2].reshape(self.N, self.w)
+        S = u[:-self.extra].reshape(self.N, self.w)
         x, T, L, V = S[:, :self.nc], S[:, self.nc] * 100, S[:, self.nc + 1] * self.F, S[:, self.nc + 2] * self.F
-        return x, T, L, V, u[-2] * self.F * H_SCALE, u[-1] * self.F * H_SCALE
+        q = u[self.N * self.w:]
+        return x, T, L, V, q[0] * self.F * H_SCALE, q[1] * self.F * H_SCALE
 
-    def pack(self, x, T, L, V, Qc, Qr):
+    def liquid_distillate(self, u):
+        """U_1 of the vapour + liquid condenser (0 otherwise)."""
+        return u[-1] * self.F if self.vl else 0.0
+
+    def pack(self, x, T, L, V, Qc, Qr, U1=None):
         S = np.column_stack([x, T / 100, L / self.F, V / self.F])
-        return np.concatenate([S.ravel(), [Qc / (self.F * H_SCALE), Qr / (self.F * H_SCALE)]])
+        tail = [Qc / (self.F * H_SCALE), Qr / (self.F * H_SCALE)] + ([U1 / self.F] if self.vl else [])
+        return np.concatenate([S.ravel(), tail])
 
     def groups(self, u):
         """Residuals by group, unscaled: material (mol/s, N x nc), summation (N x 2), energy (W, N), specs (mol/s)."""
         x, T, L, V, Qc, Qr = self.unpack(u)
+        U1 = self.liquid_distillate(u)
         N, nc, th = self.N, self.nc, self.th
         K = np.array([th.K(x[j], T[j]) for j in range(N)])
         y = K * x
@@ -446,15 +464,24 @@ class Column:
                 m -= L[j] * x[j] + V[j] * y[j]; e -= L[j] * hL[j] + V[j] * hV[j]
                 if j == 0:
                     e -= Qc
+                    m -= U1 * x[0]; e -= U1 * hL[0]     # the liquid distillate of the vapour + liquid condenser
             if j == N - 1:
                 e += Qr
             mat[j], en[j] = m, e
             summ[j] = [np.sum(x[j]) - 1, np.sum(y[j]) - 1]
-        D, B = V[0], L[-1]
+        D, B = V[0] + U1, L[-1]
         sp = []
         for s in self.specs:
             if s["kind"] == "reflux_ratio":
-                sp.append(L[0] - s["value"] * D)
+                sp.append(L[0] - s["value"] * (U1 if self.vl else D))
+            elif s["kind"] == "boilup_ratio":
+                sp.append(V[-1] - s["value"] * B)
+            elif s["kind"] == "condenser_T_K":
+                sp.append((T[0] - s["value"]) * self.F / 100)
+            elif s["kind"] == "vapour_flow_mol_s":
+                sp.append(V[0] - s["value"])
+            elif s["kind"] == "vapour_share":
+                sp.append(V[0] - s["value"] * (V[0] + U1))
             elif s["kind"] == "distillate_flow_mol_s":
                 sp.append(D - s["value"])
             elif s["kind"] == "bottoms_flow_mol_s":
@@ -485,11 +512,24 @@ class Column:
         th, N, nc, F, z = self.th, self.N, self.nc, self.F, self.z
         R = next((s["value"] for s in self.specs if s["kind"] == "reflux_ratio"), None)
         if R is None:
-            R = next(s["start_reflux_ratio"] for s in self.specs if s["kind"] == "decanter_reflux")
+            R = next((s["start_reflux_ratio"] for s in self.specs if s["kind"] == "decanter_reflux"), None)
+        if R is None:    # a boil-up ratio: the reflux from constant molar overflow
+            b = next(s["value"] for s in self.specs if s["kind"] == "boilup_ratio")
+            Dg = next((s["value"] for s in self.specs if s["kind"] == "distillate_flow_mol_s"), None)
+            Dg = Dg if Dg is not None else F - next(s["value"] for s in self.specs if s["kind"] == "bottoms_flow_mol_s")
+            vfed = sum((1 - q) * Ff for _, Ff, _, _, q in self.feeds)
+            R = (b * (F - Dg) + vfed) / Dg - 1
         D = next((s["value"] for s in self.specs if s["kind"] == "distillate_flow_mol_s"), None)
         if D is None:
             D = F - next(s["value"] for s in self.specs if s["kind"] == "bottoms_flow_mol_s")
         B = F - D
+        share = 0.0
+        if self.vl:      # the vapour share of the distillate for the start; the reflux ratio is L_1 / U_1
+            share = next((s["value"] for s in self.specs if s["kind"] == "vapour_share"), None)
+            if share is None:
+                vf = next((s["value"] for s in self.specs if s["kind"] == "vapour_flow_mol_s"), None)
+                share = min(0.98, max(0.02, vf / D)) if vf is not None else 0.3
+            R = R * (1 - share) if any(s["kind"] == "reflux_ratio" for s in self.specs) else R
         # product estimates: the distillate takes the most volatile components first (K at the feed's bubble point)
         Kf = th.K(z, bubble_T(th, z))
         d, left = np.zeros(nc), D
@@ -505,16 +545,17 @@ class Column:
         for fj, Ff, _, _, q in self.feeds:
             L[fj:] += q * Ff
             V[fj + 1:] -= (1 - q) * Ff
-        L[-1], V[0] = B, D
-        x, T = self.bubble_point_start(x, T, L, V)
-        u = self.pack(x, T, L, V, 0.0, 0.0)
+        L[-1], V[0] = B, D * (share if self.vl else 1.0)
+        U1 = (1 - share) * D if self.vl else None
+        x, T = self.bubble_point_start(x, T, L, V, U1=U1)
+        u = self.pack(x, T, L, V, 0.0, 0.0, U1)
         _, _, en, _, _ = self.groups(u)
         x_, T_, L_, V_, _, _ = self.unpack(u)
         Qc = en[0]               # the duty that closes the condenser's balance at the start
         Qr = -en[-1]
-        return self.pack(x_, T_, L_, V_, Qc, Qr)
+        return self.pack(x_, T_, L_, V_, Qc, Qr, U1)
 
-    def bubble_point_start(self, x, T, L, V, sweeps=None):
+    def bubble_point_start(self, x, T, L, V, sweeps=None, U1=None):
         """The compositions and temperatures for the start's flows, by the bubble-point method (the component balances
         as one tridiagonal system per component at fixed K, then each stage's bubble temperature, repeated): only a
         first guess for the simultaneous solution, which closes every equation."""
@@ -533,6 +574,8 @@ class Column:
                 ab[1] = -(L + V * K[:, i])
                 if self.total:
                     ab[1, 0] = -(L[0] + V[0])
+                if U1 is not None:
+                    ab[1, 0] -= U1
                 ab[2, :-1] = L[:-1]                               # below the diagonal: liquid from the stage above
                 xn[:, i] = solve_banded((1, 1), ab, -feed[:, i])
             xn = np.clip(xn, 1e-300, None)
@@ -564,7 +607,7 @@ class Column:
                         J[rows(jj), k] = d[rows(jj)] / hk
                     if j in (0, N - 1):
                         J[spec, k] = d[spec] / hk
-        for k in (len(u) - 2, len(u) - 1):     # the duties
+        for k in range(len(u) - self.extra, len(u)):     # the duties (and U_1)
             h = 1e-7 * max(1.0, abs(u[k]))
             uu = u.copy(); uu[k] += h
             J[:, k] = (self.residual(uu) - r) / h
@@ -633,6 +676,13 @@ class Column:
                                          "equilibrium": 0.0 if liquid_only else float(eq[j]), "energy_W": float(abs(en[j]))}})
         D, B = V[0], L[-1]
         xD = x[0] if self.total else y[0]
+        if self.vl:
+            U1 = self.liquid_distillate(u)
+            stages[0]["U_mol_s"] = U1
+            extra = {"condenser": "vapour_liquid", "U_liquid_distillate_mol_s": U1, "V_vapour_distillate_mol_s": V[0],
+                     "x_liquid_distillate": x[0].tolist(), "y_vapour_distillate": y[0].tolist(),
+                     "reflux_over_liquid_distillate": L[0] / U1, "vapour_share": V[0] / (V[0] + U1)}
+            D = V[0] + U1
         if hasattr(self.th, "split"):           # two liquids on the stages: each stage's liquids
             for j, st in enumerate(stages):
                 ll = self.th.split(x[j], T[j])
@@ -646,7 +696,7 @@ class Column:
                 "residuals": {"material_mol_s": float(np.abs(mat).max()), "summation": float(np.abs(summ).max()),
                               "equilibrium": float(max(s["residuals"]["equilibrium"] for s in stages)),
                               "energy_W": float(np.abs(en).max()), "specifications_mol_s": float(np.abs(sp).max())},
-                "solver": info}
+                "solver": info, **(extra if self.vl else {})}
 
 
 def feeds_of(case):

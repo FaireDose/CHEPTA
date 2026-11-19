@@ -8,7 +8,7 @@
  * a product, a stage temperature: src/units/columns/specifications.js, an outer loop around this solver).
  *
  *   solveCascade({ sys | thermo, stages, feeds, draws: [{ stage, phase: "liquid" | "vapour", rate }], specs,
- *                  ends: { condenser, reflux_liquid }, phases: "VL" | "VLL", P_kPa, start })
+ *                  ends: { condenser, reflux_liquid, condenser_spec }, phases: "VL" | "VLL", P_kPa, start })
  *   → { stages: [...], converged, residuals: { material, equilibrium, summation, energy, specifications },
  *       tolerances, iterations, warnings, products: { distillate, bottoms, draws }, duties, solver,
  *       specifications?, adjusted? }
@@ -45,6 +45,11 @@
  * sum_i K_i x_i - 1 = 0 (DWSIM writes the same two conditions for its total condenser). The energy balances of the
  * condenser and of the reboiler are replaced by the two specifications; their duties follow from those balances. A
  * specification of a duty keeps that balance, with the duty given.
+ * A vapour + liquid condenser (condenser "vapour_liquid"; proposal 0026) is an equilibrium stage as the partial one,
+ * whose liquid is split, with one composition, into the reflux l_i1 and the liquid distillate r l_i1 (r = U1 / L1, the
+ * side-stream ratio of The ChemSep Book, section 13.2.1); r is one more unknown and the condenser's own specification
+ * (ends.condenser_spec: its temperature T_K, the vapour distillate's flow vapour_rate, or the vapour's share
+ * vapour_share) one more row; the reflux ratio is L1 / U1 and the distillate flow U1 + V1 (the maintainer, 2026-11-18).
  * A decanter (condenser "decanter", phases "VLL"; milestone M2b) is a total condenser whose liquid splits into two: its
  * "liquid" variables hold the reflux (one of the two liquids, returned entirely) and its "vapour" variables the other
  * liquid, the distillate. Its E equations say that both liquids are in equilibrium with one vapour,
@@ -135,8 +140,12 @@ import { solveLiquidCascade } from "./extraction.js";
 import { DESIGN_SPECS, hasDesign, solveSpecified } from "./specifications.js";
 
 export const CASCADE_PHASES = Object.freeze(["VL", "LL", "VLL"]);
-/** The column's top: a total or partial condenser, a decanter, or none (absorber, stripper). */
-export const CONDENSERS = Object.freeze(["total", "partial", "decanter", "none"]);
+/** The column's top: a total or partial condenser, a decanter, a condenser with a vapour and a liquid distillate
+ *  (proposal 0026), or none (absorber, stripper). */
+export const CONDENSERS = Object.freeze(["total", "partial", "decanter", "vapour_liquid", "none"]);
+/** The vapour + liquid condenser's own specification (proposal 0026; exactly one): its temperature (IDAES's partial
+ *  condenser), the vapour distillate's flow (DWSIM's Partial_Condenser) or the vapour's share of the distillate. */
+export const CONDENSER_SPECS = Object.freeze(["T_K", "vapour_rate", "vapour_share"]);
 /** The specifications of milestone M2a, and those that come later (M4). */
 export const CASCADE_SPECS = Object.freeze(["reflux_ratio", "boilup_ratio", "distillate_rate", "bottoms_rate", "condenser_duty", "reboiler_duty"]);
 /** The bottoms' fraction of a component written among the MESH equations (proposal 0025, step 2; docs/decisions/
@@ -285,6 +294,19 @@ function checkInput({ stages, feeds, draws, specs, ends, phases, duties }, n) {
   if (hasCondenser && !hasReboiler) throw fail("NOT_AVAILABLE", "Column: a condenser without a reboiler (a refluxed absorber) is not built; the column has a condenser with a partial reboiler (distillation), neither (absorber, stripper), or a partial reboiler alone (reboiled stripper).");
   const decanter = condenser === "decanter";
   if (decanter && phases !== "VLL") throw fail("BAD_INPUT", "Column: a decanter on the condenser separates two liquids; turn on \"look for two liquids on the stages\" (phases \"VLL\", activity models).");
+  // the vapour + liquid condenser (proposal 0026): one specification of its own, besides the column's two
+  const vl = condenser === "vapour_liquid";
+  const cs = ends?.condenser_spec ?? null;
+  if (cs != null && !vl) throw fail("BAD_INPUT", `Column: a condenser specification (${JSON.stringify(cs?.kind)}) is the vapour + liquid condenser's: give it with condenser "vapour_liquid".`);
+  let cspec = null;
+  if (vl) {
+    if (!cs || !CONDENSER_SPECS.includes(cs.kind)) throw fail("BAD_INPUT", `Column: the vapour + liquid condenser takes one specification of its own, besides the column's two: its temperature (T_K), the vapour distillate's flow (vapour_rate, mol/s) or the vapour's share of the distillate (vapour_share); got ${JSON.stringify(cs)}.`);
+    const v = Number(cs.value);
+    if (cs.kind === "T_K" && !(Number.isFinite(v) && v > 0)) throw fail("BAD_INPUT", `Column: the condenser's temperature must be above 0 K (got ${JSON.stringify(cs.value)}).`);
+    if (cs.kind === "vapour_share" && !(v > 0 && v < 1)) throw fail("BAD_INPUT", `Column: the vapour's share of the distillate must be between 0 and 1, both excluded (got ${JSON.stringify(cs.value)}); for no vapour use a total condenser, for no liquid distillate a partial one.`);
+    if (cs.kind === "vapour_rate" && !(Number.isFinite(v) && v > 0)) throw fail("BAD_INPUT", `Column: the vapour distillate's flow must be above zero (got ${JSON.stringify(cs.value)}); for no vapour use a total condenser.`);
+    cspec = { kind: cs.kind, value: v };
+  }
   const refluxLiquid = ends?.reflux_liquid ?? "light";
   if (decanter && !["light", "heavy"].includes(refluxLiquid)) throw fail("BAD_INPUT", `Column: reflux_liquid must be "light" or "heavy", the liquid of the decanter that returns to the column (got ${JSON.stringify(refluxLiquid)}).`);
   if (!Array.isArray(feeds) || !feeds.length) throw fail("BAD_INPUT", "Column: give at least one feed.");
@@ -313,6 +335,7 @@ function checkInput({ stages, feeds, draws, specs, ends, phases, duties }, n) {
   const drawn = sum(ds.map(d => d.rate));
   if (!(drawn < F)) throw fail("BAD_INPUT", `Column: the side draws take ${fmt(drawn)} mol/s, as much as the feeds or more (${fmt(F)} mol/s): nothing is left for the distillate and the bottoms. Take smaller side draws.`);
   const Fnet = F - drawn;
+  if (cspec?.kind === "vapour_rate" && !(cspec.value < Fnet)) throw fail("BAD_INPUT", `Column: the vapour distillate's flow must be below the total feed${drawn ? " less the side draws" : ""}, ${fmt(Fnet)} mol/s (got ${cspec.value}).`);
   // a decanter returns one liquid entirely: that fixes the reflux, and one specification is left; a column without a
   // condenser or a reboiler has no specification at that end (its energy balance holds, with the stage's duty)
   const need = (hasCondenser && !decanter ? 1 : 0) + (hasReboiler ? 1 : 0);
@@ -338,6 +361,10 @@ function checkInput({ stages, feeds, draws, specs, ends, phases, duties }, n) {
   if (specs.length === 2 && specs[0].kind === specs[1].kind) throw fail("BAD_INPUT", `Column: ${specs[0].kind} is given twice; give two different specifications.`);
   const kinds = specs.map(s => s.kind);
   if (kinds.includes("distillate_rate") && kinds.includes("bottoms_rate")) throw fail("BAD_INPUT", `Column: the distillate and the bottoms flows are not independent (they add up to the feed${drawn ? " less the side draws" : ""}); give one of them with a ratio or a duty.`);
+  if (cspec?.kind === "vapour_rate") {
+    const Dg = kinds.includes("distillate_rate") ? Number(specs.find(s => s.kind === "distillate_rate").value) : kinds.includes("bottoms_rate") ? Fnet - Number(specs.find(s => s.kind === "bottoms_rate").value) : null;
+    if (Dg != null && !(cspec.value < Dg)) throw fail("BAD_INPUT", `Column: the vapour distillate (${fmt(cspec.value)} mol/s) must be smaller than the whole distillate, liquid and vapour (${fmt(Dg)} mol/s): the liquid distillate would be ${fmt(Dg - cspec.value)} mol/s. For no liquid distillate use a partial condenser.`);
+  }
   if (kinds.includes("condenser_duty") && kinds.includes("reboiler_duty")) throw fail("BAD_INPUT", "Column: the two duties fix the products only through the small difference of their enthalpies; give one duty with a flow or a ratio.");
   const out = specs.map(s => {
     if (MESH_SPECS.includes(s.kind)) {
@@ -373,7 +400,7 @@ function checkInput({ stages, feeds, draws, specs, ends, phases, duties }, n) {
     if (!Number.isFinite(q)) throw fail("BAD_INPUT", `Column: stage duty ${k + 1} needs a number Q_W (got ${JSON.stringify(d?.Q_W)}).`);
     Q[s - 1] += q;
   }
-  return { N, condenser, decanter, refluxLiquid, feeds: fs, F, Fnet, draws: ds, specs: out, slot, hasCondenser, hasReboiler, Q };
+  return { N, condenser, decanter, vl, cspec, refluxLiquid, feeds: fs, F, Fnet, draws: ds, specs: out, slot, hasCondenser, hasReboiler, Q };
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -434,6 +461,13 @@ export function solveCascade(opts = {}) {
   // equilibrium stage whose vapour leaves the column (the top product); without a reboiler stage N is one whose liquid
   // leaves it (the bottom product)
   const total = inp.condenser === "total" || inp.condenser === "decanter", decanter = inp.decanter;
+  // the vapour + liquid condenser (proposal 0026): stage 1 an equilibrium stage, as with a partial condenser, whose
+  // vapour v_i1 is the vapour distillate and whose liquid is split, with one composition, into the reflux l_i1 and the
+  // liquid distillate r l_i1 (ChemSep's ratio r = U1 / L1 of a liquid side stream, The ChemSep Book, section 13.2.1).
+  // r is one more unknown of stage 1 and the condenser's own specification one more row: every stage then holds 2C + 2
+  // variables, the last slot r on stage 1 and, on every other stage, a slot held at 1 by the row u - 1 = 0 (its step
+  // is zero), so that the Jacobian keeps its block-tridiagonal form with one block size
+  const vl = inp.vl, cspec = inp.cspec;
   const endOf = j => (j === 0 && hasCondenser ? 0 : j === N - 1 && hasReboiler ? 1 : null);
   // nonvolatile components (proposal 0009, step 5) stay in the liquid: a bottom product smaller than their feed, or a
   // top product that takes more than the volatile feed, would leave no liquid to hold them
@@ -448,7 +482,7 @@ export function solveCascade(opts = {}) {
       throw fail("BAD_INPUT", `Column: ${nvNames} ${nv.filter(Boolean).length > 1 ? "are" : "is"} nonvolatile and leave${nv.filter(Boolean).length > 1 ? "" : "s"} with the bottoms (${fmt(Fnv)} mol/s), so the bottoms must be larger than that; asked for ${fmt(B)} mol/s, which would boil the bottom stage dry. Take a larger bottoms flow (or a smaller distillate).`);
     }
   }
-  const m = 2 * n + 1, nv = N * m;
+  const m = 2 * n + 1 + (vl ? 1 : 0), nv = N * m;
   const fJ = Array.from({ length: N }, () => new Array(n).fill(0)), HF = QJ.slice();   // feeds' enthalpy and stage duties
   for (const f of feeds) { f.flows.forEach((v, i) => { fJ[f.stage][i] += v; }); HF[f.stage] += f.H_W; }
   let Ftot = inp.Fnet;   // what leaves as distillate and bottoms: the feeds less the side draws
@@ -464,6 +498,7 @@ export function solveCascade(opts = {}) {
     for (let i = 0; i < n; i++) { l.push(u[o + i]); v.push(u[o + n + i]); }
     const T = u[o + 2 * n];
     const L = sum(l), V = sum(v);
+    const r = vl ? u[o + 2 * n + 1] : 0;   // stage 1 of a vapour + liquid condenser: U1 / L1; elsewhere the slot held at 1
     const x = l.map(a => Math.max(a, 0) / L);
     let y, K, xd = null, Kr = null, Kd = null, hD = null;
     if (j === 0 && total) {
@@ -487,12 +522,14 @@ export function solveCascade(opts = {}) {
       }
     } else {
       y = v.map(a => Math.max(a, 0) / V);
-      K = th.lnK(x, y, T, j).map(Math.exp);
+      // the vapour + liquid condenser holds one liquid (proposal 0026): with two liquids on the stages, its own
+      // one-liquid K-values; a second liquid there is refused after the solve
+      K = (j === 0 && vl && th.twoLiquids ? th.base : th).lnK(x, y, T, j).map(Math.exp);
     }
-    const hL = (j === 0 && decanter && th.smooth ? th.base : th).hL(x, T, j), hV = j === 0 && total ? null : th.hV(y, T);
+    const hL = (j === 0 && ((decanter && th.smooth) || (vl && th.twoLiquids)) ? th.base : th).hL(x, T, j), hV = j === 0 && total ? null : th.hV(y, T);
     if (!(Number.isFinite(hL) && (hV === null || Number.isFinite(hV)) && K.every(Number.isFinite))) throw fail("NO_CONVERGENCE", "Column: a property is not finite at a trial point.");
     if (decanter && j === 0 && !(Number.isFinite(hD) && Kd.every(Number.isFinite))) throw fail("NO_CONVERGENCE", "Column: a property is not finite at a trial point.");
-    return { l, v, T, L, V, x, y, K, hL, hV, xd, Kr, Kd, hD };
+    return { l, v, T, L, V, x, y, K, hL, hV, xd, Kr, Kd, hD, r, U: j === 0 && vl ? r * L : UJ[j] };
   }
 
   // ---- the residuals of stage j (scaled), from the properties of j - 1, j, j + 1
@@ -503,10 +540,14 @@ export function solveCascade(opts = {}) {
     return Math.max(w[s.i], 1e-300 * F) / sum(w);
   }
   function specResidual(s, p, end) {
-    const D = p.V, B = p.L;   // stage 1: V holds the distillate; stage N: L is the bottoms
+    // stage 1: V holds the distillate (with the vapour + liquid condenser: the vapour distillate, and the whole
+    // distillate is U1 + V1); stage N: L is the bottoms
+    const D = vl && end === 0 ? p.V + p.U : p.V, B = p.L;
     switch (s.kind) {
       case "bottoms_fraction": return Math.log(specFraction(s, p) / s.value);
-      case "reflux_ratio": return (p.L - s.value * D) / F;
+      // with the vapour + liquid condenser the reflux over the liquid distillate, L1 / U1 (the maintainer, 2026-11-18,
+      // answer 2: DWSIM's stream ratio and IDAES's reflux_ratio)
+      case "reflux_ratio": return (p.L - s.value * (vl ? p.U : D)) / F;
       case "boilup_ratio": return (p.V - s.value * B) / F;
       case "distillate_rate": return end === 0 ? (D - s.value) / F : (B - (Ftot - s.value)) / F;
       case "bottoms_rate": return end === 0 ? (D - (Ftot - s.value)) / F : (B - s.value) / F;
@@ -517,12 +558,13 @@ export function solveCascade(opts = {}) {
     let e = HF[j];
     if (pa) e += pa.L * pa.hL;
     if (pb) e += pb.V * pb.hV;
-    e -= j === 0 && decanter ? p.L * p.hL + p.V * p.hD : j === 0 && total ? (p.L + p.V) * p.hL : (p.L + UJ[j]) * p.hL + (p.V + WJ[j]) * p.hV;
+    e -= j === 0 && decanter ? p.L * p.hL + p.V * p.hD : j === 0 && total ? (p.L + p.V) * p.hL : (p.L + p.U) * p.hL + (p.V + WJ[j]) * p.hV;
     return e;   // W: in - out, before any duty
   }
   function stageResidual(j, pa, p, pb, out, at) {
     // (the ends' energy rows, or their specifications, below; endOf(j) is null for every equilibrium stage)
-    const rl = 1 + UJ[j] / p.L, rv = 1 + WJ[j] / p.V;   // 1 on a stage without a side draw
+    const rl = 1 + p.U / p.L, rv = 1 + WJ[j] / p.V;   // 1 on a stage without a side draw
+    if (vl) out[at + 2 * n + 1] = j === 0 ? condenserRow(p) : p.r - 1;
     for (let i = 0; i < n; i++) {
       out[at + i] = (rl * p.l[i] + rv * p.v[i] - (pa ? pa.l[i] : 0) - (pb ? pb.v[i] : 0) - fJ[j][i]) / F;
     }
@@ -549,6 +591,14 @@ export function solveCascade(opts = {}) {
     }
     out[at + 2 * n] = h;
   }
+  // the vapour + liquid condenser's own row (proposal 0026): T_1 = T given, V_1 = V given, or V_1 = s (V_1 + U_1)
+  function condenserRow(p) {
+    if (cspec.kind === "T_K") return (p.T - cspec.value) / 100;
+    if (cspec.kind === "vapour_rate") return (p.V - cspec.value) / F;
+    return (p.V - cspec.value * (p.V + p.U)) / F;
+  }
+  const condenserError = p => (cspec.kind === "T_K" ? Math.abs(p.T - cspec.value) / cspec.value
+    : cspec.kind === "vapour_rate" ? Math.abs(p.V - cspec.value) / cspec.value : Math.abs(p.V / (p.V + p.U) - cspec.value) / cspec.value);
   const residualOf = P => {
     const r = new Float64Array(nv);
     for (let j = 0; j < N; j++) stageResidual(j, P[j - 1], P[j], P[j + 1], r, j * m);
@@ -564,6 +614,8 @@ export function solveCascade(opts = {}) {
     for (let j = 0; j < N; j++) {
       const o = j * m;
       for (let k = 0; k < m; k++) {
+        // the slot held at 1 (vapour + liquid condenser, stages below the condenser): its own row only
+        if (vl && j > 0 && k === 2 * n + 1) { B.a[bandAt(B, o + k, o + k)] = 1; continue; }
         const uk = u[o + k], isT = k === 2 * n;
         const h = isT ? 1e-4 * Math.max(1, Math.abs(uk)) / 300 : 1e-5 * Math.abs(uk) + 1e-13 * F;
         const back = isT || uk - h > 0;
@@ -606,8 +658,9 @@ export function solveCascade(opts = {}) {
       const s = end === null ? null : slot[end];
       const en = end === null || s.kind.endsWith("_duty") ? Math.abs(tmp[2 * n]) * scaleE : 0;
       if (s && MESH_SPECS.includes(s.kind)) g.specifications = Math.max(g.specifications, Math.abs(tmp[2 * n]));
-      else if (s && !s.kind.endsWith("_duty") && s.kind !== "decanter") g.specifications = Math.max(g.specifications, Math.abs(tmp[2 * n]) * F / Math.max(Math.abs(s.value) * (s.kind.endsWith("_ratio") ? (end === 0 ? p.V : p.L) : 1), 1e-300));
+      else if (s && !s.kind.endsWith("_duty") && s.kind !== "decanter") g.specifications = Math.max(g.specifications, Math.abs(tmp[2 * n]) * F / Math.max(Math.abs(s.value) * (s.kind.endsWith("_ratio") ? (end === 0 ? (vl ? p.U : p.V) : p.L) : 1), 1e-300));
       if (s?.kind.endsWith("_duty")) g.specifications = Math.max(g.specifications, Math.abs(tmp[2 * n]) * scaleE / s.value);
+      if (vl && j === 0) g.specifications = Math.max(g.specifications, condenserError(p));
       g.material = Math.max(g.material, mat); g.equilibrium = Math.max(g.equilibrium, eq);
       g.summation = Math.max(g.summation, su); g.energy = Math.max(g.energy, en);
       stageRes.push({ material_mol_s: mat, equilibrium: eq, summation: su, energy_W: en });
@@ -676,7 +729,7 @@ export function solveCascade(opts = {}) {
   const took = () => { const t = clock(), d = t - t0; t0 = t; return `${Math.round(d)} ms`; };
   let result = null;
   const startU = opts.start && Array.isArray(opts.start.stages) && opts.start.stages.length === N && opts.start.stages.every(s => s.l?.length === n && s.v?.length === n)
-    ? Float64Array.from(opts.start.stages.flatMap(s => [...s.l.map(a => a * 1), ...s.v, s.T_K])) : null;
+    ? Float64Array.from(opts.start.stages.flatMap((s, j) => [...s.l.map(a => a * 1), ...s.v, s.T_K, ...(vl ? [j === 0 ? (s.U_mol_s ?? 0.5 * s.L_mol_s) / s.L_mol_s : 1] : [])])) : null;
   if (startU) {
     const r = newton(startU, { dTmax: 20, maxIt: opts.quick ? Math.min(20, cap) : cap < Infinity ? cap : 40, patient: !!opts.quick, early: !!opts.quick });
     tried.push(`Newton from the previous solution (${r.iterations} iterations, ${took()}${r.converged ? "" : `: ${r.why}`})`);
@@ -795,8 +848,17 @@ export function solveCascade(opts = {}) {
   if (!result) tryEntrainer(true);
   if (!result) {
     const last = cold?.last;
+    // the vapour + liquid condenser whose solver ended with a distillate at zero, or a temperature outside the top
+    // vapour's two-phase range: refused as outside the range, with that range (proposal 0026)
+    if (vl && last?.P && !opts.homotopy) {
+      const p = last.P[0], lim = topVapourLimits(th, last.P[1].y);
+      const out = cspec.kind === "T_K" ? (lim.dew != null && cspec.value >= lim.dew ? "liquid" : lim.bubble != null && cspec.value <= lim.bubble ? "vapour" : null)
+        : !(p.U > 1e-6 * F) ? "liquid" : !(p.V > 1e-6 * F) ? "vapour" : null;
+      if (out) throw condenserRange(th, last.P, cspec, out, lim, true);
+    }
     const { g } = last ? groups(last.P) : { g: null };
     let hint = cold?.boilupWarning ? ` ${cold.boilupWarning}` : "";
+    if (vl && inp.specs.some(q => q.kind === "reflux_ratio")) hint += ` With the vapour + liquid condenser the reflux ratio is the reflux over the liquid distillate (L1 / U1): a small liquid distillate (a large vapour share) means a small reflux; give the reflux by another specification (a duty, a boil-up ratio) where most of the distillate leaves as vapour.`;
     if (anyDraw) hint += ` The column has ${inp.draws.length > 1 ? "side draws" : "a side draw"} (${inp.draws.map(d => `${fmt(d.rate)} mol/s of ${d.phase} from stage ${d.stage + 1}`).join(", ")}): a draw larger than the liquid or the vapour that reaches its stage has no solution; take a smaller draw, or a larger reflux (for a liquid draw) or boil-up (for a vapour draw).`;
     if (last && th.stable && phases !== "VLL") {
       const split = last.P.map((p, j) => j).filter(j => { try { return !th.stable(last.P[j].x, last.P[j].T).stable; } catch { return false; } });
@@ -851,12 +913,23 @@ export function solveCascade(opts = {}) {
     }
     twoLiquidCheck = { stages_two_liquids: two, stages_one_liquid: one, passed: true };
   }
+  // the vapour + liquid condenser (proposal 0026): both distillates present, and one liquid in the condenser
+  if (vl && checked) {
+    const p = P[0];
+    if (!(p.U > ZERO_PRODUCT * F && p.V > ZERO_PRODUCT * F)) throw condenserRange(th, P, cspec, p.U <= ZERO_PRODUCT * F ? "liquid" : "vapour");
+    const st = th.twoLiquids ? (th.base.stable ? th.base.stable(p.x, p.T) : { stable: true }) : th.stable ? th.stable(p.x, p.T) : { stable: true };
+    if (st && !st.stable) {
+      throw fail("PHASE_SPLIT", `Column: the condensate of the vapour + liquid condenser would split into two liquids (at ${fmt(p.T)} K: its liquid ${th.names.map((nm, i) => `${nm} ${fmt(p.x[i])}`).join(", ")}${st.trial ? ` splits off a liquid ${th.names.map((nm, i) => `${nm} ${fmt(st.trial[i])}`).join(", ")}` : ""}). This condenser holds a vapour and one liquid, as in the open simulators (proposal 0026; no vented decanter is built): use a decanter ("decanter" condenser) if no vapour leaves, or this condenser followed by a decanter (the flash drum with two liquids) if one does.`,
+        { stages: [{ stage: 1, T_K: p.T, x: p.x, trial: st.trial }] });
+    }
+  }
   // the phase-stability check: a second liquid on a stage is refused, never returned as a metastable answer
   if (th.twoLiquids && checked) {
     // two liquids are represented; a third is not (as by the flash)
     const third = [];
     for (let j = 0; j < N; j++) {
       if (j === 0 && decanter && th.smooth) continue;   // the reflux: one liquid of the decanter (its own check above)
+      if (j === 0 && vl) continue;                        // the vapour + liquid condenser: one liquid, checked above
       const s = th.third(P[j].x, P[j].T, j);
       if (s) third.push({ stage: j + 1, T_K: P[j].T, x: s.x, trial: s.trial });
     }
@@ -867,7 +940,7 @@ export function solveCascade(opts = {}) {
     }
   } else if (th.stable && checked) {
     const split = [];
-    for (let j = 0; j < N; j++) {
+    for (let j = vl ? 1 : 0; j < N; j++) {
       const s = th.stable(P[j].x, P[j].T);
       if (s && !s.stable) split.push({ stage: j + 1, T_K: P[j].T, x: P[j].x, trial: s.trial });
     }
@@ -916,7 +989,7 @@ export function solveCascade(opts = {}) {
     stage: j + 1, name: j === 0 && hasCondenser ? "condenser" : j === N - 1 && hasReboiler ? "reboiler" : j === 0 ? "top" : j === N - 1 ? "bottom" : feeds.some(f => f.stage === j) ? "feed" : "stage",
     T_K: p.T, P_kPa: th.P_kPa, L_mol_s: p.L, V_mol_s: j === 0 && total ? 0 : p.V, x: p.x, y: j === 0 && total ? null : p.y,
     K: j === 0 && total ? null : p.K, duty_W: endOf(j) === 0 ? -Qc : endOf(j) === 1 ? Qr : QJ[j], l: p.l, v: p.v, residuals: stageRes[j],
-    ...(UJ[j] ? { U_mol_s: UJ[j] } : {}), ...(WJ[j] ? { W_mol_s: WJ[j] } : {}),
+    ...(p.U ? { U_mol_s: p.U } : {}), ...(WJ[j] ? { W_mol_s: WJ[j] } : {}),
     ...(th.liquids ? { liquids: j === 0 && decanter ? decanterLiquids : th.liquids(p.x, p.T, p.L, j) } : {}),
     ...(j === 0 && decanter ? { x_distillate: p.xd } : {}),
   }));
@@ -949,7 +1022,11 @@ export function solveCascade(opts = {}) {
     converged: true, iterations: result.iterations, stages, ...(opts.sensitivity ? { sensitivities } : {}),
     residuals: g, tolerances: { ...limits, units: { material: "mol/s", energy: "W", equilibrium: "mole fraction", summation: "mole fraction", specifications: "relative" } },
     warnings, notes, phases,
-    products: { distillate: { flows: P[0].v.slice(), T_K: P[0].T, phase: total ? "liquid" : "vapour", H_W: P[0].V * (decanter ? P[0].hD : total ? P[0].hL : P[0].hV) },
+    products: { distillate: vl
+      // the vapour + liquid condenser: the liquid distillate (port "distillate") and the vapour distillate
+      ? { flows: P[0].l.map(a => a * P[0].r), T_K: P[0].T, phase: "liquid", H_W: P[0].U * P[0].hL }
+      : { flows: P[0].v.slice(), T_K: P[0].T, phase: total ? "liquid" : "vapour", H_W: P[0].V * (decanter ? P[0].hD : total ? P[0].hL : P[0].hV) },
+      ...(vl ? { vapour_distillate: { flows: P[0].v.slice(), T_K: P[0].T, phase: "vapour", H_W: P[0].V * P[0].hV } } : {}),
       bottoms: { flows: P[N - 1].l.slice(), T_K: P[N - 1].T, phase: "liquid", H_W: P[N - 1].L * P[N - 1].hL },
       // the side draws, in the order given: the stage's liquid or vapour, at its temperature
       draws: inp.draws.map(d => { const p = P[d.stage], liq = d.phase === "liquid";
@@ -957,6 +1034,51 @@ export function solveCascade(opts = {}) {
     duties: { condenser_W: Qc, reboiler_W: Qr },
     solver: { method: "Naphtali-Sandholm (Newton on all MESH equations)", start: result.start, tried, ...(twoLiquidCheck ? { two_liquid_check: twoLiquidCheck } : {}) },
   };
+}
+
+/** The vapour + liquid condenser (proposal 0026): a converged column whose liquid or vapour distillate is below this
+ *  share of the feed is refused (the limits of the vapour share; a product at zero is never returned). */
+const ZERO_PRODUCT = 1e-9;
+
+/**
+ * The bubble and dew temperatures of the vapour y at the column's pressure, from the adapter's own K-values (the dew
+ * point: sum_i y_i / K_i(x, y, T) = 1 with x = y / K, by bisection in T). Null where there is none in reach (a vapour
+ * of light gases has no bubble point at a low pressure). Only for the message of a refusal.
+ */
+function topVapourLimits(th, y) {
+  let bubble = null, dew = null;
+  try { const t = th.bubbleT(y); if (Number.isFinite(t)) bubble = t; } catch { /* none */ }
+  const f = T => {
+    let x = y.slice(), K = null;
+    for (let k = 0; k < 30; k++) {
+      K = th.lnK(x, y, T).map(Math.exp);
+      const w = y.map((v, i) => v / K[i]), s0 = sum(w);
+      x = w.map(v => v / s0);
+    }
+    return Math.log(sum(y.map((v, i) => v / K[i])));
+  };
+  try {
+    let lo = bubble ?? 300, flo = f(lo), hi = lo, fhi = flo;
+    // sum y / K falls as T rises: find T with f(T) < 0 above, f > 0 below
+    for (let k = 0; k < 80 && !(flo > 0); k++) { lo /= 1.05; flo = f(lo); }
+    for (let k = 0; k < 80 && !(fhi < 0); k++) { hi *= 1.05; fhi = f(hi); }
+    if (flo > 0 && fhi < 0) {
+      for (let k = 0; k < 100 && hi - lo > 1e-6; k++) { const mid = (lo + hi) / 2, fm = f(mid); if (fm > 0) lo = mid; else hi = mid; }
+      dew = (lo + hi) / 2;
+    }
+  } catch { /* none */ }
+  return { bubble, dew };
+}
+
+/** The refusal of a vapour + liquid condenser with no liquid or no vapour distillate (proposal 0026). */
+function condenserRange(th, P, cspec, missing, lim = null, lastIterate = false) {
+  lim = lim ?? topVapourLimits(th, P[1].y);
+  const range = lim.bubble != null && lim.dew != null ? `between its bubble point, ${fmt(lim.bubble)} K, and its dew point, ${fmt(lim.dew)} K`
+    : lim.dew != null ? `below its dew point, ${fmt(lim.dew)} K (it has no bubble point at this pressure: light gases that do not condense)`
+      : lim.bubble != null ? `above its bubble point, ${fmt(lim.bubble)} K` : "inside its two-phase range (its bubble and dew points were not found)";
+  const asked = cspec.kind === "T_K" ? `a condenser temperature of ${fmt(cspec.value)} K` : cspec.kind === "vapour_rate" ? `a vapour distillate of ${fmt(cspec.value)} mol/s` : `a vapour share of ${fmt(cspec.value)}`;
+  return fail("OUT_OF_RANGE", `Column: with ${asked} the vapour + liquid condenser has no ${missing} distillate${lastIterate ? " (on the solver's last iterate)" : ""}: the top vapour (${th.names.map((nm, i) => `${nm} ${fmt(P[1].y[i])}`).join(", ")}) splits into a vapour and a liquid only at a condenser temperature ${range}, at the column's pressure. For no vapour use a total condenser, for no liquid distillate a partial one.`,
+    { missing, bubble_K: lim.bubble, dew_K: lim.dew, condenser_spec: cspec });
 }
 
 /** Below this mole fraction a component is a trace, for the start values of a column only. */
@@ -977,13 +1099,48 @@ function startBubbleT(th) {
  * The start (see the file header): constant molar overflow, then the bubble-point method of Wang and Henke. Returns the
  * variables u, and a note when constant molar overflow gives no boil-up.
  */
-function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = null } = {}) {
+function bubblePointStart(th, inp, fJ, HF, opts = {}) {
+  if (inp.condenser !== "vapour_liquid") return bubblePointStartAt(th, inp, fJ, HF, opts, null);
+  // the vapour + liquid condenser (proposal 0026): the vapour share of the distillate from its specification; for a
+  // temperature, a start at a share of one half, then the share from a flash of that start's top vapour at the given
+  // temperature (the vapour leaves, the liquid makes the reflux and the liquid distillate), and the start again
+  const cs = inp.cspec;
+  if (cs.kind !== "T_K") return bubblePointStartAt(th, inp, fJ, HF, opts, cs.kind === "vapour_share" ? cs.value : null);
+  const first = bubblePointStartAt(th, inp, fJ, HF, opts, 0.5);
+  const beta = startFlash(th, first.top.y, cs.value);
+  // V1 = beta V2 with V2 = (R + 1) D, R the reflux over the whole distillate (with a reflux ratio given, L1 / U1 =
+  // R / (1 - s), so the share s solves s = beta (R' (1 - s) + 1))
+  const Rg = inp.specs.find(q => q.kind === "reflux_ratio")?.value;
+  const s0 = Rg != null ? beta * (Rg + 1) / (1 + beta * Rg) : beta * (first.top.R + 1);
+  return bubblePointStartAt(th, inp, fJ, HF, opts, Math.min(0.98, Math.max(0.02, s0)));
+}
+
+/** The vapour fraction of z flashed at T and the column's pressure, by the adapter's K-values (for a start only). */
+function startFlash(th, z, T) {
+  let x = z.slice(), y = z.slice(), beta = 0.5;
+  for (let k = 0; k < 60; k++) {
+    const K = th.lnK(x, y, T).map(Math.exp);
+    if (sum(z.map((v, i) => v * K[i])) <= 1) return 0;          // below the bubble point
+    if (sum(z.map((v, i) => v / K[i])) <= 1) return 1;          // above the dew point
+    const rr = b => sum(z.map((v, i) => v * (K[i] - 1) / (1 + b * (K[i] - 1))));
+    let lo = 0, hi = 1;
+    for (let q = 0; q < 60; q++) { const mid = (lo + hi) / 2; if (rr(mid) > 0) lo = mid; else hi = mid; }
+    beta = (lo + hi) / 2;
+    x = z.map((v, i) => v / (1 + beta * (K[i] - 1))); y = x.map((v, i) => v * K[i]);
+    const sx = sum(x), sy = sum(y); x = x.map(v => v / sx); y = y.map(v => v / sy);
+  }
+  return beta;
+}
+
+/** The bubble-point start; s0 the vapour share of the distillate of a vapour + liquid condenser (null otherwise, or
+ *  for a vapour flow given: then from that flow and the start's distillate). */
+function bubblePointStartAt(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = null } = {}, s0 = null) {
   // a start value only: where a stage's bubble point is not found because of traces (a few ppm of CO or N2 with
   // Peng-Robinson, whose K-value grows as the temperature falls, so that the sum of K x stays above 1; CHEPTA-Lab's
   // methanol column, M1, 2026-11-14), it is taken without the components below TRACE of the liquid; Newton then
   // solves the stages with them
   th = { ...th, bubbleT: startBubbleT(th) };
-  const { N, F, feeds, specs } = inp, n = th.n, total = inp.condenser !== "partial";
+  const { N, F, feeds, specs } = inp, n = th.n, vl = inp.condenser === "vapour_liquid", total = inp.condenser !== "partial" && !vl;
   const z = fJ.reduce((a, f) => a.map((v, i) => v + f[i]), new Array(n).fill(0)).map(v => v / F);
   // the feeds' liquid fractions and a latent heat, at the bubble and dew points of the whole feed
   const Tb = th.bubbleT(z);
@@ -1000,22 +1157,33 @@ function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = nu
   // the side draws: what leaves as distillate and bottoms is the feed less them (Fn); U and W per stage
   const Fn = inp.Fnet, U = new Array(N).fill(0), W = new Array(N).fill(0);
   for (const d of inp.draws) (d.phase === "liquid" ? U : W)[d.stage] += d.rate;
-  let D = get("distillate_rate") ?? (get("bottoms_rate") != null ? Fn - get("bottoms_rate") : null);
-  let R = get("reflux_ratio") ?? null;
-  const top = Vt => (total ? Vt / D - 1 : Vt / D - 1);
-  if (D == null) {
-    if (R != null && get("boilup_ratio") != null) { const r = get("boilup_ratio"); D = (r * F + vapourFed) / (R + 1 + r); }
-    else if (R != null && get("reboiler_duty") != null) D = (get("reboiler_duty") / lambda + vapourFed) / (R + 1);
-    else if (get("condenser_duty") != null && get("boilup_ratio") != null) {
-      const Vt = get("condenser_duty") / lambda, B = Math.max(Vt - vapourFed, 0.01 * F) / get("boilup_ratio"); D = F - B;
+  // (the vapour + liquid condenser: R below is the reflux over the whole distillate, L1 / (U1 + V1); a reflux ratio
+  // given is L1 / U1, so R = R_given (1 - s), s the vapour share; the condenser condenses the reflux and U1 only)
+  const flowsAt = sh => {
+    let D = get("distillate_rate") ?? (get("bottoms_rate") != null ? Fn - get("bottoms_rate") : null);
+    let R = get("reflux_ratio") != null ? get("reflux_ratio") * (vl ? 1 - sh : 1) : null;
+    const top = Vt => (total ? Vt / D - 1 : Vt / D - 1);
+    if (D == null) {
+      if (R != null && get("boilup_ratio") != null) { const r = get("boilup_ratio"); D = (r * F + vapourFed) / (R + 1 + r); }
+      else if (R != null && get("reboiler_duty") != null) D = (get("reboiler_duty") / lambda + vapourFed) / (R + 1);
+      else if (get("condenser_duty") != null && get("boilup_ratio") != null) {
+        const Vt = get("condenser_duty") / lambda, B = Math.max(Vt - vapourFed, 0.01 * F) / get("boilup_ratio"); D = F - B;
+      }
     }
-  }
-  D = Math.min(Math.max(D ?? 0.5 * Fn, 0.01 * Fn), 0.99 * Fn);
-  const B = Fn - D;
-  if (R == null) {
-    if (get("condenser_duty") != null) R = get("condenser_duty") / lambda / D - (total ? 1 : 0);
-    else if (get("reboiler_duty") != null) R = top(get("reboiler_duty") / lambda + vapourFed);
-    else if (get("boilup_ratio") != null) R = top(get("boilup_ratio") * B + vapourFed);
+    D = Math.min(Math.max(D ?? 0.5 * Fn, 0.01 * Fn), 0.99 * Fn);
+    const B = Fn - D;
+    if (R == null) {
+      if (get("condenser_duty") != null) R = get("condenser_duty") / lambda / D - (total ? 1 : vl ? 1 - sh : 0);
+      else if (get("reboiler_duty") != null) R = top(get("reboiler_duty") / lambda + vapourFed);
+      else if (get("boilup_ratio") != null) R = top(get("boilup_ratio") * B + vapourFed);
+    }
+    return { D, B, R };
+  };
+  let share = vl ? s0 ?? 0.5 : 0;
+  let { D, B, R } = flowsAt(share);
+  if (vl && s0 == null) {
+    // a vapour distillate flow given: the share from it and the start's distillate, a few times (D may follow R)
+    for (let k = 0; k < 5; k++) { share = Math.min(0.98, Math.max(0.02, inp.cspec.value / D)); ({ D, B, R } = flowsAt(share)); }
   }
   let boilupWarning = null;
   const Vb = (R + 1) * D - vapourFed;
@@ -1028,7 +1196,7 @@ function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = nu
   for (let j = 0; j < N; j++) {
     feeds.forEach((f, k) => { if (f.stage === j) { Lc += q[k] * sum(f.flows); } });
     Lc -= U[j];
-    if (j === 0) { L[0] = R * D; V[0] = D; continue; }
+    if (j === 0) { L[0] = R * D; V[0] = vl ? share * D : D; continue; }
     V[j] = L[j - 1] + D - S;
     feeds.forEach(f => { if (f.stage === j) S += sum(f.flows); });
     S -= U[j] + W[j];
@@ -1036,6 +1204,7 @@ function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = nu
   }
   for (let j = 1; j < N; j++) V[j] = Math.max(V[j], 0.01 * F);
   for (let j = 1; j < N - 1; j++) L[j] = Math.max(L[j], 0.01 * F);
+  if (vl) U[0] = (1 - share) * D;   // the liquid distillate, drawn from the condenser's liquid
   // compositions and temperatures by the bubble-point method, the vapour flows by the energy balances
   let x = Array.from({ length: N }, () => z.slice()), T = new Array(N).fill(Tb), y = x.map(r => r.slice());
   if (th.twoLiquids) {
@@ -1103,14 +1272,17 @@ function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = nu
     sweep();
     if (ch < 1e-6) break;
   }
-  const u = new Float64Array(N * (2 * n + 1));
+  // (the vapour + liquid condenser: one more slot per stage, U1 / L1 on stage 1 and 1 elsewhere; see solveCascade)
+  const w = 2 * n + 1 + (vl ? 1 : 0);
+  const u = new Float64Array(N * w);
   for (let j = 0; j < N; j++) {
-    const o = j * (2 * n + 1);
+    const o = j * w;
     for (let i = 0; i < n; i++) {
       u[o + i] = Math.max(L[j] * x[j][i], 1e-30 * F);
       u[o + n + i] = Math.max((j === 0 && total ? D * x[0][i] : V[j] * y[j][i]), 1e-30 * F);
     }
     u[o + 2 * n] = T[j];
+    if (vl) u[o + 2 * n + 1] = j === 0 ? U[0] / L[0] : 1;
   }
   if (inp.decanter) {
     // the condensate split at its bubble point: the chosen liquid is the reflux, the other the distillate
@@ -1121,7 +1293,7 @@ function bubblePointStart(th, inp, fJ, HF, { sweeps = 30, dTstop = 1e-3, R0 = nu
       for (let i = 0; i < n; i++) { u[i] = Math.max(r.flow * r.x[i], 1e-30 * F); u[n + i] = Math.max(d.flow * d.x[i], 1e-30 * F); }
     }
   }
-  return { u, boilupWarning };
+  return { u, boilupWarning, top: { y: y[1].slice(), R } };
 }
 
 /** The entrainer start's search for the heterogeneous azeotrope: at most this many steps of the distillation line, and
