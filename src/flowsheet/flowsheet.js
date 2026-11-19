@@ -125,9 +125,9 @@ function inverse(A) {
   return inv.every(row => row.every(Number.isFinite)) ? inv : null;
 }
 
-/** "B1.out" → { block: "B1", port: "out" } */
+/** "B1.out" → { block: "B1", port: "out" } (a port may hold "_": the column's "vapour_distillate", proposal 0026) */
 function endpoint(text, what, sid) {
-  const m = /^([^.\s]+)\.([a-z0-9]+)$/i.exec(String(text ?? ""));
+  const m = /^([^.\s]+)\.([a-z0-9_]+)$/i.exec(String(text ?? ""));
   if (!m) throw fail("BAD_INPUT", `Stream ${sid}: ${what} must be written "BLOCK.port", e.g. "V1.vapour" (got ${JSON.stringify(text)}).`);
   return { block: m[1], port: m[2] };
 }
@@ -206,6 +206,11 @@ export function inspectFlowsheet(fs) {
       const n = (b.outs[p.port] ?? []).length;
       if (!p.optional && n < p.min) add(b.id, `${b.unit.label} ${b.id}: connect ${p.min === 1 ? "a stream" : `at least ${p.min} streams`} to its ${p.label} outlet${p.min === 1 ? " (end it with a Product block if it leaves the flowsheet)" : ""}.`);
       if (n > p.max) add(b.id, `${b.unit.label} ${b.id}: its ${p.label} outlet takes one stream (${n} connected); use a Splitter to divide it.`);
+    }
+    // an outlet a block needs or refuses by its specification (the column's vapour distillate, proposal 0026)
+    if (typeof b.unit.outletProblem === "function") {
+      const msg = b.unit.outletProblem(b.spec, Object.fromEntries(Object.entries(b.outs).map(([k, v]) => [k, v.length])));
+      if (msg) add(b.id, `${b.unit.label} ${b.id}: ${msg}`);
     }
     if (b.unit.duty && !b.qin && !b.qout) {
       const q = energyName(b);
