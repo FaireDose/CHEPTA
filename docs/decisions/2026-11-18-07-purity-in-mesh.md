@@ -135,5 +135,6 @@ not fed at 1 %: the makeup is small, the entrainer in the column is not.
 ## Rules kept
 
 - No validation data or existing test changed; four new cases, a new fixture and its starts, a new test file.
-- `npm test` (before F11 and F12 were added): 1797 tests, 1792 pass, 0 fail, 1 todo (the UNIQUAC ternary azeotrope test,
-  as before), 4 skipped; final counts in the pull request.
+- `npm test`: 1802 tests, 1798 pass, 0 fail, 3 skipped, 1 todo (the UNIQUAC ternary azeotrope test, as before); 11 in
+  test/columns-purity-mesh.test.js. Lab's columns 5 and 11 (test/columns-lab-requests.test.js,
+  test/columns-lab-column11.test.js) pass unchanged.
