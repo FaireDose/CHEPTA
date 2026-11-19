@@ -34,8 +34,9 @@ proposal's "Workbench" and "API and project file" sections say. The engine's num
 - **Project files:** `PROJECT_FORMAT` 11 (`src/ui/project.js`), written only when a column has this condenser (or one
   of its keys, or a stream on its outlet); a file of an older format that holds one is refused, naming format 11; all
   other projects keep the lowest format that holds them and read unchanged. Schema `docs/schema/project-11.json` (the
-  port pattern now allows "_"). Two existing tests that assert the newest format number were updated from 10 to 11, as
-  the format 10 change did with 9 (they count formats; they do not test a result).
+  port pattern now allows "_"). Three lines of two existing tests that assert the newest format number were updated
+  (10 to 11, and the "too new" file 11 to 12), as the format 10 change did with 9 (commit da71bc6; they count formats,
+  they do not test a result): `test/project.test.js` (two) and `test/design-specs.test.js` (one).
 - **Docs:** `docs/models/columns.md`, section "The vapour + liquid condenser": definitions (reflux ratio L1/U1,
   distillate_kmol_h = liquid + vapour), the outlets, the refusals, `feed_second_liquid: "top"` into the liquid
   distillate.

@@ -81,7 +81,7 @@ test("a wrong file is refused with the reason", () => {
     ["[]", /expected a JSON object/],
     [JSON.stringify({ workbench: {} }), /"fugacity_project" key is missing/],
     [JSON.stringify({ fugacity_package: 1, type: "pair-data" }), /contribution package/],
-    [JSON.stringify({ ...ok, fugacity_project: 11 }), /format 11.*reads formats 1 to 10/],   // the newest format is 10 since the design specifications (2026-11-14)
+    [JSON.stringify({ ...ok, fugacity_project: 12 }), /format 12.*reads formats 1 to 11/],   // the newest format is 11 since the vapour + liquid condenser (2026-11-19)
     [JSON.stringify({ ...ok, fugacity_project: "1" }), /format number/],
     [JSON.stringify({ fugacity_project: 1 }), /no "workbench"/],
     [JSON.stringify({ ...ok, workbench: { ...ok.workbench, modle: "NRTL" } }), /unknown key "modle"/],
