@@ -68,3 +68,10 @@ are not done in simulators": the build stays with what the proposal cites (The C
   start the outer loop: its first column takes a distillate of about recovery x feed of that component. Found with
   this condenser (the light G of H1), but the total condenser does the same (pre-existing, `estimateDistillate` in
   specifications.js); purities work. Left for the maintainer to decide whether to take it up.
+
+## The maintainer's answers (on pull request #261, relayed by the coordinator): "I agree with all three"
+
+1. The formulation is accepted: one more slot on every stage when the condenser is `"vapour_liquid"` (U1 / L1 on stage
+   1, a slot held at 1 elsewhere), so that the Jacobian keeps one block size.
+2. The correction of the Python reference stays: `reference_mesh.Eos` with the temperature term of k_ij(T) = k + kb / T.
+3. Step 3 (the workbench) goes in a separate, next pull request, by another worker.
