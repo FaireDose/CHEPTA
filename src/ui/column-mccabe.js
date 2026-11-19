@@ -17,6 +17,14 @@
  *     line from (x_D, x_D) or (x_B, x_B) is tangent to it;
  *   - the minimum number of stages at total reflux (both lines on the diagonal).
  *
+ * The vapour + liquid condenser (proposal 0026): stage 1 is an equilibrium stage whose vapour y_D leaves as the vapour
+ * distillate and whose liquid x_1 is split into the reflux L and the liquid distillate U. The material balance around
+ * the top, cut between stage n and n + 1 (n >= 1), is V y_{n+1} = L x_n + U x_1 + V_1 y_D = L x_n + D z_D, with D = U + V_1
+ * and z_D = (U x_1 + V_1 y_D) / D the composition of the whole (net) distillate; stage 1 has no feed, so V = L + D. The
+ * rectifying line is eq. 1.15 with x_D replaced by z_D and R by L / D over the whole distillate (the column's
+ * reflux_over_distillate): y = R/(R + 1) x + z_D/(R + 1), through (z_D, z_D). The steps start at y_D (the condenser is
+ * the first equilibrium step, as a partial condenser is), not on the line. With U = 0 it is the partial condenser.
+ *
  * Stage counting as the column block's (docs/models/columns.md): a total condenser is not an equilibrium stage, a
  * partial one is; the reboiler is. `steps` counts the equilibrium stages stepped off (the reboiler and a partial
  * condenser included), so the rigorous column's stages are steps + 1 with a total condenser and steps with a partial
@@ -76,11 +84,13 @@ function onQLine(m, c, z, q) {
 /**
  * The construction. x_D, x_B, z: mole fractions of the light component; q: the feed's liquid fraction; R: the reflux
  * ratio L/D; curve: equilibriumCurve(); partial: a partial condenser (its first step is a stage of the column);
+ * yTop: the vapour leaving the condenser where it differs from x_D (the vapour + liquid condenser: x_D is then the net
+ * distillate z_D, R the reflux over the whole distillate, partial true);
  * feedStage: the column's feed stage, numbered from the top (default: the best one, where the lines meet).
  * Throws, saying why, where the construction does not hold (a reflux at or below the minimum, an azeotrope between the
  * products, a product purer than the curve reaches).
  */
-export function mccabeThiele({ sys, i, P_kPa, xD, xB, z, q, R, curve, partial = false, feedStage = null, maxSteps = 200 }) {
+export function mccabeThiele({ sys, i, P_kPa, xD, xB, z, q, R, curve, partial = false, yTop = null, feedStage = null, maxSteps = 200 }) {
   if (!(xD > z && z > xB)) throw new Error(`McCabe-Thiele: the light component must be richer in the distillate than in the feed, and in the feed than in the bottoms (x_D ${fmt(xD)}, z ${fmt(z)}, x_B ${fmt(xB)}).`);
   if (!(R > 0)) throw new Error("McCabe-Thiele: the reflux ratio must be above 0.");
   // the equilibrium curve must stay above the diagonal between the products: otherwise an azeotrope lies between them
@@ -98,7 +108,10 @@ export function mccabeThiele({ sys, i, P_kPa, xD, xB, z, q, R, curve, partial = 
   }
   // the operating line at x: rectifying above the lines' intersection, stripping below
   const steps = [];
-  let x = xD, y = xD, feedStep = null, stripping = false;
+  // the first step: from the vapour leaving the top (x_D for a total or partial condenser; y_D for the vapour + liquid
+  // one, drawn from the diagonal)
+  const top = yTop ?? xD;
+  let x = top, y = top, feedStep = null, stripping = false;
   for (let k = 1; k <= maxSteps; k++) {
     const xn = eqX(sys, i, P_kPa, curve, y);
     if (xn == null) throw new Error(`McCabe-Thiele: no liquid on the equilibrium curve is in equilibrium with y = ${fmt(y)}.`);
@@ -193,5 +206,13 @@ export function columnBinary(sys, fs, res, colId) {
   const feed = feeds[0];
   const q = st.q ?? feedQuality(sys, feed, P);
   const R = st.mode === "rigorous" ? st.reflux_ratio : st.R;
+  // the vapour + liquid condenser (proposal 0026): the rectifying line through the whole distillate's composition, with
+  // the reflux over the whole distillate; the steps start at the vapour distillate's composition (see the header)
+  if (st.condenser === "vapour_liquid") {
+    const V = res.streams[fs.streams.find(s => s.from === `${colId}.vapour_distillate`)?.id];
+    if (!V) return { ok: false, why: "The column's vapour distillate is not calculated." };
+    const zD = (D.F_kmol_h * D.z[i] + V.F_kmol_h * V.z[i]) / (D.F_kmol_h + V.F_kmol_h);
+    return { ok: true, i, P_kPa: P, xD: zD, xB: B.z[i], z: feed.z[i], q, R: st.reflux_over_distillate, partial: true, yTop: V.z[i], xLiquid: D.z[i], vapourLiquid: true };
+  }
   return { ok: true, i, P_kPa: P, xD: D.z[i], xB: B.z[i], z: feed.z[i], q, R, partial: st.condenser === "partial" };
 }

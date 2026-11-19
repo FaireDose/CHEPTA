@@ -34,7 +34,8 @@ test("a project keeps the settings of every workspace and opens to the same work
   // format 8 (proposal 0020, 2026-11-10) adds the Pipe (its workspace, and the flowsheet's pipe block), written only when one is used (test/pipe-project.test.js)
   // format 9 (CHEPTA-Lab's request 7, 2026-11-13) adds the splitter given by flow, written only with one (test/splitter-flow.test.js)
   // format 10 (proposal 0022, 2026-11-14) adds the flowsheet's design specifications, written only with one (test/design-specs.test.js)
-  assert.equal(PROJECT_FORMAT, 10);
+  // format 11 (proposal 0026, 2026-11-19) adds the column's vapour + liquid condenser, written only with one (test/columns-vapour-liquid-workbench.test.js)
+  assert.equal(PROJECT_FORMAT, 11);
   assert.equal(doc.fugacity_project, 2);
   assert.equal(doc.saved_with, "chepta 9.9.9");
   assert.equal(doc.saved_at, "2026-10-06T12:00:00.000Z");
@@ -80,7 +81,7 @@ test("a wrong file is refused with the reason", () => {
     ["[]", /expected a JSON object/],
     [JSON.stringify({ workbench: {} }), /"fugacity_project" key is missing/],
     [JSON.stringify({ fugacity_package: 1, type: "pair-data" }), /contribution package/],
-    [JSON.stringify({ ...ok, fugacity_project: 11 }), /format 11.*reads formats 1 to 10/],   // the newest format is 10 since the design specifications (2026-11-14)
+    [JSON.stringify({ ...ok, fugacity_project: 12 }), /format 12.*reads formats 1 to 11/],   // the newest format is 11 since the vapour + liquid condenser (2026-11-19)
     [JSON.stringify({ ...ok, fugacity_project: "1" }), /format number/],
     [JSON.stringify({ fugacity_project: 1 }), /no "workbench"/],
     [JSON.stringify({ ...ok, workbench: { ...ok.workbench, modle: "NRTL" } }), /unknown key "modle"/],

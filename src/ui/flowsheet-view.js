@@ -24,7 +24,7 @@ import { run } from "../api/dispatcher.js";
 import { startRun, workerStatus } from "../runtime/browser-worker.js";
 import { resultGate } from "../runtime/envelope.js";
 import {
-  PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, splitKey, addSideDraw, removeSideDraw, setSpec, moveBlock, setTear,
+  PALETTE, addBlock, addFeedTo, connect, removeBlock, addOutlet, removeOutlet, splitKey, addSideDraw, removeSideDraw, setSpec, setCondenser, CONDENSER_SPEC_KEYS, moveBlock, setTear,
   setComponents, streamsOf, endOf, openInlets, deleteStream, setStreamLabel, streamName, setBlockLabel, blockName, feedOf, feedStreamOf,
   energyOf, energyTargets, addEnergyFeed, connectEnergy, removeEnergy, setEnergyDuty, ENERGY_TARGETS, ENERGY_SOURCES,
   placeEnergyFeed, connectEnergyFeed, disconnectEnergy, moveEnergy, showEnergy, ratingPatch, designPatch,
@@ -478,8 +478,16 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       h("p", { class: "fa-in-hint" }, `Every stage is an equilibrium stage, counted from the top${reb ? "; the last is the reboiler" : ""}. The first inlet enters the top stage (the liquid), the second the bottom stage (the ${stripper ? "stripping gas, such as live steam" : "gas"}); the gas leaves by “gas out” at the top, the liquid by “liquid out” at the bottom. ${reb ? "The reboiler takes one specification. " : "Nothing else is specified: what leaves follows from the feeds and the stages. "}Heat added to stages: for example “4: -100” removes 100 ${u.duty ?? "kW"} from stage 4; the other stages are adiabatic. Empty pressure: the first feed's; no pressure drop. Gases in water: with an activity model, H₂, N₂, O₂, CH₄, C₂H₆, Ar, CO, CO₂, H₂S and ethylene dissolve by Henry's law (water the only solvent); Peng–Robinson or SRK needs a k_ij for each gas with a polar liquid; sour water and amines are refused until electrolyte models.`)));
   } else if (b.type === "column" && spec.mode === "rigorous") {
     // the rigorous column (proposal 0015, M2a): stages, the feed stage, two specifications from six
-    const RSPEC = [["reflux_ratio", "Reflux ratio", "L / D"], ["boilup_ratio", "Boil-up ratio", "V / B"], ["distillate_kmol_h", "Distillate flow", "kmol/h"],
+    // proposal 0026: with the vapour + liquid condenser the reflux ratio is over the liquid distillate (L1 / U1) and the
+    // distillate flow is both distillates (U1 + V1), as the engine defines them
+    const vl = spec.condenser === "vapour_liquid";
+    const RSPEC = [["reflux_ratio", "Reflux ratio", vl ? "L / liquid distillate" : "L / D"], ["boilup_ratio", "Boil-up ratio", "V / B"], ["distillate_kmol_h", vl ? "Distillate flow (liquid + vapour)" : "Distillate flow", "kmol/h"],
       ["bottoms_kmol_h", "Bottoms flow", "kmol/h"], ["condenser_duty_kW", "Condenser duty (removed)", u.duty ?? "kW"], ["reboiler_duty_kW", "Reboiler duty", u.duty ?? "kW"]];
+    // leaving the vapour + liquid condenser (another condenser, the shortcut, an absorber) also removes its vapour
+    // distillate's stream and its own specification (setCondenser)
+    // (it refuses when that stream goes to a unit: the note says so)
+    const toCondenser = (v, patch) => { try { put(setCondenser(fs, b.id, v, patch)); } catch (e) { f.note = e.message; set({}); } };
+    const setSc = patch => (vl && "condenser" in patch && patch.condenser !== "vapour_liquid" ? toCondenser(patch.condenser ?? "total", patch) : setS(patch));
     // milestone M2b: a decanter returns one liquid entirely, so it takes one specification, not the reflux or the
     // condenser duty
     const vll = spec.phases === "VLL", decanter = vll && spec.condenser === "decanter";
@@ -509,7 +517,7 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
         { id: `${b.id}-${key}`, uid, unit: row[2] })];
     };
     const comps = fs.components.map(c => [c, nameOf(c)]);
-    const products = [["distillate", "Distillate"], ["bottoms", "Bottoms"], ...sideDraws.map((_, k) => [`side_draw:${k + 1}`, `Side draw ${k + 1}`])];
+    const products = [["distillate", vl ? "Liquid distillate" : "Distillate"], ...(vl ? [["vapour_distillate", "Vapour distillate"]] : []), ["bottoms", "Bottoms"], ...sideDraws.map((_, k) => [`side_draw:${k + 1}`, `Side draw ${k + 1}`])];
     const designField = k => {
       const d = design[k], slot = nClassic + k, id = `${b.id}-dspec${k}`;
       const put1 = patch => { const next = { ...d, ...patch }; for (const key of Object.keys(next)) if (next[key] == null) delete next[key]; setS(setDesign(design.map((q, e) => (e === k ? next : q)))); };
@@ -552,9 +560,32 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
     });
     const nIn = (streamsOf(fs, b.id).in ?? []).length;
     const fsVal = Array.isArray(spec.feed_stage) ? spec.feed_stage.join(", ") : spec.feed_stage == null ? "" : String(spec.feed_stage);
+    // the vapour + liquid condenser's own specification (proposal 0026): its temperature, the vapour distillate's flow or
+    // the vapour's share of the distillate; the choice of an empty field is kept in the view's state
+    const cfixKey = `${b.id}-cfix`;
+    const cfix = CONDENSER_SPEC_KEYS.find(k => spec[k] != null) ?? f.mode?.[cfixKey] ?? "condenser_T_K";
+    const condenserFixRows = !vl ? [] : [
+      segRow("Condenser fixed by", [["condenser_T_K", "Temperature"], ["vapour_distillate_kmol_h", "Vapour flow"], ["vapour_share", "Vapour share"]], cfix, v => {
+        if (v === cfix) return;
+        f.mode = { ...(f.mode ?? {}), [cfixKey]: v };
+        // a solved column of this condenser gives the same column with its other two values (H1 of the engine's tests)
+        const s0 = done?.state?.condenser === "vapour_liquid" ? done.state : null;
+        const start = !s0 ? null : v === "condenser_T_K" ? +s0.condenser_T_K.toFixed(3) : v === "vapour_distillate_kmol_h" ? +s0.D_vapour_kmol_h.toPrecision(6) : +s0.vapour_share.toPrecision(6);
+        setS({ ...Object.fromEntries(CONDENSER_SPEC_KEYS.map(k => [k, null])), [v]: start });
+      }, `fs-cfix-${b.id}`),
+      cfix === "condenser_T_K"
+        ? numberField("Condenser temperature", spec.condenser_T_K == null ? "" : String(+tToDisplay(spec.condenser_T_K, u).toFixed(3)),
+          t => { if (t === "") return setS({ condenser_T_K: null }); const v = parseT(t, u); if (v == null || !(v > 0)) return false; setS({ condenser_T_K: v }); }, { id: `${b.id}-condenser_T_K`, uid, unit: tLabel(u) })
+        : cfix === "vapour_distillate_kmol_h"
+          ? numberField("Vapour distillate flow", spec.vapour_distillate_kmol_h == null ? "" : String(spec.vapour_distillate_kmol_h),
+            t => { const v = num(t); if (v === undefined || (v != null && !(v > 0))) return false; setS({ vapour_distillate_kmol_h: v }); }, { id: `${b.id}-vapour_distillate_kmol_h`, uid, unit: "kmol/h" })
+          : numberField("Vapour share of the distillate", spec.vapour_share == null ? "" : String(spec.vapour_share),
+            t => { const v = num(t); if (v === undefined || (v != null && !(v > 0 && v < 1))) return false; setS({ vapour_share: v }); }, { id: `${b.id}-vapour_share`, uid, unit: "V / (V + liquid distillate), 0 to 1", placeholder: "0.1" }),
+      h("p", { class: "fa-in-hint" }, "The condenser is an equilibrium stage at the column's pressure: its vapour leaves as the vapour distillate, its liquid is split into the reflux and the liquid distillate. Fix it by one of its temperature, the vapour distillate's flow or the vapour's share of the distillate, besides the column's two specifications. The reflux ratio is the reflux over the liquid distillate; the distillate flow is both distillates. A temperature at which the top vapour does not split (at or above its dew point, at or below its bubble point) is refused with the range. A second liquid in the condenser is refused: add a decanter (a flash drum with two liquids) on the liquid distillate."),
+    ];
     secs.push(inputsSection("Rigorous column (stage by stage)",
-      columnConfigurationRow(b, spec, setS, done),
-      segRow("Method", [["shortcut", "Shortcut"], ["rigorous", "Rigorous"]], "rigorous", m => setS({ mode: m, ...(m === "shortcut" ? { specifications: null, distillate_purity: null, bottoms_purity: null } : {}) }), `fs-cmode-${b.id}`),
+      columnConfigurationRow(b, spec, setSc, done),
+      segRow("Method", [["shortcut", "Shortcut"], ["rigorous", "Rigorous"]], "rigorous", m => setSc({ mode: m, ...(m === "shortcut" ? { specifications: null, distillate_purity: null, bottoms_purity: null, ...(vl ? { condenser: null } : {}) } : {}) }), `fs-cmode-${b.id}`),
       numberField("Stages", spec.stages == null ? "" : String(spec.stages), t => { const v = num(t); if (v === undefined || (v != null && !(Number.isInteger(v) && v >= 3))) return false; setS({ stages: v }); },
         { id: `${b.id}-stages`, uid, unit: "1 the condenser", placeholder: "20" }),
       numberField(nIn > 1 ? "Feed stages" : "Feed stage", fsVal, t => {
@@ -569,14 +600,17 @@ function inputsFor({ state, set, ui, uid, inputsSection }) {
       h("div", { class: "fa-in-actions" }, h("button", { type: "button", class: "fa-mini", "data-fk": `fs-addside-${b.id}`, on: { click: () => put(addSideDraw(fs, b.id)) } }, icon("plus", 14), "Side draw")),
       segRow("Liquids on the stages", [["VL", "One liquid"], ["VLL", "Look for two liquids"]], vll ? "VLL" : "VL",
         v => setS(v === "VLL" ? { phases: "VLL" } : { phases: null, ...(spec.condenser === "decanter" ? { condenser: null, reflux_liquid: null, reflux_ratio: spec.reflux_ratio ?? 2 } : {}) }), `fs-phases-${b.id}`),
-      segRow("Condenser", [["total", "Total"], ["partial", "Partial"], ...(vll ? [["decanter", "Decanter"]] : [])], spec.condenser ?? "total", v => {
-        if (v !== "decanter") return setS({ condenser: v === "total" ? null : v, reflux_liquid: null, ...(decanter ? { reflux_ratio: spec.reflux_ratio ?? 2 } : {}) });
+      segRow("Condenser", [["total", "Total"], ["partial", "Partial"], ...(vll ? [["decanter", "Decanter"]] : []), ["vapour_liquid", "Vapour + liquid"]], spec.condenser ?? "total", v => {
+        if (v === (spec.condenser ?? "total")) return;
+        // to or from the vapour + liquid condenser (proposal 0026): its vapour distillate's stream is added or removed
+        if (v !== "decanter") return toCondenser(v, { reflux_liquid: null, ...(decanter ? { reflux_ratio: spec.reflux_ratio ?? 2 } : {}) });
         // to a decanter: drop the reflux and the condenser duty, and keep one specification
         const keep = allowed.find(r => r[0] !== "reflux_ratio" && r[0] !== "condenser_duty_kW" && spec[r[0]] != null)?.[0];
-        setS({ condenser: "decanter", reflux_ratio: null, condenser_duty_kW: null,
+        toCondenser("decanter", { reflux_ratio: null, condenser_duty_kW: null,
           ...Object.fromEntries(RSPEC.map(r => r[0]).filter(k => !["reflux_ratio", "condenser_duty_kW"].includes(k) && k !== keep).map(k => [k, null])),
           ...(keep ? {} : { distillate_kmol_h: done?.state?.D_kmol_h != null ? +done.state.D_kmol_h.toPrecision(4) : null }) });
       }, `fs-cond-${b.id}`),
+      ...condenserFixRows,
       ...(decanter ? [segRow("Refluxed liquid", [["light", "Light refluxed"], ["heavy", "Heavy refluxed"]], spec.reflux_liquid ?? "light", v => setS({ reflux_liquid: v === "light" ? null : v }), `fs-reflux-${b.id}`)] : []),
       P("P_kPa", "Column pressure"),
       selectField("Property method of the column", [["", "The flowsheet's"], ["NRTL", "NRTL"], ["UNIQUAC", "UNIQUAC"], ["WILSON", "Wilson"], ["MOD-UNIFAC-2", "Modified UNIFAC 2.0"], ["ideal", "Ideal solution"], ["PR", "Peng–Robinson"], ["SRK", "SRK"], ...MHV1_CHOICES],
@@ -996,7 +1030,10 @@ function sizingSection({ b, spec, setS, inputsSection, uid, u, done, rateable })
  *  and "bottoms" are "gas out" (the top) and "liquid out" (the bottom), the maintainer's names (2026-11-04); the ids stay,
  *  so that project files and requests keep working. */
 export function outletName(block, port) {
-  if (block?.type !== "column" || !["absorber", "stripper"].includes(block.spec?.configuration)) return null;
+  if (block?.type !== "column") return null;
+  // the vapour + liquid condenser (proposal 0026): two distillates, named by phase
+  if (block.spec?.condenser === "vapour_liquid" && !block.spec?.configuration) return { distillate: "liquid distillate", vapour_distillate: "vapour distillate" }[port] ?? null;
+  if (!["absorber", "stripper"].includes(block.spec?.configuration)) return null;
   return { distillate: "gas out", bottoms: "liquid out" }[port] ?? null;
 }
 
@@ -1414,7 +1451,11 @@ function ports(fs, b) {
   spread(st.in ?? [], -1);
   if (b.type === "column") {
     // the distillate leaves at the top (from the condenser), the bottoms at the bottom (from the reboiler)
-    for (const sid of st.distillate ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
+    // with the vapour + liquid condenser (proposal 0026) the vapour distillate leaves at the top and the liquid
+    // distillate at the right, in the upper quarter (vapour above liquid, as from the condenser's drum)
+    const vl = b.spec?.condenser === "vapour_liquid";
+    for (const sid of st.distillate ?? []) at[sid] = vl ? { x: x + w / 2, y: y - hh / 4, dir: [1, 0] } : { x, y: y - hh / 2, dir: [0, -1] };
+    for (const sid of st.vapour_distillate ?? []) at[sid] = { x, y: y - hh / 2, dir: [0, -1] };
     for (const sid of st.bottoms ?? []) at[sid] = { x, y: y + hh / 2, dir: [0, 1] };
     // the side draws leave at the right, in their order
     (st.side ?? []).forEach((sid, k, all) => { at[sid] = { x: x + w / 2, y: y + (k - (all.length - 1) / 2) * 16, dir: [1, 0] }; });
@@ -1720,7 +1761,7 @@ export function flowsheetView(ctx) {
       layer.append(g);
     }
     // outlet ports (drawn last, on top of the blocks): a dot where each stream leaves a unit; drag it onto an inlet to connect
-    const OUT_LABEL = { vapour: "vapour", liquid: "liquid", liquid2: "liquid 2", hot: "hot", cold: "cold", distillate: "distillate", bottoms: "bottoms", side: "side draw" };
+    const OUT_LABEL = { vapour: "vapour", liquid: "liquid", liquid2: "liquid 2", hot: "hot", cold: "cold", distillate: "distillate", bottoms: "bottoms", side: "side draw", vapour_distillate: "vapour distillate" };
     for (const st of doc.streams) {
       const [fb, port] = st.from.split(".");
       const src = doc.blocks.find(b => b.id === fb);
@@ -2013,9 +2054,20 @@ export function resultsPanel({ state, f, sol, u, set }) {
           ["Stages, feed", `${r.state.stages}, on ${r.state.feed_stages.join(", ")}`],
           ...(r.state.design_specifications ?? []).map((q, k) => [`Specification ${k + 1}`, `${q.label}: asked ${fmtShort(q.asked, 6)}, reached ${fmtShort(q.achieved, 6)} (${q.unit}; difference ${q.error.toExponential(1)})`]),
           ...(r.state.adjusted ? [["Found for the specifications", Object.entries(r.state.adjusted).map(([k, v]) => `${{ reflux_ratio: "reflux ratio", boilup_ratio: "boil-up ratio", distillate_kmol_h: "distillate, kmol/h" }[k] ?? k.replace(/^side_draw_(\d+)_kmol_h$/, "side draw $1, kmol/h")} ${fmtShort(v, 5)}`).join("; ")]] : []),
-          ["Reflux ratio", fmtShort(r.state.reflux_ratio, 4)],
-          ["Boil-up ratio", fmtShort(r.state.boilup_ratio, 4)],
-          ["Distillate", `${fmtShort(r.state.D_kmol_h, 5)} kmol/h`],
+          // the vapour + liquid condenser (proposal 0026): the two distillates and the two reflux ratios
+          ...(r.state.condenser === "vapour_liquid" ? [
+            ["Reflux ratio (over the liquid distillate)", fmtShort(r.state.reflux_ratio, 4)],
+            ["Reflux over the whole distillate", fmtShort(r.state.reflux_over_distillate, 4)],
+            ["Boil-up ratio", fmtShort(r.state.boilup_ratio, 4)],
+            ["Liquid distillate", `${fmtShort(r.state.D_liquid_kmol_h, 5)} kmol/h`],
+            ["Vapour distillate", `${fmtShort(r.state.D_vapour_kmol_h, 5)} kmol/h (share ${fmtShort(r.state.vapour_share, 4)})`],
+            ["Distillate (liquid + vapour)", `${fmtShort(r.state.D_kmol_h, 5)} kmol/h`],
+            ["Condenser temperature", fmtTemp(r.state.condenser_T_K, u, 2)],
+          ] : [
+            ["Reflux ratio", fmtShort(r.state.reflux_ratio, 4)],
+            ["Boil-up ratio", fmtShort(r.state.boilup_ratio, 4)],
+            ["Distillate", `${fmtShort(r.state.D_kmol_h, 5)} kmol/h`],
+          ]),
           ...(r.state.side_draws ?? []).map((d, k) => [`Side draw ${k + 1}`, `${fmtShort(d.flow_kmol_h, 5)} kmol/h, ${d.phase} of stage ${d.stage}, ${fmtTemp(d.T_K, u, 2)}`]),
           ["Bottoms", `${fmtShort(r.state.B_kmol_h, 5)} kmol/h`],
           ["Condenser duty", kWText(-r.state.condenser_kW, u, 5)],
@@ -2159,7 +2211,9 @@ export function columnTable({ fs, b, r, u }) {
       ...fs.components.map(c => h("th", { scope: "col" }, `x′ ${nameOf(c)} (light)`)), ...fs.components.map(c => h("th", { scope: "col" }, `x″ ${nameOf(c)} (heavy)`))] : [];
     const liquidCells = s => (two ? [cell(lq(s, "light") ? lq(s, "light").L_kmol_h.toFixed(3) : "–"), cell(lq(s, "heavy") ? lq(s, "heavy").L_kmol_h.toFixed(3) : "–"),
       ...fs.components.map(c => cell(lq(s, "light") ? frac(lq(s, "light").x[c]) : "–")), ...fs.components.map(c => cell(lq(s, "heavy") ? frac(lq(s, "heavy").x[c]) : "–"))] : []);
-    const cond = r.state.condenser === "decanter" ? `decanter (the ${r.state.reflux_liquid} liquid is the reflux, the other the distillate)` : `${r.state.condenser} condenser`;
+    const cond = r.state.condenser === "decanter" ? `decanter (the ${r.state.reflux_liquid} liquid is the reflux, the other the distillate)`
+      : r.state.condenser === "vapour_liquid" ? "vapour + liquid condenser (its vapour is the vapour distillate; its liquid, given here, is the reflux, and a liquid of the same composition leaves as the liquid distillate)"
+        : `${r.state.condenser} condenser`;
     // the fraction of flooding of every tray, when the column is sized (the condenser and the reboiler are not trays)
     const flood = r.sizing?.stages ? Object.fromEntries(r.sizing.stages.map(t => [t.stage, t.fraction_of_flooding])) : null;
     return h("div", { class: "fs-tables", "data-fk": "fs-column-table" }, h("h3", {}, `${blockName(b)}: the profile, stage by stage`),

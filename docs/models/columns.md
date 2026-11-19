@@ -2,7 +2,8 @@
 
 One block for distillation ([proposal 0015](../../proposals/0015-separation-units.md), Part I, section 1). Its
 modes: **shortcut** (milestone M1) and **rigorous** (MESH on equilibrium stages, milestone M2a: vapour and one
-liquid; milestone M2b: two liquids on the stages, a decanter on the condenser, and the column's own property method).
+liquid; milestone M2b: two liquids on the stages, a decanter on the condenser, and the column's own property method;
+proposal 0026: a condenser with a vapour and a liquid distillate).
 Its configurations: **distillation**, and the **absorber** and the **stripper** (milestone M3, below); extraction comes
 later. Code:
 `src/units/columns/shortcut.js` (the shortcut's equations), `src/units/columns/engine.js` (the column engine, the
@@ -62,8 +63,8 @@ format 6.
 
 **Specification:** the number of stages, counted from the top with the condenser and the reboiler (1 the condenser,
 N the partial reboiler; W7's convention); the feed stage, from 2 to N − 1 (one per feed: the rigorous mode takes
-several feeds, each entering its stage as one stream); the condenser, total (liquid distillate) or partial (vapour
-distillate); the pressure (default the first feed's; no pressure drop); and **two** of: the reflux ratio L₁/D, the
+several feeds, each entering its stage as one stream); the condenser, total (liquid distillate), partial (vapour
+distillate) or vapour + liquid (both; below, "The vapour + liquid condenser"); the pressure (default the first feed's; no pressure drop); and **two** of: the reflux ratio L₁/D, the
 boil-up ratio V_N/B, the distillate or the bottoms flow, the condenser duty (heat removed) or the reboiler duty. Not
 both product flows (they add up to the feed), not both duties, and not two specifications of the same end (the reflux
 ratio with the condenser duty, the boil-up ratio with the reboiler duty). In place of any of them a design
@@ -273,6 +274,74 @@ cold start 1.9 s (6 Newton iterations), warm start at R = 3.3 0.6 s (5 iteration
 The engine's limits: extremely pure products (impurities below about 1e-30, for example 101 stages at five times the
 minimum reflux) may not converge; they are refused as not converged.
 
+## The vapour + liquid condenser (proposal 0026)
+
+`condenser: "vapour_liquid"` ("Vapour + liquid" in the column's form; rigorous mode only), accepted by the maintainer on
+2026-11-18 ([proposal 0026](../../proposals/0026-vapour-liquid-condenser.md); decisions
+[2026-11-18-05](../decisions/2026-11-18-05-vapour-liquid-condenser-proposal.md) and
+[2026-11-18-06](../decisions/2026-11-18-06-vapour-liquid-condenser-build.md)). Stage 1 is an equilibrium stage at the
+column's pressure, as with the partial condenser: its vapour V₁ leaves as the **vapour distillate**, and its liquid is
+split, with one composition, into the reflux L₁ and the **liquid distillate** U₁ (The ChemSep Book, 2nd ed., section
+13.2, pp. 192-195, stage 1 with a liquid side stream and a vapour product; DWSIM's `Partial_Condenser`; IDAES's partial
+condenser). The unknown r = U₁/L₁ adds one degree of freedom, so the column takes **three** specifications:
+
+- **the condenser's own one**, exactly one of `condenser_T_K` (its temperature), `vapour_distillate_kmol_h` (the
+  vapour distillate's flow) or `vapour_share` (V₁ / (V₁ + U₁), between 0 and 1, both excluded). In the form: the row
+  "Condenser fixed by" (Temperature, in the project's units | Vapour distillate flow | Vapour share of the distillate)
+  with one input. Switching between them in the form after a solve starts the new input from the solved column's
+  value, which gives back the same column;
+- **two of the column's**, as for the other condensers: the reflux ratio, the boil-up ratio, the distillate or bottoms
+  flow, a duty, or a design specification.
+
+**Definitions** (the maintainer's answers 2 and 3, 2026-11-18):
+
+- `reflux_ratio` = L₁ / U₁, the reflux over the **liquid** distillate (DWSIM's stream ratio, IDAES's `reflux_ratio`).
+  The result also gives `reflux_over_distillate` = L₁ / (U₁ + V₁), over the whole distillate.
+- `distillate_kmol_h` = U₁ + V₁, the whole distillate, so that the bottoms are the feed less the distillate. The result
+  gives `D_liquid_kmol_h` (U₁), `D_vapour_kmol_h` (V₁), `D_kmol_h` (their sum), `vapour_share`, `condenser_T_K` and
+  `condenser_kW`.
+- A design specification's `product: "distillate"` is the liquid distillate; `product: "vapour_distillate"` the vapour
+  one (accepted only with this condenser).
+
+**Outlets:** `distillate` (the liquid distillate, the port id unchanged) and **`vapour_distillate`**, which this
+condenser requires and the others refuse. On the canvas the vapour distillate leaves at the top of the column and the liquid distillate at the right, below
+it;
+the outlets are labelled "liquid distillate" and "vapour distillate" there and in the stream table. Choosing the
+condenser in the form adds a Product on the vapour distillate; choosing another condenser (or the shortcut, or an
+absorber) removes that stream with the condenser's own specification and the design specifications written on the
+vapour distillate (refused, with a note, when the stream goes to a unit). The results panel and the column's Excel
+sheet give both distillates, both reflux ratios, the vapour share and the condenser temperature. McCabe-Thiele's
+diagram (Column workspace) is drawn for it (the maintainer, 2026-11-19): the condenser is the first equilibrium step,
+from the vapour distillate's y_D to the liquid in equilibrium with it, and the rectifying line goes through the whole
+distillate's composition z_D = (U x_D + V y_D) / (U + V) with the reflux over the whole distillate, L / (U + V), as its
+ratio. This follows from the material balance around the top (stage 1 has no feed, so the vapour rising to it is
+L + U + V); with no liquid distillate it is the partial condenser's construction. On benzene + toluene (15 stages, R = 2
+over the liquid distillate, D = 50 kmol/h, share 0.3) the condenser step and the first operating point equal the
+rigorous column's stage-1 liquid and stage-2 vapour within 1e-12; the steps give 14.1 stages against the column's 15
+(constant molar overflow below the condenser). Projects
+with this condenser are written in **format 11** (`docs/schema/project-11.json`); a project without it keeps the
+lowest format that holds it, and older projects read unchanged.
+
+**Refused, with the reason:**
+
+| Case | Answer |
+|---|---|
+| none, or two, of the condenser's three keys | `BAD_INPUT`, naming the three and the column's list |
+| one of the three with another condenser; a stream on `vapour_distillate` with another condenser; none with this one | `BAD_INPUT` (the condenser's keys belong to `"vapour_liquid"`; connect the outlet `vapour_distillate`) |
+| `mode: "shortcut"` | refused (Fenske-Underwood-Gilliland has one distillate); the rigorous mode is named |
+| a temperature at or above the top vapour's dew point (no liquid) or at or below its bubble point (no vapour), a converged column with U₁ or V₁ below 1e-9 of the feed | `OUT_OF_RANGE`, with the top vapour's bubble and dew temperatures at the column pressure ("for no vapour use a total condenser, for no liquid distillate a partial one") |
+| two liquids in the condenser (with `phases` `"VL"` or `"VLL"`) | `PHASE_SPLIT`, advising a decanter after the condenser (a flash drum with two liquids) or the decanter condenser if no vapour leaves; no open simulator found has a vented decanter |
+
+**`feed_second_liquid: "top"`** with this condenser: the small bypassed second liquid never enters the condenser
+stage; it is mixed after the column into the **liquid distillate** (port `distillate`) by a P-H flash at the column's
+pressure, as with a total condenser, and the vapour distillate is not changed (the maintainer's correction to answer 4,
+2026-11-18; case 2b of `test/columns-vapour-liquid.test.js`).
+
+**Validation** (`test/columns-vapour-liquid.test.js`, against `validation/python/reference_mesh_condenser.py`): the
+constant-alpha column H1 with each of the three specifications, which give the same column; the limits of the share
+(H2, against the total and partial condensers); CHEPTA-Lab's methanol column H3 (Peng-Robinson, 53 °C, reflux ratio 2)
+within the tolerances of case A3. The workbench: `test/columns-vapour-liquid-workbench.test.js`.
+
 ## The Column workspace and McCabe-Thiele
 
 The Column workspace (Unit models) holds one column with its feed, solved as the block above; it draws the rigorous
@@ -439,7 +508,7 @@ Book, section 13.2.1, eqs. 13.1 to 13.3, p. 192); the profile's liquid and vapou
 next stage. Each side draw needs one stream on the block's outlet `side`, in the same order. Without `flow_kmol_h`
 the flow is found, for one more specification (for example a recovery in the side draw). With two liquids on a
 stage a liquid draw takes both in their proportion. Not built: a side draw on an absorber or a stripper, a draw of
-one of two liquids, pumparounds, a liquid distillate beside the vapour of a partial condenser.
+one of two liquids, pumparounds. (A liquid distillate beside the vapour is the vapour + liquid condenser, below.)
 
 **Validation.** Eight cases against the independent reference (flows within 2e-5 relative, mole fractions within
 2e-6, temperatures within 1e-4 K): two purities; a recovery at a given reflux; a stage temperature with a component

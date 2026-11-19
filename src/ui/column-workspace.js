@@ -14,7 +14,7 @@
 import { h, ticks } from "./dom.js";
 import { icon } from "./icons.js";
 import { emptyFlowsheet, flowsheetSystem } from "../flowsheet/document.js";
-import { addBlock, addFeedTo } from "./flowsheet-logic.js";
+import { addBlock, addFeedTo, setCondenser } from "./flowsheet-logic.js";
 import { flowsheetInputs, ensureUi, solution, resultsPanel, flowsheetKey, columnTable } from "./flowsheet-view.js";
 import { chartBox } from "./reactor-charts.js";
 import { drawPlot } from "./plot.js";
@@ -59,6 +59,13 @@ export function asFlowsheet(state, set, ui) {
   return { state: st, set: put, ui: cui };
 }
 
+/** The shortcut has one distillate: going to it from the vapour + liquid condenser (proposal 0026) takes the total
+ *  condenser and removes the vapour distillate's stream. */
+export function leaveVapourLiquid(fs, id, mode) {
+  const b = fs.blocks.find(x => x.id === id);
+  return mode === "shortcut" && b?.spec?.condenser === "vapour_liquid" ? setCondenser(fs, id, "total") : fs;
+}
+
 /** The column's spec in the other mode: switching to rigorous starts from the shortcut's stages, feed, reflux and distillate. */
 export function switchMode(spec, mode, done) {
   if (mode !== "rigorous") return { ...spec, mode };
@@ -85,7 +92,7 @@ export function columnRibbon({ state, set, ui, group, smallButton }) {
       page("cubic", `Method: ${fs.thermo.model}${fs.thermo.mixing ? " + gE (MHV1)" : ""}`, "method", "col-method"))),
     group("Column", h("div", { class: "fug-seg fa-seg", role: "group", "aria-label": "Column method" }, ...[["shortcut", "Shortcut"], ["rigorous", "Rigorous"]].map(([m, l]) =>
       h("button", { type: "button", "aria-pressed": String(mode === m), "data-fk": `col-mode-${m}`, disabled: !ready,
-        on: { click: () => { if (mode !== m) { f.sel = { kind: "block", id: CID }; a.set({ flowsheet: { ...fs, blocks: fs.blocks.map(x => (x.id === CID ? { ...x, spec: switchMode(x.spec ?? {}, m, done) } : x)) } }); } } } }, l)))),
+        on: { click: () => { if (mode !== m) { f.sel = { kind: "block", id: CID }; const g = leaveVapourLiquid(fs, CID, m); a.set({ flowsheet: { ...g, blocks: g.blocks.map(x => (x.id === CID ? { ...x, spec: switchMode(x.spec ?? {}, m, done) } : x)) } }); } } } }, l)))),
     group("Edit", h("div", { class: "fa-rows2" },
       pick("feed", "Feed", { kind: "stream", id: feed?.id }, "col-feed"),
       pick("column", "Column", { kind: "block", id: CID }, "col-block"))),
@@ -187,7 +194,7 @@ function profileChart(kind, { fs, r, u, ud, compact }) {
   return h("div", {}, withImage(box, `column ${kind === "T" ? "temperature" : kind === "flows" ? "flows" : "compositions"}`, `col-img-${kind}`),
     h("p", { class: "fug-foot" }, sep ? `${kind === "x" ? "Solid lines: the liquid leaving each stage; dashed: the vapour. " : ""}Stage 1 is the top of the ${r.state.configuration}, stage ${N} ${r.state.reboiler === "partial" ? "the reboiler" : "the bottom"}; the feeds enter stages ${r.state.feed_stages.join(", ")}.`
       : kind === "x" ? "Solid lines: the liquid leaving each stage; dashed: the vapour. Stage 1 is the condenser, the last stage the reboiler."
-      : `Stage 1 is the ${r.state.condenser} condenser, stage ${N} the reboiler; the feed enters stage ${r.state.feed_stages.join(", ")}.`));
+      : `Stage 1 is the ${r.state.condenser === "vapour_liquid" ? "vapour + liquid" : r.state.condenser} condenser, stage ${N} the reboiler; the feed enters stage ${r.state.feed_stages.join(", ")}.`));
 }
 
 /** McCabe-Thiele's diagram for the solved binary column, with its numbers beside the column's own. */
@@ -212,7 +219,7 @@ function mccabePanel({ st0, fs, res, r, cui, u, ud, compact }) {
   const light = nameOf(sys.ids[inp.i], ud);
   if (err) return warning(err, { attrs: { "data-fk": "col-mt-error" }, open: true });
   // the drawing: diagonal, equilibrium curve, q-line, operating lines, steps, pinch, products, the rigorous stages
-  const steps = [{ x: inp.xD, y: inp.xD }];
+  const steps = [{ x: inp.yTop ?? inp.xD, y: inp.yTop ?? inp.xD }];
   for (const s of mt.steps) {
     steps.push({ x: s.x, y: s.y });
     steps.push({ x: s.x, y: s.y_next ?? s.x });
@@ -227,7 +234,9 @@ function mccabePanel({ st0, fs, res, r, cui, u, ud, compact }) {
     { name: "Stages", label: false, color: "var(--fug-s3)", width: 1.5, segments: [{ points: steps }],
       markers: mt.steps.map(s => ({ x: s.x, y: s.y, shape: "dot", label: s.stage === mt.feedStep ? `${s.stage}, feed` : !many || s.stage % 5 === 0 || s.stage === mt.steps.length ? String(s.stage) : undefined })) },
     { name: "", label: false, color: "var(--fa-mark)", segments: [{ points: [] }],
-      markers: [{ x: mt.pinch.x, y: mt.pinch.y, shape: "open" }, { x: inp.xD, y: inp.xD, shape: "dot" }, { x: inp.xB, y: inp.xB, shape: "dot" }, { x: inp.z, y: inp.z, shape: "dot" }] },
+      markers: [{ x: mt.pinch.x, y: mt.pinch.y, shape: "open" }, { x: inp.xD, y: inp.xD, shape: "dot" }, { x: inp.xB, y: inp.xB, shape: "dot" }, { x: inp.z, y: inp.z, shape: "dot" },
+        // the vapour + liquid condenser: its two products, y_D and x_D, on the diagonal
+        ...(inp.vapourLiquid ? [{ x: inp.yTop, y: inp.yTop, shape: "open" }, { x: inp.xLiquid, y: inp.xLiquid, shape: "open" }] : [])] },
   ];
   if (rigorous) {
     // the rigorous column's own operating points: the liquid leaving stage n against the vapour rising from n + 1
@@ -248,7 +257,7 @@ function mccabePanel({ st0, fs, res, r, cui, u, ud, compact }) {
     ["Feed stage (from the top, 1 the condenser)", String(mt.feedStep + (inp.partial ? 0 : 1)), rigorous ? st.feed_stages.join(", ") : String(st.feed_stage)],
     ["Minimum reflux ratio", fmtShort(mt.pinch.R_min, 4), rigorous ? "–" : fmtShort(st.R_min, 4)],
     ["Minimum stages (total reflux)", mt.total == null ? "–" : fmtShort(mt.total, 4), rigorous ? "–" : fmtShort(st.N_min, 4)],
-    ["Reflux ratio", fmtShort(inp.R, 4), fmtShort(inp.R, 4)],
+    [inp.vapourLiquid ? "Reflux over the whole distillate (L / (U + V))" : "Reflux ratio", fmtShort(inp.R, 4), fmtShort(inp.R, 4)],
     ["Feed liquid fraction q", fmtShort(inp.q, 4), rigorous ? "–" : fmtShort(st.q, 4)],
   ];
   const table = h("table", { class: "fug-table", "data-fk": "col-mt-table" },
@@ -257,12 +266,13 @@ function mccabePanel({ st0, fs, res, r, cui, u, ud, compact }) {
   const legendKey = (color, label, style = "") => h("span", { class: "fug-key", style: `color:${color}` }, h("i", { style }), h("span", { style: "color:var(--fug-fg2)" }, label));
   const legend = h("div", { class: "fug-legend" }, legendKey("var(--fug-s1)", "Equilibrium curve"), legendKey("var(--fug-s2)", "Operating lines"),
     legendKey("var(--fug-muted)", "q-line", "border-top-style:dashed"), legendKey("var(--fug-s3)", `Stages, ${fmtShort(mt.stages, 3)}`),
-    legendKey("var(--fa-mark)", `Pinch (ring), R min ${fmtShort(mt.pinch.R_min, 3)}; dots: x_B, z, x_D`),
+    legendKey("var(--fa-mark)", inp.vapourLiquid ? `Pinch (ring), R min ${fmtShort(mt.pinch.R_min, 3)} over the whole distillate; dots: x_B, z and the whole distillate z_D; rings on the diagonal: the vapour and the liquid distillate`
+      : `Pinch (ring), R min ${fmtShort(mt.pinch.R_min, 3)}; dots: x_B, z, x_D`),
     ...(rigorous ? [legendKey("var(--fug-s4)", "Rigorous column (crosses)")] : []));
   const box = h("div", { class: "fa-rx-chart" }, holder, legend, read);
   return h("div", {}, withImage(box, `mccabe-thiele ${sys.ids.join(" ")}`, "col-img-mt"),
     h("div", { class: "fug-scroll" }, table),
-    h("p", { class: "fug-foot" }, `The equilibrium curve from ${fs.thermo.model} at ${fmtShort(inp.P_kPa, 5)} kPa (the bubble point of each liquid); straight operating lines by constant molar overflow, as McCabe and Thiele drew them (The ChemSep Book, 2nd ed., section 1.3.3, public domain). ${mt.pinch.kind === "tangent" ? "The pinch is a tangent: the curve bends towards the diagonal before the feed." : "The pinch is where the q-line meets the curve."} ${rigorous ? "Crosses: the rigorous column's own liquid and vapour between stages; where they leave the straight lines, the flows are not constant (heats of vaporization differ) and the step count differs from the column's." : "The shortcut takes a constant relative volatility and Gilliland's correlation, so its stages are an estimate; McCabe-Thiele steps on the method's own curve."}`));
+    h("p", { class: "fug-foot" }, `The equilibrium curve from ${fs.thermo.model} at ${fmtShort(inp.P_kPa, 5)} kPa (the bubble point of each liquid); straight operating lines by constant molar overflow, as McCabe and Thiele drew them (The ChemSep Book, 2nd ed., section 1.3.3, public domain). ${inp.vapourLiquid ? "The vapour + liquid condenser is the first step, from the vapour distillate's y_D to the liquid it is in equilibrium with (the reflux and the liquid distillate); the rectifying line passes through the composition of the whole distillate, liquid and vapour, with the reflux over the whole distillate as its ratio (the material balance around the top). " : ""}${mt.pinch.kind === "tangent" ? "The pinch is a tangent: the curve bends towards the diagonal before the feed." : "The pinch is where the q-line meets the curve."} ${rigorous ? "Crosses: the rigorous column's own liquid and vapour between stages; where they leave the straight lines, the flows are not constant (heats of vaporization differ) and the step count differs from the column's." : "The shortcut takes a constant relative volatility and Gilliland's correlation, so its stages are an estimate; McCabe-Thiele steps on the method's own curve."}`));
 }
 
 /** The numbers behind the canvas for the Excel download (diagram-export.js): the profile and McCabe-Thiele's construction. */

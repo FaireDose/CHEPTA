@@ -2,7 +2,8 @@
 
 - **Status:** Accepted (the maintainer, 2026-11-18: the seven recommended answers, answer 4 with the correction on
   `feed_second_liquid: "top"` below; docs/decisions/2026-11-18-05-vapour-liquid-condenser-proposal.md). Steps 1 and 2
-  built (docs/decisions/2026-11-18-06-vapour-liquid-condenser-build.md); step 3 (the workbench) and step 4 not yet
+  built (docs/decisions/2026-11-18-06-vapour-liquid-condenser-build.md); step 3 (the workbench) built
+  (docs/decisions/2026-11-19-01-vapour-liquid-condenser-workbench.md); step 4 not yet
 - **Author(s):** coding agent for the maintainer (2026-11-18)
 - **Discussion:** the pull request of branch `claude/proposal-partial-condenser-m5`;
   docs/decisions/2026-11-14-05-column-fixes-lab-062.md (M5); docs/decisions/2026-11-18-05-vapour-liquid-condenser-proposal.md
