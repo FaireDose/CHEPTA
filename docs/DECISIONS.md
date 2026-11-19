@@ -72,7 +72,14 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   Answered by the maintainer (2026-11-18; docs/decisions/2026-11-18-04-entrainer-start-last.md): the entrainer start
   also as the very last attempt (built: F4's column with 10 % cyclohexane converges); step 2 a bottoms purity among the
   MESH equations first, arc-length continuation only if that is not enough; the dehydration case specified by bottoms
-  purity. Open: build proposal 0025 step 2; ask CHEPTA-Lab about the decanter option.
+  purity. Built 2026-11-18 (docs/decisions/2026-11-18-07-purity-in-mesh.md): step 2, the bottoms purity among the
+  MESH equations for a column with a decanter (DWSIM's row, in place of the reboiler's energy balance; every other
+  specification keeps the outer loop); F9, F10 and the near-dry column F11/F12 (12 % water, 3.3 % cyclohexane, 0.1 mol %
+  water in the bottoms, 30 and 40 stages) converge and match the reference; with 1.17 % cyclohexane (and F4 with 1-2 %)
+  still not: the branches found end where the bottoms run out of cyclohexane, not at a turning point, so arc-length
+  continuation was not built. Answered by the maintainer (2026-11-19): all five recommendations agreed (F11 the
+  dehydration validation case; no arc-length continuation). Open: ask CHEPTA-Lab about the decanter option or an
+  entrainer recycle (the coordinator, at its next phase).
 - **Acetic acid below its triple point** (Lab's request 3; docs/decisions/2026-11-12-05-acetic-acid-supercooled.md;
   decided 2026-11-12, built in #236): ChemSep's own lower ends are kept (density 273.15 K, viscosity and surface tension
   288.15 K, thermal conductivity 274.09 K, heat capacity 289.69 K); the liquid heat capacity is extrapolated up to 10 K below its record

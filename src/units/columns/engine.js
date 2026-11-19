@@ -55,7 +55,9 @@
  * liquid, the distillate. Its E equations say that both liquids are in equilibrium with one vapour,
  * K_i(x_reflux) x_reflux,i - K_i(x_distillate) x_distillate,i = 0 (equal activities), and its energy row that the reflux
  * is at its bubble point, sum_i K_i x_i - 1 = 0; the condenser's energy balance gives its duty, and the column takes one
- * specification, on the bottom or a product flow. With two liquids on the stages, each stage's whole liquid takes the
+ * specification, on the bottom, a product flow, or the bottoms' purity among the MESH equations (MESH_SPECS: its row
+ * ln(x_i / value) = 0 on the reboiler's row, as DWSIM writes a component fraction; proposal 0025, step 2, set by
+ * specifications.js). With two liquids on the stages, each stage's whole liquid takes the
  * place of the one liquid, its K-values and enthalpy from the stage's liquid-liquid split (two-liquids.js). Each
  * specification is written on the stage whose
  * variables it holds, so that the Jacobian stays block-tridiagonal; a product flow is written on the other end where
@@ -146,6 +148,11 @@ export const CONDENSERS = Object.freeze(["total", "partial", "decanter", "vapour
 export const CONDENSER_SPECS = Object.freeze(["T_K", "vapour_rate", "vapour_share"]);
 /** The specifications of milestone M2a, and those that come later (M4). */
 export const CASCADE_SPECS = Object.freeze(["reflux_ratio", "boilup_ratio", "distillate_rate", "bottoms_rate", "condenser_duty", "reboiler_duty"]);
+/** The bottoms' fraction of a component written among the MESH equations (proposal 0025, step 2; docs/decisions/
+ *  2026-11-18-07-purity-in-mesh.md), set by specifications.js for a column with a decanter: { kind: "bottoms_fraction",
+ *  i, value, basis: "mole" | "mass", MW?, startD }. Its row is ln(x_i / value) = 0 (mass basis: the mass fraction), the
+ *  form of DWSIM's Naphtali-Sandholm solver, in place of the reboiler's energy balance (specFraction below). */
+export const MESH_SPECS = Object.freeze(["bottoms_fraction"]);
 /** The dry-stage threshold of the liquid: below this fraction of the column's largest vapour flow (this project's
  *  choice: no open source gives one for equilibrium stages without the trays' geometry). */
 export const DRY_FRACTION = 0.01;
@@ -349,7 +356,7 @@ function checkInput({ stages, feeds, draws, specs, ends, phases, duties }, n) {
       : `Column: give two specifications (the column's degrees of freedom), from ${CASCADE_SPECS.join(", ")}; got ${Array.isArray(specs) ? specs.length : 0}.`);
   }
   if (decanter && ["reflux_ratio", "condenser_duty"].includes(specs[0]?.kind)) throw fail("BAD_INPUT", `Column: with a decanter the reflux is the whole ${refluxLiquid} liquid, so ${specs[0].kind} cannot be given; give boilup_ratio, reboiler_duty, distillate_rate or bottoms_rate.`);
-  const bad = specs.filter(s => !CASCADE_SPECS.includes(s?.kind));
+  const bad = specs.filter(s => !CASCADE_SPECS.includes(s?.kind) && !MESH_SPECS.includes(s?.kind));
   if (bad.length) throw fail("BAD_INPUT", `Column: unknown specification ${bad.map(s => JSON.stringify(s?.kind)).join(", ")}. Known: ${[...CASCADE_SPECS, ...DESIGN_SPECS].join(", ")}.`);
   if (specs.length === 2 && specs[0].kind === specs[1].kind) throw fail("BAD_INPUT", `Column: ${specs[0].kind} is given twice; give two different specifications.`);
   const kinds = specs.map(s => s.kind);
@@ -360,6 +367,14 @@ function checkInput({ stages, feeds, draws, specs, ends, phases, duties }, n) {
   }
   if (kinds.includes("condenser_duty") && kinds.includes("reboiler_duty")) throw fail("BAD_INPUT", "Column: the two duties fix the products only through the small difference of their enthalpies; give one duty with a flow or a ratio.");
   const out = specs.map(s => {
+    if (MESH_SPECS.includes(s.kind)) {
+      // a product's fraction among the MESH equations (set by specifications.js; see MESH_SPECS)
+      const v = Number(s.value);
+      if (!(Number.isInteger(s.i) && s.i >= 0 && s.i < n && v > 0 && v < 1 && ["mole", "mass"].includes(s.basis ?? "mole"))) throw fail("BAD_INPUT", `Column: ${s.kind} needs a component index i, a value between 0 and 1 and a basis "mole" or "mass" (got ${JSON.stringify(s)}).`);
+      if (s.basis === "mass" && !(Array.isArray(s.MW) && s.MW.length === n && s.MW.every(w => w > 0))) throw fail("BAD_INPUT", `Column: ${s.kind} on the mass basis needs the molar masses (MW).`);
+      if (ds.length || !decanter || !hasReboiler) throw fail("NOT_AVAILABLE", `Column: ${s.kind} among the MESH equations is built for a column with a decanter and a reboiler, without side draws.`);
+      return { kind: s.kind, i: s.i, value: v, basis: s.basis ?? "mole", MW: s.MW ?? null, startD: Number.isFinite(s.startD) ? s.startD : null };
+    }
     const v = Number(s.value);
     if (!Number.isFinite(v)) throw fail("BAD_INPUT", `Column: ${s.kind} needs a number (got ${JSON.stringify(s.value)}).`);
     if (["reflux_ratio", "boilup_ratio", "condenser_duty", "reboiler_duty"].includes(s.kind) && !(v > 0)) throw fail("BAD_INPUT", `Column: ${s.kind} must be above zero (got ${v}).`);
@@ -518,11 +533,18 @@ export function solveCascade(opts = {}) {
   }
 
   // ---- the residuals of stage j (scaled), from the properties of j - 1, j, j + 1
+  // the bottoms' fraction among the MESH equations (MESH_SPECS; proposal 0025, step 2), on the reboiler's row (a
+  // decanter's rows are all taken), from the reboiler's own liquid: the Jacobian stays block-tridiagonal
+  function specFraction(s, p) {
+    const w = s.basis === "mass" ? p.l.map((v, i) => v * s.MW[i]) : p.l;
+    return Math.max(w[s.i], 1e-300 * F) / sum(w);
+  }
   function specResidual(s, p, end) {
     // stage 1: V holds the distillate (with the vapour + liquid condenser: the vapour distillate, and the whole
     // distillate is U1 + V1); stage N: L is the bottoms
     const D = vl && end === 0 ? p.V + p.U : p.V, B = p.L;
     switch (s.kind) {
+      case "bottoms_fraction": return Math.log(specFraction(s, p) / s.value);
       // with the vapour + liquid condenser the reflux over the liquid distillate, L1 / U1 (the maintainer, 2026-11-18,
       // answer 2: DWSIM's stream ratio and IDAES's reflux_ratio)
       case "reflux_ratio": return (p.L - s.value * (vl ? p.U : D)) / F;
@@ -635,7 +657,8 @@ export function solveCascade(opts = {}) {
       const end = endOf(j);
       const s = end === null ? null : slot[end];
       const en = end === null || s.kind.endsWith("_duty") ? Math.abs(tmp[2 * n]) * scaleE : 0;
-      if (s && !s.kind.endsWith("_duty") && s.kind !== "decanter") g.specifications = Math.max(g.specifications, Math.abs(tmp[2 * n]) * F / Math.max(Math.abs(s.value) * (s.kind.endsWith("_ratio") ? (end === 0 ? (vl ? p.U : p.V) : p.L) : 1), 1e-300));
+      if (s && MESH_SPECS.includes(s.kind)) g.specifications = Math.max(g.specifications, Math.abs(tmp[2 * n]));
+      else if (s && !s.kind.endsWith("_duty") && s.kind !== "decanter") g.specifications = Math.max(g.specifications, Math.abs(tmp[2 * n]) * F / Math.max(Math.abs(s.value) * (s.kind.endsWith("_ratio") ? (end === 0 ? (vl ? p.U : p.V) : p.L) : 1), 1e-300));
       if (s?.kind.endsWith("_duty")) g.specifications = Math.max(g.specifications, Math.abs(tmp[2 * n]) * scaleE / s.value);
       if (vl && j === 0) g.specifications = Math.max(g.specifications, condenserError(p));
       g.material = Math.max(g.material, mat); g.equilibrium = Math.max(g.equilibrium, eq);
@@ -714,6 +737,11 @@ export function solveCascade(opts = {}) {
   }
   let cold = null;
   const slow = [];
+  // a product's fraction among the MESH equations fixes no product flow for the start: the bubble-point starts take the
+  // distillate the outer loop would start from (startD, specifications.js estimateDistillate); the entrainer start its
+  // own, from the decanter's lever rule (entrainerStart)
+  const meshSpec = inp.specs.find(s => MESH_SPECS.includes(s.kind)) ?? null;
+  const inpStart = meshSpec ? { ...inp, specs: [...inp.specs.filter(s => s !== meshSpec), { kind: "distillate_rate", value: meshSpec.startD ?? 0.5 * inp.Fnet }] } : inp;
   // the entrainer start of a decanter (proposal 0025, step 1; entrainerStart below), tried once: where every
   // bubble-point start held one liquid in the condensate, else as the very last attempt (the maintainer, 2026-11-18)
   let entrainerTried = false;
@@ -744,7 +772,7 @@ export function solveCascade(opts = {}) {
       // a start whose own bubble points fail (a stage composition with no bubble point in the records' range) is
       // recorded and the next start tried, not the column ended (2026-11-18: water + ethanol + cyclohexane, 40 stages)
       let c;
-      try { c = hasCondenser ? bubblePointStart(th, inp, fJ, HF, { R0 }) : sumRatesStart(th, inp, fJ, HF, { temperatures: R0 }); }
+      try { c = hasCondenser ? bubblePointStart(th, inpStart, fJ, HF, { R0 }) : sumRatesStart(th, inpStart, fJ, HF, { temperatures: R0 }); }
       catch (e) {
         if (e?.code !== "NO_CONVERGENCE") throw e;
         tried.push(`the ${hasCondenser ? "bubble-point" : "sum-rates"} start${R0 != null ? ` (${hasCondenser ? "a start reflux ratio of " : "temperatures "}${R0})` : ""} failed: ${e.message} (${took()})`);
@@ -1328,7 +1356,21 @@ function entrainerStart(th, inp, fJ, HF) {
   // 2. the decanter on the tie line through the top vapour
   const liq = th.liquids(a, Ta, 1, -5);
   if (!liq) return { why: `the azeotrope the feed's distillation line reaches (${a.map(v => fmt(v)).join(", ")}, ${fmt(Ta)} K) is homogeneous: its condensate holds one liquid` };
-  const rl = liq[inp.refluxLiquid], dl = liq[inp.refluxLiquid === "light" ? "heavy" : "light"];
+  const other = inp.refluxLiquid === "light" ? "heavy" : "light";
+  // a bottoms fraction among the MESH equations (proposal 0025, step 2) fixes no product flow: the distillate flow
+  // from that component's balance (step 3), the bottoms "selected so that the material balances are (approximately)
+  // satisfied" (Bekiaris 1995, section 4.4.5); a mass fraction is taken as a mole fraction with the mean molar mass of
+  // the feed's other components (only a start)
+  const fr = specs.find(s => s.kind === "bottoms_fraction");
+  let xbSpec = null;
+  if (fr) {
+    xbSpec = fr.value;
+    if (fr.basis === "mass") {
+      const rest = z.reduce((s1, v, i) => (i === fr.i ? s1 : s1 + v), 0), Mrest = z.reduce((s1, v, i) => (i === fr.i ? s1 : s1 + v * fr.MW[i]), 0) / rest;
+      xbSpec = (xbSpec / fr.MW[fr.i]) / (xbSpec / fr.MW[fr.i] + (1 - xbSpec) / Mrest);
+    }
+  }
+  const rl = liq[inp.refluxLiquid], dl = liq[other];
   const R = rl.flow / dl.flow;
   // 3. the products: the distillate flow from the specification
   const get = k => specs.find(s => s.kind === k)?.value;
@@ -1343,7 +1385,11 @@ function entrainerStart(th, inp, fJ, HF) {
   let D = get("distillate_rate") ?? (get("bottoms_rate") != null ? Fn - get("bottoms_rate") : null);
   if (D == null && get("boilup_ratio") != null) D = (get("boilup_ratio") * Fn + vapourFed) / (R + 1 + get("boilup_ratio"));
   if (D == null && get("reboiler_duty") != null) D = (get("reboiler_duty") / lambda + vapourFed) / (R + 1);
-  D = Math.min(Math.max(D ?? 0.5 * Fn, 0.01 * Fn), 0.99 * Fn);
+  if (D == null && fr) {
+    const t = (z[fr.i] - xbSpec) / (dl.x[fr.i] - xbSpec);
+    if (Number.isFinite(t) && t > 0 && t < 1) D = t * Fn;
+  }
+  D = Math.min(Math.max(D ?? specs.find(s => MESH_SPECS.includes(s.kind))?.startD ?? 0.5 * Fn, 0.01 * Fn), 0.99 * Fn);
   const B = Fn - D, d = dl.x.map(v => v * D);
   const b = z.map((v, i) => Math.max(F * v - d[i], 1e-8 * F)), xB = b.map(v => v / sum(b));
   // 4. the profile: flows by constant molar overflow, the vapours interpolated, the liquids by the operating lines

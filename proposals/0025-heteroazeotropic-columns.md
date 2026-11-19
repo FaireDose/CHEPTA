@@ -1,7 +1,8 @@
 # 0025: Heterogeneous azeotropic columns: an entrainer start and continuation past turning points
 
 - **Status:** Accepted (the maintainer, 2026-11-18: step 1, the entrainer start, first; then step 2). Step 1 built
-  2026-11-18 (docs/decisions/2026-11-18-03-entrainer-start.md)
+  2026-11-18 (docs/decisions/2026-11-18-03-entrainer-start.md); step 2 built 2026-11-18 as the bottoms purity among
+  the MESH equations, arc-length continuation not built (docs/decisions/2026-11-18-07-purity-in-mesh.md)
 - **Author(s):** coding agent for the maintainer (2026-11-18)
 - **Discussion:** the pull request of branch `claude/vll-columns-rigorous`; docs/decisions/2026-11-18-01-vll-columns-rigorous.md
 - **Roadmap item:** proposal 0024 (two liquids in columns), the follow-up of its question 2

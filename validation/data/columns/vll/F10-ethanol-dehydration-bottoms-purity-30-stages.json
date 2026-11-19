@@ -1,0 +1,82 @@
+{
+  "chepta_column_case": 1,
+  "thermo": {
+    "kind": "chepta",
+    "model": "NRTL",
+    "vapour": "ideal",
+    "sets": "default"
+  },
+  "components": [
+    "water",
+    "ethanol",
+    "cyclohexane"
+  ],
+  "pressure_kPa": 101.325,
+  "id": "F10-ethanol-dehydration-bottoms-purity-30-stages",
+  "title": "Water + ethanol + cyclohexane, NRTL, 30 stages and a decanter: ethanol with 12 mol % water and 3 mol % cyclohexane, the organic liquid refluxed, 2 mass % water in the bottoms",
+  "purpose": "Proposal 0025, step 2 (the maintainer, 2026-11-18): a bottoms purity among the MESH equations, on the mass basis (the mass fraction in the row ln(w / value) = 0). F7's column specified by the bottoms' water (2 mass %) instead of the bottoms flow. Before step 2 the outer loop of the specifications refused it. Not dry ethanol (docs/decisions/2026-11-18-07-purity-in-mesh.md).",
+  "proposal": "proposals/0025-heteroazeotropic-columns.md, step 2",
+  "method_choice": "docs/METHOD_SELECTION.md rules 3 and 7: polar, below 10 bar, two liquids: NRTL with the default sets, each fitted to open measured data (ethanol + water fitted-kamihama2012; water + cyclohexane fitted-marche2006-etal, mutual solubilities; ethanol + cyclohexane fitted-reddy2013; src/data/binaries.json), ideal-gas vapour. None was fitted to ternary data.",
+  "phases": "VLL",
+  "column": {
+    "configuration": "distillation",
+    "stages": 30,
+    "condenser": "decanter",
+    "reflux_liquid": "light",
+    "reboiler": "partial",
+    "feed": {
+      "stage": 10,
+      "flow_mol_s": 100.0,
+      "z": [
+        0.12,
+        0.85,
+        0.03
+      ],
+      "q": 1
+    }
+  },
+  "specs": [
+    {
+      "kind": "bottoms_purity",
+      "component": "water",
+      "value": 0.02,
+      "basis": "mass"
+    }
+  ],
+  "expected": {
+    "outcome": "ok",
+    "converged": true,
+    "warnings": [],
+    "behaviour": [
+      "the column converges with the purity among the MESH equations, from the entrainer start",
+      "the reference's profile, liquids and duties within F1's tolerances",
+      "the bottoms purity met: the reference writes the same specification row, ln(x / value) = 0"
+    ],
+    "branch": "The engine's solution from its entrainer start, the bottoms purity among the MESH equations (proposal 0025, step 2). Heterogeneous azeotropic columns can have several steady states at one specification (docs/decisions/2026-11-18-03-entrainer-start.md); this is the one the start reaches. The reference (validation/python/reference_mesh_vll.py --purity, ChemSep's three-phase stage) solves its own equations, with its own purity row, from the engine's profile, perturbed."
+  },
+  "tolerances": {
+    "numerical": {
+      "engine_against_reference": {
+        "flows_relative": 1e-06,
+        "mole_fractions_absolute": 1e-07,
+        "T_K_absolute": 1e-05,
+        "duties_relative": 1e-06,
+        "why": "Proposal 0015, Engineering basis: flows within 1e-6 relative of the independent MESH solution. Both solve the same equations to residuals of 1e-8 or less, so the difference is the solvers' convergence only."
+      },
+      "balances_on_every_stage": {
+        "material_relative_to_feed": 1e-08,
+        "summation": 1e-10,
+        "equilibrium": 1e-10,
+        "energy_relative_to_feed_times_10kJ_mol": 1e-08,
+        "why": "Proposal 0015: every stage's balances closed to 1e-8. Material: |residual| / F; energy: |residual| / (F x 10 kJ/mol); summation and equilibrium are mole fractions."
+      }
+    },
+    "stability": {
+      "tpd_stable_above": -1e-09,
+      "why": "one-liquid stages: no trial liquid on a grid has a tangent-plane distance below -1e-9"
+    },
+    "agreement_with_data": {
+      "note": "The three NRTL sets are fitted to vapour-liquid data; their liquid-liquid split is W1's work (joint fits, M2b) and not a test of the column."
+    }
+  }
+}

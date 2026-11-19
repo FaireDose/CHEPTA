@@ -34,6 +34,12 @@ With --entrainer (proposal 0025, step 1): the cases F6, F7 and F8 (water + ethan
 columns that converge from the engine's entrainer start) on the same three-phase stage, written to
 validation/fixtures/columns-vll-entrainer.json, which test/columns-entrainer-start.test.js reads. First:
 node validation/columns_vll_engine_starts.mjs --entrainer.
+
+With --purity (proposal 0025, step 2): the cases F9 and F10 (F6's and F7's columns specified by the water in the
+bottoms, on the mole and the mass basis), on the same three-phase stage with the purity written as one more row,
+ln(w_i / value) = 0, w_i the bottoms' mole or mass fraction (the bottoms: both liquids leaving the reboiler), written
+here from the definition, not from the engine. Writes validation/fixtures/columns-vll-purity.json, which
+test/columns-purity-mesh.test.js reads. First: node validation/columns_vll_engine_starts.mjs --purity.
 """
 import json
 import math
@@ -427,6 +433,11 @@ class ThreePhaseColumn:
                 r.append((D - sp["value"]) / F)
             elif sp["kind"] == "bottoms_flow_mol_s":
                 r.append((B - sp["value"]) / F)
+            elif sp["kind"] == "bottoms_purity":
+                # the bottoms: both liquids leaving the reboiler; the mass basis with the components' molar masses
+                b = sum(Lk * xk for Lk, xk in self.liquids_out(S[-1]))
+                w = b * np.array([c["MW"] for c in self.th.s.c]) if sp.get("basis", "mole") == "mass" else b
+                r.append(math.log(w[sp["i"]] / np.sum(w) / sp["value"]))
             else:
                 raise ValueError(f"specification {sp['kind']} is not in the three-phase reference")
         r = np.array(r, float)
@@ -625,8 +636,9 @@ def three_phase(case, prof, th, decanter=False):
         two = [0] + two                                     # the condensate of a total condenser splits
     f = case["column"]["feed"]
     feeds = [(f["stage"], f["flow_mol_s"], f["z"], feed_enthalpy(th, f), 1.0)]
+    specs = [{**s, "i": case["components"].index(s["component"])} if "component" in s else s for s in case["specs"]]
     c = ThreePhaseColumn(th, len(case["components"]), case["column"]["stages"], feeds, case["column"]["condenser"],
-                         case["specs"], two, case["column"].get("reflux_liquid", "light"))
+                         specs, two, case["column"].get("reflux_liquid", "light"))
     # started away from that profile (each temperature 0.5 K higher, each flow and duty 3 % larger, each composition
     # tilted by 2 % and renormalized), so that the solution is this reference's own, not the profile handed to it
     u0 = c.start_from(prof)
@@ -706,6 +718,26 @@ def main_entrainer():
     (ROOT / "validation" / "fixtures" / "columns-vll-entrainer.json").write_text(json.dumps(out, indent=1) + "\n")
 
 
+def main_purity():
+    """The cases of proposal 0025, step 2 (F9, F10: a bottoms purity) on ChemSep's three-phase stage with the purity row,
+    each started from the engine's profile (validation/fixtures/columns-vll-purity-starts.json), perturbed. Writes
+    validation/fixtures/columns-vll-purity.json."""
+    data = ROOT / "validation" / "data" / "columns" / "vll"
+    starts = json.loads((ROOT / "validation" / "fixtures" / "columns-vll-purity-starts.json").read_text())["cases"]
+    out = {"_about": "Written by validation/python/reference_mesh_vll.py --purity: the columns of proposal 0025, step 2 (a bottoms "
+                     "purity among the MESH equations) on ChemSep's full three-phase stage (The ChemSep Book, 2nd ed., eqs. "
+                     "13.35-13.44) with the purity row ln(w / value) = 0, the independent check. Converged reference profiles are "
+                     "not validated against data.", "H_scale_J_mol": H_SCALE, "cases": {}}
+    for cid, start in starts.items():
+        print(cid, flush=True)
+        case = json.loads((data / f"{cid}.json").read_text())
+        th = TwoLiquids(case["components"], case["pressure_kPa"], case["thermo"]["model"])
+        prof = three_phase(case, start, th)
+        print("  ", prof["solver"], prof["check"], flush=True)
+        out["cases"][cid] = {"case": f"validation/data/columns/vll/{cid}.json", "three_phase": prof}
+    (ROOT / "validation" / "fixtures" / "columns-vll-purity.json").write_text(json.dumps(out, indent=1) + "\n")
+
+
 def main():
     f1 = json.loads((ROOT / "validation" / "data" / "columns" / "F1-butanol-water-two-liquids.json").read_text())
     out = {"_about": "Written by validation/python/reference_mesh_vll.py (W2's independent reference for two liquids on "
@@ -736,5 +768,7 @@ if __name__ == "__main__":
         main_three_phase()
     elif "--entrainer" in sys.argv:
         main_entrainer()
+    elif "--purity" in sys.argv:
+        main_purity()
     else:
         main()
