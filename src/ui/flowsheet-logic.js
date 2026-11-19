@@ -60,7 +60,7 @@ function clearSpot(fs, x, y) {
 /** Where the Product of outlet `from` (BLOCK.port) goes: right of the unit, by port, on a free spot. */
 function productSpot(fs, from, k = 0) {
   const src = fs.blocks.find(b => b.id === portOf(from).block);
-  const dy = { vapour: -60, liquid: 60, liquid2: 100, hot: -40, cold: 40 }[portOf(from).port] ?? (k - 0.5) * 70;
+  const dy = { vapour: -60, liquid: 60, liquid2: 100, hot: -40, cold: 40, vapour_distillate: -110 }[portOf(from).port] ?? (k - 0.5) * 70;
   return clearSpot(fs, (src?.x ?? 0) + 130, (src?.y ?? 0) + dy);
 }
 
@@ -350,6 +350,40 @@ export function removeSideDraw(fs, id, k) {
       .map(d => (d.product === "side_draw" && (d.draw ?? 1) > k + 1 ? { ...d, draw: (d.draw ?? 1) - 1 } : d));
     if (!spec.specifications.length) delete spec.specifications;
   }
+  b.spec = spec;
+  return out;
+}
+
+/** The vapour + liquid condenser's own specification keys (proposal 0026): exactly one is given with it. */
+export const CONDENSER_SPEC_KEYS = ["condenser_T_K", "vapour_distillate_kmol_h", "vapour_share"];
+
+/**
+ * Choose a rigorous column's condenser (proposal 0026, step 3): "total" (null), "partial", "decanter" or "vapour_liquid",
+ * with `patch` merged into the specification (null removes a key). To "vapour_liquid": a Product stream is added on the
+ * outlet "vapour_distillate" (the column requires it). From it: that stream is removed (it must lead to a Product), with
+ * the condenser's own specification and the design specifications written on the vapour distillate.
+ */
+export function setCondenser(fs, id, condenser, patch = {}) {
+  const out = clone(fs);
+  const b = out.blocks.find(x => x.id === id);
+  if (!b || b.type !== "column") return out;
+  const vl = condenser === "vapour_liquid", port = `${id}.vapour_distillate`;
+  const vs = out.streams.filter(s => s.from === port);
+  if (vl && !vs.length) addProductStream(out, port);
+  if (!vl) {
+    for (const st of vs) {
+      if (!isProduct(out, portOf(st.to).block)) throw new Error(`The vapour distillate of ${id} (${st.id}) goes to a unit; send it out of the flowsheet first.`);
+      out.streams = out.streams.filter(s => s.id !== st.id);
+      out.blocks = out.blocks.filter(x => x.id !== portOf(st.to).block);
+    }
+  }
+  const spec = { ...(b.spec ?? {}), condenser: condenser === "total" ? null : condenser, ...patch };
+  if (!vl) {
+    for (const k of CONDENSER_SPEC_KEYS) spec[k] = null;
+    if (Array.isArray(spec.specifications)) spec.specifications = spec.specifications.filter(d => d.product !== "vapour_distillate");
+    if (Array.isArray(spec.specifications) && !spec.specifications.length) spec.specifications = null;
+  }
+  for (const k of Object.keys(spec)) if (spec[k] == null || spec[k] === "") delete spec[k];
   b.spec = spec;
   return out;
 }

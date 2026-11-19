@@ -14,7 +14,7 @@
 import { h, ticks } from "./dom.js";
 import { icon } from "./icons.js";
 import { emptyFlowsheet, flowsheetSystem } from "../flowsheet/document.js";
-import { addBlock, addFeedTo } from "./flowsheet-logic.js";
+import { addBlock, addFeedTo, setCondenser } from "./flowsheet-logic.js";
 import { flowsheetInputs, ensureUi, solution, resultsPanel, flowsheetKey, columnTable } from "./flowsheet-view.js";
 import { chartBox } from "./reactor-charts.js";
 import { drawPlot } from "./plot.js";
@@ -59,6 +59,13 @@ export function asFlowsheet(state, set, ui) {
   return { state: st, set: put, ui: cui };
 }
 
+/** The shortcut has one distillate: going to it from the vapour + liquid condenser (proposal 0026) takes the total
+ *  condenser and removes the vapour distillate's stream. */
+export function leaveVapourLiquid(fs, id, mode) {
+  const b = fs.blocks.find(x => x.id === id);
+  return mode === "shortcut" && b?.spec?.condenser === "vapour_liquid" ? setCondenser(fs, id, "total") : fs;
+}
+
 /** The column's spec in the other mode: switching to rigorous starts from the shortcut's stages, feed, reflux and distillate. */
 export function switchMode(spec, mode, done) {
   if (mode !== "rigorous") return { ...spec, mode };
@@ -85,7 +92,7 @@ export function columnRibbon({ state, set, ui, group, smallButton }) {
       page("cubic", `Method: ${fs.thermo.model}${fs.thermo.mixing ? " + gE (MHV1)" : ""}`, "method", "col-method"))),
     group("Column", h("div", { class: "fug-seg fa-seg", role: "group", "aria-label": "Column method" }, ...[["shortcut", "Shortcut"], ["rigorous", "Rigorous"]].map(([m, l]) =>
       h("button", { type: "button", "aria-pressed": String(mode === m), "data-fk": `col-mode-${m}`, disabled: !ready,
-        on: { click: () => { if (mode !== m) { f.sel = { kind: "block", id: CID }; a.set({ flowsheet: { ...fs, blocks: fs.blocks.map(x => (x.id === CID ? { ...x, spec: switchMode(x.spec ?? {}, m, done) } : x)) } }); } } } }, l)))),
+        on: { click: () => { if (mode !== m) { f.sel = { kind: "block", id: CID }; const g = leaveVapourLiquid(fs, CID, m); a.set({ flowsheet: { ...g, blocks: g.blocks.map(x => (x.id === CID ? { ...x, spec: switchMode(x.spec ?? {}, m, done) } : x)) } }); } } } }, l)))),
     group("Edit", h("div", { class: "fa-rows2" },
       pick("feed", "Feed", { kind: "stream", id: feed?.id }, "col-feed"),
       pick("column", "Column", { kind: "block", id: CID }, "col-block"))),
@@ -187,7 +194,7 @@ function profileChart(kind, { fs, r, u, ud, compact }) {
   return h("div", {}, withImage(box, `column ${kind === "T" ? "temperature" : kind === "flows" ? "flows" : "compositions"}`, `col-img-${kind}`),
     h("p", { class: "fug-foot" }, sep ? `${kind === "x" ? "Solid lines: the liquid leaving each stage; dashed: the vapour. " : ""}Stage 1 is the top of the ${r.state.configuration}, stage ${N} ${r.state.reboiler === "partial" ? "the reboiler" : "the bottom"}; the feeds enter stages ${r.state.feed_stages.join(", ")}.`
       : kind === "x" ? "Solid lines: the liquid leaving each stage; dashed: the vapour. Stage 1 is the condenser, the last stage the reboiler."
-      : `Stage 1 is the ${r.state.condenser} condenser, stage ${N} the reboiler; the feed enters stage ${r.state.feed_stages.join(", ")}.`));
+      : `Stage 1 is the ${r.state.condenser === "vapour_liquid" ? "vapour + liquid" : r.state.condenser} condenser, stage ${N} the reboiler; the feed enters stage ${r.state.feed_stages.join(", ")}.`));
 }
 
 /** McCabe-Thiele's diagram for the solved binary column, with its numbers beside the column's own. */

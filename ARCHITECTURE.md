@@ -258,6 +258,12 @@ the flowsheet's design specifications (`designSpecs`: vary one input of a block 
 `src/flowsheet/design-specs.js` as an outer loop around the recycles). A format-9 reader refuses the key as unknown, so
 the format is raised and the older version names it; it is written only when a flowsheet has a design specification.
 
+Project format 11 (proposal 0026, step 3, 2026-11-19; `docs/schema/project-11.json`) is format 10 with the column's
+vapour + liquid condenser: a column block with `condenser: "vapour_liquid"`, one of `condenser_T_K`,
+`vapour_distillate_kmol_h`, `vapour_share`, and a stream on its outlet `vapour_distillate`. A format-10 reader would
+refuse the condenser only when solving, so the format is raised and the older version names it; it is written only when
+a column uses this condenser.
+
 **The request path** (`src/api/dispatcher.js`). One dispatcher over the existing functions, for the workbench (the
 Flowsheet workspace solves through it), chat pages, and, from milestone M1, the command line and the local MCP server
 (`chepta-mcp`):

@@ -189,6 +189,9 @@ export function columnBinary(sys, fs, res, colId) {
   const B = res.streams[fs.streams.find(s => s.from === `${colId}.bottoms`)?.id];
   if (!D || !B) return { ok: false, why: "The column's products are not calculated." };
   const st = r.state, P = st.P_kPa;
+  // the vapour + liquid condenser (proposal 0026): two distillates of different compositions leave the top, so the top
+  // operating line of one distillate does not apply
+  if (st.condenser === "vapour_liquid") return { ok: false, why: "McCabe-Thiele is drawn here for a total or partial condenser; the vapour + liquid condenser has two distillates. The profile charts show every stage." };
   const i = st.light_key ? sys.ids.indexOf(st.light_key) : D.z[0] >= B.z[0] ? 0 : 1;
   const feed = feeds[0];
   const q = st.q ?? feedQuality(sys, feed, P);

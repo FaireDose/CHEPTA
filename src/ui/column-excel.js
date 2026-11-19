@@ -17,7 +17,10 @@ const SPEC_ROWS = [
   ["stages", "Stages (1 the condenser, the last the reboiler)", ""], ["feed_stage", "Feed stage", "from the top"],
   ["boilup_ratio", "Boil-up ratio", "V/B"], ["distillate_kmol_h", "Distillate flow", "kmol/h"], ["bottoms_kmol_h", "Bottoms flow", "kmol/h"],
   ["condenser_duty_kW", "Condenser duty (removed)", "kW"], ["reboiler_duty_kW", "Reboiler duty", "kW"],
-  ["condenser", "Condenser", ""], ["P_kPa", "Pressure", "kPa"], ["max_iterations", "Newton iterations at most", ""],
+  ["condenser", "Condenser", ""],
+  // the vapour + liquid condenser's own specification (proposal 0026)
+  ["condenser_T_K", "Condenser temperature", "K"], ["vapour_distillate_kmol_h", "Vapour distillate flow", "kmol/h"], ["vapour_share", "Vapour share of the distillate", "V/(V + liquid distillate)"],
+  ["P_kPa", "Pressure", "kPa"], ["max_iterations", "Newton iterations at most", ""],
 ];
 
 /** The results of each mode: key in `state`, label, unit, source. */
@@ -53,6 +56,19 @@ const RESULT_ROWS = {
     ["reflux_ratio", "Reflux ratio", "L/D", "the solved column"],
     ["boilup_ratio", "Boil-up ratio", "V/B", "the solved column"],
     ["D_kmol_h", "Distillate flow", "kmol/h", "the solved column"],
+  ],
+  // the vapour + liquid condenser (proposal 0026): the two distillates and the two reflux ratios
+  vapour_liquid: [
+    ["reflux_ratio", "Reflux ratio (over the liquid distillate)", "L/U", "the solved column"],
+    ["reflux_over_distillate", "Reflux over the whole distillate", "L/(U+V)", "the solved column"],
+    ["boilup_ratio", "Boil-up ratio", "V/B", "the solved column"],
+    ["D_liquid_kmol_h", "Liquid distillate flow", "kmol/h", "the solved column"],
+    ["D_vapour_kmol_h", "Vapour distillate flow", "kmol/h", "the solved column"],
+    ["D_kmol_h", "Distillate flow (liquid + vapour)", "kmol/h", "the solved column"],
+    ["vapour_share", "Vapour share of the distillate", "V/(U+V)", "the solved column"],
+    ["condenser_T_K", "Condenser temperature", "K", "the solved column"],
+  ],
+  rigorous_rest: [
     ["B_kmol_h", "Bottoms flow", "kmol/h", "the solved column"],
     ["condenser_kW", "Condenser duty (removed)", "kW", "the condenser's energy balance"],
     ["reboiler_kW", "Reboiler duty", "kW", "the reboiler's energy balance"],
@@ -84,7 +100,9 @@ export function columnSheet(b, r, { comps, nameOf, model }) {
   if (spec.P_kPa == null) rows.push(["Pressure", val(st.P_kPa), "kPa (the feed's)"]);
   rows.push([`Method: ${model}`], []);
   rows.push([bold("Results"), bold("Value"), bold("Unit"), bold("Source")]);
-  for (const [k, label, unit, src] of RESULT_ROWS[st.configuration ? "separator" : mode] ?? []) if (st[k] != null) rows.push([label, val(st[k]), unit, src]);
+  const resultRows = st.configuration ? RESULT_ROWS.separator : mode !== "rigorous" ? RESULT_ROWS[mode]
+    : [...(st.condenser === "vapour_liquid" ? RESULT_ROWS.vapour_liquid : RESULT_ROWS.rigorous), ...RESULT_ROWS.rigorous_rest];
+  for (const [k, label, unit, src] of resultRows ?? []) if (st[k] != null) rows.push([label, val(st[k]), unit, src]);
   if (mode === "shortcut") {
     for (const [where, a] of Object.entries(st.alpha_keys ?? {})) rows.push([`Relative volatility of the keys, ${where}`, val(a), "", "K-values of CHEPTA's method at the bubble point there"]);
   } else if (st.residuals) {
