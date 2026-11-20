@@ -42,6 +42,16 @@ Read on 2026-10-09:
      https://dwsim.org/tutorials/en/reference/property-packages-guide.html, read 2026-11-04). Sour water (NH₃ with H₂S
      or CO₂) and amines need an electrolyte model ("Sour water (NH3, H2S, CO2): Sour Water ... Specialized for gas
      treating", the same guide): not in CHEPTA yet (methods track M5), so refused.
+   - **CO₂ and H₂ dissolved in methanol + water at high pressure** (the condensate of a methanol plant's separator;
+     docs/decisions/2026-11-20-01-co2-methanol-water.md): **PR + gE (MHV1)**. Against the measured ternary data of the
+     ThermoML Archive (`validation/co2_methanol_check.mjs`, `test/co2-methanol-water-solubility.test.js`), in a 1:1
+     (molar) methanol + water solvent at 313.75 K, PR + gE (MHV1) is +9 % in the CO₂ solubility and PR or SRK with the
+     k_ij of the three pairs +77 % (Xia et al. 2004, doi 10.1021/je049803i); with H₂ in the gas, PR + gE (MHV1) meets
+     the measured bubble pressures within 12 % (AAD) and PR with k_ij is +132 % on average, as H₂ + methanol has no
+     k_ij (Bezanehtak et al. 2004, doi 10.1021/je0301491). Each binary k_ij follows its own data; the error is the
+     mixture's. SRK + gE (MHV1) has no CO₂ + water set, and nitrogen + methanol has no set in either rule (no ThermoML
+     liquid + gas data): with nitrogen in the mixture PR + gE (MHV1) refuses, and PR with k_ij runs with the known
+     issue that states these errors.
 3. **Polar, no electrolytes, below 10 bar, with interaction parameters:**
    - an activity model: NRTL or UNIQUAC, or Wilson when there is only one liquid (`WILSON`, proposal 0016; ChemSep's
      Wilson set, tier databank, 165 pairs, and Wilson pairs of one's own in My data);

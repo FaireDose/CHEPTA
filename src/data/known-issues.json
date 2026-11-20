@@ -5788,6 +5788,64 @@
       "source_ids": [
         "yang2010-acetic-acid-cyclohexane"
       ]
+    },
+    {
+      "components": [
+        "carbon-dioxide",
+        "methanol",
+        "water"
+      ],
+      "model": "PR",
+      "kind": "predicted-deviation",
+      "message": "In methanol + water, PR with the k_ij of the three pairs overpredicts the solubility of CO2. Against the measured solubility of Xia et al. (2004) at 313.75 K: +77 % in a 1:1 (molar) methanol + water solvent (bubble pressure -40 %), +112.4 % at a methanol mole fraction of 0.25, +11.8 % at 0.9. PR + gE (MHV1) is +9.2 % in the 1:1 solvent: use it for CO2 in methanol + water (the condensate of a methanol plant's separator). The binary k_ij of CO2 + methanol and CO2 + water each follow their own data; the error comes from the mixture.",
+      "reference": "validation/data/eos/multicomponent/thermoml_carbon-dioxide_methanol_water_10-1021-je049803i.json, validation/data/eos/multicomponent/co2_methanol_check.json (validation/co2_methanol_check.mjs)",
+      "source_ids": [
+        "xia2004-carbon-dioxide-methanol"
+      ]
+    },
+    {
+      "components": [
+        "carbon-dioxide",
+        "methanol",
+        "water"
+      ],
+      "model": "SRK",
+      "kind": "predicted-deviation",
+      "message": "In methanol + water, SRK with the k_ij of the three pairs overpredicts the solubility of CO2. Against the measured solubility of Xia et al. (2004) at 313.75 K: +76.8 % in a 1:1 (molar) methanol + water solvent (bubble pressure -39.8 %), +111.9 % at a methanol mole fraction of 0.25, +12.3 % at 0.9. PR + gE (MHV1) is +9.2 % in the 1:1 solvent: use it for CO2 in methanol + water (the condensate of a methanol plant's separator). The binary k_ij of CO2 + methanol and CO2 + water each follow their own data; the error comes from the mixture.",
+      "reference": "validation/data/eos/multicomponent/thermoml_carbon-dioxide_methanol_water_10-1021-je049803i.json, validation/data/eos/multicomponent/co2_methanol_check.json (validation/co2_methanol_check.mjs)",
+      "source_ids": [
+        "xia2004-carbon-dioxide-methanol"
+      ]
+    },
+    {
+      "components": [
+        "carbon-dioxide",
+        "hydrogen",
+        "methanol"
+      ],
+      "model": "PR",
+      "kind": "predicted-deviation",
+      "message": "Hydrogen + methanol has no PR k_ij (k_ij = 0 is used, with a warning), so PR underpredicts the solubility of H2 in methanol: against the measured CO2 + H2 + methanol liquids of Bezanehtak et al. (2004) at 278-298 K and 2-20 MPa, the bubble pressure is +132.2 % on average (19 of 142 liquids without one). PR + gE (MHV1), with the NRTL set of H2 + methanol fitted inside the rule, is within 12 % (AAD). Use it where H2 dissolves in methanol.",
+      "reference": "validation/data/eos/multicomponent/thermoml_carbon-dioxide_hydrogen_methanol_10-1021-je0301491.json, validation/data/eos/multicomponent/thermoml_carbon-dioxide_hydrogen_methanol_10-1021-je0498614.json, validation/data/eos/multicomponent/co2_methanol_check.json (validation/co2_methanol_check.mjs)",
+      "source_ids": [
+        "bezanehtak2004-carbon-dioxide-hydrogen-methanol",
+        "xie2005-carbon-dioxide-methanol"
+      ]
+    },
+    {
+      "components": [
+        "carbon-dioxide",
+        "hydrogen",
+        "methanol"
+      ],
+      "model": "SRK",
+      "kind": "predicted-deviation",
+      "message": "Hydrogen + methanol has no SRK k_ij (k_ij = 0 is used, with a warning), so SRK underpredicts the solubility of H2 in methanol: against the measured CO2 + H2 + methanol liquids of Bezanehtak et al. (2004) at 278-298 K and 2-20 MPa, the bubble pressure is +213.2 % on average (17 of 142 liquids without one). PR + gE (MHV1), with the NRTL set of H2 + methanol fitted inside the rule, is within 12 % (AAD). Use it where H2 dissolves in methanol.",
+      "reference": "validation/data/eos/multicomponent/thermoml_carbon-dioxide_hydrogen_methanol_10-1021-je0301491.json, validation/data/eos/multicomponent/thermoml_carbon-dioxide_hydrogen_methanol_10-1021-je0498614.json, validation/data/eos/multicomponent/co2_methanol_check.json (validation/co2_methanol_check.mjs)",
+      "source_ids": [
+        "bezanehtak2004-carbon-dioxide-hydrogen-methanol",
+        "xie2005-carbon-dioxide-methanol"
+      ]
     }
   ]
 }
