@@ -475,6 +475,28 @@ function solveCore(sys, fs) {
     blockNotes.set(id, blockExtrapolations(sys, r, noted));
   };
   const blockNotes = new Map();
+  /**
+   * The strict range mode, as early as it can judge (CHEPTA-Lab EA-17, 2026-11-20). A block outside every recycle loop
+   * is calculated once, from inlets that are already final (the blocks before it, and the loops before it, converged),
+   * so its records outside their ranges are those of the answer: it is refused at once, before the loops after it are
+   * solved, with the same message as at the end. A block inside a loop is judged at convergence only: its states while
+   * the loop iterates are not the answer (a recycle may pass outside a record's range on its way); what the last pass
+   * used outside the ranges is said when the loop stops without an answer (`strictPass`).
+   */
+  const strictOutside = ids => (strictRanges() ? mergeExtrapolations(ids.filter(id => blockNotes.has(id)).map(id => ({ where: id, notes: blockNotes.get(id) })))
+    .filter(e => e.kind !== "estimatedPair") : []);
+  const strictNow = id => {
+    const outside = strictOutside([id]);
+    if (!outside.length) return;
+    throw failRange("OUT_OF_RANGE", `The strict range mode (strictRanges) refuses this answer: ${blocks.get(id).unit.label} ${id}, outside every recycle loop, is calculated once from its final inlets and uses ${outside.length === 1 ? "a record" : `${outside.length} records`} outside ${outside.length === 1 ? "its range" : "their ranges"}, so it is refused now, before the rest of the flowsheet is solved. ${outside.map(e => e.message).join(" ")} Without the strict mode the flowsheet is solved and these are warnings.`,
+      { strictRanges: true, extrapolations: outside, where: [{ block: id, message: outside.map(e => e.short ?? e.message).join("; ") }] });
+  };
+  /** A loop that stops without an answer, in the strict mode: the records its last pass used outside their ranges. */
+  const strictPass = ids => {
+    const outside = strictOutside(ids);
+    return outside.length ? { text: ` In its last pass the loop used ${outside.length === 1 ? "a record" : `${outside.length} records`} outside ${outside.length === 1 ? "its range" : "their ranges"} (${outside.map(e => e.short ?? e.message).join("; ")}): the strict range mode (strictRanges) judges the loop's answer, not its passes, and will refuse the answer if they remain there.`,
+      details: { strictRanges: true, extrapolations: outside } } : { text: "", details: {} };
+  };
 
   /** Total flow of the feed streams calculated so far (kmol/h). */
   const feedTotal = () => nodes.filter(id => blocks.get(id).type === "feed")
@@ -487,7 +509,7 @@ function solveCore(sys, fs) {
   for (const comp of comps) {
     const set = new Set(comp);
     const inner = graph.filter(e => set.has(e.from) && set.has(e.to));
-    if (!inner.length) { calc(comp[0]); continue; }
+    if (!inner.length) { calc(comp[0]); strictNow(comp[0]); continue; }
     const tears = chooseTears(comp, inner);
     const tearIds = new Set(tears.map(e => e.id));
     const seq = order(comp, inner.filter(e => !tearIds.has(e.id)));
@@ -505,9 +527,9 @@ function solveCore(sys, fs) {
     let xPrev = null, gPrev = null, it = 0, err = Infinity;
     const history = [];
     const safeguards = [];   // what the safeguards below did: { iteration, action, reason }
-    const stop = (why, extra = {}) => fail("NO_CONVERGENCE",
-      `The loop through ${seq.join(", ")} did not converge${why}. What usually helps: a purge or a smaller recycle fraction (a recycle with no way out keeps growing), a guess for the tear stream${tears.length > 1 ? "s" : ""} (${tears.map(e => e.id).join(", ")}) close to the answer, another tear stream, another convergence method, or more iterations.`,
-      { loop: comp, tears: tears.map(e => e.id), history, ...(safeguards.length ? { safeguards } : {}), ...extra });
+    const stop = (why, extra = {}, sp = strictPass(seq)) => fail("NO_CONVERGENCE",
+      `The loop through ${seq.join(", ")} did not converge${why}.${sp.text} What usually helps: a purge or a smaller recycle fraction (a recycle with no way out keeps growing), a guess for the tear stream${tears.length > 1 ? "s" : ""} (${tears.map(e => e.id).join(", ")}) close to the answer, another tear stream, another convergence method, or more iterations.`,
+      { loop: comp, tears: tears.map(e => e.id), history, ...(safeguards.length ? { safeguards } : {}), ...sp.details, ...extra });
     const sizes = x.map(v => v.length);   // material tears: n flows each; energy tears: one duty
     const isFlow = tears.flatMap((e, k) => new Array(sizes[k]).fill(!e.energy));
     const unflat = f => { let at = 0; return sizes.map(n => { const part = f.slice(at, at + n); at += n; return part; }); };
@@ -730,7 +752,8 @@ function solveCore(sys, fs) {
       if (progressWanted()) {
         reportProgress({ kind: "flowsheet", loops: [...loops.map(l => ({ ...l, converged: true })),
           { blocks: seq.slice(), tears: tears.map(e => e.id), iterations: it + 1, residual: err, tolerance: opt.tolerance, converged: false,
-            maxIterations: opt.maxIterations, method: opt.method, recent: history.slice(-5), ...(safeguards.length ? { safeguards: safeguards.slice(-3) } : {}) }] });
+            maxIterations: opt.maxIterations, method: opt.method, recent: history.slice(-5), ...(safeguards.length ? { safeguards: safeguards.slice(-3) } : {}),
+            ...(strictRanges() ? { strictOutside: strictOutside(seq).map(e => e.short ?? e.message) } : {}) }] });
       }
       // a loop without a way out for some component accumulates it: its flows grow without bound, and a
       // method that extrapolates (Broyden) can reach flows so large that the relative change looks converged
