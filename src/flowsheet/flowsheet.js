@@ -488,7 +488,7 @@ function solveCore(sys, fs) {
   const strictNow = id => {
     const outside = strictOutside([id]);
     if (!outside.length) return;
-    throw failRange("OUT_OF_RANGE", `The strict range mode (strictRanges) refuses this answer: ${blocks.get(id).unit.label} ${id}, outside every recycle loop, is calculated once from its final inlets and uses ${outside.length === 1 ? "a record" : `${outside.length} records`} outside ${outside.length === 1 ? "its range" : "their ranges"}, so it is refused now, before the rest of the flowsheet is solved. ${outside.map(e => e.message).join(" ")} Without the strict mode the flowsheet is solved and these are warnings.`,
+    throw failRange("OUT_OF_RANGE", `The strict range mode (strictRanges) refuses this answer: it uses ${outside.length === 1 ? "a record" : `${outside.length} records`} outside ${outside.length === 1 ? "its range" : "their ranges"}. ${outside.map(e => e.message).join(" ")} ${blocks.get(id).unit.label} ${id} is outside every recycle loop and is calculated once from its final inlets, so this is refused now, before the recycle loops after it are solved. Without the strict mode the flowsheet is solved and these are warnings.`,
       { strictRanges: true, extrapolations: outside, where: [{ block: id, message: outside.map(e => e.short ?? e.message).join("; ") }] });
   };
   /** A loop that stops without an answer, in the strict mode: the records its last pass used outside their ranges. */
@@ -506,10 +506,13 @@ function solveCore(sys, fs) {
   const stray = [...edges, ...energyEdges].filter(e => e.tear && !inLoop.has(e.id));
   if (stray.length) throw fail("BAD_INPUT", `${stray.map(e => e.id).join(", ")} ${stray.length > 1 ? "are" : "is"} marked as a tear stream but ${stray.length > 1 ? "are" : "is"} not part of a recycle loop.`);
   const loops = [];
+  const isLoop = c => { const set = new Set(c); return graph.some(e => set.has(e.from) && set.has(e.to)); };
   for (const comp of comps) {
     const set = new Set(comp);
     const inner = graph.filter(e => set.has(e.from) && set.has(e.to));
-    if (!inner.length) { calc(comp[0]); strictNow(comp[0]); continue; }
+    // (refused at once only where a recycle loop is still to be solved: without one the end of the flowsheet comes as
+    // soon, and a block after it may refuse with its own, more specific reason, as before)
+    if (!inner.length) { calc(comp[0]); if (comps.slice(comps.indexOf(comp) + 1).some(isLoop)) strictNow(comp[0]); continue; }
     const tears = chooseTears(comp, inner);
     const tearIds = new Set(tears.map(e => e.id));
     const seq = order(comp, inner.filter(e => !tearIds.has(e.id)));

@@ -26,7 +26,8 @@ test("EA-17: a block outside every loop is refused at once in the strict mode, b
     const r = run(req);
     assert.equal(r.outcome, "invalid_input");
     assert.equal(r.error.code, "OUT_OF_RANGE");
-    assert.match(r.error.message, /Feed F3, outside every recycle loop, is calculated once from its final inlets/);
+    assert.match(r.error.message, /^The strict range mode \(strictRanges\) refuses this answer: it uses 4 records outside their ranges\./);
+    assert.match(r.error.message, /Feed F3 is outside every recycle loop and is calculated once from its final inlets, so this is refused now/);
     assert.match(r.error.message, /Acetic acid: vapour pressure at 288\.15 K is 1\.85 K below its range/);
     assert.deepEqual(r.error.where.map(w => w.block), ["F3"]);
   }
