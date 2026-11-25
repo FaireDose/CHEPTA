@@ -27,6 +27,12 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
   feed by a design specification and column 11 by its distillate or a purity; the growth limit stays 10^6; an absolute
   per-component balance check follows in PR #257; the numbers are kept; Lab's plant tests stay opt-in. Closed once
   merged.
+- **Proposal 0027 built: faster flowsheet and design-specification runs** (docs/decisions/2026-11-25-03-solve-speed-build.md;
+  the proposal and the maintainer's seven answers: docs/decisions/2026-11-25-02-solve-speed-proposal.md): the rigorous
+  columns restarted from their last answer (`solver.columnRestart`), the two-liquid stage's failed old K-values
+  forgotten, the timing per block, pass and design-specification solve (`run.timing`), and `solver.timeLimit_s` with an
+  `OUT_OF_TIME` naming the solve, the varied value and the best point (Lab's request 18). Measured on Lab's plant in the
+  decision file. Next: (e2) as its own proposal.
 - **The plant's balance on its own tolerance** (docs/decisions/2026-11-18-02-flowsheet-balance-absolute.md): built
   `solver.balanceTolerance` (1e-4 of the fresh feed, per component, not loosened with the recycle tolerance, as COFE
   keeps a mass balance tolerance beside its recycle tolerance; DWSIM only reports its residual); beyond it the strict

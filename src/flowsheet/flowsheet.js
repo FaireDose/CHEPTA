@@ -68,7 +68,7 @@
 import { fail, failRange } from "../util/errors.js";
 import { withRangePolicy, collectExtrapolations, mergeExtrapolations, strictRanges } from "../util/ranges.js";
 import { stream } from "../stream/stream.js";
-import { reportProgress, progressWanted } from "../util/progress.js";
+import { reportProgress, progressWanted, withTimeLimit, timeUp } from "../util/progress.js";
 import { runUnit, unitType, specStatus } from "../units/units.js";
 import "../units/reactors.js";   // registers the conversion and yield reactors
 import "../units/kinetic-reactors.js";
@@ -391,12 +391,58 @@ export function solveFlowsheet(sys, fs) {
   // before; false or absent (the default) continues the record with a warning, gathered in result.extrapolations
   const strict = fs?.solver?.strictRanges;
   if (strict !== undefined && typeof strict !== "boolean") throw fail("BAD_INPUT", `solver.strictRanges must be true or false (got ${JSON.stringify(strict)}).`);
+  // proposal 0027: the columns restarted from their last answer ((a), solver.columnRestart), the timing of the run ((b),
+  // result.timing) and its own time limit ((c), solver.timeLimit_s), shared by every solve of a design specification
+  const restart = fs?.solver?.columnRestart ?? "previous";
+  if (!COLUMN_RESTARTS.includes(restart)) throw fail("BAD_INPUT", `solver.columnRestart must be ${COLUMN_RESTARTS.map(v => `"${v}"`).join(" or ")} (got ${JSON.stringify(fs.solver.columnRestart)}).`);
+  const limit = fs?.solver?.timeLimit_s;
+  if (limit !== undefined && !(typeof limit === "number" && limit > 0 && Number.isFinite(limit))) throw fail("BAD_INPUT", `solver.timeLimit_s must be a positive number of seconds (got ${JSON.stringify(limit)}).`);
+  const ctx = newRunContext(restart, limit ?? null);
   // design specifications (proposal 0022): an outer loop of whole solves around the sequential solver
   const ds = fs?.designSpecs;
-  if (ds != null && !(Array.isArray(ds) && ds.length === 0)) {
-    return withRangePolicy({ strictRanges: strict }, () => solveDesignSpecs(sys, fs, solveCore, inspectFlowsheet(fs), SOLVER_DEFAULTS.tolerance));
-  }
-  return withRangePolicy({ strictRanges: strict }, () => solveCore(sys, fs));
+  const withDs = ds != null && !(Array.isArray(ds) && ds.length === 0);
+  const result = withTimeLimit(limit ?? null, () => withRangePolicy({ strictRanges: strict }, () => (withDs
+    ? solveDesignSpecs(sys, fs, (s2, f2) => solveCore(s2, f2, ctx), inspectFlowsheet(fs), SOLVER_DEFAULTS.tolerance, ctx)
+    : solveCore(sys, fs, ctx))));
+  // the timing is not part of the answer (it differs from run to run): not enumerable, so that an answer compared or
+  // saved is the same; a request's result carries it in run.timing (src/api/dispatcher.js)
+  Object.defineProperty(result, "timing", { value: timingOf(ctx), enumerable: false, configurable: true });
+  return result;
+}
+
+/** solver.columnRestart (proposal 0027, (a)): "previous" starts each rigorous column from its last answer in the run,
+ *  "cold" from its own start every time (the path of 0.6.2). */
+export const COLUMN_RESTARTS = ["previous", "cold"];
+const clockNow = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
+const secs = ms => +(ms / 1000).toFixed(3);
+
+/** What one run keeps between the solves of its design specifications: the blocks' last answers, the timing, and where
+ *  the calculation is (for an OUT_OF_TIME). */
+function newRunContext(restart, limit_s) {
+  return { restart, limit_s, restarts: new Map(), t0: clockNow(), blocks: new Map(), loops: [], evaluations: null, where: null };
+}
+
+/** The run's timing (proposal 0027, (b)), in seconds: not part of the answer (it differs from run to run). */
+export function timingOf(ctx) {
+  return {
+    total_s: secs(clockNow() - ctx.t0),
+    blocks: Object.fromEntries([...ctx.blocks].map(([id, b]) => [id, { calls: b.calls, s: secs(b.ms) }])),
+    loops: ctx.loops.map(l => ({ blocks: l.blocks, tears: l.tears, passes: l.passes.map(p => ({ iteration: p.iteration, s: secs(p.ms),
+      ...(p.slowest ? { slowest: { block: p.slowest, s: secs(p.slowestMs) } } : {}), ...(p.jacobian ? { jacobian_passes: p.jacobian } : {}) })) })),
+    ...(ctx.evaluations ? { designSpecs: { evaluations: ctx.evaluations.map(({ ms, ...e }) => ({ ...e, s: secs(ms) })) } } : {}),
+    columnRestart: ctx.restart, ...(ctx.limit_s != null ? { timeLimit_s: ctx.limit_s } : {}),
+  };
+}
+
+/** The OUT_OF_TIME of a run's own time limit: where it was and where the time went (proposal 0027, (c)). */
+export function outOfTime(ctx, extra = "", details = {}) {
+  const t = timingOf(ctx);
+  const slow = Object.entries(t.blocks).sort((a, b) => b[1].s - a[1].s).slice(0, 3);
+  const w = ctx.where;
+  const at = w ? ` It was calculating ${w.block}${w.loop ? ` in the loop through ${w.loop.join(", ")}, at iteration ${w.iteration}${w.residual != null ? ` (the tear streams changing by ${Number(w.residual).toExponential(2)} per iteration, tolerance ${w.tolerance})` : ""}` : ""}.` : "";
+  const went = slow.length ? ` The time went to ${slow.map(([id, b]) => `${id} ${b.s} s (${b.calls} calculation${b.calls === 1 ? "" : "s"})`).join(", ")}, of ${t.total_s} s in all.` : "";
+  return fail("OUT_OF_TIME", `The time limit of ${ctx.limit_s} s (solver.timeLimit_s) passed.${at}${extra}${went} Raise solver.timeLimit_s, or start from values closer to the answer (the tear streams' guesses${details.best ? ", vary.guess" : ""}).`,
+    { timing: t, ...(w ? { where: { ...w } } : {}), ...details });
 }
 
 /**
@@ -421,13 +467,14 @@ function blockExtrapolations(sys, r, noted) {
   return [...atStates, ...(r.extrapolations ?? []), ...noted.filter(n => !FINAL_STATE_KINDS.has(n.kind))];
 }
 
-function solveCore(sys, fs) {
+function solveCore(sys, fs, ctx = newRunContext("previous", null)) {
   if (!sys || typeof sys.flash !== "function") throw fail("BAD_INPUT", "solveFlowsheet: the first argument must be a system, e.g. CHEPTA.system({ components, model }).");
   const opt = { ...SOLVER_DEFAULTS, ...(fs?.solver ?? {}) };
   if (!(Number.isInteger(opt.maxIterations) && opt.maxIterations >= 1)) throw fail("BAD_INPUT", `solver.maxIterations must be a positive whole number (got ${opt.maxIterations}).`);
   if (!(opt.tolerance > 0 && opt.tolerance < 0.1)) throw fail("BAD_INPUT", `solver.tolerance must be between 0 and 0.1 (got ${opt.tolerance}).`);
   if (opt.balanceTolerance !== undefined && !(opt.balanceTolerance > 0 && opt.balanceTolerance < 0.1)) throw fail("BAD_INPUT", `solver.balanceTolerance must be between 0 and 0.1 (got ${opt.balanceTolerance}).`);
   if (!SOLVER_METHODS.includes(opt.method)) throw fail("BAD_INPUT", `solver.method "${opt.method}" is not one of ${SOLVER_METHODS.join(", ")}.`);
+  ctx.loops = [];   // the timing of the loops is that of the last solve (a design specification's: of its last evaluation)
   const status = flowsheetStatus(sys, fs);
   if (!status.ready) {
     const lines = [...status.structure.map(p => p.message), ...Object.values(status.blocks).filter(b => !b.ok).map(b => b.message)];
@@ -454,10 +501,26 @@ function solveCore(sys, fs) {
     const outletCount = multi ? (b.outs[multi.port] ?? []).length : b.unit.outlets.filter(p => !p.optional || (b.outs[p.port] ?? []).length).length;
     let r;
     let noted = [];
+    // the time limit (solver.timeLimit_s): checked before every block; a block that fails once it has passed failed
+    // for want of time (its own error handling may have caught the check made inside it)
+    ctx.where = { ...(iterating && ctx.where?.loop ? ctx.where : {}), block: id };
+    if (timeUp()) throw outOfTime(ctx);
+    const t0 = clockNow();
+    const timed = () => {
+      const ms = clockNow() - t0, tb = ctx.blocks.get(id) ?? { calls: 0, ms: 0 };
+      tb.calls += 1; tb.ms += ms; ctx.blocks.set(id, tb);
+      if (pass && ms > pass.slowestMs) { pass.slowest = id; pass.slowestMs = ms; }
+    };
     try {
-      const got = collectExtrapolations(() => runUnit(b.type, { sys, inlets, spec: b.qin ? withEnergy(b, qvals.get(b.qin.id)) : b.spec, outletCount, reactions, iterating }));
+      // a block's own last answer in this run (proposal 0027, (a): the rigorous column's profile)
+      const got = collectExtrapolations(() => runUnit(b.type, { sys, inlets, spec: b.qin ? withEnergy(b, qvals.get(b.qin.id)) : b.spec, outletCount, reactions, iterating,
+        restart: ctx.restart === "previous" ? ctx.restarts.get(id) ?? null : null }));
       r = got.value; noted = got.extrapolations;
+      if (r.restart && ctx.restart === "previous") ctx.restarts.set(id, r.restart);
+      timed();
     } catch (e) {
+      timed();
+      if (timeUp() || e?.code === "OUT_OF_TIME") throw outOfTime(ctx);
       e.message = `${b.unit.label} ${b.id}: ${e.message.replace(new RegExp(`^${b.unit.label}: `), "")}`;
       throw e;
     }
@@ -475,6 +538,7 @@ function solveCore(sys, fs) {
     blockNotes.set(id, blockExtrapolations(sys, r, noted));
   };
   const blockNotes = new Map();
+  let pass = null;   // the timing of the loop's pass now running (proposal 0027, (b))
 
   /** Total flow of the feed streams calculated so far (kmol/h). */
   const feedTotal = () => nodes.filter(id => blocks.get(id).type === "feed")
@@ -504,6 +568,11 @@ function solveCore(sys, fs) {
     let x = tears.map(e => vec(tearValue(e), e));
     let xPrev = null, gPrev = null, it = 0, err = Infinity;
     const history = [];
+    // the timing of each pass (proposal 0027, (b)), and where the loop is, for an OUT_OF_TIME
+    const loopTiming = { blocks: seq.slice(), tears: tears.map(e => e.id), passes: [] };
+    ctx.loops.push(loopTiming);
+    let passStart = null;
+    const endPass = () => { if (pass && passStart != null) pass.ms = clockNow() - passStart; };
     const safeguards = [];   // what the safeguards below did: { iteration, action, reason }
     const stop = (why, extra = {}) => fail("NO_CONVERGENCE",
       `The loop through ${seq.join(", ")} did not converge${why}. What usually helps: a purge or a smaller recycle fraction (a recycle with no way out keeps growing), a guess for the tear stream${tears.length > 1 ? "s" : ""} (${tears.map(e => e.id).join(", ")}) close to the answer, another tear stream, another convergence method, or more iterations.`,
@@ -637,6 +706,7 @@ function solveCore(sys, fs) {
     const jacobianAt = (x0, base, F0) => {
       const xf = x0.flat(), sz = sizeOf(x0, x0), m = xf.length;
       const cols = [];
+      if (pass) pass.jacobian = m;
       try {
         for (let j = 0; j < m; j++) {
           const h = FD_STEP * sz[j];
@@ -652,7 +722,7 @@ function solveCore(sys, fs) {
           cols.push(gj.map((v, i) => (v - xs[i] - F0[i]) / h));
         }
       } catch (e) {
-        if (!e?.code || e.code === "PHASE_SPLIT") throw e;
+        if (!e?.code || e.code === "PHASE_SPLIT" || e.code === "OUT_OF_TIME") throw e;
         throw stop(`: at iteration ${it + 1}, while the Jacobian was computed (tear flows perturbed by ${FD_STEP} of their size), ${e.message}`, { cause: e.message });
       }
       return Array.from({ length: m }, (_, i) => cols.map(c => c[i]));
@@ -692,8 +762,13 @@ function solveCore(sys, fs) {
       return { text, details: { ...(net ? { netChange_kmol_h: Object.fromEntries(sys.ids.map((id, i) => [id, net[i]])) } : {}), ...(warnings.length ? { warnings } : {}) } };
     };
     for (; it < opt.maxIterations; it++) {
+      endPass();
+      pass = { iteration: it + 1, ms: 0, slowest: null, slowestMs: 0 }; passStart = clockNow();
+      loopTiming.passes.push(pass);
+      ctx.where = { loop: seq.slice(), iteration: it + 1, residual: Number.isFinite(err) ? err : null, tolerance: opt.tolerance };
       const before = tears.map(tearValue);
       try { for (const id of seq) calc(id, true); } catch (e) {
+        if (e?.code === "OUT_OF_TIME") throw e;
         if (it === 0) {
           // the first pass is a plain calculation: its error is the block's own, but its inlets are those of
           // the start values of the tear streams (no flow, unless guessed), not of the converged loop
@@ -799,6 +874,7 @@ function solveCore(sys, fs) {
       xPrev = x; gPrev = g;
       x = setTears(xNew, after, xNew === g);
     }
+    endPass(); pass = null;
     if (!(err < opt.tolerance)) {
       // the net change of each component in the last accepted pass (decision 2026-11-14-08: Lab's plant gained 0.24
       // kmol/h of ethanol and lost 0.42 of ester per pass for 200 passes)

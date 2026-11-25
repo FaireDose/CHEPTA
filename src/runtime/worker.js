@@ -35,6 +35,15 @@ const sci = v => (Number.isFinite(v) ? Number(v).toExponential(2) : String(v));
  * residual against the tolerance (CHEPTA-Lab EA-14).
  */
 export function progressText(p) {
+  // a design specification's solve (proposal 0027, (c); CHEPTA-Lab's request 18): which solve, at which value, the
+  // bracket and the best point so far
+  const d = p?.designSpec;
+  const ds = d ? `When it was stopped, design specification${d.ids?.length > 1 ? "s" : ""} ${(d.ids ?? []).join(", ")} ${d.ids?.length > 1 ? "were" : "was"} in solve ${d.solve}, at ${d.at}${d.bracket ? `; the target bracketed between ${+Number(d.bracket[0]).toPrecision(6)} and ${+Number(d.bracket[1]).toPrecision(6)}` : ""}${d.best ? `; the best so far at ${Object.entries(d.best.at).map(([id, v]) => `${id} ${+Number(v).toPrecision(6)}`).join(", ")}, reaching ${Object.entries(d.best.reached).map(([id, v]) => `${+Number(v).toPrecision(6)} (asked ${+Number(d.best.asked[id]).toPrecision(6)})`).join(", ")}` : ""}.` : "";
+  const loopText = progressLoops(p);
+  return ds ? `${ds}${loopText ? ` ${loopText.replace(/^When it was stopped, /, "In that solve, ")}` : ""}` : loopText;
+}
+
+function progressLoops(p) {
   if (p?.kind !== "flowsheet" || !Array.isArray(p.loops) || !p.loops.length) return "";
   const loops = p.loops.map(l => `the loop through ${l.blocks.join(", ")} (tear stream${l.tears.length > 1 ? "s" : ""} ${l.tears.join(", ")}) ${l.converged
     ? `had converged in ${l.iterations} iteration${l.iterations === 1 ? "" : "s"} (residual ${sci(l.residual)})`

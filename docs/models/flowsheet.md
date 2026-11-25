@@ -117,6 +117,22 @@ sequential modular:
    strict mode (`strictRanges`) refuses and the default mode warns (`balance.warnings`), naming the components and
    amounts: check the specifications first (a product given by its flow above what is fed or formed, a feed in excess
    with no way out).
+6. **Columns restarted from their last answer** (proposal 0027, (a)), `solver.columnRestart`: `"previous"` (the
+   default) starts each rigorous column from its own last answer in the run (its stages' flows and temperatures, and
+   the free variables its design specifications found) in the next pass of its loop, the Jacobian passes and the next
+   design-specification solve, with Newton stopped early when it does not converge from there; then the column's own
+   cold path, unchanged. `"cold"` starts every column from its own start every time (the path of 0.6.2). As Aspen
+   Plus, which by default "use[s] any available previous results as an initial guess" (User Guide 10, ch. 5,
+   "Reinitializing Calculations"). The last answers are kept for the run only, not in the project file.
+7. **Timing and a time limit** (proposal 0027, (b) and (c)). Every solve has its timing, in seconds: per block (the
+   calculations and their time), per pass of each loop (its time and its slowest block) and per design-specification
+   solve (the varied value, the passes, the time, the outcome); `result.timing` (not enumerable: not part of the
+   answer, which stays the same from run to run), and `run.timing` in a request's result. `solver.timeLimit_s` stops
+   the solve with `OUT_OF_TIME` once it has passed (checked before every block and between a column's Newton
+   iterations), naming the block, the loop's iteration and its last change, the design specification's solve, its
+   varied value, the bracket and the best point so far (`error.details.best`, to give as `vary.guess`), and where the
+   time went. No partial answer is returned. A request's own `limits.time_ms`, which ends the worker from outside,
+   reports the same design-specification progress in its `OUT_OF_TIME` message (CHEPTA-Lab's request 18).
 
 ## Design specifications (proposal 0022)
 
