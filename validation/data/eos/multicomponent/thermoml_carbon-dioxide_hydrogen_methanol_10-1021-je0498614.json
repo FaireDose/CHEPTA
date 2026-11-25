@@ -1,0 +1,139 @@
+{
+ "_about": "Carbon dioxide (1) + hydrogen (2) + methanol (3): bubble pressures of liquids of known composition at 313.2 K, as stored in the ThermoML Archive record.",
+ "components": [
+  "carbon-dioxide",
+  "hydrogen",
+  "methanol"
+ ],
+ "kind": "isothermal-px-ternary",
+ "source": {
+  "citation": "X. Xie, J. S. Brown, D. Bush, C. A. Eckert, Bubble and Dew Point Measurements of the Ternary System Carbon Dioxide + Methanol + Hydrogen at 313.2 K, J. Chem. Eng. Data 50 (2005) 780-783",
+  "doi": "10.1021/je0498614",
+  "open_copy": "https://trc.nist.gov/ThermoML/10.1021/je0498614.html",
+  "access": "The journal article may be subscription-only; the same data is public in the NIST TRC ThermoML Archive (NIST open license).",
+  "tables": "ThermoML record, PureOrMixtureData 2. The table number in the article was not checked.",
+  "transcription": "Read from the ThermoML XML by validation/python/hp_ternary_solubility.py; values as stored. The person checking compares each row with the record."
+ },
+ "columns": [
+  "T_K",
+  "P_kPa",
+  "x_1",
+  "x_2",
+  "U_P_kPa"
+ ],
+ "rows": [
+  [
+   313.2,
+   12960.0,
+   0.402,
+   0.032,
+   640.0
+  ],
+  [
+   313.2,
+   10150.0,
+   0.408,
+   0.018,
+   620.0
+  ],
+  [
+   313.2,
+   8790.0,
+   0.41,
+   0.011,
+   610.0
+  ],
+  [
+   313.2,
+   21760.0,
+   0.677,
+   0.129,
+   500.0
+  ],
+  [
+   313.2,
+   19030.0,
+   0.696,
+   0.103,
+   400.0
+  ],
+  [
+   313.2,
+   15880.0,
+   0.715,
+   0.079,
+   470.0
+  ],
+  [
+   313.2,
+   20070.0,
+   0.725,
+   0.196,
+   440.0
+  ],
+  [
+   313.2,
+   12400.0,
+   0.735,
+   0.053,
+   470.0
+  ],
+  [
+   313.2,
+   18710.0,
+   0.746,
+   0.172,
+   420.0
+  ],
+  [
+   313.2,
+   9800.0,
+   0.754,
+   0.019,
+   310.0
+  ],
+  [
+   313.2,
+   18280.0,
+   0.768,
+   0.149,
+   400.0
+  ],
+  [
+   313.2,
+   16620.0,
+   0.787,
+   0.127,
+   360.0
+  ],
+  [
+   313.2,
+   15640.0,
+   0.807,
+   0.105,
+   360.0
+  ],
+  [
+   313.2,
+   13840.0,
+   0.827,
+   0.083,
+   340.0
+  ],
+  [
+   313.2,
+   11730.0,
+   0.849,
+   0.059,
+   340.0
+  ],
+  [
+   313.2,
+   9920.0,
+   0.872,
+   0.032,
+   270.0
+  ]
+ ],
+ "notes": "To be checked by a person against the record (AGENTS.md rule 4)."
+}

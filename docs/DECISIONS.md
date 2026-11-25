@@ -10,6 +10,13 @@ Pull requests are in `FaireDose/CHEPTA` (formerly `FaireDose/Fugacity`; the old 
 
 ### Waiting for the maintainer
 
+- **CO2 in the methanol + water condensate of CHEPTA-Lab's separator** (docs/decisions/2026-11-20-01-co2-methanol-water.md):
+  measured ternary data (Xia 2004, Bezanehtak 2004, Xie 2005; ThermoML) show the paper's 18.5 mol % CO2 is not
+  physical and CHEPTA's PR with k_ij (3.4 %) is too high (+77 % in solubility in a 1:1 solvent); PR + gE (MHV1) is
+  within 9 % and gives about 2.6 % (without N2). Built: the data, the check, the test, four known issues and the method
+  rule. Open: check the transcribed rows (rule 4); a set for nitrogen + methanol (no ThermoML data; search the open
+  literature) and nitrogen + water (IAPWS G7-04, as H2 + water) so that MHV1 runs Lab's whole separator; whether Lab
+  switches its separator to PR + gE (MHV1).
 - **Recycle solver safeguards, Lab's request 14** (docs/decisions/2026-11-14-08-recycle-safeguards.md): built: Broyden
   rejects a pass ten times worse (a step reduction, as COFE's line search), a finite-difference Jacobian on a stall
   (COFE's "Jacobian ... when required"); a block that fails in a loop stops it at once, named (the maintainer,
